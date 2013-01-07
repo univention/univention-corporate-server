@@ -201,9 +201,22 @@ define([
 			// add onChange handlers that show the note
 			array.forEach(['interfaces_ipv4', 'interfaces_ipv6'], function(iname) {
 				var iwidget = this._form.getWidget(iname);
-				this.own(iwidget.watch('value', lang.hitch(this, function() {
+				this.own(iwidget.watch('value', lang.hitch(this, function(attr, oldMultiValue, newMultiValue) {
 					if (iwidget.focused) {
 						this._showNote();
+					}
+					if (iwidget.name == 'interfaces_ipv4') {
+						// auto-set netmask to 255.255.255.0 if not using DHCP and IP is set
+						var changeRequired = false;
+						array.forEach(newMultiValue, function(newValue) {
+							if (newValue[1] !== '' && newValue[2] === '' && newValue[3] !== 'true') {
+								newValue[2] = '255.255.255.0';
+								changeRequired = true;
+							}
+						});
+						if (changeRequired) {
+							iwidget.set('value', newMultiValue);
+						}
 					}
 				})));
 			}, this);
