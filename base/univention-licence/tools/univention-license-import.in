@@ -102,7 +102,7 @@ if [ -z "$ldap_master_port" ]; then
 	ldap_master_port=7389
 fi
 
-if ! echo "$dn" | grep -q "$ldap_base\$"; then
+if ! echo "$dn" | grep -i -q "$ldap_base\$"; then
 	echo "E: Your system is configured to use the LDAP base DN" >&2
 	echo "E:   $ldap_base" >&2
 	echo "E: but the given license file was created for" >&2

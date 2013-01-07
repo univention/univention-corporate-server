@@ -1,3 +1,9 @@
+univention-licence (5.0.5-1) unstable; urgency=low
+
+  * The license import and check is now case insensitive (Bug #29883)
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 07 Jan 2013 10:29:55 +0100
+
 univention-licence (5.0.4-1) unstable; urgency=low
 
   * make_license_v2.sh: Fixed product handling (Bug #28186)

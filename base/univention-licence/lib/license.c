@@ -284,7 +284,7 @@ int univention_license_check_basedn()
 			}
 
 			if ((strlen(licenseBaseDN->line[0]) == strlen(baseDN))) {
-				if (strcmp(licenseBaseDN->line[0], baseDN) == 0) {
+				if (strcasecmp(licenseBaseDN->line[0], baseDN) == 0) {
 					ret = 1;
 				}
 			}
