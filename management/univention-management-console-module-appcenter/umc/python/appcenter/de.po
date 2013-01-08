@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-10-30 23:08+0100\n"
+"POT-Creation-Date: 2013-01-08 19:47+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,12 +12,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/appcenter/__init__.py:105
+#: umc/python/appcenter/__init__.py:114
 #, python-format
 msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
 
-#: umc/python/appcenter/__init__.py:191 umc/python/appcenter/__init__.py:296
+#: umc/python/appcenter/__init__.py:207 umc/python/appcenter/__init__.py:312
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -26,25 +26,29 @@ msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 msgid "Any of %r must be given"
 msgstr "Ein Wert aus %r muss gegeben sein"
 
-#: umc/python/appcenter/__init__.py:88
+#: umc/python/appcenter/__init__.py:98
 msgid "Cannot parse License from LDAP"
 msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 
-#: umc/python/appcenter/__init__.py:115
+#: umc/python/appcenter/__init__.py:125
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "Konnte das App Center nicht erreichen: %s"
 
-#: umc/python/appcenter/__init__.py:197
+#: umc/python/appcenter/__init__.py:213
 #, python-format
 msgid "No license file available for application: %s"
 msgstr "Für die Applikation ist keine Lizenzdatei vorhanden: %s"
+
+#: umc/python/appcenter/__init__.py:70
+msgid "Package not found in repository"
+msgstr "Paket wurde in keinem Repository gefunden"
 
 #: umc/python/appcenter/sanitizers.py:22
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:477
+#: umc/python/appcenter/__init__.py:497
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -52,14 +56,14 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/appcenter/__init__.py:326
+#: umc/python/appcenter/__init__.py:346
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:328
+#: umc/python/appcenter/__init__.py:348
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:324
+#: umc/python/appcenter/__init__.py:344
 msgid "upgradable"
 msgstr "aktualisierbar"

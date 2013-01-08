@@ -62,6 +62,14 @@ import util
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
+class NoneCandidate(object):
+	''' Mock object if package has no candidate
+	(may happen without network connection)
+	'''
+	def __init__(self):
+		self.summary = self.version = self.description = _('Package not found in repository')
+		self.installed_size = 0
+
 class Instance(umcm.Base):
 	def init(self):
 		self.ucr = univention.config_registry.ConfigRegistry()
@@ -315,12 +323,16 @@ class Instance(umcm.Base):
 			(for detail view) set of properties.
 		"""
 		installed = package.installed # may be None
+		found = True
 		candidate = package.candidate
+		found = candidate is not None
+		if not found:
+			candidate = NoneCandidate()
 
 		result = {
 			'package': package.name,
 			'installed': package.is_installed,
-			'upgradable': package.is_upgradable,
+			'upgradable': package.is_upgradable and found,
 			'summary': candidate.summary,
 		}
 
@@ -338,7 +350,7 @@ class Instance(umcm.Base):
 		# additional fields needed for detail view
 		if full:
 			result['section'] = package.section
-			result['priority'] = package.priority
+			result['priority'] = package.priority or ''
 			# Some fields differ depending on whether the package is installed or not:
 			if package.is_installed:
 				result['summary'] = installed.summary # take the current one
