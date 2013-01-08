@@ -1,3 +1,9 @@
+univention-samba4 (2.0.35-2) unstable; urgency=low
+
+  * Provide default for samba/debug/level (Bug #29961)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 08 Jan 2013 17:25:43 +0100
+
 univention-samba4 (2.0.35-1) unstable; urgency=low
 
   * Don't start nbt_server when samba4/service/nmb==nmbd (Bug #29865)
