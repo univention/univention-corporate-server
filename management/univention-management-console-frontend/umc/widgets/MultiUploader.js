@@ -42,7 +42,7 @@ define([
 	"umc/widgets/MultiSelect",
 	"umc/widgets/ProgressInfo",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, when, on, style, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, ProgressInfo, _) {
+], function(declare, lang, array, when, on, domStyle, ContainerWidget, _FormWidgetMixin, Button, Uploader, MultiSelect, ProgressInfo, _) {
 	return declare("umc.widgets.MultiUploader", [ ContainerWidget, _FormWidgetMixin ], {
 		'class': 'umcMultiUploader',
 
@@ -300,7 +300,7 @@ define([
 				errorSignal = on(uploader, 'error', lang.hitch(this, _done, false));
 
 				// hide uploader widget and add a new one
-				style(uploader.domNode, {
+				domStyle.set(uploader.domNode, {
 					width: '0',
 					overflow: 'hidden'
 				});

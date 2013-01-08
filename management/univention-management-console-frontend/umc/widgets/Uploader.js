@@ -245,7 +245,7 @@ define([
 		},
 
 		_resetLabel: function() {
-			if (!this._uploader) {
+			if (!this.domNode) {
 				return;
 			}
 			this.set('disabled', false);

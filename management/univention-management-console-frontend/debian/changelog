@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.184-1) unstable; urgency=low
+
+  * Fix umc.widgets.MultiUploader upload button and disabling of
+  	umc.widgets.Uploader; Bug #29960
+
+ -- Florian Best <best@univention.de>  Tue, 08 Jan 2013 13:49:36 +0100
+
 univention-management-console-frontend (2.0.183-1) unstable; urgency=low
 
   * Fix UMCP responses which does not have a status because they are not json;
