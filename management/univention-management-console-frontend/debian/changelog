@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.183-1) unstable; urgency=low
+
+  * Fix UMCP responses which does not have a status because they are not json;
+  	Bug #29957
+
+ -- Florian Best <best@univention.de>  Tue, 08 Jan 2013 11:22:20 +0100
+
 univention-management-console-frontend (2.0.182-1) unstable; urgency=low
 
   * Fix Form not propagating values under certain circumstances (Bug #29551)
