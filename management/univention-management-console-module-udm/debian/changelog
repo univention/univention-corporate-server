@@ -1,3 +1,11 @@
+univention-management-console-module-udm (3.0.62-1) unstable; urgency=low
+
+  * Restarting at root of LDAP tree: if and only if needed (Bug #29400)
+  * When right-clicking on the LDAP tree, act on the container under the
+    cursor and show its path (Bug #26062)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Jan 2013 19:25:29 +0100
+
 univention-management-console-module-udm (3.0.61-1) unstable; urgency=low
 
   * Catch KeyError when a UDM_Attribute is unknown (Bug #29333)

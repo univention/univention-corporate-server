@@ -365,17 +365,7 @@ define([
 				isMultiAction: true,
 				iconClass: 'umcIconDelete',
 				callback: lang.hitch(this, function(ids) {
-					if (ids.length) {
-						var isContainer = false;
-						array.some(ids, lang.hitch(this, function(id) {
-							var item = this._grid.getItem(id);
-							if (item.objectType.substr(0, 9) == 'container') {
-								isContainer = true;
-							}
-							return isContainer;
-						}));
-						this.removeObjects(ids, isContainer);
-					}
+					this.removeObjects(ids);
 				})
 			}, {
 				name: 'move',
@@ -383,17 +373,7 @@ define([
 				description: _( 'Move objects to a different LDAP position.' ),
 				isMultiAction: true,
 				callback: lang.hitch(this, function(ids) {
-					if (ids.length) {
-						var isContainer = false;
-						array.some(ids, lang.hitch(this, function(id) {
-							var item = this._grid.getItem(id);
-							if (item.objectType.substr(0, 9) == 'container') {
-								isContainer = true;
-							}
-							return isContainer;
-						}));
-						this.moveObjects(ids, isContainer);
-					}
+					this.moveObjects(ids);
 				})
 			}];
 
@@ -436,11 +416,7 @@ define([
 						var found = false;
 						this._searchForm._widgets.superordinate.store.fetch( { onItem: lang.hitch( this, function( item ) {
 							if ( this._searchForm._widgets.superordinate.store.getValue( item, 'id' ) == keys[ 0 ] ) {
-								var handle = this._searchForm._widgets.objectPropertyValue.on('valuesLoaded', lang.hitch( this, function() {
-									this.filter(this._searchForm.gatherFormValues());
-									this.disconnect(handle);
-								} ) );
-								this._searchForm._widgets.superordinate.set( 'value', keys[ 0 ] );
+								this._searchForm.getWidget('superordinate').set( 'value', keys[ 0 ] );
 								found = true;
 								return false;
 							}
@@ -668,10 +644,15 @@ define([
 
 				// add a context menu to edit/delete items
 				var menu = new Menu({});
+				var nameMenuItem = new MenuItem({
+					label: null, // this._navContextItem.path
+					disabled: true
+				});
+				menu.addChild(nameMenuItem);
 				menu.addChild(new MenuItem({
 					label: _( 'Edit' ),
 					iconClass: 'umcIconEdit',
-					onClick: lang.hitch(this, function(e) {
+					onClick: lang.hitch(this, function() {
 						this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
 					})
 				}));
@@ -679,13 +660,13 @@ define([
 					label: _( 'Delete' ),
 					iconClass: 'umcIconDelete',
 					onClick: lang.hitch(this, function() {
-						this.removeObjects(this._navContextItem.id, true);
+						this.removeObjects(this._navContextItem.id);
 					})
 				}));
 				menu.addChild(new MenuItem({
 					label: _('Move to...'),
 					onClick: lang.hitch(this, function() {
-						this.moveObjects([this._navContextItem.id], true);
+						this.moveObjects([this._navContextItem.id]);
 					})
 				}));
 				menu.addChild(new MenuItem({
@@ -699,18 +680,14 @@ define([
 				this.own(menu);
 
 				// remember on which item the context menu has been opened
-				this.own(aspect.after(menu, '_openMyself', lang.hitch(this, function(e) {
-					if (this._tree.selectedNode) {
-						this._navContextItem = this._tree.selectedNode.item;
-					} else {
-						console.warn('this._tree.selectedNode is null');
-					}
-				})));
+				this.own(aspect.after(this._tree, '_onNodeFocus', lang.hitch(this, function(node) {
+					this._navContextItem = node.item;
+					nameMenuItem.set('label', this._navContextItem.id);
+				}), true));
 				// in the case of changes, reload the navigation, as well (could have
 				// changes referring to container objects)
 				this.on('objectsaved', lang.hitch(this, function(dn, objectType) {
-					var isContainer = objectType.substr(0, 9) === 'container';
-					this.resetPathAndReloadTreeAndFilter(isContainer);
+					this.resetPathAndReloadTreeAndFilter([dn]);
 				}));
 
 				titlePane.addChild(treePane);
@@ -780,19 +757,18 @@ define([
 						}
 
 						// a superordinate has been selected and we do not have a 'up' button so far -> add the button
-						this._upButton = this.own(new Button({
+						this._upButton = new Button({
 							label: label,
 							iconClass: 'umcIconUp',
 							callback: lang.hitch(this, function() {
 								this._searchForm.getWidget('superordinate').set('value', 'None');
-
-								// we can relaunch the search after all search form values
-								// have been updated
-								on.once(this._searchForm.getWidget('objectPropertyValue'), 'valuesLoaded', lang.hitch(this, 'filter'));
 							})
-						}))[0];
+						});
 						this._grid._toolbar.addChild(this._upButton, 0);
 					}
+					// we can relaunch the search after all search form values
+					// have been updated
+					this._searchForm.ready().then(lang.hitch(this, 'filter'));
 				})));
 			}
 
@@ -877,6 +853,7 @@ define([
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular
 			} );
+			this.own(_dialog);
 			_dialog.show();
 		},
 
@@ -899,13 +876,10 @@ define([
 			}
 		},
 
-		moveObjects: function(ids, /*Boolean?*/ isContainer) {
+		moveObjects: function(ids) {
 			if (!ids.length) {
 				return;
 			}
-
-			// default values
-			isContainer = isContainer === undefined ? false : isContainer;
 
 			// add message to container widget
 			var objectName = ids.length > 1 ? this.objectNamePlural : this.objectNameSingular;
@@ -973,13 +947,6 @@ define([
 					});
 				}, this);
 
-				// set reloading path to ldap base
-				if (isContainer) {
-					var ldapBase = this._tree.model.getIdentity(this._tree.model.root);
-					this._reloadingPath = ldapBase;
-					this._tree.set('path', [ this._tree.model.root ]);
-				}
-
 				// send UMCP command to move the objects
 				this.standby(true);
 				this.umcpCommand('udm/move', params).then(lang.hitch(this, function(data) {
@@ -1001,7 +968,7 @@ define([
 
 					// clear the selected objects
 					this.moduleStore.onChange();
-					this.resetPathAndReloadTreeAndFilter(isContainer);
+					this.resetPathAndReloadTreeAndFilter(ids);
 				}), lang.hitch(this, function() {
 					this.standby(false);
 				}));
@@ -1022,9 +989,23 @@ define([
 			}));
 		},
 
-		resetPathAndReloadTreeAndFilter: function(reset) {
-			if (reset) {
-				this._tree.set('path', [ this._tree.model.root ]);
+		resetPathAndReloadTreeAndFilter: function(modifiedDNs) {
+			if (modifiedDNs.length) {
+				var notTouched = true;
+				var path = array.filter(this._tree.get('path'), function(part) {
+					if (modifiedDNs.indexOf(part.id) > -1) {
+						// if touched, set notTouched
+						// to false for this and every
+						// following part
+						notTouched = false;
+					}
+					return notTouched;
+				});
+				if (path.length === 0) {
+					// user modified the root
+					path = [ this._tree.model.root ];
+				}
+				this._tree.set('path', path);
 				this.reloadTree();
 			}
 			this.filter();
@@ -1154,13 +1135,6 @@ define([
 				// enable standby animation
 				this.standby(true);
 
-				// set reloading path to ldap base
-				if (isContainer) {
-					var ldapBase = this._tree.model.getIdentity(this._tree.model.root);
-					this._reloadingPath = ldapBase;
-					this._tree.set('path', [ this._tree.model.root ]);
-				}
-
 				// set the options
 				var options = {
 					cleanup: form.getWidget('deleteReferring').get('value'),
@@ -1192,7 +1166,7 @@ define([
 					if (!success) {
 						dialog.alert(message);
 					}
-					this.resetPathAndReloadTreeAndFilter(isContainer);
+					this.resetPathAndReloadTreeAndFilter(ids);
 				}), lang.hitch(this, function() {
 					this.standby(false);
 				}));
@@ -1270,6 +1244,7 @@ define([
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular
 			});
+			this.own(_dialog);
 		},
 
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String*/ note) {
