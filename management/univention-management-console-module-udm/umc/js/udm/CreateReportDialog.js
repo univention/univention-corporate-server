@@ -141,6 +141,7 @@ define([
 
 				this.standby( false );
 				this._container.removeChild( waiting );
+				waiting.destroy();
 				if ( true === data.result.success ) {
 					message = lang.replace( '<p>{0}</p>', [ _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">%s report</a>', data.result.docType, data.result.URL, this.objectNameSingular ) ] );
 					title = _( 'Report has been created' );

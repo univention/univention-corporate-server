@@ -1170,7 +1170,7 @@ def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, 
 			syn.choices.append( ( dn, dn_list[ 0 ].split( '=', 1 )[ 1 ] ) )
 	elif issubclass( syn.__class__, udm_syntax.LDAP_Search ):
 		options = options.get( 'options', {} )
-		syntax = udm_syntax.LDAP_Search( options[ 'syntax' ], options[ 'filter' ], options[ 'attributes' ], options[ 'base' ], options[ 'value' ], options[ 'viewonly' ], options[ 'empty' ] )
+		syntax = udm_syntax.LDAP_Search( options[ 'syntax' ], options[ 'filter' ], options[ 'attributes' ], options[ 'base' ], options[ 'value' ], options[ 'viewonly' ], options[ 'empty' ], options[ 'empty_end' ] )
 
 		if '$dn$' in options:
 			filter_mod = get_module( None, options[ '$dn$' ] )
@@ -1234,6 +1234,11 @@ def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, 
 				syntax.choices.append( { 'module' : 'udm', 'flavor' : module.flavor, 'objectType' : module.name, 'id' : id, 'label' : label, 'icon' : 'udm-%s' % module.name.replace( '/', '-' ) } )
 		if syntax.addEmptyValue:
 			syntax.choices.insert( 0, { 'id': '', 'label': '' } )
+		elif syntax.appendEmptyValue:
+			# with appendEmptyValue the list cannot be sorted by JS
+			# do it here!
+			syntax.choices.sort(key=lambda choice: choice['label'])
+			syntax.choices.append( { 'id': '', 'label': '' } )
 		return syntax.choices
 
 	return map( lambda x: { 'id' : x[ 0 ], 'label' : x[ 1 ] }, getattr( syn, 'choices', [] ) )

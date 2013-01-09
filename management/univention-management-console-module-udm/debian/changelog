@@ -1,3 +1,13 @@
+univention-management-console-module-udm (3.0.63-1) unstable; urgency=low
+
+  * Show icon, name and path of object if it is the only one to be moved or
+    removed (Bug #26062)
+  * If unset ComboBoxes choose first entry as selected, recognize that as a
+    change; support appending (instead of prepending) empty values in
+    ComboBox's choices (Bug #29635)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 09 Jan 2013 19:56:49 +0100
+
 univention-management-console-module-udm (3.0.62-1) unstable; urgency=low
 
   * Restarting at root of LDAP tree: if and only if needed (Bug #29400)

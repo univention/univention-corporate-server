@@ -59,7 +59,7 @@ msgstr "(Mehrfachbearbeitung)"
 #, python-format
 msgid "<p>Generating %s report for %d objects.</p><p>This may take a while</p>"
 msgstr ""
-"Erzeuge den %s Report für %d Objekte.</p><p>The Aktion kann einen Moment "
+"<p>Erzeuge den %s Report für %d Objekte.</p><p>Die Aktion kann einen Moment "
 "dauern</p>"
 
 #: umc/js/udm/LicenseDialog.js:184
@@ -424,14 +424,20 @@ msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten %s!"
 
 #: umc/js/udm.js:1112
 #, python-format
-msgid "Please confirm the removal of the selected %s!"
-msgstr "Bitte bestätigen Sie das Löschen des/der ausgewählten %s!"
+msgid "Please confirm the removal of %s:"
+msgstr "Bitte bestätigen Sie das Löschen von %s:"
 
 #: umc/js/udm.js:893
 #, python-format
-msgid "Please select a LDAP position to move %d selected %s to:"
+msgid "Please select an LDAP position to move %d selected %s to:"
 msgstr ""
-"Bitte wählen sie eine LDAP-Position aus, an die %d %s verschoben werden:"
+"Bitte wählen Sie eine LDAP-Position aus, an die %d %s verschoben werden:"
+
+#: umc/js/udm.js:894
+#, python-format
+msgid "Please select an LDAP position to move %s:"
+msgstr ""
+"Bitte wählen Sie eine LDAP-Position aus für das Verschieben von %s:"
 
 #: umc/js/udm.js:1221
 msgid ""

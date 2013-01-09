@@ -101,7 +101,7 @@ def choices( syntax, udm_property ):
 	elif isinstance( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ) or inspect.isclass( syntax ) and issubclass( syntax, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ) ):
 		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : inspect.isclass( syntax ) and syntax.__name__ or syntax.__class__.__name__ } }
 	elif isinstance( syntax, udm_syntax.LDAP_Search ):
-		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'syntax' : syntax.name, 'filter' : syntax.filter, 'viewonly' : syntax.viewonly, 'base' : getattr( syntax, 'base', '' ), 'value' : syntax.value, 'attributes' : syntax.attributes, 'empty' : syntax.addEmptyValue } } }
+		opts = { 'dynamicValues' : 'udm/syntax/choices', 'dynamicOptions' : { 'syntax' : syntax.__class__.__name__, 'options' : { 'syntax' : syntax.name, 'filter' : syntax.filter, 'viewonly' : syntax.viewonly, 'base' : getattr( syntax, 'base', '' ), 'value' : syntax.value, 'attributes' : syntax.attributes, 'empty' : syntax.addEmptyValue, 'empty_end' : syntax.appendEmptyValue } }, 'sortDynamicValues' : not syntax.appendEmptyValue }
 
 	elif inspect.isclass( syntax ) and issubclass( syntax, udm_syntax.select ):
 		if getattr( syntax, 'depends', None ) is not None:

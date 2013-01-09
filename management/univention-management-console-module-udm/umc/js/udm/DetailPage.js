@@ -728,6 +728,18 @@ define([
 					// save the original form data
 					this._form.ready().then(lang.hitch(this, function() {
 						this._receivedObjFormData = this.getValues();
+						tools.forIn(this._receivedObjFormData, lang.hitch(this, function(ikey, ivalue) {
+							var widget = this._form.getWidget(ikey);
+							if (!(ikey in this._receivedObjOrigData) && tools.inheritsFrom(widget, 'umc.widgets.ComboBox')) {
+								// ikey was not received from server and it is a ComboBox
+								// => the value may very well be set because there is
+								// no empty choice (in this case the first choice is selected).
+								// this means that this value would not be
+								// recognized as a change!
+								// console.log(ikey, ivalue); // uncomment this to see which values will be send to the server
+								this._receivedObjFormData[ikey] = '';
+							}
+						}));
 						this._receivedObjFormData.$policies$ = this._receivedObjOrigData.$policies$;
 					}));
 				}));

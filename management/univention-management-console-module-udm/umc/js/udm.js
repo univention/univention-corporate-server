@@ -365,7 +365,10 @@ define([
 				isMultiAction: true,
 				iconClass: 'umcIconDelete',
 				callback: lang.hitch(this, function(ids) {
-					this.removeObjects(ids);
+					objects = array.map(ids, lang.hitch(this, function(id) {
+						return this._grid.getItem(id);
+					}));
+					this.removeObjects(objects);
 				})
 			}, {
 				name: 'move',
@@ -373,7 +376,10 @@ define([
 				description: _( 'Move objects to a different LDAP position.' ),
 				isMultiAction: true,
 				callback: lang.hitch(this, function(ids) {
-					this.moveObjects(ids);
+					objects = array.map(ids, lang.hitch(this, function(id) {
+						return this._grid.getItem(id);
+					}));
+					this.moveObjects(objects);
 				})
 			}];
 
@@ -644,11 +650,6 @@ define([
 
 				// add a context menu to edit/delete items
 				var menu = new Menu({});
-				var nameMenuItem = new MenuItem({
-					label: null, // this._navContextItem.path
-					disabled: true
-				});
-				menu.addChild(nameMenuItem);
 				menu.addChild(new MenuItem({
 					label: _( 'Edit' ),
 					iconClass: 'umcIconEdit',
@@ -660,13 +661,13 @@ define([
 					label: _( 'Delete' ),
 					iconClass: 'umcIconDelete',
 					onClick: lang.hitch(this, function() {
-						this.removeObjects(this._navContextItem.id);
+						this.removeObjects([this._navContextItem]);
 					})
 				}));
 				menu.addChild(new MenuItem({
 					label: _('Move to...'),
 					onClick: lang.hitch(this, function() {
-						this.moveObjects([this._navContextItem.id]);
+						this.moveObjects([this._navContextItem]);
 					})
 				}));
 				menu.addChild(new MenuItem({
@@ -680,10 +681,12 @@ define([
 				this.own(menu);
 
 				// remember on which item the context menu has been opened
-				this.own(aspect.after(this._tree, '_onNodeFocus', lang.hitch(this, function(node) {
-					this._navContextItem = node.item;
-					nameMenuItem.set('label', this._navContextItem.id);
+				this.own(aspect.after(this._tree, '_onNodeMouseEnter', lang.hitch(this, function(node) {
+					this._navContextItemFocused = node.item;
 				}), true));
+				this.own(aspect.before(menu, '_openMyself', lang.hitch(this, function() {
+					this._navContextItem = this._navContextItemFocused;
+				})));
 				// in the case of changes, reload the navigation, as well (could have
 				// changes referring to container objects)
 				this.on('objectsaved', lang.hitch(this, function(dn, objectType) {
@@ -880,14 +883,27 @@ define([
 			if (!ids.length) {
 				return;
 			}
+			var objects = ids;
+			ids = array.map(objects, function(object) { return object.id });
+
+			var container = new ContainerWidget({});
 
 			// add message to container widget
-			var objectName = ids.length > 1 ? this.objectNamePlural : this.objectNameSingular;
-			var container = new ContainerWidget({});
-			container.addChild(new Text({
-				content: '<p>' + _('Please select a LDAP position to move %d selected %s to:', ids.length, objectName) + '</p>',
-				style: 'width:300px;'
-			}));
+			var objectName;
+			if (objects.length == 1) {
+				objectName = this.objectNameSingular;
+				var detail = lang.replace('<div>{0}</div>', [this.iconFormatter(objects[0])]);
+				container.addChild(new Text({
+					content: '<p>' + _('Please select an LDAP position to move %s:', objectName) + detail + '</p>',
+					style: 'width:300px;'
+				}));
+			} else {
+				objectName = this.objectNamePlural;
+				container.addChild(new Text({
+					content: '<p>' + _('Please select an LDAP position to move %d selected %s to:', ids.length, objectName) + '</p>',
+					style: 'width:300px;'
+				}));
+			}
 
 			// create the tree
 			var model = new TreeModel({
@@ -1023,8 +1039,14 @@ define([
 			//		Formatter method that adds in a given column of the search grid icons
 			//		according to the object types.
 
+			var item;
+			if (rowIndex === undefined) {
+				item = value;
+				value = lang.replace('{0} (<em>{1}</em>)', [item.name || item.label, item.path || item.id]);
+			} else {
+				item = this._grid._grid.getItem(rowIndex);
+			}
 			// get the iconNamae
-			var item = this._grid._grid.getItem(rowIndex);
 			var iconName = item.objectType || '';
 			iconName = iconName.replace('/', '-');
 
@@ -1110,17 +1132,19 @@ define([
 			recursive = undefined === recursive ? true : recursive;
 
 			// get an object
-			var ids = _ids instanceof Array ? _ids : (_ids ? [ _ids ] : []);
+			var objects = _ids instanceof Array ? _ids : (_ids ? [ _ids ] : []);
+			var ids = array.map(objects, function(object) { return object.id });
 
 			// ignore empty array
-			if (!ids.length) {
+			if (!objects.length) {
 				return;
 			}
 
 			// let user confirm deletion
-			var msg = _('Please confirm the removal of the %d selected %s!', ids.length, this.objectNamePlural);
-			if (ids.length == 1) {
-				msg = _('Please confirm the removal of the selected %s!', this.objectNameSingular);
+			var msg = _('Please confirm the removal of the %d selected %s!', objects.length, this.objectNamePlural);
+			if (objects.length == 1) {
+				msg = _('Please confirm the removal of %s:', this.objectNameSingular);
+				msg += lang.replace('<div>{0}</div>', [this.iconFormatter(objects[0])]);
 			}
 
 			var _dialog = null, form = null;
