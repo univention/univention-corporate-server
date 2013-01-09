@@ -14,6 +14,7 @@ RedirectMatch ^/umc(/$|$) /univention-management-console/
 RedirectMatch ^/univention-management-console$ /univention-management-console/
 RewriteEngine On
 RewriteRule ^/univention-management-console/style/(.*) /style/$1 [L]
+RewriteRule ^/univention-management-console/images/(.*) /univention-management-console/js/dijit/themes/umc/$1 [R=301]
 
 # fix for bug in cherrypy returnin 408/409 errors out of the blue:
 #   http://cherrypy.org/ticket/853

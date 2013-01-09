@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.185-1) unstable; urgency=low
+
+  * Add apache rewrite rule to support old image paths for umc modules;
+  	Bug #29861
+
+ -- Florian Best <best@univention.de>  Wed, 09 Jan 2013 09:29:52 +0100
+
 univention-management-console-frontend (2.0.184-1) unstable; urgency=low
 
   * Fix umc.widgets.MultiUploader upload button and disabling of
