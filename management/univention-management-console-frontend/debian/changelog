@@ -1,4 +1,4 @@
-univention-management-console-frontend (2.0.185-1) unstable; urgency=low
+univention-management-console-frontend (2.0.185-2) unstable; urgency=low
 
   * Add apache rewrite rule to support old image paths for umc modules;
   	Bug #29861
