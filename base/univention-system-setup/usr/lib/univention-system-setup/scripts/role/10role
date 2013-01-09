@@ -50,20 +50,15 @@ class RoleScript(AptScript):
 			return True
 
 		# These packages will be removed if the server role was changed to memberserver or basesystem
+		# FIXME: These packages are correct only for memberserver, not for basesystem. But as
+		# long as basesystem is not supported this does not matter.
 		base_remove_packages = [
-			'samba-common',
-			'samba',
-			'samba4',
-			'slapd',
-			'univention-directory-notifier',
-			'bind9',
-			'isc-dhcp-server',
-			'heimdal-kdc',
-			'heimdal-servers',
-			'univention-ldap-acl-slave',
-			'univention-virtual-machine-manager-schema',
-			'univention-management-console-module-udm',
-			'nagios3-core',
+				'univention-management-console-module-udm',
+				'univention-virtual-machine-manager-schema',
+				'univention-s4-connector',
+				'univention-samba4',
+				'univention-ad-connector',
+				'univention-virtual-machine-manager-daemon',
 			]
 
 		# Copy local files into the local cache
@@ -81,15 +76,20 @@ class RoleScript(AptScript):
 		if not self.update():
 			return False
 
-		# Remove server packages
-		if self.wanted_server_role in ['basesystem', 'memberserver']:
-			self.uninstall(*base_remove_packages)
-
-		self.finish_task()
-
 		if current_server_role_package:
 			self.uninstall(current_server_role_package)
 		self.install(wanted_server_role_package)
+
+		self.finish_task()
+
+		# Remove server packages
+		if self.wanted_server_role in ['basesystem', 'memberserver']:
+			# filter those that are unknown (may happen without
+			# network connection): dont try to uninstall them
+			# as they are surely not installed (but not finding
+			# them results in error messages)
+			base_remove_packages = filter(lambda pkg: pkg in self.package_manager.cache, base_remove_packages)
+			self.uninstall(*base_remove_packages)
 
 		self.finish_task()
 

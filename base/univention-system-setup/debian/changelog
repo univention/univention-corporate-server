@@ -1,3 +1,10 @@
+univention-system-setup (6.0.61-1) unstable; urgency=low
+
+  * Fix changing role while having no network connection (Bug #29759)
+  * Fix committing UCR variables overwriting other changes (Bug #29970)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 09 Jan 2013 12:19:34 +0100
+
 univention-system-setup (6.0.60-1) unstable; urgency=low
 
   * Update list of recommended browsers when logging into an unjoined system

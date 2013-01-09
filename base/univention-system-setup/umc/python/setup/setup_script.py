@@ -45,8 +45,9 @@ _ = translation.translate
 locale.setlocale(locale.LC_ALL, default_locale) # needed for external translation (e.g. apt)
 
 import univention.config_registry
+from univention.config_registry import ConfigRegistry, handler_set
 from util import PATH_SETUP_SCRIPTS, PATH_PROFILE
-ucr = univention.config_registry.ConfigRegistry()
+ucr = ConfigRegistry()
 
 class SetupScript(object):
 	'''Baseclass for all Python-based Setup-Scripts.
@@ -188,12 +189,12 @@ class SetupScript(object):
 		of inner_run(). If you need to
 		commit changes immediately, you
 		can call commit_ucr() at any time.'''
-		oldval = self.get_ucr_var(var_name)
+		oldval = self.get_ucr_var(var_name, search_in_changes=False)
 		if oldval == value:
-			# nothing to do
+			# in case it was overwritten previously
+			self._ucr_changes.pop(var_name, None)
 			return
-		self._ucr_changes[var_name] = (oldval, value)
-		ucr[var_name] = value
+		self._ucr_changes[var_name] = value
 
 	def commit_ucr(self):
 		'''Saves ucr variables previously
@@ -203,18 +204,22 @@ class SetupScript(object):
 		not raise an exception*. You can
 		call it manually if you need to
 		do it (e.g. in down())'''
-		ucr.save()
-		ucr.load()
 		if self._ucr_changes:
-			handler = univention.config_registry.configHandlers()
-			handler.load()
-			handler(self._ucr_changes.keys(), (ucr, self._ucr_changes))
-		# reset (in case it is called multiple
-		# times in a script
-		self._ucr_changes = {}
+			changes = ['%s=%s' % (var_name, value) for var_name, value in self._ucr_changes.iteritems()]
+			handler_set(changes)
+			# reset (in case it is called multiple)
+			# times in a script
+			self._ucr_changes.clear()
+		ucr.load()
 
-	def get_ucr_var(self, var_name):
-		'''Retrieve the value of var_name from ucr'''
+	def get_ucr_var(self, var_name, search_in_changes=True):
+		'''Retrieve the value of var_name from ucr.
+		If search_in_changes, it first looks in (not
+		yet commited) values.
+		'''
+		if search_in_changes:
+			if var_name in self._ucr_changes:
+				return self._ucr_changes[var_name]
 		return ucr.get(var_name)
 
 	def get_profile_var(self, var_name, default=''):
