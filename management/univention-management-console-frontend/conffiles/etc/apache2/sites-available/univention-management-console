@@ -15,6 +15,7 @@ RedirectMatch ^/univention-management-console$ /univention-management-console/
 RewriteEngine On
 RewriteRule ^/univention-management-console/style/(.*) /style/$1 [L]
 
+# rewrite non existing files in js/dijit/themes/umc to old /images path; see Bug #29861
 RewriteCond %{REQUEST_URI} ^/univention-management-console/js.*/dijit/themes/umc/
 RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-d
