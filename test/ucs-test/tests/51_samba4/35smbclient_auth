@@ -108,11 +108,16 @@ def calculateInnerDelay(roundTime,amountPerRound):
 	return delayArray
 
 def checkResult(hostname):
-	pw_file = file('/tmp/pw_temp','w')
-	pw_file.write('univention')
-	pw_file.close()
-	pw_path = '/tmp/pw_temp'
-        output= pexpect.run('univention-ssh %s root@%s "smbstatus | grep -c netlogon"' % (pw_path,hostname))
+	server_role= ucr['server/role']
+	if server_role == "domaincontroller_master" and os.path.isfile('/root/root.secret'):
+		pw_path ='/root/root.secret' #workaround for test vm
+	else:
+		pw_file = file('/tmp/pw_temp','w')
+		pw_file.write('univention')
+		pw_file.close()
+		pw_path = '/tmp/pw_temp'
+
+        output= pexpect.run('univention-ssh %s root@%s "smbstatus | grep -c sysvol"' % (pw_path,hostname))
 	print output	
 	try:
 		output_int=int(output)
@@ -137,8 +142,10 @@ if __name__ == "__main__":
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()
 	innerDelay=calculateInnerDelay(roundTime,amountPerRound)
 	time.sleep(10)
+	#debug
         output= pexpect.run("/usr/bin/smbclient4 -L %s -U%s%%%s" % (hostname,username,password))
 	print output	
+	#/debug
 	for index in range(totalRounds):
 		smbclient(username,password,hostname,amountPerRound,innerDelay)    
 	time.sleep(20)

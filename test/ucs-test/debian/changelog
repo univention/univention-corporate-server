@@ -1,3 +1,9 @@
+ucs-test (3.0.24-1) unstable; urgency=low
+
+  * 51/35: added workaround for testvm (Bug #28348)
+
+ -- Tobias Peters <peters@univention.de>  Thu, 10 Jan 2013 18:03:37 +0100
+
 ucs-test (3.0.23-1) unstable; urgency=low
 
   * Added new test 00_base/25check-permissions-etc-secret which looks for 
