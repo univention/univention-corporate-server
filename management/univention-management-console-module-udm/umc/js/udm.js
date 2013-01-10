@@ -38,8 +38,6 @@ define([
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/json",
-	"dojo/dom-class",
-	"dijit/registry",
 	"dijit/layout/ContentPane",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -66,7 +64,7 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, Deferred, all, on, topic, aspect, json, domClass, registry, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, CreateReportDialog, NewObjectDialog, DetailPage, _) {
+], function(declare, lang, array, Deferred, all, on, topic, aspect, json, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) UDM objects.
@@ -229,8 +227,7 @@ define([
 				}), lang.hitch(this, function() {
 					this.standby(false);
 				}));
-			}
-			else {
+			} else {
 				// render search page, we first need to query lists of containers/superordinates
 				// in order to correctly render the search form...
 				// query also necessary UCR variables for the UDM module
@@ -320,8 +317,7 @@ define([
 				callback: lang.hitch(this, function(ids, items) {
 					if (items.length == 1 && items[0].objectType) {
 						this.createDetailPage(items[0].objectType, ids[0]);
-					}
-					else if (items.length >= 1 && items[0].objectType) {
+					} else if (items.length >= 1 && items[0].objectType) {
 						// make sure that all objects do have the same type
 						var sameType = true;
 						array.forEach(items, function(iitem) {
@@ -365,7 +361,7 @@ define([
 				isMultiAction: true,
 				iconClass: 'umcIconDelete',
 				callback: lang.hitch(this, function(ids) {
-					objects = array.map(ids, lang.hitch(this, function(id) {
+					var objects = array.map(ids, lang.hitch(this, function(id) {
 						return this._grid.getItem(id);
 					}));
 					this.removeObjects(objects);
@@ -376,7 +372,7 @@ define([
 				description: _( 'Move objects to a different LDAP position.' ),
 				isMultiAction: true,
 				callback: lang.hitch(this, function(ids) {
-					objects = array.map(ids, lang.hitch(this, function(id) {
+					var objects = array.map(ids, lang.hitch(this, function(id) {
 						return this._grid.getItem(id);
 					}));
 					this.moveObjects(objects);
@@ -406,11 +402,9 @@ define([
 					};
 					if (0 === nItemsTotal) {
 						return _('No %(objPlural)s could be found', map);
-					}
-					else if (1 == nItems) {
+					} else if (1 == nItems) {
 						return _('%(nSelected)d %(objSingular)s of %(nTotal)d selected', map);
-					}
-					else {
+					} else {
 						return _('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
 					}
 				}),
@@ -476,8 +470,7 @@ define([
 				objTypeDependencies.push('superordinate');
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
 				objProperties.push({ id: 'None', label: _( 'Default properties' ) });
-			}
-			else if (containers && containers.length) {
+			} else if (containers && containers.length) {
 				// containers...
 				containers.unshift({ id: 'all', label: _( 'All containers' ) });
 				widgets.push({
@@ -559,8 +552,7 @@ define([
 			if ('navigation' == this.moduleFlavor) {
 				// put the buttons in the first row for the navigation
 				layout[0].push('submit');
-			}
-			else {
+			} else {
 				// append the buttons to the last row otherwise
 				layout[1].push('submit');
 
@@ -629,8 +621,7 @@ define([
 					// only take them into account in case the tree is not reloading
 					if (!this._reloadingPath) {
 						this.filter();
-					}
-					else if (this._reloadingPath == this._path2str(this._tree.get('path'))) {
+					} else if (this._reloadingPath == this._path2str(this._tree.get('path'))) {
 						// tree has been reloaded to its last position
 						this._reloadingPath = '';
 					}
@@ -754,8 +745,7 @@ define([
 						var label = _('Show all superordinates');
 						if ('dhcp/dhcp' == this.moduleFlavor) {
 							label = _('Show all DHCP services');
-						}
-						else if ('dns/dns' == this.moduleFlavor) {
+						} else if ('dns/dns' == this.moduleFlavor) {
 							label = _('Show all DNS zones');
 						}
 
@@ -821,8 +811,7 @@ define([
 					widgets.objectProperty.set('visible', true);
 					//widgets.objectPropertyValue.set('visible', true);
 					toggleButton.set('label', _('(Simplified options)'));
-				}
-				else {
+				} else {
 					widgets.objectType.set('visible', false);
 					if ('superordinate' in widgets) {
 						widgets.superordinate.set('visible', false);
@@ -831,7 +820,6 @@ define([
 						widgets.container.set('visible', false);
 					}
 					widgets.objectProperty.set('visible', false);
-					//domClass.remove(widgets.objectPropertyValue.$refLabel$.domNode, 'umcZeroHeight');
 					toggleButton.set('label', _('(Advanced options)'));
 				}
 				this.layout();
@@ -884,7 +872,7 @@ define([
 				return;
 			}
 			var objects = ids;
-			ids = array.map(objects, function(object) { return object.id });
+			ids = array.map(objects, function(object) { return object.id || object.$dn$; });
 
 			var container = new ContainerWidget({});
 
@@ -1133,7 +1121,7 @@ define([
 
 			// get an object
 			var objects = _ids instanceof Array ? _ids : (_ids ? [ _ids ] : []);
-			var ids = array.map(objects, function(object) { return object.id });
+			var ids = array.map(objects, function(object) { return object.id || object.$dn$; });
 
 			// ignore empty array
 			if (!objects.length) {
@@ -1245,8 +1233,7 @@ define([
 				var items = this._tree.get('selectedItems');
 				if (items.length) {
 					selectedContainer = items[0];
-				}
-				else {
+				} else {
 					dialog.alert(_('Please select a container in the LDAP directory tree. The new object will be placed at this location.'));
 					return;
 				}
