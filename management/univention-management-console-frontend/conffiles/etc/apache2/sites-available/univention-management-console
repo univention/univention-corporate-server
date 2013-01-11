@@ -15,10 +15,13 @@ RedirectMatch ^/univention-management-console$ /univention-management-console/
 RewriteEngine On
 RewriteRule ^/univention-management-console/style/(.*) /style/$1 [L]
 
-# rewrite non existing files in js/dijit/themes/umc to old /images path; see Bug #29861
-RewriteCond %{REQUEST_URI} ^/univention-management-console/js.*/dijit/themes/umc/
-RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-d
+# rewrite non existing files in js/dijit/themes/umc to old /images path if they exists there; see Bug #29861
+RewriteCond %{REQUEST_URI} ^/univention-management-console/js[^/]*/dijit/themes/umc/(.*)
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
+RewriteCond %1 !(?:^|/)[.][.]/
+RewriteCond %{DOCUMENT_ROOT}univention-management-console/images/%1 -f [OR]
+RewriteCond %{DOCUMENT_ROOT}univention-management-console/images/%1 -d
 RewriteRule ^/univention-management-console/js.*/dijit/themes/umc/(.*) /univention-management-console/images/$1 [R=301]
 
 # fix for bug in cherrypy returnin 408/409 errors out of the blue:
