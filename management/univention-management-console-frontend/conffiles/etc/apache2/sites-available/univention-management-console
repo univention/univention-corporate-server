@@ -22,7 +22,7 @@ RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
 RewriteCond %1 !(?:^|/)[.][.]/
 RewriteCond %{DOCUMENT_ROOT}univention-management-console/images/%1 -f [OR]
 RewriteCond %{DOCUMENT_ROOT}univention-management-console/images/%1 -d
-RewriteRule ^/univention-management-console/js.*/dijit/themes/umc/(.*) /univention-management-console/images/$1 [R=301]
+RewriteRule ^/univention-management-console/js[^/]*/dijit/themes/umc/(.*) /univention-management-console/images/$1 [R=301]
 
 # fix for bug in cherrypy returnin 408/409 errors out of the blue:
 #   http://cherrypy.org/ticket/853
