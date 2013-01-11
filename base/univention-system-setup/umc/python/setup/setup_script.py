@@ -44,7 +44,6 @@ translation.set_language(default_locale[0])
 _ = translation.translate
 locale.setlocale(locale.LC_ALL, default_locale) # needed for external translation (e.g. apt)
 
-import univention.config_registry
 from univention.config_registry import ConfigRegistry, handler_set
 from util import PATH_SETUP_SCRIPTS, PATH_PROFILE
 ucr = ConfigRegistry()

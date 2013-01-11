@@ -57,6 +57,7 @@ class RoleScript(AptScript):
 				'univention-virtual-machine-manager-schema',
 				'univention-s4-connector',
 				'univention-samba4',
+				'samba4',
 				'univention-ad-connector',
 				'univention-virtual-machine-manager-daemon',
 			]
