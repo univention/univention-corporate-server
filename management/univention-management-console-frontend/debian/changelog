@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.186-1) unstable; urgency=low
+
+  * Fix issues when touching the Grid's "more" button on the iPad; Bug #29622
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 11 Jan 2013 11:31:31 +0100
+
 univention-management-console-frontend (2.0.185-3) unstable; urgency=low
 
   * Add apache rewrite rule to support old image paths for umc modules;

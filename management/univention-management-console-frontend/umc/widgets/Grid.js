@@ -40,7 +40,6 @@ define([
 	"dojo/dom-style",
 	"dojo/on",
 	"dojo/aspect",
-	"dijit/popup",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
@@ -59,7 +58,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, win, query, construct, attr, geometry,
-		style, on, aspect, pm, Menu, MenuItem, DropDownButton, BorderContainer,
+		style, on, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -278,15 +277,10 @@ define([
 				var item = new MenuItem({
 					label: ilabel,
 					iconClass: iiconClass,
-					onMouseUp: lang.hitch(this, function() {
+					onClick: lang.hitch(this, function() {
 						var canExecute = typeof iaction.canExecute == "function" ? iaction.canExecute(this._contextItem) : true;
 						if (canExecute && iaction.callback) {
 							iaction.callback([this._contextItemID], [this._contextItem]);
-							// usually called onMouseClicked
-							// but when really called onMouseUp
-							// it does not close properly.
-							// so do it manually
-							pm.close(this._contextMenu);
 						}
 					}),
 					_action: iaction
@@ -442,7 +436,6 @@ define([
 
 						var button = new DropDownButton({
 							label: _('more'),
-							onMouseDown: lang.hitch(this, '_updateContextItem', {rowIndex: rowIndex}),
 							_onClick: function() {
 								// dont propagate any event here - otherwise dropDown gets closed.
 								// this has something to do with the dropdown losing focus in favor
@@ -450,6 +443,7 @@ define([
 							},
 							dropDown: this._contextMenu
 						});
+						this.own(aspect.before(button, 'openDropDown', lang.hitch(this, '_updateContextItem', {rowIndex: rowIndex})));
 						this.own(button);
 						if (this.cacheRowWidgets) {
 							item._univention_cache_dropDown = button;
