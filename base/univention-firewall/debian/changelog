@@ -1,3 +1,9 @@
+univention-firewall (5.0.4-1) unstable; urgency=low
+
+  * do not call firewall scripts with postfix other than ".sh" (Bug #29706)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 11 Jan 2013 10:48:13 +0100
+
 univention-firewall (5.0.3-1) unstable; urgency=low
 
   * debian/rules: Don't build the UMC module (Bug #24121)

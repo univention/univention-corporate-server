@@ -39,7 +39,7 @@ case "$1" in
         else
             log_daemon_msg "Starting Univention iptables configuration:"
             if [ -x /etc/security/packetfilter.d ] ; then
-                run-parts --regex='^[a-zA-Z0-9_.-]+$' /etc/security/packetfilter.d/
+                run-parts --regex='^[a-zA-Z0-9_.-]+[.]sh$' /etc/security/packetfilter.d/
             fi
             log_end_msg 0
         fi
