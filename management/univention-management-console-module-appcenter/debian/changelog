@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.96-1) unstable; urgency=low
+
+  * Confirm removal of packages when uninstalling an application (Bug #29273)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 11 Jan 2013 14:11:45 +0100
+
 univention-management-console-module-appcenter (2.0.95-1) unstable; urgency=low
 
   * Fix searching in locally installed packages (Bug #29899)

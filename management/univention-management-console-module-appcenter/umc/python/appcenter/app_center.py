@@ -488,7 +488,7 @@ class Application(object):
 		to_uninstall = package_manager.get_packages(self.get('defaultpackages'))
 		for package in to_uninstall:
 			package.mark_delete()
-		packages = [pkg.name for pkg in package_manager.packages() if pkg.is_auto_removable]
+		packages = [pkg.name for pkg in package_manager.packages() if pkg.is_auto_removable or pkg.marked_delete]
 		package_manager.reopen_cache()
 		return packages
 

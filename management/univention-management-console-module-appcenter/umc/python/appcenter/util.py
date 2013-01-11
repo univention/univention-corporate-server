@@ -131,8 +131,7 @@ class Changes(object):
 			else:
 				MODULE.info("Setting registry variable '%s' = '%s'" % (name, value))
 				self.ucr[name] = value
-			if value != '' or oldval != '':
-				self._changes[name] = (oldval, value)
+			self._changes[name] = (oldval, value)
 		except Exception as e:
 			MODULE.warn("set_registry_var('%s', '%s') ERROR %s" % (name, value, str(e)))
 
