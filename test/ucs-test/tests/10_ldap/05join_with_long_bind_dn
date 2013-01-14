@@ -1,0 +1,127 @@
+#!/usr/share/ucs-test/runner python2.6
+## desc: Join to a master when the dn of the bind-user is very long (provoking a linebreak #16210)
+## tags: [basic]
+## exposure: safe
+
+import sys
+import os
+import subprocess
+import dns.resolver
+import socket
+from dns.exception import DNSException
+from univention.config_registry import ConfigRegistry
+
+def main():
+    """A main method stores almost completely code."""
+
+    dcname = None
+    try:
+        subprocess_join_check_status = subprocess.Popen(['univention-check-join-status'],
+        stdout=subprocess.PIPE) # subprocess (command line input)
+
+        subprocess_join_check_status.wait()
+        result = subprocess_join_check_status.returncode
+
+        if not result:
+            print >> sys.stderr, "Expected not to be joined"
+            #sys.exit(135)
+
+        print "Search DC Master:"
+        ucr = ConfigRegistry()
+        ucr.load()
+        interface_eth0_type =  ucr.get('interfaces/eth0/type')
+        interface_eth0_type_is_true = ucr.is_true('interface/eth0/type')
+        domainname = ucr.get('domainname')
+        print interface_eth0_type, interface_eth0_type_is_true, domainname
+
+        if False:# True: # interface_eth0_type_is_true and domainname and interface_eth0_type == "dhcp":
+            try:
+                dns_srv = dns.resolver.query("_domaincontroller_master._tcp."+ domainname, "SRV")
+                if dns_srv[0].target:
+                    dcname = dns_srv[0].target
+                if dcname:
+                    print "Done."
+            except dns.resolver.NXDOMAIN:
+                print >> sys.stderr, "No appropriate SRV record found."
+        else:
+             ucr_var_list = [ "nameserver", "nameserver1", "nameserver2", "nameserver3", "dnsforwarder1","dnsforwarder2", "dnsforwarder3", ]
+             for ucr_vars in ucr_var_list:
+                 ucr_value = ucr.get(ucr_vars)
+#                 print ucr_value
+                 if ucr_value:
+                     popen_string = "host -t SRV _domaincontroller_master._tcp." + domainname + " " + ucr_value
+                     subprocess_dcname = os.popen(popen_string).read().strip()
+                     #print subprocess_dcname
+                     #try:
+                     #conc = "liam.local%s" % ucr_value
+                     srv_query = "_domaincontroller_master._tcp" 
+                     #print srv_query
+                     dns_srv = dns.resolver.query("10.200.22.20", "SRV")
+                     print dns_srv[0]
+                     #print dns_srv[0].target
+                     #if dns_srv[0].target:
+                     #    dcname = dns_srv[0].target
+                     #if dcname:
+                     #    print "Done."
+                     #except dns.resolver.NXDOMAIN:
+                     print >> sys.stderr, "No appropriate SRV record found."
+        print "Equal None."
+        
+        print "dcname: ", dcname 
+
+        if True: # interface_eth0_type_is_true:
+            if False: #interface_eth0_type == "dhcp":
+                dcname= "to define"
+                popen_string = "host -t SRV _domaincontroller_master._tcp." + domainname + " | grep -v 'not found' | grep -v 'reached' | tail -1 | sed -e 's|.* ||g' | sed -e 's|\.$||'"
+                subprocess_dcname = os.popen(popen_string).read()
+
+                if subprocess_dcname.strip():
+                    print "Done."
+
+            else:
+                ucr_var_list = [ "nameserver", "nameserver1", "nameserver2", "nameserver3", "dnsforwarder1","dnsforwarder2", "dnsforwarder3", ]
+                for i in ucr_var_list:
+                    value = get_ucr_value(i)
+                    if value != None:
+                        popen_string = "host -t SRV _domaincontroller_master._tcp." + domainname + " " + value + " | grep -v 'not found' | grep -v 'reached' | tail -1 | sed -e 's|.* ||g' | sed -e 's|\.$||'"
+                        subprocess_dcname = os.popen(popen_string).read().strip()
+                        print subprocess_dcname
+                        if subprocess_dcname:
+                            print "Done"
+                            print "domain", domainname
+                            conf_file = open("/root/resolv.conf", 'w')
+                            domain_to_write = "domain " + domainname
+                            conf_file.write(domain_to_write)
+                            conf_file.write("\n")
+                            nameserver_to_write = "nameserver " + value
+                            conf_file.write(nameserver_to_write)
+                            test_string = "test -x /etc/init.d/nscd && /etc/init.d/nscd restart >>/root/join.log 2>&1"
+                            #subprocess_test = subprocess.Popen(['test', '-x', '/etc/init.d/nscd', '&&', '/etc/init.d/nscd', 'restart', '>>', '/root/join.log', '2>&1',],stdout=subprocess.PIPE) # subprocess (command line input)
+                            #return_message = subprocess_test.stdout.readline().strip()
+                            subprocess_test = os.popen(test_string).read()
+                            print subprocess_test
+                            conf_file.close()
+        else:
+            print "ELSE"
+
+    except OSError, error:
+        print >> sys.stderr, "An error occured with %s" % (error, )
+        sys.exit(1) # exit if something goes wrong on OS level
+
+def get_ucr_value(variable):
+    """This method provides a value of a ucr-variable only if it is not None"""
+    ucr = ConfigRegistry()
+    ucr.load()
+    value = ucr.get(variable)
+    is_true = ucr.is_true(variable)
+    return value
+    """if is_true:    
+        if value == None:
+            return None
+        else:
+            return value
+    else:
+        return None"""
+
+if __name__ == '__main__':
+   main()

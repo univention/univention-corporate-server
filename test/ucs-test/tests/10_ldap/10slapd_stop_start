@@ -1,0 +1,90 @@
+#!/usr/share/ucs-test/runner python2.6
+## desc: Test slapd for a correct stop and start
+## tags: [basic]
+## exposure: safe
+
+import sys
+import os
+import subprocess
+
+def main():
+    """A main method stores almost completely code."""
+    return_code = 0
+
+    # List of services to be stopped and started
+    service_path = "/etc/init.d/slapd"
+    service_binarys = "/usr/sbin/slapd"
+    server_roles = [ 'domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', ]
+
+    print "Check if services can be correctly stopped."
+
+    try:
+        # subprocess to get server role
+        subprocess_role = subprocess.Popen(['/usr/sbin/univention-config-registry', 'get', 'server/role', ],               stdout=subprocess.PIPE) # subprocess (command line input)
+        return_value_subprocess_role = subprocess_role.stdout.readline().strip() # stdout of subprocess
+
+        # subprocess to get a basename of the service
+        subprocess_name = subprocess.Popen(['basename', service_path, ],
+        stdout=subprocess.PIPE) # subprocess (command line input)
+        return_value_subprocess_name = subprocess_name.stdout.readline().strip() # stdout of subprocess
+    
+        print "Check if we can test the service", return_value_subprocess_name, "on server role", return_value_subprocess_role
+        
+        found = False
+        for server_role in server_roles: # checks if an server role matches any role in the server_roles list
+            if return_value_subprocess_role == server_role:
+                found = True # if at least the is one match  
+            
+        if found:
+            # stop the process
+            control_process(return_value_subprocess_name, service_path, "stop")
+            
+            print "Done."
+            print "Check if the process has been stopped."
+
+            # check if the process has been truly stopped
+            return_code = check_process(service_binarys, "stop")
+
+            # start the process 
+            control_process(return_value_subprocess_name, service_path, "start")
+
+            # check if the process has benn truly started
+            return_code = check_process(service_binarys, "start")
+        else:
+            print "No - skipping test."
+
+        sys.exit(return_code) # exit with appropriate returncode
+    except OSError, error:
+        print >> sys.stderr, "An error occured with: %s" % (error, )
+        sys.exit(1) # exitcode if something went wrong
+        
+def check_process(process_name, status):
+    """The method Check whether or not the given service/process-name is running."""
+    popen_string = "ps axu | grep " + process_name + "| grep -v grep"
+    subprocess = "subprocess" + process_name
+    subprocess = os.popen(popen_string).read()
+    
+    if status == "stop":
+        if process_name not in subprocess[:]:
+            print "OK. The process is not active."
+            return 0
+        else:
+            print >> sys.stderr, "ERROR. The process is active. (The process could not be started)"
+            return 1
+    else:
+        if process_name in subprocess[:]:
+            print "OK. The process is active."
+            return 0
+        else:
+            print >> sys.stderr, "ERROR. The process is not active. (The process could not be started)"
+            return 1
+
+def control_process(process_name, service_path, command):
+    """This method tries wheather to stop or to start the given process. Depends on the 2nd given parameter."""
+    print "Trying to " + command + " service ", process_name
+    subprocess_command_service = subprocess.Popen([service_path, command, ],
+    stdout=subprocess.PIPE) # subprocess (command line input)
+    waiting = subprocess_command_service.wait() # waits for child process to terminate before goes on
+
+if __name__ == '__main__':
+   main()
