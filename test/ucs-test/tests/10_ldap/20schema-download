@@ -9,7 +9,6 @@
 ## exposure: safe
 
 import sys
-import os
 import subprocess
 import socket
 from univention.config_registry import ConfigRegistry
@@ -40,7 +39,7 @@ def main():
 
         hostname = socket.gethostname() # returns hostname
         download_schema_file = hostname + "/ldap-schema.txt"
-        subprocess_wget = subprocess.Popen(['wget', '-c', download_schema_file, '-O' ,'/dev/null', ],
+        subprocess_wget = subprocess.Popen(['wget', '-c', download_schema_file, '-O' , '/dev/null', ],
         stdout=subprocess.PIPE) # subprocess (command line input) needs a returnvalue
         subprocess_wget.wait() # waits for child process to terminate before goes on
 
@@ -68,7 +67,7 @@ def main():
              
     except OSError, error:
         print >> sys.stderr, "An error occured with %s" % (error, )
-        sys.exit(1) # exit if something goes wrong on OS level
+        sys.exit(110) # exit if something goes wrong on OS level
 
 if __name__ == '__main__':
    main()

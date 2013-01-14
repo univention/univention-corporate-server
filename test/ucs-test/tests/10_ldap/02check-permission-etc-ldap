@@ -19,7 +19,7 @@ def main():
     shouldpermission = "33184" # should be Inode protection mode (represent unix-format: -rw-r-----)
     shouldowner = "root" 
     shouldgroup = "DC Backup Hosts"
-    return_code = 0
+    return_code = 100
 
     try:
 	stat_info = os.stat(filename) # statistics about a given file
@@ -32,21 +32,21 @@ def main():
 	# permission checking
 	if int(shouldpermission) != permission:
       	   print >> sys.stderr, filename, "has the wrong permission", permission, symbolic_notation(permission), "instead of", shouldpermission, symbolic_notation(int(shouldpermission))
-	   return_code = 1    
+	   return_code = 110    
 
     	# owner checking
 	if shouldowner != user:
 	   print >> sys.stderr, filename, "has the wrong owner", user, "instead of", shouldowner, "." 
-	   return_code = 1
+	   return_code = 110
 
 	# group checking
 	if shouldgroup != group:
 	   print >> sys.stderr, filename, "has the wrong group", group, "instead of", shouldgroup, "." 
-	   return_code = 1
+	   return_code = 110
 
     except OSError, error:
         print >> sys.stderr, "An error occured with: %s" % (error, )
-	sys.exit(1) # Exit with exitcode 1. Exit in case anything goes wrong on OS-level.
+	sys.exit(110) # Exit with exitcode 1. Exit in case anything goes wrong on OS-level.
     sys.exit(return_code) # Exit with returncode. End of program in case no OS-error occured.
 
 def symbolic_notation(mode):
