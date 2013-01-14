@@ -427,16 +427,23 @@ class CPgeneric(object):
 		response = response_queue.get()
 		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s (sessionid="%s")' % (id(response), id(response_queue), response.status, sessionid))
 
-		if not response.status or 200 <= response.status < 300:
+		status = response.status
+		body = response.body
+		if status is None:
+			# if status is not set, treat as SUCCESS. See Bug #29957
+			# UMCP responses which are not json do not have a status
+			status = 200
+		if 200 <= status < 300:
+			# update the session duration
 			update_session(cherrypy.response, sessionid)
-			cherrypy.response.headers[ 'Content-Type' ] = response.mimetype
 			if response.mimetype == umcp.MIMETYPE_JSON:
-				cherrypy.response.status = response.status
-				return simplejson.dumps(response.body)
-			else:
-				# UMCP responses which are not json does not have a status
-				cherrypy.response.status = 200
-				return response.body
+				# convert data to JSON
+				body = simplejson.dumps(response.body)
+
+			# return response
+			cherrypy.response.headers[ 'Content-Type' ] = response.mimetype
+			cherrypy.response.status = status
+			return body
 
 		# TODO: 3xx handling
 

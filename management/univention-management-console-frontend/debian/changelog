@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.188-1) unstable; urgency=low
+
+  * modified status handling for non-JSON responses; Bug #29957
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Jan 2013 15:24:24 +0100
+
 univention-management-console-frontend (2.0.187-1) unstable; urgency=low
 
   * MultiUploader: added missing clear for selected files; Bug #29960
