@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.187-1) unstable; urgency=low
+
+  * MultiUploader: added missing clear for selected files; Bug #29960
+  * umc/tools:parseError: added handling for upload errors; Bug #29960
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 14 Jan 2013 13:50:53 +0100
+
 univention-management-console-frontend (2.0.186-1) unstable; urgency=low
 
   * Fix issues when touching the Grid's "more" button on the iPad; Bug #29622

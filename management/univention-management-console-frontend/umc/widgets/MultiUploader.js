@@ -144,6 +144,7 @@ define([
 		},
 
 		_setValueAttr: function(newVal) {
+			this._files.selection.clear();
 			this._files.set('staticValues', newVal);
 		},
 

@@ -533,6 +533,24 @@ define([
 			591: _( 'Could not process the request.' )
 		},
 
+		_parseStatus: function(stat) {
+			if (typeof stat == 'number') {
+				// easy -> stat is a number
+				return stat;
+			}
+			if (typeof stat == 'string') {
+				// stat is a string, i.e., it could be "400" or "400 Bad Request"... try to parse it
+				try {
+					return parseInt(stat, 10);
+				} catch(error) {
+					// parsing failed -> return 0 as fallback
+					return 0;
+				}
+			}
+			// return 0 as fallback
+			return 0;
+		},
+
 		parseError: function(error) {
 			var status = error.status !== undefined ? error.status : 500;
 			var message = this._statusMessages[status] || this._statusMessages[500];
@@ -549,7 +567,7 @@ define([
 				}
 				if (error.response.data) {
 					// the response contained a valid JSON object, which contents is already html escaped
-					status = error.response.data.status && parseInt(error.response.data.status, 10) || status;
+					status = error.response.data.status && this._parseStatus(error.response.data.status) || status;
 					message = error.response.data.message || '';
 					result = error.response.data.result || null;
 				} else {
@@ -566,10 +584,14 @@ define([
 				result = error.data.result || null;
 			} else if(error.text) {
 				message = r.test(error.text) ? r.exec(error.text)[1] : error.text;
+			} else if(error.message && error.status) {
+				// Uploader: errors are returned as simple JSON object { status: "XXX ...", message: "..." }
+				message = error.message;
+				status = error.status;
 			}
 
 			return {
-				status: parseInt(status, 10),
+				status: this._parseStatus(status),
 				message: String(message).replace(/\n/g, '<br>'),
 				result: result
 			};
