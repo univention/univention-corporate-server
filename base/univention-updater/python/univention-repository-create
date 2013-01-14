@@ -261,13 +261,15 @@ if __name__ == '__main__':
 		print >>sys.stderr, ex
 		sys.exit(5)
 	try:
+		check_preconditions( options )
+
 		if not mount( options ):
 			print >>sys.stderr, "Error: Failed to mount CD-ROM device at %s" % options.mount_point
 			sys.exit( 1 )
 
 		#define repository base path with information from image
 		installfile = os.path.join(options.mount_point, '.univention_install')
-                for line in open(installfile).readlines():
+		for line in open(installfile).readlines():
 			if line.startswith('VERSION='):
 				version = string.replace(line, 'VERSION=', '')
 				major_version = version.split('.', 1)[0].strip()
@@ -276,7 +278,6 @@ if __name__ == '__main__':
 
 		_repo_base = os.path.join( _mirror_base, 'mirror', '%s.%s' % (major_version, minor_version), 'maintained', '%s.%s-0' % (major_version, minor_version) )
 		
-		check_preconditions( options )
 		prepare( options )
 
 		try:
