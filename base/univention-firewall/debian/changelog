@@ -1,3 +1,9 @@
+univention-firewall (5.0.4-2) unstable; urgency=low
+
+  * allow firewall scripts without "." and allow postfix ".sh"; Bug #29706
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Jan 2013 09:36:01 +0100
+
 univention-firewall (5.0.4-1) unstable; urgency=low
 
   * do not call firewall scripts with postfix other than ".sh" (Bug #29706)
