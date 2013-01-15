@@ -1,0 +1,140 @@
+#!/usr/share/ucs-test/runner python2.6
+## desc: Testing slapcat and slapadd
+## packages:
+##  - univention-ldap-server
+##  - univention-config-registry
+## exposure: safe
+
+import sys, os, subprocess, tempfile, shutil, filecmp, time, difflib
+from univention.config_registry import ConfigRegistry
+import univention.config_registry
+
+def main():
+    """A main method stores almost completely code."""
+    tmp_ldif_file1 = "ldif"
+    tmp_ldif_file2 = "ldif2"
+    try:
+
+        if os.path.exists(tmp_ldif_file1):
+            os.remove(tmp_ldif_file1)
+            print "File", tmp_ldif_file1, "removed."
+        if os.path.exists(tmp_ldif_file2):
+            os.remove(tmp_ldif_file2)
+            print "File", tmp_ldif_file2, "removed."
+
+        slapcat(tmp_ldif_file1)
+        
+        control_process("slapd", "/etc/init.d/slapd", "stop")
+        return_code = check_process("/usr/sbin/slapd", "stop")
+
+        tmp_dirpath = tempfile.mktemp()
+        shutil.move("/var/lib/univention-ldap/ldap/", tmp_dirpath)
+
+        ucr = ConfigRegistry()
+        ucr.load() # load whole dict
+        ldap_schema_export_server_role = ucr.get("server/role") # get specific key from ucr
+        univention.config_registry.handler_commit(["/var/lib/univention-ldap/ldap/DB_CONFIG"])
+        subprocess_slapadd = subprocess.Popen(['slapadd', '-d0', '<', tmp_ldif_file1, ], stdout=subprocess.PIPE) # subprocess (command line input) needs a returnvalue
+        subprocess_slapadd.wait() # waits for child process to terminate before goes on
+        #print subprocess_slapadd.returncode
+
+        control_process("slapd", "/etc/init.d/slapd", "start")
+        return_code = check_process("/usr/sbin/slapd", "start")
+        
+        slapcat(tmp_ldif_file2)
+
+        cmp_result = filecmp.cmp(tmp_ldif_file1, tmp_ldif_file2)
+
+        print cmp_result
+        if not cmp_result:
+            print "diff: "
+            diff_generator(tmp_ldif_file1, tmp_ldif_file2)    
+            print "There was an error testing slapcat and slapadd, trying to restore the old ldap database"
+            control_process("slapd", "/etc/init.d/slapd", "stop")
+            return_code = check_process("/usr/sbin/slapd", "stop")
+            shutil.move(tmp_dirpath, "/var/lib/univention-ldap/ldap/")
+            control_process("slapd", "/etc/init.d/slapd", "start")
+            return_code = check_process("/usr/sbin/slapd", "start")
+            os.rmdir(tmp_dirpath)
+            return_code = 110
+    except OSError, error:
+        print >> sys.stderr, "An error occured with %s" % (error, )
+        sys.exit(110) # exit if something goes wrong on OS level
+    print "DURCHGELAUFEN"
+    os.remove(tmp_ldif_file1)
+    os.remove(tmp_ldif_file2)
+    sys.exit(return_code)
+
+def diff_generator(fromfile, tofile):
+    fromdate = time.ctime(os.stat(fromfile).st_mtime)
+    todate = time.ctime(os.stat(tofile).st_mtime)
+    fromlines = open(fromfile, 'U').readlines()
+    tolines = open(tofile, 'U').readlines()
+    diff = difflib.context_diff(fromlines, tolines, fromfile, tofile,
+                                    fromdate, todate)
+    # using writelines because diff is a generator
+    sys.stdout.writelines(diff)
+
+def write_to_file(entries_list, filename):
+    """ This method creates an tmp file of a given list as parameter"""
+    tmp_file = open(filename, 'w')
+    tmp_file.write("".join(entries_list))
+    tmp_file.close()
+    if os.path.exists(filename):
+        return 0
+    else:
+        return 1
+
+def control_process(process_name, service_path, command):
+    """This method tries wheather to stop or to start the given process. Depends on the 2nd given parameter."""
+    print "Trying to " + command + " service ", process_name
+    subprocess_command_service = subprocess.Popen([service_path, command, ],
+    stdout=subprocess.PIPE) # subprocess (command line input)
+    subprocess_command_service.wait() # waits for child process to terminate before goes on
+    return subprocess_command_service.returncode
+
+def check_process(process_name, status):
+    """The method Check whether or not the given service/process-name is running."""
+    popen_string = "ps axu | grep " + process_name + "| grep -v grep"
+    subprocess_check = "subprocess" + process_name
+    subprocess_check = os.popen(popen_string).read()
+
+    if status == "stop":
+        if process_name not in subprocess_check[:]:
+            print "OK. The process is not active."
+            return 100
+        else:
+            print >> sys.stderr, "ERROR. The process is active. (The process could not be started)"
+            return 110
+    else:
+        if process_name in subprocess_check[:]:
+            print "OK. The process is active."
+            return 100
+        else:
+            print >> sys.stderr, "ERROR. The process is not active. (The process could not be started)"
+            return 110
+
+def slapcat(filename_to_write):
+    subprocess_slapcat = subprocess.Popen(['slapcat', '-d0', ], stdout=subprocess.PIPE)
+            
+    linelist_stdout = []
+    while True:
+        line = subprocess_slapcat.stdout.readline() # reads an stdout line by line
+        if line != '':
+            linelist_stdout.append(line)
+        else:
+            break
+    
+    subprocess_slapcat.wait()
+    if subprocess_slapcat.returncode:
+        print "Something went wrong with slapcat."
+        sys.exit(110)
+    return_ldif_file = write_to_file(linelist_stdout, filename_to_write)
+    if not return_ldif_file:
+        print "Slapcat was written into", filename_to_write, "."
+    else: 
+        print "Could not create", filename_to__write, "Check permissions on file management."
+        sys.exit(110)
+
+if __name__ == '__main__':
+   main()
