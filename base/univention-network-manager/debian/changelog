@@ -1,3 +1,11 @@
+univention-network-manager (4.0.8-1) unstable; urgency=low
+
+  * Re-create the resolv.conf if dhclient has overwritten it. On a DC
+    the given nameserver via DHCP is converted to a DNS forwarder
+    (Bug #29999)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Jan 2013 08:10:46 +0100
+
 univention-network-manager (4.0.7-2) unstable; urgency=low
 
   * Recommend vlan, bridge, bonding tools (Bug #29115)
