@@ -49,6 +49,7 @@ do_start () {
 
 	mkdir -p /var/run/xenstored
 	modprobe xen-evtchn
+	modprobe xen-gntdev
 	modprobe blktap
 	if ! `xenstore-read -s / >/dev/null 2>&1`
 	then
