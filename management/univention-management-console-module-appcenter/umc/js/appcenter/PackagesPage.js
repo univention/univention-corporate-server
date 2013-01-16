@@ -259,7 +259,7 @@ define([
 
 					var confirmDialog = new ConfirmDialog({
 						title: _('Package details'),
-						style: lang.replace('min-width:500px;max-width: {width}px;', {width: width}), // dialog.confirm doesn't exceed 550px
+						style: lang.replace('min-width:500px;max-width: {width}px;', {width: width}), // dialog.confirm does not exceed 550px
 						message: txt,
 						options: buttons
 					});

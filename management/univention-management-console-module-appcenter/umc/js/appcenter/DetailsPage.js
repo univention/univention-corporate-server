@@ -209,10 +209,10 @@ define([
 
 				this._form.load(data).then(lang.hitch(this, function() { this.standby(false); }));
 
-				// If we're in EDIT mode: don't allow changes to the component name.
+				// If we are in EDIT mode: do not allow changes to the component name.
 				this._form.getWidget('name').set('disabled', true);
 
-				// let's suppose the SERVER field is a good focus start
+				// let us suppose the SERVER field is a good focus start
 				this._form.getWidget('server').focus();
 			}
 		},

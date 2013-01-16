@@ -222,9 +222,9 @@ class Application(object):
 	_reg_dir_listing = re.compile(""".*<td.*<a href="(?P<name>[^"/]+\.ini)">[^<]+</a>.*</td>.*""")
 
 	@classmethod
-	def find(cls, id):
+	def find(cls, application_id):
 		for application in cls.all():
-			if application.id == id:
+			if application.id == application_id:
 				return application
 
 	@classmethod
@@ -341,7 +341,7 @@ class Application(object):
 
 		# pick the latest version of each app
 		final_applications = []
-		for iid, iapps in app_map.iteritems():
+		for iapps in app_map.itervalues():
 			# sort apps after their version (latest first)
 			iapps.sort(cmp=_version_cmp, reverse=True)
 
@@ -367,9 +367,9 @@ class Application(object):
 		res['show_ldap_schema_confirmation'] = not res['is_master']
 		if res['is_master']:
 			try:
-				import univention.admin.handlers.computers.domaincontroller_backup
+				from univention.admin.handlers.computers import domaincontroller_backup
 				lo = uldap.getMachineConnection()
-				res['show_ldap_schema_confirmation'] = 0 < len(univention.admin.handlers.computers.domaincontroller_backup.lookup(None, lo, None))
+				res['show_ldap_schema_confirmation'] = 0 < len(domaincontroller_backup.lookup(None, lo, None))
 				del lo
 			except (LDAPError, ImportError):
 				res['show_ldap_schema_confirmation'] = True

@@ -145,7 +145,7 @@ define([
 	});
 
 	var formatTxt = function(txt) {
-		// don't allow HTML
+		// do not allow HTML
 		txt = txt.replace(/</g, '&lt;');
 		txt = txt.replace(/>/g, '&gt;');
 
@@ -164,7 +164,7 @@ define([
 		_udm_accessible: false, // license depends on udm
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 
-		// the widget's class name as CSS class
+		// class name of the widget as CSS class
 		'class': 'umcAppCenter',
 
 		postMixInProperties: function() {
@@ -329,9 +329,10 @@ define([
 							callback: lang.hitch(this, function() {
 								var masterInstallConfirmend = 'yes';
 								if (app.defaultpackagesmaster && app.defaultpackagesmaster.length && app.show_ldap_schema_confirmation) {
+									var prepareMessage = app.is_master ? _('After the installation the backup servers must be prepared as described in the dialog before. Continue?') : _('Was the domain prepared as asked in the dialog before?');
 									masterInstallConfirmend = dialog.confirm(
 										_('This application requires an extension of the LDAP schema.') + ' ' +
-										_('Was the domain prepared as asked in the dialog before?'), [{
+										prepareMessage, [{
 											label: _('No'),
 											name: 'no',
 											'default': true
@@ -605,9 +606,9 @@ define([
 
 				// print out note for master and backup servers
 				if (values.is_master) {
-					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers <em>after</em> installing the application on this DC master.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
 				} else {
-					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on your DC master and all of your backup servers <em>prior</em> to installing the application on this system.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
+					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root <em>first</em> on your DC master and <em>then</em> on all of your backup servers <em>prior</em> to installing the application on this system.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
 				}
 			}
 		},

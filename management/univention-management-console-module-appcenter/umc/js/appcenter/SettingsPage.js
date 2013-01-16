@@ -90,7 +90,7 @@ define([
 			/*	name: 'reset',
 				label: _('Reset'),
 				callback: lang.hitch(this, function() {
-					this._form.load({}); // ID doesn't matter here but must be dict
+					this._form.load({}); // ID does not matter here but must be dict
 					tools.forIn(this._form._widgets, function(iname, iwidget) {
 						iwidget.setValid(true);
 					});
@@ -114,7 +114,7 @@ define([
 				scrollable: true,
 				onSaved: lang.hitch(this, '_onSavedRepositorySettings')
 			});
-			this._form.load({}); // ID doesn't matter here but must be dict
+			this._form.load({}); // ID does not matter here but must be dict
 
 			var titlePaneForm = new TitlePane({
 				title: _("General repository settings"),
@@ -169,7 +169,7 @@ define([
 					isMultiAction: false,
 					isContextAction: true,
 					callback: lang.hitch(this, function(ids) {
-						// Multi action doesn't make sense here since the real action depends
+						// Multi action does not make sense here since the real action depends
 						// row-wise from the value of the 'enabled' property.
 						var id = ids[0];
 						try {
@@ -297,7 +297,7 @@ define([
 		// refresh the grid.
 		refresh: function(standby) {
 			if (standby) {
-				// show the user that we're refreshing.
+				// show the user that we are refreshing.
 				this._grid.filter(this._query);
 			} else {
 				// silently, without standby. onload hooks are called though.
