@@ -30,6 +30,7 @@ Each entry has the following format:
 Description[de]=Beschreibung
 Description[en]=Description
 Type=str|bool|int (currently unused)
+ReadOnly=yes|no
 Categories=Management|...
 .fi
 .RE
@@ -41,6 +42,8 @@ Description for the service for different languages.
 .IP \fBType=\fP\fItype\fP
 Type of the variable used for syntax checking, currently unused.
 On of \fBstr\fP (for string), \fBbool\fP (for boolean), \fBint\fP (for integer).
+.IP \fBReadOnly=\fP\fIbool\fP
+Mark the variable as unmodifiable in UMC. By default variables are modifiable.
 .IP \fBCategories=\fP\fIstring\fP.
 Category the UCR-variable belongs to.
 Currently used values are:
