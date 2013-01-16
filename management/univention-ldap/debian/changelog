@@ -1,3 +1,10 @@
+univention-ldap (9.0.22-1) unstable; urgency=low
+
+  * fix legacy path of samba-tool so fsmo roles transfer works again
+    (Bug #29508)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Jan 2013 16:22:29 +0100
+
 univention-ldap (9.0.21-1) unstable; urgency=low
 
   * backup2master: Set correct forward_zone and reverse_zone nameserver
