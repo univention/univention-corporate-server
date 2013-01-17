@@ -36,15 +36,15 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 . /etc/default/libvirt-bin
 
 PID=/var/run/libvirtd.pid
-if [ -f "$PID" ]; then
-	read pid <"$PID" || pid=
-	if [ -d "/proc/$pid" ]; then
-		exe=$(readlink /proc/$pid/exe)
-		if [ /usr/sbin/libvirtd = "$exe" ]; then
-			echo "ERROR: libvirtd running $pid"
-			exit 1
-		fi
-	fi
+if [ -r "$PID" ]; then
+	read pid <"$PID" || true # no '\n' -> 'read' returns 1
+	exe=$(readlink "/proc/$pid/exe")
+	case "$exe" in
+	/usr/sbin/libvirtd*)
+		echo "ERROR: libvirtd running $pid" 2>&1
+		exit 1
+		;;
+	esac
 	rm -f "$PID"
 fi
 
