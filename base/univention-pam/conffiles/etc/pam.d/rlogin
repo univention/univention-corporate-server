@@ -1,17 +1,26 @@
 @%@UCRWARNING=# @%@
 
+@include common-auth
 @!@
 scope = "rlogin"
-accessfileDefault = "/etc/security/access-" + scope + ".conf"
-accessfile = "auth/" + scope + "/accessfile"
-if configRegistry.is_true("auth/" + scope + "/restrict", False):
-	print 'account required pam_access.so accessfile=%s listsep=,' % configRegistry.get(accessfile, accessfileDefault)
-
-print '@include common-account'
-print '@include common-auth'
-print '@include common-session'
-print 'session    optional   pam_lastlog.so'
-print 'session    optional   pam_mail.so standard noenv'
-print 'session    optional   pam_motd.so'
-print '@include common-password'
+accessfileFlag = "auth/%s/restrict" % (scope,)
+if configRegistry.is_true(accessfileFlag, False):
+	accessfileDefault = "/etc/security/access-%s.conf" % (scope,)
+	accessfileKey = "auth/%s/accessfile" % (scope,)
+	accessfile = configRegistry.get(accessfileKey, accessfileDefault)
+	line =  [
+		'account required pam_access.so',
+		'accessfile=%s' % (accessfile,),
+		'listsep=,',
+		]
+	maxent = configRegistry.get('pamaccess/maxent', False)
+	if maxent:
+		line.append('maxent=%s' % (maxent,))
+	print ' '.join(line)
 @!@
+@include common-account
+@include common-session
+session    optional   pam_lastlog.so
+session    optional   pam_mail.so standard noenv
+session    optional   pam_motd.so
+@include common-password

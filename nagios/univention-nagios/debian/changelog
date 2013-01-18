@@ -1,3 +1,9 @@
+univention-nagios (6.0.4-1) unstable; urgency=low
+
+  * Add support for UCR-variable pamaccess/maxent (Bug #29393)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 18 Jan 2013 08:57:42 +0100
+
 univention-nagios (6.0.3-3) unstable; urgency=low
 
   * fixed join script (Bug #18828) 

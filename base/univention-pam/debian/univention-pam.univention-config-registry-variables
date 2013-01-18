@@ -15,6 +15,7 @@ Description[de]=Aktiviert den nscd Cache für die NSS-Datanbank hosts (default: 
 Description[en]=Enabled nscd cache for the NSS database hosts (default: true)
 Type=str
 Categories=system-base
+
 [nscd/hosts/size]
 Description[de]=Wert sollte größer oder gleich der Anzahl aller im DNS verfügbarer Hosts sein.
 Description[en]=Value should be greater or equal as number of all hosts reachable via DNS.
@@ -153,6 +154,12 @@ Description[en]=Specifies whether or not pam_ldap authenticates against the LDAP
 Type=bool
 Categories=system-base
 
+[pamaccess/maxent]
+Description[de]=Gibt die maximale Hauptspeichergröße für den Check der Gruppenzugehörigkeit an. (default: 0x40001)
+Description[en]=Specifies the maximum RAM size for checking group membership. (default: 0x40001)
+Type=int
+Categories=system-base
+
 [security/limits/user/.*/hard/.*]
 Description[de]=Definiert den maximalen Wert auf den der Benutzer das entsprechende Limit setzen kann.
 Description[en]=Specifies the maximum value the user can change the corresponding limit to.
@@ -210,7 +217,7 @@ Categories=system-base
 [auth/.*/restrict]
 Description[de]=Aktiviert pam_access für diesen Dienst (* -> chfn, chsh, cron, ftp, gdm, kcheckpass, kde, kscreensaver, login, other, passwd, ppp, rlogin, rsh, screen, sshd, su, sudo, ...) und schränkt damit den PAM Zugriff ein. (default: no, außer ftp gdm login other ppp rlogin screen)
 Description[en]=Activates pam_access to restrict access to service (service can be chfn, chsh, cron, ftp, gdm, kcheckpass, kde, kscreensaver, login, other, passwd, ppp, rlogin, rsh, screen, sshd, su, sudo, ...). (default: no, except ftp gdm login other ppp rlogin screen)
-Type=str
+Type=bool
 Categories=system-base
 
 [auth/.*/accessfile]

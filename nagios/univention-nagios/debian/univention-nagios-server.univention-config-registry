@@ -43,6 +43,7 @@ Type: file
 File: etc/pam.d/nagios
 Variables: auth/nagios/accessfile
 Variables: auth/nagios/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-nagios.conf

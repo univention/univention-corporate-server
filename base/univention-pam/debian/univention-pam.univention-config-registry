@@ -137,6 +137,7 @@ Type: file
 File: etc/pam.d/chfn
 Variables: auth/chfn/accessfile
 Variables: auth/chfn/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-chfn.conf
@@ -147,6 +148,7 @@ Type: file
 File: etc/pam.d/chsh
 Variables: auth/chsh/accessfile
 Variables: auth/chsh/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-chsh.conf
@@ -157,6 +159,7 @@ Type: file
 File: etc/pam.d/cron
 Variables: auth/cron/accessfile
 Variables: auth/cron/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-cron.conf
@@ -167,6 +170,7 @@ Type: file
 File: etc/pam.d/ftp
 Variables: auth/ftp/accessfile
 Variables: auth/ftp/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-ftp.conf
@@ -177,6 +181,7 @@ Type: file
 File: etc/pam.d/gdm
 Variables: auth/gdm/restrict
 Variables: auth/gdm/accessfile
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-gdm.conf
@@ -187,6 +192,7 @@ Type: file
 File: etc/pam.d/kcheckpass
 Variables: auth/kcheckpass/accessfile
 Variables: auth/kcheckpass/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-kcheckpass.conf
@@ -197,6 +203,7 @@ Type: file
 File: etc/pam.d/kde
 Variables: auth/kde/accessfile
 Variables: auth/kde/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-kde.conf
@@ -207,6 +214,7 @@ Type: file
 File: etc/pam.d/kscreensaver
 Variables: auth/kscreensaver/accessfile
 Variables: auth/kscreensaver/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-kscreensaver.conf
@@ -217,6 +225,7 @@ Type: file
 File: etc/pam.d/login
 Variables: auth/login/accessfile
 Variables: auth/login/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-login.conf
@@ -227,6 +236,7 @@ Type: file
 File: etc/pam.d/other
 Variables: auth/other/accessfile
 Variables: auth/other/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-other.conf
@@ -237,6 +247,7 @@ Type: file
 File: etc/pam.d/passwd
 Variables: auth/passwd/accessfile
 Variables: auth/passwd/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-passwd.conf
@@ -247,6 +258,7 @@ Type: file
 File: etc/pam.d/ppp
 Variables: auth/ppp/accessfile
 Variables: auth/ppp/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-ppp.conf
@@ -257,11 +269,18 @@ Type: file
 File: etc/pam.d/rlogin
 Variables: auth/rlogin/accessfile
 Variables: auth/rlogin/restrict
+Variables: pamaccess/maxent
+
+Type: file
+File: etc/security/access-rlogin.conf
+Variables: auth/rlogin/group/.*
+Variables: auth/rlogin/user/.*
 
 Type: file
 File: etc/pam.d/rsh
 Variables: auth/rsh/accessfile
 Variables: auth/rsh/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-rsh.conf
@@ -272,6 +291,7 @@ Type: file
 File: etc/pam.d/screen
 Variables: auth/screen/accessfile
 Variables: auth/screen/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-screen.conf
@@ -282,6 +302,7 @@ Type: file
 File: etc/pam.d/sshd
 Variables: auth/sshd/accessfile
 Variables: auth/sshd/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-sshd.conf
@@ -292,6 +313,7 @@ Type: file
 File: etc/pam.d/su
 Variables: auth/su/accessfile
 Variables: auth/su/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-su.conf
@@ -302,6 +324,7 @@ Type: file
 File: etc/pam.d/sudo
 Variables: auth/sudo/accessfile
 Variables: auth/sudo/restrict
+Variables: pamaccess/maxent
 
 Type: file
 File: etc/security/access-sudo.conf
