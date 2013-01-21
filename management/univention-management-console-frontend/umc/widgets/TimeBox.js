@@ -82,6 +82,7 @@ define([
 		},
 
 		_setValueAttr: function(newVal) {
+			if (newVal === '') { newVal = null; } // set empty input instead of default value 00:00
 			if (newVal && newVal instanceof Date) {
 				newVal = this._dateToTime(newVal);
 			}
