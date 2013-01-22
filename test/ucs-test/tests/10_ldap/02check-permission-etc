@@ -6,7 +6,7 @@
 ##  - domaincontroller_backup
 ## packages:
 ##  - univention-ldap-server
-## exposure: safe
+## exposure: dangerous
 
 import sys
 import os
