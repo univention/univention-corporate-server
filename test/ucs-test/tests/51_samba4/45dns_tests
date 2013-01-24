@@ -9,35 +9,54 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 
 function cleanup() {
-udm dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --remove a="111.111.111.111"
-udm dns/srv_record remove --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --dn "relativeDomainName=_45dnstest_srv_record._tcp.foobar,zoneName=$domainname,cn=dns,$ldap_base"
-univention-directory-manager dns/alias remove --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --dn relativeDomainName="alias1,zoneName=$domainname,cn=dns,$ldap_base"
+	echo "----Cleanup"
+	udm dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --remove a="111.111.111.111"
+	udm dns/srv_record remove --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --dn "relativeDomainName=_45dnstest_srv_record._tcp.foobar,zoneName=$domainname,cn=dns,$ldap_base"
+	univention-directory-manager dns/alias remove --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --dn relativeDomainName="alias1,zoneName=$domainname,cn=dns,$ldap_base"
 }
 
 trap 'cleanup' INT TERM EXIT
 
 #CNAME RECORD
-univention-directory-manager dns/alias create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name=alias1 --set cname="$hostname.$domainname" || fail_test 1 "Could not create CNAME record." 
-sleep 5
-alias_test=$(dig alias1.$domainname | grep alias1.$domainname | grep CNAME | grep $hostname.$domainname)
-if [ -z alias_test ]; then
-       fail_test 1 "Created CNAME record could not be found." 
+echo "----Create CNAME record"
+univention-directory-manager dns/alias create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name=alias1 --set cname="$hostname.$domainname"
+if [ $? != 0 ];then
+	fail_test 1 "Could not create CNAME record." 
+fi
+
+echo "----Check functionality of CNAME record"
+sleep 8
+alias_test="$(dig "alias1.$domainname" | grep "alias1.$domainname" | grep CNAME | grep "$hostname.$domainname")"
+if [ -z "$alias_test" ]; then
+	fail_test 1 "Created CNAME record could not be found." 
 fi
 
 #SRV RECORD
-udm dns/srv_record create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name="45dnstest_srv_record tcp foobar" --set location="0 100 389 $hostname.$domainname"  || fail_test 1 "Could not create SRV record." 
-sleep 5
-srv_test=$(dig SRV _test._tcp.foobar.$domainname | grep "ANSWER SECTION")
+echo "----Create SRV record"
+udm dns/srv_record create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name="45dnstest_srv_record tcp foobar" --set location="0 100 389 $hostname.$domainname"
+if [ $? != 0 ]; then
+	fail_test 1 "Could not create SRV record." 
+fi
+sleep 8
+
+echo "----Check functionality of SRV record"
+srv_test="$(dig SRV "_test._tcp.foobar.$domainname" | grep "ANSWER SECTION")"
 if [ -z srv_test ]; then
-       fail_test 1 "Created SRV record could not be found." 
+	fail_test 1 "Created SRV record could not be found." 
 fi
 
 #A RECORD
-udm dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --append a="111.111.111.111"  || fail_test 1 "Could not modify Forward Zone." 
-sleep 5
-a_test=$(dig $domainname | grep $domainname | grep A | grep 111.111.111.111)
-if [ -z a_test ]; then
-       fail_test 1 "Created A record could not be found." 
+echo "----Create A record"
+udm dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --append a="111.111.111.111"
+if [ $? != 0 ];then
+	fail_test 1 "Could not modify Forward Zone."
+fi
+sleep 8
+
+echo "----Check functionality of A record"
+a_test="$(dig "$domainname" | grep "$domainname" | grep A | grep 111.111.111.111)"
+if [ -z "$a_test" ]; then
+	fail_test 1 "Created A record could not be found." 
 fi
 
 

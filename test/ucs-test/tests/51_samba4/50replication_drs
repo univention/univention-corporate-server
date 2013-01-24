@@ -23,23 +23,18 @@ username="$(user_randomname)"
 password=univention
 
 trap 'user_remove "$username"' INT TERM EXIT
-user_create "$username" || fail_test 1 "Could not create user $username."
+user_create "$username" || fail_fast 1 "Could not create user $username."
 
-if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
-    ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
-fi
+sleep 5	## wait a bit to give replication a head start
 
-sleep 10
-
-ADMINISTRATOR_DN="$(univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
-USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
-
-hostname_s4connector="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(univentionService=S4 Connector)" cn | grep "cn:" | sed -ne 's/^cn: //p')"
-
-user_s4connector="$(ldbsearch -H "ldap://$hostname_s4connector.$domainname" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "cn=$username" | grep dn:)"
-
-if [ -z "$user_s4connector" ]; then
-    fail_test 1 "Replication did not work." 
-fi
+i=0
+while ! ldbsearch -H /var/lib/samba/private/sam.ldb "samaccountname=$username" | grep -q '^dn:'
+do
+	let i=$i+1
+	if [ "$i" = 20 ]; then
+		fail_fast 1 "TIMEOUT: the user account '$username' was not replicated in $i seconds"
+	fi
+	sleep 1
+done
 
 exit $RETVAL

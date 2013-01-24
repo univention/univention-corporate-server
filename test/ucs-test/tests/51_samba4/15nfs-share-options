@@ -20,7 +20,7 @@ fqdn="$(host "$hostname" | awk {'print $1'})"
 echo "hostname: $hostname"
 echo "fqdn: $fqdn"
 etc="/etc/exports"
-available_options="$(udm  shares/share create | grep  --regex "(nfs)" | awk  {'print $1'})"
+available_options="$(udm shares/share create | grep  --regex "(nfs)" | awk  {'print $1'})"
 
 
 # here we have the udm_option/nfs_value/udm_value
@@ -41,21 +41,6 @@ udm shares/share create --position="$SHARE_POSITION" \
 			--set name="$share_name" \
 			--set path="/$share_name" \
 			--set host="$fqdn" || fail_fast 1 "could not create share"
-
-#waiting for share to be replicated
-i=0
-while true
-do
-    let i=$i+1
-    sleep 3
-    if [ -f "$etc" ]; then
-	break
-    fi
-    if [ "$i" == 10 ]; then
-	echo "nfs config file $etc not found"
-	break
-    fi
-done
 
 
 # set samba options via udm and check samba config file

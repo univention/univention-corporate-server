@@ -12,7 +12,7 @@
 . "$TESTLIBPATH/shares.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
-#----create User
+##----create User
 SAMBA="true"
 MAIL="false"
 KERBEROS="true"
@@ -23,69 +23,95 @@ username="$(user_randomname)"
 first_password=univention
 sharename="$(random_share)"
 
-trap 'user_remove "$username";share_remove $sharename' INT TERM EXIT
-user_create "$username" || fail_test 1 "Could not create user $username."
+trap 'user_remove "$username";
+share_remove "$sharename";
+rm -rf "/${sharename:?}";
+' INT TERM EXIT
+user_create "$username" || fail_fast 1 "Could not create user '$username.'"
 
-#----create Share
+##----create Share
 SHARE_POSITION="cn=shares,$ldap_base"
-udm shares/share create --position="$SHARE_POSITION" \
-    --set name="$sharename" \
-    --set path="/$sharename" \
-    --set directorymode=0777 \
-    --set host="$hostname.$domainname" || fail_fast 1 "could not create share"
+SHARE_DIRECTORYMODE=0777
+SHARE_HOST="$hostname.$domainname"
+if ! share_create "$sharename" "/$sharename"; then
+	fail_fast 1 "could not create share"
+fi
+sleep 10	## wait a bit for listener module postrun
 
-SHARE_DN=$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')
-
-USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
-
-#in case passwort is not the default one
-if [ $(ucr get server/role) == "domaincontroller_master" -a -e /root/root.secret ];then
+## in case passwort is not the default one
+if [ $(univention-config-registry get server/role) = "domaincontroller_master" -a -e /root/root.secret ];then
+	echo "Found /root/root.secret, using that secret for Administrator access"
     ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
 fi
 
-#waiting for user and share to be created
+## wait for user replication
 user_found=1
 i=0
-while true
+sleep_seconds=3
+while ! ldbsearch -H "ldap://localhost" -U"$username%$first_password" "cn=$username" dn 2>&1 | grep -q '^dn:'
 do
-    let i=$i+1
-    sleep 3
-    ldbsearch -H "ldap://localhost" -U"$username%$first_password" "cn=$username" | grep dn: && user_found=0
-    if [ "$user_found" == 0 ];then
-	smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" && break
-    fi
-    if [ "$i" == 10 ]; then
-	echo "TIMEOUT: The user or share could not be found in samba ldb after $i seconds"
-	break
-    fi
+	let i=$i+1
+	if [ "$i" = 10 ]; then
+		fail_fast 1 "TIMEOUT: The user could not be found in samba ldb after $((i * $sleep_seconds)) seconds"
+	fi
+	sleep "$sleep_seconds"
 done
 
-#--Tests
+## wait for samba share export
+i=0
+sleep_seconds=3
+while ! output=$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)
+do
+	let i=$i+1
+	if [ "$i" = 10 ]; then
+		print "$output"
+		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
+	fi
+	sleep "$sleep_seconds"
+done
 
-#----making a folder as Administrator, so that the testuser has no rights to write in it
-return_val="$(smbclient -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "//$hostname.$domainname/$sharename" -c "mkdir folder")"
-echo $return_val | grep "NT_STATUS_NOT_A_DIRECTORY"
-if [ $? != 0 ]  && [ -n "$return_val" ]; then
-    fail_test 1 "Failed to make a folder as Administrator even though it should work."
+##--Tests
+
+echo "----create a folder as Administrator, so that the testuser has no rights to write in it"
+output=$(smbclient -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)
+if [ -n "$output" ] && echo $output | grep -q "^NT_STATUS_"; then
+	echo "$output"
+	fail_fast 1 "Failed to make a folder as Administrator even though it should work."
 fi
 
-#----making a folder without permission
-return_val="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder2")"
-echo $return_val | grep "NT_STATUS_ACCESS_DENIED" || fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $return_val"
-
-#get objectSID
-sid="$(ldbsearch -H ldap://localhost -U"$username%$first_password" cn=$username | grep objectSid: | sed s/"objectSid: "/""/)"
-
-#get and set NTACL
-NTACL_old="$(samba-tool ntacl get /$sharename/folder --as-sddl 2>/dev/null)"
-echo "$NTACL_old" | grep "O:" || fail_test 1 "Could not retrieve NTACL"
-samba-tool ntacl set "$NTACL_old""(A;;CC;;;$sid)" /"$sharename"/folder || fail_test 1 "Failed to set NTACL"
-
-#----making a folder
-return_val="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder3")"
-if [ $? != 0 ]; then
-    fail_test 1 "Failed to make a folder even though it should work."
+echo "----attempt to create a folder without permission"
+output=$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder2" 2>&1)
+if ! echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"; then
+	if [ -n "$output" ]; then
+		echo "$output"
+	fi
+	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED"
 fi
 
+## get objectSID
+sid=$(ldbsearch -H ldap://localhost -U"$username%$first_password" cn=$username | sed -n 's/^objectSid: //p')
+if [ -z "$sid" ]; then
+	fail_fast 1 "Could not retrieve objectSid of samba user account '$username'"
+fi
+
+## get and set NTACL
+echo "----get NTACL"
+NTACL_old=$(samba-tool ntacl get "/$sharename/folder" --as-sddl 2>/dev/null)
+if ! echo "$NTACL_old" | grep -q "^O:"; then
+	fail_test 1 "Could not retrieve NTACL"
+fi
+echo "----set NTACL"
+if ! samba-tool ntacl set "$NTACL_old""(A;;CC;;;$sid)" "/$sharename/folder"; then
+	fail_test 1 "Failed to set NTACL"
+fi
+
+echo "----attempt to create a folder with permission"
+if ! output=$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder3")
+then
+	if [ -n "$output" ]; then
+		echo "$output"
+	fi
+	fail_test 1 "Failed to make a folder even though it should work."
+fi
 
 exit $RETVAL

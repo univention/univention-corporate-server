@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: "Checking all udm samba options in samba conf file"
+## desc: "Checking all udm share options in samba conf file"
 ## exposure: safe
 ## packages:
 ##  - univention-config
@@ -69,25 +69,35 @@ available_options="$(udm  shares/share create | grep  --regex "samba\w" | awk  {
 trap 'share_remove "$share_name"' INT TERM EXIT
 
 # create share
-udm shares/share create --position="$SHARE_POSITION" --option samba --set name="$share_name" --set path="/opt" --set host="$fqdn" --set sambaWriteList="workaround for bug #11972" || fail_test 1 "could not create share"
+echo "----create share"
+udm shares/share create --position="$SHARE_POSITION" \
+	--option samba --set name="$share_name" \
+	--set path="/opt" --set host="$fqdn" \
+	--set sambaWriteList="workaround for bug #11972"
+if [ $? != 0 ]; then
+	fail_fast 1 "could not create share"
+fi
 
 
 #waiting for share to be replicated
+echo "----waiting for share to be replicated"
 i=0
 while true
 do
-    let i=$i+1
-    sleep 3
-    if [ -f "$samba_etc/$share_name" ]; then
-	break
-    fi
-    if [ "$i" == 10 ]; then
-	echo "samba config file for share $share_name not found"
-	break
-    fi
+	let i=$i+1
+	sleep 3
+	if [ -f "$samba_etc/$share_name" ]; then
+		break
+	fi
+	if [ "$i" == 10 ]; then
+		echo "samba config file for share $share_name not found"
+		break
+	fi
 done
 
+
 # set samba options via udm and check samba config file
+echo "----set options via udm and check samba config file"
 while read option_line; do
 
 	echo "$option_line" | grep --regex "^\s*#" > /dev/null
@@ -119,13 +129,13 @@ while read option_line; do
 	# samba wants yes or no, that is why we grep for "locking 0" or "locking no"
 	case "$value" in
 		0)
-			s=${search//0/no}
-			search="$search\|$s"
-			;;
+		s="${search//0/no}"
+		search="$search\|$s"
+		;;
 		1)
-			s=${search//1/yes}
-			search="$search\|$s"
-			;;
+		s="${search//1/yes}"
+		search="$search\|$s"
+		;;
 	esac
 
 	# save search string and the rest in $samba_search, we can not perform the search here, because
@@ -134,7 +144,7 @@ while read option_line; do
 		samba_search="${udm_option}:DELIMETER:${search}:DELIMETER:${value}"
 	else
 		samba_search="$samba_search
-		${udm_option}:DELIMETER:${search}:DELIMETER:${value}"
+${udm_option}:DELIMETER:${search}:DELIMETER:${value}"
 	fi
 
 	# clear this options, later we want to check wether we have alle options tested or not
