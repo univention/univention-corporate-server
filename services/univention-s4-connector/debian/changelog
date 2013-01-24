@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.26-1) unstable; urgency=low
+
+  * Override permissions for the ifdown network script (Bug #30119)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jan 2013 08:28:23 +0100
+
 univention-s4-connector (7.0.25-1) unstable; urgency=low
 
   * Restart s4 connector if a network interface was stopped (Bug #30119)

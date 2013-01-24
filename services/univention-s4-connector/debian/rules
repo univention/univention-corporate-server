@@ -62,6 +62,7 @@ override_dh_fixperms:
 	chmod 755 debian/univention-s4-connector/usr/lib/univention-install/97univention-s4-connector.inst
 	chmod 755 debian/univention-s4-connector/usr/sbin/univention-password_sync_ucs_to_s4
 	chmod 755 debian/univention-s4-connector/usr/share/univention-s4-connector/msgpo.py
+	chmod 755 debian/univention-s4-connector/etc/network/if-down.d/univention-s4-connector
 	dh_fixperms
 
 override_dh_auto_test:
