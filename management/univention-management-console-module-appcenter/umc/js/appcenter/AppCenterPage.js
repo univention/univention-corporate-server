@@ -313,10 +313,11 @@ define([
 					txt += "</table>\n";
 					var buttons = [];
 					var app = data.result;
-					if (!app.allows_using && this._udm_accessible && !app.can_uninstall) {
+					if (!app.allows_using && this._udm_accessible && (app.can_install || app.can_update)) {
+						var label = app.can_install ? _('Install') : _('Upgrade'); // call it Install/Upgrade, although it is request
 						buttons.push({
 							name: 'request',
-							label: _("Install"), // call it Install, although it is request
+							label: label,
 							callback: lang.hitch(this, function() {
 								this._show_license_request();
 							})

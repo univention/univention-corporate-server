@@ -492,7 +492,7 @@ class Application(object):
 		package_manager.reopen_cache()
 		return packages
 
-	def install(self, package_manager, component_manager, add_component=True):
+	def install(self, package_manager, component_manager, add_component=True, send_as='install'):
 		try:
 			# remove all existing component versions
 			for iapp in self.versions:
@@ -520,7 +520,7 @@ class Application(object):
 		except:
 			MODULE.warn(traceback.format_exc())
 			status = 500
-		self._send_information('install', status)
+		self._send_information(send_as, status)
 		return status == 200
 
 	def _send_information(self, action, status):

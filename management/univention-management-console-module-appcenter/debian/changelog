@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.98-1) unstable; urgency=low
+
+  * Track an upgrade of an app as "update", not "install" (Bug #29638)
+  * Allow requesting a new license when unable to "upgrade" (Bug #30169)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 Jan 2013 18:34:32 +0100
+
 univention-management-console-module-appcenter (2.0.97-1) unstable; urgency=low
 
   * Corrected the statement before installing an application; Bug #30037
