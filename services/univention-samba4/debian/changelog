@@ -1,3 +1,9 @@
+univention-samba4 (2.0.35-3) unstable; urgency=low
+
+  * Configurable samba/share/netlogon/path (Bug #29801)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jan 2013 20:51:23 +0100
+
 univention-samba4 (2.0.35-2) unstable; urgency=low
 
   * Provide default for samba/debug/level (Bug #29961)

@@ -10,6 +10,7 @@ Variables: samba/share/sysvol
 Variables: samba/share/sysvol/readonly
 Variables: samba4/service/smb
 Variables: samba4/ntacl/backend
+Variables: samba/share/netlogon/path
 
 Type: multifile
 Multifile: etc/samba/smb.conf

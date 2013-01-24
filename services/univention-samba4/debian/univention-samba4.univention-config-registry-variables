@@ -411,3 +411,9 @@ Description[de]=Gibt einen bestimmten Server vor, gegen den Samba joinen soll.
 Description[en]=Defines a specific server that samba should join against.
 Type=str
 Categories=service-samba
+
+[samba/share/netlogon/path]
+Description[de]=Über diese Variable kann der Pfad für die Netlogon-Freigabe angepasst werden.
+Description[en]=This variable allows configuration of an alternative directory for the netlogon share.
+Type=str
+Categories=service-samba
