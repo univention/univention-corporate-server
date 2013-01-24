@@ -155,8 +155,8 @@ Type=bool
 Categories=system-base
 
 [pamaccess/maxent]
-Description[de]=Gibt die maximale Hauptspeichergröße für den Check der Gruppenzugehörigkeit an. (default: 0x40001)
-Description[en]=Specifies the maximum RAM size for checking group membership. (default: 0x40001)
+Description[de]=Gibt die maximale Hauptspeichergröße für den Check der Gruppenzugehörigkeit an. (default: 0x400001)
+Description[en]=Specifies the maximum RAM size for checking group membership. (default: 0x400001)
 Type=int
 Categories=system-base
 

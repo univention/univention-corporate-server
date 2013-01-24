@@ -1,7 +1,8 @@
 univention-pam (6.0.11-1) unstable; urgency=low
 
   * Fix disabling extrausers (Bug #29915)
-  * Add UCR variable authaccess/maxent (Bug #29393)
+  * Add UCR variable pamaccess/maxent (Bug #29393)
+    Set default to 0x400001 = 4 MiB.
   * Re-add UCR registration for /etc/security/access-rlogin.conf
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 15 Jan 2013 17:37:37 +0100
