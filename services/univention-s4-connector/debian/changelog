@@ -1,4 +1,4 @@
-univention-s4-connector (7.0.24-1) unstable; urgency=low
+univention-s4-connector (7.0.25-1) unstable; urgency=low
 
   * Restart s4 connector if a network interface was stopped (Bug #30119)
 
