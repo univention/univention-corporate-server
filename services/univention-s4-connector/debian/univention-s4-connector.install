@@ -10,3 +10,4 @@ univention-s4-position-sync usr/share/univention-s4-connector/
 scripts/msgpo.py usr/share/univention-s4-connector/
 scripts/upgrade_groupPolicyContainer.py usr/share/univention-s4-connector/
 scripts/write_password_settings.py usr/share/univention-s4-connector/
+etc/network/if-down.d/univention-s4-connector etc/network/if-down.d/
