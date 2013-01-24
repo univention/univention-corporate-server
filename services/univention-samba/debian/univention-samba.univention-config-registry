@@ -173,6 +173,7 @@ Variables: samba/domainmaster
 Variables: samba/share/netlogon
 Variables: samba4/ntacl/backend
 Variables: samba/vfs/acl_xattr/ignore_system_acls
+Variables: samba/share/netlogon/path
 
 Type: file
 File: etc/samba/debian_config

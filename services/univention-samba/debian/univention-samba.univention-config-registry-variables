@@ -423,3 +423,9 @@ Description[de]=SMB-Protokoll Version (Default: NT1)
 Description[en]=SMB protocol version (default: NT1)
 Type=str
 Categories=service-samba
+
+[samba/share/netlogon/path]
+Description[de]=Über diese Variable kann der Pfad für die Netlogon-Freigabe angepasst werden.
+Description[en]=This variable allows configuration of an alternative directory for the netlogon share.
+Type=str
+Categories=service-samba
