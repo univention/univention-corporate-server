@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.27-1) unstable; urgency=low
+
+  * Call daemon function directly in main this avoids calling the daemon
+    function twice (Bug #30149)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jan 2013 09:36:53 +0100
+
 univention-s4-connector (7.0.26-1) unstable; urgency=low
 
   * Override permissions for the ifdown network script (Bug #30119)

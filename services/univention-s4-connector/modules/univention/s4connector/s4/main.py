@@ -102,8 +102,6 @@ def daemon():
 
 def connect():
 
-	daemon()
-
 	f=open(STATUSLOGFILE, 'w+')
 	sys.stdout=f
 	print time.ctime()
@@ -248,6 +246,9 @@ def connect():
 	s4.close_debug()
 
 def main():
+
+	daemon()
+
 	while True:
 		try:
 			connect()
