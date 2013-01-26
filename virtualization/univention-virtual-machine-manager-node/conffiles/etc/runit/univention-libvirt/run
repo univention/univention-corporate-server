@@ -38,7 +38,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 PID=/var/run/libvirtd.pid
 if [ -r "$PID" ]; then
 	read pid <"$PID" || true # no '\n' -> 'read' returns 1
-	exe=$(readlink "/proc/$pid/exe")
+	exe=$(readlink "/proc/$pid/exe") &&
 	case "$exe" in
 	/usr/sbin/libvirtd*)
 		echo "ERROR: libvirtd running $pid" 2>&1
