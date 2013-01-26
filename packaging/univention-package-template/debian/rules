@@ -3,7 +3,7 @@
 # univention-package-template
 #  debhelper script for the debian package
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2010-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,8 +33,6 @@
 override_dh_auto_install:
 	univention-install-config-registry
 	dh_auto_install
-	# make ucslint happy
-	# 76univention-package-template.inst univention-install-config-registry-info
 
 override_dh_fixperms:
 	dh_fixperms
