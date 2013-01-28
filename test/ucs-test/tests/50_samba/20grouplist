@@ -3,7 +3,9 @@
 ## exposure: safe
 ## packages:
 ##  - univention-samba
-## roles-not: [basesystem]
+## roles-not: 
+## - basesystem
+## - memberserver
 ## tags: [basic]
 
 . "$TESTLIBPATH/user.sh" || exit 137
@@ -12,32 +14,39 @@ SAMBA="true"
 MAIL="false"
 KERBEROS="false"
 PERSON="false"
-POSIX="false"
+POSIX="true"
 
 
 username="$(user_randomname)"
+password="univention"
 
+##create user
 trap 'user_remove "$username"' INT TERM EXIT
-user_create "$username"
+echo "----create user"
+if ! user_create "$username"; then
+	fail_fast 1 "Failed to create user"
+fi
 
-#wait for the user to be created
+##wait for the user to be created
+echo "----wait for the user to be created"
 i=0
-while true
+while ! output="$(net rpc user info "$username" -U "$username%$password")"
 do
-    let i=$i+1
-    sleep 1
-    net rpc user -U"$username%$password" | grep "$username" > /dev/null && break
-    if [ $i == 20 ]; then
-	echo "TIMEOUT: The User which has been created in UDM could not be found in samba."
-	break
-    fi
+	let i="$i"+1
+	sleep 1
+	if [ "$i" = 20 ]; then
+		echo "$output"
+		fail_fast 1 "The User which has been created in UDM could not be found in samba."
+
+	fi
 done
 
 
-if net rpc group -U "$username%univention" | grep -q "Domain Users"
-then
-	echo "***The test trying to display samba-Groups as a user went like it should, everything is ok"
-else
+## display samba groups
+echo "----display samba groups"
+output="$(net rpc group -U "$username%$password" | grep "Domain Users")"
+if [ "$?" != 0 ];then
+	echo "$output"
 	fail_fast 1 "The test trying to display samba-Groups as a user failed"
 fi
 

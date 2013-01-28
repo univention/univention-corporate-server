@@ -17,17 +17,27 @@ KERBEROS="false"
 PERSON="true"
 POSIX="true"
 
-name=`group_randomnameme`
+name="$(group_randomnameme)"
 password="univention"
 
 trap 'user_remove "$name" ; group_remove "$name"' INT TERM EXIT
 
-univention-directory-manager groups/group create \
+echo "----create group"
+/usr/sbin/univention-directory-manager groups/group create \
         --position="cn=groups,$ldap_base" \
-		        --set name="$name"
+	--set name="$name"
+if [ $? != 0 ]; then
+	fail_fast 1 "Group could not be created"
+fi
 
+echo "----create user"
 user_create "$name"
+if [ $? != 0 ];then
+	fail_fast 1 "User could not be created"
+fi
 
+
+echo "----add user to group"
 group_adduser "$name" "$name"
 
 if ! [ -x /usr/bin/net ]; then
@@ -37,7 +47,8 @@ fi;
 
 info "Querying group members"
 
-OUTPUT=$(net rpc -d1 group members "$name" -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" 2>&1)
+echo "----query group members"
+OUTPUT="$(net rpc -d1 group members "$name" -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" 2>&1)"
 
 info "Got the following answer:"
 info "$OUTPUT"

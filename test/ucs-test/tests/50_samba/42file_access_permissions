@@ -13,7 +13,8 @@
 . "$TESTLIBPATH/shares.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
-#create user and share
+##create user and share
+echo "----create user and share"
 SAMBA="true"
 MAIL="false"
 KERBEROS="true"
@@ -21,37 +22,85 @@ PERSON="false"
 POSIX="true"
 
 username="$(user_randomname)"
-first_password=univention
+first_password="univention"
 second_password="$(random_chars 8 ${_upperletters}${_lowerletters}${_ciphers}äöü)1AÜÄÖ"
 third_password="$(random_chars 8 ${_upperletters}${_lowerletters}${_ciphers}äöü)1AÜÄÖ"
 sharename="$(random_share)"
 
-trap 'user_remove "$username";share_remove $sharename' INT TERM EXIT
-user_create "$username" || fail_test 1 "Could not create user $username."
+trap 'user_remove "$username";share_remove $sharename;rm -rf "/opt/${sharename:?}";' INT TERM EXIT
 
-share_create "$sharename" /"$sharename"  || fail_test 1 "Could not create share $sharename."
+if ! user_create "$username"; then
+	fail_fast 1 "Could not create user $username."
+fi
+
+if ! share_create "$sharename" "/opt/$sharename"; then
+	fail_fast 1 "Could not create share $sharename."
+fi
 
 ADMINISTRATOR_DN="$(univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
-USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
-SHARE_DN=$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')
+USER_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+SHARE_DN="$(/usr/sbin/univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
 
-udm shares/share modify --dn="$SHARE_DN" --set sambaPublic=1  || fail_test 1 "Could not modify share $sharename."
+## modify share attribute to prepare it for the test
+echo "----modify share attribute to prepare it for the test"
+shareProp="$(ls -l /etc/samba/shares.conf.d/"$sharename")"
+shareProp2="$shareProp"
 
-sleep 20
+/usr/sbin/univention-directory-manager shares/share modify --dn="$SHARE_DN" --set sambaPublic=1
+if [ "$?" != 0 ]; then
+	fail_test 1 "Could not modify share $sharename."
+fi
 
-echo smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit"  || fail_test 1 "Could not connect to the share."
-#test normal connection to the share
-smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit"  || fail_test 1 "Could not connect to the share."
+## wait until it is recognized in samba that the user has been modified
+echo "----wait until it is recognized in samba that the user has been modified"
+i=0
+while [ "$shareProp" = "$shareProp2" ]
+do
+	let i="$i"+1
+	sleep 1
+	shareProp2="$(ls -l /etc/samba/shares.conf.d/"$sharename")"
+	if [ "$i" = 20 ]; then
+		echo "TIMEOUT: Modification of $sharename haven't had any impact on the file in /etc/samba/shares.conf.d yet."
+		break
+	fi
+done
 
-#try to create a folder as a user, should fail
-return_val="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder")"
-echo $return_val | grep "NT_STATUS_ACCESS_DENIED" || fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $return_val"
+## test normal connection to the share
+echo "----test normal connection to the share"
+i=0
+while ! output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
+do
+	let i="$i"+1
+	sleep 1
+	if [ "$i" = 20 ]; then
+		echo "$output"
+		fail_test 1 "Could not connect to the share."
+	fi
+done
 
-#change directory mode, to enable write access for user
-univention-directory-manager shares/share modify --binddn "$ADMINISTRATOR_DN" --bindpwd "$ADMINISTRATOR_PASSWORD" --dn "$SHARE_DN" --set "directorymode=0777"
+## try to create a folder as a user, should fail
+echo "----try to create a folder as a use (should fail)"
+output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder")"
+if ! echo "$output" | grep "NT_STATUS_ACCESS_DENIED"; then
+	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
+fi
 
-#try to create a folder as a user, should succeed
-return_val="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder")"
-echo $return_val | grep "NT_STATUS_NOT_A_DIRECTORY" || fail_test 1 "Expected return value NT_STATUS_NOT_A_DIRECTORY, but received: $return_val"
+## change directory mode, to enable write access for user
+echo "----change directory mode, to enable write access for user"
+/usr/sbin/univention-directory-manager shares/share modify --binddn "$ADMINISTRATOR_DN" --bindpwd "$ADMINISTRATOR_PASSWORD" --dn "$SHARE_DN" --set "directorymode=0777"
 
+## try to create a folder as a user, should succeed
+echo "----try to create a folder as a user (should succeed)"
+retValue=1
+while ! [ "$retValue" = 0 ] &&  echo "$output"| grep "NT_STATUS_NOT_A_DIRECTORY" 
+do
+	output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder")"
+	retValue="$?"
+	let i="$i"+1
+	sleep 2
+	if [ "$i" = 10 ]; then
+		fail_test "Could not create a folder as a user after adjusting the directory mode."
+		break
+	fi
+done
 exit $RETVAL

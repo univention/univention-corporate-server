@@ -11,6 +11,7 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 
 #create user
+echo "----Create user"
 SAMBA="true"
 MAIL="false"
 KERBEROS="true"
@@ -18,74 +19,107 @@ PERSON="false"
 POSIX="true"
 
 username="$(user_randomname)"
-printername=test36printer
-password=univention
+printername="test36printer"
+password="univention"
 
 trap '
 user_remove "$username";
 rm -rf "/tmp/$printername"/ /tmp/print_input;
-univention-directory-manager shares/printer remove --dn="$PRINTER_DN"
+/usr/sbin/univention-directory-manager shares/printer remove --dn="$PRINTER_DN"
 ' INT TERM EXIT
-user_create "$username" || fail_test 1 "Could not create user $username."
 
-#wait for the user to be created
+if ! user_create "$username"; then
+	fail_fast 1 "User could not be created"
+fi
+
+##wait for the user to be created
+echo "----wait for the user to be created"
 i=0
-while true
+while ! output="$(net rpc user info $username -U"$username%$password" 2>&1)"
 do
-    let i=$i+1
-    sleep 1
-    net rpc user -U"$username%$password" | grep "$username" > /dev/null && break
-    if [ $i == 20 ]; then
-	echo "TIMEOUT: The User which has been created in UDM could not be found in samba."
-	break
-    fi
+	let i="$i"+1
+	if [ "$i" = 20 ]; then
+		echo "$output"
+		echo "TIMEOUT: The User which has been created in UDM could not be found in samba ldb"
+	fi
+	sleep 1
 done
 
-#create printer
-udm shares/printer create --set "name=$printername" --set "spoolHost=$hostname.$domainname" --set "uri=file:/ tmp/$printername" --set "model=None"
-sleep 5
-univention-directory-manager shares/printer list --filter cn="$printername" | sed -ne 's/^DN: //p' | grep "$printername"
-#initiate print
+##create printer
+/usr/sbin/univention-directory-manager shares/printer create \
+	--set "name=$printername" \
+	--set "spoolHost=$hostname.$domainname" \
+	--set "uri=file:/ tmp/$printername" \
+	--set "model=None"
+if [ "$?" != 0 ];then
+	fail_fast 1 "failed to create printer"
+fi
+
+##wait for printer
+sleep 10
+
+/usr/sbin/univention-directory-manager shares/printer list --filter cn="$printername" | sed -ne 's/^DN: //p' | grep "$printername"
+if [ "$?" != 0 ];then
+	fail_fast 1 "failed to modify printer"
+fi
+
+##get the printer DN
+echo "----get the printer DN"
 i=0
-while true
+while ! PRINTER_DN="$(univention-ldapsearch cn=test36printer | sed -ne 's/^dn: //p')"
 do
-    let i=$i+1
-    sleep 1
-    echo $i
-    PRINTER_DN="$(univention-directory-manager shares/printer list --filter cn="$printername" | sed -ne 's/^DN: //p' | grep "$printername")" && break
-    echo "$PRINTER_DN"
-    if [ $i == 100 ]; then
-	echo "Could not create print_input"
-	break
-    fi
+	let i="$i"+1
+	sleep 1
+	if [ $i = 100 ]; then
+		echo "Could not get printer DN"
+		break
+	fi
 done
+
+
+## look for printer
+echo "----Looking for samba printer share '$printername'"
+i=0
+while ! output="$(smbclient -NL localhost | grep -qE "^\s+$printername\s+Printer" 2>&1)"
+do
+	echo '.'
+	let i="$i"+1
+	if [ "$i" = 20 ]; then
+		print "output"
+		fail_fast 1 "Samba did not provide the printer share 20 seconds after creation"
+	fi
+	sleep 1
+done
+
+##create input file
+echo "----Creating input file"
 
 echo "$(uname -a)" > "/tmp/print_input"
 
-#initiate print
+## initiate print
+echo "----initiate print"
 i=0
-while true
+while ! output="$(smbclient -U"$username%$password" "//$hostname.$domainname/$printername" -c "print /tmp/print_input" 2>&1)"
 do
-    let i=$i+1
-    sleep 2
-    smbclient -U"$username%$password" "//$hostname.$domainname/$printername" -c "print /tmp/print_input" && break
-    if [ $i == 15 ]; then
-	echo "Initiate printing has not been successful."
-	break
-    fi
+	let i=$i+1
+	if [ "$i" = 20 ]; then
+		echo "$output"
+		fail_fast 1 "Initiate printing has not been successful."
+	fi
+	sleep 1
 done
 
-#initiate print
+## check output
+echo "----check output"
 i=0
-while true
+while ! output="$(grep "$(uname -a)" "/tmp/$printername")"
 do
-    let i=$i+1
-    sleep 1
-    grep "$(uname -a)" "/tmp/$printername" && break
-    if [ $i == 10 ]; then
-	fail_test "Nothing has been printed to the output file."
-	break
-    fi
+	let i="$i"+1
+	if [ "$i" = 10 ]; then
+		echo "$output"
+		fail_fast 1 "Nothing has been printed to the output file."
+	fi
+	sleep 1
 done
 
 exit $RETVAL
