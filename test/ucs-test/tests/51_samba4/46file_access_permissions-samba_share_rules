@@ -32,7 +32,7 @@ fi
 echo "----create Share"
 #----create Share
 SHARE_POSITION="cn=shares,$ldap_base"
-udm shares/share create --position="$SHARE_POSITION" \
+/usr/sbin/univention-directory-manager shares/share create --position="$SHARE_POSITION" \
 	--set name="$sharename" \
 	--set path="/$sharename" \
 	--set directorymode=0777 \
@@ -41,9 +41,9 @@ if [ $? != 0 ]; then
 	fail_fast 1 "could not create share"
 fi
 
-SHARE_DN="$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
+SHARE_DN="$(/usr/sbin/univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
 
-USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+USER_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 
 ## wait for user replication
 echo "----wait for user replication"
@@ -51,7 +51,7 @@ i=0
 sleep_seconds=3
 while ! ldbsearch -H "ldap://localhost" -U"$username%$password" "cn=$username" dn 2>&1 | grep -q '^dn:'
 do
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 10 ]; then
 		fail_fast 1 "TIMEOUT: The user could not be found in samba ldb after $((i * $sleep_seconds)) seconds"
 	fi
@@ -64,7 +64,7 @@ i=0
 sleep_seconds=3
 while ! output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" 2>&1)"
 do
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 10 ]; then
 		echo "$output"
 		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
@@ -76,26 +76,26 @@ done
 #----Testing general connection
 echo "----Testing general connection"
 smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1
-if [ $? != 0 ];then
+if [ "$?" != 0 ];then
 	fail_test 1 "Could not connect to the share."
 fi
 
 #----making a folder
 echo "----Making a folder in the share"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder2" 2>&1)"
-if [ $? != 0 ];then
+if [ "$?" != 0 ];then
 	echo "$output"
 	fail_test 1 "Failed to make a folder even though it should work."
 fi
 
-if ! udm shares/share modify --dn="$SHARE_DN" --set "sambaInvalidUsers=$username"; then 
+if ! /usr/sbin/univention-directory-manager shares/share modify --dn="$SHARE_DN" --set "sambaInvalidUsers=$username"; then 
 	fail_test 1 "Could not modify share $sharename."
 fi
 #----making a folder without permission
 echo "----Try to make a folder in the share withouth permission"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
 echo $output | grep -q "NT_STATUS_ACCESS_DENIED"
-if [ $? != 0 ]; then
+if [ "$?" != 0 ]; then
 	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
 fi
 exit $RETVAL

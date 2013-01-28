@@ -10,16 +10,22 @@
 
 function cleanup() {
 	echo "----Cleanup"
-	udm dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --remove a="111.111.111.111"
-	udm dns/srv_record remove --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --dn "relativeDomainName=_45dnstest_srv_record._tcp.foobar,zoneName=$domainname,cn=dns,$ldap_base"
-	univention-directory-manager dns/alias remove --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --dn relativeDomainName="alias1,zoneName=$domainname,cn=dns,$ldap_base"
+	/usr/sbin/univention-directory-manager dns/forward_zone modify \
+		--dn zoneName="$domainname,cn=dns,$ldap_base" \
+		--remove a="111.111.111.111"
+	/usr/sbin/univention-directory-manager dns/srv_record remove \
+		--superordinate "zoneName=$domainname,cn=dns,$ldap_base" \
+		--dn "relativeDomainName=_45dnstest_srv_record._tcp.foobar,zoneName=$domainname,cn=dns,$ldap_base"
+	/usr/sbin/univention-directory-manager dns/alias remove \
+		--superordinate "zoneName=$domainname,cn=dns,$ldap_base" \
+		--dn relativeDomainName="alias1,zoneName=$domainname,cn=dns,$ldap_base"
 }
 
 trap 'cleanup' INT TERM EXIT
 
 #CNAME RECORD
 echo "----Create CNAME record"
-univention-directory-manager dns/alias create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name=alias1 --set cname="$hostname.$domainname"
+/usr/sbin/univention-directory-manager dns/alias create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name=alias1 --set cname="$hostname.$domainname"
 if [ $? != 0 ];then
 	fail_test 1 "Could not create CNAME record." 
 fi
@@ -33,7 +39,7 @@ fi
 
 #SRV RECORD
 echo "----Create SRV record"
-udm dns/srv_record create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name="45dnstest_srv_record tcp foobar" --set location="0 100 389 $hostname.$domainname"
+/usr/sbin/univention-directory-manager dns/srv_record create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name="45dnstest_srv_record tcp foobar" --set location="0 100 389 $hostname.$domainname"
 if [ $? != 0 ]; then
 	fail_test 1 "Could not create SRV record." 
 fi
@@ -47,7 +53,7 @@ fi
 
 #A RECORD
 echo "----Create A record"
-udm dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --append a="111.111.111.111"
+/usr/sbin/univention-directory-manager dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --append a="111.111.111.111"
 if [ $? != 0 ];then
 	fail_test 1 "Could not modify Forward Zone."
 fi

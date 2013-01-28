@@ -3,7 +3,9 @@
 ## exposure: safe
 ## packages:
 ##  - univention-samba4
-## roles-not: [basesystem]
+## roles-not: 
+## - basesystem
+## - memberserver
 ## tags: [basic]
 
 . "$TESTLIBPATH/user.sh" || exit 137
@@ -15,15 +17,18 @@ PERSON="false"
 POSIX="true"
 
 username="$(user_randomname)"
-password=univention
+password="univention"
 
 trap 'user_remove "$username"' INT TERM EXIT
-user_create "$username" || fail_fast 1 "Could not create user $username."
+if ! user_create "$username"; then
+	fail_fast 1 "Failed to create user"
+fi
+
 
 #waiting for user replication
 echo "waiting for user replication"
 i=0
-while ! ldbsearch -H "ldap://localhost" -U"$username%$password" "cn=$username" | grep -q '^dn:'
+while ! ldbsearch -H "ldap://localhost" -U"$username%$password" "cn=$username" 2>&1 | grep -q '^dn:'
 do
 	let i=$i+1
 	if [ "$i" = 10 ]; then

@@ -7,21 +7,13 @@
 ## - domaincontroller_master
 ## tags: [basic]
 
-. "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/shares.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
-##----create User
-SAMBA="true"
-MAIL="false"
-KERBEROS="true"
-PERSON="false"
-POSIX="true"
-
-gponame=$(random_chars 8 "${_upperletters}${_lowerletters}${_ciphers}")	## samba RC6 seems to dislike UTF-8 in GPO names
+gponame="$(random_chars 8 "${_upperletters}${_lowerletters}${_ciphers}")"	## samba RC6 seems to dislike UTF-8 in GPO names
 echo gponame "$gponame"
 ## in case password is not the default one
-if [ $(univention-config-registry get server/role) = "domaincontroller_master" -a -e /root/root.secret ];then
+if [ "$(univention-config-registry get server/role)" = "domaincontroller_master" -a -e /root/root.secret ];then
 	echo "Found /root/root.secret, using that secret for Administrator access"
     ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
 fi
@@ -30,8 +22,8 @@ fi
 i=0
 while ! samba-tool domain info 127.0.0.1 > /dev/null 2>&1
 do
-	let i=$i+1
-	if [ $i = 15 ]; then
+	let i="$i"+1
+	if [ "$i" = 15 ]; then
 		echo "samba-tool Failure (Bug #29399)" >&2
 		break
 	fi
@@ -40,7 +32,7 @@ done
 
 ## create the GPO
 echo "----create the GPO"
-gpo_cn=$(samba-tool gpo create "$gponame" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" | sed -n "s/GPO '$gponame' created as //p")
+gpo_cn="$(samba-tool gpo create "$gponame" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" | sed -n "s/GPO '$gponame' created as //p")"
 if [ -n "$gpo_cn" ]; then
 	trap 'samba-tool gpo del "$gpo_cn" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD"' INT TERM EXIT
 else
@@ -54,34 +46,36 @@ i=0
 
 while true
 do
-	displayName=$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(cn=$gpo_cn))" displayName | sed -ne 's/^displayName: //p')
+	displayName="$(ldbsearch -H /var/lib/samba/private/sam.ldb "(&(objectClass=groupPolicyContainer)(cn=$gpo_cn))" displayName | sed -ne 's/^displayName: //p')"
 	if [ -n "$displayName" ]; then
 		break
 	fi
 
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 20 ]; then
 		fail_fast 1 "Could not find displayName of GPO in sam.ldb"
 	fi
 	sleep 1
 done
 
+##check whether the directory for the GPO has been created
 echo "----check whether the directory for the GPO has been created"
 i=0
 while ! [ -d "/var/lib/samba/sysvol/$domainname/Policies/$gpo_cn" ]
 do
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 20 ]; then
 		fail_fast 1 "Directory for GPO has not been created"
 	fi
 	sleep 1
 done
 
+##check whether the GPO is listed in samba-tool
 echo "----check whether the GPO is listed in samba-tool"
 i=0
-while ! ( output=$(samba-tool gpo show "$gpo_cn") && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output" > /dev/null )
+while ! ( output="$(samba-tool gpo show "$gpo_cn")" && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output" > /dev/null )
 do
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 10 ]; then
 		if [ -n "$output" ]; then
 			echo "$output"

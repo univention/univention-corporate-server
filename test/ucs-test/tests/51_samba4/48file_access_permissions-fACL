@@ -22,7 +22,7 @@ POSIX="true"
 
 username="$(user_randomname)"
 username2="$(user_randomname)"
-password=univention
+password="univention"
 sharename="$(random_share)"
 
 trap 'user_remove "$username";user_remove "$username2";share_remove $sharename;rm -rf "/${sharename:?}"' INT TERM EXIT
@@ -36,19 +36,19 @@ fi
 #----create Share
 echo "----create share"
 SHARE_POSITION="cn=shares,$ldap_base"
-udm shares/share create --position="$SHARE_POSITION" \
+/usr/sbin/univention-directory-manager shares/share create --position="$SHARE_POSITION" \
 	--set name="$sharename" \
 	--set path="/$sharename" \
 	--set directorymode=0777 \
 	--set host="$hostname.$domainname"
-if [ $? != 0 ]; then
+if [ "$?" != 0 ]; then
 	fail_fast 1 "could not create share"
 fi
 
 
-SHARE_DN="$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
+SHARE_DN="$(/usr/sbin/univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
 
-USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+USER_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 
 ## wait for user replication
 echo "----wait for user replication"

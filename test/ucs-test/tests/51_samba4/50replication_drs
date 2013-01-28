@@ -23,14 +23,16 @@ username="$(user_randomname)"
 password=univention
 
 trap 'user_remove "$username"' INT TERM EXIT
-user_create "$username" || fail_fast 1 "Could not create user $username."
+if ! user_create "$username"; then
+	fail_fast 1 "User could not be created"
+fi
 
 sleep 5	## wait a bit to give replication a head start
 
 i=0
 while ! ldbsearch -H /var/lib/samba/private/sam.ldb "samaccountname=$username" | grep -q '^dn:'
 do
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 20 ]; then
 		fail_fast 1 "TIMEOUT: the user account '$username' was not replicated in $i seconds"
 	fi

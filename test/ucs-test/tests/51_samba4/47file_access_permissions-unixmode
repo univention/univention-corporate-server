@@ -33,7 +33,7 @@ fi
 #----create Share
 echo "----create share"
 SHARE_POSITION="cn=shares,$ldap_base"
-udm shares/share create --position="$SHARE_POSITION" \
+/usr/sbin/univention-directory-manager shares/share create --position="$SHARE_POSITION" \
 	--set name="$sharename" \
 	--set path="/$sharename" \
 	--set host="$hostname.$domainname"
@@ -43,9 +43,9 @@ fi
 
 
 
-SHARE_DN="$(univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
+SHARE_DN="$(/usr/sbin/univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
 
-USER_DN="$(univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+USER_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 
 ## wait for user replication
 echo "----wait for user replication"
@@ -85,7 +85,7 @@ if [ $? != 0 ];then
 fi
 
 #----making a folder without permission
-echo "making a folder withou permission"
+echo "----making a folder without permission"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
 echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"
 if [ $? != 0 ];then
@@ -93,7 +93,7 @@ if [ $? != 0 ];then
 fi
 
 #----changing the folder's directorymode 
-univention-directory-manager shares/share modify --binddn "cn=admin,$ldap_base" --bindpwd "$(cat /etc/ldap.secret)" --dn "$SHARE_DN" --set "directorymode=0777"
+/usr/sbin/univention-directory-manager shares/share modify --binddn "cn=admin,$ldap_base" --bindpwd "$(cat /etc/ldap.secret)" --dn "$SHARE_DN" --set "directorymode=0777"
 
 #----making a folder
 echo "----making a folder with permission"

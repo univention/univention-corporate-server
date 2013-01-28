@@ -24,9 +24,13 @@ username="$(user_randomname)"
 password=univention
 
 trap 'user_remove "$username"' INT TERM EXIT
-user_create "$username" || fail_fast 1 "Could not create user $username."
+if ! user_create "$username"; then
+	fail_fast 1 "User could not be created"
+fi
 
-##waiting for user and share to be created
+
+##waiting for user to be created
+echo "Waiting for user to be created"
 i=0
 while true
 do
@@ -53,16 +57,16 @@ if [ $? != 0 ]; then
 	fail_test 1 "Could not put file on sysvol as Administrator"
 fi
 
-echo "----Access the folder Policies on sysvol as a user"
 ##Access the folder Policies on sysvol as a user
+echo "----Access the folder Policies on sysvol as a user"
 output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls $domainname/Policies" 2>&1)"
 if [ $? != 0 ]; then
 	echo "$output"
 	fail_test 1 "Could not access Policies on sysvol as a user"
 fi
 
-echo "----Put a file in the folder Policies on sysvol as a user"
 ##Put a file in the folder Policies on sysvol as a user
+echo "----Put a file in the folder Policies on sysvol as a user"
 output="$(smbclient //localhost/sysvol -U"$username%$password" -c "put /etc/hosts $domainname/t1"  2>&1)"
 if [ $? = 0 ]; then
 	echo "$output"
