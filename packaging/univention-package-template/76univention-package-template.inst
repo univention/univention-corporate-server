@@ -32,8 +32,11 @@
 
 VERSION="5"
 
+. /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
+
+eval "$(ucr shell)"
 
 univention-directory-manager container/cn create "$@" --ignore_exists \
 	--position="cn=custom attributes,cn=univention,$ldap_base" \
