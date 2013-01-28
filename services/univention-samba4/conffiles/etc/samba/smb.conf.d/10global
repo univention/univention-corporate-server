@@ -34,7 +34,7 @@ if server_services:
 	print '\tserver services\t=', ' '.join(server_services)
 if configRegistry.get('samba4/service/nmb', 'nmbd') == 'nmbd':
 	print '\tserver role check:inhibit = yes'
-	print '\t# use nmbd; to disable set samba4/service/nbtd to s4'
+	print '\t# use nmbd; to disable set samba4/service/nmb to s4'
 	print '\tnmbd_proxy_logon:cldap_server=127.0.0.1'
 
 print '\tworkgroup\t= %s' % configRegistry['windows/domain']

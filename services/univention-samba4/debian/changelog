@@ -1,3 +1,9 @@
+univention-samba4 (2.0.35-4) unstable; urgency=low
+
+  * Remove reference for UCR variable samba4/service/nbtd (Bug #24868)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Jan 2013 14:23:51 +0100
+
 univention-samba4 (2.0.35-3) unstable; urgency=low
 
   * Configurable samba/share/netlogon/path (Bug #29801)
