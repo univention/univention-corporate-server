@@ -35,6 +35,7 @@ def main():
 	except OSError, error:
 		print >> sys.stderr, "An error occured with: %s" % (error, )
 		sys.exit(RETURN_FAIL_CODE)
+
 	sys.exit(exit_code)
 
 def check_owner_groupname(filename, shouldowner, shouldgroup):
