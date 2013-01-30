@@ -1,3 +1,9 @@
+univention-management-console (5.0.57-2) unstable; urgency=low
+
+  * Raised default umc log level to 2 (= PROCESS); Bug #30033
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 30 Jan 2013 18:06:50 +0100
+
 univention-management-console (5.0.57-1) unstable; urgency=low
 
   * Fix PatternSanitizer not matching multiliners; Bug #29630
