@@ -41,7 +41,7 @@ if [ -r "$PID" ]; then
 	exe=$(readlink "/proc/$pid/exe") &&
 	case "$exe" in
 	/usr/sbin/libvirtd*)
-		echo "ERROR: libvirtd running $pid" 2>&1
+		echo "ERROR: libvirtd running $pid" >&2
 		exit 1
 		;;
 	esac
