@@ -159,7 +159,7 @@ define([
 				this.umcpCommand('updater/updates/check').then(lang.hitch(this, function(data) {
 					this.standby(false);
 					// FIXME Lots of manual styling to achieve resonable look
-					var txt = "<div style='overflow:auto;max-height:500px;'><table>\n";
+					var txt = "<table>\n";
 					var upd = data.result.update;
 					var ins = data.result.install;
 					var rem = data.result.remove;
@@ -225,7 +225,7 @@ define([
 							txt += "</tr>\n";
 						});
 					}
-					txt += "</table></div>";
+					txt += "</table>";
 					txt += "<p style='padding:1em;'>" + _("Do you really want to perform the update/install/remove of the above packages?") + "</p>\n";
 					var dia = new ConfirmDialog({
 						title:			_("Start Upgrade?"),

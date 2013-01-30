@@ -1,3 +1,10 @@
+univention-updater (8.0.63-1) unstable; urgency=low
+
+  * Bug #30171: Removed an inner scrollbar showing up in the dialog listing
+    all packages to be updated when this list is long enough.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 30 Jan 2013 22:32:04 +0100
+
 univention-updater (8.0.62-1) unstable; urgency=low
 
   * Fixed function call order and indentations
