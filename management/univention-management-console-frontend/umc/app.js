@@ -257,6 +257,7 @@ define([
 
 			// load some important UCR variables
 			var ucrDeferred = tools.ucr([
+				'server/role',
 				'domainname',
 				'hostname',
 				'umc/web/feedback/mail',
@@ -618,6 +619,10 @@ define([
 					// during UDM-Form loading)
 					this._overviewPage.addNote( _( 'Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.' ) );
 				}
+				if (tools.status('username') == 'root' && _ucr['server/role'] == 'domaincontroller_master') {
+					var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
+					this._overviewPage.addNote( _( 'You are currently logged in as %s and do not have access to the domain administration. For this you need to log in as %s.', '<em>root</em>', login_as_admin_tag ) );
+				}
 
 				// check if system reboot is required
 				if ( this.getModule('reboot') && tools.isTrue(_ucr['update/reboot/required']) ) {
@@ -842,17 +847,7 @@ define([
 				label: '<img src="js/dijit/themes/umc/logout.png">',
 				'class': 'umcHeaderButton umcLogoutButton',
 				onClick: lang.hitch(this, function() {
-					dialog.confirm(_('Do you really want to logout?'), [{
-						label: _('Logout'),
-						auto: true,
-						callback: lang.hitch(this, function() {
-							tools.closeSession();
-							window.location.reload();
-						})
-					}, {
-						label: _('Cancel'),
-						'default': true
-					}]);
+					this.relogin();
 				})
 			}));
 
@@ -865,6 +860,24 @@ define([
 			topic.subscribe('/umc/tabs/focus', lang.hitch(this, 'focusTab'));
 
 			this._setupStaticGui = true;
+		},
+
+		relogin: function(username) {
+			dialog.confirm(_('Do you really want to logout?'), [{
+				label: _('Logout'),
+				auto: true,
+				callback: lang.hitch(this, function() {
+					tools.closeSession();
+					if (username === undefined) {
+						window.location.reload();
+					} else {
+						window.location.search = 'username=' + username;
+					}
+				})
+			}, {
+				label: _('Cancel'),
+				'default': true
+			}]);
 		},
 
 		onGuiDone: function() {

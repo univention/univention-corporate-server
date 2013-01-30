@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.190-1) unstable; urgency=low
+
+  * If logged in as root on a DC master, a note is displayed with a link to
+    log in as Administrator (Bug #26507)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 30 Jan 2013 23:24:49 +0100
+
 univention-management-console-frontend (2.0.189-1) unstable; urgency=low
 
   * set fixed width for TimeBox and don't set an default value in TimeBox; Bug

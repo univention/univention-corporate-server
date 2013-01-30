@@ -16,6 +16,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: umc/app.js:634
+#, python-format
+msgid "You are currently logged in as %s and do not have access to the "
+"domain administration. For this you need to log in as %s."
+msgstr "Sie sind momentan als %s angemeldet und haben keinen Zugriff auf die "
+"Domänenadministration. Dafür müssen Sie sich als %s anmelden."
+
 #: umc/widgets/PasswordInputBox.js:66
 #, python-format
 msgid "%(label)s (retype)"
