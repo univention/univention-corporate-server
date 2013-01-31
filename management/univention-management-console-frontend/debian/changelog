@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.191-1) unstable; urgency=low
+
+  * Show message to root only when already joined; Bug #26507
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 31 Jan 2013 16:27:42 +0100
+
 univention-management-console-frontend (2.0.190-1) unstable; urgency=low
 
   * If logged in as root on a DC master, a note is displayed with a link to

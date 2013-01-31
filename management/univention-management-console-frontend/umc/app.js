@@ -258,6 +258,7 @@ define([
 			// load some important UCR variables
 			var ucrDeferred = tools.ucr([
 				'server/role',
+				'system/setup/showloginmessage', // set to true when not joined
 				'domainname',
 				'hostname',
 				'umc/web/feedback/mail',
@@ -619,7 +620,7 @@ define([
 					// during UDM-Form loading)
 					this._overviewPage.addNote( _( 'Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.' ) );
 				}
-				if (tools.status('username') == 'root' && _ucr['server/role'] == 'domaincontroller_master') {
+				if (tools.status('username') == 'root' && _ucr['server/role'] == 'domaincontroller_master' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {
 					var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
 					this._overviewPage.addNote( _( 'You are currently logged in as %s and do not have access to the domain administration. For this you need to log in as %s.', '<em>root</em>', login_as_admin_tag ) );
 				}
