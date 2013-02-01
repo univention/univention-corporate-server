@@ -306,7 +306,7 @@ class UCSHttpServer(object):
 			else:
 				return None
 
-	def __init__(self, server, port=80, prefix='', username=None, password=None):
+	def __init__(self, server, port=80, prefix='', username=None, password=None, user_agent=None):
 		self.log = logging.getLogger('updater.UCSHttp')
 		self.log.addHandler(NullHandler())
 		self.server = server
@@ -318,6 +318,7 @@ class UCSHttpServer(object):
 			self.prefix = ''
 		self.username = username
 		self.password = password
+		self.user_agent = user_agent
 
 	http_method = 'HEAD'
 	head_handler = HTTPHeadHandler()
@@ -377,6 +378,8 @@ class UCSHttpServer(object):
 
 	def access(self, rel, get=False):
 		'''Access URI and optionally get data. Return None on errors.'''
+		if self.user_agent:
+			UCSHttpServer.opener.addheaders = [('User-agent', self.user_agent)]
 		uri = self.join(rel)
 		if self.username:
 			UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.username, passwd=self.password)
@@ -1391,7 +1394,16 @@ class UniventionUpdater:
 		username = self.configRegistry.get('repository/online/component/%s/username' % component, None)
 		password = self.configRegistry.get('repository/online/component/%s/password' % component, None)
 
-		server = UCSHttpServer(server=server, port=port, prefix='', username=username, password=password)
+		# USER_AGENT='updater/identify - version/version-version/patchlevel errata version/erratalevel - uuid/system - uuid/license'
+		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
+		# USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
+		user_agent = '%s - %s-%s errata%s - %s - %s' % ( self.configRegistry.get('updater/identify', 'UCS updater'), 
+									self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
+									self.configRegistry.get('version/erratalevel'),
+									self.configRegistry.get('uuid/system', '00000000-0000-0000-0000-000000000000'),
+									self.configRegistry.get('uuid/license', '00000000-0000-0000-0000-000000000000') )
+
+		server = UCSHttpServer(server=server, port=port, prefix='', username=username, password=password, user_agent=user_agent)
 		try:
 			# if prefix.lower() == 'none' ==> use no prefix
 			if prefix and prefix.lower() == 'none':

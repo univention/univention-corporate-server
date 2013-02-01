@@ -1,3 +1,10 @@
+univention-updater (8.0.64-1) unstable; urgency=low
+
+  * Use an individual user agent string for the interaction via HTTP
+    (Bug #25489)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Feb 2013 11:40:03 +0100
+
 univention-updater (8.0.63-1) unstable; urgency=low
 
   * Bug #30171: Removed an inner scrollbar showing up in the dialog listing

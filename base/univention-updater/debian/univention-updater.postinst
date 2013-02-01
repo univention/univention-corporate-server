@@ -90,6 +90,9 @@ if [ "$1" = "configure" ]; then
 		update/available?no \
 		version/erratalevel?0
 
+	# Create a system uuid
+	ucr set uuid/system?"$(cat /proc/sys/kernel/random/uuid)"
+
 	if [ -z "$2" ]; then
 		# enable current errata component
 		eval "$(univention-config-registry shell version/version version/patchlevel)"
@@ -118,6 +121,8 @@ fi
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.54-1; then
 	remove_ucr_template /etc/apt/sources.list.d/18_ucs-online-errata.list
 fi
+
+test -x /etc/init.d/univention-directory-listener && /etc/init.d/univention-directory-listener restart
 
 # set the repository server
 eval "$(univention-config-registry shell hostname domainname update/server)"

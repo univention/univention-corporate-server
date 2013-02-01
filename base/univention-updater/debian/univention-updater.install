@@ -29,6 +29,8 @@ script/univention-removed usr/share/univention-updater/
 script/apt-secure usr/share/univention-updater/
 script/univention-add-app usr/sbin/
 
+license_uuid.py usr/lib/univention-directory-listener/system/
+
 script/preup.sh usr/share/univention-updater/
 script/postup.sh usr/share/univention-updater/
 
