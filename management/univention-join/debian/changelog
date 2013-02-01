@@ -1,3 +1,11 @@
+univention-join (5.0.23-1) unstable; urgency=low
+
+  * Close fd 3 while calling the join script otherwise a running daemon
+    could inherit it and a python parent program with subprocess won't
+    come back (Bug #30245)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Feb 2013 09:57:54 +0100
+
 univention-join (5.0.22-1) unstable; urgency=low
 
   * univention-run-join-scripts does not print its header when called

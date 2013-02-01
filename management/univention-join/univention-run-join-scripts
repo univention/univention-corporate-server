@@ -195,9 +195,9 @@ then
 		fi
 
 		if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
-			"$i" --binddn "$binddn" --bindpwd "$(cat "$DCPWD")"
+			"$i" --binddn "$binddn" --bindpwd "$(cat "$DCPWD")" 3>&-
 		else
-			"$i"
+			"$i" 3>&-
 		fi
 		RET=$?
 		echo "EXITCODE=$RET"
