@@ -91,12 +91,20 @@ fi
 univention-config-registry set samba/debug/level?0 \
 							   samba/os/level?65
 
-if [ "$1" = "configure" ] && [ -z "$2" ]; then
-	# only set this for new installations
-	univention-config-registry set samba/autostart="no"
-fi
+if [ "$1" = "configure" ]; then
+	if [ -z "$2" ]; then
+		# only set this for new installations
+		univention-config-registry set samba/autostart="no"
 
-call_joinscript 26univention-samba.inst
+		if [ "$server_role" = "domaincontroller_master" ]; then
+			univention-config-registry set windows/wins-support=yes
+		else
+			univention-config-registry set windows/wins-support?no
+			if [ -n "$ldap_master" ]; then
+				univention-config-registry set windows/wins-server?$ldap_master
+			fi
+		fi
+fi
 
 univention-config-registry set samba/script/adduser?true \
 				samba/script/deleteuser?true \
@@ -130,19 +138,11 @@ univention-config-registry set samba/script/adduser?true \
 				samba/domain/logons?auto \
 				samba/password/checkscript?"/usr/share/univention-samba/password_check %u"
 
+call_joinscript 26univention-samba.inst
+
 if [ "$1" = "configure" ]; then
 
-	if [ -z "$2" ]; then
-		# only set this for new installations
-		if [ "$server_role" = "domaincontroller_master" ]; then
-			univention-config-registry set windows/wins-support=yes
-		else
-			univention-config-registry set windows/wins-support?no
-			if [ -n "$ldap_master" ]; then
-				univention-config-registry set windows/wins-server?$ldap_master
-			fi
-		fi
-	elif [ -n "$2" ]; then
+	if [ -n "$2" ]; then
 		/etc/init.d/samba crestart
 	fi
 
