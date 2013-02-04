@@ -104,6 +104,7 @@ if [ "$1" = "configure" ]; then
 				univention-config-registry set windows/wins-server?$ldap_master
 			fi
 		fi
+	fi
 fi
 
 univention-config-registry set samba/script/adduser?true \

@@ -1,3 +1,9 @@
+univention-samba (7.0.14-2) unstable; urgency=low
+
+  * fix shell syntax (Bug #30271)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Feb 2013 18:44:55 +0100
+
 univention-samba (7.0.14-1) unstable; urgency=low
 
   * Set UCR variables in postinst before running joinscript (Bug #30271)
