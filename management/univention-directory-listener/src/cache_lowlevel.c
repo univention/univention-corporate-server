@@ -214,12 +214,10 @@ static enum type read_header(void *data, u_int32_t size, u_int32_t *pos, void **
 /* Decode CacheEntry from data chunk. */
 int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 {
-	FILE *file;
 	enum type type;
 	void *key_data, *data_data;
 	u_int32_t key_size, data_size;
 	u_int32_t pos=0;
-	char *f;
 
 	entry->attributes=NULL;
 	entry->attribute_count=0;
@@ -227,7 +225,8 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 	entry->module_count=0;
 
 	while ((type = read_header(data, size, &pos, &key_data, &key_size, &data_data, &data_size)) > 0) {
-		if (type == TYPE_ATTRIBUTE) {
+		switch (type) {
+		case TYPE_ATTRIBUTE: {
 			CacheEntryAttribute **attribute;
 			bool found = false;
 
@@ -289,7 +288,10 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "value is \"%s\"", (*attribute)->values[(*attribute)->value_count]);
 			(*attribute)->values[(*attribute)->value_count+1] = NULL;
 			(*attribute)->value_count++;
-		} else if (type == TYPE_MODULES) {
+			break;
+		}
+
+		case TYPE_MODULES:
 			entry->modules = realloc(entry->modules, (entry->module_count + 2) * sizeof(char*));
 			entry->modules[entry->module_count] = strndup((char*)key_data, key_size);
 			if (entry->modules[entry->module_count] == NULL) {
@@ -298,7 +300,12 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			}
 			entry->modules[entry->module_count+1] = NULL;
 			entry->module_count++;
-		} else {
+			break;
+
+		default: {
+			FILE *file;
+			char *f;
+
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "bad data block at position %d:", pos);
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "last 100 bytes of previous entry:");
 			hex_dump(UV_DEBUG_ERROR, data, pos-1000 < 0 ? 0 : pos-1000, pos-1000 < 0 ? pos : 1000);
@@ -314,6 +321,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			free(f);
 
 			return -1;
+		}
 		}
 	}
 
