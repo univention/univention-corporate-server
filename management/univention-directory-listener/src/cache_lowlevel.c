@@ -227,67 +227,62 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 	while ((type = read_header(data, size, &pos, &key_data, &key_size, &data_data, &data_size)) > 0) {
 		switch (type) {
 		case TYPE_ATTRIBUTE: {
-			CacheEntryAttribute **attribute;
-			bool found = false;
+			CacheEntryAttribute **attribute, *c_attr;
 
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "attribute is \"%s\"", (char*)key_data);
 
-			for (attribute = entry->attributes;
+			for (attribute = entry->attributes, c_attr = NULL;
 					attribute != NULL && *attribute != NULL;
 					attribute++) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "current attribute is \"%s\"", (*attribute)->name);
-				if (strcmp((*attribute)->name, (char*)key_data) == 0) {
-					found = true;
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "current attribute is \"%s\"", c_attr->name);
+				if (strcmp(c_attr->name, (char*)key_data) == 0) {
+					c_attr = *attribute;
 					break;
 				}
 			}
-			if (!found) {
+			if (!c_attr) {
 				entry->attributes = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute*));
 				if (entry->attributes == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 					abort(); // FIXME
 				}
-				entry->attributes[entry->attribute_count] = malloc(sizeof(CacheEntryAttribute));
-				if (entry->attributes[entry->attribute_count] == NULL) {
+				c_attr = malloc(sizeof(CacheEntryAttribute));
+				if (c_attr == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "malloc failed");
 					abort(); // FIXME
 				}
-				entry->attributes[entry->attribute_count+1] = NULL;
-
-				attribute=entry->attributes+entry->attribute_count;
-				(*attribute)->name = strndup((char*)key_data, key_size);
-				if ((*attribute)->name == NULL) {
+				c_attr->name = strndup((char*)key_data, key_size);
+				if (c_attr->name == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
 					abort(); // FIXME
 				}
-				entry->attributes[entry->attribute_count+1] = NULL;
-				(*attribute)->values = NULL;
-				(*attribute)->length = NULL;
-				(*attribute)->value_count = 0;
-				entry->attribute_count++;
+				c_attr->values = NULL;
+				c_attr->length = NULL;
+				c_attr->value_count = 0;
+				entry->attributes[entry->attribute_count++] = c_attr;
+				entry->attributes[entry->attribute_count] = NULL;
 
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at %p", (*attribute)->name, *attribute);
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at %p", c_attr->name, c_attr);
 			}
-			(*attribute)->values = realloc((*attribute)->values, ((*attribute)->value_count + 2) * sizeof(char*));
-			if ((*attribute)->values == NULL) {
+			c_attr->values = realloc((*attribute)->values, ((*attribute)->value_count + 2) * sizeof(char*));
+			if (c_attr->values == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				abort(); // FIXME
 			}
-			(*attribute)->length = realloc((*attribute)->length, ((*attribute)->value_count + 2) * sizeof(int));
-			if ((*attribute)->length == NULL) {
+			c_attr->length = realloc((*attribute)->length, ((*attribute)->value_count + 2) * sizeof(int));
+			if (c_attr->length == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				abort(); // FIXME
 			}
 			// TODO: stdndup() copies until the first \0, which would be incorrect if data is binary!
-			(*attribute)->values[(*attribute)->value_count] = strndup((char*)data_data, data_size);
-			if ((*attribute)->values[(*attribute)->value_count] == NULL) {
+			c_attr->values[c_attr->value_count] = strndup((char*)data_data, data_size);
+			if (c_attr->values[c_attr->value_count] == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
 				abort(); // FIXME
 			}
-			(*attribute)->length[(*attribute)->value_count] = data_size;
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "value is \"%s\"", (*attribute)->values[(*attribute)->value_count]);
-			(*attribute)->values[(*attribute)->value_count+1] = NULL;
-			(*attribute)->value_count++;
+			c_attr->length[c_attr->value_count] = data_size;
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "value is \"%s\"", c_attr->values[c_attr->value_count]);
+			c_attr->values[++c_attr->value_count] = NULL;
 			break;
 		}
 
