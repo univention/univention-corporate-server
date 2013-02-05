@@ -37,44 +37,44 @@
 #include <ldap.h>
 
 struct _CacheEntryAttribute {
-	char			 *name;
-	char			**values;
-	int			*length;
-	int			  value_count;
+	char *name;
+	char **values;
+	int *length;
+	int value_count;
 } typedef CacheEntryAttribute;
 
 struct _CacheEntry {
-	CacheEntryAttribute	**attributes;
-	int			  attribute_count;
-	char			**modules;
-	int			  module_count;
+	CacheEntryAttribute **attributes;
+	int attribute_count;
+	char **modules;
+	int module_count;
 } typedef CacheEntry;
 
 /* Initialize interal setting once. */
 extern void cache_entry_init(void);
 
-int	cache_free_entry		(char		**dn,
-					 CacheEntry	 *entry);
-int	cache_dump_entry		(char		 *dn,
-					 CacheEntry	 *entry,
-					 FILE		 *fp);
-int	cache_new_entry_from_ldap	(char		**dn,
-					 CacheEntry	 *cache_entry,
-					 LDAP		 *ld,
-					 LDAPMessage	 *ldap_entry);
-int	cache_entry_module_add		(CacheEntry	 *entry,
-					 char		 *module);
-int	cache_entry_module_remove	(CacheEntry	 *entry,
-					 char		 *module);
-int	cache_entry_module_present	(CacheEntry	 *entry,
-					 char		 *module);
-char**	cache_entry_changed_attributes	(CacheEntry	 *new,
-					 CacheEntry	 *old);
+int cache_free_entry(char **dn,
+		CacheEntry *entry);
+int cache_dump_entry(char *dn,
+		CacheEntry *entry,
+		FILE *fp);
+int cache_new_entry_from_ldap(char **dn,
+		CacheEntry *cache_entry,
+		LDAP *ld,
+		LDAPMessage *ldap_entry);
+int cache_entry_module_add(CacheEntry *entry,
+		char *module);
+int cache_entry_module_remove(CacheEntry *entry,
+		char *module);
+int cache_entry_module_present(CacheEntry *entry,
+		char *module);
+char** cache_entry_changed_attributes(CacheEntry *new,
+		CacheEntry *old);
 
-int	copy_cache_entry		(CacheEntry *cache_entry,
-					 CacheEntry *backup_cache_entry);
+int copy_cache_entry(CacheEntry *cache_entry,
+		CacheEntry *backup_cache_entry);
 
-void	compare_cache_entries		(CacheEntry *lentry,
-					 CacheEntry *rentry);
+void compare_cache_entries(CacheEntry *lentry,
+		CacheEntry *rentry);
 
 #endif /* _CACHE_ENTRY_H_ */
