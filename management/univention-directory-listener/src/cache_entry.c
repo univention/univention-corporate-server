@@ -172,8 +172,6 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 
 	bool memberUidMode = false;
 	bool uniqueMemberMode = false;
-	bool duplicateMemberUid = false;
-	bool duplicateUniqueMember = false;
 	int i;
 
 	/* convert LDAP entry to cache entry */
@@ -237,35 +235,29 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 
 			if (memberUidMode) {
 				/* avoid duplicate memberUid entries https://forge.univention.org/bugzilla/show_bug.cgi?id=17998 */
-				duplicateMemberUid = 0;
 				for (i = 0; i < cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
 					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate memberUid entry:");
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s", *dn);
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "memberUid: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
-						duplicateMemberUid = true;
 						break;
 					}
 				}
-				if (duplicateMemberUid) {
+				if (i < cache_entry->attributes[cache_entry->attribute_count]->value_count)
 					continue;
-				}
 			}
 			if (uniqueMemberMode) {
 				/* avoid duplicate uniqueMember entries https://forge.univention.org/bugzilla/show_bug.cgi?id=18692 */
-				duplicateUniqueMember = false;
 				for (i = 0; i < cache_entry->attributes[cache_entry->attribute_count]->value_count; i++) {
 					if (!memcmp(cache_entry->attributes[cache_entry->attribute_count]->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Found a duplicate uniqueMember entry:");
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "DN: %s", *dn);
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "uniqueMember: %s", cache_entry->attributes[cache_entry->attribute_count]->values[i]);
-						duplicateUniqueMember = true;
 						break;
 					}
 				}
-				if (duplicateUniqueMember) {
+				if (i < cache_entry->attributes[cache_entry->attribute_count]->value_count)
 					continue;
-				}
 			}
 			if ((cache_entry->attributes[cache_entry->attribute_count]->values =
 			         realloc(cache_entry->attributes[cache_entry->attribute_count]->values, (cache_entry->attributes[cache_entry->attribute_count]->value_count + 2) * sizeof(char *))) == NULL) {
