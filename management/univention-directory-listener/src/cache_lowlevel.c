@@ -40,6 +40,7 @@
 #include <errno.h>
 #include <sys/types.h>
 
+#include <assert.h>
 #include <univention/debug.h>
 
 #include "common.h"
@@ -211,6 +212,12 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry) {
 			CacheEntryAttribute **attribute, *c_attr;
 
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "attribute is \"%s\"", (char *)key_data);
+			/* key name including '\0' */
+			assert(key_size >= 1);
+			assert('\0' == ((char *)key_data)[key_size - 1]);
+			/* value including '\0' */
+			assert(data_size >= 1);
+			assert('\0' == ((char *)data_data)[data_size - 1]);
 
 			for (attribute = entry->attributes, c_attr = NULL; attribute != NULL && *attribute != NULL; attribute++) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "current attribute is \"%s\"", (*attribute)->name);
