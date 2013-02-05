@@ -36,4 +36,4 @@ script/postup.sh usr/share/univention-updater/
 
 modules/univention/updater/*.py usr/share/pyshared/univention/updater/
 
-appliance-hooks.d/updater.sh usr/lib/univention-system-setup/appliance-hooks.d/
+appliance-hooks.d/updater usr/lib/univention-system-setup/appliance-hooks.d/

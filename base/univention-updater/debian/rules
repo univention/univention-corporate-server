@@ -77,7 +77,7 @@ override_dh_fixperms:
 	chmod 755 debian/univention-updater/usr/share/univention-updater/univention-updater-check
 	chmod 755 debian/univention-updater/usr/share/univention-updater/univention-updater-umc-dist-upgrade
 	chmod 755 debian/univention-updater/usr/share/univention-updater/univention-updater-umc-univention-install
-	chmod 755 debian/univention-updater/usr/lib/univention-system-setup/appliance-hooks.d/updater.sh
+	chmod 755 debian/univention-updater/usr/lib/univention-system-setup/appliance-hooks.d/updater
 
 override_dh_installinit:
 	dh_installinit --name="univention-maintenance" --no-start --update-rcd-params="defaults 97 05"
