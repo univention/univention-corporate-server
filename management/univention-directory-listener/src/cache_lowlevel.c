@@ -125,22 +125,28 @@ int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry) {
 	char **value;
 	char **module;
 	int *length;
-	int i;
+	int i, rv = -1;
 	u_int32_t pos = 0;
 
 	for (attribute = entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
 		for (value = (*attribute)->values, i = 0, length = (*attribute)->length; *value != NULL; value++, i++) {
-			write_header(data, size, &pos, TYPE_ATTRIBUTE, (*attribute)->name, strlen((*attribute)->name) + 1, *value, length[i]);
+			rv = write_header(data, size, &pos, TYPE_ATTRIBUTE, (*attribute)->name, strlen((*attribute)->name) + 1, *value, length[i]);
+			if (rv)
+				goto out;
 		}
 	}
 	for (module = entry->modules; module != NULL && *module != NULL; module++) {
-		write_header(data, size, &pos, TYPE_MODULES, *module, strlen(*module) + 1, NULL, 0);
+		rv = write_header(data, size, &pos, TYPE_MODULES, *module, strlen(*module) + 1, NULL, 0);
+		if (rv)
+			goto out;
 	}
 
 	/* allocated memory maybe bigger than size, but doesn't matter anyhow... */
 	*size = pos;
+	rv = 0;
 
-	return 0;
+out:
+	return rv;
 }
 
 static enum type read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_data, u_int32_t *key_size, void **data_data, u_int32_t *data_size) {
