@@ -315,7 +315,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 
 result:
 	if (rv != 0)
-		cache_free_entry(NULL, cache_entry);
+		cache_free_entry(dn, cache_entry);
 
 	return rv;
 }
