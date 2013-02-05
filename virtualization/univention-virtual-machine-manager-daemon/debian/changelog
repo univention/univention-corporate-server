@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.30-2) unstable; urgency=low
+
+  * Handle empty cache files (Bug #30174)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 05 Feb 2013 16:34:53 +0100
+
 univention-virtual-machine-manager-daemon (2.0.30-1) unstable; urgency=low
 
   * Add support for UCR-variable pamaccess/maxent (Bug #29393)

@@ -528,6 +528,7 @@ class Node(PersistentCached):
 			cache_file = open(cache_file_name, 'r')
 			try:
 				data = pickle.Unpickler(cache_file)
+				assert data is not None
 				self.pd = data.load()
 			finally:
 				cache_file.close()
@@ -552,10 +553,10 @@ class Node(PersistentCached):
 						assert domStat.cache_file_name() == cache_file_name
 						self.domains[domStat.pd.uuid] = domStat
 						logger.debug("Loaded from cache '%s#%s'", self.pd.uri, domStat.pd.uuid)
-					except (IOError, AssertionError), ex:
+					except (EOFError, IOError, AssertionError, ExpatError), ex:
 						logger.warning("Failed to load cached domain %s: %s" % (cache_file_name, ex))
 				del dirs[:] # just that direcory; no recursion
-		except (IOError, pickle.PickleError), ex:
+		except (EOFError, IOError, AssertionError, pickle.PickleError), ex:
 			logger.warning("Failed to load cached state of %s: %s" % (uri, ex))
 			self.pd = Data_Node() # public data
 			self.pd.uri = uri
