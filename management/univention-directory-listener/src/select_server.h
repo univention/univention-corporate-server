@@ -39,6 +39,6 @@ struct server_list {
 	char *server_name;
 };
 
-void select_server(univention_ldap_parameters_t *lp);
+extern void select_server(univention_ldap_parameters_t *lp);
 
 #endif

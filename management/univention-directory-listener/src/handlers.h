@@ -78,20 +78,20 @@ struct _Handler {
 	int prepared : 1;
 } typedef Handler;
 
-int handlers_init(void);
-int handlers_free_all(void);
-void handler_write_state(Handler *handler);
-int handlers_load_path(char *filename);
-int handlers_reload_all_paths(void);
-int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char command);
-int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command);
-int handlers_delete(const char *dn, CacheEntry *old, char command);
-int handler_clean(Handler *handler);
-int handlers_clean_all(void);
-int handler_initialize(Handler *handler);
-int handlers_initialize_all(void);
-int handlers_postrun_all(void);
-int handlers_set_data_all(char *key, char *value);
-char *handlers_filter(void);
+extern int handlers_init(void);
+extern int handlers_free_all(void);
+extern void handler_write_state(Handler *handler);
+extern int handlers_load_path(char *filename);
+extern int handlers_reload_all_paths(void);
+extern int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char command);
+extern int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command);
+extern int handlers_delete(const char *dn, CacheEntry *old, char command);
+extern int handler_clean(Handler *handler);
+extern int handlers_clean_all(void);
+extern int handler_initialize(Handler *handler);
+extern int handlers_initialize_all(void);
+extern int handlers_postrun_all(void);
+extern int handlers_set_data_all(char *key, char *value);
+extern char *handlers_filter(void);
 
 #endif /* _HANDLERS_H_ */

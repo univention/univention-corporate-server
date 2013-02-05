@@ -76,15 +76,15 @@ struct transaction {
 /* Initialize interal setting once. */
 extern void cache_entry_init(void);
 
-int cache_free_entry(char **dn, CacheEntry *entry);
-void cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp);
-int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAPMessage *ldap_entry);
-int cache_entry_module_add(CacheEntry *entry, char *module);
-int cache_entry_module_remove(CacheEntry *entry, char *module);
-int cache_entry_module_present(CacheEntry *entry, char *module);
-char **cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old);
+extern int cache_free_entry(char **dn, CacheEntry *entry);
+extern void cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp);
+extern int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAPMessage *ldap_entry);
+extern int cache_entry_module_add(CacheEntry *entry, char *module);
+extern int cache_entry_module_remove(CacheEntry *entry, char *module);
+extern int cache_entry_module_present(CacheEntry *entry, char *module);
+extern char **cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old);
 
-int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry);
+extern int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry);
 
 extern const char *cache_entry_get1(CacheEntry *entry, const char *key);
 extern void cache_entry_set1(CacheEntry *entry, const char *key, const char *value);

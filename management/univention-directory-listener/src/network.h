@@ -61,19 +61,19 @@ struct _NotifierClient {
 	char *buf;
 } typedef NotifierClient;
 
-void notifier_entry_free(NotifierEntry *entry);
-int notifier_client_new(NotifierClient *client, const char *server, int starttls);
-void notifier_client_destroy(NotifierClient *client);
-int notifier_wait(NotifierClient *client, time_t timeout);
+extern void notifier_entry_free(NotifierEntry *entry);
+extern int notifier_client_new(NotifierClient *client, const char *server, int starttls);
+extern void notifier_client_destroy(NotifierClient *client);
+extern int notifier_wait(NotifierClient *client, time_t timeout);
 
-int notifier_recv_result(NotifierClient *client, time_t timeout);
-NotifierMessage *notifier_get_msg(NotifierClient *client, int msgid);
+extern int notifier_recv_result(NotifierClient *client, time_t timeout);
+extern NotifierMessage *notifier_get_msg(NotifierClient *client, int msgid);
 
-int notifier_get_dn(NotifierClient *client, NotifierID id);
-int notifier_resend_get_dn(NotifierClient *client, int msgid, NotifierID id);
-int notifier_get_dn_result(NotifierClient *client, int msgid, NotifierEntry *entry);
-int notifier_alive_s(NotifierClient *client);
-int notifier_get_id_s(NotifierClient *client, NotifierID *id);
-int notifier_get_schema_id_s(NotifierClient *client, NotifierID *id);
+extern int notifier_get_dn(NotifierClient *client, NotifierID id);
+extern int notifier_resend_get_dn(NotifierClient *client, int msgid, NotifierID id);
+extern int notifier_get_dn_result(NotifierClient *client, int msgid, NotifierEntry *entry);
+extern int notifier_alive_s(NotifierClient *client);
+extern int notifier_get_id_s(NotifierClient *client, NotifierID *id);
+extern int notifier_get_schema_id_s(NotifierClient *client, NotifierID *id);
 
 #endif /* _NETWORK_H_ */
