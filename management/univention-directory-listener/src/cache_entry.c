@@ -194,6 +194,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 
 	int i;
 	enum { DUPLICATES, UNIQUE_UID, UNIQUE_MEMBER } check;
+	size_t len;
 
 	/* convert LDAP entry to cache entry */
 	memset(cache_entry, 0, sizeof(CacheEntry));
@@ -217,6 +218,10 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			goto result;
 		}
 		c_attr->name = strdup(attr);
+		if (!c_attr->name) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for CacheEntryAttribute.name failed");
+			goto result;
+		}
 		c_attr->values = NULL;
 		c_attr->length = NULL;
 		c_attr->value_count = 0;
@@ -267,30 +272,22 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				if (i < c_attr->value_count)
 					continue;
 			}
-			if ((c_attr->values = realloc(c_attr->values, (c_attr->value_count + 2) * sizeof(char *))) == NULL) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of values array failed");
-				goto result;
-			}
-			if ((c_attr->length = realloc(c_attr->length, (c_attr->value_count + 2) * sizeof(int))) == NULL) {
+			if (!(c_attr->length = realloc(c_attr->length, (c_attr->value_count + 2) * sizeof(int)))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of length array failed");
 				goto result;
 			}
-			if ((*v)->bv_len == strlen((*v)->bv_val)) {
-				if ((c_attr->values[c_attr->value_count] = strdup((*v)->bv_val)) == NULL) {
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: strdup of value failed");
-					goto result;
-				}
-				c_attr->length[c_attr->value_count] = strlen(c_attr->values[c_attr->value_count]) + 1;
-			} else {  // in this case something is strange about the string in bv_val, maybe contains a '\0'
-				// the legacy approach is to copy bv_len bytes, let's stick with this and just terminate to be safe
-				if ((c_attr->values[c_attr->value_count] = malloc(((*v)->bv_len + 1) * sizeof(char))) == NULL) {
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for value failed");
-					goto result;
-				}
-				memcpy(c_attr->values[c_attr->value_count], (*v)->bv_val, (*v)->bv_len);
-				c_attr->values[c_attr->value_count][(*v)->bv_len] = '\0';  // terminate the string to be safe
-				c_attr->length[c_attr->value_count] = (*v)->bv_len + 1;
+			if (!(c_attr->values = realloc(c_attr->values, (c_attr->value_count + 2) * sizeof(char *)))) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: realloc of values array failed");
+				goto result;
 			}
+			len = (*v)->bv_len;
+			if (!(c_attr->values[c_attr->value_count] = malloc(len + 1))) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "cache_new_entry_from_ldap: malloc for value failed");
+				goto result;
+			}
+			c_attr->length[c_attr->value_count] = len + 1;
+			memcpy(c_attr->values[c_attr->value_count], (*v)->bv_val, len);
+			c_attr->values[c_attr->value_count][len] = '\0';
 			c_attr->values[++c_attr->value_count] = NULL;
 		}
 
@@ -349,60 +346,70 @@ char **cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old) {
 	return changes;
 }
 
-int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
-	CacheEntryAttribute **curs, **curb;
-	int i = 0;
+int copy_cache_entry(CacheEntry *src, CacheEntry *dst) {
 	int rv = 1;
-	memset(backup_cache_entry, 0, sizeof(CacheEntry));
-	for (curs = cache_entry->attributes; curs != NULL && *curs != NULL; curs++) {
-		if ((backup_cache_entry->attributes = realloc(backup_cache_entry->attributes, (backup_cache_entry->attribute_count + 2) * sizeof(CacheEntryAttribute *))) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of attributes array failed");
-			goto result;
-		}
-		if ((backup_cache_entry->attributes[backup_cache_entry->attribute_count] = malloc(sizeof(CacheEntryAttribute))) == NULL) {
+
+	memset(dst, 0, sizeof(CacheEntry));
+
+	int a, a_count = src->attribute_count;
+	if (!(dst->attributes = calloc(a_count + 1, sizeof(CacheEntryAttribute *)))) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc of attributes array failed");
+		goto result;
+	}
+	for (a = 0; a < a_count; a++) {
+		CacheEntryAttribute *a_dst, *a_src = src->attributes[a];
+		int v, v_count = a_src->value_count;
+
+		if ((a_dst = malloc(sizeof(CacheEntryAttribute))) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc for CacheEntryAttribute failed");
 			goto result;
 		}
-		curb = &backup_cache_entry->attributes[backup_cache_entry->attribute_count];
-		(*curb)->name = strdup((*curs)->name);
-		(*curb)->values = NULL;
-		(*curb)->length = NULL;
-		(*curb)->value_count = 0;
-		backup_cache_entry->attributes[backup_cache_entry->attribute_count + 1] = NULL;
+		memset(a_dst, 0, sizeof(CacheEntryAttribute));
+		dst->attributes[a] = a_dst;
 
-		for (i = 0; i < (*curs)->value_count; i++) {
-			if (((*curb)->values = realloc((*curb)->values, ((*curb)->value_count + 2) * sizeof(char *))) == NULL) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of values array failed");
-				goto result;
-			}
-			if (((*curb)->length = realloc((*curb)->length, ((*curb)->value_count + 2) * sizeof(int))) == NULL) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of length array failed");
-				goto result;
-			}
-			if ((*curs)->length[i] == strlen((*curs)->values[i]) + 1) {
-				if (((*curb)->values[(*curb)->value_count] = strdup((*curs)->values[i])) == NULL) {
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: strdup of value failed");
-					goto result;
-				}
-				(*curb)->length[(*curb)->value_count] = strlen((*curb)->values[(*curb)->value_count]) + 1;
-			} else {
-				if (((*curb)->values[(*curb)->value_count] = malloc(((*curs)->length[i]) * sizeof(char))) == NULL) {
-					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc for value failed");
-					goto result;
-				}
-				memcpy((*curb)->values[(*curb)->value_count], (*curs)->values[i], (*curs)->length[i]);
-				(*curb)->length[(*curb)->value_count] = (*curs)->length[i];
-			}
-			(*cur2)->values[++(*curb)->value_count] = NULL;
+		if (!(a_dst->name = strdup(a_src->name))) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: strdup for CacheEntryAttribute.name failed");
+			goto result;
 		}
-		backup_cache_entry->attribute_count++;
+
+		a_dst->value_count = v_count;
+		if (!(a_dst->values = calloc(a_dst->value_count + 1, sizeof(char *)))) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of values array failed");
+			goto result;
+		}
+		if (!(a_dst->length = calloc(a_dst->value_count + 1, sizeof(int)))) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of length array failed");
+			goto result;
+		}
+		for (v = 0; v < v_count; v++) {
+			char *v_dst, *v_src = a_src->values[v];
+			int len = a_src->length[v];
+
+			if (!(v_dst = malloc(len))) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc of value failed");
+				goto result;
+			}
+			memcpy(v_dst, v_src, len);
+			a_dst->values[v] = v_dst;
+			a_dst->length[v] = len;
+		}
+		a_dst->values[v] = NULL;
 	}
-	char **module_ptr;
-	for (module_ptr = cache_entry->modules; module_ptr != NULL && *module_ptr != NULL; module_ptr++) {
-		backup_cache_entry->modules = realloc(backup_cache_entry->modules, (backup_cache_entry->module_count + 2) * sizeof(char *));
-		backup_cache_entry->modules[backup_cache_entry->module_count] = strdup(*module_ptr);
-		backup_cache_entry->modules[++backup_cache_entry->module_count] = NULL;
+	dst->attributes[a] = NULL;
+
+	int m, m_count = src->module_count;
+	if (!(dst->modules = calloc(m_count + 1, sizeof(char *)))) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc of module array failed");
+		goto result;
 	}
+	for (m = 0; m < m_count; m++) {
+		if (!(dst->modules[m] = strdup(src->modules[m]))) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: strdup of module failed");
+			goto result;
+		}
+	}
+	dst->modules[m] = NULL;
+
 	rv = 0;
 result:
 	return rv;
