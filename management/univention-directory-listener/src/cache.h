@@ -48,51 +48,51 @@ struct _CacheMasterEntry {
 } CacheMasterEntry;
 #endif
 
-int cache_init(void);
+extern int cache_init(void);
 #ifdef WITH_DB42
-int cache_get_master_entry(CacheMasterEntry *master_entry);
-int cache_update_master_entry(CacheMasterEntry *master_entry,
+extern int cache_get_master_entry(CacheMasterEntry *master_entry);
+extern int cache_update_master_entry(CacheMasterEntry *master_entry,
 		DB_TXN *dptxnp);
 #endif
-int cache_update_entry(NotifierID id,
+extern int cache_update_entry(NotifierID id,
 		char *dn,
 		CacheEntry *entry);
 inline int cache_update_entry_lower(NotifierID id,
 		char *dn,
 		CacheEntry *entry);
-int cache_delete_entry(NotifierID id,
+extern int cache_delete_entry(NotifierID id,
 		char *dn);
-int cache_delete_entry_lower_upper(NotifierID id,
+extern int cache_delete_entry_lower_upper(NotifierID id,
 		char *dn);
-int cache_update_or_deleteifunused_entry(NotifierID id,
+extern int cache_update_or_deleteifunused_entry(NotifierID id,
 		char *dn,
 		CacheEntry *entry);
-int cache_get_entry(NotifierID id,
+extern int cache_get_entry(NotifierID id,
 		char *dn,
 		CacheEntry *entry);
-int cache_get_entry_lower_upper(NotifierID id,
+extern int cache_get_entry_lower_upper(NotifierID id,
 		char *dn,
 		CacheEntry *entry);
-int cache_first_entry(DBC **cur,
+extern int cache_first_entry(DBC **cur,
 		char **dn,
 		CacheEntry *entry);
-int cache_next_entry(DBC **cur,
+extern int cache_next_entry(DBC **cur,
 		char **dn,
 		CacheEntry *entry);
-int cache_free_cursor(DBC *cur);
-int cache_close(void);
+extern int cache_free_cursor(DBC *cur);
+extern int cache_close(void);
 
 /* deprecated with DB42*/
-int cache_set_int(const char *key,
+extern int cache_set_int(const char *key,
 		const NotifierID value);
-int cache_get_int(const char *key,
+extern int cache_get_int(const char *key,
 		NotifierID *value,
 		const long def);
 
-int cache_get_schema_id(const char *key,
+extern int cache_get_schema_id(const char *key,
 		NotifierID *value,
 		const long def);
-int cache_set_schema_id(const char *key,
+extern int cache_set_schema_id(const char *key,
 		const NotifierID value);
 
 #endif /* _CACHE_H_ */

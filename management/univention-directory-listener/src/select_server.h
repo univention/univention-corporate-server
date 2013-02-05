@@ -40,7 +40,7 @@ struct server_list {
 	int conn_attemp;
 };
 
-void select_server(univention_ldap_parameters_t *lp);
-int suspend_connect(void);
+extern void select_server(univention_ldap_parameters_t *lp);
+extern int suspend_connect(void);
 
 #endif

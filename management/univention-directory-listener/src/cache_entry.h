@@ -53,28 +53,28 @@ struct _CacheEntry {
 /* Initialize interal setting once. */
 extern void cache_entry_init(void);
 
-int cache_free_entry(char **dn,
+extern int cache_free_entry(char **dn,
 		CacheEntry *entry);
-int cache_dump_entry(char *dn,
+extern int cache_dump_entry(char *dn,
 		CacheEntry *entry,
 		FILE *fp);
-int cache_new_entry_from_ldap(char **dn,
+extern int cache_new_entry_from_ldap(char **dn,
 		CacheEntry *cache_entry,
 		LDAP *ld,
 		LDAPMessage *ldap_entry);
-int cache_entry_module_add(CacheEntry *entry,
+extern int cache_entry_module_add(CacheEntry *entry,
 		char *module);
-int cache_entry_module_remove(CacheEntry *entry,
+extern int cache_entry_module_remove(CacheEntry *entry,
 		char *module);
-int cache_entry_module_present(CacheEntry *entry,
+extern int cache_entry_module_present(CacheEntry *entry,
 		char *module);
-char** cache_entry_changed_attributes(CacheEntry *new,
+extern char** cache_entry_changed_attributes(CacheEntry *new,
 		CacheEntry *old);
 
-int copy_cache_entry(CacheEntry *cache_entry,
+extern int copy_cache_entry(CacheEntry *cache_entry,
 		CacheEntry *backup_cache_entry);
 
-void compare_cache_entries(CacheEntry *lentry,
+extern void compare_cache_entries(CacheEntry *lentry,
 		CacheEntry *rentry);
 
 #endif /* _CACHE_ENTRY_H_ */
