@@ -314,35 +314,35 @@ result:
 char **cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old) {
 	char **changes = NULL;
 	int changes_count = 0;
-	CacheEntryAttribute **cur1, **cur2;
+	CacheEntryAttribute **curn, **curo;
 
-	for (cur1 = new->attributes; cur1 != NULL &&*cur1 != NULL; cur1++) {
-		for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++)
-			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
+	for (curn = new->attributes; curn != NULL &&*curn != NULL; curn++) {
+		for (curo = old->attributes; curo != NULL && *curo != NULL; curo++)
+			if (strcmp((*curn)->name, (*curo)->name) == 0)
 				break;
-		if (cur2 != NULL && *cur2 != NULL && (*cur1)->value_count == (*cur2)->value_count) {
+		if (curo != NULL && *curo != NULL && (*curn)->value_count == (*curo)->value_count) {
 			int i;
-			for (i = 0; i < (*cur1)->value_count; i++)
-				if (memcmp((*cur1)->values[i], (*cur2)->values[i], (*cur1)->length[i]) != 0)
+			for (i = 0; i < (*curn)->value_count; i++)
+				if (memcmp((*curn)->values[i], (*curo)->values[i], (*curn)->length[i]) != 0)
 					break;
-			if (i == (*cur1)->value_count)
+			if (i == (*curn)->value_count)
 				continue;
 		}
 
 		changes = realloc(changes, (changes_count + 2) * sizeof(char *));
-		changes[changes_count] = (*cur1)->name;
+		changes[changes_count] = (*curn)->name;
 		changes[++changes_count] = NULL;
 	}
 
-	for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++) {
-		for (cur1 = new->attributes; cur1 != NULL &&*cur1 != NULL; cur1++)
-			if (strcmp((*cur1)->name, (*cur2)->name) == 0)
+	for (curo = old->attributes; curo != NULL && *curo != NULL; curo++) {
+		for (curn = new->attributes; curn != NULL &&*curn != NULL; curn++)
+			if (strcmp((*curn)->name, (*curo)->name) == 0)
 				break;
-		if (cur1 != NULL && *cur1 != NULL)
+		if (curn != NULL && *curn != NULL)
 			continue;
 
 		changes = realloc(changes, (changes_count + 2) * sizeof(char *));
-		changes[changes_count] = (*cur2)->name;
+		changes[changes_count] = (*curo)->name;
 		changes[++changes_count] = NULL;
 	}
 
@@ -350,11 +350,11 @@ char **cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old) {
 }
 
 int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
-	CacheEntryAttribute **cur1, **cur2;
+	CacheEntryAttribute **curs, **curb;
 	int i = 0;
 	int rv = 1;
 	memset(backup_cache_entry, 0, sizeof(CacheEntry));
-	for (cur1 = cache_entry->attributes; cur1 != NULL && *cur1 != NULL; cur1++) {
+	for (curs = cache_entry->attributes; curs != NULL && *curs != NULL; curs++) {
 		if ((backup_cache_entry->attributes = realloc(backup_cache_entry->attributes, (backup_cache_entry->attribute_count + 2) * sizeof(CacheEntryAttribute *))) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of attributes array failed");
 			goto result;
@@ -363,37 +363,37 @@ int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc for CacheEntryAttribute failed");
 			goto result;
 		}
-		cur2 = &backup_cache_entry->attributes[backup_cache_entry->attribute_count];
-		(*cur2)->name = strdup((*cur1)->name);
-		(*cur2)->values = NULL;
-		(*cur2)->length = NULL;
-		(*cur2)->value_count = 0;
+		curb = &backup_cache_entry->attributes[backup_cache_entry->attribute_count];
+		(*curb)->name = strdup((*curs)->name);
+		(*curb)->values = NULL;
+		(*curb)->length = NULL;
+		(*curb)->value_count = 0;
 		backup_cache_entry->attributes[backup_cache_entry->attribute_count + 1] = NULL;
 
-		for (i = 0; i < (*cur1)->value_count; i++) {
-			if (((*cur2)->values = realloc((*cur2)->values, ((*cur2)->value_count + 2) * sizeof(char *))) == NULL) {
+		for (i = 0; i < (*curs)->value_count; i++) {
+			if (((*curb)->values = realloc((*curb)->values, ((*curb)->value_count + 2) * sizeof(char *))) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of values array failed");
 				goto result;
 			}
-			if (((*cur2)->length = realloc((*cur2)->length, ((*cur2)->value_count + 2) * sizeof(int))) == NULL) {
+			if (((*curb)->length = realloc((*curb)->length, ((*curb)->value_count + 2) * sizeof(int))) == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: realloc of length array failed");
 				goto result;
 			}
-			if ((*cur1)->length[i] == strlen((*cur1)->values[i]) + 1) {
-				if (((*cur2)->values[(*cur2)->value_count] = strdup((*cur1)->values[i])) == NULL) {
+			if ((*curs)->length[i] == strlen((*curs)->values[i]) + 1) {
+				if (((*curb)->values[(*curb)->value_count] = strdup((*curs)->values[i])) == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: strdup of value failed");
 					goto result;
 				}
-				(*cur2)->length[(*cur2)->value_count] = strlen((*cur2)->values[(*cur2)->value_count]) + 1;
+				(*curb)->length[(*curb)->value_count] = strlen((*curb)->values[(*curb)->value_count]) + 1;
 			} else {
-				if (((*cur2)->values[(*cur2)->value_count] = malloc(((*cur1)->length[i]) * sizeof(char))) == NULL) {
+				if (((*curb)->values[(*curb)->value_count] = malloc(((*curs)->length[i]) * sizeof(char))) == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "copy_cache_entry: malloc for value failed");
 					goto result;
 				}
-				memcpy((*cur2)->values[(*cur2)->value_count], (*cur1)->values[i], (*cur1)->length[i]);
-				(*cur2)->length[(*cur2)->value_count] = (*cur1)->length[i];
+				memcpy((*curb)->values[(*curb)->value_count], (*curs)->values[i], (*curs)->length[i]);
+				(*curb)->length[(*curb)->value_count] = (*curs)->length[i];
 			}
-			(*cur2)->values[++(*cur2)->value_count] = NULL;
+			(*cur2)->values[++(*curb)->value_count] = NULL;
 		}
 		backup_cache_entry->attribute_count++;
 	}
