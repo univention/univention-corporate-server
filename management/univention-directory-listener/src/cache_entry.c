@@ -93,13 +93,14 @@ void cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp) {
 		for (j = 0; j < entry->attributes[i]->value_count; j++) {
 			char *value = entry->attributes[i]->values[j];
 			char *c;
-			for (c = value; *c != '\0'; c++) {
+			int len = attribute->length[j] - 1;
+			for (c = value; len >= 0; c++, len--) {
 				if (!isgraph(*c))
 					break;
 			}
-			if (*c != '\0') {
+			if (len >= 0) {
 				char *base64_value;
-				size_t srclen = entry->attributes[i]->length[j] - 1;
+				size_t srclen = attribute->length[j] - 1;
 				base64_value = malloc(BASE64_ENCODE_LEN(srclen) + 1);
 				base64_encode((u_char *)value, srclen, base64_value, BASE64_ENCODE_LEN(srclen) + 1);
 				fprintf(fp, "%s:: %s\n", attribute->name, base64_value);
