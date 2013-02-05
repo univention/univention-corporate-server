@@ -100,7 +100,7 @@ static int write_header(void **data, u_int32_t *size, u_int32_t *pos, enum type 
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "write_header key_size=%d data_size=%d", key_size, data_size);
 
-	need_memory = sizeof(struct cache_entry_header)+key_size+data_size;
+	need_memory = sizeof(struct cache_entry_header) + key_size + data_size;
 	if (*size < *pos+need_memory) {
 		while (*size < *pos+need_memory)
 			*size += BUFSIZ;
@@ -121,6 +121,7 @@ static int write_header(void **data, u_int32_t *size, u_int32_t *pos, enum type 
 	return 0;
 }
 
+/* Encode CacheEntry to data chunk. */
 int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry)
 {
 	CacheEntryAttribute **attribute;
@@ -130,8 +131,13 @@ int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry)
 	int i, rv = -1;
 	u_int32_t pos=0;
 
-	for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
-		for (value=(*attribute)->values, i=0, length=(*attribute)->length; *value != NULL; value++, i++) {
+	for (attribute = entry->attributes;
+			attribute != NULL && *attribute != NULL;
+			attribute++) {
+		length = (*attribute)->length;
+		for (value = (*attribute)->values, i = 0;
+				*value != NULL;
+				value++, i++) {
 			rv = write_header(data, size, &pos, TYPE_ATTRIBUTE,
 					(*attribute)->name, strlen((*attribute)->name) + 1,
 					*value, length[i]);
@@ -139,7 +145,9 @@ int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry)
 				goto out;
 		}
 	}
-	for (module=entry->modules; module != NULL && *module != NULL; module++) {
+	for (module = entry->modules;
+			module != NULL && *module != NULL;
+			module++) {
 		rv = write_header(data, size, &pos, TYPE_MODULES,
 				*module, strlen(*module) + 1,
 				NULL, 0);
@@ -203,6 +211,7 @@ static enum type read_header(void *data, u_int32_t size, u_int32_t *pos, void **
 	return h->type;
 }
 
+/* Decode CacheEntry from data chunk. */
 int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 {
 	FILE *file;
@@ -224,7 +233,9 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "attribute is \"%s\"", (char*)key_data);
 
-			for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
+			for (attribute = entry->attributes;
+					attribute != NULL && *attribute != NULL;
+					attribute++) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "current attribute is \"%s\"", (*attribute)->name);
 				if (strcmp((*attribute)->name, (char*)key_data) == 0) {
 					found = true;
@@ -232,7 +243,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 				}
 			}
 			if (!found) {
-				entry->attributes = realloc(entry->attributes, (entry->attribute_count+2)*sizeof(CacheEntryAttribute*));
+				entry->attributes = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute*));
 				if (entry->attributes == NULL) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 					abort(); // FIXME
@@ -258,12 +269,12 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at %p", (*attribute)->name, *attribute);
 			}
-			(*attribute)->values = realloc((*attribute)->values, ((*attribute)->value_count+2)*sizeof(char*));
+			(*attribute)->values = realloc((*attribute)->values, ((*attribute)->value_count + 2) * sizeof(char*));
 			if ((*attribute)->values == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				abort(); // FIXME
 			}
-			(*attribute)->length = realloc((*attribute)->length, ((*attribute)->value_count+2)*sizeof(int));
+			(*attribute)->length = realloc((*attribute)->length, ((*attribute)->value_count + 2) * sizeof(int));
 			if ((*attribute)->length == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				abort(); // FIXME
@@ -279,7 +290,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			(*attribute)->values[(*attribute)->value_count+1] = NULL;
 			(*attribute)->value_count++;
 		} else if (type == TYPE_MODULES) {
-			entry->modules = realloc(entry->modules, (entry->module_count+2)*sizeof(char*));
+			entry->modules = realloc(entry->modules, (entry->module_count + 2) * sizeof(char*));
 			entry->modules[entry->module_count] = strndup((char*)key_data, key_size);
 			if (entry->modules[entry->module_count] == NULL) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
@@ -294,7 +305,8 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "first 100 bytes of current entry:");
 			hex_dump(UV_DEBUG_ERROR, data, pos, pos+1000 > size ? size-pos : 1000);
 
-			if (asprintf(&f, "%s/bad_cache", cache_dir) < 0) abort();
+			if (asprintf(&f, "%s/bad_cache", cache_dir) < 0)
+				abort();
 			if ((file = fopen(f, "w")) != NULL) {
 				fprintf(file, "Check log file");
 				fclose(file);
