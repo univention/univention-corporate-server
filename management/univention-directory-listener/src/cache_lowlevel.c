@@ -45,6 +45,11 @@
 #include "common.h"
 #include "cache_lowlevel.h"
 
+enum type {
+	TYPE_ATTRIBUTE = 1,
+	TYPE_MODULES = 2,
+};
+
 struct cache_entry_header {
 	u_int16_t type;
 	u_int32_t key_size;
@@ -89,7 +94,7 @@ static int append_buffer(void **data, u_int32_t *pos, void *blob_data, u_int32_t
 	return 0;
 }
 
-static int write_header(void **data, u_int32_t *size, u_int32_t *pos, u_int16_t type, void *key_data, u_int32_t key_size, void *data_data, u_int32_t data_size) {
+static int write_header(void **data, u_int32_t *size, u_int32_t *pos, enum type type, void *key_data, u_int32_t key_size, void *data_data, u_int32_t data_size) {
 	struct cache_entry_header h;
 	u_int32_t need_memory;
 
@@ -126,11 +131,11 @@ int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry) {
 
 	for (attribute = entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
 		for (value = (*attribute)->values, i = 0, length = (*attribute)->length; *value != NULL; value++, i++) {
-			write_header(data, size, &pos, 1, (void *)(*attribute)->name, strlen((*attribute)->name) + 1, (void *)*value, length[i]);
+			write_header(data, size, &pos, TYPE_ATTRIBUTE, (void *)(*attribute)->name, strlen((*attribute)->name) + 1, (void *)*value, length[i]);
 		}
 	}
 	for (module = entry->modules; module != NULL && *module != NULL; module++) {
-		write_header(data, size, &pos, 2, (void *)*module, strlen(*module) + 1, NULL, 0);
+		write_header(data, size, &pos, TYPE_MODULES, (void *)*module, strlen(*module) + 1, NULL, 0);
 	}
 
 	/* allocated memory maybe bigger than size, but doesn't matter anyhow... */
@@ -139,7 +144,7 @@ int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry) {
 	return 0;
 }
 
-static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_data, u_int32_t *key_size, void **data_data, u_int32_t *data_size) {
+static enum type read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_data, u_int32_t *key_size, void **data_data, u_int32_t *data_size) {
 	struct cache_entry_header *h;
 
 	if (*pos == size) {
@@ -152,7 +157,7 @@ static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_da
 
 	h = (struct cache_entry_header *)((char *)data + *pos);
 
-	if ((h->type != 1 && h->type != 2) || h->key_size == 0) {
+	if ((h->type != TYPE_ATTRIBUTE && h->type != TYPE_MODULES) || h->key_size == 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "read_header pos=%d type=%d key_size=%d data_size=%d", *pos, h->type, h->key_size, h->data_size);
 		*key_size = 0;
 		*key_data = NULL;
@@ -185,7 +190,7 @@ static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_da
 }
 
 int parse_entry(void *data, u_int32_t size, CacheEntry *entry) {
-	u_int16_t type;
+	enum type type;
 	void *key_data, *data_data;
 	u_int32_t key_size, data_size;
 	u_int32_t pos = 0;
@@ -196,7 +201,8 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry) {
 	entry->module_count = 0;
 
 	while ((type = read_header(data, size, &pos, &key_data, &key_size, &data_data, &data_size)) > 0) {
-		if (type == 1) {
+		switch (type) {
+		case TYPE_ATTRIBUTE: {
 			CacheEntryAttribute **attribute, *c_attr;
 
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "attribute is \"%s\"", (char *)key_data);
@@ -245,14 +251,19 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry) {
 			memcpy(c_attr->values[c_attr->value_count], data_data, data_size);
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "value is \"%s\"", c_attr->values[c_attr->value_count]);
 			c_attr->values[++c_attr->value_count] = NULL;
-		} else if (type == 2) {
+			break;
+		}
+
+		case TYPE_MODULES:
 			entry->modules = realloc(entry->modules, (entry->module_count + 2) * sizeof(char *));
 			if (!(entry->modules[entry->module_count] = strndup((char *)key_data, key_size))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
 				abort();  // FIXME
 			}
 			entry->modules[++entry->module_count] = NULL;
-		} else {
+			break;
+
+		default: {
 			char filename[PATH_MAX];
 			FILE *file;
 			u_int32_t len;
@@ -277,6 +288,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry) {
 				abort_io("close", filename);
 
 			return -1;
+		}
 		}
 	}
 
