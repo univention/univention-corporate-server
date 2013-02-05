@@ -102,6 +102,8 @@ void cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp) {
 				char *base64_value;
 				size_t srclen = attribute->length[j] - 1;
 				base64_value = malloc(BASE64_ENCODE_LEN(srclen) + 1);
+				if (!base64_value)
+					return;
 				base64_encode((u_char *)value, srclen, base64_value, BASE64_ENCODE_LEN(srclen) + 1);
 				fprintf(fp, "%s:: %s\n", attribute->name, base64_value);
 				free(base64_value);
@@ -124,6 +126,8 @@ int cache_entry_module_add(CacheEntry *entry, char *module) {
 	}
 
 	entry->modules = realloc(entry->modules, (entry->module_count + 2) * sizeof(char *));
+	if (!entry->modules)
+		return 1;
 	entry->modules[entry->module_count] = strdup(module);
 	entry->modules[++entry->module_count] = NULL;
 
