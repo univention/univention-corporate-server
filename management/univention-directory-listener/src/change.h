@@ -38,9 +38,9 @@
 
 #include "cache_entry.h"
 
-int change_new_modules(univention_ldap_parameters_t *lp);
-int change_update_schema(univention_ldap_parameters_t *lp);
-int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMessage *ldap_entry, char command);
+extern int change_new_modules(univention_ldap_parameters_t *lp);
+extern int change_update_schema(univention_ldap_parameters_t *lp);
+extern int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMessage *ldap_entry, char command);
 extern int change_update_dn(struct transaction *);
 extern void change_free_transaction_op(struct transaction_op *);
 

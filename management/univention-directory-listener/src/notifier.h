@@ -36,6 +36,6 @@
 #include <stdbool.h>
 #include <univention/ldap.h>
 
-int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_file, univention_ldap_parameters_t *lp_local);
+extern int notifier_listen(univention_ldap_parameters_t *lp, bool write_transaction_file, univention_ldap_parameters_t *lp_local);
 
 #endif /* _NOTIFIER_H_ */
