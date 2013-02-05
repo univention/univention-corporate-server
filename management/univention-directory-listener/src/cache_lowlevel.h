@@ -35,15 +35,12 @@
 
 #include "cache.h"
 
-extern int unparse_entry(void **data,
-		u_int32_t *size,
-		CacheEntry *entry);
-extern int parse_entry(void *data,
-		u_int32_t size,
-		CacheEntry *entry);
-extern void hex_dump(int level,
-		void *data,
-		u_int32_t start,
-		u_int32_t size);
+int	unparse_entry	(void		**data,
+			 u_int32_t	 *size,
+			 CacheEntry	 *entry);
+int	parse_entry	(void		 *data,
+			 u_int32_t	  size,
+			 CacheEntry	 *entry);
+void hex_dump(int level, void *data, u_int32_t start, u_int32_t size);
 
 #endif /* _CACHE_LOWLEVEL_ */

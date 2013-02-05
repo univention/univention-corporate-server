@@ -556,7 +556,6 @@ int main(int argc, char* argv[])
 
 	/* XXX: we shouldn't block all signals for so long */
 	signals_block();
-	cache_entry_init();
 	cache_init();
 	handlers_init();
 

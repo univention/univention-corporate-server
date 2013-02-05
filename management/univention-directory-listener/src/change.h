@@ -38,19 +38,20 @@
 
 #include "network.h"
 
-extern int change_new_modules(univention_ldap_parameters_t *lp);
-extern int change_update_schema(univention_ldap_parameters_t *lp);
-extern int change_update_entry(univention_ldap_parameters_t *lp,
-		NotifierID id,
-		LDAPMessage *ldap_entry,
-		char command);
-extern int change_delete_dn(NotifierID id,
-		char *dn,
-		char command);
-extern int change_update_dn(univention_ldap_parameters_t *lp,
-		NotifierID id,
-		char *dn,
-		char command,
-		univention_ldap_parameters_t *lp_local);
+
+int	change_new_modules	(univention_ldap_parameters_t	*lp);
+int 	change_update_schema	(univention_ldap_parameters_t	*lp);
+int	change_update_entry	(univention_ldap_parameters_t	*lp,
+				 NotifierID			 id,
+				 LDAPMessage			*ldap_entry,
+				 char 				command);
+int 	change_delete_dn	(NotifierID			 id,
+				 char				*dn,
+				 char 				command);
+int 	change_update_dn	(univention_ldap_parameters_t	*lp,
+				 NotifierID			 id,
+				 char				*dn,
+				 char				command,
+				 univention_ldap_parameters_t   *lp_local);
 
 #endif /* _CHANGE_H_ */

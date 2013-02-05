@@ -33,7 +33,7 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-extern void drop_privileges(void);
+void drop_privileges(void);
 
 #ifdef DMALLOC
 #include <dmalloc.h>

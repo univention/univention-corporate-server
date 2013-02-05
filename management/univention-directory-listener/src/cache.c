@@ -590,7 +590,7 @@ int cache_print_entries(char *dn)
 	DBC *cur;
 	memset(&key, 0, sizeof(DBT));
 	memset(&data, 0, sizeof(DBT));
-	key.data = dn;
+	key.data = strdup(dn);
 	key.size = strlen(dn)+1;
 	key.flags = DB_DBT_REALLOC;
 	data.flags = DB_DBT_REALLOC;
@@ -603,6 +603,7 @@ int cache_print_entries(char *dn)
 
 	cur->c_close(cur);
 	free(key.data);
+	free(data.data);
 	return 0;
 }
 
