@@ -125,8 +125,7 @@ int cache_entry_module_add(CacheEntry *entry, char *module) {
 
 	entry->modules = realloc(entry->modules, (entry->module_count + 2) * sizeof(char *));
 	entry->modules[entry->module_count] = strdup(module);
-	entry->modules[entry->module_count + 1] = NULL;
-	entry->module_count++;
+	entry->modules[++entry->module_count] = NULL;
 
 	return 0;
 }
@@ -145,8 +144,7 @@ int cache_entry_module_remove(CacheEntry *entry, char *module) {
 	/* replace entry that is to be removed with last entry */
 	free(*cur);
 	entry->modules[cur - entry->modules] = entry->modules[entry->module_count - 1];
-	entry->modules[entry->module_count - 1] = NULL;
-	entry->module_count--;
+	entry->modules[--entry->module_count] = NULL;
 
 	entry->modules = realloc(entry->modules, (entry->module_count + 1) * sizeof(char *));
 
@@ -325,8 +323,7 @@ char **cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old) {
 
 		changes = realloc(changes, (changes_count + 2) * sizeof(char *));
 		changes[changes_count] = (*cur1)->name;
-		changes[changes_count + 1] = NULL;
-		changes_count++;
+		changes[++changes_count] = NULL;
 	}
 
 	for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++) {
@@ -338,8 +335,7 @@ char **cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old) {
 
 		changes = realloc(changes, (changes_count + 2) * sizeof(char *));
 		changes[changes_count] = (*cur2)->name;
-		changes[changes_count + 1] = NULL;
-		changes_count++;
+		changes[++changes_count] = NULL;
 	}
 
 	return changes;
@@ -389,8 +385,7 @@ int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
 				memcpy((*cur2)->values[(*cur2)->value_count], (*cur1)->values[i], (*cur1)->length[i]);
 				(*cur2)->length[(*cur2)->value_count] = (*cur1)->length[i];
 			}
-			(*cur2)->values[(*cur2)->value_count + 1] = NULL;
-			(*cur2)->value_count++;
+			(*cur2)->values[++(*cur2)->value_count] = NULL;
 		}
 		backup_cache_entry->attribute_count++;
 	}
@@ -398,8 +393,7 @@ int copy_cache_entry(CacheEntry *cache_entry, CacheEntry *backup_cache_entry) {
 	for (module_ptr = cache_entry->modules; module_ptr != NULL && *module_ptr != NULL; module_ptr++) {
 		backup_cache_entry->modules = realloc(backup_cache_entry->modules, (backup_cache_entry->module_count + 2) * sizeof(char *));
 		backup_cache_entry->modules[backup_cache_entry->module_count] = strdup(*module_ptr);
-		backup_cache_entry->modules[backup_cache_entry->module_count + 1] = NULL;
-		backup_cache_entry->module_count++;
+		backup_cache_entry->modules[++backup_cache_entry->module_count] = NULL;
 	}
 	rv = 0;
 result:
@@ -499,8 +493,8 @@ static CacheEntryAttribute *_cache_entry_add_new_attribute(CacheEntry *entry, LD
 	if (!_cache_entry_force_value(attr, ava))
 		goto error;
 
-	entry->attributes[entry->attribute_count++] = attr;
-	entry->attributes[entry->attribute_count] = NULL;
+	entry->attributes[entry->attribute_count] = attr;
+	entry->attributes[++entry->attribute_count] = NULL;
 
 	return attr;
 error:
