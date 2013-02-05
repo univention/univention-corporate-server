@@ -622,11 +622,12 @@ define([
 			}
 
 			var txt = '';
-			if (cannot_install_reason == 'conflict') {
+			if (cannot_install_reason == 'hardware_requirements') {
+				return cannot_install_reason_detail;
+			} else if (cannot_install_reason == 'conflict') {
 				txt = _('This application conflicts with the following Applications/Packages. Uninstall them first.');
 				txt += '<ul><li>' + cannot_install_reason_detail.join('</li><li>') + '</li></ul>';
-			}
-			if (cannot_install_reason == 'wrong_serverrole') {
+			} else if (cannot_install_reason == 'wrong_serverrole') {
 				txt = _('<p>This application cannot be installed on the current server role (%s). In order to install the application, one of the following roles is necessary: %s</p>', cannot_install_reason_detail, values.serverrole.join(', '));
 			}
 			return txt;

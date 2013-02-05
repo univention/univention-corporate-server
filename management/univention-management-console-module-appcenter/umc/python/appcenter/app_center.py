@@ -54,14 +54,17 @@ import ldif
 from univention.management.console.log import MODULE
 import univention.config_registry
 import univention.uldap as uldap
+import univention.management.console as umc
 
 # local application
 from constants import COMPONENT_BASE
-import util
+from util import urlopen, get_current_ram_available
 
-LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/package_manager.log
+LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/management-console-module-appcenter.log
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
+
+_ = umc.Translation('univention-management-console-module-appcenter').translate
 
 class License(object):
 	def __init__(self):
@@ -119,7 +122,7 @@ class Application(object):
 	def __init__(self, url):
 		# load config file
 		self._options = {}
-		fp = util.urlopen(url)
+		fp = urlopen(url)
 		config = ConfigParser.ConfigParser()
 		config.readfp(fp)
 
@@ -142,6 +145,13 @@ class Application(object):
 				self._options[ikey] = config.getboolean('Application', ikey)
 			else:
 				self._options[ikey] = False
+
+		# parse int values:
+		for ikey in ('minram',):
+			if ikey in self._options:
+				self._options[ikey] = config.getint('Application', ikey)
+			else:
+				self._options[ikey] = 0
 
 		# parse list values
 		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'serverrole'):
@@ -193,8 +203,8 @@ class Application(object):
 
 	def _fetch_file(self, key, url):
 		try:
-			# open the license file 
-			fp = util.urlopen(url)
+			# open the license file
+			fp = urlopen(url)
 			self._options[key] = ''.join(fp.readlines()).strip()
 		except (urllib2.HTTPError, urllib2.URLError) as e:
 			MODULE.warn('No information for %s available (%s): %s' % (key, e, url))
@@ -235,7 +245,7 @@ class Application(object):
 			try:
 				# open .ini file
 				MODULE.info('opening category translation file: %s' % url)
-				fp = util.urlopen(url)
+				fp = urlopen(url)
 				config = ConfigParser.ConfigParser()
 				config.readfp(fp)
 
@@ -272,7 +282,7 @@ class Application(object):
 				cls._all_applications = []
 
 				threads = []
-				for iline in util.urlopen(url):
+				for iline in urlopen(url):
 					# parse the server's directory listing
 					m = cls._reg_dir_listing.match(iline)
 					if m:
@@ -392,6 +402,8 @@ class Application(object):
 			return 'not_joined', None
 		elif self.get('serverrole') and server_role not in self.get('serverrole'):
 			return 'wrong_serverrole', server_role
+		elif self.get('minram') and get_current_ram_available() < self.get('minram'):
+			return 'hardware_requirements', _('The application requires %d MB of free RAM but only %d MB are available.') % (self.get('minram'), get_current_ram_available())
 		else:
 			conflict_packages = []
 			for package in self.get('conflictedsystempackages'):
@@ -538,6 +550,6 @@ class Application(object):
 			          }
 			request_data = urllib.urlencode(values)
 			request = urllib2.Request(url, request_data)
-			util.urlopen(request)
+			urlopen(request)
 		except:
 			MODULE.warn(traceback.format_exc())

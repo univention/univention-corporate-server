@@ -35,6 +35,9 @@
 from contextlib import contextmanager
 import urllib2
 
+# related third party
+import psutil
+
 # univention
 from univention.management.console.log import MODULE
 import univention.config_registry
@@ -57,6 +60,10 @@ def urlopen(request):
 	# use this in __init__ and app_center
 	# to have the proxy handler installed globally
 	return urllib2.urlopen(request)
+
+def get_current_ram_available():
+	''' Returns RAM currently available in MB, excluding Swap '''
+	return psutil.avail_phymem() / (1024*1024)
 
 class Changes(object):
 	def __init__(self, ucr):

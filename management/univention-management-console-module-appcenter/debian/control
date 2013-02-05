@@ -13,6 +13,7 @@ Package: univention-management-console-module-appcenter
 Architecture: all
 Depends: univention-management-console-server,
  python-univention-lib,
+ python-psutil,
  univention-updater,
  univention-management-console-module-lib
 Replaces: univention-management-console-module-packages (<< 2.0.55-1)
