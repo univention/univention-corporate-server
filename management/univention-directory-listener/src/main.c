@@ -549,6 +549,7 @@ int main(int argc, char *argv[]) {
 	/* XXX: we shouldn't block all signals for so long */
 	signals_block();
 
+	cache_entry_init();
 	rv = snprintf(cache_mdb_dir, PATH_MAX, "%s/cache", cache_dir);
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();
