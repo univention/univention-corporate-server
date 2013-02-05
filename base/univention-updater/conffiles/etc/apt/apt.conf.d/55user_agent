@@ -1,7 +1,7 @@
 @%@UCRWARNING=#@%@
 
 @!@
-user_agent = '%s - %s-%s errata%s - %s - %s' % ( configRegistry.get('updater/identify', 'UCS updater'),
+user_agent = '%s - %s-%s errata%s - %s - %s' % ( configRegistry.get('updater/identify', 'UCS'),
                                     configRegistry.get('version/version'), configRegistry.get('version/patchlevel'),
                                     configRegistry.get('version/erratalevel'),
                                     configRegistry.get('uuid/system', '00000000-0000-0000-0000-000000000000'),

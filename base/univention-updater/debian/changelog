@@ -1,3 +1,9 @@
+univention-updater (8.0.64-2) unstable; urgency=low
+
+  * Added appliance hook to re-create the system uuid (Bug #25489)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 05 Feb 2013 08:21:19 +0100
+
 univention-updater (8.0.64-1) unstable; urgency=low
 
   * Use an individual user agent string for the interaction via HTTP
