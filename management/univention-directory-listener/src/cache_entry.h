@@ -73,6 +73,9 @@ struct transaction {
 	struct transaction_op cur, prev;
 };
 
+/* Initialize interal setting once. */
+extern void cache_entry_init(void);
+
 int cache_free_entry(char **dn, CacheEntry *entry);
 void cache_dump_entry(char *dn, CacheEntry *entry, FILE *fp);
 int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAPMessage *ldap_entry);

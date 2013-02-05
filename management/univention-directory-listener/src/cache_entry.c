@@ -56,6 +56,25 @@ static void cache_free_attribute(CacheEntryAttribute *attr) {
 	free(attr);
 }
 
+static bool memberUidMode;
+static bool uniqueMemberMode;
+
+/* Initialize interal setting once. */
+void cache_entry_init(void) {
+	char *ucrval;
+
+	ucrval = univention_config_get_string("listener/memberuid/skip");
+	if (ucrval) {
+		memberUidMode |= !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
+		free(ucrval);
+	}
+	ucrval = univention_config_get_string("listener/uniquemember/skip");
+	if (ucrval) {
+		uniqueMemberMode |= !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
+		free(ucrval);
+	}
+}
+
 int cache_free_entry(char **dn, CacheEntry *entry) {
 	int i;
 
@@ -173,9 +192,8 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 	char *attr;
 	int rv = 1;
 
-	bool memberUidMode = false;
-	bool uniqueMemberMode = false;
 	int i;
+	enum { DUPLICATES, UNIQUE_UID, UNIQUE_MEMBER } check;
 
 	/* convert LDAP entry to cache entry */
 	memset(cache_entry, 0, sizeof(CacheEntry));
@@ -205,26 +223,12 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		cache_entry->attributes[cache_entry->attribute_count] = c_attr;
 		cache_entry->attributes[++cache_entry->attribute_count] = NULL;
 
-		memberUidMode = false;
-		if (!strcmp(c_attr->name, "memberUid")) {
-			char *ucrval;
-			ucrval = univention_config_get_string("listener/memberuid/skip");
-
-			if (ucrval) {
-				memberUidMode = !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
-				free(ucrval);
-			}
-		}
-		uniqueMemberMode = false;
-		if (!strcmp(c_attr->name, "uniqueMember")) {
-			char *ucrval;
-			ucrval = univention_config_get_string("listener/uniquemember/skip");
-
-			if (ucrval) {
-				uniqueMemberMode = !strcmp(ucrval, "yes") || !strcmp(ucrval, "true");
-				free(ucrval);
-			}
-		}
+		if (!strcmp(c_attr->name, "memberUid"))
+			check = UNIQUE_UID;
+		else if (!strcmp(c_attr->name, "uniqueMember"))
+			check = UNIQUE_MEMBER;
+		else
+			check = DUPLICATES;
 		if ((val = ldap_get_values_len(ld, ldap_entry, attr)) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "ldap_get_values failed");
 			goto result;
@@ -237,7 +241,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				goto result;
 			}
 
-			if (memberUidMode) {
+			if (memberUidMode && check == UNIQUE_UID) {
 				/* avoid duplicate memberUid entries https://forge.univention.org/bugzilla/show_bug.cgi?id=17998 */
 				for (i = 0; i < c_attr->value_count; i++) {
 					if (!memcmp(c_attr->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
@@ -250,7 +254,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				if (i < c_attr->value_count)
 					continue;
 			}
-			if (uniqueMemberMode) {
+			if (uniqueMemberMode && check == UNIQUE_MEMBER) {
 				/* avoid duplicate uniqueMember entries https://forge.univention.org/bugzilla/show_bug.cgi?id=18692 */
 				for (i = 0; i < c_attr->value_count; i++) {
 					if (!memcmp(c_attr->values[i], (*v)->bv_val, (*v)->bv_len + 1)) {
