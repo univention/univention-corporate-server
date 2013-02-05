@@ -184,7 +184,6 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 {
 	BerElement *ber;
 	char *attr;
-	char *_dn;
 	int rv = 0;
 
 	bool memberUidMode = false;
@@ -196,7 +195,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 	/* convert LDAP entry to cache entry */
 	memset(cache_entry, 0, sizeof(CacheEntry));
 	if (dn != NULL) {
-		_dn = ldap_get_dn(ld, ldap_entry);
+		char *_dn = ldap_get_dn(ld, ldap_entry);
 		if(*dn)
 				free(*dn);
 		*dn = strdup(_dn);
