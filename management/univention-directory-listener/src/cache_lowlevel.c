@@ -84,14 +84,13 @@ void hex_dump(int level, void *data, u_int32_t start, u_int32_t size)
 }
 
 /* assumption: enough memory as been allocated for us */
-static int append_buffer(void **data, u_int32_t *size, u_int32_t *pos, void* blob_data, u_int32_t blob_size)
+static void append_buffer(void *data, u_int32_t size, u_int32_t *pos, void *blob_data, u_int32_t blob_size)
 {
 	if (blob_size > 0) {
-		memcpy((void*)(((char*)*data)+*pos), blob_data, blob_size);
+		memcpy(((char*)data) + *pos, blob_data, blob_size);
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "position was=%d is=%d", *pos, *pos+blob_size);
 		*pos += blob_size;
 	}
-	return 0;
 }
 
 static int write_header(void **data, u_int32_t *size, u_int32_t *pos, enum type type, void* key_data, u_int32_t key_size, void* data_data, u_int32_t data_size)
@@ -115,9 +114,9 @@ static int write_header(void **data, u_int32_t *size, u_int32_t *pos, enum type 
 	h.key_size = key_size;
 	h.data_size = data_size;
 
-	append_buffer(data, size, pos, (void*) &h, sizeof(struct cache_entry_header));
-	append_buffer(data, size, pos, key_data, key_size);
-	append_buffer(data, size, pos, data_data, data_size);
+	append_buffer(*data, *size, pos, &h, sizeof(struct cache_entry_header));
+	append_buffer(*data, *size, pos, key_data, key_size);
+	append_buffer(*data, *size, pos, data_data, data_size);
 
 	return 0;
 }
@@ -134,13 +133,13 @@ int unparse_entry(void **data, u_int32_t *size, CacheEntry *entry)
 	for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
 		for (value=(*attribute)->values, i=0, length=(*attribute)->length; *value != NULL; value++, i++) {
 			write_header(data, size, &pos, TYPE_ATTRIBUTE,
-					(void*) (*attribute)->name, strlen((*attribute)->name)+1,
-					(void*) *value, length[i]);
+					(*attribute)->name, strlen((*attribute)->name) + 1,
+					*value, length[i]);
 		}
 	}
 	for (module=entry->modules; module != NULL && *module != NULL; module++) {
 		write_header(data, size, &pos, TYPE_MODULES,
-				(void*) *module, strlen(*module)+1,
+				*module, strlen(*module) + 1,
 				NULL, 0);
 	}
 
