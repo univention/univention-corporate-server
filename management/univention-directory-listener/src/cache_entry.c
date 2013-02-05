@@ -122,9 +122,8 @@ int cache_entry_module_add(CacheEntry *entry, char *module)
 	}
 
 	entry->modules = realloc(entry->modules, (entry->module_count+2)*sizeof(char*));
-	entry->modules[entry->module_count] = strdup(module);
-	entry->modules[entry->module_count+1] = NULL;
-	entry->module_count++;
+	entry->modules[entry->module_count++] = strdup(module);
+	entry->modules[entry->module_count] = NULL;
 
 	return 0;
 }
@@ -144,8 +143,7 @@ int cache_entry_module_remove(CacheEntry *entry, char *module)
 	/* replace entry that is to be removed with last entry */
 	free(*cur);
 	entry->modules[cur-entry->modules] = entry->modules[entry->module_count-1];
-	entry->modules[entry->module_count-1] = NULL;
-	entry->module_count--;
+	entry->modules[--entry->module_count] = NULL;
 
 	entry->modules = realloc(entry->modules, (entry->module_count+1)*sizeof(char*));
 
@@ -326,9 +324,8 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 		}
 
 		changes = realloc(changes, (changes_count+2)*sizeof(char*));
-		changes[changes_count] = (*cur1)->name;
-		changes[changes_count+1] = NULL;
-		changes_count++;
+		changes[changes_count++] = (*cur1)->name;
+		changes[changes_count] = NULL;
 	}
 
 	for (cur2 = old->attributes; cur2 != NULL && *cur2 != NULL; cur2++) {
@@ -339,9 +336,8 @@ char** cache_entry_changed_attributes(CacheEntry *new, CacheEntry *old)
 			continue;
 
 		changes = realloc(changes, (changes_count+2)*sizeof(char*));
-		changes[changes_count] = (*cur2)->name;
-		changes[changes_count+1] = NULL;
-		changes_count++;
+		changes[changes_count++] = (*cur2)->name;
+		changes[changes_count] = NULL;
 	}
 
 	return changes;
