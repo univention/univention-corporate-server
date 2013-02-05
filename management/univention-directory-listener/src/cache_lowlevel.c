@@ -241,18 +241,15 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 				}
 			}
 			if (!c_attr) {
-				entry->attributes = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute*));
-				if (entry->attributes == NULL) {
+				if (!(entry->attributes = realloc(entry->attributes, (entry->attribute_count + 2) * sizeof(CacheEntryAttribute*)))) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 					abort(); // FIXME
 				}
-				c_attr = malloc(sizeof(CacheEntryAttribute));
-				if (c_attr == NULL) {
+				if (!(c_attr = malloc(sizeof(CacheEntryAttribute)))) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "malloc failed");
 					abort(); // FIXME
 				}
-				c_attr->name = strndup((char*)key_data, key_size);
-				if (c_attr->name == NULL) {
+				if (!(c_attr->name = strndup((char*)key_data, key_size))) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
 					abort(); // FIXME
 				}
@@ -264,19 +261,16 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at %p", c_attr->name, c_attr);
 			}
-			c_attr->values = realloc((*attribute)->values, ((*attribute)->value_count + 2) * sizeof(char*));
-			if (c_attr->values == NULL) {
+			if (!(c_attr->length = realloc(c_attr->length, (c_attr->value_count + 2) * sizeof(int)))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				abort(); // FIXME
 			}
-			c_attr->length = realloc((*attribute)->length, ((*attribute)->value_count + 2) * sizeof(int));
-			if (c_attr->length == NULL) {
+			if (!(c_attr->values = realloc(c_attr->values, (c_attr->value_count + 2) * sizeof(char*)))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				abort(); // FIXME
 			}
 			// TODO: stdndup() copies until the first \0, which would be incorrect if data is binary!
-			c_attr->values[c_attr->value_count] = strndup((char*)data_data, data_size);
-			if (c_attr->values[c_attr->value_count] == NULL) {
+			if (!(c_attr->values[c_attr->value_count] = strndup((char*)data_data, data_size))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
 				abort(); // FIXME
 			}
@@ -288,13 +282,11 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 
 		case TYPE_MODULES:
 			entry->modules = realloc(entry->modules, (entry->module_count + 2) * sizeof(char*));
-			entry->modules[entry->module_count] = strndup((char*)key_data, key_size);
-			if (entry->modules[entry->module_count] == NULL) {
+			if (!(entry->modules[entry->module_count] = strndup((char*)key_data, key_size))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
 				abort(); // FIXME
 			}
-			entry->modules[entry->module_count+1] = NULL;
-			entry->module_count++;
+			entry->modules[++entry->module_count] = NULL;
 			break;
 
 		default: {
