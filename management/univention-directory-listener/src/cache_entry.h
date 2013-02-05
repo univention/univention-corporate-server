@@ -50,6 +50,9 @@ struct _CacheEntry {
 	int			  module_count;
 } typedef CacheEntry;
 
+/* Initialize interal setting once. */
+extern void cache_entry_init(void);
+
 int	cache_free_entry		(char		**dn,
 					 CacheEntry	 *entry);
 int	cache_dump_entry		(char		 *dn,
