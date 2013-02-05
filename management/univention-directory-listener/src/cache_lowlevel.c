@@ -68,9 +68,9 @@ static void hex_dump(int level, const char *data, u_int32_t start, u_int32_t siz
 	memset(hex, 0, 80);
 	memset(str, 0, 80);
 
-	for (i = 0; i < size; i++) {
-		snprintf(hex + (pos * 3), 80 - (pos * 3), "%02x ", ((u_int8_t *)data + start)[i]);
-		snprintf(str + pos, 80 - pos, "%c", isprint(((char *)data + start)[i]) ? ((char *)data + start)[i] : '?');
+	for (i = 0, data += start; i < size; i++, data++) {
+		snprintf(hex + (pos * 3), 80 - (pos * 3), "%02x ", *data);
+		snprintf(str + pos, 80 - pos, "%c", isprint(*data) ? *data : '?');
 		pos += 1;
 		if ((i + 1) % per_line == 0) {
 			univention_debug(UV_DEBUG_LISTENER, level, "%s| %s (%08d)", hex, str, start + i - per_line);
