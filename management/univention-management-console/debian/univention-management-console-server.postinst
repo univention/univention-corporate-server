@@ -58,7 +58,7 @@ fi
 
 # root shouldn't have access to the app center by default
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=30292
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions -lt "5.0.57-1.717.201301301749"; then
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" le "5.0.57-1.717.201301301749"; then
 	/usr/sbin/univention-management-console-acls remove --user root \
 				--command 'appcenter/*'
 fi
