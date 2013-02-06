@@ -36,7 +36,7 @@ from contextlib import contextmanager
 import urllib2
 
 # related third party
-import psutil
+#import psutil # psutil is outdated. reenable when methods are supported
 
 # univention
 from univention.management.console.log import MODULE
@@ -63,7 +63,15 @@ def urlopen(request):
 
 def get_current_ram_available():
 	''' Returns RAM currently available in MB, excluding Swap '''
-	return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024)
+	#return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. reenable when methods are supported
+	# implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
+	with open('/proc/meminfo', 'r') as f:
+		splitlines = map(lambda line: line.split(), f.readlines())
+		meminfo = dict([(line[0], int(line[1]) * 1024) for line in splitlines]) # bytes
+	avail_phymem = meminfo['MemFree:']
+	phymem_buffers = meminfo['Buffers:']
+	cached_phymem = meminfo['Cached:']
+	return (avail_phymem, phymem_buffers, cached_phymem) / (1024 * 1024)
 
 class Changes(object):
 	def __init__(self, ucr):
