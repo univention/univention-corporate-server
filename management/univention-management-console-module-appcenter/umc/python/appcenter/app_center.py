@@ -147,7 +147,7 @@ class Application(object):
 				self._options[ikey] = False
 
 		# parse int values:
-		for ikey in ('minram',):
+		for ikey in ('minphysicalram',):
 			if ikey in self._options:
 				self._options[ikey] = config.getint('Application', ikey)
 			else:
@@ -402,8 +402,8 @@ class Application(object):
 			return 'not_joined', None
 		elif self.get('serverrole') and server_role not in self.get('serverrole'):
 			return 'wrong_serverrole', server_role
-		elif self.get('minram') and get_current_ram_available() < self.get('minram'):
-			return 'hardware_requirements', _('The application requires %d MB of free RAM but only %d MB are available.') % (self.get('minram'), get_current_ram_available())
+		elif self.get('minphysicalram') and get_current_ram_available() < self.get('minphysicalram'):
+			return 'hardware_requirements', _('The application requires %d MB of free RAM but only %d MB are available.') % (self.get('minphysicalram'), get_current_ram_available())
 		else:
 			conflict_packages = []
 			for package in self.get('conflictedsystempackages'):
