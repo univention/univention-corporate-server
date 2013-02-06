@@ -56,6 +56,13 @@ fi
 /usr/sbin/univention-management-console-acls remove --user root \
 			--command 'baseconfig/*'
 
+# root shouldn't have access to the app center by default
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=30292
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions -lt "5.0.57-1.717.201301301749"; then
+	/usr/sbin/univention-management-console-acls remove --user root \
+				--command 'appcenter/*'
+fi
+
 # create UMC ACLs for user root
 eval "$(ucr shell server/role)"
 
@@ -68,7 +75,6 @@ eval "$(ucr shell server/role)"
 			--command 'reboot/*' \
 			--command 'services/*' \
 			--command 'sysinfo/*' \
-			--command 'appcenter/*' \
 			--command 'updater/*' \
 			--command 'lib/*'
 

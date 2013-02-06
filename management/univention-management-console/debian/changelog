@@ -1,3 +1,10 @@
+univention-management-console (5.0.58-1) unstable; urgency=low
+
+  * The default access for root to the app center has been removed
+    (Bug #30292)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Feb 2013 17:17:37 +0100
+
 univention-management-console (5.0.57-2) unstable; urgency=low
 
   * Raised default umc log level to 2 (= PROCESS); Bug #30033
