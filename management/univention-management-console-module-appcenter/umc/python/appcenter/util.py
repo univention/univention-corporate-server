@@ -63,7 +63,7 @@ def urlopen(request):
 
 def get_current_ram_available():
 	''' Returns RAM currently available in MB, excluding Swap '''
-	return psutil.avail_phymem() / (1024*1024)
+	return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024)
 
 class Changes(object):
 	def __init__(self, ucr):
