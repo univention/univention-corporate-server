@@ -1,3 +1,10 @@
+xen-4.1 (4.1.3-6) ucs3-1-0-0; urgency=low
+
+  * Fix multiple security issues:
+  * CVE-2012-5634, CVE-2013-0153, CVE-2012-6075 (Bug #29997)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 06 Feb 2013 13:53:33 +0100
+
 xen-4.1 (4.1.3-5) ucs3-1-0-0; urgency=low
 
   * Load missing gntdev kernel module (Bug #29581)

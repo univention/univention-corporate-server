@@ -1,0 +1,369 @@
+ACPI: acpi_table_parse() should return handler's error code
+
+Currently, the error code returned by acpi_table_parse()'s handler
+is ignored. This patch will propagate handler's return value to
+acpi_table_parse()'s caller.
+
+AMD,IOMMU: Clean up old entries in remapping tables when creating new
+interrupt mapping.
+
+When changing the affinity of an IRQ associated with a passed
+through PCI device, clear previous mapping.
+
+In addition, because some BIOSes may incorrectly program IVRS
+entries for IOAPIC try to check for entry's consistency. Specifically,
+if conflicting entries are found disable IOMMU if per-device
+remapping table is used. If entries refer to bogus IOAPIC IDs
+disable IOMMU unconditionally
+
+AMD,IOMMU: Disable IOMMU if SATA Combined mode is on
+
+AMD's SP5100 chipset can be placed into SATA Combined mode
+that may cause prevent dom0 from booting when IOMMU is
+enabled and per-device interrupt remapping table is used.
+While SP5100 erratum 28 requires BIOSes to disable this mode,
+some may still use it.
+
+This patch checks whether this mode is on and, if per-device
+table is in use, disables IOMMU.
+
+AMD,IOMMU: Make per-device interrupt remapping table default
+
+Using global interrupt remapping table may be insecure, as
+described by XSA-36. This patch makes per-device mode default.
+
+This is XSA-36 / CVE-2013-0153.
+
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Boris Ostrovsky <boris.ostrovsky@amd.com>
+
+--- a/xen/arch/x86/irq.c
++++ b/xen/arch/x86/irq.c
+@@ -1677,9 +1677,6 @@ int map_domain_pirq(
+         d->arch.pirq_irq[pirq] = irq;
+         d->arch.irq_pirq[irq] = pirq;
+         spin_unlock_irqrestore(&desc->lock, flags);
+-
+-        if ( opt_irq_vector_map == OPT_IRQ_VECTOR_MAP_PERDEV )
+-            printk(XENLOG_INFO "Per-device vector maps for GSIs not implemented yet.\n");
+     }
+ 
+ done:
+--- a/xen/drivers/acpi/tables.c
++++ b/xen/drivers/acpi/tables.c
+@@ -267,7 +267,7 @@ acpi_table_parse_madt(enum acpi_madt_typ
+  * @handler: handler to run
+  *
+  * Scan the ACPI System Descriptor Table (STD) for a table matching @id,
+- * run @handler on it.  Return 0 if table found, return on if not.
++ * run @handler on it.
+  */
+ int acpi_table_parse(char *id, acpi_table_handler handler)
+ {
+@@ -282,8 +282,7 @@ int acpi_table_parse(char *id, acpi_tabl
+ 		acpi_get_table(id, 0, &table);
+ 
+ 	if (table) {
+-		handler(table);
+-		return 0;
++		return handler(table);
+ 	} else
+ 		return 1;
+ }
+--- a/xen/drivers/passthrough/amd/iommu_acpi.c
++++ b/xen/drivers/passthrough/amd/iommu_acpi.c
+@@ -21,6 +21,7 @@
+ #include <xen/config.h>
+ #include <xen/errno.h>
+ #include <asm/apicdef.h>
++#include <asm/io_apic.h>
+ #include <asm/amd-iommu.h>
+ #include <asm/hvm/svm/amd-iommu-proto.h>
+ #include <asm/hvm/svm/amd-iommu-acpi.h>
+@@ -29,7 +30,6 @@ extern unsigned long amd_iommu_page_entr
+ extern unsigned short ivrs_bdf_entries;
+ extern struct ivrs_mappings *ivrs_mappings;
+ extern unsigned short last_bdf;
+-extern int ioapic_bdf[MAX_IO_APICS];
+ extern void *shared_intremap_table;
+ 
+ static void add_ivrs_mapping_entry(
+@@ -636,6 +636,7 @@ static u16 __init parse_ivhd_device_spec
+     u16 header_length, u16 block_length, struct amd_iommu *iommu)
+ {
+     u16 dev_length, bdf;
++    int apic;
+ 
+     dev_length = sizeof(struct acpi_ivhd_device_special);
+     if ( header_length < (block_length + dev_length) )
+@@ -652,9 +653,58 @@ static u16 __init parse_ivhd_device_spec
+     }
+ 
+     add_ivrs_mapping_entry(bdf, bdf, ivhd_device->header.flags, iommu);
+-    /* set device id of ioapic */
+-    ioapic_bdf[ivhd_device->special.handle] = bdf;
+-    return dev_length;
++
++    if ( ivhd_device->special.variety != 1 /* ACPI_IVHD_IOAPIC */ )
++    {
++        if ( ivhd_device->special.variety != 2 /* ACPI_IVHD_HPET */ )
++            printk(XENLOG_ERR "Unrecognized IVHD special variety %#x\n",
++                   ivhd_device->special.variety);
++        return dev_length;
++    }
++
++    /*
++     * Some BIOSes have IOAPIC broken entries so we check for IVRS
++     * consistency here --- whether entry's IOAPIC ID is valid and
++     * whether there are conflicting/duplicated entries.
++     */
++    for ( apic = 0; apic < nr_ioapics; apic++ )
++    {
++        if ( IO_APIC_ID(apic) != ivhd_device->special.handle )
++            continue;
++
++        if ( ioapic_bdf[ivhd_device->special.handle].pin_setup )
++        {
++            if ( ioapic_bdf[ivhd_device->special.handle].bdf == bdf )
++                AMD_IOMMU_DEBUG("IVHD Warning: Duplicate IO-APIC %#x entries\n",
++                                ivhd_device->special.handle);
++            else
++            {
++                printk(XENLOG_ERR "IVHD Error: Conflicting IO-APIC %#x entries\n",
++                       ivhd_device->special.handle);
++                if ( amd_iommu_perdev_intremap )
++                    return 0;
++            }
++        }
++        else
++        {
++            /* set device id of ioapic */
++            ioapic_bdf[ivhd_device->special.handle].bdf = bdf;
++
++            ioapic_bdf[ivhd_device->special.handle].pin_setup = xzalloc_array(
++                unsigned long, BITS_TO_LONGS(nr_ioapic_registers[apic]));
++            if ( nr_ioapic_registers[apic] &&
++                 !ioapic_bdf[IO_APIC_ID(apic)].pin_setup )
++            {
++                printk(XENLOG_ERR "IVHD Error: Out of memory\n");
++                return 0;
++            }
++        }
++        return dev_length;
++    }
++
++    printk(XENLOG_ERR "IVHD Error: Invalid IO-APIC %#x\n",
++           ivhd_device->special.handle);
++    return 0;
+ }
+ 
+ static int __init parse_ivhd_block(struct acpi_ivhd_block_header *ivhd_block)
+--- a/xen/drivers/passthrough/amd/iommu_init.c
++++ b/xen/drivers/passthrough/amd/iommu_init.c
+@@ -897,12 +897,45 @@ static int __init amd_iommu_setup_device
+     return 0;
+ }
+ 
++/* Check whether SP5100 SATA Combined mode is on */
++static bool_t __init amd_sp5100_erratum28(void)
++{
++    u32 bus, id;
++    u16 vendor_id, dev_id;
++    u8 byte;
++
++    for (bus = 0; bus < 256; bus++)
++    {
++        id = pci_conf_read32(bus, 0x14, 0, PCI_VENDOR_ID);
++
++        vendor_id = id & 0xffff;
++        dev_id = (id >> 16) & 0xffff;
++
++        /* SP5100 SMBus module sets Combined mode on */
++        if (vendor_id != 0x1002 || dev_id != 0x4385)
++            continue;
++
++        byte = pci_conf_read8(bus, 0x14, 0, 0xad);
++        if ( (byte >> 3) & 1 )
++        {
++            printk(XENLOG_WARNING "AMD-Vi: SP5100 erratum 28 detected, disabling IOMMU.\n"
++                   "If possible, disable SATA Combined mode in BIOS or contact your vendor for BIOS update.\n");
++            return 1;
++        }
++    }
++
++    return 0;
++}
++
+ int __init amd_iommu_init(void)
+ {
+     struct amd_iommu *iommu;
+ 
+     BUG_ON( !iommu_found() );
+ 
++    if ( amd_iommu_perdev_intremap && amd_sp5100_erratum28() )
++        goto error_out;
++
+     irq_to_iommu = xmalloc_array(struct amd_iommu *, nr_irqs);
+     if ( irq_to_iommu == NULL )
+         goto error_out;
+--- a/xen/drivers/passthrough/amd/iommu_intr.c
++++ b/xen/drivers/passthrough/amd/iommu_intr.c
+@@ -27,7 +27,7 @@
+ #define INTREMAP_LENGTH 0xB
+ #define INTREMAP_ENTRIES (1 << INTREMAP_LENGTH)
+ 
+-int ioapic_bdf[MAX_IO_APICS];
++struct ioapic_bdf ioapic_bdf[MAX_IO_APICS];
+ extern struct ivrs_mappings *ivrs_mappings;
+ extern unsigned short ivrs_bdf_entries;
+ void *shared_intremap_table;
+@@ -117,12 +117,12 @@ void invalidate_interrupt_table(struct a
+ static void update_intremap_entry_from_ioapic(
+     int bdf,
+     struct amd_iommu *iommu,
+-    struct IO_APIC_route_entry *ioapic_rte)
++    const struct IO_APIC_route_entry *rte,
++    const struct IO_APIC_route_entry *old_rte)
+ {
+     unsigned long flags;
+     u32* entry;
+     u8 delivery_mode, dest, vector, dest_mode;
+-    struct IO_APIC_route_entry *rte = ioapic_rte;
+     int req_id;
+     spinlock_t *lock;
+     int offset;
+@@ -138,6 +138,14 @@ static void update_intremap_entry_from_i
+     spin_lock_irqsave(lock, flags);
+ 
+     offset = get_intremap_offset(vector, delivery_mode);
++    if ( old_rte )
++    {
++        int old_offset = get_intremap_offset(old_rte->vector,
++                                             old_rte->delivery_mode);
++
++        if ( offset != old_offset )
++            free_intremap_entry(bdf, old_offset);
++    }
+     entry = (u32*)get_intremap_entry(req_id, offset);
+     update_intremap_entry(entry, vector, delivery_mode, dest_mode, dest);
+ 
+@@ -176,7 +184,7 @@ int __init amd_iommu_setup_ioapic_remapp
+                 continue;
+ 
+             /* get device id of ioapic devices */
+-            bdf = ioapic_bdf[IO_APIC_ID(apic)];
++            bdf = ioapic_bdf[IO_APIC_ID(apic)].bdf;
+             iommu = find_iommu_for_device(bdf);
+             if ( !iommu )
+             {
+@@ -207,6 +215,7 @@ int __init amd_iommu_setup_ioapic_remapp
+                 flush_command_buffer(iommu);
+                 spin_unlock_irqrestore(&iommu->lock, flags);
+             }
++            set_bit(pin, ioapic_bdf[IO_APIC_ID(apic)].pin_setup);
+         }
+     }
+     return 0;
+@@ -218,6 +227,7 @@ void amd_iommu_ioapic_update_ire(
+     struct IO_APIC_route_entry old_rte = { 0 };
+     struct IO_APIC_route_entry new_rte = { 0 };
+     unsigned int rte_lo = (reg & 1) ? reg - 1 : reg;
++    unsigned int pin = (reg - 0x10) / 2;
+     int saved_mask, bdf;
+     struct amd_iommu *iommu;
+ 
+@@ -228,7 +238,7 @@ void amd_iommu_ioapic_update_ire(
+     }
+ 
+     /* get device id of ioapic devices */
+-    bdf = ioapic_bdf[IO_APIC_ID(apic)];
++    bdf = ioapic_bdf[IO_APIC_ID(apic)].bdf;
+     iommu = find_iommu_for_device(bdf);
+     if ( !iommu )
+     {
+@@ -254,6 +264,14 @@ void amd_iommu_ioapic_update_ire(
+         *(((u32 *)&new_rte) + 1) = value;
+     }
+ 
++    if ( new_rte.mask &&
++         !test_bit(pin, ioapic_bdf[IO_APIC_ID(apic)].pin_setup) )
++    {
++        ASSERT(saved_mask);
++        __io_apic_write(apic, reg, value);
++        return;
++    }
++
+     /* mask the interrupt while we change the intremap table */
+     if ( !saved_mask )
+     {
+@@ -262,7 +280,11 @@ void amd_iommu_ioapic_update_ire(
+     }
+ 
+     /* Update interrupt remapping entry */
+-    update_intremap_entry_from_ioapic(bdf, iommu, &new_rte);
++    update_intremap_entry_from_ioapic(
++        bdf, iommu, &new_rte,
++        test_and_set_bit(pin,
++                         ioapic_bdf[IO_APIC_ID(apic)].pin_setup) ? &old_rte
++                                                                 : NULL);
+ 
+     /* Forward write access to IO-APIC RTE */
+     __io_apic_write(apic, reg, value);
+@@ -373,6 +395,12 @@ void amd_iommu_msi_msg_update_ire(
+         return;
+     }
+ 
++    if ( msi_desc->remap_index >= 0 )
++        update_intremap_entry_from_msi_msg(iommu, pdev, msi_desc, NULL);
++
++    if ( !msg )
++        return;
++
+     update_intremap_entry_from_msi_msg(iommu, pdev, msi_desc, msg);
+ }
+ 
+--- a/xen/drivers/passthrough/amd/pci_amd_iommu.c
++++ b/xen/drivers/passthrough/amd/pci_amd_iommu.c
+@@ -195,6 +195,8 @@ int __init amd_iov_detect(void)
+     {
+         printk("AMD-Vi: Not overriding irq_vector_map setting\n");
+     }
++    if ( !amd_iommu_perdev_intremap )
++        printk(XENLOG_WARNING "AMD-Vi: Using global interrupt remap table is not recommended (see XSA-36)!\n");
+     return scan_pci_devices();
+ }
+ 
+--- a/xen/drivers/passthrough/iommu.c
++++ b/xen/drivers/passthrough/iommu.c
+@@ -49,7 +49,7 @@ bool_t __read_mostly iommu_qinval = 1;
+ bool_t __read_mostly iommu_intremap = 1;
+ bool_t __read_mostly iommu_hap_pt_share;
+ bool_t __read_mostly amd_iommu_debug;
+-bool_t __read_mostly amd_iommu_perdev_intremap;
++bool_t __read_mostly amd_iommu_perdev_intremap = 1;
+ 
+ static void __init parse_iommu_param(char *s)
+ {
+@@ -78,6 +78,8 @@ static void __init parse_iommu_param(cha
+             amd_iommu_debug = 1;
+         else if ( !strcmp(s, "amd-iommu-perdev-intremap") )
+             amd_iommu_perdev_intremap = 1;
++        else if ( !strcmp(s, "amd-iommu-global-intremap") )
++            amd_iommu_perdev_intremap = 0;
+         else if ( !strcmp(s, "dom0-passthrough") )
+             iommu_passthrough = 1;
+         else if ( !strcmp(s, "dom0-strict") )
+--- a/xen/include/asm-x86/hvm/svm/amd-iommu-proto.h
++++ b/xen/include/asm-x86/hvm/svm/amd-iommu-proto.h
+@@ -88,6 +88,11 @@ void amd_iommu_read_msi_from_ire(
+ unsigned int amd_iommu_read_ioapic_from_ire(
+     unsigned int apic, unsigned int reg);
+ 
++extern struct ioapic_bdf {
++    u16 bdf;
++    unsigned long *pin_setup;
++} ioapic_bdf[];
++
+ /* power management support */
+ void amd_iommu_resume(void);
+ void amd_iommu_suspend(void);
