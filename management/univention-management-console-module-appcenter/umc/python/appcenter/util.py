@@ -71,7 +71,7 @@ def get_current_ram_available():
 	avail_phymem = meminfo['MemFree:']
 	phymem_buffers = meminfo['Buffers:']
 	cached_phymem = meminfo['Cached:']
-	return (avail_phymem, phymem_buffers, cached_phymem) / (1024 * 1024)
+	return (avail_phymem + phymem_buffers + cached_phymem) / (1024 * 1024)
 
 class Changes(object):
 	def __init__(self, ucr):
