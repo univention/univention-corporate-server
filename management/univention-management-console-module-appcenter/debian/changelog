@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (2.0.101-1) unstable; urgency=low
+
+  * Bug #30037: If an application requires an extension of the LDAP scheme, a
+    reminder was shown just before installation that the domain has to be
+    prepared. This reminder is removed when installing on an DC master.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 06 Feb 2013 18:10:07 +0100
+
 univention-management-console-module-appcenter (2.0.100-1) unstable; urgency=low
 
   * Bug #29113: Add buffer and cache to available memory

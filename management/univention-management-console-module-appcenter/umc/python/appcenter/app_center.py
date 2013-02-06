@@ -239,7 +239,7 @@ class Application(object):
 
 	@classmethod
 	def _get_category_translations(cls):
-		if cls._category_translations == None:
+		if cls._category_translations is None:
 			cls._category_translations = {}
 			url = '%s/../categories.ini' % cls.get_metainf_url()
 			try:
@@ -375,14 +375,14 @@ class Application(object):
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
 		res['show_ldap_schema_confirmation'] = not res['is_master']
-		if res['is_master']:
-			try:
-				from univention.admin.handlers.computers import domaincontroller_backup
-				lo = uldap.getMachineConnection()
-				res['show_ldap_schema_confirmation'] = 0 < len(domaincontroller_backup.lookup(None, lo, None))
-				del lo
-			except (LDAPError, ImportError):
-				res['show_ldap_schema_confirmation'] = True
+		#if res['is_master']:
+		#	try:
+		#		from univention.admin.handlers.computers import domaincontroller_backup
+		#		lo = uldap.getMachineConnection()
+		#		res['show_ldap_schema_confirmation'] = 0 < len(domaincontroller_backup.lookup(None, lo, None))
+		#		del lo
+		#	except (LDAPError, ImportError):
+		#		res['show_ldap_schema_confirmation'] = True
 		res['server'] = self.get_server()
 		res['server_version'] = ucr.get('version/version')
 		return res
