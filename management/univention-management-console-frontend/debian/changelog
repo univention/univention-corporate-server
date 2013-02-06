@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.192-1) unstable; urgency=low
+
+  * Bug #26507: If logged in as root show hint that App Center will be
+    unavailable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 06 Feb 2013 16:07:32 +0100
+
 univention-management-console-frontend (2.0.191-1) unstable; urgency=low
 
   * Show message to root only when already joined; Bug #26507

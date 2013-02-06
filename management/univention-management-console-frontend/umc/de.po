@@ -16,12 +16,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/app.js:634
+#: umc/app.js:626
 #, python-format
-msgid "You are currently logged in as %s and do not have access to the "
-"domain administration. For this you need to log in as %s."
-msgstr "Sie sind momentan als %s angemeldet und haben keinen Zugriff auf die "
-"Domänenadministration. Dafür müssen Sie sich als %s anmelden."
+msgid ""
+"As %s you do not have access to the App Center. For this you need to log in "
+"as %s."
+msgstr "Als %s haben Sie keinen Zugriff auf das App Center. Dafür müssen Sie "
+"sich als %s anmelden."
+
+#: umc/app.js:628
+#, python-format
+msgid ""
+"As %s you have neither access to the domain administration nor to the App "
+"Center. For this you need to log in as %s."
+msgstr "Als %s haben Sie weder Zugriff auf die Domänenadministration noch "
+"auf das App Center. Dafür müssen Sie sich als %s anmelden."
 
 #: umc/widgets/PasswordInputBox.js:66
 #, python-format

@@ -620,9 +620,13 @@ define([
 					// during UDM-Form loading)
 					this._overviewPage.addNote( _( 'Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.' ) );
 				}
-				if (tools.status('username') == 'root' && _ucr['server/role'] == 'domaincontroller_master' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {
+				if (tools.status('username') == 'root' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {
 					var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
-					this._overviewPage.addNote( _( 'You are currently logged in as %s and do not have access to the domain administration. For this you need to log in as %s.', '<em>root</em>', login_as_admin_tag ) );
+					if (_ucr['server/role'] == 'domaincontroller_slave') {
+						this._overviewPage.addNote( _( 'As %s you do not have access to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
+					} else { // master, backup
+						this._overviewPage.addNote( _( 'As %s you have neither access to the domain administration nor to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
+					}
 				}
 
 				// check if system reboot is required
