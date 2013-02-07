@@ -1,3 +1,9 @@
+univention-samba4 (2.0.36-1) unstable; urgency=low
+
+  * fix broken parsing of bind credentials (Bug #28814)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Feb 2013 20:15:44 +0100
+
 univention-samba4 (2.0.35-4) unstable; urgency=low
 
   * Remove reference for UCR variable samba4/service/nbtd (Bug #24868)
