@@ -32,27 +32,33 @@
 # <http://www.gnu.org/licenses/>.
 
 # standard library
+import shutil
 from distutils.version import LooseVersion
+from gzip import GzipFile
+from StringIO import StringIO
 import ConfigParser
 import copy
 import locale
 import os.path
 import re
-import threading
+from threading import Thread
+from hashlib import md5
 import traceback
 import urllib
 import urllib2
-from HTMLParser import HTMLParser
+from glob import glob
 import cgi
+from urlparse import urlsplit, urlunsplit, urljoin
 from datetime import datetime
+from PIL import Image
 
 # related third party
-from ldap import LDAPError
 import ldif
+from simplejson import loads
 
 # univention
 from univention.management.console.log import MODULE
-import univention.config_registry
+from univention.config_registry import ConfigRegistry, handler_commit
 import univention.uldap as uldap
 import univention.management.console as umc
 
@@ -61,7 +67,9 @@ from constants import COMPONENT_BASE
 from util import urlopen, get_current_ram_available
 
 LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/management-console-module-appcenter.log
-ucr = univention.config_registry.ConfigRegistry()
+CACHE_DIR = '/var/cache/univention-management-console/appcenter'
+FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
+ucr = ConfigRegistry()
 ucr.load()
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
@@ -119,25 +127,28 @@ class Application(object):
 	_all_applications = None
 	_category_translations = None
 
-	def __init__(self, url):
+	def __init__(self, ini_file, localize=True):
 		# load config file
 		self._options = {}
-		fp = urlopen(url)
 		config = ConfigParser.ConfigParser()
-		config.readfp(fp)
+		with open(ini_file, 'rb') as fp:
+			config.readfp(fp)
+		self.raw_config = config
+		url = urljoin('%s/' % self.get_metainf_url(), os.path.basename(ini_file))
 
 		# copy values from config file
 		for k, v in config.items('Application'):
 			self._options[k] = cgi.escape(v)
 
-		# overwrite english values with localized translations
-		loc = locale.getlocale()[0]
-		if isinstance(loc, basestring):
-			if not config.has_section(loc):
-				loc = loc.split('_')[0]
-			if config.has_section(loc):
-				for k, v in config.items(loc):
-					self._options[k] = v
+		if localize:
+			# overwrite english values with localized translations
+			loc = locale.getlocale()[0]
+			if isinstance(loc, basestring):
+				if not config.has_section(loc):
+					loc = loc.split('_')[0]
+				if config.has_section(loc):
+					for k, v in config.items(loc):
+						self._options[k] = v
 
 		# parse boolean values
 		for ikey in ('notifyvendor',):
@@ -147,7 +158,7 @@ class Application(object):
 				self._options[ikey] = False
 
 		# parse int values:
-		for ikey in ('minphysicalram',):
+		for ikey in ('minram',):
 			if ikey in self._options:
 				self._options[ikey] = config.getint('Application', ikey)
 			else:
@@ -161,14 +172,15 @@ class Application(object):
 			else:
 				self._options[ikey] = []
 
-		# localize the category names
-		category_translations = self._get_category_translations()
-		self._options['categories'] = [ category_translations.get(icat.lower()) or icat for icat in self.get('categories') ]
+		if localize:
+			# localize the category names
+			category_translations = self._get_category_translations()
+			self._options['categories'] = [ category_translations.get(icat.lower()) or icat for icat in self.get('categories') ]
 
 		# return a proper URL for local files
 		for ikey in ('screenshot',):
 			if self.get(ikey):
-				self._options[ikey] = urllib2.urlparse.urljoin('%s/' % self.get_metainf_url(), self.get(ikey))
+				self._options[ikey] = urljoin('%s/' % self.get_metainf_url(), self.get(ikey))
 
 		# save important meta data
 		self.id = self._options['id'] = self._options['id'].lower()
@@ -182,15 +194,10 @@ class Application(object):
 		if m:
 			self.component_id = m.groupdict()['id']
 
-		# fetch files via threads
-		threads = [
-			threading.Thread(target=self._fetch_file, args=('licenseagreement', self.get_repository_url() + '/LICENSE_AGREEMENT')),
-			threading.Thread(target=self._fetch_file, args=('readmeupdate', self.get_repository_url() + '/README_UPDATE')),
-		]
-		for ithread in threads:
-			ithread.start()
-		for ithread in threads:
-			ithread.join()
+		self._fetch_file('readme_en', 'README_EN')
+		self._fetch_file('readme_de', 'README_DE')
+		self._fetch_file('licenseagreement', 'LICENSE_AGREEMENT')
+		self._fetch_file('readmeupdate', 'README_UPDATE')
 
 	def get(self, key):
 		'''Helper function to access configuration elements of the application's .ini
@@ -201,30 +208,38 @@ class Application(object):
 			return ''
 		return v
 
-	def _fetch_file(self, key, url):
+	def _fetch_file(self, key, file_ext):
 		try:
 			# open the license file
-			fp = urlopen(url)
-			self._options[key] = ''.join(fp.readlines()).strip()
-		except (urllib2.HTTPError, urllib2.URLError) as e:
-			MODULE.warn('No information for %s available (%s): %s' % (key, e, url))
+			filename = os.path.join(CACHE_DIR, '%s.%s' % (self.component_id, file_ext))
+			with open(filename, 'rb') as fp:
+				self._options[key] = ''.join(fp.readlines()).strip()
+		except IOError:
+			pass
+			# MODULE.warn('No information for %s available (%s): %s' % (key, e, filename))
 
 	@classmethod
-	def get_server(cls):
-		return ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
+	def get_server(cls, with_scheme=False):
+		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
+		if with_scheme:
+			if not server.startswith('http'):
+				server = 'https://%s' % server
+		else:
+			server = re.sub('https?://', '', server)
+		return server
 
 	def get_repository_url(self):
 		# univention-repository/3.1/maintained/component/owncloud/all/
-		return 'https://%s/univention-repository/%s/maintained/component/%s' % (
-			self.get_server(),
+		return '%s/univention-repository/%s/maintained/component/%s' % (
+			self.get_server(with_scheme=True),
 			ucr.get('version/version', ''),
 			self.component_id,
 		)
 
 	@classmethod
 	def get_metainf_url(cls):
-		return 'https://%s/meta-inf/%s' % (
-			cls.get_server(),
+		return '%s/meta-inf/%s' % (
+			cls.get_server(with_scheme=True),
 			ucr.get('version/version', ''),
 		)
 
@@ -238,7 +253,9 @@ class Application(object):
 				return application
 
 	@classmethod
-	def _get_category_translations(cls):
+	def _get_category_translations(cls, fake=False):
+		if fake:
+			cls._category_translations = {}
 		if cls._category_translations is None:
 			cls._category_translations = {}
 			url = '%s/../categories.ini' % cls.get_metainf_url()
@@ -263,54 +280,112 @@ class Application(object):
 		return cls._category_translations
 
 	@classmethod
-	def all(cls, force_reread=False):
+	def sync_with_server(cls):
+		something_changed = False
+		json_url = urljoin('%s/' % cls.get_metainf_url(), 'index.json.gz')
+		MODULE.process('Downloading "%s"...' % json_url)
+		try:
+			zipped = StringIO(urlopen(json_url).read())
+			content = GzipFile(mode='rb', fileobj=zipped).read()
+		except:
+			MODULE.error('Could not read "%s"' % json_url)
+			raise
+		try:
+			json_apps = loads(content)
+		except:
+			MODULE.error('JSON malformatted: "%s"' % content)
+			raise
+		files_to_download = []
+		files_in_json_file = []
+		for appname, appinfo in json_apps.iteritems():
+			for appfile, appfileinfo in appinfo.iteritems():
+				filename = '%s.%s' % (appname, appfile)
+				remote_md5sum = appfileinfo['md5']
+				remote_url = appfileinfo['url']
+				# compare with local cache
+				cached_filename = os.path.join(CACHE_DIR, filename)
+				files_in_json_file.append(cached_filename)
+				local_md5sum = None
+				m = md5()
+				if os.path.exists(cached_filename):
+					with open(cached_filename, 'r') as f:
+						m.update(f.read())
+						local_md5sum = m.hexdigest()
+				if remote_md5sum != local_md5sum:
+					# ask to re-download this file
+					files_to_download.append((remote_url, filename))
+					something_changed = True
+		# remove those files that apparently do not exist on server anymore
+		for cached_filename in glob(os.path.join(CACHE_DIR, '*')):
+			if cached_filename not in files_in_json_file:
+				MODULE.info('Deleting obsolete %s' % cached_filename)
+				something_changed = True
+				os.unlink(cached_filename)
+		def _download(url, dest):
+			MODULE.info('Downloading %s to %s' % (url, dest))
+			try:
+				urlcontent = urlopen(url)
+			except Exception as e:
+				MODULE.error('Error downloading %s: %s' % url, e)
+			else:
+				with open(dest, 'wb') as f:
+					f.write(urlcontent.read())
+		threads = []
+		for filename_url, filename in files_to_download:
+			# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
+			# but dont quote https:// -> https%3A//
+			parts = list(urlsplit(filename_url))
+			parts[2] = urllib2.quote(parts[2]) # 0 -> scheme, 1 -> netloc, 2 -> path
+			filename_url = urlunsplit(parts)
+
+			cached_filename = os.path.join(CACHE_DIR, filename)
+
+			thread = Thread(target=_download, args=(filename_url, cached_filename))
+			thread.start()
+			threads.append(thread)
+		for thread in threads:
+			thread.join()
+		if something_changed:
+			# TODO: would be nice if vendors provided ${app}16.png
+			# special handling for icons
+			for png in glob(os.path.join(FRONTEND_ICONS_DIR, '**', 'apps-*.png')):
+				os.unlink(png)
+			# images are created as -rw-------
+			# change the mode to that every other image is installed with
+			# (normally -rw-r--r--)
+			template_png = glob(os.path.join(FRONTEND_ICONS_DIR, '**', '*.png'))[0]
+			for png in glob(os.path.join(CACHE_DIR, '*.png')):
+				app_id, ext = os.path.splitext(os.path.basename(png))
+				# 50x50
+				png_50 = os.path.join(FRONTEND_ICONS_DIR, '50x50', 'apps-%s.png' % app_id)
+				shutil.copy2(png, png_50)
+				shutil.copymode(template_png, png_50)
+				# 16x16
+				png_16 = os.path.join(FRONTEND_ICONS_DIR, '16x16', 'apps-%s.png' % app_id)
+				image = Image.open(png)
+				new_image = image.resize((16, 16))
+				new_image.save(png_16)
+				shutil.copymode(template_png, png_16)
+
+	@classmethod
+	def all(cls, force_reread=False, only_local=False, localize=True):
 		# reload ucr variables
 		ucr.load()
 
 		# load the first time the category translations
-		cls._get_category_translations()
+		cls._get_category_translations(fake=not localize)
 
 		if force_reread:
 			cls._all_applications = None
 
 		if cls._all_applications is None:
+			cls._all_applications = []
 			# query all applications from the server
 			ucr.load()
-			url = cls.get_metainf_url()
-			parser = HTMLParser()
-			try:
-				cls._all_applications = []
-
-				threads = []
-				for iline in urlopen(url):
-					# parse the server's directory listing
-					m = cls._reg_dir_listing.match(iline)
-					if m:
-						# try to load and parse application's .ini file
-						ifilename = m.group('name')
-						# 'foo%20&amp;%20bar.ini' -> 'foo%20&%20bar.ini'
-						ifilename = parser.unescape(ifilename)
-						iurl = url + '/' + ifilename
-
-						# thread function
-						def _append_app(myurl):
-							try:
-								cls._all_applications.append(Application(myurl))
-							except (ConfigParser.Error, urllib2.HTTPError, urllib2.URLError, ValueError, KeyError) as e:
-								MODULE.warn('Could not open application file: %s\n%s' % (myurl, e))
-
-						# start a new thread for fetching the application information
-						thread = threading.Thread(target=_append_app, args=(iurl,))
-						thread.start()
-						threads.append(thread)
-
-				# wait until all threads are finished
-				for ithread in threads:
-					ithread.join()
-
-			except (urllib2.HTTPError, urllib2.URLError) as e:
-				MODULE.warn('Could not query App Center host at: %s\n%s' % (url, e))
-				raise
+			if not only_local:
+				cls.sync_with_server()
+			for ini_file in glob(os.path.join(CACHE_DIR, '*.ini')):
+				cls._all_applications.append(Application(ini_file, localize))
 
 		# filter function
 		def _included(the_list, app):
@@ -396,7 +471,7 @@ class Application(object):
 	def cannot_install_reason(self, package_manager):
 		is_joined = os.path.exists('/var/univention-join/joined')
 		server_role = ucr.get('server/role')
-		if all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages')):
+		if self.is_installed(package_manager):
 			return 'installed', None
 		elif self.get('defaultpackagesmaster') and not is_joined:
 			return 'not_joined', None
@@ -407,11 +482,11 @@ class Application(object):
 		else:
 			conflict_packages = []
 			for package in self.get('conflictedsystempackages'):
-				if package_manager.is_installed(package):
+				if package_manager.is_installed(package, reopen=False):
 					conflict_packages.append(package)
 			for app in self.all():
 				if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
-					if any(package_manager.is_installed(package) for package in app.get('defaultpackages')):
+					if any(package_manager.is_installed(package, reopen=False) for package in app.get('defaultpackages')):
 						if app.name not in conflict_packages:
 							# can conflict multiple times: conflicts with 
 							# APP-1.1 and APP-1.2, both named APP
@@ -419,6 +494,9 @@ class Application(object):
 			if conflict_packages:
 				return 'conflict', conflict_packages
 		return None, None
+
+	def is_installed(self, package_manager):
+		return all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages'))
 
 	def can_be_installed(self, package_manager):
 		return not bool(self.cannot_install_reason(package_manager)[0])
@@ -450,6 +528,7 @@ class Application(object):
 
 			# update package information
 			package_manager.update()
+			self.update_conffiles()
 
 			status = 200
 		except:
@@ -514,7 +593,7 @@ class Application(object):
 
 			# add the new repository component for the app
 			ucr.load()
-			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')  # packages need to be installed on backup AND master systems
+			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup') # packages need to be installed on backup AND master systems
 			to_install = self.get('defaultpackages')
 			if is_master and self.get('defaultpackagesmaster'):
 				to_install.extend(self.get('defaultpackagesmaster'))
@@ -526,6 +605,7 @@ class Application(object):
 			# install + dist_upgrade
 			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
 			package_manager.commit(install=to_install, dist_upgrade=True)
+			self.update_conffiles()
 
 			# successful installation
 			status = 200
@@ -537,8 +617,8 @@ class Application(object):
 
 	def _send_information(self, action, status):
 		ucr.load()
-		server = self.get_server()
-		url = 'https://%s/postinst' % (server, )
+		server = self.get_server(with_scheme=True)
+		url = '%s/postinst' % (server, )
 		uuid = LICENSE.uuid or '00000000-0000-0000-0000-000000000000'
 		try:
 			values = {'uuid': uuid,
@@ -553,3 +633,7 @@ class Application(object):
 			urlopen(request)
 		except:
 			MODULE.warn(traceback.format_exc())
+
+	def update_conffiles(self):
+		handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
+

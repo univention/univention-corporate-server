@@ -1,0 +1,6 @@
+Module: apps
+Python: apps/python
+Definition: apps/apps.xml
+Javascript: apps/js
+Icons: apps/icons
+Category: apps/categories/apps.xml

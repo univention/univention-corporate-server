@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<!--
+@%@UCRWARNING=# @%@
+	-->
+@!@
+from univention.management.console.modules.appcenter.app_center import Application
+from univention.management.console.resources import moduleManager
+from univention.lib.package_manager import PackageManager
+package_manager = PackageManager(lock=False)
+moduleManager.load()
+apps = Application.all(only_local=True, localize=False)
+def apps_used(app):
+	if (app.get('umcmodule') or app.id) in moduleManager.modules():
+		return False
+	if not app.is_installed(package_manager):
+		return False
+	return True
+apps = filter(apps_used, apps)
+
+deactivated = 'no'
+if not apps:
+	deactivated = 'yes'
+print '''
+	<module id="apps" icon="apps-module" priority="-100" version="1.0" deactivated="{deactivated}">
+		<categories>
+			<category name="apps"/>
+		</categories>'''.format(deactivated=deactivated)
+
+for app in apps:
+	xml = '''
+		<flavor icon="{icon}" priority="-100" id="{id}">
+			<name>{name}</name>
+			<description>{description}</description>
+		</flavor>'''.format(
+			id=app.id,
+			name=app.name,
+			version=app.version,
+			description=app.get('description'),
+			icon='apps-%s' % app.component_id,
+		)
+	print xml
+@!@
+
+		<command name="apps/get" function="get" />
+	</module>
+</umc>
+

@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.102-1) unstable; urgency=low
+
+  * Add new module for dedicated introduction of installed apps (Bug #30249)
+  * Cache App Center files for faster module startup (Bug #30204)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Feb 2013 19:38:09 +0100
+
 univention-management-console-module-appcenter (2.0.101-1) unstable; urgency=low
 
   * Bug #30037: If an application requires an extension of the LDAP scheme, a

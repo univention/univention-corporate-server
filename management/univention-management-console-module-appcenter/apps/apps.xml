@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="apps" icon="apps-module" priority="-100" version="1.0">
+		<name>Applications</name>
+		<description>Introduction to installed Apps</description>
+		<categories>
+			<category name="apps"/>
+		</categories>
+
+		<!-- WARNING!!! This is just a dummy file.
+		     Flavors are added/removed automatically via ucr commit.
+		Example: -->
+		<flavor icon="http://appcenter.knut.univention.de/meta-inf/3.1/ucc.png" priority="-100" id="ucc">
+			<name>UCC</name>
+			<description>Introduction to UCC</description>
+		</flavor>
+
+		<command name="apps/get" function="get" />
+	</module>
+</umc>
