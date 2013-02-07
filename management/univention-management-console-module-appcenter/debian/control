@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~),
  python-support,
+ univention-config-dev,
  univention-management-console-dev,
  python-all
 Standards-Version: 3.8.2
@@ -14,6 +15,7 @@ Architecture: all
 Depends: univention-management-console-server,
  python-univention-lib,
  python-imaging,
+ univention-config,
  univention-updater,
  univention-management-console-module-lib
 Replaces: univention-management-console-module-packages (<< 2.0.55-1)
