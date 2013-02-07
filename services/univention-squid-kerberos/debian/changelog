@@ -1,3 +1,10 @@
+univention-squid-kerberos (2.0.1-2) unstable; urgency=low
+
+  * revert last change, bind credentials are only parsed on non-samba4
+    server (Bug #28814).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Feb 2013 21:59:07 +0100
+
 univention-squid-kerberos (2.0.1-1) unstable; urgency=low
 
   * use univention-samba4 shell lib to fix parsing of bind credentials
