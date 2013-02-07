@@ -36,24 +36,21 @@ Locales
 
 The translations provided by the UMC server are technically based on
 gettext library. As the server needs to provide translations for several
-different commponents that deliver their own translation files this
-module provides for the UMC server a simple way to get the required
-translations. Components that provide there own translation files:
+different components that deliver their own translation files this
+module provides a simple way for the UMC server to get the required
+translations. Components that provide their own translation files:
 
 * the UMC core --- python code directly imported by the UMC server
 * categories
 * module definitions
 """
 
-import gettext
-from locale import getlocale, getdefaultlocale
-import re
+from locale import getdefaultlocale
 import os
 
 import polib
 
 from .log import LOCALE
-from .config import ucr
 
 from univention.lib.i18n import Locale
 
