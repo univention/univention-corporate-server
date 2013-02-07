@@ -1,3 +1,9 @@
+univention-samba (7.0.15-1) unstable; urgency=low
+
+  * fix broken parsing of bind credentials (Bug #28814)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Feb 2013 20:18:04 +0100
+
 univention-samba (7.0.14-2) unstable; urgency=low
 
   * fix shell syntax (Bug #30271)

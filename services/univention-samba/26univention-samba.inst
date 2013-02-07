@@ -53,6 +53,33 @@ if [ -n "$s4setup" ] && is_domain_controller; then
 	fi
 fi
 
+### --- BEGIN helper functions ---
+
+extract_binddn_and_bindpwd_from_args() {
+	## parse binddn and bindpwd from command line arguments into shell variables
+	while [ $# -gt 0 ]; do
+		case "$1" in
+			"--binddn")
+							binddn="${2:?missing binddn}"
+							shift 2 || exit 2
+							;;
+			"--bindpwd")
+							bindpwd="${2:?missing bindpwd}"
+							shift 2 || exit 2
+							;;
+			*)
+				shift
+				;;
+		esac
+	done
+	if [ -n "$binddn" ]; then
+		dcaccount=$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret \
+		             -s base -b "$binddn" uid | ldapsearch-wrapper | sed -n 's/^uid: //p')
+	fi
+}
+
+### --- END helper functions ---
+
 # Join as ADS member if the S4 connector is installed.
 # To overwrite this setting:
 #  ucr set --force samba/domain/security=ads
@@ -127,11 +154,8 @@ eval "$(univention-config-registry shell samba/user/pwdfile samba/user)"
 /etc/init.d/samba restart
 sleep 3
 
-# parse binddn and bindpwd from command line arguments into shell variables
-eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
-if [ -n "$binddn" ]; then
-	dcaccount="$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "$binddn" -LLL uid | ldapsearch-wrapper | sed -n 's/^uid: \(.*\)$/\1/p')"
-fi
+extract_binddn_and_bindpwd_from_args "$@"
+
 if [ -n "$dcaccount" -a -n "$bindpwd" ]; then
 	samba_account="$dcaccount"
 	samba_pwd="$bindpwd"
