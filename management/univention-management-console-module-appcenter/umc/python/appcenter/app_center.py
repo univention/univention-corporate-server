@@ -158,7 +158,7 @@ class Application(object):
 				self._options[ikey] = False
 
 		# parse int values:
-		for ikey in ('minram',):
+		for ikey in ('minphysicalram',):
 			if ikey in self._options:
 				self._options[ikey] = config.getint('Application', ikey)
 			else:

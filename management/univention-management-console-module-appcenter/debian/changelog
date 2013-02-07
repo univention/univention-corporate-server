@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.103-1) unstable; urgency=low
+
+  * Renamed MinRAM to MinPhysicalRAM (Bug #29113)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 07 Feb 2013 20:27:31 +0100
+
 univention-management-console-module-appcenter (2.0.102-2) unstable; urgency=low
 
   * Fixed build dependecy (Bug #30249)
