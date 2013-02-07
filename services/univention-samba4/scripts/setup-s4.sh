@@ -262,7 +262,7 @@ else
 	fi
 
 	## Preparations for the samba3update:
-	eval $(echo "$@" | sed -n 's/.*--binddn \(.*\) --bindpwd \(.*\).*/binddn="\1"\nbindpwd="\2"/p')
+	extract_binddn_and_bindpwd_from_args "$@"
 	groups=("Windows Hosts" "DC Backup Hosts" "DC Slave Hosts" "Computers" "Power Users")
 	for group in "${groups[@]}"; do
 		record=$(univention-ldapsearch -xLLL "(&(cn=$group)(objectClass=univentionGroup))" dn description | ldapsearch-wrapper)
