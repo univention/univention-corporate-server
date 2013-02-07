@@ -1,3 +1,10 @@
+univention-directory-listener (7.0.6-1) unstable; urgency=low
+
+  * Fix retrival of binary attribute values from listener cache
+    (Bug #30165)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Feb 2013 13:47:08 +0100
+
 univention-directory-listener (7.0.5-1) unstable; urgency=low
 
   * univention-directory-listener now uses the current joinscript-lib (Bug #28993)

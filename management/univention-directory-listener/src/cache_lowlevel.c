@@ -209,74 +209,64 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 
 	while ((type = read_header(data, size, &pos, &key_data, &key_size, &data_data, &data_size)) > 0) {
 		if (type == 1) {
-			CacheEntryAttribute **attribute;
-			bool found = false;
+			CacheEntryAttribute **attribute, *c_attr;
 
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "attribute is \"%s\"", (char*)key_data);
 
-			for (attribute=entry->attributes; attribute != NULL && *attribute != NULL; attribute++) {
+			for (attribute = entry->attributes, c_attr = NULL;
+					attribute != NULL && *attribute != NULL;
+					attribute++) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "current attribute is \"%s\"", (*attribute)->name);
 				if (strcmp((*attribute)->name, (char*)key_data) == 0) {
-					found = true;
+					c_attr = *attribute;
 					break;
 				}
 			}
-			if (!found) {
-				entry->attributes = realloc(entry->attributes, (entry->attribute_count+2)*sizeof(CacheEntryAttribute*));
-				if (entry->attributes == NULL) {
+			if (!c_attr) {
+				if (!(entry->attributes = realloc(entry->attributes, (entry->attribute_count + 2)*sizeof(CacheEntryAttribute*)))) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 					abort(); // FIXME
 				}
-				entry->attributes[entry->attribute_count] = malloc(sizeof(CacheEntryAttribute));
-				if (entry->attributes[entry->attribute_count] == NULL) {
+				if (!(c_attr = malloc(sizeof(CacheEntryAttribute)))) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "malloc failed");
 					abort(); // FIXME
 				}
-				entry->attributes[entry->attribute_count+1] = NULL;
-
-				attribute=entry->attributes+entry->attribute_count;
-				(*attribute)->name = strndup((char*)key_data, key_size);
-				if ((*attribute)->name == NULL) {
+				if (!(c_attr->name = strndup((char*)key_data, key_size))) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
 					abort(); // FIXME
 				}
-				entry->attributes[entry->attribute_count+1] = NULL;
-				(*attribute)->values = NULL;
-				(*attribute)->length = NULL;
-				(*attribute)->value_count = 0;
-				entry->attribute_count++;
+				c_attr->values = NULL;
+				c_attr->length = NULL;
+				c_attr->value_count = 0;
+				entry->attributes[entry->attribute_count++] = c_attr;
+				entry->attributes[entry->attribute_count] = NULL;
 
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at %p", (*attribute)->name, *attribute);
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s is at %p", c_attr->name, c_attr);
 			}
-			(*attribute)->values = realloc((*attribute)->values, ((*attribute)->value_count+2)*sizeof(char*));
-			if ((*attribute)->values == NULL) {
+			if (!(c_attr->values = realloc(c_attr->values, (c_attr->value_count + 2)*sizeof(char*)))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				abort(); // FIXME
 			}
-			(*attribute)->length = realloc((*attribute)->length, ((*attribute)->value_count+2)*sizeof(int));
-			if ((*attribute)->length == NULL) {
+			if (!(c_attr->length = realloc(c_attr->length, (c_attr->value_count + 2)*sizeof(int)))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				abort(); // FIXME
 			}
 			// TODO: stdndup() copies until the first \0, which would be incorrect if data is binary!
-			(*attribute)->values[(*attribute)->value_count] = strndup((char*)data_data, data_size);
-			if ((*attribute)->values[(*attribute)->value_count] == NULL) {
+			if (!(c_attr->values[c_attr->value_count] = malloc(data_size))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
 				abort(); // FIXME
 			}
-			(*attribute)->length[(*attribute)->value_count] = data_size;
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "value is \"%s\"", (*attribute)->values[(*attribute)->value_count]);
-			(*attribute)->values[(*attribute)->value_count+1] = NULL;
-			(*attribute)->value_count++;
+			c_attr->length[c_attr->value_count] = data_size;
+			memcpy(c_attr->values[c_attr->value_count], data_data, data_size);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "value is \"%s\"", c_attr->values[c_attr->value_count]);
+			c_attr->values[++c_attr->value_count] = NULL;
 		} else if (type == 2) {
-			entry->modules = realloc(entry->modules, (entry->module_count+2)*sizeof(char*));
-			entry->modules[entry->module_count] = strndup((char*)key_data, key_size);
-			if (entry->modules[entry->module_count] == NULL) {
+			entry->modules = realloc(entry->modules, (entry->module_count + 2)*sizeof(char*));
+			if (!(entry->modules[entry->module_count] = strndup((char*)key_data, key_size))) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
 				abort(); // FIXME
 			}
-			entry->modules[entry->module_count+1] = NULL;
-			entry->module_count++;
+			entry->modules[++entry->module_count] = NULL;
 		} else {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "bad data block at position %d:", pos);
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "last 100 bytes of previous entry:");
