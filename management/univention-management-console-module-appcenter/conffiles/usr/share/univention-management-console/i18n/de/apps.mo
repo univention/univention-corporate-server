@@ -4,9 +4,7 @@ from datetime import datetime
 from univention.management.console.modules.appcenter.app_center import Application
 from univention.management.console.modules.appcenter.util import check_module
 from univention.lib.package_manager import PackageManager
-from univention.management.console.resources import moduleManager
 package_manager = PackageManager(lock=False)
-moduleManager.load()
 po = POFile()
 po.metadata = {
     'Project-Id-Version': 'univention-management-console-module-apps',

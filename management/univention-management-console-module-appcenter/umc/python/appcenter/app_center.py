@@ -63,8 +63,7 @@ import univention.uldap as uldap
 import univention.management.console as umc
 
 # local application
-from constants import COMPONENT_BASE
-from util import urlopen, get_current_ram_available, check_module
+from util import urlopen, get_current_ram_available, check_module, component_registered
 
 LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/management-console-module-appcenter.log
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
@@ -198,6 +197,10 @@ class Application(object):
 		self._fetch_file('readme_de', 'README_DE')
 		self._fetch_file('licenseagreement', 'LICENSE_AGREEMENT')
 		self._fetch_file('readmeupdate', 'README_UPDATE')
+
+		# candidate is for upgrading an already installed app
+		# is set by all()
+		self.candidate = None
 
 	def get(self, key):
 		'''Helper function to access configuration elements of the application's .ini
@@ -436,9 +439,16 @@ class Application(object):
 			# sort apps after their version (latest first)
 			iapps.sort(cmp=_version_cmp, reverse=True)
 
+			used_app = iapps[0] # take newest one
+			for iiapp in iapps:
+				if component_registered(iiapp.component_id, ucr):
+					if iiapp is not used_app:
+						used_app = iiapp
+						used_app.candidate = iapps[0]
+					break
 			# store all versions
-			iapps[0].versions = iapps
-			final_applications.append(iapps[0])
+			used_app.versions = iapps
+			final_applications.append(used_app)
 
 		return final_applications
 
@@ -474,13 +484,14 @@ class Application(object):
 			if not check_module(res['umc_module'], res['umc_flavor']):
 				res['umc_module'] = None
 				res['umc_flavor'] = None
+		if self.candidate:
+			# too expensive
+			# res['candidate'] = self.candidate.to_dict(package_manager)
+			res['candidate_version'] = self.candidate.version
 		return res
 
 	def can_be_updated(self):
-		old_app_registered = False
-		if len(self.versions) > 1:
-			old_app_registered = any(['%s/%s' % (COMPONENT_BASE, iapp.component_id) in ucr for iapp in self.versions[1:]])
-		return old_app_registered
+		return self.candidate is not None
 
 	def cannot_install_reason(self, package_manager):
 		is_joined = os.path.exists('/var/univention-join/joined')
@@ -551,6 +562,8 @@ class Application(object):
 		return status == 200
 
 	def install_dry_run(self, package_manager, component_manager, remove_component=True):
+		if self.candidate:
+			return self.candidate.install_dry_run(package_manager, component_manager, remove_component)
 		MODULE.info('Invoke install_dry_run')
 		result = None
 		try:
@@ -598,6 +611,8 @@ class Application(object):
 		return packages
 
 	def install(self, package_manager, component_manager, add_component=True, send_as='install'):
+		if self.candidate:
+			return self.candidate.install(package_manager, component_manager, add_component, send_as)
 		try:
 			# remove all existing component versions
 			for iapp in self.versions:

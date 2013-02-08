@@ -90,6 +90,12 @@ def get_current_ram_available():
 	cached_phymem = meminfo['Cached:']
 	return (avail_phymem + phymem_buffers + cached_phymem) / (1024 * 1024)
 
+def component_registered(component_id, ucr):
+	''' Checks if a component is registered (enabled or disabled).
+	Moved outside of ComponentManager to avoid dependencies for
+	UniventionUpdater when just using Application.all() '''
+	return '%s/%s' % (COMPONENT_BASE, component_id) in ucr
+
 class Changes(object):
 	def __init__(self, ucr):
 		self.ucr = ucr
@@ -226,7 +232,7 @@ class ComponentManager(object):
 		return entry
 
 	def is_registered(self, component_id):
-		return '%s/%s' % (COMPONENT_BASE, component_id) in self.ucr
+		return component_registered(component_id, self.ucr)
 
 	def put_app(self, app):
 		# ATTENTION: changes made here have to be done

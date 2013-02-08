@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.105-1) unstable; urgency=low
+
+  * Use installed app version, not newest one (Bug #30027)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 08 Feb 2013 15:09:11 +0100
+
 univention-management-console-module-appcenter (2.0.104-1) unstable; urgency=low
 
   * Improve module overwriting in apps module (Bug #30249)

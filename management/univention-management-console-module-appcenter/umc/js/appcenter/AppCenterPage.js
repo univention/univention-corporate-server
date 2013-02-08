@@ -301,9 +301,9 @@ define([
 						var detail_func = this['_detail_field_custom_' + key];
 						if (detail_func) {
 							value = lang.hitch(this, detail_func)(app);
-							if (!value) {
-								return; // continue
-							}
+						}
+						if (!value) {
+							return; // continue
 						}
 						if (label) {
 							txt += "<tr>\n";
@@ -683,6 +683,7 @@ define([
 				'contact',
 				'website',
 				'version',
+				'candidate_version',
 				'categories',
 				'longdescription',
 				'screenshot',
@@ -701,6 +702,7 @@ define([
 				'contact': _("Contact"),
 				'website': _("Website"),
 				'version': _('Version'),
+				'candidate_version': _('Candidate version'),
 				'categories': _("Section"),
 				'longdescription': _("Description"),
 				'screenshot': _("Screenshot"),
