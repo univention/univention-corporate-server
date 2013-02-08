@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-02-05 18:57+0100\n"
+"POT-Creation-Date: 2013-02-08 12:51+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,7 @@ msgstr "Für die Anwendung ist keine Lizenzdatei vorhanden: %s"
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
 
-#: umc/python/appcenter/app_center.py:403
+#: umc/python/appcenter/app_center.py:495
 #, python-format
 msgid ""
 "The application requires %d MB of free RAM but only %d MB are available."

@@ -64,7 +64,7 @@ import univention.management.console as umc
 
 # local application
 from constants import COMPONENT_BASE
-from util import urlopen, get_current_ram_available
+from util import urlopen, get_current_ram_available, check_module
 
 LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/management-console-module-appcenter.log
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
@@ -346,6 +346,12 @@ class Application(object):
 		for thread in threads:
 			thread.join()
 		if something_changed:
+			# some variables could change apps.xml
+			# e.g. UMCModuleName
+			# TODO: changes take effect only after a restart of UMC
+			#   and we cannot tell at the moment
+			cls.update_conffiles()
+
 			# TODO: would be nice if vendors provided ${app}16.png
 			# special handling for icons
 			for png in glob(os.path.join(FRONTEND_ICONS_DIR, '**', 'apps-*.png')):
@@ -460,6 +466,14 @@ class Application(object):
 		#		res['show_ldap_schema_confirmation'] = True
 		res['server'] = self.get_server()
 		res['server_version'] = ucr.get('version/version')
+		res['umc_module'] = self.get('UMCModuleName') or self.id
+		res['umc_flavor'] = self.get('UMCModuleFlavor')
+		if not check_module(res['umc_module'], res['umc_flavor']):
+			res['umc_module'] = 'apps'
+			res['umc_flavor'] = self.id
+			if not check_module(res['umc_module'], res['umc_flavor']):
+				res['umc_module'] = None
+				res['umc_flavor'] = None
 		return res
 
 	def can_be_updated(self):
@@ -634,6 +648,7 @@ class Application(object):
 		except:
 			MODULE.warn(traceback.format_exc())
 
-	def update_conffiles(self):
+	@classmethod
+	def update_conffiles(cls):
 		handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
 

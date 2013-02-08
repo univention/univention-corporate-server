@@ -2,6 +2,7 @@
 from polib import POFile, POEntry
 from datetime import datetime
 from univention.management.console.modules.appcenter.app_center import Application
+from univention.management.console.modules.appcenter.util import check_module
 from univention.lib.package_manager import PackageManager
 from univention.management.console.resources import moduleManager
 package_manager = PackageManager(lock=False)
@@ -25,7 +26,7 @@ entry = POEntry(
 )
 po.append(entry)
 for app in Application.all(only_local=True, localize=False):
-	if (app.get('umcmodule') or app.id) in moduleManager.modules():
+	if check_module(app=app):
 		continue
 	if not app.is_installed(package_manager):
 		continue

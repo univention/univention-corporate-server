@@ -58,17 +58,17 @@ define([
 		return txt;
 	};
 
-	return declare("umc.modules.apps", [ Module ], {
+	return declare("umc.modules.apps", Module, {
 		standbyOpacity: 1,
 
 		buildRendering: function() {
 			this.inherited(arguments);
 			var buttons = [{
 				name: 'close',
-				label: _( 'Close' ),
+				label: _('Close'),
 				align: 'left',
 				callback: lang.hitch( this, function() {
-					topic.publish('/umc/tabs/close', this );
+					topic.publish('/umc/tabs/close', this);
 				})
 			}];
 			this._page = new Page({
@@ -85,6 +85,10 @@ define([
 			this.standby(true);
 			tools.umcpCommand('apps/get', {'application' : this.moduleFlavor}).then(lang.hitch(this, function(data) {
 				var app = data.result;
+				if (app === null) {
+					topic.publish('/umc/tabs/close', this);
+					return;
+				}
 				this._page.set('headerText', app.name);
 				var locale = kernel.locale.slice( 0, 2 ).toLowerCase();
 				var content = app['readme_' + locale] || app.readme_en;

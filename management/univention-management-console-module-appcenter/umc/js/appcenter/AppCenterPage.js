@@ -36,6 +36,7 @@ define([
 	"dojo/query",
 	"dojo/dom-class",
 	"dojo/store/Memory",
+	"dojo/topic",
 	"dojo/regexp",
 	"dojox/image/LightboxNano",
 	"umc/dialog",
@@ -53,7 +54,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, query, domClass, Memory, regexp, Lightbox, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
+], function(declare, lang, array, when, query, domClass, Memory, topic, regexp, Lightbox, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
 
 	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
@@ -285,20 +286,21 @@ define([
 			tools.umcpCommand('appcenter/get', {'application': app.id}).then(
 				lang.hitch(this, function(data) {
 					this.standby(false);
+					var app = data.result;
 					var width = 550;	// mimic the default of dialog.confirm
 
 					var label_style = 'vertical-align:top;text-align:right;padding-left:1em;padding-right:.5em;white-space:nowrap;font-weight:bold;';
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
-					var txt = "<h1>" + lang.replace(_("Details for Application '{name}'"), data.result) + "</h1>";
+					var txt = "<h1>" + lang.replace(_("Details for Application '{name}'"), app) + "</h1>";
 					txt += lang.replace("<table style=\"width: {0}px;\">\n", [ width ]);
 					var fields = this._detail_field_order();
 					array.forEach(fields, lang.hitch(this, function(key) {
 						var label = this._detail_field_label(key);
-						var value = data.result[key];
+						var value = app[key];
 						var detail_func = this['_detail_field_custom_' + key];
 						if (detail_func) {
-							value = lang.hitch(this, detail_func)(data.result);
+							value = lang.hitch(this, detail_func)(app);
 							if (!value) {
 								return; // continue
 							}
@@ -312,7 +314,6 @@ define([
 					}));
 					txt += "</table>\n";
 					var buttons = [];
-					var app = data.result;
 					if (!app.allows_using && this._udm_accessible && (app.can_install || app.can_update)) {
 						var label = app.can_install ? _('Install') : _('Upgrade'); // call it Install/Upgrade, although it is request
 						buttons.push({
@@ -408,6 +409,15 @@ define([
 								this._call_installer('uninstall', app);
 							})
 						});
+						if (app.umc_module) {
+							buttons.push({
+								name: 'open',
+								label: _("Open"),
+								callback: lang.hitch(this, function() {
+									topic.publish('/umc/modules/open', app.umc_module, app.umc_flavor);
+								})
+							});
+						}
 					}
 					// always: a button to close the dialog.
 					buttons.push({
@@ -444,7 +454,7 @@ define([
 					confirmDialog.show();
 
 				}),
-				lang.hitch(this, function(data) {
+				lang.hitch(this, function() {
 					this.standby(false);
 				})
 			);

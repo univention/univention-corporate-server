@@ -39,11 +39,28 @@ import urllib2
 #import psutil # psutil is outdated. reenable when methods are supported
 
 # univention
+from univention.management.console.resources import moduleManager
 from univention.management.console.log import MODULE
 import univention.config_registry
 
 # local application
 from constants import COMPONENT_BASE, COMP_PARTS, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
+
+moduleManager.load()
+
+def check_module(module_id=None, flavor_id=None, app=None):
+	if app is not None:
+		module_id = app.get('UMCModuleName') or app.id
+		flavor_id = app.get('UMCModuleFlavor')
+	if module_id not in moduleManager.modules():
+		return False
+	if flavor_id:
+		for xml in moduleManager[module_id]:
+			for flavor in xml.flavors:
+				if flavor.id == flavor_id:
+					return True
+		return False
+	return True
 
 # TODO: this should probably go into univention-lib
 # and hide urllib/urllib2 completely

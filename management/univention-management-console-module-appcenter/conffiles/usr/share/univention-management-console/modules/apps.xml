@@ -5,13 +5,14 @@
 	-->
 @!@
 from univention.management.console.modules.appcenter.app_center import Application
+from univention.management.console.modules.appcenter.util import check_module
 from univention.management.console.resources import moduleManager
 from univention.lib.package_manager import PackageManager
 package_manager = PackageManager(lock=False)
 moduleManager.load()
 apps = Application.all(only_local=True, localize=False)
 def apps_used(app):
-	if (app.get('umcmodule') or app.id) in moduleManager.modules():
+	if check_module(app=app):
 		return False
 	if not app.is_installed(package_manager):
 		return False

@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.104-1) unstable; urgency=low
+
+  * Improve module overwriting in apps module (Bug #30249)
+  * Added a link in the App Center to go directly to app module (Bug #30249)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 08 Feb 2013 12:53:49 +0100
+
 univention-management-console-module-appcenter (2.0.103-1) unstable; urgency=low
 
   * Renamed MinRAM to MinPhysicalRAM (Bug #29113)

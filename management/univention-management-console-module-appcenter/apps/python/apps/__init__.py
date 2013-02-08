@@ -42,7 +42,7 @@ from univention.management.console.modules.sanitizers import StringSanitizer
 import univention.config_registry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
-from univention.management.console.modules.appcenter.app_center import Application, LICENSE
+from univention.management.console.modules.appcenter.app_center import Application
 
 _ = umc.Translation('univention-management-console-module-apps').translate
 
@@ -63,7 +63,8 @@ class Instance(umcm.Base):
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):
-		LICENSE.reload()
 		application = Application.find(application)
+		if application is None:
+			return None
 		return application.to_dict(self.package_manager)
 
