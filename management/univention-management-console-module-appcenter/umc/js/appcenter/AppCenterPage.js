@@ -594,14 +594,15 @@ define([
 		_detail_field_custom_defaultpackagesmaster: function(values) {
 			var master_packages = values.defaultpackagesmaster;
 			var can_install = values.can_install;
+			var can_update = values.can_update;
 			var allows_using = values.allows_using;
 			if (allows_using && values.cannot_install_reason == 'not_joined') {
 				return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('The system has to join a domain before the application can be installed!');
 			}
-			if (allows_using && can_install && master_packages && master_packages.length) {
+			if (allows_using && (can_install || can_update) && master_packages && master_packages.length) {
 				// prepare a command with max 50 characters length per line
 				var MAXCHARS = 50;
-				var cmdLine = lang.replace('univention-add-app {component_id} ', values);
+				var cmdLine = lang.replace('univention-add-app {component_id} ', {component_id: values.candidate_component_id || values.component_id});
 				var cmdLines = [];
 				array.forEach(master_packages, function(icmd) {
 					if (icmd.length + cmdLine.length > MAXCHARS) {

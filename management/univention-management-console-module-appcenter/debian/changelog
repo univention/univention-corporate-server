@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.106-1) unstable; urgency=low
+
+  * Show univention-add-app commands when an app can be upgraded (Bug #30383)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 11 Feb 2013 11:52:45 +0100
+
 univention-management-console-module-appcenter (2.0.105-1) unstable; urgency=low
 
   * Use installed app version, not newest one (Bug #30027)

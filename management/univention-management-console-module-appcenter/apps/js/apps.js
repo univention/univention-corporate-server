@@ -94,9 +94,7 @@ define([
 				var content = app['readme_' + locale] || app.readme_en;
 				if (!content) {
 					var url = app.website || app.websitevendor;
-					content = lang.replace(_('The maintainer did not provide a dedicated README for the application. See {url} for further details.'), {url: url});
-					content += '\n\n' + app.longdescription;
-					content = formatTxt(content);
+					content = formatTxt(url + '\n\n' + app.longdescription);
 				}
 				this._text.set('content', content);
 				this.standby(false);

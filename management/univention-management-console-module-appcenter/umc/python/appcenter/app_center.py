@@ -488,6 +488,7 @@ class Application(object):
 			# too expensive
 			# res['candidate'] = self.candidate.to_dict(package_manager)
 			res['candidate_version'] = self.candidate.version
+			res['candidate_component_id'] = self.candidate.component_id
 		return res
 
 	def can_be_updated(self):
