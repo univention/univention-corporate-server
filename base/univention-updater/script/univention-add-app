@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
 #
 # Univention Updater
 #  univention-add-app
@@ -31,35 +32,55 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-if [ "$#" -lt 1 -o "$1" = "-h" -o "$1" = "--help" ] ; then
-	(
-	echo
-	echo "$(basename $0) <component> [<package> ...]"
-	echo
-	echo "$(basename $0) prepares the corresponding repository settings for"
-	echo "the specified component and installs the given packages."
-	echo
-	) | fmt
-	exit 1
-fi
+import sys
+from optparse import OptionParser
 
-eval "$(ucr shell)"
+from univention.lib.package_manager import PackageManager
+from univention.config_registry import ConfigRegistry
+from univention.updater import UniventionUpdater
+try:
+	from univention.management.console.modules.appcenter.util import ComponentManager
+	from univention.management.console.modules.appcenter.app_center import Application
+except ImportError:
+	sys.stderr.write('univention-management-console-module-appcenter must be installed\n')
+	sys.exit(2)
 
-COMP="repository/online/component/$1"
-shift
-univention-config-registry set \
-	"${COMP}/server=${repository_app_center_server:-appcenter.software-univention.de}" \
-	"${COMP}/parts=maintained" \
-	"${COMP}=enabled" \
-	"${COMP}/version=current" \
-	"${COMP}/localmirror=false" \
-	"${COMP}-errata/server=${repository_app_center_server:-appcenter.software-univention.de}" \
-	"${COMP}-errata/parts=maintained" \
-	"${COMP}-errata=enabled" \
-	"${COMP}-errata/version=current" \
-	"${COMP}-errata/localmirror=false"
+def simple_handler(f):
+	def _simple_handler(msg):
+		if not msg.endswith('\n'):
+			msg = '%s\n' % msg
+		f.write(msg)
+	return _simple_handler
 
-if [ "$#" -gt 0 ] ; then
-	univention-install "$@"
-fi
+if __name__ == '__main__':
+	usage = '%prog <component> [<package> ...]'
+	description = '%prog prepares the corresponding repository settings for the specified component and installs the given packages.'
+	parser = OptionParser(usage=usage, description=description)
+	(options, args) = parser.parse_args()
+	try:
+		component_id = args[0]
+	except IndexError:
+		parser.print_usage()
+		sys.exit(1)
+	packages = args[1:]
+	ucr = ConfigRegistry()
+	ucr.load()
+	updater = UniventionUpdater(False)
+	component_manager = ComponentManager(ucr, updater)
+	requested_app = None
+	for app in Application.all():
+		requested_apps = filter(lambda iapp: iapp.component_id == component_id, app.versions)
+		if requested_apps:
+			requested_app = requested_apps[0]
+			for iapp in app.versions:
+				component_manager.remove_app(iapp)
+			break
+	if requested_app is None:
+		sys.stderr.write('App "%s" not found\n' % component_id)
+		sys.exit(1)
+	component_manager.put_app(requested_app)
+	package_manager = PackageManager(info_handler=simple_handler(sys.stdout), error_handler=simple_handler(sys.stderr), always_noninteractive=True)
+	package_manager.update()
+	if packages:
+		package_manager.install(*packages)
 
