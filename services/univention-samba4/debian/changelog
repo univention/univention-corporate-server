@@ -2,7 +2,7 @@ univention-samba4 (2.0.37-2) unstable; urgency=low
 
   * Cover winbind logfiles with logrotate (Bug #29953)
 
- -- Arvid Requate <requate@univention.de>  Mon, 11 Feb 2013 19:03:46 +0100
+ -- Arvid Requate <requate@univention.de>  Mon, 11 Feb 2013 19:13:00 +0100
 
 univention-samba4 (2.0.37-1) unstable; urgency=low
 
@@ -15,6 +15,7 @@ univention-samba4 (2.0.37-1) unstable; urgency=low
     supplementalCredentials (Bug #28931)
   * Make s4search-decode output AD timestamps in a human parseable format
     (Bug #29992)
+  * Remove explicit IPC$ share configuration for s3fs (Bug #29227)
 
  -- Arvid Requate <requate@univention.de>  Mon, 11 Feb 2013 15:35:18 +0100
 
