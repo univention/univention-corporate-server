@@ -6,8 +6,8 @@ import univention.lib.ucrLogrotate
 daemon = 'winbindd'
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(daemon, configRegistry)
 
-for filename in ('winbindd', 'winbindd-idmap', 'log.wb-%s' % configRegistry['windows/domain']):
-	print "/var/log/samba/%s" % filename,
+for filename in ('winbindd', 'winbindd-idmap', 'winbindd-dc-connect', 'wb-BUILTIN', 'wb-%s' % configRegistry['windows/domain'], 'wb-%s' % configRegistry['hostname'].upper()):
+	print "/var/log/samba/log.%s" % filename,
 print "{"
 
 for setting in settings.keys():
