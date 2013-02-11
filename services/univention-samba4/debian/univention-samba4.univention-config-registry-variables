@@ -124,6 +124,18 @@ Description[en]=Debug level for samba 4 processes
 Type=str
 Categories=service-samba
 
+[samba/max_log_size]
+Description[de]=Maximalgröße für Samba Logdateien ab der Samba die Datei selbständig nach .old umbenennt.
+Description[en]=Maximal size of samba log files. Samba will periodically rename the file to .old if exceeded.
+Type=str
+Categories=service-samba
+
+[samba/interfaces]
+Description[de]=Falls samba/interfaces/bindonly auf 'yes' gesetzt ist, verwendet Samba nur die hier aufgeführten Interfaces (durch Leerzeichen getrennt).
+Description[en]=If samba/interfaces/bindonly is set to 'yes', Samba only binds to the interfaces listed in this variable (space separated).
+Type=str
+Categories=service-samba
+
 [samba/interfaces/bindonly]
 Description[de]=Weist Samba an, nur die in samba/interfaces aufgeführten Interfaces zu verwenden.
 Description[en]=Limits Samba to listen only on the interfaces listed in samba/interfaces.

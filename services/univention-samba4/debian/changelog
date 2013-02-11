@@ -1,3 +1,17 @@
+univention-samba4 (2.0.37-1) unstable; urgency=low
+
+  * New UCR variable samba/max_log_size with new default 0 (Bug #29542)
+  * Add UCR variable description for saba/interfaces (Bug #28014)
+  * Duplicate UCRWARNING header removed (Bug #28426)
+  * fixes for check_essential_samba4_dns_records (Bug #28891)
+  * add purge_s4_computer.py (Bug #29460)
+  * improve resilience of s4search-decode against broken
+    supplementalCredentials (Bug #28931)
+  * Make s4search-decode output AD timestamps in a human parseable format
+    (Bug #29992)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 11 Feb 2013 15:35:18 +0100
+
 univention-samba4 (2.0.36-2) unstable; urgency=low
 
   * fix parsing of bind credentials in setup.s4 as well (Bug #28814)

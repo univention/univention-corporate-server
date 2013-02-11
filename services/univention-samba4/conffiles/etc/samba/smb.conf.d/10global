@@ -3,7 +3,9 @@
 ; ---------------------<10global>------------------------
 [global]
 @!@
-print '\tdebug level\t= %s\n' % configRegistry.get('samba/debug/level', 1)
+print '\tdebug level\t= %s' % configRegistry.get('samba/debug/level', 1)
+print '\tsyslog\t\t= 0'
+print '\tmax log size\t= %s\n' % configRegistry.get('samba/max_log_size', 0)
 
 if configRegistry.get('samba/netbios/name'):
 	print '\tnetbios name\t= %s' % configRegistry['samba/netbios/name']
@@ -64,9 +66,6 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 
 ## legacy settings for smbd
 if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
-	print '\tsyslog\t\t= 0'
-	print '\tmax log size\t= 1000000'
-
 	for key, smbstring in [
 				   ('samba/charset/display', 'display charset'),
 				   ('samba/enable-privileges', 'enable privileges'),

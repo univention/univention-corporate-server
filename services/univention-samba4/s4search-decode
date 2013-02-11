@@ -46,6 +46,7 @@ from samba.dcerpc import dnsp
 from samba.dcerpc import drsblobs
 from samba.ndr import ndr_unpack
 from samba.ndr import ndr_print
+from datetime import datetime
 
 context = None
 
@@ -56,7 +57,7 @@ keytypes = {
 	18: 'aes256',
 }
 
-regEx = re.compile('^([a-zA-Z0-9-]*):: (.*)')
+regEx = re.compile('^([a-zA-Z0-9-]*):?: (.*)')
 
 def decode_unicodePwd(value, kvno = 0):
 	global context
@@ -95,21 +96,26 @@ def decode_supplementalCredentials(value, kvno = 0):
 	for p in object_data.sub.packages:
 		print "#\tsupplementalCredentials package name: ", p.name
 		krb_blob = binascii.unhexlify(p.data)
-		krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
-		print "#\tsupplementalCredentials package version: ", krb.version
-		print "#\tkrb5Salt: %s" % (krb.ctr.salt.string)
-		for k in krb.ctr.keys:
-			# print "#\tk.value:", binascii.b2a_base64(k.value).strip()
-			keytype = keytypes.get(k.keytype, k.keytype)
-			print "#\tkeytype: %s (%d)" % (keytype, k.keytype)
-			print "#\tkeyblock:",
-			keyblock = heimdal.keyblock_raw(context, k.keytype, k.value)
-			print keyblock
-			print "#\tkrb5SaltObject:",
-			krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
-			print krb5SaltObject
-			krb5key = heimdal.asn1_encode_key(keyblock, krb5SaltObject, kvno)
-			print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
+		try:
+			krb = ndr_unpack(drsblobs.package_PrimaryKerberosBlob, krb_blob)
+			print "#\tsupplementalCredentials package version: ", krb.version
+			print "#\tkrb5Salt: %s" % (krb.ctr.salt.string)
+			for k in krb.ctr.keys:
+				# print "#\tk.value:", binascii.b2a_base64(k.value).strip()
+				keytype = keytypes.get(k.keytype, k.keytype)
+				print "#\tkeytype: %s (%d)" % (keytype, k.keytype)
+				print "#\tkeyblock:",
+				keyblock = heimdal.keyblock_raw(context, k.keytype, k.value)
+				print keyblock
+				print "#\tkrb5SaltObject:",
+				krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
+				print krb5SaltObject
+				krb5key = heimdal.asn1_encode_key(keyblock, krb5SaltObject, kvno)
+				print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
+		except:
+			print "### Exception during ndr_unpack"
+			for line in traceback.format_exc().split('\n'):
+				print "### %s" % line
 
 def decode_dnsRecord(value):
 	object_data = ndr_unpack(dnsp.DnssrvRpcRecord, binascii.a2b_base64(value))
@@ -117,6 +123,15 @@ def decode_dnsRecord(value):
 	for line in ndr_print(object_data).split('\n'):
 		if line:
 			print "# %s" % line
+
+def decode_pwdLastSet(value):
+	offset = 116444736000000000L #difference between 1601 and 1970
+	print "# decoded (Note: timezone not converted to local time):"
+	try:
+		print "# pwdLastSet: %s" % datetime.fromtimestamp((int(value) - offset)/10000000).isoformat(' ')
+	except:
+		print "# traceback during decoding:"
+		traceback.print_exc()
 
 class decode_drsblob():
 	
@@ -137,6 +152,7 @@ objecttypes = {
 	'supplementalCredentials': decode_supplementalCredentials,
 	'unicodePwd': decode_unicodePwd,
 	'krb5Key': decode_krb5Key,
+	'pwdLastSet': decode_pwdLastSet,
 }
 
 def decode_line(line):
