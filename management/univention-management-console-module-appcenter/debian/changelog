@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.107-1) unstable; urgency=low
+
+  * Add necessary checks when asking an app if it can_be_updated (Bug #30385)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 11 Feb 2013 15:12:52 +0100
+
 univention-management-console-module-appcenter (2.0.106-1) unstable; urgency=low
 
   * Show univention-add-app commands when an app can be upgraded (Bug #30383)

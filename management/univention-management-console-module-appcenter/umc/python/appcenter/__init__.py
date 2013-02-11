@@ -169,7 +169,7 @@ class Instance(umcm.Base):
 			elif function == 'install' and not application.can_be_installed(self.package_manager):
 				MODULE.info('Application cannot be installed: %s' % application_id)
 				can_continue = False
-			elif function == 'update' and not application.can_be_updated():
+			elif function == 'update' and not application.can_be_updated(self.package_manager):
 				MODULE.info('Application cannot be updated: %s' % application_id)
 				can_continue = False
 

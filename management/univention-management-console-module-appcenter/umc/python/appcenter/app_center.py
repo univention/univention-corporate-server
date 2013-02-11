@@ -459,9 +459,9 @@ class Application(object):
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
 
-		res['can_update'] = self.can_be_updated() and cannot_install_reason == 'installed'
 		res['can_install'] = cannot_install_reason is None
 		res['is_installed'] = res['can_uninstall'] = cannot_install_reason == 'installed'
+		res['can_update'] = self.can_be_updated(package_manager)
 		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
@@ -491,13 +491,16 @@ class Application(object):
 			res['candidate_component_id'] = self.candidate.component_id
 		return res
 
-	def can_be_updated(self):
-		return self.candidate is not None
+	def can_be_updated(self, package_manager):
+		if self.candidate:
+			return self.is_installed(package_manager) and self.candidate.can_be_installed(package_manager, check_is_installed=False)
+		else:
+			return False
 
-	def cannot_install_reason(self, package_manager):
+	def cannot_install_reason(self, package_manager, check_is_installed=True):
 		is_joined = os.path.exists('/var/univention-join/joined')
 		server_role = ucr.get('server/role')
-		if self.is_installed(package_manager):
+		if check_is_installed and self.is_installed(package_manager):
 			return 'installed', None
 		elif self.get('defaultpackagesmaster') and not is_joined:
 			return 'not_joined', None
@@ -524,8 +527,8 @@ class Application(object):
 	def is_installed(self, package_manager):
 		return all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages'))
 
-	def can_be_installed(self, package_manager):
-		return not bool(self.cannot_install_reason(package_manager)[0])
+	def can_be_installed(self, package_manager, check_is_installed=True):
+		return not bool(self.cannot_install_reason(package_manager, check_is_installed)[0])
 
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables
