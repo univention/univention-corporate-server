@@ -286,6 +286,12 @@ Description[en]=Debug level for samba processes
 Type=str
 Categories=service-samba
 
+[samba/max_log_size]
+Description[de]=Maximalgröße für Samba Logdateien ab der Samba die Datei selbständig nach .old umbenennt.
+Description[en]=Maximal size of samba log files. Samba will periodically rename the file to .old if exceeded.
+Type=str
+Categories=service-samba
+
 [samba/generate_smbpasswd]
 Description[de]=Aktiviere/Deaktiviere die Verwendung der lokalen TDBSAM-Datanbank bei der Samba-Installation
 Description[en]=Enable/Disable usage of the local TDBSAM database on Samba installation
@@ -313,6 +319,12 @@ Categories=service-samba
 [samba/domain/logons]
 Description[de]=Aktiviert/Deaktiviert die Unterstützung für Windows 9X Netlogons bzw. NT4-Domänen-Dienste (gültige Werte: no/auto/yes)
 Description[en]=Enables/Disables support for windows 9X network logons and NT4 style domain services (valid values: no/auto/yes)
+Type=str
+Categories=service-samba
+
+[samba/interfaces]
+Description[de]=Falls samba/interfaces/bindonly auf 'yes' gesetzt ist, verwendet Samba nur die hier aufgeführten Interfaces (durch Leerzeichen getrennt).
+Description[en]=If samba/interfaces/bindonly is set to 'yes', Samba only binds to the interfaces listed in this variable (space separated).
 Type=str
 Categories=service-samba
 
