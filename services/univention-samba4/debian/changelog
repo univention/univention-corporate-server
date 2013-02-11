@@ -1,3 +1,9 @@
+univention-samba4 (2.0.37-2) unstable; urgency=low
+
+  * Cover winbind logfiles with logrotate (Bug #29953)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 11 Feb 2013 19:03:46 +0100
+
 univention-samba4 (2.0.37-1) unstable; urgency=low
 
   * New UCR variable samba/max_log_size with new default 0 (Bug #29542)
