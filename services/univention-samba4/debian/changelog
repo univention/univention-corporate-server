@@ -1,3 +1,9 @@
+univention-samba4 (2.0.37-3) unstable; urgency=low
+
+  * register UCR variables for logrotate (Bug #29953)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 11 Feb 2013 19:31:35 +0100
+
 univention-samba4 (2.0.37-2) unstable; urgency=low
 
   * Cover winbind logfiles with logrotate (Bug #29953)
