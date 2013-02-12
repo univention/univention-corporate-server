@@ -45,6 +45,7 @@ import univention.admin.mapping
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.localization
+import univention.admin.syntax
 from univention.admin import configRegistry
 
 translation=univention.admin.localization.translation('univention/admin/handlers')
@@ -1455,6 +1456,12 @@ class simpleComputer( simpleLdap ):
 		return dn
 
 	def __split_dhcp_line( self, entry ):
+		try:
+			# sanitize mac address
+			entry[-1] = univention.admin.syntax.MAC_Address.parse(entry[-1])
+		except univention.admin.uexceptions.valueError:
+			# the mac address is invalid, __is_mac will check again if it has the right format
+			pass
 		if self.__is_mac ( entry[ -1 ] ):
 			if self.__is_ip ( entry[ -2 ] ):
 				return entry
