@@ -37,7 +37,7 @@ msgid "Entries"
 msgstr "Einträge"
 
 #: umc/js/top.js:70
-msgid "Force terminate"
+msgid "Force termination"
 msgstr "Beenden erzwingen"
 
 #: umc/js/top.js:125

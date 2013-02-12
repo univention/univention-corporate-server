@@ -1,3 +1,9 @@
+univention-management-console-module-top (2.0.4-1) unstable; urgency=low
+
+  * fix typo; Bug #27818
+
+ -- Florian Best <best@univention.de>  Tue, 12 Feb 2013 10:09:33 +0100
+
 univention-management-console-module-top (2.0.3-1) unstable; urgency=low
 
   * Add priority (Bug #26961)

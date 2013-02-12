@@ -72,6 +72,7 @@ define([
 					}));
 				})
 			}, {
+				'default': true,
 				label: _('Cancel')
 			}]);
 		},
@@ -98,7 +99,7 @@ define([
 				isMultiAction: true
 			}, {
 				name: 'kill',
-				label: _('Force terminate'),
+				label: _('Force termination'),
 				callback: lang.hitch(this, 'killProcesses', 'SIGKILL'),
 				isStandardAction: false,
 				isMultiAction: true
