@@ -51,7 +51,7 @@ msgstr ""
 "Master (kurz DC Master) ist der primäre Domänencontroller einer UCS-Domäne "
 "und wird immer als erstes System installiert. Auf dem DC Master werden die "
 "Domänendaten (wie z.B. Benutzer, Gruppen, Drucker) und die SSL-"
-"Sicherheitszertifikategespeichert. Kopien dieser Daten werden automatisch "
+"Sicherheitszertifikate gespeichert. Kopien dieser Daten werden automatisch "
 "auf Server mit der Rolle Domänencontroller Backup übertragen."
 
 #: umc/js/_setup/SystemRolePage.js:98

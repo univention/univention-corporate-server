@@ -1,3 +1,9 @@
+univention-system-setup (6.0.63-1) unstable; urgency=low
+
+  * fix typo in german translation; Bug #29944
+
+ -- Florian Best <best@univention.de>  Tue, 12 Feb 2013 10:13:58 +0100
+
 univention-system-setup (6.0.62-1) unstable; urgency=low
 
   * Explicitely remove samba4 when changing role to member (Bug #29759)
