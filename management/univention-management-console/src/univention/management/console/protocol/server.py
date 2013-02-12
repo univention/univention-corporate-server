@@ -137,7 +137,7 @@ class MagicBucket( object ):
 			statistics.connections.inactive()
 			if self.__states[ socket ].username in statistics.users:
 				statistics.users.remove( self.__states[ socket ].username )
-			CRYPT.warn( 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
+			CRYPT.warn( 'SSL error in _receive: %s. Probably the socket was closed by the client.' % str( error ) )
 			if self.__states[ socket ].processor is not None:
 				self.__states[ socket ].processor.shutdown()
 			notifier.socket_remove( socket )
@@ -293,7 +293,7 @@ class MagicBucket( object ):
 			statistics.connections.inactive()
 			if self.__states[ socket ].username in statistics.users:
 				statistics.users.remove( self.__states[ socket ].username )
-			CRYPT.warn( 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
+			CRYPT.warn( 'SSL error in _do_send: %s. Probably the socket was closed by the client.' % str( error ) )
 			if self.__states[ socket ].processor is not None:
 				self.__states[ socket ].processor.shutdown()
 			notifier.socket_remove( socket )
@@ -335,7 +335,7 @@ class MagicBucket( object ):
 			if state.socket in self.__states:
 				if state.username in statistics.users:
 					statistics.users.remove( state.username )
-					CRYPT.warn( 'SSL error: %s. Probably the socket was closed by the client.' % str( error ) )
+					CRYPT.warn( 'SSL error in _response: %s. Probably the socket was closed by the client.' % str( error ) )
 					if state.processor is not None:
 						state.processor.shutdown()
 					notifier.socket_remove( state.socket )

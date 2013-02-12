@@ -41,7 +41,7 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/modules/MODULEID/DetailPage",
-	"umc/i18n!/umc/modules/MODULEID"
+	"umc/i18n!umc/modules/MODULEID"
 ], function(declare, lang, on, dialog, Grid, Page, SearchForm, ExpandingTitlePane, Module, TextBox, ComboBox, DetailPage, _) {
 	return declare("umc.modules.MODULEID", [ Module ], {
 		// summary:
@@ -238,9 +238,9 @@ define([
 			// visibility of sub pages here
 			// ... widget.on() will destroy signal handlers upon widget
 			// destruction automatically
-			this._detailPage.on('close', function() {
+			this._detailPage.on('close', lang.hitch(this, function() {
 				this.selectChild(this._searchPage);
-			});
+			}));
 		},
 
 		_addObject: function() {

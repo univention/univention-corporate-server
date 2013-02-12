@@ -1,3 +1,10 @@
+univention-management-console (5.0.60-1) unstable; urgency=low
+
+  * fix errors in module templates; Bug #29993, Bug #30164
+   extend server debug output; Bug #29989
+
+ -- Florian Best <best@univention.de>  Tue, 12 Feb 2013 10:12:23 +0100
+
 univention-management-console (5.0.59-1) unstable; urgency=low
 
   * Added "installed apps" module (Bug #30249)

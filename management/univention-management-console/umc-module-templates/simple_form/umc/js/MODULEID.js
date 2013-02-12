@@ -41,7 +41,7 @@ define([
 	"umc/widgets/Module",
 	"umc/widgets/TextBox",
 	"umc/widgets/TextArea",
-	"umc/i18n!/umc/modules/MODULEID"
+	"umc/i18n!umc/modules/MODULEID"
 ], function(declare, lang, on, topic, dialog, tools, Page, Form, ExpandingTitlePane, Module, TextBox, TextArea, _) {
 	return declare("umc.modules.MODULEID", [ Module ], {
 		// summary:
@@ -150,9 +150,9 @@ define([
 				label: _( 'Send' ),
 				'default': true,
 				callback: lang.hitch( this, function() {
-					var values = this._form.gatherFormValues();
+					var values = this._form.get('value');
 					if ( values.message ) {
-						this.onSubmit( this._form.gatherFormValues() );
+						this.onSubmit( this._form.get('value') );
 					} else {
 						dialog.alert( 'A message is missing!' );
 					}
@@ -161,7 +161,7 @@ define([
 				name: 'close',
 				label: _('Close'),
 				callback: lang.hitch(this, function() {
-					var values = this._form.gatherFormValues();
+					var values = this._form.get('value');
 					if ( values.message ) {
 						dialog.confirm( _( 'Should the UMC module be closed? All unsaved modification will be lost.' ), [ {
 							label: _( 'Close' ),

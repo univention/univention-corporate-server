@@ -37,7 +37,7 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/StandbyMixin",
-	"umc/i18n!/umc/modules/MODULEID"
+	"umc/i18n!umc/modules/MODULEID"
 ], function(declare, lang, dialog, Form, Page, TextBox, ComboBox, StandbyMixin, _) {
 	return declare("umc.modules.MODULEID.DetailPage", [ Page, StandbyMixin ], {
 		// summary:
@@ -70,7 +70,7 @@ define([
 				name: 'submit',
 				label: _('Save'),
 				callback: lang.hitch(this, function() {
-					this._save(this._form.gatherFormValues());
+					this._save(this._form.get('value'));
 				})
 			}, {
 				name: 'back',
