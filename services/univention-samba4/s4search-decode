@@ -124,14 +124,49 @@ def decode_dnsRecord(value):
 		if line:
 			print "# %s" % line
 
-def decode_pwdLastSet(value):
+def decode_100nanosectimestamp(value):
 	offset = 116444736000000000L #difference between 1601 and 1970
+	return datetime.fromtimestamp((int(value) - offset)/10000000).isoformat(' ')
+
+def decode_accountExpires(value):
 	print "# decoded (Note: timezone not converted to local time):"
-	try:
-		print "# pwdLastSet: %s" % datetime.fromtimestamp((int(value) - offset)/10000000).isoformat(' ')
-	except:
-		print "# traceback during decoding:"
-		traceback.print_exc()
+	if long(value) == 0x7FFFFFFFFFFFFFFF:
+		print "# accountExpires: never"
+	else:
+		try:
+			print "# accountExpires: %s" % decode_100nanosectimestamp(value)
+		except:
+			print "# traceback during decoding:"
+			traceback.print_exc()
+
+class decode_lastDate():
+	
+	def __init__(self, attrname):
+		self.attrname = attrname
+
+	def __call__(self, value):
+		print "# decoded (Note: timezone not converted to local time):"
+		if long(value) == 0:
+			print "# %s: unkown" % self.attrname
+		else:
+			try:
+				print "# %s: %s" % (self.attrname, decode_100nanosectimestamp(value))
+			except:
+				print "# traceback during decoding:"
+				traceback.print_exc()
+
+def decode_pwdLastSet(value):
+	print "# decoded (Note: timezone not converted to local time):"
+	if long(value) == -1:
+		print "# %s: Just set" % self.attrname
+	elif long(value) == 0:
+		print "# %s: Must change on next logon" % self.attrname
+	else:
+		try:
+			print "# pwdLastSet: %s" % decode_100nanosectimestamp(value)
+		except:
+			print "# traceback during decoding:"
+			traceback.print_exc()
 
 class decode_drsblob():
 	
@@ -153,6 +188,10 @@ objecttypes = {
 	'unicodePwd': decode_unicodePwd,
 	'krb5Key': decode_krb5Key,
 	'pwdLastSet': decode_pwdLastSet,
+	'accountExpires': decode_accountExpires,
+	'badPasswordTime': decode_lastDate('badPasswordTime'),
+	'lastLogoff': decode_lastDate('lastLogoff'),
+	'lastLogon': decode_lastDate('lastLogon')
 }
 
 def decode_line(line):
