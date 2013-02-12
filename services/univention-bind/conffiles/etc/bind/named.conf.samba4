@@ -1,5 +1,9 @@
 @%@UCRWARNING=# @%@
 
+controls{
+        inet 127.0.0.1
+        allow { @%@dns/master/address@%@; };
+};			
 options {
         tkey-gssapi-keytab "/var/lib/samba/private/dns.keytab";
 @!@
