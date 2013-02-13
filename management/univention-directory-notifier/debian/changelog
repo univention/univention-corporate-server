@@ -1,3 +1,10 @@
+univention-directory-notifier (7.0.8-2) unstable; urgency=low
+
+  * rename etc/network/if-post-down.d/appliance-notifier (Bug #30412)
+  * fix permissions for the script
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Feb 2013 11:49:08 +0100
+
 univention-directory-notifier (7.0.8-1) unstable; urgency=low
 
   * Add etc/network/if-post-down.d/appliance-notifier (Bug #30412)
