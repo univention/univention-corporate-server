@@ -84,7 +84,7 @@ static PyObject* module_import(char *filename)
 
 	if ((fp = fopen(filename, "r")) == NULL)
 		return NULL;
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Load file %s", filename);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Load file %s", filename);
 
 	namep = strrchr(filename, '.');
 	if ((namep != NULL) && (strcmp(namep, ".pyo") == 0)) {
@@ -749,7 +749,7 @@ int attribute_has_changed(char** changes, char* attribute)
 	char **cur;
 
 	for (cur = changes; cur != NULL && *cur != NULL; cur++) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "%s ? %s", *cur, attribute);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "%s ? %s", *cur, attribute);
 		if (strcmp(*cur, attribute) == 0)
 			return 1;
 	}
@@ -942,12 +942,12 @@ int handlers_set_data_all(char *key, char *value)
 	PyTuple_SetItem(argtuple, 0, PyString_FromString(key));
 	PyTuple_SetItem(argtuple, 1, PyString_FromString(value));
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "DEBUG: handlers=%p", handlers);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DEBUG: handlers=%p", handlers);
 	if (handlers == NULL)
 		return 0;
 
 	for (handler=handlers; handler != NULL; handler=handler->next) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "DEBUG: handler=%p", handler);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DEBUG: handler=%p", handler);
 		if (handler_set_data(handler, argtuple) < 0)
 			rv = -1;
 	}
