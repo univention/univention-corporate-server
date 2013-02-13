@@ -250,16 +250,14 @@ class ComponentManager(object):
 			'version' : 'current',
 			'localmirror' : 'false',
 		}
-		errata_data = app_data.copy()
-		errata_data['name'] += '-errata'
-		errata_data['description'] = '%s Errata' % app.name
 		with set_save_commit_load(self.ucr) as super_ucr:
 			self.put(app_data, super_ucr)
-			self.put(errata_data, super_ucr)
 
 	def remove_app(self, app):
 		with set_save_commit_load(self.ucr) as super_ucr:
 			self._remove(app.component_id, super_ucr)
+			# errata component was added before Bug #30406
+			# -> remove them if installed
 			self._remove(app.component_id + '-errata', super_ucr)
 
 	def put(self, data, super_ucr):

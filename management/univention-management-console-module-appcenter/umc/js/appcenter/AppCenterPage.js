@@ -39,6 +39,7 @@ define([
 	"dojo/topic",
 	"dojo/regexp",
 	"dojox/image/LightboxNano",
+	"umc/app",
 	"umc/dialog",
 	"umc/tools",
 	"umc/modules/lib/server",
@@ -54,7 +55,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, query, domClass, Memory, topic, regexp, Lightbox, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
+], function(declare, lang, array, when, query, domClass, Memory, topic, regexp, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
 
 	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
@@ -532,7 +533,7 @@ define([
 						var progressMessage = lang.replace(_("Going to {verb} Application '{name}'"),
 										   {verb: verb, name: app.name});
 
-						this._switch_to_progress_bar(progressMessage);
+						this._switch_to_progress_bar(progressMessage, app, func);
 					}
 				}),
 				lang.hitch(this, function(data) {
@@ -833,12 +834,25 @@ define([
 			}
 		},
 
-		_switch_to_progress_bar: function(msg) {
+		_switch_to_progress_bar: function(msg, app, func) {
 			this.standby(true, this._progressBar);
 			this._progressBar.reset(msg);
 			this._progressBar.auto('appcenter/progress',
 				{},
-				lang.hitch(this, '_restartOrReload')
+				lang.hitch(this, function() {
+					if (func === 'install') {
+						var module_name = app.umcmodulename;
+						var module_flavor = app.umcmoduleflavor;
+						if (! module_name) {
+							module_name = 'apps';
+							module_flavor = app.id;
+						}
+						// hack it into favorites: the app is yet unknown
+						UMCApplication.addFavoriteModule(module_name, module_flavor);
+						UMCApplication._saveFavorites();
+					}
+					this._restartOrReload();
+				})
 			);
 		},
 
@@ -846,7 +860,6 @@ define([
 			// update the list of apps
 			this.updateApplications();
 
-			// TODO: only if necessary? these apps probably will require a restart
 			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.'));
 		}
 

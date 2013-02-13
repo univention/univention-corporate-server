@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.108-1) unstable; urgency=low
+
+  * Removed separate errata repository for each app (Bug #30406)
+  * Newly installed apps are added as favorite (Bug #30249)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Feb 2013 12:37:33 +0100
+
 univention-management-console-module-appcenter (2.0.107-1) unstable; urgency=low
 
   * Add necessary checks when asking an app if it can_be_updated (Bug #30385)
