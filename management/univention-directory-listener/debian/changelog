@@ -1,3 +1,9 @@
+univention-directory-listener (7.0.6-3) unstable; urgency=low
+
+  * Add etc/network/if-post-down.d/appliance-listener (Bug #30408)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Feb 2013 11:17:57 +0100
+
 univention-directory-listener (7.0.6-2) unstable; urgency=low
 
   * Lower debug level for some INFO messages (Bug #9819)
