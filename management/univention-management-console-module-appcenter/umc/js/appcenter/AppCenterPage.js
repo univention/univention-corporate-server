@@ -205,7 +205,9 @@ define([
 
 				getStatusIconClass: function(item) {
 					var iconClass = '';
-					if (item.can_update) {
+					if (! item.can_update && item.candidate_version) {
+						iconClass = tools.getIconClass('appcenter-cannot_update', 24, 'umcAppCenter');
+					} else if (item.can_update) {
 						iconClass = tools.getIconClass('appcenter-can_update', 24, 'umcAppCenter');
 					} else if (item.is_installed) {
 						iconClass = tools.getIconClass('appcenter-is_installed', 24, 'umcAppCenter');
@@ -626,6 +628,14 @@ define([
 			}
 		},
 
+		_detail_field_custom_cannot_update_reason: function(values) {
+			var newValues = lang.mixin({}, values);
+			newValues.cannot_install_reason = values.cannot_update_reason;
+			newValues.cannot_install_reason_detail = values.cannot_update_reason_detail;
+			newValues.serverrole = values.candidate_server_role;
+			return this._detail_field_custom_cannot_install_reason(newValues);
+		},
+
 		_detail_field_custom_cannot_install_reason: function(values) {
 			var cannot_install_reason = values.cannot_install_reason;
 			var cannot_install_reason_detail = values.cannot_install_reason_detail;
@@ -691,6 +701,7 @@ define([
 				'screenshot',
 				'defaultpackagesmaster',
 				'cannot_install_reason',
+				'cannot_update_reason',
 				'notifyvendor',
 				'allows_using'
 			];
@@ -709,7 +720,8 @@ define([
 				'longdescription': _("Description"),
 				'screenshot': _("Screenshot"),
 				'defaultpackagesmaster': _("Packages for master system"),
-				'cannot_install_reason': _("Conflicts"),
+				'cannot_install_reason': _("Installation not possible"),
+				'cannot_update_reason': _("Upgrade not possible"),
 				'notifyvendor': _("Email notification"),
 				'allows_using': _("UCS License Key")
 			};

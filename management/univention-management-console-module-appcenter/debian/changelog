@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.109-1) unstable; urgency=low
+
+  * Added status icon and reason in case update is not possible (Bug #30385)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Feb 2013 14:40:37 +0100
+
 univention-management-console-module-appcenter (2.0.108-1) unstable; urgency=low
 
   * Removed separate errata repository for each app (Bug #30406)
