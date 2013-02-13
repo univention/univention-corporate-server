@@ -146,21 +146,6 @@ define([
 		}
 	});
 
-	var formatTxt = function(txt) {
-		// do not allow HTML
-		txt = txt.replace(/</g, '&lt;');
-		txt = txt.replace(/>/g, '&gt;');
-
-		// insert links
-		txt = txt.replace(/(https?:\/\/\S*)/g, '<a target="_blank" href="$1">$1</a>');
-
-		// format line breakes
-		txt = txt.replace(/\n\n\n/g, '\n<br>\n<br>\n<br>\n');
-		txt = txt.replace(/\n\n/g, '\n<br>\n<br>\n');
-
-		return txt;
-	};
-
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
 		_udm_accessible: false, // license depends on udm
@@ -278,8 +263,19 @@ define([
 			})));
 		},
 
-		startup: function() {
-			this.inherited(arguments);
+		formatTxt: function(txt) {
+			// do not allow HTML
+			txt = txt.replace(/</g, '&lt;');
+			txt = txt.replace(/>/g, '&gt;');
+
+			// insert links
+			txt = txt.replace(/(https?:\/\/\S*)/g, '<a target="_blank" href="$1">$1</a>');
+
+			// format line breakes
+			txt = txt.replace(/\n\n\n/g, '\n<br>\n<br>\n<br>\n');
+			txt = txt.replace(/\n\n/g, '\n<br>\n<br>\n');
+
+			return txt;
 		},
 
 		// inspired by PackagesPage._show_details
@@ -352,7 +348,7 @@ define([
 											// before installing, user must agree on license terms
 											var content = '<h1>' + _('License agreement') + '</h1>';
 											content += '<div style="max-height:250px; overflow:auto;">' +
-												formatTxt(app.licenseagreement) +
+												this.formatTxt(app.licenseagreement) +
 												'</div>';
 											dialog.confirm(content, [{
 												name: 'decline',
@@ -379,28 +375,7 @@ define([
 							name: 'update',
 							label: _("Upgrade"),
 							callback: lang.hitch(this, function() {
-								if (app.readmeupdate) {
-									// before updating, show update README file
-									var content = '<h1>' + _('Upgrade information') + '</h1>';
-									content += '<div style="max-height:250px; overflow:auto;">' +
-										formatTxt(app.readmeupdate) +
-										'</div>';
-									dialog.confirm(content, [{
-										name: 'decline',
-										label: _('Cancel'),
-										'default': true
-									}, {
-										name: 'update',
-										label: _('Upgrade')
-									}], _('Upgrade information')).then(lang.hitch(this, function(response) {
-										if (response == 'update') {
-											this._call_installer('update', app);
-										}
-									}));
-								}
-								else {
-									this._call_installer('update', app);
-								}
+								this.upgradeApp(app);
 							})
 						});
 					}
@@ -726,6 +701,30 @@ define([
 				'allows_using': _("UCS License Key")
 			};
 			return labels[key];
+		},
+
+		upgradeApp: function(app) {
+			if (app.readmeupdate) {
+				// before updating, show update README file
+				var content = '<h1>' + _('Upgrade information') + '</h1>';
+				content += '<div style="max-height:250px; overflow:auto;">' +
+					this.formatTxt(app.readmeupdate) +
+					'</div>';
+				dialog.confirm(content, [{
+					name: 'decline',
+					label: _('Cancel'),
+					'default': true
+				}, {
+					name: 'update',
+					label: _('Upgrade')
+				}], _('Upgrade information')).then(lang.hitch(this, function(response) {
+					if (response == 'update') {
+						this._call_installer('update', app);
+					}
+				}));
+			} else {
+				this._call_installer('update', app);
+			}
 		},
 
 		getApplications: function() {

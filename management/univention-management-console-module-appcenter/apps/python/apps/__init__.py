@@ -60,6 +60,9 @@ class Instance(umcm.Base):
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
 
+		# populate internal cache
+		Application.all(only_local=True, localize=False)
+
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):

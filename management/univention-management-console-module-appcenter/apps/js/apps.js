@@ -32,37 +32,26 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
+	"dojo/dom-construct",
 	"dojo/topic",
 	"umc/tools",
+	"umc/widgets/Button",
+	"umc/widgets/TitlePane",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
 	"umc/widgets/Module",
-	"umc/i18n!umc/modules/apps" // not needed atm
-], function(declare, lang, kernel, topic, tools, Text, ContainerWidget, Page, Module, _) {
-	var formatTxt = function(txt) {
-		// FIXME:
-		// Same as in appcenter/AppCenterPage.js
-		// Should go into tools.
-		// do not allow HTML
-		txt = txt.replace(/</g, '&lt;');
-		txt = txt.replace(/>/g, '&gt;');
-
-		// insert links
-		txt = txt.replace(/(https?:\/\/\S*)/g, '<a target="_blank" href="$1">$1</a>');
-
-		// format line breakes
-		txt = txt.replace(/\n\n\n/g, '\n<br>\n<br>\n<br>\n');
-		txt = txt.replace(/\n\n/g, '\n<br>\n<br>\n');
-
-		return txt;
-	};
-
+	"umc/modules/appcenter/AppCenterPage",
+	"umc/i18n!umc/modules/appcenter",
+	"umc/i18n!umc/modules/apps"
+], function(declare, lang, kernel, domConstruct, topic, tools, Button, TitlePane, Text, ContainerWidget, Page, Module, AppCenterPage, appCenterTranslate, _) {
 	return declare("umc.modules.apps", Module, {
 		standbyOpacity: 1,
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			this._appcenterPage = AppCenterPage();
+			this.own(this._appcenterPage);
 			var buttons = [{
 				name: 'close',
 				label: _('Close'),
@@ -79,8 +68,22 @@ define([
 				scrollable: true
 			});
 			this._page.addChild(container);
+
+			this._table = domConstruct.create('table', {
+				style: {width: '500px'}
+			});
+			var detailsPane = new TitlePane({
+				title: _('Details'),
+				content: this._table
+			});
+			container.addChild(detailsPane);
+
 			this._text = new Text({});
-			container.addChild(this._text);
+			var descriptionPane = new TitlePane({
+				title: _('Description'),
+				content: this._text
+			});
+			container.addChild(descriptionPane);
 
 			this.standby(true);
 			tools.umcpCommand('apps/get', {'application' : this.moduleFlavor}).then(lang.hitch(this, function(data) {
@@ -90,11 +93,35 @@ define([
 					return;
 				}
 				this._page.set('headerText', app.name);
+
+				this.addToDetails(appCenterTranslate('Vendor'), this._appcenterPage._detail_field_custom_vendor(app));
+				this.addToDetails(appCenterTranslate('Maintainer'), this._appcenterPage._detail_field_custom_maintainer(app));
+				this.addToDetails(appCenterTranslate('Contact'), this._appcenterPage._detail_field_custom_contact(app));
+				this.addToDetails(appCenterTranslate('Website'), this._appcenterPage._detail_field_custom_website(app));
+				this.addToDetails(appCenterTranslate('Version'), app.version);
+				if (app.candidate_version) {
+					var candidate_version = app.candidate_version;
+					if (app.allows_using && app.can_update) {
+						candidate_version = _('Upgrade to %s', candidate_version);
+						var candidate_version_button = new Button({
+							name: 'update',
+							defaultButton: true,
+							label: candidate_version,
+							callback: lang.hitch(this, function() {
+								this._appcenterPage.upgradeApp(app);
+							})
+						});
+						this.own(candidate_version_button);
+						candidate_version = candidate_version_button.domNode.outerHTML;
+					}
+					this.addToDetails(appCenterTranslate('Candidate version'), candidate_version);
+				}
+				this.addToDetails(appCenterTranslate('Upgrade not possible'), this._appcenterPage._detail_field_custom_cannot_update_reason(app));
+
 				var locale = kernel.locale.slice( 0, 2 ).toLowerCase();
 				var content = app['readme_' + locale] || app.readme_en;
 				if (!content) {
-					var url = app.website || app.websitevendor;
-					content = formatTxt(url + '\n\n' + app.longdescription);
+					content = this._appcenterPage.formatTxt(app.longdescription);
 				}
 				this._text.set('content', content);
 				this.standby(false);
@@ -104,8 +131,13 @@ define([
 			}));
 		},
 
-		startup: function() {
-			this.inherited(arguments);
+		addToDetails: function(key, value) {
+			if (! value) {
+				return;
+			}
+			var tr = domConstruct.create('tr', {}, this._table);
+			domConstruct.create('td', {innerHTML: key}, tr);
+			domConstruct.create('td', {innerHTML: value}, tr);
 		}
 
 	});

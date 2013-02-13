@@ -36,8 +36,8 @@ Description: transitional dummy package
 
 Package: univention-management-console-module-apps
 Architecture: all
-Pre-Depends: univention-management-console-module-appcenter
-Depends: python-polib
+Depends: univention-management-console-module-appcenter,
+ python-polib
 Description: UMC module for application overview
  This package contains an introduction for every installed app.
  .
