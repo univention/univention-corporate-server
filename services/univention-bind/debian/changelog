@@ -1,3 +1,10 @@
+univention-bind (7.0.11-2) unstable; urgency=low
+
+  * /etc/bind/rndc.key needs to be owned by root (Bug #30321)
+    http://bugs.debian.org/386791
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Feb 2013 15:13:17 +0100
+
 univention-bind (7.0.11-1) unstable; urgency=low
 
   * enable rndc control in named.conf.samba4 (Bug #30321)
