@@ -110,7 +110,8 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master = True, 
 			# ldap/server/name is down, try next server
 			if not ucr.get('ldap/server/addition'):
 				raise ldap.SERVER_DOWN, e
-			for server in ucr.get('ldap/server/addition', []):
+			servers = ucr.get('ldap/server/addition', '')
+			for server in servers.split():
 				try:
 					lo=access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
 				except ldap.SERVER_DOWN, e:
