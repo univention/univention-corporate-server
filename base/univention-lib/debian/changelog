@@ -1,3 +1,9 @@
+univention-lib (2.0.22-1) unstable; urgency=low
+
+  * fixed problems due to pipe handling during longer installations; Bug #30370
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 14 Feb 2013 11:13:44 +0100
+
 univention-lib (2.0.21-1) unstable; urgency=low
 
   * Dont log yourself, instead give control to the calling module (Bug #29239)

@@ -70,32 +70,6 @@ class ProgressState(object):
 		self.handle_only_frontend_errors = handle_only_frontend_errors
 		self.logfiles = {}
 		self.hard_reset()
-		self.pipe_read, self.pipe_write = os.pipe()
-		self._repeat_check_pipe = True
-		fcntl.fcntl(self.pipe_read, fcntl.F_SETFL, os.O_NONBLOCK)
-
-	def start_checking_pipe(self):
-		self._repeat_check_pipe = True
-		self._check_pipe_thread = threading.Thread(target=self.check_pipe)
-		self._check_pipe_thread.start()
-
-	def stop_checking_pipe(self):
-		self._repeat_check_pipe = False
-		self._check_pipe_thread.join()
-
-	def check_pipe(self):
-		try:
-			output = os.read(self.pipe_read, 2048)
-			for line in output.split('\n'):
-				for subline in line.split('\r'):
-					if subline:
-						self.info(subline)
-		except OSError:
-			# nothing to read
-			pass
-		if self._repeat_check_pipe:
-			time.sleep(1)
-			self.check_pipe()
 
 	def reset(self):
 		self._info = None
@@ -206,14 +180,51 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 		self.progress_state = progress_state
 
 	def fork(self):
-		# we better have a real file
-		# when using low-level routines
-		# basically taken from https://bugs.launchpad.net/jockey/+bug/280291
+		# start a new pipe
+		self.fd_pipe_read, self.fd_pipe_write = os.pipe()
+
+		# wrap handle for reading end of the pipe... for convenience
+		self.pipe_read = os.fdopen(self.fd_pipe_read)
+
+		# we better have a real file when using low-level routines
+		# basically taken from: https://bugs.launchpad.net/jockey/+bug/280291
 		p = os.fork()
 		if p == 0:
-			os.dup2(self.progress_state.pipe_write, sys.stdout.fileno())
-			os.dup2(self.progress_state.pipe_write, sys.stderr.fileno())
+			# child -> redirect stdout/stderr of dpkg to pipe
+			os.dup2(self.fd_pipe_write, sys.stdout.fileno())
+			os.dup2(self.fd_pipe_write, sys.stderr.fileno())
+
+			# close unneeded pipe handles
+			os.close(self.fd_pipe_read)
+			os.close(self.fd_pipe_write)
+		else:
+			# parent -> close write handle
+			os.close(self.fd_pipe_write)
+			
+			# start thread that monitors the pipes output
+			self._check_pipe_thread = threading.Thread(target=self.check_pipe)
+			self._check_pipe_thread.start()
+
 		return p
+
+	def check_pipe(self):
+		while True:
+			try:
+				# read the next line
+				output = self.pipe_read.readline()
+				if not output:
+					# pipe has been closed -> we are done
+					break 
+
+				# we got a new line -> send to info handler
+				self.progress_state.info(output.strip())
+				
+			except (OSError, IOError):
+				# something unexpected happened -> break loop
+				break
+
+		# close the pipe's read end
+		self.pipe_read.close()
 
 	# status == pmstatus
 	def status_change(self, pkg, percent, status):
@@ -371,14 +382,6 @@ class PackageManager(object):
 
 	def reset_status(self):
 		self.progress_state.hard_reset()
-
-	@contextmanager
-	def checking_dpkg_output(self):
-		self.progress_state.start_checking_pipe()
-		try:
-			yield
-		finally:
-			self.progress_state.stop_checking_pipe()
 
 	@contextmanager
 	def brutal_noninteractive(self):
@@ -579,12 +582,11 @@ class PackageManager(object):
 
 			# commit marked packages
 			kwargs = {'fetch_progress' : self.fetch_progress, 'install_progress' : self.dpkg_progress}
-			with self.checking_dpkg_output():
-				if self.always_noninteractive:
-					with self.noninteractive():
-						result = self.cache.commit(**kwargs)
-				else:
+			if self.always_noninteractive:
+				with self.noninteractive():
 					result = self.cache.commit(**kwargs)
+			else:
+				result = self.cache.commit(**kwargs)
 			if not result:
 				raise SystemError()
 		except FetchFailedException as e:
