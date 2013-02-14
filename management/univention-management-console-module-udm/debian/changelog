@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.65-1) unstable; urgency=low
+
+  * Remove unnecessary tooltip (Bug #30167)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 14 Feb 2013 17:07:00 +0100
+
 univention-management-console-module-udm (3.0.64-1) unstable; urgency=low
 
   * Fix showing objects taken from grid in dialog (Bug #26062)

@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (2.0.6-1) unstable; urgency=low
+
+  * Remove unnecessary tooltip (Bug #30167)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 14 Feb 2013 17:05:54 +0100
+
 univention-management-console-module-ucr (2.0.5-1) unstable; urgency=low
 
   * Add priority (Bug #26961)

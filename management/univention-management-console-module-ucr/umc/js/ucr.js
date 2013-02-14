@@ -332,7 +332,6 @@ define([
 				type: TextBox,
 				name: 'pattern',
 				value: '*',
-				description: _( 'Keyword that should be searched for in the selected attribute' ),
 				label: _( 'Keyword' ),
 				size: 'TwoThirds'
 			}];

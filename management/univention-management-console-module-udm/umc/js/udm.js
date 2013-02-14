@@ -535,7 +535,6 @@ define([
 			}, {
 				type: 'MixedInput',
 				name: 'objectPropertyValue',
-				description: _( 'The value for the specified object property on which the query is filtered.' ),
 				label: _( 'Property value' ),
 				dynamicValues: 'udm/values',
 				umcpCommand: umcpCmd,
