@@ -503,6 +503,9 @@ define([
 
 					var qcow2_images = 0;
 					var snapshots_possible = array.every( this._domain.disks, function( disk ) {
+						if (!disk.source) {
+							return true;
+						}
 						if ( disk.driver_type == 'qcow2' ) {
 							++qcow2_images;
 							return true;
