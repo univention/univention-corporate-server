@@ -327,7 +327,7 @@ define([
 			var deferred = new Deferred();
 			deferred.resolve();
 			// just of a domain URI is available we need to detach/delete it otherwise we just remove it from the grid
-			if ( undefined !== this.domain.domainURI ) {
+			if ( undefined !== this.domain.domainURI && disk.volumeFilename) {
 				deferred = deferred.then( lang.hitch( this, function() {
 					return tools.umcpCommand('uvmm/storage/volume/deletable', [ {
 						domainURI: this.domain.domainURI,
@@ -338,6 +338,8 @@ define([
 				deferred = deferred.then( lang.hitch( this, function( response ) {
 					if ( disk.device == 'cdrom' ) {
 						msg += ' ' + _( 'The selected drive is a CD-ROM and should be detached from the virtual instance. If the volume is delete no other instance can use it anymore.' );
+					} else if (disk.device == 'floppy') {
+						msg += ' ' + _( 'The selected drive is a floppy and should be detached from the virtual instance. If the volume is delete no other instance can use it anymore.' );
 					} else if ( ! response.result[ 0 ].deletable ) {
 						msg += ' ' + _( 'The selected drive seems to be attached to other virtual instances and therefor should not be deleted.' );
 					}

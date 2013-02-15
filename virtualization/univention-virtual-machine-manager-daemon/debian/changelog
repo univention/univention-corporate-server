@@ -2,6 +2,7 @@ univention-virtual-machine-manager-daemon (2.0.30-3) unstable; urgency=low
 
   * Disallow snapshots with floppy images (Bug #30472)
   * Enable snapshots for empty drives (Bug #30472)
+  * Empty drives have no media to delete (Bug #30472)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 15 Feb 2013 18:44:15 +0100
 

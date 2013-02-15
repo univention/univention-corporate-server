@@ -1006,6 +1006,15 @@ msgstr ""
 
 #: umc/js/uvmm/DriveGrid.js:342
 msgid ""
+"The selected drive is a floppy and should be detached from the virtual "
+"instance. If the volume is delete no other instance can use it anymore."
+msgstr ""
+"Das ausgewählte Laufwerk ist ein Floppy-Laufwerk und sollte nur ausgehängt "
+"werden. Wird das Image gelöscht können auch andere Instanzen nicht mehr "
+"darauf zugreifen."
+
+#: umc/js/uvmm/DriveGrid.js:342
+msgid ""
 "The selected drive seems to be attached to other virtual instances and "
 "therefor should not be deleted."
 msgstr ""
