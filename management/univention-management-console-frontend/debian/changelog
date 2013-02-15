@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.193-1) unstable; urgency=low
+
+  * adapted cookie handling to avoid problems with IE; Bug #30318
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Feb 2013 18:34:55 +0100
+
 univention-management-console-frontend (2.0.192-1) unstable; urgency=low
 
   * Bug #26507: If logged in as root show hint that App Center will be

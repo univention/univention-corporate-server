@@ -83,7 +83,8 @@ define([
 			feedbackAddress: 'feedback@univention.de',
 			// default value for the session timeout
 			// it will be replaced by the ucr variable 'umc/http/session/timeout' onLogin
-			sessionTimeout: 300
+			sessionTimeout: 300,
+			sessionLastRequest: new Date(0)
 		},
 
 		status: function(/*String?*/ key, /*Mixed?*/ value) {
@@ -122,48 +123,27 @@ define([
 		closeSession: function() {
 			// summary:
 			//		Reset the session cookie in order to close the session from the client side.
+			this.status('sessionLastRequest', new Date(0));
 			cookie('UMCSessionId', null, {
 				expires: -1,
 				path: '/'
 			});
 		},
 
-		holdSession: function(/*String?*/ id) {
+		holdSession: function() {
 			// summary:
-			//		Set the expiration time of the current session cookie in to 24 hours.
+			//		Set the expiration time of the current session to 24 hours.
 			// id: String
 			//		If specified, the session ID will be set to this value, otherwise the
 			//		ID will be read from the cookie automatically.
 			var date = new Date((new Date()).getTime() + 1000 * 60 * 60 * 24);
-			cookie('UMCSessionId', id || cookie('UMCSessionId'), {
-				expires: date.toUTCString(),
-				path: '/'
-			});
+			this.status('sessionLastRequest', date);
 		},
 
-		// update the cookie data
-		_dateRenewIESession : null,
-
-		_markRenewIESession : function() {
+		_updateSession: function() {
 			// summary:
-			//		Mark that the session will be renewed at the next _checkSessionTimer
-			// 		tick. This avoids too many cookie updates at once.
-			if(has('ie') !== undefined) {
-				this._dateRenewIESession = new Date();
-			}
-		},
-
-		_renewIESession : function(/*Date?*/_date) {
-			// summary:
-			//		Reset the Internet Explorer Session. Internet Explorer can not handle max-age cookies.
-			//		This is required for automatically show the login dialogue when the session is expired.
-			if(has('ie') !== undefined) {
-				var date = new Date((_date || new Date()).getTime() + 1000 * this.status('sessionTimeout'));
-				cookie('UMCSessionId', cookie('UMCSessionId'), {
-					expires: date.toUTCString(),
-					path: '/'
-				});
-			}
+			//		Reset timestamp of last received request
+			this.status('sessionLastRequest', new Date());
 		},
 
 		_checkSessionTimer: null,
@@ -184,14 +164,11 @@ define([
 				// create a new timer instance
 				this._checkSessionTimer = new timing.Timer(1000);
 				this._checkSessionTimer.onTick = lang.hitch(this, function() {
-					// update cookie for IE if necessary
-					if (this._dateRenewIESession) {
-						this._renewIESession(this._dateRenewIESession);
-						this._dateRenewIESession = null;
-					}
+					// check the remaining time for the current session
+					var diff = (new Date() - this.status('sessionLastRequest')) / 1000;
 
-					// check whether cookie is still valid
-					if (typeof cookie('UMCSessionId') != 'string') {
+					// check whether session is still valid
+					if (this.status('sessionTimeout') < diff) {
 						this._checkSessionTimer.stop();
 						if (tools.status('loggingIn')) {
 							// login dialog is already running
@@ -247,10 +224,6 @@ define([
 
 		// handler class for long polling scenario
 		_PollingHandler: function(url, content, finishedDeferred, opts) {
-			// save the current session ID locally, as the cookie might expire when
-			// the time and timezone settings are updated
-			var _oldSessionID = cookie('UMCSessionId');
-
 			return {
 				finishedDeferred: finishedDeferred,
 
@@ -300,17 +273,10 @@ define([
 
 				sendRequest: function() {
 					// switch off the automatic check for session timeout...
-					// the proble here is as follows, we do not receive a response,
-					// therefore the cookie is not updated (which is checked for the
-					// session timeout), however, the server will renew the session
-					// with each valid request that it receives
-					var currentSessionID = cookie('UMCSessionId');
-					if (!currentSessionID || 'undefined' == currentSessionID) {
-						// restore last valid session ID
-						currentSessionID = _oldSessionID;
-					}
-					_oldSessionID = currentSessionID;
-					tools.holdSession(currentSessionID);
+					// the problem here is as follows, we do not receive a response, 
+					// therefore our session may expire, however, the server will 
+					// renew the session with each valid request that it receives
+					tools.holdSession();
 
 					// send AJAX command
 					this._lastRequestTime = (new Date()).getTime();
@@ -324,7 +290,7 @@ define([
 						timeout: 1000 * this.xhrTimeout
 					}).then(lang.hitch(this, function(data) {
 						// request finished
-						tools._markRenewIESession();
+						tools._updateSession();
 						this._dialog.hide();
 						this._dialog.destroyRecursive();
 						this.finishedDeferred.resolve(data);
@@ -440,7 +406,7 @@ define([
 				});
 
 				call = call.then(function(data) {
-					tools._markRenewIESession();
+					tools._updateSession();
 					return data;
 				});
 

@@ -44,6 +44,7 @@ import tempfile
 import time
 import threading
 import uuid
+import datetime
 
 import notifier
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
@@ -293,18 +294,6 @@ class QueueRequest(object):
 		self.ip = ip
 		self.cookie = cookie
 
-def update_session(response, sessionid):
-	"""Defines a new cookie for the given session ID."""
-	session = UMCP_Dispatcher.sessions.get(sessionid)
-	if session and session.cookie:
-		response.cookie['UMCSessionId'] = sessionid
-		response.cookie['UMCSessionId']['max-age'] = _session_timeout
-		response.cookie['UMCSessionId']['version'] = 1
-		response.cookie['UMCSessionId']['path'] = '/'
-	# always send headers
-	response.headers['X-UMC-Session-Id'] = sessionid
-	response.headers['X-UMC-Session-Timeout'] = _session_timeout
-
 def default_error_page(status, message, traceback, version, result = None):
 	""" The default error page for UMCP responses """
 	cherrypy.response.headers['Content-type'] = umcp.MIMETYPE_JSON
@@ -364,9 +353,7 @@ class CPgeneric(object):
 		"""get the current session ID, either set via headers or cookie."""
 		# check for a valid session key
 		req = cherrypy.request
-		if req.headers.get('X-UMC-Session-Id'):
-			sessionid = req.headers['X-UMC-Session-Id']
-		elif req.cookie.get('UMCSessionId'):
+		if req.cookie.get('UMCSessionId'):
 			sessionid = req.cookie['UMCSessionId'].value
 		else:
 			# a sessionid is required to use this command
@@ -434,8 +421,6 @@ class CPgeneric(object):
 			# UMCP responses which are not json do not have a status
 			status = 200
 		if 200 <= status < 300:
-			# update the session duration
-			update_session(cherrypy.response, sessionid)
 			if response.mimetype == umcp.MIMETYPE_JSON:
 				# convert data to JSON
 				body = simplejson.dumps(response.body)
@@ -518,14 +503,8 @@ class CPUpload( CPgeneric ):
 	def default( self, *path, **kwargs ):
 		self._log('info', 'got new request')
 
-		# check for a valid session key in GET/POST data
-		if 'X-UMC-Session-Id' in kwargs:
-			# allow for X-UMC-Sesssion-Id as entry in a multi-form (=upload) request
-			sessionid = kwargs['X-UMC-Session-Id']
-			self._log('info', 'found sessionid')
-			self._log(99, 'sessionid="%s"' % (sessionid))
-		else:
-			sessionid = self.get_session_id()
+		# get the session id from the request
+		sessionid = self.get_session_id()
 
 		if not cherrypy.request.headers.get( 'Content-Type', '' ).startswith( 'multipart/form-data' ):
 			raise cherrypy.HTTPError(httplib.BAD_REQUEST, 'Content type and URL do not match')
@@ -595,7 +574,18 @@ class CPAuth(CPgeneric):
 
 		if response.status == umcp.SUCCESS and response.body.get('sessionid'):
 			CORE.info('CPRoot/auth: creating session with sessionid=%s' % response.body.get('sessionid'))
-			update_session(cherrypy.response, response.body['sessionid'])
+
+			# set the cookie once during successful authentication
+			# force expiration of cookie in 5 years from now on... 
+			# IE does not support max-age
+			expiration = datetime.datetime.now()
+			expiration = expiration.replace(year=expiration.year + 5)
+			expirationStr = expiration.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
+			cherrypy.response.cookie['UMCSessionId'] = response.body.get('sessionid')
+			cherrypy.response.cookie['UMCSessionId']['expires'] = expirationStr
+			cherrypy.response.cookie['UMCSessionId']['version'] = 1
+			cherrypy.response.cookie['UMCSessionId']['path'] = '/'
+
 			return ""
 
 		CORE.process('CPRoot/auth: username: %s, status code: %s' % (json.get('username'), response.status))
