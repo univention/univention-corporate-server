@@ -507,7 +507,7 @@ define([
 							++qcow2_images;
 							return true;
 						}
-						return disk.device == 'floppy' || disk.readonly;
+						return disk.readonly;
 					} );
 					if ( snapshots_possible && qcow2_images > 0 ) {
 						this.showChild( this._snapshotPage );
