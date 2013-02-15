@@ -605,6 +605,18 @@ define([
 					this._overviewPage.addNote( _( 'The %s will expire in %d days and should be renewed!', certType, days ) );
 				}
 
+				// check license
+				if ( this.getModule( 'udm' ) ) {
+					// taken from udm.js
+					tools.umcpCommand('udm/license', {}, false).then(lang.hitch(this, function(data) {
+						var msg = data.result.message;
+						if (msg) {
+							this._overviewPage.addNote(msg);
+						}
+					}), function() {
+						console.log('WARNING: An error occurred while verifying the license. Ignoring error.');
+					});
+				}
 				// check if updates are available
 				if ( this.getModule('updater') && tools.isTrue(_ucr['update/available']) ) {
 					var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'updater\')"';

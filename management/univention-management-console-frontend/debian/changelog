@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.194-1) unstable; urgency=low
+
+  * Bug #30355: The hint shown when the license of UCS exceeded, was added to
+    the overview of UMC.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Feb 2013 19:20:46 +0100
+
 univention-management-console-frontend (2.0.193-1) unstable; urgency=low
 
   * adapted cookie handling to avoid problems with IE; Bug #30318

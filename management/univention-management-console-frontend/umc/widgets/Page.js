@@ -263,7 +263,7 @@ define([
 		},
 
 		addNote: function(message) {
-			var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="Close"></span>';
+			var closeButton = '<span class="dijitTabCloseButton dijitTabCloseIcon" style="float:right" title="' + _('Close') + '"></span>';
 
 			var note = new Text({
 				content: closeButton + '<b>' + _('Note') + ':</b> ' + message,
