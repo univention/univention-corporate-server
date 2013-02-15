@@ -136,7 +136,7 @@ msgstr "Abbrechen"
 
 #: umc/js/appcenter/PackagesPage.js:316 umc/js/appcenter/AppCenterPage.js:718
 msgid "Candidate version"
-msgstr "Anwärterversion"
+msgstr "Verfügbare Version"
 
 #: umc/js/appcenter/AppCenterPage.js:81
 msgid "Categories"

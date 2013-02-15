@@ -184,7 +184,6 @@ class Application(object):
 		# save important meta data
 		self.id = self._options['id'] = self._options['id'].lower()
 		self.name = self._options['name']
-		self.icon = self._options['icon'] = '%s.png' % url[:-4]
 		self.version = self._options['version']
 
 		# get the name of the component
@@ -192,6 +191,7 @@ class Application(object):
 		self.component_id = 'unknown'
 		if m:
 			self.component_id = m.groupdict()['id']
+		self.icon = self._options['icon'] = 'apps-%s' % self.component_id
 
 		self._fetch_file('readme_en', 'README_EN')
 		self._fetch_file('readme_de', 'README_DE')

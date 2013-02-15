@@ -61,7 +61,10 @@ class Instance(umcm.Base):
 		locale.setlocale(locale.LC_ALL, str(self.locale))
 
 		# populate internal cache
-		Application.all(only_local=True, localize=False)
+		# be sure to not hit app center (in case it is unavailable)
+		#   but use only local files
+		Application._get_category_translations(fake=True)
+		Application.all(only_local=True)
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response

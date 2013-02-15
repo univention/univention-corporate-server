@@ -150,6 +150,7 @@ define([
 
 		_udm_accessible: false, // license depends on udm
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		autoStart: true, // get/user/preferences and updateApplications. Needed because it is used in apps.js as well
 
 		// class name of the widget as CSS class
 		'class': 'umcAppCenter',
@@ -204,52 +205,54 @@ define([
 			titlePane.addChild(this._grid);
 			this.addChild(titlePane);
 
-			tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
-				if (prefs.appcenterSeen === 'yes') {
-					// load apps
+			if (this.autoStart) {
+				tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
+					if (prefs.appcenterSeen === 'yes') {
+						// load apps
+						this.updateApplications();
+					} else {
+						dialog.confirmForm({
+							title: _('Univention App Center'),
+							widgets: [
+								{
+									type: Text,
+									name: 'help_text',
+									content: '<div style="width: 535px"><p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
+									'<p>' + _('Univention always receives an estranged notification for statistical purposes upon installation and uninstallation of an application in Univention App Center that is only saved at Univention for data processing and will not be forwarded to any third party.') + '</p>' +
+									'<p>' + _('Depending on the guideline of the respective application vendor an updated UCS license key with so-called key identification (Key ID) is required for the installation of an application. In this case, the Key ID will be sent to Univention together with the notification. As a result the application vendor receives a message from Univention with the following information:') +
+										'<ul>' +
+											'<li>' + _('Name of the installed application') + '</li>' +
+											'<li>' + _('Registered email address') + '</li>' +
+										'</ul>' +
+									_('The description of every application includes a respective indication for such cases.') + '</p>' +
+									'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
+									'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p></div>'
+								},
+								{
+									type: CheckBox,
+									name: 'show_again',
+									label: _("Show this message again")
+								}
+							],
+							buttons: [{
+								name: 'submit',
+								'default': true,
+								label: _('Continue')
+							}]
+						}).then(
+							lang.hitch(this, function(data) {
+								tools.setUserPreference({appcenterSeen: data.show_again ? 'no' : 'yes'});
+								this.updateApplications();
+							}),
+							lang.hitch(this, function() {
+								this.updateApplications();
+							})
+						);
+					}
+				}), lang.hitch(this, function() {
 					this.updateApplications();
-				} else {
-					dialog.confirmForm({
-						title: _('Univention App Center'),
-						widgets: [
-							{
-								type: Text,
-								name: 'help_text',
-								content: '<div style="width: 535px"><p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
-								'<p>' + _('Univention always receives an estranged notification for statistical purposes upon installation and uninstallation of an application in Univention App Center that is only saved at Univention for data processing and will not be forwarded to any third party.') + '</p>' +
-								'<p>' + _('Depending on the guideline of the respective application vendor an updated UCS license key with so-called key identification (Key ID) is required for the installation of an application. In this case, the Key ID will be sent to Univention together with the notification. As a result the application vendor receives a message from Univention with the following information:') +
-									'<ul>' +
-										'<li>' + _('Name of the installed application') + '</li>' +
-										'<li>' + _('Registered email address') + '</li>' +
-									'</ul>' +
-								_('The description of every application includes a respective indication for such cases.') + '</p>' +
-								'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
-								'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p></div>'
-							},
-							{
-								type: CheckBox,
-								name: 'show_again',
-								label: _("Show this message again")
-							}
-						],
-						buttons: [{
-							name: 'submit',
-							'default': true,
-							label: _('Continue')
-						}]
-					}).then(
-						lang.hitch(this, function(data) {
-							tools.setUserPreference({appcenterSeen: data.show_again ? 'no' : 'yes'});
-							this.updateApplications();
-						}),
-						lang.hitch(this, function() {
-							this.updateApplications();
-						})
-					);
-				}
-			}), lang.hitch(this, function() {
-				this.updateApplications();
-			}));
+				}));
+			}
 		},
 
 		postCreate: function() {
@@ -519,6 +522,26 @@ define([
 			);
 		},
 
+		_detail_field_custom_candidate_version: function(values) {
+			var version = values.version;
+			var candidate_version = values.candidate_version;
+			var is_installed = values.is_installed;
+			if (candidate_version) {
+				return candidate_version;
+			}
+			if (! is_installed) {
+				return version;
+			}
+		},
+
+		_detail_field_custom_version: function(values) {
+			var version = values.version;
+			var is_installed = values.is_installed;
+			if (is_installed) {
+				return version;
+			}
+		},
+
 		_detail_field_custom_website: function(values) {
 			var name = values.name;
 			var website = values.website;
@@ -689,7 +712,7 @@ define([
 				'maintainer': _("Maintainer"),
 				'contact': _("Contact"),
 				'website': _("Website"),
-				'version': _('Version'),
+				'version': _('Installed version'),
 				'candidate_version': _('Candidate version'),
 				'categories': _("Section"),
 				'longdescription': _("Description"),

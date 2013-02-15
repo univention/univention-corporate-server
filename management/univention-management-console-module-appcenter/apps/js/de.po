@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-apps\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-02-13 19:53+0100\n"
+"POT-Creation-Date: 2013-02-14 11:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,26 +12,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: apps/js/apps.js:57
+#: apps/js/apps.js:60
 msgid "Close"
 msgstr "Schließen"
 
-#: apps/js/apps.js:83
+#: apps/js/apps.js:86
 msgid "Description"
 msgstr "Beschreibung"
 
-#: apps/js/apps.js:76
+#: apps/js/apps.js:79
 msgid "Details"
 msgstr "Details"
 
-#: apps/js/apps.js:105
+#: apps/js/apps.js:117
 #, python-format
-msgid "Upgrade to %s"
-msgstr "Auf %s aktualisieren"
+msgid "Do you really want to upgrade to %s?"
+msgstr "Wollen Sie wirklich auf %s aktualisieren?"
 
-#~ msgid ""
-#~ "The maintainer did not provide a dedicated README for the application. "
-#~ "See {url} for further details."
-#~ msgstr ""
-#~ "Der Betreuer dieser Anwendung hat keine eigene README hinterlegt. {url} "
-#~ "enthält weitere Informationen."
+#: apps/js/apps.js:119
+msgid "No"
+msgstr "Nein"
+
+#: apps/js/apps.js:145
+#, python-format
+msgid "Uninstall %s"
+msgstr "%s deinstallieren"
+
+#: apps/js/apps.js:116
+msgid "Upgrade %s"
+msgstr "%s aktualisieren"
+
+#: apps/js/apps.js:123
+msgid "Yes"
+msgstr "Ja"

@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (2.0.111-1) unstable; urgency=low
+
+  * Add upgrade and uninstall link to apps module (Bug #30249)
+  * Add app icon to apps module (Bug #30249)
+  * Adjusted translations
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Feb 2013 10:32:13 +0100
+
 univention-management-console-module-appcenter (2.0.110-1) unstable; urgency=low
 
   * Add application details to apps module (Bug #30249)
