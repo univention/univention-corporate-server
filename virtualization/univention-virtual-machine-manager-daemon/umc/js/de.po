@@ -297,6 +297,14 @@ msgstr "Erstellen eines Klons"
 msgid "Create a new image"
 msgstr "Erstellen einer neuen Image-Datei"
 
+#: umc/js/uvmm/SnapshotGrid.js:112
+msgid "Creating a snapshots is not possible, because the domain contains writeable raw images!"
+msgstr "Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain ein schreibbares Raw-Datei-Image enthält!"
+
+#: umc/js/uvmm/SnapshotGrid.js:115
+msgid "Creating a snapshot is not possible, because the domain does not have at least one qcow2 image!"
+msgstr "Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain nicht wenigstens ein Qcow2-Datei-Image enthält!"
+
 #: umc/js/uvmm/DomainWizard.js:79
 msgid "Create a virtual instance"
 msgstr "Erstellen einer virtuellen Instanz"

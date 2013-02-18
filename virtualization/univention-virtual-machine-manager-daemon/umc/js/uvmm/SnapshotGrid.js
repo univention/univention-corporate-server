@@ -94,6 +94,28 @@ define([
 		_addSnapshot: function() {
 			var _dialog = null, form = null;
 
+			var qcow2_images = 0;
+			var snapshots_possible = array.every(this.domain.disks, function(disk) {
+				if (!disk.source) {
+					return true;
+				}
+				if (disk.readonly) {
+					return true;
+				}
+				if (disk.driver_type == 'qcow2') {
+					++qcow2_images;
+					return true;
+				}
+				return false;
+			});
+			if (!snapshots_possible) {
+				dialog.alert(_('Creating a snapshots is not possible, because the domain contains writeable raw images!'));
+				return;
+			} else if (qcow2_images == 0 && this.domain.state != 'SHUTOFF') {
+				dialog.alert(_('Creating a snapshot is not possible, because the domain does not have at least one qcow2 image!'));
+				return;
+			}
+
 			if (this.domain.state != 'SHUTOFF') {
 				var mem = types.parseStorageSize(this.domain.maxMem);
 				if (mem === null) {

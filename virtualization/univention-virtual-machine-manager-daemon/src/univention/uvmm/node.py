@@ -318,21 +318,6 @@ class Domain(PersistentCached):
 		# List of snapshots
 		snapshots = None
 		if self.node.pd.supports_snapshot:
-			has_snapshot_disk = False
-			for dev in self.pd.disks:
-				# Read-only devixes are never modified
-				if dev.readonly:
-					continue
-				# Empty CDROM-/floppy devices are okay
-				if not dev.source:
-					continue
-				# Qcow2 supports internal snapshots
-				if dev.driver_type in ('qcow2',):
-					has_snapshot_disk = True
-					continue
-				break
-			else:
-				if has_snapshot_disk:
 					snapshots = {}
 					for name in domain.snapshotListNames(0):
 						snap = domain.snapshotLookupByName(name, 0)

@@ -501,18 +501,8 @@ define([
 					this._interfaceStore.setData(this._domain.interfaces);
 					this._driveStore.setData(this._domain.disks);
 
-					var qcow2_images = 0;
-					var snapshots_possible = array.every( this._domain.disks, function( disk ) {
-						if (!disk.source) {
-							return true;
-						}
-						if ( disk.driver_type == 'qcow2' ) {
-							++qcow2_images;
-							return true;
-						}
-						return disk.readonly;
-					} );
-					if ( snapshots_possible && qcow2_images > 0 ) {
+					// Only qemu can do snapshots
+					if (types.getNodeType(this._domain.domainURI) == 'qemu') {
 						this.showChild( this._snapshotPage );
 					} else {
 						this.hideChild( this._snapshotPage );
