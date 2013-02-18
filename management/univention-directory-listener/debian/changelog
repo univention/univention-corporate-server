@@ -1,3 +1,9 @@
+univention-directory-listener (7.0.7-1) unstable; urgency=low
+
+  * Always run replication handler (Bug #29475)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Feb 2013 13:20:29 +0100
+
 univention-directory-listener (7.0.6-6) unstable; urgency=low
 
   * fix permissions for the script (Bug #30408)

@@ -766,8 +766,12 @@ static int handler__update(Handler *handler, char *dn, CacheEntry *new, CacheEnt
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "handler: %s considered", handler->name);
 
-	/* check if attributes for handler have changed */
-	if (cache_entry_module_present(old, handler->name)) {
+	/* check if attributes for handler have changed 
+
+	   the replication handler should be checked for the changed object in any case,
+	   especially if we have an incomplete cache
+	*/
+	if ( (!strcmp(handler->name, "replication")) || cache_entry_module_present(old, handler->name)) {
 		char **cur;
 		bool uptodate = false;
 
@@ -872,7 +876,8 @@ int handlers_delete(char *dn, CacheEntry *old, char command)
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "delete handlers for %s", dn);
 
 	for (handler=handlers; handler != NULL; handler=handler->next) {
-		if (!cache_entry_module_present(old, handler->name)) {
+		/* run the replication handler in any case, see Bug #29475 */
+		if (!cache_entry_module_present(old, handler->name) && strcmp(handler->name, "replication") {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (skipped)", handler->name);
 			continue;
 		}

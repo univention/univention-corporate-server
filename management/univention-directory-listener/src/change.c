@@ -279,7 +279,14 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 	int rv;
 
 	if ((rv=cache_get_entry_lower_upper(id-1, dn, &entry)) == DB_NOTFOUND) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "not in cache: %s", dn);
+		signals_block();
+		/* run handlers anyway */
+		if (handlers_delete(dn, &entry, command) == 0) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", dn);
+		} else {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "not in cache: %s", dn);
+		}
+		signals_unblock();
 		return LDAP_SUCCESS;
 	} else if (rv != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "reading from cache failed: %s", dn);
