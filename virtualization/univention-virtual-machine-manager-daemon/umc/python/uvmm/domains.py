@@ -280,11 +280,14 @@ class Domains( object ):
 
 			MODULE.info( 'Creating a %s drive' % ( driver_pv and 'paravirtual' or 'non-paravirtual' ) )
 
-			if drive.device in ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ):
-				if drive.device == Disk.DEVICE_CDROM:
-					drive.driver_type = 'raw' # ISOs need driver/@type='raw'
+			if drive.device == Disk.DEVICE_DISK:
+				drive.readonly = disk.get('readonly', False)
+			elif drive.device == Disk.DEVICE_CDROM:
+				drive.driver_type = 'raw' # ISOs need driver/@type='raw'
+				drive.readonly = disk.get('readonly', True)
 			elif drive.device == Disk.DEVICE_FLOPPY:
 				drive.target_bus = 'fdc'
+				drive.readonly = disk.get('readonly', True)
 			else:
 				raise ValueError('Invalid drive-type "%s"' % drive.device)
 

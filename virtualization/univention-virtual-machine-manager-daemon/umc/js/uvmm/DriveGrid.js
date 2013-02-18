@@ -227,6 +227,7 @@ define([
 					disk.target_bus = null;
 					disk.target_dev = null;
 				}
+				disk.readonly = values.readonly;
 				disk.paravirtual = values.paravirtual;
 				disk.driver_cache = values.driver_cache;
 				this.moduleStore.put( disk );
@@ -266,6 +267,12 @@ define([
 					label: _( 'Filename' ),
 					disabled: true
 				}, {
+					name: 'readonly',
+					type: CheckBox,
+					value: disk.readonly || false,
+					label: _('Read only'),
+					description: _('The device cannot be modified by the guest.')
+				}, {
 					type: CheckBox,
 					name: 'paravirtual',
 					value: disk.paravirtual === undefined ? false : disk.paravirtual,
@@ -290,7 +297,7 @@ define([
 					label: _('Cancel'),
 					callback: _cleanup
 				}],
-				layout: ['__message', 'device', 'pool', 'volumeFilename', 'paravirtual', 'driver_cache']
+				layout: ['__message', 'device', 'pool', 'volumeFilename', 'readonly', 'paravirtual', 'driver_cache']
 			});
 
 			// hide pool for block devices
@@ -386,6 +393,7 @@ define([
 			var _finished = lang.hitch(this, function(values) {
 				var paravirtual = false;
 				var driver_cache = values.device == 'disk' ? 'none' : 'default';
+				var readonly = values.device != 'disk'; // floppy cdrom
 				var id = this._nextID();
 
 				_cleanup();
@@ -402,6 +410,7 @@ define([
 				this.moduleStore.add( lang.mixin( {
 					$id$: id,
 					driver_cache: driver_cache,
+					readonly: readonly,
 					paravirtual: paravirtual
 				}, values ) );
 			});

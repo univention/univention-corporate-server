@@ -448,6 +448,14 @@ msgstr "Färöisch"
 msgid "Filename"
 msgstr "Dateiname"
 
+#: umc/js/uvmm/DriveGrid.js:266
+msgid "Read only"
+msgstr "Nur lesen"
+
+#: umc/js/uvmm/DriveGrid.js:267
+msgid "The device cannot be modified by the guest."
+msgstr "Das Gerät kann nicht vom Gast modifiziert werden."
+
 #: umc/js/uvmm/types.js:123
 msgid "Finnish"
 msgstr "Finnisch"
