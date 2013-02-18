@@ -1,3 +1,9 @@
+univention-directory-replication (6.0.5-1) unstable; urgency=low
+
+  * Adjust log level of cache vs LDAP checks (Bug #26562)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Feb 2013 10:56:53 +0100
+
 univention-directory-replication (6.0.4-2) unstable; urgency=low
 
   * fix/improve log messages (for Bug #20605)

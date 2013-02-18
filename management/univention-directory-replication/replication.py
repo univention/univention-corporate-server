@@ -874,7 +874,7 @@ def handler(dn, new, listener_old, operation):
 			# Check if both entries really match
 			match=1
 			if len(old) != len(listener_old):
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
 					'LDAP keys=%s; listener keys=%s' % (str(old.keys()), str(listener_old.keys())))
 				match=0
 			else:
@@ -882,22 +882,22 @@ def handler(dn, new, listener_old, operation):
 					if k in EXCLUDE_ATTRIBUTES:
 						continue
 					if k not in listener_old:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
 							'listener does not have key %s' % k)
 						match=0
 						break
 					if len(old[k]) != len(listener_old[k]):
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
+						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
 							'%s: LDAP values and listener values diff' % (k))
 						match=0
 						break
 					for v in old[k]:
 						if not v in listener_old[k]:
-							univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'listener does not have value for key %s' % (k))
+							univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'listener does not have value for key %s' % (k))
 							match=0
 							break
 			if not match:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN,
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
 						'replication: old entries from LDAP server and Listener do not match')
 		else:
 			old=listener_old
