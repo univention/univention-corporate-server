@@ -4,7 +4,7 @@ Description[en]=Output directory for pdf pseudo printer
 Type=str
 Categories=Printing
 
-[cups/cups-pdf/directory]
+[cups/cups-pdf/anonymous]
 Description[de]=Verzeichnis für PDF Pseudo Drucker (anonymous)
 Description[en]=Output directory for pdf pseudo printer (anonymous)
 Type=str
