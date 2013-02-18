@@ -877,7 +877,7 @@ int handlers_delete(char *dn, CacheEntry *old, char command)
 
 	for (handler=handlers; handler != NULL; handler=handler->next) {
 		/* run the replication handler in any case, see Bug #29475 */
-		if (!cache_entry_module_present(old, handler->name) && strcmp(handler->name, "replication") {
+		if (!cache_entry_module_present(old, handler->name) && strcmp(handler->name, "replication")) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (skipped)", handler->name);
 			continue;
 		}
