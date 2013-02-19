@@ -1,4 +1,10 @@
-univention-ad-connector (7.0.12-1) precise; urgency=low
+univention-ad-connector (7.0.12-2) unstable; urgency=low
+
+  * version bump (Bug #30150)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 19 Feb 2013 16:47:08 +0100
+
+univention-ad-connector (7.0.12-1) unstable; urgency=low
 
   * moved daemon() call from connect() to main() to prevent it from being
     called multiple times (Bug #30150)
