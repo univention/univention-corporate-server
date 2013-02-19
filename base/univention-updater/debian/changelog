@@ -1,3 +1,10 @@
+univention-updater (8.0.66-1) unstable; urgency=low
+
+  * univention-add-app: Track app installations (Bug #30433)
+  * Enable univention-add-app to automatically install app packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 19 Feb 2013 18:46:29 +0100
+
 univention-updater (8.0.65-1) unstable; urgency=low
 
   * Bug #30384: Remove existing app version if new version is installed via

@@ -4,7 +4,7 @@
 # Univention Updater
 #  univention-add-app
 #
-# Copyright 2012 Univention GmbH
+# Copyright 2012-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -40,28 +40,32 @@ from univention.config_registry import ConfigRegistry
 from univention.updater import UniventionUpdater
 try:
 	from univention.management.console.modules.appcenter.util import ComponentManager
-	from univention.management.console.modules.appcenter.app_center import Application
+	from univention.management.console.modules.appcenter.app_center import Application, LICENSE
 except ImportError:
 	sys.stderr.write('univention-management-console-module-appcenter must be installed\n')
 	sys.exit(2)
 
 def simple_handler(f):
 	def _simple_handler(msg):
-		if not msg.endswith('\n'):
-			msg = '%s\n' % msg
+		msg = '%s\n\r' % msg.strip()
 		f.write(msg)
 	return _simple_handler
 
 if __name__ == '__main__':
-	usage = '%prog <component> [<package> ...]'
+	usage = '%prog <component> [-a] [-m] [<package> ...]'
 	description = '%prog prepares the corresponding repository settings for the specified component and installs the given packages.'
 	parser = OptionParser(usage=usage, description=description)
+	parser.add_option("-a", "--all", action="store_true", dest="install_all", default=False,
+			help="Installs all DefaultPackages of the app. If DC master or backup, also installs DefaultPackagesMaster. Performs dist-upgrade!")
+	parser.add_option("-m", "--master", action="store_true", dest="install_master", default=False,
+			help="If DC master or backup, installs DefaultPackagesMaster. Performs dist-upgrade! Has no meaning when used together with --all")
 	(options, args) = parser.parse_args()
 	try:
 		component_id = args[0]
 	except IndexError:
 		parser.print_usage()
 		sys.exit(1)
+	# for compatibility with 3.1-0. may be removed with 3.2-0
 	packages = args[1:]
 	ucr = ConfigRegistry()
 	ucr.load()
@@ -78,9 +82,26 @@ if __name__ == '__main__':
 	if requested_app is None:
 		sys.stderr.write('App "%s" not found\n' % component_id)
 		sys.exit(1)
+	if not LICENSE.allows_using(requested_app.get('notifyvendor')):
+		sys.stderr.write('App "%s" may not be installed\n' % requested_app.name)
+		sys.exit(1)
+	success = True
 	component_manager.put_app(requested_app)
 	package_manager = PackageManager(info_handler=simple_handler(sys.stdout), error_handler=simple_handler(sys.stderr), always_noninteractive=True)
 	package_manager.update()
+	if options.install_all or options.install_master:
+		requested_app.candidate = None # delete a possible candidate (newer version)
+		requested_app.versions = Application.find(requested_app.id).versions
+		if not options.install_all: # remove DefaultPackages from those packages to install
+			requested_app._options['defaultpackages'] = []
+		success = requested_app.install(package_manager, component_manager, add_component=False, send_as='add-app') and success
+	else:
+		requested_app._send_information('add-app-noop', 200)
+	# for compatibility with 3.1-0. should be removed with 3.2-0
 	if packages:
-		package_manager.install(*packages)
+		success = package_manager.install(*packages) and success
+	if success:
+		sys.exit(0)
+	else:
+		sys.exit(100) # apt-get error code
 
