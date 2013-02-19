@@ -192,7 +192,7 @@ class Instance(umcm.Base):
 						with module.package_manager.no_umc_restart(exclude_apache=True):
 							if function in ('install', 'update'):
 								# dont have to add component: already added during dry_run
-								return application.install(module.package_manager, module.component_manager, add_component=False, send_as=function)
+								return application.install(module.package_manager, module.component_manager, add_component=False, send_as=function, ssh_username=self._username, ssh_password=self._password)
 							else:
 								return application.uninstall(module.package_manager, module.component_manager)
 				def _finished(thread, result):

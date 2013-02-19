@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.112-1) unstable; urgency=low
+
+  * Automatically install master packages on DC Master and Backup (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 19 Feb 2013 19:23:08 +0100
+
 univention-management-console-module-appcenter (2.0.111-1) unstable; urgency=low
 
   * Add upgrade and uninstall link to apps module (Bug #30249)

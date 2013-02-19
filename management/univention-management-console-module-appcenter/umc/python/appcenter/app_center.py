@@ -51,10 +51,12 @@ import cgi
 from urlparse import urlsplit, urlunsplit, urljoin
 from datetime import datetime
 from PIL import Image
+from socket import gaierror
 
 # related third party
 import ldif
 from simplejson import loads
+from paramiko import SSHClient, SSHException, AutoAddPolicy
 
 # univention
 from univention.management.console.log import MODULE
@@ -63,7 +65,7 @@ import univention.uldap as uldap
 import univention.management.console as umc
 
 # local application
-from util import urlopen, get_current_ram_available, check_module, component_registered
+from util import urlopen, get_current_ram_available, check_module, component_registered, get_master, get_all_backups
 
 LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/management-console-module-appcenter.log
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
@@ -572,6 +574,26 @@ class Application(object):
 		self._send_information('uninstall', status)
 		return status == 200
 
+	def install_master_packages_on_host(self, host, username, password):
+		try:
+			ssh = SSHClient()
+			ssh.set_missing_host_key_policy(AutoAddPolicy())
+			ssh.load_system_host_keys()
+			ssh.connect(host, username=username, password=password)
+			# execute command
+			cmd = '/usr/sbin/univention-add-app -m %s' % self.component_id
+			stdin, stdout, stderr = ssh.exec_command(cmd)
+			success = True
+			for line in stdout:
+				MODULE.process('STDOUT FROM %s: %s' % (host, line.strip()))
+			for line in stderr:
+				MODULE.warn('STDERR FROM %s: %s' % (host, line.strip()))
+				success = False
+			return success
+		except (gaierror, SSHException) as e:
+			MODULE.warn('Could not connect to host %s: %s' % (host, e))
+			return None
+
 	def install_dry_run(self, package_manager, component_manager, remove_component=True):
 		if self.candidate:
 			return self.candidate.install_dry_run(package_manager, component_manager, remove_component)
@@ -621,10 +643,28 @@ class Application(object):
 		package_manager.reopen_cache()
 		return packages
 
-	def install(self, package_manager, component_manager, add_component=True, send_as='install'):
+	def install(self, package_manager, component_manager, add_component=True, send_as='install', ssh_username=None, ssh_password=None):
 		if self.candidate:
 			return self.candidate.install(package_manager, component_manager, add_component, send_as)
+		con = None
 		try:
+			ucr.load()
+			is_master = ucr.get('server/role') == 'domaincontroller_master'
+			to_install = self.get('defaultpackages')
+			master_packages = self.get('defaultpackagesmaster')
+			if master_packages:
+				con, pos = uldap.getMachineConnection(ldap_master=False)
+				MODULE.info('Trying to install master packages on on DC master and DC backup')
+				if is_master:
+					to_install.extend(master_packages)
+				else:
+					master = get_master(con)
+					if ssh_username is None:
+						MODULE.warn('Not connecting to DC Master. Has to be done manually')
+					else:
+						for host in [master] + get_all_backups(con):
+							if not self.install_master_packages_on_host(host, ssh_username, ssh_password):
+								raise Exception('Unable to install %r on %s. Abort!' % (master_packages, host))
 			# remove all existing component versions
 			for iapp in self.versions:
 				# dont remove yourself (if already added)
@@ -632,12 +672,6 @@ class Application(object):
 					component_manager.remove_app(iapp)
 
 			# add the new repository component for the app
-			ucr.load()
-			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup') # packages need to be installed on backup AND master systems
-			to_install = self.get('defaultpackages')
-			if is_master and self.get('defaultpackagesmaster'):
-				to_install.extend(self.get('defaultpackagesmaster'))
-
 			if add_component:
 				component_manager.put_app(self)
 				package_manager.update()
@@ -647,11 +681,20 @@ class Application(object):
 			package_manager.commit(install=to_install, dist_upgrade=True)
 			self.update_conffiles()
 
+			if master_packages and is_master:
+				if ssh_username is None:
+					MODULE.warn('Not connecting to DC Backups. Has to be done manually')
+				else:
+					for backup in get_all_backups(con):
+						if not self.install_master_packages_on_host(backup, ssh_username, ssh_password):
+							raise Exception('Unable to install %r on %s. Has to be done manually!' % (master_packages, backup))
 			# successful installation
 			status = 200
 		except:
 			MODULE.warn(traceback.format_exc())
 			status = 500
+		finally:
+			del con
 		self._send_information(send_as, status)
 		return status == 200
 
