@@ -884,7 +884,7 @@ class ucs:
 		for listener_file in files:
 			sync_successfull = False
 			filename = os.path.join(self.listener_dir, listener_file)
-			if not filename == "%s/tmp" % self.baseConfig['%s/ad/listener/dir' % self.CONFIGBASENAME]:
+			if os.path.isfile(filename):
 				if not filename in self.rejected_files:
 					try:
 						f=file(filename,'r')
