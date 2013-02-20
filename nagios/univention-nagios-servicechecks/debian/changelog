@@ -1,3 +1,10 @@
+univention-nagios-servicechecks (3.0.1-1) unstable; urgency=low
+
+  * Updated check_univention_squid and check_univention_dansguardian to check for
+    currently supported auth methods (Bug #29506) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 20 Feb 2013 14:00:36 +0100
+
 univention-nagios-servicechecks (3.0.0-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
