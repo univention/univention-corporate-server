@@ -1,3 +1,9 @@
+univention-bacula (4.0.1-1) unstable; urgency=low
+
+  * Added bacula entries to system services umc module (Bug #17346)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 19 Feb 2013 14:23:32 +0100
+
 univention-bacula (4.0.0-3) unstable; urgency=low
 
   * fixed dependencies Bug #16257 
