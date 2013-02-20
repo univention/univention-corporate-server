@@ -1,3 +1,13 @@
+univention-squid (6.0.5-1) unstable; urgency=low
+
+  * Added squid3 entry to system services umc module (Bug #30295)
+  * Added parsing option for squid/allowfrom=all (Bug #27523)
+  * Added new variable squid/append_domain (Bug #10390) 
+  * Authentication with group membership now supports groups with spaces in their names (Bug #11819)
+  * Use CIDR masks in always_direct rule definitions (Bug #25268) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 20 Feb 2013 12:46:17 +0100
+
 univention-squid (6.0.4-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

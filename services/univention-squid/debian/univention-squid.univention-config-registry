@@ -6,7 +6,6 @@ Variables: ldap/hostdn
 Variables: squid/cache
 Variables: squid/virusscan
 Variables: squid/contentscan
-Variables: squid/ldapauth/groups
 Variables: squid/auth/groups
 Variables: squid/ntlmauth
 Variables: squid/basicauth
@@ -32,6 +31,11 @@ Variables: squid/krb5auth/children
 Variables: squid/krb5auth/keepalive
 Variables: ldap/server/port
 Variables: squid/ntlmauth/tool
+Variables: squid/append_domain
+
+Type: file
+File: etc/squid3/allowed_ldap_groups.conf
+Variables: squid/ldapauth/groups
 
 Type: file
 File: etc/security/packetfilter.d/20squid

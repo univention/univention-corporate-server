@@ -10,6 +10,18 @@ Description[en]=Verbosity of log messages (ALL logs all functionality levels, be
 Type=str
 Categories=service-webproxy
 
+[squid/append_domain]
+Description[de]=Diese Domain wird an Hostnamen ohne Punkt angehängt, sie muss mit einem Punkt beginnen. Beispiel: .example.com
+Description[en]=This domain is appended to a hostname that was entered without a dot. The domain has to start with a dot, i.e. .example.com
+Type=str
+Categories=service-webproxy
+
+[squid/cache]
+Description[de]=Komplette Deaktvierung des cachings, Squid arbeitet nur als Proxy wenn dies false ist.
+Description[en]=Completely deactivate caching, only work as proxy if this is set to false.
+Type=str
+Categories=service-webproxy
+
 [squid/virusscan]
 Description[de]=Virenscanner für squid aktivieren
 Description[en]=Activate virus scanner for squid
