@@ -37,7 +37,7 @@ univention-directory-listener (7.0.6-3) unstable; urgency=low
 
 univention-directory-listener (7.0.6-2) unstable; urgency=low
 
-  * Lower debug level for some INFO messages (Bug #9819)
+  * Lower debug level for some INFO messages (Bug #30521)
 
  -- Arvid Requate <requate@univention.de>  Wed, 13 Feb 2013 11:10:06 +0100
 
