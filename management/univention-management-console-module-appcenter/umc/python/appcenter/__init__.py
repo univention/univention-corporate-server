@@ -127,7 +127,7 @@ class Instance(umcm.Base):
 		self.package_manager.reopen_cache()
 		for application in applications:
 			if pattern.search(application.name):
-				props = application.to_dict(self.package_manager)
+				props = application.to_dict(self.package_manager, self._username)
 
 				# delete larger entries
 				for ikey in ('readmeupdate', 'licenseagreement'):
@@ -143,7 +143,7 @@ class Instance(umcm.Base):
 		LICENSE.reload()
 		application = Application.find(application)
 		self.package_manager.reopen_cache()
-		return application.to_dict(self.package_manager)
+		return application.to_dict(self.package_manager, self._username)
 
 	@sanitize(
 			function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
@@ -166,10 +166,10 @@ class Instance(umcm.Base):
 			if not application:
 				MODULE.info('Application not found: %s' % application_id)
 				can_continue = False
-			elif function == 'install' and not application.can_be_installed(self.package_manager):
+			elif function == 'install' and not application.can_be_installed(self.package_manager, self._username):
 				MODULE.info('Application cannot be installed: %s' % application_id)
 				can_continue = False
-			elif function == 'update' and not application.can_be_updated(self.package_manager):
+			elif function == 'update' and not application.can_be_updated(self.package_manager, self._username):
 				MODULE.info('Application cannot be updated: %s' % application_id)
 				can_continue = False
 

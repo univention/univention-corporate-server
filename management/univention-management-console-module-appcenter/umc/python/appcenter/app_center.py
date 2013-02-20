@@ -52,6 +52,7 @@ from urlparse import urlsplit, urlunsplit, urljoin
 from datetime import datetime
 from PIL import Image
 from socket import gaierror
+from grp import getgrnam
 
 # related third party
 import ldif
@@ -454,16 +455,16 @@ class Application(object):
 
 		return final_applications
 
-	def to_dict(self, package_manager):
+	def to_dict(self, package_manager, username):
 		ucr.load()
 		res = copy.copy(self._options)
 		res['component_id'] = self.component_id
-		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
+		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager, username)
 		cannot_install_reason = res['cannot_install_reason']
 
 		res['can_install'] = cannot_install_reason is None
 		res['is_installed'] = res['can_uninstall'] = cannot_install_reason == 'installed'
-		res['cannot_update_reason'], res['cannot_update_reason_detail'] = self.cannot_update_reason(package_manager)
+		res['cannot_update_reason'], res['cannot_update_reason_detail'] = self.cannot_update_reason(package_manager, username)
 		res['can_update'] = self.candidate and res['cannot_update_reason'] is None # faster than self.can_be_updated()
 		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
@@ -489,30 +490,37 @@ class Application(object):
 				res['umc_flavor'] = None
 		if self.candidate:
 			# too expensive
-			# res['candidate'] = self.candidate.to_dict(package_manager)
+			# res['candidate'] = self.candidate.to_dict(package_manager, username)
 			res['candidate_version'] = self.candidate.version
 			res['candidate_component_id'] = self.candidate.component_id
 			res['candidate_server_role'] = self.candidate.get('serverrole')
 		return res
 
-	def cannot_update_reason(self, package_manager):
+	def cannot_update_reason(self, package_manager, username):
 		if self.candidate:
-			return self.candidate.cannot_install_reason(package_manager, check_is_installed=False)
+			return self.candidate.cannot_install_reason(package_manager, username, check_is_installed=False)
 		return None, None
 
-	def can_be_updated(self, package_manager):
+	def can_be_updated(self, package_manager, username):
 		if self.candidate:
-			return self.cannot_update_reason(package_manager)[0] is None
+			return self.cannot_update_reason(package_manager, username)[0] is None
 		else:
 			return False
 
-	def cannot_install_reason(self, package_manager, check_is_installed=True):
+	def cannot_install_reason(self, package_manager, username, check_is_installed=True):
 		is_joined = os.path.exists('/var/univention-join/joined')
 		server_role = ucr.get('server/role')
+		try:
+			# TODO: nested groups not supported
+			domain_admins = getgrnam('Domain Admins')[3] # gr_mem
+		except:
+			domain_admins = []
 		if check_is_installed and self.is_installed(package_manager):
 			return 'installed', None
 		elif self.get('defaultpackagesmaster') and not is_joined:
 			return 'not_joined', None
+		elif self.get('defaultpackagesmaster') and username not in domain_admins:
+			return 'no_admin', None
 		elif self.get('serverrole') and server_role not in self.get('serverrole'):
 			return 'wrong_serverrole', server_role
 		elif self.get('minphysicalram') and get_current_ram_available() < self.get('minphysicalram'):
@@ -536,8 +544,8 @@ class Application(object):
 	def is_installed(self, package_manager):
 		return all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages'))
 
-	def can_be_installed(self, package_manager, check_is_installed=True):
-		return not bool(self.cannot_install_reason(package_manager, check_is_installed)[0])
+	def can_be_installed(self, package_manager, username, check_is_installed=True):
+		return not bool(self.cannot_install_reason(package_manager, username, check_is_installed)[0])
 
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables

@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.113-1) unstable; urgency=low
+
+  * Autoinstallation may only succeed if user is Domain Admin (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Feb 2013 11:55:20 +0100
+
 univention-management-console-module-appcenter (2.0.112-1) unstable; urgency=low
 
   * Automatically install master packages on DC Master and Backup (Bug #30503)

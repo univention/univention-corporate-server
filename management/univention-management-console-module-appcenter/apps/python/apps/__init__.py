@@ -72,5 +72,5 @@ class Instance(umcm.Base):
 		application = Application.find(application)
 		if application is None:
 			return None
-		return application.to_dict(self.package_manager)
+		return application.to_dict(self.package_manager, self._username)
 
