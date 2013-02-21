@@ -36,14 +36,85 @@ from contextlib import contextmanager
 import urllib2
 
 # related third party
-#import psutil # psutil is outdated. reenable when methods are supported
+#import psutil # our psutil is outdated. reenable when methods are supported
+from httplib import HTTPSConnection
+from simplejson import loads, dumps
 
 # univention
 from univention.management.console.log import MODULE
 import univention.config_registry
+from univention.admin.handlers.computers import domaincontroller_master
+from univention.admin.handlers.computers import domaincontroller_backup
+
 
 # local application
 from constants import COMPONENT_BASE, COMP_PARTS, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
+
+def get_hosts(module, lo, ucr=None):
+ 	hosts = module.lookup(None, lo, None)
+	ips = []
+	if ucr:
+		hostname = ucr.get('hostname')
+	else:
+		hostname = None
+	for host in hosts:
+		if hostname == host.info['name']:
+			continue
+		if host.info['ip']:
+			ips.append(host.info['ip'][0])
+	return ips
+
+def get_master(lo):
+	return get_hosts(domaincontroller_master, lo)[0]
+
+def get_all_backups(lo, ucr=None):
+	return get_hosts(domaincontroller_backup, lo, ucr)
+
+class UMCConnection(object):
+	def __init__(self, host, username=None, password=None):
+		self._host = host
+		self._headers = {
+			'Content-Type' : 'application/json; charset=UTF-8'
+		}
+		if username is not None:
+			self.auth(username, password)
+
+	def get_connection(self):
+		# once keep-alive is over, the socket closes
+		#   so create a new connection on every request
+		return HTTPSConnection(self._host)
+
+	def auth(self, username, password):
+		data = self.build_data({'username' : username, 'password' : password})
+		con = self.get_connection()
+		con.request('POST', '/umcp/auth', data)
+		response = con.getresponse()
+		cookie = response.getheader('set-cookie')
+		if cookie is None:
+			error_message = '%s: Authentication failed: %s' % (self._host, response.read())
+			MODULE.error(error_message)
+			raise Exception(error_message)
+		self._headers['Cookie'] = cookie
+
+	def build_data(self, data, flavor=None):
+		data = {'options' : data}
+		if flavor:
+			data['flavor'] = flavor
+		return dumps(data)
+
+	def request(self, url, data=None, flavor=None):
+		if data is None:
+			data = {}
+		data = self.build_data(data, flavor)
+		con = self.get_connection()
+		con.request('POST', '/umcp/command/%s' % url, data, headers=self._headers)
+		response = con.getresponse()
+		if response.status != 200:
+			error_message = '%s on %s: %s' % (response.status, self._host, response.read())
+			MODULE.error(error_message)
+			raise Exception(error_message)
+		content = response.read()
+		return loads(content)['result']
 
 # TODO: this should probably go into univention-lib
 # and hide urllib/urllib2 completely

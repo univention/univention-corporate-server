@@ -33,6 +33,7 @@
 
 # standard library
 import shutil
+import time
 from distutils.version import LooseVersion
 from gzip import GzipFile
 from StringIO import StringIO
@@ -63,7 +64,7 @@ import univention.uldap as uldap
 import univention.management.console as umc
 
 # local application
-from util import urlopen, get_current_ram_available, component_registered
+from util import urlopen, get_current_ram_available, component_registered, UMCConnection, get_master, get_all_backups
 
 LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/management-console-module-appcenter.log
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
@@ -450,6 +451,7 @@ class Application(object):
 					if iiapp is not used_app:
 						used_app = iiapp
 						used_app.candidate = iapps[0]
+						used_app.candidate.versions = iapps
 					break
 			# store all versions
 			used_app.versions = iapps
@@ -490,6 +492,7 @@ class Application(object):
 			res['candidate_version'] = self.candidate.version
 			res['candidate_component_id'] = self.candidate.component_id
 			res['candidate_server_role'] = self.candidate.get('serverrole')
+			res['candidate_readmeupdate'] = self.candidate.get('readmeupdate')
 		return res
 
 	def cannot_update_reason(self, package_manager):
@@ -620,10 +623,73 @@ class Application(object):
 		package_manager.reopen_cache()
 		return packages
 
-	def install(self, package_manager, component_manager, add_component=True, send_as='install'):
+	def install_master_packages_on_host(self, package_manager, function, host, username, password):
+		connection = UMCConnection(host, username, password)
+		result = connection.request('appcenter/invoke', {'function' : function, 'application' : self.id, 'force' : True, 'only_master_packages' : True, 'dont_remote_install' : True})
+		if result['can_continue']:
+			while True:
+				all_errors = set()
+				result = connection.request('appcenter/progress')
+				MODULE.info('Result from %s: %r' % (host, result))
+				info = result['info']
+				steps = result['steps']
+				errors = ['%s: %s' % (host, error) for error in result['errors']]
+				if info:
+					package_manager.progress_state.info(_('Output from %s: %s') % (host, info))
+				package_manager.progress_state.percentage(steps)
+				for error in errors:
+					if error not in all_errors:
+						package_manager.progress_state.error(error)
+						all_errors.add(error)
+				if result['finished'] is True:
+					package_manager.progress_state.percentage(0)
+					break
+				time.sleep(0.1)
+			return True
+		else:
+			MODULE.warn('%r' % result)
+			return False
+
+	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_master_packages=False, dont_remote_install=False):
 		if self.candidate:
-			return self.candidate.install(package_manager, component_manager, add_component, send_as)
+			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install)
+		raised_before_installed = True
 		try:
+			function = 'install'
+			if send_as == 'update':
+				function = 'update'
+ 			ucr.load()
+ 			is_master = ucr.get('server/role') == 'domaincontroller_master'
+ 			is_backup = ucr.get('server/role') == 'domaincontroller_backup'
+			to_install = []
+			if not only_master_packages:
+				to_install.extend(self.get('defaultpackages'))
+ 			master_packages = self.get('defaultpackagesmaster')
+ 			if master_packages:
+ 				MODULE.info('Trying to install master packages on DC master and DC backup')
+ 				if is_master:
+ 					to_install.extend(master_packages)
+ 				else:
+					if is_backup:
+						# complete installation on backup, too
+						to_install.extend(master_packages)
+ 					if username is None or dont_remote_install:
+ 						MODULE.warn('Not connecting to DC Master and Backups. Has to be done manually')
+ 					else:
+						lo = uldap.getMachineConnection(ldap_master=False)
+						try:
+							# may be backup: dont install on oneself!
+							for host in [get_master(lo)] + get_all_backups(lo, ucr):
+								package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
+								if not self.install_master_packages_on_host(package_manager, function, host, username, password):
+									error_message = 'Unable to install %r on %s. Abort!' % (master_packages, host)
+									MODULE.error(error_message)
+									raise Exception(error_message)
+						finally:
+							del lo
+			# from now on better dont remove component
+			raised_before_installed = False
+
 			# remove all existing component versions
 			for iapp in self.versions:
 				# dont remove yourself (if already added)
@@ -631,15 +697,23 @@ class Application(object):
 					component_manager.remove_app(iapp)
 
 			# add the new repository component for the app
-			ucr.load()
-			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup') # packages need to be installed on backup AND master systems
-			to_install = self.get('defaultpackages')
-			if is_master and self.get('defaultpackagesmaster'):
-				to_install.extend(self.get('defaultpackagesmaster'))
-
 			if add_component:
 				component_manager.put_app(self)
 				package_manager.update()
+
+			if master_packages and is_master:
+				if username is None or dont_remote_install:
+					MODULE.warn('Not connecting to DC Backups. Has to be done manually')
+				else:
+					lo = uldap.getMachineConnection(ldap_master=False)
+					try:
+						for backup in get_all_backups(lo):
+							if not self.install_master_packages_on_host(package_manager, function, backup, username, password):
+								error_message = 'Unable to install %r on %s. Has to be done manually!' % (master_packages, backup)
+								MODULE.error(error_message)
+								raise Exception(error_message)
+					finally:
+						del lo
 
 			# install + dist_upgrade
 			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
@@ -650,6 +724,8 @@ class Application(object):
 			status = 200
 		except:
 			MODULE.warn(traceback.format_exc())
+			if raised_before_installed:
+				component_manager.remove_app(self)
 			status = 500
 		self._send_information(send_as, status)
 		return status == 200
@@ -661,12 +737,12 @@ class Application(object):
 		uuid = LICENSE.uuid or '00000000-0000-0000-0000-000000000000'
 		try:
 			values = {'uuid': uuid,
-			          'app': self.id,
-			          'version': self.version,
-			          'action': action,
-			          'status': status,
-			          'role': ucr.get('server/role'),
-			          }
+				  'app': self.id,
+				  'version': self.version,
+				  'action': action,
+				  'status': status,
+				  'role': ucr.get('server/role'),
+				  }
 			request_data = urllib.urlencode(values)
 			request = urllib2.Request(url, request_data)
 			urlopen(request)

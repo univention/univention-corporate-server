@@ -453,7 +453,7 @@ define([
 				verb = _("uninstall");
 				verb1 = _("uninstalling");
 				break;
-			case 'upgrade':
+			case 'update':
 				verb = _("upgrade");
 				verb1 = _("upgrading");
 				break;
@@ -732,7 +732,7 @@ define([
 				'contact',
 				'website',
 				'version',
-				'umc_module',
+				//'umc_module', // problems with dialog staying open
 				'web_interface',
 				'user_activation_required',
 				'candidate_version',
@@ -772,11 +772,11 @@ define([
 		},
 
 		upgradeApp: function(app) {
-			if (app.readmeupdate) {
+			if (app.candidate_readmeupdate) {
 				// before updating, show update README file
 				var content = '<h1>' + _('Upgrade information') + '</h1>';
 				content += '<div style="max-height:250px; overflow:auto;">' +
-					this.formatTxt(app.readmeupdate) +
+					this.formatTxt(app.candidate_readmeupdate) +
 					'</div>';
 				dialog.confirm(content, [{
 					name: 'decline',

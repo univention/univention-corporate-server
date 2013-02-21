@@ -148,13 +148,17 @@ class Instance(umcm.Base):
 	@sanitize(
 			function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
 			application=StringSanitizer(minimum=1, required=True),
-			force=BooleanSanitizer()
+			force=BooleanSanitizer(),
+			only_master_packages=BooleanSanitizer(),
+			dont_remote_install=BooleanSanitizer()
 		)
 	def invoke(self, request):
 		function = request.options.get('function')
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
 		force = request.options.get('force')
+		only_master_packages = request.options.get('only_master_packages')
+		dont_remote_install = request.options.get('dont_remote_install')
 		try:
 			# make sure that the application cane be installed/updated
 			can_continue = True
@@ -164,19 +168,21 @@ class Instance(umcm.Base):
 				'broken' : [],
 			}
 			if not application:
-				MODULE.info('Application not found: %s' % application_id)
+				MODULE.process('Application not found: %s' % application_id)
 				can_continue = False
-			elif function == 'install' and not application.can_be_installed(self.package_manager):
-				MODULE.info('Application cannot be installed: %s' % application_id)
+			elif function == 'install' and not only_master_packages and not application.can_be_installed(self.package_manager):
+				MODULE.process('Application cannot be installed: %s' % application_id)
 				can_continue = False
-			elif function == 'update' and not application.can_be_updated(self.package_manager):
-				MODULE.info('Application cannot be updated: %s' % application_id)
+			elif function == 'update' and not only_master_packages and not application.can_be_updated(self.package_manager):
+				MODULE.process('Application cannot be updated: %s' % application_id)
 				can_continue = False
 
 			if can_continue and function in ('install', 'update'):
-				result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=False)
+				if not only_master_packages:
+					# only_master_packages? dont need to dry_run. but be sure to add component (done in dry_run!)
+					result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=False)
 				if result['broken'] or (result['remove'] and not force):
-					MODULE.info('Remove component: %s' % application_id)
+					MODULE.process('Remove component: %s' % application_id)
 					self.component_manager.remove_app(application)
 					self.package_manager.update()
 					can_continue = False
@@ -192,7 +198,7 @@ class Instance(umcm.Base):
 						with module.package_manager.no_umc_restart(exclude_apache=True):
 							if function in ('install', 'update'):
 								# dont have to add component: already added during dry_run
-								return application.install(module.package_manager, module.component_manager, add_component=False, send_as=function)
+								return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=function, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install)
 							else:
 								return application.uninstall(module.package_manager, module.component_manager)
 				def _finished(thread, result):
