@@ -66,7 +66,7 @@ if [ "$1" = "configure" ]; then
 
 	if [ -n "$2" ]; then
 		### The following block of code may be removed after ucs3.1-1
-		if dpkg --compare-versions "$2" lt-nl "6.0.20-1"; then
+		if dpkg --compare-versions "$2" le-nl "6.0.17-1.582.201212101237"; then
 
 			if [ "$cups_server" = "$hostname.$domainname" ]; then
 				## only set this when value does not differ from the previous default value
