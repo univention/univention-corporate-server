@@ -37,8 +37,7 @@ import locale
 # univention
 from univention.lib.package_manager import PackageManager
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import StringSanitizer
+from univention.management.console.modules.decorators import simple_response
 import univention.config_registry
 import univention.management.console as umc
 import univention.management.console.modules as umcm
@@ -60,15 +59,16 @@ class Instance(umcm.Base):
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
 
-		# populate internal cache
+		# populate translation file with nothing
+		#   otherwise one would have to ask app center server (which is undesired)
+ 		Application._get_category_translations(fake=True)
+
+	@simple_response(with_flavor='application')
+	def get(self, application):
+		# re-populate internal cache; be always as current as app center
 		# be sure to not hit app center (in case it is unavailable)
 		#   but use only local files
-		Application._get_category_translations(fake=True)
-		Application.all(only_local=True)
-
-	@sanitize(application=StringSanitizer(minimum=1, required=True))
-	@simple_response
-	def get(self, application):
+		Application.all(force_reread=True, only_local=True)
 		application = Application.find(application)
 		if application is None:
 			return None

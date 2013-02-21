@@ -5,17 +5,9 @@
 	-->
 @!@
 from univention.management.console.modules.appcenter.app_center import Application
-from univention.management.console.modules.appcenter.util import check_module
 from univention.lib.package_manager import PackageManager
 package_manager = PackageManager(lock=False)
-apps = Application.all(only_local=True, localize=False)
-def apps_used(app):
-	if check_module(app=app):
-		return False
-	if not app.is_installed(package_manager):
-		return False
-	return True
-apps = filter(apps_used, apps)
+apps = Application.all_installed(package_manager, only_local=True, localize=False)
 
 deactivated = 'no'
 if not apps:

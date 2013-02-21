@@ -522,6 +522,45 @@ define([
 			);
 		},
 
+		_detail_field_custom_user_activation_required: function(values) {
+			var useractivationrequired = values.useractivationrequired;
+			if (useractivationrequired) {
+				var txt = _('Users need to be modified in the Domain administration in order to use this service.');
+				if (values.is_installed && UMCApplication.getModule('udm', 'users/user')) {
+					return lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\')">{name}</a>', {name : txt});
+				} else {
+					return txt;
+				}
+			}
+		},
+
+		_detail_field_custom_umc_module: function(values) {
+			if (! values.is_installed) {
+				return '';
+			}
+			var umcmodulename = values.umcmodulename;
+			var umcmoduleflavor = values.umcmoduleflavor;
+			var module = UMCApplication.getModule(umcmodulename, umcmoduleflavor);
+			if (module) {
+				return lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'{umcmodulename}\', {umcmoduleflavor})">{name}</a>', {
+					umcmodulename: umcmodulename,
+					umcmoduleflavor: umcmoduleflavor ? '\'' + umcmoduleflavor + '\'' : 'undefined',
+					name: module.name
+				});
+			}
+		},
+
+		_detail_field_custom_web_interface: function(values) {
+			if (! values.is_installed) {
+				return '';
+			}
+			var webinterface = values.webinterface;
+			var name = values.webinterfacename || values.name;
+			if (webinterface) {
+				return lang.replace('<a href="{webinterface}" target="_blank">{name}</a>', {webinterface: webinterface, name: _('Open %s', name)});
+			}
+		},
+
 		_detail_field_custom_candidate_version: function(values) {
 			var version = values.version;
 			var candidate_version = values.candidate_version;
@@ -693,6 +732,9 @@ define([
 				'contact',
 				'website',
 				'version',
+				'umc_module',
+				'web_interface',
+				'user_activation_required',
 				'candidate_version',
 				'categories',
 				'longdescription',
@@ -713,6 +755,9 @@ define([
 				'contact': _("Contact"),
 				'website': _("Website"),
 				'version': _('Installed version'),
+				'umc_module': _('UMC Module'),
+				'web_interface': _('Web interface'),
+				'user_activation_required': _('Domain administration'),
 				'candidate_version': _('Candidate version'),
 				'categories': _("Section"),
 				'longdescription': _("Description"),

@@ -2,7 +2,6 @@
 from polib import POFile, POEntry
 from datetime import datetime
 from univention.management.console.modules.appcenter.app_center import Application
-from univention.management.console.modules.appcenter.util import check_module
 from univention.lib.package_manager import PackageManager
 package_manager = PackageManager(lock=False)
 po = POFile()
@@ -23,11 +22,7 @@ entry = POEntry(
 	msgstr='Installierte Applikationen'
 )
 po.append(entry)
-for app in Application.all(only_local=True, localize=False):
-	if check_module(app=app):
-		continue
-	if not app.is_installed(package_manager):
-		continue
+for app in Application.all_installed(package_manager, only_local=True, localize=False):
 	for attr in ('Name', 'Description'):
 		try:
 			msgid = msgstr=app.raw_config.get('Application', attr)

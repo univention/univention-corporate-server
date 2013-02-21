@@ -56,7 +56,6 @@ define([
 			innerHTML: content
 		});
 		parentWidget.on('.' + callbackId + ':click', function() {
-			tools.umcpCommand('appcenter/get', {}, false, false, false);
 			callback(callbackId);
 		});
 		return anchor;
@@ -111,7 +110,7 @@ define([
 			container.addChild(descriptionPane);
 
 			this.standby(true);
-			tools.umcpCommand('apps/get', {'application' : this.moduleFlavor}).then(lang.hitch(this, function(data) {
+			tools.umcpCommand('apps/get', {}, undefined, this.moduleFlavor).then(lang.hitch(this, function(data) {
 				var app = data.result;
 				if (app === null) {
 					// no app found. should not happen if not opened manually
@@ -134,6 +133,9 @@ define([
 				this.addToDetails(appCenterTranslate('Maintainer'), this._appcenterPage._detail_field_custom_maintainer(app));
 				this.addToDetails(appCenterTranslate('Contact'), this._appcenterPage._detail_field_custom_contact(app));
 				this.addToDetails(appCenterTranslate('Website'), this._appcenterPage._detail_field_custom_website(app));
+				this.addToDetails(appCenterTranslate('UMC Module'), this._appcenterPage._detail_field_custom_umc_module(app));
+				this.addToDetails(appCenterTranslate('Web interface'), this._appcenterPage._detail_field_custom_web_interface(app));
+				this.addToDetails(appCenterTranslate('Domain administration'), this._appcenterPage._detail_field_custom_user_activation_required(app));
 				this.addToDetails(appCenterTranslate('Installed version'), this._appcenterPage._detail_field_custom_version(app));
 				if (app.candidate_version) {
 					var candidate_version = app.candidate_version;

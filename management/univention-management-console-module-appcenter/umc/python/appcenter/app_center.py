@@ -150,7 +150,7 @@ class Application(object):
 						self._options[k] = v
 
 		# parse boolean values
-		for ikey in ('notifyvendor',):
+		for ikey in ('notifyvendor', 'useractivationrequired'):
 			if ikey in self._options:
 				self._options[ikey] = config.getboolean('Application', ikey)
 			else:
@@ -377,6 +377,11 @@ class Application(object):
 				shutil.copymode(template_png, png_16)
 
 	@classmethod
+	def all_installed(cls, package_manager, force_reread=False, only_local=False, localize=True):
+		applications = cls.all(force_reread=force_reread, only_local=only_local, localize=localize)
+		return [app for app in applications if app.is_installed(package_manager)]
+
+	@classmethod
 	def all(cls, force_reread=False, only_local=False, localize=True):
 		# reload ucr variables
 		ucr.load()
@@ -477,14 +482,11 @@ class Application(object):
 		#		res['show_ldap_schema_confirmation'] = True
 		res['server'] = self.get_server()
 		res['server_version'] = ucr.get('version/version')
-		res['umc_module'] = self.get('UMCModuleName') or self.id
-		res['umc_flavor'] = self.get('UMCModuleFlavor')
+		res['umc_module'] = 'apps'
+		res['umc_flavor'] = self.id
 		if not check_module(res['umc_module'], res['umc_flavor']):
-			res['umc_module'] = 'apps'
-			res['umc_flavor'] = self.id
-			if not check_module(res['umc_module'], res['umc_flavor']):
-				res['umc_module'] = None
-				res['umc_flavor'] = None
+			res['umc_module'] = None
+			res['umc_flavor'] = None
 		if self.candidate:
 			# too expensive
 			# res['candidate'] = self.candidate.to_dict(package_manager)
