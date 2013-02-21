@@ -42,23 +42,11 @@ import urllib2
 from univention.management.console.resources import moduleManager
 from univention.management.console.log import MODULE
 import univention.config_registry
-import univention.admin.handlers.computers.domaincontroller_master
-import univention.admin.handlers.computers.domaincontroller_backup
 
 # local application
 from constants import COMPONENT_BASE, COMP_PARTS, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
 
 moduleManager.load()
-
-def get_hosts(module, lo):
-	hosts = module.lookup(None, lo, None)
-	return ['%s.%s' % (host.info['name'], host.info['domain']) for host in hosts]
-
-def get_master(lo):
-	return get_hosts(univention.admin.handlers.computers.domaincontroller_master, lo)[0]
-
-def get_all_backups(lo):
-	return get_hosts(univention.admin.handlers.computers.domaincontroller_backup, lo)
 
 def check_module(module_id=None, flavor_id=None, app=None):
 	if app is not None:

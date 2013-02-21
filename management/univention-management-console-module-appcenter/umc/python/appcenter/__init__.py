@@ -127,7 +127,7 @@ class Instance(umcm.Base):
 		self.package_manager.reopen_cache()
 		for application in applications:
 			if pattern.search(application.name):
-				props = application.to_dict(self.package_manager, self._username)
+				props = application.to_dict(self.package_manager)
 
 				# delete larger entries
 				for ikey in ('readmeupdate', 'licenseagreement'):
@@ -143,7 +143,7 @@ class Instance(umcm.Base):
 		LICENSE.reload()
 		application = Application.find(application)
 		self.package_manager.reopen_cache()
-		return application.to_dict(self.package_manager, self._username)
+		return application.to_dict(self.package_manager)
 
 	@sanitize(
 			function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
@@ -166,10 +166,10 @@ class Instance(umcm.Base):
 			if not application:
 				MODULE.info('Application not found: %s' % application_id)
 				can_continue = False
-			elif function == 'install' and not application.can_be_installed(self.package_manager, self._username):
+			elif function == 'install' and not application.can_be_installed(self.package_manager):
 				MODULE.info('Application cannot be installed: %s' % application_id)
 				can_continue = False
-			elif function == 'update' and not application.can_be_updated(self.package_manager, self._username):
+			elif function == 'update' and not application.can_be_updated(self.package_manager):
 				MODULE.info('Application cannot be updated: %s' % application_id)
 				can_continue = False
 
@@ -192,7 +192,7 @@ class Instance(umcm.Base):
 						with module.package_manager.no_umc_restart(exclude_apache=True):
 							if function in ('install', 'update'):
 								# dont have to add component: already added during dry_run
-								return application.install(module.package_manager, module.component_manager, add_component=False, send_as=function, ssh_username=self._username, ssh_password=self._password)
+								return application.install(module.package_manager, module.component_manager, add_component=False, send_as=function)
 							else:
 								return application.uninstall(module.package_manager, module.component_manager)
 				def _finished(thread, result):

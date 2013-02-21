@@ -56,6 +56,7 @@ define([
 			innerHTML: content
 		});
 		parentWidget.on('.' + callbackId + ':click', function() {
+			tools.umcpCommand('appcenter/get', {}, false, false, false);
 			callback(callbackId);
 		});
 		return anchor;

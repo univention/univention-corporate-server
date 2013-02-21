@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.114-1) unstable; urgency=low
+
+  * Reverting patches for autoinstallation (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 21 Feb 2013 12:25:47 +0100
+
 univention-management-console-module-appcenter (2.0.113-1) unstable; urgency=low
 
   * Autoinstallation may only succeed if user is Domain Admin (Bug #30503)

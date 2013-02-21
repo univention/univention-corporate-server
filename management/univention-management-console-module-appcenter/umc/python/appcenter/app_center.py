@@ -51,13 +51,10 @@ import cgi
 from urlparse import urlsplit, urlunsplit, urljoin
 from datetime import datetime
 from PIL import Image
-from socket import gaierror
-from grp import getgrnam
 
 # related third party
 import ldif
 from simplejson import loads
-from paramiko import SSHClient, SSHException, AutoAddPolicy
 
 # univention
 from univention.management.console.log import MODULE
@@ -66,7 +63,7 @@ import univention.uldap as uldap
 import univention.management.console as umc
 
 # local application
-from util import urlopen, get_current_ram_available, check_module, component_registered, get_master, get_all_backups
+from util import urlopen, get_current_ram_available, check_module, component_registered
 
 LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/management-console-module-appcenter.log
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
@@ -455,16 +452,16 @@ class Application(object):
 
 		return final_applications
 
-	def to_dict(self, package_manager, username):
+	def to_dict(self, package_manager):
 		ucr.load()
 		res = copy.copy(self._options)
 		res['component_id'] = self.component_id
-		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager, username)
+		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
 
 		res['can_install'] = cannot_install_reason is None
 		res['is_installed'] = res['can_uninstall'] = cannot_install_reason == 'installed'
-		res['cannot_update_reason'], res['cannot_update_reason_detail'] = self.cannot_update_reason(package_manager, username)
+		res['cannot_update_reason'], res['cannot_update_reason_detail'] = self.cannot_update_reason(package_manager)
 		res['can_update'] = self.candidate and res['cannot_update_reason'] is None # faster than self.can_be_updated()
 		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
@@ -490,37 +487,30 @@ class Application(object):
 				res['umc_flavor'] = None
 		if self.candidate:
 			# too expensive
-			# res['candidate'] = self.candidate.to_dict(package_manager, username)
+			# res['candidate'] = self.candidate.to_dict(package_manager)
 			res['candidate_version'] = self.candidate.version
 			res['candidate_component_id'] = self.candidate.component_id
 			res['candidate_server_role'] = self.candidate.get('serverrole')
 		return res
 
-	def cannot_update_reason(self, package_manager, username):
+	def cannot_update_reason(self, package_manager):
 		if self.candidate:
-			return self.candidate.cannot_install_reason(package_manager, username, check_is_installed=False)
+			return self.candidate.cannot_install_reason(package_manager, check_is_installed=False)
 		return None, None
 
-	def can_be_updated(self, package_manager, username):
+	def can_be_updated(self, package_manager):
 		if self.candidate:
-			return self.cannot_update_reason(package_manager, username)[0] is None
+			return self.cannot_update_reason(package_manager)[0] is None
 		else:
 			return False
 
-	def cannot_install_reason(self, package_manager, username, check_is_installed=True):
+	def cannot_install_reason(self, package_manager, check_is_installed=True):
 		is_joined = os.path.exists('/var/univention-join/joined')
 		server_role = ucr.get('server/role')
-		try:
-			# TODO: nested groups not supported
-			domain_admins = getgrnam('Domain Admins')[3] # gr_mem
-		except:
-			domain_admins = []
 		if check_is_installed and self.is_installed(package_manager):
 			return 'installed', None
 		elif self.get('defaultpackagesmaster') and not is_joined:
 			return 'not_joined', None
-		elif self.get('defaultpackagesmaster') and username not in domain_admins:
-			return 'no_admin', None
 		elif self.get('serverrole') and server_role not in self.get('serverrole'):
 			return 'wrong_serverrole', server_role
 		elif self.get('minphysicalram') and get_current_ram_available() < self.get('minphysicalram'):
@@ -544,8 +534,8 @@ class Application(object):
 	def is_installed(self, package_manager):
 		return all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages'))
 
-	def can_be_installed(self, package_manager, username, check_is_installed=True):
-		return not bool(self.cannot_install_reason(package_manager, username, check_is_installed)[0])
+	def can_be_installed(self, package_manager, check_is_installed=True):
+		return not bool(self.cannot_install_reason(package_manager, check_is_installed)[0])
 
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables
@@ -581,26 +571,6 @@ class Application(object):
 			status = 500
 		self._send_information('uninstall', status)
 		return status == 200
-
-	def install_master_packages_on_host(self, host, username, password):
-		try:
-			ssh = SSHClient()
-			ssh.set_missing_host_key_policy(AutoAddPolicy())
-			ssh.load_system_host_keys()
-			ssh.connect(host, username=username, password=password)
-			# execute command
-			cmd = '/usr/sbin/univention-add-app -m %s' % self.component_id
-			stdin, stdout, stderr = ssh.exec_command(cmd)
-			success = True
-			for line in stdout:
-				MODULE.process('STDOUT FROM %s: %s' % (host, line.strip()))
-			for line in stderr:
-				MODULE.warn('STDERR FROM %s: %s' % (host, line.strip()))
-				success = False
-			return success
-		except (gaierror, SSHException) as e:
-			MODULE.warn('Could not connect to host %s: %s' % (host, e))
-			return None
 
 	def install_dry_run(self, package_manager, component_manager, remove_component=True):
 		if self.candidate:
@@ -651,28 +621,10 @@ class Application(object):
 		package_manager.reopen_cache()
 		return packages
 
-	def install(self, package_manager, component_manager, add_component=True, send_as='install', ssh_username=None, ssh_password=None):
+	def install(self, package_manager, component_manager, add_component=True, send_as='install'):
 		if self.candidate:
 			return self.candidate.install(package_manager, component_manager, add_component, send_as)
-		con = None
 		try:
-			ucr.load()
-			is_master = ucr.get('server/role') == 'domaincontroller_master'
-			to_install = self.get('defaultpackages')
-			master_packages = self.get('defaultpackagesmaster')
-			if master_packages:
-				con, pos = uldap.getMachineConnection(ldap_master=False)
-				MODULE.info('Trying to install master packages on on DC master and DC backup')
-				if is_master:
-					to_install.extend(master_packages)
-				else:
-					master = get_master(con)
-					if ssh_username is None:
-						MODULE.warn('Not connecting to DC Master. Has to be done manually')
-					else:
-						for host in [master] + get_all_backups(con):
-							if not self.install_master_packages_on_host(host, ssh_username, ssh_password):
-								raise Exception('Unable to install %r on %s. Abort!' % (master_packages, host))
 			# remove all existing component versions
 			for iapp in self.versions:
 				# dont remove yourself (if already added)
@@ -680,6 +632,12 @@ class Application(object):
 					component_manager.remove_app(iapp)
 
 			# add the new repository component for the app
+			ucr.load()
+			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup') # packages need to be installed on backup AND master systems
+			to_install = self.get('defaultpackages')
+			if is_master and self.get('defaultpackagesmaster'):
+				to_install.extend(self.get('defaultpackagesmaster'))
+
 			if add_component:
 				component_manager.put_app(self)
 				package_manager.update()
@@ -689,20 +647,11 @@ class Application(object):
 			package_manager.commit(install=to_install, dist_upgrade=True)
 			self.update_conffiles()
 
-			if master_packages and is_master:
-				if ssh_username is None:
-					MODULE.warn('Not connecting to DC Backups. Has to be done manually')
-				else:
-					for backup in get_all_backups(con):
-						if not self.install_master_packages_on_host(backup, ssh_username, ssh_password):
-							raise Exception('Unable to install %r on %s. Has to be done manually!' % (master_packages, backup))
 			# successful installation
 			status = 200
 		except:
 			MODULE.warn(traceback.format_exc())
 			status = 500
-		finally:
-			del con
 		self._send_information(send_as, status)
 		return status == 200
 

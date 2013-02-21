@@ -14,7 +14,6 @@ Package: univention-management-console-module-appcenter
 Architecture: all
 Depends: univention-management-console-server,
  python-univention-lib,
- python-paramiko,
  python-imaging,
  univention-config,
  univention-updater,

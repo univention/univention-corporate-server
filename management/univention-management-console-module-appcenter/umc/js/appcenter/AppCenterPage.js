@@ -644,8 +644,6 @@ define([
 			var txt = '';
 			if (cannot_install_reason == 'hardware_requirements') {
 				return cannot_install_reason_detail;
-			} else if (cannot_install_reason == 'no_admin') {
-				return _('This application requires an extension of the LDAP schema.') + ' ' + _('To install the extension you need to be member of the group "Domain Admins".');
 			} else if (cannot_install_reason == 'conflict') {
 				txt = _('This application conflicts with the following Applications/Packages. Uninstall them first.');
 				txt += '<ul><li>' + cannot_install_reason_detail.join('</li><li>') + '</li></ul>';
