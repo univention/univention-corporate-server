@@ -36,7 +36,7 @@ eval "$(univention-config-registry shell)"
 create_logfile /var/log/univention/printserver-start.log "root:adm" 640
 
 
-univention-config-registry set cups/server?"$hostname.$domainname" \
+univention-config-registry set cups/server?"localhost" \
 	cups/admin?"root@"$domainname \
 	cups/systemgroup?"Printer-Admins,lp" \
 	cups/location/base?"networks" \
@@ -63,6 +63,19 @@ if [ ! -d /var/lib/cups/certs ]; then
 fi
 
 if [ "$1" = "configure" ]; then
+
+	if [ -n "$2" ]; then
+		### The following block of code may be removed after ucs3.1-1
+		if dpkg --compare-versions "$2" lt-nl "6.0.20-1"; then
+
+			if [ "$cups_server" = "$hostname.$domainname" ]; then
+				## only set this when value does not differ from the previous default value
+				univention-config-registry set cups/server="localhost"
+			fi
+
+		fi
+	fi
+
 	if test -f /etc/init.d/univention-directory-listener
 		then
 		/etc/init.d/univention-directory-listener crestart
