@@ -63,7 +63,7 @@ import univention.uldap as uldap
 import univention.management.console as umc
 
 # local application
-from util import urlopen, get_current_ram_available, check_module, component_registered
+from util import urlopen, get_current_ram_available, component_registered
 
 LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/management-console-module-appcenter.log
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
@@ -350,7 +350,7 @@ class Application(object):
 			thread.join()
 		if something_changed:
 			# some variables could change apps.xml
-			# e.g. UMCModuleName
+			# e.g. Name, Description
 			# TODO: changes take effect only after a restart of UMC
 			#   and we cannot tell at the moment
 			cls.update_conffiles()
@@ -484,9 +484,6 @@ class Application(object):
 		res['server_version'] = ucr.get('version/version')
 		res['umc_module'] = 'apps'
 		res['umc_flavor'] = self.id
-		if not check_module(res['umc_module'], res['umc_flavor']):
-			res['umc_module'] = None
-			res['umc_flavor'] = None
 		if self.candidate:
 			# too expensive
 			# res['candidate'] = self.candidate.to_dict(package_manager)

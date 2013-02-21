@@ -919,15 +919,9 @@ define([
 			this._progressBar.auto('appcenter/progress',
 				{},
 				lang.hitch(this, function() {
-					if (func === 'install') {
-						var module_name = app.umcmodulename;
-						var module_flavor = app.umcmoduleflavor;
-						if (! module_name) {
-							module_name = 'apps';
-							module_flavor = app.id;
-						}
+					if (func === 'install' && app.umc_module) {
 						// hack it into favorites: the app is yet unknown
-						UMCApplication.addFavoriteModule(module_name, module_flavor);
+						UMCApplication.addFavoriteModule(app.umc_module, app.umc_flavor);
 						UMCApplication._saveFavorites();
 					}
 					this._restartOrReload();
