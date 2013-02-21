@@ -193,7 +193,7 @@ def _reload(zones, restart=False, dns_backend='ldap'):
 					pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
 					pids[pid] = cmd
 			elif dns_backend == 'samba4':
-					cmd = [RNDC_BIN, '-p', '953', 'reload', zone]
+					cmd = [RNDC_BIN, '-p', '953', 'reload']
 					p = subprocess.Popen(cmd)
 					if p.wait() != 0:
 						restart = True
