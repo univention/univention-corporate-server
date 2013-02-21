@@ -1,3 +1,9 @@
+univention-printserver (6.0.20-4) unstable; urgency=low
+
+  * use samba crestart (Bug #29699)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Feb 2013 20:39:53 +0100
+
 univention-printserver (6.0.20-3) unstable; urgency=low
 
   * Improve update version comparison in univention-printserver.postinst

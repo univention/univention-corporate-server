@@ -73,7 +73,7 @@ if [ "$1" = "configure" ]; then
 				univention-config-registry set cups/server="localhost"
 
 				if [ -x "/etc/init.d/samba" ]; then
-					/etc/init.d/samba restart
+					/etc/init.d/samba crestart
 				fi
 				if [ -x "/etc/init.d/samba4" ]; then
 					/etc/init.d/samba4 restart
