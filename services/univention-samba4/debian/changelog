@@ -1,3 +1,10 @@
+univention-samba4 (2.0.37-5) unstable; urgency=low
+
+  * make purge_s4_computer.py executable (Bug #29460)
+  * fix output of keyblock and salt data in s4search-decode (Bug #28931)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Feb 2013 18:26:22 +0100
+
 univention-samba4 (2.0.37-4) unstable; urgency=low
 
   * Fix logrotate for winbind logfiles (Bug #29953)
@@ -21,7 +28,7 @@ univention-samba4 (2.0.37-2) unstable; urgency=low
 univention-samba4 (2.0.37-1) unstable; urgency=low
 
   * New UCR variable samba/max_log_size with new default 0 (Bug #29542)
-  * Add UCR variable description for saba/interfaces (Bug #28014)
+  * Add UCR variable description for samba/interfaces (Bug #28014)
   * Duplicate UCRWARNING header removed (Bug #28426)
   * fixes for check_essential_samba4_dns_records (Bug #28891)
   * add purge_s4_computer.py (Bug #29460)

@@ -106,10 +106,11 @@ def decode_supplementalCredentials(value, kvno = 0):
 				print "#\tkeytype: %s (%d)" % (keytype, k.keytype)
 				print "#\tkeyblock:",
 				keyblock = heimdal.keyblock_raw(context, k.keytype, k.value)
-				print keyblock
+				key_data = keyblock.keyvalue()
+				print binascii.b2a_base64(key_data).strip()
 				print "#\tkrb5SaltObject:",
 				krb5SaltObject = heimdal.salt_raw(context, krb.ctr.salt.string)
-				print krb5SaltObject
+				print krb5SaltObject.saltvalue()
 				krb5key = heimdal.asn1_encode_key(keyblock, krb5SaltObject, kvno)
 				print "#\tkrb5Key:: %s" % binascii.b2a_base64(krb5key).strip()
 		except:
