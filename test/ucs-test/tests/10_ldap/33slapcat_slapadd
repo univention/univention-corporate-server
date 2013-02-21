@@ -5,7 +5,7 @@
 ##  - univention-config-registry
 ## exposure: dangerous
 
-import sys, os, subprocess, tempfile, shutil, filecmp, time, difflib
+import sys, os, subprocess, tempfile, shutil
 from univention.config_registry import ConfigRegistry
 import univention.config_registry
 
@@ -124,6 +124,7 @@ def compare_ldif(ldif_file_1, ldif_file_2):
 		return False
 
 def slapcat(filename_to_write):
+	"""This method performs a slapcat with a output of it and invoke another method 'write'"""
 	try:
 		subprocess_slapcat = subprocess.Popen(['slapcat', '-d0', ], stdout=subprocess.PIPE)
 
@@ -147,7 +148,7 @@ def slapcat(filename_to_write):
 	if write_to_file(linelist_stdout, filename_to_write):
 		print "Slapcat was written into", filename_to_write
 	else:
-		print "Could not create", filename_to__write, "Check permissions on file management."
+		print "Could not create", filename_to_write, "Check permissions on file management."
 		sys.exit(RETURN_FAIL_CODE)
 
 def slapadd(from_tmp_file):
