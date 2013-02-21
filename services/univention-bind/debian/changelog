@@ -1,3 +1,12 @@
+univention-bind (7.0.11-3) unstable; urgency=low
+
+  * If dns/backend == samba4 try rndc and if that fails (currently it does)
+    then restart named (Bug #30321).
+  * /etc/bind/rndc.key needs to be owned by the uid the named is run as
+    and this depends on the dns/backend, so the owner needs to be 'bind'.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Feb 2013 19:32:49 +0100
+
 univention-bind (7.0.11-2) unstable; urgency=low
 
   * /etc/bind/rndc.key needs to be owned by root (Bug #30321)

@@ -39,6 +39,7 @@ configuration directory (should-state) and reload/restart as appropriate.
 __package__ = '' 	# workaround for PEP 366
 import listener
 import os
+import subprocess
 import univention.debug as ud  # pylint: disable-msg=E0611
 import time
 import errno
@@ -176,20 +177,26 @@ def clean():
 		listener.unsetuid()
 
 
-def _reload(zones, restart=False):
+def _reload(zones, restart=False, dns_backend='ldap'):
 	"""Force reload of zones; might restart daemon; returns pids."""
 	pids = {}
 	if zones:
 		# Try to only reload the zones if rndc is available
 		if os.path.exists(RNDC_BIN):
-			for zone in zones:
-				ud.debug(ud.LISTENER, ud.INFO, 'DNS: Reloading zone %s' % (zone,))
-				cmd = ['rndc', '-p', '55555', 'reload', zone]
-				pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
-				pids[pid] = cmd
-				cmd = ['rndc', '-p', '953', 'reload', zone]
-				pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
-				pids[pid] = cmd
+			if dns_backend == 'ldap':
+				for zone in zones:
+					ud.debug(ud.LISTENER, ud.INFO, 'DNS: Reloading zone %s' % (zone,))
+					cmd = ['rndc', '-p', '55555', 'reload', zone]
+					pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
+					pids[pid] = cmd
+					cmd = ['rndc', '-p', '953', 'reload', zone]
+					pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
+					pids[pid] = cmd
+			elif dns_backend == 'samba4':
+					cmd = [RNDC_BIN, '-p', '953', 'reload', zone]
+					p = subprocess.Popen(cmd)
+					if p.wait() != 0:
+						restart = True
 		else:
 			restart = True
 	# Fall back to restart, which will temporarily interrupt the service
@@ -275,13 +282,27 @@ def postrun():
 		named_conf.close()
 		proxy_conf.close()
 
+		# Restart is needed when new zones are added or old zones removed.
+		restart = False
 		do_reload = True
+		zones = []
+
 		dns_backend = listener.configRegistry.get('dns/backend')
 		if dns_backend == 'samba4':
 			if not __zone_created_or_removed:
 				do_reload = False
 			else:	## reset flag and continue with reload
 				__zone_created_or_removed = False
+		elif dns_backend == 'ldap':
+			for filename in os.listdir(PROXY_CACHE_DIR):
+				os.remove(os.path.join(PROXY_CACHE_DIR, filename))
+				if not os.path.exists(os.path.join(NAMED_CACHE_DIR, filename)):
+					restart = True
+				else:
+					zone = filename.replace(".zone", "")
+					zones.append(zone)
+			if zones:
+				ud.debug(ud.LISTENER, ud.INFO, 'DNS: Zones: %s' % (zones,))
 		elif dns_backend == 'none':
 				do_reload = False
 
@@ -291,19 +312,7 @@ def postrun():
 			ud.debug(ud.LISTENER, ud.INFO, 'DNS: Skip zone reload')
 			return
 
-		# Restart is needed when new zones are added or old zones removed.
-		restart = False
-		zones = []
-		for filename in os.listdir(PROXY_CACHE_DIR):
-			os.remove(os.path.join(PROXY_CACHE_DIR, filename))
-			if not os.path.exists(os.path.join(NAMED_CACHE_DIR, filename)):
-				restart = True
-			else:
-				zone = filename.replace(".zone", "")
-				zones.append(zone)
-
-		ud.debug(ud.LISTENER, ud.INFO, 'DNS: Zones: %s' % (zones,))
-		pids = _reload(zones, restart)
+		pids = _reload(zones, restart, dns_backend)
 		_wait_children(pids)
 		_kill_children(pids)
 	finally:

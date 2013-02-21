@@ -47,7 +47,6 @@ ucr set security/packetfilter/package/univention-bind/udp/53/all=ACCEPT \
 
 chmod g+w /etc/bind
 chmod g+w /etc/bind/*
-chown root /etc/bind/rndc.key
 
 univention-config-registry set 'bind/autostart?yes' \
                                'dns/ipv6?yes' \
