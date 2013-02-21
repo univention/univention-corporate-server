@@ -1,3 +1,10 @@
+univention-printserver (6.0.20-2) unstable; urgency=low
+
+  * restart samba and samba4 if cups/server was modified during update
+    (Bug #29699)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Feb 2013 20:20:13 +0100
+
 univention-printserver (6.0.20-1) unstable; urgency=low
 
   * change default cups/server to localhost (Bug #29699)

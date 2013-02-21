@@ -71,6 +71,13 @@ if [ "$1" = "configure" ]; then
 			if [ "$cups_server" = "$hostname.$domainname" ]; then
 				## only set this when value does not differ from the previous default value
 				univention-config-registry set cups/server="localhost"
+
+				if [ -x "/etc/init.d/samba" ]; then
+					/etc/init.d/samba restart
+				fi
+				if [ -x "/etc/init.d/samba4" ]; then
+					/etc/init.d/samba4 restart
+				fi
 			fi
 
 		fi
