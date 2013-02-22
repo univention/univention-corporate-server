@@ -72,7 +72,9 @@ define([
 			this._appcenterPage = new AppCenterPage({
 				standby: lang.hitch(this, 'standby'),
 				autoStart: false,
-				updateApplications: function() {}
+				updateApplications: lang.hitch(this, function() {
+					this.updateApplication();
+				})
 			});
 			this._appcenterPage._grid.categoriesDisplayed = false; // dont show categories in app center icon (can go beyond title pane)
 			this.own(this._appcenterPage);
@@ -88,10 +90,19 @@ define([
 				footerButtons: buttons
 			});
 			this.addChild(this._page);
-			var container = new ContainerWidget({
+			this._container = null;
+			this.updateApplication();
+		},
+
+		updateApplication: function() {
+			if (this._container) {
+				this._page.removeChild(this._container);
+				this._container.destroyRecursive();
+			}
+			this._container = new ContainerWidget({
 				scrollable: true
 			});
-			this._page.addChild(container);
+			this._page.addChild(this._container);
 
 			this._table = domConstruct.create('table', {
 				style: {width: '500px'}
@@ -100,14 +111,14 @@ define([
 				title: _('Details'),
 				content: this._table
 			});
-			container.addChild(this._detailsPane);
+			this._container.addChild(this._detailsPane);
 
 			this._text = new Text({});
 			var descriptionPane = new TitlePane({
 				title: _('Description'),
 				content: this._text
 			});
-			container.addChild(descriptionPane);
+			this._container.addChild(descriptionPane);
 
 			this.standby(true);
 			tools.umcpCommand('apps/get', {}, undefined, this.moduleFlavor).then(lang.hitch(this, function(data) {

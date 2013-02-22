@@ -68,6 +68,7 @@ class Instance(umcm.Base):
 		# re-populate internal cache; be always as current as app center
 		# be sure to not hit app center (in case it is unavailable)
 		#   but use only local files
+		self.package_manager.reopen_cache() # installation status may have changed
 		Application.all(force_reread=True, only_local=True)
 		application = Application.find(application)
 		if application is None:

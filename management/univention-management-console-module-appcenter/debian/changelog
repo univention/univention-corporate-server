@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.119-1) unstable; urgency=low
+
+  * Improve refreshing of installed apps (Bug #30249)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Feb 2013 19:15:46 +0100
+
 univention-management-console-module-appcenter (2.0.118-1) unstable; urgency=low
 
   * Warn about unreachable DC Master/Backup before installing (Bug #30503)
