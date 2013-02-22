@@ -26,37 +26,40 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define require*/
 
 define([
 	"dojo/topic",
-	"dojo/_base/array",
-	"https://www.piwik.univention.de/piwik.js"
+	"dojo/_base/array"
 ], function(topic, array) {
-	// make sure piwik has been included
-	if (!Piwik) {
-		return;
-	}
+	require(["https://www.piwik.univention.de/piwik.js"], function() {
+		// make sure piwik has been included
+		if (!Piwik) {
+			return;
+		}
 
-	// create a new tracker instance
-	var piwikTracker = {};
-	piwikTracker = Piwik.getTracker('https://www.piwik.univention.de/piwik.php', 14);
-	piwikTracker.enableLinkTracking();
+		// create a new tracker instance
+		var piwikTracker = {};
+		piwikTracker = Piwik.getTracker('https://www.piwik.univention.de/piwik.php', 14);
+		piwikTracker.enableLinkTracking();
 
-	// subscribe to all topics containing interesting actions
-	topic.subscribe('/umc/actions', function(/*moduleID?, flavor?, action*/) {
-		var titleStr = [];
-		array.forEach(arguments, function(i) {
-			if (i) {
-				// ignore values that are: null, undefined, ''
-				i = i + '';
-				titleStr.push(i.replace(/\//g, '-'));
-			}
+		// subscribe to all topics containing interesting actions
+		topic.subscribe('/umc/actions', function(/*moduleID?, flavor?, action*/) {
+			var titleStr = [];
+			array.forEach(arguments, function(i) {
+				if (i) {
+					// ignore values that are: null, undefined, ''
+					i = i + '';
+					titleStr.push(i.replace(/\//g, '-'));
+				}
+			});
+			titleStr = titleStr.join('/');
+			piwikTracker.setDocumentTitle(titleStr);
+			piwikTracker.trackPageView();
 		});
-		titleStr = titleStr.join('/');
-		piwikTracker.setDocumentTitle(titleStr);
-		piwikTracker.trackPageView();
-		console.log('PIWIK: ', titleStr);
+
+		// send login action
+		topic.publish('/umc/actions', 'session', 'login');
 	});
 });
 

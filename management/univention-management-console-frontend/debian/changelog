@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.196-1) unstable; urgency=low
+
+  * Bug #30563: adapted topic publishing
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 22 Feb 2013 16:40:49 +0100
+
 univention-management-console-frontend (2.0.195-1) unstable; urgency=low
 
   * Bug #30563: added topic publishing for umc actions

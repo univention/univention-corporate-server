@@ -63,7 +63,6 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
-	"umc/piwik",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, array, win, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
@@ -399,9 +398,7 @@ define([
 			ucrDeferred.then(function(res) {
 				if (tools.isTrue(_ucr['umc/web/piwik'])) {
 					// use piwik for user action feedback if it is not switched off explicitely
-					require(['umc/piwik'], function() {
-						topic.publish('/umc/actions', 'session', 'login');
-					});
+					require(['umc/piwik'], function() {});
 				}
 			});
 		},
