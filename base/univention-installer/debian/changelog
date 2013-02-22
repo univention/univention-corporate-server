@@ -1,3 +1,9 @@
+univention-installer (8.0.44-1) unstable; urgency=low
+
+  * use "Ctrl" instead of "Strg" in original help texts (Bug #30528)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 22 Feb 2013 14:16:35 +0100
+
 univention-installer (8.0.43-1) unstable; urgency=low
 
   * Ensure the normal interfaces/restart/auto variable is

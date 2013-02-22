@@ -373,19 +373,19 @@ class mods:
 		if last[0]==0: # first
 			if last[1]==0: # last
 				if self.cmdline.has_key( 'recover' ) and self.cmdline[ 'recover' ]:
-					text = _(' F1-Help | F12-Start Recover Shell | Strg+c-Exit')
+					text = _(' F1-Help | F12-Start Recover Shell | Ctrl+c-Exit')
 				else:
-					text = _(' F1-Help | F12-Start Installation | Strg+c-Exit')
+					text = _(' F1-Help | F12-Start Installation | Ctrl+c-Exit')
 			elif last[1]==1: # not last
-				text = _(' F1-Help | F12-Next | Strg+c-Exit')
+				text = _(' F1-Help | F12-Next | Ctrl+c-Exit')
 		elif last[0]==1: # not first
 			if last[1]==0: # last
 				if self.cmdline.has_key( 'recover' ) and self.cmdline[ 'recover' ]:
-					text = _(' F1-Help | F11-Back | F12-Start Recover Shell | Strg+c-Exit')
+					text = _(' F1-Help | F11-Back | F12-Start Recover Shell | Ctrl+c-Exit')
 				else:
-					text = _(' F1-Help | F11-Back | F12-Start Installation | Strg+c-Exit')
+					text = _(' F1-Help | F11-Back | F12-Start Installation | Ctrl+c-Exit')
 			elif last[1]==1: # not last
-				text = _(' F1-Help | F11-Back | F12-Next | Strg+c-Exit')
+				text = _(' F1-Help | F11-Back | F12-Next | Ctrl+c-Exit')
 
 		return objects.footline(text,max_y/2+18,max_x/2-(len(text)/2))
 

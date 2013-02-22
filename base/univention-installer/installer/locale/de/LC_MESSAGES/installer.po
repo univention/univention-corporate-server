@@ -166,27 +166,27 @@ msgid "Ok"
 msgstr "Ok"
 
 #: installer/main.py:376
-msgid " F1-Help | F12-Start Recover Shell | Strg+c-Exit"
+msgid " F1-Help | F12-Start Recover Shell | Ctrl+c-Exit"
 msgstr " F1-Hilfe | F12-Starte Recover Shell | Strg+c-Abbruch"
 
 #: installer/main.py:378
-msgid " F1-Help | F12-Start Installation | Strg+c-Exit"
+msgid " F1-Help | F12-Start Installation | Ctrl+c-Exit"
 msgstr " F1-Hilfe | F12-Starte Installation | Strg+c-Abbruch"
 
 #: installer/main.py:380
-msgid " F1-Help | F12-Next | Strg+c-Exit"
+msgid " F1-Help | F12-Next | Ctrl+c-Exit"
 msgstr " F1-Hilfe | F12-Weiter | Strg+c-Abbruch"
 
 #: installer/main.py:384
-msgid " F1-Help | F11-Back | F12-Start Recover Shell | Strg+c-Exit"
+msgid " F1-Help | F11-Back | F12-Start Recover Shell | Ctrl+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Starte Recover Shell | Strg+c-Abbruch"
 
 #: installer/main.py:386
-msgid " F1-Help | F11-Back | F12-Start Installation | Strg+c-Exit"
+msgid " F1-Help | F11-Back | F12-Start Installation | Ctrl+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Starte Installation | Strg+c-Abbruch"
 
 #: installer/main.py:388
-msgid " F1-Help | F11-Back | F12-Next | Strg+c-Exit"
+msgid " F1-Help | F11-Back | F12-Next | Ctrl+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | Strg+c-Abbruch"
 
 #: installer/objects.py:1019
