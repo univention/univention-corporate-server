@@ -1,3 +1,10 @@
+univention-mail-cyrus (5.0.4-2) unstable; urgency=low
+
+  * modified univention-service entry for cyrus; service is now called
+    "cyrus-imapd" (Bug #29806)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 22 Feb 2013 15:49:46 +0100
+
 univention-mail-cyrus (5.0.4-1) unstable; urgency=low
 
   * replaced popen with subprocess in cyrus.py listener (Bug #17928) 

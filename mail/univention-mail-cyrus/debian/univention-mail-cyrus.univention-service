@@ -1,4 +1,4 @@
-[cyrus2.2]
+[cyrus-imapd]
 Description[de]=Cyrus IMAP/POP-Server
 Description[en]=Cyrus IMAP/POP Server
 programs=/usr/sbin/cyrmaster
