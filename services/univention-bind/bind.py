@@ -180,10 +180,10 @@ def clean():
 def _reload(zones, restart=False, dns_backend='ldap'):
 	"""Force reload of zones; might restart daemon; returns pids."""
 	pids = {}
-	if zones:
-		# Try to only reload the zones if rndc is available
-		if os.path.exists(RNDC_BIN):
-			if dns_backend == 'ldap':
+	# Try to only reload the zones if rndc is available
+	if os.path.exists(RNDC_BIN):
+		if dns_backend == 'ldap':
+			if zones:
 				for zone in zones:
 					ud.debug(ud.LISTENER, ud.INFO, 'DNS: Reloading zone %s' % (zone,))
 					cmd = ['rndc', '-p', '55555', 'reload', zone]
@@ -192,13 +192,13 @@ def _reload(zones, restart=False, dns_backend='ldap'):
 					cmd = ['rndc', '-p', '953', 'reload', zone]
 					pid = os.spawnv(os.P_NOWAIT, RNDC_BIN, cmd)
 					pids[pid] = cmd
-			elif dns_backend == 'samba4':
-					cmd = [RNDC_BIN, '-p', '953', 'reload']
-					p = subprocess.Popen(cmd)
-					if p.wait() != 0:
-						restart = True
-		else:
-			restart = True
+		elif dns_backend == 'samba4':
+				cmd = [RNDC_BIN, '-p', '953', 'reload']
+				p = subprocess.Popen(cmd)
+				if p.wait() != 0:
+					restart = True
+	else:
+		restart = True
 	# Fall back to restart, which will temporarily interrupt the service
 	if restart:
 		ud.debug(ud.LISTENER, ud.INFO, 'DNS: Restarting BIND')

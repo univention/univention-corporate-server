@@ -1,6 +1,12 @@
+univention-bind (7.0.11-5) unstable; urgency=low
+
+  * Fix named reload in case of dns/backend == samba4 (Bug #30321)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 22 Feb 2013 21:32:46 +0100
+
 univention-bind (7.0.11-4) unstable; urgency=low
 
-  * Fix rndc reload in case of  dns/backend == samba4 (Bug #30321)
+  * Fix rndc reload in case of dns/backend == samba4 (Bug #30321)
 
  -- Arvid Requate <requate@univention.de>  Thu, 21 Feb 2013 19:42:45 +0100
 
