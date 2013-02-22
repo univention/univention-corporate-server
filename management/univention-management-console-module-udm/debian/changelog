@@ -1,6 +1,12 @@
+univention-management-console-module-udm (3.0.66-2) unstable; urgency=low
+
+  * corrected changelog (Bug #29862)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 22 Feb 2013 16:17:23 +0100
+
 univention-management-console-module-udm (3.0.66-1) unstable; urgency=low
 
-  * user "Servers" (plural number) instead of "Server" in english licence
+  * use "Servers" (plural number) instead of "Server" in english licence
     dialoag (Bug #29862)
 
  -- Lukas Walter <walter@univention.de>  Fri, 22 Feb 2013 16:08:21 +0100
