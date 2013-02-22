@@ -3,7 +3,7 @@
 # Univention Dansguardian
 #  Univention Configuration Registry Module to write filter group configuration
 #
-# Copyright 2009-2012 Univention GmbH
+# Copyright 2009-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,17 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
-
+import os, glob
 import univention.config_registry as ucr
 
 TEMPLATE_PATH = '/etc/univention/templates/files/etc/dansguardian/'
 CONFIG_PATH = '/etc/dansguardian'
+files_written = []
 
 def handler( configRegistry, changes ):
 	groups = configRegistry.get( 'dansguardian/groups', 'web-access' ).split( ';' )
 	for i in range( len( groups ) ):
 		ucr.handler_set( [ 'dansguardian/current/groupno=%d' % ( i + 1 ), 'dansguardian/current/group=%s' % groups[ i ] ] )
+		configRegistry.load()
 
 		# primary filter group configuration file
 		src = os.path.join( TEMPLATE_PATH, 'dansguardianfX.conf' )
@@ -52,17 +53,25 @@ def handler( configRegistry, changes ):
 		fd.write( content )
 		fd.close()
 
+		ignore_templates_for_groups = ['bannediplist', 'exceptioniplist']
 		# several lists for filter groups
 		for entry in os.listdir( os.path.join( TEMPLATE_PATH, 'lists' ) ):
-			abs_filename = os.path.join( TEMPLATE_PATH, 'lists', entry )
-			if os.path.isfile( abs_filename ):
-				template = open( abs_filename )
-				conf = os.path.join( CONFIG_PATH, 'lists', '%s-%s' % (groups[ i ], entry ) )
-				content = ucr.filter( template.read(), configRegistry, srcfiles = [ abs_filename ] )
-				template.close()
-				fd = open( conf, 'w' )
-				fd.write( content )
-				fd.close()
+			if entry not in ignore_templates_for_groups:
+				abs_filename = os.path.join( TEMPLATE_PATH, 'lists', entry )
+				if os.path.isfile( abs_filename ):
+					template = open( abs_filename )
+					conf = os.path.join( CONFIG_PATH, 'lists', '%s-%s' % (groups[ i ], entry ) )
+					content = ucr.filter( template.read(), configRegistry, srcfiles = [ abs_filename ] )
+					template.close()
+					fd = open( conf, 'w' )
+					fd.write( content )
+					fd.close()
+			 		files_written.append(conf)
+
+	# remove old filter lists
+	for f in glob.iglob( os.path.join( CONFIG_PATH, 'lists', '*-*list' ) ):
+		if not f in files_written and os.path.isfile( f ):
+			os.unlink( f )
 
 	ucr.handler_unset( [ 'dansguardian/current/groupno', 'dansguardian/current/group' ] )
 

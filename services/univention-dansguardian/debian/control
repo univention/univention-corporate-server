@@ -16,8 +16,9 @@ Replaces: univention-antivir-web
 Conflicts: univention-antivir-web (<=5.0.0-2)
 Provides: univention-antivir-web
 Recommends: univention-nagios-dansguardian
-Description: UCS - antivirus web
- UCS module to add antivirus protection to the web module.
+Description: UCS - antivirus/webcontent filter
+ UCS module to add antivirus and content protection 
+ to the web module.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

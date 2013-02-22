@@ -1,3 +1,16 @@
+univention-dansguardian (6.0.2-1) unstable; urgency=low
+
+  * Added dansguardian entry to system services umc module (Bug #30296)
+  * Corrected ucr variable description dansguardian/groups (Bug #25311) 
+  * Set all ucr variables in postinst before restarting dansguardian (Bug #29494) 
+  * Removed templates and ucr variables for banneduser & exceptionuser (Bug #25327) 
+  * Removed groupbased ip address ban & exceptionlists and added global settings in ucr
+    variables dansguardian/bannedipaddresses & dansguardian/exceptionipaddresses (Bug #25321)
+  * Unused group config files are deleted (Bug #30270)
+  * The default group has been renamed from www-access to defaultgroup (Bug #30553)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Feb 2013 11:55:54 +0100
+
 univention-dansguardian (6.0.1-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

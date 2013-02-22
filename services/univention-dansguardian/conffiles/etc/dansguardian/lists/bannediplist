@@ -11,8 +11,7 @@
 
 @!@
 if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	group = configRegistry.get( 'dansguardian/current/group' )
-	banned = configRegistry.get( 'dansguardian/groups/%s/banned/ipaddresses' % group, '' )
+	banned = configRegistry.get( 'dansguardian/bannedipaddresses', '' )
 	for entry in banned.split( ' ' ):
 		print entry
 @!@

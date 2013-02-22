@@ -3,7 +3,7 @@
 # Univention Dansguardian
 #  postinst script for univention-dansguardian
 #
-# Copyright 2001-2012 Univention GmbH
+# Copyright 2001-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -37,8 +37,11 @@
 
 . /usr/share/univention-lib/all.sh
 
-ucr set squid/virusscan?yes
-ucr set squid/contentscan?yes
+ucr set squid/virusscan?yes \
+	squid/contentscan?yes \
+	dansguardian/groups?defaultgroup \
+	dansguardian/groups/system?yes \
+	dansguardian/virusscanner?clamav
 
 /etc/init.d/squid3 restart
 
@@ -58,14 +61,6 @@ fi
 call_joinscript 79univention-dansguardian.inst
 
 /etc/init.d/univention-directory-listener crestart
-
-# default group for web access
-ucr set dansguardian/groups?www-access
-# use system groups for filter groups
-ucr set dansguardian/groups/system?yes
-
-# activate clamav virus scanner by default, if not already set
-ucr set dansguardian/virusscanner?clamav
 
 # configure firewall
 ucr set security/packetfilter/package/univention-dansguardian/tcp/3128/all="ACCEPT" \

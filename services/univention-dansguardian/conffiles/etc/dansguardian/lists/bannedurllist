@@ -32,28 +32,6 @@
 #Remove the # from the following and edit as needed to use a stock
 #squidGuard blacklists collection.
 #.Include</etc/dansguardian/blacklists/ads/urls>
-#.Include</etc/dansguardian/blacklists/adult/urls>
-#.Include</etc/dansguardian/blacklists/aggressive/urls>
-#.Include</etc/dansguardian/blacklists/audio-video/urls>
-#.Include</etc/dansguardian/blacklists/chat/urls>
-#.Include</etc/dansguardian/blacklists/drugs/urls>
-#.Include</etc/dansguardian/blacklists/entertainment/urls>
-#.Include</etc/dansguardian/blacklists/frencheducation/urls>
-#.Include</etc/dansguardian/blacklists/gambling/urls>
-#.Include</etc/dansguardian/blacklists/government/urls>
-#.Include</etc/dansguardian/blacklists/hacking/urls>
-#.Include</etc/dansguardian/blacklists/jobsearch/urls>
-#.Include</etc/dansguardian/blacklists/kidstimewasting/urls>
-#.Include</etc/dansguardian/blacklists/mail/urls>
-#.Include</etc/dansguardian/blacklists/news/urls>
-#.Include</etc/dansguardian/blacklists/porn/urls>
-#.Include</etc/dansguardian/blacklists/proxy/urls>
-#.Include</etc/dansguardian/blacklists/publicite/urls>
-#.Include</etc/dansguardian/blacklists/redirector/urls>
-#.Include</etc/dansguardian/blacklists/violence/urls>
-#.Include</etc/dansguardian/blacklists/virusinfected/urls>
-#.Include</etc/dansguardian/blacklists/warez/urls>
-# You will need to edit to add and remove categories you want
 
 @!@
 if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:

@@ -10,9 +10,15 @@ Description[en]=File extensions blocked by Dansguardian
 Type=str
 Categories=service-webproxy
 
-[dansguardian/groups/.*/banned/ipaddresses]
+[dansguardian/bannedipaddresses]
 Description[de]=Rechneradressen, denen der Zugriff auf Squid verboten wird
 Description[en]=IP address, which cannot access Squid
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups]
+Description[de]=Gruppen, denen verschiedene Dansguardian Regeln zugewiesen werden sollen. Durch Semikolon getrennt. Gehört ein Benutzer keiner angegebenen Gruppe an wird die erste Gruppe zugewiesen
+Description[en]=Groups which are assigned different dansguardian rules. Seperated by semicolon. If a user belongs to no provided group, he is assigned to the first group
 Type=str
 Categories=service-webproxy
 
@@ -34,15 +40,9 @@ Description[en]=Web URLs sites blocked by Dansguardian
 Type=str
 Categories=service-webproxy
 
-[dansguardian/groups/.*/exception/ipaddresses]
+[dansguardian/exceptionipaddresses]
 Description[de]=IP-Adressen, deren Zugriffe nicht durch Dansguardian gefiltert werden
 Description[en]=IP addresses, which are not filtered by Dansguardian
-Type=str
-Categories=service-webproxy
-
-[dansguardian/groups/.*/exception/user]
-Description[de]=Benutzernamen, deren Zugriffe nicht durch Dansguardian gefiltert werden
-Description[en]=User names, whose accesses are not filtered by Dansguardian
 Type=str
 Categories=service-webproxy
 
@@ -106,9 +106,9 @@ Description[en]=If no system/LDAP groups are used (UCR variable dansguardian/gro
 Type=str
 Categories=service-webproxy
 
-[dansguardian/groups/%s/addresses]
+[dansguardian/groups/.*/addresses]
 Description[de]=Erlaubt die Definition einer Filtergruppe anhand einer IP-Adresse, möglich ist die Angabe einzelner Adressen, eines Subnetzes (z.B. 192.168.1.0/255.255.255.0) oder eines IP-Bereichs (z.B. 192.168.1.0-192.168.1.255)
-Description[en]=
+Description[en]=Allows defining a ip address based filter group. Possible values are single ip addresses, subnets (i.e. 192.168.1.0/255.255.255.0) or ip ranges (i.e. 192.168.1.0-192.168.1.255)
 Type=str
 Categories=service-webproxy
 

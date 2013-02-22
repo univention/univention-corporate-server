@@ -1,0 +1,5 @@
+[dansguardian]
+description[de]=Web Inhaltefilter
+description[en]=Web Content Filter
+icon=service/dansguardian
+programs=/usr/sbin/dansguardian

@@ -63,9 +63,6 @@ Type: file
 File: etc/dansguardian/lists/contentregexplist
 
 Type: file
-File: etc/dansguardian/lists/banneduserlist
-
-Type: file
 File: etc/dansguardian/lists/logsitelist
 
 Type: file
@@ -108,8 +105,7 @@ Variables: dansguardian/groups/.*/exception/extensions
 Type: file
 File: etc/dansguardian/lists/bannediplist
 Variables: squid/contentscan
-Variables: dansguardian/current/group
-Variables: dansguardian/groups/.*/banned/ipaddresses
+Variables: dansguardian/bannedipaddresses
 
 Type: file
 File: etc/dansguardian/lists/exceptionphraselist
@@ -150,14 +146,7 @@ Variables: dansguardian/groups/.*/exception/sites
 Type: file
 File: etc/dansguardian/lists/exceptioniplist
 Variables: squid/contentscan
-Variables: dansguardian/current/group
-Variables: dansguardian/groups/.*/exception/ipaddresses
-
-Type: file
-File: etc/dansguardian/lists/exceptionuserlist
-Variables: squid/contentscan
-Variables: dansguardian/current/group
-Variables: dansguardian/groups/.*/exception/users
+Variables: dansguardian/exceptionipaddresses
 
 Type: file
 File: etc/dansguardian/lists/contentscanners/exceptionvirusextensionlist
