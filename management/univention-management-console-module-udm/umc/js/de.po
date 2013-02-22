@@ -523,11 +523,11 @@ msgid "number exceeded configured limit"
 msgstr "Anzahl über konfigurierter Grenze"
 
 #: umc/js/udm/LicenseDialog.js:238
-msgid "Server with premium support"
+msgid "Servers with premium support"
 msgstr "Server mit Premiumsupport"
 
 #: umc/js/udm/LicenseDialog.js:236
-msgid "Server with standard support"
+msgid "Servers with standard support"
 msgstr "Server mit Standardsupport"
 
 #: umc/js/udm/LicenseDialog.js:226
