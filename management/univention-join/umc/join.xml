@@ -6,15 +6,13 @@
 		<categories>
 			<category name="system"/>
 		</categories>
-		<!-- should be used only for the grid, so no arg is needed -->
-		<command name="join/scripts/query" function="query" />
-		<!-- Status queries, distinct URLs now -->
+		<command name="join/scripts/query" function="query"/>
 		<command name="join/logview" function="logview"/>
 		<command name="join/joined" function="joined"/>
 		<command name="join/running" function="running"/>
-		<!-- run one or more script(s) -->
-		<command name="join/run" function="run" />
-		<!-- do a domain join -->
-		<command name="join/join" function="join" />
+		<command name="join/progress" function="progress"/>
+		<command name="join/run" function="run"/>
+		<command name="join/join" function="join"/>
+		<command name="join/master" function="master"/>
 	</module>
 </umc>

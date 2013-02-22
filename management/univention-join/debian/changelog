@@ -1,3 +1,14 @@
+univention-join (5.0.24-1) unstable; urgency=low
+
+  * show progressbar instead of the join log; Bug #30112
+  * add possibility to rejoin a system; Bug #27792
+  * force execution of join scripts in univention-run-join-scripts with
+  	parameter --force
+  * run only selected join scripts in univention-run-join-scripts with
+  	parameter --run-scripts
+
+ -- Florian Best <best@univention.de>  Fri, 22 Feb 2013 13:55:34 +0100
+
 univention-join (5.0.23-1) unstable; urgency=low
 
   * Close fd 3 while calling the join script otherwise a running daemon

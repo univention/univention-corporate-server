@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -30,11 +30,54 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/lang",
+	"umc/tools",
 	"umc/widgets/Form",
-	"umc/widgets/StandbyMixin"
-], function(declare, Form, StandbyMixin) {
+	"umc/widgets/Text",
+	"umc/widgets/TextBox",
+	"umc/widgets/PasswordBox",
+	"umc/i18n!umc/modules/join"
+], function(declare, lang, tools, Form, Text, TextBox, PasswordBox, _) {
 
-	return declare("umc.modules.join.Form", [ Form, StandbyMixin ], {
-		// that's all.
+	return declare("umc.modules.join.Form", [ Form ], {
+		constructor: function() {
+			this.buttons = [{
+				name:			'submit',
+				label:			_("Join system")
+			}];
+
+			this.widgets = [{
+				type:			Text,
+				name:			'text',
+				style:			'margin-bottom:1em;',
+				content:		_("Please enter the required information below and click the 'Join System' button. This will join your system into the domain.")
+			}, {
+				type:			TextBox,
+				name:			'username',
+				value:			'Administrator',
+				label:			_('Username'),
+				description:	_('The username of the domain administrator')
+			}, {
+				type:			PasswordBox,
+				name:			'password',
+				value:			'',
+				label: 			_( 'Password' ),
+				description:	_( 'Password of the domain administrator' )
+			}, {
+				type:			TextBox,
+				name:			'hostname',
+				value:			'',
+				label:			_('Hostname of domain controller master'),
+				description:	_('The hostname of the domain controller master of the domain')
+			}];
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			tools.umcpCommand('join/master').then(lang.hitch(this, function(data) {
+				// guess the master hostname
+				this._widgets.hostname.set('value', data.result);
+			}));
+		}
 	});
 });

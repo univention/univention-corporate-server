@@ -2,7 +2,7 @@
 #
 # Univention Run Join Scripts
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,12 +39,14 @@ display_help() {
 	display_header
 	cat <<-EOL
 	Syntax:
-	  univention-run-join-scripts [options]
+	  univention-run-join-scripts [options] [script, ...]
 
 	Options:
 	  -dcaccount <account>:    name of DC master account
 	  -dcpwd <password file>:  file with DC master password
 	  --ask-pass            :  ask for DC master account and password
+	  --run-scripts         :  run only the scripts given as parameters
+	  --force               :  force execution of joinscripts which are already executed
 
 	  -h | --help | -?:        print this usage message and exit program
 	  --version:               print version information and exit program
@@ -91,6 +93,14 @@ do
 			ASK_PASS=1
 			shift
 			;;
+		"--force")
+			export JOIN_FORCE=1
+			shift
+			;;
+		"--run-scripts")
+			RUN_SCRIPTS=1
+			shift
+			;;
 		"--version")
 			display_version
 			exit 0
@@ -100,8 +110,7 @@ do
 			exit 0
 			;;
 		*)
-			display_help
-			exit 1
+			break
 			;;
 	esac
 done
@@ -169,6 +178,27 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 	fi
 fi
 
+# get list of join scripts to be executed
+# fallback to all existing join scripts
+SCRIPTS=(/usr/lib/univention-install/*.inst)
+if [ -n "$RUN_SCRIPTS" ]; then
+	# evaluate specified join scripts
+	SCRIPTS=()
+	for iscript in $@; do
+		# guess full path of join script
+		iscript=/usr/lib/univention-install/$iscript
+		if [ ! -e "$iscript" ]; then
+			# expand .inst suffix if not specified
+			iscript=$iscript.inst
+		fi
+		if [ ! -e "$iscript" ]; then
+			# error ... join script does not exist
+			failed_message "The given joinscript '$iscript' does not exists"
+		fi
+		SCRIPTS[${#SCRIPTS[@]}]=$iscript
+	done
+fi
+
 # Save STDOUT to fd3, redirect to logfile
 exec 3>&1 >>/var/log/univention/join.log 2>&1
 
@@ -178,7 +208,7 @@ date
 echo
 if [ -e "/usr/lib/univention-install/" ]
 then
-	for i in /usr/lib/univention-install/*.inst
+	for i in "${SCRIPTS[@]}"
 	do
 		echo -n "Running $(basename "$i")" >&3
 		echo "RUNNING $(basename "$i")"
@@ -188,7 +218,7 @@ then
 			echo "EXITCODE=invalid_joinscript"
 			continue
 		fi
-		if joinscript_check_already_executed; then
+		if joinscript_check_already_executed && [ -z "$JOIN_FORCE" ]; then
 			echo -e "\033[60Gskipped (already executed)" >&3
 			echo "EXITCODE=already_executed"
 			continue

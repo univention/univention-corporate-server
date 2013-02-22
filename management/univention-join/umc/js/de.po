@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-11-06 08:21+0100\n"
+"POT-Creation-Date: 2013-02-15 14:51+0100\n"
 "PO-Revision-Date: 2012-04-23 16:17+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,25 +12,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/join.js:422
+#: umc/js/join/Grid.js:252
 #, python-format
-msgid "%d scripts are due to be run."
+msgid "%d scripts are pending to be run."
 msgstr "Insgesamt können %d Skripte ausgeführt werden."
 
-#: umc/js/join.js:413
+#: umc/js/join/Grid.js:243
 #, python-format
 msgid "%d scripts selected"
 msgstr "%d Skripte ausgewählt"
 
-#: umc/js/join.js:707
+#: umc/js/join.js:314
 msgid "... loading log ..."
 msgstr "... Protokoll wird geladen ..."
 
-#: umc/js/join.js:412
+#: umc/js/join/Grid.js:242
 msgid "1 script selected"
 msgstr "1 Skript ausgewählt"
 
-#: umc/js/join.js:870
+#: umc/js/join.js:163
 msgid ""
 "<p>Please enter username and password of a Domain Administrator to run the "
 "selected join scripts and click the <i>Run</i> button.</p>"
@@ -38,14 +38,18 @@ msgstr ""
 "<p>Bitte Benutzernamen und Passwort eines Domänen-Administrators eingeben, "
 "um das/die ausgewählte(n) Joinskripte auszuführen.</p>"
 
-#: umc/js/join.js:740
+#: umc/js/join.js:436
+msgid "A join process is already running..."
+msgstr "Ein Joinvorgang läuft bereits..."
+
+#: umc/js/join.js:394
 msgid ""
 "A restart of the UMC server components is necessary after an initial join."
 msgstr ""
 "Ein Neustart der UMC-Server-Komponenten ist notwendig nach einem erstmaligen "
 "Domänenbeitritt."
 
-#: umc/js/join.js:737
+#: umc/js/join.js:391
 msgid ""
 "A restart of the UMC server components may be necessary for changes to take "
 "effect."
@@ -53,24 +57,20 @@ msgstr ""
 "Ein Neustart der UMC-Server-Komponenten kann notwendig sein, damit "
 "Änderungen wirksam werden."
 
-#: umc/js/join.js:458
+#: umc/js/join.js:90
 msgid "Can't start join process:<br>"
 msgstr "Konnte Joinvorgang nicht starten:<br>"
 
-#: umc/js/join.js:503
+#: umc/js/join.js:261
 #, python-format
 msgid "Can't start join script:<br>%s"
 msgstr "Kann Join-Skript nicht starten:<br>%s"
 
-#: umc/js/join.js:890
+#: umc/js/join.js:183
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/join.js:733
-msgid "Close log"
-msgstr "Log schließen"
-
-#: umc/js/join.js:529
+#: umc/js/join.js:132
 msgid "Current status"
 msgstr "Aktueller Status"
 
@@ -83,69 +83,65 @@ msgstr "Aktueller Status: Das System ist noch keiner Domäne beigetreten."
 msgid "Current status: System joined on %s"
 msgstr "Aktueller Status: Das System ist der Domäne am %s beigetreten."
 
-#: umc/js/join.js:588
-msgid "Current<br/>version"
-msgstr "Aktuelle<br/>Version"
-
-#: umc/js/join.js:503
+#: umc/js/join.js:261 umc/js/join.js:262
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/js/join.js:552
+#: umc/js/join.js:90
+msgid "Error"
+msgstr "Fehler"
+
+#: umc/js/join/Grid.js:51
 msgid "Execute"
 msgstr "Ausführen"
 
-#: umc/js/join.js:553
+#: umc/js/join/Grid.js:52
 msgid "Execute this join script"
 msgstr "Dieses Join-Skript ausführen"
 
-#: umc/js/join.js:813
+#: umc/js/join/Form.js:59
 msgid "Hostname of domain controller master"
 msgstr "Rechnername des Domänencontroller Master"
 
-#: umc/js/join.js:234
+#: umc/js/join.js:59 umc/js/join.js:64
+msgid "Join system"
+msgstr "System joinen"
+
+#: umc/js/join.js:297
 msgid "Join Protocol"
 msgstr "Protokoll aller Join-Skripte"
 
-#: umc/js/join.js:523
+#: umc/js/join.js:292
+msgid "Join log"
+msgstr "Join-Protokoll"
+
+#: umc/js/join.js:126
 msgid "Join status"
 msgstr "Join-Status"
 
-#: umc/js/join.js:434
+#: umc/js/join/Grid.js:264
 msgid "Join status ok, nothing to do."
 msgstr ""
 "Domänenbeitritt ist komplett; es sind keine Skripte übrig, die ausgeführt "
 "werden müssten."
 
-#: umc/js/join.js:595
-msgid "Last<br/>version"
-msgstr "Letzte<br/>Version"
-
-#: umc/js/join.js:589
-msgid "Latest script version ready for execution"
-msgstr "Neuester Skript, der ausgeführt werden kann"
-
-#: umc/js/join.js:596
-msgid "Latest script version that was executed successfully"
-msgstr "Letzter Skript, der erfolgreich ausgeführt wurde"
-
-#: umc/js/join.js:425
-msgid "One script is due to be run."
+#: umc/js/join/Grid.js:255
+msgid "One script is pending to be run."
 msgstr "Ein Skript steht zur Ausführung an."
 
-#: umc/js/join.js:827 umc/js/join.js:886
+#: umc/js/join.js:179 umc/js/join/Form.js:71
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/js/join.js:903
+#: umc/js/join.js:196
 msgid "Password invalid"
 msgstr "Passwort ungültig"
 
-#: umc/js/join.js:828
+#: umc/js/join/Form.js:72
 msgid "Password of the domain administrator"
 msgstr "Passwort des Domänen-Administrators"
 
-#: umc/js/join.js:807
+#: umc/js/join/Form.js:54
 msgid ""
 "Please enter the required information below and click the 'Start Join' "
 "button. This will join your system into the domain."
@@ -154,51 +150,67 @@ msgstr ""
 "auf die Schaltfläche 'Domänenbeitritt starten'. Dies gliedert Ihr System in "
 "die Domäne ein."
 
-#: umc/js/join.js:900
+#: umc/js/join/Grid.js:67
+msgid "Rejoin"
+msgstr "Neu joinen"
+
+#: umc/js/join/Grid.js:68
+msgid "Rejoins the system"
+msgstr "Joined das system neu"
+
+#: umc/js/join.js:193
 msgid "Run"
 msgstr "Ausführen"
 
-#: umc/js/join.js:920
+#: umc/js/join.js:213
 msgid "Run join scripts"
 msgstr "Join-Skripte ausführen"
 
-#: umc/js/join.js:581
+#: umc/js/join/Grid.js:90
 msgid "Script (package)"
 msgstr "Skript (Paket)"
 
-#: umc/js/join.js:582
+#: umc/js/join/Grid.js:91
 msgid "Script name (the same as the package it belongs to)"
 msgstr "Skriptname (benannt nach dem Paket, zu dem er gehört)"
 
-#: umc/js/join.js:754
-msgid "Show full log"
-msgstr "Volle Ansicht"
+#: umc/js/join/Grid.js:78
+msgid "Shows the join log"
+msgstr "Zeigt das Join-Protokoll"
 
-#: umc/js/join.js:797
+#: umc/js/join/Form.js:47
 msgid "Start Join"
 msgstr "Domänenbeitritt starten"
 
-#: umc/js/join.js:603
+#: umc/js/join.js:105
+msgid "Starting the join process..."
+msgstr "Join prozess startet..."
+
+#: umc/js/join/Grid.js:96
 msgid "State"
 msgstr "Status"
 
-#: umc/js/join.js:604
+#: umc/js/join/Grid.js:97
 msgid "Status of this package"
 msgstr "Status dieses Paketes"
 
-#: umc/js/join.js:814
+#: umc/js/join/Form.js:60
 msgid "The hostname of the domain controller master of the domain"
 msgstr "Der Computername des Master-Domaincontrollers der Domäne"
 
-#: umc/js/join.js:903
+#: umc/js/join.js:196
 msgid "The password may not be empty."
 msgstr "Es muss ein Passwort angegeben werden."
 
-#: umc/js/join.js:821
+#: umc/js/join/Form.js:66
 msgid "The username of the domain administrator"
 msgstr "Benutzername des Domänen-Administrators"
 
-#: umc/js/join.js:524
+#: umc/js/join.js:293
+msgid "This page shows the join log"
+msgstr "Diese Seite zeigt das Join-Protokoll"
+
+#: umc/js/join.js:127
 msgid ""
 "This page shows the status of all available join scripts on this system, "
 "along with all join-related actions (run selected or all join scripts, or "
@@ -207,47 +219,26 @@ msgstr ""
 "Diese Seite zeigt den Status aller verfügbaren Join-Skripte auf diesem "
 "System, zusammen mit allen Aktionen, die ausgeführt werden können."
 
-#: umc/js/join.js:820 umc/js/join.js:881
+#: umc/js/join.js:174 umc/js/join/Form.js:65
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/js/join.js:238
-msgid "last {logcount} lines"
-msgstr "letzte {logcount} Zeilen"
+#: umc/js/join/Grid.js:77
+msgid "View join log"
+msgstr "Join-Protokoll ansehen"
 
-#: umc/js/join.js:429
+#: umc/js/join/Grid.js:100
+msgid "pending"
+msgstr "ausstehend"
+
+#: umc/js/join/Grid.js:259
 msgid "run all"
 msgstr "Alle Skripte ausführen"
 
-#: umc/js/join.js:415
+#: umc/js/join/Grid.js:245
 msgid "run selected scripts"
 msgstr "Ausgewählte Skripte ausführen"
 
-#: umc/js/join.js:724
-msgid "show log"
-msgstr "Protokoll einblenden"
-
-#~ msgid "%d join scripts are currently running"
-#~ msgstr "Momentan werden %d Join-Skripte ausgeführt."
-
-#~ msgid "Can't start join: "
-#~ msgstr "Kann Join-Prozess nicht starten: "
-
-#~ msgid ""
-#~ "Currently some join scripts are running. You may watch the log file until "
-#~ "they are finished."
-#~ msgstr ""
-#~ "Momentan werden Join-Skripte abgearbeitet. Sie können den Fortschritt im "
-#~ "Log-File verfolgen, bis der Vorgang abgeschlossen ist."
-
-#~ msgid "DC Hostname"
-#~ msgstr "Name des Domaincontroller-Computers"
-
-#~ msgid "One join script is currently running"
-#~ msgstr "Ein Skript wird momentan ausgeführt."
-
-#~ msgid "hide log"
-#~ msgstr "Protokoll ausblenden"
-
-#~ msgid "show all"
-#~ msgstr "Gesamtes Protokoll zeigen"
+#: umc/js/join/Grid.js:100
+msgid "successful"
+msgstr "erfolgreich"

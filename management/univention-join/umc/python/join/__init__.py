@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: system usage statistics
 #
-# Copyright 2011-2012 Univention GmbH
+# Copyright 2011-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,665 +34,380 @@
 import traceback
 import subprocess
 import os
-import stat
 import tempfile
-import base64
-import ldap
-import pipes
-import pprint
-import univention.management.console as umc
-import univention.management.console.modules as umcm
-from univention.management.console.config import ucr
-
+import socket
+import glob
 import re
-from os import listdir,chmod,unlink,path, umask
-from locale import nl_langinfo,D_T_FMT
-from time import strftime,localtime
-from string import join
-from subprocess import Popen
-import notifier.threads
-import univention.uldap
-import univention.admin.uldap
-import univention.admin.modules
+import dns.resolver
 
+import notifier.threads
+
+import univention.management.console as umc
 from univention.management.console.log import MODULE
+from univention.management.console.modules import Base
+from univention.management.console.config import ucr
 from univention.management.console.protocol.definitions import *
+from univention.management.console.modules.decorators import simple_response, sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer, ListSanitizer, BooleanSanitizer
 
 _ = umc.Translation('univention-management-console-module-join').translate
 
-class JoinExceptionUnknownHost(Exception):
-	pass
-class JoinExceptionInvalidCredentials(Exception):
-	pass
-class JoinExceptionInvalidCharacters(Exception):
-	pass
-class JoinExceptionUnknownError(Exception):
+CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
+CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
+RE_HOSTNAME = re.compile('^[a-z]([a-z0-9-]*[a-z0-9])*(\.([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*)?$')
+
+def get_master_dns_lookup():
+	# DNS lookup for the DC master entry
+	try:
+		query = '_domaincontroller_master._tcp.%s.' % ucr.get('domainname')
+		result = dns.resolver.query(query, 'SRV')
+		if result:
+			return result[0].target.canonicalize().split(1)[0].to_text()
+	except dns.resolver.NXDOMAIN as err:
+		MODULE.error('Error to perform a DNS query for service record: %s' % query)
+	return ''
+
+class HostSanitizer(StringSanitizer):
+	def _sanitize(self, value, name, further_args):
+		value = super(HostSanitizer, self)._sanitize(value, name, further_args)
+		try:
+			return socket.getfqdn(value)
+		except socket.gaierror:
+			# invalid FQDN
+			self.raise_validation_error(_('The entered FQDN is not a valid value'))
+
+class Progress(object):
+	def __init__(self, max_steps=100):
+		self.reset(max_steps)
+
+	def reset(self, max_steps=100):
+		self.max_steps = max_steps
+		self.finished = False
+		self.steps = 0
+		self.component = _('Initializing')
+		self.info = ''
+		self.errors = []
+
+	def poll(self):
+		return dict(
+			finished=self.finished,
+			steps=100 * float(self.steps) / self.max_steps,
+			component=self.component,
+			info=self.info,
+			errors=self.errors,
+		)
+
+	def finish(self):
+		self.finished = True
+
+	def info_handler(self, info):
+		MODULE.process(info)
+		self.info = info
+
+	def error_handler(self, err):
+		MODULE.warn(err)
+		self.errors.append(err)
+
+	def step_handler(self, steps):
+		self.steps = steps
+
+	def add_steps(self, steps = 1):
+		self.steps += steps
+
+# dummy function that does nothing
+def _dummyFunc(*args):
 	pass
 
-class Instance(umcm.Base):
-	def __init__( self ):
-		umcm.Base.__init__( self )
-		# reset umask to default
-		umask( 0022 )
+def system_join(hostname, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc):
+	# get the number of join scripts
+	nJoinScripts = len(glob.glob('%s/*.inst' % INSTDIR))
+	stepsPerScript = 100.0 / (nJoinScripts+1)
+
+	with tempfile.NamedTemporaryFile() as passwordFile:
+		passwordFile.write('%s' % password)
+		passwordFile.flush()
+
+		MODULE.process('Performing system join...')
+		cmd = ['/usr/sbin/univention-join', '-dcname', hostname, '-dcaccount', username, '-dcpwd', passwordFile.name]
+
+		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler)
+
+def run_join_scripts(scripts, force, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc):
+	with tempfile.NamedTemporaryFile() as passwordFile:
+		cmd = ['/usr/sbin/univention-run-join-scripts']
+		if username and password:
+			# credentials are provided
+			passwordFile.write('%s' % password)
+			passwordFile.flush()
+			cmd += ['-dcaccount', username, '-dcpwd', passwordFile.name]
+
+		if force:
+			cmd += ['--force']
+
+		if scripts:
+			# if scripts are provided only execute them instead of running all join scripts
+			cmd += ['--run-scripts'] + scripts
+		else:
+			# we need the number of join scripts for the progressbar
+			scripts = os.listdir(INSTDIR)
+		stepsPerScript = 100.0 / (len(scripts)+1)
+
+		MODULE.process('Executing join scripts ...')
+		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler)
+
+def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc):
+	# disable UMC/apache restart
+	MODULE.info('disabling UMC and apache server restart')
+	subprocess.call(CMD_DISABLE_EXEC)
+
+	try:
+		# regular expressions for output parsing
+		regError = re.compile('^\* Message:\s*(?P<message>.*)\s*$')
+		regJoinScript = re.compile('(Configure|Running)\s+(?P<script>.*)\.inst.*$')
+		regInfo = re.compile('^(?P<message>.*?)\s*:?\s*\x1b.*$')
+
+		# call to univention-join
+		MODULE.info('calling "%s"' % ' '.join(cmd))
+		process = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+		failedJoinScripts = []
+		while True:
+			# get the next line
+			line = process.stdout.readline()
+			if not line:
+				# no more text from stdout
+				break
+			MODULE.process(line.strip())
+
+			# parse output... first check for errors
+			m = regError.match(line)
+			if m:
+				error_handler(_('The system join process could not be completed: %s. More details can be found in the log file /var/log/univention/join.log. Please retry after resolving any conflicting issues.') % m.groupdict().get('message'))
+				continue
+
+			# check for currently called join script
+			m = regJoinScript.match(line)
+			if m:
+				info_handler(_('Executing join script %s') % m.groupdict().get('script'))
+				step_handler(stepsPerScript)
+				if 'failed' in line:
+					failedJoinScripts.append(m.groupdict().get('script'))
+				continue
+
+			# check for other information
+			m = regInfo.match(line)
+			if m:
+				info_handler(m.groupdict().get('message'))
+				step_handler(stepsPerScript/10)
+				continue
+
+		# get all remaining output
+		stdout, stderr = process.communicate()
+		if stderr:
+			# write stderr into the log file
+			MODULE.warn('stderr: %s' % stderr)
+
+		success = True
+		# check for errors
+		if process.returncode != 0:
+			# error case
+			MODULE.warn('Could not perform system join: %s%s' % (stdout, stderr))
+			success = False
+		elif failedJoinScripts:
+			MODULE.warn('The following join scripts could not be executed: %s' % failedJoinScripts)
+			error_handler(_('Some join scripts could not be executed. More details can be found in the log file /var/log/univention/join.log. Please retry to execute the join scripts after resolving any conflicting issues.'))
+			success = False
+		return success
+	finally:
+		# make sure that UMC servers and apache can be restarted again
+		MODULE.info('enabling UMC and apache server restart')
+		subprocess.call(CMD_ENABLE_EXEC)
+
+INSTDIR = '/usr/lib/univention-install'
+LOGFILE = '/var/log/univention/join.log'
+LOCKFILE = '/var/lock/univention_umc_join.lock'
+RE_JOINFILE = re.compile('^(?P<script>(?P<prio>\d+)(?P<name>.+))\.inst$')
+RE_NOT_CONFIGURED = re.compile("^Warning: '([^']+)' is not configured.$")
+
+class Instance(Base):
 
 	def init(self):
-		MODULE.warn("Initializing 'join' module with LANG = '%s'" % self.locale)
+		self.progress_state = Progress()
 
-		# some constants
-		self._instdir		= '/usr/lib/univention-install'				# where to find *.inst files
-		self._statusfile	= '/var/univention-join/status'				# where to find last run versions
-		self._logname		= '/var/log/univention/join.log'			# join log file name
-		self._jointool		= '/usr/sbin/univention-join'				# the tool to call for a full join
-		self._tempscript	= '/tmp/umc_join_runscripts.sh'				# temp script name for invoking scripts
-		self._tempfile		= '/tmp/umc_join.tmp'						# file to use if the script itself needs a temp file
-		self._passfile		= '/tmp/ucs_join_pass.tmp'					# password for join tool must be given in a file
+	@simple_response
+	def query(self):
+		"""collects status about join scripts"""
 
+		# unjoined system?
+		if not self._joined:
+			return []
 
-		# Will hold the object of the subprocess as long as scripts are running.
-		# Can be queried with the 'join/running' query.
-		self._process		= None
-
-	def query(self,request):
-		""" Query to fill the scripts grid. """
-		# ----------- DEBUG -----------------
-		MODULE.info("join/query invoked with:")
-		MODULE.info("   << LANG = '%s'" % self.locale)
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-		result = self._scripts()
-		request.status = SUCCESS
-
-		# ---------- DEBUG --------------
-		MODULE.info("join/query returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id,result)
-
-	def joined(self,request):
-		""" returns the (localized) join date/time or
-			the empty string.
-		"""
-		# ----------- DEBUG -----------------
-		MODULE.info("join/joined invoked with:")
-		MODULE.info("   << LANG = '%s'" % self.locale)
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
-		result = self._joined()
-		request.status = SUCCESS
-
-		# ---------- DEBUG --------------
-		MODULE.info("join/joined returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id,result)
-
-	def running(self,request):
-		""" returns true if a join script is running.
-		"""
-		# ----------- DEBUG -----------------
-		MODULE.info("join/running invoked with:")
-		MODULE.info("   << LANG = '%s'" % self.locale)
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
-		result = self._running()
-		request.status = SUCCESS
-
-		# ---------- DEBUG --------------
-		MODULE.info("join/running returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id,result)
-
-	def logview(self,request):
-		""" Frontend to the _logview() function: returns
-			either the timestamp of the log file or
-			some log lines.
-		"""
-		# ----------- DEBUG -----------------
-		MODULE.info("join/logview invoked with:")
-		MODULE.info("   << LANG = '%s'" % self.locale)
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
-		result = self._logview(int(request.options.get('count',10)))
-		request.status = SUCCESS
-
-		# ---------- DEBUG --------------
-		# TODO: We should not repeat the whole log into
-		# the module log file!
-		MODULE.info("join/logview returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id,result)
-
-
-	def _check_thread_error( self, thread, result, request ):
-		"""Checks if the thread returned an exception. In that case in
-		error response is send and the function returns True. Otherwise
-		False is returned."""
-		if not isinstance( result, BaseException ):
-			return False
-
-		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
-		MODULE.process( 'An internal error occurred: %s' % msg )
-		self.finished( request.id, None, msg, False )
-		return True
-
-
-	def _thread_finished( self, thread, result, request ):
-		if self._check_thread_error( thread, result, request ):
-			return
-		self.finished( request.id, result )
-
-	def _ldapsearch_wrapper_decode64_dnfilter(self, lines):
-		reBase64 = re.compile('^([a-zA-Z0-9-]*):: (.*)')
-
-		# decode base64 encoded ldapsearch result lines
-		def decode64(txt):
-			if reBase64.match(txt):
-				attr, data = txt.split(':: ',1)
-				return '%s: %s' % (attr, base64.decodestring(data))
-			return txt
-
-		# unwrap lines from ldapsearch
-		result = []
-		linecache = ''
-		for line in lines.splitlines():
-			if line[:1] == ' ' and line[:2] != '  ':
-				linecache += line[1:]
-			else:
-				if linecache:
-					result.append(decode64(linecache))
-				linecache = line
-		result.append(decode64(linecache))
-
-		# filter out lines with object DN
-		for line in result:
-			if line.startswith('DN: ') or line.startswith('dn: '):
-				return line[4:]
-
-		return ''
-
-
-	# regular expression to match warnings
-	_regWarnings = re.compile(r'^Warning:.*?\n', re.MULTILINE)
-
-	def _guess_userdn(self, username, password, hostname):
-		# do some security checks on given username and hostname
-		# Warning: no complete check since the user is able to log on to the DC master and can call harmful commands directly
-		invalid_characters = """'"$();"""
-		for i in invalid_characters:
-			if i in username:
-				raise JoinExceptionInvalidCharacters(_('The username contains an invalid character: %s') % i)
-			if i in hostname:
-				raise JoinExceptionInvalidCharacters(_('The hostname contains an invalid character: %s') % i)
-
-		# create temporary password file
-		pwdfilename = tempfile.mkstemp()[1]
-		os.chown(pwdfilename, 0, 0)
-		os.chmod(pwdfilename, stat.S_IRUSR | stat.S_IWUSR)
-		open(pwdfilename,'w').write('%s\n' % password)
-
-		user_host = '%s@%s' % (username, hostname)
-
-		# TODO: the following shell calls are also present in "univention-join";
-		#       move them to a new script "univention-guess-userdn" and
-		#		call this new script from univention-join and from here via
-		#       univention-ssh while joining.
-		#
-		# Original commands from script "univention-join"
-		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" /usr/sbin/udm users/user list --filter uid=$DCACCOUNT --logfile /dev/null | sed -ne 's|DN: ||p'
-		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" ldapsearch -x -LLL -H ldapi:/// "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p'
-		# univention-ssh "$DCPWD" "$DCACCOUNT"@"$DCNAME" ldapsearch -x -LLL "\'(&(uid=$DCACCOUNT)(objectClass=person))\'" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p'
-		cmdlist = [	['univention-ssh', pwdfilename, user_host, '/usr/sbin/udm', 'users/user', 'list', '--filter', 'uid=%s' % username, '--logfile', '/dev/null'],
-					['univention-ssh', pwdfilename, user_host, 'ldapsearch', '-x', '-LLL', '-H', 'ldapi:///', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
-					['univention-ssh', pwdfilename, user_host, 'ldapsearch', '-x', '-LLL', '''"\'(&(uid=%s)(objectClass=person))\'"''' % username, 'dn' ],
-					]
-
-		try:
-			for cmd in cmdlist:
-				# call univention-ssh and try to determine userDn
-				stdout, stderr = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-				if stderr:
-					MODULE.error('calling %s failed:\n%s' % (cmd, stderr))
-				if 'could not resolve hostname' in stderr.lower() or 'name or service not known' in stderr.lower():
-					raise JoinExceptionUnknownHost()
-				if 'permission denied' in stderr.lower():
-					raise JoinExceptionInvalidCredentials()
-				stderr = self._regWarnings.sub('', stderr)  # ignore warnings
-				if stderr:
-					raise JoinExceptionUnknownError()
-
-				userdn = self._ldapsearch_wrapper_decode64_dnfilter(stdout)
-				if userdn:
-					return userdn
-
-			return None
-		finally:
-			os.remove(pwdfilename)
-
-
-	def join(self,request):
-		"""runs the 'univention-join' script for a unjoined system with
-		the given arguments."""
-
-
-		def _thread( request ):
-			result = {}
-			host = request.options.get('host')
-			user = request.options.get('user')
-			password = request.options.get('pass')
-
-			try:
-				if not self._guess_userdn(user, password, host):
-					result['msg'] = _("The given user does not exist in LDAP. Please enter a domain administrator account.")
-					result['title'] = _('Wrong credentials')
-			except JoinExceptionUnknownHost:
-				result['msg'] = _("The given hostname cannot be resolved or the host is unreachable.")
-				result['title'] = _('Host unreachable')
-			except JoinExceptionInvalidCredentials:
-				result['msg'] = _("The given username or password is not correct.")
-				result['title'] = _('Wrong credentials')
-			except JoinExceptionUnknownError:
-				result['msg'] = _("An unknown error occured while testing join credentials.")
-				result['title'] = _('Error')
-			except JoinExceptionInvalidCharacters, e:
-				result['msg'] = str(e)
-				result['title'] = _('Invalid characters')
-
-			if result:
-				result['errortype'] = 'autherror'
-				request.status = SUCCESS
-				self.finished(request.id, result)
-				return
-
-			# create temporary password file
-			self._passfile = tempfile.mkstemp()[1]
-			os.chown(self._passfile, 0, 0)
-			os.chmod(self._passfile, stat.S_IRUSR | stat.S_IWUSR)
-			open(self._passfile, 'w').write('%s\n' % password)
-
-			args = ['-dcname', host, '-dcaccount', user, '-dcpwd', self._passfile]		# argument list to univention-join
-
-			# construct a batch file that will do everything
-			cmds = [
-				'#!/bin/bash',
-				'TMPF=%s' % self._tempfile,
-				'trap "rm -f %s %s %s" EXIT' % (self._passfile, self._tempfile, self._tempscript),
-				'(',
-				'  echo "`date`: Starting univention-join"',
-				'  /usr/share/univention-updater/disable-apache2-umc',  # disable UMC server components restart
-				'  %s %s >${TMPF} 2>&1' % (self._jointool,join(args)),
-				'  ret=$?',
-				'  if [ ${ret} = 0 ] ; then',
-				'	 echo "`date`: univention-join finished successfully"',
-				'  else',
-				'	 echo "`date`: univention-join finished with error:"',
-				'	 /usr/bin/tail -n 7 ${TMPF}',
-				'  fi',
-				'  echo',
-				'  /usr/share/univention-updater/enable-apache2-umc --no-restart',  # enable UMC server components restart
-				') >>%s 2>&1' % self._logname
-			]
-			msg = self._run_shell_script(cmds)
-			if msg:
-				result['msg'] = msg
-				result['errortype'] = 'joinerror'
-			request.status = SUCCESS
-			self.finished(request.id, result)
-
-		localthread = notifier.threads.Simple( 'join', notifier.Callback( _thread, request ),
-										  notifier.Callback( self._thread_finished, request ) )
-		localthread.run()
-
-
-	def run(self,request):
-		"""runs the given join scripts (args is an array) Note that we
-		don't rely on sortedness or even existance of the script names
-		passed in. Everything is checked here before we fire the real
-		action."""
-		result = {}
-		credentials = []
-		username = request.options.get('username',[])
-		password = request.options.get('password',[])
-		scripts = request.options.get('scripts',[])
-		current = self._script_map()
-
-		ucr.load()
-		baseDn = ucr.get('ldap/base')
-
-		# If username and password are set then check credentials against master
-		# before calling join script.
-		MODULE.info('username = %s' % username)
-		if username and password:
-			userDn = None
-			try:
-				# get LDAP connection and UDM users/user module
-				lo = univention.uldap.getMachineConnection()
-				position = univention.admin.uldap.position(baseDn)
-				univention.admin.modules.update()
-				user_module = univention.admin.modules.get("users/user")
-				univention.admin.modules.init(lo, position, user_module)
-
-				# find desired object
-				objects = univention.admin.modules.lookup(user_module, None, lo, scope='sub', filter='uid=%s' % username)
-
-				if not objects:
-					MODULE.warn('The given username "%s" does not exist.' % username)
-					result['msg'] = _('The given username "%s" does not exist.') % username
-				elif len(objects) > 1:
-					MODULE.error('Found more than one matching user object for uid=%s.'% username)
-					result['msg'] = _('Found more than one matching user object.')
-				else:
-					userDn = objects[0].dn
-					MODULE.info('userDn = %s' % userDn)
-					credentials = [ '--binddn', userDn, '--bindpwd', password ]
-
-					port = int(ucr.get('ldap/master/port', '7389'))
-					lo = univention.uldap.access(host=ucr['ldap/master'], port=port,
-												 base=ucr['ldap/base'],
-												 binddn=userDn, bindpw=password,
-												 start_tls=2, decode_ignorelist=[])
-			except ldap.INVALID_CREDENTIALS, e:
-				MODULE.warn('The given credentials are not correct.')
-				result['msg'] = _('The given credentials are not correct.')
-			except ldap.SERVER_DOWN, e:
-				MODULE.error('Cannot connect to LDAP server for resolving username.')
-				result['msg'] = _('Cannot connect to LDAP server for resolving username.')
-
-			if result.get('msg'):
-				# error status
-				result['errortype'] = 'autherror'
-				request.status = SUCCESS
-				self.finished(request.id, result)
-				return
-
-		# Temporary shell script that will call the scripts,
-		# redirect their output (STDERR + STDOUT) into the
-		# log file, and logs their exit code.
-		cmds = [
-			'#!/bin/bash',
-			'trap "rm -f $0" EXIT',
-			'function run()',
-			'{',
-			'  echo "`date`: running $1"',
-			'  /usr/share/univention-updater/disable-apache2-umc',  # disable UMC server components restart
-			'  local cmd="$1"; shift',
-			'  ./$cmd "$@"',
-			'  local ret=$?',
-			'  echo "`date`: $cmd finished with exitcode ${ret}"',
-			'  echo',
-			'  /usr/share/univention-updater/enable-apache2-umc --no-restart',  # enable UMC server components restart
-			'}',
-			'('
-			'  cd %s' % self._instdir
-		]
-		if len(scripts):
-			fnames = []		# array for the full filenames of scripts, must be sorted by priority numbers
-			MODULE.info("Running selected join scripts:")
-			for s in scripts:
-				if not s in current:
-					MODULE.warn("   !! Script name '%s' is illegal" % s)
-				else:
-					fnames.append(current[s]['full'])
-			for s in sorted(fnames):
-				if credentials:
-					cmd = '%s %s' % (s, ' '.join([ pipes.quote(x) for x in credentials]))
-					MODULE.info('   .. %s' % cmd)
-					cmds.append('  run %s' % cmd)
-				else:
-					MODULE.info('   .. %s' % s)
-					cmds.append('  run %s' % s)
-			cmds.append(') >>%s 2>&1' % self._logname)
-
-			result['msg'] = self._run_shell_script(cmds)
-			if result['msg']:
-				result['errortype'] = 'scripterror'
-			request.status = SUCCESS
-
-		self.finished(request.id,result)
-
-	def _run_shell_script(self,cmds):
-		"""internal helper for running a script:
-		 -	arg is a list of lines to write into a temporary shell script
-		 -	create that script, flag it executable
-		 -	create process, store in self._process
-		 -	on any error, returns error text, else empty string"""
-		if path.exists(self._tempscript):
-			# this is shown at the frontend, so we have to translate it.
-			return _("Another join operation is in progress")
-		file = None
-		try:
-			MODULE.info("Creating temporary script:")
-			file = open(self._tempscript,'w')
-			for line in cmds:
-				MODULE.info("   ++ %s" % line)
-				file.write("%s\n" % line)
-			file.close()
-			chmod(self._tempscript,0700)
-			self._process = Popen(self._tempscript)
-		except Exception, ex:
-			self._process = None
-			if file != None:
-				file.close()
-			if path.exists(self._tempscript):
-				unlink(self._tempscript)
-			MODULE.warn("ERROR: %s" % str(ex))		# print to module log
-			return str(ex)
-		return ''
-
-	def _joined(self):
-		"""returns (localized) the join date+time (or empty string if not joined)"""
-		try:
-			st = os.stat('/var/univention-join/joined')
-			if st:
-				# FIXME Locale info of the process is not right!
-				fmt = nl_langinfo(D_T_FMT)		# string to format a date/time
-				tim = localtime(st[9])
-				txt = strftime(fmt,tim)
-				return txt
-		except:
-			return ''
-
-	def _script_map(self):
-		"""Helper function that returns a dict of currently available join scripts.
-		Key is the 'basename', value is a dict with relevant keys:-
-			'script' ... basename of the script
-			'full' ..... real file name
-			'prio' ..... priority number, must be honored if we're running multiple scripts
-			'current' .. the version number as read from the script itself"""
-		# List all join scripts (*.inst) in /usr/lib/univention-install
-		MODULE.info("Listing scripts in '%s'" % self._instdir)
-		files = {}		# key = basename, value = dict with properties
-		for fname in listdir(self._instdir):
-			match = re.search('^(\d+)(.*)\.inst$',fname)
+		# List all join scripts
+		files = {}
+		for fname in os.listdir(INSTDIR):
+			match = RE_JOINFILE.match(fname)
 			if match:
-				entry = {}
-				entry['full'] = fname				# full file name
-				entry['script'] = match.group(2)	# basename without prio and '.inst'
-				entry['prio'] = match.group(1)		# script priority
+				entry = match.groupdict()
+				entry['configured'] = True
+				files[entry['script']] = entry
 
-				file = None
-				try:
-					file = open('%s/%s' % (self._instdir,fname))
-					for line in file:
-						match = re.search('^VERSION\=(\d+)',line)
-						if match:
-							try:
-								entry['current'] = int(match.group(1))
-								MODULE.info("   Script '%s' has version '%s'" % (fname,match.group(1)))
-								break	# should stop reading from this file
-							except ValueError, e:
-								MODULE.warn("   Failed to parse version number for Script '%s': VERSION=%s" % (fname, match.group(1)))
-				finally:
-					if file != None:
-						file.close()
-					# should never happen, but...
-					if not 'current' in entry:
-						MODULE.warn("   Script '%s' has no version number" % fname)
-					else:
-						files[entry['script']] = entry
-		MODULE.info("Found %d valid scripts." % len(files))
-		return files
+		# check for unconfigured scripts
+		process = subprocess.Popen(['/usr/sbin/univention-check-join-status'], shell=False, stdout=subprocess.PIPE)
+		while True:
+			# get the next line
+			line = process.stdout.readline()
+			if not line:
+				# no more text from stdout
+				break
 
-	def _scripts(self):
-		"""collects status about join scripts, returns ready-formatted
-		grid data.  if machine is not joined -> returns an empty array."""
-		jtx = self._joined()
-		if not len(jtx):
-			MODULE.warn("   System not joined -> returning empty script list.")
-			result = []
-			return result
-		# get list of join scripts
-		files = self._script_map()
+			match = RE_NOT_CONFIGURED.match(line)
+			if match:
+				name = match.groups()[0]
+				files.get(name, {})['configured'] = False
 
-		# read status file /var/univention-join/status
-		# <scriptname> v<version> <status>
-		#
-		# Assigns remaining properties to the corresponding entry of files{}
+		return files.values()
 
-		MODULE.info("   .. Parsing '%s' ..." % self._statusfile)
-		file = None
-		lcount = 0			# line count
-		fcount = 0			# file count
-		try:
-			file = open(self._statusfile)
-			try:
-				for line in file:
-					lcount = lcount + 1
-					temp = line.split()
-					if len(temp) != 3:
-						continue
-					if temp[2] != 'successful':
-						continue
-					fcount = fcount + 1
-					(fname,version,status) = temp
-					try:
-						version = int(version.replace('v',''))
-					except ValueError, e:
-						version = 0
-						MODULE.warn("   Failed to parse executed version number for Script '%s': %s" % (fname, version))
-					if fname in files:
-						# Some join scripts fail to remove older entries from the status
-						# file, so we have to check that we've catched the highest version!
-						if version < files[fname].get('last', 0):
-							# ignore smaller version
-							continue
-						files[fname]['last'] = version
-						if files[fname].get('last', 0) < files[fname].get('current', 0):
-							files[fname]['action'] = _('run')
-							files[fname]['status'] = _('due')
-						else:
-							files[fname]['status'] = _('successful')
-							files[fname]['action'] = ''
-					else:
-						MODULE.warn("  Script '%s' has no package" % fname)
-						e = {}
-						e['script'] = fname
-						e['status'] = _('not installed')
-						e['last'] = version
-						files[fname] = e
-			finally:
-				file.close()
-		except (IOError, OSError), e:
-			MODULE.warn("ERROR opening the status file: %s" % e)
-		MODULE.info("   .. Read %d lines, extracted %d success entries" % (lcount,fcount))
-		# Say it perlish: @result = values %files;
-		result = []
-		for idx in files:
-			entry = files[idx]
-			if not 'last' in entry:
-				entry['last'] = '--'
-				if 'current' in entry:
-					entry['status'] = _('never run')
-					entry['action'] = _('run')
-			# to avoid double expressions in the JS code, checking for
-			# definedness and non-emptiness of strings: We set all empty
-			# properties to the empty string.
-			if not 'action' in entry:
-				entry['action'] = ''
-			# Return only entries that have a 'current' property.
-			if 'current' in entry:
-				result.append(entry)
-		return result
+	@simple_response
+	def joined(self):
+		return self._joined
 
-	def _logview(self,count):
-		"""Contains all functions needed to view or 'tail' the join log.
-		Argument 'count' can have different values:
-		< 0 ... return Unix timestamp of log file, to avoid fetching unchanged file.
-		0 ..... return the whole file, splitted into lines.
-		> 0 ... return the last 'count' lines of the file. (a.k.a. tail)"""
-		lines = []
-		if count < 0:
-			try:
-				st = os.stat(self._logname)
-				if st:
-					MODULE.info("   >> log file stamp = '%s'" % st[9])
-					return st[9]
-				return 0
-			except:
-				return 0
-		try:
-			file = open(self._logname,'r')
-			for line in file:
-				l = line.rstrip()
-				lines.append(l)
-				if (count) and (len(lines) > count):
-					lines.pop(0)
-		finally:
-			if file != None:
-				file.close()
-		return lines
+	@simple_response
+	def progress(self):
+		return self.progress_state.poll()
 
+	@simple_response
+	def running(self):
+		""" returns true if a join script is running. """
+		return self._running
+
+	@simple_response
+	def master(self):
+		""" returns the hostname of the domaincontroller master as fqdn """
+		return get_master_dns_lookup()
+
+	@property
+	def _joined(self):
+		return os.path.exists('/var/univention-join/joined')
+	
+	@property
 	def _running(self):
-		"""Polling function that checks if our subprocess is running or
-		finished in the meantime."""
-		# do we have a process running?
-		if self._process != None:
-			# already terminated?
-			if self._process.poll() != None:
-				# unregister it.
-				self._process = None
-				# Clean up temp files
-				for f in [self._tempscript, self._tempfile, self._passfile ]:
-					if path.exists(f):
-						MODULE.warn("Removing temp file: %s" % f)
-						unlink(f)
-			# true if running, false if not.
-			return (self._process != None)
-		# If we're a different module instance than the one that holds the
-		# currently running process -> check for existance of the script
-		# file and return true if we see one.
-		else:
-			return (path.exists(self._tempscript))
+		return os.path.exists(LOCKFILE)
 
+	def _lock(self):
+		try:
+			open(LOCKFILE, 'a').close()
+		except (IOError, OSError), ex:
+			MODULE.warn('_lock: %s' % (ex))
+
+	def _unlock(self):
+		try:
+			if self._running:
+				os.unlink(LOCKFILE)
+		except (IOError, OSError), ex:
+			MODULE.warn('_unlock: %s' % (ex))
+
+	def __del__(self):
+		self._unlock()
+
+	# TODO __finalize__?
+
+	@simple_response
+	def logview(self):
+		"""Returns the last 2MB of the join.log file"""
+		with open(LOGFILE) as fd:
+			return fd.read(2097152)
+
+	@sanitize(
+		username=StringSanitizer(required=True),
+		password=StringSanitizer(required=True),
+		hostname=HostSanitizer(required=True, regex_pattern=RE_HOSTNAME),
+	)
+	def join(self, request):
+		username, password, hostname = (request.options['username'], request.options['password'], request.options['hostname'])
+
+		def _error(msg):
+			self.finished(request.id, dict(success=False, error=msg), success=False, status=400)
+
+		# Check if already a join process is running
+		if self._running:
+			_error(_('A join process is already running.'))
+
+		# check for valid server role
+		if ucr.get('server/role') == 'domaincontroller_master':
+			_error(_('Invalid server role! A master domain controller can not be joined.'))
+
+		def _thread():
+			self.progress_state.reset()
+			self.progress_state.component = _('Domain join')
+			self._lock()
+			return system_join(
+				hostname, username, password,
+				info_handler=self.progress_state.info_handler,
+				step_handler=self.progress_state.add_steps,
+				error_handler=self.progress_state.error_handler,
+			)
+
+		def _finished(thread, result):
+			MODULE.info('Finished joining')
+			self._unlock()
+			self.progress_state.info = _('finished...')
+			self.progress_state.finish()
+			if isinstance(result, BaseException):
+				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
+				MODULE.warn('Exception during domain join: %s' % msg)
+				self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
+
+		# launch thread
+		thread = notifier.threads.Simple('join', _thread, _finished)
+		thread.run()
+
+		request.status = 202
+		self.finished(request.id, {'success': True})
+
+	@sanitize(
+		username=StringSanitizer(),
+		password=StringSanitizer(),
+		scripts=ListSanitizer(required=True, min_elements=1),
+		force=BooleanSanitizer(default=False)
+	)
+	def run(self, request):
+		"""runs the given join scripts"""
+
+		def _error(msg):
+			self.finished(request.id, dict(success=False, error=msg), success=False, status=400)
+
+		# Check if already a join process is running
+		if self._running:
+			_error(_('A join process is already running.'))
+
+		scripts, username, password, force = (request.options['scripts'], request.options.get('username'), request.options.get('password'), request.options.get('force', False))
+
+		def _thread():
+			# reset progress state and lock against other join processes
+			self.progress_state.reset()
+			self.progress_state.component = _('Running join scripts...')
+			self._lock()
+			return run_join_scripts(
+				scripts, force, username, password,
+				info_handler=self.progress_state.info_handler,
+				step_handler=self.progress_state.add_steps,
+				error_handler=self.progress_state.error_handler,
+			)
+
+		def _finished(thread, result):
+			MODULE.info('Finished running join scripts')
+			self._unlock()
+			self.progress_state.info = _('finished...')
+			self.progress_state.finish()
+			if isinstance(result, BaseException):
+				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
+				MODULE.warn('Exception during running join scripts: %s' % msg)
+				self.progress_state.error_handler(_('An unexpected error occurred: %s') % result)
+
+		# launch thread
+		thread = notifier.threads.Simple('join', _thread, _finished)
+		thread.run()
+
+		# finish request
+		request.status = 202
+		self.finished(request.id, {'success': True})

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-11-06 08:21+0100\n"
+"POT-Creation-Date: 2013-02-17 23:39-0500\n"
 "PO-Revision-Date: 2012-04-23 15:37+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,97 +12,55 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/join/__init__.py:327
-msgid "An unknown error occured while testing join credentials."
-msgstr ""
-"Ein unbekannter Fehler ist beim Prüfen der Benutzerinformationen aufgetreten."
+#: umc/python/join/__init__.py:337 umc/python/join/__init__.py:385
+msgid "A join process is already running."
+msgstr "Ein Joinprozess läuft bereits."
 
-#: umc/python/join/__init__.py:494
-msgid "Another join operation is in progress"
-msgstr "Es wird gerade eine andere Join-Operation ausgeführt"
+#: umc/python/join/__init__.py:362 umc/python/join/__init__.py:409
+#, python-format
+msgid "An unexpected error occurred: %s"
+msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
 
-#: umc/python/join/__init__.py:432
-msgid "Cannot connect to LDAP server for resolving username."
-msgstr ""
-"Eine Verbindung zum LDAP-Server konnte nicht hergestellt werden, um den "
-"Benutzernamen aufzulösen."
+#: umc/python/join/__init__.py:345
+msgid "Domain join"
+msgstr "Domänenjoin"
 
-#: umc/python/join/__init__.py:328
-msgid "Error"
-msgstr "Fehler"
+#: umc/python/join/__init__.py:187
+#, python-format
+msgid "Executing join script %s"
+msgstr "Führe join skript %s aus"
 
-#: umc/python/join/__init__.py:416
-msgid "Found more than one matching user object."
-msgstr "Es wurde mehr als ein Benutzerobjekt gefunden."
+#: umc/python/join/__init__.py:77
+msgid "Initializing"
+msgstr "Initialisiere"
 
-#: umc/python/join/__init__.py:322
-msgid "Host unreachable"
-msgstr "Rechner ist nicht erreichbar"
+#: umc/python/join/__init__.py:341
+msgid "Invalid server role! A master domain controller can not be joined."
+msgstr "Ungültige Serverrolle. Ein master Domönencontroller kann nicht gejoined werden."
 
-#: umc/python/join/__init__.py:331
-msgid "Invalid characters"
-msgstr "Ungültige Zeichen"
+#: umc/python/join/__init__.py:392
+msgid "Running join scripts..."
+msgstr "Join skripte ausführen..."
 
-#: umc/python/join/__init__.py:429
-msgid "The given credentials are not correct."
-msgstr "Die angegebenen Benutzerinformationen sind nicht korrekt."
-
-#: umc/python/join/__init__.py:321
-msgid "The given hostname cannot be resolved or the host is unreachable."
-msgstr ""
-"Der angegebene Rechnername konnte nicht aufgelöst werden oder der Rechner "
-"ist nicht erreichbar."
-
-#: umc/python/join/__init__.py:318
+#: umc/python/join/__init__.py:214
 msgid ""
-"The given user does not exist in LDAP. Please enter a domain administrator "
-"account."
-msgstr ""
-"Der angegebene Benutzer existiert nicht im LDAP-Verzeichnis. Bitte ein Konto "
-"eines Domänen Administrators angeben."
+"Some join scripts could not be executed. More details can be found in the "
+"log file /var/log/univention/join.log. Please retry to execute the join "
+"scripts after resolving any conflicting issues."
+msgstr "Einige join skripte konnten nicht ausgeführt werden. Weitere informationen können in der Logdatei /var/log/univention/join.log gefunden werden. Bitte wiederhole ausführung der join skripte nach lösen aller Konflikte."
 
-#: umc/python/join/__init__.py:413
+#: umc/python/join/__init__.py:67
+msgid "The entered FQDN is not a valid value"
+msgstr "Die eingegebene FQDN ist kein gültiger Wert."
+
+#: umc/python/join/__init__.py:181
 #, python-format
-msgid "The given username \"%s\" does not exist."
-msgstr "Der angegebene Benutzername \"%s\" existiert nicht."
+msgid ""
+"The system join process could not be completed: %s. More details can be "
+"found in the log file /var/log/univention/join.log. Please retry after "
+"resolving any conflicting issues."
+msgstr "Der system joinprozess konnte nicht fertiggestellt werden: %s. Weitere informationen können in der Logdatei /var/log/univention/join.log gefunden werden. Bitte Vorgang nach lösen aller Konflikte wiederholen."
 
-#: umc/python/join/__init__.py:324
-msgid "The given username or password is not correct."
-msgstr "Der angegebene Benutzername oder das Passwort ist nicht korrekt."
-
-#: umc/python/join/__init__.py:258
-#, python-format
-msgid "The hostname contains an invalid character: %s"
-msgstr "Der Rechnername enthält ein ungültiges Zeichen: %s"
-
-#: umc/python/join/__init__.py:256
-#, python-format
-msgid "The username contains an invalid character: %s"
-msgstr "Der Benutzername enthält ein ungültiges Zeichen: %s"
-
-#: umc/python/join/__init__.py:319 umc/python/join/__init__.py:325
-msgid "Wrong credentials"
-msgstr "Falsche Benutzerangaben"
-
-#: umc/python/join/__init__.py:615
-msgid "due"
-msgstr "fällig"
-
-#: umc/python/join/__init__.py:638
-msgid "never run"
-msgstr "noch nie ausgeführt"
-
-#: umc/python/join/__init__.py:623
-msgid "not installed"
-msgstr "nicht installiert"
-
-#: umc/python/join/__init__.py:614 umc/python/join/__init__.py:639
-msgid "run"
-msgstr "ausführen"
-
-#: umc/python/join/__init__.py:617
-msgid "successful"
-msgstr "erfolgreich"
-
-#~ msgid "Removing temp file: %s"
-#~ msgstr "Lösche temporäre Datei: "
+#: umc/python/join/__init__.py:357 umc/python/join/__init__.py:404
+msgid "finished..."
+msgstr "beendet..."

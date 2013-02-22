@@ -1,6 +1,6 @@
 # Helper lib for writing join-scripts.
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -118,6 +118,11 @@ joinscript_save_current_version () {
 
 joinscript_get_last_executed_version () {
 
+	if [ -n "$JOIN_FORCE" ]; then
+		JS_LAST_EXECUTED_VERSION=0
+		return 0
+	fi
+
 	if ! joinscript_check_any_version_executed; then
 		JS_LAST_EXECUTED_VERSION=0
 		return 0
@@ -220,7 +225,7 @@ joinscript_init () {
 		joinscript_abort "The server has not joined yet"
 	fi
 
-	if joinscript_check_already_executed; then
+	if [ -z "$JOIN_FORCE" ] && joinscript_check_already_executed; then
 		# This is the special case, where it would be nicer to have a different
 		# exit-code, but exit-code 1 is still returned in order not to break
 		# compatibility with join-scripts, that don't use this lib yet.
