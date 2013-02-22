@@ -5,8 +5,10 @@ univention-squid (6.0.5-1) unstable; urgency=low
   * Added new variable squid/append_domain (Bug #10390) 
   * Authentication with group membership now supports groups with spaces in their names (Bug #11819)
   * Use CIDR masks in always_direct rule definitions (Bug #25268) 
+  * squid/auth/groups is removed, group authentication is handled by squid/auth/allowed_groups (Bug #30553)
+  * Renamed squid/ldapauth/groups to squid/auth/allowed_groups, which is by default empty (Bug #30553) 
 
- -- Erik Damrose <damrose@univention.de>  Wed, 20 Feb 2013 12:46:17 +0100
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Feb 2013 11:13:20 +0100
 
 univention-squid (6.0.4-1) unstable; urgency=low
 

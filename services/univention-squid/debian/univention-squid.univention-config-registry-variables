@@ -46,9 +46,9 @@ Description[en]=Number of basic authentication processes
 Type=str
 Categories=service-webproxy
 
-[squid/ldapauth/groups]
-Description[de]=Benutzergruppen, die auf squid zugreifen dürfen
-Description[en]=User groups that are allowed to access squid
+[squid/auth/allowed_groups]
+Description[de]=Benutzergruppen, die auf squid zugreifen dürfen, durch Semikolon getrennt. Ist diese Variable leer wird keine Gruppenzugehörigkeit überprüft
+Description[en]=User groups that are allowed to access squid, seperated by semicolon. If this Variable is empty no group checks are performed
 Type=str
 Categories=service-webproxy
 
@@ -139,12 +139,6 @@ Categories=service-webproxy
 [squid/krb5auth/keepalive]
 Description[de]=keep_alive Option für squid_kerb_auth 
 Description[en]=keep_alive option for squid_kerb_auth
-Type=str
-Categories=service-webproxy
-
-[squid/auth/groups]
-Description[de]=Autorisierung am Squid auf Basis von Gruppenzugehörigkeit (Default: yes)
-Description[en]=Squid Authorization based on group membership (Default: yes)
 Type=str
 Categories=service-webproxy
 
