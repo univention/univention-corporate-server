@@ -203,13 +203,17 @@ def main(argv):
 						   bindpw = bindpw)
 	except uexceptions.authFail:
 		raise UsageError, "Authentication failed, try `--bindpwd'"
+	
+	out = ['Base DN: %s' % baseDN]
 	try:
 		_license.init_select(lo, 'admin')
-		return check_license(lo, None, options.has_key('list-dns'), 0)
+		out.extend( check_license(lo, None, options.has_key('list-dns'), 0) )
 	except uexceptions.base:
 		dns = find_licenses(lo, baseDN, 'admin')
 		dn, expired = choose_license(lo, dns)
-		return check_license(lo, dn, options.has_key('list-dns'), expired)
+		out.extend( check_license(lo, dn, options.has_key('list-dns'), expired) )
+	finally:
+		return out
 
 def doit(argv):
 	try:
