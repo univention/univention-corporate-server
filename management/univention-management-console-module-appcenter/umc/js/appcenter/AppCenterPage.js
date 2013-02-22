@@ -331,45 +331,27 @@ define([
 							name: 'install',
 							label: _("Install"),
 							callback: lang.hitch(this, function() {
-								var masterInstallConfirmend = 'yes';
-								if (app.defaultpackagesmaster && app.defaultpackagesmaster.length && app.show_ldap_schema_confirmation) {
-									var prepareMessage = app.is_master ? _('After the installation the backup servers must be prepared as described in the dialog before. Continue?') : _('Was the domain prepared as asked in the dialog before?');
-									masterInstallConfirmend = dialog.confirm(
-										_('This application requires an extension of the LDAP schema.') + ' ' +
-										prepareMessage, [{
-											label: _('No'),
-											name: 'no',
-											'default': true
-										}, {
-											label: _('Yes'),
-											name: 'yes'
-										}]);
-								}
-								when(masterInstallConfirmend, lang.hitch(this, function(answer) {
-									if (answer === 'yes') {
-										if (app.licenseagreement) {
-											// before installing, user must agree on license terms
-											var content = '<h1>' + _('License agreement') + '</h1>';
-											content += '<div style="max-height:250px; overflow:auto;">' +
-												this.formatTxt(app.licenseagreement) +
-												'</div>';
-											dialog.confirm(content, [{
-												name: 'decline',
-												label: _('Cancel'),
-												'default': true
-											}, {
-												name: 'accept',
-												label: _('Accept license')
-											}], _('License agreement')).then(lang.hitch(this, function(response) {
-												if (response == 'accept') {
-													this._call_installer('install', app);
-												}
-											}));
-										} else {
+								if (app.licenseagreement) {
+									// before installing, user must agree on license terms
+									var content = '<h1>' + _('License agreement') + '</h1>';
+									content += '<div style="max-height:250px; overflow:auto;">' +
+										this.formatTxt(app.licenseagreement) +
+										'</div>';
+									dialog.confirm(content, [{
+										name: 'decline',
+										label: _('Cancel'),
+										'default': true
+									}, {
+										name: 'accept',
+										label: _('Accept license')
+									}], _('License agreement')).then(lang.hitch(this, function(response) {
+										if (response == 'accept') {
 											this._call_installer('install', app);
 										}
-									}
-								}));
+									}));
+								} else {
+									this._call_installer('install', app);
+								}
 							})
 						});
 					}
@@ -498,6 +480,21 @@ define([
 						if (result.broken.length) {
 							label = _('This operation causes problems in the following packages that cannot be resolved:');
 							txt += '<p>' + label + '<ul><li>' + result.broken.join('</li><li>') + '</li></ul></p>';
+							headline = _('You cannot continue');
+							buttons = [{
+								name: 'cancel',
+								'default': true,
+								label: _("Cancel")
+							}];
+						}
+						if (result.unreachable.length) {
+							if (app.is_master) {
+								label = _('The server must be able to connect to DC Backups.');
+							} else {
+								label = _('The server must be able to connect to DC Master and DC Backups.');
+							}
+							label += ' ' + _('The following hosts cannot be reached:');
+							txt += '<p>' + label + '<ul><li>' + result.unreachable.join('</li><li>') + '</li></ul></p>';
 							headline = _('You cannot continue');
 							buttons = [{
 								name: 'cancel',
@@ -639,30 +636,30 @@ define([
 			if (allows_using && values.cannot_install_reason == 'not_joined') {
 				return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('The system has to join a domain before the application can be installed!');
 			}
-			if (allows_using && (can_install || can_update) && master_packages && master_packages.length) {
-				// prepare a command with max 50 characters length per line
-				var MAXCHARS = 50;
-				var cmdLine = lang.replace('univention-add-app {component_id} ', {component_id: values.candidate_component_id || values.component_id});
-				var cmdLines = [];
-				array.forEach(master_packages, function(icmd) {
-					if (icmd.length + cmdLine.length > MAXCHARS) {
-						cmdLines.push(cmdLine);
-						cmdLine = '    ';
-					}
-					cmdLine += icmd + ' ';
-				});
-				if (cmdLine) {
-					cmdLines.push(cmdLine);
-				}
-				var commandStr = cmdLines.join('\\\n');
+			// if (allows_using && (can_install || can_update) && master_packages && master_packages.length) {
+			// 	// prepare a command with max 50 characters length per line
+			// 	var MAXCHARS = 50;
+			// 	var cmdLine = lang.replace('univention-add-app {component_id} ', {component_id: values.candidate_component_id || values.component_id});
+			// 	var cmdLines = [];
+			// 	array.forEach(master_packages, function(icmd) {
+			// 		if (icmd.length + cmdLine.length > MAXCHARS) {
+			// 			cmdLines.push(cmdLine);
+			// 			cmdLine = '    ';
+			// 		}
+			// 		cmdLine += icmd + ' ';
+			// 	});
+			// 	if (cmdLine) {
+			// 		cmdLines.push(cmdLine);
+			// 	}
+			// 	var commandStr = cmdLines.join('\\\n');
 
-				// print out note for master and backup servers
-				if (values.is_master) {
-					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers <em>after</em> installing the application on this DC master.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
-				} else {
-					return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root <em>first</em> on your DC master and <em>then</em> on all of your backup servers <em>prior</em> to installing the application on this system.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
-				}
-			}
+			// 	// print out note for master and backup servers
+			// 	if (values.is_master) {
+			// 		return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of your backup servers <em>after</em> installing the application on this DC master.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
+			// 	} else {
+			// 		return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root <em>first</em> on your DC master and <em>then</em> on all of your backup servers <em>prior</em> to installing the application on this system.') + '</td></tr><tr><td colspan="2"><pre>' + commandStr + '</pre>';
+			// 	}
+			// }
 		},
 
 		_detail_field_custom_cannot_update_reason: function(values) {

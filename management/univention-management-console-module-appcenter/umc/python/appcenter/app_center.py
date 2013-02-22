@@ -52,6 +52,7 @@ import cgi
 from urlparse import urlsplit, urlunsplit, urljoin
 from datetime import datetime
 from PIL import Image
+from httplib import HTTPException
 
 # related third party
 import ldif
@@ -473,7 +474,7 @@ class Application(object):
 		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
-		res['show_ldap_schema_confirmation'] = not res['is_master']
+		res['show_ldap_schema_confirmation'] = False # is done automatically
 		#if res['is_master']:
 		#	try:
 		#		from univention.admin.handlers.computers import domaincontroller_backup
@@ -574,22 +575,44 @@ class Application(object):
 		self._send_information('uninstall', status)
 		return status == 200
 
-	def install_dry_run(self, package_manager, component_manager, remove_component=True):
+	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None):
 		if self.candidate:
-			return self.candidate.install_dry_run(package_manager, component_manager, remove_component)
+			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password)
 		MODULE.info('Invoke install_dry_run')
 		result = None
 		try:
 			ucr.load()
 			server_role = ucr.get('server/role')
 
+			master_packages = self.get('defaultpackagesmaster')
+
+			# connect to master/backups
+			unreachable = []
+			if master_packages:
+				lo = uldap.getMachineConnection(ldap_master=False)
+				try:
+					hosts = []
+					if server_role != 'domaincontroller_master':
+						hosts.append(get_master(lo))
+					# may be backup: dont install on oneself!
+					hosts.extend(get_all_backups(lo, ucr))
+					for host in hosts:
+						try:
+							connection = UMCConnection(host)
+							connection.auth(username, password)
+						except HTTPException as e:
+							MODULE.warn('%s: %s' % (host, e))
+							unreachable.append(host)
+				finally:
+					del lo
+
 			# packages to install
 			to_install = self.get('defaultpackages')
 			MODULE.info('defaultpackages: %s' % (to_install, ))
 			if server_role in ('domaincontroller_master', 'domaincontroller_backup', ):
 				MODULE.info('Running on DC master or DC backup')
-				if self.get('defaultpackagesmaster'):
-					to_install.extend(self.get('defaultpackagesmaster'))
+				if master_packages:
+					to_install.extend(master_packages)
 
 			# add the new component
 			component_manager.put_app(self)
@@ -602,6 +625,7 @@ class Application(object):
 			result = package_manager.mark(to_install, [], dry_run=True)
 			result = dict(zip(['install', 'remove', 'broken'], result))
 			MODULE.info('Package changes: %s' % (result, ))
+			result['unreachable'] = unreachable
 
 			if remove_component:
 				# remove the newly added component
@@ -630,6 +654,9 @@ class Application(object):
 			while True:
 				all_errors = set()
 				result = connection.request('appcenter/progress')
+				if result is None:
+					MODULE.warn('%s: appcenter/progress returned None (BadStatusLine)' % host)
+					continue
 				MODULE.info('Result from %s: %r' % (host, result))
 				info = result['info']
 				steps = result['steps']

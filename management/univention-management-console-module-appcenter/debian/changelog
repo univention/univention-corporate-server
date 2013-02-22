@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.118-1) unstable; urgency=low
+
+  * Warn about unreachable DC Master/Backup before installing (Bug #30503)
+  * Remove univention-add-app advisories (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 22 Feb 2013 14:01:43 +0100
+
 univention-management-console-module-appcenter (2.0.117-1) unstable; urgency=low
 
   * Automatically install master packages on DC Master and Backup (Bug #30503)
