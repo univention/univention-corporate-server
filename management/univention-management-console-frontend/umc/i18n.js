@@ -40,18 +40,35 @@ define([
 	"dojox/string/sprintf"
 ], function(i18nTools, lang, array, kernel, request, all, json, Deferred, sprintf) {
 
-	// internal function and list of erroneous/missing translation information
-	var _ignoreModules = {};
-	var _ignore = function(language, modPath, modName) {
-		lang.setObject(lang.replace('{0}.{1}.{2}', [language, modPath, modName]), true, _ignoreModules);
-	};
-	var _ignored = function(language, modPath, modName) {
-		return lang.getObject(lang.replace('{0}.{1}.{2}', [language, modPath, modName]), false, _ignoreModules) || false;
-	};
-
-	// Internal regular expression to split the module name into the module
+	// Internal helper function to split the module name into the module
 	// path and name.
 	var _i18nModNameRegExp = /^([^\/]*)$|^(.*)\/([^\/]*)$/;
+	var _splitScope = function(scope) {
+		// get module path and module name
+		// case1: no '/' is in the path: m[2] == undefined && m[3] == undefined
+		// case2: there is a '/' in the path: m[1] == undefined
+		var m = _i18nModNameRegExp.exec(scope);
+		var modPath = m[2] || '';
+		var modName = m[3] || m[1];
+		return [modPath, modName];
+	};
+
+	// return full path of a given scope
+	var _scopePath = function(language, _scope) {
+		var scope = _splitScope(_scope);
+		return lang.replace('{1}/i18n/{0}/{2}.json', [ language, scope[0], scope[1] ]);
+	};
+
+	// internal function and list of erroneous/missing translation information
+	var _ignoreModules = {};
+	var _ignore = function(language, _scope) {
+		var scope = _splitScope(_scope);
+		lang.setObject(lang.replace('{0}.{1}.{2}', [language, scope[0], scope[1]]), true, _ignoreModules);
+	};
+	var _ignored = function(language, _scope) {
+		var scope = _splitScope(_scope);
+		return lang.getObject(lang.replace('{0}.{1}.{2}', [language, scope[0], scope[1]]), false, _ignoreModules) || false;
+	};
 
 	// Internal regular expression to split locales in to the language and the
 	// territory (which is ignored at the moment).
@@ -85,6 +102,11 @@ define([
 		// |	});
 
 		load: function (params, req, load, config) {
+			// detect the locale language (ignore territory)
+			var m = _i18nLocalRegExp.exec(kernel.locale);
+			var language = m[1] || 'en'; // default is English
+			language = language.toLowerCase();
+
 			// Internal dictionary of translation from English -> current language
 			var _translations = [];
 
@@ -110,28 +132,47 @@ define([
 				return sprintf.apply(null, args);
 			};
 
-			// detect the locale language (ignore territory)
-			var m = _i18nLocalRegExp.exec(kernel.locale);
-			var language = m[1] || 'en'; // default is English
-			language = language.toLowerCase();
+			translate.inverse = function(/*String*/ _msg /*, String scope, ...*/) {
+				// try to get the original message given the localized message
+				// note: if the string has been expanded (e.g., with '%s' etc.)
+				//       this will not be possible.
+				var msg = null;
+				var translations = _translations.slice(); // shallow copy
+				var i;
+				for (i = arguments.length - 1; i > 0; --i) {
+					// add specified scopes
+					var iscope = arguments[i];
+					if (cachedData[iscope] !== undefined && !_ignored(language, iscope)) {
+						// ok, we have this scope already loaded
+						translations.unshift(cachedData[iscope]);
+					}
+				}
+
+				// iterate over all scopes and try to find the original of the localized string
+				for (i = 0; i < translations.length && msg === null; ++i) {
+					// iterate over all entries of the scope
+					for (var ikey in translations[i]) {
+						if (translations[i].hasOwnProperty(ikey)) {
+							var ival = translations[i][ikey];
+							if (ival == _msg) {
+								// we found the original
+								msg = ikey;
+								break;
+							}
+						}
+					}
+				}
+				return msg || _msg; // return by default the localized string
+			};
 
 			// use 'umc.app' as backup path to allow other class to override a
 			// UMC base class without loosing its translations (see Bug #24864)
 			var scopes = params.split(/\s*,\s*/);
 			scopes.push('umc/app');
-			scopes = array.map(scopes, function(iscope) {
-				// get module path and module name
-				// case1: no '/' is in the path: m[2] == undefined && m[3] == undefined
-				// case2: there is a '/' in the path: m[1] == undefined
-				var m = _i18nModNameRegExp.exec(iscope);
-				var modPath = m[2] || '';
-				var modName = m[3] || m[1];
-				return [modPath, modName];
-			});
 
 			// ignore i18n files that could not be loaded previously
 			scopes = array.filter(scopes, function(iscope) {
-				return !_ignored(language, iscope[0], iscope[1]);
+				return !_ignored(language, iscope);
 			});
 
 			// try to load the JSON translation file for the current language
@@ -140,29 +181,31 @@ define([
 			var ndone = 0;
 			var results = [];
 			var resolved = function() {
-					// call the resolve function of the deferred if all requests are finished
-					++ndone;
-					if (ndone >= scopes.length) {
-						deferred.resolve(results);
-					}
+				// call the resolve function of the deferred if all requests are finished
+				++ndone;
+				if (ndone >= scopes.length) {
+					deferred.resolve(results);
+				}
 			};
 
 			array.forEach(scopes, function(iscope, i) {
-				var path = lang.replace('{1}/i18n/{0}/{2}.json', [ language, iscope[0], iscope[1] ]);
-				if (cachedData[path] !== undefined) {
+				if (cachedData[iscope] !== undefined) {
+					// we already have already cached the specified scope
 					resolved();
-					results[i] = cachedData[path];
+					results[i] = cachedData[iscope];
 					return;
 				}
+
+				// new scope, get the URL and load its JSON data
+				var path = _scopePath(language, iscope);
 				request(require.toUrl(path)).then(function(idata) {
 					// parse JSON data and store results
-					cachedData[path] = (results[i] = idata ? json.parse(idata) : null);
-
+					cachedData[iscope] = (results[i] = idata ? json.parse(idata) : null);
 					resolved();
 				}, function(error) {
 					// i18n data could not be loaded, ignore them in the future
-					_ignore(language, scopes[i][0], scopes[i][1]);
-					console.log(lang.replace('INFO: Localization files for scope "{0}/{1}" in language "{2}" not available!', [scopes[i][0], scopes[i][1], language]));
+					_ignore(language, iscope);
+					console.log(lang.replace('INFO: Localization files for scope "{0}" in language "{1}" not available!', [iscope, language]));
 
 					resolved();
 				});

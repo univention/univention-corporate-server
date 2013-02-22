@@ -39,6 +39,7 @@ define([
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"dojo/on",
+	"dojo/topic",
 	"dojo/aspect",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -58,7 +59,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, win, query, construct, attr, geometry,
-		style, on, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
+		style, on, topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -192,6 +193,19 @@ define([
 			});
 		},
 
+		_parentModule: undefined,
+		_publishAction: function(action) {
+			if (this._parentModule === undefined) {
+				this._parentModule = tools.getParentModule(this);
+			}
+			if (!this._parentModule) {
+				// could not determine our parent module
+				return;
+			}
+
+			topic.publish('/umc/actions', this._parentModule.moduleID, this._parentModule.moduleFlavor, 'grid', action);
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -280,6 +294,7 @@ define([
 					onClick: lang.hitch(this, function() {
 						var canExecute = typeof iaction.canExecute == "function" ? iaction.canExecute(this._contextItem) : true;
 						if (canExecute && iaction.callback) {
+							this._publishAction('menu-' + iaction.name);
 							iaction.callback([this._contextItemID], [this._contextItem]);
 						}
 					}),
@@ -369,6 +384,7 @@ define([
 						// add callback handler
 						if (iaction.callback) {
 							props.onClick = lang.hitch(this, function() {
+								this._publishAction(iaction.name);
 								iaction.callback([key], [item]);
 							});
 						}
@@ -501,6 +517,9 @@ define([
 			// add buttons to toolbar
 			array.forEach(buttons.$order$, function(ibutton) {
 				this._toolbar.addChild(ibutton);
+				ibutton.on('click', lang.hitch(this, function() {
+					this._publishAction(ibutton.name);
+				}));
 			}, this);
 
 			// clear the footer and redraw the columns
@@ -649,6 +668,7 @@ define([
 					if ( action.name == defaultAction ) {
 						var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
 						if ( action.callback && isExecutable && !this.getDisabledItem(identity)) {
+							this._publishAction('default-' + action.name);
 							action.callback( [ identity ], [ item ] );
 						}
 						return false;
@@ -821,6 +841,7 @@ define([
 					// add callback handler
 					if (iaction.callback) {
 						props.onClick = lang.hitch(this, function() {
+							this._publishAction('multi-' + iaction.name);
 							iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 						});
 					}
@@ -855,6 +876,7 @@ define([
 						iconClass: iiconClass,
 						onClick: lang.hitch(this, function() {
 							if (iaction.callback) {
+								this._publishAction('multi-' + iaction.name);
 								iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 							}
 						})

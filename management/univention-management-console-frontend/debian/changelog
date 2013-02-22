@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.195-1) unstable; urgency=low
+
+  * Bug #30563: added topic publishing for umc actions
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 22 Feb 2013 16:03:39 +0100
+
 univention-management-console-frontend (2.0.194-1) unstable; urgency=low
 
   * Bug #30355: The hint shown when the license of UCS exceeded, was added to

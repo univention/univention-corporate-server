@@ -176,6 +176,7 @@ define([
 						}
 
 						// try to login
+						topic.publish('/umc/actions', 'session', 'timeout');
 						dialog.login().then(lang.hitch(this, function() {
 							if (!this._checkSessionTimer.isRunning) {
 								this._checkSessionTimer.start();
@@ -273,8 +274,8 @@ define([
 
 				sendRequest: function() {
 					// switch off the automatic check for session timeout...
-					// the problem here is as follows, we do not receive a response, 
-					// therefore our session may expire, however, the server will 
+					// the problem here is as follows, we do not receive a response,
+					// therefore our session may expire, however, the server will
 					// renew the session with each valid request that it receives
 					tools.holdSession();
 
@@ -580,10 +581,12 @@ define([
 					logindialog.style('display', 'block');
 				} else if(401 == status) {
 					// session has expired
+					topic.publish('/umc/actions', 'session', 'expired');
 					dialog.login();
 					dialog.notify(this._statusMessages[status]);
 				} else if (409 == status && handleErrors && handleErrors.onValidationError) {
 					// validation error
+					topic.publish('/umc/actions', 'error', status);
 					handleErrors.onValidationError(message, result);
 				}
 				/*else if (591 == status) {
@@ -595,6 +598,7 @@ define([
 				// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
 				else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 
+					topic.publish('/umc/actions', 'error', 'traceback');
 					var feedbackLink = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\nunivention-management-console-frontend {5}", [
 						_('Please take a second to provide the following information:'),
 						_('steps to reproduce the failure'),
@@ -638,11 +642,13 @@ define([
 				}
 				else {
 					// all other cases
+					topic.publish('/umc/actions', 'error', status);
 					dialog.alert('<p>' + this._statusMessages[status] + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''));
 				}
 			}
 			else if (undefined !== status) {
 				// unknown status code .. should not happen
+				topic.publish('/umc/actions', 'error', 'unknown');
 				dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
 			}
 			else {
@@ -1120,6 +1126,26 @@ define([
 				}
 			});
 			return matched;
+		},
+
+		getParentModule: function(/*_Widget*/ widget) {
+			// summary:
+			//		Return the enclosing module of the widget.
+
+			if (!widget || typeof widget.getParent != 'function') {
+				return null;
+			}
+
+			// recursively climb up the DOM
+			var parentWidget = widget.getParent();
+			while (parentWidget) {
+				if (this.inheritsFrom(parentWidget, 'umc.widgets._ModuleMixin')) {
+					// found the parent module
+					return parentWidget;
+				}
+				parentWidget = parentWidget.getParent();
+			}
+			return null;
 		},
 
 		capitalize: function(/*String*/ str) {

@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/on",
+	"dojo/aspect",
 	"dojo/has",
 	"dojo/Evented",
 	"dojo/Deferred",
@@ -62,8 +63,9 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
+	"umc/piwik",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, array, win, on, has, Evented, Deferred, all, cookie, topic, Memory, Observable, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, array, win, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -269,7 +271,8 @@ define([
 				'ssl/validity/root',
 				'ssl/validity/warning',
 				'update/available',
-				'update/reboot/required'
+				'update/reboot/required',
+				'umc/web/piwik'
 			]).then(lang.hitch(this, function(res) {
 				// save the ucr variables in a local variable
 				lang.mixin(_ucr, res);
@@ -391,6 +394,16 @@ define([
 				});
 				dialog.login().then(lang.hitch(this, 'onLogin'));
 			}));
+
+			// perform actions that depend on the UCR variables
+			ucrDeferred.then(function(res) {
+				if (tools.isTrue(_ucr['umc/web/piwik'])) {
+					// use piwik for user action feedback if it is not switched off explicitely
+					require(['umc/piwik'], function() {
+						topic.publish('/umc/actions', 'session', 'login');
+					});
+				}
+			});
 		},
 
 		getModules: function(/*String?*/ category) {
@@ -552,6 +565,7 @@ define([
 					this._univentionMenu.addChild(new MenuItem({
 						label: _('License'),
 						onClick : function() {
+							topic.publish('/umc/actions', 'menu-univention', 'license');
 							var dlg = new LicenseDialog();
 							dlg.show();
 						}
@@ -702,10 +716,12 @@ define([
 							if (array.indexOf(item.categories, '$favorites$') >= 0) {
 								// for the favorite category, remove the moduel from the favorites
 								this.removeFavoriteModule(item.id, item.flavor);
+								topic.publish('/umc/actions', 'overview', 'favorites', item.id, item.flavor, 'remove');
 							}
 							else {
 								// for any other category, add the module to the favorites
 								this.addFavoriteModule(item.id, item.flavor);
+								topic.publish('/umc/actions', 'overview', 'favorites', item.id, item.flavor, 'add');
 							}
 						}));
 					}
@@ -772,6 +788,19 @@ define([
 			});
 			topContainer.addChild(this._tabContainer);
 
+			// register events for closing and focusing
+			this._tabContainer.watch('selectedChildWidget', function(name, oldModule, newModule) {
+				if (!newModule.moduleID) {
+					// this is the overview page, not a module
+					topic.publish('/umc/actions', 'overview');
+				} else {
+					topic.publish('/umc/actions', newModule.moduleID, newModule.moduleFlavor, 'focus');
+				}
+			});
+			aspect.before(this._tabContainer, 'removeChild', function(module) {
+				topic.publish('/umc/actions', module.moduleID, module.moduleFlavor, 'close');
+			});
+
 			// the header
 			var header = new ContainerWidget({
 				'class': 'umcHeader',
@@ -793,11 +822,15 @@ define([
 			this._univentionMenu = new Menu({});
 			this._univentionMenu.addChild(new MenuItem({
 				label: _('Help'),
-				onClick : help
+				onClick : function() {
+					topic.publish('/umc/actions', 'menu-univention', 'help');
+					help();
+				}
 			}));
 			this._univentionMenu.addChild(new MenuItem({
 				label: _('About UMC'),
 				onClick : function() {
+					topic.publish('/umc/actions', 'menu-univention', 'about');
 					tools.umcpCommand( 'get/info' ).then( function( data ) {
 						about( data.result );
 					} );
@@ -807,6 +840,7 @@ define([
 			this._univentionMenu.addChild(new MenuItem({
 				label: _('Univention Website'),
 				onClick: function() {
+					topic.publish('/umc/actions', 'menu-univention', 'website');
 					var w = window.open( 'http://www.univention.de/', 'UMC' );
 					w.focus();
 				}
@@ -831,6 +865,7 @@ define([
 				label: _('Tooltips'),
 				checked: tools.preferences('tooltips'),
 				onClick: function() {
+					topic.publish('/umc/actions', 'menu-user', 'tooltips', this.checked ? 'on' : 'off');
 					tools.preferences('tooltips', this.checked);
 				}
 			}));
@@ -846,6 +881,7 @@ define([
 				label: _('Module help description'),
 				checked: tools.preferences('moduleHelpText'),
 				onClick: function() {
+					topic.publish('/umc/actions', 'menu-user', 'module-help-text', this.checked ? 'on' : 'off');
 					tools.preferences('moduleHelpText', this.checked);
 				}
 			}));
@@ -884,6 +920,7 @@ define([
 				label: _('Logout'),
 				auto: true,
 				callback: lang.hitch(this, function() {
+					topic.publish('/umc/actions', 'session', 'logout');
 					tools.closeSession();
 					if (username === undefined) {
 						window.location.reload();

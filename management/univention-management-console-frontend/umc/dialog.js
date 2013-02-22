@@ -32,6 +32,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/on",
+	"dojo/topic",
 	"dojo/Deferred",
 	"dojo/dom-class",
 	"dojo/dom-style",
@@ -43,7 +44,7 @@ define([
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!umc/app"
-], function(lang, array, on, Deferred, domClass, domStyle, LoginDialog, Toaster, ConfirmDialog, Text, Form, tools, i18nTools, _) {
+], function(lang, array, on, topic, Deferred, domClass, domStyle, LoginDialog, Toaster, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 		_loginDialog: null, // internal reference to the login dialog
@@ -119,6 +120,8 @@ define([
 				return tools.umcpCommand('set', {
 					locale: i18nTools.defaultLang().replace('-', '_')
 				}, false).then(function() {
+					topic.publish('/umc/actions', 'session', 'relogin');
+
 					// remove the reference to the login deferred object
 					dialog._loginDeferred = null;
 
