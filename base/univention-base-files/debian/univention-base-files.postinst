@@ -47,6 +47,8 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.28-1; 
 	fi
 fi
 
+default_ntp_pool=$(univention-default-ntp-pool)
+
 univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	ldap/server/name?ds1 \
 	ldap/server/ip?127.0.0.1 \
@@ -61,7 +63,10 @@ univention-config-registry set ldap/base?dc=univention,dc=unconfigured \
 	update/secure_apt?no \
 	ucr/backup/enabled?yes \
 	ucr/replog/enabled?yes \
-	ntp/signed?yes
+	ntp/signed?yes \
+	timeserver?"0.$default_ntp_pool" \
+	timeserver2?"1.$default_ntp_pool" \
+	timeserver3?"2.$default_ntp_pool"
 
 eval "$(univention-config-registry shell logrotate/rotate/count)"
 univention-config-registry set \
