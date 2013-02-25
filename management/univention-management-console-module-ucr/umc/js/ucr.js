@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
+	"dojo/sniff",
 	"dijit/Dialog",
 	"dijit/form/_TextBoxMixin",
 	"umc/tools",
@@ -49,7 +50,7 @@ define([
 	"umc/widgets/HiddenInput",
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/ucr"
-], function(declare, lang, kernel, array, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, ExpandingTitlePane, TextBox, Text, HiddenInput, ComboBox, _) {
+], function(declare, lang, kernel, array, has, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, ExpandingTitlePane, TextBox, Text, HiddenInput, ComboBox, _) {
 	var _DetailDialog = declare([ Dialog, StandbyMixin ], {
 		_form: null,
 
@@ -347,9 +348,12 @@ define([
 
 			this._page.startup();
 
-			// make sure that the input field is focused
-			this._page.on('show', lang.hitch(this, '_selectInputText'));
-			this._grid.on('filterDone', lang.hitch(this, '_selectInputText'));
+			// Do not focus on touch devices (e.g. tablets)
+			if (! has('touch')) {
+				// make sure that the input field is focused
+				this._page.on('show', lang.hitch(this, '_selectInputText'));
+				this._grid.on('filterDone', lang.hitch(this, '_selectInputText'));
+			}
 
 			//
 			// create dialog for UCR variable details

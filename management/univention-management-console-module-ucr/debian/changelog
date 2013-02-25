@@ -1,3 +1,10 @@
+univention-management-console-module-ucr (2.0.7-1) unstable; urgency=low
+
+  * Do not automatically focus the search field on touch screen devices
+    (Bug #30167)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 25 Feb 2013 14:31:05 +0100
+
 univention-management-console-module-ucr (2.0.6-1) unstable; urgency=low
 
   * Remove unnecessary tooltip (Bug #30167)
