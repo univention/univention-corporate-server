@@ -709,14 +709,11 @@ class Application(object):
 							for host in [get_master(lo)] + get_all_backups(lo, ucr):
 								package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
 								if not self.install_master_packages_on_host(package_manager, function, host, username, password):
-									error_message = 'Unable to install %r on %s. Abort!' % (master_packages, host)
+									error_message = 'Unable to install %r on %s. Abort! Check /var/log/univention/management-console-module-appcenter.log on the host. All errata updates have been installed on %s?' % (master_packages, host, host)
 									MODULE.error(error_message)
 									raise Exception(error_message)
 						finally:
 							del lo
-			# from now on better dont remove component
-			raised_before_installed = False
-
 			# remove all existing component versions
 			for iapp in self.versions:
 				# dont remove yourself (if already added)
@@ -728,24 +725,27 @@ class Application(object):
 				component_manager.put_app(self)
 				package_manager.update()
 
+			# install + dist_upgrade
+			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
+			package_manager.commit(install=to_install, dist_upgrade=True)
+			self.update_conffiles()
+
+			# from now on better dont remove component
+			raised_before_installed = False
+
 			if master_packages and is_master:
 				if username is None or dont_remote_install:
 					MODULE.warn('Not connecting to DC Backups. Has to be done manually')
 				else:
 					lo = uldap.getMachineConnection(ldap_master=False)
 					try:
-						for backup in get_all_backups(lo):
-							if not self.install_master_packages_on_host(package_manager, function, backup, username, password):
-								error_message = 'Unable to install %r on %s. Has to be done manually!' % (master_packages, backup)
+						for host in get_all_backups(lo):
+							if not self.install_master_packages_on_host(package_manager, function, host, username, password):
+								error_message = 'Unable to install %r on %s. Has to be done manually! Check /var/log/univention/management-console-module-appcenter.log on the host. All errata updates have been installed on %s?' % (master_packages, host, host)
 								MODULE.error(error_message)
 								raise Exception(error_message)
 					finally:
 						del lo
-
-			# install + dist_upgrade
-			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
-			package_manager.commit(install=to_install, dist_upgrade=True)
-			self.update_conffiles()
 
 			# successful installation
 			status = 200

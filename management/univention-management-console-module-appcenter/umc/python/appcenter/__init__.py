@@ -180,13 +180,15 @@ class Instance(umcm.Base):
 
 			if can_continue and function in ('install', 'update'):
 				if not only_master_packages:
-					# only_master_packages? dont need to dry_run. but be sure to add component (done in dry_run!)
+					# only_master_packages? dont need to dry_run. but be sure to add component (normally done in dry_run!)
 					result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=False, username=self._username, password=self._password)
 				if result['broken'] or result['unreachable'] or (result['remove'] and not force):
 					MODULE.process('Remove component: %s' % application_id)
 					if function == 'update':
 						self.component_manager.remove_app(application.candidate)
 						self.component_manager.put_app(application)
+					else:
+						self.component_manager.remove_app(application)
 					self.package_manager.update()
 					can_continue = False
 			elif can_continue and function in ('uninstall',) and not force:

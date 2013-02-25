@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.120-1) unstable; urgency=low
+
+  * Install LDAP packages on Backups after those on Master (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Feb 2013 12:08:02 +0100
+
 univention-management-console-module-appcenter (2.0.119-1) unstable; urgency=low
 
   * Improve refreshing of installed apps (Bug #30249)
