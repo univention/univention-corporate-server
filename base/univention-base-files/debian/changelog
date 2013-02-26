@@ -1,3 +1,12 @@
+univention-base-files (2.0.13-3) precise; urgency=low
+
+  * Adjust strata of ntp servers as a workaround for Windows 7 w32tm
+    treating stata > 9 as "unspecified" (Bug #30198):
+    - lower local stratum of master from 10 to usual default value of 5
+    - lower local stratum of other roles from 15 to 9
+
+ -- Arvid Requate <requate@univention.de>  Tue, 26 Feb 2013 16:47:41 +0100
+
 univention-base-files (2.0.13-2) precise; urgency=low
 
   * Revert last change, pool.ntp.org must not be shipped as default
