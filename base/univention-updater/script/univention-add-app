@@ -71,12 +71,16 @@ if __name__ == '__main__':
 	ucr.load()
 	updater = UniventionUpdater(False)
 	component_manager = ComponentManager(ucr, updater)
+	package_manager = PackageManager(info_handler=simple_handler(sys.stdout), error_handler=simple_handler(sys.stderr), always_noninteractive=True)
 	requested_app = None
+	function = 'install'
 	for app in Application.all():
 		requested_apps = filter(lambda iapp: iapp.component_id == component_id, app.versions)
 		if requested_apps:
 			requested_app = requested_apps[0]
 			for iapp in app.versions:
+				if app.is_installed(package_manager):
+					function = 'update'
 				component_manager.remove_app(iapp)
 			break
 	if requested_app is None:
@@ -87,16 +91,16 @@ if __name__ == '__main__':
 		sys.exit(1)
 	success = True
 	component_manager.put_app(requested_app)
-	package_manager = PackageManager(info_handler=simple_handler(sys.stdout), error_handler=simple_handler(sys.stderr), always_noninteractive=True)
 	package_manager.update()
 	if options.install_all or options.install_master:
+		only_master_packages = not options.install_all
 		requested_app.candidate = None # delete a possible candidate (newer version)
 		requested_app.versions = Application.find(requested_app.id).versions
-		if not options.install_all: # remove DefaultPackages from those packages to install
-			requested_app._options['defaultpackages'] = []
-		success = requested_app.install(package_manager, component_manager, add_component=False, send_as='add-app') and success
+		if only_master_packages:
+			function = '%s-schema' % function
+		success = requested_app.install(package_manager, component_manager, add_component=False, send_as=function, only_master_packages=only_master_packages) and success
 	else:
-		requested_app._send_information('add-app-noop', 200)
+		requested_app._send_information(function, 200)
 	# for compatibility with 3.1-0. should be removed with 3.2-0
 	if packages:
 		success = package_manager.install(*packages) and success

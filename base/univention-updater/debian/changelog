@@ -1,3 +1,9 @@
+univention-updater (8.0.67-1) unstable; urgency=low
+
+  * Track as standard functions (e.g. 'install') (Bug #30433)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Feb 2013 11:41:33 +0100
+
 univention-updater (8.0.66-1) unstable; urgency=low
 
   * univention-add-app: Track app installations (Bug #30433)
