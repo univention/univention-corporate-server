@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.6
+#!/usr/share/ucs-test/runner bash
 ## desc: Test slapd for a correct stop and start
 ## tags: [basic]
 ## roles:
@@ -9,102 +9,61 @@
 ##  - slapd
 ## exposure: dangerous
 
-import sys
-import subprocess
-from os.path import basename
-from univention.config_registry import ConfigRegistry
+#Config
+returnOK=0
+returnERROR=1
+returnCode=$returnOK
 
-RETURN_PASS_CODE = 100
-RETURN_FAIL_CODE = 110
+#List of services to be stopped and started
+service_count=1
 
-def main():
-	"""A main method stores almost completely code."""
-	return_code = None # return code for
-	exit_code = RETURN_PASS_CODE # use for exitcode of the entire test, in further code it will be set only to RETURN_PASS_CODE
-	# List of services to be stopped and started
-	service_path = "/etc/init.d/slapd"
-	service_binarys = "/usr/sbin/slapd"
-	server_roles = [ 'domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', ]
-	print "Check if services can be correctly stopped."
+service_path[0]="/etc/init.d/slapd"
+service_binarys[0]="/usr/sbin/slapd"
+server_roles[0]="domaincontroller_master domaincontroller_backup domaincontroller_slave"
 
-	ucr = ConfigRegistry()
-	ucr.load() # load whole dict
-	ldap_schema_export_server_role = ucr.get("server/role")
-	base_name = basename(service_path) # basename of service_path
+echo "Check if services can be correctly stopped"
+role=$(/usr/sbin/univention-config-registry get server/role)
+nr=0
+while [ $nr -lt $service_count ] ; do
+        name="$(basename "${service_path[$nr]}")"
+        echo -ne "Check if we can test the service \"$name\" on server role \"$role\"\t"
+        found=0
+        for r in ${server_roles[$nr]} ; do
+                if [ "$r" == "$role" ] ; then
+                        found=1
+                fi
+        done
+        if [ $found -eq 1 ] ; then
+                echo "Yes"
+                echo -ne "Trying to stop service $name\t"
+                "${service_path[$nr]}" stop
+                echo "Done"
 
-	try:
-		print "Check if we can test the service", ldap_schema_export_server_role, "on server role", base_name
+                echo -ne "Has the service been stopped?\t"
+                running=$(ps axu | grep "${service_binarys[$nr]}" | grep -v grep)
+                if [ -z "$running" ] ; then
+                        echo "Ok"
+                else
+                        echo "Error"
+                        returnCode=$returnERROR
+                fi
 
-		found = False
-		for server_role in server_roles: # checks if an server role matches any role in the server_roles list
-			if ldap_schema_export_server_role == server_role:
-				found = True # if at least the is one match
+                echo -ne "Trying to start service $(basename "${service_path[$nr]}")\t"
+                "${service_path[$nr]}" start
+                echo "Done"
 
-		if found:
-			# stop the process
-			if not control_process(base_name, service_path, "stop"):
-				exit_code = RETURN_FAIL_CODE
-			print "Done."
+                echo -ne "Is this service running?\t"
+                running=$(ps axu | grep "${service_binarys[$nr]}" | grep -v grep)
+                if [ -z "$running" ] ; then
+                        echo "Error"
+                        returnCode=$returnERROR
+                else
+                        echo "Ok"
+                fi
+        else
+                echo "No - skipping test"
+        fi
+        nr=$(($nr + 1))
+done
 
-			print "Check if the process has been stopped."
-			if not check_process(service_binarys, "stop"):
-				exit_code = RETURN_FAIL_CODE
-
-			# start the prcocess
-			if not control_process(base_name, service_path, "start"):
-				exit_code = RETURN_FAIL_CODE
-
-			print "Check if the process has been started."
-			if not check_process(service_binarys, "start"):
-				exit_code = RETURN_FAIL_CODE
-		else:
-			print "No server role matched. Skipping test."
-			sys.exit(RETURN_FAIL_CODE) # test failed
-	except OSError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
-		sys.exit(RETURN_FAIL_CODE)
-
-	sys.exit(exit_code) # exit with appropriate returncode
-
-def check_process(process_name, status):
-	"""The method Check whether or not the given service/process-name is running."""
-	try:
-		process_one = subprocess.Popen(["ps", "axu", ], stdout=subprocess.PIPE) # command for first PIPE
-		process_to_pipe_grep_one = subprocess.Popen(["grep", process_name, ], stdin=process_one.stdout, stdout=subprocess.PIPE) # command for secon PIPE
-		process_one.stdout.close()  # Allow process_one to receive a SIGPIPE if process2 exits.
-		process_to_pipe_grep_two = subprocess.Popen(["grep", "-v", "grep", ], stdin=process_to_pipe_grep_one.stdout, stdout=subprocess.PIPE)
-		process_to_pipe_grep_one.stdout.close()  # Allow process2 to receive a SIGPIPE if process3 exits
-		output_check = process_to_pipe_grep_two.communicate()[0] # output with process
-		process_to_pipe_grep_two.stdout.close()
-
-		if status == "stop":
-			if process_name not in output_check[:]:
-				print "OK. The process is not active."
-				return True
-			else:
-				print >> sys.stderr, "ERROR. The process is active. (The process could not be started)"
-				return False
-		else:
-			if process_name in output_check[:]:
-				print "OK. The process is active."
-				return True
-			else:
-				print >> sys.stderr, "ERROR. The process is not active. (The process could not be started)"
-				return False
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
-		return False
-
-def control_process(process_name, service_path, command):
-	"""This method tries wheather to stop or to start the given process. Depends on the 3rd given parameter."""
-	try:
-		print "Trying to " + command + " service ", process_name
-		subprocess_command_service = subprocess.Popen([service_path, command, ], stdout=subprocess.PIPE) # subprocess (command line input)
-		subprocess_command_service.wait() # waits for child process to terminate before goes on
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
-		return False
-	return True
-
-if __name__ == '__main__':
-	main()
+exit $returnCode

@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner python2.6
+#!/usr/share/ucs-test/runner bash
 ## desc: Checking ldap schema download
 ## tags: [basic]
 ## roles:
@@ -8,80 +8,22 @@
 ##  - univention-directory-manager-tools
 ## exposure: dangerous
 
-import sys
-import subprocess
-import socket
-from univention.config_registry import ConfigRegistry
-import univention.config_registry
+# activate ldap schema download
+univention-config-registry set ldap/schema/export=yes
+/etc/init.d/slapd restart
 
-RETURN_PASS_CODE = 100
-RETURN_FAIL_CODE = 110
+# try to download schema file
+wget -c $(hostname)/ldap-schema.txt -O /dev/null
+ret=$?
 
-def main():
-	"""A main method stores almost completely code."""
-	exit_code = RETURN_PASS_CODE # will be set in further code only to RESTURN_FAIL_CODE
-	ucr_variable_to_set = "ldap/schema/export"
-	service_to_restart = "/etc/init.d/slapd"
+# deactivate ldap schema download
+univention-config-registry unset ldap/schema/export
+/etc/init.d/slapd restart
 
-	# activate ldap schema download
-	univention.config_registry.handler_set([ucr_variable_to_set + '=yes']) # set to value
-	ucr = ConfigRegistry()
-	ucr.load() # load whole dict
+if [ $ret -eq 0 ]
+then
+        exit 0
+else
+        exit 1
+fi
 
-	try:
-		if not restart_process(service_to_restart):
-			exit_code = RETURN_FAIL_CODE
-
-		hostname = socket.gethostname() # returns hostname
-		download_schema_file = hostname + "/ldap-schema.txt"
-		# try to download schema file
-		if not download_ldap_schema(download_schema_file):
-			# deactivate ldap schema download if downloading fails
-			univention.config_registry.handler_unset([ucr_variable_to_set])
-			exit_code = RETURN_FAIL_CODE
-
-		# deactivate ldap schema download
-		univention.config_registry.handler_unset([ucr_variable_to_set])
-		if not restart_process(service_to_restart):
-			exit_code = RETURN_FAIL_CODE
-
-	except OSError, error:
-		print >> sys.stderr, "An error occured with %s" % (error, )
-		sys.exit(RETURN_FAIL_CODE) # exit if something goes wrong on OS level
-	sys.exit(exit_code) #exit with appropriate exitcode
-
-def restart_process(service_to_restart):
-	"""This method restarts a service. Parameter is the name of the service to restart."""
-	try:
-		print "Try to restart", service_to_restart
-		subprocess_restart_slapd = subprocess.Popen([service_to_restart, 'restart'], stdout=subprocess.PIPE) # subprocess (command line input)
-		subprocess_restart_slapd.wait() # waits for child process to terminate before goes on
-		if subprocess_restart_slapd.returncode: # analysis of restart
-			print >> sys.stderr, "Something went wrong with restarting", service_to_restart
-			return False
-		else:
-			print "Done."
-			return True
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
-		return False
-
-def download_ldap_schema(download_schema_file):
-	"""This method download schema file. Invoke subprocess with 'wget'."""
-	try:
-		print "Try to download schema file."
-		subprocess_wget = subprocess.Popen(['wget', '-c', download_schema_file, '-O' , '/dev/null', ], stdout=subprocess.PIPE) # subprocess (command line input) needs a returnvalue
-		subprocess_wget.wait() # waits for child process to terminate before goes on
-
-		if subprocess_wget.returncode: # analysis of restart
-			print >> sys.stderr, "Something went wrong with downloading", download_schema_file
-			return False
-		else:
-			print "Done."
-			return True
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
-		return False
-
-if __name__ == '__main__':
-	main()
