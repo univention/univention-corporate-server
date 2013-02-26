@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.199-1) unstable; urgency=low
+
+  * Add a new CSS class on touch devices and use bigger tab close buttons
+    (Bug #30167)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 26 Feb 2013 14:08:53 +0100
+
 univention-management-console-frontend (2.0.198-1) unstable; urgency=low
 
   * Bug #30167: only enable scrollbars if the viewport is small enough
