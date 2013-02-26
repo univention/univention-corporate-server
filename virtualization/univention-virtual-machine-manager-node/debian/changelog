@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (2.0.3-2) UNRELEASED; urgency=low
+
+  * Don't restart kvm bridge on package upgrades (Bug #30590)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Feb 2013 10:14:33 +0100
+
 univention-virtual-machine-manager-node (2.0.3-1) unstable; urgency=low
 
   * Fix pid file deletion (Bug #29667)
