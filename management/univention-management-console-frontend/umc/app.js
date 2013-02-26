@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/window",
+	"dojo/window",
 	"dojo/on",
 	"dojo/aspect",
 	"dojo/has",
@@ -43,6 +44,7 @@ define([
 	"dojo/topic",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
+	"dojo/dom-style",
 	"dijit/Dialog",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -64,7 +66,7 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, array, win, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, array, win, win2, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -768,6 +770,22 @@ define([
 			// make sure that we have not build the GUI before
 			if (this._setupStaticGui) {
 				return;
+			}
+
+			// show vertical scrollbars only if the viewport size is smaller
+			// than 550px (which is our minimal height)
+			// this is to avoid having vertical scrollbars when long ComboBoxes open up
+			window.onresize = function() {
+				var viewportHeight = win2.getBox().h;
+				var hasScrollbars = style.get(win.body(), 'overflowY') == 'auto';
+				if (viewportHeight < 550 && !hasScrollbars) {
+					// enable scrollbars
+					style.set(win.body(), 'overflowY', 'auto');
+				}
+				if (viewportHeight >= 550 && hasScrollbars) {
+					// disable scrollbars
+					style.set(win.body(), 'overflowY', 'hidden');
+				}
 			}
 
 			// set up fundamental layout parts
