@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.132-1) unstable; urgency=low
+
+  * changed shares/printer.py syntax to
+    string_numbers_letters_dots_spaces (Bug #2857)
+
+ -- Felix Botner <botner@univention.de>  Tue, 26 Feb 2013 21:10:06 +0100
+
 univention-directory-manager-modules (8.0.102-1) unstable; urgency=low
 
   * added base DN to output of univention-license-check (Bug #29100)
