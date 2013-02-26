@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.197-1) unstable; urgency=low
+
+  * Bug #30167: enforce minimal height for UMC to avoid display problems on
+    tablet devices
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 26 Feb 2013 11:38:59 +0100
+
 univention-management-console-frontend (2.0.196-1) unstable; urgency=low
 
   * Bug #30563: adapted topic publishing

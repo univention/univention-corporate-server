@@ -771,11 +771,16 @@ define([
 			}
 
 			// set up fundamental layout parts
+			// enforce a minimal height of 550px
+			var styleStr = 'min-height: 550px;';
+			if (tools.status('width')) {
+				styleStr += tools.status('width') + 'px;';
+			}
 			var topContainer = new BorderContainer( {
 				'class': 'umcTopContainer',
 				gutters: false,
 				// force a displayed width if specified
-				style: tools.status('width') ? 'width:' + tools.status('width') + 'px;' : null
+				style: styleStr
 			}).placeAt(win.body());
 
 			// container for all modules tabs
