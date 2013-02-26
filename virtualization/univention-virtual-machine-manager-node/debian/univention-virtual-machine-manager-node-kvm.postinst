@@ -51,6 +51,11 @@ case "$1" in
 		then
 			dpkg-divert --package univention-virtual-machine-manager-node-kvm --rename --remove /usr/bin/kvm
 		fi
+		# Bug #30590: Re-construct bridge after uvvm-node-kvm restart
+		if dpkg --compare-versions "$2" le-nl 2.0.2-2.61.201301252219
+		then
+			/usr/lib/univention-virtual-machine-manager-node-kvm/ucs-kvm-reconnect-bridge
+		fi
 	;;
 esac
 

@@ -48,6 +48,8 @@ Depends: ${misc:Depends},
  bridge-utils,
  iproute,
  shell-univention-lib,
+ python-libvirt,
+ python-libxml2
 Recommends: univention-nagios-libvirtd-kvm, univention-kvm-virtio
 Provides: univention-virtual-machine-manager-node
 Description: UCS Virtual Machine Manager node using kvm
