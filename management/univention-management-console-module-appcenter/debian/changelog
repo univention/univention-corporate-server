@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.125-1) unstable; urgency=low
+
+  * Fix overwriting important variables (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Feb 2013 22:02:52 +0100
+
 univention-management-console-module-appcenter (2.0.124-1) unstable; urgency=low
 
   * Distilled three points in App details into one: "Usage" (Bug #30249)

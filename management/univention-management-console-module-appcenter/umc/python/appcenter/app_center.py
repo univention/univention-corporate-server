@@ -597,14 +597,14 @@ class Application(object):
 						hosts.append((get_master(lo), True))
 					# may be backup: dont install on oneself!
 					hosts.extend([(host, False) for host in get_all_backups(lo, ucr)])
-					for host, is_master in hosts:
+					for host, host_is_master in hosts:
 						try:
 							connection = UMCConnection(host)
 							connection.auth(username, password)
 						except HTTPException as e:
 							MODULE.warn('%s: %s' % (host, e))
 							unreachable.append(host)
-							if is_master:
+							if host_is_master:
 								master_unreachable = True
 				finally:
 					del lo
@@ -718,7 +718,7 @@ class Application(object):
 							hosts = [(get_master(lo), True)] + [(host, False) for host in get_all_backups(lo, ucr)]
 						finally:
 							del lo
-						for host, is_master in hosts:
+						for host, host_is_master in hosts:
 							package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
 							try:
 								if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
@@ -726,9 +726,9 @@ class Application(object):
 									raise Exception(error_message)
 							except Exception as e:
 								MODULE.error('%s: %s' % (host, e))
-								if is_master:
+								if host_is_master:
 									package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Master. Check /var/log/univention/management-console-module-appcenter.log on this host and the DC Master') % host)
-									raise # only if is_master!
+									raise # only if host_is_master!
 								else:
 									package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Backup. If everything else went correct and this is just a temporary network problem, you should execute "univention-add-app %s -m" as root on that backup system. You should also check /var/log/univention/management-console-module-appcenter.log on this host and the DC Backup.') % (host, self.component_id))
 			# remove all existing component versions

@@ -61,6 +61,7 @@ def get_hosts(module, lo, ucr=None):
 		host.open() # needed for fqdn. it may be enough to return 'name'
 		hostname = host.info.get('name')
 		if hostname == local_hostname:
+			MODULE.process('%s is me. Skipping' % host.dn)
 			continue
 		if 'LDAP' not in host.info.get('service', []):
 			MODULE.warn('%s does not provide LDAP. Skipping' % host.dn)
@@ -69,12 +70,15 @@ def get_hosts(module, lo, ucr=None):
 			MODULE.warn('%s does not have an FQDN. Skipping' % host.dn)
 			continue
 		hostnames.append(host.info['fqdn'])
+	MODULE.process('Found hosts: %r' % hostnames)
 	return hostnames
 
 def get_master(lo):
+	MODULE.process('Searching DC Master')
 	return get_hosts(domaincontroller_master, lo)[0]
 
 def get_all_backups(lo, ucr=None):
+	MODULE.process('Searching DC Backup')
 	return get_hosts(domaincontroller_backup, lo, ucr)
 
 class UMCConnection(object):
