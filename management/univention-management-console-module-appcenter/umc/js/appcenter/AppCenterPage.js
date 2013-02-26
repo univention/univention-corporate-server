@@ -151,6 +151,7 @@ define([
 		_udm_accessible: false, // license depends on udm
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		autoStart: true, // get/user/preferences and updateApplications. Needed because it is used in apps.js as well
+		showModuleUsage: false, // problems with dialog staying open
 
 		// class name of the widget as CSS class
 		'class': 'umcAppCenter',
@@ -525,42 +526,38 @@ define([
 			);
 		},
 
-		_detail_field_custom_user_activation_required: function(values) {
+		_detail_field_custom_usage: function(values) {
+			var txts = [];
 			var useractivationrequired = values.useractivationrequired;
-			if (useractivationrequired) {
-				var txt = _('Users need to be modified in the Domain administration in order to use this service.');
-				if (values.is_installed && UMCApplication.getModule('udm', 'users/user')) {
-					return lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\')">{name}</a>', {name : txt});
-				} else {
-					return txt;
-				}
-			}
-		},
-
-		_detail_field_custom_umc_module: function(values) {
-			if (! values.is_installed) {
-				return '';
-			}
+			var webinterface = values.webinterface;
+			var webinterfacename = values.webinterfacename || values.name;
 			var umcmodulename = values.umcmodulename;
 			var umcmoduleflavor = values.umcmoduleflavor;
 			var module = UMCApplication.getModule(umcmodulename, umcmoduleflavor);
-			if (module) {
-				return lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'{umcmodulename}\', {umcmoduleflavor})">{name}</a>', {
+			if (useractivationrequired) {
+				var domain_administration_link = _('Domain administration');
+				if (values.is_installed && UMCApplication.getModule('udm', 'users/user')) {
+					domain_administration_link = lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\')">{name}</a>', {name : domain_administration_link});
+				}
+				txts.push(_('Users need to be modified in the %s in order to use this service.', domain_administration_link));
+			}
+			if (module && this.showModuleUsage) {
+				var module_link = lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'{umcmodulename}\', {umcmoduleflavor})">{name}</a>', {
 					umcmodulename: umcmodulename,
 					umcmoduleflavor: umcmoduleflavor ? '\'' + umcmoduleflavor + '\'' : 'undefined',
 					name: module.name
 				});
+				txts.push(_('A module for the administration of the app is available: %s.', module_link));
 			}
-		},
-
-		_detail_field_custom_web_interface: function(values) {
-			if (! values.is_installed) {
-				return '';
+			if (values.is_installed && webinterface) {
+				var webinterface_link = lang.replace('<a href="{webinterface}" target="_blank">{name}</a>', {
+					webinterface: webinterface,
+					name: webinterfacename
+				});
+				txts.push(_('The app provides a web interface: %s.', webinterface_link));
 			}
-			var webinterface = values.webinterface;
-			var name = values.webinterfacename || values.name;
-			if (webinterface) {
-				return lang.replace('<a href="{webinterface}" target="_blank">{name}</a>', {webinterface: webinterface, name: _('Open %s', name)});
+			if (txts.length) {
+				return txts.join(' ');
 			}
 		},
 
@@ -690,7 +687,7 @@ define([
 				txt = _('This application conflicts with the following Applications/Packages. Uninstall them first.');
 				txt += '<ul><li>' + cannot_install_reason_detail.join('</li><li>') + '</li></ul>';
 			} else if (cannot_install_reason == 'wrong_serverrole') {
-				txt = _('<p>This application cannot be installed on the current server role (%s). In order to install the application, one of the following roles is necessary: %s</p>', cannot_install_reason_detail, values.serverrole.join(', '));
+				txt = '<p>' + _('This application cannot be installed on the current server role (%s). In order to install the application, one of the following roles is necessary: %s', cannot_install_reason_detail, values.serverrole.join(', ')) + '</p>';
 			}
 			return txt;
 		},
@@ -735,13 +732,11 @@ define([
 				'contact',
 				'website',
 				'version',
-				//'umc_module', // problems with dialog staying open
-				'web_interface',
-				'user_activation_required',
 				'candidate_version',
 				'categories',
 				'longdescription',
 				'screenshot',
+				'usage',
 				'defaultpackagesmaster',
 				'cannot_install_reason',
 				'cannot_update_reason',
@@ -758,13 +753,11 @@ define([
 				'contact': _("Contact"),
 				'website': _("Website"),
 				'version': _('Installed version'),
-				'umc_module': _('UMC Module'),
-				'web_interface': _('Web interface'),
-				'user_activation_required': _('Domain administration'),
 				'candidate_version': _('Candidate version'),
 				'categories': _("Section"),
 				'longdescription': _("Description"),
 				'screenshot': _("Screenshot"),
+				'usage': _('Notes on using'),
 				'defaultpackagesmaster': _("Packages for master system"),
 				'cannot_install_reason': _("Installation not possible"),
 				'cannot_update_reason': _("Upgrade not possible"),

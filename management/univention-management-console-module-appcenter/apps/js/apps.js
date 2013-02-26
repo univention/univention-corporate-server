@@ -72,6 +72,7 @@ define([
 			this._appcenterPage = new AppCenterPage({
 				standby: lang.hitch(this, 'standby'),
 				autoStart: false,
+				showModuleUsage: true,
 				updateApplications: lang.hitch(this, function() {
 					this.updateApplication();
 				})
@@ -113,10 +114,10 @@ define([
 			});
 			this._container.addChild(this._detailsPane);
 
-			this._text = new Text({});
+			this._descriptionText = new Text({});
 			var descriptionPane = new TitlePane({
 				title: _('Description'),
-				content: this._text
+				content: this._descriptionText
 			});
 			this._container.addChild(descriptionPane);
 
@@ -144,10 +145,8 @@ define([
 				this.addToDetails(appCenterTranslate('Maintainer'), this._appcenterPage._detail_field_custom_maintainer(app));
 				this.addToDetails(appCenterTranslate('Contact'), this._appcenterPage._detail_field_custom_contact(app));
 				this.addToDetails(appCenterTranslate('Website'), this._appcenterPage._detail_field_custom_website(app));
-				this.addToDetails(appCenterTranslate('UMC Module'), this._appcenterPage._detail_field_custom_umc_module(app));
-				this.addToDetails(appCenterTranslate('Web interface'), this._appcenterPage._detail_field_custom_web_interface(app));
-				this.addToDetails(appCenterTranslate('Domain administration'), this._appcenterPage._detail_field_custom_user_activation_required(app));
 				this.addToDetails(appCenterTranslate('Installed version'), this._appcenterPage._detail_field_custom_version(app));
+				this.addToDetails('', '&nbsp;');
 				if (app.candidate_version) {
 					var candidate_version = app.candidate_version;
 					if (app.allows_using && app.can_update) {
@@ -201,8 +200,12 @@ define([
 					content = lang.replace(content, app);
 				} else {
 					content = this._appcenterPage.formatTxt(app.longdescription);
+					var usage = this._appcenterPage._detail_field_custom_usage(app);
+					if (usage) {
+						content += ' ' + usage;
+					}
 				}
-				this._text.set('content', content);
+				this._descriptionText.set('content', content);
 				this.standby(false);
 			}),
 			lang.hitch(this, function() {

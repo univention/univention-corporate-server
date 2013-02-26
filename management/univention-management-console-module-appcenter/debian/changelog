@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.124-1) unstable; urgency=low
+
+  * Distilled three points in App details into one: "Usage" (Bug #30249)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Feb 2013 17:08:43 +0100
+
 univention-management-console-module-appcenter (2.0.123-1) unstable; urgency=low
 
   * Improved error handling when backups are unreachable (Bug #30503)
