@@ -39,6 +39,13 @@ tmpDir:=$(CURDIR)/tmp
 themesDir:=$(tmpDir)/dijit/themes
 jsFiles:=$(shell find umc -name "*.js")
 
+# collect all less files...
+# the UMC theme is based on claro with some additional .less files
+claroLessFiles:=$(shell find $(dojoDir)/dijit/themes/claro -name "*.less" | sed 's|^.*themes/claro/|$(themesDir)/umc/|')
+umcLessFiles:=$(shell find css -name "*.less" | sed 's|^css/|$(themesDir)/umc/|')
+lessFiles:=$(claroLessFiles) $(umcLessFiles)
+cssFiles:=$(lessFiles:%.less=%.css)
+
 .PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(tmpDir)/umc/login.html $(buildDir)/index.html $(buildDir)/debug.html
 
 build: build-common $(tmpDir) $(buildDir)/js/dojo/dojo.js.uncompressed.js $(themesDir)/umc
@@ -87,6 +94,12 @@ $(tmpDir)/umc/login.html: login.html
 	sed 's/%HASH%/_$(timestamp)/;' login.html > $@
 	cp $@ $(dir $@)/blank.html
 
+%.css: %.less
+	@# compile less file
+	./lessc $< $@
+	@# replace .claro rules with .umc rule
+	sed -i 's/\.claro\>/.umc/g; s/"""/"/g;' $@
+
 # copy css and image data into umc themes directory
 $(themesDir)/umc: $(tmpDir)
 	@#rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css $@
@@ -101,12 +114,6 @@ $(themesDir)/umc: $(tmpDir)
 	cat $(themesDir)/claro/variables.less $@/variables.orig.less > $@/variables.less
 	@# remove claro compile.js file
 	rm $@/compile.js
-	@# compile all less files and replace ".claro" with ".umc"
-	for i in $$(find $@ -name "*.less"); do \
-		echo ./lessc $$i $${i%.*}.css; \
-		./lessc $$i $${i%.*}.css; \
-		sed -i 's/\.claro\>/.umc/g; s/"""/"/g;' $${i%.*}.css; \
-	done
 
 $(themesDir)/umc/icons: $(themesDir)/umc
 	@# scale all icons
@@ -128,7 +135,7 @@ build-dev: build-common
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/* $(themesDir)/umc/icons/
 
-build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)/umc/icons $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
+build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)/umc/icons $(cssFiles) $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
 	@# symlink to javascript dir with timestamp
 	rm -f "$(buildDir)/js_"*
 	ln -s "js" "$(buildDir)/js_"'$(timestamp)'
