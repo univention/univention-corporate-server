@@ -715,14 +715,22 @@ class Application(object):
 						lo = uldap.getMachineConnection(ldap_master=False)
 						try:
 							# may be backup: dont install on oneself!
-							for host in [get_master(lo)] + get_all_backups(lo, ucr):
-								package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
-								if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
-									error_message = 'Unable to install %r on %s. Abort! Check /var/log/univention/management-console-module-appcenter.log on the host. All errata updates have been installed on %s?' % (master_packages, host, host)
-									MODULE.error(error_message)
-									raise Exception(error_message)
+							hosts = [(get_master(lo), True)] + [(host, False) for host in get_all_backups(lo, ucr)]
 						finally:
 							del lo
+						for host, is_master in hosts:
+							package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
+							try:
+								if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
+									error_message = 'Unable to install %r on %s. Abort! Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
+									raise Exception(error_message)
+							except Exception as e:
+								MODULE.error('%s: %s' % (host, e))
+								if is_master:
+									package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Master. Check /var/log/univention/management-console-module-appcenter.log on this host and the DC Master') % host)
+									raise # only if is_master!
+								else:
+									package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Backup. If everything else went correct and this is just a temporary network problem, you should execute "univention-add-app %s -m" as root on that backup system. You should also check /var/log/univention/management-console-module-appcenter.log on this host and the DC Backup.') % (host, self.component_id))
 			# remove all existing component versions
 			for iapp in self.versions:
 				# dont remove yourself (if already added)
@@ -748,13 +756,17 @@ class Application(object):
 				else:
 					lo = uldap.getMachineConnection(ldap_master=False)
 					try:
-						for host in get_all_backups(lo):
-							if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
-								error_message = 'Unable to install %r on %s. Has to be done manually! Check /var/log/univention/management-console-module-appcenter.log on the host. All errata updates have been installed on %s?' % (master_packages, host, host)
-								MODULE.error(error_message)
-								raise Exception(error_message)
+						hosts = get_all_backups(lo)
 					finally:
 						del lo
+					for host in hosts:
+						try:
+							if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
+								error_message = 'Unable to install %r on %s. Has to be done manually! Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
+								raise Exception(error_message)
+						except Exception as e:
+							MODULE.error('%s: %s' % (host, e))
+							package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Backup. If everything else went correct and this is just a temporary network problem, you should execute "univention-add-app %s -m" as root on that backup system. You should also check /var/log/univention/management-console-module-appcenter.log on this host and the DC Backup.') % (host, self.component_id))
 
 			# successful installation
 			status = 200

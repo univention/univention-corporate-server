@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.123-1) unstable; urgency=low
+
+  * Improved error handling when backups are unreachable (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Feb 2013 14:31:09 +0100
+
 univention-management-console-module-appcenter (2.0.122-1) unstable; urgency=low
 
   * Enable to force installation if only backups are unreachable (Bug #30503)

@@ -162,7 +162,8 @@ class Instance(umcm.Base):
 		application = Application.find(application_id)
 		force = request.options.get('force')
 		dont_remote_install = request.options.get('dont_remote_install')
-		only_master_packages = function.endswith('schema')
+		only_master_packages = send_as.endswith('schema')
+		MODULE.process('Try to %s (%s) %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r.' % (function, send_as, application_id, force, only_master_packages, dont_remote_install))
 		try:
 			# make sure that the application cane be installed/updated
 			can_continue = True
