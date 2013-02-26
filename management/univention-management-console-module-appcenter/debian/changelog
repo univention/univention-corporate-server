@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.122-1) unstable; urgency=low
+
+  * Enable to force installation if only backups are unreachable (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Feb 2013 13:29:48 +0100
+
 univention-management-console-module-appcenter (2.0.121-1) unstable; urgency=low
 
   * Track remote installations as 'install-schema' (resp update-) (Bug #30503)

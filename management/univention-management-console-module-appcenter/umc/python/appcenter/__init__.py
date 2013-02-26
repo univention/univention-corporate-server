@@ -171,6 +171,7 @@ class Instance(umcm.Base):
 				'remove' : [],
 				'broken' : [],
 				'unreachable' : [],
+				'master_unreachable' : False,
 			}
 			if not application:
 				MODULE.process('Application not found: %s' % application_id)
@@ -186,7 +187,7 @@ class Instance(umcm.Base):
 				if not only_master_packages:
 					# only_master_packages? dont need to dry_run. but be sure to add component (normally done in dry_run!)
 					result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=False, username=self._username, password=self._password)
-				if result['broken'] or result['unreachable'] or (result['remove'] and not force):
+				if result['broken'] or result['master_unreachable'] or (result['unreachable'] and not force) or (result['remove'] and not force):
 					MODULE.process('Remove component: %s' % application_id)
 					if function == 'update':
 						self.component_manager.remove_app(application.candidate)

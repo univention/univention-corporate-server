@@ -588,21 +588,24 @@ class Application(object):
 
 			# connect to master/backups
 			unreachable = []
+			master_unreachable = False
 			if master_packages:
 				lo = uldap.getMachineConnection(ldap_master=False)
 				try:
 					hosts = []
 					if server_role != 'domaincontroller_master':
-						hosts.append(get_master(lo))
+						hosts.append((get_master(lo), True))
 					# may be backup: dont install on oneself!
-					hosts.extend(get_all_backups(lo, ucr))
-					for host in hosts:
+					hosts.extend([(host, False) for host in get_all_backups(lo, ucr)])
+					for host, is_master in hosts:
 						try:
 							connection = UMCConnection(host)
 							connection.auth(username, password)
 						except HTTPException as e:
 							MODULE.warn('%s: %s' % (host, e))
 							unreachable.append(host)
+							if is_master:
+								master_unreachable = True
 				finally:
 					del lo
 
@@ -626,6 +629,7 @@ class Application(object):
 			result = dict(zip(['install', 'remove', 'broken'], result))
 			MODULE.info('Package changes: %s' % (result, ))
 			result['unreachable'] = unreachable
+			result['master_unreachable'] = master_unreachable
 
 			if remove_component:
 				# remove the newly added component

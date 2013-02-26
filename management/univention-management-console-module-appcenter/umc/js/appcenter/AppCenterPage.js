@@ -372,7 +372,7 @@ define([
 								this._call_installer('uninstall', app);
 							})
 						});
-						if (app.umc_module) {
+						if (UMCApplication.getModule(app.umc_module, app.umc_flavor)) {
 							buttons.push({
 								name: 'open',
 								label: _("Open"),
@@ -460,9 +460,33 @@ define([
 
 					if (!result.can_continue) {
 						confirmationRequired = true;
+						var mayContinue = true;
 						if (result.remove.length) {
 							label = _('The following packages will be removed:');
 							txt += '<p>' + label + '<ul><li>' + result.remove.join('</li><li>') + '</li></ul></p>';
+						}
+						if (result.broken.length) {
+							label = _('This operation causes problems in the following packages that cannot be resolved:');
+							txt += '<p>' + label + '<ul><li>' + result.broken.join('</li><li>') + '</li></ul></p>';
+							mayContinue = false;
+						}
+						if (result.unreachable.length) {
+							if (app.is_master) {
+								label = _('The server tried to connect to DC Backups.');
+							} else {
+								label = _('The server tried to connect to DC Master and DC Backups.');
+							}
+							label += ' ' + _('The following hosts cannot be reached:');
+							txt += '<p>' + label + '<ul><li>' + result.unreachable.join('</li><li>') + '</li></ul></p>';
+							if (result.master_unreachable) {
+								mayContinue = false;
+							} else {
+								var cmdLine = lang.replace('univention-add-app {component_id} -m', {component_id: app.candidate_component_id || app.component_id});
+								var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of these backup servers <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
+								txt += '<p>' + commandHint + '</p>';
+							}
+						}
+						if (mayContinue) {
 							headline = lang.replace(_("Do you really want to {verb} {ids}?"),
 										{verb: verb, ids: app.name});
 							buttons = [{
@@ -476,25 +500,7 @@ define([
 									this._call_installer(func, app, true);
 								})
 							}];
-						}
-						if (result.broken.length) {
-							label = _('This operation causes problems in the following packages that cannot be resolved:');
-							txt += '<p>' + label + '<ul><li>' + result.broken.join('</li><li>') + '</li></ul></p>';
-							headline = _('You cannot continue');
-							buttons = [{
-								name: 'cancel',
-								'default': true,
-								label: _("Cancel")
-							}];
-						}
-						if (result.unreachable.length) {
-							if (app.is_master) {
-								label = _('The server must be able to connect to DC Backups.');
-							} else {
-								label = _('The server must be able to connect to DC Master and DC Backups.');
-							}
-							label += ' ' + _('The following hosts cannot be reached:');
-							txt += '<p>' + label + '<ul><li>' + result.unreachable.join('</li><li>') + '</li></ul></p>';
+						} else {
 							headline = _('You cannot continue');
 							buttons = [{
 								name: 'cancel',
@@ -505,7 +511,7 @@ define([
 					}
 
 					if (confirmationRequired) {
-						dialog.confirm('<p><strong>' + headline + '</strong></p>' + txt, buttons);
+						dialog.confirm('<div style="max-width: 550px;"><p><strong>' + headline + '</strong></p>' + txt + '</div>', buttons);
 					} else {
 						var progressMessage = lang.replace(_("Going to {verb} Application '{name}'"),
 										   {verb: verb, name: app.name});
