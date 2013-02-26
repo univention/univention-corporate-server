@@ -776,7 +776,7 @@ define([
 			// show vertical scrollbars only if the viewport size is smaller
 			// than 550px (which is our minimal height)
 			// this is to avoid having vertical scrollbars when long ComboBoxes open up
-			window.onresize = function() {
+			on(win.global, 'resize', function() {
 				var viewportHeight = win2.getBox().h;
 				var hasScrollbars = style.get(win.body(), 'overflowY') == 'auto';
 				if (viewportHeight < 550 && !hasScrollbars) {
@@ -787,7 +787,7 @@ define([
 					// disable scrollbars
 					style.set(win.body(), 'overflowY', 'hidden');
 				}
-			}
+			});
 			// enforce scrollbar to be visible/hidden
 			// (otherwise the setings would only be applied after a resize event on IE
 			style.set(win.body(), 'overflowY', win2.getBox().h > 550 ? 'hidden' : 'auto');

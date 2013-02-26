@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.200-1) unstable; urgency=low
+
+  * Bug #30167: changed window.onresize to on(win.global, 'resize', ...)
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 26 Feb 2013 14:35:58 +0100
+
 univention-management-console-frontend (2.0.199-1) unstable; urgency=low
 
   * Add a new CSS class on touch devices and use bigger tab close buttons
