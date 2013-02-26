@@ -276,7 +276,10 @@ IFS=$OLDIFS
 
 # check join constraints
 #  * disable join of newer ucs system against older ucs systems
+echo "disableVersionCheck: $VERSION_CHECK" >>/var/log/univention/join.log
 if $VERSION_CHECK; then
+
+	echo "running version check" >>/var/log/univention/join.log
 
 	mystatus="no"
 	if [ -n "$master_version" -a -n "$master_patchlevel" ]; then
@@ -288,6 +291,8 @@ if $VERSION_CHECK; then
 	if [ "no" = "$mystatus" ]; then
 		failed_message "version on ${DCNAME} seems to be lower than version of this system, this constellation is not supported."
 	fi
+else
+	echo "version check was disabled (-disableVersionCheck)" >>/var/log/univention/join.log
 fi
 
 echo -e "\033[60Gdone"

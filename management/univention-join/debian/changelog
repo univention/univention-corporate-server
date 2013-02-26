@@ -1,3 +1,9 @@
+univention-join (5.0.25-1) unstable; urgency=low
+
+  * log disableVersionCheck (Bug #30492)
+
+ -- Felix Botner <botner@univention.de>  Tue, 26 Feb 2013 21:35:28 +0100
+
 univention-join (5.0.24-1) unstable; urgency=low
 
   * show progressbar instead of the join log; Bug #30112
