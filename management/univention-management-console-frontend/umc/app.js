@@ -787,6 +787,9 @@ define([
 					style.set(win.body(), 'overflowY', 'hidden');
 				}
 			}
+			// enforce scrollbar to be visible/hidden
+			// (otherwise the setings would only be applied after a resize event on IE
+			style.set(win.body(), 'overflowY', win2.getBox().h > 550 ? 'hidden' : 'auto');
 
 			// set up fundamental layout parts
 			// enforce a minimal height of 550px
