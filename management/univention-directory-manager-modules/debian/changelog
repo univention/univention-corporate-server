@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.133-1) unstable; urgency=low
+
+  * changed policies/dhcp_statements.py syntax to 
+    hostOrIP (Bug #19665) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 26 Feb 2013 21:24:16 +0100
+
 univention-directory-manager-modules (8.0.132-1) unstable; urgency=low
 
   * changed shares/printer.py syntax to
