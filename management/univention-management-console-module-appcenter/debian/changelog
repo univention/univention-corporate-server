@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.121-1) unstable; urgency=low
+
+  * Track remote installations as 'install-schema' (resp update-) (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Feb 2013 11:48:39 +0100
+
 univention-management-console-module-appcenter (2.0.120-1) unstable; urgency=low
 
   * Install LDAP packages on Backups after those on Master (Bug #30503)

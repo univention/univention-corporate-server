@@ -648,8 +648,11 @@ class Application(object):
 		return packages
 
 	def install_master_packages_on_host(self, package_manager, function, host, username, password):
+		function = 'install-schema'
+		if function == 'update':
+			function = 'update-schema'
 		connection = UMCConnection(host, username, password)
-		result = connection.request('appcenter/invoke', {'function' : function, 'application' : self.id, 'force' : True, 'only_master_packages' : True, 'dont_remote_install' : True})
+		result = connection.request('appcenter/invoke', {'function' : function, 'application' : self.id, 'force' : True, 'dont_remote_install' : True})
 		if result['can_continue']:
 			while True:
 				all_errors = set()
@@ -682,9 +685,11 @@ class Application(object):
 			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install)
 		raised_before_installed = True
 		try:
-			function = 'install'
-			if send_as == 'update':
-				function = 'update'
+			remote_function = send_as
+			if remote_function.startswith('install'):
+				remote_function = 'install'
+			if remote_function.startswith('update'):
+				remote_function = 'update'
  			ucr.load()
  			is_master = ucr.get('server/role') == 'domaincontroller_master'
  			is_backup = ucr.get('server/role') == 'domaincontroller_backup'
@@ -708,7 +713,7 @@ class Application(object):
 							# may be backup: dont install on oneself!
 							for host in [get_master(lo)] + get_all_backups(lo, ucr):
 								package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
-								if not self.install_master_packages_on_host(package_manager, function, host, username, password):
+								if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
 									error_message = 'Unable to install %r on %s. Abort! Check /var/log/univention/management-console-module-appcenter.log on the host. All errata updates have been installed on %s?' % (master_packages, host, host)
 									MODULE.error(error_message)
 									raise Exception(error_message)
@@ -740,7 +745,7 @@ class Application(object):
 					lo = uldap.getMachineConnection(ldap_master=False)
 					try:
 						for host in get_all_backups(lo):
-							if not self.install_master_packages_on_host(package_manager, function, host, username, password):
+							if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
 								error_message = 'Unable to install %r on %s. Has to be done manually! Check /var/log/univention/management-console-module-appcenter.log on the host. All errata updates have been installed on %s?' % (master_packages, host, host)
 								MODULE.error(error_message)
 								raise Exception(error_message)

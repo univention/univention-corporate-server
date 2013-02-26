@@ -146,19 +146,23 @@ class Instance(umcm.Base):
 		return application.to_dict(self.package_manager)
 
 	@sanitize(
-			function=ChoicesSanitizer(['install', 'uninstall', 'update'], required=True),
+			function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
 			application=StringSanitizer(minimum=1, required=True),
 			force=BooleanSanitizer(),
-			only_master_packages=BooleanSanitizer(),
 			dont_remote_install=BooleanSanitizer()
 		)
 	def invoke(self, request):
 		function = request.options.get('function')
+		send_as = function
+		if function.startswith('install'):
+			function = 'install'
+		if function.startswith('update'):
+			function = 'update'
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
 		force = request.options.get('force')
-		only_master_packages = request.options.get('only_master_packages')
 		dont_remote_install = request.options.get('dont_remote_install')
+		only_master_packages = function.endswith('schema')
 		try:
 			# make sure that the application cane be installed/updated
 			can_continue = True
@@ -203,7 +207,7 @@ class Instance(umcm.Base):
 						with module.package_manager.no_umc_restart(exclude_apache=True):
 							if function in ('install', 'update'):
 								# dont have to add component: already added during dry_run
-								return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=function, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install)
+								return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install)
 							else:
 								return application.uninstall(module.package_manager, module.component_manager)
 				def _finished(thread, result):
