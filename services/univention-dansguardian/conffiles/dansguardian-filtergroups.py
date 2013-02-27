@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6
+#!/usr/bin/python2.7
 #
 # Univention Dansguardian
 #  Univention Configuration Registry Module to write filter group configuration

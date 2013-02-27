@@ -1,3 +1,9 @@
+univention-dansguardian (6.0.3-1) unstable; urgency=low
+
+  * Added UMC system service entry for clamav-freshclam (Bug #13814)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 27 Feb 2013 14:54:28 +0100
+
 univention-dansguardian (6.0.2-1) unstable; urgency=low
 
   * Added dansguardian entry to system services umc module (Bug #30296)

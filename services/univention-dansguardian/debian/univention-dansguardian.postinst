@@ -41,7 +41,8 @@ ucr set squid/virusscan?yes \
 	squid/contentscan?yes \
 	dansguardian/groups?defaultgroup \
 	dansguardian/groups/system?yes \
-	dansguardian/virusscanner?clamav
+	dansguardian/virusscanner?clamav \
+	clamav/freshclam/autostart?yes
 
 /etc/init.d/squid3 restart
 
@@ -56,6 +57,11 @@ if [ "$squid_virusscan" = yes -o "$squid_contentscan" = yes ]; then
 	fi
 	/etc/init.d/dansguardian restart
 	[ "$freshclam_active" = 1 ] && /etc/init.d/clamav-freshclam start
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.3-1; then
+	ucr set clamav/freshclam/autostart="$(ucr get mail/antivir/clamav-freshclam/autostart)"
+	ucr unset mail/antivir/clamav-freshclam/autostart
 fi
 
 call_joinscript 79univention-dansguardian.inst

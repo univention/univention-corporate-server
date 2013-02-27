@@ -1,3 +1,9 @@
+[clamav/freshclam/autostart]
+Description[de]=Automatischer Start des Virenscanner Updaters
+Description[en]=Automatically start of the antivirus update daemon
+Type=str
+Categories=service-mail,system-services
+
 [dansguardian/virus/notifyemail]
 Description[de]=Benachrichtigungs-E-Mail-Adresse bei gefundenen Viren
 Description[en]=Notification email address if a virus has been detected
