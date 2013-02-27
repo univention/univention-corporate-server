@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.28-1) unstable; urgency=low
+
+  * moved ifdown script from "ifdown.d" to "if-post-down.d" (Bug #30414)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 27 Feb 2013 13:18:10 +0100
+
 univention-s4-connector (7.0.27-1) unstable; urgency=low
 
   * Call daemon function directly in main this avoids calling the daemon
