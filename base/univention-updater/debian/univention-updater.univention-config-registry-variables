@@ -1,6 +1,6 @@
 [repository/online/server]
-Description[de]=Server, auf dem das Repository vorgehalten wird [apt.univention.de]
-Description[en]=Server holding the Repository [apt.univention.de]
+Description[de]=Server, auf dem das Repository vorgehalten wird [updates.software-univention.de]
+Description[en]=Server holding the Repository [updates.software-univention.de]
 Type=str
 Categories=service-software-management
 
@@ -104,7 +104,7 @@ Categories=service-software-management
 Description[de]=Pakete aus dem Maintained-Bereich verwenden [yes]
 Description[en]=Use packages from the maintained section [yes]
 Type=bool
-Categories=service-software-management
+Categories=deprecated
 
 [repository/online/unmaintained]
 Description[de]=Pakete aus dem Unmaintained-Bereich verwenden [no]
@@ -116,7 +116,7 @@ Categories=service-software-management
 Description[de]=hotfix-Pakete für Sicherheitsupdates verwenden [no]
 Description[en]=Use hotfix packages for security updates [no]
 Type=bool
-Categories=service-software-management
+Categories=deprecated
 
 [repository/online/httpmethod]
 Description[de]=HTTP-Methode zum Testen der Verfügbarkeit von Updates [HEAD]
@@ -136,6 +136,83 @@ Description[en]=Lowest errata-version to use [1]
 Type=int
 Categories=service-software-management
 
+[repository/online/component/.*]
+Description[de]=Aktiviert das Einbinden der Komponente
+Description[en]=Activates the inclusion of the component
+Type=bool
+Categories=service-software-management
+
+[repository/online/component/.*/description]
+Description[de]=Beschreibung der Komponente
+Description[en]=Description for the component
+Type=str
+Categories=service-software-management
+
+[repository/online/component/.*/erratalevel]
+Description[de]=Errata-Patchlevel der Komponente
+Description[en]=Errata patchlevel of the component
+Type=int
+Categories=service-software-management
+
+[repository/online/component/.*/parts]
+Description[de]=Bereiche, aus dem Pakete verwendet werden [maintained]
+Description[en]=Sections from which packages are used [maintained]
+Type=str
+Categories=deprecated
+
+[repository/online/component/.*/unmaintained]
+Description[de]=Pakete aus dem Unmaintained-Bereich verwenden [no]
+Description[en]=Use packages from the unmaintained section [no]
+Type=bool
+Categories=service-software-management
+
+[repository/online/component/.*/version]
+Description[de]=Liste von Versionen der Komponente, die eingebunden werden sollen. 'current' erfordert das Vorhandensein der Komponente für die UCS Version, was u.a. Upgrades auf die nächste UCS-Version verhindert, bis auch die Komponente dafür vorhanden ist.
+Description[en]=List of versions for component, which should be activated. 'current' requires the component to be available for the UCS version, which blocks upgrades to the next UCS version, until the component is available for it.
+Type=str
+Categories=service-software-management
+
+[repository/online/component/.*/server]
+Description[de]=Server, auf dem das Repository der Komponente vorgehalten wird
+Description[en]=Server holding the Repository of the component
+Type=str
+Categories=service-software-management
+
+[repository/online/component/.*/port]
+Description[de]=TCP-Portnummer des online Repository Servers der Komponente
+Description[en]=TCP port number of the online repository servers of the component
+Type=int
+Categories=service-software-management
+
+[repository/online/component/.*/prefix]
+Description[de]=Updateverzeichnis auf dem Repository Server der Komponente
+Description[en]=Update directory on the repository server of the component
+Type=str
+Categories=service-software-management
+
+[repository/online/component/.*/username]
+Description[de]=Benutzername für den Zugriff auf den Repository Server der Komponente
+Description[en]=User name to access the repository server of the component
+Type=str
+Categories=service-software-management
+
+[repository/online/component/.*/password]
+Description[de]=Passwort für den Zugriff auf den Repository Server der Komponente
+Description[en]=Passwort to access the repository server of the component
+Type=str
+Categories=service-software-management
+
+[repository/online/component/.*/localmirror]
+Description[de]=Aktiviere/Deaktiviere das Spiegeln der Komponente in das lokale Repository
+Description[en]=Enable/Disable mirroring the component into the local repository
+Type=bool
+Categories=service-software-management
+
+[repository/online/component/.*/clean]
+Description[de]=Skript zum Löschen nicht länger benötigter Pakete aus dem lokalen Repository erzeugen
+Description[en]=Create script to delete obsolete packages from the local repository
+Type=bool
+Categories=service-software-management
 
 [repository/mirror]
 Description[de]=Aktiviere/Deaktiviere das Spiegeln der Pakete in das lokale Repository [yes]
@@ -328,3 +405,21 @@ Description[de]=Kommando zum Simulieren einer Aktualisierung aller installierter
 Description[en]=Command to simulate the upgrade of all installed packages
 Type=str
 Categories=service-software-management
+
+[updater/identify]
+Description[de]=Identifizierungsmerkmal des Updates
+Description[en]=Identification property of the updater
+Type=str
+Categories=Misc
+
+[uuid/license]
+Description[de]=Eindeutige ID der UCS Lizenz der Domäne
+Description[en]=Unique ID of the UCS license of the domain
+Type=str
+Categories=Misc
+
+[uuid/system]
+Description[de]=Eindeutige ID des Rechners
+Description[en]=Unique ID of the host
+Type=str
+Categories=Misc
