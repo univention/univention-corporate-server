@@ -1,3 +1,9 @@
+univention-dansguardian (6.0.3-2) unstable; urgency=low
+
+  * Fixed wrong python version (Bug #13814)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 27 Feb 2013 15:12:41 +0100
+
 univention-dansguardian (6.0.3-1) unstable; urgency=low
 
   * Added UMC system service entry for clamav-freshclam (Bug #13814)
