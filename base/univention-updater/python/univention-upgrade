@@ -300,6 +300,8 @@ def main():
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
+	if options.check:
+		options.noninteractive = True
 	if options.noninteractive:
 		os.environ['UCS_FRONTEND']='noninteractive'
 
@@ -309,23 +311,16 @@ def main():
 	dprint(silent, 'Checking for local repository: ', newline=False)
 	if configRegistry.is_true('local/repository', False) and configRegistry.is_true('repository/mirror', False):
 		dprint(silent, 'found\n')
-		run=True
-		if not options.noninteractive:
-			run = readcontinue('Update the local repository via network [Y|n]?')
-		if run:
+		if options.noninteractive or readcontinue('Update the local repository via network [Y|n]?'):
 			if options.updateto:
-				retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'net', '--updateto' '%s' % (version_next)], shell=False, env=os.environ)
+				subprocess.call(('/usr/sbin/univention-repository-update', 'net', '--updateto', options.updateto))
 			else:
-				retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'net'], shell=False, env=os.environ)
-		else:
-			run=True
-			if not options.noninteractive:
-				run = readcontinue('Update the local repository via cdrom [Y|n]?')
-			if run:
-				if options.iso:
-					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom','--iso', options.iso], shell=False, env=os.environ)
-				else:
-					retcode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom', '--device', options.cdrom ], shell=False, env=os.environ)
+				subprocess.call(('/usr/sbin/univention-repository-update', 'net'))
+		elif options.noninteractive or readcontinue('Update the local repository via cdrom [Y|n]?'):
+			if options.iso:
+				subprocess.call(('/usr/sbin/univention-repository-update', 'cdrom', '--iso', options.iso))
+			else:
+				subprocess.call(('/usr/sbin/univention-repository-update', 'cdrom', '--device', options.cdrom))
 	else:
 		dprint(silent, 'none')
 

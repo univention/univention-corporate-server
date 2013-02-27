@@ -1,3 +1,9 @@
+univention-updater (8.0.68-1) unstable; urgency=low
+
+  * Force univention-upgrade --check to be non-interactive (Bug #30315)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 26 Feb 2013 19:36:08 +0100
+
 univention-updater (8.0.67-1) unstable; urgency=low
 
   * Track as standard functions (e.g. 'install') (Bug #30433)
