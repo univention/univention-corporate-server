@@ -483,7 +483,7 @@ define([
 								mayContinue = false;
 							} else {
 								var cmdLine = lang.replace('univention-add-app {component_id} -m', {component_id: app.candidate_component_id || app.component_id});
-								var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following commands as root on all of these backup servers <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
+								var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following command as root on all of these backup servers <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
 								txt += '<p>' + commandHint + '</p>';
 							}
 						}
@@ -920,9 +920,32 @@ define([
 						UMCApplication.addFavoriteModule(app.umc_module, app.umc_flavor);
 						UMCApplication._saveFavorites();
 					}
-					this._restartOrReload();
-				})
+					this._markupErrors();
+				}),
+				undefined,
+				undefined,
+				true
 			);
+		},
+
+		_markupErrors: function() {
+			var installMasterPackagesOnHostFailedRegex = (/Installing extension of LDAP schema for (.+) failed on (DC Master|DC Backup) (.+)/);
+			var errors = array.map(this._progressBar._errors, function(error) {
+				var match = installMasterPackagesOnHostFailedRegex.exec(error);
+				if (match) {
+					var component = match[1];
+					var role = match[2];
+					var host = match[3];
+					error = '<p>' + _('Installing the extension of the LDAP schema on %s failed.', '<strong>' + host + '</strong>') + '</p>';
+					if (role == 'DC Backup') {
+						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that backup system.', '<pre>univention-add-app ' + component + ' -m</pre>') + '</p>';
+					}
+					error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/management-console-module-appcenter.log</em>') + '</p>';
+				}
+				return error;
+			});
+			this._progressBar._errors = errors;
+			this._progressBar.stop(lang.hitch(this, '_restartOrReload'), undefined, true);
 		},
 
 		_restartOrReload: function() {

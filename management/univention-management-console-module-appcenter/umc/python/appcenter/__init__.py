@@ -331,9 +331,7 @@ class Instance(umcm.Base):
 	@simple_response
 	def progress(self):
 		timeout = 5
-		result = self.package_manager.poll(timeout)
-		MODULE.info('progress: %r' % result)
-		return result
+		return self.package_manager.poll(timeout)
 
 	def _package_to_dict(self, package, full):
 		""" Helper that extracts properties from a 'apt_pkg.Package' object

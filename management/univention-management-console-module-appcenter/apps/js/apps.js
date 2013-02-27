@@ -114,6 +114,13 @@ define([
 			});
 			this._container.addChild(this._detailsPane);
 
+			this._usageText = new Text({});
+			this._usagePane = new TitlePane({
+				title: appCenterTranslate('Notes on using'),
+				content: this._usageText
+			});
+			this._container.addChild(this._usagePane);
+
 			this._descriptionText = new Text({});
 			var descriptionPane = new TitlePane({
 				title: _('Description'),
@@ -195,17 +202,20 @@ define([
 				}
 
 				var locale = kernel.locale.slice( 0, 2 ).toLowerCase();
-				var content = app['readme_' + locale] || app.readme_en;
-				if (content) {
-					content = lang.replace(content, app);
+				var usage = app['readme_' + locale] || app.readme_en;
+				if (usage) {
+					usage = lang.replace(usage, app);
 				} else {
-					content = this._appcenterPage.formatTxt(app.longdescription);
-					var usage = this._appcenterPage._detail_field_custom_usage(app);
-					if (usage) {
-						content += ' ' + usage;
-					}
+					usage = this._appcenterPage._detail_field_custom_usage(app);
 				}
-				this._descriptionText.set('content', content);
+				if (usage) {
+					this._usageText.set('content', usage);
+				} else {
+					this._container.removeChild(this._usagePane);
+					this._usagePane.destroyRecursive();
+				}
+
+				this._descriptionText.set('content', this._appcenterPage.formatTxt(app.longdescription));
 				this.standby(false);
 			}),
 			lang.hitch(this, function() {

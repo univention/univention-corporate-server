@@ -590,24 +590,17 @@ class Application(object):
 			unreachable = []
 			master_unreachable = False
 			if master_packages:
-				lo = uldap.getMachineConnection(ldap_master=False)
-				try:
-					hosts = []
-					if server_role != 'domaincontroller_master':
-						hosts.append((get_master(lo), True))
-					# may be backup: dont install on oneself!
-					hosts.extend([(host, False) for host in get_all_backups(lo, ucr)])
-					for host, host_is_master in hosts:
-						try:
-							connection = UMCConnection(host)
-							connection.auth(username, password)
-						except HTTPException as e:
-							MODULE.warn('%s: %s' % (host, e))
-							unreachable.append(host)
-							if host_is_master:
-								master_unreachable = True
-				finally:
-					del lo
+				is_master = server_role == 'domaincontroller_master'
+				hosts = self.find_all_hosts(is_master=is_master)
+				for host, host_is_master in hosts:
+					try:
+						connection = UMCConnection(host)
+						connection.auth(username, password)
+					except HTTPException as e:
+						MODULE.warn('%s: %s' % (host, e))
+						unreachable.append(host)
+						if host_is_master:
+							master_unreachable = True
 
 			# packages to install
 			to_install = self.get('defaultpackages')
@@ -685,6 +678,46 @@ class Application(object):
 			MODULE.warn('%r' % result)
 			return False
 
+	def find_all_hosts(self, is_master):
+		lo = uldap.getMachineConnection(ldap_master=False)
+		try:
+			hosts = []
+			if not is_master:
+				hosts.append((get_master(lo), True))
+			# use ucr to not find oneself!
+			hosts.extend([(host, False) for host in get_all_backups(lo, ucr)])
+			return hosts
+		finally:
+			del lo
+
+	def install_master_packages_on_hosts(self, package_manager, remote_function, username, password, is_master):
+		master_packages = self.get('defaultpackagesmaster')
+		hosts = self.find_all_hosts(is_master=is_master)
+		all_hosts_count = len(hosts)
+		package_manager.set_max_steps(all_hosts_count * 200) # up to 50% if all hosts are installed
+		# maybe we already installed local packages (on master)
+		if is_master:
+			# TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
+			package_manager.progress_state._start_steps = all_hosts_count * 100
+		for host, host_is_master in hosts:
+			package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
+			try:
+				if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
+					error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
+					raise Exception(error_message)
+			except Exception as e:
+				MODULE.error('%s: %s' % (host, e))
+				if host_is_master:
+					role = 'DC Master'
+				else:
+					role = 'DC Backup'
+				# ATTENTION: This message is not localised. It is parsed by the frontend to markup this message! If you change this message, be sure to do the same in AppCenterPage.js
+				package_manager.progress_state.error('Installing extension of LDAP schema for %s failed on %s %s' % (self.component_id, role, host))
+				if host_is_master:
+					raise # only if host_is_master!
+			finally:
+				package_manager.add_hundred_percent()
+
 	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_master_packages=False, dont_remote_install=False):
 		if self.candidate:
 			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install)
@@ -715,29 +748,7 @@ class Application(object):
  					if username is None or dont_remote_install:
  						MODULE.warn('Not connecting to DC Master and Backups. Has to be done manually')
  					else:
-						lo = uldap.getMachineConnection(ldap_master=False)
-						try:
-							# may be backup: dont install on oneself!
-							hosts = [(get_master(lo), True)] + [(host, False) for host in get_all_backups(lo, ucr)]
-						finally:
-							del lo
-						all_hosts_count = len(hosts)
-						package_manager.set_max_steps(all_hosts_count * 200) # up to 50% if all hosts are installed
-						for host, host_is_master in hosts:
-							package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
-							try:
-								if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
-									error_message = 'Unable to install %r on %s. Abort! Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
-									raise Exception(error_message)
-							except Exception as e:
-								MODULE.error('%s: %s' % (host, e))
-								if host_is_master:
-									package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Master. Check /var/log/univention/management-console-module-appcenter.log on this host and the DC Master') % host)
-									raise # only if host_is_master!
-								else:
-									package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Backup. If everything else went correct and this is just a temporary network problem, you should execute "univention-add-app %s -m" as root on that backup system. You should also check /var/log/univention/management-console-module-appcenter.log on this host and the DC Backup.') % (host, self.component_id))
-							finally:
-								package_manager.add_hundred_percent()
+						self.install_master_packages_on_hosts(package_manager, remote_function, username, password, is_master=False)
 
 			if master_packages:
 				# real installation is 50%
@@ -769,25 +780,7 @@ class Application(object):
 				if username is None or dont_remote_install:
 					MODULE.warn('Not connecting to DC Backups. Has to be done manually')
 				else:
-					lo = uldap.getMachineConnection(ldap_master=False)
-					try:
-						hosts = get_all_backups(lo)
-					finally:
-						del lo
-					all_hosts_count = len(hosts)
-					package_manager.set_max_steps(all_hosts_count * 200) # the last 50% if all hosts are installed
-					package_manager.progress_state._start_steps = all_hosts_count * 100 # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
-					for host in hosts:
-						package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
-						try:
-							if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
-								error_message = 'Unable to install %r on %s. Has to be done manually! Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
-								raise Exception(error_message)
-						except Exception as e:
-							MODULE.error('%s: %s' % (host, e))
-							package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Backup. If everything else went correct and this is just a temporary network problem, you should execute "univention-add-app %s -m" as root on that backup system. You should also check /var/log/univention/management-console-module-appcenter.log on this host and the DC Backup.') % (host, self.component_id))
-						finally:
-							package_manager.add_hundred_percent()
+					self.install_master_packages_on_hosts(package_manager, remote_function, username, password, is_master=True)
 
 			# successful installation
 			status = 200

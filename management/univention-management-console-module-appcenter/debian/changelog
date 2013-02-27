@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.127-1) unstable; urgency=low
+
+  * Markup errors when connection failed during install (Bug #30503)
+  * Notes on using get their own pane in "Installed Apps" (Bug #30249)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 27 Feb 2013 16:42:08 +0100
+
 univention-management-console-module-appcenter (2.0.126-1) unstable; urgency=low
 
   * Progressbar: Remote install 50%, local install 50% (Bug #30503)

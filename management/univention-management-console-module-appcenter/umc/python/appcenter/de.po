@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-02-26 14:27+0100\n"
+"POT-Creation-Date: 2013-02-27 15:33+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,34 +11,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: umc/python/appcenter/app_center.py:733
-#: umc/python/appcenter/app_center.py:769
-#, python-format
-msgid ""
-"%s: Unable to install extension of LDAP schema on DC Backup. If everything "
-"else went correct and this is just a temporary network problem, you should "
-"execute \"univention-add-app %s -m\" as root on that backup system. You "
-"should also check /var/log/univention/management-console-module-appcenter."
-"log on this host and the DC Backup."
-msgstr ""
-"%s: Installation der Erweiterung des LDAP Schemas auf dem DC Backup ist "
-"fehlgeschlagen. Wenn keine weiteren Fehler auftraten und dies nur ein "
-"temporäres Netzwerkproblem ist, sollten Sie \"univention-add-app %s -m\" als "
-"root auf dem Backup System ausführen. Überprüfen Sie bitte außerdem /var/log/"
-"univention/management-console-module-appcenter.log auf diesem Host und dem "
-"DC Backup"
-
-#: umc/python/appcenter/app_center.py:730
-#, python-format
-msgid ""
-"%s: Unable to install extension of LDAP schema on DC Master. Check /var/log/"
-"univention/management-console-module-appcenter.log on this host and the DC "
-"Master"
-msgstr ""
-"%s: Installation der Erweiterung des LDAP Schemas auf dem DC Master ist "
-"fehlgeschlagen. Überprüfen Sie bitte /var/log/univention/management-console-"
-"module-appcenter.log auf diesem Host und dem DC Master"
 
 #: umc/python/appcenter/__init__.py:114
 #, python-format
@@ -63,7 +35,7 @@ msgstr "Fehler beim Auslesen der Lizenz aus dem LDAP"
 msgid "Could not query App Center: %s"
 msgstr "Konnte das App Center nicht erreichen: %s"
 
-#: umc/python/appcenter/app_center.py:722
+#: umc/python/appcenter/app_center.py:703
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
@@ -73,7 +45,7 @@ msgstr "Installiere LDAP Pakete auf %s"
 msgid "No license file available for application: %s"
 msgstr "Für die Anwendung ist keine Lizenzdatei vorhanden: %s"
 
-#: umc/python/appcenter/app_center.py:672
+#: umc/python/appcenter/app_center.py:665
 #, python-format
 msgid "Output from %s: %s"
 msgstr "Ausgabe von %s: %s"
