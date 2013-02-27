@@ -25,7 +25,6 @@ class NoDoubleNameSanitizer(StringSanitizer):
 basic_components_sanitizer = DictSanitizer({
 		'server' : StringSanitizer(required=True, minimum=1),
 		'prefix' : StringSanitizer(required=True),
-		'maintained' : AnySanitizer(required=True, may_change_value=False, further_arguments=['unmaintained']),
 		'unmaintained' : BooleanSanitizer(required=True),
 	},
 	allow_other_keys=False,
@@ -34,7 +33,6 @@ basic_components_sanitizer = DictSanitizer({
 advanced_components_sanitizer = DictSanitizer({
 		'server' : StringSanitizer(),
 		'prefix' : StringSanitizer(),
-		'maintained' : BooleanSanitizer(),
 		'unmaintained' : BooleanSanitizer(),
 		'enabled' : BooleanSanitizer(required=True),
 		'name' : StringSanitizer(required=True, regex_pattern='^[A-Za-z0-9\-\_\.]+$'),

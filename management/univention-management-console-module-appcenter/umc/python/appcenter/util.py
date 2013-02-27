@@ -48,7 +48,7 @@ from univention.admin.handlers.computers import domaincontroller_backup
 
 
 # local application
-from constants import COMPONENT_BASE, COMP_PARTS, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
+from constants import COMPONENT_BASE, COMP_PARAMS, STATUS_ICONS, DEFAULT_ICON, PUT_SUCCESS, PUT_PROCESSING_ERROR
 
 def get_hosts(module, lo, ucr=None):
  	hosts = module.lookup(None, lo, None)
@@ -275,8 +275,6 @@ class ComponentManager(object):
 		"""
 		entry = {}
 		entry['name'] = component_id
-		for part in COMP_PARTS:
-			entry[part] = False
 		# ensure a proper bool
 		entry['enabled'] = self.ucr.is_true('%s/%s' % (COMPONENT_BASE, component_id), False)
 		# Most values that can be fetched unchanged
@@ -285,13 +283,8 @@ class ComponentManager(object):
 			entry[attr] = self.ucr.get(regstr, '')
 		# Get default packages (can be named either defaultpackage or defaultpackages)
 		entry['defaultpackages'] = list(self.uu.get_component_defaultpackage(component_id))  # method returns a set
-		# Parts value (if present) must be splitted into words and added as bools.
-		# For parts not contained here we have set 'False' default values.
-		parts = self.ucr.get('%s/%s/parts' % (COMPONENT_BASE, component_id), '').split(',')
-		for part in parts:
-			p = part.strip()
-			if len(p):
-				entry[p] = True
+		# Explicitly enable unmaintained component
+		entry['unmaintained'] = self.ucr.is_true('%s/%s/unmaintained' % (COMPONENT_BASE, component_id), False)
 		# Component status as a symbolic string
 		entry['status'] = self.uu.get_current_component_status(component_id)
 		entry['installed'] = self.uu.is_component_defaultpackage_installed(component_id)
@@ -317,7 +310,6 @@ class ComponentManager(object):
 		app_data = {
 			'server' : app.get_server(),
 			'prefix' : '',
-			'maintained' : True,
 			'unmaintained' : False,
 			'enabled' : True,
 			'name' : app.component_id,
@@ -350,13 +342,8 @@ class ComponentManager(object):
 			'object': {},
 		}
 		try:
-			parts = set()
 			name = data.pop('name')
 			named_component_base = '%s/%s' % (COMPONENT_BASE, name)
-			old_parts = self.ucr.get('%s/parts' % named_component_base, '')
-			if old_parts:
-				for part in old_parts.split(','):
-					parts.add(part)
 			for key, val in data.iteritems():
 				if val is None:
 					# was not given, so dont update
@@ -365,12 +352,6 @@ class ComponentManager(object):
 					super_ucr.set_registry_var('%s/%s' % (named_component_base, key), val)
 				elif key == 'enabled':
 					super_ucr.set_registry_var(named_component_base, val)
-				elif key in COMP_PARTS:
-					if val:
-						parts.add(key)
-					else:
-						parts.discard(key)
-			super_ucr.set_registry_var('%s/parts' % named_component_base, ','.join(sorted(parts)))
 		except Exception as e:
 			result['status'] = PUT_PROCESSING_ERROR
 			result['message'] = "Parameter error: %s" % str(e)
@@ -400,9 +381,7 @@ class ComponentManager(object):
 
 	def _remove(self, component_id, super_ucr):
 		named_component_base = '%s/%s' % (COMPONENT_BASE, component_id)
-		for var in COMP_PARAMS + ['parts']:
-			# COMP_PARTS (maintained,unmaintained) are special
-			# '' deletes this variable
+		for var in COMP_PARAMS:
 			super_ucr.set_registry_var('%s/%s' % (named_component_base, var), '')
 
 		super_ucr.set_registry_var(named_component_base, '')

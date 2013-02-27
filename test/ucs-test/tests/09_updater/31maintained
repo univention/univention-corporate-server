@@ -4,6 +4,8 @@
 ##  1. setup local repository with maintained and unmaintained
 ##  2. check if enabling maintained works
 ## roles-not: [basesystem]
+## versions:
+##  3.1-1: skip
 ## tags: [basic]
 ## packages:
 ##  - apache2 | apache2-mpm-prefork

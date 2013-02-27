@@ -475,7 +475,6 @@ class Instance(umcm.Base):
 
 		for _ in iterator:
 			yield {
-				'maintained' : self.ucr.is_true('repository/online/maintained', False),
 				'unmaintained' : self.ucr.is_true('repository/online/unmaintained', False),
 				'server' : self.ucr.get('repository/online/server', ''),
 				'prefix' : self.ucr.get('repository/online/prefix', ''),

@@ -544,11 +544,7 @@ class UniventionUpdater:
 			os.environ['no_proxy'] = self.configRegistry['proxy/no_proxy']
 
 		# check for maintained and unmaintained
-		self.parts = []
-
-		if self.configRegistry.is_true('repository/online/maintained', True):
-			self.parts.append('maintained')
-
+		self.parts = ['maintained']
 		if self.configRegistry.is_true('repository/online/unmaintained', False):
 			self.parts.append('unmaintained')
 
@@ -803,7 +799,7 @@ class UniventionUpdater:
 
 	def security_update_available(self, version=None):
 		'''Check for the security version for the current version.
-	       Returns next available security update number (integer) or False if no security update is available.
+		   Returns next available security update number (integer) or False if no security update is available.
 		'''
 		if version:
 			start = end = version
@@ -816,7 +812,7 @@ class UniventionUpdater:
 
 	def errata_update_available(self, version=None):
 		'''Check for the errata version for the current version.
-	       Returns next available security update number (integer) or False if no security update is available.
+		   Returns next available security update number (integer) or False if no security update is available.
 		'''
 		if version:
 			start = end = version
@@ -1115,9 +1111,9 @@ class UniventionUpdater:
 
 	def _iterate_component_repositories(self, components, start, end, archs, for_mirror_list=False, errata_level=None, iterate_errata=True):
 		'''
-			Iterate over all components and return (server, version).
-			for_mirror_list shall be True if the code shall iterate over component
-			repositories for mirror.list.
+		Iterate over all components and return (server, version).
+		for_mirror_list shall be True if the code shall iterate over component
+		repositories for mirror.list.
 		'''
 
 		self.log.info('Searching components %r [%s..%s)', components, start, end)
@@ -1126,8 +1122,10 @@ class UniventionUpdater:
 			# server, port, prefix
 			server = self._get_component_server(component, for_mirror_list=for_mirror_list)
 			# parts
-			parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained')
-			parts = ['%s/component' % part for part in RE_SPLIT_MULTI.split(parts)]
+			parts = set(self.parts)
+			if self.configRegistry.is_true('repository/online/component/%s/unmaintained' % (component)):
+				parts.add("unmaintained")
+			parts = ['%s/component' % (part,) for part in self.parts]
 			# versions
 			if start == end:
 				versions = (start,)
@@ -1162,7 +1160,7 @@ class UniventionUpdater:
 
 				# Go through all errata level for this component and break if the first errata level is missing
 				if for_mirror_list:
-					for i in range(1,1000):
+					for i in xrange(1, 1000):
 						valid = False
 						patch_name = '%s-errata%s' % (component, i)
 						for (UCSRepoPoolVariant, subarchs) in ((UCSRepoPool, archs), (UCSRepoPoolNoArch, ('all',))):

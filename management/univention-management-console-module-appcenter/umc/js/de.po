@@ -722,10 +722,6 @@ msgstr "Informationen zur Aktualisierung"
 msgid "Upgrade not possible"
 msgstr "Aktualisierung nicht möglich"
 
-#: umc/js/appcenter/DetailsPage.js:111 umc/js/appcenter/SettingsPage.js:77
-msgid "Use maintained repositories"
-msgstr "'Maintained' Repositories benutzen"
-
 #: umc/js/appcenter/DetailsPage.js:116 umc/js/appcenter/SettingsPage.js:81
 msgid "Use unmaintained repositories"
 msgstr "'Unmaintained' Repositories benutzen"
@@ -835,3 +831,6 @@ msgstr "aktualisiert"
 
 #~ msgid "Was the domain prepared as asked in the dialog before?"
 #~ msgstr "Wurde die Domäne wie zuvor beschrieben vorbereitet?"
+
+#~ msgid "Use maintained repositories"
+#~ msgstr "'Maintained' Repositories benutzen"

@@ -107,11 +107,6 @@ define([
 				},
 				{
 					type: CheckBox,
-					name: 'maintained',
-					label: _("Use maintained repositories")
-				},
-				{
-					type: CheckBox,
 					name: 'unmaintained',
 					label: _("Use unmaintained repositories")
 				},
@@ -148,7 +143,7 @@ define([
 					label: _("Advanced settings"),
 					layout:
 					[
-						['maintained', 'unmaintained'],
+						['unmaintained'],
 						['username', 'password'],
 						['version']
 					]
@@ -236,7 +231,6 @@ define([
 					defaultpackages: '',
 					server: '',
 					// TODO These have to be copied from the current settings
-					maintained: true,
 					unmaintained: false
 				});
 		}

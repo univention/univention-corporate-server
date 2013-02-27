@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.128-1) unstable; urgency=low
+
+  * Replace component/parts in favor of component/{,un}maintained inheriting
+    from repository/online/{,un}maintained (Bug #30261)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Feb 2013 14:41:19 +0100
+
 univention-management-console-module-appcenter (2.0.127-1) unstable; urgency=low
 
   * Markup errors when connection failed during install (Bug #30503)

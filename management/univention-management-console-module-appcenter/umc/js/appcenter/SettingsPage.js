@@ -73,17 +73,13 @@ define([
 				label: _("Repository prefix")
 			}, {
 				type: 'CheckBox',
-				name: 'maintained',
-				label: _("Use maintained repositories")
-			}, {
-				type: 'CheckBox',
 				name: 'unmaintained',
 				label: _("Use unmaintained repositories")
 			}];
 
 			var formLayout = [
 				['server', 'prefix', 'submit' ],
-				['maintained', 'unmaintained']
+				['unmaintained']
 			];
 
 			var formButtons = [{
