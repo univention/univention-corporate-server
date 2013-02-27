@@ -1,3 +1,9 @@
+univention-nfs (5.0.8-1) unstable; urgency=low
+
+  * Added nfs to system services module (Bug #27783)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 27 Feb 2013 10:51:08 +0100
+
 univention-nfs (5.0.7-2) unstable; urgency=low
 
   * fixed nfs-homes listener (Bug #25375) 

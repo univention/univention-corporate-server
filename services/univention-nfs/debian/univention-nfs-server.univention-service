@@ -1,0 +1,6 @@
+[nfs-kernel-server]
+description[de]=Network Filesystem Dämon
+description[en]=Network Filesystem Daemon
+start_type=nfs/autostart
+icon=service/nfs
+programs=/usr/sbin/rpc.mountd
