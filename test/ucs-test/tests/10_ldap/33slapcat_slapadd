@@ -1,222 +1,50 @@
-#!/usr/share/ucs-test/runner python2.6
+#!/usr/share/ucs-test/runner bash
 ## desc: Testing slapcat and slapadd
 ## packages:
 ##  - univention-ldap-server
 ##  - univention-config-registry
 ## exposure: dangerous
 
-import sys, os, subprocess, tempfile, shutil
-from univention.config_registry import ConfigRegistry
-import univention.config_registry
+. "$TESTLIBPATH/base.sh" || exit 1
 
-RETURN_PASS_CODE = 100
-RETURN_FAIL_CODE = 110
+ldif=`mktemp`
+ldif2=`mktemp`
 
-def main():
-	"""A main method stores almost completely code."""
-	tmp_ldif_file1 = "ldif"
-	tmp_ldif_file2 = "ldif2"
-	service_path = "/etc/init.d/slapd"
-	service_binarys = "/usr/sbin/slapd"
-	process_name = "slapd"
-	univention_ldap_directory = "/var/lib/univention-ldap/ldap/"
-	exit_code = RETURN_PASS_CODE # will be set in further code only to RESTURN_FAIL_CODE
+/etc/init.d/slapd stop
 
-	ucr = ConfigRegistry()
-	ucr.load() # load whole dict
+slapcat > "$ldif"
 
-	try:
-		#checks if tmp file exist, if yes will be deleted
-		if os.path.exists(tmp_ldif_file1):
-			os.remove(tmp_ldif_file1)
-			print "File", tmp_ldif_file1, "removed."
-		if os.path.exists(tmp_ldif_file2):
-			os.remove(tmp_ldif_file2)
-			print "File", tmp_ldif_file2, "removed."
+temp_dir=`mktemp -d`
 
-		# perfom slapcat into a file 'tmp_ldif_file1'
-		slapcat(tmp_ldif_file1)
+mv /var/lib/univention-ldap/ldap/* "$temp_dir/"
 
-		# stop slapd process and check if it has been stopped
-		if not control_process(process_name, service_path, "stop"):
-			exit_code = RETURN_FAIL_CODE
-		if not check_process(service_binarys, "stop"):
-			exit_code = RETURN_FAIL_CODE
+ucr commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
-		# create a tmp directory where the original ldap database will be stored
-		tmp_dirpath = tempfile.mktemp()
-		move_files(univention_ldap_directory, tmp_dirpath) #copy ldap files
+slapadd < "$ldif"
 
-		#rebuild configfile from univention template
-		univention.config_registry.handler_commit([univention_ldap_directory +"DB_CONFIG"])
+slapcat > "$ldif2"
 
-		# perfom slapadd from a file 'tmp_ldif_file1'
-		slapadd(tmp_ldif_file1)
+/etc/init.d/slapd start
 
-		# start slapd process and check if it runs
-		if not control_process(process_name, service_path, "start"):
-			exit_code = RETURN_FAIL_CODE
-		if not check_process(service_binarys, "start"):
-			exit_code = RETURN_FAIL_CODE
+test=`diff "$ldif" "$ldif2"`
 
-		# perfom a second slapcat into a file 'tmp_ldif_file2'
-		slapcat(tmp_ldif_file2)
+if [ ! "$test" = "" ]; then
+        echo "diff: $test"
+        echo "There was an error testing slapcat and slapadd, trying to restore the old ldap database"
+        /etc/init.d/slapd stop
+        rm /var/lib/univention-ldap/ldap/*
+        mv $temp_dir/* /var/lib/univention-ldap/ldap/
+        /etc/init.d/slapd start
+        fail_test 1
+fi
 
-		#compare slapcat before and after rebuilding new configfile
-		if not compare_ldif(tmp_ldif_file1, tmp_ldif_file2):
-			print "There was an ERROR testing slapcat and slapadd, trying to restore the old ldap database"
-			restore_old_database(process_name, service_path, service_binarys, univention_ldap_directory, tmp_dirpath)
-			exit_code = RETURN_FAIL_CODE
+rm "$ldif" "$ldif2"
+rm -r "$temp_dir"
 
-		os.remove(tmp_ldif_file1)
-		os.remove(tmp_ldif_file2)
-		shutil.rmtree(tmp_dirpath)
-	except OSError, error:
-		print >> sys.stderr, "An error occurred with %s" % (error, )
-		restore_old_database(process_name, service_path, service_binarys, univention_ldap_directory, tmp_dirpath)
-		sys.exit(RETURN_FAIL_CODE) # exit if something goes wrong on OS level
-	sys.exit(exit_code) # if no exception occurred
+# check if slapd running
+if ! pidof -s "slapd" > /dev/null; then
+	echo "Slapd is not running. Test failed."
+    fail_test 1
+fi
 
-def restore_old_database(process_name, service_path, service_binarys, univention_ldap_directory, tmp_dirpath):
-	"""This method restores the original database"""
-	control_process(process_name, service_path, "stop")
-	check_process(service_binarys, "stop")
-	shutil.rmtree(univention_ldap_directory) # remove ldap directory and its content
-	os.makedirs(univention_ldap_directory) # create a new empty ldap directory
-	move_files(tmp_dirpath, univention_ldap_directory) # move files from temp to ldap dir
-	control_process(process_name, service_path, "start")
-	check_process(service_binarys, "start")
-
-def move_files(root_src_dir, root_dst_dir):
-	"""A method which provides a copy function of the content of one directory to another directory. """
-	for src_dir, dirs, files in os.walk(root_src_dir):
-		dst_dir = src_dir.replace(root_src_dir, root_dst_dir)
-		if not os.path.exists(dst_dir):
-			os.mkdir(dst_dir)
-		for file_ in files:
-			src_file = os.path.join(src_dir, file_)
-			dst_file = os.path.join(dst_dir, file_)
-			if os.path.exists(dst_file):
-				os.remove(dst_file)
-			shutil.move(src_file, dst_dir)
-
-def compare_ldif(ldif_file_1, ldif_file_2):
-	"""This method compare two slapcat outputs files and returns a returncode. The method invokes ./compareldif (should be located in the same directory as a test)."""
-	try:
-		subprocess_compare = subprocess.Popen(['./compareldif', ldif_file_1, ldif_file_2, ], stdout=subprocess.PIPE) # subprocess (command line input) needs a returnvalue
-
-		while True:
-			line = subprocess_compare.stdout.readline() # reads an stdout line by line
-			if line != '':
-				sys.stdout.write(line)
-			else:
-				break
-
-		subprocess_compare.wait() # waits for child process to terminate before goes on
-
-		if subprocess_compare.returncode:
-			return False
-		else:
-			return True
-
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, "An error occured with ./compareldif: %s" % (error, )
-		return False
-
-def slapcat(filename_to_write):
-	"""This method performs a slapcat with a output of it and invoke another method 'write'"""
-	try:
-		subprocess_slapcat = subprocess.Popen(['slapcat', '-d0', ], stdout=subprocess.PIPE)
-
-		linelist_stdout = []
-		while True:
-			line = subprocess_slapcat.stdout.readline() # reads an stdout line by line
-			if line != '':
-				linelist_stdout.append(line)
-			else:
-				break
-
-		subprocess_slapcat.wait()
-		if subprocess_slapcat.returncode:
-			print "Something went wrong with slapcat."
-			sys.exit(RETURN_FAIL_CODE)
-
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
-		sys.exit(RETURN_FAIL_CODE)
-
-	if write_to_file(linelist_stdout, filename_to_write):
-		print "Slapcat was written into", filename_to_write
-	else:
-		print "Could not create", filename_to_write, "Check permissions on file management."
-		sys.exit(RETURN_FAIL_CODE)
-
-def slapadd(from_tmp_file):
-	""" This method performs 'slapadd' from a tmp_ldif_file"""
-	try:
-		subprocess_slapadd = subprocess.Popen(['slapadd', '-d0', '-l', from_tmp_file, ], stdout=subprocess.PIPE) # subprocess (command line input) needs a returnvalue
-		subprocess_slapadd.wait() # waits for child process to terminate before goes on
-
-		if subprocess_slapadd.returncode:
-			print "Something went wrong with slapadd."
-
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
-
-def write_to_file(entries_list, filename):
-	""" This method creates an tmp file of a given list as parameter"""
-	try:
-		tmp_file = open(filename, 'w')
-		tmp_file.write("".join(entries_list))
-		tmp_file.close()
-		if os.path.exists(filename):
-			return True
-		else:
-			return False
-	except OSError, error:
-		print >> sys.stderr, "An error occurred with %s" % (error, )
-		return False
-
-def check_process(process_name, status):
-	"""The method Check whether or not the given service/process-name is running."""
-	try:
-		process_one = subprocess.Popen(["ps", "axu", ], stdout=subprocess.PIPE) # command for first PIPE
-		process_to_pipe_grep_one = subprocess.Popen(["grep", process_name, ], stdin=process_one.stdout, stdout=subprocess.PIPE) # command for secon PIPE
-		process_one.stdout.close()  # Allow process_one to receive a SIGPIPE if process2 exits.
-		process_to_pipe_grep_two = subprocess.Popen(["grep", "-v", "grep", ], stdin=process_to_pipe_grep_one.stdout, stdout=subprocess.PIPE)
-		process_to_pipe_grep_one.stdout.close()  # Allow process2 to receive a SIGPIPE if process3 exits
-		output_check = process_to_pipe_grep_two.communicate()[0] # output with process
-		process_to_pipe_grep_two.stdout.close()
-
-		if status == "stop":
-			if process_name not in output_check[:]:
-				print "OK. The process is not active."
-				return True
-			else:
-				print >> sys.stderr, "ERROR. The process is active. (The process could not be started)"
-				return False
-		else:
-			if process_name in output_check[:]:
-				print "OK. The process is active."
-				return True
-			else:
-				print >> sys.stderr, "ERROR. The process is not active. (The process could not be started)"
-				return False
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
-		return False
-
-def control_process(process_name, service_path, command):
-	"""This method tries wheather to stop or to start the given process. Depends on the 3rd given parameter."""
-	try:
-		print "Trying to " + command + " service ", process_name
-		subprocess_command_service = subprocess.Popen([service_path, command, ], stdout=subprocess.PIPE) # subprocess (command line input)
-		subprocess_command_service.wait() # waits for child process to terminate before goes on
-	except subprocess.CalledProcessError, error:
-		print >> sys.stderr, "An error occured with: %s" % (error, )
-		return False
-	return True
-
-
-if __name__ == '__main__':
-	main()
+exit $RETVAL
