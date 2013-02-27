@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.126-1) unstable; urgency=low
+
+  * Progressbar: Remote install 50%, local install 50% (Bug #30503)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 27 Feb 2013 12:18:51 +0100
+
 univention-management-console-module-appcenter (2.0.125-1) unstable; urgency=low
 
   * Fix overwriting important variables (Bug #30503)

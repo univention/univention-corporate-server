@@ -670,13 +670,14 @@ class Application(object):
 				errors = ['%s: %s' % (host, error) for error in result['errors']]
 				if info:
 					package_manager.progress_state.info(_('Output from %s: %s') % (host, info))
-				package_manager.progress_state.percentage(steps)
+				if steps:
+					steps = float(steps) # bug in package_manager in 3.1-0: int will result in 0 because of division and steps < max_steps
+					package_manager.progress_state.percentage(steps)
 				for error in errors:
 					if error not in all_errors:
 						package_manager.progress_state.error(error)
 						all_errors.add(error)
 				if result['finished'] is True:
-					package_manager.progress_state.percentage(0)
 					break
 				time.sleep(0.1)
 			return True
@@ -706,6 +707,8 @@ class Application(object):
  				if is_master:
  					to_install.extend(master_packages)
  				else:
+					# install remotely when on backup or slave.
+					# remote installation on master is done after real installation
 					if is_backup:
 						# complete installation on backup, too
 						to_install.extend(master_packages)
@@ -718,6 +721,8 @@ class Application(object):
 							hosts = [(get_master(lo), True)] + [(host, False) for host in get_all_backups(lo, ucr)]
 						finally:
 							del lo
+						all_hosts_count = len(hosts)
+						package_manager.set_max_steps(all_hosts_count * 200) # up to 50% if all hosts are installed
 						for host, host_is_master in hosts:
 							package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
 							try:
@@ -731,6 +736,16 @@ class Application(object):
 									raise # only if host_is_master!
 								else:
 									package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Backup. If everything else went correct and this is just a temporary network problem, you should execute "univention-add-app %s -m" as root on that backup system. You should also check /var/log/univention/management-console-module-appcenter.log on this host and the DC Backup.') % (host, self.component_id))
+							finally:
+								package_manager.add_hundred_percent()
+
+			if master_packages:
+				# real installation is 50%
+				package_manager.set_max_steps(200)
+				if not is_master:
+					# already have installed 50%
+					package_manager.progress_state._start_steps = 100 # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
+
 			# remove all existing component versions
 			for iapp in self.versions:
 				# dont remove yourself (if already added)
@@ -759,7 +774,11 @@ class Application(object):
 						hosts = get_all_backups(lo)
 					finally:
 						del lo
+					all_hosts_count = len(hosts)
+					package_manager.set_max_steps(all_hosts_count * 200) # the last 50% if all hosts are installed
+					package_manager.progress_state._start_steps = all_hosts_count * 100 # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
 					for host in hosts:
+						package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
 						try:
 							if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
 								error_message = 'Unable to install %r on %s. Has to be done manually! Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
@@ -767,6 +786,8 @@ class Application(object):
 						except Exception as e:
 							MODULE.error('%s: %s' % (host, e))
 							package_manager.progress_state.error(_('%s: Unable to install extension of LDAP schema on DC Backup. If everything else went correct and this is just a temporary network problem, you should execute "univention-add-app %s -m" as root on that backup system. You should also check /var/log/univention/management-console-module-appcenter.log on this host and the DC Backup.') % (host, self.component_id))
+						finally:
+							package_manager.add_hundred_percent()
 
 			# successful installation
 			status = 200

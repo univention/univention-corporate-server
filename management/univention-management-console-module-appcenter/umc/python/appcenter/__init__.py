@@ -251,7 +251,7 @@ class Instance(umcm.Base):
 	def packages_query(self, pattern, section='all', key='package'):
 		""" Query to fill the grid. Structure is fixed here. """
 		result = []
-		for package in self.package_manager.packages():
+		for package in self.package_manager.packages(reopen=True):
 			if section == 'all' or package.section == section:
 				toshow = False
 				if pattern.pattern == '^.*$':
@@ -331,7 +331,9 @@ class Instance(umcm.Base):
 	@simple_response
 	def progress(self):
 		timeout = 5
-		return self.package_manager.poll(timeout)
+		result = self.package_manager.poll(timeout)
+		MODULE.info('progress: %r' % result)
+		return result
 
 	def _package_to_dict(self, package, full):
 		""" Helper that extracts properties from a 'apt_pkg.Package' object
