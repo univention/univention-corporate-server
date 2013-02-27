@@ -1,0 +1,79 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Try to bind to ldapi as normal user (Bug #10529)
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+## packages:
+##  - univention-config
+##  - univention-directory-manager-tools
+## exposure: dangerous
+
+
+. "$TESTLIBPATH/base.sh" || exit 1
+. "$TESTLIBPATH/random.sh" || exit 1
+
+USRNAME="$(random_chars)"
+DOMAINNAME="$(random_chars)"
+
+eval "$(ucr shell)"
+
+cleanup () {
+
+	echo "Try to clean up..."
+
+	univention-directory-manager mail/domain remove "${CREDENTIALS[@]}" \
+		--dn "cn=$DOMAINNAME.de,$ldap_base" || fail_test 1
+
+	univention-directory-manager users/user remove "${CREDENTIALS[@]}" \
+		--dn "uid=$USRNAME,cn=users,$ldap_base" || fail_test 1
+
+}
+
+declare -a CREDENTIALS
+
+if [ "$server_role" == "domaincontroller_slave" ]; then
+	CREDENTIALS=("--binddn" "${BINDDN}" "--bindpwd" "${BINDPWD}")
+fi
+
+univention-directory-manager mail/domain create "${CREDENTIALS[@]}" \
+	--set name=$DOMAINNAME.de || fail_test 1
+
+univention-directory-manager users/user create "${CREDENTIALS[@]}" \
+	--position cn=users,$ldap_base \
+	--set "username=$USRNAME" \
+	--set "lastname=Test" \
+	--set "password=univention" \
+	--set "firstname=$USRNAME" \
+	--set "mailPrimaryAddress=ldapi@$DOMAINNAME.de" || fail_test 1
+
+
+
+# wait for the replication
+i=0
+while sleep 1s;
+do
+	if [ $i -lt 120 ]; then
+		echo "Waiting for replication..."
+		if getent passwd "$USRNAME"; then
+			break
+		fi
+	else
+		echo "Waiting for replication longer than two minutes. Replication is probably broken. Test failed."
+		cleanup
+		exit 1
+
+	fi
+	i=`expr $i + 1`
+done
+
+echo -e "\n\n***Try to call ldapdelete via the ldapi interface. This shouln't work."
+su - "$USRNAME" -c "ldapdelete -x -H ldapi:/// \"uid=$USRNAME,cn=users,$ldap_base\" && echo \"Error: Removed the object as user $USRNAME via ldapi socket.\" && exit 1 || exit 0"
+
+if [ $? -ne 0 ]; then
+	fail_test 1
+fi
+
+cleanup
+
+exit "$RETVAL"
