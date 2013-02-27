@@ -49,7 +49,7 @@ define([
 			this.actions = [{
 				name: 'run',
 				label: _('Execute'),
-				description: _('Execute this join script'),
+				description: _('Executes this join script'),
 				isContextAction: true,
 				isStandardAction: true,
 				isMultiAction: true,
@@ -59,7 +59,7 @@ define([
 				callback: lang.hitch(this, function(ids) {
 					ids = array.filter(ids, lang.hitch(this, function(id) { return !this.getItem(id).configured; }));
 					if (ids.length === 0) {
-						dialog.alert(_('You can only execute join scripts which are not successfully configured. To execute the selected scripts anyway use the force execution option.'));
+						dialog.alert(_('Only join scripts which are not successfully configured can be executed. To execute the selected scripts anyway the force execution option have to be used.'));
 						return;
 					}
 					this.onRunScripts(ids);
@@ -67,7 +67,7 @@ define([
 			}, {
 				name: 'force',
 				label: _('Force execution'),
-				description: _('Force execution of selected join scripts'),
+				description: _('Forces execution of selected join scripts'),
 				isContextAction: true,
 				isMultiAction: true,
 				isStandardAction: false,
@@ -76,8 +76,8 @@ define([
 				})
 			}, {
 				name: 'execute_pending',
-				label: 'Execute all pending scripts',
-				description: _('Execute join scripts which are not properly configured.'),
+				label: _('Execute all pending scripts'),
+				description: _('Executes join scripts which are not properly configured.'),
 				isContextAction: false,
 				isMultiAction: true,
 				isStandardAction: false,

@@ -56,7 +56,7 @@ define([
 		_form: null,
 
 		headerText: _("Join system"),
-		helpText: _("On this page the system can be joined into the domain."),
+		helpText: _("On this page the system can join into the domain."),
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -212,7 +212,7 @@ define([
 				var txtscripts = '<ul style="max-height: 200px; overflow: auto;"><li>' + scripts.join('</li><li>') + '</ul>';
 				if (this._serverRole == 'domaincontroller_master') {
 					// we don't need credentials on DC master
-					dialog.confirm('Please confirm to run the given joinscripts: ' + txtscripts, [{
+					dialog.confirm(_('Please confirm to run the given join scripts: ') + txtscripts, [{
 						name: 'run',
 						label: _('Run join scripts'),
 						callback: lang.hitch(this, function() {
