@@ -48,7 +48,7 @@ cssFiles:=$(lessFiles:%.less=%.css)
 
 .PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(tmpDir)/umc/login.html $(buildDir)/index.html $(buildDir)/debug.html
 
-build: build-common $(tmpDir) $(buildDir)/js/dojo/dojo.js.uncompressed.js $(themesDir)/umc
+build: build-common $(buildDir)/js/dojo/dojo.js.uncompressed.js $(themesDir)/umc
 
 # the automatically generated module umc/widgets contains a require to all umc widgets
 umc/widgets.js:
@@ -101,7 +101,7 @@ $(tmpDir)/umc/login.html: login.html
 	sed -i 's/\.claro\>/.umc/g; s/"""/"/g;' $@
 
 # copy css and image data into umc themes directory
-$(themesDir)/umc: $(tmpDir)
+$(themesDir)/umc:
 	@#rsync -rp --exclude ".svn" --exclude "*.xcf" --exclude "*.sh" css $@
 	@# symlinks for css style sheets and images
 	cp -rf $(dojoDir)/dijit/themes/claro $@
@@ -135,7 +135,7 @@ build-dev: build-common
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/* $(themesDir)/umc/icons/
 
-build-common: i18n umc/widgets.js umc/package.json $(themesDir)/umc $(themesDir)/umc/icons $(cssFiles) $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
+build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(themesDir)/umc $(themesDir)/umc/icons $(cssFiles) $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
 	@# symlink to javascript dir with timestamp
 	rm -f "$(buildDir)/js_"*
 	ln -s "js" "$(buildDir)/js_"'$(timestamp)'
