@@ -4,13 +4,13 @@ Description[en]=Automatically start of the amavis daemon
 Type=str
 Categories=service-mail,system-services
 
-[mail/antivir/clamav-daemon/autostart]
+[clamav/daemon/autostart]
 Description[de]=Automatischer Start des Virenscanner
 Description[en]=Automatically start of the antivirus daemon
 Type=str
 Categories=service-mail,system-services
 
-[mail/antivir/clamav-freshclam/autostart]
+[clamav/freshclam/autostart]
 Description[de]=Automatischer Start des Virenscanner Updaters
 Description[en]=Automatically start of the antivirus update daemon
 Type=str

@@ -1,3 +1,13 @@
+univention-antivir-mail (4.0.4-1) unstable; urgency=low
+
+  * Renamed mail/antivir/clamav-daemon/autostart to clamav/daemon/autostart and
+    mail/antivir/clamav-freshclam/autostart to clamav/freshclam/autostart, which
+    are utilized in clamav init scripts (Bug #29980)
+  * Made clamav-daemon and clamav-freshclam available in UMC 
+    symstem services module (Bug #13814)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 27 Feb 2013 14:45:34 +0100
+
 univention-antivir-mail (4.0.3-1) unstable; urgency=low
 
   * added initial virus signatures (Bug #27881) 

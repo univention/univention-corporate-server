@@ -3,7 +3,7 @@
 # Univention AntiVir Mail
 #  rules file for the univention-antivir-mail debian package
 #
-# Copyright 2001-2012 Univention GmbH
+# Copyright 2001-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -53,14 +53,22 @@ univention-config-registry set mail/antivir/banned/double_ext?"yes"	\
 			  mail/antivir/banned/rfc2046?"yes"
 
 univention-config-registry set mail/antivir/amavis/autostart?"yes" \
-								mail/antivir/clamav-daemon/autostart?"yes" \
-								mail/antivir/clamav-freshclam/autostart?"yes" \
+								clamav/daemon/autostart?"yes" \
+								clamav/freshclam/autostart?"yes" \
 								'mail/antispam/bodysizelimit?300'
 
 # new installations
 if [ "$1" = "configure" -a -z "$2" ]; then
 	[ -e /var/lib/clamav/daily.cvd ] || cp /usr/share/univention-antivir-mail/daily.cvd /var/lib/clamav/
 	[ -e /var/lib/clamav/main.cvd ] || cp /usr/share/univention-antivir-mail/main.cvd /var/lib/clamav/
+fi
+
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then
+	ucr set clamav/freshclam/autostart="$(ucr get mail/antivir/clamav-freshclam/autostart)"
+	ucr set clamav/daemon/autostart="$(ucr get mail/antivir/clamav-daemon/autostart)"
+	ucr unset mail/antivir/clamav-freshclam/autostart
+	ucr unset mail/antivir/clamav-daemon/autostart
 fi
 
 #DEBHELPER#
