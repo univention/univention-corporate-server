@@ -66,7 +66,7 @@ define([
 				})
 			}, {
 				name: 'force',
-				label: _('Force execution'),
+				label: _('Force execute'),
 				description: _('Forces execution of selected join scripts'),
 				isContextAction: true,
 				isMultiAction: true,

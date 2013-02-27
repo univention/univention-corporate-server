@@ -56,7 +56,6 @@ define([
 		_form: null,
 
 		headerText: _("Join system"),
-		helpText: _("On this page the system can join into the domain."),
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -76,7 +75,7 @@ define([
 		_grid: null,
 
 		headerText: _("Join status"),
-		helpText: _("This page shows the status of all available join scripts on this system, along with all join-related actions (run selected or all join scripts, or rejoin the system as a whole)"),
+		helpText: _("This page shows the status of all available join scripts on this system, along with all join-related actions."),
 
 		buildRendering: function() {
 			this.inherited(arguments);

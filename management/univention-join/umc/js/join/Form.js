@@ -50,7 +50,7 @@ define([
 				type:			Text,
 				name:			'text',
 				style:			'margin-bottom:1em;',
-				content:		_("Please enter the required information below and click the 'Join System' button. This will join your system into the domain.")
+				content:		_("To join the system please enter the required information below and click the 'Join System' button.")
 			}, {
 				type:			TextBox,
 				name:			'username',
