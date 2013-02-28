@@ -127,10 +127,8 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/enabled?yes \
 		update/check/boot/debug?no \
 		update/available?no \
-		version/erratalevel?0
-
-	# Create a system uuid
-	ucr set uuid/system?"$(cat /proc/sys/kernel/random/uuid)"
+		version/erratalevel?0 \
+		uuid/system?"$(cat /proc/sys/kernel/random/uuid)"
 
 	if [ -z "$2" ]; then
 		# enable current errata component
@@ -153,10 +151,10 @@ fi
 
 # Remove old UCR template for errata updates
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=26387
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.54-1; then
+if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 8.0.54-1; then
 	remove_ucr_template /etc/apt/sources.list.d/18_ucs-online-errata.list
 fi
 
-test -x /etc/init.d/univention-directory-listener && /etc/init.d/univention-directory-listener restart
+test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
 
 exit 0
