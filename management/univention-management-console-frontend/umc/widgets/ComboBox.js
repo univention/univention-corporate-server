@@ -32,10 +32,21 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/on",
+	"dojo/aspect",
+	"dojo/has",
+	"dojo/dom",
+	"dijit/focus",
 	"dijit/form/FilteringSelect",
 	"umc/widgets/_SelectMixin",
 	"umc/widgets/_FormWidgetMixin"
-], function(declare, lang, on, FilteringSelect, _SelectMixin, _FormWidgetMixin) {
+], function(declare, lang, on, aspect, has, dom, focusUtil, FilteringSelect, _SelectMixin, _FormWidgetMixin) {
+	// monitor the last clicked DOM node... for special handling of touch devices
+	var clickedNode = null;
+	aspect.before(focusUtil, '_onTouchNode', function(node, by) {
+		clickedNode = node;
+		return [node, by];
+	});
+
 	return declare("umc.widgets.ComboBox", [ FilteringSelect , _SelectMixin, _FormWidgetMixin ], {
 		// the widget's class name as CSS class
 		'class': 'umcComboBox',
@@ -50,6 +61,8 @@ define([
 		//		If true, the ComboBox will only be visible if there it lists more than
 		//		one element.
 		autoHide: false,
+
+		_firstClick: true,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -69,6 +82,27 @@ define([
 					this.set('visible', values.length > 1);
 				}
 			});
+		},
+
+		_onFocus: function() {
+			if (has('touch')) {
+				// special handling for touch devices...
+				var isButtonClicked = dom.isDescendant(clickedNode, this._buttonNode);
+				if (!this.textbox.disabled && (this._firstClick || isButtonClicked)) {
+					// disable focusing the input box on touch devices
+					// in order to avoid the keyboard from showing
+					this.textbox.disabled = true;
+					if (this._firstClick && !isButtonClicked) {
+						this.toggleDropDown();
+					}
+					this._firstClick = false;
+					setTimeout(lang.hitch(this, function() {
+						this.textbox.disabled = false;
+						clickedNode = null;
+					}), 1000);
+				}
+			}
+			this.inherited(arguments);
 		}
 	});
 });

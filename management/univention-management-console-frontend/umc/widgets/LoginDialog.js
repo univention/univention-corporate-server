@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/aspect",
+	"dojo/has",
 	"dojo/on",
 	"dojo/mouse",
 	"dojo/dom",
@@ -50,7 +51,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/app",
 	"dojo/domReady!"
-], function(declare, lang, array, win, aspect, on, mouse, dom, query, attr, domClass, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
+], function(declare, lang, array, win, aspect, has, on, mouse, dom, query, attr, domClass, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
 	return declare("umc.widgets.LoginDialog", [StandbyMixin], {
 		// our own variables
 		_connections: null,
@@ -222,7 +223,9 @@ define([
 					// username is specified, we need to auto fill
 					// the username and disable the textbox.
 					attr.set('umc_UsernameInput', 'value', tools.status('username'));
-					dom.byId('umc_PasswordInput').focus();
+					if (!has('touch')) {
+						dom.byId('umc_PasswordInput').focus();
+					}
 					this._setFocus('umc_PasswordContainer', true);
 
 					// disable the username field during relogin, i.e., when the GUI has been previously set up
@@ -232,7 +235,9 @@ define([
 					}
 				} else {
 					// initial focus on username input
-					dom.byId('umc_UsernameInput').focus();
+					if (!has('touch')) {
+						dom.byId('umc_UsernameInput').focus();
+					}
 					this._setFocus('umc_UsernameContainer', true);
 				}
 			}));
