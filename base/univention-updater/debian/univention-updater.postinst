@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+REPOSITORY="updates.software-univention.de"
+#REPOSITORY="testing.univention.de"
 . /usr/share/univention-lib/all.sh
 
 create_logfile /var/log/univention/repository.log "root:adm" 640
@@ -96,6 +98,7 @@ if [ "$1" = "configure" ]; then
 		update/doc/releasenotes/url"?http://download.univention.de/doc/" \
 		update/doc/releasenotes/description"?http://download.univention.de/doc/"\
 		repository/online?no \
+		repository/online/server?"${REPOSITORY}" \
 		repository/online/port?80 \
 		repository/online/unmaintained?no \
 		repository/online/hotfixes?no \
@@ -157,14 +160,5 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.54-1
 fi
 
 test -x /etc/init.d/univention-directory-listener && /etc/init.d/univention-directory-listener restart
-
-# set the repository server
-eval "$(univention-config-registry shell domainname)"
-if host "univention-repository.$domainname" > /dev/null 2>&1; then
-	univention-config-registry set repository/online/server?"univention-repository.$domainname"
-else
-	# univention-config-registry set repository/online/server?"testing.univention.de"
-	univention-config-registry set repository/online/server?"updates.software-univention.de"
-fi
 
 exit 0

@@ -5,6 +5,7 @@ univention-updater (8.0.68-1) unstable; urgency=low
     from repository/online/{,un}maintained (Bug #30261)
   * debian/rules: Remove duplicate chmod line
   * Remove code of Bug #13220.
+  * Always set repository server to updates.software-univention.de (Bug #30409)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 26 Feb 2013 19:36:08 +0100
 

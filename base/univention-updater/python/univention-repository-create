@@ -39,6 +39,7 @@ import shutil
 import string
 import subprocess
 import sys
+from textwrap import dedent
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
@@ -308,27 +309,45 @@ if __name__ == '__main__':
 			if ex.errno != errno.EEXIST:
 				raise
 
-		print """
+		print dedent("""
 		The local repository has been created.
 
+		The local host has been modified to use this local repository.  Other hosts
+		must be re-configured by setting the Univention Configuration Registry (UCR)
+		variable 'repository/online/server' to the FQDN of this host.
+
+		  ucr set repository/online/server="%(hostname)s.%(domainname)s"
+
 		UCS validates the archive integrity through signed Release files (using the
-		secure APT mechanism). Secure APT is not yet available for local repositories.
-		As such, it should be disabled on this and all other hosts using this
-		repository by setting the Univention Configuration Registry (UCR) variable
-		update/secure_apt to no:
+		secure APT mechanism).  Secure APT is not yet available for local repositories.
+		As such, it must be disabled on this and all other hosts using this
+		repository by setting the UCR variable 'update/secure_apt' to no:
 
 		  ucr set update/secure_apt=no
 
-		This is best done in a domain by defining an UCR Policy, which sets this variable
-		and is applied to all hosts using this repository server.
-		""".replace('\t\t', '')
+		Both settings are best set in a domain by defining UCR Policies, which
+		set these variables on all hosts using this repository server. For example:
+
+		  udm policies/repositoryserver create \
+		    --position "cn=repository,cn=update,cn=policies,%(ldap/base)s" \
+		    --set name="%(hostname)s repository" \
+		    --set repositoryServer="%(hostname)s.%(domainname)s"
+		  udm policies/registry create \
+		    --position "cn=config-registry,cn=policies,%(ldap/base)s" \
+		    --set name="global settings" \
+		    --set registry="update/secure no"
+		  udm container/dc modify \
+		    --dn "%(ldap/base)s" \
+		    --policy-reference "cn=global settings,cn=config-registry,cn=policies,%(ldap/base)s" \
+		    --policy-reference "cn=%(hostname)s repository,cn=repository,cn=update,cn=policies,%(ldap/base)s"
+		""" % configRegistry)
 
 		if not minor_version == '0':
-			print """
+			print dedent("""
 			An UCS repository must always start with minor version 0, for example
 			with UCS %(major)s.0. Please synchronize the repository from %(major)s.0 to %(major)s.%(minor)s
 			by using the tool univention-repository-update.
-			""".replace('\t\t\t', '') % {'major': major_version, 'minor': minor_version}
+			""" % {'major': major_version, 'minor': minor_version})
 
 	finally:
 		if not univention.updater.tools.updater_lock_release(lock):
