@@ -145,7 +145,7 @@ fi
 # the UCR debhelper section will be added before the pysupport section,
 # so we added the pysupport section manually
 if which update-python-modules >/dev/null 2>&1; then
-        update-python-modules  univention-updater.public
+	update-python-modules univention-updater.public
 fi
 
 #DEBHELPER#
@@ -159,11 +159,8 @@ fi
 test -x /etc/init.d/univention-directory-listener && /etc/init.d/univention-directory-listener restart
 
 # set the repository server
-eval "$(univention-config-registry shell hostname domainname update/server)"
-if [ -n "$update_server" -a "$update_server" != "http://download.univention.de" ]; then
-	update_server=`echo "$update_server" | LC_ALL=C sed -e 's|^[A-Za-z][0-9A-Za-z+.-]*://\([^/]*\).*|\1|'` # <http://www.ietf.org/rfc/rfc2396.txt#3.1.>
-	univention-config-registry set repository/online/server?"$update_server"
-elif host univention-repository.$domainname > /dev/null 2>&1; then
+eval "$(univention-config-registry shell domainname)"
+if host "univention-repository.$domainname" > /dev/null 2>&1; then
 	univention-config-registry set repository/online/server?"univention-repository.$domainname"
 else
 	# univention-config-registry set repository/online/server?"testing.univention.de"
