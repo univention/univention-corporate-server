@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.204-1) unstable; urgency=low
+
+  * Bug #30167: force tooltips to hide when opening a new module
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 28 Feb 2013 11:58:25 +0100
+
 univention-management-console-frontend (2.0.203-1) unstable; urgency=low
 
   * Bug #30167: adjusted handling of ComboBox on touch devices

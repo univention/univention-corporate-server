@@ -51,6 +51,7 @@ define([
 	"dijit/MenuItem",
 	"dijit/CheckedMenuItem",
 	"dijit/MenuSeparator",
+	"dijit/Tooltip",
 	"dijit/form/DropDownButton",
 	"dijit/layout/BorderContainer",
 	"dijit/layout/TabContainer",
@@ -67,7 +68,7 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, array, win, win2, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domClass, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, array, win, win2, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domClass, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -189,6 +190,9 @@ define([
 
 			// create a new tab
 			try {
+				// force any tooltip to hide
+				Tooltip.hide();
+
 				var params = lang.mixin({
 					title: module.name,
 					iconClass: tools.getIconClass(module.icon),
