@@ -192,7 +192,7 @@ define([
 			// create a new tab
 			try {
 				// force any tooltip to hide
-				Tooltip.hide();
+				Tooltip._masterTT && Tooltip._masterTT.fadeOut.play();
 
 				var params = lang.mixin({
 					title: module.name,
@@ -728,6 +728,11 @@ define([
 								this.addFavoriteModule(item.id, item.flavor);
 								topic.publish('/umc/actions', 'overview', 'favorites', item.id, item.flavor, 'add');
 							}
+
+							// hide any tooltip
+							setTimeout(function() {
+								Tooltip._masterTT && Tooltip._masterTT.fadeOut.play();
+							}, 10);
 						}));
 					}
 
