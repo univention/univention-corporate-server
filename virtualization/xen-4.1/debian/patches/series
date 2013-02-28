@@ -25,3 +25,4 @@ CVE-2012-5515.patch
 CVE-2012-5634.patch
 CVE-2013-0153.patch
 CVE-2012-6075.patch
+fix-x86-time-scale-asm.patch
