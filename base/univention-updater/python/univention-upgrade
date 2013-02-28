@@ -300,16 +300,16 @@ def main():
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	if options.check:
-		options.noninteractive = True
 	if options.noninteractive:
 		os.environ['UCS_FRONTEND']='noninteractive'
 
 	silent = False
-	dprint(silent, '\nStarting univention-upgrade. Current UCS version is %s-%s errata%s\n' % (configRegistry.get('version/version'), configRegistry.get('version/patchlevel'), configRegistry.get('version/erratalevel')))
+	dprint(silent, '\nStarting univention-upgrade. Current UCS version is %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s\n' % configRegistry)
 
 	dprint(silent, 'Checking for local repository: ', newline=False)
-	if configRegistry.is_true('local/repository', False) and configRegistry.is_true('repository/mirror', False):
+	if options.check:
+		dprint(silent, 'skipped')
+	elif configRegistry.is_true('local/repository', False) and configRegistry.is_true('repository/mirror', False):
 		dprint(silent, 'found\n')
 		if options.noninteractive or readcontinue('Update the local repository via network [Y|n]?'):
 			if options.updateto:

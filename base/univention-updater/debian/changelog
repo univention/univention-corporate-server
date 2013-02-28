@@ -1,6 +1,6 @@
 univention-updater (8.0.68-1) unstable; urgency=low
 
-  * Force univention-upgrade --check to be non-interactive (Bug #30315)
+  * Skip local repository update on univention-upgrade --check (Bug #30315)
   * Replace component/parts in favor of component/{,un}maintained inheriting
     from repository/online/{,un}maintained (Bug #30261)
 
