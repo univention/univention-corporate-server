@@ -69,6 +69,8 @@ for key, value in ucr.items():
 ucr.save()'
 }
 
+[ -d /etc/apt/sources.list.d ] || mkdir -p /etc/apt/sources.list.d
+
 if [ "$1" = "configure" ]; then
 	# update cronjob-entries
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
@@ -140,10 +142,6 @@ if [ "$1" = "configure" ]; then
 fi
 
 call_joinscript 41univention-updater.inst
-
-if [ ! -d /etc/apt/sources.list.d ]; then
-	mkdir -p /etc/apt/sources.list.d
-fi
 
 # the UCR debhelper section will be added before the pysupport section,
 # so we added the pysupport section manually
