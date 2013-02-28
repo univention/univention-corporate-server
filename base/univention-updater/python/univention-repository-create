@@ -294,7 +294,7 @@ if __name__ == '__main__':
 
 		# unset UCR variable marking old repository
 		if 'repository/local/old' in configRegistry:
-			ucr.handler_unset( 'repository/local/old' )
+			ucr.handler_unset(['repository/local/old'])
 
 		# set start version for synchronsation of repository
 		if major_version:
