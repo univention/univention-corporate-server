@@ -63,12 +63,13 @@ define([
 	"umc/widgets/GalleryPane",
 	"umc/widgets/TitlePane",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/TouchScrollContainerWidget",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, array, win, win2, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domClass, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, array, win, win2, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domClass, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -601,7 +602,7 @@ define([
 				});
 
 				// prepare the widget displaying all categories
-				this._categoriesContainer = new ContainerWidget({
+				this._categoriesContainer = new TouchScrollContainerWidget({
 					scrollable: true
 				});
 				this._overviewPage.addChild(this._categoriesContainer);
