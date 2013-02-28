@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.67-1) unstable; urgency=low
+
+  * Bug #30167: do not automatically focus search field on touch devices
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 28 Feb 2013 12:51:13 +0100
+
 univention-management-console-module-udm (3.0.66-2) unstable; urgency=low
 
   * corrected changelog (Bug #29862)

@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/has",
 	"dojo/Deferred",
 	"dojo/promise/all",
 	"dojo/on",
@@ -64,7 +65,7 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, Deferred, all, on, topic, aspect, json, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, CreateReportDialog, NewObjectDialog, DetailPage, _) {
+], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) UDM objects.
@@ -454,7 +455,6 @@ define([
 				// add the types 'None'  and '$containers$' to objTypes
 				objTypes.push( { id: 'None', label: _( 'All types' ) } );
 				objTypes.push( { id: '$containers$', label: _( 'All containers' ) } );
-				objProperties.push({ id: 'None', label: _( 'Default properties' ) });
 			} else if (superordinates && superordinates.length) {
 				// superordinates...
 				widgets.push({
@@ -469,7 +469,6 @@ define([
 				layout[0].push('superordinate');
 				objTypeDependencies.push('superordinate');
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
-				objProperties.push({ id: 'None', label: _( 'Default properties' ) });
 			} else if (containers && containers.length) {
 				// containers...
 				containers.unshift({ id: 'all', label: _( 'All containers' ) });
@@ -484,8 +483,8 @@ define([
 				});
 				layout[0].push('container');
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
-				objProperties.push({ id: 'None', label: _( 'Default properties' ) });
 			}
+			objProperties.push({ id: 'None', label: _( 'Default properties' ) });
 
 			// add remaining elements of the search form
 			widgets = widgets.concat([{
@@ -781,6 +780,11 @@ define([
 		},
 
 		_selectInputText: function() {
+			if (has('touch')) {
+				// ignore touch devices
+				return;
+			}
+
 			// focus on input widget
 			var widget = this._searchForm.getWidget('objectPropertyValue');
 			widget.focus();
