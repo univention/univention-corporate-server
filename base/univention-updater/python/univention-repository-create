@@ -36,7 +36,6 @@ import os
 import errno
 from optparse import OptionParser
 import shutil
-import string
 import subprocess
 import sys
 from textwrap import dedent
@@ -219,7 +218,7 @@ def setup_pxe( options ):
 		line = line.strip()
 		if line.startswith('linux '):
 			kernel = line.split(' ')[1]
-			kernel = string.replace(kernel, '/boot/', '')
+			kernel = kernel.replace('/boot/', '')
 	if not kernel:
 		print 'Failed to search kernel'
 		return 1
@@ -272,7 +271,7 @@ if __name__ == '__main__':
 		installfile = os.path.join(options.mount_point, '.univention_install')
 		for line in open(installfile).readlines():
 			if line.startswith('VERSION='):
-				version = string.replace(line, 'VERSION=', '')
+				version = line[len('VERSION='):]
 				major_version = version.split('.', 1)[0].strip()
 				minor_version = version.split('.', 1)[1].strip()
 				break
