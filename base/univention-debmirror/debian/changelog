@@ -1,3 +1,9 @@
+univention-debmirror (5.0.5-2) UNRELEASED; urgency=low
+
+  * Fix undefined FQDN (Bug #30409)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 28 Feb 2013 12:57:28 +0100
+
 univention-debmirror (5.0.5-1) unstable; urgency=low
 
   * Use FQDN for univention-repository CNAME (Bug #26765)

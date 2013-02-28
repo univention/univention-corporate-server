@@ -36,11 +36,11 @@ joinscript_init
 
 eval "$(univention-config-registry shell hostname domainname)"
 . /usr/share/univention-lib/all.sh
+FQDN="$hostname.$domainname"
 
 if is_ucr_true "local/repository"
 then
 	REPO="univention-repository.$domainname"
-	FQDN="$hostname.$domainname"
 	# Is there already another repository server?
 	target="$(LC_ALL=C host -t CNAME "$REPO" | sed -ne 's|.* is an alias for \(.*\)\.$|\1|p')"
 	if [ -z "$target" ]; then
