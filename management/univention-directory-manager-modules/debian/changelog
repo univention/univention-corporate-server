@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.136-1) unstable; urgency=low
+
+  * fixed description of "locked login methods" (Bug #19662)
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 16:42:50 +0100
+
 univention-directory-manager-modules (8.0.135-1) unstable; urgency=low
 
   * added --superordinate to udm list bash completion (Bug #15245) 

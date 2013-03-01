@@ -2603,10 +2603,10 @@ class disabled( select ):
 
 class locked( select ):
 	choices = (
-		( 'none', _( 'None locked login method' ) ),
-		( 'all', _( 'Locked all login method' ) ),
-		( 'windows', _( 'Locked Windows/Kerberos only' ) ),
-		( 'posix', _( 'Locked POSIX/LDAP only' ) ),
+		( 'none', _( 'None' ) ),
+		( 'all', _( 'Lock all login methods' ) ),
+		( 'windows', _( 'Lock Windows/Kerberos only' ) ),
+		( 'posix', _( 'Lock POSIX/LDAP only' ) ),
 	)
 
 # printing stuff
