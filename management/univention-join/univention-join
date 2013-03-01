@@ -41,9 +41,21 @@ eval "$(univention-config-registry shell)"
 SIMPLEGUI=""
 TYPE=
 USERTMP="$(mktemp -d)"
-trap "rm -rf '$USERTMP'" EXIT
 DCPWD="$USERTMP/dcpwd"
 VERSION_CHECK=true
+VERBOSE=false
+
+trapOnExit() {
+	rm -rf "$USERTMP"
+	if [ -n "$VERBOSE" -a "$VERBOSE" = "true" ]; then
+		if [ -n "$old_listener_debug_level" ]; then
+			ucr set listener/debug/level="$old_listener_debug_level" >>/var/log/univention/join.log 2>&1
+		fi
+	fi
+	echo "$(LC_ALL=C date): finish $0" >>/var/log/univention/join.log 2>&1
+}
+
+trap trapOnExit EXIT
 
 display_help() {
 	display_header
@@ -59,6 +71,7 @@ display_help() {
 	  -ldapbase <ldap base>:   LDAP Base DN, e.g. dc=test,dc=local
 	  -realm <kerberos realm>: Kerberos realm, e.g. TEST.LOCAL
 	  -disableVersionCheck     Disable version check against _dcname_
+	  -verbose                 Enable verbose logging (/var/log/univention/join.log)
 
 	  -h | --help | -?:        print this usage message and exit program
 	  --version:               print version information and exit program
@@ -134,6 +147,66 @@ check_ldap_tls_connection () {
 	echo -e "\033[60Gdone"
 }
 
+run_join_scripts () {
+
+	if test -d "/usr/lib/univention-install/"; then
+		for i in /usr/lib/univention-install/*.inst; do
+			echo -n "Configure $(basename "$i") "
+			[ -n "$SIMPLEGUI" ] && echo
+			echo "Configure $(basename "$i") $(LC_ALL=C date)" >>/var/log/univention/join.log
+			bashVerbose=""
+			if [ -n "$VERBOSE" -a "$VERBOSE" = "true" ]; then
+				bashVerbose="bash -x"
+			fi
+			$bashVerbose "$i" --binddn "$binddn" --bindpwd "$(<"$DCPWD")" >>/var/log/univention/join.log 2>&1
+			if [ $? -ne 0 ]; then
+				echo -e "\033[60Gfailed"
+				failed_message "FAILED: $(basename "$i")"
+			else
+				echo -e "\033[60Gdone"
+			fi
+			if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "domaincontroller_backup" ]; then
+
+				# check failed.ldif
+				if [ "$(basename "$i")" = "03univention-directory-listener.inst" ]; then
+					if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
+						failed_message "FAILED: failed.ldif exists."
+					fi
+
+					# backup
+					if [ "$server_role" = "domaincontroller_backup" ]; then
+						univention-scp "$DCPWD" -r \
+							"${DCACCOUNT}@${DCNAME}:/var/lib/univention-ldap/notify/transaction" \
+							"$USERTMP/tlog" >/dev/null 2>&1
+						if [ ! -e "$USERTMP/tlog" ]; then
+							failed_message " FAILED: failed do copy /var/lib/univention-ldap/notify/transaction from the dc master. Please try again."
+						fi
+
+						id="$(</var/lib/univention-directory-listener/notifier_id)"
+						awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
+					fi
+
+					# slave 
+					if [ "$server_role" = "domaincontroller_slave" ]; then
+						if [ -n "$listener_supply_notifier" -a "$listener_supply_notifier" = "yes" ]; then
+							univention-scp "$DCPWD" -q \
+								"${DCACCOUNT}@${DCNAME}:/var/lib/univention-ldap/notify/transaction" \
+								"$USERTMP/tlog" >/dev/null 2>&1
+							id="$(</var/lib/univention-directory-listener/notifier_id)"
+							awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
+						fi
+
+					fi
+				fi
+			fi
+		done
+	fi
+
+}
+
+# log univention-join call
+echo "$(LC_ALL=C date): starting $0 $*" >>/var/log/univention/join.log 2>&1
+
 while [ $# -gt 0 ]
 do
 	case "$1" in
@@ -179,12 +252,29 @@ do
 			display_help
 			exit 0
 			;;
+		"-verbose")
+			VERBOSE="true"
+			shift
+			;;
 		*)
 			display_help
 			exit 1
 			;;
 	esac
 done
+
+# verbose logging for univention-join and listener
+if [ -n "$VERBOSE" -a "$VERBOSE" = "true" ]; then
+	exec 2>>/var/log/univention/join.log
+	set -x
+	if [ -n "$listener_debug_level" ]; then
+		old_listener_debug_level="$listener_debug_level"
+	else
+		old_listener_debug_level="2"
+	fi
+	ucr set listener/debug/level=4 >>/var/log/univention/join.log 2>&1
+	listener_debug_level=4
+fi
 
 display_header
 
@@ -597,35 +687,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
 
-	if test -d "/usr/lib/univention-install/"; then
-		for i in /usr/lib/univention-install/*.inst; do
-			echo -n "Configure $(basename "$i") "
-			[ -n "$SIMPLEGUI" ] && echo
-			echo "Configure $(basename "$i")" >>/var/log/univention/join.log
-			if ! "$i" --binddn "$binddn" --bindpwd "$(<"$DCPWD")" >>/var/log/univention/join.log 2>&1
-			then
-				echo -e "\033[60Gfailed"
-				failed_message "FAILED: $(basename "$i")"
-			else
-				echo -e "\033[60Gdone"
-			fi
-
-			if [ "$(basename "$i")" = "03univention-directory-listener.inst" ]; then
-				if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
-					failed_message "FAILED: failed.ldif exists."
-				fi
-				univention-scp "$DCPWD" -r "${DCACCOUNT}@${DCNAME}:/var/lib/univention-ldap/notify/transaction" "$USERTMP/tlog" >/dev/null 2>&1
-				if [ ! -e "$USERTMP/tlog" ]; then
-					failed_message " FAILED: failed do copy /var/lib/univention-ldap/notify/transaction from the dc master. Please try again."
-				fi
-
-				id="$(</var/lib/univention-directory-listener/notifier_id)"
-				awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
-				: >/var/lib/univention-ldap/replog/replog
-			fi
-		done
-	fi
-
+	run_join_scripts
 
 elif [ "$server_role" = "domaincontroller_slave" ]; then
 
@@ -691,32 +753,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
-	if test -d "/usr/lib/univention-install/"; then
-		for i in /usr/lib/univention-install/*.inst; do
-			echo -n "Configure $(basename "$i") "
-			[ -n "$SIMPLEGUI" ] && echo
-			echo "Configure $(basename "$i")" >>/var/log/univention/join.log
-			if ! "$i" --binddn "$binddn" --bindpwd "$(<"$DCPWD")" >>/var/log/univention/join.log 2>&1
-			then
-				echo -e "\033[60Gfailed"
-				failed_message "FAILED: $(basename "$i")"
-			else
-				echo -e "\033[60Gdone"
-			fi
-			if [ "$(basename "$i")" = "03univention-directory-listener.inst" ]; then
-				if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
-					failed_message "FAILED: failed.ldif exists."
-				fi
-				if [ -n "$listener_supply_notifier" -a "$listener_supply_notifier" = "yes" ]; then
-					univention-scp "$DCPWD" -q "${DCACCOUNT}@${DCNAME}:/var/lib/univention-ldap/notify/transaction" "$USERTMP/tlog" >/dev/null 2>&1
-					id="$(</var/lib/univention-directory-listener/notifier_id)"
-					awk -F ' ' '{ if ( $1 <= '$id') print }' "$USERTMP/tlog" >/var/lib/univention-ldap/notify/transaction
-					: >/var/lib/univention-ldap/replog/replog
-				fi
-			fi
-		done
-	fi
-
+	run_join_scripts
 
 elif [ "$server_role" = "memberserver" ]; then
 	mkdir -p /etc/univention/ssl/ucsCA
@@ -755,21 +792,7 @@ elif [ "$server_role" = "memberserver" ]; then
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
-	if test -d "/usr/lib/univention-install/"; then
-		for i in /usr/lib/univention-install/*.inst; do
-			echo -n "Configure $(basename "$i") "
-			[ -n "$SIMPLEGUI" ] && echo
-			echo "Configure $(basename "$i")" >>/var/log/univention/join.log
-			if ! "$i" --binddn "$binddn" --bindpwd "$(<"$DCPWD")" >>/var/log/univention/join.log 2>&1
-			then
-				echo -e "\033[60Gfailed"
-				echo "FAILED: $(basename "$i")"
-				failed_message "FAILED: $(basename "$i")"
-			else
-				echo -e "\033[60Gdone"
-			fi
-		done
-	fi
+	run_join_scripts
 
 else
 # Client and Mobile Client
@@ -809,21 +832,9 @@ else
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
 	eval "$(univention-config-registry shell)"
-	if test -d "/usr/lib/univention-install/"; then
-		for i in /usr/lib/univention-install/*.inst; do
-			echo -n "Configure $(basename "$i") "
-			[ -n "$SIMPLEGUI" ] && echo
-			echo "Configure $(basename "$i")" >>/var/log/univention/join.log
-			if ! "$i" --binddn "$binddn" --bindpwd "$(<"$DCPWD")" >>/var/log/univention/join.log 2>&1
-			then
-				echo -e "\033[60Gfailed"
-				echo "FAILED: $(basename "$i")"
-				failed_message "FAILED: $(basename "$i")"
-			else
-				echo -e "\033[60Gdone"
-			fi
-		done
-	fi
+
+	run_join_scripts
+
 fi
 
 if [ -d /etc/runit/univention-directory-notifier ]; then
