@@ -85,12 +85,12 @@ display_help() {
 
 display_header() {
 	echo "univention-join: joins a computer to an ucs domain"
-	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo "copyright (c) 2001-2013 Univention GmbH, Germany"
 	echo ""
 }
 
 display_version() {
-	echo "univention-join @%@package_version@%@"
+	echo "univention-join 5.0.27-1.413.201302271553"
 }
 
 failed_message () {
@@ -365,8 +365,6 @@ done
 IFS=$OLDIFS
 
 # check join constraints
-#  * disable join of newer ucs system against older ucs systems
-echo "disableVersionCheck: $VERSION_CHECK" >>/var/log/univention/join.log
 if $VERSION_CHECK; then
 
 	echo "running version check" >>/var/log/univention/join.log

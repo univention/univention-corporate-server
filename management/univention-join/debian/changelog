@@ -1,3 +1,9 @@
+univention-join (5.0.29-1) unstable; urgency=low
+
+  * fixed disableVersionCheck logging (Bug #30492) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 14:56:00 +0100
+
 univention-join (5.0.28-1) unstable; urgency=low
 
   * added -verbose to univention-join (Bug #30154) 
