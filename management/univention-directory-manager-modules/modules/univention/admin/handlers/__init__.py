@@ -1458,6 +1458,10 @@ class simpleComputer( simpleLdap ):
 	def __split_dhcp_line( self, entry ):
 		try:
 			# sanitize mac address
+			#   0011.2233.4455 -> 00:11:22:33:44:55 -> is guaranteed to work together with our DHCP server
+			#   __split_dhcp_line may be used outside of UDM which means that MAC_Address.parse may not be called.
+			#   if __is_mac would return True for 0011.2233.4455 and MAC_Address.parse is not called afterwards DHCP may not work.
+			#   See Bug #30140
 			entry[-1] = univention.admin.syntax.MAC_Address.parse(entry[-1])
 		except univention.admin.uexceptions.valueError:
 			# the mac address is invalid, __is_mac will check again if it has the right format
