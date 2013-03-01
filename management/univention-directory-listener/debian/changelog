@@ -1,3 +1,9 @@
+univention-directory-listener (7.0.8-1) unstable; urgency=low
+
+  * respect listener/debug/level in join script (Bug #30154) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 15:00:19 +0100
+
 univention-directory-listener (7.0.7-2) unstable; urgency=low
 
   * fix missing parenthesis (Bug #29475)
