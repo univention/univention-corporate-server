@@ -149,6 +149,7 @@ check_ldap_tls_connection () {
 
 run_join_scripts () {
 
+	LC_COLLATE="C"
 	if test -d "/usr/lib/univention-install/"; then
 		for i in /usr/lib/univention-install/*.inst; do
 			echo -n "Configure $(basename "$i") "

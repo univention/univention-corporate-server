@@ -72,6 +72,7 @@ then
 	log_error "localhost ldapsearch failed"
 fi
 
+LC_COLLATE="C"
 declare -i MISSING=0
 for i in /usr/lib/univention-install/*.inst
 do

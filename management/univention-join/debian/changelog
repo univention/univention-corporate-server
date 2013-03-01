@@ -1,3 +1,11 @@
+univention-join (5.0.30-1) unstable; urgency=low
+
+  * added LC_COLLATE="C" to univention-join,
+    univention-check-join-status and univention-run-join-scripts
+    (Bug #30168)
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 15:39:32 +0100
+
 univention-join (5.0.29-1) unstable; urgency=low
 
   * fixed disableVersionCheck logging (Bug #30492) 
