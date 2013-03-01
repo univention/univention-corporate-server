@@ -1068,7 +1068,7 @@ msgid "POSIX and Kerbeors disabled"
 msgstr "POSIX und Kerberos deaktiviert"
 
 #: syntax.py:2602
-msgid "Lock all login method"
+msgid "Lock all login methods"
 msgstr "Alle Anmeldeverfahren sind gesperrt"
 
 #: syntax.py:2603

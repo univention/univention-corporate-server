@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.136-3) unstable; urgency=low
+
+  * fixed description of "locked login methods" (Bug #19662) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 17:04:31 +0100
+
 univention-directory-manager-modules (8.0.136-2) unstable; urgency=low
 
   * fixed description of "locked login methods" (Bug #19662) 
