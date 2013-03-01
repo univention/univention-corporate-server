@@ -1035,7 +1035,7 @@ msgstr "Übersetzter Karteikartenname"
 msgid "Translated group name"
 msgstr "Übersetzter Gruppenname"
 
-#: syntax.py:2588
+#: syntax.py:2588 syntax.py:2601
 msgid "None"
 msgstr "Keine"
 
@@ -1066,10 +1066,6 @@ msgstr "Windows und Kerberos deaktiviert"
 #: syntax.py:2596
 msgid "POSIX and Kerbeors disabled"
 msgstr "POSIX und Kerberos deaktiviert"
-
-#: syntax.py:2601
-msgid "None"
-msgstr "Keines"
 
 #: syntax.py:2602
 msgid "Lock all login method"
