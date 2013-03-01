@@ -26,7 +26,7 @@ _uniudm () {
 
 		list)
 			if [ $COMP_CWORD -gt 2 ] ; then
-				COMPREPLY=($(compgen -W "--binddn --bindpwd --filter --policies" -- ${cur}))
+				COMPREPLY=($(compgen -W "--binddn --bindpwd --filter --policies --superordinate" -- ${cur}))
 			fi ;;
 
 		move)
