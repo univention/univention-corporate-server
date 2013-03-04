@@ -57,3 +57,15 @@ Description[de]=Spezifiziert einen alternativen Namen, unter dem der Server beka
 Description[en]=Specifies an alternate name that the server is known by. The special name "*" allows any name to be used.
 Type=str
 Categories=service-cups
+
+[cups/include/local]
+Description[de]=Falls auf true gesetzt, wird am Ende der cupsd.conf cupsd.local.conf eingebunden (default: false)
+Description[en]=If set to true, cupsd.conf includes cupsd.local.conf at the end (default: false)
+Type=str
+Categories=service-cups
+
+[cups/autostart]
+Description[de]=Definiert, ob der Cups (Druckserver) Dienst automatisch gestartet werden soll (default: true)
+Description[en]=Defines if the cups service should be started automatically (default: true)
+Type=str
+Categories=service-cups

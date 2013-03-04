@@ -1,3 +1,11 @@
+univention-printserver (6.0.21-1) unstable; urgency=low
+
+  * added -h localhost to lpadmin call in univention-lpadmin (Bug #28476) 
+  * added description for cups/autostart (Bug #29669)
+  * include cupsd.local.conf in cupsd.conf (Bug #19552)
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2013 09:29:08 +0100
+
 univention-printserver (6.0.20-4) unstable; urgency=low
 
   * use samba crestart (Bug #29699)

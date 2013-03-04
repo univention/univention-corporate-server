@@ -51,6 +51,9 @@ for path in [ '/usr/sbin/accept', '/usr/sbin/cupsaccept' ]:
 	if os.path.exists(path):
 		acceptexec = path
 
+if not '-h' in args:
+	args = args + ['-h', 'localhost']
+
 # read machine password
 secretFile=open('/etc/machine.secret','r')
 pwdLine=secretFile.readline()
