@@ -1,0 +1,59 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create and modify 10 users from UCS to AD in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+B00="$(random_chars)"
+B01="$(random_chars)"
+B02="$(random_chars)"
+B03="$(random_chars)"
+B04="$(random_chars)"
+B05="$(random_chars)"
+B06="$(random_chars)"
+B07="$(random_chars)"
+B08="$(random_chars)"
+B09="$(random_chars)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+invoke-rc.d univention-ad-connector restart
+
+for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09"; do
+	ad_createuser "$b" || fail_test 110
+	sleep 1
+	ad_set_attribute "CN=$b,CN=Users,$(ad_get_base)" "description" "Test 123" || fail_test 110
+done
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09"; do
+	echo "Search in AD"
+	ad_verify_attribute "CN=$b,CN=Users,$(ad_get_base)" "description" "Test 123"; fail_bool 0 110
+	echo "Search in UCS"
+	UDM_users_user_username="$b"
+	udm_verify_udm_attribute "description" "Test 123" "users/user"; fail_bool 0 110
+done
+
+section "Clean up"
+
+for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09"; do
+	ad_delete "CN=$b,CN=Users,$(ad_get_base)" || fail_test 110
+done
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09"; do
+	ad_exists "CN=$b,CN=Users,$(ad_get_base)"; fail_bool 1 110
+done
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

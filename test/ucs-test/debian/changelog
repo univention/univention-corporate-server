@@ -1,3 +1,10 @@
+ucs-test (3.0.25-2) unstable; urgency=low
+
+  * Added two simple connector tests, create 10 users and modify them
+    after the creation (Bug #30317)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 04 Mar 2013 22:04:39 +0100
+
 ucs-test (3.0.25-1) unstable; urgency=low
 
   * Added test cases for S4 and AD conenctor for Bug #29874 (Bug #29874)
