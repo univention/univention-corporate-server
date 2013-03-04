@@ -1,3 +1,9 @@
+univention-join (5.0.32-1) unstable; urgency=low
+
+  * fixed display_header (Bug #30492) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 04 Mar 2013 15:35:00 +0100
+
 univention-join (5.0.31-1) unstable; urgency=low
 
   * fix status of unexecuted join scripts; Bug #27792
