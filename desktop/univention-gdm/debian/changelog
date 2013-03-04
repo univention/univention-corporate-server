@@ -1,3 +1,9 @@
+univention-gdm (9.0.2-1) unstable; urgency=low
+
+  * allow root login (Bug #28372)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 04 Mar 2013 17:28:39 +0100
+
 univention-gdm (9.0.1-4) unstable; urgency=low
 
   * changed ucrv descriptions (Bug #25677) 

@@ -1,3 +1,9 @@
+univention-kde (7.0.6-1) unstable; urgency=low
+
+  * display notification when root user logs in (Bug #28372)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 04 Mar 2013 17:27:35 +0100
+
 univention-kde (7.0.5-1) unstable; urgency=low
 
   * do not disable polkit-kde-authentication-agent-1 in ucs kde profile (Bug #28807)
