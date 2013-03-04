@@ -470,7 +470,7 @@ class Application(object):
 		res['can_install'] = cannot_install_reason is None
 		res['is_installed'] = res['can_uninstall'] = cannot_install_reason == 'installed'
 		res['cannot_update_reason'], res['cannot_update_reason_detail'] = self.cannot_update_reason(package_manager)
-		res['can_update'] = self.candidate and res['cannot_update_reason'] is None # faster than self.can_be_updated()
+		res['can_update'] = res['cannot_update_reason'] is None # faster than self.can_be_updated()
 		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
@@ -498,14 +498,17 @@ class Application(object):
 
 	def cannot_update_reason(self, package_manager):
 		if self.candidate:
-			return self.candidate.cannot_install_reason(package_manager, check_is_installed=False)
-		return None, None
+			# check if installed. can have candidate without being installed
+			#   e.g. only master packages installed
+			if self.is_installed(package_manager):
+				return self.candidate.cannot_install_reason(package_manager, check_is_installed=False)
+			else:
+				return 'not_installed', None
+		else:
+			return 'no_candidate', None
 
 	def can_be_updated(self, package_manager):
-		if self.candidate:
-			return self.cannot_update_reason(package_manager)[0] is None
-		else:
-			return False
+		return self.cannot_update_reason(package_manager)[0] is None
 
 	def cannot_install_reason(self, package_manager, check_is_installed=True):
 		is_joined = os.path.exists('/var/univention-join/joined')

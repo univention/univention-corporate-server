@@ -192,7 +192,7 @@ define([
 
 				getStatusIconClass: function(item) {
 					var iconClass = '';
-					if (! item.can_update && item.candidate_version) {
+					if (! item.can_update && item.candidate_version && item.cannot_update_reason != 'not_installed') {
 						iconClass = tools.getIconClass('appcenter-cannot_update', 24, 'umcAppCenter');
 					} else if (item.can_update) {
 						iconClass = tools.getIconClass('appcenter-can_update', 24, 'umcAppCenter');

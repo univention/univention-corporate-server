@@ -1,3 +1,12 @@
+univention-management-console-module-appcenter (2.0.129-1) unstable; urgency=low
+
+  * Bug #30637: If only the schema extension for an app was installed and a
+    newer version was available, the App Center showed the option to upgrade
+    the complete application. This option is now only shown on the server that
+    has installed the "core" of the application.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 Mar 2013 12:24:12 +0100
+
 univention-management-console-module-appcenter (2.0.128-1) unstable; urgency=low
 
   * Replace component/parts in favor of component/{,un}maintained inheriting
