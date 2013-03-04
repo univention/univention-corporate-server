@@ -2,7 +2,7 @@
 ## desc: "Check if Administrator is still member of Domain Admins"
 ## exposure: dangerous
 ## packages:
-## - univention-ad-connector
+## - univention-s4-connector
 ## bugs:
 ##  - 28845
 
