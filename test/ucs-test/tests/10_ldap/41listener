@@ -1,0 +1,67 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check listener functionality
+## tags: [basic]
+## roles-not: [basesystem]
+## packages:
+##  - univention-directory-listener
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 1
+. "$TESTLIBPATH/user.sh" || exit 1
+
+ucstest="$(random_chars)"
+touch /usr/lib/univention-directory-listener/system/"$ucstest".py
+
+tempFile="$(mktemp)"
+
+cat <<__HERE__ >/usr/lib/univention-directory-listener/system/"$ucstest".py
+import os, listener
+description='set up a new handler (with an new uid entry in tmp-file) for listener'
+name='ucstest'
+filter='(objectClass=posixAccount)'
+def handler(dn, new, old):
+        if new:
+                listener.setuid(0)
+                f=open("$tempFile", 'a+')
+                f.write('New User: %s\n' % new.get('uid')[0])
+                f.close()
+                listener.unsetuid()
+
+__HERE__
+
+/etc/init.d/univention-directory-listener restart
+
+USERNAME=$(user_randomname)
+user_create "$USERNAME"
+
+echo "Waiting for replication..."
+i=0
+while sleep 1s;
+do
+	if [ $i -lt 120 ]; then
+		if getent passwd "$USERNAME"; then
+			break
+		fi
+	else
+		echo "Waiting for replication longer than two minutes. Replication is probably broken."
+		break
+	fi
+	i=`expr $i + 1`
+done
+
+grep "New User: $USERNAME" $tempFile
+if [ $? = 0 ]; then
+        echo "Found username ($USERNAME) in tempfile ($tempFile)"
+else
+        echo "Did not found username ($USERNAME) in tempfile ($tempFile)"
+        fail_test 1
+fi
+
+/etc/init.d/univention-directory-listener restart || fail_test 1
+
+#cleanup
+rm -f /usr/lib/univention-directory-listener/system/"$ucstest".py || fail_test 1
+rm -f "$tempFile"
+
+#removing users/user
+user_remove "$USERNAME"
