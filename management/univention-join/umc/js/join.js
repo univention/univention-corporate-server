@@ -85,7 +85,9 @@ define([
 			});
 			this.addChild(this._titlePane);
 
-			this._grid = new JoinGrid({});
+			this._grid = new JoinGrid({
+				_serverRole: this._serverRole
+			});
 			this._titlePane.addChild(this._grid);
 		}
 	});
@@ -207,11 +209,11 @@ define([
 			}));
 
 			// run join scripts
-			this._statuspage._grid.on('RunScripts', lang.hitch(this, function(scripts, force) {
+			this._statuspage._grid.on('runScripts', lang.hitch(this, function(scripts, force) {
 				var txtscripts = '<ul style="max-height: 200px; overflow: auto;"><li>' + scripts.join('</li><li>') + '</ul>';
 				if (this._serverRole == 'domaincontroller_master') {
 					// we don't need credentials on DC master
-					dialog.confirm(_('Please confirm to run the given join scripts: ') + txtscripts, [{
+					dialog.confirm(_('The following join scripts will be executed: ') + txtscripts, [{
 						name: 'run',
 						label: _('Run join scripts'),
 						callback: lang.hitch(this, function() {
@@ -261,11 +263,11 @@ define([
 
 				if (job_running) {
 					// display the running progress
-					this._joinpage.show_progress_bar(_('A join process is already running...'));
+					this._joinpage.show_progress_bar(_('A join process is already running...'), _('The join scripts have successfully been executed.'));
 				}
 				else if (!joined) {
 					if (this._serverRole == 'domaincontroller_master') {
-						dialog.alert(_('A master domaincontroller should be joined by the <a %s>Basic settings Module</a>.', 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"'));
+						dialog.alert(_('A DC master should be joined by the <a %s>Basic settings Module</a>.', 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"'));
 						return;
 					}
 					this._switch_view('join_form');
@@ -287,8 +289,7 @@ define([
 				if (joined) {
 					// show grid with join status, else....
 					this._switch_view('grid');
-				}
-				else {
+				} else {
 					// show affordance to join, nothing more.
 					this._switch_view('join_form');
 				}
@@ -353,7 +354,7 @@ define([
 			}));
 		},
 
-		show_progress_bar: function(title) {
+		show_progress_bar: function(title, successmsg) {
 			this.standby(false);
 			this.standby(true, this._progressBar);
 			// Job is started. Now wait for its completion.
@@ -369,7 +370,7 @@ define([
 					} else if (errors.critical) {
 						dialog.alert(errors.critical, _('Join error'));
 					} else {
-						dialog.notify(_('The join process was successful.'));
+						dialog.notify(successmsg || _('The join process was successful.'));
 					}
 					this.reinit();
 				}),

@@ -1,3 +1,9 @@
+univention-join (5.0.31-1) unstable; urgency=low
+
+  * fix status of unexecuted join scripts; Bug #27792
+
+ -- Florian Best <best@univention.de>  Mon, 04 Mar 2013 14:53:06 +0100
+
 univention-join (5.0.30-1) unstable; urgency=low
 
   * added LC_COLLATE="C" to univention-join,

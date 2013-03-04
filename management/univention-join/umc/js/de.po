@@ -45,10 +45,10 @@ msgstr "Ein Joinvorgang läuft bereits..."
 #: umc/js/join.js:268
 #, python-format
 msgid ""
-"A master domaincontroller should be joined by the <a %s>Basic settings "
+"A DC master should be joined by the <a %s>Basic settings "
 "Module</a>."
 msgstr ""
-"Ein Domänencontroller master sollte vom <a %s>Basis Einstellungen Modul</a> "
+"Ein Domänencontroller master sollte über das Modul <a %s>Basis Einstellungen</a> "
 "gejoined werden."
 
 #: umc/js/join.js:301
@@ -153,8 +153,8 @@ msgid "Password of the domain administrator"
 msgstr "Passwort des Domänen-Administrators"
 
 #: umc/js/join.js:214
-msgid "Please confirm to run the given join scripts: "
-msgstr "Bitte bestätige, die gewählten Join-Skripte auszuführen: "
+msgid "The following join scripts will be executed: "
+msgstr "Die folgenden Join-Skripte werden ausgeführt: "
 
 #: umc/js/join/Grid.js:94
 msgid "Rejoin"
@@ -210,7 +210,7 @@ msgstr "Der Computername des Master-Domaincontrollers der Domäne"
 
 #: umc/js/join.js:372
 msgid "The join process was successful."
-msgstr "Der join-Vorgang war erfolgreich."
+msgstr "Der join-Prozess war erfolgreich."
 
 #: umc/js/join.js:406
 msgid "The password may not be empty."
@@ -255,3 +255,7 @@ msgstr "ausstehend"
 #: umc/js/join/Grid.js:121
 msgid "successful"
 msgstr "erfolgreich"
+
+msgid "The join scripts have successfully been executed."
+msgstr "Die join-Skripte wurden erfolgreich ausgeführt"
+

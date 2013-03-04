@@ -32,12 +32,13 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/aspect",
 	"umc/dialog",
 	"umc/tools",
 	"umc/store",
 	"umc/widgets/Grid",
 	"umc/i18n!umc/modules/join"
-], function(declare, lang, array, dialog, tools, store, Grid, _) {
+], function(declare, lang, array, aspect, dialog, tools, store, Grid, _) {
 	return declare("umc.modules.join.Grid", [ Grid ], {
 		moduleStore: null,
 		_serverRole: null,
@@ -95,7 +96,6 @@ define([
 				description: _('Rejoins the system'),
 				isContextAction: false,
 				isStandardAction: false,
-				canExecute: lang.hitch(this, function() { return this._serverRole != 'domaincontroller_master'; }),
 				callback: lang.hitch(this, 'onRejoin')
 			}, {
 				name: 'logfile',
@@ -105,6 +105,14 @@ define([
 				isStandardAction: false,
 				callback: lang.hitch(this, 'onShowLogfile')
 			}];
+
+			tools.ucr('server/role').then(lang.hitch(this, function(values) {
+				this._serverRole = values['server/role'];
+				if (this._serverRole == 'domaincontroller_master') {
+					// remove the rejoin action on DC master
+					this.set('actions', array.filter(this.actions, function(action) { return action.name != 'rejoin'; }));
+				}
+			}));
 
 			this.columns = [{
 				name: 'script',
@@ -147,8 +155,8 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			tools.ucr('server/role').then(lang.hitch(this, function(values) {
-				this._serverRole = values['server/role'];
+			aspect.after(this.moduleStore, 'onChange', lang.hitch(this, function() {
+				this.reload_grid();
 			}));
 
 			this.on('filterDone', lang.hitch(this, function() {

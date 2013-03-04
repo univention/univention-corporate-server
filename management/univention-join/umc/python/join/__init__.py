@@ -44,7 +44,7 @@ import notifier.threads
 
 import univention.management.console as umc
 from univention.management.console.log import MODULE
-from univention.management.console.modules import Base
+from univention.management.console.modules import Base, UMC_CommandError
 from univention.management.console.config import ucr
 from univention.management.console.protocol.definitions import *
 from univention.management.console.modules.decorators import simple_response, sanitize
@@ -228,6 +228,7 @@ LOGFILE = '/var/log/univention/join.log'
 LOCKFILE = '/var/lock/univention_umc_join.lock'
 RE_JOINFILE = re.compile('^(?P<script>(?P<prio>\d+)(?P<name>.+))\.inst$')
 RE_NOT_CONFIGURED = re.compile("^Warning: '([^']+)' is not configured.$")
+RE_ERROR = re.compile('^Error: (.*?)$')
 
 class Instance(Base):
 
@@ -249,21 +250,25 @@ class Instance(Base):
 			if match:
 				entry = match.groupdict()
 				entry['configured'] = True
-				files[entry['script']] = entry
+				files[entry['name']] = entry
 
 		# check for unconfigured scripts
 		process = subprocess.Popen(['/usr/sbin/univention-check-join-status'], shell=False, stdout=subprocess.PIPE)
-		while True:
-			# get the next line
-			line = process.stdout.readline()
-			if not line:
-				# no more text from stdout
-				break
+		stdout, stderr = process.communicate()
+		if process.returncode == 0:
+			return files
 
+		for line in stdout.splitlines():
+			# is there a general error?
+			match = RE_ERROR.match(line)
+			if match:
+				raise UMC_CommandError(_('Error: %s') % match.groups()[0])
+
+			# unconfigured script
 			match = RE_NOT_CONFIGURED.match(line)
 			if match:
 				name = match.groups()[0]
-				files.get(name, {})['configured'] = False
+				files[name]['configured'] = False
 
 		return files.values()
 
