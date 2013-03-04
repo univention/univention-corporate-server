@@ -26,89 +26,80 @@ MAX_WAIT=100 # wait this many seconds for the container to appear in local direc
 # Program  code #
 #################
 
-. "$TESTLIBPATH/base.sh" || exit 1
 . "$TESTLIBPATH/random.sh" || exit 1
+
+exit_code=140 #Script-internal error
 
 eval "$(ucr shell)"
 
-set -o errexit #"script bail out when it detects an error (a non-zero exit code).
-set -o pipefail
-set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
+#if [ "$server_role" != "domaincontroller_backup" -a "$server_role" != "domaincontroller_slave" ]
+#then
+#        echo 'This script only applies to "domaincontroller_backup" or "domaincontroller_slave"!'
+#        exit 134 #This test is not necessary for this system role
+#fi
 
-container_name="$(random_chars 20 "${_lowerletters}${_upperletters}${_ciphers}")"
+trap "exit \$exit_code" EXIT
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+get_random_name() {
+        set +o pipefail
+        cat "/dev/urandom" | tr -dc 'A-Za-z0-9' | head -c "$1"
+        set -o pipefail
+}
+
+container_name="$(get_random_name 20)"
+echo "$container_name"
 echo "Creating and modifiying object:"
 echo "<univention-ssh>"
 # Warning: univention-ssh requires another level of quoting
 univention-ssh -timeout 100 "/etc/machine.secret" "$hostname\$@$ldap_master" \
-"\" /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
+"\" /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpw $(cat /etc/machine.secret) \
         --set description=original --set name=$container_name --position cn=computers,$ldap_base
-
 for i in \$(seq 1 8)
 do
-    /usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
+    /usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpw $(cat /etc/machine.secret) \
         --dn cn=$container_name,cn=computers,$ldap_base
-    /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
+    /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpw $(cat /etc/machine.secret) \
         --set description=other\$i --set name=$container_name --position cn=computers,$ldap_base
 done
 
 for i in \$(seq 9 12)
 do
-    /usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
+    /usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpw $(cat /etc/machine.secret) \
         --dn cn=$container_name,cn=computers,$ldap_base
-    /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
+    /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpw $(cat /etc/machine.secret) \
         --set description=other\$i --set name=$container_name --position cn=computers,$ldap_base
     sleep 1s
 done
 
 for i in \$(seq 13 20)
 do
-    /usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
+    /usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpw $(cat /etc/machine.secret) \
         --dn cn=$container_name,cn=computers,$ldap_base
-    /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
+    /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpw $(cat /etc/machine.secret) \
         --set description=other\$i --set name=$container_name --position cn=computers,$ldap_base
 done\""
 echo "</univention-ssh>"
-echo -n "Waiting for replication of object... "
-
-i=0
+echo
+echo -n "Waiting for replication of object"
 for i in $(seq 0 $MAX_WAIT)
 do
-        if univention-ldapsearch -LLL -x -b "cn=$container_name,cn=computers,$ldap_base" &> "/dev/zero"
+        if ldapsearch -LLL -x -b "cn=$container_name,cn=computers,$ldap_base" &> "/dev/zero"
         then
                 break
         fi
         echo -n "."
         sleep 1s
 done
+echo
 echo "Waited $i seconds."
-if ! univention-ldapsearch -LLL -x -b "cn=$container_name,cn=computers,$ldap_base"
+echo
+if ! ldapsearch -LLL -x -b "cn=$container_name,cn=computers,$ldap_base"
 then
         echo 'ERROR: container not found!'
-		fail_test 1 #Test failed
+        exit_code=110 #Test failed
 else
-        echo 'OK: container was replicated.'
-        if ! univention-ldapsearch -LLL -x -b "cn=$container_name,cn=computers,$ldap_base" | grep -qs '^description:'
-        then
-                echo 'ERROR: container has no "description"-attribute!'
-				fail_test 1 #Test failed
-        else
-                echo 'OK: container has "description"-attribute.'
-                if ! univention-ldapsearch -LLL -x -b "cn=$container_name,cn=computers,$ldap_base" | grep -qs '^description:\s*other20$'
-                then
-                        echo 'ERROR: value of "description"-attribute is incorrect!'
-						fail_test 1 #Test failed
-                else
-                        echo 'OK: object was successfully replicated.'
-						#Test passed
-                fi
-        fi
-fi
-echo "Removing object:"
-echo "<univention-ssh>"
-univention-ssh "/etc/machine.secret" "$hostname\$@$ldap_master" \
-"\"/usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
-        --dn cn=$container_name,cn=computers,$ldap_base
-\""
-echo "</univention-ssh>"
-
-exit $RETVAL
+        echo 'OK: contain

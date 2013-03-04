@@ -13,42 +13,12 @@
 
 . "$TESTLIBPATH/base.sh" || exit 1
 . "$TESTLIBPATH/random.sh" || exit 1
-
-USRNAME="$(random_chars)"
-DOMAINNAME="$(random_chars)"
+. "$TESTLIBPATH/user.sh" || exit 1
 
 eval "$(ucr shell)"
 
-cleanup () {
-
-	echo "Try to clean up..."
-
-	univention-directory-manager mail/domain remove "${CREDENTIALS[@]}" \
-		--dn "cn=$DOMAINNAME.de,$ldap_base" || fail_test 1
-
-	univention-directory-manager users/user remove "${CREDENTIALS[@]}" \
-		--dn "uid=$USRNAME,cn=users,$ldap_base" || fail_test 1
-
-}
-
-declare -a CREDENTIALS
-
-if [ "$server_role" == "domaincontroller_slave" ]; then
-	CREDENTIALS=("--binddn" "${BINDDN}" "--bindpwd" "${BINDPWD}")
-fi
-
-univention-directory-manager mail/domain create "${CREDENTIALS[@]}" \
-	--set name=$DOMAINNAME.de || fail_test 1
-
-univention-directory-manager users/user create "${CREDENTIALS[@]}" \
-	--position cn=users,$ldap_base \
-	--set "username=$USRNAME" \
-	--set "lastname=Test" \
-	--set "password=univention" \
-	--set "firstname=$USRNAME" \
-	--set "mailPrimaryAddress=ldapi@$DOMAINNAME.de" || fail_test 1
-
-
+USERNAME=$(user_randomname)
+user_create "$USERNAME"
 
 # wait for the replication
 i=0
@@ -56,12 +26,12 @@ while sleep 1s;
 do
 	if [ $i -lt 120 ]; then
 		echo "Waiting for replication..."
-		if getent passwd "$USRNAME"; then
+		if getent passwd "$USERNAME"; then
 			break
 		fi
 	else
 		echo "Waiting for replication longer than two minutes. Replication is probably broken. Test failed."
-		cleanup
+		user_remove "$USERNAME"
 		exit 1
 
 	fi
@@ -69,12 +39,12 @@ do
 done
 
 echo -e "\n\n***Try to call ldapdelete via the ldapi interface. This shouln't work."
-su - "$USRNAME" -c "ldapdelete -x -H ldapi:/// \"uid=$USRNAME,cn=users,$ldap_base\" && echo \"Error: Removed the object as user $USRNAME via ldapi socket.\" && exit 1 || exit 0"
+su - "$USERNAME" -c "ldapdelete -x -H ldapi:/// \"uid=$USERNAME,cn=users,$ldap_base\" && echo \"Error: Removed the object as user $USERNAME via ldapi socket.\" && exit 1 || exit 0"
 
 if [ $? -ne 0 ]; then
 	fail_test 1
 fi
 
-cleanup
+user_remove "$USERNAME"
 
 exit "$RETVAL"
