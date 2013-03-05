@@ -1,3 +1,11 @@
+univention-pam (6.0.12-1) unstable; urgency=low
+
+  * added join script 11univention-pam.inst
+  * commit UCR template for /etc/libnss-ldap.conf in join script
+  (Bug #25368)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 05 Mar 2013 13:57:42 +0100
+
 univention-pam (6.0.11-1) unstable; urgency=low
 
   * Fix disabling extrausers (Bug #29915)
