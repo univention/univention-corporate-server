@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  rsync,
  php5-cli,
  rhino,
- librsvg2-2
+ librsvg2-bin
 
 Package: univention-management-console-frontend
 Architecture: all

@@ -929,6 +929,14 @@ define([
 				}
 			}));
 			this._helpMenu.addChild(new MenuItem({
+				label: _('Feedback'),
+				onClick : function() {
+					topic.publish('/umc/actions', 'menu-univention', 'feedback');
+					var w = window.open( 'http://www.univention.de/en/products/maintenance/product-feedback/', 'umcFeedback' );
+					w.focus();
+				}
+			}));
+			this._helpMenu.addChild(new MenuItem({
 				label: _('About UMC'),
 				onClick : function() {
 					topic.publish('/umc/actions', 'menu-univention', 'about');
@@ -942,7 +950,7 @@ define([
 				label: _('Univention Website'),
 				onClick: function() {
 					topic.publish('/umc/actions', 'menu-univention', 'website');
-					var w = window.open( 'http://www.univention.de/', 'UMC' );
+					var w = window.open( 'http://www.univention.de/', 'univention' );
 					w.focus();
 				}
 			}));
