@@ -165,7 +165,7 @@ define([
 
 		_refresh_grid: function() {
 
-			var values = this._form.gatherFormValues();
+			var values = this._form.get('value');
 			if (values.section) {
 				this._form.allowSearchButton(false);
 				this._grid.filter(values);
