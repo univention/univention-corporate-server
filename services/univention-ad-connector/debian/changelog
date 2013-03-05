@@ -1,3 +1,13 @@
+univention-ad-connector (7.0.14-1) unstable; urgency=low
+
+  * The group membership synchronisation could lack in an inconsistence
+    result. The handling of the cache has been adapted (Bug #29874)
+  * As long as changes come from one side, the connector reads these
+    changes. This reduces the overwrite of changes just made to an
+    object due to concurrent processes (Bug #30652)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 05 Mar 2013 07:46:35 +0100
+
 univention-ad-connector (7.0.13-1) unstable; urgency=low
 
   * only try to poll changes from real files when syncing from UCS
