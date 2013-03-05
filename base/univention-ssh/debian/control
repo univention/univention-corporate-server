@@ -11,7 +11,7 @@ Architecture: all
 Conflicts: univention-join (<< 0.2)
 Depends: ${misc:Depends},
  python,
- univention-config-registry,
+ univention-config,
  rsync,
  openssh-client
 Description: UCS - ssh scripts
