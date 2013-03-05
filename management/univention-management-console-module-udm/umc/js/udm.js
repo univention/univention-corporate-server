@@ -691,7 +691,8 @@ define([
 			this._grid.on('filterDone', lang.hitch(this, '_selectInputText'));
 
 			// register event to update hiding/showing of form fields
-			this._searchForm.ready().then(lang.hitch(this,  '_updateSearch'));
+			this._searchForm.ready().then(lang.hitch(this, '_updateSearch'));
+			this._grid.on('filterDone', lang.hitch(this, '_updateSearch'));
 
 			// reload the superordinates in case an object has been added, it might be a new superordinate
 			if (superordinates && superordinates.length) {
