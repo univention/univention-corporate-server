@@ -116,9 +116,6 @@ $(themesDir)/umc:
 	rm $@/compile.js
 
 $(themesDir)/umc/icons: $(themesDir)/umc
-	@# symlinks for installed icons
-	mkdir -p $(themesDir)/umc/icons/
-	cp -frs /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/* $(themesDir)/umc/icons/
 	@# scale all icons
 	@# treat umc-menu* icons differently and create a version with different
 	@# background for the hover effect
@@ -152,7 +149,10 @@ build-dev: build-common
 	[ -e $(buildDir)/js ] || ln -s $(tmpDir) $(buildDir)/js
 	@# symlinks for installed modules
 	mkdir -p $(tmpDir)/umc/modules
-	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules
+	cp -frsn /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules
+	@# symlinks for installed icons
+	mkdir -p $(themesDir)/umc/icons/
+	cp -frsn /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/* $(themesDir)/umc/icons/
 
 build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(themesDir)/umc $(themesDir)/umc/icons $(cssFiles) $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
 	@# symlink to javascript dir with timestamp
