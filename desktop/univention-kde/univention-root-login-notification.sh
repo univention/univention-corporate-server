@@ -27,11 +27,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-MSG=""
-if [ "${LANG#de}" != "$LANG" ]; then
-	MSG="Der Login als Root sollte nur für administrative Zwecke, nicht aber für den täglichen Gebrauch verwendet werden."
-else
-	MSG="Login as root should only be used for administrative purpose, not for daily use."
-fi
+. gettext.sh
 
-kdialog --msgbox "$MSG" --dontagain univention-gdm-login-as-root:warning
+export TEXTDOMAIN="univention-root-login-notification.sh"
+
+kdialog --msgbox "$(gettext "Login as 'root' should only be used for administrative purpose. For daily use, you can log in as 'Administrator' instead.")" --dontagain univention-kde-login-as-root:warning

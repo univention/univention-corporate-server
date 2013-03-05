@@ -1,3 +1,9 @@
+univention-kde (7.0.7-1) unstable; urgency=low
+
+  * localize root login notification via po file (Bug #28372)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 05 Mar 2013 11:28:10 +0100
+
 univention-kde (7.0.6-1) unstable; urgency=low
 
   * display notification when root user logs in (Bug #28372)

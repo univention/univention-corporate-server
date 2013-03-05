@@ -78,4 +78,6 @@ if [ ! -h /usr/share/univention-kde-profiles/ucs-kde-menu21 -a -d /usr/share/uni
 	ln -sf /usr/share/univention-kde-profiles/kde4-menu /usr/share/univention-kde-profiles/ucs-kde-menu21
 fi
 
+msgfmt -o /usr/share/locale/de/LC_MESSAGES/univention-root-login-notification.sh.mo /usr/share/locale/de/LC_MESSAGES/univention-root-login-notification.sh.po
+
 exit 0
