@@ -203,27 +203,37 @@ def connect():
 		sys.stdout=f
 		print time.ctime()
 		# Aenderungen pollen
-		change_counter=1
-		while change_counter != 0:
-			sys.stdout.flush()
+		sys.stdout.flush()
+		while True:
+			# Read changes from OpenLDAP
 			try:
-				change_counter=s4.poll_ucs()			
+				change_counter=s4.poll_ucs()
+				if change_counter > 0:
+					# UCS changes, read again from UCS
+					retry_rejected=0
+					time.sleep(1)
+					continue
+				else:
+					break
 			except ldap.SERVER_DOWN:
 				print "Can't contact LDAP server during ucs-poll, sync not possible."
 				connected = False
- 				sys.stdout.flush()
-				change_counter=0
+				sys.stdout.flush()
 
+		while True:
 			try:
-				change_counter+=s4.poll()
+				change_counter=s4.poll()
+				if change_counter > 0:
+					# S4 changes, read again from S4
+					retry_rejected=0
+					time.sleep(1)
+					continue
+				else:
+					break
 			except ldap.SERVER_DOWN:
 				print "Can't contact LDAP server during s4-poll, sync not possible."
 				connected = False
- 				sys.stdout.flush()
-				change_counter=0
-
-			if change_counter > 0:
-				retry_rejected=0
+				sys.stdout.flush()
 
 		try:
 			if str(retry_rejected) == baseconfig_retry_rejected:
