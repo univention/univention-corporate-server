@@ -1,3 +1,13 @@
+univention-s4-connector (7.0.30-1) unstable; urgency=low
+
+  * Sync Mac OS X, Ubuntu clients, Linux clients and UCC to S4
+    (Bug #29872)
+  * Check the operatingSystem attribute while syncing the objects and
+    convert the object from Windows client to Mac OS X if the attribute
+    is set to 'Mac OS X' (Bug #29998)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 05 Mar 2013 14:55:14 +0100
+
 univention-s4-connector (7.0.29-2) unstable; urgency=low
 
   * Consider stopped LDAP server (Bug #30651)

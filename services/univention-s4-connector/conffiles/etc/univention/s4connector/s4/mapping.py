@@ -36,6 +36,7 @@ import univention.s4connector.s4.password
 import univention.s4connector.s4.sid_mapping
 import univention.s4connector.s4.dns
 import univention.s4connector.s4.dc
+import univention.s4connector.s4.computer
 
 global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base@%@',
 			'cn=shares,@%@ldap/base@%@','cn=printers,@%@ldap/base@%@',
@@ -402,6 +403,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
 @!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
+							univention.s4connector.s4.computer.checkAndConvertToMacOSX,
 						    ],
 	
 			attributes= {
@@ -443,7 +445,7 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 			ucs_default_dn='cn=computers,@%@ldap/base@%@',
 			con_default_dn='cn=computers,@%@connector/s4/ldap/base@%@',
 			ucs_module='computers/windows',
-			ucs_module_others=['computers/memberserver'],
+			ucs_module_others=['computers/memberserver', 'computers/ucc', 'computers/linux', 'computers/ubuntu', 'computers/macos' ],
 
 			sync_mode='@%@connector/s4/mapping/syncmode@%@',
 
@@ -454,7 +456,7 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 			con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))',
 
 			# ignore_filter='userAccountControl=4096',
-			match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer))',
+			match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer)(objectClass=univentionUbuntuClient)(objectClass=univentionLinuxClient)(objectClass=univentionMacOSClient))',
 
 			ignore_subtree = global_ignore_subtree,
 @!@
@@ -485,6 +487,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 	print 'univention.s4connector.s4.sid_mapping.sid_to_ucs,'
 @!@
 							univention.s4connector.s4.password.password_sync_s4_to_ucs_no_userpassword,
+							univention.s4connector.s4.computer.checkAndConvertToMacOSX,
 						    ],
 
 			attributes= {

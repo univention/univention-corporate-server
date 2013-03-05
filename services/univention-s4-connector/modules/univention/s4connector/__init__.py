@@ -668,7 +668,7 @@ class ucs:
 					break
 				elif self.modules_others[k]:
 					for m in self.modules_others[k]:
-						if m.identify(unicode(dn,'utf8'), old):
+						if m and m.identify(unicode(dn,'utf8'), old):
 							key=k
 							break
 				if key:
@@ -680,7 +680,7 @@ class ucs:
 					break
 				elif self.modules_others[k]:
 					for m in self.modules_others[k]:
-						if m.identify(unicode(dn,'utf8'), new):
+						if m and m.identify(unicode(dn,'utf8'), new):
 							key=k
 							break
 				if key:
@@ -838,9 +838,11 @@ class ucs:
 			self.modules_others[key]=[]
 			if self.property[key].ucs_module_others:
 				for m in self.property[key].ucs_module_others:
-					self.modules_others[key].append(univention.admin.modules.get(m))
+					if m:
+						self.modules_others[key].append(univention.admin.modules.get(m))
 				for m in self.modules_others[key]:
-					univention.admin.modules.init(self.lo,position,m)
+					if m:
+						univention.admin.modules.init(self.lo,position,m)
 		
 		# try to resync rejected changes
 		self.resync_rejected_ucs()
