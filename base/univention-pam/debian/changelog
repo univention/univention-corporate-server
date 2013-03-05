@@ -1,3 +1,9 @@
+univention-pam (6.0.13-1) unstable; urgency=low
+
+  * removed pam_ldap from pam.d/common-password (Bug #29438)
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 16:44:07 +0100
+
 univention-pam (6.0.12-1) unstable; urgency=low
 
   * added join script 11univention-pam.inst
