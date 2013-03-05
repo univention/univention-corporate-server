@@ -1,3 +1,9 @@
+univention-ldap (9.0.23-1) unstable; urgency=low
+
+  * improved logging for univention-backup2master (Bug #29085) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 14:00:40 +0100
+
 univention-ldap (9.0.22-1) unstable; urgency=low
 
   * fix legacy path of samba-tool so fsmo roles transfer works again

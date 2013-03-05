@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+LOGFILE="/var/log/univention/backup2master.log"
+
 opt_force=0
 opt_wait=30
 opt_dry_run=0
@@ -190,7 +192,7 @@ consider_termination() {
   if [ -z "$STILL_RUNNING" ]; then
     exit
   fi
-  logger -p auth.warning "$0 manually interrupted"
+  echo "$(basename "$0") manually interrupted" | tee -a "$LOGFILE"
   echo ""
   echo "You have requested termination of this script at"
   echo "a time when the script has not finished properly."
@@ -203,20 +205,26 @@ consider_termination() {
 
   while true ; do
     echo ""
-    read -p "Do you want to continue with converting this server into a DC master [Y|n]? " answer
+    read -p "Do you want to continue with converting this server into a DC master [Y|n]? " answer 2>&1
     case $answer in
       [yY] )
-        echo "Ok, continue"
+        echo "Ok, continue" | tee -a "$LOGFILE"
         return ;;
       [nN] )
-        logger -p auth.emerg "$0 terminated prematurely upon manual interrupt, leaving new DC master incomplete"
-        echo "Ok, terminating as requested"
+        echo "Ok, terminating as requested, leaving new DC master incomplete." | tee -a "$LOGFILE"
         STILL_RUNNING=
         exit ;;
      * )     ;;
     esac
   done
 }
+
+# log call
+echo "$(LC_ALL=C date): started $(basename $0)" >>"$LOGFILE"
+echo "$(LC_ALL=C date): with options $*" >>"$LOGFILE"
+
+# save errors in log file
+exec 2>>"$LOGFILE"
 
 while getopts dfhvw: name
 do
@@ -235,8 +243,8 @@ if [ $# -ne 0 ] ; then
 fi
 
 # Check if the script univention-config-registry can be executed.
-if ! univention-config-registry 2> /dev/null > /dev/null ; then
-  printf "ERROR: This is not a proper UCS host (cannot find command univention-config-registry). Use -f to proceed anyway\n"
+if ! univention-config-registry -v >>"$LOGFILE"; then
+  printf "ERROR: This is not a proper UCS host (cannot find command univention-config-registry). Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   if [ $opt_force -eq 0 ] ; then
     exit 1
   fi
@@ -244,7 +252,7 @@ fi
 
 # Check if the current user has root permissions.
 if [ $( id -u ) -ne 0 ]; then
-  printf "ERROR: You are user $( id -u ) and not root, so you are not allowed to do this. Use -f to proceed anyway\n"
+  printf "ERROR: You are user $( id -u ) and not root, so you are not allowed to do this. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   if [ $opt_force -eq 0 ] ; then
     exit 1
   fi
@@ -255,7 +263,7 @@ eval "$(univention-config-registry shell)"
 
 # Check if the current host has been configured to become DC master
 if [ "$server_role" != "domaincontroller_backup" ]; then
-  printf "ERROR: univention-backup2master can only be started on a domain controller backup. Use -f to proceed anyway\n"
+  printf "ERROR: univention-backup2master can only be started on a domain controller backup. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   # Does it make sense to allow enforcement on a master ?
   # Yes, immediately after conversion, we use this script to report remainders.
   if [ $opt_force -eq 0 ] ; then
@@ -263,13 +271,42 @@ if [ "$server_role" != "domaincontroller_backup" ]; then
   fi
 fi
 
-# Try to connect to DC master, check if connection is possible
-if nc -z $ldap_master $ldap_master_port 2> /dev/null > /dev/null ; then
-  printf "ERROR: The LDAP Domain Controller master host ($ldap_master:$ldap_master_port) is still running. Use -f to proceed anyway\n"
+# check if system is joined
+if [ ! -e /var/univention-join/joined ]; then
+  printf "ERROR: The system is not joined to an UCS domain. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
+  if [ $opt_force -eq 0 ] ; then
+    exit 1
+  fi 
+fi
+
+# check master dns
+if ! host $ldap_master >>"$LOGFILE"; then
+  printf "ERROR: LDAP master dns name is not resolvable. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
   if [ $opt_force -eq 0 ] ; then
     exit 1
   fi
 fi
+
+# try to download univention-server-master
+apt-get update >>"$LOGFILE"
+apt-get -d install univention-server-master >>"$LOGFILE"
+if [ -z "$(ls /var/cache/apt/archives/univention-server-master_*.deb)" ]; then
+  printf "ERROR: Could not download package univention-server-master. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
+  if [ $opt_force -eq 0 ] ; then
+    exit 1
+  fi
+fi
+
+# Try to connect to DC master, check if connection is possible
+if nc -z $ldap_master $ldap_master_port >>"$LOGFILE"; then
+  printf "ERROR: The LDAP Domain Controller master host ($ldap_master:$ldap_master_port) is still running. Use -f to proceed anyway\n" | tee -a "$LOGFILE"
+  if [ $opt_force -eq 0 ] ; then
+    exit 1
+  fi
+fi
+
+# turn on verbose logging
+set -x
 
 # The environment seems proper, now start the actual conversion to master.
 echo
