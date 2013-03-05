@@ -1,3 +1,9 @@
+univention-ssl (7.0.7-1) unstable; urgency=low
+
+  * reduced pseudo log messages in gencertificate.py (Bug #9819) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 14:42:17 +0100
+
 univention-ssl (7.0.6-1) unstable; urgency=low
 
   * Certificate revoke list now correctly syncs to domain backup (Bug #29468)

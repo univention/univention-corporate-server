@@ -120,7 +120,7 @@ def handler(dn, new, old):
 
 def set_permissions(_arg, directory, fnames):
 	"""Set file permission on directory and files within."""
-	ud.debug(ud.LISTENER, ud.PROCESS,
+	ud.debug(ud.LISTENER, ud.INFO,
 			'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % \
 					(directory, gidNumber, uidNumber))
 	os.chown(directory, uidNumber, gidNumber)
@@ -128,7 +128,7 @@ def set_permissions(_arg, directory, fnames):
 
 	for fname in fnames:
 		filename = os.path.join(directory, fname)
-		ud.debug(ud.LISTENER, ud.PROCESS,
+		ud.debug(ud.LISTENER, ud.INFO,
 				'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % \
 						(filename, gidNumber, uidNumber))
 		os.chown(filename, uidNumber, gidNumber)
@@ -159,7 +159,7 @@ def create_certificate(hostname, domainname):
 							(fqdn,))
 			return
 
-		ud.debug(ud.LISTENER, ud.PROCESS,
+		ud.debug(ud.LISTENER, ud.INFO,
 				'CERTIFICATE: Creating certificate %s' % hostname)
 
 		cmd = '. /usr/share/univention-ssl/make-certificates.sh;gencert "%s" "%s"' % \
