@@ -1,3 +1,9 @@
+univention-updater (8.0.69-1) unstable; urgency=low
+
+  * save ucr settings in preup (Bug #19369)
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 15:26:20 +0100
+
 univention-updater (8.0.68-2) UNRELEASED; urgency=low
 
   * Bump version (Bug #30409)

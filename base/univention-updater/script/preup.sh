@@ -134,6 +134,14 @@ if [ `uname -m` != "x86_64" ]; then
 	fi
 fi
 
+# save ucr settings
+updateLogDir="/var/univention-backup/update-to-$UPDATE_LAST_VERSION"
+if [ ! -d "$updateLogDir" ]; then
+	mkdir -p "$updateLogDir"
+fi
+cp /etc/univention/base*.conf "$updateLogDir/" 
+ucr dump > "$updateLogDir/ucr.dump"
+
 # call custom preup script if configured
 if [ ! -z "$update_custom_preup" ]; then
 	if [ -f "$update_custom_preup" ]; then
