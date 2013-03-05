@@ -76,7 +76,11 @@ flatmode_container = {}
 flatmode_module_prefix = 'ldap/replication/flatmode/module/'
 flatmode_container_prefix = 'ldap/replication/flatmode/container/'
 
-univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode enabled by UCR: %s' % listener.baseConfig.get('ldap/replication/flatmode','no'))
+univention.debug.debug(
+	univention.debug.LISTENER,
+	univention.debug.INFO,
+	'replication flatmode enabled by UCR: %s' % listener.baseConfig.get('ldap/replication/flatmode','no'))
+
 if listener.baseConfig.is_true('ldap/replication/flatmode', False):
 	# flatmode is enabled
 	try:
@@ -109,7 +113,11 @@ if listener.baseConfig.is_true('ldap/replication/flatmode', False):
 						flatmode = True
 				else:
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode: cannot find UCR variable %s' % key_cn)
-univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication flatmode activated: %s' % flatmode)
+
+univention.debug.debug(
+	univention.debug.LISTENER,
+	univention.debug.INFO,
+	'replication flatmode activated: %s' % flatmode)
 
 STATE_DIR = '/var/lib/univention-directory-replication'
 LDIF_FILE = os.path.join(STATE_DIR, 'failed.ldif')

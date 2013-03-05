@@ -1,3 +1,9 @@
+univention-directory-replication (6.0.6-1) unstable; urgency=low
+
+  * removed unnecessary log messages in replication.py (Bug #15567) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 17:16:29 +0100
+
 univention-directory-replication (6.0.5-1) unstable; urgency=low
 
   * Adjust log level of cache vs LDAP checks (Bug #26562)
