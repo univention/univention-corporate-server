@@ -471,6 +471,9 @@ define([
 				});
 				this._policiesTab.addChild(policiesContainer);
 
+				// sort policies by its label
+				policies.sort(tools.cmpObjects({attribute: 'label'}));
+
 				// we need to query for each policy object its properties and its layout
 				// this can be done asynchronously
 				var commands = [];

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.69-1) unstable; urgency=low
+
+  * sort policies by its label; Bug #24643
+
+ -- Florian Best <best@univention.de>  Tue, 05 Mar 2013 10:44:08 +0100
+
 univention-management-console-module-udm (3.0.68-1) unstable; urgency=low
 
   * rename UDM object into LDAP object; Bug #30529
