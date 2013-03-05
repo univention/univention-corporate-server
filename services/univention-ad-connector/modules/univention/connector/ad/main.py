@@ -244,6 +244,7 @@ def connect():
 				print "Can't contact LDAP server during ucs-poll, sync not possible."
 				connected = False
 				sys.stdout.flush()
+				break
 
 		while True:
 			try:
@@ -259,6 +260,7 @@ def connect():
 				print "Can't contact LDAP server during ad-poll, sync not possible."
 				connected = False
 				sys.stdout.flush()
+				break
 
 		try:
 			if str(retry_rejected) == baseconfig_retry_rejected:
