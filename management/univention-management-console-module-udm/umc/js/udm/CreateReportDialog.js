@@ -105,7 +105,7 @@ define([
 				label: _( 'Create' ),
 				defaultButton: true,
 				callback: lang.hitch( this, function() {
-					this.onDone( this._form.gatherFormValues() );
+					this.onDone( this._form.get('value') );
 				} )
 			}, {
 				name: 'cancel',

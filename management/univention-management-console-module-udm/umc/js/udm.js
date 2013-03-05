@@ -141,7 +141,7 @@ define([
 			this._default_columns = [{
 				name: 'name',
 				label: _( 'Name' ),
-				description: _( 'Name of the UDM object.' ),
+				description: _( 'Name of the LDAP object.' ),
 				formatter: lang.hitch(this, 'iconFormatter')
 			}];
 
@@ -150,7 +150,7 @@ define([
 				this._default_columns.push({
 					name: 'path',
 					label: _('Path'),
-					description: _( 'Path of the UDM object.' )
+					description: _( 'Path of the LDAP object.' )
 				});
 			}
 		},
@@ -174,7 +174,7 @@ define([
 				'mail': [ _('mail object'), _('mail objects') ],
 				'nagios': [ _('Nagios object'), _('Nagios objects') ],
 				'policies': [ _('policy'), _('policies') ],
-				'default': [ _('UDM object'), _('UDM objects') ]
+				'default': [ _('LDAP object'), _('LDAP objects') ]
 			};
 
 			// this deferred is resolved when everything has been loaded
@@ -412,7 +412,7 @@ define([
 				defaultAction: lang.hitch( this, function( keys, items ) {
 					if ( 'navigation' == this.moduleFlavor && ( this._searchForm._widgets.objectType.get( 'value' ) == '$containers$' || items[ 0 ].$childs$ === true ) ) {
 						this._tree.set( 'path', this._ldapDN2TreePath( keys[ 0 ] ) );
-						this.filter( this._searchForm.gatherFormValues() );
+						this.filter( this._searchForm.get('value') );
 					} else if ( undefined !== this._searchForm._widgets.superordinate ) {
 						var found = false;
 						this._searchForm._widgets.superordinate.store.fetch( { onItem: lang.hitch( this, function( item ) {
@@ -490,7 +490,7 @@ define([
 			widgets = widgets.concat([{
 				type: 'ComboBox',
 				name: 'objectType',
-				description: _( 'The type of the UDM object.' ),
+				description: _( 'The type of the LDAP object.' ),
 				label: _('%s type', tools.capitalize(this.objectNameSingular)),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
 				staticValues: objTypes,
@@ -768,7 +768,7 @@ define([
 				if ( tools.isTrue(autoSearch)) {
 					// connect to the onValuesInitialized event of the form
 					on.once(this._searchForm, 'valuesInitialized', lang.hitch(this, function() {
-						this.filter(this._searchForm.gatherFormValues());
+						this.filter(this._searchForm.get('value'));
 					}));
 				}
 				// create report button
@@ -1070,7 +1070,7 @@ define([
 			//		Send a new query with the given filter options as specified in the search form
 			//		and (for the UDM navigation) the selected container.
 
-			var vals = this._searchForm.gatherFormValues();
+			var vals = this._searchForm.get('value');
 			var columns = null;
 			var new_column = null;
 			if ('navigation' == this.moduleFlavor) {
@@ -1115,7 +1115,7 @@ define([
 
 		removeObjects: function( /*String|String[]*/ _ids, /*Boolean?*/ isContainer, /*Boolean?*/ cleanup, /*Boolean?*/ recursive ) {
 			// summary:
-			//		Remove the selected UDM objects.
+			//		Remove the selected LDAP objects.
 
 			// default values
 			isContainer = isContainer === undefined ? false : isContainer;
@@ -1228,7 +1228,7 @@ define([
 
 		showNewObjectDialog: function() {
 			// summary:
-			//		Open a user dialog for creating a new UDM object.
+			//		Open a user dialog for creating a new LDAP object.
 
 			// when we are in navigation mode, make sure the user has selected a container
 			var selectedContainer = { id: '', label: '', path: '' };
@@ -1263,7 +1263,7 @@ define([
 
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String*/ note) {
 			// summary:
-			//		Creates and views the detail page for editing UDM objects.
+			//		Creates and views the detail page for editing LDAP objects.
 
 			if (newObjOptions) {
 				// make sure that container and superordinate are at least set to null
@@ -1296,7 +1296,7 @@ define([
 
 		closeDetailPage: function() {
 			// summary:
-			//		Closes the detail page for editing UDM objects.
+			//		Closes the detail page for editing LDAP objects.
 
 			// in case the detail page was "closable", we need to close the module
 			if (this._detailPage && this._detailPage.isClosable) {

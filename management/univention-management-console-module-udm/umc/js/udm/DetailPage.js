@@ -65,7 +65,7 @@ define([
 	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
-		//		in order to edit UDM objects.
+		//		in order to edit LDAP objects.
 
 		// umcpCommand: Function
 		//		Reference to the module specific umcpCommand function.
@@ -80,7 +80,7 @@ define([
 		moduleFlavor: this.moduleFlavor,
 
 		// objectType: String
-		//		The object type of the UDM object that is edited.
+		//		The object type of the LDAP object that is edited.
 		objectType: null,
 
 		// ldapName: String?|String[]?
@@ -90,7 +90,7 @@ define([
 		ldapName: null,
 
 		// newObjectOptions:
-		// 		Dict containing options for creating a new UDM object (chosen by the user
+		// 		Dict containing options for creating a new LDAP object (chosen by the user
 		// 		in the 'add object' dialog). This includes properties such as superordinate,
 		//		the container in wich the object is to be created, the object type etc.
 		newObjectOptions: null,
@@ -103,7 +103,7 @@ define([
 		//		If given, this string is displayed as note on the first page.
 		note: null,
 
-		// internal reference to the formular containing all form widgets of an UDM object
+		// internal reference to the formular containing all form widgets of an LDAP object
 		_form: null,
 
 		// internal reference to the page containing the subtabs for object properties
@@ -121,7 +121,7 @@ define([
 		// initial object properties as they are represented by the form
 		_receivedObjFormData: null,
 
-		// UDM object type of the current edited object
+		// LDAP object type of the current edited object
 		_editedObjType: null,
 
 		// dict that saves which form element is displayed on which subtab
@@ -150,7 +150,7 @@ define([
 
 		_bundledCommands: null,
 
-		// UDM object type name in singular and plural
+		// LDAP object type name in singular and plural
 		objectNameSingular: '',
 		objectNamePlural: '',
 
@@ -332,7 +332,7 @@ define([
 			if ( option_prop && option_prop.widgets.length > 0 && !this._multiEdit ) {
 				var optiontab = {
 					label: _( '[Options]' ),
-					description: _( 'Options describing the basic features of the UDM object' ),
+					description: _( 'Options describing the basic features of the LDAP object' ),
 					layout: [ '$options$' ]
 				};
 				layout.push( optiontab );
@@ -563,7 +563,7 @@ define([
 							staticValues: [{ id: 'None', label: _('Inherited') }],
 							dynamicValues: lang.hitch(this, '_queryPolicies', ipolicyType),
 							label: _('Select policy configuration'),
-							description: _('Select a policy that should be directly linked to the current UDM object'),
+							description: _('Select a policy that should be directly linked to the current LDAP object'),
 							onChange: lang.hitch(this, '_updatePolicy', ipolicyType)
 						});
 						var buttonsConf = [{
@@ -756,7 +756,7 @@ define([
 
 		getValues: function() {
 			// get all form values
-			var vals = this._form.gatherFormValues();
+			var vals = this._form.get('value');
 
 			// get also policy values... can not be handled as standard form entry
 			// explicitely exclude users/self. FIXME: find a way
@@ -1254,7 +1254,7 @@ define([
 				var success = true;
 				var msg = '';
 				if (result instanceof Array) {
-					msg = '<p>' + _('The following UDM objects could not be saved:') + '</p><ul>';
+					msg = '<p>' + _('The following LDAP objects could not be saved:') + '</p><ul>';
 					array.forEach(result, function(iresult) {
 						success = success && iresult.success;
 						if (!iresult.success) {
@@ -1265,7 +1265,7 @@ define([
 				} else {
 					success = result.success;
 					if (!result.success) {
-						msg = _('The UDM object could not be saved: %(details)s', result);
+						msg = _('The LDAP object could not be saved: %(details)s', result);
 					}
 				}
 

@@ -43,7 +43,7 @@ define([
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
-		//		Dialog class for creating a new UDM object.
+		//		Dialog class for creating a new LDAP object.
 
 		// umcpCommand: Function
 		//		Reference to the module specific umcpCommand function.
@@ -69,7 +69,7 @@ define([
 		//		The object type that is selected by default.
 		defaultObjectType: null,
 
-		// UDM object type name in singular and plural
+		// LDAP object type name in singular and plural
 		objectNameSingular: '',
 		objectNamePlural: '',
 
@@ -131,7 +131,7 @@ define([
 
 
 			// depending on the list we get, create a form for adding
-			// a new UDM object
+			// a new LDAP object
 			var widgets = [];
 			var layout = [];
 
@@ -141,7 +141,7 @@ define([
 					type: 'ComboBox',
 					name: 'container',
 					label: _('Container'),
-					description: _('The container in which the UDM object shall be created.'),
+					description: _('The container in which the LDAP object shall be created.'),
 					staticValues: containers
 				});
 				layout.push('container');
@@ -152,7 +152,7 @@ define([
 						type: 'ComboBox',
 						name: 'superordinate',
 						label: _('Superordinate'),
-						description: _('The corresponding superordinate for the UDM object.', this.objectNameSingular),
+						description: _('The corresponding superordinate for the LDAP object.', this.objectNameSingular),
 						staticValues: superordinates,
 						value: this.selectedSuperordinate
 					}, {
@@ -207,7 +207,7 @@ define([
 					type: 'ComboBox',
 					name: 'objectType',
 					label: _('%s type', tools.capitalize(this.objectNameSingular)),
-					description: _('The exact object type of the new UDM object.'),
+					description: _('The exact object type of the new LDAP object.'),
 					staticValues: types
 				}, {
 					type: 'ComboBox',
@@ -228,7 +228,7 @@ define([
 				label: _('Add'),
 				defaultButton: true,
 				callback: lang.hitch(this, function() {
-					this.onDone(this._form.gatherFormValues());
+					this.onDone(this._form.get('value'));
 					this.destroyRecursive();
 				}),
 				style: 'float:right;'
@@ -247,7 +247,7 @@ define([
 				buttons: buttons
 			});
 			this._form.on('submit', lang.hitch(this, function() {
-				this.onDone(this._form.gatherFormValues());
+				this.onDone(this._form.get('value'));
 				this.destroyRecursive();
 			}));
 			this.on('show', lang.hitch(this, function() {
@@ -256,7 +256,7 @@ define([
 			var container = new ContainerWidget({});
 			if ('navigation' == this.moduleFlavor) {
 				container.addChild(new Text({
-					content: _('<p>The UDM object will be created in the the container:</p><p><i>%s</i></p>', this.selectedContainer.path)
+					content: _('<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>', this.selectedContainer.path)
 				}));
 			}
 			container.addChild(this._form);

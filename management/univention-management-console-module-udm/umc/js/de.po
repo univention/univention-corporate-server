@@ -104,9 +104,9 @@ msgstr ""
 #: umc/js/udm/NewObjectDialog.js:259
 #, python-format
 msgid ""
-"<p>The UDM object will be created in the the container:</p><p><i>%s</i></p>"
+"<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>"
 msgstr ""
-"<p>Das UDM-Objekt wird in dem folgenden Container angelegt:</p><p><i>%s</i></"
+"<p>Das LDAP-Objekt wird in dem folgenden Container angelegt:</p><p><i>%s</i></"
 "p>"
 
 #: umc/js/udm/NewObjectDialog.js:193 umc/js/udm/NewObjectDialog.js:216
@@ -355,8 +355,8 @@ msgid "Name"
 msgstr "Name"
 
 #: umc/js/udm.js:145
-msgid "Name of the UDM object."
-msgstr "Name des UDM-Objektes"
+msgid "Name of the LDAP object."
+msgstr "Name des LDAP-Objektes"
 
 #: umc/js/udm/NewObjectDialog.js:88
 #, python-format
@@ -395,11 +395,11 @@ msgstr "Nur Objekte des gleichen Typs können zusammen bearbeitet werden"
 #: umc/js/udm.js:343
 msgid "Open a new tab in order to edit the UDM-object"
 msgstr ""
-"Öffnet einen neuen Reiter, in dem das UDM-Objekt bearbeitet werden kann."
+"Öffnet einen neuen Reiter, in dem das LDAP-Objekt bearbeitet werden kann."
 
 #: umc/js/udm/DetailPage.js:324
-msgid "Options describing the basic features of the UDM object"
-msgstr "Optionen für grundlegende UDM-Objekt-Eigenschaften"
+msgid "Options describing the basic features of the LDAP object"
+msgstr "Optionen für grundlegende LDAP-Objekt-Eigenschaften"
 
 #: umc/js/udm/OverwriteLabel.js:46
 msgid "Overwrite"
@@ -414,8 +414,8 @@ msgid "Path"
 msgstr "Pfad"
 
 #: umc/js/udm.js:154
-msgid "Path of the UDM object."
-msgstr "Pfad des UDM-Objektes"
+msgid "Path of the LDAP object."
+msgstr "Pfad des LDAP-Objektes"
 
 #: umc/js/udm.js:1110
 #, python-format
@@ -509,9 +509,9 @@ msgstr "Suche in:"
 
 #: umc/js/udm/DetailPage.js:550
 msgid ""
-"Select a policy that should be directly linked to the current UDM object"
+"Select a policy that should be directly linked to the current LDAP object"
 msgstr ""
-"Wählen Sie eine Richtlinie, die direkt mit dem aktuellen UDM-Objekt "
+"Wählen Sie eine Richtlinie, die direkt mit dem aktuellen LDAP-Objekt "
 "verknüpft werden soll"
 
 #: umc/js/udm/DetailPage.js:549
@@ -561,20 +561,20 @@ msgstr ""
 
 #: umc/js/udm/DetailPage.js:1209
 #, python-format
-msgid "The UDM object could not be saved: %(details)s"
-msgstr "Das UDM-Objekt konnte nicht gespeichert werden: %(details)s"
+msgid "The LDAP object could not be saved: %(details)s"
+msgstr "Das LDAP-Objekt konnte nicht gespeichert werden: %(details)s"
 
 #: umc/js/udm/NewObjectDialog.js:144
-msgid "The container in which the UDM object shall be created."
-msgstr "Der Container, in dem das UDM-Objekt erzeugt wird."
+msgid "The container in which the LDAP object shall be created."
+msgstr "Der Container, in dem das LDAP-Objekt erzeugt wird."
 
 #: umc/js/udm.js:486
 msgid "The container in which the query is executed."
 msgstr "Der Container, in dem die Suche ausgeführt wird."
 
 #: umc/js/udm/NewObjectDialog.js:155
-msgid "The corresponding superordinate for the UDM object."
-msgstr "Das dem neuen UDM-Objekt zugewiesene übergeordnete Objekt."
+msgid "The corresponding superordinate for the LDAP object."
+msgstr "Das dem neuen LDAP-Objekt zugewiesene übergeordnete Objekt."
 
 #: umc/js/udm/NewObjectDialog.js:163 umc/js/udm/NewObjectDialog.js:179
 #, python-format
@@ -582,11 +582,11 @@ msgid "The exact %s type."
 msgstr "Der genaue %styp"
 
 #: umc/js/udm/NewObjectDialog.js:210
-msgid "The exact object type of the new UDM object."
-msgstr "Der genaue Objekttyp des neuen UDM-Objektes."
+msgid "The exact object type of the new LDAP object."
+msgstr "Der genaue Objekttyp des neuen LDAP-Objektes."
 
 #: umc/js/udm/DetailPage.js:1198
-msgid "The following UDM objects could not be saved:"
+msgid "The following LDAP objects could not be saved:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gespeichert werden:"
 
 #: umc/js/udm.js:1152
@@ -631,8 +631,8 @@ msgid "The superordinate in which the search is carried out."
 msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 
 #: umc/js/udm.js:501
-msgid "The type of the UDM object."
-msgstr "Der Type des UDM-Objektes."
+msgid "The type of the LDAP object."
+msgstr "Der Type des LDAP-Objektes."
 
 #: umc/js/udm.js:545 umc/js/udm/MultiObjectSelect.js:131
 msgid ""
@@ -653,12 +653,12 @@ msgid "UCS license"
 msgstr "UCS Lizenz"
 
 #: umc/js/udm.js:178
-msgid "UDM object"
-msgstr "UDM-Objekt"
+msgid "LDAP object"
+msgstr "LDAP-Objekt"
 
 #: umc/js/udm.js:178
-msgid "UDM objects"
-msgstr "UDM-Objekte"
+msgid "LDAP objects"
+msgstr "LDAP-Objekte"
 
 #: umc/js/udm/LicenseDialog.js:167
 msgid "Updating the license information has failed"
