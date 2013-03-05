@@ -413,7 +413,7 @@ define([
 
 				this._keepAlive.start();
 
-				return dialog.confirm(msg, choices, true).then(lang.hitch(this, function(response) {
+				return dialog.confirm(msg, choices).then(lang.hitch(this, function(response) {
 					if (response == 'cancel') {
 						// do not continue
 						this._keepAlive.stop();
