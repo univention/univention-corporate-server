@@ -1,0 +1,129 @@
+@import "variables";
+
+/**
+ * UMC overview page icons
+ */
+
+/* add an 'X' (for removing) when hovering favorite items */
+.dgrid.umcOverviewFavorites .umcGalleryItem:hover .umcGalleryStatusIcon {
+	.opacity(0.4);
+	background-image: url(icons/24x24/delete.png);
+}
+
+/* add nice star when hovering */
+.dgrid.umcOverviewCategory .umcGalleryItem:hover {
+	.umcGalleryStatusIcon {
+		.opacity(0.4);
+		background-image: url(icons/24x24/star.png);
+	}
+
+	.umcGalleryStatusIcon.icon24-star {
+		/* if the status icon is already marked with a star, show an 'X' for deletion */
+		background-image: url(icons/24x24/delete.png);
+	}
+}
+
+/* change the opacity when clicked on the icon to 100% */
+.dgrid.umcOverviewCategory, .dgrid.umcOverviewFavorites {
+	.umcGalleryItem .umcGalleryStatusIcon:active {
+		.opacity(1);
+	}
+}
+
+/**
+ * UMC menu icons
+ */
+.icon24-umc-menu-help,
+.icon24-umc-menu-logout,
+.icon24-umc-menu-settings {
+        width: 24px;
+        height: 24px;
+}
+
+.icon24-umc-menu-help {
+	background-image: url("icons/24x24/umc-menu-help.png");
+}
+
+.icon24-umc-menu-logout {
+	background-image: url("icons/24x24/umc-menu-logout.png");
+}
+
+.icon24-umc-menu-settings {
+	background-image: url("icons/24x24/umc-menu-settings.png");
+}
+
+.dijitHover .icon24-umc-menu-help {
+	background-image: url("icons/24x24/umc-menu-help-over.png");
+}
+
+.dijitHover .icon24-umc-menu-logout {
+	background-image: url("icons/24x24/umc-menu-logout-over.png");
+}
+
+.dijitHover .icon24-umc-menu-settings {
+	background-image: url("icons/24x24/umc-menu-settings-over.png");
+}
+
+/**
+ * UMC icons
+ */
+.umcIconDelete,
+.umcIconEdit,
+.umcIconAdd,
+.umcIconReport,
+.umcIconUp,
+.umcIconRefresh,
+.umcIconPlay,
+.umcIconPause,
+.umcIconStop,
+.umcIconView {
+	background-image: url(images/commonIcons.png);
+	width: 16px;
+	height: 16px;
+}
+
+.umcIconDelete {
+	background-position: 0px 0px;
+}
+
+.umcIconEdit {
+	background-position: -16px 0px;
+}
+
+.umcIconAdd {
+	background-position: -32px 0px;
+}
+
+.umcIconReport {
+	background-position: -48px 0px;
+}
+
+.umcIconUp {
+	background-position: -64px 0px;
+}
+
+.umcIconRefresh {
+	background-position: -80px 0px;
+}
+
+.umcIconPlay {
+	background-position: -96px 0px;
+}
+
+.umcIconPause {
+	background-position: -112px 0px;
+}
+
+.umcIconStop {
+	background-position: -128px 0px;
+}
+
+.umcIconView {
+	background-position: -144px 0px;
+}
+
+.umcIconLoading {
+	background-image: url(images/loadingAnimation.gif);
+	width: 20px;
+	height: 20px;
+}

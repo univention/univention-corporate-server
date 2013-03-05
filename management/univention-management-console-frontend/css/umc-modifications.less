@@ -38,12 +38,11 @@
 }
 
 .dijitButtonContents {
-	display: inline-block;		
+	display: inline-block;
 }
 
 
 .dijitButtonNode {
- 	
 	border: inherit; /* DEL */
 	vertical-align: auto;
 	vertical-align: auto;
@@ -97,52 +96,6 @@
 
 .dijitStackContainer-child {
 	 border: inherit; /* DEL */
-}
-
-.umc .umcTopContainer .SingleChild-child {
-	border: none !important;
-}
-
-/* @group Sub-Tabs */
-/*.umc .umcTopContainer .SingleChild .dijitTabContainerTop-tabs,
-.umc .umcTopContainer #umc_modules_mrtg_0_tablist */
-.umc .umcTopContainer .dijitTabContainerTabListNested {
-	background-color: #ededee;
-	border: none;
-	border-top: 1px solid #fff;
-}
-
-.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabInnerDiv {
-	background: none;
-	border-right: 1px solid #fff;
-}
-
-.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabContent {
-	padding: 5px 7px;
-}
-.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabChecked .dijitTabContent {
-	padding: 5px 7px;
-	background-color: #74be4b;
-}
-
-.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabChecked .dijitTabContent .tabLabel {
-	color: #fff;
-}
-
-.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabHover .dijitTabContent {
-	border: none;
-}
-
-.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabHover .dijitTabInnerDiv {
-	background-color: #ddd;
-}
-
-.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabActive .dijitTabContent {
-	border: none;
-}
-
-.umc .umcTopContainer .dijitTabContainerNested .dijitTabContainerTop-tabs .dijitTabContainerTop-tabs {
-	border: none;
 }
 
 /* @end */
@@ -446,7 +399,7 @@
 }
 
 .umc .dijitDownArrowButton .dijitButtonText {
-	display: inline-block !important
+	display: inline-block;
 }
 
 
@@ -1038,11 +991,6 @@ ORIGINAL DIFF
 }
 
 
-
-.umc > div[dijitpopupparent=dijit_form_DropDownButton_0],
-.umc > div[dijitpopupparent=dijit_form_DropDownButton_1] {
-	top: 38px !important;
-}
 
 .umc .dijitMenuPassive .dijitMenuItemHover,
 .umc .dijitMenuPassive .dijitMenuItemSelected {
@@ -1845,9 +1793,9 @@ ORIGINAL DIFF
 	width: 215px !important;
 }
 
-#umc_widgets_Button_0_label .dijitButtonNode {
+/*#umc_widgets_Button_0_label .dijitButtonNode {
 	background: none;
-}
+}*/
 
 /* @end */
 
@@ -2053,73 +2001,6 @@ ORIGINAL DIFF
 	text-decoration: underline;
 }
 
-.umcHeaderText {
-	display: block;
-	float: left;
-	vertical-align: middle;
-	color: #fff;
-	height: auto;
-	background: none;
-	border-radius: 0;
-	border: none;
-	padding: 0;
-	box-shadow: none;
-	padding: 9px;
-	font-size: 15px;
-}
-
-.umcHeader .umcHeaderButton {
-	margin: 0;
-	display: block;
-	float: left;
-}
-
-.umc .umcHeader .umcLogoutButton .dijitButtonNode,
-.umc .umcHeader .umcLogoutButton .dijitButtonNode .dijitButtonContents {
-	height: 30px !important;
-}
-
-.umc .umcHeader .umcLogoutButton .dijitButtonNode .dijitInline {
-	padding-top: 3px;
-	display: block;
-}
-
-.umcHeader .umcHeaderButton .dijitButtonNode {
-	height: auto !important;
-	background: none;
-	border-radius: 0;
-	border: none;
-	padding: 0;
-	box-shadow: none;
-}
-
-.umcHeader .umcHeaderButton .dijitButtonNode .dijitInline {
-	padding: 9px;
-	font-size: 15px;
-	color: #fff;
-	background: url(bg_images/top-link.png) repeat-y left 5px;
-}
-
-.umcHeader .dijitDownArrowButton {
-	display: block;
-	overflow: hidden;
-}
-
-.umcHeader .dijitDownArrowButton .dijitArrowButtonInner {
-	position: relative;
-	top: 14px;
-}
-
-.umcHeader .dijitDownArrowButton span {
-	display: block;
-	float: left;
-}
-
-.umcHeader .dijitButtonHover,
-.umcHeader .dijitDropdownButtonHover {
-	background-color: #4d4d4f;
-}
-
 .dijitToasterContent {
 	border: 1px solid #73C74A !important;
 	background: #fff !important;
@@ -2158,12 +2039,6 @@ ORIGINAL DIFF
 }
 /* @end */
 
-.umc .univentionLogo {
-	display: block;
-	float: left;
-	margin-top: 8px;
-}
-
 /* @from style css */
 html {
 	background: url(bg_images/page.png) repeat-y center #eeeeef;
@@ -2187,13 +2062,6 @@ form {
 	margin-bottom: 15px;
 }
 
-.umcTopContainer {
-	height: 100%;
-	width: 960px;
-	margin: 0 auto;
-	background: #fff;
-}
-
 .dijitLayoutContainer {
 	overflow: visible !important;
 }
@@ -2212,42 +2080,17 @@ form {
 	padding:4px;
 }
 
-.umcHeader {
-	height: 34px;
-	overflow: hidden;
-	background: url(bg_images/top.png) repeat-x top;
-}
-
-/* Useless spans? */
-.umcHeader .umcHeaderButton .dijitButtonNode .dijitIcon {
-	width: auto;
-	height: auto;
-	padding: 0;
-	background: none;
-}
-
 /* @group User-Dropdown */
 
 /* univention menu */
-#dijit_form_DropDownButton_0_label {
+/*#dijit_form_DropDownButton_0_label {
 	padding-right: 5px;
 	background: none;
-}
+}*/
 
 /* @end */
 
-.umcHeader .umcHeaderButton .dijitButtonNode .dijitArrowButtonInner {
-	width: 8px;
-	height: 5px;
-	padding: 0 10px 0 0;
-	background-image: url(arrow-down.png);
-}
-
 /* @end */
-
-.umcMainTabContainer {
-	padding: 20px 30px;
-}
 
 .umcPageHeader h1 {
 	margin: 15px 0;
@@ -2322,14 +2165,6 @@ form {
 	color:#AAA;
 }
 
-.univentionLogo {
-	background-image: url(univention_logo.png) !important;
-	background-position: 10px 0 !important;
-	width: 165px !important;
-	height: 18px !important;
-	background-repeat: no-repeat !important;
-}
-
 /* @end */
 
 p {
@@ -2355,68 +2190,6 @@ p {
 /* set opacity to 50% for icons of disabled buttons */
 .umc .dijitButtonDisabled .dijitIcon {
 	.opacity(0.5);
-}
-
-/* UMC icons */
-.umcIconDelete,
-.umcIconEdit,
-.umcIconAdd,
-.umcIconReport,
-.umcIconUp,
-.umcIconRefresh,
-.umcIconPlay,
-.umcIconPause,
-.umcIconStop,
-.umcIconView {
-	background-image: url(images/commonIcons.png);
-	width: 16px;
-	height: 16px;
-}
-
-.umcIconDelete {
-	background-position: 0px 0px;
-}
-
-.umcIconEdit {
-	background-position: -16px 0px;
-}
-
-.umcIconAdd {
-	background-position: -32px 0px;
-}
-
-.umcIconReport {
-	background-position: -48px 0px;
-}
-
-.umcIconUp {
-	background-position: -64px 0px;
-}
-
-.umcIconRefresh {
-	background-position: -80px 0px;
-}
-
-.umcIconPlay {
-	background-position: -96px 0px;
-}
-
-.umcIconPause {
-	background-position: -112px 0px;
-}
-
-.umcIconStop {
-	background-position: -128px 0px;
-}
-
-.umcIconView {
-	background-position: -144px 0px;
-}
-
-.umcIconLoading {
-	background-image: url(images/loadingAnimation.gif);
-	width: 20px;
-	height: 20px;
 }
 
 .umcButtonRow {
@@ -2568,35 +2341,6 @@ p {
 	position: absolute;
 	overflow-x: auto;
 	overflow-y: scroll;
-}
-
-
-/* UMC overview page */
-
-/* add an 'X' (for removing) when hovering favorite items */
-.dgrid.umcOverviewFavorites .umcGalleryItem:hover .umcGalleryStatusIcon {
-	.opacity(0.4);
-	background-image: url(icons/24x24/delete.png);
-}
-
-/* add nice star when hovering */
-.dgrid.umcOverviewCategory .umcGalleryItem:hover {
-	.umcGalleryStatusIcon {
-		.opacity(0.4);
-		background-image: url(icons/24x24/star.png);
-	}
-
-	.umcGalleryStatusIcon.icon24-star {
-		/* if the status icon is already marked with a star, show an 'X' for deletion */
-		background-image: url(icons/24x24/delete.png);
-	}
-}
-
-/* change the opacity when clicked on the icon to 100% */
-.dgrid.umcOverviewCategory, .dgrid.umcOverviewFavorites {
-	.umcGalleryItem .umcGalleryStatusIcon:active {
-		.opacity(1);
-	}
 }
 
 

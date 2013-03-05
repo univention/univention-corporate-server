@@ -116,24 +116,43 @@ $(themesDir)/umc:
 	rm $@/compile.js
 
 $(themesDir)/umc/icons: $(themesDir)/umc
+	@# symlinks for installed icons
+	mkdir -p $(themesDir)/umc/icons/
+	cp -frs /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/* $(themesDir)/umc/icons/
 	@# scale all icons
+	@# treat umc-menu* icons differently and create a version with different
+	@# background for the hover effect
 	for s in 16x16 24x24 50x50; do \
-		mkdir -p "$@/$$s"; \
-		for i in icons/*.png; do \
-			dest="$@/$$s/$${i##*/}"; \
-			if [ ! -e "$$dest" ]; then \
-				convert "$$i" -resize $$s "$$dest"; \
+		path="$@/$$s"; \
+		mkdir -p "$$path"; \
+		for isrc in icons/*.svg*; do \
+			name="$${isrc##*/}"; \
+			name="$${name%.*}"; \
+			suffixes=".png"; \
+			if [ "$${name#umc-menu}" != "$${name}" ]; then \
+				suffixes=".png -over.png"; \
 			fi; \
+			for isuffix in $$suffixes; do \
+				dest="$$path/$${name}$$isuffix"; \
+				echo "creating $$dest"; \
+				bgcolor=none; \
+				if [ "$${name#umc-menu}" != "$${name}" ]; then \
+					bgcolor="#575759"; \
+					if [ "$$isuffix" = "-over.png" ]; then \
+						bgcolor="#7e7e81"; \
+					fi; \
+				fi; \
+				convert -background "$$bgcolor" "$$isrc" -resize $$s "$$dest"; \
+			done; \
 		done; \
 	done
 
 build-dev: build-common
 	@# symlink javascript code
 	[ -e $(buildDir)/js ] || ln -s $(tmpDir) $(buildDir)/js
-	@# symlinks for installed modules/icons
+	@# symlinks for installed modules
 	mkdir -p $(tmpDir)/umc/modules
 	cp -frs /usr/share/univention-management-console-frontend/js/umc/modules/* $(tmpDir)/umc/modules
-	cp -frs /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/* $(themesDir)/umc/icons/
 
 build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(themesDir)/umc $(themesDir)/umc/icons $(cssFiles) $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
 	@# symlink to javascript dir with timestamp

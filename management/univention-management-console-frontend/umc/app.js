@@ -164,8 +164,12 @@ define([
 		},
 
 		_tabContainer: null,
+		_topContainer: null,
 		_overviewPage: null,
-		_univentionMenu: null,
+		_helpMenu: null,
+		_headerRight: null,
+		_settingsMenu: null,
+		_settingsMenu: null,
 		_hostInfo: null,
 		_categoriesContainer: null,
 		_favoritesEnabled: true,
@@ -564,17 +568,21 @@ define([
 				return;
 			}
 
+			// show the menu bar
+			style.set(this._headerRight.domNode, 'display', 'block');
+
 			// try to insert license dialog
 			if ( this.getModule( 'udm' ) ) {
 				require(['umc/modules/udm/LicenseDialog'], lang.hitch(this, function(LicenseDialog) {
-					this._univentionMenu.addChild(new MenuItem({
+					this._settingsMenu.addChild(new MenuSeparator({}), 0);
+					this._settingsMenu.addChild(new MenuItem({
 						label: _('License'),
 						onClick : function() {
 							topic.publish('/umc/actions', 'menu-univention', 'license');
 							var dlg = new LicenseDialog();
 							dlg.show();
 						}
-					}), 2);
+					}), 0);
 				}));
 			}
 
@@ -763,6 +771,9 @@ define([
 				array.forEach(this.getCategories(), lang.hitch(this, _renderCategory));
 			}
 
+			// add the TabContainer to the main BorderContainer
+			this._topContainer.addChild(this._tabContainer);
+
 			// show a message in case no module is available
 			if (!this._moduleStore.query().length) {
 				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
@@ -808,7 +819,7 @@ define([
 			if (tools.status('width')) {
 				styleStr += tools.status('width') + 'px;';
 			}
-			var topContainer = new BorderContainer( {
+			this._topContainer = new BorderContainer( {
 				'class': 'umcTopContainer',
 				gutters: false,
 				// force a displayed width if specified
@@ -820,7 +831,6 @@ define([
 				region: 'center',
 				'class': 'umcMainTabContainer'
 			});
-			topContainer.addChild(this._tabContainer);
 
 			// register events for closing and focusing
 			this._tabContainer.watch('selectedChildWidget', function(name, oldModule, newModule) {
@@ -840,28 +850,85 @@ define([
 				'class': 'umcHeader',
 				region: 'top'
 			});
-			topContainer.addChild( header );
+			this._topContainer.addChild( header );
 
 			// we need containers aligned to the left and the right
-			var headerLeft = new ContainerWidget({
-				style: 'float: left'
+			var headerLeft = new Text({
+				style: 'float: left',
+				content: lang.replace('<a href="{url}" target="_blank" title="{title}"><div class="univentionLogo"></div></a>', {
+					url: _('umcLogoUrl'),
+					title: _('umcLogoTitle')
+				})
 			});
 			header.addChild(headerLeft);
-			var headerRight = new ContainerWidget({
-				style: 'float: right'
-			});
-			header.addChild(headerRight);
 
-			// the univention context menu
-			this._univentionMenu = new Menu({});
-			this._univentionMenu.addChild(new MenuItem({
+			this._headerRight = new ContainerWidget({
+				style: 'float: right; display: none;'
+			});
+			header.addChild(this._headerRight);
+
+			// query domainname and hostname and add this information to the header
+			this._hostInfo = new Text( {
+				id: 'umcMenuHostInfo',
+				'class': 'umcHeaderText',
+				templateString: '<span dojoAttachPoint="contentNode">${content}</span>',
+				content: '...'
+			} );
+			this._headerRight.addChild(this._hostInfo);
+
+			if (tools.status('displayUsername')) {
+				// display the username
+				this._headerRight.addChild(new Text({
+					id: 'umcMenuUsername',
+					'class': 'umcHeaderText',
+					content: _('umcUserInfo', {
+						username: tools.status('username')
+					})
+				}));
+			}
+
+			// the settings context menu
+			this._settingsMenu = new Menu({});
+			this._settingsMenu.addChild(new CheckedMenuItem({
+				label: _('Tooltips'),
+				checked: tools.preferences('tooltips'),
+				onClick: function() {
+					topic.publish('/umc/actions', 'menu-user', 'tooltips', this.checked ? 'on' : 'off');
+					tools.preferences('tooltips', this.checked);
+				}
+			}));
+			/*this._settingsMenu.addChild(new CheckedMenuItem({
+				label: _('Confirmations'),
+				checked: true,
+				checked: tools.preferences('confirm'),
+				onClick: function() {
+					tools.preferences('confirm', this.checked);
+				}
+			}));*/
+			this._settingsMenu.addChild(new CheckedMenuItem({
+				label: _('Module help description'),
+				checked: tools.preferences('moduleHelpText'),
+				onClick: function() {
+					topic.publish('/umc/actions', 'menu-user', 'module-help-text', this.checked ? 'on' : 'off');
+					tools.preferences('moduleHelpText', this.checked);
+				}
+			}));
+			this._headerRight.addChild(new DropDownButton({
+				id: 'umcMenuSettings',
+				iconClass: tools.getIconClass('umc-menu-settings', 24),
+				dropDown: this._settingsMenu
+			}));
+
+			// the help context menu
+			this._helpMenu = new Menu({});
+			this._helpMenu.addChild(new MenuItem({
 				label: _('Help'),
 				onClick : function() {
 					topic.publish('/umc/actions', 'menu-univention', 'help');
 					help();
 				}
 			}));
-			this._univentionMenu.addChild(new MenuItem({
+			this._helpMenu.addChild(new MenuItem({
 				label: _('About UMC'),
 				onClick : function() {
 					topic.publish('/umc/actions', 'menu-univention', 'about');
@@ -870,8 +937,8 @@ define([
 					} );
 				}
 			}));
-			this._univentionMenu.addChild(new MenuSeparator({}));
-			this._univentionMenu.addChild(new MenuItem({
+			this._helpMenu.addChild(new MenuSeparator({}));
+			this._helpMenu.addChild(new MenuItem({
 				label: _('Univention Website'),
 				onClick: function() {
 					topic.publish('/umc/actions', 'menu-univention', 'website');
@@ -879,60 +946,16 @@ define([
 					w.focus();
 				}
 			}));
-			headerLeft.addChild(new DropDownButton({
-				'class': 'umcHeaderButton univentionButton',
-				iconClass: 'univentionLogo',
-				dropDown: this._univentionMenu
+			this._headerRight.addChild(new DropDownButton({
+				id: 'umcMenuHelp',
+				iconClass: tools.getIconClass('umc-menu-help', 24),
+				dropDown: this._helpMenu
 			}));
 
-			// query domainname and hostname and add this information to the header
-			this._hostInfo = new Text( {
-				templateString: '<span dojoAttachPoint="contentNode">${content}</span>',
-				content: '...',
-				'class': 'umcHeaderText'
-			} );
-			headerRight.addChild(this._hostInfo);
-
-			// the user context menu
-			var userMenu = new Menu({});
-			userMenu.addChild(new CheckedMenuItem({
-				label: _('Tooltips'),
-				checked: tools.preferences('tooltips'),
-				onClick: function() {
-					topic.publish('/umc/actions', 'menu-user', 'tooltips', this.checked ? 'on' : 'off');
-					tools.preferences('tooltips', this.checked);
-				}
-			}));
-			/*userMenu.addChild(new CheckedMenuItem({
-				label: _('Confirmations'),
-				checked: true,
-				checked: tools.preferences('confirm'),
-				onClick: function() {
-					tools.preferences('confirm', this.checked);
-				}
-			}));*/
-			userMenu.addChild(new CheckedMenuItem({
-				label: _('Module help description'),
-				checked: tools.preferences('moduleHelpText'),
-				onClick: function() {
-					topic.publish('/umc/actions', 'menu-user', 'module-help-text', this.checked ? 'on' : 'off');
-					tools.preferences('moduleHelpText', this.checked);
-				}
-			}));
-			if (tools.status('displayUsername')) {
-				headerRight.addChild(new DropDownButton({
-					label: _('umcUserInfo', {
-						username: tools.status('username')
-					}),
-					'class': 'umcHeaderButton',
-					dropDown: userMenu
-				}));
-			}
-
-			// add logout button
-			headerRight.addChild(new Button({
-				label: '<img src="js/dijit/themes/umc/logout.png">',
-				'class': 'umcHeaderButton umcLogoutButton',
+			// the logout button
+			this._headerRight.addChild(new Button({
+				id: 'umcMenuLogout',
+				iconClass: tools.getIconClass('umc-menu-logout', 24),
 				onClick: lang.hitch(this, function() {
 					this.relogin();
 				})
@@ -944,7 +967,7 @@ define([
 			}
 
 			// put everything together
-			topContainer.startup();
+			this._topContainer.startup();
 
 			// subscribe to requests for opening modules and closing/focusing tabs
 			topic.subscribe('/umc/modules/open', lang.hitch(this, 'openModule'));
