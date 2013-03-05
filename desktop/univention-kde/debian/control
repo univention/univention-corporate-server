@@ -16,6 +16,7 @@ Recommends: kde-l10n-de,
  univention-flashplugin,
  univention-x-core
 Depends: ${misc:Depends},
+ gettext,
  univention-config-registry,
  univention-directory-manager-tools (>> 7.0.147),
  kde-standard (>= 5:66),
