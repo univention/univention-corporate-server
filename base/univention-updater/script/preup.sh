@@ -238,7 +238,7 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
 		echo "         This may interrupt the update and result in an inconsistent system!"
 		echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         config registry variable update30/checkfilesystems to \"no\"."
+		echo "         config registry variable update31/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
 		if [ "$partition" = "/boot" -a ! "$update31_pruneoldkernel" = "yes" ] ; then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
