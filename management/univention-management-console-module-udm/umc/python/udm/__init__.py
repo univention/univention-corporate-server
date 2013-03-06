@@ -51,7 +51,6 @@ from univention.management.console.protocol.session import TEMPUPLOADDIR
 
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
-import univention.admin.license as udm_license
 import univention.admin.uexceptions as udm_errors
 
 import univention.directory.reports as udr
@@ -179,41 +178,46 @@ class Instance( Base ):
 	@LDAP_Connection
 	def license_info( self, request, ldap_connection = None, ldap_position = None ):
 		license_data = {}
-		license_data[ 'licenseVersion' ] = udm_license._license.version
-		if udm_license._license.version == '1':
-			for item in ( 'licenses', 'real' ):
-				license_data[ item ] = {}
-				for lic_type in ( 'CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE' ):
-					count = getattr( udm_license._license, item )[udm_license._license.version][ eval( 'udm_license.License.%s' % lic_type ) ]
-					if isinstance( count, basestring ):
-						try:
-							count = int( count )
-						except:
-							count = None
-					license_data[ item ][ lic_type.lower() ] = count
+		try:
+			import univention.admin.license as udm_license
+		except:
+			license_data['licenseVersion'] = 'gpl'
+		else:
+			license_data[ 'licenseVersion' ] = udm_license._license.version
+			if udm_license._license.version == '1':
+				for item in ( 'licenses', 'real' ):
+					license_data[ item ] = {}
+					for lic_type in ( 'CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE' ):
+						count = getattr( udm_license._license, item )[udm_license._license.version][ eval( 'udm_license.License.%s' % lic_type ) ]
+						if isinstance( count, basestring ):
+							try:
+								count = int( count )
+							except:
+								count = None
+						license_data[ item ][ lic_type.lower() ] = count
 
-			if 'UGS' in udm_license._license.types:
-				udm_license._license.types = filter( lambda x: x != 'UGS', udm_license._license.types )
-		elif udm_license._license.version == '2':
-			for item in ( 'licenses', 'real' ):
-				license_data[ item ] = {}
-				for lic_type in ( 'SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS', 'VIRTUALDESKTOPUSERS', 'VIRTUALDESKTOPCLIENTS' ):
-					count = getattr( udm_license._license, item )[udm_license._license.version][ eval( 'udm_license.License.%s' % lic_type ) ]
-					if isinstance( count, basestring ):
-						try:
-							count = int( count )
-						except:
-							count = None
-					license_data[ item ][ lic_type.lower() ] = count
-			license_data[ 'keyID' ] = udm_license._license.licenseKeyID
-			license_data[ 'support' ] = udm_license._license.licenseSupport
-			license_data[ 'premiumSupport' ] = udm_license._license.licensePremiumSupport
+				if 'UGS' in udm_license._license.types:
+					udm_license._license.types = filter( lambda x: x != 'UGS', udm_license._license.types )
+			elif udm_license._license.version == '2':
+				for item in ( 'licenses', 'real' ):
+					license_data[ item ] = {}
+					for lic_type in ( 'SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS', 'VIRTUALDESKTOPUSERS', 'VIRTUALDESKTOPCLIENTS' ):
+						count = getattr( udm_license._license, item )[udm_license._license.version][ eval( 'udm_license.License.%s' % lic_type ) ]
+						if isinstance( count, basestring ):
+							try:
+								count = int( count )
+							except:
+								count = None
+						license_data[ item ][ lic_type.lower() ] = count
+				license_data[ 'keyID' ] = udm_license._license.licenseKeyID
+				license_data[ 'support' ] = udm_license._license.licenseSupport
+				license_data[ 'premiumSupport' ] = udm_license._license.licensePremiumSupport
 
-		license_data[ 'licenseTypes' ] = udm_license._license.types
-		license_data[ 'oemProductTypes' ] = udm_license._license.oemProductTypes
-		license_data[ 'endDate' ] = udm_license._license.endDate
-		license_data[ 'baseDN' ] = udm_license._license.licenseBase
-		license_data[ 'sysAccountsFound' ] = udm_license._license.sysAccountsFound
+			license_data[ 'licenseTypes' ] = udm_license._license.types
+			license_data[ 'oemProductTypes' ] = udm_license._license.oemProductTypes
+			license_data[ 'endDate' ] = udm_license._license.endDate
+			license_data[ 'baseDN' ] = udm_license._license.licenseBase
+			license_data[ 'sysAccountsFound' ] = udm_license._license.sysAccountsFound
 
 		self.finished( request.id, license_data )
 

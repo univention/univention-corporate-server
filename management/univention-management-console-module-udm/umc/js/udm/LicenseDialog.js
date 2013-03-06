@@ -40,8 +40,9 @@ define([
 	"umc/widgets/Button",
 	"dojo/text!umc/modules/udm/license.html",
 	"dojo/text!umc/modules/udm/license_v2.html",
+	"dojo/text!umc/modules/udm/license_gpl.html",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, Dialog, tools, dialog, render, ContainerWidget, StandbyMixin, Button, licenseHtml, license_v2Html, _) {
+], function(declare, lang, Dialog, tools, dialog, render, ContainerWidget, StandbyMixin, Button, licenseHtml, license_v2Html, license_gplHtml, _) {
 
 	return declare('umc.modules.udm.LicenseDialog', [ Dialog, StandbyMixin ], {
 		// summary:
@@ -178,84 +179,99 @@ define([
 			if ( ! this.licenseInfo ) {
 				return;
 			}
-			// content: license info and upload widgets
-			var product = '';
-			if ( this.licenseInfo.oemProductTypes.length === 0 ) {
-				product = this.licenseInfo.licenseTypes.join( ', ' );
-			} else {
-				product = this.licenseInfo.oemProductTypes.join( ', ' );
-			}
-			var free_license_info = '';
-			if ( this.licenseInfo.baseDN == 'Free for personal use edition' ) {
-				free_license_info = _( '<p>The "free for personal use" edition of Univention Corporate Server is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>' );
-			}
 
 			var keys, message;
-			if ( this.licenseInfo.licenseVersion === '1' ) {
-
-				// substract system accounts
-				if ( this.licenseInfo.real.account >= this.licenseInfo.sysAccountsFound ) {
-					this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
+			if(this.licenseInfo.licenseVersion === 'gpl') {
+				message = license_gplHtml;
+				keys  = {
+					title: _('Current license'),
+					type: _('Type: GPL'),
+					info: _('You are using a GPL license. Thus, you are not eligible to support and maintenance.')
 				}
-
-				keys = {
-					title : _( 'Current license' ),
-					labelBase : _( 'LDAP base' ),
-					base: this.licenseInfo.baseDN,
-					labelUser : _( 'User accounts' ),
-					user: this._limitInfo( 'account' ),
-					labelClients : _( 'Clients' ),
-					clients: this._limitInfo( 'client' ),
-					labelDesktops : _( 'Desktops' ),
-					desktops: this._limitInfo( 'desktop' ),
-					labelEndDate : _( 'Expiry date' ),
-					endDate: _( this.licenseInfo.endDate ),
-					labelProduct : _( 'Valid product types' ),
-					product: product
-				};
-
-				message = licenseHtml;
-
-			} else {
-
-				// substract system accounts
-				if ( this.licenseInfo.real.users >= this.licenseInfo.sysAccountsFound ) {
-					this.licenseInfo.real.users -= this.licenseInfo.sysAccountsFound;
-				}
-
-				keys = {
-					title : _( 'Current license' ),
-					labelBase : _( 'LDAP base' ),
-					base: this.licenseInfo.baseDN,
-					labelUser : _( 'User accounts' ),
-					user: this._limitInfo( 'users' ),
-					labelServers : _( 'Servers' ),
-					servers: this._limitInfo( 'servers' ),
-					labelManagedClients : _( 'Managed Clients' ),
-					managedclients: this._limitInfo( 'managedclients' ),
-					labelCorporateClients : _( 'Corporate Clients' ),
-					corporateclients: this._limitInfo( 'corporateclients' ),
-					labelDVSUsers : _( 'DVS Users' ),
-					dvsusers: this._limitInfo( 'virtualdesktopusers' ),
-					labelDVSClients : _( 'DVS Clients' ),
-					dvsclients: this._limitInfo( 'virtualdesktopclients' ),
-					labelSupport : _( 'Servers with standard support' ),
-					support: this.licenseInfo.support,
-					labelPremiumSupport : _( 'Servers with premium support' ),
-					premiumsupport: this.licenseInfo.premiumSupport,
-					labelKeyID : _( 'Key ID' ),
-					keyID: _( this.licenseInfo.keyID ),
-					labelEndDate : _( 'Expiry date' ),
-					endDate: _( this.licenseInfo.endDate ),
-					labelProduct : _( 'Valid product types' ),
-					product: product
-				};
-
-				message = license_v2Html;
 			}
+			else {
 
+				// content: license info and upload widgets
+				var product = '';
+				if ( this.licenseInfo.oemProductTypes.length === 0 ) {
+					product = this.licenseInfo.licenseTypes.join( ', ' );
+				} else {
+					product = this.licenseInfo.oemProductTypes.join( ', ' );
+				}
+				var free_license_info = '';
+				if ( this.licenseInfo.baseDN == 'Free for personal use edition' ) {
+					free_license_info = _( '<p>The "free for personal use" edition of Univention Corporate Server is a special software license which allows users free use of the Univention Corporate Server and software products based on it for private purposes acc. to § 13 BGB (German Civil Code).</p><p>In the scope of this license, UCS can be downloaded, installed and used from our servers. It is, however, not permitted to make the software available to third parties to download or use it in the scope of a predominantly professional or commercial usage.</p><p>The license of the "free for personal use" edition of UCS occurs in the scope of a gift contract. We thus exclude all warranty and liability claims, except in the case of deliberate intention or gross negligence. We emphasise that the liability, warranty, support and maintance claims arising from our commercial software contracts do not apply to the "free for personal use" edition.</p><p>We wish you a lot of happiness using the "free for personal use" edition of Univention Corporate Server and look forward to receiving your feedback. If you have any questions, please consult our forum, which can be found on the Internet at http://forum.univention.de/.</p>' );
+				}
+
+				if ( this.licenseInfo.licenseVersion === '1' ) {
+
+					// substract system accounts
+					if ( this.licenseInfo.real.account >= this.licenseInfo.sysAccountsFound ) {
+						this.licenseInfo.real.account -= this.licenseInfo.sysAccountsFound;
+					}
+
+					keys = {
+						title : _( 'Current license' ),
+						labelBase : _( 'LDAP base' ),
+						base: this.licenseInfo.baseDN,
+						labelUser : _( 'User accounts' ),
+						user: this._limitInfo( 'account' ),
+						labelClients : _( 'Clients' ),
+						clients: this._limitInfo( 'client' ),
+						labelDesktops : _( 'Desktops' ),
+						desktops: this._limitInfo( 'desktop' ),
+						labelEndDate : _( 'Expiry date' ),
+						endDate: _( this.licenseInfo.endDate ),
+						labelProduct : _( 'Valid product types' ),
+						product: product
+					};
+
+					message = licenseHtml;
+
+				} else if (this.licenseInfo.licenseVersion === '2') {
+
+					// substract system accounts
+					if ( this.licenseInfo.real.users >= this.licenseInfo.sysAccountsFound ) {
+						this.licenseInfo.real.users -= this.licenseInfo.sysAccountsFound;
+					}
+
+					keys = {
+						title : _( 'Current license' ),
+						labelBase : _( 'LDAP base' ),
+						base: this.licenseInfo.baseDN,
+						labelUser : _( 'User accounts' ),
+						user: this._limitInfo( 'users' ),
+						labelServers : _( 'Servers' ),
+						servers: this._limitInfo( 'servers' ),
+						labelManagedClients : _( 'Managed Clients' ),
+						managedclients: this._limitInfo( 'managedclients' ),
+						labelCorporateClients : _( 'Corporate Clients' ),
+						corporateclients: this._limitInfo( 'corporateclients' ),
+						labelDVSUsers : _( 'DVS Users' ),
+						dvsusers: this._limitInfo( 'virtualdesktopusers' ),
+						labelDVSClients : _( 'DVS Clients' ),
+						dvsclients: this._limitInfo( 'virtualdesktopclients' ),
+						labelSupport : _( 'Servers with standard support' ),
+						support: this.licenseInfo.support,
+						labelPremiumSupport : _( 'Servers with premium support' ),
+						premiumsupport: this.licenseInfo.premiumSupport,
+						labelKeyID : _( 'Key ID' ),
+						keyID: _( this.licenseInfo.keyID ),
+						labelEndDate : _( 'Expiry date' ),
+						endDate: _( this.licenseInfo.endDate ),
+						labelProduct : _( 'Valid product types' ),
+						product: product
+					};
+
+					message = license_v2Html;
+				}
+				this._widgets.ffpu.set( 'content', this.licenseInfo.baseDN == 'Free for personal use edition' ? free_license_info : '' );
+				
+			}
 			this._widgets.message.set( 'content', lang.replace( message, keys ) );
-			this._widgets.ffpu.set( 'content', this.licenseInfo.baseDN == 'Free for personal use edition' ? free_license_info : '' );
+			
+
+			
 
 			// recenter dialog
 			this._size();

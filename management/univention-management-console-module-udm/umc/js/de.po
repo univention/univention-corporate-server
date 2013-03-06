@@ -101,6 +101,18 @@ msgstr ""
 "Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren "
 "kommerziellen Softwareverträgen ergeben, nicht gelten.</p>"
 
+#: umc/js/udm/LicenseDialog.js:188
+msgid "Type: GPL"
+msgstr "Typ: GPL"
+
+#: umc/js/udm/LicenseDialog.js:189
+msgid ""
+"You are using a GPL license. Thus, you are not eligible to support and "
+"maintenance."
+msgstr ""
+"Sie verwenden eine GPL Lizenz. Daher haben sie keinen Anspruch auf "
+"Support oder Maintenance-Untersützung."
+
 #: umc/js/udm/NewObjectDialog.js:259
 #, python-format
 msgid ""
@@ -198,7 +210,7 @@ msgstr "Report erstellen"
 msgid "Creating the report ..."
 msgstr "Erstelle den Report ..."
 
-#: umc/js/udm/LicenseDialog.js:196 umc/js/udm/LicenseDialog.js:221
+#: umc/js/udm/LicenseDialog.js:187 umc/js/udm/LicenseDialog.js:196 umc/js/udm/LicenseDialog.js:221
 msgid "Current license"
 msgstr "Aktuelle Lizenz"
 

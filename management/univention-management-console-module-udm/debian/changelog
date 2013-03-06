@@ -1,3 +1,10 @@
+univention-management-console-module-udm (3.0.71-1) unstable; urgency=low
+
+  * when python-univention-license is not installed, inform the user about the
+    fact that he is running under GPL (Bug #14123)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 06 Mar 2013 11:10:52 +0100
+
 univention-management-console-module-udm (3.0.70-1) unstable; urgency=low
 
   * update search widgets when the grid filter has been executed; Bug #29748
