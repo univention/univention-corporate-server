@@ -20,10 +20,10 @@ You may NOT sub-license, resell, rent, redistribute or otherwise transfer the ic
    xml:space="preserve"
    id="svg2"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="umc-menu-settings.svg"><metadata
+   sodipodi:docname="umc-menu.svg"><metadata
    id="metadata9"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
    id="defs7" /><sodipodi:namedview
    pagecolor="#58585a"
    bordercolor="#666666"
@@ -38,12 +38,12 @@ You may NOT sub-license, resell, rent, redistribute or otherwise transfer the ic
    id="namedview5"
    showgrid="false"
    inkscape:zoom="0.1767767"
-   inkscape:cx="1651.3694"
+   inkscape:cx="1195.9926"
    inkscape:cy="302.40375"
    inkscape:window-x="460"
    inkscape:window-y="172"
    inkscape:window-maximized="0"
-   inkscape:current-layer="g3879" />
+   inkscape:current-layer="g3867" />
 
 
 
@@ -55,7 +55,7 @@ You may NOT sub-license, resell, rent, redistribute or otherwise transfer the ic
      width="512"
      id="rect3781"
      style="fill:#58585a;fill-opacity:1;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none" /><rect
-     style="fill:#b8b8b9;fill-opacity:1;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none"
+     style="fill:#7e7e81;fill-opacity:1;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none"
      id="rect3783"
      width="512"
      height="512"
@@ -83,7 +83,7 @@ You may NOT sub-license, resell, rent, redistribute or otherwise transfer the ic
        height="512"
        width="512"
        id="rect2997"
-       style="fill:#b8b8b9;fill-opacity:1;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none" /></g><path
+       style="fill:#7e7e81;fill-opacity:1;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none" /></g><path
      inkscape:connector-curvature="0"
      id="gear-icon"
      d="m 233.15625,78 -8.84375,24.84375 c -6.68528,20.80207 -32.33839,32.21233 -52.28125,23.3125 -8.62789,-3.90951 -17.15689,-8.13258 -25.75,-12.15625 L 114,146.28125 c 6.20304,15.05952 17.9019,29.74819 14.65625,46.96875 -2.26072,16.34036 -15.66766,29.29404 -31.46875,33.0625 L 78,233.15625 l 0,45.6875 c 15.035291,6.24187 33.7538,8.42855 43.625,22.84375 9.88806,13.14831 9.5706,31.8277 1.09375,45.625 l -8.75,18.40625 L 146.28125,398 c 15.05952,-6.20304 29.74819,-17.9019 46.96875,-14.65625 16.33802,2.26895 29.30135,15.66416 33.0625,31.46875 l 6.84375,19.1875 45.6875,0 c 6.18598,-15.0645 8.53181,-33.80273 22.90625,-43.625 12.9955,-9.85472 31.63551,-9.68063 45.375,-1.21875 L 365.71875,398 398,365.71875 c -6.2151,-15.04479 -17.89452,-29.74603 -14.65625,-46.96875 2.24277,-16.30701 15.67323,-29.30428 31.46875,-33.0625 L 434,278.84375 l 0,-45.6875 c -15.04454,-6.25688 -33.71646,-8.40575 -43.625,-22.84375 -9.8932,-13.14536 -9.58769,-31.82674 -1.125,-45.625 L 398,146.28125 365.71875,114 C 350.65923,120.20304 335.97056,131.9019 318.75,128.65625 302.40663,126.39441 289.44493,112.97754 285.6875,97.1875 L 278.84375,78 233.15625,78 z M 256,172 c 46.39192,0 84,37.60808 84,84 0,46.39192 -37.60808,84 -84,84 -46.39192,0 -84,-37.60808 -84,-84 0,-46.39192 37.60808,-84 84,-84 z"
@@ -101,7 +101,7 @@ You may NOT sub-license, resell, rent, redistribute or otherwise transfer the ic
        width="512"
        id="rect3775"
        style="fill:#58585a;fill-opacity:1;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none" /><rect
-       style="fill:#b8b8b9;fill-opacity:1;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#7e7e81;fill-opacity:1;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3777"
        width="512"
        height="512"

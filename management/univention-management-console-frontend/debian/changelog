@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.213-1) unstable; urgency=low
+
+  * Bug #30151: added setTimeout of 200ms for umc/widgets/ProgressBar:auto
+  * Bug #25753: fixed background color of menu icons for hover state
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 06 Mar 2013 11:55:48 +0100
+
 univention-management-console-frontend (2.0.212-1) unstable; urgency=low
 
   * Bug #30664: fixed CSS rule for enforcing UMC width
