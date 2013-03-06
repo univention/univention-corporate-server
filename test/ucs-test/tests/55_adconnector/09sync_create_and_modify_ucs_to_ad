@@ -46,7 +46,7 @@ for i in 0 3 6 12; do
 		echo "Search in UCS LDAP as user $b with the new password"
 		univention-ldapsearch -x -D "uid=$b,cn=users,$ldap_base" -w q1w2e3r4 -LLL -s base dn || fail_test 110
 		echo "Search in AD as user $b with the new password"
-		univention-adsearch -x -D "cn=$b,cn=user,$(ad_get_base)" -w %q1w2e3r4 -s base dn || fail_test 110
+		smbclient -U "$b%q1w2e3r4" //$(ucr get connector/ad/ldap/host)/sysvol -c ls || fail_test 110
 	done
 
 	section "Clean up"
