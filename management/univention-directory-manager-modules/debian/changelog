@@ -1,3 +1,14 @@
+univention-directory-manager-modules (8.0.137-1) unstable; urgency=low
+
+  * Make computer name of IP managed clients changeable (Bug #7016)
+  * Set also the sambaNTPassword during the password change for the
+    computer objects (Bug #30183)
+  * Added nagios support for Ubuntu and Linux clients (Bug #30615)
+  * Added support option to Mac OS X, Linux and Ubuntu clients, required
+    for Bug #30183
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 08:37:49 +0100
+
 univention-directory-manager-modules (8.0.136-3) unstable; urgency=low
 
   * fixed description of "locked login methods" (Bug #19662) 

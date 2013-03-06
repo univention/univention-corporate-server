@@ -522,11 +522,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if 'posix' in self.options:
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 				al.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-			#The password must be set via net rpc join
-			#if 'samba' in self.options:
-			#	password_nt, password_lm = univention.admin.password.ntlm(self['password'])
-			#	al.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
-			#	al.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
+			if 'samba' in self.options:
+				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+				al.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
+				al.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 			self.modifypassword=0
 		if 'samba' in self.options:
@@ -646,11 +645,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if 'posix' in self.options:
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-			#The password must be set via net rpc join
-			#if 'samba' in self.options:
-			#	password_nt, password_lm = univention.admin.password.ntlm(self['password'])
-			#	ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
-			#	ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
+			if 'samba' in self.options:
+				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+				ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
+				ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 		# add samba option
 		if 'samba' in self.options and not self.old_samba_option:

@@ -63,7 +63,7 @@ property_descriptions={
 			include_in_default_search=1,
 			options=[],
 			required=1,
-			may_change=0,
+			may_change=1,
 			identifies=1
 		),
 	'description': univention.admin.property(
