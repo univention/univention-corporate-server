@@ -114,7 +114,7 @@ def clean():
 	try:
 		for directory in dirs:
 			for filename in os.listdir(directory):
-				if filename != "tmp":
+				if os.path.isfile(filename):
 					os.remove(os.path.join(directory,filename))
 			if os.path.exists(os.path.join(directory,'tmp')):
 				for filename in os.listdir(os.path.join(directory,'tmp')):

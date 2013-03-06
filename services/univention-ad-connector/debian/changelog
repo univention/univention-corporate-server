@@ -1,3 +1,10 @@
+univention-ad-connector (7.0.15-1) unstable; urgency=low
+
+  * fixed listener module traceback which occured when
+    /var/lib/univention-connector/ad/ contained subdirectories (Bug #18125)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 06 Mar 2013 14:33:23 +0100
+
 univention-ad-connector (7.0.14-2) unstable; urgency=low
 
   * Consider stopped LDAP server (Bug #30652)
