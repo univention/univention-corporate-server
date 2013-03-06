@@ -256,7 +256,7 @@ class Instance(Base):
 		process = subprocess.Popen(['/usr/sbin/univention-check-join-status'], shell=False, stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 		if process.returncode == 0:
-			return files
+			return files.values()
 
 		for line in stdout.splitlines():
 			# is there a general error?
