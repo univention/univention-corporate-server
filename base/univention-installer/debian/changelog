@@ -1,3 +1,10 @@
+univention-installer (8.0.46-1) unstable; urgency=low
+
+  * removed univention-set-bootable-flag-on-protective-mbr
+    (instead we fix parted) (Bug #29449) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Mar 2013 16:04:50 +0100
+
 univention-installer (8.0.45-1) unstable; urgency=low
 
   * added univention-set-bootable-flag-on-protective-mbr to
