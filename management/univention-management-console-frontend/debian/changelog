@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.215-1) unstable; urgency=low
+
+  * fix possibility to expand nodes after widgets.Tree.reload(); Bug #29210
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2013 14:23:24 +0100
+
 univention-management-console-frontend (2.0.214-1) unstable; urgency=low
 
   * fix background for dijitDialogCloseIconHover; Bug #29210

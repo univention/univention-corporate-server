@@ -111,7 +111,8 @@ define([
 
 			// rebuild the tree
 			this.postMixInProperties();
-			this.postCreate();
+			// this.postCreate(); // FIXME: this would register events again
+			this._load();
 
 			/* reset the paths */
 			this._reloadOnLoadConnect = this.on('load', lang.hitch(this, function() {
