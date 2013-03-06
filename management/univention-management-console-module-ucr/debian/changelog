@@ -1,3 +1,10 @@
+univention-management-console-module-ucr (2.0.8-1) unstable; urgency=low
+
+  * Add the description of the UCR variable in the dialog and as a tooltip
+    in the grid overview (Bug #23223)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 06 Mar 2013 15:20:16 +0100
+
 univention-management-console-module-ucr (2.0.7-1) unstable; urgency=low
 
   * Do not automatically focus the search field on touch screen devices

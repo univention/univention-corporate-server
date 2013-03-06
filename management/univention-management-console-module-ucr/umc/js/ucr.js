@@ -49,10 +49,13 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/HiddenInput",
 	"umc/widgets/ComboBox",
+	"umc/widgets/Tooltip",
 	"umc/i18n!umc/modules/ucr"
-], function(declare, lang, kernel, array, has, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, ExpandingTitlePane, TextBox, Text, HiddenInput, ComboBox, _) {
+], function(declare, lang, kernel, array, has, Dialog, _TextBoxMixin, tools, dialog, Form, Grid, Module, Page, SearchForm, StandbyMixin, ExpandingTitlePane, TextBox, Text, HiddenInput, ComboBox, Tooltip, _) {
 	var _DetailDialog = declare([ Dialog, StandbyMixin ], {
 		_form: null,
+
+		_locale: kernel.locale.substr(0, 2),
 
 		_description: null,
 
@@ -64,7 +67,7 @@ define([
 
 			lang.mixin(this, {
 				title: _( 'Edit UCR variable' ),
-				style: 'max-width: 400px'
+				style: 'max-width: 325px'
 			});
 		},
 
@@ -86,10 +89,11 @@ define([
 				type: Text,
 				name: 'description',
 				description: _( 'Description of the UCR variable' ),
-				label: _( 'Description:' )
+				label: _( 'Description:' ),
+				style: 'margin-bottom: 5px'
 			}, {
 				type: HiddenInput,
-				name: 'description[' + kernel.locale + ']'
+				name: 'description[' + this._locale + ']'
 	//		}, {
 	//			type: 'MultiSelect',
 	//			name: 'categories',
@@ -130,7 +134,7 @@ define([
 			this._form.on('loaded', lang.hitch(this, function() {
 				// display the description text
 				var descWidget = this._form.getWidget('description');
-				var text = this._form.getWidget('description[' + kernel.locale + ']').get('value');
+				var text = this._form.getWidget('description[' + this._locale + ']').get('value');
 				if (text) {
 					// we have description, update the description field
 					descWidget.set('visible', true);
@@ -279,7 +283,8 @@ define([
 			var columns = [{
 				name: 'key',
 				label: _( 'UCR variable' ),
-				description: _( 'Unique name of the UCR variable' )
+				description: _( 'Unique name of the UCR variable' ),
+				formatter: lang.hitch(this, '_keyFormatter')
 			}, {
 				name: 'value',
 				label: _( 'Value' ),
@@ -378,6 +383,23 @@ define([
 				}
 				catch(err) { }
 			}
+		},
+
+		_keyFormatter: function(label, rowIndex) {
+			var widget = new Text({
+				content: label
+			});
+
+			var item = this._grid.getRowValues(rowIndex);
+			if (item.description) {
+				var tooltip = new Tooltip({
+					label: item.description,
+					connectId: [widget.domNode],
+					position: ['below']
+				});
+			}
+
+			return widget;
 		}
 	});
 
