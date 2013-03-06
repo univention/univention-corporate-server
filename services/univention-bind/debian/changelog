@@ -1,3 +1,10 @@
+univention-bind (7.0.12-1) unstable; urgency=low
+
+  * Give the permissions for rndc.key to root if s4 is used as backend.
+    Otherwise the rndc interface can't be used (Bug #25358)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 16:44:03 +0100
+
 univention-bind (7.0.11-5) unstable; urgency=low
 
   * Fix named reload in case of dns/backend == samba4 (Bug #30321)

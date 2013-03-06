@@ -34,6 +34,10 @@ mkdir -p /var/run/named
 chmod 775 /var/run/named
 chown root:bind /var/run/named >/dev/null 2>&1 || true
 
+# Give permissions back to bind,
+# see /etc/runit/univention-bind-samba4/run
+chown bind:bind /etc/bind/rndc.key
+
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 OPTS="-c /etc/bind/named.conf.proxy -u bind -f"
