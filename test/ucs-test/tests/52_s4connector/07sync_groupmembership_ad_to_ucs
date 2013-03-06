@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash 
-## desc: "Test sync of group memberships from UCS to AD in sync-mode"
+## desc: "Test sync of group memberships from AD to UCS in sync-mode"
 ## exposure: dangerous
 ## packages:
 ## - univention-s4-connector

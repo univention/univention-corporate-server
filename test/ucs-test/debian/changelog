@@ -1,3 +1,9 @@
+ucs-test (3.0.25-6) unstable; urgency=low
+
+  * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Mar 2013 11:32:20 +0100
+
 ucs-test (3.0.25-5) unstable; urgency=low
 
   * Added test case for Windows to Mac transformation (Bug #29998)
