@@ -1,3 +1,11 @@
+univention-s4-connector (7.0.31-1) unstable; urgency=low
+
+  * Remember if the user was just created in UCS and don't write the
+    password back from AD/S4, because the password could be changed on
+    UCS in this gap (Bug #30651)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 14:50:36 +0100
+
 univention-s4-connector (7.0.30-1) unstable; urgency=low
 
   * Sync Mac OS X, Ubuntu clients, Linux clients and UCC to S4

@@ -630,6 +630,12 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 	object=s4connector._object_mapping(key, ucs_object, 'ucs')
 	res=s4connector.lo_s4.lo.search_s(univention.s4connector.s4.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['objectSid','pwdLastSet'])
 
+	if s4connector.isInCreationList(object['dn']):
+		s4connector.removeFromCreationList(object['dn'])
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: Synchronisation of password has been canceled. Object was just created.")
+		return
+		
+
 	pwdLastSet = None
 	if res[0][1].has_key('pwdLastSet'):
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])

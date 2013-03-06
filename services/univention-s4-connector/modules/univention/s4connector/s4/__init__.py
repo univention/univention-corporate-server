@@ -706,6 +706,11 @@ class s4(univention.s4connector.ucs):
 			LDB_CONTROL_PROVISION_OID = '1.3.6.1.4.1.7165.4.3.16'
 			self.serverctrls_for_add_and_modify.append(LDAPControl(LDB_CONTROL_PROVISION_OID,criticality=0) )
 
+		# Save a list of objects just created, this is needed to
+		# prevent the back sync of a password if it was changed just
+		# after the creation
+		self.creation_list = []
+
 		# Build an internal cache with S4 as key and the UCS object as cache
 		self.group_mapping_cache_ucs = {}
 		self.group_mapping_cache_con = {}
@@ -871,6 +876,15 @@ class s4(univention.s4connector.ucs):
 		_d=ud.function('ldap.remove_rejected')
 		self._remove_rejected(self.__get_change_usn(object),object['dn'])
 
+	def addToCreationList(self, dn):
+		if not dn.lower() in self.creation_list:
+			self.creation_list.append(dn.lower())
+	
+	def removeFromCreationList(self, dn):
+		self.creation_list = [s for s in self.creation_list if s != dn.lower()]
+
+	def isInCreationList(self, dn):
+		return dn.lower() in self.creation_list
 
 	def get_object(self, dn):
 		_d=ud.function('ldap.get_object')
@@ -2169,6 +2183,8 @@ class s4(univention.s4connector.ucs):
 
 		if (object['modtype'] == 'add' and not s4_object) or (object['modtype'] == 'modify' and not s4_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: add object: %s"%object['dn'])
+
+			self.addToCreationList(object['dn'])
 
 			if hasattr(self.property[property_type],"con_sync_function"):
 				self.property[property_type].con_sync_function(self, property_type, object)
