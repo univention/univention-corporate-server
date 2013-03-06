@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2010-2012 Univention GmbH
+# Copyright (C) 2010-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,8 +31,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 UPDATER_LOG="/var/log/univention/updater.log"
 exec 3>>"$UPDATER_LOG"
-UPDATE_LAST_VERSION="$1"
-UPDATE_NEXT_VERSION="$2"
+UPDATE_NEXT_VERSION="$1"
 
 echo "Running preup.sh script" >&3
 date >&3
@@ -78,11 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: http://download.univention.de/doc/release-notes-3.1_en.pdf"
-echo " German version:  http://download.univention.de/doc/release-notes-3.1.pdf"
-# echo "Changelog: http://download.univention.de/doc/changelog-2.4-2.pdf"
-# echo "Please note that Univention Corporate Server (UCS) 3.0 is under development."
-# echo "At the moment UCS 3.0 is not ready for production use!"
+echo " English version: http://download.univention.de/doc/release-notes-3.1-1_en.pdf"
+echo " German version:  http://download.univention.de/doc/release-notes-3.1-1.pdf"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -135,7 +131,7 @@ if [ `uname -m` != "x86_64" ]; then
 fi
 
 # save ucr settings
-updateLogDir="/var/univention-backup/update-to-$UPDATE_LAST_VERSION"
+updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
 if [ ! -d "$updateLogDir" ]; then
 	mkdir -p "$updateLogDir"
 fi
@@ -147,7 +143,7 @@ if [ ! -z "$update_custom_preup" ]; then
 	if [ -f "$update_custom_preup" ]; then
 		if [ -x "$update_custom_preup" ]; then
 			echo "Running custom preupdate script $update_custom_preup"
-			"$update_custom_preup" "$UPDATE_LAST_VERSION" "$UPDATE_NEXT_VERSION" >&3 2>&3
+			"$update_custom_preup" "$UPDATE_NEXT_VERSION" >&3 2>&3
 			echo "Custom preupdate script $update_custom_preup exited with exitcode: $?" >&3
 		else
 			echo "Custom preupdate script $update_custom_preup is not executable" >&3
@@ -323,10 +319,10 @@ if [ "$(dpkg-query -W -f='${Status}\n' univention-legacy-kolab-schema 2>/dev/nul
 fi
 # END 3.1 update mark univention-legacy-kolab-schema as manually installed Bug #28900
 
-# Pre-update univention-config to ensure ucr is available during the upgrade:
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=29208
+# Pre-upgrade
+preups=""
 $update_commands_update >&3 2>&3
-for pkg in univention-config; do
+for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
 		echo -n "Starting pre-upgrade of $pkg: "
 		$update_commands_install "$pkg" >&3 2>&3
@@ -338,17 +334,6 @@ for pkg in univention-config; do
 		echo "done."
 	fi
 done
-
-# Pre-download python-univention-directory-manager-legacy-ucd-tcs
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=29212
-if dpkg -l "python-univention-directory-manager" 2>&3 | grep ^ii  >&3 ; then
-	if ! apt-get install -d --yes python-univention-directory-manager-legacy-ucd-tcs >&3 2>&3; then	
-		echo "ERROR: Failed to download the package "
-		echo "       python-univention-directory-manager-legacy-ucd-tcs."
-		echo "       Please check your network and repository settings."
-		exit 1
-	fi
-fi
 
 echo ""
 echo "Starting update process, this may take a while."

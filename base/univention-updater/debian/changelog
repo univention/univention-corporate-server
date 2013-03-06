@@ -1,3 +1,9 @@
+univention-updater (8.0.71-1) unstable; urgency=low
+
+  * updated preup/postup.sh (Bug #30622)
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Mar 2013 17:09:03 +0100
+
 univention-updater (8.0.70-1) unstable; urgency=low
 
   * fixed filesystem check error message in preup (Bug #30100) 
