@@ -261,7 +261,7 @@ class Instance(Base):
 		for line in stdout.splitlines():
 			# is there a general error?
 			match = RE_ERROR.match(line)
-			if match:
+			if match and not line.startswith('Error: Not all install files configured'):
 				raise UMC_CommandError(_('Error: %s') % match.groups()[0])
 
 			# unconfigured script

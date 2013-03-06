@@ -1,3 +1,9 @@
+univention-join (5.0.33-1) unstable; urgency=low
+
+  * fix status; Bug #27792, Bug #30112
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2013 13:23:13 +0100
+
 univention-join (5.0.32-1) unstable; urgency=low
 
   * fixed display_header (Bug #30492) 
