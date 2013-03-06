@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.32-1) unstable; urgency=low
+
+  * change textarea size; Bug #24682
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2013 11:05:45 +0100
+
 univention-virtual-machine-manager-daemon (2.0.31-1) unstable; urgency=low
 
   * Display the domain description field as TextArea, also display the field

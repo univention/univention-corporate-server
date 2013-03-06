@@ -126,6 +126,8 @@ define([
 				}, {
 					name: 'description',
 					type: TextArea,
+					cols: 120,
+					rows: 5,
 					label: _('Description')
 				}],
 				buttons: [{
