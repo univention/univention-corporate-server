@@ -592,6 +592,11 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.INFO,"__init__: init add config section 'AD GUID'")
 			self.config.add_section('AD GUID')
 
+		# Save a list of objects just created, this is needed to
+		# prevent the back sync of a password if it was changed just
+		# after the creation
+		self.creation_list = []
+
 		# Build an internal cache with AD as key and the UCS object as cache
 		self.group_mapping_cache_ucs = {}
 		self.group_mapping_cache_con = {}
@@ -751,6 +756,15 @@ class ad(univention.connector.ucs):
 		_d=ud.function('ldap.remove_rejected')
 		self._remove_rejected(self.__get_change_usn(object),object['dn'])
 
+	def addToCreationList(self, dn):
+		if not dn.lower() in self.creation_list:
+			self.creation_list.append(dn.lower())
+	
+	def removeFromCreationList(self, dn):
+		self.creation_list = [s for s in self.creation_list if s != dn.lower()]
+ 
+	def isInCreationList(self, dn):
+		return dn.lower() in self.creation_list
 
 	def get_object(self, dn):
 		_d=ud.function('ldap.get_object')
@@ -2059,6 +2073,8 @@ class ad(univention.connector.ucs):
 
 		if (object['modtype'] == 'add' and not ad_object) or (object['modtype'] == 'modify' and not ad_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: add object: %s"%object['dn'])
+
+			self.addToCreationList(object['dn'])
 
 			# objectClass
 			if self.property[property_type].con_create_objectclass:

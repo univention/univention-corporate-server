@@ -249,6 +249,11 @@ def password_sync(connector, key, ucs_object):
 	object=connector._object_mapping(key, ucs_object, 'ucs')
 	res=connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['objectSid','pwdLastSet'])
 
+	if connector.isInCreationList(object['dn']):
+		connector.removeFromCreationList(object['dn'])
+		ud.debug(ud.LDAP, ud.INFO, "password_sync: Synchronisation of password has been canceled. Object was just created.")
+		return
+
 	pwdLastSet = None
 	if res[0][1].has_key('pwdLastSet'):
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])

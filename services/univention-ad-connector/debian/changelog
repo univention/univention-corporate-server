@@ -1,3 +1,11 @@
+univention-ad-connector (7.0.16-1) unstable; urgency=low
+
+  * Remember if the user was just created in UCS and don't write the
+    password back from AD/S4, because the password could be changed on
+    UCS in this gap (Bug #30652)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 14:54:42 +0100
+
 univention-ad-connector (7.0.15-1) unstable; urgency=low
 
   * fixed listener module traceback which occured when
