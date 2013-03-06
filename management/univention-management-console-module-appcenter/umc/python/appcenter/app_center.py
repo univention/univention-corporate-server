@@ -53,6 +53,7 @@ from urlparse import urlsplit, urlunsplit, urljoin
 from datetime import datetime
 from PIL import Image
 from httplib import HTTPException
+from socket import error as SocketError
 
 # related third party
 import ldif
@@ -222,6 +223,31 @@ class Application(object):
 		except IOError:
 			pass
 			# MODULE.warn('No information for %s available (%s): %s' % (key, e, filename))
+
+	@classmethod
+	def get_appcenter_version(cls):
+		''' Returns the version number of the App Center.
+		As App Center within a domain may talk to each other it is necessary
+		to ask whether they are compatible.
+		The version number will rise whenever a change was made that may break compatibility.
+
+		  1: initial app center 12/12 (not assigned, appcenter/version was not supported)
+		  2: app center with remote installation 02/13 (not assigned, appcenter/version was not supported)
+		  3: app center with version and only_dry_run 03/13
+		'''
+		return 3
+
+	@classmethod
+	def compatible_version(cls, other_version):
+		''' Checks for compatibility with another version.
+		For now we accept every other App Center and just warn
+		in case of inequality.
+		'''
+		my_version = cls.get_appcenter_version()
+		compatible = my_version == other_version
+		if not compatible:
+			MODULE.warn('App Center version check failed: %s != %s' % (my_version, other_version))
+		return True
 
 	@classmethod
 	def get_server(cls, with_scheme=False):
@@ -578,21 +604,28 @@ class Application(object):
 		self._send_information('uninstall', status)
 		return status == 200
 
-	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None):
+	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None, only_master_packages=False, dont_remote_install=False, function='install', force=False):
 		if self.candidate:
-			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password)
+			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password, only_master_packages, dont_remote_install, function, force)
 		MODULE.info('Invoke install_dry_run')
 		result = None
 		try:
 			ucr.load()
 			server_role = ucr.get('server/role')
+			if function.startswith('update'):
+				remote_function = 'update-schema'
+			else:
+				remote_function = 'install-schema'
 
 			master_packages = self.get('defaultpackagesmaster')
 
 			# connect to master/backups
 			unreachable = []
 			master_unreachable = False
-			if master_packages:
+			hosts_info = {}
+			problems_with_hosts = False
+			serious_problems_with_hosts = False
+			if master_packages and not dont_remote_install:
 				is_master = server_role == 'domaincontroller_master'
 				hosts = self.find_all_hosts(is_master=is_master)
 				for host, host_is_master in hosts:
@@ -604,9 +637,34 @@ class Application(object):
 						unreachable.append(host)
 						if host_is_master:
 							master_unreachable = True
+					else:
+						host_info = {}
+						try:
+							host_version = connection.request('appcenter/version')
+						except NotImplementedError:
+							# command is not yet known (older app center)
+							host_version = None
+						host_info['compatible_version'] = Application.compatible_version(host_version)
+						try:
+							host_info['result'] = connection.request('appcenter/invoke_dry_run', {
+								'function' : remote_function,
+								'application' : self.id,
+								'force' : force,
+								'dont_remote_install' : True,
+							})
+						except NotImplementedError:
+							# command is not yet known (older app center)
+							host_info['result'] = {'can_continue' : False, 'serious_problems' : False}
+						if not host_info['compatible_version'] or not host_info['result']['can_continue']:
+							problems_with_hosts = True
+							if host_info['result']['serious_problems'] or not host_info['compatible_version']:
+								serious_problems_with_hosts = True
+						hosts_info[host] = host_info
 
 			# packages to install
-			to_install = self.get('defaultpackages')
+			to_install = []
+			if not only_master_packages:
+				to_install.extend(self.get('defaultpackages'))
 			MODULE.info('defaultpackages: %s' % (to_install, ))
 			if server_role in ('domaincontroller_master', 'domaincontroller_backup', ):
 				MODULE.info('Running on DC master or DC backup')
@@ -621,11 +679,18 @@ class Application(object):
 			to_install = package_manager.get_packages(to_install)
 
 			# determine the changes
+			# also check for changes from dist-upgrade (as it will
+			#   be performed when installing).
+			#   dry_run will throw away changes marked by upgrade
+			package_manager.cache.upgrade(dist_upgrade=True)
 			result = package_manager.mark(to_install, [], dry_run=True)
 			result = dict(zip(['install', 'remove', 'broken'], result))
 			MODULE.info('Package changes: %s' % (result, ))
 			result['unreachable'] = unreachable
 			result['master_unreachable'] = master_unreachable
+			result['hosts_info'] = hosts_info
+			result['problems_with_hosts'] = problems_with_hosts
+			result['serious_problems_with_hosts'] = serious_problems_with_hosts
 
 			if remove_component:
 				# remove the newly added component
@@ -648,18 +713,30 @@ class Application(object):
 		return packages
 
 	def install_master_packages_on_host(self, package_manager, function, host, username, password):
-		function = 'install-schema'
 		if function == 'update':
 			function = 'update-schema'
+		else:
+			function = 'install-schema'
 		connection = UMCConnection(host, username, password)
 		result = connection.request('appcenter/invoke', {'function' : function, 'application' : self.id, 'force' : True, 'dont_remote_install' : True})
 		if result['can_continue']:
+			all_errors = set()
+			number_failures = 0
+			number_failures_max = 20
 			while True:
-				all_errors = set()
-				result = connection.request('appcenter/progress')
-				if result is None:
-					MODULE.warn('%s: appcenter/progress returned None (BadStatusLine)' % host)
+				try:
+					result = connection.request('appcenter/progress')
+				except (HTTPException, SocketError) as e:
+					MODULE.warn('%s: appcenter/progress returned an error: %s' % (host, e))
+					number_failures += 1
+					if number_failures >= number_failures_max:
+						MODULE.error('%s: Remote App Center cannot be contacted for more than %d seconds. Maybe just a long Apache Restart? Presume failure! Check logs on remote machine, maybe installation was successful.' % number_failures_max)
+						return False
+					time.sleep(1)
 					continue
+				else:
+					# everything okay. reset "timeout"
+					number_failures = 0
 				MODULE.info('Result from %s: %r' % (host, result))
 				info = result['info']
 				steps = result['steps']
@@ -676,7 +753,7 @@ class Application(object):
 				if result['finished'] is True:
 					break
 				time.sleep(0.1)
-			return True
+			return len(all_errors) == 0
 		else:
 			MODULE.warn('%r' % result)
 			return False
@@ -715,7 +792,7 @@ class Application(object):
 				else:
 					role = 'DC Backup'
 				# ATTENTION: This message is not localised. It is parsed by the frontend to markup this message! If you change this message, be sure to do the same in AppCenterPage.js
-				package_manager.progress_state.error('Installing extension of LDAP schema for %s failed on %s %s' % (self.component_id, role, host))
+				package_manager.progress_state.error('Installing extension of LDAP schema for %s seems to have failed on %s %s' % (self.component_id, role, host))
 				if host_is_master:
 					raise # only if host_is_master!
 			finally:

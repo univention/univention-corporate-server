@@ -1,3 +1,16 @@
+univention-management-console-module-appcenter (2.0.131-1) unstable; urgency=low
+
+  * Bug #30663: If an application requires an extension of the LDAP schema,
+    the corresponding packages are installed remotely by the local App Center.
+    If the Apache web server is restarted on that remote host during the app
+    installation, this does no longer lead to an error message on the local
+    App Center.
+  * Bug #30172: Improved the confirmation dialog before installing an app by
+    listing also packages that will be updated via automatic errata updates
+    and all package changes that will be done on remote hosts.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 06 Mar 2013 18:27:22 +0100
+
 univention-management-console-module-appcenter (2.0.130-1) unstable; urgency=low
 
   * set ucr variable repository/app_center/server in postinst; Bug #30264

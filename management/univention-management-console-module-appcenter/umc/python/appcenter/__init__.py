@@ -90,6 +90,10 @@ class Instance(umcm.Base):
 		# in order to set the correct locale for Application
 		locale.setlocale(locale.LC_ALL, str(self.locale))
 
+	@simple_response
+	def version(self):
+		return Application.get_appcenter_version()
+
 	@sanitize(email=EmailSanitizer(required=True))
 	@simple_response
 	def request_new_license(self, email):
@@ -145,13 +149,25 @@ class Instance(umcm.Base):
 		self.package_manager.reopen_cache()
 		return application.to_dict(self.package_manager)
 
+	def invoke_dry_run(self, request):
+		request.options['only_dry_run'] = True
+		self.invoke(request)
+
 	@sanitize(
-			function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
-			application=StringSanitizer(minimum=1, required=True),
-			force=BooleanSanitizer(),
-			dont_remote_install=BooleanSanitizer()
-		)
+		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
+		application=StringSanitizer(minimum=1, required=True),
+		force=BooleanSanitizer(),
+		only_dry_run=BooleanSanitizer(),
+		dont_remote_install=BooleanSanitizer()
+	)
 	def invoke(self, request):
+		# ATTENTION!!!!!!!
+		# this function has to stay compatible with the very first App Center installations (Dec 2012)
+		# if you add new arguments that change the behaviour
+		# you should add a new method (see invoke_dry_run) or add a function name (e.g. install-schema)
+		# this is necessary because newer app center may talk remotely with older one
+		#   that does not understand new arguments and behaves the old way (in case of
+		#   dry_run: install application although they were asked to dry_run)
 		function = request.options.get('function')
 		send_as = function
 		if function.startswith('install'):
@@ -161,18 +177,24 @@ class Instance(umcm.Base):
 		application_id = request.options.get('application')
 		application = Application.find(application_id)
 		force = request.options.get('force')
+		only_dry_run = request.options.get('only_dry_run')
 		dont_remote_install = request.options.get('dont_remote_install')
 		only_master_packages = send_as.endswith('schema')
-		MODULE.process('Try to %s (%s) %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r.' % (function, send_as, application_id, force, only_master_packages, dont_remote_install))
+		MODULE.process('Try to %s (%s) %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, application_id, force, only_master_packages, dont_remote_install, only_dry_run))
 		try:
 			# make sure that the application cane be installed/updated
 			can_continue = True
+			serious_problems = False
 			result = {
 				'install' : [],
 				'remove' : [],
 				'broken' : [],
 				'unreachable' : [],
 				'master_unreachable' : False,
+				'serious_problems' : False,
+				'hosts_info' : {},
+				'problems_with_hosts' : False,
+				'serious_problems_with_hosts' : False,
 			}
 			if not application:
 				MODULE.process('Application not found: %s' % application_id)
@@ -185,17 +207,20 @@ class Instance(umcm.Base):
 				can_continue = False
 
 			if can_continue and function in ('install', 'update'):
-				if not only_master_packages:
-					# only_master_packages? dont need to dry_run. but be sure to add component (normally done in dry_run!)
-					result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=False, username=self._username, password=self._password)
-				if result['broken'] or result['master_unreachable'] or (result['unreachable'] and not force) or (result['remove'] and not force):
+				remove_component = only_dry_run
+				result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
+				serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
+				if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
 					MODULE.process('Remove component: %s' % application_id)
-					if function == 'update':
-						self.component_manager.remove_app(application.candidate)
-						self.component_manager.put_app(application)
-					else:
-						self.component_manager.remove_app(application)
-					self.package_manager.update()
+					if remove_component:
+						# component was not removed automatically after dry_run
+						if function == 'update':
+							self.component_manager.remove_app(application.candidate)
+							self.component_manager.put_app(application)
+						else:
+							self.component_manager.remove_app(application)
+						self.package_manager.update()
+					result['serious_problems'] = serious_problems
 					can_continue = False
 			elif can_continue and function in ('uninstall',) and not force:
 				result['remove'] = application.uninstall_dry_run(self.package_manager)
@@ -203,7 +228,7 @@ class Instance(umcm.Base):
 			result['can_continue'] = can_continue
 			self.finished(request.id, result)
 
-			if can_continue:
+			if can_continue and not only_dry_run:
 				def _thread(module, application, function):
 					with module.package_manager.locked(reset_status=True, set_finished=True):
 						with module.package_manager.no_umc_restart(exclude_apache=True):

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require*/
+/*global define require console*/
 
 define([
 	"dojo/_base/declare",
@@ -48,6 +48,7 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/widgets/ExpandingTitlePane",
+	"umc/widgets/TitlePane",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ContainerWidget",
@@ -55,7 +56,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, query, domClass, Memory, topic, regexp, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
+], function(declare, lang, array, when, query, domClass, Memory, topic, regexp, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
 
 	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
@@ -424,6 +425,47 @@ define([
 			);
 		},
 
+		_package_changes_one: function(changes, label) {
+			var txt = '';
+			var details;
+			if (changes === undefined || changes.length) {
+				if (changes === undefined) {
+					details = '<div>' + _('Unknown') + '</div>';
+				} else {
+					details = '<ul><li>' + changes.join('</li><li>') + '</li></ul>';
+				}
+				txt = '<p>' + label + details + '</p>';
+			}
+			return txt;
+		},
+
+		_package_changes: function(install, remove, broken, incompatible, opened, host) {
+			var txt = '';
+			txt += this._package_changes_one(install, _('The following packages will be installed or upgraded:'));
+			txt += this._package_changes_one(remove, _('The following packages will be removed:'));
+			txt += this._package_changes_one(broken, _('This operation causes problems in the following packages that cannot be resolved:'));
+			if (txt === '') {
+				txt = '<p>' + _('No changes') + '</p>';
+			}
+			if (incompatible) {
+				txt += '<div>' + _('The version of the remote App Center is <strong>incompatible</strong> with the local one. Please update your hosts.') + '</div>';
+			}
+			var install_count = install ? install.length : _('Unknown');
+			var remove_count = remove ? (remove.length === 0 ? 0 : '<strong>' + remove.length + '</strong>') : _('Unknown');
+			var broken_count = broken ? (broken.length === 0 ? 0 : '<strong>' + broken.length + '</strong>') : _('Unknown');
+			var incompatible_headline = incompatible ? ', <strong>' + _('incompatible') : '</strong>';
+			var showTitle = _('Show changes on %s (installed/upgraded: %s, removed: %s, erroneous: %s%s)', host, install_count, remove_count, broken_count, incompatible_headline);
+			var hideTitle = _('Hide changes on %s (installed/upgraded: %s, removed: %s, erroneous: %s%s)', host, install_count, remove_count, broken_count, incompatible_headline);
+			var changes = new TitlePane({
+				title: showTitle,
+				open: opened,
+				content: txt,
+				onHide: function() { changes.set('title', showTitle); },
+				onShow: function() { changes.set('title', hideTitle); }
+			});
+			return changes;
+		},
+
 		_call_installer: function(func, app, force) {
 			var verb = '';
 			var verb1 = '';
@@ -440,9 +482,11 @@ define([
 				verb = _("upgrade");
 				verb1 = _("upgrading");
 				break;
+			default:
+				console.warn(func, 'is not a known function');
+				break;
 			}
 
-			var confirmationRequired = false;
 			var commandArguments = {
 				'function': func,
 				'application': app.id,
@@ -454,23 +498,24 @@ define([
 				lang.hitch(this, function(data) {
 					this.standby(false);
 					var result = data.result;
-					var txt = '';
+					var confirmationRequired = false;
+					var content = [];
 					var label = '';
 					var headline = '';
 					var buttons = [];
 
 					if (!result.can_continue) {
 						confirmationRequired = true;
-						var mayContinue = true;
-						if (result.remove.length) {
-							label = _('The following packages will be removed:');
-							txt += '<p>' + label + '<ul><li>' + result.remove.join('</li><li>') + '</li></ul></p>';
-						}
-						if (result.broken.length) {
-							label = _('This operation causes problems in the following packages that cannot be resolved:');
-							txt += '<p>' + label + '<ul><li>' + result.broken.join('</li><li>') + '</li></ul></p>';
-							mayContinue = false;
-						}
+						var mayContinue = !result.serious_problems;
+						var no_host_info = true;
+						tools.forIn(result.hosts_info, lang.hitch(function() {
+							no_host_info = false;
+							return false;
+						}));
+						content.push(this._package_changes(result.install, result.remove, result.broken, false, no_host_info, _('this host')));
+						tools.forIn(result.hosts_info, lang.hitch(this, function(host, host_info) {
+							content.push(this._package_changes(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host));
+						}));
 						if (result.unreachable.length) {
 							if (app.is_master) {
 								label = _('The server tried to connect to DC Backups.');
@@ -478,13 +523,15 @@ define([
 								label = _('The server tried to connect to DC Master and DC Backups.');
 							}
 							label += ' ' + _('The following hosts cannot be reached:');
-							txt += '<p>' + label + '<ul><li>' + result.unreachable.join('</li><li>') + '</li></ul></p>';
-							if (result.master_unreachable) {
-								mayContinue = false;
-							} else {
+							content.push(new Text({
+								content: label + '<ul><li>' + result.unreachable.join('</li><li>') + '</li></ul>'
+							}));
+							if (!result.master_unreachable) {
 								var cmdLine = lang.replace('univention-add-app {component_id} -m', {component_id: app.candidate_component_id || app.component_id});
 								var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following command as root on all of these backup servers <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
-								txt += '<p>' + commandHint + '</p>';
+								content.push(new Text({
+									content: commandHint
+								}));
 							}
 						}
 						if (mayContinue) {
@@ -512,7 +559,34 @@ define([
 					}
 
 					if (confirmationRequired) {
-						dialog.confirm('<div style="max-width: 550px;"><p><strong>' + headline + '</strong></p>' + txt + '</div>', buttons);
+						var container = new ContainerWidget({});
+						var titlePanes = [];
+						array.forEach(content, function(widget) {
+							container.addChild(widget);
+							if (tools.inheritsFrom(widget, 'umc.widgets.TitlePane')) {
+								titlePanes.push(widget);
+							}
+						});
+						var confirmDialog = new ConfirmDialog({
+							title: headline,
+							style: {maxWidth: 550},
+							message: container,
+							options: buttons
+						});
+						array.forEach(titlePanes, function(titlePane) {
+							titlePane._wipeIn.on('End', function() {
+								confirmDialog._relativePosition = null;
+								confirmDialog._position();
+							});
+							titlePane._wipeOut.on('End', function() {
+								confirmDialog._relativePosition = null;
+								confirmDialog._position();
+							});
+						});
+						confirmDialog.on('confirm', function() {
+							confirmDialog.close();
+						});
+						confirmDialog.show();
 					} else {
 						var progressMessage = lang.replace(_("Going to {verb} Application '{name}'"),
 										   {verb: verb, name: app.name});
@@ -520,7 +594,7 @@ define([
 						this._switch_to_progress_bar(progressMessage, app, func);
 					}
 				}),
-				lang.hitch(this, function(data) {
+				lang.hitch(this, function() {
 					this.standby(false);
 				})
 			);
@@ -929,14 +1003,14 @@ define([
 		},
 
 		_markupErrors: function() {
-			var installMasterPackagesOnHostFailedRegex = (/Installing extension of LDAP schema for (.+) failed on (DC Master|DC Backup) (.+)/);
+			var installMasterPackagesOnHostFailedRegex = (/Installing extension of LDAP schema for (.+) seems to have failed on (DC Master|DC Backup) (.+)/);
 			var errors = array.map(this._progressBar._errors, function(error) {
 				var match = installMasterPackagesOnHostFailedRegex.exec(error);
 				if (match) {
 					var component = match[1];
 					var role = match[2];
 					var host = match[3];
-					error = '<p>' + _('Installing the extension of the LDAP schema on %s failed.', '<strong>' + host + '</strong>') + '</p>';
+					error = '<p>' + _('Installing the extension of the LDAP schema on %s seems to have failed.', '<strong>' + host + '</strong>') + '</p>';
 					if (role == 'DC Backup') {
 						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that backup system.', '<pre>univention-add-app ' + component + ' -m</pre>') + '</p>';
 					}

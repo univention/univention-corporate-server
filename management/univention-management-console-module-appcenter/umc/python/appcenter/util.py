@@ -37,7 +37,7 @@ import urllib2
 
 # related third party
 #import psutil # our psutil is outdated. reenable when methods are supported
-from httplib import HTTPSConnection, HTTPException, BadStatusLine
+from httplib import HTTPSConnection, HTTPException
 from simplejson import loads, dumps
 
 # univention
@@ -129,12 +129,17 @@ class UMCConnection(object):
 		data = self.build_data(data, flavor)
 		con = self.get_connection()
 		con.request('POST', '/umcp/command/%s' % url, data, headers=self._headers)
-		try:
-			response = con.getresponse()
-		except BadStatusLine:
-			return None
+		response = con.getresponse()
 		if response.status != 200:
-			error_message = '%s on %s: %s' % (response.status, self._host, response.read())
+			error_message = '%s on %s (%s): %s' % (response.status, self._host, url, response.read())
+			if response.status == 403:
+				# 403 is either command is unknown
+				#   or command is known but forbidden
+				# as the user was allowed to invoke the same command
+				# on the local host, it means that the command
+				# is unknown (older app center)
+				MODULE.warn(error_message)
+				raise NotImplementedError
 			raise HTTPException(error_message)
 		content = response.read()
 		return loads(content)['result']
