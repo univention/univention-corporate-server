@@ -1,3 +1,9 @@
+univention-dojo (6.0.12-1) unstable; urgency=low
+
+  * Bug #30625: added missing library files
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 06 Mar 2013 17:54:58 +0100
+
 univention-dojo (6.0.11-1) unstable; urgency=low
 
   * Bug #30625: updated dgrid and put-selector version to latest release
