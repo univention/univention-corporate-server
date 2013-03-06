@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.212-1) unstable; urgency=low
+
+  * Bug #30664: fixed CSS rule for enforcing UMC width
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 06 Mar 2013 11:22:21 +0100
+
 univention-management-console-frontend (2.0.211-1) unstable; urgency=low
 
   * Bug #25753: fixed CSS issues and problems with menu icons

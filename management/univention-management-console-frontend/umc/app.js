@@ -817,7 +817,7 @@ define([
 			// enforce a minimal height of 550px
 			var styleStr = 'min-height: 550px;';
 			if (tools.status('width')) {
-				styleStr += tools.status('width') + 'px;';
+				styleStr += 'width: ' + tools.status('width') + 'px;';
 			}
 			this._topContainer = new BorderContainer( {
 				'class': 'umcTopContainer',
