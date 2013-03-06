@@ -72,6 +72,7 @@ s%dojo\.xhrPost%/*REQUIRE:"dojo/request"*/ /*TODO*/ request%g
 s%dojo\.xhrGet%/*REQUIRE:"dojo/request"*/ /*TODO*/ request%g
 s%dojo\.cookie%/*REQUIRE:"dojo/cookie"*/ cookie%g
 s%dojo\.date\.locale\.format%/*REQUIRE:"dojo/date/locale"*/ locale.format%g
+s%dojo\.date\.locale\.parse%/*REQUIRE:"dojo/date/locale"*/ locale.parse%g
 s%this._\>%_%g
 s%umc\.\(tools\|dialog\|render\|store\)%\1%g
 s%^/\*global.*\<dojo\>.*\*/%/*global define*/%g
