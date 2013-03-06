@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.138-1) unstable; urgency=low
+
+  * Fixed Mac OS X search filter (Bug #15729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 09:22:27 +0100
+
 univention-directory-manager-modules (8.0.137-1) unstable; urgency=low
 
   * Make computer name of IP managed clients changeable (Bug #7016)

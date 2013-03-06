@@ -656,13 +656,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		filter=univention.admin.filter.conjunction('&',[
 			univention.admin.filter.expression('objectClass', 'univentionHost'),
 			univention.admin.filter.expression('objectClass', 'univentionMacOSClient'),
-			univention.admin.filter.conjunction('|', [
-				univention.admin.filter.expression('objectClass', 'posixAccount'),
-				univention.admin.filter.conjunction('&', [
-					univention.admin.filter.expression('objectClass', 'krb5KDCEntry'),
-					univention.admin.filter.expression('objectClass', 'krb5Principal'),
-					])
-				])
 			])
 
 		if filter_s:
