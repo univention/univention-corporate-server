@@ -45,6 +45,7 @@ define([
 	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TextBox",
+	"umc/widgets/TextArea",
 	"umc/widgets/HiddenInput",
 	"umc/widgets/ComboBox",
 	"umc/widgets/MultiInput",
@@ -56,7 +57,7 @@ define([
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
 ], function(declare, lang, array, Memory, Observable, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, ExpandingTitlePane, StandbyMixin,
-	TextBox, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, InterfaceGrid, DriveGrid, types, _) {
+	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, InterfaceGrid, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ TabContainer, StandbyMixin ], {
 		nested: true,
@@ -124,7 +125,7 @@ define([
 					})
 				}, {
 					name: 'description',
-					type: TextBox,
+					type: TextArea,
 					label: _('Description')
 				}],
 				buttons: [{

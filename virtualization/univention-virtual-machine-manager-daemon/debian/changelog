@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (2.0.31-1) unstable; urgency=low
+
+  * Display the domain description field as TextArea, also display the field
+  	in the domain tooltip on the domain overview; Bug #24682
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2013 09:39:21 +0100
+
 univention-virtual-machine-manager-daemon (2.0.30-3) unstable; urgency=low
 
   * Disallow snapshots with floppy images (Bug #30472)

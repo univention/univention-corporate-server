@@ -937,9 +937,10 @@ define([
 
 			if ( undefined !== item.state ) {
 				var tooltip = new Tooltip( {
-					label: lang.replace( _( 'State: {state}<br>Server: {node}<br>{vnc_port}' ), {
+					label: lang.replace( _( 'State: {state}<br>Server: {node}<br>Description: {description}<br>{vnc_port}' ), {
 						state: types.getDomainStateDescription( item ),
 						node: item.nodeName,
+						description: entities.encode(item.description).replace('\n', '<br>'),
 						vnc_port: item.vnc_port == -1 ? '' : _( 'VNC-Port: %s', item.vnc_port)
 					} ),
 					connectId: [ widget.domNode ],
