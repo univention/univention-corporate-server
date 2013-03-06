@@ -1,3 +1,9 @@
+univention-dojo (6.0.11-1) unstable; urgency=low
+
+  * Bug #30625: updated dgrid and put-selector version to latest release
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 06 Mar 2013 17:43:59 +0100
+
 univention-dojo (6.0.10-1) unstable; urgency=low
 
   * Bug #30167: updated dojo version from 1.8.1 to 1.8.3
