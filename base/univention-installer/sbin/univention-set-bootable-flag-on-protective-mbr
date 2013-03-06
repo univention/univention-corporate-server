@@ -1,0 +1,97 @@
+#!/usr/bin/python2.6
+# 
+# Helper script to the bootable flag for a protective MBR
+#
+# Copyright 2012-2013 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import os
+import struct
+from optparse import OptionParser
+
+def fix_boot_flag_in_protective_mbr(device):
+	"""
+	This function reads the first 512 bytes of specified device and
+	adds the bootable flag to all partitions with partition type 0xEE.
+	The disk gets changed directly!
+	returns True, if MBR has been modified, otherwise False.
+	"""
+	def parse_entry(mbr, partition_number):
+		partition = struct.unpack('BBBBBBBB8x',mbr[446+partition_number*16:446+(partition_number+1)*16])
+		return { 'flag': partition[0],
+				 'type': partition[4],
+				 'HSCstart': partition[1:4],
+				 'HSCend': partition[5:8] }
+
+	def get_modfied_entry_with_boot_flag(mbr, partition_number):
+		"""
+		Set bootable flag (bit 7) in flag byte in specified MBR partition entry.
+		"""
+		mbr = mbr[:446+partition_number*16] + \
+			  chr(ord(mbr[446+partition_number*16]) | 0x80) + \
+			  mbr[446+partition_number*16+1:]
+		return mbr
+
+	if not os.path.exists(device):
+		print 'fix_boot_flag_in_protective_mbr: device %s does not exist' % device
+		return False
+	# get MBR / 512 bytes of device
+	try:
+		data = open(device, 'r').read(512)
+	except (IOError, OSError), e:
+		print 'fix_boot_flag_in_protective_mbr: exception during read on device %s: %s' % (device, str(e))
+		return False
+
+	# iterate over all partitions
+	changed = False
+	for i in xrange(0, 4):
+		# if partition type is 0xEE...
+		entry = parse_entry(data, i)
+		print 'fix_boot_flag_in_protective_mbr: entry[%d]=%s' % (i, str(entry))
+		if entry['type'] == 0xEE:
+			print 'fix_boot_flag_in_protective_mbr: found protective partition'
+			# then set bootable flag
+			data = get_modfied_entry_with_boot_flag(data, i)
+			changed = True
+
+	if changed:
+		try:
+			open(device, 'w').write(data)
+		except (IOError, OSError), e:
+			print 'fix_boot_flag_in_protective_mbr: exception during write on device %s: %s' % (device, str(e))
+			return False
+	return changed
+
+p = OptionParser()
+p.add_option("-p", action="store", type="string", dest="partition", help="The partition, on which the bootable flag should be set")
+
+opt, args = p.parse_args()
+
+if not opt.partition:
+	p.error("You need to specify the parition, which should be marked as bootable, e.g. /dev/sda")
+
+fix_boot_flag_in_protective_mbr(opt.partition)

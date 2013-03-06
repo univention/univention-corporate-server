@@ -1,3 +1,10 @@
+univention-installer (8.0.45-1) unstable; urgency=low
+
+  * added univention-set-bootable-flag-on-protective-mbr to
+    univention-installer-modules (Bug #29449) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 06 Mar 2013 14:08:02 +0100
+
 univention-installer (8.0.44-1) unstable; urgency=low
 
   * use "Ctrl" instead of "Strg" in original help texts (Bug #30528)
