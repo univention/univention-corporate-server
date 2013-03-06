@@ -1203,8 +1203,7 @@ define([
 					type: 'CheckBox',
 					label: _('Delete referring objects.'),
 					name: 'deleteReferring',
-					value: cleanup,
-					style: 'width:auto'
+					value: cleanup
 				}],
 				buttons: [{
 					name: 'submit',
