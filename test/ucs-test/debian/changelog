@@ -1,3 +1,9 @@
+ucs-test (3.0.25-5) unstable; urgency=low
+
+  * Added test case for Windows to Mac transformation (Bug #29998)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 10:01:08 +0100
+
 ucs-test (3.0.25-4) unstable; urgency=low
 
   * Added a test for adding nagios support to computer objects
