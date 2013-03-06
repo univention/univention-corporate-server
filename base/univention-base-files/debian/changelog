@@ -1,3 +1,12 @@
+univention-base-files (2.0.14-1) unstable; urgency=low
+
+  * added UCR variable ntp/tinker/panic, which can be used to configure the
+    maximum allowed time difference (in seconds) to the ntp server until the
+    ntpd stops synchronising. It is set to 0 in postinst in order to allow
+    any time difference per default (Bug #25752)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 06 Mar 2013 15:50:12 +0100
+
 univention-base-files (2.0.13-3) precise; urgency=low
 
   * Adjust strata of ntp servers as a workaround for Windows 7 w32tm

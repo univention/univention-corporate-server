@@ -471,6 +471,12 @@ Description[en]=Activate Signed NTP
 Type=bool
 Categories=system-base
 
+[ntp/tinker/panic]
+Description[de]=Maximale Zeitdifferenz zum NTP Server in Sekunden die synchronisiert wird (für beliebige Zeitdifferenz auf "0" setzen)
+Description[en]=Maximum time difference to the NTP server in seconds which is synchronized (set to "0" for any time difference)
+Type=int
+Categories=system-base
+
 [timeserver]
 Description[de]=Der erste NTP-Server
 Description[en]=The first NTP server
