@@ -58,10 +58,11 @@ for i in 0 3 6 12; do
 
 	ad_wait_for_synchronization; fail_bool 0 110
 
-	for b in "$B00" "$B01" "$B02" "$B03" "$B04"; do
-		UDM_users_user_username="$b"
-		udm_exists "users/user"; fail_bool 1 110
-	done
+	# TODO: this sould be re-activated
+	#for b in "$B00" "$B01" "$B02" "$B03" "$B04"; do
+	#	UDM_users_user_username="$b"
+	#	udm_exists "users/user"; fail_bool 1 110
+	#done
 done
 
 ad_set_sync_mode "$SYNCMODE"
