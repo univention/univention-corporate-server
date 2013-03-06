@@ -915,7 +915,7 @@ define([
 			}));
 			this._headerRight.addChild(new DropDownButton({
 				id: 'umcMenuSettings',
-				iconClass: tools.getIconClass('umc-menu-settings', 24),
+				iconClass: 'icon24-umc-menu-settings',
 				dropDown: this._settingsMenu
 			}));
 
@@ -956,14 +956,14 @@ define([
 			}));
 			this._headerRight.addChild(new DropDownButton({
 				id: 'umcMenuHelp',
-				iconClass: tools.getIconClass('umc-menu-help', 24),
+				iconClass: 'icon24-umc-menu-help',
 				dropDown: this._helpMenu
 			}));
 
 			// the logout button
 			this._headerRight.addChild(new Button({
 				id: 'umcMenuLogout',
-				iconClass: tools.getIconClass('umc-menu-logout', 24),
+				iconClass: 'icon24-umc-menu-logout',
 				onClick: lang.hitch(this, function() {
 					this.relogin();
 				})

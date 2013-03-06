@@ -119,28 +119,15 @@ $(themesDir)/umc/icons: $(themesDir)/umc
 	@# scale all icons
 	@# treat umc-menu* icons differently and create a version with different
 	@# background for the hover effect
-	for s in 16x16 24x24 50x50; do \
-		path="$@/$$s"; \
+	for s in 16 24 50; do \
+		path="$@/$${s}x$${s}"; \
 		mkdir -p "$$path"; \
 		for isrc in icons/*.svg*; do \
 			name="$${isrc##*/}"; \
 			name="$${name%.*}"; \
-			suffixes=".png"; \
-			if [ "$${name#umc-menu}" != "$${name}" ]; then \
-				suffixes=".png -over.png"; \
-			fi; \
-			for isuffix in $$suffixes; do \
-				dest="$$path/$${name}$$isuffix"; \
-				echo "creating $$dest"; \
-				bgcolor=none; \
-				if [ "$${name#umc-menu}" != "$${name}" ]; then \
-					bgcolor="#575759"; \
-					if [ "$$isuffix" = "-over.png" ]; then \
-						bgcolor="#7e7e81"; \
-					fi; \
-				fi; \
-				convert -background "$$bgcolor" "$$isrc" -resize $$s "$$dest"; \
-			done; \
+			dest="$$path/$${name}.png"; \
+			echo "creating $$dest"; \
+			convert -background none "$$isrc" -resize x$$s "$$dest"; \
 		done; \
 	done
 
