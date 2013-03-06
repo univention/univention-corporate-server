@@ -1,3 +1,12 @@
+ucs-test (3.0.25-8) unstable; urgency=low
+
+  * The user import test cases for the connector have been adjusted. The
+    test case 08sync_create_and_modify_ad_to_ucs has been removed
+    because the code now checks only the password change in the way UCS
+    to AD/S4. For the main problem see Bug #18501 (Bug #30317)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 14:38:07 +0100
+
 ucs-test (3.0.25-7) unstable; urgency=low
 
   * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317) 
