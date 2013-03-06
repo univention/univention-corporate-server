@@ -1,3 +1,10 @@
+ucs-test (3.0.25-4) unstable; urgency=low
+
+  * Added a test for adding nagios support to computer objects
+    (Bug #30615)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 09:24:17 +0100
+
 ucs-test (3.0.25-3) unstable; urgency=low
 
   * Test if computer objects can be created and check the password
