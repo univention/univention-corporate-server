@@ -8,13 +8,11 @@ computers/domaincontroller_master
 computers/domaincontroller_slave
 computers/ipmanagedclient
 computers/macos
-computers/managedclient
 computers/memberserver
-computers/mobileclient
-computers/thinclient
 computers/linux
 computers/ubuntu
-computers/windows"
+computers/windows
+computers/windows_domaincontroller"
 
 udm_get_identifier_attribute () {
 	local module="$1"

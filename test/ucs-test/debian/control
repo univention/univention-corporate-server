@@ -261,15 +261,15 @@ Description: Test scripts for Nagios
 # This package includes some scripts for testing the functionality of the DHCP
 # services of the UDM.
 
-#Package: ucs-test-udm-computers
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for the computers/* modules of UDM.
-# This package includes some scripts for testing the functionality of the
-# computers of the UDM.
+Package: ucs-test-udm-computers
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for the computers/* modules of UDM.
+ This package includes some scripts for testing the functionality of the
+ computers of the UDM.
 
 #Package: ucs-test-udm-containers
 #Architecture: all
@@ -361,7 +361,7 @@ Depends:
  ucs-test-s4connector,
 # ucs-test-pkgdb,
 # ucs-test-udm-dns,
-# ucs-test-udm-computers,
+ ucs-test-udm-computers,
 # ucs-test-udm-containers,
 # ucs-test-kolab,
  ucs-test-updater,

@@ -1,3 +1,10 @@
+ucs-test (3.0.25-3) unstable; urgency=low
+
+  * Test if computer objects can be created and check the password
+    modification of computer clients (Bug #30183)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 08:06:13 +0100
+
 ucs-test (3.0.25-2) unstable; urgency=low
 
   * Added two simple connector tests, create 10 users and modify them
