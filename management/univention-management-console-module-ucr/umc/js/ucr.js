@@ -397,8 +397,8 @@ define([
 					connectId: [widget.domNode],
 					position: ['below']
 				});
+				widget.own(tooltip);
 			}
-
 			return widget;
 		}
 	});
