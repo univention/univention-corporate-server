@@ -23,7 +23,7 @@ ad_wait_for_synchronization; fail_bool 0 110
 AD_DN="CN=$UDM_computers_windows_name,CN=computers,$(ad_get_base)"
 ad_exists "$AD_DN"; fail_bool 0 110
 
-univention-directory-manager 'computers/windows' modify --dn "cn=$UDM_computers_windows_name,cn=computers,dc=deadlock50,dc=local" --set operatingSystem="Mac OS X" || fail_test 110
+univention-directory-manager 'computers/windows' modify --dn "cn=$UDM_computers_windows_name,cn=computers,$(ucr get ldap/base)" --set operatingSystem="Mac OS X" || fail_test 110
 
 ad_wait_for_synchronization; fail_bool 0 110
 

@@ -1,3 +1,10 @@
+ucs-test (3.0.25-11) unstable; urgency=low
+
+  * 52_s4connector/31_macos_transformation: use ucr variable for
+    ldap/base instead of static value (Bug #29998)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 06 Mar 2013 19:21:14 +0100
+
 ucs-test (3.0.25-10) unstable; urgency=low
 
   * Don't fail if the clean up failed (Bug #30317)
