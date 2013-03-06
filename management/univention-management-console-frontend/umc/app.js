@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/kernel",
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/window",
@@ -69,7 +70,7 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, array, win, win2, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domClass, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, TouchScrollContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, win, win2, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domClass, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -932,7 +933,10 @@ define([
 				label: _('Feedback'),
 				onClick : function() {
 					topic.publish('/umc/actions', 'menu-univention', 'feedback');
-					var w = window.open( 'http://www.univention.de/en/products/maintenance/product-feedback/', 'umcFeedback' );
+					var url = lang.replace('http://www.univention.de/{0}/products/maintenance/product-feedback/', [
+						kernel.locale.indexOf('de-') === 0 ? 'de' : 'en'
+					]);
+					var w = window.open(url, 'umcFeedback');
 					w.focus();
 				}
 			}));

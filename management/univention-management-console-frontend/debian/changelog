@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.216-1) unstable; urgency=low
+
+  * Bug #25753: adapted feedback URL
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 06 Mar 2013 14:47:16 +0100
+
 univention-management-console-frontend (2.0.215-1) unstable; urgency=low
 
   * fix possibility to expand nodes after widgets.Tree.reload(); Bug #29210
