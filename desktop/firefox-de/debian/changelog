@@ -1,3 +1,10 @@
+firefox-de (1:17.0.3esr-5) unstable; urgency=low
+
+  * Update to Firefox 17.0.3esr (Bug #29185)
+  * Downloaded from http://www.mozilla.org/en-US/firefox/organizations/all.html	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 07 Mar 2013 12:55:42 +0100
+
 firefox-de (1:10.0.9esr-3) unstable; urgency=low
 
   * Update to Firefox 10.0.9esr (Bug #28727)
