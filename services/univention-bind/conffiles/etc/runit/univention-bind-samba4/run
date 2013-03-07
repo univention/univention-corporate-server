@@ -42,6 +42,9 @@ chown root:bind /var/run/named >/dev/null 2>&1 || true
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-OPTS="-c /etc/bind/named.conf.samba4 -f"
+debug_level="$(ucr get dns/debug/level)"
+test -z $debug_level && debug_level=0
+
+OPTS="-c /etc/bind/named.conf.samba4 -f -d $debug_level"
 
 exec /usr/sbin/named $OPTS

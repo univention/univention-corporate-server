@@ -69,3 +69,15 @@ Description[de]=Definiert, ob Bind auch über IPv6-Sockets ansprechbar ist (Stan
 Description[en]=Defines if the bind service should listen on IPv6 sockets (Default: yes)
 Type=bool
 Categories=service-bind
+
+[dns/debug/level]
+Description[de]=Debug Level des DNS Server (Standard: 0)
+Description[en]=Debug level of DNS server (Default: 0)
+Type=int
+Categories=service-bind
+
+[dns/dlz/debug/level]
+Description[de]=Debug Level für das Samba4-DLZ-Modul des DNS-Server (Standard: 0)
+Description[en]=Debug level for the Samba 4 dlz module of the DNS server (Default: 0)
+Type=int
+Categories=service-bind

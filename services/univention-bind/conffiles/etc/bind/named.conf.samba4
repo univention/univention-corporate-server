@@ -24,6 +24,15 @@ if configRegistry.is_true('dns/ipv6', True ):
 print '\tlisten-on-v6 { %s; };' % val
 @!@};
 
+logging {
+	category default{ default_syslog; };
+	channel default_syslog {
+		syslog daemon;		# send to syslog's daemon facility
+		severity dynamic;	# log at the server's current debug level
+	};
+};
+
+
 @!@
 if configRegistry.get('dns/forwarder1') or configRegistry.get('dns/forwarder2') or configRegistry.get('dns/forwarder3'):
 	print '\n# Found a forwarder in ucr variables, using forwarder in zone ".".'
@@ -60,7 +69,7 @@ include "/etc/bind/local-predlz.conf.samba4";
 
 @!@
 print '''dlz "samba4.zone" {
-	database "dlopen /usr/lib/samba/bind9/dlz_bind9.so {
+	database "dlopen /usr/lib/samba/bind9/dlz_bind9.so -d %(dns/dlz/debug/level)s {
 			/*
 			 * update-policy {
 			 * 		grant %(kerberos/realm)s ms-self * A AAAA;

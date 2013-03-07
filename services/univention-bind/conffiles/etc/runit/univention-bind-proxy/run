@@ -40,6 +40,9 @@ chown bind:bind /etc/bind/rndc.key
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-OPTS="-c /etc/bind/named.conf.proxy -u bind -f"
+debug_level="$(ucr get dns/debug/level)"
+test -z $debug_level && debug_level=0
+
+OPTS="-c /etc/bind/named.conf.proxy -u bind -f -d $debug_level"
 
 exec /usr/sbin/named $OPTS

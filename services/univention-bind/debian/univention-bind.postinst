@@ -52,7 +52,9 @@ univention-config-registry set 'bind/autostart?yes' \
                                'dns/ipv6?yes' \
                                'nameserver/external?false' \
                                'dns/allow/query?any' \
-                               'dns/allow/transfer?any'
+                               'dns/allow/transfer?any' \
+                               'dns/dlz/debug/level?0' \
+                               'dns/debug/level?0'
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10; then
 	# Update to UCS 3.0

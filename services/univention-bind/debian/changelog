@@ -1,3 +1,10 @@
+univention-bind (7.0.13-1) unstable; urgency=low
+
+  * Added debug level variables dns/debug/level and dns/dlz/debug/level
+    (Bug #29652)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 07 Mar 2013 08:23:08 +0100
+
 univention-bind (7.0.12-1) unstable; urgency=low
 
   * Give the permissions for rndc.key to root if s4 is used as backend.

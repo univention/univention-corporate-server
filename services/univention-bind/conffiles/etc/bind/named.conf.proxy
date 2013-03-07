@@ -26,7 +26,12 @@ if configRegistry.is_true('dns/ipv6', True ):
 print '\tlisten-on-v6 { %s; };' % val
 @!@};
 logging {
-   category lame-servers { null; };
+	category lame-servers { null; };
+	category default{ default_syslog; };
+	channel default_syslog {
+		syslog daemon;		# send to syslog's daemon facility
+		severity dynamic;	# log at the server's current debug level
+	};
 };
 @!@
 if configRegistry.get('dns/forwarder1') or configRegistry.get('dns/forwarder2') or configRegistry.get('dns/forwarder3'):
