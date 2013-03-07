@@ -96,6 +96,7 @@ class Domains( object ):
 											'vnc' : domain[ 'vnc' ],
 											'vnc_port' : domain[ 'vnc_port' ],
 											'suspended' : bool( domain[ 'suspended' ] ),
+											'description': domain['description'],
 											'node_available' : domain[ 'node_available' ] } )
 				self.finished( request.id, domain_list )
 			else:

@@ -797,7 +797,7 @@ class Node(PersistentCached):
 					'vnc': pd.graphics and pd.graphics[0].type == Graphic.TYPE_VNC and pd.graphics[0].listen == '0.0.0.0',
 					'vnc_port': pd.graphics[0].port if pd.graphics else -1,
 					'suspended': pd.suspended,
-					'description': pd.annotations.get('description'),
+					'description': descr,
 					'node_available': self.pd.last_try == self.pd.last_update
 					})
 
