@@ -138,7 +138,7 @@ define([
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,
-				sortIndex: '-3',
+				sortIndex: -3,
 				query: {
 					category: 'all',
 					pattern: '*'
