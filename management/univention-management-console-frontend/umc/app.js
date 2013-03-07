@@ -675,6 +675,27 @@ define([
 					this._overviewPage.addNote( _( 'This system has been updated recently. Please visit the <a %s>Reboot Module</a> and reboot this system to finish the update.', link_reboot ) );
 				}
 
+				// check join status
+				if (this.getModule('join')) {
+					all([
+						tools.umcpCommand('join/joined'),
+						tools.umcpCommand('join/scripts/query')
+					]).then(
+						lang.hitch(this, function(data) {
+							var systemJoined = data[0].result;
+							var allScriptsConfigured = array.every(data[1].result, function(item) {
+								return item.configured;
+							});
+							var joinModuleLink = '<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'join\')"';
+							if (!systemJoined) {
+								this._overviewPage.addNote(_('The system seems not to be joined. Please visit <a %s>Domain Join Module</a> to join the system.', joinModuleLink));
+							} else if (!allScriptsConfigured) {
+								this._overviewPage.addNote(_('Not all installed components have been joined. Please visit <a %s>Domain Join Module</a> to join the remaining components.', joinModuleLink));
+							}
+						})
+					);
+				}
+
 				// helper function for rendering a category
 				var _renderCategory = function(icat) {
 					// ignore empty categories
