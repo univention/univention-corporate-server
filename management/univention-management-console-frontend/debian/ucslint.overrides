@@ -3,6 +3,7 @@
 0010-2: tests/post.sh
 0010-2: css/dijit/themes/umc/compile.js
 0010-2: umc/widgets/Tree.js
+0010-2: tmp/dgrid/test/data/createIndex.js
 0010-2: tmp/dojo/tests/io/upload.cgi
 0010-2: tmp/dojo/tests/_base/loader/i18n-exhaustive/i18n-test/build-test-targets.sh
 0010-2: tmp/dojox/storage/buildFlashStorage.sh

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.218-1) unstable; urgency=low
+
+  * Fix ucslint.overrides (Bug #29489)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 07 Mar 2013 16:41:39 +0100
+
 univention-management-console-frontend (2.0.217-1) unstable; urgency=low
 
   * Display a notification on the overview page about the current join status
