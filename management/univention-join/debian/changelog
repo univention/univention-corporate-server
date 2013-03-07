@@ -1,3 +1,9 @@
+univention-join (5.0.35-1) unstable; urgency=low
+
+  * fix wording; Bug #27792, Bug #30112
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2013 15:50:00 +0100
+
 univention-join (5.0.34-1) unstable; urgency=low
 
   * fix typo; Bug #27792, Bug #30112

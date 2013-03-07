@@ -182,7 +182,7 @@ def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFu
 			# parse output... first check for errors
 			m = regError.match(line)
 			if m:
-				error_handler(_('The system join process could not be completed: %s. More details can be found in the log file /var/log/univention/join.log. Please retry after resolving any conflicting issues.') % m.groupdict().get('message'))
+				error_handler(_( "The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry after resolving any conflicting issues.") % m.groupdict().get('message'))
 				continue
 
 			# check for currently called join script
@@ -215,7 +215,8 @@ def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFu
 			success = False
 		elif failedJoinScripts:
 			MODULE.warn('The following join scripts could not be executed: %s' % failedJoinScripts)
-			error_handler(_('Some join scripts could not be executed. More details can be found in the log file /var/log/univention/join.log. Please retry to execute the join scripts after resolving any conflicting issues.'))
+			error_handler(_('Some join scripts could not be executed. More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute the join scripts after resolving any conflicting issues.'))
+
 			success = False
 		return success
 	finally:
@@ -387,10 +388,13 @@ class Instance(Base):
 
 		scripts, username, password, force = (request.options['scripts'], request.options.get('username'), request.options.get('password'), request.options.get('force', False))
 
+		# sort scripts
+		scripts.sort(key=lambda i: int(re.match('^(\d+)', i).group()))
+
 		def _thread():
 			# reset progress state and lock against other join processes
 			self.progress_state.reset()
-			self.progress_state.component = _('Running join scripts...')
+			self.progress_state.component = _('Authentication')
 			self._lock()
 			return run_join_scripts(
 				scripts, force, username, password,

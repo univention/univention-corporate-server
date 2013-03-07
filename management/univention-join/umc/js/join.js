@@ -86,7 +86,7 @@ define([
 			this.addChild(this._titlePane);
 
 			this._grid = new JoinGrid({
-				_serverRole: this._serverRole
+				sortIndex: 2,
 			});
 			this._titlePane.addChild(this._grid);
 		}
@@ -267,7 +267,7 @@ define([
 				}
 				else if (!joined) {
 					if (this._serverRole == 'domaincontroller_master') {
-						dialog.alert(_('A DC master should be joined by the <a %s>Basic settings Module</a>.', 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"'));
+						dialog.alert(_('A DC master should be joined by the <a %s>Basic settings</a> module.', 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"'));
 						return;
 					}
 					this._switch_view('join_form');
@@ -304,6 +304,7 @@ define([
 					Lib_Server.askRestart(msg);
 				}
 
+				this._statuspage._grid.reload_grid();
 				this.standby(false);
 			}), lang.hitch(this, function(result) {
 				this.standby(false);
@@ -382,7 +383,7 @@ define([
 
 		// pop up to ask for credentials when running join scripts
 		_get_credentials: function(scripts) {
-			var msg = _('<p>Please enter username and password of a Domain Administrator to run the selected join scripts and click the <i>Run</i> button.</p>') + scripts;
+			var msg = _('<p>Please enter credentials of an user account with administrator rights to run the selected join scripts.</p>') + scripts;
 			var deferred = dialog.confirmForm({
 				widgets: [{
 					name: 'text',

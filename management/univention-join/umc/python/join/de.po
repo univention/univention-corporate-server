@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-02-22 08:12-0500\n"
+"POT-Creation-Date: 2013-03-06 16:52-0500\n"
 "PO-Revision-Date: 2012-04-23 15:37+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,47 +12,53 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/join/__init__.py:333 umc/python/join/__init__.py:381
+#: umc/python/join/__init__.py:339 umc/python/join/__init__.py:387
 msgid "A join process is already running."
-msgstr "Ein Joinprozess läuft bereits."
+msgstr "Ein Join-Vorgang läuft bereits."
 
-#: umc/python/join/__init__.py:358 umc/python/join/__init__.py:405
+#: umc/python/join/__init__.py:364 umc/python/join/__init__.py:414
 #, python-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
 
-#: umc/python/join/__init__.py:341
+#: umc/python/join/__init__.py:397
+msgid "Authentication"
+msgstr "Authentifizierung"
+
+#: umc/python/join/__init__.py:347
 msgid "Domain join"
-msgstr "Domänenjoin"
+msgstr "Domänebeitritt"
+
+#: umc/python/join/__init__.py:266
+#, python-format
+msgid "Error: %s"
+msgstr "Fehler: %s"
 
 #: umc/python/join/__init__.py:191
 #, python-format
 msgid "Executing join script %s"
-msgstr "Führe join skript %s aus"
+msgstr "Ausführung des Join-Skripts %s"
 
 #: umc/python/join/__init__.py:87
 msgid "Initializing"
 msgstr "Initialisiere"
 
-#: umc/python/join/__init__.py:337
+#: umc/python/join/__init__.py:343
 msgid "Invalid server role! A master domain controller can not be joined."
 msgstr ""
 "Ungültige Serverrolle. Ein master Domönencontroller kann nicht gejoined "
 "werden."
 
-#: umc/python/join/__init__.py:388
-msgid "Running join scripts..."
-msgstr "Join skripte ausführen..."
-
 #: umc/python/join/__init__.py:218
 msgid ""
 "Some join scripts could not be executed. More details can be found in the "
-"log file /var/log/univention/join.log. Please retry to execute the join "
-"scripts after resolving any conflicting issues."
+"log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute "
+"the join scripts after resolving any conflicting issues."
 msgstr ""
-"Einige join skripte konnten nicht ausgeführt werden. Weitere informationen "
-"können in der Logdatei /var/log/univention/join.log gefunden werden. Bitte "
-"wiederhole ausführung der join skripte nach lösen aller Konflikte."
+"Einige Join-Skripte konnten nicht ausgeführt werden. <br/>Weitere "
+"Informationen können in der Logdatei <i>/var/log/univention/join.log</i> "
+"gefunden werden.<br/>Bitte die Ausführung der Join-Skripte nach Lösen aller "
+"Konflikte erneut durchführen."
 
 #: umc/python/join/__init__.py:77
 msgid "The entered FQDN is not a valid value"
@@ -61,14 +67,15 @@ msgstr "Die eingegebene FQDN ist kein gültiger Wert."
 #: umc/python/join/__init__.py:185
 #, python-format
 msgid ""
-"The system join process could not be completed: %s. More details can be "
-"found in the log file /var/log/univention/join.log. Please retry after "
-"resolving any conflicting issues."
+"The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> "
+"More details can be found in the log file <i>/var/log/univention/join.log</"
+"i>.<br/>Please retry after resolving any conflicting issues."
 msgstr ""
-"Der system joinprozess konnte nicht fertiggestellt werden: %s. Weitere "
-"informationen können in der Logdatei /var/log/univention/join.log gefunden "
-"werden. Bitte Vorgang nach lösen aller Konflikte wiederholen."
+"Der Join-Vorgang konnte nicht durchgeführt werden:<br/><br/><i>%s</i><br/"
+"><br/> Weitere Informationen können in der Logdatei <i>/var/log/univention/"
+"join.log</i> gefunden werden.<br/>Bitte den Join-Vorgang nach Lösen aller "
+"Konflikte erneut durchführen."
 
-#: umc/python/join/__init__.py:353 umc/python/join/__init__.py:400
+#: umc/python/join/__init__.py:359 umc/python/join/__init__.py:409
 msgid "finished..."
 msgstr "beendet..."

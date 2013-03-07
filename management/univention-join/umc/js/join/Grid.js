@@ -77,7 +77,7 @@ define([
 				})
 			}, {
 				name: 'execute_pending',
-				label: _('Execute all pending scripts'),
+				label: _('Execute all pending join scripts'),
 				description: _('Executes join scripts which are not properly configured.'),
 				isContextAction: false,
 				isMultiAction: true,
@@ -85,7 +85,7 @@ define([
 				callback: lang.hitch(this, function() {
 					var ids = this.getPendingIds();
 					if (ids.length === 0) {
-						dialog.alert(_('There are no pending join script to execute.'));
+						dialog.alert(_('There are no pending join scripts to execute.'));
 						return;
 					}
 					return this.onRunScripts(ids);
@@ -149,7 +149,7 @@ define([
 		},
 
 		reload_grid: function() {
-			this._grid.filter({'*': '*'});
+			this.filter({'*': '*'});
 		},
 
 		buildRendering: function() {
