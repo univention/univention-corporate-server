@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (2.0.32-2) unstable; urgency=low
+
+  * renamed service in order to make uvmmd be manageable via UMC
+  	services module (Bug #29531)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 06 Mar 2013 14:23:35 +0100
+
 univention-virtual-machine-manager-daemon (2.0.32-1) unstable; urgency=low
 
   * change textarea size; Bug #24682

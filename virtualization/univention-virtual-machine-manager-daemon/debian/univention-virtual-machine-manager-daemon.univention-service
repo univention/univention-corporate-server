@@ -1,4 +1,4 @@
-[uvmmd]
+[univention-virtual-machine-manager-daemon]
 Description[de]=UCS Virtual Machine Manager
 Description[en]=UCS Virtual Machine Manager
 start_type=yes
