@@ -753,10 +753,10 @@ msgstr "Paravirtualisiertes Laufwerk"
 
 #: umc/js/uvmm/DriveGrid.js:209
 msgid ""
-"Paravirtualisation is a special variant of virtualisation in which the "
-"virtualised operating system is adapted to the underlying virtualisation "
+"Paravirtualization is a special variant of virtualization in which the "
+"virtualized operating system is adapted to the underlying virtualization "
 "technology. This improves the performance. Linux systems usually support "
-"paravirtualisation out of the box. For Windows systems additional support "
+"paravirtualization out of the box. For Windows systems additional support "
 "drivers need to be installed, see the <a href=\"http://wiki.univention.de/"
 "index.php?title=UVMM_Technische_Details\">Univention wiki</a> for details "
 "(currently only available in German)."

@@ -397,7 +397,7 @@ class Domains( object ):
 			if profile:
 				domain_info.domain_type, domain_info.os_type = profile.virttech.split( '-' )
 			else:
-				raise UMC_CommandError( 'Could not determine virtualisation technology for domain' )
+				raise UMC_CommandError( 'Could not determine virtualization technology for domain' )
 
 		# check configuration for para-virtualized machines
 		if domain_info.os_type == 'xen':
