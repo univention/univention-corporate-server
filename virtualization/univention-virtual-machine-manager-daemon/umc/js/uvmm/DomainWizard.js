@@ -36,12 +36,17 @@ define([
 	"dojo/store/Observable",
 	"umc/tools",
 	"umc/widgets/TitlePane",
+	"umc/widgets/TextArea",
+	"umc/widgets/TextBox",
+	"umc/widgets/ComboBox",
+	"umc/widgets/CheckBox",
+	"umc/widgets/HiddenInput",
 	"umc/widgets/Wizard",
 	"umc/widgets/ContainerWidget",
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, tools, TitlePane, Wizard, ContainerWidget, DriveGrid, types, _) {
+], function(declare, lang, array, Memory, Observable, tools, TitlePane, TextArea, TextBox, ComboBox, CheckBox, HiddenInput, Wizard, ContainerWidget, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainWizard", [ Wizard ], {
 		_profile: null,
@@ -96,13 +101,13 @@ define([
 					helpText: _('The following settings were read from the selected profile and can be modified now.'),
 					widgets: [{
 						name: 'nodeURI',
-						type: 'HiddenInput'
+						type: HiddenInput
 					}, {
 						name: 'profile',
-						type: 'HiddenInput'
+						type: HiddenInput
 					}, {
 						name: 'domain_type',
-						type: 'HiddenInput'
+						type: HiddenInput
 					}, {
 						name: 'name',
 						type: 'TextBox',
@@ -111,11 +116,13 @@ define([
 						label: _('Name')
 					}, {
 						name: 'description',
-						type: 'TextBox',
+						type: TextArea,
+						cols: 120,
+						rows: 5,
 						label: _('Description')
 					}, {
 						name: 'maxMem',
-						type: 'TextBox',
+						type: TextBox,
 						required: true,
 						constraints: {min: 4*1024*1024},
 						validator: function(value, constraints) {
@@ -138,13 +145,13 @@ define([
 						label: _('Memory (default unit MB)')
 					}, {
 						name: 'vcpus',
-						type: 'ComboBox',
+						type: ComboBox,
 						label: _('Number of CPUs'),
 						depends: 'nodeURI',
 						dynamicValues: types.getCPUs
 					}, {
 						name: 'vnc',
-						type: 'CheckBox',
+						type: CheckBox,
 						label: _('Enable direct access')
 					}]
 				}, {
