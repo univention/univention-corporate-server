@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (2.0.33-1) unstable; urgency=low
+
+  * add description to domain; Bug #24682
+  * update copyright years
+
+ -- Florian Best <best@univention.de>  Thu, 07 Mar 2013 10:06:20 +0100
+
 univention-virtual-machine-manager-daemon (2.0.32-2) unstable; urgency=low
 
   * renamed service in order to make uvmmd be manageable via UMC
