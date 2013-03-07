@@ -1,3 +1,22 @@
+univention-ldap (9.0.24-1) unstable; urgency=low
+
+  * added 
+     - aRecord
+     - associatedDomain
+     - employeeNumber
+     - macAddress
+     - name
+     - pTRRecord
+     - relativeDomainName
+     - univentionInventoryNumber
+     - univentionOperatingSystem
+     - univentionSyntaxDescription
+     - univentionUDMPropertyLongDescription
+     - univentionUDMPropertyShortDescription 
+    to ldap/index/sub (UMC default search) (Bug #29509)
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Mar 2013 15:18:25 +0100
+
 univention-ldap (9.0.23-1) unstable; urgency=low
 
   * improved logging for univention-backup2master (Bug #29085) 
