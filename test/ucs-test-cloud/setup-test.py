@@ -212,6 +212,8 @@ def ssh_exec(command, idle_timeout=10*60):
     session = transport.open_session()
     try:
         session.exec_command(command)
+        # Close STDIN for remote command
+        session.shutdown_write()
         while idle_timeout > 0:
             r_list, _w_list, _e_list = select([session], [], [], 10)
             if r_list:
