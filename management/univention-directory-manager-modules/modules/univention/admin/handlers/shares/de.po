@@ -704,12 +704,12 @@ msgid "Denied hosts"
 msgstr "Nicht zugelassene Rechner"
 
 #: share.py:476
-msgid "Valid users"
-msgstr "Gültiger Benutzer"
+msgid "Valid users or groups"
+msgstr "Gültige Benutzer oder Gruppen"
 
 #: share.py:486
-msgid "Invalid users"
-msgstr "Nicht erlaubte Benutzer"
+msgid "Invalid users or groups"
+msgstr "Nicht erlaubte Benutzer oder Gruppen"
 
 #: share.py:496
 msgid "Force user"

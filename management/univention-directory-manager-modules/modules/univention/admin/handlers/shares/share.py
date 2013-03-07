@@ -476,7 +476,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sambaValidUsers': univention.admin.property(
-			short_description=_('Valid users'),
+			short_description=_('Valid users or groups'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -486,7 +486,7 @@ property_descriptions={
 			identifies=0
 		),
 	'sambaInvalidUsers': univention.admin.property(
-			short_description=_('Invalid users'),
+			short_description=_('Invalid users or groups'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,

@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.139-1) unstable; urgency=low
+
+  * fixed description of sambaInvalidUsers and sambaValidUsers 
+    (Bug #30714 #7849) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Mar 2013 16:21:43 +0100
+
 univention-directory-manager-modules (8.0.138-1) unstable; urgency=low
 
   * Fixed Mac OS X search filter (Bug #15729)
