@@ -63,7 +63,7 @@ define([
 				}, {
 					name: 'drive',
 					headerText: _('Add a new drive'),
-					helpText: _('For the drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual instance at a time.'),
+					helpText: _('For the drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual machine at a time.'),
 					widgets: [{
 						name: 'driveType',
 						type: 'HiddenInput',

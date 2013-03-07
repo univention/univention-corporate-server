@@ -76,8 +76,8 @@ define([
 			lang.mixin(this, {
 				pages: [{
 					name: 'profile',
-					headerText: _('Create a virtual instance'),
-					helpText: _('By selecting a profile for the virtual instance most of the settings will be set to default values. In the following steps some of these values might be modified. After the creation of the virtual instance all parameters, extended settings und attached drives can be adjusted. It should be ensured that the profile is for the correct architecture as this option can not be changed afterwards.'),
+					headerText: _('Create a virtual machine'),
+					helpText: _('By selecting a profile for the virtual machine most of the settings will be set to default values. In the following steps some of these values might be modified. After the creation of the virtual machine all parameters, extended settings und attached drives can be adjusted. It should be ensured that the profile is for the correct architecture as this option can not be changed afterwards.'),
 					widgets: [{
 						name: 'nodeURI',
 						type: 'ComboBox',
@@ -107,7 +107,7 @@ define([
 						name: 'name',
 						type: 'TextBox',
 						required: true,
-						invalidMessage: _( 'A name for the virtual instance is required and should not be the same as the given name prefix' ),
+						invalidMessage: _( 'A name for the virtual machine is required and should not be the same as the given name prefix' ),
 						label: _('Name')
 					}, {
 						name: 'description',
@@ -150,7 +150,7 @@ define([
 				}, {
 					name: 'drives',
 					headerText: _('Add drive'),
-					helpText: _('To finalize the creation of the virtual instance, please add one or more drives by clicking on "Add drive".')
+					helpText: _('To finalize the creation of the virtual machine, please add one or more drives by clicking on "Add drive".')
 				}]
 			});
 		},
@@ -196,7 +196,7 @@ define([
 					this.getWidget('vnc').set('value', this._profile.vnc);
 
 					// update page header
-					this._pages.general.set('headerText', _('Create a virtual instance (profile: %s)', this._profile.name));
+					this._pages.general.set('headerText', _('Create a virtual machine (profile: %s)', this._profile.name));
 
 					this.standby(false);
 				}), lang.hitch(this, function() {

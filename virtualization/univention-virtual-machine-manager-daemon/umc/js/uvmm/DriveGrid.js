@@ -86,7 +86,7 @@ define([
 					isStandardAction: true,
 					callback: lang.hitch(this, '_editDrive'),
 					canExecute: lang.hitch( this, function( item ) {
-						// when creating an instance drives can not be edited
+						// when creating an machine drives can not be edited
 						return !this.disabled && undefined !== this.domain.domainURI;
 					} )
 				}, {
@@ -329,7 +329,7 @@ define([
 			} ];
 
 			// confirm removal of drive
-			var msg = _( 'Should the selected drive be deleted or detached from the virtual instance?' );
+			var msg = _( 'Should the selected drive be deleted or detached from the virtual machine?' );
 			// chain the UMCP commands for removing the drive
 			var deferred = new Deferred();
 			deferred.resolve();
@@ -344,11 +344,11 @@ define([
 				} ) );
 				deferred = deferred.then( lang.hitch( this, function( response ) {
 					if ( disk.device == 'cdrom' ) {
-						msg += ' ' + _( 'The selected drive is a CD-ROM and should be detached from the virtual instance. If the volume is delete no other instance can use it anymore.' );
+						msg += ' ' + _( 'The selected drive is a CD-ROM and should be detached from the virtual machine. If the volume is delete no other machine can use it anymore.' );
 					} else if (disk.device == 'floppy') {
-						msg += ' ' + _( 'The selected drive is a floppy and should be detached from the virtual instance. If the volume is delete no other instance can use it anymore.' );
+						msg += ' ' + _( 'The selected drive is a floppy and should be detached from the virtual machine. If the volume is delete no other machine can use it anymore.' );
 					} else if ( ! response.result[ 0 ].deletable ) {
-						msg += ' ' + _( 'The selected drive seems to be attached to other virtual instances and therefor should not be deleted.' );
+						msg += ' ' + _( 'The selected drive seems to be attached to other virtual machines and therefor should not be deleted.' );
 					}
 					return dialog.confirm( msg, buttons );
 				} ) );

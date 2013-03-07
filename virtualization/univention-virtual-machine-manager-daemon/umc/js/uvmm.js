@@ -114,11 +114,11 @@ define([
 			// setup search page
 			this._searchPage = new Page({
 				headerText: 'UCS Virtual Machine Manager'
-				//helpText: _('<p>This module provides a management interface for physical servers that are registered within the UCS domain.</p><p>The tree view on the left side shows an overview of all existing physical servers and the residing virtual instances. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual instance can be invoked on each of the instances.</p><p>Also possible is direct access to virtual instances. Therefor it must be activated in the configuration.</p><p>Each virtual instance entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.</p>')
+				//helpText: _('<p>This module provides a management interface for physical servers that are registered within the UCS domain.</p><p>The tree view on the left side shows an overview of all existing physical servers and the residing virtual machines. By selecting one of the physical servers statistics of the current state are displayed to get an impression of the health of the hardware system. Additionally actions like start, stop, suspend and resume for each virtual machine can be invoked on each of the instances.</p><p>Also possible is direct access to virtual machines. Therefor it must be activated in the configuration.</p><p>Each virtual machine entry in the tree view provides access to detailed information und gives the possibility to change the configuration or state and migrated it to another physical server.</p>')
 			});
 			this.addChild(this._searchPage);
 			var titlePane = new ExpandingTitlePane({
-				title: _('Search for virtual instances and physical servers'),
+				title: _('Search for virtual machines and physical servers'),
 				design: 'sidebar'
 			});
 			this._searchPage.addChild(titlePane);
@@ -133,7 +133,7 @@ define([
 				name: 'type',
 				label: _('Displayed type'),
 				staticValues: [
-					{ id: 'domain', label: _('Virtual instance') },
+					{ id: 'domain', label: _('Virtual machine') },
 					{ id: 'node', label: _('Physical server') }
 				],
 				size: 'Half'
@@ -327,7 +327,7 @@ define([
 					uniqueNodes[ nodeURI ] = true;
 				} );
 				if ( count > 1 ) {
-					dialog.alert( _( 'The selected virtual instances are not all located on the same physical server. The migration will not be performed.' ) );
+					dialog.alert( _( 'The selected virtual machines are not all located on the same physical server. The migration will not be performed.' ) );
 					return;
 				}
 			}
@@ -359,7 +359,7 @@ define([
 				widgets: [ {
 					type: Text,
 					name: 'warning',
-					content: _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running instances! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual instances will be shown again. Any duplicates have to be cleaned up manually by migrating the instances back to the server or by deleting them. Make sure that shared images are not delete.</p>' )
+					content: _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' )
 				}, {
 					name: 'name',
 					type: ComboBox,
@@ -410,7 +410,7 @@ define([
 				{
 					type: Text,
 					name: 'question',
-					content: '<p>' + lang.replace( _( 'Should the selected virtual instance {label} be removed?' ), {
+					content: '<p>' + lang.replace( _( 'Should the selected virtual machine {label} be removed?' ), {
 						label: entities.encode(domain.label)
 					} ) + '</p>',
 					label: ''
@@ -512,7 +512,7 @@ define([
 				});
 
 				_dialog = new Dialog({
-					title: _( 'Remove a virtual instance' ),
+					title: _( 'Remove a virtual machine' ),
 					content: form,
 					'class' : 'umcPopup'
 				});
@@ -564,7 +564,7 @@ define([
 
 			if ( ids.length > 1 ) {
 				if ( ! this._grid.canExecuteOnSelection( action, items ).length ) {
-					dialog.alert( _( 'The state of the selected virtual instances can not be changed' ) );
+					dialog.alert( _( 'The state of the selected virtual machine can not be changed' ) );
 					return;
 				}
 			}
@@ -606,7 +606,7 @@ define([
 
 			if ( ids.length > 1 && action !== null ) {
 				if ( ! this._grid.canExecuteOnSelection( action, items ).length ) {
-					dialog.alert( _( 'The state of the selected virtual instances can not be changed' ) );
+					dialog.alert( _( 'The state of the selected virtual machine can not be changed' ) );
 					return;
 				}
 			}
@@ -754,13 +754,13 @@ define([
 				isStandardAction: true,
 				isMultiAction: false,
 				iconClass: 'umcIconEdit',
-				description: _( 'Edit the configuration of the virtual instance' ),
+				description: _( 'Edit the configuration of the virtual machine' ),
 				callback: lang.hitch(this, 'openDomainPage')
 			}, {
 				name: 'start',
 				label: _( 'Start' ),
 				iconClass: 'umcIconPlay',
-				description: _( 'Start the virtual instance' ),
+				description: _( 'Start the virtual machine' ),
 				isStandardAction: true,
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'RUN', 'start' ),
@@ -771,10 +771,10 @@ define([
 				name: 'stop',
 				label: _( 'Stop' ),
 				iconClass: 'umcIconStop',
-				description: _( 'Shut off the virtual instance' ),
+				description: _( 'Shut off the virtual machine' ),
 				isStandardAction: false,
 				isMultiAction: true,
-				callback: lang.hitch(this, '_maybeChangeState', _( 'Stopping virtual instances will turn them off without shutting down the operating system. Should the operation be continued?' ), _( 'Stop' ), 'SHUTDOWN', 'stop' ),
+				callback: lang.hitch(this, '_maybeChangeState', _( 'Stopping virtual machine will turn them off without shutting down the operating system. Should the operation be continued?' ), _( 'Stop' ), 'SHUTDOWN', 'stop' ),
 				canExecute: function(item) {
 					return item.state == 'RUNNING' || item.state == 'IDLE' && item.node_available;
 				}
@@ -823,7 +823,7 @@ define([
 				isMultiAction: false,
 				iconClass: 'umcIconView',
 				description: lang.hitch( this, function( item ) {
-					return lang.replace( _( 'Open a view to the virtual instance {label} on {nodeName}' ), item );
+					return lang.replace( _( 'Open a view to the virtual machine {label} on {nodeName}' ), item );
 				} ),
 				callback: lang.hitch(this, 'vncLink' ),
 				canExecute: function(item) {
@@ -849,7 +849,7 @@ define([
 				}
 			}, {
 				name: 'add',
-				label: _( 'Create virtual instance' ),
+				label: _( 'Create virtual machine' ),
 				iconClass: 'umcIconAdd',
 				isMultiAction: false,
 				isContextAction: false,

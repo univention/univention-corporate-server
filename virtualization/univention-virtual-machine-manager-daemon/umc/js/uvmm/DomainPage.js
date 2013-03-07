@@ -136,7 +136,7 @@ define([
 					callback: lang.hitch(this, function() {
 						var val = this._generalForm.gatherFormValues();
 						if (val.contact) {
-							location.href = 'mailto:' + val.contact + '?subject=' + _('Virtual instance: %s', val.name);
+							location.href = 'mailto:' + val.contact + '?subject=' + _('Virtual machine: %s', val.name);
 						}
 					})
 				}],
@@ -455,7 +455,7 @@ define([
 
 					this._generalPage.clearNotes();
 					if ( ! this._domain.available ) {
-						this._generalPage.addNote( _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running instances! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual instances will be shown again. Any duplicates have to be cleaned up manually by migrating the instances back to the server or by deleting them. Make sure that shared images are not delete.</p>' ) );
+						this._generalPage.addNote( _( '<p>For fail over the virtual machine can be migrated to another physical server re-using the last known configuration and all disk images. This can result in <strong>data corruption</strong> if the images are <strong>concurrently used</strong> by multiple running machines! Therefore the failed server <strong>must be blocked from accessing the image files</strong>, for example by blocking access to the shared storage or by disconnecting the network.</p><p>When the server is restored, all its previous virtual machines will be shown again. Any duplicates have to be cleaned up manually by migrating the machines back to the server or by deleting them. Make sure that shared images are not delete.</p>' ) );
 						this.hideChild( this._devicesPage );
 						this.hideChild( this._snapshotPage );
 						this.hideChild( this._advancedPage );
@@ -517,7 +517,7 @@ define([
 					// deactivate most input field when domain is running
 					var disabled = Boolean(this._domain.state == 'RUNNING' || this._domain.state == 'IDLE' || this._domain.state == 'PAUSED' || this._domain.suspended);
 					if ( disabled && ! this.disabled ) {
-						this._generalPage.addNote( _( 'While the virtual instance is running most of the settings can not be changed.' ) );
+						this._generalPage.addNote( _( 'While the virtual machine is running most of the settings can not be changed.' ) );
 					} else if ( ! disabled ) {
 						this._generalPage.clearNotes();
 					}
