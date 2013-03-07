@@ -268,6 +268,9 @@ def postrun():
 	"""Run pending updates."""
 	global __zone_created_or_removed
 
+	# Reload UCR
+	listener.configRegistry.load()
+
 	listener.setuid(0)
 	try:
 		# Re-create named and proxy inclusion file
