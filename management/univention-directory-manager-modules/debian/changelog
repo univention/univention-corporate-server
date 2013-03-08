@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.141-1) unstable; urgency=low
+
+  * use associatedDomain (or UCR domainname) and hostname to build
+    fqdn in nagios.py and service.py (Bug #30614)
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Mar 2013 13:48:32 +0100
+
 univention-directory-manager-modules (8.0.140-1) precise; urgency=low
 
   * Make SSL attributes read-only (Bug #13679)

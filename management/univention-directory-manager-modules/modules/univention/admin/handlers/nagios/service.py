@@ -38,6 +38,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.syntax
 import univention.admin.localization
+from univention.admin import configRegistry
 
 translation=univention.admin.localization.translation('univention.admin.handlers.nagios')
 _=translation.translate
@@ -326,7 +327,7 @@ class object(univention.admin.handlers.simpleLdap):
 					# find dn of host that is related to given aRecords
 					res=self.lo.search(filter)
 					if res:
-						hostlist.append( res[0][0] )
+						hostlist.append(res[0][0])
 
 		self['assignedHosts'] = hostlist
 
@@ -380,12 +381,12 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged('assignedHosts'):
 			hostlist = []
 			for hostdn in self.info.get( 'assignedHosts', [] ):
-				aRecords = self.lo.getAttr(hostdn, 'aRecord')
-				if aRecords and aRecords[0]:
-					res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*)(&(!(relativeDomainName=@))(!(relativeDomainName=*.*))))' % aRecords[0])
-					if res:
-						fqdn = res[0][1]['relativeDomainName'][0]+'.'+res[0][1]['zoneName'][0]
-						hostlist.append(fqdn)
+				domain = self.lo.getAttr(hostdn, 'associatedDomain')
+				cn = self.lo.getAttr(hostdn, 'cn')
+				if not domain:
+					domain = [configRegistry.get("domainname")]
+				fqdn = "%s.%s" % (cn[0], domain[0])
+				hostlist.append(fqdn)
 
 			ml.insert(0, ('univentionNagiosHostname', self.oldattr.get('univentionNagiosHostname', []), hostlist))
 
