@@ -1,3 +1,11 @@
+univention-samba4 (2.0.39-1) unstable; urgency=low
+
+  * Added a new UCR variable samba/domain/master to configure the domain
+    master option. By default this will be activated on the DC master,
+    like wins (Bug #30132)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 08 Mar 2013 15:50:37 +0100
+
 univention-samba4 (2.0.38-2) unstable; urgency=low
 
   * Fixed typo in UCR variables description (Bug #27468)

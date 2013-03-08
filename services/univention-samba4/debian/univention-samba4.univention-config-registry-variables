@@ -22,6 +22,12 @@ Description[en]=Controls whether Samba clients will try to use Simple and Protec
 Type=str
 Categories=service-samba
 
+[samba/domain/master]
+Description[de]=Definiert ob der Server als Domain Master Browser laufen soll. Per Default sollte dies nur auf einem System konfiguriert werden.
+Description[en]=Defines whether the server should run as domain master browser. By default, this should only be configured on one system.
+Type=str
+Categories=service-samba
+
 [samba/enable-msdfs]
 Description[de]=Agiere als DFS-Server und erlaube DFS-fähigen Clients DFS-Trees zu durchsuchen
 Description[en]=Act as a DFS server and allow DFS-aware clients to browse DFS trees

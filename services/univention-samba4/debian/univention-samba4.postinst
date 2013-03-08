@@ -157,7 +157,8 @@ if [ "$1" = "configure" ]; then
 
 		# only set this for new installations
 		if [ "$server_role" = "domaincontroller_master" ]; then
-			univention-config-registry set windows/wins-support=yes
+			univention-config-registry set windows/wins-support=yes \
+										samba/domain/master?yes
 		else
 			univention-config-registry set windows/wins-support?no
 			univention-config-registry set windows/wins-server?$ldap_master
@@ -167,6 +168,13 @@ if [ "$1" = "configure" ]; then
 		update-rc.d -f samba remove > /dev/null
 
 	elif [ -n "$2" ]; then
+
+		# Make the UCS DC Master to the default domain browser
+		if dpkg --compare-versions "$2" lt-nl 2.0.39-1; then
+			if [ "$server_role" = "domaincontroller_master" ]; then
+				univention-config-registry set samba/domain/master?yes
+			fi
+		fi
 
 		chgrp ntp /var/lib/samba/ntp_signd
 		chmod g+x /var/lib/samba/ntp_signd

@@ -7,6 +7,7 @@ else:
 	print '\tpreferred master = %s' % configRegistry.get('samba/preferred/master', 'yes')
 	print '\tlocal master = %s' % configRegistry.get('samba/local/master', 'yes')
 
+print '\tdomain master = %s' % configRegistry.get('samba/domain/master', 'auto')
 
 if configRegistry.is_true('windows/wins-support'):
 	print '\twins support = yes'
