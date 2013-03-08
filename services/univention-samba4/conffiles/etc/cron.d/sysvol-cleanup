@@ -1,0 +1,16 @@
+@%@UCRWARNING=# @%@
+
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+@!@
+samba4_sysvol_cleanup_cron = configRegistry.get('samba4/sysvol/cleanup/cron')
+samba4_sysvol_cleanup_parameters = configRegistry.get('samba4/sysvol/cleanup/parameters', '')
+if not samba4_sysvol_cleanup_cron:
+	print "# cron job disabled because samba4/sysvol/cleanup/cron is not set"
+	print "# ",
+	samba4_sysvol_cleanup_cron = "#4 * * * *"
+
+print "%s root /usr/share/univention-samba4/scripts/sysvol-cleanup.py --move /var/lib/samba/sysvol_backup %s >>/var/log/univention/sysvol-sync.log 2>&1" % (samba4_sysvol_cleanup_cron, samba4_sysvol_cleanup_parameters)
+@!@
+

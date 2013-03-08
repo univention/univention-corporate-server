@@ -1,3 +1,10 @@
+univention-samba4 (2.0.38-1) unstable; urgency=low
+
+  * Added sysvol-cleanup.py script which removes unused GPOs from sysvol
+    directory (Bug #27468)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 08 Mar 2013 10:44:16 +0100
+
 univention-samba4 (2.0.37-7) unstable; urgency=low
 
   * make purge_s4_computer.py executable (Bug #29460)

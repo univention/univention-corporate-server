@@ -10,4 +10,16 @@ Description[en]=Interval for the variation of the time of sysvol replication (in
 Type=str
 Categories=service-samba
 
+[samba4/sysvol/cleanup/cron]
+Description[de]=Zeitpunkte im Crontab Format an dem unbenutzte GPOs in das Verzeichnis /var/lib/samba/sysvol_backup verschoben werden . Löschen der Variable deaktiviert den Job.
+Description[en]=Time when unused filesystem GPOs moved to /var/lib/samba/sysvol_backup in crontab format. Unsetting this variable disables the job
+Type=str
+Categories=service-samba
+
+[samba4/sysvol/sync/parameters]
+Description[de]=Zusätzliche Parameter für den Sysvol Cleanup Cron-Job
+Description[en]=Additional parameters for sysvol cleanup cron job
+Type=str
+Categories=service-samba
+
 
