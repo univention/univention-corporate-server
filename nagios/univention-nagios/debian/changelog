@@ -1,3 +1,9 @@
+univention-nagios (6.0.5-1) unstable; urgency=low
+
+  * apply UNIVENTION_NTP to memberserver too (Bug #30041) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Mar 2013 17:13:50 +0100
+
 univention-nagios (6.0.4-1) unstable; urgency=low
 
   * Add support for UCR-variable pamaccess/maxent (Bug #29393)
