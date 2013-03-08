@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.219-1) unstable; urgency=low
+
+  * add validate function to _FormWidgetMixin; Bug #30109
+
+ -- Florian Best <best@univention.de>  Fri, 08 Mar 2013 09:27:06 +0100
+
 univention-management-console-frontend (2.0.218-1) unstable; urgency=low
 
   * Fix ucslint.overrides (Bug #29489)

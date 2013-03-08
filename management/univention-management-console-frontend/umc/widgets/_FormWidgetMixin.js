@@ -116,6 +116,10 @@ define([
 			return true;
 		},
 
+		validate: function() {
+			return this.isValid();
+		},
+
 		show: function() {
 			this.set( 'visible', true );
 		},
