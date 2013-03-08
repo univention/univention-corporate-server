@@ -147,6 +147,9 @@ then
 	univention-config-registry set 'security/limits/group/Domain Users/hard/nproc?1000' # Bug #12928
 fi
 
+
+call_joinscript 11univention-pam.inst
+
 #DEBHELPER#
 
 exit 0

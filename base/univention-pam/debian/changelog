@@ -1,3 +1,9 @@
+univention-pam (6.0.13-2) unstable; urgency=low
+
+  * call join script in postinst (Bug #25368)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 08 Mar 2013 12:04:27 +0100
+
 univention-pam (6.0.13-1) unstable; urgency=low
 
   * removed pam_ldap from pam.d/common-password (Bug #29438)
