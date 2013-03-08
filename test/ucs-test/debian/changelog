@@ -1,3 +1,9 @@
+ucs-test (3.0.26-1) unstable; urgency=low
+
+  * 26check_logfiles_general: ignore "/var/log/dpkg.log" (Bug #30718)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 08 Mar 2013 10:28:39 +0100
+
 ucs-test (3.0.25-11) unstable; urgency=low
 
   * 52_s4connector/31_macos_transformation: use ucr variable for

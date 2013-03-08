@@ -76,6 +76,7 @@ find /var/log \
 		-o -path "/var/log/wtmp" \
 		-o -path "/var/log/Xorg*log*" \
 		-o -path "/var/log/ntpstats/*" \
+		-o -path "/var/log/dpkg.log" \
 	\) -print0 >"$tmpfile"
 if [ -s "$tmpfile" ]
 then
