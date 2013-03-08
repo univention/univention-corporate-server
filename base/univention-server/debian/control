@@ -100,6 +100,7 @@ Recommends: univention-management-console,
 Depends: ${misc:Depends},
  univention-role-server-common (= ${source:Version}),
  univention-heimdal-member,
+ ntp | ntp-server,
 Conflicts: exim
 Description: UCS - member server
  This package installs a UCS member server.
