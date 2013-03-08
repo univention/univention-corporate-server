@@ -683,7 +683,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -694,7 +694,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -705,7 +705,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -716,7 +716,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -727,7 +727,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -738,7 +738,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -749,7 +749,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -760,7 +760,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -771,7 +771,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -782,7 +782,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -793,7 +793,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -804,7 +804,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -815,18 +815,18 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
 	'certificateSubjectMail': univention.admin.property(
-			short_description=_('Issuer Mail'),
-			long_description=_( 'Certificate Issuer Mail' ),
+			short_description=_('Subject Mail'),
+			long_description=_( 'Certificate Subject Mail' ),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -837,7 +837,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -848,7 +848,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -859,7 +859,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -870,7 +870,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			dontsearch=1,
-			may_change=0,
+			editable=0,
 			options=['pki'],
 			identifies=0
 		),
@@ -968,30 +968,24 @@ layout = [
 	Tab( _( 'Certificate' ), _( 'Certificate' ), advanced = True, layout = [
 		Group( _( 'General' ), '', [
 			'userCertificate',
-			'certificateSubjectCommonName',
-			'certificateSubjectOrganisationalUnit',
-			'certificateSubjectOrganisation',
+			] ),
+		Group( _( 'Subject' ), '', [
+			['certificateSubjectCommonName', 'certificateSubjectMail'],
+			['certificateSubjectOrganisation', 'certificateSubjectOrganisationalUnit'],
 			'certificateSubjectLocation',
-			'certificateSubjectState',
-			'certificateSubjectCountry',
-			'certificateSubjectMail',
+			['certificateSubjectState', 'certificateSubjectCountry'],
 			] ),
 		Group( _( 'Issuer' ), '', [
-			'certificateIssuerCommonName',
-			'certificateIssuerOrganisationalUnit',
-			'certificateIssuerOrganisation',
+			['certificateIssuerCommonName', 'certificateIssuerMail'],
+			['certificateIssuerOrganisation', 'certificateIssuerOrganisationalUnit'],
 			'certificateIssuerLocation',
-			'certificateIssuerState',
-			'certificateIssuerCountry',
-			'certificateIssuerMail',
+			['certificateIssuerState', 'certificateIssuerCountry'],
 			] ),
-		Group( _( 'Dates' ), '', [
-			'certificateDateNotBefore',
-			'certificateDateNotAfter',
+		Group( _( 'Validity' ), '', [
+			['certificateDateNotBefore', 'certificateDateNotAfter']
 			] ),
 		Group( _( 'Misc' ), '', [
-			'certificateVersion',
-			'certificateSerial'
+			['certificateVersion', 'certificateSerial']
 			] )
 		] )
 	]

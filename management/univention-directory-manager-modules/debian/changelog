@@ -1,3 +1,12 @@
+univention-directory-manager-modules (8.0.140-1) precise; urgency=low
+
+  * Make SSL attributes read-only (Bug #13679)
+  * Fix label for certificate subject email (Bug #30460)
+  * Fix translation for certificate state (Bug #30461)
+  * Reformat certificate attributes in 2 columns.
+
+ -- Lukas Walter <walter@univention.de>  Fri, 08 Mar 2013 13:08:23 +0100
+
 univention-directory-manager-modules (8.0.139-1) unstable; urgency=low
 
   * fixed description of sambaInvalidUsers and sambaValidUsers 
