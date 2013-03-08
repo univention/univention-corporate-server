@@ -1,4 +1,10 @@
-univention-directory-manager-modules (8.0.143-1) precise; urgency=low
+univention-directory-manager-modules (8.0.143-2) unstable; urgency=low
+
+  * version bump (Bug #29918)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 08 Mar 2013 16:47:43 +0100
+
+univention-directory-manager-modules (8.0.143-1) unstable; urgency=low
 
   * fixed typo (Bug #29918)
 
