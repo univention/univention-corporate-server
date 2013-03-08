@@ -2109,14 +2109,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				if 'posix' in self.options or 'mail' in self.options:
 					now=(long(time.time())/3600/24)
 					if pwd_change_next_login == 1:
-						if expiryInterval == -1:
+						if expiryInterval == -1 or expiryInterval == 0:
 							shadowMax = "1"
 						else:
 							shadowMax="%d" % expiryInterval
 
 						shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
 					else:
-						if expiryInterval==-1:
+						if expiryInterval==-1 or expiryInterval == 0:
 							shadowMax=''
 						else:
 							shadowMax="%d" % expiryInterval
@@ -2321,7 +2321,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					pwhistoryPolicy['expiryInterval']=''
 					expiryInterval=-1
 
-				if expiryInterval == -1:
+				if expiryInterval == -1 or expiryInterval == 0:
 					shadowMax = "1"
 				else:
 					shadowMax="%d" % expiryInterval
@@ -2359,7 +2359,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 			# 2. set posix attributes
 			if 'posix' in self.options or 'mail' in self.options:
-				if expiryInterval==-1:
+				if expiryInterval==-1 expiryInterval == 0:
 					shadowMax=''
 				else:
 					shadowMax="%d" % expiryInterval

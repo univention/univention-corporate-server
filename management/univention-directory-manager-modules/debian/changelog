@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.142-1) unstable; urgency=low
+
+  * deactivate password expiry for posix if set to "0" in the related policy
+  (Bug #29918)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 08 Mar 2013 15:59:26 +0100
+
 univention-directory-manager-modules (8.0.141-1) unstable; urgency=low
 
   * use associatedDomain (or UCR domainname) and hostname to build
