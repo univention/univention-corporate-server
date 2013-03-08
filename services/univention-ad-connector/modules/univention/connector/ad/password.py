@@ -165,7 +165,8 @@ def password_sync_ucs(connector, key, object):
 		pwd=res[0][1]['sambaNTPassword'][0]
 	else:
 		pwd='NO PASSWORDXXXXXX'
-		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get NT Hash from UCS")
+		if connector.baseConfig.is_true('password/samba/lmhash'):
+			ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get NT Hash from UCS")
 
 	if res[0][1].has_key('sambaLMPassword'):
 		pwd+=res[0][1]['sambaLMPassword'][0]

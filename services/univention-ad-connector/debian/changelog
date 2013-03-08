@@ -1,3 +1,10 @@
+univention-ad-connector (7.0.17-1) unstable; urgency=low
+
+  * only log LM hash warning if UCR variable password/samba/lmhash is set to
+    true (Bug #29294)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 08 Mar 2013 11:51:30 +0100
+
 univention-ad-connector (7.0.16-1) unstable; urgency=low
 
   * Remember if the user was just created in UCS and don't write the
