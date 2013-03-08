@@ -2359,7 +2359,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 			# 2. set posix attributes
 			if 'posix' in self.options or 'mail' in self.options:
-				if expiryInterval==-1 expiryInterval == 0:
+				if expiryInterval==-1 or expiryInterval == 0:
 					shadowMax=''
 				else:
 					shadowMax="%d" % expiryInterval

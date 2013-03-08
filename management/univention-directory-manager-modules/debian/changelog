@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.143-1) precise; urgency=low
+
+  * fixed typo (Bug #29918)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 08 Mar 2013 16:46:52 +0100
+
 univention-directory-manager-modules (8.0.142-1) unstable; urgency=low
 
   * deactivate password expiry for posix if set to "0" in the related policy
