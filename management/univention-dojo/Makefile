@@ -60,7 +60,7 @@ dojo: dojo-*.tar.gz
 	patch -p1 < ../fix_dojo_iframe_textarea.patch && \
 	patch -p1 < ../fix_html5_uploader.patch && \
 	patch -p1 < ../fix_dijit_dialog.patch && \
-	patch -p0 < ../fix_Dialog_autofocus.patch
+	patch -p1 < ../fix_Dialog_autofocus.patch
 
 # all other JS packages
 libs/%: %-*.tar.gz
