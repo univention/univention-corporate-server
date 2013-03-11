@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.222-2) unstable; urgency=low
+
+  * Bug #25753: version bump
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 11 Mar 2013 18:48:25 +0100
+
 univention-management-console-frontend (2.0.222-1) unstable; urgency=low
 
   * Bug #25753: added missing feedback links
