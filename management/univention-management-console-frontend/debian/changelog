@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.222-1) unstable; urgency=low
+
+  * Bug #25753: added missing feedback links
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 11 Mar 2013 18:41:03 +0100
+
 univention-management-console-frontend (2.0.221-1) unstable; urgency=low
 
   * Bug #30625: fixed global scrolling behaviour, set fixed height for UMC

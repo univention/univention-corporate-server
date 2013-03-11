@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-03-11 14:04+0100\n"
+"POT-Creation-Date: 2013-03-11 18:40+0100\n"
 "PO-Revision-Date: 2012-02-23 16:18+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/widgets/LoginDialog.js:153 umc/widgets/PasswordInputBox.js:66
+#: umc/widgets/PasswordInputBox.js:66 umc/widgets/LoginDialog.js:153
 #, python-format
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
@@ -41,7 +41,7 @@ msgstr ""
 "Module benutzen zu können.<br>Momentan geöffnete Module funktionieren "
 "möglicherweise nicht mehr korrekt.<br>Soll die Seite neu geladen werden?"
 
-#: umc/about.js:58 umc/app.js:965
+#: umc/about.js:58 umc/app.js:1016
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -61,11 +61,11 @@ msgstr "Objekte hinzufügen"
 msgid "Add to favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: umc/tools.js:729
+#: umc/tools.js:730
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: umc/tools.js:655
+#: umc/tools.js:656
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
@@ -76,7 +76,7 @@ msgstr ""
 msgid "An error occurred: "
 msgstr "Ein Fehler ist aufgetreten: "
 
-#: umc/tools.js:651
+#: umc/tools.js:652
 #, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -120,8 +120,8 @@ msgstr "Die Authentisierung schlug fehl. Bitte melden Sie sich erneut an."
 msgid "Back"
 msgstr "Zurück"
 
-#: umc/app.js:1027 umc/tools.js:200 umc/dialog.js:328 umc/widgets/Wizard.js:87
-#: umc/widgets/MultiObjectSelect.js:139
+#: umc/tools.js:200 umc/app.js:1074 umc/dialog.js:328
+#: umc/widgets/MultiObjectSelect.js:139 umc/widgets/Wizard.js:87
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -133,7 +133,7 @@ msgstr "Daten leeren"
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
 
-#: umc/about.js:58 umc/help.js:53 umc/widgets/Page.js:266
+#: umc/help.js:53 umc/about.js:58 umc/widgets/Page.js:266
 msgid "Close"
 msgstr "Schließen"
 
@@ -141,7 +141,7 @@ msgstr "Schließen"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/app.js:923
+#: umc/app.js:974
 msgid "Confirmations"
 msgstr "Bestätigungen"
 
@@ -153,7 +153,7 @@ msgstr "Die Anfrage konnte nicht ausgeführt werden."
 msgid "Could not process the request."
 msgstr "Die Anfrage konnte nicht bearbeitet werden."
 
-#: umc/app.js:1014
+#: umc/app.js:1061
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
@@ -161,7 +161,7 @@ msgstr "Möchten Sie sich wirklich abmelden?"
 msgid "Favorites"
 msgstr "Favoriten"
 
-#: umc/app.js:954
+#: umc/app.js:1005
 msgid "Feedback"
 msgstr "Feedback"
 
@@ -194,11 +194,11 @@ msgstr "Hello %(last)s, %(first)s!"
 msgid "Hello %s %s!"
 msgstr "Hello %s %s!"
 
-#: umc/app.js:947 umc/help.js:53
+#: umc/help.js:53 umc/app.js:998
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/tools.js:618
+#: umc/tools.js:619
 msgid "Hide server error message"
 msgstr "Fehlernachricht des Servers ausblenden"
 
@@ -276,11 +276,11 @@ msgstr "Laden der Module"
 msgid "Login"
 msgstr "Anmelden"
 
-#: umc/app.js:1015
+#: umc/app.js:1062
 msgid "Logout"
 msgstr "Abmelden"
 
-#: umc/app.js:931
+#: umc/app.js:982
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -375,7 +375,7 @@ msgstr "Suchen"
 msgid "Search results:"
 msgstr "Suchergebnisse:"
 
-#: umc/tools.js:614
+#: umc/tools.js:615
 msgid "Send feedback mail"
 msgstr "Feedback per E-Mail senden"
 
@@ -383,11 +383,11 @@ msgstr "Feedback per E-Mail senden"
 msgid "Server"
 msgstr "Server"
 
-#: umc/tools.js:645
+#: umc/tools.js:646
 msgid "Server error message:"
 msgstr "Fehlernachricht des Servers:"
 
-#: umc/tools.js:619
+#: umc/tools.js:620
 msgid "Show server error message"
 msgstr "Fehlernachricht des Servers anzeigen"
 
@@ -434,7 +434,7 @@ msgstr ""
 msgid "The password has expired and must be changed."
 msgstr "Das Passwort ist abgelaufen und muss geändert werden."
 
-#: umc/widgets/LoginDialog.js:219 umc/widgets/PasswordInputBox.js:112
+#: umc/widgets/PasswordInputBox.js:112 umc/widgets/LoginDialog.js:219
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
@@ -477,7 +477,7 @@ msgstr ""
 "Dieses System wurde kürzlich aktualisiert. Ein Neustart des Systems über das "
 "<a %s>Neustarten-Modul</a> ist erforderlich, um das Update abzuschließen."
 
-#: umc/app.js:915
+#: umc/app.js:966
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -497,12 +497,12 @@ msgstr "Erneutes Laden der UMC notwendig"
 msgid "UMC version"
 msgstr "UMC Version"
 
-#: umc/app.js:975
+#: umc/app.js:1026
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
-#: umc/widgets/Uploader.js:110 umc/widgets/MultiUploader.js:104
-#: umc/widgets/InfoUploader.js:45
+#: umc/widgets/Uploader.js:110 umc/widgets/InfoUploader.js:45
+#: umc/widgets/MultiUploader.js:104
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -612,15 +612,19 @@ msgstr "mehr"
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
 
+#: umc/app.js:1008
+msgid "umcFeedbackUrl"
+msgstr "http://www.univention.de/produkte/maintenance/produkt-feedback/"
+
 #: umc/app.js:591
 msgid "umcHostInfo"
 msgstr "Host: %(host)s.%(domain)s"
 
-#: umc/app.js:882
+#: umc/app.js:933
 msgid "umcLogoTitle"
 msgstr "Webseite Univention GmbH"
 
-#: umc/app.js:881
+#: umc/app.js:932
 msgid "umcLogoUrl"
 msgstr "http://www.univention.de"
 
@@ -640,7 +644,7 @@ msgstr ""
 msgid "umcOverviewTabTitle"
 msgstr "Übersicht"
 
-#: umc/app.js:906
+#: umc/app.js:957
 msgid "umcUserInfo"
 msgstr "Benutzer: %(username)s"
 
