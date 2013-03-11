@@ -1,3 +1,9 @@
+ucs-test (3.0.29-2) unstable; urgency=low
+
+  * Removed 00_base/07kpasswd_output (Bug #30750)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Mar 2013 21:51:47 +0100
+
 ucs-test (3.0.29-1) unstable; urgency=low
 
   * Adapt proof uniquemember test script to UCS 3.1-1 (Bug #12081)
