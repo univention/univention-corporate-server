@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/has",
 	"dojo/promise/all",
 	"dijit/Dialog",
 	"umc/tools",
@@ -39,7 +40,7 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, all, Dialog, tools, Text, Form, ContainerWidget, _) {
+], function(declare, lang, array, has, all, Dialog, tools, Text, Form, ContainerWidget, _) {
 
 	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
@@ -250,9 +251,12 @@ define([
 				this.onDone(this._form.get('value'));
 				this.destroyRecursive();
 			}));
-			this.on('show', lang.hitch(this, function() {
-				this._form.getWidget(widgets[0].name).focus();
-			}));
+			if (!has('touch')) {
+				// only focus the element in normal browsers
+				this.on('show', lang.hitch(this, function() {
+					this._form.getWidget(widgets[0].name).focus();
+				}));
+			}
 			var container = new ContainerWidget({});
 			if ('navigation' == this.moduleFlavor) {
 				container.addChild(new Text({

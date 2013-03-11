@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.74-1) unstable; urgency=low
+
+  * Bug #30749: adjusted focus behaviour for mobile devices
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 11 Mar 2013 18:01:46 +0100
+
 univention-management-console-module-udm (3.0.73-1) unstable; urgency=low
 
   * display a notification if an user successfully changed his password with
