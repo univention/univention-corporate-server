@@ -99,10 +99,10 @@ class State( signals.Provider ):
 	def _authenticated( self, success ):
 		self.signal_emit( 'authenticated', success, self )
 
-	def authenticate( self, username, password ):
+	def authenticate( self, username, password, new_password=None ):
 		"""Initiates an authentication process"""
 		self.username = username
-		self.__auth.authenticate( username, password )
+		self.__auth.authenticate( username, password, new_password )
 
 	def credentials( self ):
 		"""Returns the credentials"""

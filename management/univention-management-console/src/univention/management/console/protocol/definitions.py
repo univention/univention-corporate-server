@@ -62,7 +62,7 @@ class CommandDefinition( object ):
 
 #: List of valid commands
 COMMANDS = (
-	CommandDefinition( 'AUTH', False, 'username', 'password' ),
+	CommandDefinition( 'AUTH', False, 'username', 'password', 'new_password' ),
 	CommandDefinition( 'COMMAND', True ),
 	CommandDefinition( 'VERSION', False ),
 	CommandDefinition( 'GET', True ),
@@ -116,6 +116,7 @@ STATUS = (
 	Status( 'BAD_REQUEST_ACCOUNT_EXPIRED'		, 412, _( 'The account is expired and can not be used anymore' ) ),
 	Status( 'BAD_REQUEST_ACCOUNT_DISABLED'		, 413, _( 'The account as been disabled' ) ),
 	Status( 'BAD_REQUEST_UNAVAILABLE_LOCALE'	, 414, _( 'Specified locale is not available' ) ),
+	Status( 'BAD_REQUEST_PASSWORD_EXPIRED'		, 415, _( 'The password has expired and must be renewed' ) ),
 
 	# UMCP server core errors
 	Status( 'SERVER_ERR'						, 500, _( 'Internal error' ) ),

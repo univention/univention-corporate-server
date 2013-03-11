@@ -113,14 +113,19 @@ class MagicBucket( object ):
 			statistics.users.add( state.username )
 			state.authResponse.status = SUCCESS
 		else:
-			state.authResponse.status = BAD_REQUEST_AUTH_FAILED
-		state.authenticated = success
+			if hasattr(success, 'password_is_expired') and success.password_is_expired():
+				state.authResponse.status = BAD_REQUEST_PASSWORD_EXPIRED
+			else:
+				state.authResponse.status = BAD_REQUEST_AUTH_FAILED
+			if hasattr(success, 'error_message'):
+				state.authResponse.message = success.error_message
+		state.authenticated = bool(success)
 		self._response( state.authResponse, state )
 		state.authResponse = None
 
 	def _receive( self, socket ):
 		"""Signal callback: Handles incoming data. Processes SSL events
-		and parses the incoming data. If a vaild UMCP was found it is
+		and parses the incoming data. If a valid UMCP was found it is
 		passed to _handle.
 
 		:param fd socket: file descriptor or socket object that reported incoming data
@@ -208,7 +213,7 @@ class MagicBucket( object ):
 		elif msg.command == 'AUTH':
 			state.authResponse = Response( msg )
 			try:
-				state.authenticate( msg.body[ 'username' ], msg.body[ 'password' ] )
+				state.authenticate( msg.body[ 'username' ], msg.body[ 'password' ], msg.body.get( 'new_password' ) )
 			except ( TypeError, KeyError ), e:
 				state.authResponse.status = BAD_REQUEST_INVALID_OPTS
 				state.authResponse.message = 'insufficient authentification information'

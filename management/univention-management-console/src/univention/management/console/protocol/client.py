@@ -329,9 +329,10 @@ class Client( signals.Provider, Translation ):
 			if response.status == SUCCESS:
 				self.__authenticated = True
 				self.__unfinishedRequests.remove( response.id )
+			message = response.message or status_description( response.status )
 			self.signal_emit( 'authenticated', self.__authenticated,
 							  response.status,
-							  status_description( response.status ) )
+							  message )
 		elif response.id in self.__unfinishedRequests:
 			self.signal_emit( 'response', response )
 			if response.is_final():
@@ -339,18 +340,18 @@ class Client( signals.Provider, Translation ):
 		else:
 			self.signal_emit( 'error', UnknownRequestError() )
 
-	def authenticate( self, username, password ):
+	def authenticate( self, username, password, new_password=None ):
 		"""Authenticate against the UMC server"""
 		authRequest = Request ('AUTH' )
 		authRequest.body['username'] = username
 		authRequest.body['password'] = password
+		authRequest.body['new_password'] = new_password
 
 		self.request( authRequest )
 
 		self.__auth_id = authRequest.id
 
 if __name__ == '__main__':
-	import notifier
 	from getpass import getpass
 
 	notifier.init( notifier.GENERIC )

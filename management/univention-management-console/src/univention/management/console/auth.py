@@ -44,12 +44,36 @@ import notifier.signals as signals
 import notifier.threads as threads
 
 import PAM
+import functools
 
-from .log import *
+from .log import AUTH
 
 from univention.lib.i18n import Translation
 
 _ = Translation( 'univention.management.console' ).translate
+# FIXME: translation is not working: setting locale is done after authorization...
+
+class AuthenticationResult(object):
+	def __init__(self, success, password_valid=None, password_expired=False, error_message=None):
+		from univention.management.console.protocol.definitions import status_description, BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_PASSWORD_EXPIRED
+		self.success = success
+		if password_valid is None:
+			password_valid = success
+		if not success and error_message is None:
+			if password_expired is True:
+				self.error_message = status_description(BAD_REQUEST_PASSWORD_EXPIRED)
+			else:
+				self.error_message = status_description(BAD_REQUEST_AUTH_FAILED)
+		else:
+			self.error_message = error_message
+		self.password_valid = password_valid
+		self.password_expired = password_expired
+
+	def password_is_expired(self):
+		return bool(self.password_expired)
+
+	def __nonzero__(self):
+		return self.success
 
 class Auth( signals.Provider ):
 	"""
@@ -58,6 +82,7 @@ class Auth( signals.Provider ):
 	**Signals:**
 
 	* *auth_return* -- is emitted when the authentication process has finished. As argument a boolean is passed defining if the authentication was successful. This signal is used internally only by the :class:`AuthHandler`.
+	* *password_changed* -- is emitted when the authentication process changed an expired password. As argument the new password is passed. This signal is used internally only by the :class:`AuthHandler`.
 	"""
 	def __init__( self, username, password ):
 		"""This class is not meant to be instanciated directly. It is
@@ -72,12 +97,26 @@ class Auth( signals.Provider ):
 		self._password = password
 
 		self.signal_new( 'auth_return' )
+		self.signal_new( 'password_changed' )
 
 	def authenticate( self ):
 		"""This method should be overwritten when implementing an
 		authentication module. It is invoked by the UMC core when
 		verifiying the credentials of a user."""
 		return True
+
+	def may_change_password( self ):
+		"""This method may be overwritten when implementing an
+		authentication module. It is invoked by the UMC core when
+		checking if an unsuccessful authentication may be retried with
+		a new password, e.g. in case of an expired password."""
+		return False
+
+	def change_expired_password( self, new_password ):
+		"""This method may be overwritten when implementing an
+		authentication module. It is invoked by the UMC core when
+		changing an expired password to a new one."""
+		return False
 
 class PAM_Auth( Auth ):
 	"""This class implements the interface :class:`Auth` to provide
@@ -88,24 +127,45 @@ class PAM_Auth( Auth ):
 	:param password: the secret to use for authentcation. Normally this will be a cleartext password.
 	"""
 
+	ERROR_MESSAGES = {
+		20: _('The system does not allow changing the password') # 'Authentication token manipulation error'
+	}
+
 	def __init__( self, username = None, password = None ):
 		Auth.__init__( self, username, password )
 		self._pam = PAM.pam()
 		self._pam.start( 'univention-management-console' )
 		self._pam.set_item( PAM.PAM_CONV, self._conv )
+		self._may_change_password = False
 
-	def _conv( self, auth, query_list, data ):
-		resp = []
-		for query, qt in query_list:
-			if qt == PAM.PAM_PROMPT_ECHO_ON:
-				resp.append( ( self._password, 0 ) )
-			elif qt == PAM.PAM_PROMPT_ECHO_OFF:
-				resp.append( ( self._password, 0 ) )
-			elif qt == PAM.PAM_PROMPT_ERROR_MSG or qt == PAM.PAM_PROMPT_TEXT_INFO:
-				resp.append( ( '', 0 ) )
-			else:
-				return None
-		return resp
+	def may_change_password( self ):
+		return self._may_change_password
+
+	def _talk_to_pam( self, answers, save_prompts_to=None ):
+		def _conv( auth, query_list, data ):
+			resp = []
+			for query, qt in query_list:
+				try:
+					if save_prompts_to is not None:
+						save_prompts_to.append(query)
+					answer = answers[qt]
+					if isinstance(answer, (list, tuple)):
+						answer, others = answer[0], answer[1:]
+						if len(others) == 1:
+							others = others[0]
+						answers[qt] = others
+					resp.append( ( answer, 0 ) )
+				except KeyError:
+					return None
+			return resp
+		return _conv
+
+	@property
+	def _conv( self ):
+		return self._talk_to_pam( {
+			PAM.PAM_PROMPT_ECHO_ON : self._password,
+			PAM.PAM_PROMPT_ECHO_OFF : self._password,
+		} )
 
 	def authenticate( self ):
 		self._pam.set_item( PAM.PAM_USER, self._username )
@@ -115,20 +175,69 @@ class PAM_Auth( Auth ):
 	def _auth_result( self, thread, success ):
 		self.signal_emit( 'auth_return', success )
 
-	def _ask_pam( self ):
+	def _ask_pam( self, new_password=None ):
+		self._may_change_password = False
 		try:
 			AUTH.info( 'PAM: trying to authenticate %s' % self._username )
 			self._pam.authenticate()
-			self._pam.acct_mgmt()
+			try:
+				self._pam.acct_mgmt()
+			except PAM.error as e:
+				if e[1] == PAM.PAM_NEW_AUTHTOK_REQD: # error: ('Authentication token is no longer valid; new one required', 12)
+					if new_password is not None:
+						prompts = []
+						new_pam = PAM.pam()
+						new_pam.start( 'univention-management-console' )
+						new_pam.set_item( PAM.PAM_CONV, self._talk_to_pam( {
+							PAM.PAM_PROMPT_ECHO_ON : self._username,
+							PAM.PAM_PROMPT_ECHO_OFF : [self._password, new_password, new_password], # old, new, retype
+						}, save_prompts_to=prompts ) )
+						try:
+							new_pam.chauthtok()
+						except PAM.error, e:
+							message = PAM_Auth.ERROR_MESSAGES.get(e[1], e[0])
+							# okay, check prompts, maybe they have a hint why it failed?
+							# prompts are localised, i.e. if the operating system uses German, the prompts are German!
+							# try to be exhaustive. otherwise the errors will not be presented to the user.
+							known_errors = [
+								([': Es ist zu kurz', ': Es ist VIEL zu kurz', ': it is WAY too short', ': Password is too short'], _('The password is too short')),
+								([': Es ist zu einfach/systematisch', ': it is too simplistic/systematic'], _('The password is too simple')),
+								([': is a palindrome'], _('The password is a palindrome')),
+								([': Es basiert auf einem Wörterbucheintrag', ': it is based on a dictionary word'], _('Es basiert auf einem Wörterbucheintrag')),
+								([': Password already used'], _('The password was already used')),
+								([': Es enthält nicht genug unterschiedliche Zeichen', ': it does not contain enough DIFFERENT characters'], _('The password does not contain enough different characters')),
+							]
+							further_error_message_found = False
+							for possible_responses, user_friendly_response in known_errors:
+								if any(resp in prompts for resp in possible_responses):
+									message = '%s. %s' % (message, user_friendly_response)
+									further_error_message_found = True
+							if not further_error_message_found:
+								user_friendly_response = _('No further information available')
+								message = '%s. %s' % (message, user_friendly_response)
+							message = message + '.'
+							return AuthenticationResult(False, error_message=message)
+						self.signal_emit('password_changed', new_password)
+						return AuthenticationResult(True)
+					else:
+						AUTH.error( "PAM: password expired" )
+						self._may_change_password = True
+						return AuthenticationResult(False, password_valid=True, password_expired=True)
+				raise
 		except PAM.error, e:
 			AUTH.error( "PAM: authentication error: %s" % str( e ) )
-			return False
+			return AuthenticationResult(False)
 		except Exception, e: # internal error
 			AUTH.warn( "PAM: global error: %s" % str( e ) )
-			return False
+			return AuthenticationResult(False)
 
-		AUTH.info( 'Authentication for %s was succcessful' % self._username )
-		return True
+		AUTH.info( 'Authentication for %s was successful' % self._username )
+		return AuthenticationResult(True)
+
+	def change_expired_password( self, new_password ):
+		function = functools.partial( self._ask_pam, new_password )
+		ask = threads.Simple( 'pam', function, self._auth_result )
+		ask.run()
 
 _all_modules = ( PAM_Auth, )
 
@@ -154,25 +263,44 @@ class AuthHandler( signals.Provider ):
 		for mod in _all_modules:
 			instance = mod( username, password )
 			instance.signal_connect( 'auth_return', self._auth_return )
+			instance.signal_connect( 'password_changed', self._password_changed )
 			self._modules.append( instance )
 		self._modules.reverse()
 
-	def authenticate( self, username, password ):
+	def authenticate( self, username, password, new_password=None ):
 		self._create_modules( username, password )
 		self._current = self._modules.pop()
+		self.__new_password = new_password
 		self._current.authenticate()
 		self.__credentials = ( username, password )
 
 	def credentials( self ):
 		return self.__credentials
 
-	def _auth_return( self, success ):
-		if not success:
-			try:
-				self._current = self._modules.pop()
-				self._current.authenticate()
-			except:
-				self.signal_emit( 'authenticated', False )
+	def _password_changed( self, new_password ):
+		credentials = self.__credentials
+		if credentials is None:
+			AUTH.warn('Password changed without credentials set!')
 		else:
+			self.__credentials = ( credentials[0], new_password )
+
+	def _auth_return( self, success ):
+		if success:
 			self._modules = []
-			self.signal_emit( 'authenticated', True )
+		else:
+			current_auth_module = self._current
+			if self.__new_password is not None and current_auth_module.may_change_password():
+				try:
+					current_auth_module.change_expired_password(self.__new_password)
+					return # dont emit here. change_expired_password will emit
+				except:
+					pass
+			else:
+				try:
+					self._current = self._modules.pop()
+					self._current.authenticate()
+					return # dont emit here. the next authenticate will emit
+				except:
+					pass
+		self.signal_emit( 'authenticated', success )
+

@@ -1,3 +1,9 @@
+univention-management-console (5.0.61-1) unstable; urgency=low
+
+  * Allow setting a new password when the old one expired (Bug #29971)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 11 Mar 2013 16:55:51 +0100
+
 univention-management-console (5.0.60-1) unstable; urgency=low
 
   * fix errors in module templates; Bug #29993, Bug #30164

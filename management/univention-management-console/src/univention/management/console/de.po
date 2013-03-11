@@ -262,6 +262,34 @@ msgstr "Ungültige or fehlende Kommando-Optionen"
 msgid "The authentication has failed"
 msgstr "Authentisierung ist fehlgeschlagen"
 
+#: src/univention/management/console/protocol/definitions.py:119
+msgid "The password was already used"
+msgstr "Das Passwort wurde schon genutzt"
+
+#: src/univention/management/console/protocol/definitions.py:119
+msgid "The password is a palindrome"
+msgstr "Das Passwort ist ein Palindrom"
+
+#: src/univention/management/console/protocol/definitions.py:119
+msgid "The password does not contain enough different characters"
+msgstr "Das Passwort enthält nicht genug unterschiedliche Zeichen"
+
+#: src/univention/management/console/protocol/definitions.py:119
+msgid "No further information available"
+msgstr "Keine weiteren Informationen verfügbar"
+
+#: src/univention/management/console/protocol/definitions.py:119
+msgid "The password is too simple"
+msgstr "Das Passwort ist zu einfach"
+
+#: src/univention/management/console/protocol/definitions.py:119
+msgid "The password is too short"
+msgstr "Das Passwort ist zu kurz"
+
+#: src/univention/management/console/protocol/definitions.py:119
+msgid "The password has expired and must be renewed"
+msgstr "Das Passwort ist abgelaufen und muss erneuert werden"
+
 #: src/univention/management/console/protocol/definitions.py:116
 msgid "The account is expired and can not be used anymore"
 msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden"
@@ -277,6 +305,10 @@ msgstr "Angegebene Sprache ist nicht verfügbar"
 #: src/univention/management/console/protocol/definitions.py:121
 msgid "Internal error"
 msgstr "Interner Fehler"
+
+#: src/univention/management/console/auth.py:119
+msgid "The system does not allow changing the password"
+msgstr "Das System erlaubt das Ändern des Passwortes nicht"
 
 #: src/univention/management/console/protocol/definitions.py:122
 msgid "Module process died unexpectedly"
