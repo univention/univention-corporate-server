@@ -1,3 +1,9 @@
+ucs-test (3.0.29-1) unstable; urgency=low
+
+  * Adapt proof uniquemember test script to UCS 3.1-1 (Bug #12081)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Mar 2013 21:35:06 +0100
+
 ucs-test (3.0.28-1) unstable; urgency=low
 
   * improved changes made for Bug #30733
