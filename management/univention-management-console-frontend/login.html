@@ -33,7 +33,7 @@
 	</head>
 	<body class="umc">
 		<form id="umc_Form" name="umc_Form" action="blank.html" method="post" class="umcLoginForm" autocomplete="on">
-			<div class="umcLabelPane">
+			<div id="umc_OuterLabelPane_Username" class="umcLabelPane">
 				<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop">
 					<label id="umc_LabelPane_Username" for="umc_UsernameInput"></label>
 				</div>
@@ -43,13 +43,33 @@
 					</div>
 				</div>
 			</div>
-			<div class="umcLabelPane">
+			<div id="umc_OuterLabelPane_Password" class="umcLabelPane">
 				<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop">
 					<label id="umc_LabelPane_Password" for="umc_PasswordInput"></label>
 				</div>
 				<div id="umc_PasswordContainer" class="dijit dijitReset dijitInlineTable dijitLeft umcPasswordBox umcFormWidget dijitTextBox dijitValidationTextBox">
 					<div class="dijitReset dijitInputField dijitInputContainer">
 						<input id="umc_PasswordInput" name="password" type="password" class="dijitReset dijitInputInner" />
+					</div>
+				</div>
+			</div>
+			<div id="umc_OuterLabelPane_NewPassword" class="umcLabelPane">
+				<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop">
+					<label id="umc_LabelPane_NewPassword" for="umc_NewPasswordInput"></label>
+				</div>
+				<div id="umc_NewPasswordContainer" class="dijit dijitReset dijitInlineTable dijitLeft umcPasswordInputBox umcFormWidget dijitTextBox dijitValidationTextBox">
+					<div class="dijitReset dijitInputField dijitInputContainer">
+						<input id="umc_NewPasswordInput" name="new_password" type="password" class="dijitReset dijitInputInner" />
+					</div>
+				</div>
+			</div>
+			<div id="umc_OuterLabelPane_NewPasswordRetype" class="umcLabelPane">
+				<div class="umcLabelPaneLabelNode umcLabelPaneLabeNodeTop">
+					<label id="umc_LabelPane_NewPasswordRetype" for="umc_NewPasswordRetypeInput"></label>
+				</div>
+				<div id="umc_NewPasswordRetypeContainer" class="dijit dijitReset dijitInlineTable dijitLeft umcPasswordInputBox umcFormWidget dijitTextBox dijitValidationTextBox">
+					<div class="dijitReset dijitInputField dijitInputContainer">
+						<input id="umc_NewPasswordRetypeInput" type="password" class="dijitReset dijitInputInner" />
 					</div>
 				</div>
 			</div>

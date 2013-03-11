@@ -122,6 +122,7 @@ class SessionClient(object):
 		"""Callback function for 'authenticated' from UMCP-Server."""
 		CORE.process('SessionClient(0x%x): _authenticated: success=%s  status=%s  message=%s' % (id(self), success, status, message))
 		self._auth_response.status = status
+		self._auth_response.message = message
 		self._auth_response_queue.put( self._auth_response )
 		# release queue object
 		self._auth_response_queue = None
@@ -132,7 +133,7 @@ class SessionClient(object):
 		self._auth_response = umcp.Response( request )
 		self._auth_response.body['sessionid'] = request.body.get('sessionid','')
 		self._auth_response_queue = response_queue
-		self.client.authenticate( request.body[ 'username' ], request.body[ 'password' ] )
+		self.client.authenticate( request.body[ 'username' ], request.body[ 'password' ], request.body[ 'new_password' ] )
 
 	def _response(self, response):
 		"""Queue response from UMC server."""
@@ -559,6 +560,7 @@ class CPAuth(CPgeneric):
 		req = umcp.Request( 'AUTH' )
 		req.body[ 'username' ] = json[ 'options' ].get('username','')
 		req.body[ 'password' ] = json[ 'options' ].get('password','')
+		req.body[ 'new_password' ] = json[ 'options' ].get('new_password')
 
 		# create new response queue
 		response_queue = Queue.Queue()

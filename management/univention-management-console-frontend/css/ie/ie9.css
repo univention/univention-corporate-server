@@ -10,3 +10,7 @@
 .umcLoginDialogFormContainer {
 	height: 195px;
 }
+
+.umcLoginDialogFormContainerWithNewPassword {
+	height: 295px;
+}

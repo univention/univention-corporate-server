@@ -133,9 +133,6 @@ define([
 		holdSession: function() {
 			// summary:
 			//		Set the expiration time of the current session to 24 hours.
-			// id: String
-			//		If specified, the session ID will be set to this value, otherwise the
-			//		ID will be read from the cookie automatically.
 			var date = new Date((new Date()).getTime() + 1000 * 60 * 60 * 24);
 			this.status('sessionLastRequest', date);
 		},
@@ -486,6 +483,7 @@ define([
 			412: _( 'The account is expired and can not be used anymore.' ),
 			413: _( 'The account as been disabled.' ),
 			414: _( 'Specified locale is not available.' ),
+			415: _( 'The password has expired and must be changed.' ),
 
 			500: _( 'Internal server error.' ),
 			503: _( 'Internal server error: The service is temporarily not available.' ),
@@ -573,11 +571,12 @@ define([
 
 			// handle the different status codes
 			if (undefined !== status && status in this._statusMessages) {
-				if (411 == status) {
+				if (411 == status || 415 == status) {
 					// authentification failed, show a notification
 					dialog.login();
+					dialog._loginDialog.updateForm(415 === status);
 					var logindialog = query('.umc_LoginMessage');
-					logindialog[0].innerHTML = this._statusMessages[status];
+					logindialog[0].innerHTML = message;
 					logindialog.style('display', 'block');
 				} else if(401 == status) {
 					// session has expired
@@ -599,12 +598,13 @@ define([
 				else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 
 					topic.publish('/umc/actions', 'error', 'traceback');
-					var feedbackLink = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\nunivention-management-console-frontend {5}", [
+					var feedbackLink = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\n{5} {6}", [
 						_('Please take a second to provide the following information:'),
 						_('steps to reproduce the failure'),
 						_('expected result'),
 						_('actual result'),
 						message.replace(/<br *\/?>/g, "\n"),
+						'univention-management-console-frontend',
 						tools.status('version')
 					]);
 

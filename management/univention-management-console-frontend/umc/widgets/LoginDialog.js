@@ -133,25 +133,50 @@ define([
 			});
 		},
 
+		updateForm: function(passwordExpired) {
+			this._passwordExpired = passwordExpired;
+		},
+
 		_initForm: function() {
 			// wait until the iframe is completely loaded
 			setTimeout(lang.hitch(this, function() {
 				// check whether the form is available or not
-				var	state = lang.getObject('contentWindow.state', false, this._iframe);
+				var state = lang.getObject('contentWindow.state', false, this._iframe);
+				var showNewPassword = this._passwordExpired;
 				if (state === 'loaded') {
 					// we are able to access the form
 					win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
 						// because of the iframe we need to manually translate the content
 						attr.set(dom.byId('umc_LabelPane_Username'), 'innerHTML', _('Username'));
 						attr.set(dom.byId('umc_LabelPane_Password'), 'innerHTML', _('Password'));
+						attr.set(dom.byId('umc_LabelPane_NewPassword'), 'innerHTML', _('New Password'));
+						attr.set(dom.byId('umc_LabelPane_NewPasswordRetype'), 'innerHTML', _('%(label)s (retype)', {label: _('New Password')}));
 						attr.set(dom.byId('umc_SubmitButton_label'), 'innerHTML', _('Login'));
+						if (showNewPassword) {
+							domClass.remove('umc_OuterLabelPane_NewPassword', 'dijitHidden');
+							domClass.remove('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
+						} else {
+							domClass.add('umc_OuterLabelPane_NewPassword', 'dijitHidden');
+							domClass.add('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
+						}
 					}));
+					if (showNewPassword) {
+						array.forEach(query('.umcLoginDialogFormContainer'), function(domNode) {
+							domClass.add(domNode, 'umcLoginDialogFormContainerWithNewPassword');
+						});
+					} else {
+						array.forEach(query('.umcLoginDialogFormContainer'), function(domNode) {
+							domClass.remove(domNode, 'umcLoginDialogFormContainerWithNewPassword');
+						});
+					}
 
-					// each time the page is loaded, we need to connect to the form events
-					this._connectEvents();
+					if (state === 'loaded') {
+						// each time the page is loaded, we need to connect to the form events
+						this._connectEvents();
 
-					this._isRendered = true;
-					lang.setObject('contentWindow.state', 'initialized', this._iframe);
+						this._isRendered = true;
+						lang.setObject('contentWindow.state', 'initialized', this._iframe);
+					}
 					this._initForm();
 				} else {
 					// we can't access the form, or it has already been initialized
@@ -168,6 +193,10 @@ define([
 			var usernameContainer;
 			var passwordInput;
 			var passwordContainer;
+			var newPasswordInput;
+			var newPasswordContainer;
+			var newPasswordRetypeInput;
+			var newPasswordRetypeContainer;
 
 			win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
 				form = dom.byId('umc_Form');
@@ -175,13 +204,23 @@ define([
 				usernameContainer = dom.byId('umc_UsernameContainer');
 				passwordInput = dom.byId('umc_PasswordInput');
 				passwordContainer = dom.byId('umc_PasswordContainer');
+				newPasswordInput = dom.byId('umc_NewPasswordInput');
+				newPasswordContainer = dom.byId('umc_NewPasswordContainer');
+				newPasswordRetypeInput = dom.byId('umc_NewPasswordRetypeInput');
+				newPasswordRetypeContainer = dom.byId('umc_NewPasswordRetypeContainer');
 			}));
 
 			this._connections = [];
 			// register all events
 			this._connections.push(
 				on(form, 'submit', lang.hitch(this, function(evt) {
-					this._authenticate(usernameInput.value, passwordInput.value);
+					if (newPasswordInput.value !== newPasswordRetypeInput.value) {
+						var logindialog = query('.umc_LoginMessage');
+						logindialog[0].innerHTML = _('The passwords do not match, please retype again.');
+						evt.preventDefault();
+						return;
+					}
+					this._authenticate(usernameInput.value, passwordInput.value, newPasswordInput.value);
 					this._isRendered = false;
 					this._initForm();
 				}))
@@ -189,7 +228,9 @@ define([
 
 			var fields = [
 				[usernameInput, usernameContainer],
-				[passwordInput, passwordContainer]
+				[passwordInput, passwordContainer],
+				[newPasswordInput, newPasswordContainer],
+				[newPasswordRetypeInput, newPasswordRetypeContainer]
 			];
 			var settingsArray = [
 				[mouse.enter, this._setHover, true],
@@ -263,12 +304,16 @@ define([
 			}
 		},
 
-		_authenticate: function(username, password) {
+		_authenticate: function(username, password, new_password) {
 			this.standby(true);
-			tools.umcpCommand('auth', {
+			args = {
 				username: username,
 				password: password
-			}).then(lang.hitch(this, function(data) {
+			};
+			if (new_password) {
+				args.new_password = new_password;
+			}
+			tools.umcpCommand('auth', args).then(lang.hitch(this, function(data) {
 				// disable standby in any case
 				this.standby(false);
 
