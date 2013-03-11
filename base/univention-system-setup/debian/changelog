@@ -1,3 +1,9 @@
+univention-system-setup (6.0.67-1) unstable; urgency=low
+
+  * [WIP] support bridges, bondings and vlan on NetworkPage; Bug #28389
+
+ -- Florian Best <best@univention.de>  Mon, 11 Mar 2013 17:22:39 +0100
+
 univention-system-setup (6.0.66-1) unstable; urgency=low
 
   * if no software component has been removed but some installed, do not add

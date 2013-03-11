@@ -45,6 +45,7 @@ import sys
 import apt
 import psutil
 import csv
+import imp
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
@@ -54,7 +55,6 @@ installer_i18n = Translation( 'installer', localedir = '/lib/univention-installe
 if not '/lib/univention-installer/' in sys.path:
 	sys.path.append('/lib/univention-installer/')
 import package_list
-import imp
 
 ucr=univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -91,6 +91,7 @@ UCR_VARIABLES = [
 	'proxy/http',
 	# net: ipv6
 	'ipv6/gateway',
+	'interfaces/primary',
 	# ssl
 	'ssl/common', 'ssl/locality', 'ssl/country', 'ssl/state',
 	'ssl/organization', 'ssl/organizationalunit', 'ssl/email',
@@ -121,6 +122,7 @@ def load_values():
 	for link_local in link_locals:
 		net_values['interfaces/%s/type' % link_local] = 'dhcp'
 	values.update(net_values)
+	values['interfaces'] = [idev['name'] for idev in detect_interfaces()]
 
 	# see whether the system has been joined or not
 	values['joined'] = os.path.exists('/var/univention-join/joined')
