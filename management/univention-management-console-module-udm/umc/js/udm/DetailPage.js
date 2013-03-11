@@ -1272,7 +1272,11 @@ define([
 					}
 				}
 
-				if (success) {
+				if (success && this.moduleFlavor == 'users/self') {
+					this._form.clearFormValues();
+					this._form.load(this.ldapName);
+					dialog.alert(_('The changes have been successfully applied.'));
+				} else if (success) {
 					// everything ok, close page
 					this.onCloseTab();
 					this.onSave(result.$dn$, this.objectType);

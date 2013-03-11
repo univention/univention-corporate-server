@@ -576,6 +576,10 @@ msgstr ""
 msgid "The LDAP object could not be saved: %(details)s"
 msgstr "Das LDAP-Objekt konnte nicht gespeichert werden: %(details)s"
 
+#: umc/js/udm/DetailPage.js:1281
+msgid "The changes have been successfully applied."
+msgstr "Die Änderungen wurden erfolgreich übernommen."
+
 #: umc/js/udm/NewObjectDialog.js:144
 msgid "The container in which the LDAP object shall be created."
 msgstr "Der Container, in dem das LDAP-Objekt erzeugt wird."

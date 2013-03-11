@@ -1,3 +1,10 @@
+univention-management-console-module-udm (3.0.73-1) unstable; urgency=low
+
+  * display a notification if an user successfully changed his password with
+    the udm/self command (Bug #29251)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 11 Mar 2013 14:29:41 +0100
+
 univention-management-console-module-udm (3.0.72-1) unstable; urgency=low
 
   * fix background for checkboxes; Bug #29210
