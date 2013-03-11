@@ -1,3 +1,9 @@
+ucs-test (3.0.28-1) unstable; urgency=low
+
+  * improved changes made for Bug #30733
+
+ -- Lukas Walter <walter@univention.de>  Mon, 11 Mar 2013 10:09:55 +0100
+
 ucs-test (3.0.27-1) unstable; urgency=low
 
   * 90change_user_pwd_via_udm: do not check if the master is reachable via ssh
