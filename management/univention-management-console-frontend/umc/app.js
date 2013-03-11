@@ -47,6 +47,7 @@ define([
 	"dojo/store/Observable",
 	"dojo/dom-style",
 	"dojo/dom-class",
+	"dojo/dom-geometry",
 	"dijit/Dialog",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -70,7 +71,7 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, win, win2, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domClass, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, TouchScrollContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, win, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domClass, domGeometry, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -169,7 +170,6 @@ define([
 		_overviewPage: null,
 		_helpMenu: null,
 		_headerRight: null,
-		_settingsMenu: null,
 		_settingsMenu: null,
 		_hostInfo: null,
 		_categoriesContainer: null,
@@ -808,6 +808,19 @@ define([
 
 		_setupStaticGui: false,
 
+		_updateScrolling: function() {
+			var viewportHeight = win.getBox().h;
+			var docHeight = this._topContainer ? domGeometry.getMarginBox(this._topContainer.domNode).h : viewportHeight;
+			var scrollStyle = style.get(baseWin.body(), 'overflowY');
+			var needsScrolling = Math.abs(viewportHeight - docHeight) > 10;
+			var hasScrollbars = (scrollStyle == 'auto' || scrollStyle == 'scroll');
+			console.log('needsScrolling:', needsScrolling, ' hasScrollbars:', hasScrollbars);
+			if (needsScrolling != hasScrollbars) {
+				// disable/enable scrollbars
+				style.set(baseWin.body(), 'overflowY', needsScrolling ? 'scroll' : 'hidden');
+			}
+		},
+
 		setupStaticGui: function() {
 			// setup everythin that can be set up statically
 
@@ -819,25 +832,63 @@ define([
 			// show vertical scrollbars only if the viewport size is smaller
 			// than 550px (which is our minimal height)
 			// this is to avoid having vertical scrollbars when long ComboBoxes open up
-			on(win.global, 'resize', function() {
-				var viewportHeight = win2.getBox().h;
-				var hasScrollbars = style.get(win.body(), 'overflowY') == 'auto';
-				if (viewportHeight < 550 && !hasScrollbars) {
-					// enable scrollbars
-					style.set(win.body(), 'overflowY', 'auto');
-				}
-				if (viewportHeight >= 550 && hasScrollbars) {
-					// disable scrollbars
-					style.set(win.body(), 'overflowY', 'hidden');
-				}
-			});
-			// enforce scrollbar to be visible/hidden
-			// (otherwise the setings would only be applied after a resize event on IE
-			style.set(win.body(), 'overflowY', win2.getBox().h > 550 ? 'hidden' : 'auto');
+			on(baseWin.doc, 'resize', lang.hitch(this, '_updateScrolling'));
+			on(kernel.global, 'resize', lang.hitch(this, '_updateScrolling'));
 
-			// set up fundamental layout parts
-			// enforce a minimal height of 550px
-			var styleStr = 'min-height: 550px;';
+			if (has('touch')) {
+				// listen to some more events for updating the scrolling behaviour
+				on(kernel.global, 'scroll', lang.hitch(this, '_updateScrolling'));
+
+				// We use specific CSS classes on touch devices (e.g. tablets)
+				domClass.add(baseWin.body(), 'umcTouchDevices');
+
+				// make sure that the background cannot be moved unless
+				// a virtual keyboard appeared (-> iPad)
+				var ignoreTouch = false;
+				on(baseWin.doc, 'touchmove', function(evt) {
+					if (ignoreTouch) {
+						// ignore event
+						evt.preventDefault();
+					}
+				});
+				on(baseWin.doc, 'touchend', function(evt) {
+					// back to default
+					ignoreTouch = false;
+				});
+				on(baseWin.doc, 'touchstart', function(evt) {
+					if (evt.touches.length > 1) {
+						// ignore touches with more than 1 finger -> zoom gesture
+						ignoreTouch = false;
+						return;
+					}
+
+					// by default ignore touch unless it happens somewhere in a
+					// DOM element that can be scrolled
+					ignoreTouch = true;
+					var scrollStyle = '';
+					for (var node = evt.target; node; node = node.parentNode) {
+						try {
+							scrollStyle = style.get(node, 'overflowY');
+							if (scrollStyle == 'auto' || scrollStyle == 'scroll') {
+								ignoreTouch = false;
+								break;
+							}
+						}
+						catch (err) {
+							// ignore error
+						}
+					}
+				});
+			}
+
+			// set up fundamental layout parts...
+
+			// enforce a minimal height of 550px on normal devices
+			// and take the viewport height as fixed height on touch devices
+			var styleStr = lang.replace('min-height: {0}px;', [550]);
+			if (has('touch')) {
+				styleStr = lang.replace('height: {0}px;', [Math.max(win.getBox().h, 500)]);
+			}
 			if (tools.status('width')) {
 				styleStr += 'width: ' + tools.status('width') + 'px;';
 			}
@@ -846,7 +897,7 @@ define([
 				gutters: false,
 				// force a displayed width if specified
 				style: styleStr
-			}).placeAt(win.body());
+			}).placeAt(baseWin.body());
 
 			// container for all modules tabs
 			this._tabContainer = new TabContainer({
@@ -954,7 +1005,7 @@ define([
 				label: _('Feedback'),
 				onClick : function() {
 					topic.publish('/umc/actions', 'menu-univention', 'feedback');
-					var url = lang.replace('http://www.univention.de/{0}/products/maintenance/product-feedback/', [
+					var url = lang.replace(_('umcFeedbackUrl'), [
 						kernel.locale.indexOf('de-') === 0 ? 'de' : 'en'
 					]);
 					var w = window.open(url, 'umcFeedback');
@@ -994,13 +1045,9 @@ define([
 				})
 			}));
 
-			if (has('touch')) {
-				// We use specific CSS classes on touch devices (e.g. tablets)
-				domClass.add(win.body(), 'umcTouchDevices');
-			}
-
 			// put everything together
 			this._topContainer.startup();
+			this._updateScrolling();
 
 			// subscribe to requests for opening modules and closing/focusing tabs
 			topic.subscribe('/umc/modules/open', lang.hitch(this, 'openModule'));

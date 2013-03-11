@@ -1,3 +1,11 @@
+univention-management-console-frontend (2.0.221-1) unstable; urgency=low
+
+  * Bug #30625: fixed global scrolling behaviour, set fixed height for UMC
+    on mobile devices, prevent swiping of UMC main window
+  * Bug #25753: make feedback URL customizable
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 11 Mar 2013 18:23:10 +0100
+
 univention-management-console-frontend (2.0.220-1) unstable; urgency=low
 
   * Allow setting a new password when the old one expired (Bug #29971)
