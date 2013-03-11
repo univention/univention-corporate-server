@@ -1,11 +1,13 @@
-make sure that autofocus for Dialogs on mobile devices is disabled
---- dojo-release-1.8.1rc3-src/dijit/Dialog.js.orig	2012-10-24 11:22:39.239943099 +0200
-+++ dojo-release-1.8.1rc3-src/dijit/Dialog.js	2012-10-24 11:23:37.947647672 +0200
-@@ -85,7 +85,7 @@
+--- dojo/dijit/Dialog.js.orig	2013-03-11 18:45:21.000000000 +0100
++++ dojo/dijit/Dialog.js	2013-03-11 18:45:24.000000000 +0100
+@@ -83,8 +83,9 @@
+ 		// autofocus: Boolean
+ 		//		A Toggle to modify the default focus behavior of a Dialog, which
  		//		is to focus on the first dialog element after opening the dialog.
- 		//		False will disable autofocusing. Default: false (on mobile) and true
- 		//		otherwise
+-		//		False will disable autofocusing. Default: true
 -		autofocus: true,
++ 		//		False will disable autofocusing. Default: false (on mobile) and true
++ 		//		otherwise
 +		autofocus: !has('touch'),
  
  		// _firstFocusItem: [private readonly] DomNode

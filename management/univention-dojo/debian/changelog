@@ -1,3 +1,9 @@
+univention-dojo (6.0.15-1) unstable; urgency=low
+
+  * Bug #30749: adjusted patch
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 11 Mar 2013 18:45:21 +0100
+
 univention-dojo (6.0.14-1) unstable; urgency=low
 
   * Bug #30749: fixed build issue
