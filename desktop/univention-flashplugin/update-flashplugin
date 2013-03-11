@@ -5,7 +5,7 @@
 #   based on postinst from the Debian package 
 #   flashplugin-nonfree
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,7 +38,7 @@ eval "$(univention-config-registry shell)"
 
 DOWNLOAD_DIR=/var/cache/flashplugin-nonfree
 DOWNLOAD_FILE=install_flash_player_11_linux_i386
-DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.251/install_flash_player_11_linux_i386.tar.gz
+DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.273/install_flash_player_11_linux.i386.tar.gz
 TARGET_DIR=/usr/lib/flashplugin-nonfree
 
 fp_exit_with_error() {
