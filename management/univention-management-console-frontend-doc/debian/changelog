@@ -1,3 +1,9 @@
+univention-management-console-frontend-doc (6.0.8-3) unstable; urgency=low
+
+  * version bump; Bug #28969
+
+ -- Florian Best <best@univention.de>  Mon, 11 Mar 2013 11:34:57 +0100
+
 univention-management-console-frontend-doc (6.0.8-2) unstable; urgency=low
 
   * fix image path; Bug #28969
