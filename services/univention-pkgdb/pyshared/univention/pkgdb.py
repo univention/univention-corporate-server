@@ -133,6 +133,14 @@ def log(message):
 		# no log, no real problem
 		pass
 
+def build_sysversion(config_registry):
+	sysversion = '%s-%s' % (config_registry['version/version'], config_registry['version/patchlevel'], )
+	if config_registry.get('version/security-patchlevel'):
+		sysversion = "%s-%s" % (sysversion, config_registry['version/security-patchlevel'], )
+	if config_registry.get('version/erratalevel'):
+		sysversion = "%s errata%s" % (sysversion, config_registry['version/erratalevel'], )
+	return sysversion
+
 def sql_check_privileges(cursor):
 	'''DB-Privs testen (leerer Zugriff)'''
 	log('check privileges ')
@@ -425,9 +433,7 @@ scan_and_store_packages.cache = None
 def action_fill_testdb(connection, cursor, config_registry):
 	'''Fülle Testdatenbank'''
 	connection.rollback()
-	sysversion = '%s-%s' % (config_registry['version/version'], config_registry['version/patchlevel'], )
-	if config_registry.get('version/security-patchlevel'):
-		sysversion = "%s-%s" % (sysversion, config_registry['version/security-patchlevel'], )
+	sysversion = build_sysversion(config_registry)
 	sysrole    = config_registry['server/role']
 	ldaphostdn = config_registry['ldap/hostdn']
 	apt_pkg.init()
@@ -452,9 +458,7 @@ def action_scan(connection, cursor, config_registry):
 	'''put systems <sysname> in the database and updates it with the current package state'''
 	connection.rollback()
 	sysname = config_registry['hostname']
-	sysversion = '%s-%s' % (config_registry['version/version'], config_registry['version/patchlevel'], )
-	if config_registry.get('version/security-patchlevel'):
-		sysversion = "%s-%s" % (sysversion, config_registry['version/security-patchlevel'], )
+	sysversion = build_sysversion(config_registry)
 	sysrole    = config_registry['server/role']
 	ldaphostdn = config_registry['ldap/hostdn']
 	apt_pkg.init()

@@ -1,3 +1,9 @@
+univention-pkgdb (6.0.18-1) unstable; urgency=low
+
+  * add errata level to system version string (Bug #30739)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 11 Mar 2013 15:56:57 +0100
+
 univention-pkgdb (6.0.17-4) unstable; urgency=low
 
   * remove obsolete u-pkgdb-clean cronjob (Bug #29266)
