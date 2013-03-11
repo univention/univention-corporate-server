@@ -13,13 +13,6 @@ RETURN_MISSING_SOFTWARE=137
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/master.sh" || exit 137
 
-info "Check if the master system is reachable via SSH ..."
-if master_reachable_via_ssh
-then
-	info "OK"
-else
-	fail_fast $RETURN_ERROR "FAIL ($?)"
-fi
 
 LDAP_SECRET="$(master_ldap_secret)" || fail_fast $RETURN_ERROR "ldap.secret missing"
 

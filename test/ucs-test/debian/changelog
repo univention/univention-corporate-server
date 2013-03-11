@@ -1,3 +1,10 @@
+ucs-test (3.0.27-1) unstable; urgency=low
+
+  * 90change_user_pwd_via_udm: do not check if the master is reachable via ssh
+    (Bug #30733)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 11 Mar 2013 09:48:30 +0100
+
 ucs-test (3.0.26-1) unstable; urgency=low
 
   * 26check_logfiles_general: ignore "/var/log/dpkg.log" (Bug #30718)
