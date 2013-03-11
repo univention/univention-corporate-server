@@ -1,3 +1,11 @@
+univention-system-setup (6.0.66-1) unstable; urgency=low
+
+  * if no software component has been removed but some installed, do not add
+    an empty list of removed components to the confirmation dialog
+    (Bug #30603)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 11 Mar 2013 17:10:38 +0100
+
 univention-system-setup (6.0.65-1) unstable; urgency=low
 
   * correct missing title for confirm dialog; Bug #29817
