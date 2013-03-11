@@ -1,3 +1,9 @@
+univention-dojo (6.0.13-1) unstable; urgency=low
+
+  * Bug #30749: set autofocus for dijit/Dialog on mobile devices to false
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 11 Mar 2013 18:07:30 +0100
+
 univention-dojo (6.0.12-1) unstable; urgency=low
 
   * Bug #30625: added missing library files

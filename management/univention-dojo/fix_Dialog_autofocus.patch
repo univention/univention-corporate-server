@@ -1,0 +1,12 @@
+make sure that autofocus for Dialogs on mobile devices is disabled
+--- dijit/Dialog.js.orig	2013-03-11 16:53:01.000000000 +0100
++++ dijit/Dialog.js	2013-03-11 16:55:07.000000000 +0100
+@@ -85,7 +85,7 @@
+ 		//		is to focus on the first dialog element after opening the dialog.
+ 		//		False will disable autofocusing. Default: false (on mobile) and true
+ 		//		otherwise
+-		autofocus: true,
++		autofocus: !has('touch'),
+ 
+ 		// _firstFocusItem: [private readonly] DomNode
+ 		//		The pointer to the first focusable node in the dialog.
