@@ -1,3 +1,12 @@
+univention-flashplugin (7.0.2-2) unstable; urgency=low
+
+  * The Flash plugin for Linux is in maintenance mode, only security fixes are
+    being made. As such the download file name doesn't change any longer and
+    we can no longer rely on the old cache mechanism, since otherwise the old
+    insecure releases would remain installed (Bug #29767)	  
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 11 Mar 2013 12:02:56 +0100
+
 univention-flashplugin (7.0.2-1) unstable; urgency=low
 
   * Update to latest Adobe security release (Bug #29767)
