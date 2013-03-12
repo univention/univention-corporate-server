@@ -291,6 +291,7 @@ define([
 					label: _('Reset'),
 					callback: lang.hitch(this, function() {
 						this.load();
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reset');
 					})
 				}];
 
@@ -385,6 +386,8 @@ define([
 				});
 				return matched;
 			};
+
+			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'save');
 
 			// confirm dialog to continue with boot process
 			var _cleanup = lang.hitch(this, function(msg, hasCancel, loadAfterCancel, cancelLabel, applyLabel) {
