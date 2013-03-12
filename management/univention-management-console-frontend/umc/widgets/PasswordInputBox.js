@@ -188,6 +188,14 @@ define([
 			array.forEach(widgets, function(iwidget) {
 				iwidget.reset();
 			});
+		},
+
+		focus: function() {
+			if (! this._firstWidget.get('value')) {
+				this._firstWidget.focus();
+			} else {
+				this._secondWidget.focus();
+			}
 		}
 	});
 });
