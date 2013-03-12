@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/dom-class",
 	"dojo/json",
+	"dojo/topic",
 	"umc/dialog",
 	"umc/tools",
 	"umc/store",
@@ -41,7 +42,7 @@ define([
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, domClass, json, dialog, tools, store, TitlePane, Page, Form, _) {
+], function(declare, lang, array, domClass, json, topic, dialog, tools, store, TitlePane, Page, Form, _) {
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
 		_last_reboot:	false,
@@ -268,6 +269,7 @@ define([
 						var release = element.get('value');
 						// TODO check updater/installer/running, don't do action if a job is running
 						this.onRunReleaseUpdate(release);
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'release-update');
 					}),
 					visible:	false
 				},
@@ -276,6 +278,7 @@ define([
 					label:		_("Check for package updates"),
 					callback:	lang.hitch(this, function() {
 						this._check_dist_upgrade();
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'package-update');
 					})
 				},
 				// If refresh isn't automatic anymore... should we show a "Refresh" button?
@@ -291,6 +294,7 @@ define([
 					label:		_("Reboot"),
 					callback:	lang.hitch(this, function() {
 						this._reboot();
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reboot');
 					})
 				},
 				{
@@ -299,6 +303,7 @@ define([
 					callback:	lang.hitch(this, function() {
 						// TODO check updater/installer/running, don't do action if a job is running
 						this.onRunEasyUpgrade();
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'easy-upgrade');
 					})
 				}
 			];
