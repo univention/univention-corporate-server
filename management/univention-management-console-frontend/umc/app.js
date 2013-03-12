@@ -814,7 +814,6 @@ define([
 			var scrollStyle = style.get(baseWin.body(), 'overflowY');
 			var needsScrolling = Math.abs(viewportHeight - docHeight) > 10;
 			var hasScrollbars = (scrollStyle == 'auto' || scrollStyle == 'scroll');
-			console.log('needsScrolling:', needsScrolling, ' hasScrollbars:', hasScrollbars);
 			if (needsScrolling != hasScrollbars) {
 				// disable/enable scrollbars
 				style.set(baseWin.body(), 'overflowY', needsScrolling ? 'scroll' : 'hidden');

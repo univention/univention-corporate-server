@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.223-1) unstable; urgency=low
+
+  * Bug #30577: search actions are published now, as well
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 12 Mar 2013 12:25:27 +0100
+
 univention-management-console-frontend (2.0.222-2) unstable; urgency=low
 
   * Bug #25753: version bump
