@@ -1,3 +1,10 @@
+univention-lib (2.0.23-1) unstable; urgency=low
+
+  * Bug #30279: Resolve dependency problems manually with resolver class.
+    Using auto_fix caused problems with multiple installs at once.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 12 Mar 2013 14:19:09 +0100
+
 univention-lib (2.0.22-1) unstable; urgency=low
 
   * fixed problems due to pipe handling during longer installations; Bug #30370

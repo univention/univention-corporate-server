@@ -36,13 +36,12 @@ import os
 import time
 import subprocess
 from contextlib import contextmanager
-import fcntl
 import threading
 
 import apt_pkg
 import apt
 import apt.progress
-from apt.cache import FetchFailedException, LockFailedException
+from apt.cache import FetchFailedException, LockFailedException, ProblemResolver
 
 apt_pkg.init()
 
@@ -132,7 +131,7 @@ class ProgressState(object):
 			'finished' : self._finished,
 		}
 		if self._max_steps and result['steps']:
-			result['steps'] = int((result['steps'] / self._max_steps) * 100)
+			result['steps'] = int((result['steps'] * 100 / self._max_steps))
 		self.reset()
 		return result
 
@@ -498,16 +497,51 @@ class PackageManager(object):
 			install = []
 		if remove is None:
 			remove = []
+		# fix problems and fix them only once
+		# this is necessary because we used auto_fix=False
+		# auto_fix causes problems when used multiple times
+		# as every auto_fix thinks this is the most important operation
+		#   and does not take care of other deletes and installs
+		# see below for a real-life situation
+		fixer = ProblemResolver(self.cache)
 		for pkg in remove:
 			try:
-				pkg.mark_delete()
+				pkg.mark_delete(auto_fix=False)
 			except SystemError:
 				broken.add(pkg.name)
+			else:
+				fixer.clear(pkg)
+				fixer.protect(pkg)
+				fixer.remove(pkg)
 		for pkg in install:
 			try:
-				pkg.mark_install()
+				pkg.mark_install(auto_fix=False)
 			except SystemError:
 				broken.add(pkg.name)
+			else:
+				fixer.clear(pkg)
+				fixer.protect(pkg)
+		fixer.install_protect()
+		fixer.resolve()
+		# if more than one package is to be installed and this package
+		#   has an OR-dependency, the package will automatically choose
+		#   the first one. but if the second OR-dependency is to be
+		#   installed explicitely along with that package in the
+		#   beginning, the first OR-dependency is obsolete (and all of
+		#   its own dependencies). Sadly we have to remove them manually.
+		# btw: this is the reason why we have to use the ProblemResolver.
+		#   If OR-dependency1 conflicts with OR-dependency2 this causes
+		#   problems when the original package used auto_fix=True but
+		#   the second OR-dependency is to be installed explicitely.
+		# see https://forge.univention.org/bugzilla/show_bug.cgi?id=30279
+		package_was_garbage = True
+		while package_was_garbage:
+			package_was_garbage = False
+			for pkg in self.cache.get_changes():
+				if pkg.marked_install and pkg.is_auto_installed:
+					if self.cache._depcache.is_garbage(pkg._pkg): # FIXME: python-apt 0.7 is broken. change to pkg.is_auto_removable in python-apt 0.8
+						pkg.mark_delete()
+						package_was_garbage = True
 		for pkg in self.cache.get_changes():
 			if pkg.marked_install or pkg.marked_upgrade:
 				to_be_installed.add(pkg.name)
@@ -532,7 +566,7 @@ class PackageManager(object):
 		for pkg in remove:
 			if not pkg.marked_delete:
 				# maybe its already removed...
-				if pkg.is_installed:
+				if pkg.marked_install or pkg.is_installed:
 					broken.add(pkg.name)
 		for pkg in install:
 			if not pkg.marked_install:
@@ -553,7 +587,7 @@ class PackageManager(object):
 		install = self.get_packages(install or [])
 		remove = self.get_packages(remove or [])
 
-		# perform an upgarde/dist_upgrade
+		# perform an upgrade/dist_upgrade
 		if dist_upgrade:
 			self.cache.upgrade(dist_upgrade=True)
 		elif upgrade:
@@ -571,7 +605,7 @@ class PackageManager(object):
 			if broken:
 				raise SystemError()
 
-			# perform an upgarde/dist_upgrade -> marks packages to upgrade/install
+			# perform an upgrade/dist_upgrade -> marks packages to upgrade/install
 			if dist_upgrade:
 				self.cache.upgrade(dist_upgrade=True)
 			elif upgrade:
