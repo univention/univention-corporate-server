@@ -265,6 +265,7 @@ define([
 
 			this.own(this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
 				this._show_details(this._grid.row(evt));
+				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this._grid.row(evt).id, 'show');
 			})));
 		},
 
@@ -487,6 +488,10 @@ define([
 				break;
 			}
 
+			if (!force) {
+				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, func);
+			}
+
 			var commandArguments = {
 				'function': func,
 				'application': app.id,
@@ -540,7 +545,10 @@ define([
 							buttons = [{
 								name: 'cancel',
 								'default': true,
-								label: _("No")
+								label: _("No"),
+								callback: lang.hitch(this, function() {
+									topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'user-cancel');
+								})
 							}, {
 								name: 'submit',
 								label: _("Yes"),
@@ -549,6 +557,7 @@ define([
 								})
 							}];
 						} else {
+							topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'cannot-continue');
 							headline = _('You cannot continue');
 							buttons = [{
 								name: 'cancel',
@@ -942,6 +951,7 @@ define([
 		},
 
 		_show_license_request: function() {
+			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'request-license');
 			if (this._udm_accessible) {
 				dialog.confirmForm({
 					title: _('Request updated license key with identification'),

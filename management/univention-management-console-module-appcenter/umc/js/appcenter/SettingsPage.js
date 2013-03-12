@@ -35,7 +35,7 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
-	"umc/widgets/Grid",
+	"./Grid",
 	"umc/widgets/TitlePane",
 	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Form",
@@ -269,6 +269,7 @@ define([
 			this._grid = new Grid({
 				query: this._query,
 				moduleStore: this.moduleStore,
+				_publishPrefix: 'components',
 				actions: actions,
 				columns: columns
 			});

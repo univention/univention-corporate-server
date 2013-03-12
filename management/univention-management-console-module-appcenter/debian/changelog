@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.132-1) unstable; urgency=low
+
+  * Bug #30574: publish more actions
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 12 Mar 2013 18:29:58 +0100
+
 univention-management-console-module-appcenter (2.0.131-2) unstable; urgency=low
 
   * fix postinst; Bug #30264

@@ -35,7 +35,7 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
-	"umc/widgets/Grid",
+	"./Grid",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/ProgressBar",
 	"umc/modules/lib/server",
@@ -65,7 +65,8 @@ define([
 			this.own(this._progressBar);
 
 			this._form = new SearchForm({
-				region: 'top'
+				region: 'top',
+				_publishPrefix: 'packages'
 			});
 			this._form.on('submit', lang.hitch(this, function() {
 				this._refresh_grid();
@@ -152,6 +153,7 @@ define([
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,
+				_publishPrefix: 'packages',
 				defaultAction: 'view',
 				onFilterDone: lang.hitch(this, function() {
 					this._form.allowSearchButton(true);

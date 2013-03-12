@@ -72,10 +72,26 @@ define([
 			this._tabContainer = new TabContainer({nested: true}); // simulate a TabbedModule. Weird IE-Bug prevents standby in TabbedModule
 			this.addChild(this._tabContainer);
 
-			this._app_center = new AppCenterPage({_udm_accessible: this._udm_accessible, standby: lang.hitch(this, 'standby')});
-			this._packages = new PackagesPage({moduleStore: this._packagesStore, standby: lang.hitch(this, 'standby')});
-			this._components = new SettingsPage({moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')});
-			this._details = new DetailsPage({moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')});
+			this._app_center = new AppCenterPage({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				_udm_accessible: this._udm_accessible, standby: lang.hitch(this, 'standby')
+			});
+			this._packages = new PackagesPage({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				moduleStore: this._packagesStore, standby: lang.hitch(this, 'standby')
+			});
+			this._components = new SettingsPage({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')
+			});
+			this._details = new DetailsPage({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')
+			});
 
 			this._tabContainer.addChild(this._app_center);
 			this._tabContainer.addChild(this._packages);
