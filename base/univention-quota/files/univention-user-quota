@@ -162,7 +162,7 @@ fi
 i=0
 oldi=-1
 ldap_server_port="${ldap_server_port:-7389}"
-for s in `/usr/bin/ldapsearch -x -h $ldap_server_name -p "$ldap_server_port" -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionShare)(univentionShareHost=$hostname.$domainname))" | ldapsearch-wrapper | grep "^dn:\|^univentionSharePath:" | awk '{print $2}'`
+for s in `/usr/bin/ldapsearch -x -h $ldap_server_name -p "$ldap_server_port" -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionShare)(univentionShareHost=$hostname.$domainname))" dn univentionSharePath | ldapsearch-wrapper  | sed -n 's/^[^:]*:\s*\(.*\)/\1/p'`
   do
   if [ $oldi -lt $i ] # dn
 	  then
@@ -170,15 +170,15 @@ for s in `/usr/bin/ldapsearch -x -h $ldap_server_name -p "$ldap_server_port" -ZZ
 	  univentionQuotaHardLimitInodes=0
 	  univentionQuotaSoftLimitInodes=0
 	  univentionQuotaHardLimitSpace=0
-	  eval `/usr/bin/univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s $s`
-	  sharedn[$i]=$s
+	  eval `/usr/bin/univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$s"`
+	  sharedn[$i]="$s"
 	  sharehli[$i]=$univentionQuotaHardLimitInodes
 	  sharesli[$i]=$univentionQuotaSoftLimitInodes
 	  sharehls[$i]=$univentionQuotaHardLimitSpace
 	  sharesls[$i]=$univentionQuotaSoftLimitSpace
 	  oldi=$i
   else # path
-	  sharepath[$i]=$s
+	  sharepath[$i]="$s"
 	  i=$((i+1))
 	  nshares=$i
   fi
