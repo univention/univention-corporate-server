@@ -27,8 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. gettext.sh
 
-export TEXTDOMAIN="univention-root-login-notification.sh"
+export TEXTDOMAIN="univention-root-login-notification"
 
 kdialog --msgbox "$(gettext "Login as 'root' should only be used for administrative purpose. For daily use, you can log in as 'Administrator' instead.")" --dontagain univention-kde-login-as-root:warning

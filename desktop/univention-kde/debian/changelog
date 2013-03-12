@@ -1,3 +1,14 @@
+univention-kde (7.0.8-1) unstable; urgency=low
+
+  * build .mo files via Makefile
+  * do not import gettext.sh in univention-root-login-notification
+  * do not copy .po file to system
+  * use "univention-root-login-notification" as text domain in
+    univention-root-login-notification
+  (Bug #28372)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 12 Mar 2013 15:15:29 +0100
+
 univention-kde (7.0.7-2) unstable; urgency=low
 
   * depend on gettext (Bug #28372)
