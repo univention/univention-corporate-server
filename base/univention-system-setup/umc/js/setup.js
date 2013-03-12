@@ -446,7 +446,7 @@ define([
 							// 1. check if value is equal to the current IP
 							// 2. check if the key for this value startswith interfaces/
 							// 3. check if a new value was set
-							if ((ival == window.location.host) && (ikey.indexOf('interfaces/') === 0)  && (values[ikey])) {
+							if ((ival == window.location.host) && (array.indexOf(ikey, 'interfaces/') === 0)  && (values[ikey])) {
 								target = target.replace(new RegExp(ival+"/univention-management-console", "g"), values[ikey]+"/univention-management-console");
 							}
 						});

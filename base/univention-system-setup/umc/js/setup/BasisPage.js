@@ -114,7 +114,7 @@ define([
 				function count(s) { 
 					var n = 0;
 					var i = 0;
-					while ((i = s.indexOf('.', i)) >= 0) { 
+					while ((i = array.indexOf(s, '.', i)) >= 0) { 
 						++n; 
 						++i; 
 					}

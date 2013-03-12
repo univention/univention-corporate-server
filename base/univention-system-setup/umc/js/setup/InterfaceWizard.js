@@ -98,6 +98,9 @@ define([
 					label: _('DHCP-Query'),
 					callback: lang.hitch(this, function() { this._dhcpQuery(this['interface']); })
 				});
+			} else {
+				delete ethlayout[0].layout[array.indexOf(ethlayout[0].layout, 'dhcpquery')];
+				ethlayout[0].layout = array.filter(ethlayout[0].layout, function(i) { return i !== undefined; });
 			}
 
 			lang.mixin(this, {
@@ -310,7 +313,7 @@ define([
 				tools.forIn(ipage._form._widgets, function(iname, iwidget) {
 					tools.forIn(types.interfaceTypes, function(typename) {
 						// hide every widget which startswith one of the interface types but is not the setted interface type
-						if (iname.indexOf(typename + '_') === 0) {
+						if (array.indexOf(iname, typename + '_') === 0) {
 							iwidget.set('visible', typename === this.interfaceType);
 						}
 					}, this);
@@ -361,13 +364,6 @@ define([
 			this.inherited(arguments);
 			this.setValues(this.values);
 		},
-
-//		startup: function() {
-//			this.inherited(arguments);
-//			// FIXME: remove this when the bug is fixed
-//			this._pages.br._form._widgets.bridge_ports.startup();
-//			this._pages.bond._form._widgets['bond-slaves'].startup();
-//		},
 
 		canFinish: function(values) {
 			// TODO: conflict if two bonds wants to use the same interface

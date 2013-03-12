@@ -38,18 +38,15 @@ define([
 			if (/^[0-9]+$/.test(nm)) {
 				return parseInt(nm, 10);
 			}
-			// FIXME: IE8 does not have .reduce
-			return array.map(nm.split('.'), function(i) { return parseInt((parseInt(i, 10) + 1) / 32, 10); }).reduce(function(x,y) { return x + y; });
+			var num = 0;
+			array.forEach(array.map(nm.split('.'), function(i) { return parseInt((parseInt(i, 10) + 1) / 32, 10); }), function(x) { num += x; });
+			return num;
 		},
 		interfaceTypes: {
 			'eth': _('Ethernet'),
 			'vlan': _('Virtual LAN'),
 			'bond': _('Bonding'),
 			'br': _('Bridge')
-		},
-		getTypeByDevice: function(device) { // TODO: rename
-			var key = /^([^\d]+)\d$/.exec(device);
-			return key ? key[1] : device;
 		},
 		getNumberByDevice: function(device) {
 			var num = /^[^\d]+(\d+)$/.exec(device);

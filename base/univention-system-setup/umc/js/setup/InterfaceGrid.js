@@ -50,7 +50,7 @@ define([
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
 
-		style: 'width: 100%; height: 200px;',
+		style: 'width: 100%; height: 230px;',
 		query: {},
 		sortIndex: null,
 
@@ -157,14 +157,16 @@ define([
 		_getValueAttr: function() { return this.moduleStore.query(); },
 
 		_setValueAttr: function(values) {
-			// TODO: delete the whole grid items and add the items from values
+			// empty the grid
+			array.forEach(this.moduleStore.query(), lang.hitch(this, function(iface) {
+				this.moduleStore.remove(iface['interface']);
+			}));
+
+			// set new values
 			tools.forIn(values, function(id, value) {
-				try {
-					this.moduleStore.add(lang.mixin({'interface': id}, value));
-				} catch(e) {
-					console.error('Error while setting interfaces: ', e);
-				}
+				this.moduleStore.add(lang.mixin({'interface': id}, value));
 			}, this);
+
 			this._set('value', this.get('value'));
 		},
 
@@ -204,7 +206,7 @@ define([
 					// set original iface
 					array.forEach(iface[key], lang.hitch(this, function(ikey) {
 						var iiface = this.moduleStore.get(ikey);
-						var filtered = {}; tools.forIn(iiface, function(k, v) { if (k.indexOf("_") !== 0) { filtered[k] = v; } });
+						var filtered = {}; tools.forIn(iiface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
 						iiface.original = lang.clone(filtered);
 
 						// set iface to deactivate the interface iface
@@ -222,7 +224,7 @@ define([
 					}));
 				}
 
-				var filtered = {}; tools.forIn(iface, function(k, v) { if (k.indexOf("_") !== 0) { filtered[k] = v; } });
+				var filtered = {}; tools.forIn(iface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
 				iface = filtered;
 				if (!create) {
 					this.moduleStore.put( iface ); // FIXME: why does put not work? we have to manually remove and add it...

@@ -26,12 +26,13 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/regexp",
 	"dojo/on",
 	"dojo/aspect",
 	"dijit/Dialog",
@@ -48,7 +49,7 @@ define([
 	"umc/modules/setup/InterfaceGrid",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, on, aspect, Dialog, tools, dialog, store, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceWizard, InterfaceGrid, types, _) {
+], function(declare, lang, array, regexp, on, aspect, Dialog, tools, dialog, store, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceWizard, InterfaceGrid, types, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -208,92 +209,169 @@ define([
 			vals['dns/forwarder'] = [];
 			array.forEach(sortedKeys, function(ikey) {
 				array.forEach(['nameserver', 'dns/forwarder'], function(jname) {
-					if (0 === ikey.indexOf(jname)) {
+					if (0 === array.indexOf(ikey, jname)) {
 						vals[jname].push(_vals[ikey]);
 					}
 				});
 			});
 
-			// copy ipv4 interfaces
-			r = /interfaces\/(([^_\/]+)(_([0-9]+))?)\/(.+)/;
-			var ipv4 = {};
-			array.forEach(sortedKeys, function(ikey) {
-				var match = ikey.match(r);
-				if (_vals[ikey] && match) {
-					var iname = match[1];
-					var idev = match[2];
-					var ivirtual = parseInt(match[4], 10);
-					var type = match[5];
-					ipv4[iname] = ipv4[iname] ? ipv4[iname] : {};
-					ipv4[iname][type] = _vals[ikey];
-					ipv4[iname].virtual = !isNaN(ivirtual);
-					ipv4[iname].device = idev;
-				}
-			});
-
-			// get the correct order (real interfaces first, then virtual ones)
-			var sortedIpv4 = [];
-			tools.forIn(ipv4, function(ikey, ival) {
-				sortedIpv4.push(ival);
-			});
-
-			// copy ipv6 interfaces
-			r = /interfaces\/([^\/]+)\/ipv6\/([^\/]+)\/(.+)/;
-			var ipv6 = {};
-			array.forEach(sortedKeys, function(ikey) {
-				var match = ikey.match(r);
-				if (_vals[ikey] && match) {
-					var idev = match[1];
-					var iid = match[2];
-					var type = match[3];
-					var iname = idev + '/' + iid;
-					ipv6[iname] = ipv6[iname] ? ipv6[iname] : {};
-					ipv6[iname][type] = _vals[ikey];
-					ipv6[iname].id = iid;
-					ipv6[iname].device = idev;
-				}
-			});
-
-			// get the correct order (real interfaces first, then virtual ones)
-			var sortedIpv6 = [];
-			tools.forIn(ipv6, function(ikey, ival) {
-				sortedIpv6.push(ival);
-			});
-
-			// translate to our datastructure
 			var interfaces = {};
-			vals.ip4dynamic = false;
-			array.forEach(sortedIpv4, function(idev) {
-				interfaces[idev.device] = interfaces[idev.device] || { 'interface': idev.device, interfaceType: types.getTypeByDevice(idev.device) };
-				if (!idev.virtual) {
-					interfaces[idev.device].ip4dynamic = (idev.type == 'dynamic' || idev.type == 'dhcp');
-				}
-				interfaces[idev.device].ip4 = interfaces[idev.device].ip4 || [];
-				interfaces[idev.device].ip4.push([
-					idev.address || '',
-					idev.netmask || ''
-				]);
-				interfaces[idev.device].ip6 = [];
-			});
-
-			// translate to our datastructure
-			array.forEach(sortedIpv6, function(idev) {
-				interfaces[idev.device] = interfaces[idev.device] || {};
-				interfaces[idev.device].ip6 = interfaces[idev.device].ip6 || [];
-				interfaces[idev.device].ip6.push([
-					idev.address || '',
-					idev.prefix || '',
-					idev.id || ''
-				]);
-			});
-
-			// dynamic ipv6 interfaces
-			r = /interfaces\/([^\/]+)\/ipv6\/acceptRA/;
-			array.forEach(sortedKeys, function(ikey) {
+			// create the scheme
+			r = /interfaces\/(([^_\/]+)[0-9.]+)\//; // TODO: enhance?
+			tools.forIn(_vals, function(ikey) {
 				var match = ikey.match(r);
 				if (match) {
-					interfaces[match[1]].ip6dynamic = tools.isTrue(_vals[ikey]);
+					var name = match[1];
+					var interfaceType = match[2];
+					var vlan_id = null;
+
+					if (interfaces[name]) {
+						return; // already parsed
+					}
+
+					// TODO: move into types.getTypeByDeviceName
+					// vlan device?
+					if(/[.]/.test(interfaceType)) {
+						vlan_id = parseInt(interfaceType.match(/[^.]+[.]([0-9]+)/)[1], 10);
+						interfaceType = 'vlan';
+					} else {
+						if (interfaceType !== 'bond' && interfaceType !== 'br') {
+							interfaceType = 'eth'; // wlan, etc → eth
+						}
+					}
+					interfaces[name] = {
+						// every device
+						'interface': name,
+						interfaceType: interfaceType, // eth|vlan|bond|br
+						ip4: [['', '']],
+						ip6: [['', '', '']],
+						ip4dynamic: null,
+						ip6dynamic: null,
+						start: null, // true|false
+//						type: null, // static|dhcp|manual
+
+						// for vlan devices
+						vlan_id: vlan_id,
+
+						// for bonding devices
+						'bond-mode': null,
+						'bond-slaves': null,
+						primary: null,
+						miimon: null,
+
+						// for bridge devices
+						bridge_ports: null,
+						bridge_fd: null
+					};
 				}
+			});
+
+			var cached = {};
+			// parse (also virtual) interfaces
+			r = /interfaces\/(([^_\/]+)(_([0-9]+))?)\/(.+)/;
+			tools.forIn(_vals, function(ikey, typeval) {
+				var match = ikey.match(r);
+				if (match) {
+					var iorig = match[1]; // the whole interface string
+					var iname = match[2]; // the device name
+					var ivirtual = parseInt(match[4], 10); // the virtual id number or NaN
+					var virtual = !isNaN(ivirtual);
+					var type = match[5]; // the rest of the string
+
+					var temp = cached[iname] || {};
+					temp.data = temp.data || {};
+					temp.virtual = temp.virtual || {};
+					temp.ip6 = temp.ip6 || {};
+					temp.options = temp.options || {};
+
+					if (virtual) {
+						// TODO: check if there are other values which can be set on an virtual interface
+						if (type == 'address' || type == 'netmask') {
+							temp.virtual[type] = typeval;
+						} else {
+							console.warn('got unexpected variable: ' + type + '=' + typeval);
+						}
+					} else {
+						var rmatch = type.match(/ipv6\/([^\/]+)\/(.+)/);
+						var roptions = type.match(/options\/([^\/]+)\/(.+)/);
+						if (array.indexOf(['address', 'netmask', 'type', 'start', 'ipv6/acceptRA'], type) !== -1) {
+							temp.data[type] = typeval;
+						} else if (rmatch) {
+							var identifier = rmatch[1];
+							var type6 = rmatch[2];
+							temp.ip6[identifier] = temp.ip6[identifier] || {};
+							if (type6 == 'address' || type6 == 'prefix') {
+								temp.ip6[identifier][type6] = typeval;
+							} else {
+								console.warn('got unexpected variable: ' + type + '=' + typeval);
+							}
+						} else if (roptions) {
+							var option = roptions[2];
+
+							tools.forIn({
+								miimon: function(val) { return parseInt(val, 10); },
+								'bond-mode': function(val) { return parseInt(val, 10); },
+								'bond-slaves': function(val) { return val.split(' '); },
+								primary: function(val) { return val.split(' '); },
+								bridge_ports: function(val) { return val.split(' '); },
+								bridge_fd: function(val) { return parseInt(val, 10); }
+							}, function(opt, formatter) {
+								var r = new RegExp('^' + opt + '\\s+(.*)\\s*$');
+								match = option.match(r);
+								if (match) {
+									temp.options[opt] = formatter(match[1]);
+									return false; // break loop
+								}
+							});
+						} else {
+							if (type != 'broadcast' && type != 'network' && type != 'order') { // route/*
+								console.warn('got unexpected variable: ' + type + '=' + typeval);
+							}
+						}
+					}
+
+					cached[iname] = temp;
+				}
+			});
+
+			tools.forIn(cached, function(iname, ivalue, iobj) {
+
+				// DHCP
+				if (ivalue.data.type == 'dhcp' || ivalue.data.type == 'dynamic') { // TODO: don't support dynamic anymore
+					interfaces[iname].ip4dynamic = true;
+				} else {
+					// set primary IP address
+					interfaces[iname].ip4[0][0] = ivalue.data.address;
+					interfaces[iname].ip4[0][1] = ivalue.data.netmask || '255.255.255.0';
+				}
+
+				// set virtual IP addresses
+				tools.forIn(ivalue.virtual, function(ikey, ivirt) {
+					interfaces[iname].ip4.push([ivirt.address, ivirt.netmask]);
+				});
+
+				// SLAAC
+				if (undefined !== ivalue.data['ipv6/acceptRA']) {
+					interfaces[iname].ip6dynamic = tools.isTrue(ivalue.data['ipv6/acceptRA']);
+				}
+
+				// set primary IP6 address
+				if (ivalue.ip6['default']) {
+					interfaces[iname].ip6[0] = [ivalue.ip6['default'].address, ivalue.ip6['default'].prefix, 'default'];
+				}
+
+				// set virtual IP6 addresses
+				tools.forIn(ivalue.ip6, function(id, ival) {
+					if (id === 'default') {
+						return; // already entered
+					}
+					interfaces[iname].ip6.push([ival.address, ival.prefix, id]);
+				});
+
+				// set options
+				tools.forIn(ivalue.options, function(ikey, ival) {
+					 interfaces[iname][ikey] = ival;
+				});
 			});
 
 			vals.interfaces = interfaces;
