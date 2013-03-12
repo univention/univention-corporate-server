@@ -1,3 +1,9 @@
+univention-management-console-module-lib (1.0.4-1) unstable; urgency=low
+
+  * Bug #30577: publish restart actions
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 12 Mar 2013 15:46:41 +0100
+
 univention-management-console-module-lib (1.0.3-1) unstable; urgency=low
 
   * added minimal lib.js file to avoid warnings at startup; Bug #26857

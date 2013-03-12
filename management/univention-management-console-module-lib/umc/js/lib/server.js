@@ -32,6 +32,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/dom-style",
 	"dojo/Deferred",
+	"dojo/topic",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Text",
@@ -39,12 +40,14 @@ define([
 	"dijit/Dialog",
 	"dijit/ProgressBar",
 	"umc/i18n!umc/modules/lib"
-], function(lang, style, Deferred, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
+], function(lang, style, Deferred, topic, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
 
 	return {
 		askRestart: function(_msg) {
 			// TODO: first call to: lib/server/restart/isNeeded
 			//       if no restart is needed -> do not show any alert
+			topic.publish('/umc/actions', 'lib', 'server', 'askRestart');
+
 			var msg = '';
 			if (_msg) {
 				msg += '<p>' + _msg + '</p>';
@@ -68,6 +71,8 @@ define([
 		},
 
 		restart: function() {
+			topic.publish('/umc/actions', 'lib', 'server', 'restart');
+
 			var container = new ContainerWidget({});
 			container.addChild(new Text({
 				content: '<p>' + _('Please wait while UMC server components and HTTP web server are being restarted.') + '</p>'
