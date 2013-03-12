@@ -1,3 +1,9 @@
+univention-mail-cyrus (5.0.5-1) unstable; urgency=low
+
+  * read init script name for service entry from UCR variable (Bug #29806)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 12 Mar 2013 17:35:43 +0100
+
 univention-mail-cyrus (5.0.4-2) unstable; urgency=low
 
   * modified univention-service entry for cyrus; service is now called

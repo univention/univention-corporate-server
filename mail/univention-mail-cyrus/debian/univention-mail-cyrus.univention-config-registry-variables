@@ -183,3 +183,9 @@ Description[de]=Aktivierung bzw. Deaktivierung des cyrus notifyd (default: true,
 Description[en]=Disable or enable cyrus notifyd (default: true, if mail/cyrus/mailnotifier is set)
 Type=str
 Categories=service-mail
+
+[mail/cyrus/initscript]
+Description[de]=Dateiname des Initskripts der installierten Cyrus version
+Description[en]=Filename of the installed cyrus version's init script
+Type=str
+Categories=service-mail
