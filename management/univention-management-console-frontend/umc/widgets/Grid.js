@@ -194,8 +194,10 @@ define([
 		},
 
 		_parentModule: undefined,
+		_parentModuleTries: 0,
 		_publishAction: function(action) {
-			if (this._parentModule === undefined) {
+			if (!this._parentModule && this._parentModuleTries < 5) {
+				++this._parentModuleTries;
 				this._parentModule = tools.getParentModule(this);
 			}
 			if (!this._parentModule) {
@@ -650,6 +652,13 @@ define([
 			// -> handle context menus when clicked in the last column
 			// -> call custom handler when clicked on any other cell
 			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+
+			this.own(aspect.after(this._grid, "_onFetchComplete", lang.hitch(this, '_publishAction', 'search-finished')));
+			this.own(aspect.after(this._grid, "_onFetchError", lang.hitch(this, '_publishAction', 'search-error')));
 		},
 
 		_onRowClick: function( ev ) {

@@ -1,6 +1,7 @@
 univention-management-console-frontend (2.0.223-1) unstable; urgency=low
 
-  * Bug #30577: search actions are published now, as well
+  * Bug #30577: actions for submitting a search and for a finished search are
+    published now, as well
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 12 Mar 2013 12:25:27 +0100
 
