@@ -47,6 +47,8 @@ define([
 
 		_parentModule: undefined,
 
+		_publishPrefix: null,
+
 		postMixInProperties: function() {
 			// in case no buttons are defined, define the standard 'submit' button
 			if (!this.buttons) {
@@ -94,8 +96,7 @@ define([
 				}
 
 				// inverse the localized subtab title
-				topic.publish('/umc/actions', this._parentModule.moduleID, this._parentModule.moduleFlavor, 'search');
-
+				topic.publish('/umc/actions', this._parentModule.moduleID, this._parentModule.moduleFlavor, this._publishPrefix, 'search');
 			}));
 		},
 

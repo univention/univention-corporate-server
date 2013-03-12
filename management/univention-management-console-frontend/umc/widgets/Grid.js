@@ -195,17 +195,20 @@ define([
 
 		_parentModule: undefined,
 		_parentModuleTries: 0,
-		_publishAction: function(action) {
+		_publishPrefix: null,
+		_getParentModule: function() {
 			if (!this._parentModule && this._parentModuleTries < 5) {
 				++this._parentModuleTries;
 				this._parentModule = tools.getParentModule(this);
 			}
-			if (!this._parentModule) {
-				// could not determine our parent module
-				return;
-			}
+			return this._parentModule;
+		},
 
-			topic.publish('/umc/actions', this._parentModule.moduleID, this._parentModule.moduleFlavor, 'grid', action);
+		_publishAction: function(action) {
+			var mod = this._getParentModule();
+			if (mod) {
+				topic.publish('/umc/actions', mod.moduleID, mod.moduleFlavor, this._publishPrefix, 'grid', action);
+			}
 		},
 
 		postMixInProperties: function() {

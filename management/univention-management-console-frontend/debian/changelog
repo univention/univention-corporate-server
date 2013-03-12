@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.225-1) unstable; urgency=low
+
+  * Bug #30574: allow prefixes for published actions of Grid and SearchForm
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 12 Mar 2013 18:28:27 +0100
+
 univention-management-console-frontend (2.0.224-1) unstable; urgency=low
 
   * added focus() function to PasswordInputBox (Bug #29251)
