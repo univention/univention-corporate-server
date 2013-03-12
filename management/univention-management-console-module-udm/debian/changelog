@@ -1,6 +1,7 @@
 univention-management-console-module-udm (3.0.75-1) unstable; urgency=low
 
-  * Bug #30741: added translations for tab names
+  * Bug #30577: publish search toggle, report generation, added translations
+    for tab names
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 12 Mar 2013 11:56:08 +0100
 

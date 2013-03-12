@@ -560,6 +560,8 @@ define([
 					label: '',  // label will be set in toggleSearch
 					callback: lang.hitch(this, function() {
 						this._isAdvancedSearch = !this._isAdvancedSearch;
+						var search = this._isAdvancedSearch ? 'toggle-search-simple' : 'toggle-search-advanced';
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, search);
 						this._updateSearch();
 					})
 				});
@@ -837,6 +839,7 @@ define([
 
 		_createReport: function () {
 			// open the dialog
+			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'grid', 'report');
 			var objects = array.map( this._grid.getAllItems(), function( item ) {
 				return item.$dn$;
 			} );
