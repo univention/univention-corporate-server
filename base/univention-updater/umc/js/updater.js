@@ -54,7 +54,11 @@ define([
 
 			this.inherited(arguments);
 
-			this._updates = new UpdatesPage({standby: lang.hitch(this, 'standby')});
+			this._updates = new UpdatesPage({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standby: lang.hitch(this, 'standby')
+			});
 			this._progress = new ProgressPage({});
 
 			this.addChild(this._updates);
