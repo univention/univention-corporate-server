@@ -579,7 +579,7 @@ define([
 					this._settingsMenu.addChild(new MenuItem({
 						label: _('License'),
 						onClick : function() {
-							topic.publish('/umc/actions', 'menu-univention', 'license');
+							topic.publish('/umc/actions', 'menu-settings', 'license');
 							var dlg = new LicenseDialog();
 							dlg.show();
 						}
@@ -965,7 +965,7 @@ define([
 				label: _('Tooltips'),
 				checked: tools.preferences('tooltips'),
 				onClick: function() {
-					topic.publish('/umc/actions', 'menu-user', 'tooltips', this.checked ? 'on' : 'off');
+					topic.publish('/umc/actions', 'menu-settings', 'tooltips', this.checked ? 'on' : 'off');
 					tools.preferences('tooltips', this.checked);
 				}
 			}));
@@ -981,7 +981,7 @@ define([
 				label: _('Module help description'),
 				checked: tools.preferences('moduleHelpText'),
 				onClick: function() {
-					topic.publish('/umc/actions', 'menu-user', 'module-help-text', this.checked ? 'on' : 'off');
+					topic.publish('/umc/actions', 'menu-settings', 'module-help-text', this.checked ? 'on' : 'off');
 					tools.preferences('moduleHelpText', this.checked);
 				}
 			}));
@@ -996,14 +996,14 @@ define([
 			this._helpMenu.addChild(new MenuItem({
 				label: _('Help'),
 				onClick : function() {
-					topic.publish('/umc/actions', 'menu-univention', 'help');
+					topic.publish('/umc/actions', 'menu-help', 'help');
 					help();
 				}
 			}));
 			this._helpMenu.addChild(new MenuItem({
 				label: _('Feedback'),
 				onClick : function() {
-					topic.publish('/umc/actions', 'menu-univention', 'feedback');
+					topic.publish('/umc/actions', 'menu-help', 'feedback');
 					var url = lang.replace(_('umcFeedbackUrl'), [
 						kernel.locale.indexOf('de-') === 0 ? 'de' : 'en'
 					]);
@@ -1014,7 +1014,7 @@ define([
 			this._helpMenu.addChild(new MenuItem({
 				label: _('About UMC'),
 				onClick : function() {
-					topic.publish('/umc/actions', 'menu-univention', 'about');
+					topic.publish('/umc/actions', 'menu-help', 'about');
 					tools.umcpCommand( 'get/info' ).then( function( data ) {
 						about( data.result );
 					} );
@@ -1024,7 +1024,7 @@ define([
 			this._helpMenu.addChild(new MenuItem({
 				label: _('Univention Website'),
 				onClick: function() {
-					topic.publish('/umc/actions', 'menu-univention', 'website');
+					topic.publish('/umc/actions', 'menu-help', 'website');
 					var w = window.open( 'http://www.univention.de/', 'univention' );
 					w.focus();
 				}
