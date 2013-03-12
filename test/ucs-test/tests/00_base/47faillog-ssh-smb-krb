@@ -30,7 +30,7 @@ ucr set \
 invoke-rc.d ssh restart
 
 tdir=$(mktemp -d)
-trap "rm -rf '$tdir' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
+trap "rm -rf '$tdir' ; udm mail/domain remove --dn 'cn=$domainname,$ldap_base' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
 fake_passwd="$tdir/fake_passwd"
 echo "foobar1234" >"$fake_passwd"
 passwd="$tdir/passwd"
@@ -51,8 +51,10 @@ krb_login () {
 	return $rc
 }
 
+udm mail/domain create --set name="$domainname"
 user_create "$NAME" \
 	--set groups="cn=Administrators,cn=groups,$ldap_base" \
+	--set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base" \
 	--set locked=none
 
 ssh_hostname="$(ssh_login "$passwd")"

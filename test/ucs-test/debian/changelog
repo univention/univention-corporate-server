@@ -1,3 +1,9 @@
+ucs-test (3.0.30-1) unstable; urgency=low
+
+  * corrected certain faillog tests (Bug #19016)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 12 Mar 2013 13:00:52 +0100
+
 ucs-test (3.0.29-5) unstable; urgency=low
 
   * Adapt https test case to UCS 3.1-1 (Bug #30734)
