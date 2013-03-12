@@ -42,6 +42,7 @@ udm mail/domain create --set name="$domainname"
 user_create "$NAME" \
 	--set groups="cn=Administrators,cn=groups,$ldap_base" \
 	--set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base"
+/usr/lib/univention-pam/ldap-group-to-file.py
 
 info "Lock after tally"
 ssh_login "$fake_passwd" # 3

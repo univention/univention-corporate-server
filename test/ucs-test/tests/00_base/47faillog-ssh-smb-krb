@@ -56,6 +56,7 @@ user_create "$NAME" \
 	--set groups="cn=Administrators,cn=groups,$ldap_base" \
 	--set primaryGroup="cn=Domain Admins,cn=groups,$ldap_base" \
 	--set locked=none
+/usr/lib/univention-pam/ldap-group-to-file.py
 
 ssh_hostname="$(ssh_login "$passwd")"
 if [ "$ssh_hostname" != "$hostname" ]
