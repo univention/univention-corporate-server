@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/topic",
 	"dojo/promise/all",
 	"dijit/layout/BorderContainer",
 	"dojox/html/entities",
@@ -48,7 +49,7 @@ define([
 	"umc/modules/join/Grid",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/join"
-], function(declare, lang, all, BorderContainer, entities, dialog, tools, ContainerWidget, Module, Page, Text,
+], function(declare, lang, topic, all, BorderContainer, entities, dialog, tools, ContainerWidget, Module, Page, Text,
 			ExpandingTitlePane, TextBox, PasswordBox, ProgressBar, JoinForm, JoinGrid, Lib_Server, _) {
 
 	var JoinPage = declare("umc.modules.join.JoinPage", [Page], {
@@ -205,6 +206,7 @@ define([
 				var values = this._joinpage._form.get('value');
 				this._joinpage._form._widgets.password.set('value', '');
 
+				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'initial-join');
 				this.join(values);
 			}));
 

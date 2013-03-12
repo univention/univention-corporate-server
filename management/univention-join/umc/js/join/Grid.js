@@ -43,6 +43,13 @@ define([
 		moduleStore: null,
 		_serverRole: null,
 
+		_publishAction: function(action) {
+			// ignore search actions for the grid
+			if (action.indexOf('search-') != 0) {
+				this.inherited(arguments);
+			}
+		},
+
 		postMixInProperties: function() {
 			this.moduleStore = store('script', 'join/scripts');
 			this.inherited(arguments);

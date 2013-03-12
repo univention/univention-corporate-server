@@ -1,3 +1,9 @@
+univention-join (5.0.36-1) unstable; urgency=low
+
+  * Bug #30577: publish actions for initial join and filter grid reload actions
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 12 Mar 2013 14:04:06 +0100
+
 univention-join (5.0.35-1) unstable; urgency=low
 
   * fix wording; Bug #27792, Bug #30112
