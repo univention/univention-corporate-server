@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.75-1) unstable; urgency=low
+
+  * Bug #30741: added translations for tab names
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 12 Mar 2013 11:56:08 +0100
+
 univention-management-console-module-udm (3.0.74-1) unstable; urgency=low
 
   * Bug #30749: adjusted focus behaviour for mobile devices

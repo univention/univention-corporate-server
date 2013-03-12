@@ -1328,3 +1328,43 @@ define([
 	});
 });
 
+// add pseudo translations for UDM tab names in order to enable
+// resolving tab names for umc/actions publishing...
+// the tab names are already translated in the backend and javascript
+// has otherwise no mean to find the corresponding English original
+
+/***** BEGIN *****
+_('Access control');
+_('Access Rights');
+_('Account');
+_('Allow/Deny');
+_('Boot');
+_('Change password');
+_('Contact');
+_('Data type');
+_('DHCP statements');
+_('DNS Update');
+_('Employee');
+_('General');
+_('Groups');
+_('Hosts');
+_('IP addresses');
+_('KDE Profiles');
+_('LDAP');
+_('Lease Time');
+_('License');
+_('Linux');
+_('Mail');
+_('MX records');
+_('Netbios');
+_('NFS general');
+_('Primary Groups');
+_('Samba general');
+_('Start of authority');
+_('TXT records');
+_('UDM General');
+_('UDM Web');
+_('User Account');
+_('User Contact');
+_('Windows');
+****** END ******/
