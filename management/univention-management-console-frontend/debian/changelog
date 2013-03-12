@@ -4,7 +4,6 @@ univention-management-console-frontend (2.0.224-1) unstable; urgency=low
 
  -- Lukas Walter <walter@univention.de>  Tue, 12 Mar 2013 13:22:55 +0100
 
-=======
 univention-management-console-frontend (2.0.223-1) unstable; urgency=low
 
   * Bug #30577: actions for submitting a search and for a finished search are
