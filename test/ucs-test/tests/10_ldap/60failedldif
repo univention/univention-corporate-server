@@ -65,7 +65,7 @@ then
 else
 	testldif "$ldif"
 fi
-usr/share
+
 /etc/init.d/slapd start
 
 for replayed in "$ldif_path"/replayed.ldif_*;
