@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.227-1) unstable; urgency=low
+
+  * Bug #30574: remove search actions from Grid
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 13 Mar 2013 19:44:24 +0100
+
 univention-management-console-frontend (2.0.226-1) unstable; urgency=low
 
   * Bug #29971: Username/password does not have to be typed in again if an

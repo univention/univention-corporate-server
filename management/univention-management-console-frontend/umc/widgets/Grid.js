@@ -657,13 +657,6 @@ define([
 			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
 		},
 
-		postCreate: function() {
-			this.inherited(arguments);
-
-			this.own(aspect.after(this._grid, "_onFetchComplete", lang.hitch(this, '_publishAction', 'search-finished')));
-			this.own(aspect.after(this._grid, "_onFetchError", lang.hitch(this, '_publishAction', 'search-error')));
-		},
-
 		_onRowClick: function( ev ) {
 			// default action should not be executed when clicked on selector or action cells
 			if ( ev.cellIndex === 0 || ev.cellIndex > this.columns.length ) {
