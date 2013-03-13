@@ -29,7 +29,10 @@ echo -e "\n\n***Create a test user with UDM CLI"
 PRINTERNAME="$(getprintername)"
 create_localprinter "$PRINTERNAME" || fail_test 1
 
-set_printer_sambaname "$PRINTERNAME" "sambaname"
+# create domain part in configured mail domains list
+if ! udm mail/domain create --set name=$domainname ; then
+	echo "Mail/domain object already exists or could not be created. Continue testing..."
+fi
 
 USERNAME=$(user_randomname)
 user_create "$USERNAME" || fail_test 1
@@ -44,7 +47,7 @@ echo "$PRINTERNAME"
 
 group_adduser "$USERNAME" "$GROUPNAME" || fail_test 1
 
-echo -e "\n\n***Adding the new group to \"Domain Admins\""x
+echo -e "\n\n***Adding the new group to \"Domain Admins\""
 
 group_addgroup "$GROUPNAME" "Domain Admins" || fail_test 1
 
@@ -64,6 +67,11 @@ group_remove "$GROUPNAME" || fail_test 1
 
 remove_printer "$PRINTERNAME" || fail_test 1
 
+
+if ! udm mail/domain remove --dn "cn=$domainname,$ldap_base" ; then
+	echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+fi
+
 if [ ! "$RET" = "0" ] ; then
         if [ -z "$(pidof slapd)" ] ; then
                 echo " The slapd crashed. See Bug #9738."
@@ -75,7 +83,6 @@ if [ ! "$RET" = "0" ] ; then
         fi
 else
         echo "Everthing was fine. The slapd did not crash."
-
 fi
 
 exit "$RETVAL"
