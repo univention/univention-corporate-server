@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.134-1) unstable; urgency=low
+
+  * Improve compatibility with Firefox 10 in installed apps (Bug #30758)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Mar 2013 14:10:02 +0100
+
 univention-management-console-module-appcenter (2.0.133-1) unstable; urgency=low
 
   * Add headline in license request (Bug #30199)

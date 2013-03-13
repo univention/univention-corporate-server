@@ -32,32 +32,29 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
+	"dojo/on",
 	"dojo/dom-construct",
 	"dojo/dom-style",
 	"dojo/topic",
 	"umc/tools",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Text",
-	"umc/widgets/ConfirmDialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
 	"umc/widgets/Module",
 	"umc/modules/appcenter/AppCenterPage",
 	"umc/i18n!umc/modules/appcenter",
 	"umc/i18n!umc/modules/apps"
-], function(declare, lang, kernel, domConstruct, domStyle, topic, tools, TitlePane, Text, ConfirmDialog, ContainerWidget, Page, Module, AppCenterPage, appCenterTranslate, _) {
+], function(declare, lang, kernel, on, domConstruct, domStyle, topic, tools, TitlePane, Text, ContainerWidget, Page, Module, AppCenterPage, appCenterTranslate, _) {
 	// behaves like a button, but it is a simple <a>-tag
-	//   needs a parentWidget to connect the onclick-event to
-	//   callbackId should be unique within this parentWidget (css-class)
-	var _AnchorButton = function(content, callbackId, parentWidget, callback) {
+	var _AnchorButton = function(content, callback, owner) {
 		var anchor = domConstruct.create('a', {
 			href: 'javascript:void(0)',
-			'class': callbackId,
 			innerHTML: content
 		});
-		parentWidget.on('.' + callbackId + ':click', function() {
-			callback(callbackId);
-		});
+		owner.own(on(anchor, 'click', function() {
+			callback();
+		}));
 		return anchor;
 	};
 
@@ -159,31 +156,12 @@ define([
 					if (app.allows_using && app.can_update) {
 						var upgradeButton = _AnchorButton(
 							candidate_version,
-							'upgrade',
-							this._detailsPane,
 							lang.hitch(this, function() {
-								var confirmDialog = new ConfirmDialog({
-									title: _('Upgrade %s', app.name),
-									message: '<strong>' + _('Do you really want to upgrade to %s?', app.candidate_version) + '</strong>',
-									options: [{
-										label: _('Cancel'),
-										name: 'no',
-										'default': true
-									}, {
-										label: tools.capitalize(appCenterTranslate('upgrade')),
-										name: 'yes'
-									}]
-								});
-								confirmDialog.on('confirm', lang.hitch(this, function(answer) {
-									confirmDialog.close();
-									if (answer == 'yes') {
-										this._appcenterPage.upgradeApp(app);
-									}
-								}));
-								confirmDialog.show();
-							})
+								this._appcenterPage.upgradeApp(app);
+							}),
+							this
 						);
-						candidate_version = upgradeButton.outerHTML;
+						candidate_version = upgradeButton;
 					}
 					this.addToDetails(appCenterTranslate('Candidate version'), candidate_version);
 				}
@@ -192,13 +170,12 @@ define([
 				if (app.can_uninstall) {
 					var uninstallButton = _AnchorButton(
 						_('Uninstall %s', app.name),
-						'uninstall',
-						this._detailsPane,
 						lang.hitch(this, function() {
 							this._appcenterPage._call_installer('uninstall', app);
-						})
+						}),
+						this
 					);
-					this.addToDetails(appCenterTranslate('Uninstall'), uninstallButton.outerHTML);
+					this.addToDetails(appCenterTranslate('Uninstall'), uninstallButton);
 				}
 
 				var locale = kernel.locale.slice( 0, 2 ).toLowerCase();
@@ -229,7 +206,13 @@ define([
 			}
 			var tr = domConstruct.create('tr', {}, this._table);
 			domConstruct.create('td', {innerHTML: key}, tr);
-			domConstruct.create('td', {innerHTML: value}, tr);
+			if (typeof value == 'string') {
+				domConstruct.create('td', {innerHTML: value}, tr);
+			} else {
+				// value is a DOM node
+				var td = domConstruct.create('td', {}, tr);
+				domConstruct.place(value, td, 'only');
+			}
 		}
 
 	});

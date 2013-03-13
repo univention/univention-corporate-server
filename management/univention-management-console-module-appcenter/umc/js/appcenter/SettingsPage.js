@@ -35,7 +35,7 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
-	"./Grid",
+	"umc/modules/appcenter/Grid",
 	"umc/widgets/TitlePane",
 	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Form",
