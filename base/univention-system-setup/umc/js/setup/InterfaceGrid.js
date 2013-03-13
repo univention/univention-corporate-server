@@ -75,33 +75,42 @@ define([
 						return types.interfaceTypes[value] || value;
 					}
 				}, {
-					name: 'information',
-					label: _('Information'),
+					name: 'configuration',
+					label: _('Configuration'),
 					formatter: lang.hitch(this, function(__nothing__, row, scope) {
 						var iface = this.getRowValues(row);
 						var back = '';
 
 						if (((iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type !== 'manual') || (iface.interfaceType === 'bond' || iface.interfaceType === 'br')) {
 							// display IP addresses
-							var formatIp = function(ips) {
-								return array.map(array.filter(ips, function(i) { return i[0] && i[1]; }), function(i) { return i[0] + '/' + types.convertNetmask(i[1]);}).join(', ');
+							var formatIPs = function(ips) {
+								return array.map(array.filter(ips, function(i) { return i[0] && i[1]; }), function(i) { return i[0] + '/' + types.convertNetmask(i[1]);});
 							};
-							back = _('IP addresses') + ': ';
+							var ip4s = formatIPs(iface.ip4);
+							var ip6s = formatIPs(iface.ip6);
+
 							if (iface.ip4dynamic) {
-								back += 'DHCP';
-							} else if (iface.ip4.length){
-								back += formatIp(iface.ip4);
+								back += _('Dynamic (DHCP)');
 							}
 							if (iface.ip6dynamic) {
-								back += ', <br>SLAAC';
-							} else if (iface.ip6.length) {
-								back += ', <br>' + formatIp(iface.ip6);
+								back += _('Autoconfiguration (SLAAC)');
+							}
+
+							if (ip4s.length && !iface.ip4dynamic){
+								back += _('Static') + ': ';
+								back += ip4s.join(', ');
+							}
+							if (ip6s.length && !iface.ip6dynamic) {
+								back += '<br>' + _('Static (IPv6)') + ': ';
+								back += ip6s.join(', ');
 							}
 						}
 
-						if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
-							// display related interfaces
-							back += '<br>' + _('Interfaces') + ': ' + iface[iface.interfaceType === 'br' ? 'bridge_ports' : 'bond-slaves'].join(', ');
+						if (iface.interfaceType === 'br') {
+							back += '<br>' + _('Bridge ports') + ': ' + iface['bridge_ports'].join(', ');
+						} else if(iface.interfaceType === 'bond') {
+							back += '<br>' + _('Bonding primaries') + ': ' + iface['bond-primary'].join(', ');
+							// TODO: also show slaves?
 						}
 
 						return back;
@@ -109,17 +118,6 @@ define([
 					width: '70%'
 				}],
 				actions: [{
-				// TODO: decide if we show a DHCP query action for every row?!
-//					name: 'dhcp_query',
-//					label: 'DHCP query',
-//					callback: lang.hitch(this, function() {
-//						// TODO: interface name
-//				//		this._dhcpQuery();
-//					}),
-//					isMultiAction: false,
-//					isStandardAction: true,
-//					isContextAction: true
-//				}, {
 					name: 'edit',
 					label: _('Edit'),
 					iconClass: 'umcIconEdit',
@@ -193,6 +191,7 @@ define([
 					var ifacename = iface['interface'];
 					iface['interface'] = iface['interface'].split('.', 1) + '.' + String(iface.vlan_id);
 					if (!create && ifacename !== iface['interface']) {
+						// if the interface id was renamed the identifier changed... so delete the old row
 						this.moduleStore.remove(ifacename);
 					}
 
@@ -217,7 +216,7 @@ define([
 						iiface.type = 'manual';
 						iiface.start = false;
 
-						// FIXME: put does not overwrite
+						// FIXME: put does not work
 						this.moduleStore.put(iiface);
 						this.moduleStore.remove(iiface['interface']);
 						this.moduleStore.add(iiface);
@@ -227,7 +226,7 @@ define([
 				var filtered = {}; tools.forIn(iface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
 				iface = filtered;
 				if (!create) {
-					this.moduleStore.put( iface ); // FIXME: why does put not work? we have to manually remove and add it...
+					this.moduleStore.put( iface ); // FIXME: put does not work
 					this.moduleStore.remove(iface['interface']);
 					this.moduleStore.add( iface );
 				} else {
@@ -239,8 +238,6 @@ define([
 					}
 				}
 			this._set('value', this.get('value'));
-			// FIXME: remove; we could replace by .watch(value) but this would catch the initial query on NetworkPage
-			this.onChange();
 		},
 
 		_addInterface: function() {
@@ -293,7 +290,7 @@ define([
 							delete d.eth;
 						}
 						var arr = [];
-						// FIXME: add a order: eth, vlan, br, bond
+						// TODO: add a order: eth, vlan, br, bond
 						tools.forIn(d, function(k, v) {
 							arr.push(v);
 						});
@@ -395,6 +392,7 @@ define([
 				// remove the interface from grid
 				this.moduleStore.remove(iid);
 			}, this);
+			this._set('value', this.get('value'));
 		}
 
 	});

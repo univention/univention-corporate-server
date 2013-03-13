@@ -149,18 +149,25 @@ define([
 						subtypes: [{
 							type: TextBox,
 							label: _('IPv4 address'),
+							validator: function(ip) {
+								return /^[0-9.]+$/.test(ip);
+							},
 							sizeClass: 'Half'
 						}, {
 							type: TextBox,
 							label: _('Netmask'),
 							value: '255.255.255.0',
+							validator: function(nm) { 
+								var nm = types.convertNetmask(nm);
+								return !isNaN(nm) && nm < 33;
+							},
 							sizeClass: 'Half'
 						}]
 					}, {
 						name: 'ip4dynamic',
 						type: CheckBox,
 						onChange: lang.hitch(this, function(value) {
-							this._pages.eth._form._widgets.ip4.set('disabled', value);
+							this._pages.eth._form._widgets.ip4.set('disabled', !!value);
 						}),
 						label: _('Dynamic (DHCP)')
 					}, {
@@ -171,10 +178,17 @@ define([
 						subtypes: [{
 							type: TextBox,
 							label: _('IPv6 address'),
+							validator: function(ip) {
+								return /^[0-9A-Fa-f:]+$/.test(ip);
+							},
 							sizeClass: 'One'
 						}, {
 							type: TextBox,
 							label: _('IPv6 prefix'),
+							validator: function(nm) { 
+								var nm = types.convertNetmask(nm);
+								return !isNaN(nm) && nm < 129;
+							},
 							sizeClass: 'OneThird'
 						}, {
 							type: TextBox,
@@ -447,7 +461,7 @@ define([
 				}
 
 				var values = {
-					ip4dynamic: false, // set "Dynamic (DHCP)" to be false
+					ip4dynamic: false, // set "Dynamic (DHCP)" to false
 					ip4: [[address, netmask]]
 				};
 

@@ -130,7 +130,7 @@ define([
 				layout: ['interfaces']
 			}, {
 				label: _('Global network settings'),
-				layout: [ ['gateway', 'ipv6/gateway'], 'interfaces/primary', 'nameserver', 'dns/forwarder', 'proxy/http']
+				layout: [ ['gateway', 'ipv6/gateway'], 'nameserver', 'dns/forwarder', 'proxy/http']
 			}];
 
 			this._form = new Form({
@@ -201,7 +201,7 @@ define([
 			vals['dns/forwarder'] = [];
 			array.forEach(sortedKeys, function(ikey) {
 				array.forEach(['nameserver', 'dns/forwarder'], function(jname) {
-					if (0 === array.indexOf(ikey, jname)) {
+					if (0 === ikey.indexOf(jname)) {
 						vals[jname].push(_vals[ikey]);
 					}
 				});
@@ -214,23 +214,21 @@ define([
 				var match = ikey.match(r);
 				if (match) {
 					var name = match[1];
-					var interfaceType = match[2];
 					var vlan_id = null;
 
 					if (interfaces[name]) {
 						return; // already parsed
 					}
 
-					// TODO: move into types.getTypeByDeviceName
+					var interfaceType = 'eth';
 					// vlan device?
-					if(/[.]/.test(interfaceType)) {
-						vlan_id = parseInt(interfaceType.match(/[^.]+[.]([0-9]+)/)[1], 10);
+					if(/[.]/.test(match[2])) {
+						vlan_id = parseInt(match[2].match(/[^.]+[.]([0-9]+)/)[1], 10);
 						interfaceType = 'vlan';
-					} else {
-						if (interfaceType !== 'bond' && interfaceType !== 'br') {
-							interfaceType = 'eth'; // wlan, etc → eth
-						}
 					}
+
+					var primary = _vals['interfaces/primary'] === name;
+
 					interfaces[name] = {
 						// every device
 						'interface': name,
@@ -241,6 +239,7 @@ define([
 						ip6dynamic: null,
 						start: null, // true|false
 //						type: null, // static|dhcp|manual
+						primary: primary,
 
 						// for vlan devices
 						vlan_id: vlan_id,
@@ -300,6 +299,7 @@ define([
 						} else if (roptions) {
 							var option = roptions[2];
 
+							// parse interface options
 							tools.forIn({
 								miimon: function(val) { return parseInt(val, 10); },
 								'bond-mode': function(val) { return parseInt(val, 10); },
@@ -328,8 +328,17 @@ define([
 
 			tools.forIn(cached, function(iname, ivalue, iobj) {
 
+				// set interfaceType
+				if (interfaces[iname].interfaceType !== 'vlan') {
+					if (ivalue.options['bond-primary']) {
+						interfaces[iname].interfaceType = 'bond';
+					} else if (ivalue.options['bridge_ports']) {
+						interfaces[iname].interfaceType = 'br';
+					}
+				}
+
 				// DHCP
-				if (ivalue.data.type == 'dhcp' || ivalue.data.type == 'dynamic') { // TODO: don't support dynamic anymore
+				if (ivalue.data.type == 'dhcp') {
 					interfaces[iname].ip4dynamic = true;
 				} else {
 					// set primary IP address
@@ -386,10 +395,12 @@ define([
 			// show a note if interfaces changes
 			if (!this.wizard_mode) {
 				// only show notes in an joined system in productive mode
-				this.own(on.once(this._form._widgets.interfaces, 'change', lang.hitch(this, function() {
+				var handler = this._form._widgets.interfaces.watch('value', lang.hitch(this, function() {
 					// TODO: only show it when IP changes??
 					this.addNote(_('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
-				})));
+					handler.unwatch();
+				}));
+				this.own(handler);
 			}
 		},
 
@@ -553,11 +564,10 @@ define([
 				variables: ['interfaces/primary'],
 				description: _('primary network interface'),
 				values: vals['interfaces/primary']
-//			}, {
-				// FIXME
-//				variables: [/^interfaces\/[^\/]+\/ipv6\/acceptRA/],
-//				description: _('IPv6 interfaces with autoconfiguration (SLAAC)'),
-//				values: vals['dynamic_interfaces_ipv6'].length ? vals['dynamic_interfaces_ipv6'].join(', ') : _('No device')
+			}, {
+				variables: [/^interfaces\/[^\/]+\/ipv6\/acceptRA/],
+				description: _('IPv6 interfaces with autoconfiguration (SLAAC)'),
+				values: array.map(array.filter(vals.interfaces, function(iface) { return iface.ip6dynamic; }), function(iface) { return iface['interface']; }).join(', ') || _('No device')
 			}];
 		},
 
