@@ -22,37 +22,22 @@ function testldif () {
 	declare -i GROUP_PERM="${PERM:1:1}"
 	declare -i OTHERS_PERM="${PERM:2:1}"
 
-    #echo "PERM-user:" "${PERM:0:1}"
-	#echo "PERM-group:" "${PERM:1:1}"
-	#echo "PERM-others:" "${PERM:2:1}"
-	#(( RES = "${PERM:0:1}"==0?1:0 )) # trinary operator
-
 	if [[ "$GROUP_PERM" -gt 0 ]]; then
 		echo "... Wrong group permissions on file $1"
 		fail_test 1
 	elif [[ "$OTHERS_PERM" -gt 0 ]]; then
 		echo "... Wrong other users permissions on file $1"
 		fail_test 1
-	elif [[ "$OWNER" != "root" ]]; then
+	elif [ ! "$OWNER" = "root" ]; then
 		echo "... Wrong owner $OWNER (not root) on file $1"
 		fail_test 1
-
-		########## check_perm ain't work, because checks only full permissions ########
-		: 'if ! check_perm -f "$1" "0$PERM" root nogroup
-		then
-			echo " ... Wrong permissions on file $1."
-			fail_test 1
-		else
-			echo " ... was ok."
-		fi'
-		############################################################################
 	else
 		echo " ... was ok."
 	fi
 
 }
 
-#check if ldap-server can be reached
+#check if master ldap-server can be reached
 univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" -x uid=Administrator | grep -q "# numEntries: 1" || exit 120
 
 #START TEST
@@ -61,7 +46,7 @@ ldif="$ldif_path/failed.ldif"
 
 /etc/init.d/slapd stop
 
-# modificate $server_role to create failed.ldif file (because slapd is off)
+# modify $server_role to create failed.ldif file (because slapd is off)
 univention-directory-manager computers/$server_role modify --binddn="$ldap_hostdn" --bindpwd="$(cat /etc/machine.secret)" --dn "$ldap_hostdn" --set password="$(cat /etc/machine.secret)" || fail_test 1
 
 echo "Wait until failed.ldif is created. Should take max. 6 min..."
@@ -80,7 +65,7 @@ then
 else
 	testldif "$ldif"
 fi
-
+usr/share
 /etc/init.d/slapd start
 
 for replayed in "$ldif_path"/replayed.ldif_*;
