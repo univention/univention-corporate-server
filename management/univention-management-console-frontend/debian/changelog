@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.226-1) unstable; urgency=low
+
+  * Bug #29971: Username/password does not have to be typed in again if an
+    expired password is to be replaced by a new one.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Mar 2013 09:53:36 +0100
+
 univention-management-console-frontend (2.0.225-1) unstable; urgency=low
 
   * Bug #30574: allow prefixes for published actions of Grid and SearchForm

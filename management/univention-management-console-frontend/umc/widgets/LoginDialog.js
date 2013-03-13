@@ -60,6 +60,9 @@ define([
 		_languageLabel: null,
 		_text: null,
 
+		_username: null,
+		_password: null,
+
 		// internal flag whether the dialog is rendered or not
 		_isRendered: false,
 
@@ -153,30 +156,29 @@ define([
 						attr.set(dom.byId('umc_LabelPane_NewPasswordRetype'), 'innerHTML', _('%(label)s (retype)', {label: _('New Password')}));
 						attr.set(dom.byId('umc_SubmitButton_label'), 'innerHTML', _('Login'));
 						if (showNewPassword) {
+							domClass.add('umc_OuterLabelPane_Username', 'dijitHidden');
+							domClass.add('umc_OuterLabelPane_Password', 'dijitHidden');
+							if (this._username) {
+								dom.byId('umc_UsernameInput').value = this._username;
+							}
+							if (this._password) {
+								dom.byId('umc_PasswordInput').value = this._password;
+							}
 							domClass.remove('umc_OuterLabelPane_NewPassword', 'dijitHidden');
 							domClass.remove('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
 						} else {
+							domClass.remove('umc_OuterLabelPane_Username', 'dijitHidden');
+							domClass.remove('umc_OuterLabelPane_Password', 'dijitHidden');
 							domClass.add('umc_OuterLabelPane_NewPassword', 'dijitHidden');
 							domClass.add('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
 						}
 					}));
-					if (showNewPassword) {
-						array.forEach(query('.umcLoginDialogFormContainer'), function(domNode) {
-							domClass.add(domNode, 'umcLoginDialogFormContainerWithNewPassword');
-						});
-					} else {
-						array.forEach(query('.umcLoginDialogFormContainer'), function(domNode) {
-							domClass.remove(domNode, 'umcLoginDialogFormContainerWithNewPassword');
-						});
-					}
 
-					if (state === 'loaded') {
-						// each time the page is loaded, we need to connect to the form events
-						this._connectEvents();
+					// each time the page is loaded, we need to connect to the form events
+					this._connectEvents();
 
-						this._isRendered = true;
-						lang.setObject('contentWindow.state', 'initialized', this._iframe);
-					}
+					this._isRendered = true;
+					lang.setObject('contentWindow.state', 'initialized', this._iframe);
 					this._initForm();
 				} else {
 					// we can't access the form, or it has already been initialized
@@ -220,7 +222,13 @@ define([
 						evt.preventDefault();
 						return;
 					}
-					this._authenticate(usernameInput.value, passwordInput.value, newPasswordInput.value);
+					var username = usernameInput.value;
+					var password = passwordInput.value;
+					// save in case password expired and username and password have to be sent again
+					this._username = username;
+					this._password = password;
+					var newPassword = newPasswordInput.value;
+					this._authenticate(username, password, newPassword);
 					this._isRendered = false;
 					this._initForm();
 				}))
@@ -314,6 +322,10 @@ define([
 				args.new_password = new_password;
 			}
 			tools.umcpCommand('auth', args).then(lang.hitch(this, function(data) {
+				// delete password ASAP. should not be stored
+				this._username = null;
+				this._password = null;
+
 				// disable standby in any case
 				this.standby(false);
 
