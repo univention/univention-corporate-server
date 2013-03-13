@@ -166,11 +166,11 @@ define([
 									title: _('Upgrade %s', app.name),
 									message: '<strong>' + _('Do you really want to upgrade to %s?', app.candidate_version) + '</strong>',
 									options: [{
-										label: _('No'),
+										label: _('Cancel'),
 										name: 'no',
 										'default': true
 									}, {
-										label: _('Yes'),
+										label: tools.capitalize(appCenterTranslate('upgrade')),
 										name: 'yes'
 									}]
 								});

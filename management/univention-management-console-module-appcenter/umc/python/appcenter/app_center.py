@@ -546,7 +546,7 @@ class Application(object):
 		elif self.get('serverrole') and server_role not in self.get('serverrole'):
 			return 'wrong_serverrole', server_role
 		elif self.get('minphysicalram') and get_current_ram_available() < self.get('minphysicalram'):
-			return 'hardware_requirements', _('The application requires %d MB of free RAM but only %d MB are available.') % (self.get('minphysicalram'), get_current_ram_available())
+			return 'hardware_requirements', _('The application requires %(minimum)d MB of free RAM but only %(current)d MB are available.') % {'minimum' : self.get('minphysicalram'), 'current' : get_current_ram_available()}
 		else:
 			conflict_packages = []
 			for package in self.get('conflictedsystempackages'):
@@ -742,7 +742,7 @@ class Application(object):
 				steps = result['steps']
 				errors = ['%s: %s' % (host, error) for error in result['errors']]
 				if info:
-					package_manager.progress_state.info(_('Output from %s: %s') % (host, info))
+					package_manager.progress_state.info(_('Output from %(host)s: %(info)s') % {'host' : host, 'info' : info})
 				if steps:
 					steps = float(steps) # bug in package_manager in 3.1-0: int will result in 0 because of division and steps < max_steps
 					package_manager.progress_state.percentage(steps)

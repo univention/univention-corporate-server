@@ -297,7 +297,7 @@ define([
 					var label_style = 'vertical-align:top;text-align:right;padding-left:1em;padding-right:.5em;white-space:nowrap;font-weight:bold;';
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
-					var txt = "<h1>" + lang.replace(_("Details for Application '{name}'"), app) + "</h1>";
+					var txt = "<h1>" + _("Details for Application '%(name)s'", app) + "</h1>";
 					txt += lang.replace("<table style=\"width: {0}px;\">\n", [ width ]);
 					var fields = this._detail_field_order();
 					array.forEach(fields, lang.hitch(this, function(key) {
@@ -455,8 +455,8 @@ define([
 			var remove_count = remove ? (remove.length === 0 ? 0 : '<strong>' + remove.length + '</strong>') : _('Unknown');
 			var broken_count = broken ? (broken.length === 0 ? 0 : '<strong>' + broken.length + '</strong>') : _('Unknown');
 			var incompatible_headline = incompatible ? ', <strong>' + _('incompatible') : '</strong>';
-			var showTitle = _('Show changes on %s (installed/upgraded: %s, removed: %s, erroneous: %s%s)', host, install_count, remove_count, broken_count, incompatible_headline);
-			var hideTitle = _('Hide changes on %s (installed/upgraded: %s, removed: %s, erroneous: %s%s)', host, install_count, remove_count, broken_count, incompatible_headline);
+			var showTitle = _('Show changes on %(host)s (installed/upgraded: %(installed)s, removed: %(removed)s, erroneous: %(erroneous)s%(incompatible)s)', {host: host, installed: install_count, removed: remove_count, erroneous: broken_count, incompatible: incompatible_headline});
+			var hideTitle = _('Hide changes on %(host)s (installed/upgraded: %(installed)s, removed: %(removed)s, erroneous: %(erroneous)s%(incompatible)s)', {host: host, installed: install_count, removed: remove_count, erroneous: broken_count, incompatible: incompatible_headline});
 			var changes = new TitlePane({
 				title: showTitle,
 				open: opened,
@@ -540,18 +540,18 @@ define([
 							}
 						}
 						if (mayContinue) {
-							headline = lang.replace(_("Do you really want to {verb} {ids}?"),
+							headline = _("Do you really want to %(verb)s %(ids)s?",
 										{verb: verb, ids: app.name});
 							buttons = [{
 								name: 'cancel',
 								'default': true,
-								label: _("No"),
+								label: _("Cancel"),
 								callback: lang.hitch(this, function() {
 									topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'user-cancel');
 								})
 							}, {
 								name: 'submit',
-								label: _("Yes"),
+								label: tools.capitalize(verb),
 								callback: lang.hitch(this, function() {
 									this._call_installer(func, app, true);
 								})
@@ -597,8 +597,7 @@ define([
 						});
 						confirmDialog.show();
 					} else {
-						var progressMessage = lang.replace(_("Going to {verb} Application '{name}'"),
-										   {verb: verb, name: app.name});
+						var progressMessage = _("You're currently %(verb)s %(ids)s", {verb: verb1, ids: app.name});
 
 						this._switch_to_progress_bar(progressMessage, app, func);
 					}
@@ -770,7 +769,7 @@ define([
 				txt = _('This application conflicts with the following Applications/Packages. Uninstall them first.');
 				txt += '<ul><li>' + cannot_install_reason_detail.join('</li><li>') + '</li></ul>';
 			} else if (cannot_install_reason == 'wrong_serverrole') {
-				txt = '<p>' + _('This application cannot be installed on the current server role (%s). In order to install the application, one of the following roles is necessary: %s', cannot_install_reason_detail, values.serverrole.join(', ')) + '</p>';
+				txt = '<p>' + _('This application cannot be installed on the current server role (%(reason_detail)s). In order to install the application, one of the following roles is necessary: %(server_roles)s', {reason_detail: cannot_install_reason_detail, server_roles: values.serverrole.join(', ')}) + '</p>';
 			}
 			return txt;
 		},
@@ -959,7 +958,7 @@ define([
 						{
 							type: Text,
 							name: 'help_text',
-							content: '<div style="width: 535px"><p>' + _('The installation of applications with Univention App Center requires an individually issued license key with a unique key identification. You are currently using a license key without identification. Please fill in the form and provide a valid email address. Afterwards an updated license will be sent to you in a couple of minutes that can be applied and updated directly in the license dialog.') + '</p>' +
+							content: '<div><strong>' + _('Updated UCS license key required') + '</strong></div><div style="width: 535px"><p>' + _('The installation of applications with Univention App Center requires an individually issued license key with a unique key identification. You are currently using a license key without identification. Please fill in the form and provide a valid email address. Afterwards an updated license will be sent to you in a couple of minutes that can be applied and updated directly in the license dialog.') + '</p>' +
 							'<p>' + _('The UCS system sends your current license key to Univention. The key will be extended by the identification and will be sent back to the provided email address. The license scope remains unchanged.') + '</p>' +
 							'<p>' + _('Right after this form, you will see another dialog where you can upload your new license.') + '</p></div>'
 						},

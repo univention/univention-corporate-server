@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (2.0.133-1) unstable; urgency=low
+
+  * Add headline in license request (Bug #30199)
+  * Remove component after dry_run (Bug #30768)
+  * Cleanup translations
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Mar 2013 09:58:29 +0100
+
 univention-management-console-module-appcenter (2.0.132-1) unstable; urgency=low
 
   * Bug #30574: publish more actions

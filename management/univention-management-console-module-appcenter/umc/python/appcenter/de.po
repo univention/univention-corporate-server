@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-03-06 15:31+0100\n"
+"POT-Creation-Date: 2013-03-12 20:33+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,8 +47,8 @@ msgstr "Für die Anwendung ist keine Lizenzdatei vorhanden: %s"
 
 #: umc/python/appcenter/app_center.py:745
 #, python-format
-msgid "Output from %s: %s"
-msgstr "Ausgabe von %s: %s"
+msgid "Output from %(host)s: %(info)s"
+msgstr "Ausgabe von %(host)s: %(info)s"
 
 #: umc/python/appcenter/__init__.py:70
 msgid "Package not found in repository"
@@ -57,10 +57,11 @@ msgstr "Paket wurde in keinem Repository gefunden"
 #: umc/python/appcenter/app_center.py:549
 #, python-format
 msgid ""
-"The application requires %d MB of free RAM but only %d MB are available."
+"The application requires %(minimum)d MB of free RAM but only %(current)d MB "
+"are available."
 msgstr ""
-"Die Anwendung erfordert %d MB freien Speicher, es sind aber nur %d MB "
-"verfügbar."
+"Die Anwendung erfordert %(minimum)d MB freien Speicher, es sind aber nur "
+"%(current)d MB verfügbar."
 
 #: umc/python/appcenter/sanitizers.py:22
 msgid "There already is a component with this name"

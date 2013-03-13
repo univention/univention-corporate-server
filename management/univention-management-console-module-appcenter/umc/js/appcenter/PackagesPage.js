@@ -194,7 +194,7 @@ define([
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
 					var txt = "<p style='" + head_style + "'>" +
-						lang.replace(_("Details for package '{package}'"), data.result) +
+						_("Details for package '%(package)s'", data.result) +
 						"</p>";
 					txt += '<table>\n';
 					var width = 550;	// mimic the default of dialog.confirm
@@ -339,9 +339,10 @@ define([
 						return _("Yes");
 					}
 					return _("No");
+				default:
+					// fallback: return value unchanged
+					return value;
 			}
-			// fallback: return value unchanged
-			return value;
 		},
 
 		// Helper functions that determine if a given function can be executed.
@@ -378,6 +379,9 @@ define([
 					verb = _("upgrade");
 					verb1 = _("upgrading");
 					break;
+				default:
+					console.warn(func, 'is not a known function');
+					break;
 			}
 
 			this.standby(true);
@@ -410,17 +414,17 @@ define([
 						}
 					];
 				} else {
-					headline = lang.replace(_("Do you really want to {verb} {ids}?"), {verb: verb, ids: ids.join(', ')});
-					var msg = lang.replace(_("You're currently {verb} {ids}"), {verb: verb1, ids: ids.join(', ')});
+					headline = _("Do you really want to %(verb)s %(ids)s?", {verb: verb, ids: ids.join(', ')});
+					var msg = _("You're currently %(verb)s %(ids)s", {verb: verb1, ids: ids.join(', ')});
 					buttons = [
 						{
 							name: 'cancel',
-							label: _("No")
+							label: _("Cancel")
 						},
 						{
 							name: 'submit', // I want to catch <Enter> too
 							'default': true,
-							label: _("Yes"),
+							label: tools.capitalize(verb),
 							callback: lang.hitch(this, function() {
 								this._execute_installer(func, ids, msg);
 							})

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-03-06 16:15+0100\n"
+"POT-Creation-Date: 2013-03-12 20:27+0100\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr "--- alle ---"
 msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
-#: umc/js/appcenter/AppCenterPage.js:624
+#: umc/js/appcenter/AppCenterPage.js:623
 #, python-format
 msgid "A module for the administration of the app is available: %s."
 msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
 
-#: umc/js/appcenter/AppCenterPage.js:1029 umc/js/appcenter/PackagesPage.js:456
+#: umc/js/appcenter/PackagesPage.js:460 umc/js/appcenter/AppCenterPage.js:1028
 msgid ""
 "A restart of the UMC server components may be necessary for the software "
 "changes to take effect."
@@ -83,8 +83,8 @@ msgstr "Änderungen anwenden"
 msgid "Are you sure you want to delete the following components: [{ids}]"
 msgstr "Möchten Sie die folgenden Komponenten wirklich löschen: [{ids}]"
 
-#: umc/js/appcenter/AppCenterPage.js:531 umc/js/appcenter/AppCenterPage.js:714
-#: umc/js/appcenter/AppCenterPage.js:735 umc/js/appcenter/AppCenterPage.js:737
+#: umc/js/appcenter/AppCenterPage.js:531 umc/js/appcenter/AppCenterPage.js:713
+#: umc/js/appcenter/AppCenterPage.js:734 umc/js/appcenter/AppCenterPage.js:736
 msgid "Attention!"
 msgstr "Achtung!"
 
@@ -104,7 +104,7 @@ msgstr ""
 "Führen Sie den folgenden Befehl als root auf den diesen Backup-Servern aus, "
 "<em>nachdem</em> Sie die Applikation auf diesem System installiert haben."
 
-#: umc/js/appcenter/AppCenterPage.js:737
+#: umc/js/appcenter/AppCenterPage.js:736
 msgid ""
 "Be sure to execute the following commands as root <em>first</em> on your DC "
 "master and <em>then</em> on all of your backup servers <em>prior</em> to "
@@ -114,7 +114,7 @@ msgstr ""
 "System und <em>danach</em> auf all Ihren Backup-Servern aus, <em>bevor</em> "
 "Sie die Applikation auf diesem System installieren."
 
-#: umc/js/appcenter/AppCenterPage.js:735
+#: umc/js/appcenter/AppCenterPage.js:734
 msgid ""
 "Be sure to execute the following commands as root on all of your backup "
 "servers <em>after</em> installing the application on this DC master."
@@ -122,13 +122,13 @@ msgstr ""
 "Führen Sie die folgenden Befehle als root auf all Ihren Backup-Servern aus, "
 "<em>nachdem</em> Sie die Applikation auf diesem System installiert haben."
 
-#: umc/js/appcenter/SettingsPage.js:350 umc/js/appcenter/AppCenterPage.js:344
-#: umc/js/appcenter/AppCenterPage.js:556 umc/js/appcenter/AppCenterPage.js:853
-#: umc/js/appcenter/PackagesPage.js:407
+#: umc/js/appcenter/PackagesPage.js:411 umc/js/appcenter/AppCenterPage.js:344
+#: umc/js/appcenter/AppCenterPage.js:556 umc/js/appcenter/AppCenterPage.js:852
+#: umc/js/appcenter/SettingsPage.js:350
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/appcenter/AppCenterPage.js:830 umc/js/appcenter/PackagesPage.js:316
+#: umc/js/appcenter/PackagesPage.js:316 umc/js/appcenter/AppCenterPage.js:829
 msgid "Candidate version"
 msgstr "Verfügbare Version"
 
@@ -136,7 +136,7 @@ msgstr "Verfügbare Version"
 msgid "Categories"
 msgstr "Kategorien"
 
-#: umc/js/appcenter/AppCenterPage.js:391 umc/js/appcenter/PackagesPage.js:257
+#: umc/js/appcenter/PackagesPage.js:257 umc/js/appcenter/AppCenterPage.js:391
 msgid "Close"
 msgstr "Schließen"
 
@@ -148,7 +148,7 @@ msgstr "Name der Komponente"
 msgid "Components"
 msgstr "Komponenten"
 
-#: umc/js/appcenter/AppCenterPage.js:827
+#: umc/js/appcenter/AppCenterPage.js:826
 msgid "Contact"
 msgstr "Kontakt"
 
@@ -179,18 +179,20 @@ msgstr ""
 "Applikationshersteller erhält daraufhin eine Nachricht von Univention mit "
 "folgenden Informationen:"
 
-#: umc/js/appcenter/DetailsPage.js:96 umc/js/appcenter/AppCenterPage.js:832
-#: umc/js/appcenter/PackagesPage.js:310
+#: umc/js/appcenter/PackagesPage.js:310 umc/js/appcenter/DetailsPage.js:96
+#: umc/js/appcenter/AppCenterPage.js:831
 msgid "Description"
 msgstr "Beschreibung"
 
 #: umc/js/appcenter/AppCenterPage.js:299
-msgid "Details for Application '{name}'"
-msgstr "Details zur Applikation '{name}'"
+#, python-format
+msgid "Details for Application '%(name)s'"
+msgstr "Details zur Applikation '%(name)s'"
 
 #: umc/js/appcenter/PackagesPage.js:195
-msgid "Details for package '{package}'"
-msgstr "Details zum Paket '{package}'"
+#, python-format
+msgid "Details for package '%(package)s'"
+msgstr "Details zum Paket '%(package)s'"
 
 #: umc/js/appcenter/SettingsPage.js:155
 msgid "Disable"
@@ -200,11 +202,12 @@ msgstr "Deaktivieren"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: umc/js/appcenter/AppCenterPage.js:538 umc/js/appcenter/PackagesPage.js:411
-msgid "Do you really want to {verb} {ids}?"
-msgstr "Möchten Sie {ids} wirklich {verb}?"
+#: umc/js/appcenter/PackagesPage.js:415 umc/js/appcenter/AppCenterPage.js:538
+#, python-format
+msgid "Do you really want to %(verb)s %(ids)s?"
+msgstr "Möchten Sie %(ids)s wirklich %(verb)s?"
 
-#: umc/js/appcenter/AppCenterPage.js:612
+#: umc/js/appcenter/AppCenterPage.js:611
 msgid "Domain administration"
 msgstr "Domänenadministration"
 
@@ -220,11 +223,11 @@ msgstr "Komponenten-Details [{component}] bearbeiten"
 msgid "Edit the detail information about this component"
 msgstr "Detailinformation über diese Komponente bearbeiten"
 
-#: umc/js/appcenter/AppCenterPage.js:961
+#: umc/js/appcenter/AppCenterPage.js:960
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: umc/js/appcenter/AppCenterPage.js:838
+#: umc/js/appcenter/AppCenterPage.js:837
 msgid "Email notification"
 msgstr "E-Mail Benachrichtigung"
 
@@ -244,7 +247,7 @@ msgstr "Diese Komponente aktivieren"
 msgid "Extended software management"
 msgstr "Erweiterte Software-Verwaltung"
 
-#: umc/js/appcenter/AppCenterPage.js:700
+#: umc/js/appcenter/AppCenterPage.js:699
 msgid ""
 "For the installation of this application an updated UCS license key with a "
 "so-called key identification (Key ID) is required."
@@ -252,7 +255,7 @@ msgstr ""
 "Für die Installation dieser Applikation ist ein aktueller UCS-"
 "Lizenzschlüssel mit sogenannter Schlüsselidentifikation (Key-ID) notwendig."
 
-#: umc/js/appcenter/AppCenterPage.js:1017
+#: umc/js/appcenter/AppCenterPage.js:1016
 #, python-format
 msgid ""
 "Further information can be found in the following log file on each of the "
@@ -265,19 +268,16 @@ msgstr ""
 msgid "General repository settings"
 msgstr "Allgemeine Repository-Einstellungen"
 
-#: umc/js/appcenter/AppCenterPage.js:591
-msgid "Going to {verb} Application '{name}'"
-msgstr "Im Begriff, die Applikation '{name}' zu {verb}"
-
 #: umc/js/appcenter/AppCenterPage.js:458
 #, python-format
 msgid ""
-"Hide changes on %s (installed/upgraded: %s, removed: %s, erroneous: %s%s)"
+"Hide changes on %(host)s (installed/upgraded: %(installed)s, removed: "
+"%(removed)s, erroneous: %(erroneous)s%(incompatible)s)"
 msgstr ""
-"Verstecke Änderungen auf %s (installiert/aktualisiert: %s, entfernt: %s, "
-"fehlerhaft: %s%s)"
+"Verstecke Änderungen auf %(host)s (installiert/aktualisiert: %(installed)s, "
+"entfernt: %(removed)s, fehlerhaft: %(erroneous)s%(incompatible)s)"
 
-#: umc/js/appcenter/AppCenterPage.js:1015
+#: umc/js/appcenter/AppCenterPage.js:1014
 #, python-format
 msgid ""
 "If everything else went correct and this is just a temporary network "
@@ -299,9 +299,9 @@ msgstr ""
 "direkt bei Univention anzufordern. Anschließend kann der neue Schlüssel "
 "eingespielt werden."
 
-#: umc/js/appcenter/SettingsPage.js:184 umc/js/appcenter/AppCenterPage.js:322
-#: umc/js/appcenter/AppCenterPage.js:334 umc/js/appcenter/PackagesPage.js:89
-#: umc/js/appcenter/PackagesPage.js:229
+#: umc/js/appcenter/PackagesPage.js:89 umc/js/appcenter/PackagesPage.js:229
+#: umc/js/appcenter/AppCenterPage.js:322 umc/js/appcenter/AppCenterPage.js:334
+#: umc/js/appcenter/SettingsPage.js:184
 msgid "Install"
 msgstr "Installieren"
 
@@ -309,7 +309,7 @@ msgstr "Installieren"
 msgid "Install the component's default package(s)"
 msgstr "Die Standardpakete dieser Komponente installieren"
 
-#: umc/js/appcenter/AppCenterPage.js:836
+#: umc/js/appcenter/AppCenterPage.js:835
 msgid "Installation not possible"
 msgstr "Installation nicht möglich"
 
@@ -321,11 +321,11 @@ msgstr "Paketstatus"
 msgid "Installed"
 msgstr "Installiert"
 
-#: umc/js/appcenter/AppCenterPage.js:829 umc/js/appcenter/PackagesPage.js:315
+#: umc/js/appcenter/PackagesPage.js:315 umc/js/appcenter/AppCenterPage.js:828
 msgid "Installed version"
 msgstr "Installierte Version"
 
-#: umc/js/appcenter/AppCenterPage.js:1013
+#: umc/js/appcenter/AppCenterPage.js:1012
 #, python-format
 msgid "Installing the extension of the LDAP schema on %s seems to have failed."
 msgstr ""
@@ -344,7 +344,7 @@ msgstr "Aktualisierbar"
 msgid "License agreement"
 msgstr "Lizenzbestimmungen"
 
-#: umc/js/appcenter/AppCenterPage.js:826
+#: umc/js/appcenter/AppCenterPage.js:825
 msgid "Maintainer"
 msgstr "Betreuer"
 
@@ -352,7 +352,7 @@ msgstr "Betreuer"
 msgid "Manage Applications for UCS"
 msgstr "Applikationen für UCS verwalten"
 
-#: umc/js/appcenter/AppCenterPage.js:824
+#: umc/js/appcenter/AppCenterPage.js:823
 msgid "Name"
 msgstr "Name"
 
@@ -360,8 +360,8 @@ msgstr "Name"
 msgid "Name of the installed application"
 msgstr "Name der soeben installierten Applikation"
 
-#: umc/js/appcenter/AppCenterPage.js:543 umc/js/appcenter/PackagesPage.js:339
-#: umc/js/appcenter/PackagesPage.js:416
+#: umc/js/appcenter/PackagesPage.js:339 umc/js/appcenter/PackagesPage.js:420
+#: umc/js/appcenter/AppCenterPage.js:543
 msgid "No"
 msgstr "Nein"
 
@@ -373,7 +373,7 @@ msgstr "Keine Änderungen"
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: umc/js/appcenter/AppCenterPage.js:834
+#: umc/js/appcenter/AppCenterPage.js:833
 msgid "Notes on using"
 msgstr "Anmerkungen"
 
@@ -408,7 +408,7 @@ msgstr "Öffnen"
 msgid "Package categories"
 msgstr "Kategorien"
 
-#: umc/js/appcenter/SearchForm.js:72 umc/js/appcenter/PackagesPage.js:140
+#: umc/js/appcenter/PackagesPage.js:140 umc/js/appcenter/SearchForm.js:72
 msgid "Package description"
 msgstr "Paketbeschreibung"
 
@@ -416,8 +416,8 @@ msgstr "Paketbeschreibung"
 msgid "Package details"
 msgstr "Paketdetails"
 
-#: umc/js/appcenter/SearchForm.js:71 umc/js/appcenter/PackagesPage.js:131
-#: umc/js/appcenter/PackagesPage.js:307
+#: umc/js/appcenter/PackagesPage.js:131 umc/js/appcenter/PackagesPage.js:307
+#: umc/js/appcenter/SearchForm.js:71
 msgid "Package name"
 msgstr "Paketname"
 
@@ -425,11 +425,11 @@ msgstr "Paketname"
 msgid "Package size"
 msgstr "Paketgröße"
 
-#: umc/js/appcenter/AppCenterPage.js:835
+#: umc/js/appcenter/AppCenterPage.js:834
 msgid "Packages for master system"
 msgstr "Pakete für den Master"
 
-#: umc/js/appcenter/PackagesPage.js:438
+#: umc/js/appcenter/PackagesPage.js:442
 msgid "Packages not found: "
 msgstr "Pakete wurden nicht gefunden: "
 
@@ -489,7 +489,7 @@ msgstr "Repository Server"
 msgid "Repository settings"
 msgstr "Repository-Einstellungen"
 
-#: umc/js/appcenter/AppCenterPage.js:947
+#: umc/js/appcenter/AppCenterPage.js:946
 msgid "Request updated license key with identification"
 msgstr "Aktualisierten Lizenzschlüssel mit Identifikation anfordern"
 
@@ -497,7 +497,7 @@ msgstr "Aktualisierten Lizenzschlüssel mit Identifikation anfordern"
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: umc/js/appcenter/AppCenterPage.js:954
+#: umc/js/appcenter/AppCenterPage.js:953
 msgid ""
 "Right after this form, you will see another dialog where you can upload your "
 "new license."
@@ -505,7 +505,7 @@ msgstr ""
 "Direkt nach diesem Formular wird ein weiterer Dialog angezeigt werden, in "
 "welchem Sie die neue Lizenz hochladen können."
 
-#: umc/js/appcenter/AppCenterPage.js:833
+#: umc/js/appcenter/AppCenterPage.js:832
 msgid "Screenshot"
 msgstr "Screenshot"
 
@@ -521,18 +521,19 @@ msgstr "Suche nach"
 msgid "Search term"
 msgstr "Suchbegriff"
 
-#: umc/js/appcenter/AppCenterPage.js:831 umc/js/appcenter/PackagesPage.js:136
-#: umc/js/appcenter/PackagesPage.js:308
+#: umc/js/appcenter/PackagesPage.js:136 umc/js/appcenter/PackagesPage.js:308
+#: umc/js/appcenter/AppCenterPage.js:830
 msgid "Section"
 msgstr "Kategorie"
 
 #: umc/js/appcenter/AppCenterPage.js:457
 #, python-format
 msgid ""
-"Show changes on %s (installed/upgraded: %s, removed: %s, erroneous: %s%s)"
+"Show changes on %(host)s (installed/upgraded: %(installed)s, removed: "
+"%(removed)s, erroneous: %(erroneous)s%(incompatible)s)"
 msgstr ""
-"Zeige Änderungen auf %s (installiert/aktualisiert: %s, entfernt: %s, "
-"fehlerhaft: %s%s)"
+"Zeige Änderungen auf %(host)s (installiert/aktualisiert: %(installed)s, "
+"entfernt: %(removed)s, fehlerhaft: %(erroneous)s%(incompatible)s)"
 
 #: umc/js/appcenter/AppCenterPage.js:236
 msgid "Show this message again"
@@ -546,7 +547,7 @@ msgstr "Status"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: umc/js/appcenter/AppCenterPage.js:953
+#: umc/js/appcenter/AppCenterPage.js:952
 msgid ""
 "The UCS system sends your current license key to Univention. The key will be "
 "extended by the identification and will be sent back to the provided email "
@@ -557,7 +558,7 @@ msgstr ""
 "angegebene E-Mail-Adresse zurück geschickt. Der Lizenzumfang bleibt "
 "unverändert."
 
-#: umc/js/appcenter/AppCenterPage.js:631
+#: umc/js/appcenter/AppCenterPage.js:630
 #, python-format
 msgid "The app provides a web interface: %s."
 msgstr "Die App bietet ein Webinterface: %s."
@@ -579,15 +580,15 @@ msgstr ""
 msgid "The following hosts cannot be reached:"
 msgstr "Folgende Hosts konnten nicht erreicht werden:"
 
-#: umc/js/appcenter/AppCenterPage.js:444 umc/js/appcenter/PackagesPage.js:388
+#: umc/js/appcenter/PackagesPage.js:392 umc/js/appcenter/AppCenterPage.js:444
 msgid "The following packages will be installed or upgraded:"
 msgstr "Folgende Pakete werden installiert bzw. aktualisiert:"
 
-#: umc/js/appcenter/AppCenterPage.js:445 umc/js/appcenter/PackagesPage.js:392
+#: umc/js/appcenter/PackagesPage.js:396 umc/js/appcenter/AppCenterPage.js:445
 msgid "The following packages will be removed:"
 msgstr "Folgende Pakete werden deinstalliert:"
 
-#: umc/js/appcenter/AppCenterPage.js:952
+#: umc/js/appcenter/AppCenterPage.js:951
 msgid ""
 "The installation of applications with Univention App Center requires an "
 "individually issued license key with a unique key identification. You are "
@@ -623,7 +624,7 @@ msgstr ""
 "Der Server hat versucht, sich mit dem DC Master und den DC Backups zu "
 "verbinden."
 
-#: umc/js/appcenter/AppCenterPage.js:714
+#: umc/js/appcenter/AppCenterPage.js:713
 msgid ""
 "The system has to join a domain before the application can be installed!"
 msgstr ""
@@ -638,17 +639,18 @@ msgstr ""
 "Die Version des entfernten App Center ist zu der des lokalen "
 "<strong>inkompatibel</strong>. Bitte aktualisieren Sie Ihre Hosts."
 
-#: umc/js/appcenter/AppCenterPage.js:764
+#: umc/js/appcenter/AppCenterPage.js:763
 #, python-format
 msgid ""
-"This application cannot be installed on the current server role (%s). In "
-"order to install the application, one of the following roles is necessary: %s"
+"This application cannot be installed on the current server role "
+"(%(reason_detail)s). In order to install the application, one of the "
+"following roles is necessary: %(server_roles)s"
 msgstr ""
-"Diese Applikation kann nicht für die aktuelle Serverrolle (%s) installiert "
-"werden. Um die Applikation zu installieren, ist eine der folgenden "
-"Serverrollen notwendig: %s"
+"Diese Applikation kann nicht für die aktuelle Serverrolle "
+"(%(reason_detail)s) installiert werden. Um die Applikation zu installieren, "
+"ist eine der folgenden Serverrollen notwendig: %(server_roles)s"
 
-#: umc/js/appcenter/AppCenterPage.js:761
+#: umc/js/appcenter/AppCenterPage.js:760
 msgid ""
 "This application conflicts with the following Applications/Packages. "
 "Uninstall them first."
@@ -656,35 +658,35 @@ msgstr ""
 "Diese Applikation kann nicht gemeinsam mit den folgenden Applikationen oder "
 "Paketen installiert werden. Deinstallieren Sie diese zuerst."
 
-#: umc/js/appcenter/AppCenterPage.js:531 umc/js/appcenter/AppCenterPage.js:714
-#: umc/js/appcenter/AppCenterPage.js:735 umc/js/appcenter/AppCenterPage.js:737
+#: umc/js/appcenter/AppCenterPage.js:531 umc/js/appcenter/AppCenterPage.js:713
+#: umc/js/appcenter/AppCenterPage.js:734 umc/js/appcenter/AppCenterPage.js:736
 msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
 
-#: umc/js/appcenter/AppCenterPage.js:779
+#: umc/js/appcenter/AppCenterPage.js:778
 msgid "This application will inform the maintainer if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Betreuer über eine (De)Installation in Kenntnis."
 
-#: umc/js/appcenter/AppCenterPage.js:781
+#: umc/js/appcenter/AppCenterPage.js:780
 msgid "This application will inform the vendor if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Hersteller über eine (De)Installation in "
 "Kenntnis."
 
-#: umc/js/appcenter/AppCenterPage.js:785
+#: umc/js/appcenter/AppCenterPage.js:784
 msgid "This application will not inform the maintainer if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Betreuer nicht über eine (De)Installation in "
 "Kenntnis."
 
-#: umc/js/appcenter/AppCenterPage.js:787
+#: umc/js/appcenter/AppCenterPage.js:786
 msgid "This application will not inform the vendor if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Hersteller nicht über eine (De)Installation in "
 "Kenntnis."
 
-#: umc/js/appcenter/AppCenterPage.js:446 umc/js/appcenter/PackagesPage.js:396
+#: umc/js/appcenter/PackagesPage.js:400 umc/js/appcenter/AppCenterPage.js:446
 msgid ""
 "This operation causes problems in the following packages that cannot be "
 "resolved:"
@@ -700,12 +702,12 @@ msgstr ""
 "Diese Seite dient dazu, Ihrer UCS-Installation weitere Applikationen "
 "hinzuzufügen oder diese zu entfernen."
 
-#: umc/js/appcenter/AppCenterPage.js:839
+#: umc/js/appcenter/AppCenterPage.js:838
 msgid "UCS License Key"
 msgstr "UCS-Lizenzschlüssel"
 
-#: umc/js/appcenter/AppCenterPage.js:372 umc/js/appcenter/PackagesPage.js:102
-#: umc/js/appcenter/PackagesPage.js:238
+#: umc/js/appcenter/PackagesPage.js:102 umc/js/appcenter/PackagesPage.js:238
+#: umc/js/appcenter/AppCenterPage.js:372
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
@@ -733,23 +735,27 @@ msgstr ""
 "anonymisierte Benachrichtigung, die nur bei Univention zur Datenverarbeitung "
 "gespeichert und nicht an Dritte weiter gegeben wird."
 
-#: umc/js/appcenter/SettingsPage.js:261 umc/js/appcenter/AppCenterPage.js:433
-#: umc/js/appcenter/AppCenterPage.js:453 umc/js/appcenter/AppCenterPage.js:454
-#: umc/js/appcenter/AppCenterPage.js:455
+#: umc/js/appcenter/AppCenterPage.js:433 umc/js/appcenter/AppCenterPage.js:453
+#: umc/js/appcenter/AppCenterPage.js:454 umc/js/appcenter/AppCenterPage.js:455
+#: umc/js/appcenter/SettingsPage.js:261
 msgid "Unknown"
 msgstr "Unbekannt"
 
+#: umc/js/appcenter/AppCenterPage.js:951
+msgid "Updated UCS license key required"
+msgstr "Aktualisierter UCS Lizenzschlüssel erforderlich"
+
+#: umc/js/appcenter/PackagesPage.js:115 umc/js/appcenter/PackagesPage.js:247
 #: umc/js/appcenter/AppCenterPage.js:322 umc/js/appcenter/AppCenterPage.js:363
-#: umc/js/appcenter/AppCenterPage.js:857 umc/js/appcenter/PackagesPage.js:115
-#: umc/js/appcenter/PackagesPage.js:247
+#: umc/js/appcenter/AppCenterPage.js:856
 msgid "Upgrade"
 msgstr "Aktualisieren"
 
-#: umc/js/appcenter/AppCenterPage.js:847 umc/js/appcenter/AppCenterPage.js:858
+#: umc/js/appcenter/AppCenterPage.js:846 umc/js/appcenter/AppCenterPage.js:857
 msgid "Upgrade information"
 msgstr "Informationen zur Aktualisierung"
 
-#: umc/js/appcenter/AppCenterPage.js:837
+#: umc/js/appcenter/AppCenterPage.js:836
 msgid "Upgrade not possible"
 msgstr "Aktualisierung nicht möglich"
 
@@ -761,7 +767,7 @@ msgstr "'Unmaintained' Repositories benutzen"
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/js/appcenter/AppCenterPage.js:616
+#: umc/js/appcenter/AppCenterPage.js:615
 #, python-format
 msgid "Users need to be modified in the %s in order to use this service."
 msgstr "Benutzer müssen in der %s für diesen Dienst freigeschaltet werden."
@@ -776,7 +782,7 @@ msgstr ""
 "werden<br/>Da es auch ein temporäres Problem des betreffenden Servers sein "
 "kann, wurden Ihre Eingaben trotzdem gespeichert.<br/>Das Problem ist:"
 
-#: umc/js/appcenter/AppCenterPage.js:825
+#: umc/js/appcenter/AppCenterPage.js:824
 msgid "Vendor"
 msgstr "Hersteller"
 
@@ -788,7 +794,7 @@ msgstr "Version"
 msgid "View Details"
 msgstr "Details anzeigen"
 
-#: umc/js/appcenter/AppCenterPage.js:828
+#: umc/js/appcenter/AppCenterPage.js:827
 msgid "Website"
 msgstr "Webpräsenz"
 
@@ -800,16 +806,16 @@ msgstr ""
 "Mit den momentanen (bereits veränderten) Einstellungen ist das folgende "
 "Problem aufgetreten:"
 
-#: umc/js/appcenter/AppCenterPage.js:546 umc/js/appcenter/PackagesPage.js:337
-#: umc/js/appcenter/PackagesPage.js:421
+#: umc/js/appcenter/PackagesPage.js:337 umc/js/appcenter/PackagesPage.js:425
+#: umc/js/appcenter/AppCenterPage.js:546
 msgid "Yes"
 msgstr "Ja"
 
-#: umc/js/appcenter/AppCenterPage.js:552 umc/js/appcenter/PackagesPage.js:402
+#: umc/js/appcenter/PackagesPage.js:406 umc/js/appcenter/AppCenterPage.js:552
 msgid "You cannot continue"
 msgstr "Fortfahren nicht möglich"
 
-#: umc/js/appcenter/AppCenterPage.js:702
+#: umc/js/appcenter/AppCenterPage.js:701
 msgid ""
 "You need to have access to the Univention Directory Manager (UDM) module to "
 "fully use the App Center."
@@ -817,9 +823,10 @@ msgstr ""
 "Sie benötigen Zugriff auf das Univention Directory Manager (UDM) Modul, um "
 "das App Center umfänglich zu nutzen."
 
-#: umc/js/appcenter/PackagesPage.js:412
-msgid "You're currently {verb} {ids}"
-msgstr "{ids} wird/werden momentan {verb}"
+#: umc/js/appcenter/PackagesPage.js:416 umc/js/appcenter/AppCenterPage.js:591
+#, python-format
+msgid "You're currently %(verb)s %(ids)s"
+msgstr "%(ids)s wird momentan %(verb)s"
 
 #: umc/js/appcenter/DetailsPage.js:203
 msgid "You're editing the details of the component definition."
@@ -833,11 +840,11 @@ msgstr "zurück zur Übersicht"
 msgid "incompatible"
 msgstr "inkompatibel"
 
-#: umc/js/appcenter/AppCenterPage.js:474 umc/js/appcenter/PackagesPage.js:368
+#: umc/js/appcenter/PackagesPage.js:369 umc/js/appcenter/AppCenterPage.js:474
 msgid "install"
 msgstr "installieren"
 
-#: umc/js/appcenter/AppCenterPage.js:475 umc/js/appcenter/PackagesPage.js:369
+#: umc/js/appcenter/PackagesPage.js:370 umc/js/appcenter/AppCenterPage.js:475
 msgid "installing"
 msgstr "installiert"
 
@@ -845,19 +852,19 @@ msgstr "installiert"
 msgid "this host"
 msgstr "diesem Host"
 
-#: umc/js/appcenter/AppCenterPage.js:478 umc/js/appcenter/PackagesPage.js:372
+#: umc/js/appcenter/PackagesPage.js:373 umc/js/appcenter/AppCenterPage.js:478
 msgid "uninstall"
 msgstr "deinstallieren"
 
-#: umc/js/appcenter/AppCenterPage.js:479 umc/js/appcenter/PackagesPage.js:373
+#: umc/js/appcenter/PackagesPage.js:374 umc/js/appcenter/AppCenterPage.js:479
 msgid "uninstalling"
 msgstr "deinstalliert"
 
-#: umc/js/appcenter/AppCenterPage.js:482 umc/js/appcenter/PackagesPage.js:376
+#: umc/js/appcenter/PackagesPage.js:377 umc/js/appcenter/AppCenterPage.js:482
 msgid "upgrade"
 msgstr "aktualisieren"
 
-#: umc/js/appcenter/AppCenterPage.js:483 umc/js/appcenter/PackagesPage.js:377
+#: umc/js/appcenter/PackagesPage.js:378 umc/js/appcenter/AppCenterPage.js:483
 msgid "upgrading"
 msgstr "aktualisiert"
 
@@ -867,6 +874,9 @@ msgstr "aktualisiert"
 #~ msgstr ""
 #~ "Nach der Installation müssen die Backup Server wie zuvor beschrieben "
 #~ "vorbereitet werden. Fortfahren?"
+
+#~ msgid "Going to {verb} Application '{name}'"
+#~ msgstr "Im Begriff, die Applikation '{name}' zu {verb}"
 
 #~ msgid "Use maintained repositories"
 #~ msgstr "'Maintained' Repositories benutzen"

@@ -211,12 +211,11 @@ class Instance(umcm.Base):
 				result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
 				serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
 				if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
-					MODULE.process('Remove component: %s' % application_id)
-					if remove_component:
+					MODULE.process('Problems encountered or confirmation required. Removing component %s' % application.id)
+					if not remove_component:
 						# component was not removed automatically after dry_run
-						if function == 'update':
+						if application.candidate:
 							self.component_manager.remove_app(application.candidate)
-							self.component_manager.put_app(application)
 						else:
 							self.component_manager.remove_app(application)
 						self.package_manager.update()
