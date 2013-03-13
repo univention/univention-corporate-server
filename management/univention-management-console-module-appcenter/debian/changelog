@@ -1,6 +1,7 @@
 univention-management-console-module-appcenter (2.0.134-1) unstable; urgency=low
 
   * Improve compatibility with Firefox 10 in installed apps (Bug #30758)
+  * Remove additional upgrade confirmation in "Installed apps" (Bug #30769)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Mar 2013 14:10:02 +0100
 
