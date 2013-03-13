@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.135-1) unstable; urgency=low
+
+  * Bug #30574: use standard grid
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 13 Mar 2013 19:39:15 +0100
+
 univention-management-console-module-appcenter (2.0.134-1) unstable; urgency=low
 
   * Improve compatibility with Firefox 10 in installed apps (Bug #30758)

@@ -35,7 +35,7 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
-	"umc/modules/appcenter/Grid",
+	"umc/widgets/Grid",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/ProgressBar",
 	"umc/modules/lib/server",
