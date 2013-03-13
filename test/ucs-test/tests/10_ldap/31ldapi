@@ -17,15 +17,19 @@
 
 eval "$(ucr shell)"
 
+setdomain=1
 # create domain part in configured mail domains list
 if ! udm mail/domain create --set name=$domainname ; then
 	echo "Mail/domain object already exists or could not be created. Continue testing..."
+	setdomain=0
 fi
 
 cleanup () {
 
-	if ! udm mail/domain remove --dn "cn=$domainname,$ldap_base" ; then
-		echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+	if [[ "$setdomain" -ne 0 ]]; then
+		if ! udm mail/domain remove --dn "cn=$domainname,$ldap_base" ; then
+			echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+		fi
 	fi
 
 }

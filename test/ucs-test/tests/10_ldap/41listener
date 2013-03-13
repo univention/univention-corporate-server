@@ -35,8 +35,10 @@ __HERE__
 /etc/init.d/univention-directory-listener restart
 
 # create domain part in configured mail domains list
+setdomain=1
 if ! udm mail/domain create --set name=$DOMAIN ; then
 	echo "Mail/domain object already exists or could not be created. Continue testing..."
+	setdomain=0
 fi
 
 USERNAME=$(user_randomname)
@@ -74,8 +76,10 @@ rm -f "$tempFile" || fail_test 1
 #removing users/user
 user_remove "$USERNAME" || fail_test 1
 
-if ! udm mail/domain remove --dn "cn=$DOMAIN,$LDAPBASE" ; then
-	echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+if [[ "$setdomain" -ne 0 ]]; then
+	if ! udm mail/domain remove --dn "cn=$DOMAIN,$LDAPBASE" ; then
+		echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+	fi
 fi
 
 exit "$RETVAL"

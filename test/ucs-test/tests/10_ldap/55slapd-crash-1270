@@ -30,8 +30,10 @@ PRINTERNAME="$(getprintername)"
 create_localprinter "$PRINTERNAME" || fail_test 1
 
 # create domain part in configured mail domains list
+setdomain=1
 if ! udm mail/domain create --set name=$domainname ; then
 	echo "Mail/domain object already exists or could not be created. Continue testing..."
+	setdomain=0
 fi
 
 USERNAME=$(user_randomname)
@@ -67,9 +69,10 @@ group_remove "$GROUPNAME" || fail_test 1
 
 remove_printer "$PRINTERNAME" || fail_test 1
 
-
-if ! udm mail/domain remove --dn "cn=$domainname,$ldap_base" ; then
-	echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+if [[ "$setdomain" -ne 0 ]]; then
+	if ! udm mail/domain remove --dn "cn=$domainname,$ldap_base" ; then
+		echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+	fi
 fi
 
 if [ ! "$RET" = "0" ] ; then
