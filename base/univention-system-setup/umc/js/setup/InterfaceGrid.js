@@ -84,7 +84,7 @@ define([
 						if (((iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type !== 'manual') || (iface.interfaceType === 'bond' || iface.interfaceType === 'br')) {
 							// display IP addresses
 							var formatIp = function(ips) {
-								return array.map(ips, function(i) { return i[0] + '/' + types.convertNetmask(i[1]);}).join(', ');
+								return array.map(array.filter(ips, function(i) { return i[0] && i[1]; }), function(i) { return i[0] + '/' + types.convertNetmask(i[1]);}).join(', ');
 							};
 							back = _('IP addresses') + ': ';
 							if (iface.ip4dynamic) {
@@ -100,7 +100,7 @@ define([
 						}
 
 						if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
-							// display s/related/TODO/ interfaces
+							// display related interfaces
 							back += '<br>' + _('Interfaces') + ': ' + iface[iface.interfaceType === 'br' ? 'bridge_ports' : 'bond-slaves'].join(', ');
 						}
 

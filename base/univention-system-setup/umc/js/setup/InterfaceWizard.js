@@ -252,13 +252,16 @@ define([
 							return this.filterInterfaces(this.getPhysicalInterfaces(false));
 						})
 					}, {
-						name: 'primary',
+						name: 'bond-primary',
 						label: 'primary interface',
-						type: ComboBox,
+						type: MultiInput,
 						depends: ['bond-slaves'],
-						dynamicValues: lang.hitch(this, function() {
-							return this._pages.bond._form._widgets['bond-slaves'].get('value');
-						})
+						subtypes: [{
+							type: ComboBox,
+							dynamicValues: lang.hitch(this, function(vals) {
+								return vals['bond-slaves'];
+							})
+						}]
 					}, {
 						name: 'bond-mode',
 						label: _('Mode'),
@@ -294,7 +297,7 @@ define([
 					}],
 					layout: [{
 						label: _('configure the bonding interface'),
-						layout: ['bond-slaves', 'primary']
+						layout: ['bond-slaves', 'bond-primary']
 					}, {
 						label: _('advanced configuration'),
 						layout: ['bond-mode', 'miimon']

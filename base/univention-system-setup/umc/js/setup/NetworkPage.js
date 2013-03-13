@@ -93,9 +93,9 @@ define([
 				name: 'interfaces/primary',
 				label: _('primary network interface'),
 				depends: ['interfaces', 'gateway'],
-				dynamicValues: lang.hitch(this, function() {
+				dynamicValues: lang.hitch(this, function(values) {
 					// The primary interface can be of any type
-					return array.map(this._form._widgets.interfaces.get('value'), function(iface) {
+					return array.map(values.interfaces, function(iface) {
 						return {id: iface['interface'], label: iface['interface']};
 					});
 				})
@@ -140,15 +140,6 @@ define([
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
-			// only show notes in an joined system in productive mode
-			if (!this.wizard_mode) {
-				// show a note if interfaces changes
-				this.own(on.once(this._form._widgets.interfaces, 'change', lang.hitch(this, function() {
-					// TODO: only show it when IP changes??
-					this.addNote(_('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
-				})));
-			}
-
 			this.addChild(this._form);
 
 			// FIXME: as the grid is a border container it has to be resized manually if it is used as form element
@@ -179,6 +170,7 @@ define([
 		},
 
 		setValues: function(_vals) {
+
 			// save a copy of all original values that may be lists
 			var r = /^(interfaces\/.*|nameserver[1-3]|dns\/forwarder[1-3])$/;
 			this._orgValues = {};
@@ -255,13 +247,13 @@ define([
 
 						// for bonding devices
 						'bond-mode': null,
-						'bond-slaves': null,
-						primary: null,
+						'bond-slaves': [],
+						'bond-primary': [],
 						miimon: null,
 
 						// for bridge devices
-						bridge_ports: null,
-						bridge_fd: null
+						bridge_ports: [],
+						bridge_fd: 0
 					};
 				}
 			});
@@ -312,7 +304,7 @@ define([
 								miimon: function(val) { return parseInt(val, 10); },
 								'bond-mode': function(val) { return parseInt(val, 10); },
 								'bond-slaves': function(val) { return val.split(' '); },
-								primary: function(val) { return val.split(' '); },
+								'bond-primary': function(val) { return val.split(' '); },
 								bridge_ports: function(val) { return val.split(' '); },
 								bridge_fd: function(val) { return parseInt(val, 10); }
 							}, function(opt, formatter) {
@@ -341,13 +333,13 @@ define([
 					interfaces[iname].ip4dynamic = true;
 				} else {
 					// set primary IP address
-					interfaces[iname].ip4[0][0] = ivalue.data.address;
+					interfaces[iname].ip4[0][0] = ivalue.data.address || "";
 					interfaces[iname].ip4[0][1] = ivalue.data.netmask || '255.255.255.0';
 				}
 
 				// set virtual IP addresses
 				tools.forIn(ivalue.virtual, function(ikey, ivirt) {
-					interfaces[iname].ip4.push([ivirt.address, ivirt.netmask]);
+					interfaces[iname].ip4.push([ivirt.address || "", ivirt.netmask || ""]);
 				});
 
 				// SLAAC
@@ -357,7 +349,7 @@ define([
 
 				// set primary IP6 address
 				if (ivalue.ip6['default']) {
-					interfaces[iname].ip6[0] = [ivalue.ip6['default'].address, ivalue.ip6['default'].prefix, 'default'];
+					interfaces[iname].ip6[0] = [ivalue.ip6['default'].address || "", ivalue.ip6['default'].prefix || "", 'default'];
 				}
 
 				// set virtual IP6 addresses
@@ -365,7 +357,7 @@ define([
 					if (id === 'default') {
 						return; // already entered
 					}
-					interfaces[iname].ip6.push([ival.address, ival.prefix, id]);
+					interfaces[iname].ip6.push([ival.address || "", ival.prefix || "", id]);
 				});
 
 				// set options
@@ -390,6 +382,15 @@ define([
 			this._form.setFormValues(vals);
 
 			this.clearNotes();
+
+			// show a note if interfaces changes
+			if (!this.wizard_mode) {
+				// only show notes in an joined system in productive mode
+				this.own(on.once(this._form._widgets.interfaces, 'change', lang.hitch(this, function() {
+					// TODO: only show it when IP changes??
+					this.addNote(_('Changing IP address configurations may result in restarting or stopping services. This can have severe side-effects when the system is in productive use at the moment.'));
+				})));
+			}
 		},
 
 		getValues: function() {
@@ -429,10 +430,9 @@ define([
 							vals['interfaces/' + iname + '/options/2'] = 'bridge_fd ' + iface.bridge_fd;
 						} else if(iface.interfaceType === 'bond') {
 							vals['interfaces/' + iname + '/options/1'] = 'bond-slaves ' + iface['bond-slaves'].join(' ');
-							// FIXME TODO bond-primary ??
 							vals['interfaces/' + iname + '/options/2'] = 'bond-mode ' + iface['bond-mode'];
+							vals['interfaces/' + iname + '/options/4'] = 'bond-primary ' + iface['bond-primary'].join(' ');
 							vals['interfaces/' + iname + '/options/3'] = 'miimon ' + iface.miimon;
-							vals['interfaces/' + iname + '/options/4'] = 'primary ' + iface.primary;
 						}
 
 					}
@@ -453,7 +453,7 @@ define([
 						});
 					} else if (iface.ip4dynamic) {
 						// DHCP
-						vals['interfaces/' + iname + '/type'] = 'dynamic';
+						vals['interfaces/' + iname + '/type'] = 'dhcp';
 					}
 
 					// IPv6 SLAAC
