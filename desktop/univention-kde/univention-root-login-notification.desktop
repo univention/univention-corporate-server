@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=/usr/share/univention-kde-profiles/univention-root-login-notification
+OnlyShowIn=KDE;
+Type=Application
+Terminal=false
+Name=Root login notification
+Name[de]=Root Login Benachrichtigung

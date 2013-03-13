@@ -36,6 +36,7 @@ VERSION := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 PO_FILE := de.po
 MO_FILE := $(PO_FILE:.po=.mo)
 MO_INST_DIR := $(DESTDIR)/usr/share/locale/de/LC_MESSAGES
+AUTOSTART_INST_DIR := $(DESTDIR)/usr/share/autostart
 
 .PHONY: build install
 
@@ -43,6 +44,7 @@ build: $(MO_FILE)
 
 install: $(MO_FILE)
 	mkdir -p $(MO_INST_DIR)
+	mkdir -p $(AUTOSTART_INST_DIR)
 	install $(MO_FILE) $(MO_INST_DIR)/univention-root-login-notification.mo
 
 $(MO_FILE): $(PO_FILE)
@@ -56,7 +58,7 @@ $(PO_FILE): $(PO_FILE).tmp
 		cp "$<" "$@"; \
 	fi
 
-$(PO_FILE).tmp: univention-root-login-notification
+$(PO_FILE).tmp: profiles/univention-root-login-notification
 	xgettext --output=$(@) \
 		--language=Shell \
 		--keyword=N_:1 \

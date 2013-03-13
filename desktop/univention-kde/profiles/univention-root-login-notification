@@ -30,4 +30,6 @@
 
 export TEXTDOMAIN="univention-root-login-notification"
 
-kdialog --msgbox "$(gettext "Login as 'root' should only be used for administrative purpose. For daily use, you can log in as 'Administrator' instead.")" --dontagain univention-kde-login-as-root:warning
+if [ -n "$USER" -a "$USER" = "root" ]; then
+	kdialog --msgbox "$(gettext "Login as 'root' should only be used for administrative purpose. For daily use, you can log in as 'Administrator' instead.")" --dontagain univention-kde-login-as-root:warning
+fi
