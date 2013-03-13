@@ -35,6 +35,10 @@ _cleanup(){
   for i in $(seq 1 200) ; do
     udm users/user remove --dn "uid=nsstest$i,cn=users,$ldap_base" >/dev/null
   done
+
+  if ! udm mail/domain remove --dn "cn=domain.de,$ldap_base" ; then
+	  echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+  fi
 }
 
 trap _cleanup EXIT
@@ -109,9 +113,5 @@ EOF
     fi
 done
 echo "The testscript, testing for the crash, doing a \"getent group\" went like it should, everything is fine."
-
-if ! udm mail/domain remove --dn "cn=domain.de,$ldap_base" ; then
-	echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
-fi
 
 exit "$RETVAL"
