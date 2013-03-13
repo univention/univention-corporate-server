@@ -608,97 +608,93 @@ class Application(object):
 		if self.candidate:
 			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password, only_master_packages, dont_remote_install, function, force)
 		MODULE.info('Invoke install_dry_run')
-		result = None
-		try:
-			ucr.load()
-			server_role = ucr.get('server/role')
-			if function.startswith('update'):
-				remote_function = 'update-schema'
-			else:
-				remote_function = 'install-schema'
+		ucr.load()
+		server_role = ucr.get('server/role')
+		if function.startswith('update'):
+			remote_function = 'update-schema'
+		else:
+			remote_function = 'install-schema'
 
-			master_packages = self.get('defaultpackagesmaster')
+		master_packages = self.get('defaultpackagesmaster')
 
-			# connect to master/backups
-			unreachable = []
-			master_unreachable = False
-			hosts_info = {}
-			problems_with_hosts = False
-			serious_problems_with_hosts = False
-			if master_packages and not dont_remote_install:
-				is_master = server_role == 'domaincontroller_master'
-				hosts = self.find_all_hosts(is_master=is_master)
-				for host, host_is_master in hosts:
+		# connect to master/backups
+		unreachable = []
+		master_unreachable = False
+		hosts_info = {}
+		problems_with_hosts = False
+		serious_problems_with_hosts = False
+		if master_packages and not dont_remote_install:
+			is_master = server_role == 'domaincontroller_master'
+			hosts = self.find_all_hosts(is_master=is_master)
+			for host, host_is_master in hosts:
+				try:
+					connection = UMCConnection(host)
+					connection.auth(username, password)
+				except HTTPException as e:
+					MODULE.warn('%s: %s' % (host, e))
+					unreachable.append(host)
+					if host_is_master:
+						master_unreachable = True
+				else:
+					host_info = {}
 					try:
-						connection = UMCConnection(host)
-						connection.auth(username, password)
-					except HTTPException as e:
-						MODULE.warn('%s: %s' % (host, e))
-						unreachable.append(host)
-						if host_is_master:
-							master_unreachable = True
-					else:
-						host_info = {}
-						try:
-							host_version = connection.request('appcenter/version')
-						except NotImplementedError:
-							# command is not yet known (older app center)
-							host_version = None
-						host_info['compatible_version'] = Application.compatible_version(host_version)
-						try:
-							host_info['result'] = connection.request('appcenter/invoke_dry_run', {
-								'function' : remote_function,
-								'application' : self.id,
-								'force' : force,
-								'dont_remote_install' : True,
-							})
-						except NotImplementedError:
-							# command is not yet known (older app center)
-							host_info['result'] = {'can_continue' : False, 'serious_problems' : False}
-						if not host_info['compatible_version'] or not host_info['result']['can_continue']:
-							problems_with_hosts = True
-							if host_info['result']['serious_problems'] or not host_info['compatible_version']:
-								serious_problems_with_hosts = True
-						hosts_info[host] = host_info
+						host_version = connection.request('appcenter/version')
+					except NotImplementedError:
+						# command is not yet known (older app center)
+						host_version = None
+					host_info['compatible_version'] = Application.compatible_version(host_version)
+					try:
+						host_info['result'] = connection.request('appcenter/invoke_dry_run', {
+							'function' : remote_function,
+							'application' : self.id,
+							'force' : force,
+							'dont_remote_install' : True,
+						})
+					except NotImplementedError:
+						# command is not yet known (older app center)
+						host_info['result'] = {'can_continue' : False, 'serious_problems' : False}
+					if not host_info['compatible_version'] or not host_info['result']['can_continue']:
+						problems_with_hosts = True
+						if host_info['result']['serious_problems'] or not host_info['compatible_version']:
+							serious_problems_with_hosts = True
+					hosts_info[host] = host_info
 
-			# packages to install
-			to_install = []
-			if not only_master_packages:
-				to_install.extend(self.get('defaultpackages'))
-			MODULE.info('defaultpackages: %s' % (to_install, ))
-			if server_role in ('domaincontroller_master', 'domaincontroller_backup', ):
-				MODULE.info('Running on DC master or DC backup')
-				if master_packages:
-					to_install.extend(master_packages)
+		# packages to install
+		to_install = []
+		if not only_master_packages:
+			to_install.extend(self.get('defaultpackages'))
+		MODULE.info('defaultpackages: %s' % (to_install, ))
+		if server_role in ('domaincontroller_master', 'domaincontroller_backup', ):
+			MODULE.info('Running on DC master or DC backup')
+			if master_packages:
+				to_install.extend(master_packages)
 
-			# add the new component
-			component_manager.put_app(self)
+		# add the new component
+		component_manager.put_app(self)
+		package_manager.update()
+
+		# get package objects
+		to_install = package_manager.get_packages(to_install)
+
+		# determine the changes
+		# also check for changes from dist-upgrade (as it will
+		#   be performed when installing).
+		#   dry_run will throw away changes marked by upgrade
+		package_manager.cache.upgrade(dist_upgrade=True)
+		result = package_manager.mark(to_install, [], dry_run=True)
+		result = dict(zip(['install', 'remove', 'broken'], result))
+		MODULE.info('Package changes: %s' % (result, ))
+		result['unreachable'] = unreachable
+		result['master_unreachable'] = master_unreachable
+		result['hosts_info'] = hosts_info
+		result['problems_with_hosts'] = problems_with_hosts
+		result['serious_problems_with_hosts'] = serious_problems_with_hosts
+
+		if remove_component:
+			# remove the newly added component
+			MODULE.info('Remove component: %s' % (self.component_id, ))
+			component_manager.remove_app(self)
 			package_manager.update()
-
-			# get package objects
-			to_install = package_manager.get_packages(to_install)
-
-			# determine the changes
-			# also check for changes from dist-upgrade (as it will
-			#   be performed when installing).
-			#   dry_run will throw away changes marked by upgrade
-			package_manager.cache.upgrade(dist_upgrade=True)
-			result = package_manager.mark(to_install, [], dry_run=True)
-			result = dict(zip(['install', 'remove', 'broken'], result))
-			MODULE.info('Package changes: %s' % (result, ))
-			result['unreachable'] = unreachable
-			result['master_unreachable'] = master_unreachable
-			result['hosts_info'] = hosts_info
-			result['problems_with_hosts'] = problems_with_hosts
-			result['serious_problems_with_hosts'] = serious_problems_with_hosts
-
-			if remove_component:
-				# remove the newly added component
-				MODULE.info('Remove component: %s' % (self.component_id, ))
-				component_manager.remove_app(self)
-				package_manager.update()
-		except:
-			MODULE.warn(traceback.format_exc())
 
 		return result
 

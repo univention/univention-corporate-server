@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.136-1) unstable; urgency=low
+
+  * Bug #30777: Show the "correct" traceback in case an internal error ocurrs
+    during dry_run of an app.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Mar 2013 20:10:09 +0100
+
 univention-management-console-module-appcenter (2.0.135-1) unstable; urgency=low
 
   * Bug #30574: use standard grid
