@@ -17,6 +17,11 @@
 
 eval "$(ucr shell)"
 
+# create domain part in configured mail domains list
+if ! udm mail/domain create --set name=$domainname ; then
+	echo "Mail/domain object already exists or could not be created. Continue testing..."
+fi
+
 USERNAME=$(user_randomname)
 user_create "$USERNAME"
 
@@ -46,5 +51,9 @@ if [ $? -ne 0 ]; then
 fi
 
 user_remove "$USERNAME"
+
+if ! udm mail/domain remove --dn "cn=$domainname,$ldap_base" ; then
+	echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+fi
 
 exit "$RETVAL"

@@ -9,6 +9,9 @@
 . "$TESTLIBPATH/base.sh" || exit 1
 . "$TESTLIBPATH/user.sh" || exit 1
 
+DOMAIN="$(ucr get domainname)"
+LDAPBASE="$(ucr get ldap/base)"
+
 ucstest="$(random_chars)"
 touch /usr/lib/univention-directory-listener/system/"$ucstest".py
 
@@ -30,6 +33,11 @@ def handler(dn, new, old):
 __HERE__
 
 /etc/init.d/univention-directory-listener restart
+
+# create domain part in configured mail domains list
+if ! udm mail/domain create --set name=$DOMAIN ; then
+	echo "Mail/domain object already exists or could not be created. Continue testing..."
+fi
 
 USERNAME=$(user_randomname)
 user_create "$USERNAME"
@@ -57,11 +65,17 @@ else
         fail_test 1
 fi
 
-/etc/init.d/univention-directory-listener restart || fail_test 1
-
 #cleanup
 rm -f /usr/lib/univention-directory-listener/system/"$ucstest".py || fail_test 1
-rm -f "$tempFile"
+rm -f "$tempFile" || fail_test 1
+
+/etc/init.d/univention-directory-listener restart || fail_test 1
 
 #removing users/user
-user_remove "$USERNAME"
+user_remove "$USERNAME" || fail_test 1
+
+if ! udm mail/domain remove --dn "cn=$DOMAIN,$LDAPBASE" ; then
+	echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
+fi
+
+exit "$RETVAL"
