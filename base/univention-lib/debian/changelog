@@ -1,3 +1,10 @@
+univention-lib (2.0.25-1) unstable; urgency=low
+
+  * Added remove_joinscript_status which removes a given join script
+    from the status file (Bug #30555)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Mar 2013 14:06:27 +0100
+
 univention-lib (2.0.24-1) unstable; urgency=low
 
   * Added support for uninstallation of packages, including a schema

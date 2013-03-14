@@ -93,6 +93,17 @@ delete_unjoinscript ()
 	return 0
 }
 
+# removes the given joinscript from the join script status file
+# remove_joinscript_status <name>
+# e.g. remove_joinscript_status univention-pkgdb-tools
+#
+remove_joinscript_status ()
+{
+	local name="$1"
+
+	sed -i "/^${name} /d" /var/univention-join/status
+}
+
 #
 # calls the given unjoinscript
 # call_unjoinscript <joinscript>
