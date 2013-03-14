@@ -58,6 +58,7 @@ define([
 
 		gateway: "",
 		nameserver: [],
+		'interfaces/primary': null,
 
 		constructor: function() {
 			this.moduleStore = new Observable(new Memory({idProperty: 'interface'}));
@@ -90,18 +91,21 @@ define([
 							var ip6s = formatIPs(iface.ip6);
 
 							if (iface.ip4dynamic) {
-								back += _('Dynamic (DHCP)');
+								back += _('Dynamic (DHCP)') + '<br>';
 							}
 							if (iface.ip6dynamic) {
-								back += _('Autoconfiguration (SLAAC)');
+								back += _('Autoconfiguration (SLAAC)') + '<br>';
 							}
 
 							if (ip4s.length && !iface.ip4dynamic){
 								back += _('Static') + ': ';
 								back += ip4s.join(', ');
+								if (ip6s.length && !iface.ip6dynamic) {
+									back += '<br>';
+								}
 							}
 							if (ip6s.length && !iface.ip6dynamic) {
-								back += '<br>' + _('Static (IPv6)') + ': ';
+								back += _('Static (IPv6)') + ': ';
 								back += ip6s.join(', ');
 							}
 						}
@@ -181,8 +185,15 @@ define([
 				if (iface.nameserver && iface.nameserver.length) {
 					this.set('nameserver', iface.nameserver);
 				}
+				if (iface.primary) {
+					this.set('interfaces/primary', iface['interface']);
+				}
 				delete iface.gateway;
 				delete iface.nameserver;
+				array.forEach(this.get('value'), function(__iface) {
+					// TODO: check if we need to put the new values
+					__iface.primary = __iface['interface'] == iface['interface'];
+				});
 
 				if (iface.interfaceType === 'eth') {
 
@@ -205,6 +216,10 @@ define([
 					// set original iface
 					array.forEach(iface[key], lang.hitch(this, function(ikey) {
 						var iiface = this.moduleStore.get(ikey);
+						if (iiface === undefined) {
+							// the interface is not configured in the grid but exists as physical interface
+							return;
+						}
 						var filtered = {}; tools.forIn(iiface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
 						iiface.original = lang.clone(filtered);
 
@@ -264,6 +279,7 @@ define([
 					name: 'interfaceType',
 					label: _('Interface type'),
 					type: ComboBox,
+					sortDynamicValues: false,
 					onChange: lang.hitch(this, function(interfaceType) {
 						// recalculate the possible device number
 						if (interfaceType) {
@@ -277,23 +293,19 @@ define([
 					}),
 					dynamicValues: lang.hitch(this, function() {
 						// TODO: lookup if interfaces are already in use
-						var d = types.interfaceValuesDict();
+						
+						var arr = types.interfaceValues();
 						if (this.physical_interfaces.length < 2) {
 							// we can not use a bonding interface if we don't have at least two physical interfaces
-							delete d.bond;
+							arr = array.filter(arr, function(i) { return i.id !== 'bond'; });
 						}
 						if (array.every(this.physical_interfaces, lang.hitch(this, function(iface) {
 							var ifaces = this.get('value');
 							return ifaces.length !== 0 ? array.some(ifaces, function(val) { return iface === val['interface']; }) : false;
 						}))) {
 							// if all physical interfaces are configured we can not configure another one
-							delete d.eth;
+							arr = array.filter(arr, function(i) { return i.id !== 'eth'; });
 						}
-						var arr = [];
-						// TODO: add a order: eth, vlan, br, bond
-						tools.forIn(d, function(k, v) {
-							arr.push(v);
-						});
 						return arr;
 					})
 				}, {
@@ -319,7 +331,14 @@ define([
 							}
 							return [ interfaceType + String(num) ];
 						}
-					})
+					}),
+					validator: function(value) {
+						if (form._widgets.interfaceType.get('value') !== 'eth') {
+							// every interface name is valid
+							return /^[a-z]+[0-9]+/.test(value);
+						}
+						return form._widgets.interfaceType.__proto__.validator(value);
+					}
 				}],
 				layout: ['interfaceType', 'interface']
 			});
@@ -383,6 +402,9 @@ define([
 					// re set original values
 					array.forEach(iface[key], lang.hitch(this, function(ikey) {
 						var iiface = this.moduleStore.get(ikey);
+						if (iiface === undefined) {
+							return; // the interface is not configured in the grid
+						}
 						if (iiface.original) {
 							this.moduleStore.put(iiface.original);
 						}

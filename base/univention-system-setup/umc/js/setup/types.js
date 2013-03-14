@@ -30,9 +30,8 @@
 
 define([
 	"dojo/_base/array",
-	"umc/tools",
 	"umc/i18n!umc/modules/setup"
-], function(array, tools, _) {
+], function(array, _) {
 	var self = {
 		convertNetmask: function(nm) {
 			if (/^[0-9]+$/.test(nm)) {
@@ -48,29 +47,14 @@ define([
 			'bond': _('Bonding'),
 			'br': _('Bridge')
 		},
-		getNumberByDevice: function(device) {
-			var num = /^[^\d]+(\d+)$/.exec(device);
-			return num ? num[1] : device;
-		},
+		interfaceTypeSorting: ['eth', 'vlan', 'br', 'bond'],
 		interfaceValues: function() {
-			var arr = [];
-			tools.forIn(self.interfaceTypes, function(id, label) {
-				arr.push({
+			return array.map(self.interfaceTypeSorting, function(id) {
+				return {
 					id: id,
-					label: label
-				});
-			});
-			return arr;
-		},
-		interfaceValuesDict: function() {
-			var d = {};
-			tools.forIn(self.interfaceTypes, function(id, label) {
-				d[id] = {
-					id: id,
-					label: label
+					label: self.interfaceTypes[id]
 				};
 			});
-			return d;
 		},
 		filterInterfaces: function(/*String[]*/ interfaces, /*Object[]*/ available_interfaces) {
 			// filter interfaces, which are available for use (because no interface already uses one of the interface)

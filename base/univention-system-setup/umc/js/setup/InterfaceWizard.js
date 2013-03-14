@@ -69,7 +69,12 @@ define([
 			this.physical_interfaces = props.physical_interfaces || [];
 			this.available_interfaces = props.available_interfaces || [];
 
+			var primary = this['interface'] == props['interfaces/primary'];
+
 			var ethlayout = [{
+				label: _('Primary network device'),
+				layout: ['primary']
+			}, {
 				label: _('IPv4 network devices'),
 				layout: [ 'ip4dynamic', 'dhcpquery', 'ip4' ]
 			}, {
@@ -77,6 +82,7 @@ define([
 				layout: ['ip6dynamic', 'ip6']
 			}];
 
+			var autostart = props.start;
 			var vlan_id = 2; // some machines do not support 1, so we use 2 as default value
 			if (this.interfaceType === 'vlan') {
 				ethlayout.push({
@@ -138,8 +144,13 @@ define([
 					}, {
 						name: 'start', // Autostart the interface?
 						type: CheckBox,
-						value: true,
+						value: autostart,
 						visible: false
+					}, {
+						name: 'primary',
+						label: _('select this interface as the primary network interface'),
+						type: CheckBox,
+						value: primary
 					}, {
 						type: MultiInput,
 						name: 'ip4',
@@ -150,7 +161,7 @@ define([
 							type: TextBox,
 							label: _('IPv4 address'),
 							validator: function(ip) {
-								return /^[0-9.]+$/.test(ip);
+								return !ip || /^[0-9.]+$/.test(ip);
 							},
 							sizeClass: 'Half'
 						}, {
@@ -159,7 +170,7 @@ define([
 							value: '255.255.255.0',
 							validator: function(nm) { 
 								var nm = types.convertNetmask(nm);
-								return !isNaN(nm) && nm < 33;
+								return !nm || !isNaN(nm) && nm < 33;
 							},
 							sizeClass: 'Half'
 						}]
@@ -179,7 +190,7 @@ define([
 							type: TextBox,
 							label: _('IPv6 address'),
 							validator: function(ip) {
-								return /^[0-9A-Fa-f:]+$/.test(ip);
+								return !ip || /^[0-9A-Fa-f:]+$/.test(ip);
 							},
 							sizeClass: 'One'
 						}, {
@@ -187,7 +198,7 @@ define([
 							label: _('IPv6 prefix'),
 							validator: function(nm) { 
 								var nm = types.convertNetmask(nm);
-								return !isNaN(nm) && nm < 129;
+								return !nm || !isNaN(nm) && nm < 129;
 							},
 							sizeClass: 'OneThird'
 						}, {

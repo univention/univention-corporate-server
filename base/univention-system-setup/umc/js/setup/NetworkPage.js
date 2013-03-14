@@ -91,14 +91,14 @@ define([
 			}, {
 				type: ComboBox,
 				name: 'interfaces/primary',
-				label: _('primary network interface'),
-				depends: ['interfaces', 'gateway'],
-				dynamicValues: lang.hitch(this, function(values) {
-					// The primary interface can be of any type
-					return array.map(values.interfaces, function(iface) {
-						return {id: iface['interface'], label: iface['interface']};
-					});
-				})
+				label: _('primary network interface')
+//				depends: ['interfaces', 'gateway']
+//				dynamicValues: lang.hitch(this, function(values) {
+//					// The primary interface can be of any type
+//					return array.map(values.interfaces, function(iface) {
+//						return {id: iface['interface'], label: iface['interface']};
+//					});
+//				})
 			}, {
 				type: TextBox,
 				name: 'gateway',
@@ -166,6 +166,10 @@ define([
 				}
 				// set nameserver from dhcp request
 				nameserverWidget.set('value', value);
+			}));
+			this._form._widgets.interfaces.watch('interfaces/primary', lang.hitch(this, function(name, old, value) {
+				// set new primary interface
+				this._form._widgets['interfaces/primary'].set('value', value);
 			}));
 		},
 
@@ -422,20 +426,29 @@ define([
 
 			array.forEach(_vals.interfaces, function(iface) {
 				var iname = iface['interface'];
-				if ((iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type === 'manual') {
-					// The device is used in a bridge or bonding
-					vals['interfaces/' + iname + '/type'] = iface.type; //assert type == manual
-					vals['interfaces/' + iname + '/start'] = iface.start; // assert start == false
-					// TODO: do we have to remove ip, etc. here?
+
+				iface.type !== undefined && iface.type !== null && (vals['interfaces/' + iname + '/type'] = iface.type);
+				iface.start !== undefined && iface.start !== null && (vals['interfaces/' + iname + '/start'] = iface.start);
+
+				if (array.some(_vals.interfaces, function(iiface) {
+					var ikey = iiface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
+					return (iiface.interfaceType === 'bond' || iiface.interfaceType === 'br') && -1 !== array.indexOf(iiface[ikey], iname);
+				})) {
+					// The device is used in a bridge or bonding, so remove its IPs
 					vals['interfaces/' + iname + '/address'] = '';
 					vals['interfaces/' + iname + '/netmask'] = '';
 
+					// assert iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type === 'manual'
+
 				} else {
+					// the device is not used by a bridge or bonding, so we configure its IP addresses
+
 					if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
 						// for bonding and bridging this must/should be set
 						// for eth and vlan we don't want to overwrite existing settings
 						vals['interfaces/' + iname + '/start'] = iface.start;
 						if (iface.interfaceType === 'br') {
+							// FIXME: this could overwrite additional existing options
 							var bp = iface.bridge_ports.length ? iface.bridge_ports.join(' ') : 'none';
 							vals['interfaces/' + iname + '/options/1'] = 'bridge_ports ' + bp;
 							vals['interfaces/' + iname + '/options/2'] = 'bridge_fd ' + iface.bridge_fd;
@@ -447,13 +460,17 @@ define([
 						}
 
 					}
-					if (iface.ip4.length) {
+
+					if (iface.ip4dynamic) {
+						// DHCP
+						vals['interfaces/' + iname + '/type'] = 'dhcp';
+					} else if (iface.ip4.length) {
 						// IPv4
 						array.forEach(iface.ip4, function(virtval, i) {
 							var iaddress = virtval[0];
 							var imask = virtval[1];
 							if (i === 0) {
-								// IP address
+								// primary IP address
 								vals['interfaces/' + iname + '/address'] = iaddress;
 								vals['interfaces/' + iname + '/netmask'] = imask;
 							} else {
@@ -462,9 +479,6 @@ define([
 								vals['interfaces/' + iname + '_' + (i-1) + '/netmask'] = imask;
 							}
 						});
-					} else if (iface.ip4dynamic) {
-						// DHCP
-						vals['interfaces/' + iname + '/type'] = 'dhcp';
 					}
 
 					// IPv6 SLAAC
@@ -507,9 +521,9 @@ define([
 				return idev.ip4.length;
 			}), function(idev) {
 				if (idev.ip4dynamic) {
-					return idev['interface'] + ': DHCP';
+					return idev['interface'] + ': ' + _('Dynamic (DHCP)');
 				}
-				return idev['interface'] + ': ' + array.map(idev.ip4, function(ip4) {
+				return idev['interface'] + ': ' + array.map(array.filter(idev.ip4, function(ip4) { return ip4[0] && ip4[1]; }), function(ip4) {
 					// address/netmask
 					return ip4[0] + '/' + ip4[1];
 				}).join(', ');
@@ -521,12 +535,12 @@ define([
 				return idev.ip6 && idev.ip6.length;
 			}), function(idev) {
 				if (idev.ip6dynamic) {
-					return idev['interface'] + ': DHCP';
+					return idev['interface'] + ': ' + _('Autoconfiguration (SLAAC)');
 				}
-				return idev['interface'] + ': ' + array.map(idev.ip6, function(ip6) {
-					// adress - prefix/identifier
-					return ip6[0] + ' - ' + ip6[1] + '/' + ip6[2];
-				}).join(', '); // TODO: <br> or <li>
+				return idev['interface'] + ': ' + array.map(array.filter(idev.ip6, function(ip6) { return ip6[0] && ip6[1]; }), function(ip6) {
+					// identifier: address/prefix
+					return ip6[2] + ': ' + ip6[0] + '/' + ip6[1];
+				}).join(', '); // TODO: <br> or <li>?
 			});
 
 			ipv6Str = ipv6Str.length ? '<ul><li>' + ipv6Str.join('</li><li>') + '</li></ul>' : '';
