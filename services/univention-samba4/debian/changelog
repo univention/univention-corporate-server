@@ -1,3 +1,10 @@
+univention-samba4 (2.0.40-1) unstable; urgency=low
+
+  * fix looping over DCs and sites in check_essential_samba4_dns_records.sh
+    (Bug #30784)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 14 Mar 2013 15:19:54 +0100
+
 univention-samba4 (2.0.39-1) unstable; urgency=low
 
   * Added a new UCR variable samba/domain/master to configure the domain
