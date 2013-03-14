@@ -10,7 +10,7 @@ univention-management-console-module-appcenter (2.0.137-1) unstable; urgency=low
   * Added support for uninstallation of packages, including a schema
     registration. Remove the check that defaultmasterpackages could not
     be removed if they are part of the normal package list in the ini
-    file (Bug #30596)
+    file (Bug #30596, Bug #30787)
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Mar 2013 07:53:52 +0100
 
