@@ -69,6 +69,53 @@ call_joinscript () {
 }
 
 #
+# deletes the given unjoinscript if it does not belong to any package
+# delete_unjoinscript <joinscript>
+# e.g. call_unjoinscript 99my-custom-joinscript.uinst
+#
+delete_unjoinscript ()
+{
+	local joinscript
+	joinscript="/usr/lib/univention-install/$1"
+
+	# Nothing to do if it does not exist
+	test -e "$joinscript" || return 1
+
+	# Does the script ends with uinst?
+	echo "$joinscript" | grep -q ".uinst$" || return 1
+
+	# Remove the script only if it does not be part of a package
+	dpkg -S "$joinscript" >/dev/null 2>&1 && return 1
+
+	# Do it
+	rm -f "$joinscript"
+
+	return 0
+}
+
+#
+# calls the given unjoinscript
+# call_unjoinscript <joinscript>
+# e.g. call_unjoinscript 99my-custom-joinscript.uinst
+# e.g. call_unjoinscript 99my-custom-joinscript.uinst --binddn ... --bindpwd ...
+#
+call_unjoinscript () {
+	local joinscript
+	local joinscript_name
+
+	joinscript_name="$1"
+	joinscript="/usr/lib/univention-install/${joinscript_name}"
+
+	if [ -x "$joinscript" ] ; then
+		shift
+		local role="$(ucr get server/role)"
+		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
+			"$joinscript" "$@" && delete_unjoinscript "${joinscript_name}"
+		fi
+	fi
+}
+
+#
 # calls the given joinscript ONLY on DC master
 # call_joinscript_on_dcmaster <joinscript>
 # e.g. call_joinscript_on_dcmaster 99my-custom-joinscript.inst

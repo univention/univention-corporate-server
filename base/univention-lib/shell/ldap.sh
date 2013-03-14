@@ -150,16 +150,118 @@ ucs_addServiceToLocalhost () { # <servicename> [<udm-credentials>]
 # e.g. ucs_addServiceToHost "nagios-server" "domaincontroller_slave" "cn=myslave,cn=dc,cn=computers,dc=test,dc=system" "$@"
 #
 ucs_addServiceToHost () { # <servicename> <udm-module-name> <dn> [options]
-	   local servicename="$1"
-	   local modulename="$2"
-	   local hostdn="$3"
-	   local ldap_base="$(ucr get ldap/base)"
-	   if ! shift 3
-	   then
-			   echo "ucs_addServiceToHost: wrong argument number" >&2
-			   return 2
-	   fi
-	   univention-directory-manager container/cn	  create "$@" --ignore_exists --set name="services" --position "cn=univention,$ldap_base"
-	   univention-directory-manager settings/service  create "$@" --ignore_exists --set name="$servicename"  --position "cn=services,cn=univention,$ldap_base"
-	   univention-directory-manager "computers/$modulename" modify "$@" --dn "$hostdn" --append service="$servicename"
+	local servicename="$1"
+	local modulename="$2"
+	local hostdn="$3"
+	local ldap_base="$(ucr get ldap/base)"
+	if ! shift 3
+	then
+		echo "ucs_addServiceToHost: wrong argument number" >&2
+		return 2
+	fi
+	univention-directory-manager container/cn	  create "$@" --ignore_exists --set name="services" --position "cn=univention,$ldap_base"
+	univention-directory-manager settings/service  create "$@" --ignore_exists --set name="$servicename"  --position "cn=services,cn=univention,$ldap_base"
+	univention-directory-manager "computers/$modulename" modify "$@" --dn "$hostdn" --append service="$servicename"
 }
+
+#
+# ucs_removeServiceFromLocalhost removes a service entry from local UDM host object. This can be easily used
+# in join scripts to remove a service (like "nagios-server") after removing of corresponding service 
+# package (luke "univention-nagios-server"). Additional arguments like UDM credentials will be passed 
+# through.
+# ucs_removeServiceFromLocalhost <servicename> [<udm-credentials>]
+# e.g. ucs_removeServiceFromLocalhost "nagios-server" "$@"
+#
+ucs_removeServiceFromLocalhost () { # <servicename> [<udm-credentials>]
+	local server_role ldap_base ldap_hostdn
+	local servicename="$1"
+	eval "$(ucr shell server/role ldap/base ldap/hostdn)"
+	shift
+	ucs_removeServiceFromHost "$servicename" "$server_role" "$ldap_hostdn" "$@"
+}
+
+#
+# ucs_removeServiceFromHosz removes a service entry from specified UDM host object. This can be easily used
+# in e.g. join scripts to remove a service. Additional arguments like UDM credentials will be passed 
+# through.
+# ucs_removeServiceFromHost <servicename> <udm-module-name> <dn> [<udm-credentials>]
+# e.g. ucs_removeServiceFromHost "nagios-server" "domaincontroller_slave" "cn=myslave,cn=dc,cn=computers,dc=test,dc=system" "$@"
+#
+ucs_removeServiceFromHost () { # <servicename> <udm-module-name> <dn> [options]
+	local servicename="$1"
+	local modulename="$2"
+	local hostdn="$3"
+	local ldap_base="$(ucr get ldap/base)"
+	if ! shift 3
+	then
+		echo "ucs_removeServiceFromHost: wrong argument number" >&2
+		return 2
+	fi
+	univention-directory-manager "computers/$modulename" modify "$@" --dn "$hostdn" --remove service="$servicename"
+	if ucs_isServiceUnused "$servicename" "$@" ; then
+		univention-directory-manager settings/service  remove "$@" --ignore_exists --set name="$servicename"  --position "cn=services,cn=univention,$ldap_base"
+	fi
+}
+
+#
+# ucs_isServiceUnused cechks whether a service entry is used.
+# ucs_isServiceUnused <servicename> [<udm-credentials>]
+# e.g.  if ucs_isServiceUnused "DNS" "$@"; then uninstall DNS; fi
+#
+ucs_isServiceUnused () {
+	local servicename="$1"
+
+	if ! shift 1
+	then
+		echo "ucs_lastHostWithService: wrong argument number" >&2
+		return 2
+	fi
+	
+	# create a tempfile to get the real return code of the ldapsearch command,
+	# otherwise we get only the code of the sed command
+	local tempfile=$(mktemp)
+	univention-ldapsearch univentionService="${servicename}" cn >"$tempfile"
+	if [ $? != 0 ]; then
+		rm -f "$tempfile"
+		echo "ucs_isServiceUnused: search failed" >&2
+		return 2
+	fi
+
+	count=$(grep -c "^cn: " "$tempfile")
+	if [ $? = 0 ] && [ $count -gt 0 ]; then
+		ret=1
+	else
+		ret=0
+	fi
+	
+	rm -f "$tempfile"
+
+	return $ret
+}
+
+#
+# ucs_registerLDAPSchema copies the LDAP schema to a persistent place /var/lib/univention-ldap/local-schema/
+# and it will not be removed if the package is uninstalled.
+# ucs_registerLDAPSchema <schema file>
+# e.g. ucs_registerLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
+#
+ucs_registerLDAPSchema () {
+	local schemaFile="$1"
+
+	if [ ! -d /var/lib/univention-ldap/local-schema ]; then
+		mkdir -p /var/lib/univention-ldap/local-schema
+		chmod 755 /var/lib/univention-ldap/local-schema
+	fi
+
+	if [ ! -e "$schemaFile" ]; then
+		echo "ucs_registerLDAPSchema: missing schema file" >&2
+		return 2
+	fi
+
+	cp "$schemaFile" /var/lib/univention-ldap/local-schema/
+
+	ucr commit /etc/ldap/slapd.conf
+
+	test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
+}
+

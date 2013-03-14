@@ -574,12 +574,6 @@ class Application(object):
 		ucr.load()
 
 		try:
-			# make sure that packages in 'defaultpackagesmaster' are never uninstalled
-			is_master = ucr.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')
-			to_keep = []
-			if is_master and self.get('defaultpackagesmaster'):
-				to_keep.extend(self.get('defaultpackagesmaster'))
-
 			# remove all packages of the component
 			package_manager.set_max_steps(200)
 			package_manager.log('\n== UNINSTALLING %s AT %s ==\n' % (self.name, datetime.now()))

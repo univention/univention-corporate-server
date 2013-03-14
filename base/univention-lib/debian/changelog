@@ -1,3 +1,10 @@
+univention-lib (2.0.24-1) unstable; urgency=low
+
+  * Added support for uninstallation of packages, including a schema
+    registration (Bug #30596)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Mar 2013 07:51:31 +0100
+
 univention-lib (2.0.23-1) unstable; urgency=low
 
   * Bug #30279: Resolve dependency problems manually with resolver class.

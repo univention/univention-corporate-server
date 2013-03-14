@@ -141,6 +141,12 @@ joinscript_get_last_executed_version () {
 	return 0
 }
 
+# Removes a given join script from index file
+joinscript_remove_script_from_status_file () {
+	local scriptname="$1"
+	sed -i "/^$scriptname v/d" $JS_STATUSFILE
+}
+
 joinscript_check_joinstatus () {
 	if [ ! -f "/var/univention-join/joined" ]; then
 		return 1

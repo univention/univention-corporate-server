@@ -151,7 +151,8 @@ run_join_scripts () {
 
 	LC_COLLATE="C"
 	if test -d "/usr/lib/univention-install/"; then
-		for i in /usr/lib/univention-install/*.inst; do
+		for i in /usr/lib/univention-install/*.{inst,uinst}; do
+			test -e "$i" || continue
 			echo -n "Configure $(basename "$i") "
 			[ -n "$SIMPLEGUI" ] && echo
 			echo "Configure $(basename "$i") $(LC_ALL=C date)" >>/var/log/univention/join.log
@@ -165,6 +166,7 @@ run_join_scripts () {
 				failed_message "FAILED: $(basename "$i")"
 			else
 				echo -e "\033[60Gdone"
+				delete_unjoinscript "$(basename "$i")"
 			fi
 			if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "domaincontroller_backup" ]; then
 
@@ -833,7 +835,6 @@ else
 	eval "$(univention-config-registry shell)"
 
 	run_join_scripts
-
 fi
 
 if [ -d /etc/runit/univention-directory-notifier ]; then

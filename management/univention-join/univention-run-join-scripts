@@ -30,6 +30,7 @@
 # <http://www.gnu.org/licenses/>.
 
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/all.sh
 
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
@@ -181,7 +182,7 @@ fi
 # get list of join scripts to be executed
 # fallback to all existing join scripts
 LC_COLLATE="C"
-SCRIPTS=(/usr/lib/univention-install/*.inst)
+SCRIPTS=(/usr/lib/univention-install/*.{inst,uinst})
 if [ -n "$RUN_SCRIPTS" ]; then
 	# evaluate specified join scripts
 	SCRIPTS=()
@@ -236,6 +237,7 @@ then
 			echo -e "\033[60Gfailed (exitcode: $RET)" >&3
 		else
 			echo -e "\033[60Gdone" >&3
+			delete_unjoinscript "$(basename "$i")"
 		fi
 	done
 fi

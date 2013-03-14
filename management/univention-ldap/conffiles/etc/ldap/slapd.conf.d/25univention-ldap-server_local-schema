@@ -1,0 +1,54 @@
+
+@!@
+import os
+import os.path
+import re
+import subprocess
+
+def getRegisteredFiles():
+	files = []
+	registeredDirectory='/etc/univention/templates/info/'
+	for f in os.listdir(registeredDirectory):
+		for line in open(os.path.join(registeredDirectory,f), 'r').readlines():
+			if line.startswith('File: '):
+				files.append(line.replace('File: ', '').strip())
+
+	return files
+		
+		
+def isSchemaFileIncluded(schemaFile):
+	directoryPath='/etc/univention/templates/files/etc/ldap/slapd.conf.d/'
+
+	registeredFiles = getRegisteredFiles()
+
+	for f in os.listdir(directoryPath):
+		if f == '25univention-ldap-server_local-schema' or f.startswith('.'):
+			continue
+
+		# check if file is registered?
+		if not 'etc/ldap/slapd.conf.d/%s' % f in registeredFiles:
+			continue
+		
+		p1 = subprocess.Popen(["cat", "/etc/univention/templates/files/etc/ldap/slapd.conf.d/%s" % f], stdout=subprocess.PIPE)
+		p2 = subprocess.Popen(["ucr", "filter"], stdin=p1.stdout, stdout=subprocess.PIPE)
+		p1.stdout.close()
+		output = p2.communicate()[0]
+		pattern = re.compile('include.*%s' % schemaFile)
+		for line in output.split('\n'):
+			if line and pattern.match(line):
+				return True
+
+	return False
+
+
+if configRegistry.get('ldap/server/type', 'slave') == 'master':
+
+	if os.path.exists('/var/lib/univention-ldap/local-schema'):
+
+		for schemaFile in os.listdir('/var/lib/univention-ldap/local-schema'):
+			
+			if not isSchemaFileIncluded(schemaFile):
+	
+				print 'include         /var/lib/univention-ldap/local-schema/%s' % schemaFile
+
+@!@
