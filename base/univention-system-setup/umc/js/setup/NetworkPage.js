@@ -280,7 +280,7 @@ define([
 							temp.virtual[ivirtual] = temp.virtual[ivirtual] || {};
 							temp.virtual[ivirtual][type] = typeval;
 						} else {
-							console.warn('got unexpected variable: ' + type + '=' + typeval);
+							console.warn('FIXME: got unexpected variable: ' + type + '=' + typeval);
 						}
 					} else {
 						var rmatch = type.match(/ipv6\/([^\/]+)\/(.+)/);
@@ -294,10 +294,11 @@ define([
 							if (type6 == 'address' || type6 == 'prefix') {
 								temp.ip6[identifier][type6] = typeval;
 							} else {
-								console.warn('got unexpected variable: ' + type + '=' + typeval);
+								console.warn('FIXME: got unexpected variable: ' + type + '=' + typeval);
 							}
 						} else if (roptions) {
 							var num = roptions[1];
+							var not_matched = true;
 
 							// parse interface options
 							tools.forIn({
@@ -312,12 +313,17 @@ define([
 								match = typeval.match(r);
 								if (match) {
 									temp.options[opt] = formatter(match[1]);
+									not_matched = false;
 									return false; // break loop
 								}
 							});
+
+							if (not_matched) {
+								// TODO: store it and set it back
+							}
 						} else {
-							if (type != 'broadcast' && type != 'network' && type != 'order') { // route/*
-								console.warn('got unexpected variable: ' + type + '=' + typeval);
+							if (-1 === array.indexOf(['broadcast', 'network', 'order', 'mac', 'host'], type) && type.indexOf('route/') !== 0) {
+								console.warn('FIXME: got unexpected variable: ' + type + '=' + typeval);
 							}
 						}
 					}
@@ -420,7 +426,7 @@ define([
 				});
 			});
 
-			array.forEach(_vals.interfaces, function(iface) {
+			array.forEach(_vals.interfaces, lang.hitch(this, function(iface) {
 				var iname = iface['interface'];
 
 				iface.type !== undefined && iface.type !== null && (vals['interfaces/' + iname + '/type'] = iface.type);
@@ -454,7 +460,6 @@ define([
 							vals['interfaces/' + iname + '/options/2'] = 'bond-mode ' + iface['bond-mode'];
 							vals['interfaces/' + iname + '/options/3'] = 'miimon ' + iface.miimon;
 						}
-
 					}
 
 					if (iface.ip4dynamic) {
@@ -493,8 +498,15 @@ define([
 							vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/prefix'] = iprefix;
 						});
 					}
+
+					// compatibility workarounds
+					array.forEach(['broadcast', 'network', 'hosts', 'mac'], lang.hitch(this, function(foobar) {
+						if (this._orgValues['interfaces/' + iname + '/' + foobar]) {
+							vals['interfaces/' + iname + '/' + foobar] = this._orgValues['interfaces/' + iname + '/' + foobar];
+						}
+					}));
 				}
-			});
+			}));
 
 			// add empty entries for all original entries that are not used anymore
 			tools.forIn(this._orgValues, function(ikey, ival) {

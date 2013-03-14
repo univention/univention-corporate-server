@@ -189,7 +189,7 @@ define([
 				delete iface.gateway;
 				delete iface.nameserver;
 				array.forEach(this.get('value'), function(__iface) {
-					// TODO: check if we need to put the new values
+					// TODO: we need to modulestore.put the new values
 					__iface.primary = __iface['interface'] == iface['interface'];
 				});
 
@@ -221,11 +221,6 @@ define([
 						var filtered = {}; tools.forIn(iiface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
 						iiface.original = lang.clone(filtered);
 
-						// set iface to deactivate the interface iface
-						iiface.ip4 = [];
-						iiface.ip6 = [];
-						iiface.ip4dynamic = false;
-						iiface.ip6dynamic = false;
 						iiface.type = 'manual';
 						iiface.start = false;
 
@@ -315,12 +310,14 @@ define([
 						var interfaceType = deps.interfaceType;
 
 						if (interfaceType === 'eth') {
-							// return all available physical interfaces which are not already in use
+							// return all available physical interfaces which are not already in the grid
 							var available = this.get('value');
 							return array.filter(this.physical_interfaces, function(_iface) { return array.every(available, function(item) { return item['interface'] !== _iface; }); });
 						} else if (interfaceType === 'vlan') {
-							// return all physical eth devices
-							return this.physical_interfaces;
+							// return all interfaces which are not vlans
+//							// FIXME: if the physical interface is not defined in the grid this could lead to errors
+//							return this.physical_interfaces.concat(array.filter(this.get('value'), function(item) { return item.interfaceType !== 'vlan'; }));
+							return array.map(array.filter(this.get('value'), function(item) { return item.interfaceType !== 'vlan'; }), function(item) { return item['interface']; });
 						} else if(interfaceType === 'br' || interfaceType === 'bond' ) {
 							// get the next possible device
 							var num = 0;
