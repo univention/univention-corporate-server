@@ -1,3 +1,9 @@
+univention-system-setup (6.0.73-1) unstable; urgency=low
+
+  * Bug #30780: evaluate the initial visibility of tabs
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 14 Mar 2013 11:54:30 +0100
+
 univention-system-setup (6.0.72-1) unstable; urgency=low
 
   * [WIP] support bridges, bondings and vlan on NetworkPage; Bug #28389

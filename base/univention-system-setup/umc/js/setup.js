@@ -297,6 +297,7 @@ define([
 
 				// create all pages dynamically
 				this._pages = [];
+				var tabInDomDeferred = new Deferred();
 				array.forEach(allPages, function(iclass) {
 					// create new page
 					var ipath = 'umc/modules/setup/' + iclass;
@@ -326,9 +327,17 @@ define([
 							tabContainer.hideChild(ipage);
 						}
 					}));
+
+					// evaluate initial visibility
+					tabInDomDeferred.then(function() {
+						if (ipage.get('visible') === false) {
+							tabContainer.hideChild(ipage);
+						}
+					});
 				}, this);
 
 				this.addChild(tabContainer);
+				tabInDomDeferred.resolve();
 			}
 
 			this.startup();
