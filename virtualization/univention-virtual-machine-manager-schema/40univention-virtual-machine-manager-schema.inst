@@ -84,7 +84,7 @@ univention-directory-manager settings/extended_attribute create "$@" --ignore_ex
 	--set tabPosition="1" || die
 
 if [ "$(check_package_status python-univention-directory-manager-legacy-ucd-tcs)"  == "install" ] ; then
-	univention-directory-manager settings/extended_attribute modify \
+	univention-directory-manager settings/extended_attribute modify "$@" \
 		--dn "cn=ManageableBy,cn=UVMM,cn=custom attributes,cn=univention,$ldap_base" \
 		--append module="computers/managedclient" \
 		--append module="computers/mobileclient" || die
