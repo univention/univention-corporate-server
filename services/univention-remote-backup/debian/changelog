@@ -1,3 +1,9 @@
+univention-remote-backup (5.0.2-1) unstable; urgency=low
+
+  * Use ssh BatchMode=yes (Bug #5318)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 14 Mar 2013 16:47:27 +0100
+
 univention-remote-backup (5.0.1-0) unstable; urgency=low
 
   * Server and client backups are now discerned correctly, errors are now
