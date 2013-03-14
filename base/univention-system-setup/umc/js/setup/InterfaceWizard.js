@@ -33,11 +33,9 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/string",
-	"dojo/when",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Wizard",
-	'umc/widgets/Form',
 	'umc/widgets/MultiInput',
 	'umc/widgets/ComboBox',
 	'umc/widgets/TextBox',
@@ -46,7 +44,7 @@ define([
 	'umc/widgets/NumberSpinner',
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, when, tools, dialog, Wizard, Form, MultiInput, ComboBox, TextBox, MultiSelect, CheckBox, NumberSpinner, types, _) {
+], function(declare, lang, array, string, tools, dialog, Wizard, MultiInput, ComboBox, TextBox, MultiSelect, CheckBox, NumberSpinner, types, _) {
 
 	return declare("umc.modules.setup.InterfaceWizard", [ Wizard ], {
 
@@ -168,9 +166,9 @@ define([
 							type: TextBox,
 							label: _('Netmask'),
 							value: '255.255.255.0',
-							validator: function(nm) { 
-								var nm = types.convertNetmask(nm);
-								return !nm || !isNaN(nm) && nm < 33;
+							validator: function(netm) {
+								var nm = types.convertNetmask(netm);
+								return !netm || !isNaN(nm) && nm < 33;
 							},
 							sizeClass: 'Half'
 						}]
@@ -196,9 +194,9 @@ define([
 						}, {
 							type: TextBox,
 							label: _('IPv6 prefix'),
-							validator: function(nm) { 
-								var nm = types.convertNetmask(nm);
-								return !nm || !isNaN(nm) && nm < 129;
+							validator: function(netm) {
+								var nm = types.convertNetmask(netm);
+								return !netm || !isNaN(nm) && nm < 129;
 							},
 							sizeClass: 'OneThird'
 						}, {
@@ -487,7 +485,7 @@ define([
 						                              [_('nameserver'), array.filter([result.nameserver_1, result.nameserver_2, result.nameserver_3], function(arg) { return arg;})], null,
 						                              { nameservers: function(value, key) { return value.join(', '); }});
 					}
-					var gw_ns_string = '<ul>' + gw_string  + ns_string + '</ul>'
+					var gw_ns_string = '<ul>' + gw_string  + ns_string + '</ul>';
 					dialog.confirm(_('Should the nameserver and gateway be set: %s', gw_ns_string), [{label: _('set'), name: 'yes'}, {label: _("don't set"), name: 'no'}]).then(lang.hitch(this, function(answer) {
 	
 						if (answer === 'yes') {

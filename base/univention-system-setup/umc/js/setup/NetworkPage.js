@@ -32,24 +32,19 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/regexp",
-	"dojo/on",
 	"dojo/aspect",
-	"dijit/Dialog",
 	"umc/tools",
-	"umc/dialog",
-	"umc/store",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TextBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/MultiInput",
 	"umc/widgets/Form",
-	"umc/modules/setup/InterfaceWizard",
 	"umc/modules/setup/InterfaceGrid",
+	"umc/i18n!umc/modules/setup",
 	"umc/modules/setup/types",
-	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, regexp, on, aspect, Dialog, tools, dialog, store, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceWizard, InterfaceGrid, types, _) {
+	"umc/modules/setup/InterfaceWizard"
+], function(declare, lang, array, aspect, tools, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceGrid, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -282,13 +277,14 @@ define([
 					if (virtual) {
 						// TODO: check if there are other values which can be set on an virtual interface
 						if (type == 'address' || type == 'netmask') {
-							temp.virtual[type] = typeval;
+							temp.virtual[ivirtual] = temp.virtual[ivirtual] || {};
+							temp.virtual[ivirtual][type] = typeval;
 						} else {
 							console.warn('got unexpected variable: ' + type + '=' + typeval);
 						}
 					} else {
 						var rmatch = type.match(/ipv6\/([^\/]+)\/(.+)/);
-						var roptions = type.match(/options\/([^\/]+)\/(.+)/);
+						var roptions = type.match(/options\/([0-9]+)$/);
 						if (array.indexOf(['address', 'netmask', 'type', 'start', 'ipv6/acceptRA'], type) !== -1) {
 							temp.data[type] = typeval;
 						} else if (rmatch) {
@@ -301,7 +297,7 @@ define([
 								console.warn('got unexpected variable: ' + type + '=' + typeval);
 							}
 						} else if (roptions) {
-							var option = roptions[2];
+							var num = roptions[1];
 
 							// parse interface options
 							tools.forIn({
@@ -313,7 +309,7 @@ define([
 								bridge_fd: function(val) { return parseInt(val, 10); }
 							}, function(opt, formatter) {
 								var r = new RegExp('^' + opt + '\\s+(.*)\\s*$');
-								match = option.match(r);
+								match = typeval.match(r);
 								if (match) {
 									temp.options[opt] = formatter(match[1]);
 									return false; // break loop
@@ -351,7 +347,7 @@ define([
 				}
 
 				// set virtual IP addresses
-				tools.forIn(ivalue.virtual, function(ikey, ivirt) {
+				tools.forIn(ivalue.virtual, function(inum, ivirt) {
 					interfaces[iname].ip4.push([ivirt.address || "", ivirt.netmask || ""]);
 				});
 
@@ -450,12 +446,12 @@ define([
 						if (iface.interfaceType === 'br') {
 							// FIXME: this could overwrite additional existing options
 							var bp = iface.bridge_ports.length ? iface.bridge_ports.join(' ') : 'none';
-							vals['interfaces/' + iname + '/options/1'] = 'bridge_ports ' + bp;
-							vals['interfaces/' + iname + '/options/2'] = 'bridge_fd ' + iface.bridge_fd;
+							vals['interfaces/' + iname + '/options/0'] = 'bridge_ports ' + bp;
+							vals['interfaces/' + iname + '/options/1'] = 'bridge_fd ' + iface.bridge_fd;
 						} else if(iface.interfaceType === 'bond') {
-							vals['interfaces/' + iname + '/options/1'] = 'bond-slaves ' + iface['bond-slaves'].join(' ');
+							vals['interfaces/' + iname + '/options/0'] = 'bond-slaves ' + iface['bond-slaves'].join(' ');
+							vals['interfaces/' + iname + '/options/1'] = 'bond-primary ' + iface['bond-primary'].join(' ');
 							vals['interfaces/' + iname + '/options/2'] = 'bond-mode ' + iface['bond-mode'];
-							vals['interfaces/' + iname + '/options/4'] = 'bond-primary ' + iface['bond-primary'].join(' ');
 							vals['interfaces/' + iname + '/options/3'] = 'miimon ' + iface.miimon;
 						}
 
@@ -475,8 +471,8 @@ define([
 								vals['interfaces/' + iname + '/netmask'] = imask;
 							} else {
 								// virtual ip adresses
-								vals['interfaces/' + iname + '_' + (i-1) + '/address'] = iaddress;
-								vals['interfaces/' + iname + '_' + (i-1) + '/netmask'] = imask;
+								vals['interfaces/' + iname + '_' + i + '/address'] = iaddress;
+								vals['interfaces/' + iname + '_' + i + '/netmask'] = imask;
 							}
 						});
 					}
@@ -490,6 +486,9 @@ define([
 							var iaddress = ip6val[0];
 							var iprefix = ip6val[1];
 							var iidentifier = ip6val[2];
+							if (!iidentifier) {
+								return;
+							}
 							vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/address'] = iaddress;
 							vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/prefix'] = iprefix;
 						});

@@ -26,13 +26,12 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/aspect",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dijit/Dialog",
@@ -42,11 +41,10 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/widgets/ComboBox",
-	"umc/widgets/TextBox",
 	"umc/modules/setup/InterfaceWizard",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, aspect, Memory, Observable, Dialog, dialog, tools, Grid, Form, _FormWidgetMixin, ComboBox, TextBox, InterfaceWizard, types, _) {
+], function(declare, lang, array, Memory, Observable, Dialog, dialog, tools, Grid, Form, _FormWidgetMixin, ComboBox, InterfaceWizard, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
 
@@ -335,7 +333,7 @@ define([
 					validator: function(value) {
 						if (form._widgets.interfaceType.get('value') !== 'eth') {
 							// every interface name is valid
-							return /^[a-z]+[0-9]+/.test(value);
+							return /^[a-z]+[0-9]+$/.test(value);
 						}
 						return form._widgets.interfaceType.__proto__.validator(value);
 					}
