@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.137-2) unstable; urgency=low
+
+  * Remove the last reference to to_keep which has been removed with the
+    last commit (Bug #30596)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Mar 2013 08:51:25 +0100
+
 univention-management-console-module-appcenter (2.0.137-1) unstable; urgency=low
 
   * Added support for uninstallation of packages, including a schema

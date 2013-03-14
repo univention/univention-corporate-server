@@ -577,7 +577,7 @@ class Application(object):
 			# remove all packages of the component
 			package_manager.set_max_steps(200)
 			package_manager.log('\n== UNINSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
-			package_manager.commit(remove=self.get('defaultpackages'), install=to_keep)
+			package_manager.commit(remove=self.get('defaultpackages'))
 			package_manager.add_hundred_percent()
 
 			# remove all dependencies
