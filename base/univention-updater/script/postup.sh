@@ -85,9 +85,6 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# install UDM legacy package containing old policy UDM modules
-install python-univention-directory-manager-legacy-ucd-tcs
-
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list
