@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.235-1) unstable; urgency=low
+
+  * Text changes (Bug #29771)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Mar 2013 22:01:19 +0100
+
 univention-management-console-frontend (2.0.234-1) unstable; urgency=low
 
   * Typo in translation (Bug #29771)
