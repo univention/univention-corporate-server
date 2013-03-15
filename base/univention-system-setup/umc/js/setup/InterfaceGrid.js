@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dijit/Dialog",
@@ -44,7 +45,7 @@ define([
 	"umc/modules/setup/InterfaceWizard",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, Memory, Observable, Dialog, dialog, tools, Grid, Form, _FormWidgetMixin, ComboBox, InterfaceWizard, types, _) {
+], function(declare, lang, array, on, Memory, Observable, Dialog, dialog, tools, Grid, Form, _FormWidgetMixin, ComboBox, InterfaceWizard, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
 
@@ -181,16 +182,18 @@ define([
 			var deleted = insertedInto === -1;
 			var key;
 
-			// update disabling
-			var disabledIDs = [];
-			this.moduleStore.query().forEach(lang.hitch(this, function(iiface) {
-				// disable all bond, bridge and vlan interfaces
-				if (iiface.interfaceType !== 'eth') {
-					disabledIDs.push(iiface['interface']);
-				}
+			// update disabled items when grid update is through
+			on.once(this, 'filterDone', lang.hitch(this, function() {
+				var disabledIDs = [];
+				this.moduleStore.query().forEach(lang.hitch(this, function(iiface) {
+					// disable all bond, bridge and vlan interfaces
+					console.log(iiface);
+					if (iiface.interfaceType !== 'eth') {
+						disabledIDs.push(iiface['interface']);
+					}
+				}));
+				this.setDisabledItem(disabledIDs, true);
 			}));
-			this.clearDisabledItems();
-			this.setDisabledItem(disabledIDs, true);
 
 			if (!deleted) {
 				iface.primary = iface['interface'] === this['interfaces/primary']; // FIXME: initial value is not set

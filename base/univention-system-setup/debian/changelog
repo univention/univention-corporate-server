@@ -1,3 +1,9 @@
+univention-system-setup (6.0.75-1) unstable; urgency=low
+
+  * [WIP] Bug #28389: fixed handling of disabled items
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Mar 2013 14:15:37 +0100
+
 univention-system-setup (6.0.74-1) unstable; urgency=low
 
   * [WIP] support bridges, bondings and vlan on NetworkPage; Bug #28389
