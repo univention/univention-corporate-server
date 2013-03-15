@@ -1,3 +1,10 @@
+univention-server (8.0.3-1) unstable; urgency=low
+
+  * specific parts of server_password_change moved to univention-samba
+    (Bug #30539)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 Mar 2013 16:40:55 +0100
+
 univention-server (8.0.2-1) unstable; urgency=low
 
   * added ntp as package dependency to univention-server-member (Bug #30041) 
