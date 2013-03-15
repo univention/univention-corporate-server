@@ -1,3 +1,9 @@
+univention-squid (6.0.8-1) unstable; urgency=low
+
+  * Unset deprecated ucr variable squid/ldapauth/groups and squid/auth/groups (Bug #30553)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Mar 2013 14:34:47 +0100
+
 univention-squid (6.0.7-1) unstable; urgency=low
 
   * Do not add redundant networks when squid/allowfrom is set to 'all' (Bug #27523)

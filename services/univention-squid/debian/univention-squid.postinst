@@ -64,6 +64,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.5-1; t
 			fi
 		fi
 	fi
+	ucr unset squid/ldapauth/groups squid/auth/groups
 fi 
 
 if [ -e /etc/squid/local.conf ] ; then
