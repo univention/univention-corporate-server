@@ -1,3 +1,9 @@
+univention-samba4 (2.0.41-1) unstable; urgency=low
+
+  * UCRV samba/machine_password_timeout with default 0 (Bug #30539)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 15 Mar 2013 17:47:25 +0100
+
 univention-samba4 (2.0.40-1) unstable; urgency=low
 
   * fix looping over DCs and sites in check_essential_samba4_dns_records.sh

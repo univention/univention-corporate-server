@@ -74,5 +74,6 @@ if configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 		if value != None:
 			print '\t%s\t= %s' % (smbstring, value)
 
+print '\tmachine password timeout\t= %d' % int(configRegistry.get('samba/machine_password_timeout', 0))
 @!@
 ; ---------------------</10global>------------------------
