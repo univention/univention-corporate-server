@@ -48,11 +48,6 @@ import functools
 
 from .log import AUTH
 
-from univention.lib.i18n import Translation
-
-_ = Translation( 'univention.management.console' ).translate
-# FIXME: translation is not working: setting locale is done after authorization...
-
 class AuthenticationResult(object):
 	def __init__(self, success, password_valid=None, password_expired=False, error_message=None):
 		from univention.management.console.protocol.definitions import status_description, BAD_REQUEST_AUTH_FAILED, BAD_REQUEST_PASSWORD_EXPIRED
@@ -127,10 +122,6 @@ class PAM_Auth( Auth ):
 	:param password: the secret to use for authentcation. Normally this will be a cleartext password.
 	"""
 
-	ERROR_MESSAGES = {
-		20: _('The system does not allow changing the password') # 'Authentication token manipulation error'
-	}
-
 	def __init__( self, username = None, password = None ):
 		Auth.__init__( self, username, password )
 		self._pam = PAM.pam()
@@ -195,28 +186,27 @@ class PAM_Auth( Auth ):
 						try:
 							new_pam.chauthtok()
 						except PAM.error, e:
-							message = PAM_Auth.ERROR_MESSAGES.get(e[1], e[0])
+							AUTH.warn('Change password failed (%s). Prompts: %r' % (e, prompts))
 							# okay, check prompts, maybe they have a hint why it failed?
 							# prompts are localised, i.e. if the operating system uses German, the prompts are German!
 							# try to be exhaustive. otherwise the errors will not be presented to the user.
 							known_errors = [
-								([': Es ist zu kurz', ': Es ist VIEL zu kurz', ': it is WAY too short', ': Password is too short'], _('The password is too short')),
-								([': Es ist zu einfach/systematisch', ': it is too simplistic/systematic'], _('The password is too simple')),
-								([': is a palindrome'], _('The password is a palindrome')),
-								([': Es basiert auf einem Wörterbucheintrag', ': it is based on a dictionary word'], _('Es basiert auf einem Wörterbucheintrag')),
-								([': Password already used'], _('The password was already used')),
-								([': Es enthält nicht genug unterschiedliche Zeichen', ': it does not contain enough DIFFERENT characters'], _('The password does not contain enough different characters')),
+								([': Es ist zu kurz', ': Es ist VIEL zu kurz', ': it is WAY too short', ': Password is too short'], 'The password is too short'),
+								([': Es ist zu einfach/systematisch', ': it is too simplistic/systematic', ': Password does not meet complexity requirements'], 'The password is too simple'),
+								([': is a palindrome'], 'The password is a palindrome'),
+								([': Es basiert auf einem Wörterbucheintrag', ': it is based on a dictionary word'], 'The password is based on a dictionary word'),
+								([': Password already used'], 'The password was already used'),
+								([': Es enthält nicht genug unterschiedliche Zeichen', ': it does not contain enough DIFFERENT characters'], 'The password does not contain enough different characters'),
 							]
-							further_error_message_found = False
+							important_prompt = prompts[-1] # last prompt is some kind of internal error message
 							for possible_responses, user_friendly_response in known_errors:
-								if any(resp in prompts for resp in possible_responses):
-									message = '%s. %s' % (message, user_friendly_response)
-									further_error_message_found = True
-							if not further_error_message_found:
-								user_friendly_response = _('No further information available')
-								message = '%s. %s' % (message, user_friendly_response)
-							message = message + '.'
+								if any(resp == important_prompt for resp in possible_responses):
+									message = user_friendly_response
+									break
+							else:
+								message = important_prompt # best guess: just show the prompt
 							return AuthenticationResult(False, error_message=message)
+						AUTH.info('Password changed successfully for %s' % self._username)
 						self.signal_emit('password_changed', new_password)
 						return AuthenticationResult(True)
 					else:
