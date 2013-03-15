@@ -1,3 +1,9 @@
+univention-system-setup (6.0.76-1) unstable; urgency=low
+
+  * adapt NetworkPage; Bug #28389
+
+ -- Florian Best <best@univention.de>  Fri, 15 Mar 2013 16:29:57 +0100
+
 univention-system-setup (6.0.75-1) unstable; urgency=low
 
   * [WIP] Bug #28389: fixed handling of disabled items

@@ -256,7 +256,7 @@ define([
 				}
 			});
 
-			var cached = {};
+			var stored = {};
 			// parse (also virtual) interfaces
 			r = /interfaces\/(([^_\/]+)(_([0-9]+))?)\/(.+)/;
 			tools.forIn(_vals, function(ikey, typeval) {
@@ -268,7 +268,7 @@ define([
 					var virtual = !isNaN(ivirtual);
 					var type = match[5]; // the rest of the string
 
-					var temp = cached[iname] || {};
+					var temp = stored[iname] || {};
 					temp.data = temp.data || {};
 					temp.virtual = temp.virtual || {};
 					temp.ip6 = temp.ip6 || {};
@@ -283,13 +283,13 @@ define([
 							console.warn('FIXME: got unexpected variable: ' + type + '=' + typeval);
 						}
 					} else {
-						var rmatch = type.match(/ipv6\/([^\/]+)\/(.+)/);
+						var ip6match = type.match(/ipv6\/([^\/]+)\/(.+)/);
 						var roptions = type.match(/options\/([0-9]+)$/);
 						if (array.indexOf(['address', 'netmask', 'type', 'start', 'ipv6/acceptRA'], type) !== -1) {
 							temp.data[type] = typeval;
-						} else if (rmatch) {
-							var identifier = rmatch[1];
-							var type6 = rmatch[2];
+						} else if (ip6match) {
+							var identifier = ip6match[1];
+							var type6 = ip6match[2];
 							temp.ip6[identifier] = temp.ip6[identifier] || {};
 							if (type6 == 'address' || type6 == 'prefix') {
 								temp.ip6[identifier][type6] = typeval;
@@ -309,7 +309,7 @@ define([
 								bridge_ports: function(val) { return val.split(' '); },
 								bridge_fd: function(val) { return parseInt(val, 10); }
 							}, function(opt, formatter) {
-								var r = new RegExp('^' + opt + '\\s+(.*)\\s*$');
+								var r = new RegExp('^' + opt + '\\s*(.*)\\s*$');
 								match = typeval.match(r);
 								if (match) {
 									temp.options[opt] = formatter(match[1]);
@@ -320,6 +320,7 @@ define([
 
 							if (not_matched) {
 								// TODO: store it and set it back
+
 							}
 						} else {
 							if (-1 === array.indexOf(['broadcast', 'network', 'order', 'mac', 'host'], type) && type.indexOf('route/') !== 0) {
@@ -328,11 +329,11 @@ define([
 						}
 					}
 
-					cached[iname] = temp;
+					stored[iname] = temp;
 				}
 			});
 
-			tools.forIn(cached, function(iname, ivalue, iobj) {
+			tools.forIn(stored, function(iname, ivalue, iobj) {
 
 				// set interfaceType
 				if (interfaces[iname].interfaceType !== 'vlan') {
@@ -395,8 +396,6 @@ define([
 
 			// set values
 			this._form.setFormValues(vals);
-
-			this._orgValues = this.getValues();
 
 			this.clearNotes();
 
@@ -510,12 +509,35 @@ define([
 				}
 			}));
 
+			var non_eth_interfaces = array.map(array.filter(this._form._widgets.interfaces.get('value'), function(item) { return item.interfaceType !== 'eth';}), function(item) {
+				return item['interface'];
+			});
+
+			tools.forIn(vals, function(ikey) {
+				// remove every non eth interface
+				array.forEach(non_eth_interfaces, lang.hitch(this, function(iiname) {
+					if ((new RegExp('^interfaces/' + iiname + '/')).test(ikey)) {
+						delete vals[ikey];
+					}
+				}));
+			});
+
 			// add empty entries for all original entries that are not used anymore
 			tools.forIn(this._orgValues, function(ikey, ival) {
+				// ----------- no br, bond, vlan
+				// set original values for every non eth interface
+				array.forEach(non_eth_interfaces, lang.hitch(this, function(iiname) {
+					if ((new RegExp('^interfaces/' + iiname + '/')).test(ikey)) {
+						vals[ikey] = ival;
+					}
+				}));
+				// ------------------------
 				if (!(ikey in vals)) {
 					vals[ikey] = '';
 				}
 			});
+
+			vals['interfaces/primary'] = this._orgValues['interfaces/primary'];
 
 			return vals;
 		},

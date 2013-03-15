@@ -70,8 +70,8 @@ define([
 			var primary = this['interface'] == props['interfaces/primary'];
 
 			var ethlayout = [{
-				label: _('Primary network device'),
-				layout: ['interface', 'primary']
+				label: _('network device'),
+				layout: ['interface'/*, 'primary'*/]
 			}, {
 				label: _('IPv4 network devices'),
 				layout: [ 'ip4dynamic', 'dhcpquery', 'ip4' ]
@@ -107,6 +107,21 @@ define([
 				ethlayout[0].layout = array.filter(ethlayout[0].layout, function(i) { return i !== undefined; });
 			}
 
+			// no br, bond, vlan --------
+			var staticValues;
+			if (!props.create) {
+				staticValues = this.physical_interfaces.concat(array.map(this.available_interfaces, function(iiface) { return iiface['interface']; }));
+			} else {
+				staticValues = array.filter(this.physical_interfaces, lang.hitch(this, function(iface) {
+					return -1 === array.indexOf(array.map(array.filter(this.available_interfaces, function(item) {
+						return item.interfaceType === 'eth';
+					}), function(iiface) {
+						return iiface['interface']; }), iface);
+					})
+				);
+			}
+			// ----------------
+
 			lang.mixin(this, {
 				pages: [{
 					// A "normal" ethernet interface
@@ -127,9 +142,8 @@ define([
 
 						// ---- no bridge, bond, vlan support
 						type: ComboBox,
-						staticValues: this.physical_interfaces,
-						disabled: props.create,
-						visible: !props.create,
+						staticValues: staticValues,
+						visible: props.create
 //						type: TextBox,
 //						disabled: true,
 //						visible: false,
@@ -145,6 +159,12 @@ define([
 						}, {
 							id: 'manual',
 							label: 'manual'
+						}, {
+							id: 'dhcp',
+							label: 'dhcp',
+						}, {
+							id: 'auto',
+							label: 'auto',
 						}]
 					}, {
 						name: 'start', // Autostart the interface?
@@ -359,6 +379,11 @@ define([
 					}, this);
 				}, this);
 			}, this);
+
+			this._pages.eth._form._widgets['interface'].watch('value', lang.hitch(this, function(name, old, value) {
+				this.set('interface', value);
+			}));
+
 		},
 
 		getAvailableInterfaces: function(format) {

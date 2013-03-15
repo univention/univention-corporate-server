@@ -187,7 +187,6 @@ define([
 				var disabledIDs = [];
 				this.moduleStore.query().forEach(lang.hitch(this, function(iiface) {
 					// disable all bond, bridge and vlan interfaces
-					console.log(iiface);
 					if (iiface.interfaceType !== 'eth') {
 						disabledIDs.push(iiface['interface']);
 					}
@@ -296,6 +295,12 @@ define([
 		},
 
 		_addInterface: function() {
+			// --------don't support vlan, br, bond----------
+			if (!array.some(this.physical_interfaces, lang.hitch(this, function(iface) { return -1 === array.indexOf(array.map(array.filter(this.get('value'), function(item) { return item.interfaceType === 'eth';}), function(iiface) { return iiface['interface']; }), iface); }))) {
+				dialog.alert(_('There are no interface to configure'));
+				return;
+			}
+			//------------
 			// grid action
 			this._modifyInterface({});
 		},
@@ -307,7 +312,8 @@ define([
 
 		_modifyInterface: function(props) {
 			// ---------- no bridge, bond, vlan support
-			props.create = !!props.interfaceType;
+			props.create = !props.interfaceType;
+			if (!props.interfaceType) { props.interfaceType = 'eth'; }
 			this._showWizard(props);
 			return;
 			// -----------
