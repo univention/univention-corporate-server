@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define console setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -158,9 +158,11 @@ define([
 
 		_setValueAttr: function(values) {
 			// empty the grid
-			array.forEach(this.moduleStore.query(), lang.hitch(this, function(iface) {
-				this.moduleStore.remove(iface['interface']);
-			}));
+			this.moduleStore.setData([]);
+			this.moduleStore.query().observe(lang.hitch(this, '_consistence'), true);
+
+			// FIXME: the consistence check depends on other interfaces, we have to insert all interfaces and trigger than for every interface the notification
+			// we need to fix this when supporting bridges, vlans and bondings
 
 			// set new values
 			tools.forIn(values, function(id, value) {
@@ -174,41 +176,39 @@ define([
 			// event stub
 		},
 
-		updateInterface: function(iface, create) {
-				// if a DHCP query was done the iface for gateway and nameserver are set
-				// so we trigger on change event
-				if (iface.gateway) {
-					this.set('gateway', iface.gateway);
+		_consistence: function(iface, removedFrom, insertedInto) {
+			var create = removedFrom === -1;
+			var deleted = insertedInto === -1;
+			var key;
+			// ---------- disable all bond, bridge and vlan interfaces
+			if (!deleted) {
+				if (iface.interfaceType !== 'eth') {
+					this.setDisabledItem(iface['interface'], true);
 				}
-				if (iface.nameserver && iface.nameserver.length) {
-					this.set('nameserver', iface.nameserver);
-				}
-				if (iface.primary) {
-					this.set('interfaces/primary', iface['interface']);
-				}
-				delete iface.gateway;
-				delete iface.nameserver;
-				array.forEach(this.get('value'), function(__iface) {
-					// TODO: we need to modulestore.put the new values
-					__iface.primary = __iface['interface'] == iface['interface'];
-				});
 
-				if (iface.interfaceType === 'eth') {
+				iface.primary = iface['interface'] === this['interfaces/primary']; // FIXME: initial value is not set
+				// TODO: insert
+			}
+			return;
+			// ----------
 
-				} else if (iface.interfaceType === 'vlan') {
-					// The interface is build from interface.vlan_id
+			if (!deleted) {
+
+				if (iface.interfaceType === 'vlan') {
+					// build the interface name from interface "." vlan_id
 					var ifacename = iface['interface'];
 					iface['interface'] = iface['interface'].split('.', 1) + '.' + String(iface.vlan_id);
-					if (!create && ifacename !== iface['interface']) {
+					if (ifacename !== iface['interface']) {
 						// if the interface id was renamed the identifier changed... so delete the old row
-						this.moduleStore.remove(ifacename);
+						setTimeout(lang.hitch(this, function() { this.moduleStore.remove(ifacename); }), 0);
 					}
+				}
 
-				} else if (iface.interfaceType === 'bond' || iface.interfaceType === 'br') {
+				if (iface.interfaceType === 'bond' || iface.interfaceType === 'br') {
 					iface.start = true;
 
 					// disable the interfaces which are used by this interface
-					var key = iface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
+					key = iface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
 					this.setDisabledItem(iface[key], true);
 
 					// set original iface
@@ -223,29 +223,67 @@ define([
 
 						iiface.type = 'manual';
 						iiface.start = false;
-
-						// FIXME: put does not work
-						this.moduleStore.put(iiface);
-						this.moduleStore.remove(iiface['interface']);
-						this.moduleStore.add(iiface);
+						setTimeout(lang.hitch(this, function() {
+							// FIXME: put does not work
+							this.moduleStore.put(iiface);
+							this.moduleStore.remove(iiface['interface']);
+							this.moduleStore.add(iiface);
+						}), 0);
 					}));
 				}
 
-				var filtered = {}; tools.forIn(iface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
-				iface = filtered;
-				if (!create) {
-					this.moduleStore.put( iface ); // FIXME: put does not work
-					this.moduleStore.remove(iface['interface']);
-					this.moduleStore.add( iface );
-				} else {
-					try {
-						this.moduleStore.add( iface );
-					} catch(error) {
-						console.log(error);
-						dialog.alert(_('Interface "%s" already exists', iface['interface']));
+				if (deleted) {
+					if (iface.interfaceType === 'bond' || iface.interfaceType === 'br') {
+						// enable the interfaces which were blocked by this interface
+						key = iface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
+
+						// enable the blocked devices
+						this.setDisabledItem(iface[key], false);
+
+						// re set original values
+						array.forEach(iface[key], lang.hitch(this, function(ikey) {
+							var iiface = this.moduleStore.get(ikey);
+							if (iiface === undefined) {
+								return; // the interface is not configured in the grid
+							}
+							if (iiface.original) {
+								setTimeout(lang.hitch(this, function() { this.moduleStore.put(iiface.original); }), 0);
+							}
+						}));
 					}
 				}
+			}
 			this._set('value', this.get('value'));
+		},
+
+		updateInterface: function(iface) {
+			// set gateway if got from DHCP request
+			iface.gateway && this.set('gateway', iface.gateway);
+			// set nameservers if got from DHCP request
+			iface.nameserver && iface.nameserver.length && this.set('nameserver', iface.nameserver);
+			// set this interface as primary interface if it was selected
+			iface.primary && this.set('interfaces/primary', iface['interface']);
+
+			// delete values which does not belong to the interface data in the grid
+			var update = !iface.create;
+			delete iface.create;
+			delete iface.gateway;
+			delete iface.nameserver;
+
+			if (update) {
+				var filtered = {}; tools.forIn(iface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } }); iface = filtered; // don't use the reference
+				this.moduleStore.put( iface ); // FIXME: put does not work
+				this.moduleStore.remove(iface['interface']);
+				this.moduleStore.add( iface );
+			} else {
+				try {
+					this.moduleStore.add( iface );
+				} catch(error) {
+					// TODO: this happened when renaming an vlan interface but is fixed. can we remove it?
+					console.log(error);
+					dialog.alert(_('Interface "%s" already exists', iface['interface']));
+				}
+			}
 		},
 
 		_addInterface: function() {
@@ -259,6 +297,12 @@ define([
 		},
 
 		_modifyInterface: function(props) {
+			// ---------- no bridge, bond, vlan support
+			props.create = !!props.interfaceType;
+			this._showWizard(props);
+			return;
+			// -----------
+
 			// Add or modify an interface
 			if (props.interfaceType) {
 				// only edit the existing interface
@@ -326,14 +370,15 @@ define([
 							}
 							return [ interfaceType + String(num) ];
 						}
-					}),
-					validator: function(value) {
-						if (form._widgets.interfaceType.get('value') !== 'eth') {
-							// every interface name is valid
-							return /^[a-z]+[0-9]+$/.test(value);
-						}
-						return form._widgets.interfaceType.__proto__.validator(value);
-					}
+					})//,
+					// FIXME: allow to add various device names for bondings, etc., but we have to restrict eth names to the physical interface names (which is in the logic from dynamicValues)
+//					validate: function(value) {
+//						if (form._widgets.interfaceType.get('value') !== 'eth') {
+//							// every interface name is valid
+//							return /^[a-z]+[0-9]+$/.test(value);
+//						}
+//						return form._widgets.interfaceType.__proto__.validator(value);
+//					}
 				}],
 				layout: ['interfaceType', 'interface']
 			});
@@ -358,7 +403,7 @@ define([
 			};
 
 			var _finished = lang.hitch(this, function(values) {
-				this.updateInterface(values, props.create);
+				this.updateInterface(values);
 				_cleanup();
 			});
 	
@@ -385,28 +430,8 @@ define([
 
 		_removeInterface: function(ids) {
 			// grid action
+			// remove the interfaces from grid
 			array.forEach(ids, function(iid) {
-				var iface = this.moduleStore.get(iid);
-				if (iface.interfaceType === 'bond' || iface.interfaceType === 'br') {
-					// enable the interfaces which were blocked by this interface
-					var key = iface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
-
-					// enable the blocked devices
-					this.setDisabledItem(iface[key], false);
-
-					// re set original values
-					array.forEach(iface[key], lang.hitch(this, function(ikey) {
-						var iiface = this.moduleStore.get(ikey);
-						if (iiface === undefined) {
-							return; // the interface is not configured in the grid
-						}
-						if (iiface.original) {
-							this.moduleStore.put(iiface.original);
-						}
-					}));
-				}
-
-				// remove the interface from grid
 				this.moduleStore.remove(iid);
 			}, this);
 			this._set('value', this.get('value'));

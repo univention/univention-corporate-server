@@ -71,7 +71,7 @@ define([
 
 			var ethlayout = [{
 				label: _('Primary network device'),
-				layout: ['primary']
+				layout: ['interface', 'primary']
 			}, {
 				label: _('IPv4 network devices'),
 				layout: [ 'ip4dynamic', 'dhcpquery', 'ip4' ]
@@ -121,12 +121,19 @@ define([
 						value: props.interfaceType
 					}, {
 						name: 'interface',
-						type: TextBox,
-						disabled: true,
-						visible: false,
+						label: _('Interface'),
 						value: props['interface'],
 						size: 'Half',
-						label: _('Interface')
+
+						// ---- no bridge, bond, vlan support
+						type: ComboBox,
+						staticValues: this.physical_interfaces,
+						disabled: props.create,
+						visible: !props.create,
+//						type: TextBox,
+//						disabled: true,
+//						visible: false,
+						// -----
 					}, {
 						name: 'type',
 						type: ComboBox,
@@ -230,6 +237,13 @@ define([
 						type: MultiInput,
 						subtypes: [{ type: TextBox }],
 						max: 3,
+						visible: false
+					}, {
+						// shall the interface be created in the grid do we edit a existing interface?
+						name: 'create',
+						type: CheckBox,
+						value: props.create,
+						disabled: true,
 						visible: false
 					}],
 					buttons: interfacebuttons,
@@ -430,6 +444,7 @@ define([
 			} else if(pageName === 'br' || pageName === 'bond') {
 				return 'eth';
 			}
+			return this.inherited(arguments);
 		},
 
 		previous: function(pageName) {

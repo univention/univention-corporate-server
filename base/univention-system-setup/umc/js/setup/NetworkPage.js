@@ -396,6 +396,8 @@ define([
 			// set values
 			this._form.setFormValues(vals);
 
+			this._orgValues = this.getValues();
+
 			this.clearNotes();
 
 			// show a note if interfaces changes
