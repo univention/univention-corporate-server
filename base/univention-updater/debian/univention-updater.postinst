@@ -157,4 +157,9 @@ fi
 
 test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
 
+# force the listener module license_uuid to be executed
+if [ -x /usr/sbin/univention-directory-listener-ctrl ]; then
+	/usr/sbin/univention-directory-listener-ctrl resync license_uuid || true
+fi
+
 exit 0
