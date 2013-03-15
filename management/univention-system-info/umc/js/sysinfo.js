@@ -195,7 +195,7 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'firstText',
-					content: _('To transfer the information via mail please follow these steps:<ol><li>Download the archive with the collected information and save it on your local system (find the link below)</li><li>Click on link Send mail to open your mail program</li><li>Attach the downloaded archive to the mail and send it to Univention</li><li>End this assistant by clicking on the button Finish</li></ol>')
+					content: _('To transfer the information via mail please follow these steps:<ol><li>Download the archive with the collected information and save it on your local system (find the link below)</li><li>Click on link Send mail to open your mail program</li><li>Attach the downloaded archive to the mail and send it to Univention</li><li>End this assistant by clicking on the button \'Finish\'</li></ol>')
 				}, {
 					type: Text,
 					name: 'download',

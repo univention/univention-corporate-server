@@ -1,3 +1,9 @@
+univention-system-info (3.0.9-1) unstable; urgency=low
+
+  * Fixed quoting of button name in german and english (Bug #29503)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Mar 2013 15:21:09 +0100
+
 univention-system-info (3.0.8-2) unstable; urgency=low
 
   * Partially reverted previous commit (Bug #29503)
