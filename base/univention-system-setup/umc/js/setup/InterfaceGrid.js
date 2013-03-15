@@ -180,17 +180,23 @@ define([
 			var create = removedFrom === -1;
 			var deleted = insertedInto === -1;
 			var key;
-			// ---------- disable all bond, bridge and vlan interfaces
-			if (!deleted) {
-				if (iface.interfaceType !== 'eth') {
-					this.setDisabledItem(iface['interface'], true);
-				}
 
+			// update disabling
+			var disabledIDs = [];
+			this.moduleStore.query().forEach(lang.hitch(this, function(iiface) {
+				// disable all bond, bridge and vlan interfaces
+				if (iiface.interfaceType !== 'eth') {
+					disabledIDs.push(iiface['interface']);
+				}
+			}));
+			this.clearDisabledItems();
+			this.setDisabledItem(disabledIDs, true);
+
+			if (!deleted) {
 				iface.primary = iface['interface'] === this['interfaces/primary']; // FIXME: initial value is not set
 				// TODO: insert
 			}
 			return;
-			// ----------
 
 			if (!deleted) {
 
@@ -225,7 +231,7 @@ define([
 						iiface.start = false;
 						setTimeout(lang.hitch(this, function() {
 							// FIXME: put does not work
-							this.moduleStore.put(iiface);
+							//this.moduleStore.put(iiface);
 							this.moduleStore.remove(iiface['interface']);
 							this.moduleStore.add(iiface);
 						}), 0);
@@ -272,7 +278,7 @@ define([
 
 			if (update) {
 				var filtered = {}; tools.forIn(iface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } }); iface = filtered; // don't use the reference
-				this.moduleStore.put( iface ); // FIXME: put does not work
+				//this.moduleStore.put( iface ); // FIXME: put does not work
 				this.moduleStore.remove(iface['interface']);
 				this.moduleStore.add( iface );
 			} else {
