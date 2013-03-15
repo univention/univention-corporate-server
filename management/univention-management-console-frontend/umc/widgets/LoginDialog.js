@@ -41,6 +41,7 @@ define([
 	"dojo/query",
 	"dojo/dom-attr",
 	"dojo/dom-class",
+	"dojo/Deferred",
 	"dijit/Dialog",
 	"dijit/DialogUnderlay",
 	"umc/tools",
@@ -51,7 +52,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/app",
 	"dojo/domReady!"
-], function(declare, lang, array, win, aspect, has, on, mouse, dom, query, attr, domClass, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
+], function(declare, lang, array, win, aspect, has, on, mouse, dom, query, attr, domClass, Deferred, Dialog, DialogUnderlay, tools, Text, LabelPane, ComboBox, StandbyMixin, i18nTools, _) {
 	return declare("umc.widgets.LoginDialog", [StandbyMixin], {
 		// our own variables
 		_connections: null,
@@ -63,6 +64,7 @@ define([
 		_username: null,
 		_password: null,
 		_newPassword: null,
+		_updateFormDeferred: null,
 
 		// internal flag whether the dialog is rendered or not
 		_isRendered: false,
@@ -77,6 +79,9 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+
+			this._updateFormDeferred = new Deferred();
+			this._updateFormDeferred.resolve(false); // may update form, dont show new password
 
 			// set the properties for the dialog underlay element
 			this.underlayAttrs = {
@@ -183,6 +188,7 @@ define([
 			if (localisedMessage.slice(-1) !== '.') {
 				localisedMessage += '.';
 			}
+			this._updateFormDeferred.resolve(this._passwordExpired);
 			this.set('LoginMessage', localisedMessage);
 		},
 
@@ -197,28 +203,29 @@ define([
 			setTimeout(lang.hitch(this, function() {
 				// check whether the form is available or not
 				var state = lang.getObject('contentWindow.state', false, this._iframe);
-				var showNewPassword = this._passwordExpired;
 				if (state === 'loaded') {
-					// we are able to access the form
-					win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
-						// because of the iframe we need to manually translate the content
-						attr.set(dom.byId('umc_LabelPane_Username'), 'innerHTML', _('Username'));
-						attr.set(dom.byId('umc_LabelPane_Password'), 'innerHTML', _('Password'));
-						attr.set(dom.byId('umc_LabelPane_NewPassword'), 'innerHTML', _('New Password'));
-						attr.set(dom.byId('umc_LabelPane_NewPasswordRetype'), 'innerHTML', _('%(label)s (retype)', {label: _('New Password')}));
-						attr.set(dom.byId('umc_SubmitButton_label'), 'innerHTML', _('Login'));
-						if (showNewPassword) {
-							domClass.add('umc_OuterLabelPane_Username', 'dijitHidden');
-							domClass.add('umc_OuterLabelPane_Password', 'dijitHidden');
-							domClass.remove('umc_OuterLabelPane_NewPassword', 'dijitHidden');
-							domClass.remove('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
-							if (this._username) {
-								dom.byId('umc_UsernameInput').value = this._username;
+					this._updateFormDeferred.then(lang.hitch(this, function(showNewPassword) {
+						// we are able to access the form
+						win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
+							// because of the iframe we need to manually translate the content
+							attr.set(dom.byId('umc_LabelPane_Username'), 'innerHTML', _('Username'));
+							attr.set(dom.byId('umc_LabelPane_Password'), 'innerHTML', _('Password'));
+							attr.set(dom.byId('umc_LabelPane_NewPassword'), 'innerHTML', _('New Password'));
+							attr.set(dom.byId('umc_LabelPane_NewPasswordRetype'), 'innerHTML', _('%(label)s (retype)', {label: _('New Password')}));
+							attr.set(dom.byId('umc_SubmitButton_label'), 'innerHTML', _('Login'));
+							if (showNewPassword) {
+								domClass.add('umc_OuterLabelPane_Username', 'dijitHidden');
+								domClass.add('umc_OuterLabelPane_Password', 'dijitHidden');
+								domClass.remove('umc_OuterLabelPane_NewPassword', 'dijitHidden');
+								domClass.remove('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
+								if (this._username) {
+									dom.byId('umc_UsernameInput').value = this._username;
+								}
+								if (this._password) {
+									dom.byId('umc_PasswordInput').value = this._password;
+								}
 							}
-							if (this._password) {
-								dom.byId('umc_PasswordInput').value = this._password;
-							}
-						}
+						}));
 					}));
 
 					// each time the page is loaded, we need to connect to the form events
@@ -368,12 +375,14 @@ define([
 				this._newPassword = new_password;
 				args.new_password = new_password;
 			}
+			this._updateFormDeferred = new Deferred();
 			tools.umcpCommand('auth', args).then(lang.hitch(this, function(data) {
 				// delete password ASAP. should not be stored
 				this._username = null;
 				this._password = null;
 				this._newPassword = null;
 				this._passwordExpired = false;
+				this._updateFormDeferred.resolve(this._passwordExpired);
 
 				// disable standby in any case
 				this.standby(false);
