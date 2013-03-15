@@ -1,3 +1,10 @@
+univention-errata-level (1.0.1-1) unstable; urgency=low
+
+  * Update copyright to 2013
+  * Bump version (Bug #30802)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Mar 2013 20:57:37 +0100
+
 univention-errata-level (1.0.0-2) unstable; urgency=low
 
   * Add DEBHELPER stanza to postinst (Bug #26387)
