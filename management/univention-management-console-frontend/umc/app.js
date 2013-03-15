@@ -284,7 +284,8 @@ define([
 				'ssl/validity/warning',
 				'update/available',
 				'update/reboot/required',
-				'umc/web/piwik'
+				'umc/web/piwik',
+				'license/base'
 			]).then(lang.hitch(this, function(res) {
 				// save the ucr variables in a local variable
 				lang.mixin(_ucr, res);
@@ -409,7 +410,10 @@ define([
 
 			// perform actions that depend on the UCR variables
 			ucrDeferred.then(function(res) {
-				if (tools.isTrue(_ucr['umc/web/piwik'])) {
+				var piwikUcrv = _ucr['umc/web/piwik'];
+				var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
+				var ffpuLicense = _ucr['license/base'] == 'Free for personal use edition';
+				if (tools.isTrue(_ucr['umc/web/piwik']) || (!piwikUcrvIsSet && ffpuLicense)) {
 					// use piwik for user action feedback if it is not switched off explicitely
 					require(['umc/piwik'], function() {});
 				}
