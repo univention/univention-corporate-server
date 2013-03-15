@@ -1,3 +1,9 @@
+univention-dansguardian (6.0.3-4) unstable; urgency=low
+
+  * Set correct default group (Bug #30553) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Mar 2013 13:52:27 +0100
+
 univention-dansguardian (6.0.3-3) unstable; urgency=low
 
   * Removed needless generation of bannediplist and exceptioniplist 
