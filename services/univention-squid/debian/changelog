@@ -1,3 +1,9 @@
+univention-squid (6.0.7-1) unstable; urgency=low
+
+  * Do not add redundant networks when squid/allowfrom is set to 'all' (Bug #27523)
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 11 Mar 2013 14:48:35 +0100
+
 univention-squid (6.0.6-1) unstable; urgency=low
 
   * squid/auth/groups is removed, group authentication is handled by squid/auth/allowed_groups (Bug #30553)

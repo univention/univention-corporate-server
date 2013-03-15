@@ -51,15 +51,15 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.12; th
 	ucr unset squid/ldapauth/children squid/ldapauth
 fi
 
-# change group default behavior #Bug 30553
+# change group default behavior #Bug 30553 for 3.1-1
 # if this was unchanged set it to the old default values, otherwise copy old values to new ucr variables
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.5-1; then
 	# only if any kind of authentication is activated. 
-	if [ -n "$(ucr get squid/basicauth)" ] || [ -n "$(ucr get squid/krb5auth)" ] || [ -n "$(ucr get squid/ntlmauth)" ]; then
-		if [ -n "$(ucr get squid/ldapauth/groups)" ]; then
-			ucr set squid/auth/allowed_groups="$(ucr get squid/ldapauth/groups)"
-		else
-			if [ -n "$(ucr get squid/auth/groups)" ] || is_ucr_true squid/auth/groups; then
+	if is_ucr_true squid/basicauth || is_ucr_true squid/ntlmauth || is_ucr_true squid/krb5auth; then 
+		if [ -z "$(ucr get squid/auth/groups)" ] || is_ucr_true squid/auth/groups; then
+			if [ -n "$(ucr get squid/ldapauth/groups)" ]; then
+				ucr set squid/auth/allowed_groups="$(ucr get squid/ldapauth/groups)"
+			else
 				ucr set squid/auth/allowed_groups=www-access
 			fi
 		fi
@@ -85,7 +85,6 @@ fi
 ucr set squid/transparentproxy?false \
 	squid/cache?yes \
 	squid/debug/level?ALL,1 \
-	squid/auth/allowed_groups?""
 
 /etc/init.d/squid3 stop
 /etc/init.d/squid3 start
