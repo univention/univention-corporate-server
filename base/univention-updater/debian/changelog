@@ -1,3 +1,9 @@
+univention-updater (8.0.75-1) unstable; urgency=low
+
+  * Bug #30741: fixed typo
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Mar 2013 20:08:11 +0100
+
 univention-updater (8.0.74-1) unstable; urgency=low
 
   * Bug #30741: update license/base in the license_uid

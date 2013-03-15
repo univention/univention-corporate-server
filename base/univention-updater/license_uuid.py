@@ -45,7 +45,7 @@ def handler(dn, new, old):
 		try:
 			ucrVars = ['license/base=%s' % new.get('univentionLicenseBaseDN')[0]]
 			if new.get('univentionLicenseKeyID'):
-				ucrVars.append(['uuid/license=%s' % new.get('univentionLicenseKeyID')[0]])
+				ucrVars.append('uuid/license=%s' % new.get('univentionLicenseKeyID')[0])
 			univention.config_registry.handler_set(ucrVars)
 		finally:
 			listener.unsetuid()
