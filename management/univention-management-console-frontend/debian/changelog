@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.230-1) unstable; urgency=low
+
+  * Bug #30795: fixed typos
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Mar 2013 15:24:49 +0100
+
 univention-management-console-frontend (2.0.229-1) unstable; urgency=low
 
   * Bug #30795: the handling of disabled Grid items has been corrected

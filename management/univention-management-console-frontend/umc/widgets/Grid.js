@@ -38,7 +38,6 @@ define([
 	"dojo/dom-attr",
 	"dojo/dom-geometry",
 	"dojo/dom-style",
-	"dojo/on",
 	"dojo/topic",
 	"dojo/aspect",
 	"dijit/Menu",
@@ -59,7 +58,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, win, query, construct, attr, geometry,
-		style, on, topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
+		style, topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -1018,7 +1017,7 @@ define([
 				// update item if its current state does not match
 				// the requested state in _disabledIDs
 				var idx = this.getItemIndex(id);
-				if (dx >= 0 && disabled != !!this._grid.rowSelectCell.disabled(idx)) {
+				if (idx >= 0 && disabled != !!this._grid.rowSelectCell.disabled(idx)) {
 					this._grid.rowSelectCell.setDisabled(idx, disabled);
 				}
 			}, this);
@@ -1076,7 +1075,7 @@ define([
 			var idx;
 			for (idx = 0; idx < this._grid.rowCount; ++idx) {
 				// enable item if it is disabled
-				if (this._grid.rowSelectCell.disabled(idx) {
+				if (this._grid.rowSelectCell.disabled(idx)) {
 					this._grid.rowSelectCell.setDisabled(idx, false);
 				}
 			}
