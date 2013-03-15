@@ -1,3 +1,10 @@
+univention-x-core (6.0.6-1) unstable; urgency=low
+
+  * Added support for ucrv xorg/device/driver="" which writes no
+    device section into xorg.conf. (Bug #30799)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Mar 2013 16:27:17 +0100
+
 univention-x-core (6.0.5-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
