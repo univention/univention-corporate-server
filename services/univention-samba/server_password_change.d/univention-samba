@@ -42,7 +42,7 @@ def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
 	secrets_tdb.transaction_start()
 	try:
 		previous_machine_password = secrets_tdb.get(machine_password_key)
-		secrets_tdb.store(previous_machine_password_key, "%s\0" % previous_machine_password)
+		secrets_tdb.store(previous_machine_password_key, "%s" % previous_machine_password)
 
 		secrets_tdb.store(machine_password_key, "%s\0" % machine_password)
 
