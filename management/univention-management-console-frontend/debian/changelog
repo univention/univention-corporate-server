@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.234-1) unstable; urgency=low
+
+  * Typo in translation (Bug #29771)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Mar 2013 21:58:09 +0100
+
 univention-management-console-frontend (2.0.233-1) unstable; urgency=low
 
   * Use deferreds in LoginDialog (Bug #29771)
