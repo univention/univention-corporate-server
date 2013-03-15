@@ -66,10 +66,12 @@ def run_postchange():
 		## store machine.secret in secrets.tdb
 		write_machine_secret_to_secrets_tdb(machine_password, windows_domain)
 	except:
-		traceback.print_exc()
+		sys.stdout.write(traceback.format_exc())
+		sys.stdout.flush()
 		return 1
 	else:
-		print "machine password stored successfully in secrets.tdb"
+		sys.stdout.write("machine password stored successfully in secrets.tdb\n")
+		sys.stdout.flush()
 
 	ldap_hostdn = ucr.get('ldap/hostdn')
 	samba_user = ucr.get('samba/user')
@@ -85,7 +87,8 @@ def run_postchange():
 
 	for idmap_domain in idmap_domains:
 		## store secret for idmap domain
-		print "setting idmap secret for '%s' from /etc/machine.secret" % idmap_domain
+		sys.stdout.write("setting idmap secret for '%s' from /etc/machine.secret\n" % idmap_domain)
+		sys.stdout.flush()
 		process = subprocess.Popen(['net', 'idmap', 'secret', idmap_domain, machine_password])
 		process.wait()
 
