@@ -62,6 +62,7 @@ define([
 
 		_username: null,
 		_password: null,
+		_newPassword: null,
 
 		// internal flag whether the dialog is rendered or not
 		_isRendered: false,
@@ -136,8 +137,59 @@ define([
 			});
 		},
 
-		updateForm: function(passwordExpired) {
+		updateForm: function(passwordExpired, statusMessage, detail) {
 			this._passwordExpired = passwordExpired;
+			var localisedMessage = statusMessage;
+			if (detail) {
+				// details are not localised. they are sent in English (if recognized in UMC-Server.Auth) or as the raw string returned from Kerberos!
+				var newPasswordFailed;
+				switch (detail) {
+					// setting new password failed!
+					case 'The password is too short':
+						newPasswordFailed = _('The password is too short');
+						break;
+					case 'The password is too simple':
+						newPasswordFailed = _('The password is too simple');
+						break;
+					case 'The password is a palindrome':
+						newPasswordFailed = _('The password is a palindrome');
+						break;
+					case 'The password is based on a dictionary word':
+						newPasswordFailed = _('The password is based on a dictionary word');
+						break;
+					case 'The password was already used':
+						newPasswordFailed = _('The password was already used');
+						break;
+					case 'The password does not contain enough different characters':
+						newPasswordFailed = _('The password does not contain enough different characters');
+						break;
+					default:
+						if (detail.slice(0, 2) === ': ') { // Kerberos error message starts with :
+							newPasswordFailed = _('The error is unknown') + '. ' + _('In case it helps, the raw error message will be displayed') + detail;
+						} else {
+							console.warn('Unknown error message', detail);
+							if (this._newPassword) {
+								// obviously we wanted to change the password
+								newPasswordFailed = _('The error is unknown');
+							}
+						}
+						break;
+				}
+				if (newPasswordFailed) {
+					localisedMessage = _('The system does not allow changing the password') + '. ' + newPasswordFailed;
+					this._passwordExpired = true;
+				}
+			}
+			if (localisedMessage.slice(-1) !== '.') {
+				localisedMessage += '.';
+			}
+			this.set('LoginMessage', localisedMessage);
+		},
+
+		_setLoginMessageAttr: function(message) {
+			var logindialog = query('.umc_LoginMessage');
+			logindialog[0].innerHTML = message;
+			logindialog.style('display', 'block');
 		},
 
 		_initForm: function() {
@@ -158,19 +210,14 @@ define([
 						if (showNewPassword) {
 							domClass.add('umc_OuterLabelPane_Username', 'dijitHidden');
 							domClass.add('umc_OuterLabelPane_Password', 'dijitHidden');
+							domClass.remove('umc_OuterLabelPane_NewPassword', 'dijitHidden');
+							domClass.remove('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
 							if (this._username) {
 								dom.byId('umc_UsernameInput').value = this._username;
 							}
 							if (this._password) {
 								dom.byId('umc_PasswordInput').value = this._password;
 							}
-							domClass.remove('umc_OuterLabelPane_NewPassword', 'dijitHidden');
-							domClass.remove('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
-						} else {
-							domClass.remove('umc_OuterLabelPane_Username', 'dijitHidden');
-							domClass.remove('umc_OuterLabelPane_Password', 'dijitHidden');
-							domClass.add('umc_OuterLabelPane_NewPassword', 'dijitHidden');
-							domClass.add('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
 						}
 					}));
 
@@ -217,16 +264,12 @@ define([
 			this._connections.push(
 				on(form, 'submit', lang.hitch(this, function(evt) {
 					if (newPasswordInput.value !== newPasswordRetypeInput.value) {
-						var logindialog = query('.umc_LoginMessage');
-						logindialog[0].innerHTML = _('The passwords do not match, please retype again.');
+						this.set('LoginMessage', _('The passwords do not match, please retype again.'));
 						evt.preventDefault();
 						return;
 					}
 					var username = usernameInput.value;
 					var password = passwordInput.value;
-					// save in case password expired and username and password have to be sent again
-					this._username = username;
-					this._password = password;
 					var newPassword = newPasswordInput.value;
 					this._authenticate(username, password, newPassword);
 					this._isRendered = false;
@@ -314,17 +357,23 @@ define([
 
 		_authenticate: function(username, password, new_password) {
 			this.standby(true);
+			// save in case password expired and username and password have to be sent again
+			this._username = username;
+			this._password = password;
 			args = {
 				username: username,
 				password: password
 			};
 			if (new_password) {
+				this._newPassword = new_password;
 				args.new_password = new_password;
 			}
 			tools.umcpCommand('auth', args).then(lang.hitch(this, function(data) {
 				// delete password ASAP. should not be stored
 				this._username = null;
 				this._password = null;
+				this._newPassword = null;
+				this._passwordExpired = false;
 
 				// disable standby in any case
 				this.standby(false);

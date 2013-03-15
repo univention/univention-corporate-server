@@ -32,7 +32,6 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/window",
-	"dojo/query",
 	"dojo/request/xhr",
 	"dojo/_base/xhr",
 	"dojo/Deferred",
@@ -49,7 +48,7 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(lang, array, _window, query, xhr, basexhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, _) {
+], function(lang, array, _window, xhr, basexhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -568,21 +567,19 @@ define([
 			var status = info.status;
 			var message = info.message;
 			var result = info.result;
+			var statusMessage = this._statusMessages[status];
 
 			// handle the different status codes
-			if (undefined !== status && status in this._statusMessages) {
+			if (statusMessage) {
 				if (411 == status || 415 == status) {
 					// authentification failed, show a notification
 					dialog.login();
-					dialog._loginDialog.updateForm(415 === status);
-					var logindialog = query('.umc_LoginMessage');
-					logindialog[0].innerHTML = message;
-					logindialog.style('display', 'block');
+					dialog._loginDialog.updateForm(415 === status, statusMessage, message);
 				} else if(401 == status) {
 					// session has expired
 					topic.publish('/umc/actions', 'session', 'expired');
 					dialog.login();
-					dialog.notify(this._statusMessages[status]);
+					dialog.notify(statusMessage);
 				} else if (409 == status && handleErrors && handleErrors.onValidationError) {
 					// validation error
 					topic.publish('/umc/actions', 'error', status);
@@ -592,7 +589,7 @@ define([
 					// the command could not be executed, e.g., since the user data was not correct
 					// this error deserves a special treatment as it is not critical, but rather a
 					// a user error
-					dialog.alert('<p>' + this._statusMessages[status] + (message ? ': ' + message : '.') + '</p>');
+					dialog.alert('<p>' + statusMessage + (message ? ': ' + message : '.') + '</p>');
 				}*/
 				// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
 				else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
@@ -630,24 +627,21 @@ define([
 
 					var container = new ContainerWidget({});
 					container.addChild(new Text({
-						content: '<p>' + this._statusMessages[status] + '</p>'
+						content: '<p>' + statusMessage + '</p>'
 					}));
 					container.addChild(titlePane);
 
 					dialog.alert( container );
-				}
-				else {
+				} else {
 					// all other cases
 					topic.publish('/umc/actions', 'error', status);
-					dialog.alert('<p>' + this._statusMessages[status] + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''));
+					dialog.alert('<p>' + statusMessage + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''));
 				}
-			}
-			else if (undefined !== status) {
+			} else if (undefined !== status) {
 				// unknown status code .. should not happen
 				topic.publish('/umc/actions', 'error', 'unknown');
 				dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
-			}
-			else {
+			} else {
 				// probably server timeout, could also be a different error
 				dialog.alert(_('An error occurred while connecting to the server, please try again later.'));
 			}

@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.231-1) unstable; urgency=low
+
+  * Localise password error messages sent unlocalised from server (Bug #29971)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Mar 2013 20:05:47 +0100
+
 univention-management-console-frontend (2.0.230-1) unstable; urgency=low
 
   * Bug #30795: fixed typos
