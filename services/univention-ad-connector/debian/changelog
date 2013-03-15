@@ -1,3 +1,10 @@
+univention-ad-connector (7.0.18-1) unstable; urgency=low
+
+  * Consider password/samba/lmhash for LM hash message and not for NT
+    hash message (Bug #29294)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Mar 2013 22:21:56 +0100
+
 univention-ad-connector (7.0.17-1) unstable; urgency=low
 
   * only log LM hash warning if UCR variable password/samba/lmhash is set to

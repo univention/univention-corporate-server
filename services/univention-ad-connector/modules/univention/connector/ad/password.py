@@ -165,14 +165,14 @@ def password_sync_ucs(connector, key, object):
 		pwd=res[0][1]['sambaNTPassword'][0]
 	else:
 		pwd='NO PASSWORDXXXXXX'
-		if connector.baseConfig.is_true('password/samba/lmhash'):
-			ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get NT Hash from UCS")
+		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get NT Hash from UCS")
 
 	if res[0][1].has_key('sambaLMPassword'):
 		pwd+=res[0][1]['sambaLMPassword'][0]
 	else:
 		pwd+='NO PASSWORDXXXXX'
-		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get LM Hash from UCS")
+		if connector.baseConfig.is_true('password/samba/lmhash'):
+			ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get LM Hash from UCS")
 
 	res=connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['pwdLastSet','objectSid'])
 	pwdLastSet = None
@@ -326,7 +326,6 @@ def password_sync(connector, key, ucs_object):
 			if ntPwd in ['00000000000000000000000000000000', 'NO PASSWORD*********************']:
 				ud.debug(ud.LDAP, ud.WARN, "password_sync: AD connector password daemon retured 0 for the nt hash. Please check the AD settings.")
 			else:
-				ud.debug(ud.LDAP, ud.WARN, "password_sync: %s" % ntPwd)
 				pwd_changed = True
 				modlist.append(('sambaNTPassword', ntPwd_ucs, str(ntPwd.upper())))
 				if krb5Principal:
