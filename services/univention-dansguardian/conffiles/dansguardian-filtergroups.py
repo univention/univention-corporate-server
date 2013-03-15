@@ -38,8 +38,10 @@ CONFIG_PATH = '/etc/dansguardian'
 files_written = []
 
 def handler( configRegistry, changes ):
-	groups = configRegistry.get( 'dansguardian/groups', 'web-access' ).split( ';' )
+	groups = configRegistry.get( 'dansguardian/groups', 'defaultgroup' ).split( ';' )
 	for i in range( len( groups ) ):
+		if groups[i] == '':
+			continue
 		ucr.handler_set( [ 'dansguardian/current/groupno=%d' % ( i + 1 ), 'dansguardian/current/group=%s' % groups[ i ] ] )
 		configRegistry.load()
 

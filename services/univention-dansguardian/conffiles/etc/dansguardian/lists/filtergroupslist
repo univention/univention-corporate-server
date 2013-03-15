@@ -11,7 +11,7 @@
 #
 
 @!@
-groups = configRegistry.get( 'dansguardian/groups', 'www-access' ).split( ';' )
+groups = configRegistry.get( 'dansguardian/groups', 'defaultgroup' ).split( ';' )
 
 if configRegistry.get( 'dansguardian/groups/system', 'yes' ).lower() in ( 'on', 'yes', '1' ):
 	for grp in groups:

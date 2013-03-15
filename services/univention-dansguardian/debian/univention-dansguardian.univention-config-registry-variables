@@ -4,6 +4,12 @@ Description[en]=Automatically start of the antivirus update daemon
 Type=str
 Categories=service-mail,system-services
 
+[dansguardian/autostart]
+Description[de]=Konfiguriert den automatischen Start von dansguardian beim Systemstart
+Description[en]=Configures dansguardian automatic start at boot time
+Type=str
+Categories=service-webproxy
+
 [dansguardian/virus/notifyemail]
 Description[de]=Benachrichtigungs-E-Mail-Adresse bei gefundenen Viren
 Description[en]=Notification email address if a virus has been detected

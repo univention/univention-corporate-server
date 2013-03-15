@@ -1,3 +1,12 @@
+univention-dansguardian (6.0.3-3) unstable; urgency=low
+
+  * Removed needless generation of bannediplist and exceptioniplist 
+    for groups. The settings in these files are only evaluated globally (Bug #25321)
+  * Removed erroneously remained references to old defaultgroup (Bug #30553) 
+  * Do not generate group config files if no groups are defined (Bug #30270) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 14 Mar 2013 17:13:22 +0100
+
 univention-dansguardian (6.0.3-2) unstable; urgency=low
 
   * Fixed wrong python version (Bug #13814)
