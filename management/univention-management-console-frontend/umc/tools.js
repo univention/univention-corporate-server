@@ -616,8 +616,8 @@ define([
 					});
 
 					var content = '<pre>' + message + '</pre><br>' + feedbackLink;
-					var hideLink = '<a>' + _('Hide server error message') + '</a>';
-					var showLink = '<a>' + _('Show server error message') + '</a>';
+					var hideLink = _('Hide server error message');
+					var showLink = _('Show server error message');
 
 					var titlePane = new TitlePane({
 						title: showLink,
@@ -633,10 +633,6 @@ define([
 						content: '<p>' + this._statusMessages[status] + '</p>'
 					}));
 					container.addChild(titlePane);
-
-					// center the alert dialog when folding the title pane
-					titlePane._wipeIn.on('End', function() { dialog.centerAlertDialog(); } );
-					titlePane._wipeOut.on('End', function() { dialog.centerAlertDialog(); } );
 
 					dialog.alert( container );
 				}

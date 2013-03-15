@@ -1279,6 +1279,23 @@ ORIGINAL DIFF
   padding: 0 7px 3px 7px !important;
 }
 
+.umc .umcConfirmDialog {
+  .dijitTitlePane {
+    width: 535px;
+  }
+  .dijitTitlePaneTitle {
+    border: none;
+    background: none;
+    .dijitTitlePaneTextNode {
+      color: #74be4b;
+      text-decoration: underline;
+    }
+  }
+  .dijitTitlePaneContentInner {
+    max-height: 400px;
+    overflow: auto;
+  }
+}
 
 .umc .dijitTitlePaneTitleHover {
   background-color: #74be4b;
@@ -1287,7 +1304,7 @@ ORIGINAL DIFF
 }
 
 .umc .dijitTitlePaneTitleHover .dijitTitlePaneTextNode {
-	color: #ffffff;
+  color: #ffffff;
 }
 
 .umc .dijitTitlePaneTitleActive {
@@ -1956,11 +1973,7 @@ ORIGINAL DIFF
 	background-color: #fff;
 	border: 0 none !important;
 }
-.umcTracebackPane .dijitTitlePaneTitle .dijitTitlePaneTextNode a {
-	text-decoration: underline;
-}
 .umcTracebackPane pre {
-	max-height: 400px;
 	overflow: auto;
 	font-family: monospace;
 }

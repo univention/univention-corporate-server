@@ -26,19 +26,33 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define require*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
+	"dojo/query",
 	"dojo/dom-class",
 	"dijit/Dialog",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/widgets/Text"
-], function(declare, lang, array, on, domClass, Dialog, ContainerWidget, Button, Text) {
+], function(declare, lang, array, query, domClass, Dialog, ContainerWidget, Button, Text) {
+	// in order to break circular dependencies
+	// we define umc/tools and dijit/registry an empty object and
+	// require it explicitely
+	var tools = {
+		inheritsFrom: function() { return false; }
+	};
+	var registry = {
+		byNode: function() {}
+	};
+	require(["dijit/registry", "umc/tools"], function(_registry, _tools) {
+		registry = _registry;
+		tools = _tools;
+	});
+
 	return declare("umc/widgets/ConfirmDialog", [ Dialog ], {
 		// summary:
 		//		Class that provides a customizable confirmation dialog.
@@ -124,6 +138,22 @@ define([
 			if (typeof this.message == "object" && 'declaredClass' in this.message) {
 				// message is a widget
 				domClass.add(this.message.domNode, 'umcConfirmDialogText');
+				var widgets = [this.message]; // fallback: check self
+				if (this.containerNode) {
+					widgets = query("[widgetId]", this.message.containerNode).map(registry.byNode);
+				}
+				array.forEach(widgets, lang.hitch(this, function(widget) {
+					if (tools.inheritsFrom(widget, 'dijit.TitlePane')) {
+						widget._wipeIn.on('End', lang.hitch(this, function() {
+							this._relativePosition = null;
+							this._position();
+						}));
+						widget._wipeOut.on('End', lang.hitch(this, function() {
+							this._relativePosition = null;
+							this._position();
+						}));
+					}
+				}));
 				this._container.addChild(this.message, 0);
 			}
 		},
@@ -140,7 +170,7 @@ define([
 			array.forEach(this.options, lang.hitch(this, function(ichoice, idx) {
 				var props = lang.mixin({}, ichoice, {
 					defaultButton: true === ichoice['default'],
-					onClick: lang.hitch(this, function(values) {
+					onClick: lang.hitch(this, function() {
 						// the response is either a custom response or the choice (button) index
 						var response = ichoice.name || idx;
 
@@ -180,10 +210,6 @@ define([
 
 			// attach layout to dialog
 			this.set('content', this._container);
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
 		},
 
 		close: function() {

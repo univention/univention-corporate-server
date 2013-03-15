@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.228-1) unstable; urgency=low
+
+  * Bug #30791: Added generic support for widgets folding out in a
+    confirmation Dialog.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Mar 2013 11:58:17 +0100
+
 univention-management-console-frontend (2.0.227-1) unstable; urgency=low
 
   * Bug #30574: remove search actions from Grid
