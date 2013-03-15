@@ -173,6 +173,18 @@ define([
 			this._progressBar = new ProgressBar();
 			this.own(this._progressBar);
 
+			this._appCenterInformation =
+				'<p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
+				'<p>' + _('Univention always receives an estranged notification for statistical purposes upon installation and uninstallation of an application in Univention App Center that is only saved at Univention for data processing and will not be forwarded to any third party.') + '</p>' +
+				'<p>' + _('Depending on the guideline of the respective application vendor an updated UCS license key with so-called key identification (Key ID) is required for the installation of an application. In this case, the Key ID will be sent to Univention together with the notification. As a result the application vendor receives a message from Univention with the following information:') +
+					'<ul>' +
+						'<li>' + _('Name of the installed application') + '</li>' +
+						'<li>' + _('Registered email address') + '</li>' +
+					'</ul>' +
+				_('The description of every application includes a respective indication for such cases.') + '</p>' +
+				'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
+				'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p>';
+
 			this._searchWidget = new _SearchWidget({
 				region: 'left'
 			});
@@ -209,7 +221,7 @@ define([
 
 			if (this.autoStart) {
 				tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
-					if (prefs.appcenterSeen === 'yes') {
+					if (tools.isTrue(prefs.appcenterSeen)) {
 						// load apps
 						this.updateApplications();
 					} else {
@@ -219,16 +231,7 @@ define([
 								{
 									type: Text,
 									name: 'help_text',
-									content: '<div style="width: 535px"><p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
-									'<p>' + _('Univention always receives an estranged notification for statistical purposes upon installation and uninstallation of an application in Univention App Center that is only saved at Univention for data processing and will not be forwarded to any third party.') + '</p>' +
-									'<p>' + _('Depending on the guideline of the respective application vendor an updated UCS license key with so-called key identification (Key ID) is required for the installation of an application. In this case, the Key ID will be sent to Univention together with the notification. As a result the application vendor receives a message from Univention with the following information:') +
-										'<ul>' +
-											'<li>' + _('Name of the installed application') + '</li>' +
-											'<li>' + _('Registered email address') + '</li>' +
-										'</ul>' +
-									_('The description of every application includes a respective indication for such cases.') + '</p>' +
-									'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
-									'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p></div>'
+									content: '<div style="width: 535px">' + this._appCenterInformation + '</div>'
 								},
 								{
 									type: CheckBox,
@@ -243,7 +246,7 @@ define([
 							}]
 						}).then(
 							lang.hitch(this, function(data) {
-								tools.setUserPreference({appcenterSeen: data.show_again ? 'no' : 'yes'});
+								tools.setUserPreference({appcenterSeen: data.show_again ? 'false' : 'true'});
 								this.updateApplications();
 							}),
 							lang.hitch(this, function() {
@@ -441,6 +444,7 @@ define([
 		},
 
 		_package_changes: function(install, remove, broken, incompatible, opened, host) {
+			var container = new ContainerWidget({});
 			var txt = '';
 			txt += this._package_changes_one(install, _('The following packages will be installed or upgraded:'));
 			txt += this._package_changes_one(remove, _('The following packages will be removed:'));
@@ -455,16 +459,15 @@ define([
 			var remove_count = remove ? (remove.length === 0 ? 0 : '<strong>' + remove.length + '</strong>') : _('Unknown');
 			var broken_count = broken ? (broken.length === 0 ? 0 : '<strong>' + broken.length + '</strong>') : _('Unknown');
 			var incompatible_headline = incompatible ? ', <strong>' + _('incompatible') : '</strong>';
-			var showTitle = _('Show changes on %(host)s (installed/upgraded: %(installed)s, removed: %(removed)s, erroneous: %(erroneous)s%(incompatible)s)', {host: host, installed: install_count, removed: remove_count, erroneous: broken_count, incompatible: incompatible_headline});
-			var hideTitle = _('Hide changes on %(host)s (installed/upgraded: %(installed)s, removed: %(removed)s, erroneous: %(erroneous)s%(incompatible)s)', {host: host, installed: install_count, removed: remove_count, erroneous: broken_count, incompatible: incompatible_headline});
-			var changes = new TitlePane({
-				title: showTitle,
+			container.addChild(new Text({
+				content: _('Software changes on %(host)s (installed/upgraded: %(installed)s, removed: %(removed)s, erroneous: %(erroneous)s%(incompatible)s)', {host: host, installed: install_count, removed: remove_count, erroneous: broken_count, incompatible: incompatible_headline})
+			}));
+			container.addChild(new TitlePane({
+				title: _('Show details'),
 				open: opened,
-				content: txt,
-				onHide: function() { changes.set('title', showTitle); },
-				onShow: function() { changes.set('title', hideTitle); }
-			});
-			return changes;
+				content: txt
+			}));
+			return container;
 		},
 
 		_call_installer: function(func, app, force) {
@@ -504,7 +507,7 @@ define([
 					this.standby(false);
 					var result = data.result;
 					var confirmationRequired = false;
-					var content = [];
+					var container = new ContainerWidget({});
 					var label = '';
 					var headline = '';
 					var buttons = [];
@@ -517,9 +520,9 @@ define([
 							no_host_info = false;
 							return false;
 						}));
-						content.push(this._package_changes(result.install, result.remove, result.broken, false, no_host_info, _('this host')));
+						container.addChild(this._package_changes(result.install, result.remove, result.broken, false, no_host_info, _('this server')));
 						tools.forIn(result.hosts_info, lang.hitch(this, function(host, host_info) {
-							content.push(this._package_changes(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host));
+							container.addChild(this._package_changes(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host));
 						}));
 						if (result.unreachable.length) {
 							if (app.is_master) {
@@ -528,13 +531,13 @@ define([
 								label = _('The server tried to connect to DC Master and DC Backups.');
 							}
 							label += ' ' + _('The following hosts cannot be reached:');
-							content.push(new Text({
+							container.addChild(new Text({
 								content: label + '<ul><li>' + result.unreachable.join('</li><li>') + '</li></ul>'
 							}));
 							if (!result.master_unreachable) {
 								var cmdLine = lang.replace('univention-add-app {component_id} -m', {component_id: app.candidate_component_id || app.component_id});
 								var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following command as root on all of these backup servers <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
-								content.push(new Text({
+								container.addChild(new Text({
 									content: commandHint
 								}));
 							}
@@ -568,34 +571,7 @@ define([
 					}
 
 					if (confirmationRequired) {
-						var container = new ContainerWidget({});
-						var titlePanes = [];
-						array.forEach(content, function(widget) {
-							container.addChild(widget);
-							if (tools.inheritsFrom(widget, 'umc.widgets.TitlePane')) {
-								titlePanes.push(widget);
-							}
-						});
-						var confirmDialog = new ConfirmDialog({
-							title: headline,
-							style: {maxWidth: 550},
-							message: container,
-							options: buttons
-						});
-						array.forEach(titlePanes, function(titlePane) {
-							titlePane._wipeIn.on('End', function() {
-								confirmDialog._relativePosition = null;
-								confirmDialog._position();
-							});
-							titlePane._wipeOut.on('End', function() {
-								confirmDialog._relativePosition = null;
-								confirmDialog._position();
-							});
-						});
-						confirmDialog.on('confirm', function() {
-							confirmDialog.close();
-						});
-						confirmDialog.show();
+						dialog.confirm(container, buttons, headline);
 					} else {
 						var progressMessage = _("You're currently %(verb)s %(ids)s", {verb: verb1, ids: app.name});
 
@@ -958,9 +934,14 @@ define([
 						{
 							type: Text,
 							name: 'help_text',
-							content: '<div><strong>' + _('Updated UCS license key required') + '</strong></div><div style="width: 535px"><p>' + _('The installation of applications with Univention App Center requires an individually issued license key with a unique key identification. You are currently using a license key without identification. Please fill in the form and provide a valid email address. Afterwards an updated license will be sent to you in a couple of minutes that can be applied and updated directly in the license dialog.') + '</p>' +
-							'<p>' + _('The UCS system sends your current license key to Univention. The key will be extended by the identification and will be sent back to the provided email address. The license scope remains unchanged.') + '</p>' +
-							'<p>' + _('Right after this form, you will see another dialog where you can upload your new license.') + '</p></div>'
+							content: '<div><strong>' + _('Provision of an updated UCS license key') + '</strong></div><div style="width: 535px"><p>' + _('Please provide a valid email address such that an updated license can be sent to you. This may take a few minutes. You can then upload the updated license key directly in the following license dialog.') + '</p>'
+						},
+						{
+							type: TitlePane,
+							name: 'more_information',
+							title: _('More information'),
+							open: false,
+							content: this._appCenterInformation
 						},
 						{
 							type: TextBox,

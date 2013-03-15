@@ -75,7 +75,7 @@ define([
 			var actions = [
 				{
 					name: 'view',
-					label: _("View Details"),
+					label: _("Show details"),
 					isContextAction: true,
 					isStandardAction: false,
 					isMultiAction: false,
