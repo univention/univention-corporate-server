@@ -212,6 +212,7 @@ if [ -e "/usr/lib/univention-install/" ]
 then
 	for i in "${SCRIPTS[@]}"
 	do
+		[ "$(basename "$i")" = "*.uinst" -o "$(basename "$iscript")" = "*.inst" ] && continue
 		echo -n "Running $(basename "$i")" >&3
 		echo "RUNNING $(basename "$i")"
 
