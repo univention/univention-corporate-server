@@ -1,0 +1,115 @@
+#!/usr/bin/python2.6
+#
+# Univention Samba Machine Password Rotation Script
+#
+# Copyright 2013 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import tdb, struct
+import sys, os, time, traceback, subprocess
+from univention.config_registry import ConfigRegistry
+
+def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
+	machine_password_key = 'SECRETS/MACHINE_PASSWORD/%s' % windows_domain
+	previous_machine_password_key = 'SECRETS/MACHINE_PASSWORD.PREV/%s' % windows_domain
+	machine_last_change_key = 'SECRETS/MACHINE_LAST_CHANGE_TIME/%s' % windows_domain
+
+	secrets_tdb = tdb.open('/var/lib/samba/secrets.tdb')
+	secrets_tdb.transaction_start()
+	try:
+		previous_machine_password = secrets_tdb.get(machine_password_key)
+		secrets_tdb.store(previous_machine_password_key, "%s\0" % previous_machine_password)
+
+		secrets_tdb.store(machine_password_key, "%s\0" % machine_password)
+
+		seconds_since_epoch = int(time.mktime(time.localtime()))
+		seconds_since_epoch_uint32 = struct.pack("<L", seconds_since_epoch)
+		assert len(seconds_since_epoch_uint32) == 4
+		secrets_tdb.store(machine_last_change_key, seconds_since_epoch_uint32)
+
+		secrets_tdb.transaction_commit()
+	except:
+		secrets_tdb.transaction_cancel()
+		raise
+	finally:
+		secrets_tdb.close()
+
+def run_postchange():
+	windows_domain = ucr.get('windows/domain')
+	machine_password = open('/etc/machine.secret', 'r').read().strip()
+
+	try:
+		## store machine.secret in secrets.tdb
+		write_machine_secret_to_secrets_tdb(machine_password, windows_domain)
+	except:
+		traceback.print_exc()
+		return 1
+	else:
+		print "machine password stored successfully in secrets.tdb"
+
+	ldap_hostdn = ucr.get('ldap/hostdn')
+	samba_user = ucr.get('samba/user')
+	if ldap_hostdn == samba_user:
+		## store ldap bind password for passdb LDAP
+		process = subprocess.Popen(['/usr/bin/smbpasswd', '-w', machine_password])
+		process.wait()
+
+	idmap_domains = ['*']
+	samba_idmap_domains = ucr.get('samba/idmap/domains')
+	if samba_idmap_domains:
+		idmap_domains.extend(samba_idmap_domains)
+
+	for idmap_domain in idmap_domains:
+		## store secret for idmap domain
+		print "setting idmap secret for '%s' from /etc/machine.secret" % idmap_domain
+		process = subprocess.Popen(['net', 'idmap', 'secret', idmap_domain, machine_password])
+		process.wait()
+
+	for service in ('samba', 'winbind'):
+		## restart services
+		initscript = '/etc/init.d/%s' % service
+		if os.path.isfile(initscript) and os.access(initscript, os.X_OK):
+			if service == 'winbind':
+				time.sleep(3)
+			process = subprocess.Popen(['invoke-rc.d', service, 'restart'])
+			process.wait()
+
+	return 0
+
+
+if __name__ == '__main__':
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	if len(sys.argv) != 2:
+		print "%s [prechange|nochange|postchange]" % sys.argv[0]
+	else:
+		if sys.argv[1] == "postchange":
+			rc = run_postchange()
+			sys.exit(rc)
+		else:
+			sys.exit(0)

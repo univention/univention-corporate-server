@@ -26,4 +26,6 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 
 if configRegistry.get('samba/socket_options'):
 	print '\tsocket options = %s' % configRegistry['samba/socket_options']
+
+print '\tmachine password timeout\t= %d' % int(configRegistry.get('samba/machine_password_timeout', 0))
 @!@

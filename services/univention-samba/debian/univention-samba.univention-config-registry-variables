@@ -441,3 +441,9 @@ Description[de]=Über diese Variable kann der Pfad für die Netlogon-Freigabe an
 Description[en]=This variable allows configuration of an alternative directory for the netlogon share.
 Type=str
 Categories=service-samba
+
+[samba/machine_password_timeout]
+Description[de]=Intervall für die von Samba automatisch durchgeführte Rotation des Maschinenpassworts. Einheit: Sekunden (Default: 0, d.h. deaktiviert)
+Description[en]=Intreval for the automatic machine password rotation performed by Samba. Unit: seconds (default: 0, i.e. disabled)
+Type=str
+Categories=service-samba
