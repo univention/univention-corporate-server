@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.139-1) unstable; urgency=low
+
+  * Improve markup for request license dialog (Bug #30199)
+  * Changed message in progressbar during App Center operations (Bug #29761)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Mar 2013 19:45:41 +0100
+
 univention-management-console-module-appcenter (2.0.138-1) unstable; urgency=low
 
   * Use new TitlePanes when listing package changes (Bug #30172).

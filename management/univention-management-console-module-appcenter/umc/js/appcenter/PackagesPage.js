@@ -369,15 +369,15 @@ define([
 			switch(func) {
 				case 'install':
 					verb = _("install");
-					verb1 = _("installing");
+					verb1 = _("Installing");
 					break;
 				case 'uninstall':
 					verb = _("uninstall");
-					verb1 = _("uninstalling");
+					verb1 = _("Uninstalling");
 					break;
 				case 'upgrade':
 					verb = _("upgrade");
-					verb1 = _("upgrading");
+					verb1 = _("Upgrading");
 					break;
 				default:
 					console.warn(func, 'is not a known function');
@@ -415,7 +415,7 @@ define([
 					];
 				} else {
 					headline = _("Do you really want to %(verb)s %(ids)s?", {verb: verb, ids: ids.join(', ')});
-					var msg = _("You're currently %(verb)s %(ids)s", {verb: verb1, ids: ids.join(', ')});
+					var msg = _("%(verb)s %(ids)s", {verb: verb1, ids: ids.join(', ')});
 					buttons = [
 						{
 							name: 'cancel',

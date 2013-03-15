@@ -476,15 +476,15 @@ define([
 			switch(func) {
 			case 'install':
 				verb = _("install");
-				verb1 = _("installing");
+				verb1 = _("Installing");
 				break;
 			case 'uninstall':
 				verb = _("uninstall");
-				verb1 = _("uninstalling");
+				verb1 = _("Uninstalling");
 				break;
 			case 'update':
 				verb = _("upgrade");
-				verb1 = _("upgrading");
+				verb1 = _("Upgrading");
 				break;
 			default:
 				console.warn(func, 'is not a known function');
@@ -573,7 +573,7 @@ define([
 					if (confirmationRequired) {
 						dialog.confirm(container, buttons, headline);
 					} else {
-						var progressMessage = _("You're currently %(verb)s %(ids)s", {verb: verb1, ids: app.name});
+						var progressMessage = _("%(verb)s %(ids)s", {verb: verb1, ids: app.name});
 
 						this._switch_to_progress_bar(progressMessage, app, func);
 					}
@@ -934,7 +934,7 @@ define([
 						{
 							type: Text,
 							name: 'help_text',
-							content: '<div><strong>' + _('Provision of an updated UCS license key') + '</strong></div><div style="width: 535px"><p>' + _('Please provide a valid email address such that an updated license can be sent to you. This may take a few minutes. You can then upload the updated license key directly in the following license dialog.') + '</p>'
+							content: '<h2>' + _('Provision of an updated UCS license key') + '</h2><div style="width: 535px"><p>' + _('Please provide a valid email address such that an updated license can be sent to you. This may take a few minutes. You can then upload the updated license key directly in the following license dialog.') + '</p>'
 						},
 						{
 							type: TitlePane,
