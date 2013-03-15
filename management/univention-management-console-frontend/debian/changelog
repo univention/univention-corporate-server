@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.229-1) unstable; urgency=low
+
+  * Bug #30795: the handling of disabled Grid items has been corrected
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Mar 2013 13:34:31 +0100
+
 univention-management-console-frontend (2.0.228-1) unstable; urgency=low
 
   * Bug #30791: Added generic support for widgets folding out in a

@@ -1014,14 +1014,12 @@ define([
 		},
 
 		_updateDisabledItems: function() {
-			tools.forIn(this._disabledIDs, function(id, disabled) {
-				if (disabled) {
-					var idx = this.getItemIndex(id);
-					if (idx >= 0) {
-						this._grid.rowSelectCell.setDisabled(idx, disabled);
-					}
-				}
-			}, this);
+			var idx, iitem, dn;
+			for (idx = 0; idx < this._grid.rowCount; ++idx) {
+				iitem = this._grid.getItem(idx);
+				dn = iitem[this.moduleStore.idProperty];
+				this._grid.rowSelectCell.setDisabled(idx, this._disabledIDs[dn] === true);
+			}
 		},
 
 		setDisabledItem: function(_ids, disable) {
