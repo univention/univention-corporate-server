@@ -1014,12 +1014,14 @@ define([
 		},
 
 		_updateDisabledItems: function() {
-			var idx, iitem, dn;
-			for (idx = 0; idx < this._grid.rowCount; ++idx) {
-				iitem = this._grid.getItem(idx);
-				dn = iitem[this.moduleStore.idProperty];
-				this._grid.rowSelectCell.setDisabled(idx, this._disabledIDs[dn] === true);
-			}
+			tools.forIn(this._disabledIDs, function(id, disabled) {
+				// update item if its current state does not match
+				// the requested state in _disabledIDs
+				var idx = this.getItemIndex(id);
+				if (dx >= 0 && disabled != !!this._grid.rowSelectCell.disabled(idx)) {
+					this._grid.rowSelectCell.setDisabled(idx, disabled);
+				}
+			}, this);
 		},
 
 		setDisabledItem: function(_ids, disable) {
@@ -1033,7 +1035,7 @@ define([
 			var ids = tools.stringOrArray(_ids);
 			disable = undefined === disable ? true : disable;
 			array.forEach(ids, function(id) {
-				this._disabledIDs[id] = disable;
+				this._disabledIDs[id] = !!disable;
 			}, this);
 			this._updateDisabledItems();
 			this._ignoreNextFetch = true;
@@ -1065,9 +1067,21 @@ define([
 
 		clearDisabledItems: function(/*Boolean?*/ doRendering) {
 			// summary:
-			//		Enables all previously disabled items and clears internal cache.a
+			//		Enables all previously disabled items and clears internal cache.
+
+			// clear internal cache
 			this._disabledIDs = {};
-			this._updateDisabledItems();
+
+			// enable all disabled items
+			var idx;
+			for (idx = 0; idx < this._grid.rowCount; ++idx) {
+				// enable item if it is disabled
+				if (this._grid.rowSelectCell.disabled(idx) {
+					this._grid.rowSelectCell.setDisabled(idx, false);
+				}
+			}
+
+			// perform rendering if requested
 			if (undefined === doRendering || doRendering) {
 				this._ignoreNextFetch = true;
 				this._grid.render();
