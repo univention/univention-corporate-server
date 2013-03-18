@@ -50,7 +50,7 @@ ldif="$ldif_path/failed.ldif"
 univention-directory-manager computers/$server_role modify --binddn="$ldap_hostdn" --bindpwd="$(cat /etc/machine.secret)" --dn "$ldap_hostdn" --set password="$(cat /etc/machine.secret)" || fail_test 1
 
 echo "Wait until failed.ldif is created. Should take max. 6 min..."
-# "replicaion.py" --> "time.sleep(10)" --> (approx. 30*10 seconds) 5 min. waiting for failed.ldif plus 1 minute of tolerance
+# "replication.py" --> "time.sleep(10)" --> (approx. 30*10 seconds) 5 min. waiting for failed.ldif plus 1 minute of tolerance
 count=0
 while [ $count -le 360 -a ! -e "$ldif" ]
 do

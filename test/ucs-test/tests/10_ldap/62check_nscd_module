@@ -20,20 +20,17 @@ cleanup_mail_domain () {
 				echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
 			fi
 		fi
-}
+ }
 
-
-#Program code
 if ! [ -f /usr/lib/univention-directory-listener/system/nscd.py ]
 then
-        echo "nscd listener module not found"
-		fail_test 1
-		exit "$RETVAL"
+    echo "nscd listener module not found"
+	fail_test 1
+	exit "$RETVAL"
 else
 
 	trap cleanup_mail_domain EXIT
-
-	# create domain part in configured mail domains list
+        # create domain part in configured mail domains list
 	setdomain=1
 	if ! udm mail/domain create --set name=$DOMAIN ; then
 		echo "Mail/domain object already exists or could not be created. Continue testing..."
@@ -54,43 +51,43 @@ else
 	GROUPNAME="$(group_randomnameme)"
 	group_create "$GROUPNAME" || fail_test 1
 
-    sleep 10
+	sleep 10
 
 	group_adduser "$USERNAME" "$GROUPNAME" || fail_test 1
 	ERASENSCDCACHE=$(nscd --invalidate group)
 
-    sleep 30
+	sleep 30
 
 
 	MEMBERTRUE=$(group_getent $GROUPNAME $USERNAME)
-    if [ "$?" == "0" ]
-    then
-        echo "nscd listener module seems to work"
-    else
-        echo "nscd listener module doesn't seem to work"
-        fail_test 1
-    fi
+	if [ "$?" == "0" ]
+	then
+		echo "nscd listener module seems to work"
+	else
+		echo "nscd listener module doesn't seem to work"
+		fail_test 1
+	fi
 
 
 	group_removeuser $USERNAME $GROUPNAME || fail_test 1
 	ERASENSCDCACHE="$(nscd --invalidate group)"
 
-    sleep 30
+	sleep 30
 
 
 	MEMBERTRUE=$(group_getent $GROUPNAME $USERNAME)
 
-    if [ "$?" == "1" ]
-    then
-        echo "nscd listener module seems to work"
-    else
-        echo "nscd listener module doesn't seem to work"
-        fail_test 1
-    fi
+	if [ "$?" == "1" ]
+	then
+		echo "nscd listener module seems to work"
+	else
+		echo "nscd listener module doesn't seem to work"
+		fail_test 1
+	fi
 
-    user_remove $USERNAME || fail_test 1
+	user_remove $USERNAME || fail_test 1
 
-    group_remove $GROUPNAME || fail_test 1
+	group_remove $GROUPNAME || fail_test 1
 
 fi
 
