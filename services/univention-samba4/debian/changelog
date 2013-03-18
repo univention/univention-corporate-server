@@ -1,3 +1,10 @@
+univention-samba4 (2.0.43-1) unstable; urgency=low
+
+  * sysvol-cleanup.py: search for objectClass=groupPolicyContainer
+    instead of gPLink=* (Bug #27468)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Mar 2013 20:30:50 +0100
+
 univention-samba4 (2.0.42-1) unstable; urgency=low
 
   * fix ownership of ntp socket directory also during new installations

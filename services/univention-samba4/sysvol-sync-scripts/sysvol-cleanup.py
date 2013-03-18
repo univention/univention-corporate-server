@@ -47,7 +47,7 @@ def _sysvol_directory(ucr):
 def getLDAPGPOs(options):
 	ldapGPOs=[]
 	
-	p1 = subprocess.Popen(['univention-s4search', 'gPLink=*', 'gPLink'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	p1 = subprocess.Popen(['univention-s4search', 'objectClass=groupPolicyContainer', 'cn'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	res = p1.communicate()
 	if p1.returncode != 0:
 		if options.verbose:
@@ -62,16 +62,15 @@ def getLDAPGPOs(options):
 	for line in stdout.split('\n'):
 		# The result looks like this:
 		#   # record 1
-		#   dn: DC=deadlock55,DC=local
-		#   gPLink: [LDAP://CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=Syste
-		#    m,DC=deadlock55,DC=local;0]
-		#   
+		#   dn: CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=deadlock50,DC=local
+		#   cn: {31B2F340-016D-11D2-945F-00C04FB984F9}
 		#   ...
 		# 
 
-		if line.startswith('gPLink: '):
-			currentGPO = line.split('gPLink: ',1)[1]
+		if line.startswith('cn: '):
+			currentGPO = line.split('cn: ',1)[1]
 		elif line.startswith(' '):
+			# if the attributes value uses more than one line
 			currentGPO += line.split(' ', 1)[1]
 		else:
 			if currentGPO:
@@ -84,9 +83,9 @@ def getLDAPGPOs(options):
 		bracketOpen = gpo.find('{')
 		bracketClose = gpo.find('}')
 
-		if bracketOpen < 1 or bracketClose < 1:
+		if bracketOpen < 0 or bracketClose < 0:
 			if options.verbose:
-				print 'Unknown GPO format: %s' % gpo
+				print 'Unknown GPO format: "%s"' % gpo
 			continue
 
 		ldapGPOs.append( gpo[bracketOpen:bracketClose+1] )
