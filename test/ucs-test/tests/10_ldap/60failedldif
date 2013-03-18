@@ -1,9 +1,9 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Checking wheter failed.ldif is created with right permisssions.
+## desc: Checking whether failed.ldif is created with right permissions.
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
-## packages:
+## packages:xs
 ##  - univention-config
 ##  - univention-directory-manager-tools
 ##  - ldap-utils
