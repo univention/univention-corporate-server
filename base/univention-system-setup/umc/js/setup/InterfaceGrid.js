@@ -203,15 +203,15 @@ define([
 
 			if (!deleted) {
 
-				if (iface.interfaceType === 'vlan') {
-					// build the interface name from interface "." vlan_id
-					var ifacename = iface['interface'];
-					iface['interface'] = iface['interface'].split('.', 1) + '.' + String(iface.vlan_id);
-					if (ifacename !== iface['interface']) {
-						// if the interface id was renamed the identifier changed... so delete the old row
-						setTimeout(lang.hitch(this, function() { this.moduleStore.remove(ifacename); }), 0);
-					}
-				}
+//				if (iface.interfaceType === 'vlan') {
+//					// build the interface name from interface "." vlan_id
+//					var ifacename = iface['interface'];
+//					iface['interface'] = iface['interface'].split('.', 1) + '.' + String(iface.vlan_id);
+//					if (ifacename !== iface['interface']) {
+//						// if the interface id was renamed the identifier changed... so delete the old row
+//						setTimeout(lang.hitch(this, function() { this.moduleStore.remove(ifacename); }), 0);
+//					}
+//				}
 
 				if (iface.interfaceType === 'bond' || iface.interfaceType === 'br') {
 					iface.start = true;
@@ -220,25 +220,25 @@ define([
 					key = iface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
 					this.setDisabledItem(iface[key], true);
 
-					// set original iface
-					array.forEach(iface[key], lang.hitch(this, function(ikey) {
-						var iiface = this.moduleStore.get(ikey);
-						if (iiface === undefined) {
-							// the interface is not configured in the grid but exists as physical interface
-							return;
-						}
-						var filtered = {}; tools.forIn(iiface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
-						iiface.original = lang.clone(filtered);
-
-						iiface.type = 'manual';
-						iiface.start = false;
-						setTimeout(lang.hitch(this, function() {
-							// FIXME: put does not work
-							//this.moduleStore.put(iiface);
-							this.moduleStore.remove(iiface['interface']);
-							this.moduleStore.add(iiface);
-						}), 0);
-					}));
+//					// set original iface
+//					array.forEach(iface[key], lang.hitch(this, function(ikey) {
+//						var iiface = this.moduleStore.get(ikey);
+//						if (iiface === undefined) {
+//							// the interface is not configured in the grid but exists as physical interface
+//							return;
+//						}
+//						var filtered = {}; tools.forIn(iiface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
+//						iiface.original = lang.clone(filtered);
+//
+//						iiface.type = 'manual';
+//						iiface.start = false;
+//						setTimeout(lang.hitch(this, function() {
+//							// FIXME: put does not work
+//							//this.moduleStore.put(iiface);
+//							this.moduleStore.remove(iiface['interface']);
+//							this.moduleStore.add(iiface);
+//						}), 0);
+//					}));
 				}
 
 				if (deleted) {
@@ -252,16 +252,16 @@ define([
 						// enable the blocked devices
 						this.setDisabledItem(iface[key], false);
 
-						// re set original values
-						array.forEach(iface[key], lang.hitch(this, function(ikey) {
-							var iiface = this.moduleStore.get(ikey);
-							if (iiface === undefined) {
-								return; // the interface is not configured in the grid
-							}
-							if (iiface.original) {
-								setTimeout(lang.hitch(this, function() { this.moduleStore.put(iiface.original); }), 0);
-							}
-						}));
+//						// re set original values
+//						array.forEach(iface[key], lang.hitch(this, function(ikey) {
+//							var iiface = this.moduleStore.get(ikey);
+//							if (iiface === undefined) {
+//								return; // the interface is not configured in the grid
+//							}
+//							if (iiface.original) {
+//								setTimeout(lang.hitch(this, function() { this.moduleStore.put(iiface.original); }), 0);
+//							}
+//						}));
 					}
 				}
 			}

@@ -260,7 +260,7 @@ define([
 			// parse (also virtual) interfaces
 			r = /interfaces\/(([^_\/]+)(_([0-9]+))?)\/(.+)/;
 			this._unknownValues = {};
-			tools.forIn(_vals, function(ikey, typeval) {
+			tools.forIn(_vals, lang.hitch(this, function(ikey, typeval) {
 				var match = ikey.match(r);
 				if (match) {
 					var iorig = match[1]; // the whole interface string
@@ -332,7 +332,7 @@ define([
 
 					stored[iname] = temp;
 				}
-			});
+			}));
 
 			tools.forIn(stored, function(iname, ivalue, iobj) {
 
@@ -444,17 +444,17 @@ define([
 					vals['interfaces/' + iname + '/start'] = this._orgValues['interfaces/' + iname + '/type'];
 				}
 
-				if (array.some(_vals.interfaces, function(iiface) {
-					var ikey = iiface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
-					return (iiface.interfaceType === 'bond' || iiface.interfaceType === 'br') && -1 !== array.indexOf(iiface[ikey], iname);
-				})) {
-					// The device is used in a bridge or bonding, so remove its IPs
-					vals['interfaces/' + iname + '/address'] = '';
-					vals['interfaces/' + iname + '/netmask'] = '';
-
-					// assert iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type === 'manual'
-
-				} else {
+//				if (array.some(_vals.interfaces, function(iiface) {
+//					var ikey = iiface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
+//					return (iiface.interfaceType === 'bond' || iiface.interfaceType === 'br') && -1 !== array.indexOf(iiface[ikey], iname);
+//				})) {
+//					// The device is used in a bridge or bonding, so remove its IPs
+//				//	vals['interfaces/' + iname + '/address'] = '';
+//				//	vals['interfaces/' + iname + '/netmask'] = '';
+//
+//					// assert iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type === 'manual'
+//
+//				} else {
 					// the device is not used by a bridge or bonding, so we configure its IP addresses
 
 					if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
@@ -517,7 +517,7 @@ define([
 							vals['interfaces/' + iname + '/' + foobar] = this._orgValues['interfaces/' + iname + '/' + foobar];
 						}
 					}));
-				}
+//				}
 			}));
 
 			var non_eth_interfaces = array.map(array.filter(this._form._widgets.interfaces.get('value'), function(item) { return item.interfaceType !== 'eth';}), function(item) {
@@ -535,17 +535,17 @@ define([
 
 			tools.forIn(this._unknownValues, function(ikey, ival) {
 				vals[ikey] = ival;
-			}
+			});
 
 			// add empty entries for all original entries that are not used anymore
 			tools.forIn(this._orgValues, function(ikey, ival) {
 				// ----------- no br, bond, vlan
 				// set original values for every non eth interface
-				array.forEach(non_eth_interfaces, lang.hitch(this, function(iiname) {
+				array.forEach(non_eth_interfaces, function(iiname) {
 					if ((new RegExp('^interfaces/' + iiname + '/')).test(ikey)) {
 						vals[ikey] = ival;
 					}
-				}));
+				});
 				// ------------------------
 				if (!(ikey in vals)) {
 					vals[ikey] = '';
