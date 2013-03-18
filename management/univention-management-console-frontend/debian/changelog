@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.236-1) unstable; urgency=low
+
+  * Text changes (Bug #29489)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 18 Mar 2013 10:10:22 +0100
+
 univention-management-console-frontend (2.0.235-1) unstable; urgency=low
 
   * Text changes (Bug #29771)

@@ -694,7 +694,7 @@ define([
 							if (!systemJoined) {
 								this._overviewPage.addNote(_('The system seems not to be joined. Please visit <a %s>Domain Join Module</a> to join the system.', joinModuleLink));
 							} else if (!allScriptsConfigured) {
-								this._overviewPage.addNote(_('Not all installed components have been joined. Please visit <a %s>Domain Join Module</a> to join the remaining components.', joinModuleLink));
+								this._overviewPage.addNote(_('Not all installed components have been registered. Please visit <a %s>Domain Join Module</a> to register the remaining components.', joinModuleLink));
 							}
 						})
 					);
