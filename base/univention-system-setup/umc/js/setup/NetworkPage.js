@@ -561,7 +561,7 @@ define([
 			// list of all IPv4 network devices
 			var vals = this._form.get('value');
 			var ipv4Str = array.map(array.filter(vals.interfaces, function(idev) {
-				return idev.ip4.length;
+				return idev.ip4.length && idev.interfaceType === 'eth';
 			}), function(idev) {
 				if (idev.ip4dynamic) {
 					return idev['interface'] + ': ' + _('Dynamic (DHCP)');
@@ -575,7 +575,7 @@ define([
 			ipv4Str = ipv4Str.length ? '<ul><li>' + ipv4Str.join('</li><li>') + '</li></ul>' : '';
 
 			var ipv6Str = array.map(array.filter(vals.interfaces, function(idev) {
-				return idev.ip6 && idev.ip6.length;
+				return idev.ip6.length && idev.interfaceType === 'eth';
 			}), function(idev) {
 				if (idev.ip6dynamic) {
 					return idev['interface'] + ': ' + _('Autoconfiguration (SLAAC)');

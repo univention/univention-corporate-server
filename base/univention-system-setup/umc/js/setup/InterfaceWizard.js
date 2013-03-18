@@ -173,7 +173,7 @@ define([
 						visible: false
 					}, {
 						name: 'primary',
-						label: _('select this interface as the primary network interface'),
+						label: _('configure as primary network interface'),
 						type: CheckBox,
 						value: primary
 					}, {
