@@ -160,7 +160,6 @@ define([
 		_setValueAttr: function(values) {
 			// empty the grid
 			this.moduleStore.setData([]);
-			this._grid.render();
 			this.moduleStore.query().observe(lang.hitch(this, '_consistence'), true);
 
 			// FIXME: the consistence check depends on other interfaces, we have to insert all interfaces and trigger than for every interface the notification
@@ -171,6 +170,7 @@ define([
 				this.moduleStore.add(lang.mixin({'interface': id}, value));
 			}, this);
 
+			setTimeout(lang.hitch(this._grid, '_refresh'), 0):
 			this._set('value', this.get('value'));
 		},
 
