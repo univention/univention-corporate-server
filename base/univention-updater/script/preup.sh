@@ -113,23 +113,6 @@ if [ "$TERM" = "xterm" ]; then
 	fi
 fi
 
-if [ `uname -m` != "x86_64" ]; then
-	if [ "$(dpkg-query -W -f='${Status}\n' univention-kernel-image-2.6.32 2>/dev/null)" = "install ok installed" ]; then
-		paeavail=`grep "^flags" /proc/cpuinfo | grep pae`
-		if [ -n "$paeavail" ]; then
-			echo "You have the univention-kernel-image-2.6.32 installed, which is the meta package for systems"
-			echo "without the Physical Adress Extension needed to support more than 4 GB of memory."
-			echo "Starting with UCS 3.1 the standard kernel for 32 bit CPUs will always use PAE. To upgrade"
-			echo "to this kernel you need to perform the following steps before starting the update:"
-			echo
-			echo "1. univention-install univention-kernel-image-2.6.32-64gb"
-			echo "2. Reboot the system"
-			echo "3. apt-get remove univention-kernel-image-2.6.32"
-			exit 1
-		fi
-	fi
-fi
-
 # save ucr settings
 updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
 if [ ! -d "$updateLogDir" ]; then
@@ -312,12 +295,6 @@ then
 	echo "       before the update can continue."
 	exit 1
 fi
-
-# BEGIN 3.1 update mark univention-legacy-kolab-schema as manually installed Bug #28900
-if [ "$(dpkg-query -W -f='${Status}\n' univention-legacy-kolab-schema 2>/dev/null)" = "install ok installed" ]; then
-	apt-get unmarkauto univention-legacy-kolab-schema
-fi
-# END 3.1 update mark univention-legacy-kolab-schema as manually installed Bug #28900
 
 # Pre-upgrade
 preups=""
