@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.239-1) unstable; urgency=low
+
+  * Bug #30795: let Grid:_updateDisabledItems() go through all grid items in
+    order to ensure global consistency
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 18 Mar 2013 11:42:52 +0100
+
 univention-management-console-frontend (2.0.238-1) unstable; urgency=low
 
   * Bug #30795: added missing lang.hitch()

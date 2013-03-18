@@ -656,21 +656,7 @@ define([
 			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
 
 			// make sure that we update the disabled items after sorting etc.
-			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, function() {
-				// see how many items are disabled
-				var nDisabledItems = 0;
-				tools.forIn(this._disabledIDs, function() {
-					++nDisabledItems;
-				});
-
-				// only update the disabled items if necessary
-				if (nDisabledItems > 0) {
-					var disabledIDsCopy = this._disabledIDs;
-					this.clearDisabledItems();
-					this._disabledIDs = disabledIDsCopy;
-					this._updateDisabledItems();
-				}
-			})));
+			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, '_updateDisabledItems')));
 		},
 
 		_onRowClick: function( ev ) {
@@ -1030,14 +1016,27 @@ define([
 		},
 
 		_updateDisabledItems: function() {
-			tools.forIn(this._disabledIDs, function(id, disabled) {
-				// update item if its current state does not match
-				// the requested state in _disabledIDs
-				var idx = this.getItemIndex(id);
-				if (idx >= 0 && disabled != !!this._grid.rowSelectCell.disabled(idx)) {
+			// see how many items are disabled
+			var nDisabledItems = 0;
+			tools.forIn(this._disabledIDs, function() {
+				++nDisabledItems;
+			});
+			if (!nDisabledItems) {
+				// nothing to do
+				return;
+			}
+
+			// walk through all elements and make sure that their disabled state
+			// is correctly set
+			var idx, iitem, iid, disabled;
+			for (idx = 0; idx < this._grid.rowCount; ++idx) {
+				iitem = this._grid.getItem(idx);
+				iid = iitem[this.moduleStore.idProperty];
+				disabled = this._disabledIDs[iid] === true;
+				if (disabled != !!this._grid.rowSelectCell.disabled(idx)) {
 					this._grid.rowSelectCell.setDisabled(idx, disabled);
 				}
-			}, this);
+			}
 		},
 
 		setDisabledItem: function(_ids, disable) {
