@@ -656,7 +656,7 @@ define([
 			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
 
 			// make sure that we update the disabled items after sorting etc.
-			this.own(aspect.after(this._grid, '_refresh', function() {
+			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, function() {
 				// see how many items are disabled
 				var nDisabledItems = 0;
 				tools.forIn(this._disabledIDs, function() {
@@ -670,7 +670,7 @@ define([
 					this._disabledIDs = disabledIDsCopy;
 					this._updateDisabledItems();
 				}
-			}));
+			})));
 		},
 
 		_onRowClick: function( ev ) {

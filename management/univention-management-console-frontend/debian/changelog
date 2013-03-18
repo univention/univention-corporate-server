@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.238-1) unstable; urgency=low
+
+  * Bug #30795: added missing lang.hitch()
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 18 Mar 2013 11:11:39 +0100
+
 univention-management-console-frontend (2.0.237-1) unstable; urgency=low
 
   * Bug #30795: update disabled items after changing the sorting in Grid
