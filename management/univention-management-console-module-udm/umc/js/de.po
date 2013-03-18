@@ -456,7 +456,7 @@ msgstr "Name"
 
 #: umc/js/udm.js:144
 msgid "Name of the LDAP object."
-msgstr "Name des LDAP-Objektes"
+msgstr "Name des LDAP-Objekts."
 
 #: umc/js/udm.js:1359
 msgid "Netbios"
@@ -519,7 +519,7 @@ msgstr "Pfad"
 
 #: umc/js/udm.js:153
 msgid "Path of the LDAP object."
-msgstr "Pfad des LDAP-Objektes"
+msgstr "Pfad des LDAP-Objekts."
 
 #: umc/js/udm.js:1138
 #, python-format
@@ -702,7 +702,7 @@ msgstr "Der genaue %styp"
 
 #: umc/js/udm/NewObjectDialog.js:211
 msgid "The exact object type of the new LDAP object."
-msgstr "Der genaue Objekttyp des neuen LDAP-Objektes."
+msgstr "Der genaue Objekttyp des neuen LDAP-Objekts."
 
 #: umc/js/udm/DetailPage.js:1260
 msgid "The following LDAP objects could not be saved:"
@@ -751,7 +751,7 @@ msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 
 #: umc/js/udm.js:493
 msgid "The type of the LDAP object."
-msgstr "Der Type des LDAP-Objektes."
+msgstr "Der Type des LDAP-Objekts."
 
 #: umc/js/udm.js:1087 umc/js/udm.js:1100
 msgid "Type"

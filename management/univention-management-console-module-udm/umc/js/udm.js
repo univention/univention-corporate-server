@@ -68,14 +68,14 @@ define([
 ], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
-		//		Module to interface (Univention Directory Manager) UDM objects.
+		//		Module to interface (Univention Directory Manager) LDAP objects.
 		// description:
 		//		This class offers a GUI interface to query and manipulate the different types
-		//		of UDM objects. UDM objects have different properties and functions, however,
+		//		of LDAP objects. LDAP objects have different properties and functions, however,
 		//		the way they are displayed is rudimentary similar across the different types.
 		//		This class is meant to be used (a) either to interface a particular UDM type
 		//		(users, groups, computers, ...) or (b) to display a navigation interface which
-		//		shows the container hierarchy on the left side and existing UDM objects of
+		//		shows the container hierarchy on the left side and existing LDAP objects of
 		//		any type on the search list. The class' behaviour is controlled by the moduleFlavor
 		//		property (which is set automatically when available modules are queried during
 		//		the initialization).
@@ -99,7 +99,7 @@ define([
 		// internal reference to the search page
 		_searchPage: null,
 
-		// internal reference to the detail page for editing an UDM object
+		// internal reference to the detail page for editing an LDAP object
 		_detailPage: null,
 
 		// reference to a `umc/widgets/Tree` instance which is used to display the container
@@ -131,7 +131,7 @@ define([
 		// internal flag whether the advanced search is shown or not
 		_isAdvancedSearch: true,
 
-		// UDM object type name in singular and plural
+		// LDAP object type name in singular and plural
 		objectNameSingular: '',
 		objectNamePlural: '',
 

@@ -37,10 +37,10 @@ define([
 
 	return declare('umc.modules.udm.Template', null, {
 		// summary:
-		//		Class that provides a template functionality for UDM objects.
+		//		Class that provides a template functionality for LDAP objects.
 		// description:
 		//		This class registers event handlers and monitors user input in order to
-		//		update UDM object values for a specified template. Template values may
+		//		update LDAP object values for a specified template. Template values may
 		//		be static values (i.e., strings) or values containing references to other
 		//		form fields. References are indicated by using tags '<variable>'.
 		//		Additionally, modifiers can be applied to the content of a variable (e.g.,

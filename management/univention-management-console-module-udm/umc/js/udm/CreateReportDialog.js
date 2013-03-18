@@ -60,7 +60,7 @@ define([
 		// list of available reports
 		reports: null,
 
-		// UDM object type name in singular and plural
+		// LDAP object type name in singular and plural
 		objectNameSingular: '',
 		objectNamePlural: '',
 
