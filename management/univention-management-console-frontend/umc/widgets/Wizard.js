@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -137,7 +137,7 @@ define([
 			array.forEach(this.pages, function(ipage, i) {
 				if (ipage.name == pageName) {
 					idx = i;
-					return false;
+					return false; // FIXME
 				}
 			});
 			return idx;
@@ -163,7 +163,7 @@ define([
 				var w = this.getWidget( page.name, widgetName );
 				if ( undefined !== w ) {
 					widget = w;
-					return true;
+					return true; // FIXME
 				}
 			} ) );
 
@@ -263,7 +263,7 @@ define([
 			var values = {};
 			array.forEach(this.pages, function(ipage) {
 				if (this._pages[ipage.name]._form) {
-					lang.mixin(values, this._pages[ipage.name]._form.gatherFormValues());
+					lang.mixin(values, this._pages[ipage.name]._form.get('value'));
 				}
 			}, this);
 			return values;

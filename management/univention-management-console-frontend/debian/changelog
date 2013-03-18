@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.240-1) unstable; urgency=low
+
+  * revert; Bug #29210
+
+ -- Florian Best <best@univention.de>  Mon, 18 Mar 2013 12:19:30 +0100
+
 univention-management-console-frontend (2.0.239-1) unstable; urgency=low
 
   * Bug #30795: let Grid:_updateDisabledItems() go through all grid items in

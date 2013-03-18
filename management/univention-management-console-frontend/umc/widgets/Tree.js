@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -111,8 +111,7 @@ define([
 
 			// rebuild the tree
 			this.postMixInProperties();
-			// this.postCreate(); // FIXME: this would register events again
-			this._load();
+			this.postCreate(); // FIXME: this registers events again
 
 			/* reset the paths */
 			this._reloadOnLoadConnect = this.on('load', lang.hitch(this, function() {
