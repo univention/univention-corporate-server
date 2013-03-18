@@ -654,6 +654,23 @@ define([
 			// -> handle context menus when clicked in the last column
 			// -> call custom handler when clicked on any other cell
 			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
+
+			// make sure that we update the disabled items after sorting etc.
+			this.own(aspect.after(this._grid, '_refresh', function() {
+				// see how many items are disabled
+				var nDisabledItems = 0;
+				tools.forIn(this._disabledIDs, function() {
+					++nDisabledItems;
+				});
+
+				// only update the disabled items if necessary
+				if (nDisabledItems > 0) {
+					var disabledIDsCopy = this._disabledIDs;
+					this.clearDisabledItems();
+					this._disabledIDs = disabledIDsCopy;
+					this._updateDisabledItems();
+				}
+			}));
 		},
 
 		_onRowClick: function( ev ) {

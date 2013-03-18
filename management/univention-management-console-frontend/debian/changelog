@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.237-1) unstable; urgency=low
+
+  * Bug #30795: update disabled items after changing the sorting in Grid
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 18 Mar 2013 11:05:26 +0100
+
 univention-management-console-frontend (2.0.236-1) unstable; urgency=low
 
   * Text changes (Bug #29489)
