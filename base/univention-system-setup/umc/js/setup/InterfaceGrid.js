@@ -170,7 +170,7 @@ define([
 				this.moduleStore.add(lang.mixin({'interface': id}, value));
 			}, this);
 
-			setTimeout(lang.hitch(this._grid, '_refresh'), 0):
+			setTimeout(lang.hitch(this._grid, '_refresh'), 0);
 			this._set('value', this.get('value'));
 		},
 

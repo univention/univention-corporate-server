@@ -384,6 +384,20 @@ define([
 				this.set('interface', value);
 			}));
 
+			this.own(this.getWidget('ip4').watch('value', lang.hitch(this, function(attr, oldMultiValue, newMultiValue) {
+				// auto-set netmask to 255.255.255.0
+				var changeRequired = false;
+				array.forEach(newMultiValue, function(newValue) {
+					if (newValue[0] !== '' && newValue[1] === '') {
+							newValue[1] = '255.255.255.0';
+							changeRequired = true;
+					}
+				});
+				if (changeRequired) {
+					this.getWidget('ip4').set('value', newMultiValue);
+				}
+			})));
+
 		},
 
 		getAvailableInterfaces: function(format) {
