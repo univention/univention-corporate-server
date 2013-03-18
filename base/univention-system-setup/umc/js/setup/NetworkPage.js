@@ -259,6 +259,7 @@ define([
 			var stored = {};
 			// parse (also virtual) interfaces
 			r = /interfaces\/(([^_\/]+)(_([0-9]+))?)\/(.+)/;
+			this._unknownValues = {};
 			tools.forIn(_vals, function(ikey, typeval) {
 				var match = ikey.match(r);
 				if (match) {
@@ -280,7 +281,7 @@ define([
 							temp.virtual[ivirtual] = temp.virtual[ivirtual] || {};
 							temp.virtual[ivirtual][type] = typeval;
 						} else {
-							console.warn('FIXME: got unexpected variable: ' + type + '=' + typeval);
+							this._unknownValues[ikey] = typeval;
 						}
 					} else {
 						var ip6match = type.match(/ipv6\/([^\/]+)\/(.+)/);
@@ -294,7 +295,7 @@ define([
 							if (type6 == 'address' || type6 == 'prefix') {
 								temp.ip6[identifier][type6] = typeval;
 							} else {
-								console.warn('FIXME: got unexpected variable: ' + type + '=' + typeval);
+								this._unknownValues[ikey] = typeval;
 							}
 						} else if (roptions) {
 							var num = roptions[1];
@@ -319,12 +320,12 @@ define([
 							});
 
 							if (not_matched) {
-								// TODO: store it and set it back
-
+								// FIXME: don't overwrite
+								this._unknownValues[ikey] = typeval;
 							}
 						} else {
 							if (-1 === array.indexOf(['broadcast', 'network', 'order', 'mac', 'host'], type) && type.indexOf('route/') !== 0) {
-								console.warn('FIXME: got unexpected variable: ' + type + '=' + typeval);
+								this._unknownValues[ikey] = typeval;
 							}
 						}
 					}
@@ -531,6 +532,10 @@ define([
 					}
 				}));
 			});
+
+			tools.forIn(this._unknownValues, function(ikey, ival) {
+				vals[ikey] = ival;
+			}
 
 			// add empty entries for all original entries that are not used anymore
 			tools.forIn(this._orgValues, function(ikey, ival) {
