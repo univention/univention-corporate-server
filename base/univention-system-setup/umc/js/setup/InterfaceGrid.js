@@ -160,6 +160,7 @@ define([
 		_setValueAttr: function(values) {
 			// empty the grid
 			this.moduleStore.setData([]);
+			this._grid.render();
 			this.moduleStore.query().observe(lang.hitch(this, '_consistence'), true);
 
 			// FIXME: the consistence check depends on other interfaces, we have to insert all interfaces and trigger than for every interface the notification
@@ -314,7 +315,7 @@ define([
 
 		_editInterface: function(name, props) {
 			// --------don't support vlan, br, bond----------
-			if (this.moduleStore.get(props[0]).interfaceType !== 'eth') {
+			if (props[0].interfaceType !== 'eth') {
 				dialog.alert('Currently only ethernet interfaces can be modified.');
 				return;
 			}
