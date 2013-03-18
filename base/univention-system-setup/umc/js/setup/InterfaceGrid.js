@@ -195,7 +195,7 @@ define([
 			}));
 
 			if (!deleted) {
-				iface.primary = iface['interface'] === this['interfaces/primary']; // FIXME: initial value is not set
+				iface.primary = iface['interface'] === this['interfaces/primary'];
 				// TODO: insert
 			}
 			return;
@@ -241,6 +241,9 @@ define([
 				}
 
 				if (deleted) {
+					if (iface['interface'] === this['interfaces/primary']) {
+						this.set('interfaces/primary', '');
+					}
 					if (iface.interfaceType === 'bond' || iface.interfaceType === 'br') {
 						// enable the interfaces which were blocked by this interface
 						key = iface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
@@ -270,7 +273,11 @@ define([
 			// set nameservers if got from DHCP request
 			iface.nameserver && iface.nameserver.length && this.set('nameserver', iface.nameserver);
 			// set this interface as primary interface if it was selected
-			iface.primary && this.set('interfaces/primary', iface['interface']);
+			if (iface.primary) {
+				this.set('interfaces/primary', iface['interface']);
+			} else {
+				this.set('interfaces/primary', '');
+			}
 
 			// delete values which does not belong to the interface data in the grid
 			var update = !iface.create;
@@ -297,7 +304,7 @@ define([
 		_addInterface: function() {
 			// --------don't support vlan, br, bond----------
 			if (!array.some(this.physical_interfaces, lang.hitch(this, function(iface) { return -1 === array.indexOf(array.map(array.filter(this.get('value'), function(item) { return item.interfaceType === 'eth';}), function(iiface) { return iiface['interface']; }), iface); }))) {
-				dialog.alert(_('There are no interface to configure'));
+				dialog.alert(_('There are no interfaces to configure'));
 				return;
 			}
 			//------------
@@ -306,6 +313,12 @@ define([
 		},
 
 		_editInterface: function(name, props) {
+			// --------don't support vlan, br, bond----------
+			if (this.moduleStore.get(props[0]).interfaceType !== 'eth') {
+				dialog.alert('Currently only ethernet interfaces can be modified.');
+				return;
+			}
+			// ------
 			// grid action
 			return this._modifyInterface(props[0]);
 		},

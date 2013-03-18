@@ -101,7 +101,7 @@ msgstr "Kontodaten"
 
 #: umc/js/setup/InterfaceGrid.js:356
 msgid "Add a network interface"
-msgstr ""
+msgstr "Ein Netzwerkgerät hinzufügen"
 
 #: umc/js/setup/InterfaceGrid.js:121 umc/js/setup/InterfaceGrid.js:323
 msgid "Add interface"
@@ -214,7 +214,7 @@ msgstr "Konfiguration der UCS-Systemrolle"
 #: umc/js/setup/InterfaceWizard.js:239
 #, python-format
 msgid "Configure the %s network interface %s"
-msgstr ""
+msgstr "Konfiguriere das %s Netzwerkgerät %s"
 
 #: umc/js/setup.js:391 umc/js/setup/BasisPage.js:260
 msgid "Continue"
@@ -246,7 +246,7 @@ msgstr "Standard-System-Sprachdefinition"
 
 #: umc/js/setup/InterfaceGrid.js:129 umc/js/setup/InterfaceGrid.js:135
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: umc/js/setup/SystemRolePage.js:74
 msgid "Domain controller backup"
@@ -274,11 +274,11 @@ msgstr "Dynamisch (DHCP)"
 
 #: umc/js/setup/InterfaceGrid.js:113
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 #: umc/js/setup/InterfaceGrid.js:356
 msgid "Edit a network interface"
-msgstr ""
+msgstr "Bearbeite ein Netzwerkgerät"
 
 #: umc/js/setup/CertificatePage.js:108
 msgid "Email address"
@@ -467,7 +467,7 @@ msgstr "Netzwerkgerät"
 #: umc/js/setup/InterfaceGrid.js:217
 #, python-format
 msgid "Interface \"%s\" already exists"
-msgstr ""
+msgstr "Netzwerkgerät \"%s\" existiert bereits."
 
 #: umc/js/setup/InterfaceWizard.js:89
 msgid "Interface configuration"
@@ -543,7 +543,7 @@ msgstr "Member-Server"
 
 #: umc/js/setup/InterfaceWizard.js:258
 msgid "Mode"
-msgstr ""
+msgstr "Modus"
 
 #: umc/js/setup/LanguagePage.js:123
 msgid "Name"
@@ -605,7 +605,7 @@ msgstr ""
 #: umc/js/setup/InterfaceGrid.js:134
 #, python-format
 msgid "Please confirm the removal of the %d selected interfaces!"
-msgstr ""
+msgstr "Bitte Löschung der %d Netzwerkgeräte bestätigen!"
 
 #: umc/js/setup.js:592
 msgid ""
@@ -699,8 +699,8 @@ msgstr ""
 "Console unter der {linkStart}neuen Adresse{linkEnd} ein."
 
 #: umc/js/setup/InterfaceWizard.js:387
-msgid "The entered data is not valid. Please correct your input."
-msgstr ""
+msgid "The entered data is not valid. Please correct the input."
+msgstr "Die eingegeben Daten sind nicht gültig. Bitte Eingaben korrigieren."
 
 #: umc/js/setup.js:586
 msgid "The following changes will be applied to the system:"
@@ -712,7 +712,7 @@ msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
 #: umc/js/setup/InterfaceGrid.js:304
 msgid "The interface must be one of the physical interfaces: "
-msgstr ""
+msgstr "Das Netzwerkgerät muss eins der physikalischen Netzwerkgeräte sein: "
 
 #: umc/js/setup.js:797
 msgid ""
@@ -768,7 +768,7 @@ msgstr "Zeitzonen- und Tastatureinstellungen"
 
 #: umc/js/setup/InterfaceGrid.js:66
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: umc/js/setup/HelpPage.js:61
 msgid "UCS initial configuration"
@@ -805,8 +805,8 @@ msgid ""
 msgstr ""
 
 #: umc/js/setup/InterfaceWizard.js:373
-msgid "You have to specify at least one ip address or enable DHCP or SLACC."
-msgstr ""
+msgid "At least one ip address have to be specified or DHCP or SLACC have to be enabled."
+msgstr "Mindestens eine IP-Adresse muss angegeben werden oder DHCP oder SLAAC muss eingeschaltet sein."
 
 #: umc/js/setup/InterfaceWizard.js:377
 msgid "You have to specify at least two interfaces to use for this bond device"
@@ -845,7 +845,7 @@ msgstr ""
 
 #: umc/js/setup/NetworkPage.js:98 umc/js/setup/NetworkPage.js:509
 msgid "primary network interface"
-msgstr ""
+msgstr "primäres Netzwerkgerät"
 
 #~ msgid ""
 #~ "<h2>Base system</h2>A base system is an independent system. It is not a "

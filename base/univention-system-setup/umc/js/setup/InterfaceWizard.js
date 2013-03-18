@@ -71,7 +71,7 @@ define([
 
 			var ethlayout = [{
 				label: _('network device'),
-				layout: ['interface'/*, 'primary'*/]
+				layout: ['interface', 'primary']
 			}, {
 				label: _('IPv4 network devices'),
 				layout: [ 'ip4dynamic', 'dhcpquery', 'ip4' ]
@@ -161,10 +161,10 @@ define([
 							label: 'manual'
 						}, {
 							id: 'dhcp',
-							label: 'dhcp',
+							label: 'dhcp'
 						}, {
 							id: 'auto',
-							label: 'auto',
+							label: 'auto'
 						}]
 					}, {
 						name: 'start', // Autostart the interface?
@@ -440,11 +440,11 @@ define([
 			var interfaceType = this.interfaceType === 'vlan' ? 'eth' : this.interfaceType; // The pagename for vlan interfaces is eth
 
 			if (!(values.ip4.length || values.ip4dynamic || values.ip6.length || values.ip6dynamic)) {
-				dialog.alert(_('You have to specify at least one ip address or enable DHCP or SLACC.'));
+				dialog.alert(_('At least one ip address have to be specified or DHCP or SLACC have to be enabled.'));
 				return false;
 			}
 			if (interfaceType === 'bond' && values['bond-slaves'].length < 2) {
-				dialog.alert(_('You have to specify at least two interfaces to use for this bond device'));
+				dialog.alert(_('At least two interfaces have to be used for this bond device'));
 				return false;
 			}
 
@@ -454,7 +454,7 @@ define([
 			}, this);
 
 			if (!valid) {
-				dialog.alert(_('The entered data is not valid. Please correct your input.'));
+				dialog.alert(_('The entered data is not valid. Please correct the input.'));
 			}
 			return valid;
 		},

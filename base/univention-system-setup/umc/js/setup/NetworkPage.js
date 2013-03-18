@@ -84,7 +84,7 @@ define([
 				name: 'interfaces',
 				label: ''
 			}, {
-				type: ComboBox,
+				type: TextBox,
 				name: 'interfaces/primary',
 				label: _('primary network interface')
 //				depends: ['interfaces', 'gateway']
@@ -162,10 +162,10 @@ define([
 				// set nameserver from dhcp request
 				nameserverWidget.set('value', value);
 			}));
-			this._form._widgets.interfaces.watch('interfaces/primary', lang.hitch(this, function(name, old, value) {
+			this.own(this._form._widgets.interfaces.watch('interfaces/primary', lang.hitch(this, function(name, old, value) {
 				// set new primary interface
 				this._form._widgets['interfaces/primary'].set('value', value);
-			}));
+			})));
 		},
 
 		setValues: function(_vals) {
@@ -386,6 +386,8 @@ define([
 			// set all physical interfaces for the grid here, the info does not exists on grid creation
 			this._form._widgets.interfaces.set('physical_interfaces', this.physical_interfaces);
 
+			this._form._widgets.interfaces.set('interfaces/primary', vals['interfaces/primary']);
+
 			// only show forwarder for master, backup, and slave
 			this._currentRole = _vals['server/role'];
 			var showForwarder = this._currentRole == 'domaincontroller_master' || this._currentRole == 'domaincontroller_backup' || this._currentRole == 'domaincontroller_slave';
@@ -430,8 +432,16 @@ define([
 			array.forEach(_vals.interfaces, lang.hitch(this, function(iface) {
 				var iname = iface['interface'];
 
-				iface.type !== undefined && iface.type !== null && (vals['interfaces/' + iname + '/type'] = iface.type);
-				iface.start !== undefined && iface.start !== null && (vals['interfaces/' + iname + '/start'] = iface.start);
+			// no eth bond br ---
+			//	iface.type !== undefined && iface.type !== null && (vals['interfaces/' + iname + '/type'] = iface.type);
+			//	iface.start !== undefined && iface.start !== null && (vals['interfaces/' + iname + '/start'] = iface.start);
+			//	-----
+				if (this._orgValues['interfaces/' + iname + '/start'] !== undefined) {
+					vals['interfaces/' + iname + '/start'] = this._orgValues['interfaces/' + iname + '/start'];
+				}
+				if (this._orgValues['interfaces/' + iname + '/type'] !== undefined) {
+					vals['interfaces/' + iname + '/start'] = this._orgValues['interfaces/' + iname + '/type'];
+				}
 
 				if (array.some(_vals.interfaces, function(iiface) {
 					var ikey = iiface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
@@ -536,8 +546,6 @@ define([
 					vals[ikey] = '';
 				}
 			});
-
-			vals['interfaces/primary'] = this._orgValues['interfaces/primary'];
 
 			return vals;
 		},
