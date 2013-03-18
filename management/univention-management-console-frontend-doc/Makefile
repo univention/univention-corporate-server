@@ -52,18 +52,20 @@ api-viewer:
 univention-dojo: /usr/share/univention-dojo
 	cp -r $< $@
 	cd $@ && patch -p0 < ../Selection.patch
+	# workarounds for referenced external modules
+	for imodule in umc/modules/udm/LicenseDialog.js https://www.piwik.univention.de/piwik.js; do \
+		mkdir -p univention-dojo/$${imodule%/*}; \
+		echo 'define([],function(){});' > univention-dojo/$${imodule}; \
+	done
+	# remove test directories
+	rm -rf univention-dojo/dgrid/test univention-dojo/put-selector/test univention-dojo/xstyle/test
 
 univention-dojo/umc: /usr/share/univention-management-console-frontend-src/umc
 	cp -r $< $@
 
-# this is a workaround: umc.app require()s this file, so we add an empty one
-univention-dojo/umc/modules/udm/LicenseDialog.js:
-	mkdir -p univention-dojo/umc/modules/udm
-	echo 'define([],function(){});' > $@
-
 univention-management-console-frontend-doc: data
 
-data: js-doc-parse univention-dojo univention-dojo/umc univention-dojo/umc/modules/udm/LicenseDialog.js
+data: js-doc-parse univention-dojo univention-dojo/umc
 	#creating details.xml and tree.json
 	install -m755 -d 'data/1.8'
 	cd $< && \
