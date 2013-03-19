@@ -682,8 +682,8 @@ define([
 				// check join status
 				if (this.getModule('join')) {
 					all([
-						tools.umcpCommand('join/joined'),
-						tools.umcpCommand('join/scripts/query')
+						tools.umcpCommand('join/joined', null, false),
+						tools.umcpCommand('join/scripts/query', null, false)
 					]).then(
 						lang.hitch(this, function(data) {
 							var systemJoined = data[0].result;
