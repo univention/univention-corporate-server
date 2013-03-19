@@ -308,7 +308,7 @@ if __name__ == '__main__':
 			if ex.errno != errno.EEXIST:
 				raise
 
-		print dedent("""
+		print dedent(r"""
 		The local repository has been created.
 
 		The local host has been modified to use this local repository.  Other hosts
