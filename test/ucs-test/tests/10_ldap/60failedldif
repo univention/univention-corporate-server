@@ -3,7 +3,7 @@
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
-## packages:xs
+## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
 ##  - ldap-utils
