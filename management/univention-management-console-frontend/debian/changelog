@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.241-1) unstable; urgency=low
+
+  * Bug #25753: adjusted feedback URL, send current open tab as query string
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 19 Mar 2013 12:30:19 +0100
+
 univention-management-console-frontend (2.0.240-1) unstable; urgency=low
 
   * revert; Bug #29210

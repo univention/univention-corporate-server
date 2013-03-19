@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console window getQuery*/
+/*global define require console window getQuery setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -1006,14 +1006,12 @@ define([
 			}));
 			this._helpMenu.addChild(new MenuItem({
 				label: _('Feedback'),
-				onClick : function() {
+				onClick : lang.hitch(this, function() {
 					topic.publish('/umc/actions', 'menu-help', 'feedback');
-					var url = lang.replace(_('umcFeedbackUrl'), [
-						kernel.locale.indexOf('de-') === 0 ? 'de' : 'en'
-					]);
+					var url = _('umcFeedbackUrl') + '?umc=' + this._tabContainer.get('selectedChildWidget').title;
 					var w = window.open(url, 'umcFeedback');
 					w.focus();
-				}
+				})
 			}));
 			this._helpMenu.addChild(new MenuItem({
 				label: _('About UMC'),

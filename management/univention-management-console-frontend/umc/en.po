@@ -560,7 +560,7 @@ msgstr ""
 
 #: umc/app.js:1008
 msgid "umcFeedbackUrl"
-msgstr "http://www.univention.de/en/products/maintenance/product-feedback/"
+msgstr "http://www.univention.com/feedback"
 
 #: umc/app.js:591
 msgid "umcHostInfo"

@@ -650,7 +650,7 @@ msgstr "Schritte, um den Fehler zu reproduzieren"
 
 #: umc/app.js:1011
 msgid "umcFeedbackUrl"
-msgstr "http://www.univention.de/produkte/maintenance/produkt-feedback/"
+msgstr "http://www.univention.de/feedback"
 
 #: umc/app.js:595
 msgid "umcHostInfo"
