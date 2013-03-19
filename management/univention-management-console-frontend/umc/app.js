@@ -696,7 +696,9 @@ define([
 							} else if (!allScriptsConfigured) {
 								this._overviewPage.addNote(_('Not all installed components have been registered. Please visit <a %s>Domain Join Module</a> to register the remaining components.', joinModuleLink));
 							}
-						})
+						}), function() {
+							console.log('WARNING: An error occurred while verifying the join state. Ignoring error.');
+						}
 					);
 				}
 

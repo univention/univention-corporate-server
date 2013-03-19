@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.242-1) unstable; urgency=low
+
+  * Add error handling (Bug #29489)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 19 Mar 2013 14:07:34 +0100
+
 univention-management-console-frontend (2.0.241-1) unstable; urgency=low
 
   * Bug #25753: adjusted feedback URL, send current open tab as query string
