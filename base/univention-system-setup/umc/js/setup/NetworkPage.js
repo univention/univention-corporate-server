@@ -237,7 +237,7 @@ define([
 						ip4dynamic: null,
 						ip6dynamic: null,
 						start: null, // true|false
-//						type: null, // static|dhcp|manual
+						type: null, // static|dhcp|manual
 						primary: primary,
 
 						// for vlan devices
@@ -276,16 +276,19 @@ define([
 					temp.options = temp.options || {};
 
 					if (virtual) {
-						// TODO: check if there are other values which can be set on an virtual interface
+						// virtual device
 						if (type == 'address' || type == 'netmask') {
 							temp.virtual[ivirtual] = temp.virtual[ivirtual] || {};
 							temp.virtual[ivirtual][type] = typeval;
 						} else {
+							// unknown key
 							this._unknownValues[ikey] = typeval;
 						}
 					} else {
+						// real device
 						var ip6match = type.match(/ipv6\/([^\/]+)\/(.+)/);
 						var roptions = type.match(/options\/([0-9]+)$/);
+
 						if (array.indexOf(['address', 'netmask', 'type', 'start', 'ipv6/acceptRA'], type) !== -1) {
 							temp.data[type] = typeval;
 						} else if (ip6match) {
@@ -295,6 +298,7 @@ define([
 							if (type6 == 'address' || type6 == 'prefix') {
 								temp.ip6[identifier][type6] = typeval;
 							} else {
+								// unknown key
 								this._unknownValues[ikey] = typeval;
 							}
 						} else if (roptions) {
@@ -320,13 +324,12 @@ define([
 							});
 
 							if (not_matched) {
-								// FIXME: don't overwrite
+								// FIXME: don't overwrite; we have to store the /$id/ also to not rename the UCR variable
 								this._unknownValues[ikey] = typeval;
 							}
 						} else {
-							if (-1 === array.indexOf(['broadcast', 'network', 'order', 'mac', 'host'], type) && type.indexOf('route/') !== 0) {
-								this._unknownValues[ikey] = typeval;
-							}
+							// unknown key
+							this._unknownValues[ikey] = typeval;
 						}
 					}
 
@@ -346,12 +349,12 @@ define([
 				}
 
 				// DHCP
-				if (ivalue.data.type == 'dhcp') {
-					interfaces[iname].ip4dynamic = true;
-				} else {
+				interfaces[iname].ip4dynamic = (ivalue.data.type === 'dhcp');
+
+				if (ivalue.data.address) {
 					// set primary IP address
-					interfaces[iname].ip4[0][0] = ivalue.data.address || "";
-					interfaces[iname].ip4[0][1] = ivalue.data.netmask || '255.255.255.0';
+					interfaces[iname].ip4[0][0] = ivalue.data.address;
+					interfaces[iname].ip4[0][1] = ivalue.data.netmask || "";
 				}
 
 				// set virtual IP addresses
@@ -433,6 +436,18 @@ define([
 			array.forEach(_vals.interfaces, lang.hitch(this, function(iface) {
 				var iname = iface['interface'];
 
+				// restore original values for every non eth interface
+				if (iface.interfaceType !== 'eth') {
+					tools.forIn(this._orgValues, function(ikey, ival) {
+						// set original values for every non eth interface
+						if ((new RegExp('^interfaces/' + iname + '/')).test(ikey)) {
+							vals[ikey] = ival;
+						}
+					});
+
+					return;
+				}
+
 			// no eth bond br ---
 			//	iface.type !== undefined && iface.type !== null && (vals['interfaces/' + iname + '/type'] = iface.type);
 			//	iface.start !== undefined && iface.start !== null && (vals['interfaces/' + iname + '/start'] = iface.start);
@@ -441,7 +456,7 @@ define([
 					vals['interfaces/' + iname + '/start'] = this._orgValues['interfaces/' + iname + '/start'];
 				}
 				if (this._orgValues['interfaces/' + iname + '/type'] !== undefined) {
-					vals['interfaces/' + iname + '/start'] = this._orgValues['interfaces/' + iname + '/type'];
+					vals['interfaces/' + iname + '/type'] = this._orgValues['interfaces/' + iname + '/type'];
 				}
 
 //				if (array.some(_vals.interfaces, function(iiface) {
@@ -457,96 +472,72 @@ define([
 //				} else {
 					// the device is not used by a bridge or bonding, so we configure its IP addresses
 
-					if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
-						// for bonding and bridging this must/should be set
-						// for eth and vlan we don't want to overwrite existing settings
-						vals['interfaces/' + iname + '/start'] = iface.start;
-						if (iface.interfaceType === 'br') {
-							// FIXME: this could overwrite additional existing options
-							var bp = iface.bridge_ports.length ? iface.bridge_ports.join(' ') : 'none';
-							vals['interfaces/' + iname + '/options/0'] = 'bridge_ports ' + bp;
-							vals['interfaces/' + iname + '/options/1'] = 'bridge_fd ' + iface.bridge_fd;
-						} else if(iface.interfaceType === 'bond') {
-							vals['interfaces/' + iname + '/options/0'] = 'bond-slaves ' + iface['bond-slaves'].join(' ');
-							vals['interfaces/' + iname + '/options/1'] = 'bond-primary ' + iface['bond-primary'].join(' ');
-							vals['interfaces/' + iname + '/options/2'] = 'bond-mode ' + iface['bond-mode'];
-							vals['interfaces/' + iname + '/options/3'] = 'miimon ' + iface.miimon;
-						}
-					}
+//					if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
+//						// for bonding and bridging this must/should be set
+//						// for eth and vlan we don't want to overwrite existing settings
+//						vals['interfaces/' + iname + '/start'] = iface.start;
+//						if (iface.interfaceType === 'br') {
+//							// FIXME: this could overwrite additional existing options
+//							var bp = iface.bridge_ports.length ? iface.bridge_ports.join(' ') : 'none';
+//							vals['interfaces/' + iname + '/options/0'] = 'bridge_ports ' + bp;
+//							vals['interfaces/' + iname + '/options/1'] = 'bridge_fd ' + iface.bridge_fd;
+//						} else if(iface.interfaceType === 'bond') {
+//							vals['interfaces/' + iname + '/options/0'] = 'bond-slaves ' + iface['bond-slaves'].join(' ');
+//							vals['interfaces/' + iname + '/options/1'] = 'bond-primary ' + iface['bond-primary'].join(' ');
+//							vals['interfaces/' + iname + '/options/2'] = 'bond-mode ' + iface['bond-mode'];
+//							vals['interfaces/' + iname + '/options/3'] = 'miimon ' + iface.miimon;
+//						}
+//					}
 
 					if (iface.ip4dynamic) {
 						// DHCP
 						vals['interfaces/' + iname + '/type'] = 'dhcp';
-					} else if (iface.ip4.length) {
-						// IPv4
-						array.forEach(iface.ip4, function(virtval, i) {
-							var iaddress = virtval[0];
-							var imask = virtval[1];
-							if (i === 0) {
-								// primary IP address
-								vals['interfaces/' + iname + '/address'] = iaddress;
-								vals['interfaces/' + iname + '/netmask'] = imask;
-							} else {
-								// virtual ip adresses
-								vals['interfaces/' + iname + '_' + i + '/address'] = iaddress;
-								vals['interfaces/' + iname + '_' + i + '/netmask'] = imask;
-							}
-						});
 					}
+
+					// IPv4
+					array.forEach(iface.ip4, function(virtval, i) {
+						var iaddress = virtval[0];
+						var imask = virtval[1];
+						if (!iaddress) {
+							// empty MultiInput value
+							return;
+						}
+						if (i === 0) {
+							// primary IP address
+							vals['interfaces/' + iname + '/address'] = iaddress;
+							vals['interfaces/' + iname + '/netmask'] = imask;
+						} else {
+							// virtual ip adresses
+							vals['interfaces/' + iname + '_' + i + '/address'] = iaddress;
+							vals['interfaces/' + iname + '_' + i + '/netmask'] = imask;
+						}
+					});
 
 					// IPv6 SLAAC
 					vals['interfaces/' + iname + '/ipv6/acceptRA'] = iface.ip6dynamic ? 'true' : 'false';
 
-					if (!iface.ip6dynamic) {
-						// IPv6
-						array.forEach(iface.ip6, function(ip6val) {
-							var iaddress = ip6val[0];
-							var iprefix = ip6val[1];
-							var iidentifier = ip6val[2];
-							if (!iidentifier) {
-								return;
-							}
-							vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/address'] = iaddress;
-							vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/prefix'] = iprefix;
-						});
-					}
-
-					// compatibility workarounds
-					array.forEach(['broadcast', 'network', 'hosts', 'mac'], lang.hitch(this, function(foobar) {
-						if (this._orgValues['interfaces/' + iname + '/' + foobar]) {
-							vals['interfaces/' + iname + '/' + foobar] = this._orgValues['interfaces/' + iname + '/' + foobar];
+					// IPv6
+					array.forEach(iface.ip6, function(ip6val) {
+						var iaddress = ip6val[0];
+						var iprefix = ip6val[1];
+						var iidentifier = ip6val[2];
+						if (!iidentifier) {
+							// empty MultiInput value
+							return;
 						}
-					}));
+						vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/address'] = iaddress;
+						vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/prefix'] = iprefix;
+					});
 //				}
 			}));
 
-			var non_eth_interfaces = array.map(array.filter(this._form._widgets.interfaces.get('value'), function(item) { return item.interfaceType !== 'eth';}), function(item) {
-				return item['interface'];
-			});
-
-			tools.forIn(vals, function(ikey) {
-				// remove every non eth interface
-				array.forEach(non_eth_interfaces, lang.hitch(this, function(iiname) {
-					if ((new RegExp('^interfaces/' + iiname + '/')).test(ikey)) {
-						delete vals[ikey];
-					}
-				}));
-			});
-
+			// restore original values of unknown UCR variables
 			tools.forIn(this._unknownValues, function(ikey, ival) {
 				vals[ikey] = ival;
 			});
 
 			// add empty entries for all original entries that are not used anymore
 			tools.forIn(this._orgValues, function(ikey, ival) {
-				// ----------- no br, bond, vlan
-				// set original values for every non eth interface
-				array.forEach(non_eth_interfaces, function(iiname) {
-					if ((new RegExp('^interfaces/' + iiname + '/')).test(ikey)) {
-						vals[ikey] = ival;
-					}
-				});
-				// ------------------------
 				if (!(ikey in vals)) {
 					vals[ikey] = '';
 				}
