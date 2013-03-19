@@ -1,3 +1,9 @@
+univention-management-console-frontend-doc (6.0.11-1) unstable; urgency=low
+
+  * Bug #30741: fixed external dependency
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 19 Mar 2013 15:51:17 +0100
+
 univention-management-console-frontend-doc (6.0.10-1) unstable; urgency=low
 
   * Bug #30741: make sure that umc widgets are also parsed

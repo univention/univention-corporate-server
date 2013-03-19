@@ -54,7 +54,7 @@ univention-dojo: /usr/share/univention-dojo
 	cp -r /usr/share/univention-management-console-frontend-src/umc $@
 	cd $@ && patch -p0 < ../Selection.patch
 	# workarounds for referenced external modules
-	for imodule in umc/modules/udm/LicenseDialog.js https://www.piwik.univention.de/piwik.js; do \
+	for imodule in umc/modules/udm/LicenseDialog.js https://www.piwik.univention.de/piwik.js.js; do \
 		mkdir -p univention-dojo/$${imodule%/*}; \
 		echo 'define([],function(){});' > univention-dojo/$${imodule}; \
 	done
