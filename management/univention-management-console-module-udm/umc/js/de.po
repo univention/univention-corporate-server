@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-03-12 11:43+0100\n"
+"POT-Creation-Date: 2013-03-19 18:42+0100\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,17 +43,21 @@ msgstr "%s-Vorlage"
 msgid "%s type"
 msgstr "%styp"
 
-#: umc/js/udm.js:827
+#: umc/js/udm.js:829
 msgid "(Advanced options)"
 msgstr "(Erweiterte Optionen)"
 
-#: umc/js/udm.js:817
+#: umc/js/udm.js:819
 msgid "(Simplified options)"
 msgstr "(Vereinfachte Optionen)"
 
 #: umc/js/udm/DetailPage.js:391
 msgid "(multi-edit)"
 msgstr "(Mehrfachbearbeitung)"
+
+#: umc/js/udm/LicenseDialog.js:188
+msgid "<b>License type:</b> GPL"
+msgstr "<b>Lizenztyp:</b> GPL"
 
 #: umc/js/udm/CreateReportDialog.js:134
 #, python-format
@@ -113,15 +117,15 @@ msgstr ""
 msgid "A template defines rules for default object properties."
 msgstr "Eine Vorlage definiert Regeln für Vorgabewerte eines neuen Objektes."
 
-#: umc/js/udm.js:1338
+#: umc/js/udm.js:1341
 msgid "Access Rights"
 msgstr "Zugriffsrechte"
 
-#: umc/js/udm.js:1337
+#: umc/js/udm.js:1340
 msgid "Access control"
 msgstr "Zugriffskontrolle"
 
-#: umc/js/udm.js:1339
+#: umc/js/udm.js:1342
 msgid "Account"
 msgstr "Konto"
 
@@ -155,7 +159,7 @@ msgstr "Alle Container"
 msgid "All types"
 msgstr "Alle Objekttypen"
 
-#: umc/js/udm.js:1340
+#: umc/js/udm.js:1343
 msgid "Allow/Deny"
 msgstr "Erlauben/Verbieten"
 
@@ -167,16 +171,16 @@ msgstr "Zurück zum LDAP-Verzeichnisbaum"
 msgid "Back to search"
 msgstr "Zurück zur Suche"
 
-#: umc/js/udm.js:1341
+#: umc/js/udm.js:1344
 msgid "Boot"
 msgstr "Boot"
 
-#: umc/js/udm.js:931 umc/js/udm.js:1210 umc/js/udm/DetailPage.js:611
+#: umc/js/udm.js:934 umc/js/udm.js:1213 umc/js/udm/DetailPage.js:611
 #: umc/js/udm/CreateReportDialog.js:112
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/udm.js:1342
+#: umc/js/udm.js:1345
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -193,7 +197,7 @@ msgstr "Clients"
 msgid "Close"
 msgstr "Schließen"
 
-#: umc/js/udm.js:1343
+#: umc/js/udm.js:1346
 msgid "Contact"
 msgstr "Kontakt"
 
@@ -218,7 +222,7 @@ msgstr "%s anlegen"
 msgid "Create new policy"
 msgstr "Neue Richtlinie"
 
-#: umc/js/udm.js:861
+#: umc/js/udm.js:864
 msgid "Create report"
 msgstr "Report erstellen"
 
@@ -239,11 +243,11 @@ msgstr "DHCP-Objekt"
 msgid "DHCP objects"
 msgstr "DHCP-Objekte"
 
-#: umc/js/udm.js:1345
+#: umc/js/udm.js:1348
 msgid "DHCP statements"
 msgstr "DHCP Verschiedenes"
 
-#: umc/js/udm.js:1346
+#: umc/js/udm.js:1349
 msgid "DNS Update"
 msgstr "DDNS Aktualisierungen"
 
@@ -263,7 +267,7 @@ msgstr "DVS Clients"
 msgid "DVS Users"
 msgstr "DVS Benutzer"
 
-#: umc/js/udm.js:1344
+#: umc/js/udm.js:1347
 msgid "Data type"
 msgstr "Datentyp"
 
@@ -271,15 +275,15 @@ msgstr "Datentyp"
 msgid "Default properties"
 msgstr "Standardeigenschaften"
 
-#: umc/js/udm.js:359 umc/js/udm.js:650 umc/js/udm.js:1214
+#: umc/js/udm.js:359 umc/js/udm.js:652 umc/js/udm.js:1217
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/udm.js:1222
+#: umc/js/udm.js:1225
 msgid "Delete objects"
 msgstr "Objekte löschen"
 
-#: umc/js/udm.js:1204
+#: umc/js/udm.js:1207
 msgid "Delete referring objects."
 msgstr "Zugehörige Objekte löschen."
 
@@ -292,7 +296,7 @@ msgstr "Die ausgewählten %s löschen"
 msgid "Desktops"
 msgstr "Desktops"
 
-#: umc/js/udm.js:313 umc/js/udm.js:643
+#: umc/js/udm.js:313 umc/js/udm.js:645
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -305,7 +309,7 @@ msgstr "Bearbeiten in neuem Reiter"
 msgid "Edit the %s."
 msgstr "%s bearbeiten"
 
-#: umc/js/udm.js:1347
+#: umc/js/udm.js:1350
 msgid "Employee"
 msgstr "Mitarbeiter"
 
@@ -321,7 +325,7 @@ msgstr "Ablaufdatum"
 msgid "Failed to import license"
 msgstr "Dier Lizenzimport ist fehlgeschlagen"
 
-#: umc/js/udm.js:965
+#: umc/js/udm.js:968
 msgid "Failed to move the following objects:"
 msgstr "Die folgenden Objekte konnten nicht verschoben werden:"
 
@@ -329,19 +333,19 @@ msgstr "Die folgenden Objekte konnten nicht verschoben werden:"
 msgid "Failed to upload certificate"
 msgstr "Fehler beim Hochladen des Zertifikates"
 
-#: umc/js/udm.js:1348
+#: umc/js/udm.js:1351
 msgid "General"
 msgstr "Allgemein"
 
-#: umc/js/udm.js:1349
+#: umc/js/udm.js:1352
 msgid "Groups"
 msgstr "Gruppen"
 
-#: umc/js/udm.js:1350
+#: umc/js/udm.js:1353
 msgid "Hosts"
 msgstr "enthaltene Rechner"
 
-#: umc/js/udm.js:1351
+#: umc/js/udm.js:1354
 msgid "IP addresses"
 msgstr "IP-Adressen"
 
@@ -349,7 +353,7 @@ msgstr "IP-Adressen"
 msgid "Inherited"
 msgstr "Ererbt"
 
-#: umc/js/udm.js:1352
+#: umc/js/udm.js:1355
 msgid "KDE Profiles"
 msgstr "KDE-Profile"
 
@@ -357,7 +361,7 @@ msgstr "KDE-Profile"
 msgid "Key ID"
 msgstr "Key ID"
 
-#: umc/js/udm.js:1353
+#: umc/js/udm.js:1356
 msgid "LDAP"
 msgstr "LDAP"
 
@@ -373,11 +377,11 @@ msgstr "LDAP-Objekt"
 msgid "LDAP objects"
 msgstr "LDAP-Objekte"
 
-#: umc/js/udm.js:1354
+#: umc/js/udm.js:1357
 msgid "Lease Time"
 msgstr "Lease-Zeit"
 
-#: umc/js/udm.js:1355
+#: umc/js/udm.js:1358
 msgid "License"
 msgstr "Lizenz"
 
@@ -397,7 +401,7 @@ msgstr "Lizenz hochladen"
 msgid "License was imported successfully"
 msgstr "Die Lizenz wurde erfolgreich importiert"
 
-#: umc/js/udm.js:1356
+#: umc/js/udm.js:1359
 msgid "Linux"
 msgstr "Linux/UNIX"
 
@@ -413,11 +417,11 @@ msgstr ""
 "\"bearbeiten\" wird ein neuer Reiter mit der entsprechenden Richtlinie "
 "geöffnet."
 
-#: umc/js/udm.js:1358
+#: umc/js/udm.js:1361
 msgid "MX records"
 msgstr "MX Records"
 
-#: umc/js/udm.js:1357
+#: umc/js/udm.js:1360
 msgid "Mail"
 msgstr "Mail"
 
@@ -425,7 +429,7 @@ msgstr "Mail"
 msgid "Managed Clients"
 msgstr "Managed Clients"
 
-#: umc/js/udm.js:934
+#: umc/js/udm.js:937
 #, python-format
 msgid "Move %s"
 msgstr "%s verschieben"
@@ -434,11 +438,11 @@ msgstr "%s verschieben"
 msgid "Move objects to a different LDAP position."
 msgstr "Objekte an eine andere LDAP-Position verschieben."
 
-#: umc/js/udm.js:372 umc/js/udm.js:657
+#: umc/js/udm.js:372 umc/js/udm.js:659
 msgid "Move to..."
 msgstr "Verschieben nach..."
 
-#: umc/js/udm.js:1360
+#: umc/js/udm.js:1363
 msgid "NFS general"
 msgstr "NFS-Allgemein"
 
@@ -458,7 +462,7 @@ msgstr "Name"
 msgid "Name of the LDAP object."
 msgstr "Name des LDAP-Objekts."
 
-#: umc/js/udm.js:1359
+#: umc/js/udm.js:1362
 msgid "Netbios"
 msgstr "Netbios"
 
@@ -472,7 +476,7 @@ msgstr "%s anlegen"
 msgid "No %(objPlural)s could be found"
 msgstr "Es wurden keine %(objPlural)s gefunden"
 
-#: umc/js/udm.js:944
+#: umc/js/udm.js:947
 msgid "No LDAP position has been selected."
 msgstr "Kein LDAP-Position wurde ausgewählt."
 
@@ -484,7 +488,7 @@ msgstr "Keine Änderungen wurden vorgenommen."
 msgid "None"
 msgstr "Kein"
 
-#: umc/js/udm.js:917
+#: umc/js/udm.js:920
 msgid "Note that moving a container can take some time."
 msgstr "Das Verschieben von Containern kann einige Zeit in Anspruch nehmen."
 
@@ -509,7 +513,7 @@ msgstr "Optionen für grundlegende LDAP-Objekt-Eigenschaften"
 msgid "Overwrite"
 msgstr "Überschreiben"
 
-#: umc/js/udm.js:582
+#: umc/js/udm.js:584
 msgid "Parent container"
 msgstr "Übergeordneter Container"
 
@@ -521,17 +525,17 @@ msgstr "Pfad"
 msgid "Path of the LDAP object."
 msgstr "Pfad des LDAP-Objekts."
 
-#: umc/js/udm.js:1138
+#: umc/js/udm.js:1141
 #, python-format
 msgid "Please confirm the removal of %s:"
 msgstr "Bitte bestätigen Sie das Löschen von %s:"
 
-#: umc/js/udm.js:1136
+#: umc/js/udm.js:1139
 #, python-format
 msgid "Please confirm the removal of the %d selected %s!"
 msgstr "Bitte bestätigen Sie das Löschen der %d ausgewählten %s!"
 
-#: umc/js/udm.js:1240
+#: umc/js/udm.js:1243
 msgid ""
 "Please select a container in the LDAP directory tree. The new object will be "
 "placed at this location."
@@ -539,13 +543,13 @@ msgstr ""
 "Bitte wählen Sie einen Container aus dem LDAP-Verzeichnisbaum aus. Das neue "
 "Objekte wird an dieser Stelle erzeugt."
 
-#: umc/js/udm.js:895
+#: umc/js/udm.js:898
 #, python-format
 msgid "Please select an LDAP position to move %d selected %s to:"
 msgstr ""
 "Bitte wählen Sie eine LDAP-Position aus, an die %d %s verschoben werden:"
 
-#: umc/js/udm.js:889
+#: umc/js/udm.js:892
 #, python-format
 msgid "Please select an LDAP position to move %s:"
 msgstr "Bitte wählen Sie eine LDAP-Position aus für das Verschieben von %s:"
@@ -555,7 +559,7 @@ msgstr "Bitte wählen Sie eine LDAP-Position aus für das Verschieben von %s:"
 msgid "Position: <i>%(path)s</i>"
 msgstr "Position: <i>%(path)s</i>"
 
-#: umc/js/udm.js:1361
+#: umc/js/udm.js:1364
 msgid "Primary Groups"
 msgstr "Primäre Gruppen"
 
@@ -572,7 +576,7 @@ msgstr "Eigenschaft"
 msgid "Property value"
 msgstr "Eigenschaftswert"
 
-#: umc/js/udm.js:663
+#: umc/js/udm.js:665
 msgid "Reload"
 msgstr "Neu laden"
 
@@ -597,7 +601,7 @@ msgstr "Report für %s"
 msgid "Report has been created"
 msgstr "Report wurde erstellt"
 
-#: umc/js/udm.js:1362
+#: umc/js/udm.js:1365
 msgid "Samba general"
 msgstr "Samba-Allgemein"
 
@@ -641,19 +645,19 @@ msgstr "Server mit Premiumsupport"
 msgid "Servers with standard support"
 msgstr "Server mit Standardsupport"
 
-#: umc/js/udm.js:746
+#: umc/js/udm.js:748
 msgid "Show all DHCP services"
 msgstr "Alle DHCP-Dienste zeigen"
 
-#: umc/js/udm.js:748
+#: umc/js/udm.js:750
 msgid "Show all DNS zones"
 msgstr "Alle DNS-Zonen zeigen"
 
-#: umc/js/udm.js:744
+#: umc/js/udm.js:746
 msgid "Show all superordinates"
 msgstr "Alle übergeordnete Objekte zeigen"
 
-#: umc/js/udm.js:1363
+#: umc/js/udm.js:1366
 msgid "Start of authority"
 msgstr "Start of Authority Eintrag"
 
@@ -661,7 +665,7 @@ msgstr "Start of Authority Eintrag"
 msgid "Superordinate"
 msgstr "Übergeordnetes Objekt"
 
-#: umc/js/udm.js:1364
+#: umc/js/udm.js:1367
 msgid "TXT records"
 msgstr "TXT Records"
 
@@ -708,7 +712,7 @@ msgstr "Der genaue Objekttyp des neuen LDAP-Objekts."
 msgid "The following LDAP objects could not be saved:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gespeichert werden:"
 
-#: umc/js/udm.js:1172
+#: umc/js/udm.js:1175
 msgid "The following object(s) could not be deleted:"
 msgstr "Die/das folgende(n) Objekt(e) konnte(n) nicht gelöscht werden:"
 
@@ -753,7 +757,7 @@ msgstr "Das übergeordnete Objekt, für welches die Suche ausgeführt wird."
 msgid "The type of the LDAP object."
 msgstr "Der Type des LDAP-Objekts."
 
-#: umc/js/udm.js:1087 umc/js/udm.js:1100
+#: umc/js/udm.js:1090 umc/js/udm.js:1103
 msgid "Type"
 msgstr "Typ"
 
@@ -762,19 +766,15 @@ msgstr "Typ"
 msgid "Type: <i>%(type)s</i>"
 msgstr "Typ: <i>%(type)s</i>"
 
-#: umc/js/udm/LicenseDialog.js:188
-msgid "Type: GPL"
-msgstr "Typ: GPL"
-
 #: umc/js/udm/LicenseDialog.js:153
 msgid "UCS license"
 msgstr "UCS Lizenz"
 
-#: umc/js/udm.js:1365
+#: umc/js/udm.js:1368
 msgid "UDM General"
 msgstr "UDM Allgemein"
 
-#: umc/js/udm.js:1366
+#: umc/js/udm.js:1369
 msgid "UDM Web"
 msgstr "UDM Web"
 
@@ -790,11 +790,11 @@ msgstr "Hochladen"
 msgid "Upload certificate"
 msgstr "Zertifikat hochladen"
 
-#: umc/js/udm.js:1367
+#: umc/js/udm.js:1370
 msgid "User Account"
 msgstr "Benutzer-Konto"
 
-#: umc/js/udm.js:1368
+#: umc/js/udm.js:1371
 msgid "User Contact"
 msgstr "Benutzer-Kontakt"
 
@@ -806,7 +806,7 @@ msgstr "Benutzerkonten"
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
-#: umc/js/udm.js:1369
+#: umc/js/udm.js:1372
 msgid "Windows"
 msgstr "Windows"
 
@@ -821,11 +821,11 @@ msgstr ""
 
 #: umc/js/udm/LicenseDialog.js:189
 msgid ""
-"You are using a GPL license. Thus, you are not eligible to support and "
-"maintenance."
+"You are using a GPL license which is not eligible for maintenance or support "
+"claims."
 msgstr ""
-"Sie verwenden eine GPL Lizenz. Daher haben sie keinen Anspruch auf Support "
-"oder Maintenance-Untersützung."
+"Sie verwenden eine GPL Lizenz, die zu keinem Anspruch auf Support "
+"oder Maintenance-Unterstützung berechtigt."
 
 #: umc/js/udm/DetailPage.js:303
 msgid "[Advanced settings]"
@@ -927,3 +927,6 @@ msgstr "Benutzer"
 #~ "The value for the specified object property on which the query is "
 #~ "filtered."
 #~ msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
+
+#~ msgid "Type: GPL"
+#~ msgstr "Typ: GPL"

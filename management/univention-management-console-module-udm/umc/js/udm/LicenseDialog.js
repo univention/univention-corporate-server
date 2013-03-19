@@ -185,8 +185,8 @@ define([
 				message = license_gplHtml;
 				keys  = {
 					title: _('Current license'),
-					type: _('Type: GPL'),
-					info: _('You are using a GPL license. Thus, you are not eligible to support and maintenance.')
+					type: _('<b>License type:</b> GPL'),
+					info: _('You are using a GPL license which is not eligible for maintenance or support claims.')
 				}
 			}
 			else {
