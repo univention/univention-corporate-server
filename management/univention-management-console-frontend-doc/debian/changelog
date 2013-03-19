@@ -1,3 +1,9 @@
+univention-management-console-frontend-doc (6.0.10-1) unstable; urgency=low
+
+  * Bug #30741: make sure that umc widgets are also parsed
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 19 Mar 2013 15:38:57 +0100
+
 univention-management-console-frontend-doc (6.0.9-1) unstable; urgency=low
 
   * Bug #30741: adapted Makefile to account for external modules

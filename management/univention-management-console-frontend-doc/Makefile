@@ -50,7 +50,8 @@ api-viewer:
 	tar xvzf api-viewer.tar.gz
 
 univention-dojo: /usr/share/univention-dojo
-	cp -r $< $@
+	cp -r /usr/share/univention-dojo $@
+	cp -r /usr/share/univention-management-console-frontend-src/umc $@
 	cd $@ && patch -p0 < ../Selection.patch
 	# workarounds for referenced external modules
 	for imodule in umc/modules/udm/LicenseDialog.js https://www.piwik.univention.de/piwik.js; do \
@@ -60,12 +61,9 @@ univention-dojo: /usr/share/univention-dojo
 	# remove test directories
 	rm -rf univention-dojo/dgrid/test univention-dojo/put-selector/test univention-dojo/xstyle/test
 
-univention-dojo/umc: /usr/share/univention-management-console-frontend-src/umc
-	cp -r $< $@
-
 univention-management-console-frontend-doc: data
 
-data: js-doc-parse univention-dojo univention-dojo/umc
+data: js-doc-parse univention-dojo
 	#creating details.xml and tree.json
 	install -m755 -d 'data/1.8'
 	cd $< && \
