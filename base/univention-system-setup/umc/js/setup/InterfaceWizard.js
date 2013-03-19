@@ -43,7 +43,7 @@ define([
 	'umc/widgets/CheckBox',
 	'umc/widgets/NumberSpinner',
 	"umc/modules/setup/types",
-	"umc/i18n!umc/modules/uvmm"
+	"umc/i18n!umc/modules/setup"
 ], function(declare, lang, array, string, tools, dialog, Wizard, MultiInput, ComboBox, TextBox, MultiSelect, CheckBox, NumberSpinner, types, _) {
 
 	return declare("umc.modules.setup.InterfaceWizard", [ Wizard ], {
