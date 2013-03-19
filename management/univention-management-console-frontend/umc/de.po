@@ -315,7 +315,7 @@ msgid ""
 "Join Module</a> to register the remaining components."
 msgstr ""
 "Nicht alle installierten Komponenten sind in der Domäne registriert. Dies kann "
-"über das <a %s>Domänenbeitritt-Modul</a> nachgeholt werden."
+"über das <a %s>Domänenbeitritt-Modul</a> durchgeführt werden."
 
 #: umc/widgets/Page.js:269
 msgid "Note"
@@ -477,11 +477,11 @@ msgstr "Das System erlaubt das Ändern des Passwortes nicht"
 #: umc/app.js:695
 #, python-format
 msgid ""
-"The system seems not to be joined. Please visit <a %s>Domain Join Module</a> "
+"The system has not been joined into a domain so far. Please visit <a %s>Domain Join Module</a> "
 "to join the system."
 msgstr ""
 "Dieses System ist noch keiner Domäne beigetreten. Dies kann über das <a "
-"%s>Domänenbeitritt-Modul</a> nachgeholt werden."
+"%s>Domänenbeitritt-Modul</a> durchgeführt werden."
 
 #: umc/i18n.js:99
 #, python-format

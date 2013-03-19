@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.243-1) unstable; urgency=low
+
+  * Bug #29489: adjusted texts
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 19 Mar 2013 16:01:17 +0100
+
 univention-management-console-frontend (2.0.242-2) unstable; urgency=low
 
   * Add error handling (Bug #29489)

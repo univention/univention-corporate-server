@@ -692,7 +692,7 @@ define([
 							});
 							var joinModuleLink = '<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'join\')"';
 							if (!systemJoined) {
-								this._overviewPage.addNote(_('The system seems not to be joined. Please visit <a %s>Domain Join Module</a> to join the system.', joinModuleLink));
+								this._overviewPage.addNote(_('The system has not been joined into a domain so far. Please visit <a %s>Domain Join Module</a> to join the system.', joinModuleLink));
 							} else if (!allScriptsConfigured) {
 								this._overviewPage.addNote(_('Not all installed components have been registered. Please visit <a %s>Domain Join Module</a> to register the remaining components.', joinModuleLink));
 							}
