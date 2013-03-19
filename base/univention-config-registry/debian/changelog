@@ -1,3 +1,9 @@
+univention-config-registry (8.0.7-1) unstable; urgency=low
+
+  * added dependency to ldap-utils in univention-config (Bug #28851) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 07 Mar 2013 14:40:55 +0100
+
 univention-config-registry (8.0.6-1) unstable; urgency=low
 
   * Document read-only UCR variables (Bug #23354)
