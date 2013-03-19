@@ -1125,7 +1125,7 @@ class UniventionUpdater:
 			parts = set(self.parts)
 			if self.configRegistry.is_true('repository/online/component/%s/unmaintained' % (component)):
 				parts.add("unmaintained")
-			parts = ['%s/component' % (part,) for part in self.parts]
+			parts = ['%s/component' % (part,) for part in parts]
 			# versions
 			if start == end:
 				versions = (start,)

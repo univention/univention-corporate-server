@@ -1,3 +1,9 @@
+univention-updater (8.0.77-1) unstable; urgency=low
+
+  * Fix component/parts inheritance (Bug #30261)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Mar 2013 09:30:52 +0100
+
 univention-updater (8.0.76-1) unstable; urgency=low
 
   * removed pae and legacy-kolab test in preup (Bug #30757)
