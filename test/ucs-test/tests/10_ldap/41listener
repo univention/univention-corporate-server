@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Check listener functionality
+## desc: Checking listener functionality
 ## tags: [basic]
 ## roles-not: [basesystem]
 ## packages:
