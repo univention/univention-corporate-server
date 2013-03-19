@@ -159,16 +159,23 @@ define([
 
 		_setValueAttr: function(values) {
 			// empty the grid
-			this.moduleStore.setData([]);
+			var data = [];
+
+			// set new values
+			tools.forIn(values, function(id, value) {
+				data.push(lang.mixin({'interface': id}, value));
+			}, this);
+
+			this.moduleStore.setData(data);
+
+			tools.forIn(this.moduleStore.query(), lang.hitch(this, function(iface) {
+				this._consistence(iface, -1, 0);
+			}));
+
 			this.moduleStore.query().observe(lang.hitch(this, '_consistence'), true);
 
 			// FIXME: the consistence check depends on other interfaces, we have to insert all interfaces and trigger than for every interface the notification
 			// we need to fix this when supporting bridges, vlans and bondings
-
-			// set new values
-			tools.forIn(values, function(id, value) {
-				this.moduleStore.add(lang.mixin({'interface': id}, value));
-			}, this);
 
 			setTimeout(lang.hitch(this._grid, '_refresh'), 0);
 			this._set('value', this.get('value'));
