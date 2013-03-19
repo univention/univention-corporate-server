@@ -142,7 +142,7 @@ if __name__ == '__main__':
 
 		# Move GPO
 		src = os.path.join(sysvolDirectory, fileSystemGPO)
-		dest = os.path.join(options.target_directory, '%s_%s' % (fileSystemGPO, int(time.time())))
+		dest = os.path.join(options.target_directory, '%s_%s' % (fileSystemGPO, time.strftime("%Y%m%d%H%M", time.localtime())))
 		if options.verbose:
 			print 'Move unused GPO %s to %s' % (fileSystemGPO, dest)
 		shutil.move(src, dest)
