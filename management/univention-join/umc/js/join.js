@@ -87,7 +87,7 @@ define([
 			this.addChild(this._titlePane);
 
 			this._grid = new JoinGrid({
-				sortIndex: 2,
+				sortIndex: 2
 			});
 			this._titlePane.addChild(this._grid);
 		}
