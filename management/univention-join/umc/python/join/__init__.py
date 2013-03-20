@@ -114,11 +114,14 @@ class Progress(object):
 	def add_steps(self, steps = 1):
 		self.steps += steps
 
+	def component_handler(self, component):
+		self.component = component
+
 # dummy function that does nothing
 def _dummyFunc(*args):
 	pass
 
-def system_join(hostname, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc):
+def system_join(hostname, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
 	# get the number of join scripts
 	nJoinScripts = len(glob.glob('%s/*.inst' % INSTDIR))
 	stepsPerScript = 100.0 / (nJoinScripts+1)
@@ -132,7 +135,7 @@ def system_join(hostname, username, password, info_handler = _dummyFunc, error_h
 
 		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler)
 
-def run_join_scripts(scripts, force, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc):
+def run_join_scripts(scripts, force, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
 	with tempfile.NamedTemporaryFile() as passwordFile:
 		cmd = ['/usr/sbin/univention-run-join-scripts']
 		if username and password:
@@ -155,7 +158,7 @@ def run_join_scripts(scripts, force, username, password, info_handler = _dummyFu
 		MODULE.process('Executing join scripts ...')
 		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler)
 
-def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc):
+def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
 	# disable UMC/apache restart
 	MODULE.info('disabling UMC and apache server restart')
 	subprocess.call(CMD_DISABLE_EXEC)
@@ -188,6 +191,7 @@ def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFu
 			# check for currently called join script
 			m = regJoinScript.match(line)
 			if m:
+				component_handler(_('Executing join scripts'))
 				info_handler(_('Executing join script %s') % m.groupdict().get('script'))
 				step_handler(stepsPerScript)
 				if 'failed' in line:
@@ -251,6 +255,7 @@ class Instance(Base):
 			if match:
 				entry = match.groupdict()
 				entry['configured'] = True
+				entry['status'] = '1:%s' % (entry['prio'])
 				files[entry['name']] = entry
 
 		# check for unconfigured scripts
@@ -270,6 +275,7 @@ class Instance(Base):
 			if match:
 				name = match.groups()[0]
 				files[name]['configured'] = False
+				files[name]['status'] = '0:%s' % (files[name]['prio'])
 
 		return files.values()
 

@@ -56,13 +56,13 @@ define([
 		_titlePane: null,
 		_form: null,
 
-		headerText: _("Join system"),
+		headerText: _("Initial system join"),
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
 			this._titlePane = new ExpandingTitlePane({
-				title: _("Join system")
+				title: _("credentials")
 			});
 			this.addChild(this._titlePane);
 

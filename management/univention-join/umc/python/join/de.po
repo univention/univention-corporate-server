@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-03-06 16:52-0500\n"
+"POT-Creation-Date: 2013-03-20 09:26+0100\n"
 "PO-Revision-Date: 2012-04-23 15:37+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,44 +12,48 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/join/__init__.py:339 umc/python/join/__init__.py:387
+#: umc/python/join/__init__.py:345 umc/python/join/__init__.py:393
 msgid "A join process is already running."
 msgstr "Ein Join-Vorgang läuft bereits."
 
-#: umc/python/join/__init__.py:364 umc/python/join/__init__.py:414
+#: umc/python/join/__init__.py:370 umc/python/join/__init__.py:420
 #, python-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
 
-#: umc/python/join/__init__.py:397
+#: umc/python/join/__init__.py:403
 msgid "Authentication"
 msgstr "Authentifizierung"
 
-#: umc/python/join/__init__.py:347
+#: umc/python/join/__init__.py:353
 msgid "Domain join"
-msgstr "Domänebeitritt"
+msgstr "Domänenbeitritt"
 
-#: umc/python/join/__init__.py:266
+#: umc/python/join/__init__.py:271
 #, python-format
 msgid "Error: %s"
 msgstr "Fehler: %s"
 
-#: umc/python/join/__init__.py:191
+#: umc/python/join/__init__.py:195
 #, python-format
 msgid "Executing join script %s"
 msgstr "Ausführung des Join-Skripts %s"
+
+#: umc/python/join/__init__.py:194
+msgid "Executing join scripts"
+msgstr "Ausführung der Join-Skripte"
 
 #: umc/python/join/__init__.py:87
 msgid "Initializing"
 msgstr "Initialisiere"
 
-#: umc/python/join/__init__.py:343
+#: umc/python/join/__init__.py:349
 msgid "Invalid server role! A master domain controller can not be joined."
 msgstr ""
 "Ungültige Serverrolle. Ein master Domönencontroller kann nicht gejoined "
 "werden."
 
-#: umc/python/join/__init__.py:218
+#: umc/python/join/__init__.py:222
 msgid ""
 "Some join scripts could not be executed. More details can be found in the "
 "log file <i>/var/log/univention/join.log</i>.<br/>Please retry to execute "
@@ -64,7 +68,7 @@ msgstr ""
 msgid "The entered FQDN is not a valid value"
 msgstr "Die eingegebene FQDN ist kein gültiger Wert."
 
-#: umc/python/join/__init__.py:185
+#: umc/python/join/__init__.py:188
 #, python-format
 msgid ""
 "The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> "
@@ -76,6 +80,6 @@ msgstr ""
 "join.log</i> gefunden werden.<br/>Bitte den Join-Vorgang nach Lösen aller "
 "Konflikte erneut durchführen."
 
-#: umc/python/join/__init__.py:359 umc/python/join/__init__.py:409
+#: umc/python/join/__init__.py:365 umc/python/join/__init__.py:415
 msgid "finished..."
 msgstr "beendet..."

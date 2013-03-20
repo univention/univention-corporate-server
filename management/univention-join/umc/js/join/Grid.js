@@ -121,12 +121,12 @@ define([
 				editable: false
 				//width: '50%'
 			}, {
-				name: 'configured',
+				name: 'status',
 				label: _("State"),
 				description: _("Status of this package"),
 				editable: false,
 				formatter: function(value) {
-					return value ? _('successful') : _('pending');
+					return value.indexOf('1') === 0 ? _('successful') : _('pending');
 				},
 				width: '14%'
 			}];
