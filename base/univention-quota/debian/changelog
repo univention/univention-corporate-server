@@ -1,3 +1,9 @@
+univention-quota (7.0.5-2) unstable; urgency=low
+
+  * Undo last commit (Bug #30636)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Mar 2013 11:48:06 +0100
+
 univention-quota (7.0.5-1) unstable; urgency=low
 
   * fixed handling of share names containing whitespaces (Bug #30636)
