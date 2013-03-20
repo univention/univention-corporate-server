@@ -368,22 +368,25 @@ done
 IFS=$OLDIFS
 
 # check join constraints
-if $VERSION_CHECK; then
+echo "running version check" >>/var/log/univention/join.log
 
-	echo "running version check" >>/var/log/univention/join.log
+mystatus="no"
+if [ -n "$master_version" -a -n "$master_patchlevel" ]; then
+	vmaster="$master_version$master_patchlevel"
+	vmyself="$version_version$version_patchlevel"
+	mystatus="$(echo "$vmaster" "$vmyself" | awk '{if ($1 >= $2) print "yes"; else print "no"}')"
+fi
 
-	mystatus="no"
-	if [ -n "$master_version" -a -n "$master_patchlevel" ]; then
-		vmaster="$master_version$master_patchlevel"
-		vmyself="$version_version$version_patchlevel"
-		mystatus="$(echo "$vmaster" "$vmyself" | awk '{if ($1 >= $2) print "yes"; else print "no"}')"
-	fi
-
-	if [ "no" = "$mystatus" ]; then
-		failed_message "version on ${DCNAME} seems to be lower than version of this system, this constellation is not supported."
+if [ "no" = "$mystatus" ]; then
+	vmsg="Warning: UCS version on ${DCNAME} is lower ($vmaster) than local version ($vmyself)."
+	vmsg="$vmsg This constellation is not supported."
+	if $VERSION_CHECK; then
+		failed_message "$vmsg"
+	else
+		echo "$vmsg Continuing anyway as requested with option (-disableVersionCheck)." >>/var/log/univention/join.log
 	fi
 else
-	echo "version check was disabled (-disableVersionCheck)" >>/var/log/univention/join.log
+	echo "OK: UCS version on ${DCNAME} is higher or equal ($vmaster) to the local version ($vmyself)." >>/var/log/univention/join.log
 fi
 
 echo -e "\033[60Gdone"
