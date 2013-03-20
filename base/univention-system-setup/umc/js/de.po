@@ -488,7 +488,7 @@ msgstr "Netzwerkgerät"
 
 #: umc/js/setup/InterfaceGrid.js:299
 #, python-format
-msgid "Interface \"%s\" already exists"
+msgid "Interface \"%s\" already exists."
 msgstr "Netzwerkgerät \"%s\" existiert bereits."
 
 #: umc/js/setup/InterfaceWizard.js:129
@@ -785,8 +785,8 @@ msgstr ""
 "Konfigurationseinstellungen aufgetreten:"
 
 #: umc/js/setup/InterfaceGrid.js:307
-msgid "There are no interfaces to configure"
-msgstr "Es gibt keine zu konfigurierenden Netzwerkgeräte"
+msgid "There are no further interfaces to configure."
+msgstr "Es existieren keine weiteren konfigurierbaren Netzwerkgeräte."
 
 #: umc/js/setup/LanguagePage.js:85 umc/js/setup/LanguagePage.js:226
 msgid "Time zone"

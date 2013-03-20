@@ -304,7 +304,7 @@ define([
 				} catch(error) {
 					// TODO: this happened when renaming an vlan interface but is fixed. can we remove it?
 					console.log(error);
-					dialog.alert(_('Interface "%s" already exists', iface['interface']));
+					dialog.alert(_('Interface "%s" already exists.', iface['interface']));
 				}
 			}
 		},
@@ -312,7 +312,7 @@ define([
 		_addInterface: function() {
 			// --------don't support vlan, br, bond----------
 			if (!array.some(this.physical_interfaces, lang.hitch(this, function(iface) { return -1 === array.indexOf(array.map(array.filter(this.get('value'), function(item) { return item.interfaceType === 'eth';}), function(iiface) { return iiface['interface']; }), iface); }))) {
-				dialog.alert(_('There are no interfaces to configure'));
+				dialog.alert(_('There are no further interfaces to configure.'));
 				return;
 			}
 			//------------
