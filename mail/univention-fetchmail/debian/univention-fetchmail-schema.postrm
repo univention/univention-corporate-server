@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention Fetchmail
+# Univention Fetchmail Schema
 #  postrm script
 #
 # Copyright 2013 Univention GmbH
@@ -32,12 +32,10 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
 
 if [ "$1" = "remove" ]; then
-	call_unjoinscript 93univention-fetchmail-uninstall.uinst
-	joinscript_remove_script_from_status_file univention-fetchmail
+	joinscript_remove_script_from_status_file univention-fetchmail-schema
 fi
 
 exit 0

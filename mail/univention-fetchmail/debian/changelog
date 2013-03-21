@@ -1,3 +1,9 @@
+univention-fetchmail (6.0.4-1) unstable; urgency=low
+
+  * Remove join scripts from status file (Bug #30596)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Mar 2013 22:13:53 +0100
+
 univention-fetchmail (6.0.3-1) unstable; urgency=low
 
   * Rename 92univention-fetchmail.uinst to 93univention-fetchmail-
