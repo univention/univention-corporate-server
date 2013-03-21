@@ -79,7 +79,12 @@ class Snapshots( object ):
 				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_INFO', Callback( _finished, request ), uri = node_uri, domain = domain_uuid )
+		self.uvmm.send(
+				'DOMAIN_INFO',
+				Callback(_finished, request),
+				uri=node_uri,
+				domain=domain_uuid
+				)
 
 
 	def snapshot_create( self, request ):
@@ -92,7 +97,13 @@ class Snapshots( object ):
 		self.required_options( request, 'domainURI', 'snapshotName' )
 
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_SNAPSHOT_CREATE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, snapshot = request.options[ 'snapshotName' ] )
+		self.uvmm.send(
+				'DOMAIN_SNAPSHOT_CREATE',
+				Callback(self._thread_finish, request),
+				uri=node_uri,
+				domain=domain_uuid,
+				snapshot=request.options['snapshotName']
+				)
 
 	def snapshot_remove( self, request ):
 		"""Returns a list of snapshots of a domain
@@ -104,7 +115,13 @@ class Snapshots( object ):
 		self.required_options( request, 'domainURI', 'snapshotName' )
 
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_SNAPSHOT_DELETE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, snapshot = request.options[ 'snapshotName' ] )
+		self.uvmm.send(
+				'DOMAIN_SNAPSHOT_DELETE',
+				Callback(self._thread_finish, request),
+				uri=node_uri,
+				domain=domain_uuid,
+				snapshot=request.options['snapshotName']
+				)
 
 	def snapshot_revert( self, request ):
 		"""Returns a list of snapshots of a domain
@@ -116,5 +133,11 @@ class Snapshots( object ):
 		self.required_options( request, 'domainURI', 'snapshotName' )
 
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_SNAPSHOT_REVERT', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, snapshot = request.options[ 'snapshotName' ] )
+		self.uvmm.send(
+				'DOMAIN_SNAPSHOT_REVERT',
+				Callback(self._thread_finish, request),
+				uri=node_uri,
+				domain=domain_uuid,
+				snapshot=request.options['snapshotName']
+				)
 

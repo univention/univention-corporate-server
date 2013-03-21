@@ -67,7 +67,11 @@ class Storages( object ):
 			else:
 				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
-		self.uvmm.send( 'STORAGE_POOLS', Callback( _finished, request ), uri = request.options[ 'nodeURI' ] )
+		self.uvmm.send(
+				'STORAGE_POOLS',
+				Callback(_finished, request),
+				uri=request.options['nodeURI']
+				)
 
 	def storage_volume_query( self, request ):
 		"""Returns a list of volumes located in the given pool.
@@ -93,7 +97,13 @@ class Storages( object ):
 		drive_type = request.options.get( 'type', None )
 		if drive_type == 'floppy': # not yet supported
 			drive_type = 'disk'
-		self.uvmm.send( 'STORAGE_VOLUMES', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], pool = request.options[ 'pool' ], type = drive_type )
+		self.uvmm.send(
+				'STORAGE_VOLUMES',
+				Callback(_finished, request),
+				uri=request.options['nodeURI'],
+				pool=request.options['pool'],
+				type=drive_type
+				)
 
 	def storage_volume_remove( self, request ):
 		"""Removes a list of volumes located in the given pool.
@@ -111,7 +121,12 @@ class Storages( object ):
 				MODULE.warn( 'Could not remove volume %(volumeFilename)s. The pool %(pool)s is not known' % vol )
 				continue
 			volume_list.append( os.path.join( path, vol[ 'volumeFilename' ] ) )
-		self.uvmm.send( 'STORAGE_VOLUMES_DESTROY', Callback( self._thread_finish, request ), uri = request.options[ 'nodeURI' ], volumes = volume_list )
+		self.uvmm.send(
+				'STORAGE_VOLUMES_DESTROY',
+				Callback(self._thread_finish, request),
+				uri=request.options['nodeURI'],
+				volumes=volume_list
+				)
 
 	def storage_volume_usedby( self, request ):
 		"""Returns a list of domains that use the given volume.
@@ -139,7 +154,11 @@ class Storages( object ):
 		if pool_path is None:
 			raise UMC_OptionTypeError( _( 'The given pool could not be found or is no file pool' ) )
 		volume = os.path.join( pool_path, request.options[ 'volumeFilename' ] )
-		self.uvmm.send( 'STORAGE_VOLUME_USEDBY', Callback( _finished, request ), volume = volume )
+		self.uvmm.send(
+				'STORAGE_VOLUME_USEDBY',
+				Callback(_finished, request),
+				volume=volume
+				)
 
 	def storage_volume_deletable( self, request ):
 		"""Returns a list of domains that use the given volume.
@@ -161,7 +180,11 @@ class Storages( object ):
 				continue
 			volume_path = os.path.join( pool_path, volume[ 'volumeFilename' ] )
 
-			success, result = self.uvmm.send( 'STORAGE_VOLUME_USEDBY', None, volume = volume_path )
+			success, result = self.uvmm.send(
+					'STORAGE_VOLUME_USEDBY',
+					None,
+					volume=volume_path
+					)
 			if not success:
 				raise UMC_OptionTypeError( _( 'Failed to check if the drive is used by any other virtual instance' ) )
 
@@ -171,7 +194,12 @@ class Storages( object ):
 				continue
 
 			if not volume[ 'domainURI' ] in _tmp_cache:
-				success, result = self.uvmm.send( 'DOMAIN_INFO', None, uri = node_uri, domain = domain_uuid )
+				success, result = self.uvmm.send(
+						'DOMAIN_INFO',
+						None,
+						uri=node_uri,
+						domain=domain_uuid
+						)
 				if not success:
 					raise UMC_OptionTypeError(_('Could not retrieve details for domain %s') % domain_uuid)
 				_tmp_cache[ volume[ 'domainURI' ] ] = result
@@ -199,7 +227,11 @@ class Storages( object ):
 		if pool_name is None and pool_path is None:
 			return None
 		if not node_uri in self.storage_pools:
-			success, data = self.uvmm.send( 'STORAGE_POOLS', None, uri = node_uri )
+			success, data = self.uvmm.send(
+					'STORAGE_POOLS',
+					None,
+					uri=node_uri
+					)
 			self.storage_pools[ node_uri ] = dict( map( lambda p: ( p.name, object2dict( p ) ), data ) )
 			if not node_uri in self.storage_pools:
 				return None

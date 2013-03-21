@@ -108,7 +108,12 @@ class Profiles( object ):
 			else:
 				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
-		self.uvmm.send( 'NODE_LIST', Callback( _finished, request ), group = 'default', pattern = request.options[ 'nodeURI' ] )
+		self.uvmm.send(
+				'NODE_LIST',
+				Callback(_finished, request),
+				group='default',
+				pattern=request.options['nodeURI']
+				)
 
 	def profile_get( self, request ):
 		"""Returns a list of profiles for the given virtualization technology"""

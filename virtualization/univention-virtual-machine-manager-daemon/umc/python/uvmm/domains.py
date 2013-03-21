@@ -102,7 +102,12 @@ class Domains( object ):
 			else:
 				self.finished( request.id, None, str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
-		self.uvmm.send( 'DOMAIN_LIST', Callback( _finished, request ), uri = request.options.get( 'nodePattern', '*' ), pattern = request.options.get( 'domainPattern', '*' ) )
+		self.uvmm.send(
+				'DOMAIN_LIST',
+				Callback(_finished, request),
+				uri=request.options.get('nodePattern', '*'),
+				pattern=request.options.get('domainPattern', '*')
+				)
 
 	def domain_get( self, request ):
 		"""Returns details about a domain domainUUID.
@@ -222,7 +227,12 @@ class Domains( object ):
 
 		self.required_options( request, 'domainURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_INFO', Callback( _finished, request ), uri = node_uri, domain = domain_uuid )
+		self.uvmm.send(
+				'DOMAIN_INFO',
+				Callback(_finished, request),
+				uri=node_uri,
+				domain=domain_uuid
+				)
 
 	def _create_disks( self, node_uri, disks, domain_info, profile = None ):
 		drives = []
@@ -366,7 +376,6 @@ class Domains( object ):
 		domain_info.annotations[ 'contact' ] = domain.get( 'contact', '' )
 		domain_info.annotations[ 'description' ] = domain.get( 'description', '' )
 
-
 		domain_info.name = domain[ 'name' ]
 		if 'arch' in domain:
 			domain_info.arch = domain[ 'arch' ]
@@ -376,7 +385,12 @@ class Domains( object ):
 			raise UMC_CommandError( 'Could not determine architecture for domain' )
 
 		if domain_info.arch == 'automatic':
-			success, node_list = self.uvmm.send( 'NODE_LIST', None, group = 'default', pattern = request.options[ 'nodeURI' ] )
+			success, node_list = self.uvmm.send(
+					'NODE_LIST',
+					None,
+					group='default',
+					pattern=request.options['nodeURI']
+					)
 			if not success:
 				raise UMC_CommandError( _( 'Failed to retrieve details for the server %(nodeURI)s' ) % request.optiond )
 			if not node_list:
@@ -496,7 +510,12 @@ class Domains( object ):
 			else:
 				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
-		self.uvmm.send( 'DOMAIN_DEFINE', Callback( _finished, request ), uri = request.options[ 'nodeURI' ], domain = domain_info )
+		self.uvmm.send(
+				'DOMAIN_DEFINE',
+				Callback(_finished, request),
+				uri=request.options['nodeURI'],
+				domain=domain_info
+				)
 
 	def domain_put( self, request ):
 		"""Modifies a domain domainUUID on node nodeURI.
@@ -519,7 +538,13 @@ class Domains( object ):
 		MODULE.info( 'nodeURI: %s, domainUUID: %s' % ( node_uri, domain_uuid ) )
 		if request.options[ 'domainState' ] not in self.DOMAIN_STATES:
 			raise UMC_OptionTypeError( _( 'Invalid domain state' ) )
-		self.uvmm.send( 'DOMAIN_STATE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, state = request.options[ 'domainState' ] )
+		self.uvmm.send(
+				'DOMAIN_STATE',
+				Callback(self._thread_finish, request),
+				uri=node_uri,
+				domain=domain_uuid,
+				state=request.options['domainState']
+				)
 
 	def domain_migrate( self, request ):
 		"""Migrates a domain from sourceURI to targetURI.
@@ -530,7 +555,13 @@ class Domains( object ):
 		"""
 		self.required_options( request, 'domainURI', 'targetNodeURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_MIGRATE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, target_uri = request.options[ 'targetNodeURI' ] )
+		self.uvmm.send(
+				'DOMAIN_MIGRATE',
+				Callback(self._thread_finish, request),
+				uri=node_uri,
+				domain=domain_uuid,
+				target_uri=request.options['targetNodeURI']
+				)
 
 	def domain_clone( self, request ):
 		"""Clones an existing domain.
@@ -541,7 +572,14 @@ class Domains( object ):
 		"""
 		self.required_options( request, 'domainURI', 'cloneName' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
-		self.uvmm.send( 'DOMAIN_CLONE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, name = request.options[ 'cloneName' ], subst = { 'mac' : request.options.get( 'macAddress', 'clone' ) } )
+		self.uvmm.send(
+				'DOMAIN_CLONE',
+				Callback(self._thread_finish, request),
+				uri=node_uri,
+				domain=domain_uuid,
+				name=request.options['cloneName'],
+				subst={'mac': request.options.get('macAddress', 'clone')}
+				)
 
 	def domain_remove( self, request ):
 		"""Removes a domain. Optional a list of volumes can bes specified that should be removed
@@ -560,7 +598,13 @@ class Domains( object ):
 				MODULE.warn( 'Could not find volume %(volumeFilename)s. The pool %(pool)s is not known' % vol )
 				continue
 			volume_list.append( os.path.join( path, vol[ 'volumeFilename' ] ) )
-		self.uvmm.send( 'DOMAIN_UNDEFINE', Callback( self._thread_finish, request ), uri = node_uri, domain = domain_uuid, volumes = volume_list )
+		self.uvmm.send(
+				'DOMAIN_UNDEFINE',
+				Callback(self._thread_finish, request),
+				uri=node_uri,
+				domain=domain_uuid,
+				volumes=volume_list
+				)
 
 class Bus( object ):
 	"""Periphery bus like IDE-, SCSI-, Xen-, VirtIO- und FDC-Bus."""
@@ -610,9 +654,18 @@ class Bus( object ):
 
 def verify_device_files( domain_info ):
 	if domain_info.domain_type == 'xen' and domain_info.os_type == 'xen':
-		busses = ( Bus( 'ide', 'hd%s' ), Bus( 'xen', 'xvd%s', default = True ), Bus( 'virtio', 'vd%s' ) )
+		busses = (
+				Bus('ide', 'hd%s'),
+				Bus('xen', 'xvd%s', default=True),
+				Bus('virtio', 'vd%s'),
+				)
 	else:
-		busses = ( Bus( 'ide', 'hd%s', default = True ), Bus( 'xen', 'xvd%s' ), Bus( 'virtio', 'vd%s' ), Bus( 'fdc', 'fd%s', default = True, unsupported = ( Disk.DEVICE_DISK, Disk.DEVICE_CDROM ) ) )
+		busses = (
+				Bus('ide', 'hd%s', default=True),
+				Bus('xen', 'xvd%s'),
+				Bus('virtio', 'vd%s'),
+				Bus('fdc', 'fd%s', default=True, unsupported=(Disk.DEVICE_DISK, Disk.DEVICE_CDROM)),
+				)
 
 	for bus in busses:
 		bus.attach( domain_info.disks )
@@ -621,4 +674,3 @@ def verify_device_files( domain_info ):
 		for bus in busses:
 			if bus.connect( dev ):
 				break
-

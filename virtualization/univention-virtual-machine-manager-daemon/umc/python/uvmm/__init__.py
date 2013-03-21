@@ -117,7 +117,10 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 			raise UMC_OptionTypeError( _( 'Unknown query type' ) )
 
 	def group_query( self, request ):
-		self.uvmm.send( 'GROUP_LIST', Callback( self._thread_finish, request ) )
+		self.uvmm.send(
+				'GROUP_LIST',
+				Callback(self._thread_finish, request)
+				)
 
 	def nic_get( self, request ):
 		self.finished( request.id )
