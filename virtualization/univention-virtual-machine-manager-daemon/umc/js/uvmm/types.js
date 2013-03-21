@@ -274,7 +274,7 @@ define([
 			}).then(function(data) {
 				return array.map(data.result, function(iitem) {
 					return {
-						id: iitem.volumeFilename,
+						id: iitem.source,
 						type: iitem.driver_type,
 						label: iitem.volumeFilename
 					};

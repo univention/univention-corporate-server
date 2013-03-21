@@ -237,57 +237,40 @@ class Domains( object ):
 	def _create_disk( self, node_uri, disk, domain_info, profile = None ):
 		"""Convert single disk from JSON to Python UVMM Disk object."""
 		uri = urlparse.urlsplit( node_uri )
-		drive = Disk()
-		# do we create a new disk or just copy data from an already defined drive
-		create_new = disk.get( 'source', None ) is None
 
+		driver_pv = disk.get('paravirtual', False) # by default no paravirtual devices
+
+		drive = Disk()
 		drive.device = disk[ 'device' ]
 		drive.driver_type = disk[ 'driver_type' ]
 		drive.driver_cache = disk.get('driver_cache', 'default')
+		drive.driver = disk.get('driver', None)
+		drive.target_bus = disk.get('target_bus', None)
+		drive.target_dev = disk.get('target_dev', None)
 
-		# set old values of existing drive
-		if not create_new:
-			drive.source = disk[ 'source' ]
-			drive.driver = disk[ 'driver' ]
-			drive.target_bus = disk[ 'target_bus' ]
-			drive.target_dev = disk[ 'target_dev' ]
-			if disk[ 'size' ] is not None:
-				drive.size = MemorySize.str2num( disk[ 'size' ], unit = 'MB' )
-		else: # when changing the medium of a CDROM we must keep the target
-			drive.target_bus = disk.get( 'target_bus', None )
-			drive.target_dev = disk.get( 'target_dev', None )
+		if disk.get('source', None) is None:
+			# new drive
+			drive.size = MemorySize.str2num(disk.get('size') or '12', unit='MB')
+			pool = self.get_pool(node_uri, pool_name=disk.get('pool'))
+			drive.source = os.path.join(pool['path'], disk['volumeFilename'])
+			try:
+				pool_type = pool['type']
+				drive.type = self.POOLS_TYPE[pool_type]
+				if drive.type == Disk.TYPE_FILE:
+					drive.target_bus = 'ide'
+			except LookupError:
+				raise ValueError(_('No valid source for disk "%s" found') % drive.device)
 
-		# creating new drive
-		pool_path = self.get_pool_path( node_uri, disk.get( 'pool' ) )
-		file_pool = self.is_file_pool( node_uri, disk.get( 'pool' ) )
-
-		if pool_path:
-			drive.source = os.path.join( pool_path, disk[ 'volumeFilename' ] )
-		elif not file_pool and disk.get( 'volumeType', Disk.TYPE_BLOCK ) and disk[ 'volumeFilename' ]:
-			drive.source = disk[ 'volumeFilename' ]
-		elif drive.source is None:
-			raise ValueError( _( 'No valid source for disk "%s" found' ) % drive.device )
-
-		if file_pool:
-			drive.type = Disk.TYPE_FILE
-		else:
-			drive.type = Disk.TYPE_BLOCK
-			drive.target_bus = 'ide'
-			drive.source = disk[ 'volumeFilename' ]
-
-		# get default for paravirtual
-		if create_new:
-			if profile is not None:
+			if profile:
 				if drive.device == Disk.DEVICE_DISK:
-					driver_pv = getattr( profile, 'pvdisk', False )
+					driver_pv = getattr(profile, 'pvdisk', False)
 				elif drive.device == Disk.DEVICE_CDROM:
-					driver_pv = getattr( profile, 'pvcdrom', False )
-			else:
-				driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
+					driver_pv = getattr(profile, 'pvcdrom', False)
 		else:
-			driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
+			# old drive
+			drive.source = disk[ 'source' ]
 
-		MODULE.info( 'Creating a %s drive' % ( driver_pv and 'paravirtual' or 'non-paravirtual' ) )
+		MODULE.info('Creating a %s drive' % ('paravirtual' if driver_pv else 'emulated'))
 
 		if drive.device == Disk.DEVICE_DISK:
 			drive.readonly = disk.get('readonly', False)
@@ -318,7 +301,7 @@ class Domains( object ):
 				drive.target_bus = 'xen'
 			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
 			# from Xen 4.0.1
-			if file_pool:
+			if drive.type == Disk.TYPE_FILE:
 				# Use tapdisk2 by default, but not for empty CDROM drives
 				if drive.source is not None and ucr.is_true( 'uvmm/xen/images/tap2', True ):
 					drive.driver = 'tap2'
@@ -332,8 +315,6 @@ class Domains( object ):
 				drive.driver = 'phy'
 		else:
 			raise ValueError( 'Unknown virt-tech "%s"' % node_uri )
-		if disk[ 'size' ]:
-			drive.size = MemorySize.str2num( disk[ 'size' ], unit = 'MB' )
 
 		return drive
 

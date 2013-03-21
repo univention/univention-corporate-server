@@ -243,7 +243,7 @@ define([
 
 		getValues: function() {
 			var _values = this.inherited(arguments);
-			var mode = _values.volumeType; // Mode of operation: new exists block
+			var mode = _values.volumeType; // Mode of operation: new exists block empty
 			var values = {
 				device: _values.driveType,
 				volumeFilename: _values['volumeFilename_' + mode] || '',
@@ -252,6 +252,11 @@ define([
 				driver_type: _values['driver_type_' + mode] || '',
 				volumeType: mode
 			};
+			if (mode === 'new') {
+				values['source'] = null; // trigger volume creation
+			} else {
+				values['source'] = values['volumeFilename'];
+			}
 			return values;
 		},
 
