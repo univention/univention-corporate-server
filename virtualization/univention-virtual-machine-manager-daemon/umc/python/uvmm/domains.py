@@ -234,112 +234,108 @@ class Domains( object ):
 				domain=domain_uuid
 				)
 
-	def _create_disks( self, node_uri, disks, domain_info, profile = None ):
-		drives = []
-
+	def _create_disk( self, node_uri, disk, domain_info, profile = None ):
+		"""Convert single disk from JSON to Python UVMM Disk object."""
 		uri = urlparse.urlsplit( node_uri )
-		for disk in disks:
-			drive = Disk()
-			# do we create a new disk or just copy data from an already defined drive
-			create_new = disk.get( 'source', None ) is None
+		drive = Disk()
+		# do we create a new disk or just copy data from an already defined drive
+		create_new = disk.get( 'source', None ) is None
 
-			drive.device = disk[ 'device' ]
-			drive.driver_type = disk[ 'driver_type' ]
-			drive.driver_cache = disk.get('driver_cache', 'default')
+		drive.device = disk[ 'device' ]
+		drive.driver_type = disk[ 'driver_type' ]
+		drive.driver_cache = disk.get('driver_cache', 'default')
 
-			# set old values of existing drive
-			if not create_new:
-				drive.source = disk[ 'source' ]
-				drive.driver = disk[ 'driver' ]
-				drive.target_bus = disk[ 'target_bus' ]
-				drive.target_dev = disk[ 'target_dev' ]
-				if disk[ 'size' ] is not None:
-					drive.size = MemorySize.str2num( disk[ 'size' ], unit = 'MB' )
-			else: # when changing the medium of a CDROM we must keep the target
-				drive.target_bus = disk.get( 'target_bus', None )
-				drive.target_dev = disk.get( 'target_dev', None )
+		# set old values of existing drive
+		if not create_new:
+			drive.source = disk[ 'source' ]
+			drive.driver = disk[ 'driver' ]
+			drive.target_bus = disk[ 'target_bus' ]
+			drive.target_dev = disk[ 'target_dev' ]
+			if disk[ 'size' ] is not None:
+				drive.size = MemorySize.str2num( disk[ 'size' ], unit = 'MB' )
+		else: # when changing the medium of a CDROM we must keep the target
+			drive.target_bus = disk.get( 'target_bus', None )
+			drive.target_dev = disk.get( 'target_dev', None )
 
-			# creating new drive
-			pool_path = self.get_pool_path( node_uri, disk.get( 'pool' ) )
-			file_pool = self.is_file_pool( node_uri, disk.get( 'pool' ) )
+		# creating new drive
+		pool_path = self.get_pool_path( node_uri, disk.get( 'pool' ) )
+		file_pool = self.is_file_pool( node_uri, disk.get( 'pool' ) )
 
-			if pool_path:
-				drive.source = os.path.join( pool_path, disk[ 'volumeFilename' ] )
-			elif not file_pool and disk.get( 'volumeType', Disk.TYPE_BLOCK ) and disk[ 'volumeFilename' ]:
-				drive.source = disk[ 'volumeFilename' ]
-			elif drive.source is None:
-				raise ValueError( _( 'No valid source for disk "%s" found' ) % drive.device )
+		if pool_path:
+			drive.source = os.path.join( pool_path, disk[ 'volumeFilename' ] )
+		elif not file_pool and disk.get( 'volumeType', Disk.TYPE_BLOCK ) and disk[ 'volumeFilename' ]:
+			drive.source = disk[ 'volumeFilename' ]
+		elif drive.source is None:
+			raise ValueError( _( 'No valid source for disk "%s" found' ) % drive.device )
 
-			if file_pool:
-				drive.type = Disk.TYPE_FILE
-			else:
-				drive.type = Disk.TYPE_BLOCK
-				drive.target_bus = 'ide'
-				drive.source = disk[ 'volumeFilename' ]
+		if file_pool:
+			drive.type = Disk.TYPE_FILE
+		else:
+			drive.type = Disk.TYPE_BLOCK
+			drive.target_bus = 'ide'
+			drive.source = disk[ 'volumeFilename' ]
 
-			# get default for paravirtual
-			if create_new:
-				if profile is not None:
-					if drive.device == Disk.DEVICE_DISK:
-						driver_pv = getattr( profile, 'pvdisk', False )
-					elif drive.device == Disk.DEVICE_CDROM:
-						driver_pv = getattr( profile, 'pvcdrom', False )
-				else:
-					driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
+		# get default for paravirtual
+		if create_new:
+			if profile is not None:
+				if drive.device == Disk.DEVICE_DISK:
+					driver_pv = getattr( profile, 'pvdisk', False )
+				elif drive.device == Disk.DEVICE_CDROM:
+					driver_pv = getattr( profile, 'pvcdrom', False )
 			else:
 				driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
+		else:
+			driver_pv = disk.get( 'paravirtual', False ) # by default no paravirtual devices
 
-			MODULE.info( 'Creating a %s drive' % ( driver_pv and 'paravirtual' or 'non-paravirtual' ) )
+		MODULE.info( 'Creating a %s drive' % ( driver_pv and 'paravirtual' or 'non-paravirtual' ) )
 
-			if drive.device == Disk.DEVICE_DISK:
-				drive.readonly = disk.get('readonly', False)
-			elif drive.device == Disk.DEVICE_CDROM:
-				drive.driver_type = 'raw' # ISOs need driver/@type='raw'
-				drive.readonly = disk.get('readonly', True)
-			elif drive.device == Disk.DEVICE_FLOPPY:
-				drive.target_bus = 'fdc'
-				drive.readonly = disk.get('readonly', True)
-			else:
-				raise ValueError('Invalid drive-type "%s"' % drive.device)
+		if drive.device == Disk.DEVICE_DISK:
+			drive.readonly = disk.get('readonly', False)
+		elif drive.device == Disk.DEVICE_CDROM:
+			drive.driver_type = 'raw' # ISOs need driver/@type='raw'
+			drive.readonly = disk.get('readonly', True)
+		elif drive.device == Disk.DEVICE_FLOPPY:
+			drive.target_bus = 'fdc'
+			drive.readonly = disk.get('readonly', True)
+		else:
+			raise ValueError('Invalid drive-type "%s"' % drive.device)
 
-			if uri.scheme.startswith( 'qemu' ):
-				drive.driver = 'qemu'
-				if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
-					drive.target_bus = 'virtio'
-				elif disk.get( 'paravirtual', None ) == False and not drive.target_bus:
-					drive.target_bus = 'ide'
-			elif uri.scheme.startswith( 'xen' ):
-				pv_domain = domain_info.os_type == 'xen'
-				if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
-					drive.target_bus = 'xen'
-				elif pv_domain and not driver_pv:
-					# explicitly set ide bus
-					drive.target_bus = 'ide'
-				# block devices of para-virtual xen instances must use bus xen
-				if pv_domain and drive.type == Disk.TYPE_BLOCK:
-					drive.target_bus = 'xen'
-				# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
-				# from Xen 4.0.1
-				if file_pool:
-					# Use tapdisk2 by default, but not for empty CDROM drives
-					if drive.source is not None and ucr.is_true( 'uvmm/xen/images/tap2', True ):
-						drive.driver = 'tap2'
-						drive.driver_type = 'aio'
-						# if drive.type == 'raw':
-						# 	drive.driver_type = 'aio'
-					else:
-						drive.driver = 'file'
-						drive.driver_type = None # only raw support
+		if uri.scheme.startswith( 'qemu' ):
+			drive.driver = 'qemu'
+			if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
+				drive.target_bus = 'virtio'
+			elif disk.get( 'paravirtual', None ) == False and not drive.target_bus:
+				drive.target_bus = 'ide'
+		elif uri.scheme.startswith( 'xen' ):
+			pv_domain = domain_info.os_type == 'xen'
+			if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
+				drive.target_bus = 'xen'
+			elif pv_domain and not driver_pv:
+				# explicitly set ide bus
+				drive.target_bus = 'ide'
+			# block devices of para-virtual xen instances must use bus xen
+			if pv_domain and drive.type == Disk.TYPE_BLOCK:
+				drive.target_bus = 'xen'
+			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
+			# from Xen 4.0.1
+			if file_pool:
+				# Use tapdisk2 by default, but not for empty CDROM drives
+				if drive.source is not None and ucr.is_true( 'uvmm/xen/images/tap2', True ):
+					drive.driver = 'tap2'
+					drive.driver_type = 'aio'
+					# if drive.type == 'raw':
+					# 	drive.driver_type = 'aio'
 				else:
-					drive.driver = 'phy'
+					drive.driver = 'file'
+					drive.driver_type = None # only raw support
 			else:
-				raise ValueError( 'Unknown virt-tech "%s"' % node_uri )
-			if disk[ 'size' ]:
-				drive.size = MemorySize.str2num( disk[ 'size' ], unit = 'MB' )
+				drive.driver = 'phy'
+		else:
+			raise ValueError( 'Unknown virt-tech "%s"' % node_uri )
+		if disk[ 'size' ]:
+			drive.size = MemorySize.str2num( disk[ 'size' ], unit = 'MB' )
 
-			drives.append( drive )
-
-		return drives
+		return drive
 
 	def domain_add( self, request ):
 		"""Creates a new domain on nodeURI.
@@ -466,7 +462,8 @@ class Domains( object ):
 			domain_info.rtc_offset = 'utc'
 
 		# drives
-		domain_info.disks = self._create_disks( request.options[ 'nodeURI' ], domain[ 'disks' ], domain_info, profile )
+		domain_info.disks = [self._create_disk(request.options['nodeURI'], disk, domain_info, profile)
+				for disk in domain['disks']]
 		verify_device_files( domain_info )
 		# on _new_ PV machines we should move the CDROM drive to first position
 		if domain_info.uuid is None and domain_info.os_type == 'xen':
