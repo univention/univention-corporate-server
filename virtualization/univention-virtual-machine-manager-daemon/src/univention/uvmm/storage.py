@@ -205,13 +205,14 @@ def get_storage_volumes(node, pool_name, type=None):
 		logger.error(e)
 		raise StorageError(_('Error listing volumes at "%(uri)s": %(error)s'), uri=node.pd.uri, error=e.get_error_message())
 	for name in pool.listVolumes():
-		disk = Disk()
 		vol = pool.storageVolLookupByName( name )
 		xml = vol.XMLDesc( 0 )
 		try:
 			doc = parseString(xml)
 		except ExpatError:
 			continue
+		disk = Disk()
+		disk.pool = pool_name
 		disk.size = int( doc.getElementsByTagName( 'capacity' )[ 0 ].firstChild.nodeValue )
 		target = doc.getElementsByTagName( 'target' )[ 0 ]
 		disk.source = target.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
