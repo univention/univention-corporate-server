@@ -133,7 +133,7 @@ def system_join(hostname, username, password, info_handler = _dummyFunc, error_h
 		MODULE.process('Performing system join...')
 		cmd = ['/usr/sbin/univention-join', '-dcname', hostname, '-dcaccount', username, '-dcpwd', passwordFile.name]
 
-		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler)
+		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler, component_handler)
 
 def run_join_scripts(scripts, force, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
 	with tempfile.NamedTemporaryFile() as passwordFile:
@@ -156,7 +156,7 @@ def run_join_scripts(scripts, force, username, password, info_handler = _dummyFu
 		stepsPerScript = 100.0 / (len(scripts)+1)
 
 		MODULE.process('Executing join scripts ...')
-		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler)
+		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler, component_handler)
 
 def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
 	# disable UMC/apache restart
@@ -357,6 +357,7 @@ class Instance(Base):
 				info_handler=self.progress_state.info_handler,
 				step_handler=self.progress_state.add_steps,
 				error_handler=self.progress_state.error_handler,
+				component_handler=self.progress_state.component_handler,
 			)
 
 		def _finished(thread, result):
@@ -407,6 +408,7 @@ class Instance(Base):
 				info_handler=self.progress_state.info_handler,
 				step_handler=self.progress_state.add_steps,
 				error_handler=self.progress_state.error_handler,
+				component_handler=self.progress_state.component_handler,
 			)
 
 		def _finished(thread, result):

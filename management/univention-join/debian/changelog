@@ -1,3 +1,9 @@
+univention-join (5.0.42-1) unstable; urgency=low
+
+  * display the correct component in progressbar; Bug #27792
+
+ -- Florian Best <best@univention.de>  Thu, 21 Mar 2013 10:09:17 +0100
+
 univention-join (5.0.41-1) unstable; urgency=low
 
   * fixed -disableVersionCheck log message (Bug #30492) 
