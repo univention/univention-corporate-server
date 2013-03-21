@@ -155,8 +155,9 @@ def create_storage_volume(conn, domain, disk):
 		template = '''
 <volume>
 	<name>%%(name)s</name>
-	<allocation>0</allocation>
+	<source/>
 	<capacity>%%(size)ld</capacity>
+	<allocation>0</allocation>
 	<target>
 		<format type="%%(type)s"/>
 		%s
@@ -167,7 +168,9 @@ def create_storage_volume(conn, domain, disk):
 		template = '''
 <volume>
 	<name>%(name)s</name>
+	<source/>
 	<capacity>%(size)ld</capacity>
+	<target/>
 </volume>
 		'''
 	else:
