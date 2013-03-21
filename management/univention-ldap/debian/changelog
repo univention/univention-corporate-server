@@ -1,3 +1,9 @@
+univention-ldap (9.0.26-1) unstable; urgency=low
+
+  * added ou to recommended_ldap_index_sub (Bug #29509)
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Mar 2013 12:21:39 +0100
+
 univention-ldap (9.0.25-1) unstable; urgency=low
 
   * Added support for uninstallation of packages, including a schema
