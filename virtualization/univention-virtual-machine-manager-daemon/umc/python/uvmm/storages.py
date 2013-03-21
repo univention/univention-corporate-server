@@ -193,8 +193,10 @@ class Storages( object ):
 				return_value.append( volume )
 				continue
 
-			if not volume[ 'domainURI' ] in _tmp_cache:
-				success, result = self.uvmm.send(
+			try:
+				domain = _tmp_cache[volume['domainURI']]
+			except LookupError:
+				success, domain = self.uvmm.send(
 						'DOMAIN_INFO',
 						None,
 						uri=node_uri,
@@ -202,9 +204,8 @@ class Storages( object ):
 						)
 				if not success:
 					raise UMC_OptionTypeError(_('Could not retrieve details for domain %s') % domain_uuid)
-				_tmp_cache[ volume[ 'domainURI' ] ] = result
+				_tmp_cache[volume['domainURI']] = domain
 
-			domain = _tmp_cache[ volume[ 'domainURI' ] ]
 			drive = None
 			for disk in domain.disks:
 				if disk.source == volume_path:

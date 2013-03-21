@@ -528,6 +528,16 @@ class Client(object):
 		"""
 		return protocol.Request_STORAGE_DEFINE(uri=uri, pool=pool, name=name, size=size)
 
+	def volume_used(self, volume):
+		"""
+		%prog volume_used <volume>
+
+		Return a list of all (uri, domain)s using the given <volume>.
+		Example:
+			%prog volume_used /var/lib/libvirt/images/ucs_3.0-0-latest-amd64.iso
+		"""
+		return protocol.Request_STORAGE_VOLUME_USEDBY(volume=volume)
+
 	def snap_create(self, uri, domain, snapshot):
 		"""
 		%prog snap_create <uri> <domain> <snapshot>
