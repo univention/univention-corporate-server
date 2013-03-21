@@ -166,7 +166,21 @@ define([
 								nodeURI: this._getNodeURI()
 							};
 						}),
-						dynamicValues: types.getPools
+						dynamicValues: types.getPools,
+						onChange: lang.hitch(this, function(newVal) {
+							// File type is only relevant for file pools
+							var poolWidget = this._pages.drive._form.getWidget('pool_exists');
+							var drvTypeWidget = this._pages.drive._form.getWidget('driver_type_exists');
+							var items = array.filter(poolWidget.getAllItems(), function(iitem) {
+								return iitem.id == newVal;
+							});
+							if (items.length && types.POOLS_FILE[items[0].type]) {
+								drvTypeWidget.set('visible', true);
+							} else {
+								drvTypeWidget.set('value', 'raw');
+								drvTypeWidget.set('visible', false);
+							}
+						})
 					}, {
 						name: 'volumeFilename_exists',
 						type: 'ComboBox',
@@ -229,13 +243,14 @@ define([
 
 		getValues: function() {
 			var _values = this.inherited(arguments);
+			var mode = _values.volumeType; // Mode of operation: new exists block
 			var values = {
 				device: _values.driveType,
-				volumeFilename: _values['volumeFilename_' + _values.volumeType] || '',
-				pool: _values['pool_' + _values.volumeType] || '',
-				size: _values['size_' + _values.volumeType] || '',
-				driver_type: _values['driver_type_' + _values.volumeType] || '',
-				volumeType: _values.volumeType
+				volumeFilename: _values['volumeFilename_' + mode] || '',
+				pool: _values['pool_' + mode] || '',
+				size: _values['size_' + mode] || '',
+				driver_type: _values['driver_type_' + mode] || '',
+				volumeType: mode
 			};
 			return values;
 		},

@@ -252,7 +252,11 @@ define([
 				return array.map(array.filter(data.result, function(iitem) {
 						return options.create ? self.POOLS_RW[iitem.type] : true;
 					}), function(iitem) {
-					return iitem.name;
+					return {
+						id: iitem.name,
+						type: iitem.type,
+						label: iitem.name
+					};
 				});
 			}, function() {
 				// fallback
