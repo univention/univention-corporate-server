@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.32-1) unstable; urgency=low
+
+  * Added UCC objectClass to match filter (Bug #29872)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Mar 2013 11:25:23 +0100
+
 univention-s4-connector (7.0.31-1) unstable; urgency=low
 
   * Remember if the user was just created in UCS and don't write the
