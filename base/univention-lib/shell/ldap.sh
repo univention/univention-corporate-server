@@ -199,7 +199,7 @@ ucs_removeServiceFromHost () { # <servicename> <udm-module-name> <dn> [options]
 	fi
 	univention-directory-manager "computers/$modulename" modify "$@" --dn "$hostdn" --remove service="$servicename"
 	if ucs_isServiceUnused "$servicename" "$@" ; then
-		univention-directory-manager settings/service  remove "$@" --ignore_exists --set name="$servicename"  --position "cn=services,cn=univention,$ldap_base"
+		univention-directory-manager settings/service  remove "$@" --ignore_exists --dn "cn=$servicename,cn=services,cn=univention,$ldap_base"
 	fi
 }
 
