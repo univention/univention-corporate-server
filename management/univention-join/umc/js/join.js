@@ -375,7 +375,7 @@ define([
 					} else {
 						dialog.notify(successmsg || _('The join process was successful.'));
 					}
-					this.reinit();
+					this.reinit(true);
 				}),
 				undefined,
 				undefined,

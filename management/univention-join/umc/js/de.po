@@ -164,7 +164,7 @@ msgstr ""
 
 #: umc/js/join/Grid.js:95
 msgid "Rejoin"
-msgstr "erneut beitreten"
+msgstr "Erneut beitreten"
 
 #: umc/js/join.js:245
 msgid "Rejoin system"
