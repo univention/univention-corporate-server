@@ -33,7 +33,7 @@
 #DEBHELPER#
 
 if [ "$1" = "remove" ]; then
-	cp /usr/lib/univention-uninstall/92univention-fetchmail.uinst /usr/lib/univention-install/
+	cp /usr/lib/univention-uninstall/93univention-fetchmail-uninstall.uinst /usr/lib/univention-install/
 fi
 
 exit 0

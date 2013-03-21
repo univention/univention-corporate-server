@@ -1,3 +1,10 @@
+univention-fetchmail (6.0.3-1) unstable; urgency=low
+
+  * Rename 92univention-fetchmail.uinst to 93univention-fetchmail-
+    uninstall.uinst (Bug #30596)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Mar 2013 21:37:50 +0100
+
 univention-fetchmail (6.0.2-2) unstable; urgency=low
 
   * Added missing preinst script (Bug #30596)

@@ -34,7 +34,7 @@
 
 
 if [ "$1" = "configure" ]; then
-	test -e /usr/lib/univention-install/92univention-fetchmail.uinst && rm /usr/lib/univention-install/92univention-fetchmail.uinst
+	test -e /usr/lib/univention-install/93univention-fetchmail-uninstall.uinst && rm /usr/lib/univention-install/93univention-fetchmail-uninstall.uinst
 fi
 
 exit 0
