@@ -88,19 +88,20 @@ def create_storage_volume(conn, domain, disk):
 		if not e.get_error_code() in ( libvirt.VIR_ERR_INVALID_STORAGE_VOL, libvirt.VIR_ERR_NO_STORAGE_VOL ):
 			raise StorageError(_('Error locating storage volume "%(volume)s" for "%(domain)s": %(error)s'), volume=disk.source, domain=domain.name, error=e.get_error_message())
 
-	pool = (0, None)
+	pool = (0, None, '')
 	for pool_name in conn.listStoragePools() + conn.listDefinedStoragePools():
 		try:
 			p = conn.storagePoolLookupByName(pool_name)
 			xml = p.XMLDesc(0)
 			doc = parseString(xml)
+			pool_type = doc.firstChild.getAttribute('type')
 			path = doc.getElementsByTagName('path')[0].firstChild.nodeValue
 			if '/' != path[-1]:
 				path += '/'
 			if disk.source.startswith(path):
 				l = len(path)
 				if l > pool[0]:
-					pool = (l, p)
+					pool = (l, p, pool_type)
 		except libvirt.libvirtError, e:
 			if e.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_POOL:
 				logger.error(e)
@@ -112,9 +113,10 @@ def create_storage_volume(conn, domain, disk):
 		return None # FIXME
 		#raise StorageError(_('Volume "%(volume)s" for "%(domain)s" in not located in any storage pool.'), volume=disk.source, domain=domain.name)
 		#create_storage_pool(conn, path.dirname(disk.source))
-	l, p = pool
+	l, p, pool_type = pool
 	try:
-		p.refresh(0)
+		if pool_type in ('dir', 'fs', 'netfs'):
+			p.refresh(0)
 		v = p.storageVolLookupByName(disk.source[l:])
 		logger.warning('Reusing existing volume "%s" for domain "%s"' % (disk.source, domain.name))
 		return v
@@ -133,10 +135,6 @@ def create_storage_volume(conn, domain, disk):
 			'size': size,
 			}
 
-	# determin pool type
-	xml = p.XMLDesc(0)
-	doc = parseString(xml)
-	pool_type = doc.firstChild.getAttribute('type')
 	if pool_type in ('dir', 'fs', 'netfs'):
 		if hasattr(disk, 'driver_type') and disk.driver_type not in (None, 'iso', 'aio'):
 			values['type'] = xml_escape(disk.driver_type)
@@ -196,7 +194,12 @@ def get_storage_volumes(node, pool_name, type=None):
 	volumes = []
 	try:
 		pool = timeout(node.conn.storagePoolLookupByName)(pool_name)
-		pool.refresh(0)
+
+		xml = pool.XMLDesc(0)
+		doc = parseString(xml)
+		pool_type = doc.firstChild.getAttribute('type')
+		if pool_type in ('dir', 'fs', 'netfs'):
+			pool.refresh(0)
 	except TimeoutError, e:
 		logger.warning('libvirt connection "%s" timeout: %s', node.pd.uri, e)
 		node.pd.last_try = time.time()
@@ -204,6 +207,11 @@ def get_storage_volumes(node, pool_name, type=None):
 	except libvirt.libvirtError, e:
 		logger.error(e)
 		raise StorageError(_('Error listing volumes at "%(uri)s": %(error)s'), uri=node.pd.uri, error=e.get_error_message())
+
+	xml = pool.XMLDesc(0)
+	doc = parseString(xml)
+	pool_type = doc.firstChild.getAttribute('type')
+
 	for name in pool.listVolumes():
 		vol = pool.storageVolLookupByName( name )
 		xml = vol.XMLDesc( 0 )
@@ -216,17 +224,22 @@ def get_storage_volumes(node, pool_name, type=None):
 		disk.size = int( doc.getElementsByTagName( 'capacity' )[ 0 ].firstChild.nodeValue )
 		target = doc.getElementsByTagName( 'target' )[ 0 ]
 		disk.source = target.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
-		try: # Only directory-based pools have /volume/format/@type
+
+		if pool_type in ('dir', 'fs', 'netfs'):
 			disk.driver_type = target.getElementsByTagName('format')[0].getAttribute('type')
 			disk.type = Disk.TYPE_FILE
 			if disk.driver_type == 'iso':
 				disk.device = Disk.DEVICE_CDROM
 			else:
 				disk.device = Disk.DEVICE_DISK
-		except IndexError, e:
+		elif pool_type in ('logical', 'disk', 'iscsi', 'scsi', 'mpath') or disk.source.startswith('/dev/'):
 			disk.type = Disk.TYPE_BLOCK
 			disk.device = Disk.DEVICE_DISK
 			disk.driver_type = None # raw
+		else:
+			logger.info('Unsupported storage pool type: %s', pool_type)
+			continue
+
 		if not type or disk.device == type:
 			volumes.append( disk )
 
