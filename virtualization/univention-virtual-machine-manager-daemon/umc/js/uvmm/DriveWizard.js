@@ -89,6 +89,7 @@ define([
 						description: _('Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS).'),
 						dynamicOptions: lang.hitch(this, function(options) {
 							return {
+								create: true,
 								nodeURI: this._getNodeURI()
 							};
 						}),
@@ -161,6 +162,7 @@ define([
 						description: _('Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.'),
 						dynamicOptions: lang.hitch(this, function(options) {
 							return {
+								create: false,
 								nodeURI: this._getNodeURI()
 							};
 						}),

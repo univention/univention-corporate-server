@@ -50,6 +50,17 @@ from .tools import object2dict
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 class Storages( object ):
+	POOLS_RW = set(('dir', 'disk', 'fs', 'netfs', 'logical'))
+	POOLS_TYPE = {
+			'dir': Disk.TYPE_FILE,
+			'disk': Disk.TYPE_BLOCK,
+			'fs': Disk.TYPE_FILE,
+			'iscsi': Disk.TYPE_BLOCK,
+			'logical': Disk.TYPE_BLOCK,
+			'mpath': Disk.TYPE_BLOCK,
+			'netfs': Disk.TYPE_FILE,
+			'scsi': Disk.TYPE_BLOCK,
+			}
 	def __init__( self ):
 		self.storage_pools = {}
 
@@ -164,23 +175,36 @@ class Storages( object ):
 	def storage_volume_deletable( self, request ):
 		"""Returns a list of domains that use the given volume.
 
-		options: [ { 'domainURI' : <domain URI>, 'pool' : <pool name>, 'volumeFilename': <filename> }, ... ]
+		options: [{'domainURI': <domain URI>, 'pool': <pool name>, 'volumeFilename': <filename> }, ...]
 
-		return: [ { 'domainURI' : <domain URI>, 'pool' : <pool name>, 'volumeFilename': <filename>, 'deletable' : (True|False|None) }, ... ]
+		return: [{'domainURI': <domain URI>, 'pool': <pool name>, 'volumeFilename': <filename>, 'deletable': (True|False|None)}, ...]
+
+		where 'deletebale' is
+		  True: disk can be deleted
+		  False: disk is shared and should not be deleted
+		  None: disk can not be deleted
 		"""
 		_tmp_cache = {}
-		return_value = []
 
 		for volume in request.options:
-			# check if volume is used by any other domain
+			# safe default: not deletable
+			volume['deletable'] = None
+
 			node_uri, domain_uuid = urlparse.urldefrag( volume[ 'domainURI' ] )
-			pool_path = self.get_pool_path( node_uri, volume[ 'pool' ] )
-			if pool_path is None:
-				volume[ 'deletable' ] = None
-				return_value.append( volume )
+			# Must be in a pool
+			pool = self.get_pool(node_uri, volume['pool'])
+			if not pool:
+				continue
+			# Pool must be modifiable
+			if pool['type'] not in Storages.POOLS_RW:
+				continue
+			# Pool must be mapped to the file system
+			pool_path = pool['path']
+			if not pool_path:
 				continue
 			volume_path = os.path.join( pool_path, volume[ 'volumeFilename' ] )
 
+			# check if volume is used by any other domain
 			success, result = self.uvmm.send(
 					'STORAGE_VOLUME_USEDBY',
 					None,
@@ -191,7 +215,6 @@ class Storages( object ):
 
 			if len( result ) > 1: # is used by at least one other domain
 				volume[ 'deletable' ] = False
-				return_value.append( volume )
 				continue
 
 			try:
@@ -213,15 +236,11 @@ class Storages( object ):
 					drive = disk
 					break
 			else:
-				volume[ 'deletable' ] = None
-				return_value.append( volume )
 				continue
 
-			volume[ 'deletable' ] = drive.type == Disk.TYPE_FILE and drive.device == Disk.DEVICE_DISK
+			volume['deletable'] = drive.device == Disk.DEVICE_DISK
 
-			return_value.append( volume )
-
-		self.finished( request.id, return_value )
+		self.finished(request.id, request.options)
 
 	# helper functions
 	def get_pool( self, node_uri, pool_name = None, pool_path = None ):
@@ -268,4 +287,4 @@ class Storages( object ):
 		if pool is None:
 			return None
 
-		return pool[ 'type' ] in ( 'dir', 'netfs' )
+		return Disk.TYPE_FILE == Storage.POOLS_TYPE[pool['type']]

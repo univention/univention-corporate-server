@@ -229,14 +229,29 @@ define([
 			'directsync': _('No host caching, forced sync (direct-sync)'),
 			'unsafe': _('Read/write caching, sync filtered out (unsafe)'),
 		},
+		POOLS_RW: { // storage pools which support creating new volumes
+			dir: true,
+			disk: true,
+			fs: true,
+			netfs: true,
+			logical: true
+		},
+		POOLS_FILE: { // storage pools which contain files
+			dir: true,
+			fs: true,
+			netfs: true
+		},
 		getPools: function(options) {
 			if (!options.nodeURI) {
 				return [];
 			}
+			// volumes can be created in these pools
 			return tools.umcpCommand('uvmm/storage/pool/query', {
 				nodeURI: options.nodeURI
 			}).then(function(data) {
-				return array.map(data.result, function(iitem) {
+				return array.map(array.filter(data.result, function(iitem) {
+						return options.create ? self.POOLS_RW[iitem.type] : true;
+					}), function(iitem) {
 					return iitem.name;
 				});
 			}, function() {
@@ -276,7 +291,7 @@ define([
 				list.push(RAW);
 			} else {
 				list.push(RAW);
-				if (options.domain_type == 'kvm') {
+				if (options.domain_type == 'kvm') { // TODO: Check self.POOLS_FILE
 					// add qcow2 as pre-selected item
 					list.push(QCOW2);
 				}

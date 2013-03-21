@@ -263,7 +263,7 @@ define([
 				}, {
 					name: 'volumeFilename',
 					type: TextBox,
-					value: disk.volumeFilename,
+					value: disk.source || '',
 					label: _( 'Filename' ),
 					disabled: true
 				}, {
@@ -334,7 +334,7 @@ define([
 			var deferred = new Deferred();
 			deferred.resolve();
 			// just of a domain URI is available we need to detach/delete it otherwise we just remove it from the grid
-			if ( undefined !== this.domain.domainURI && disk.volumeFilename) {
+			if ( undefined !== this.domain.domainURI && disk.volumeFilename && disk.pool) {
 				deferred = deferred.then( lang.hitch( this, function() {
 					return tools.umcpCommand('uvmm/storage/volume/deletable', [ {
 						domainURI: this.domain.domainURI,
@@ -343,7 +343,10 @@ define([
 					} ] );
 				} ) );
 				deferred = deferred.then( lang.hitch( this, function( response ) {
-					if ( disk.device == 'cdrom' ) {
+					if (null === response.result[0].deletable) {
+						// not in a pool or pool is not manageable
+						return 'detach';
+					} else if ( disk.device == 'cdrom' ) {
 						msg += ' ' + _( 'The selected drive is a CD-ROM and should be detached from the virtual machine. If the volume is delete no other machine can use it anymore.' );
 					} else if (disk.device == 'floppy') {
 						msg += ' ' + _( 'The selected drive is a floppy and should be detached from the virtual machine. If the volume is delete no other machine can use it anymore.' );
