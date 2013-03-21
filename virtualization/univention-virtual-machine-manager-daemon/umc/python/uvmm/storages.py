@@ -55,22 +55,23 @@ class Storages( object ):
 
 	def storage_pool_query( self, request ):
 		self.required_options( request, 'nodeURI' )
-		if request.options[ 'nodeURI' ] in self.storage_pools:
-			self.finished( request.id, self.storage_pools[ request.options[ 'nodeURI' ] ].values() )
+		uri = request.options['nodeURI']
+		if uri in self.storage_pools:
+			self.finished(request.id, self.storage_pools[uri].values())
 			return
 
 		def _finished( thread, result, request ):
 			success, data = result
 			if success:
-				self.storage_pools[ request.options[ 'nodeURI' ] ] = dict( map( lambda p: ( p.name, object2dict( p ) ), data ) )
-				self.finished( request.id, self.storage_pools[ request.options[ 'nodeURI' ] ].values() )
+				self.storage_pools[uri] = dict([(pool.name, object2dict(pool)) for pool in data])
+				self.finished(request.id, self.storage_pools[uri].values())
 			else:
 				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
 
 		self.uvmm.send(
 				'STORAGE_POOLS',
 				Callback(_finished, request),
-				uri=request.options['nodeURI']
+				uri=uri
 				)
 
 	def storage_volume_query( self, request ):
@@ -225,27 +226,24 @@ class Storages( object ):
 	# helper functions
 	def get_pool( self, node_uri, pool_name = None, pool_path = None ):
 		"""Returns a pool object or None if the pool could not be found"""
-		if pool_name is None and pool_path is None:
-			return None
-		if not node_uri in self.storage_pools:
+		try:
+			pools = self.storage_pools[node_uri]
+		except LookupError:
 			success, data = self.uvmm.send(
 					'STORAGE_POOLS',
 					None,
 					uri=node_uri
 					)
-			self.storage_pools[ node_uri ] = dict( map( lambda p: ( p.name, object2dict( p ) ), data ) )
-			if not node_uri in self.storage_pools:
-				return None
+			pools = dict([(pool.name, object2dict(pool)) for pool in data])
+			self.storage_pools[node_uri] = pools
 
-		if pool_name is not None and not pool_name in self.storage_pools[ node_uri ]:
-			return None
+		if pool_name:
+			return pools.get(pool_name)
 
-		if pool_name is not None:
-			return self.storage_pools[ node_uri ][ pool_name ]
-
-		for uri, pool in self.storage_pools[ node_uri ].items():
-			if pool_path.startswith( pool[ 'path' ] ):
-				return pool
+		if pool_path:
+			for uri, pool in pools.items():
+				if pool_path.startswith(pool['path']):
+					return pool
 
 		return None
 
