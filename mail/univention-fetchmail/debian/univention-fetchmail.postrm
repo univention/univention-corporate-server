@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Fetchmail
-#  postinst script
+#  postrm script
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,14 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
-
 #DEBHELPER#
 
-. /usr/share/univention-lib/all.sh
-
-ucs_registerLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
-
-call_joinscript 92univention-fetchmail-schema.inst
+if [ "$1" = "remove" ]; then
+	. /usr/share/univention-lib/all.sh
+	call_unjoinscript 92univention-fetchmail.uinst
+fi
 
 exit 0

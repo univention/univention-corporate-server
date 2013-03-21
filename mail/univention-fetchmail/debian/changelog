@@ -1,3 +1,9 @@
+univention-fetchmail (6.0.2-1) unstable; urgency=low
+
+  * Use new uninstallation scripts (Bug #30596)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Mar 2013 20:40:44 +0100
+
 univention-fetchmail (6.0.1-1) unstable; urgency=low
 
   * Added ucr autostart capabilities (Bug #30781)
