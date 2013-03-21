@@ -1,3 +1,12 @@
+univention-fetchmail (6.0.1-1) unstable; urgency=low
+
+  * Added ucr autostart capabilities (Bug #30781)
+  * Added entries for system-services module (Bug #30782)
+  * Fixed an error that caused renamed user entries to not get properly 
+    updated in the fetchmailrc file (Bug #29640)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 21 Mar 2013 16:31:39 +0100
+
 univention-fetchmail (6.0.0-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)

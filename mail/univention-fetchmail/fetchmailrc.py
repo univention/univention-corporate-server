@@ -38,6 +38,10 @@ import re
 import ldap
 import univention.config_registry
 import univention.uldap
+import os
+import cPickle
+
+modrdn="1"
 
 fn_fetchmailrc = '/etc/fetchmailrc'
 __initscript = '/etc/init.d/fetchmail'
@@ -147,26 +151,40 @@ def only_password_reset(old, new):
 	return True
 
 
-def handler(dn, new, old):
-	flist = load_rc(fn_fetchmailrc)
+def handler(dn, new, old, command):
+	if os.path.exists(os.path.join('/tmp','fetchmail_old_dn')):
+		f=open(os.path.join('/tmp','fetchmail_old_dn'),'r')
+		p=cPickle.Unpickler(f)
+		old=p.load()
+		f.close()
+		os.unlink(os.path.join('/tmp','fetchmail_old_dn'))
+	if command == 'r':
+		filename=os.path.join('/tmp','fetchmail_old_dn')
+		f=open(filename, 'w+')
+		os.chmod(filename, 0600)
+		p=cPickle.Pickler(f)
+		old=p.dump(old)
+		p.clear_memo()
+		f.close()
 
-	if old and not new:
+	flist = load_rc(fn_fetchmailrc)
+	if old and not new and not command == 'r':
 		# object has been deleted ==> remove entry from rc file
 		flist = objdelete(flist, old)
 		write_rc(flist, fn_fetchmailrc)
 
 	elif old and new and details_complete(old) and not details_complete(new):
 		# data is now incomplete ==> remove entry from rc file
+		
 		flist = objdelete(flist, old)
 		write_rc(flist, fn_fetchmailrc)
 
 	elif new and details_complete(new):
 		# obj has been created or modified
-
 		passwd = None
 		if old:
 			# old exists ==> object has been modified ==> get old password and remove object entry from rc file
-			passwd = get_pw_from_rc( flist, new.get('uid')[0] )
+			passwd = get_pw_from_rc( flist, old.get('uid')[0] )
 			flist = objdelete(flist, old)
 
 		if not details_complete(new, incl_password=True):
