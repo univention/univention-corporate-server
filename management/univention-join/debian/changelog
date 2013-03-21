@@ -1,3 +1,9 @@
+univention-join (5.0.44-1) unstable; urgency=low
+
+  * Also execute unjoin scripts (Bug #30596)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Mar 2013 21:55:34 +0100
+
 univention-join (5.0.43-1) unstable; urgency=low
 
   * fix typo which prevents displaying of UMC restart required dialog;

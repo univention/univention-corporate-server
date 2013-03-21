@@ -74,11 +74,13 @@ fi
 
 LC_COLLATE="C"
 declare -i MISSING=0
-for i in /usr/lib/univention-install/*.inst
+for i in /usr/lib/univention-install/*.{inst,uinst}
 do
+	test -e "$i" || continue
 	unset VERSION
 	eval "$(grep -h ^VERSION= "$i")"
 	n="${i##*/[0-9][0-9]}"
+	n="${n%.uinst}"
 	n="${n%.inst}"
 	if ! grep -Fxq "$n v${VERSION} successful" /var/univention-join/status
 	then
