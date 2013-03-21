@@ -231,7 +231,7 @@ def get_storage_volumes(node, pool_name, type=None):
 
 	return volumes
 
-def get_all_storage_volumes(domain):
+def get_domain_storage_volumes(domain):
 	"""Retrieve all referenced storage volumes."""
 	volumes = []
 	try:
@@ -318,12 +318,12 @@ def storage_volume_usedby( nodes, volume_path, ignore_cdrom = True ):
 	"""Returns a list of tuples ( <node URI>, <domain UUID> ) of domains
 	that use the given volume"""
 	used_by = []
-	for uir, node in nodes.items():
+	for uri, node in nodes.items():
 		for uuid, domain in node.domains.items():
 			for device in domain.pd.disks:
 				if ignore_cdrom and device.device == Disk.DEVICE_CDROM:
 					continue
 				if device.source == volume_path:
-					used_by.append( ( node.pd.uri, domain.pd.uuid ) )
+					used_by.append((uri, domain.pd.uuid))
 
 	return used_by

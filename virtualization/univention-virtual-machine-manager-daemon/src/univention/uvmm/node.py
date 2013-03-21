@@ -45,7 +45,7 @@ from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modi
 import univention.admin.uexceptions
 from univention.uvmm.eventloop import *
 import threading
-from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_all_storage_volumes, StorageError, storage_pools
+from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError, storage_pools
 from protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
 from network import network_start, network_find_by_bridge, NetworkError
 import copy
@@ -1515,7 +1515,7 @@ def domain_undefine(uri, domain, volumes=[]):
 		dom = conn.lookupByUUIDString(domain)
 		_domain_backup(dom)
 		if volumes is None:
-			volumes = get_all_storage_volumes(dom)
+			volumes = get_domain_storage_volumes(dom)
 		destroy_storage_volumes(conn, volumes, ignore_error=True)
 		try:
 			if dom.hasManagedSaveImage(0):
