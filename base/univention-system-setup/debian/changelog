@@ -1,4 +1,4 @@
-univention-system-setup (6.0.76-14) unstable; urgency=low
+univention-system-setup (6.0.76-15) unstable; urgency=low
 
   * adapt NetworkPage; Bug #28389
 

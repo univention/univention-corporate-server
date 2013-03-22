@@ -508,8 +508,8 @@ define([
 							vals['interfaces/' + iname + '/netmask'] = imask;
 						} else {
 							// virtual ip adresses
-							vals['interfaces/' + iname + '_' + i + '/address'] = iaddress;
-							vals['interfaces/' + iname + '_' + i + '/netmask'] = imask;
+							vals['interfaces/' + iname + '_' + (i-1) + '/address'] = iaddress;
+							vals['interfaces/' + iname + '_' + (i-1) + '/netmask'] = imask;
 						}
 					});
 

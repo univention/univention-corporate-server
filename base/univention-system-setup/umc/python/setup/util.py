@@ -115,10 +115,6 @@ def load_values():
 			if attr == 'address' and v.startswith('169.254.'):
 				link_locals.append(iface)
 			net_values[k] = v
-	for k, v in net_values.items():
-		if 'ipv6' not in k:
-			if any(link_local in k for link_local in link_locals):
-				net_values.pop(k)
 	for link_local in link_locals:
 		net_values['interfaces/%s/type' % link_local] = 'dhcp'
 	values.update(net_values)
