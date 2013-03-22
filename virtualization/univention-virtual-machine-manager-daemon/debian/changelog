@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.36-3) unstable; urgency=low
+
+  * Fix handling of local block devices (Bug #19804)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 22 Mar 2013 17:18:44 +0100
+
 univention-virtual-machine-manager-daemon (2.0.36-2) unstable; urgency=low
 
   * Add support for iSCSI storage pools (Bug #19804)

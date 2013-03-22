@@ -245,21 +245,21 @@ class Domains( object ):
 		drive.driver_type = disk[ 'driver_type' ]
 		drive.driver_cache = disk.get('driver_cache', 'default')
 		drive.driver = disk.get('driver', None)
-		drive.target_bus = disk.get('target_bus', None)
+		drive.target_bus = disk.get('target_bus', 'ide')
 		drive.target_dev = disk.get('target_dev', None)
+
+		pool_name = disk.get('pool')
+		if pool_name:
+			pool = self.get_pool(node_uri, pool_name=pool_name)
+		else:
+			pool = {}
 
 		if disk.get('source', None) is None:
 			# new drive
 			drive.size = MemorySize.str2num(disk.get('size') or '12', unit='MB')
-			pool = self.get_pool(node_uri, pool_name=disk.get('pool'))
+			if not pool:
+				raise ValueError('Pool "%s" not found' % disk.get('pool'))
 			drive.source = os.path.join(pool['path'], disk['volumeFilename'])
-			try:
-				pool_type = pool['type']
-				drive.type = self.POOLS_TYPE[pool_type]
-				if drive.type == Disk.TYPE_FILE:
-					drive.target_bus = 'ide'
-			except LookupError:
-				raise ValueError(_('No valid source for disk "%s" found') % drive.device)
 
 			if profile:
 				if drive.device == Disk.DEVICE_DISK:
@@ -272,38 +272,55 @@ class Domains( object ):
 
 		MODULE.info('Creating a %s drive' % ('paravirtual' if driver_pv else 'emulated'))
 
+		try:
+			pool_type = pool['type']
+			drive.type = self.POOLS_TYPE[pool_type]
+		except LookupError:
+			if drive.source.startswith('/dev/'):
+				drive.type = Disk.TYPE_BLOCK
+			elif not drive.source:
+				# empty CDROM or floppy device
+				drive.type = Disk.TYPE_BLOCK
+			else:
+				drive.type = Disk.TYPE_FILE
+
 		if drive.device == Disk.DEVICE_DISK:
 			drive.readonly = disk.get('readonly', False)
 		elif drive.device == Disk.DEVICE_CDROM:
 			drive.driver_type = 'raw' # ISOs need driver/@type='raw'
 			drive.readonly = disk.get('readonly', True)
 		elif drive.device == Disk.DEVICE_FLOPPY:
-			drive.target_bus = 'fdc'
 			drive.readonly = disk.get('readonly', True)
 		else:
 			raise ValueError('Invalid drive-type "%s"' % drive.device)
 
 		if uri.scheme.startswith( 'qemu' ):
 			drive.driver = 'qemu'
-			if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
+			if drive.device == Disk.DEVICE_FLOPPY:
+				drive.target_bus = 'fdc'
+			elif driver_pv:
 				drive.target_bus = 'virtio'
-			elif disk.get( 'paravirtual', None ) == False and not drive.target_bus:
+			elif disk.get('paravirtual', None) == False:
 				drive.target_bus = 'ide'
+			else:
+				pass  # keep
 		elif uri.scheme.startswith( 'xen' ):
 			pv_domain = domain_info.os_type == 'xen'
-			if driver_pv and drive.device != Disk.DEVICE_FLOPPY and drive.type != Disk.TYPE_BLOCK:
+			if pv_domain:
 				drive.target_bus = 'xen'
-			elif pv_domain and not driver_pv:
-				# explicitly set ide bus
+			elif drive.device == Disk.DEVICE_FLOPPY:
+				drive.target_bus = 'fdc'
+			elif driver_pv:
+				drive.target_bus = 'xen'
+			elif disk.get('paravirtual', None) == False:
 				drive.target_bus = 'ide'
-			# block devices of para-virtual xen instances must use bus xen
-			if pv_domain and drive.type == Disk.TYPE_BLOCK:
-				drive.target_bus = 'xen'
-			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver
-			# from Xen 4.0.1
+			else:
+				pass  # keep
+
+			# Since UCS 2.4-2 Xen 3.4.3 contains the blktab2 driver from Xen 4.0.1
 			if drive.type == Disk.TYPE_FILE:
-				# Use tapdisk2 by default, but not for empty CDROM drives
-				if drive.source is not None and ucr.is_true( 'uvmm/xen/images/tap2', True ):
+				# Use tapdisk2 by default for disks
+				if drive.device == Disk.DEVICE_DISK and ucr.is_true('uvmm/xen/images/tap2', True):
 					drive.driver = 'tap2'
 					drive.driver_type = 'aio'
 					# if drive.type == 'raw':
