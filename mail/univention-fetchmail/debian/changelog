@@ -1,3 +1,9 @@
+univention-fetchmail (6.0.5-4) unstable; urgency=low
+
+  * Partially revert previous version: leave template files (Bug #30781) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 22 Mar 2013 12:29:47 +0100
+
 univention-fetchmail (6.0.5-3) unstable; urgency=low
 
   * Cover update case in postinst: remove unneeded files and

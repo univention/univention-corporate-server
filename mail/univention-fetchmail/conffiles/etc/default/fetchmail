@@ -1,0 +1,6 @@
+@%@UCRWARNING=#@%@ 
+
+@!@
+print "START_DAEMON=yes"
+@!@
+
