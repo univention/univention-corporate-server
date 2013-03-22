@@ -1,3 +1,10 @@
+univention-flashplugin (6.0.7-2) unstable; urgency=low
+
+  * Update to new Flash download URL (Bug #29766)
+  * Incorporate the  changes to update-flashplugin from 3.1 	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 22 Mar 2013 14:47:08 +0100
+
 univention-flashplugin (6.0.7-1) unstable; urgency=low
 
   * update to new Flash download URL (Bug #28217)

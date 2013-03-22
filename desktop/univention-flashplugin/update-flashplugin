@@ -5,7 +5,7 @@
 #   based on postinst from the Debian package 
 #   flashplugin-nonfree
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -37,8 +37,8 @@ set -e
 eval "$(univention-config-registry shell)"
 
 DOWNLOAD_DIR=/var/cache/flashplugin-nonfree
-DOWNLOAD_FILE=install_flash_player_11_linux_i386
-DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.251/install_flash_player_11_linux_i386.tar.gz
+DOWNLOAD_FILE=install_flash_player_11_linux.i386
+DOWNLOAD_URL=http://fpdownload.macromedia.com/get/flashplayer/pdc/11.2.202.275/install_flash_player_11_linux.i386.tar.gz
 TARGET_DIR=/usr/lib/flashplugin-nonfree
 
 fp_exit_with_error() {
@@ -51,43 +51,39 @@ fp_download_and_unpack() {
 
 	cd $DOWNLOAD_DIR
 
+	# The Flash plugin for Linux is in maintenance mode, as such the filename
+	# doesn't change any longer. If there's already a downloaded version, remove
+	# it before downloading the new file
 	if [ -d "$DOWNLOAD_DIR" -a -f "$DOWNLOAD_DIR/$DOWNLOAD_FILE.tar.gz" ]; then
+		echo "Removing previous Flash download"
+		rm "$DOWNLOAD_DIR/$DOWNLOAD_FILE.tar.gz"
+	fi
 
-		echo "Installing from local file $DOWNLOAD_DIR/$DOWNLOAD_FILE"
+	:> wgetrc
+	echo "noclobber = off" >> wgetrc
+	echo "dir_prefix = ." >> wgetrc
+	echo "dirstruct = off" >> wgetrc
+	echo "timeout = 120" >> wgetrc
+	echo "verbose = on" >> wgetrc
+	echo "progress = dot:default" >> wgetrc
 
-	else # no local file
+	proxy_http=$(univention-config-registry get proxy/http)
+	if [ ! -z "$proxy_http" ]; then
+		export http_proxy=$proxy_http
+	fi
 
-		# setting wget options
-		:> wgetrc
-		echo "noclobber = off" >> wgetrc
-		echo "dir_prefix = ." >> wgetrc
-		echo "dirstruct = off" >> wgetrc
-		echo "timeout = 120" >> wgetrc
-		echo "verbose = on" >> wgetrc
-		echo "progress = dot:default" >> wgetrc
-
-		# proxy
-		proxy_http=$(univention-config-registry get proxy/http)
-		if [ ! -z "$proxy_http" ]; then
-			export http_proxy=$proxy_http
+	echo "Downloading the plugin..."
+	if [ ! -z $flashplugin_downloadserver ]; then
+		if [ ! -z $flashplugin_downloadpath ]; then
+			WGETRC=wgetrc wget $flashplugin_downloadserver$flashplugin_downloadpath
 		fi
+	else
+		WGETRC=$DOWNLOAD_URL
+	fi
+	wget $WGETRC || fp_exit_with_error "download failed"
+	rm -f wgetrc
+	echo "Download done."
 
-		# downloading the plugin
-		echo "Downloading..."
-		if [ ! -z $flashplugin_downloadserver ]; then
-		    if [ ! -z $flashplugin_downloadpath ]; then
-			    WGETRC=wgetrc wget $flashplugin_downloadserver$flashplugin_downloadpath
-		    fi
-		else
-			WGETRC=$DOWNLOAD_URL
-		fi
-		wget $WGETRC || fp_exit_with_error "download failed"
-		rm -f wgetrc
-		echo "Download done."
-
-	fi # end if local file
-
-        # unpacking the plugin
 	tar xzf $DOWNLOAD_FILE.tar.gz || fp_exit_with_error "cannot unpack plugin"
 }
 
