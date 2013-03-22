@@ -1,3 +1,10 @@
+univention-fetchmail (6.0.5-2) unstable; urgency=low
+
+  * univention-fetchmail.preinst: check for 'install' instead of
+    'configure' (Bug #30596)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Mar 2013 08:52:01 +0100
+
 univention-fetchmail (6.0.5-1) unstable; urgency=low
 
   * univention-fetchmail-schema: depend on newer univention-join and

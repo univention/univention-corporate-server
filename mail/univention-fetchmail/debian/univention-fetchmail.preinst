@@ -33,7 +33,7 @@
 #DEBHELPER#
 
 
-if [ "$1" = "configure" ]; then
+if [ "$1" = "install" ]; then
 	test -e /usr/lib/univention-install/93univention-fetchmail-uninstall.uinst && rm /usr/lib/univention-install/93univention-fetchmail-uninstall.uinst
 fi
 
