@@ -296,6 +296,12 @@ then
 	exit 1
 fi
 
+if [ "$(dpkg-query -W -f='${Status}\n' univention-fetchmail 2>/dev/null)" = "install ok installed" ]; then
+	echo "univention-fetchmail hold" | dpkg --set-selections
+	echo "univention-fetchmail-schema hold" | dpkg --set-selections
+	univention-config-registry set update31/hold/fetchmail=true >>"$UPDATER_LOG" 2>&1
+fi
+
 # Pre-upgrade
 preups=""
 $update_commands_update >&3 2>&3

@@ -61,6 +61,13 @@ date >>"$UPDATER_LOG" 2>&1
 
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
+if [ "$update31_hold_fetchmail" = "true" ]; then
+	echo "univention-fetchmail install" | dpkg --set-selections
+	echo "univention-fetchmail-schema install" | dpkg --set-selections
+	install univention-fetchmail-schema univention-fetchmail >>"$UPDATER_LOG" 2>&1
+	univention-config-registry unset update31/hold/fetchmail >>"$UPDATER_LOG" 2>&1
+fi
+
 ## for p in univention-xen; do
 ## 	check_and_install $p
 ## done
