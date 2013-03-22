@@ -24,3 +24,17 @@ Description: UCS - firewall integration
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-management-console-module-firewall
+Architecture: all
+Depends: univention-management-console-server,
+ python-univention-management-console,
+ python-univention-config-registry,
+ python-ipaddr
+Description: UMC module for firewall configuration
+ This package contains the UMC module for the firewall configuration.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

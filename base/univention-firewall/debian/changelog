@@ -1,3 +1,9 @@
+univention-firewall (5.0.5-1) unstable; urgency=low
+
+  * UMC: Major update (Bug #24121)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 22 Mar 2013 16:37:53 +0100
+
 univention-firewall (5.0.4-2) unstable; urgency=low
 
   * allow firewall scripts without "." and allow postfix ".sh"; Bug #29706
