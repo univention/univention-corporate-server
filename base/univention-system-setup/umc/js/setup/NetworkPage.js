@@ -548,16 +548,15 @@ define([
 
 		getSummary: function() {
 			// a list of all components with their labels
-			var allInterfaces = {};
 
-			allInterfaces = array.map(this._form._widgets.interfaces.get('value'), function(item) {
+			var allInterfaces = array.map(this._form._widgets.interfaces.get('value'), function(item) {
 				return item['interface'];
 			});
 
 			// list of all IPv4 network devices
 			var vals = this._form.get('value');
 			var ipv4Str = array.map(array.filter(vals.interfaces, function(idev) {
-				return idev.ip4.length && idev.interfaceType === 'eth';
+				return (idev.ip4.length || idev.ip4dynamic) && idev.interfaceType === 'eth';
 			}), function(idev) {
 				if (idev.ip4dynamic) {
 					return idev['interface'] + ': ' + _('Dynamic (DHCP)');
@@ -573,9 +572,9 @@ define([
 			var ipv6Str = array.map(array.filter(vals.interfaces, function(idev) {
 				return idev.ip6.length && idev.interfaceType === 'eth';
 			}), function(idev) {
-				if (idev.ip6dynamic) {
-					return idev['interface'] + ': ' + _('Autoconfiguration (SLAAC)');
-				}
+			//	if (idev.ip6dynamic) {
+			//		return idev['interface'] + ': ' + _('Autoconfiguration (SLAAC)');
+			//	}
 				return idev['interface'] + ': ' + array.map(array.filter(idev.ip6, function(ip6) { return ip6[0] && ip6[1]; }), function(ip6) {
 					// identifier: address/prefix
 					return ip6[2] + ': ' + ip6[0] + '/' + ip6[1];

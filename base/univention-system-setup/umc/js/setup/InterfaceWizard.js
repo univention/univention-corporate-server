@@ -67,7 +67,7 @@ define([
 			this.physical_interfaces = props.physical_interfaces || [];
 			this.available_interfaces = props.available_interfaces || [];
 
-			var primary = this['interface'] == props['interfaces/primary'];
+			var primary = !props.create && this['interface'] === props['interfaces/primary'];
 
 			var ethlayout = [{
 				label: _('network device'),
@@ -230,7 +230,6 @@ define([
 							type: TextBox,
 							label: _('Identifier'),
 							sizeClass: 'OneThird'
-
 						}]
 					}, {
 						type: CheckBox,
@@ -460,6 +459,12 @@ define([
 			if (interfaceType === 'bond' && values['bond-slaves'].length < 2) {
 				dialog.alert(_('At least two interfaces have to be used for this bond device'));
 				return false;
+			}
+
+			if (array.filter(values.ip6, function(ip6) {
+				return (!ip6[2] && (ip6[0] || ip6[1]));
+			}).length) {
+				dialog.alert(_('Each IPv6 interface must have an identifier'));
 			}
 
 			tools.forIn(this._pages[interfaceType]._form._widgets, function(iname, iwidget) {

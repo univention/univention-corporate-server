@@ -68,6 +68,11 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
 	serversystem=1
 fi
 
+var=$(get_profile_var interfaces/primary)
+if [ -n "$var" ]; then
+	baseconfig_set="$baseconfig_set interfaces/primary=$var"
+fi
+
 while read interface
 do
 	for attr in address broadcast netmask network type; do

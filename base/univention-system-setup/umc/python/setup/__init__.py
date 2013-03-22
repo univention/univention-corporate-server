@@ -41,6 +41,7 @@ import csv
 import univention.info_tools as uit
 from univention.lib.i18n import Translation
 import univention.management.console.modules as umcm
+import univention.config_registry
 import util
 import os
 import copy
@@ -52,6 +53,9 @@ from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 from univention.management.console.modules.sanitizers import PatternSanitizer
 from univention.management.console.modules.decorators import sanitize, simple_response
+
+ucr=univention.config_registry.ConfigRegistry()
+ucr.load()
 
 _ = Translation('univention-management-console-module-setup').translate
 
@@ -373,6 +377,9 @@ class Instance(umcm.Base):
 		_check('ssl/email', lambda x: x.find('@') >= 0, _("Please enter a valid email address"))
 
 		# net
+		# validate the primary network interface
+		_check('interfaces/primary', lambda x: any(re.match('^interfaces/%s/' % x, v) for v in [values.values() + ucr.values()]), _('The primary interface must be an existing interface'))
+
 		# validate all ipv4 addresses and there netmask
 		checkedIpv4 = set()
 		for ikey, ival in values.iteritems():
