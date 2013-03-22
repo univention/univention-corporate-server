@@ -190,8 +190,9 @@ if [ -n "$RUN_SCRIPTS" ]; then
 		# guess full path of join script
 		iscript=/usr/lib/univention-install/$iscript
 		if [ ! -e "$iscript" ]; then
-			# expand .inst suffix if not specified
-			iscript=$iscript.inst
+			# expand .inst or .uinst suffix if not specified
+			test -e "$iscript.uinst" && iscript=$iscript.uinst
+			test -e "$iscript.inst" && iscript=$iscript.inst
 		fi
 		if [ ! -e "$iscript" ]; then
 			# error ... join script does not exist
