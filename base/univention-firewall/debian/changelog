@@ -1,3 +1,9 @@
+univention-firewall (5.0.5-2) unstable; urgency=low
+
+  * debian: Don't build the UMC module (Bug #24121)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 22 Mar 2013 16:58:03 +0100
+
 univention-firewall (5.0.5-1) unstable; urgency=low
 
   * UMC: Major update (Bug #24121)
