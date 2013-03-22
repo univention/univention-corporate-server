@@ -378,7 +378,8 @@ class Instance(umcm.Base):
 
 		# net
 		# validate the primary network interface
-		_check('interfaces/primary', lambda x: any(re.match('^interfaces/%s/' % x, v) for v in [values.values() + ucr.values()]), _('The primary interface must be an existing interface'))
+		ucr.load()
+		_check('interfaces/primary', lambda x: not x or any(k.startswith('interfaces/%s/' % x) for k in values.keys() + ucr.keys()), _('The primary interface must be an existing interface'))
 
 		# validate all ipv4 addresses and there netmask
 		checkedIpv4 = set()
