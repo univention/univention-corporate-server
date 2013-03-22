@@ -1,3 +1,9 @@
+univention-ldap (9.0.27-1) unstable; urgency=low
+
+  * improved logging for univention-backup2master (Bug #29085) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 22 Mar 2013 14:24:02 +0100
+
 univention-ldap (9.0.26-1) unstable; urgency=low
 
   * added ou to recommended_ldap_index_sub (Bug #29509)

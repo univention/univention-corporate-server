@@ -428,7 +428,7 @@ resolve_reference dns/forward_zone nameserver "$old_ldap_master." "$hostname.$do
 resolve_reference dns/reverse_zone nameserver "$old_ldap_master." "$hostname.$domainname." ""
 
 # Run join scripts
-univention-run-join-scripts
+univention-run-join-scripts 2>&1 | tee -a "$LOGFILE"
 
 # Resolve any LDAP references to the old master
 resolve_reference shares/share   host     $old_ldap_master_hostname $hostname ""
