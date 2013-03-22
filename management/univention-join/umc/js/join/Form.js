@@ -54,7 +54,7 @@ define([
 			}, {
 				type:			TextBox,
 				name:			'username',
-				value:			'Administrator',
+				value:			tools.status('username'),
 				label:			_('Username'),
 				description:	_('The username of the domain administrator')
 			}, {

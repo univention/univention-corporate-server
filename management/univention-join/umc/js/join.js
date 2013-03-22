@@ -38,6 +38,7 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Module",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
@@ -49,8 +50,8 @@ define([
 	"umc/modules/join/Grid",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/join"
-], function(declare, lang, topic, all, BorderContainer, entities, dialog, tools, ContainerWidget, Module, Page, Text,
-			ExpandingTitlePane, TextBox, PasswordBox, ProgressBar, JoinForm, JoinGrid, Lib_Server, _) {
+], function(declare, lang, topic, all, BorderContainer, entities, dialog, tools, ContainerWidget, ConfirmDialog,
+			Module, Page, Text, ExpandingTitlePane, TextBox, PasswordBox, ProgressBar, JoinForm, JoinGrid, Lib_Server, _) {
 
 	var JoinPage = declare("umc.modules.join.JoinPage", [Page], {
 		_titlePane: null,
@@ -314,6 +315,29 @@ define([
 			}));
 		},
 
+		_error_handler: function(msg, title) {
+			return lang.hitch(this, function(error) {
+				this.standby(false);
+				if (error.response.status != 400 && error.response.status != 409) {
+					return tools.handleErrorStatus(error.response, true);
+				}
+				var errormessage = '';
+				// lol, we got HTTP errors which are exactly meant the other way round
+				if (error.response.status == 400) {
+					errormessage = msg;
+					errormessage += error.response.data.result.error;
+				} else if (error.response.status == 409) {
+					errormessage = error.response.data.message + ':<br>';
+					_('username'); _('password'); _('hostname');
+					tools.forIn(error.response.data.result, function(key, value) {
+						errormessage += key + ': ' + value + '<br>';
+					});
+				}
+				dialog.alert(errormessage, title || _('Error'));
+				this.reinit(false);
+			});
+		},
+
 		// starts the join process and show progressbar
 		join: function(dataObj) {
 			this.standby(true);
@@ -321,16 +345,10 @@ define([
 				hostname: dataObj.hostname,
 				username: dataObj.username,
 				password: dataObj.password
-			}, false).then(lang.hitch(this, function(data) {
-				this.show_progress_bar();
-			}), lang.hitch(this, function(error) {
-				this.standby(false);
-				if (error.response.status != 400 || !error.response.data.result.error) {
-					return tools.handleErrorStatus(error.response, true);
-				}
-				dialog.alert(_("Can't start join process:<br>") + error.response.data.result.error, _('Error'));
-				this.reinit(false);
-			}));
+			}, false).then(
+				lang.hitch(this, function(data) { this.show_progress_bar(); }),
+				this._error_handler(_("Can't start join process:<br>"))
+			);
 		},
 
 		run_scripts: function(scripts, force, credentials) {
@@ -344,17 +362,33 @@ define([
 				values.password = credentials.password;
 			}
 
-			this.umcpCommand('join/run', values, false).then(lang.hitch(this, function(data) {
-				// Job is started. Now wait for its completion.
-				this.show_progress_bar();
-			}), lang.hitch(this, function(error) {
-				this.standby(false);
-				if (error.response.status != 400 || !error.response.data.result.error) {
-					return tools.handleErrorStatus(error.response, true);
-				}
-				dialog.alert(_("Can't run join scripts:<br>") + error.response.data.result.error, _('Error'));
-				this.reinit(false);
-			}));
+			this.umcpCommand('join/run', values, false).then(
+				lang.hitch(this, function(data) {
+					// Job is started. Now wait for its completion.
+					this.show_progress_bar();
+				}),
+				this._error_handler(_("Can't run join scripts:<br>"))
+			);
+		},
+
+		_alert: function(msg, title, callback) {
+			var dialog = new ConfirmDialog({
+				message: msg,
+				title: title,
+				style: 'max-width: 650px;',
+				options: [{
+					label: 'Ok',
+					'default': true,
+					callback: lang.hitch(this, function() {
+						callback();
+						dialog.hide();
+					})
+				}]
+			});
+			this.own(dialog);
+			dialog.on('cancel', function() { callback(); });
+			dialog.show();
+			return dialog;
 		},
 
 		show_progress_bar: function(title, successmsg) {
@@ -368,14 +402,19 @@ define([
 				lang.hitch(this, function() {
 					this.standby(false);
 					var errors = this._progressBar.getErrors();
-					if (errors.errors.length) {
+					if (errors.critical) {
+						// invalid credentials... don't show the restart dialog
 						dialog.alert(errors.errors[0], _('Join error'));
-					} else if (errors.critical) {
-						dialog.alert(errors.critical, _('Join error'));
+						this.reinit(false);
+					} else if (errors.errors.length) {
+						this._alert(errors.errors[0], _('Join error'), lang.hitch(this, function() {
+							// reload and show restart dialog after user closed the pop up
+							this.reinit(true);
+						}));
 					} else {
 						dialog.notify(successmsg || _('The join process was successful.'));
+						this.reinit(true);
 					}
-					this.reinit(true);
 				}),
 				undefined,
 				undefined,
@@ -395,7 +434,7 @@ define([
 					name: 'username',
 					type: TextBox,
 					label: _('Username'),
-					value: ''
+					value: tools.status('username')
 				}, {
 					name: 'password',
 					type: PasswordBox,
@@ -408,6 +447,10 @@ define([
 			}).then(function(values) {
 				if (!values.password || values.password.length === 0) {
 					dialog.alert(_('The password may not be empty.'), _('Password invalid'));
+					throw new Error();
+				}
+				if (!values.username || values.username.length === 0) {
+					dialog.alert(_('The username may not be empty.'), _('Username invalid'));
 					throw new Error();
 				}
 				return values;

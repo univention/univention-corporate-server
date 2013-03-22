@@ -1,3 +1,9 @@
+univention-join (5.0.46-1) unstable; urgency=low
+
+  * fix wrong error messages when providing no credentials; Bug #27792
+
+ -- Florian Best <best@univention.de>  Fri, 22 Mar 2013 08:56:49 +0100
+
 univention-join (5.0.45-1) unstable; urgency=low
 
   * univention-run-join-scripts: check also for uinst suffix

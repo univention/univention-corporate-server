@@ -87,6 +87,7 @@ class Progress(object):
 		self.component = _('Initializing')
 		self.info = ''
 		self.errors = []
+		self.critical = False
 
 	def poll(self):
 		return dict(
@@ -95,6 +96,7 @@ class Progress(object):
 			component=self.component,
 			info=self.info,
 			errors=self.errors,
+			critical=self.critical,
 		)
 
 	def finish(self):
@@ -108,20 +110,23 @@ class Progress(object):
 		MODULE.warn(err)
 		self.errors.append(err)
 
+	def component_handler(self, component):
+		self.component = component
+
+	def critical_handler(self, critical):
+		self.critical = critical
+
 	def step_handler(self, steps):
 		self.steps = steps
 
 	def add_steps(self, steps = 1):
 		self.steps += steps
 
-	def component_handler(self, component):
-		self.component = component
-
 # dummy function that does nothing
 def _dummyFunc(*args):
 	pass
 
-def system_join(hostname, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
+def system_join(hostname, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, critical_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
 	# get the number of join scripts
 	nJoinScripts = len(glob.glob('%s/*.inst' % INSTDIR))
 	stepsPerScript = 100.0 / (nJoinScripts+1)
@@ -133,9 +138,9 @@ def system_join(hostname, username, password, info_handler = _dummyFunc, error_h
 		MODULE.process('Performing system join...')
 		cmd = ['/usr/sbin/univention-join', '-dcname', hostname, '-dcaccount', username, '-dcpwd', passwordFile.name]
 
-		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler, component_handler)
+		return run(cmd, stepsPerScript, info_handler, error_handler, critical_handler, step_handler, component_handler)
 
-def run_join_scripts(scripts, force, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
+def run_join_scripts(scripts, force, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, critical_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
 	with tempfile.NamedTemporaryFile() as passwordFile:
 		cmd = ['/usr/sbin/univention-run-join-scripts']
 		if username and password:
@@ -156,9 +161,9 @@ def run_join_scripts(scripts, force, username, password, info_handler = _dummyFu
 		stepsPerScript = 100.0 / (len(scripts)+1)
 
 		MODULE.process('Executing join scripts ...')
-		return run(cmd, stepsPerScript, info_handler, error_handler, step_handler, component_handler)
+		return run(cmd, stepsPerScript, info_handler, error_handler, critical_handler, step_handler, component_handler)
 
-def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
+def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFunc, critical_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
 	# disable UMC/apache restart
 	MODULE.info('disabling UMC and apache server restart')
 	subprocess.call(CMD_DISABLE_EXEC)
@@ -185,7 +190,13 @@ def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFu
 			# parse output... first check for errors
 			m = regError.match(line)
 			if m:
-				error_handler(_( "The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry after resolving any conflicting issues.") % m.groupdict().get('message'))
+				message = m.groupdict().get('message')
+				error_handler(_("The system join process could not be completed:<br/><br/><i>%s</i><br/><br/> More details can be found in the log file <i>/var/log/univention/join.log</i>.<br/>Please retry after resolving any conflicting issues.") % message)
+				if message.startswith('ssh-login for') or message.startswith('binddn for'):
+					# invalid credentials or non existent user
+					# do a critical error, the script will stop here
+					critical_handler(True)
+
 				continue
 
 			# check for currently called join script
@@ -330,8 +341,8 @@ class Instance(Base):
 			return fd.read(2097152)
 
 	@sanitize(
-		username=StringSanitizer(required=True),
-		password=StringSanitizer(required=True),
+		username=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1),
 		hostname=HostSanitizer(required=True, regex_pattern=RE_HOSTNAME),
 	)
 	def join(self, request):
@@ -358,6 +369,7 @@ class Instance(Base):
 				step_handler=self.progress_state.add_steps,
 				error_handler=self.progress_state.error_handler,
 				component_handler=self.progress_state.component_handler,
+				critical_handler=self.progress_state.critical_handler,
 			)
 
 		def _finished(thread, result):
@@ -378,8 +390,8 @@ class Instance(Base):
 		self.finished(request.id, {'success': True})
 
 	@sanitize(
-		username=StringSanitizer(),
-		password=StringSanitizer(),
+		username=StringSanitizer(required=False, minimum=1),
+		password=StringSanitizer(required=False, minimum=1),
 		scripts=ListSanitizer(required=True, min_elements=1),
 		force=BooleanSanitizer(default=False)
 	)
@@ -409,6 +421,7 @@ class Instance(Base):
 				step_handler=self.progress_state.add_steps,
 				error_handler=self.progress_state.error_handler,
 				component_handler=self.progress_state.component_handler,
+				critical_handler=self.progress_state.critical_handler,
 			)
 
 		def _finished(thread, result):
