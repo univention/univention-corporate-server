@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.244-1) unstable; urgency=low
+
+  * Bug #29210: adjust css
+
+ -- Florian Best <best@univention.de>  Fri, 22 Mar 2013 15:33:23 +0100
+
 univention-management-console-frontend (2.0.243-1) unstable; urgency=low
 
   * Bug #29489: adjusted texts
