@@ -33,6 +33,16 @@
 #DEBHELPER#
 
 . /usr/share/univention-lib/all.sh
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.1; then
+	remove_ucr_info_file univention-fetchmail.info
+	remove_ucr_template etc/default/fetchmail
+	if ! is_ucr_true fetchmail/enabled; then
+		ucr set fetchmail/autostart="$(ucr get fetchmail/enabled)"
+	fi
+	ucr unset fetchmail/enabled
+fi
+
 call_joinscript 92univention-fetchmail.inst
 
 /etc/init.d/univention-directory-listener crestart
