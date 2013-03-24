@@ -1,3 +1,10 @@
+univention-join (5.0.47-1) unstable; urgency=low
+
+  * Invalidate nscd hosts cache before joining the computer account
+    (Bug #30886)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 24 Mar 2013 21:28:14 +0100
+
 univention-join (5.0.46-1) unstable; urgency=low
 
   * fix wrong error messages when providing no credentials; Bug #27792

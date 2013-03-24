@@ -491,6 +491,9 @@ if [ -n "$mac_addr" ]; then
 	args+=(-mac "$mac_addr")
 fi
 
+# invalidate the nscd hosts cache
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=30886
+nscd -i hosts
 
 echo -n "Join Computer Account: "
 args+=(-role "$server_role" -hostname "$hostname" -domainname "$domainname")
