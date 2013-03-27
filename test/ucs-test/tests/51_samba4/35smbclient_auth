@@ -11,14 +11,12 @@
 import os
 import pexpect
 import string
-import tempfile
 import sys
 import atexit
 import univention.config_registry
 import random
 import subprocess
 import time
-import random
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -73,8 +71,6 @@ def create_user(username, password):
 	return udm.wait() == 0
 
 def cleanup(username):
-	if os.path.isfile('/tmp/pw_temp'):
-		os.remove('/tmp/pw_temp')
 	udm = subprocess.Popen(["univention-directory-manager",
 				"users/user", "remove",
 				"--dn", "uid=%s,cn=users,%s" % (username, ucr["ldap/base"],)])
@@ -83,10 +79,10 @@ def cleanup(username):
 	return udm.wait() == 0
 
 
-def smbclient(username,password,hostname,number,innerDelay):
+def smbclient(username,password,number,innerDelay):
 	for i in range(number):
-		print '/usr/bin/smbclient4 -U%s%%%s //%s/sysvol' % (username,password,hostname)
-		subprocess.Popen(["/usr/bin/smbclient4", "-U%s%%%s" % (username,password), "//%s/sysvol" % hostname],stdin=subprocess.PIPE)
+#		print '/usr/bin/smbclient -U%s%%%s //localhost/sysvol' % (username,password)
+		subprocess.Popen(["/usr/bin/smbclient", "-U%s%%%s" % (username,password), "//localhost/sysvol"],stdin=subprocess.PIPE)
 		time.sleep(innerDelay[i])
 
 def calculateInnerDelay(roundTime,amountPerRound):
@@ -107,24 +103,19 @@ def calculateInnerDelay(roundTime,amountPerRound):
 		sum2=sum2+delayArray[i]
 	return delayArray
 
-def checkResult(hostname):
-	server_role= ucr['server/role']
-	if server_role == "domaincontroller_master" and os.path.isfile('/root/root.secret'):
-		pw_path ='/root/root.secret' #workaround for test vm
-	else:
-		pw_file = file('/tmp/pw_temp','w')
-		pw_file.write('univention')
-		pw_file.close()
-		pw_path = '/tmp/pw_temp'
+def checkResult(expectedResult):
+	for i in range(20):
 
-        output= pexpect.run('univention-ssh %s root@%s "smbstatus | grep -c sysvol"' % (pw_path,hostname))
-	print output	
-	try:
-		output_int=int(output)
-	except Exception, e:
-		print "Result was not an integer!"
-		sys.exit(1)
-
+		output = pexpect.run('/bin/bash -c "smbstatus 2>&1 | grep -c sysvol"')
+		try:
+			output_int=int(output)
+		except Exception, e:
+			print "Result was not an integer!"
+			sys.exit(1)
+		if output_int == expectedResult:
+			return output_int
+		time.sleep(1)
+		
 	return output_int
 
 
@@ -137,20 +128,15 @@ if __name__ == "__main__":
 		sys.exit(120) # Transient error
 	atexit.register(cleanup, username)
 
-	hostname=ucr["ldap/master"]
-
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()
 	innerDelay=calculateInnerDelay(roundTime,amountPerRound)
 	time.sleep(10)
-	#debug
-        output= pexpect.run("/usr/bin/smbclient4 -L %s -U%s%%%s" % (hostname,username,password))
-	print output	
-	#/debug
+
 	for index in range(totalRounds):
-		smbclient(username,password,hostname,amountPerRound,innerDelay)    
-	time.sleep(20)
-	result=checkResult(hostname)
+		smbclient(username,password,amountPerRound,innerDelay)    
+#	time.sleep(20)
 	expectedResult=amountPerRound*totalRounds
+	result=checkResult(expectedResult)
 	print "%s of %s have been successfull." % (result,expectedResult)
 	if result == expectedResult:
 		sys.exit(0)

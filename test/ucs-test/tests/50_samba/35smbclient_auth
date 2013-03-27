@@ -11,14 +11,12 @@
 import os
 import pexpect
 import string
-import tempfile
 import sys
 import atexit
 import univention.config_registry
 import random
 import subprocess
 import time
-import random
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -50,8 +48,8 @@ def get_unique_username():
 	while True:
 		randomname = "T%x" % (random.getrandbits(44),)
 		# this equivalent to
-		# /usr/sbin/univention-directory-manager users/user list | sed -rne "s_^\s+username:\s+(.*)$_\1_p"
-		udm = subprocess.Popen(["/usr/sbin/univention-directory-manager", "users/user", "list"], stdout=subprocess.PIPE)
+		# univention-directory-manager users/user list | sed -rne "s_^\s+username:\s+(.*)$_\1_p"
+		udm = subprocess.Popen(["univention-directory-manager", "users/user", "list"], stdout=subprocess.PIPE)
 		sed = subprocess.Popen(["sed", "-rne", "s_^\s+username:\s+(.*)$_\1_p"], stdin=udm.stdout, stdout=subprocess.PIPE)
 		stdout, stderr = sed.communicate()
 		for username in stdout:
@@ -62,7 +60,7 @@ def get_unique_username():
 
 def create_user(username, password):
 	mailaddress = "%s@%s" % (username, ucr["domainname"])
-	udm = subprocess.Popen(["/usr/sbin/univention-directory-manager",
+	udm = subprocess.Popen(["univention-directory-manager",
 				"users/user", "create",
 				"--set", "password=%s" % password,
 				"--set", "username=%s" % username,
@@ -73,9 +71,7 @@ def create_user(username, password):
 	return udm.wait() == 0
 
 def cleanup(username):
-	if os.path.isfile('/tmp/pw_temp'):
-		os.remove('/tmp/pw_temp')
-	udm = subprocess.Popen(["/usr/sbin/univention-directory-manager",
+	udm = subprocess.Popen(["univention-directory-manager",
 				"users/user", "remove",
 				"--dn", "uid=%s,cn=users,%s" % (username, ucr["ldap/base"],)])
 
@@ -83,9 +79,10 @@ def cleanup(username):
 	return udm.wait() == 0
 
 
-def smbclient(username,password,hostname,number,innerDelay):
+def smbclient(username,password,number,innerDelay):
 	for i in range(number):
-		subprocess.Popen(["/usr/bin/smbclient", "-U%s%%%s" % (username,password), "//%s/netlogon" % hostname],stdin=subprocess.PIPE)
+#		print '/usr/bin/smbclient -U%s%%%s //localhost/sysvol' % (username,password)
+		subprocess.Popen(["/usr/bin/smbclient", "-U%s%%%s" % (username,password), "//localhost/netlogon"],stdin=subprocess.PIPE)
 		time.sleep(innerDelay[i])
 
 def calculateInnerDelay(roundTime,amountPerRound):
@@ -106,20 +103,19 @@ def calculateInnerDelay(roundTime,amountPerRound):
 		sum2=sum2+delayArray[i]
 	return delayArray
 
-def checkResult(hostname):
-	pw_file = file('/tmp/pw_temp','w')
-	pw_file.write('univention')
-	pw_file.close()
-	pw_path = '/tmp/pw_temp'
+def checkResult(expectedResult):
+	for i in range(20):
 
-        output= pexpect.run('univention-ssh %s root@%s "smbstatus 2>/dev/null  | grep -c netlogon"' % (pw_path,hostname))
-	print output	
-	try:
-		output_int=int(output)
-	except Exception, e:
-		print "Result was not an integer!"
-		sys.exit(1)
-
+		output = pexpect.run('/bin/bash -c "smbstatus 2>&1 | grep -c netlogon"')
+		try:
+			output_int=int(output)
+		except Exception, e:
+			print "Result was not an integer!"
+			sys.exit(1)
+		if output_int == expectedResult:
+			return output_int
+		time.sleep(1)
+		
 	return output_int
 
 
@@ -132,16 +128,15 @@ if __name__ == "__main__":
 		sys.exit(120) # Transient error
 	atexit.register(cleanup, username)
 
-	hostname=ucr["ldap/master"]
-
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()
 	innerDelay=calculateInnerDelay(roundTime,amountPerRound)
 	time.sleep(10)
+
 	for index in range(totalRounds):
-		smbclient(username,password,hostname,amountPerRound,innerDelay)    
-	time.sleep(20)
-	result=checkResult(hostname)
+		smbclient(username,password,amountPerRound,innerDelay)    
+#	time.sleep(20)
 	expectedResult=amountPerRound*totalRounds
+	result=checkResult(expectedResult)
 	print "%s of %s have been successfull." % (result,expectedResult)
 	if result == expectedResult:
 		sys.exit(0)
