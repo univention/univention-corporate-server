@@ -286,7 +286,7 @@ define([
 				message: message,
 				options: options
 			});
-			domStyle.set(confirmDialog.containerNode, 'max-width', '550px');
+			domStyle.set(confirmDialog.containerNode, {maxWidth: '550px'});
 
 			// connect to 'confirm' event to close the dialog in any case
 			var deferred = new Deferred();

@@ -79,7 +79,17 @@ define([
 			if (null !== this.valid) {
 				return this.get('valid');
 			}
-			return this.inherited(arguments);
+			// fallback to inherited method:
+			// not all of our widgets (or the dijit base classes)
+			//   define "isValid", in this case return true
+			// see Bug#30965
+			var superIsValid = this.inherited(arguments, true); // only return the function, not yet called
+			if (superIsValid !== undefined) {
+			       return superIsValid.apply(this, arguments);
+			} else {
+				// was not defined
+			       return true;
+			}
 		},
 
 		_isValidSubset: function() {
