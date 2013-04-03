@@ -1,3 +1,12 @@
+univention-squid (6.0.8-2) unstable; urgency=low
+
+  * Fixed a regression in squid group authentication if squid/auth/allowed_groups 
+    was not set (Bug #30969)
+  * When using squid with ntlm authentication it is now checked if the user account 
+    is locked or disabled (Bug #29492) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 03 Apr 2013 13:46:40 +0200
+
 univention-squid (6.0.8-1) unstable; urgency=low
 
   * Unset deprecated ucr variable squid/ldapauth/groups and squid/auth/groups (Bug #30553)
