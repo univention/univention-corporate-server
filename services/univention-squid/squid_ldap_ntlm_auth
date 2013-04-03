@@ -307,21 +307,22 @@ def getNtHash(user):
 			if options.debug:
 				debug("  cache entry for %s invalid -> new ldapsearch" % user)
 
-	# search for ntHash of user
+	# search for ntHash and sambaAcctFlags of user
 	ntHash = ""
 	ldapFilter = "(uid=%s)" % user
-	attr = ["sambaNTPassword"]
+	attr = ["sambaNTPassword", "sambaAcctFlags"]
 	ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file = "/etc/squid3.secret")
 	result = ldap.search(base=cr["ldap/base"], filter=ldapFilter, attr=attr)
 	if options.debug:
 		debug("  ldapsearch for sambaNTPassword of user %s" % user)
 	if len(result) == 1:
 		tmp = result[0][1].get("sambaNTPassword", [""])[0]
-		if tmp:
+		sambaAcctFlags = result[0][1].get("sambaAcctFlags", [""])[0]
+		if tmp and sambaAcctFlags:
 			if options.debug:
-				debug("  found sambaNTPassword in ldap for user %s" % user)
+				debug("  found sambaNTPassword in ldap for user %s with sambaAcctFlags %s" % (user, sambaAcctFlags))
 			ntHash = tmp
-			users[user] = [ntHash, time.time()]
+			users[user] = [ntHash, time.time(), sambaAcctFlags]
 
 	return ntHash
 
@@ -342,6 +343,15 @@ def verifyNtlmTypeThree(data, challenge):
 		return "NA no ntHash found"
 	else:
 		ntHash = ntHash.decode("hex") + '\x00'*5
+
+	# nthash is valid, check if user account is disabled/locked
+	global users
+	userflags = users.get(username.lower())[2]
+	if userflags:
+		if "D" in userflags:
+			return "NA Account is disabled"
+		elif "L" in userflags:
+			return "NA Account has been auto-locked"
 
 	# debug
 	if options.debug:

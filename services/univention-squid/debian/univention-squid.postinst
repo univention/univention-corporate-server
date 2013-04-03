@@ -87,6 +87,11 @@ ucr set squid/transparentproxy?false \
 	squid/cache?yes \
 	squid/debug/level?ALL,1 \
 
+# Commit regarding template error: Bug 30969
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.9; then
+	ucr commit /etc/squid3/squid.conf
+fi
+
 /etc/init.d/squid3 stop
 /etc/init.d/squid3 start
 
