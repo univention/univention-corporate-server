@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (2.0.140-1) unstable; urgency=low
+
+  * Bug #30798: Added progress bar while fetching software changes in App
+    Center
+  * More robust free memory calculation in OpenVZ environments (Bug #30659)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 04 Apr 2013 19:19:13 +0200
+
 univention-management-console-module-appcenter (2.0.139-1) unstable; urgency=low
 
   * Improve markup for request license dialog (Bug #30199)

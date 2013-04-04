@@ -432,7 +432,7 @@ define([
 					];
 				}
 
-				dialog.confirm('<p><strong>' + headline + '</strong></p>' + txt, buttons);
+				dialog.confirm('<h2>' + headline + '</h2>' + txt, buttons);
 			}));
 		},
 

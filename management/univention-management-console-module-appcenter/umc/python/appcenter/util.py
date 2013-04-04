@@ -168,7 +168,7 @@ def get_current_ram_available():
 		splitlines = map(lambda line: line.split(), f.readlines())
 		meminfo = dict([(line[0], int(line[1]) * 1024) for line in splitlines]) # bytes
 	avail_phymem = meminfo['MemFree:']
-	phymem_buffers = meminfo['Buffers:']
+	phymem_buffers = meminfo.get('Buffers:', 0) # OpenVZ does not have Buffers, calculation still correct, see Bug #30659
 	cached_phymem = meminfo['Cached:']
 	return (avail_phymem + phymem_buffers + cached_phymem) / (1024 * 1024)
 

@@ -37,6 +37,7 @@ define([
 	"dojo/dom-class",
 	"dojo/store/Memory",
 	"dojo/topic",
+	"dojo/Deferred",
 	"dojo/regexp",
 	"dojox/image/LightboxNano",
 	"umc/app",
@@ -56,7 +57,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, query, domClass, Memory, topic, regexp, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
+], function(declare, lang, array, when, query, domClass, Memory, topic, Deferred, regexp, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
 
 	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
@@ -495,14 +496,31 @@ define([
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, func);
 			}
 
+			var command = 'appcenter/invoke';
+			if (!force) {
+				command = 'appcenter/invoke_dry_run';
+			}
 			var commandArguments = {
 				'function': func,
 				'application': app.id,
 				'force': force === true
 			};
-
-			this.standby(true);
-			tools.umcpCommand('appcenter/invoke', commandArguments).then(
+			var deferred = tools.umcpCommand(command, commandArguments);
+			this.standby(true, this._progressBar);
+			this._progressBar.reset(_('%s: Performing software tests on involved systems', app.name));
+			if (command === 'appcenter/invoke_dry_run') {
+				var dryRunDeferred = deferred;
+				deferred = new Deferred();
+				this._progressBar.auto('appcenter/progress',
+					{},
+					function() {
+						dryRunDeferred.then(function(data) {
+							deferred.resolve(data);
+						});
+					}
+				);
+			}
+			deferred.then(
 				lang.hitch(this, function(data) {
 					this.standby(false);
 					var result = data.result;

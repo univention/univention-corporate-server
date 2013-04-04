@@ -150,8 +150,20 @@ class Instance(umcm.Base):
 		return application.to_dict(self.package_manager)
 
 	def invoke_dry_run(self, request):
+		''' Calls invoke with only_dry_run=True in a dedicated thread
+		so that progress may be called while it runs (can run some time)
+		'''
 		request.options['only_dry_run'] = True
-		self.invoke(request)
+		application_id = request.options.get('application')
+		def _thread(module, req):
+			with module.package_manager.locked(reset_status=True, set_finished=True):
+				module.invoke(req)
+		def _finished(thread, result):
+			if isinstance(result, BaseException):
+				MODULE.warn('Exception during %s %s: %s' % ('dry_run', application_id, str(result)))
+		thread = notifier.threads.Simple('invoke_dry_run',
+			notifier.Callback(_thread, self, request), _finished)
+		thread.run()
 
 	@sanitize(
 		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
@@ -167,7 +179,7 @@ class Instance(umcm.Base):
 		# you should add a new method (see invoke_dry_run) or add a function name (e.g. install-schema)
 		# this is necessary because newer app center may talk remotely with older one
 		#   that does not understand new arguments and behaves the old way (in case of
-		#   dry_run: install application although they were asked to dry_run)
+		#   only_dry_run: install application although they were asked to dry_run)
 		function = request.options.get('function')
 		send_as = function
 		if function.startswith('install'):

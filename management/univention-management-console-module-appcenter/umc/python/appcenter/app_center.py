@@ -620,7 +620,10 @@ class Application(object):
 		if master_packages and not dont_remote_install:
 			is_master = server_role == 'domaincontroller_master'
 			hosts = self.find_all_hosts(is_master=is_master)
+			i = 0
 			for host, host_is_master in hosts:
+				i += 1
+				package_manager.progress_state.info(_('Checking software changes on %s' % host))
 				try:
 					connection = UMCConnection(host)
 					connection.auth(username, password)
@@ -652,6 +655,9 @@ class Application(object):
 						if host_info['result']['serious_problems'] or not host_info['compatible_version']:
 							serious_problems_with_hosts = True
 					hosts_info[host] = host_info
+				package_manager.progress_state.percentage(i * 100 / len(hosts))
+
+		package_manager.progress_state.info(_('Checking software changes on %s' % _('this server')))
 
 		# packages to install
 		to_install = []
@@ -677,7 +683,6 @@ class Application(object):
 		package_manager.cache.upgrade(dist_upgrade=True)
 		result = package_manager.mark(to_install, [], dry_run=True)
 		result = dict(zip(['install', 'remove', 'broken'], result))
-		MODULE.info('Package changes: %s' % (result, ))
 		result['unreachable'] = unreachable
 		result['master_unreachable'] = master_unreachable
 		result['hosts_info'] = hosts_info
@@ -690,16 +695,19 @@ class Application(object):
 			component_manager.remove_app(self)
 			package_manager.update()
 
+		package_manager.progress_state.percentage(100)
 		return result
 
 	def uninstall_dry_run(self, package_manager):
 		MODULE.info('Invoke uninstall_dry_run')
+		package_manager.progress_state.info(_('Checking software changes on %s' % _('this server')))
 		package_manager.reopen_cache()
 		to_uninstall = package_manager.get_packages(self.get('defaultpackages'))
 		for package in to_uninstall:
 			package.mark_delete()
 		packages = [pkg.name for pkg in package_manager.packages() if pkg.is_auto_removable or pkg.marked_delete]
 		package_manager.reopen_cache()
+		package_manager.progress_state.percentage(100)
 		return packages
 
 	def install_master_packages_on_host(self, package_manager, function, host, username, password):
