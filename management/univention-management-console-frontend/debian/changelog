@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.246-1) unstable; urgency=low
+
+  * Bug #30965: added form test .html file
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 04 Apr 2013 12:10:18 +0200
+
 univention-management-console-frontend (2.0.245-1) unstable; urgency=low
 
   * Fixed regression in form validation with certain FormWidgets (Bug #30965)
