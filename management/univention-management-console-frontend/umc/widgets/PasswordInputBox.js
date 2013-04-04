@@ -172,11 +172,6 @@ define([
 		},
 
 		isValid: function() {
-			var res = this.inherited(arguments);
-			if (undefined !== res && null !== res) {
-				return res;
-			}
-
 			// compare passwords
 			var pw1 = this._firstWidget.get('value');
 			var pw2 = this._secondWidget.get('value');

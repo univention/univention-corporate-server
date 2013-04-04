@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.247-1) unstable; urgency=low
+
+  * Fixed isValid in PasswordInputBox (Bug #30965)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 04 Apr 2013 13:26:43 +0200
+
 univention-management-console-frontend (2.0.246-1) unstable; urgency=low
 
   * Bug #30965: added form test .html file
