@@ -1,3 +1,11 @@
+univention-directory-manager-modules (8.0.143-3) unstable; urgency=low
+
+  * when updating ptrrecords because a forward zone has changed, only
+    modify entries in the related zone, not all zones in the LDAP
+    (Bug #30905)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 04 Apr 2013 13:44:24 +0200
+
 univention-directory-manager-modules (8.0.143-2) unstable; urgency=low
 
   * version bump (Bug #29918)
