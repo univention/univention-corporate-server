@@ -1485,14 +1485,26 @@ class simpleComputer( simpleLdap ):
 		return ( zone, ip )
 
 	def __remove_dns_reverse_object( self, name, dnsEntryZoneReverse , ip ):
+		def modify(rdn, zoneDN):
+			zone_name = zoneDN.split('=')[1].split(',')[0]
+			for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter='(&(relativeDomainName=%s)(zoneName=%s))' % (rdn, zone_name)):
+				if len(attributes['pTRRecord']) == 1:
+					self.lo.delete( 'relativeDomainName=%s,%s' % ( rdn, zoneDN ) )
+				else:
+					for dn2, attributes2 in self.lo.search(scope='domain', attr=[ 'zoneName' ], filter='(&(relativeDomainName=%s)(objectClass=dNSZone))' %  name, unique=0 ):
+						self.lo.modify( dn, [('pTRRecord', '%s.%s.' % (name, attributes2['zoneName'][0]), '')] )
+
+				zone = univention.admin.handlers.dns.reverse_zone.object( self.co, self.lo, self.position, zoneDN) 
+				zone.open()
+				zone.modify()
+
+
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dns reverse object: dnsEntryZoneReverse="%s", name="%s", ip="%s"' % ( dnsEntryZoneReverse, name, ip ) )
 		if dnsEntryZoneReverse:
 			rdn = self.calc_dns_reverse_entry_name( ip, dnsEntryZoneReverse )
 			if rdn:
-				self.lo.delete( 'relativeDomainName=%s,%s' % ( rdn, dnsEntryZoneReverse ) )
-				zone = univention.admin.handlers.dns.reverse_zone.object( self.co, self.lo, self.position, dnsEntryZoneReverse )
-				zone.open( )
-				zone.modify( )
+				modify(rdn, dnsEntryZoneReverse)
+
 		elif ip:
 			tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 			results = self.lo.search( base = tmppos.getBase( ), scope = 'domain', attr = [ 'zoneDn' ], filter = '(&(objectClass=dNSZone)(|(pTRRecord=%s)(pTRRecord=%s.*)))' % ( name, name ), unique = 0 )
@@ -1504,10 +1516,7 @@ class simpleComputer( simpleLdap ):
 				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'DEBUG: rdn: "%s"' % rdn )
 				if rdn:
 					try:
-						self.lo.delete( 'relativeDomainName=%s,%s' % ( rdn, zone ) )
-						zone = univention.admin.handlers.dns.reverse_zone.object( self.co, self.lo, self.position, zone )
-						zone.open( )
-						zone.modify( )
+						modify(rdn, zone)
 					except univention.admin.uexceptions.noObject:
 						pass
 			pass
