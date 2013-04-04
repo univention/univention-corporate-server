@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.244-3) unstable; urgency=low
+
+  * Fixed isValid in PasswordInputBox (Bug #30965)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 04 Apr 2013 13:28:45 +0200
+
 univention-management-console-frontend (2.0.244-2) unstable; urgency=low
 
   * Fixed regression in form validation with certain FormWidgets (Bug #30965)
