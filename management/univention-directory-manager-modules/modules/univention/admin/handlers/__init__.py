@@ -1632,7 +1632,7 @@ class simpleComputer( simpleLdap ):
 		ip_split.reverse()
 		search_filter = '(|(relativeDomainName=%s)(relativeDomainName=%s)(relativeDomainName=%s))' % (ip_split[0], '.'.join(ip_split[:1]), '.'.join(ip_split[:2]))
 
-		for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=search_filter):
+		for dn, attributes in self.lo.search(base=zoneDN, scope='domain', attr=['pTRRecord'], filter=search_filter):
 			self.lo.modify(dn, [('pTRRecord', '', ptrrecord)])
 
 
@@ -1643,7 +1643,7 @@ class simpleComputer( simpleLdap ):
 		ip_split.reverse()
 		search_filter = '(|(relativeDomainName=%s)(relativeDomainName=%s)(relativeDomainName=%s))' % (ip_split[0], '.'.join(ip_split[:1]), '.'.join(ip_split[:2]))
 
-		for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=search_filter):
+		for dn, attributes in self.lo.search(base=zoneDN, scope='domain', attr=['pTRRecord'], filter=search_filter):
 			if ptrrecord in attributes['pTRRecord']:
 				self.lo.modify(dn, [('pTRRecord', ptrrecord, '')])
 		
