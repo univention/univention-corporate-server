@@ -114,7 +114,12 @@ define([
 			}));
 		},
 
-		auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors) {
+		auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors, untilDeferred) {
+			if (untilDeferred && untilDeferred.isFulfilled()) {
+				// auto caught SIGTERM !
+				this.stop(callback, stopComponent, !dontHandleErrors);
+				return;
+			}
 			if (pollErrorMsg === undefined) {
 				pollErrorMsg = _('Fetching information from the server failed!');
 			}
@@ -130,7 +135,7 @@ define([
 				if (result) {
 					this.setInfo(result.component, result.info, result.steps, result.errors, result.critical);
 					if (!result.finished) {
-						setTimeout(lang.hitch(this, 'auto', umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors), 200);
+						setTimeout(lang.hitch(this, 'auto', umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors, untilDeferred), 200);
 					}
 				}
 				if (!result || result.finished) {

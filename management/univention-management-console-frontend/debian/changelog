@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.248-1) unstable; urgency=low
+
+  * Bug #30984: Added possibility to manually stop auto-polling of ProgressBar
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 04 Apr 2013 21:04:48 +0200
+
 univention-management-console-frontend (2.0.247-1) unstable; urgency=low
 
   * Fixed isValid in PasswordInputBox (Bug #30965)
