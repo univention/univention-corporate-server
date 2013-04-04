@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-04-04 19:06+0200\n"
+"POT-Creation-Date: 2013-04-04 20:04+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "An error occurred while sending the request: %s"
 msgstr "Ein Fehler ist während des Anforderns aufgetreten: %s"
 
-#: umc/python/appcenter/__init__.py:260 umc/python/appcenter/__init__.py:365
+#: umc/python/appcenter/__init__.py:263 umc/python/appcenter/__init__.py:368
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -47,7 +47,7 @@ msgstr "Konnte das App Center nicht erreichen: %s"
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
 
-#: umc/python/appcenter/__init__.py:266
+#: umc/python/appcenter/__init__.py:269
 #, python-format
 msgid "No license file available for application: %s"
 msgstr "Für die Anwendung ist keine Lizenzdatei vorhanden: %s"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:549
+#: umc/python/appcenter/__init__.py:552
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -82,11 +82,11 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/appcenter/__init__.py:399
+#: umc/python/appcenter/__init__.py:402
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:401
+#: umc/python/appcenter/__init__.py:404
 msgid "not installed"
 msgstr "nicht installiert"
 
@@ -95,6 +95,6 @@ msgstr "nicht installiert"
 msgid "this server"
 msgstr "diesem Server"
 
-#: umc/python/appcenter/__init__.py:397
+#: umc/python/appcenter/__init__.py:400
 msgid "upgradable"
 msgstr "aktualisierbar"

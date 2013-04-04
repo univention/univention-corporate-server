@@ -150,20 +150,8 @@ class Instance(umcm.Base):
 		return application.to_dict(self.package_manager)
 
 	def invoke_dry_run(self, request):
-		''' Calls invoke with only_dry_run=True in a dedicated thread
-		so that progress may be called while it runs (can run some time)
-		'''
 		request.options['only_dry_run'] = True
-		application_id = request.options.get('application')
-		def _thread(module, req):
-			with module.package_manager.locked(reset_status=True, set_finished=True):
-				module.invoke(req)
-		def _finished(thread, result):
-			if isinstance(result, BaseException):
-				MODULE.warn('Exception during %s %s: %s' % ('dry_run', application_id, str(result)))
-		thread = notifier.threads.Simple('invoke_dry_run',
-			notifier.Callback(_thread, self, request), _finished)
-		thread.run()
+		self.invoke(request)
 
 	@sanitize(
 		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
@@ -180,79 +168,94 @@ class Instance(umcm.Base):
 		# this is necessary because newer app center may talk remotely with older one
 		#   that does not understand new arguments and behaves the old way (in case of
 		#   only_dry_run: install application although they were asked to dry_run)
-		function = request.options.get('function')
-		send_as = function
-		if function.startswith('install'):
-			function = 'install'
-		if function.startswith('update'):
-			function = 'update'
-		application_id = request.options.get('application')
-		application = Application.find(application_id)
-		force = request.options.get('force')
-		only_dry_run = request.options.get('only_dry_run')
-		dont_remote_install = request.options.get('dont_remote_install')
-		only_master_packages = send_as.endswith('schema')
-		MODULE.process('Try to %s (%s) %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, application_id, force, only_master_packages, dont_remote_install, only_dry_run))
 		try:
-			# make sure that the application cane be installed/updated
-			can_continue = True
-			serious_problems = False
-			result = {
-				'install' : [],
-				'remove' : [],
-				'broken' : [],
-				'unreachable' : [],
-				'master_unreachable' : False,
-				'serious_problems' : False,
-				'hosts_info' : {},
-				'problems_with_hosts' : False,
-				'serious_problems_with_hosts' : False,
-			}
-			if not application:
-				MODULE.process('Application not found: %s' % application_id)
-				can_continue = False
-			elif function == 'install' and not only_master_packages and not application.can_be_installed(self.package_manager):
-				MODULE.process('Application cannot be installed: %s' % application_id)
-				can_continue = False
-			elif function == 'update' and not only_master_packages and not application.can_be_updated(self.package_manager):
-				MODULE.process('Application cannot be updated: %s' % application_id)
-				can_continue = False
+			# this lock is to raise LockError and prevent further actions
+			with self.package_manager.locked():
+				def _thread(module, request):
+					# this lock is to really lock it during the whole thread
+					with module.package_manager.locked():
+						function = request.options.get('function')
+						send_as = function
+						if function.startswith('install'):
+							function = 'install'
+						if function.startswith('update'):
+							function = 'update'
+						application_id = request.options.get('application')
+						application = Application.find(application_id)
+						force = request.options.get('force')
+						only_dry_run = request.options.get('only_dry_run')
+						dont_remote_install = request.options.get('dont_remote_install')
+						only_master_packages = send_as.endswith('schema')
+						MODULE.process('Try to %s (%s) %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, application_id, force, only_master_packages, dont_remote_install, only_dry_run))
 
-			if can_continue and function in ('install', 'update'):
-				remove_component = only_dry_run
-				result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
-				serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
-				if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
-					MODULE.process('Problems encountered or confirmation required. Removing component %s' % application.id)
-					if not remove_component:
-						# component was not removed automatically after dry_run
-						if application.candidate:
-							self.component_manager.remove_app(application.candidate)
+						# make sure that the application cane be installed/updated
+						can_continue = True
+						serious_problems = False
+						result = {
+							'install' : [],
+							'remove' : [],
+							'broken' : [],
+							'unreachable' : [],
+							'master_unreachable' : False,
+							'serious_problems' : False,
+							'hosts_info' : {},
+							'problems_with_hosts' : False,
+							'serious_problems_with_hosts' : False,
+						}
+						if not application:
+							MODULE.process('Application not found: %s' % application_id)
+							can_continue = False
+						elif function == 'install' and not only_master_packages and not application.can_be_installed(module.package_manager):
+							MODULE.process('Application cannot be installed: %s' % application_id)
+							can_continue = False
+						elif function == 'update' and not only_master_packages and not application.can_be_updated(module.package_manager):
+							MODULE.process('Application cannot be updated: %s' % application_id)
+							can_continue = False
+
+						if can_continue and function in ('install', 'update'):
+							remove_component = only_dry_run
+							# this is lock is for dry_run only
+							with module.package_manager.locked(reset_status=True, set_finished=False):
+								result = application.install_dry_run(module.package_manager, module.component_manager, remove_component=remove_component, username=module._username, password=module._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
+							serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
+							if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
+								MODULE.process('Problems encountered or confirmation required. Removing component %s' % application.id)
+								if not remove_component:
+									# component was not removed automatically after dry_run
+									if application.candidate:
+										module.component_manager.remove_app(application.candidate)
+									else:
+										module.component_manager.remove_app(application)
+									module.package_manager.update()
+								result['serious_problems'] = serious_problems
+								can_continue = False
+						elif can_continue and function in ('uninstall',) and not force:
+							result['remove'] = application.uninstall_dry_run(module.package_manager)
+							can_continue = False
+						result['can_continue'] = can_continue
+						module.finished(request.id, result)
+
+						if not can_continue or only_dry_run:
+							# we should not go any further here
+							#   so we finished
+							module.package_manager.set_finished()
 						else:
-							self.component_manager.remove_app(application)
-						self.package_manager.update()
-					result['serious_problems'] = serious_problems
-					can_continue = False
-			elif can_continue and function in ('uninstall',) and not force:
-				result['remove'] = application.uninstall_dry_run(self.package_manager)
-				can_continue = False
-			result['can_continue'] = can_continue
-			self.finished(request.id, result)
-
-			if can_continue and not only_dry_run:
-				def _thread(module, application, function):
-					with module.package_manager.locked(reset_status=True, set_finished=True):
-						with module.package_manager.no_umc_restart(exclude_apache=True):
-							if function in ('install', 'update'):
-								# dont have to add component: already added during dry_run
-								return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install)
-							else:
-								return application.uninstall(module.package_manager, module.component_manager)
+							# locked again with reset status and finished because now
+							#   it is about the (un)installation, not the dry_run
+							with module.package_manager.locked(reset_status=True, set_finished=True):
+								with module.package_manager.no_umc_restart(exclude_apache=True):
+									if function in ('install', 'update'):
+										# dont have to add component: already added during dry_run
+										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=module._username, password=module._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install)
+									else:
+										return application.uninstall(module.package_manager, module.component_manager)
 				def _finished(thread, result):
 					if isinstance(result, BaseException):
+						function = request.options.get('function')
+						application_id = request.options.get('application')
 						MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
 				thread = notifier.threads.Simple('invoke',
-					notifier.Callback(_thread, self, application, function), _finished)
+					notifier.Callback(_thread, self, request), _finished)
 				thread.run()
 		except LockError:
 			# make it thread safe: another process started a package manager

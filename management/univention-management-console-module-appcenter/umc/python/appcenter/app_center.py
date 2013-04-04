@@ -620,10 +620,11 @@ class Application(object):
 		if master_packages and not dont_remote_install:
 			is_master = server_role == 'domaincontroller_master'
 			hosts = self.find_all_hosts(is_master=is_master)
+			num_all_hosts = len(hosts) + 1 # + localhost
 			i = 0
 			for host, host_is_master in hosts:
 				i += 1
-				package_manager.progress_state.info(_('Checking software changes on %s' % host))
+				package_manager.progress_state.info(_('Checking software changes on %s') % host)
 				try:
 					connection = UMCConnection(host)
 					connection.auth(username, password)
@@ -655,9 +656,9 @@ class Application(object):
 						if host_info['result']['serious_problems'] or not host_info['compatible_version']:
 							serious_problems_with_hosts = True
 					hosts_info[host] = host_info
-				package_manager.progress_state.percentage(i * 100 / len(hosts))
+				package_manager.progress_state.percentage(i * 100 / num_all_hosts)
 
-		package_manager.progress_state.info(_('Checking software changes on %s' % _('this server')))
+		package_manager.progress_state.info(_('Checking software changes on %s') % _('this server'))
 
 		# packages to install
 		to_install = []
@@ -700,7 +701,7 @@ class Application(object):
 
 	def uninstall_dry_run(self, package_manager):
 		MODULE.info('Invoke uninstall_dry_run')
-		package_manager.progress_state.info(_('Checking software changes on %s' % _('this server')))
+		package_manager.progress_state.info(_('Checking software changes on %s') % _('this server'))
 		package_manager.reopen_cache()
 		to_uninstall = package_manager.get_packages(self.get('defaultpackages'))
 		for package in to_uninstall:
