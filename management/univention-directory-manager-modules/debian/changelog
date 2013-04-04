@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.143-4) unstable; urgency=low
+
+  * only remove a reverse zone entry when the last ptrrecord is removed
+    (Bug #30905)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 04 Apr 2013 17:37:03 +0200
+
 univention-directory-manager-modules (8.0.143-3) unstable; urgency=low
 
   * when updating ptrrecords because a forward zone has changed, only
