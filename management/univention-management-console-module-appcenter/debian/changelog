@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.141-1) unstable; urgency=low
+
+  * Bug #30798: Just use "spinning" progress bar during software checks. Use
+    threads in the backend when testing on remote servers to speedup process.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Apr 2013 21:41:45 +0200
+
 univention-management-console-module-appcenter (2.0.140-1) unstable; urgency=low
 
   * Bug #30798: Added progress bar while fetching software changes in App

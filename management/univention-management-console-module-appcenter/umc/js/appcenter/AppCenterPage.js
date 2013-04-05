@@ -504,19 +504,11 @@ define([
 				'application': app.id,
 				'force': force === true
 			};
-			var deferred = tools.umcpCommand(command, commandArguments);
-			this.standby(true, this._progressBar);
+
 			this._progressBar.reset(_('%s: Performing software tests on involved systems', app.name));
-			// progress during dry_run and before the actual installtion
-			this._progressBar.auto('appcenter/progress',
-				{},
-				function() {},
-				undefined,
-				undefined,
-				undefined,
-				deferred // stop when deferred is resolved. another appcenter/progress will start!
-			);
-			deferred.then(
+			this._progressBar._progressBar.set('value', Infinity);
+			this.standby(true, this._progressBar);
+			tools.umcpCommand(command, commandArguments).then(
 				lang.hitch(this, function(data) {
 					this.standby(false);
 					var result = data.result;
