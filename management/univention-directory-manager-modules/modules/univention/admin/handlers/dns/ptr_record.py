@@ -63,7 +63,7 @@ property_descriptions={
 			short_description=_('Pointer'),
 			long_description=_("FQDNs must end with '.'"),
 			syntax=univention.admin.syntax.dnsName,
-			multivalue=0,
+			multivalue=1,
 			include_in_default_search=1,
 			options=[],
 			required=0,
@@ -81,7 +81,7 @@ layout = [
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('address', 'relativeDomainName', None, univention.admin.mapping.ListToString)
-mapping.register('ptr_record', 'pTRRecord', None, univention.admin.mapping.ListToString)
+mapping.register('ptr_record', 'pTRRecord')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
