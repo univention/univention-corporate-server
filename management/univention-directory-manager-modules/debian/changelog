@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.143-7) unstable; urgency=low
+
+  * display every ptrrecord on dns reverse entries (Bug #28667)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 05 Apr 2013 12:53:25 +0200
+
 univention-directory-manager-modules (8.0.143-6) unstable; urgency=low
 
   * do not map txt record property of dns/forward_zone as string (Bug #29681)
