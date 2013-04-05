@@ -1,3 +1,10 @@
+ucs-test (3.0.32-1) unstable; urgency=low
+
+  * added test to determine whether 'Administrator' may execute udm/users
+  list with filter "uid=Administrator" (which he should) (Bug #30116)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 05 Apr 2013 14:03:46 +0200
+
 ucs-test (3.0.31-1) unstable; urgency=low
 
   * applied patch to 51_samba4/41password_change (Bug #29058)

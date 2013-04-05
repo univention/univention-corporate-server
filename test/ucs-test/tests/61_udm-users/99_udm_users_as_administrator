@@ -1,0 +1,26 @@
+#!/usr/share/ucs-test/runner python
+## desc: Try excecuting udm users/user list as Administrator
+## tags: [udm-users]
+## roles:
+##   - domaincontroller_master
+##   - domaincontroller_backup
+## exposure: secure
+## packages:
+##   - univention-directory-manager-tools
+##   - python-pexpect
+
+
+import sys
+import pexpect
+
+if __name__ == '__main__':
+	udm = pexpect.spawn('su', ['Administrator', '-c', '/usr/sbin/univention-directory-manager users/user list --filter uid=Administrator'])
+	result = udm.expect([pexpect.EOF, 'E: Permission denied'])
+
+	if result == 1:
+		sys.exit(110) # udm has printed 'E: Permission denied', Administrator is not allowed to execute the command
+
+	sys.exit(0) # nothing went wrong, test passed
+
+
+
