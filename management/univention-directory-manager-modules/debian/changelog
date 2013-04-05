@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.146-1) unstable; urgency=low
+
+  * fixed keyerror when removing the MAC address (Bug #28945)
+  * fixed keyerror when removing the network (Bug #29676)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 05 Apr 2013 10:15:54 +0200
+
 univention-directory-manager-modules (8.0.145-1) unstable; urgency=low
 
   * only remove a reverse zone entry when the last ptrrecord is removed

@@ -2082,7 +2082,7 @@ class simpleComputer( simpleLdap ):
 
 		if self.hasChanged('ip') or self.hasChanged('mac'):
 
-			if len(self.info['ip']) == 1 and len(self.info['mac']) == 1 and len(self.info['dhcpEntryZone']):
+			if len(self.info.get('ip', [])) == 1 and len(self.info.get('mac', [])) == 1 and len(self.info.get('dhcpEntryZone', [])):
 				# In this special case, we assume the mapping between ip/mac address to be
 				# unique. The dhcp entry needs to contain the mac address (as sepcified by
 				# the ldap search for dhcp entries), the ip address may not correspond to 
@@ -2111,7 +2111,7 @@ class simpleComputer( simpleLdap ):
 
 				# remove all DHCP-entries that have been associated with any of these IP/MAC addresses
 				newDhcpEntries = []
-				for entry in self['dhcpEntryZone']:
+				for entry in self.get('dhcpEntryZone', []):
 					dn, ip, mac = self.__split_dhcp_line( entry )
 					if ip not in removedIPs and mac not in removedMACs:
 						newDhcpEntries.append(entry)
