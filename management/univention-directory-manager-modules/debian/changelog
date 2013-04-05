@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.150-1) unstable; urgency=low
+
+  * users/user: exclude sambaLogonHours from advanded search (Bug #28803
+
+ -- Lukas Walter <walter@univention.de>  Fri, 05 Apr 2013 17:35:59 +0200
+
 univention-directory-manager-modules (8.0.149-1) unstable; urgency=low
 
   * do not use the term "UDM Web" in the extented attribute module
