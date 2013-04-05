@@ -233,7 +233,7 @@ mapping.register('zone', 'zoneName', None, univention.admin.mapping.ListToString
 mapping.register('nameserver', 'nSRecord')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
 mapping.register('mx', 'mXRecord', mapMX, unmapMX)
-mapping.register('txt', 'tXTRecord', None, univention.admin.mapping.ListToString)
+mapping.register('txt', 'tXTRecord')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
