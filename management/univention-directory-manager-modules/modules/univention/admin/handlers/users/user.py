@@ -653,7 +653,7 @@ property_descriptions={
 			multivalue = False,
 			options=['samba'],
 			required=0,
-			dontsearch=0,
+			dontsearch=1,
 			may_change=1,
 			identifies=0,
 		),
