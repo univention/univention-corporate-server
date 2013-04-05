@@ -92,6 +92,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			may_change=1,
+			dontsearch=1,
 			identifies=0
 		),
 	'ipRange': univention.admin.property(

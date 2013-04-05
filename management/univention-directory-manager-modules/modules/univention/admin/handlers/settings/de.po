@@ -247,8 +247,8 @@ msgid "Default Value"
 msgstr "Vorgabewert"
 
 #: extended_attribute.py:168
-msgid "Do not show in UDM Web"
-msgstr "In UDM Web nicht anzeigen"
+msgid "Do not show in UMC"
+msgstr "In UMC nicht anzeigen"
 
 #: extended_attribute.py:178
 msgid "Tab Name"
@@ -338,12 +338,12 @@ msgid "Unsearchable"
 msgstr "Nicht durchsuchbar"
 
 #: extended_attribute.py:380
-msgid "UDM Web"
-msgstr "UDM Web"
+msgid "UMC"
+msgstr "UMC"
 
 #: extended_attribute.py:380
-msgid "Settings for UDM web interface"
-msgstr "UDM-Web-spezifische Einstellungen"
+msgid "Settings for UMC"
+msgstr "UMC-spezifische Einstellungen"
 
 #: extended_attribute.py:381
 msgid "Tab layout"

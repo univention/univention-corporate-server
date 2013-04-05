@@ -141,6 +141,7 @@ property_descriptions={
 			required=0,
 			may_change=0,
 			identifies=0,
+			dontsearch=1,
 			options=['posix','samba']
 		),
 	'gidNumber': univention.admin.property(
@@ -152,6 +153,7 @@ property_descriptions={
 			may_change=0,
 			identifies=0,
 			editable=0,
+			dontsearch=1,
 			options=['posix','samba']
 		),
 	'firstname': univention.admin.property(
@@ -184,7 +186,8 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			default = '<firstname> <lastname><:umlauts,strip>',
-			identifies=0
+			identifies=0,
+			dontsearch=1
 		),
 	'displayName': univention.admin.property(
 			short_description=_('Display name'),
