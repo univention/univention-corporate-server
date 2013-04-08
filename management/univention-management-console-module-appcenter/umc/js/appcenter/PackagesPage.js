@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -449,6 +449,14 @@ define([
 		},
 
 		_switch_to_progress_bar: function(msg) {
+			// One request needs to be active otherwise
+			// module might be killed if user logs out
+			// during installation: dpkg will be in a
+			// broken state, Bug #30611.
+			// dont handle any errors. a timeout is not
+			// important. this command is just for the module
+			// to stay alive
+			this.moduleStore.umcpCommand('appcenter/keep_alive', {}, false);
 			this.standby(true, this._progressBar);
 			this._progressBar.reset(msg);
 			this._progressBar.auto('appcenter/packages/progress',

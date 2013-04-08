@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.142-1) unstable; urgency=low
+
+  * Bug #30611: Prevent the module from starving while installing.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Apr 2013 14:41:44 +0200
+
 univention-management-console-module-appcenter (2.0.141-1) unstable; urgency=low
 
   * Bug #30798: Just use "spinning" progress bar during software checks. Use
