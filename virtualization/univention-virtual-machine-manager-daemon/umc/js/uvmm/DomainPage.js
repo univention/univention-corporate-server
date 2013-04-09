@@ -79,8 +79,6 @@ define([
 
 		_domain: null,
 
-		disabled: false,
-
 		buildRendering: function() {
 			this.inherited(arguments);
 			//
@@ -515,13 +513,12 @@ define([
 					this._advancedForm._widgets.vnc_port.set('visible', Boolean(this._advancedForm._widgets.vnc_port.get('value')));
 
 					// deactivate most input field when domain is running
-					var disabled = Boolean(this._domain.state == 'RUNNING' || this._domain.state == 'IDLE' || this._domain.state == 'PAUSED' || this._domain.suspended);
-					if ( disabled && ! this.disabled ) {
+					var domainActive = Boolean(this._domain.state == 'RUNNING' || this._domain.state == 'IDLE' || this._domain.state == 'PAUSED' || this._domain.suspended);
+					if (domainActive) {
 						this._generalPage.addNote( _( 'While the virtual machine is running most of the settings can not be changed.' ) );
-					} else if ( ! disabled ) {
+					} else if ( ! domainActive ) {
 						this._generalPage.clearNotes();
 					}
-					this.disabled = disabled;
 					// name should not be editable
 					this._generalForm._widgets.name.set( 'disabled', true );
 					// currently this does not work for xen also (Bug #24829) -> otherwise the following block just deactivates the name for KVM
@@ -534,17 +531,17 @@ define([
 					// hide architecture for xen domains
 					if ( types.getNodeType( this._domain.domainURI ) == 'qemu' ) {
 						this._advancedForm._widgets.arch.set( 'visible', true );
-						this._advancedForm._widgets.arch.set( 'disabled', disabled );
+						this._advancedForm._widgets.arch.set( 'disabled', domainActive );
 					} else {
 						this._advancedForm._widgets.arch.set( 'visible', false );
 					}
-					this._driveGrid.set( 'disabled', disabled );
-					this._interfaceGrid.set( 'disabled', disabled );
+					this._driveGrid.set( 'domainActive', domainActive );
+					this._interfaceGrid.set( 'disabled', domainActive );
 					tools.forIn( this._advancedForm._widgets, lang.hitch( this, function( iid, iwidget ) {
 						if ( iwidget.readonly ) {
 							iwidget.set( 'disabled', true );
 						} else {
-							iwidget.set( 'disabled', disabled );
+							iwidget.set( 'disabled', domainActive );
 						}
 					} ) );
 					this.selectChild( this._generalPage, true);

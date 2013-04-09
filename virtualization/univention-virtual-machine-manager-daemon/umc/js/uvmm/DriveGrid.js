@@ -53,6 +53,8 @@ define([
 
 		domain: null,
 
+		domainActive: false,
+
 		query: {},
 
 		sortIndex: null,
@@ -87,7 +89,7 @@ define([
 					callback: lang.hitch(this, '_editDrive'),
 					canExecute: lang.hitch( this, function( item ) {
 						// when creating an machine drives can not be edited
-						return !this.disabled && undefined !== this.domain.domainURI;
+						return !this.domainActive && undefined !== this.domain.domainURI;
 					} )
 				}, {
 					name: 'change_medium',
@@ -106,7 +108,7 @@ define([
 					iconClass: 'umcIconDelete',
 					callback: lang.hitch(this, '_removeDrive'),
 					canExecute: lang.hitch(this, function(item) {
-						return !this.disabled;
+						return !this.domainActive;
 					})
 				}, {
 					name: 'add',
@@ -114,17 +116,14 @@ define([
 					isMultiAction: false,
 					isContextAction: false,
 					iconClass: 'umcIconAdd',
-					callback: lang.hitch(this, '_addDrive'),
-					canExecute: lang.hitch(this, function(item) {
-						return !this.disabled;
-					})
+					callback: lang.hitch(this, '_addDrive')
 				}]
 			});
 		},
 
-		_setDisabledAttr: function(value) {
+		_setDomainActiveAttr: function(value) {
 			if (this.domain.domain_type === 'kvm') {
-				this.disabled = value;
+				this.domainActive = value;
 				this._grid.update();
 
 				// disable actions in toolbar
@@ -133,8 +132,6 @@ define([
 						widget.set('disabled', value);
 					}
 				}));
-			} else {
-				this.inherited(arguments);
 			}
 		},
 
