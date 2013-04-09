@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.36-4) unstable; urgency=low
+
+  * DriveGrid: Fix broken context menu for active instances (Bug #29261)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 08 Apr 2013 17:36:03 +0200
+
 univention-virtual-machine-manager-daemon (2.0.36-3) unstable; urgency=low
 
   * Fix handling of local block devices (Bug #19804)

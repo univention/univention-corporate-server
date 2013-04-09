@@ -104,7 +104,10 @@ define([
 					isMultiAction: false,
 					isStandardAction: true,
 					iconClass: 'umcIconDelete',
-					callback: lang.hitch(this, '_removeInterface')
+					callback: lang.hitch(this, '_removeInterface'),
+					canExecute: lang.hitch(this, function(item) {
+						return !this.disabled && undefined !== this.domain.domainURI;
+					})
 				}, {
 					name: 'add',
 					label: _('Add network interface'),
