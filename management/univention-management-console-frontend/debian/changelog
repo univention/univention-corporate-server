@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.249-1) unstable; urgency=low
+
+  * Fix textarea width (Bug #30889)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 09 Apr 2013 13:17:13 +0200
+
 univention-management-console-frontend (2.0.248-1) unstable; urgency=low
 
   * Bug #30984: Added possibility to manually stop auto-polling of ProgressBar
