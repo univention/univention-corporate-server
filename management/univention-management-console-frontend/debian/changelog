@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.244-5) unstable; urgency=low
+
+  * Fixed text widget bug which caused a 404 error (Bug #28810)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 10 Apr 2013 11:06:58 +0200
+
 univention-management-console-frontend (2.0.244-4) unstable; urgency=low
 
   * Fix textarea width (Bug #30889)
