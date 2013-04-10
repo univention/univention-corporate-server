@@ -44,8 +44,22 @@ define([
 		//		String which contains the text (or HTML code) to be rendered.
 		content: '',
 
+		_tmpContent: null,
+
 		// the widget's class name as CSS class
 		'class': 'umcText',
+
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			// We need to temporary unset 'content'. See bug #28810 or #25635
+			this._tmpContent = this.content;
+			this.content = '';
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			this.set('content', this._tmpContent);
+		},
 
 		_setContentAttr: function(content) {
 			this.content = content;
