@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "App Center"
-msgstr ""
+msgstr "App Center"
 
 msgid "Manage (install/uninstall) software packages on your machine"
 msgstr "Verwaltung der Software-Pakete auf diesem System"

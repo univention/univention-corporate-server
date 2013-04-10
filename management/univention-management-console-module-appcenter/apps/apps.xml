@@ -9,11 +9,12 @@
 
 		<!-- WARNING!!! This is just a dummy file.
 		     Flavors are added/removed automatically via ucr commit.
-		Example: -->
+		Example:
 		<flavor icon="ucc" priority="-100" id="ucc">
 			<name>UCC</name>
 			<description>Introduction to UCC</description>
 		</flavor>
+		-->
 
 		<command name="apps/get" function="get" />
 	</module>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -495,14 +495,20 @@ define([
 				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, func);
 			}
 
+			var command = 'appcenter/invoke';
+			if (!force) {
+				command = 'appcenter/invoke_dry_run';
+			}
 			var commandArguments = {
 				'function': func,
 				'application': app.id,
 				'force': force === true
 			};
 
-			this.standby(true);
-			tools.umcpCommand('appcenter/invoke', commandArguments).then(
+			this._progressBar.reset(_('%s: Performing software tests on involved systems', app.name));
+			this._progressBar._progressBar.set('value', Infinity);
+			this.standby(true, this._progressBar);
+			tools.umcpCommand(command, commandArguments).then(
 				lang.hitch(this, function(data) {
 					this.standby(false);
 					var result = data.result;
@@ -974,6 +980,14 @@ define([
 		},
 
 		_switch_to_progress_bar: function(msg, app, func) {
+			// One request needs to be active otherwise
+			// module might be killed if user logs out
+			// during installation: dpkg will be in a
+			// broken state, Bug #30611.
+			// dont handle any errors. a timeout is not
+			// important. this command is just for the module
+			// to stay alive
+			tools.umcpCommand('appcenter/keep_alive', {}, false);
 			this.standby(true, this._progressBar);
 			this._progressBar.reset(msg);
 			this._progressBar.auto('appcenter/progress',

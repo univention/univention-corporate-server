@@ -1,3 +1,17 @@
+univention-management-console-module-appcenter (2.0.139-2) unstable; urgency=low
+
+  * Bug #30611: Fixed an issue when closing the App Center tab in the
+    Management Console: The backend shut down the module when no further
+    requests regarding the progress of an installation was sent. When this
+    happened during installation the package database could become temporarily
+    broken.
+  * Bug #30798: Added a progress bar while fetching software changes in App
+    Center and speeded up the process of retrieving this information.
+  * Bug #30659: Made free memory calculation more robust in OpenVZ
+    environments.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Apr 2013 19:56:16 +0200
+
 univention-management-console-module-appcenter (2.0.139-1) unstable; urgency=low
 
   * Improve markup for request license dialog (Bug #30199)

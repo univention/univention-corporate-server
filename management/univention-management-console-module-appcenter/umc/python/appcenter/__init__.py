@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: software management
 #
-# Copyright 2011-2012 Univention GmbH
+# Copyright 2011-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,6 +33,7 @@
 
 # standard library
 import locale
+import time
 import sys
 import urllib
 import urllib2
@@ -247,6 +248,23 @@ class Instance(umcm.Base):
 			# this module instance already has a running package manager
 			raise umcm.UMC_CommandError(_('Another package operation is in progress'))
 
+	def keep_alive(self, request):
+		''' Fix for Bug #30611: UMC kills appcenter module
+		if no request is sent for $(ucr get umc/module/timeout).
+		this happens if a user logs out during a very long installation.
+		this function will be run by the frontend to always have one connection open
+		to prevent killing the module. '''
+		def _thread():
+			while not self.package_manager.progress_state._finished:
+				time.sleep(1)
+			self.finished(request.id, True)
+		def _finished(thread, result):
+			if isinstance(result, BaseException):
+				MODULE.warn('Exception during keep_alive: %s' % result)
+		thread = notifier.threads.Simple('keep_alive',
+			notifier.Callback(_thread), _finished)
+		thread.run()
+
 	@simple_response
 	def app_center_app_license(self, application):
 		application = Application.find(application)
@@ -344,7 +362,7 @@ class Instance(umcm.Base):
 					def _finished(thread, result):
 						if isinstance(result, BaseException):
 							MODULE.warn('Exception during %s %s: %r' % (function, packages, str(result)))
-					thread = notifier.threads.Simple('invoke', 
+					thread = notifier.threads.Simple('invoke',
 						notifier.Callback(_thread, self.package_manager, function, packages), _finished)
 					thread.run()
 		except LockError:
