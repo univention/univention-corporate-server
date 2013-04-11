@@ -1,3 +1,12 @@
+univention-management-console-frontend (2.0.244-6) unstable; urgency=low
+
+  * Inside the "favorite" category, favorites can no longer be removed
+  * GalleryPane no longer creates status icon divs for items which
+    dont't have a 'statusIconClass'
+  (Bug #29555)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 11 Apr 2013 14:08:42 +0200
+
 univention-management-console-frontend (2.0.244-5) unstable; urgency=low
 
   * Fixed text widget bug which caused a 404 error (Bug #28810)
