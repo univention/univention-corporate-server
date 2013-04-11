@@ -101,7 +101,6 @@ define([
 			var div = put("div");
 			var categories = this.categoriesDisplayed ? item.categories.join(', ') : '';
 			domConstruct.create('div', {'class': 'umcGalleryIcon ' + this.getIconClass(item)}, div);
-			var statusIconDiv = domConstruct.create('div', {'class': 'umcGalleryStatusIcon ' + this.getStatusIconClass(item)}, div);
 			domConstruct.create('div', {'class': 'umcGalleryName', 'innerHTML': item.name}, div);
 			domConstruct.create('div', {'class': 'umcGalleryDescription', 'innerHTML': categories}, div);
 			domClass.add(div, 'umcGalleryItem');
@@ -112,13 +111,17 @@ define([
 				connectId: [ div ]
 			});
 			this._tooltipContainer.own(tooltip);
-			var statusIconLabel = this.getStatusIconTooltip(item);
-			if (statusIconLabel) {
-				var statusIconTooltip = new Tooltip({
-					label: statusIconLabel,
-					connectId: [ statusIconDiv ]
-				});
-				this._tooltipContainer.own(statusIconTooltip);
+
+			if (this.getStatusIconClass(item)) {
+				var statusIconDiv = domConstruct.create('div', {'class': 'umcGalleryStatusIcon ' + this.getStatusIconClass(item)}, div);
+				var statusIconLabel = this.getStatusIconTooltip(item);
+				if (statusIconLabel) {
+					var statusIconTooltip = new Tooltip({
+						label: statusIconLabel,
+						connectId: [ statusIconDiv ]
+					});
+					this._tooltipContainer.own(statusIconTooltip);
+				}
 			}
 
 			return div;

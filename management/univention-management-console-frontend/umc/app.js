@@ -720,14 +720,18 @@ define([
 						store: this._moduleStore,
 						categoriesDisplayed: false,
 						getStatusIconClass: function(item) {
-							if (icat.id != '$favorites$' && array.indexOf(item.categories, '$favorites$') >= 0) {
+							if (icat.id === '$favorites$') {
+								return null;
+							} else if (array.indexOf(item.categories, '$favorites$') >= 0) {
 								return tools.getIconClass('star', 24);
 							}
-							return '';
+							return 'dummy';
 						},
 						getStatusIconTooltip: lang.hitch(this, function(item) {
 							if (this._favoritesEnabled) {
-								if (icat.id == '$favorites$' || array.indexOf(item.categories, '$favorites$') >= 0) {
+								if (icat.id === '$favorites$') {
+									return null;
+								} else if (array.indexOf(item.categories, '$favorites$') >= 0) {
 									return _('Remove from favorites');
 								} else {
 									return _('Add to favorites');
