@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.143-11) unstable; urgency=low
+
+  * Revert changes from Bug #27948 for UCS 3.1-1 errata (Bug #27948)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Apr 2013 08:06:54 +0200
+
 univention-directory-manager-modules (8.0.143-10) unstable; urgency=low
 
   * users/user: exclude sambaLogonHours from advanded search (Bug #28803)

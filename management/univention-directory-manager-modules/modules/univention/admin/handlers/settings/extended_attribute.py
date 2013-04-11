@@ -165,7 +165,7 @@ property_descriptions={
 			identifies=0
 		),
 	'disableUDMWeb': univention.admin.property(
-			short_description=_('Do not show in UMC'),
+			short_description=_('Do not show in UDM Web'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -377,7 +377,7 @@ layout = [
 			[ "translationShortDescription", "translationLongDescription" ]
 		] ),
 	] ),
-	Tab(_('UMC'),_('Settings for UMC'), layout = [
+	Tab(_('UDM Web'),_('Settings for UDM web interface'), layout = [
 		Group( _( 'Tab layout' ), layout = [
 			[ "tabName", "tabPosition" ],
 			"translationTabName",
