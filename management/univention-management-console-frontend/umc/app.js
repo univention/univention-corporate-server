@@ -725,7 +725,7 @@ define([
 							} else if (array.indexOf(item.categories, '$favorites$') >= 0) {
 								return tools.getIconClass('star', 24);
 							}
-							return 'dummy';
+							return '';
 						},
 						getStatusIconTooltip: lang.hitch(this, function(item) {
 							if (this._favoritesEnabled) {

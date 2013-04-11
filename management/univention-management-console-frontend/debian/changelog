@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.252-1) unstable; urgency=low
+
+  * Fix last commit (Bug #29555)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 11 Apr 2013 15:11:59 +0200
+
 univention-management-console-frontend (2.0.251-1) unstable; urgency=low
 
   * Inside the "favorite" category, favorites can no longer be removed

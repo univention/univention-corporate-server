@@ -112,8 +112,9 @@ define([
 			});
 			this._tooltipContainer.own(tooltip);
 
-			if (this.getStatusIconClass(item)) {
-				var statusIconDiv = domConstruct.create('div', {'class': 'umcGalleryStatusIcon ' + this.getStatusIconClass(item)}, div);
+			var statusIconClass = this.getStatusIconClass(item);
+			if (typeof statusIconClass === 'string') {
+				var statusIconDiv = domConstruct.create('div', {'class': 'umcGalleryStatusIcon ' + statusIconClass}, div);
 				var statusIconLabel = this.getStatusIconTooltip(item);
 				if (statusIconLabel) {
 					var statusIconTooltip = new Tooltip({
