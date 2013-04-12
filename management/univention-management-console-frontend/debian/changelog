@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.244-8) unstable; urgency=low
+
+  * The username input field of the login dialog stays disabled after a failed
+    relogin (Bug #27989)
+
+ -- Jascha Geerds <geerds@univention.de>  Fri, 12 Apr 2013 11:44:05 +0200
+
 univention-management-console-frontend (2.0.244-7) unstable; urgency=low
 
   * Fix last commit (Bug #29555)
