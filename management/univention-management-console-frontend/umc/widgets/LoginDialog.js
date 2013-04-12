@@ -391,6 +391,8 @@ define([
 				this.onLogin(username);
 				this.hide();
 			}), lang.hitch(this, function(error) {
+				this._setInitialFocus();
+				Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 				// disable standby in any case
 				this.standby(false);
 				Dialog._DialogLevelManager.hide(this);
