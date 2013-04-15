@@ -59,8 +59,16 @@ def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
 		secrets_tdb.close()
 
 def run_postchange():
-	windows_domain = ucr.get('windows/domain')
+	windows_domain = ucr.get('windows/domain', '').upper()
 	machine_password = open('/etc/machine.secret', 'r').read().strip()
+	ldap_hostdn = ucr.get('ldap/hostdn')
+	samba_user = ucr.get('samba/user')
+	server_role = ucr.get('server/role')
+	ldap_base = ucr.get('ldap/base')
+
+	if not windows_domain:
+		sys.stdout.write("ERROR: windows/domain is not set!\n")
+		return 1
 
 	try:
 		## store machine.secret in secrets.tdb
@@ -73,24 +81,39 @@ def run_postchange():
 		sys.stdout.write("machine password stored successfully in secrets.tdb\n")
 		sys.stdout.flush()
 
-	ldap_hostdn = ucr.get('ldap/hostdn')
-	samba_user = ucr.get('samba/user')
-	if ldap_hostdn == samba_user:
-		## store ldap bind password for passdb LDAP
-		process = subprocess.Popen(['/usr/bin/smbpasswd', '-w', machine_password])
-		process.wait()
-
 	idmap_domains = ['*']
 	samba_idmap_domains = ucr.get('samba/idmap/domains')
 	if samba_idmap_domains:
 		idmap_domains.extend(samba_idmap_domains)
 
-	for idmap_domain in idmap_domains:
-		## store secret for idmap domain
-		sys.stdout.write("setting idmap secret for '%s' from /etc/machine.secret\n" % idmap_domain)
-		sys.stdout.flush()
-		process = subprocess.Popen(['net', 'idmap', 'secret', idmap_domain, machine_password])
-		process.wait()
+	if server_role in ('domaincontroller_slave', 'memberserver'):	## this is the criterion used in 26univention-samba.inst
+		if samba_user == ldap_hostdn:
+			samba_user_secret = open('/etc/machine.secret', 'r').read().strip()
+
+			## store new machine secret als ldap bind password for passdb LDAP
+			process = subprocess.Popen(['/usr/bin/smbpasswd', '-w', samba_user_secret])
+			process.wait()
+
+			for idmap_domain in idmap_domains:
+				## store secret for idmap domain
+				sys.stdout.write("setting idmap secret for '%s' from /etc/machine.secret\n" % idmap_domain)
+				sys.stdout.flush()
+				process = subprocess.Popen(['net', 'idmap', 'secret', idmap_domain, machine_password])
+				process.wait()
+		else:
+			## don't touch anything, just issue a warning
+			sys.stdout.write("WARNING: samba/user is expected to be set to the ldap/hostdn on UCS DC Slaves and UCS Memberservers.\n")
+			sys.stdout.write("WARNING: samba/user is '%s' instead, skipping update of idmap secrets.\n" % samba_user)
+	else:
+		## don't touch anything, just check that things are sane:
+		default_samba_user = "cn=admin,%s" % ldap_base
+		if samba_user != default_samba_user:
+			special_dc_roles = { 'domaincontroller_master': 'UCS DC Master', 'domaincontroller_backup': 'UCS DC Backup' }
+			if server_role in special_dc_roles:
+				sys.stdout.write("WARNING: samba/user is expected to be set to the %s on a %s.\n" % (default_samba_user, special_dc_roles[server_role]) )
+				sys.stdout.write("WARNING: samba/user is '%s' instead. Anyway, this is just a warning.\n" % samba_user)
+			else:
+				sys.stdout.write("WARNING: unexpected server role %s.\n" % server_role)
 
 	for service in ('samba', 'winbind'):
 		## restart services

@@ -1,3 +1,10 @@
+univention-samba (7.0.17-6) unstable; urgency=low
+
+  * Errata hotfix: don't set machine password for "idmap secret '*'" on
+    DC Master and DC Backup during server_password_change (Bug #31052)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Apr 2013 13:12:30 +0200
+
 univention-samba (7.0.17-5) unstable; urgency=low
 
   * fix zero byte at SECRETS/MACHINE_PASSWORD.PREV (Bug #30539)
