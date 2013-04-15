@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.143-1) unstable; urgency=low
+
+  * Fix dialog width (Bug #30796)
+
+ -- Jascha Geerds <geerds@univention.de>  Mon, 15 Apr 2013 17:11:33 +0200
+
 univention-management-console-module-appcenter (2.0.142-1) unstable; urgency=low
 
   * Bug #30611: Prevent the module from starving while installing.
