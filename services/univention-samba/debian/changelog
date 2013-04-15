@@ -1,3 +1,9 @@
+univention-samba (7.0.17-7) unstable; urgency=low
+
+  * crestart winbind in postinst as well if present (Bug #31052)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Apr 2013 13:22:34 +0200
+
 univention-samba (7.0.17-6) unstable; urgency=low
 
   * Errata hotfix: don't set machine password for "idmap secret '*'" on

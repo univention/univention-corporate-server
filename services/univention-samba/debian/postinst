@@ -155,6 +155,14 @@ if [ "$1" = "configure" ]; then
 
 	if [ -n "$2" ]; then
 		/etc/init.d/samba crestart
+		if [ -x /etc/init.d/winbind ]; then
+			if [ -n "$(pgrep -fx /usr/sbin/winbindd)" ];
+				if [ -n "$(pgrep -f /usr/sbin/smbd)" ];
+					sleep 3
+				fi
+				/etc/init.d/winbind restart
+			fi
+		fi
 	fi
 
 
