@@ -295,13 +295,12 @@ define([
 				lang.hitch(this, function(data) {
 					this.standby(false);
 					var app = data.result;
-					var width = 550;	// mimic the default of dialog.confirm
 
 					var label_style = 'vertical-align:top;text-align:right;padding-left:1em;padding-right:.5em;white-space:nowrap;font-weight:bold;';
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
 					var txt = "<h1>" + _("Details for Application '%(name)s'", app) + "</h1>";
-					txt += lang.replace("<table style=\"width: {0}px;\">\n", [ width ]);
+					txt += "<table>\n"
 					var fields = this._detail_field_order();
 					array.forEach(fields, lang.hitch(this, function(key) {
 						var label = this._detail_field_label(key);
