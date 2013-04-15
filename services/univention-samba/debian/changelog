@@ -1,3 +1,9 @@
+univention-samba (7.0.17-8) unstable; urgency=low
+
+  * Fix shell syntax glitch (Bug #31052)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Apr 2013 16:16:38 +0200
+
 univention-samba (7.0.17-7) unstable; urgency=low
 
   * crestart winbind in postinst as well if present (Bug #31052)
