@@ -1,3 +1,10 @@
+ucs-test (3.0.34-1) unstable; urgency=low
+
+  * modified test 99_udm_users_as_administrator in order to also make it fail
+    when the UDM return code is not equal to zero (Bug #30116)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 15 Apr 2013 11:33:02 +0200
+
 ucs-test (3.0.33-1) unstable; urgency=low
 
   * version bump (Bug #30116)

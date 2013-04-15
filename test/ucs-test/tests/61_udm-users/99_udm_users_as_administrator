@@ -17,8 +17,8 @@ if __name__ == '__main__':
 	udm = pexpect.spawn('su', ['Administrator', '-c', '/usr/sbin/univention-directory-manager users/user list --filter uid=Administrator'])
 	result = udm.expect([pexpect.EOF, 'E: Permission denied'])
 
-	if result == 1:
-		sys.exit(110) # udm has printed 'E: Permission denied', Administrator is not allowed to execute the command
+	if result == 1 or udm.exitstatus != 0:
+		sys.exit(110) # udm has printed 'E: Permission denied' to stdout or returned an exitstatus != 0, Administrator is not allowed to execute the command
 
 	sys.exit(0) # nothing went wrong, test passed
 
