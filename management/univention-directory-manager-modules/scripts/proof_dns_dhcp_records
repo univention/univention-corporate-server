@@ -43,9 +43,7 @@ baseDN=baseConfig['ldap/base']
 
 lo=ldap.open('localhost', 7389)
 bindpw=open('/etc/ldap.secret').read()
-if bindpw[-1] == '\n':
-        bindpw=bindpw[0:-1]
-	lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
+lo.simple_bind_s("cn=admin,"+baseDN, bindpw.strip('\n\r'))
 
 # check for dhcp records without matching computer object
 
