@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.36-6) unstable; urgency=low
+
+  * Fix snapshot's ordering of savepoints (Bug #29901)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 16 Apr 2013 13:37:50 +0200
+
 univention-virtual-machine-manager-daemon (2.0.36-5) unstable; urgency=low
 
   * Fix typo in german translation (Bug #22377)

@@ -71,7 +71,11 @@ class Snapshots( object ):
 				if success and data.snapshots is not None:
 					for name, info in data.snapshots.items():
 						creation = datetime.fromtimestamp( info.ctime )
-						snapshot = { 'id' : name, 'label' : name, 'time' : creation.strftime( "%x %X" )  }
+						snapshot = {
+							'id': name,
+							'label': name,
+							'time': creation.isoformat(' '),
+							}
 						snapshot_list.append( snapshot )
 
 				self.finished( request.id, snapshot_list )
