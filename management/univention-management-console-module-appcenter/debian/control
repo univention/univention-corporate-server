@@ -18,8 +18,7 @@ Depends: univention-management-console-server,
  python-imaging,
  univention-config,
  univention-updater,
- univention-management-console-module-lib,
- univention-management-console-frontend (>= 2.0.244-9)
+ univention-management-console-module-lib
 Replaces: univention-management-console-module-packages (<< 2.0.55-1)
 Breaks: univention-management-console-module-packages (<< 2.0.55-1)
 Description: UMC module for software management

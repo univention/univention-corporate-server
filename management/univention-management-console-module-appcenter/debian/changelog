@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (2.0.139-5) unstable; urgency=low
+
+  * Remove changes from 2.0.139-3 and 2.0.139-4
+  * Fix dialog width in a downward compatible way
+  (Bug #30796)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 16 Apr 2013 13:54:30 +0200
+
 univention-management-console-module-appcenter (2.0.139-4) unstable; urgency=low
 
   * Add dependency to univention-management-console-frontend (>= 2.0.244-9)
