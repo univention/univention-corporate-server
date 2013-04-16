@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.139-4) unstable; urgency=low
+
+  * Add dependency to univention-management-console-frontend (>= 2.0.244-9)
+    (Bug #30796)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 16 Apr 2013 10:14:29 +0200
+
 univention-management-console-module-appcenter (2.0.139-3) unstable; urgency=low
 
   * Fix dialog width (Bug #30796)
