@@ -820,7 +820,7 @@ msgstr "Portugiesisch-Brasilien"
 
 #: umc/js/uvmm/DomainWizard.js:89
 msgid "Profile"
-msgstr "Profile"
+msgstr "Profil"
 
 #: umc/js/uvmm.js:143
 msgid "Query pattern"

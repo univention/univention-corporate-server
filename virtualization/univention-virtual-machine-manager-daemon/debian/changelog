@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.36-5) unstable; urgency=low
+
+  * Fix typo in german translation (Bug #22377)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 16 Apr 2013 11:31:00 +0200
+
 univention-virtual-machine-manager-daemon (2.0.36-4) unstable; urgency=low
 
   * DriveGrid: Fix broken context menu for active instances (Bug #29261)
