@@ -55,6 +55,7 @@ define([
 					name: 'label',
 					label: _('Name')
 				}, {
+					width: '11em',
 					name: 'time',
 					label: _('Date')
 				}],
