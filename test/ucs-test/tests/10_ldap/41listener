@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Checking listener functionality
+## desc: Check listener functionality
 ## tags: [basic]
 ## roles-not: [basesystem]
 ## packages:
@@ -8,6 +8,7 @@
 
 . "$TESTLIBPATH/base.sh" || exit 1
 . "$TESTLIBPATH/user.sh" || exit 1
+. "$TESTLIBPATH/maildomain.sh" || exit 1
 
 DOMAIN="$(ucr get domainname)"
 LDAPBASE="$(ucr get ldap/base)"
@@ -35,11 +36,8 @@ __HERE__
 /etc/init.d/univention-directory-listener restart
 
 # create domain part in configured mail domains list
-setdomain=1
-if ! udm mail/domain create --set name=$DOMAIN ; then
-	echo "Mail/domain object already exists or could not be created. Continue testing..."
-	setdomain=0
-fi
+create_mail_domain "$domainname"
+rc=$?
 
 USERNAME=$(user_randomname)
 user_create "$USERNAME"
@@ -76,10 +74,9 @@ rm -f "$tempFile" || fail_test 1
 #removing users/user
 user_remove "$USERNAME" || fail_test 1
 
-if [[ "$setdomain" -ne 0 ]]; then
-	if ! udm mail/domain remove --dn "cn=$DOMAIN,$LDAPBASE" ; then
-		echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
-	fi
+
+if [ "$rc" = "0" ]; then
+    delete_mail_domain "$domainname" || fail_test 1
 fi
 
 exit "$RETVAL"

@@ -9,18 +9,16 @@
 . "$TESTLIBPATH/base.sh" || exit 1
 . "$TESTLIBPATH/user.sh" || exit 1
 . "$TESTLIBPATH/group.sh" || exit 1
+. "$TESTLIBPATH/maildomain.sh" || exit 1
 
 DOMAIN="$(ucr get domainname)"
 LDAPBASE="$(ucr get ldap/base)"
 
 cleanup_mail_domain () {
-
-		if [[ "$setdomain" -ne 0 ]]; then
-			if ! udm mail/domain remove --dn "cn=$DOMAIN,$LDAPBASE" ; then
-				echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
-			fi
-		fi
- }
+    if [ "$rc" = "0" ]; then
+        delete_mail_domain "$DOMAIN" || fail_test 1
+    fi
+}
 
 if ! [ -f /usr/lib/univention-directory-listener/system/nscd.py ]
 then
@@ -29,13 +27,11 @@ then
 	exit "$RETVAL"
 else
 
+    # create domain part in configured mail domains list
+	create_mail_domain "$DOMAIN"
+	rc=$?
+
 	trap cleanup_mail_domain EXIT
-        # create domain part in configured mail domains list
-	setdomain=1
-	if ! udm mail/domain create --set name=$DOMAIN ; then
-		echo "Mail/domain object already exists or could not be created. Continue testing..."
-		setdomain=0
-	fi
 
 	ERASENSCDCACHE=$(nscd --invalidate group)
 
@@ -58,7 +54,6 @@ else
 
 	sleep 30
 
-
 	MEMBERTRUE=$(group_getent $GROUPNAME $USERNAME)
 	if [ "$?" == "0" ]
 	then
@@ -73,7 +68,6 @@ else
 	ERASENSCDCACHE="$(nscd --invalidate group)"
 
 	sleep 30
-
 
 	MEMBERTRUE=$(group_getent $GROUPNAME $USERNAME)
 

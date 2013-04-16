@@ -12,6 +12,7 @@
 ## exposure: dangerous
 
 . "$TESTLIBPATH/base.sh" || exit 1
+. "$TESTLIBPATH/maildomain.sh" || exit 1
 
 eval "$(ucr shell)"
 
@@ -19,11 +20,8 @@ section "Preparing"
 sleep 3s
 
 # create domain part in configured mail domains list
-setdomain=1
-if ! udm mail/domain create --set name=domain.de ; then
-	echo "Mail/domain object already exists or could not be created. Continue testing..."
-	setdomain=0
-fi
+create_mail_domain "$domainname"
+rc=$?
 
 udm groups/group remove --dn "cn=subgroup,cn=groups,$ldap_base"
 udm groups/group remove --dn "cn=subgroup2,cn=groups,$ldap_base"
@@ -37,10 +35,8 @@ _cleanup(){
   for i in $(seq 1 200) ; do
     udm users/user remove --dn "uid=nsstest$i,cn=users,$ldap_base" >/dev/null
   done
-  if [[ "$setdomain" -ne 0 ]]; then
-	  if ! udm mail/domain remove --dn "cn=domain.de,$ldap_base" ; then
-		  echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
-	  fi
+  if [ "$rc" = "0" ]; then
+      delete_mail_domain "$domainname" || fail_test 1
   fi
 }
 

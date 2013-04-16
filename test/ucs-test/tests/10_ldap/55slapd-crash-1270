@@ -16,6 +16,7 @@
 . "$TESTLIBPATH/user.sh" || exit 1
 . "$TESTLIBPATH/group.sh" || exit 1
 . "$TESTLIBPATH/printer.sh" || exit 1
+. "$TESTLIBPATH/maildomain.sh" || exit 1
 
 eval "$(ucr shell)"
 
@@ -29,12 +30,8 @@ echo -e "\n\n***Create a test user with UDM CLI"
 PRINTERNAME="$(getprintername)"
 create_localprinter "$PRINTERNAME" || fail_test 1
 
-# create domain part in configured mail domains list
-setdomain=1
-if ! udm mail/domain create --set name=$domainname ; then
-	echo "Mail/domain object already exists or could not be created. Continue testing..."
-	setdomain=0
-fi
+create_mail_domain "$domainname"
+rc=$?
 
 USERNAME=$(user_randomname)
 user_create "$USERNAME" || fail_test 1
@@ -69,10 +66,8 @@ group_remove "$GROUPNAME" || fail_test 1
 
 remove_printer "$PRINTERNAME" || fail_test 1
 
-if [[ "$setdomain" -ne 0 ]]; then
-	if ! udm mail/domain remove --dn "cn=$domainname,$ldap_base" ; then
-		echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
-	fi
+if [ "$rc" = "0" ]; then
+	delete_mail_domain "$domainname" || fail_test 1
 fi
 
 if [ ! "$RET" = "0" ] ; then
