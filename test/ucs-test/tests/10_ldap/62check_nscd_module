@@ -13,6 +13,7 @@
 
 DOMAIN="$(ucr get domainname)"
 LDAPBASE="$(ucr get ldap/base)"
+TIME_TO_WAIT=120 # time to wait for nscd listener
 
 cleanup_mail_domain () {
     if [ "$rc" = "0" ]; then
@@ -52,32 +53,42 @@ else
 	group_adduser "$USERNAME" "$GROUPNAME" || fail_test 1
 	ERASENSCDCACHE=$(nscd --invalidate group)
 
-	sleep 30
-
-	MEMBERTRUE=$(group_getent $GROUPNAME $USERNAME)
-	if [ "$?" == "0" ]
-	then
-		echo "nscd listener module seems to work"
-	else
-		echo "nscd listener module doesn't seem to work"
-		fail_test 1
-	fi
-
+	echo "Waiting for nscd listener module..."
+	i=0
+	while sleep 1s;
+	do
+		if [ $i -lt "$TIME_TO_WAIT" ]; then
+			if getent group "$GROUPNAME" | grep -q "$USERNAME"; then
+				echo "nscd listener module seems to work"
+				break
+			fi
+		else
+			echo "nscd listener module doesn't seem to work. Waited longer than $TIME_TO_WAIT seconds."
+			fail_test 1
+			break
+		fi
+		i=`expr $i + 1`
+	done
 
 	group_removeuser $USERNAME $GROUPNAME || fail_test 1
 	ERASENSCDCACHE="$(nscd --invalidate group)"
 
-	sleep 30
-
-	MEMBERTRUE=$(group_getent $GROUPNAME $USERNAME)
-
-	if [ "$?" == "1" ]
-	then
-		echo "nscd listener module seems to work"
-	else
-		echo "nscd listener module doesn't seem to work"
-		fail_test 1
-	fi
+	echo "Waiting for nscd listener module..."
+	i=0
+	while sleep 1s;
+	do
+		if [ $i -lt "$TIME_TO_WAIT" ]; then
+			if ! getent group "$GROUPNAME" | grep -q "$USERNAME"; then
+				echo "nscd listener module seems to work"
+				break
+			fi
+		else
+			echo "nscd listener module doesn't seem to work. Waited longer than $TIME_TO_WAIT seconds."
+			fail_test 1
+			break
+		fi
+		i=`expr $i + 1`
+	done
 
 	user_remove $USERNAME || fail_test 1
 
