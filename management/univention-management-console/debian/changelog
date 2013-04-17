@@ -1,3 +1,11 @@
+univention-management-console (5.0.62-2) unstable; urgency=low
+
+  * Do not log UNIVENTION_DEBUG_{BEGIN, END} information (Bug #29603)
+  * Fix a crash when setting an invalid locale (Bug #28657)
+  * Fix a typo (Bug #30605)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 17 Apr 2013 14:14:41 +0200
+
 univention-management-console (5.0.62-1) unstable; urgency=low
 
   * Send unlocalised error messages to the client (Bug #29971)

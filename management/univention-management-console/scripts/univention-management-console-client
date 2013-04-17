@@ -80,7 +80,7 @@ class CLI_Client( umcp.Client ):
 				self.request( self.__wait )
 				self.__wait = None
 		if options.exit:
-			if not self._options.quite:
+			if not self._options.quiet:
 				print 'existing without waiting for response'
 			sys.exit( 0 )
 
@@ -145,7 +145,7 @@ class CLI_Client( umcp.Client ):
 		if self._options.timing:
 			self.__finished = datetime.datetime.now()
 			self.print_timing( msg )
-		if self._options.quite:
+		if self._options.quiet:
 			raise ClientExit( msg.status - 200 )
 		print 'Response: %s' % msg.command
 		print '  data length   : %4d' % len( str( msg ) )
@@ -188,7 +188,7 @@ if __name__ == '__main__':
 	group = OptionGroup( parser, 'General' )
 	group.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 0,
 					   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
-	group.add_option( '-q', '--quite', action = 'store_true', dest = 'quite',
+	group.add_option( '-q', '--quiet', action = 'store_true', dest = 'quiet',
 					   help = 'if given no output is generated' )
 	group.add_option( '-r', '--pretty-print', action = 'store_true',
 					   dest = 'prettyprint', default = False,

@@ -425,7 +425,7 @@ class Processor( signals.Provider ):
 					self.core_i18n.set_language( value )
 					CORE.info( 'Setting locale: %s' % value )
 					self.i18n.set_locale( value )
-				except I18N_Error, e:
+				except (I18N_Error, AttributeError), e:
 					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
 					res.message = status_description( res.status )
 					CORE.warn( 'Setting locale to specified locale failed (%s)' % value )
