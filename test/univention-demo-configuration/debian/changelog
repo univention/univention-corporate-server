@@ -1,3 +1,9 @@
+univention-demo-configuration (1.0.4-3) unstable; urgency=low
+
+  * Bug #31091: adapted login.html for 3.1-1, allow UMC command join/master
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 18 Apr 2013 12:30:01 +0200
+
 univention-demo-configuration (1.0.4-2) unstable; urgency=low
 
   * fixed update issues; Bug #29595
