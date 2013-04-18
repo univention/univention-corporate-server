@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.143-12) unstable; urgency=low
+
+  * univention-dnsedit now supports the pTRRecord as multivalue (Bug #31103)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Apr 2013 20:39:31 +0200
+
 univention-directory-manager-modules (8.0.143-11) unstable; urgency=low
 
   * Revert changes from Bug #27948 for UCS 3.1-1 errata (Bug #27948)

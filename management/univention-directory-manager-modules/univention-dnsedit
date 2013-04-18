@@ -306,7 +306,7 @@ def add_ptr_record(address, ptr):
 		record = ptr_record.object(co, lo, position, superordinate=zone)
 		record['address'] = address
 
-	if record['ptr_record'] and not (record['ptr_record'] == ptr or
+	if record['ptr_record'] and not (record['ptr_record'] == ptr or ptr in record['ptr_record'] or
 			options.overwrite):
 		print >> sys.stderr, 'E: Record exists and points to different address'
 		sys.exit(1)
