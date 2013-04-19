@@ -1,3 +1,9 @@
+ucs-test (3.0.37-1) unstable; urgency=low
+
+  * readded fixed version of 07kpasswd_output to base section (Bug #30750)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Apr 2013 14:25:13 +0200
+
 ucs-test (3.0.36-1) unstable; urgency=low
 
   * do not use pexpect in 99_udm_users_as_administrator (Bug #30116)
