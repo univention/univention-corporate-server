@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="sysinfo" icon="sysinfo-module" priority="2" version="1.0">
-		<name>System Information</name>
-		<description>Collecting System Information</description>
+		<name>System information</name>
+		<description>Collecting system information</description>
 		<categories>
 			<category name="system"/>
 		</categories>

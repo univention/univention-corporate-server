@@ -56,8 +56,8 @@ define([
 		constructor: function() {
 			this.pages = [{
 				name: 'general',
-				headerText: _('General Information'),
-				helpText: _('<p>This module collects information about the hardware of your system. This might be helpful in connection with a support case. By transmitting the data to Univention you provide the information on which platforms UCS is currently used and therefore should be supported by newer versions. All information gathered by this module will be made anonymous before the transfer to Univention. In the following procedure you will be informed in detail about the each step.</p><p>No information is transmitted without your acceptance!</p>'),
+				headerText: _('General information'),
+				helpText: _('<p>This module collects information about the hardware of your system. This might be helpful in connection with a support case. By transmitting the data to Univention you provide the information on which platforms UCS is currently used and therefore should be supported by newer versions. In the following procedure you will be informed in detail about the each step.</p><p>No information is transmitted without your acceptance</p>'),
 				widgets: [{
 					type: TextBox,
 					name: 'manufacturer',
@@ -69,7 +69,7 @@ define([
 				}, {
 					type: TextArea,
 					name: 'comment',
-					label: _('Descriptive comment')
+					label: _('Comment')
 				}, {
 					type: CheckBox,
 					name: 'supportBox',
@@ -77,7 +77,7 @@ define([
 				}, {
 					type: Text,
 					name: 'secondText',
-					label: _('If this is related to a support case the next step will be to enter the ticket number. if not than the information about your system will be collected and a summary is shown.')
+					label: _('If this is related to a support case the next step will be to enter the ticket number. Otherwise the information about your system will be collected and a summary is shown.')
 				}],
 				layout: [['manufacturer', 'model'],
 					 	 ['comment'],
@@ -85,28 +85,28 @@ define([
 					 	 ['secondText']]
 			}, {
 				name: 'support',
-				headerText: _('Support Information'),
+				headerText: _('Support information'),
 				helpText: _(''),
 				widgets: [{
 					type: Text,
 					name: 'firstText',
-					content: _('<p>If a Univention Support Engineer has asked you to provide these information, than please insert the ticket number of the related support ticket into the following text field. The ticket number can be found in the subject of a support mail of the ticket. This information will speed up the processing of the ticket.</p>')
+					content: _('<p>If a Univention Support Engineer has asked you to provide this information, then please insert the ticket number of the related support ticket into the following text field. The ticket number can be found in the subject of a support mail of the ticket. This information will speed up the processing of the ticket.</p>')
 				}, {
 					type: TextBox,
 					name: 'ticket',
-					label: _('This is related to a support case'),
+					label: _('Ticket'),
 					value: ''
 				}, {
 					type: Text,
 					name: 'secondText',
-					content: _('<p>In the next step the information about the hardware of your system will be collect and a summary will be shown. No information will be send to Univention.</p>')
+					content: _('<p>In the next step the information about the hardware of your system will be collected and a summary will be shown. During this step, no information will be sent to Univention.</p>')
 				}],
 				layout: [['firstText'],
 					 	 ['ticket'],
 					 	 ['secondText']]
 			}, {
 				name: 'collect',
-				headerText: _('Collected Data'),
+				headerText: _('Collected data'),
 				helpText: _(''),
 				widgets: [{
 					type: Text,
@@ -131,16 +131,16 @@ define([
 				}, {
 					type: TextBox,
 					name: 'net_dev',
-					label: _('Network Device'),
+					label: _('Network adapter'),
 					value: ''
 				}, {
 					type: TextBox,
 					name: 'gfx_dev',
-					label: _('Graphics Device')
+					label: _('Graphics card')
 				}, {
 					type: Text,
 					name: 'secondText',
-					content: _('<p>Additionally to the information listed above some more details about your system has been collected. The hole set of collected data that will be transmitted to Univention can be downloaded at the following URL:</p>')
+					content: _('<p>Additionally to the information listed above some more details about the system has been collected. The whole set of collected data that will be transmitted to Univention can be downloaded at the following URL:</p>')
 				}, {
 					type: Text,
 					name: 'download',
@@ -165,7 +165,7 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'firstText',
-					content: _('<p>The collected information can be transfered to Univention by uploading the data or by sending the data via mail. Please selected the corresponding option for the technique of your choice.</p>')
+					content: _('<p>The collected information can be transfered to Univention by uploading the data or by sending it via mail. Please select the corresponding option.</p>')
 				}, {
 					type: ComboBox,
 					name: 'method',
@@ -195,7 +195,7 @@ define([
 				widgets: [{
 					type: Text,
 					name: 'firstText',
-					content: _('To transfer the information via mail please follow these steps:<ol><li>Download the archive with the collected information and save it on your local system (find the link below)</li><li>Click on link Send mail to open your mail program</li><li>Attach the downloaded archive to the mail and send it to Univention</li><li>End this assistant by clicking on the button \'Finish\'</li></ol>')
+					content: _('To transfer the information via mail please follow these steps:<ol><li>Download the archive with the collected information and save it on your local system</li><li>Click on link <i>Send mail</i> to open your mail program</li><li>Attach the downloaded archive to the mail and send it to Univention</li><li>End this assistant by clicking on the button <i>Finish</i></li></ol>')
 				}, {
 					type: Text,
 					name: 'download',
