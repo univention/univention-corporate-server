@@ -7,18 +7,16 @@
 ## exposure: secure
 ## packages:
 ##   - univention-directory-manager-tools
-##   - python-pexpect
 
 
 import sys
-import pexpect
+import subprocess
 
 if __name__ == '__main__':
-	udm = pexpect.spawn('su', ['Administrator', '-c', '/usr/sbin/univention-directory-manager users/user list --filter uid=Administrator'])
-	result = udm.expect([pexpect.EOF, 'E: Permission denied'])
+	udm = subprocess.Popen(['su', 'Administrator', '-c', '/usr/sbin/univention-directory-manager users/user list --filter uid=Administrator'], stdout=subprocess.PIPE)
 
-	if result == 1 or udm.exitstatus != 0:
-		sys.exit(110) # udm has printed 'E: Permission denied' to stdout or returned an exitstatus != 0, Administrator is not allowed to execute the command
+	if udm.wait() != 0 or not 'DN: uid=Administrator' in udm.stdout.read():
+		sys.exit(110) # udm has returned an error or did not successfully print the Administrator object to stdout
 
 	sys.exit(0) # nothing went wrong, test passed
 
