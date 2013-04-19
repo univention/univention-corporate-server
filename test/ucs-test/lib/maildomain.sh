@@ -1,5 +1,4 @@
 #!/bin/bash
-CONTROLMODE=true
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
