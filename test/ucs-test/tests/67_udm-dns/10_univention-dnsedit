@@ -1,0 +1,52 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Test univention-dnsedit"
+## exposure: dangerous
+## packages:
+## - univention-directory-manager-tools
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. /usr/share/univention-lib/all.sh || exit 137
+
+eval "$(ucr shell)"
+
+zonename="$(random_chars).local"
+host="$(random_chars)"
+
+IP="1.10.20.30"
+NETMASK="$(get_default_netmask)"
+
+# add forward zone
+/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists "$zonename" add zone "root@$domainname." 1 28800 7200 604800 10800 "$hostname.$domainname." || fail_test 110
+
+# add A record
+for((i=0;i<2;i++)); do
+	# do it twice, see Bug #31103
+	/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists "$zonename" add a "$host" "$IP" || fail_test 110
+done
+
+# calc reverse zone
+reversezone=$(univention-ipcalc6 --netmask "$NETMASK" --ip "$IP" --output reverse --calcdns)
+test -n "$reversezone" || fail_test 110
+ptr=$(univention-ipcalc6 --netmask "$NETMASK" --ip "$IP" --output pointer --calcdns)
+test -n "$ptr" || fail_test 110
+
+# add reverse zone
+/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists --reverse "$reversezone" add zone "root@$domainname." 1 28800 7200 604800 10800 "$hostname.$domainname." || fail_test 110
+
+# add ptr
+for((i=0;i<2;i++)); do
+	# do it twice, see Bug #31103
+	/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists --reverse "$reversezone" add ptr "$ptr" "$host.$domainname." || fail_test 110
+done
+
+# cleanup
+udm dns/forward_zone delete --dn "zoneName=$zonename,cn=dns,$ldap_base"
+reverse_dn="$(udm dns/reverse_zone list --filter subnet=$reversezone | sed -ne 's|DN: ||p')"
+test -n "$reverse_dn" || fail_test 110
+udm dns/reverse_zone delete --dn "$reverse_dn"
+
+exit "$RETVAL"

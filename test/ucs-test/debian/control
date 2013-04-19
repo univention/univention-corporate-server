@@ -212,15 +212,15 @@ Description: Test scripts for Nagios
 # This package includes some scripts for testing the basic functionality of the
 # UDM.
 
-#Package: ucs-test-udm-users
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for the users/user-module of the UDM
-# This package includes some scripts for testing the functionality of the
-# users/user-module of the UDM.
+Package: ucs-test-udm-users
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for the users/user-module of the UDM
+ This package includes some scripts for testing the functionality of the
+ users/user-module of the UDM.
 
 #Package: ucs-test-udm-groups
 #Architecture: all
@@ -232,14 +232,14 @@ Description: Test scripts for Nagios
 # This package includes some scripts for testing the functionality of the
 # groups/group-module of the UDM.
 
-#Package: ucs-test-udm-dns
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for the dns/* modules of the UDM.
-# This package includes some scripts for testing the functionality of the domain
-# name services of the UDM.
+Package: ucs-test-udm-dns
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for the dns/* modules of the UDM.
+ This package includes some scripts for testing the functionality of the domain
+ name services of the UDM.
 
 #Package: ucs-test-udm-printers
 #Architecture: all
@@ -360,7 +360,7 @@ Depends:
  ucs-test-samba4,
  ucs-test-s4connector,
 # ucs-test-pkgdb,
-# ucs-test-udm-dns,
+ ucs-test-udm-dns,
  ucs-test-udm-computers,
 # ucs-test-udm-containers,
 # ucs-test-kolab,
@@ -372,7 +372,7 @@ Depends:
  ucs-test-nagios,
 # ucs-test-apache,
 # ucs-test-udm-general,
-# ucs-test-udm-users,
+ ucs-test-udm-users,
 # ucs-test-udm-groups,
 # ucs-test-system-setup,
 # ucs-test-udm-net,
