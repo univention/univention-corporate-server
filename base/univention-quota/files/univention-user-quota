@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/python2.6
 #
 # Univention Quota
 #  read default quota-settings and write into quota-table
@@ -30,244 +30,135 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-usage () {
-	echo "Usage: $0 [username]"
-	echo "    username defaults to \$USER"
-	echo
-	echo "Example:"
-	echo "  $0 someuser"
-	echo "     set up quota for someuser"
-	echo "  $0"
-	echo "     set up quota for \$USER"
-}
 
-get_blocksize () {
-	echo 1024
-}
+import sys
+import os
+import re
+import subprocess
+import pwd
+import copy
+import time
+import univention.config_registry
+import univention.admin.uldap
+import univention.lib.policy_result
 
-# calc blocks with blocksize and value of g,gb,m,mb,k,kb (case insensitive)
-get_blocks () {
-	# convert to upper case
-	size=`echo $2 | sed -e 'y/gmkb/GMKB/'`
-	# delete last B if G/M/K is second-last
-	slchar=`echo $size | rev | cut -c 1`
-	if [  "$slchar" = 'B' ]
-		then
-		size=`echo $size | sed -e 's/B//'`
-	fi
-	case `echo $size | rev | cut -c 1` in # cut can only cut the first letter (not the last), so rev is used
-		B)
-			bytes=`echo $size | sed -e 's/B//'`
-			blocks=$(($bytes/$1))
-			;;
-		K)
-			bytes=`echo $size | sed -e 's/K//'`
-			blocks=$(($bytes*1024/$1))
-			;;
-		M)
-			bytes=`echo $size | sed -e 's/M//'`
-			blocks=$(($bytes*1024*1024/$1))
-			;;
-		G)
-			bytes=`echo $size | sed -e 's/G//'`
-			blocks=$(($bytes*1024*1024*1024/$1))
-			;;
-		[0-9])
-			blocks=$(($size/$1))
-			;;
-		*)
-			echo "$$ WARNING: unknown type for quota-size" >> $LOGFILE
-			blocks=$(($size/$1))
-			;;
-	esac
-	echo "$$ $1/$2 ($bytes bytes) equals $blocks blocks" >> $LOGFILE
-	echo $blocks
-}
+def get_blocks(size):
+	size = size.upper()
 
+	if size.endswith('KB'):
+		return int(size.strip('KB'))
+	if size.endswith('MB'):
+		return int(size.strip('MB')) * 1024
+	if size.endswith('GB'):
+		return int(size.strip('GB')) * 1024 * 1024
+	if size.endswith('B'):
+		return int(size.strip('B')) / 1024
+	if int(size[-1]) in range(0, 10):
+		return int(size) / 1024
 
-for arg
-do
-	if [ "$arg" = "-h" -o "$arg" = "--help" ]
-	then
-		usage
-		exit 0
-	fi
-done
+def get_shares():
+	shares = {}
+	for dn, attrs in lo.search( filter='(&(objectClass=univentionShare)(univentionShareHost=%s.%s))' % (ucr.get('hostname', ''), ucr.get('domainname', '')), attr=['univentionSharePath'] ):
+		policy_result = univention.lib.policy_result.policy_result(dn)[0]
+		try:
+			share = {
+				'inodeSoftLimit': int(policy_result['univentionQuotaSoftLimitInodes'][0]),
+				'inodeHardLimit': int(policy_result['univentionQuotaHardLimitInodes'][0]),
+				'spaceSoftLimit': get_blocks(policy_result['univentionQuotaSoftLimitSpace'][0]),
+				'spaceHardLimit': get_blocks(policy_result['univentionQuotaHardLimitSpace'][0])
+			}
+		except KeyError: # not connected to quota policy
+			continue
+		else:
+			shares[ attrs['univentionSharePath'][0] ] = share
+	return shares
 
-eval "$(/usr/sbin/univention-config-registry shell)"
-
-if [ -n "$quota_logfile" ]
-then
-	LOGFILE="$quota_logfile"
-else
-	LOGFILE="/dev/null"
-fi
-
-echo "$$ -------------------------------------------------------- start" >> $LOGFILE
-echo "$$" `date` >> $LOGFILE
-
-if [ -n "$1" ]; then
-	USER=$1
-fi
-
-if [ -z "$USER" ]
-	then
-	echo "$$ need one parameter (username)" >> $LOGFILE
-	echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
-	exit 1
-fi
-
-userid=`/usr/bin/id -u $USER`
-if [ $userid -lt 1000 ]
-	then
-	echo "$$ woun't set quota for system-users ($USER has UID $userid)" >> $LOGFILE
-	echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
-	exit 0
-fi
-
-echo "$$ set default quota for $USER" >> $LOGFILE
-
-echo "$$ host ist $hostname.$domainname" >> $LOGFILE
-
-# get all mountpoints with quota-support and without already set quota
-i=0
-for fs in `cat /etc/mtab | grep usrquota | awk '{print $1}'`
-  do
-  quota_set=0
-  quota -v -w $USER | egrep "[0-9]+[ ]+0[ ]+0[ ]+[0-9]+[ ]+0[ ]+0" | grep -q "$fs" || quota_set=1;
-  if [ $quota_set -lt 1 ]
-	  then
-	  mpoint[$i]=`cat /etc/mtab | grep usrquota | grep "$fs" | awk '{print $2}'`
-	  mpointfs[$i]=$fs
-	  mpointsls[$i]=0
-	  mpointhli[$i]=0
-	  mpointsli[$i]=0
-	  mpointhls[$i]=0
-	  i=$((i+1))
-	  nmpoints=$i
-  else
-	  echo "$$ quota for fs $fs already set" >> $LOGFILE
-  fi
-done
-
-# exit if all quotas are set
-if [ -z "$nmpoints" ]
-	then
-	echo "$$ all quotas are already set" >> $LOGFILE
-	echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
-	exit 0
-fi
-
-# shares, first line is dn, second is path
-i=0
-oldi=-1
-ldap_server_port="${ldap_server_port:-7389}"
-for s in `/usr/bin/ldapsearch -x -h $ldap_server_name -p "$ldap_server_port" -ZZ -D "$ldap_hostdn" -y /etc/machine.secret "(&(objectClass=univentionShare)(univentionShareHost=$hostname.$domainname))" | ldapsearch-wrapper | grep "^dn:\|^univentionSharePath:" | awk '{print $2}'`
-  do
-  if [ $oldi -lt $i ] # dn
-	  then
-	  univentionQuotaSoftLimitSpace=0
-	  univentionQuotaHardLimitInodes=0
-	  univentionQuotaSoftLimitInodes=0
-	  univentionQuotaHardLimitSpace=0
-	  eval `/usr/bin/univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s $s`
-	  sharedn[$i]=$s
-	  sharehli[$i]=$univentionQuotaHardLimitInodes
-	  sharesli[$i]=$univentionQuotaSoftLimitInodes
-	  sharehls[$i]=$univentionQuotaHardLimitSpace
-	  sharesls[$i]=$univentionQuotaSoftLimitSpace
-	  oldi=$i
-  else # path
-	  sharepath[$i]=$s
-	  i=$((i+1))
-	  nshares=$i
-  fi
-done
+def get_quota_mountpoints(user):
+	mountpoints = {}
+	quota = subprocess.Popen(['quota', '-v', '-w', '-u', user], stdout=subprocess.PIPE)
+	quota.wait()
+	quota = quota.stdout.readlines()
+	whitespace =  re.compile('\s+')
+	with open('/etc/mtab') as mtab:
+			for line in mtab:
+				if 'usrquota' in line:
+					try:
+						filesystem = whitespace.split(line)[0]
+						quota_re = re.compile(r'^\s*%s\s+[0-9]+\s+0\s+0\s+[0-9]+\s+0\s+0\s*$' % filesystem)
+						for quota_line in quota:
+							if re.match(quota_re, quota_line):
+								mountpoints[whitespace.split(line)[1]] = {
+									'inodeSoftLimit': 0,
+									'inodeHardLimit': 0,
+									'spaceSoftLimit': 0,
+									'spaceHardLimit': 0,
+								}
+								break
+						else:
+							log.write('quota for fs %s already set\n' % filesystem)
+					except IndexError:
+						pass
+	return mountpoints
 
 
-# exit if all quotas are set
-if [ -z "$nshares" ]
-	then
-	echo "$$ no shares found" >> $LOGFILE
-	echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
-	exit 0
-fi
 
-echo "$$ found $nshares shares and $nmpoints mountpoints" >> $LOGFILE
 
-# search share corresponding to a mointpoint and set Limits
+if __name__ == '__main__':
+	if '-h' in sys.argv or '--help' in sys.argv:
+		print 'Usage: %s [username]' % sys.argv[0]
+		print '    username defaults to \$USER\n'
+		print 'Example:'
+		print '  %s someuser' % sys.argv[0]
+		print '     set up quota for someuser'
+		print '  %s' % sys.argv[0]
+		print '     set up quota for \$USER'
+		sys.exit(0)
 
-i=0
-while [ $i -lt $nmpoints ]
-  do
-  pathdifflen=66000
-  s=0
-  blocksize=`get_blocksize ${mpointfs[$i]}`
-  while [ $s -lt $nshares ]
-	do
-	pathdiff=`echo ${sharepath[$s]} | sed -e "s|^${mpoint[$i]}||"`
-	if [ "$pathdiff" != "${sharepath[$s]}" ] # share is deeper than or equal to mointpoint
-		then
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	lo, positon = univention.admin.uldap.getAdminConnection()
+	log = open(ucr.get('quota/logfile', '/dev/null'), 'a+')
+	TIMEFORMAT = '%a %b %d %H:%M:%S %Z %Y'
+	user = sys.argv[1] if len(sys.argv) > 1 else os.getlogin()
+	uid = pwd.getpwnam(user)[2]
 
-		pathdifflen=`echo "$pathdiff" | wc -m `
-		continue_settings=1
-		for mp in `cat /etc/mtab | awk '{print $2}'`
-		do # check if a deeper mountpoint in this share-path exists, must be "closer" to the sharepath
-			if [ $(echo $mp | wc -m) -gt $(echo ${mpoint[$i]} | wc -m) ]
-			then
-				echo ${sharepath[$s]} | grep -q "$mp/" && continue_settings=0 # mount-point is part of this sharepath
-				if [ $mp = ${sharepath[$s]} ] # mount point is sharepath
-				then
-					continue_settings=0
-				fi
-			fi
-		done
+	log.write('-------------------------------------------------------- start\n')
+	log.write('%s\n' % time.strftime(TIMEFORMAT))
+	if uid < 1000:
+		log.write('won\'t set quota for system-users (%s has UID %i)\n' % (user, uid))
+		sys.exit(1)
+	log.write('set default quota for %s\n' % user)
+	log.write( 'host is %s.%s\n' % (ucr.get('hostname', ''), ucr.get('domainname', '')) )
 
-		if [ $continue_settings = 1 ]
-		then
-			echo "$$ use ${sharepath[$s]} for mointpoint ${mpoint[$i]}" >> $LOGFILE
-			sharehls_blocks=`get_blocks $blocksize ${sharehls[$s]}`
-			sharesls_blocks=`get_blocks $blocksize ${sharesls[$s]}`
-			if [ ${mpointsli[$i]} = "0" -o \( ${sharesli[$s]} -lt ${mpointsli[$i]} -a ${sharesli[$s]} -gt "0" \) ]
-			then
-				if [ ${sharesli[$s]} -gt 0 ];
-				then mpointsli[$i]=${sharesli[$s]};
-				fi
-			fi
-			if [ ${mpointhli[$i]} = "0" -o \( ${sharehli[$s]} -lt ${mpointhli[$i]} -a ${sharesli[$s]} -gt "0" \) ]
-			then
-				if [ ${sharehli[$s]} -gt 0 ];
-				then
-					mpointhli[$i]=${sharehli[$s]};
-				fi
-			fi
-			if [ ${mpointsls[$i]} = "0" -o \( $sharesls_blocks -lt ${mpointsls[$i]} -a $sharesls_blocks -gt "0" \) ]
-			then
-				if [ $sharesls_blocks -gt 0 ];
-				then
-					mpointsls[$i]=$sharesls_blocks;
-				fi
-			fi
-			if [ ${mpointhls[$i]} = "0" -o \( $sharehls_blocks -lt ${mpointhls[$i]} -a $sharehls_blocks -gt "0" \) ]
-			then
-				if [ $sharehls_blocks -gt 0 ];
-				then
-					mpointhls[$i]=$sharehls_blocks;
-				fi
-			fi
-		fi
-	fi
+	mountpoints = get_quota_mountpoints(user)
+	shares = get_shares()
+	if not mountpoints:
+		log.write('all quotas are already set\n')
+	elif not shares:
+		log.write('no shares found\n')
+	else:
+		log.write( 'found %i shares and %i mountpoints\n' % (len(shares), len(mountpoints)) )
+		for mountpoint_path, mountpoint in mountpoints.items():
+			# find corresponding share for that mount point (that is to say, the one most equal to it)
+			corresponding_share = ''
+			for share_path in shares:
+				if share_path.startswith(mountpoint_path) and len(share_path.split('/')) > len(corresponding_share.split('/')):
+					corresponding_share = share_path
 
-	s=$((s+1))
-  done
-  if [ ${mpointsls[$i]} -gt 0 -o ${mpointhls[$i]} -gt 0 -o ${mpointsli[$i]} -gt 0 -o ${mpointhli[$i]} -gt 0 ]
-	  then
-	  echo "$$ setquota -u $USER ${mpointsls[$i]} ${mpointhls[$i]} ${mpointsli[$i]} ${mpointhli[$i]} ${mpoint[$i]}" >> $LOGFILE
-	  /usr/sbin/setquota -u $USER ${mpointsls[$i]} ${mpointhls[$i]} ${mpointsli[$i]} ${mpointhli[$i]} ${mpoint[$i]} >> $LOGFILE 2>&1
-  else
-	  echo "$$ no quota for ${mpoint[$i]}" >> $LOGFILE
-  fi
-  i=$((i+1))
-done
+			if corresponding_share:
+				log.write('use %s for mointpoint %s\n' % (corresponding_share, mountpoint_path))
+				mp = copy.deepcopy(mountpoint)
 
-echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
+				# only use shares settings for mountpoint if they're more restrictive than the mountpoints
+				for limit in mp:
+					if mp[limit] == 0 or shares[corresponding_share][limit] < mp[limit]:
+						mp[limit] = shares[corresponding_share][limit]
+
+				if mp['spaceSoftLimit'] != 0 or mp['spaceHardLimit'] != 0 or mp['inodeSoftLimit'] != 0 or mp['inodeHardLimit'] != 0:
+					log.write('/usr/sbin/setquota -u %s %i %i %i %i %s\n' % (user, mp['spaceSoftLimit'], mp['spaceHardLimit'], mp['inodeSoftLimit'], mp['inodeHardLimit'], mountpoint_path))
+					set_quota = subprocess.Popen(['/usr/sbin/setquota', '-u', user, str(mp['spaceSoftLimit']), str(mp['spaceHardLimit']), str(mp['inodeSoftLimit']), str(mp['inodeHardLimit']), mountpoint_path])
+					set_quota.wait()
+				else:
+					log.write('no quota for %s\n') % mountpoint_path
+
+	log.write('-------------------------------------------------------- exit\n')

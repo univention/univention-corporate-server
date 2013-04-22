@@ -1,3 +1,9 @@
+univention-quota (7.0.5-3) unstable; urgency=low
+
+  * rewrote the script "univention-user-quota" in python (Bug #30636)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 22 Apr 2013 17:27:56 +0200
+
 univention-quota (7.0.5-2) unstable; urgency=low
 
   * Undo last commit (Bug #30636)
