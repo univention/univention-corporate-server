@@ -1,3 +1,9 @@
+univention-samba4 (2.0.45-1) unstable; urgency=low
+
+  * refresh shares.conf directly after removing a share (Bug #29399)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 22 Apr 2013 16:50:45 +0200
+
 univention-samba4 (2.0.44-1) unstable; urgency=low
 
   * Use a better timestamp for the sysvol cleanup backup directory
