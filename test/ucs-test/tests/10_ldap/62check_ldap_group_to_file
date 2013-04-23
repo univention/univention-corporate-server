@@ -16,7 +16,7 @@ OLD_NSS_GROUP_CACHEFILE="$(ucr get nss/group/cachefile)"
 
 DOMAIN="$(ucr get domainname)"
 LDAPBASE="$(ucr get ldap/base)"
-TIME_TO_WAIT=600 # time to wait for nscd listener
+TIME_TO_WAIT=600 # time to waitf for NSS update script
 
 ucr set nss/group/cachefile="yes"
 
