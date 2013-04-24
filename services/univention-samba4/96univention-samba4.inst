@@ -554,6 +554,8 @@ if [ "$samba4_role" = 'DC' ]; then
 					exit 1
 				fi
 
+				univention-config-registry set windows/wins-server?$ldap_master
+
 				remove_dc_ntds_guid_records_from_dns "$@"
 
 				## Check if this is a re-join

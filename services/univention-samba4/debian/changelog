@@ -1,3 +1,9 @@
+univention-samba4 (2.0.46-1) unstable; urgency=low
+
+  * windows/wins-server is now initiated in the join script (Bug #30813)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 24 Apr 2013 14:32:39 +0200
+
 univention-samba4 (2.0.45-1) unstable; urgency=low
 
   * refresh shares.conf directly after removing a share (Bug #29399)
