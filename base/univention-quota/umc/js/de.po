@@ -193,7 +193,7 @@ msgstr "Setzen, Entfernen und Bearbeiten von Quota-Einstellungen"
 
 #: umc/js/quota.js:150
 msgid "Size (GB)"
-msgstr "Größe (MB)"
+msgstr "Größe (GB)"
 
 #: umc/js/_quota/PartitionPage.js:137
 msgid "Size (MB) (used/soft/hard)"
