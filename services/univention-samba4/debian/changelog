@@ -1,3 +1,9 @@
+univention-samba4 (2.0.47-1) unstable; urgency=low
+
+  * sysvol-cleanup: only consider directories startig with { (Bug #31186)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Apr 2013 14:03:20 +0200
+
 univention-samba4 (2.0.46-1) unstable; urgency=low
 
   * windows/wins-server is now initiated in the join script (Bug #30813)
