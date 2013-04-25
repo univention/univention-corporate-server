@@ -148,6 +148,12 @@ Description[en]=Specifies whether or not nssldap authenticates against the LDAP 
 Type=bool
 Categories=system-base
 
+[nssldap/nss_srv]
+Description[de]=Gibt an, ob bei der nss-ldap Namensauflösung DNS SRV Record lookups gemacht werden dürfen. (default: true)
+Description[en]=Specifies whether or not nss-ldap is allowed to do DNS SRV record lookups. (default: true)
+Type=bool
+Categories=system-base
+
 [pamldap/auth]
 Description[de]=Gibt an, ob pam_ldap eine Authentifizierung gegenüber dem LDAP-Server durchführt. (default: yes)
 Description[en]=Specifies whether or not pam_ldap authenticates against the LDAP server. (default: yes)

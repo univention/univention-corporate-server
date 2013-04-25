@@ -1,3 +1,9 @@
+univention-pam (6.0.14-1) unstable; urgency=low
+
+  * added ucrv nssldap/nss_srv for libnss-ldap.conf (Bug #30779)
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Apr 2013 16:37:14 +0200
+
 univention-pam (6.0.13-2) unstable; urgency=low
 
   * call join script in postinst (Bug #25368)
