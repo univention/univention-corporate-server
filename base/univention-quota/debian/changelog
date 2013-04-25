@@ -1,3 +1,9 @@
+univention-quota (7.0.8-1) unstable; urgency=low
+
+  * enable support of ext4 partitions in the UMC module (Bug #24357)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 25 Apr 2013 13:05:04 +0200
+
 univention-quota (7.0.7-1) unstable; urgency=low
 
   * fixed typo in german localization of UMC frontend (Bug #28377)

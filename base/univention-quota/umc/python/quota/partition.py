@@ -57,7 +57,7 @@ class Commands(object):
 			message = _('Could not open %s') % error.filename
 			request.status = MODULE_ERR
 		else:
-			partitions = fs.get(['xfs', 'ext3', 'ext2'], False) # TODO: ext4?
+			partitions = fs.get(['xfs', 'ext4', 'ext3', 'ext2'], False)
 			for partition in partitions:
 				list_entry = {}
 				list_entry['partitionDevice'] = partition.spec
