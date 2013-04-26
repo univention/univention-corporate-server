@@ -1,3 +1,10 @@
+univention-quota (7.0.5-8) unstable; urgency=low
+
+  * univention-user-quota: regard every share instead of only that ones
+    with fully set quota policy (Bug #30636)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 26 Apr 2013 15:18:14 +0200
+
 univention-quota (7.0.5-7) unstable; urgency=low
 
   * univention-user-quota:
