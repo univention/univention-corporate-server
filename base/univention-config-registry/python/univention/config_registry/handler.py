@@ -111,19 +111,15 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 			proc = subprocess.Popen((__PYTHON_EXECUTABLE,),
 					stdin=subprocess.PIPE, stdout=subprocess.PIPE,
 					close_fds=True)
-			child_stdin, child_stdout = proc.stdin, proc.stdout
-			child_stdin.write('''\
+			value = proc.communicate('''\
 # -*- coding: utf-8 -*-
 import univention.config_registry
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 # for compatibility
 baseConfig = configRegistry
-''')
-			child_stdin.write(template[start.end():end.start()])
-			child_stdin.close()
-			value = child_stdout.read()
-			child_stdout.close()
+%s
+''' % template[start.end():end.start()])[0]
 			template = template[:start.start()] + value + template[end.end():]
 
 		except StopIteration:

@@ -1,3 +1,9 @@
+univention-config-registry (8.0.7-2) unstable; urgency=low
+
+  * use subprocess.communicate() to prevent problems with EINTR (Bug #31140)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 26 Apr 2013 11:58:38 +0200
+
 univention-config-registry (8.0.7-1) unstable; urgency=low
 
   * added dependency to ldap-utils in univention-config (Bug #28851) 
