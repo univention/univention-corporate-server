@@ -1,3 +1,12 @@
+univention-quota (7.0.9-1) unstable; urgency=low
+
+  * use getMchineConnection() instead of getAdminConnection in
+    "univention-user-quota" (Bug #30636)
+  * restart quota service after enabling quota for an ext4 partition
+    (Bug #24357)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 26 Apr 2013 10:34:47 +0200
+
 univention-quota (7.0.8-1) unstable; urgency=low
 
   * enable support of ext4 partitions in the UMC module (Bug #24357)
