@@ -1,3 +1,13 @@
+univention-quota (7.0.5-7) unstable; urgency=low
+
+  * univention-user-quota:
+      - fixed idendation
+      - added short description to usage message
+      - replaced univention.uldap.admin by univention.uldap
+  (Bug #30636)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 26 Apr 2013 12:55:21 +0200
+
 univention-quota (7.0.5-6) unstable; urgency=low
 
   * use getMchineConnection() instead of getAdminConnection in

@@ -39,7 +39,7 @@ import pwd
 import copy
 import time
 import univention.config_registry
-import univention.admin.uldap
+import univention.uldap
 import univention.lib.policy_result
 
 def get_blocks(size):
@@ -57,7 +57,7 @@ def get_blocks(size):
 		return int(size) / 1024
 
 def get_shares():
-	lo, positon = univention.admin.uldap.getMachineConnection(ldap_master=False)
+	lo = univention.uldap.getMachineConnection(ldap_master=False)
 	shares = {}
 	for dn, attrs in lo.search( filter='(&(objectClass=univentionShare)(univentionShareHost=%s.%s))' % (ucr.get('hostname', ''), ucr.get('domainname', '')), attr=['univentionSharePath'] ):
 		policy_result = univention.lib.policy_result.policy_result(dn)[0]
@@ -81,24 +81,24 @@ def get_quota_mountpoints(user):
 	quota = quota.stdout.readlines()
 	whitespace =  re.compile('\s+')
 	with open('/etc/mtab') as mtab:
-			for line in mtab:
-				if 'usrquota' in line:
-					try:
-						filesystem = whitespace.split(line)[0]
-						quota_re = re.compile(r'^\s*%s\s+[0-9]+\s+0\s+0\s+[0-9]+\s+0\s+0\s*$' % filesystem)
-						for quota_line in quota:
-							if re.match(quota_re, quota_line):
-								mountpoints[whitespace.split(line)[1]] = {
-									'inodeSoftLimit': 0,
-									'inodeHardLimit': 0,
-									'spaceSoftLimit': 0,
-									'spaceHardLimit': 0,
-								}
-								break
-						else:
-							log.write('quota for fs %s already set\n' % filesystem)
-					except IndexError:
-						pass
+		for line in mtab:
+			if 'usrquota' in line:
+				try:
+					filesystem = whitespace.split(line)[0]
+					quota_re = re.compile(r'^\s*%s\s+[0-9]+\s+0\s+0\s+[0-9]+\s+0\s+0\s*$' % filesystem)
+					for quota_line in quota:
+						if re.match(quota_re, quota_line):
+							mountpoints[whitespace.split(line)[1]] = {
+								'inodeSoftLimit': 0,
+								'inodeHardLimit': 0,
+								'spaceSoftLimit': 0,
+								'spaceHardLimit': 0,
+							}
+							break
+					else:
+						log.write('quota for fs %s already set\n' % filesystem)
+				except IndexError:
+					pass
 	return mountpoints
 
 
@@ -106,13 +106,14 @@ def get_quota_mountpoints(user):
 
 if __name__ == '__main__':
 	if '-h' in sys.argv or '--help' in sys.argv:
+		print '%s - write user quota from shares into quota-table' % sys.argv[0]
 		print 'Usage: %s [username]' % sys.argv[0]
-		print '    username defaults to \$USER\n'
+		print '    username defaults to $USER\n'
 		print 'Example:'
 		print '  %s someuser' % sys.argv[0]
 		print '     set up quota for someuser'
 		print '  %s' % sys.argv[0]
-		print '     set up quota for \$USER'
+		print '     set up quota for $USER'
 		sys.exit(0)
 
 	ucr = univention.config_registry.ConfigRegistry()
