@@ -143,7 +143,7 @@ def _do_activate_quota(partitions, activate):
 				continue
 			if part.type == 'xfs':
 				failed.append(_activate_quota_xfs(part))
-			elif part.type in ('ext2', 'ext3'):
+			elif part.type in ('ext2', 'ext3', 'ext4'):
 				failed.append(_activate_quota_ext(part, True))
 		else:
 			if not 'usrquota' in part.options:
@@ -153,7 +153,7 @@ def _do_activate_quota(partitions, activate):
 				fs.save()
 			if part.type == 'xfs':
 				failed.append(_activate_quota_xfs(part))
-			elif part.type in ('ext2', 'ext3'):
+			elif part.type in ('ext2', 'ext3', 'ext4'):
 				failed.append(_activate_quota_ext(part, True))
 
 	return failed
