@@ -1,4 +1,4 @@
-univention-updater (8.0.78-2) unstable; urgency=low
+univention-updater (8.0.78-3) unstable; urgency=low
 
   * Add switch to install latest app in univention-add-app (Bug #31157)
 
