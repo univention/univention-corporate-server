@@ -522,7 +522,12 @@ class PackageManager(object):
 				fixer.clear(pkg)
 				fixer.protect(pkg)
 		fixer.install_protect()
-		fixer.resolve()
+		try:
+			fixer.resolve()
+		except SystemError as e:
+			self.progress_state.error(str(e))
+			for pkg in install + remove:
+				broken.add(pkg.name)
 		# if more than one package is to be installed and this package
 		#   has an OR-dependency, the package will automatically choose
 		#   the first one. but if the second OR-dependency is to be
