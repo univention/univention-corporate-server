@@ -1,3 +1,9 @@
+univention-updater (8.0.80-1) unstable; urgency=low
+
+  * Fix latest-switch in univention-add-app (Bug #31157)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Apr 2013 14:21:39 +0200
+
 univention-updater (8.0.79-1) unstable; urgency=low
 
   * Add switch to install latest app in univention-add-app (Bug #31157)
