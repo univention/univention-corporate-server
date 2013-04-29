@@ -1,3 +1,9 @@
+univention-updater (8.0.78-2) unstable; urgency=low
+
+  * Add switch to install latest app in univention-add-app (Bug #31157)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Apr 2013 12:28:08 +0200
+
 univention-updater (8.0.78-1) unstable; urgency=low
 
   * Set univention-fetchmail packages on hold during the 3.1-1 upgrade

@@ -52,21 +52,29 @@ def simple_handler(f):
 	return _simple_handler
 
 if __name__ == '__main__':
-	usage = '%prog <component> [-a] [-m] [<package> ...]'
+	usage = '%prog <component> [-a [-l]] [-m [-l]] [<package> ...]'
 	description = '%prog prepares the corresponding repository settings for the specified component and installs the given packages.'
 	parser = OptionParser(usage=usage, description=description)
 	parser.add_option("-a", "--all", action="store_true", dest="install_all", default=False,
 			help="Installs all DefaultPackages of the app. If DC master or backup, also installs DefaultPackagesMaster. Performs dist-upgrade!")
 	parser.add_option("-m", "--master", action="store_true", dest="install_master", default=False,
 			help="If DC master or backup, installs DefaultPackagesMaster. Performs dist-upgrade! Has no meaning when used together with --all")
+	parser.add_option("-l", "--latest", action="store_true", dest="install_latest", default=False,
+			help="<component> is not the component's name but the ID of the application. And always the latest available gets added. Has to be combined with --all or --master!")
 	(options, args) = parser.parse_args()
 	try:
 		component_id = args[0]
 	except IndexError:
 		parser.print_usage()
 		sys.exit(1)
+
 	# for compatibility with 3.1-0. may be removed with 3.2-0
 	packages = args[1:]
+
+	if options.install_latest and not (options.install_master or options.install_all):
+		parser.print_usage()
+		sys.exit(1)
+
 	ucr = ConfigRegistry()
 	ucr.load()
 	updater = UniventionUpdater(False)
@@ -74,15 +82,18 @@ if __name__ == '__main__':
 	package_manager = PackageManager(info_handler=simple_handler(sys.stdout), error_handler=simple_handler(sys.stderr), always_noninteractive=True)
 	requested_app = None
 	function = 'install'
-	for app in Application.all():
-		requested_apps = filter(lambda iapp: iapp.component_id == component_id, app.versions)
-		if requested_apps:
-			requested_app = requested_apps[0]
-			for iapp in app.versions:
-				if app.is_installed(package_manager):
-					function = 'update'
-				component_manager.remove_app(iapp)
-			break
+	if options.install_latest:
+		requested_app = Application.find(component_id)
+	else:
+		for app in Application.all():
+			requested_apps = filter(lambda iapp: iapp.component_id == component_id, app.versions)
+			if requested_apps:
+				requested_app = requested_apps[0]
+				for iapp in app.versions:
+					if app.is_installed(package_manager):
+						function = 'update'
+					component_manager.remove_app(iapp)
+				break
 	if requested_app is None:
 		sys.stderr.write('App "%s" not found\n' % component_id)
 		sys.exit(1)
@@ -101,9 +112,11 @@ if __name__ == '__main__':
 		success = requested_app.install(package_manager, component_manager, add_component=False, send_as=function, only_master_packages=only_master_packages) and success
 	else:
 		requested_app._send_information(function, 200)
+
 	# for compatibility with 3.1-0. should be removed with 3.2-0
 	if packages:
 		success = package_manager.install(*packages) and success
+
 	if success:
 		sys.exit(0)
 	else:
