@@ -59,6 +59,10 @@ def update():
 	modules={}
 	superordinates=set()
 
+	# since last update(), syntax classes may have been added.
+	# see Bug #31154
+	univention.admin.syntax.import_syntax_files()
+
 	def _walk(root, dir, files):
 		global modules, superordinates
 		for file in files:

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.153-1) unstable; urgency=low
+
+  * Bug #31154: Import syntax classes every time udm_modules.update() is called
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 30 Apr 2013 19:16:53 +0200
+
 univention-directory-manager-modules (8.0.152-1) unstable; urgency=low
 
   * univention-dnsedit now supports the pTRRecord as multivalue (Bug #31103)
