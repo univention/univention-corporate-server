@@ -59,9 +59,11 @@ def update():
 	modules={}
 	superordinates=set()
 
-	# since last update(), syntax classes may have been added.
+	# since last update(), syntax classes or hook files may have been
+	#   added.
 	# see Bug #31154
 	univention.admin.syntax.import_syntax_files()
+	univention.admin.hook.import_hook_files()
 
 	def _walk(root, dir, files):
 		global modules, superordinates
