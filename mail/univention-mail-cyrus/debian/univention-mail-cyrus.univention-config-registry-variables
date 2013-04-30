@@ -58,6 +58,12 @@ Description[en]=Sets time interval for checking mailquota settings (minutes)
 Type=str
 Categories=service-mail
 
+[mail/cyrus/imap/duplicatesuppression]
+Description[de]=Wenn gesetzt, wird lmtpd die E-Mail-Zustellung mit der selben Message-ID, die schon an den Posteingang zugestellt wurde unterbinden. Zeichnet den Posteingang und Message_ID/Letzte-Message-ID von allen erfolgreichen Zustellungen auf (Standard: yes)
+Description[en]=If enabled, lmtpd will suppress delivery of a message to a mailbox if a message with the same message-id (or resent-message-id) is recorded as having already been delivered to the mailbox. Records the mailbox and message-id/resent-message-id of all successful deliveries (Default: yes)
+Type=str
+Categories=service-mail
+
 [mail/cyrus/idlemethod]
 Description[de]=Zu verwendendes Backend für das IDLE Kommando ("no", "poll", "idled")
 Description[en]=The idle backend to use for IDLE command ("no", "poll", "idled")

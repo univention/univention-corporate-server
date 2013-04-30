@@ -52,8 +52,8 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; t
 
     # fix sieve dir permissions
 	find  /var/spool/cyrus/sieve/ -maxdepth 5 -type d -exec chown cyrus:mail {} \;
-	
-fi 
+
+fi
 
 dpkg-statoverride --add cyrus sasl 640 /etc/univention/templates/files/etc/imapd/imapd.conf || true
 
@@ -96,14 +96,15 @@ univention-config-registry set mail/cyrus?yes \
 	mail/cyrus/sieve/spam?true \
 	mail/cyrus/sieve/port?4190 \
 	mail/cyrus/userlogfiles?no \
+	mail/cyrus/imap/duplicatesuppression?yes \
 	mail/cyrus/initscript?cyrus-imapd
 
 CHROOT=/var/spool/postfix
 addgroup --system postfix || true
-adduser --system --home ${CHROOT} --no-create-home --disabled-password --ingroup postfix postfix 
-adduser postfix mail 
+adduser --system --home ${CHROOT} --no-create-home --disabled-password --ingroup postfix postfix
+adduser postfix mail
 dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
-	
+
 # create cyrus password
 if [ ! -e /etc/cyrus.secret ]; then
 	TMP=$(tempfile)

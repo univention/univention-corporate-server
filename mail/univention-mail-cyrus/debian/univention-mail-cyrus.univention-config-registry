@@ -7,6 +7,7 @@ Variables: mail/cyrus/admins
 Variables: mail/cyrus/imap/admins
 Variables: mail/cyrus/imap/quotawarnpercent
 Variables: mail/cyrus/imap/quotawarnkb
+Variables: mail/cyrus/imap/duplicatesuppression
 Variables: mail/cyrus/loginrealms
 Variables: mail/cyrus/idlemethod
 Variables: mail/hosteddomains

@@ -1,3 +1,9 @@
+univention-mail-cyrus (5.0.7-1) unstable; urgency=low
+
+  * added "duplicatesuppression" UCR variable (Bug #22429)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Fri, 26 Apr 2013 16:02:02 +0200
+
 univention-mail-cyrus (5.0.6-1) unstable; urgency=low
 
   * added missing template file (Bug #29806)
