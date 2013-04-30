@@ -1,1 +1,2 @@
 tests/51_samba4 usr/share/ucs-test/
+tests/50_samba/50quota usr/share/ucs-test/51_samba4/
