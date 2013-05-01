@@ -1,3 +1,10 @@
+ucs-test (3.0.38-2) unstable; urgency=low
+
+  * 50quota: use binddn and bindpwd to support tests on memberserver and
+    dc slave (Bug #31210)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 01 May 2013 12:27:43 +0200
+
 ucs-test (3.0.38-1) unstable; urgency=low
 
   * Added a simple Samba quota test case (Bug #31210)
