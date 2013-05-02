@@ -493,7 +493,7 @@ class Application(object):
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
 
-		res['can_install'] = cannot_install_reason is None
+		res['can_install'] = False and cannot_install_reason is None
 		res['is_installed'] = res['can_uninstall'] = cannot_install_reason == 'installed'
 		res['cannot_update_reason'], res['cannot_update_reason_detail'] = self.cannot_update_reason(package_manager)
 		res['can_update'] = res['cannot_update_reason'] is None # faster than self.can_be_updated()
@@ -521,6 +521,9 @@ class Application(object):
 			res['candidate_server_role'] = self.candidate.get('serverrole')
 			res['candidate_readmeupdate'] = self.candidate.get('readmeupdate')
 		return res
+
+	def __repr__(self):
+		return '<Application id="%s" name="%s (%s)" component="%s">' % (self.id, self.name, self.version, self.component_id)
 
 	def cannot_update_reason(self, package_manager):
 		if self.candidate:
@@ -781,9 +784,10 @@ class Application(object):
 		finally:
 			del lo
 
-	def install_master_packages_on_hosts(self, package_manager, remote_function, username, password, is_master):
+	def install_master_packages_on_hosts(self, package_manager, remote_function, username, password, is_master, hosts=None):
 		master_packages = self.get('defaultpackagesmaster')
-		hosts = self.find_all_hosts(is_master=is_master)
+		if hosts is None:
+			hosts = self.find_all_hosts(is_master=is_master)
 		all_hosts_count = len(hosts)
 		package_manager.set_max_steps(all_hosts_count * 200) # up to 50% if all hosts are installed
 		# maybe we already installed local packages (on master)
@@ -841,10 +845,17 @@ class Application(object):
  					else:
 						self.install_master_packages_on_hosts(package_manager, remote_function, username, password, is_master=False)
 
+			hosts = None
 			if master_packages:
-				# real installation is 50%
-				package_manager.set_max_steps(200)
-				if not is_master:
+				if is_master:
+					hosts = self.find_all_hosts(is_master=True)
+					if len(hosts):
+						# real installation is 50%
+						#   if there are any backups. otherwise use 100%
+						package_manager.set_max_steps(200)
+				else:
+					# real installation is 50%
+					package_manager.set_max_steps(200)
 					# already have installed 50%
 					package_manager.progress_state._start_steps = 100 # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
 
@@ -871,7 +882,7 @@ class Application(object):
 				if username is None or dont_remote_install:
 					MODULE.warn('Not connecting to DC Backups. Has to be done manually')
 				else:
-					self.install_master_packages_on_hosts(package_manager, remote_function, username, password, is_master=True)
+					self.install_master_packages_on_hosts(package_manager, remote_function, username, password, is_master=True, hosts=hosts)
 
 			# successful installation
 			status = 200

@@ -326,8 +326,8 @@ define([
 					}));
 					txt += "</table>\n";
 					var buttons = [];
-					if (!app.allows_using && this._udm_accessible && (app.can_install || app.can_update)) {
-						var label = app.can_install ? _('Install') : _('Upgrade'); // call it Install/Upgrade, although it is request
+					if (!app.allows_using && this._udm_accessible) {
+						var label = app.can_update ? _('Upgrade') : _('Install'); // call it Install/Upgrade, although it is request
 						buttons.push({
 							name: 'request',
 							label: label,
@@ -1043,7 +1043,7 @@ define([
 			// Convert string to a array of numbers
 			var _stringToArray = function(obj) {
 				return array.map(obj.split(/\D/), function(item) {
-					return parseInt(item);
+					return parseInt(item, 10);
 				});
 			};
 
