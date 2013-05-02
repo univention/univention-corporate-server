@@ -1,3 +1,14 @@
+ucs-test (3.0.39-1) unstable; urgency=low
+
+  * Set homedir/mount=false when 51_samba4/35smbclient_auth is running (Bug #26807)  
+  * Changed distribution for similar tests in samba and samba4 - 
+    10samba-share-options (Bug #28341)
+  * Changed distribution for similar tests in samba and samba4 -
+  	15nfs-share-options (Bug #28342)
+
+
+ -- Tobias Peters <peters@univention.de>  Thu, 02 May 2013 16:32:44 +0200
+
 ucs-test (3.0.38-3) unstable; urgency=low
 
   * Added a dependency to python-pexpect for samba test packages

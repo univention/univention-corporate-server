@@ -70,7 +70,12 @@ def create_user(username, password):
 				"--position", "cn=users,%(ldap/base)s" % ucr,])
 	return udm.wait() == 0
 
-def cleanup(username):
+def cleanup(username,homedir_mount):
+	if homedir_mount == "None":
+                univention.config_registry.handler_unset(['homedir/mount'])
+	else:
+                univention.config_registry.handler_set(['homedir/mount=%s' % homedir_mount])
+
 	udm = subprocess.Popen(["univention-directory-manager",
 				"users/user", "remove",
 				"--dn", "uid=%s,cn=users,%s" % (username, ucr["ldap/base"],)])
@@ -126,7 +131,11 @@ if __name__ == "__main__":
 	if not create_user(username, password):
 		print 'Could not create user "%s" with password "%s"' % (username, password,)
 		sys.exit(120) # Transient error
-	atexit.register(cleanup, username)
+
+	homedir_mount = "%s" % (ucr["homedir/mount"])
+	univention.config_registry.handler_set(['homedir/mount=false'])
+
+	atexit.register(cleanup, username, homedir_mount)
 
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()
 	innerDelay=calculateInnerDelay(roundTime,amountPerRound)

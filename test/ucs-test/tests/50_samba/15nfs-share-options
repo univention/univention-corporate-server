@@ -4,7 +4,7 @@
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
-##  - univention-samba
+##  - univention-samba | univention-samba4
 ## roles-not: [basesystem]
 ## tags: [basic]
 ## join: true
