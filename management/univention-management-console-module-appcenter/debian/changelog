@@ -1,3 +1,12 @@
+univention-management-console-module-appcenter (2.0.139-7) unstable; urgency=low
+
+  * Bug #31166: Show button to request new license even when app cannot be
+    installed.
+  * Bug #31184: Use the full progressbar when not installing packages on other
+    servers in the domain.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 02 May 2013 12:46:07 +0200
+
 univention-management-console-module-appcenter (2.0.139-6) unstable; urgency=low
 
   * Adapt changes from version 2.0.139-5 (Bug #30796)
