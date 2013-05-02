@@ -146,6 +146,7 @@ Package: ucs-test-samba
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
+ python-pexpect,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for samba (and NFS shares)
@@ -156,6 +157,7 @@ Package: ucs-test-samba4
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
+ python-pexpect,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for samba4 (and NFS shares)

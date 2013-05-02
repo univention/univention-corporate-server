@@ -1,3 +1,10 @@
+ucs-test (3.0.38-3) unstable; urgency=low
+
+  * Added a dependency to python-pexpect for samba test packages
+    (Bug #29058)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 02 May 2013 07:46:33 +0200
+
 ucs-test (3.0.38-2) unstable; urgency=low
 
   * 50quota: use binddn and bindpwd to support tests on memberserver and
