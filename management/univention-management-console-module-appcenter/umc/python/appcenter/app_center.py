@@ -493,7 +493,7 @@ class Application(object):
 		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
 		cannot_install_reason = res['cannot_install_reason']
 
-		res['can_install'] = False and cannot_install_reason is None
+		res['can_install'] = cannot_install_reason is None
 		res['is_installed'] = res['can_uninstall'] = cannot_install_reason == 'installed'
 		res['cannot_update_reason'], res['cannot_update_reason_detail'] = self.cannot_update_reason(package_manager)
 		res['can_update'] = res['cannot_update_reason'] is None # faster than self.can_be_updated()
@@ -607,7 +607,9 @@ class Application(object):
 		MODULE.info('Invoke install_dry_run')
 		ucr.load()
 		server_role = ucr.get('server/role')
+		is_install = True
 		if function.startswith('update'):
+			is_install = False
 			remote_function = 'update-schema'
 		else:
 			remote_function = 'install-schema'
@@ -692,9 +694,10 @@ class Application(object):
 
 			# determine the changes
 			# also check for changes from dist-upgrade (as it will
-			#   be performed when installing).
+			#   be performed when upgrading - NOT when installing!).
 			#   dry_run will throw away changes marked by upgrade
-			package_manager.cache.upgrade(dist_upgrade=True)
+			if not is_install:
+				package_manager.cache.upgrade(dist_upgrade=True)
 			package_changes = package_manager.mark(to_install, [], dry_run=True)
 			result.update(dict(zip(['install', 'remove', 'broken'], package_changes)))
 
@@ -819,10 +822,12 @@ class Application(object):
 		raised_before_installed = True
 		try:
 			remote_function = send_as
+			is_install = True
+			if remote_function.startswith('update'):
+				is_install = False
+				remote_function = 'update'
 			if remote_function.startswith('install'):
 				remote_function = 'install'
-			if remote_function.startswith('update'):
-				remote_function = 'update'
  			ucr.load()
  			is_master = ucr.get('server/role') == 'domaincontroller_master'
  			is_backup = ucr.get('server/role') == 'domaincontroller_backup'
@@ -870,9 +875,9 @@ class Application(object):
 				component_manager.put_app(self)
 				package_manager.update()
 
-			# install + dist_upgrade
+			# install + (dist_upgrade if update)
 			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
-			package_manager.commit(install=to_install, dist_upgrade=True)
+			package_manager.commit(install=to_install, dist_upgrade=not is_install)
 			self.update_conffiles()
 
 			# from now on better dont remove component

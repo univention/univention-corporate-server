@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.139-8) unstable; urgency=low
+
+  * Bug #31129: If an application is installed, do not dist-upgrade. If it is
+    upgraded, show a warning that the dist-upgrade may include errata updates.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 03 May 2013 14:26:59 +0200
+
 univention-management-console-module-appcenter (2.0.139-7) unstable; urgency=low
 
   * Bug #31166: Show button to request new license even when app cannot be
