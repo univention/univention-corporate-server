@@ -1,7 +1,8 @@
-univention-updater (8.0.78-4) unstable; urgency=low
+univention-updater (8.0.78-5) unstable; urgency=low
 
   * Bug #31278: univention-add-app --all or --master do a dist-upgrade only if
     the app is upgraded.
+  * Fixed --all or --master when pointing to an outdated app (Bug #31279)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 03 May 2013 15:17:56 +0200
 
