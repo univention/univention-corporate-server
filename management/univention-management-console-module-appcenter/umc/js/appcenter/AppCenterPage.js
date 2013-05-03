@@ -530,6 +530,12 @@ define([
 							no_host_info = false;
 							return false;
 						}));
+						if (func == 'update') {
+							container.addChild(new Text({
+								content: _('These changes contain <strong>all package upgrades available</strong> and thus may <strong>include errata updates</strong>. If this is not intended, the corresponding components have to be temporarily deactivated first using the tab "%s" above.', _('Repository Settings')),
+								style: {paddingBottom: '.25em'}
+							}));
+						}
 						container.addChild(this._package_changes(result.install, result.remove, result.broken, false, no_host_info, _('this server')));
 						tools.forIn(result.hosts_info, lang.hitch(this, function(host, host_info) {
 							container.addChild(this._package_changes(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host));
