@@ -1,0 +1,414 @@
+<chapter>
+  <title>Heterogenous enterprise environment in an insurance company</title>
+  <section>
+	<title>Initial situation</title>
+	<para>
+	  <emphasis>Hanseatische Marineversicherung</emphasis> (HMV) is an insurance company with
+	  1800 employees specialised in the logistics sector. HMV is a subsidiary
+	  of the Vigil Insurances parent company.
+	</para>
+
+	<para>
+	  The parent company operates an independent directory service based on
+	  Microsoft Active Directory, but the user data of the individual
+	  subsidiaries is managed internally.
+	</para>
+
+	<para>
+	  The employees work at a total of 36 locations across the world with
+	  the largest being the company headquarter in Bremen with approximately
+	  250 persons. Many of the users work on the move with laptops as
+	  salespersons or estimators.
+	</para>
+
+	<para>
+	  Microsoft Windows 7 is used on all the desktops. Software distribution
+	  and the installation of security updates are centralised.
+	</para>
+
+	<para>
+	  Citrix XenApp needs to be employed in the headquarters because of a
+	  superordinate group policy: users should access the terminal services
+	  with thin clients.
+	</para>
+
+	<para>
+	  The groupware Microsoft Exchange is provided centrally by the parent
+	  company.
+	</para>
+
+	<para>
+	  All users, computers and services should be centrally
+	  administrable. Critical system status should be reported promptly per
+	  e-mail and SMS.
+	</para>
+
+	<para>
+	  All server systems in the headquarters should be virtualized. The
+	  resulting considerable significance of virtualization requires the
+	  implementation of an open source solution.
+	</para>
+
+	<para>
+	  Data backup is performed centrally in Bremen.
+	</para>
+
+	<para>
+	  Different international compliance requirements from the insurance
+	  sector must be satisfied.
+	</para>
+  </section>
+
+  <section>
+	<title>Implementation</title>
+	<para>
+	  The company implements an infrastructure composed of a &ucsMaster;
+	  (DC master), a &ucsBackup; (DC backup), several UCS &ucsSlave; (DC
+	  slaves) and 150 thin clients.
+	</para>
+
+	<para>
+	  The DC master is the centrepiece of the UCS domain. The central,
+	  writeable LDAP directory is provided on this system.
+	</para>
+
+	<para>
+	  The DC backup also largely represents a copy of the DC master. In this
+	  way, the important services are available doubled on the network, the
+	  availability of the services is thus further increased and the load is
+	  distributed between the domain controllers.
+	</para>
+
+	<para>
+	  If the DC master fails as a result of a hardware defect, the DC backup
+	  can be converted to the DC Master in a very short time.
+	</para>
+
+	<para>
+	  <figure id="versicherung-gesamt">
+		<title>General overview (excluded: storage, DNS, DHCP, print services, virtualization, backup)</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/versicherung_en.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  The DC master and DC backup are both installed at the company headquarters.
+	  The locations also contain additional &ucsSlave; systems, which
+	  provide Windows domain services, print services and software distribution.
+	</para>
+
+	<para>
+	  <figure id="versicherung-standort">
+		<title>Structure of a location</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/versicherung-standort_en.png"/>
+	  </figure>
+	</para>
+  </section>
+
+  <section>
+	<title>Virtualization</title>
+	<para>
+	  All server systems in the HMV environment are virtualized with
+	  &ucsUVMM; (UVMM). Only open source software is used.
+	</para>
+
+	<para>
+	  <figure id="uvmm2">
+		<title>Managing virtual machines with UVMM</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/uvmm_en.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  Virtualization servers based on UCS member servers (server installations
+	  without a local LDAP server) form the basis for the
+	  virtualization. Each of these hosts one or more virtual machines with
+	  the Xen virtualization solution. UCS and Windows systems are operated
+	  paravirtualized, i.e., the direct access of the virtualized systems to the
+	  hosts' resources results in better performance.
+	</para>
+
+	<para>
+	  All virtual machines can be created and managed conveniently over the
+	  web-based &ucsUVMM;. If maintenance work is necessary on a
+	  virtualization server, the virtual machines running on this system can
+	  be migrated to another server while still running.
+	</para>
+
+	<para>
+	  The access to the virtual machines is abstracted via a library, so
+	  that the virtualization solution KVM can also be used alongside Xen.
+	</para>
+  </section>
+
+  <section>
+	<title>Software distribution of UCS systems</title>
+	<para>
+	  Installation profiles have been created for the UCS domain
+	  controllers. These profiles can be used to roll out new systems with
+	  the Univention Net Installer using PXE or, as required, to restore
+	  systems after hardware failure. The installation concludes without
+	  further user interaction.
+	</para>
+
+	<para>
+	  A central package installation source - the repository - is
+	  established on a server in the headquarters for the installation of
+	  release updates and the subsequent installation of software
+	  packages. All installable software packages and updates are provided
+	  there.
+	</para>
+
+	<para>
+	  Policies in the &ucsUMC; can be used to control the software
+	  distribution centrally. The updates can be installed or software
+	  packages can be subsequently installed at a freely selectable time or
+	  when shutting down / starting up the system.
+	</para>
+
+	<para>
+	  All systems record the installed packages in a central SQL database
+	  automatically so that an overview of the software inventory is always
+	  available. Security updates for UCS are promptly provided to download
+	  and can also be installed automatically.
+	</para>
+  </section>
+
+  <section>
+	<title>Connecting Windows clients and Windows software deployment</title>
+	<para>
+	  Samba 4 is used in the HMV for the integration of Microsoft Windows
+	  clients. Samba 4 offers domain, directory and authentication services
+	  which are compatible with Microsoft Active Directory. These also allow
+	  the use of the tools provided by Microsoft for the management of group
+	  policies (GPOs).
+	</para>
+
+	<para>
+	  Windows clients can join the Active Directory-compatible domains
+	  provided by UCS directly and can be centrally configured via group
+	  policies. From the client point of view, the domain join procedure is
+	  identical to joining a Windows-based domain.
+	</para>
+
+	<para>
+	  The Open Source software distribution opsi runs on the Windows
+	  clients. It allows an extensively automated distribution of security
+	  updates and Windows updates as well as the rollout of software
+	  packages to the Windows clients. The configuration of opsi integrates
+	  itself into the UCS management system with OPSI4UCS.
+	</para>
+
+	<para>
+	  opsi is also used for the rollout of new Windows systems. These are
+	  automatically installed via PXE.
+	</para>
+  </section>
+
+  <section>
+	<title>Active Directory synchronisation</title>
+	<para>
+	  The Univention Active Directory connector (AD connector for short)
+	  makes it possible to synchronise directory service objects between a
+	  Microsoft Windows 2000/2003/2008/2012 server with Microsoft Active
+	  Directory (AD) and an Open Source LDAP directory service in &ucsUCS;.
+	</para>
+
+	<para>
+	  The synchronisation settings can be specified individually. The
+	  administrator thus has the possibility of controlling the
+	  synchronisation precisely and only synchronising selected objects and
+	  attributes.
+	</para>
+
+	<para>
+	  The UCS directory service synchronises with the Microsoft Active
+	  Directory of the parent company. The replication encompasses
+	  all the containers, organisational units, users and groups. Users have
+	  a special position since the password cannot be queried via the
+	  LDAP protocol in Microsoft Active Directory. A system service is
+	  installed on the Windows server for this purpose, which enables
+	  password synchronisation.
+	</para>
+
+	<para>
+	  The computer accounts are not synchronised, as Windows computers can
+	  only be joined in one domain. All Windows clients are joined in the UCS
+	  Samba 4 domain.
+	</para>
+  </section>
+
+  <section>
+	<title>Groupware</title>
+	<para>
+	  The groupware is provided in the form of Exchange Server
+	  2010 by the parent company Vigil Insurances, allowing the users to
+	  access it using Outlook 2010 and Outlook WebAccess.
+	</para>
+
+	<para>
+	  The integration of the UCS directory service and the Active Directory
+	  of the parent company allows authentication with the same user name /
+	  password.
+	</para>
+
+	<para>
+	  Users can access the services of both environments in a transparent
+	  way, as the same user settings apply in both domains. For example, a
+	  user can log into both the UCS directory service on his laptop and
+	  the Citrix Server in the Microsoft Active Directory with the same user
+	  name and password.
+	</para>
+  </section>
+
+  <section>
+	<title>Compliance requirements</title>
+	<para>
+	  HMV must satisfy a range of insurance industry compliance
+	  requirements.
+	</para>
+
+	  <itemizedlist>
+		<listitem>
+		  <simpara>All LDAP write accesses must be verifiable. This is
+		  done by means of the Univention Directory Logger. This
+		  transcribes each LDAP change in a secure transaction log
+		  file, which is protocolled audit-compliantly with
+		  checksums.</simpara></listitem>
+
+		<listitem><simpara>The user data must be available immediately
+		for external audit purposes. To do so, Univention Directory
+		Reports can be used to create a PDF document or a CSV file of
+		all or some users and groups from the
+		&ucsUMC;.</simpara></listitem>
+
+		<listitem><simpara>Quality standards must be established for
+		passwords. In UCS, for example, one can set a minimum number
+		of lowercase and uppercase characters, symbols or figures for
+		passwords. In addition, passwords can be compared against a
+		list of unsafe passwords (e.g.,
+		<emphasis>secret</emphasis>).</simpara></listitem>
+	  </itemizedlist>
+  </section>
+
+  <section>
+	<title>System monitoring with Nagios</title>
+	<para>
+	  UCS integrates the system monitoring software Nagios, which allows the
+	  monitoring of complex IT structures from networks, computers and
+	  services. Nagios includes a comprehensive range of monitoring modules,
+	  which can also be expanded if necessary.
+	</para>
+
+	<para>
+	  The Nagios configuration is predominantly performed in the &ucsUMC;.
+	</para>
+
+	<para>
+	  A web-based interface can be used to check the status of the monitored
+	  objects. In addition, Nagios is configured in such a way that the
+	  administrators receive e-mails when errors occur. SMS messages are
+	  sent for serious errors.
+	</para>
+
+	<para>
+	  <figure id="nagios">
+		<title>System monitoring of a server</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/nagios_en.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  Nagios checks can be chronologically limited so that non-critical
+	  values don't trigger logging messages during the night, for example.
+	</para>
+  </section>
+
+  <section>
+	<title>Integration of the AIX system</title>
+	<para>
+	  The insurance policies are administrated with an application which can
+	  only be operated on highly available POWER7 systems using IBM AIX.
+	</para>
+
+	<para>
+	  In the past, all users working on the system were maintained doubly in
+	  the local user database of the AIX system. Now only the secldapclntd
+	  service runs on the AIX system; it performs all the authentication
+	  processes against the UCS LDAP directory.
+	</para>
+  </section>
+
+  <section>
+	<title>Citrix terminal services</title>
+	<para>
+	  In the headquarters 150 users work with terminal services based on
+	  Citrix XenApp 6.0. The XenApp terminal server runs on a Windows member server,
+	  which joined the local Samba 4 domain.
+	</para>
+
+	<para>
+	  Access to the Citrix server is performed via thin clients, which are
+	  operated with Univention Corporate Client (UCC): the thin clients are
+	  registered and configured in the UCS management system (for example, the
+	  IP address can be assigned centrally per DHCP or the monitor
+	  resolution can be centrally specified). The terminal services used by
+	  the users are configured user-specifically; the configuration is
+	  performed via the user administration of the &ucsUMC;.
+	</para>
+  </section>
+
+  <section>
+	<title>Backup</title>
+	<para>
+	  SEP sesam is used for file backup. It offers a distributed backup
+	  concept with different backup agents, which backup both complete
+	  systems and data. Special backup agents are available for the backup of
+	  databases. All data are copied from the standard servers in the
+	  headquarters and from there saved on tape media. The installation can be performed with a few clicks
+	  using the App Center.
+	</para>
+
+	<para>
+	  Distributed replicated block device (DRBD) is used for the mirroring
+	  of hard drive partitions and other block devices via the network
+	  between two servers. In doing so, all local write accesses are
+	  additionally transferred to the second server via the
+	  network. Depending on the configuration you have the possibility to
+	  consider the write access to the hard drive as successful only once
+	  this has been run successfully on both the local server and the second
+	  server. In this way both servers have an identical copy of a hard
+	  drive partition at all times.
+	</para>
+  </section>
+
+  <section>
+	<title>Integration of SugarCRM</title>
+	<para>
+	  SugarCRM 6.5 is employed as the CRM solution for sales personnel. The
+	  administration of the SugarCRM users and roles integrates directly in
+	  the &ucsUMC;. The installation can be performed with a few clicks
+	  using the Univention App Center.
+	</para>
+
+	<para>
+	  The installation is operated as a &ucsSlave; system on the Amazon EC2
+	  cloud. This ensures high availability and allows flexible scaling to
+	  growing performance and storage requirements.
+	</para>
+  </section>
+
+  <section>
+	<title>References</title>
+	  <itemizedlist>
+		<listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>
+		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=UVMM_Quickstart"/></simpara></listitem>
+		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=Opsi_%28open_pc_server_integration%29"/> (currently only available in German)</simpara></listitem>
+		<listitem><simpara><ulink url="http://docs.univention.de/ucc-manual-1.0.html"/> (Univention Corporate Client manual)</simpara></listitem>
+		<listitem><simpara><ulink url="http://docs.univention.de/installation.html"/> (Extended installation documentation)</simpara></listitem>
+		<listitem><simpara><ulink url="http://www.univention.de/en/products/ucs/app-catalogue/app/details/drbd"/> (DRBD)</simpara></listitem>
+		<listitem><simpara><ulink url="http://www.univention.de/en/products/ucs/app-catalogue/app/details/sep-sesam"/> (SEP sesam Backup)</simpara></listitem>
+		<listitem><simpara><ulink url="http://www.univention.de/en/products/ucs/app-catalogue/app/details/sugarcrm"/> (SugarCRM)</simpara></listitem>
+	  </itemizedlist>
+  </section>
+</chapter>

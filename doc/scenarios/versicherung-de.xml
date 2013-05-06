@@ -1,0 +1,426 @@
+<chapter>
+  <title>Heterogene Großumgebung im Konzernverbund</title>
+  <section>
+	<title>Ausgangslage</title>
+	<para>
+	  Die Hanseatische Marineversicherung (HMV) ist ein auf den Logistikbereich
+	  spezialisierter Versicherungsdienstleister mit 1800 Mitarbeitern. Die
+	  HMV ist ein Bestandteil der Konzernmutter Vigil Insurances.
+	</para>
+
+	<para>
+	  Die Konzernmutter betreibt einen eigenständigen Verzeichnisdienst auf
+	  Basis von Microsoft Active Directory, die Pflege der Benutzerdaten der einzelnen
+	  Tochterfirmen erfolgt jedoch autark.
+	</para>
+
+	<para>
+	  Die Mitarbeiter arbeiten an insgesamt 36 Standorten weltweit, der
+	  grösste davon der Stammsitz in Bremen mit ca. 250 Personen. Viele der
+	  Benutzer arbeiten als Vertreter oder Gutachter mobil mit Notebooks.
+	</para>
+
+	<para>
+	  Auf den Desktops kommt durchgehend Microsoft Windows 7 zum Einsatz. Die
+	  Softwareverteilung und Installation von Sicherheitsupdates erfolgt
+	  zentralisiert.
+	</para>
+
+	<para>
+	  In der Zentrale soll aufgrund einer übergeordneten Konzernrichtlinie
+	  Citrix XenApp eingesetzt werden, die Benutzer greifen dann mit Thin
+	  Clients darauf zu.
+	</para>
+
+	<para>
+	  Die Groupware wird durch Microsoft Exchange zentral von der
+	  Konzernmutter bereitgestellt.
+	</para>
+
+	<para>
+	  Alle Benutzer, Rechner und Dienste sollen zentral verwaltbar sein.
+	  Kritische Systemzustände sollen zeitnah per E-Mail und SMS gemeldet
+	  werden.
+	</para>
+
+	<para>
+	  Alle Serversysteme in der Zentrale sollen virtualisiert
+	  werden. Aufgrund der daraus erwachsenden erheblichen Bedeutung der
+	  Virtualisierung muss dafür eine Open Source-Lösung zum Einsatz kommen.
+	</para>
+
+	<para>
+	  Die Datensicherung erfolgt zentral in Bremen.
+	</para>
+
+	<para>
+	  Verschiedene internationale Compliance-Anforderungen aus dem
+	  Versicherungssektor müssen erfüllt werden.
+	</para>
+
+	<para>
+	  Eine Spezialapplikation für die Versicherungswirtschaft wird auf einem
+	  POWER7-System mit IBM AIX betrieben. Die Benutzer auf diesem System sollen
+	  nicht doppelt gepflegt werden.
+	</para>
+  </section>
+
+  <section>
+	<title>Umsetzung</title>
+	<para>
+	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem
+	  &ucsMaster; (DC Master), einem &ucsBackup; (DC Backup),
+	  mehreren &ucsSlave; (DC Slave) mit Univention Corporate Server (UCS) und 150 Thin Clients.
+	</para>
+
+	<para>
+	  Der DC Master ist das Kernstück der UCS-Domäne. Auf diesem System wird
+	  der zentrale, schreibbare LDAP-Verzeichnisdienst vorgehalten.
+	</para>
+
+	<para>
+	  <figure id="versicherung-gesamt">
+		<title>Gesamtüberblick (nicht im Bild: Storage, DNS, DHCP, Druckdienste, Virtualisierung, Backup)</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/versicherung.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  Der DC Backup stellt weitgehend eine Kopie des DC Master dar. Dadurch
+	  sind alle wichtigen Dienste doppelt im Netzwerk vorhanden, die
+	  Verfügbarkeit der Dienste wird also weiter erhöht und die Last zwischen den
+	  Domänencontrollern verteilt.
+	</para>
+
+	<para>
+	  Sollte der DC Master durch einen Hardware-Defekt ausfallen, kann der
+	  DC Backup innerhalb kürzester Zeit zum DC Master umgewandelt werden.
+	</para>
+
+	<para>
+	  Der DC Master und der DC Backup stehen in der Firmenzentrale.
+	  An den Standorten finden sich weitere &ucsSlave;-Systeme,
+	  die Windows-Domänendienste, Druckdienste und eine Softwareverteilung
+	  bereitstellen.
+	</para>
+
+	<para>
+	  <figure id="versicherung-standort">
+		<title>Aufbau eines Standort-Servers</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/versicherung-standort.png"/>
+	  </figure>
+	</para>
+  </section>
+
+  <section>
+	<title>Virtualisierung</title>
+	<para>
+	  Alle Serversysteme in der Umgebung der HMV sind mit &ucsUVMM; (UVMM)
+	  virtualisiert. Zum Einsatz kommt dabei ausschliesslich Open
+	  Source-Software.
+	</para>
+
+	<para>
+	  <figure id="uvmm2">
+		<title>Verwaltung virtueller Maschinen mit UVMM</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/uvmm_de.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  Als Grundlage der Virtualisierung dienen
+	  Virtualisierungsserver auf UCS-Memberservern (Serversysteme
+	  ohne lokalen Verzeichnisdienst). Auf diesen laufen jeweils ein bis mehrere
+	  virtuelle Maschinen mit der Virtualisierungslösung Xen. UCS- und
+	  Windows-Systeme werden paravirtualisiert betrieben, d.h. durch einen
+	  Zugriff der virtualisierten Systeme auf die Ressourcen der Wirtsysteme
+	  kann ein höherer Durchsatz erzielt werden.
+	</para>
+
+	<para>
+	  Alle virtuellen Maschinen können über den webbasierten &ucsUVMM;
+	  komfortabel angelegt und verwaltet
+	  werden. Werden Wartungsarbeiten an einem Virtualisierungsserver
+	  nötig, so können die auf diesem System laufenden virtuellen Maschinen im
+	  laufenden Betrieb auf einen anderen Server migriert werden.
+	</para>
+
+	<para>
+	  Der Zugriff auf die virtuellen Maschinen wird durch eine Bibliothek abstrahiert,
+	  so dass alternativ zu Xen auch die Virtualisierungslösung KVM eingesetzt werden
+	  kann.
+	</para>
+  </section>
+
+  <section>
+	<title>Software-Verteilung der UCS-Systeme</title>
+	<para>
+	  Für die UCS-Domänencontroller wurden Installationsprofile
+	  erstellt. Mit diesen Profilen können mit dem Univention Net Installer PXE-basiert
+	  neue Systeme ausgerollt werden oder ggf. Systeme nach einem
+	  Hardwareausfall wieder hergestellt werden. Die Installation läuft
+	  dabei ohne weitere Benutzerinteraktion ab.
+	</para>
+
+	<para>
+	  Für die Installation von Release-Updates und die Nachinstallation von Software-Paketen wird auf einem
+	  Server in der Zentrale eine zentrale Paket-Installationsquelle - das
+	  Repository - eingerichtet. Alle installierbaren Software-Pakete und
+	  -Updates werden dort vorgehalten.
+	</para>
+
+	<para>
+	  Durch Richtlinien in der &ucsUMC; kann die Softwareverteilung zentral
+	  gesteuert werden. Zu einem frei wählbaren Zeitpunkt oder beim
+	  Herunterfahren/Starten des Systems werden dann Updates eingespielt
+	  oder Software-Pakete nachinstalliert.
+	</para>
+
+	<para>
+	  Alle Systeme tragen die installierten Pakete automatisch in eine
+	  zentrale SQL-Datenbank ein, so dass ein Überblick über den
+	  Softwarebestand stets gewährleistet ist. Sicherheitsupdates für UCS
+	  werden zeitnah zum Download bereitgestellt und können ebenfalls
+	  automatisiert eingespielt werden.
+	</para>
+  </section>
+
+  <section>
+	<title>Anbindung von Windows-Clients und Software-Verteilung</title>
+	<para>
+	  In der HMV wird Samba 4 für die Anbindung der Windows-Clients
+	  eingesetzt. Samba 4 bietet Domänen-, Verzeichnis- und
+	  Authentifizierungsdienste, die kompatibel zu Microsoft Active
+	  Directory sind. Diese ermöglichen auch die Verwendung der von
+	  Microsoft bereit gestellten Werkzeuge für die Verwaltung von
+	  Gruppenrichtlinien (GPOs).
+	</para>
+
+	<para>
+	  Windows-Clients können direkt der durch UCS bereitgestellten Active
+	  Directory-kompatiblen Domäne beitreten und über
+	  Gruppenrichtlinien zentral konfiguriert werden. Der Domänen-Join ist
+	  aus Client-Sicht identisch mit dem Beitritt zu einer Windows-basierten
+	  Domäne.
+	</para>
+
+	<para>
+	  Auf den Windows-Clients läuft die Open Source-Softwareverteilung
+	  opsi. Sie ermöglicht auf den Windows-Clients eine weitgehend
+	  automatisierte Verteilung von Sicherheitsupdates und Windows-Updates
+	  sowie den Rollout von Software-Paketen. Die Konfiguration von opsi
+	  integriert sich durch opsi4UCS in das UCS-Managementsystem.
+	</para>
+
+	<para>
+	  OPSI wird auch für den Rollout neuer Windows-Systeme verwendet. Diese
+	  werden über PXE automatisch installiert.
+	</para>
+  </section>
+
+  <section>
+	<title>Active Directory-Anbindung</title>
+	<para>
+	  Der UCS Active Directory Connector (kurz AD Connector)
+	  ermöglicht eine Synchronisation von Verzeichnisdienstobjekten zwischen
+	  einem Microsoft Windows 2000/2003/2008/2012 Server mit Microsoft Active Directory (AD) und dem
+	  OpenLDAP-Verzeichnisdienst in &ucsUCS;.
+	</para>
+
+	<para>
+	  Die Synchronisationseinstellungen können individuell festgelegt
+	  werden. Der Administrator erhält dadurch die Möglichkeit, die
+	  Synchronisation exakt zu steuern und nur ausgewählte Objekte und
+	  Attribute abzugleichen.
+	</para>
+
+	<para>
+	  Der UCS-Verzeichnisdienst synchronisiert sich mit dem Microsoft Active
+	  Directory-Verzeichnis des Mutterkonzerns. Die Replikation umfasst alle
+	  Container, Organisationseinheiten, Benutzer und Gruppen. Die Benutzer
+	  nehmen eine Sonderstellung ein, da das Passwort im Microsoft Active
+	  Directory nicht über LDAP abgefragt werden kann. Hierfür
+	  wird ein zusätzlicher Dienst auf dem Microsoft Windows-Server installiert, der
+	  diese Passwortsynchronisation ermöglicht.
+	</para>
+
+	<para>
+	  Die Rechnerkonten werden nicht synchronisiert, da Windows-Rechner nur
+	  in eine Domäne eingebunden sein können. Alle Windows-Clients sind in die
+	  UCS-Samba-4-Domäne gejoint.
+	</para>
+  </section>
+
+  <section>
+	<title>Groupware</title>
+	<para>
+	  Die Groupware wird in Form von Exchange Server 2010 komplett durch
+	  die Konzernmutter Vigil Insurances bereitgestellt, auf das die
+	  Benutzer mit Outlook 2010 und Outlook WebAccess zugreifen.
+	</para>
+
+	<para>
+	  Durch die Anbindung des UCS-Verzeichnisdienstes and das Active
+	  Directory der Konzernmutter erfolgt die Authentifizierung mit der
+	  gleichen Benutzernamen/Passwort-Kombination.
+	</para>
+
+	<para>
+	  Da in beiden Domänen die gleichen Benutzereinstellungen greifen,
+	  können Benutzer transparent auf Dienste beider Umgebungen
+	  zugreifen. So kann etwa ein Benutzer sich sowohl an seinem Notebook am
+	  UCS-Verzeichnisdienst als auch am Citrix-Server im Microsoft Active Directory
+	  mit dem selben Benutzernamen und Kennwort anmelden.
+	</para>
+  </section>
+
+  <section>
+	<title>Compliance-Anforderungen</title>
+	<para>
+	  Die HMV muss eine Reihe von Compliance-Anforderungen im
+	  Versicherungswesen erfüllen:
+	</para>
+	  <itemizedlist>
+		<listitem><simpara>Alle LDAP-Schreibzugriffe müssen verifizierbar sein. Hierzu wird der
+		Univention Directory Logger eingesetzt. Dieser schreibt jede LDAP-Änderung in eine
+		gesicherte Transaktionslogdatei, die über Prüfsummen revisionssicher protokolliert wird.</simpara>
+		</listitem>
+
+		<listitem><simpara>Die Benutzerdaten müssen zeitnah für eine Betriebsprüfung abrufbar
+		sein. Hierfür kann über Univention Directory Reports aus der &ucsUMC; heraus ein
+		PDF-Dokument oder eine CSV-Datei über alle oder einige Benutzer und Gruppen erstellt
+		werden.</simpara>
+		</listitem>
+
+		<listitem><simpara>Es müssen Qualitätsstandards für Passwörter etabliert werden. In UCS kann
+		für Passwörter beispielsweise eine Mindestanzahl von Klein- und Großbuchstaben,
+		Sonderzeichen oder Ziffern konfiguriert werden. Außerdem können Passwörter gegen Listen
+		unsicherer Passwörter (z.B. ``secret'') abgeglichen werden.</simpara>
+		</listitem>
+
+	  </itemizedlist>
+  </section>
+
+  <section>
+	<title>System-Monitoring mit Nagios</title>
+	<para>
+	  UCS integriert die Systemüberwachungssoftware Nagios, die die Überwachung
+	  komplexer IT-Strukturen aus Netzen, Rechnern und Diensten ermöglicht.
+	  Nagios bringt eine umfassende Sammlung an Überwachungsmodulen mit, die
+	  ggf. auch noch erweitert werden können.
+	</para>
+
+	<para>
+	  Die Konfiguration von Nagios erfolgt weitestgehend in der &ucsUMC;.
+	</para>
+
+	<para>
+	  Über eine webbasierte Oberfläche kann der Zustand der überwachten
+	  Objekte einfach abgefragt werden. Darüber hinaus wird Nagios so
+	  konfiguriert, dass beim Auftreten von Fehlern E-Mails an die
+	  Administratoren verschickt werden. Für gravierende Fehler werden
+	  SMS-Kurznachrichten verschickt.
+	</para>
+
+	<para>
+	  <figure id="nagios">
+		<title>Systemüberwachung auf einem Server</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/nagios.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  Nagios-Prüfungen können zeitlich eingeschränkt werden, so dass
+	  unkritische Werte beispielsweise nachts keine Meldungen auslösen.
+	</para>
+  </section>
+
+  <section>
+	<title>Integration des AIX-Systems</title>
+	<para>
+	  Die Versichungspolicen werden mit einer Applikation verwaltet, die nur
+	  auf hochverfügbaren POWER7-Systemen mit IBM AIX betrieben werden kann.
+	</para>
+
+	<para>
+	  In der Vergangenheit wurden alle Benutzer, die auf dem System arbeiten,
+	  doppelt in der lokalen Benutzerdatenbank des AIX-Systems gepflegt.
+	  Auf dem AIX-System läuft nun der secldapclntd-Dienst, der sämtliche
+	  Authentifizierungsvorgänge gegen das UCS-LDAP-Verzeichnis
+	  durchführt.
+	</para>
+  </section>
+
+  <section>
+	<title>Citrix Terminal Services</title>
+	<para>
+	  In der Zentrale arbeiten 150 Benutzer mit Terminaldiensten auf Basis
+	  von Citrix XenApp 6.0. Der XenApp-Terminalserver läuft auf einem
+	  Microsoft Windows Memberserver, der in die Samba 4-Domäne gejoint ist.
+	</para>
+
+	<para>
+	  Der Zugriff auf die Citrix-Server erfolgt durch Thin Clients, die mit
+	  Univention Corporate Client (UCC) betrieben werden: Die Thin
+	  Clients werden im UCS-Managementsystem angelegt und konfiguriert (die
+	  IP-Adresse kann beispielsweise zentral per DHCP zugewiesen oder
+	  die Bildschirmauflösung zentral vorgegeben werden). Die von den
+	  Benutzern verwendeten Terminaldienste werden benutzerbezogen
+	  konfiguriert; die Konfiguration erfolgt über die Benutzer-Verwaltung
+	  der &ucsUMC;.
+	</para>
+  </section>
+
+  <section>
+	<title>Backup</title>
+	<para>
+	  Für die Datensicherung kommt SEP sesam zum Einsatz. Es bietet ein
+	  verteiltes Sicherungskonzept mit verschiedenen Backup-Agenten, die
+	  sowohl komplette Systeme als auch Daten sichern können. Für die
+	  Sicherung von Datenbanken stehen etwa gesonderte Agenten zur Verfügung.
+	  Alle Daten werden von den Standort-Servern in die Zentrale kopiert und
+	  dort auf Bandmedien gesichert. Die Installation erfolgt mit wenigen Klicks aus dem App Center.
+	</para>
+
+	<para>
+	  Distributed Replicated Block Device (DRBD) wird für die Spiegelung von
+	  Festplatten-Partitionen und anderen Blockgeräten über das Netzwerk zwischen
+	  zwei Servern verwendet. Dabei werden alle lokalen Schreibzugriffe zusätzlich
+	  über das Netzwerk an den zweiten Server übermittelt. Je nach Konfiguration
+	  besteht die Möglichkeiten einen Schreibzugriff auf die Festplatte erst dann
+	  als erfolgreich zu erachten, wenn dieser sowohl auf dem lokalen Server, als
+	  auch auf dem zweiten Server erfolgreich ausgeführt wurde. Somit besitzen beide
+	  Server zu jedem Zeitpunkt eine identische Kopie einer Festplatten-Partition.
+	</para>
+  </section>
+
+  <section>
+	<title>Integration von SugarCRM</title>
+	<para>
+	  Als CRM-Lösung für Vertriebsmitarbeiter wird SugarCRM 6.5
+	  eingesetzt. Die Verwaltung der SugarCRM-Benutzer- und -rollen
+	  integriert sich direkt in die &ucsUMC;. Die Installation erfolgt mit wenigen Klicks aus dem App Center.
+	</para>
+
+	<para>
+	  Die Installation wird als &ucsSlave;-System in der Amazon EC2-Cloud
+	  betrieben. Dies stellt eine hohe Erreichbarkeit sicher und
+	  erlaubt eine flexible Skalierung auf wachsende Leistungs- und
+	  Speicherplatzanforderungen.
+	</para>
+  </section>
+
+  <section>
+	<title>Referenzen</title>
+	  <itemizedlist>
+		<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
+		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=UVMM_Quickstart"/></simpara></listitem>
+		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=Opsi_%28open_pc_server_integration%29"/></simpara></listitem>
+		<listitem><simpara><ulink url="http://docs.univention.de/ucc-manual-1.0.html"/> (Univention Corporate Client-Handbuch)</simpara></listitem>
+		<listitem><simpara><ulink url="http://docs.univention.de/installation.html"/> (Erweiterte Installations-Dokumentation)</simpara></listitem>
+		<listitem><simpara><ulink url="http://www.univention.de/produkte/ucs/app-katalog/app/details/drbd"/> (DRBD)</simpara></listitem>
+		<listitem><simpara><ulink url="http://www.univention.de/produkte/ucs/app-katalog/app/details/sep-sesam"/> (SEP sesam Backup)</simpara></listitem>
+		<listitem><simpara><ulink url="http://www.univention.de/produkte/ucs/app-katalog/app/details/sugarcrm"/> (SugarCRM)</simpara></listitem>
+	  </itemizedlist>
+  </section>
+</chapter>

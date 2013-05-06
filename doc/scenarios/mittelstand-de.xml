@@ -1,0 +1,320 @@
+<chapter>
+  <title>Mittelständische Maschinenbau-Firma</title>
+  <section>
+	<title>Ausgangslage</title>
+	<para>
+	  Gunapa Technologies ist einer der wichtigsten Hersteller für Walzstahlfräsen. Am Firmensitz in
+	  Deutschland arbeiten 260 Mitarbeiter in Produktion, Verwaltung, Konstruktion und
+	  Vertrieb. Außerdem gibt es in den USA, Argentinien und Indien lokale Standorte mit 5-10
+	  Mitarbeitern.
+	</para>
+
+	<para>
+	  Auf dem Desktop kommt überwiegend Linux zum Einsatz. Die Mitarbeiter aus Konstruktion und
+	  Entwicklung sind auf Linux-Software angewiesen und benötigen einen frei konfigurierbaren
+	  Desktop.
+	</para>
+
+	<para>
+	  Für die Mitarbeiter aus der Verwaltung und dem Vertrieb soll nur eine Office-Suite, ein
+	  E-Mail-Client und ein Browser angeboten werden. Der Desktop soll von den Benutzern nicht
+	  ``zerspielt'' werden können.
+	</para>
+
+	<para>
+	  Eine Buchhaltungssoftware, die von einigen Benutzern benötigt wird, ist nur unter Microsoft
+	  Windows verfügbar. Ein Teil der Konstruktion muss mit einer CAD-Software erfolgen, die nur für
+	  Oracle Solaris verfügbar ist.
+	</para>
+
+	<para>
+	  Die Administration der Rechner soll möglichst zentralisiert erfolgen. Während in der Zentrale
+	  zwei EDV-Mitarbeiter arbeiten, ist an den drei externen Standorten kein technisches Personal
+	  verfügbar.
+	</para>
+
+	<para>
+	  Um Arbeitsausfälle durch Störungen zu vermeiden, muss der Großteil der angebotenen Dienste
+	  redundant bereitgestellt werden.
+	</para>
+
+	<para>
+	  Um Energie zu sparen und Wartungskosten zu minimieren, sollen für die Mitarbeiter in
+	  Verwaltung und Vertrieb Thin Clients (festplattenlose Rechner) zum Einsatz kommen. Da keine
+	  lokalen Daten oder Konfigurationen gespeichert werden, kann ein defekter Thin Client
+	  problemlos auch durch nicht-technische Mitarbeiter ersetzt werden.
+	</para>
+
+	<para>
+	  Ein Proxy-Server soll den Netzwerkverkehr in einem Cache zwischenspeichern und Virenschutz
+	  anbieten.
+	</para>
+
+	<para>
+	  Für die Koordination der weltweit verteilten Arbeitsabläufe wird eine Groupwarelösung
+	  benötigt.
+	</para>
+
+	<para>
+	  Alle Nutzdaten werden zentral auf einem Storage Area Network (SAN) gespeichert.
+	</para>
+  </section>
+
+  <section>
+	<title>Umsetzung</title>
+
+	<para>
+	  <figure id="mittelstand">
+		<title>Systemübersicht von Ganupa Technologies am zentralen Standort (die Virtualisierung wird in diesem Schaubild nicht berücksichtigt)</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/mittelstand.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  <figure id="mittelstand-ueberblick">
+		<title>Globaler Systemaufbau von Ganupa Technologies</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/mittelstand-ueberblick.png"/>
+	  </figure>
+	</para>
+  </section>
+
+  <section>
+	<title>Domänencontroller / LDAP-Verzeichnis</title>
+	<para>
+	  Das Unternehmen implementiert eine Infrastruktur bestehend aus einem UCS Domänencontroller
+	  Master (DC Master), einem UCS Domänencontroller Backup (DC Backup), mehreren UCS
+	  Domänencontroller Slave (DC Slave) und Thin Clients.
+	</para>
+
+	<para>
+	  Der DC Master ist das Kernstück der UCS-Domäne. Auf diesem System wird die zentrale
+	  schreibbare Kopie des LDAP-Verzeichnisdienstes vorgehalten.
+	</para>
+
+	<para>
+	  Der DC Backup stellt weitgehend eine Kopie des DC Master dar. Dadurch sind alle wichtigen
+	  Dienste doppelt im Netzwerk vorhanden, die Verfügbarkeit der Dienste wird also weiter erhöht
+	  und die Last zwischen den UCS Domänencontrollern verteilt.
+	</para>
+
+	<para>
+	  Sollte der DC Master durch einen Hardwaredefekt ausfallen, kann der DC Backup innerhalb
+	  kürzester Zeit zu einem DC Master umgewandelt werden.
+	</para>
+
+	<para>
+	  Der DC Master und der DC Backup stehen in der Firmenzentrale. Die beiden UCS-Systeme betreiben
+	  einen LDAP-Server und bieten Anmeldedienste für die Domäne an. Für ein zentrales IP-Management
+	  läuft auf beiden Systemen ein mit Daten aus dem LDAP-Verzeichnis gepflegter und somit
+	  redundanter DNS- und DHCP-Server. Auf dem DC Backup ist ein Druckserver eingerichtet.
+	</para>
+  </section>
+
+  <section>
+	<title>Virtualisierung</title>
+	<para>
+	  Alle Serversysteme in der Umgebung von Ganupa Technologies sind mit &ucsUVMM; (UVMM)
+	  virtualisiert. Zum Einsatz kommt dabei ausschliesslich Open Source-Software.
+	</para>
+
+	<para>
+	  Als Grundlage der Virtualisierung dienen Virtualisierungsserver auf Memberservern
+	  (UCS-Serversysteme ohne lokalen LDAP-Server). Auf diesen laufen jeweils ein bis mehrere
+	  virtuelle Maschinen mit der Virtualisierungslösung KVM. UCS- und Windows-Systeme werden
+	  paravirtualisiert betrieben, d.h. durch einen Zugriff der virtualisierten Systeme auf die
+	  Ressourcen der Wirtsysteme kann ein höherer Durchsatz erzielt werden.
+	  Paravirtualisierungstreiber für Xen und KVM werden von Univention als signierte
+	  MSI-Installationspakete bereitgestellt und können so einfach installiert werden.
+	</para>
+
+	<para>
+	  <figure id="uvmm">
+		<title>Verwaltung virtueller Maschinen mit UVMM</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/uvmm_de.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  Alle virtuellen Maschinen können über den webbasierten &ucsUVMM; komfortabel angelegt und
+	  verwaltet werden. Werden Wartungsarbeiten an einem Virtualisierungsserver nötig, so können die
+	  auf diesem System laufenden virtuellen Maschinen im laufenden Betrieb auf einen anderen Server
+	  migriert werden.
+	</para>
+
+	<para>
+	  Snapshots ermöglichen einen einfachen Rollback von Updates im Fehlerfall.
+	</para>
+
+	<para>
+	  Der Zugriff auf die virtuellen Maschinen wird durch eine Bibliothek abstrahiert, so dass
+	  alternativ zu KVM auch die Virtualisierungslösung Xen eingesetzt werden kann.
+	</para>
+  </section>
+
+  <section>
+	<title>Linux Terminal Services</title>
+	<para>
+	  In der Firmenzentrale sind vier Domänencontroller Slave-Systeme installiert. Sie dienen als
+	  Linux-Terminalserver, auf die mit Thin Clients zugegriffen wird.
+	</para>
+
+	<para>
+	  Die Anwendungen der Benutzer werden auf den Terminalservern ausgeführt, während die Thin
+	  Clients die Anwendungen lediglich darstellen und Benutzereingaben an den Terminalserver
+	  übermitteln. Der Bildschirminhalt wird durch den RDP-Server xrdp bereitgestellt, die
+	  Übertragung erfolgt daher bandbreitenschonend über das Remote Desktop Protocol (RDP).
+	</para>
+
+	<para>
+	  Die Benutzerdaten werden auf dem zentralen SAN gespeichert. Die dafür verwendete Freigabe wird
+	  durch die &ucsUMC; verwaltet.
+	</para>
+
+	<para>
+	  Auf den Linux-Terminalservern kommt der Univention Corporate Client (UCC) mit dem Desktop KDE 4 zum
+	  Einsatz. Alle für den Bürobetrieb wichtigen Anwendungen werden mitgeliefert (Textverarbeitung,
+	  Datenbanken, Präsentationen und Tabellenkalkulation mit LibreOffice, Bildverarbeitung mit
+	  Gimp, Mozilla Firefox als Web-Browser, Mozilla Thunderbird als Groupware- und Mailclient,
+	  Multimedia-Applikationen für das Abspielen von Musik und Videos und zum Brennen von DVDs/CDs).
+	</para>
+
+	<para>
+	  <figure id="ucc">
+		<title>Zentral verwalteter Univention Corporate Client</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/ucc.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  Für verschiedene Benutzergruppen existieren vorkonfigurierte Desktops, in denen je nach
+	  Tätigkeit verschiedene Applikationen vorkonfiguriert sind. So verwendet etwa die Verwaltung
+	  einen Desktop, auf dem nur Mozilla Firefox und LibreOffice eingerichtet sind, während die
+	  technischen Mitarbeiter aus einem breiteren Applikationsumfang schöpfen können.
+	</para>
+  </section>
+
+  <section>
+	<title>Druckdienste</title>
+	<para>
+	  Druckaufträge werden über einen Print-Server an den gewünschten Drucker weiterleitet. Die
+	  Print-Server werden mit CUPS realisiert, das die verschiedenen Drucker in ein zentrales
+	  Spooling einbindet.
+	</para>
+
+	<para>
+	  In einigen Großraumbüros sind mehrere Drucker zu einer Druckergruppe zusammengefasst; die
+	  Benutzer drucken einfach auf diese Gruppe, wobei die Druckaufträge gleichmässig verteilt
+	  werden und der nächste freie Drucker verwendet wird. Die Benutzer müssen so nicht prüfen ob
+	  ein Drucker gerade in Verwendung ist.
+	</para>
+
+	<para>
+	  Außerdem ist jedem Drucker ein Seitenpreis zugeordnet. Dadurch können pro Benutzer die
+	  angefallenen Druckkosten ermittelt werden. Dies kann auch mit einer Limitierung von zu
+	  druckenden Seiten verbunden werden, die aber in der Umgebung nicht zum Einsatz kommt.
+	</para>
+  </section>
+
+  <section>
+	<title>Windows-Terminalserver</title>
+	<para>
+	  Für die Windows-Programme wird durch Samba 4 eine Windows-Domäne realisiert, in die ein
+	  Windows-Terminalserver als Mitgliedsserver eingebunden wird. Auf diesem Server wird die
+	  Buchhaltungssoftware betrieben, die nur unter Microsoft Windows läuft. Diese wird durch einen
+	  RDP-Client nahtlos auf den Linux-Desktops dargestellt.
+	</para>
+
+	<para>
+	  <figure id="windowsts">
+		<title>Integration einer Windows-Applikation in den Univention Desktop Client</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/windows-ts.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  Die Linux- und die Samba 4-Domäne verwenden dieselben Benutzerdaten und Benutzer können von
+	  Linux und Microsoft Windows aus auf ihr Heimatverzeichnis zugreifen.
+	</para>
+  </section>
+
+  <section>
+	<title>Einbindung von Oracle Solaris-Systemen</title>
+	<para>
+	  Eine Fachanwendung für CAD-Konstruktionen ist nur für Oracle Solaris verfügbar. Die
+	  Namensdienste auf dem Solaris-System wurden auf eine Authentifizierung gegen das UCS-LDAP
+	  angepasst, d.h. Benutzer können sich auf dem Solaris-System mit ihrer Domänen-Benutzerkennung
+	  und -Passwort anmelden. Die zusätzliche Pflege lokaler Benutzerkonten auf dem Solaris-System
+	  entfällt so.
+	</para>
+
+	<para>
+	  Das Solaris-System erhält seine IP-Adresse über DHCP von den UCS-DHCP-Servern zugewiesen. Die
+	  Datenspeicherung erfolgt auf den UCS-Fileservern über eine NFS-Freigabe.
+	</para>
+  </section>
+
+  <section>
+	<title>Datenhaltung</title>
+	<para>
+	  Die Speicherung aller Benutzerdaten erfolgt auf einem zentralen SAN-System. Die verschiedenen
+	  Freigaben werden in der &ucsUMC; angelegt und verwaltet. Die Linux- und Solaris-Clients
+	  greifen über das Network Filesystem (NFS) auf die einzelnen Freigaben zu, die Windows-Clients
+	  über das CIFS-Protokoll.
+	</para>
+  </section>
+
+  <section>
+	<title>Groupware</title>
+	<para>
+	  Ganupa Technologies verwendet die Groupwarelösung Open-Xchange Server Edition zur Abstimmung
+	  von Terminen, Kontakten und Aufgaben.
+	</para>
+
+	<para>
+	  Der Groupware-Server wird als &ucsSlave;-System in der Amazon EC2-Cloud betrieben. Dies erlaubt
+	  eine flexible Skalierung des Groupwaresystems auf wachsende Leistungs- und
+	  Speicherplatzanforderungen. Die Installation erfolgt mit wenigen Klicks aus dem App Center.
+	</para>
+
+	<para>
+	  Die Verwaltung der Groupware-relavanten Attribute integriert sich nahtlos in die &ucsUMC;. Die
+	  Mitarbeiter greifen auf die Groupware über den Open-Xchange-Web-Client und Mozilla Thunderbird
+	  zu.
+	</para>
+
+	<para>
+	  Mobile Endgeräte (Smartphones und Tablets) werden über das Microsoft ActiveSync-Protokoll
+	  integriert.
+	</para>
+
+	<para>
+	  Virenerkennung inkl. Signaturen-Updates und Spamfilterung sind ohne weitere Folgekosten
+	  integriert.
+	</para>
+  </section>
+
+  <section>
+	<title>Ausblick</title>
+	<para>
+	  Zu einem späteren Zeitpunkt soll der Internet-Zugriff zentral über einen Web-Proxy kanalisiert
+	  und auf Viren und Malware geprüft werden.
+	</para>
+
+	<para>
+	  UCS bietet hierfür eine Integration des Web-Proxy Squid und des Virenscanners ClamAV.
+	</para>
+
+	<para>
+	  Alternativ kann auch die Anschaffung einer spezialisierten Appliance erwogen werden, die die
+	  Benutzer dann gegen den UCS-LDAP-Server authentifzieren kann.
+	</para>
+  </section>
+
+  <section>
+	<title>Referenzen</title>
+	  <itemizedlist>
+		<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
+		<listitem><simpara><ulink url="http://www.univention.de/produkte/ucs/app-katalog/app/details/oxseforucs"/> (Open-Xchange Server Edition)</simpara></listitem>
+	  </itemizedlist>
+  </section>
+</chapter>

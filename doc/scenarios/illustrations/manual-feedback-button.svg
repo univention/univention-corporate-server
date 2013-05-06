@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- The icon can be used freely in both personal and commercial projects with no attribution required, but always appreciated. 
+You may NOT sub-license, resell, rent, redistribute or otherwise transfer the icon without express written permission from iconmonstr.com -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="368.55927"
+   height="119.80166"
+   viewBox="0 0 368.55927 119.80166"
+   enable-background="new 0 0 512 512"
+   xml:space="preserve"
+   id="svg4223"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="iconmonstr-speech-bubble-14-icon.svg"><metadata
+   id="metadata4230"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs4228" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1557"
+   inkscape:window-height="944"
+   id="namedview4226"
+   showgrid="false"
+   fit-margin-top="10"
+   fit-margin-left="10"
+   fit-margin-bottom="10"
+   fit-margin-right="10"
+   inkscape:zoom="0.2917506"
+   inkscape:cx="413.54535"
+   inkscape:cy="49.586135"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="svg4223" />
+
+<path
+   id="speech-bubble-14-icon"
+   d="m 353.31581,93.329739 c 3.35053,-4.04019 5.24345,-9.24671 5.24345,-14.54949 0,-8.6816 -4.89086,-16.00655 -12.17175,-20.62461 1.03066,-3.21387 1.57456,-6.54789 1.57456,-9.91516 0,-22.21049 -21.5797,-38.2404802 -45.42188,-38.2404802 -23.99238,0 -45.42239,16.1513602 -45.42239,38.2407302 0,7.83512 2.79654,15.52793 7.74723,21.49697 0.20903,6.99502 -3.87029,17.02739 -7.54483,24.33658 9.84819,-1.79614 23.85005,-5.76542 30.1995,-9.69036 3.72626,0.91519 7.34369,1.48394 10.83529,1.74814 4.40162,12.45563 19.74932,21.992121 39.62717,17.110611 4.29771,2.65645 13.77412,5.34267 20.43995,6.55899 -2.48704,-4.94749 -5.24788,-11.737681 -5.1063,-16.471921 z m -66.0534,-18.15385 c -8.51788,4.97433 -16.01444,6.95908 -16.01444,6.95908 0,0 2.53578,-6.83547 3.5918,-14.69891 -5.19542,-5.29564 -8.87612,-10.66611 -8.87612,-19.19533 0,-16.20848 16.40814,-29.39513 36.57654,-29.39513 20.16814,0 36.57653,13.18665 36.57653,29.39513 -2.5e-4,16.77722 -19.28299,35.57246 -51.85431,26.93516 z m 60.67404,25.473381 c 0,0 -4.82018,-1.275911 -10.29678,-4.474271 -16.17771,4.289601 -27.24615,-1.93945 -31.45326,-9.96416 17.3386,-1.00356 30.71954,-9.85163 37.29327,-21.44008 4.817,3.46328 7.85458,8.49448 7.85458,14.08533 0,5.48399 -2.36664,8.93696 -5.70707,12.34213 0.67882,5.05607 2.30926,9.451051 2.30926,9.451051 z"
+   inkscape:connector-curvature="0" />
+
+<g
+   id="g5036"
+   transform="translate(-75.264874,-205.80706)"><text
+     sodipodi:linespacing="125%"
+     id="text4232"
+     y="280.638"
+     x="82.262039"
+     style="font-size:10.07999992px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:Nimbus Sans L"
+     xml:space="preserve"><tspan
+       style="font-size:50px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       y="280.638"
+       x="82.262039"
+       id="tspan4234"
+       sodipodi:role="line">Feedback</tspan></text>
+<path
+     inkscape:connector-curvature="0"
+     id="path4238"
+     d="m 86.764874,286.63456 233.591426,0"
+     style="fill:none;stroke:#000000;stroke-width:2.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" /></g></svg>
