@@ -1,3 +1,12 @@
+ucs-test (3.0.43-1) unstable; urgency=low
+
+  * The function user_create from lib/user.sh now checks whether the
+    mail domain exists or not. If the mail domain for the local domain
+    does not exist the user is created without a mail address
+    (Bug #31296)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 06 May 2013 21:21:36 +0200
+
 ucs-test (3.0.42-1) unstable; urgency=low
 
   * Added a tes case for chainging the server password (Bug #31295)

@@ -7,6 +7,11 @@ user_randomname () { #Generates a random string as username an echoes it. Usage:
 	random_string
 }
 
+mail_domain_exists () {
+	univention-ldapsearch "(&(objectClass=univentionMailDomainname)(cn=$1))" | grep -q "^cn: $1"
+	return $?
+}
+
 user_create () { #Creates a user named like the first argument, supplied to the function.
 	#The Time consumed to create the User is stored in $TIMETOCREATEUSER (in nsecs)
 	# Possible Options are:
@@ -40,7 +45,10 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 	fi
 	if [ -z "$MAILADDR" ]
 	then
-		MAILADDR=$(random_mailaddress)
+		if mail_domain_exists "$domainname"; then
+			MAILADDR=$(random_mailaddress)
+			mail="--set mailPrimaryAddress="$MAILADDR@$domainname""
+		fi
 	fi
 	shift 1
 
@@ -50,8 +58,7 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 		--set username="$USERNAME" \
 		--set firstname=Max \
 		--set lastname=Muster \
-		--set organisation=firma.de_GmbH \
-		--set mailPrimaryAddress="$MAILADDR@$domainname" \
+		--set organisation=firma.de_GmbH $mail \
 		--set password=univention)
 
 	[ "$UIDTEST" = true ] && CMD+=(--set uidNumber=1234)
