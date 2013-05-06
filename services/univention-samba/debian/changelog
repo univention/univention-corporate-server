@@ -1,3 +1,9 @@
+univention-samba (7.0.17-9) unstable; urgency=low
+
+  * Added a service definition for winbind (Bug #9560)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 06 May 2013 16:51:27 +0200
+
 univention-samba (7.0.17-8) unstable; urgency=low
 
   * Fix shell syntax glitch (Bug #31052)
