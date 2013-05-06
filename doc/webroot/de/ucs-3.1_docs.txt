@@ -1,0 +1,6 @@
+UCS-Handbuch für Benutzer und Administratoren; ../handbuch-3.1-1.html; ../handbuch-3.1-1.pdf
+Extended installation documentation (nur in Englisch verfügbar); ../installation-3.1.html; ../installation-3.1.pdf
+Extended computer management documentation (nur in Englisch verfügbar); ../computers-3.1.html; ../computers-3.1.pdf
+Extended IP and network management documentation (nur in Englisch verfügbar); ../networks-3.1.html; ../networks-3.1.pdf
+UCS performance guide (nur in Englisch verfügbar); ../performance-guide-3.1.html; ../performance-guide-3.1.pdf
+Einsatzszenarien für Univention Corporate Server; ../scenarios-de.html; ../scenarios-de.pdf

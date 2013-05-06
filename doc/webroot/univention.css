@@ -1,0 +1,185 @@
+/* import basic styles from the dojo main css file */
+
+/* styles for the overview site */
+
+html, body {
+	height: 100%;
+	width: 100%;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	font: 12px Myriad,Helvetica,Tahoma,Arial,clean,sans-serif;
+	color: #414142;
+}
+
+html {
+	background: url("images/page.png") repeat-y scroll center center #EEEEEF;
+}
+
+img {
+	border: 0 none;
+}
+
+a {
+	color: #414142;
+}
+
+a.anchor {
+	display: block;
+	position: relative;
+	top: -34px;
+	visibility:hidden;
+}
+
+
+h1 {
+/*	font-size: 1.5em;*/
+/*	font-weight: normal;*/
+	line-height: 1em;
+	border-bottom: 1px solid #989A9C;
+	border-bottom: 1px solid #C00;
+}
+
+hr {
+	border: 0 none;
+	border-bottom: 1px solid #c00;
+}
+
+div.book {
+	margin: 0 auto;
+	padding: 40px 30px 0;
+	width: 901px;
+	background-color: #ffffff;
+
+	/**
+	 * Necessary for a CSS footer to work:
+	 * http://ryanfait.com/resources/footer-stick-to-bottom-of-page/
+	 */
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin-bottom: -80px;
+}
+
+div#header {
+	position: fixed;
+	left:0;
+	top:0;
+	width:100%;
+	height: 34px;
+	background: url("images/top.png") repeat-x scroll center top transparent;
+	color: #FFFFFF;
+}
+
+div#header div#header-wrapper {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 7px;
+	width: 961px;
+	margin: 0 auto;
+	text-align: right;
+}
+
+div#header div#header-wrapper div#header-left {
+	float: left;
+	margin-left: 10px;
+}
+
+div#header-right {
+	float: right;
+	background-image: url('images/claim_be_open.png');
+	background-repeat: no-repeat;
+	margin: 0 20px;
+	width: 70px;
+	height: 25px;
+}
+/*
+/*div.toc > dl > dt a {*//*
+/*div.toc {*//*
+	margin-right: 50px;
+	padding-left: 20px;
+	background-image: url('images/about.png');
+	background-repeat: no-repeat;
+	background-size: 16px 16px;
+	-webkit-background-size: 16px 16px;
+	-moz-background-size: 16px 16px;
+}*/
+div.toc a {
+	line-height: 18px;
+}
+
+div.section div.table table,
+div.section div.table table tr,
+div.section div.table table th,
+div.section div.table table td {
+	border-color: #808080;
+}
+
+div.section div.table table {
+	border: 2px solid #808080;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+div.section div.table table th {
+	border-bottom: 2px solid #808080;
+}
+
+div.caution {
+	background-image: url('images/achtung.jpg');
+}
+div.note {
+	background-image: url('images/info.jpg');
+
+}
+div.caution,
+div.note {
+	background-repeat: no-repeat;
+	background-size: 30px 30px;
+	-webkit-background-size: 30px 30px;
+	-moz-background-size: 30px 30px;
+	margin-left: 0 !important;
+	padding-left: 0.5in;
+
+}
+
+div.list-of-tables,
+div.list-of-figures {
+	display: none;
+}
+
+div.book > div.toc, div.book > div.chapter {
+	margin-bottom: 50px;
+	border-bottom: thin solid #c00;
+}
+
+div.book:last-child {
+	padding-bottom: 30px;
+}
+
+div.book div.chapter p {
+	text-align: justify;
+}
+
+.mousebutton {
+	font-weight: bold;
+}
+
+.guimenu {
+	font-weight: bold;
+}
+
+.package {
+	font-style: italic;
+	font-weight: bold;
+}
+.command {
+	 font-family: "Courier", "monospace";
+}
+pre.programlisting, pre.screen, pre.synopsis {
+	background-color: #E0E0E0;
+}
+* > span.remark {
+	background-color: cyan;
+	border-left: 2px solid red;
+	padding: 2px;
+}

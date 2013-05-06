@@ -1,0 +1,1183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Univention Corporate Client</title><link rel="stylesheet" type="text/css" href="univention.css" /><meta name="generator" content="DocBook XSL Stylesheets V1.76.1" /></head><body><div id="header"><div id="header-wrapper"><div id="header-left"><a href="http://www.univention.de/"><img alt="" src="images/univention_logo.png" /></a></div><div id="header-right"></div></div></div><div xml:lang="en" class="book" title="Univention Corporate Client" lang="en"><div class="titlepage"><div><h1 class="title"><a name="idp5073168" id="idp5073168"></a>
+      Univention Corporate Client
+    </h1><div align="center"><img src="images/ucs_logo.png" width="60%" /></div><div><h2 class="subtitle">
+      Manual for administrators
+    </h2></div></div><hr /></div><div class="toc"><p><strong>Table of Contents</strong></p><dl><dt><span class="chapter"><a href="#introduction:chapter">1. Introduction</a></span></dt><dt><span class="chapter"><a href="#installation:chapter">2. Installation</a></span></dt><dd><dl><dt><span class="section"><a href="#installation:singleserver">2.1. Installation in a single-server environment</a></span></dt><dt><span class="section"><a href="#installation:distributed">2.2. Installation in a distributed environment</a></span></dt><dt><span class="section"><a href="#installation:imagemanagement">2.3. Management of UCC images</a></span></dt><dd><dl><dt><span class="section"><a href="#installation:imagemanagement:download">2.3.1. Downloading UCC images</a></span></dt><dt><span class="section"><a href="#installation:imagemanagement:remove">2.3.2. Deleting UCC images</a></span></dt><dt><span class="section"><a href="#installation:imagemanagement:mirror">2.3.3. Operating a local UCC image mirror</a></span></dt></dl></dd><dt><span class="section"><a href="#installation:officialimages">2.4. Official UCC images</a></span></dt></dl></dd><dt><span class="chapter"><a href="#rollout:chapter">3. Management, rollout and updates of UCC systems</a></span></dt><dd><dl><dt><span class="section"><a href="#rollout:administrationumc">3.1. Administration of UCC systems in the Univention Management Console</a></span></dt><dt><span class="section"><a href="#rollout:bootpolicy">3.2. Configuration of the PXE server in a multi-server environment</a></span></dt><dt><span class="section"><a href="#rollout:imagerollout">3.3. Rollout of images</a></span></dt><dt><span class="section"><a href="#rollout:partitioning">3.4. Partitioning / separation of user and system data</a></span></dt><dt><span class="section"><a href="#rollout:automatic">3.5. Configuration of a fully automated rollout</a></span></dt><dt><span class="section"><a href="#rollout:domainjoins">3.6. Domain join of UCC systems</a></span></dt><dt><span class="section"><a href="#rollout:iso">3.7. Rollouts using an ISO image</a></span></dt><dt><span class="section"><a href="#rollout:persistent">3.8. Persistently stored system settings</a></span></dt><dt><span class="section"><a href="#rollout:overlayfs">3.9. OverlayFS on thin clients</a></span></dt></dl></dd><dt><span class="chapter"><a href="#config:chapter">4. Configuration of UCC systems</a></span></dt><dd><dl><dt><span class="section"><a href="#config:ucr">4.1. Setting of Univention Configuration Registry settings on UCC clients</a></span></dt><dt><span class="section"><a href="#config:cron">4.2. Definition of Cron jobs</a></span></dt><dt><span class="section"><a href="#config:softwareupdates">4.3. Software updates</a></span></dt><dt><span class="section"><a href="#config:keyboardlocale">4.4. Configuration of the keyboard layout / locale </a></span></dt><dt><span class="section"><a href="#config:time">4.5. Configuration of the time zone / time server</a></span></dt><dt><span class="section"><a href="#config:logging">4.6. Remote logging </a></span></dt><dt><span class="section"><a href="#config:ssh">4.7. SSH access to UCC clients</a></span></dt><dt><span class="section"><a href="#config:bootsplash">4.8. Bootsplash startup animation</a></span></dt></dl></dd><dt><span class="chapter"><a href="#hardware:chapter">5. Hardware configuration of UCC systems</a></span></dt><dd><dl><dt><span class="section"><a href="#hardware:network">5.1. Network configuration</a></span></dt><dt><span class="section"><a href="#hardware:usbthin">5.2. USB mass storage access on thin clients</a></span></dt><dt><span class="section"><a href="#hardware:sound">5.3. Sound support</a></span></dt><dt><span class="section"><a href="#hardware:dualdisplay">5.4. Configuration of dual-display setups</a></span></dt></dl></dd><dt><span class="chapter"><a href="#logins:chapter">6. User logins</a></span></dt><dd><dl><dt><span class="section"><a href="#logins:lightdm">6.1. User logins on LightDM</a></span></dt><dd><dl><dt><span class="section"><a href="#logins:sessions">6.1.1. Session selection</a></span></dt><dt><span class="section"><a href="#logins:autologin">6.1.2. Configuration of an automatic login and session selection</a></span></dt><dt><span class="section"><a href="#logins:sessionscripts">6.1.3. Session scripts</a></span></dt><dt><span class="section"><a href="#logins:environmentvars">6.1.4. Configuration of environment variables and execution of scripts during user login</a></span></dt></dl></dd><dt><span class="section"><a href="#logins:localcaching">6.2. Local caching of user and group information</a></span></dt><dt><span class="section"><a href="#logins:pwcaching">6.3. Logins to offline UCC systems / password credentials caching</a></span></dt><dt><span class="section"><a href="#logins:firefox">6.4. Firefox session script</a></span></dt><dt><span class="section"><a href="#logins:sessionobjects">6.5. Registration of sessions in the Univention Management Console</a></span></dt></dl></dd><dt><span class="chapter"><a href="#desktop:chapter">7. Univention Corporate Client desktop environment</a></span></dt><dt><span class="chapter"><a href="#imagegen:chapter">8. Generation of adapted UCC images</a></span></dt><dd><dl><dt><span class="section"><a href="#imagegen:toolkit">8.1. Image toolkit</a></span></dt><dt><span class="section"><a href="#imagegen:params">8.2. Overview of image parameters</a></span></dt><dt><span class="section"><a href="#imagegen:crypto">8.3. Configuring an encrypted disk</a></span></dt></dl></dd><dt><span class="chapter"><a href="#terminalservices:chapter">9. Terminal services with UCC</a></span></dt><dd><dl><dt><span class="section"><a href="#terminalservices:ucc">9.1. UCC terminal services</a></span></dt><dd><dl><dt><span class="section"><a href="#terminalservices:ucc:installation">9.1.1. Installation</a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:assign">9.1.2. Assignment of users to terminal servers</a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:graphics">9.1.3. Configuration of graphic transmission</a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:timeouts">9.1.4. Session timeouts</a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:sound">9.1.5. Sound output </a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:usb">9.1.6. Access to USB mass storage devices on the thin client</a></span></dt></dl></dd><dt><span class="section"><a href="#terminalservices:rdp">9.2. RDP terminal services</a></span></dt><dd><dl><dt><span class="section"><a href="#terminalservices:rdp:assign">9.2.1. Assignment of the terminal server and the Windows domain</a></span></dt><dt><span class="section"><a href="#terminalservices:rdp:usb">9.2.2. Access to USB mass storage devices on the thin client</a></span></dt><dt><span class="section"><a href="#terminalservices:rdp:crypto">9.2.3. Networklevel authentication / certificate approval</a></span></dt><dt><span class="section"><a href="#terminalservices:rdp:sound">9.2.4. Sound output in the RDP session</a></span></dt><dt><span class="section"><a href="#terminalservices:rdp:furtheropts">9.2.5. Further options for the RDP session</a></span></dt></dl></dd><dt><span class="section"><a href="#terminalservices:citrix">9.3. Citrix XenApp terminal services</a></span></dt><dd><dl><dt><span class="section"><a href="#terminalservices:citrix:installation">9.3.1. Installation</a></span></dt><dt><span class="section"><a href="#terminalservices:citrix:soundusb">9.3.2. Sound transmission / Access to USB storage devices on the thin client</a></span></dt><dt><span class="section"><a href="#terminalservices:citrix:flash">9.3.3. Accelerating the playback of Flash videos</a></span></dt></dl></dd></dl></dd><dt><span class="bibliography"><a href="#idp7542352">Bibliography</a></span></dt></dl></div><div class="chapter" title="Chapter 1. Introduction"><div class="titlepage"><div><div><h2 class="title"><a id="introduction:chapter"></a>Chapter 1. Introduction</h2></div></div></div><p>
+  Univention Corporate Client (UCC) is a flexible and economic
+  alternative for the operation and administration of PCs, notebooks
+  and thin clients in companies and institutions. The software
+  contains a Linux-based desktop environment optimised for business
+  use. In addition, UCC serves as a platform for access to remote
+  desktop solutions and virtualized desktops as well as browser or
+  terminal server-based applications. 
+</p><p>
+  Univention Corporate Client is the successor to Univention Corporate
+  Desktop (UCD) and UCS Thin Client Services (UCS TCS). Notes on
+  upgrading from UCD and TCS can be found in the Univention Wiki under 
+  <a class="ulink" href="http://wiki.univention.de/index.php?title=Upgrade-TCS-UCD-to-UCC" target="_top">http://wiki.univention.de/index.php?title=Upgrade-TCS-UCD-to-UCC</a>.
+</p><p>
+  UCC systems are rolled out via an image-based procedure: All the
+  user data - and as such also the user settings - are typically saved on a
+  separate partition. If a new version of the image is installed, the
+  complete operating system installation is overwritten.
+</p><p>
+  UCC clients need to be joined into a UCS domain. The clients are
+  entirely managed through settings from the LDAP. As a result, a UCC
+  system is directly configured after an upgrade or an
+  installation. Features configured from the LDAP include network
+  configuration, hardware settings like dual monitor setups and
+  software selections.
+</p><p>
+  Kubuntu is used as the basis for the images (Version 12.04 in UCC
+  1.0). Univention provides two preconfigured: a
+  minimal image for thin clients and a larger image for native desktop
+  installations. These two images are maintained and tested
+  by Univention. It is also possible to create modified or completely
+  new images with a minimum of effort using the included image toolkit
+  (see <a class="xref" href="#imagegen:toolkit" title="8.1. Image toolkit">Section 8.1</a>). In contrast to the
+  existing integration of Ubuntu clients in UCS, UCC clients work out
+  of the box and require no further modification.
+</p><p>
+  UCC systems include the most important UCS base components and
+  integrate into the UCS user management: all the users in a UCS
+  domain can log on to UCC clients using their domain password. The
+  integration packages are installed via the Univention App
+  Center (UCC requires UCS 3.1).
+</p><p>
+  UCC support both a local desktop based on KDE Plasma and working on
+  terminal servers (RDP, Citrix XenApp and remotely used KDE
+  desktops). Access to web-based services can also be configured.
+  A UCC desktop system be used both in the company network and in
+  mobile use (all user and group information is cached locally for
+  that).
+</p><p>
+  A UCC system is usually installed over a network using PXE, but can
+  also be setup from local media (DVD ROM or USB stick). The rollout
+  can be performed fully automatic without user interaction (see <a class="xref" href="#rollout:automatic" title="3.5. Configuration of a fully automated rollout">Section 3.5</a>).
+</p><p>
+  The CompactFlash storage media typically integrated in thin clients
+  are only designed for a limited number of write operations.
+  Thin clients in UCC are thus started with an OverlayFS file system
+  so that all write accesses on the storage media of a booted system
+  are only performed in the system memory and not written to the hard
+  drive. All the write changes are thus lost once the thin client is
+  switched off. This does not pose any problems for access to terminal
+  services, as all the user activities are performed on the respective
+  terminal servers. The system log of UCC clients is performed
+  remotely.
+</p></div><div class="chapter" title="Chapter 2. Installation"><div class="titlepage"><div><div><h2 class="title"><a id="installation:chapter"></a>Chapter 2. Installation</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#installation:singleserver">2.1. Installation in a single-server environment</a></span></dt><dt><span class="section"><a href="#installation:distributed">2.2. Installation in a distributed environment</a></span></dt><dt><span class="section"><a href="#installation:imagemanagement">2.3. Management of UCC images</a></span></dt><dd><dl><dt><span class="section"><a href="#installation:imagemanagement:download">2.3.1. Downloading UCC images</a></span></dt><dt><span class="section"><a href="#installation:imagemanagement:remove">2.3.2. Deleting UCC images</a></span></dt><dt><span class="section"><a href="#installation:imagemanagement:mirror">2.3.3. Operating a local UCC image mirror</a></span></dt></dl></dd><dt><span class="section"><a href="#installation:officialimages">2.4. Official UCC images</a></span></dt></dl></div><p>
+  Univention Corporate Client integrates into the management system
+  of Univention Corporate Server. UCS 3.1 is a prerequisite for the
+  installation of UCC.
+</p><p>
+  The UCS integration packages are installed via the Univention App
+  Center. General information on the Univention App Center can be found
+  in the UCS manual <a class="xref" href="#ucs-manual" title="Univention Corporate Server - Manual for users and administrators">[ucs-manual]</a>.
+</p><div class="figure"><a id="idp135632"></a><p class="title"><strong>Figure 2.1. Installing UCC in the Univention App Center</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="60%"><tr><td><img src="illustrations/ucc-app-center.png" width="100%" alt="Installing UCC in the Univention App Center" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+  A UCC environment is made up of three components:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>The integration in the UCS management system (UMC
+	modules and LDAP schema extensions). These must be installed on
+	the master domain controller and all backup domain controller systems. </p></li><li class="listitem"><p>A UCS server which distributes the images for the
+	installation of UCC systems via PXE. The images used for the installation of
+	UCC systems are loaded from the Univention mirror using an image
+	download tool and then distributed locally to the clients. Custom
+	installation images are also created on UCS servers. UCC
+	servers can be installed in all UCS server roles (master domain controller, backup domain controller,
+	slave domain controller and member server). It is possible to employ
+	more than one UCC server in an environment.</p></li><li class="listitem"><p>The UCC clients. They are installed via the
+	images.</p></li></ul></div><p>
+</p><div class="section" title="2.1. Installation in a single-server environment"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="installation:singleserver"></a>2.1. Installation in a single-server environment</h2></div></div></div><p>
+  All available errata updates should be installed on the
+  master domain controller.
+</p><p>
+  In the Univention App Center, select the <span class="emphasis"><em>Univention Corporate
+  Client</em></span> application and click on
+  <span class="guimenu">Install</span>.
+</p><p>
+  The thin client image is downloaded during the installation; the
+  download may take some time depending on the speed of the Internet
+  connection.
+</p><p>
+  Once the component is installed, click on
+  <span class="guimenu">Restart</span>.
+</p><p>
+  It is recommended to restart the system before the rollout of UCC clients.
+</p></div><div class="section" title="2.2. Installation in a distributed environment"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="installation:distributed"></a>2.2. Installation in a distributed environment</h2></div></div></div><p>
+  When UCC is installed in an environment with more than one server,
+  the installation is performed in two stages:
+</p><p>
+  All available errata updates should be installed on both the
+  master domain controller and the additional server.
+</p><p>
+1. Installation of the UMC modules and LDAP schema expansions:
+</p><p>
+  Log on to the master domain controller as the <span class="emphasis"><em>root</em></span> user and
+  run the following command. If backup domain controller systems are in use, the
+  command must also be run on all of these systems. After installation
+  the Univention Management Console server needs to be restarted:
+
+  </p><pre class="programlisting">
+univention-add-app ucc_20130218 ucc-management-integration 
+/etc/init.d/univention-management-console-server restart
+  </pre><p>
+</p><p>
+  2. Installation of the UCC server(s)
+</p><p>
+  UCC servers can be installed in all UCS server roles. The UMC module
+  <span class="guimenu">Univention App Center</span> must be opened on all the
+  systems on which you wish to install a UCC server.
+</p><p>
+  In the Univention App Center, select the <span class="emphasis"><em>Univention Corporate
+  Client</em></span> application and click on
+  <span class="guimenu">Install</span>. The thin client image is downloaded
+  during the installation; the download may take some time depending
+  on the speed of the Internet connection.
+</p><p>
+  Once the component is installed, click on <span class="guimenu">Restart</span>.
+</p><p>
+  Finally the join scripts need to be executed on the UCC server:
+  </p><pre class="programlisting">
+univention-run-join-scripts	
+  </pre><p>
+</p><p>
+  It is recommended to restart the system before the rollout of UCC clients.
+</p></div><div class="section" title="2.3. Management of UCC images"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="installation:imagemanagement"></a>2.3. Management of UCC images</h2></div></div></div><div class="section" title="2.3.1. Downloading UCC images"><div class="titlepage"><div><div><h3 class="title"><a id="installation:imagemanagement:download"></a>2.3.1. Downloading UCC images</h3></div></div></div><p>
+  The UCC images are not delivered in the Debian package format; the
+  Debian package format is not best suited to files in the gigabyte
+  range.
+</p><p>
+  Instead, UCC images are downloaded with the
+  <code class="command">ucc-image-download</code> tool. The individual files of
+  the image are referenced via a spec file containing the file names
+  and SHA256 hashes. The hash values are checked as part of the
+  download procedure in order to detect erroneous transmissions. The
+  proxy settings of a UCS system are taken into account.
+</p><p>
+  The images are available at
+  <a class="ulink" href="http://ucc-images.software-univention.de/download/ucc-images/" target="_top">http://ucc-images.software-univention.de/download/ucc-images/</a>. A
+  local UCC mirror can also be used, see <a class="xref" href="#installation:imagemanagement:mirror" title="2.3.3. Operating a local UCC image mirror">Section 2.3.3</a>.
+</p><p>
+  Univention provides two metapackages, the installation of which
+  initiates the downloading of the images. The packages can be
+  installed with <code class="command">univention-install</code> or via the
+  software management module of the Univention Management Console.
+
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><span class="emphasis"><em>ucc-thinclient-image</em></span>
+	installs the latest thin client image </p></li><li class="listitem"><p><span class="emphasis"><em>ucc-desktop-image</em></span> installs
+	the latest desktop image</p></li></ul></div><p>
+</p><p>
+  The installation of the images is initiated at the end of the
+  installation. The downloaded images are not removed when removing
+  the metapackages. If desired, they should be removed manually in the
+  directory <code class="filename">/var/lib/univention-client-boot</code>.
+</p><p>
+  Alternatively, the download can also be performed manually by
+  running <code class="command">ucc-image-download</code>. The parameter
+  <span class="emphasis"><em>-s</em></span> is used to provide the name of the spec file
+  on the mirror, e.g.:
+  </p><pre class="programlisting">
+ucc-image-download -s ucc-1.0-thinclient-image.img.spec
+  </pre><p>
+</p><p>
+  Interrupted downloads are restarted as standard. You can use the
+  option <span class="emphasis"><em>--reload</em></span> to force the download to
+  restart completely.
+</p><p>
+  The full list of available parameters can be queried with the
+  <span class="emphasis"><em>-h</em></span> option.
+</p><p>
+  The root password of the installed system is initially specified in
+  the image. To avoid there being an identical root password on all
+  UCC systems operated with the official Univention images, the root password
+  is "personalised" during the image download: the root password of
+  the UCC server is set as the root password on the images. You can
+  also use the <span class="emphasis"><em>--set-root-pw-interactive</em></span> option
+  to set a different root password.
+</p></div><div class="section" title="2.3.2. Deleting UCC images"><div class="titlepage"><div><div><h3 class="title"><a id="installation:imagemanagement:remove"></a>2.3.2. Deleting UCC images</h3></div></div></div><p>
+  The <code class="command">ucc-image-remove -l</code> command can be used to
+  output an overview of the available images. An image can be deleted
+  using the parameter <span class="emphasis"><em>-r</em></span> and specifying a spec
+  file, e.g.:
+  </p><pre class="programlisting">
+ucc-image-remove -r ucc-1.0-desktop-image.img.spec
+  </pre><p>
+</p></div><div class="section" title="2.3.3. Operating a local UCC image mirror"><div class="titlepage"><div><div><h3 class="title"><a id="installation:imagemanagement:mirror"></a>2.3.3. Operating a local UCC image mirror</h3></div></div></div><p>
+  If you are operating a number of UCC servers or an infrastructure
+  completely disconnected from the Internet, you can also operate a
+  local UCC mirror. In this case, the images need to be stored on an
+  HTTP server. Then the Univention Configuration Registry variable <code class="envar">ucc/image/download/url</code> on the UCC
+  servers needs to be set to the download path.
+</p></div></div><div class="section" title="2.4. Official UCC images"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="installation:officialimages"></a>2.4. Official UCC images</h2></div></div></div><p>
+  Univention provides two preconfigured UCC images: a
+  minimal image for thin clients and a larger image for native desktop
+  installations. These two images are maintained and tested
+  by Univention. 
+</p><p>
+  UCC systems operated with these images must have at least 512 MB of
+  system memory available.
+</p><p>
+  The thin client image offers a minimal desktop and support for
+  terminal sessions on Windows and UCC terminal servers. In addition, a local LXDE desktop environment is also
+  available. Thin clients which are to be operated with this image
+  must be equipped with at least 2 GB of local disk space (e.g.,
+  CompactFlash or SSD).
+</p><p>
+  The desktop client image offers a KDE Plasma desktop and support for
+  terminal sessions on Windows and UCC terminal servers (support for
+  Citrix XenApp can be subsequently installed).
+</p><p>
+  Software packages can also be installed or removed to complement the
+  range of functions of the standard UCC images. Software updates can
+  also be initiated through a policy (see <a class="xref" href="#config:softwareupdates" title="4.3. Software updates">Section 4.3</a>)
+</p></div></div><div class="chapter" title="Chapter 3. Management, rollout and updates of UCC systems"><div class="titlepage"><div><div><h2 class="title"><a id="rollout:chapter"></a>Chapter 3. Management, rollout and updates of UCC systems</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#rollout:administrationumc">3.1. Administration of UCC systems in the Univention Management Console</a></span></dt><dt><span class="section"><a href="#rollout:bootpolicy">3.2. Configuration of the PXE server in a multi-server environment</a></span></dt><dt><span class="section"><a href="#rollout:imagerollout">3.3. Rollout of images</a></span></dt><dt><span class="section"><a href="#rollout:partitioning">3.4. Partitioning / separation of user and system data</a></span></dt><dt><span class="section"><a href="#rollout:automatic">3.5. Configuration of a fully automated rollout</a></span></dt><dt><span class="section"><a href="#rollout:domainjoins">3.6. Domain join of UCC systems</a></span></dt><dt><span class="section"><a href="#rollout:iso">3.7. Rollouts using an ISO image</a></span></dt><dt><span class="section"><a href="#rollout:persistent">3.8. Persistently stored system settings</a></span></dt><dt><span class="section"><a href="#rollout:overlayfs">3.9. OverlayFS on thin clients</a></span></dt></dl></div><p>
+  UCC systems are rolled out via an image-based procedure. The
+  recommended rollout procedure is creating the UCC systems in the
+  Univention Management Console in advance. When the image is installed, the image installation tool then
+  checks whether there is already a computer account available for the
+  client and uses it. If the computer name is not stored in advance,
+  the name can be specified interactively during the installation.
+</p><div class="section" title="3.1. Administration of UCC systems in the Univention Management Console"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="rollout:administrationumc"></a>3.1. Administration of UCC systems in the Univention Management Console</h2></div></div></div><p>
+  UCC systems are registered and administrated with the system role
+  <span class="emphasis"><em>Univention Corporate Client</em></span> in the computer
+  management module of the Univention Management Console.
+</p><p>
+  In the command line frontend Univention Directory Manager, clients
+  are managed with the <span class="emphasis"><em>computers/ucc</em></span> module.
+</p><p>
+  The following settings must be configured for every UCC client as a minimum:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>The <span class="emphasis"><em>name</em></span> of the client
+	(composed of lowercase and uppercase letters, numbers, hyphens and
+	underscores).</p></li><li class="listitem"><p>The <span class="emphasis"><em>MAC address</em></span> of the
+	client in the notation XX:XX:XX:XX:XX:XX</p></li><li class="listitem"><p>The <span class="emphasis"><em>IP address</em></span> of the client</p></li></ul></div><p>
+</p><div class="figure"><a id="idp6801760"></a><p class="title"><strong>Figure 3.1. Management of a UCC system in the UMC</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="illustrations/ucc-client-umc.png" width="100%" alt="Management of a UCC system in the UMC" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+  A forward and reverse zone for DNS resolution should be assigned under
+  <span class="guimenu">DNS Forward and Reverse Lookup Zone</span>. These zones
+  are created automatically in the scope of the installation of the
+  master domain controller. The name and the IP address of the UCC client can thus
+  also be resolved in the UCS DNS service.
+</p><p>
+  The network configuration of UCC clients is managed through DHCP in
+  the default setting. A DHCP service must also be assigned under
+  <span class="guimenu">DHCP</span>. These are also created automatically in the
+  scope of the installation of the domain controller master. The UCC
+  client is then registered for the DHCP server and the configured IP
+  address is assigned to the DHCP.
+</p><p>
+  UCS offers you the possibility of centrally managing the IP
+  addresses and DNS/DHCP settings of a network in a network
+  object in the LDAP. This can considerably facilitate the management of
+  UCC clients by selecting the network object in 
+  <span class="guimenu">Network</span> input field: The next free IP address of
+  the network and the DNS and DHCP settings are then adopted automatically.
+</p><div class="figure"><a id="idp6807856"></a><p class="title"><strong>Figure 3.2. Management of IP addresses through a network object</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="80%"><tr><td><img src="illustrations/umc-network.png" width="100%" alt="Management of IP addresses through a network object" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+  During the installation of an UCS system, a network object with the
+  name <span class="emphasis"><em>default</em></span> is saved as standard, which can
+  usually be used in normal cases.  If, for example, several sites are
+  to be managed, additional networks can be defined using the
+  <span class="guimenu">Networks</span> wizard in the Univention Management Console.
+</p><p>
+  The DHCP configuration is then also performed via the UMC. The
+  network properties of UCC clients can be centrally specified per
+  subnetwork. The settings can be set via the UMC's
+  <span class="guimenu">DHCP</span> wizard. The DHCP service of the current
+  domain must be selected. The selection list which opens then shows
+  the subnetwork object, which can be opened with a click. The
+  following properties can be specified under
+  <span class="guimenu">Policies</span> amongst others:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p> <span class="emphasis"><em>DNS</em></span> allows the assignment
+	of one or more name servers</p></li><li class="listitem"><p> <span class="emphasis"><em>Routing</em></span> allows the
+	assignment of a default gateway</p></li><li class="listitem"><p> <span class="emphasis"><em>Lease time</em></span> allows
+	configuration of a lease time for an IP address</p></li></ul></div><p>
+</p><p>
+  In the default setting, fixed IP addresses are assigned and only to
+  clients registered in the LDAP.
+</p><p>
+  The DHCP administration also offers numerous, extensive configuration options,
+  which are generally, however, not required in UCC
+  client operation. They are described in the DHCP section in the UCS
+  manual <a class="xref" href="#ucs-manual" title="Univention Corporate Server - Manual for users and administrators">[ucs-manual]</a>.
+</p></div><div class="section" title="3.2. Configuration of the PXE server in a multi-server environment"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="rollout:bootpolicy"></a>3.2. Configuration of the PXE server in a multi-server environment</h2></div></div></div><p>
+  The rollout of UCC systems usually occurs via PXE (see <a class="xref" href="#rollout:imagerollout" title="3.3. Rollout of images">Section 3.3</a>). If
+  UCC is operated in a single server environment the server distributing the IP adresses to the
+  clients is identical to the PXE server providing the UCC images for installation.
+</p><p>
+  If UCC is used in a distributed environment, there may be DHCP servers not serving as PXE servers. In
+  that case the UCS server distributing the UCC images needs to be configured through a
+  <span class="guimenu">DHCP Boot</span> policy. Please see the UCS manual for additional information 
+  <a class="xref" href="#ucs-manual-pxeboot" title="Univention Corporate Server - Manual for users and administrators">[ucs-manual-pxeboot]</a>.
+</p></div><div class="section" title="3.3. Rollout of images"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="rollout:imagerollout"></a>3.3. Rollout of images</h2></div></div></div><p>
+  The image with which a UCC client is operated is configured in the
+  Univention Management Console in the <span class="guimenu">Images</span> tab on UCC computer
+  objects. All the UCC images registered in the UCS management
+  system are available for selection. The registration is effected
+  with join scripts during the installation of the image, see <a class="xref" href="#installation:imagemanagement:download" title="2.3.1. Downloading UCC images">Section 2.3.1</a>.
+</p><p>
+  The Univention Management Console can also be used to edit several objects at once, which
+  permits the assignment of images to several computers at once. This
+  is documented in the UCS manual <a class="xref" href="#ucs-manual-multiedit" title="Univention Corporate Server - Manual for users and administrators">[ucs-manual-multiedit]</a>.
+</p><div class="figure"><a id="idp6826752"></a><p class="title"><strong>Figure 3.3. Assigning the desktop image to a UCC client</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="60%"><tr><td><img src="illustrations/ucc-assign-image.png" width="100%" alt="Assigning the desktop image to a UCC client" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+  UCC clients can be operated in three different installation modes,
+  which can be assigned via the <span class="guimenu">Boot variant</span> field:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p> <span class="guimenu">Live boot</span> Here the image is
+	started via PXE and mounted via NFS. The client must be configured
+	for PXE boot in the BIOS. Technically, all UCC systems are always
+	treated as having read/write storage media: If an image is mounted from a
+	source which itself only allows readonly access (from a live DVD or as
+	in this case from a NFS share), an OverlayFS file system is employed:
+	All the write changes are cached in the system memory and are lost when the computer is
+	switched off. Thin clients are also always run with an overlayfs
+	for a local installation, further information can be found under
+	<a class="xref" href="#rollout:overlayfs" title="3.9. OverlayFS on thin clients">Section 3.9</a>.</p></li><li class="listitem"><p> <span class="guimenu">Image boot with update check / Initial
+	installation</span> This mode is used for two purposes:
+	</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem"><p>The initial installation of a UCC client</p></li><li class="listitem"><p>For updates of UCC systems to a new UCC image</p></li></ul></div><p>
+	If there are no partitions present, the system is partitioned. 
+	After the installation of the image, the system is joined into the
+	UCS domain. If this boot variante is used on an existing UCC
+	installation, is is detected whether the installed image differs
+	from the image to be installed. If that is the case, the 
+	system, the UCC system partition is overwritten. In this case, no
+	new partitioning occurs.</p></li><li class="listitem"><p> <span class="guimenu">Image boot without update
+	check</span> In this boot mode, the locally installed image
+	is started and no check for a newly available image
+	performed. Following an installation performed with <span class="guimenu">Image boot
+	with update check / Initial installation</span>, the system returns to
+	this boot mode automatically.</p></li></ul></div><p>
+</p><p>
+  The <span class="guimenu">Additional boot parameter</span> input field can be
+  used to add any parameters to the initial RAM disk, which performs
+  the installation/rollout. Two preconfigured options are:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p> <span class="emphasis"><em>debugshell=y</em></span> : If an error
+	occurs during installation of the image, a shell opens in which
+	the problem can be analysed further. </p></li><li class="listitem"><p> <span class="emphasis"><em>verbose=y</em></span> : The shell scripts
+	of the initial RAM disk are started with the parameter "-x", with
+	which the current control flow can be better monitored (useful
+	for debugging). </p></li></ul></div><p>
+</p></div><div class="section" title="3.4. Partitioning / separation of user and system data"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="rollout:partitioning"></a>3.4. Partitioning / separation of user and system data</h2></div></div></div><p>
+  On the systems installed with images, user-specific data such as the
+  home of the users must be stored separately from the system data on
+  another partition. This is the case in the default partition configuration.
+</p><p>
+  The partitioning scheme is specified in the images configuration, see
+  <a class="xref" href="#imagegen:params" title="8.2. Overview of image parameters">Section 8.2</a>.
+</p><p>
+  The <span class="guimenu">Repartitioning for installed systems</span> option
+  on the <span class="guimenu">Images</span> tab of a UCC client in the computer
+  management of the Univention Management Console forces repartitioning of a
+  system.  A prompt must be confirmed before the partitioning begins.
+  </p><div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3>Existing user data on a /home partition on a system are
+  also deleted!</div><p>
+
+</p><p>
+  The GNU Parted version used in Ubuntu 12.04 has a bug, which means that
+  the <span class="emphasis"><em>bootable</em></span> flag of the protective MBR disappears when you edit a
+  partition. This can cause boot problems with some BIOS
+  implementations. This bug does not occur during partitioning in UCC
+  as the flag is set manually via a script
+  (<code class="command">set-bootable-flag-on-protective-mbr</code>). As such, manual
+  partitioning should be avoided or the script be executed after partitioning.
+</p><p>
+  It is also possible to perform completely new partitioning schemes - e.g. an encrypted hard drive - 
+  with an adapted partitioning script, see  <a class="xref" href="#imagegen:crypto" title="8.3. Configuring an encrypted disk">Section 8.3</a>).
+</p></div><div class="section" title="3.5. Configuration of a fully automated rollout"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="rollout:automatic"></a>3.5. Configuration of a fully automated rollout</h2></div></div></div><p>
+  The rollout of UCC systems can be completely automated so that user
+  interaction is no longer necessary. Once all the clients to be
+  rolled out have been created in the UCS management system (see
+  <a class="xref" href="#rollout:administrationumc" title="3.1. Administration of UCC systems in the Univention Management Console">Section 3.1</a>), the following steps
+  are necessary:
+</p><p>
+  An image must be generated in which the interactive confirmation of
+  the partitioning is disabled. This can be achieved by setting the
+  option <span class="emphasis"><em>continuation_prompt</em></span> to
+  <span class="emphasis"><em>false</em></span> (see <a class="xref" href="#imagegen:params" title="8.2. Overview of image parameters">Section 8.2</a>).
+</p><p>
+  Then the credentials of a user need to be stored in the image,
+  which is authorised to join clients in the domain (the user must be
+  a member of the <span class="emphasis"><em>Domain Admins</em></span> and <span class="emphasis"><em>DC Backup Hosts</em></span> groups for
+  this). For security reasons, this user should only be created during
+  the rollout and then removed or disabled after the rollout. 
+</p><p>
+  These credentials are now saved in the image with the tool
+  <code class="command">ucc-image-set-join-information</code>. The parameter
+  <span class="emphasis"><em>-i</em></span> is used to specify an image and the join
+  account and its password are interactively prompted.
+</p><p>
+  The clients are then rolled out fully automatically without user
+  interaction.
+</p></div><div class="section" title="3.6. Domain join of UCC systems"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="rollout:domainjoins"></a>3.6. Domain join of UCC systems</h2></div></div></div><p>
+  Only UCC clients, which are joined into a UCS domain can be
+  centrally configured. Unjoined clients can still be used for special
+  setups like live systems or demo points.
+</p><p>
+  The domain join is typically performed in the scope of the rollout
+  via PXE (see <a class="xref" href="#rollout:imagerollout" title="3.3. Rollout of images">Section 3.3</a>). The domain
+  join can also be subsequently performed by
+  running <code class="command">univention-join</code>. The subsequent domain join
+  cannot be performed via SSH, but should instead be run via a
+  local login or, if virtualization is employed, via VNC. The system
+  must be restarted after the join.
+</p></div><div class="section" title="3.7. Rollouts using an ISO image"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="rollout:iso"></a>3.7. Rollouts using an ISO image</h2></div></div></div><p>
+  While the standard rollout mechanism for UCC systems is PXE-based,
+  it is also possible to perform installations using ISO images, which
+  can be written to USB sticks, DVDs or BluRays.
+</p><p>
+  The images are available at
+  <code class="uri">http://ucc-images.software-univention.de/download/ucc-images/</code>.
+</p><p>
+  The client to be installed should be created in the UMC computer
+  management first (see <a class="xref" href="#rollout:administrationumc" title="3.1. Administration of UCC systems in the Univention Management Console">Section 3.1</a>).
+</p><p>
+  After the image has been written to disk and the boot medium is
+  started, a boot menu appears. Here, <span class="guimenu">UCC - Image boot with
+  update check / Initial installation</span> needs to be selected
+  and the <span class="emphasis"><em>e</em></span> key pressed. Then the boot options need to
+  be modified from <span class="emphasis"><em>ucc=update</em></span> to
+  <span class="emphasis"><em>ucc=rollout</em></span>. If the client already contains a
+  partitioning, which needs to be replaced
+  <span class="emphasis"><em>repartition=y</em></span> needs to be added.
+</p></div><div class="section" title="3.8. Persistently stored system settings"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="rollout:persistent"></a>3.8. Persistently stored system settings</h2></div></div></div><p>
+  System data which must be preserved during an update (e.g., the join
+  status) are saved separately from the system data and automatically restored
+  after updates. These files and selected Univention Configuration Registry variables are registered in
+  the UCR variables <code class="envar">ucc/persistent/files</code> and
+  <code class="envar">ucc/persistent/ucr</code>. Important standard UCC settings
+  are preconfigured automatically and can be expanded for local
+  adaptations.
+</p></div><div class="section" title="3.9. OverlayFS on thin clients"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="rollout:overlayfs"></a>3.9. OverlayFS on thin clients</h2></div></div></div><p>
+  The CompactFlash storage media typically integrated in thin clients
+  are only designed for a limited number of write operations.
+</p><p>
+  Thin clients are thus started in UCC with an OverlayFS file system
+  so that all write accesses on the storage media of a booted system
+  are only performed in the system memory and not written to the hard
+  drive. All the write changes are thus lost once the thin client is
+  switched off. This does not pose any problems for access to terminal
+  services, as all the user activities are performed on the respective
+  terminal servers. The standard write access is selectively enabled
+  for individual operations such as the installation of new UCC images
+  or subsequent installation of software.
+</p><p>
+  If a thin client uses storage media which allow 
+  permanent write access, the Overlayfs can also be disabled by
+  setting the Univention Configuration Registry variables <code class="envar">ucc/boot/mount</code> to <span class="emphasis"><em>rw</em></span> and
+  <code class="envar">ucc/thinclientoverlayfs</code> to <span class="emphasis"><em>false</em></span>.
+</p></div></div><div class="chapter" title="Chapter 4. Configuration of UCC systems"><div class="titlepage"><div><div><h2 class="title"><a id="config:chapter"></a>Chapter 4. Configuration of UCC systems</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#config:ucr">4.1. Setting of Univention Configuration Registry settings on UCC clients</a></span></dt><dt><span class="section"><a href="#config:cron">4.2. Definition of Cron jobs</a></span></dt><dt><span class="section"><a href="#config:softwareupdates">4.3. Software updates</a></span></dt><dt><span class="section"><a href="#config:keyboardlocale">4.4. Configuration of the keyboard layout / locale </a></span></dt><dt><span class="section"><a href="#config:time">4.5. Configuration of the time zone / time server</a></span></dt><dt><span class="section"><a href="#config:logging">4.6. Remote logging </a></span></dt><dt><span class="section"><a href="#config:ssh">4.7. SSH access to UCC clients</a></span></dt><dt><span class="section"><a href="#config:bootsplash">4.8. Bootsplash startup animation</a></span></dt></dl></div><div class="section" title="4.1. Setting of Univention Configuration Registry settings on UCC clients"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="config:ucr"></a>4.1. Setting of Univention Configuration Registry settings on UCC clients</h2></div></div></div><p>
+  The configuration of UCC system settings is mostly performed using
+  Univention Configuration Registry. Typically, these settings are not saved locally on the UCC client
+  systems, but rather via UCR policies via the LDAP.
+</p><p>
+  Univention Configuration Registry policies can be managed in the Univention Management Console in the
+  <span class="guimenu">Policies</span> menu. At least one UCR variable must be
+  configured with the <span class="guimenu">Variable</span> and
+  <span class="guimenu">Value</span> fields. Additional variables can be added
+  by clicking on the plus sign. The UCR policies are evaluated when
+  the system is started and then once an hour.
+</p><div class="figure"><a id="idp6968336"></a><p class="title"><strong>Figure 4.1. Configuring UCR values through a policy</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="60%"><tr><td><img src="illustrations/ucc-ucr-policy.png" width="100%" alt="Configuring UCR values through a policy" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+  In addition to policies, Univention Configuration Registry variables can also be set via the
+  command line frontend. However, we recommend performing the UCR settings
+  via policies as the locally set variables are lost when image updates are
+  installed or thin clients are switched off (see <a class="xref" href="#rollout:overlayfs" title="3.9. OverlayFS on thin clients">Section 3.9</a>).
+</p></div><div class="section" title="4.2. Definition of Cron jobs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="config:cron"></a>4.2. Definition of Cron jobs</h2></div></div></div><p>
+  Regularly recurring actions can be defined and run on UCC clients
+  via Cron jobs. The configuration is performed as in Univention
+  Corporate Server via Univention Configuration Registry or local configuration files under
+  <code class="filename">/etc/cron.d</code>. Further information can be found
+  in the UCS manual <a class="xref" href="#ucs-manual-cron" title="Univention Corporate Server - Manual for users and administrators">[ucs-manual-cron]</a>.
+</p></div><div class="section" title="4.3. Software updates"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="config:softwareupdates"></a>4.3. Software updates</h2></div></div></div><p>
+  Every UCC image comes with a predefined software package selection. A computer
+  policy in the UCS management system can be used to install available
+  software updates and install/uninstall software packages. This check
+  is performed every time the system is started.
+</p><p>
+  The settings are defined with a <span class="guimenu">UCC software update
+  settings</span> computer policy in the Univention Management Console:
+</p><div class="figure"><a id="idp6976896"></a><p class="title"><strong>Figure 4.2. Installing additional software through a software update policy</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="60%"><tr><td><img src="illustrations/ucc-software-policy.png" width="100%" alt="Installing additional software through a software update policy" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><span class="guimenu">Install available software
+	updates</span> updates all the installed packages for which
+	updates are available.</p></li><li class="listitem"><p><span class="guimenu">Packages to be installed</span> is a
+	list of packages which are installed if they have not yet been
+	installed and which are updated if a newer version is
+	available. </p></li><li class="listitem"><p><span class="guimenu">Packages to be removed</span> is a
+	list of packages to be removed. This function should be used with
+	care to ensure that no packages which are essential for UCC are
+	removed due to dependencies. </p></li></ul></div><p>
+</p><p>
+  The installation/updates are logged in
+  <code class="filename">/var/log/univention/software-updates.log</code>.
+</p><p>
+  Thin clients employ an OverlayFS (see <a class="xref" href="#rollout:overlayfs" title="3.9. OverlayFS on thin clients">Section 3.9</a>). For this reason,
+  the installation of updates is performed in several stages on thin
+  clients: The client is restarted to change to the writeable mode and
+  then following installation of the updates restarted again to change
+  to the OverlayFS mode. 
+</p></div><div class="section" title="4.4. Configuration of the keyboard layout / locale"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="config:keyboardlocale"></a>4.4. Configuration of the keyboard layout / locale </h2></div></div></div><p>
+  In the standard setting, the keyboard layout and the language
+  setting (locale) of the UCC PXE server is also employed on the UCC
+  clients. If UCC systems are not installed using PXE, the Univention Configuration Registry
+  variables specified below need to be set via a policy:
+</p><p>
+  The Univention Configuration Registry variable <code class="envar">xorg/keyboard/options/XkbLayout</code> can be
+  used to set another keyboard layout, e.g., <span class="emphasis"><em>de</em></span>
+  for German or <span class="emphasis"><em>fr</em></span> for French.
+</p><p>
+  The Univention Configuration Registry variable <code class="envar">locale/default</code> can be used to set a
+  different locale, e.g., <span class="emphasis"><em>de_DE.UTF-8:UTF-8</em></span> for German or
+  <span class="emphasis"><em>fr_FR.UTF-8:UTF-8</em></span> for French. Please note that it may be necessary
+  to install additional language packages for some locales. The standard thin client
+  image includes German and English; the standard desktop image
+  includes English, German, French, Dutch and Spanish.
+</p><p>
+  The language and keyboard settings are evaluated every time the
+  system is started.
+</p></div><div class="section" title="4.5. Configuration of the time zone / time server"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="config:time"></a>4.5. Configuration of the time zone / time server</h2></div></div></div><p>
+  In the standard setting, the time zone of the UCC PXE server is also
+  employed on the UCC clients. If UCC systems are not installed using
+  PXE, the time zone needs to be set via a policy:
+
+</p><p>
+  The Univention Configuration Registry variable <code class="envar">ucc/timezone</code> can be used to set a
+  different time zone. The available time zones can be found in the
+  <code class="filename">/usr/share/zoneinfo/</code> directory, for example
+  <span class="emphasis"><em>Europe/Berlin</em></span>.
+</p><p>
+  Authentication in UCC is performed through Kerberos. For this reason,
+  synchronised time sources are essential. When a UCC client joins a
+  domain, the master domain controller of the domain is set as the
+  time server. The Univention Configuration Registry variable <code class="envar">ucc/timeserver</code> can be used to configure a
+  different server.
+</p><p>
+  The system time is synchronised via NTP every time the system is
+  started.
+</p></div><div class="section" title="4.6. Remote logging"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="config:logging"></a>4.6. Remote logging </h2></div></div></div><p>
+  In addition to local logging, the system logging (syslog) of UCC
+  clients can also be performed remotely against a central log host
+  based on rsyslog. As standard, the logging is performed against the
+  UCC PXE server.
+</p><p>
+  The Univention Configuration Registry variable <code class="envar">ucc/pxe/append</code> can be adapted to
+  deactivate the remote logging (syslog=n) or reroute it to another
+  log host (syslogserver=HOSTNAME). These configuration options are
+  only set during the installation or update of an UCC system.
+</p></div><div class="section" title="4.7. SSH access to UCC clients"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="config:ssh"></a>4.7. SSH access to UCC clients</h2></div></div></div><p>
+  As standard, an SSH login is possible on UCC clients. The login is
+  performed with the local root account or a domain account.
+</p></div><div class="section" title="4.8. Bootsplash startup animation"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="config:bootsplash"></a>4.8. Bootsplash startup animation</h2></div></div></div><p>
+  A startup animation (bootsplash) is displayed when a UCC client is started. This
+  can be hidden by pressing the Escape key to diagnose the startup in
+  full details.
+</p><p>
+  The Univention Configuration Registry variable <code class="envar">ucc/pxe/bootsplash</code> on the UCC PXE
+  server can be set to <span class="emphasis"><em>no</em></span> to deactivate it
+  completely.
+</p></div></div><div class="chapter" title="Chapter 5. Hardware configuration of UCC systems"><div class="titlepage"><div><div><h2 class="title"><a id="hardware:chapter"></a>Chapter 5. Hardware configuration of UCC systems</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#hardware:network">5.1. Network configuration</a></span></dt><dt><span class="section"><a href="#hardware:usbthin">5.2. USB mass storage access on thin clients</a></span></dt><dt><span class="section"><a href="#hardware:sound">5.3. Sound support</a></span></dt><dt><span class="section"><a href="#hardware:dualdisplay">5.4. Configuration of dual-display setups</a></span></dt></dl></div><div class="section" title="5.1. Network configuration"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="hardware:network"></a>5.1. Network configuration</h2></div></div></div><p>
+  The network configuration of UCC clients is generally performed
+  via DHCP. The configuration of MAC and IP addresses, etc., is
+  performed in the UCS management system, see <a class="xref" href="#rollout:administrationumc" title="3.1. Administration of UCC systems in the Univention Management Console">Section 3.1</a>.
+</p><p>
+  The network interfaces of a joined UCC client are managed via the
+  Network Manager. Here you can also configure additional connections
+  such as a VPN/Wifi access or a static IP address.
+</p><p>
+  During the PXE live boot of a UCC system, the primary interface
+  (eth0) is not managed by Network Manager.
+</p><p>
+  While offline operation is supported for images running the desktop
+  image, thin clients require a permanenent network connection.
+</p><p>
+  The wireless regulatory domain is set to <span class="emphasis"><em>00</em></span> as standard. With some
+  access points, it can be necessary to configure this to the national
+  code using the command <code class="command">iw reg set</code>.
+</p></div><div class="section" title="5.2. USB mass storage access on thin clients"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="hardware:usbthin"></a>5.2. USB mass storage access on thin clients</h2></div></div></div><p>
+  The <span class="emphasis"><em>univention-ucc-remote-mount</em></span> package
+  installed as standard allows access to the USB-CD/DVD drives, hard
+  drives and sticks connected to a UCC thin client. If a USB mass
+  storage device is connected to the client, a local mount is
+  performed via a udev rule. The terminal service solutions then
+  provide this directory through the terminal session. The additional
+  component <code class="command">cdpinger</code> is used for the integration of
+  USB-CDROM/DVDROMs. VFAT, NTFS and ext* file systems are mounted.
+</p><p>
+  The local mount points are made available in UCC, Windows terminal
+  server and XenApp terminal server sessions if the option <span class="guimenu">Allow
+  access to local mass storage</span> is activated in the <span class="guimenu">UCC client
+  configuration</span> policy in the UMC computer management.
+</p><p>
+  In the standard setting, data on thin clients are cached for up to a
+  tenth of a second before they are written on the USB medium. The
+  behaviour can be adapted with the Univention Configuration Registry variables
+  <code class="envar">ucc/sysctl/dirtywritebackcentisecs</code> and
+  <code class="envar">ucc/sysctl/dirtyexpiredcentisecs</code>.
+</p><p>
+  Setting the Univention Configuration Registry variable <code class="envar">ucc/mount/sync</code> to
+  <span class="emphasis"><em>true</em></span> allows all changes to be written
+  directly. This generally leads to considerable performance losses.
+</p><p>
+  The access to the mounted USB media is described in the
+  corresponding sections on terminal services (see <a class="xref" href="#terminalservices:chapter" title="Chapter 9. Terminal services with UCC">Chapter 9</a>).
+</p></div><div class="section" title="5.3. Sound support"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="hardware:sound"></a>5.3. Sound support</h2></div></div></div><p>
+  The sound output is activated in UCC clients as standard. Sound is
+  also output in terminal sessions:
+
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>In RDP sessions to Windows terminal servers,
+	audio is transported via an RDP channel.</p></li><li class="listitem"><p>In sessions to UCC terminal servers, the remote
+	sound output is redirected via PulseAudio. </p></li><li class="listitem"><p>In Citrix XenApp sessions, sound output is
+	transmitted via the Citrix protocol.</p></li></ul></div><p>
+</p><p>
+  Information of the configuration of the sound output in terminal
+  services can be found in <a class="xref" href="#terminalservices:chapter" title="Chapter 9. Terminal services with UCC">Chapter 9</a>.
+</p></div><div class="section" title="5.4. Configuration of dual-display setups"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="hardware:dualdisplay"></a>5.4. Configuration of dual-display setups</h2></div></div></div><p>
+  UCC uses the Xorg autodetection for the configuration of the graphics
+  adapter. This automatically determines the suitable
+  driver for the graphics card and the appropriate display
+  parameters.
+</p><div class="figure"><a id="idp7069840"></a><p class="title"><strong>Figure 5.1. Configuring dual monitor display</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="60%"><tr><td><img src="illustrations/ucc-hardware-policy.png" width="100%" alt="Configuring dual monitor display" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+  Dual-display setups can be configured using a <span class="guimenu">UCC
+  client configuration</span> computer policy in the UCS management
+  system:
+</p><p>
+  To configure a dual-display setup, at least the position of the
+  primary display relative to the secondary display must be specified
+  in the <span class="guimenu">Position of secondary display relative to the primary</span>
+  field:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Left of primary display</p></li><li class="listitem"><p>Right of primary display</p></li><li class="listitem"><p>Above primary display</p></li><li class="listitem"><p>Below primary display</p></li></ul></div><p>
+</p><p>
+  Setting the resolutions via the <span class="guimenu">Resolution of primary
+  display</span> and <span class="guimenu">Resolution of secondary
+  display</span> fields is optional: If they are not set, they are
+  assigned the recommended value (<code class="command">xrandr --auto</code>). The values for
+  width and height should be separated by an <span class="emphasis"><em>x</em></span>, e.g.,
+  <span class="emphasis"><em>1024x768</em></span>.
+</p><p>
+  The Xorg-internal names of the displays are also automatically detected and listed
+  alphabetically. In this way, the order is always fixed. If
+  automatic determination of the display names is used, a message like
+  the one below is written in the syslog:
+
+  </p><pre class="programlisting">
+Dec 17 13:12:34 x201 logger: The display settings for x201 were
+queried automatically, if you want to set them through a policy 
+use the display names LVDS1 and VGA1
+  </pre><p>
+  
+  These values can then be specified in the <span class="guimenu">Name of primary
+  display</span> and <span class="guimenu">Name of secondary
+  display</span> fields.
+</p><p>
+  For special cases such as the configuration of a third display, a
+  local display setup script can be configured. This is done by
+  setting the UCR variable Univention Configuration Registry variable <code class="envar">ucc/displayscript</code> to a script,
+  which is then run for the Xorg configuration instead of
+  the standard script.
+</p></div></div><div class="chapter" title="Chapter 6. User logins"><div class="titlepage"><div><div><h2 class="title"><a id="logins:chapter"></a>Chapter 6. User logins</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#logins:lightdm">6.1. User logins on LightDM</a></span></dt><dd><dl><dt><span class="section"><a href="#logins:sessions">6.1.1. Session selection</a></span></dt><dt><span class="section"><a href="#logins:autologin">6.1.2. Configuration of an automatic login and session selection</a></span></dt><dt><span class="section"><a href="#logins:sessionscripts">6.1.3. Session scripts</a></span></dt><dt><span class="section"><a href="#logins:environmentvars">6.1.4. Configuration of environment variables and execution of scripts during user login</a></span></dt></dl></dd><dt><span class="section"><a href="#logins:localcaching">6.2. Local caching of user and group information</a></span></dt><dt><span class="section"><a href="#logins:pwcaching">6.3. Logins to offline UCC systems / password credentials caching</a></span></dt><dt><span class="section"><a href="#logins:firefox">6.4. Firefox session script</a></span></dt><dt><span class="section"><a href="#logins:sessionobjects">6.5. Registration of sessions in the Univention Management Console</a></span></dt></dl></div><div class="section" title="6.1. User logins on LightDM"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="logins:lightdm"></a>6.1. User logins on LightDM</h2></div></div></div><div class="section" title="6.1.1. Session selection"><div class="titlepage"><div><div><h3 class="title"><a id="logins:sessions"></a>6.1.1. Session selection</h3></div></div></div><p>
+	UCC uses LightDM as its login manager. When the UCC client is started,
+	a login mask is shown. If the UCC client is not yet joined, an
+	automatic login is performed with a temporary guest user.  The user can choose between different session
+	types. LightDM can optionally also be configured in such a way that a
+	session is started automatically without additional user login, see
+	<a class="xref" href="#logins:autologin" title="6.1.2. Configuration of an automatic login and session selection">Section 6.1.2</a>
+  </p><div class="figure"><a id="idp7087552"></a><p class="title"><strong>Figure 6.1. User login at LightDM</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="80%"><tr><td><img src="illustrations/ucc-lightdm.png" width="100%" alt="User login at LightDM" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+	If a password has expired or a user is scheduled for a password
+	change the next time she logs in, the password change is performed
+	in the scope of the login. Password changes are currently not
+	possible when using the RDP session script, this will be fixed in
+	a future release. 
+  </p><p>
+	It must be noted that although the Univention Management Console permits the creation
+	of users with a space in their user name - as these user names
+	are legitimate in Active Directory domains - it is not
+	possible to logon to UCC clients with these user names.
+  </p><p>
+	The last used user session is cached per client.
+  </p><div class="figure"><a id="idp7132272"></a><p class="title"><strong>Figure 6.2. Session selection at LightDM</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="40%"><tr><td><img src="illustrations/ucc-session-selection.png" width="100%" alt="Session selection at LightDM" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+	The following session scripts are supported in UCC 1.0:
+	</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Univention Corporate Client based on KDE (on a
+	  local system and as a terminal service) (<a class="xref" href="#terminalservices:ucc" title="9.1. UCC terminal services">Section 9.1</a>, <a class="xref" href="#desktop:chapter" title="Chapter 7. Univention Corporate Client desktop environment">Chapter 7</a>)  </p></li><li class="listitem"><p>Citrix XenApp (<a class="xref" href="#terminalservices:citrix" title="9.3. Citrix XenApp terminal services">Section 9.3</a>) </p></li><li class="listitem"><p>Microsoft Windows Terminal Server (<a class="xref" href="#terminalservices:rdp" title="9.2. RDP terminal services">Section 9.2</a>) </p></li><li class="listitem"><p>Firefox (with direct login to a configured website) (<a class="xref" href="#logins:firefox" title="6.4. Firefox session script">Section 6.4</a>) </p></li><li class="listitem"><p>LXDE (Lightweight X11 Desktop Environment) (<a class="xref" href="#desktop:chapter" title="Chapter 7. Univention Corporate Client desktop environment">Chapter 7</a>) </p></li></ul></div><p>
+  </p></div><div class="section" title="6.1.2. Configuration of an automatic login and session selection"><div class="titlepage"><div><div><h3 class="title"><a id="logins:autologin"></a>6.1.2. Configuration of an automatic login and session selection</h3></div></div></div><p>
+	Instead of an interactive login, it is also possible to configure
+	an automatic login with the guest user. This is useful for a
+	UCC client which is only used for access to terminal services or
+	to a website (e.g., for kiosk systems).
+  </p><p>
+	This is done by setting the Univention Configuration Registry variable <code class="envar">lightdm/autologin</code> to <span class="emphasis"><em>yes</em></span>
+	and <code class="envar">lightdm/autologin/session</code> to a session script. The session
+	scripts can be found in the <code class="filename">/usr/share/xsessions</code> directory, in
+	other words, <span class="emphasis"><em>RDP</em></span> for example.
+  </p><p>
+	In the case described above, the LightDM login dialogue is no
+	longer shown. The session can alternatively also be specified in
+	the user management of the Univention Management Console. This is performed in the
+	<span class="guimenu">Force this session for user logins</span> input field in the <span class="emphasis"><em>UCC user
+	session</em></span> policy: Independently of the selection of the session
+	script during the LightDM user login, the login is always
+	performed with the predefined session. The sessions available in
+	the policy can be extended, see <a class="xref" href="#logins:sessionobjects" title="6.5. Registration of sessions in the Univention Management Console">Section 6.5</a>.
+  </p></div><div class="section" title="6.1.3. Session scripts"><div class="titlepage"><div><div><h3 class="title"><a id="logins:sessionscripts"></a>6.1.3. Session scripts</h3></div></div></div><p>
+	Scripts can be run at different times during session setup and
+	when exiting the session. All the scripts which can be run in the
+	following directories are run alphabetically with root rights:
+
+	</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><code class="filename">/etc/lightdm/session-setup</code>:
+	  Is run before the session script is executed.</p></li><li class="listitem"><p><code class="filename">/etc/lightdm/session-cleanup</code>: Is run
+	  after the session script is exited.</p></li><li class="listitem"><p><code class="filename">/etc/lightdm/display-setup</code>: Is run if
+	  a greeter session is run.</p></li><li class="listitem"><p><code class="filename">/etc/lightdm/greeter-setup</code>: Is run if
+	  a greeter session is started.</p></li></ul></div><p>
+  </p></div><div class="section" title="6.1.4. Configuration of environment variables and execution of scripts during user login"><div class="titlepage"><div><div><h3 class="title"><a id="logins:environmentvars"></a>6.1.4. Configuration of environment variables and execution of scripts during user login</h3></div></div></div><p>
+	A <span class="guimenu">UCC desktop settings</span> user policy can be used
+	to configure environment variables in the user session. All the
+	variables set with the <span class="guimenu">Variable</span> and
+	<span class="guimenu">Value</span> options are then set in the user session
+	scripts.
+  </p><p>
+	The settings set via the <span class="guimenu">Desktop logon scripts</span>
+	and <span class="guimenu">Desktop logout scripts</span> settings are run
+	before and after the user login with the rights of the accessing
+	user.
+  </p><p>
+	The scripts must be specified as absolute file names and must not
+	contain any spaces. Also, the scripts must be executable.
+  </p></div></div><div class="section" title="6.2. Local caching of user and group information"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="logins:localcaching"></a>6.2. Local caching of user and group information</h2></div></div></div><p>
+	UCC systems store user and group information in local files
+	integrated via an NSS module. In combination with caching of the
+	login credentials (see <a class="xref" href="#logins:pwcaching" title="6.3. Logins to offline UCC systems / password credentials caching">Section 6.3</a>),
+	this allows operation of UCC clients
+	without a connection to an LDAP server of the UCS domain.
+  </p><p>
+	The user and group information is extracted via a listener module
+	(<code class="filename">ucc-nss-passwd.py</code>) on the UCS-based UCC
+	servers into a <code class="filename"> passwd</code> and a
+	<code class="filename">group</code> file.
+  </p><p>
+	These files are read from UCC systems via an NSS module
+	(libnss-extrausers). The user and group data are downloaded in
+	two ways:
+	</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>The current files are downloaded when the UCC
+	  client is started.</p></li><li class="listitem"><p>If the user is not yet present on the UCC
+	  system, the download is also initiated during login via the PAM
+	  stack.</p></li></ul></div><p>
+  </p><p>
+	As standard, all of the users in the domain are always copied to
+	the client. For special cases - such as notebooks, on which
+	only a few users should be present - the Univention Configuration Registry variable
+	<code class="envar">ucc/nss/update/hostspecific</code> should be set to
+	<span class="emphasis"><em>true</em></span>. In this case, the download script for
+	the user data on the UCS server searches for the
+	<code class="filename">/var/cache/ucc/HOSTNAME.passwd</code> and
+	<code class="filename">/var/cache/ucc/HOSTNAME.group</code> files in which
+	system-specific user data can be stored.
+  </p></div><div class="section" title="6.3. Logins to offline UCC systems / password credentials caching"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="logins:pwcaching"></a>6.3. Logins to offline UCC systems / password credentials caching</h2></div></div></div><p>
+	Kerberos authentication is performed on UCC systems with a network
+	connection.
+  </p><p>
+	In addition, successful login attempts are cached via the PAM
+	module pam_ccreds, i.e., if a user has successfully logged in once
+	with an active network connection, she can also continue to log in
+	with this password when working offline.
+  </p></div><div class="section" title="6.4. Firefox session script"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="logins:firefox"></a>6.4. Firefox session script</h2></div></div></div><p>
+	The Firefox session script starts a Firefox web browser in a fullscreen session. If the
+	Univention Configuration Registry variable <code class="envar">firefox/startsite</code> is set to an URL, the
+	website is automatically opened.
+  </p></div><div class="section" title="6.5. Registration of sessions in the Univention Management Console"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="logins:sessionobjects"></a>6.5. Registration of sessions in the Univention Management Console</h2></div></div></div><p>
+	Sessions are registered in the Univention Management Console. New sessions can be
+	created by selecting the UMC module <span class="guimenu">LDAP
+	directory</span> and adding a <span class="guimenu">UCC session
+	script</span> object below <span class="emphasis"><em>cn=univention,cn=UCC,dc=Session</em></span>.
+  </p></div></div><div class="chapter" title="Chapter 7. Univention Corporate Client desktop environment"><div class="titlepage"><div><div><h2 class="title"><a id="desktop:chapter"></a>Chapter 7. Univention Corporate Client desktop environment</h2></div></div></div><p>
+  Univention Corporate Client offers a desktop environment based on
+  the KDE Plasma desktop in version 4.8. It offers a compilation of
+  software components suitable for typical business applications.
+</p><div class="figure"><a id="idp7194368"></a><p class="title"><strong>Figure 7.1. Univention Corporate Client desktop</strong></p><div class="figure-contents"><div><table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="80%"><tr><td><img src="illustrations/ucc-desktop.png" width="100%" alt="Univention Corporate Client desktop" /></td></tr></table></div></div></div><br class="figure-break" /><p>
+  Extensive documentation and manuals for all the KDE components can
+  be found at <code class="uri">http://docs.kde.org/</code>.
+</p><p>
+  LibreOffice is the core application of the Univention Corporate
+  Client and offers the full scope of functions of a modern Office
+  suite. In addition to standardised, open formats such as the
+  OpenDocument format, OpenOffice.org can also be used to open and
+  edit documents created in other office applications such as
+  Microsoft Office. To ensure uncomplicated distribution, documents can
+  also be easily exported in PDF format.
+</p><p>
+  Extensive documentation on Libreoffice can be found at
+  <a class="ulink" href="http://www.libreoffice.org/get-help/documentation/" target="_top">http://www.libreoffice.org/get-help/documentation/</a>.
+</p><p>
+  Mozilla Firefox is also supplied for accessing websites. The Adobe
+  Flash plugin is integrated for the playback of Flash animations.
+</p><p>
+  Thin clients only offer a slimmed down desktop environment based on
+  LXDE. LXDE is only provided for simple administrative environments.
+</p></div><div class="chapter" title="Chapter 8. Generation of adapted UCC images"><div class="titlepage"><div><div><h2 class="title"><a id="imagegen:chapter"></a>Chapter 8. Generation of adapted UCC images</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#imagegen:toolkit">8.1. Image toolkit</a></span></dt><dt><span class="section"><a href="#imagegen:params">8.2. Overview of image parameters</a></span></dt><dt><span class="section"><a href="#imagegen:crypto">8.3. Configuring an encrypted disk</a></span></dt></dl></div><div class="section" title="8.1. Image toolkit"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="imagegen:toolkit"></a>8.1. Image toolkit</h2></div></div></div><p>
+	Beside the official UCC images provided by Univention it is
+	also possible to build local images. These images are generated
+	via a toolkit run on a UCS server installed on a UCS domain controller. The image generation requires a
+	considerable amount of space; we recommend ensuring that there
+	are at least 100 GB of free disk space available on the system.
+  </p><p>
+	On systems on which an image is integrated, two conditions
+	currently need to be fulfilled as otherwise disruptions might
+	occur in the image build:
+
+	</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Bind must be installed. This is the case as
+	  standard on UCS domain controllers.</p></li><li class="listitem"><p>A DNS forwarder must be configured with the
+	  Univention Configuration Registry variable <code class="envar">dns/forwarder1</code>.</p></li></ul></div><p>
+  </p><p>
+	Image generation is performed with the
+	<code class="command">ucc-image</code> tool in the
+	<span class="emphasis"><em>ucc-image-toolkit</em></span> package. The images are
+	defined via a configuration file. In addition to the image, the
+	image toolkit also creates an initial ram disk (initrd) and a kernel. An ISO image
+	can also optionally be created. In addition, a spec file is
+	generated, which is used when downloading a UCC image (see <a class="xref" href="#installation:imagemanagement:download" title="2.3.1. Downloading UCC images">Section 2.3.1</a>).
+  </p><p>
+	The configurations of the two official UCC images are also
+	provided in this package and can be used as templates for your own
+	configurations:
+	</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p> <code class="filename">/usr/share/doc/ucc-image-toolkit/example/ucc-desktop.cfg</code></p></li><li class="listitem"><p> <code class="filename">/usr/share/doc/ucc-image-toolkit/example/ucc-thinclient.cfg</code></p></li></ul></div><p>
+  </p><p>
+	The images are created with the <code class="command">ucc-image</code>
+	command as the <span class="emphasis"><em>root</em></span> user.
+  </p><p>
+	The parameter <span class="emphasis"><em>-c</em></span> must be used to specify a
+	configuration file. If the parameter <span class="emphasis"><em>--compress</em></span> is set, the image
+	is compressed with xz. The option <span class="emphasis"><em>-t</em></span> can be used to specify a
+	target directory. After image generation the images need to be copied to the directory
+	<code class="filename">/var/lib/univention-client-boot/</code> on the UCC servers. The join script
+	needs to be copied to
+	<code class="filename">/usr/lib/univention-install</code>. After that,
+	<code class="command">univention-run-join-script</code> needs to be executed.
+  </p><p>
+	The image generation is logged in <code class="filename">/var/log/univention/ucc-image-toolkit.log</code>. The
+	option <span class="emphasis"><em>-l</em></span> can also be used to specify a different log file.
+  </p></div><div class="section" title="8.2. Overview of image parameters"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="imagegen:params"></a>8.2. Overview of image parameters</h2></div></div></div><p>
+	The following parameters can be used. The configuration files can
+	be commented with a hash (#):
+	</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p> <span class="emphasis"><em>arch</em></span>: The system
+	  architecture, i386 or amd64. The official UCC images are
+	  provided as i386. When building an image for amd64
+	  <span class="emphasis"><em>linux-image-generic</em></span> needs to be used as the
+	  kernel package.</p></li><li class="listitem"><p> <span class="emphasis"><em>version</em></span>: The Ubuntu code
+	  name on which the image is based. It must be taken into account
+	  that the Univention modifications are always only compiled and
+	  tested for a specific release, in the case of UCC 1.0 for Ubuntu 12.04
+	  (precise). </p></li><li class="listitem"><p> <span class="emphasis"><em>hostname</em></span>: The standard host
+	  name of an unjoined UCC client. The name is set to the name
+	  configured in the LDAP in the scope of the domain join. </p></li><li class="listitem"><p> <span class="emphasis"><em>domainname</em></span>: The standard
+	  domain name of an unjoined UCC client. The domain is set in the
+	  scope of the domain join. </p></li><li class="listitem"><p> <span class="emphasis"><em>root_password</em></span>: The
+	  SHA-512 hash of the standard root password. If the official
+	  image is loaded from the Univention server, it is adapted during
+	  the download, see <a class="xref" href="#installation:imagemanagement:download" title="2.3.1. Downloading UCC images">Section 2.3.1</a>. To generate an individual hash, the
+	  <span class="emphasis"><em>whois</em></span> package must be installed. The command <code class="command">mkpasswd -H sha-512
+	  PASSWORD</code> can be used to generate the hash
+	  value. </p></li><li class="listitem"><p> <span class="emphasis"><em>mirror</em></span>: Configures the
+	  mirror from which the Ubuntu packages are downloaded. </p></li><li class="listitem"><p> <span class="emphasis"><em>updates, security,
+	  backports</em></span>: Here, true/false can be used to specify
+	  whether, in addition to the standard release, updated bugfix
+	  packages (updates), security updates or backports should also be
+	  integrated into the image. </p></li><li class="listitem"><p> <span class="emphasis"><em>universe, multiverse</em></span>:
+	  These options (true/false) integrate additional archive suites
+	  from Ubuntu, see <a class="xref" href="#ubuntu-repositories" title="Repositories Ubuntu">[ubuntu-repositories]</a> for details. </p></li><li class="listitem"><p> <span class="emphasis"><em>ucc</em></span>: Installs some basic
+	  packages required during image generation.</p></li><li class="listitem"><p> <span class="emphasis"><em>sources_list</em></span>: Additional
+	  apt sources can be integrated here. </p></li><li class="listitem"><p> <span class="emphasis"><em>packages_no_recommends,
+	  packages</em></span>: In the Debian package format, packages can
+	  declare recommendations for packages which should be
+	  additionally installed during installation of a package. In
+	  these options, packages can be specified which should be
+	  installed with or without their recommended packages.</p></li><li class="listitem"><p> <span class="emphasis"><em>ucr_variables</em></span>: Here one
+	  can define Univention Configuration Registry variables which are then set directly in the
+	  installed image.</p></li><li class="listitem"><p> <span class="emphasis"><em>version</em></span>: Here one can
+	  specify a version for the image which, among other things, is
+	  also displayed in the image selection in the Univention Management Console. </p></li><li class="listitem"><p> <span class="emphasis"><em>size</em></span>: The size of the
+	  image in megabytes. </p></li><li class="listitem"><p> <span class="emphasis"><em>filesystem</em></span>: The file
+	  system used; it is recommended to retain ext4 here.</p></li><li class="listitem"><p> <span class="emphasis"><em>name</em></span>: The name of the
+	  image.</p></li><li class="listitem"><p> <span class="emphasis"><em>initramfs_modules</em></span>: You
+	  can specify a list of kernel modules here which should be loaded
+	  in the initrd.</p></li><li class="listitem"><p> <span class="emphasis"><em>kernel, initrd</em></span>: The Linux
+	  kernel of a UCC system is saved separately from the image. The
+	  file names are defined here.</p></li><li class="listitem"><p> <span class="emphasis"><em>iso</em></span>: If a name of a file
+	  is defined here, a bootable ISO image is also generated with
+	  which can be booted from USB or a DVD drive.</p></li><li class="listitem"><p> <span class="emphasis"><em>device</em></span>: Specifies which
+	  device should be partitioned, e.g., hda or sda. <span class="emphasis"><em>auto</em></span> establishes
+	  the first available disk. </p></li><li class="listitem"><p> <span class="emphasis"><em>continuation_prompt</em></span> If
+	  this option is set to true, a prompt appears to verify whether
+	  partitioning should be performed. </p></li><li class="listitem"><p> <span class="emphasis"><em>continuation_message_top,
+	  continuation_message, continuation_dialog,
+	  continuation_dialog_yes, continuation_dialog_no,
+	  continuation_dialog_error</em></span>: Different dialogue texts
+	  during partitioning which can be adapted or compiled. </p></li><li class="listitem"><p> <span class="emphasis"><em>remove_partitions</em></span>: Here
+	  you can specify a list of partitions which should be removed
+	  during partitioning. Alternatively, <span class="emphasis"><em>auto</em></span>
+	  removes all partitions. </p></li><li class="listitem"><p> <span class="emphasis"><em>partition_start</em></span>: A whole
+	  number value in megabytes, which specifies where the
+	  partitioning should start. </p></li><li class="listitem"><p> <span class="emphasis"><em>partition&lt;NUMBER&gt;_name</em></span>: The
+	  name of the partition. </p></li><li class="listitem"><p> <span class="emphasis"><em>partition&lt;NUMBER&gt;_size</em></span>: The
+	  size of the image. Here you can either specify a numerical value
+	  in megabytes, a percentage or <span class="emphasis"><em>expand</em></span>. expand then uses the
+	  remaining available space on the disk. </p></li><li class="listitem"><p>
+		<span class="emphasis"><em>partition&lt;NUMBER&gt;_fs</em></span>: The file
+		system to be used, e.g., ext4. </p></li><li class="listitem"><p>
+		<span class="emphasis"><em>partition&lt;NUMBER&gt;_mountpoint</em></span>: The
+		directory under which the file system should be
+		mounted. </p></li><li class="listitem"><p>
+		<span class="emphasis"><em>partition&lt;NUMBER&gt;_image_mount</em></span>: Uses
+		true/false to specify whether the file system should be
+		mounted in the image as standard. </p></li><li class="listitem"><p>
+		<span class="emphasis"><em>partition&lt;NUMBER&gt;_copy_files</em></span>:
+		Specifies whether the partition should be copied during an
+		image update. Usually only required for the boot
+		partition. </p></li></ul></div><p>
+  </p></div><div class="section" title="8.3. Configuring an encrypted disk"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="imagegen:crypto"></a>8.3. Configuring an encrypted disk</h2></div></div></div><p>
+	A script can be mounted for further partitioning steps such as
+	setting up an encrypted hard drive.
+  </p><p>
+	The <span class="emphasis"><em>ucc-image-toolkit</em></span> package contains the
+	file <code class="filename">/usr/share/doc/ucc-image-toolkit/example/custom_partition.example</code>,
+	which can be used to set up an encrypted hard disk partition, for
+	example. The necessary steps for the integration of the script in
+	the initrd can be found at the beginning of the script.
+  </p></div></div><div class="chapter" title="Chapter 9. Terminal services with UCC"><div class="titlepage"><div><div><h2 class="title"><a id="terminalservices:chapter"></a>Chapter 9. Terminal services with UCC</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#terminalservices:ucc">9.1. UCC terminal services</a></span></dt><dd><dl><dt><span class="section"><a href="#terminalservices:ucc:installation">9.1.1. Installation</a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:assign">9.1.2. Assignment of users to terminal servers</a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:graphics">9.1.3. Configuration of graphic transmission</a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:timeouts">9.1.4. Session timeouts</a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:sound">9.1.5. Sound output </a></span></dt><dt><span class="section"><a href="#terminalservices:ucc:usb">9.1.6. Access to USB mass storage devices on the thin client</a></span></dt></dl></dd><dt><span class="section"><a href="#terminalservices:rdp">9.2. RDP terminal services</a></span></dt><dd><dl><dt><span class="section"><a href="#terminalservices:rdp:assign">9.2.1. Assignment of the terminal server and the Windows domain</a></span></dt><dt><span class="section"><a href="#terminalservices:rdp:usb">9.2.2. Access to USB mass storage devices on the thin client</a></span></dt><dt><span class="section"><a href="#terminalservices:rdp:crypto">9.2.3. Networklevel authentication / certificate approval</a></span></dt><dt><span class="section"><a href="#terminalservices:rdp:sound">9.2.4. Sound output in the RDP session</a></span></dt><dt><span class="section"><a href="#terminalservices:rdp:furtheropts">9.2.5. Further options for the RDP session</a></span></dt></dl></dd><dt><span class="section"><a href="#terminalservices:citrix">9.3. Citrix XenApp terminal services</a></span></dt><dd><dl><dt><span class="section"><a href="#terminalservices:citrix:installation">9.3.1. Installation</a></span></dt><dt><span class="section"><a href="#terminalservices:citrix:soundusb">9.3.2. Sound transmission / Access to USB storage devices on the thin client</a></span></dt><dt><span class="section"><a href="#terminalservices:citrix:flash">9.3.3. Accelerating the playback of Flash videos</a></span></dt></dl></dd></dl></div><p>
+  In addition to the operation of stationary UCC clients, UCC also supports
+  access to terminal services. Login is supported to:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>UCC terminal servers</p></li><li class="listitem"><p>Windows terminal services via the RDP protocol</p></li><li class="listitem"><p>Citrix XenApp</p></li></ul></div><p>
+</p><p>
+  There are three possibilities for configuring access to a terminal service:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>An interactive selection of the session by the
+	user during login to LightDM (see <a class="xref" href="#logins:sessions" title="6.1.1. Session selection">Section 6.1.1</a>)</p></li><li class="listitem"><p>A user login to LightDM where a session is
+	forcibly specified by the administrator</p></li><li class="listitem"><p>Automatic session selection where login is
+	performed with a guest user. In this case, no login dialogue is
+	shown.</p></li></ul></div><p>
+</p><div class="section" title="9.1. UCC terminal services"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="terminalservices:ucc"></a>9.1. UCC terminal services</h2></div></div></div><div class="section" title="9.1.1. Installation"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:ucc:installation"></a>9.1.1. Installation</h3></div></div></div><p>
+  The UCC standard desktop is based on KDE Plasma and can also be
+  provided for thin clients as a terminal server.
+</p><p>
+  As a terminal server, a UCC system is setup with the standard
+  desktop image. Then the
+  <span class="emphasis"><em>univention-ucc-application-server</em></span> package is
+  installed and <code class="command">univention-run-join-scripts</code> must be run. UCC
+  terminal servers are registered as a service in the UCS management
+  system.
+</p><p>
+  The access to UCC terminal servers is performed with the
+  session script <span class="emphasis"><em>UCC-remote</em></span>. All applications are run on the UCC
+  terminal server and only the graphic output transmitted to the thin
+  client.
+</p></div><div class="section" title="9.1.2. Assignment of users to terminal servers"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:ucc:assign"></a>9.1.2. Assignment of users to terminal servers</h3></div></div></div><p>
+  The UCC terminal server to be used can be assigned via a
+  <span class="emphasis"><em>UCC user session</em></span> user policy. One or several
+  servers can be specified in the <span class="guimenu">UCC terminal server</span> input field. If
+  more than one server is configured, the server with the lowest
+  system load is selected during login.
+</p></div><div class="section" title="9.1.3. Configuration of graphic transmission"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:ucc:graphics"></a>9.1.3. Configuration of graphic transmission</h3></div></div></div><p>
+  The screen content output can be transmitted in two different ways,
+  which must be compared and selected depending on the application
+  scenario and the available thin client hardware:
+
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Transmission of the data via SSH-tunnelled X
+	forwarding </p></li><li class="listitem"><p>Transmission of the data via pure X forwarding </p></li></ul></div><p>
+</p><p>
+  The transmission via SSH offers the advantage of an encrypted
+  transmission and the optional compression of the data considerably
+  reduces the bandwidth requirement. However, data encryption can
+  cause bottlenecks in cases such as streaming videos, which require
+  large bandwidths. The SSH-tunnelled access is also not suitable for
+  use with very old thin client hardware. 
+</p><p>
+  The standard setting is transmission via SSH-tunnelled X forwarding;
+  it is possible to switch back to pure X forwarding for older hardware. To
+  enable X forwarding, the Univention Configuration Registry variable <code class="envar">lightdm/xserver/allowtcp</code> must be
+  set to <span class="emphasis"><em>true</em></span> on UCC clients and LightDM restarted.
+</p><p>
+  The encryption algorithms used by SSH can be adapted via the
+  Univention Configuration Registry variable <code class="envar">ucc/session/remote/ssh/cipher</code>. SSH
+  compression can be disabled with the Univention Configuration Registry variable
+  <code class="envar">ucc/session/remote/ssh/compression</code>.
+</p><p>
+  As standard, UCC uses a KDE profile optimised for remote operation
+  on terminal servers, in which some graphic-intensive effects are
+  disabled. The use of this profile can be disabled per UCC terminal
+  server by setting the Univention Configuration Registry variable
+  <code class="envar">ucc/session/remote/profile</code> to false.
+</p><p>
+  The integration package <span class="emphasis"><em>libreoffice-kde</em></span>
+  (installed as standard) provides improved integration of LibreOffice
+  in the KDE desktop environment. However, these integration packages
+  also result in a considerably increased graphic throughput when
+  browsing the menus. To reduce the data quantities transmitted in terminal
+  service operation, <span class="emphasis"><em>libreoffice-kde</em></span> can be uninstalled on UCC
+  terminal services. 
+</p></div><div class="section" title="9.1.4. Session timeouts"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:ucc:timeouts"></a>9.1.4. Session timeouts</h3></div></div></div><p>
+  The terminal server and the client send keep alive messages
+  regularly (by default every 100 seconds). If the client has not been
+  reached after the third attempt (i.e., 300 seconds = five minutes),
+  the server terminates the connection (and vice versa: the client
+  also terminates the connection if the server cannot be reached). The
+  value for the test on the server can be set using the Univention Configuration Registry variable
+  <code class="envar">sshd/clientAliveInterval</code> and on the client using the
+  Univention Configuration Registry variable <code class="envar">ucc/session/remote/session/timeout</code>.
+</p></div><div class="section" title="9.1.5. Sound output"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:ucc:sound"></a>9.1.5. Sound output </h3></div></div></div><p>
+  Sound output in the terminal server session is transmitted via the
+  sound server PulseAudio. The sound transmission can be disabled by
+  setting the Univention Configuration Registry variable
+  <code class="envar">ucc/session/remote/disable-sound</code> to
+  <span class="emphasis"><em>yes</em></span> on the UCC client.
+</p></div><div class="section" title="9.1.6. Access to USB mass storage devices on the thin client"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:ucc:usb"></a>9.1.6. Access to USB mass storage devices on the thin client</h3></div></div></div><p>  
+  A USB mass storage device attached on the thin client (see <a class="xref" href="#hardware:usbthin" title="5.2. USB mass storage access on thin clients">Section 5.2</a>) is
+  integrated via a KDE autostart script during login. This generates a
+  KDE file bookmark, which creates a connection to the mount directory
+  on the thin client via the FISH protocol. This bookmark is displayed
+  as a separate drive in the file manager Dolphin, for example. In
+  applications which do not use the KDE dialogues (e.g., Firefox), the
+  files firstly need to be saved in another directory and then copied
+  to the USB stick in Dolphin.
+</p><p>  
+  The authentication of the access is performed with Kerberos; there
+  is no need to enter a password manually. During the first access to
+  the client, the SSH host key must be confirmed.
+</p></div></div><div class="section" title="9.2. RDP terminal services"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="terminalservices:rdp"></a>9.2. RDP terminal services</h2></div></div></div><p>  
+  UCC supports login to Windows 2003-based and Windows 2008R2-based
+  Windows terminal servers via the RDP protocol. The Windows terminal
+  servers can be joined in the UCS domain or alternatively the access
+  can be performed against an external domain.
+</p><p>  
+  The login is performed via the <span class="emphasis"><em>RDP</em></span> session script installed as
+  standard, which uses <code class="command">freerdp</code> for the access. The password entered by
+  the user during login to LightDM is cached by a PAM module and
+  automatically provided to Freerdp, i.e., it is not necessary to
+  enter it again when logging in to the terminal server.
+</p><p>  
+  The RDP client Remmina is provided as a client with which an RDP connection can be
+  configured and started on the desktop.
+</p><div class="section" title="9.2.1. Assignment of the terminal server and the Windows domain"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:rdp:assign"></a>9.2.1. Assignment of the terminal server and the Windows domain</h3></div></div></div><p>  
+  The terminal server and the Windows domain of the terminal server
+  can be specified per user via a <span class="emphasis"><em>UCC user
+  session</em></span> user policy. Alternatively, the server and the
+  domain can also be specified per client by setting the Univention Configuration Registry variables
+  <code class="envar">rdp/domainname</code> and
+  <code class="envar">rdp/server</code>.
+</p><p>  
+  <code class="envar">rdp/user</code> can be used to specify a different user name
+  from the current one during login.
+</p></div><div class="section" title="9.2.2. Access to USB mass storage devices on the thin client"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:rdp:usb"></a>9.2.2. Access to USB mass storage devices on the thin client</h3></div></div></div><p>  
+  A mass storage device mounted on the thin client (see <a class="xref" href="#hardware:usbthin" title="5.2. USB mass storage access on thin clients">Section 5.2</a>) is
+  mounted in the session if the Univention Configuration Registry variable <code class="envar">rdp/redirectdisk</code> is set to
+  <span class="emphasis"><em>true</em></span>. The transmission is performed via a session channel of the RDP
+  protocol.
+</p></div><div class="section" title="9.2.3. Networklevel authentication / certificate approval"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:rdp:crypto"></a>9.2.3. Networklevel authentication / certificate approval</h3></div></div></div><p>  
+  The RDP client does not use the "Network Level Authentication" (NLA)
+  authentication method as standard. If NLA is enabled on the terminal
+  server, this can be enabled by setting the Univention Configuration Registry variable
+  <code class="envar">rdp/checknla</code> to <span class="emphasis"><em>true</em></span>.
+</p><p>  
+  Verification of the login certificate is also disabled as
+  standard. It can be enabled by setting the Univention Configuration Registry variable
+  <code class="envar">rdp/ignorecertificate</code> to <span class="emphasis"><em>true</em></span>.
+</p><p>  
+  In special cases, it may be necessary to disable the TLS encryption
+  of the RDP connection entirely. This is done by setting the
+  Univention Configuration Registry variable <code class="envar">rdp/checktls</code> to <span class="emphasis"><em>false</em></span>.
+</p></div><div class="section" title="9.2.4. Sound output in the RDP session"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:rdp:sound"></a>9.2.4. Sound output in the RDP session</h3></div></div></div><p>  
+  As standard, the sound output in the RDP session is transmitted via
+  an RDP session channel. The sound output can be disabled by setting
+  the Univention Configuration Registry variable <code class="envar">rdp/disable-sound</code> to <span class="emphasis"><em>true</em></span>.
+</p></div><div class="section" title="9.2.5. Further options for the RDP session"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:rdp:furtheropts"></a>9.2.5. Further options for the RDP session</h3></div></div></div><p>  
+  The Univention Configuration Registry variable <code class="envar">rdp/keyboard</code> can be used to configure a
+  different keyboard layout for the RDP session from that of the
+  current client. The layout is specified in the same format as the
+  Univention Configuration Registry variable <code class="envar">xorg/keyboard/options/XkbLayout</code>.
+</p><p>  
+  The Univention Configuration Registry variable <code class="envar">rdp/additionaloptions</code> can be used to
+  provide any additional options to freerdp (e.g., to enable
+  additional plugins).
+</p><p>  
+  <code class="envar">rdp/geometry</code> can be used to specify the screen
+  resolution.
+</p><p>  
+  <code class="envar">rdp/clienthostname</code> allows you to specify a different
+  host name from the current computer name in the RDP session.
+</p></div></div><div class="section" title="9.3. Citrix XenApp terminal services"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="terminalservices:citrix"></a>9.3. Citrix XenApp terminal services</h2></div></div></div><p>
+  UCC supports access to Citrix XenApp terminal servers. This
+  documentation refers to Citrix XenApp 6.5 Enterprise on Windows
+  Server 2008R2, which uses a Windows 2008R2 domain controller and the
+  Citrix Receiver 12.1.
+</p><p>
+  Citrix XenApp supports two login methods:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Access to the XenApp terminal server is
+	configured by an ICA session file in which the connection
+	parameters are configured.</p></li><li class="listitem"><p>The access is performed via a Citrix Farm web
+	interface the user logs in to. During the login, an ICA file
+	tailored to the user is generated, which is started via a browser
+	plugin in the Citrix Receiver client.</p></li></ul></div><p>
+</p><p>
+  UCC only integrates the browser-based login method.
+</p><div class="section" title="9.3.1. Installation"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:citrix:installation"></a>9.3.1. Installation</h3></div></div></div><p>
+  To set up the session script <span class="emphasis"><em>XenApp</em></span> on a client, the
+  <span class="emphasis"><em>univention-ucc-session-xenapp</em></span> package must be
+  installed. It also installs some packages required by the Citrix
+  Receiver. Then the Univention Configuration Registry variable <code class="envar">citrix/webinterface</code> must
+  be set to the URL of the Citrix Farm web interface. The session
+  script then opens the web interface directly in Firefox during
+  login.
+</p><p>
+  The Citrix Receiver cannot be supplied with UCC and must be
+  downloaded from the Citrix website as a DEB package and installed on
+  the client. <sup>[<a id="idp7446080" href="#ftn.idp7446080" class="footnote">1</a>]</sup>
+  Version 12.1 is needed as the minimum version.
+</p><p>
+  The Citrix Receiver uses <code class="filename">/dev/random</code> as a
+  randomness source as standard. <code class="filename">/dev/random</code> blocks access if insufficient entropy is
+  available from hardware sources. This is the case on many thin
+  clients. To avoid login delays, the basic setting on the client thus
+  symlinks <code class="filename">/dev/random</code> to
+  <code class="filename">/dev/urandom</code>. If the hardware generates
+  sufficient entropy, this can be prevented by setting the Univention Configuration Registry variable
+  <code class="envar">citrix/linkdevrandom</code> to <span class="emphasis"><em>false</em></span>.
+</p><p>
+  If the Citrix web interfaces performs authentication against an
+  Active Directory domain separate from UCS, it is possible to
+  configure a login-less access to the web interface by setting the
+  Univention Configuration Registry variable <code class="envar">lightdm/autologin/session</code> to
+  <span class="emphasis"><em>XenApp</em></span> and the Univention Configuration Registry variable
+  <code class="envar">lightdm/autologin</code> to <span class="emphasis"><em>yes</em></span>. 
+</p></div><div class="section" title="9.3.2. Sound transmission / Access to USB storage devices on the thin client"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:citrix:soundusb"></a>9.3.2. Sound transmission / Access to USB storage devices on the thin client</h3></div></div></div><p>
+  Configuration parameters such as full screen display or the
+  sound transmission are configured in the Citrix Farm settings. They
+  are then saved in the ICA file generated for the user during login
+  and implemented by the Citrix Receiver.
+</p><p>
+  An USB storage device on a thin client (see <a class="xref" href="#hardware:usbthin" title="5.2. USB mass storage access on thin clients">Section 5.2</a>) is available under Drive Z: in the
+  Citrix session.
+</p></div><div class="section" title="9.3.3. Accelerating the playback of Flash videos"><div class="titlepage"><div><div><h3 class="title"><a id="terminalservices:citrix:flash"></a>9.3.3. Accelerating the playback of Flash videos</h3></div></div></div><p>
+  The Citrix client offers the possibility of optimising the
+  playback of Flash videos: instead of streaming the video on the
+  server and transmitting every image, the video is transmitted to the
+  client and played locally in the terminal session. This requires
+  the installation of the Flash plugin on the UCC client (included in
+  the default settings).
+</p></div></div><div class="footnotes"><br /><hr width="100" align="left" /><div class="footnote"><p><sup>[<a id="ftn.idp7446080" href="#idp7446080" class="para">1</a>] </sup><a class="ulink" href="http://www.citrix.com/downloads/citrix-receiver/receivers-by-platform/receiver-for-linux-121.html" target="_top">http://www.citrix.com/downloads/citrix-receiver/receivers-by-platform/receiver-for-linux-121.html</a></p></div></div></div><div class="bibliography" title="Bibliography"><div class="titlepage"><div><div><h2 class="title"><a id="idp7542352"></a>Bibliography</h2></div></div></div><div class="biblioentry" title="Univention Corporate Server - Manual for users and administrators"><a id="ucs-manual"></a><p>[ucs-manual] <span class="publishername">Univention GmbH. </span><span class="pubdate">2013. </span><span class="title"><em>Univention Corporate Server - Manual for users and administrators</em>. </span><span class="releaseinfo"><a class="ulink" href="http://docs.univention.de/manual-3.1.html" target="_top">http://docs.univention.de/manual-3.1.html</a>. </span></p></div><div class="biblioentry" title="Univention Corporate Server - Manual for users and administrators"><a id="ucs-manual-multiedit"></a><p>[ucs-manual-multiedit] <span class="publishername">Univention GmbH. </span><span class="pubdate">2013. </span><span class="title"><em>Univention Corporate Server - Manual for users and administrators</em>. </span><span class="releaseinfo"><a class="ulink" href="http://docs.univention.de/handbuch-3.1.html#central%3Auser-interface%3Aedit" target="_top">http://docs.univention.de/handbuch-3.1.html#central%3Auser-interface%3Aedit</a>. </span></p></div><div class="biblioentry" title="Univention Corporate Server - Manual for users and administrators"><a id="ucs-manual-cron"></a><p>[ucs-manual-cron] <span class="publishername">Univention GmbH. </span><span class="pubdate">2013. </span><span class="title"><em>Univention Corporate Server - Manual for users and administrators</em>. </span><span class="releaseinfo"><a class="ulink" href="http://docs.univention.de/manual-3.1.html#computers%3AExecuting_recurring_actions_with_Cron" target="_top">http://docs.univention.de/manual-3.1.html#computers%3AExecuting_recurring_actions_with_Cron</a>. </span></p></div><div class="biblioentry" title="Univention Corporate Server - Manual for users and administrators"><a id="ucs-manual-pxeboot"></a><p>[ucs-manual-pxeboot] <span class="publishername">Univention GmbH. </span><span class="pubdate">2013. </span><span class="title"><em>Univention Corporate Server - Manual for users and administrators</em>. </span><span class="releaseinfo"><a class="ulink" href="http://docs.univention.de/manual.html#ip-config:Configuration_of_boot_server/PXE_settings" target="_top">http://docs.univention.de/manual.html#ip-config:Configuration_of_boot_server/PXE_settings</a>. </span></p></div><div class="biblioentry" title="Repositories Ubuntu"><a id="ubuntu-repositories"></a><p>[ubuntu-repositories] <span class="publishername">Ubuntu Community Wiki. </span><span class="pubdate">2013. </span><span class="title"><em>Repositories Ubuntu</em>. </span><span class="releaseinfo"><a class="ulink" href="https://help.ubuntu.com/community/Repositories/Ubuntu" target="_top">https://help.ubuntu.com/community/Repositories/Ubuntu</a>. </span></p></div><div class="biblioentry" title="Documentation on Univention products"><a id="ucs-docs"></a><p>[ucs-docs] <span class="publishername">Univention GmbH. </span><span class="pubdate">2013. </span><span class="title"><em>Documentation on Univention products</em>. </span><span class="releaseinfo"><a class="ulink" href="http://docs.univention.de/en/ucs.html" target="_top">http://docs.univention.de/en/ucs.html</a>. </span></p></div></div><html>
+  <!-- Piwik -->
+  <script type="text/javascript">
+    var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.univention.de/" : "http://piwik.univention.de/");
+    document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+    try {
+    //<!-- Local Piwik Tracker -->
+    var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 11);
+    //<!-- Global Piwik Tacker *.univention.de -->
+    var globalTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 10);
+
+    piwikTracker.trackPageView();
+    globalTracker.trackPageView();
+
+    piwikTracker.enableLinkTracking();
+    globalTracker.enableLinkTracking();
+    globalTracker.setConversionAttributionFirstReferrer();
+    globalTracker.setCookieDomain('*.univention.de');
+    } catch( err ) {}
+  </script>
+  <noscript>
+    <p><img src="http://piwik.univention.de/piwik.php?idsite=11" style="border:0" alt="" /></p>
+    <p><img src="http://piwik.univention.de/piwik.php?idsite=10" style="border:0" alt="" /></p>
+  </noscript>
+  <!-- End Piwik Tracking Code -->
+</html></div></body></html>
