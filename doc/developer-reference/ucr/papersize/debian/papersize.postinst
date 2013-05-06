@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+ucr set print/papersize?a4
+
+exit 0

@@ -1,0 +1,17 @@
+Source: papersize
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7),
+ univention-config-dev,
+Standards-Version: 3.7.2
+
+Package: papersize
+Architecture: all
+Depends: ${misc:Depends}
+Description: An example package to configure the papersize
+ This purpose of this package is to show how Univention Config
+ Registry is used.
+ .
+ For more information about UCS, refer to:
+ http://www.univention.de/
