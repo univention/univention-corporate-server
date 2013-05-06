@@ -2,9 +2,12 @@
 #
 # script to script UMCP-requests via HTTP
 #
+
+eval "$(ucr shell)"
+
 username=${1:-"Administrator"}
 password=${2:-"univention"}
-host=${3:-"www.example.com"}
+host=${3:-"$hostname.$domainname"}
 port=${4:-80}
 key=$5
 prefix=${6-"umcp/"}
@@ -52,20 +55,25 @@ for line in sys.stdin:
 
 # authenticate at UMCP server
 function authenticate {
-	key=$(umcp auth '{"username":"'$username'", "password":"'$password'", "version":"1.0.394-1"}' | send | sed -n 's/^.*X-UMC-Session-Id: \(.*\)$/\1/pi')
+    key=$(umcp auth '{"username":"'$username'", "password":"'$password'", "version":"1.0.394-1"}' | send | sed -n 's/^.*UMCSessionId=\([^;]*\);.*$/\1/pi')
 	echo "got session key: $key"
 }
 
 # examples
 authenticate
 
+# pretty print
+umcp get/modules/list | send | prettyprint
+
 # synchronous requests
 (
-umcp get/modules/list | send | prettyprint
-umcp set '{"locale":"de"}'
+umcp get/ucr '["domainname","hostname"]'
+umcp get/ucr '["server/role"]'
 ) | send
 
 # asynchronous requests
 umcp get/ucr '["domainname","hostname"]' | send &
 umcp get/ucr '["server/role"]' | send &
 
+wait
+echo
