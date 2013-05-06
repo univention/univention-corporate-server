@@ -2,11 +2,12 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: samba
-fix: 2:3.6.8-1.562.201305011033
+fix: 2:3.6.8-1.563.201305061252
 note:
 version: [1]
 desc: |
-  The current Samba 3 build does not support quota on XFS file systems like 
-  expected. This erratum fixes the problem.
-bug: [31210]
-
+  This errata update fixes two bugs in the package samba:
+  * The current Samba 3 build does not support quota on XFS file systems like 
+  expected.
+  * The winbind init script did not ensure that the daemon actually got stopped.
+bug: [31210, 31289]
