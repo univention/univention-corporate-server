@@ -1,3 +1,9 @@
+ucs-test (3.0.42-1) unstable; urgency=low
+
+  * Added a tes case for chainging the server password (Bug #31295)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 06 May 2013 20:46:14 +0200
+
 ucs-test (3.0.41-1) unstable; urgency=low
 
   * Added a test case for winbind restart (Bug #31289)
