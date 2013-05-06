@@ -1,3 +1,9 @@
+ucs-test (3.0.41-1) unstable; urgency=low
+
+  * Added a test case for winbind restart (Bug #31289)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 06 May 2013 15:28:28 +0200
+
 ucs-test (3.0.40-1) unstable; urgency=low
 
   * added test 51_modify_dns_forward_zone_ptr_record (Bug #31041)
