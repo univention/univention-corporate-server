@@ -115,7 +115,7 @@ if __name__ == '__main__':
 	ucr.load()
 	log = open(ucr.get('quota/logfile', '/dev/null'), 'a+')
 	TIMEFORMAT = '%a %b %d %H:%M:%S %Z %Y'
-	user = sys.argv[1] if len(sys.argv) > 1 else os.getlogin()
+	user = sys.argv[1] if len(sys.argv) > 1 else os.environ['USER']
 	uid = pwd.getpwnam(user)[2]
 
 	log.write('-------------------------------------------------------- start\n')
