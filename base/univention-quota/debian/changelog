@@ -1,3 +1,10 @@
+univention-quota (7.0.5-9) unstable; urgency=low
+
+  * use os.environ['USER'] as fallback if no username is passed to
+    univention-user-quota (Bug #30636)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 06 May 2013 16:01:03 +0200
+
 univention-quota (7.0.5-8) unstable; urgency=low
 
   * univention-user-quota: regard every share instead of only that ones
