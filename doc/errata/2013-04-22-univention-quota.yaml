@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-quota
-fix: 7.0.5-8.109.201304261522
+fix: 7.0.5-9.110.201305061604
 note:
 version: [1]
 desc: |
