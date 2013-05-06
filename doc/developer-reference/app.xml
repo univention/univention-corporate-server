@@ -1,0 +1,47 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="chap:app" status="draft">
+	<title>App center
+		<indexterm><primary>App center</primary></indexterm>
+	</title>
+	<remark>PMH: Bug #31226</remark>
+	<important>
+		<para>
+			This chapter is a draft and work in progress!
+			Feedback is already appreciated.
+		</para>
+	</important>
+	<para>
+		Allow 3rd party products to be easily installed.
+	</para>
+
+	<section id="app:ldap">
+		<title>Common LDAP objects and attributes</title>
+		<para>
+			Reuse users, groups, computers already administered in domain.
+			See <xref linkend="udm:ldap:common-attributes"/>.
+		</para>
+	</section>
+
+	<section id="app:checklist">
+		<title>Checklist</title>
+		<itemizedlist>
+			<listitem><simpara>Can be installed.</simpara></listitem>
+			<listitem><simpara>Can be removed.</simpara></listitem>
+			<listitem><simpara>Can be upgraded,</simpara></listitem>
+			<listitem><simpara>Doesn't break UCS functionality.</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="app:testcenter">
+		<title>Setup test app center</title>
+		<para>
+			TBD
+		</para>
+	</section>
+
+</chapter>
+<!-- vim:set ts=2 sw=2 noet ft=docbk:-->

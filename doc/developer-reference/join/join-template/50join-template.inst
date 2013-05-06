@@ -1,0 +1,12 @@
+#!/bin/sh
+VERSION=1
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+# Register new service entry for this host
+udm "computers/$(ucr get server/role)" modify "$@" \
+	--dn "$(ucr get ldap/hostdn)" \
+	--set univentionFreeAttribute1="Test1"
+
+joinscript_save_current_version
+exit 0

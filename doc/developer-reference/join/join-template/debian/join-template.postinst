@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+. /usr/share/univention-lib/base.sh
+call_joinscript 50join-template.inst
+
+exit 0
