@@ -1,0 +1,167 @@
+<bibliography>
+<biblioentry id="ucs-handbuch">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Univention Corporate Server - Handbuch für Benutzer und Administratoren</title>
+  <releaseinfo><ulink url="http://docs.univention.de/handbuch-3.1.pdf"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="ucs-schule">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Übersichtsseite zu UCS@school</title>
+  <releaseinfo><ulink url="http://www.univention.de/produkte/schule"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="ucs-dokumentationen">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Übersichtsseite der weiteren UCS Dokumentationen</title>
+  <releaseinfo><ulink url="http://www.univention.de/download/dokumentation/standarddokumentation/"/></releaseinfo>
+  <!-- FIXME
+  <releaseinfo><ulink url="http://docs.univention.de/de.html"/></releaseinfo>
+  -->
+</biblioentry>
+
+<biblioentry id="locales">
+  <publishername>Debian Project</publishername>
+  <pubdate>2012</pubdate>
+  <title>Locale - Debian Wiki</title>
+  <releaseinfo><ulink url="http://wiki.debian.org/Locale"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="wiki-samba4">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Univention Wiki - Samba in UCS 3.0</title>
+  <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=Samba_in_UCS_3.0"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="bind-loglevel">
+  <publishername>O'Reilly</publishername>
+  <pubdate>1998</pubdate>
+  <title>Reading Bind Debugging Output</title>
+  <releaseinfo><ulink url="http://www.diablotin.com/librairie/networking/dnsbind/ch12_01.htm"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="ucs-school-teacher">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>UCS@school - Handbuch für Lehrkräfte und Schuladministratoren</title>
+  <releaseinfo><ulink url="http://docs.univention.de/ucsschool-lehrer-handbuch-3.1.pdf"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="samba3-howto-chapter-20">
+  <publishername>Jelmer R. Vernooij and John H. Terpstra and Gerald (Jerry) Carter</publishername>
+  <pubdate>2010</pubdate>
+  <title>The Official Samba 3.2.x HOWTO and Reference Guide</title>
+  <releaseinfo><ulink url="http://www.samba.org/samba/docs/Samba3-HOWTO.pdf#chapter.20"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="wiki-samba-update">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Univention Wiki - Update to UCS 3.0 Samba 4</title>
+  <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=Update_to_UCS_3.0_Samba_4"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="wiki-ad-takeover">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Univention Wiki - UCS 3.1 Univention AD Takeover</title>
+  <releaseinfo><ulink url="http://wiki.univention.de/UCS_3.1_Univention_AD_Takeover"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="sdb-acls">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2011</pubdate>
+  <title>Univention Support Database - Wie können ACLs sind UCS konfiguriert werden</title>
+  <releaseinfo><ulink url="http://sdb.univention.de/1042"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="sdb-sslchange">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2013</pubdate>
+  <title>Univention Support Database - Erneuern der SSL-Zertifikate</title>
+  <releaseinfo><ulink url="http://sdb.univention.de/1000"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="univention-technologiepartner">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Univention Technologiepartner</title>
+  <releaseinfo><ulink url="http://www.univention.de/partner/technologiepartner/"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="ext-doc-inst">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Extended installation documentation</title>
+  <releaseinfo><ulink url="http://docs.univention.de/installation-3.1.pdf"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="ext-doc-net">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2013</pubdate>
+  <title>Extended network management documentation</title>
+  <releaseinfo><ulink url="http://docs.univention.de/networks-3.1.pdf"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="uvmm-technical-details">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Univention Wiki - UVMM - Technische Details</title>
+  <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=UVMM_Technische_Details"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="uvmm-quickstart">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Univention Wiki - UVMM - Quickstart Guide</title>
+  <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=UVMM_Quickstart"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="hardwarelist">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Kompatible Hardware - mit UCS erfolgreich eingesetzt</title>
+  <releaseinfo><ulink url="http://www.univention.de/produkte/ucs/produktinformationen/kompatible-hardware/"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="ec2-quickstart">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2011</pubdate>
+  <title>Univention Wiki - Amazon EC2 Quickstart</title>
+  <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=Amazon_EC2_Quickstart"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="xenserver-installation">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2013</pubdate>
+  <title>Univention Wiki - Citrix XenServer</title>
+  <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=Citrix_Xen_Server"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="ubuntu-integration">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Ubuntu Integration</title>
+  <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=Ubuntu"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="bacula-config-example">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Bacula Beispielkonfiguration</title>
+  <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=Bacula_configuration_example"/></releaseinfo>
+</biblioentry>
+
+<biblioentry id="ext-doc-computers">
+  <publishername>Univention GmbH</publishername>
+  <pubdate>2012</pubdate>
+  <title>Extended computer management documentation</title>
+  <releaseinfo><ulink url="http://docs.univention.de/computers-3.1.pdf"/></releaseinfo>
+</biblioentry>
+
+</bibliography>
+

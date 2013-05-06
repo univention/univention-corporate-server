@@ -1,0 +1,25 @@
+  <!ENTITY  ucsUMS                 "UCS-Managementsystem" >
+  <!ENTITY  ucsUDM                 "Univention Directory Manager" >
+  <!ENTITY  ucsUDL                 "Univention Directory Listener" >
+  <!ENTITY  ucsUCD                 "Univention Corporate Desktop" >
+  <!ENTITY  ucsUDN                 "Univention Directory Notifier" >
+  <!ENTITY  ucsTCS                 "Univention Thin Client Services" >
+  <!ENTITY  ucsUMC                 "Univention Management Console" >
+  <!ENTITY  ucsUCR                 "Univention Configuration Registry" >
+  <!ENTITY  ucsUSS                 "Univention System Setup" >
+
+  <!ENTITY  ucsUAS                 "UCS@school" >
+  <!ENTITY  ucsUVMM                "UCS Virtual Machine Manager" >
+  <!ENTITY  ucsDVS                 "UCS Desktop Virtualization Services" >
+  <!ENTITY  ucsMaster              "Domänencontroller Master" >
+  <!ENTITY  ucsBackup              "Domänencontroller Backup" >
+  <!ENTITY  ucsSlave               "Domänencontroller Slave" >
+  <!ENTITY  ucsMember              "Memberserver" >
+
+  <!ENTITY  ucsUCRV                "Univention Configuration Registry-Variable" >
+  <!ENTITY  ucsOX                  "Open-Xchange Advanced Server Edition" >
+  <!ENTITY  ucsOXS                 "OXASE" >
+
+  <!ENTITY  ucsUCS                 "Univention Corporate Server" >
+
+  <!ENTITY  ar                     "-&gt;" >
