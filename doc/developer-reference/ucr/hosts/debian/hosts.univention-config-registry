@@ -1,0 +1,23 @@
+Type: multifile
+Multifile: etc/hosts.allow
+
+Type: subfile
+Multifile: etc/hosts.allow
+Subfile: etc/hosts.allow.d/00header
+
+Type: subfile
+Multifile: etc/hosts.allow
+Subfile: etc/hosts.allow.d/50dynamic
+Variables: ^hosts/allow/.*
+
+Type: multifile
+Multifile: etc/hosts.deny
+
+Type: subfile
+Multifile: etc/hosts.deny
+Subfile: etc/hosts.deny.d/00header
+
+Type: subfile
+Multifile: etc/hosts.deny
+Subfile: etc/hosts.deny.d/50dynamic
+Variables: ^hosts/deny/.*

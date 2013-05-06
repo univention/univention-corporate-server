@@ -1,0 +1,319 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="chap:misc">
+	<title>Miscellaneous</title>
+	<important>
+		<para>
+			This chapter is a draft and work in progress!
+			Feedback is already appreciated.
+		</para>
+	</important>
+
+	<section id="misc:database" status="draft">
+		<title>Databases
+			<indexterm><primary>Database</primary></indexterm>
+		</title>
+		<para><acronym>UCS</acronym> ships with two major database management systems, which are used for <acronym>UCS</acronym> internal purposes, but can also be used for custom additions.</para>
+
+		<section id="misc:postgresql">
+			<title>PostgreSQL
+				<indexterm><primary>Database</primary><secondary>PostgreSQL</secondary></indexterm>
+			</title>
+			<para><acronym>UCS</acronym> uses PostgreSQL by default for its package tracking database, which collects the state and versions of packages installed on all systems of the domain.</para>
+		</section>
+
+		<section id="misc:mysql">
+			<title>MySQL
+				<indexterm><primary>Database</primary><secondary>MySQL</secondary></indexterm>
+			</title>
+			<para>By default the MySQL root password is set to ___. Debian provides the <package>dbconfig</package> package, which can be used to create and modify additional databases from maintainer scripts. <!--bug>19354</bug--></para>
+		</section>
+	</section>
+
+	<section id="misc:ucslint">
+		<title>UCS lint
+			<indexterm><primary>Packaging</primary><secondary>checking for errors</secondary></indexterm>
+		</title>
+		<para>
+			Use <command>ucslint</command> to find packaging mistakes.
+			Called best from <filename>debian/rules</filename>, needs build dependency on <package>ucslint</package>.
+		</para>
+		<programlisting><![CDATA[
+override_dh_auto_test:
+	dh_auto_test
+	ucslint
+		]]></programlisting>
+		<para>
+			For each issue, <command>ucslint</command> prints one line, which line contains several fields separated by <literal>:</literal>:
+		</para>
+		<synopsis><replaceable>severity</replaceable>:<replaceable>module-id</replaceable>-<replaceable>test-id</replaceable><optional>:<replaceable>filename</replaceable><optional>:<replaceable>line-number</replaceable><optional>:<replaceable>column-number</replaceable></optional></optional></optional>: <replaceable>message</replaceable></synopsis>
+		<para>
+			For some issues extra context data is printed on the following lines, which are indented with space characters.
+			All other lines start with a letter specifying the severity:
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term><literal>E</literal></term>
+				<listitem><simpara>Error: Missing data, conflicting information, real bugs.</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><literal>W</literal></term>
+				<listitem><simpara>Warning: Possible bug, but might be okay in some situations.</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><literal>I</literal></term>
+				<listitem><simpara>Informational: found some issue, which needs further investigation.</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><literal>S</literal></term>
+				<listitem><simpara>Style: There might be some better less error prone way.</simpara></listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			The severities are ordered by importance.
+			By default <command>ucslint</command> only aborts on errors, but this can be overwritten using the <option>--exitcode-categories</option> argument followed by a subset of the characters <literal>EWIS</literal>.
+		</para>
+		<para>
+			After the severity an identifier follows, which uniquely identifies the module and the test.
+			The module is given as four digits, which is followed by a dash and the number of the test in that module.
+			Currently the following modules exist:
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>0001-CheckJoinScript</term>
+				<listitem><simpara>Checks join file issues</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0002-CopyPasteErrors</term>
+				<listitem><simpara>Checks for copy&amp;paste error from example files</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0004-CheckUCR</term>
+				<listitem><simpara>Checks UCR info files</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0006-CheckPostinst</term>
+				<listitem><simpara>Checks Debian maintainer scripts</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0007-Changelog</term>
+				<listitem><simpara>Checks <filename>debian/changelog</filename> file for conformance with Univention rules</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0008-Translations</term>
+				<listitem><simpara>Checks translation files for completeness and errors</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0009-Python</term>
+				<listitem><simpara>Checks Python files for common errors</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0010-Copyright</term>
+				<listitem><simpara>Checks for Univention copyright</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0011-Control</term>
+				<listitem><simpara>Checks <filename>debian/control</filename> file for errors</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0013-bashism</term>
+				<listitem><simpara>Checks files using <filename>/bin/sh</filename> for BASH constructs</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0014-Depends</term>
+				<listitem><simpara>Checks files for missing runtime dependencies on UCS packages</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0015-FuzzyNames</term>
+				<listitem><simpara>Checks for mis-spellings of <wordasword>Univention</wordasword></simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0016-Deprecated</term>
+				<listitem><simpara>Checks files for usage of deprecated functions</simpara></listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>0017-Shell</term>
+				<listitem><simpara>Checks shell scripts for quoting errors</simpara></listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			The module and test number may be optionally followed by a file name, line number in that file, and column number in that line, where the issue was found.
+			After that a message is printed, which describes the issue in more detail.
+		</para>
+		<para>
+			Since <command>ucslint</command> is very Univention centric, many of its tests return false positives for software packages by other parties.
+			Therefore many tests need to be disables.
+			For that a file <filename>debian/ucslint.overrides</filename> can be created with list of modules and test, which should be ignored.
+			Without specifying the optional filename, line number and column number, the test ist globally disabled for all files.
+		</para>
+	</section>
+
+	<section id="misc:lib">
+		<title>Library functions
+			<indexterm><primary>Packaging</primary><secondary>library functions</secondary></indexterm>
+		</title>
+		<para>
+			The source package <package>univention-lib</package> provides two binary packages <package>shell-univention-lib</package> and <package>python-univention-lib</package>, which contain common library functions usable in shell or Python programs.
+		</para>
+		<remark>PMH: poorly documented and of qustionale code quality</remark>
+
+		<section>
+			<title><package>shell-univention-lib</package></title>
+			<para>
+				This package provides several libraries in <filename class="directory">/usr/share/univention-lib/</filename>, which can be used in shell scripts.
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><filename>/usr/share/univention-lib/base.sh</filename></term>
+					<listitem>
+						<para>
+							This file contains some helpers to create log files, handle unjoin scripts (<xref linkend="join:unjoin"/>) or query the network configuration.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>/usr/share/univention-lib/ldap.sh</filename></term>
+					<listitem>
+						<para>
+							This file contains some helpers to query data from LDAP, register and unregister service entries and LDAP schema.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>/usr/share/univention-lib/ucr.sh</filename></term>
+					<listitem>
+						<para>
+							This file contains some helpers to handle bool'ean &ucsUCRV;s and handle UCR files on package removal.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>/usr/share/univention-lib/umc.sh</filename></term>
+					<listitem>
+						<para>
+							This file contains some helpers to handle UMC (<xref linkend="chap:umc"/>) related tasks.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>/usr/share/univention-lib/all.sh</filename></term>
+					<listitem>
+						<para>
+							This is a convenient library, which just includes all libraries mentioned above.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</section>
+
+		<section>
+			<title><package>python-univention-lib</package></title>
+			<para>
+				This package provides several Python libraries located in the module <package>univention.lib</package>.
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><package>univention.lib.atjobs</package></term>
+					<listitem>
+						<remark>PMH: Bug #27670</remark>
+						<para>
+							This module contains functions to handle at-jobs.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.error</package></term>
+					<listitem>
+						<para>
+							This module provides the function <function>formatTraceback</function>, which returns the full stack trace for an exception.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.fstab</package></term>
+					<listitem>
+						<para>
+							This module provides some functions for handling the file <filename>/etc/fstab</filename>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><cmdsynopsis>
+							<command>/usr/share/pyshared/univention/lib/getMailFromMailOrUid.py</command>
+							<group choice="req">
+								<arg choice="plain">uid</arg>
+								<arg choice="plain">email</arg>
+							</group>
+							</cmdsynopsis></term>
+					<listitem>
+						<remark>PMH: WTF?</remark>
+						<para>
+							This program returns the distinguished name of the user, which either matches the user identifier or email address given to the command as an argument.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.i18n</package></term>
+					<listitem>
+						<para>
+							This module provides some classes to handle texts and their translations.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.listenerSharePath</package></term>
+					<listitem>
+						<para>
+							This module provides some helper functions internally used by the Directory Listener module handling file shares.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.locking</package></term>
+					<listitem>
+						<para>
+							This module provides some functions to implement mutual exclusion using file objects as locking objects.
+						</para>
+						<remark>PMH: this should be re-witten using a Python context manager</remark>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.package_manager</package></term>
+					<listitem>
+						<para>
+							This module provides some wrappers for <command>dpkg</command> and <application>APT</application>, which add functions for progress reporting.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.shell</package></term>
+					<listitem>
+						<para>
+							This module provides two functions for escaping shell command line arguments and creating at jobs.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><package>univention.lib.ucrLogrotate</package></term>
+					<listitem>
+						<para>
+							This module provides some helper functions internally used for parsing the &ucsUCRV;s related to <citerefentry><refentrytitle>logrotate</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</section>
+	</section>
+
+	<section id="misc:acl" status="draft">
+		<title>Access control</title>
+		<para>
+			<filename>/etc/security/access-*.conf</filename>
+		</para>
+	</section>
+
+</chapter>
+<!-- vim:set ts=2 sw=2 noet ft=docbk:-->

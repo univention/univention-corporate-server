@@ -1,0 +1,20 @@
+<!DOCTYPE preface PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<preface id="intro:foreword">
+	<title>Forword</title>
+	<para>This document is for persons interested in extending &ucsUCS; (<acronym>UCS</acronym>) and developing applications on UCS.</para>
+
+	<section id="intro:audience">
+		<title>Audience</title>
+		<para>This guide is for software developers and application providers.</para>
+	</section>
+
+	<section id="intro:convention">
+		<title>Conventions</title>
+		<para>The following sytles are used in this document:</para>
+	</section>
+</preface>
+<!-- vim:set ts=2 sw=2 noet ft=docbk:-->

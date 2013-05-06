@@ -1,0 +1,12 @@
+[hosts/allow/.*]
+Description[en]=An permissive access control entry for system services.
+Description[de]=Eine erlaubende Zugriffsregel für Systemdienste.
+Type=str
+Categories=service-net
+
+[hosts/deny/.*]
+Description[en]=An denying access control entry for system services.
+Description[de]=Eine verbietende Zugriffsregel für Systemdienste.
+Type=str
+Categories=service-net
+

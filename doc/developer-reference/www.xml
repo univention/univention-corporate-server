@@ -1,0 +1,95 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="chap:www">
+	<title>Web services
+		<indexterm><primary>Web Services</primary></indexterm>
+		<indexterm><primary>Apache</primary><see>Web Services</see></indexterm>
+	</title>
+	<important>
+		<para>
+			This chapter is a draft and work in progress!
+			Feedback is already appreciated.
+		</para>
+	</important>
+	<para>
+		<acronym>UCS</acronym> systems are managed by <xref linkend="chap:umc"/>, but additional web services might be provided by hosts. Opening the <acronym>URL</acronym> <ulink url="http://localhost/ucs-overview/"/> will show a overview page, which links to additional web resources.
+	</para>
+
+	<section id="www:overview">
+		<title>Extending the overview page</title>
+		<para>
+			When a user opens <uri>http://localhost/</uri> or <uri>http://<replaceable>hostname</replaceable>/</uri> in a browser, she is redirected to the <firstterm>UCS overview</firstterm>.
+			Depending on the preferred language negotiated by the browser the user is either redirected to the German version <filename>/var/www/ucs-overview/de.html</filename> or English version <filename>/var/www/ucs-overview/en.html</filename>.
+		</para>
+		<para>
+			By default this page provides the following links:
+		</para>
+		<itemizedlist>
+			<listitem><simpara>UCS Management Console (<acronym>UMC</acronym>)</simpara></listitem>
+			<listitem><simpara>Certificate of the Certification Authority</simpara></listitem>
+			<listitem><simpara>List of withdrawn certificates</simpara></listitem>
+			<listitem><simpara>Link to &ucsMaster;</simpara></listitem>
+			<listitem><simpara>Website of Univention GmbH</simpara></listitem>
+			<listitem><simpara>Link to the Univention forum</simpara></listitem>
+			<listitem><simpara>Link to Documentation for &ucsUCS;</simpara></listitem>
+		</itemizedlist>
+		<para>
+			These overview pages are &ucsUCR; Multifile templates (<xref linkend="ucr:multifile"/>) and can be extended by adding additional subfiles.
+			The pages use a <acronym>HTML</acronym> table with a three column layout.
+			It is opened in subfile <filename>01en.html</filename> and closed in <filename>99en.html</filename>.
+			In between each entry is rendered as a table row with the follosing columns:
+		</para>
+		<orderedlist>
+			<listitem><simpara>The first column may contain an icon of size 24×24 pixels.</simpara></listitem>
+			<listitem><simpara>The second column should contain a link to the resource.</simpara></listitem>
+			<listitem><simpara>The third column should contain a short descriptive text.</simpara></listitem>
+		</orderedlist>
+		<para>
+			The following example extends the English page with a link to the Univention Wiki.
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term><filename>conffiles/var/www/ucs-overview/en.html.d/50univention-wiki.html</filename></term>
+				<listitem>
+					<programlisting><![CDATA[
+<tr>
+	<td class="overview">
+		<a href="http://wiki.univention.de/">
+			<img src="../icon/about.png" alt="" style="border:0" />
+		</a>
+	</td>
+	<td class="overview">
+		<a href="http://wiki.univention.de/">Univention Wiki</a>
+	</td>
+	<td class="overview">The Univention Wiki</td>
+	<td>
+</tr>
+					]]></programlisting>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry</filename></term>
+				<listitem>
+					<programlisting><![CDATA[
+Type: subfile
+Multifile: var/www/ucs-overview/en.html
+Subfile: var/www/ucs-overview/en.html.d/50univention-wiki.html
+					]]></programlisting>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</section>
+
+	<section id="www:rest" status="draft">
+		<title>Restful</title>
+		<para>
+			See <command>umd-client</command> and <command>umc-command</command>.
+			Until then: JSON.
+		</para>
+	</section>
+
+</chapter>
+<!-- vim:set ts=2 sw=2 noet ft=docbk:-->

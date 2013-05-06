@@ -1,0 +1,194 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="chap:umc" status="draft">
+	<title>Management Console
+		<indexterm><primary>Management Console</primary></indexterm>
+		<indexterm><primary>Univention Management Console</primary><see>Management Console</see></indexterm>
+		<indexterm><primary>UMC</primary><see>Management Console</see></indexterm>
+	</title>
+	<remark>PMH: Bug #31269</remark>
+	<important>
+		<para>
+			This chapter is a draft and work in progress!
+			Feedback is already appreciated.
+		</para>
+	</important>
+	<para>
+		The Univention Management Console (<acronym>UMC</acronym>) is the web-based management application provided by <acronym>UCS</acronym>.
+	</para>
+	<para>
+		<ulink url="http://wiki.univention.de/index.php?title=UCS_3.0_UMC_Architecture_and_Protocol"/>
+	</para>
+
+	<section id="umc:files">
+		<title>UMC files
+			<indexterm><primary>Management Console</primary><secondary>files</secondary></indexterm>
+		</title>
+		<para>
+			Files for building a UMC module.
+		</para>
+
+		<section id="umc:umc-modules">
+			<title><filename>debian/<replaceable>package</replaceable>.umc-modules</filename>
+				<indexterm><primary>Management Console</primary><secondary>umc-modules</secondary></indexterm>
+			</title>
+
+			<para>
+				<command>dh-umc-module-build</command> builds translation files.
+				<command>dh-umc-module-install</command> installs files.
+				Configured through <filename>debian/<replaceable>package</replaceable>.umc-modules</filename>.
+			</para>
+			<programlisting><![CDATA[
+Module: module-name
+Python: umc
+Definition: umc/module-name.xml
+Javascript: umc
+Icons: umc/icons
+			]]></programlisting>
+			<variablelist>
+				<varlistentry>
+					<term><literal>Module</literal></term>
+					<listitem>
+						<para>
+							Internal (?) name of the module.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Python</literal></term>
+					<listitem>
+						<para>
+							Directory containing the Python code relative to top-level directory.
+							<remark>PMH: Bug #31151</remark>
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Definition</literal></term>
+					<listitem>
+						<para>
+							Path to an XML file, which describes the module.
+							See <xref linkend="umc:xml"/> for more information.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Javascript</literal></term>
+					<listitem>
+						<para>
+							Directory containing the Java-Script code relative to top-level directory.
+							<remark>PMH: Bug #31151</remark>
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>Icons</literal></term>
+					<listitem>
+						<para>
+							Directory containing the Icons relative to top-level directory.
+							Must provide icons in sizes 16×16 (<filename>umc/icons/16x16/udm-<replaceable>module</replaceable>.png</filename>) and 50×50 (<filename>umc/icons/50x50/udm-<replaceable>module</replaceable>.png</filename>) pixels.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</section>
+
+		<section id="umc:xml">
+			<title>UMC XML file
+				<indexterm><primary>Management Console</primary><secondary>XML</secondary></indexterm>
+			</title>
+			<para>
+				<filename>umc/<replaceable>module</replaceable>.xml</filename>
+				<remark>PMH: Bug #26275</remark>
+			</para>
+			<programlisting><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!--DOCTYPE umc SYSTEM "branches/ucs-3.1/ucs/management/univention-management-console/doc/module.dtd"-->
+<umc version="2.0">
+	<module id="udm" icon="udm-MODULE" version="1.0" translationId="MODULE">
+		<name>...</name>
+		<description>...</description>
+		<flavor>...</flavor>
+		<categories>
+			<category name="domain"/>
+		</categories>
+		<command>...</command>
+	</module>
+</umc>
+			]]></programlisting>
+		</section>
+
+		<section id="umc:translation">
+			<title>UMC translation files
+				<indexterm><primary>Management Console</primary><secondary>Translations</secondary></indexterm>
+			</title>
+			<para>
+				Translation for Python code files.
+				Translation for JavaScript code files.
+				Translation for XML files.
+			</para>
+		</section>
+	</section>
+
+	<section id="umc:module">
+		<title>Local system module
+			<indexterm><primary>Management Console</primary><secondary>Module</secondary><tertiary>System</tertiary></indexterm>
+		</title>
+		<para>
+			Use <command>umc-create-module</command> to template for custom module.
+			<ulink url="http://wiki.univention.de/index.php?title=UCS_3.0_UMC_API_for_Modules"/>
+		</para>
+	</section>
+
+	<section id="umc:udm">
+		<title>Domain LDAP module
+			<indexterm><primary>Management Console</primary><secondary>Module</secondary><tertiary>LDAP</tertiary></indexterm>
+		</title>
+		<para>
+			Done through <firstterm>flavor</firstterm>.
+		</para>
+		<programlisting><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="udm" icon="udm-MODULE" version="1.0" translationId="MODULE">
+		<flavor priority="25" icon="udm-MODULE-SUBMODULE" id="MODULE/DUBMODULE">
+			<name>MODULE name</name>
+			<description>MODULE description</description>
+		</flavor>
+		<categories>
+			<category name="domain"/>
+		</categories>
+	</module>
+</umc>
+		]]></programlisting>
+		<para>
+			Must use <uri>/umc/module/category/@name="domain"</uri>!
+			Must use <uri>/umc/module/@translationId</uri> to specify alternative translation file, which must be installed as <filename>/usr/share/univention-management-console/i18n/<replaceable>module</replaceable>.mo</filename>.
+			Icons must be named "udm-MODULE-SUBMODULE.png".
+		</para>
+	</section>
+
+	<section id="umc:module:disable">
+		<title>Disbale a module
+			<indexterm><primary>Management Console</primary><secondary>Module</secondary><tertiary>Disable</tertiary></indexterm>
+		</title>
+		<para>
+			To disabling a module use the following <acronym>XML</acronym> file as a template:
+		</para>
+		<programlisting><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="udm" icon="udm/module" version="1.0" translationId="MODULE">
+		<name/>
+		<description/>
+		<flavor id="MODULE/SUBMODULE" deactivated="yes" />
+	</module>
+</umc>
+		]]></programlisting>
+	</section>
+
+</chapter>
+<!-- vim:set ts=2 sw=2 noet ft=docbk:-->

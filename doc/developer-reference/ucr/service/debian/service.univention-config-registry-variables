@@ -1,0 +1,5 @@
+[atd/autostart]
+Description[en]=Automatically start the AT daemon on system startup
+Description[de]=Automatischer Start des AT-Dienstes beim Systemstart
+Type=bool
+Categories=service-at

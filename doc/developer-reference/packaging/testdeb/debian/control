@@ -1,0 +1,21 @@
+Source: testdeb
+Section: univention
+Priority: optional
+Maintainer: John Doe <user@example.com>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.7.2
+
+Package: testdeb
+Architecture: all
+Depends: ${misc:Depends}
+Description: An example package for the developer guide
+ This purpose of this package is to describe the structure of a Debian
+ packages. It also documents
+ .
+  * the structure of a Debian/Univention package
+  * installation process.
+  * content of packages
+  * format and function of control files
+ .
+ For more information about UCS, refer to:
+ http://www.univention.de/

@@ -1,0 +1,6 @@
+@!@
+for key, value in sorted(configRegistry.items()):
+	if key.startswith('hosts/deny/'):
+		print value
+@!@
+

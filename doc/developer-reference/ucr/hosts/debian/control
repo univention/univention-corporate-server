@@ -1,0 +1,12 @@
+Source: hosts
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7),
+ univention-config-dev,
+Standards-Version: 3.7.2
+
+Package: hosts
+Architecture: all
+Depends: ${misc:Depends}
+Description: An example package to configure the host access

@@ -1,0 +1,152 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="chap:udm" status="draft">
+	<title>LDAP
+		<indexterm><primary>Directory Manager</primary><see>LDAP</see></indexterm>
+		<indexterm><primary>Univention Directory Manager</primary><see>LDAP</see></indexterm>
+		<indexterm><primary>UDM</primary><see>LDAP</see></indexterm>
+	</title>
+	<remark>PMH: Bug #31269</remark>
+	<important>
+		<para>
+			This chapter is a draft and work in progress!
+			Feedback is already appreciated.
+		</para>
+	</important>
+	<para>
+		The Univention Directory Manager (<acronym>UDM</acronym>) is a wrapper for <acronym>LDAP</acronym> objects.
+		Traditionally <acronym>LDAP</acronym> stores objects as a collection of attributes, which are defines by so called schemata.
+		Modifying entries is slightly complicated, as there are no high-level operations to add or remove values from multi-valued attributes, or to keep the password used by different authentication schemes such as Windows <acronym>NTLM</acronym>-hashes, UNIX <acronym>MD5</acronym> hashes, or Kerberos tickets in sync.
+	</para>
+
+	<section><title>Introduction</title>
+		<programlisting><![CDATA[
+eval "$(ucr shell)"
+udm container/ou create --position "$ldap_base" name="xxx"
+		]]></programlisting>
+		<programlisting><![CDATA[
+eval "$(ucr shell)"
+ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<__LDIF__
+dn: uid=xxx,$ldap_base
+objectClass: organizationalRole
+cn: xxx
+__LDIF__
+		]]></programlisting>
+	</section>
+
+	<section id="udm:ea">
+		<title>Packaging Extended Attributes</title>
+		<para>
+			Extended attribute can be used to extend <acronym>UDM</acronym> modules.
+			Each module provides a set of mappings from <acronym>LDAP</acronym> attributes to properties.
+			This set is not complete, because <acronym>LDAP</acronym> objects can be extended with additional <emphasis>auxiliary objectClasses</emphasis>
+		</para>
+		<para>
+			udm settings/extended_attributes create "$@"
+		</para>
+		<para>
+			<remark>PMH: Bug #21912</remark>
+			Options: <ulink url="https://forge.univention.org/bugzilla/show_bug.cgi?id=21912"/>.
+		</para>
+	</section>
+
+	<section id="udm:ldap">
+		<title>LDAP basics
+			<indexterm><primary>LDAP</primary></indexterm>
+		</title>
+		<para>
+			Schema extension.
+			Install on master.
+			Replicated to backup and slaves.
+		</para>
+		<para>
+			<ulink url="https://forge.univention.org/bugzilla3/show_bug.cgi?id=30596"/>
+		</para>
+		<para>
+			<ulink url="http://www.zytrax.com/books/ldap/ch3/"/>
+		</para>
+
+		<section id="udm:ldap:objectclass">
+			<title>LDAP objectclass
+				<indexterm><primary>LDAP</primary><secondary>objectclass</secondary></indexterm>
+			</title>
+			<para>
+				NAME.
+				DESC.
+				OBSOLETE.
+				SUP(erior).
+				STRUCTURAL, AUXILIARY, ABSTRACT.
+				MUST, MAY.
+			</para>
+		</section>
+
+		<section id="udm:ldap:attribute">
+			<title>LDAP attribute
+				<indexterm><primary>LDAP</primary><secondary>objectclass</secondary></indexterm>
+			</title>
+			<para>
+				OID.
+				NAME.
+				DESC.
+				OBSOLETE.
+				SUP(erior).
+				EQUALITY, ORDERING, SUBSTR.
+				SYNTAX.
+				SINGLE-VALUE, MULTI-VALUE.
+				COLLECTIVE.
+				NO-USER-MODIFICATION.
+				USAGE.
+			</para>
+		</section>
+
+	</section>
+
+	<section id="udm:modules">
+		<title>UDM modules</title>
+		<remark>PMH: Bug #29525</remark>
+		<para>
+			<ulink url="http://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager"/>
+		</para>
+	</section>
+
+	<section id="udm:syntax">
+		<title>UDM Syntax</title>
+		<remark>PMH: Bug #24236</remark>
+		<para>
+			<filename>/usr/share/pyshared/univention/admin/syntax.py</filename>
+		</para>
+	</section>
+
+	<section id="udm:hook">
+		<title>EA Hooks</title>
+		<remark>PMH: Bug #25053</remark>
+		<para>
+			<ulink url="http://wiki.univention.de/index.php?title=Erstellen_eines_erweiterten_Attributs_mit_Hook"/>
+		</para>
+	</section>
+
+	<section id="udm:acl">
+		<title>LDAP Accress Control Lists
+			<indexterm><primary>LDAP</primary><secondary>ACL</secondary></indexterm>
+		</title>
+		<remark>SG: might be too much</remark>
+		<remark>PMH: but needed by us</remark>
+		<para>
+			OpenLDAP ACLs: break, continue, ...
+		</para>
+	</section>
+
+	<section id="udm:ldap:common-attributes">
+		<title>Common LDAP attributes
+			<indexterm><primary>LDAP</primary><secondary>attributes</secondary></indexterm>
+		</title>
+		<para>
+			Do not re-invent the wheel, use existing LDAP attributes.
+		</para>
+	</section>
+
+</chapter>
+<!-- vim:set ts=2 sw=2 noet ft=docbk:-->

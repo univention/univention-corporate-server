@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+ucr set atd/autostart?yes
+
+exit 0

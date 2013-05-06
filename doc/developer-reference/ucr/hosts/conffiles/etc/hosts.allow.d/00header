@@ -1,0 +1,3 @@
+@%@UCRWARNING=# @%@
+# /etc/hosts.allow: list of hosts that are allowed to access the system.
+#                   See the manual pages hosts_access(5) and hosts_options(5).
