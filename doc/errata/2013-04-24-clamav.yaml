@@ -1,0 +1,10 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: clamav
+fix: 0.97.7+dfsg-1.121.201304241717
+note: This update fixes this vulnerability by updating to ClamAV 0.97.7
+desc: |
+ ClamAV 0.97.7 addresses several reported potential security bugs,
+ for which no CVE IDs have been assigned yet.
+bug: [30872]

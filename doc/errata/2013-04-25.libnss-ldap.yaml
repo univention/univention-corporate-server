@@ -1,0 +1,19 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: libnss-ldap
+fix: 264-2.2.47.201304251546
+note: |
+  libnss-ldap uses in some environments the 
+  DNS SRV LDAP record to look up the LDAP
+  server instead of using the configured LDAP
+  sever from /etc/libnss-ldap.conf.
+  This erratum added a configuration switch to 
+  libnss-ldap.conf to disable the DNS look up.
+  The default is unchanged and the DNS look up 
+  can be disabled by setting nssldap/nss_srv
+  to false.
+version: [1]
+desc: |
+  Added config option nss_srv to deny dns srv record lookups
+bug: [30779]

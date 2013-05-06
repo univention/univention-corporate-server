@@ -1,0 +1,17 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-management-console
+fix: 5.0.62-2.729.201304171418
+note:
+version: [1]
+desc: |
+  This update fixes several issues:
+  * The "--quite" option in the command line tool
+    univention-management-console-client has been renamed to
+    "--quiet"
+  * "UNIVENTION_DEBUG_BEGIN" and "UNIVENTION_DEBUG_END" information are no
+    longer logged.
+  * A problem which caused to crash the UMC server when setting an invalid
+    locale has been corrected.
+bug: [30605, 29603, 28657]

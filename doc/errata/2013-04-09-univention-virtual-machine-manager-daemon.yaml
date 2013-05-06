@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-virtual-machine-manager-daemon
+fix: 2.0.36-6.443.201304161341
+note:
+version: [1]
+desc: |
+  This update fixes several issues:
+  * This update fixes the broken context menu for active instances on
+    the devices page.
+  * A typo in the german translation has been fixed
+  * A problem with the ordering of snapshot savepoints has been corrected
+bug: [29261, 22377, 29901]
