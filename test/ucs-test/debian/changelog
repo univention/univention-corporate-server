@@ -1,3 +1,13 @@
+ucs-test (3.0.40-1) unstable; urgency=low
+
+  * added test 51_modify_dns_forward_zone_ptr_record (Bug #31041)
+  * added test 52_modify_ip_ptr_record (Bug #31041)
+  * added possibility to pass options and position to UDM test python API
+    (Bug #30560)
+  * code cleanup for UDM test python API (Bug #30560)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 06 May 2013 14:19:12 +0200
+
 ucs-test (3.0.39-2) unstable; urgency=low
 
   * In 51_samba4/35smbclient_auth there is now a check that the user has been
