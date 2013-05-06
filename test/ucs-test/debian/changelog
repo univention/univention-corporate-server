@@ -1,3 +1,10 @@
+ucs-test (3.0.39-2) unstable; urgency=low
+
+  * In 51_samba4/35smbclient_auth there is now a check that the user has been
+  	created. (Bug #26807)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 06 May 2013 14:21:58 +0200
+
 ucs-test (3.0.39-1) unstable; urgency=low
 
   * Set homedir/mount=false when 51_samba4/35smbclient_auth is running (Bug #26807)  
