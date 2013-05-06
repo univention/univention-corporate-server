@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+
+  %entities;
+]>
+<book lang="en" id="performance-guide-3.1">
+
+<bookinfo>
+  <title>Univention Corporate Server</title>
+  <subtitle>Performance guide</subtitle>
+	<revhistory>
+		<revision>
+			<revnumber>3.1</revnumber>
+			<date>19 Sep 2012</date>
+		</revision>
+	</revhistory>
+</bookinfo>
+
+<chapter>
+	<title>Introduction</title>
+	<para>
+		In its default configuration, UCS is suitable for environments with up to
+		5,000 users.
+	</para>
+	<para>
+		This document describes configuration modifications which can increase
+		performance in larger environments.
+	</para>
+	</chapter>
+
+<chapter>
+	<title>OpenLDAP and listener/notifier domain replication</title>
+	<para>
+		As a core element in the operation and administration of a UCS domain, the
+		performance of the LDAP server plays a central role in the overall performance.
+	</para>
+
+	<section>
+		<title>Indices</title>
+		<para>
+			Comparable with other database systems, OpenLDAP runs indices about commonly
+			requested attributes. For indexed attributes, a search is not performed via the
+			full database contents, but over an optimized subsection.
+		</para>
+		<para>
+			The preset indices are often extended with new UCS releases. As of UCS 2.3-2,
+			it is possible to update the indices automatically. If the &ucsUCRV;
+			<envar>ldap/index/autorebuild</envar> is set to <literal>yes</literal> or
+			<literal>true</literal>, the LDAP indices configured on the system are
+			expanded automatically and the <command>slapindex</command> command is used to
+			rebuild the indices during release upgrades.
+		</para>
+		<para>
+			For the indexing of large directories, it must be taken into account that
+			<command>slapindex</command> running times can take several hours.
+		</para>
+	</section>
+
+	<section>
+		<title>Configuration of the database backend (BDB)</title>
+		<para>
+			The data of the LDAP server are stored in a database in the Berkeley database
+			format (BDB).
+		</para>
+		<para>
+			The BDB configuration is performed via &ucsUCR; variables, which configure the
+			<filename>/var/lib/univention-ldap/ldap/DB_CONFIG</filename> file.
+		</para>
+		<para>
+			The &ucsUCRV; <envar>ldap/database/bdb/set_cachesize</envar> defines the cache
+			size (default 90 MB). As a general rule, the cache should always be large
+			enough to be able to hold all indices.
+		</para>
+		<para>
+			The &ucsUCRV; <envar>ldap/database/bdb/set_lg_bsize</envar> controls the
+			maximum size of the BDB transaction log in bytes. These files are also stored
+			in the data directory and store requested modifications before being run. If
+			the transaction is cancelled or the LDAP server is not exited properly, the
+			last log files can be used to check the last transactions and restore a
+			consistent database status.
+		</para>
+		<para>
+			Following most changes to <filename>DB_CONFIG</filename>, the
+			<command>db_recover</command> tool must be run to adopt the new configuration
+			for the database. This tool also performs the replay of potentially missed
+			transactions.. To ensure problem-free OpenLDAP operation,
+			<command>db_recover</command> is run in the slapd init script. In other words,
+			when BDB-specific &ucsUCR; variables are changed, it suffices to restart the
+			LDAP server.
+		</para>
+		<para>
+			The <command>db4.8_stat</command> tool is provided to check the BDB database. On a
+			running LDAP server, it is possible, among other things, to request information
+			about the maximum cache size, cache utilisation and locking.
+		</para>
+		<para>
+			The following modifications may prove useful in larger environments:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>Increasing the size of the cache</emphasis>
+				</para>
+				<para>
+					A larger cache improves performance, particularly for commonly requested
+					objects. Statistics of the cache usage can be displayed with
+					<command>db4.8_stat -m -h /var/lib/univention-ldap/ldap/</command>.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Increasing the maximum number of locks</emphasis>
+				</para>
+				<para>
+					In the default setting, BDB allows a maximum of 1,000 locks for concurrent
+					accesses (locks), users (lockers) or objects. An evaluation of the actually
+					used locks can be viewed using <command>db4.8_stat -c -h
+					/var/lib/univention-ldap/ldap/</command>.
+				</para>
+				<para>
+					The locks can be set with the DB_config options <varname>set_lk_max_lockers</varname>,
+					<varname>set_lk_max_locks</varname> and <varname>set_lk_max_objects</varname>.
+				</para>
+			</listitem>
+		</itemizedlist>
+
+		<section>
+			<title>OpenLDAP ACLs</title>
+			<para>
+				Access to the information contained in the LDAP directory is controlled by
+				access control lists (ACLs) on the server side. General information on the
+				configuration of ACLs in UCS can be found in the LDAP chapter of the UCS
+				manual.
+			</para>
+			<para>
+				The default setting of the LDAP server does not allow anonymous access to the
+				LDAP directory. If the &ucsUCRV; <envar>ldap/acl/read/anonymous</envar> is set
+				to <literal>yes</literal>, these access restrictions do not apply and the
+				LDAP performance is increased. Access to sensitive attributes such as user
+				passwords remains protected via separate ACLs.
+			</para>
+		</section>
+	</section>
+
+	<section>
+		<title>Univention Directory Listener</title>
+		<para>
+			In the default setting, the Univention Directory Listener performs safety
+			checks to prevent a user name being added into a group twice. These checks can
+			be deactivated by setting the &ucsUCR; variables
+			<envar>listener/memberuid/skip</envar> and
+			<envar>listener/uniquemember/skip</envar> to <literal>yes</literal>.
+		</para>
+	</section>
+</chapter>
+
+<chapter>
+	<title>Name Service Cache Daemon (NSCD)</title>
+	<para>
+		Name resolutions can be cached by the <emphasis>Name Service Cache
+		Daemon</emphasis> (NSCD) in order to speed up frequently recurring requests for
+		unchanged data. Thus, if a repeated request occurs, instead of querying the
+		LDAP server, the data are simply drawn directly from the cache.
+	</para>
+	<para>
+		The size of the cache held by the NSCD is preconfigured for an environment with
+		5,000 users. If more users or hosts are created, the cache
+		should be enlarged as otherwise it will not be possibly to cache enough
+		entries.
+	</para>
+	<para>
+		The following &ucsUCR; variables can be set:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<simpara>
+			<envar>nscd/hosts/size</envar> should be at least the same as the number
+			of all the computers entered in the DNS.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			<envar>nscd/passwd/size</envar> should be at least the same as the number
+			of users.
+			</simpara>
+		</listitem>
+	</itemizedlist>
+	<para>
+		To allow an efficient cache allocation, the value selected should always be a
+		prime number, in case of doubt the next highest prime number should be
+		selected.
+	</para>
+	<para>
+		A script can be downloaded from
+		<ulink url="http://download.univention.de/download/scripts/nscdCachesize.sh"/>
+		which suggests corresponding values based on the objects currently included in
+		the system.
+	</para>
+</chapter>
+
+<chapter>
+	<title>Local group cache</title>
+
+	<para>
+		In the default setting, the group cache is regenerated every time changes are
+		made to a group. This avoids cache effects whereby group memberships only
+		become visible for a service after the next scheduled group
+		cache rewrite (in the default setting after 15 minutes and
+		after 15 seconds of inactivity in the &ucsUDL;. In
+		larger environments with a lot of group changes, this function should be
+		deactivated by setting the &ucsUCRV;
+		<envar>nss/group/invalidate_cache_on_changes</envar> to
+		<literal>false</literal>. This setting takes effect immediately and does not
+		require a restart of the Univention Directory Listener.
+	</para>
+
+	<para>
+	  When the group cache file is being generated, the script verifies whether the group members
+	  are still present in the LDAP directory. If only the &ucsUMC; is used for the management of
+	  the LDAP directory, this additional check is not necessary and can be disabled by setting the
+	  &ucsUCRV; <envar>nss/group/cachefile/check_member</envar> to <literal>false</literal>.
+	</para>
+
+</chapter>
+
+
+<chapter>
+  <title>UCS management system</title>
+
+  <section>
+	<title>Disabling automatic search</title>
+	<para>
+	  By default all objects are automatically searched for in the domain management
+	  modules of the &ucsUMC;. This behaviour can be disabled by setting the
+	  &ucsUCRV; <envar>directory/manager/web/modules/autosearch</envar> to
+	  <literal>0</literal>.
+	</para>
+  </section>
+
+  <section>
+	<title>Imposing a size limit for searches</title>
+	<para>
+	  The &ucsUCRV; <envar>directory/manager/web/sizelimit</envar> is used to impose an upper limit
+	  for search results. If, e.g., this variable is set to 2000 (as is the default), searching for
+	  more than 2000 users would not be performed and instead the user is asked to refine the
+	  search.
+	</para>
+  </section>
+</chapter>
+
+
+<chapter>
+	<title>Further services and components</title>
+	<section>
+		<title>Squid</title>
+		<para>
+			If the Squid proxy service is used with NTLM authentication, the authentication
+			is performed via the Winbind service. The communication with Winbind is
+			performed over a queue, as standard up to five running NTLM requests can be
+			processed in parallel. If the Winbind service answers slowly or many proxy
+			requests are received in parallel, the top limit of the queue may be reached
+			and the Squid user may receive an authentication error. The queue size can be
+			configured with the &ucsUCRV; <envar>squid/ntlmauth/children</envar>.
+		</para>
+	</section>
+
+	<section>
+		<title>Bind</title>
+		<para>
+		  Bind can use two different backends for its configuration: OpenLDAP or the internal LDB
+		  database of Samba 4. The backend is configured via the &ucsUCRV;
+		  <envar>dns/backend</envar>.
+		</para>
+
+		<para>
+		  When using the Samba backend, a search is performed in the LDAP for every DNS
+		  request. With the OpenLDAP backend, a search is only performed in the directory service if
+		  the DNS data has changed. For this reason, using the OpenLDAP backend can reduce the load
+		  on a Samba 4 domain controller.
+	  </para>
+	</section>
+
+</chapter>
+<?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>

@@ -1,0 +1,1255 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+
+  %entities;
+]>
+<book lang="en" id="installation-3.1">
+<bookinfo>
+  <title>Univention Corporate Server</title>
+  <subtitle>Extended installation documentation</subtitle>
+  <revhistory>
+     <revision>
+        <revnumber>3.1</revnumber>
+        <date>19 Sep 2012</date>
+     </revision>
+  </revhistory>
+</bookinfo>
+
+<chapter><title>Profile-based installation</title>
+
+<section><title>Introduction</title>
+<para>
+  In addition to the interactive installation described in the UCS
+  manual <citation>ucs-handbuch</citation>, profile-based installation of UCS is also
+  possible. In this method, the settings for the UCS installer are
+  specified in a profile file. If all the required settings are included
+  in the installation profile, it is possible to perform the
+  installation fully unattended. <xref linkend="profile:variables"/>
+  describes the structure of the profile file and the variables used in
+  it.
+</para>
+<para>
+  Profile-based installations can be performed in two ways:
+</para>
+<itemizedlist>
+  <listitem><simpara>Installation from a DVD: The profile settings can then be
+  imported from a floppy disk or a USB storage device or alternatively
+  stored on the installation DVD. How to perform a profile-based
+  installation from a DVD is described in
+  <xref linkend="profile:dvdinstaller"/>.
+  </simpara></listitem>
+  <listitem><simpara>The <emphasis>Univention Net Installer</emphasis> can be used to perform
+  network-based installations automatically via PXE. The profile
+  settings used are identical. The PXE-based installations are
+  documented in <xref linkend="profile:netinstaller"/>.</simpara></listitem>
+</itemizedlist>
+</section>
+
+<section id="profile:variables"><title>Structure of profile files / overview of profile variables</title>
+
+<section><title>Introduction</title>
+<para>
+An installation profile is a normal text file which can be edited with
+any editor. Installation profiles must be saved in UTF-8.
+The settings must be entered in the following format:
+</para>
+<programlisting>
+Variable='Value1 Value2'
+</programlisting>
+<para>
+Multiple values for one variable are separated by blank spaces. Lines
+are commented out with #.
+</para>
+<para>
+It is not necessary to write an installation profile from scratch
+every time: The settings performed in the Univention Installer in an
+interactive installation are saved in
+the <filename>/etc/univention/installation_profile</filename> file (with the
+exception of the root password). This file can be used as a template
+for an installation profile.
+</para>
+</section>
+
+<section id="profile:example"><title>Example installation profile</title>
+<para>
+The following installation profile installs a &ucsMaster;
+with English language and country settings on which the complete hard
+drive is managed in an LVM. Samba 4 is installed.
+</para>
+<programlisting>
+#### UCS-Profile ####
+
+# [Time zone]
+timezone='Europe/London'
+locale_default='en_GB.UTF-8:UTF-8'
+locales='en_GB.UTF-8:UTF-8'
+
+# [Language]
+language='en'
+
+# [System role]
+system_role='domaincontroller_master'
+
+# [Settings]
+domainname='company.example'
+hostname='master'
+ldap_base='dc=company,dc=example'
+fqdn='master.company.example'
+windows_domain='COMPANY'
+root_password='secret'
+
+# [Source device]
+cdrom_device='/dev/sr0'
+
+# [Partitioning]
+disks='/dev/sdb /dev/sda'
+boot_partition='/dev/sda1'
+auto_part=full_disk
+
+# [Keyboard]
+keymap='uk'
+
+# [Software]
+packages='univention-s4-connector univention-samba4'
+
+# [Network]
+nameserver_1='192.168.0.3'
+eth0_broadcast='192.168.0.255'
+dns_forwarder_1='192.168.0.3'
+eth0_netmask='255.255.255.0'
+eth0_network='192.168.0.0'
+gateway='192.168.0.240'
+eth0_ip='192.168.0.134'
+</programlisting>
+</section>
+
+<section><title>Overview of the possible profile variables</title>
+
+<section id="profile:variables:general"><title>Profile variables - General</title>
+<para>
+The following profile variables are used to control the progress of
+the installation. For example, it is possible to include a password
+prompt, run programs before and after the installation or allow the
+entry of the value for individual variables during the installation.
+</para>
+
+<table>
+<title>Profile variables - installation</title>
+<tgroup cols="2">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="2*"/>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Function</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>profile_password</entry>
+<entry>
+Here one can specify the password that
+must be entered when the installation profile is used. This is not
+a security feature as the password is saved in the profile in plain
+text. However, a password can serve as a safe guard mechanism against an
+incorrectly selected profile.
+</entry>
+</row>
+
+<row>
+<entry>to_check</entry>
+<entry>
+Here one can specify variables whose values must
+be entered or checked at the beginning of the installation. These
+variables can be used to install a large number of computers of the
+same type with the same profile in cases where only individual
+settings such as IP addresses and the computer name are different. If
+more than one value is specified, the values are separated by blank
+spaces.
+</entry>
+</row>
+
+<row>
+<entry>check</entry>
+<entry>
+If this variable is used, only the variables listed
+are requested. Other missing variables are not taken into
+account. <varname>check</varname> supports the
+parameter <literal>all</literal>. When <literal>check=all</literal> is used, all profile
+variables are requested, even those already set (same as interactive
+installation). If more than one value is specified, the values are
+separated by blank spaces.
+</entry>
+</row>
+
+<row>
+<entry>scan</entry>
+<entry>
+This option provides mechanisms with which the values
+of the profile variables can be retrieved dynamically during the
+installation. At present, <varname>hostname</varname> is the only profile
+variable supported. If <literal>scan=hostname</literal> is entered, the
+computer name is procured via the computer's IP address by means of
+a name server request during the installation. <varname>scan</varname>supports
+the parameter <literal>all</literal>. If <literal>scan=all</literal> is used, all the
+profile variables supported by <varname>scan</varname> are imported during the
+installation. If more than one value is specified, the values are
+separated by blank spaces.
+</entry>
+</row>
+
+<row>
+<entry>ignore</entry>
+<entry>
+The value for the <varname>ignore</varname>option can
+include profile variables that are not to be checked. If, for
+example, <literal>scan=hostname</literal> is set, <literal>ignore=hostname</literal>
+must also be set. <varname>ignore</varname> must also be used if system
+settings are to be set using scripts
+<varname>preinst_hook</varname>, <varname>postinst_hook</varname>). <varname>ignore</varname>
+supports the parameter <literal>all</literal>. If <literal>ignore=all</literal> is used, no profile
+variables are requested unless they are specifically set. If more than
+one value is specified, the values are separated by blank spaces.
+</entry>
+</row>
+
+<row>
+<entry>preinst_hook</entry>
+<entry>
+Here one can specify scripts which should be
+run before the installation. The scripts must be provided in
+the <filename class="directory">script/</filename> directory on the installation medium. If more than
+one script is entered, they must be separated by blank spaces.
+</entry>
+</row>
+
+<row>
+<entry>postinst_hook</entry>
+<entry>
+Here one can specify scripts which should
+be run after the installation. The scripts must be provided in
+the <filename class="directory">script/</filename> directory on the installation medium. If more than
+one script is entered, they must be separated by blank spaces.
+</entry>
+</row>
+
+<row>
+<entry>auto_reboot</entry>
+<entry>
+The system is automatically restarted after
+the installation if the parameter is set to <literal>true</literal>
+or <literal>yes</literal>. This parameter should not be used in network-based
+installations as the computer setting <guimenu>(Re-)install on next boot</guimenu>
+cannot be unset at the end of the installation. The
+installation would start from the beginning again the next time the
+system was started.
+</entry>
+</row>
+
+</tbody>
+</tgroup>
+</table>
+</section>
+
+<section id="installation:profilvariablen-systemeigenschaften"><title>Profile variables - System properties</title>
+
+<para>
+The following profile variables can be used to specify basic
+properties of the computer such as the computer name, its role within
+the UCS domain and the name of the domain the computer should join.
+</para>
+
+<table>
+<title>Profile variables - System properties</title>
+<tgroup cols="2">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="2*"/>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Function</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>hostname</entry>
+<entry>
+The computer name. The name must only contain the
+letters a to z in lowercase, the figures 0 to 9, hyphens and
+underscores and must begin with a letter.
+</entry>
+</row>
+
+<row>
+<entry>system_role</entry>
+<entry>
+The system role. You may choose
+from <literal>domaincontroller_master</literal>, <literal>domaincontroller_backup</literal>,
+<literal>domaincontroller_slave</literal> <literal>memberserver</literal>, <literal>managed_client</literal>,
+<literal>mobile_client</literal>and <literal>base</literal>. The properties of the
+system roles are described in the domain services chapter of the UCS
+manual <citation>ucs-handbuch</citation>.
+</entry>
+</row>
+
+<row>
+<entry>locales</entry>
+<entry>
+Localisation packages to be installed (locales). If more than one
+locale is specified, the locales are separated by blank spaces.
+</entry>
+</row>
+
+<row>
+<entry>locale_default</entry>
+<entry>
+The standard locale for the computer, e.g. <literal>en_GB.UTF-8:UTF-8</literal>.
+More information on system locales can be found at <citation>locales</citation>.
+</entry>
+</row>
+
+<row>
+<entry>country, keymap</entry>
+<entry>
+The keyboard layout for the computer, specified in the form of an X11
+keymap entry, e.g. <literal>de-latin1</literal>.
+</entry>
+</row>
+
+<row>
+<entry>timezone</entry>
+<entry>
+The time zone for the computer,
+e.g. <literal>Europe/Berlin</literal>. A complete list of possible
+configuration options is shown in the <emphasis>Basic
+settings</emphasis> module of the Univention Management Console.
+</entry>
+</row>
+
+<row>
+<entry>root_password</entry>
+<entry>
+The password for the <emphasis>root</emphasis> user for
+this computer. On a &ucsMaster;, this password is also used for
+the <emphasis>Administrator</emphasis>'s password.
+</entry>
+</row>
+
+<row>
+<entry>domainname</entry>
+<entry>
+The name of the DNS domain in which the computer is joined.
+</entry>
+</row>
+
+<row>
+<entry>use_efi</entry>
+<entry>
+Whether a system is using the Unified Extensible
+Firmware Interface (UEFI) boot mechanism is detected automatically.
+This variable can be used to override the automatic
+detection. Possible values are <literal>yes</literal> and
+<literal>no</literal>.
+</entry>
+</row>
+
+</tbody>
+</tgroup>
+</table>
+</section>
+
+
+<section><title>Profile variables - LDAP settings and domain joins</title>
+<para>
+The entries <varname>domain_controller_account</varname>
+and <varname>domain_controller_password</varname> are essential for computers
+intended to join the domain.
+</para>
+
+<table>
+<title>Profile variables - LDAP settings</title>
+<tgroup cols="2">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="2*"/>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Function</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>domain_controller_account</entry>
+<entry>
+The name of a user authorised to perform the computer's domain
+join. In the standard setting this is the user
+<literal>Administrator</literal>. The entry is essential on systems
+intended to join the UCS domain.
+</entry>
+</row>
+
+<row>
+<entry>domain_controller_password</entry>
+<entry>
+The password for the
+<varname>domain_controller_account</varname>. The entry is essential
+on systems intended to join the UCS domain.
+</entry>
+</row>
+
+<row>
+<entry>ldap_base</entry>
+<entry>
+The base DN of the LDAP domain. In general, the
+base DN <literal>dc=company,dc=example</literal> is used in a
+domain <literal>company.example</literal>. This variable is only evaluated on the
+system role &ucsMaster;.
+</entry>
+</row>
+
+<row>
+<entry>auto_join</entry>
+<entry>
+As standard, all computers apart from the base
+system attempt to join the UCS domain in the course of the
+installation. If this parameter is set to false, the automatic domain
+join is deactivated.
+</entry>
+</row>
+
+<row>
+<entry>ldap_position</entry>
+<entry>
+The position as DN in the LDAP directory at
+which the computer object should be saved when joining the domain. If
+this variable is not set, the object is saved in the standard
+container for computers with its system role.
+</entry>
+</row>
+
+</tbody>
+</tgroup>
+</table>
+</section>
+
+
+<section><title>Profile variables - network configuration</title>
+<para>
+The following profile variables can be used to specify the network
+configuration of the computer. There is a restriction on the number of
+network cards used. A maximum of four physical network cards can be
+used with four virtual interfaces for each physical one.
+</para>
+<para>
+General information on the network configuration and the use of the
+name servers can be found in Chapter <emphasis>Network configuration</emphasis>
+of the UCS manual <citation>ucs-handbuch</citation>.
+</para>
+<para>
+The <varname>use_external_nameserver</varname> parameter can be used to
+suppress the use of the local name server. The external name server
+must be specified in the profile with the <varname>nameserver_1</varname>
+parameter.
+</para>
+<para>
+The settings for network cards must be performed completely. It is not
+possible to leave individual settings blank. For example, if there is
+no IP address for the device eth0 in the profile, in addition to the
+IP address, the <varname>eth0_netmask</varname> will also be requested.
+</para>
+
+
+<table>
+<title>Profile variables - Network configuration</title>
+<tgroup cols="2">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="2*"/>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Function</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+    <entry>eth<replaceable>N</replaceable>_type</entry>
+<entry>
+If this parameter is set to <literal>dynamic</literal>, the
+network interface ethN procures its network configuration via DHCP. It
+is then not necessary to enter
+the <varname>eth<replaceable>N</replaceable>_ip</varname>, <varname>eth<replaceable>N</replaceable>_netmask</varname>, <varname>eth<replaceable>N</replaceable>_network</varname>
+and <varname>eth<replaceable>N</replaceable>_broadcast</varname> in the profile. If no DHCP offer is received, a random
+IP address in the <literal>169.254.<replaceable>x.x</replaceable></literal> network is used.
+</entry>
+</row>
+
+<row>
+    <entry>eth<replaceable>N</replaceable>_ip</entry>
+<entry>
+The IPv4 address of the physical network interface ethN.
+</entry>
+</row>
+
+<row>
+    <entry>eth<replaceable>N</replaceable>_netmask</entry>
+<entry>
+The network mask of the subnetwork from which the IPv4 address of ethN
+originates.
+</entry>
+</row>
+
+<row>
+    <entry>eth<replaceable>N</replaceable>_acceptra</entry>
+<entry>
+If this setting is set to <literal>yes</literal>, the
+stateless address autoconfiguration (SLAAC) is used. In this, the IP
+address is assigned from the routers of the local network segment. If
+the variable is set to <literal>no</literal>, the configuration is performed
+statically via <varname>eth<replaceable>N</replaceable>_ip6</varname> and <varname>eth<replaceable>N</replaceable>_prefix6</varname> (see
+below).
+</entry>
+</row>
+
+<row>
+    <entry>eth<replaceable>N</replaceable>_ip6</entry>
+<entry>
+The IPv6 address of the physical network interface ethN in static
+configuration.
+</entry>
+</row>
+
+<row>
+    <entry>eth<replaceable>N</replaceable>_prefix6</entry>
+<entry>
+The prefix of the IPv6 address of the physical network interface ethN
+in static configuration.
+</entry>
+</row>
+
+<row>
+<entry>use_external_nameserver</entry>
+<entry>
+If this parameter is set to <literal>true</literal>, the DNS service
+automatically installed on every domain controller is not used. Instead, the
+variable <varname>nameserver_N</varname> is used to specify an external name
+server. If the parameter is set to <literal>false</literal> or not set at all, the
+internal name server will be used in accordance with the UCS
+standard.
+</entry>
+</row>
+
+<row>
+<entry>nameserver_1, nameserver_2, nameserver_3</entry>
+<entry>
+The IP address of the name server which should perform the name
+resolution. It is possible to specify up to three name servers.
+</entry>
+</row>
+
+<row>
+<entry>gateway</entry>
+<entry>
+The IPv4 address of the gateway which the computer should use as
+standard. Alternatively, one can specify the computer name or the FQDN
+that can be resolved into the IP address.
+</entry>
+</row>
+
+<row>
+<entry>gateway6</entry>
+<entry>
+The IPv6 address of the gateway which the
+computer should use as standard. It is not obligatory to enter a
+gateway for IPv6, but recommended. An IPv6 gateway configured here has
+preference over router advertisements, which might otherwise be able
+to change the route.
+</entry>
+</row>
+
+<row>
+<entry>dns_forwarder_1, dns_forwarder_2, dns_forwarder_3</entry>
+<entry>
+The IP address of the name server
+intended to serve as the forwarder for a locally installed DNS
+service. It is possible to specify up to three forwarders.
+</entry>
+</row>
+
+<row>
+<entry>proxy_http</entry>
+<entry>
+The URL of a proxy server to be used when
+downloading accessing the Internet. The specified URL is adopted in
+the &ucsUCR; variables <envar>proxy/http</envar> and <envar>proxy/ftp</envar>. This setting is only required
+if packages are to be installed which download additional packages
+from external web servers; e.g., the installation program for the
+Flash plugin.
+<para>
+Example: proxy_http=http://proxy.company.example:8080
+</para>
+</entry>
+</row>
+
+</tbody>
+</tgroup>
+</table>
+</section>
+
+<section><title>Profile variables - software selection</title>
+<para>
+The following profile variables refer to software packages which are
+to be installed on the computer.
+</para>
+
+<table>
+<title>Profile variables - Software</title>
+<tgroup cols="2">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="2*"/>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Function</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>packages</entry>
+<entry>
+Each system role has a preselection of software
+which is installed on the system. This settings names packages which
+are additionally installed. If more than one package is specified, the
+packages are separated by blank spaces.
+</entry>
+</row>
+
+<row>
+<entry>local_repository</entry>
+<entry>
+If this parameter is set to <literal>true</literal>,
+a local repository is set up and the contents of the installation DVD
+copied (see Chapter <emphasis>Software deployment</emphasis> of the UCS
+manual <citation>ucs-handbuch</citation>.
+</entry>
+</row>
+
+</tbody>
+</tgroup>
+</table>
+</section>
+
+
+
+<section><title>Profile variables - Partitioning</title>
+<para>
+The configuration of the partition settings can be performed
+completely profiled-baseds. Existing partitions can be deleted or
+mounted as data partitions without reformatting; new partitions can be
+set up in free areas.
+</para>
+<para>
+In contrast to the remaining variables, the profile variables for hard
+drive configuration have an extended syntax.
+</para>
+<para>
+<varname>part_delete</varname> causes deletion of
+partitions; <varname>lvmlv_delete</varname> can be used to delete logical LVM
+media. The profile variable <varname>auto_part</varname> activates the automatic
+partitioning.
+</para>
+<para>
+    The profile variable <varname>dev_<replaceable>Number</replaceable></varname> specifies whether and how
+the partition should be formatted and where the partition should be
+mounted in the file system. The names used for the profile variable
+must be furnished with running numbers starting with zero (<varname>dev_0</varname>,
+<varname>dev_1</varname>, <varname>dev_2</varname>, ...) The profile variable for the configuration of
+the partitions has the most extensive syntax. The entry type, device
+file, partition type, partition format, file system, start and end
+cylinder of the partition, directory under which the partition should
+be mounted and additional options parameters must be specified.
+</para>
+<para>
+The first parameter describes the entry type. A difference is made
+here between <literal>PHY</literal> for a physical partition and <literal>LVM</literal> for a
+LVM entry. As a second parameter, the device name of the partition
+(e.g., <filename class="partition">/dev/sda1</filename>) or the logical LVM medium
+(e.g., <filename class="partition">/dev/vg_ucs/log_vol_1</filename>) must be entered.
+</para>
+<para>
+The third parameter describes the partition type. For <literal>PHY</literal>
+entries, <literal>0</literal> means primary, <literal>1</literal> means logical and <literal>2</literal>
+means extended. For <literal>LVM</literal> entries, only the value <literal>LVMLV</literal>
+for a logical LVM medium is currently recognised. The fourth parameter
+determines whether the partition is formatted during the installation
+(value <literal>1</literal>) or not (value <literal>0</literal>). Extended partitions are
+assigned the value <literal>0</literal>. If you do not want to format an existing
+partition, alternatively, the parameter <literal>only_mount</literal> can be set
+on the third position and <literal>0</literal> can be set in the fourth
+position. The fifth parameter describes the file system to be
+used. You can choose between <literal>ext2</literal>, <literal>ext3</literal>, <literal>ext4</literal>,
+<literal>linux-swap</literal> <literal>None</literal> (for extended partitions and partitions
+to which no file system is to be ordered) and <literal>xfs</literal>.
+</para>
+<para>
+Parameters six and seven describe the start and end cylinders of the
+partition. If <literal>0</literal> is entered as the end cylinder, the partition
+is set from the specified start cylinder to the end of the hard
+drive. The start and end points of the partition can also be specified
+in kilobytes/1024 bytes (<literal>k</literal> or <literal>K</literal>), megabytes/1048576 bytes (<literal>m</literal> or <literal>M</literal>) and
+gigabytes/1073741824 bytes (<literal>g</literal> or <literal>G</literal>).
+</para>
+<para>
+The end can be specified relative to the start point (e.g., `10g
++2g'). Bytes and cylinder specifications can be mixed (e.g., `12g
+0' for a partition beginning at 12 gigabytes and ending with the last
+cylinder). For an <literal>LVM</literal> entry, the start point should always be
+set as 0 and its end point should be set to the required size of the
+logical LVM medium.
+</para>
+<para>
+The following provides an example:
+</para>
+<programlisting>
+bootloader_record="/dev/sda"
+disks="/dev/sda"
+part_delete="all"
+lvm_delete="/dev/vg_ucs/*"
+dev_1="PHY /dev/sda1 0 1 ext3 0.032256M 106.928128M /boot None"
+dev_0="LVM /dev/vg_ucs/rootfs LVMLV 1 ext3 0.0M 4000M / None"
+dev_4="LVM /dev/vg_ucs/vol2 LVMLV 1 ext3 0 4000M None None"
+dev_3="PHY /dev/sda3 0 0 None 633.34656M 0 None lvm"
+dev_2="PHY /dev/sda2 0 1 linux-swap 106.92864M 633.346048M None None"
+</programlisting>
+<para>
+The eighth parameter stands for the mount point. For swap partitions and other
+partitions without a mount point <literal>None</literal> should be entered.
+</para>
+<para>
+<literal>lvm</literal> can be entered as the ninth parameter to mark the partition
+as a physical LVM medium. In all other cases, <literal>None</literal> should be entered.
+</para>
+
+<table>
+<title>Profile variables - Partitioning</title>
+<tgroup cols="2">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="2*"/>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Function</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>bootloader_record</entry>
+<entry>
+The partition in which the bootloader
+Grub is installed is detected automatically in the basic setting (if
+more than one partition is found an interactive selection needs to be made)
+This variable can be used to specify an entry. Example: <filename class="devicefile">/dev/sda</filename>
+</entry>
+</row>
+
+<row>
+<entry>part_delete</entry>
+<entry>
+The names of the partitions to be deleted
+during the installation. The name used by the operating system
+(e.g., <filename class="partition">/dev/sda4</filename>) should be entered here. In addition, the
+value <literal>all</literal>, which causes the deletion of all the partitions
+on all detected hard drives, is supported.
+</entry>
+</row>
+
+<row>
+<entry>lvm_delete</entry>
+<entry>
+The names of the logical LVM media to be
+deleted during the installation. Two different spellings can be used
+in the entry. In addition to the specification of the device file
+(e.g., <filename class="partition">/dev/vg_ucs/rootfs</filename>), it is also possible to specify the
+combination of LVM media group and logical LVM medium
+(e.g., <literal>vg_ucs/rootfs</literal>). In addition, it is also possible to
+delete all logical LVM media from an LVM media group by specifying the
+LVM media group (e.g., <filename class="partition">/dev/vg_ucs/*</filename> or <literal>vg_ucs</literal>).
+</entry>
+</row>
+
+<row>
+    <entry>dev_<replaceable>N</replaceable></entry>
+<entry>
+Information on the partitions in the order
+entry type, device file, partition type, formatting yes/no, file
+system, start and end point, mount point, additional options.
+</entry>
+</row>
+
+<row>
+<entry>auto_part</entry>
+<entry>
+Selection of partition schema for the automatic
+partitioning. Currently only the value <literal>full_disk</literal> is supported;
+whereby all the existing hard drives are newly partitioned and
+formatted using the Logical Volume Manager (LVM).
+</entry>
+</row>
+
+<row>
+<entry>create_partitiontable</entry>
+<entry>
+This variable can be used to
+specify partitions on which a DOS partition table should be
+written. The entry is not necessary with automatic partitioning.
+</entry>
+</row>
+
+</tbody>
+</tgroup>
+</table>
+</section>
+
+<section><title>Profile variables - SSL</title>
+<para>
+A SSL certification infrastructure is set up during installation of
+a &ucsMaster;. If no settings are configured, automatic names are
+given for the certificate.
+</para>
+
+<table>
+<title>Profile variables - SSL</title>
+<tgroup cols="2">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="2*"/>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Function</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>ssl_country</entry>
+<entry>
+The ISO country code of the certification body appearing in the
+certificate (root CA), specified with two capital letters.
+</entry>
+</row>
+
+<row>
+<entry>ssl_state</entry>
+<entry>
+The region, county or province that appears in the certificate of the
+root CA.
+</entry>
+</row>
+
+<row>
+<entry>ssl_locality</entry>
+<entry>
+Place appearing in the certificate of the root CA.
+</entry>
+</row>
+
+<row>
+<entry>ssl_organization</entry>
+<entry>
+Name of the organisation that appears in the certificate of the root CA.
+</entry>
+</row>
+
+<row>
+<entry>ssl_organizationalunit</entry>
+<entry>
+Name of the organisational unit or department of the organisation that
+appears in the certificate of the root CA.
+</entry>
+</row>
+
+<row>
+<entry>ssl_email</entry>
+<entry>
+E-mail address that appears in the certificate of the root CA.
+</entry>
+</row>
+
+</tbody>
+</tgroup>
+</table>
+</section>
+
+
+</section>
+</section>
+
+<section id="profile:netinstaller"><title>Network-based PXE installations with Univention Net Installer</title>
+<para>
+Network-based, profile-based installations via PXE are performed with
+the Univention Net Installer, which can be set up using
+the <package>univention-net-installer</package> package. In addition, a DHCP
+server is required. If the DHCP server and the PXE server of the
+Univention Net Installer are operated on separate systems, the PXE
+server must be assigned via a DHCP boot policy.
+</para>
+<para>
+Univention Net Installer supports both the interactive and profile-based
+installation.
+</para>
+<para>
+Univention Net Installer requires a local repository as a package
+source (see the software deployment chapter of the UCS manual <citation>ucs-handbuch</citation>).
+The generated profiles are copied into the
+<filename>/var/lib/univention-repository/profiles</filename> directory on the
+repository server.
+</para>
+
+<section><title>Assignment of a computer for automatic installation</title>
+<para>
+A computer to be installed via Univention Net Installer must firstly
+be registered in the computer management of the &ucsUMC;. The
+following values must be set as a minimum:
+</para>
+<itemizedlist>
+<listitem><simpara>Hostname (General tab)</simpara></listitem>
+<listitem><simpara>MAC address (General tab)</simpara></listitem>
+<listitem><simpara>IP address (General tab)</simpara></listitem>
+<listitem><simpara>DNS forward and reverse zone entries (General tab)</simpara></listitem>
+<listitem><simpara>DHCP service entry (General tab)</simpara></listitem>
+</itemizedlist>
+<para>
+The <guimenu>(Re-)install on next boot</guimenu> option must now be
+activated in the <guimenu>Advanced settings</guimenu> tab
+under <guimenu>Deployment</guimenu>.
+</para>
+<para>
+The name of the installation profile under
+<filename class="directory">/var/lib/univention-repository/profiles/</filename> can be
+entered under <guimenu>Name of installation profile</guimenu>. The
+file name of the profile should be entered without specifying the
+path.
+</para>
+<para>
+Options entered under <guimenu>Additonal start options</guimenu> are
+passed on to the kernel in network-based installations, e.g., for the
+deactivation of ACPI during system start.
+</para>
+<para>
+A profile-based installation is performed as standard in installations
+with the Univention Net Installer. If one wishes to perform an
+interactive installation instead, the <guimenu>Interactive
+installation</guimenu> option must be activated. If any installation
+profile is entered, then it is no longer used.
+</para>
+<para>
+A PXE configuration file is created for every computer object
+under <filename class="directory">/var/lib/univention-client-boot/</filename>.
+</para>
+<para>
+It must be verified that the boot order in BIOS of the system to be
+installed prefers a PXE network boot over hard disks or CD-ROMs.
+</para>
+<para>
+The next time a restart is performed, the computer boots via PXE and
+is installed via the network. If no profile has been specified, a list
+of existing profiles is shown at the beginning of the installation for
+selection. If the selected profile includes an error, meaning it
+can't be loaded, an error message is emitted. It is then possible
+to select another profile.
+</para>
+<para>
+User inputs are only required for profile-based installations if a
+profile password is specified in the profile or variables with
+<varname>to_check</varname> are explicitly entered for requests (see 
+<xref linkend="profile:variables:general"/>). If
+<varname>to_check</varname> is not used, a request may be given for
+essential variables with missing or erroneous values.
+</para>
+<caution>
+    <para>
+The UMC option <guimenu>(Re-)install on next boot</guimenu>
+must be removed again during or after the installation or
+else it will be reinstalled every time the host is booted!
+    </para>
+</caution>
+</section>
+
+</section>
+
+<section id="profile:dvdinstaller"><title>Profile-based installation from DVD with Univention Installer</title>
+<para>
+Univention Installer can procure the installation profile in three ways:
+</para>
+
+<itemizedlist>
+<listitem><simpara>The installation profile can be stored on an adapted
+installation DVD. This is done by creating a copy of the DVD and
+storing the installation profile in the <filename class="directory">profiles/</filename>
+directory.</simpara></listitem>
+<listitem><simpara>The installation profile can be stored in the root directory of
+a disk or a USB storage device (e.g., USB stick).</simpara></listitem>
+</itemizedlist>
+
+<para>
+First the <guimenu>Additional options</guimenu> option must be selected in
+the main menu of the Univention Installer and then the kernel to be
+used (e.g., <guimenu>Univention Installer Kernel 2.6.32</guimenu>) must be
+the selected in the following menu.
+</para>
+<para>
+If the installation profile was stored on the DVD,
+<guimenu>Univention Installer Profil</guimenu> must be selected;
+<guimenu>Univention Installer Profil USB</guimenu>
+or <guimenu>Univention Installer Profil Floppy</guimenu>
+must be selected if the files are to be procured from a USB stick or
+disk.
+</para>
+</section>
+
+</chapter>
+
+<chapter id="expertpartitioning"><title>Expert mode for the partitioning in Univention Installer</title>
+<para>
+If <guimenu>Additional options &ar; Univention Installer Kernel [Version] 
+&ar; Software RAID (expert mode)</guimenu> has
+been selected in the Univention Grub Boot Menu, the 
+partitioning menu during the installation process is
+replaced with a command line shell, which allows arbitrary
+partitioning configuration.
+</para>
+<figure id="GrubMenuPartitioning">
+	<title>Selecting Software Raid (expert mode) installation option in the Grub bootloader</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/screenshot_ucs_cd_bootloader_expert_mode.jpg"/>
+</figure>
+<para>
+This mode can, for example, be used to set up a software RAID or an
+encrypted hard drive partition. After partitioning, the interactive
+installation is continued.
+</para>
+<para>
+The following programs are available for partitioning:
+</para>
+
+<itemizedlist>
+	<listitem><simpara><command>pvcreate</command>, <command>pvdisplay</command> Editing of LVM physical volumes</simpara></listitem>
+	<listitem><simpara><command>lvcreate</command>, <command>lvdisplay</command> Editing of LVM logical volumes</simpara></listitem>
+	<listitem><simpara><command>vgcreate</command>, <command>vgdisplay</command> Editing of LVM volume groups</simpara></listitem>
+	<listitem><simpara><command>fdisk</command> Partitioning tool on the command line</simpara></listitem>
+	<listitem><simpara><command>parted</command> Partitioning tool on the command line</simpara></listitem>
+	<listitem><simpara><command>cfdisk</command> Menu-guided partitioning tool in text mode</simpara></listitem>
+	<listitem><simpara><command>mkfs.*</command> Tools to create filesystems</simpara></listitem>
+	<listitem><simpara><command>mdadm</command> Program for configuring software RAIDs</simpara></listitem>
+</itemizedlist>
+<para>
+Special &ucsUCR; variables with partitioning information must then be
+set. The installer evaluates these later and mounts the corresponding
+partitions during the installation.
+</para>
+<para>
+There are three variables for every partition to be mounted:
+</para>
+<itemizedlist>
+	<listitem><simpara><envar>installer/device/<replaceable>NUMBER</replaceable>/name</envar>: the partition's device file,
+  for example <filename class="partition">/dev/sda1</filename>, <filename class="partition">/dev/hda1</filename> or
+  <filename class="partition">/dev/vg_ucs/rootfs</filename></simpara></listitem>
+	<listitem><simpara><envar>installer/device/<replaceable>NUMBER</replaceable>/fs</envar>: the partition's file system type,
+  e.g. <literal>ext3</literal>, <literal>ext4</literal>,
+  <literal>xfs</literal> or <literal>linux-swap</literal></simpara></listitem>
+	<listitem><simpara><envar>installer/device/<replaceable>NUMBER</replaceable>/mp</envar>: the mount point, e.g.
+  <filename>/</filename>. If <literal>None</literal> is specified here, the partition is
+  not mounted (e.g. for swap partitions)</simpara></listitem>
+</itemizedlist>
+<para>
+The <replaceable>NUMBER</replaceable> value at the third position in the variable's name
+increases for every device file to be mounted. The information for
+three partitions should thus be saved under
+<envar>installer/device/0</envar>, <envar>installer/device/1</envar> and
+<envar>installer/device/2</envar>. The root partition, in other words the
+partition which will later be mounted under <filename>/</filename>, must
+always be configured under <envar>installer/device/0</envar>.
+</para>
+<para>
+If e.g. the following partitions have been setup:
+</para>
+<itemizedlist>
+	<listitem><simpara><filename>/dev/sda1</filename> with ext3 on <filename>/</filename></simpara></listitem>
+	<listitem><simpara><filename>/dev/sda2</filename> swap</simpara></listitem>
+	<listitem><simpara><filename>/dev/sda5</filename> with xfs on <filename>/var</filename></simpara></listitem>
+</itemizedlist>
+<para>
+The following &ucsUCR; variables must then be set:
+</para>
+<programlisting>
+# Root partition
+ucr set installer/device/0/name=/dev/sda1
+ucr set installer/device/0/fs=ext3
+ucr set installer/device/0/mp=/
+
+# Swap
+ucr set installer/device/1/name=/dev/sda2
+ucr set installer/device/1/fs=linux-swap
+ucr set installer/device/1/mp=None
+
+# Data partion
+ucr set installer/device/2/name=/dev/sda5
+ucr set installer/device/2/fs=xfs
+ucr set installer/device/2/mp=/var
+</programlisting>
+<para>
+Following disk partitioning, creation of filesystems and setting up the
+&ucsUCR; variables, the key combination <keycombo action="simul"><keycap function="alt">Alt</keycap><keycap>F1</keycap></keycombo> 
+can be used to return to the installer and continue with the installation.
+</para>
+</chapter>
+
+<chapter><title>Example for configuring software RAID 1 with LVM</title>
+
+<para>
+A RAID (redundant array of independent disks) is used to increase data security and/or data
+throughput via the organisation of several hard drives in a logical
+drive. RAID is usually setup using a designated hardware RAID controller,
+but can also be implemented with a software-based setup.
+</para>
+<para>
+In &ucsUCS;, software RAIDs can be created and managed with the
+<command>mdadm</command> program. At least two hard drive partitions
+(normally on different hard drives) are combined into one RAID
+device. This RAID device can be accessed, formatted and mounted via a
+device file like a normal partition.
+</para>
+<para>
+The kernel modules responsible for software RAID (<filename>raid0</filename>,
+<filename>raid1</filename>, <filename>raid10</filename> and <filename>raid5</filename>) are included in the
+Linux kernel and loaded automatically.
+</para>
+<para>
+Start the installation in expert mode as described in <xref linkend="expertpartitioning"/>. 
+In this example it is assumed that two hard disks with identical sizes are present: 
+<filename class="partition">/dev/sda</filename> and <filename class="partition">/dev/sdb</filename>.
+</para>
+<para>
+The following commands prepare the hard disks for RAID 1 by setting up 3 partitions. A small
+partition to hold the bootloader, a partition for <filename class="partition">/boot</filename> and the rest of the available space
+for a LVM which will hold the operating system.
+</para>
+<programlisting>
+parted -s /dev/sda mklabel gpt
+parted -s /dev/sda mkpart primary 1 10
+parted -s /dev/sda mkpart primary 10 500 
+parted -s /dev/sda mkpart primary 500 100% 
+parted -s /dev/sda set 1 bios_grub on
+parted -s /dev/sda set 2 raid on
+parted -s /dev/sda set 3 raid on
+</programlisting>
+<para>
+To prepare the second disk, each of the above commands has to be executed with the
+parameter <filename class="partition">/dev/sda</filename> changed to 
+<filename class="partition">/dev/sdb</filename>.
+</para>
+<para>
+The next step is to setup the RAID 1 for the <filename class="partition">/boot</filename> partition and the LVM Partition. 
+</para>
+<programlisting>
+mdadm --create --auto=md /dev/md0 --level=1 --raid-devices=2 /dev/sda2 /dev/sdb2
+mdadm --create --auto=md /dev/md1 --level=1 --raid-devices=2 /dev/sda3 /dev/sdb3
+</programlisting>
+<para>
+After the RAID 1 has been set up the devices have to sync. This takes some time depending on
+the disk size. The current status and remaining time
+can be checked with <command>cat /proc/mdstat</command>. Only after the devices are synced the
+filesystems can be setup.
+</para>
+<programlisting>
+mkfs.ext3 /dev/md0
+
+lvm pvcreate /dev/md1
+lvm vgcreate vg_ucs /dev/md1
+lvcreate -L2G -n swap vg_ucs
+lvcreate -l100%FREE -n rootfs vg_ucs
+
+mkswap /dev/mapper/vg_ucs-swap
+mkfs.ext4 /dev/mapper/vg_ucs-rootfs
+</programlisting>
+<para>
+Before continuing the installation the following ucr variables have to be set to inform the installer
+about the partition layout.
+</para>
+<programlisting>
+ucr set installer/device/0/fs=ext4
+ucr set installer/device/0/mp=/
+ucr set installer/device/0/name=/dev/mapper/vg_ucs-rootfs
+ucr set installer/device/1/fs=ext4
+ucr set installer/device/1/mp=/boot
+ucr set installer/device/1/name=/dev/md0
+ucr set installer/device/2/fs=linux-swap
+ucr set installer/device/2/mp=None
+ucr set installer/device/2/name=/dev/mapper/vg_ucs-swap
+</programlisting>
+<para>
+To continue the installation 
+<keycombo action="simul"><keycap function="alt">Alt</keycap><keycap>F1</keycap></keycombo> 
+has to be pressed to return to the menu. When asked
+where to install the grub bootloader, <filename class="partition">/dev/sda</filename> should be selected.
+</para>
+<para>
+After rebooting, grub has to be installed on all hard disks to ensure that it
+can be executed should one drive fail. This is done with the following commands:
+</para>
+<programlisting>
+grub-install /dev/sda
+grub-install /dev/sdb
+</programlisting>
+<para>
+The configuration file <filename>/etc/mdadm/mdadm.conf</filename> contains
+general settings and a description of the RAID level and the
+partitions involved for every RAID.
+</para>
+<programlisting>
+# by default, scan all partitions (/proc/partitions)
+DEVICE partitions
+
+# auto-create devices with Debian standard permissions
+CREATE owner=root group=disk mode=0660 auto=yes
+
+# instruct the monitoring daemon where to send mail alerts
+MAILADDR root
+
+ARRAY /dev/md0 level=raid1 num-devices=2 UUID=96d170c7:aee25771:2bb7a921:880c37fd
+</programlisting>
+<para>
+The RAIDs entered in this file (ARRAY) can be determined with the
+<command>mdadm --detail --scan</command> command. The daemon is configured
+in the <filename>/etc/default/mdadm</filename> file. The entry of
+<literal>AUTOSTART=true</literal> is important here to ensure that the RAIDs are
+automatically updated when the computer is started.
+</para>
+<para>
+The software package <command>mdadm</command> automatically detects all RAIDs
+during the installation and creates the configuration files
+<filename>/etc/mdadm/mdadm.conf</filename> and <filename>/etc/default/mdadm</filename> In
+other words, no additional adjustments to the RAID configuration files
+are necessary during the installation.
+</para>
+<para>
+Further information on software RAIDs and the partitioning on the
+command line can be found at the following URLs.
+</para>
+<itemizedlist>
+	<listitem><simpara><ulink url="http://linuxwiki.de/mdadm"/></simpara></listitem>
+	<listitem><simpara><ulink url="http://www.gnu.org/software/parted/manual/"/></simpara></listitem>
+	<listitem><simpara><ulink url="http://www.linuxhaven.de/dlhp/HOWTO/DE-Software-RAID-HOWTO.html"/></simpara></listitem>
+</itemizedlist>
+
+</chapter>
+<?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>

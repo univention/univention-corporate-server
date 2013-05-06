@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+
+  %entities;
+]>
+<book lang="en" id="networks-3.1">
+    <bookinfo>
+      <title>Univention Corporate Server</title>
+      <subtitle>Extended IP and network management documentation</subtitle>
+
+        <revhistory>
+            <revision>
+                <revnumber>3.1-1</revnumber>
+                <date>26 Mar 2013</date>
+            </revision>
+        </revhistory>
+    </bookinfo>
+
+    <chapter>
+        <title>Advanced proxy configuration</title>
+        <section>
+            <title>Cascading of proxies</title>
+			<para>
+			  In some scenarios, cascading of proxy servers may be required. In such a setup,
+			  individual proxy servers access logically superordinate proxy servers when web
+			  sites are opened, which then fetch the requested data from the Internet. This allows
+			  creation of a hierarchical structure of proxy servers and, for example, the operation of a
+			  central cache in a company's headquarters that the proxy servers at the individual
+			  company sites can access.
+			</para>
+
+			<para>
+			  The superordinate proxy server is referred to as a <emphasis>parent proxy</emphasis>
+			  The parent proxy can be specified via the &ucsUCR; variables
+			  <envar>squid/parent/host</envar> (IP address or hostname) and
+			  <envar>squid/parent/port</envar> (port number).
+			</para>
+
+			<para>
+			  Proxy requests from computers in the proxy server's local network are answered
+			  directly and not forwarded to the parent proxy. If additional networks should be
+			  excluded from forwarding to the parent proxy, these can be specified via the
+			  &ucsUCRV; <envar>squid/parent/directnetworks</envar>. When doing so, the CIDR notation
+			  must be used (e.g. 192.168.2.0/24); several networks should be separated by blank spaces.
+			</para>
+        </section>
+
+        <section>
+            <title>Operation as a transparent proxy</title>
+			<para>
+			  It is possible to configure Squid as a transparent proxy if you want to avoid that the
+			  proxy server to be used needs to be configured in the application programs (e.g., in
+			  the web browser). In this case, all web queries sent from a client are automatically
+			  rerouted to and answered by the proxy server.
+			</para>
+
+			<para>
+			  The prerequisite for such a configuration is that the proxy server is entered as the
+			  standard gateway in the network configuration on all clients. The LDAP authentication
+			  on the proxy server must not be enabled.
+			</para>
+
+			<para>
+			  If the &ucsUCRV; <envar>squid/transparentproxy</envar> is set to
+			  <emphasis>yes</emphasis>, packet filter rules are automatically included.
+			  These rules redirect all queries for the ports specified in the &ucsUCRV;
+			  <envar>squid/webports</envar> which are routed over the UCS system to the proxy
+			  server. After setting the variable the Univention Firewall component needs to be
+			  restarted with
+<programlisting>
+/etc/init.d/univention-firewall restart
+</programlisting>
+			</para>
+		</section>
+
+        <section>
+            <title>Integration of a virus scanner in the proxy</title>
+
+			<para>
+			  Following the installation of <package>univention-dansguardian</package>, the
+			  virus scanner and the filter for web contents are activated. ClamAV is used as the virus scan engine
+			</para>
+
+			<para>
+			  The filtering of web content and the virus scanner can be activated
+			  separately. In order to deactivate the content filter, the
+			  &ucsUCRV; <envar>squid/contentscan</envar> must be set to <emphasis>no</emphasis> and Squid
+			  restarted. To disable the virus scanner, the
+			  &ucsUCRV; <envar>squid/virusscan</envar> must be set to <emphasis>no</emphasis>.
+			  If neither of the two variables is set to <emphasis>yes</emphasis>,
+			  Dansguardian is not used. After changes to the variables Squid and Dansguardian
+			  must be restarted.
+			</para>
+
+			<para>
+			  The following variables can be used to configure the virus scan:
+
+			  <table>
+				<title>UCR variables for filter rules</title>
+				<tgroup cols="2">
+				  <colspec colnum="1" colname="col1" colwidth="1*"/>
+				  <colspec colnum="2" colname="col2" colwidth="2*"/>
+				  <thead>
+					<row>
+					  <entry>UCR variable</entry>
+					  <entry>Description</entry>
+					</row>
+				  </thead>
+				  <tbody>
+
+					<row>
+					  <entry>
+						<envar>dansguardian/virus/notifyemail</envar>
+					  </entry>
+					  <entry>
+						If this value is set to a valid e-mail address, a notification is sent via e-mail
+						as soon as a user attempts to download a file infected with a virus.
+					  </entry>
+					</row>
+
+					<row>
+					  <entry>
+						<envar>dansguardian/virus/exception/extension</envar>
+					  </entry>
+					  <entry>
+						Files which have a suffix specified in this variable are not scanned for
+						viruses. This option should be employed with caution as file suffixes do not
+						provide definitive information on the actual contents of a file.
+					  </entry>
+					</row>
+
+					<row>
+					  <entry>
+						<envar>dansguardian/virus/exception/mimetypes</envar>
+					  </entry>
+					  <entry>
+						MIME types specified in this variable are not scanned for viruses. This option
+						should also be employed with caution.
+					  </entry>
+					</row>
+
+					<row>
+					  <entry>
+						<envar>dansguardian/virus/exception/sites</envar>
+					  </entry>
+					  <entry>
+						This can be used to exclude complete web sites from virus scans, e.g. by excluding
+						the company's intranet.
+					  </entry>
+					</row>
+
+					<row>
+					  <entry>
+						<envar>dansguardian/virus/exception/urls</envar>
+					  </entry>
+					  <entry>
+						In contrast to the previous variable, this can be used to exempts only individual
+						URLs from the virus scan.
+					  </entry>
+					</row>
+				  </tbody>
+				</tgroup>
+			  </table>
+			</para>
+
+		</section>
+
+    </chapter>
+    <?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>
