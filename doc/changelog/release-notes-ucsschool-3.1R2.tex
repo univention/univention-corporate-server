@@ -1,0 +1,162 @@
+%autobuild=true changelog
+
+\input{handbuch_pdf_1}
+
+\newcommand{\ucsManualTitle}{UCS@school 3.1 R2 Release Notes}
+\newcommand{\ucsManualSubtitle}{Release Notes für die Inbetriebnahme und
+Aktualisierung von \ucsUAS{} 3.1 R2}
+\newcommand{\ucsManualVersion}{3.1}
+\newcommand{\ucsTechAuthor}{ & Univention GmbH & feedback@univention.de}
+\newcommand{\ucsSVNVersion}{16319}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\input{handbuch_pdf_2_school}
+
+\chapter{Release-Highlights}
+
+Mit Univention Corporate Server 3.1 steht das fünfte Release für
+\ucsUAS{} zur Verfügung. Es umfasst eine Reihe von Detailverbesserungen und Fehlerkorrekturen sowie die
+folgenden Neuerungen:
+\begin{itemize}
+\item XXX
+\item XXX
+\end{itemize}
+
+
+\section{Aktualisierung auf UCS 3.1}
+\ucsUAS{} basiert auf UCS 3.1 und profitiert dadurch von allen Erweiterungen und Korrekturen, die direkt
+in UCS eingeflossen sind.
+
+\section{Highlight 2...}
+\section{Highlight 3...}
+
+\chapter{Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS-Server / Update von Systemen mit UCS-Komponenten}
+
+Für das Update von UCS-Umgebungen mit mehr als einem UCS-System wird
+die nachfolgende Vorgehensreihenfolge empfohlen und muss beachtet werden:
+
+Auf dem \ucsMaster{} wird die maßgebliche (authoritative) Version des
+LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server
+der UCS-Domäne repliziert wird. Da bei Release-Updates Veränderungen
+an den LDAP-Schemata auftreten können (siehe
+Kapitel 3.4.1 des Handbuchs \cite{UCS-Handbuch}) muss der \ucsMaster{} bei einem
+Release-Update immer als erstes System aktualisiert werden.
+Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem
+Wartungsfenster zu aktualisieren. 
+
+\section{Hinweise zu Umgebungen mit Dritt-Software}
+
+Bei der Verwendung von 3rd-Party-Software ist generell \emph{vor} dem Update
+mit dem Hersteller/Vertriebspartner der Software zu klären, ob
+diese mit der neuen Version von Univention Corporate Server weiterhin
+uneingeschränkt einsetzbar ist. 
+
+Die Hersteller/Vertriebspartner von auf Univention Corporate Server
+basierenden Produkten sorgen eigenständig für die Veröffentlichung. Updates
+müssen daher von dort bezogen werden.
+
+Falls Ihnen von Univention angepasste Paketversionen bereitgestellt wurden, so
+sollte geprüft werden, ob durch die Aktualisierung angepasste Pakete
+überschrieben werden --- vorzugsweise in einer Testumgebung. Sollten Sie hier
+Probleme feststellen, so wenden Sie sich bitte an Univention.
+
+\chapter{Vorbereitung des Updates}
+Vor einem Update auf UCS 3.1"=0/\ucsUAS{} 3.1 muss auf UCS 3.0-2 aktualisiert werden.
+
+Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist. Eine
+Standard-Installation benötigt mindestens 6 GB Speicherplatz. Das
+Update benötigt je nach Umfang der vorhanden Installation mindestens 2 GB
+weiteren Speicherplatz zum Herunterladen und Installieren der Pakete.
+
+Für das Update sollte eine Anmeldung auf der Console mit dem
+Benutzer \emph{root} durchgeführt und das Update dort gestartet werden.
+Alternativ kann das Update über die \ucsUMC{} durchgeführt werden.
+
+Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies
+beispielsweise bei Unterbrechung der Netzwerkverbindung zum Abbruch des
+Update-Vorgangs und zu einer Beeinträchtigung des Systems führen kann. Sollte
+dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist
+sicherzustellen, dass das Update bei Unterbrechung der Netzwerkverbindung trotzdem
+weiterläuft. Hierfür können beispielsweise die Tools \ucsCommand{screen} oder
+\ucsCommand{at} eingesetzt werden, die auf allen Systemrollen installiert sind.
+
+
+\chapter{Nachbereitung des Updates}
+
+Nach dem Update sollte auf allen Systemen der
+Befehl \ucsCommand{univention-run-join-scripts} als
+Benutzer \emph{root} aufgerufen werden, um nicht aufgerufene Joinskripte auszuführen, und
+das UCS-System anschließend neu gestartet werden. Alternativ kann die Ausführung 
+der Joinskripte auch im UMC"=Modul \ucsName{Domänenbeitritt} ausgelöst werden.
+
+
+
+
+\chapter{Hinweise zum Einsatz einzelner Pakete (siehe auch Release Notes für UCS 3.1)}
+
+\section{Empfohlene Browser für den Zugriff auf die Univention Management Console}
+
+\ucsUMC{} verwendet für die Darstellung der Web-Oberfläche zahlreiche
+Javascript- und CSS-Funktionen. Cookies müssen im Browser zugelassen
+sein. Die folgenden Browser werden empfohlen:
+
+\begin{itemize}
+\item Chrome ab Version 14
+\item Firefox ab Version 10
+\item Internet Explorer ab Version 9
+\item Safari (auf dem iPad 2)
+\end{itemize}
+
+Auf älteren Browsern können Darstellungs- oder Performanceprobleme
+auftreten.
+
+\section{Aktivierung der Passwortrotation für Samba 4-Domänencontroller}
+
+Die Rotation der Passworte von Samba 4 Domänencontrollern wird beim Update wieder aktiviert.
+Dies ist wichtig, weil sich die domänenweite Einstellung für das maximale Passwortalter
+unter Samba 4 auch auf Domänencontroller bezieht. Falls die Passswortrotation der
+Domänencontroller nicht gewünscht ist, kann sie auf jedem Domänencontroller einzeln
+durch Setzen der \ucsUCR{}-Variable \ucsUCRVSA{server/password/change} auf \emph{no} deaktivert werden.
+
+\section{Einschränkungen im Samba 4-Betrieb}
+
+Die aktuell vom Samba-Projekt veröffentlichten Versionen von Samba 4
+unterliegen in der Weiterentwicklung noch stärkeren Änderungen als Samba
+3. Einige Funktionalitäten stehen daher noch nicht vollständig zur Verfügung:
+
+\begin{itemize}
+\item Microsoft Windows Domänencontroller dürfen aktuell nicht in eine Samba 4-Domäne
+gejoint werden.
+\item Eine selektive Replikation ist mit Samba 4 nicht möglich, da diese durch
+Active Directory prinzipiell nicht unterstützt wird (in UCS@school
+basiert die selektive Replikation auf der Listener/Notifier-Replikation).
+\item Samba 4 unterstützt aktuell keine Forest-Domänen. 
+\item Samba 4 unterstützt aktuell keine Vertrauensstellungen.
+\end{itemize}
+
+Weitere Hinweise finden sich in Kapitel 8 des UCS-Handbuchs \cite{UCS-Handbuch}.
+
+\section{Deaktivierung der Generierung von LM-Hashes}
+In Samba 3 wurden die Passwörter von Benutzern im LM-Hashverfahren gespeichert.
+In Umgebungen mit UCS 3.x sind diese Hash-Einträge nicht mehr nötig. 
+
+Ab UCS 3.0 werden keine LM-Hashes mehr generiert. Das alte Verhalten kann durch
+Setzen der \ucsUCR{}-Variable \ucsUCRVSA{password/samba/lmhash} auf \emph{true} wieder aktiviert 
+werden.
+
+\section{Änderungen an LDAP-ACLs}
+Lehrer haben die Berechtigung erhalten, Arbeitsgruppen zu erstellen.
+
+
+\chapter{Changelog}
+
+Die Changelogs mit den detaillierten Änderungsinformationen werden ab UCS 3.0
+nur noch in Englisch gepflegt.
+
+\input{changelog-ucsschool-3.1}
+
+\input{bibtex}
+
+\end{document}

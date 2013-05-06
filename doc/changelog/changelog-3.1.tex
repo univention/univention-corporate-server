@@ -1,0 +1,1555 @@
+\newcommand{\ucsUCRV}[1]{Univention Configuration Registry variable \ucsCommand{\ucsBCindex{#1}}}
+
+\section{General}
+\begin{itemize}
+
+\item The Debian Squeeze 6.0.6 point update has been integrated. It
+  provides many bugfixes (\ucsBug{28490}). The update also fixes
+  some security issues:
+
+\begin{itemize}
+\item libotr (CVE-2012-3461) (\ucsBug{28177})
+\item devscripts (CVE-2012-2240,  CVE-2012-2241, CVE-2012-2242, CVE-2012-3500) (\ucsBug{28392})
+\item nss (CVE-2012-0441) (\ucsBug{27488})
+\item mono (CVE-2012-3382) (\ucsBug{27867})
+\item libxslt (CVE-2011-1202 CVE-2011-3970 CVE-2012-2825) (\ucsBug{25686})
+\item vte (CVE-2012-2738) (\ucsBug{27696})
+\item apache2 (CVE-2012-2687) (\ucsBug{27730})
+\item network-manager (CVE-2012-2736) (\ucsBug{25609})
+\item postgresql-8.4 (CVE-2012-3488, CVE-2012-3489) (\ucsBug{28253})
+\item openoffice.org (CVE-2012-1149, CVE-2012-2334, CVE-2012-2665) (\ucsBug{27192})
+\end{itemize}
+
+\item Several packages have been converted to use the common shell
+library to create their initial log files (\ucsBug{24730}).
+
+\item The copyright files of the Univention packages have been reviewed. Some copyright
+files were clarified (\ucsBug{26440}).
+
+\item The UCS 3.0 errata updates 94 to 133 have been integrated (\ucsBug{28147})
+
+\end{itemize}
+
+
+\section{Univention Installer}
+\begin{itemize}
+
+\item The partition module of the installer was completely overhauled. It now uses GUID partition tables (GPT)
+  instead of a master boot record (MBR). This results in the following changes: (\ucsBug{23990}, 
+  \ucsBug{25065},\ucsBug{26045}, \ucsBug{28263}, \ucsBug{28552})
+  \begin{itemize}
+  \item The GPT uses 64 bit values and is LBA-only, so the previous
+    limitation of 2 terabytes no longer exists (up to 9 zetta bytes
+    may be addressed now using up to 127 partitions).
+  \item Although GPT is part of the extensible firmware interface
+    (EFI), UCS can also boot from GPT disks if the system does not
+    support (U)EFI.
+  \item Some spare space is reserved for later use at the beginning
+    (16 MiB) and at the end (128 MiB) of the disk.
+  \item The partition module offers up to 5 different partition types:
+    data, swap, LVM, BIOS boot and EFI system. The LVM type is only
+    shown if enabled by the user.
+  \item All new partitions will be aligned at 1 MiB boundaries. This
+    avoids performance issues on harddisks or solid state disks using
+    4k sectors.
+  \item An existing MBR may be converted to GPT. Please make sure in advance, that other operating systems 
+    on that harddisks are able to handle a GPT correctly. The order of partitions may vary 
+    during conversion, so the conversion process may influence other operating systems.
+  \item If for some reason the old partitioning module is needed, it
+    may be activated in the GRUB menu of the DVD under
+    \emph{Additional options} \ucsRightArrow \emph{Univention
+      Installer MBR Mode (deprecated)}.
+  \item The default partition sizes for automatic partitioning have been altered:
+    \begin{itemize}
+    \item \emph{BIOS boot}: 8 MiB\quad or \emph{EFI system}: 256 MiB
+    \item \emph{/boot}: 512 MiB
+    \item \emph{swap}: minimum 512 MiB; up to 10 GiB
+    \item \emph{/}: at least 4 GiB
+    \end{itemize}
+
+  \end{itemize}
+
+\item The amd64 installation DVD now supports the installation on
+  systems with the \emph{extensible firmware interface} (EFI). EFI is
+  detected automatically by Univention Installer (\ucsBug{28672}) and
+  the following changes are made:
+  \begin{itemize}
+  \item Creation of EFI system partition instead of a BIOS boot
+    partition during automatic partitioning
+  \item Installation of an EFI-capable Grub configuration
+  \item Configuration of a new EFI boot entry for GRUB
+  \end{itemize}
+  In case of a erroneous detection of EFI, the use of EFI may be
+  forced by a new GRUB kernel parameter \ucsCommand{use\_efi=yes/no}.
+
+\item The join credentials are now tested before the installation
+  proceeds (\ucsBug{7444}, \ucsBug{29286}).
+
+\item The test for a valid windows domain name in the
+  \ucsMenuEntry{Basic settings} dialogue now performs additional
+  checks (\ucsBug{26027}).
+
+\item The description of base systems has been improved (\ucsBug{25606}).
+
+
+\item The installer now ignores deprecated files when copying the script
+directory during installation (\ucsBug{25595}).
+
+\item The \ucsFile{/etc/fstab} file is now created using UUIDs instead
+  of device names (\ucsBug{17018}).
+
+\item A bug in the CDROM drive detection has been fixed that could lead to
+  a traceback if no drive had been found (\ucsBug{28512}).
+
+\item A filesystem check for ext* filesystems is now performed after
+  the installation (\ucsBug{25284}).
+
+\item The kernel modules for kernel-based modesetting (KMS) have been
+  removed from the installer ramdisk (\ucsBug{28267}).
+
+\item The password of the root user is now hashed with sha-512
+  (\ucsBug{28271}).
+
+\item The dialogue to configure the bootloader now ignores device
+  mapper devices (\ucsBug{9936}).
+
+\item Network configuration via DHCP is now possible for all system
+roles (\ucsBug{26417}).
+
+\item The package \ucsName{python-univention-lib} is now installed
+  earlier to prevent package dependency problems (\ucsBug{27962}).
+
+\item Before the domain join, the network is started using the
+  networking init script instead of using \ucsCommand{ifup}
+  (\ucsBug{27931}).
+
+\item Network interfaces are not  reconfigured during installation
+  anymore. This fixes problems with incompletely configured IPv6
+  interfaces in IPv6-only setups (\ucsBug{28473}).
+
+\item Various code cleanups have been made in the installer scripts
+(\ucsBug{28374}).
+
+\item Existing LVM PV signatures of already existing partitions will
+  be now removed, before any new LVM physical volume gets created
+  (\ucsBug{18771}).
+
+\item A traceback in the partitioning module has been fixed that could
+  be triggered by LVM physical volumes that are not assigned to any
+  volume group (\ucsBug{25185}).
+
+\item The handling of custom installer scripts in the installer has been
+fixed (\ucsBug{28394}).
+
+\item During startup, the installer now waits for the udev driver
+  initialization (\ucsBug{20797}).
+
+\end{itemize}
+
+\subsection{Profile-based installation}
+\begin{itemize}
+\item The profile-based installation was adapted to the GPT changes:
+  Old profiles remain valid, but will continue to use only the
+  deprecated MBR mode of the Univention installer. To use the GPT
+  mode, small changes have to be done to the profile's partitioning
+  variables. Please check the extended installation documentation
+  manual for a detailed variable description.
+\item The auto partitioning now automatically creates an additional
+  BIOS boot partition and a EFI system partition.
+
+\item A bug in the partitioning module concerning LVM partitions has
+  been fixed (\ucsBug{13936}).
+
+\item A bootloader record entry in the installation profile is now only
+required for systems with more than one hard disk (\ucsBug{9936}).
+
+\item The installation profiles shipped on the installation DVD now
+  use GPT as partition table type (\ucsBug{29255}).
+
+\item Fixed a missing confirmation dialog when pressing F12 (\ucsBug{29277}).
+
+\end{itemize}
+
+
+\section{Upgrade provisions (preup and postup scripts)}
+
+\begin{itemize}
+\item The update scripts \ucsName{preup.sh} and \ucsName{postup.sh}
+  have been adjusted to UCS 3.1 (\ucsBug{28393}, \ucsBug{29208}, \ucsBug{29212}).
+
+\item Apache and the \ucsUMC{} are no longer restarted in
+  \ucsName{postup.sh} (\ucsBug{27925}).
+
+\item \ucsName{univention-legacy-kolab-schema} will be marked as
+  manually installed in \ucsName{preup.sh} to avoid the autoremove of
+  this package (\ucsBug{28900}).
+
+\item An update to UCS 3.1 is prevented if packages are marked as
+  \emph{hold} (\ucsBug{19915}).
+
+\item An update to UCS 3.1 is prevented when the 2.6.32 meta package for
+  non-PAE (physical address extension) systems is installed on a system capable of PAE (\ucsBug{29384}).
+
+\end{itemize}
+
+
+
+
+
+\section{Basic system services}
+
+% \subsection{Boot loader}
+% \begin{itemize}
+% \end{itemize}
+
+\subsection{Linux kernel and firmware packages}
+\begin{itemize}
+\item The Linux kernel and associated tools and firmware packages have been updated to version 3.2.30. The meta
+  packages have been updated and simplified (\ucsBug{26297}, \ucsBug{27456}, \ucsBug{28157}). The update also fixes
+  a number of security issues (CVE-2010-4805,CVE-2011-1083,CVE-2011-1747,CVE-2011-2695,CVE-2011-3347,CVE-2011-4131,
+  CVE-2012-2119,CVE-2012-2121,CVE-2012-2136,CVE-2012-2313,CVE-2012-2319,CVE-2012-2375,CVE-2012-2390,CVE-2012-3375,
+  CVE-2012-2745,CVE-2012-3400,CVE-2012-3430,CVE-2011-3347,CVE-2012-3412,CVE-2012-3511)
+  and a filesystem corruption bug when using sparse files with XFS
+  (\ucsBug{26255}). It should be noted that the 486 kernel variant no
+  longer supports SMP, you should use the 686 flavour instead.
+\item The blktap patch (needed for Xen) was integrated into the 3.2.30 kernel package (\ucsBug{28176}).
+\item DKMS has been integrated to ease the build of external kernel modules (\ucsBug{16542}).
+\end{itemize}
+
+\subsection{Univention Configuration Registry}
+
+\subsubsection{Changes to templates and modules}
+\begin{itemize}
+\item Variable descriptions were added for several variables  (\ucsBug{28134}).
+\item The template for \ucsFile{/etc/network/interfaces} was converted
+  to a multifile template and now supports more complex network
+  configurations like bridging, bonding and virtual local area
+  networks (\ucsBug{26058}).
+\end{itemize}
+
+\subsubsection{Internal changes}
+\begin{itemize}
+\item \ucsUCR{} variable descriptions for unset variables are now also
+  shown when searching for variables (\ucsBug{18254}).
+\item Error messages are now redirected to the standard error output
+  (\ucsBug{23968}).
+\item When multiple patterns match the name of a \ucsUCR{} variable the
+  longest match is applied first (\ucsBug{28131}).
+\item The \ucsCommand{univention-install-config-registry-info} and
+  \ucsCommand{univention-install-service-info} commands now provide
+  more detailed error messages (\ucsBug{18507}, \ucsBug{3952}).
+\item The \ucsCommand{ldapsearch-wrapper} command now also handles
+  tabulator characters correctly (\ucsBug{27842}).
+\item Multifile templates now also support calling Python modules
+  before and after changes (\ucsBug{28229}).
+\item In the header of files generated by a multifile template, the
+  list of source template file names is now sorted (\ucsBug{26886}).
+\item The tab completion of \ucsName{ucr set} has been changed: The
+  value is now put in single quotes to protect it from being evaluated
+  (\ucsBug{27573}).
+\item The \ucsCommand{ucr randpw} functionality has been removed
+  (\ucsBug{28431}).
+\item \ucsUCR{} now always uses local diversions of configuration
+  files (\ucsBug{28750}).
+\item Removing a package contributing a subfile to a multifile
+  template leads to the diversion being removed. The function
+  \texttt{ConfigHandlers.unregister()} function has been changed to
+  only return a set of obsolete handlers instead of a set of all
+  affected handlers (\ucsBug{26476}).
+\end{itemize}
+
+
+\subsection{Network interface configuration}
+\begin{itemize}
+\item Network Manager is no longer supported on servers. The package
+  \ucsName{univention-network-manager} can be safely removed after the
+  upgrade (\ucsBug{26609}).
+\item Host routes are now correctly handled for virtual network
+  interfaces (\ucsBug{27198}).
+\item The host addresses in \ucsFile{/etc/hosts} are now ordered by
+  the network interface name (\ucsBug{19440}).
+\item \ucsCommand{univention-ipcalc} and \ucsCommand{univention-ipcalc6} now provide a \emph{-{}-help}
+  option. The calculation of reverse DNS zones has been fixed
+  (\ucsBug{25626}, \ucsBug{28143}).
+\item If the UCS system is configured as a DHCP client, the
+  nameservers configured via \ucsUCR{} are used as first nameservers
+  (\ucsBug{27939}).
+\item The fallback link local address is  now configured as a
+  class B network (\ucsBug{28468}).
+\item The IP range 169.254.0.x has been removed from the link local
+  address range (\ucsBug{28468}).
+\ucsName{univention-register-network-address} will correcty refresh
+the related PTR DNS record (\ucsBug{27937}).
+\item The packages required to configure bridging, bonding and VLANs
+  are now installed by default (\ucsBug{29115}).
+\end{itemize}
+
+
+% \subsection{Univention Firewall}
+% \begin{itemize}
+% \end{itemize}
+
+
+\section{Domain services}
+\subsection{OpenLDAP}
+\begin{itemize}
+\item OpenLDAP has been updated to version 2.4.31
+  (\ucsBug{27992}). This update also fixes a minor security issue in
+  two modules, which are not enabled by default (\ucsBug{26473})
+\item During the update the group \ucsName{DC Slave Hosts} will be
+  added to the group \ucsName{Computers} (\ucsBug{20334}).
+\item A segmentation fault in the OpenLDAP overlay module \emph{k5pwd}
+  was fixed (\ucsBug{28166}).
+\item A description for the \ucsUCRV{ldap/replication/preferredpassword}
+  has been added (\ucsBug{18389}).
+
+\item The libnss-ldap/NSCD caching handling for the group resolution has
+been replaced with a dump of the LDAP groups and memberships to a
+single file (\ucsFile{/var/lib/extrausers/group}) which is used by
+nss-extrausers. The dump can be triggered via cron and with a listener
+module (\ucsName{nss.py}). The update to UCS 3.1 does these changes
+automatically. The old mechanism can be re-configured via UCR, for
+example:
+\begin{ucsConfigFile}
+  ucr set nss/group/cachefile=no
+  ucr set nscd/group/enabled=true
+  ucr nscd/group/invalidate_cache_on_changes=true
+  invoke-rc.d nscd restart
+  invoke-rc.d univention-directory-listener restart
+\end{ucsConfigFile} (\ucsBug{28361}).
+
+\item The new \ucsUCRV{nss/group/cachefile/check\_member} defines
+whether the group members should be re-checked in the LDAP directory
+(\ucsBug{28401}).
+
+\end{itemize}
+
+% \subsection{LDAP ACL changes}
+% \begin{itemize}
+% \end{itemize}
+
+%% \subsection{LDAP schema changes}
+%% \begin{itemize}
+%% \end{itemize}
+
+\subsection{Listener/Notifier domain replication}
+\begin{itemize}
+\item A debug message has been changed from debug level WARNING to
+  INFO (\ucsBug{26916}).
+\item The tool \ucsName{univention-replicate-one} has been added to
+  re-replicate one given LDAP object. The tool
+  \ucsName{univention-directory-replicate-one} has been removed
+  (\ucsBug{27625}).
+\item Several memory leaks, out-of-memory conditions and a file
+  descriptor leak have been fixed (\ucsBug{27330}, \ucsBug{27729},
+  \ucsBug{28417}).
+\item The locking used by the Listener and Notifier daemons has been
+  changed to be atomic (\ucsBug{27730}, \ucsBug{28417}).
+\item The implementation of the extended LDAP filter has been removed
+  (\ucsBug{27329}).
+\item The reporting of errors in Listener modules has been improved
+  (\ucsBug{27376}).
+\item The old name \ucsCommand{univention-ldap-listener} is deprecated
+  since UCS 2.0. The old compatibility link has been removed
+  (\ucsBug{28414}).
+\item The handling of the Listener cache path has been fixed
+  (\ucsBug{27314}).
+\item Various internal implementations details in the Listener daemon
+  have been cleaned up (\ucsBug{27315}).
+
+\item On new UCS installations the values for the
+\ucsUCRVSA{listener/uniquemember/skip} and
+\ucsUCRVSA{listener/uniquemember/skip} will be set to \emph{no}. This
+means the listener no longer checks if duplicated entries are set for
+uniqueMember or memberUid during the replication (\ucsBug{19491}).
+
+\item LDAP move/rename operations used to be replicated as separate
+  delete and add operations. They are now replicated as a rename operation
+  (\ucsBug{20605}).
+\item The script \ucsCommand{univention-update-memberof} from the
+  \ucsName{univention-ldap-overlay-memberof} package  now modifies
+  group objects instead of removing and adding the membership
+  attributes (\ucsBug{27955}).
+\end{itemize}
+
+\subsection{Domain joins of UCS systems}
+\begin{itemize}
+\item DHCP entries are again created for managed and mobile clients (\ucsBug{28209}).
+\item Using a password file for joining UCS systems has been fixed
+  (\ucsBug{19430}, \ucsBug{28789}).
+\item The error reporting in join script execution has been fixed
+  (\ucsBug{27753}).
+\item The join of Univention Corporate Client systems to a UCS domain
+  controller is now supported (\ucsBug{28570}).
+\item \ucsName{univention-management-console-server} and
+  \ucsName{univention-management-console-web-server} are now restarted
+  during join.
+\item \ucsName{univention-join} now compares the UCS versions of the
+  joined system and the master domain controller. The version of the
+  master domain controller has to be higher or equal to the version of
+  the joined system. This test can be disabled via the command line
+  paramater \ucsName{-disableVersionCheck} (\ucsBug{25824}).
+\item The \ucsUMC{} join module now displays the correct status of join scripts
+  (\ucsBug{28067}).
+\end{itemize}
+
+
+
+\section{Univention Management Console}
+
+\subsection{Univention Management Console web interface}
+\begin{itemize}
+\item The overall performance of the web interface was improved both in terms
+  of memory consumption and speed. Nonetheless, a warning is shown in the
+  overview if using an old (slow) browser (IE 8 or FF 3.6)
+  (\ucsBug{27432}, \ucsBug{29249}).
+\item A global limit for LDAP search results in domain related UMC modules
+  has been added in order to avoid long loading times. The exact value can
+  be controlled via \ucsUCRV{directory/manager/web/sizelimit}, its
+  default value is 2000 (\ucsBug{28248}).
+\item Users can add (and remove) their favourite modules to a
+  prominent place at the module overview (\ucsBug{28074},
+  \ucsBug{28800}, \ucsBug{29236}).
+\item If only one module is available, it will be opened directly and
+  the overview page will be hidden (\ucsBug{26901}).
+\item The \ucsUCRV{umc/web/feedback/mail} configures the email address
+  for feedback emails (\ucsBug{27702}).
+\item The help dialog can now be replaced (\ucsBug{27627}).
+\item A notification is displayed if the UMC page requires a reload
+  (\ucsBug{24947}).
+\item The ordering of modules and categories at the overview was made
+  explicit and can now be customized (\ucsBug{26961}).
+\item The containers to be searched in the UMC modules are now ordered
+  alphabetically (\ucsBug{28069}).
+\item UMC modules and flavours can now be deactivated the
+  \ucsUCRV{umc/module/MODULENAME/disabled} and the
+  \ucsUCRV{umc/module/MODULENAME/FLAVORNAME/disabled}
+  (\ucsBug{26721}).
+\item Problems with non-responding sessions for UMC domain management
+  modules have been corrected (\ucsBug{28108}).
+\item The online documentation link have been added to the documentation links (\ucsBug{29101}).
+\end{itemize}
+
+\subsection{Univention Management Console server}
+\begin{itemize}
+\item The ACL evaluation has been changed to improve the login
+  performance of UMC in large environments (\ucsBug{26490}).
+\item Fixed error handling of the UMC server for invalid \ucsUCR{}
+  requests options (\ucsBug{27875}).
+\item A traceback related to a missing type check, which occured in
+  rare cases, was fixed (\ucsBug{28102}).
+\item Fixed module crashes if the response datatype doesn't
+  support the \emph{in} operation (\ucsBug{28182}).
+\item The processing of certain GET commands has been fixed
+  (\ucsBug{27850}).
+\item Fixed various server crashes caused by malformed request data
+  (\ucsBug{28140}).
+\item A join script for the UMC web server  has been added. During a
+join on the command line with \ucsName{univention-join} UMC will now be
+restarted (\ucsBug{11925}).
+\end{itemize}
+
+\subsection{Univention Management Console / Univention Directory
+  Manager modules}
+
+\subsubsection{Basic settings / Univention System Setup}
+\begin{itemize}
+\item The join process has been corrected to use locally pre-installed
+  packages during the installation of server role components
+  (\ucsBug{28089}).
+\item The Firefox 10 packages (\ucsName{firefox-de},
+  \ucsName{firefox-en}) are now installed by default (\ucsBug{27909}).
+
+\item When a software component is added, the warning that
+  \ucsName{Samba 3} and \ucsName{Samba 4} should not be combined, will
+  only be displayed when a Samba version is newly selected that is not
+  already installed (\ucsBug{27949}).
+
+\item When using a long (> 13 characters) hostname, a warning is displayed
+  that it should not be used in Samba environments(\ucsBug{27854}).
+
+\item The welcome page only displays help texts for modules that are actually
+  used during the setup (\ucsBug{27733}).
+
+\item Problems with non-responding sessions for the UMC module have
+  been corrected (\ucsBug{28108}).
+
+\item An empty root password is forbidden when installed locally and
+  warned against otherwise (\ucsBug{28155}).
+
+\item A new Python class is now used instead a wrapper around
+  \ucsCommand{apt-get} in the software selection.
+
+\item The obsolete hook script
+  \ucsName{domainname.post/kerberos\_rename} was removed
+  (\ucsBug{28427}).
+
+\item During installation no error will be displayed anymore if the
+  \ucsUCRV{system/setup/boot/help} is not set (\ucsBug{27900}).
+
+\item The usability of the widget for specifying the system languages
+  was improved (\ucsBug{24388}).
+
+\item A bug in the package selection was fixed (\ucsBug{28198}).
+
+\item The page changes now introduce a slight delay to fix problems in
+  incorrect virtualisazion environments (\ucsBug{27734}).
+
+\item A problem concerning the language selection has been fixed
+  (\ucsBug{28556}).
+
+\item The memberserver role has been removed from the role selection. It
+will be re-added in a errata update for UCS 3.1-0 (\ucsBug{29757}).
+
+\end{itemize}
+
+\subsubsection{Users module}
+\begin{itemize}
+\item LanMAN hashes are no longer created on new UCS 3.1 installations
+  (\ucsBug{27860}).
+
+\item User names with upper cases are now allowed (\ucsBug{25656}).
+
+\item It is no longer allowed to create a user with a name which is
+  already used by a group and vice versa. The old behavior can be
+  configured by setting the
+  \ucsUCRV{directory/manager/user\_group/uniqueness} to \emph{false}
+  (\ucsBug{26289}).
+\item It is no longer possible to create users with the \emph{Samba}
+  option if their chosen primary group does not have the \emph{Samba}
+  option as well (\ucsBug{26817}).
+\item \ucsName{homeSharePath} and \ucsName{homeShare} can now only be
+  set if both values are provided (\ucsBug{28996}).
+
+\item Only users with at least one of the options \ucsName{samba} or
+  \ucsName{person} can have a \ucsName{Display name} (\ucsBug{27853}).
+
+\item A new \ucsUCRV{directory/manager/user/primarygroup/update} has
+been introduced. If set to \emph{false}, the update of the primary group when
+creating users is disabled (\ucsBug{18247}).
+
+\end{itemize}
+
+
+\subsubsection{Extended attributes}
+\begin{itemize}
+\item Changes to extended attributes immediately alter other modules without
+  the need to restart the \ucsUMC{} server (\ucsBug{26677}).
+\end{itemize}
+
+
+\subsubsection{License module}
+\begin{itemize}
+\item Support for UCS license version 2 has been added
+(\ucsBug{28186}, \ucsBug{29079}).
+
+\item The detection of invalid license files has been improved
+  (\ucsBug{26047}).
+
+\item Fixed a bug, which could result in the deletion of arbitrary
+  files (\ucsBug{28189}).
+
+\item The import of a free-for-personal-use license is now possible
+  (\ucsBug{29051}).
+
+\item The license handling code for Univention Groupware Server and
+  the Open-Xchange Appliance Edition has been removed (\ucsBug{26919}).
+
+\item The users \emph{http-hostname}, \emph{http-proxy-hostname} and
+  \emph{zarafa-hostname} are no longer be accounted to the
+  license. Also, some accounts typically present on a Microsoft Small
+  Business Server, are no longer accounted to the license (\ucsBug{28930}).
+
+\item A bug in UCS license version 1 regarding the counting of system
+  accounts has been fixed (\ucsBug{28944}).
+\end{itemize}
+
+
+\subsubsection{Mail module}
+\begin{itemize}
+\item New syntax classes have been implemented for shared folder ACLs,
+  which prevent performance problems in large environments
+  (\ucsBug{28084}).
+\item The mail module is now also available on systems with only a UCS
+  license (i.e. without a UGS sublicense) (\ucsBug{27985});
+\item An LDAP search syntax for mail home servers has been added
+  \ucsBug{27820}).
+\item The attribute \ucsName{Mail home server} (present in the user
+  and the mail folder module) is now correctly set (\ucsBug{26425}).
+
+
+\end{itemize}
+
+\subsubsection{Services module}
+\begin{itemize}
+\item The search for service names has been fixed (\ucsBug{28132}).
+\item The descriptions of the services are now correctly localized
+  (\ucsBug{27742}).
+\end{itemize}
+
+
+\subsubsection{Software management}
+\begin{itemize}
+\item The module App Center has been developed and added to UMC. It allows
+  users to easily install new applications on an UCS system
+  (\ucsBug{27458}, \ucsBug{28002}, \ucsBug{28599}, \ucsBug{28798},
+  \ucsBug{28940}, \ucsBug{28718},  \ucsBug{29035}, \ucsBug{29039},
+  \ucsBug{29036}, \ucsBug{29081}, \ucsBug{28706}, \ucsBug{29037},
+  \ucsBug{28740}, \ucsBug{28793}, \ucsBug{27998}, \ucsBug{29246},
+  \ucsBug{29243}, \ucsBug{29339}).
+
+\item The \ucsName{univention-management-console-module-packages}
+  module has been renamed to
+  \ucsName{univention-management-console-module-appcenter}.
+  (\ucsBug{28626}).
+
+\item The module for the installation of additional software packages
+  was reworked (e.g. added possibility to install/remove multiple
+  packages at once) (\ucsBug{27997}, \ucsBug{28088}, \ucsBug{17337}, \ucsBug{28010}).
+
+\item The configuration of components and the repository now occurs
+  through the Univention App Center (\ucsBug{26784}).
+\end{itemize}
+
+\subsubsection{Online update module}
+\begin{itemize}
+\item The errata level is now also displayed along with the version (\ucsBug{26906}).
+\item The page refresh after updates has been improved (\ucsBug{27460}).
+\item After package upgrades it is now checked again, whether new
+  updates are available (\ucsBug{27794}).
+\item Display a strong warning to not power off the system during update
+  (\ucsBug{27899}).
+\item A link to the errata web site containing the available updates
+  is now displayed (\ucsBug{25597}).
+\item Only the last 2500 lines of a log file are now shown (\ucsBug{26279}).
+\item Do not rely on \ucsUCRV{update/available} alone when checking
+  for updates in easy mode (\ucsBug{26278}).
+\end{itemize}
+
+
+\subsubsection{Computers module}
+\begin{itemize}
+
+\item The IP address will now be shown in the search result list if
+  the IP address was used as filter (\ucsBug{25242}).
+
+\item An \ucsUDM{} module for arbitrary Linux computers has been added
+  (\ucsBug{27587}).
+
+\item Fixed a problem when removing the last IP address of a computer account
+  (\ucsBug{28622}).
+
+\item When the DNS forward zone entries of a computer object are
+  modified, the related PTR records are now updated as well(\ucsBug{26307}).
+
+\item Corrected an error which occured when creating a computer object
+  with a DNS forward zone differing from the kerberos domain
+  (\ucsBug{25172}).
+
+\end{itemize}
+
+\subsubsection{Policies}
+\begin{itemize}
+\item Fixed a caching problem that displayed incorrectly referenced objects for
+  some policies (\ucsBug{25638}).
+
+\item Every computer module stored under
+  \ucsName{/usr/share/pyshared/univention/admin/handlers/computers}
+  is now automatically imported (\ucsBug{28461}).
+
+\item The descriptions of certain attributes in package management policies have
+  been corrected (\ucsBug{18200}).
+
+\item A bug was fixed, which prevented changing the user's password if
+  a mail quota policy was fixed (\ucsBug{28430}).
+
+\item Some special characters (e.g. umlauts) can no longer be used as
+  policy names (\ucsBug{28098}).
+
+\item The \ucsName{nouveau} driver has been added to the list of
+  available X servers in the \ucsName{Display} policy (\ucsBug{23124}).
+
+\item The \ucsUCR{} policy now also applies to Univention Corporate
+  Client systems (\ucsBug{28852}).
+
+\end{itemize}
+
+\subsubsection{Printers module}
+\begin{itemize}
+\item An incorrect error message when trying to add printers to a
+  printer group with quota support has been fixed (\ucsBug{19627}).
+\item A new option \ucsName{Use Windows client driver} has been added.
+  It is enabled by default and allows Windows clients to print using
+  locally installed drivers (\ucsBug{27340}).
+\end{itemize}
+
+\subsubsection{DHCP module}
+\begin{itemize}
+\item When all DHCP range entries are removed from a DHCP subnet, the
+  related LDAP attribute \ucsName{dhcpRange} will be deleted from the
+  LDAP object (\ucsBug{28623}).
+\end{itemize}
+
+\subsubsection{Other modules}
+\begin{itemize}
+\item The page layout of the samba domain page has been improved (\ucsBug{27267}).
+
+\item Alternative email adresses can now be configured for mail groups
+  (\ucsBug{27871}).
+
+\item The LDAP filter for \ucsName{container/cn} and
+  \ucsName{container/ou} no longer matches the LDAP base object
+  (\ucsBug{25737}).
+
+\item Various UDM objects now use a new default search: It searches in
+  several important attributes (specific for every class of object) at
+  once (\ucsBug{24341}).
+
+\item An error message in the processing of incorrect syntax
+  definitions has been clarified (\ucsBug{28408}).
+
+\item Fixed an error when retrieving possible choices for a syntax while the
+  underlying LDAP extension has not yet been installed (\ucsBug{29333}).
+
+\item Visual glitches in the display of UDM detail pages are now
+  prevented (\ucsBug{28400}).
+
+\item The escaping of characters specific to LDAP search filters has
+  been improved (\ucsBug{16387}).
+
+\item A UDM module to create Kerberos KDC entries has been added
+  (\ucsBug{28379}).
+
+\item The \ucsName{Networks} module no longer suggests IP addresses
+  which are already in use (\ucsBug{28137}).
+
+\item Legacy policies and \ucsUDM{} modules for the management of UCD and UCS
+TCS have been moved into the package
+\ucsName{python-univention-directory-manager-legacy-ucd-tcs}. This
+package will be automatically installed during the update to UCS 3.1 
+(\ucsBug{27617}).
+
+\item The module \ucsName{Navigation} have been renamed to
+  \ucsName{LDAP directory} (\ucsBug{26511}).
+
+\item The caption of the \ucsMenuEntry{UMC Command List} has been
+  fixed (\ucsBug{26705}).
+
+\item Various spelling mistakes in several modules have been corrected
+  (\ucsBug{28397}).
+
+\end{itemize}
+
+\subsection{Univention Directory Manager command line interface and related tools}
+\begin{itemize}
+\item \ucsCommand{proof\_uniqueMembers} has been extended to also
+  remove users which no longer exist (\ucsBug{27929}). The
+  \emph{uniqueMember} and \emph{memberUid} attributes are now compared
+  case-insensitive (\ucsBug{21026}).
+
+\item \ucsCommand{univention-sync-memberuid} has been rewritten
+  (\ucsBug{27907}).
+
+\item \ucsCommand{univention-dnsedit} now provides more help
+  information (\ucsBug{27864}).
+
+\item It is now possible to pass
+  \ucsCommand{univention-directory-manager} the password for the LDAP
+  connection via a file by using the option \texttt{-{}-bindpwdfile}
+  (\ucsBug{19978}).
+
+\item The \ucsUCRV{directory/manager/cmd/sockettimeout}
+  can be used to configure the time interval (in seconds) the CLI client
+  waits for a socket file of the CLI server
+
+\item \ucsCommand{convert-user-base64-photos} now displays an error
+  message if the LDAP server is unreachable (\ucsBug{27961}).
+
+\item The deprecated log file \ucsFile{admin-cmd.log} has been
+  replaced with the current \ucsFile{directory-manager-cmd.log} in
+  several commandline tools (\ucsBug{13105}).
+
+\item The postinst script of
+\ucsName{univention-directory-manager-modules} no longer calls the update script
+\ucsName{convert-user-base64-photos} for new installations
+(\ucsBug{28366}).
+
+\item A traceback when trying to remove non-existent objects has been fixed (\ucsBug{27956}).
+
+\end{itemize}
+
+
+\subsection{Development of modules for Univention Management Console}
+\begin{itemize}
+\item Several decorator functions have been added to help developers to write
+  and extend UMC modules. These functions are documented in
+  \ucsName{univention-management-console-doc} (\ucsBug{27716}).
+\item Arguments passed to UMC modules can now be validated and sanitized
+  uniformly. The mechanism is extendable and is documented in
+  \ucsName{univention-management-console-doc} (\ucsBug{27720}).
+\item Added a new widget to handle cases where a huge amount of entries
+  would be returned possibly blocking the form for several minutes. All
+  entries can be searched remotely from within this widget (\ucsBug{26556}).
+\item Fixed dependent widgets not updating initially when the other widget was
+  initialized with an empty value (\ucsBug{29333}).
+\item The prefix of all the package management UMCP commands have been
+  renamed from \emph{packages/*} to \emph{appcenter/*}.
+  Corresponding \ucsName{UMC}-policies have to be adapted manually
+  (\ucsBug{28626}).
+\item Added a function to set further details of a module's title. This also
+  fixes some possible escaping problems (\ucsBug{28146}).
+\item The MultiObjectSelect widget formatter now supports strings (\ucsBug{26780}).
+\item The initialization of static values in the Form widget was fixed
+  (\ucsBug{26780}).
+\item The Dojo Toolkit library has been updated to version 1.8.1, and the UMC
+  framework as well as all UMC modules have been ported and adapted to Dojo
+  API changes (\ucsBug{26857}, \ucsBug{26826}, \ucsBug{28498},
+  \ucsBug{28551}, \ucsBug{28516}, \ucsBug{28811}, \ucsBug{28710},
+  \ucsBug{27397}, \ucsBug{28796}, \ucsBug{29087}, \ucsBug{28018},
+  \ucsBug{29224}, \ucsBug{29232}, \ucsBug{29382}, \ucsBug{29390},
+  \ucsBug{29250}, \ucsBug{29238}).
+\item The PasswordInputBox widget has been extended with a function to
+  reset the whole widget (\ucsBug{27135}).
+\item The \emph{confirmForm} function was added to
+  \ucsName{umc.dialog} (\ucsBug{26791}).
+\item Visibility issues with doubled entries in grids during opening a
+  module have been corrected (\ucsBug{25476}).
+\item The package
+  \ucsName{univention-manangement-console-frontend-src} has been added
+  which contains the uncompressed javascript source files
+  (\ucsBug{28018}).
+\item Problems with dependencies of form items have been resolved, an
+  additional method for handling of asynchronous data loading has been
+  added (\ucsBug{26214}, \ucsBug{28847}).
+\end{itemize}
+
+
+
+
+\section{Software deployment}
+
+\begin{itemize}
+\item The handling for errata updates has been changed in UCS 3.1. One
+errata scope will be released for every UCS patchlevel release
+(\ucsBug{26387}).
+
+\item The upgrade maintenance check did not recognize new package
+policies. This issue has been fixed (\ucsBug{27171}).
+
+\end{itemize}
+
+\subsection{Repository handling}
+\begin{itemize}
+\item \ucsCommand{apt-mirror} has been patched to honor the limit of
+  forked \ucsCommand{apt-ftparchive} and \ucsCommand{gzip} processes
+  as configured by the \ucsUCRV{repository/mirror/threads}
+  (\ucsBug{25518}).
+\item \ucsCommand{univention-repository-update} now supports the
+  \emph{--iso} option to update a local repository from a downloaded
+  \emph{.iso} file (\ucsBug{26239}).
+
+\item The errata updates for components will now be mirrored into the
+  local repository (\ucsBug{28187}).
+
+\item The symlinks in the \ucsFile{isolinux} directory of the repository will no
+  longer be created (\ucsBug{17835}).
+
+\item The PXE symlinks for the Univention Net Installer kernel and the
+  initrd are now created by \ucsName{univention-repository-create}
+  (\ucsBug{24777}).
+
+\item If the \ucsUCRV{repository/mirror/recreate\_packages} is set to \emph{no}, the
+packages files from the reporitory mirror will be used (\ucsBug{23346}).
+
+\item The obsolete function
+  \ucsCommand{errata\_component\_update\_temporary\_sources\_list()}
+  has been removed (\ucsBug{27152}). Some old code still using
+  deprecated functions has been cleaned up (\ucsBug{27745}).
+\end{itemize}
+
+
+
+\subsection{Software deployment command line tools}
+\begin{itemize}
+\item The new tool \ucsCommand{univention-remove} can be used to
+  uninstall packages (\ucsBug{19468}).
+\end{itemize}
+
+
+\subsection{Software monitor (univention-pkgdb)}
+\begin{itemize}
+\item The \ucsName{univention-pkgdb} has been cleaned up for speed,
+  code, and usability improvements (\ucsBug{13538}, \ucsBug{21873},
+  \ucsBug{19467}, \ucsBug{29196}).
+
+\item The \ucsUCRV{pgsql/pkgdb/networks} now contains a list
+  (separated by spaces) of PostgreSQL CIDR-ADDRESS definitions of the
+  networks that are allowed to access the \ucsName{univention-pkgdb}
+  database. By default the access is not restricted. The
+  \ucsUCR{} variables \ucsUCRVSA{pgsql/pkgdb/network} and \ucsUCRVSA{pkgsql/pkgdb/netmask} are
+  not supported anymore and should be migrated to the new
+  \ucsUCRV{pgsql/pkgdb/networks} if required (\ucsBug{27873}).
+
+\item The description of the \ucsUCRV{pkgdb/scan} has been improved
+  (\ucsBug{22578}).
+
+\item \ucsName{univention-pkgdb} now stores the system architecture in
+  the database (\ucsBug{11364}).
+
+\item It is now possible to remove a system from the database using
+  \ucsName{univention-pkgdb-scan -{}-remove-system} (\ucsBug{14929}).
+
+\item The \ucsUCRV{pkgdb/requiressl} is set to \ucsName{true} during the
+  update of \ucsName{univention-pkgdb-tools}. If this \ucsUCRV{} is
+  \emph{true}, clients use only SSL secured
+  connections to the server. If this variable is set to \emph{true},
+  software monitor servers only allow SSL secured
+  connections to the server. It can be set to \ucsName{false} to
+  restore the old behaviour, if required for compatibility with older
+  \ucsUCS{} versions (\ucsBug{27873}).
+
+\item The join script now waits for up to a minute for the service
+  record to appear before starting the initial scan of the system
+  (\ucsBug{13890}).
+
+\item The \ucsName{--clean} action is not necessary anymore. Thus the
+  corresponding weekly cronjob univention-pkgdb-clean has been removed
+  (\ucsBug{29266}).
+\end{itemize}
+
+
+\section{Univention Library}
+\begin{itemize}
+\item \ucsName{get\_default\_netmask()} from \ucsFile{base.sh} will now return a
+  netmask if the default address is IPv4 and a prefix length if it is IPv6
+  (\ucsBug{26216}).
+\end{itemize}
+
+
+\section{System services}
+
+\subsection{DHCP}
+\begin{itemize}
+\item The remaining DHCP configuration files were moved from
+  \ucsFile{/etc/dhcp3/} to \ucsFile{/etc/dhcp/}, which is the new
+  directory since UCS 3.0 (\ucsBug{27829}).
+
+\item \ucsFile{/etc/init.d/isc-dhcp-server} now prints a message that
+  the script is over-ruled by \ucsFile{/etc/init.d/univention-dhcp}
+  (\ucsBug{17802}).
+
+\item The permission bit of \ucsFile{/etc/init.d/isc-dhcp-server} has been
+  fixed to be executable (\ucsBug{25377}).
+
+\item Several statements, which are illegal inside a pool section, are
+  no longer added to the dhcpd configuration (\ucsBug{7585}).
+\end{itemize}
+
+\subsection{DNS}
+\begin{itemize}
+\item \ucsFile{/etc/init.d/bind9} now checks the autostart setting of
+  \ucsName{univention-bind} instead of \ucsName{univention-bind-proxy}
+  (\ucsBug{23811}).
+\item The \ucsUCRV{dns/allow/transfer} has been added to make the
+  \ucsName{allow-transfer} option of \ucsName{bind9} configurable. It
+  and the \ucsUCRV{dns/allow/query} are initialized to \texttt{any}
+  (only supported by the LDAP backend) (\ucsBug{10365}).
+\item The new file \ucsFile{local-predlz.conf.samba4} gets included in
+  \ucsFile{named.conf.samba4} before the declaration of the Samba 4
+  DLZ zone (\ucsBug{26302}).
+\item A newly joined UCS 3.1 DNS server will be automatically appended
+  to the list of the name servers in the DNS forward and reverse zone
+  (\ucsBug{8036}).
+\item A potential crash through incorrect memory handling (double
+  free) has been fixed in the LDAP backend of bind9 (\ucsBug{11295}).
+\item In case \emph{samba4} is configured in \ucsUCRV{dns/backend}
+  the name server is reloaded after a DNS zone was added or removed
+  (\ucsBug{29289}).
+\item The network scripts \ucsName{ifup} and \ucsName{ifdown} now
+  restart bind instead of using \ucsName{rndc reconfig}
+  (\ucsBug{29659}).
+\end{itemize}
+
+\subsection{Cyrus}
+\begin{itemize}
+\item The setting of the default Cyrus ACLs has been fixed (\ucsBug{17994}).
+
+\item A default (7389) for the \ucsUCRV{ldap/server/port} has been added
+in the \ucsUCR{} templates of \ucsName{univention-mail-cyrus} and
+\ucsName{univention-mail-cyrus-murder} (\ucsBug{27305}).
+
+\item Creation of the default Sieve script in
+  \ucsName{univention-cyrus-mkdir} has been fixed (\ucsBug{17928}).
+\end{itemize}
+
+\subsection{Postfix}
+\begin{itemize}
+\item A default (7389) for the \ucsUCRV{ldap/server/port} has been
+  added in the \ucsUCR{} templates of
+  \ucsName{univention-mail-postfix} (\ucsBug{27305}).
+\end{itemize}
+
+% \subsection{Spam detection and countermeasures}
+% \begin{itemize}
+% \end{itemize}
+
+\subsection{Printing services}
+\begin{itemize}
+\item The run time directory for new installations of the PDF printer
+  package was changed from \ucsFile{/var/cache/cups-pdf/} to
+  \ucsFile{/var/spool/cups-pdf/} (\ucsBug{17548}). An old override for
+  file permissions of \ucsCommand{cups-pdf} has been removed
+  (\ucsBug{17547}).
+
+\item The package \ucsName{univention-foomatic-ppds} has been split
+  from \ucsName{univention-printserver-pdf} into its own source
+  package (\ucsBug{28494}).
+
+\item The test for disabled printers in
+  \ucsName{univention-check-printers} has been fixed (\ucsBug{26767}).
+
+\item A python error in \ucsName{cups-printers.py} has been fixed
+  (\ucsBug{29674}).
+\end{itemize}
+
+\subsection{Kerberos}
+\begin{itemize}
+\item The Heimdal KDC daemon is now restarted in the Heimdal join
+  script (\ucsBug{25103}).
+\end{itemize}
+
+\subsection{Proxy services}
+\begin{itemize}
+\item The \ucsFile{squid.conf} template has been cleaned up (\ucsBug{27815}).
+
+\item The Dansguardian virus check can now be disabled via the
+  \ucsUCRV{squid/virusscan}, the content scan via the
+  \ucsUCRV{squid/contentscan}. If both variables are set to
+  \emph{false}, Dansguardian is disabled and no longer used by the
+  Squid proxy as webfilter backend (\ucsBug{13674})
+\end{itemize}
+
+% \subsection{Apache}
+% \begin{itemize}
+% \end{itemize}
+
+\subsection{Nagios}
+\begin{itemize}
+\item Some warnings in the UNIVENTION\_JOINSTATUS plugin have been
+  fixed (\ucsBug{18828}).
+\end{itemize}
+
+
+\subsection{SSL}
+\begin{itemize}
+\item \ucsName{univention-ssl} now also stores the validity for the root
+certificate. The expiration date of the host certificate is
+automatically stored in the new \ucsUCRV{ssl/validity/host}, the
+expiration date of the root certificate in the new
+\ucsUCRV{ssl/validity/root}. The old \ucsUCRV{ssl/validity/days} will be
+deleted during the update. The UMC and the nagios test UNIVENTION\_SSL
+now examine both the host and the root certificate (\ucsBug{27002},
+\ucsBug{25788}).
+
+\item SSL certificates are now also created for Univention Corporate
+  Client systems (\ucsBug{28571}).
+
+\item \ucsName{univention-ssl} now sets a default (true) for the
+ \ucsUCRV{ssl/validity/check} on all system roles (\ucsBug{19736}).
+
+\item A path handling problem was fixed in \ucsName{univention-ssl}
+  (\ucsBug{26572}).
+\end{itemize}
+
+\subsection{NFS}
+\begin{itemize}
+\item The join script for \ucsName{univention-nfs-server} is now
+  executed after installation (\ucsBug{24086}).
+
+\item NFS version 4 for the NFS server has been disabled by
+  default. It can be configured by setting the
+  \ucsUCRV{nfs/nfsd/nfs4} (\ucsBug{28500}).
+
+\item The \ucsUCR{} template for
+  \ucsFile{/etc/modprobe.d/nfs-kernel-lockd} has been updated to the
+  new modprobe naming scheme (\ucsBug{27959}).
+
+\item The handling of LDAP exceptions in the policy script
+  \ucsName{nfsmounts} has been improved (\ucsBug{28194}).
+
+\item The new listener module \ucsName{nfs-homes} from the package
+  \ucsName{univention-nfs-server} is responsible for the creation of
+  the user's \ucsName{homeSharePath} on NFS home shares. This feature can be
+  disabled by setting the \ucsUCRV{nfs/create/homesharepath} to
+  \emph{false} and restarting the Univention Directory Listener
+  ((\ucsBug{25375})).
+\end{itemize}
+
+
+\subsection{Other services}
+\begin{itemize}
+\item With the update to UCS 3.1 the \ucsUCRV{ntp/signed} will be set
+  to \emph{yes} if the variable was not set before. This will enable signed
+  NTP packages (\ucsBug{26223}).
+
+\item The init script of \ucsName{univention-runit} is now stopped later. This
+  prevents early terminations of services like \ucsName{libvirt-bin},
+  which otherwise fails to save virtual machines (\ucsBug{28817}).
+
+\item The PAM configuration in \ucsName{univention-postgresql} is now
+  updated in a join script to ensure it contains the current
+  \ucsFile{machine.secret} (\ucsBug{28795}).
+\end{itemize}
+
+
+\section{Virtualisation}
+
+\subsection{libvirt}
+\begin{itemize}
+\item Libvirt has been updated to version 0.9.12
+  (\ucsBug{27612}).
+\item The init script
+  \ucsCommand{/etc/init.d/univention-virtual-machine-manager-node-common}
+  has been deprecated in favour of
+  \ucsCommand{/etc/init.d/libvirt-bin}. The order in which the
+  virtualisation init scripts are called, has been fixed (\ucsBug{19145}).
+
+\item Broken qcow2 files missing their backing store no longer
+  prohibit the storage pool form starting (\ucsBug{22098}).
+\end{itemize}
+
+\subsection{Univention Virtual Machine Manager}
+\begin{itemize}
+\item Some spelling mistakes have been corrected (\ucsBug{24831}).
+\item The \ucsUVMM{ daemon} was changed to not log libvirt-related messages to
+  \ucsFile{/var/log/univention/virtual-machine-manager-daemon-errors.log},
+  since they are also logged to
+  \ucsFile{/var/log/univention/virtual-machine-manager-daemon.log}
+  (\ucsBug{24135}).
+
+\item The logging level of the \ucsUVMM{ daemon} can now be controlled
+  by the \ucsUCRV{uvmm/debug}, \ucsUCRVSA{uvmm/debug/command},
+  \ucsUCRVSA{uvmm/debug/ldap}, and
+  \ucsUCRVSA{uvmm/debug/unix}. Accepted values are \emph{DEBUG},
+  \emph{INFO}, \emph{WARNING}, \emph{ERROR}, \emph{CRITICAL}
+  (\ucsBug{28136}.
+
+\item The \ucsUCRV{uvmm/umc/vnc/host} controls the format of the VNC
+  link: By default the IPv4 address is used, which can also be
+  explicitly set to \emph{IPv4}. \emph{IPv6} explicitly requests an
+  IPv6 address. To both values a Python regular expression can be
+  appended by a single blank, which only accepts matching addresses as
+  returned by \emph{getaddrinfo()}. \emph{NAME} passes on the DNS name
+  of the virtualization server unmodified, but substitutions can be
+  performed by appending multiple \emph{old=new} pairs separated by
+  spaces, which are applied to the name in order. Any other values
+  overwrites the individual server name by a fixed static string
+  (\ucsBug{28104}).
+
+\item The escaping of XML special characters has been fixed;
+  \texttt{\&} and \texttt{<} are prohibited in snapshot names
+  (\ucsBug{27189}).
+
+\item Profiles for Microsoft Windows 2012 and Microsoft Windows 8 have
+  been added (\ucsBug{28420}). Profiles for UCS-3.1 have been added
+  while profiles for UCS-2.4 are no longer created on new
+  installations (\ucsBug{29338}).
+
+\item The configuration file for the loopback devices has been renamed
+  (\ucsBug{14824}).
+
+\item The file format used by image files can now be changed when
+  attaching existing images to virtual machines. This also fixes a bug
+  when \emph{qcow2} images were wrongly attached as
+  \emph{raw}-images. (\ucsBug{25169}).
+
+\item The cache strategy for block devices can be configured now. The
+  default for harddisks was changed to \emph{none} (\ucsBug{23445}).
+
+\item Snapshots are now deleted when a virtual machine is removed
+  (\ucsBug{25181}).
+
+\item Migration now waits until the target domain is running again
+  (\ucsBug{25857}).
+
+\item Invalid XML data in storage volume and domain information is now
+  silently ignored (\ucsBug{26681}).
+
+\item The \emph{Change medium}-dialog will now show the available
+  mediums (\ucsBug{27817}).
+
+\item Editing of VMs which are not cleanly shutdown is disabled (\ucsBug{25467}).
+
+\item Now the initial values will be loaded properly when editing an
+  existing interface (\ucsBug{29274}).
+\item An internal bug was fixed, which caused UVMM to hang when no profiles were found (\ucsBug{29375}).
+\end{itemize}
+
+\subsection{Xen}
+\begin{itemize}
+\item The \ucsName{Xen} hypervisor and tool stack have been updated to
+  version 4.1.3 (\ucsBug{27021}).
+
+\item The signed build of the GPLPV windows drivers have been updated
+  to version 0.11.0.369 (\ucsBug{26613}).
+
+\item The order in which the Xen init scripts are called, has been
+  fixed, thus correctly suspending and resuming guest machines on host reboot (\ucsBug{28813}).
+\end{itemize}
+
+\subsection{QEMU/kvm}
+\begin{itemize}
+\item The \ucsName{QEMU-kvm} hypervisor and tool stack have been
+  updated to version 1.1.2 (\ucsBug{28282}, \ucsBug{28283}).
+\item \ucsName{QEMU-kvm} switched from the deprecated
+  \ucsName{etherboot-qemu} to \ucsName{ipxe} to provide the network
+  card ROM images. Old snapshots and suspended virtual machines still
+  need the old ROM images. \ucsName{QEMU-kvm} has been patched to use
+  the old \ucsName{etherboot-qemu} ROMs for \emph{pc-0.14} and older
+  VMs (\ucsBug{24702}).
+\end{itemize}
+
+
+\section{Desktop packages}
+\begin{itemize}
+
+\item Via the new \ucsUCRV{gdm/systemmenu} it is possible to allow or
+disallow the shutdown or reboot of the system via the login manager
+\ucsName{gdm} or the desktop environment \ucsName{KDE} (default is
+true). The \ucsUCRV{gdm/menu/system} controls whether the login manager
+provides buttons for the shutdown and restart of the computer (default
+is \emph{false}). By default, the system can now be turned off or rebooted via
+the desktop environment but not via the login manager (\ucsBug{25677}).
+
+\item The previously used form of internationalization
+in firefox with language packs is no longer supported. Instead, there
+are now two separate packages, \ucsName{firefox-en} for the English
+and \ucsName{firefox-de} for the German version of Firefox (\ucsBug{28006}, \ucsBug{27986}).
+
+\item An entry \ucsName{Server Administration} (link to the
+UCS overview page) has been added to the KDE menu (\ucsBug{28586}).
+
+\item The NSS LDAP configuration has been fixed: It is now
+possible for the DBus daemon to resolve usernames (\ucsBug{28807}).
+
+\item The download url in \ucsName{univention-flashplugin} has been updated (\ucsBug{28855}).
+\end{itemize}
+
+
+\section{Services for Windows}
+
+\begin{itemize}
+\item Support for Microsoft Windows 8 has been added (\ucsBug{28015}).
+\item The \ucsUDL{} module for generating Samba shares now removes the
+  local share configuration if the share host has been changed to a
+  different host. The module now also uses the current fully qualified
+  domain name and IP (\ucsBug{27253}).
+\item The script \ucsCommand{remove\_sambapwdlastset} has been renamed to
+  \ucsCommand{remove\_sambapwdmustchange} (\ucsBug{27838}).
+\end{itemize}
+
+\subsection{Samba 3}
+\begin{itemize}
+\item Samba has been updated to version 3.6.8 (\ucsBug{24231}):
+	\begin{itemize}
+	\item The \ucsUCRV{samba/winbind/max/clients} has been introduced
+      with a default value of 500.
+	\item Default value for \texttt{use spnego} is not set explicitly
+      any longer to avoid a deprecation warning.
+	\item New \ucsUCRV{samba/vfs/acl\_xattr/ignore\_system\_acls}.
+	\item New \ucsUCRV{samba/max\_protocol}.
+	\item Removed support for legacy \ucsUCRV{samba/idmap/domains}.
+	\end{itemize}
+\item Winbind is now installed on all Samba 3 systems (\ucsBug{26200}).
+\item For new UCS installations the default for the minimal password
+  length in the Samba domain policy has been increased from 5 to 8 characters
+  to match the standard UCS password policy default (\ucsBug{21262}).
+\item A traceback has been fixed in the \ucsCommand{kerberize\_user} and
+  \ucsCommand{remove-samba-account} scripts (\ucsBug{27841}).
+\item The Logrotate configuration for the main Winbind log files has
+  been extended (\ucsBug{4738}).
+\item A minor traceback during the installation of
+  \ucsName{univention-samba-local-config} has been fixed
+  (\ucsBug{27887}).
+\item Inheritance of group ownership from parent directories by means
+  of the set group id (SGID) bit is now honoured during file and
+  directory creation via SMB (\ucsBug{27950}).
+\item During the first join of an UCS member server into a Samba 4
+  domain, the \ucsUCRV{samba/share/home} will be set to \emph{yes}, to
+  provide access to the home directories via samba share
+  (\ucsBug{25339}).
+\end{itemize}
+
+\subsection{Samba 4}
+\begin{itemize}
+\item Samba 4 has been updated to version 4.0 RC6 (\ucsBug{27457},
+  \ucsBug{24247}, \ucsBug{29529}).
+\item Periodic machine password changes are now possible on Samba 4
+  domain controllers. It is enabled automatically during update by
+  setting the \ucsUCRV{server/password/change} to \emph{yes}
+  (\ucsBug{24703}).
+\item Two trivial tracebacks in
+  \ucsCommand{univention-samba4-site-tool.py} have been fixed
+  (\ucsBug{27153}).
+\item The \ucsName{samba4} init script now ensures that all Samba
+  processes terminate when \emph{stop} is called (\ucsBug{27132}).
+\item The password complexity check has been fixed for UTF-8 characters
+  (\ucsBug{25554}).
+\item \ucsCommand{univention-s4search} has been fixed to use the
+  machine account for authorization by default (\ucsBug{28279}).
+\item A bug affecting rejoins of Samba 4 domain controllers has been fixed, where the
+  RID pool rIDNextRID counter was lost, possibly blocking the local
+  creation of new Samba 4 accounts. Now this counter will be preserved
+  during rejoins (\ucsBug{28373}).
+\item Error handling and performance of the Samba 4 join and provision
+  scripts have been improved (\ucsBug{26731}).
+\item When joining a domain the GC record registration is now
+  controlled by the \ucsUCRV{dns/register/srv\_records/gc} and the PDC
+  record registration by the \ucsUCRV{dns/register/srv\_records/pdc}
+  (\ucsBug{28065}).
+\item If Samba 4 cannot itself find a DC during a join, the
+  \ucsName{univention-samba4} joinscript will try joining against all
+  DCs it an find in LDAP offering Samba 4 services in turn. The
+  \ucsUCRV{samba4/dc} can be used to specify a server to join against
+  instead. Kerberos will not be used during Samba domain join
+  (\ucsBug{27469}).
+\item SYSVOL NTACLs and fACLs were set to the UCS 3.0 defaults on
+  every run of the Samba 4 join script. This has been fixed
+  (\ucsBug{28894}).
+\item The handling of LDAP rename operations has been improved in the
+  \ucsName{samba4-idmap} listener module (\ucsBug{28643}).
+\item The source of two tracebacks has been fixed in the
+  \ucsName{samba4-idmap} listener module (\ucsBug{26013}).
+\item Inheritance of group ownership from parent directories by means
+  of the set group id (SGID) bit is now honoured during file and
+  directory creation via SMB (\ucsBug{28711}).
+\item Samba 4 now uses its own version of Heimdal Kerberos (instead
+  of using the system-wide Heimdal libraries) (\ucsBug{29005}).
+\item The post-installation script of the \ucsName{univention-samba4}
+  package was improved to avoid a deadlock due to a leftover Samba
+  process (\ucsBug{28583}).
+\item The join script of \ucsName{univention-samba4} has been improved
+  to backup and merge the Samba 4 machine keytab in case of a re-join
+  (\ucsBug{25393}).
+\item Group SIDs appearing in the owner field of a NT security
+  descriptor are now supported in NTACLs, e.g. of GPO files in the
+  sysvol share. To avoid privilege escalation in cases of overlapping
+  uid and gid numbers, the Unix file ownership is mapped to 0 for this
+  kind of NTACLs (\ucsBug{28737}).
+\item A new script \ucsCommand{univention-ad-takeover} has been added
+  to support the takeover of users and computers from an Active
+  Directory server (\ucsBug{28390}).
+\item The reliability of DNS service principal creation was improved
+  (\ucsBug{29217}).
+\item The first system that provides Samba 4 will remove systems
+  without Samba 4 from the Kerberos DNS service records. This
+  avoids Kerberos errors in environments where Samba 4 is run
+  on a DC Backup but not on a DC Master (\ucsBug{29225}).
+\end{itemize}
+
+\subsection{Univention S4 Connector}
+\begin{itemize}
+\item The domain password setting attributes are now synced between UCS and
+Samba 4. During the update to UCS 3.1 the password settings in UCS will be
+overwritten with the Samba 4 settings (\ucsBug{24237}).
+\item If the connection to the UCS LDAP server was closed, the connection
+will be reopened and the last search will be started again (\ucsBug{27176}).
+\item The S4 Connector will be restarted at the end of the join process
+so the UCR values are re-read (\ucsBug{26859}).
+\item The debug message if SSL is disabled has been improved
+(\ucsBug{25835}).
+\item The init script has been made more resilient (\ucsBug{27175}).
+\item The attribute \emph{mailPrimaryAddress} is now synced to the
+  Samba 4 attribute \emph{mail} instead of the UCS attribute \emph{mail}.
+\item A traceback has been fixed which occured if the LDAP and Samba 4
+  base DNs are not equal (\ucsBug{28573}).
+\item The group membership cache has been improved (\ucsBug{28689}).
+\item A bug in the creation of new DNS zones in UCS has been fixed
+  (\ucsBug{28889}).
+\item A traceback caused by an special/invalid Kerberos keytypes was
+  fixed. This keytype is typically issued by Windows 2008 AD servers
+  (\ucsBug{28907}, \ucsBug{28932}).
+\item The mapping has been enhanced to allow group name mappings,
+  e.g. to abstract from locale specific names in Samba 4
+  (\ucsBug{28910}).
+\item The extended attributes will now be loaded before the first
+  object will be created (\ucsBug{28981}).
+\item A write-lock problem in the \ucsName{univention-ad-takeover} script has been fixed (\ucsBug{29751}).
+\end{itemize}
+
+\subsection{Univention Active Directory Connector}
+\begin{itemize}
+\item The Univention Active Directory Connector supports now Microsoft
+  Server 2012 (\ucsBug{28013}).
+\item The debug message if SSL is disabled has been improved
+  (\ucsBug{25835}).
+\item \ucsUCR{} variables have been added to handle which objects will
+  be ignored by the Active Directory connector
+  (\ucsUCRVSA{connector/ad/mapping/*/ignorelist}) (\ucsBug{20517}).
+\item The init script has been made more resilient (\ucsBug{27175}).
+\item The attribute \emph{mailPrimaryAddress} is now synced to the
+  AD attribute \emph{mail} instead of the UCS attribute \emph{mail}.
+\item The group membership cache has been improved (\ucsBug{28689},
+  \ucsBug{28845})).
+\item A LANMAN warning has been removed because the LM hash is no
+  longer required (\ucsBug{28709}).
+\end{itemize}
+
+
+
+\section{Other changes}
+\begin{itemize}
+\item The ``known bugs'' message has been removed from
+  \ucsName{univention-repository-addpackage},
+  \ucsName{univention-repository-delpackage},
+  \ucsName{univention-repository-merge},
+  \ucsName{univention-directory-manager}, \ucsName{univention-join},
+  \ucsName{univention-server-join},
+  \ucsName{univention-run-join-scripts},
+  \ucsName{univention-system-info}, and
+  \ucsName{univention-pkgdb-scan} (\ucsBug{25379}).
+
+\item An incompatibility between \ucsName{plymouth} and
+\ucsName{sysvinit} which led to a crash of the boot splash has been
+resolved (\ucsBug{28287}).
+
+\item A quoting bug was fixed in the \ucsCommand{jitter} command
+  (\ucsBug{16428}).
+
+\item The \ucsName{ucs-test} suite is now released in the unmaintained archive
+  section of UCS 3.1 (\ucsBug{28215}). Several tests have been adjusted to the current package versions
+(\ucsBug{28356}, \ucsBug{28357}, \ucsBug{22937}, \ucsBug{21765},
+\ucsBug{28360}, \ucsBug{28341}, \ucsBug{28342}, \ucsBug{28343},
+\ucsBug{28348}, \ucsBug{28262}, \ucsBug{25818}, \ucsBug{27650},
+\ucsBug{11431}).
+
+\item A bug in \ucsName{univention-demo-configuration} was fixed,
+  which resulted in duplicated display of the \ucsMenuEntry{Basic
+    settings} dialogue (\ucsBug{27978}).
+
+\item The following packages have been rebuild with python 2.6 support
+only (\ucsBug{26852}):
+\begin{itemize}
+\item univention-nagios
+\item univention-pkgdb
+\item univention-package-template-python
+\item univention-licence
+\item univention-base-files
+\item univention-config-registry
+\item univention-python
+\item univention-management-console-module-mrtg
+\item univention-management-console-module-ipchange
+\item univention-management-console-module-packages
+\item univention-management-console-module-services
+\item univention-management-console-module-vnc
+\item univention-management-console-module-ucr
+\item univention-management-console-module-reboot
+\item univention-management-console-module-top
+\end{itemize}
+
+\item Configuration for password-protected access to the Bacula database
+with the \emph{bacula} user has been added in the package
+\ucsName{univention-bacula} (\ucsBug{16257}).
+
+\item The boot loader GRUB has been updated to version 1.99 (\ucsBug{29445}).
+
+\item The bootsplash has been disabled for the grub recovery mode boot
+entry (\ucsBug{28287}).
+
+\item A superfluous dependency on \ucsName{diff} has been removed in
+  the \ucsName{univention-grub} package (\ucsBug{27010}).
+
+\item The default ramdisk size for the net installer has been increased
+(\ucsBug{28477}).
+
+\item The permissions of certain logfiles and logfile directories have been restricted
+(\ucsBug{11431}):
+\begin{itemize}
+\item /var/log/lastlog
+\item /var/log/faillog
+\item /var/log/dpkg.log
+\item /var/log/bootstrap.log
+\item /var/log/mail*
+\item /var/log/samba
+\item /var/log/univention
+\end{itemize}
+
+\item The automatic start of the NFS server is configurable through the
+  \ucsUCRV{nfs/autostart} (\ucsBug{11559}).
+
+\item The new \ucsUCRV{homedir/mount/required} defines whether a
+successful mount of the users home directory is required for the logon
+(\ucsBug{23637}).
+
+\item The quota rpc service is now started, if a entry in
+  \ucsFile{/etc/exports} exists (\ucsBug{25430}).
+
+\item The packages \ucsName{apt-transport-https},
+\ucsName{dpt-i2o-raidutils}, \ucsName{raidutils}, \ucsName{varmon},
+\ucsName{cpqarrayd}, \ucsName{mpt-status}, \ucsName{php-gettext},
+\ucsName{multipath-tools} and \ucsName{util-linux-locales} have been
+added to the maintained repository (\ucsBug{28153}, \ucsBug{17073},
+\ucsBug{27363}, \ucsBug{28484}, \ucsBug{8708}).
+
+\item The Horde webmailer has been updated to version 4.0.8
+\ucsBug{25792}, \ucsBug{29200}).
+
+\item \ucsName{univention-debug} no longer logs error messages to Syslog
+(\ucsBug{25469}).
+
+\item \ucsName{univention-system-info} has been modified to backup
+existing archives before creating the sysinfo archive (\ucsBug{21497}).
+
+\item \ucsName{univention-skel} has been modified to provide a \ucsFile{.profile},
+which executes the personal \ucsFile{.bashrc} (\ucsBug{15754}).
+
+\item Descriptions for the \ucsUCR{} variables have been added to
+\ucsName{univention-log-collector} (\ucsBug{22537}).
+
+\item Support for ldap/server/addition has been added to
+\ucsName{univention\_policy\_result} and
+\ucsName{univention-directory-policy} (\ucsBug{19428}).
+
+\end{itemize}
+
+\subsection{ucslint}
+\begin{itemize}
+\item A test for unquoted calls of \ucsCommand{eval \$(ucr shell)} has
+  been added (\ucsBug{18443}).
+\item The use of deprecated commands like
+  \ucsCommand{univention-baseconfig} and \ucsCommand{univention-admin}
+  now emits a warning (\ucsBug{23566}).
+\item The use of globbing patterns instead of regular expressions in
+  \ucsUCR{} files produces a warning
+  (\ucsBug{13015}).
+\item Fragile comparisons with None in Python code produce a warning
+  (\ucsBug{22487}).
+\item A warning is printed when Debian source files are not prefixed
+  with the package name (\ucsBug{23482}).
+\item In \ucsUCR{} template info files the fields \emph{Mode},
+  \emph{User}, \emph{Group}, \emph{Preinst}, and \emph{Postinst} are
+  now also checked (\ucsBug{14070}, \ucsBug{14201}).
+\item Using UCRWARNING before a file type specific magic strings
+  produces a warning (\ucsBug{21431}).
+\item \ucsUCR{} templates not using any \ucsUCR{} variables produce a
+  warning (\ucsBug{22434}).
+\item Tests for files in sub-directories used by version control
+  systems like GIT and Subversion and automatically generated files
+  are skipped (\ucsBug{22470}, \ucsBug{22482}, \ucsBug{22498}).
+\item Translations of multi line strings are now also checked for
+  incorrectly substitued variables (\ucsBug{22479}).
+\item Several coding and packaging problems in \ucsCommand{ucslint}
+  have been fixed (\ucsBug{22482}, \ucsBug{22484}, \ucsBug{27429},
+  \ucsBug{27444}).
+\item The test for \ucsUCR{} \verb|is_true()| and \verb|is_flase()|
+  has been improved (\ucsBug{22485}).
+\item Comments are better detected and are no longer checked for
+  issues (\ucsBug{23465}).
+\item \ucsCommand{dh-umc-module-install} is now recognized as a
+  program indirectly installing join and template files
+  (\ucsBug{24816}).
+\item The test for checking Python issues in hash-bang lines has been
+  improved to better handle white spaces (\ucsBug{25766}).
+\item Most error messages now consistently include the name of the
+  file, where the error was found (\ucsBug{27889}).
+\end{itemize}

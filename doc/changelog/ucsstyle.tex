@@ -1,0 +1,255 @@
+% packages needed in all documents
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{ngerman}
+\usepackage{verbatim}
+\usepackage[hyphens,spaces]{url}
+\usepackage{listings}
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage{ifthen}
+\usepackage{index}
+\usepackage{color}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{pifont}
+\usepackage{version}
+\usepackage{multirow}
+\usepackage{eso-pic}
+\usepackage{wallpaper}
+\usepackage[top=4.5cm, headsep=1.5cm, bottom=3cm, footskip=2cm]{geometry}
+%\usepackage{showkeys}  % ENABLE SHOWKEYS TO DISPLAY REFERENCE_TAGS IN DOCUMENT
+\usepackage{ucsframed}
+\usepackage{marginnote}
+\usepackage{placeins}
+
+\def\UrlBreaks{\do\/\do\.\do\-}
+
+\iftrue
+% http://www.ctan.org/tex-archive/macros/latex/required/psnfss/psnfss2e.pdf
+\usepackage{mathptmx} % roman, formulas
+\usepackage{helvet} % sans-serif
+\usepackage{courier} % typewriter
+\renewcommand{\familydefault}{\sfdefault}
+\else
+% use font univers as sf-font
+\fontfamily{pun}
+\selectfont
+\sffamily
+\renewcommand*{\rmdefault}{pun} % pageheader
+\renewcommand*{\sfdefault}{pun} % global font
+%\renewcommand*{\ttdefault}{pun} % fixed font, should not be univers
+\fi
+
+% Tabbox, can be used to create s.th. like this
+%
+% ---------------------
+% | Tab-Titel         |
+% ------------------------------------
+% | whatever you want                |
+% | and some more of this            |
+% ------------------------------------
+%
+% usage:
+%
+% \begin{ucsTabbox}{Tab-Titel}
+% whatever you want
+% and some more of this
+% \end{ucsTabbox}
+
+% Tabbox with Info Sign
+
+\newenvironment{ucsInfobox}[1]
+{\marginpar{\vspace{3ex}\centering\includegraphics{abbildungen/info.jpg}}\setlength{\FrameRule}{1pt}\setlength{\fboxsep}{2mm}\begin{ucsframed}{#1}\parskip\baselineskip}
+{\end{ucsframed}}
+
+\newenvironment{ucsTabbox}[1]
+{\setlength{\FrameRule}{1pt}\setlength{\fboxsep}{2mm}\begin{ucsframed}{#1}\parskip\baselineskip}
+{\end{ucsframed}}
+
+\newcommand{\ucsTabentry}[2]{\textbf{#1}\\#2}
+
+%% for the background-image on the title page
+%% http://stackoverflow.com/questions/240097/how-to-create-a-background-image-on-titlepage-with-latex
+\newcommand\BackgroundPicEven{
+\put(0,0){
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight]{illustrations/page-background-even.jpg}%
+\vfill
+}}}
+
+\newcommand\BackgroundPicOdd{
+\put(0,0){
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight]{illustrations/page-background-odd.jpg}%
+\vfill
+}}}
+
+% Colors:
+% red as used in univention corporate identiy
+% gray for listing background
+
+\definecolor{ucsRed}{RGB}{0.51372549, 0.141176471, 0.235294118}
+\definecolor{ucsCodeGray}{gray}{0.7}
+\definecolor{ucsHyperrefLinkColor}{rgb}{0, 0, 0.8}
+
+% tabular environment using sans serif
+
+\newenvironment{tableSansSerif}%
+{\begin{table}[H]\footnotesize\sffamily}%
+{\end{table}}
+
+% environment for console sessions
+\lstnewenvironment{ucsConsoleInput}
+ {\lstset{basicstyle=\ttfamily}\small}
+ {\normalsize}
+
+% environment for console sessions, boxed
+%\lstnewenvironment{ucsConsoleInputBoxed}
+% {\lstset{frame=trlb,basicstyle=\ttfamily}\small}
+% {\normalsize}
+
+% environment for config files
+\lstnewenvironment{ucsConfigFile}
+ {\lstset{basicstyle=\ttfamily,backgroundcolor=\color{ucsCodeGray}}\small}
+ {\normalsize}
+
+% exclamation mark on border
+\newcommand{\ucsExclamation}{\mbox{}\marginnote{\vspace{0pt}\centering\includegraphics{abbildungen/achtung.jpg}}}
+
+% URLs
+\newcommand{\ucsURL}[1]{\textsf{\mbox{\url{#1}}}}
+%\newcommand{\ucsURL}[1]{\textsf{\url{#1}}}
+
+\newcommand{\ucsFile}[1]{\sloppy{\texttt{#1}}}
+
+% Bugs
+\newcommand{\ucsBug}[2][Bug \#]{\href{https://forge.univention.org/bugzilla/show_bug.cgi?id=#2}{#1#2}}
+
+% emphasize text
+\renewcommand{\emph}[1]{\textbf{\textsl{#1}}}
+
+% various names
+\newcommand{\ucsName}[1]{\sloppy{\textbf{\textsl{#1}}}}
+
+% single command, inline
+\newcommand{\ucsCommand}[1]{\sloppy{\texttt{#1}}}
+
+% easy backslash
+\newcommand{\BS}{\ensuremath{\backslash}}
+
+% menu entries
+\newcommand{\ucsMenuEntry}[1]{\textbf{#1}}
+
+% click buttons
+\newcommand{\ucsButton}[1]{\sloppy{[\textbf{#1}]}}
+
+% special notes
+\newcommand{\ucsNote}[2][Hinweis:]{\textsl{\textbf{#1}\ifthenelse{\equal{#1}{}}{}{\\}#2}}
+
+% extra note
+\newcommand{\ucsAttention}[1]{\textbf{Achtung:}\\#1}
+
+% example
+\newcommand{\ucsExample}[2][Beispiel:]{\textbf{#1}\\#2}
+
+% nice right arrow
+\newcommand{\ucsRightArrow}{\ding{222}}
+
+% no new paragraph indention
+\parindent0cm
+
+% easy integration of bitmaps
+\newcommand{\ucsGraphicsTabbox}[3][1]
+ {
+  \begin{center}
+   \includegraphics[width=#1\textwidth]{#3}
+   {\refstepcounter{figure}Abbildung \thefigure: \begin{minipage}[t]{0.7\textwidth}{#2}\end{minipage}}
+  \end{center}
+ }
+
+% easy integration of bitmaps
+\newcommand{\ucsGraphics}[3][1]
+ {
+  \begin{figure}[htb]
+  \begin{center}
+   \includegraphics[width=#1\textwidth]{#3}
+   \ifthenelse{\equal{#2}{}}{}{\caption{#2}}
+  \end{center}
+  \end{figure}
+ }
+
+% easy integration of bitmaps (with reference)
+\newcommand{\ucsGraphicsRef}[4][1]
+ {
+  \begin{figure}[htb]
+  \begin{center}
+   \includegraphics[width=#1\textwidth]{#3}
+   \ifthenelse{\equal{#2}{}}{}{\caption{#2}}
+   \label{pic:#4}
+  \end{center}
+  \end{figure}
+ }
+
+% simple index command for univention baseconfig variables
+%
+% PLEASE do not insert additional spaces or newlines for readability
+% they will occur as additional and annoying spaces within final document!
+\newcommand{\ucrpath}[1]{% <http://tex.stackexchange.com/questions/50777/>
+ \begingroup
+ \ttfamily
+ \begingroup\lccode`~=`/\lowercase{\endgroup\def~}{/\discretionary{}{}{}}%
+ \catcode`/=\active
+ \scantokens{#1\noexpand}%
+ \endgroup
+}
+\newcommand{\ucsBCindex}[2][]{\ifthenelse{\equal{#1}{}}{#2}{#1}\index[ucsConfigRegistry]{#2@\ucrpath{#2}}}
+
+\tracingpages=1
+
+% add section number up to subparagraph
+\setcounter{secnumdepth}{5}
+% add section into index up to subsection
+\setcounter{tocdepth}{5}
+
+%wording
+\newcommand{\ucsUDM}[1]{Univention Directory Manager#1}
+\newcommand{\ucsUDL}[1]{Univention Directory Listener#1}
+\newcommand{\ucsUCD}[1]{Univention Corporate Desktop#1}
+\newcommand{\ucsUDN}[1]{Univention Directory Notifier#1}
+\newcommand{\ucsUMS}[1]{UCS-Managementsystem#1}
+\newcommand{\ucsTCS}[1]{Univention Thin Client Services#1}
+\newcommand{\ucsUMC}[1]{Univention Management Console#1}
+\newcommand{\ucsUCR}[1]{Univention Configuration Registry#1}
+\newcommand{\ucsUSS}[1]{Univention System Setup#1}
+\newcommand{\ucsUCRVSA}[1]{\ucsCommand{\ucsBCindex{#1}}}
+\newcommand{\ucsUAS}[1]{UCS@school#1}
+\newcommand{\ucsUVMM}[1]{UCS Virtual Machine Manager#1}
+
+\newcommand{\ucsDVS}[1]{UCS Desktop Virtualization Services#1}
+\newcommand{\ucsMaster}[1]{Domänencontroller Master#1}
+\newcommand{\ucsBackup}[1]{Domänencontroller Backup#1}
+\newcommand{\ucsSlave}[1]{Domänencontroller Slave#1}
+\newcommand{\ucsMember}[1]{Memberserver#1}
+
+\newcommand{\ucsUCS}[1]{Univention Corporate Server#1}
+
+\newcommand{\ucsUGS}[1]{Univention Groupware Server#1}
+\newcommand{\ucsKolab}[1]{Kolab2 für UCS#1}
+
+%some \ucsUDMb,\ucsUDLCb and \ucsUCRb entrys have to be changed by hand (they do not work in listing environments)
+%like  "\begin{ucsConsoleInput}" or something like that
+\newcommand{\ucsUCRb}[1]{univention-config-registry#1}
+\newcommand{\ucsUDMb}[1]{univention-directory-manager#1}
+\newcommand{\ucsUDLCb}[1]{univention-directory-listener-ctrl#1}
+\newcommand{\ucsUDNb}[1]{univention-directory-notifier#1}
+
+%not bash but bash style, because there is no command "univention-management-console"
+\newcommand{\ucsUMCnb}[1]{univention-management-console#1}
+

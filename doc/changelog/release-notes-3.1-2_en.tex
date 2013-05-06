@@ -1,0 +1,221 @@
+%autobuild=true changelog
+
+\input{handbuch_pdf_1}
+
+\newcommand{\ucsManualTitle}{UCS 3.1-2 Release Notes}
+\newcommand{\ucsManualSubtitle}{Release notes for the installation and update of Univention Corporate Server (UCS) 3.1-2}
+\newcommand{\ucsManualVersion}{3.1-2}
+\newcommand{\ucsTechAuthor}{ & Univention GmbH & feedback@univention.de}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\input{handbuch_pdf_2}
+
+\chapter{Release highlights}
+
+With Univention Corporate Server 3.1-2, the first point release for
+Univention Corporate Server (UCS) 3.1 is now available. It provides
+several improvements and bugfixes:
+
+\begin{itemize}
+\item TODO % TODO
+\end{itemize}
+
+\chapter{Recommended update order for environments with more than one UCS server / Updating systems with UCS components}
+
+In environments with more than one UCS system, the update order of the
+UCS systems must be borne in mind:
+
+The authoritative version of the LDAP directory service
+is maintained on the master domain controller and replicated on all the remaining
+LDAP servers of the UCS domain. As changes to the LDAP schemes can
+occur during release updates (see Chapter 3.4.1 of the UCS
+manual \cite{UCS-Handbuch}), the master domain controller must always be the first
+system to be updated during a release update.
+
+It is generally advisable to update all UCS systems in one maintenance
+window whenever possible. 
+
+\section{Information on environments with third-party software}
+
+When using third-party software it should generally be clarified with
+the manufacturer/reseller \emph{before} the update whether it can still
+be used without restrictions with the latest version of Univention
+Corporate Server. 
+
+The manufacturers/resellers of products based on Univention Corporate
+Server are responsible for the publication themselves. Updates must
+thus be procured from them.
+
+If you were provided with modified package versions by Univention,
+you must check whether the update will overwrite the coordinated
+packages - preferably in a test environment. If you identify any
+problems here, please contact Univention.
+
+
+\chapter{Preparation of update}
+It must be checked whether sufficient disk space is available. A
+standard installation requires a minimum of 6 GB of memory. Depending
+on the scope of the existing installation, the update will require at
+least another 1 GB of memory for the downloading and installation of
+the packages.
+
+For the update, a login should be performed on the console with
+the \emph{root} user and then the update started there. Alternatively,
+the update can be initiated using the \ucsUMC{}.
+
+Remote updating via SSH is not recommended as this may result in the
+update procedure being cancelled if the network connection is
+interrupted, for example, and this can affect the system. If updating
+should occur over a network connection nevertheless, it must be
+verified that the update continues despite disconnection from the
+network. This can be done, for example, using the
+tools \ucsCommand{screen} and \ucsCommand{at}, which are installed on
+all system roles.
+
+
+
+\chapter{Postprocessing of the update}
+Following the update, new or updated join scripts need to be executed.
+This can be done in two ways: Either using the UMC module 
+\ucsMenuEntry{Domain join} or by running the command
+\ucsCommand{univention-run-join-scripts} as the user \emph{root}.
+
+Subsequently the UCS system should be restarted.
+
+\section{Migration to Grub 2}
+Starting with UCS 3.0, in a new installation, the Univention Installer writes Grub 2 in the
+boot sector directly.
+
+In an update, Grub 1 remains installed in the master boot record
+(MBR). Grub 2 sets up a ``Chainload into Grub'' entry, which then
+loads the actual Grub 2.
+
+Documentation explaining how to write Grub 2 directly in the MBR on
+updated systems will be provided at a later date (\ucsBug{23544}).
+
+\section{Migration of PostgreSQL 8.3 to PostgreSQL 8.4}
+As of UCS 3.0, PostgreSQL 8.4 is also available in addition to
+PostgreSQL 8.3. When systems with PostgreSQL 8.3 are updated to UCS
+3.0, however, the installed PostgreSQL version is retained.
+
+The update to PostgreSQL 8.4 is described in the SDB
+article \ucsURL{http://sdb.univention.de/1220}.
+
+
+\chapter{Further notes on selected packages}
+
+\section{Collection of usage statistics when using the free-for-personal-use version}
+
+Anonymous usage statistics on the use of the \ucsUMC{} are collected when using the \emph{free for
+personal use} version of UCS (which is generally used for evaluating UCS). The modules
+opened are logged in an instance of the web traffic analysis tool Piwik. This makes it
+possible for Univention to tailor the development of the \ucsUMC{} better to customer needs
+and carry out usability improvements.
+
+This logging is only performed when the free-for-personal-use license
+is used. The license status can be verified by clicking on the cog
+symbol in the top righthand corner of the \ucsUMC{} and
+selecting \ucsMenuEntry{License}. If \emph{Free for personal use
+edition} is listed under \ucsMenuEntry{LDAP base}, this version is in
+use. When a regular UCS license is used, no usage statistics are
+collected.
+
+Indendepent of the licence used, the statistics generation can be
+deactivated by setting the \ucsUCR{} variable \ucsUCRVSA{umc/web/piwik} to \emph{false}.
+
+\section{Bootproblems when using the UEFI installation DVD}
+As of UCS 3.1, in addition to the standard installation DVD there is
+also a medium with support for the Unified Extensible Firmware
+Interface standard (UEFI) available for the amd64 architecture.
+
+It can be used instead of the standard DVD on systems which only
+support a UEFI boot.
+
+\section{Scope of security support for Webkit, Konqueror und QtWebKit}
+Webkit, Konqueror and QtWebkit are shipped in the maintained branch of
+the UCS repository, but not covered with security support. Webkit is
+primarily used for displaying HTML help pages etc. Firefox should be
+used as the web browser.
+
+\section{Recommeded browsers for the access to the Univention Management Console}
+
+\ucsUMC{} uses numerous Javascript and CSS functions to display the
+web interface. Cookies need to be permitted in the browser.
+The following browsers are recommended:
+
+\begin{itemize}
+\item Chrome as of version 14
+\item Firefox as of version 10
+\item Internet Explorer as of version 9
+\item Safari (on the iPad 2)
+\end{itemize}
+
+Users with older browsers may experience display or performance
+problems. The installation of a current Firefox version on UCS 3.1 is
+documented in the Univention Wiki \cite{ucd-firefox7}.
+
+b\section{Restrictions in Samba 4 operation}
+
+The versions of Samba 4 currently published by the Samba project are
+undergoing more intensive changes in their further
+development than Samba 3. For this reason, some functions are not yet
+completely available:
+
+\begin{itemize}
+\item Microsoft Windows domain controllers cannot be joined in a Samba
+4 domain currently.
+\item Selective replication is not possible with Samba 4 as this is
+not supported by Active Directory in principle (in UCS@school
+selective replication is implemented through the listener/notifier
+replication mechanism).
+
+\item Samba 4 does not currently support forest domains. 
+\item Samba 4 does not currently support trust relationships.
+\end{itemize}
+
+Further information can be found in Chapter 8 of the UCS
+manual \cite{UCS-Handbuch}.
+
+\section{Installation in VirtualBox}
+During the installation of UCS in the virtualization solution VirtualBox, a bug
+may appear which has been corrected in version 4.2: if UCS has been
+successfully installed and the DVD is still in the disk drive, the
+installation DVD offers the option \ucsMenuEntry{Boot from first
+harddisk partition}. If you select this option, VirtualBox freezes. 
+
+For Linux distributions which still use Virtualbox 4.0 or 4.1, either
+the installation DVD can be taken out of the drive settings of the
+VirtualBox VM or F12 pressed when starting the virtual instance and
+the hard drive selected as a boot partition as a workaround before
+starting the UCS VM. UCS will then start successfully.
+
+\section{Migration of a Samba 3 environment to Samba 4}
+\label{samba-migration}
+
+There are two basic procedures for migrating Samba 3 to Samba 4:
+
+\begin{itemize}
+\item Setup of a parallel Samba 4 domain. Both domains use different
+NetBIOS names and SIDs. The clients then join the Samba 4 step by
+step.
+\item Migration of all systems within one maintenance window.
+\end{itemize}
+
+Both procedures are documented in detail in the Univention Wiki:
+\ucsURL{http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4}.
+
+\section{Xen} % Bug #29296
+If the Xen hypervisor is used and the memory limit for the Dom0 has been configured using the \ucsUCR{}-Variable \ucsUCRVSA{grub/xenhopt}, the value should be updated to include the \texttt{,max:} part as well.
+See the \href{http://wiki.univention.de/index.php?title=UVMM_Quickstart-3.1/en#Configuring_the_Dom0}{UVMM Quickstart guide} for further details.
+
+\chapter{Changelog}
+
+Listed are the changes since UCS 3.1-1.
+
+\input{changelog-3.1-2}
+
+\input{bibtex}
+
+\end{document}

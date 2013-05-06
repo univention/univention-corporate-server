@@ -1,0 +1,56 @@
+%% Titelseite
+
+\begin{titlepage}
+  %% Kopf- und Fußzeilen für die Titelseite
+  \thispagestyle{empty}
+
+	\ThisLRCornerWallPaper{1.0}{illustrations/page-background-title-page-ucsschool.jpg}
+
+  \vspace*{3cm}
+  \sffamily \bfseries
+  \begin{center}
+    \Huge
+      \ucsManualTitle \\ [3.5cm]
+    \huge
+      \ucsManualSubtitle
+  \end{center}
+  \normalsize
+  \normalfont
+
+\newpage
+\AddToShipoutPicture{\ifthenelse{\isodd{\thepage}}%
+	{\BackgroundPicOdd}{\BackgroundPicEven}}
+\thispagestyle{empty}
+\parindent0cm
+\sffamily
+\vspace*{11cm}
+
+Version \ucsManualVersion \\
+Revision \ucsSVNVersion \\
+Stand: \today \\
+\\
+Alle Rechte vorbehalten. / All rights reserved.\\
+(c) 2002 bis 2013 \\
+Univention GmbH \\
+Mary-Somerville-Straße 1 \\
+28359 Bremen \\
+Deutschland \\
+feedback@univention.de \\
+\\
+Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer
+jeweiligen eingetragenen Rechtsinhaber. Linux ist ein eingetragenes
+Warenzeichen von Linus Torvalds.
+
+The mentioned brand names and registered trademarks are owned by the
+respective legal owners in each case. Linux is a registered trademark
+of Linus Torvalds.
+
+\end{titlepage}
+
+%% Kopf- und Fußzeilen für den Rest des Dokuments
+
+%% Inhaltsverzeichnis
+\dominitoc
+\tableofcontents
+\newpage
+

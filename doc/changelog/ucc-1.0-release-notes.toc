@@ -1,0 +1,4 @@
+\chapterbegin 
+\contentsline {chapter}{\numberline {1}Release highlights}{4}{chapter.1}
+\contentsline {chapter}{\numberline {2}Upgrades from Univention Corporate Desktop and UCS Thin Client Services}{5}{chapter.2}
+\chapterbegin 

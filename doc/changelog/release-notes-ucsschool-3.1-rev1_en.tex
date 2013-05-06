@@ -1,0 +1,98 @@
+%autobuild=true changelog
+
+\input{handbuch_pdf_1}
+
+\newcommand{\ucsManualTitle}{UCS@school 3.1rev1 Release Notes}
+\newcommand{\ucsManualSubtitle}{Release notes for the installation and update of UCS@school 3.1rev1}
+\newcommand{\ucsManualVersion}{3.1rev1}
+\newcommand{\ucsTechAuthor}{ & Univention GmbH & feedback@univention.de}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% Titelseite
+
+\begin{titlepage}
+  %% Kopf- und Fußzeilen für die Titelseite
+  \thispagestyle{empty}
+
+  \vspace*{3cm}
+  \sffamily \bfseries
+  \begin{center}
+    \Huge
+      \ucsManualTitle \\ [3.5cm]
+    \huge
+      \ucsManualSubtitle
+  \end{center}
+  \normalsize
+  \normalfont
+
+\newpage
+\AddToShipoutPicture{\ifthenelse{\isodd{\thepage}}%
+        {\BackgroundPicOdd}{\BackgroundPicEven}}
+\thispagestyle{empty}
+\parindent0cm
+\sffamily
+\vspace*{12cm}
+
+Version \ucsManualVersion \\
+Date: \today \\
+\\
+Alle Rechte vorbehalten. / All rights reserved.\\
+(c) 2002 bis 2013 \\
+Univention GmbH \\
+Mary-Somerville-Straße 1 \\
+28359 Bremen \\
+Deutschland \\
+feedback@univention.de \\
+\\
+Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer
+jeweiligen eingetragenen Rechtsinhaber. Linux ist ein eingetragenes
+Warenzeichen von Linus Torvalds.
+
+The mentioned brand names and registered trademarks are owned by the
+respective legal owners in each case. Linux is a registered trademark
+of Linus Torvalds.
+
+\end{titlepage}
+
+%% Kopf- und Fußzeilen für den Rest des Dokuments
+
+%% Inhaltsverzeichnis
+\dominitoc
+\tableofcontents
+\newpage
+
+\chapter{Changelog}
+\newcommand{\ucsUCRV}[1]{Univention Configuration Registry variable \ucsCommand{\ucsBCindex{#1}}}
+\newcommand{\ucsCVE}[1]{\href{http://security-tracker.debian.org/tracker/CVE-#1}{CVE-#1}}
+
+\section{Configuration wizard}
+\begin{itemize}
+\item The UCS@school installer now also moves existing DHCP server objects to the corresponding OU if neccessary (\ucsBug{30435}).
+\end{itemize}
+
+\section{iTALC}
+\begin{itemize}
+\item The naming scheme of the iTALC public key file on sysvol share has been fixed. The key file name now
+      contains the hostname of the corresponding domaincontroller slave. The old filename has been kept for
+      backward compatibility (\ucsBug{30301}).
+\end{itemize}
+
+\section{RADIUS}
+\begin{itemize}
+\item During the periodic server password change the freeradius configuration now gets updated automatically (\ucsBug{30783}).
+\end{itemize}
+
+
+\section{Univention Management Console}
+\subsection{Computerroom module}
+\begin{itemize}
+\item The stability of the UMC computerroom module has been improved. This fixes various problems with the
+      computerroom module (\ucsBug{27534}, \ucsBug{31036}).
+\item Fixed an error which prevents displaying of the correct room settings in computeroom module (\ucsBug{31193}).
+\item When setting share and printer access destrictions in the computerroom module, the configuration change now takes effect for clients that are already connected to the samba server (\ucsBug{31202}).
+\item Fixed a misconfiguration which prevented users from printing if printing has been explicitely allowed for another computer room (\ucsBug{30450}).
+\end{itemize}
+
+\end{document}

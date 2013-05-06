@@ -1,0 +1,244 @@
+\section{General}
+\begin{itemize}
+\item Updated copyrights for all packages to 2013 (\ucsBug{30123}).
+\end{itemize}
+
+\section{Import scripts}
+\begin{itemize}
+
+\item The creation of the incorrect and obsolete userlogon share for
+  each school has been removed from the \ucsCommand{create\_ou} import script
+  (\ucsBug{15705}).
+
+\item The \ucsCommand{import\_computer} import script now skips computers with an
+  existing MAC address instead of generating a new one, which led to
+  a traceback when not in district mode (\ucsBug{26446}).
+
+\item The \ucsCommand{import\_user} import script now searches for computers with
+  the service \emph{Samba 3} instead of the wrong service name \emph{Samba}
+  (\ucsBug{27366}).
+
+\item This update disables the creation of school OUs that contain
+  hyphens in their name in order to avoid errors for some UMC modules
+  (\ucsBug{27991}).
+
+\item An annoying debug output has been removed (\ucsBug{28324}).
+
+\item The mechanism to determine the correct fileserver for new users \emph{sambaHomePath} has changed. If
+  set, the \ucsUCR{} variable \ucsUCRVSA{ucsschool/import/set/sambahome} is used. Otherwise in single server environments the
+  domaincontroller master is always used as share fileserver.
+
+  In multi server environments the share fileserver is now read from the corresponding school OU object. The
+  fileserver for user home shares will be written automatically into school OU object during OU creation. If
+  another fileserver shall be used to create a \emph{sambaHomePath}, OU's fileserver settings may be changed
+  via CLI or UMC.
+
+  During the update to UCS@school 3.1 missing fileserver settings at school OU objects will be set
+  automatically. Please check the update logfile or the OU objects directly to be sure all settings are
+  correct. Especially in environments with multiple school OUs hosted on one school DC all related OU objects
+  have to be checked.
+
+  To disable the automatic update of OU's fileserver settings during the update to UCS@school 3.1, the
+  UCR variable \ucsUCRVSA{update31/ucsschool/ou\_fileserver/update} has to be set to \emph{no} on domaincontroller master
+  before the update is started. The OU update may be manually started afterwards by executing the following
+  command (\ucsBug{27549}):\\
+  \begin{ucsConsoleInput}
+root@master# cd /usr/share/ucs-school-import/scripts/
+root@master# ./ucs-school-update-ou-fileservers --auto-detect
+  \end{ucsConsoleInput}
+
+\item The command \ucsCommand{move\_domaincontroller\_to\_ou} has been added to move domaincontroller slave
+  objects to a specified school OU if the object has been created e.g. in the global computer container. It
+  keeps track of e.g. the share file server settings at school OU objects and changes them accordingly (\ucsBug{27242}).
+
+\end{itemize}
+
+\section{iTALC}
+%\begin{itemize}
+%
+%\end{itemize}
+
+\section{Domain services}
+
+% \subsection{OpenLDAP}
+% \begin{itemize}
+% \end{itemize}
+
+\subsection{LDAP ACL changes}
+\begin{itemize}
+\item The LDAP subtree below \emph{cn=license,cn=univention,BASEDN} can now be replicated by UCS@school
+  domaincontroller slave systems. This change is required for proper use of Univention App Center
+  (\ucsBug{30229}).
+\end{itemize}
+
+\subsection{LDAP schema changes}
+\begin{itemize}
+\item The UCS@school LDAP schemata has been updated by removing some unused comments (\ucsBug{20663}).
+\end{itemize}
+
+% \subsection{Listener/Notifier domain replication}
+% \begin{itemize}
+% \end{itemize}
+
+\subsection{Domain joins of UCS systems}
+\begin{itemize}
+\item A new join script has been added which will only be executed on a DC
+  slave. This script will check if the DC slave's computer object is at the
+  right place inside the LDAP tree as well as verify the permissions
+  (\ucsBug{26834}).
+\end{itemize}
+
+\subsection{Services for Windows}
+\begin{itemize}
+\item A traceback during directory creation in the \ucsUDL{ module} \ucsName{ucs-school-user-logonscripts.py}
+  has been fixed (\ucsBug{28121}).
+\item Due to an offline caching related bug in Windows XP, the netlogon script based assignment of
+  \ucsName{My documents} / \ucsName{Eigene Dateien} and \ucsName{My pictures} / \ucsName{Eigene Bilder} to
+  the server stored home directory leads to permission problems during user logoff.
+  By default the assigment is now deactivated for new users and can be reactivated by setting the
+  UCR variable \ucsUCRVSA{ucsschool/userlogon/myshares/enabled} to \emph{yes} on the master domain controller and (if
+  existing) slave domain controllers.
+
+  After changing the UCR variable, a resync of the Univention Directory Listener module 
+  \emph{ucs-school-netlogon-user-logonscript} is advised to update the user logonscripts and recreate missing logon
+  scripts (\ucsBug{28214}).
+\item The permissions of the netlogon script \ucsCommand{ucs-school-logon.vbs} will be now set to 0644 on each
+  change. Additionally the owner will be set to root:root (\ucsBug{30284}).
+\item The listener module \ucsName{ucs-school-user-logonscript} now respects the following two \ucsUCR{}
+  variables defining the output directory for new logon scripts:
+  \begin{itemize}
+  \item \ucsCommand{ucsschool/userlogon/netlogon/path}
+  \item \ucsCommand{samba/share/netlogon/path}
+  \end{itemize}
+  The first mentioned variable has higher priority (\ucsBug{28205}).
+\item The filename for the listener module \ucsFile{ucs-school-user-logonscripts.py} has been renamed to
+  \ucsFile{ucs-school-user-logonscript.py} to match to the listener modules internal name (\ucsBug{28452}).
+
+\item The DNS SRV record mapping for the S4 connector will be
+preconfigured with this release. This is required for the Samba 3 to
+Samba 4 migration (\ucsBug{27395}).
+
+\item The UCR variables \ucsName{dns/register/srv\_records/gc},
+\ucsName{dns/register/srv\_records/pdc} and
+\ucsName{samba4/dns/domain/register} will be set to \ucsName{false} on a
+school slave installation and upgrade. This prevents the SRV registration for
+GC and PDC records and the IP registration at the forward zone. Thus the
+overwriting of the DNS SRV records on the master has been removed
+(\ucsBug{28754}).
+
+\item SRV record priority and weight were permuted in the ucs-school-slave S4 connector DNS mapping overrides.
+While probably a cosmetic issue, this is now fixed for slaves joining with the new release (\ucsBug{30166}).
+
+\item The DNS service account is now created in a separate join script \ucsName{univention-samba4-slavepdc}
+to avoid a conflict with \ucsName{libunivention-ldb-modules} (\ucsBug{30105}).
+
+\item \ucsName{ucs-school-slave} now sets the UCR variables \ucsUCRVSA{samba4/ignore/mixsetup} and
+  \ucsUCRVSA{samba3/ignore/mixsetup} to \emph{yes} during initial installations of the package to facilitate
+  migration scenarios and deployment by the new installation wizard (\ucsBug{30212}, \ucsBug{30302}).
+
+\item Initialize UCR variable \ucsUCRVSA{windows/wins-support} before running the joinscript of \ucsName{univention-samba} (\ucsBug{30267}).
+\end{itemize}
+
+%\subsection{Univention S4 Connector}
+%\begin{itemize}
+%
+%\end{itemize}
+
+% \section{Print services}
+% \begin{itemize}
+% \end{itemize}
+
+%\section{Proxy services}
+%\begin{itemize}
+%
+%\end{itemize}
+
+%\section{RADIUS}
+%\begin{itemize}
+%\end{itemize}
+
+%\section{Univention Directory Manager modules}
+%\begin{itemize}
+%
+%\end{itemize}
+
+\section{Univention Management Console}
+
+%\subsection{Univention Management Console server}
+%\begin{itemize}
+%
+%\end{itemize}
+
+%\subsection{Univention Management Console web interface}
+%\begin{itemize}
+%
+%\end{itemize}
+
+\subsection{Univention Management Console modules}
+\begin{itemize}
+
+\item All UMC modules have been ported to the new version of the Dojo toolkit
+  (\ucsBug{29793}, \ucsBug{29787}, \ucsBug{29792},
+  \ucsBug{29791}, \ucsBug{29790}, \ucsBug{29784}, \ucsBug{29788},
+  \ucsBug{29786}, \ucsBug{29785}, \ucsBug{29789}, \ucsBug{29776}).
+
+\item A new module to guide the initial configuration of UCS@school in a domain has
+been added (\ucsBug{30162}).
+
+\item This update disables the creation of school OUs that contain
+  hyphens in their name in order to avoid errors for some UMC modules
+  (\ucsBug{27991}).
+
+\item Added missing scrollbars for the detail view of UMC modules
+  \ucsName{Room management}, \ucsName{Assign teachers to classes},
+  \ucsName{Administrate workgroups} (\ucsBug{27941}).
+
+\item Corrected the behaviour when cancelling the delete action in the confirmation dialog (\ucsBug{28213}).
+
+\item Shares are now automatically created and removed along with workgroups (\ucsBug{28211}).
+
+\item Assigning internet rules failed when /dev/squid/ and /var/lib/ucs-school-webproxy/ resided on different partitions (\ucsBug{29891}).
+
+\item Old greylist internetrules from UCS 2.4 does not produce a traceback anymore (\ucsBug{28684}).
+
+\item Fix initial search query on assign page in \ucsName{internetrules} module (\ucsBug{27726}).
+
+\item Fix encoding of ucr keys which leads to traceback when assigning internetrules (\ucsBug{29948}).
+\item Remove duplicated error messages (\ucsBug{27940}).
+\item Use new template method for help page (\ucsBug{27681}).
+\item Display a more detailed error message if the IP or MAC address is
+  already in use in the computer wizard (\ucsBug{27393}).
+\item The ''lock'' option in the computerroom module has been renamed into ''lock screen''. Also fixed a little typo in german translation (\ucsBug{27246}).
+\item If connection to a computer room is lost, the module tries to reconnect
+  five times before giving up and displaying an error message. This is done
+  because of segfaults caused by iTalc not yet fully understood
+  (\ucsBug{27202}).
+\item The computerroom module checks if VNC received a screenshots of the
+  requested computer before sending it. This does not change the behaviour of
+  the module, but it prevents ``silent'' tracebacks in the log files of that
+  module (\ucsBug{28674}).
+\item Fixed some little issues in MultiUploader (\ucsBug{28818}).
+\item In some cases groups without the prefix ''<schoolname>-'' would not be
+  displayed (\ucsBug{29830}).
+\item Teachers are no longer added to a class automatically. After a user is
+  created, the first widget on the page will be focussed (\ucsBug{27954}).
+\item The password module now respects the
+  UCR variable \ucsUCRVSA{directory/manager/web/modules/autosearch} option (\ucsBug{28200}).
+\item The list of school OUs is now updated at each request. This avoids the
+  necessity to relogin after creating a new school OU (\ucsBug{30046}).
+
+\item In the wizards module the password of a user will be validated before
+  creating the user object (\ucsBug{30091}).
+
+\item A typo in the password module has been corrected (\ucsBug{30134}).
+
+\item Hyphens have been enabled for the name of slave DC in the wizard
+  ``Add school'' (\ucsBug{30232}).
+
+\end{itemize}
+
+\section{Other changes}
+\begin{itemize}
+\item During the update to UCS@school 3.1 the repository configuration will be altered automatically.
+  Further release updates of UCS@school have to be installed via Univention App Center (\ucsBug{30221}).
+\end{itemize}

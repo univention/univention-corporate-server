@@ -1,0 +1,404 @@
+\newcommand{\ucsUCRV}[1]{Univention Configuration Registry variable \ucsCommand{\ucsBCindex{#1}}}
+%\newcommand{\ucsCVE}[1]{\href{http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-#1}{CVE-#1}}
+\newcommand{\ucsCVE}[1]{\href{http://security-tracker.debian.org/tracker/CVE-#1}{CVE-#1}}
+
+%\section{General}
+%\begin{itemize}
+%\end{itemize}
+
+
+%\section{Univention Installer}
+%\begin{itemize}
+%\end{itemize}
+
+%%\subsection{Profile-based installation}
+%%\begin{itemize}
+%%\end{itemize}
+
+
+%\section{Upgrade provisions (preup and postup scripts)}
+%\begin{itemize}
+%\end{itemize}
+
+
+\section{Basic system services}
+
+%\subsection{Boot loader}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Linux kernel and firmware packages}
+%\begin{itemize}
+%\end{itemize}
+
+\subsection{Univention Configuration Registry}
+\begin{itemize}
+\item The process handling in \ucsName{univention"=config"=registry} has been improved to prevent issues with process
+  signals during system calls (\ucsBug{31140}).
+\end{itemize}
+
+%% \subsubsection{Changes to templates and modules}
+%% \begin{itemize}
+%% \end{itemize}
+
+%\subsubsection{Internal changes}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Network interface configuration}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Univention Firewall}
+%\begin{itemize}
+%\end{itemize}
+
+
+\section{Domain services}
+%\begin{itemize}
+%\end{itemize}
+
+%%\subsection{OpenLDAP}
+%%\begin{itemize}
+%%\end{itemize}
+
+%\subsection{LDAP ACL changes}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{LDAP schema changes}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Listener/Notifier domain replication}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Domain joins of UCS systems}
+%\begin{itemize}
+%\end{itemize}
+
+
+\section{Univention Management Console}
+
+\subsection{Univention Management Console web interface}
+\begin{itemize}
+\item Fixed regression in form validation with certain FormWidgets
+  (\ucsBug{30965}).
+\item Fixed width of ConfirmDialog in Firefox (\ucsBug{30102}).
+\item The width of \emph{textarea} fields has been fixed
+  (\ucsBug{30889}).
+\item A problem in the Text widget has been corrected which caused to
+  a 404 error (\ucsBug{28810}).
+\item Inside the ,,favorite'' category, favorites can no longer be
+  removed (\ucsBug{29555}).
+\item The username input field of the login dialog stays disabled
+  after a failed relogin (\ucsBug{27989}).
+\item A problem with scrollbars in the Dialog widget has been
+  corrected (\ucsBug{30796}).
+\item UMC login problems with the demo configuration package installed have
+  been corrected (\ucsBug{31091}).
+\end{itemize}
+
+%\subsection{Univention Management Console server}
+%\begin{itemize}
+%\end{itemize}
+
+\subsection{Univention App Center}
+\begin{itemize}
+\item Fixed an issue when closing the App Center tab in the Management Console:
+  The backend shut down the module when no further requests regarding the
+  progress of an installation was sent. When this happened during installation
+  the package database could become temporarily broken (\ucsBug{30611}).
+\item Added a progress bar while fetching software changes in App Center and
+  speeded up the process of retrieving this information (\ucsBug{30798}).
+\item Made free memory calculation more robust in OpenVZ environments
+  (\ucsBug{30659}).
+\item Added switch to install the latest version of the application in
+  \ucsName{univention-add-app} (\ucsBug{31157}).
+\item Fixed --all and --master when pointing to an outdated app version in
+  \ucsName{univention-add-app} (\ucsBug{31279}).
+\item The full progress bar is used while installing an application when not
+  installing packages on other servers in the domain (\ucsBug{31184}).
+\item If an application is installed, the system does not dist-upgrade anymore.
+  If the app is upgraded, the system still does a dist-upgrade but shows a
+  warning that the dist-upgrade may include errata updates (\ucsBug{31129},
+  \ucsBug{31278}).
+\item The button to request a new license is shown even when the application
+  cannot be installed (\ucsBug{31166}).
+\item A typo in the command line tool
+  \emph{univention-management-console-client} has been corrected
+  (\ucsBug{30605}).
+\item \emph{UNIVENTION\_DEBUG\_BEGIN} and \emph{UNIVENTION\_DEBUG\_END}
+  information are no longer logged (\ucsBug{29603}).
+\item Fixed resolving dependencies of packages: Errors from apt are handled
+  correctly (\ucsBug{31230}).
+\item A problem which caused to crash the UMC server when setting an
+  invalid locale has been corrected (\ucsBug{28657}).
+\end{itemize}
+
+\subsection{Univention Management Console / Univention Directory Manager modules}
+\begin{itemize}
+\item The attributes ,,User ID'', ,,Group ID'' and ,,GECOS'' in the users module, ,,FQDN'' in the computers
+  module and ,,Next IP'' in the network module have been removed from the advanced search as they
+  are not searchable in the UMC (\ucsBug{28803}).
+\item A broken LDAP authentification in \ucsName{proof\_dns\_dhcp\_records} has been corrected (\ucsBug{30903}).
+\item All syntax files and hooks files are re-evaluated every time a new
+  session is created. This prevents errors caused by referenced classes unknown
+  during \ucsName{univention-management-console-server} startup
+  (\ucsBug{31154}).
+\subsubsection{Basic settings / Univention System Setup}
+\end{itemize}
+
+%\subsubsection{Users module}
+%\begin{itemize}
+%\end{itemize}
+
+%% \subsubsection{Extended attributes}
+%% \begin{itemize}
+%% \end{itemize}
+
+%\subsubsection{License module}
+%\begin{itemize}
+%\end{itemize}
+
+%% \subsubsection{Mail module}
+%% \begin{itemize}
+%% \end{itemize}
+
+%\subsubsection{System services module}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsubsection{Domain join module}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsubsection{Online update module}
+%\begin{itemize}
+%\end{itemize}
+
+\subsubsection{Computers module}
+\begin{itemize}
+\item A problem has been corrected which led to invalid PTR records when
+  changing the DNS forward zone of a computer object, or to the loss of PTR
+  records when changing it's DNS reverse zone (\ucsBug{30905}).
+\item A traceback which occurred when removing the MAC address or network from
+  a computer with DHCP entry has been fixed (\ucsBug{28945}, \ucsBug{29676}).
+\end{itemize}
+
+%% \subsubsection{Policies}
+%% \begin{itemize}
+%% \end{itemize}
+
+%\subsubsection{Printers module}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsubsection{DHCP module}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsubsection{UCR module}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsubsection{Policies}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsubsection{LDAP directory browser}
+%\begin{itemize}
+%\end{itemize}
+
+\subsubsection{Other modules}
+\begin{itemize}
+\item A mapping which broke the representation of TXT records for DNS forward
+  zones has been fixed (\ucsBug{29681}).
+\item The pointer record attribute of the DNS pointer module is now a multi
+value attribute (\ucsBug{28667}, \ucsBug{31103}).
+\item The term ,,UDM Web'' in the extended attributes module has been replaced
+  by ,,UMC'' (\ucsBug{27948}).
+\item The english and german texts of the \emph{System information}
+  module have been adapted (\ucsBug{30797}).
+\item Support of ext4 partitions has been added to the filesystem quota module
+  (\ucsBug{24357}).
+\item A typo in the german localization in
+  \ucsName{univention-management-console-module-quota} has been corrected
+  (\ucsBug{28377}).
+\end{itemize}
+
+%\subsection{Univention Directory Manager command line interface and related tools}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Development of modules for Univention Management Console}
+%\begin{itemize}
+%\end{itemize}
+
+
+%\section{Software deployment}
+%\begin{itemize}
+%\end{itemize}
+
+%%\subsection{Repository handling}
+%%\begin{itemize}
+%%\end{itemize}
+
+%%\subsection{Software deployment command line tools}
+%%\begin{itemize}
+%%\end{itemize}
+
+%%\subsection{Software monitor (univention-pkgdb)}
+%%\begin{itemize}
+%%\end{itemize}
+
+
+%\section{Univention Library}
+%\begin{itemize}
+%\end{itemize}
+
+
+\section{System services}
+
+%\subsection{DHCP}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{DNS}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Cyrus}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Postfix}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Spam/virus detection and countermeasures}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Printing services}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Kerberos}
+%\begin{itemize}
+%\end{itemize}
+
+\subsection{Proxy services}
+\begin{itemize}
+\item Fixed a regression in \ucsName{squid} group authentication if \ucsUCRV{squid/auth/allowed\_groups}
+was not set (\ucsBug{30969}).
+\item When using \ucsName{squid} with ntlm authentication it is now checked if the user account
+is locked or disabled (\ucsBug{29492}).
+\end{itemize}
+
+%\subsection{Apache}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Nagios}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{SSL}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{NFS}
+%\begin{itemize}
+%\end{itemize}
+
+\subsection{PAM / Local group cache}
+\begin{itemize}
+\item The \ucsUCRV{nssldap/nss\_srv} has been added to specify whether or
+not libnss-ldap is allowed to perform dns srv record lookups (default:
+true, \ucsBug{30779}).
+\end{itemize}
+
+\subsection{Other services}
+\begin{itemize}
+\item The config option nss\_srv (to deny dns srv record lookups) has
+been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
+\end{itemize}
+
+
+\section{Virtualisation}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{libvirt}
+%\begin{itemize}
+%\end{itemize}
+
+\subsection{Univention Virtual Machine Manager}
+\begin{itemize}
+\item Fixed the broken context menu for active instances on the
+  devices page (\ucsBug{29261}).
+\item A typo in the german translation has been fixed
+  (\ucsBug{22377}).
+\item A problem with the ordering of snapshot savepoints has been
+  corrected (\ucsBug{29901}).
+\end{itemize}
+
+%\subsection{Xen}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{QEMU/kvm}
+%\begin{itemize}
+%\end{itemize}
+
+
+%\section{Desktop packages}
+%\begin{itemize}
+%\end{itemize}
+
+
+\section{Services for Windows}
+%\begin{itemize}
+%\end{itemize}
+
+\subsection{Samba 3}
+\begin{itemize}
+\item Samba 3 does now support quota on XFS file systems like expected, for example the calculation of the partition limit or the used space (\ucsBug{31210}).
+\end{itemize}
+
+\subsection{Samba 4}
+\begin{itemize}
+\item The file \ucsFile{/etc/shares.conf} is now refreshed directly after removing a share (\ucsBug{29399}).
+\item \ucsUCRV{windows/wins-server} is now initiated when joining  (\ucsBug{30813}).
+\item Samba 4 does now support quota on XFS file systems (\ucsBug{31234}).
+\end{itemize}
+
+%\subsection{Univention S4 Connector}
+%\begin{itemize}
+%\end{itemize}
+
+%\subsection{Univention Active Directory Connector}
+%\begin{itemize}
+%\end{itemize}
+
+
+\section{ucs-test framework}
+\begin{itemize}
+\item A test has been added to check if the ,,Administrator'' user may execute
+  \ucsCommand{univention-directory-manager users/user list --filter uid=Administrator} (\ucsBug{30116}).
+
+\item A test case for \ucsName{univention-dnsedit} has been added (\ucsBug{31104}).
+\end{itemize}
+
+
+\section{Other changes}
+\begin{itemize}
+\item \ucsName{univention-user-quota} has been rewritten in python. It does
+  now support share names with whitespaces (\ucsBug{30636}).
+\end{itemize}
+
+%% \subsection{ucslint}
+%% \begin{itemize}
+%% \end{itemize}
