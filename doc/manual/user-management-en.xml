@@ -1,0 +1,1182 @@
+<chapter id="users:general">
+    <title>User management</title>
+    <para>
+        UCS integrates central identity management according to the
+        <emphasis>same user, same password</emphasis> principle.
+        All user information are managed
+        centrally in UCS via the &ucsUMC; and stored in the LDAP directory
+        service.
+    </para>
+    <para>
+        All the services integrated in the domain access the central account
+        information, i.e., the same username and password are used for the
+        user login to a Windows client as for the login on the IMAP server.
+    </para>
+    <para>
+        The domain-wide management of user data reduces the administrative
+        efforts as changes do not need to be subsequently configured on
+        different individual systems and avoids subsequent errors arising from
+        inconsistencies between the individual databases.
+    </para>
+    <section id="users::management">
+        <title>User management in the Univention Management Console</title>
+        <para>
+            Users are managed in the <emphasis>Users</emphasis> module of the &ucsUMC;.
+        </para>
+        <figure id="user-create">
+            <title>Creating a user in UMC</title>
+            <graphic scalefit="1" width="80%" fileref="illustrations/users_user_en.png"/>
+        </figure>
+        <para>
+            General information on the operation of the domain management modules
+            of the &ucsUMC; and on the adding, editing, searching for and
+            deleting of objects can be found in <xref linkend="central:user-interface"/>.
+        </para>
+        <table>
+            <title>'General' tab</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribute</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>User name</entry>
+                        <entry>
+                            <para>
+                                This is the name, by which the user logs into the system. The name has to
+                                begin with a letter which has to be followed by: letters a-z in lower case,
+                                numerals 0-9, dots, hyphens, or underlines.
+                            </para>
+                            <para>
+                                In order to ensure compatibility to non-UCS systems the creation of users
+                                which are only distinguished from each other by upper and lower case letters
+                                is prevented. Thus, if the user name <emphasis>smith</emphasis> already exists, then the user
+                                name <emphasis>Smith</emphasis> cannot be created.
+                            </para>
+                            <para>
+							  In the default setting, it is not possible to create a user with the same name as an
+							  existing group. If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar>
+							  is set to <emphasis>false</emphasis>, this check is removed.
+							</para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Description</entry>
+                        <entry>
+                            Arbitrary descriptions for the user can be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Password</entry>
+                        <entry>
+                            The user's password has to be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Password (retype)</entry>
+                        <entry>
+                            In order to avoid spelling errors, the user's password has to be entered for a
+                                second time.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Override password history</entry>
+                        <entry>
+                            By checking this box, the password history is overridden for this user and for
+                            this password change. This means, with this change the user can be assigned a
+                            password which is already in use. Further details on user password management
+                            can be found in <xref linkend="users:passwords"/>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Override password check</entry>
+                        <entry>
+                            By checking this box, the requirements for the length of the password and for password quality checks are
+                            overridden for this user and for this password change. This means, the user
+                            can e.g. be assigned a shorter password than would be possible according to the
+                            defined minimum length. Further details on the password policies for users can
+                            be found in <xref linkend="users:passwords"/>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Primary e-mail address</entry>
+                        <entry>
+                            The e-mail address of the user is declared here, see
+                            <xref linkend="mail::management::users"/>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Title</entry>
+                        <entry>
+                            The title of the user is to be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>First name</entry>
+                        <entry>
+                            The first name of the user is to be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Last name</entry>
+                        <entry>
+                            The last name of the user is to be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Display name</entry>
+                        <entry>
+                            The display name is automatically composed of the first and
+                            surnames. It generally does not need to be changed. The screen name is
+                            used for the synchronisation with Active Directory and Samba 4 among
+                            other things.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Organisation</entry>
+                        <entry>
+                            The organisation is to be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Birthday</entry>
+                        <entry>
+                            This field is used to save a user's birthday.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>jpeg photo</entry>
+                        <entry>
+                            This mask can be used to save a picture of the user in LDAP in JPEG format. In
+                            the default settings the file size is limited to 512 kilobytes.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Employee number</entry>
+                        <entry>
+                            Numbers for staff members can be entered in this field.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Employee type</entry>
+                        <entry>
+                            The category of the staff member can be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Superior</entry>
+                        <entry>
+                            The superior of the user can be selected here.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>'Groups' tab</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribute</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Primary group</entry>
+                        <entry>
+                            This select list can be used for specifying the user's primary
+                            group. All the groups registered in the domain are open for selection. By
+                            default, the group <emphasis>Domain Users</emphasis> is preset.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Groups</entry>
+                        <entry>
+                            Here it is possible to set further group memberships for the user in
+                            addition to the primary group.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>'Account' tab</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribute</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Account deactivation</entry>
+                        <entry>
+                            <para>
+                                The <guimenu>Account deactivation</guimenu> selection field can be used to
+                                deactivate the user account for one or more login methods. As long as the
+                                respective account type is deactivated, the user cannot log into the system. This
+                                is typically used when a user leaves the company. In a heterogeneous
+                                environment, an account deactivation might also be caused by external tools; in that
+                                case the selection field reflects the account status. Normally users should
+                                always be deactivated for all account types. The following deactivation states can be
+                                realised:
+                            </para>
+                                <itemizedlist>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>None</guimenu> - Basic status; all logins are possible.
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>All disabled</guimenu> - All account types are blocked.
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Windows disabled</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Kerberos disabled</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>POSIX disabled</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Windows und POSIX disabled</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Windows und Kerberos disabled</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>POSIX und Kerberos disabled</guimenu>
+										</simpara>
+                                    </listitem>
+                                </itemizedlist>
+                            <para>
+                                The following interconnections between the different login methods are
+                                derived from the UCS PAM configuration:
+                            </para>
+                                <itemizedlist>
+                                    <listitem>
+										<simpara>
+                                        The Linux login (e.g., on GDM or a tty) is only deactivated if all
+                                        login methods are deactivated; a deactivated POSIX account alone is not enough.
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        Samba requires a not-deactivated POSIX account - that means that the
+                                        deactivation of the POSIX account automatically deactivates Samba as well.
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        The Kerberos library (Heimdal) also evaluates the Samba account settings - that means that the
+                                        deactivation of the Windows account will also deactivate Kerberos.
+										</simpara>
+                                    </listitem>
+                                </itemizedlist>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Locked login methods</entry>
+                        <entry>
+                            <para>
+                                This selection field can be used to block individual login methods. This
+                                can happen automatically for security reasons, for example, if a user has
+                                entered his password incorrectly too often, see <xref linkend="users:faillog"/>.
+                            </para>
+                            <para>
+                                Normally users should always be blocked for all login methods.
+                            </para>
+                            <para>
+                                In contrast to <guimenu>Account deactivation</guimenu>, the account is not blocked,
+                                but the login is denied. The following login methods can be restricted:
+                            </para>
+                                <itemizedlist>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>None</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Locked all login methods</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Locked Windows/Kerberos only</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Locked POSIX/LDAP only</guimenu>
+										</simpara>
+                                    </listitem>
+                                </itemizedlist>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Account expiry date</entry>
+                        <entry>
+                            <para>
+                                A date is specified in this input field on which the account will
+                                automatically be locked. This is practical for user accounts that
+                                only need to be active for a certain period of time, e.g., for
+                                interns.
+                            </para>
+                            <para>
+                                If the date is deleted or replaced by a different, future date, the user will
+                                regain the right to log in.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Password expiry date</entry>
+                        <entry>
+                            <para>
+                                If the password is subject to an expiry date, then this date is displayed in
+                                this entry field. This entry field cannot be edited directly, see
+                                <xref linkend="users:passwords"/>.
+                            </para>
+                            <para>
+                                If a password expiry interval is defined, the password expiry date is
+                                automatically adjusted when passwords are changed.
+                            </para>
+                            <para>
+                                If no <guimenu>Expiry interval</guimenu> is declared, the old expiry date will be
+                                deleted and no new date will be set.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Change password on next login</entry>
+                        <entry>
+                            If this checkbox is ticked, then the user has to change his password during
+                            the next login procedure.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Windows home drive</entry>
+                        <entry>
+                            If the Windows home directory for this user is to show up on a different
+                            Windows drive than that specified by the Samba configuration, then the
+                            corresponding drive letter can be entered here, e.g. <emphasis>M:</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Windows home path</entry>
+                        <entry>
+                            The path of the directory which is to be the user's Windows home directory, is
+                            to be entered here, e.g. <emphasis>\\ucs-file-server\smith</emphasis>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Windows logon script</entry>
+                        <entry>
+                            The user-specific logon script relative to the Netlogon share is entered here, e.g.
+                            <emphasis>scripts\user.bat</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Windows profile directory</entry>
+                        <entry>
+                            The profile directory for the user can be entered here, e.g.
+                            <emphasis>\\ucs-file-server\user\profile</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Relative ID</entry>
+                        <entry>
+                            The relative ID (RID) is the local part of the SID. If a user is to be
+                            assigned a certain RID, the ID in question can be entered in this field. If no
+                            RID is assigned, the next available RID will automatically be used. The RID
+                            cannot be subsequently changed. Integers from 1000 upwards are permitted. RIDs
+                            below 1000 are reserved to standard groups and other special objects.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Samba privileges</entry>
+                        <entry>
+                            This selection mask can be used to assign a user selected Windows
+                            systems rights, for example the permission to join a system to the
+                            domain.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Samba User Login Times</entry>
+                        <entry>
+                            <para>
+                                This input field contains time periods for which this user can log on
+                                to Windows computers.
+                            </para>
+                            <para>
+                                If no entry is made in this field, the user can log in at any time of day.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Allow the authentication only on these Microsoft Windows hosts</entry>
+                        <entry>
+                            This setting specifies the clients where the user may log in. If no settings
+                            are made, the user can log into any client.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>UNIX home directory</entry>
+                        <entry>
+                            The path of the user's home directory.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Login shell</entry>
+                        <entry>
+                            The user's login shell is to be entered in this field. This program is started
+                            if the user performs a text-based login. By default, <filename>/bin/bash</filename> is preset.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>User ID</entry>
+                        <entry>
+                            <para>
+                                If the user is to be assigned a certain user ID, the ID in question
+                                can be entered in this field. If no value is specified, a free user ID
+                                is assigned automatically.
+                            </para>
+                            <para>
+                                The user ID can only
+                                be declared when adding the user. When the user data are subsequently edited,
+                                the user ID will be represented in grey and barred from change.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Group ID</entry>
+                        <entry>
+                            The group ID of the user's primary group is shown here. The primary
+                            group can be changed in the <guimenu>General</guimenu> tab.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Home share</entry>
+                        <entry>
+                            If a share is selected here, the home directory is stored on the
+                            specified server. If no selection is made, the user data are saved on
+                            the respective login system.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Home share path</entry>
+                        <entry>
+                            The path of the home directory relative to the <guimenu>Home share</guimenu> is
+                            declared here. The username is already preset as a default value when creating a user.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>'Contact' tab</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribute</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>E-Mail address(es)</entry>
+                        <entry>
+                            <para>
+                                Additional e-mail addresses can be saved here. These are not evaluated
+                                by the mail server.
+                            </para>
+                            <para>
+                                The values of this attribute are stored in the LDAP attribute <emphasis>mail</emphasis>.
+                                Most address books applications using an LDAP search function will search for
+                                an e-mail address by this attribute.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Telephone number(s)</entry>
+                        <entry>
+                            This field contains the user's business phone number.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Room number</entry>
+                        <entry>
+                            The room number of the user.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Department number</entry>
+                        <entry>
+                            The department number of the user can be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Street</entry>
+                        <entry>
+                            The street and house number of the user's business address can be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Postal code</entry>
+                        <entry>
+                            This field contains the post code of the user's business address.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>City</entry>
+                        <entry>
+                            This field contains the city of the user's business address.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Private telephone number</entry>
+                        <entry>
+                            The private fixed network phone number can be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Mobile telephone number</entry>
+                        <entry>
+                            The user's mobile numbers can be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Pager telephone number</entry>
+                        <entry>
+                            Pager numbers can be entered here.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Private postal address</entry>
+                        <entry>
+                            One or more of the user's private postal addresses can be entered in this
+                            field.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>'Mail' tab</title>
+            <tgroup cols="1">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <tbody>
+                    <row>
+                        <entry>
+                            <para>
+                                This tab is displayed in the advanced settings.
+                            </para>
+                            <para>
+                                The settings are described in <xref linkend="mail::management::users"/>.
+                            </para>
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+
+		<para>
+		  The following tab configures settings for working on Windows terminal servers.
+		</para>
+
+        <table>
+            <title>'Windows Advanced' tab (advanced settings)</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribute</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Home directory for Windows terminal services</entry>
+                        <entry>
+                            The directory path which is to be the user's Windows home directory on
+                            the terminal server can be entered here, e.g.
+                            <emphasis>\\ucs-file-server\ts\user</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Home drive for Windows terminal services</entry>
+                        <entry>
+                            If the Windows home directory for this user is to appear on a different Windows
+                            drive than specified in the Samba configuration, the respective letter of
+                            the drive can be entered here followed by a colon, e.g. <emphasis>M:</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Startup command</entry>
+                        <entry>
+                            Path to a program which should be run when a terminal session is started.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Working directory for startup command</entry>
+                        <entry>
+                            The program's working directory, which is entered under <guimenu>Startup command</guimenu>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Use client configuration for startup command</entry>
+                        <entry>
+                            Both configuration settings <guimenu>Startup command</guimenu> and
+                            <guimenu>Working directory for startup command</guimenu> can be overwritten by the
+                            client application. If this checkbox is activated, the client configuration is
+                            used.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Connect client drives at login</entry>
+                        <entry>
+                            The drives of the connecting client computer can be made available
+                            during a terminal server session when this checkbox is activated.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Connect client printers at login</entry>
+                        <entry>
+                            The client printers are connected during log-in to the terminal server and
+                            are thus available during the terminal server session.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Make client default printer the default printer for Windows terminal services</entry>
+                        <entry>
+                            If this checkbox is activated the client standard printer will be declared the
+                            standard printer for this terminal server session.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Allow Windows terminal server login</entry>
+                        <entry>
+                            If this checkbox is activated the user can log on to a terminal server.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>CTX Mirroring</entry>
+                        <entry>
+                            This selection list specifies whether a user session can be mirrored.
+                            If <guimenu>Disabled</guimenu> is selected the session cannot be mirrored.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Terminated or timed-out sessions</entry>
+                        <entry>
+                            In this selection list one can select whether ended or expired connections
+                            should be <guimenu>Disconnected</guimenu>ed or <guimenu>Reset</guimenu>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Reconnect session</entry>
+                        <entry>
+                            Here you can select whether the ended connection to each client or just the
+                            previous client can be rebuilt.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>CTX RAS Dialin</entry>
+                        <entry>
+                            <para>
+                                This option configures the callback function of a remote access server.
+                                If enabled, the dialin line of the user is disconnected after authentication
+                                and the user is called back.
+                            </para>
+                            <para>
+                                If an entry with the <guimenu>Input On</guimenu> option is selected, the user
+                                who initiated the mirroring will be given the permission to perform keyboard
+                                inputs and mouse action in the mirrored session. If an entry with the
+                                <guimenu>Message On</guimenu> option is selected, a message is shown on
+                                the client stating that a request has been made to mirror the session.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Profile directory for Windows terminal services</entry>
+                        <entry>
+                            The path to the Windows profile which is to be used in the terminal server
+                            session should be entered here. If no value is entered, the standard profile
+                            path is used.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Keyboard layout</entry>
+                        <entry>
+                            The keyboard layout for the terminal server session.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>'(Options)' tab</title>
+            <!--para>
+                This tab makes it possible to select individual LDAP object classes for the
+                user.
+            </para-->
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribute</entry>
+                        <entry>Description</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Mail account</entry>
+                        <entry>
+                            If this checkbox is not ticked, the user will not be assigned the object class
+                            <emphasis>univentionMail</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Kerberos principal</entry>
+                        <entry>
+                            If this checkbox is not ticked, the user will not be assigned the object
+                            classes <emphasis>krb5Principal</emphasis> and <emphasis>krb5KDCEntry</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Samba account</entry>
+                        <entry>
+                            If this checkbox is not ticked, the user will not be assigned the object class
+                            <emphasis>sambaSamAccount</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>POSIX account</entry>
+                        <entry>
+                            If this checkbox is not ticked, the user will not be assigned the object
+                            classes <emphasis>posixAccount</emphasis> and <emphasis>shadowAccount</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Personal information</entry>
+                        <entry>
+                            If this checkbox is not ticked, the user will not be assigned the object
+                            classes <emphasis>organizationalPerson</emphasis> and <emphasis>inetOrgPerson</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Public key infrastructure account</entry>
+                        <entry>
+                            If this checkbox is not ticked, the user will not be assigned the object class
+                            <emphasis>pkiUser</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Simple authentication account</entry>
+                        <entry>
+                            This option can be used for creating user objects which have only a username
+                            and a password. With these users, authentication is possible against the
+                            LDAP directory service exclusively; logging into UCS or Windows systems is not
+                            possible. If this option is activated, the object classes <emphasis>uidObject</emphasis> and
+                            <emphasis>simpleSecurityObject</emphasis> will be used.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+    </section>
+    <section id="users:passwords">
+        <title>User password management</title>
+        <para>
+            Passwords which are difficult to guess and regular password changes
+            are an essential element of the system security of a UCS domain. The
+            following properties can be configured for users using a
+            <emphasis>password</emphasis> policy.
+
+			If Samba is used, the settings of the Samba domain object
+			(see <xref linkend="users:password:samba"/>) apply for logins to Window clients.
+			The settings of the Samba domain object and the policy should be set identically,
+			otherwise different password requirements will apply for logins to Windows and UCS systems.
+		</para>
+
+        <para>
+		  The password is saved in different attributes for every user saved in the management
+		  system:
+		</para>
+		  <itemizedlist>
+			<listitem><simpara>The <emphasis>krb5Key</emphasis> attribute stores the Kerberos
+			password.</simpara></listitem>
+			<listitem><simpara>The <emphasis>userPassword</emphasis> attribute stores the Unix password
+			(In other Linux distributions present in <filename>/etc/shadow</filename>).</simpara></listitem>
+			<listitem><simpara>The <emphasis>sambaNTPassword</emphasis> attribute stores the NT
+			password hash used by Samba.</simpara></listitem>
+		  </itemizedlist>
+        <para>
+		  Password changes are always initiated via Kerberos in the UCS PAM configuration.
+		</para>
+
+            <figure id="password-policy">
+                <title>Configuring a password policy</title>
+                <graphic scalefit="1" width="80%" fileref="illustrations/users_policy_password_en.png"/>
+            </figure>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        The <emphasis>history length</emphasis> saves the last password
+                        hashes. These passwords can then not be used by the user as a new
+                        password when setting a new password. With a password history length of
+                        five, for example, five new passwords must be set before a password
+                        can be reused.
+                    </para>
+                    <para>
+                        The passwords are not stored retroactively. Example: If ten passwords
+                        were stored, and the value is reduced to three, the oldest seven
+                        passwords will be deleted during the next password change. If then the
+                        value is increased again, the number of stored passwords initially
+                        remains at three, and is only increased by each password change.
+                    </para>
+                </listitem>
+                <listitem>
+					<simpara>
+                    The <emphasis>password length</emphasis> is the minimum length in characters
+                    that a user password must comply with. If no value is entered here,
+                    the minimum size is eight characters. The default value of eight
+                    characters for password length is fixed, so it always applies if no
+                    policy is set and the <guimenu>Override password check</guimenu>
+                    checkbox is not ticked. This means it even applies if the
+                    <emphasis>default-settings</emphasis> password policy has been deleted.
+					</simpara>
+                </listitem>
+                <listitem>
+					<simpara>
+                    A <emphasis>password expiry interval</emphasis> demands regular password
+                    changes. A password change is demanded during logons to the &ucsUMC;, to Kerberos,
+                    on Windows clients and on UCS systems following expiry of the period
+                    in days. The remaining validity of the password is displayed in the
+                    user management under <guimenu>Password expiry date</guimenu> in the
+                    <guimenu>Account</guimenu> tab.
+					If this input field is left blank, no password expiry interval is applied.
+					</simpara>
+                </listitem>
+                <listitem>
+                    <para>
+                        If the option <emphasis>Password quality check</emphasis> is activated,
+                        additional checks - including dictionary checks - are performed for
+                        password changes in Samba, &ucsUMC; and Kerberos.
+                    </para>
+                    <para>
+                        The configuration is done via &ucsUCR; and should occur on all login
+                        servers. The following checks can be enforced:
+                    </para>
+                        <itemizedlist>
+                            <listitem>
+								<simpara>
+                                Minimum number of digits in the new password
+                                (<envar>password/quality/credit/digits</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Minimum number of uppercase letters in the new password
+                                (<envar>password/quality/credit/upper</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Minimum number of lowercase letters in the new password
+                                (<envar>password/quality/credit/lower</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Minimum number of characters in the new password which are
+                                neither letters nor digits (<envar>password/quality/credit/other</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Individual characters/digits can be excluded
+                                (<envar>password/quality/forbidden/chars</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Individual characters/figures can be made compulsory
+                                (<envar>password/quality/required/chars</envar>).
+								</simpara>
+                            </listitem>
+                        </itemizedlist>
+                </listitem>
+            </itemizedlist>
+    </section>
+
+    <section id="users:password:samba">
+	  <title>Password settings for Windows clients when using Samba</title>
+
+	  <para>
+		With the Samba domain object, one can set the password
+		requirements for logins to Windows clients in a Samba domain.
+	  </para>
+
+	  <para>
+		The Samba domain object is managed via the
+		<emphasis>LDAP directory</emphasis> module of the &ucsUMC;. It can
+		be found in the <emphasis>samba</emphasis> container below
+		the LDAP base and carries the domain's NetBIOS name.
+	  </para>
+
+	  <para>
+		The settings of the Samba domain object and the policy (see
+		<xref linkend="users:passwords"/>) should be set identically,
+		otherwise different password requirements will apply for
+		logins to Windows and UCS systems.
+	  </para>
+
+	  <para>
+		<table>
+		  <title>'General' tab</title>
+		  <tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+			  <row>
+				<entry>Attribute</entry>
+				<entry>Description</entry>
+			  </row>
+			</thead>
+			<tbody>
+			  <row>
+				<entry>Password length</entry>
+				<entry>
+				  The minimum number of characters for a user password.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>Passwort history</entry>
+				<entry>
+				  The latest password changes are saved in the form of
+				  hashes. These passwords can then not be used by the
+				  user as a new password when setting a new
+				  password. With a password history of five, for
+				  example, five new passwords must be set before a
+				  password can be reused.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>Minimum password age</entry>
+				<entry>
+				  The period of time set for this must have at least
+				  expired since the last password change before a user
+				  can reset his password again.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>Maximum password age</entry>
+				<entry>
+				  Once the saved period of time has elapsed, the
+				  password must be changed again by the user the next
+				  time he logs in. If the value is left blank, the
+				  password is infinitely valid.
+				</entry>
+			  </row>
+
+			</tbody>
+		  </tgroup>
+		</table>
+	  </para>
+
+	</section>
+
+
+    <section id="user-management:Password_changes_by_users_via_UMC">
+        <title>Password changes by users via &ucsUMC;</title>
+        <para>
+            As standard, users cannot change their password via the &ucsUMC;. To
+            allow user-initiated password changes, the modification must be allowed
+            in the LDAP ACLs and in the &ucsUMC;.
+        </para>
+        <para>
+            To adapt the LDAP ACLs, the &ucsUCRV; <envar>ldap/acl/user/password/change</envar>
+            must be set to <emphasis>yes</emphasis> on the &ucsMaster; and the LDAP server
+            restarted.
+        </para>
+        <para>
+            For simple activation in the UMC, the policy <emphasis>default-udm-self</emphasis>
+            can be linked with an LDAP object (e.g., with the LDAP base or the group
+            <emphasis>Domain Users</emphasis> (see <xref linkend="central:policies:assign"/>)).
+        </para>
+    </section>
+
+    <section id="users:faillog">
+        <title>Automatic lockout of users after failed login attempts</title>
+        <para>
+            As standard, a user can enter his password incorrectly any number of times. To
+            hinder brute force attacks on passwords, an automatic lockout for user accounts
+            can be activated after a configured number of failed log-in attempts. The lockout
+            is activated locally per computer system as standard. In other words, if a
+            user enters his password incorrectly too many times on one system, he can
+            still login on another system. Setting the &ucsUCRV; <envar>auth/faillog/lock_global</envar>
+            will make the lock effective globally and register it in the LDAP. The global
+            lock can only be set on domain controller master/backup systems as other
+            system roles do not possess the requisite permissions in the LDAP
+            directory. On these system roles, the user is, however, locally locked or
+            unlocked again via the listener module.
+        </para>
+        <caution>
+			<para>
+            This setting can also be misused, for example when a user has locked his
+            screen and another user enters the password incorrectly several times in his
+            absence. In this case, the user must contact the administrator to have his
+            account unlocked.
+			</para>
+        </caution>
+        <para>
+            The automatic lockout of users following failed logins can be activated by
+            setting the &ucsUCRV; <envar>auth/faillog</envar> to <emphasis>yes</emphasis>. The upper limit of failed log-in
+            attempts at which an account lockout is activated is configured
+            in the &ucsUCRV; <envar>auth/faillog/limit</envar>. The counter is reset each time the password
+            is entered correctly.
+        </para>
+        <para>
+            As standard, the <emphasis>root</emphasis> user is excluded from the password lock, but can also be
+            subjected to it by setting the &ucsUCRV; <envar>auth/faillog/root</envar> to <emphasis>yes</emphasis>.
+        </para>
+        <para>
+            As standard, the lockout is not subject to time limitations and must be reset by
+            the administrator. However, it can also be reset automatically after a certain
+            interval has elapsed. This is done by specifying a time period in seconds
+            in &ucsUCRV; <envar>auth/faillog/unlock_time</envar>. If the value is set to 0, the lock is
+            reset immediately.
+        </para>
+        <para>
+            If accounts are locked locally, the administrator can unlock a user by
+            entering the command <command>faillog -r USERNAME</command>. If the lock occurs
+            globally in the LDAP, the user can be reset in
+            the <guimenu>User account</guimenu> tab of a user in &ucsUDM;.
+        </para>
+    </section>
+
+    <section id="users:templates">
+        <title>User templates</title>
+        <para>
+            A user template can be used to preset settings when creating a user.
+        </para>
+        <para>
+            If at least one user template is defined, it can be selected when creating a user.
+        </para>
+        <figure id="user-create-template">
+            <title>Selecting a user template</title>
+            <graphic scalefit="1" width="40%" fileref="illustrations/users_usertemplate_en.png"/>
+        </figure>
+        <para>
+            User templates are administrated in the <guimenu>LDAP directory</guimenu>
+            module of the &ucsUMC;. There one needs to switch to the
+            <emphasis>univention</emphasis> container and then to the <emphasis>templates</emphasis>
+            subcontainer. A new user template can be created here via the
+            <guimenu>Add LDAP object</guimenu> with the object type
+            <guimenu>Settings: User template</guimenu>.
+        </para>
+        <para>
+            In a user template, either a fixed value can be specified (e.g., for
+            the address) or an attribute of the user management
+            referenced. Attributes are then referenced in chevrons.
+        </para>
+        <para>
+            A list of possible attributes can be displayed with the command:
+        </para>
+            <programlisting>
+univention-director-manager users/user
+            </programlisting>
+        <para>
+            in the section <emphasis>users/user variables</emphasis> of the output.
+        </para>
+        <para>
+            If a user template is used for adding a user, this template will
+            overwrite all the fields with the preset values of the template. In
+            doing so, an empty field is set to "".
+        </para>
+        <para>
+            It is also possible to only use partial values of attributes or
+            convert values in uppercase/lowercase.
+        </para>
+
+        <para>
+		  For example, the UNIX home directory can be stored under
+		  <filename>/home/&lt;title&gt;.&lt;lastname&gt;</filename> or the primary e-mail address
+		  can be predefined with
+		  <emphasis>&lt;firstname&gt;.&lt;lastname&gt;@firma.com</emphasis>. Substitutions are
+		  generally possibly for any value, but there is no syntax or semantics check. So, if no
+		  first name is specified when creating a user, the above e-mail address would begin with a
+		  dot and would thus be invalid according to the e-mail standard. Similar sources of error
+		  can also occur when handling file paths etc. Non-resolvable attributes (for instance due
+		  to typing errors in the template) are deleted.
+		</para>
+
+        <para>
+		  If only a single character of an attribute is required instead of the complete attribute
+		  value, the index of the required character can be entered in the user template in square
+		  brackets after the name of the attribute. The count of characters of the attribute begins
+		  with 0, so that index 1 corresponds to the second character of the attribute
+		  value. Accordingly, <emphasis>&lt;firstname&gt;[0].&lt;lastname&gt;@firma.com</emphasis>
+		  means an e-mail address will consist of the first letter of the first name plus the lastname.
+		</para>
+
+        <para>
+		  A substring of the attribute value can be defined by entering a range in square
+		  brackets. In doing so, the index of the first required character and the index of the last
+		  required character plus one are to be entered. For example, the input
+		  <emphasis>&lt;firstname&gt;[2:5]</emphasis> returns the third to fifth character of the
+		  first name.
+		</para>
+
+        <para>
+		  Adding <emphasis>&lt;:lower&gt;</emphasis> or <emphasis>&lt;:upper&gt;</emphasis> to the
+		  attribute name converts the attribute value to lowercase or uppercase, e.g.,
+		  <emphasis>&lt;firstname:lower&gt;</emphasis>. If a modificator like
+		  <emphasis>&lt;:lower&gt;</emphasis> is appended to the entire field, the complete value is
+		  transformed, e.g. <emphasis>&lt;lastname&gt;@company.com&lt;:lower&gt;</emphasis>.
+		</para>
+
+        <para>
+		  The option <emphasis>&lt;:umlauts&gt;</emphasis> can be used to convert special characters
+		  such as è, ä or ß into the corresponding ASCII characters.
+		</para>
+
+        <para>
+		  It is also possible to combine options, e.g: <emphasis>&lt;:umlauts,upper&gt;</emphasis>.
+		</para>
+
+    </section>
+</chapter>

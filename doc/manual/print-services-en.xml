@@ -1,0 +1,701 @@
+<chapter id="print::general">
+<title>Print services</title>
+
+<section id="print-services:Introduction">
+<title>Introduction</title>
+	<para>
+		&ucsUCS; includes a print system, which can also be used to realise
+		complex environments. Printers and printer groups can be created and
+		configured conveniently in &ucsUMC;. Extensions for cost
+		calculation and page limitation can be installed subsequently using
+		the print quota system.
+	</para>
+	<para>
+		The print services are based on <emphasis>CUPS (Common Unix Printing
+		System)</emphasis>. <emphasis>CUPS</emphasis> manages print jobs in print queues and
+		converts print jobs into the native formats of the connected printers.
+		The print queues are also administrated in the &ucsUMC;, see
+		<xref linkend="umc:modules:printer"/>.
+	</para>
+	<para>
+		All printers set up in CUPS can be directly used by UCS systems and
+		are automatically also provided for Windows computers when Samba is
+		used.
+	</para>
+	<para>
+		The technical capacities of a printer are specified in so-called PPD
+		files. These files include for example whether a printer can print in
+		colour, whether duplex printing is possible, whether there are several
+		paper trays, which resolutions are supported and which printer control
+		languages are supported (e.g., PCL or Postscript).
+	</para>
+	<para>
+		Print jobs are transformed by CUPS with the help of filters into a
+		format that the respective printer can interpret, for example into
+		Postscript for a Postscript-compatible printer.
+	</para>
+	<para>
+		UCS already includes a wide variety of filters and PPD
+		files. Consequently, most printers can be employed without the need to
+		install additional drivers. The setting up of additional PPD files is
+		described in <xref linkend="print::ppdlisten"/>.
+	</para>
+	<para>
+		A printer can either be connected directly to the print server
+		locally (e.g., via the USB port or a parallel port) or communicate
+		with a printer via remote protocols (e.g., TCP/IP-compatible printers,
+		which are connected via IPP or LPD).
+	</para>
+	<para>
+		Network printers with their own IP address should be registered in the
+		computer administration of &ucsUMC; as an IP managed client (see
+		<xref linkend="systemrollen"/>).
+	</para>
+	<para>
+		CUPS offers the possibility of defining printer groups. The included
+		printers are used employed alternating, which allows automatic load
+		distribution between neighbouring printers.
+	</para>
+	<para>
+		The print quota system, which can be installed using
+		the <package>univention-printquota</package> package, can be used to install an
+		expansion for recording incurred printer costs and for limiting the
+		number of pages to be printed.
+		<!-- The setting and configuration is documented in Univention Wiki under WIKIREF-22767. -->
+	</para>
+	<para>
+		Print shares from Windows systems can also be integrated in the CUPS
+		print server, see <xref linkend="print::shares"/>.
+	</para>
+</section>
+
+<section id="print-services:Installing_a_print_server">
+<title>Installing a print server</title>
+	<para>
+		A print server can be set up on all domain controllers and member
+		servers by selecting the installer component <emphasis>Print server
+		(CUPS)</emphasis> or via subsequent installation of
+		the <package>univention-printserver</package> package. After installation of
+		the package, <command>univention-run-join-scripts</command> must be run.
+	</para>
+</section>
+
+<section id="print-services:configuration">
+<title>Setting the local configuration properties of a print server</title>
+<para>
+  The configuration of the Cups print server is performed via settings from the LDAP directory
+  service and &ucsUCR;. If the &ucsUCRV; <envar>cups/include/local</envar> is set to
+  <emphasis>true</emphasis>, the <filename>/etc/cups/cupsd.local.conf</filename> file is included,
+   in which arbitrary options can be defined.
+</para>
+</section>
+
+<section id="print::shares">
+<title>Creating a printer share</title>
+	<para>
+		Print shares are administrated in the <emphasis>Printers</emphasis> module of
+		the &ucsUMC; with the <guimenu>Printer share</guimenu> object
+		type.
+	</para>
+	<para>
+		General information on the operation of the domain management modules
+		of the &ucsUMC; and on the adding, editing, searching for and
+		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+	</para>
+	<figure id="create-printershare">
+	<title>Creating a printer share</title>
+		<graphic scalefit="1" width="60%" fileref="illustrations/create_printershare_en.png"/>
+	</figure>
+	<para>
+		When adding/deleting/editing a printer share, the printer is
+		automatically configured in CUPS. CUPS does not have an LDAP interface
+		for printer configuration, instead the <filename>printers.conf</filename> file is
+		generated via a listener module. If Samba is used, the printer
+		shares are also automatically provided for Windows clients.
+	</para>
+	<table>
+	<title>'General' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Name (*)</entry>
+					<entry>
+						This input field contains the name of the printer share, which is used
+						by CUPS. The printer appears under this name in Linux and
+						Windows. The name may contain alphanumeric characters (i.e., uppercase
+						and lowercase letters a to z and numbers 0 to 9) as well as hyphens
+						and underscores. Other characters (including blank spaces) are not
+						permitted.
+					</entry>
+				</row>
+				<row>
+					<entry>Spool host (*)</entry>
+					<entry>
+						<para>
+							A print server manages the printer queue for the printers to
+							be shared. It converts the data to be printed into a compatible print
+							format when this is necessary. If the printer is not ready, the print
+							server saves the print jobs temporarily and forwards them on to the
+							printer subsequently. If more than one print server is specified, the
+							print job from the client will be sent to the first print server to
+							become available.
+						</para>
+						<para>
+							Only domain controllers and &ucsMember;s on which
+							the <package>univention-printserver</package> package is installed are
+							displayed in the list.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Protocol and Destination (*)</entry>
+					<entry>
+						<para>
+							These two input fields specify how the print server accesses the
+							printer:
+						</para>
+						<para>
+							The following list describes the syntax of the individual protocols
+							for the configuration of printers connected locally to the server:
+						</para>
+						<itemizedlist>
+							<listitem>
+								<para><uri>parallel://<replaceable>&lt;devicefile&gt;</replaceable></uri></para>
+								<para>Example: <uri>parallel://dev/lp0</uri></para>
+							</listitem>
+							<listitem>
+								<para><uri>socket://<replaceable>&lt;server&gt;</replaceable>:<replaceable>&lt;port&gt;</replaceable></uri></para>
+								<para>Example: <uri>socket://printer_03:9100</uri></para>
+							</listitem>
+							<listitem>
+								<para><uri>usb://<replaceable>&lt;devicefile&gt;</replaceable></uri></para>
+								<para>Example: <uri>usb://dev/usb/lp0</uri></para>
+							</listitem>
+						</itemizedlist>
+						<para>
+							The following list describes the syntax of the individual protocols
+							for the configuration of network printers:
+						</para>
+						<itemizedlist>
+							<listitem>
+								<para><uri>http://<replaceable>&lt;server&gt;</replaceable>[:<replaceable>&lt;port&gt;</replaceable>]/<replaceable>&lt;path&gt;</replaceable></uri></para>
+								<para>Example: <uri>http://192.168.0.10:631/printers/remote</uri></para>
+							</listitem>
+							<listitem>
+								<para><uri>ipp://<replaceable>&lt;server&gt;</replaceable>/printers/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para>Example: <uri>ipp://printer_01/printers/xerox</uri></para>
+							</listitem>
+							<listitem>
+								<para><uri>lpd://<replaceable>&lt;server&gt;</replaceable>/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para>Example: <uri>lpd://10.200.18.30/bwdraft</uri></para>
+							</listitem>
+						</itemizedlist>
+						<para>
+							The <uri>cups-pdf</uri> protocol is used for integrating a pseudo printer,
+							which creates a PDF document from all the print jobs. The setup is
+							documented in <xref linkend="pdf-printer"/>.
+						</para>
+						<para>
+							The <uri>file:/</uri> protocol expects a file name as a target. The print
+							job is then not sent to the printer, but instead written in this file,
+							which can be useful for test purposes. The file is rewritten with
+							every print job.
+						</para>
+						<para>
+							The <uri>smb://</uri> protocol can be used to mount a Windows print share.
+							For example, to integrate the <emphasis>laser01</emphasis> printer share from Windows
+							system <emphasis>win01</emphasis>, <emphasis>win01/laser01</emphasis> must be specified as destination.
+							The manufacturer and model must be selected according to the printer in question.
+							The print server uses the printer model settings to convert the print
+							jobs where necessary and send these directly to the URI
+							<uri>smb://win01/laser01</uri>. No Windows drivers are used in this.
+						</para>
+						<para>
+							Independant of these settings, the printer share can be mounted by other
+							Windows systems with the corresponding printer drivers.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Manufacturer</entry>
+					<entry>
+						When the printer manufacturer is selected, the <emphasis>Printer model</emphasis>
+						selection list updates automatically.
+					</entry>
+				</row>
+				<row>
+					<entry>Printer model (*)</entry>
+					<entry>
+						This selection list shows all the printers PPD files available for the selected
+						manufacturer. If the required printer model is not there, a similar
+						model can be selected and a test print used to establish correct
+						function. <xref linkend="print::ppdlisten"/> explains how to expand the
+						list of printer models.
+					</entry>
+				</row>
+				<row>
+					<entry>Samba name</entry>
+					<entry>
+						<para>
+							A printer can also be assigned an additional name by which it can be
+							reached from Windows. Unlike the CUPS name (see <guimenu>Name</guimenu>), the
+							Samba name may contain blank spaces and umlauts. The printer is then
+							available to Windows under both the CUPS name and the Samba name.
+						</para>
+						<para>
+							Using a Samba name in addition to the CUPS name is practical, for
+							example, if the printer was already in use in Windows under a name
+							which contains blank spaces or umlauts. The printer can then still be
+							reached under this name without the need to reconfigure the Windows
+							computers.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Enable quota support</entry>
+					<entry>
+						<para>
+							If quota were activated for this printer, the quota settings on the
+							<guimenu>[Print Quota]</guimenu> policy apply.
+						</para>
+						<para>
+							The print quota system needs to be installed for this.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Price per page</entry>
+					<entry>
+						<para>
+							The user is charged the value given in this input field for every page
+							printed. The incurred costs are summarised in the user's account and
+							used for the accurate calculation of print costs. If no value is
+							specified, print costs will not be calculated.
+						</para>
+						<para>
+							The print quota system needs to be installed for this.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Price per print job</entry>
+					<entry>
+						<para>
+							The user is charged the value given in this input field for every
+							print job. The incurred costs are summarised in the user's account and
+							used for the accurate calculation of print costs. If no value is
+							specified, print costs will not be calculated.
+						</para>
+						<para>
+							The print quota system needs to be installed for this.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Location</entry>
+					<entry>
+						This data is displayed by some applications when selecting the printer. It
+						can be filled with any text.
+					</entry>
+				</row>
+				<row>
+					<entry>Description</entry>
+					<entry>
+						This is displayed by some applications when selecting the printer. It
+						can be filled with any text.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+	<title>'Access Control' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Access control</entry>
+					<entry>
+						<para>
+							Access rights for the printer can be specified here.
+							Access can be limited to certain groups or users or generally allowed
+							and certain groups or users blocked specifically.
+							As standard, access is available for all groups and users.
+							These rights are also adopted for the corresponding Samba printer
+							shares, so that the same access rights apply when printing via Samba
+							as when printing directly via CUPS.
+						</para>
+						<para>
+							This access control is useful for the management of printers spread
+							across several locations, so that the users at location A do not
+							see the printers of location B.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Allowed/denied users</entry>
+					<entry>This lists individual users for whom access should be controlled.</entry>
+				</row>
+				<row>
+					<entry>Allowed/denied groups</entry>
+					<entry>This lists individual groups for whom access should be controlled.</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+</section>
+
+<section id="druckergruppen">
+<title>Creating a printer group</title>
+	<para>
+		CUPS offers the possibility to group printers into
+		classes. These are implemented in UCS as <emphasis>printer groups</emphasis>
+		Printer groups appear to clients as normal printers
+		The aim of such a printer group is to create a higher
+		availability of printer services. If the printer group is used to
+		print, the job is sent to the first printer in the printer group to
+		become available. The printers are selected based on the round robin
+		principle so that the degree of utilisation is kept uniform.
+	</para>
+	<figure id="printergroup">
+	<title>Configuring a printer group</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/printer_group-en.png"/>
+	</figure>
+	<para>
+		A printer group must have at least one printer as a member. Only
+		printers from the same server can be members of the group.
+	</para>
+	<caution>
+		<para>
+		The possibility of grouping printers
+		shares from different printer servers in a printer group makes
+		it possible to select printer groups as members of a printer
+		group. This could result in a printer group adopting itself as a group
+		member. This must not be allowed to happen.
+		</para>
+	</caution>
+	<para>
+		Printer groups are administrated in the <emphasis>Printers</emphasis> module of
+		the &ucsUMC; with the <guimenu>Printer share</guimenu> object type.
+	</para>
+	<para>
+		General information on the operation of the domain management modules
+		of the &ucsUMC; and on the adding, editing, searching for and
+		deleting of objects can be found in <xref linkend="central:user-interface"/>.
+	</para>
+	<table>
+	<title>'General' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Name (*)</entry>
+					<entry>
+						<para>
+							This input field contains the names of the printer group share, which
+							is used by CUPS. The printer group appears under this name in Linux
+							and Windows.
+						</para>
+						<para>
+							The name may contain alphanumeric characters (i.e., uppercase and
+							lowercase letters a to z and numbers 0 to 9) as well as hyphens and
+							underscores. Other characters (including blank spaces) are not
+							permitted.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Spool host (*)</entry>
+					<entry>
+						A range of print servers (spoolers) can be specified here to expand
+						the list of printers available for selection. Printers which are
+						assigned to the servers specified here can then be adopted in the
+						<guimenu>Group members</guimenu> list from the selection arranged below them.
+					</entry>
+				</row>
+				<row>
+					<entry>Samba name</entry>
+					<entry>
+						<para>
+							A printer group can also be assigned an additional name by which it
+							can reached from Windows. Unlike the CUPS name (see <emphasis>Name</emphasis>), the
+							Samba name may contain blank spaces and umlauts. The printer is then
+							available to Windows under both the CUPS name and the Samba name.
+						</para>
+						<para>
+							Using a Samba name in addition to the CUPS name is practical, for
+							example, if the printer group was already in use in Windows under a
+							name which contains blank spaces or umlauts.
+							The printer group can then still be reached under this name without
+							the need to reconfigure the Windows computers.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Group members</entry>
+					<entry>
+						This list is used to assign printers to the printer group.
+					</entry>
+				</row>
+				<row>
+					<entry>Enable quota support</entry>
+					<entry>
+						<para>
+							If quota were activated for this printer group, the quota settings on
+							the <guimenu>[Print Quota]</guimenu> tab apply.
+						</para>
+						<para>
+							The print quota system needs to be installed for this.
+						</para>
+					</entry>
+				</row>
+
+				<row>
+				  <entry>Use Windows client driver</entry>
+				  <entry>
+					<para>
+					  This option is documented in <xref linkend="print-services:Mounting_of_print_shares_in_Windows_clients"/>.
+					</para>
+				  </entry>
+				</row>
+
+				<row>
+					<entry>Price per page</entry>
+					<entry>
+						The user is charged the value given in this input field for every page
+						printed. The incurred costs are summarised in the user's account and
+						used for the accurate calculation of print costs. If no value is
+						specified, print costs will not be calculated.
+					</entry>
+				</row>
+				<row>
+					<entry>Price per print job</entry>
+					<entry>
+						The user is charged the value given in this input field for every
+						print job. The incurred costs are summarised in the user's account and
+						used for the accurate calculation of print costs. If no value is
+						specified, print costs will not be calculated.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+</section>
+
+<section id="umc:modules:printer">
+<title>Administration of print jobs and print queues</title>
+	<para>
+		The <guimenu>Printer Administration</guimenu> module of the &ucsUMC;
+		allows you to check the status of the connected printers, restart
+		paused printers and remove print jobs from the queues on printer
+		servers.
+	</para>
+	<figure id="printer-admin">
+	<title>Printer administration</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/umc-printer_administration-en.png"/>
+	</figure>
+	<para>
+		The start page of the module contains a search mask with which the available
+		printers can be selected. The results list displays the server, name, status,
+		print quota properties, location and description of the respective
+		printer. The status of more than one printer can be changed simultaneously by
+		selecting the printers and running either the <guimenu>deactivate</guimenu> or
+		<guimenu>activate</guimenu> function.
+	</para>
+	<para>
+		Clicking on the printer name displays details of the selected printer. The
+		information displayed includes a list of the print jobs currently in the
+		printer queue. These print jobs can be deleted from the queue by selecting the
+		jobs and running the <mousebutton>Delete</mousebutton> function.
+	</para>
+</section>
+
+<section id="pdf-printer">
+<title>Generating PDF documents from print jobs</title>
+	<para>
+		Installing the <package>univention-printserver-pdf</package> package expands
+		the print server with a special <guimenu>cups-pdf</guimenu> printer type,
+		which converts incoming print jobs into PDF documents and add them in
+		a specified directory on the printer server where they are readable
+		for the respective user. After the installation of the
+		package, <command>univention-run-join-scripts</command> must be run.
+	</para>
+	<para>
+		The <guimenu>cups-pdf:/</guimenu> protocol must be selected when creating a
+		PDF printer in &ucsUMC; (see <xref linkend="print::shares"/>); the
+		destination field remains empty.
+	</para>
+
+	<para>
+	  <emphasis>PDF</emphasis> must be selected as <guimenu>Printer
+	  producer</guimenu> and <emphasis>Generic CUPS-PDF
+	  Printer</emphasis> as <guimenu>Printer model</guimenu>.
+	</para>
+
+	<para>
+		The target directory for the generated PDF documents is set using
+		the &ucsUCRV; <envar>cups/cups-pdf/directory</envar>. As standard it is set
+		to <filename>/var/spool/cups-pdf/%U</filename> so that <emphasis>cups-pdf</emphasis> uses a
+		different directory for each user.
+	</para>
+	<para>
+		Print jobs coming in anonymously are printed in the directory
+		specified by the &ucsUCRV; <envar>cups/cups-pdf/anonymous</envar> (standard setting:
+		<filename>/var/spool/cups-pdf</filename>).
+	</para>
+</section>
+
+<section id="print-services:Mounting_of_print_shares_in_Windows_clients">
+<title>Mounting of print shares in Windows clients</title>
+
+<para>
+  The printer shares set up in the &ucsUMC; can be added to Windows systems as network printers. The
+  printer drivers need to be set up during the first access. To facilitate user access to the drivers,
+  the drivers can also be stored on the server, as is described below. Alternatively, the
+  option <guimenu>Use Windows client driver</guimenu> can also be activated on a
+  printer share. This is necessary for Samba to accept print jobs from printer drivers only
+  installed by users locally.
+</para>
+
+	<para>
+		Printer shares are usually operated using the Windows printer drivers
+		provided.
+	</para>
+	<para>
+		The network printer can alternatively be set up on the
+		Windows side with a standard Postscript printer driver. If a colour
+		printer should be accessed, a driver for a Postscript-compatible
+		colour printer should be used on the Windows side, e.g., HP Color
+		Laserjet 8550.
+	</para>
+	<caution>
+		<para>
+		The printer can only be accessed by a regular user when he has local
+		permissions for driver installation or the respective printer drivers
+		were stored on the printer server. If this is not the case, Windows
+		may issue an error warning that the permissions are insufficient to
+		establish a connection to the printer.
+		</para>
+	</caution>
+	<para>
+		The following steps make it possible to install a new printer driver
+		on the printer server:
+	</para>
+	<orderedlist>
+		<listitem>
+			<simpara>
+			When logged on to Windows as <emphasis>Administrator</emphasis> you can
+			open the printer server and the printer directory it contains.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Right clicking in a free area of the window opens the context
+			menu where you can open the <guimenu>Server properties</guimenu>
+			dialogue. Clicking on <guimenu>Add</guimenu> on the
+			<guimenu>Drivers</guimenu> tab allows you to select a printer driver for
+			the system architecture required and load this onto the server all
+			via menus.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			A right click on the printer will now run the
+			<guimenu>Properties</guimenu> dialogue. The <guimenu>Properties</guimenu>
+			tab contains a selction field for the drivers already
+			installed. Clicking on <mousebutton>OK</mousebutton> assigns the driver to the
+			printer and means that users privileges can access the
+			printer without the need to install a driver.
+			</simpara>
+		</listitem>
+	</orderedlist>
+</section>
+
+<section id="print::ppdlisten">
+<title>Integrating additional PPD files</title>
+	<para>
+		The technical capacities of a printer are specified in so-called PPD
+		files. These files include for example whether a printer can print in
+		colour, whether duplex printing is possible, whether there are several
+		paper trays, which resolutions are supported and which printer control
+		languages are supported (e.g., PCL or Postscript).
+	</para>
+	<para>
+		In addition to the PPD files already included in the standard scope,
+		additional ones can be added via the &ucsUMC;. The PPDs are generally
+		provided by the printer manufacturer and need to be copied into
+		the <filename>/usr/share/ppd</filename> directory on the print servers.
+	</para>
+	<para>
+		The printer driver lists are administrated in
+		the <guimenu>LDAP directory</guimenu> module of the &ucsUMC;. There you need
+		to switch to the <emphasis>univention</emphasis> container and then to
+		the <emphasis>cups</emphasis> subcontainer. Printer driver lists already exist
+		for the majority of printer manufacturers. These can be expanded or
+		new ones can be added.
+	</para>
+	<table>
+	<title>'General' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Name (*)</entry>
+					<entry>
+						The name of the printer driver list. The name under which the list
+						appears in the <guimenu>Printer model</guimenu> selection list on
+						the <guimenu>General</guimenu> tab for printer shares (see
+						<xref linkend="print::shares"/>).
+					</entry>
+				</row>
+				<row>
+					<entry>Driver</entry>
+					<entry>
+						The path to the ppd file or to the <filename>/usr/share/ppd/</filename>
+						directory. For example, if the <filename>/usr/share/ppd/laserjet.ppd</filename>
+						should be used, <filename>laserjet.ppd</filename> must be entered here. gzip
+						compressed files (file ending .gz) can also be entered here.
+					</entry>
+				</row>
+				<row>
+					<entry>Description</entry>
+					<entry>
+						A description of the printer driver, under which it appears in
+						the <guimenu>Printer model</guimenu> selection list on
+						the <guimenu>General</guimenu> tab for printer shares.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+</section>
+</chapter>

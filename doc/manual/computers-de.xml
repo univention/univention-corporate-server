@@ -1,0 +1,3016 @@
+<chapter id="computers:general"><title>Rechnerverwaltung</title>
+
+    <section id="computers::hostaccounts"><title>Verwaltung der Rechnerkonten in der Univention Management Console</title>
+        <para>
+            Alle UCS-, Linux- und Windowssysteme innerhalb einer UCS-Domäne verfügen über
+            ein Rechner-Domänenkonto, mit dem sich die Systeme untereinander
+            authentifizieren und mit dem sie auf das LDAP-Verzeichnis zugreifen.
+        </para>
+        <para>
+            Das Rechnerkonto wird in der Regel automatisch beim
+            Join des Systems zur UCS-Domäne angelegt (siehe
+            <xref linkend="domaenenbeitritt"/>), das Rechnerkonto kann jedoch auch
+            vor dem Domänenbeitritt angelegt werden.
+        </para>
+        <para>
+            Das Passwort für das Rechnerkonto wird beim Domänenbeitritt
+            automatisch erzeugt und in der Datei <filename>/etc/machine.secret</filename>
+            gespeichert.
+        </para>
+        <para>
+            Für jede Systemrolle existiert ein eigenständiger Rechnerobjekttyp.
+            Weitergehende Hinweise zu den einzelnen Systemrollen finden sich in
+            <xref linkend="systemrollen"/>.
+        </para>
+        <para>
+            Rechnerkonten werden im Modul <guimenu>Rechner</guimenu> der &ucsUMC;
+            verwaltet.
+        </para>
+        <table>
+            <title>Reiter 'Allgemein'</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Name</entry>
+                        <entry>
+                            <para>
+                                In dieses Eingabefeld muss der Rechnername eingetragen werden.
+                            </para>
+                            <para>
+                                Um die Kompatibilität mit verschiedenen Betriebssystemen und Diensten
+                                zu gewährleisten, sollten Rechnernamen ausschließlich die Buchstaben
+                                <emphasis>a</emphasis> bis <emphasis>z</emphasis> in Kleinschreibung, Zahlen, Bindestriche und
+                                Unterstriche enthalten. Umlaute und Sonderzeichen sind nicht erlaubt. Der Punkt wird als
+                                Trennzeichen zwischen den einzelnen Bestandteilen eines voll
+                                qualifizierten Domänennamens interpretiert und darf deswegen nicht
+                                innerhalb des Rechnernamens verwendet werden. Rechnernamen sollten mit
+                                einem Buchstaben beginnen.
+                            </para>
+                            <para>
+                                Microsoft Windows akzeptiert nur Rechnernamen mit maximal 15 Zeichen,
+                                so dass man sich bei Rechnernamen grundsätzlich auf 15 Zeichen
+                                beschränken sollte, sofern nicht ausgeschlossen ist, dass Microsoft
+                                Windows zum Einsatz kommen wird.
+                            </para>
+                            <para>
+							  Der Rechnername kann nach dem Anlegen nur bei den Systemrollen
+							  <emphasis>Windows Workstation/Server</emphasis>, <emphasis>Mac OS X
+							  Client</emphasis> und <emphasis>IP-Managed-Client</emphasis> verändert
+							  werden.
+							</para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Beschreibung</entry>
+                        <entry>
+                            Für den Rechner kann in diesem Eingabefeld eine beliebige Beschreibung
+                            hinterlegt werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Inventarnummer</entry>
+                        <entry>
+                            Hier können Inventarnummern für Rechner hinterlegt werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Netzwerk</entry>
+                        <entry>
+                            Der Rechner kann einem bereits angelegten Netzwerk-Objekt zugeordnet
+                            werden. Hinweise zur IP-Konfiguration finden sich in
+                            <xref linkend="networks::introduction"/>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>MAC-Adresse</entry>
+                        <entry>
+                            An dieser Stelle kann die MAC-Adresse des Rechners eingetragen
+                            werden, z.B. <emphasis>2e:44:56:3f:12:32</emphasis>. Soll der Rechner einen
+                            DHCP-Eintrag erhalten, ist die Angabe der MAC-Adresse zwingend
+                            erforderlich.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>IP-Adresse</entry>
+                        <entry>
+                            <para>
+                                Hier können feste IP-Adressen für den Rechner eingegeben werden.
+                                Wenn auf der Karteikarte <guimenu>Allgemein</guimenu> ein Netzwerk
+                                ausgewählt wurde, wird die IP-Adresse, die dem Rechner aus dem
+                                Netzwerk automatisch zugewiesen wurde, hier angezeigt. Weitere
+                                Hinweise zur IP-Konfiguration finden sich in <xref linkend="networks::introduction"/>.
+                            </para>
+                            <para>
+                                Eine hier (also im LDAP-Verzeichnis) eingetragene IP-Adresse kann dem
+                                Rechner nur über DHCP zugewiesen werden. Sollte kein DHCP-Server
+                                verwendet werden, so muss die IP-Adresse auch lokal auf dem Rechner
+                                konfiguriert werden, siehe <xref linkend="hardware::networkconfiguration"/>.
+                            </para>
+                            <para>
+                                Werden die eingetragenen IP-Adressen eines Rechners ohne Wechsel der
+                                DNS-Zonen geändert, werden diese im Rechner-Objekt und - soweit
+                                vorhanden - auch automatisch in den DNS-Einträgen in der Forward und
+                                Reverse Lookup Zone geändert. Falls die IP-Adresse des Rechners noch
+                                an anderen Stellen eingetragen wurde, müssen diese Einträge manuell
+                                geändert werden! Wurde beispielsweise in einer DHCP-Boot-Richtlinie
+                                nicht der Name des Boot-Servers, sondern seine IP-Adresse dort
+                                eingetragen, muss diese IP-Adresse manuell durch das Bearbeiten der
+                                Richtlinie angepasst werden.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Forward-Zone für DNS-Eintrag</entry>
+                        <entry>
+                            <para>
+                                Die DNS-Forward-Zone, in die der Rechner eingetragen wird. Die Zone
+                                dient der Auflösung des Rechnernamens in die zugewiesene IP-Adresse.
+                                Hinweise zur IP-Konfiguration finden sich in <xref linkend="networks::introduction"/>.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Reverse-Zone für DNS-Eintrag</entry>
+                        <entry>
+                            Die DNS-Reverse-Zone, in die der Rechner eingetragen wird. Mit der
+                            Zone wird die IP-Adresse des Rechners in einen Rechnernamen aufgelöst.
+                            Hinweise zur IP-Konfiguration finden sich in <xref linkend="networks::introduction"/>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Service für DHCP-Eintrag</entry>
+                        <entry>
+                            <para>
+                                Wenn ein Rechner seine IP-Adresse über DHCP beziehen soll, muss hier
+                                ein DHCP-Service zugeordnet werden. Hinweise zur IP-Konfiguration
+                                finden sich in <xref linkend="networks::introduction"/>.
+                            </para>
+                            <para>
+                                Bei der Zuweisung muss darauf geachtet werden, dass die DHCP-Server
+                                des DHCP-Service-Objekts für das physikalische Netzwerk zuständig
+                                sind.
+                            </para>
+                            <para>
+                                Wurde auf der Karteikarte <guimenu>Allgemein</guimenu> ein Netzwerk
+                                ausgewählt, wird automatisch ein für das Netzwerk passender Eintrag
+                                hinzugefügt, der nachträglich manuell angepasst werden kann.
+                            </para>
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Reiter 'Konto' (erweiterte Einstellungen)</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Passwort</entry>
+                        <entry>
+                            <para>
+                                Das Passwort des Rechnerkontos wird in der Regel automatisch erstellt und
+                                rotiert. Für Sonderfälle wie die Einbindung externer Systeme kann es
+                                in diesem Feld auch explizit konfiguriert werden.
+                            </para>
+                            <para>
+                                Dasselbe Passwort muss dann auch lokal auf dem Rechner in die Datei
+                                <filename>/etc/machine.secret</filename> eingetragen werden.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Primäre Gruppe</entry>
+                        <entry>
+                            In diesem Auswahlfeld kann die primäre Gruppe des Rechners selektiert
+                            werden. Das ist nur notwendig, wenn von den automatisch eingestellten
+                            Vorgabewerten abgewichen werden soll. Der Vorgabewert für einen
+                            DC Master oder DC Backup lautet <emphasis>DC Backup Hosts</emphasis>, für einen
+                            DC Slave <emphasis>DC Slave Hosts</emphasis> und für &ucsMember;, Managed Clients
+                            und Mobile Clients <emphasis>Computers</emphasis>.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Reiter 'Unix-Konto' (erweiterte Einstellungen)</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>UNIX-Heimatverzeichnis (*)</entry>
+                        <entry>
+                            In diesem Eingabefeld kann ein abweichendes Heimatverzeichnis für das
+                            Rechner-Konto eingetragen werden. Der automatisch eingestellte
+                            Vorgabewert für das Heimatverzeichnis lautet <filename>/dev/null</filename>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Login-Shell</entry>
+                        <entry>
+                            Falls eine vom Vorgabewert abweichende Login-Shell für das
+                            Rechner-Konto verwendet werden soll, kann die Login-Shell in diesem
+                            Eingabefeld manuell angepasst werden. Der automatisch eingestellte
+                            Vorgabewert sieht <filename>/bin/sh</filename> als Login-Shell vor.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Reiter 'Dienste' (erweiterte Einstellungen)</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Dienst</entry>
+                        <entry>
+                            Mit einem Dienst-Objekt können Applikationen oder Dienste feststellen,
+                            ob auf einem Rechner oder generell in der Domäne ein Dienst verfügbar
+                            ist.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <note>
+			<simpara>
+            Die Karteikarte 'Dienste' wird nur auf UCS-Serversystemrollen angezeigt.
+			</simpara>
+        </note>
+        <table>
+            <title>Reiter '(Re)installation' (erweiterte Einstellungen)</title>
+            <tgroup cols="1">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <tbody>
+                    <row>
+                        <entry>
+                             Diese Karteikarte wird für den Univention Net Installer verwendet, siehe <xref linkend="ext-doc-inst"/>.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Reiter 'DNS-Alias' (erweiterte Einstellungen)</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Zone für DNS-Alias</entry>
+                        <entry>
+                            Wenn für den Rechner im Feld <guimenu>Forward Lookup Zone für
+                            DNS-Eintrag</guimenu> ein Zoneneintrag zur Vorwärtsauflösung eingerichtet
+                            wurde, können hier zusätzlich Alias-Einträge konfiguriert werden,
+                            über die der Rechner erreichbar ist.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Reiter 'Gruppen' (erweiterte Einstellungen)</title>
+            <tgroup cols="1">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <tbody>
+                    <row>
+                        <entry>
+                            In diesem Reiter kann der Rechner in verschiedene Gruppen aufgenommen werden.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Reiter 'Nagios-Dienste' (erweiterte Einstellungen)</title>
+            <tgroup cols="1">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <tbody>
+                    <row>
+                        <entry>
+                            In diesem Reiter wird festgelegt, welche Nagios-Prüfungen für diesen
+                            Rechner durchgeführt werden, siehe <xref linkend="nagios::hostconfig"/>.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Reiter 'Nagios-Benachrichtigung' (erweiterte Einstellungen)</title>
+            <tgroup cols="1">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <tbody>
+                    <row>
+                        <entry>
+                            In diesem Reiter wird festgelegt, welche Benutzer bei fehlschlagenden
+                            Nagios-Prüfungen benachrichtigt werden, siehe
+                            <xref linkend="nagios::hostconfig"/>.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Reiter 'UVMM' (erweiterte Einstellungen)</title>
+            <tgroup cols="1">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <tbody>
+                    <row>
+                        <entry>
+                            In diesem Reiter wird festgelegt, welche Virtualisierungs-Server durch
+                            UVMM verwaltbar sind (siehe <xref linkend="uvmm:chapter"/>).
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Reiter '(Optionen)'</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+					<row><!-- FIXME -->
+						<entry namest="col1" nameend="col2">
+                    Die Karteikarte ermöglicht es, einzelne LDAP-Objektklassen für den Rechner
+                    zu konfigurieren. Die Eingabefelder für Attribute abgewählter Objektklassen
+                    werden dann nicht angezeigt. Nicht alle Objektklassen können
+                    nachträglich verändert werden.
+						</entry>
+					</row>
+                    <row>
+                        <entry>Kerberos Prinzipal</entry>
+                        <entry>
+                            Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
+                            Objektklassen <emphasis>krb5Principal</emphasis> und <emphasis>krb5KDCEntry</emphasis> nicht.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Posix Konto</entry>
+                        <entry>
+                            Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
+                            Objektklasse <emphasis>posixAccount</emphasis> nicht.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Samba-Konto</entry>
+                        <entry>
+                            Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
+                            Objektklasse <emphasis>sambaSamAccount</emphasis> nicht.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Nagios-Unterstützung</entry>
+                        <entry>
+                            Nur wenn diese Option aktiviert ist, können Nagios-Prüfungen für
+                            dieses Rechnerkonto konfiguriert werden.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+
+        <section id="computers:ubuntu"><title>Integration von Ubuntu-Clients</title>
+            <para>
+                Ubuntu-Clients können mit einer eigenen Rechnerrolle in der &ucsUMC;
+                verwaltet werden. Die Netzwerkeigenschaften für DNS/DHCP können dabei
+                ebenfalls über die &ucsUMC; verwaltet werden.
+            </para>
+            <para>
+                Die Anwendung von Richtlinien wird nicht unterstützt.
+            </para>
+            <para>
+                Auf den Ubuntu-Systemen müssen einige Konfigurationsanpassungen
+                vorgenommen werden, die im Univention Wiki dokumentiert sind <xref linkend="ubuntu-integration"/>.
+            </para>
+        </section><!-- Integration von Ubuntu-Clients -->
+    </section><!-- Verwaltung der Rechnerkonten in der Univention Management Console -->
+
+    <section id="computers:Konfiguration_von_Hardware_und_Treibern"><title>Konfiguration von Hardware und Treibern</title>
+        <section id="computers:Verfuegbare_Kernel-Varianten"><title>Verfügbare Kernel-Varianten</title>
+			<para>
+            Der Standard-Kernel in UCS 3.1 basiert auf dem Linux-Kernel
+            3.2. Prinzipiell sind drei verschiedene Arten von Kernel-Paketen zu
+            unterscheiden:
+			</para>
+            <itemizedlist>
+				<listitem>
+					<simpara>
+						Ein <emphasis>Kernel-Image-Paket</emphasis> stellt einen lauffähigen Kernel bereit, der
+						installiert und gestartet werden kann.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Ein <emphasis>Kernel-Source-Paket</emphasis> stellt den Quellcode für einen Kernel
+                    bereit. Aus diesem kann beispielsweise ein angepasster Kernel erstellt werden, indem
+						Funktionen aktiviert oder deaktiviert werden können.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Ein <emphasis>Kernel-Header-Paket</emphasis> stellt Schnittstellen-Informationen bereit, die von externen
+                    Paketen benötigt werden, wenn diese auf Kernel-Funktionen zugreifen
+						müssen. Sie werden typischerweise zum Übersetzen externer Kernel-Treiber benötigt.
+					</simpara>
+				</listitem>
+            </itemizedlist>
+            <para>
+                Im Regelfall ist für den Betrieb eines UCS-Systems nur die Installation eines
+                Kernel-Image-Paketes notwendig.
+            </para>
+            <para>
+                Der Standard-Kernel in UCS für i386-basierte Systeme ist der sogenannte <emphasis>bigmem-Kernel</emphasis> für Prozessoren mit PAE-Unterstützung, der 64 GB RAM unterstützt.
+                Für ältere i386-basierte Systeme wird ein zweiter Kernel ohne PAE-Unterstützung bereitgestellt, der maximal 4 GB Arbeitsspeicher unterstützt.
+                Der Standard-Kernel für amd64-Systeme besitzt keine solchen Einschränkungen.
+            </para>
+            <para>
+                Mehrere Kernel-Varianten können parallel installiert sein. Dies stellt sicher, dass
+                im Fehlerfall immer auf eine ältere Variante zurückgegriffen werden kann. Um
+                ein System trotzdem immer auf dem jeweils aktuellen Stand halten zu können,
+                werden sogenannte Meta-Pakete bereitgestellt, die immer auf die aktuell
+                für UCS empfohlene Kernel-Version verweisen und diese im Update-Fall jeweils
+                nachinstallieren.
+            </para>
+            <para>
+                Die folgenden Meta-Pakete stehen unter i386 / 32 Bit zur Verfügung:
+            </para>
+			<itemizedlist>
+				<listitem><simpara>univention-kernel-image - Standard-Kernel (max. 64 GB RAM)</simpara></listitem>
+				<listitem><simpara>univention-kernel-image-486 - Kernel für Systeme ohne PAE-Support (max. 4 GB RAM)</simpara></listitem>
+			</itemizedlist>
+            <para>
+                Die folgenden Meta-Pakete stehen unter amd64 / 64 Bit zur Verfügung:
+            </para>
+			<itemizedlist>
+				<listitem><simpara>univention-kernel-image - Standard-Kernel</simpara></listitem>
+			</itemizedlist>
+        </section><!-- Verfügbare Kernel-Variante -->
+
+        <section id="computers:Treiber-Management__Kernel-Module"><title>Treiber-Management / Kernel-Module</title>
+            <para>
+                Der Boot-Prozess erfolgt zweistufig unter Verwendung einer Initial RAM
+                Disk (kurz initrd). Diese besteht aus einem Archiv mit weiteren Treibern und Programmen.
+                Der Boot-Manager GRUB (siehe <xref linkend="grub"/>) lädt den Kernel und die
+                initrd in den Arbeitsspeicher, wo das initrd-Archiv entpackt und als
+                temporäres Root-Dateisystem gemountet wird. Aus diesem wird dann das
+                tatsächliche Root-Dateisystem eingebunden, woraufhin abschließend das
+                temporäre Archiv wieder entfernt und der Systemstart eingeleitet wird.
+            </para>
+            <para>
+                Die zu verwendenden Treiber werden beim Systemstart automatisch erkannt und
+                durch den Device Manager udev geladen. Dabei werden außerdem die notwendigen
+                System-Verknüpfungen unter <filename>/dev/</filename> angelegt. Wenn Treiber nicht erkannt
+                werden (was vorkommen kann, wenn keine entsprechenden Hardware-IDs registriert
+                sind oder Hardware verwendet wird, die nicht automatisch erkannt werden
+                kann, etwa ISA-Steckkarten), so können zu ladende Kernel-Module
+                durch die &ucsUCRV; <envar>kernel/modules</envar>
+                hinzugefügt werden. Soll mehr als ein Kernel-Modul geladen werden, so
+                müssen diese durch ein Semikolon voneinander getrennt werden.
+            </para>
+            <para>
+                Im Gegensatz zu anderen Betriebssystemen liefert der Linux-Kernel (von wenigen
+                Ausnahmen abgesehen) alle Treiber für Komponenten aus einer Hand. Im Regelfall
+                ist es deshalb nicht notwendig Treiber aus externen Quellen
+                nachzuinstallieren.
+            </para>
+            <para>
+                Wenn doch externe Treiber oder Kernelmodule benötigt werden, können diese über <emphasis>Dynamic Kernel Module Support</emphasis> (DKMS) eingebunden werden.
+                Es stellt eine standardisierte Schnittstelle für Kernelquellen bereit und erlaubt es, Module automatisch für jeden installierten Kernel zu übersetzen.
+                Dazu müssen neben dem Paket <emphasis>dkms</emphasis> auch die Kernel-Header-Pakete <emphasis>univention-kernel-headers</emphasis> für die gewünschten Kernel installiert werden.
+                Zu beachten ist, dass nicht alle externen Kernelmodule mit allen Kerneln kompatibel sind.
+            </para>
+        </section><!-- Treiber-Management / Kernel-Module -->
+
+        <section id="grub"><title>GRUB Boot-Manager</title>
+            <para>
+                Als Boot-Manager wird in &ucsUCS; GNU GRUB 2
+                verwendet. GRUB stellt ein Auswahlmenü bereit, aus dem eine zu
+                bootende Linux-Kernel-Variante oder ein weiteres Betriebssystem ausgewählt werden kann.
+                GRUB kann auch direkt auf Dateisysteme zugreifen, so dass im Fehlerfall
+                etwa ein abweichender Kernel geladen werden kann.
+            </para>
+            <para>
+                <figure id="grub-selection"><title>GRUB-Auswahlmenü</title>
+                    <graphic scalefit="1" width="80%" fileref="illustrations/computers_grub.png"/>
+                </figure>
+            </para>
+            <para>
+                GRUB wird in einem zweistufigen Verfahren geladen: in den Master
+                Boot Record der Festplatte wird der Stage 1-Loader geschrieben, der auf die
+                Daten der Stage 2 verweist, welche den Großteil des übrigen Boot-Vorgangs
+                übernimmt.
+            </para>
+            <para>
+                Die Auswahl der zu startenden Kernel im Boot-Menü wird in der Datei
+                <filename>/boot/grub/grub.cfg</filename> abgelegt. Diese Datei wird automatisch generiert,
+                es stehen alle installierten Kernel-Pakete zur Auswahl.
+                Durch Auswahl der Option <guimenu>Memory test</guimenu> kann das
+                Speicher-Testprogramm Memtest86+ gestartet werden, das Konsistenzprüfungen auf
+                dem Arbeitsspeicher durchführt.
+            </para>
+            <para>
+                Standardmäßig wird fünf Sekunden auf die Auswahl des zu bootenden Kernels
+                gewartet. Durch die &ucsUCRV; <envar>grub/timeout</envar> kann ein abweichender Wert in Sekunden
+                konfiguriert werden.
+            </para>
+            <para>
+                In der Grundeinstellung wird in einen 800x600 Pixel großen Bildschirm unter
+                16 Bit Farbtiefe gewechselt. Durch die &ucsUCRV; <envar>grub/gfxmode</envar> kann ein anderer Modus ausgewählt
+                werden. Es werden nur Auflösungen unterstützt, die über VESA Bios Extentions
+                gesetzte werden können. Eine Liste der verfügbaren Modi findet sich unter
+                <ulink url="http://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. Die Eingabe
+                erfolgt im Format <emphasis>HORIZONTALxVERTIKAL@FARBTIEFEBIT</emphasis>, also
+                z.B. <emphasis>1024x768@16</emphasis>.
+            </para>
+            <para>
+                Kernel-Optionen für die gestarteten Linux-Kernel können mit
+                der &ucsUCRV; <envar>grub/append</envar> übergeben werden. Mit der <envar>grub/xenhopt</envar>
+                können Optionen an den Xen-Hypervisor übergeben werden.
+            </para>
+            <para>
+                Die grafische Darstellung während des Bootvorgangs - der sogenannte
+                Splash-Screen - kann durch Setzen der &ucsUCRV; <envar>grub/bootsplash</envar> auf
+                <emphasis>nosplash</emphasis> deaktiviert werden.
+            </para>
+            <para>
+                In älteren Xen-Umgebungen wird zum Booten paravirtualisierter Systeme
+                noch eine Version von PyGrub verwendet, die
+                auf die ältere GRUB 1-Konfigurationsdatei <filename>/goot/grub/menu.lst</filename>
+                angewiesen ist. Diese wird automatisch erzeugt, sofern sie noch nicht existiert.
+                Dieses Verhalten kann durch Setzen der
+                &ucsUCRV; <envar>grub/generate-menu-lst</envar> auf <emphasis>no</emphasis> deaktiviert werden.
+            </para>
+        </section><!-- GRUB Boot-Manager -->
+
+        <section id="hardware::networkconfiguration"><title>Netz-Konfiguration</title>
+            <section id="computers:Netzwerk-Interfaces"><title>Netzwerk-Interfaces</title>
+				<para>
+                Die Konfiguration von Netzwerk-Interfaces kann in der &ucsUMC; unter
+                <guimenu>Basis-Einstellungen &ar; Netzwerk</guimenu> angepasst werden.
+				</para>
+                <para>
+                    Die Konfiguration wird in &ucsUCR;-Variablen gespeichert, die auch
+                    direkt gesetzt werden können. Die Variablen sind in den einzelnen Abschnitten
+                    zusätzlich in Klammern aufgeführt.
+                    <figure id="network-settings"><title>Konfiguration der Netzwerkeinstellungen</title>
+                        <graphic scalefit="1" width="80%" fileref="illustrations/computers_network_de.png"/>
+                    </figure>
+                    Unter <guimenu>IPv4-Netzwerkgeräte</guimenu> und
+                    <guimenu>IPv6-Netzwerkgeräte</guimenu> werden alle im System verfügbaren
+                    Netzwerkkarten aufgeführt (es werden nur Netzwerkinterfaces im Schema
+                    <emphasis>ethX</emphasis> dargestellt).
+                </para>
+                <para>
+                    Netzwerkschnittstellen können für IPv4 und/oder IPv6 konfiguriert
+                    werden. IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier
+                    Blöcken in Dezimalschrebweise dargestellt (z.B. 192.168.0.10), während
+                    IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal dargestellt
+                    werden (z.B. 2222:0DFE:FE29:DE27:0000:0000:0000:0000).
+                </para>
+
+                <section id="computers:Konfiguration_von_IPv4-Adressen"><title>Konfiguration von IPv4-Adressen</title>
+                    <para>
+                        Wenn die Option <guimenu>Dynamisch (DHCP)</guimenu> nicht gewählt wurde, muss die IP-Adresse
+                        eingegeben werden, die an die Netzwerkkarte gebunden werden soll. Zusätzlich
+                        zur <guimenu>IPv4-Adresse</guimenu> muss die <guimenu>Netzmaske</guimenu> angegeben
+                        werden. Mit <guimenu>DHCP-Anfrage</guimenu> kann eine Adresse von einem
+                        DHCP-Server abgefragt werden. Sofern die Option <guimenu>Dynamisch
+						(DHCP)</guimenu> nicht aktiviert wird, werden die aus der DHCP-Anfrage
+						erhaltenen Werte dann statisch konfiguriert.
+                    </para>
+                    <para>
+                        Auch Server-Systeme können per DHCP konfiguriert werden. Dies ist
+                        z.B. bei einigen Cloud-Anbietern notwendig.
+                    </para>
+                    <para>
+                        Schlägt die Vergabe einer IP-Adresse für einen Server fehl, wird
+                        ersatzweise eine zufällige Link-Local-Adresse (169.254.x.y) konfiguriert.
+                    </para>
+                    <para>
+                        Die über DHCP erhaltene Adresse wird für UCS-Serversysteme auch in das
+                        LDAP-Verzeichnis geschrieben.
+                    </para>
+                    <note>
+						<simpara>
+                        Nicht alle Dienste (z.B. DNS-Server) sind für eine Verwendung auf einem DHCP-basierten
+						Server geeignet.
+						</simpara>
+					</note>
+                    <para>
+                        (UCR-Variablen: <envar>interfaces/ethX/address</envar>, <envar>interfaces/ethX/netmask</envar>, <envar>interfaces/ethX/type</envar>)
+                    </para>
+                    <para>
+                        Neben den physischen Interfaces können auch zusätzliche virtuelle Interfaces in der Form
+                        <envar>interfaces/ethX_Y/Eigenschaft</envar> definiert werden.
+                    </para>
+                </section><!-- Konfiguration von IPv4-Adressen -->
+
+                <section id="computers:Konfiguration_von_IPv6-Adressen"><title>Konfiguration von IPv6-Adressen</title>
+                    <para>
+                        Die IPv6-Adresse kann auf zwei Arten konfiguriert werden: Bei
+                        der <guimenu>Automatischen Konfiguration (SLAAC)</guimenu> kommt Stateless Address
+                        Autoconfiguration (SLAAC) zum Einsatz. Dabei wird die IP-Adresse von den Routern des
+                        lokalen Netzsegmentes zugewiesen. Alternativ kann die Adresse auch durch
+                        Angabe von <guimenu>IPv6-Adresse</guimenu> und <guimenu>IPv6-Präfix</guimenu> statisch
+                        konfiguriert werden. Im Gegensatz zu DHCP wird bei SLAAC keine Zuweisung von
+                        weitergehenden Daten wie dem zu verwendenden DNS-Server durchgeführt. Hierfür
+                        gibt es mit DHCPv6 ein Zusatzprotokoll, das bei der dynamischen Zuweisung aber
+                        nicht zum Einsatz kommt.
+                    </para>
+                    <para>
+                        (UCR-Variablen: <envar>interfaces/ethX/ipv6/address</envar>,
+                        <envar>interfaces/ethX/ipv6/prefix</envar>,
+                        <envar>interfaces/eth0/ipv6/acceptRA</envar> aktiviert SLAAC).
+                    </para>
+                    <para>
+                        Unter <guimenu>Globale Netzwerk-Einstellungen</guimenu> können weitere
+                        netzwerkbezogene Einstellungen vorgenommen werden.
+                    </para>
+                    <para>
+                        Unter <guimenu>Gateway (IPv4)</guimenu> und <guimenu>Gateway (IPv6)</guimenu> können die für
+                        die IP-Adresse im Subnetz eingesetzten Standard-Gateways für IPv4
+                        und IPv6 eingegeben werden. Für IPv6 ist die Angabe eines Gateways nicht
+                        erforderlich, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat
+                        Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten.
+                    </para>
+                    <para>
+                        (UCR-Variablen: <envar>gateway</envar>, <envar>ipv6/gateway</envar>)
+                    </para>
+                </section><!-- Konfiguration von IPv6-Adressen -->
+
+                <section id="computers:Konfiguration_der_Nameserver"><title>Konfiguration der Nameserver</title>
+					<para>
+                    Zwei Typen von DNS-Servern werden unterschieden:
+				</para>
+                    <itemizedlist>
+						<listitem>
+							<simpara>
+							Ein <guimenu>externer DNS-Server</guimenu> wird für die Auflösung von
+                            Rechnernamen und Adressen außerhalb der UCS-Domäne verwendet,
+                            z.B. <emphasis>univention.de</emphasis>. Dies ist typischerweise ein Nameserver, der vom
+							Internet Provider betrieben wird.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+							Ein <guimenu>Domänen-DNS-Server</guimenu> ist ein lokaler Nameserver der
+                            UCS-Domäne. Dort werden in der Regel die Rechnernamen und IP-Adressen der
+                            UCS-Domäne verwaltet. Wird eine Adresse im lokalen Datenbestand nicht
+                            aufgefunden, wird automatisch ein externer DNS-Server angefragt. Die DNS-Daten
+                            werden im LDAP-Verzeichnisdienst gespeichert, d.h. alle Domänen-DNS-Server
+							liefern identische Daten aus.
+							</simpara>
+						</listitem>
+                    </itemizedlist>
+                    <para>
+                        Bei der Installation eines &ucsMaster; wird nur ein <guimenu>externer
+                        DNS-Server</guimenu> abgefragt, da im Rahmen der Installation immer ein
+                        Domänen-DNS-Server eingerichtet wird. Dieser kann dann von den anderen
+                        Systemen der Domäne verwendet wird. Über die Schaltfläche <mousebutton>Mehr</mousebutton>
+                        können weitere Nameserver aufgenommen werden.
+                    </para>
+                    <para>
+                        Auf den Systemrollen &ucsMaster;, &ucsBackup; und &ucsSlave; läuft ein
+                        lokaler DNS-Server. Hier kann durch Angabe von
+                        <guimenu>Domänen-DNS-Server</guimenu> konfiguriert werden, welcher Server primär
+                        für die Namensauflösung verwendet wird.
+                    </para>
+                    <para>
+                        (UCR-Variablen: <envar>nameserver1</envar> bis <envar>nameserver3</envar>,
+                        <envar>dns/forwarder1</envar> bis <envar>dns/forwarder3</envar>,
+                    </para>
+                </section><!-- Konfiguration der Nameserver-->
+
+                <section id="computers:Konfiguration_von_Bridges_Bonding_VLANs"><title>Konfiguration von Bridges/Bonding/VLANs</title>
+				<para>
+				  UCS unterstützt komplexe Netzwerk-Konfigurationen mit Bridges, Bonding und VLAN-Netzen:
+				</para>
+				<itemizedlist>
+				  <listitem>
+					<simpara>
+					  Bridges werden oft von Virtualisierungslösungen verwendet, um virtualisierte
+					  Netzwerkkarten einer virtuellen Maschine mit der physischen Netzwerkkarte des
+					  Virtualisierungsservers zu verbinden.
+					</simpara>
+				  </listitem>
+				  <listitem>
+					<simpara>
+					  Bonding erhöht die Ausfallsicherheit, in dem mehrere physikalische
+					  Netzwerkkarten für den Zugriff auf ein Netzwerk gebündelt werden.
+					</simpara>
+				  </listitem>
+				  <listitem>
+					<simpara>
+					  VLANs können verwendet werden um den Netzwerkverkehr in einem physikalischen
+					  Netzwerk logisch auf ein oder mehrere virtuelle Unternetze aufzuteilen.
+					</simpara>
+				  </listitem>
+				</itemizedlist>
+
+				<para>
+				  Bridges, Bondings und VLANs werden in der &ucsUMC; angezeigt, können aber nur
+				  durch &ucsUCR;-Variablen konfiguriert werden. Die Einrichtung wird in der erweiterten
+				  Dokumentation beschrieben <xref linkend="ext-doc-computers"/>.
+				</para>
+				</section>
+            </section><!-- Netzwerk-Interfaces-->
+
+           <section id="computers:Konfiguration_des_Proxyzugriffs"><title>Konfiguration des Proxyzugriffs</title>
+                <para>
+                    Die meisten Kommandozeilen-Tools, die Zugriffe auf Webserver durchführen (z.B.
+                    <command>wget</command>, <command>elinks</command> oder <command>curl</command>), prüfen, ob die Umgebungsvariable
+                    <command>http_proxy</command> gesetzt ist. Ist dies der Fall, wird automatisch der
+                    in dieser Variable eingestellte Proxy-Server verwendet.
+                </para>
+                <para>
+                    Über die &ucsUCRV; <envar>proxy/http</envar> kann das Setzen dieser
+                    Umgebungsvariable <command>http_proxy</command> durch einen Eintrag in <filename>/etc/profile</filename> aktiviert
+                    werden. Dabei muss die Proxy-URL angegeben werden, also
+                    z.B. <uri>http://192.168.1.100</uri>.
+                </para>
+                <para>
+                    Der Proxy-URL kann optional auch die Angabe eines Ports folgen, welcher durch einen
+                    Doppelpunkt abzutrennen ist, z.B. <uri>http://192.168.1.100:3128</uri>. Erfordert der Proxy eine
+                    Authentifizierung des zugreifenden Benutzers, so können die Benutzerinformationen in der Form
+                    <uri>http://username:password@192.168.1.100</uri> übergeben werden.
+                </para>
+                <para>
+                    Die Umgebungsvariable wird nicht für aktuell geöffnete Sitzungen übernommen. Damit
+                    die Änderung aktiv wird, muss eine Neuanmeldung erfolgen.
+                </para>
+                <para>
+                    Die UCS-Programme zur Paketverwaltung unterstützen ebenfalls den Betrieb über
+                    einen Proxy und lesen die &ucsUCR;-Variable direkt aus.
+                </para>
+                <para>
+                    Einzelne Domänen können von der Verwendung des Proxys ausgenommen werden, in
+                    dem sie kommasepariert in die &ucsUCRV; <envar>proxy/no_proxy</envar> aufgenommen werden.
+                    Unterdomänen werden dabei berücksichtigt; eine Ausnahme für <uri>univention.de</uri>
+                    wirkt sich also auch auf <uri>apt.univention.de</uri> aus.
+                </para>
+            </section><!-- Konfiguration des Proxyzugriffs -->
+        </section><!-- Netz-Konfiguration -->
+
+        <section id="computers:Konfiguration_der_Bildschirmeinstellungen"><title>Konfiguration der Bildschirmeinstellungen</title>
+            <para>
+                Die Konfiguration der Grafikauflösungen und Monitor-Parameter erfolgt
+                in der Grundeinstellung über eine automatische Erkennung der
+                Grafikkarte und des Monitors. Dabei wird automatisch der
+                beste für die Grafikkarte verfügbare Treiber ausgewählt und die
+                Monitorauflösung auf den höchsten vom Monitor unterstützten Wert
+                gesetzt.
+            </para>
+            <para>
+                Managed und Mobile Clients (nur installierbar mit &ucsUCD;) und Thin
+                Clients (nur installierbar mit &ucsTCS;) können auch auch manuell
+                über eine <guimenu>Display</guimenu>-Richtlinie konfiguriert werden. Auf
+                den übrigen Systemrollen können die Einstellungen über eine
+                &ucsUCR;-Richtlinie gesetzt werden.
+                Die manuelle Konfguration ist auch nötig, wenn ein Dual-Monitor-Betrieb verwendet
+                werden soll. Im folgenden eine Auswahl der wichtigen Einstellungen
+                und die dazugehörigen UCR-Variablen in Klammern:
+            </para>
+            <itemizedlist>
+				<listitem>
+					<simpara>
+					<guimenu>Grafikkarten-Treiber</guimenu> wählt den zuständigen
+					Xorg-Treiber aus (<envar>xorg/device/driver</envar>).
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Unter <guimenu>Auflösung des primären Monitors</guimenu> ist die
+                    Bildschirmauflösung des Hauptmonitors einzutragen. Die Angabe von
+                    Breite und Höhe in Pixeln ist durch ein "x" zu trennen,
+					z.B. <emphasis>1024x768</emphasis> (<envar>xorg/resolution</envar>).
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					<guimenu>Auflösung des sekundären Monitors</guimenu> definiert die
+                    Bildschirmauflösung eines eventuellen zweiten Monitors. Dieser
+                    bildet zusammen mit dem primären Monitor eine gemeinsame
+					Bildschirmfläche (<envar>xorg/resolution/secondary</envar>).
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Das Auswahlfeld <guimenu>Position des sekundären Monitors</guimenu>
+                    gibt die relative Position des sekundären Monitors gegenüber dem
+					primären Monitor an (<envar>xorg/display/relative-position</envar>).
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Die <guimenu>Farbtiefe</guimenu> ist in Bit pro Pixel
+                    anzugeben. Zulässige Werte sind 1, 2, 4, 8, 16 und 24. (24 Bit ist
+					True Color-Farbtiefe) (<envar>xorg/screen/DefaultDepth</envar>).
+					</simpara>
+				</listitem>
+            </itemizedlist>
+        </section><!-- Konfiguration der Bildschirmeinstellungen -->
+
+        <section id="computers:Einbinden_von_NFS-Freigaben"><title>Einbinden von NFS-Freigaben</title>
+			<para>
+            Mit der Richtlinie <guimenu>NFS-Freigaben</guimenu> der Rechnerverwaltung
+            der &ucsUMC; können NFS-Freigaben konfiguriert werden, die auf dem
+            System gemountet werden. Zur Auswahl steht eine
+            <guimenu>NFS-Freigabe</guimenu>, die unter dem in <guimenu>Mount
+            point</guimenu> angegebenen Dateipfad eingehängt wird.
+            <figure id="nfs-mount"><title>Einbinden einer NFS-Freigabe</title>
+                <graphic scalefit="1" width="60%" fileref="illustrations/computers_policy_nfsshare_de.png"/>
+            </figure>
+			</para>
+        </section><!-- Einbinden von NFS-Freigaben -->
+
+        <section id="computers:hardware:sysinfo"><title>Erfassung von unterstützter Hardware</title>
+            <para>
+                Univention pflegt eine Übersicht von Hardware <xref linkend="hardwarelist"/>, die
+                mit UCS kompatibel ist und bei Kunden im Einsatz ist. Die hierbei
+                verarbeiteten Informationen werden über das UMC-Modul
+                <guimenu>Systeminformationen</guimenu> erfasst.
+            </para>
+            <para>
+                Alle Daten werden dabei anonymisiert an Univention weitergeleitet und erst nach
+                Benutzereinwilligung übermittelt.
+            </para>
+            <para>
+                Im Start-Dialog finden sich die Eingabefelder <guimenu>Hersteller</guimenu> und
+                <guimenu>Modell</guimenu>, die mit aus den DMI-Informationen der Hardware
+                ermittelten Werten vorausgefüllt sind. Die Felder können auch angepasst und
+                ein zusätzlicher <guimenu>Kommentar</guimenu> angegeben werden.
+            </para>
+            <para>
+                Wenn die Übermittlung der Systeminformationen im Rahmen einer Support-Anfrage
+                erfolgt, sollte die Option <guimenu>Dies bezieht sich auf einen
+                Supportfall</guimenu> aktiviert werden. Im folgenden Feld kann dann eine Ticketnummer
+                angegeben werden, die die Zuordnung vereinfacht und eine schnellere
+                Bearbeitung ermöglicht.
+            </para>
+            <para>
+                Nach einem Klick auf <guimenu>Weiter</guimenu> wird eine Übersicht der ermittelten
+                Systeminformationen ausgegeben. Außerdem wird ein komprimiertes Tar-Archiv
+                erstellt, das eine Liste mit den im System verwendeten Hardware-Komponenten
+                enthält und über <guimenu>Archiv mit den Systeminformationen</guimenu>
+                heruntergeladen werden kann.
+            </para>
+            <para>
+                Nach einem erneuten Klick auf <guimenu>Weiter</guimenu> kann der Übermittlungsweg der
+                Daten an Univention ausgewählt werden. <guimenu>Hochladen</guimenu> überträgt die
+                Daten per HTTPS, <guimenu>Mail senden</guimenu> führt zu
+                einem Dialog, der die für den Versand nötigen Schritte aufführt.
+            </para>
+        </section><!-- Erfassung von unterstützter Hardware -->
+    </section><!--Konfiguration von Hardware und Treibern -->
+
+    <section id="computers:Verwaltung_der_lokalen_Systemkonfiguration_mit_Univention_Configuration_Registry"><title>Verwaltung der lokalen Systemkonfiguration mit Univention Configuration Registry</title>
+        <section id="computers:ucr:Einfuehrung"><title>Einführung</title>
+            <para>
+                &ucsUCR; ist das zentrale Werkzeug zur Verwaltung der
+                lokalen Systemkonfiguration eines UCS-basierten Systems. Ein direktes
+                Editieren der Konfigurationsdateien ist dabei in der Regel nicht nötig.
+            </para>
+            <para>
+                Einstellungen werden in einem Registrierungsmechanismus in einem
+                einheitlichen Format festgelegt, den sogenannten <emphasis>Univention Configuration Registry-Variablen</emphasis>.
+                Diese Variablen werden verwendet, um aus Konfigurationsdatei-Vorlagen
+                (den sogenannten <emphasis>Univention Configuration Registry-Templates</emphasis>) die effektiv von den
+                Diensten/Programmen verwendeten Konfigurationsdateien zu generieren.
+            </para>
+            <para>
+                Dieses Verfahren bietet eine Reihe von Vorteilen:
+            </para>
+                <itemizedlist>
+					<listitem>
+						<simpara>
+						In der Regel müssen keine Konfigurationsdateien manuell
+                        editiert werden. Dies vermeidet Fehler durch ungültige Syntax von
+						Konfigurationseinstellungen o.ä.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+						Es existiert ein einheitliches Interface zum Editieren der
+                        Einstellungen und die unterschiedlichen Syntaxformate der
+						Konfigurationsdateien werden vor dem Administrator verborgen.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+						Die Einstellungen werden von der eigentlichen
+                        Konfigurationsdatei entkoppelt, d.h. wenn eine Software in einer neuen
+                        Version ein anderes Konfigurationsformat verwendet, wird einfach ein
+                        neues Template im neuen Format ausgeliefert anstatt eine aufwendige
+						und fehlerträchtige Konvertierung der bestehenden Konfigurationsdatei vorzunehmen.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+						Die in einer durch &ucsUCR; verwalteten Konfigurationsdatei
+                        verwendeten Variablen werden intern zugeordnet. Das stellt sicher, dass
+                        beim Ändern einer UCR-Variable alle Konfigurationsdateien, auf
+						die sich die veränderte Variable bezieht, neu erstellt werden.
+						</simpara>
+					</listitem>
+                </itemizedlist>
+            <para>
+                &ucsUCR;-Variablen können auf der Kommandozeile über den
+                Befehl <command>univention-config-registry</command> (Kurzform: <command>ucr</command>)
+                oder über die &ucsUMC; konfiguriert werden.
+            </para>
+            <para>
+                Da die meisten Pakete ihre Konfiguration über &ucsUCR; durchführen
+                und bei der Installation entsprechende Grundeinstellungen eingerichtet
+                werden, sind nach der Installation eines UCS-Systems bereits einige
+                Hundert &ucsUCR;-Variablen gesetzt.
+            </para>
+            <para>
+                UCR-Variablen können auch effizient in Shell-Skripten
+                verwendet werden, um auf Systemeinstellungen wie den Rechnernamen zuzugreifen.
+            </para>
+            <para>
+                Die Benennung der Variablen folgt einer baumartigen Struktur, wobei
+                ein Schrägstrich als Trennzeichen von Namensbestandteilen verwendet
+                wird. Beispielsweise handelt es sich bei allen mit <emphasis>ldap</emphasis>
+                beginnenden &ucsUCR;-Variablen um Einstellungen, die den lokalen
+                Verzeichnisdienst betreffen.
+            </para>
+            <para>
+                Zu den meisten Variablen ist eine Beschreibung hinterlegt, die die
+                Verwendung und Funktion erläutert.
+            </para>
+            <para>
+                Wenn eine Konfigurationsdatei durch ein UCR-Template verwaltet wird
+                und die gewünschte Einstellung nicht bereits durch eine vorhandene
+                Variable abgedeckt ist, muss statt der Konfigurationsdatei das
+                UCR-Template erweitert werden. Würde die Konfigurationsdatei direkt
+                angepasst, würde bei der nächsten Neugenerierung der Datei - z.B. beim
+                Setzen einer registrierten UCR-Variable - die lokale Anpassung wieder
+                überschrieben. Die Anpassung von UCR-Templates ist in <xref linkend="ucr::templates::extend"/> beschrieben.
+            </para>
+            <para>
+                Ein Teil der über &ucsUCR; konfigurierten Einstellungen sind
+                systemspezifisch (z.B. der Rechnername), viele Eigenschaften können
+                jedoch auch auf mehrere Rechner angewendet werden. Mithilfe der
+                <emphasis>Univention Configuration Registry-Richtlinie</emphasis> in der
+                Domänenverwaltung der &ucsUMC; können Variablen zusammengefasst und
+                auf mehr als einen Rechner angewendet werden.
+            </para>
+            <para>
+                Die Auswertung der &ucsUCR;-Variablen auf einem UCS-System erfolgt
+                vierstufig:
+            </para>
+                <itemizedlist>
+					<listitem>
+						<simpara>
+						Als Erstes werden lokale &ucsUCR;-Variablen ausgewertet.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+						Die lokalen Variablen werden von Richtlinien-Variablen
+						überstimmt, die aus dem Verzeichnisdienst bezogen werden.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+						Die Option <emphasis>--schedule</emphasis> dient zum Setzen lokaler
+                        Variablen, die nur für einen gewissen Zeitraum gelten sollen. Diese
+                        Ebene der &ucsUCR; ist reserviert für lokale Einstellungen, die
+                        durch zeitgesteuerte Mechanismen in &ucsUCS; automatisiert
+						vorgenommen werden.
+						</simpara>
+					</listitem>
+					<listitem>
+						<para>
+						Durch Verwendung der Option <emphasis>--force</emphasis> beim Setzen einer
+                        lokalen Variable werden aus den Verzeichnisdienst übernommene
+                        Einstellung ebenso wie Variablen der Schedule-Ebene überstimmt und
+                        statt dessen der angegebene Wert für das lokale System festgelegt. Beispiel:
+						</para>
+                        <programlisting>
+univention-config-registry set --force mail/messagesizelimit=1000000
+					</programlisting>
+					</listitem>
+                </itemizedlist>
+            <para>
+                Wird eine Variable gesetzt, die durch eine übergeordnete Richtlinie
+                überschrieben wird, erscheint eine Warnmeldung.
+            </para>
+            <para>
+                Die Verwendung der &ucsUCR;-Richtlinie ist in
+                <xref linkend="ucr::templates::policy"/> dokumentiert.
+            </para>
+        </section><!--Einführung -->
+
+        <section id="computers:Verwendung_des_Web-Interface_der_Univention_Management_Console"><title>Verwendung des Web-Interface der Univention Management Console</title>
+            <para>
+                Über das Modul <guimenu>Univention Configuration Registry</guimenu> der
+                &ucsUMC; können die Variablen eines Systems angezeigt und verändert
+                werden, außerdem besteht die Möglichkeit über
+                <guimenu>Hinzufügen</guimenu> neue Variablen zu setzen.
+            </para>
+            <para>
+                Auf der Startseite wird eine Suchmaske angezeigt. Alle Variablen sind
+                anhand einer <guimenu>Kategorie</guimenu> klassifiziert, etwa alle
+                LDAP-bezogenen Einstellungen.
+            </para>
+            <para>
+                In der Suchmaske kann als Filter das <guimenu>Suchattribut</guimenu>
+                angegeben werden, das sich auf den Variablennamen, den Wert oder die
+                Beschreibung beziehen kann.
+            </para>
+            <para>
+                Nach erfolgter Suche werden die gefundenen Variablen in
+                einer Tabelle angezeigt, dabei wird der Variablenname und der Wert
+                angezeigt. Bewegt man den Mauszeiger auf den Variablennamen, wird eine weiterführende
+				Beschreibung der Variable angezeigt.
+            </para>
+            <para>
+                Mit einem Klick auf das Icon mit dem stilisierten Stift wird die
+                Einstellung einer Variable bearbeitet. Das Icon mit dem stilisierten
+                Minuszeichen erlaubt das Löschen einer Variable.
+            </para>
+            <para>
+                Einige zentrale Variablen - z.B. der Domänenname - können nicht direkt
+                in &ucsUCR; geändert werden, sondern nur indirekt über die Basiseinstellungen der &ucsUMC;.
+                Diese Variablen werden ausgegraut dargestellt. Eine
+                Bearbeitung über das Kommandozeilen-Frontend ist weiterhin möglich.
+            </para>
+        </section><!-- Verwendung des Web-Interface der Univention Management Console-->
+
+        <section id="computers:Verwendung_des_Kommandozeilenfrontends"><title>Verwendung des Kommandozeilenfrontends</title>
+			<para>
+            Das Kommandozeileninterface von &ucsUCR; wird über den Befehl
+            <command>univention-config-registry</command> aufgerufen. Alternativ kann
+            auch die Kurzform <command>ucr</command> verwendet werden.
+			</para>
+
+            <section id="computers:Abfrage_einer_UCR-Variable"><title>Abfrage einer UCR-Variable</title>
+                <para>
+                    Eine einzelne &ucsUCR;-Variable kann mit dem Aufrufparameter
+                    <emphasis>get</emphasis> ausgelesen werden:
+                </para>
+                    <programlisting>
+univention-config-registry get ldap/server/ip
+                    </programlisting>
+                <para>
+                    Mit dem Aufrufparameter <emphasis>dump</emphasis> können auch alle aktuell
+                    gesetzten Variablen ausgegeben werden:
+                </para>
+                    <programlisting>
+univention-config-registry dump
+                    </programlisting>
+            </section><!-- Abfrage einer UCR-Variable -->
+
+            <section id="computers:Setzen_von_UCR-Variablen"><title>Setzen von UCR-Variablen</title>
+                <para>
+                    Mit dem Aufrufparameter <emphasis>set</emphasis> kann eine Variable gesetzt
+                    werden. Der Name der Variable kann frei gewählt werden, darf aber
+                    ausschließlich aus Buchstaben, Punkten, Zahlen, Binde- und
+                    Schrägstrichen bestehen.
+                </para>
+                    <programlisting>
+univention-config-registry set VARIABLENNAME=WERT
+                    </programlisting>
+                <para>
+                    Ist die Variable schon vorhanden, wird der Inhalt aktualisiert.
+                    Ansonsten wird ein neuer Eintrag angelegt.
+                </para>
+                <para>
+                    Beim Setzen einer &ucsUCR;-Variable erfolgt keine Syntaxprüfung. Die
+                    Änderung einer Variable bewirkt, dass alle Konfigurationsdateien, für
+                    die diese Variable registriert ist, unmittelbar neu geschrieben
+                    werden. Die betroffenen Dateien werden auf der Kommandozeile ausgegeben.
+                </para>
+                <para>
+                    Dabei ist zu beachten, dass beim Setzen einer UCR-Variable zwar die
+                    Konfiguration eines Dienstes aktualisiert wird, der entsprechende
+                    Dienst aber nicht automatisch neu gestartet wird! Der Neustart muss manuell erfolgen.
+                </para>
+                <para>
+                    Gleichzeitige Änderungen mehrerer Variablen in einer Befehlszeile sind
+                    möglich. Wenn sich diese auf ein- und dieselbe Konfigurationsdatei
+                    beziehen, wird diese nur einmal neu geschrieben:
+                </para>
+                    <programlisting>
+# univention-config-registry set \
+    dns/forwarder1=192.168.0.2 \
+    sshd/xforwarding="no" \
+    sshd/port=2222
+                    </programlisting>
+                <para>
+                    Auch ein bedingtes Setzen ist möglich. Soll z.B. ein
+                    Wert nur dann in einer &ucsUCR;-Variable gespeichert
+                    werden, wenn die Variable noch nicht vorhanden ist, kann dies durch
+                    ein Fragezeichen statt des Gleichheitszeichens beim Zuweisen des
+                    Wertes erreicht werden:
+                </para>
+                    <programlisting>
+univention-config-registry set dns/forwarder1?192.168.0.2
+                    </programlisting>
+            </section><!-- Setzen von UCR-Variablen -->
+
+            <section id="computers:Suche_nach_Variablen_und_gesetzten_Werten"><title>Suche nach Variablen und gesetzten Werten</title>
+                <para>
+                    Mit dem Parameter <emphasis>search</emphasis> kann nach einer Variable gesucht
+                    werden. Dieser Befehl sucht nach Variablennamen, welche die Zeichenkette
+                    <emphasis>nscd</emphasis> enthalten und gibt diese mit den aktuellen Belegungen aus:
+                </para>
+                    <programlisting>
+univention-config-registry search nscd
+                    </programlisting>
+                <para>
+                    Es kann alternativ auch nach gesetzten Variablen-Werten gesucht
+                    werden. Dieser Aufruf sucht nach allen Variablen, die auf
+                    <emphasis>master.example.com</emphasis> gesetzt sind:
+                </para>
+                    <programlisting>
+univention-config-registry search --value master.example.com
+                    </programlisting>
+                <para>
+                    Bei der Suche können auch Suchmuster in Form von regulären Ausdrücken
+                    verwendet werden. Das vollständige Format ist unter
+                    <ulink url="http://docs.python.org/library/re.html"/> dokumentiert.
+                </para>
+            </section><!-- Suche nach Variablen und gesetzten Werten -->
+
+            <section id="computers:Loeschen_von_UCR-Variablen"><title>Löschen von UCR-Variablen</title>
+                <para>
+                    Mit dem Aufrufparameter <emphasis>unset</emphasis> kann eine Variable entfernt werden.
+                    Das folgende Beispiel löscht die Variable <emphasis>dns/forwarder2</emphasis>. Auch hier
+                    können mehrere zu löschende Variablen übergeben werden:
+                </para>
+                    <programlisting>
+univention-config-registry unset dns/forwarder2
+                    </programlisting>
+            </section><!-- Löschen von UCR-Variablen -->
+
+            <section id="computers:Neuerzeugung_von_Konfigurationsdateien_aus_ihrem_Template"><title>Neuerzeugung von Konfigurationsdateien aus ihrem Template</title>
+                <para>
+                    Mit dem Aufrufparameter <emphasis>commit</emphasis> wird eine Konfigurationsdatei
+                    aus ihrem Template neu erzeugt. Der Name der Konfigurationsdatei ist
+                    als Parameter anzugeben, z.B.:
+                </para>
+                    <programlisting>
+univention-config-registry commit /etc/samba/smb.conf
+                    </programlisting>
+                <para>
+                    Da UCR-Templates beim Editieren von UCR-Variablen in der Regel
+                    automatisch neu erzeugt werden, wird dies vor allem für Tests verwendet.
+                </para>
+                <para>
+                    Wird beim Aufruf von <command>ucr commit</command> kein Dateiname angegeben,
+                    werden sämtliche durch &ucsUCR; verwalteten Dateien neu aus den
+                    Vorlagen erzeugt. In der Regel sollte es allerdings nicht notwendig
+                    sein, alle Konfigurationsdateien neu zu erzeugen.
+                </para>
+            </section><!-- Neuerzeugung von Konfigurationsdateien aus ihrem Template -->
+
+            <section id="computers:Übernahme_von_Variablen_in_Shell-Skripte"><title>Übernahme von Variablen in Shell-Skripte</title>
+                <para>
+                    Über den Aufrufparameter <emphasis>shell</emphasis> werden &ucsUCR;-Variablen
+                    und ihre aktuellen Belegungen in einem Format ausgegeben, das in
+                    Shell-Skripten verwendet werden kann:
+                </para>
+                    <programlisting>
+univention-config-registry shell ldap/server/name
+                    </programlisting>
+                <para>
+                    Dabei werden verschiedene Konvertierungen vorgenommen: Schrägstriche
+                    in Variablennamen werden durch Unterstriche ersetzt und in den Werten
+                    enthaltene Zeichen, die in Shell-Skripten eine besondere Bedeutung
+                    haben, werden durch Anführungszeichen geschützt.
+                </para>
+                <para>
+                    Damit &ucsUCR;-Variablen als Umgebungsvariablen in einem
+                    Shell-Skript eingelesen werden, muss die Ausgabe von &ucsUCR;
+                    durch den Befehl <emphasis>eval</emphasis> ausgeführt werden:
+                </para>
+                    <programlisting>
+# eval "$(univention-config-registry shell ldap/server/name)"
+# echo "$ldap_server_name"
+master.firma.de
+                    </programlisting>
+            </section><!-- Übernahme von Variablen in Shell-Skripte -->
+        </section><!-- Verwendung des Kommandozeilenfrontends -->
+
+        <section id="ucr::templates::policy"><title>Richtlinienbasierte Konfiguration von UCR-Variablen</title>
+            <para>
+                Ein Teil der über &ucsUCR; konfigurierten Einstellungen sind
+                systemspezifisch (z.B. der Rechnername), viele Eigenschaften können
+                jedoch auch auf mehrere Rechner angewendet werden. Mithilfe der
+                im <guimenu>Richtlinien</guimenu>-Modul der &ucsUMC; verwalteten
+                <guimenu>Univention Configuration Registry</guimenu>-Richtlinie können
+                Variablen zusammengefasst und auf mehr als einen Rechner angewendet
+                werden.
+            </para>
+                <figure id="policy-mailsize"><title>Konfiguration der maximalen Mailgröße über eine Richtlinie</title>
+                    <graphic scalefit="1" width="80%" fileref="illustrations/computers_policy_mailsize_de.png"/>
+                </figure>
+            <para>
+                Zuerst muss für die anzulegende Richtlinie ein <guimenu>Name</guimenu>
+                gesetzt werden, unter dem die Variablen später einzelnen
+                Rechner-Objekten zugewiesen werden können.
+            </para>
+            <para>
+                Außerdem muss mindestens eine <guimenu>Variable</guimenu> konfiguriert
+                und ein <guimenu>Wert</guimenu> zugewiesen werden.
+            </para>
+            <para>
+                Diese Richtlinie kann dann einem Rechner-Objekt oder einem
+                Container/OU zugewiesen werden (siehe
+                <xref linkend="central:policies:assign"/>). Es ist zu
+                beachten, dass die Auswertung der konfigurierten Werte gegenüber den übrigen
+                Richtlinien abweicht: Die Werte werden nicht direkt auf die Rechner übertragen,
+                sondern durch Univention Directory Policy auf den zugewiesenen Rechner
+                geschrieben. Das dabei verwendete Zeitintervall wird durch die
+                &ucsUCRV; <envar>ldap/policy/cron</envar> konfiguriert und erfolgt standardmäßig stündlich.
+            </para>
+        </section><!-- Richtlinienbasierte Konfiguration von UCR-Variablen -->
+
+        <section id="ucr::templates::extend"><title>Anpassung von UCR-Templates</title>
+            <para>
+                Ein &ucsUCR;-Template ist im im einfachsten Fall eine Kopie der ursprünglichen
+                Konfigurationsdatei, in der die Stellen, an denen der Wert einer Variable
+                verwendet werden soll, eine Referenz auf den Variablennamen enthalten.
+            </para>
+            <para>
+                Für komplexere Szenarien kann auch Inline-Python-Code integriert
+                werden, der dann auch komplexere Konstrukte wie etwa bedingte Abfragen erlaubt.
+            </para>
+			<note>
+				<para>
+                    &ucsUCR;-Templates sind in den entsprechenden UCS-Software-Paketen
+                    als Konfigurationsdateien enthalten. Bei der Aktualisierung von
+                    Paketen wird überprüft, ob Änderungen an Konfigurationsdateien
+                    vorgenommen wurden. Wenn Konfigurationsdateien nicht mehr im
+                    Auslieferungszustand vorliegen, werden diese nicht
+                    überschrieben. Stattdessen wird eine neue Version im selben
+                    Verzeichnis mit der Endung <emphasis>.debian.dpkg-new</emphasis> abgelegt. Sollen
+                    Änderungen an &ucsUCR;-Templates vorgenommen werden, werden diese
+                    Templates bei der Aktualisierung ebenfalls nicht überschrieben und im
+                    selben Verzeichnis mit der Endung <emphasis>.dpkg-new</emphasis> oder
+                    <emphasis>.dpkg-dist</emphasis> abgelegt. Entsprechenden Hinweise werden in die
+                    Log-Datei <filename>/var/log/univention/updater.log</filename> geschrieben.
+                    Dies tritt nur auf, wenn UCR-Templates lokal angepasst werden.
+				</para>
+			</note>
+            <para>
+                Die UCR-Templates werden im Verzeichnis
+                <filename>/etc/univention/templates/files</filename> abgelegt. Der Pfad zu den
+                Vorlagen entspricht dem absoluten Pfad zu der Konfigurationsdatei mit
+                vorangestelltem Pfad zum Vorlagenverzeichnis. So findet sich zum Beispiel
+                die Vorlage für die Konfigurationsdatei <filename>/etc/issue</filename> unter
+                <filename>/etc/univention/templates/files/etc/issue</filename>.
+            </para>
+            <para>
+                Damit Konfigurationsdateien von &ucsUCR; korrekt verarbeitet werden
+                können, müssen sie im UNIX-Format vorliegen. Werden
+                Konfigurationsdateien z.B. unter DOS oder Windows bearbeitet, werden
+                Steuerzeichen zur Kennzeichnung des Zeilenumbruchs eingefügt, die die
+                Verwendung der Datei durch &ucsUCR; stören.
+            </para>
+
+            <section id="ucr::templates::extend::simple"><title>Referenzierung von UCR-Variablen in Templates</title>
+                <para>
+                    Im einfachsten Fall kann eine UCR-Variable im Template direkt
+                    referenziert werden. Als Platzhalter dient der Variablenname, der von der
+                    Zeichenkette <emphasis>@%@</emphasis> eingefasst wird. Als Beispiel die Option für
+                    die Aktivierung von X11-Forwarding in der Konfigurationsdatei
+                    <filename>/etc/ssh/sshd_config</filename> des OpenSSH-Servers:
+                </para>
+                    <programlisting>
+X11Forwarding @%@sshd/xforwarding@%@
+                    </programlisting>
+                <para>
+                    Neu eingefügte Referenzen auf UCR-Variablen werden automatisch von Templates
+                    ausgewertet, eine zusätzliche Registrierung ist nur bei der Verwendung von
+                    Inline-Python-Code nötig (siehe <xref linkend="ucr::templates::extend::python"/>).
+                </para>
+            </section><!-- Referenzierung von UCR-Variablen in Templates -->
+
+            <section id="ucr::templates::extend::python"><title>Integration von Inline-Python-Code in Templates</title>
+                <para>
+                    In UCR-Templates kann beliebiger Python-Code eingebettet werden, in
+                    dem ein von der Zeichenkette <emphasis>@!@</emphasis> eingefasster Codeblock
+                    eingefügt wird. Mit solchen Blöcken können z.B. bedingte Abfragen
+                    umgesetzt werden, so dass beim Ändern eines Parameters über eine
+                    Variable weitere abhängige Einstellungen automatisch in die
+                    Konfigurationsdatei aufgenommen werden. Folgende Code-Sequenz
+                    konfiguriert beispielsweise Netzwerk-Einstellungen anhand der
+                    &ucsUCR;-Einstellungen:
+                </para>
+                    <programlisting>
+@!@
+if configRegistry.get('apache2/ssl/certificate'):
+    print 'SSLCertificateFile %s' % \
+        configRegistry['apache2/ssl/certificate']
+@!@
+                    </programlisting>
+                <para>
+                    Alle mit der print-Funktion ausgegebenen Daten werden dabei in die
+                    generierte Konfigurationsdatei geschrieben. Die in &ucsUCR;
+                    gespeicherten Daten können über das configRegistry-Objekt abgefragt
+                    werden, z.B.:
+                </para>
+                    <programlisting>
+@!@
+if configRegistry.get('version/version') and \
+        configRegistry.get('version/patchlevel'):
+    print 'UCS %(version/version)s-%(version/patchlevel)s' % \
+        configRegistry
+@!@
+                    </programlisting>
+                <para>
+                    Im Gegensatz zu direkt referenzierten UCR-Variablen (siehe
+                    <xref linkend="ucr::templates::extend::simple"/>) müssen Variablen, auf die in
+                    Inline-Python-Code zugegriffen wird, explizit registriert werden.
+                </para>
+                <para>
+                    Die in Konfigurationsdateien verwendeten &ucsUCR;-Variablen werden
+                    unterhalb des Verzeichnisses
+                    <filename>/etc/univention/templates/info</filename> in <emphasis>info</emphasis>-Dateien
+                    registriert, die in der Regel nach dem Paketnamen mit der
+                    Dateiendung <emphasis>.info</emphasis> benannt werden. Wird neuer Python-Code in die Vorlagen eingefügt oder bestehender Code
+                    so verändert, dass er zusätzliche oder andere Variablen nutzt, so muss
+                    einer der bestehenden <emphasis>.info</emphasis>-Dateien modifiziert oder eine neue
+                    hinzugefügt werden.
+                </para>
+                <para>
+                    Nach der Änderung von <emphasis>.info</emphasis>-Dateien muss der Befehl
+                    <command>ucr update</command> aufgerufen werden.
+                </para>
+            </section><!-- Integration von Inline-Python-Code in Templates -->
+        </section><!-- Anpassung von UCR-Templates -->
+    </section><!-- Verwaltung der lokalen Systemkonfiguration mit Univention -->
+
+    <section id="computers:Basis-Systemdienste"><title>Basis-Systemdienste</title>
+        <para>
+            Dieser Abschnitt beschreibt grundlegende System-Dienste einer
+            UCS-Installation, wie etwa die Konfiguration der
+            Authentifizierungs-Schnittstelle PAM, des System-Loggings und des NSCD.
+        </para>
+
+        <section id="computers:rootaccount"><title>Administrativer Zugriff mit dem Root-Konto</title>
+            <para>
+                Für den administrativen Vollzugriff existiert auf jedem UCS-System
+                das <emphasis>root</emphasis>-Konto. Das Passwort wird beim Installieren des Systems
+                festgelegt. Der root-Benutzer wird nicht im LDAP-Verzeichnis
+                gespeichert, sondern in den lokalen Benutzerkonten.
+            </para>
+            <para>
+                Das Passwort für den lokalen root-Nutzer kann über die &ucsUMC;
+                unter <guimenu>Basis-Einstellungen &ar; Allgemein &ar; Root-Passwort</guimenu>
+                geändert werden. Alternativ kann auf der Kommandozeile der Befehl
+                <command>passwd</command> aufgerufen werden.
+            </para>
+            <para>
+                Es ist zu beachten, dass hierbei keine Prüfungen hinsichtlich der
+                Passwortlänge/-Stärke und bereits verwendeter Passwörter durchgeführt
+                wird. Um Folgefehler durch Tippfehler zu vermeiden, muss dass Passwort
+                doppelt eingegeben werden.
+            </para>
+        </section><!-- Administrativer Zugriff mit dem Root-Konto -->
+
+        <section id="computers:Konfiguration_der_Sprach-_und_Tastatur-Einstellungen"><title>Konfiguration der Sprach- und Tastatur-Einstellungen</title>
+            <para>
+                Unter Linux werden Lokalisierungseigenschaften für Software in <emphasis>Locales</emphasis>
+                definiert. Konfiguriert werden u.a. Einstellungen wie Datums- sowie zu
+                nutzende Währungsformate, verwendete Zeichensätze und die
+                Sprachauswahl für internationalisierte Programme. Die installierten Locales können in der &ucsUMC; unter
+                <guimenu>Basis-Einstellungen &ar; Spracheinstellungen &ar; Verfügbare
+                System-Lokalisierungen</guimenu> geändert werden. Unter
+                <guimenu>Standard-System-Lokalisierung</guimenu> wird die Standard-Locale
+                festgelegt.
+            </para>
+                <figure id="language-settings"><title>Konfiguration der Spracheinstellungen</title>
+                    <graphic scalefit="1" width="80%" fileref="illustrations/computers_timezone_de.png"/>
+                </figure>
+            <para>
+                Das <guimenu>Tastaturlayout</guimenu> im Menüpunkt
+                <guimenu>Zeitzonen- und Tastatureinstellungen</guimenu> greift bei lokalen
+                Anmeldungen an dem Rechner.
+            </para>
+        </section><!-- Konfiguration der Sprach- und Tastatur-Einstellungen -->
+
+        <section id="computers:systemservices"><title>Starten/Stoppen von Systemdiensten / Konfiguration des automatischen Starts</title>
+            <para>
+                Mit dem UMC-Modul <guimenu>Systemdienste</guimenu> kann der aktuelle
+                Status eines Systemdienstes geprüft und dieser ggf. gestartet oder
+                gestoppt werden.
+            </para>
+                <figure id="umc-services"><title>Übersicht der Systemdienste</title>
+                    <graphic scalefit="1" width="80%" fileref="illustrations/umc-systemservices.png"/>
+                </figure>
+            <para>
+                In der Liste aller auf dem System installierten Dienste ist unter
+                <guimenu>Status</guimenu> der aktuelle Laufzeitstatus und eine
+                <guimenu>Beschreibung</guimenu> aufgeführt. Unter <guimenu>mehr</guimenu> kann
+                der Dienst gestartet, gestoppt oder neu gestartet werden.
+            </para>
+            <para>
+                In der Grundeinstellung wird jeder Dienst automatisch beim Systemstart
+                gestartet. In einigen Fällen kann es sinnvoll sein, den Dienst nicht
+                direkt zu starten, sondern z.B. erst nach Konfiguration weiterer
+                Einstellungen. Mit der Aktion <guimenu>Manuell starten</guimenu> wird der
+                Dienst nicht beim Systemstart automatisch gestartet, kann aber
+                nachträglich gestartet werden. Mit der Aktion <guimenu>Niemals
+                starten</guimenu> wird auch der nachträgliche Start unterbunden.
+            </para>
+        </section><!-- Starten/Stoppen von Systemdiensten / Konfiguration des automatischen Starts -->
+
+        <section id="computers:Authentifizierung__PAM"><title>Authentifizierung / PAM</title>
+            <para>
+                Authentifizierungs-Dienste werden in Univention Corporate Server durch
+                <emphasis>Pluggable Authentication Modules</emphasis> (PAM) realisiert. Dabei werden
+                unterschiedliche Anmeldeverfahren auf eine gemeinsame Schnittstelle
+                abgebildet, so dass eine neue Anmeldemethode keine Anpassungen an
+                bestehenden Applikationen benötigt.
+            </para>
+
+            <section id="computers:Anmeldebeschraenkungen_fuer_ausgewaehlte_Benutzer"><title>Anmeldebeschränkungen für ausgewählte Benutzer</title>
+                <para>
+                    In der Grundeinstellung können sich nur der <emphasis>root</emphasis>-Benutzer und Mitglieder der
+                    Gruppe <emphasis>Domain Admins</emphasis> remote über SSH und lokal auf einem
+                    tty anmelden.
+                </para>
+                <para>
+                    Diese Einschränkung kann mit der &ucsUCRV; <envar>auth/DIENST/restrict</envar>
+                    konfiguriert werden. Der Zugriff auf diesen Dienst kann durch Setzen
+                    der Variablen <envar>auth/DIENST/user/BENUTZERNAME</envar> und
+                    <envar>auth/DIENST/group/GRUPPENNAME</envar> auf <emphasis>yes</emphasis> freigegeben
+                    werden.
+                </para>
+                <para>
+                    Anmeldebeschränkungen werden unterstützt für SSH (<emphasis>sshd</emphasis>), FTP
+                    (<emphasis>ftp</emphasis>), die Anmeldung am Login-Manager GDM (<emphasis>gdm</emphasis>), die
+                    Anmeldung an einem tty (<emphasis>login</emphasis>), rlogin (<emphasis>rlogin</emphasis>), PPP
+                    (<emphasis>ppp</emphasis>) und andere Dienste (<emphasis>other</emphasis>). Ein Beispiel für SSH:
+                </para>
+                    <programlisting>
+auth/sshd/group/Administrators: yes
+auth/sshd/group/Computers: yes
+auth/sshd/group/DC Backup Hosts: yes
+auth/sshd/group/DC Slave Hosts: yes
+auth/sshd/group/Domain Admins: yes
+auth/sshd/restrict: yes
+                    </programlisting>
+            </section><!-- Anmeldebeschränkungen für ausgewählte Benutzer -->
+        </section><!-- Authentifizierung / PAM -->
+
+        <section id="computers:Konfiguration_des_verwendeten_LDAP-Servers"><title>Konfiguration des verwendeten LDAP-Servers</title>
+            <para>
+                In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der
+                primär verwendete wird mit der &ucsUCRV; <envar>ldap/server/name</envar> festgelegt,
+                weitere Server können über die &ucsUCRV; <envar>ldap/server/addition</envar> angegeben
+                werden.
+            </para>
+            <para>
+                Alternativ können die LDAP-Server auch über die Richtlinie
+                <guimenu>LDAP-Server</guimenu> in der Rechnerverwaltung der &ucsUMC;
+                festgelegt werden. Die Reihenfolge der Server bestimmt die Reihenfolge der Anfragen des
+                Rechners an die Server, falls ein LDAP-Server nicht erreichbar sein sollte.
+            </para>
+        </section><!-- Konfiguration des verwendeten LDAP-Server -->
+
+        <section id="computers:Konfiguration_des_verwendeten_Druckservers"><title>Konfiguration des verwendeten Druckservers</title>
+            <para>
+                Der zu verwendende Druckserver kann mit der &ucsUCRV; <envar>cups/server</envar>
+                festgelegt werden.
+            </para>
+            <para>
+                Alternativ kann der Server auch über die Richtlinie
+                <guimenu>Druckserver</guimenu> in der Rechnerverwaltung der &ucsUMC; festgelegt werden.
+            </para>
+        </section><!-- Konfiguration des verwendeten Druckservers -->
+
+        <section id="computers:Protokollierung_Abfrage_von_Systemmeldungen_und_zustaenden"><title>Protokollierung/Abfrage von Systemmeldungen und -zuständen</title>
+            <section id="computers:Logdateien"><title>Logdateien</title>
+                <para>
+                    Alle UCS-spezifischen Logdateien (z.B. für die Listener/Notifier-Replikation)
+                    werden im Verzeichnis <filename>/var/log/univention</filename> abgelegt. Serverdienste
+                    protokollieren in ihre jeweilige Standard-Logdateien; Apache beispielsweise in
+                    die Datei <filename>/var/log/apache2/error.log</filename>.
+                </para>
+                <para>
+                    Die Logdateien werden durch Logrotate verwaltet. Es sorgt dafür, dass
+                    Logdateien in einem Intervall (konfigurierbar in Wochen über
+                    die &ucsUCRV; <envar>log/rotate/weeks</envar>, standardmäßig 12) fortlaufend benannt werden
+                    und ältere Logdateien anschließend gelöscht werden. Die aktuelle Logdatei für
+                    den Univention Directory Listener findet sich beispielsweise in der
+                    Datei <filename>listener.log</filename>, die der Vorwoche in <filename>listener.log.1</filename> usw.
+                </para>
+                <para>
+                    Alternativ können Logdateien auch erst beim Erreichen einer bestimmten Größe rotiert
+                    werden. Soll beispielsweise erst ab einer Größe von 50 MB rotiert werden, kann dazu
+                    die &ucsUCRV; <envar>logrotate/rotates</envar> auf <emphasis>size 50M</emphasis>
+                    gesetzt werden.
+                </para>
+                <para>
+                    Über die &ucsUCRV; <envar>logrotate/compress</envar> kann konfiguriert werden, ob
+                    die älteren Logdateien zusätzlich mit Gzip komprimiert werden sollen.
+                </para>
+            </section><!-- Logdateien -->
+
+            <section id="computers:Protokollierung_des_Systemzustands"><title>Protokollierung des Systemzustands</title>
+                <para>
+                    Mit <command>univention-system-stats</command> kann der
+                    aktuelle Systemzustand in die Datei <filename>/var/log/univention/system-stats.log</filename>
+                    protokolliert werden. Protokolliert werden dabei folgende Werte:
+                </para>
+                    <itemizedlist>
+						<listitem><simpara>Der freie Speicherplatz auf den Systempartitionen (<command>df -lhT</command>)</simpara></listitem>
+						<listitem><simpara>Die aktuelle Prozeßliste (<command>ps auxf</command>)</simpara></listitem>
+						<listitem><simpara>Zwei <command>top</command>-Aufstellungen der aktuellen Prozesse und Auslastung (<command>top -b -n2</command>)</simpara></listitem>
+						<listitem><simpara>Den aktuell freien Arbeitsspeicher (<command>free</command>)</simpara></listitem>
+						<listitem><simpara>Die Zeit, die seit dem Start des Systems vergangen ist (<command>uptime</command>)</simpara></listitem>
+						<listitem><simpara>Temperatur-, Lüfter- und Spannungskennzahlen aus LM-Sensors (<command>sensors</command>)</simpara></listitem>
+						<listitem><simpara>Eine Aufstellung der aktuellen Samba-Verbindungen (<command>smbstatus</command>)</simpara></listitem>
+                    </itemizedlist>
+                <para>
+                    Die Laufzeiten in denen der Systemzustand protokolliert werden soll, können
+                    durch die &ucsUCRV; <envar>system/stats/cron</envar> in Cron-Syntax definiert werden,
+                    z.B. <emphasis>0,30 * * * *</emphasis> für eine Protokollierung jeweils zu jeder vollen und
+                    halben Stunde. Die Protokollierung wird durch Setzen
+                    der &ucsUCRV; <envar>system/stats</envar> auf <emphasis>yes</emphasis> aktiviert und ist bei
+                    Neuinstallationen ab UCS 3.0 die Grundeinstellung.
+                </para>
+            </section><!-- Protokollierung des Systemzustands -->
+
+            <section id="computers:Anzeige_von_Systemstatistiken_in_der_UMC"><title>Anzeige von Systemstatistiken in der &ucsUMC;</title>
+                <para>
+                    Das UMC-Modul <guimenu>Statistiken</guimenu> zeigt die Auslastung des
+                    Systems an. Dabei wird jeweils eine Grafik für die unterschiedlichen
+                    Zeiträume angezeigt:
+                </para>
+                    <itemizedlist>
+					<listitem><simpara>Die letzten 24 Stunden</simpara></listitem>
+					<listitem><simpara>Die vergangene Woche</simpara></listitem>
+					<listitem><simpara>Der vergangene Monat</simpara></listitem>
+					<listitem><simpara>Das vergangene Jahr</simpara></listitem>
+                    </itemizedlist>
+                <para>
+                    Folgende Systeminformationen werden protokolliert:
+                </para>
+                    <itemizedlist>
+					<listitem><simpara>Die Auslastung des Hauptspeichers in Prozent</simpara></listitem>
+					<listitem><simpara>Die Prozessor-Auslastung des Systems</simpara></listitem>
+					<listitem><simpara>Die Anzahl der jeweils aktiven Terminalserver-Sitzungen</simpara></listitem>
+					<listitem><simpara>Die Auslastung der Auslagerungsdatei (Swap)</simpara></listitem>
+                    </itemizedlist>
+            </section><!-- Anzeige von Systemstatistiken in der &ucsUMC; -->
+
+            <section id="computers:modules:top"><title>Prozessübersicht in der &ucsUMC;</title>
+                <para>
+                    Das UMC-System-Modul <guimenu>Prozessübersicht</guimenu> zeigt eine Tabelle der aktuellen
+                    Prozesse auf dem System an. Die Prozesse können nach den folgenden
+                    Eigenschaften sortiert werden, in dem auf den entsprechenden
+                    Tabellenkopf geklickt wird:
+                </para>
+                    <itemizedlist>
+					<listitem><simpara>Die CPU-Nutzung in Prozent</simpara></listitem>
+					<listitem><simpara>Der Benutzername, unter dem der Prozess läuft</simpara></listitem>
+					<listitem><simpara>Speicherverbrauch in Prozent</simpara></listitem>
+					<listitem><simpara>Die Prozess-ID</simpara></listitem>
+                    </itemizedlist>
+                <para>
+                    Unter dem Menüpunkt <guimenu>mehr</guimenu> können Prozesse beendet werden. Hierbei werden zwei Arten der Terminierung
+                    unterschieden:
+                </para>
+                    <itemizedlist>
+						<listitem>
+							<simpara>
+							Die Aktion <guimenu>Beenden</guimenu> schickt dem Prozess eine
+                            Benachrichtigung vom Typ SIGTERM, dies ist der Regelfall bei der
+							kontrollierten Beendigung von Programmen.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+							In Einzelfällen kann es vorkommen, dass sich ein Programm
+                            - z.B. nach einem Absturz - nicht
+                            mehr über dieses Verfahren beenden lässt. In diesem Fall kann mit der Aktion
+                            <guimenu>Beenden erzwingen</guimenu> das Signal SIGKILL geschickt werden
+							um den Prozess forciert zu beenden.
+							</simpara>
+						</listitem>
+                    </itemizedlist>
+                <para>
+                    Das Beenden über SIGTERM ist in der Regel vorzuziehen, da viele
+                    Programme dann einen kontrollierten Programmabbruch einleiten und
+                    z.B. ein Speichern von Dateien o.ä. durchführen.
+                </para>
+            </section><!-- Prozessübersicht in der &ucsUMC; -->
+        </section><!-- Protokollierung/Abfrage von Systemmeldungen und -zuständen -->
+
+        <section id="computers:Ausfuehren_von_wiederkehrenden_Aktionen_mit_Cron"><title>Ausführen von wiederkehrenden Aktionen mit Cron</title>
+            <para>
+                Regelmäßig wiederkehrende Aktionen (wie z.B. das Verarbeiten von Logdateien)
+                können mit dem Cron-Dienst zu einem definierten Zeitpunkt gestartet
+                werden. Eine solche Aktion bezeichnet man auch als Cron-Job.
+            </para>
+
+            <section id="computers:Stündliches_tägliches_wöchentliches_monatliches_Ausführen_von_Skripten"><title>Stündliches/tägliches/wöchentliches/monatliches Ausführen von Skripten</title>
+                <para>
+                    Auf jedem UCS-System sind vier Verzeichnisse
+                    vordefiniert, <filename>/etc/cron.hourly/</filename>, <filename>/etc/cron.daily/</filename>, <filename>/etc/cron.weekly/</filename>
+                    und <filename>/etc/cron.monthly/</filename>. Shell-Skripte, die in diesen Verzeichnissen
+                    abgelegt werden und als ausführbar markiert sind, werden automatisch
+                    stündlich, täglich, wöchentlich oder monatlich ausgeführt.
+                </para>
+            </section><!-- Stündliches/tägliches/wöchentliches/monatliches Ausführen von Skripten -->
+
+            <section id="cron:local"><title>Definition eigener Cron-Jobs in /etc/cron.d</title>
+                <para>
+                    Ein Cron-Job wird in einer Zeile definiert, die aus insgesamt sieben Spalten aufgebaut ist:
+                </para>
+                    <itemizedlist>
+					<listitem><simpara>Minute (0-59)</simpara></listitem>
+					<listitem><simpara>Stunde (0-23)</simpara></listitem>
+					<listitem><simpara>Tag (1-31)</simpara></listitem>
+					<listitem><simpara>Monat (1-12)</simpara></listitem>
+					<listitem><simpara>Wochentag (0-7) (0 und 7 stehen dabei für den Sonntag)</simpara></listitem>
+					<listitem><simpara>Name des ausführenden Benutzers (z.B. root)</simpara></listitem>
+					<listitem><simpara>Der auszuführende Befehl</simpara></listitem>
+                    </itemizedlist>
+                <para>
+                    Die Zeitangaben können dabei in verschiedenen Formaten vorgenommen werden. Es
+                    kann entweder eine konkrete Minute/Stunde/etc. vorgegeben werden oder mit
+                    einem * eine Aktion zu jeder Minute/Stunde/etc. ausgeführt werden. Es können
+                    auch Intervalle definiert werden, */2 führt als Minutenangabe beispielsweise dazu, dass
+                    eine Aktion jede zweite Minute ausgeführt wird.
+                </para>
+                <para>
+                    Einige Beispiele:
+                </para>
+                    <programlisting>
+30 * * * * root /usr/sbin/jitter 600 /usr/share/univention-samba/slave-sync
+*/5 * * * * www-data /usr/bin/php -q /usr/share/horde/reminders.php
+                    </programlisting>
+            </section><!-- Definition eigener Cron-Jobs in /etc/cron.d -->
+
+            <section id="computers:Definition_eigener_Cron-Jobs_in_Univention_Configuration_Registry"><title>Definition eigener Cron-Jobs in Univention Configuration Registry</title>
+                <para>
+                    Cron-Jobs können auch in &ucsUCR; definiert werden. Das ist besonders
+                    nützlich, wenn sie über eine &ucsUDM;-Richtlinie gesetzt und somit auf mehr als einen Rechner angewendet werden.
+                </para>
+                <para>
+                    Jeder Cron-Job setzt sich dabei aus min. zwei &ucsUCR;-Variablen
+                    zusammen. JOBNAME ist dabei ein allgemeiner Bezeichner.
+                </para>
+                    <itemizedlist>
+						<listitem>
+							<simpara>
+							<command>cron/JOBNAME/command</command> legt den auszuführenden
+							Befehl fest (Angabe erforderlich)
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+							<command>cron/JOBNAME/time</command> setzt die Ausführungszeit
+							fest (siehe <xref linkend="cron:local"/>) (Angabe erforderlich)
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+							Standardmäßig wird der Crob-Job als Benutzer <emphasis>root</emphasis> ausgeführt. Mit
+                            <command>cron/JOBNAME/user</command> kann ein abweichender Benutzer
+							angegeben werden.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+							Wird unter <command>cron/JOBNAME/mailto</command> eine
+							Email-Adresse hinterlegt, wird die Ausgabe des Cron-Jobs per Email dorthin gesendet.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+							Mit <command>cron/JOBNAME/description</command> kann eine
+							Beschreibung hinterlegt werden.
+							</simpara>
+						</listitem>
+                    </itemizedlist>
+            </section><!-- Definition eigener Cron-Jobs in Univention Configuration Registry -->
+        </section><!-- Ausführen von wiederkehrenden Aktionen mit Cron -->
+
+        <section id="computers:nscd"><title>Name Server Cache Daemon</title>
+            <para>
+                Um häufige Anfragen unveränderter Daten zu beschleunigen, werden Namensauflösungen
+                durch den <emphasis>Name Server Cache Daemon</emphasis> (NSCD) zwischengespeichert. Werden diese erneut angefragt, muss so nicht eine
+                vollständige neue LDAP-Anfrage durchgeführt werden, sondern die Daten können
+                direkt aus dem Cache bezogen werden.
+            </para>
+
+			<para>
+			  Die Zwischenspeicherung der Gruppen erfolgt seit UCS 3.1
+			  aus Performance- und Stabilitätsgründen nicht mehr über
+			  den NSCD, sondern durch einen lokalen Gruppencache,
+			  siehe <xref linkend="groups::cache"/>.
+			</para>
+
+            <para>
+                Die zentrale Konfigurations-Datei des NSCD (<filename>/etc/nscd.conf</filename>) wird
+                durch &ucsUCR; verwaltet.
+            </para>
+            <para>
+                Der Zugriff auf den Cache erfolgt über eine Hash-Tabelle. Die Größe dieser
+                Hash-Tabelle kann über &ucsUCR; konfiguriert werden und sollte größer sein als
+                die Anzahl der gleichzeitig verwendeten Benutzer/Rechner. Aus technischen Gründen
+                sollte als Größe der Tabelle eine Primzahl verwendet werden. Die folgende Tabelle
+                führt die Standardwerte der Variablen auf:
+            </para>
+                <table>
+                    <title>Standardgrößen der NSCD Hash-Tablellen</title>
+                    <tgroup cols="2">
+                        <colspec colnum="1" colname="col1" colwidth="1*"/>
+                        <colspec colnum="2" colname="col2" colwidth="2*"/>
+                        <thead>
+                            <row>
+                                <entry>Variable</entry>
+                                <entry>Standardgröße der Hash-Tabelle</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry><command>nscd/hosts/size</command></entry>
+                                <entry>6007</entry>
+                            </row>
+                            <row>
+                                <entry><command>nscd/passwd/size</command></entry>
+                                <entry>6007</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            <para>
+                Bei sehr großen Caches kann es nötig sein, die Größe der Cache-Datenbank im
+                Arbeitsspeicher zu erhöhen. Dies kann mit den &ucsUCR;-Variablen
+                <envar>nscd/hosts/maxdbsize</envar> und
+                <envar>nscd/passwd/maxdbsize</envar> konfiguriert werden.
+            </para>
+            <para>
+                Standardmäßig startet NSCD fünf Threads. In Umgebungen, in denen
+                viele Zugriffe erfolgen, kann es erforderlich sein, die Anzahl durch
+                die &ucsUCRV; <envar>nscd/threads</envar> zu erhöhen.
+            </para>
+            <para>
+                In der Grundeinstellung wird ein aufgelöster Gruppen- oder Rechnername eine
+                Stunde im Cache vorgehalten und ein Benutzername zehn Minuten. Durch die
+                &ucsUCR;-Variablen
+                <envar>nscd/hosts/positive_time_to_live</envar> und
+                <envar>nscd/passwd/positive_time_to_live</envar> können diese
+                Zeiträume erweitert oder verringert werden (die Angabe erfolgt in Sekunden).
+            </para>
+            <para>
+                Gelegentlich kann es nötig sein, den Cache des NSCD manuell zu
+                invalidieren. Die kann individuell pro Cache-Tabelle durch folgende Befehle
+                geschehen:
+            </para>
+                <programlisting>
+nscd -i passwd
+nscd -i hosts
+                </programlisting>
+            <para>
+                Der Detailgrad der Logmeldungen kann mit der &ucsUCRV; <envar>nscd/debug/level</envar>
+                konfiguriert werden.
+            </para>
+        </section><!-- Name Server Cache Daemon -->
+
+        <section id="computers:SSH-Zugriff_auf_Systeme"><title>SSH-Zugriff auf Systeme</title>
+            <para>
+                Bei der Installation eines UCS-Systems wird in der Vorauswahl ein SSH-Server
+                mitinstalliert. Über SSH können verschlüsselte Verbindungen zu Rechnern
+                durchgeführt werden, wobei auch die Identität eines Rechners über eine
+                Prüfsumme sichergestellt werden kann. Wesentliche Aspekte der Konfiguration
+                des SSH-Servers lassen sich über &ucsUCR; anpassen:
+            </para>
+            <para>
+                Standardmäßig ist der Login des privilegierten <emphasis>root</emphasis>-Benutzers per SSH
+                erlaubt (etwa um ein neu installiertes System an einem entfernten Standort zu
+                konfigurieren, auf dem noch keine weiteren Benutzer angelegt wurden).
+            </para>
+            <itemizedlist>
+				<listitem>
+					<simpara>
+					Wird die &ucsUCRV; <envar>sshd/permitroot</envar> auf <emphasis>without-password</emphasis>
+                    gesetzt, so wird für den <emphasis>root</emphasis>-Benutzer keine interaktive
+                    Passwort-Abfrage mehr durchgeführt, sondern beispielsweise nur eine
+                    Public-Key-basierte Anmeldung, was Brute-Force-Attacken auf
+					Passwörter vermeidet.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Soll für den <emphasis>root</emphasis>-Benutzer überhaupt keine SSH-Anmeldung mehr möglich sein, kann dies
+                    durch Setzen der &ucsUCRV; <envar>auth/sshd/user/root</envar> auf <emphasis>no</emphasis>
+					deaktiviert werden.
+					</simpara>
+				</listitem>
+            </itemizedlist>
+            <para>
+                Mit der &ucsUCRV; <envar>sshd/xforwarding</envar> kann
+                konfiguriert werden, ob eine X11-Ausgabe über SSH weitergeleitet werden
+                soll. Dies ist u.a. nötig, um einem Benutzer die Möglichkeit zu geben durch
+                einen Login mit <command>ssh -X ZIELRECHNER</command> ein Programm mit grafischer
+                Ausgabe auf einem entfernten Rechner zu starten. Die möglichen Einstellungen
+                sind <emphasis>yes</emphasis> und <emphasis>no</emphasis>.
+            </para>
+            <para>
+                Der Standard-Port für SSH-Verbindungen ist Port 22 über TCP. Wenn ein
+                abweichender Port verwendet werden soll, kann dies über die
+                &ucsUCR;-Variable <command>sshd/port</command> konfiguriert werden.
+            </para>
+        </section><!-- SSH-Zugriff auf Systeme -->
+
+        <section id="basicservices::ntp"><title>Konfiguration der Zeitzone / Zeitsynchronisation</title>
+            <para>
+                Die Zeitzone, in der ein System angesiedelt ist, kann in der &ucsUMC;
+                unter <guimenu>Basis-Einstellungen &ar; Sprache &ar; Zeitzone</guimenu>
+                geändert werden.
+            </para>
+            <para>
+                Asynchrone Systemzeiten zwischen den einzelnen Rechnern einer Domäne
+                können die Quelle vielfältiger Fehler bedeuten: Sie verringern beispielweise die
+                Verlässlichkeit von Log-Dateien, stören den Kerberos-Betrieb und können die
+                korrekte Auswertung von Passwortablaufintervallen stören.
+            </para>
+            <para>
+                In einer Domäne dient standardmäßig der Domänencontroller Master als
+                Zeitserver. Über die &ucsUCR;-Variablen <envar>timeserver</envar>,
+                <envar>timeserver2</envar> und <envar>timeserver3</envar> können externe NTP-Server
+                als Zeitquelle eingebunden werden.
+            </para>
+            <para>
+                Eine manuelle Zeitsynchronisation kann durch den Befehl <command>ntpdate</command>
+                gestartet werden.
+            </para>
+            <para>
+                Windows-Clients, die in eine Samba 4-Domäne gejoint wurden,
+                akzeptieren nur signierte NTP-Zeitanfragen. Wird die
+                &ucsUCRV; <envar>ntp/signed</envar> auf <emphasis>yes</emphasis> gesetzt, werden die NTP-Pakete
+                durch Samba 4 signiert. Diese Einstellung sollte auf Samba 4-Domänencontrollern gesetzt werden.
+            </para>
+        </section><!-- Konfiguration der Zeitzone / Zeitsynchronisation -->
+    </section><!-- Basis-Systemdienste -->
+
+    <section id="computers::softwaremanagement"><title>Softwareverteilung</title>
+        <section id="computers:Einfuehrung"><title>Einführung</title>
+            <para>
+                Die in UCS integrierte Softwareverteilung bietet umfangreiche
+                Möglichkeiten für den Rollout und die Aktualisierung von UCS-Installationen.
+                Sicherheits- und Versionsupdates können dabei über ein Online-Update installiert
+                werden.
+            </para>
+            <para>
+                Für größere Installationen besteht die Möglichkeit, einen lokalen
+                Repository-Server einzurichten, von dem dann alle weiteren Aktualisierungen
+                durchgeführt werden. Dieser Repository-Server bezieht seine Pakete entweder
+                vom Univention-Online-Repository oder in Umgebungen ohne
+                Internetzugriff auch durch Offline-Updates in Form von ISO-Images
+                (siehe <xref linkend="software::configrepo"/>).
+            </para>
+            <para>
+                UCS-Systeme können über die &ucsUMC;, über ein Kommandozeilen-Tool
+                und richtliniengesteuert aktualisiert werden. Dies wird in
+                <xref linkend="software::ucs-updates"/> beschrieben. Die UCS-Softwareverteilung
+                unterstützt nicht die Aktualisierung von Microsoft
+                Windows-Systemen. Hierfür ist eine zusätzliche
+                Windows-Softwareverteilung nötig.
+            </para>
+            <para>
+                Die Erstinstallation von UCS-Systemen ist nicht Bestandteil dieses Kapitels
+                und wird stattdessen in <xref linkend="installation:chapter"/> beschrieben.
+            </para>
+            <para>
+                Der Funktionsumfang einer UCS-Installation kann durch die Einbindung weiterer
+                Repository-Komponenten erweitert werden, siehe <xref linkend="computers::softwaremanagement::repoadd"/>.
+                Solche Komponenten werden sowohl von Univention (z.B. für das auf UCS
+                aufbauende UCS DVS), wie auch von Drittanbietern bereitgestellt.
+            </para>
+            <para>
+                Die UCS-Softwareverteilung basiert auf den unterliegenden
+                Debian-Paketmanagement-Tools, wird aber durch UCS-spezifische Werkzeuge
+                ergänzt. Die verschiedenen Werkzeuge zur Installation von Software werden in
+                <xref linkend="computers::softwaremanagement::installsoftware"/> vorgestellt.
+            </para>
+            <para>
+                Die Installation von Versions- und Sicherheitsupdates kann über Richtlinien
+                automatisiert werden, siehe <xref linkend="computers::softwaremanagement::maintenancepolicy"/>
+            </para>
+            <para>
+                Mit dem Software-Monitor steht ein Werkzeug zur Verfügung, mit dem
+                alle Paketinstallationsstände zentral in einer Datenbank erfasst
+                werden, siehe <xref linkend="computers::softwaremonitor"/>.
+            </para>
+        </section><!-- Einführung -->
+
+        <section id="computers:Unterscheidung_der_Update-Varianten_Aufbau_der_UCS-Versionen"><title>Unterscheidung der Update-Varianten / Aufbau der UCS-Versionen</title>
+            <para>
+                Vier Arten von UCS-Updates werden unterschieden:
+            </para>
+                <itemizedlist>
+					<listitem>
+					<simpara>
+						<emphasis>Major Releases</emphasis> erscheinen ca. alle vier Jahre. Major
+                        Releases können sich von vorhergehenden Major Releases signifikant hinsichtlich
+                        ihres Leistungsumfangs, ihrer Funktionsweise und der darin enthaltenen
+						Software unterscheiden.
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+						Während der Maintenance-Dauer eines Major Releases erscheinen <emphasis>Minor Releases</emphasis>
+                        in einem Rhythmus von ca. 6-8 Monaten. Diese Updates beinhalten die Behebung
+                        neu bekannt gewordener Fehler, sowie die Ergänzung des
+                        Produkts um zusätzliche Funktionen. Dabei erhalten Minor Releases so weit wie
+                        möglich die Kompatibilität zu vorhergehenden Versionen hinsichtlich
+                        Funktionsweise, Schnittstellen und Bedienung. Sollte eine Änderung des
+                        Verhaltens sinnvoll oder unvermeidbar sein, so wird bei der Veröffentlichung
+						der neuen Version in den Release Notes darauf hingewiesen.
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+						<emphasis>Patchlevel Releases</emphasis> beinhalten gegenüber einem Minor Release
+                        weniger Änderungen. Der Fokus liegt hier ausschließlich auf der Korrektur von
+                        Fehlern. Die Kompatibilität zur vorherigen Version hinsichtlich
+                        Funktionsweise, Schnittstellen und Bedienung wird eingehalten, sofern eine
+                        Änderung nicht aufgrund eines kritischen Fehlers und mit zumutbarem Aufwand
+                        unumgänglich ist. Sollte eine Änderung indes unvermeidbar sein, so wird bei der
+                        Veröffentlichung der neuen Version in Release Notes darauf hingewiesen.
+						Neue Patchlevelversionen werden ca. alle zwei Monate veröffentlicht.
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+						Neben der geplanten, langfristigen Pflege und Weiterentwicklung von UCS
+                        durch Major- , Minor- und Patchlevelversionen, veröffentlicht Univention nach
+                        Bedarf <emphasis>Errata-Updates</emphasis>. Errata-Updates enthalten
+                        Korrekturen für Sicherheitslücken oder kritische Programmfehler,
+                        die zeitnah noch vor dem nächsten Patchlevel-Update behoben werden müssen.
+                        Eine Aufstellung der Errata-Updates findet sich unter
+                        <ulink url="http://errata.univention.de"/>. Errata-Updates können auch für
+						Komponenten bereitgestellt werden.
+					</simpara>
+					</listitem>
+                </itemizedlist>
+            <para>
+                Jede ausgelieferte UCS-Version besitzt eine eindeutige Versionsbezeichnung;
+                sie besteht aus einer Zahl (der Majorversion), einem Punkt, einer zweiten Zahl (der Minorversion)
+                einem Bindestrich und einer dritten Zahl (der Patchlevelversion). Mit der
+                Version UCS 3.2-1 wird also das erste Patchlevel-Update für das zweite Minor
+                Update für das Major-Release UCS 3 bezeichnet.
+            </para>
+            <para>
+                Errata-Updates beziehen sich immer auf bestimmte Minor-Releases, also
+                beispielsweise für UCS 3.0. Errata-Updates können in der Regel für alle
+                Patchlevelversionen eines Minor Releases installiert werden.
+            </para>
+            <para>
+                Wenn neue Release- oder Errata-Updates verfügbar sind, wird bei der Anmeldung
+                an der &ucsUMC; ein entsprechender Hinweis ausgegeben.
+            </para>
+            <para>
+                Die Verfügbarkeit neuer Updates wird außerdem per E-Mail angekündigt,
+                entsprechende Newsletter - getrennt nach Release- und Errata-Updates - können
+                auf der Univention-Webseite abonniert werden.
+            </para>
+            <para>
+                Unter <ulink url="http://errata.univention.de/"/> wird zusätzlich eine
+                Übersicht aller Errata-Updates bereitgestellt.
+            </para>
+            <para>
+                Zu jedem Release-Update wird ein Release-Notes-Dokument veröffentlicht, in
+                dem die aktualisierten Pakete, Hinweise zu Fehlerkorrekturen und neuen
+                Funktionen aufgeführt sind.
+            </para>
+        </section><!-- Unterscheidung der Update-Varianten / Aufbau der UCS-Versionen -->
+
+        <section id="software:appcenter"><title>Univention App Center</title>
+		<para>
+		  Das Univention App Center erlaubt die einfache Einbindung von Softwarekomponenten in eine
+		  UCS-Installation. Die Applikationen werden sowohl von Drittanbietern wie auch von
+		  Univention selbst (z.B. UCS@school) bereitgestellt. Der Kauf von Lizenzen, Maintenance oder
+		  Support für die Applikation verläuft über den jeweiligen Hersteller und
+		  nicht über das Univention App Center.
+		</para>
+
+		<figure id="appcenter-overview"><title>Überblick der verfügbaren Applikationen im App Center</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_overview_de.png"/>
+		</figure>
+
+		<para>
+		  Das Univention App Center kann über das UMC-Modul <emphasis>App Center</emphasis>
+		  aufgerufen werden. Unter <guimenu>Applikationen</guimenu> werden die verfügbaren
+		  Softwarekomponenten aufgeführt. Mit <guimenu>Suchbegriff</guimenu> kann die Liste der
+		  angezeigten Applikationen eingeschränkt werden, außerdem können die Applikationen anhand
+		  der <guimenu>Kategorien</guimenu> geordnet werden.
+		</para>
+
+		<para>
+		  Klickt man auf eine der angezeigten Applikationen, werden weitergehende Details zu der
+		  Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein
+		  Screenshot). Im Feld <guimenu>E-Mail Benachrichtigung</guimenu> wird angezeigt, ob der
+		  Hersteller der Softwarekomponente bei der Installation/Deinstallation benachrichtigt wird.
+		</para>
+
+		<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_details_de.png"/>
+		</figure>
+
+		<para>
+		  Die Installation der meisten Anwendungen aus dem Univention App Center erfordert einen individuell
+		  ausgestellten Lizenschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Lizenzschlüssel,
+		  die für UCS-Versionen vor 3.1 ausgestellt wurden, müssen umgewandelt werden. Wird eine
+		  betroffene Applikation installiert, öffnet sich ein Dialog, mit dem die Umwandlung
+		  eingeleitet werden kann: Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
+		  und der aktualisierte Schlüssel nach einigen Minuten an eine angegebene E-Mail-Adresse
+		  versendet. Der neue Schlüssel kann dann direkt eingespielt werden. Der Lizenzumfang bleibt
+		  durch die Konvertierung unverändert.
+		</para>
+
+		<para>
+		  Einige Applikationen sind möglicherweise inkompatibel mit anderen Softwarepaketen aus
+		  UCS. So setzen beispielsweise die meisten Groupwarepakete voraus, dass der UCS-Mailstack
+		  deinstalliert ist. Jede Applikation prüft, ob inkompatible Versionen installiert sind und
+		  gibt einen Hinweis, welche <guimenu>Konflikte</guimenu> bestehen und wie sie beseitigt werden können. Die
+		  Installation dieser Pakete wird dann zurückgehalten, bis die Konflikte beseitigt sind.
+		</para>
+
+		<para>
+		  Viele Komponenten integrieren Pakete, die auf dem &ucsMaster; installiert werden müssen (in der
+		  Regel LDAP-Schema-Erweiterungen oder Erweiterungen für das UCS-Managementsystem). Diese
+		  Pakete werden automatisch auf dem &ucsMaster; installiert. Ist dieser nicht erreichbar,
+		  wird die Installation abgebrochen. Außerdem werden die Pakete auf allen erreichbaren
+		  &ucsBackup;-Systemen eingerichtet.
+		</para>
+
+		<para>
+		  Nach der Installation einer Applikation werden nach einem Klick auf das Icon einer Applikation
+		  zwei neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation
+		  und ein Klick auf <guimenu>Öffnen</guimenu> zeigt ein Übersichtsmodul an, in dem
+		  weitergehende Informationen wie ein Link zu Dokumentation und die installierte Version
+		  angezeigt werden. Hier kann die Applikation auch deinstalliert werden oder - falls eine
+		  aktuellere Version vorliegt - ein Update gestartet werden. Eine Übersicht über die
+		  vorhandenen Applikationen kann in der UMC-Startseite unter <guimenu>Installierte
+		  Applikationen</guimenu> abgerufen werden.
+		</para>
+
+		<para>
+		  Installationen und das Entfernen von Paketen werden in der Logdatei
+		  <filename>/var/log/univention/management-console-module-appcenter.log</filename>
+		  protokolliert.
+		</para>
+		</section>
+
+        <section id="software::configrepo"><title>Konfiguration des Repository-Servers für Updates und Paketinstallationen</title>
+            <para>
+                Paketinstallationen und Updates können entweder vom Univention-Update-Server
+                oder von einem lokal gepflegten Repository durchgeführt werden. Ein lokales
+                Repository ist sinnvoll, wenn viele UCS-Systeme zu aktualisieren sind, da
+                Updates in diesem Fall nur einmalig heruntergeladen werden müssen. Da
+                Repositorys auch offline aktualisiert werden können, ermöglicht ein lokales
+                Repository auch die Aktualisierung von UCS-Umgebungen ohne Internetanbindung.
+            </para>
+            <para>
+                Anhand der registrierten Einstellungen werden apt-Paketquellen für Release- und
+                Errata-Updates und Addon-Komponenten im Verzeichnis
+                <filename>/etc/apt/sources.list.d</filename> automatisch generiert.
+                Sollten auf einem System weitere Repositorys benötigt werden, können diese in
+                die Datei <filename>/etc/apt/sources.list</filename> eingetragen werden.
+            </para>
+            <para>
+                Bei einer Neuinstallation wird in der Grundeinstellung das
+                Univention-Repository <uri>updates.software-univention.de</uri> verwendet.
+            </para>
+            <para>
+                Das Univention-Repository und andere Repository-Komponenten unterscheiden
+                zwischen zwei Bestandteilen:
+            </para>
+                <itemizedlist>
+					<listitem>
+					<simpara>
+						Der von der Maintenance abgedeckte Standard-Paketumfang von UCS
+                        befindet sich im <emphasis>maintained</emphasis>-Bereich. Standardmäßig ist nur der
+                        Zugriff auf diese Pakete aktiviert. Sicherheits-Updates werden zeitnah
+						nur für Pakete aus <emphasis>maintained</emphasis> bereitgestellt.
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+						Unter <emphasis>unmaintained</emphasis> finden sich die weiteren Pakete,
+                        z.B. andere Mailserver als Postfix. Diese Pakete sind nicht durch
+                        Sicherheits-Updates oder anderweitige Maintenance
+						abgedeckt. <emphasis>unmaintained</emphasis> ist standardmäßig nicht eingebunden
+					</simpara>
+					</listitem>
+                </itemizedlist>
+            <para>
+                Ein lokales Repository kann - gerade bei Einbindung des
+                unmaintained-Zweiges - viel Plattenplatz in Anspruch nehmen.
+            </para>
+
+            <section id="computers:Konfiguration_ueber_die_Univention_Management_Console"><title>Konfiguration über die Univention Management Console</title>
+                <para>
+                    Im <guimenu>App Center</guimenu>-Modul der &ucsUMC; können die
+                    Repository-Einstellungen angepasst werden. Im Reiter
+                    <guimenu>Repository-Einstellungen</guimenu> kann der <guimenu>Repository-Server</guimenu>
+                    festgelegt werden und die Verwendung der Maintained- und
+                    Unmaintained-Sektionen festgelegt werden.
+                </para>
+            </section><!-- Konfiguration über die Univention Management Console -->
+
+            <section id="computers:Konfiguration_ueber_Univention_Configuration_Registry"><title>Konfiguration über Univention Configuration Registry</title>
+                <para>
+                    Der zu verwendende Repository-Server wird in die
+                    &ucsUCRV; <envar>repository/online/server</envar> eingetragen und ist bei einer
+                    Neuinstallation auf <uri>updates.software-univention.de</uri> voreingestellt.
+                </para>
+                <para>
+                    Das unmaintained-Repository kann durch Setzen der
+                    &ucsUCRV; <envar>repository/online/unmaintained</envar> auf <emphasis>yes</emphasis> integriert
+                    werden.
+                </para>
+            </section><!-- Konfiguration über Univention Configuration Registry -->
+
+            <section id="computers:Richtlinienbasierte_Konfiguration_des_Repository-Servers"><title>Richtlinienbasierte Konfiguration des Repository-Servers</title>
+                <para>
+                    Der zu verwendende Repository-Server kann auch über die Richtlinie
+                    <guimenu>Repository-Server</guimenu> in der Rechnerverwaltung der &ucsUMC;
+                    festgelegt werden. In dem Auswahlfeld werden UCS-Server-Systeme
+                    angezeigt, für die ein DNS-Eintrag hinterlegt ist.
+                </para>
+                <para>
+                    Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+                </para>
+            </section><!-- Richtlinienbasierte Konfiguration des Repository-Servers -->
+
+            <section id="software::createrepo"><title>Einrichtung und Aktualisierung eines lokalen Repositorys</title>
+                <para>
+                    Paketinstallationen und Updates können entweder vom Univention-Update-Server
+                    oder von einem lokal gepflegten Repository durchgeführt werden. Ein lokales
+                    Repository ist sinnvoll wenn viele UCS-Systeme zu aktualisieren sind, da
+                    Updates in diesem Fall nur einmalig heruntergeladen werden müssen. Da
+                    Repositorys auch offline aktualisiert werden können, ermöglicht ein lokales
+                    Repository auch die Aktualisierung von UCS-Umgebungen ohne Internetanbindung.
+                </para>
+                <para>
+                    Es besteht auch die Möglichkeit lokale Repositorys zu synchronisieren,
+                    so dass beispielsweise in der Firmenzentrale ein Haupt-Repository
+                    gepflegt wird, das dann in lokale Repositorys der einzelnen Standorte
+                    synchronisiert wird.
+                    <!-- Diese Funktionalität wird im Univention Wiki unter WIKIREF-24826 beschrieben. -->
+                    Um ein Repository einzurichten, muss der Befehl
+                    <command>univention-repository-create</command> als Benutzer <emphasis>root</emphasis>
+                    aufgerufen werden. Der initiale Paketbestand wird von einer
+                    Installations-DVD eingelesen, mit dem Parameter <emphasis>--iso</emphasis> kann
+					hier auch ein ISO-Image übergeben werden.
+                </para>
+                <para>
+                    Der Zugriff auf das Univention Online-Repository wird durch Verwendung
+                    von Secure Apt über Signaturen kryptografisch gesichert. Für lokale
+                    Repositorys besteht diese Möglichkeit aktuell noch nicht, so dass beim
+                    Erstellen eines Repositorys ein Hinweis ausgegeben wird, wie Secure
+                    Apt mit der &ucsUCRV; <envar>update/secure_apt</envar> deaktiviert werden kann.
+                    Diese Einstellung muss auf allen UCS-Systemen gesetzt werden, die auf
+                    das Repository zugreifen.
+                </para>
+                <para>
+                    Mit dem Tool <command>univention-repository-update</command> werden die
+                    Pakete im Repository aktualisiert. Es unterstützt zwei Modi:
+				</para>
+                    <itemizedlist>
+						<listitem>
+							<simpara>
+							<command>univention-repository-update cdrom</command> Dabei wird das
+							Repository über eine Update-DVD oder ein ISO-Image aktualisiert.
+							</simpara>
+						</listitem>
+						<listitem>
+							<simpara>
+						<command>univention-repository-update net</command> Bei dieser Variante wird
+                            das Repository mit einem angebenen anderen Repository-Server
+                            synchronisiert. Dieser ist in der &ucsUCRV; <envar>repository/mirror/server</envar>
+							definiert (typischerweise <uri>updates.software-univention.de</uri>).
+							</simpara>
+						</listitem>
+                    </itemizedlist>
+                <para>
+                    Eine Übersicht über die möglichen Optionen kann mit folgendem Befehl aufgerufen werden:
+                </para>
+                    <programlisting>
+univention-repository-update -h
+                    </programlisting>
+                <para>
+                    Das Repository wird im Verzeichnis
+                    <filename>/var/lib/univention-repository/mirror</filename> vorgehalten.
+                </para>
+                <para>
+                    Durch die &ucsUCRV; <envar>local/repository</envar> kann das lokale Repository
+                    aktiviert/deaktiviert werden.
+                </para>
+            </section><!-- Einrichtung und Aktualisierung eines lokalen Repositorys -->
+        </section><!-- Konfiguration des Repository-Servers für Updates und Paketinstallationen -->
+
+        <section id="software::ucs-updates"><title>Aktualisierung von UCS-Systemen</title>
+            <para>
+                UCS-Systeme können auf zwei Wegen aktualisiert werden; entweder pro einzelnem System
+                (über die &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
+                UCS-Systemen automatisiert über eine Rechner-Richtlinie der &ucsUMC;.
+            </para>
+
+            <section id="computers:Update-Strategie_in_Umgebungen_mit_mehr_als_einem_UCS-System"><title>Update-Strategie in Umgebungen mit mehr als einem UCS-System</title>
+                <para>
+                    In Umgebungen mit mehr als einem UCS-System muss die
+                    Update-Reihenfolge der UCS-Systeme beachtet werden:
+                </para>
+                <para>
+                    Auf dem &ucsMaster; wird die authoritative Version des
+                    LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server
+                    der UCS-Domäne repliziert wird. Da bei Release-Updates Veränderungen
+                    an den LDAP-Schemata auftreten können (siehe <xref linkend="domain:ldap:schemata"/>) muss der &ucsMaster;
+                    bei einem Release-Update immer als erstes System aktualisiert werden.
+                </para>
+                <para>
+                    Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem
+                    Wartungsfenster zu aktualisieren. Wo dies nicht möglich ist, sollten
+                    die nicht-aktualisierten UCS-Systeme gegenüber dem &ucsMaster; nur
+                    eine Release-Version älter sein.
+                </para>
+                <para>
+                    Es ist zu beachten, daß durch als kritisch markierte Komponenten
+                    ggf. ein Upgrade auf das nächste Minor- oder Major-Release verhindert
+                    werden kann. Weiterführende Hinweise finden sich im
+                    <xref linkend="computers::softwaremanagement::repoadd"/>
+                </para>
+            </section><!-- Update-Strategie in Umgebungen mit mehr als einem -->
+
+            <section id="computers:Aktualisierung_eines_einzelnen_Systems_in_der_UMC"><title>Aktualisierung eines einzelnen Systems in der &ucsUMC;</title>
+                <para>
+                    Mit dem <guimenu>Online-Update</guimenu>-Modul der &ucsUMC; können Versions- und
+                    Errata-Updates installiert werden.
+                </para>
+                <para>
+                    In <xref linkend="software-umcupdate"/> ist die Übersichtsseite des
+                    Moduls dargestellt. Im oberen Teil des Dialogs wird unter
+                    <guimenu>Release-Aktualisierungen</guimenu> der aktuelle Installationsstand
+                    angezeigt.
+                </para>
+                    <figure id="software-umcupdate"><title>Aktualisierung eines UCS-Systems über UMC</title>
+                        <graphic scalefit="1" width="80%" fileref="illustrations/software_onlineupdate_de.png"/>
+                    </figure>
+                <para>
+                    Sollte eine neuere UCS-Version vorhanden sein, wird eine Auswahlliste
+                    präsentiert. Durch einen Klick auf <guimenu>Release-Aktualisierungen installieren</guimenu>
+                    werden nach Bestätigung alle Updates bis zur jeweiligen Version eingespielt. Zuvor wird ein Hinweis auf mögliche
+                    Einschränkungen der Serverdienste während des Updates angezeigt. Eventuelle
+                    Zwischenversionen werden automatisch mitinstalliert.
+                </para>
+                <para>
+                    Durch einen Klick auf <guimenu>Errata-Aktualisierungen
+                    installieren</guimenu> werden alle für das aktuelle Release und die
+                    eingebundenen Komponenten verfügbaren Errata-Updates eingerichtet.
+                </para>
+                <para>
+                    Mit <guimenu>Paket-Aktualisierungen prüfen</guimenu> wird eine Aktualisierung der momentan
+                    eingetragenen Paketquellen aktiviert. Dies kann etwa verwendet werden, wenn
+                    für eine Komponente eine aktualisierte Version bereitgestellt wurde.
+                </para>
+                <para>
+                    Die während der Aktualisierung erzeugten Meldungen werden in die
+                    Datei <filename>/var/log/univention/updater.log</filename> geschrieben.
+                </para>
+            </section><!-- Aktualisierung eines einzelnen Systems in der &ucsUMC; -->
+
+            <section id="computers:Aktualisierung_eines_einzelnen_Systems_auf_der_Kommandozeile"><title>Aktualisierung eines einzelnen Systems auf der Kommandozeile</title>
+                <para>
+                    Die folgenden Schritte müssen mit <emphasis>root</emphasis>-Rechten durchgeführt werden.
+                </para>
+                <para>
+                    Ein einzelnes UCS-System kann auf der Kommandozeile mit dem Befehl
+                    <command>univention-upgrade</command> aktualisiert werden. Es wird geprüft, ob neue
+                    Updates vorliegen, die dann nach Bestätigung einer Nachfrage installiert
+                    werden. Außerdem werden Paket-Aktualisierungen durchgeführt (z.B. im Rahmen
+                    eines Errata-Updates).
+                </para>
+                <para>
+                    In der Grundeinstellung werden die zu aktualisierenden Pakete über das
+                    Netz aus einem Repository geladen. Wird ein lokales Repository
+                    eingesetzt (siehe <xref linkend="software::createrepo"/>), können
+                    Release-Updates alternativ auch über Update-DVD-Images installiert werden, die
+                    entweder als ISO-Datei oder von einem Laufwerk eingelesen werden.
+                </para>
+                <para>
+                    Dazu muss <command>univention-upgrade</command> mit den Parametern
+                    <command>--iso=ISOIMAGEDATEI</command> oder
+                    <command>--cdrom=LAUFWERK</command> aufgerufen werden.
+                </para>
+                <para>
+                    Von einer Remote-Aktualisierung über SSH wird abgeraten, da dies zum
+                    Abbruch des Update-Vorgangs führen kann. Sollte dennoch eine Aktualisierung
+                    über eine Netzverbindung durchgeführt werden, ist
+                    sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung
+                    trotzdem weiterläuft. Hierfür können beispielsweise die Tools
+                    <command>screen</command> oder <command>at</command> eingesetzt werden, die auf
+                    allen Systemrollen installiert sind.
+                </para>
+                <para>
+                    Die während der Aktualisierung erzeugten Meldungen werden in die
+                    Datei <filename>/var/log/univention/updater.log</filename> geschrieben.
+                </para>
+            </section><!-- Aktualisierung eines einzelnen Systems auf der Kommandozeile -->
+
+            <section id="computers::softwaremanagement::releasepolicy"><title>Aktualisierung von Systemen über eine Rechner-Richtlinie</title>
+                <para>
+                    Mit einer <guimenu>Release-Richtlinie</guimenu> in der
+                    Rechner-/Domänenverwaltung der &ucsUMC; lässt sich ein Update für
+                    mehrere Rechner konfigurieren.
+                </para>
+                <para>
+                    Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+                </para>
+                    <figure id="software-policyupdate"><title>Aktualisierung eines UCS-Systems über eine Release-Richtlinie</title>
+                        <graphic scalefit="1" width="50%" fileref="illustrations/software_policy_de.png"/>
+                    </figure>
+                <para>
+                    Nur wenn das Auswahlfeld <guimenu>Aktiviere die Richtlinie</guimenu>
+                    aktiviert ist, wird eine Release-Aktualisierung durchgeführt.
+                </para>
+                <para>
+                    Das Eingabefeld <guimenu>Release-Version</guimenu> enthält die
+                    Versionsnummer, bis zu der das System aktualisiert werden soll,
+                    z.B. <emphasis>3.2-1</emphasis>. Wird keine Angabe gemacht, aktualisiert sich das
+                    System bis zur höchsten verfügbaren Versionsnummer.
+                </para>
+                <para>
+                    Der Zeitpunkt, zu dem die Aktualisierung durchgeführt wird, wird über
+                    eine <guimenu>Paketpflege</guimenu>-Richtlinie konfiguriert (siehe
+                    <xref linkend="computers::softwaremanagement::maintenancepolicy"/>).
+                </para>
+                <para>
+                    Die während der Aktualisierung erzeugten Meldungen werden in die
+                    Datei <filename>/var/log/univention/updater.log</filename> geschrieben.
+                </para>
+            </section><!-- Aktualisierung von Systemen über eine Rechner-Richtlinie -->
+
+            <section id="computers:Nachbereitung_von_Release-Updates"><title>Nachbereitung von Release-Updates</title>
+                <para>
+                    Nach erfolgreicher Durchführung eines Release-Updates sollte geprüft
+                    werden, ob neue oder aktualisierte Join-Skripte ausgeführt werden
+                    müssen. Zur Überprüfung und zum Starten der Join-Skripte kann
+                    entweder das UMC-Modul <emphasis>Domänenbeitritt</emphasis> verwendet werden
+                    oder das Kommandozeilenprogramm
+                    <command>univention-run-join-scripts</command> (siehe
+                    <xref linkend="linux-domaenenbeitritt"/>).
+                </para>
+            </section><!-- Nachbereitung von Release-Updates -->
+
+            <section id="computers:troubleshooting">
+			  <title>Fehlersuche bei Updateproblemen</title>
+			  <para>
+				Die während der Aktualisierung erzeugten Meldungen werden in die Datei
+				<filename>/var/log/univention/updater.log</filename> geschrieben, die zur weiteren
+				Fehleranalyse herangezogen werden kann.
+			  </para>
+			  <para>
+				Der Stand der &ucsUCR;-Variablen vor der Release-Aktualisierung wird in dem Verzeichnis
+				<filename>/var/univention-backup/update-to-ZIELRELEASEVERSION</filename>
+				gesichert. Damit kann geprüft werden, ob und welche Variablen im Rahmen des Updates
+				verändert wurden.
+			  </para>
+            </section>
+        </section><!-- Aktualisierung von UCS-Systemen -->
+
+        <section id="computers::softwaremanagement::installsoftware"><title>Installation weiterer Software</title>
+            <para>
+                Die Erstauswahl der Software-Komponenten eines UCS-Systems
+                erfolgt im Rahmen der Installation. Die Auswahl der
+                Softwarekomponenten erfolgt dabei funktionsbezogen, indem etwa die
+                Komponente <emphasis>Proxy-Server</emphasis> ausgewählt wird, die dann über ein
+                Meta-Paket die eigentlichen Software-Pakete nachzieht. Der
+                Administrator muss dazu die eigentlichen Paketnamen nicht kennen.
+                Für weitergehende Aufgaben können aber auch einzelne Pakete gezielt
+                installiert und entfernt werden.
+            </para>
+			<para>
+			  Bei der Installation eines Pakets werden unter Umständen Pakete
+			  mitinstalliert, die für die Funktion des angegebenen Pakets
+			  erforderlich sind, die sogenannten Paketabhängigkeiten.
+			</para>
+            <para>
+                Alle Softwarekomponenten werden aus einem Repository geladen (siehe
+                <xref linkend="software::configrepo"/>).
+            </para>
+            <para>
+                Fremdsoftware, die nicht im Debian-Paketformat vorliegt, sollte in
+                die Verzeichnisse <filename>/opt</filename> oder <filename>/usr/local</filename> installiert
+                werden. UCS-Pakete nutzen diese Verzeichnisse nicht, so dass eine
+                saubere Trennung von UCS- und Fremdsoftware gewährleistet ist.
+            </para>
+            <para>
+                Um auf einem bereits installierten System nachträglich weitere Pakete
+                zuinstallieren, stehen mehrere Möglichkeiten zur Verfügung:
+            </para>
+
+            <section id="computers:Funktionsbezogene_Softwareauswahl_in_der_Univention_Management_Console"><title>Funktionsbezogene Softwareauswahl in der Univention Management Console</title>
+                <para>
+                    In der &ucsUMC; steht unter <guimenu>Basis-Einstellungen &ar;
+                    Software</guimenu> ein Modul zur Verfügung, mit der die auch im Univention
+                    Installer angebotene funktionsbezogene Softwareauswahl nachträglich
+                    angepasst werden kann. Durch Aktivierung/Deaktivierung des
+                    Auswahlkästchens vor den Komponenten und abschließendem Klick auf
+                    Speichern können Softwarekomponenten installiert und entfernt werden.
+                </para>
+                    <figure id="software-setup"><title>Funktionsbezogene Softwareauswahl</title>
+                        <graphic scalefit="1" width="80%" fileref="illustrations/software_basicsettings_de.png"/>
+                    </figure>
+                <para>
+                    Eine Aufstellung der verfügbaren Softwareauswahl findet sich in
+                    <xref linkend="installation::softwareselection"/>.
+                </para>
+            </section><!-- Funktionsbezogene Softwareauswahl in der Univention Management Console -->
+
+            <section id="computers:Installation_Deinstallation_von_einzelnen_Paketen_in_der_Univention_Management_Console"><title>Installation/Deinstallation von einzelnen Paketen in der Univention Management Console</title>
+                <para>
+				  Mit dem &ucsUMC;-Modul <guimenu>App Center</guimenu> (Reiter: <guimenu>Erweiterte
+				  Software-Verwaltung</guimenu>) können einzelne Softwarepakete installiert und
+				  deinstalliert werden.
+                </para>
+                    <figure id="software-umcinstall"><title>Installation des Pakets univention-squid in der Univention Management Console</title>
+                        <graphic scalefit="1" width="80%" fileref="illustrations/software_install_de1.png"/>
+                    </figure>
+                <para>
+                    Auf der Startseite wird eine Suchmaske angezeigt in der die Paketkategorie und
+                    ein Suchfilter (Name oder Beschreibung) zur Auswahl
+                    stehen. Die Ergebnisliste besteht aus einer Tabelle mit den folgenden Spalten:
+                </para>
+                    <itemizedlist>
+					<listitem><simpara>Paketname</simpara></listitem>
+					<listitem><simpara>Paketbeschreibung</simpara></listitem>
+					<listitem><simpara>Paketstatus</simpara></listitem>
+                    </itemizedlist>
+                <para>
+                    Durch einen Klick auf eine Zeile in der Ergebnisliste wird eine detaillierte
+                    Informationsseite zu dem Softwarepaket angezeigt, u.a. eine
+                    ausführliche Beschreibung und die Versionsnummer.
+                </para>
+                <para>
+                    Zusätzlich werden ein oder mehrere Buttons angezeigt:
+                    <guimenu>Installieren</guimenu> wird angezeigt, falls das Softwarepaket noch nicht
+                    installiert ist, <guimenu>Deinstallieren</guimenu>, falls das Paket installiert
+                    ist und <guimenu>Aktualisieren</guimenu> falls das Softwarepaket bereits
+                    installiert, aber nicht aktuell ist. Durch <guimenu>Schließen</guimenu> kann zu
+                    der vorherigen Suchabfrage zurückgekehrt werden.
+                </para>
+            </section><!-- Installation/Deinstallation von einzelnen Paketen in der Univention Management Console -->
+
+            <section id="computers:Installation_Deinstallation_von_einzelnen_Paketen_auf_der_Kommandozeile"><title>Installation/Deinstallation von einzelnen Paketen auf der Kommandozeile</title>
+                <para>
+                    Die folgenden Schritte müssen mit <emphasis>root</emphasis>-Rechten durchgeführt werden.
+                </para>
+                <para>
+                    Die Installation einzelner Pakete erfolgt mit dem Kommando
+                </para>
+                    <programlisting>
+univention-install PAKETNAME
+                    </programlisting>
+                <para>
+				  Pakete können mit dem folgenden Befehl entfernt werden:
+                </para>
+                    <programlisting>
+univention-remove PAKETNAME
+                    </programlisting>
+                <para>
+                    Wenn der Name eines Pakets nicht bekannt ist, kann mit dem Kommando
+                    <command>apt-cache search</command> nach Paketen gesucht werden. Als Aufrufparameter
+                    können Teile des Namens oder Wörter, die in der Beschreibung eines Paketes
+                    vorkommen angegeben werden, z.B.
+                </para>
+                    <programlisting>
+apt-cache search fax
+                    </programlisting>
+            </section><!-- Installation/Deinstallation von einzelnen Paketen auf der Kommandozeile -->
+
+            <section id="computers::softwaremanagement::packagelists"><title>Richtlinienbasierte Installation/Deinstallation von einzelnen Paketen über Paketlisten</title>
+                <para>
+                    Mit Paketlisten kann richtlinienbasiert Software installiert und
+                    entfernt werden. Dadurch lassen sich auf große Stückzahlen an
+                    Rechnersystemen zentral mit neuer Software bestücken.
+                </para>
+                <para>
+                    Jede Systemrolle verfügt über eine eigenen Paket-Richtlinien-Typ.
+                </para>
+                <para>
+                    Paketrichtlinien werden im Modul <emphasis>Richtlinien</emphasis> der &ucsUMC;
+                    mit dem Objekttyp <guimenu>Richtlinie: Pakete + Systemrolle</guimenu>
+                    verwaltet.
+                </para>
+                <table>
+                    <title>Karteikarte '[Pakete ...]'</title>
+                    <tgroup cols="2">
+                        <colspec colnum="1" colname="col1" colwidth="1*"/>
+                        <colspec colnum="2" colname="col2" colwidth="2*"/>
+                        <thead>
+                            <row>
+                                <entry>Attribut</entry>
+                                <entry>Beschreibung</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Name</entry>
+                                <entry>
+                                    Ein eindeutiger Name für diese Paketliste, z.B. <emphasis>Standort-Server</emphasis>.
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>[...] Pakete Installationsliste</entry>
+                                <entry>
+                                    Eine Liste zu installierender Pakete.
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>[...] Pakete Deinstallationsliste</entry>
+                                <entry>
+                                    Eine Liste zu entfernender Pakete.
+                                </entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+                <para>
+                    Die in einer Paketliste definierten Softwarepakete werden zu dem in
+                    der <guimenu>Paketpflege</guimenu>-Richtlinie definierten Zeitpunkt (zur
+                    Konfiguration siehe <xref linkend="computers::softwaremanagement::maintenancepolicy"/>) installiert, bzw. deinstalliert.
+                </para>
+                <para>
+                    Die in den Pakete-Richtlinien zuordbaren Softwarepakete werden ebenfalls im
+                    LDAP registriert.
+                    <!-- Dies ist im Univention Wiki unter WIKIREF-24368 dokumentiert. -->
+                </para>
+            </section><!-- Richtlinienbasierte Installation/Deinstallation von einzelnen Paketen über Paketlisten -->
+        </section><!-- Installation weiterer Software -->
+
+        <section id="computers::softwaremanagement::maintenancepolicy"><title>Festlegung eines Aktualisierungs-Zeitpunkts mit der Paketpflege-Richtlinie</title>
+            <para>
+                Mit einer <guimenu>Paketpflege</guimenu>-Richtlinie in der
+                Rechner-/Domänenverwaltung der &ucsUMC; kann ein Zeitpunkt
+                vorgegeben werden, an dem die folgenden Schritte durchgeführt werden:
+            </para>
+                <itemizedlist>
+					<listitem>
+						<simpara>
+						Prüfung auf verfügbare und zu installierende Release-Updates
+                        (siehe <xref linkend="computers::softwaremanagement::releasepolicy"/>)
+                        und ggf. Installation
+						</simpara>
+                    </listitem>
+					<listitem>
+						<simpara>
+						Installation/Deinstallation von Paketlisten (siehe
+                        <xref linkend="computers::softwaremanagement::packagelists"/>)
+						</simpara>
+                    </listitem>
+					<listitem>
+						<simpara>
+						Installation verfügbarer Errata-Updates
+						</simpara>
+					</listitem>
+                </itemizedlist>
+            <para>
+                Alternativ können die Aktualisierungen auch beim Systemstart oder
+                beim Herunterfahren des Systems erfolgen.
+            </para>
+            <para>
+                Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+            </para>
+                <table>
+                    <title>Karteikarte '[Paketpflege]'</title>
+                    <tgroup cols="2">
+                        <colspec colnum="1" colname="col1" colwidth="1*"/>
+                        <colspec colnum="2" colname="col2" colwidth="2*"/>
+                        <thead>
+                            <row>
+                                <entry>Attribut</entry>
+                                <entry>Beschreibung</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>Systemstart</entry>
+                                <entry>
+                                    Falls diese Option aktiviert ist, werden die Aktualisierungsschritte
+                                    während des Startvorgangs des Rechners durchgeführt.
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>System herunterfahren</entry>
+                                <entry>
+                                    Falls diese Option aktiviert ist, werden die Aktualisierungsschritte
+                                    beim Herunterfahren des Rechners durchgeführt.
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>Cron Einstellung benutzen</entry>
+                                <entry>
+                                    Wird dieses Feld aktiviert, kann über die Felder <emphasis>Monat</emphasis>,
+                                    <emphasis>Wochentag</emphasis>, <emphasis>Tag</emphasis>, <emphasis>Stunde</emphasis> und <emphasis>Minute</emphasis> ein
+                                    genauer Zeitpunkt angegeben werden, an dem die Aktualisierungsschritte
+                                    durchgeführt werden sollen.
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>Nach Paketpflege neu starten</entry>
+                                <entry>
+                                    Diese Option ermöglicht es, nach Release-Aktualisierungen
+                                    optional einen automatischen Neustart des Systems durchzuführen, entweder
+                                    direkt oder nach dem angegebenen Zeitintervall in Stunden.
+                                </entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+        </section><!-- Festlegung eines Aktualisierungs-Zeitpunkts mit der Paketpflege-Richtlinie -->
+
+        <section id="computers::softwaremanagement::repoadd"><title>Integration von Komponenten,
+		die nicht über das Univention App Center bereitgestellt werden</title>
+            <para>
+			  Ein Repository enthält in der Grundeinstellung nur die Pakete des
+			  Standard-UCS-Umfangs. Weitere Komponenten können eingebunden werden,
+			  sowohl von Univention - etwa die Komponente &ucsUAS; - oder von Drittanbietern
+			  wie Groupware-Herstellern.
+			  Zusätzliche Komponenten werden in der Regel über das Univention App Center integriert
+			  (siehe <xref linkend="software:appcenter"/>). Die
+			  folgenden Schritte sind nur notwendig für Komponenten,
+			  die nicht über das Univention App Center bereitgestellt werden.
+			</para>
+            <para>
+			  Weitere Komponenten können über die &ucsUMC; oder in der &ucsUCR;
+			  registriert werden.
+            </para>
+            <para>
+			  Komponenten können versioniert werden. Dies stellt sicher, dass nur zu einer
+			  UCS-Version kompatible Komponenten installiert werden. Bei der Installation über das
+			  Univention App Center wird die Versionskompatibilität automatisch sichergestellt.
+            </para>
+			<variablelist>
+				<varlistentry>
+					<term>leer bzw. nicht gesetzt</term>
+					<listitem>
+						<simpara>
+							Es werden automatisch
+							alle Versionen derselben Major-Version eingebunden. Ist z.B. aktuell UCS
+							2.3 installiert, so werden die Repositories für die Komponente in den Versionen
+							2.0, 2.1, 2.2 und 2.3 eingebunden, sofern diese existieren.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><literal>current</literal></term>
+					<listitem>
+						<simpara>
+							Durch das Schlüsselwort <emphasis>current</emphasis> werden
+							ebenfalls alle Versionen der selben Major-Version eingebunden. Zusätzlich
+							wird aber ein Minor- oder Major-Upgrade des installierten UCS-Systems
+							solange verhindert, bis auch die so markierte Komponente für die neue
+							Version verfügbar ist; Patchlevel- oder Errata-Updates sind davon nicht
+							betroffen. Ist z.B. aktuell UCS-2.3 installiert, UCS-2.4 oder UCS-3.0
+							aber bereits verfügbar, so erfolgt dennoch solange kein Upgrade auf die
+							neue Version, bis auch die Komponente für die Version 2.4 bzw. 3.0
+							verfügbar ist.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><emphasis>major.minor</emphasis></term>
+					<listitem>
+						<simpara>
+							Durch die Angabe einer expliziten Version wird die
+							Komponente nur in dieser Version eingebunden. UCS-Release-Updates werden
+							dadurch nicht blockiert. Mehrere Versionen können durch Komma getrennt
+							angegeben werden, z.B. <emphasis>2.0,2.3</emphasis>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+
+            <section id="computers:Integration_von_Repository-Komponenten_ueber_die_Univention_Management_Console"><title>Integration von Repository-Komponenten über die Univention Management Console</title>
+			<para>
+			  Im <guimenu>App Center</guimenu>-Modul der &ucsUMC; findet sich im Reiter
+			  <guimenu>Repository-Einstellungen</guimenu> eine Aufstellung der eingebundenen
+			  Repository-Komponenten. Applikationen, die über das Univention App Center eingebunden
+			  wurden, werden hier weiterhin aufgeführt, sollten aber über den Reiter
+			  <guimenu>App-Verwaltung</guimenu> verwaltet werden.
+			</para>
+                <para>
+                    Mit <guimenu>Neu</guimenu> kann eine weitere Komponente eingerichtet
+                    werden. Der <guimenu>Name der Komponente</guimenu> identifiziert die
+                    Komponente auf dem Repository-Server. Unter
+                    <guimenu>Beschreibung</guimenu> kann ein frei wählbarer Text angegeben
+                    werden, der z.B. detaillierter auf die Funktion der Komponente
+                    eingeht.
+                </para>
+                <figure id="software-repocomponent"><title>Konfiguration einer Repository-Komponente in UMC</title>
+                    <graphic scalefit="1" width="80%" fileref="illustrations/software_repository_de2.png"/>
+                </figure>
+                <para>
+                    Der Rechnername des Download-Servers ist im Eingabefeld
+                    <guimenu>Repository Server</guimenu> anzugeben und, sofern notwendig,
+                    unter <guimenu>Repository Prefix</guimenu> ein eventueller zusätzlicher
+                    Dateipfad.
+                </para>
+                <para>
+                    Für Repository-Server, die eine Authentifizierung erfordern, können
+                    <guimenu>Benutzername</guimenu> und <guimenu>Passwort</guimenu> konfiguriert
+                    werden.
+                </para>
+                <para>
+                    Eine Software-Komponente ist erst verfügbar, wenn sie mit
+                    <guimenu>Diese Komponenten aktivieren</guimenu> aktiviert wurde.
+                </para>
+                <para>
+                    Auch für Komponenten wird zwischen <emphasis>maintained</emphasis> und
+                    <emphasis>unmaintained</emphasis>-Komponenten unterschieden, siehe
+                    <xref linkend="software::configrepo"/>.
+                </para>
+            </section><!-- Integration von Repository-Komponenten über die Univention Management Console -->
+
+            <section id="computers::softwaremanagement::repoadducr"><title>Integration von Repository-Komponenten über Univention Configuration Registry</title>
+                <para>
+                    Mit den folgenden &ucsUCR;-Variablen kann eine Repository-Komponente
+                    registriert werden. Hier können auch einige weitergehende Funktionen
+                    aktiviert werden, die über das UMC-Modul nicht konfiguriert werden
+                    können. <emphasis>NAME</emphasis> steht für den Namen der Komponente.
+                </para>
+                <variablelist>
+                    <varlistentry>
+                        <term><command>repository/online/component/NAME/server</command></term>
+                        <listitem>
+                            <simpara>
+                                Der Repository-Server auf
+                                dem die Komponente zur Verfügung gestellt wird. Wird diese Variable nicht
+                                gesetzt, dann wird der Server aus der &ucsUCRV; <envar>repository/online/server</envar> verwendet.
+                            </simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term><command>repository/online/component/NAME</command></term>
+                        <listitem>
+                            <simpara>
+                                Diese Variable muss auf
+                                <emphasis>enabled</emphasis> gesetzt werden, wenn die Komponente eingebunden werden
+                                soll.
+                            </simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term><command>repository/online/component/NAME/localmirror</command></term>
+                        <listitem>
+                            <simpara>
+                                Mit dieser Variable kann
+                                konfiguriert werden, ob die Komponente lokal gespiegelt wird. In Verbindung
+                                mit der &ucsUCRV; <envar>repository/online/component/NAME/server</envar> kann so
+                                konfiguriert werden, dass eine Komponente zwar gespiegelt, aber nicht
+                                aktiviert wird oder dass sie zwar aktiviert, aber nicht gespiegelt wird.
+                            </simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term><command>repository/online/component/NAME/description</command></term>
+                        <listitem>
+                            <simpara>
+                                Ein beschreibender Name für das Repository.
+                            </simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term><command>repository/online/component/NAME/prefix</command></term>
+                        <listitem>
+                            <simpara>
+                                Definiert die URL-Präfix, die
+                                auf dem Repository-Server verwendet wird. In der Regel muss diese Variable
+                                nicht gesetzt werden.
+                            </simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term><command>repository/online/component/NAME/username</command></term>
+                        <listitem>
+                            <simpara>
+                                Wenn der Repository-Server
+                                eine Authentifizierung erfordert, kann in dieser Variable der Benutzername
+                                eingetragen werden.
+                            </simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term><command>repository/online/component/NAME/password</command></term>
+                        <listitem>
+                            <simpara>
+                                Wenn der Repository-Server
+                                eine Authentifizierung erfordert, kann in dieser Variable das der Passwort
+                                eingetragen werden.
+                            </simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term><command>repository/online/component/NAME/version</command></term>
+                        <listitem>
+                            <simpara>
+                                Über diese Variable kann die
+                                einzubindende Version angegeben werden, siehe
+                                <xref linkend="computers::softwaremanagement::repoadd"/>.
+                            </simpara>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term><command>repository/online/component/NAME/defaultpackages</command></term>
+                        <listitem>
+                            <simpara>
+                                Über diese Variable
+                                kann eine leerzeichenseparierte Liste an Paketnamen angegeben
+                                werden. Im UMC-Modul <emphasis>App Center</emphasis> wird die
+                                Installation der Komponente angeboten, wenn mindestens eines der Pakete
+                                nicht installiert ist. Die Angabe der Paketliste vereinfacht dadurch die
+                                Nachinstallation von Komponenten.
+                            </simpara>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
+                <para>
+                    Um beispielsweise die UCS@school-Komponente einzubinden müssen
+                    folgende Variablen gesetzt werden:
+                </para>
+                <programlisting>
+ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
+ repository/online/component/ucsschool/server=updates.software-univention.de \
+ repository/online/component/ucsschool=yes
+                </programlisting>
+            </section><!-- Integration von Repository-Komponenten über Univention Configuration Registry -->
+        </section><!-- Integration weiterer Komponenten in ein Repository -->
+
+        <section id="computers::softwaremonitor"><title>Zentrale Überwachung von Softwareinstallationsständen mit dem Software-Monitor</title>
+            <para>
+                Der Software-Monitor ist eine Datenbank, in der Informationen über die
+                auf UCS-Systemen installierten Softwarepakete aufgezeichnet werden. Durch
+                diese Datenbank kann sich ein Administrator einen Überblick
+                verschaffen, welche Release- und Paketversionen auf den Systemen der
+                Domäne installiert sind und diese Informationen bei der schrittweisen
+                Aktualisierung einer UCS-Domäne nutzen und Installations-Probleme erkennen.
+            </para>
+            <para>
+                Der Software-Monitor kann durch Auswahl der Komponente
+                <emphasis>Paketstatus-Überwachung</emphasis> im Univention Installer eingerichtet
+                werden. Alternativ kann das Paket <package>univention-pkgdb</package>
+                installiert werden.
+            </para>
+            <para>
+                UCS-Systeme aktualisieren ihre Einträge bei der Installation,
+                Entfernung und Aktualisierung von Software selbsttätig. Das System,
+                auf dem der Software-Monitor betrieben wird, wird dabei durch den
+                DNS-Service-Record <command>_pkgdb._tcp</command> lokalisiert.
+            </para>
+            <para>
+                Die webbasierte Abfrageschnittstelle des Software-Monitors integriert
+                sich in die &ucsUMC; und kann über das Modul
+                <guimenu>Software-Monitor</guimenu> erreicht werden. Folgende Funktionen
+                stehen zur Verfügung:
+            </para>
+                <itemizedlist>
+					<listitem>
+						<simpara>
+						<emphasis>Systeme</emphasis> erlaubt die Suche nach UCS-Systemen, die vom
+                        Software-Montor erfasst werden. Es kann nach Systemnamen,
+                        UCS-Versionen und Systemrollen gesucht werden.
+						</simpara>
+                    </listitem>
+					<listitem>
+						<para>
+						<emphasis>Pakete</emphasis> ermöglicht die Suche in den von der
+                        Paketstatusdatenbank erfassten Installationsdaten. Nachfolgend
+                        findet sich eine Übersicht der vorhandenen Suchmöglichkeiten zu den
+                        Installations-Zuständen von Paketen:
+						</para>
+                        <itemizedlist>
+							<listitem>
+								<simpara>
+								Der <emphasis>Paketauswahlstatus</emphasis> beeinflusst das Verhalten bei der Aktualisierung eines Pakets.
+                                Durch <emphasis>Install</emphasis> wird ein Paket zur Installation ausgewählt. Ist ein
+                                Paket auf <emphasis>Hold</emphasis> konfiguriert, so wird es von weiterer Aktualisierung
+                                ausgenommen. Es existieren zwei Möglichkeiten ein Paket zu deinstallieren:
+                                Ein mit <emphasis>DeInstall</emphasis> entferntes Paket hält lokal erzeugte
+                                Konfigurations-Daten weiterhin vor, während ein mit <emphasis>Purge</emphasis> entferntes
+                                Paket komplett gelöscht wird.
+								</simpara>
+                            </listitem>
+							<listitem>
+								<simpara>
+								Der <emphasis>Installationszustand</emphasis> beschreibt den Status eines installierten
+                                Pakets im Hinblick auf kommende Aktualisierungen.
+                                Der Normalfall ist <emphasis>Ok</emphasis>, was dazu führt, dass ein Paket bei
+                                Vorhandensein einer aktuelleren Version aktualisiert würde. Ist ein Paket auf
+                                <emphasis>Hold</emphasis> konfiguriert, so wird es von der Aktualisierung ausgenommen.
+								</simpara>
+                            </listitem>
+							<listitem>
+								<simpara>
+								Der <emphasis>aktuelle Paketstatus</emphasis> beschreibt den Zustand eines eingerichteten
+                                Pakets. Der Normalfall ist <emphasis>Installed</emphasis> für installierte und
+                                <emphasis>ConfigFiles</emphasis> für entfernte Pakete, alle übrigen Zustände entstehen,
+                                wenn die Installation des Pakets in verschiedenen Phasen abgebrochen wurde.
+								</simpara>
+                            </listitem>
+                        </itemizedlist>
+                    </listitem>
+					<listitem>
+						<para>
+						<emphasis>Probleme</emphasis> ermöglicht die automatisierte Erkennung von
+                        Installationsprobleme:
+						</para>
+                        <itemizedlist>
+							<listitem>
+								<simpara>
+								Der Installationsstand von Systemen kann abgefragt
+                                werden und mit einem Ziel-Release verglichen werden. Veraltete
+                                Installationen können so auch in grossen Umgebungen
+                                effizient erkannt werden.
+								</simpara>
+                            </listitem>
+							<listitem>
+								<simpara>
+								Unvollständig installierte Software-Pakete können erkannt werden.
+								</simpara>
+                            </listitem>
+                        </itemizedlist>
+                    </listitem>
+                </itemizedlist>
+                <figure id="software-monitor"><title>Suche nach Paketen im Software-Monitor</title>
+                    <graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_de1.png"/>
+                </figure>
+            <para>
+                Wenn verhindert werden soll, dass UCS-Systeme Installations-Vorgänge
+                im Software-Monitor aufzeichnen (etwa weil keine Netzwerkverbindung
+                zur Datenbank besteht), kann dies durch Setzen der
+                &ucsUCRV; <envar>pkgdb/scan</envar> auf <emphasis>no</emphasis> abgeschaltet werden. Wenn die
+                Aufzeichnungen danach wieder aktiviert werden, muss das Kommando
+                <command>univention-pkgdb-scan</command> ausgeführt werden, damit die in der
+                Zwischenzeit installierten Paketversionen in die Datenbank übernommen
+                werden.
+            </para>
+
+            <para>
+			  Mit dem folgenden Befehl kann der Programmbestand eines Systems wieder aus der Datenbank entfernt werden:
+			</para>
+                <programlisting>
+univention-pkgdb-scan --remove-system RECHNERNAME
+				</programlisting>
+        </section><!-- Zentrale Überwachung von Softwareinstallationsständen mit dem Software-Monitor -->
+    </section><!-- Softwarevderteilung -->
+
+</chapter>

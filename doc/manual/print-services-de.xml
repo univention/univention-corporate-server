@@ -1,0 +1,722 @@
+<chapter id="print::general">
+<title>Druckdienste</title>
+<section id="print-services:Einfuehrung">
+<title>Einführung</title>
+	<para>
+		&ucsUCS; beinhaltet ein Drucksystem, mit dem sich auch komplexe
+		Umgebungen realisieren lassen. Drucker und Druckergruppen werden dabei
+		in der &ucsUMC; verwaltet.
+	</para>
+	<para>
+		Die Druckdienste basieren auf <emphasis>CUPS (Common Unix Printing
+		System)</emphasis>. Druckaufträge werden von CUPS in Warteschlangen verwaltet
+		und in die Druckformate der angeschlossenen Drucker umgewandelt.
+		Die Druckerwarteschlangen werden ebenfalls in der &ucsUMC; verwaltet,
+		siehe <xref linkend="umc:modules:printer"/>.
+	</para>
+	<para>
+		Alle in CUPS eingerichteten Drucker können von UCS-Systemen direkt
+		verwendet werden und werden bei Verwendung von Samba automatisch
+		auch für Windows-Rechner bereitgestellt.
+	</para>
+	<para>
+		Die technischen Fähigkeiten eines Druckers werden in sogenannten
+		PPD-Dateien spezifiziert. In diesen Dateien ist beispielsweise
+		festgehalten, ob ein Drucker farbig drucken kann, ob ein beidseitiger
+		Druck möglich ist, welche Papierschächte vorhanden sind, welche
+		Auflösungen unterstützt und welche Druckerbefehlssprachen unterstützt
+		werden (z.B. PCL oder Postscript).
+	</para>
+	<para>
+		Druckaufträge werden von CUPS mit Hilfe von Filtern in ein Format
+		umgewandelt, das der jeweilige Drucker interpretieren kann, also
+		z.B. in Postscript für einen Postscript-fähigen Drucker.
+	</para>
+	<para>
+		UCS bringt eine Vielzahl von Filtern und PPD-Dateien direkt mit, so
+		dass die meisten Drucker ohne zusätzlich zu installierende Treiber
+		angesprochen werden können. Die Einrichtung weiterer PPD-Dateien ist
+		in <xref linkend="print::ppdlisten"/> beschrieben.
+	</para>
+	<para>
+		Ein Drucker kann entweder direkt an den Druckserver
+		angeschlossen sein (z.B. über die USB-Schnittstelle oder einen
+		Parallelport) oder über Remote-Protokolle mit einem Druckserver
+		kommunizieren (z.B. TCP/IP-fähige Drucker, die über IPP oder LPD
+		angebunden werden).
+	</para>
+	<para>
+		Netzwerkdrucker mit eigener IP-Adresse sollten als IP-Managed-Client
+		in der Rechnerverwaltung der &ucsUMC; registriert werden (siehe
+		<xref linkend="systemrollen"/>).
+	</para>
+	<para>
+		CUPS bietet die Möglichkeit Druckergruppen zu definieren. Die darin
+		enthaltenen Drucker werden abwechselnd zur Bearbeitung von
+		Druckaufträgen herangezogen, was eine automatische Lastverteilung
+		zwischen räumlich benachbarten Druckern ermöglicht.
+	</para>
+	<para>
+		Mit dem Druck-Quota-System, das über das
+		Paket <package>univention-printquota</package> installiert wird, kann eine
+		Erweiterung zur Ermittlung angefallener Druckkosten und zur
+		Limitierung zu druckender Seiten installiert werden.
+		<!-- Die Einrichtung und Konfiguration ist im Univention Wiki unter WIKIREF-22767 dokumentiert. -->
+	</para>
+	<para>
+		Es können auch Druckerfreigaben von Windows-Systemen in den
+		CUPS-Druckserver integriert werden, dies ist in
+		<xref linkend="print::shares"/> dokumentiert.
+	</para>
+</section>
+<section id="print-services:Installation_eines_Druckservers">
+<title>Installation eines Druckservers</title>
+	<para>
+		Ein Druckserver kann auf allen Domänencontroller und auf &ucsMember;n
+		durch Auswahl der Installer-Komponente <emphasis>Druckserver (CUPS)</emphasis> oder
+		durch nachträgliche Installation des Pakets <package>univention-printserver</package>
+		eingerichtet werden. Nach Installation des Pakets
+		sollte <command>univention-run-join-scripts</command> aufgerufen werden.
+	</para>
+</section>
+
+<section id="print-services:configuration">
+<title>Einstellung lokaler Konfigurationseigenschaften eines Druckservers</title>
+<para>
+  Die Konfiguration von Cups als Druckserver erfolgt über Einstellungen aus dem
+  LDAP-Verzeichnisdienst und &ucsUCR;. Wird die &ucsUCRV; <envar>cups/include/local</envar> auf
+  <emphasis>true</emphasis> gesetzt, wird zusätzlich die Datei
+  <filename>/etc/cups/cupsd.local.conf</filename> eingebunden, in der beliebige weitere Optionen
+  hinterlegt werden können.
+</para>
+</section>
+
+<section id="print::shares">
+<title>Konfiguration von Druckerfreigaben</title>
+	<para>
+		Druckerfreigaben werden im Modul <emphasis>Drucker</emphasis> der &ucsUMC;
+		mit dem Objekttyp <guimenu>Druckerfreigabe: Drucker</guimenu> verwaltet.
+	</para>
+	<para>
+		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
+		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
+		Objekten finden sich in <xref linkend="central:user-interface"/>.
+	</para>
+	<figure id="create-printershare">
+	<title>Anlegen einer Druckerfreigabe</title>
+		<graphic scalefit="1" width="60%" fileref="illustrations/create_printershare_de.png"/>
+	</figure>
+	<para>
+		Beim Hinzufügen, Entfernen oder Bearbeiten einer Druckerfreigabe wird der
+		Drucker automatisch auch in CUPS konfiguriert. CUPS verfügt über keine
+		LDAP-Schnittstelle für die Druckerkonfiguration, stattdessen wird über
+		ein Listener-Modul die CUPS-Druckerkonfiguration (<filename>printers.conf</filename>) generiert. Wenn
+		Samba eingesetzt wird, werden die Druckerfreigaben automatisch auch
+		für Windows-Clients bereitgestellt.
+	</para>
+	<table>
+	<title>Reiter 'Allgemein'</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Name (*)</entry>
+					<entry>
+						Dieses Eingabefeld enthält den Namen der Druckerfreigabe, der
+						von CUPS verwendet wird. Unter diesem Namen erscheint der
+						Drucker unter Linux und Windows. Der Name darf alphanumerische Zeichen
+						(also die Buchstaben a bis z in Groß- und Kleinschreibung und die
+						Ziffern 0 bis 9) sowie Binde- und Unterstriche enthalten. Andere
+						Zeichen (einschließlich Leerzeichen) sind nicht erlaubt.
+					</entry>
+				</row>
+				<row>
+					<entry>Server (*)</entry>
+					<entry>
+						<para>
+							Ein Druckserver verwaltet die Druckerqueue für den
+							freizugebenden Drucker und wandelt - falls notwendig - die Druckdaten in
+							das passende Druckerformat um. Ist der Drucker nicht bereit, speichert
+							der Druckserver die anstehenden Druckaufträge zwischen und sendet sie
+							später zum Drucker. Werden mehrere Druckserver angegeben, wird der
+							Druckauftrag vom Client zum ersten Druckserver gesendet, der
+							erreichbar ist.
+						</para>
+						<para>
+							Nur Domänencontroller und &ucsMember;, auf denen das
+							Paket <emphasis>univention-printserver</emphasis> installiert wurde, werden in
+							der Liste angezeigt.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Protokoll und Ziel (*)</entry>
+					<entry>
+						<para>
+							Diese beiden Eingabefelder legen fest, wie der Druckserver auf den
+							Drucker zugreift:
+						</para>
+						<para>
+							Die folgende Liste beschreibt die Syntax der einzelnen Protokolle
+							für die Konfiguration lokal an den Server angeschlossener Drucker:
+						</para>
+						<itemizedlist>
+							<listitem>
+								<para><uri>parallel://<replaceable>&lt;devicedatei&gt;</replaceable></uri></para>
+								<para>Beispiel: <uri>parallel://dev/lp0</uri></para>
+							</listitem>
+							<listitem>
+								<para><uri>socket://<replaceable>&lt;server&gt;</replaceable>:<replaceable>&lt;port&gt;</replaceable></uri></para>
+								<para>Beispiel: <uri>socket://printer_03:9100</uri></para>
+							</listitem>
+							<listitem>
+								<para><uri>usb://<replaceable>&lt;devicedatei&gt;</replaceable></uri></para>
+								<para>Beispiel: <uri>usb://dev/usb/lp0</uri></para>
+							</listitem>
+						</itemizedlist>
+						<para>
+							Die folgende Liste beschreibt die Syntax der einzelnen Protokolle
+							für die Konfiguration von Netzwerk-Druckern:
+						</para>
+						<itemizedlist>
+							<listitem>
+								<para><uri>http://<replaceable>&lt;server&gt;</replaceable>[:<replaceable>&lt;port&gt;</replaceable>]/<replaceable>&lt;pfad&gt;</replaceable></uri></para>
+								<para>Beispiel: <uri>http://192.168.0.10:631/printers/remote</uri></para>
+							</listitem>
+							<listitem>
+								<para><uri>ipp://<replaceable>&lt;server&gt;</replaceable>/printers/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para>Beispiel: <uri>ipp://printer_01/printers/kopierer</uri></para>
+							</listitem>
+							<listitem>
+								<para><uri>lpd://<replaceable>&lt;server&gt;</replaceable>/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para>Beispiel: <uri>lpd://10.200.18.30/bwdraft</uri></para>
+							</listitem>
+						</itemizedlist>
+						<para>
+							Das Protokoll <uri>cups-pdf</uri> wird zur Anbindung eines
+							Pseudo-Druckers verwendet, der aus allen Druckaufträgen ein
+							PDF-Dokument erzeugt. Die Einrichtung ist in <xref linkend="pdf-printer"/>
+							dokumentiert.
+						</para>
+						<para>
+							Das Protokoll <uri>file://</uri> erwartet als Ziel einen Dateinamen. Der
+							Druckauftrag wird dann nicht auf einen Drucker geschrieben, sondern in
+							diese Datei, was für Testzwecke nützlich sein kann. Die Datei wird mit
+							jedem Druckauftrag neu geschrieben.
+						</para>
+						<para>
+							Mit dem Protokoll <uri>smb://</uri> kann eine Windows-Druckerfreigabe
+							eingebunden werden. Um beispielsweise die Druckerfreigabe <emphasis>laser01</emphasis> des
+							Windows-Systems <emphasis>win01</emphasis> über die &ucsUMC; einzubinden,
+							muss als Ziel <emphasis>win01/laser01</emphasis> angegeben werden. Dabei sollten
+							Hersteller und Modell-Typ entsprechend des verwendeten Geräts gewählt
+							werden. Der Druckserver nutzt dabei die verwendeten
+							Druckermodell-Einstellungen um die Druckaufträge ggf. umzuwandeln und
+							sendet diese anschließend an die URI <uri>smb://win01/laser01</uri>. Hierbei
+							werden keine Windows-Treiber verwendet.
+						</para>
+						<para>
+							Unabhängig von diesen Einstellungen kann die Druckerfreigabe auch
+							weiterhin von anderen Windows-Systemen mit den entsprechenden
+							Druckertreibern eingebunden werden.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Drucker-Hersteller</entry>
+					<entry>
+						Nach der Auswahl des Herstellers des Druckers wird die
+						Auswahlliste <emphasis>Drucker-Modell</emphasis> automatisch aktualisiert.
+					</entry>
+				</row>
+				<row>
+					<entry>Drucker-Modell (*)</entry>
+					<entry>
+						Diese Auswahlliste zeigt alle verfügbaren Drucker-PPD-Dateien für den
+						ausgewählten <emphasis>Drucker-Hersteller</emphasis> an. Wenn das gesuchte
+						Drucker-Modell nicht vorhanden ist, kann ein ähnliches Modell
+						ausgewählt werden und mit einem Drucktest die korrekte Funktion
+						überprüft werden. In <xref linkend="print::ppdlisten"/> wird
+						erläutert, wie die Liste der Drucker-Modelle erweitert werden kann.
+					</entry>
+				</row>
+				<row>
+					<entry>Samba-Name</entry>
+					<entry>
+						<para>
+							Für einen Drucker kann ein zusätzlicher Name vergeben werden, unter
+							dem er von Windows aus erreichbar sein soll. Im Gegensatz zum
+							CUPS-Namen (siehe <guimenu>Name</guimenu>) darf der Samba-Name Leerzeichen
+							und Umlaute enthalten. Der Drucker steht für Windows dann sowohl unter
+							dem CUPS-Namen als auch unter dem Samba-Namen zur Verfügung.
+						</para>
+						<para>
+							Die Verwendung des Samba-Namens zusätzlich zum CUPS-Namen ist
+							z.B. dann sinnvoll, wenn der Drucker nach einer Migration unter Windows mit
+							einem Namen verwendet wurde, der Leerzeichen oder Umlaute
+							enthielt. Der Drucker kann dann weiterhin unter diesem Namen
+							erreicht werden und die Windows-Rechner müssen nicht umkonfiguriert
+							werden.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Quota aktivieren</entry>
+					<entry>
+						<para>
+							Wurden Quota für den Drucker aktiviert, greifen die
+							Quota-Einstellungen der Richtlinie <guimenu>[Druck-Quota]</guimenu>.
+						</para>
+						<para>
+							Hierfür muss das Druck-Quota-System installiert sein.
+						</para>
+					</entry>
+				</row>
+
+				<row>
+				  <entry>Clientseitigen Windows Treiber verwenden</entry>
+				  <entry>
+					<para>
+					  Diese Einstellung ist in <xref linkend="print-services:Einbinden_von_Druckerfreigaben_auf_Windows-Clients"/>
+					  dokumentiert.
+					</para>
+				  </entry>
+				</row>
+
+				<row>
+					<entry>Preis pro Druckauftrag</entry>
+					<entry>
+						<para>
+							Dem Benutzer wird für jeden Druckauftrag der in diesem Eingabefeld
+							angegebene Wert berechnet. Die anfallenden Kosten werden im Konto des
+							Benutzers aufsummiert und dienen zur genauen Abrechnung von
+							Druckkosten. Wird kein Wert angegeben, findet keine
+							Druckkostenberechnung statt.
+						</para>
+						<para>
+							Hierfür muss das Druck-Quota-System installiert sein.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Standort</entry>
+					<entry>
+						Diese Angabe wird von einigen Anwendungen bei der Druckerauswahl
+						angezeigt. Sie kann mit einem beliebigen Text gefüllt werden.
+					</entry>
+				</row>
+				<row>
+					<entry>Beschreibung</entry>
+					<entry>
+						Diese Angabe wird von einigen Anwendungen bei der Druckerauswahl
+						angezeigt. Sie kann mit beliebigem Text gefüllt werden.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+	<title>Reiter 'Zugriffskontrolle'</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Zugriffslisten</entry>
+					<entry>
+						<para>
+							Über diese Auswahl lassen sich Zugriffsrechte für den Drucker
+							festlegen. Der Zugriff kann auf bestimmte Gruppen oder Benutzer
+							beschränkt werden oder er kann generell freigegeben und spezifisch für
+							bestimmte Gruppen oder Benutzer gesperrt werden. Standardmäßig ist der
+							Zugriff für alle Gruppen und Benutzer zugelassen. Diese Rechte werden
+							auch für die entsprechende Samba-Druckerfreigabe übernommen, so dass
+							beim Drucken über Samba die gleichen Zugriffsrechte gelten, wie beim
+							Drucken direkt über CUPS.
+						</para>
+						<para>
+							Die Zugriffskontrolle ist z.B. sinnvoll für die Verwaltung von Druckern an
+							mehreren Standorten, so dass den Benutzern an Standort A nicht die
+							Druckerfreigaben von Standort B angezeigt werden.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Zugelassene/abgewiesene Benutzer</entry>
+					<entry>
+						Diese Auswahl führt einzelne Benutzer auf, für die der Zugriff reguliert
+						werden soll.
+					</entry>
+				</row>
+				<row>
+					<entry>Zugelassene/abgewiesene Gruppen</entry>
+					<entry>
+						Diese Auswahl führt Gruppen auf, für die der Zugriff reguliert werden
+						soll.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+</section>
+<section id="druckergruppen">
+<title>Konfiguration von Druckergruppen</title>
+	<para>
+		CUPS bietet die Möglichkeit Drucker in Klassen zusammenzufassen. In
+		UCS sind diese als Druckergruppen implementiert. Druckergruppen
+		erscheinen für Clients wie normale Drucker. Eine Druckergruppe erhöht die Verfügbarkeit des
+		Druckdienstes. Wird auf eine Druckergruppe gedruckt, wird der Auftrag
+		an den ersten verfügbaren Drucker der Druckergruppe geschickt. Die
+		Auswahl der Drucker erfolgt nach dem Round-Robin-Prinzip, so dass eine
+		gleichmäßige Auslastung angestrebt wird.
+	</para>
+	<figure id="printergroup">
+	<title>Konfiguration einer Druckergruppe</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/printer_group-de.png"/>
+	</figure>
+	<para>
+		Eine Druckergruppe muss mindestens einen Drucker als Mitglied
+		haben. Es können nur Drucker des gleichen Druckservers als Mitglieder der
+		Gruppe gesetzt werden.
+	</para>
+	<caution>
+		<para>
+		Die Fähigkeit, Druckerfreigaben von verschiedenen Druckservern in
+		einer Druckergruppe zusammenzufassen, ermöglicht es auch,
+		Druckergruppen als Mitglieder einer Druckergruppe zu setzen. Eine
+		Druckergruppe könnte sich dadurch selbst als Gruppenmitglied
+		enthalten. Dies ist unbedingt zu vermeiden.
+		</para>
+	</caution>
+	<para>
+		Druckergruppen werden im Modul <emphasis>Drucker</emphasis> der &ucsUMC;
+		mit dem Objekttyp <guimenu>Druckerfreigabe: Druckergruppe</guimenu> verwaltet.
+	</para>
+	<para>
+		Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
+		der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
+		Objekten finden sich in <xref linkend="central:user-interface"/>.
+	</para>
+	<table>
+	<title>Karteikarte 'Allgemein'</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Name (*)</entry>
+					<entry>
+						Dieses Eingabefeld enthält den Namen der Druckergruppenfreigabe, der
+						von CUPS verwendet wird. Unter diesem Namen erscheint die
+						Druckergruppe unter Linux und Windows. Der Name darf alphanumerische
+						Zeichen (also die Buchstaben a bis z in Groß- und Kleinschreibung und
+						die Ziffern 0 bis 9) sowie Binde- und Unterstriche enthalten. Andere
+						Zeichen (einschließlich Leerzeichen) sind nicht erlaubt.
+
+					</entry>
+				</row>
+				<row>
+					<entry>Server (*)</entry>
+					<entry>
+						Drucker, die hier angegebenen Servern zugeordnet sind, können in
+						der darunter angeordneten Auswahl in die Liste
+						der <guimenu>Gruppenmitglieder</guimenu> aufgenommen werden.
+					</entry>
+				</row>
+				<row>
+					<entry>Samba-Name</entry>
+					<entry>
+						<para>
+							Für eine Druckergruppe kann ein zusätzlicher Name vergeben werden,
+							unter dem sie von Windows aus erreichbar sein soll. Im Gegensatz zum
+							CUPS-Namen (siehe <emphasis>Name</emphasis>) darf der Samba-Name Leerzeichen und
+							Umlaute enthalten. Der Drucker steht für Windows dann sowohl unter dem
+							CUPS-Namen als auch unter dem Samba-Namen zur Verfügung.
+						</para>
+						<para>
+							Die Verwendung des Samba-Namens zusätzlich zum CUPS-Namen ist
+							z.B. dann sinnvoll, wenn die Druckergruppe schon früher unter Windows
+							mit einem Namen verwendet wurde, der Leerzeichen oder Umlaute
+							enthielt. Die Druckergruppe kann dann weiterhin unter diesem Namen
+							erreicht werden und die Windows-Rechner müssen nicht umkonfiguriert
+							werden.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Gruppenmitglieder</entry>
+					<entry>
+						Durch diese Liste werden Drucker der Druckergruppe zugeordnet.
+					</entry>
+				</row>
+				<row>
+					<entry>Quota aktivieren</entry>
+					<entry>
+						<para>
+							Wurden Quota für die Druckergruppe aktiviert, gelten die
+							Quota-Einstellungen der Richtlinie <guimenu>[Druck-Quota]</guimenu>.
+						</para>
+						<para>
+							Hierfür muss das Druck-Quota-System installiert sein.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Preis pro Seite</entry>
+					<entry>
+						<para>
+							Dem Benutzer wird für jede gedruckte Seite der in diesem Eingabefeld
+							angegebene Wert berechnet. Die anfallenden Kosten werden im Konto des
+							Benutzers aufsummiert und dienen zur genauen Abrechnung von
+							Druckkosten. Wird kein Wert angegeben, findet keine
+							Druckkostenberechnung statt.
+						</para>
+						<para>
+							Hierfür muss das Druck-Quota-System installiert sein.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Preis pro Druckauftrag</entry>
+					<entry>
+						<para>
+							Dem Benutzer wird für jeden Druckauftrag der in diesem Eingabefeld
+							angegebene Wert berechnet. Die anfallenden Kosten werden im Konto des
+							Benutzers aufsummiert und dienen zur genauen Abrechnung von
+							Druckkosten. Wird kein Wert angegeben, findet keine
+							Druckkostenberechnung statt.
+						</para>
+						<para>
+							Hierfür muss das Druck-Quota-System installiert sein.
+						</para>
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+</section>
+<section id="umc:modules:printer">
+<title>Verwaltung von Druckaufträgen und Druckerwarteschlangen</title>
+	<para>
+		Das <guimenu>Drucker Administration</guimenu>-Modul der &ucsUMC; erlaubt
+		auf Druckservern den Status der angeschlossenen Drucker zu prüfen,
+		angehaltene Drucker neu zu starten oder Druckaufträge aus den
+		Warteschlagen zu entfernen.
+	</para>
+	<figure id="printer-admin">
+	<title>Drucker-Administration</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/umc-printer_administration-de.png"/>
+	</figure>
+	<para>
+		Auf der Startseite des Moduls befindet sich eine Suchmaske, mit der die
+		vorhandenen Drucker ausgewählt werden können. In der Ergebnisliste wird zu dem
+		jeweiligen Drucker der Server, der Name, der Status, die
+		Druck-Quota-Eigenschaften, der Standort und die Beschreibung angezeigt. Durch
+		Markieren der Drucker und Ausführen einer der beiden Aktionen
+		<guimenu>deaktivieren</guimenu> bzw. <guimenu>aktivieren</guimenu>, kann der Status
+		mehrerer Drucker gleichzeitig geändert werden.
+	</para>
+	<para>
+		Durch den Klick auf einen Druckernamen können Details zu dem ausgewählten
+		Drucker angezeigt werden. Zu den angezeigten Informationen gehört auch eine Liste
+		der aktuell existierenden Druckaufträge, die noch in der Warteschlange des
+		Druckers sind. Durch Markieren der Druckaufträge und Auswahl der Aktion
+		<mousebutton>Löschen</mousebutton> können Druckaufträge aus der Warteschlange entfernt
+		werden.
+	</para>
+</section>
+<section id="pdf-printer">
+<title>Generierung von PDF-Dokumenten aus Druckaufträgen</title>
+	<para>
+		Durch die Installation des Pakets <package>univention-printserver-pdf</package> wird
+		ein Druckserver um den speziellen Druckertyp <guimenu>cups-pdf</guimenu>
+		erweitert, der eingehende Druckaufträge in das PDF-Format umwandelt
+		und für den jeweiligen Benutzer lesbar in ein Verzeichnis auf dem
+		Druckserver ausgibt. Nach der Installation des Pakets
+		sollte <command>univention-run-join-scripts</command> aufgerufen werden.
+	</para>
+	<para>
+		Beim Anlegen eines PDF-Druckers in der &ucsUMC; (siehe
+		<xref linkend="print::shares"/>) muss als
+		Protokoll <guimenu>cups-pdf:/</guimenu> ausgewählt werden, das Ziel-Feld
+		bleibt leer.
+	</para>
+
+	<para>
+		Als <guimenu>Drucker-Hersteller</guimenu> muss
+		<emphasis>PDF</emphasis> und als
+		<guimenu>Drucker-Modell</guimenu> <emphasis>Generic CUPS-PDF
+		Printer</emphasis> ausgewählt werden.
+	</para>
+
+	<para>
+		Das Zielverzeichnis für die generierten PDF-Dokumente wird über
+		die &ucsUCRV; <envar>cups/cups-pdf/directory</envar> festgelegt. Standardmäßig wird
+		es auf <filename>/var/spool/cups-pdf/%U</filename> gesetzt,
+		so dass <emphasis>cups-pdf</emphasis> für jeden Benutzer ein eigenes Verzeichnis
+		verwendet.
+	</para>
+	<para>
+		Anonym eingegangene Druckaufträge werden in das durch
+		die &ucsUCRV; <envar>cups/cups-pdf/anonymous</envar> vorgegebene Verzeichnis
+		ausgegeben (Standardeinstellung: <filename>/var/spool/cups-pdf</filename>).
+	</para>
+</section>
+
+<section id="print-services:Einbinden_von_Druckerfreigaben_auf_Windows-Clients">
+<title>Einbinden von Druckerfreigaben auf Windows-Clients</title>
+<para>
+  Die in der &ucsUMC; eingerichteten Druckerfreigaben können auf Windows-Systemen als
+  Netzwerkdrucker hinzugefügt werden. Die Druckertreiber müssen beim ersten Zugriff eingerichtet
+  werden. Um den Benutzern den Zugriff auf die Treiber zu erleichtern, können die Treiber auf dem
+  Server hinterlegt werden, das ist unten beschrieben. Alternativ kann die Option
+  <guimenu>Clientseitigen Windows Treiber verwenden</guimenu> an einer Druckerfreigabe aktiviert
+  werden. Dies ist notwendig, damit Samba Druckaufträge solchen Druckertreibern akzeptiert, die von
+  Benutzern nur lokal installiert wurden.
+</para>
+
+<para>
+  Druckerfreigaben werden in der Regel mit den mitgelieferten
+  Windows-Druckertreibern betrieben.
+</para>
+<para>
+  Der Netzwerkdrucker kann auf Windows-Seite alternativ mit einem
+  Standard-PostScript-Druckertreiber eingerichtet werden. Wenn auf
+  einen Farbdrucker zugegriffen werden soll, sollte auf Windows-Seite
+  ein Treiber für einen PostScript-fähigen Farbdrucker verwendet werden,
+  z.B. HP Color Laserjet 8550.
+</para>
+<caution>
+	<para>
+  Der Zugriff auf einen Drucker ist für einen regulären Benutzer nur
+  möglich wenn dieser über lokale Rechte zur Treiberinstallation verfügt
+  oder ein entsprechender Druckertreiber auf dem Druckserver
+  hinterlegt wurde. Ist dies nicht der Fall kann es zu einer Windows
+  Fehlermeldung kommen, die besagt, dass die Berechtigungen nicht
+  ausreichen, um eine Verbindung mit dem Drucker herzustellen.
+	</para>
+</caution>
+<para>
+  Um einen neuen Druckertreiber auf dem Druckserver zu hinterlegen,
+  sind folgende Schritte notwendig:
+</para>
+<orderedlist>
+	<listitem>
+		<simpara>
+		Windows-Anmeldung als <emphasis>Administrator</emphasis>
+		</simpara>
+	</listitem>
+  <listitem>
+	  <simpara>
+	Zugriff auf die Netzwerkumgebung des Druckservers, dort ist der
+	Ordner mit den Druckern zu öffnen
+	  </simpara>
+  </listitem>
+  <listitem>
+	  <simpara>
+	Ein Rechtsklick in einen freien Bereich des Fensters öffnet ein
+	Kontext-Menü, über das der Dialog <guimenu>Servereigenschaften</guimenu> geöffnet
+	werden kann. Auf dem Reiter <guimenu>Treiber</guimenu> kann durch einen Klick auf
+	<guimenu>Hinzufügen</guimenu> menügeführt ein Druckertreiber für die gewünschte
+	Systemarchitektur gewählt und auf den Server geladen werden.
+	  </simpara>
+  </listitem>
+  <listitem>
+	  <simpara>
+	Nun kann durch einen Rechtsklick auf den Drucker der
+	<guimenu>Eigenschaften</guimenu>-Dialog aufgerufen werden. Auf dem Reiter <guimenu>Erweitert</guimenu>
+	findet sich ein Auswahlfeld für die bereits installierten Treiber. Mit
+	einem Klick auf <mousebutton>OK</mousebutton> wird der Treiber dem Drucker zugewiesen und
+	Benutzer können sich mit dem Drucker verbinden ohne
+	einen Treiber installieren zu müssen.
+	  </simpara>
+  </listitem>
+</orderedlist>
+</section>
+
+<section id="print::ppdlisten">
+	<title>Integration weiterer PPD-Dateien</title>
+	<para>
+		Die technischen Fähigkeiten eines Druckers werden in sogenannten
+		PPD-Dateien spezifiziert. In diesen Dateien ist beispielsweise
+		festgehalten, ob ein Drucker farbig drucken kann, ob ein beidseitiger
+		Druck möglich ist, welche Papierschächte vorhanden sind, welche
+		Auflösungen unterstützt und welche Druckerbefehlssprachen unterstützt
+		werden (z.B. PCL oder Postscript).
+	</para>
+	<para>
+		Neben den bereits im Standardumfang enthaltenen PPD-Dateien können
+		weitere über die &ucsUMC; hinzugefügt werden. Die PPD wird in der
+		Regel vom Hersteller des Druckers bereitgestellt und muss auf den
+		Druckservern in das Verzeichnis <filename>/usr/share/ppd</filename> kopiert werden.
+	</para>
+	<para>
+		Die Druckertreiberlisten werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
+		der &ucsUMC; verwaltet. Dort muss in den
+		Container <emphasis>univention</emphasis> und dort in den
+		Untercontainer <emphasis>cups</emphasis> gewechselt werden. Für die meisten
+		Druckerhersteller existieren bereits Druckertreiberlisten. Diese
+		können ergänzt werden oder eine neue hinzugefügt werden.
+	</para>
+	<table>
+	<title>Karteikarte 'Allgemein'</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Name (*)</entry>
+					<entry>
+						Der Name der Druckertreiberliste. Unter diesem Namen erscheint die Liste in der Auswahlliste
+						<guimenu>Drucker-Hersteller</guimenu> auf der Karteikarte <guimenu>Allgemein</guimenu> der
+						Druckerfreigaben (siehe <xref linkend="print::shares"/>).
+					</entry>
+				</row>
+				<row>
+					<entry>Treiber</entry>
+					<entry>
+						Der Pfad zur PPD-Datei, relativ zu dem Verzeichnis
+						<filename>/usr/share/ppd/</filename>. Soll beispielweise die Datei
+						<filename>/usr/share/ppd/laserjet.ppd</filename> verwendet werden, so ist
+						hier <emphasis>laserjet.ppd</emphasis> einzutragen. Es können auch gzip-komprimierte
+						Dateien (Dateiendung .gz) angegeben werden.
+					</entry>
+				</row>
+				<row>
+					<entry>Beschreibung</entry>
+					<entry>
+						Eine Beschreibung des Druckertreibers, unter der er in der
+						Auswahlliste <guimenu>Drucker-Modell</guimenu> auf der Karteikarte
+						<guimenu>Allgemein</guimenu> der Druckerfreigaben erscheint.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+</section>
+</chapter>

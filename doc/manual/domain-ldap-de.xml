@@ -1,0 +1,1127 @@
+<chapter id="domaenenkonzept"><title>Domänendienste / LDAP-Verzeichnisdienst</title>
+
+<section id="domain-ldap:Einfuehrung">
+	<title>Einführung</title>
+	<para>
+		Univention Corporate Server bietet ein plattformübergreifendes
+		Domänenkonzept mit einem gemeinsamen Vertrauenskontext zwischen Linux- und
+		Windows-Systemen. Innerhalb dieser Domäne ist ein Benutzer mit seinem im
+		&ucsUMS; hinterlegten Benutzernamen und Passwort auf allen Systemen bekannt,
+		und kann für ihn freigeschaltete Dienste nutzen. Das Konto wird über das
+		Managementsystem sowohl für die Windows-Anmeldung als auch für
+		Linux/Posix-Systeme und Kerberos synchron gehalten. Die Verwaltung von
+		Benutzerkonten ist in <xref linkend="users:general"/> beschrieben.
+	</para>
+	<para>
+		Alle UCS- und Windowssysteme innerhalb einer UCS-Domäne verfügen über ein
+		Domänenkonto, sobald sie der UCS-Domäne beigetreten sind. Der Domänenbeitritt
+		wird in <xref linkend="domaenenbeitritt"/> beschrieben.
+	</para>
+	<para>
+		Jedes Rechnersystem, das Mitglied einer UCS-Domäne ist, besitzt eine
+		Systemrolle. Aus dieser Systemrolle ergeben sich verschiedene Berechtigungen
+		und Einschränkungen, die in <xref linkend="systemrollen"/> beschrieben
+		sind.
+	</para>
+	<para>
+		Auf dem &ucsMaster; wird die Certificate Authority (CA) der UCS-Domäne
+		betrieben. Dort wird für jedes der Domäne beigetretene System ein
+		SSL-Zertifikat generiert. Weitere Informationen finden sich in <xref
+		linkend="domain:ssl"/>.
+	</para>
+	<para>
+		Alle domänenweiten Einstellungen werden in einem Verzeichnisdienst auf
+		Basis von OpenLDAP vorgehalten. In <xref linkend="domain:ldap"/> wird
+		beschrieben wie der Speicherumfang durch LDAP-Schema-Erweiterungen ergänzt
+		werden kann, wie eine revisionssichere LDAP-Protokollierung eingerichtet werden
+		kann und wie Zugriffsberechtigungen auf das LDAP-Verzeichnis definiert werden
+		können.
+	</para>
+	<para>
+		Die Replikation der Verzeichnisdaten innerhalb einer UCS-Domäne erfolgt
+		über den Listener/Notifier-Mechanismus. Weitere Informationen finden sich in
+		<xref linkend="domain:listenernotifier"/>.
+	</para>
+	<para>
+		Kerberos ist ein Authentikationsverfahren um in verteilten Netzen über
+		potentiell unsichere Verbindungen eine sichere Identifikation zu erlauben. Jede
+		UCS-Domäne betreibt einen eigenen Kerberosvertrauenskontext (Realm). Weitere
+		Informationen finden sich in <xref linkend="domain:kerberos"/>
+	</para>
+</section>
+
+<section id="domaenenbeitritt">
+	<title>Domänenbeitritt</title>
+	<para>
+		Ein UCS, Ubuntu- oder Windows-System muss nach der Installation der Domäne
+		beitreten. Im Folgenden werden die verschiedenen Möglichkeiten hierzu
+		vorgestellt:
+	</para>
+
+	<section id="linux-domaenenbeitritt">
+		<title>Domänenbeitritt von UCS-Systemen</title>
+		<para>
+			Es gibt drei Möglichkeiten ein UCS-System einer bestehenden Domäne
+			beitreten zu lassen; direkt am Ende der Installation im Univention Installer
+			(siehe <xref linkend="installer_join"/>) oder nachträglich durch den
+			Befehl <command>univention-join</command> bzw. mit der Univention Management
+			Console.
+		</para>
+		<para>
+			Der &ucsMaster; sollte immer auf dem aktuellsten Release-Stand der Domäne
+			installiert sein, da beim Join eines Systems in aktuellerer Version gegen einen
+			älteren DC Master Probleme auftreten können.
+		</para>
+		<para>
+			Beim Beitritt eines Rechners wird für diesen ein Rechnerkonto angelegt,
+			die SSL-Zertifikate synchronisiert und ggf. eine LDAP-Replikation
+			angestoßen. Außerdem werden am Ende des Join-Vorgangs
+			<emphasis>Join-Skripte</emphasis> ausgeführt. Diese registrieren anhand der auf
+			dem System installierten Software-Pakete z.B. weitere Objekte im
+			Verzeichnisdienst.
+		</para>
+		<para>
+		  Der Domänenbeitritt wird auf Client-Seite in der Logdatei
+		  <filename>/var/log/univention/join.log</filename> aufgezeichnet, die zur Fehleranalyse
+		  herangezogen werden kann. Auf dem &ucsMaster; ausgeführte Aktionen werden in der Logdatei
+		  <filename>/home/&lt;Join-Account&gt;/.univention-server-join.log</filename> abgelegt.
+		</para>
+		<para>
+			Der Join-Vorgang kann jederzeit wiederholt werden. Nach bestimmten
+			administrativen Schritten (etwa nach Änderungen wichtiger Systemeigenschaften
+			auf dem &ucsMaster;) kann ein erneuter Beitritt der Systeme sogar zwingend
+			erforderlich sein.
+		</para>
+
+		<section id="domain-ldap:Nachtraeglicher_Domaenenbeitritt_mit_univention-join">
+			<title>Nachträglicher Domänenbeitritt mit univention-join</title>
+			<para>
+				<command>univention-join</command> fragt eine Reihe essentieller
+				Parameter direkt ab, ist aber auch durch mehrere Parameter konfigurierbar:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<simpara>
+					Der &ucsMaster; wird im Regelfall durch eine DNS-Abfrage
+					ermittelt. Wenn das nicht möglich sein sollte (z.B. weil ein Standortserver mit
+					einer abweichenden DNS-Domäne beitreten soll), lässt sich der Rechnername des
+					DC Master auch durch den Parameter <command>-dcname HOSTNAME</command> direkt
+					angegeben werden. Der Rechnername muss dabei als vollqualifizierter Name
+					angeben werden, also beispielsweise <emphasis>master.firma.de</emphasis>.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Als Join-Account wird ein Benutzerkonto bezeichnet, das berechtigt
+					ist, Systeme der UCS-Domäne hinzuzufügen. Standardmäßig ist dies der Benutzer
+					<emphasis>Administrator</emphasis> oder ein Mitglied der Gruppe
+					<emphasis>Domain Admins</emphasis>. Der Join-Account kann durch den Parameter
+					<command>-dcaccount ACCOUNTNAME</command> übergeben werden.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Das Passwort kann durch den Parameter <command>-dcpwd DATEI</command>
+					übergeben werden. Das Passwort wird dabei aus der angegebenen Datei ausgelesen.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+				  Mit dem Parameter <emphasis>-verbose</emphasis> werden zusätzliche Debugausgaben
+				  in die Logdateien geschrieben, die die Analyse im Fehlerfall vereinfachen.
+					</simpara>
+				</listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="linux-domaenenbeitritt-umc">
+			<title>Domänenbeitritt mit &ucsUMC;</title>
+			<para>
+				Der Domänenbeitritt kann auch webbasiert über das Modul
+				<guimenu>Domänenbeitritt</guimenu> der &ucsUMC; erfolgen.
+			</para>
+			<para>
+				Da auf einem noch nicht der Domäne beigetretenen System der
+				Administrator-Benutzer noch nicht vorhanden ist, muss die Anmeldung an &ucsUMC;
+				als Benutzer <emphasis>root</emphasis> erfolgen.
+			</para>
+			<para>
+				Auch hier müssen der Benutzername und das Passwort eines Benutzers
+				eingetragen werden, der berechtigt ist, Rechner der Domäne hinzuzufügen.
+			</para>
+			<para>
+				Wie beim Domänenbeitritt über die Kommandozeile ist es auch bei der
+				&ucsUMC; erforderlich, dass ein DNS-Service-Record für den DC Master vorhanden
+				ist. Es besteht hier keine Möglichkeit, den Namen des DC Masters explizit
+				anzugeben.
+			</para>
+			<para>
+			  Mit der Option <guimenu>Erneut beitreten</guimenu> kann der Domänenbeitritt jederzeit
+			  erneut durchgeführt werden.
+			</para>
+		</section>
+
+		<section id="domain-ldap:Nachtraegliches_Ausfuehren_von_Join-Skripten">
+			<title>Nachträgliches Ausführen von Join-Skripten</title>
+			<para>
+			  Gibt es auf einem System Join-Skripte, die noch nicht ausgeführt wurden oder die nur
+			  für eine ältere Version augeführt wurden, wird in der Startseite der &ucsUMC; eine
+			  Warnmeldung ausgegeben.
+			</para>
+			<para>
+			  Nicht ausgeführte Join-Skript können über das Modul
+			  <guimenu>Domänenbeitritt</guimenu> der &ucsUMC; aufgerufen werden, in dem der
+			  Menüpunkt <guimenu>Alle Skripte ausführen</guimenu> aufgerufen wird.
+			</para>
+			<para>
+				Mit dem Befehl <command>univention-run-join-scripts</command> lassen
+				sich alle auf einem System installierten Join-Skripte ausführen. Ob sie bereits
+				gestartet wurden, prüfen die Skripte selbständig.
+			</para>
+			<para>
+				Der Name des Join-Skriptes und die Ausgabe des Skriptes werden auch in
+				<filename>/var/log/univention/join.log</filename> festgehalten.
+			</para>
+			<para>
+				Wird <command>univention-run-join-scripts</command> auf einer anderen
+				Systemrolle als &ucsMaster; oder &ucsBackup; ausgeführt, so wird der Benutzer
+				nach einem Benutzernamen und einem Passwort gefragt. Auf &ucsMaster; und
+				&ucsBackup; kann dies durch die Option <emphasis>--ask-pass</emphasis> erreicht
+				werden.
+			</para>
+		</section>
+	</section>
+
+	<section id="windows-domaenenbeitritt">
+		<title>Windows-Domänenbeitritt</title>
+		<para>
+			Der Domänenbeitritt von Windows-Systemen zu einer durch Samba
+			bereitgestellten UCS-Domäne wird nachfolgend für Windows 7/8 und Windows XP
+			Professional beschrieben. Bei anderen Windows-Versionen funktioniert der
+			Beitritt ähnlich.
+		</para>
+		<para>
+			Nur domänenfähige Windows-Versionen können der UCS-Domäne beitreten,
+			d.h. ein Domänenbeitritt mit den Home-Versionen von Windows ist nicht möglich.
+		</para>
+		<para>
+			Unter UCS können zwei verschiedene Versionen von Samba zum Einsatz
+			kommen: Samba 3 implementiert eine Windows-Domäne auf Basis von
+			NT-Domänentechnologie, während Samba 4 ein Active Directory-Verzeichnis
+			nachbildet. Weitere Hinweise finden sich in <xref
+			linkend="windows:general"/>.
+		</para>
+		<para>
+			Beim Domänenbeitritt wird automatisch ein Rechnerkonto für den
+			Windows-Client erstellt (siehe <xref
+			linkend="computers::hostaccounts"/>). Angaben zu MAC- und IP-Adresse, Netzwerk,
+			DHCP oder DNS können vor oder nach dem Domänenbeitritt in der &ucsUMC; ergänzt
+			werden.
+		</para>
+		<para>
+			Der Domänenbeitritt wird in der Regel mit dem lokalen Administrator-Konto
+			des Windows-Systems durchgeführt.
+		</para>
+		<figure>
+			<title>Domänenbeitritt eines Windows 7-Systems</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/win7-join_2-de.png"/>
+		</figure>
+		<para>
+			Der Domänenbeitritt dauert einige Zeit und sollte nicht vorzeitig
+			abgebrochen werden. Nach einem erfolgreichen Beitritt erscheint ein kleines
+			Fenster mit der Nachricht <guimenu>Willkommen in der Domäne
+			&lt;Domänenname&gt;</guimenu>, die mit <mousebutton>OK</mousebutton> bestätigt
+			werden muss. Abschließend muss der Rechner neu gestartet werden, um die
+			Änderungen in Kraft zu setzen.
+		</para>
+		<para>
+			Domänennamen sollten auf 15 Zeichen beschränkt werden, da diese auf Seite
+			der Windows-Clients ansonsten verkürzt dargestellt werden, was zu
+			Anmeldefehlern führen kann.
+		</para>
+		<para>
+			Bei einem Domänenbeitritt gegen einen Domänencontroller auf Basis von
+			Samba 3 muss sichergestellt werden, dass der NetBIOS-Name der Domäne auflösbar
+			ist. Dazu ist unter Umständen ein WINS-Server zu konfigurieren (siehe
+			<xref linkend="windows:wins"/>).
+		</para>
+		<para>
+			Bei einem Domänenbeitritt gegen einen Domänencontroller auf Basis von
+			Samba 4 muss die DNS-Konfiguration des Clients so eingerichtet sein, dass
+			DNS-Einträge aus der DNS-Zone der UCS-Domäne aufgelöst werden können. Außerdem
+			muss die Zeit auf dem Client-System mit der Zeit auf dem Domänencontroller
+			synchronisiert sein.
+		</para>
+
+		<section id="domain-ldap:Windows_8">
+			<title>Windows 8</title>
+			<para>
+			  Der Domänenbeitritt ist nur mit der Pro und Enterprise-Edition von Windows 8 möglich.
+			</para>
+			<para>
+			  Tritt der Client einer Domäne auf Basis von Samba 3 bei, müssen vor dem
+			  Domänenbeitritt einige Einstellungen in der Windows-Registry vorgenommen
+			  werden. Eine entsprechende REG-Datei kann unter
+			  <ulink url="http://sdb.univention.de/1102"/> heruntergeladen werden. Anschließend
+			  muss das System neu gestartet werden. Dieser Schritt ist unter Samba 4 nicht
+			  nötig.
+			</para>
+			<para>
+			  Die Systemsteuerung kann erreicht werden, indem der Mauszeiger in die rechte untere
+			  Bildschirmecke bewegt wird. Anschließend kann unter <guimenu>Suchen &ar; Apps</guimenu> nach der
+			  <emphasis>Systemsteuerung</emphasis> gesucht werden. Unter <guimenu>System und
+			  Sicherheit &ar; System</guimenu> muss auf <guimenu>Einstellungen ändern &ar; Netzwerk
+			  ID</guimenu> geklickt werden.
+			</para>
+			<para>
+			  Für den Domänenbeitritt muss das Optionsfeld <guimenu>Domäne</guimenu>
+			  markiert und der Name der Samba-Domäne in das Eingabefeld eingetragen
+			  werden. Nach einem Klick auf die Schaltfläche <mousebutton>OK</mousebutton>
+			  muss in das Eingabefeld <guimenu>Name</guimenu> der Name
+			  <emphasis>Administrator</emphasis> und in das Eingabefeld
+			  <guimenu>Kennwort</guimenu> das Passwort von
+			  <emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> eingetragen
+			  werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
+			  <mousebutton>OK</mousebutton> gestartet werden.
+			</para>
+		</section>
+
+		<section id="domain-ldap:Windows_7">
+			<title>Windows 7</title>
+			<para>
+				Der Domänenbeitritt ist nur mit der Professional, Enterprise oder
+				Ultimate-Edition von Windows 7 möglich.
+			</para>
+			<para>
+				Tritt der Client einer Domäne auf Basis von Samba 3 bei, müssen vor dem
+				Domänenbeitritt einige Einstellungen in der Windows-Registry vorgenommen
+				werden. Eine entsprechende REG-Datei kann unter
+				<ulink url="http://sdb.univention.de/1102"/> heruntergeladen werden. Anschließend
+				muss das System neu gestartet werden. Dieser Schritt ist unter Samba 4 nicht
+				nötig.
+			</para>
+			<para>
+				Über <guimenu>Start &ar; Systemsteuerung &ar; System und Sicherheit &ar;
+				Computernamen anzeigen</guimenu> kann der Basiskonfigurationsdialog erreicht
+				werden. Unter <guimenu>Einstellungen für Computernamen, Domäne und
+				Arbeitsgruppe</guimenu> muss <guimenu>Einstellungen ändern</guimenu> gewählt
+				werden und auf <guimenu>Ändern</guimenu> geklickt werden.
+			</para>
+			<para>
+				Für den Domänenbeitritt muss das Optionsfeld <guimenu>Domäne</guimenu>
+				markiert und der Name der Samba-Domäne in das Eingabefeld eingetragen
+				werden. Nach einem Klick auf die Schaltfläche <mousebutton>OK</mousebutton>
+				muss in das Eingabefeld <guimenu>Name</guimenu> der Name
+				<emphasis>Administrator</emphasis> und in das Eingabefeld
+				<guimenu>Kennwort</guimenu> das Passwort von
+				<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> eingetragen
+				werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
+				<mousebutton>OK</mousebutton> gestartet werden.
+			</para>
+		</section>
+
+		<section id="domain-ldap:Windows_XP_Professional">
+			<title>Windows XP Professional</title>
+			<para>
+				Über einen Rechtsklick auf den Eintrag <guimenu>Arbeitsplatz</guimenu>
+				im Startmenü kann der Dialog zum Domänenbeitritt erreicht werden. Dort muss
+				<guimenu>Eigenschaften &ar; Computername &ar; Ändern</guimenu> ausgewählt werden.
+			</para>
+			<para>
+				Für den Domänenbeitritt muss das Optionsfeld <guimenu>Domäne</guimenu>
+				markiert und der Name der Samba-Domäne in das Eingabefeld eingetragen
+				werden. Nach einem Klick auf die Schaltfläche <mousebutton>OK</mousebutton>
+				muss in das Eingabefeld <guimenu>Name</guimenu> der Name
+				<emphasis>Administrator</emphasis> und in das Eingabefeld
+				<guimenu>Kennwort</guimenu> das Passwort von
+				<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> eingetragen
+				werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
+				<mousebutton>OK</mousebutton> gestartet werden.
+			</para>
+		</section>
+	</section>
+
+	<section id="ubuntu-domaenenbeitritt">
+		<title>Ubuntu-Domänenbeitritt</title>
+		<para>
+			Die Integration von Ubuntu-Clients in eine UCS-Domäne ist in
+			<xref linkend="computers:ubuntu"/> beschrieben.
+		</para>
+	</section>
+
+	<section id="joining-macos">
+		<title>Mac OS X-Domänenbeitritt</title>
+		<para>
+		  UCS unterstützt den Domänenbeitritt von Mac OS X-Clients in eine UCS-Umgebung mit Samba
+		  4. Diese Anleitung bezieht sich auf Mac OS X 10.8.2.
+		</para>
+
+		<para>
+		  Der Domänenbeitritt kann über das Systemeinstellungsmenü oder den Kommandozeilenbefehl
+		  <command>dsconfigad</command> erfolgen.
+		</para>
+
+		<para>
+		  Nach erfolgtem Domänenbeitritt besteht die Möglichkeit CIFS-Freigaben zu definieren, die
+		  bei der Anmeldung eines Benutzers unterhalb von <filename>/Volumes</filename> automatisch
+		  eingehängt werden. Um dies zu erreichen, muss die folgende Zeile in die Datei
+		  <filename>/etc/auto_master</filename> eingefügt werden:
+		</para>
+	  <programlisting>
+/Volumes    auto_custom
+	  </programlisting>
+
+		<para>
+		  Außerdem muss die Datei <filename>/etc/auto_custom</filename> angelegt werden und die
+		  einzubindenden Freigaben dort in der folgenden Form aufgeführt werden:
+		</para>
+	  <programlisting>
+&lt;subfolder name&gt;    -fstype=smbfs    ://&lt;fqdn&gt;/&lt;sharename&gt;
+	  </programlisting>
+		<para>
+	  Die eingebundenen Freigaben werden nicht in der Seitenleiste des Finders angezeigt.
+		</para>
+
+		<section id="joining-macos:gui">
+		  <title>Domänenbeitritt über das Systemeinstellungen-Menü</title>
+		  <para>
+			In den Systemeinstellungen kann über <guimenu>Benutzer</guimenu> das Menü
+			<guimenu>Anmeldeoptionen</guimenu> ausgewählt werden. Die Anmeldung erfolgt durch einen
+			Klick auf das Schloss in der linken unteren Ecke, dort muss das lokale Administrator-Konto und
+			dessen Passwort angegeben und <guimenu>Netzwerk-Account-Server: Verbinden</guimenu>
+			angeklickt werden.
+		  </para>
+
+		<figure>
+			<title>Domänenbeitritt eines Mac OS X-Systems</title>
+			<graphic scalefit="1" width="60%" fileref="illustrations/macosx-bind_de.png"/>
+		</figure>
+
+		  <para>
+			In den erweiterten Einstellungen sollte die Option <guimenu>Mobilen Account bei Anmeldung erstellen</guimenu>
+			aktiviert werden. Sie bietet den Vorteil, das auch ohne Verbindung zur Domäne eine
+			Anmeldung mit der Domänenbenutzerkennung erfolgen kann
+		  </para>
+
+		  <para>
+			Der Domänenname muss nun im Feld <guimenu>Active Directory Domain</guimenu> und der
+			Rechnername des Mac OS X-Clients in das Feld <guimenu>Computer-ID</guimenu> eingetragen
+			werden. Der Domänenbeitritt erfolgt nach einem Klick auf <guimenu>OK</guimenu>. Für den
+			Domänenbeitritt muss ein Konto aus der Gruppen <emphasis>Domain Admins</emphasis>
+			verwendet werden, z.B. <emphasis>Administrator</emphasis>.
+		  </para>
+		</section>
+
+		<section id="joining-macos:cli">
+		  <title>Domänenbeitritt auf den Kommandozeile</title>
+		  <para>
+			Der Domänenbeitritt kann auch auf der Kommandozeile mit dem Befehl
+			<command>dsconfigad</command> erfolgen:
+		  </para>
+	    <programlisting>
+dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ldap_base&gt;" \
+-u &lt;Domain Administrator&gt; -mobile enable
+	    </programlisting>
+		  <para>
+	    Weitere Optionen werden mit <command>dsconfigad -help</command> angezeigt.
+		  </para>
+		</section>
+	</section>
+</section>
+
+<section id="systemrollen">
+	<title>UCS-Systemrollen</title>
+	<para>
+		In einer UCS-Domäne können Systeme in unterschiedlichen
+		<emphasis>Systemrollen</emphasis> installiert werden. Im Folgenden werden die
+		verschiedenen Systemrollen kurz charakterisiert:
+	</para>
+
+	<section id="domain-ldap:Domaenencontroller_Master">
+		<title>Domänencontroller Master</title>
+		<para>
+			Ein System mit der Rolle &ucsMaster; (kurz DC Master) ist der primäre
+			Domänencontroller einer UCS-Domäne und wird immer als erstes System
+			installiert. Auf dem DC Master werden die Domänendaten (wie z.B. Benutzer,
+			Gruppen, Drucker) und die SSL-Sicherheitszertifikate gespeichert. Kopien
+			dieser Daten werden automatisch auf Server mit der Rolle &ucsBackup;
+			übertragen.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Domaenencontroller_Backup">
+		<title>Domänencontroller Backup</title>
+		<para>
+			Auf Servern mit der Rolle &ucsBackup; (kurz DC Backup) werden alle
+			Domänendaten und SSL-Sicherheitszertifikate als Nur-Lese-Kopie gespeichert.
+		</para>
+		<para>
+			Der &ucsBackup; dient als Fallback-System des DC Master. Sollte dieser
+			ausfallen, kann ein DC Backup die Rolle des DC Master dauerhaft übernehmen
+			(siehe <xref linkend="domain:backup2master"/>).
+		</para>
+	</section>
+
+	<section id="domain-ldap:Domaenencontroller_Slave">
+		<title>Domänencontroller Slave</title>
+		<para>
+			Auf Servern mit der Rolle &ucsSlave; (kurz DC Slave) werden die
+			Domänendaten als Nur-Lese-Kopie gespeichert. Im Gegensatz zum &ucsBackup; werden
+			jedoch nicht alle SSL-Sicherheitszertifikate gespeichert. Da die Zugriffe der
+			auf einem &ucsSlave; laufenden Dienste gegen den lokalen LDAP-Datenbestand
+			erfolgen, bieten sich DC Slave-System für Standortserver und für die Verteilung
+			lastintensiver Dienste an.
+		</para>
+		<para>
+			Ein DC Slave-System kann nicht zum DC Master hochgestuft werden.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Memberserver">
+		<title>&ucsMember;</title>
+		<para>
+			&ucsMember; sind Server-Systeme ohne lokalen LDAP-Server. Der Zugriff auf
+			Domänendaten erfolgt hierbei über andere Server der Domäne.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Basissystem">
+		<title>Basissystem</title>
+		<para>
+			Ein Basissystem ist ein eigenständiges System, das aber nicht Mitglied
+			der Domäne ist.
+		</para>
+		<para>
+			Ein Basissystem bietet sich somit für Dienste an, die außerhalb des
+			Vertrauenskontextes der Domäne betrieben werden, etwa als Web-Server oder
+			Firewall.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Ubuntu">
+		<title>Ubuntu</title>
+		<para>
+			Ubuntu-Clients können mit einer eigenen Systemrolle verwaltet werden,
+			siehe <xref linkend="computers:ubuntu"/>.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Linux">
+		<title>Linux</title>
+		<para>
+		  Diese Systemrolle wird für die Integration von anderen Linux-Systemen als UCS und Ubuntu
+		  verwendet, z.B. für Debian- oder CentOS-Systeme.
+		</para>
+	</section>
+
+	<section id="domain-ldap:ucc">
+		<title>Univention Corporate Client</title>
+		<para>
+			Ein Univention Corporate Client ist ein Desktop- oder Thin Client-System auf Basis von
+			Univention Corporate Client.
+		</para>
+	</section>
+
+	<section id="domain-ldap:macos">
+	  <title>Mac OS X</title>
+	  <para>
+		Mac OS X-Systeme können einer UCS-Domäne mit Samba 4 beitreten. Weitere Hinweise finden sich
+		in <xref linkend="joining-macos"/>.
+	  </para>
+	</section>
+
+	<section id="domain-ldap:Managed_Client">
+		<title>Managed Client</title>
+		<para>
+			Ein Managed Client ist ein stationäres Linux-Desktop-System auf Basis von
+			&ucsUCD;.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Mobile_Client">
+		<title>Mobile Client</title>
+		<para>
+			Ein Mobile Client ist ein mobiles Linux-Desktop-System auf Basis von
+			&ucsUCD;.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Thin_Client">
+		<title>Thin Client</title>
+		<para>
+			Ein Thin Client ist ein festplattenloser Rechner, der über das Netz
+			gebootet wird und der auf einem Terminal-Server (Linux oder Windows)
+			ausgeführte Anwendungen darstellt.
+		</para>
+		<para>
+			Auf dem Thin Client ist also kein Betriebssystem installiert, wodurch er
+			sehr wartungsarm ist.
+		</para>
+		<para>
+			Unterstützung für Thin Clients bietet die UCS-Komponente &ucsTCS;.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Domain_Trust_Account">
+		<title>Domain Trust Account</title>
+		<para>
+			Ein Domain Trust Account wird für Vertrauensstellungen zwischen Windows
+			und UCS Domänen eingerichtet.
+		</para>
+	</section>
+
+	<section id="domain-ldap:IP-Managed-Client">
+		<title>IP-Managed-Client</title>
+		<para>
+			Ein IP-Managed-Client ermöglicht die Integration von Nicht-UCS-Systemen
+			in das IP-Management (DNS/DHCP), z.B. für Netzwerkdrucker oder Router.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Windows_Domaenencontroller">
+		<title>Windows Domänencontroller</title>
+		<para>
+			Windows-Domänencontroller in einer Samba 4-Umgebung werden mit dieser
+			Systemrolle betrieben.
+		</para>
+	</section>
+
+	<section id="domain-ldap:Windows_Workstation_Server">
+		<title>Windows Workstation/Server</title>
+		<para>
+			Windows-Clients und Windows-Memberserver werden mit dieser Systemrolle
+			verwaltet.
+		</para>
+	</section>
+</section>
+
+<section id="domain:ldap">
+	<title>LDAP-Verzeichnisdienst</title>
+	<para>
+		Univention Corporate Server speichert domänenweit vorgehaltene Daten in
+		einem LDAP-Verzeichnisdienst auf Basis von OpenLDAP. Dieses Kapitel beschreibt
+		die weitergehende Konfiguration und Anpassung von OpenLDAP.
+	</para>
+
+	<section id="domain:ldap:schemata">
+		<title>LDAP-Schemata</title>
+		<para>
+			In Schema-Definitionen wird festgelegt, welche Objektklassen existieren
+			und welche Attribute darin enthalten sind - mit anderen Worten, welche Daten in
+			einem Verzeichnisdienst gespeichert werden können. Schema-Definitionen liegen
+			als Text-Dateien vor und werden über die Konfigurationsdatei des
+			OpenLDAP-Servers eingebunden.
+		</para>
+		<para>
+			UCS verwendet nach Möglichkeit Standard-Schemata, so dass eine
+			Interoperabilität mit anderen LDAP-Applikationen in der Regel gegeben ist. Für
+			Univention-spezifische Attribute - etwa für den Richtlinien-Mechanismus -
+			werden Schema-Erweiterungen mitgeliefert.
+		</para>
+
+		<section id="domain:ldap:extensions">
+			<title>LDAP-Schema-Erweiterungen</title>
+			<para>
+				Um den Aufwand für kleine Erweiterungen im LDAP möglichst gering zu
+				halten, bringt UCS ein eigenes LDAP-Schema für Kundenerweiterungen mit. Die
+				LDAP-Objektklasse <emphasis>univentionFreeAttributes</emphasis> kann ohne
+				Einschränkungen für erweiterte Attribute verwendet werden. Sie bringt 20 frei
+				zu verwendende Attribute (<emphasis>univentionFreeAttribute1</emphasis> bis
+				<emphasis>univentionFreeAttribute20</emphasis>) mit und kann in Verbindung mit
+				jedem beliebigen LDAP-Objekt (z.B. einem Benutzerobjekt) verwendet werden.
+			</para>
+		</section>
+
+		<section id="domain-ldap:LDAP-Schema-Replikation">
+			<title>LDAP-Schema-Replikation</title>
+			<para>
+				Über den Listener/Notifier-Mechanismus (siehe <xref
+				linkend="domain:listenernotifier"/>) wird auch die Replikation der
+				LDAP-Schemata automatisiert. Dies entbindet den Administrator von der
+				Notwendigkeit, Schema-Änderungen auf allen OpenLDAP-Servern der Domäne manuell
+				nachzupflegen. Mit der Ausführung der Schema-Replikation vor der Replikation
+				von LDAP-Objekten wird sichergestellt, dass diese nicht aufgrund fehlender
+				Objektklassen oder Attribute scheitert.
+			</para>
+			<para>
+				Auf dem &ucsMaster; wird beim Start des OpenLDAP-Servers über alle
+				Verzeichnisse mit Schema-Definitionen eine Prüfsumme erzeugt. Diese Prüfsumme
+				wird mit der letzten in der Datei
+				<filename>/var/lib/univention-ldap/schema/md5</filename> gespeicherten
+				Prüfsumme verglichen.
+			</para>
+			<para>
+				Die eigentliche Replikation der Schema-Definitionen wird vom Univention
+				Directory Listener initiiert. Vor jeder Abfrage einer neuen Transaktions-ID
+				durch den Univention Directory Notifier wird dessen aktuelle Schema-ID
+				abgefragt. Ist diese höher als die Schema-ID auf der Listener-Seite, wird über
+				eine LDAP-Suche vom LDAP-Server des Notifier-Systems dessen aktuell verwendetes
+				Subschema bezogen.
+			</para>
+			<para>
+				Das ausgelesene Subschema wird auf dem Listener-System im LDIF-Format
+				in die Datei <filename>/var/lib/univention-ldap/schema.conf</filename>
+				eingebunden und der lokale OpenLDAP-Server neu gestartet. Ist die
+				Schema-Replikation mit diesem Schritt abgeschlossen, wird die Replikation der
+				LDAP-Objekte fortgeführt.
+			</para>
+		</section>
+	</section>
+
+	<section id="domain-ldap:Revisionssichere_LDAP-Protokollierung">
+		<title>Revisionssichere LDAP-Protokollierung</title>
+		<para>
+			Das Paket <command>univention-directory-logger</command> ermöglicht die
+			Protokollierung von Änderungen im LDAP-Verzeichnisdienst. Eine integrierte
+			Hash-Summe stellt zusätzlich sicher, dass keine Änderungen aus der Logdatei
+			entfernt werden. Die Protokollierung erfolgt in die Datei
+			<filename>/var/log/univention/directory-logger.log</filename>
+		</para>
+		<!-- Hinweise zur Einrichtung und Konfiguration des Univention Directory -->
+		<!-- Logger findet sich im Univention Wiki unter WIKIREF-23404. -->
+	</section>
+
+	<section id="domain-ldap:Timeout_fuer_inaktive_LDAP-Verbindungen">
+		<title>Timeout für inaktive LDAP-Verbindungen</title>
+		<para>
+			Mit der &ucsUCRV; <envar>ldap/idletimeout</envar> kann ein Zeitraum in
+			Sekunden konfiguriert werden, nach dessen Ablauf eine LDAP-Verbindung
+			serverseitig geschlossen wird. Wenn der Wert auf 0 gesetzt wird, wird kein
+			Ablaufzeitraum angewendet. Seit UCS 3.0 beträgt der Ablaufzeitraum
+			standardmäßig sechs Minuten.
+		</para>
+	</section>
+
+	<section id="domain-ldap:LDAP-Kommandozeilen-Tools">
+		<title>LDAP-Kommandozeilen-Tools</title>
+		<para>
+			Neben dem &ucsUMC;-Webinterface gibt es auch eine Reihe von Programmen,
+			mit denen auf der Kommandozeile auf das LDAP-Verzeichnis zugegriffen werden
+			kann.
+		</para>
+		<para>
+			Das Tool <command>univention-ldapsearch</command> vereinfacht die
+			authentifizierte Suche im LDAP-Verzeichnis. Als Argument muss ein Suchfilter
+			übergeben werden, im folgenden Beispiel wird der Administrator anhand der
+			User-ID gesucht:
+		</para>
+		<programlisting>
+univention-ldapsearch uid=Administrator
+		</programlisting>
+		<para>
+			Der Befehl <command>slapcat</command> ermöglicht die Speicherung der
+			aktuellen LDAP-Daten in einer Textdatei im LDIF-Format, z.B.:
+		</para>
+		<programlisting>
+slapcat > ldapdaten.txt
+		</programlisting>
+	</section>
+
+	<section id="domain-ldap:Zugriffskontrolle_auf_das_LDAP-Verzeichnis">
+		<title>Zugriffskontrolle auf das LDAP-Verzeichnis</title>
+		<para>
+			Der Zugriff auf die Informationen im LDAP-Verzeichnis wird serverseitig
+			durch Access Control Lists (ACLs) geregelt. Die ACLs werden in der zentralen
+			Konfigurations-Datei <filename>/etc/ldap/slapd.conf</filename> definiert und
+			über &ucsUCR; verwaltet. Die <filename>slapd.conf</filename> wird dabei durch
+			ein Multifile-Template verwaltet; weitere ACL-Elemente können unterhalb von
+			<filename>/etc/univention/templates/files/etc/ldap/slapd.conf.d/</filename>
+			zwischen den Dateien <filename>60univention-ldap-server_acl-master</filename>
+			und <filename>70univention-ldap-server_acl-master-end</filename> eingefügt
+			werden oder die bestehenden Templates erweitert werden.
+		</para>
+		<para>
+			Die Grundeinstellung des LDAP-Servers bei Neuinstallationen mit UCS
+			erlaubt keinen anonymen Zugriff auf das LDAP-Verzeichnis. Dieses Verhalten kann
+			mit der &ucsUCRV; <envar>ldap/acl/read/anonymous</envar> konfiguriert
+			werden. Einzelne IP-Adressen können über die &ucsUCRV;
+			<envar>ldap/acl/read/ips</envar> für den anonymen Lesezugriff freigeschaltet
+			werden.
+		</para>
+		<para>
+			Nach erfolgreicher Authentifizierung am LDAP-Server können alle Attribute
+			eines Benutzerkontos von diesem Benutzer ausgelesen werden.
+		</para>
+		<para>
+			Ein zusätzlicher, interner Account, der Root-DN, besitzt darüberhinaus
+			auch schreibenden Vollzugriff.
+		</para>
+		<para>
+			Unter UCS gibt es außerdem einige standardmäßig installierte ACLs,
+			die den Zugriff auf sensitive Daten unterbinden (z.B. auf das Benutzerpasswort)
+			und für den Betrieb notwendige Regeln setzen (etwa nötige Zugriffe auf
+			Rechnerkonten für Anmeldungen). Der lesende und schreibende Zugriff auf diese
+			sensitiven Daten ist nur für die Mitglieder der Gruppe <emphasis>Domain
+			Admins</emphasis> vorgesehen. Dabei werden auch enthaltene Gruppen
+			unterstützt. Mit der &ucsUCRV; <envar>ldap/acl/nestedgroups</envar> kann diese
+			Gruppen-in-Gruppen-Funktionalität für die LDAP-ACLs deaktiviert werden, wodurch
+			eine Geschwindigkeitssteigerung bei den Verzeichnisdienstanfragen zu erwarten
+			ist.
+		</para>
+
+		<!-- Weiterführende Hinweise zum Aufbau und zur Anpassung der Zugriffsregeln finden -->
+		<!-- sich im Univention Wiki unter WIKIREF-22403. -->
+
+		<section id="domain-ldap:Delegation_des_Zuruecksetzens_von_Benutzerpasswoertern">
+			<title>Delegation des Zurücksetzens von Benutzerpasswörtern</title>
+			<para>
+				Um einer Teilgruppe von Administratoren mit eingeschränkten Rechten,
+				z.B. einem Helpdesk, das Zurücksetzen von Benutzerpasswörtern zu ermöglichen,
+				kann das Paket <package>univention-admingrp-user-passwordreset</package>
+				installiert werden. Es legt über ein Joinskript die Benutzergruppe
+				<emphasis>User Password Admins</emphasis> an, sofern diese noch nicht
+				existiert.
+			</para>
+			<para>
+				Mitglieder dieser Gruppe erhalten über zusätzliche LDAP-ACLs die
+				Berechtigung, Passwörter von anderen Benutzern zurückzusetzen. Diese LDAP-ACLs
+				werden bei der Paketinstallation automatisch aktiviert. Um eine andere
+				ggf. schon existierende Gruppe statt der Gruppe <emphasis>User Password
+				Admins</emphasis> zu verwenden, kann der DN der zu verwendenden Gruppe in die
+				&ucsUCRV; <envar>ldap/acl/user/passwordreset/accesslist/groups/dn</envar>
+				eingetragen werden. Nach der Änderung ist ein Neustart des LDAP-Servers
+				erforderlich.
+			</para>
+			<para>
+				Das Zurücksetzen der Passwörter kann über den &ucsUDM; erfolgen. In der
+				Standardeinstellung bietet &ucsUDM; nur dem Benutzer
+				<emphasis>Administrator</emphasis> den Benutzer-Assistenten an, über den neue
+				Passwörter gesetzt werden können. Während der Installation wird automatisch
+				eine neue Richtlinie <package>default-user-password-admins</package> erstellt,
+				die mit den Mitgliedern der Gruppe <emphasis>User Password Admins</emphasis>
+				bzw. mit einem entsprechenden Container im LDAP-Verzeichnis verknüpft werden
+				kann.
+			</para>
+			<para>
+				Die Richtlinie ermöglicht dabei die Suche nach Benutzern sowie die
+				Ansicht aller Attribute eines Benutzerobjektes. Wird versucht, neben dem
+				Passwort weitere Attribute zu modifizieren, für die keine ausreichenden
+				Zugriffsrechte auf das LDAP-Verzeichnis existieren, wird der Schreibzugriff vom
+				&ucsUDM; mit der Meldung <emphasis>Zugriff verweigert</emphasis> abgelehnt.
+			</para>
+			<caution>
+				<para>
+					Das Paket ist auf dem Domaincontroller Master- sowie den
+					Domaincontroller Backup-Systemen zu installieren. Während der Installation wird
+					der LDAP-Server neu gestartet und ist kurzzeitig nicht erreichbar.
+				</para>
+			</caution>
+			<para>
+				Um das Zurücksetzen von Passwörtern für bestimmte Benutzer
+				(z.B. Domänen-Administratoren) zu verhindern, können die UIDs der zu
+				schützenden Benutzer in der &ucsUCRV;
+				<envar>ldap/acl/user/passwordreset/protected/uid</envar> kommasepariert
+				angegeben werden. Nach einer Änderung der Variable ist es erforderlich, den
+				LDAP-Verzeichnisdienst über den Befehl <command>/etc/init.d/slapd
+				restart</command> neu zu starten, damit die geänderten LDAP-ACLs wirksam
+				werden. In der Standardeinstellung wird der Benutzer
+				<emphasis>Administrator</emphasis> vor Passwortänderungen durch die Gruppe
+				<emphasis>User Password Admins</emphasis> geschützt.
+			</para>
+			<para>
+				Sollte für die Änderung des Passworts der Zugriff auf zusätzliche
+				LDAP-Attribute notwendig sein, können die Attributnamen in der &ucsUCRV;
+				<envar>ldap/acl/user/passwordreset/attributes</envar> ergänzt werden. Nach der
+				Änderung ist zur Übernahme ein Neustart des LDAP-Verzeichnisdienstes
+				notwendig. Für eine UCS-Standard-Installation ist diese Variable bereits
+				passend gesetzt.
+			</para>
+		</section>
+	</section>
+
+	<section id="domain-ldap:Name_Service_Switch__LDAP-NSS-Modul">
+		<title>Name Service Switch / LDAP-NSS-Modul</title>
+		<para>
+			Die in Univention Corporate Server verwendete GNU C-Standardbibliothek
+			(glibc) bietet eine modulare Schnittstelle zur Auflösung von Namen von
+			Benutzern, Gruppen und Rechnern, den <emphasis>Name Service Switch</emphasis>.
+		</para>
+		<para>
+			Das LDAP-NSS-Modul wird auf UCS-Systemen standardmäßig für den Zugriff
+			auf die Domänen-Daten (z.B. Benutzer) verwendet. Das Modul greift dabei auf den
+			in der &ucsUCRV; <envar>ldap/server/name</envar> (und ggf. zusätzlich der
+			<envar>ldap/server/addition</envar>) festgelegten LDAP-Server zu.
+		</para>
+		<para>
+			Das Verhalten bei nicht erreichbarem LDAP-Server kann durch die &ucsUCRV;
+			<envar>nssldap/bindpolicy</envar> festgelegt werden. Standardmäßig wird bei
+			nicht erreichbarem Server eine erneute Verbindung aufgebaut. Wird die Variable
+			auf <emphasis>soft</emphasis> gesetzt, wird kein erneuter Verbindungsaufbau
+			durchgeführt. Dies kann den Boot eines Systems mit nicht erreichbarem
+			LDAP-Server - z.B. in einer abgeschottenen Testumgebung - deutlich
+			beschleunigen.
+		</para>
+	</section>
+
+	<section id="domain:ldap:syncrepl">
+		<title>Syncrepl zur Anbindung von Nicht-UCS OpenLDAP-Servern</title>
+		<para>
+			Für die Anbindung von nicht auf UCS-Systemen installierten
+			OpenLDAP-Servern an das UCS-Managementsystem kann parallel zum Notifier-Dienst
+			der Syncrepl-Replikations-Dienst aktiviert werden. Dieser ist Bestandteil von
+			OpenLDAP, registriert Veränderungen im lokalen Verzeichnisdienst und überträgt
+			diese auf weitere OpenLDAP-Server.
+		</para>
+
+		<!-- Can be re-integrated once the article has been updated to UCS 3.x -->
+		<!-- <para> -->
+		<!--	Die Einrichtung ist in der Univention Supportdatenbank unter -->
+		<!--	<ulink url="http://sdb.univention.de/1120"/> beschrieben. -->
+		<!-- </para> -->
+	</section>
+
+	<section id="domain-ldap:Konfiguration_des_Verzeichnis-Dienstes_bei_Verwendung_von_Samba_4">
+		<title>Konfiguration des Verzeichnis-Dienstes bei Verwendung von Samba 4</title>
+		<para>
+			Standardmäßig ist der OpenLDAP-Server ab UCS 3.0 so konfiguriert, dass er
+			zusätzlich zu den Standard-Ports 389 und 636 auch auf den Ports 7389 und 7636
+			Anfragen entgegennimmt.
+		</para>
+		<para>
+			Wird Samba 4 eingesetzt, belegt der Samba-Domänencontroller-Dienst die
+			Ports 389 und 636. In diesem Fall wird OpenLDAP automatisch umkonfiguriert, so
+			dass nur noch die Ports 7389 und 7636 eingesetzt werden. Dies ist insbesondere
+			bei der Konfiguration von Syncrepl zu beachten (siehe <xref
+			linkend="domain:ldap:syncrepl"/>). <command>univention-ldapsearch</command>
+			verwendet automatisch den Standard-Port.
+		</para>
+		<para>
+			Managed/Mobile Clients oder &ucsMember; auf Basis von UCS 2.4-4 greifen
+			weiterhin auf Port 389/636 zu. Solche Systeme müssen als LDAP-Server entweder
+			einen Domänencontroller auf Basis von UCS 2.4-4 oder einen UCS
+			3.x-Domänencontroller ohne Samba 4 verwenden.
+		</para>
+	</section>
+</section>
+
+<section id="domain:listenernotifier">
+	<title>Domänenreplikation mit dem Listener/Notifier-Verfahren</title>
+	<para>
+		Die Replikation der Verzeichnisdaten innerhalb einer UCS-Domäne erfolgt
+		über den Listener/Notifier-Mechanismus: Auf dem &ucsMaster; überwacht der
+		Notifier-Dienst Änderungen im LDAP-Verzeichnis und stellt die aufgezeichneten
+		Änderungen transaktionsbasiert den Listener-Diensten auf den weiteren
+		Domänensystemen mit LDAP-Verzeichniskopie zur Verfügung. Die Verteilung der
+		domänenweiten Datenänderungen ermöglicht neben der Replikation der LDAP-Inhalte
+		auch eine Übertragung von Änderungen an LDAP-Inhalten in Konfigurationsdateien
+		nicht-LDAP-fähiger Dienste (wie z.B. NFS).
+	</para>
+	<figure>
+		<title>Listener/Notifier-Mechanismus</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/administration-overview.png"/>
+	</figure>
+	<para>
+		Wird zum Beispiel eine neue NFS-Freigabe in der Domänenverwaltung der
+		&ucsUMC; angelegt, wird durch ein Python-Skript - ein sogenanntes Univention
+		Directory Listener-Modul - eine weitere Zeile in die Datei
+		<filename>/etc/exports</filename> integriert. Sollte die Freigabe entfernt oder
+		verändert werden, wird die Datei ebenfalls angepasst.
+	</para>
+</section>
+
+<section id="domain:ssl">
+	<title>SSL-Zertifikatsverwaltung</title>
+	<para>
+		Unter UCS werden sensitive Daten immer verschlüsselt über das Netzwerk
+		übertragen, zum Beispiel durch die Verwendung von SSH für den Login auf Systeme
+		oder durch Verwendung von Protokollen auf Basis von
+		SSL/TLS. (<emphasis>Transport Layer Security (TLS)</emphasis> ist der aktuelle
+		Protokollname, der Name des Vorgängerprotokolls <emphasis>Secure Socket Layer
+		(SSL)</emphasis> ist jedoch weiterhin gebräuchlicher und wird auch in dieser
+		Dokumentation verwendet).
+	</para>
+	<para>
+		SSL/TLS kommt beispielsweise bei der Listener/Notifier-Domänenreplikation
+		oder beim HTTPS-Zugriff auf die &ucsUMC; zum Einsatz.
+	</para>
+	<para>
+		Für eine verschlüsselte Kommunikation zwischen zwei Rechnern müssen beide
+		Kommunikationspartner die Authentizität des verwendeten Schlüssels prüfen
+		können. Dafür besitzt jeder Rechner ein so genanntes
+		<emphasis>Rechnerzertifikat</emphasis>, das von einer Zertifizierungsstelle
+		(Certification Authority, CA) herausgegeben und signiert wird.
+	</para>
+	<para>
+		UCS bringt seine eigene CA mit, die bei der Installation des &ucsMaster;
+		automatisch eingerichtet wird und von der jedes UCS-System im Rahmen des
+		Domänenbeitritts automatisch ein Zertifikat für sich selbst und das öffentliche
+		Zertifikat der CA bezieht. Diese CA tritt als Root-CA auf, signiert ihr eigenes
+		Zertifikat, und kann Zertifikate für andere Zertifizierungsstellen signieren.
+	</para>
+
+	<para>
+	  Die Eigenschaften der CA werden bei der Installation basierend auf Systemeinstellungen wie der Locale
+	  automatisch festgelegt. Diese Einstellungen können auf dem &ucsMaster; im UMC-Modul
+	  <guimenu>Basis-Einstellungen</guimenu> unter dem Reiter <guimenu>Zertifikat</guimenu>
+	  nachträglich angepasst werden.
+	</para>
+
+	<caution>
+		<para>
+		Besteht die UCS-Domäne aus mehr als einem System müssen durch die Änderung des
+		Root-Zertifikats auch alle anderen Rechner-Zertifikate neu ausgestellt werden! Das dafür
+		nötige Vorgehen ist in <xref linkend="sdb-sslchange"/> dokumentiert.
+		</para>
+	</caution>
+
+	<!-- Wie die Root-CA in eine nachrangige Zertifizierungsstelle (Sub-CA) umgewandelt -->
+	<!-- wird und der CA einer anderen oder vorhandenen Organisation untergeordnet -->
+	<!-- werden kann, ist in WIKIREF-23879 dokumentiert. -->
+
+	<para>
+		Die UCS-CA befindet sich immer auf dem &ucsMaster;. Auf jedem &ucsBackup;
+		wird eine Kopie der CA vorgehalten, die über einen Cronjob standardmäßig alle
+		20 Minuten mit der CA auf dem Domänencontroller Master synchronisiert wird.
+	</para>
+	<caution>
+		<para>
+			Die CA wird nur vom &ucsMaster; zum &ucsBackup; synchronisiert und nicht
+			umgekehrt. Es sollte also ausschließlich die CA auf dem &ucsMaster; verwendet
+			werden.
+		</para>
+	</caution>
+	<para>
+		Wird ein &ucsBackup; zum &ucsMaster; hochgestuft (siehe <xref
+		linkend="domain:backup2master"/>), so kann die CA auf dem dann neuen
+		&ucsMaster; direkt verwendet werden.
+	</para>
+	<para>
+		Das UCS-Root-Zertifikat hat - ebenso wie die damit erstellten
+		Rechnerzertifikate - einen bestimmten Gültigkeitszeitraum.
+	</para>
+	<caution>
+		<para>
+			Ist dieser Zeitraum abgelaufen, funktionieren Dienste, die ihre
+			Kommunikation mit SSL verschlüsseln (z.B. LDAP oder die Domänenreplikation)
+			nicht mehr. Es ist deshalb notwendig, die Gültigkeit der Zertifikate
+			regelmäßig zu überprüfen und rechtzeitig das Root-Zertifikat zu
+			erneuern. Für die Überwachung des Gültigkeitszeitraums wird ein Nagios-Plugin
+			bereitgestellt. Außerdem erfolgt bei der Anmeldung an der &ucsUMC; eine
+			Warnmeldung, wenn das Root-Zertifikat bald abläuft (der Warnzeitraum kann mit
+			der &ucsUCRV; <envar>ssl/validity/warning</envar> festgelegt werden und beträgt
+			standardmäßig 30 Tage).
+		</para>
+	</caution>
+	<para>
+	  Auf UCS-Systemen überprüft ein Cronjob täglich die Gültigkeit des lokalen Rechnerzertifikats
+	  und des Root-Zertifikats und schreibt das Ablaufdatum in die &ucsUCR;-Variablen
+	  <envar>ssl/validity/host</envar> (Rechnerzertifikat) und <envar>ssl/validity/root</envar>
+	  (Root-Zertifikat). Die dort angegebenen Werte spiegeln die Anzahl der Tage seit dem 1.1.1970
+	  wieder.
+	</para>
+	<para>
+	  In der Übersichtsseite der &ucsUMC; - erreichbar durch einen Klick auf das Fragezeichen in
+	  der oberen Bildleiste - wird unter <guimenu>Über UMC</guimenu> auch das effektive Ablaufdatum
+	  des Rechner- und Root-Zertifikats angezeigt.
+	</para>
+
+</section>
+
+<section id="domain:kerberos">
+	<title>Kerberos</title>
+	<para>
+		Kerberos ist ein Authentikationsverfahren um in verteilten Netzen über
+		potentiell unsichere Verbindungen eine sichere Identifikation zu erlauben. Alle
+		Clients verwenden dabei eine gemeinsame Vertrauensbasis, das <emphasis>Key
+		Distribution Centre</emphasis> (KDC). Ein Client authentifiziert sich bei
+		diesem KDC und erhält ein Authentizierungs-Token, das sogenannte Ticket, das
+		zur Authentizierung innerhalb einer Kerberos-Umgebung (der sogenannten Kerberos
+		Realm) verwendet werden kann. Der Name der Kerberos Realm kann über die
+		&ucsUCRV; <envar>kerberos/realm</envar> konfiguriert werden.
+	</para>
+	<para>
+		Tickets sind standardmäßig acht Stunden gültig; für eine Kerberos-Domäne
+		ist deshalb eine synchrone Systemzeit zwischen den Systemen der Kerberos Realm
+		essentiell.
+	</para>
+	<para>
+		In Univention Corporate Server wird die Kerberos-Implementierung Heimdal
+		verwendet. In einer Domäne können mehrere Domänencontroller als KDC operieren,
+		per Default arbeitet jeder Domänencontroller als KDC. Der von einem System
+		verwendete KDC kann durch die &ucsUCRV; <envar>kerberos/kdc</envar>
+		umkonfiguriert werden. Standardmäßig wird der KDC über einen DNS-Servicerecord
+		ausgewählt.
+	</para>
+	<para>
+		Auf dem &ucsMaster; läuft der Kerberos-Adminserver, auf dem administrative
+		Einstellungen der Domäne vorgenommen werden können. Die meisten Einstellungen
+		werden in Univention Corporate Server aus dem LDAP-Verzeichnis bezogen, so dass
+		die wichtigste verbleibende Funktion das Ändern von Passwörtern
+		darstellt. Diese können durch das Tool <command>kpasswd</command> geändert
+		werden und werden dann auch im LDAP verändert. Der Kerberos Adminserver kann
+		auf einem System durch die &ucsUCRV; <envar>kerberos/adminserver</envar>
+		konfiguriert werden.
+	</para>
+</section>
+
+<section id="domain:backup2master">
+	<title>Umwandlung eines DC Backup zum neuen DC Master</title>
+	<para>
+		Ein &ucsBackup; speichert alle Domänendaten und alle
+		SSL-Sicherheitszertifikate als Kopie, im Gegensatz zum &ucsMaster;
+		können jedoch keine schreibenden Änderungen vorgenommen werden.
+	</para>
+	<para>
+		Jeder &ucsBackup; kann zu einem &ucsMaster; umgewandelt werden. Hierfür
+		gibt es zwei typische Anwendungsfälle:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<simpara>
+			Im Notfall nach einem Hardwareausfall des &ucsMaster;
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Zum geplanten Ersetzen des &ucsMaster; durch neue Hardware
+			</simpara>
+		</listitem>
+	</itemizedlist>
+	<caution>
+		<para>
+	  Die Umwandlung eines &ucsBackup; in einen &ucsMaster; ist ein tief eingreifender
+	  Konfigurationsschritt und sollte gründlich vorbereitet werden! Die Umwandlung kann nicht rückgängig
+	  gemacht werden.
+		</para>
+	</caution>
+	<para>
+		Die Umwandlung umfasst primär die Umstellung der für die Authentifizierung
+		relevanten Dienste wie LDAP, Kerberos oder Samba. Der Abgleich der
+		installierten Software muss manuell erfolgen (z.B. mit dem &ucsUMC;-Modul
+		<guimenu>Basis-Einstellungen</guimenu>). Wenn also z.B. auf dem vorherigen DC Master die
+		Mailkomponente installiert war, ist diese nach der Umwandlung nicht automatisch
+		auf dem neuen DC Master verfügbar.
+	</para>
+	<para>
+	  Wurden auf dem &ucsMaster; zusätzliche LDAP-Schema-Pakete installiert, so
+	  müssen diese vor der Umwandlung auch auf dem &ucsBackup; installiert werden.
+	  Die Paketliste des alten &ucsMaster; sollte vor der Umstellung gesichert werden, um einen
+	  Abgleich der installierten Pakete zu erlauben. Die Paketliste kann mit dem folgenden Befehl
+	  erstellt werden:
+	</para>
+	  <programlisting>
+COLUMNS=200 dpkg --list &gt; dateiliste.txt
+	  </programlisting>
+	<para>
+	  Darüberhinaus sollte der &ucsUCR;-Datenbestand gespeichert werden, um
+	  Konfigurationsanpassungen auch auf dem neuen &ucsMaster; abgleichen zu können. Dies kann mit
+	  dem folgenden Befehl erfolgen:
+	</para>
+	  <programlisting>
+ucr dump &gt; ucr.txt
+	  </programlisting>
+	<para>
+	  Die Umwandlung eines DC Backup zum neuen DC Master erfolgt durch Aufruf des
+	  Befehls <command>/usr/lib/univention-ldap/univention-backup2master</command>.
+	  Das System muss anschließend neu gestartet werden. Die Umstellung wird in der Logdatei
+	  <filename>/var/log/univention/backup2master.log</filename> protokolliert.
+	</para>
+	<para>
+	  Der Rechnername und/oder die IP-Adresse des &ucsMaster; wird im Rahmen der Umwandlung in allen aus dem UCS-LDAP oder
+	  durch &ucsUCR; verwalteten Konfigurationen automatisch auf den neuen Namen angepasst. Wird der
+	  Name in Konfigurationsdateien oder auf Systemen referenziert, die nicht durch &ucsUCR; verwaltet werden, muss er
+	  nach der Umwandlung angepasst werden.
+	</para>
+</section>
+
+</chapter>

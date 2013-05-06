@@ -1,0 +1,2520 @@
+<chapter id="networks::general">
+  <title>IP and network management</title>
+  <para>
+	IP addresses for the computer systems managed in a UCS domain can be
+	centrally managed via the &ucsUMC; and and assigned via DHCP.
+  </para>
+  <para>
+	With <emphasis>network objects</emphasis> one can manage the features of a
+	network centrally, e.g., the available IP addresses and the DNS and
+	DHCP zones in which a system is located.
+  </para>
+  <para>
+	The assignment of IP addresses via DHCP and the DNS resolution are also
+	integrated in UCS. The data used for this, e.g., the MAC address, are stored
+	in the LDAP directory.
+  </para>
+  <para>
+	Incoming and outgoing network traffic can be restricted via the
+	<emphasis>Univention Firewall</emphasis> based on IPTables.
+  </para>
+  <para>
+	The integration of the proxy server Squid allows the caching of web
+	contents and the enforcement of content policies for web access.
+  </para>
+
+  <section id="networks::introduction">
+	<title>Network objects</title>
+	<para>
+	  <emphasis>Network objects</emphasis> can be used to compile available IP
+	  addresses; the next available address is then automatically specified
+	  during assignment to a computer.
+	</para>
+	<figure id="net-networks">
+	  <title>Creating a network object</title>
+	  <graphic fileref="illustrations/create-network_EN.png" scalefit="1" width="100%"/>
+	</figure>
+	<para>
+	  For example, it is possible to define a network object <emphasis>Workstation network</emphasis>
+	  which encompasses the IP addresses from
+	  192.168.2.0 to 192.168.2.254. If a Windows computer object is now
+	  created and only the network object selected, an internal check is
+	  performed for which IP addresses are already assigned and the next
+	  free one selected. This saves the administrator having to compile the
+	  available addresses manually. If a computer object is removed, the
+	  address is automatically reassigned.
+	</para>
+	<para>
+	  Network objects are managed in the <emphasis>Networks</emphasis> module of the &ucsUMC;.
+	</para>
+	<para>
+	  General information on the operation of the domain management modules
+	  of the &ucsUMC; and on the adding, editing, searching for and
+	  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+	</para>
+	  <table>
+		<title>'General' tab</title>
+		<tgroup cols="2">
+		  <colspec colname="col1" colnum="1" colwidth="1*"/>
+		  <colspec colname="col2" colnum="2" colwidth="2*"/>
+		  <thead>
+			<row>
+			  <entry>
+				Attribut
+			  </entry>
+			  <entry>
+				Beschreibung
+			  </entry>
+			</row>
+		  </thead>
+		  <tbody>
+			<row>
+			  <entry>
+				Name
+			  </entry>
+			  <entry>
+				<para>
+				  The name of the network is entered in this input field. This is the
+				  name under which the network also appears in the computer management.
+				</para>
+			  </entry>
+			</row>
+			<row>
+			  <entry>
+				Networks
+			  </entry>
+			  <entry>
+				<para>
+				  The network address is entered in dot-decimal form in this input
+				  field, e.g., <emphasis>192.168.1.0</emphasis>.
+				</para>
+			  </entry>
+			</row>
+			<row>
+			  <entry>
+				Netmask
+			  </entry>
+			  <entry>
+				<para>
+				  The network mask can be entered in this input field in network
+				  prefix or dot-decimal form. If the network mask is entered in
+				  dot-decimal form it will be subsequently be converted into the
+				  corresponding network prefix and later also shown so.
+				</para>
+			  </entry>
+			</row>
+			<row>
+			  <entry>
+				IP address range
+			  </entry>
+			  <entry>
+				<para>
+				  One or more IP ranges can be configured here. When a host is
+				  assigned to this network at a later point, it will automatically
+				  be assigned the next, free IP address from the IP range entered here.
+				</para>
+				<para>
+				  When no IP range is entered here, the system automatically uses the
+				  range given by the network and the subnet mark entered.
+				</para>
+				<para>
+				  Forward lookup zones and reverse lookup zones can be selected in the
+				  sub menu <guimenu>DNS preferences</guimenu>. When a host is assigned to
+				  this network at a later point, a host record in the forward lookup
+				  zone and/or a pointer record in the reverse lookup zone will be
+				  created automatically.
+				</para>
+				<para>
+				  The zones are also administrated in the &ucsUMC;, see
+				  <xref linkend="networks::dns::forwardzone"/>.
+				</para>
+				<para>
+				  If no zone is selected here, no DNS records are created during
+				  assignment to a computer object. However, the DNS entries can still be
+				  set manually.
+				</para>
+			  </entry>
+			</row>
+			<row>
+			  <entry>
+				DNS forward lookup zone
+			  </entry>
+			  <entry>
+				<para>
+				  The forward lookup zone where hosts from the network should be added
+				  must be specified here. The resolution of the computer name to an IP
+				  address is performed via the zone.
+				</para>
+			  </entry>
+			</row>
+			<row>
+			  <entry>
+				DNS reverse lookup zone
+			  </entry>
+			  <entry>
+				<para>
+				  The reverse lookup zone where hosts from the network should be added
+				  must be specified here. The reverse resolution of the IP address back
+				  to a computer name is performed via the zone.
+				</para>
+				<para>
+				  A DHCP service can be assigned to the network in the sub menu
+				  <guimenu>DHCP preferences</guimenu>. When a host is assigned to this
+				  network at a later point, a DHCP computer entry with a fixed IP
+				  address will be created automatically in the selected DHCP service.
+				</para>
+				<para>
+				  The DHCP service settings are also administrated in the &ucsUMC;, see <xref linkend="networks::dhcp::general"/>.
+				</para>
+				<para>
+				  If no DHCP service is selected, no DHCP host record is created
+				  during assignment to a computer object. However, such an entry can
+				  also still be assigned manually.
+				</para>
+			  </entry>
+			</row>
+		  </tbody>
+		</tgroup>
+	  </table>
+  </section>
+
+  <section id="networks:dns">
+	<title>Administration of DNS data with Bind</title>
+	<para>
+	  UCS integrates Bind for the name resolution via the domain name system
+	  (DNS). The majority of DNS functions are used for DNS resolution in
+	  the local domain; however, the UCS Bind integration can also be used
+	  for a public name server in principle.
+	</para>
+	<para>
+	  Bind is always available on all domain controller system roles;
+	  installation on other system roles is not supported.
+	</para>
+	<para>
+	  The configuration of the name servers to be used by a UCS system is
+	  documented in <xref linkend="hardware::networkconfiguration"/>.
+	</para>
+	<para>
+	  The following DNS data are differentiated:
+	</para>
+	<itemizedlist>
+	  <listitem>
+		<para>
+		  A <emphasis>forward lookup zone</emphasis> contains information which is
+		  used to resolve DNS names into IP addresses. Each DNS zone has at
+		  least one authoritative, primary name server whose information
+		  governs the zone. Subordinate servers synchronise themselves with
+		  the authoritative server via zone transfers. The entry which defines
+		  such a zone is called a <emphasis>SOA record</emphasis> in DNS terminology.
+		</para>
+	  </listitem>
+	  <listitem>
+		<para>
+		  The <emphasis>MX record</emphasis> of a forward lookup zone represents
+		  important DNS information necessary for e-mail routing. It points to
+		  the computer which accepts e-mails for a domain.
+		</para>
+	  </listitem>
+	  <listitem>
+		<para>
+		  <emphasis>TXT records</emphasis> include human-readable text and can
+		  include descriptive information about a forward lookup zone.
+		</para>
+	  </listitem>
+	  <listitem>
+		<para>
+		  A <emphasis>CNAME record</emphasis> (also called an alias record) refers to
+		  an existing, canonical DNS name. For example, the actual host
+		  name of the mail server can be given an alias entry <emphasis>mailserver</emphasis>,
+		  which is then entered in the mail clients. Any
+		  number of CNAME records can be mapped to one canonical name.
+		</para>
+	  </listitem>
+	  <listitem>
+		<para>
+		  An <emphasis>A record</emphasis> (under IPv6 <emphasis>AAAA record</emphasis>) assigns
+		  an IP address to a DNS name. A records are also known as
+		  <emphasis>Host records</emphasis> in UCS.
+		</para>
+	  </listitem>
+	  <listitem>
+		<para>
+		  A <emphasis>SRV record</emphasis> (called a service record in UCS) can be
+		  used to save information about available system services in the
+		  DNS. In UCS, service records are used amongst other things to make
+		  LDAP servers or the &ucsMaster; known domain-wide.
+		</para>
+	  </listitem>
+	  <listitem>
+		<para>
+		  A <emphasis>reverse lookup zone</emphasis> contains information which is
+		  used to resolve IP addresses into DNS names. Each DNS zone has at
+		  least one authoritative, primary name server whose information
+		  governs the zone, subordinate servers synchronise themselves with
+		  the authoritative server via zone transfers. The entry which defines
+		  such a zone is the <emphasis>SOA record</emphasis>.
+		</para>
+	  </listitem>
+	  <listitem>
+		<para>
+		  A <emphasis>PTR record (pointer record)</emphasis> allows resolution of an
+		  IP address into a host name. It thus represents the equivalent in a
+		  reverse lookup zone of a host record in a forward lookup zone.
+		</para>
+	  </listitem>
+	</itemizedlist>
+
+	<section id="ip-config:Configuration_of_the_Bind_nameserver">
+	  <title>Configuration of the Bind nameserver</title>
+
+	  <section id="ip-config:bind-debug">
+		<title>Configuration of Bind debug output</title>
+		<para>
+		  The level of detail of the Bind debug output can be configured via the
+		  <envar>dns/debug/level</envar> and <envar>dns/dlz/debug/level</envar> (for the Samba
+		  backend, see <xref linkend="ip-config:Configuration_of_the_data_backend"/>) &ucsUCR;
+		  variables. The possible values are between 0 (no debug tasks) to 11. A complete list of
+		  levels can be found at <xref linkend="bind-loglevel"/>.
+		</para>
+	  </section>
+
+	  <section id="ip-config:Configuration_of_the_data_backend">
+		<title>Configuration of the data backend</title>
+		<para>
+		  In a typical Bind installation on a non-UCS system, the configuration
+		  is performed by editing zone files. In UCS, Bind is completely
+		  configured via the &ucsUMC;, which saves its data in the LDAP
+		  directory.
+		</para>
+		<para>
+		  Bind can use two different backends for its configuration:
+		</para>
+		  <itemizedlist>
+			<listitem>
+			  <para>
+				The <emphasis>LDAP backend</emphasis> accesses the data in the LDAP
+				directory. This is the standard backend.
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+				Samba 4 provides an Active Directory domain. Active Directory is
+				closely connected with DNS, for DNS updates of Windows clients or
+				the localisation of Netlogon shares among other things. If Samba 4
+				is used, the domain controller in question is switched over to the
+				use of the <emphasis>Samba backend</emphasis>.
+				The DNS database is maintained in
+				Samba's internal LDB database, which Samba updates directly. Bind
+				then accesses the Samba DNS data via the DLZ interface.
+			  </para>
+			</listitem>
+		  </itemizedlist>
+
+		<para>
+		  When using the Samba backend, a search is performed in the LDAP for every DNS request.
+		  With the OpenLDAP backend, a search is only performed in the directory service if the DNS
+		  data has changed. The use of the LDAP backend can thus result in a reduction of the system
+		  load on Samba 4 systems.
+		</para>
+		<para>
+		  The backend is configured via the &ucsUCRV; <envar>dns/backend</envar>. The DNS
+		  administration is not changed by the backend used and is performed via
+		  the &ucsUMC; in both cases.
+		</para>
+	  </section>
+
+	  <section id="ip-config:Configuration_of_zone_transfers">
+		<title>Configuration of zone transfers</title>
+		<para>
+		  In the default setting, the UCS name server allows zone transfers of the
+		  DNS data. If the UCS server can be reached from the Internet, a list of all computer names
+		  and IP addresses can be requested. The zone transfer can be deactivated when using the OpenLDAP backend by setting the
+		  &ucsUCRV; <envar>dns/allow/transfer</envar> to <emphasis>none</emphasis>.
+		</para>
+	  </section>
+
+	</section>
+
+	<section id="ip-config:Administration_of_DNS_data_in_the_Univention_Management_Console">
+	  <title>Administration of DNS data in the Univention Management Console</title>
+	  <para>
+		DNS files are stored in the <emphasis>cn=dns,&lt;base-dn&gt;</emphasis> container as
+		standard. Forward and reverse lookup zones are stored directly in the
+		container. Additional DNS objects such as pointer records can be stored in
+		the respective zones.
+	  </para>
+	  <para>
+		The relative or fully qualified domain name (FQDN) should always be used in
+		the input fields for computers and not the computer's IP address. A
+		FQDN should always end in a full stop to avoid the domain name being
+		added anew.
+	  </para>
+
+	  <section id="networks::dns::forwardzone">
+		<title>Forward lookup zone</title>
+		<para>
+		  Forward lookup zones contain information which is used to resolve DNS
+		  names into IP addresses. They are managed in the <emphasis>DNS</emphasis> module
+		  of the &ucsUMC;. To create an additional forward lookup zone,
+		  <guimenu>None</guimenu> must be entered as <guimenu>Superordinate</guimenu>.
+		</para>
+		<figure id="net-dns-forward">
+		  <title>Configuring a forward lookup zone in UMC</title>
+		  <graphic fileref="illustrations/forward-lookup-zone_EN.png" scalefit="1" width="100%"/>
+		</figure>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		<para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Zone name
+				  </entry>
+				  <entry>
+					<para>
+					  This is the complete name of the DNS domain for which the zone will be
+					  responsible.
+					</para>
+					<para>
+					  The domain name must not end in a full stop in zone names!
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Zone time to live
+				  </entry>
+				  <entry>
+					<para>
+					  The time to live specifies how long these files may be cached by other
+					  DNS servers. The value is specified in seconds.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Name servers
+				  </entry>
+				  <entry>
+					<para>
+					  The fully qualified domain name with a full stop at the end of the
+					  relative domain name of the responsible name server. The first entry
+					  in the line is the primary name server for the zone.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		  <table>
+			<title>'Start of authority' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Contact person
+				  </entry>
+				  <entry>
+					<para>
+					  The e-mail address of the person responsible for administrating the
+					  zone.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Serial number
+				  </entry>
+				  <entry>
+					<para>
+					  Other DNS servers use the serial number to recognise whether zone data
+					  have changed. The slave name server compares the serial number of its
+					  copy with that on the master name server. If the serial number of the
+					  slave is lower than that on the master, the slave copies the changed
+					  data.
+					</para>
+					<para>
+					  There are two commonly used patterns for this serial number:
+					  <itemizedlist>
+						<listitem>
+						  <para>
+							Start with 1 and increment the serial number with each change
+						  </para>
+						</listitem>
+						<listitem>
+						  <para>
+							By including the date the number can be entered in the format
+							YYYYMMDDNN, where Y stands for year, M for month, D for day and N
+							for the number of the change of this day.
+						  </para>
+						</listitem>
+					  </itemizedlist>
+					</para>
+					<para>
+					  If the serial number is not changed manually, it will be increased
+					  automatically with every change.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Refresh interval
+				  </entry>
+				  <entry>
+					<para>
+					  The time span in seconds after which the slave name server checks that
+					  its copy of the zone data is up-to-date.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Retry interval
+				  </entry>
+				  <entry>
+					<para>
+					  The time span in seconds after which the slave name server tries again to check
+					  that its copy of the zone data is up-to-date after a failed attempt to
+					  update. This time span is usually set to be less than the update
+					  interval, but can also be equal.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Expiry interval
+				  </entry>
+				  <entry>
+					<para>
+					  The time span in seconds after which the copy of the zone data on the slave
+					  becomes invalid if it could not be checked to be up-to-date.
+					</para>
+					<para>
+					  For example, an expiry interval of one week means that the copy of the
+					  zone data becomes invalid when all requests to update in one week
+					  fail. In this case, it is assumed that the files are too outdated
+					  after the expiry interval date to be used further. The slave name
+					  server can then no longer answer name resolution requests for this
+					  zone.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Minimum time to live
+				  </entry>
+				  <entry>
+					<para>
+					  The minimum time to live specifies in seconds how long other servers can cache
+					  no-such-domain (NXDOMAIN) answers. This value cannot be set at more
+					  than 3 hours, the preset value is 3 hours.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		  <table>
+			<title>Reiter 'IP addresses'</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					IP addresses
+				  </entry>
+				  <entry>
+					<para>
+					  This input field can be used to specify one or more IP addresses,
+					  which are output when the name of the zone is resolved. These IP
+					  addresses are queried by Microsoft Windows clients in AD compatible
+					  domains.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		  <table>
+			<title>'MX records' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Priority
+				  </entry>
+				  <entry>
+					<para>
+					  A numerical value between 0 and 65535. If several mail servers are
+					  available for the MX record, an attempt will be made to engage the
+					  server with the lowest priority value first.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Mail server
+				  </entry>
+				  <entry>
+					<para>
+					  The mail server responsible for this domain as fully qualified domain
+					  name with a full stop at the end. Only canonical names and no alias
+					  names can be used here.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		  <table>
+			<title>'TXT records' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					TXT record
+				  </entry>
+				  <entry>
+					<para>
+					  Descriptive text for this zone. Text records must not contain umlauts
+					  or other special characters.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		</para>
+	  </section>
+
+	  <section id="ip-config:CNAME-Record_Alias-Records">
+		<title>CNAME-Record (Alias-Records)</title>
+		<para>
+		  CNAME records / alias records are managed in the <emphasis>DNS</emphasis> module
+		  of the &ucsUMC;. To create an additional record, a forward lookup
+		  zone must be entered as the <guimenu>Superordinate</guimenu> and
+		  the <guimenu>Alias record</guimenu> object type selected.
+		</para>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		<para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Alias
+				  </entry>
+				  <entry>
+					<para>
+					  The alias name as fully qualified domain name with a full stop at the
+					  end or as a relative domain name which should point to the canonical
+					  name.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Canonical name
+				  </entry>
+				  <entry>
+					<para>
+					  The canonical name of the computer that the alias should point to,
+					  entered as a fully qualified domain name with a full stop at the end
+					  or a relative domain name.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		</para>
+	  </section>
+
+	  <section id="networks::dns::hostrecord">
+		<title>A/AAAA records (host records)</title>
+		<para>
+		  Host records are managed in the <emphasis>DNS</emphasis> module of the
+		  &ucsUMC;. To create an additional record, a forward lookup zone must
+		  be entered as the <guimenu>Superordinate</guimenu> and the
+		  <guimenu>Host record</guimenu> object type selected.
+		</para>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		<para>
+		  When adding or editing a computer objekt a host record can be created
+		  automatically or edited.
+		</para>
+		<para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Host name
+				  </entry>
+				  <entry>
+					<para>
+					  The FQDN with a full stop at the end or the relative domain name of
+					  the name server.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					IP addresses
+				  </entry>
+				  <entry>
+					<para>
+					  The IPv4 and/or IPv6 addresses to which the host record should refer.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Zone time to live
+				  </entry>
+				  <entry>
+					<para>
+					  The time to live specifies in seocnds how long these files may be cached by other
+					  DNS servers.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		</para>
+	  </section>
+
+	  <section id="ip-config:Service_records">
+		<title>Service records</title>
+		<para>
+		  Service records are managed in the <emphasis>DNS</emphasis> module of the
+		  &ucsUMC;. To create an additional record, a forward lookup zone must
+		  be entered as the <guimenu>Superordinate</guimenu> and
+		  the <guimenu>Service record</guimenu> object type selected.
+		</para>
+		<figure id="net-srv-record">
+		  <title>
+			Configuring a service records
+		  </title>
+		  <graphic fileref="illustrations/srv-record_EN.png" scalefit="1" width="100%"/>
+		</figure>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		<para>
+		  A service record must always be assigned to a forward lookup zone and
+		  can therefore only be added to a forward lookup zone or a subordinate
+		  container.
+		</para>
+		<para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Service
+				  </entry>
+				  <entry>
+					<para>
+					  The name under which the service should be reachable.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Protocol
+				  </entry>
+				  <entry>
+					<para>
+					  The protocol via which the record can be accessed (TCP, UDP, MSDCS or
+					  SITES).
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Extension
+				  </entry>
+				  <entry>
+					<para>
+					  This input field can be used to specify additional parameters.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Priority
+				  </entry>
+				  <entry>
+					<para>
+					  A whole number between 0 and 65535. If more than one server offer the
+					  same service, the client will approach the server with the lowest
+					  priority value first.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Weighting
+				  </entry>
+				  <entry>
+					<para>
+					  A whole number between 0 and 65535. The weight function is used for
+					  load balancing between servers with the same priority. When more than
+					  one server offer the same service and have the same priority the load
+					  is distributed across the servers in relation to the weight function.
+					</para>
+					<para>
+					  Example: <emphasis>Server1</emphasis> has a priority of 1 and a weight function of 1,
+					  whilst <emphasis>Server2</emphasis>also has a priority of 1, but has a weight
+					  function of 3. In this case, <emphasis>Server2</emphasis>
+					  will be used three times as often as <emphasis>Server1</emphasis>.
+					  The load is measured depending on the
+					  service, for example, as the number of requests or connection.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Port
+				  </entry>
+				  <entry>
+					<para>
+					  The port where the service can be reached on the server (valid value
+					  from 1 to 65535).
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Server
+				  </entry>
+				  <entry>
+					<para>
+					  The name of the server on which the service will be made available, as
+					  a fully qualified domain name with a full stop at the end or a
+					  relative domain name.
+					</para>
+					<para>
+					  Several servers can be entered for each service.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Zone time to live
+				  </entry>
+				  <entry>
+					<para>
+					  The time to live specifies how long these files may be cached by other
+					  DNS servers.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		</para>
+	  </section>
+
+	  <section id="ip-config:Reverse_lookup_zone">
+		<title>Reverse lookup zone</title>
+		<para>
+		  A reverse lookup zone is used to resolve IP address into host names.
+		  They are managed in the <emphasis>DNS</emphasis> module of the &ucsUMC;. To
+		  create an additional reverse lookup zone, <guimenu>None</guimenu>
+		  must be entered as <guimenu>Superordinate</guimenu>.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Subnet
+				  </entry>
+				  <entry>
+					<para>
+					  The IP address of the network for which the reverse lookup zone shall
+					  apply. For example, if the network in question consisted of the IP
+					  addresses <emphasis>192.168.1.0</emphasis> to <emphasis>192.168.1.255</emphasis>,
+					  <emphasis>192.168.1</emphasis> should be entered.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Zone time to live
+				  </entry>
+				  <entry>
+					<para>
+					  The time to live specifies how long these files may be cached by other
+					  DNS servers.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		<para>
+		  Each DNS zone has at least one authoritative, primary name server
+		  whose information governs the zone. Subordinate servers synchronise
+		  themselves with the authoritative server via zone transfers. The entry
+		  which defines such a zone is called a SOA record in DNS terminology.
+		</para>
+		  <table>
+			<title>'Start of authority' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Contact person
+				  </entry>
+				  <entry>
+					<para>
+					  The e-mail address of the person responsible for administrating the
+					  zone (with a full stop at the end).
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Name servers
+				  </entry>
+				  <entry>
+					<para>
+					  The fully qualified domain name with a full stop at the end or the
+					  relative domain name of the primary master name server.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Serial number
+				  </entry>
+				  <entry>
+					<para>
+					  See the documentation on forward lookup zones in
+					  <xref linkend="networks::dns::forwardzone"/>.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Refresh interval
+				  </entry>
+				  <entry>
+					<para>
+					  See the documentation on forward lookup zones in
+					  <xref linkend="networks::dns::forwardzone"/>.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Retry interval
+				  </entry>
+				  <entry>
+					<para>
+					  See the documentation on forward lookup zones in
+					  <xref linkend="networks::dns::forwardzone"/>.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Expiry interval
+				  </entry>
+				  <entry>
+					<para>
+					  See the documentation on forward lookup zones in
+					  <xref linkend="networks::dns::forwardzone"/>.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Minimum time to live
+				  </entry>
+				  <entry>
+					<para>
+					  See the documentation on forward lookup zones in
+					  <xref linkend="networks::dns::forwardzone"/>.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="ip-config:Pointer_record">
+		<title>Pointer record</title>
+		<para>
+		  Pointer records are managed in the <emphasis>DNS</emphasis>
+		  module of the
+		  &ucsUMC;. To create an additional record, a forward lookup zone must
+		  be entered as the <guimenu>Superordinate</guimenu>
+		  and the <guimenu>Pointer</guimenu> object type selected.
+		</para>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Address
+				  </entry>
+				  <entry>
+					<para>
+					  The last octet of the computer's IP address (depends on network
+					  prefix, see example below).
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Pointer
+				  </entry>
+				  <entry>
+					<para>
+					  The computer's fully qualified domain name with a full stop at the end.
+					</para>
+					<para>
+					  In a network with a 24-bit network prefix (subnet mask 255.255.255.0)
+					  a pointer should be created for the <emphasis>client001</emphasis>
+					  computer with the IP address 192.168.1.101.
+					  <emphasis>101</emphasis> must then be entered in the
+					  <guimenu>Address field</guimenu> and <emphasis>client001.company.com.</emphasis> in <guimenu>Pointer</guimenu>.
+					</para>
+					<para>
+					  Example:
+					</para>
+					<para>
+					  For a network with a 16-bit network prefix (subnet mask 255.255.0.0)
+					  the last two octets should be entered in reverse order for this
+					  computer (here <emphasis>101.1</emphasis>).
+					  <emphasis>client001.company.com.</emphasis>also needs
+					  to be entered in the <guimenu>Pointer</guimenu>field here.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+	</section>
+  </section>
+
+  <section id="module:dhcp:dhcp">
+	<title>IP assignment via DHCP</title>
+	<section id="ip-config:Introduction">
+	  <title>Introduction</title>
+	  <para>
+		The <emphasis>Dynamic Host Configuration Protocol</emphasis> (DHCP) assigns
+		computers an IP address, the subnet mask and further settings for the
+		gateway or NetBIOS server as necessary. The IP address can be set
+		fixed or dynamic.
+	  </para>
+	  <para>
+		The use of DHCP allows central assignment and control of IP addresses
+		via the LDAP directory without performing manual configuration on the
+		individual computer systems.
+	  </para>
+	  <para>
+		The DHCP integration in UCS only supports IPv4.
+	  </para>
+	  <para>
+		In a <emphasis>DHCP service</emphasis>, DHCP servers are grouped in a shared LDAP
+		configuration. Global configuration parameters are
+		entered in the DHCP service; specific parameters in the subordinate
+		objects.
+	  </para>
+	  <para>
+		Every UCS server on which the <emphasis>DHCP server</emphasis> component was
+		selected during installation or the <package>univention-dhcp</package> package
+		has been subsequently installed assigns IP addresses via DHCP. In the
+		default setting, only static IP addresses are assigned to computer
+		objects registered in the UCS LDAP.
+	  </para>
+	  <para>
+		If only fixed IP addresses are assigned, as many DHCP servers as
+		required may be used in a DHCP service. All the DHCP servers procure
+		identical data from the LDAP and offer the DHCP clients the data
+		multiple times. DHCP clients then accept the first answer and ignore the rest.
+	  </para>
+	  <para>
+		If variable IP addresses are also assigned, the DHCP failover
+		mechanism must be employed and a maximum of two DHCP servers can be
+		used per subnet.
+	  </para>
+	  <para>
+		A <emphasis>DHCP host</emphasis> entry is used to make the DHCP service aware of
+		a computer. A DHCP host object is required for computers
+		attempting to retrieve a fixed IP address over DHCP. DHCP computer
+		objects do not normally need to be created manually, instead they are
+		created when a DHCP service is assigned to a computer object with a
+		fixed IP address.
+	  </para>
+	  <para>
+		A <emphasis>DHCP subnet</emphasis> entry is required for every subnet,
+		irrespective of whether variable IP addresses are to be assigned from
+		this subnet.
+	  </para>
+	  <para>
+		Configuration parameters can be assigned to the different IP ranges by
+		creating <emphasis>DHCP pools</emphasis> within subnets. In this way unknown
+		computers can be allowed in one IP range and excluded in another IP
+		range. DHCP pools can only be created below DHCP subnet objects.
+	  </para>
+	  <para>
+		If several subnets use the same common, physical network, this should
+		be entered as a <emphasis>DHCP shared subnet</emphasis> below
+		a <guimenu>DHCP shared network</guimenu>.
+		<guimenu>DHCP shared subnet</guimenu> objects can only be created below
+		<guimenu>DHCP shared network</guimenu> objects.
+	  </para>
+	  <para>
+		Values which are set on a DHCP configuration level always apply for
+		this level and all subordinate levels, unless other values are
+		specified there. Similar to policies, the value which is
+closest to the object always applies.
+	  </para>
+	</section>
+
+	<section id="networks::dhcp::general">
+	  <title>Composition of the DHCP configuration via DHCP LDAP objects</title>
+	  <section id="networks::dhcp::services">
+		<title>Administration of DHCP services</title>
+		<para>
+		  DHCP services are managed in the <emphasis>DHCP</emphasis> module of
+		  the &ucsUMC;. To create an additional service, <guimenu>None</guimenu>
+		  must be entered as <guimenu>Superordinate</guimenu>.
+		</para>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		<para>
+		  The following parameters are often set on the DHCP service object
+		  which then apply to all the computers which are served by this DHCP
+		  service (unless other values are entered in lower levels):
+		</para>
+		  <itemizedlist>
+			<listitem>
+			  <para>
+				<guimenu>Domain name</guimenu> and <guimenu>Domain name servers</guimenu>
+				under <guimenu>Policy: DHCP DNS</guimenu>
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+				<guimenu>NetBIOS name servers</guimenu> under <guimenu>Policy: DHCP NetBIOS</guimenu>
+			  </para>
+			</listitem>
+		  </itemizedlist>
+		<para>
+		  A description of this and the other DHCP policies can be found
+		  at <xref linkend="networks::dhcp::policies"/>.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Service name
+				  </entry>
+				  <entry>
+					<para>
+					  An unambiguous name for the DHCP service can be entered in this input
+					  field, e.g., <emphasis>company.example</emphasis>.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="ip-config:Administration_of_DHCP_server_entries">
+		<title>Administration of DHCP server entries</title>
+		<para>
+		  DHCP servers are managed in the <emphasis>DHCP</emphasis> module of
+		  the &ucsUMC;. To create an additional DHCP server entry, a DHCP
+		  service must be selected as <guimenu>Superordinate</guimenu>.
+		</para>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		<para>
+		  Each server which should offer the DCHP service requires
+		  a <emphasis>DHCP server</emphasis> entry in the LDAP directory. The entry does
+		  not normally need to be created manually, instead it is created by the
+		  join script of the <package>univention-dhcp</package> package.
+		</para>
+		  <table>
+			<title>
+			  'General' tab
+			</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Server name
+				  </entry>
+				  <entry>
+					<para>
+					  The computer name that the DHCP service should offer is entered in
+					  this input field, e.g., <emphasis>ucs-master</emphasis>.
+					</para>
+					<para>
+					  A server cannot be entered in more than one DHCP service at the same
+					  time.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="ip-config:Administration_of_DHCP_subnets">
+		<title>Administration of DHCP subnets</title>
+		<para>
+		  DHCP subnets are managed in the <emphasis>DHCP</emphasis> module of
+		  the &ucsUMC;. To create an additional DHCP server entry, a DHCP
+		  service must be selected as <guimenu>Superordinate</guimenu>.
+		</para>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		<para>
+		  A DHCP subnet entry is required for every subnet from which dynamic
+		  or fixed IP addresses are to be assigned. It is only necessary to
+		  enter IP address ranges if IP addresses are to be assigned
+		  dynamically.
+		</para>
+		<para>
+		  If <emphasis>DHCP shared subnet</emphasis> objects are to be used, the
+		  corresponding subnets should be created below the <emphasis>DHCP shared subnet</emphasis>
+		  container created for this purpose (see <xref linkend="networks::dhcp::sharedsubnets"/>).
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Subnet address
+				  </entry>
+				  <entry>
+					<para>
+					  The IP address of the subnet must be entered in dot-decimal form in
+					  this input field, e.g., <emphasis>192.168.1.0</emphasis>.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Net mask
+				  </entry>
+				  <entry>
+					<para>
+					  The network mask can be entered in this input field as the
+					  network prefix or in dot-decimal form. If the network mask is
+					  entered in dot-decimal form it will be subsequently be converted into
+					  the corresponding network prefix and later also shown so.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Dynamic address assignment
+				  </entry>
+				  <entry>
+					<para>
+					  Here one can set up individual or multiple IP address ranges for
+					  dynamic assignment. The range stretches from the <guimenu>First address</guimenu>
+					  to the <guimenu>Last address</guimenu> in dot-decimal form.
+					</para>
+					<caution>
+						<para>
+						IP ranges for a subnet should always either be specified exclusively
+						in the subnet entry or exclusively in one or more special pool
+						entries. The types of IP range entries within a subnet must not be
+						mixed! If different IP ranges with different configurations are be set
+						up in one subnet, pool entries must be created for this purpose.
+						</para>
+					</caution>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		<para>
+		  At this level, the gateway for all computers in a subnet is often set
+		  using the <guimenu>Router</guimenu> input field on
+		  the <guimenu>Policy: DHCP Routing</guimenu> tab (unless other entries
+		  are perfomed at lower levels).
+		</para>
+	  </section>
+
+	  <section id="ip-config:Administration_of_DHCP_pools">
+		<title>Administration of DHCP pools</title>
+		<para>
+		  DHCP pools can only be managed via the <emphasis>LDAP directory</emphasis>
+		  module of
+		  the &ucsUMC;. To do so, one must always be in a DHCP subnet object
+		  - a DHCP pool object must always be created below a DHCP subnet
+		  object - and a <guimenu>DHCP: Pool</guimenu>
+		  object added with <guimenu>Add LDAP object</guimenu>.
+		</para>
+		<para>
+		  If DHCP pools are created in a subnet, no IP address range should be
+		  defined in the subnet entry. These should only be created in the pool
+		  entries.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Name
+				  </entry>
+				  <entry>
+					<para>
+					  An unambiguous name for the DHCP pool can be entered in this input
+					  field, e.g., <emphasis>testnet.compaby.example</emphasis>.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Dynamic range
+				  </entry>
+				  <entry>
+					<para>
+					  Here you can enter the IP addresses in dot-decimal form that are to be
+					  dynamically assigned.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		  <table>
+			<title>'Advanced settings' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry/>
+				  <entry>
+					<para>
+					  Configuration options can be set in this tab which are only needed for
+					  a few scenarios.
+					</para>
+					<!-- They are documented in Univention Wiki under WIKIREF-24604.-->
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="ip-config:Registration_of_computers_with_DHCP_computer_objects">
+		<title>
+		  Registration of computers with DHCP computer objects
+		</title>
+		<para>
+		  A <emphasis>DHCP host</emphasis> entry is used to register the respective
+		  computer in the DHCP service. Computers can be handled depending on
+		  their registration status. Only known computers receive fixed IP
+		  addresses from the DHCP service; unknown computers only receive
+		  dynamic IP addresses.
+		</para>
+		<para>
+		  DHCP computer entries are usually created automatically when a
+		  computer is added via the computer management. Below the DHCP service
+		  object you have the possibility of adding DHCP computer entries or
+		  editing existing entries manually, irrespective of whether they were
+		  created manually or automatically.
+		</para>
+		<para>
+		  DHCP host objects are managed in the <emphasis>DHCP</emphasis> module of
+		  the &ucsUMC;. To create an additional DHCP server entry, a DHCP
+		  service must be selected as <guimenu>Superordinate</guimenu>.
+		</para>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Host name
+				  </entry>
+				  <entry>
+					<para>
+					  A name for the computer is entered in this input field (which usually
+					  also has an entry in the computer management). It is recommended to
+					  enter the same name and the same MAC address for the computer in both
+					  entries to facilitate assignment.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Type
+				  </entry>
+				  <entry>
+					<para>
+					  The type of network used can be selected in this select
+					  list. <guimenu>Ethernet</guimenu> almost always needs to be selected here.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Address
+				  </entry>
+				  <entry>
+					<para>
+					  The MAC address of the network card needs to be entered here,
+					  e.g., <emphasis>2e:44:56:3f:12:32</emphasis> or <emphasis>2e-44-56-3f-12-32</emphasis>.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Fixed IP addresses
+				  </entry>
+				  <entry>
+					<para>
+					  One or more fixed IP addresses can be assigned to the computer
+					  here. In addition to an IP address, a fully qualified domain names can
+					  also be entered, which is resolved into one or more IP addresses by
+					  the DNS server.
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="networks::dhcp::sharedsubnets">
+		<title>Management of DHCP shared networks / DHCP shared subnets</title>
+		<para>
+		  <emphasis>DHCP shared network</emphasis>
+		  objects accept subnets which use a
+		  common physical network.
+		</para>
+		<para>
+		  DHCP shared network objects are managed in the <emphasis>DHCP</emphasis> module
+		  of the &ucsUMC;. To create an additional DHCP server entry, a DHCP
+		  service must be selected as <guimenu>Superordinate</guimenu>.
+		</para>
+		<para>
+		  General information on the operation of the domain management modules
+		  of the &ucsUMC; and on the adding, editing, searching for and
+		  deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		<para>
+		  A shared subnet (see below) should be entered in the shared network
+		  under all circumstances as otherwise the DHCP service will need to be
+		  ended and restarted if there is an empty shared network in its
+		  configuration.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Shared network name
+				  </entry>
+				  <entry>
+					<para>
+					  A name for the shared network should be entered in this input field.
+
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+		<para>
+		  Subnets are declared as a <emphasis>DHCP shared subnet</emphasis> when they use the
+		  same, common physical network. All subnets which use the same network
+		  should be stored below the same shared network container. A
+		  separate <emphasis>DHCP shared subnet</emphasis> object must be created for each
+		  subnet.
+		</para>
+		<para>
+		  DHCP shared subnet objects can only be managed via
+		  the <emphasis>LDAP directory</emphasis> module of the &ucsUMC;. To do so, one must
+		  always be in a DHCP subnet object - a DHCP shared subnet object
+		  must always be created below a DHCP shared network object - and
+		  a <guimenu>DHCP shared subnet</guimenu> object added
+		  with <guimenu>Add LDAP object</guimenu>.
+		</para>
+	  </section>
+	</section>
+
+	<section id="networks::dhcp::policies">
+	  <title>Configuration of clients via DHCP policies</title>
+	  <section id="ip-config:Setting_the_gateway">
+		<title>Setting the gateway</title>
+		<para>
+		  The default gateway can be specified via DHCP with a <emphasis>DHCP routing</emphasis>
+		  policy, which is managed in the <guimenu>Policies</guimenu>
+		  module of the &ucsUMC;.
+		</para>
+		<para>
+		  General information on policy management can be found in <xref linkend="central:policies"/>.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Routers
+				  </entry>
+				  <entry>
+					<para>
+					  The names or IP addresses of the routers are to be entered here. It
+					  must be verified that the DHCP server can resolve these names in IP
+					  addresses. The routers are contacted by the client in the order in
+					  which they stand in the selection list.
+
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="ip-config:Setting_the_DNS_servers">
+		<title>Setting the DNS servers</title>
+		<para>
+		  The name servers to be used by a client can be specified via DHCP with
+		  a <emphasis>DHCP DNS</emphasis> policy, which is managed in
+		  the <guimenu>Policies</guimenu> module of the &ucsUMC;.
+		</para>
+		<para>
+		  General information on policy management can be found in
+		  <xref linkend="central:policies"/>.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Domain name
+				  </entry>
+				  <entry>
+					<para>
+					  The name of the domain, which the client automatically appends on
+					  computer names that it sends to the DNS server for resolution and
+					  which are not FQDNs. Usually this is the name of the domain to which
+					  the client belongs.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Domain name servers
+				  </entry>
+				  <entry>
+					<para>
+					  Here IP addresses or fully qualified domain names (FQDNs) of DNS
+					  servers can be added. When using FQDNs, it must be verified that the
+					  DHCP server can resolve the names in IP addresses. The DNS servers are
+					  contacted by the clients according to the order specified here.
+
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="networks:dhcp:wins">
+		<title>Setting the WINS server</title>
+		<para>
+		  The WINS server to be used can be specified via DHCP with
+		  a <emphasis>DHCP NetBIOS</emphasis> policy, which is managed in
+		  the <guimenu>Policies</guimenu> module of the &ucsUMC;.
+		</para>
+		<para>
+		  General information on policy management can be found in
+		  <xref linkend="central:policies"/>.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					NetBIOS name servers
+				  </entry>
+				  <entry>
+					<para>
+					  The names or IP addresses of the NetBIOS name servers (also known as
+					  WINS servers) should be entered here. It must be verified that the
+					  DHCP server can resolve these names in IP addresses. The servers
+					  entered are contacted by the client in the order in which they stand
+					  in the selection list.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					NetBIOS scope
+				  </entry>
+				  <entry>
+					<para>
+					  The NetBIOS over TCP/IP scope for the client according to the
+					  specification in RFC1001 and RFC1002. Attention must be paid to
+					  uppercase and lowercase when entering the NetBIOS scope.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					NetBIOS node type
+				  </entry>
+				  <entry>
+					<para>
+					  This field sets the node type of the client. Possible values are:
+					</para>
+					  <itemizedlist>
+						<listitem>
+						  <para>
+							1 B-node (Broadcast: no WINS)
+						  </para>
+						</listitem>
+						<listitem>
+						  <para>
+							2 P-node (Peer: only WINS)
+						  </para>
+						</listitem>
+						<listitem>
+						  <para>
+							4 M-node (Mixed: first Broadcast, then WINS)
+						  </para>
+						</listitem>
+						<listitem>
+						  <para>
+							8 H-node (Hybrid: first WINS, then Broadcast)
+						  </para>
+						</listitem>
+					  </itemizedlist>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="ip-config:Configuration_of_the_DHCP_lease">
+		<title>Configuration of the DHCP lease</title>
+		<para>
+		  The validity of an assigned IP address - a so-called DHCP lease
+		  - can be specified with a <emphasis>DHCP lease time</emphasis> policy, which
+		  is managed in the <guimenu>Policies</guimenu> module of the &ucsUMC;.
+		</para>
+		<para>
+		  General information on policy management can be found in <xref linkend="central:policies"/>.
+		</para>
+		  <table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Default lease time
+				  </entry>
+				  <entry>
+					<para>
+					  If the client does not request a specific lease time, the standard
+					  lease time is assigned. If this input field is left empty, the DHCP
+					  server's default value is used.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Maximum lease time
+				  </entry>
+				  <entry>
+					<para>
+					  The maximum lease time specifies the longest period of time for which
+					  a lease can be granted. If this input field is left empty, the DHCP
+					  server's default value is used.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Minimum lease time
+				  </entry>
+				  <entry>
+					<para>
+					  The minimum lease time specifies the shortest period of time for which
+					  a lease can be granted. If this input field is left empty, the DHCP
+					  server's default value is used.
+
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="ip-config:Configuration_of_boot_server_PXE_settings">
+		<title>Configuration of boot server/PXE settings</title>
+		<para>
+		  A <emphasis>DHCP Boot</emphasis> policy is used to assign computers configuration
+		  parameters for booting via BOOTP/PXE. They are managed in
+		  the <guimenu>Policies</guimenu> module of the &ucsUMC;.
+		</para>
+		<para>
+		  General information on policy management can be found in <xref linkend="central:policies"/>.
+		</para>
+		  <table>
+			<title>'Boot' tab</title>
+			<tgroup cols="2">
+			  <colspec colname="col1" colnum="1" colwidth="1*"/>
+			  <colspec colname="col2" colnum="2" colwidth="2*"/>
+			  <thead>
+				<row>
+				  <entry>
+					Attribut
+				  </entry>
+				  <entry>
+					Beschreibung
+				  </entry>
+				</row>
+			  </thead>
+			  <tbody>
+				<row>
+				  <entry>
+					Boot server
+				  </entry>
+				  <entry>
+					<para>
+					  The IP address or the FQDN of the PXE boot server from which the
+					  client should load the boot file is entered in the input field. If no
+					  value is entered in this input field, the client boots from the DHCP
+					  server from which it retrieves its IP address.
+					</para>
+				  </entry>
+				</row>
+				<row>
+				  <entry>
+					Boot filename
+				  </entry>
+				  <entry>
+					<para>
+					  The path to the boot file is entered here. The path must be entered
+					  relative to the base directory of the TFTP service
+					  (<filename class="directory">/var/lib/univention-client-boot/</filename>).
+					</para>
+				  </entry>
+				</row>
+			  </tbody>
+			</tgroup>
+		  </table>
+	  </section>
+
+	  <section id="ip-config:Further_DHCP_policies">
+		<title>Further DHCP policies</title>
+		<para>
+		  There are some further DHCP policies available, but they are only
+		  required in special cases.
+		  <!-- ; their use is documented in the Univention Wiki under WIKIREF-24604.-->
+		</para>
+		  <itemizedlist>
+			<listitem>
+			  <para>
+				<emphasis>DHCP Dynamic DNS</emphasis>
+				allows the configuration of dynamic
+				DNS updates. These cannot yet be performed with a UCS-based DNS
+				service, but only with external servers.
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+				<emphasis>DHCP Allow/Deny</emphasis>
+				allows the detailed assignment of
+				access rights on the DHCP servers.
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+				<emphasis>DHCP statements</emphasis>
+				allows the configuration of different
+				options, which are only required in exceptional cases.
+			  </para>
+			</listitem>
+		  </itemizedlist>
+	  </section>
+	</section>
+  </section>
+
+  <section id="ip-config:Packet_filter_with_Univention_Firewall">
+	<title>Packet filter with Univention Firewall</title>
+	<para>
+	  Univention Firewall integrates a packet filter based on iptables in
+	  Univention Corporate Server.
+	</para>
+	<para>
+	  It permits targeted filtering of undesired services and the
+	  protection of computers during installations. Furthermore it
+	  provides the basis for complex scenarios such as firewalls and
+	  application level gateways. Univention Firewall is included in all
+	  UCS installations as standard.
+	</para>
+	<para>
+	  In the default setting, all incoming ports are blocked. Every UCS
+	  package provides rules, which free up the ports required by the
+	  package again.
+	</para>
+	<para>
+	  The configuration is primarily performed via &ucsUCR; variables.
+	  <!-- The definition of this type of packet filter rules is documented in the Univention Wiki under WIKIREF-24589.-->
+	  In addition, the configuration scripts in the
+	  <filename>/etc/security/packetfilter.d/</filename> directory are listed in
+	  alphabetic order. The names of all scripts begin with two digits,
+	  which makes it easy to create a numbered order. The scripts must be
+	  marked as executable.
+	</para>
+	<para>
+	  After changing the packet filter settings, the <package>univention-firewall</package>
+	  service has to be restarted.
+	</para>
+	<para>
+	  Univention Firewall can be deactivated by setting the
+	  &ucsUCRV; to <emphasis>true</emphasis>
+	</para>
+  </section>
+
+  <section id="ip-config:Web_proxy_for_caching_and_policy_management__virus_scan">
+	<title>Web proxy for caching and policy management / virus scan</title>
+	<para>
+	  The UCS proxy integration allows the use of a web cache for improving
+	  the performance and controlling data traffic. It is based on the
+	  tried-and-tested proxy server Squid and supports the protocols HTTP,
+	  FTP and HTTPS.
+	</para>
+	<para>
+	  A proxy server receives requests about Internet contents and verifies
+	  whether these contents are already available in a local cache. If this
+	  is the case, the requested data are provided from the local cache. If
+	  the data are not available, these contents are called up from the
+	  respective web server and inserted in the local cache. This can be
+	  used to reduce the answering times for the users and the transfer
+	  volume via the Internet access.
+	</para>
+	<para>
+	  The software Dansguardian can be installed as an additional component
+	  with the package <package>univention-dansguardian</package>. This makes it
+	  possible to check and filter the Internet contents prior to delivery
+	  to the user in order to scan files for viruses or prevent access to
+	  undesirable content.
+	</para>
+
+	<para>
+	  Further documentation on proxy services - such as the cascading of
+	  proxy servers, transparent proxiss and the integration of a virus scan engine - are documented
+	  in the extended network management documentation <xref linkend="ext-doc-net"/>.
+	</para>
+
+	<section id="ip-config:Installation">
+	  <title>Installation</title>
+	  <para>
+		The web proxy can be installed on any UCS server system role with the
+		package <package>univention-squid</package>.
+	  </para>
+	  <para>
+		The service is configured with standard settings sufficient for
+		operation so that it can be used immediately. It is possible to
+		configure the port on which the service is accessible to suit your
+		preferences (see <xref linkend="proxy:port"/>); port 3128 is
+		set as default.
+	  </para>
+	  <para>
+		If changes are made to the configuration, Squid must be
+		restarted. This can be performed either via the &ucsUMC; or the
+		command line:
+	  </para>
+		<programlisting>
+/etc/init.d/squid3 restart
+		</programlisting>
+	  <para>
+		In addition to the configuration possibilities via &ucsUCR; described
+		in this document, it is also possible to set additional Squid
+		configuration options in the <filename>/etc/squid3/local.conf</filename>.
+	  </para>
+	  <para>
+		<emphasis>Dansguardian</emphasis>can be installed via the
+		package <package>univention-dansguardian</package>,
+		see <xref linkend="proxy:contentfilter"/>.
+	  </para>
+	</section>
+
+	<section id="ip-config:Caching_of_web_content">
+	  <title>Caching of web content</title>
+	  <para>
+		Squid is a caching proxy, i.e., previously viewed contents can
+		be provided from a cache without being reloaded from the respective web
+		server. This reduces the incoming traffic via the Internet
+		connection and can result in quicker responses of HTTP requests.
+	  </para>
+	  <para>
+		However, this caching function is not necessary for some environments
+		or, in the case of cascaded proxies, it should not be activated for
+		all of them. For these scenarios, the caching function of the Squid
+		can be deactivated with the &ucsUCRV; by setting this to <emphasis>no</emphasis>.
+		Squid must then be restarted.
+	  </para>
+	</section>
+
+	<section id="ip-config:Logging_proxy_accesses">
+	  <title>Logging proxy accesses</title>
+	  <para>
+		All accesses performed via the proxy server are stored in the
+		logfile <filename>/var/log/squid3/access.log</filename>.
+		It can be used to follow which websites have been accessed by the users.
+	  </para>
+	  <para>
+		When Dansguardian is used, all accesses are documented in
+		<filename>/var/log/dansguardian/access.log</filename>.
+	  </para>
+	</section>
+
+	<section id="ip-config:Restriction_of_access_to_permitted_networks">
+	  <title>Restriction of access to permitted networks</title>
+	  <para>
+		As standard, the proxy server can only be accessed from local
+		networks. If, for example, a network interface with the address
+		192.168.1.10 and the network mask 255.255.255.0 is available on the
+		computer on which Squid is installed, only computers from the network
+		192.168.1.0/24 can access the proxy server. Additional networks can be
+		specified via the &ucsUCRV;. When doing so, the CIDR
+		notation must be used; several networks should be separated by blank
+		spaces.
+	  </para>
+	  <para>
+		Example:
+	  </para>
+		<programlisting>
+univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/24&quot;
+		</programlisting>
+	  <para>
+		Once Squid has been restarted, access is now permitted from the networks
+		192.168.2.0/24 and 192.168.3.0/24. If configured to <emphasis>all</emphasis>, proxy access
+		in granted from all networks.
+	  </para>
+	  <para>
+		If Squid is used together with Dansguardian, i.e., the virus or web
+		content filter is activated, Squid cannot verify the access as the
+		connections are performed via Dansguardian. In this case, the access
+		can be restricted via Dansguardian.
+	  </para>
+	</section>
+
+	<section id="ip-config:Configuration_of_the_ports_used">
+	  <title>Configuration of the ports used</title>
+	  <section id="proxy:port">
+		<title>Access port</title>
+		<para>
+		  As standard, the web proxy can be accessed via port 3128. If another
+		  port is required, this can be configured via the
+		  &ucsUCRV;. When the Univention firewall is used, the
+		  packet filter configuration must also be adjusted.
+		</para>
+		<para>
+		  When using the content and virus scanner
+		  (see <xref linkend="proxy:contentfilter"/>)
+		  Dansguardian is accessible at the configured port instead of
+		  Squid. Squid then occupies the next-highest port. This must be borne
+		  in mind if there are other applications which are supposed to offer
+		  services via this port.
+		</para>
+	  </section>
+
+	  <section id="ip-config:Permitted_ports">
+		<title>Permitted ports</title>
+		<para>
+		  In the standard configuration, Squid only forwards client requests
+		  intended for the network ports 80 (HTTP), 443 (HTTPS) or 21 (FTP). The
+		  list of permitted ports can be changed via the
+		  &ucsUCRV;; several entries should be separated by blank
+		  spaces.
+		</para>
+		<para>
+		  Example:
+		</para>
+		  <programlisting>
+univention-config-registry set squid/webports=&quot;80 443&quot;
+		  </programlisting>
+		<para>
+		  With this setting, access is only allowed to ports 80 and 443 (HTTP and HTTPS).
+		</para>
+	  </section>
+	</section>
+
+	<section id="proxy:userauth">
+	  <title>User authentication on the proxy</title>
+	  <para>
+		It is sometimes necessary to restrict web access to certain users. Squid allows
+		user-specific access regulation via group memberships. To allow verification of group
+		membership, it is necessary for the user to authenticate on the proxy server.
+	  </para>
+
+	  <caution>
+		<para>
+		To prevent unauthorised users from opening websites nonetheless, additional measures are
+		required to prevent these users from bypassing the proxy server and accessing the
+		Internet. This can be done, for example, by limiting all HTTP traffic through a firewall.
+		</para>
+	  </caution>
+
+	  <para>
+		The authentication must firstly be enabled. There are a number of possible mechanisms for
+		this: It can either be performed directly against the LDAP server or an NTLM authentication
+		can be performed. The latter offers the advantage that it is not necessary to re-enter the
+		password when Windows computers attempt to access the proxy.
+	  </para>
+
+	  <para>
+		To activate the authentication via LDAP, the &ucsUCRV; <envar>squid/basicauth</envar> and for
+		NTLM the &ucsUCRV; <envar>squid/ntlmauth</envar> must be set to <emphasis>yes</emphasis>.
+	  </para>
+
+	  <para>
+		As standard, an NTLM authentication is performed for every HTTP query. If for example the
+		website <uri>http://www.univention.de</uri> is opened, the subpages and images are loaded in
+		addition to the actual HTML page. The NTML authentication can be cached per domain: If the
+		&ucsUCRV; <envar>squid/ntlmauth/keepalive</envar> is set to <emphasis>yes</emphasis>, no
+		further NTLM authentication is performed for subsequent HMTL queries in the same
+		domain. This is enabled by default. To avoid the display of multiple authentication
+		dialogues on Windows clients, which haven't joined the UCS domain yet, the feature can be
+		disabled with <emphasis>false</emphasis>.
+	  </para>
+
+	  <para>
+		In the standard setting all users can access the proxy. The &ucsUCRV;
+		<envar>squid/auth/allowed_groups</envar> can be used to limit the proxy access to one or
+		several groups. If several groups are specified, they must be separated by a semicolon.
+	  </para>
+	</section>
+
+	<section id="proxy:contentfilter">
+	  <title>Filtering/policy enforcement of web content with Dansguardian</title>
+	  <para>
+		Dansguardian accepts website requests from the network and checks
+		whether access by the request's sender is permitted. If so, the
+		request is forwarded to the proxy server, Squid. For example,
+		Dansguardian allows the blocking of individual file types and suffixes
+		or access to websites or domains.
+	  </para>
+	  <para>
+		<figure id="net-dansguardian">
+		  <title>Dansguardian blocking a web site</title>
+		  <graphic fileref="illustrations/dansguardian_EN.png" scalefit="1" width="100%"/>
+		</figure>
+	  </para>
+	  <para>
+		It is also possible to scan requested files for viruses. In the
+		default setting, the free virus scanner <emphasis>Clamav</emphasis> is used.
+		The setup is documented in the extended network management documentation <xref linkend="ext-doc-net"/>.
+	  </para>
+	  <caution>
+		<para>
+		  Direct access to the proxy server Squid is restricted to access from the
+		  local host. Users working on the system on which Squid
+		  and Dansguardian are installed have the possibility of bypassing the
+		  filter functions by accessing Squid directly. The web proxy and
+		  Dansguardian should thus only be installed on
+		  dedicated systems which users cannot log in to.
+		</para>
+	  </caution>
+	  <para>
+		Following the installation of <package>univention-dansguardian</package>, the
+		virus scanner and the filter for web contents are activated.
+	  </para>
+	  <para>
+		The filtering of web content and the virus scanner can be activated
+		separately. In order to deactivate the content filter, the
+		&ucsUCRV; <envar>squid/contentscan</envar> must be set to <emphasis>no</emphasis> and Squid
+		restarted. To disable the virus scanner, the
+		&ucsUCRV; <envar>squid/virusscan</envar> must be set to <emphasis>no</emphasis>.
+		If neither of the two variables is set to <emphasis>yes</emphasis>,
+		Dansguardian is not used. After changes to the variables Squid and - if available - Dansguardian
+		must be restarted.
+	  </para>
+	</section>
+
+	<section id="proxy:contentfilter-configuration">
+	  <title>Definition of content filters for Dansguardian</title>
+	  <para>
+		Web content can be filtered based on file suffixes, MIME types, websites and individual
+		URLs. It is possible to exempt individual computers or users from the filtering.
+	  </para>
+
+	  <para>
+		The filter function can be configured via the following &ucsUCR; variables. Where several
+		values are to be added, these must each be separated by blank spaces. The filtering is
+		performed on the basis of group memberships, i.e., different rules can be
+		defined per group and as such it is possible to realise different rights when accessing the
+		Internet. Which groups are taken into account by Dansguardian can be defined in the
+		&ucsUCRV; <envar>dansguardian/groups</envar>.
+	  </para>
+
+	  <para>
+		It must be noted that the first group in the list plays a special role. All users which
+		cannot be assigned to one of the specified groups are assigned to this one, i.e., the
+		defined filter rules apply. This group is generally assigned the lowest rights.
+	  </para>
+
+	  <para>
+		For group changes to take effect, Dansguardian needs to be restarted. This can be done
+		either in the <guimenu>System services</guimenu> module of the &ucsUMC; or on the
+		commandline using the command
+	  </para>
+<programlisting>
+/etc/init.d/dansguardian restart
+</programlisting>
+
+	  <para>
+		For changes to filter rules, it is sufficient to reload the configuration using the
+		following command:
+	  </para>
+<programlisting>
+dansguardian -g
+</programlisting>
+
+	  <para>
+		The &ucsUCR; variables for the definition of the filter rules contain the group names
+		replaced in the following list by <emphasis>&lt;group&gt;</emphasis>.
+	  </para>
+
+		<table>
+		  <title>UCR variables for filter rules</title>
+		  <tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+			  <row>
+				<entry>UCR variable</entry>
+				<entry>Description</entry>
+			  </row>
+			</thead>
+			<tbody>
+			  <row>
+				<entry>
+				  <envar>dansguardian/groups/&lt;group&gt;/banned/extensions</envar>
+				</entry>
+				<entry>
+				  Files with the specified file suffixes may not be downloaded. The suffix point
+				  must always be specified. If this variable is left blank, standard values are
+				  used. To allow all file suffixes, the variable must be set to ' ' (string with a
+				  blank space). Example: <emphasis>'.doc .xls .exe'</emphasis>.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>
+				  <envar>dansguardian/groups/&lt;group&gt;/banned/mimetypes</envar>
+				</entry>
+				<entry>
+				  Files with the specified MIME types may not be downloaded. The MIME type is
+				  specified by the delivering web server (or an application running on
+				  it). Normally, the MIME types corresponding to the file suffixes outlined above
+				  are specified. If this variable is left blank, standard values are used. To allow
+				  all MIME types, the variable must be set to ' ' (string with a blank
+				  space). Example: <emphasis>audio/mpeg application/zip</emphasis>
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>
+				  <envar>dansguardian/groups/&lt;group&gt;/banned/sites</envar>
+				</entry>
+				<entry>
+				  This can be used to block complete web sites. Example: <emphasis>illegal-example-website.com</emphasis>
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>
+				  <envar>dansguardian/&lt;group&gt;/banned/urls</envar>
+				</entry>
+				<entry>
+				  In contrast to the previous parameter, this can be used to block only specific
+				  URLs of websites.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>
+				  <envar>dansguardian/&lt;group&gt;/exception/urls</envar>
+				</entry>
+				<entry>
+				  The access to the URLs specified here is not filtered by Dansguardian.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>
+				  <envar>dansguardian/&lt;group&gt;/exception/sites</envar>
+				</entry>
+				<entry>
+				  The access to the web sites specified here is not filtered by Dansguardian.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>
+				  <envar>dansguardian/bannedipaddresses</envar>
+				</entry>
+				<entry>
+				  This variable makes it possible to exclude individual clients (based on the IP
+				  address) from accessing the proxy server
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>
+				  <envar>dansguardian/exceptionipaddresses</envar>
+				</entry>
+				<entry>
+				  This can be used to disable all filter rules for individual computers with the
+				  result that all the files can be downloaded from the proxy server from this
+				  computer. This can be useful if, for example, an administration computer should be
+				  used to download files for other users.
+				</entry>
+			  </row>
+
+			</tbody>
+		  </tgroup>
+		</table>
+
+	  <caution>
+		<para>
+		The definition of an exception rule for content filters using
+		<envar>dansguardian/&lt;group&gt;/exception/*</envar> also exempts the content from virus scanning!
+		</para>
+	  </caution>
+
+	</section>
+
+  </section>
+</chapter>

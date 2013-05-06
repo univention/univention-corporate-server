@@ -1,0 +1,438 @@
+<chapter id="introduction:Introduction"><title>Introduction</title>
+
+<section id="introduction:What_is_Univention_Corporate_Server"><title>What is Univention Corporate Server?</title>
+<para>
+Univention Corporate Server (UCS) is a Linux-based corporate platform
+for the operation and administration of IT infrastructures for
+companies and authorities. UCS implements an integrated, holistic
+concept with consistent, central administration and can ensure the
+operation of all the components in an interrelated security and trust
+context, the so-called UCS domain. At the same time, UCS supports a
+wide range of open standards and includes extensive interfaces to
+infrastructure components and management tools from other
+manufacturers, meaning it can be easily integrated in existing
+environments.
+</para>
+<para>
+UCS includes and is based on reliable Open Source software tried and
+tested in organisations of different sizes. These software components
+are integrated together via the &ucsUMS;. This allows the easy
+integration and administration of the system in both simple and
+complex distributed or virtualized environments.
+</para>
+<para>
+The central functions of UCS are:
+</para>
+<itemizedlist>
+<listitem><simpara>Flexible and extensive identity, infrastructure and virtualization management system</simpara></listitem>
+<listitem><simpara>Support for Microsoft Windows and integration in Microsoft Active Directory environments</simpara></listitem>
+<listitem><simpara>Network and Intranet services for administration of DHCP and DNS</simpara></listitem>
+<listitem><simpara>File and print services</simpara></listitem>
+<listitem><simpara>Computer administration and monitoring</simpara></listitem>
+<listitem><simpara>Mail services</simpara></listitem>
+</itemizedlist>
+<para>
+These functions are provided by different software packages in
+Univention Corporate Server and are handled in detail in the course of
+this handbook. Basically, the software packages contained in UCS can
+be assigned to the following three main categories:
+</para>
+<orderedlist>
+<listitem><simpara>UCS basic system</simpara></listitem>
+<listitem><simpara>UCS management system</simpara></listitem>
+<listitem><simpara>UCS components</simpara></listitem>
+</orderedlist>
+<para>
+The <emphasis>base system</emphasis> encompasses the operating system, the UCS Linux
+distribution maintained by Univention and based on Debian GNU/Linux
+and largely includes the same software selection as Debian GNU/Linux
+as well as tools for the installation, updating and configuration of
+clients and servers.
+</para>
+<para>
+The <emphasis>&ucsUMS;</emphasis> realises a single point of administration where
+the accounts of all domain members (users, groups, and hosts) and
+services such as DNS and DHCP are managed in a single directory
+service. Core components of the management system are the services
+OpenLDAP (directory service), Samba (provision of domain, file and
+print services for Windows), Kerberos (authentication and single sign
+on), DNS (network name resolution) and SSL/TLS (secure transmission
+of data between systems). It can be used either via a web interface
+or in the command line and in individual scripts. The UCS management
+system can be extended with APIs (application programmers interfaces)
+and provides a flexible client-server architecture which allows
+changes to be transferred to the involved systems and be activated
+there.
+</para>
+<para>
+Additional <emphasis>UCS components</emphasis> from Univention and other
+manufacturers expand the system with numerous functions such as
+groupware, document management and services for Windows, meaning that
+they can also be run from a UCS system and administrated via the UCS
+management system.
+</para>
+</section>
+
+<section id="introduction:Overview_of_UCS"><title>Overview of UCS</title>
+<para>
+As an operating system designed for multi-user and multi-tasking
+application right from the start, where the focus in its development
+was always on stability, security and compatibility with other
+operating systems, Linux is predestined for being used in server
+operating systems that are stable, secure and available at all
+times. Without UCS, however, the administration of Linux systems is
+often time-consuming, complicated and largely unstandardised,
+particularly in application scenarios in which infrastructure services
+closely linked to user and computer administration are provided for
+companies and authorities. This is the point where UCS comes into
+play.
+</para>
+<para>
+UCS can be employed as the basis for the IT infrastructure in
+companies and authorities and provide the central control for it. This
+makes a considerable contribution to secure, efficient and
+cost-effective IT operation. The business-critical applications are
+integrated in a uniform concept, adapted to each other and
+pre-configured for professional utilisation.
+</para>
+
+<section id="introduction:Commissioning"><title>Commissioning</title>
+<para>
+The use of UCS begins either with a classic operating system
+installation on a physical server or as a virtual machine,
+which is also set up via an installation or can be generated from an
+existing virtual machine employed as a template. The installation can
+be interactive or fully automatic either from a CD-ROM/DVD or via the
+network/PXE.
+</para>
+<para>
+Further information can be found in <xref linkend="installation:chapter"/>.
+</para>
+</section>
+
+<section id="introduction:Domain_concept"><title>Domain concept</title>
+<para>
+During installation each computer is assigned a system role. As
+standard in UCS, all servers, clients and users are stored in one
+security and trust context, the so-called UCS domain. Consequently, all
+the system roles (domain controllers, &ucsMember;s and clients) are available.
+</para>
+<para>
+<figure><title>UCS domain concept</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations/domainconcept_en.jpg"/>
+ </figure>
+</para>
+<para>
+Depending on the system role the computer is to play within the
+domain, such services as Kerberos, OpenLDAP, Samba, modules for domain
+replication or a Root CA (certification authority) are installed on
+the computer and are automatically configured for the selected role
+within the system. Thus manual implementation and configuration of
+every single service and application are not required. Due to the
+modular design and extensive configuration interfaces, tailor-made
+solutions to individual requirements can nevertheless be realised.
+</para>
+<para>
+The integration of Samba, which provides the domain service for
+clients and servers operated with Microsoft Windows, makes Univention
+Corporate Server compatible with Microsoft Active Directory (AD),
+whereby the system acts as an Active Directory server for
+Windows-based systems. Consequently, for example, group policies for
+Microsoft Windows systems can be administrated in the usual way and
+are available in the Samba 4 domain via UCS.
+</para>
+<para>
+Ubuntu clients can be integrated in a UCS environment (see
+<xref linkend="computers:ubuntu"/>).
+</para>
+</section>
+
+<section id="introduction:Expandability_with_components"><title>Expandability with components</title>
+<para>
+The functional scope of a computer can be expanded via the
+selection of different additional components during the installation
+or via an online repository. The components can be setup
+without time-consuming configuration work as they are coordinated for
+UCS's holistic concept and integrate seamlessly into the UCS
+management system.
+</para>
+</section>
+
+<section id="introduction:LDAP_directory_service"><title>LDAP directory service</title>
+<para>
+With the &ucsUMS;, all the components of the UCS domain can be
+centrally administrated across computer, operating system and site
+boundaries. It thus provides a single point of administration for
+the domain. One primary element of the UCS management system is an
+LDAP directory in which the data required across the domain for the
+administration are stored. In addition to the user accounts and
+similar elements, the data basis of services such as DHCP is also
+saved. The central data management in the LDAP directory avoids not
+only the repeated entry of the same data, but also reduces the
+probability of errors and inconsistencies.
+</para>
+<para>
+An LDAP directory has a tree-like structure, the root of which forms
+the so-called basis of the UCS domain. The UCS domain forms the common
+security and trust context for its members. An account in the LDAP
+directory establishes the membership in the UCS domain for
+users. Computers receive a computer account when they join the
+domain. Microsoft Windows systems can also join the domain and users
+can log in there with their domain passport.
+</para>
+<para>
+UCS utilises OpenLDAP as a directory service server. The directory is
+provided by the &ucsMaster; and replicated on all domain controllers
+(DCs) in the domain. The complete LDAP directory is also replicated on
+a DC backup as this can replace the DC master in an emergency. In
+contrast, the replication on DC slaves can be restricted to certain
+areas of the LDAP directory using ACLs (access control lists), which
+allows selective replication. For example, this may be desirable if
+data should only be stored on as few servers as possible for security
+reasons. A root CA (certification authority) is integrated in UCS so
+that these and other data can be transmitted encrypted.
+</para>
+<para>
+Further information can be found in <xref linkend="domain:ldap"/>.
+</para>
+</section>
+
+<section id="introduction:Domain_administration"><title>Domain administration</title>
+<para>
+<figure><title>Univention Management Console</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations/umc-overview_en.png"/>
+</figure>
+</para>
+<para>
+Access to the LDAP directory is performed via the web-based and
+modular &ucsUMC; (UMC). Technically, the access is performed by the
+&ucsUMC; module &ucsUDM;. This is displayed as the <guimenu>Domain</guimenu>
+modules in &ucsUMC;.
+</para>
+
+<para>
+Univention Directory Manager also allows the realisation of all
+domain-wide administrative tasks via a command line interface. This
+is particularly suitable for the integration in scripts or automated
+administrative steps.
+</para>
+
+<para>
+&ucsUMC; makes it possible to enter data into the LDAP directory and
+then display, edit and delete them there. It is also possible to
+search - filtered according to a wide range of criteria - for
+data. The web interface offers a range of wizards for the
+administration of user, groups, networks, computers, directory shares
+and printers. The administration of computers also comprises
+comprehensive functions for distributing and updating software.
+</para>
+
+<para>
+The integrated LDAP directory browser can be used to make further
+settings and add customer-specific object classes and attributes.
+</para>
+<para>
+Further information can be found in <xref linkend="central:general"/>.
+</para>
+
+</section>
+
+<section id="introduction:Computer_administration"><title>Computer administration</title>
+<para>
+&ucsUMC; allows not only the access to the LDAP directory with the
+domain data, but also the web-based configuration and administration
+of individual computers, such as the adaptation of configuration data,
+the installation of software and the monitoring and control of
+services and operating system. With &ucsUMS;, domain administration
+and computer and server configuration is also possible from any place
+via a comfortable graphic web interface.
+</para>
+</section>
+
+<section id="introduction:Policy_concept"><title>Policy concept</title>
+<para>
+The tree-like structure of LDAP directories ensures - similar to in a
+file system - that all objects (such as users, computers, etc.) are in
+one container and that these containers can also be adopted by other
+containers. The so-called root container forms the basis for this and
+is often also called the LDAP base object.
+</para>
+<para>
+Policies describe certain administrative settings which can be
+practically be used on more than one object. They facilitate the
+administration as they can be linked to containers and then apply
+to all the objects in the container in question and the objects in
+subfolders.
+</para>
+<para>
+For example, users can be organised in different containers or
+organisational units (which are a form of containers) depending on
+which department they belong to. Settings such as the desktop
+background or programs that can be run can then be connected to these
+organisational units using policies and subsequently apply for all
+users within the organisational unit in question.
+</para>
+<para>
+Further information can be found in <xref linkend="central:policies"/>.
+</para>
+</section>
+
+<section id="introduction:Listener_notifier_replication"><title>Listener/notifier replication</title>
+<para>
+The listener/notifier mechanism is an important technical component of
+the &ucsUMS;. With this, the creation, editing or deleting of freely
+definable entries in the LDAP directory triggers defined actions on
+the computers in question.
+</para>
+<para>
+For example, the creation of a directory share with &ucsUMC; leads to
+the share firstly being entered in the LDAP directory. The
+listener/notifier mechanism then ensures that the NFS
+and Samba configuration files are also expanded accordingly on the
+selected server and that the directory is created in the file system
+of the selected server if it does not already exist.
+</para>
+<para>
+The listener/notifier mechanism can be easily expanded with modules
+for further - even customer-specific - procedures and is
+consequently used by numerous technology partners for the integration
+of their products in the LDAP directory service and the &ucsUMS; for
+example.
+</para>
+<para>
+Further information can be found in <xref linkend="domain:listenernotifier"/>.
+</para>
+</section>
+
+<section id="introduction:Virtualization_management"><title>Virtualization management</title>
+<para>
+With the UMC module &ucsUVMM; (UVMM), UCS offers an extensive,
+powerful tool for the administration of virtualized
+infrastructures. Virtualization servers registered in the UCS domain
+and virtual machines operated on it can be centrally monitored and
+administrated. The Open Source virtualization technologies KVM (Kernel
+Virtual Machine) and Xen can be used as hypervisor technology with
+UCS.
+</para>
+<para>
+Further information can be found in <xref linkend="uvmm:chapter"/>.
+</para>
+</section>
+</section>
+
+
+<section id="introduction:Further_documentation"><title>Further documentation</title>
+<para>
+This manual addresses just a small selection of the possibilities in
+UCS. Among other things, UCS and solutions based on UCS provide:
+</para>
+<itemizedlist>
+	<listitem><simpara>Comprehensive support for complex server environments and replication scenarios</simpara></listitem>
+	<listitem><simpara>Advanced capabilities for Windows environments (e. g. automatic Windows client installation)</simpara></listitem>
+	<listitem><simpara>Central network management with DNS and DHCP</simpara></listitem>
+	<listitem><simpara>Monitoring systems and networks with Nagios</simpara></listitem>
+	<listitem><simpara>Print server functionalities</simpara></listitem>
+	<listitem><simpara>Thin Client support</simpara></listitem>
+	<listitem><simpara>Fax service</simpara></listitem>
+	<listitem><simpara>Proxy server</simpara></listitem>
+	<listitem><simpara>Virtualization with Xen and KVM</simpara></listitem>
+	<listitem><simpara>Integrated backup functions</simpara></listitem>
+	<listitem><simpara>Linux desktop for business operations</simpara></listitem>
+</itemizedlist>
+
+<para>
+Further documentation related to UCS and further issues is published
+under <xref linkend="ucs-dokumentationen"/> and in the Univention Wiki (<ulink url="http://wiki.univention.de/"/>).
+</para>
+</section>
+
+<section id="introduction:Symbols_and_conventions_used_in_this_manual"><title>Symbols and conventions used in this manual</title>
+<para>
+The manual uses the following symbols:
+</para>
+
+<caution>
+<para>
+Warnings are highlighted.
+</para>
+</caution>
+
+<note>
+<para>
+Notes are also highlighted.
+</para>
+</note>
+
+<para>
+This tables describes the functionality of a UMC module:
+
+<table>
+<title>Tab Nagios service</title>
+<tgroup cols="2">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="2*"/>
+<thead>
+<row>
+<entry>Attribute</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>Name</entry>
+<entry>
+The unique name of a Nagios service.
+</entry>
+</row>
+
+<row>
+<entry>Description</entry>
+<entry>
+An arbitrary description of the Nagios service.
+</entry>
+</row>
+</tbody>
+</tgroup>
+</table>
+</para>
+
+<para>
+Menu entries, button labels, and similar details are printed in <guimenu>bold</guimenu> lettering.
+In addition, <mousebutton>button labels</mousebutton> are represented in square brackets.
+</para>
+
+<para>
+Names are in <emphasis>bold</emphasis>.
+</para>
+
+<para>
+<emphasis>Computer names, LDAP DNs</emphasis>, <command>program names</command>, <filename>file names, file paths</filename>,
+<uri>internet addresses</uri> und <emphasis>options</emphasis> are also optically accented.
+</para>
+
+<para>
+<command>Commands and other keyboard input</command> is printed in the Courier font.
+</para>
+
+<programlisting>
+In addition, excerpts from configuration files, screen output, etc are
+printed on a grey background.
+</programlisting>
+
+<para>
+A backslash (\) at the end of a line signifies that the subsequent line
+feed is not to be understood as an <emphasis>end of line</emphasis>. This circumstance
+may occur, for example, where commands cannot be represented in one
+line in the manual, yet have to be entered in the command line in one
+piece without the backslash or with the backslash and a subsequent
+Enter.
+</para>
+
+<para>
+The path to a function is represented in a similar way to a file
+path. <guimenu>Users &ar; Add</guimenu> means for example, you have to click
+<guimenu>Users</guimenu> in the main menu and <guimenu>Add</guimenu> in the submenu.
+</para>
+</section>
+</chapter>

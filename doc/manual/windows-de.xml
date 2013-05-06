@@ -1,0 +1,1194 @@
+<chapter id="windows:Services_fuer_Windows"><title>Services für Windows</title>
+<section id="windows:general">
+<title>Einführung</title>
+<para>
+UCS kann aus Sicht von Windows-Systemen die Aufgaben von
+Windows-Serversystemen übernehmen:
+</para>
+<itemizedlist>
+<listitem><simpara>Domänencontrollerfunktionalität</simpara></listitem>
+<listitem><simpara>Dateidienste</simpara></listitem>
+<listitem><simpara>Authentifizierungsdienste</simpara></listitem>
+<listitem><simpara>Druckdienste</simpara></listitem>
+</itemizedlist>
+<para>
+Alle diese Dienste werden in UCS durch die Software Samba bereitgestellt.
+Zwei verschiedene Samba-Versionen können in UCS eingesetzt werden:
+</para>
+<itemizedlist>
+	<listitem>
+		<simpara>
+			<emphasis>Samba 3</emphasis> implementiert Domänendienste
+auf Basis der
+Domänen-Technologie von Microsoft Windows NT. Samba 3 ist die aktuelle,
+stabile und bewährte Haupt-Release-Serie des Samba-Projekts und ist seit
+vielen Jahren in UCS integriert.
+</simpara>
+</listitem>
+<listitem>
+	<simpara>
+		<emphasis>Samba 4</emphasis> ist die nächste Generation der
+Samba-Suite. Die wichtigste Neuerung von Samba 4 besteht in der
+Unterstützung von Domänen-, Verzeichnis- und
+Authentifizierungsdiensten, die kompatibel zu Microsoft Active
+Directory sind. Mit Samba 4 lassen sich deswegen Active
+Directory-kompatible Windows-Domänen aufbauen. Diese ermöglichen auch
+die Verwendung der von Microsoft bereit gestellten Werkzeuge
+beispielsweise für die Verwaltung von Benutzern oder
+Gruppenrichtlinien (GPOs). Die aktuell vom Samba-Projekt
+veröffentlichten Versionen von Samba 4 unterliegen in der
+Weiterentwicklung noch stärkeren Änderungen als Samba 3. Univention hat die
+benötigten Komponenten für die
+Bereitstellung von Active Directory kompatiblen Domänendiensten mit
+Samba 4 getestet und in enger Zusammenarbeit mit dem Samba-Team in UCS
+integriert. Parallel dazu wurde für UCS Samba 3 mit Samba 4
+integriert. Somit werden auch bei Verwendung der Active Directory
+kompatiblen Domänendienste die erprobten Datei- und Druckdienste
+aus Samba 3 verwendet.
+</simpara>
+</listitem>
+</itemizedlist>
+<para>
+Eine Übersicht der funktionalen Unterschiede zwischen Samba 3 und
+Samba 4 findet sich im Univention Wiki <xref linkend="wiki-samba4"/>.
+</para>
+<para>
+UCS integriert neben Samba 4 noch eine zusätzliche Komponente zur
+Anbindung an Active Directory (AD); den Univention Active Directory
+Connector. Im Gegensatz zu Samba 4 wird hierbei allerdings eine
+separate AD-Domäne auf Basis von Microsoft Windows betrieben, die
+bidirektional oder unidirektional synchronisiert wird, siehe
+<xref linkend="ad-connector:general"/>.
+</para>
+</section>
+<section id="windows:Installation_und_Aufbau_einer_Samba-Domaene"><title>Installation und Aufbau einer Samba-Domäne</title>
+<para>
+Eine Samba-Domäne besteht aus min. einem Domänencontroller.
+Windows-Clients und UCS-&ucsMember; können als
+Domänenmitglieder dem Vertrauenskontext der Samba-Domäne beitreten.
+Solche Systeme stellen keine Anmeldedienste bereit, bieten aber
+beispielsweise Datei- oder Druckdienste an.
+Die Anmeldung an diesen Servern erfolgt dann
+gegen die UCS-Anmeldedaten. &ucsMember; auf Basis von UCS werden aktuell
+durch Samba 3 bereitgestellt.
+</para>
+<para>
+Der Domänenbeitritt von Windows-Clients wird in
+<xref linkend="windows-domaenenbeitritt"/> beschrieben.
+</para>
+<para>
+Windows-Domänencontroller können weder mit Samba 3, noch mit Samba 4
+der Domäne beitreten. Für Samba 4 ist die Funktionalität zu einem
+späteren Zeitpunkt geplant.
+</para>
+<para>
+Der Name der Samba-Domäne wird bei der Installation des &ucsMaster;
+festgelegt, unabhängig davon, ob auf dem System Samba installiert wird
+oder nicht. Der Name der Domäne wird in der &ucsUCRV; <envar>windows/domain</envar>
+gespeichert.
+</para>
+<para>
+Samba 4 kann zum jetzigen Zeitpunkt noch nicht einem Active Directory
+Forest beitreten. (Für Samba 3 steht diese Funktionalität mangels
+Unterstützung der Active Directory-Technologie ohnehin nicht zur
+Verfügung).
+</para>
+
+<section id="windows:Installation__Aufbau_einer_Domaene_mit_Samba_3"><title>Installation / Aufbau einer Domäne mit Samba 3</title>
+<para>
+Samba 3 kann auf allen UCS-Domänencontrollern durch Auswahl der
+Installer-Komponente <emphasis>NT-kompatibler Domänencontroller (Samba
+3)</emphasis> oder durch nachträgliche Installation des
+Pakets <package>univention-samba</package> eingerichtet werden. Bei der
+nachträglichen Installation muss zum Abschluss der
+Befehl <command>univention-run-join-scripts</command> aufgerufen werden.
+</para>
+<para>
+Auf &ucsMember;n heißt die Installer-Komponente <emphasis>Windows
+&ucsMember; (Samba 3 / Samba 4)</emphasis>. Alternativ können die
+Pakete <package>univention-samba</package> und <package>winbind</package> installiert
+werden.
+</para>
+</section>
+
+<section id="windows:Installation__Aufbau_einer_Domaene_mit_Samba_4"><title>Installation / Aufbau einer Domäne mit Samba 4</title>
+<para>
+Samba 4 kann nur auf UCS-Domänencontrollern installiert werden.
+</para>
+<para>
+Im Univention Installer ist die Komponente <guimenu>Active
+Directory-kompatibler Domänencontroller (Samba 4)</guimenu> auszuwählen.
+Eine Installation auf der Kommandozeile erfolgt mit dem Paket
+<package>univention-samba4</package>. Auf den Systemrollen &ucsMaster; und
+&ucsBackup; muss zusätzlich <package>univention-s4-connector</package>
+installiert werden (bei der Installation über den Univention Installer
+wird das Connector-Paket automatisch mitinstalliert).
+</para>
+<para>
+Zur Installation eines Samba-Member-Servers ist auf einem
+UCS-&ucsMember; im Univention Installer die
+Komponente <guimenu>Windows &ucsMember; (Samba 3 / Samba 4)</guimenu>
+auszuwählen. Alternativ können die
+Pakete <package>univention-samba</package> und <package>winbind</package> installiert
+werden.
+</para>
+<para>
+Auf allen Samba-Domänencontrollern sollte die Signierung der
+NTP-Pakete aktiviert werden, siehe <xref linkend="basicservices::ntp"/>.
+</para>
+<para>
+Samba 4 implementiert Active Directory Verzeichnisdienste, die eine
+Multimasterreplikation erlauben, d.h. die schreibenden Änderungen
+mehrerer Domänencontroller werden auf Protokollebene synchronisiert.
+Die Verwendung von Snapshots in Virtualisierungslösungen sollte daher
+beim Einsatz von Samba 4 vermieden und Samba 4 auf einem Server
+betrieben werden, der durchgehend eingeschaltet bleibt.
+</para>
+</section>
+</section>
+
+<section id="windows:Dienste_einer_Samba-Domaene"><title>Dienste einer Samba-Domäne</title>
+<section id="windows:Authentifizierungsdienst"><title>Authentifizierungsdienst</title>
+<para>
+Unter Samba 3 werden die Benutzerkennwörter im UCS-LDAP gespeichert.
+Benutzer werden bei der Domänenanmeldung mit
+Benutzernamen und Passwort gegen das LDAP-Verzeichnis authentifiziert
+und können dann auf alle freigegebenen Ressourcen der Domäne zugreifen
+ohne Benutzernamen und Passwort erneut eingeben zu müssen. Rechner mit
+jeglicher Art von Windows-Betriebssystem werden wie in
+Windows NT-Domänen über das NTLMv2-Protokoll authentifiziert.
+</para>
+<para>
+Benutzer, die sich an einem Windows-System
+anmelden, das in einen Samba4-Server gejoint ist, erhalten bei der
+Anmeldung ein Kerberos-Ticket, mit dem die weitere Authentifizierung
+durchgeführt wird. Mit diesem Ticket wird dann auf die Ressourcen der
+Domäne zugegriffen.
+Für eine funktionierende Kerberos-Authentifizierung ist eine
+Synchronisation der Systemzeiten zwingend erforderlich.
+</para>
+<para>
+Benutzeranmeldungen können nur auf Microsoft Windows-Systemen
+erfolgen, die der Samba-Domäne beigetreten sind. Der Domänenbeitritt
+ist in <xref linkend="windows-domaenenbeitritt"/> dokumentiert.
+</para>
+<para>
+Mischumgebungen aus Samba 3- und Samba 4-Domänencontrollern sind nur für Update-Szenarien
+unterstützt und werden im Univention Wiki <xref linkend="wiki-samba-update"/> weitergehend beschrieben.
+</para>
+</section>
+
+<section id="windows:Dateidienste__File-Server"><title>Dateidienste / File-Server</title>
+<para>
+Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung
+von Freigaben auf Basis von CIFS (siehe
+<xref linkend="shares::general"/>).
+Sofern das unterliegende Dateisystem Access Control Lists (ACLs)
+unterstützt (verwendbar bei ext3, ext4 und XFS) sind ACLs
+auch von Windows-Clients verwendbar.
+Samba 4 setzt zwingend ein Dateisystem mit XATTR-Unterstützung voraus.
+</para>
+<para>
+Dateidienste können auch mit Samba 4-Domänencontrollern bereitgestellt
+werden. Generell wird in Samba 4-Umgebungen - analog zu den
+Empfehlungen für Active Directory - empfohlen Domänencontroller- und
+Datei/Druckdienste zu trennen, d.h. Domänencontroller für die
+Anmeldung und Memberserver für Datei-/Druckdienste zu verwenden. Dies
+stellt sicher, dass hohe Last auf einem Fileserver nicht zu Störungen
+im Anmeldedienst führen. Für kleine Umgebungen, in denen keine
+Möglichkeit für den Betrieb zweier Server gegeben ist, können Datei-
+und Druckdienste auch mit auf einem Domänencontroller betrieben werden.
+</para>
+</section>
+
+<section id="windows:Druckdienste__Print-Server"><title>Druckdienste / Print-Server</title>
+<para>
+Samba bietet die Möglichkeit, unter Linux eingerichtete Drucker als
+Netzwerkdrucker für Windows-Clients freizugeben. Die Verwaltung der
+Druckerfreigaben und die Integration der Druckertreiber ist in
+<xref linkend="print::general"/> beschrieben.
+</para>
+<para>
+Druckdienste können auch mit Samba 4-Domänencontrollern bereitgestellt
+werden. Hierbei sind die in <xref
+linkend="windows:Dateidienste__File-Server"/> beschriebenen
+Einschränkungen zu beachten.
+</para>
+</section>
+
+<section id="windows:Univention_S4_Connector"><title>Univention S4 Connector</title>
+<para>
+Unter Samba 4 werden die Samba-Benutzerkonten komplett durch Samba
+verwaltet. Die Synchronisation zwischen den UCS-LDAP und Samba erfolgt
+durch einen internen Systemdienst, den Univention-S4-Connector.
+</para>
+<para>
+Hinweise zum Status der Synchronisation finden sich in der
+Logdatei <filename>/var/log/univention/connector-s4.log</filename>.
+</para>
+</section>
+
+<section id="windows:NetBIOS-Netzwerkdienst"><title>NetBIOS-Netzwerkdienst</title>
+<para>
+NetBIOS ist ein auf Windows-Systemen verwendetes Netzwerkprotokoll zur
+Namensauflösung und Netzwerkkommunikation, welches in der Regel auf
+TCP/IP aufsetzt. Samba bildet NetBIOS-Funktionalität durch den
+Systemdienst <emphasis>nmbd</emphasis> ab.
+</para>
+<para>
+NetBIOS-Rechnernamen können maximal 15 Zeichen
+umfassen. Der NetBIOS-Name eines UCS-Systems entspricht
+standardmäßig dem Rechnernamen. Mit der &ucsUCRV; <envar>samba/netbios/name</envar>
+kann ein abweichender Name konfiguriert werden und mit der
+&ucsUCRV; <envar>samba/netbios/aliases</envar> Alias-Namen definiert werden.
+</para>
+<para>
+In einer nativen Active Directory-Umgebung werden standardmäßig keine
+NetBIOS-Dienste bereitgestellt. In einer AD-Umgebung auf Basis von
+Samba 4 sind sie hingegen aktiviert. Dies kann mit
+der &ucsUCRV; <envar>samba4/service/nmb</envar> deaktiviert werden.
+</para>
+<para>
+Samba 3 und Samba 4 bieten in Bezug auf NetBIOS einen identischen
+Funktionsumfang.
+</para>
+</section>
+
+<section id="windows:wins"><title>Namensauflösung über WINS</title>
+<para>
+Der <emphasis>Windows Internet Name Service (WINS)</emphasis> ist ein Dienst
+zur Auflösung von NetBIOS-Namen in IP-Adressen ähnlich DNS in
+TCP/IP-Netzwerken. Außerdem stellt WINS Informationen über die
+Aufgaben der Rechner bereit.
+</para>
+<para>
+WINS wird in NT-kompatiblen Domänen auf Basis von Samba 3 verwendet,
+in Samba-4-Domänen erfolgt die Namensauflösung in der Regel über DNS.
+</para>
+<para>
+Der WINS-Dienst kann von Samba bereitgestellt
+werden. WINS-Unterstützung ist in der Grundeinstellung auf
+dem &ucsMaster; aktiviert und kann mit
+der &ucsUCRV; <envar>windows/wins-support</envar> auch auf einem anderen Server in
+Betrieb genommen werden. WINS kann ohne Anpassungen nur auf jeweils
+einem Samba-Server der Domäne betrieben werden, die Verteilung auf
+mehrere Server erfordert die Einrichtung von WINS-Replikation.
+Informationen zur Inbetriebnahme der WINS-Replikation finden sich in
+der Univention Support Datenbank
+unter <ulink url="http://sdb.univention.de/1107"/>
+</para>
+<para>
+Der WINS-Server kann Windows-Clients in der &ucsUMC; über eine DHCP-NetBIOS-Richtlinie
+zugewiesen werden, siehe <xref linkend="networks:dhcp:wins"/>.
+</para>
+</section>
+</section>
+
+<section id="windows:Konfiguration_und_Management_von_Windows-Desktops"><title>Konfiguration und Management von Windows-Desktops</title>
+<section id="gruppenrichtlinien"><title>Gruppenrichtlinien</title>
+<para>
+<figure><title>Gruppenrichtlinien-Editor</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations/win_policy_de.png"/>
+ </figure>
+</para>
+<para>
+Gruppenrichtlinien sind eine Active Directory-Funktion, die die
+zentrale Konfiguration von Rechner- und Benutzereinstellungen
+erlaubt. Sie werden nur von Samba 4 unterstützt.
+</para>
+<para>
+Die Einrichtung von Gruppenrichtlinien kann mit dem <emphasis>Remote
+Server Administration Tools (RSAT) for Windows 7</emphasis>
+<footnote><para><ulink url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>.
+oder den <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
+<footnote><para><ulink url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>.
+erfolgen.
+</para>
+<para>
+Die Gruppenrichtlinien werden in der SYSVOL-Freigabe gespeichert.
+</para>
+<para>
+  Gruppenrichtlinien werden von Mac OS X-Clients nicht unterstützt.
+</para>
+</section>
+
+<section id="netlogon-freigabe"><title>Anmeldeskripte / NETLOGON-Freigabe</title>
+<para>
+Die NETLOGON-Freigabe dient der Bereitstellung von Anmeldeskripten in
+Windows-Domänen. Die Anmeldeskripte werden nach der erfolgreichen
+Anmeldung eines Benutzers ausgeführt und ermöglichen die Anpassung der
+Arbeitsumgebung des Benutzers. Die Skripte müssen in einem für Windows
+ausführbaren Format gespeichert werden, wie z.B. <emphasis>bat</emphasis>.
+</para>
+<para>
+Die NETLOGON-Freigabe muss auf allen
+Samba-Domänencontrollern zur Verfügung stehen und sollte überall
+denselben Inhalt haben.
+</para>
+
+<section id="windows:netlogon:Samba_3"><title>Samba 3</title>
+<para>
+Unter Samba 3 ist standardmäßig das
+Verzeichnis <filename>/var/lib/samba/netlogon</filename> als
+Samba-Freigabe <emphasis>NETLOGON</emphasis> eingerichtet.
+</para>
+<para>
+In der Grundeinstellung werden alle Anpassungen im
+Verzeichnis <filename>/var/lib/samba/netlogon</filename> auf dem &ucsMaster;
+vorgenommen und stündlich mit dem <emphasis>rsync</emphasis>-Tool auf alle
+Domänencontroller mit installiertem Samba synchronisiert.
+</para>
+<para>
+Um ein globales Anmeldeskript für alle Benutzer zu definieren, steht die
+&ucsUCRV; <envar>samba/logonscript</envar> zur Verfügung. Ist diese Variable auf einem
+Samba-Server gesetzt, wird allen Benutzern, die sich an diesem
+Samba-Server anmelden, standardmäßig das dort angegebene Anmeldeskript
+zugeordnet. Das Anmeldeskript kann auch benutzerspezifisch zugewiesen
+werden, siehe <xref linkend="users::management"/>.
+</para>
+</section>
+
+<section id="windows:netlogon:Samba_4"><title>Samba 4</title>
+<para>
+Unter Samba 4 werden die Anmeldeskripte
+unter <filename>/var/lib/samba/sysvol/&lt;Domänenname&gt;/scripts/</filename> abgelegt
+und werden ebenfalls unter dem Freigabennamen <emphasis>NETLOGON</emphasis>
+bereitgestellt.
+</para>
+<para>
+Die NETLOGON-Freigabe wird im Rahmen der SYSVOL-Replikation repliziert.
+</para>
+</section>
+</section>
+
+<section id="windows:Konfiguration_des_Servers_auf_dem_das_Heimatverzeichnis_abgelegt_wird"><title>Konfiguration des Servers, auf dem das Heimatverzeichnis abgelegt wird</title>
+<section id="windows:Konfiguration_unter_Samba_3"><title>Konfiguration unter Samba 3</title>
+<para>
+Das Heimatverzeichnis eines Benutzers wird durch Samba freigegeben und
+nach der Anmeldung unter Windows in der Grundeinstellung mit dem
+Laufwerk <emphasis>I:</emphasis> verbunden.
+</para>
+<para>
+Mit der &ucsUCRV; <envar>samba/homedirserver</envar> kann der Server festgelegt
+werden, auf dem die Heimatverzeichnisse vorgehalten werden, mit der
+&ucsUCRV; <envar>samba/homedirpath</envar> kann das Verzeichnis vorgegeben werden.
+Diese Werte gelten dann für alle Benutzer.
+</para>
+<para>
+Sie können aber in den Benutzereinstellungen - siehe
+<xref linkend="users::management"/> - mit der
+Einstellung <guimenu>Windows-Heimatverzeichnis</guimenu>
+auch individuell zugewiesen werden, z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
+</para>
+<para>
+Wenn anstelle des UNIX-Heimatverzeichnisses des Benutzers ein anderes
+UNIX-Verzeichnis auf dem Windows-Laufwerk für das Heimatverzeichnis
+angezeigt werden soll, muss dieser Server und das Verzeichnis
+in das Eingabefeld <guimenu>Windows-Heimatverzeichnis</guimenu>
+eingetragen werden.
+</para>
+</section>
+
+<section id="windows:Konfiguration_unter_Samba_4"><title>Konfiguration unter Samba 4</title>
+<para>
+Unter Samba 4 kann das Heimatverzeichnis nur benutzerbezogen in
+der &ucsUMC; definiert werden, siehe <xref linkend="users::management"/>.
+Dies erfolgt mit der Einstellung <guimenu>Windows-Heimatverzeichnis</guimenu>,
+z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
+</para>
+<para>
+Für das Zuweisen des Heimatverzeichnis-Servers an mehrere Benutzer auf
+einmal kann der Mehrfachbearbeitungsmodus der &ucsUMC; verwendet
+werden, siehe <xref linkend="central:user-interface:edit"/>.
+</para>
+</section>
+</section>
+
+<section id="windows:Servergespeicherte_Profile"><title>Servergespeicherte Profile</title>
+<para>
+Samba unterstützt servergespeicherte Profile, d.h. Einstellungen der
+Benutzer werden auf einem Server gespeichert. In diesem Verzeichnis werden auch die Dateien gespeichert, die der
+Benutzer im Ordner <emphasis>Eigene Dateien</emphasis> speichert. Sie werden
+zwischenzeitlich lokal auf dem Windows-Rechner vorgehalten und erst
+bei der Abmeldung auf den Samba-Server synchronisiert.
+</para>
+<para>
+Wird der Profilpfad in der &ucsUMC; geändert, wird ein neues Profilverzeichnis
+angelegt. Die Daten aus dem alten Profilverzeichnis bleiben dabei
+erhalten und können manuell in das neue Profilverzeichnis
+kopiert beziehungsweise verschoben werden. Abschließend kann
+das alte Profilverzeichnis gelöscht werden.
+</para>
+<section id="windows:Samba_3"><title>Samba 3</title>
+<para>
+Unter Samba 3 werden die Benutzerprofile standardmäßig im
+Unterverzeichnis <filename>windows-profiles\ &lt;Windows-Version&gt;</filename>
+auf dem Samba-Server gespeichert, an dem sich der Benutzer angemeldet
+hat.
+</para>
+<para>
+Mit der &ucsUCRV; <envar>samba/profileserver</envar> kann ein anderer Server und
+<envar>samba/profilepath</envar> ein anderes Verzeichnis
+festgelegt werden. Diese Einstellungen müssen auf allen Samba-Domänencontrollern
+gesetzt werden.
+</para>
+<para>
+In der Benutzerverwaltung der &ucsUMC; kann mit der Einstellung
+<guimenu>Profilverzeichnis</guimenu> ein abweichender Pfad
+oder ein anderer Server für das Profilverzeichnis für den Benutzer
+konfiguriert werden.
+</para>
+<para>
+Durch Konfiguration
+der &ucsUCR;-Variablen <envar>samba/profilepath</envar> und
+<envar>samba/profileserver</envar> auf <emphasis>local</emphasis> und Neustart des
+Samba-Servers können servergespeicherten Profile deaktiviert werden.
+</para>
+</section>
+
+<section id="windows:Samba_4"><title>Samba 4</title>
+<para>
+Unter Samba 4 werden in der Voreinstellung keine serverseitigen Profile
+verwendet.
+</para>
+<para>
+Serverseitige Profile können pro Benutzer aktiviert werden; die Verwendung muss
+über das Feld <guimenu>Profilverzeichnis</guimenu> im
+Reiter <guimenu>Konto</guimenu> der Benutzerverwaltung konfiguriert
+werden. Der angegebene Pfad kann Windows-Variablen enthalten, z.B.
+<programlisting>
+sambaProfilePath: \\ucsmaster\%UserName%\windows-profiles
+</programlisting>
+Dieser Pfad kann auch über eine Benutzervorlage gesetzt werden, siehe
+<xref linkend="users:templates"/>.
+</para>
+
+<para>
+Alternativ kann das Profilverzeichnis auch über eine Gruppenrichtlinie konfiguriert werden, die unter
+<guimenu>Computerkonfiguration &ar; Richtlinien &ar; Administrative Vorlagen &ar; System &ar;
+Benutzerprofile &ar; Pfad des servergespeicherten Profils für alle Benutzer
+festlegen</guimenu> zu finden ist.
+</para>
+
+<note>
+	<para>
+Der Administrator-Benutzer greift standardmäßig mit root-Berechtigungen auf Freigaben
+zu. Wenn dadurch das Profilverzeichnis mit root als Benutzer angelegt wird, sollte
+es manuell mit dem Befehl <command>chown</command> an den Administrator vergeben werden.
+	</para>
+</note>
+</section>
+</section>
+
+<section id="windows:Vergabe_erweiterter_Windows-Berechtigungen_an_Benutzer"><title>Vergabe erweiterter Windows-Berechtigungen an Benutzer</title>
+<para>
+Mit der Auswahlmaske <guimenu>Samba-Privilegien</guimenu> in der Benutzerverwaltung
+können einem Benutzer ausgewählte Windows-Systemrechte zugewiesen
+werden, etwa die Berechtigung zur Verwaltung von Druckern, siehe <xref linkend="users::management"/>.
+</para>
+<para>
+Diese Funktionalität steht nur unter Samba 3 zur Verfügung.
+</para>
+</section>
+</section>
+
+<section id="ad-connector:general"><title>UCS Active Directory Connector</title>
+<section id="ad-connector:einfuehrung"><title>Einführung</title>
+<para>
+Der UCS Active Directory Connector (kurz AD Connector)
+ermöglicht eine Synchronisation von Verzeichnisdienstobjekten zwischen
+einem Windows 2003/2008/2012 Server mit Active Directory (AD) und dem
+OpenLDAP-Verzeichnis aus &ucsUCS;.
+</para>
+<para>
+In der Standardeinstellung werden Container, Organisationseinheiten,
+Benutzer und Gruppen synchronisiert. Die Benutzer nehmen eine
+Sonderstellung ein, da das Passwort in Active Directory nicht über das
+LDAP-Protokoll abgefragt werden kann. Hierfür wird ein zusätzlicher
+Dienst auf dem Windows-Server installiert, der diese
+Passwortsynchronisation ermöglicht (siehe
+<xref linkend="ad-connector:password-dienst"/>).
+</para>
+<para>
+Hinweise zu den in der Grundeinstellung konfigurierten Attributen und
+zu beachtende Besonderheiten finden sich in
+<xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
+</para>
+<para>
+Die Rechnerkonten werden nicht synchronisiert, da Windows-Rechner nur in
+eine Domäne eingebunden sein können.
+</para>
+<para>
+Durch die in beiden Domänen gleichen Benutzereinstellungen, können Benutzer transparent auf
+Dienste beider Umgebungen zugreifen. Nachdem eine Domänenanmeldung an
+einer UCS-Domäne durchgeführt wurde, ist anschließend eine Verbindung
+zu einer Dateifreigabe oder einem Exchange-Server mit Active Directory
+ohne erneute Passwortabfrage möglich. Auf den Ressourcen der anderen
+Domäne finden Benutzer und Administratoren gleichnamige Benutzer und
+Gruppen vor und können so mit den gewohnten Rechtestrukturen arbeiten.
+</para>
+<para>
+Nach dem erstmaligen Start des Connectors wird die Initialisierung
+vorgenommen. Dabei werden alle Einträge aus dem UCS gelesen und
+entsprechend dem eingestellten Mapping in AD-Objekte umgewandelt und
+auf AD-Seite hinzugefügt, bzw., falls bereits vorhanden,
+modifiziert. Anschließend werden alle Objekte aus dem AD gelesen und
+in UCS-Objekte umgewandelt und entsprechend auf UCS-Seite hinzugefügt
+bzw. modifiziert. Solange noch Änderungen vorliegen, werden die
+Verzeichnisdienst-Server weiter abgefragt.
+Der AD-Connector kann auch in einem unidirektionalen Modus betrieben werden.
+</para>
+<para>
+Nach dem initialen Sync werden weitere Änderungen in einem festen Intervall
+abfragt. Dieser Wert ist auf fünf Sekunden eingestellt und kann über das
+&ucsUMC;-Konfigurationsmodul angepasst werden.
+</para>
+<para>
+Sollte ein Objekt nicht synchronisiert werden können, so wird dieses
+Objekt zunächst zurückgestellt ("rejected"). Nach einer konfigurierbaren
+Anzahl von Durchläufen - das Intervall kann im UMC-Konfigurationsmodul
+konfiguriert werden, siehe <xref linkend="ad-connector:grundkonfiguration"/>
+ - wird erneut versucht diese Änderungen wieder
+einzuspielen. Der Standardwert beträgt zehn Durchläufe. Außerdem wird bei
+einem Neustart des UCS AD Connectors ebenfalls versucht, die zuvor
+zurückgewiesenen Änderungen erneut zu synchronisieren.
+</para>
+</section>
+
+<section id="ad-connector:einrichtung"><title>Einrichtung des UCS AD Connectors</title>
+<para>
+Die Installation erfolgt durch Installation des Pakets
+<package>univention-ad-connector</package>.
+</para>
+<para>
+Der UCS AD Connector kann nur auf einem &ucsMaster; oder
+&ucsBackup; installiert werden.
+</para>
+<para>
+Trotz intensiver Tests kann aufgrund der Vielfalt der Konfigurations-
+und Betriebsvarianten einer Active Directory-Domäne nicht ausgeschlossen werden, dass die
+Ergebnisse des Synchronisationsvorgangs den Betrieb einer produktiven
+Domäne beeinträchtigen. Der Connector sollte daher vorab in einer
+getrennten Umgebung auf die jeweiligen Anforderungen geprüft werden.
+</para>
+<para>
+Alle Active Directory- und UCS-Server in einer Connector-Umgebung
+müssen dieselbe Zeitzone verwenden.
+</para>
+<section id="ad-connector:grundkonfiguration"><title>Grundkonfiguration des Connectors</title>
+<para>
+Der Connector wird über den Assistenten
+<guimenu>UCS Active Directory Connector</guimenu> der &ucsUMC;
+konfiguriert.
+</para>
+<para>
+Internet Explorer 6 - der auf Windows 2003-Systemen vorinstalliert ist
+- wird von der &ucsUMC; nicht unterstützt. Hier sollte zuerst eine
+Aktualisierung des Browsers durchgeführt oder ein alternativer
+Browser installiert werden.
+</para>
+<para>
+Unter <guimenu>Konfiguration</guimenu> wird der Einrichtungs-Status
+des Connectors angezeigt. Durch Klick auf <guimenu>UCS Active
+Directory Connector einrichten</guimenu> kann die Konfiguration des AD
+Connectors begonnen werden.
+</para>
+<para>
+Im Feld <guimenu>Active Directory Server</guimenu> muss
+der vollqualifizierte Rechnername des Active Directory Servers angegeben
+werden. Wenn der Rechnername des AD-Systems für das UCS-System nicht
+auflösbar sein sollte, muss für das AD-System ein DNS-Host-Record
+in der DNS-Verwaltung der &ucsUMC; angelegt werden (siehe <xref linkend="networks::dns::hostrecord"/>).
+</para>
+<para>
+Alternativ kann auch über &ucsUCR; ein statischer Eintrag in <filename>/etc/hosts</filename> aufgenommen werden, z.B. mit
+</para>
+<programlisting>
+ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
+</programlisting>
+<para>
+<figure><title>Konfiguration des AD-Connectors in UMC</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-de.png"/>
+ </figure>
+</para>
+<para>
+Ist die Option <guimenu>Automatische Ermittlung der
+  LDAP-Konfiguration</guimenu> aktiviert, werden Einstellungen wie die Basis-DN
+des Active Directory-Verzeichnis oder die Kerberos-Domäne des AD-Systems
+automatisch ausgelesen und müssen nicht manuell konfiguriert werden.
+</para>
+<para>
+Im nächsten Dialog müssen die LDAP- und Kerberos-Einstellungen geprüft,
+bzw. eingegeben werden.
+</para>
+<para>
+Im Feld <guimenu>LDAP-DN des Replikationsbenutzers</guimenu> wird die LDAP-DN
+des Benutzer konfiguriert, der für den Zugriff auf das Active
+Directory verwendet wird. Die Einstellung wird in der
+&ucsUCRV; <envar>connector/ad/ldap/binddn</envar> gespeichert. Bei Verwendung der Funktion für die
+automatische Ermittlung der Basis-DN des Active Directory wird das
+Administrator-Konto für die Basis-DN als Vorgabe eingetragen.
+</para>
+<!-- Weiterführende Hinweise zum Betrieb des AD Connectors mit einem -->
+<!-- abweichenden Benutzer finden sich im Univention Wiki WIKIREF-22814. -->
+<para>
+Das verwendete Kennwort für den Zugriff wird im Feld
+<guimenu>Passwort des Synchronisationsbenutzers</guimenu> eingetragen und in
+einer Datei gespeichert.
+</para>
+<para>
+Nun muss auf <guimenu>Weiter</guimenu> geklickt werden.
+</para>
+<para>
+Einige Gruppennamen werden abhängig von der Installationssprache des
+Servers im Active Directory anders gespeichert. Unter
+<guimenu>Systemsprache des Active Directory Servers</guimenu> kann die
+verwendete Lokalisierung ausgewählt werden. Weitere Hinweise finden
+sich in <xref linkend="ad-connector:gruppen"/>.
+</para>
+<para>
+Der Connector kann in verschiedenen Modi betrieben werden, die unter
+<guimenu>Synchronisationsmodus</guimenu> ausgewählt werden können. Neben
+einer bidirektionalen Synchronisation kann auch einseitig von Active
+Directory nach UCS oder einseitig von UCS in das Active Directory
+repliziert werden.
+</para>
+<para>
+Nun muss auf <guimenu>Weiter</guimenu> geklickt werden. Die
+Voreinstellungen im folgenden Dialog sind für die meisten Umgebungen
+sinnvoll und brauchen in der Regel nicht verändert werden.
+</para>
+<para>
+In <guimenu>Polling-Intervall (in Sekunden)</guimenu> kann festgelegt
+werden, wie lange nach einem Lauf ohne Änderungen gewartet wird, bis
+eine erneute Anfrage gestellt wird.
+</para>
+<para>
+Unter <guimenu>Wiederholungsintervall für abgelehnte Objekte</guimenu>
+wird festgelegt, nach wievielen Synchronisations-Intervallen
+zurückgehaltene Änderungen nachträglich eingespielt
+werden.
+</para>
+<para>
+Der <guimenu>Debug-Level des Active Directory Connectors</guimenu>
+konfiguriert wieviele Debug-Informationen in die Datei
+<filename>/var/log/univention/connector.log</filename> protokolliert werden.
+Mit <guimenu>Debug-Ausgaben für Funktionen ausgeben</guimenu> kann
+außerdem festgelegt werden, ob für Funktionsaufrufe weiterer
+Debug-Output hinzugefügt wird.
+</para>
+<para>
+Nach einem Klick auf <guimenu>Beenden</guimenu> wird die
+Konfiguration übernommen. Änderungen werden erst nach einem Neustart
+des UCS AD Connectors übernommen, siehe
+<xref linkend="ad-connector:neustart"/>.
+</para>
+</section>
+
+<section id="ad-connector:ad-zertifikat"><title>Import des SSL-Zertifikats des Active Directory</title>
+<para>
+Auf dem Active Directory-System muss nun ein SSL-Zertifikat erzeugt
+und das Root-Zertifikat exportiert werden, damit eine verschlüsselte Kommunikation
+stattfinden kann. Erzeugt wird das Zertifikat mit dem
+Zertifikatsdienst des Active Directory. Die nötigen Schritte
+sind abhängig von der eingesetzten Windows-Version und werden hier
+beispielhaft für zwei Varianten dargestellt.
+</para>
+<para>
+Die verschlüsselte Verbindung zwischen UCS-System und Active Directory
+kann auch deaktiviert werden, indem die
+&ucsUCRV; <envar>connector/ad/ldap/ssl</envar> auf <emphasis>no</emphasis> gesetzt wird. Diese
+Einstellung betrifft nicht die Kommunikation mit dem
+Passwort-Dienst (siehe <xref linkend="ad-connector:password-dienst"/>);
+diese ist immer verschlüsselt.
+</para>
+
+<section id="windows:Export_unter_Windows_2003"><title>Export unter Windows 2003</title>
+<para>
+Falls der Zertifikatsdienst nicht installiert ist, so kann dieser
+nachinstalliert werden: <guimenu>Start &ar;
+Einstellungen &ar; Systemsteuerung &ar; Software &ar; Windows
+Komponenten, Zertifikatsdienst auswählen &ar; Weiter
+Stammzertifizierungsstelle des Unternehmens wählen &ar; Weiter, Domänen
+Namen angeben &ar; Weiter &ar; Weiter</guimenu>. Anschließend sollte der Server neu
+gestartet werden.
+</para>
+<para>
+Dieses Zertifikat muss exportiert und auf das UCS System kopiert werden:
+<guimenu>Zertifizierungsstelle &ar; AD-Domäne &ar;
+Eigenschaften &ar; Zertifikat anzeigen &ar; Details &ar; In Datei kopieren &ar;
+DER-codiert-binaer X.509</guimenu>.
+</para>
+</section>
+
+<section id="windows:Export_unter_Windows_2008"><title>Export unter Windows 2008</title>
+<para>
+Falls der Zertifikatsdienst nicht installiert ist, so muss dieser
+nachinstalliert werden:
+</para>
+<para>
+<figure><title>Export des Root-Zertifikats unter Windows 2008</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_23-de.png"/>
+ </figure>
+</para>
+<para>
+<guimenu>Start &ar; Systemsteuerung &ar; Programme und Funktionen &ar; Windows-Funktionen
+aktivieren oder deaktivieren &ar; Rollen &ar; Rollen hinzufügen &ar; Weiter
+&ar; Haken bei Active Directory-Zertifikatsdienste aktivieren &ar; Weiter
+&ar; Weiter &ar; Zertifizierungsstelle aktivieren &ar; Unternehmen auswählen
+&ar; Stammzertifierungsstelle auswählen &ar; Neuen privaten Schlüssel
+erstellen &ar; Weiter &ar; Die vorgeschlagenen Kryptoeinstellungen mit
+Weiter akzeptieren &ar; Den vorgeschlagenen Namen der
+Zertifizierungsstelle akzeptieren &ar; Eine beliebige Gültigkeitsdauer
+auswählen &ar; Weiter &ar; Standardpfad für die Zertifikatsdatenbank
+akzeptieren</guimenu> . Im abschließenden Dialog erscheint eine Warnmeldung,
+dass Name und Domäneneinstellung nach Installation der
+Zertifizierungsstelle nicht mehr geändert werden können. Dies muss
+mit <guimenu>Installieren</guimenu> bestätigt werden.
+</para>
+<para>
+Anschließend muss der AD-Server neu gestartet werden.
+</para>
+<para>
+Dieses Zertifikat muss nun exportiert und auf das UCS System kopiert
+werden: <guimenu>Start &ar; Programme &ar; Verwaltung &ar;
+Zertifizierungsstelle &ar; Rechtsklick auf den Namen des erzeugten
+Zertifikats &ar; Eigenschaften &ar; Zertifikat anzeigen &ar; Details - In
+Datei kopieren &ar; DER-codiert-binär X.509 (.CER) &ar; Auswahl eines
+beliebigen Dateinamens und Speicherpfad &ar; Fertigstellen</guimenu>
+</para>
+</section>
+
+<section id="windows:Kopieren_des_AD-Zertifikats_auf_das_UCS-System"><title>Kopieren des AD-Zertifikats auf das UCS-System</title>
+<para>
+Nun muss das SSL-AD-Zertifikat über den &ucsUMC;-Assistenten in das
+UCS-System importiert werden.
+</para>
+<para>
+Dies erfolgt durch einen Klick auf <guimenu>Hochladen</guimenu> im
+Untermenü <guimenu>Active Directory Server Konfiguration</guimenu>.
+</para>
+<para>
+Hierbei öffnet sich ein Fenster, in dem eine Datei ausgewählt wird.
+Das hochgeladene Zertifikat wird dadurch für den AD Connector verfügbar gemacht.
+</para>
+</section>
+</section>
+
+<section id="ad-connector:password-dienst"><title>Einrichtung des Passwort-Dienstes auf dem AD-System</title>
+<para>
+Active Directory verbietet die Abfrage von Passwörtern über das
+LDAP-Protokoll, was die Installation eines Paketes auf dem
+Windows-Server erfordert.
+</para>
+<para>
+Die Installations-Pakete werden ebenfalls über den
+Einrichtungs-Assistenten der &ucsUMC; bereitgestellt.
+</para>
+<para>
+Nach Auswahl von <guimenu>Herunterladen des UCS-Zertifikats und
+  des Passwort-Dienstes für Windows</guimenu> öffnet sich ein neues
+Browser-Fenster, in dem fünf Dateien zum Download angeboten werden:
+</para>
+<para>
+<figure><title>Download der Pakete für den Passwortdienst</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_6-en_de.png"/>
+ </figure>
+</para>
+<itemizedlist>
+<listitem><simpara><filename>ucs-ad-connector.msi (for 32bit Windows)</filename></simpara></listitem>
+<listitem><simpara><filename>ucs-ad-connector-64bit.msi (for 64bit Windows)</filename></simpara></listitem>
+<listitem><simpara><filename>Microsoft Visual C++ 2010 Redistributable Package (x86)</filename></simpara></listitem>
+<listitem><simpara><filename>private.key</filename></simpara></listitem>
+<listitem><simpara><filename>cert.pem</filename></simpara></listitem>
+</itemizedlist>
+<para>
+Auf 64 Bit-Varianten von Windows muss vor der Installation des AD
+Connectors das <emphasis>Microsoft Visual C++ 2010
+  Redistributable Package (x86)</emphasis>installiert werden.
+</para>
+<para>
+Die MSI-Pakete sind die Installations-Dateien für den
+Passwortdienst und können durch einen Doppelklick gestartet werden.
+</para>
+<para>
+Das Paket wird automatisch in das Verzeichnis <command>C:\Windows\UCS-AD-Connector</command> installiert. Zusätzlich wird der
+Passwort-Dienst als Systemdienst in die Windows-Umgebung integriert,
+wodurch der Dienst automatisch oder manuell gestartet werden kann.
+Nach der Installation ist der Passwort-Dienst für den automatischen
+Start konfiguriert.
+</para>
+<para>
+Die Dateien <emphasis>private.key</emphasis> und <emphasis>cert.pem</emphasis> beinhalten unter UCS erzeugte
+SSL-Zertifikate für die gesicherte Kommunikation des Passwort-Dienstes. Sie müssen ebenfalls
+in das Installationsverzeichnis des Passwort-Dienstes kopiert werden.
+Anschließend muss der Passwort-Dienst neu gestartet werden.
+</para>
+<para>
+In einer Standard-Installation unter Windows 2008 blockiert die
+Windows-Firewall die Zugriffe auf den AD Connector. Diese muss entweder
+in der <guimenu>Systemsteuerung</guimenu> deaktiviert werden oder Port
+6670/TCP freigegeben werden.
+</para>
+</section>
+
+<section id="ad-connector:neustart"><title>Start/Stop des Active Directory Connectors</title>
+<para>
+Abschließend kann der Connector über <guimenu>Active Directory
+  Connector starten</guimenu> gestartet werden und bei Bedarf über <guimenu>
+Active Directory Connector beenden</guimenu> angehalten werden. Alternativ kann
+ein Starten/Stoppen auch über Kommandozeile durch die Befehle
+<command>/etc/init.d/univention-ad-connector start</command> und
+<command>/etc/init.d/univention-ad-connector stop</command> erfolgen.
+</para>
+</section>
+
+<section id="windows:Funktionstest_der_Grundeinstellungen"><title>Funktionstest der Grundeinstellungen</title>
+<para>
+Die korrekte Grundkonfiguration des Connectors lässt sich prüfen, indem
+vom UCS-System aus im Active Directory gesucht wird. Hier kann z.B. mit
+<command>univention-adsearch cn=Administrator</command> nach dem
+Administrator-Konto im Active Directory gesucht werden.
+</para>
+<para>
+Da <command>univention-adsearch</command> auf die in &ucsUCRV;
+gespeicherte Konfiguration zugreift, kann auf diesem Weg die
+Erreichbarkeit/Konfiguration des Active Directory-Zugriffs geprüft
+werden.
+</para>
+</section>
+</section>
+
+<section id="ad-connector:tools"><title>Werkzeuge / Fehlersuche</title>
+<para>
+Mit dem AD Connector werden einige Tools und Logdateien bereitgestellt:
+</para>
+<section id="ad-connector:univention-adsearch"><title>univention-adsearch</title>
+<para>
+Dieses Tool ermöglicht die einfache LDAP-Suche im Active Directory.
+In AD gelöschte Objekte werden immer mit angezeigt (diese werden in AD
+weiterhin in einem LDAP-Unterbaum vorgehalten). Als erste Option erwartet das Skript
+einen LDAP-Filter, die zweite Option kann eine Liste der anzuzeigenden
+LDAP-Attribute sein, z.B.:
+</para>
+<programlisting>
+univention-adsearch cn=administrator cn givenName
+</programlisting>
+</section>
+
+<section id="ad-connector:univention-connector-list-rejected"><title>univention-connector-list-rejected</title>
+<para>
+Dieses Tool führt die DNs nicht synchronisierter Objekte auf. Zusätzlich wird,
+sofern zwischengespeichert, die korrespondierende DN im jeweils anderen LDAP-Verzeichnis
+angegeben. Abschließend gibt <emphasis>lastUSN</emphasis> die ID der letzten von AD
+synchronisierten Änderung an.
+</para>
+</section>
+
+<section id="windows:Logdateien"><title>Logdateien</title>
+<para>
+Zur Fehlersuche bei Synchronisationsproblemen finden sich
+entsprechende Meldungen in folgenden Dateien auf dem UCS-System:
+</para>
+<programlisting>
+/var/log/univention/connector.log
+/var/log/univention/connector-status.log
+</programlisting>
+<para>
+Die Statusmeldungen des Passwort-Dienstes auf AD-Seite werden in die
+Datei <filename>C:\Windows\UCS-AD-Connector\UCS-AD-Connector.log</filename> protokolliert.
+</para>
+</section>
+</section>
+
+<section id="ad-connector:details-zur-vorkonfigurierten-synchronisation"><title>Details zur vorkonfigurierten Synchronisation</title>
+<para>
+In der Grundeinstellung werden einige Container durch Filter von der
+Synchronisation ausgeschlossen. Diese finden sich in der
+Konfigurationsdatei <filename>/etc/univention/connector/ad/mapping</filename>
+unter der Einstellung <emphasis>global_ignore_subtree</emphasis>.
+</para>
+
+<section id="ad-connector:container-und-organisationseinheiten"><title>Container und Organisationseinheiten</title>
+<para>
+Container und Organisationseinheiten werden zusammen mit ihrer Beschreibung
+synchronisiert. Die Container <emphasis>cn=mail</emphasis> und <emphasis>cn=kerberos</emphasis> werden auf beiden
+Seiten ignoriert. Bei
+Containern sind einige Besonderheiten auf AD-Seite zu beachten. Active
+Directory bietet im <guimenu>Manager für Benutzer und Gruppen</guimenu> keine
+Möglichkeit, Container anzulegen. AD zeigt diese im erweiterten Modus
+aber an (<guimenu>Ansicht &ar; Erweiterte Funktionen</guimenu>).
+</para>
+
+<section id="windows:ad-connector:Besonderheiten"><title>Besonderheiten</title>
+<itemizedlist>
+	<listitem>
+		<para>Unter AD gelöschte Container oder Organisationseinheiten werden unter
+UCS rekursiv gelöscht, das bedeutet, dass evtl. nicht synchronisierte
+Unterobjekte, die in AD nicht zu sehen sind, ebenfalls entfernt
+werden.
+</para>
+</listitem>
+</itemizedlist>
+</section>
+</section>
+
+<section id="ad-connector:gruppen"><title>Gruppen</title>
+<para>
+Gruppen werden anhand des Gruppennamens synchronisiert, dabei findet
+eine Berücksichtigung der primären Gruppe eines Benutzers statt (die
+unter AD nur am Benutzer im LDAP hinterlegt wird).
+</para>
+<para>
+Gruppenmitglieder, die im anderen System z.B. aufgrund von Ignore-Filtern
+kein Gegenstück haben, werden ignoriert (bleiben also Mitglied der Gruppe).
+</para>
+<para>
+Zusätzlich wird die Beschreibung der Gruppe synchronisiert.
+</para>
+
+<section id="windows:gruppen:Besonderheiten"><title>Besonderheiten</title>
+<itemizedlist>
+<listitem><simpara>Unter AD wird der <emphasis>Prä-Windows 2000 Name</emphasis> (LDAP-Attribut
+<emphasis>samAccountName</emphasis>) verwendet, daher kann eine Gruppe im
+Active Directory mit anderem Namen erscheinen als unter UCS.
+</simpara>
+</listitem>
+<listitem><simpara>Der Connector ignoriert Gruppen, die im &ucsUDM;
+unter <guimenu>Samba Gruppentyp</guimenu> als <emphasis>Bekannte Gruppe</emphasis>
+konfiguriert wurden. Eine Synchronisation von SID oder RID findet
+nicht statt.
+</simpara>
+</listitem>
+<listitem><simpara>Gruppen, die im &ucsUDM; unter <guimenu>Samba Gruppentyp</guimenu> als <emphasis>Lokale Gruppe</emphasis>
+konfiguriert wurden, werden vom Connector als <emphasis>globale Gruppen</emphasis>
+in das Active Directory synchronisiert.
+</simpara>
+</listitem>
+<listitem><simpara>Neu angelegte oder verschobene Gruppen werden immer im gleichen
+Untercontainer auf der Gegenseite angelegt. Existieren während der
+Initialisierung gleichnamige Gruppen in unterschiedlichen Containern,
+werden die Mitglieder synchronisiert, nicht jedoch die Position im
+LDAP. Wird eine solche Gruppe auf einer Seite verschoben ist der
+Zielcontainer auf der anderen Seite identisch, so dass sich die DNs
+der Gruppen ab diesem Zeitpunkt nicht mehr unterscheiden.
+</simpara>
+</listitem>
+<listitem>
+	<para>Bestimmte Gruppennamen werden anhand einer Mapping-Tabelle umgesetzt, so
+dass z.B. die UCS-Gruppe <emphasis>Domain Users</emphasis> mit der AD-Gruppe
+<emphasis>Domänen-Benutzer</emphasis>. synchronisiert wird. Dieses Mapping kann in
+englischsprachigen AD-Domänen dazu führen, das die deutschsprachigen
+Gruppen angelegt werden und sollte in diesem Fall deaktiviert
+werden. Dazu kann die &ucsUCRV; <envar>connector/ad/mapping/group/language</envar>
+verwendet werden.
+</para>
+<para>
+Die vollständige Tabelle ist:
+</para>
+<informaltable>
+<?dbhtml table-width="50%" ?>
+<?dbfo table-width="50%" ?>
+<tgroup cols="2">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="1*"/>
+<thead>
+<row>
+<entry><emphasis>UCS-Gruppe</emphasis></entry>
+<entry><emphasis>AD-Gruppe</emphasis></entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry>Domain Users</entry>
+<entry>Domänen-Benutzer</entry>
+</row>
+<row>
+<entry>Domain Admins</entry>
+<entry>Domänen-Admins</entry>
+</row>
+<row>
+<entry>Windows Hosts</entry>
+<entry>Domänencomputer</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</listitem>
+<listitem><simpara>Die Repräsentation von Gruppen in Gruppen unterscheidet sich zwischen
+AD und UCS. Sind unter UCS Gruppen Mitglieder von Gruppen, so können
+diese Objekte nicht immer auf AD-Seite synchronisiert werden und erscheinen
+in der Liste der zurückgewiesenen Objekte. Verschachtelte Gruppen
+sollten daher aufgrund der in Active Directory vorliegenden
+Einschränkungen immer nur dort zugewiesen werden.
+</simpara>
+</listitem>
+<listitem><simpara>Wird im &ucsUDM; eine globale Gruppe A als Mitglied einer
+  anderen globalen Gruppe B aufgenommen, so erscheint diese Mitgliedschaft aufgrund von
+AD-internen Beschänkungen unter Windows 2000/2003 nicht im Active
+Directory. Wird Gruppe A anschließend umbenannt, geht die
+Gruppenmitgliedschaft in Gruppe B verloren. Ab Windows 2008 besteht
+diese Einschränkung nicht mehr, dort können im Active Directory auch
+globale Gruppen verschachtelt werden.
+</simpara>
+</listitem>
+</itemizedlist>
+</section>
+</section>
+
+<section id="ad-connector:benutzer"><title>Benutzer</title>
+<para>
+Benutzer werden wie Gruppen anhand des Benutzernamens bzw. anhand des
+AD-Prä-Windows 2000 Namens synchronisiert. Direkt übermittelt werden
+die Attribute <emphasis>Vorname</emphasis>, <emphasis>Nachname</emphasis>, <emphasis>primäre Gruppe</emphasis> (sofern auf der
+anderen Seite vorhanden), <emphasis>Organisation</emphasis>, <emphasis>Beschreibung</emphasis>, <emphasis>Straße</emphasis>, <emphasis>Stadt</emphasis>,
+<emphasis>PLZ</emphasis>, <emphasis>Profilpfad</emphasis>, <emphasis>Anmeldeskriptpfad</emphasis>, <emphasis>Deaktiviert</emphasis> und
+<emphasis>Kontoablaufdatum</emphasis>. Indirekt werden zusätzlich <emphasis>Passwort</emphasis>,
+<emphasis>Passwortablaufdatum</emphasis> und <emphasis>Ändern des Passwortes beim nächsten Login</emphasis>
+synchronisiert. Vorbereitet, aber auf Grund unterschiedlicher Syntax in
+der Mapping-Konfiguration auskommentiert, sind <emphasis>Primäre Mail-Adresse</emphasis> und
+<emphasis>Telefonnummer</emphasis>.
+</para>
+<para>
+Ausgenommen werden die Benutzer <emphasis>root</emphasis> und <emphasis>Administrator</emphasis>.
+</para>
+
+<section id="windows:benutzer:Besonderheiten"><title>Besonderheiten</title>
+<itemizedlist>
+<listitem><simpara>Benutzer werden ebenfalls anhand des Namens identifiziert, so dass für
+Benutzer, die vor der ersten Synchronisation auf beiden Seiten
+angelegt wurden, hinsichtlich der Position im LDAP das gleiche
+Verhalten gilt wie bei Gruppen.
+</simpara>
+</listitem>
+<listitem><simpara>Die Synchronisation des Passwortablaufdatums und der Benutzer-Option <emphasis>Passwort-Ändern
+beim nächsten Login</emphasis> erfolgt UCS-seitig nur auf Samba-Ebene. Wird die Passwortänderung
+durch &ucsUMC; ausgelöst, dass Passwort dann aber im Active Directory
+geändert, werden die Ablaufdaten bzgl. des Kerberos- und
+Posix- Kennworts nicht geändert, so dass der User z.B. bei Thin Client-Anmeldung
+sein Passwort erneut ändern muss.
+</simpara>
+</listitem>
+<listitem><simpara>Es kann vorkommen, dass ein unter AD anzulegender Benutzer, dessen
+Passwort zurückgewiesen wurde, nach sofortigem erneuten Anlegen aus AD
+gelöscht wird. Grund dafür ist, das AD diesen Benutzer zunächst anlegt
+und nach dem Abweisen des Passwortes sofort wieder löscht. Werden
+diese Operationen nach UCS übertragen, werden sie auch wieder zurück
+nach AD übermittelt. Wurde der Benutzer auf AD-Seite schon vor der Rückübertragung
+der Operation erneut eingetragen, so wird er nach der Rückübertragung
+gelöscht. Das Auftreten dieses Verhaltens ist abhängig von dem
+eingestellten Polling-Intervall des Connectors.
+</simpara>
+</listitem>
+<listitem><simpara>AD und UCS legen neue Benutzer per Voreinstellung in eine bestimmte
+primäre Gruppe (meist <emphasis>Domain Users</emphasis> bzw. <emphasis>Domänen Benutzer</emphasis>). Während
+der ersten Synchronisation von UCS nach AD werden die Benutzer daher
+immer in dieser Gruppe Mitglied.
+</simpara>
+</listitem>
+</itemizedlist>
+</section>
+</section>
+</section>
+</section>
+
+<section id="vertrauensstellungen_generell"><title>Vertrauensstellungen</title>
+<para>
+Vertrauensstellungen zwischen Domänen ermöglichen es den Benutzern
+einer Domäne, sich an Rechnern einer anderen Domäne anzumelden.
+</para>
+<para>
+Vertrauensstellungen werden nur von Samba 3 unterstützt.
+</para>
+<para>
+Vertraut eine Windows-Domäne einer Samba-3-Domäne, steht bei der
+Anmeldung an Rechnern der Windows-Domäne neben der Windows-Domäne auch
+die Samba-Domäne zur Auswahl.
+</para>
+<para>
+Vertraut eine Samba-3-Domäne einer Windows-Domäne, geben die Benutzer der Windows-Domäne
+bei der Anmeldung an einem Linux-Rechner als Benutzernamen <emphasis>Name der
+  Windows-Domäne>+&lt;Benutzername&gt;</emphasis> ein.
+</para>
+<para>
+Während der Einrichtung und Nutzung von Vertrauensstellungen müssen
+sich die Domänencontroller der beiden Domänen über das Netzwerk
+erreichen und per Broadcast oder WINS gegenseitig identifizieren
+können.
+</para>
+
+<section id="windows:Windows-Domaene_vertraut_Samba-3-Domaene"><title>Windows-Domäne vertraut Samba-3-Domäne</title>
+<para>
+In der Rechnerverwaltung der &ucsUMC; muss ein <emphasis>Domain Trust Account</emphasis> angelegt
+werden, dessen Name dem NetBIOS-Namen der Windows-Domäne entspricht,
+und ein Passwort für das Konto vergeben werden. Die möglicherweise in der
+Windows-Domäne geltenden Anforderungen an sichere Passwörter sind dabei
+zu beachten.
+</para>
+<para>
+Auf dem Windows-PDC muss eine Vertrauensstellung angelegt werden.
+</para>
+<!-- Die dafür nötigen Schritte unterscheiden sich je nach -->
+<!-- Windows-Version und sind im WIKIREF-24031 dokumentiert. -->
+<para>
+Die Vertrauensstellung der Windows-Domäne zur Samba-Domäne
+kann durch Löschung der Vertrauensstellung auf dem Windows-PDC und des Domain
+Trust Accounts in der &ucsUMC; wieder aufgehoben werden.
+</para>
+</section>
+
+<section id="windows:Samba-3-Domaene_vertraut_Windows-Domaene"><title>Samba-3-Domäne vertraut Windows-Domäne</title>
+<para>
+Mit den folgenden Schritten wird die Vertrauensstellung auf einem
+&ucsSlave; als Benutzer <emphasis>root</emphasis> eingerichtet:
+</para>
+<para>
+Vertrauensstellungen können nur auf Domänencontrollern eingerichtet werden.
+</para>
+<para>
+Das Paket <package>winbind</package> muss installiert werden. Winbind ordnet
+Windows-Benutzer- und Gruppennamen UNIX-IDs zu.
+</para>
+<para>
+Auf dem Windows-PDC muss nun eine Vertrauensstellung angelegt werden.
+</para>
+<!-- Die dafür nötigen Schritte unterscheiden sich je nach -->
+<!-- Windows-Version und sind im WIKIREF-24031 dokumentiert. -->
+<para>
+Wird Univention Firewall verwendet, müssen Antworten auf
+NetBIOS-Broadcasts zugelassen werden:
+</para>
+<programlisting>
+echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
+    &gt;&gt; /etc/security/packetfilter.d/50_local.sh
+/etc/init.d/univention-firewall restart
+</programlisting>
+<para>
+Für weitere notwendige Anpassungen sollte aktuell UCS Bug 25254 beachtet werden.
+</para>
+<para>
+Nun wird die Vertrauensstellung initiiert und Winbind neu gestartet:
+Dies muss auf allen Samba-Anmeldeservern ausgeführt werden.
+</para>
+<programlisting>
+net rpc trustdom establish &lt;Windowsdomain&gt;
+/etc/init.d/winbind restart
+</programlisting>
+<para>
+Mit folgendem Befehl kann geprüft werden, ob die Vertrauensstellung
+korrekt hinzugefügt wurde:
+</para>
+<programlisting>
+net rpc trustdom list
+</programlisting>
+</section>
+</section>
+
+<section id="univention_ad_takeover_generell"><title>Univention AD Takeover</title>
+<para>
+Detaillierte Informationen zu Univention AD Takeover finden sich im
+Univention Wiki <xref linkend="wiki-ad-takeover"/>.
+</para>
+</section>
+
+</chapter>

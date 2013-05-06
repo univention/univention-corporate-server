@@ -1,0 +1,312 @@
+<chapter id="groups">
+	<title>Group management</title>
+
+		<para>
+			Permissions in UCS are predominantly differentiated between on the
+			basis of <emphasis>groups</emphasis>. Groups are stored in the LDAP and are thus
+			identical on all systems. Groups can contain not only user accounts,
+			but can also optionally accept computer accounts.
+		</para>
+		<para>
+			In addition, there are also local user groups on each system, which
+			are predominantly used for hardware access. These are not managed
+			through the &ucsUMS;, but saved in the <filename>/etc/group</filename> file.
+		</para>
+		<para>
+			The assignment of users to groups is performed in two ways:
+			<itemizedlist>
+				<listitem>
+					<simpara>
+					A selection of groups can be assigned to a user in the user
+					management (see <xref linkend="users::management"/>)
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					A selection of users can be assigned to a group in the group
+					management (see <xref linkend="groups::management"/>)
+					</simpara>
+				</listitem>
+			</itemizedlist>
+		</para>
+
+	<section id="groups::management">
+		<title>Managing groups in the Univention Management Console</title>
+		<para>
+			Groups are managed in the module <emphasis>Groups</emphasis> of the &ucsUMC;.
+		</para>
+		<figure id="create-group">
+			<title>Creating a group in UMC</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/create-group_EN.png"/>
+		</figure>
+		<para>
+			General information on the operation of the domain management modules
+			of the &ucsUMC; and on the adding, editing, searching for and
+			deleting of objects can be found in <xref linkend="central:user-interface"/>.
+		</para>
+		<table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+				<colspec colnum="1" colname="attribute" colwidth="1*"/>
+				<colspec colnum="2" colname="description" colwidth="2*"/>
+				<thead>
+					<row>
+						<entry>Attribute</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Name (*)</entry>
+						<entry>
+                            <para>
+							  The name of the group has to begin and end with a letter or a
+							  numeral. The rest of the characters which form the group name may
+							  include letters, numerals, spaces, hyphens, or dots.
+							</para>
+                            <para>
+							  In the default setting, it is not possible to create a group with the same name as an existing user.
+							  If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar> is set to <emphasis>false</emphasis>,
+							  this check is removed.
+							</para>
+						</entry>
+					</row>
+					<row>
+						<entry>Description</entry>
+						<entry>
+							A description of the group can be entered here.
+						</entry>
+					</row>
+					<row>
+						<entry>Users</entry>
+						<entry>
+							This tab can be used for accepting users as members of the group.
+						</entry>
+					</row>
+					<row>
+						<entry>Membership of other Groups</entry>
+						<entry>
+							On this tab, other groups can be added as members of the current group
+							(groups in groups).
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+
+		<table>
+			<title>'Advanced settings' tab</title>
+			<tgroup cols="2">
+				<colspec colnum="1" colname="attribute" colwidth="1*"/>
+				<colspec colnum="2" colname="description" colwidth="2*"/>
+				<thead>
+					<row>
+						<entry>Attribute</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Mail</entry>
+						<entry>
+							These options define a mail group and are documented in the
+							<xref linkend="mail::management::mailgroups"/>.
+						</entry>
+					</row>
+					<row>
+						<entry>Host members</entry>
+						<entry>
+							This field can be used for accepting computers as members of the
+							group.
+						</entry>
+					</row>
+					<row>
+						<entry>Nested groups</entry>
+						<entry>
+							The current group can be added as a member to other groups here (groups in groups).
+						</entry>
+					</row>
+					<row>
+						<entry>Group ID</entry>
+						<entry>
+							<para>
+								If a group is to be assigned a certain group ID, the ID in question
+								can be entered in this field. Otherwise, &ucsUMC;
+								will automatically assign the next available group ID when
+								adding the group. The group ID cannot be subsequently changed. When
+								editing the group, the group ID will be represented in grey.
+							</para>
+							<para>
+								The group ID may consist of integers between 1000 and 59999 and
+								between 65536 and 100000.
+							</para>
+						</entry>
+					</row>
+					<row>
+						<entry>Windows &ar; Relative ID</entry>
+						<entry>
+							<para>
+								The relative ID (RID) is the local part of the Security ID (SID) and
+								is used in Windows and Samba domains. If a group is to be assigned a
+								certain RID, the ID in question can be entered in this
+								field. Otherwise, &ucsUMC; will automatically
+								assign the next available group ID when adding the group.
+							</para>
+							<para>
+								The RID cannot be subsequently changed. When editing the group, the group ID
+								will be represented in grey.
+							</para>
+							<para>
+								The RIDs below 1000 are reserved for standard groups and other special objects.
+							</para>
+							<para>
+								When Samba 4 is used, the RID is generated by Samba and cannot be specified.
+							</para>
+						</entry>
+					</row>
+					<row>
+						<entry>Windows &ar; Samba group type</entry>
+						<entry>
+							Three types of Windows groups can be distinguished:
+							<itemizedlist>
+								<listitem>
+									<simpara>
+									<emphasis>Domain Groups</emphasis> are known across the domain. This is the
+									default group time.
+									</simpara>
+								</listitem>
+								<listitem>
+									<simpara>
+									<emphasis>Local groups</emphasis> are relevant on Windows servers
+									exclusively. If a local group is created on a Windows server, this
+									group is known solely to the server; it is not available across the
+									domain. UCS, in contrast, does not differentiate between local and
+									global groups. After taking over an NT domain, local groups in UCS
+									can be handled in the same way as global groups.
+									</simpara>
+								</listitem>
+								<listitem>
+									<simpara>
+									<emphasis>Well-Known Group:</emphasis>
+									This type contains groups pre-configured by Samba servers or by
+									Windows servers, which can be available across the domain or locally
+									restricted, e.g. <emphasis>Adminusers, Printer Admins, etc.</emphasis>.
+									</simpara>
+								</listitem>
+							</itemizedlist>
+						</entry>
+					</row>
+					<row>
+						<entry>Windows &ar; Samba privileges</entry>
+						<entry>
+							This input mask can be used to assign Windows system rights to a
+							group, e.g., the right to join a Windows client in the domain. This
+							function is documented in <xref linkend="users::management"/>.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+		<table>
+			<title>'Options' tab</title>
+			<tgroup cols="2">
+				<colspec colnum="1" colname="attribute" colwidth="1*"/>
+				<colspec colnum="2" colname="description" colwidth="2*"/>
+				<thead>
+					<row><!-- FIXME -->
+						<entry namest="attribute" nameend="description">
+				This tab is only available when adding groups, not when editing
+				groups. Certain LDAP object classes for the group can be de-selected
+				here. The entry fields for the attributes of these classes can then no
+				longer be filled in.
+						</entry>
+					</row>
+					<row>
+						<entry>Attribute</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Samba group</entry>
+						<entry>
+							This checkbox indicates whether the group contains the object class
+							<emphasis>sambaGroupMapping</emphasis>.
+						</entry>
+					</row>
+					<row>
+						<entry>Posix group</entry>
+						<entry>
+							This checkbox indicates whether the group contains the object class
+							<emphasis>posixGroup</emphasis>.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</section>
+
+	<section id="groups::nested">
+		<title>Nested groups</title>
+		<para>
+			UCS supports group nesting (also known as "groups in groups"). This
+			simplifies the management of the groups. For example, if two locations
+			are managed in one domain, two groups can be formed <emphasis>IT staff location A</emphasis>
+			and <emphasis>IT staff location B</emphasis>), to which the user
+			accounts of the location's IT staff can be assigned respectively.
+		</para>
+		<para>
+			To create a cross-location group, it is then sufficient to
+			define the groups <emphasis>IT staff location A</emphasis> and <emphasis>IT staff location B</emphasis>
+			as members.
+		</para>
+		<para>
+			Cyclic dependencies of nested groups are automatically detected and
+			refused. This check can be disabled with the
+			&ucsUCRV; <envar>directory/manager/web/modules/groups/group/checks/circular_dependency</envar>.
+			Cyclic memberships must also be avoided in direct group changes
+			without the &ucsUMS;.
+		</para>
+		<para>
+			The resolution of nested group memberships is performed
+			during the generation of the group cache (see <xref linkend="groups::cache"/>)
+			and is thus transparent for applications.
+		</para>
+	</section>
+
+	<section id="groups::cache">
+		<title>Local group cache</title>
+		<para>
+		  The user and computer information retrieved from the LDAP is cached by the Name Server
+		  Cache Daemon, see <xref linkend="computers:nscd"/>.
+		</para>
+
+		<para>
+		  Since UCS 3.1, the groups are no longer cached via the NSCD for performance and
+		  stability reasons; instead they are now cached by the NSS module
+		  <emphasis>libnss-extrausers</emphasis>. The group information is automatically exported to
+		  the <filename>/var/lib/extrausers/group</filename> file by the
+		  <filename>/usr/lib/univention-pam/ldap-group-to-file.py</filename> script and read
+		  from there by the NSS module.
+		</para>
+
+		<para>
+		  In the basic setting, the export is performed every 15 minutes by a cron job and is
+		  additionally started if the &ucsUDL; has been inactive for 15
+		  seconds. The interval for the cron update is configured in Cron syntax (see <xref
+		  linkend="cron:local"/>) by the &ucsUCRV;
+		  <envar>nss/group/cachefile/invalidate_interval</envar>. This listener module can be
+		  activated/deactivated via the &ucsUCRV;
+		  <envar>nss/group/invalidate_cache_on_changes</envar> (<emphasis>true/false</emphasis>).
+		</para>
+
+		<para>
+		  When the group cache file is being generated, the script verifies whether the group
+		  members are still present in the LDAP directory. If only the &ucsUMC; is used for user
+		  management, this additional check is not necessary and can be
+		  disabled by setting the &ucsUCRV; <envar>nss/group/cachefile/check_member</envar> to
+		  <emphasis>false</emphasis>.
+		</para>
+	</section>
+
+</chapter>

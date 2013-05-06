@@ -1,0 +1,1314 @@
+<chapter id="central:general">
+<title>Central domain management with UMC</title>
+<section id="central-management-umc:Introduction">
+<title>Introduction</title>
+	<para>
+		&ucsUMC; (UMC) is the central tool for web-based administration of
+		the UCS domain. UMC supports two basic module types:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<simpara>
+			<emphasis>Domain modules</emphasis> manage all the data saved in the LDAP
+			directory, e.g., users, groups or host accounts. All the modifications
+			made here apply to the whole domain. Domain modules are only displayed
+			on the &ucsMaster; and &ucsBackup;. All the domain modules can also
+			be controlled with a command line interface, the &ucsUDM;.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			<emphasis>System modules</emphasis> allow the configuration or management of
+			an individual system, e.g., the starting or stopping of services or
+			the configuration of &ucsUCR; variables.
+			</simpara>
+		</listitem>
+	</itemizedlist>
+	<para>
+		<xref linkend="central:user-interface"/> describes the user interface of
+		the &ucsUMC;. <xref linkend="central:extendedattrs"/> describes how the functions of the
+		domain management can be expanded with additional attributes.
+	</para>
+	<para>
+		The domain data can also be exported and evaluated with Univention
+		Directory reports, see <xref linkend="central:reports"/>.
+	</para>
+	<para>
+		The Univention Directory Manager - the command line interface of the
+		domain management is described in the <xref linkend="central:udm"/>.
+	</para>
+</section>
+<section id="central:user-interface">
+<title>Operating instructions for &ucsUMC;</title>
+	<section id="central-management-umc:Login">
+	<title>Login</title>
+		<para>
+		&ucsUMC; uses numerous Javascript and CSS functions to display the
+		web interface. Cookies need to be permitted in the browser.
+		The following browsers are supported.
+		</para>
+		<itemizedlist>
+			<listitem><simpara>Chrome as of version 14</simpara></listitem>
+			<listitem><simpara>Firefox as of version 3.6 (version 10 or above is recommended due to performance reasons)</simpara></listitem>
+			<listitem><simpara>Internet Explorer as of version 8 (version 9 or above is recommended due to performance reasons)</simpara></listitem>
+			<listitem><simpara>Safari (on the iPad 2, iOS version 6.1.2)</simpara></listitem>
+			<listitem><simpara>Android browser (version 4.1 or above)</simpara></listitem>
+		</itemizedlist>
+		<para>
+			Users with older browsers may experience display problems.
+		</para>
+		<para>
+			&ucsUMC; is available in German and English; the language to be used
+			can be selected during login.
+		</para>
+		<para>
+			The web interface of the &ucsUMC; can be opened via the
+			URL <uri>https://servername/umc/</uri>. Alternatively, access is also
+			possible via the server's IP address.
+		</para>
+		<para>
+			Under certain circumstances it may be necessary to access
+			the &ucsUMC; over an insecure connection (e.g., if no SSL
+			certificates have been created for the system yet). In this
+			case, <uri>http</uri> must be used instead of <uri>https</uri> in the
+			URL. In this case, passwords are sent over the network in plain text!
+		</para>
+		<figure id="umc-login">
+		<title>UMC login mask</title>
+			<graphic scalefit="1" width="20%" fileref="illustrations/umc_login_en.png"/>
+		</figure>
+		<para>
+			Once the URL has been opened, a login mask is displayed in which
+			the <guimenu>Username</guimenu> and <guimenu>Password</guimenu> need to be
+			entered:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				When logging in with the system's local <emphasis>root</emphasis> account (see
+				<xref linkend="computers:rootaccount"/>) only the system modules of
+				the &ucsUMC; are displayed.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				When logging in with the <emphasis>Administrator</emphasis> account on
+				the &ucsMaster; or &ucsBackup; all domain modules are displayed.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				When logging on with another user account, the domain modules
+				approved for the user are shown.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
+			Following ten minutes of inactivity, the browser session is
+			automatically closed and it is necessary to login again. This
+			interval can be adjusted in seconds with the &ucsUCRV;
+			<envar>umc/http/session/timeout</envar>.
+		</para>
+	</section>
+	<section id="central:license">
+	<title>Activation of UCS license / license overview</title>
+		<para>
+			The UCS license can be set up by clicking on the gear-wheel symbol in
+			the top right line of the screen. To do so, the <guimenu>License</guimenu>
+			menu entry must be selected. The current license status is shown
+			under <guimenu>Current license</guimenu>.
+		</para>
+		<figure id="umc-license">
+		<title>Displaying the UCS license</title>
+			<graphic scalefit="1" width="40%" fileref="illustrations/umc_ffpu_en.png"/>
+		</figure>
+		<para>
+			<guimenu>License upload</guimenu> can be used to select a license
+			file. Alternatively, the license key can be copied into
+			the <guimenu>License text</guimenu> input field and activated
+			with <guimenu>Upload</guimenu>.
+		</para>
+		<para>
+		  If the number of licensed user or computer objects is exceeded, it is not possible to create
+		  any additional objects in the &ucsUMC; or edit any existing ones unless an extended
+		  licence is imported or no longer required users or computers are deleted. A corresponding
+		  message is displayed on the UMC start page if the licence is exceeded.
+		</para>
+	</section>
+	<section id="central-management-umc:Operating_instructions_for_domain_modules">
+	<title>Operating instructions for domain modules</title>
+		<para>
+			All of the domain modules in &ucsUMC; are controlled identically from
+			a structural perspective. The following examples are presented using
+			the user management but apply equally for all modules.
+		</para>
+		<figure id="umc-modules">
+		<title>Module overview</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/umc_modules_en.png"/>
+		</figure>
+		<para>
+			The configuration properties/possibilities of the domain
+			modules are described in the following chapters:
+		</para>
+		<itemizedlist>
+			<listitem><simpara>Users - <xref linkend="users:general"/></simpara></listitem>
+			<listitem><simpara>Groups - <xref linkend="groups"/></simpara></listitem>
+			<listitem><simpara>Computers - <xref linkend="computers:general"/></simpara></listitem>
+			<listitem><simpara>Networks - <xref linkend="networks::introduction"/></simpara></listitem>
+			<listitem><simpara>DNS - <xref linkend="networks:dns"/></simpara></listitem>
+			<listitem><simpara>DHCP - <xref linkend="module:dhcp:dhcp"/></simpara></listitem>
+			<listitem><simpara>Shares - <xref linkend="shares::general"/></simpara></listitem>
+			<listitem><simpara>Printers - <xref linkend="print::general"/></simpara></listitem>
+			<listitem><simpara>E-mail - <xref linkend="mail::general"/></simpara></listitem>
+			<listitem><simpara>Nagios - <xref linkend="nagios::general"/></simpara></listitem>
+		</itemizedlist>
+		<para>
+			The use of policies (<xref linkend="central:policies"/>) and the LDAP
+			navigation (<xref linkend="central:navigation"/>) are described
+			separately.
+		</para>
+		<section id="central-management-umc:Searching_for_objects">
+		<title>Searching for objects</title>
+			<para>
+				The module overview lists all the objects managed by this
+				module. The <guimenu>Property</guimenu> selection field can be used to
+				select an attribute. The objects can then be filtered according to
+				this attribute. The search filter is entered in the next input
+				field. For example, in user management, the selection
+				of <emphasis>Username</emphasis> and the search maske <emphasis>m*</emphasis> can be used to
+				display only the user names beginning with <emphasis>m</emphasis>.
+			</para>
+			<figure id="umc-search">
+			<title>Searching for users</title>
+				<graphic scalefit="1" width="80%" fileref="illustrations/umc_user_en.png"/>
+			</figure>
+			<para>
+				Clicking on <guimenu>Advanced options</guimenu> can be used to select
+				another <guimenu>Search in</guimenu> selection field. This selection can be
+				used to choose whether the complete LDAP directory or only selected
+				LDAP containers are searched in.
+				Further information on the structure of the LDAP directory service can
+				be found in <xref linkend="central:cn-and-ous"/>.
+			</para>
+		</section>
+		<section id="central-management-umc:Creating_objects">
+		<title>Creating objects</title>
+			<para>
+				The lowest line of the screen includes an action line for creating a
+				new object. The menu entries have the same names as the module name,
+				e.g., <guimenu>Add user</guimenu>. If a user template is defined, it can
+				be selected (see <xref linkend="users:templates"/>).
+			</para>
+		</section>
+		<section id="central:user-interface:edit">
+		<title>Editing objects</title>
+			<para>
+				Clicking on the stylised pen behind an LDAP object in the search
+				overview allows to edit the object. The individual attributes are
+				described in the individual documentation chapters. Clicking
+				on <guimenu>Save changes</guimenu> accepts all the changes made in
+				the LDAP directory; <guimenu>Back to search</guimenu> cancels the
+				editing.
+			</para>
+			<para>
+				In front of every item in the result list is a selection field with which the
+				individual objects can be selected. The selection status is also
+				displayed in the lowest screen line, e.g., <guimenu>2 users	of 102 selected</guimenu>
+				If more than one object is selected,
+				clicking on the stylised pen in the selection status bar activates the
+				multi edit mode. The same attributes are now shown as when
+				editing an individual object, but the changes are only accepted for
+				the objects where the <guimenu>Overwrite</guimenu> tick is activated.
+				Only objects of the same type can be edited.
+			</para>
+		</section>
+		<section id="central-management-umc:Deleting_objects">
+		<title>Deleting objects</title>
+			<para>
+				Clicking on the stylised minus sign behind an LDAP object in the
+				search overview allows to delete the object. The prompt must be
+				confirmed. Some objects use internal references - e.g., a DNS or
+				DHCP object - can be associated with computer objects. These can also be
+				deleted by selecting the <guimenu>Delete referring objects</guimenu>
+				option.
+			</para>
+			<para>
+				Similar to the selection of multiple objects when editing objects, it
+				is also possible to delete multiple objects at once.
+			</para>
+		</section>
+		<section id="central-management-umc:Moving_objects">
+		<title>Moving objects</title>
+			<para>
+				The <guimenu>more</guimenu> selection field behind an LDAP object in the
+				search overview can be used, after the selection
+				of <guimenu>Move to...</guimenu>, to select an LDAP position to
+				which the object should be moved.
+			</para>
+			<para>
+				Similar to the selection of multiple objects when editing objects, it
+				is also possible to move multiple objects at once.
+			</para>
+		</section>
+	</section>
+
+	<section id="central-management-umc:Favorites">
+	<title>Favorites</title>
+		<para>
+		  Commonly used UMC modules are shown in a submenu <guimenu>Favorites</guimenu>. If you move
+		  the mouse right over the icon of a module already marked as a favorite, a translucent red
+		  cross appears. If you click this, the module is removed from your favorites. To add a
+		  module to the favorites, the yellow star above the modules should be activated in the
+		  same way.
+		</para>
+	</section>
+
+	<section id="central-management-umc:feedback">
+	<title>Feedback on UMC and UCS</title>
+	<para>
+	  The <guimenu>Feedback</guimenu> option can be reached by clicking on the question mark symbol
+	  in the top menu bar. Here you can provide feedback on UCS and the &ucsUMC; via a web form.
+	</para>
+	</section>
+
+</section>
+
+<section id="central-management-umc:piwik">
+  <title>Collection of usage statistics</title>
+  <para>
+	Anonymous usage statistics on the use of the &ucsUMC; are collected when using the <emphasis>free for
+	personal use</emphasis> version of UCS (which is generally used for evaluating UCS). The modules
+	opened are logged in an instance of the web traffic analysis tool Piwik. This makes it
+	possible for Univention to tailor the development of the &ucsUMC; better to customer needs
+	and carry out usability improvements.
+  </para>
+
+  <para>
+	This logging is only performed when the <emphasis>free-for-personal-use license</emphasis> is used. The license
+	status can be verified by clicking on the cog symbol in the top righthand corner of the &ucsUMC;
+	and selecting <guimenu>License</guimenu>. If <guimenu>Free for personal use edition</guimenu>
+	is listed under <guimenu>LDAP base</guimenu>, this version is in use. When a regular UCS license is
+	used, no usage statistics are collected.
+  </para>
+
+  <para>
+	Independent of the license used, the statistics generation can be deactivated by setting the
+	&ucsUCRV; <envar>umc/web/piwik</envar> to <emphasis>false</emphasis>.
+  </para>
+</section>
+
+<section id="central:navigation">
+<title>LDAP directory browser</title>
+	<para>
+		The <guimenu>LDAP directory</guimenu> domain module can be used to navigate
+		through the LDAP directory. When doing so, new objects can be created,
+		modified or deleted in the LDAP directory.
+	</para>
+	<figure id="umc-navigation">
+	<title>Navigating the LDAP directory</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/umc_navigation_en.png"/>
+	</figure>
+	<para>
+		The left half of the screen shows the LDAP directory as a tree
+		structure whose elements can be shown and hidden using the plus and
+		minus buttons.
+	</para>
+	<para>
+		Clicking on an element of the tree structure switches to this LDAP
+		position and displays the objects at this LDAP position in the
+		overview in the left side of the screen. The selection
+		list <guimenu>LDAP object type</guimenu> can be used to limit the display
+		to selected attributes.
+	</para>
+	<para>
+		The <guimenu>Add LDAP object</guimenu> option can be used to add new
+		objects here too. Similar to the control elements described in
+		<xref linkend="central:user-interface"/>, existing objects can also be edited,
+		deleted or moved here.
+	</para>
+	<figure id="umc-container-edit">
+	<title>Editing LDAP container settings</title>
+		<graphic scalefit="1" width="20%" fileref="illustrations/umc_navigation_edit_en.png"/>
+	</figure>
+	<para>
+		Right-clicking on an element in the tree structure allows edititing
+		the properties of the container or the LDAP base with <guimenu>Edit</guimenu>.
+	</para>
+</section>
+<section id="central:policies">
+<title>Policies</title>
+	<para>
+		<emphasis>Policies</emphasis> describe administrative settings which can be
+		practically be used on more than one object. They facilitate the
+		administration as they can be connected to containers and then apply
+		to all the objects in the container in question and the objects in
+		sub containers. The values are applied according to the inheritance principle. For
+		every object, the applied value is always that which lies closest to
+		the object in question.
+	</para>
+	<para>
+		If, for example, the same password expiry interval is to be defined for all
+		users of a location, then a special container can be created for these
+		users. After moving the user objects into the container, a password
+		policy can be linked to the container. This policy is valid for all
+		user objects within the container.
+	</para>
+	<para>
+		An exception to this rule is a value which was defined in a policy in
+		the form of <guimenu>fixed attributes</guimenu>. Such values cannot
+		be overwritten by subordinate policies.
+	</para>
+	<para>
+		The command line program <command>univention-policy-result</command> can be
+		used to show in detail which policy applies to which directory service
+		object.
+	</para>
+	<para>
+		Every policy applies to a certain type of UMC domain object, e.g., for
+		users or DHCP subnets.
+	</para>
+	<section id="central-management-umc:Creating_a_policy">
+	<title>Creating a policy</title>
+		<para>
+			Policies can be managed via the <guimenu>Policies</guimenu> module of
+			the &ucsUMC;. The operation is the same as for the functions
+			described in <xref linkend="central:user-interface"/>.
+		</para>
+		<para>
+			The attributes and properties of the policies are described in the
+			corresponding chapters, e.g. the DHCP policies in the network chapter.
+		</para>
+
+		<para>
+		  The names of policies must not contain any umlauts.
+		</para>
+
+		<para>
+			<guimenu>Referencing objects</guimenu> provides a list of all
+			containers or LDAP objects for which this policy currently applies.
+		</para>
+		<para>
+		  The expanded settings host some general policy options which are
+		  generally only required in special cases.
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+			  <guimenu>Required object classes</guimenu>: Here you can specify LDAP object classes
+			  that an object must possess for the policy to apply to this object. If, for example, a
+			  user policy is only relevant for Windows environments, the
+			  <emphasis>sambaSamAccount</emphasis> object class could be demanded here.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+			  <guimenu>Excluded object classes</guimenu>: Similar to the configuration of the
+			  required object classes, you can also list object classes here which should be
+			  excluded.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+			  <guimenu>Fixed attributes</guimenu>: Attributes can be selected here, the values of
+			  which may not be changed by subordinate policies.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+			  <guimenu>Empty attributes</guimenu>: Attributes can be selected here, which are to be
+			  set to empty in the policy, meaning they will be stored without containing a
+			  value. This can be useful for removing values inherited by an object from a
+			  superordinate policy. In subordinate policies, new values can be assigned to the
+			  attributes in question.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+	</section>
+	<section id="central:policies:assign">
+	<title>Applying policies</title>
+		<para>
+			Policies can be assigned in two ways:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				A policy can be assigned to the LDAP base or a container/OU. To
+				do so, the <guimenu>Policies</guimenu> tab in the properties of the
+				LDAP object must be opened in the navigation (see
+				<xref linkend="central:navigation"/>).
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				A <guimenu>Policies</guimenu> tab is shown in the individual
+				domain modules for which there are policies, e.g., for users. A
+				different policy can be specified here for this user.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
+			The <guimenu>Policies</guimenu> configuration dialogue is functionally
+			identical; however, all policy types are offered when assigning
+			policies to a LDAP container, whilst only the policy types applicable
+			for the object type in question are offered when assigning policies to
+			an LDAP object.
+		</para>
+		<para>
+			A policy can be assigned to the LDAP object or container under
+			<guimenu>Policies</guimenu>.
+			The values resulting from this policy are displayed directly.
+			The <guimenu>Inherited</guimenu> setting means that the settings are adopted
+			from a superordinate policy again - when one exists.
+		</para>
+		<para>
+			If an object is linked to a policy, or inherits policy settings which
+			cannot be applied to the object, the settings remain without effect
+			for the object. This makes it possible, for example, to assign a policy
+			to the base entry of the LDAP directory, which is then valid for all the
+			objects of the domain which can apply this policy. Objects which
+			cannot apply to this policy are not affected.
+		</para>
+	</section>
+	<section id="central-management-umc:Editing_a_policy"><title>Editing a policy</title>
+		<para>
+			Policies can be edited and deleted in the UMC domain module
+			<guimenu>Policies</guimenu>. The interface is described in
+			<xref linkend="central:user-interface"/>.
+		</para>
+		<caution>
+			<para>
+			When editing a policy, the settings for all the objects linked to this
+			policy are changed! The values from the changed policy apply to
+			objects already registered in the system and linked to the policy, in
+			the same way as to objects added in the future.
+			</para>
+		</caution>
+		<para>
+			The policy tab of the individual LDAP objects also includes the
+			<guimenu>edit</guimenu> option, which can be used to edit the policy
+			currently applicable for this object.
+		</para>
+	</section>
+</section>
+<section id="central:extendedattrs">
+<title>Expansion of the attributes managed in UMC with extended attributes</title>
+	<para>
+		The domain management of the &ucsUMC; allows the comprehensive
+		management of the data in a domain. <emphasis>Extended attributes</emphasis>
+		offer the possibility of integrating new attributes in the domain
+		management which are not covered by the UCS standard scope. Extended
+		attributes are also employed by third party vendors for the integration
+		of solutions in UCS.
+	</para>
+	<para>
+		Extended attributes are managed in the <guimenu>LDAP directory</guimenu>
+		module of the &ucsUMC;. There one needs to switch to
+		the <emphasis>univention</emphasis> container and then to the <emphasis>custom attributes</emphasis>
+		subcontainer. Existing attributes can be edited here or a
+		new <guimenu>Settings: extended attribute</guimenu> object created
+		here with <guimenu>Add LDAP object</guimenu>.
+	</para>
+	<figure id="umc-extended-attr">
+	<title>Extended attribute for managing a car license</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/umc_extended_attribute_en.png"/>
+	</figure>
+	<para>
+		Extended attributes can be internationalized. In this case, the name
+		and description should be compiled in English as this is the standard
+		language for &ucsUMC;.
+	</para>
+	<table>
+		<title>'General' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Name</entry>
+					<entry>
+						The name of the LDAP object which will be used to store the extended
+						attribute. Within a container, the name has to be unique.
+					</entry>
+				</row>
+				<row>
+					<entry>Default short description</entry>
+					<entry>
+						Used as title of the input field in the &ucsUMC; or as the attribute
+						description in the command line interface.
+					</entry>
+				</row>
+				<row>
+					<entry>Default short description</entry>
+					<entry>
+						This long description is shown as a tool tip in the input fields in
+						&ucsUMC;.
+					</entry>
+				</row>
+				<row>
+					<entry>Translated short description</entry>
+					<entry>
+						Translated short descriptions can be saved in several languages so
+						that the title of extended attributes is also output with other
+						language settings in the respective national language. This can be
+						done by assigning the respective short description to a language code
+						(e.g., <emphasis>de_DE</emphasis> or <emphasis>fr_FR</emphasis>) in this input field.
+					</entry>
+				</row>
+				<row>
+					<entry>Translated short description</entry>
+					<entry>
+						Additional information displayed in the tool tip for an extended
+						attribute can also be saved for several languages. This can be done by
+						assigning the respective long description to a language code (e.g.,
+						<emphasis>de_DE</emphasis> or <emphasis>fr_FR</emphasis>) in this input field.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>UDM Web</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Tab name</entry>
+					<entry>
+						<para>
+							The name of the tab in the &ucsUMC; on which the extended attribute
+							should be displayed. New tabs can also be added here.
+						</para>
+						<para>
+							If no tab name is entered, <emphasis>user-defined</emphasis> will be used.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Position number on tab</entry>
+					<entry>
+						<para>
+							If several extended attributes are to be managed on one tab, the order
+							of the individual attributes on the tab can be influenced here. They
+							are added to the end of the tab in question in ascending order of
+							their numbers.
+						</para>
+						<para>
+							If extended attributes have the same number, they are listed in a
+							random order. If the difference between two consecutive numbers is
+							larger than 1 and the first attribute is shown in the left column, the
+							second will be displayed in the next line.
+						</para>
+						<para>
+							If the <emphasis>Overwrite existing tab</emphasis> option is activated, the
+							numbers will be used to overwrite an existing input field. The
+							numbering of the input fields starts in the top left of the tab with
+							<emphasis>1</emphasis>.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Translated tab name</entry>
+					<entry>
+						Translated tab names can be assigned to the corresponding language
+						code (z.B. <emphasis>de_DE</emphasis> oder <emphasis>fr_FR</emphasis>) in this input field.
+					</entry>
+				</row>
+				<row>
+					<entry>Group name</entry>
+					<entry>
+						<para>
+							Groups allow the structuring of a tab. A group is separated by a grey
+							horizontal bar and can be shown and hidden.
+						</para>
+						<para>
+							If no group name is specified for an extended attribute, the attribute
+							is placed above the first group entry.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Position number of group</entry>
+					<entry>
+						If multiple groups are managed in one tab, this position number can be
+						used to specify the order of the groups. They are shown in the
+						ascending order of their position numbers.
+					</entry>
+				</row>
+				<row>
+					<entry>Translated group name</entry>
+					<entry>
+						To translate the name of the group, translated group names for the
+						corresponding language code can be saved in this input field
+						(e.g., <emphasis>de_DE</emphasis> or <emphasis>fr_FR</emphasis>).
+					</entry>
+				</row>
+				<row>
+					<entry>Overwrite existing widget</entry>
+					<entry>
+						In some cases it is practical to overwrite predefined input fields
+						with extended attributes. If this option is activated, the input field
+						located at the specified number will be overwritten with this extended
+						attribute. It must be noted that this option can cause problems with
+						compulsory fields.
+					</entry>
+				</row>
+				<row>
+					<entry>Span both columns</entry>
+					<entry>
+						As standard all input fields are grouped into two columns. This option
+						can be used for overlong input fields, which need the full width of the
+						tab.
+					</entry>
+				</row>
+				<row>
+					<entry>Overwrite existing tab</entry>
+					<entry>
+						If this option is activated, the tab in question is overwritten before
+						the extended attributes are positioned on it. This option can be used
+						to hide existing input fields on a predefined tab. It must be noted
+						that this option can cause problems with compulsory fields.
+					</entry>
+				</row>
+				<row>
+					<entry>Advanced tab</entry>
+					<entry>
+						Settings possibilities which are not often used can be placed in the
+						extended settings tab.
+					</entry>
+				</row>
+				<row>
+					<entry>Do not show in UDM Web</entry>
+					<entry>
+						This option can be activated if an attribute should only be
+						administrated internally instead of by the administrator, e.g.,
+						indirectly by scripts. The attribute can then only be set via the
+						command line interface &ucsUDM; and is not displayed in the
+						&ucsUMC;.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>UDM General</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>UDM CLI name of extended attribute</entry>
+					<entry>
+						The specified attribute name should be used when employing the
+						command line interface. When the extended attribute is
+						saved, the <emphasis>Name</emphasis> of the <emphasis>General</emphasis> tab is
+						automatically adopted and can be subsequently modified.
+					</entry>
+				</row>
+				<row>
+					<entry>Hook</entry>
+					<entry>
+						The functions of the hook class specified here are used during saving,
+						modifying and deleting the objects with extended attributes. Additional
+						information can be found at <ulink url="http://sdb.univention.de/1080"/>
+						(currently only available in German).
+					</entry>
+				</row>
+				<row>
+					<entry>Options</entry>
+					<entry>
+						Some extended attributes can only be used practically if certain
+						object classes are activated on the <emphasis>(Options)</emphasis> tab. One or more
+						options can optionally be saved in this input field so that this
+						extended attribute is displayed or editable.
+					</entry>
+				</row>
+				<row>
+					<entry>Needed module</entry>
+					<entry>
+						The &ucsUDM; module which is to be expanded with the extended
+						attribute. An extended attribute can apply for multiple modules.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>Data type</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Syntax</entry>
+					<entry>
+						<para>
+							When values are entered, the &ucsUDM; performs a syntax check.
+						</para>
+						<para>
+							Apart from standard syntax definitions (<emphasis>string</emphasis>) and (<emphasis>integer</emphasis>), there are three
+							possibilities for expressing a binary condition. The syntax
+							<emphasis>TrueFalse</emphasis> is represented at LDAP level using the strings
+							<emphasis>true</emphasis> and <emphasis>false</emphasis>, the syntax
+							<emphasis>TrueFalseUpper</emphasis>corresponds to the OpenLDAP boolean values
+							<emphasis>TRUE</emphasis> and <emphasis>FALSE</emphasis> and the syntax
+							<emphasis>boolean</emphasis> does not save any value or the string
+							<emphasis>1</emphasis>.
+						</para>
+						<para>
+							The syntax <emphasis>string</emphasis> is the default.
+							<!-- Custom syntax definitions which can also be used at -->
+							<!-- this point are described in the Univention Wiki under WIKIREF-24236. -->
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Default value</entry>
+					<entry>
+						If a preset value is defined here, new objects to be created will be
+						initialised with this value. The value can still be edited manually
+						during creation. Existing objects remain unchanged.
+					</entry>
+				</row>
+				<row>
+					<entry>Multi value</entry>
+					<entry>
+						This option establishes whether a single value or multiple values can
+						be entered in the input mask. The scheme definition of the LDAP
+						attribute specifies whether one or several instances of the attribute
+						may be used in one LDAP object.
+					</entry>
+				</row>
+				<row>
+					<entry>May change</entry>
+					<entry>
+						This option establishes whether the object saved in the extended
+						attribute can only be modified when saving the object, or whether it
+						can also be modified subsequently.
+					</entry>
+				</row>
+				<row>
+					<entry>Value required</entry>
+					<entry>
+						If this option is active, a valid value must be entered for the
+						extended attribute in order to create or save the object in question.
+					</entry>
+				</row>
+				<row>
+					<entry>Unsearchable</entry>
+					<entry>
+						<para>
+							If it should not be possible to search for an extended attribute in
+							the search window of a wizard, this option can be activated to remove
+							the extended attribute from the list of possible search criteria.
+						</para>
+						<para>
+							This is only needed in exceptional cases.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Value not editable</entry>
+					<entry>
+						If this option is activated, the attribute cannot be modified
+						manually, neither at creation time, nor later. This is useful for
+						internal state information configured through a hook function or
+						internally inside a module.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>LDAP</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Object class</entry>
+					<entry>
+						<para>
+							Object class to which the attribute entered under <emphasis>LDAP mapping</emphasis>
+							belongs.
+						</para>
+						<para>
+							Predefined LDAP schema extensions for extended attributes are provided
+							with the object class <emphasis>univentionFreeAttributes</emphasis>.
+							Further information can be found in <xref linkend="domain:ldap:extensions"/>.
+						</para>
+						<para>
+							Each LDAP object which should be extended with an attribute is
+							automatically extended with the LDAP object class specified here if a
+							value for the extended attribute has been entered by the user.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>LDAP mapping</entry>
+					<entry>
+						The name of the LDAP attribute where the values of the LDAP object are
+						to be stored. The LDAP attribute must be included in the specified
+						object class.
+					</entry>
+				</row>
+				<row>
+					<entry>Delete object class</entry>
+					<entry>
+						If the value of a extended attribute in &ucsUMC; is deleted, the
+						attribute is removed from the LDAP object. If no further attributes of
+						the registered object class are used in this LDAP object, the
+						<emphasis>Objektklasse</emphasis> will also be removed from the LDAP object if
+						this option is activated.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+</section>
+<section id="central:cn-and-ous">
+<title>Structuring of the domain with user-defined LDAP structures</title>
+	<para>
+		Containers and organisational units (OU) are used to structure the
+		data in the LDAP directory. There is no technical difference between
+		the two types, just in their application:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<simpara>
+			Organisational units usually represent real, existing units such
+			as a department in a company or an institution
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+			Containers are usually used for fictitious units such as all the
+			computers within a company
+			</simpara>
+		</listitem>
+	</itemizedlist>
+	<para>
+		Containers and organisational units are managed in
+		the <guimenu>LDAP directory</guimenu> module of the &ucsUMC; and are created
+		with <guimenu>Add LDAP object</guimenu> and the object
+		types <guimenu>Container: Container</guimenu> and
+		<guimenu>Container:	Organisational unit</guimenu>.
+	</para>
+	<para>
+		Containers and OUs can in principle be added at any position in the
+		LDAP; however, OUs cannot be created below containers.
+	</para>
+	<table>
+		<title>'General' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Name</entry>
+					<entry>
+						A random name for the container / organisational unit.
+					</entry>
+				</row>
+				<row>
+					<entry>Description</entry>
+					<entry>
+						A random description for the container / organisational unit.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'Advanced settings' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Add to standard &lt;object type&gt; containers</entry>
+					<entry>
+						If this option is activated, the container or organisational unit will
+						be regarded as a standard container for a certain object type. If the
+						current container is declared the standard user container, for
+						example, this container will also be displayed in users search and
+						create masks.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'Policies' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribut</entry>
+					<entry>Beschreibung</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry></entry>
+					<entry>
+						The tab is described in <xref linkend="central:policies:assign"/>.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+</section>
+<section id="central:udm">
+<title>Command line interface of domain management (Univention Directory Manager)</title>
+	<para>
+		The &ucsUDM; is the command line interface of the domain management
+		function of &ucsUMC;. It expands the web-based interface of the
+		&ucsUMC; and functions as a powerful tool for the automation of
+		administrative procedures in scripts and for the integration in other
+		programs.
+	</para>
+	<para>
+		&ucsUDM; can be started with the
+		<command>univention-directory-manager</command> command (short form
+		<command>udm</command>) as the <emphasis>root</emphasis> user on the &ucsMaster;.
+	</para>
+	<para>
+		&ucsUMC; and &ucsUDM; use the same domain management modules, i.e.,
+		all functions of the web interface are also available in the command
+		line interface.
+	</para>
+	<para>
+		A complete list of available modules is displayed if the
+		<command>udm</command> is run with the <command>modules</command> parameter:
+	</para>
+	<programlisting>
+# univention-directory-manager modules
+Available Modules are:
+  computers/managedclient
+  computers/computer
+  computers/domaincontroller_backup
+  computers/domaincontroller_master
+  computers/domaincontroller_slave
+ [...]
+	</programlisting>
+	<para>
+		There are up to five operations for every module:
+	</para>
+	<itemizedlist>
+		<listitem><simpara><emphasis>list</emphasis> lists all existing objects of this type</simpara></listitem>
+		<listitem><simpara><emphasis>create</emphasis> creates a new object</simpara></listitem>
+		<listitem><simpara><emphasis>modify</emphasis> for the editing of existing objects</simpara></listitem>
+		<listitem><simpara><emphasis>remove</emphasis> deletes an object</simpara></listitem>
+		<listitem><simpara><emphasis>move</emphasis> is used to move an object to another position in the LDAP directory</simpara></listitem>
+	</itemizedlist>
+	<para>
+		The possible options of a UDM module and the operations which can be
+		used on it can be output by specifying the operation name, e.g.,
+	</para>
+	<screen>
+univention-directory-manager users/user move
+[...]
+create options:
+  --binddn                         bind DN
+  --bindpwd                        bind password
+[...]
+modify options:
+  --binddn                         bind DN
+  --bindpwd                        bind password
+  --dn                             Edit object with DN
+[...]
+remove options:
+  --binddn                         bind DN
+  --bindpwd                        bind password
+  --dn                             Remove object with DN
+  --arg                            Remove object with ARG
+[...]
+list options:
+  --filter                         Lookup filter
+[...]
+move options:
+  --binddn                         bind DN
+  --bindpwd                        bind password
+[...]
+	</screen>
+	<para>
+		The following command outputs further information, the operations and
+		the options for every module. This also displays all attributes of the
+		module:
+	</para>
+	<programlisting>
+univention-directory-manager &lt;category/modulename&gt;
+	</programlisting>
+	<para>
+		With the <emphasis>create</emphasis> operation, the attributes marked with
+		<command>(*)</command> must be specified when creating a new object.
+	</para>
+	<para>
+		Some attributes can be assigned more than one value (e.g., mail
+		addresses to user objects). These multi-value fields are marked with
+		<command>[]</command> behind the attribute name. Some attributes can only be
+		set if certain options are set for the object. This is performed for
+		the individual attributes by entering the option name:
+	</para>
+	<screen>
+users/user variables:
+  General:
+    username (*)                             Username
+[...]
+  Contact:
+    e-mail (person,[])                       E-Mail Address
+	</screen>
+	<para>
+		Here, <command>username (*)</command> signifies that this attribute must
+		always be set when creating user objects. If the <command>person</command>
+		option is set for the user account (this is the standard case), one or
+		more e-mail addresses can be added to the contact information.
+	</para>
+	<para>
+		A range of standard parameters are defined for every module:
+	</para>
+	<itemizedlist>
+		<listitem>
+			<para>
+				The parameter <emphasis>--dn</emphasis> is used to specify the LDAP
+				position of the object during modifications or deletion. The
+				complete DN must be entered, e.g.,
+			</para>
+			<programlisting>
+univention-directory-manager users/user remove \
+    --dn="uid=ldapadmin,cn=users,dc=company,dc=example"
+			</programlisting>
+		</listitem>
+		<listitem>
+			<para>
+				The <emphasis>--position</emphasis> parameter is used to specify at
+				which LDAP position an object should be created. If no
+				<emphasis>--position</emphasis> is entered, the object is created below the
+				LDAP base! In the <emphasis>move</emphasis> operation, this parameter specifies
+				to which position an object should be moved, e.g:
+			</para>
+			<programlisting>
+univention-directory-manager computers/managedclient move \
+    --dn="cn=desk01,cn=management,cn=computers,dc=company,dc=com" \
+    --position="cn=finance,cn=computers,dc=company,dc=example"
+			</programlisting>
+		</listitem>
+		<listitem>
+			<para>
+				The <emphasis>--set</emphasis> parameter specifies that the given
+				value should be assigned to the following attribute. The parameter
+				must be used per attribute value pair, e.g:
+			</para>
+			<programlisting>
+univention-directory-manager users/user create \
+    --position="cn=users,dc=compaby,dc=example" \
+    --set username="jsmith" \
+    --set firstname="John" \
+    --set lastname="Smith" \
+    --set password="12345678"
+			</programlisting>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis>--option</emphasis> defines the LDAP object classes of an
+				object. If, for example, only <emphasis>posix</emphasis> and <emphasis>person</emphasis>
+				are provided as options for a user object, it is not possible to
+				specify a <emphasis>mailPrimaryAddress</emphasis> for this user as this
+				attribute is part of the <emphasis>mail</emphasis> option:
+			</para>
+			<programlisting>
+univention-directory-manager users/user modify \
+    --option="posix" --option="mail" --option="kerberos"
+			</programlisting>
+		</listitem>
+		<listitem>
+			<simpara>
+			<emphasis>--superordinate</emphasis> is used to specify dependent,
+			superordinate modules. A DHCP object, for example, requires a DHCP
+			service object under which it can be stored. This is transferred
+			with the <emphasis>--superordinate</emphasis> option.
+			</simpara>
+		</listitem>
+		<listitem>
+			<para>
+				The <emphasis>--policy-reference</emphasis> parameter allows the
+				assignment of policies to objects (and similarly their deletion with
+				<emphasis>--policy-dereference</emphasis>). If a policy is linked to an
+				object, the settings from the policy are used for the object, e.g.:
+			</para>
+			<programlisting>
+univention-directory-manager &lt;category/modulename&gt; &lt;Operation&gt; \
+    --policy-reference="cn=sales,cn=pwhistory,\
+cn=users,cn=policies,dc=company,dc=example"
+			</programlisting>
+		</listitem>
+		<listitem>
+			<simpara>
+			The <emphasis>--ignore_exists</emphasis> parameters skips existing
+			objects. If it is not possible to create an object, as it already
+			exists, the error code 0 (no error) is still returned.
+			</simpara>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis>--append</emphasis> and <emphasis>--remove</emphasis> are used to
+				add/remove a value from a multi-value field, e.g.:
+			</para>
+			<programlisting>
+univention-directory-manager groups/group modify \
+    --dn="cn=staff,cn=groups,dc=company,dc=example" \
+    --append users="uid=smith,cn=users,dc=company,dc=example" \
+    --remove users="uid=miller,cn=users,dc=company,dc=example"
+			</programlisting>
+			<!-- Example commands for Univention Directory Manager can be found in the -->
+			<!-- Univention Wiki under WIKIREF-24587. -->
+		</listitem>
+	</itemizedlist>
+</section>
+<section id="central:reports">
+<title>Evaluation of data from the LDAP directory with Univention Directory Reports</title>
+	<para>
+		Univention Directory Reports offers the possibility of creating
+		predefined reports for any objects to be managed in the directory
+		service.
+	</para>
+	<para>
+		The structure of the reports is defined using templates. The
+		specification language developed for this purpose allows the use of
+		wildcards, which can be replaced with values from the LDAP
+		directory. Any number of report templates can be created. This allows
+		users to select very detailed reports or just create simple address
+		lists, for example.
+	</para>
+	<para>
+		The creation of the reports is directly integrated in the web
+		interface of the &ucsUMC;. Alternatively, the command line program
+		<command>univention-directory-reports</command> can be used.
+	</para>
+	<para>
+		Six report templates are already provided with the delivered
+		Univention Directory Reports, which can be used for users, groups and
+		computers. Three templates create PDF documents and three CSV files,
+		which can be used as an import source for other programs. Further
+		templates can be created and registered.
+	</para>
+	<para>
+		Reports can be created via a command line program or via the &ucsUMC;
+		web interface.
+	</para>
+	<section id="central-management-umc:Creating_reports_in_the_Univention_Management_Console">
+	<title>Creating reports in the Univention Management Console</title>
+		<para>
+			To create a report, you need to switch to the domain module for users,
+			groups or hosts. The report is created for all the objects shown in
+			the overview. The selection can be limited based on a
+			<guimenu>Property</guimenu> using filters. Clicking on
+			<guimenu>Create report</guimenu> allows to choose between the
+			<guimenu>Standard Report</guimenu> in PDF format and the
+			<guimenu>Standard CSV Report</guimenu> in CSV format.
+		</para>
+		<figure id="umc-report">
+		<title>Creating a report</title>
+			<graphic scalefit="1" width="20%" fileref="illustrations/umc_report_en2.png"/>
+		</figure>
+		<para>
+		The reports created via &ucsUMC; are stored for 12 hours and then
+		deleted by a cron job. The settings for when the cron job should run
+		and how long the reports should be stored for can be defined via two
+		&ucsUCR; variables:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				<envar>directory/reports/cleanup/cron</envar>
+				Defines when the cron job should be run.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				<envar>directory/reports/cleanup/age</envar>
+				Defines the maximum age of a report document in seconds before it is deleted.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+	</section>
+	<section id="central-management-umc:Creating_reports_on_the_command_line">
+	<title>Creating reports on the command line</title>
+		<para>
+			Reports can also be created via the command line with the
+			<command>univention-directory-reports</command> program. Information on the
+			use of the program can be viewed using the <command>--help</command> option.
+		</para>
+		<para>
+			The following command can be used to list the report templates
+			available to users, for example:
+		</para>
+		<programlisting>
+univention-directory-reports -m users/user -l
+		</programlisting>
+	</section>
+	<section id="central-management-umc:Adjustment_expansion_of_Univention_Directory_Reports">
+	<title>Adjustment/expansion of Univention Directory Reports</title>
+		<para>
+			Existing reports can be created directly with the presettings. Some
+			presettings can be adapted using &ucsUCR;. For example, it is
+			possible to replace the logo that appears in the header of each page
+			of a PDF report. To do so, the value of the
+			&ucsUCRV; <envar>directory/reports/logo</envar> can include the name of an image
+			file. The usual image formats such as JPEG, PNG and GIF can be
+			used. The image is automatically adapted to a fixed width of 5.0 cm.
+		</para>
+		<para>
+			In addition to the logo, the contents of the report can also be
+			adapted by defining new report templates.
+			<!-- These templates are defined -->
+			<!-- in a specification language, which is described in detail under WIKIREF-23573 -->
+			<!-- in the Univention Wiki. -->
+		</para>
+	</section>
+</section>
+</chapter>

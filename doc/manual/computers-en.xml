@@ -1,0 +1,3070 @@
+<chapter id="computers:general"><title>Computer management</title>
+
+<section id="computers::hostaccounts">
+	<title>Management of computer accounts in the Univention Management Console</title>
+	<para>
+		All UCS, Linux and Windows systems within a UCS domain each have a
+		computer domain account (also referred to as the host account) with which the
+		systems can authenticate themselves among each other and with which they can
+		access the LDAP directory.
+	</para>
+	<para>
+		The computer account is generally created automatically when the system
+		joins the UCS domain (see <xref linkend="domaenenbeitritt"/>); however,
+		the computer account can also be added prior to the domain join.
+	</para>
+	<para>
+		The password for the computer account is generated automatically during the
+		domain join and saved in the <filename>/etc/machine.secret</filename> file.
+	</para>
+	<para>
+		There is an different computer object type for every system role. Further
+		information on the individual system roles can be found in <xref
+		linkend="systemrollen"/>.
+	</para>
+	<para>
+		Computer accounts are managed in the <guimenu>Computers</guimenu> module of
+		the &ucsUMC;.
+	</para>
+	<table>
+		<title>'General' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Name</entry>
+					<entry>
+						<para>
+							The name for the host should be entered in this input field.
+						</para>
+						<para>
+							To guarantee compatibility with different operating systems and
+							services, computer names should only contain the lowercase letters
+							<emphasis>a</emphasis> to <emphasis>z</emphasis>, numbers, hyphens and
+							underscores. Umlauts and special characters are not permitted. The full stop is
+							used as a separating mark between the individual components of a fully
+							qualified domain name and must therefore not appear as part of the computer
+							name. Computer names must begin with a letter.
+						</para>
+						<para>
+							Microsoft Windows accepts computer names with a maximum of 15
+							characters, so as a rule computer names should be limited to 15 characters if
+							there is any chance that Microsoft Windows will be used.
+						</para>
+						<para>
+						  After creation, the computer name can only be changed for the system roles
+						  <emphasis>Windows Workstation/Server</emphasis>, <emphasis>Mac OS X
+						  Client</emphasis> and <emphasis>IP managed client</emphasis>.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Description</entry>
+					<entry>
+						Any description can be entered for the host in this input field.
+					</entry>
+				</row>
+				<row>
+					<entry>Inventory number</entry>
+					<entry>
+						Inventory numbers for hosts can be stored here.
+					</entry>
+				</row>
+				<row>
+					<entry>Network</entry>
+					<entry>
+						The host can be assigned to a existing network object. Information
+						on the IP configuration can be found in <xref
+						linkend="networks::introduction"/>.
+					</entry>
+				</row>
+				<row>
+					<entry>MAC address</entry>
+					<entry>
+						The MAC address of the computer can be entered here e.g.,
+						<emphasis>2e:44:56:3f:12:32</emphasis>. If the computer is to receive a DHCP
+						entry, the entry of the MAC address is essential.
+					</entry>
+				</row>
+				<row>
+					<entry>IP address</entry>
+					<entry>
+						<para>
+							Fixed IP addresses for the host can be given here. Further
+							information on the IP configuration can be found in <xref
+							linkend="networks::introduction"/>.
+						</para>
+						<para>
+							If a network was selected on the <guimenu>General</guimenu> tab,
+							the IP address assigned to the host from the network will be shown here
+							automatically.
+						</para>
+						<para>
+							An IP address entered here (i.e. in the LDAP directory) can only
+							be transferred to the host via DHCP. If no DHCP is being used, the IP address
+							must be configured locally, see <xref linkend="hardware::networkconfiguration"/>.
+						</para>
+						<para>
+							If the IP addresses entered for a host are changed without the
+							DNS zones being changed, they are automatically changed in the computer object
+							and - where they exist - in the DNS entries of the forward and reverse
+							lookup zones. If the IP address of the host was entered at other places as
+							well, these entries must be changed manually! For example, if the IP address
+							was given in a DHCP boot policy instead of the name of the boot server, this IP
+							address will need to be changed manually by editing the policy.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Forward zone for DNS entry</entry>
+					<entry>
+						The DNS forward zone in which the computer is entered. The zone is
+						used for the resolution of the computer name in the assigned IP
+						address. Further information on the IP configuration can be found in
+						<xref linkend="networks::introduction"/>.
+					</entry>
+				</row>
+				<row>
+					<entry>Reverse zone for DNS entry</entry>
+					<entry>
+						The DNS reverse zone in which the computer is entered. The zone is
+						used to resolve the computer's IP address in a computer name. Further
+						information on the IP configuration can be found in <xref linkend="networks::introduction"/>.
+					</entry>
+				</row>
+				<row>
+					<entry>DHCP service</entry>
+					<entry>
+						<para>
+							If a computer is supposed to procure its IP address via DHCP, a
+							DHCP service must be assigned here. Information on the IP configuration can be
+							found in <xref linkend="networks::introduction"/>.
+						</para>
+						<para>
+							During assignment, it must be ensured that the DHCP servers of
+							the DHCP service object are responsible for the physical network.
+						</para>
+						<para>
+							If a network is selected on the <guimenu>General</guimenu> tab an
+							appropriate entry for the network will be added automatically. It can be
+							adapted subsequently.
+						</para>
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'Account' tab' (advanced settings)</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Password</entry>
+					<entry>
+						<para>
+							The password for the computer account is usually automatically
+							created and rotated. For special cases such as the integration of external
+							systems it can also be explicitly configured in this field.
+						</para>
+						<para>
+							The same password must then also be entered locally on the
+							computer in the <filename>/etc/machine.secret</filename> file.
+						</para>
+					</entry>
+				</row>
+				<row>
+					<entry>Primary group</entry>
+					<entry>
+						The primary group of the host can be selected in this selection
+						field. This is only necessary when they deviate from the automatically created
+						default values. The default value for a DC master or DC backup is <emphasis>DC
+						Backup Hosts</emphasis>, for a DC slave <emphasis>DC Slave Hosts</emphasis> and
+						for member services, managed clients and mobile clients
+						<emphasis>Computers</emphasis>.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'Unix account' tab (advanced settings)</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Unix home directory (*)</entry>
+					<entry>
+						A different input field for the host account can be entered
+						here. The automatically created default value for the home directory is
+						<filename>/dev/null</filename>
+					</entry>
+				</row>
+				<row>
+					<entry>Login shell</entry>
+					<entry>
+						If a different login shell from the default value is to be used for
+						the computer account, the login shell can be adapted manually in this input
+						field. The automatically set default value assumes a login shell of
+						<filename>/bin/sh</filename>.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'Services' tab (advanced settings)</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Service</entry>
+					<entry>
+						By means of a service object, applications or services can
+						determine whether a service is available on a computer or generally in the
+						domain.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<note>
+		<simpara>
+		The tab 'Services' is only displayed on UCS server system roles.
+		</simpara>
+	</note>
+	<table>
+		<title>'Deployment' tab (advanced settings)</title>
+		<tgroup cols="1">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<tbody>
+				<row>
+					<entry>
+						This tab is used for the Univention Net Installer, see <xref linkend="ext-doc-inst"/>.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'DNS-Alias' tab (advanced settings)</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>Zone for DNS Alias</entry>
+					<entry>
+						If a zone entry for forward mapping has been set up for the host in
+						the <guimenu>Forward zone for DNS entry</guimenu> field, the additional alias
+						entries via which the host can be reached can be configured here.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'Groups' tab (advanced settings)</title>
+		<tgroup cols="1">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<tbody>
+				<row>
+					<entry>
+						The computer can be added into different groups in this tab.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'Nagios services' tab (advanced settings)</title>
+		<tgroup cols="1">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<tbody>
+				<row>
+					<entry>
+						This tab is used to specify which Nagios tests should be performed for this
+						computer, see <xref linkend="nagios::hostconfig"/>.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'Nagios notification' tab (advanced settings)</title>
+		<tgroup cols="1">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<tbody>
+				<row>
+					<entry>
+						This tab is used to specify which users should be informed if Nagios tests
+						should fail, see <xref linkend="nagios::hostconfig"/>.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'UVMM' tab (advanced settings)</title>
+		<tgroup cols="1">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<tbody>
+				<row>
+					<entry>
+						This tab is used to specify which virtualization servers can be
+						managed by UVMM. Further information can be found in <xref
+						linkend="uvmm:chapter"/>.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<table>
+		<title>'(Options)' tab</title>
+		<tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+				<row>
+					<entry>Attribute</entry>
+					<entry>Description</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row><!-- FIXME -->
+					<entry namest="col1" nameend="col2">
+						This tab allows to disable LDAP object classes for host objects.
+						The entry fields for attributes of disables object classes are no longer shown.
+						Not all object classes can be modified subsequently.
+					</entry>
+				</row>
+				<row>
+					<entry>Kerberos principal</entry>
+					<entry>
+						If this checkbox is not selected the host does not receive the
+						<emphasis>krb5Principal</emphasis> and <emphasis>krb5KDCEntry</emphasis> object
+						classes.
+					</entry>
+				</row>
+				<row>
+					<entry>Posix account</entry>
+					<entry>
+						If this checkbox is not selected the host does not receive the
+						<emphasis>posixAccount</emphasis> object class.
+					</entry>
+				</row>
+				<row>
+					<entry>Nagios support</entry>
+					<entry>
+						If this checkbox is selected Nagios checks can be activated for this host.
+					</entry>
+				</row>
+				<row>
+					<entry>Samba account</entry>
+					<entry>
+						If this checkbox is not selected the host does not receive the
+						<emphasis>sambaSamAccount</emphasis> object class.
+					</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+
+	<section id="computers:ubuntu">
+		<title>Integration of Ubuntu clients</title>
+		<para>
+			Ubuntu clients can be managed in the &ucsUMC; with their own system role. The
+			network properties for DNS/DHCP can also be managed via the &ucsUMC;.
+		</para>
+		<para>
+			The use of policies is not supported.
+		</para>
+		<para>
+			Some configuration adjustments need to be performed on Ubuntu systems;
+			these are documented in the Univention Wiki <xref
+			linkend="ubuntu-integration"/>.
+		</para>
+	</section>
+</section>
+
+<section id="computers:Configuration_of_hardware_and_drivers">
+	<title>Configuration of hardware and drivers</title>
+
+	<section id="computers:Available_kernel_variants">
+		<title>Available kernel variants</title>
+		<para>
+			The standard kernel in UCS 3.1 is based on the Linux kernel 3.2. In
+			principle, there are three different types of kernel packages:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				A <emphasis>kernel image package</emphasis> provides an executable
+				kernel which can be installed and started.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				A <emphasis>kernel source package</emphasis> provides the source code
+				for a kernel. From this source, a tailor-made kernel can be created, and
+				functions can be activated or deactivated.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				A <emphasis>kernel header package</emphasis> provides interface
+				information which is required by external packages if these have to access
+				kernel functions. This information is usually necessary for compiling external
+				kernel drivers.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
+			Normally, the operation of a UCS system only requires the installation of
+			one kernel image package.
+		</para>
+		<para>
+			The default kernel in UCS for i386-based systems is the so-called
+			<emphasis>bigmem kernel</emphasis> for processors with PAE support, which
+			supports 64 GB RAM. For older i386-based systems a second kernel without PAE
+			support is provided, which only supports up to 4 GB RAM. The standard kernel
+			for amd64 systems has no such limits.
+		</para>
+		<para>
+			Several kernel versions can be installed in parallel. This makes sure
+			that there is always an older version available to which can be reverted in
+			case of an error. So-called meta packages are available which always refer to
+			the kernel version currently recommended for UCS. In case of an update, the new
+			kernel version will be installed, making it possible to keep the system up to
+			date at any time.
+		</para>
+		<para>
+			The following meta packages are available under i386 / 32 bit:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				univention-kernel-image - Standard kernel with support up to 64 GB RAM
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				univention-kernel-image-486 - Kernel for systems without PAE support (max. 4 GB RAM)
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
+			The following meta packages are available under amd64 / 64 bit:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				univention-kernel-image - Standard kernel
+				</simpara>
+			</listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="computers:Hardware_drivers__kernel_modules">
+		<title>Hardware drivers / kernel modules</title>
+		<para>
+			The boot process occurs in two steps using an initial ramdisk ('initrd' for
+			short). This is composed of an archive with further drivers and programs.
+		</para>
+		<para>
+			The GRUB boot manager (see <xref linkend="grub"/>) loads the kernel and
+			the initrd into the system memory, where the initrd archive is extracted and
+			mounted as a temporary root file system. The real root file system is then
+			mounted from this, before the temporary archive is removed and the system start
+			implemented.
+		</para>
+		<para>
+			The drivers to be used are recognised automatically during system start and
+			loaded via the udev device manager. At this point, the necessary device links
+			are also created under <filename>/dev/</filename>. If drivers are not
+			recognised (which can occur if no respective hardware IDs are registered or
+			hardware is employed which cannot be recognised automatically, e.g., ISA
+			boards), kernel modules to be loaded can be added via &ucsUCRV;
+			<envar>kernel/modules</envar>. If more than one kernel module is to be loaded,
+			these must be separated by a semicolon.
+		</para>
+		<para>
+			Unlike other operating systems, the Linux kernel (with very few exceptions)
+			provides all drivers for hardware components from one source. For this reason,
+			it is not normally necessary to install drivers from external sources
+			subsequently.
+		</para>
+		<para>
+		  However, if external drivers / kernel modules are required, they can be integrated via the
+		  DKMS framework (Dynamic Kernel Module Support). This provides a standardised interface for
+		  kernel sources, which are then built automatically for every installed kernel (insofar as
+		  the source package is compatible with the respective kernel). For this to happen, the
+		  kernel header package <emphasis>univention-kernel-headers</emphasis> must be
+		  installed in addition to the <emphasis>dkms</emphasis> package. Please note that not all
+		  the external kernel modules are compatible with all kernels.
+		</para>
+	</section>
+
+	<section id="grub">
+		<title>GRUB boot manager</title>
+		<para>
+			In &ucsUCS; GNU GRUB 2 is used as the boot manager. GRUB provides a menu
+			which allows the selection of a Linux kernel or another operating system to be
+			booted. GRUB can also access file systems directly and can thus, for example,
+			load another kernel in case of an error.
+		</para>
+		<para>
+			GRUB gets loades in a two-step procedure; in the Master
+			Boot Record of the hard drive, the Stage 1 loader is written which refers to
+			the data of Stage 2, which in turn manages the rest of the boot procedure.
+		</para>
+		<para>
+			The selection of kernels to be started in the boot menu is stored in the
+			file <filename>/boot/grub/grub.cfg</filename>. This file is generated
+			automatically; all installed kernel packages are available for selection. The
+			memory test program Memtest86+ can be started by selecting the option
+			<guimenu>Memory test</guimenu> and performs a consistency check for the main
+			memory.
+		</para>
+		<para>
+			There is a five second waiting period during which the kernel to be
+			booted can be selected. This delay can be changed via the &ucsUCRV;
+			<envar>grub/timeout</envar>.
+		</para>
+		<para>
+			By default a screen of 800x600 pixels size and 16 Bit colour depth is
+			pre-set. A different value can be set via the &ucsUCRV;
+			<envar>grub/gfxmode</envar>. Only resolutions are supported which can be set
+			via VESA BIOS extensions. A list of available modes can be found at
+			<ulink url="http://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. The input must
+			be specified in the format
+			<emphasis>HORIZONTALxVERTICAL@COLOURDEPTHBIT</emphasis>, so for example
+			<emphasis>1024x768@16</emphasis>.
+		</para>
+		<para>
+			Kernel options for the started Linux kernel can be passed with the
+			&ucsUCRV; <envar>grub/append</envar>. &ucsUCRV; <envar>grub/xenhopt</envar> can
+			be used to pass options to the Xen hypervisor.
+		</para>
+		<para>
+			The graphic representation of the boot procedure - the so-called splash
+			screen - can be deactivated by setting &ucsUCRV; <envar>grub/bootsplash</envar>
+			to <emphasis>nosplash</emphasis>.
+		</para>
+		<para>
+			Older Xen environments might use a version of PyGrub, which still
+			requires the GRUB 1 configuration file <filename>/goot/grub/menu.lst</filename>
+			to boot paravirtualized Xen systems. This file is generated automatically if
+			it does not yet exist. This behaviour can be deactivated by setting the
+			&ucsUCRV; <envar>grub/generate-menu-lst</envar> to <emphasis>no</emphasis>.
+		</para>
+	</section>
+
+	<section id="hardware::networkconfiguration">
+		<title>Network configuration</title>
+
+		<section id="computers:Network_interfaces">
+			<title>Network interfaces</title>
+			<para>
+				The configuration of network interfaces can be adjusted in the &ucsUMC;
+				under <guimenu>Basic settings &ar; Network</guimenu>.
+			</para>
+			<para>
+				The configuration is saved in &ucsUCR; variables, which can also be set
+				directly. These variables are listed in brackets in the individual sections.
+			</para>
+			<figure id="network-settings">
+				<title>Configuring the network settings</title>
+				<graphic scalefit="1" width="80%" fileref="illustrations/computers_network_en.png"/>
+			</figure>
+			<para>
+				All the network cards available in the system are listed under
+				<guimenu>IPv4 network devices</guimenu> and <guimenu>IPv6 network
+				devices</guimenu> (only network interfaces in the <emphasis>ethX</emphasis>
+				scheme are shown).
+			</para>
+			<para>
+				Network interfaces can be configured for IPv4 and/or IPv6. IPv4
+				addresses have a 32-bit length and are generally written in four blocks in
+				decimal form (e.g., 192.168.0.10), whereas IPv6 addresses are four times as
+				long and typically written in hexadecimal form (e.g.,
+				2222:0DFE:FE29:DE27:0000:0000:0000:0000).
+			</para>
+
+			<section id="computers:Configuration_of_IPv4_addresses">
+				<title>Configuration of IPv4 addresses</title>
+				<para>
+					If the <guimenu>Dynamic (DHCP)</guimenu> option was not chosen, the
+					IP address to be bound to the network card must be entered. In addition to the
+					<guimenu>IPv4 address</guimenu> the <guimenu>net mask</guimenu> must also be
+					entered. <guimenu>DHCP query</guimenu> is used to request an address from a
+					DHCP server. Unless the <guimenu>Dynamic (DHCP)</guimenu> option is activated,
+					the values received from the DHCP request are configured statically.
+				</para>
+				<para>
+					Server systems can also be configured via DHCP. This is necessary for
+					some cloud providers, for example. If the assignment of an IP address for a
+					server fails, a random link local address (169.254.x.y) is configured as a
+					replacement.
+				</para>
+				<para>
+					For UCS server systems the address received via DHCP is also written
+					to the LDAP directory.
+				</para>
+				<note>
+					<para>
+					Not all services (e.g., DNS servers) are suitable for use on a
+					DHCP-based server.
+					</para>
+				</note>
+				<para>
+					(UCR variables: <envar>interfaces/ethX/address</envar>,
+					<envar>interfaces/ethX/netmask</envar>, <envar>interfaces/ethX/type</envar>)
+				</para>
+				<para>
+					Besides the physical interfaces, additional virtual interfaces can
+					also be defined in the form <envar>interfaces/ethX_Y/setting</envar>.
+				</para>
+			</section>
+
+			<section id="computers:Configuration_of_IPv6_addresses">
+				<title>Configuration of IPv6 addresses</title>
+				<para>
+					The IPv6 address can be configured in two ways: Stateless address
+					autoconfiguration (SLAAC) is employed in the <guimenu>Autoconfiguration
+					(SLAAS)</guimenu> configuration. In this, the IP address is assigned from the
+					routers of the local network segment. Alternatively, the address can also be
+					configured statically by entering the <guimenu>IPv6 address</guimenu> and
+					<guimenu>IPv6 prefix</guimenu>. In contrast to DHCP, in SLAAC there is no
+					assignment of additional data such as the DNS server to be used. There is an
+					additional protocol for this (DHCPv6), which, however, is not employed in the
+					dynamic assignment.
+				</para>
+				<para>
+					(UCR variables: <envar>interfaces/ethX/ipv6/address</envar>,
+					<envar>interfaces/ethX/ipv6/prefix</envar>,
+					<envar>interfaces/eth0/ipv6/acceptRA</envar> activates SLAAC).
+				</para>
+				<para>
+					Further network settings can be performed under <guimenu>Global
+					network settings</guimenu>.
+				</para>
+				<para>
+					The IP addresses for the standard gateways in the subnetwork can be
+					entered under <guimenu>Gateway (IPv4)</guimenu> and <guimenu>Gateway
+					(IPv6)</guimenu>. It is not obligatory to enter a gateway for IPv6, but
+					recommended. A gateway configured here has preference over router
+					advertisements, which might otherwise be able to change the route.
+				</para>
+				<para>
+					(UCR variables: <envar>gateway</envar>, <envar>ipv6/gateway</envar>)
+				</para>
+			</section>
+
+			<section id="computers:Configuring_the_name_servers">
+				<title>Configuring the name servers</title>
+				<para>
+					There are two types of DNS servers:
+				</para>
+				<itemizedlist>
+					<listitem>
+						<simpara>
+						An <guimenu>External DNS Server</guimenu> is employed for the
+						resolution of host names and addresses outside of the UCS domain, e.g.,
+						<emphasis>univention.de</emphasis>. This is typically a name server operated by
+						the Internet provider.
+						</simpara>
+					</listitem>
+					<listitem>
+						<simpara>
+						A <guimenu>Domain DNS Server</guimenu> is a local name server in
+						the UCS domain. This name server usually administrates host names and IP
+						addresses belonging to the UCS domain. If an address is not found in the local
+						inventory, an external DNS server is automatically requested. The DNS data are
+						saved in the LDAP directory service, i.e., all domain DNS servers deliver
+						identical data.
+						</simpara>
+					</listitem>
+				</itemizedlist>
+				<para>
+					A local DNS server is set up on the &ucsMaster;, &ucsBackup; and
+					&ucsSlave; system roles. Here, you can configure which server should be
+					primarily used for the name resolution by entering the <guimenu>Domain DNS
+					Server</guimenu>.
+				</para>
+				<para>
+					(UCR variables: <envar>nameserver1</envar> to
+					<envar>nameserver3</envar>, <envar>dns/forwarder1</envar> to
+					<envar>dns/forwarder3</envar>,
+				</para>
+			</section>
+
+			<section id="computers:Configuration_of_bridges_bonding_VLANs"><title>Configuration of bridges/bonding/VLANs</title>
+			<para>
+			  UCS supports advanced network configurations using bridging, bonding and virtual
+			  networks (VLAN):
+			</para>
+
+			<itemizedlist>
+			  <listitem>
+                <simpara>
+				  Bridging is often used with virtualization to connect multiple virtual machines
+				  running on a host through one shared physical network interface.
+				</simpara>
+			  </listitem>
+			  <listitem>
+				<simpara>
+				  Bondings allows failover redundancy for hosts with multiple physical network
+				  interfaces to the same network.
+				</simpara>
+			  </listitem>
+			  <listitem>
+				<simpara>
+				  VLANs can be used to separate network traffic logically while using only one (or
+				  more) physical network interface.
+				</simpara>
+			  </listitem>
+			</itemizedlist>
+
+			<para>
+			  Bridges, bondings and VLANs are displayed in the &ucsUMC;, but the configuration of
+			  such setups can only be performed through &ucsUCR; variables. The setup is explained in
+			  the extended computer documentation <xref linkend="ext-doc-computers"/>.
+			</para>
+			</section>
+		</section>
+
+		<section id="computers:Configuring_proxy_access">
+			<title>Configuring proxy access</title>
+			<para>
+				The majority of the command line tools which access web servers (e.g.,
+				<command>wget</command>, <command>elinks</command> or <command>curl</command>)
+				check whether the environment variable <command>http_proxy</command> is set. If
+				this is the case, the proxy server set in this variable is used automatically.
+			</para>
+			<para>
+				The &ucsUCRV; <envar>proxy/http</envar> can also be used to activate the
+				setting of this environment variable via an entry in
+				<filename>/etc/profile</filename>.
+			</para>
+			<para>
+				The proxy URL must be specified for this, e.g.,
+				<uri>http://192.168.1.100</uri>. The proxy port can be specified in the proxy
+				URL using a colon, e.g., <uri>http://192.168.1.100:3128</uri>. If the proxy
+				requires authentication for the accessing user, this can be provided in the
+				form <uri>http://username:password@192.168.1.100</uri>.
+			</para>
+			<para>
+				The environment variable is not adopted for sessions currently opened. A
+				relogin is required for the change to be activated.
+			</para>
+			<para>
+				The Univention tools for software updates also support operation via a proxy
+				and query the &ucsUCR; variable.
+			</para>
+			<para>
+				Individual domains can be excluded from use by the proxy by including them
+				separated by commas in the &ucsUCRV; <envar>proxy/no_proxy</envar>. Subdomains
+				are taken into account; e.g. an exception for <uri>univention.de</uri> also
+				applies for <uri>apt.univention.de</uri>.
+			</para>
+		</section>
+	</section>
+
+	<section id="computers:Configuration_of_the_monitor_settings">
+		<title>Configuration of the monitor settings</title>
+		<para>
+			The configuration of the graphic resolutions and monitor parameters is
+			performed via automatic detection of the graphics card and the monitor in the
+			default setting. When this is done, the best available driver for the graphics
+			card is selected automatically and the monitor resolution set to the highest
+			value supported by the monitor.
+		</para>
+		<para>
+			Managed and mobile clients (only installable with &ucsUCD;) and thin clients
+			(only installable with &ucsTCS;) can also be manually configured with a
+			<guimenu>Display</guimenu> policy. The settings can be set with a &ucsUCR;
+			policy on the remaining system roles.
+		</para>
+		<para>
+			Manual configuration is also necessary if dual monitor operation is to be
+			used. The following provides a selection of the important settings and the
+			corresponding UCR variables in brackets:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				<guimenu>Graphics adapter driver</guimenu> selects the responsible Xorg
+				driver (<envar>xorg/device/driver</envar>).
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				The screen resolution of the main monitor should be entered under
+				<guimenu>Resolution of primary monitor</guimenu>. The values for width and
+				height in pixels should be separated by an 'x', e.g.,
+				<emphasis>1024x768</emphasis> (<envar>xorg/resolution</envar>).
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				<guimenu>Resolution of secondary display</guimenu> defines the screen
+				resolution of a second monitor, if present. This combines with the primary
+				monitor to display a shared screen area
+				(<envar>xorg/resolution/secondary</envar>).
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				The <guimenu>Position of secondary display</guimenu> menu specifies the
+				relative position of the secondary monitor with respect to the primary monitor
+				(<envar>xorg/display/relative-position</envar>).
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				The <guimenu>Color depth</guimenu> should be entered in bits per
+				pixel. Admissible values are 1, 2, 4, 8, 16 and 24. (24-bit is true colour
+				colour depth) (<envar>xorg/screen/DefaultDepth</envar>).
+				</simpara>
+			</listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="computers:Mounting_NFS_shares">
+		<title>Mounting NFS shares</title>
+		<para>
+			The <guimenu>NFS mounts</guimenu> policy of the computer management of
+			the &ucsUMC; can be used to configure NFS shares, which are mounted on the
+			system. There is a <guimenu>NFS share</guimenu> for selection, which is mounted
+			in the file path specified under <guimenu>Mount point</guimenu>.
+		</para>
+		<figure id="nfs-mount">
+			<title>Mounting a NFS share</title>
+			<graphic scalefit="1" width="60%" fileref="illustrations/computers_policy_nfsshare_en.png"/>
+		</figure>
+	</section>
+
+	<section id="computers:hardware:sysinfo">
+		<title>Collection of list of supported hardware</title>
+		<para>
+			Univention maintains a list of the hardware <xref linkend="hardwarelist"/>
+			which is compatible with UCS and in use by customers. The information processed
+			for this are gathered by the UMC module <guimenu>System information</guimenu>.
+		</para>
+		<para>
+			All files are forwarded to Univention anonymously and only transferred once
+			permission has been received from the user.
+		</para>
+		<para>
+			The start dialogue contains the entry fields <guimenu>Manufacturer</guimenu>
+			and <guimenu>Model</guimenu>, which must be completed with the values
+			determined from the DMI information of the hardware. The fields can also be
+			adapted and an additional <guimenu>Descriptive comment</guimenu> added.
+		</para>
+		<para>
+			If the system information is transferred as part of a support request, the
+			<guimenu>This is related to a support case</guimenu> option should be
+			activated. A ticket number can be entered in the next field; this facilitates
+			assignment and allows quicker processing.
+		</para>
+		<para>
+			Clicking on <guimenu>Next</guimenu> offers an overview of the transferred
+			system information. In addition, a compressed .tar archive is created, which
+			contains a list of the hardware components used in the system and can be
+			downloaded via <guimenu>Archive with system information</guimenu>.
+		</para>
+		<para>
+			Clicking on <guimenu>Next</guimenu> again allows you to select the way the data
+			are transferred to Univention. <guimenu>Upload</guimenu> transmits the data via
+			HTTPS, <guimenu>Send mail)</guimenu> opens a dialogue, which lists the needed
+			steps to send the archive via e-mail.
+		</para>
+	</section>
+</section>
+
+<section id="computers:Administration_of_local_system_configuration_with_Univention_Configuration_Registry">
+	<title>
+	Administration of local system configuration with Univention Configuration Registry
+	</title>
+
+	<section id="computers:ucr:Introduction">
+		<title>Introduction</title>
+		<para>
+			&ucsUCR; is the central tool for managing the local system configuration of a
+			UCS-based system. Direct editing of the configuration files is usually not
+			necessary.
+		</para>
+		<para>
+			Settings are specified in a consistent format in a registry mechanism, the
+			so-called <emphasis>Univention Configuration Registry
+			variables</emphasis>. These variables are used to generate the configuration
+			files used effectively by the services/programs from the configuration
+			templates (the so-called <emphasis>Univention Configuration Registry
+			templates</emphasis>).
+		</para>
+		<para>
+			This procedure offers a range of advantages:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				It is not usually necessary to edit any configuration files
+				manually. This avoids errors arising from invalid syntax of configuration
+				settings or similar.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				There is a uniform interface for editing the settings and the different
+				syntax formats of the configuration files are hidden from the administrator.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				Settings are decoupled from the actual configuration file, i.e., if a
+				software uses a different configuration format in a new version, a new template
+				in a new format is simply delivered instead of performing time-consuming and
+				error-prone conversion of the file.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				The variables used in a configuration file administrated with &ucsUCR;
+				are registered internally. This ensures that when a UCR variable is changed,
+				all the configuration files containing the changed variable are recreated.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
+			&ucsUCR; variables can be configured in the command line using the
+			<command>univention-config-registry</command> command (short form:
+			<command>ucr</command> or via the &ucsUMC;.
+		</para>
+		<para>
+			As the majority of packages perform their configuration via &ucsUCR; and the
+			corresponding basic settings need to be set up during the installation,
+			hundreds of &ucsUCR; variables are already set after the installation of a UCS
+			system.
+		</para>
+		<para>
+			UCR variables can also be used efficiently in shell scripts for
+			accessing current system settings.
+		</para>
+		<para>
+			The variables are named according to a tree structure with a forward slash
+			being used to separate components of the name. For example, &ucsUCR; variables
+			beginning with <emphasis>ldap</emphasis> are settings which apply to the local
+			directory service.
+		</para>
+		<para>
+			A description is given for the majority of variables explaining their use.
+		</para>
+		<para>
+			If a configuration file is administrated by a UCR template and the required
+			setting has not already been covered by an existing variable, the UCR template
+			should be edited instead of the configuration file. If the configuration were
+			directly adapted, the next time the file is regenerated - e.g., when a
+			registered UCR variable is set - the local modification will be overwritten
+			again. Adaptation of UCR templates is described in <xref
+			linkend="ucr::templates::extend"/>.
+		</para>
+		<para>
+			Part of the settings configured in &ucsUCR; are system-specific (e.g., the
+			computer name); many settings can, however, be used on more then one
+			computer. The &ucsUCR; policy in the domain administration of &ucsUMC; can be
+			used to compile variables and apply them on more than one computer.
+		</para>
+		<para>
+			The evaluation of the &ucsUCR; variables on a UCS system comprises four stages:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				First the local &ucsUCR; variables are evaluated.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				The local variables are overruled by policy variables which are usually
+				sourced from the directory service
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				The <emphasis>--schedule</emphasis> option is used to set local
+				variables which are only intended to apply for a certain period of time. This
+				level of the &ucsUCR; is reserved for local settings which are automated by
+				time-controlled mechanisms in &ucsUCS;.
+				</simpara>
+			</listitem>
+			<listitem>
+				<para>
+				When the <emphasis>--force</emphasis> option is used in setting a
+				local variable, settings adopted from the directory service and variables from
+				the schedule level are overruled and the given value for the local system fixed
+				instead. An example:
+				</para>
+				<programlisting>
+univention-config-registry set --force mail/messagesizelimit=1000000
+				</programlisting>
+			</listitem>
+		</itemizedlist>
+		<para>
+			If a variable is set which is overwritten by a superordinate policy, a warning
+			message is given.
+		</para>
+		<para>
+			The use of the &ucsUCR; policy is documented in the <xref
+			linkend="ucr::templates::policy"/>.
+		</para>
+	</section>
+
+	<section id="computers:Using_the_Univention_Management_Console_web_interface">
+		<title>Using the Univention Management Console web interface</title>
+		<para>
+			The <guimenu>Univention Configuration Registry</guimenu> module of the &ucsUMC;
+			can be used to display and adjust the variables of a system. There is also the
+			possibility of setting new variables using <guimenu>Add new variable</guimenu>.
+		</para>
+		<para>
+			A search mask is displayed on the start page. All variables are classified
+			using a <guimenu>Category</guimenu>, for example all LDAP-specific settings.
+		</para>
+		<para>
+			The <guimenu>Search attribute</guimenu> can be entered as a filter in the
+			search mask, which can refer to the variable name, value or description.
+		</para>
+		<para>
+			Following a successful search, the variables found are displayed in a
+			table with the variable name and the value.
+			A detailed description of the variable is displayed when moving the mouse cursor over
+			the variable name.
+		</para>
+		<para>
+			Clicking on the icon with the stylised pen edits the setting of a variable. The
+			icon with the stylised minus sign allows the deletion of a variable.
+		</para>
+		<para>
+			Some central variables - e.g., the domain name - cannot be changed directly in
+			&ucsUCR;. Instead they can only be changed indirectly via the basic settings in
+			the &ucsUMC;. These variables can be shown in grey. It is still possible to
+			edit them via the command line front-end.
+		</para>
+	</section>
+
+	<section id="computers:Using_the_command_line_front_end">
+		<title>Using the command line front end</title>
+		<para>
+			The command line interface of &ucsUCR; is run using the
+			<command>univention-config-registry</command> command. Alternatively, the short
+			form <command>ucr</command> can be used.
+		</para>
+
+		<section id="computers:Querying_a_UCR_variable">
+			<title>Querying a UCR variable</title>
+			<para>
+				A single &ucsUCR; variable can be queried with the parameter
+				<emphasis>get</emphasis>:
+			</para>
+			<programlisting>
+univention-config-registry get ldap/server/ip
+			</programlisting>
+			<para>
+				The parameter <emphasis>dump</emphasis> can also be used to display all
+				currently set variables:
+			</para>
+			<programlisting>
+univention-config-registry dump
+			</programlisting>
+
+			<section id="computers:Setting_UCR_variables">
+				<title>Setting UCR variables</title>
+				<para>
+					The parameter <emphasis>set</emphasis> is used to set a variable. The variable
+					can be given any name consisting exclusively of letters, full stops, figures,
+					hyphens and forward slashes.
+				</para>
+				<programlisting>
+univention-config-registry set VARIABLENAME=VALUE
+				</programlisting>
+				<para>
+					If the variable already exists, the content is updated; otherwise, a new entry
+					is created.
+				</para>
+				<para>
+					The syntax is not checked when a &ucsUCR; variable is set. The change to a
+					variable results in all configuration files for which the variable is
+					registered being rewritten immediately. The files in question are output on
+					the console:
+				</para>
+				<para>
+					In doing so it must be noted that although the configuration of a service is
+					updated, the service in question is not restarted automatically! The restart
+					must be performed manually.
+				</para>
+				<para>
+					It is also possible to perform simultaneous changes to several variables in one
+					command line. If these refer to the same configuration file, the file is only
+					rewritten once.
+				</para>
+				<programlisting>
+# univention-config-registry set \
+    dns/forwarder1=192.168.0.2 \
+    sshd/xforwarding="no" \
+    sshd/port=2222
+				</programlisting>
+				<para>
+					A conditional setting is also possible. For example, if a value should only be
+					saved in a &ucsUCR; variable when the variable does not yet exist, this can be
+					done by entering a question mark instead of the equals sign when assigning
+					values.
+				</para>
+				<programlisting>
+univention-config-registry set dns/forwarder1?192.168.0.2
+				</programlisting>
+			</section>
+
+			<section id="computers:Searching_for_variables_and_set_values">
+				<title>Searching for variables and set values</title>
+				<para>
+					The <emphasis>search</emphasis> parameter can be used to search for a
+					variable. This command searches for variable names which contain
+					<emphasis>nscd</emphasis> and displays these with their current assignments:
+				</para>
+				<programlisting>
+univention-config-registry search nscd
+				</programlisting>
+				<para>
+					Alternatively, searches can also be performed for set variable values. This
+					request searches for all variables set to
+					<emphasis>master.example.com</emphasis>:
+				</para>
+				<programlisting>
+univention-config-registry search --value master.example.com
+				</programlisting>
+				<para>
+					Search templates in the form of regular expressions can also be used in the
+					search. The complete format is documented at
+					<ulink url="http://docs.python.org/library/re.html"/>.
+				</para>
+			</section>
+
+			<section id="computers:Deleting_UCR_variables">
+				<title>Deleting UCR variables</title>
+				<para>
+					The parameter <emphasis>unset</emphasis> is used to delete a variable. The
+					following example deletes the variable <emphasis>dns/forwarder2</emphasis>. It
+					is also possible here to specify several variables to be deleted:
+				</para>
+				<programlisting>
+univention-config-registry unset dns/forwarder2
+				</programlisting>
+			</section>
+
+			<section id="computers:Regeneration_of_configuration_files_from_their_template">
+				<title>Regeneration of configuration files from their template</title>
+				<para>
+					The <emphasis>commit</emphasis> parameter is used to regenerate a configuration
+					file from its template. The name of the configuration file is entered as a
+					parameter, e.g.:
+				</para>
+				<programlisting>
+univention-config-registry commit /etc/samba/smb.conf
+				</programlisting>
+				<para>
+					As UCR templates are generally regenerated automatically when UCR variables are
+					edited, this is primarily used for tests.
+				</para>
+				<para>
+					If no file name is given when running <command>ucr commit</command>, all of the
+					files managed by &ucsUCR; will be regenerated from the templates. It is,
+					however, not generally necessary to regenerate all the configuration files.
+				</para>
+			</section>
+
+			<section id="computers:Sourcing_variables_in_shell_scripts">
+				<title>Sourcing variables in shell scripts</title>
+				<para>
+					The parameter <emphasis>shell</emphasis> is used to display &ucsUCR;
+					variables and their current assignments in a format that can be used in shell
+					scripts.
+				</para>
+				<programlisting>
+univention-config-registry shell ldap/server/name
+				</programlisting>
+				<para>
+					Different conversions are involved in this: forward slashes in variable names
+					are replaced with underscores and characters in the values which have a
+					particular significance in shell scripts are included in quotation marks to
+					ensure they are not altered.
+				</para>
+				<para>
+					The &ucsUCR; output must be executed via the command
+					<emphasis>eval</emphasis> for &ucsUCR; variables to be able to be read in a
+					shell script as environment variables:
+				</para>
+				<programlisting>
+# eval "$(univention-config-registry shell ldap/server/name)"
+# echo "$ldap_server_name"
+master.firma.de
+				</programlisting>
+			</section>
+		</section>
+	</section>
+
+	<section id="ucr::templates::policy">
+		<title>Policy-based configuration of UCR variables</title>
+		<para>
+			Part of the settings configured in &ucsUCR; are system-specific (e.g., the
+			computer name); many settings can, however, be used on more then one
+			computer. The <guimenu>Univention Configuration Registry</guimenu> policy
+			managed in the <guimenu>Policies</guimenu> module of the &ucsUMC; can be used
+			to compile variables and apply them on more than one computer.
+		</para>
+		<figure id="policy-mailsize">
+			<title>Policy-based configuration of the maximum mail size</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/computers_policy_mailsize_en.png"/>
+		</figure>
+		<para>
+			Firstly, a <guimenu>Name</guimenu> must be set for the policy which is to be
+			created, under which the variables will later be assigned to the individual
+			computer objects.
+		</para>
+		<para>
+			In addition, at least one <guimenu>Variable</guimenu> must be configured and a
+			<guimenu>Value</guimenu> assigned.
+		</para>
+		<para>
+			This policy can then be assigned to a computer object or a container/OU (see
+			<xref linkend="central:policies:assign"/>). Note that the evaluation of
+			configured values differs from other policies: the values are not forwarded
+			directly to the computer, but rather written on the assigned computer by
+			Univention Directory Policy. The time interval used for this is configured by
+			the &ucsUCRV; <envar>ldap/policy/cron</envar> and is set to hourly as standard.
+		</para>
+	</section>
+
+	<section id="ucr::templates::extend">
+		<title>Modifying UCR templates</title>
+		<para>
+			In the simplest case, a &ucsUCR; template is a copy of the original
+			configuration file in which the points at which the value of a variable are to
+			be used contain a reference to the variable name.
+		</para>
+		<para>
+			Inline Python code can also be integrated for more complicated scenarios, which
+			then also allows more complicated constructions such as conditional
+			assignments.
+		</para>
+		<note>
+			<para>
+			&ucsUCR; templates are included in the corresponding software packages as
+			configuration files. When packages are updated, a check is performed for
+			whether any changes have been made to the configuration files. If configuration
+			files are no longer there in the form in which they were delivered, they will
+			not be overwritten. Instead a new version will be created in the same directory
+			with the ending <emphasis>.debian.dpkg-new</emphasis>. If changes are to be
+			made on the &ucsUCR; templates, these templates are also not overwritten during
+			the update and are instead resaved in the same directory with the ending
+			<emphasis>.dpkg-new</emphasis> or
+			<emphasis>.dpkg-dist</emphasis>. Corresponding notes are written in the
+			<filename>/var/log/univention/actualise.log</filename> log file. This only
+			occurs if UCR templates have been locally modified.
+			</para>
+		</note>
+		<para>
+			The UCR templates are stored in the
+			<filename>/etc/univention/templates/files</filename> directory. The path to the
+			templates is the absolute path to the configuration file with the prefixed path
+			to the template directory. For example, the template for the
+			<filename>/etc/issue</filename> configuration file can be found under
+			<filename>/etc/univention/templates/files/etc/issue</filename>.
+		</para>
+		<para>
+			For the configuration files to be processed correctly by &ucsUCR; they must be
+			in UNIX format. If configuration files are edited in DOS or Windows, for
+			example, control characters are inserted to indicate line breaks, which can
+			disrupt the way &ucsUCR; uses the file.
+		</para>
+
+		<section id="ucr::templates::extend::simple">
+			<title>Referencing of UCR variables in templates</title>
+			<para>
+				In the simplest case, a UCR variable can be directly referenced in the
+				template. The variable name framed by the string <emphasis>@\%@</emphasis>
+				represents the wildcard. As an example the option for the activation of X11
+				forwarding in the configuration file <filename>/etc/ssh/sshd_config</filename>
+				of the OpenSSH server:
+			</para>
+			<programlisting>
+X11Forwarding @%@sshd/xforwarding@%@
+			</programlisting>
+			<para>
+				Newly added references to UCR variables are automatically evaluated by
+				templates; additional registration is only required with the use of inline
+				Python code (see <xref linkend="ucr::templates::extend::python"/>).
+			</para>
+		</section>
+
+		<section id="ucr::templates::extend::python">
+			<title>Integration of inline Python code in templates</title>
+			<para>
+				Any type of Python code can be embedded in UCR templates by entering a code
+				block framed by the string <emphasis>@!@</emphasis>. For example, these blocks
+				can be used to realise conditional requests so that when a parameter is changed
+				via a variable, further dependent settings are automatically adopted in the
+				configuration file. The following code sequence configures for example network
+				settings using the &ucsUCR; settings:
+			</para>
+			<programlisting>
+@!@
+if configRegistry.get('apache2/ssl/certificate'):
+    print 'SSLCertificateFile %s' % \
+        configRegistry['apache2/ssl/certificate']
+@!@
+			</programlisting>
+			<para>
+				All the data output with the print function are written in the generated
+				configuration file. The data saved in &ucsUCR; can be requested via the
+				configRegistry object, e.g.:
+			</para>
+			<programlisting>
+@!@
+if configRegistry.get('version/version') and \
+        configRegistry.get('version/patchlevel'):
+    print 'UCS %(version/version)s-%(version/patchlevel)s' % \
+        configRegistry
+@!@
+			</programlisting>
+			<para>
+				In contrast to directly referenced UCR variables (see <xref
+				linkend="ucr::templates::extend::simple"/>), variables accessed in inline
+				Python code must be explicitly registered.
+			</para>
+			<para>
+				The &ucsUCR; variables used in the configuration files are registered in
+				<emphasis>info</emphasis> files in the
+				<filename>/etc/univention/templates/info</filename> directory which are usually
+				named after the package name with the file ending
+				<emphasis>.info</emphasis>. If new Python code is entered into the templates or
+				the existing code changed in such a way that it requires additional or
+				different variables, one of the existing <emphasis>.info</emphasis> files will
+				need to be modified or a new one added.
+			</para>
+			<para>
+				Following the changing of <emphasis>.info</emphasis> files, the
+				<command>ucr update</command> command must be run.
+			</para>
+		</section>
+	</section>
+</section>
+
+<section id="computers:Basic_system_services">
+	<title>Basic system services</title>
+	<para>
+		This chapter describes basic system services of a UCS Installation such as the
+		configuration of the PAM authentication framework, system logs and the NSCD.
+	</para>
+
+	<section id="computers:rootaccount">
+		<title>Administrative access with the root account</title>
+		<para>
+			There is a <emphasis>root</emphasis> account on every UCS system for complete
+			administrative access. The password is set during installation of the
+			system. The root user is not stored in the LDAP directory, but instead in the
+			local user accounts.
+		</para>
+		<para>
+			The password for the root user can be changed via the &ucsUMC; under
+			<guimenu>Basic settings &ar; General &ar; Root password</guimenu>. Alternatively,
+			the <command>passwd</command> command can be run in the command line.
+		</para>
+		<para>
+			It must be pointed out that this process does not include any checks regarding
+			either the length of the password or the passwords used in the past. To avoid
+			subsequent errors by misspelling, the password has to be entered twice.
+		</para>
+	</section>
+
+	<section id="computers:Configuration_of_language_and_keyboard_settings">
+		<title>Configuration of language and keyboard settings</title>
+		<para>
+			In Linux, localisation properties for software are defined in so-called
+			<emphasis>locales</emphasis>. Configuration includes, among other things,
+			settings for date and currency format, the set of characters in use and the
+			language used for internationalised programs. The installed locales can be
+			changed in the &ucsUMC; under <guimenu>Basic settings &ar; Language &ar; Installed
+			system locales</guimenu> The standard locale is set under <guimenu>Default
+			system locale</guimenu>.
+		</para>
+		<figure id="language-settings">
+			<title>Configuring the language settings</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/computers_timezone_en.png"/>
+		</figure>
+		<para>
+			The <guimenu>Keyboard layout</guimenu> in the menu entry <guimenu>Time zone and
+			keyboard settings</guimenu> is applied during local logins to the system.
+		</para>
+	</section>
+
+	<section id="computers:systemservices">
+		<title>Starting/stopping system services / configuration of automatic startup</title>
+		<para>
+			The UMC module <guimenu>System services</guimenu> can be used to check the
+			current status of a system service and to start or stop it as required.
+		</para>
+		<figure id="umc-services">
+			<title>Overview of system services</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/umc-systemservices_en.png"/>
+		</figure>
+		<para>
+			In this list of all the services installed on the system, the current running
+			runtime status and a <guimenu>Description</guimenu> are displayed under
+			<guimenu>Status</guimenu>. The service can be started, stopped or restarted
+			under <guimenu>more</guimenu>.
+		</para>
+		<para>
+			In the default setting, every service is started automatically when the system
+			is started. In some situations, it can be useful not to have the service start
+			directly, but instead only after further configuration. The action
+			<guimenu>Start manually</guimenu> is used so that the service is not started
+			automatically when the system is started, but can still be started
+			subsequently. The action <guimenu>Start never</guimenu> also prevents
+			subsequent service starts.
+		</para>
+	</section>
+
+	<section id="computers:Authentication__PAM">
+		<title>Authentication / PAM</title>
+		<para>
+			Authentication services in Univention Corporate Server are realised via
+			<emphasis>Pluggable Authentication Modules</emphasis> (PAM). To this end
+			different log-in procedures are displayed on a common interface so that a new
+			log-in method does not require adaptation for existing applications.
+		</para>
+
+		<section id="computers:Limiting_authentication_to_selected_users">
+			<title>Limiting authentication to selected users</title>
+			<para>
+				In the default setting, only the <emphasis>root</emphasis> user and members of
+				the <emphasis>Domain Admins</emphasis> group can login remotely via SSH and
+				locally on a tty.
+			</para>
+			<para>
+				This restriction can be configured with the &ucsUCRV;
+				<envar>auth/SERVICE/restrict</envar>. Access to this service can be authorised
+				by setting the variables <envar>auth/SERVICE/user/USERNAME</envar> and
+				<envar>auth/SERVICE/group/GROUPNAME</envar> to <emphasis>yes</emphasis>.
+			</para>
+			<para>
+				Login restrictions are supported for SSH (<emphasis>sshd</emphasis>), FTP
+				(<emphasis>ftp</emphasis>), the login manager GDM (<emphasis>gdm</emphasis>),
+				login on a tty (<emphasis>login</emphasis>), rlogin
+				(<emphasis>rlogin</emphasis>), PPP (<emphasis>ppp</emphasis>) and other
+				services (<emphasis>other</emphasis>). An example for SSH:
+			</para>
+			<programlisting>
+auth/sshd/group/Administrators: yes
+auth/sshd/group/Computers: yes
+auth/sshd/group/DC Backup Hosts: yes
+auth/sshd/group/DC Slave Hosts: yes
+auth/sshd/group/Domain Admins: yes
+auth/sshd/restrict: yes
+			</programlisting>
+		</section>
+	</section>
+
+	<section id="computers:Configuration_of_the_LDAP_server_in_use">
+		<title>Configuration of the LDAP server in use</title>
+		<para>
+			Several LDAP servers can be operated in a UCS domain. The primary one used is
+			specified with the &ucsUCRV; <envar>ldap/server/name</envar>, further servers
+			can be specified via the &ucsUCRV; <envar>ldap/server/addition</envar>.
+		</para>
+		<para>
+			Alternatively, the LDAP servers can also be specified via a <guimenu>LDAP
+			server</guimenu> policy in the computer management of the &ucsUMC;. The order
+			of the servers determines the order of the computer's requests to the server if
+			a LDAP server cannot be reached.
+		</para>
+	</section>
+
+	<section id="computers:Configuration_of_the_print_server_in_use">
+		<title>Configuration of the print server in use</title>
+		<para>
+			The print server to be used can be specified with the &ucsUCRV;
+			<envar>cups/server</envar>.
+		</para>
+		<para>
+			Alternatively, the server can also be specified via the <guimenu>Print
+			server</guimenu> policy in the computer management of the &ucsUMC;.
+		</para>
+	</section>
+
+	<section id="computers:Logging_retrieval_of_system_messages_and_system_status">
+		<title>Logging/retrieval of system messages and system status</title>
+
+		<section id="computers:Log_files">
+			<title>Log files</title>
+			<para>
+				All UCS-specific log files (e.g., for the listener/notifier replication) are
+				stored in the <filename>/var/log/univention</filename> directory. Services log
+				in their own standard log files: for example, Apache to the file
+				<filename>/var/log/apache2/error.log</filename>.
+			</para>
+			<para>
+				The log files are managed by Logrotate. It ensures that log files are named in
+				series in intervals (can be configured in weeks using the &ucsUCRV;
+				<envar>log/rotate/weeks</envar>, with the default setting being 12) and older
+				log files are then deleted. For example, the current log file for the
+				Univention Directory Listener is found in the <filename>listener.log</filename>
+				file; the one for the previous week in <filename>listener.log.1</filename>,
+				etc.
+			</para>
+			<para>
+			  Alternatively, log files can also be rotated only once
+			  they have reached a certain size. For example, if they
+			  are only to be rotated once they reach a size of 50 MB,
+			  the &ucsUCRV; <envar>logrotate/rotates</envar> can be
+			  set to <emphasis>size 50M</emphasis>.
+			</para>
+			<para>
+				The &ucsUCRV; <envar>logrotate/compress</envar> is used to configure whether
+				the older log files are additionally zipped with Gzip.
+			</para>
+		</section>
+
+		<section id="computers:Logging_the_system_status">
+			<title>Logging the system status</title>
+			<para>
+				<command>univention-system-stats</command> can be used to document the current
+				system status in the <filename>/var/log/univention/system-stats.log</filename>
+				file. The following values are logged:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<simpara>
+					The free disk space on the system partitions (<command>df -lhT</command>)
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					The current process list (<command>ps auxf</command>)
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Two <command>top</command> lists of the current processes and system
+					load (<command>top -b -n2</command>)
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					The current free system memory (<command>free</command>)
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					The time elapsed since the system was started (<command>uptime</command>)
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Temperature, fan and voltage indices from LM sensors (<command>sensors</command>)
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					A list of the current Samba connections (<command>smbstatus</command>)
+					</simpara>
+				</listitem>
+			</itemizedlist>
+			<para>
+				The runtimes in which the system status should be logged can be defined in Cron
+				syntax via the &ucsUCRV; <envar>system/stats/cron</envar>, e.g., <emphasis>0,30
+				* * * *</emphasis> for logging every half and full hour. The logging is
+				activated by setting the &ucsUCRV; <envar>system/stats</envar> to
+				<emphasis>yes</emphasis>. This is the default since UCS 3.0.
+			</para>
+		</section>
+
+		<section id="computers:Querying_system_statistics_in_the_UMC">
+			<title>Querying system statistics in the &ucsUMC;</title>
+			<para>
+				The UMC module <guimenu>Statistics</guimenu> displays the utilisation of system
+				resources. For this purpose, a graph is displayed for different periods:
+			</para>
+			<itemizedlist>
+				<listitem><simpara>The past 24 hours</simpara></listitem>
+				<listitem><simpara>The past week</simpara></listitem>
+				<listitem><simpara>The past month</simpara></listitem>
+				<listitem><simpara>The past year</simpara></listitem>
+			</itemizedlist>
+			<para>
+				The following system information is documented:
+			</para>
+			<itemizedlist>
+				<listitem><simpara>The utilisation of the main memory in percent</simpara></listitem>
+				<listitem><simpara>The processor utilisation of the system</simpara></listitem>
+				<listitem><simpara>The number of terminal server sessions active</simpara></listitem>
+				<listitem><simpara>The utilisation of the swap file</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="computers:modules:top">
+			<title>Process overview in the &ucsUMC;</title>
+			<para>
+				The UMC system module <guimenu>Process overview</guimenu> displays a
+				table of the current processes on the system. The processes can be sorted based
+				on the following properties by clicking on the corresponding table header:
+			</para>
+			<itemizedlist>
+				<listitem><simpara>CPU utilisation in percent</simpara></listitem>
+				<listitem><simpara>The user name under which the process is running</simpara></listitem>
+				<listitem><simpara>Memory consumption in percent</simpara></listitem>
+				<listitem><simpara>The process ID</simpara></listitem>
+			</itemizedlist>
+			<para>
+				The menu item <guimenu>more</guimenu> can be used to terminate
+				processes. Two different types of termination are possible:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<simpara>
+					The action <guimenu>Terminate</guimenu> sends the process a SIGTERM
+					signal; this is the standard method for the controlled termination of programs.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					Sometimes, it may be the case that a program - e.g., after
+				crashing - can no longer be terminated with this procedure. In this case, the
+				action <guimenu>Force terminate</guimenu> can be used to send the signal
+				SIGKILL and force the process to terminate.
+					</simpara>
+				</listitem>
+			</itemizedlist>
+			<para>
+				As a general rule, terminating the program with SIGTERM is preferable
+				as many programs then stop the program in a controlled manner and, for example,
+				save open files.
+			</para>
+		</section>
+	</section>
+
+	<section id="computers:Executing_recurring_actions_with_Cron">
+		<title>Executing recurring actions with Cron</title>
+		<para>
+			Regularly recurring actions (e.g., the processing of log files) can be started
+			at a defined time with the Cron service. Such an action is known as a cron job.
+		</para>
+
+		<section id="computers:Hourly_daily_weekly_monthly_execution_of_scripts">
+			<title>Hourly/daily/weekly/monthly execution of scripts</title>
+			<para>
+				Four directories are predefined on every UCS system,
+				<filename>/etc/cron.hourly/</filename>, <filename>/etc/cron.daily/</filename>,
+				<filename>/etc/cron.weekly/</filename> and
+				<filename>/etc/cron.monthly/</filename>. Shell scripts which are placed in
+				these directories and marked as executable are run automatically every hour,
+				day, week or month.
+			</para>
+		</section>
+
+		<section id="cron:local">
+			<title>Defining local cron jobs in /etc/cron.d</title>
+			<para>
+				A cron job is defined in a line, which is composed of a total of seven columns:
+			</para>
+			<itemizedlist>
+				<listitem><simpara>Minute (0-59)</simpara></listitem>
+				<listitem><simpara>Hour (0-23)</simpara></listitem>
+				<listitem><simpara>Day (1-31)</simpara></listitem>
+				<listitem><simpara>Month (1-12)</simpara></listitem>
+				<listitem><simpara>Weekday (0-7) (0 and 7 both stand for Sunday)</simpara></listitem>
+				<listitem><simpara>Name of user executing the job (e.g., root)</simpara></listitem>
+				<listitem><simpara>The command to be run</simpara></listitem>
+			</itemizedlist>
+			<para>
+				The time specifications can be set in different ways. One can specify a
+				specific minute/hour/etc. or run an action every minute/hour/etc. with an
+				*. Intervals can also be defined, for example */2 as a minute specification
+				runs an action every two minutes.
+			</para>
+			<para>
+				Some examples:
+			</para>
+			<programlisting>
+30 * * * * root /usr/sbin/jitter 600 /usr/share/univention-samba/slave-sync
+*/5 * * * * www-data /usr/bin/php -q /usr/share/horde/reminders.php
+			</programlisting>
+		</section>
+
+		<section id="computers:Defining_cron_jobs_in_Univention_Configuration_Registry">
+			<title>Defining cron jobs in Univention Configuration Registry</title>
+			<para>
+				Cron jobs can also be defined in &ucsUCR;. This is particularly useful if
+				they are set via a &ucsUDM; policy and are thus used on more than one computer.
+			</para>
+			<para>
+				Each cron job is composed of at least two &ucsUCR; variables. JOBNAME is a
+				general description.
+			</para>
+			<itemizedlist>
+				<listitem>
+					<simpara>
+					<command>cron/JOBNAME/command</command> specifies the command to be
+					run (required)
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					<command>cron/JOBNAME/time</command> specifies the execution time
+					(see <xref linkend="cron:local"/>) (required)
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					As standard, the cron job is run as a user
+					<emphasis>root</emphasis>. <command>cron/JOBNAME/user</command> can be used to
+					specify a different user.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					If an e-mail address is specified under
+					<command>cron/JOBNAME/mailto</command>, the output of the cron job is sent
+					there per e-mail.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					<command>cron/JOBNAME/description</command> can be used to provide a
+					description.
+					</simpara>
+				</listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section id="computers:nscd">
+		<title>Nameserver cache daemon</title>
+		<para>
+			Data of the NSS service is cached by the <emphasis>Name Server Cache
+			Daemon</emphasis> (NSCD) in order to speed up frequently recurring requests for
+			unchanged data. Thus, if a repeat request occurs, instead of a complete LDAP
+			request to be processed, the data are simply drawn directly from the cache.
+		</para>
+
+		<para>
+		  Since UCS 3.1, the groups are no longer cached via the NSCD for performance and
+		  stability reasons; instead they are now cached by a local group cache, see <xref
+		  linkend="groups::cache"/>.
+		</para>
+
+		<para>
+			The central configuration file of the (<filename>/etc/nscd.conf</filename>) is
+			managed by &ucsUCR;.
+		</para>
+		<para>
+			The access to the cache is handled via a hash table. The size of the hash table
+			can be specified in &ucsUCR;, and should be higher than the number of
+			simultaneously used users/hosts. For technical reasons, a prime number
+			should be used for the size of the table. The following table shows the
+			standard values of the variables:
+		</para>
+		<table>
+			<title>Default size of the hash table</title>
+			<tgroup cols="2">
+				<colspec colnum="1" colname="col1" colwidth="1*"/>
+				<colspec colnum="2" colname="col2" colwidth="2*"/>
+				<thead>
+					<row>
+						<entry>Variable</entry>
+						<entry>Default size of the hash table</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							<command>nscd/hosts/size</command>
+						</entry>
+						<entry>6007</entry>
+					</row>
+					<row>
+						<entry>
+							<command>nscd/passwd/size</command>
+						</entry>
+						<entry>6007</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+		<para>
+			With very big caches it may be necessary to increase the size of the cache
+			database in the system memory. This can be configured through the &ucsUCR;
+			variables <envar>nscd/hosts/maxdbsize</envar>,
+			<envar>nscd/group/maxdbsize</envar> and <envar>nscd/passwd/maxdbsize</envar>.
+		</para>
+		<para>
+			As standard, five threads are started by NSCD. In environments with many
+			accesses it may prove necessary to increase the number via the &ucsUCRV;
+			<envar>nscd/threads</envar>.
+		</para>
+		<para>
+			In the basic setting, a resolved group or host name is kept in cache for one
+			hour, a user name for ten minutes. With the &ucsUCR; variables
+			<envar>nscd/group/positive_time_to_live</envar> and
+			<envar>nscd/passwd/positive_time_to_live</envar> these periods can be extended
+			or diminished (in seconds).
+		</para>
+		<para>
+			From time to time it might be necessary to manually invalidate the cache of the
+			NSCD. This can be done individually for each cache table with the following
+			commands:
+		</para>
+		<programlisting>
+nscd -i passwd
+nscd -i hosts
+		</programlisting>
+		<para>
+			The verbosity of the log messages can be configured through the &ucsUCRV;
+			<envar>nscd/debug/level</envar>.
+		</para>
+	</section>
+
+	<section id="computers:SSH_login_to_systems">
+		<title>SSH login to systems</title>
+		<para>
+			When installing a UCS system, an SSH server is also installed per
+			preselection. SSH is used for realising encrypted connections to other hosts,
+			wherein the identity of a host can be assured via a check sum. Essential
+			aspects of the SSH server's configuration can be adjusted in &ucsUCR;.
+		</para>
+		<para>
+			By default the login of the privileged <emphasis>root</emphasis> user is
+			permitted by SSH (e.g. for configuring a newly installed system where no users
+			have been created yet, from a remote location).
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				If the &ucsUCRV; <envar>sshd/permitroot</envar> is set to
+				<emphasis>without-password</emphasis>, then no interactive password request
+				will be performed for the <emphasis>root</emphasis> user, but only a login
+				based on a public key. By this means brute force attacks to passwords can be
+				avoided.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				To prohibit SSH login completely, this can be deactivated by setting
+				the &ucsUCRV; <envar>auth/sshd/user/root</envar> to <emphasis>no</emphasis>.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
+			The &ucsUCRV; <envar>sshd/xforwarding</envar> can be used to configure whether
+			an X11 output should be passed on via SSH. This is necessary, for example, for
+			allowing a user to start a program with graphic output on a remote computer by
+			logging in with <command>ssh -X TARGETHOST</command>. Valid settings are
+			<emphasis>yes</emphasis> and <emphasis>no</emphasis>.
+		</para>
+		<para>
+			The standard port for SSH connections is port 22 via TCP. If a different port
+			is to be used, this can be arranged via the &ucsUCRV; <envar>sshd/port</envar>.
+		</para>
+	</section>
+
+	<section id="basicservices::ntp">
+		<title>Configuring the time zone / time synchronisation</title>
+		<para>
+			The time zone in which a system is located can be changed in the &ucsUMC; under
+			<guimenu>Basic settings &ar; Language &ar; Time zone</guimenu>.
+		</para>
+		<para>
+			Asynchronous system times between individual hosts of a domain can be the
+			source of a large number of errors: the reliability of log files is impaired;
+			Kerberos operation is disrupted; the correct evaluation of the validity periods
+			of passwords can be disturbed; etc.
+		</para>
+		<para>
+			Usually the Domain Controller Master functions as the time server of a
+			domain. With the &ucsUCR; variables <envar>timeserver</envar>,
+			<envar>timeserver2</envar> and <envar>timeserver3</envar> external NTP servers
+			can be included as time sources.
+		</para>
+		<para>
+			Manual time synchronisation can be started by the command
+			<command>ntpdate</command>.
+		</para>
+		<para>
+			Windows clients joined in a Samba 4 domain only accept signed NTP time
+			requests. If the &ucsUCRV; <envar>ntp/signed</envar> is set to
+			<emphasis>yes</emphasis>, the NTP replies are signed by Samba 4. This setting
+			should be set on Samba 4 domain controllers.
+		</para>
+	</section>
+</section>
+
+<section id="computers::softwaremanagement">
+	<title>Software deployment</title>
+
+	<section id="computers:Introduction">
+		<title>Introduction</title>
+		<para>
+			The software deployment integrated in UCS offers extensive possibilities for
+			the rollout and updating of UCS installations. Security and version updates can
+			be installed via an online update.
+		</para>
+		<para>
+			For larger installations, there is the possibility of establishing a local
+			repository server from which all further updates can then be performed. This
+			repository server either procures its packages from the Univention online
+			repository or, in environments without Internet access, also from offline
+			updates in the form of ISO images (see <xref
+			linkend="software::configrepo"/>).
+		</para>
+		<para>
+			UCS systems can be updated via the &ucsUMC;, a command line tool and
+			policy-based. This is described in the <xref
+			linkend="software::ucs-updates"/>.
+		</para>
+		<para>
+			The UCS software deployment does not support the updating of Microsoft Windows
+			systems. An additional Windows software distribution is required for this.
+		</para>
+		<para>
+			The initial installation of UCS systems is not covered in this chapter and is
+			documented in <xref linkend="installation:chapter"/> instead.
+		</para>
+		<para>
+			The functional scope of a UCS installation can be expanded by integrating
+			further repository components, see <xref linkend="computers::softwaremanagement::repoadd"/>. These components are
+			provided both by Univention (e.g., for the UCS-based UCS DVS) and by third
+			parties.
+		</para>
+		<para>
+			The UCS software deployment is based on the underlying Debian package
+			management tools, which are expanded through UCS-specific tools. The different
+			tools for the installation of software are introduced in <xref
+			linkend="computers::softwaremanagement::installsoftware"/>.
+		</para>
+		<para>
+			The installation of version and errata updates can be automated via policies,
+			see <xref linkend="computers::softwaremanagement::maintenancepolicy"/>
+		</para>
+		<para>
+			The software monitor provides a tool with which all package installations
+			statuses can be centrally stored in a database, see <xref
+			linkend="computers::softwaremonitor"/>.
+		</para>
+	</section>
+
+	<section id="computers:Differentiation_of_update_variants__UCS_versions">
+		<title>Differentiation of update variants / UCS versions</title>
+		<para>
+			Four different types of UCS updates are differentiated:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				<emphasis>Major releases</emphasis> appear approximately every four
+				years. Major releases can differ significantly from previous major releases in
+				terms of their scope of services, functioning and the software they contain.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				During the maintenance period of a major release, <emphasis>minor
+				Releases</emphasis> are released approx. every 6-8 months. These updates
+				include corrections to recently identified errors and the expansion of the
+				product with additional features. At the same time and as far as this is
+				possible, the minor releases are compatible with the previous versions in terms
+				of their functioning, interfaces and operation. Should a change in behaviour
+				prove practical or unavoidable, this will be noted in the release notes when
+				the new version is published.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				<emphasis>Patchlevel releases</emphasis> include fewer changes than a
+				minor release. The focus here is exclusively on correcting
+				errors. Compatibility with the previous version in terms of the functioning,
+				interfaces and operation is maintained insofar as a change cannot be avoided
+				without excessive efforts or corrects a critical error. Should a change,
+				however, prove unavoidable, this will be noted in the release notes when the
+				new version is published. New patch level versions are released approximately
+				every two months.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				Alongside the planned, long-term maintenance and on-going development
+				of UCS via major, minor and patch level versions, Univention also publishes
+				<emphasis>errata updates</emphasis> as necessary. Errata updates include the
+				corrections for security vulnerabilities or critical program errors which need
+				to be resolved quickly prior to the release of the next patch level update. A
+				list of the errata updates can be found at
+				<ulink url="http://errata.univention.de/"/>. Errata updates can also be provided
+				for components.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
+			Every released UCS version has an unambiguous version number; it is composed of
+			a figure (the major version), a full stop, a second figure (the minor version),
+			a hyphen and a third figure (the patch level version). The version UCS 3.2-1
+			thus refers to the first patch level update for the second minor update for the
+			major release UCS 3.x.
+		</para>
+		<para>
+			Errata updates always refer to certain minor releases, e.g., for UCS
+			3.0. Errata updates can generally be installed for all patch level versions of
+			a minor release.
+		</para>
+		<para>
+			If new release or errata updates are available, a corresponding notification is
+			given when a user logs on to &ucsUMC;.
+		</para>
+		<para>
+			The availability of new updates is also notified via e-mail; the corresponding
+			newsletters - separated into release and error updates - can be subscribed on
+			the Univention website.
+		</para>
+		<para>
+			An overview of all the errata updates can be found under
+			<ulink url="http://errata.univention.de/"/>.
+		</para>
+		<para>
+			A changelog document is published for every release update listing the updated
+			packages, information on error corrections and new functions and references to
+			the Univention Bugzilla.
+		</para>
+	</section>
+
+	<section id="software:appcenter"><title>Univention App Center</title>
+	<para>
+	  The Univention App Center allows simple integration of software components in a UCS
+	  installation. The applications are provided both by third parties and by Univention itself
+	  (e.g., ucs@School). Licenses, maintenance and support for the applications are purchased from
+	  the respective manufacturer and not via the Univention App Center.
+	</para>
+
+	<figure id="appcenter-overview"><title>Overview of applications available in the App Center</title>
+	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_overview_en.png"/>
+	</figure>
+
+	<para>
+	  The Univention App Center can be opened via the UMC module <emphasis>App
+	  Center</emphasis>. The available software components are listed under
+	  <guimenu>Applications</guimenu>. <guimenu>Search term</guimenu> can be used to filter the
+	  list of displayed applications. The applications can also be sorted using the
+	  <guimenu>Categories</guimenu>.
+	</para>
+
+	<para>
+	  If you click on one of the displayed applications, further details on it are shown (e.g.,
+	  description, manufacturer, contact information and a screenshot). The <guimenu>Email notification</guimenu>
+	  field shows whether the manufacturer of the software component is
+	  notified when it is installed/uninstalled.
+	</para>
+
+	<figure id="appcenter-details"><title>Details for an application in the App Center</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/appcenter_details_en.png"/>
+	</figure>
+
+	<para>
+	  Installation of most of the applications in the Univention App Center requires a personalised
+	  license key. UCS license keys granted for UCS
+	  versions older than 3.1 need to be converted. If an affected application is installed, a
+	  window opens where you can start the conversion process: the current license key is sent to Univention
+	  and the updated key returned to a specified e-mail address within a few minutes. The new key
+	  can be imported directly. The conversion does not affect the scope of the license.
+	</para>
+
+	<para>
+	  Some applications may not be compatible with other software packages from UCS. For instance,
+	  most groupware packages require the UCS mailstack to be uninstalled. Every application checks
+	  whether incompatible versions are installed and then prompts which
+	  <guimenu>Conflicts</guimenu> exist and how they can be resolved. The installation of these
+	  packages is then prevented until the conflicts have been resolved.
+	</para>
+
+	<para>
+	  Many components integrate packages that need to be installed on the &ucsMaster; (usually LDAP
+	  schema extensions or new modules for the UCS management system). These packages are
+	  automatically installed on the &ucsMaster;. If this is not possible, the installation is
+	  aborted. In addition, the packages are set up on all accessible &ucsBackup; systems.
+	</para>
+
+	<para>
+	  Following installation of an application, two new options are shown when clicking on the icon
+	  of an application: <guimenu>Uninstall</guimenu> removes an application and clicking on
+	  <guimenu>Open</guimenu> displays an overview module containing detailed information and a
+	  link to the documentation as well as the installed version. Here one can also uninstall the
+	  application or - if a more up-to-date version is available - perform an update. An
+	  overview of the existing applications can be opened under <guimenu>Installed applications</guimenu>
+	  on the UMC start page.
+	</para>
+
+	<para>
+	  Installations and the removal of packages are documented in the
+	  <filename>/var/log/univention/management-console-module-appcenter.log</filename> log file.
+	</para>
+	</section>
+
+	<section id="software::configrepo">
+		<title>Configuration of the repository server for updates and package installations</title>
+		<para>
+			Package installations and updates can either be performed from the Univention
+			update server or from a locally maintained repository. A local repository is
+			practical if there are a lot of UCS systems to update as the updates only need
+			to be downloaded once in this case. As repositories can also be updated
+			offline, a local repository also allows the updating of UCS environments
+			without Internet access.
+		</para>
+		<para>
+			Using the registered settings, apt package sources are automatically generated
+			in the <filename>/etc/apt/sources.list.d</filename> directory for release and
+			errata updates and addon components. If further repositories are required on a
+			system, these can be entered in the <filename>/etc/apt/sources.list</filename>
+			file.
+		</para>
+		<para>
+			In the default setting, the Univention repository
+			<uri>updates.software-univention.de</uri> is used for a new installation.
+		</para>
+		<para>
+			The Univention repository and repository components differentiate between two
+			component parts:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				The UCS standard package scope covered by maintenance can be found in
+				the <emphasis>maintained</emphasis> area. In the default setting, only access
+				to these packages is activated. Security updates are only provided for
+				<emphasis>maintained</emphasis> packages.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				Additional packages, e.g., other mail servers than Postfix can be found
+				under <emphasis>unmaintained</emphasis>. These packages are not covered by
+				security updates or ulterior maintenance. In the default setting,
+				<emphasis>unmaintained</emphasis> is not mounted, but can be integrated by
+				setting the &ucsUCRV; <envar>repository/online/unmaintained</envar> to
+				<emphasis>yes</emphasis>.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
+			A local repository can require a lot of disk space - particularly if the
+			unmaintained branch is activated.
+		</para>
+
+		<section id="computers:Configuration_via_the_Univention_Management_Console">
+			<title>Configuration via the Univention Management Console</title>
+			<para>
+				The repository settings can be adjusted in the <guimenu>App Center</guimenu>
+				module of the &ucsUMC;. The <guimenu>Repository server</guimenu> and the use of
+				the maintained and unmaintained sections can be specified in the
+				<guimenu>Repository Settings</guimenu> tab.
+			</para>
+		</section>
+
+		<section id="computers:Configuration_via_Univention_Configuration_Registry">
+			<title>Configuration via Univention Configuration Registry</title>
+			<para>
+				The repository server to be used can be entered in the &ucsUCRV;
+				<envar>repository/online/server</envar> and is preset to
+				<uri>updates.software-univention.de</uri> for a new installation.
+			</para>
+			<para>
+				The unmaintained repository can be integrated by setting the &ucsUCRV;
+				<envar>repository/online/unmaintained</envar> to <emphasis>yes</emphasis>.
+			</para>
+		</section>
+
+		<section id="computers:Policy-based_configuration_of_the_repository_server">
+			<title>Policy-based configuration of the repository server</title>
+			<para>
+				The repository server to be used can also be specified using the
+				<guimenu>Repository server</guimenu> policy in the computer management of the
+				&ucsUMC;. Only UCS server systems for which a DNS entry has been configured are
+				shown in the selection field.
+			</para>
+			<para>
+				General information on policy management can be found in <xref linkend="central:policies"/>.
+			</para>
+		</section>
+
+		<section id="software::createrepo">
+			<title>Creating and updating a local repository</title>
+			<para>
+				Package installations and updates can either be performed from the Univention
+				update server or from a locally maintained repository. A local repository is
+				practical if there are a lot of UCS systems to update as the updates only need
+				to be downloaded once in this case. As repositories can also be updated
+				offline, a local repository also allows the updating of UCS environments
+				without Internet access.
+			</para>
+			<para>
+				There is also the possibility of synchronising local repositories, which means,
+				for example, a main repository is maintained at the company headquarters and
+				then synchronised to local repositories at the individual locations.
+			</para>
+			<!-- This is described in Univention Wiki under WIKIREF-24826. -->
+			<para>
+				To set up a repository, the <command>univention-repository-create</command>
+				command must be run as the <emphasis>root</emphasis> user. The initial package
+				inventory is imported from an installation DVD. The parameter
+				<emphasis>--iso</emphasis> allows importing from an ISO image.
+			</para>
+			<para>
+				Access to the Univention online repository is cryptographically secured via the
+				use of Secure Apt employing signatures. This feature is not currently available
+				for local repositories and so a message appears when creating a repository
+				explaining how Secure Apt can be deactivated using the &ucsUCRV;
+				<envar>update/secure_apt</envar>. This setting must be set on all UCS systems
+				that access the repository.
+			</para>
+			<para>
+				The packages in the repository can be updated using the
+				<command>univention-repository-update</command> tool. It supports two modes:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<simpara>
+					<command>univention-repository-update cdrom</command>Here the
+					repository is updated with an update DVD or an ISO image.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+					<command>univention-repository-update net</command> Here the
+					repository is synchronised with another specified repository server. This is
+					defined in the &ucsUCRV; <envar>repository/mirror/server</envar> and typically
+					points to <uri>updates.software-univention.de</uri>.
+					</simpara>
+				</listitem>
+			</itemizedlist>
+			<para>
+				An overview of the possible options is displayed with the following
+				command:
+			</para>
+			<programlisting>
+univention-repository-update -h
+			</programlisting>
+			<para>
+				The repository is stored in the
+				<filename>/var/lib/univention-repository/mirror</filename> directory.
+			</para>
+			<para>
+				The local repository can be activated/deactivated using the &ucsUCRV;
+				<envar>local/repository</envar>.
+			</para>
+		</section>
+	</section>
+
+	<section id="software::ucs-updates">
+		<title>Updates of UCS systems</title>
+		<para>
+			There are two ways to update UCS systems; either on individual systems (via the
+			&ucsUMC; or command line) or via a &ucsUMC; computer policy for larger groups
+			of UCS systems.
+		</para>
+
+		<section id="computers:Update_strategy_in_environments_with_more_than_one_UCS_system">
+			<title>Update strategy in environments with more than one UCS system</title>
+			<para>
+				In environments with more than one UCS system, the update order of the UCS
+				systems must be borne in mind:
+			</para>
+			<para>
+				The authoritative version of the LDAP directory service is maintained on the
+				&ucsMaster; and replicated on all the remaining LDAP servers of the UCS
+				domain. As changes to the LDAP schemes (see <xref linkend="domain:ldap:schemata"/>) can occur during release updates, the
+				&ucsMaster; must always be the first system to be updated during a release
+				update.
+			</para>
+			<para>
+				It is generally advisable to update all UCS systems in one maintenance window
+				whenever possible. If this is not possible, all not-updated UCS systems should
+				only be one release version older compared with the &ucsMaster;.
+			</para>
+			<para>
+				It should be noted, that components marked as critical can block an upgrade to
+				the next minor or major release. More information can be found in <xref linkend="computers::softwaremanagement::repoadd"/>.
+			</para>
+		</section>
+
+		<section id="computers:Updating_individual_systems_via_the_UMC">
+			<title>Updating individual systems via the &ucsUMC;</title>
+			<para>
+				The <guimenu>Online Update</guimenu> module allows the installation of release
+				updates and errata updates.
+			</para>
+			<para>
+				Figure <xref linkend="software-umcupdate"/> shows the overview page of the
+				module. The currently installed version is displayed under <guimenu>Release
+				updates</guimenu> in the upper part of the dialogue box.
+			</para>
+			<figure id="software-umcupdate">
+				<title>Updating a UCS system in UMC</title>
+				<graphic scalefit="1" width="80%" fileref="illustrations/software_onlineupdate_en.png"/>
+			</figure>
+			<para>
+				If a newer UCS version is available, a select list is displayed. After clicking
+				on <guimenu>Install release updates</guimenu> and confirmation all updates up
+				to the respective version are installed. Before the installation process is
+				started, a message will be displayed informing the user of possible
+				restrictions of the server services during the update. Any intermediate
+				versions are also installed automatically.
+			</para>
+			<para>
+				Clicking on <guimenu>Install available errata updates</guimenu> installs all
+				the available errata updates for the current release and all installed
+				components.
+			</para>
+			<para>
+				<guimenu>Check for package updates</guimenu> activates an update of the package
+				sources currently entered. This can be used, for example, if an updated version
+				is provided for a component.
+			</para>
+			<para>
+				The messages created during the update are written to the file
+				<filename>/var/log/univention/updater.log</filename>
+			</para>
+		</section>
+
+		<section id="computers:Updating_individual_systems_via_the_command_line">
+			<title>Updating individual systems via the command line</title>
+			<para>
+				The following steps must be performed with <emphasis>root</emphasis> rights.
+			</para>
+			<para>
+				An individual UCS system can be updated using the
+				<command>univention-upgrade</command> command in the command line. A check is
+				performed to establish whether new updates are available and these are then
+				installed if a prompt is confirmed. In addition, package updates are also
+				performed (e.g., in the scope of an errata update).
+			</para>
+			<para>
+				In the basic setting, the packages to be updated are loaded from a repository
+				via the network. If a local repository is used (see <xref linkend="software::createrepo"/>), release updates can alternatively also be
+				installed via update DVD images, which are either imported as ISO files or from
+				a drive.
+			</para>
+			<para>
+				This is done by running <command>univention-upgrade</command> with the
+				parameters <command>--iso=ISOIMAGEFILE</command> or
+				<command>--cdrom=DRIVE</command>.
+			</para>
+			<para>
+				Remote updating over SSH is not advisable as this may result in the update
+				procedure being aborted. If updates should occur over a network connection
+				nevertheless, it must be verified that the update continues despite
+				disconnection from the network. This can be done, for example, using the tools
+				<command>screen</command> and <command>at</command>, which are installed on all
+				system roles.
+			</para>
+			<para>
+				The messages created during the update are written to the file
+				<filename>/var/log/univention/updater.log</filename>
+			</para>
+		</section>
+
+		<section id="computers::softwaremanagement::releasepolicy">
+			<title>Updating systems via a policy</title>
+			<para>
+				An update for more than one computer can be configured with a
+				<guimenu>Release</guimenu> policy in the computer/domain management of the
+				&ucsUMC;.
+			</para>
+			<para>
+				General information on policy management can be found in <xref
+				linkend="central:policies"/>.
+			</para>
+			<figure id="software-policyupdate">
+				<title>Updating UCS systems using a release policy</title>
+				<graphic scalefit="1" width="50%" fileref="illustrations/software_policy_en.png"/>
+			</figure>
+			<para>
+				A release update is only run when the <guimenu>Activate policy</guimenu>
+				selection field is activated.
+			</para>
+			<para>
+				The <guimenu>Release version</guimenu> input field includes the version number
+				up to which the system should be updated, e.g., <emphasis>3.2-1</emphasis>. If
+				no entry is made, the system continues updating to the highest available
+				version number.
+			</para>
+			<para>
+				The point at which the update should be performed is configured via a
+				<guimenu>Paketpflege</guimenu> policy (see <xref
+				linkend="computers::softwaremanagement::maintenancepolicy"/>).
+			</para>
+			<para>
+				The messages created during the update are written to the file
+				<filename>/var/log/univention/updater.log</filename>
+			</para>
+		</section>
+
+		<section id="computers:Postprocessing_of_release_updates">
+			<title>Postprocessing of release updates</title>
+			<para>
+				Once a release update has been performed successfully, a check should be made
+				for whether new or updated join scripts need to be run.
+			</para>
+				<para>
+					Either the <emphasis>Domain join</emphasis> UMC module or the command
+					line program <command>univention-run-join-scripts</command> is used for
+					checking and starting the join scripts (see <xref
+					linkend="linux-domaenenbeitritt"/>).
+				</para>
+		</section>
+
+		<section id="computers:troubleshooting">
+		  <title>Troubleshooting in case of update problems</title>
+		  <para>
+			The messages generated during updates are written to the
+			<filename>/var/log/univention/updater.log</filename> file, which can be used for more
+			in-depth error analysis.
+		  </para>
+		  <para>
+			The status of the &ucsUCR; variables before the release update is saved in the
+			<filename>/var/univention-backup/update-to-TARGETRELEASEVERSION</filename>
+			directory. This can then be used to check whether and which variables have been changed
+			during the update.
+		  </para>
+		</section>
+	</section>
+
+	<section id="computers::softwaremanagement::installsoftware">
+		<title>Installation of further software</title>
+		<para>
+			The initial selection of the software components of a UCS system is performed
+			within the scope of the installation. The software components are selected
+			relative to the functions, whereby e.g. the <emphasis>Proxy server</emphasis>
+			component is selected, which then procures the actual software packages via a
+			meta package. The administrator does not need to know the actual package names.
+		</para>
+		<para>
+			However, individual packages can also be specifically installed and removed for
+			further tasks.
+		</para>
+		<para>
+		  When installing a package, it is sometimes necessary to install additional
+		  packages, which are required for the proper functioning of the package. These
+		  are called packages dependencies.
+		</para>
+		<para>
+			All software components are loaded from a repository (see <xref
+			linkend="software::configrepo"/>).
+		</para>
+		<para>
+			Software which is not available in the Debian package format should be
+			installed into the <filename>/opt</filename> or <filename>/usr/local</filename>
+			directories. These directories are not used for installing UCS packages, thus a
+			clean separation between UCS packages and other software is ensured.
+		</para>
+
+		<para>
+			There are several possibilities for installing further packages subsequently on
+			an installed system:
+		</para>
+
+		<section id="computers:Role-based_software_selection_in_the_Univention_Management_Console">
+			<title>Role-based software selection in the Univention Management Console</title>
+			<para>
+				A module is provided under <guimenu>Basic settings &ar; Software</guimenu> in the
+				&ucsUMC; with which the role-based software selection also offered in the
+				Univention Installer can be subsequently adjusted. Software components can be
+				installed or removed by activating/deactivating the selection box in front of
+				the components and then clicking on save.
+			</para>
+			<figure id="software-setup">
+				<title>Software selection</title>
+				<graphic scalefit="1" width="80%" fileref="illustrations/software_basicsettings_en.png"/>
+			</figure>
+			<para>
+				A list of the available software selection can be found in <xref
+				linkend="installation::softwareselection"/>.
+			</para>
+		</section>
+
+		<section id="computers:Installation_removal_of_individual_packages_in_the_Univention_Management_Console">
+			<title>Installation/removal of individual packages in the Univention Management Console</title>
+			<para>
+			  The &ucsUMC; module <guimenu>App Center</guimenu> (tab: <guimenu>Extended software
+			  management</guimenu>) can be used to install and uninstall individual software
+			  packages.
+			</para>
+			<figure id="software-umcinstall">
+				<title>Installing the package univention-squid in the Univention Management Console</title>
+				<graphic scalefit="1" width="80%" fileref="illustrations/software_install_en1.png"/>
+			</figure>
+			<para>
+				A search mask is displayed on the start page in which the user can select the
+				package category or a search filter (name or description). The results are displayed in
+				a table with the following columns:
+			</para>
+			<itemizedlist>
+				<listitem><simpara>Package name</simpara></listitem>
+				<listitem><simpara>Package description</simpara></listitem>
+				<listitem><simpara>Installation status</simpara></listitem>
+			</itemizedlist>
+			<para>
+				Clicking an entry in the result list opens a detailed information page with a
+				comprehensive description of the package.
+			</para>
+			<para>
+				In addition, one or more buttons will be displayed: <guimenu>Install</guimenu>
+				is displayed if the software package is not installed yet;
+				<guimenu>Uninstall</guimenu> is displayed if the software package is installed
+				and <guimenu>Upgrade</guimenu> is displayed if the software package is
+				installed but not updated. <guimenu>Close</guimenu> can be used for returning
+				to the previous search request.
+			</para>
+		</section>
+
+		<section id="computers:Installation_removal_of_individual_packages_in_the_command_line">
+			<title>Installation/removal of individual packages in the command line</title>
+			<para>
+				The following steps must be performed with <emphasis>root</emphasis> rights.
+			</para>
+			<para>
+				Individual packages are installed using the command
+			</para>
+			<programlisting>
+univention-install PACKAGENAME
+			</programlisting>
+			<para>
+			  Packages can be removed with the following command:
+			</para>
+			<para>
+			  <programlisting>
+univention-remove PACKAGENAME
+			  </programlisting>
+			</para>
+			<para>
+				If the name of a package is unknown, the command <command>apt-cache
+				search</command> can be used to search for the package. Parts of the name or
+				words which appear in the description of the package are listed, e.g.:
+			</para>
+			<programlisting>
+apt-cache search fax
+			</programlisting>
+		</section>
+
+		<section id="computers::softwaremanagement::packagelists">
+			<title>Policy-based installation/uninstallation of individual packages via package lists</title>
+			<para>
+				Package lists can be used to install and remove software using policies. This
+				allows central software deployment for a large number of computer systems.
+			</para>
+			<para>
+				Each system role has its own package policy type.
+			</para>
+			<para>
+				Package policies are managed in the <emphasis>Policies</emphasis>
+				module of the &ucsUMC; with the <guimenu>Policy: Packages + system
+				role</guimenu>.
+			</para>
+			<table>
+				<title>'General' tab</title>
+				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
+					<colspec colnum="2" colname="col2" colwidth="2*"/>
+					<thead>
+						<row>
+							<entry>Attribute</entry>
+							<entry>Description</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Name</entry>
+							<entry>
+								An unambiguous name for this package list, e.g., <emphasis>mail
+								server</emphasis>.
+							</entry>
+						</row>
+						<row>
+							<entry>Package installation list</entry>
+							<entry>
+								A list of packages to be installed.
+							</entry>
+						</row>
+						<row>
+							<entry>Package removal list</entry>
+							<entry>
+								A list of packages to be removed.
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+			<para>
+				The software packages defined in a package list are
+				installed/uninstalled at the time defined in the <guimenu>Maintenance</guimenu>
+				policy (for the configuration see <xref
+				linkend="computers::softwaremanagement::maintenancepolicy"/>).
+			</para>
+			<para>
+				The softwares assignable in the package policies are also registered in the
+				LDAP.
+			</para>
+			<!-- This is documented in Univention Wiki under WIKIREF-24368. -->
+		</section>
+	</section>
+
+	<section id="computers::softwaremanagement::maintenancepolicy">
+		<title>Specification of an update point using the package maintenance policy</title>
+		<para>
+			A <guimenu>Maintenance</guimenu> policy in the computer/domain management of the
+			&ucsUMC; can be used to specify a point at which the following steps should be
+			performed:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				Check for available release updates to be installed (see <xref
+				linkend="computers::softwaremanagement::releasepolicy"/>) and, if applicable,
+				installation.
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				Installation/uninstallation of package lists (see <xref
+				linkend="computers::softwaremanagement::packagelists"/>)
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+				Installation of available errata updates
+				</simpara>
+			</listitem>
+		</itemizedlist>
+		<para>
+			Alternatively, the updates can also be performed when the system is booting or
+			shut down.
+		</para>
+		<para>
+			General information on policy management can be found in <xref linkend="central:policies"/>.
+		</para>
+		<table>
+			<title>'General' tab</title>
+			<tgroup cols="2">
+				<colspec colnum="1" colname="col1" colwidth="1*"/>
+				<colspec colnum="2" colname="col2" colwidth="2*"/>
+				<thead>
+					<row>
+						<entry>Attribute</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>System startup</entry>
+						<entry>
+							If this option is activated, the update steps are performed when the computer
+							is started up.
+						</entry>
+					</row>
+					<row>
+						<entry>System shutdown</entry>
+						<entry>
+							If this option is activated, the update steps are performed when the computer
+							is shut down.
+						</entry>
+					</row>
+					<row>
+						<entry>Use Cron settings</entry>
+						<entry>
+							If this flag is activated, the fields <emphasis>Month</emphasis>, <emphasis>Day
+							of week</emphasis>, <emphasis>Day</emphasis>, <emphasis>Hour</emphasis> and
+							<emphasis>Minute</emphasis> can be used to specify an exact time when the
+							update steps should be performed.
+						</entry>
+					</row>
+					<row>
+						<entry>Reboot after maintenance</entry>
+						<entry>
+							This option allows you to perform an automatic system restart after release
+							updates either directly or after a specified time period of hours.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</section>
+
+	<section id="computers::softwaremanagement::repoadd">
+		<title>Integration of components not provided through the Univention App Center</title>
+		<para>
+		  In the default setting, a repository only includes the packages of the standard
+		  UCS scope. Further components can be added both from Univention - e.g.,
+		  &ucsUAS; - or from third parties such as groupware manufacturers.
+		  Additional components are generally integrated via the Univention App Center (see <xref
+		  linkend="software:appcenter"/>). The following steps are only necessary for components
+		  which are not available from the Univention App Center.
+		</para>
+		<para>
+			Additional components can be registered via the &ucsUMC; or in &ucsUCR;.
+		</para>
+		<para>
+		  Components can be versioned. This ensures that only components are installed
+		  that are compatible with a UCS version.
+		  The version compatibility is automatically ensured during installation via the Univention
+		  App Center.
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>empty or unset</term>
+				<listitem>
+					<simpara>
+						All versions of the same major
+						number will be used. If for example UCS-2.3 is installed, all repositories of the
+						component with version numbers 2.0, 2.1, 2.2 and 2.3 will be used if available.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><literal>current</literal></term>
+				<listitem>
+					<simpara>
+						<emphasis>current</emphasis> Using the keyword <emphasis>current</emphasis> will
+						likewise include all versions of the same major version. Additionally it will block all
+						minor and major upgrades of the installed UCS system until the respective component is
+						also available for the new release. Patch level and errata updates are not affected. If
+						for example UCS-2.3 is currently installed and UCS-2.4 or UCS-3.0 is already available,
+						the release updated will be postponed until the component is also available for version
+						2.4 and 3.0 respectively.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term><emphasis>major.minor</emphasis></term>
+				<listitem>
+					<simpara>
+						By specifying an explicit version number only the
+						specified version of the component will be used. Release updates of the system will not
+						be hindered by such components. Multiple versions can be given using commas as
+						delimiters, for example <emphasis>2.0,2.3</emphasis>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+
+		<section id="computers:Integration_of_repository_components_via_the_Univention_Management_Console">
+			<title>Integration of repository components via the Univention Management Console</title>
+			<para>
+			  A list of the integrated repository components can be found in the
+			  <guimenu>Repository Settings</guimenu> tab in the <guimenu>App Center</guimenu> module of
+			  the &ucsUMC;.
+			  Applications which have been added via the Univention App Center are still listed
+			  here, but should be managed via the <guimenu>App management</guimenu> tab.
+			</para>
+			<para>
+				A further component can be set up with <guimenu>Add</guimenu>. The
+				<guimenu>Component Name</guimenu> identifies the component on the repository
+				server. A free text can be entered under <guimenu>Description</guimenu>, for
+				example, for describing the functions of the component in more detail.
+			</para>
+			<figure id="software-repocomponent">
+				<title>Configuring a repository component in UMC</title>
+				<graphic scalefit="1" width="80%" fileref="illustrations/software_repository_en2.png"/>
+			</figure>
+			<para>
+				The host name of the download server is to be entered in the input field
+				<guimenu>Repository server</guimenu>, and, if necessary, an additional file
+				path in <guimenu>Repository prefix</guimenu>.
+			</para>
+			<para>
+				A <guimenu>Username</guimenu> and <guimenu>Password</guimenu> can be configured
+				for repository servers which require authentication.
+			</para>
+			<para>
+				A software component is only available once <guimenu>Enable this
+				component</guimenu> has been activated.
+			</para>
+			<para>
+				A differentiation is also made for components between
+				<emphasis>maintained</emphasis> and <emphasis>unmaintained</emphasis>
+				components, see <xref linkend="software::configrepo"/>.
+			</para>
+		</section>
+
+		<section id="computers::softwaremanagement::repoadducr">
+			<title>Integration of repository components via Univention Configuration Registry</title>
+			<para>
+				The following &ucsUCR; variables can be used to register a repository
+				component. It is also possible to activate further functions here which cannot
+				be configured via the UMC module. <emphasis>NAME</emphasis> stands for the
+				component's name:
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><command>repository/online/component/NAME/server</command></term>
+					<listitem>
+						<simpara>
+							The repository server on which the components are available.
+							If this variable is
+							not set, the server from the &ucsUCRV; <envar>repository/online/server</envar>
+							uses.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><command>repository/online/component/NAME</command></term>
+					<listitem>
+						<simpara>
+							This
+							variable must be set to <emphasis>enabled</emphasis> if the components are to
+							be mounted.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><command>repository/online/component/NAME/localmirror</command></term>
+					<listitem>
+						<simpara>
+							This variable can be used to configure whether the component is mirrored locally.
+							In combination with the &ucsUCRV;
+							<envar>repository/online/component/NAME/server</envar>, a configuration
+							can be set up so that the component is mirrored, but not activated, or that it
+							is activated, but not mirrored.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><command>repository/online/component/NAME/description</command></term>
+					<listitem>
+						<simpara>
+							A descriptive name for the repository.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><command>repository/online/component/NAME/prefix</command></term>
+					<listitem>
+						<simpara>
+							Defines the URL prefix which is used on the repository server.
+							This variable is usually not set.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><command>repository/online/component/NAME/username</command></term>
+					<listitem>
+						<simpara>
+							If the
+							repository server requires authentication, the user name can be entered in this
+							variable.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><command>repository/online/component/NAME/password</command></term>
+					<listitem>
+						<simpara>
+							If the
+							repository server requires authentication, the password can be entered in this
+							variable.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<command>repository/online/component/NAME/version</command>
+					</term>
+					<listitem>
+						<simpara>
+							This variable controls the versions to include, see
+							<xref linkend="computers::softwaremanagement::repoadd"/> for details.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><command>repository/online/component/NAME/defaultpackages</command></term>
+					<listitem>
+						<simpara>
+							A list of package names separated by blanks.
+							The UMC module <emphasis>App Center</emphasis>
+							offers the installation of this component if at least one of
+							the packages is not installed. Specifying the package list eases the subsequent
+							installation of components.
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+
+			<para>
+				For example, to integrate the UCS@School component, the following variables
+				must be set:
+			</para>
+			<programlisting>
+ucr set repository/online/component/ucsschool/description="UCS@School packages" \
+ repository/online/component/ucsschool/server=updates.software-univention.de \
+ repository/online/component/ucsschool=yes
+			</programlisting>
+		</section>
+	</section>
+
+	<section id="computers::softwaremonitor">
+		<title>Central monitoring of software installation statuses with the software monitor</title>
+		<para>
+			The software monitor is a database in which information is stored concerning
+			the software packages installed across all UCS systems. This database offers an
+			administrator an overview of which release and package versions are installed
+			in the domain and offers information for the step-by-step updating of a UCS
+			domain and for use in identifying problems.
+		</para>
+		<para>
+			The software monitor can be set up by selecting the <emphasis>Software
+			installation monitor</emphasis> component in the Univention
+			Installer. Alternatively, the <package>univention-pkgdb</package> package can
+			be installed.
+		</para>
+		<para>
+			UCS systems update their entries automatically when software is installed,
+			uninstalled or updated. The system on which the software monitor is operated is
+			located by the DNS service record <command>_pkgdb._tcp</command>.
+		</para>
+		<para>
+			The software monitor's web-based interface integrates in the &ucsUMC; and can
+			be accessed via the <guimenu>Software monitor</guimenu> module. The following
+			functions are available:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+				<emphasis>Systems</emphasis> allows to search for UCS systems, which
+				are tracked by the software monitor. It is possible to search for system names,
+				UCS versions and system roles.
+				</simpara>
+			</listitem>
+			<listitem>
+				<para>
+				<emphasis>Packages</emphasis> allows to search in the installation data
+				tracked by the package status database. The following gives an overview of the
+				search possibilities available for the installation status of packages:
+				</para>
+			<itemizedlist>
+				<listitem>
+						<simpara>
+					The <emphasis>Selection state</emphasis> influences the action taken
+					when updating a package. <emphasis>Install</emphasis> is used to select a
+					package for installation. If a package is configured to
+					<emphasis>Hold</emphasis> it will be excluded from further updates. There are
+					two possibilities for uninstalling a package: A package removed with
+					<emphasis>DeInstall</emphasis> keeps locally created configuration data, whilst
+					a package removed with <emphasis>Purge</emphasis><emphasis>Purge</emphasis> is
+					completely deleted.
+						</simpara>
+				</listitem>
+				<listitem>
+						<simpara>
+					The <emphasis>Installation state</emphasis> describes the status of
+					an installed package in relation to upcoming updates. The normal status is
+					<emphasis>Ok</emphasis>, which leads to a package being updated when a newer
+					version exists. If a package is configured to <emphasis>Hold</emphasis> it will
+					be excluded from the update.
+						</simpara>
+				</listitem>
+				<listitem>
+						<simpara>
+					The <emphasis>Package state</emphasis> describes the status of a
+					set-up package. The normal status here is <emphasis>Installed</emphasis> for
+					installed packages and <emphasis>ConfigFiles</emphasis> for removed
+					packages. All other statuses appear when the package's installation was
+					cancelled in different phases.
+						</simpara>
+				</listitem>
+			</itemizedlist>
+			</listitem>
+			<listitem>
+				<para>
+				<emphasis>Problems</emphasis> allows automatic identification of
+				installation problems:
+				</para>
+			<itemizedlist>
+				<listitem>
+						<simpara>
+					The system installation status can be compared with a given target
+					release. This allows the efficient discovery of out-of-date installations in
+					large environments.
+						</simpara>
+				</listitem>
+				<listitem>
+						<simpara>
+					Incompletely installed software packages can be identified.
+						</simpara>
+				</listitem>
+			</itemizedlist>
+			</listitem>
+		</itemizedlist>
+		<figure id="software-monitor">
+			<title>Searching for packages in the software monitor</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_en1.png"/>
+		</figure>
+		<para>
+			If you do not wish UCS systems to store installation processes in the software
+			monitor (e.g., when there is no network connection to the database), this can
+			be arranged by setting the &ucsUCRV; <envar>pkgdb/scan</envar> to
+			<emphasis>no</emphasis>.
+		</para>
+		<para>
+			Should storing be reactivated at a later date, the command
+			<command>univention-pkgdb-scan</command> must be executed to ensure that
+			package versions installed in the meanwhile are also adopted in the database.
+		</para>
+
+		<para>
+		  The following command can be used to remove a system's program inventory from the database again:
+		</para>
+		  <programlisting>
+univention-pkgdb-scan --remove-system RECHNERNAME
+		  </programlisting>
+	</section>
+</section>
+
+</chapter>

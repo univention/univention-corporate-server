@@ -1,0 +1,1217 @@
+<chapter id="users:general">
+    <title>Benutzerverwaltung</title>
+    <para>
+        UCS integriert ein zentrales Identity-Management nach dem <emphasis>Same
+        User, Same Password</emphasis>-Prinzip. Alle Benutzerinformationen werden in UCS
+        zentral über die &ucsUMC; verwaltet und im LDAP-Verzeichnisdienst
+        gespeichert.
+    </para>
+    <para>
+        Alle in die Domäne integrierten Dienste greifen dabei auf die
+        zentralen Konto-Informationen zu, d.h. für die Benutzeranmeldung an
+        einem Windows-Client wird die gleiche Benutzerkennung und das gleiche
+        Passwort verwendet wie etwa bei der Anmeldung am IMAP-Server.
+    </para>
+    <para>
+        Die domänenweite Verwaltung von Benutzerdaten verringert den
+        administrativen Aufwand, da Änderungen nicht auf verschiedenen
+        Einzelsystemen nachkonfiguriert werden müssen und vermeidet
+        Folgefehler aus Inkonsistenzen zwischen den einzelnen Datenbasen.
+    </para>
+    <section id="users::management">
+        <title>Verwaltung von Benutzern in der Univention Management Console</title>
+        <para>
+            Benutzer werden im Modul <emphasis>Benutzer</emphasis> der &ucsUMC; verwaltet.
+        </para>
+        <figure id="user-create">
+            <title>Anlegen eines Benutzers in UMC</title>
+            <graphic scalefit="1" width="80%" fileref="illustrations/users_user_de.png"/>
+        </figure>
+        <para>
+            Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
+            der &ucsUMC; und zum Hinzufügen, Bearbeiten, Suchen und Löschen von
+            Objekten finden sich in <xref linkend="central:user-interface"/>.
+        </para>
+        <table>
+            <title>Karteikarte 'Allgemein'</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Benutzername</entry>
+                        <entry>
+                            <para>
+                                Mit diesem Namen meldet sich der Benutzer am System an. Der Name muss
+                                mit einem Buchstaben beginnen und darf anschließend Buchstaben von a bis
+                                z, die Ziffern 0 bis 9, Punkte, Bindestriche oder Unterstriche enthalten.
+                            </para>
+                            <para>
+                                Um die Kompatibilität mit Nicht-UCS-Systemen zu gewährleisten, wird
+                                das Anlegen von Benutzern, die sich lediglich in der Groß- und Kleinschreibung
+                                unterscheiden, verhindert. Wenn beispielsweise der Benutzername <emphasis>meier</emphasis>
+                                bereits existiert, wird der Benutzername <emphasis>Meier</emphasis> nicht mehr zugelassen.
+                            </para>
+                            <para>
+							  In der Grundeinstellung kann kein Benutzer mit dem Namen einer existierenden
+							  Gruppe angelegt werden. Wird die &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar>
+							  auf <emphasis>false</emphasis> gesetzt, wird diese Prüfung aufgehoben.
+							</para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Beschreibung</entry>
+                        <entry>
+                            Hier kann eine beliebige Beschreibung für den Benutzer eingetragen werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Passwort</entry>
+                        <entry>
+                            Hier wird das Passwort des Benutzers eingegeben.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Passwort (Wiederholung)</entry>
+                        <entry>
+                            Um Tippfehler auszuschließen wird das Passwort des Benutzers erneut
+                            eingegeben.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Passwort-History ignorieren</entry>
+                        <entry>
+                            Durch die Aktivierung dieses Auswahlkästchens wird die Passwort-History für diesen
+                            Benutzer und für diese Passwortänderung außer Kraft gesetzt. Dadurch kann dem
+                            Benutzer mit dieser Änderung ein bereits verwendetes Passwort
+                            zugewiesen werden. Weitere Hinweise zur Passwortverwaltung finden sich in
+                            <xref linkend="users:passwords"/>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Passwort-Prüfungen ignorieren</entry>
+                        <entry>
+                            Wird diese Option aktiviert, wird die Prüfung der Passwortlänge und -qualität
+                            für diesen Benutzer und für diese Passwortänderung außer Kraft
+                            gesetzt. Dadurch kann dem Benutzer mit dieser Änderung z.B. ein
+                            kürzeres Passwort zugewiesen werden, als in der Mindestlänge vorgegeben
+                            ist. Weitere Hinweise zur Passwortverwaltung finden sich in
+                            <xref linkend="users:passwords"/>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Primäre E-Mail-Adresse</entry>
+                        <entry>
+                            Hier wird die E-Mail-Adresse des Benutzers eingetragen, siehe
+                            <xref linkend="mail::management::users"/>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Titel</entry>
+                        <entry>
+                            Die Anrede des Benutzers kann hier eingegeben werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Vorname</entry>
+                        <entry>
+                            Hier wird der Vorname des Benutzers eingetragen.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Nachname</entry>
+                        <entry>
+                            Hier wird der Nachname des Benutzers angegeben.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Anzeigename</entry>
+                        <entry>
+                            Der Anzeigename wird automatisch aus Vor- und Nachname gebildet. In der Regel
+                            muss er nicht angepasst werden. Der Anzeigename wird u.a. in der
+                            Synchronisation mit Active Directory und Samba 4 verwendet.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Organisation</entry>
+                        <entry>
+                            Die Organisation/das Unternehmen, dem der Benutzer angehört, wird in diesem Feld eingetragen.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Geburtsdatum</entry>
+                        <entry>
+                            In diesem Feld kann das Geburtsdatum des Benutzers gespeichert werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Bild des Benutzers (JPEG-Format)</entry>
+                        <entry>
+                            Über diese Maske kann ein Bild des Benutzers im JPEG-Format im LDAP hinterlegt
+                            werden. Standardmäßig ist die Dateigröße auf 512 Kilobyte limitiert.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Mitarbeiternummer</entry>
+                        <entry>
+                            Die Mitarbeiter- oder Personalnummer kann in dieses Feld eingetragen werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Mitarbeiterkategorie</entry>
+                        <entry>
+                            Hier kann die Kategorie des Mitarbeiters festgelegt werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Vorgesetzter</entry>
+                        <entry>
+                            Der Vorgesetzte des Benutzers kann hier ausgewählt werden.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Karteikarte 'Gruppen'</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Primäre Gruppe</entry>
+                        <entry>
+                            In dieser Auswahlliste kann die primäre Gruppe für den Benutzer festgelegt
+                            werden. Zur Auswahl stehen alle in der Domäne eingetragenen Gruppen.
+                            Standardmäßig ist die Gruppe <emphasis>Domain Users</emphasis> als Vorgabe eingestellt.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Gruppen</entry>
+                        <entry>
+                            Hier können weitere Gruppenzugehörigkeiten des Benutzers neben der
+                            primären Gruppe eingestellt werden.
+                        </entry>
+                    </row>
+				</tbody>
+			</tgroup>
+		</table>
+
+        <table>
+            <title>Karteikarte 'Konto'</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Konto-Deaktivierung</entry>
+                        <entry>
+                            <para>
+                                Mit dem Auswahlfeld <guimenu>Konto-Deaktivierung</guimenu> kann das Benutzerkonto
+                                für ein oder mehrere Anmeldeverfahren deaktiviert werden. Solange der
+                                jeweilige Konto-Typ deaktiviert ist, kann sich der Benutzer nicht am System
+                                anmelden. Ein typischer Anwendungsfall ist ein Benutzer, der das Unternehmen
+                                verlassen hat. Eine Kontodeaktivierung kann in einer heterogenen Umgebung ggf. auch durch
+                                externe Tools ausgelöst werden, das Auswahlfeld spiegelt dann den Zustand
+                                des Kontos wider. Normalerweise sollten Benutzer immer für alle Konto-Typen
+                                deaktiviert werden. Folgende Deaktivierungszustände können umgesetzt werden:
+                                <itemizedlist>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Keine</guimenu> - Der Grundzustand; alle Anmeldungen sind möglich.
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Alle deaktiviert</guimenu> - Alle Kontotypen sind gesperrt.
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Windows deaktiviert</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Kerberos deaktiviert</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>POSIX deaktiviert</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Windows und POSIX deaktiviert</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Windows und Kerberos deaktiviert</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>POSIX und Kerberos deaktiviert</guimenu>
+										</simpara>
+                                    </listitem>
+                                </itemizedlist>
+                            </para>
+                            <para>
+                                Folgende Querbeziehungen zwischen den verschiedenen Anmeldeverfahren ergeben sich aus
+                                der UCS-PAM-Konfiguration:
+                                <itemizedlist>
+                                    <listitem>
+										<simpara>
+                                        Die Linux-Anmeldung (z.B. an GDM oder einem tty) wird nur deaktiviert,
+                                        wenn alle Anmeldeverfahren deaktiviert werden; ein deaktiviertes POSIX-Konto
+                                        reicht dazu nicht aus.
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        Samba setzt ein nicht deaktiviertes POSIX-Konto voraus, d.h. durch das
+                                        Deaktivieren des POSIX-Kontos wird auch Samba deaktiviert.
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        Die Kerberos-Bibliothek (Heimdal) wertet auch die Samba-Kontoeinstellungen aus, d.h. durch das
+                                        Deaktivieren des Windows-Kontos wird auch Kerberos deaktiviert.
+										</simpara>
+                                    </listitem>
+                                </itemizedlist>
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Gesperrte Anmeldeverfahren</entry>
+                        <entry>
+                            <para>
+                                Mit diesem Auswahlfeld können einzelne Anmeldeverfahren gesperrt werden. Dies
+                                kann beispielsweise aus Sicherheitsgründen automatisch erfolgen, wenn ein
+                                Benutzer sein Passwort zu oft fehlerhaft eingegeben hat, siehe <xref linkend="users:faillog"/>.
+                            </para>
+                            <para>
+                                Normalerweise sollten Benutzer immer für alle Anmeldeverfahren gesperrt werden.
+                            </para>
+                            <para>
+                                Im Gegensatz zur <guimenu>Konto-Deaktivierung</guimenu> wird dabei nicht das Konto
+                                deaktiviert, sondern nur die Anmeldung verweigert. Folgende Anmeldeverfahren
+                                können eingeschränkt werden:
+                                <itemizedlist>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Kein gesperrtes Anmeldeverfahren</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Alle Anmeldeverfahren sind gesperrt</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Nur Windows/Kerberos gesperrt</guimenu>
+										</simpara>
+                                    </listitem>
+                                    <listitem>
+										<simpara>
+                                        <guimenu>Nur POSIX/LDAP gesperrt</guimenu>
+										</simpara>
+                                    </listitem>
+                                </itemizedlist>
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Konto-Ablaufdatum</entry>
+                        <entry>
+                            <para>
+                                In diesem Eingabefeld wird ein Datum vorgegeben, an dem das Konto
+                                automatisch gesperrt wird. Dies ist sinnvoll für zeitlich befristete
+                                Benutzerkonten, z.B. für Praktikanten.
+                            </para>
+                            <para>
+                                Wenn das Datum entfernt oder ein anderes, zukünftiges Datum
+                                eingetragen wird, kann sich der Benutzer wieder anmelden.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Passwort-Ablaufdatum</entry>
+                        <entry>
+                            <para>
+                                Wenn das Passwort zu einem bestimmten Datum abläuft, wird dieses Datum in
+                                diesem Eingabefeld angezeigt. Das Eingabefeld ist nicht direkt
+                                änderbar, siehe <xref linkend="users:passwords"/>.
+                            </para>
+                            <para>
+                                Ist ein Passwort-Ablaufintervall definiert, wird das
+                                Passwort-Ablaufdatum bei Kennwortänderungen automatisch angepasst.
+                            </para>
+                            <para>
+                                Wird kein <guimenu>Passwort-Ablaufdatum</guimenu> gesetzt, werden evtl.
+								bestehende frühere Ablaufdaten entfernt.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Passwort bei der nächsten Anmeldung ändern</entry>
+                        <entry>
+                            Wenn dieses Auswahlkästchen aktiviert ist, muss der Benutzer bei der nächsten
+                            Anmeldung an der Domäne sein Passwort ändern.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Laufwerk für das Windows-Heimatverzeichnis</entry>
+                        <entry>
+                            Wenn das Windows-Heimatverzeichnis bei diesem Benutzer auf einem anderen
+                            Windows-Laufwerk erscheinen soll, als in der Samba-Konfiguration vorgegeben,
+                            so kann hier ein Laufwerksbuchstabe eingetragen werden, z.B. <emphasis>M:</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Windows-Heimatverzeichnis</entry>
+                        <entry>
+                            Hier wird der Pfad zu dem Verzeichnis angegeben, das als
+                            Windows-Heimatverzeichnis für den Benutzer dienen soll,
+                            z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Anmeldeskript</entry>
+                        <entry>
+                            Hier wird das benutzerspezifische Anmeldeskript relativ zur Netlogon-Freigabe
+                            eingetragen, z.B. <emphasis>scripts\user.bat</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Profilverzeichnis</entry>
+                        <entry>
+                            Das Profilverzeichnis für den Benutzer kann hier angegeben werden,
+                            e.g. <emphasis>\\ucs-file-server\user\profile</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Relative ID</entry>
+                        <entry>
+                            Die relative ID (RID) ist der lokale Teil der SID-Domänenkennung. Wenn ein Benutzer eine
+                            bestimmte RID erhalten soll, so kann diese hier eingetragen werden. Wenn keine
+                            RID eingetragen wird, so wird automatisch die nächste freie RID verwendet. Die
+                            RID kann nachträglich nicht geändert werden, es sind ganze Zahlen ab
+                            1000 zulässig. RIDs unter 1000 sind Standard-Gruppen und anderen speziellen
+                            Objekten vorbehalten.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Samba-Privilegien</entry>
+                        <entry>
+                            Mit dieser Auswahlmaske können einem Benutzer ausgewählte
+                            Windows-Systemrechte zugewiesen werden, etwa die Berechtigung ein
+                            System in die Domäne zu joinen.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Samba-Anmeldezeitraum</entry>
+                        <entry>
+                            <para>
+                                In diesem Eingabefeld werden Zeitspannen festgelegt, zu denen sich dieser Benutzer
+                                an Windows-Rechnern anmelden kann.
+                            </para>
+                            <para>
+                                Wird keine Einstellung in diesem Feld vorgenommen, so kann sich der Benutzer zu jeder
+                                Tageszeit anmelden.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Anmeldung nur an diesen Microsoft Windows-Rechnern zulassen</entry>
+                        <entry>
+                            Diese Einstellung gibt an, an welchen Rechnern sich der Benutzer anmelden
+                            darf. Werden keine Einstellungen vorgenommen, ist der Benutzer berechtigt,
+                            sich an jedem Rechner anzumelden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>UNIX-Heimatverzeichnis</entry>
+                        <entry>
+                            Der Verzeichnispfad zum Heimatverzeichnis des Benutzers.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Login-Shell</entry>
+                        <entry>
+                            In diesem Feld wird die Login-Shell des Benutzers eingetragen. Dieses Programm
+                            wird bei der textbasierten Anmeldung des Benutzers gestartet. Standardmäßig
+                            wird hier <filename>/bin/bash</filename> eingetragen.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Benutzer-ID</entry>
+                        <entry>
+                            <para>
+                                Wenn der Benutzer eine bestimmte Benutzer-ID erhalten soll, so kann die
+                                Benutzer-ID in dieses Feld eingetragen werden. Wird kein Wert
+                                vorgegeben, wird automatisch eine freie Benutzer-ID zugewiesen.
+                            </para>
+                            <para>
+                                Die Benutzer-ID kann nur beim Hinzufügen des Benutzers angegeben
+                                werden, beim späteren Bearbeiten des Benutzers kann die Benutzer-ID nicht
+                                geändert werden und wird ausgegraut dargestellt.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Gruppen-ID</entry>
+                        <entry>
+                            Hier wird die Gruppen-ID der primären Gruppe des Benutzers
+                            angezeigt. Die primäre Gruppe kann im Reiter <guimenu>Allgemein</guimenu>
+                            geändert werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Heimatverzeichnisfreigabe</entry>
+                        <entry>
+                            Wird hier eine Freigabe ausgewählt, wird das Heimatverzeichnis auf dem
+                            angegebenen Server gespeichert. Erfolgt keine Auswahl, werden die
+                            Benutzerdaten auf dem jeweiligen Anmeldesystem gespeichert.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Pfad der Heimatverzeichnisfreigabe</entry>
+                        <entry>
+                            Hier wird der Pfad zum Heimatverzeichnis relativ zur
+                            <guimenu>Heimatverzeichnisfreigabe</guimenu> angegeben. Beim Neuanlegen
+							eines Benutzers ist der Benutzername als Vorgabewert bereits eingetragen.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Karteikarte 'Kontakt'</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>E-Mail-Adresse</entry>
+                        <entry>
+                            Hier können weitere E-Mail-Adressen hinterlegt werden. Diese werden
+                            nicht vom Mailserver ausgewertet. Die Werte werden im LDAP-Attribut
+                            <emphasis>mail</emphasis> gespeichert. Die meisten Adressbuch-Applikationen suchen
+                            im LDAP nach diesem Attribut.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Telefonnummer</entry>
+                        <entry>
+                            Dieses Feld beinhaltet die geschäftlichen Telefonnummern des Benutzers.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Abteilungsnummer</entry>
+                        <entry>
+                            Hier kann die Abteilungsnummer des Mitarbeiters angegeben werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Raumnummer</entry>
+                        <entry>
+                            Die Raumnummer des Benutzers.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Straße</entry>
+                        <entry>
+                            Die Straße und die Hausnummer der Geschäftsadresse des Benutzers kann hier eingetragen werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Postleitzahl</entry>
+                        <entry>
+                            Dieses Feld beinhaltet die Postleitzahl der Geschäftsadresse des Benutzers.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Stadt</entry>
+                        <entry>
+                            Dieses Feld beinhaltet die Stadt der Geschäftsadresse des Benutzers.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Telefonnummer Mobil</entry>
+                        <entry>
+                            Hier werden die privaten Mobilfunknummern des Benutzers eingetragen.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Telefonnummer Festnetz</entry>
+                        <entry>
+                            Die privaten Festnetznummern können hier angegeben werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Rufnummer Pager</entry>
+                        <entry>
+                            Pager-Rufnummern werden in diesem Feld angegeben.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Private Adresse</entry>
+                        <entry>
+                            Eine oder mehrere private Postadressen des Benutzers können in diesem Feld
+                            angegeben werden.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Karteikarte 'Mail'</title>
+            <tgroup cols="1">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <tbody>
+                    <row>
+                        <entry>
+                            <para>
+                                Diese Karteikarte wird in den erweiterten Einstellungen angezeigt.
+                            </para>
+                            <para>
+                                Die Einstellungen sind in <xref linkend="mail::management::users"/>
+                                beschrieben.
+                            </para>
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+
+		<para>
+		  Die folgende Karteikarte konfiguriert Einstellungen für Anmeldungen an Windows-Terminalservern.
+		</para>
+        <table>
+            <title>Karteikarte 'Windows-Terminalserver' (erweiterte Einstellungen)</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>Basisverzeichnis des Terminalservers</entry>
+                        <entry>
+                            Hier kann der Pfad zu einem Verzeichnis angegeben werden, das als
+                            Windows-Heimatverzeichnis für den Benutzer am Terminalserver dienen
+                            soll, z.B <emphasis>\\ucs-file-server\ts\user</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Laufwerksbuchstabe für das Basisverzeichnis des Terminalservers</entry>
+                        <entry>
+                            Wenn das Windows-Heimatverzeichnis bei diesem Benutzer auf einem anderen
+                            Windows-Laufwerk erscheinen soll, als in der Samba-Konfiguration vorgegeben,
+                            so kann der entsprechende Laufwerksbuchstabe mit anschließendem Doppelpunkt
+                            hier eingetragen werden, z.B: <emphasis>M:</emphasis>.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Startprogramm Befehlszeile</entry>
+                        <entry>
+                            Pfad zu einem Programm, das beim Starten der Terminal-Sitzung ausgeführt
+                            werden soll.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Startprogramm Arbeitsverzeichnis</entry>
+                        <entry>
+                            Arbeitsverzeichnis des Programms, das unter <guimenu>Startprogramm Befehlszeile</guimenu>
+                            eingetragen ist.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Client-Konfiguration übernehmen für das Startprogramm</entry>
+                        <entry>
+                            Die beiden Einstellungen <guimenu>Startprogramm Befehlszeile</guimenu> und
+                            <guimenu>Startprogramm Arbeitsverzeichnis</guimenu> können von der Client-Anwendung
+                            überschrieben werden. Wird dieses Auswahlkästchen aktiviert, so wird die
+                            Client-Konfiguration verwendet.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Client-Laufwerke beim Anmelden verbinden</entry>
+                        <entry>
+                            Die Laufwerke des zugreifenden Clients werden in der Terminalserver-Sitzung zur Verfügung
+                            gestellt, wenn diese Option aktiviert ist.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Client-Drucker beim Anmelden verbinden</entry>
+                        <entry>
+                            Die Client-Drucker werden bei der Anmeldung am Terminalserver verbunden und
+                            stehen somit in der Terminalserver-Sitzung zur Verfügung.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Standardmäßig der Client Hauptdrucker</entry>
+                        <entry>
+                            Wird dieses Auswahlkästchen aktiviert, so wird der Client Standard-Drucker zum
+                            Standard-Drucker für diese Terminalserver-Sitzung deklariert.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Anmeldung am Terminalserver zulassen</entry>
+                        <entry>
+                            Ist dieses Auswahlkästchen aktiviert, so darf sich der Benutzer an einem
+                            Terminalserver anmelden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>CTX Spiegelung</entry>
+                        <entry>
+                            Diese Auswahlliste gibt an, ob eine Benutzersitzung gespiegelt werden kann.
+                            Wenn <guimenu>deaktiviert</guimenu> ausgewählt ist, so kann diese Sitzung nicht
+                            gespiegelt werden.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Beendete oder abgelaufene Verbindungen</entry>
+                        <entry>
+                            In dieser Auswahlliste kann ausgewählt werden, ob beendete oder abgelaufene
+                            Verbindungen <guimenu>getrennt</guimenu> oder <guimenu>zurückgesetzt</guimenu> werden sollen.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Wiederherstellung von beendeten Verbindungen</entry>
+                        <entry>
+                            Hier wird ausgewählt, ob die beendete Verbindung von jedem Client oder nur vom
+                            vorherigen Client wieder aufgebaut werden kann.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>CTX RAS Dialin</entry>
+                        <entry>
+                            <para>
+                                Diese Option konfiguriert die Callback-Funktion eines Remote Access
+                                Servers. Dabei wird die Einwahlleitung des Benutzer nach Authentifizierung
+                                unterbrochen und der Benutzer zurückgerufen.
+                            </para>
+                            <para>
+                                Wird ein Eintrag mit der Option <guimenu>Eingabe EIN</guimenu> ausgewählt, wird
+                                dem Benutzer, welcher die Spiegelung veranlasst hat, die Erlaubnis erteilt,
+                                Tastatureingaben und Mausaktionen in der gespiegelten Sitzung vorzunehmen.
+                                Sollte ein Eintrag mit der Option <guimenu>Benachrichtigung EIN</guimenu>
+                                ausgewählt sein, so wird auf dem Client eine Meldung angezeigt, in der um die
+                                Berechtigung zum Spiegeln der Sitzung gebeten wird.
+                            </para>
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Windows Terminalserver Profilpfad</entry>
+                        <entry>
+                            Der Pfad zum Windows-Profil, das in der Terminalserver-Sitzung verwendet
+                            werden soll, ist hier anzugeben. Wird hier kein Wert angegeben, so wird der
+                            Standard-Profilpfad verwendet.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Tastaturlayout</entry>
+                        <entry>
+                            Das Tastaturlayout für die Terminalserver-Sitzung.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        <table>
+            <title>Karteikarte '(Optionen)'</title>
+            <tgroup cols="2">
+                <colspec colnum="1" colname="col1" colwidth="1*"/>
+                <colspec colnum="2" colname="col2" colwidth="2*"/>
+                <thead>
+                    <row>
+                        <entry>Attribut</entry>
+                        <entry>Beschreibung</entry>
+                    </row>
+                </thead>
+                <tbody>
+
+                    <row>
+                        <entry>Mail-Konto</entry>
+                        <entry>
+                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
+                            Objektklasse <emphasis>univentionMail</emphasis> nicht.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Kerberos Prinzipal</entry>
+                        <entry>
+                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
+                            Objektklassen <emphasis>krb5Principal</emphasis> und <emphasis>krb5KDCEntry</emphasis> nicht.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Samba-Konto</entry>
+                        <entry>
+                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
+                            Objektklasse <emphasis>sambaSamAccount</emphasis> nicht.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>POSIX-Konto</entry>
+                        <entry>
+                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
+                            Objektklassen <emphasis>posixAccount</emphasis> und <emphasis>shadowAccount</emphasis> nicht.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Persönliche Informationen</entry>
+                        <entry>
+                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
+                            Objektklassen <emphasis>organizationalPerson</emphasis> und <emphasis>inetOrgPerson</emphasis> nicht.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Public Key Infrastruktur-Konto</entry>
+                        <entry>
+                            Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
+                            Objektklasse <emphasis>pkiUser</emphasis> nicht.
+                        </entry>
+                    </row>
+                    <row>
+                        <entry>Einfaches Authentisierungskonto</entry>
+                        <entry>
+                            Diese Option kann verwendet werden, um Benutzer-Objekte anzulegen, die
+                            ausschließlich einen Benutzernamen und ein Passwort haben. Mit diesen
+                            Benutzern ist ausschließlich eine Authentisierung gegen den LDAP-Verzeichnisdienst
+                            möglich, aber keine Anmeldung an UCS- oder Windows-Systemen. Wird diese
+                            Option gesetzt, dann werden die Objektklassen <emphasis>uidObject</emphasis> und
+                            <emphasis>simpleSecurityObject</emphasis> verwendet.
+                        </entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+    </section>
+    <section id="users:passwords">
+        <title>Management der Benutzerpasswörter</title>
+        <para>
+            Schwer zu erratende Passwörter und regelmäßige Passwortwechsel sind
+            ein wichtiger Baustein der Systemsicherheit einer
+            UCS-Domäne. Folgende Eigenschaften lassen sich für Benutzer über eine
+            <emphasis>Passwort</emphasis>-Richtlinie
+			konfigurieren. Wird Samba eingesetzt, greifen für
+			Anmeldungen an Windows-Clients die Einstellungen des
+			Samba-Domänenobjekts (siehe <xref
+			linkend="users:password:samba"/>). Die Einstellungen des
+			Samba-Domänenobjekts und der Richtlinie sollten identisch
+			gesetzt werden, sonst greifen für Anmeldungen 
+			an Windows- und UCS-Systemen unterschiedliche
+			Passwortanforderungen.
+		</para>
+        <para>
+		  Für jeden im Managementsystem gespeicherten Benutzer wird das Passwort in verschiedenen
+		  Attributen gespeichert:
+		</para>
+		  <itemizedlist>
+			<listitem>
+				<simpara>
+					Das Attribut <emphasis>krb5Key</emphasis> speichert das
+					Kerberos-Passwort
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+			Das Attribut <emphasis>userPassword</emphasis> speichert das
+			Unix-Passwort (das in anderen Linux-Distributionen in <filename>/etc/shadow</filename>
+			gespeichert wird
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+			Das Attribut <emphasis>sambaNTPassword</emphasis> enthält den von Samba
+			verwendeten NT-Passwort-Hash
+				</simpara>
+			</listitem>
+		  </itemizedlist>
+		<para>
+		  Passwortänderungen werden in der UCS-PAM-Konfiguration immer über Kerberos initiiert.
+		</para>
+            <figure id="password-policy">
+                <title>Konfiguration einer Passwort-Richtlinie</title>
+                <graphic scalefit="1" width="80%" fileref="illustrations/users_policy_password_de.png"/>
+            </figure>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Die <emphasis>Passwort-Historie</emphasis> speichert die letzten
+                        Passwortänderungen in Form von Hashes. Diese Passwörter können dann vom Benutzer bei einer
+                        Änderung nicht als neues Kennwort verwendet werden. Mit einer
+                        Passwort-Historie von z.B. fünf müssten fünf neue Passwörter verwendet
+                        werden, bis ein Kennwort erneut verwendet werden kann.
+                    </para>
+                    <para>
+                        Die Passwörter werden nicht rückwirkend gespeichert. Wenn beispielsweise
+                        ursprünglich zehn Passwörter gespeichert wurden und der Wert auf drei
+                        herabgesetzt wird, werden die älteren sieben Passwörter bei der nächsten
+                        Passwort-Änderung aus der Historie entfernt. Wird danach die
+                        Historien-Länge wieder erhöht, müssen erst wieder Passwörter
+                        'angesammelt' werden.
+                    </para>
+                </listitem>
+                <listitem>
+					<simpara>
+                    Die <emphasis>Passwort-Länge</emphasis> ist die Anzahl an Zeichen,
+                    die ein Nutzer-Passwort mindestens enthalten muss. Wird nichts
+                    eintragen, beträgt die Mindestlänge acht Zeichen.
+                    Der Vorgabewert von acht Zeichen für die Passwort-Länge ist
+                    fest vorgegeben. Er gilt deswegen immer, wenn keine
+                    Richtlinie gesetzt ist und das Auswahlkästchen <guimenu>Passwort-Länge
+                    ignorieren</guimenu> nicht markiert ist, also auch, wenn die
+                    Passwort-Richtlinie <emphasis>default-settings</emphasis> gelöscht wurde.
+					</simpara>
+                </listitem>
+                <listitem>
+					<simpara>
+                    Ein <emphasis>Passwort-Ablaufintervall</emphasis> forciert regelmäßige
+                    Passwortänderungen. Bei der Anmeldung an der Univention Management Console, Kerberos, Windows-Clients und
+                    an UCS-Systemen wird nach Ablauf des Intervalls in Tagen ein
+                    Passwortwechsel erzwungen. Die verbleibende Gültigkeit des Kennworts
+                    wird in der Benutzerverwaltung unter <guimenu>Passwort-Ablaufdatum</guimenu>
+                    im Reiter <guimenu>Konto</guimenu> angezeigt. Wird das Eingabefeld leer
+					belassen, wird kein Passwort-Ablaufintervall angewendet.
+					</simpara>
+                </listitem>
+                <listitem>
+                    <para>
+                        Ist die Option <emphasis>Passwort-Qualitätsprüfung</emphasis> aktiviert,
+                        werden für Passwortänderungen in Samba, &ucsUMC; und Kerberos
+                        zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung
+                        beinhalten.
+                    </para>
+                    <para>
+                        Die Konfiguration erfolgt über &ucsUCR; und sollte auf allen
+                        Anmeldeservern erfolgen. Folgende Prüfungen können erzwungen werden:
+                    </para>
+                        <itemizedlist>
+                            <listitem>
+								<simpara>
+                                Die Mindestanzahl von Zahlen in dem neuen Passwort
+                                (<envar>password/quality/credit/digits</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Die Mindestanzahl von Grossbuchstaben in dem neuen Passwort
+                                (<envar>password/quality/credit/upper</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Die Mindestanzahl von Kleinbuchstaben in dem neuen Passwort
+                                (<envar>password/quality/credit/lower</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Die Mindestanzahl von Zeichen in dem neuen Passwort, die keine
+                                Buchstaben oder Ziffern sind (<envar>password/quality/credit/other</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Einzelne Zeichen/Ziffern können ausgeschlossen werden
+                                (<envar>password/quality/forbidden/chars</envar>).
+								</simpara>
+                            </listitem>
+                            <listitem>
+								<simpara>
+                                Einzelne Zeichen/Ziffern können erzwungen werden
+                                (<envar>password/quality/required/chars</envar>).
+								</simpara>
+                            </listitem>
+                        </itemizedlist>
+                </listitem>
+            </itemizedlist>
+    </section>
+
+    <section id="users:password:samba">
+	  <title>Passwort-Einstellungen für Windows-Clients bei Verwendung
+	  von Samba</title>
+
+	  <para>
+	  Mit dem Samba-Domänenobjekt können die Passwortanforderungen bei
+	  der Anmeldung an Windows-Clients in einer Samba-Domäne
+	  festgelegt werden.
+	  </para>
+
+	  <para>
+		Das Samba-Domänenobjekt wird über das Modul
+		<emphasis>LDAP-Verzeichnis</emphasis> der &ucsUMC; verwaltet. Es
+		befindet sich im Container <emphasis>samba</emphasis>
+		unterhalb der LDAP-Basis und trägt den NetBIOS-Namen der Domäne.
+	  </para>
+
+	  <para>
+	  Die Einstellungen des Samba-Domänenobjekts und der Richtlinie
+	  (siehe <xref linkend="users:passwords"/>) sollten identisch
+	  gesetzt werden, sonst greifen für Anmeldungen für Anmeldungen an
+	  Windows- und UCS-Systemen unterschiedliche Passwortanforderungen.
+	  </para>
+
+		<table>
+		  <title>Reiter 'Allgemein'</title>
+		  <tgroup cols="2">
+			<colspec colnum="1" colname="col1" colwidth="1*"/>
+			<colspec colnum="2" colname="col2" colwidth="2*"/>
+			<thead>
+			  <row>
+				<entry>Attribut</entry>
+				<entry>Beschreibung</entry>
+			  </row>
+			</thead>
+			<tbody>
+
+			  <row>
+				<entry>Passwort-Länge</entry>
+				<entry>
+				  Die Anzahl an Zeichen, die ein Nutzer-Passwort mindestens enthalten muss.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>Passwort-History</entry>
+				<entry>
+				  Die letzten Passwortänderungen werden in Form von
+				  Hashes gespeichert. Diese Passwörter können dann vom Benutzer bei einer
+				  Änderung nicht als neues Kennwort verwendet
+				  werden. Mit einer Passwort-History von z.B. fünf
+				  müssten fünf neue Passwörter verwendet werden, bis
+				  ein Kennwort erneut verwendet werden kann.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>Minimales Passwortalter</entry>
+				<entry>
+				  Der hier festgelegte Zeitraum muss min. seit der
+				  letzten Passwortänderungen vergangen sein, bis ein
+				  Benutzer sein Passwort das nächste Mal setzen kann.
+				</entry>
+			  </row>
+
+			  <row>
+				<entry>Maximales Passwortalter</entry>
+				<entry>
+				  Nach Ablauf des hier hinterlegten Zeitraums muss das
+				  Passwort vom Benutzer bei der nächsten Anmeldung
+				  geändert werden. Bleibt der Wert leer, ist das
+				  Passwort unbegrenzt gültig.
+				</entry>
+			  </row>
+
+			</tbody>
+		  </tgroup>
+		</table>
+
+	</section>
+
+    <section id="user-management:Passwortwechsel_durch_Benutzer_ueber_die_UMC">
+        <title>Passwortwechsel durch Benutzer über die &ucsUMC;</title>
+        <para>
+            Standardmäßig können Benutzer ihr Passwort nicht über die &ucsUMC; ändern.
+            Um benutzerinitiierte Passwortwechsel zu erlauben, muss die Änderung
+            in den LDAP-ACLs und in der &ucsUMC; erlaubt werden.
+        </para>
+        <para>
+            Zur Anpassung der LDAP-ACLs muss auf dem &ucsMaster; die
+            &ucsUCRV; <envar>ldap/acl/user/password/change</envar> auf <emphasis>yes</emphasis> gesetzt werden
+            und der LDAP-Server neu gestartet werden.
+        </para>
+        <para>
+            Zur einfachen Freigabe in der UMC kann die Richtlinie
+            <emphasis>default-udm-self</emphasis> mit einem LDAP-Objekt verknüpft werden (z.B.
+            mit der LDAP-Basis oder der Gruppe <emphasis>Domain Users</emphasis> (siehe
+            <xref linkend="central:policies:assign"/>)).
+        </para>
+    </section>
+    <section id="users:faillog">
+        <title>Automatisches Sperren von Benutzern nach fehlgeschlagenen Anmeldungen</title>
+        <para>
+            Standardmäßig kann ein Benutzer sein Passwort beliebig oft falsch
+            eingeben. Um Brute Force-Angriffe auf Passwörter zu erschweren, kann eine
+            automatische Sperre von Benutzerkonten nach einer konfigurierbaren Anzahl von
+            fehlerhaften Anmeldungen aktiviert werden. Die Sperre ist standardmäßig lokal
+            pro Rechnersystem aktiviert. Wenn ein Benutzer also auf einem System zu oft
+            sein Passwort falsch eingegeben hat, kann er sich auf einem anderen System
+            weiterhin anmelden. Durch Setzen der &ucsUCRV; <envar>auth/faillog/lock_global</envar> kann
+            die Sperre auch global erfolgen und wird im LDAP registriert. Die globale
+            Sperrung kann nur auf &ucsMaster;/Backup-Systemen eingesetzt
+            werden, da andere Systemrollen nicht über die nötigen Berechtigungen im
+            LDAP-Verzeichnis verfügen. Auf diesen Systemrollen wird der Benutzer aber
+            lokal gesperrt, bzw. über das verwendete Listener-Modul auch wieder entsperrt.
+        </para>
+        <caution>
+			<para>
+            Diese Einstellung kann auch missbraucht werden, etwa wenn ein Benutzer seinen
+            Bildschirm gesperrt hat und ein anderer Benutzer in Abwesenheit mehrfach das
+            Passwort falsch eingibt. In diesem Fall müsste der Benutzer den Administrator
+            aufsuchen und seinen Account entsperren lassen.
+			</para>
+        </caution>
+        <para>
+            Das automatische Sperren von Benutzern nach fehlgeschlagenen Anmeldungen kann
+            durch Setzen der &ucsUCRV; <envar>auth/faillog</envar> auf <emphasis>yes</emphasis> aktiviert werden.
+            Die Obergrenze an fehlerhaften Passworteingaben, bei der eine Kontosperre
+            aktiviert wird, wird in der &ucsUCRV; <envar>auth/faillog/limit</envar> konfiguriert.
+            Nach einer korrekten Passworteingabe wird der Zähler jedesmal wieder
+            zurückgesetzt.
+        </para>
+        <para>
+            Der <emphasis>root</emphasis>-Benutzer ist standardmäßig von der Passwort-Sperre ausgenommen, kann
+            aber durch Setzen der &ucsUCRV; <envar>auth/faillog/root</envar> auf <emphasis>yes</emphasis> ebenfalls
+            aufgenommen werden.
+        </para>
+        <para>
+            Standardmäßig ist die Sperre unbegrenzt gültig und muss vom Administrator
+            zurückgesetzt werden. Sie kann aber auch nach Ablauf eines Intervalls
+            automatisch wieder aufgehoben werden. Hierzu ist in
+            der &ucsUCRV; <envar>auth/faillog/unlock_time</envar> ein Zeitraum in Sekunden
+            anzugeben. Wird der Wert auf 0 gesetzt, wird die Sperre direkt
+            wiederaufgehoben.
+        </para>
+        <para>
+            Werden Konten nur lokal gesperrt, kann der Administrator ein Benutzerkonto durch
+            Eingabe des Befehls <command>faillog -r USERNAME</command> entsperren. Erfolgt die
+            Sperrung global im LDAP, kann der Benutzer im Univention Directory Manager im
+            Reiter <guimenu>Benutzerkonto</guimenu> in den Benutzer-Optionen zurückgesetzt
+            werden.
+        </para>
+    </section>
+    <section id="users:templates">
+        <title>Benutzervorlagen</title>
+        <para>
+            Mit einer Benutzervorlage können beim Anlegen eines Benutzers Einstellungen
+            vorgegeben werden.
+        </para>
+        <para>
+            Ist mindestens eine Benutzervorlage definiert, kann sie beim Anlegen eines
+            Benutzer ausgewählt werden.
+        </para>
+        <figure id="user-create-template">
+            <title>Auswahl einer Benutzervorlage</title>
+            <graphic scalefit="1" width="40%" fileref="illustrations/users_usertemplate_de.png"/>
+        </figure>
+        <para>
+            Benutzervorlagen werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
+            der &ucsUMC; verwaltet. Dort muss in den Container <emphasis>univention</emphasis> und dort in den
+            Untercontainer <emphasis>templates</emphasis> gewechselt werden. Hier kann
+            über <guimenu>LDAP-Objekt hinzufügen</guimenu> mit dem
+            Objekt-Typ <guimenu>Einstellungen: Benutzervorlage</guimenu> eine neue
+            Benutzervorlage angelegt werden.
+        </para>
+        <para>
+            In einer Benutzervorlage kann entweder ein fester Wert vorgegeben
+            werden (z.B. für die Anschrift) oder ein Attribut der
+            Benutzerverwaltung referenziert werden. Attribute werden dabei in
+            spitzen Klammern referenziert.
+        </para>
+        <para>
+            Eine Liste möglicher Attribute kann mit dem Befehl:
+        </para>
+            <programlisting>
+univention-directory-manager users/user
+            </programlisting>
+        <para>
+            im Abschnitt <emphasis>users/user variables</emphasis> der Ausgabe ermittelt werden.
+        </para>
+        <para>
+            Wird beim Hinzufügen eines Benutzers eine Benutzervorlage verwendet,
+            überschreibt diese alle in der Vorlage vorkommenden Felder mit dem
+            in der Vorlage gesetzten Wert. Dabei gilt ein leeres Feld
+            ebenfalls als auf "" gesetzt.
+        </para>
+        <para>
+            Es können auch nur Teilwerte von Attributen übernommen werden und
+            Werte in Groß-/Kleinschreibung konvertiert werden:
+		</para>
+
+        <para>
+		  So kann beispielsweise das UNIX-Heimatverzeichnis unter
+		  <filename>/home/&lt;title&gt;.&lt;lastname&gt;</filename> angelegt werden oder die primäre
+		  E-Mail-Adresse mit <emphasis>&lt;firstname&gt;.&lt;lastname&gt;@firma.com</emphasis>
+		  vordefiniert werden. Ersetzungen sind grundsätzlich für beliebige Werte möglich, eine
+		  syntaktische oder semantische Überprüfung erfolgt jedoch nicht. Wird beispielsweise beim
+		  Anlegen des Benutzers kein Vorname angegeben, würde die obige E-Mail-Adresse mit einem
+		  Punkt beginnen und wäre somit nach dem E-Mail-Standard ungültig. Ähnliche Fehlerquellen
+		  können auch im Umgang mit Dateipfaden etc. auftreten.
+		  Nicht auflösbare Attribute (etwa durch Tippfehler in der Vorlage) werden gelöscht.
+		</para>
+
+        <para>
+		  Wird nicht der komplette Attributwert, sondern nur ein einzelnes Zeichen des Attributs
+		  benötigt, kann in der Benutzervorlage nach dem Attributnamen der Index des benötigten
+		  Zeichens in eckigen Klammern angegeben werden. Die Zählung der Zeichen des Attributs
+		  beginnt bei 0, so dass z.B. der Index 1 dem zweiten Zeichen des Attributwertes
+		  entspricht. Mit <emphasis>&lt;firstname&gt;[0].&lt;lastname&gt;@firma.com</emphasis> wird
+		  beispielsweise eine E-Mail-Adresse aus dem ersten Buchstaben des Vornamens sowie dem
+		  Nachnamen gebildet.
+		</para>
+
+        <para>
+		  Eine Teilzeichenkette des Attributwerts kann über die Angabe eines Bereichs in eckigen
+		  Klammern erreicht werden. Dabei ist der Index des ersten benötigten Zeichens sowie der
+		  Index des letzten benötigten Zeichnis plus 1 anzugeben. Die Angabe
+		  <emphasis>&lt;firstname&gt;[2:5]</emphasis> gibt z.B. das dritte bis fünfte Zeichen des
+		  Vornamens zurück.
+		</para>
+
+        <para>
+		  Das Anhängen von <emphasis>&lt;:lower&gt;</emphasis> oder <emphasis>&lt;:upper&gt;</emphasis> an den
+		  Attributnamen führt dazu, dass der Attributwert in Klein- oder Großschreibung
+		  umgewandelt wird, z.B. <emphasis>&lt;firstname:lower&gt;</emphasis>. Wird ein
+		  Modifikator wie <emphasis>&lt;:lower&gt;</emphasis> an das Ende des Feldes angehängt, wird
+		  der komplette Wert umgewandelt, z.B. <emphasis>&lt;lastname&gt;@company.com&lt;:lower&gt;</emphasis>.
+		</para>
+
+        <para>
+		  Durch die Option <emphasis>&lt;:umlauts&gt;</emphasis> werden Sonderzeichen wie è,
+		  ä oder ß in entsprechende ASCII-Zeichen umgewandelt.
+		</para>
+
+        <para>
+		  Optionen können auch kombiniert werden, z.B: <emphasis>&lt;:umlauts,upper&gt;</emphasis>.
+		</para>
+
+    </section>
+</chapter>
