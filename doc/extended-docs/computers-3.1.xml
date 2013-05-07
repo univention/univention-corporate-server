@@ -132,7 +132,7 @@
                     For building a real bridge to forward packets between two physical interfaces, all these interfaces would be mentioned in the <parameter>bride_ports</parameter> stanza.
                 </para>
 
-                <programlisting>
+                <programlisting language="sh">
 grep -v '^#' &lt;&lt;END_CONFIG | xargs -d '\n' ucr set
 # Configure physical interface
 interfaces/eth0/type=manual
@@ -216,7 +216,7 @@ END_CONFIG
                     until that link fails too.
                 </para>
 
-                <programlisting>
+                <programlisting language="sh">
 grep -v '^#' &lt;&lt;END_CONFIG | xargs -d '\n' ucr set
 # Configure physical interfaces
 interfaces/eth0/type=manual
@@ -323,7 +323,7 @@ END_CONFIG
                     host related services.
                 </para>
 
-                <programlisting>
+                <programlisting language="sh">
 grep -v '^#' &lt;&lt;END_CONFIG | xargs -d '\n' ucr set
 # Configure physical interfaces
 interfaces/eth0/type=manual
@@ -360,7 +360,7 @@ END_CONFIG
             <para>
                 The following example assumes the host is used to run several virtual machines.
                 While the host itself is considered trusted, the virtual machines are considered untrusted, since the host administrator has no control over them and cannot guarentee their proper (network) configuration.
-			</para>
+            </para>
 
             <para>
                 The host in this example has three physical network interfaces:
@@ -375,7 +375,7 @@ END_CONFIG
                 For that the correct order of the interfaces in <filename>/etc/network/interfaces</filename> is explicitly specified using the &ucsUCRV;s <envar>interfaces/<replaceable>$INTERFACENAME</replaceable>/order</envar>.
             </para>
 
-            <programlisting>
+            <programlisting language="sh">
 grep -v '^#' &lt;&lt;END_CONFIG | xargs -d '\n' ucr set
 # Configure dedicated eth2 for the host
 interfaces/eth2/start=true
@@ -437,7 +437,7 @@ END_CONFIG
                 setting the following UCR variables:
             </para>
 
-            <programlisting>
+            <programlisting language="sh">
 # for KVM:
 ucr set uvmm/kvm/bridge/autostart=no
 # for Xen:
@@ -460,3 +460,4 @@ ucr set xen/bridge/interface=none
     </chapter>
     <?dbhtml-include href="../stylesheets/piwiki.html"?>
 </book>
+<!-- vim:set sw=4 ts=4 et: -->

@@ -23,11 +23,11 @@
 	</para>
 
 	<section><title>Introduction</title>
-		<programlisting><![CDATA[
+		<programlisting language="sh"><![CDATA[
 eval "$(ucr shell)"
 udm container/ou create --position "$ldap_base" name="xxx"
 		]]></programlisting>
-		<programlisting><![CDATA[
+		<programlisting language="sh"><![CDATA[
 eval "$(ucr shell)"
 ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<__LDIF__
 dn: uid=xxx,$ldap_base
