@@ -869,6 +869,7 @@ class Application(object):
 				# dont remove yourself (if already added)
 				if iapp is not self:
 					component_manager.remove_app(iapp)
+			package_manager.reopen_cache()
 
 			# add the new repository component for the app
 			if add_component:
