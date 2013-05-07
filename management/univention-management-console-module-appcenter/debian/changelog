@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.147-1) unstable; urgency=low
+
+  * Work with latest package cache if installing an app (Bug #31282)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 07 May 2013 11:46:55 +0200
+
 univention-management-console-module-appcenter (2.0.146-1) unstable; urgency=low
 
   * Bug #31129: If an application is installed, do not dist-upgrade. If it is
