@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+if [ "$1" = "remove" ]
+then
+	. /usr/share/univention-lib/all.sh
+	call_unjoinscript 50join-template-uninstall.uinst
+fi
+
+exit 0

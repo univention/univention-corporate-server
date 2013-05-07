@@ -1,1 +1,2 @@
 50join-template.inst usr/lib/univention-install/
+50join-template-uninstall.uinst usr/lib/univention-uninstall/

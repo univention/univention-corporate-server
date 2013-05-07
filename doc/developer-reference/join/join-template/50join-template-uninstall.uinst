@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# VERSION is needed for some tools to recognize that as a join script
+VERSION=1
+
+# for stop_udm_cli_server
+. /usr/share/univention-lib/base.sh
+
+# for ucs_removeServiceFromLocalhost(), ucs_isServiceUnused()
+. /usr/share/univention-lib/ldap.sh
+
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+SERVICE="MyService"
+
+eval "$(univention-config-registry shell server/role ldap/hostdn ldap/base)"
+
+ucs_addServiceFromLocalhost "${SERVICE}" "$@"
+
+# Shall be removed in any case
+udm "computers/$server_role" modify "$@" \
+	--dn "$ldap_hostdn" \
+	--set univentionFreeAttribute1="" || die
+
+ucs_removeServiceFromLocalhost "${SERVICE}" "$@" || die
+
+if ucs_isServiceUnused "${SERVICE}" "$@"; then
+	# was last server to implement service. now the extended
+	# attributes may be removed
+	univention-directory-manager container/cn remove "$@" \
+		--dn "cn=myservice,cn=custom attributes,cn=univention,$ldap_base" || die
+	
+	# stop udm cli server
+	# he cached the extended attributes
+	stop_udm_cli_server
+fi
+
+# do not do a
+#joinscript_save_current_version
+# otherwise an entry will appear in /var/univenion-join/status
+# instead the join script needs to be removed from the status file
+joinscript_remove_script_from_status_file join-template
+
+exit 0

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+if [ "$1" = "remove" ]
+then
+	cp /usr/lib/univention-uninstall/50join-template-uninstall.uinst \
+		/usr/lib/univention-install/
+fi
+
+exit 0
