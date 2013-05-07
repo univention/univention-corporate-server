@@ -443,6 +443,16 @@ ucr set uvmm/kvm/bridge/autostart=no
 # for Xen:
 ucr set xen/bridge/interface=none
             </programlisting>
+
+            <para>
+                The UVMM profiles need to be updated as well, since the name of the network bridge is stored in them.
+                The following command updates all profiles currently using interface <literal>eth0</literal> to use the new bridge <literal>br0</literal>.
+            </para>
+            <programlisting language="sh">
+udm uvmm/profile list --filter interface=eth0 |
+	sed -ne 's/^DN: //p' |
+	xargs -r -n 1 -d '\n' udm uvmm/profile modify --set interface=br0 --dn
+            </programlisting>
         </section>
 
         <section>
