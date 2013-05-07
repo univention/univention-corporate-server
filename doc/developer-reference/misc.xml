@@ -315,5 +315,157 @@ override_dh_auto_test:
 		</para>
 	</section>
 
+	<section id="misc:nacl" status="draft">
+		<title>Network packet filter</title>
+		<remark>PMH: Bug #24589 is outdated, see Bug #23577 for latest format</remark>
+
+		<para>
+			Firewall rules are setup by <package>univention-firewall</package> and can be configured through &ucsUCR; or by providing additional UCR templates.
+		</para>
+
+		<section id="misc:nacl:ucr">
+			<title>Filter rules by &ucsUCR;</title>
+			<para>
+				Besides pre-defined service definitions, Univention Firewall also allows the implementation of package filter rules via &ucsUCR;.
+				These rules are included in <filename class="directory">/etc/security/netfilter.d/</filename> via a &ucsUCR; module.
+			</para>
+			<para>
+				Filter rules can be provided via packages or can be configured locally by the administrator.
+				Local rules have a higher priority and overwrite rules provided by packages.
+			</para>
+			<para>
+				All &ucsUCR; settings for filter rules are entered in the following format:
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term>Local filter rule</term>
+					<listitem>
+						<simpara>
+							<literal>security/packetfilter/</literal><replaceable>protocol</replaceable><literal>/</literal><replaceable>port(s)</replaceable><literal>/</literal><replaceable>address</replaceable><literal>=</literal><replaceable>policy</replaceable>
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Package filter rule</term>
+					<listitem>
+						<simpara>
+							<literal>security/packetfilter/package/</literal><replaceable>package</replaceable><literal>/</literal><replaceable>protocol</replaceable><literal>/</literal><replaceable>port(s)</replaceable><literal>/</literal><replaceable>address</replaceable><literal>=</literal><replaceable>policy</replaceable>
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
+				The following values need to be filled in:
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term><replaceable>package</replaceable> (only for packaged rules)</term>
+					<listitem>
+						<para>
+							The name of the package providing the rule.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><replaceable>protocol</replaceable></term>
+					<listitem>
+						<para>
+							Can be either <literal>tcp</literal> for server services using the <firstterm>Transmission Control Protocol</firstterm> or <literal>udp</literal> for services using the stateless <firstterm>User Datagram Protocol</firstterm>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><replaceable>port</replaceable></term>
+					<term><replaceable>min-port</replaceable><literal>:</literal><replaceable>max-port</replaceable></term>
+					<listitem>
+						<para>
+							Ports can be defined either as a single number between 1 and 65535 or as a range separated by a colon:
+							<replaceable>min-port</replaceable><literal>:</literal><replaceable>max-port</replaceable>
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><replaceable>address</replaceable></term>
+					<listitem>
+						<para>
+							This can be either <literal>ipv4</literal> for all <acronym>IPv4</acronym> addresses, <literal>ipv6</literal> for all <acronym>IPv6</acronym> addresses, <literal>all</literal> for both <acronym>IPv4</acronym> and <acronym>IPv6</acronym> addresses, or any explicitly specified <acronym>IPv4</acronym> or <acronym>IPv6</acronym> address.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><replaceable>policy</replaceable></term>
+					<listitem>
+						<para>
+							If a rule is registered as <literal>DENY</literal>, then packages to this port will be silently discarded;
+							<literal>REJECT</literal> can be used to send back an <acronym>ICMP</acronym> message <literal>port unreachable</literal> instead.
+							Using <literal>ACCEPT</literal> explicitly allows such packets.
+							(IPtables rules are executed until one rule applies;
+							thus, if a package is accepted by a rule which is discarded by a later rule, then the rule for discarding the package does not become valid).
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
+				Filter rules can optionally be described by setting additional &ucsUCRV;s.
+				For each rule and language, an additional variable suffixed by <quote><literal>/</literal><replaceable>language</replaceable></quote> can be used to add a descriptive text.
+			</para>
+			<para>
+				Some examples:
+			</para>
+			<example>
+				<title>Local firewall rule</title>
+				<programlisting><![CDATA[
+security/packetfilter/tcp/2000/all=DENY
+security/packetfilter/tcp/2000/all/en=Drop all packets to TCP port 2000
+security/packetfilter/udp/500:600/all=ACCEPT
+security/packetfilter/udp/500:600/all/en=Accept UDP port 500 to 600
+				]]></programlisting>
+			</example>
+			<para>
+				All package rules can be globally disabled by setting the &ucsUCRV; <envar>security/packetfilter/use_packages</envar> to <literal>false.</literal>.
+			</para>
+		</section>
+
+		<section id="misc:nacl:ipt">
+			<title>Local filter rules via <command>iptables</command> commands</title>
+			<para>
+				Besides the existing possibilities for settings via &ucsUCR;, there is also the possibility of integrating user-defined enhanced configurations in <filename class="directory">/etc/security/netfilter.d/</filename>, e.g. for realising a firewall or <firstterm>Network Address Translation</firstterm>.
+				The enhancements should be realised in the form of shell scripts which execute the corresponding <command>iptables</command> for <acronym>IPv4</acronym> and <command>ip6table</command> for <acronym>IPv6</acronym> calls.
+				For packages this is best done through using a &ucsUCR; template as described in<xref linkend="ucr:file"/>.
+			</para>
+			<para>
+				Full documentation for IPTables can be found at <ulink url="http://www.netfilter.org/"/>.
+			</para>
+		</section>
+
+		<section id="misc:nacl:test">
+			<title>Testing Univention Firewall settings</title>
+			<para>
+				Package filter settings should always be thoroughly tested.
+				The network scanner <command>nmap</command>, which is integrated in &ucsUCS; as a standard feature, can be used for testing the status of individual ports.
+			</para>
+			<para>
+				Since Nmap requires elevated privileges in the network stack, it should be started as <literal>root</literal> user.
+				A <acronym>TCP</acronym> port can be tested with the following command:
+			</para>
+			<programlisting language="sh">
+				<command>nmap <replaceable class="option">HOSTNAME</replaceable> <option>-p</option> <replaceable class="option">PORT(s)</replaceable></command>
+			</programlisting>
+			<para>
+				A <acronym>UDP</acronym> port can be tested with the following command:
+			</para>
+			<programlisting language="sh">
+				<command>nmap <replaceable class="option">HOSTNAME</replaceable> <option>-sU</option> <option>-p</option> <replaceable class="option">PORT(s)</replaceable></command>
+			</programlisting>
+			<example>
+				<title>Using <command>nmap</command> for firewall port testing</title>
+				<programlisting language="sh">
+nmap 192.168.1.100 -p 400
+nmap 192.168.1.110 -sU -p 400-500
+				</programlisting>
+			</example>
+		</section>
+	</section>
+
 </chapter>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->
