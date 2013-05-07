@@ -62,6 +62,8 @@ class UCSTestUDM_CreateUDMUnknownDN(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_ModifyUDMObjectFailed(UCSTestUDM_Exception):
 	pass
+class UCSTestUDM_NoModification(UCSTestUDM_Exception):
+	pass
 class UCSTestUDM_ModifyUDMUnknownDN(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_CleanupFailed(UCSTestUDM_Exception):
@@ -145,8 +147,6 @@ class UCSTestUDM(object):
 				self._cleanup.setdefault(modulename, []).append(dn)
 				break
 		else:
-			print 'Cannot find DN of created object in stdout:\nstdout=%s' % (stdout,)
-			print 'stderr=%s' % (stderr,)
 			raise UCSTestUDM_CreateUDMUnknownDN(modulename, kwargs, stdout, stderr)
 		return dn
 
@@ -160,6 +160,7 @@ class UCSTestUDM(object):
 		modulename: name of UDM module (e.g. 'users/user')
 
 		"""
+		dn = None
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		if not kwargs.get('dn'):
@@ -168,7 +169,6 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_CannotModifyExistingObject(kwargs.get('dn'))
 
 		cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
-
 		print 'Modifying %s object with %r' % (modulename, kwargs)
 		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=False)
 		(stdout, stderr) = child.communicate()
@@ -177,19 +177,17 @@ class UCSTestUDM(object):
 			print 'UDM-CLI returned exitcode %s while modifying object: ''' % (child.returncode,)
 			raise UCSTestUDM_ModifyUDMObjectFailed(modulename, kwargs, stdout, stderr)
 		else:
-			# find DN of freshly created object and add it to cleanup list
+			# find DN of freshly created object
 			for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 				if line.startswith('Object modified: '):
 					dn = line.split('Object modified: ', 1)[-1]
 					assert(dn in self._cleanup.get(modulename, []))
 					break
+				elif line.startswith('No modification: '):
+					raise UCSTestUDM_NoModification(modulename, kwargs, stdout, stderr)
 			else:
-				print 'Cannot find DN of modified object in stdout:\nstdout=%s' % (stdout,)
-				print 'stderr=%s' % (stderr,)
 				raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
-
-			return dn
-		return None
+		return dn
 
 
 	def create_user(self, **kwargs): # :pylint: disable-msg=W0613

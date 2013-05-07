@@ -1,0 +1,63 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check that required=1 is enforced for singlevalue extended attributes
+## tags: [udm-extendedattribute]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import sys
+import atexit
+import univention.uldap
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+
+lo = univention.uldap.getAdminConnection()
+udm = udm_test.UCSTestUDM()
+atexit.register(udm.cleanup)
+ucr = ucr_test.UCSTestConfigRegistry()
+ucr.load()
+
+ldapmapping = 'univentionFreeAttribute3'
+udm.create_object('settings/extended_attribute', position='cn=custom attributes,cn=univention,%s' % ucr['ldap/base'],
+	name = uts.random_string(),
+	shortDescription = 'Test short description',
+	CLIName = 'univentionUCSTestAttribute',
+	module = 'computers/windows',
+	objectClass = 'univentionFreeAttributes',
+	ldapMapping = ldapmapping,
+	valueRequired = '1',
+	mayChange = '1')
+
+
+# try creating an udm object without the just created extentend attribute given (expected to fail)
+try:
+	udm.create_object('computers/windows', name = uts.random_string())
+except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+	pass
+else:
+	print 'Successfully created an object of type computers/windows eventhough a required extended attribute was not given, which should not have happened'
+	sys.exit(1)
+
+
+
+
+# try creating an udm object WITH the just created extented attribute given to confirm that the attribute works at all
+computerName = uts.random_string()
+extendedAttributeValue = uts.random_string()
+computer = udm.create_object('computers/windows', name = computerName, univentionUCSTestAttribute = extendedAttributeValue)
+if not lo.search(filter='(&(cn=%s)(%s=%s))' % (computerName, ldapmapping, extendedAttributeValue)):
+	print 'UDM did not fail to create an object of type computers/windows with a given required single value extenend attribute, but it\'s value has not been set successfully'
+	sys.exit(1)
+
+
+
+
+# try modifying the extentend attribute of the udm object for the same reason
+extendedAttributeValue = uts.random_string()
+udm.modify_object('computers/windows', dn = computer, univentionUCSTestAttribute = extendedAttributeValue)
+if not lo.search(filter='(&(cn=%s)(%s=%s))' % (computerName, ldapmapping, extendedAttributeValue)):
+	print 'UDM did not fail to modify an required single value extenend attributes, but the value is still not set'
+	sys.exit(1)
