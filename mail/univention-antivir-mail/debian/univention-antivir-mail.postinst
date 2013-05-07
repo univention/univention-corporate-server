@@ -78,5 +78,6 @@ test -x /etc/init.d/spamassassin && /etc/init.d/spamassassin restart || true
 
 
 /etc/init.d/amavis restart
+/etc/init.d/postfix reload
 
 exit 0

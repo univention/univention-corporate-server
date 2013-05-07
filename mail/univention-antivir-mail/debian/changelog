@@ -1,9 +1,15 @@
+univention-antivir-mail (4.0.4-2) unstable; urgency=low
+
+  * Added /etc/init.d/postfix reload to file univention-antivir/mail.postfix in order to reload postfix configuration after univention-antivir-mail installation. (Bug #17967)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 07 May 2013 15:39:45 +0200
+
 univention-antivir-mail (4.0.4-1) unstable; urgency=low
 
   * Renamed mail/antivir/clamav-daemon/autostart to clamav/daemon/autostart and
     mail/antivir/clamav-freshclam/autostart to clamav/freshclam/autostart, which
     are utilized in clamav init scripts (Bug #29980)
-  * Made clamav-daemon and clamav-freshclam available in UMC 
+  * Made clamav-daemon and clamav-freshclam available in UMC
     symstem services module (Bug #13814)
 
  -- Erik Damrose <damrose@univention.de>  Wed, 27 Feb 2013 14:45:34 +0100
