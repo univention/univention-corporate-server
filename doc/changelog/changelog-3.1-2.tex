@@ -367,6 +367,9 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 \begin{itemize}
 \item Samba 3 does now support quota on XFS file systems like expected, for example the calculation of the partition limit or the used space (\ucsBug{31210}).
 \item There is now a service definition for \ucsName{winbind} (\ucsBug{9560}).
+\item The winbind init script did not ensure that the daemon actually got stopped. This could lead
+ to a non running winbind daemon after the server password change. This issue has been fixed
+ (\ucsBug{31289}).
 \end{itemize}
 
 \subsection{Samba 4}
