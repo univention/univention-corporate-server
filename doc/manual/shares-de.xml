@@ -984,4 +984,154 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 </para>
 </caution>
 </section>
+
+<section id="shares::quota">
+  <title>Konfiguration von Dateisystem-Quota</title>
+  <para>
+	UCS erlaubt die Limitierung des Speicherplatzes, den ein Benutzer auf einer Partition verwenden
+	kann. Diese Schwellwerte können entweder als eine Menge von Speicherplatz (z.B. 500 MB pro
+	Benutzer) oder als maximale Anzahl von Dateien ohne feste Größenbeschränkung angegeben werden.
+  </para>
+
+  <para>
+	Unterschieden werden dabei zwei Arten von Schwellwerten:
+
+	<itemizedlist>
+	  <listitem>
+		<para>
+		  Das <emphasis>Hard-Limit</emphasis> ist die maximale Speichermenge, die ein Benutzer in Anspruch kann. Wird sie
+		  erreicht, können keine weiteren Dateien angelegt werden.
+		</para>
+	  </listitem>
+
+	  <listitem>
+		<para>
+		  Wird das <emphasis>Soft-Limit</emphasis> erreicht - das kleiner sein muss als das Hard-Limit - und liegt der
+		  Speicherplatzverbrauch weiterhin unter dem Hard-Limit, wird dem Benutzer eine
+		  Übergangsfrist von sieben Tagen eingeräumt um unbenutzte Daten zu löschen. Nach Ablauf der
+		  sieben Tage können keine weiteren Dateien mehr angelegt oder verändert werden. Benutzern,
+		  die über CIFS auf ein Dateisystem mit Quota zugreifen, wird eine Warnung angezeigt.
+		</para>
+	  </listitem>
+	</itemizedlist>
+  </para>
+
+  <para>
+	Quotas gelten immer für eine komplette Partition. Sie können entweder über das UMC-Modul
+	<guimenu>Dateisystem Quota</guimenu> oder über eine Richtlinie für Freigaben definiert werden.
+  </para>
+
+  <para>
+	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen ext2, ext3, ext4 und xfs
+	angelegt werden. Die Verwendung von Dateisystem-Quota auf der /-Partition muss manuell aktiviert
+	werden, siehe <xref linkend="shares::quota::umc"/>.
+  </para>
+
+
+  <section id="shares::quota::umc">
+	<title>Quota-Verwaltung in der UMC</title>
+	<para>
+	  Im UMC-Modul <guimenu>Dateisystem Quota</guimenu> werden alle Partitionen aufgeführt, auf
+	  denen Quota eingerichtet werden können. Es werden nur Partitionen angezeigt, die aktuell unter
+	  einem Mount Point eingebunden sind.
+	</para>
+
+	<para>
+	  Der aktuelle Quota-Status (Aktiviert/Deaktiviert) wird angezeigt und kann mit
+	  <guimenu>Aktivieren</guimenu> und <guimenu>Deaktivieren</guimenu> verändert werden. Für alle
+	  aktivierten Partitionen kann mit dem Bleistift-Symbol die erlaubten Speichermengen festgelegt
+	  werden. Alle Einstellungen werden benutzerspezifisch festgelegt. Mit <guimenu>Benutzer hinzufügen</guimenu>
+	  können die Schwellwerte für Soft- und Hard-Limits für einen Benutzer festgelegt werden.
+	</para>
+  </section>
+
+  <section id="shares::quota::policy">
+	<title>Quota-Verwaltung für Freigaben</title>
+	<para>
+	  Die Quota-Einstellungen können auch über eine Freigaben-Richtlinie von Typ <guimenu>Benutzer-Quota</guimenu> festgelegt werden. Die
+	  Einstellungen gelten für alle Benutzer eine Freigabe; es ist nicht möglich an einer Freigabe
+	  für verschiedene Benutzer unterschiedliche Quota-Limitierungen festzulegen.
+	</para>
+
+	<para>
+	  Quota-Richtlinien können nur auf Partitionen angewendet werden, für die die
+	  Quota-Unterstützung im UMC-Modul aktiviert wurde, siehe <xref linkend="shares::quota::umc"/>.
+	</para>
+
+	<note>
+	  <para>
+		Auch wenn die Richtlinien für Freigaben definiert werden, werden sie auf vollständige
+		Partitionen angewendet. Wenn also beispielsweise auf einem Server drei Freigaben
+		bereitgestellt werden, die alle auf der separaten <filename>/var</filename>-Partition abgelegt werden und werden
+		drei verschiedene Richtlinien konfiguriert und angewendet, so gilt die restriktivste
+		Einstellung für die komplette Partition. Wenn unterschiedliche Quota verwendet werden
+		sollen, wird empfohlen die Daten auf individuelle Partitionen zu verteilen.
+	  </para>
+	</note>
+  </section>
+
+  <section id="shares::quota::apply">
+	<title>Auswertung von Quota bei der Anmeldung</title>
+	<para>
+	  Die im UCS-Managementsystem definierten Einstellungen werden bei der Anmeldung an UCS-Systemen
+	  durch das im PAM-Stack aufgerufene Tool <command>univention-user-quota</command>
+	  ausgewertet und aktiviert.
+	</para>
+
+	<para>
+	  Wenn keine Quota eingesetzt werden soll, kann die Auswertung durch Setzen der &ucsUCRV;
+	  <envar>quota/userdefault</envar> auf <emphasis>no</emphasis> deaktiviert werden.
+	</para>
+
+	<para>
+	  Wird die &ucsUCRV; <envar>quota/logfile</envar> auf einen beliebigen Dateinamen gesetzt, wird
+	  die Aktivierung der Quotas in die angegebene Datei protokolliert.
+	</para>
+  </section>
+
+  <section id="shares::quota::query">
+	<title>Abfrage des Quota-Status durch Administratoren oder Benutzer</title>
+	<para>
+	  Die für ein System definierten Quota-Begrenzungen können als Benutzer mit dem Befehl
+	  <command>repquota -va</command> aufgelistet werden.
+	</para>
+
+	<para>
+	  Angemeldete Benutzer können mit dem Befehl <command>quota -v</command> die für sie geltenden
+	  Quota-Grenzen und die aktuelle Auslastung abfragen.
+	</para>
+
+	<para>
+	  Weitergehende Informationen zu den Befehlen finden sich in den Manpages der Befehle.
+	</para>
+  </section>
+
+  <section id="shares::quota::root">
+	<title>Quota auf dem Root-Dateisystem</title>
+	<para>
+	  Wenn Quota für die Root-Partition aktiviert werden soll, muss wie folgt
+	  vorgegangen werden:
+	  <itemizedlist>
+		<listitem> <para>
+		  Die &ucsUCRV; <envar>grub/append</envar> muss um <emphasis>root2flags=quota</emphasis>
+		  ergänzt werden. Als Trennzeichen zu bereits gesetzten Werten wird dabei ein Leerzeichen
+		  verwendet. Hierdurch wird der Quota-Support für die Root-Partition als
+		  Bootparameter gesetzt. Die Änderung wird automatisch in den Bootrecord geschrieben.
+		</para>
+		</listitem>
+
+		<listitem> <para>
+		  Bei ext2, ext3 und ext4-Dateisystemen muss der Parameter <emphasis>usrquota</emphasis> für die root-Partition
+		  in der Datei <filename>/etc/fstab</filename> ergänzt werden. Für XFS-Dateisysteme ist dies
+		  nicht notwendig.
+		</para></listitem>
+
+		<listitem> <para>
+		  Anschließend muss das System neu gestartet werden.
+		</para></listitem>
+	  </itemizedlist>
+	</para>
+  </section>
+</section>
+
 </chapter>
