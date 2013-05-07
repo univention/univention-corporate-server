@@ -380,6 +380,9 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 \item The file \ucsFile{/etc/shares.conf} is now refreshed directly after removing a share (\ucsBug{29399}).
 \item \ucsUCRV{windows/wins-server} is now initiated when joining  (\ucsBug{30813}).
 \item Samba 4 does now support quota on XFS file systems (\ucsBug{31234}).
+\item Joining into a new \ucsName{samba4/join/site} without Samba4 on the Master now repects the chosen \ucsName{samba4/dc} (\ucsBug{30792}).
+\item The sysvol-sync.py script did not preserve timestamps, now it does (\ucsBug{30823}).
+\item The sysvol-cleanup.py script moved the PolicyDefinitions away. Now it considers only GPO paths (\ucsBug{31186}).
 \end{itemize}
 
 %\subsection{Univention S4 Connector}
