@@ -1,3 +1,9 @@
+univention-samba4 (2.0.47-4) unstable; urgency=low
+
+  * removed UCR variables samba/client_use_spnego and samba/time_server (Bug #26389)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 08 May 2013 16:49:33 +0200
+
 univention-samba4 (2.0.47-3) unstable; urgency=low
 
   * consider samba4/dc during create_site in joinscript (Bug #30792)

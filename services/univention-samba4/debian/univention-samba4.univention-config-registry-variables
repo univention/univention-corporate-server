@@ -16,12 +16,6 @@ Description[en]=Try to use Simple and Protected NEGOciation with Windows 2000 an
 Type=str
 Categories=service-samba
 
-[samba/client_use_spnego]
-Description[de]=Kontrolliert ob Samba Client versuchen Simple and Protected NEGOciation zu verwenden
-Description[en]=Controls whether Samba clients will try to use Simple and Protected NEGOciation
-Type=str
-Categories=service-samba
-
 [samba/domain/master]
 Description[de]=Definiert ob der Server als Domain Master Browser laufen soll. Per Default sollte dies nur auf einem System konfiguriert werden.
 Description[en]=Defines whether the server should run as domain master browser. By default, this should only be configured on one system.
@@ -97,12 +91,6 @@ Categories=service-samba
 [samba/socket_options]
 Description[de]=Zusätzliche Socket-Optionen die bei Verbindungen mit Samba-Clients verwendet werden
 Description[en]=Extra socket options to be used when talking with the client
-Type=str
-Categories=service-samba
-
-[samba/time_server]
-Description[de]=Verwende Samba als Zeitserver für Windows Clients
-Description[en]=Advertises samba as a time server to Windows clients
 Type=str
 Categories=service-samba
 
