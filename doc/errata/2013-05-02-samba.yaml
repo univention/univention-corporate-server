@@ -7,8 +7,8 @@ note:
 version: [1]
 desc: |
   This errata update fixes two bugs in the package samba:
-  * The current Samba 3 build does not support quota on XFS file systems like 
+  * The current Samba 3 build does not support quota on XFS file systems as
   expected. This new Samba build supports quota on XFS.
   * The winbind init script did not ensure that the daemon actually got stopped.
-  This could lead to a non running winbind daemon after the server password change.
+  This could lead to a non-running winbind daemon after the server password change.
 bug: [31210, 31289]
