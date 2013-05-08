@@ -1,6 +1,7 @@
 univention-antivir-mail (4.0.4-2) unstable; urgency=low
 
-  * Added /etc/init.d/postfix reload to file univention-antivir/mail.postfix in order to reload postfix configuration after univention-antivir-mail installation. (Bug #17967)
+  * Added "/etc/init.d/postfix reload" to file univention-antivir-mail.postfix
+	in order to reload postfix configuration after installation. (Bug #17967)
 
  -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 07 May 2013 15:39:45 +0200
 
@@ -16,7 +17,7 @@ univention-antivir-mail (4.0.4-1) unstable; urgency=low
 
 univention-antivir-mail (4.0.3-1) unstable; urgency=low
 
-  * added initial virus signatures (Bug #27881) 
+  * added initial virus signatures (Bug #27881)
 
  -- Felix Botner <botner@univention.de>  Mon, 16 Jul 2012 10:34:00 +0200
 
