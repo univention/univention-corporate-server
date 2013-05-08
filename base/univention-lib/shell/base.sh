@@ -57,15 +57,19 @@ create_logfile_if_missing () {
 # e.g. call_joinscript 99my-custom-joinscript.inst --binddn ... --bindpwd ...
 #
 call_joinscript () {
-	local joinscript
-	joinscript="/usr/lib/univention-install/$1"
-	if [ -x "$joinscript" ] ; then
-		shift
-		local role="$(ucr get server/role)"
-		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
-			"$joinscript" "$@"
-		fi
-	fi
+    local joinscript
+    joinscript="/usr/lib/univention-install/$1"
+    local namejoinscript
+    namejoinscript="$1"
+    if [ -x "$joinscript" ] ; then
+        shift
+        local role="$(ucr get server/role)"
+        if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
+            echo "Calling joinscript $namejoinscript ..."
+            "$joinscript" "$@"
+            echo "Joinscript $namejoinscript finished with exitcode $?"
+        fi
+    fi
 }
 
 #
