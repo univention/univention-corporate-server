@@ -3,7 +3,7 @@
 # VERSION is needed for some tools to recognize that as a join script
 VERSION=1
 
-# for stop_udm_cli_server
+# for stop_udm_cli_server()
 . /usr/share/univention-lib/base.sh
 
 # for ucs_removeServiceFromLocalhost(), ucs_isServiceUnused()
@@ -15,8 +15,6 @@ joinscript_init
 SERVICE="MyService"
 
 eval "$(univention-config-registry shell server/role ldap/hostdn ldap/base)"
-
-ucs_addServiceFromLocalhost "${SERVICE}" "$@"
 
 # Shall be removed in any case
 udm "computers/$server_role" modify "$@" \

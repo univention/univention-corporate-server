@@ -148,7 +148,7 @@
 			<title>Minimal join script example</title>
 			<para>
 				This example provides a template for writing join scripts.
-				The package is called <package>join-template</package> and just contains a join script, which does nothing.
+				The package is called <package>join-template</package> and just contains a join script and an unjoin script, which only demonstrate some commonly used functions.
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -328,7 +328,21 @@
 							<para>
 								The check commands mentioned above can also be used in other shell programs, which are not join scripts.
 								There the name of the join script to be checked must be explicitly initialized.
-								Instead of calling <command>joinscript_init</command>, this function requires an additional argument specifying the name of the <option>join script</option>.
+								Instead of calling <command>joinscript_init</command>, this function requires an additional argument specifying the name of the <option>join-script</option>.
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><cmdsynopsis>
+								<command>joinscript_remove_script_from_status_file</command>
+								<arg choice="plain">name</arg>
+						</cmdsynopsis></term>
+						<listitem>
+							<para>
+								Removes the given join script from the join script status file <filename>/var/univention-join/status</filename>.
+								The <option>name</option> should be the basename of the joinscript without the prefixed digits and the suffix <literal>.inst</literal>.
+								So if the joinscript <filename>/var/lib/univention-install/50join-template.inst</filename> shall be removed, one has to execute
+								<command>joinscript_remove_script_from_status_file join-template</command>. Primarily used in unjoin scripts.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -433,6 +447,8 @@ VERSION="2"
 						<listitem>
 							<simpara>
 								Removes the given join script <option>name</option> from the join script status file <filename>/var/univention-join/status</filename>.
+								Note that this command does the same as <command>joinscript_remove_script_from_status_file</command> provided by
+								<package>univention-join</package> (see <xref linkend="join:libraries:join"/>).
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -463,6 +479,69 @@ VERSION="2"
 							</simpara>
 						</listitem>
 					</varlistentry>
+					<varlistentry>
+						<term><cmdsynopsis>
+								<command>stop_udm_cli_server</command>
+						</cmdsynopsis></term>
+						<listitem>
+							<simpara>
+								When <command>univention-directory-manager</command> is used the first time a server is started automatically that caches
+								some information about the available modules.
+								When changing some of this information (e.g. when adding or removing extended attributes) it may be a good idea to stop the
+								server manually and do not wait for the automatic timeout.
+							</simpara>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+				<para>
+					The package also contains the shell library <filename>/usr/share/univention-lib/ldap.sh</filename>.
+					It provides convenience functions to query the LDAP server and modify objects.
+					For (un)join scripts the following functions might be important:
+				</para>
+				<variablelist>
+					<varlistentry>
+						<term><cmdsynopsis>
+								<command>ucs_addServiceToLocalhost</command>
+								<arg choice="plain">servicename</arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
+						</cmdsynopsis></term>
+						<listitem>
+							<simpara>
+								Adds <option>servicename</option> to the list of <literal>univentionService</literal> of the LDAP object
+								representing the localhost.
+								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
+								Example usage in join script: <command>ucs_addServiceToLocalhost "MyService" "$@"</command>
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><cmdsynopsis>
+								<command>ucs_removeServiceFromLocalhost</command>
+								<arg choice="plain">servicename</arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
+						</cmdsynopsis></term>
+						<listitem>
+							<simpara>
+								Removes <option>servicename</option> from the list of <literal>univentionService</literal> of the LDAP object
+								representing the localhost, effectively reverting a <command>ucs_addServiceToLocalhost</command> call.
+								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
+								Example usage in unjoin script: <command>ucs_removeServiceFromLocalhost "MyService" "$@"</command>
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><cmdsynopsis>
+								<command>ucs_isServiceUnused</command>
+								<arg choice="plain">servicename</arg>
+						</cmdsynopsis></term>
+						<listitem>
+							<simpara>
+								Returns <literal>0</literal> if no LDAP object with a <literal>univentionService</literal> named
+								<option>servicename</option> is found.
+								Example usage in unjoin script: <command>if ucs_isServiceUnused "MyService" "$@"; then uninstall_my_service; fi</command>
+							</simpara>
+						</listitem>
+					</varlistentry>
 				</variablelist>
 			</section>
 
@@ -470,7 +549,7 @@ VERSION="2"
 	</section>
 
 	<section id="join:unjoin">
-		<title>Unregister</title>
+		<title>Writing unjoin scripts</title>
 		<para>
 			On package removal packages might want to clean up the data in LDAP.
 			Removing data from LDAP also requires appropriate credentials, while removing a package only required local <literal>root</literal> privileges.
@@ -480,11 +559,11 @@ VERSION="2"
 			In most cases an unjoin script belongs to a certain join script and reverts that script's changes. Just like join scripts an unjoin script is prefixed with a
 			two-digit-number for the same reason (lexicographical order when executing all join scripts); this number should be 100 minus that of the corresponding join script,
 			so that the scripts will be executed in the reverse order. The suffix of an unjoin script is <literal>.uinst</literal>. As of UCS 3.1 <literal>.inst</literal> and
-			<literal>.uinst</literal> are treated equally so one should name the script as the join script and prepend <literal>-uninstall</literal>. Because
-			<command>univention-run-join-scripts</command> executes all (un)join scripts in <filename class="directory">/usr/lib/univention-install/</filename> it may not
-			live there as long as the package is installed. By convention an unjoin script is installed in
-			<filename class="directory">/usr/lib/univention-uninstall/</filename> and copied to the join script directory when needed. Note that first all join scripts (ordered
-			by their prefix) and after that the unjoin scripts are executed (again ordered by their prefix).
+			<literal>.uinst</literal> are not distinguished by the <emphasis>UMC Join module</emphasis> so one should name the script as the join script and prepend
+			<literal>-uninstall</literal> for users to recognize it as an unjoin script. Because <command>univention-run-join-scripts</command> executes all (un)join scripts
+			in <filename class="directory">/usr/lib/univention-install/</filename> it may not live there as long as the package is installed. By convention an unjoin script is
+			installed in <filename class="directory">/usr/lib/univention-uninstall/</filename> and copied to the join script directory when needed. Note that first all join
+			scripts (ordered by their prefix) and after that the unjoin scripts are executed (again ordered by their prefix).
 		</para>
 		<para>
 			Example: The package <package>univention-fetchmail</package> provides both a join script and an unjoin script. The join script is installed at
@@ -501,10 +580,9 @@ VERSION="2"
 				Therefore <quote>the first system to come</quote> should setup the data, while only <quote>the last system to go</quote> might clean up the data.
 				In <package>univention-fetchmail</package> this is achieved by using <command>ucs_addServiceFromLocalhost "Fetchmail" "$@"</command> in the join script
 				and <command>ucs_removeServiceFromLocalhost "Fetchmail" "$@"</command> in the unjoin script. Most of the unjoin script is executed only if
-				<command>ucs_isServiceUnused "Fetchmail" "$@"</command>.
+				<command>ucs_isServiceUnused "Fetchmail" "$@"</command>. As a side effect it is easy to see which servers are currently providing the fetchmail service.
 			</para>
 		</warning>
-		<remark>PMH: TBD Bug #31268</remark>
 		<variablelist>
 			<varlistentry>
 				<term><filename>50join-template-uninstall.uinst</filename></term>
@@ -528,8 +606,7 @@ VERSION="2"
 				<term><filename>debian/join-template.postrm</filename></term>
 				<listitem>
 					<para>
-						The unjoin script should be invoked automatically on &ucsMaster; and &ucsBackup; systems
-						after the package is removed.
+						The unjoin script should be invoked automatically on &ucsMaster; and &ucsBackup; systems after the package is removed.
 						On all other system roles an administrator must run the join script manually through <command>univention-run-join-scripts</command>.
 					</para>
 					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.postrm" parse="text"/></programlisting>
@@ -539,8 +616,7 @@ VERSION="2"
 				<term><filename>debian/join-template.preinst</filename></term>
 				<listitem>
 					<para>
-						In case the unjoin script is still present in join dir
-						(it has never been executed), but the package is to
+						In case the unjoin script is still present in join dir (it has never been executed), but the package is to
 						be installed again, the unjoin script is removed.
 					</para>
 					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.preinst" parse="text"/></programlisting>

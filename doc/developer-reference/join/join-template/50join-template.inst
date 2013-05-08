@@ -17,6 +17,7 @@ udm "computers/$server_role" modify "$@" \
 	--dn "$ldap_hostdn" \
 	--set univentionFreeAttribute1="Test1" || die
 
+# create container for extended attributes to be placed in
 udm container/cn create "$@"
 	--ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
