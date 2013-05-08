@@ -410,19 +410,11 @@ created without a mail address (\ucsBug{31296}).
 
 \end{itemize}
 
-
 \section{mail}
 \begin{itemize}
-\item \ucsName{univention-mail-cyrus} has been modified. UCR variable mail/cyrus/imap/duplicatesuppression added.
+\item \ucsName{univention-mail-cyrus} has been modified. UCR variable mail/cyrus/imap/duplicatesuppression added. Default value is 'yes'. If set the variable to 'yes' lmtpd will suppress delivery of a message to a mailbox if same message with the same message-id (or resent-message-id) has already been delivered to the mailbox (\ucsBug{22429}).
 
-\item  File univention-mail-cyrus.univention-config-registry, univention-mail-cyrus.postinst and univention-mail-cyrus.univention-config-registry-variables were extended with given UCR variable above.
-
-\item File univention-mail-cyrus.postins/conffiles/etc/imapd/imapd.conf adjusted fro UCR variable named above.
-
-\item If UCR unset the value of duplicatesuppression will be set to a default 1.
-
-\item If set to yes duplicatesuppression will be 1. If ucr variable set to ,,no'' duplicatesuppression will be set to 0 in a config file /etc/imapd/imapd.conf. (\ucsBug{22429}).
-
+\item \ucsName{univention-antivir-mail} has been modified. Postfix configuration will be reloaded after installation (\ucsBug{17967}).
 
 \end{itemize}
 
