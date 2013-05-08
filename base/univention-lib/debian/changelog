@@ -1,3 +1,9 @@
+univention-lib (2.0.27-2) unstable; urgency=low
+
+   * base.sh: call_joinscript(): added console output of start and finish notice     of the execution joinscript (Bug #29263)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Wed, 08 May 2013 17:33:21 +0200
+
 univention-lib (2.0.27-1) unstable; urgency=low
 
   * Fixed resolving dependencies: Catch errors of apt (Bug #31230)
