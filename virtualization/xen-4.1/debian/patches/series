@@ -26,3 +26,14 @@ CVE-2012-5634.patch
 CVE-2013-0153.patch
 CVE-2012-6075.patch
 fix-x86-time-scale-asm.patch
+CVE-2013-1917.patch
+CVE-2013-1918-1.patch
+CVE-2013-1918-2.patch
+CVE-2013-1918-3.patch
+CVE-2013-1918-4.patch
+CVE-2013-1918-5.patch
+CVE-2013-1918-6.patch
+CVE-2013-1918-7.patch
+CVE-2013-1919.patch
+CVE-2013-1920.patch
+CVE-2013-1952.patch
