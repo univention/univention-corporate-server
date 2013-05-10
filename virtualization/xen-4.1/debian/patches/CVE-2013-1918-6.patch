@@ -1,0 +1,127 @@
+x86: make page table unpinning preemptible
+
+... as it may take significant amounts of time.
+
+Since we can't re-invoke the operation in a second attempt, the
+continuation logic must be slightly tweaked so that we make sure
+do_mmuext_op() gets run one more time even when the preempted unpin
+operation was the last one in a batch.
+
+This is part of CVE-2013-1918 / XSA-45.
+
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Acked-by: Tim Deegan <tim@xen.org>
+
+--- a/xen/arch/x86/mm.c
++++ b/xen/arch/x86/mm.c
+@@ -3040,6 +3040,14 @@ long do_mmuext_op(
+         return rc;
+     }
+ 
++    if ( unlikely(count == MMU_UPDATE_PREEMPTED) &&
++         likely(guest_handle_is_null(uops)) )
++    {
++        /* See the curr->arch.old_guest_table related
++         * hypercall_create_continuation() below. */
++        return (int)foreigndom;
++    }
++
+     if ( unlikely(count & MMU_UPDATE_PREEMPTED) )
+     {
+         count &= ~MMU_UPDATE_PREEMPTED;
+@@ -3063,7 +3071,7 @@ long do_mmuext_op(
+ 
+     for ( i = 0; i < count; i++ )
+     {
+-        if ( hypercall_preempt_check() )
++        if ( curr->arch.old_guest_table || hypercall_preempt_check() )
+         {
+             rc = -EAGAIN;
+             break;
+@@ -3181,7 +3189,17 @@ long do_mmuext_op(
+                 break;
+             }
+ 
+-            put_page_and_type(page);
++            switch ( rc = put_page_and_type_preemptible(page, 1) )
++            {
++            case -EINTR:
++            case -EAGAIN:
++                curr->arch.old_guest_table = page;
++                rc = 0;
++                break;
++            default:
++                BUG_ON(rc);
++                break;
++            }
+             put_page(page);
+ 
+             /* A page is dirtied when its pin status is cleared. */
+@@ -3487,9 +3505,27 @@ long do_mmuext_op(
+     }
+ 
+     if ( rc == -EAGAIN )
++    {
++        ASSERT(i < count);
+         rc = hypercall_create_continuation(
+             __HYPERVISOR_mmuext_op, "hihi",
+             uops, (count - i) | MMU_UPDATE_PREEMPTED, pdone, foreigndom);
++    }
++    else if ( curr->arch.old_guest_table )
++    {
++        XEN_GUEST_HANDLE(void) null;
++
++        ASSERT(rc || i == count);
++        set_xen_guest_handle(null, NULL);
++        /*
++         * In order to have a way to communicate the final return value to
++         * our continuation, we pass this in place of "foreigndom", building
++         * on the fact that this argument isn't needed anymore.
++         */
++        rc = hypercall_create_continuation(
++                __HYPERVISOR_mmuext_op, "hihi", null,
++                MMU_UPDATE_PREEMPTED, null, rc);
++    }
+ 
+     put_pg_owner(pg_owner);
+ 
+--- a/xen/arch/x86/x86_64/compat/mm.c
++++ b/xen/arch/x86/x86_64/compat/mm.c
+@@ -222,6 +222,13 @@ int compat_mmuext_op(XEN_GUEST_HANDLE(mm
+     int rc = 0;
+     XEN_GUEST_HANDLE(mmuext_op_t) nat_ops;
+ 
++    if ( unlikely(count == MMU_UPDATE_PREEMPTED) &&
++         likely(guest_handle_is_null(cmp_uops)) )
++    {
++        set_xen_guest_handle(nat_ops, NULL);
++        return do_mmuext_op(nat_ops, count, pdone, foreigndom);
++    }
++
+     preempt_mask = count & MMU_UPDATE_PREEMPTED;
+     count ^= preempt_mask;
+ 
+@@ -324,12 +331,18 @@ int compat_mmuext_op(XEN_GUEST_HANDLE(mm
+                 guest_handle_add_offset(nat_ops, i - left);
+                 guest_handle_subtract_offset(cmp_uops, left);
+                 left = 1;
+-                BUG_ON(!hypercall_xlat_continuation(&left, 0x01, nat_ops, cmp_uops));
+-                BUG_ON(left != arg1);
+-                if (!test_bit(_MCSF_in_multicall, &mcs->flags))
+-                    regs->_ecx += count - i;
++                if ( arg1 != MMU_UPDATE_PREEMPTED )
++                {
++                    BUG_ON(!hypercall_xlat_continuation(&left, 0x01, nat_ops,
++                                                        cmp_uops));
++                    if ( !test_bit(_MCSF_in_multicall, &mcs->flags) )
++                        regs->_ecx += count - i;
++                    else
++                        mcs->compat_call.args[1] += count - i;
++                }
+                 else
+-                    mcs->compat_call.args[1] += count - i;
++                    BUG_ON(hypercall_xlat_continuation(&left, 0));
++                BUG_ON(left != arg1);
+             }
+             else
+                 BUG_ON(err > 0);

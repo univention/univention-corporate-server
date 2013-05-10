@@ -1,0 +1,50 @@
+VT-d: don't permit SVT_NO_VERIFY entries for known device types
+
+Only in cases where we don't know what to do we should leave the IRTE
+blank (suppressing all validation), but we should always log a warning
+in those cases (as being insecure).
+
+This is CVE-2013-1952 / XSA-49.
+
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Acked-by: "Zhang, Xiantao" <xiantao.zhang@intel.com>
+
+--- a/xen/drivers/passthrough/vtd/intremap.c
++++ b/xen/drivers/passthrough/vtd/intremap.c
+@@ -477,16 +477,15 @@ static void set_msi_source_id(struct pci
+     type = pdev_type(bus, devfn);
+     switch ( type )
+     {
++    case DEV_TYPE_PCIe_ENDPOINT:
+     case DEV_TYPE_PCIe_BRIDGE:
+     case DEV_TYPE_PCIe2PCI_BRIDGE:
+-    case DEV_TYPE_LEGACY_PCI_BRIDGE:
+-        break;
+-
+-    case DEV_TYPE_PCIe_ENDPOINT:
+         set_ire_sid(ire, SVT_VERIFY_SID_SQ, SQ_ALL_16, PCI_BDF2(bus, devfn));
+         break;
+ 
+     case DEV_TYPE_PCI:
++    case DEV_TYPE_LEGACY_PCI_BRIDGE:
++    /* case DEV_TYPE_PCI2PCIe_BRIDGE: */
+         ret = find_upstream_bridge(&bus, &devfn, &secbus);
+         if ( ret == 0 ) /* integrated PCI device */
+         {
+@@ -498,10 +497,15 @@ static void set_msi_source_id(struct pci
+             if ( pdev_type(bus, devfn) == DEV_TYPE_PCIe2PCI_BRIDGE )
+                 set_ire_sid(ire, SVT_VERIFY_BUS, SQ_ALL_16,
+                             (bus << 8) | pdev->bus);
+-            else if ( pdev_type(bus, devfn) == DEV_TYPE_LEGACY_PCI_BRIDGE )
++            else
+                 set_ire_sid(ire, SVT_VERIFY_SID_SQ, SQ_ALL_16,
+                             PCI_BDF2(bus, devfn));
+         }
++        else
++            dprintk(XENLOG_WARNING VTDPREFIX,
++                    "d%d: no upstream bridge for %02x:%02x.%u\n",
++                    pdev->domain->domain_id,
++                    bus, PCI_SLOT(devfn), PCI_FUNC(devfn));
+         break;
+ 
+     default:

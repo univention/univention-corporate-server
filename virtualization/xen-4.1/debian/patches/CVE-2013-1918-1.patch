@@ -1,0 +1,250 @@
+x86: make vcpu_destroy_pagetables() preemptible
+
+... as it may take significant amounts of time.
+
+The function, being moved to mm.c as the better home for it anyway, and
+to avoid having to make a new helper function there non-static, is
+given a "preemptible" parameter temporarily (until, in a subsequent
+patch, its other caller is also being made capable of dealing with
+preemption).
+
+This is part of CVE-2013-1918 / XSA-45.
+
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Acked-by: Tim Deegan <tim@xen.org>
+
+--- a/xen/arch/x86/domain.c
++++ b/xen/arch/x86/domain.c
+@@ -70,8 +70,6 @@ void (*dead_idle) (void) __read_mostly =
+ static void paravirt_ctxt_switch_from(struct vcpu *v);
+ static void paravirt_ctxt_switch_to(struct vcpu *v);
+ 
+-static void vcpu_destroy_pagetables(struct vcpu *v);
+-
+ static void continue_idle_domain(struct vcpu *v)
+ {
+     reset_stack_and_jump(idle_loop);
+@@ -909,7 +907,7 @@ void arch_vcpu_reset(struct vcpu *v)
+     if ( !is_hvm_vcpu(v) )
+     {
+         destroy_gdt(v);
+-        vcpu_destroy_pagetables(v);
++        vcpu_destroy_pagetables(v, 0);
+     }
+     else
+     {
+@@ -1917,63 +1915,6 @@ static int relinquish_memory(
+     return ret;
+ }
+ 
+-static void vcpu_destroy_pagetables(struct vcpu *v)
+-{
+-    struct domain *d = v->domain;
+-    unsigned long pfn;
+-
+-#ifdef __x86_64__
+-    if ( is_pv_32on64_vcpu(v) )
+-    {
+-        pfn = l4e_get_pfn(*(l4_pgentry_t *)
+-                          __va(pagetable_get_paddr(v->arch.guest_table)));
+-
+-        if ( pfn != 0 )
+-        {
+-            if ( paging_mode_refcounts(d) )
+-                put_page(mfn_to_page(pfn));
+-            else
+-                put_page_and_type(mfn_to_page(pfn));
+-        }
+-
+-        l4e_write(
+-            (l4_pgentry_t *)__va(pagetable_get_paddr(v->arch.guest_table)),
+-            l4e_empty());
+-
+-        v->arch.cr3 = 0;
+-        return;
+-    }
+-#endif
+-
+-    pfn = pagetable_get_pfn(v->arch.guest_table);
+-    if ( pfn != 0 )
+-    {
+-        if ( paging_mode_refcounts(d) )
+-            put_page(mfn_to_page(pfn));
+-        else
+-            put_page_and_type(mfn_to_page(pfn));
+-        v->arch.guest_table = pagetable_null();
+-    }
+-
+-#ifdef __x86_64__
+-    /* Drop ref to guest_table_user (from MMUEXT_NEW_USER_BASEPTR) */
+-    pfn = pagetable_get_pfn(v->arch.guest_table_user);
+-    if ( pfn != 0 )
+-    {
+-        if ( !is_pv_32bit_vcpu(v) )
+-        {
+-            if ( paging_mode_refcounts(d) )
+-                put_page(mfn_to_page(pfn));
+-            else
+-                put_page_and_type(mfn_to_page(pfn));
+-        }
+-        v->arch.guest_table_user = pagetable_null();
+-    }
+-#endif
+-
+-    v->arch.cr3 = 0;
+-}
+-
+ int domain_relinquish_resources(struct domain *d)
+ {
+     int ret;
+@@ -1992,7 +1933,9 @@ int domain_relinquish_resources(struct d
+         for_each_vcpu ( d, v )
+         {
+             /* Drop the in-use references to page-table bases. */
+-            vcpu_destroy_pagetables(v);
++            ret = vcpu_destroy_pagetables(v, 1);
++            if ( ret )
++                return ret;
+ 
+             /*
+              * Relinquish GDT mappings. No need for explicit unmapping of the
+--- a/xen/arch/x86/mm.c
++++ b/xen/arch/x86/mm.c
+@@ -2725,6 +2725,82 @@ static void put_superpage(unsigned long 
+ 
+ #endif
+ 
++static int put_old_guest_table(struct vcpu *v)
++{
++    int rc;
++
++    if ( !v->arch.old_guest_table )
++        return 0;
++
++    switch ( rc = put_page_and_type_preemptible(v->arch.old_guest_table, 1) )
++    {
++    case -EINTR:
++    case -EAGAIN:
++        return -EAGAIN;
++    }
++
++    v->arch.old_guest_table = NULL;
++
++    return rc;
++}
++
++int vcpu_destroy_pagetables(struct vcpu *v, bool_t preemptible)
++{
++    unsigned long mfn = pagetable_get_pfn(v->arch.guest_table);
++    struct page_info *page;
++    int rc = put_old_guest_table(v);
++
++    if ( rc )
++        return rc;
++
++#ifdef __x86_64__
++    if ( is_pv_32on64_vcpu(v) )
++        mfn = l4e_get_pfn(*(l4_pgentry_t *)mfn_to_virt(mfn));
++#endif
++
++    if ( mfn )
++    {
++        page = mfn_to_page(mfn);
++        if ( paging_mode_refcounts(v->domain) )
++            put_page(page);
++        else
++            rc = put_page_and_type_preemptible(page, preemptible);
++    }
++
++#ifdef __x86_64__
++    if ( is_pv_32on64_vcpu(v) )
++    {
++        if ( !rc )
++            l4e_write(
++                (l4_pgentry_t *)__va(pagetable_get_paddr(v->arch.guest_table)),
++                l4e_empty());
++    }
++    else
++#endif
++    if ( !rc )
++    {
++        v->arch.guest_table = pagetable_null();
++
++#ifdef __x86_64__
++        /* Drop ref to guest_table_user (from MMUEXT_NEW_USER_BASEPTR) */
++        mfn = pagetable_get_pfn(v->arch.guest_table_user);
++        if ( mfn )
++        {
++            page = mfn_to_page(mfn);
++            if ( paging_mode_refcounts(v->domain) )
++                put_page(page);
++            else
++                rc = put_page_and_type_preemptible(page, preemptible);
++        }
++        if ( !rc )
++            v->arch.guest_table_user = pagetable_null();
++#endif
++    }
++
++    v->arch.cr3 = 0;
++
++    return rc;
++}
+ 
+ int new_guest_cr3(unsigned long mfn)
+ {
+@@ -2911,12 +2987,21 @@ long do_mmuext_op(
+     unsigned int foreigndom)
+ {
+     struct mmuext_op op;
+-    int rc = 0, i = 0, okay;
+     unsigned long type;
+-    unsigned int done = 0;
++    unsigned int i = 0, done = 0;
+     struct vcpu *curr = current;
+     struct domain *d = curr->domain;
+     struct domain *pg_owner;
++    int okay, rc = put_old_guest_table(curr);
++
++    if ( unlikely(rc) )
++    {
++        if ( likely(rc == -EAGAIN) )
++            rc = hypercall_create_continuation(
++                     __HYPERVISOR_mmuext_op, "hihi", uops, count, pdone,
++                     foreigndom);
++        return rc;
++    }
+ 
+     if ( unlikely(count & MMU_UPDATE_PREEMPTED) )
+     {
+--- a/xen/arch/x86/x86_64/compat/mm.c
++++ b/xen/arch/x86/x86_64/compat/mm.c
+@@ -319,7 +319,7 @@ int compat_mmuext_op(XEN_GUEST_HANDLE(mm
+                                     : mcs->call.args[1];
+                 unsigned int left = arg1 & ~MMU_UPDATE_PREEMPTED;
+ 
+-                BUG_ON(left == arg1);
++                BUG_ON(left == arg1 && left != i);
+                 BUG_ON(left > count);
+                 guest_handle_add_offset(nat_ops, i - left);
+                 guest_handle_subtract_offset(cmp_uops, left);
+--- a/xen/include/asm-x86/domain.h
++++ b/xen/include/asm-x86/domain.h
+@@ -405,6 +405,7 @@ struct arch_vcpu
+     pagetable_t guest_table_user;       /* (MFN) x86/64 user-space pagetable */
+ #endif
+     pagetable_t guest_table;            /* (MFN) guest notion of cr3 */
++    struct page_info *old_guest_table;  /* partially destructed pagetable */
+     /* guest_table holds a ref to the page, and also a type-count unless
+      * shadow refcounts are in use */
+     pagetable_t shadow_table[4];        /* (MFN) shadow(s) of guest */
+--- a/xen/include/asm-x86/mm.h
++++ b/xen/include/asm-x86/mm.h
+@@ -555,6 +555,7 @@ void audit_domains(void);
+ int new_guest_cr3(unsigned long pfn);
+ void make_cr3(struct vcpu *v, unsigned long mfn);
+ void update_cr3(struct vcpu *v);
++int vcpu_destroy_pagetables(struct vcpu *, bool_t preemptible);
+ void propagate_page_fault(unsigned long addr, u16 error_code);
+ void *do_page_walk(struct vcpu *v, unsigned long addr);
+ 
