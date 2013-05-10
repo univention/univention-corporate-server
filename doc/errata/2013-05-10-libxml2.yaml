@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: libxml2
+fix: 2.7.8.dfsg-2.43.201305081544
+note: This update fixes these vulnerabilities
+version: [0,1]
+desc: |
+  Two denial of service vulnerabilities related to XML entity expansion
+  were discovered in the XML library libxml2.
+cve:
+ - CVE-2013-0338
+ - CVE-2013-0339
