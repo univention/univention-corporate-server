@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: clamav
+fix: 0.97.7+dfsg-1.122.201305101425
+note: This update fixes these vulnerabilities
+version: [0,1]
+desc: |
+  Several vulnerabilities have been discovered in the malware scanner
+  ClamAV. The analysis of malformed UPX archives or PDF files could
+  potentially lead to the execution of code.
+cve:
+ - CVE-2013-2020
+ - CVE-2013-2021
