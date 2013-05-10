@@ -1,0 +1,5 @@
+ucs-ec2-tools (0.1.1-1) unstable; urgency=low
+
+  * Initial Release (Bug #31283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 May 2013 11:23:04 +0200
