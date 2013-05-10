@@ -1,8 +1,0 @@
-src: samba4
-fix: 4.0.0~rc6-1.362.201302121446
-note:
-version: 0
-desc: |
-  This errata update fixes a bug in the package samba4:
-  * nmbd process not stopped reliably
-ref: Bug 30135

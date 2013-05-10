@@ -1,8 +1,0 @@
-src: heimdal
-fix: 1.4.0+git201110101743~lorikeet-3.214.201303131839
-note:
-desc: |
-  This update fixes a bug in Heimdal Kerberos:
-  * A default password lifetime of one year was enforced, overriding krb5PasswordEnd.
-ref: Bug 30755
-version: 0

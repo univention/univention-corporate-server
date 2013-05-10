@@ -1,9 +1,0 @@
-src: univention-directory-replication
-fix: 6.0.4-2.61.201302181103
-note:
-version: 0
-desc: |
-  This update lowers the debug level of several messages in the
-  univention-directory-replication package related to cache vs LDAP
-  checks.
-ref: Bug 26562

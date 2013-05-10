@@ -1,8 +1,0 @@
-src: univention-printquota
-fix: 5.0.1-2.53.201212141046
-note:
-version: 0
-desc: |
-  This errata update corrects a problem when printing
-  on printers with printer quotas.
-ref: Bug 29715

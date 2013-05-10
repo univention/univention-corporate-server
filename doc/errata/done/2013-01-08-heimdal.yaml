@@ -1,7 +1,0 @@
-src: heimdal
-fix: 1.4.0+git201110101743~lorikeet-3.210.201301081204
-note:
-desc: |
-  This update activates log messages from an abort.
-ref: Bug 29342
-version: 0

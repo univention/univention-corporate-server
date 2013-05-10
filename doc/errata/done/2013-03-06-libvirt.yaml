@@ -1,9 +1,0 @@
-src: libvirt
-fix: 0.9.12-5.123.201303061845
-note: 
-desc: |
-  This errata update re-allows certificates still using the MD5
-  algorithm, which is cryptographically broken and should be
-  considered insecure.
-ref: Bug 30702
-version: 0

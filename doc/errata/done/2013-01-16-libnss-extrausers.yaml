@@ -1,8 +1,0 @@
-src: libnss-extrausers
-fix: 0.3-1.8.201301161943
-note:
-desc: |
- A bug was fixed in the extrausers name-service-switch module, which
- caused groups to disappear from the cached LDAP data
-ref: Bug 29915
-version: 0

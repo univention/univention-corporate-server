@@ -1,8 +1,0 @@
-src: univention-lib
-fix: 2.0.17-1.125.201303211703
-note:
-version: 0
-desc: |
-  This erratum added several functions to univention lib to support
-  unjoin scripts which will be used by several App Center apps.
-ref: Bug 30596

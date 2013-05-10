@@ -1,8 +1,0 @@
-src: univention-join
-fix: 5.0.20-1.438.201303212200
-note:
-version: 0
-desc: |
-  This erratum added support for unjoin scripts which will be used
-  by several App Center apps.
-ref: Bug 30596

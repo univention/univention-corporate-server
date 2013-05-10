@@ -1,9 +1,0 @@
-src: univention-management-console
-fix: 5.0.57-1.722.201302061729
-note:
-version: 0
-desc: |
-  The user root can't use the app center but the icon is shown by
-  default. This update removes the permission for root to use the
-  app center module in UMC.
-ref: Bug 30292

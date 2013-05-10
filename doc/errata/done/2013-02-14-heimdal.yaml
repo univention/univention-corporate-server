@@ -1,8 +1,0 @@
-src: heimdal
-fix: 1.4.0+git201110101743~lorikeet-3.211.201302141720
-note:
-desc: |
-  This update fixes a bug in Heimdal Kerberos:
-  * disable limitation of default password lifetime.
-ref: Bug 27281
-version: 0

@@ -1,8 +1,0 @@
-src: univention-directory-notifier
-fix: 7.0.6-3.73.201302131212
-note:
-version: 0
-desc: |
-  This errata update fixes a bug in the package univention-directory-notifier:
-  * notifier blocks in appliance setup when changing from DHCP to a fixed IP address
-ref: Bug 30412

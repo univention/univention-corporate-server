@@ -1,8 +1,0 @@
-src: univention-directory-manager-modules
-fix: 8.0.99-1.967.201301041756
-note:
-version: 0
-desc: |
-  This errata update adds the option to append empty values at the end of
-  an LDAP_Search-style syntax.
-ref: Bug 29635

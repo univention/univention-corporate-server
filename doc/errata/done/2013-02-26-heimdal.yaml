@@ -1,8 +1,0 @@
-src: heimdal
-fix: 1.4.0+git201110101743~lorikeet-3.212.201302260827
-note:
-desc: |
-  In some environments a login was not possible after the update to
-  erratum 48. This update reverts the changes of erratum 48.
-ref: Bug 30588
-version: 0

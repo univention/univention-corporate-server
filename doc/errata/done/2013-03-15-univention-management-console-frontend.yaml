@@ -1,8 +1,0 @@
-src: univention-management-console-frontend
-fix: 2.0.180-1.597.201303151201
-note:
-version: 0
-desc: |
-  This erratum adds generic support for widgets folding out in a confirmation
-  dialog.
-ref: Bug 30791

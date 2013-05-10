@@ -1,7 +1,0 @@
-src: univention-dojo
-fix: 6.0.10-1.67.201302271422
-note:
-version: 0
-desc: |
-  This erratum updates the dojo version from 1.8.1 to 1.8.3.
-ref: Bug 30167

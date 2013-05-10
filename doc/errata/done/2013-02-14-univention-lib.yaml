@@ -1,8 +1,0 @@
-src: univention-lib
-fix: 2.0.17-1.120.201302150938
-note:
-version: 0
-desc: |
-  This errata fixes problems with the installation of large packages via the
-  App Center.
-ref: Bug 30370
