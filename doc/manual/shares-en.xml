@@ -16,8 +16,6 @@ If a file share is deleted on a server, the shared files in the
 directory are preserved.
 </para>
 
-<!-- UCS also supports the limitation of file quantities with quotas. This -->
-<!-- is described in Univention Wiki under WIKIREF-23420. -->
 <para>
 To be able to use access control lists on a share, the underlying
 Linux file system must support POSIX ACLs. In UCS the file systems
@@ -950,153 +948,149 @@ Microsoft Distributed File System Tree'.
 </caution>
 </section>
 
-<!-- <section id="shares::quota"> -->
-<!--   <title>Konfiguration von Dateisystem-Quota</title> -->
-<!--   <para> -->
-<!-- 	UCS erlaubt die Limitierung des Speicherplatzes, den ein Benutzer auf einer Partition verwenden -->
-<!-- 	kann. Diese Schwellwerte können entweder als eine Menge von Speicherplatz (z.B. 500 MB pro -->
-<!-- 	Benutzer) oder als maximale Anzahl von Dateien ohne feste Größenbeschränkung angegeben werden. -->
-<!--   </para> -->
+<section id="shares::quota">
+  <title>Configuration of file system quota</title>
+  <para>
+	UCS allows the limiting of the storage space available to a user on a partition. These
+	thresholds can be set as either a quantity of storage space (e.g., 500 MB per user) or a maximum
+	number of files without a defined size limit.
+  </para>
 
-<!--   <para> -->
-<!-- 	Unterschieden werden dabei zwei Arten von Schwellwerten: -->
+  <para>
+	Two types of thresholds are differentiated:
 
-<!-- 	<itemizedlist> -->
-<!-- 	  <listitem> -->
-<!-- 		<para> -->
-<!-- 		  Das <emphasis>Hard-Limit</emphasis> ist die maximale Speichermenge, die ein Benutzer in Anspruch kann. Wird sie -->
-<!-- 		  erreicht, können keine weiteren Dateien angelegt werden. -->
-<!-- 		</para> -->
-<!-- 	  </listitem> -->
+	<itemizedlist>
+	  <listitem>
+		<para>
+		  The <emphasis>hard limit</emphasis> is the maximum storage space a user can employ. If it
+		  is attained, no further files can be saved.
+		</para>
+	  </listitem>
 
-<!-- 	  <listitem> -->
-<!-- 		<para> -->
-<!-- 		  Wird das <emphasis>Soft-Limit</emphasis> erreicht - das kleiner sein muss als das Hard-Limit - und liegt der -->
-<!-- 		  Speicherplatzverbrauch weiterhin unter dem Hard-Limit, wird dem Benutzer eine -->
-<!-- 		  Übergangsfrist von sieben Tagen eingeräumt um unbenutzte Daten zu löschen. Nach Ablauf der -->
-<!-- 		  sieben Tage können keine weiteren Dateien mehr angelegt oder verändert werden. Benutzern, -->
-<!-- 		  die über CIFS auf ein Dateisystem mit Quota zugreifen, wird eine Warnung angezeigt. -->
-<!-- 		</para> -->
-<!-- 	  </listitem> -->
-<!-- 	</itemizedlist> -->
-<!--   </para> -->
+	  <listitem>
+		<para>
+		  If the <emphasis>soft limit</emphasis> is attained - which must be smaller than the hard
+		  limit - and the storage space used is still below the hard limit, the user is given a
+		  grace period of seven days to delete unused data. Once seven days have elapsed, it is
+		  no longer possible to save or change additional files. A warning is displayed to users who
+		  access a file system with an exceeded quota via CIFS.
+		</para>
+	  </listitem>
+	</itemizedlist>
+  </para>
 
-<!--   <para> -->
-<!-- 	Quotas gelten immer für eine komplette Partition. Sie können entweder über das UMC-Modul -->
-<!-- 	<guimenu>Dateisystem Quota</guimenu> oder über eine Richtlinie für Freigaben definiert werden. -->
-<!--   </para> -->
+  <para>
+	Quotas always apply to full partitions. They can either be defined via the UMC module
+	<guimenu>Filesystem quotas</guimenu> or a policy for shares.
+  </para>
 
-<!--   <para> -->
-<!-- 	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen ext2, ext3, ext4 und xfs -->
-<!-- 	angelegt werden. Die Verwendung von Dateisystem-Quota auf der /-Partition muss manuell aktiviert -->
-<!-- 	werden, siehe <xref linkend="shares::quota::umc"/>. -->
-<!--   </para> -->
+  <para>
+	File system quotas can only be applied on partitions with the file systems ext2, ext3, ext4 and
+	xfs. The use of file system quotas on the / partition must be manually activated, see <xref
+	linkend="shares::quota::umc"/>.
+  </para>
 
+  <section id="shares::quota::umc">
+	<title>Quota administration in the UMC</title>
+	<para>
+	  In the UMC module <guimenu>Filesystem quotas</guimenu>, all the partitions are listed on which
+	  quotas can be set up. Only partitions are shown which are currently mounted under a mount
+	  point.
+	</para>
 
-<!--   <section id="shares::quota::umc"> -->
-<!-- 	<title>Quota-Verwaltung in der UMC</title> -->
-<!-- 	<para> -->
-<!-- 	  Im UMC-Modul <guimenu>Dateisystem Quota</guimenu> werden alle Partitionen aufgeführt, auf -->
-<!-- 	  denen Quota eingerichtet werden können. Es werden nur Partitionen angezeigt, die aktuell unter -->
-<!-- 	  einem Mount Point eingebunden sind. -->
-<!-- 	</para> -->
+	<para>
+	  The current quota status (activated/deactivated) is shown and can be changed with
+	  <guimenu>Activate</guimenu> and <guimenu>Deactivate</guimenu>. The permitted storage quantities can
+	  be set with the pencil symbol for all enabled partitions. All the settings are set
+	  user-specifically. <guimenu>Add user</guimenu> can be used to set the thresholds for soft and
+	  hard limits for a user.
+	</para>
+  </section>
 
-<!-- 	<para> -->
-<!-- 	  Der aktuelle Quota-Status (Aktiviert/Deaktiviert) wird angezeigt und kann mit -->
-<!-- 	  <guimenu>Aktivieren</guimenu> und <guimenu>Deaktivieren</guimenu> verändert werden. Für alle -->
-<!-- 	  aktivierten Partitionen kann mit dem Bleistift-Symbol die erlaubten Speichermengen festgelegt -->
-<!-- 	  werden. Alle Einstellungen werden benutzerspezifisch festgelegt. Mit <guimenu>Benutzer hinzufügen</guimenu> -->
-<!-- 	  können die Schwellwerte für Soft- und Hard-Limits für einen Benutzer festgelegt werden. -->
-<!-- 	</para> -->
-<!--   </section> -->
+  <section id="shares::quota::policy">
+	<title>Quota administration for shares</title>
+	<para>
+	  The quota settings can also be set with a <guimenu>User quota</guimenu> share policy. The
+	  settings apply for all users of a share; it is not possible to establish different quota
+	  limits for different users within one policy.
+	</para>
 
-<!--   <section id="shares::quota::policy"> -->
-<!-- 	<title>Quota-Verwaltung für Freigaben</title> -->
-<!-- 	<para> -->
-<!-- 	  Die Quota-Einstellungen können auch über eine Freigaben-Richtlinie von Typ <guimenu>Benutzer-Quota</guimenu> festgelegt werden. Die -->
-<!-- 	  Einstellungen gelten für alle Benutzer eine Freigabe; es ist nicht möglich an einer Freigabe -->
-<!-- 	  für verschiedene Benutzer unterschiedliche Quota-Limitierungen festzulegen. -->
-<!-- 	</para> -->
+	<para>
+	  Quota policies can only be used on partitions for which the quota support is enabled in the
+	  UMC module, see <xref linkend="shares::quota::umc"/>.
+	</para>
 
-<!-- 	<para> -->
-<!-- 	  Quota-Richtlinien können nur auf Partitionen angewendet werden, für die die -->
-<!-- 	  Quota-Unterstützung im UMC-Modul aktiviert wurde, siehe <xref linkend="shares::quota::umc"/>. -->
-<!-- 	</para> -->
+	<note>
+	  <para>
+		Even if the policies are defined for shares, they are used on complete partitions. If, for
+		example, three shares are provided on one server which are all saved on the separate
+		<filename>/var</filename> partition and three different policies are configured and used,
+		the most restrictive setting applies for the complete partition. If different quotas are used, it
+		is recommended to distribute the data over individual partitions.
+	  </para>
+	</note>
+  </section>
 
-<!-- 	<note> -->
-<!-- 	  <para> -->
-<!-- 		Auch wenn die Richtlinien für Freigaben definiert werden, werden sie auf vollständige -->
-<!-- 		Partitionen angewendet. Wenn also beispielsweise auf einem Server drei Freigaben -->
-<!-- 		bereitgestellt werden, die alle auf der separaten <filename>/var</filename>-Partition abgelegt werden und werden -->
-<!-- 		drei verschiedene Richtlinien konfiguriert und angewendet, so gilt die restriktivste -->
-<!-- 		Einstellung für die komplette Partition. Wenn unterschiedliche Quota verwendet werden -->
-<!-- 		sollen, wird empfohlen die Daten auf individuelle Partitionen zu verteilen. -->
-<!-- 	  </para> -->
-<!-- 	</note> -->
-<!--   </section> -->
+  <section id="shares::quota::apply">
+	<title>Evaluation of quota during login</title>
+	<para>
+	  The settings defined in the UCS management system are evaluated and enabled during login to UCS systems by
+	  the tool <command>univention-user-quota</command> run in the PAM stack.
+	</para>
 
-<!--   <section id="shares::quota::apply"> -->
-<!-- 	<title>Auswertung von Quota bei der Anmeldung</title> -->
-<!-- 	<para> -->
-<!-- 	  Die im UCS-Managementsystem definierten Einstellungen werden bei der Anmeldung an UCS-Systemen -->
-<!-- 	  durch das im PAM-Stack aufgerufene Tool <command>univention-user-quota</command> -->
-<!-- 	  ausgewertet und aktiviert. -->
-<!-- 	</para> -->
+	<para>
+	  If no quota are needed, the evaluation can be disabled by setting the &ucsUCRV;
+	  <envar>quota/userdefault</envar> to <emphasis>no</emphasis>.
+	</para>
 
-<!-- 	<para> -->
-<!-- 	  Wenn keine Quota eingesetzt werden soll, kann die Auswertung durch Setzen der &ucsUCRV; -->
-<!-- 	  <envar>quota/userdefault</envar> auf <emphasis>no</emphasis> deaktiviert werden. -->
-<!-- 	</para> -->
+	<para>
+	  If the &ucsUCRV; <envar>quota/logfile</envar> is set to any file name, the activation of the
+	  quotas is logged in the specified file.
+	</para>
+  </section>
 
-<!-- 	<para> -->
-<!-- 	  Wird die &ucsUCRV; <envar>quota/logfile</envar> auf einen beliebigen Dateinamen gesetzt, wird -->
-<!-- 	  die Aktivierung der Quotas in die angegebene Datei protokolliert. -->
-<!-- 	</para> -->
-<!--   </section> -->
+  <section id="shares::quota::query">
+	<title>Querying the quota status by administrators or users</title>
+	<para>
+	  A user can view the quota limits defined for a system using the command <command>repquota
+	  -va</command>.
+	</para>
 
-<!--   <section id="shares::quota::query"> -->
-<!-- 	<title>Abfrage des Quota-Status durch Administratoren oder Benutzer</title> -->
-<!-- 	<para> -->
-<!-- 	  Die für ein System definierten Quota-Begrenzungen können als Benutzer mit dem Befehl -->
-<!-- 	  <command>repquota -va</command> aufgelistet werden. -->
-<!-- 	</para> -->
+	<para>
+	  Logged in users can use the <command>quota -v</command> command to view the applicable quota
+	  limits and the current utilisation.
+	</para>
 
-<!-- 	<para> -->
-<!-- 	  Angemeldete Benutzer können mit dem Befehl <command>quota -v</command> die für sie geltenden -->
-<!-- 	  Quota-Grenzen und die aktuelle Auslastung abfragen. -->
-<!-- 	</para> -->
+	<para>
+	  Further information on the commands can be found in the man pages of the commands.
+	</para>
+  </section>
 
-<!-- 	<para> -->
-<!-- 	  Weitergehende Informationen zu den Befehlen finden sich in den Manpages der Befehle. -->
-<!-- 	</para> -->
-<!--   </section> -->
+  <section id="shares::quota::root">
+	<title>Quota on the root file system</title>
+	<para>
+	  To enable a quota for the root partition, proceed as follows:
+	  <itemizedlist>
+		<listitem> <para>
+		  The &ucsUCRV; <envar>grub/append</envar> must be expanded with
+		  <emphasis>root2flags=quota</emphasis>. A blank space is used to separate already set
+		  values. This sets the quota support for the root partition as a boot parameter. The change
+		  is written automatically in the boot record.
+		</para>
+		</listitem>
 
-<!--   <section id="shares::quota::root"> -->
-<!-- 	<title>Quota auf dem Root-Dateisystem</title> -->
-<!-- 	<para> -->
-<!-- 	  Wenn Quota für die Root-Partition aktiviert werden soll, muss wie folgt -->
-<!-- 	  vorgegangen werden: -->
-<!-- 	  <itemizedlist> -->
-<!-- 		<listitem> <para> -->
-<!-- 		  Die &ucsUCRV; <envar>grub/append</envar> muss um <emphasis>root2flags=quota</emphasis> -->
-<!-- 		  ergänzt werden. Als Trennzeichen zu bereits gesetzten Werten wird dabei ein Leerzeichen -->
-<!-- 		  verwendet. Hierdurch wird der Quota-Support für die Root-Partition als -->
-<!-- 		  Bootparameter gesetzt. Die Änderung wird automatisch in den Bootrecord geschrieben. -->
-<!-- 		</para> -->
-<!-- 		</listitem> -->
+		<listitem> <para>
+		  On ext2, ext3 and ext4 file systems, the <emphasis>usrquota</emphasis> parameter for the
+		  root partition must be expanded in the file <filename>/etc/fstab</filename>. This is not
+		  necessary on XFS file systems.
+		</para></listitem>
 
-<!-- 		<listitem> <para> -->
-<!-- 		  Bei ext2, ext3 und ext4-Dateisystemen muss der Parameter <emphasis>usrquota</emphasis> für die root-Partition -->
-<!-- 		  in der Datei <filename>/etc/fstab</filename> ergänzt werden. Für XFS-Dateisysteme ist dies -->
-<!-- 		  nicht notwendig. -->
-<!-- 		</para></listitem> -->
-
-<!-- 		<listitem> <para> -->
-<!-- 		  Anschließend muss das System neu gestartet werden. -->
-<!-- 		</para></listitem> -->
-<!-- 	  </itemizedlist> -->
-<!-- 	</para> -->
-<!--   </section> -->
-<!-- </section> -->
+		<listitem> <para>
+		  The system must then be restarted.
+		</para></listitem>
+	  </itemizedlist>
+	</para>
+  </section>
+</section>
 
 </chapter>

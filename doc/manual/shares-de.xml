@@ -14,8 +14,6 @@ erfolgen. Die in der &ucsUMC; verwalteten NFS-Freigaben werden momentan nur
 Wird eine Verzeichnisfreigabe gelöscht, bleiben die in dem Verzeichnis
 freigegebenen Daten auf einem Server erhalten.
 </para>
-<!-- UCS unterstützt auch die Limitierung von Datenmengen durch Quota. Dies ist im -->
-<!-- Univention Wiki unter WIKIREF-23420 beschrieben. -->
 <para>
 Um auf einer Freigabe Access Control Lists einzusetzen, muss das unterliegende
 Linux-Dateisystem POSIX-ACLs unterstützen. In UCS unterstützen die
@@ -1010,7 +1008,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 		  Speicherplatzverbrauch weiterhin unter dem Hard-Limit, wird dem Benutzer eine
 		  Übergangsfrist von sieben Tagen eingeräumt um unbenutzte Daten zu löschen. Nach Ablauf der
 		  sieben Tage können keine weiteren Dateien mehr angelegt oder verändert werden. Benutzern,
-		  die über CIFS auf ein Dateisystem mit Quota zugreifen, wird eine Warnung angezeigt.
+		  die über CIFS auf ein Dateisystem mit erschöpfter Quota zugreifen, wird eine Warnung angezeigt.
 		</para>
 	  </listitem>
 	</itemizedlist>
@@ -1049,7 +1047,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	<title>Quota-Verwaltung für Freigaben</title>
 	<para>
 	  Die Quota-Einstellungen können auch über eine Freigaben-Richtlinie von Typ <guimenu>Benutzer-Quota</guimenu> festgelegt werden. Die
-	  Einstellungen gelten für alle Benutzer eine Freigabe; es ist nicht möglich an einer Freigabe
+	  Einstellungen gelten für alle Benutzer eine Freigabe; es ist nicht möglich an einer Richtlinie
 	  für verschiedene Benutzer unterschiedliche Quota-Limitierungen festzulegen.
 	</para>
 
