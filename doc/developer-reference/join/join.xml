@@ -9,13 +9,13 @@
 		<indexterm><primary>join</primary><see>domain join</see></indexterm>
 	</title>
 	<para>
-		A <acronym>UCS</acronym> system is normally joined into a domain.
+		An <acronym>UCS</acronym> system is normally joined into a domain.
 		This establishes a trust relation between the different hosts, which enables users to access services provided by any host of the domain.
 	</para>
 	<para>
-		Joining a system into a domain required write permission to create and modify entries in <acronym>LDAP</acronym>.
-		Local <literal>root</literal> permission on the joining host is not sufficient to get write access to LDAP.
-		Instead of that the LDAP credentials must be entered interactively by the administrator doing the join.
+		Joining a system into a domain requires write permission to create and modify entries in the Univention directory service (<acronym>LDAP</acronym>).
+		Local <literal>root</literal> permission on the joining host is not sufficient to get write access to the domain wide <acronym>LDAP</acronym> service.
+		Instead valid <acronym>LDAP</acronym> credentials must be entered interactively by the administrator doing the join.
 	</para>
 
 	<section id="chap:scripts">
@@ -23,11 +23,11 @@
 			<indexterm><primary>domain join</primary><secondary>join script</secondary></indexterm>
 		</title>
 		<para>
-			Packages requiring write access to LDAP can provide so called <firstterm>join scripts</firstterm>.
+			Packages requiring write access to the Univention directory service can provide so called <firstterm>join scripts</firstterm>.
 			They are installed into <filename class="directory">/usr/lib/univention-install/</filename>.
-			The name of each join script is normally derived to the name of the binary package containing it.
-			It is prefixed with a two-digit-number, which is used to lexicographical order the scripts.
-			The filename either ends on <literal>.inst</literal> or <literal>.uinst</literal>, which distinguished between a join script and unjoin script (also see <xref linkend="join:unjoin"/>).
+			The name of each join script is normally derived from the name of the binary package containing it.
+			It is prefixed with a two-digit-number, which is used to order the scripts lexicographically.
+			The filename either ends in <literal>.inst</literal> or <literal>.uinst</literal>, which distinguishes between join script and unjoin script (also see <xref linkend="join:unjoin"/>).
 		</para>
 	</section>
 
@@ -41,7 +41,7 @@
 			This is mostly a performance optimization, but is also used to find join scripts which need to be run.
 		</para>
 		<para>
-			The text file <filename>/var/univention-join/status</filename> is used to keep track of the state of all join script.
+			The text file <filename>/var/univention-join/status</filename> is used to keep track of the state of all join scripts.
 			For each successful run of a join script a line is appended to that file.
 			That record consists of three space separated entries:
 		</para>
@@ -49,19 +49,19 @@
 		<orderedlist>
 			<listitem>
 				<simpara>
-					The first entry contains the name of the join script without the two-digit prefix and without the <filename>.inst</filename> suffix.
+					The first entry contains the name of the join script without the two-digit prefix and without the <filename>.inst</filename> suffix, usually corresponding to the package name.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
 					The second entry contains a version number prefixed by a <literal>v</literal>.
-					It is used to keep track of the latest version of the join script, which was run successfully.
+					It is used to keep track of the latest version of the join script, which has been run successfully.
 					This is used to identify, which join scripts need to be executed and which can be skipped, because they were already executed in the past.
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-					The third column contains the word <literal>successful</literal>.
+					The third column contains the word <wordasword>successful</wordasword>.
 				</simpara>
 			</listitem>
 		</orderedlist>
@@ -83,8 +83,8 @@
 				<term><command>univention-join</command></term>
 				<listitem>
 					<para>
-						When <command>/univention-join</command> is invoked, a machine account is created.
-						The <firstterm>distinguished name</firstterm> (<abbrev>dn</abbrev>) of that entry is stored in the &ucsUCRV; <envar>ldap/hostdn</envar>.
+						When <command>univention-join</command> is invoked, a machine account is created.
+						The <firstterm>distinguished name</firstterm> (<abbrev>dn</abbrev>) of that entry is stored locally in the &ucsUCRV; <envar>ldap/hostdn</envar>.
 						A random password is generated, which is stored in the file <filename>/etc/machine.secret</filename>.
 					</para>
 					<para>
@@ -93,7 +93,7 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><command>univention-check-join-status</command></term>
+				<term><command>univention-run-join-scripts</command></term>
 				<listitem>
 					<para>
 						This command is similar to <command>univention-join</command>, but skips the first step of creating a machine account.
@@ -102,7 +102,7 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><command>univention-run-join-scripts</command></term>
+				<term><command>univention-check-join-status</command></term>
 				<listitem>
 					<para>
 						This command only checks for join scripts in <filename>/usr/lib/univention-install/</filename>, whose version is not yet registered in <filename>/var/univention-join/status</filename>.
@@ -112,8 +112,8 @@
 		</variablelist>
 		<para>
 			When packages are installed, it depends on the server role, if join scripts are invoked automatically from the <literal>postinst</literal> Debian maintainer script or not.
-			Only on &ucsMaster; and &ucsBackup; system roles can the local <literal>root</literal> user access the file containing the LDAP credentials.
-			On all other system roles the join scripts need to be run manually by invoking <command>univention-run-join-scripts</command> or doing so through UMC.
+			This only happens on &ucsMaster; and &ucsBackup; system roles, where the local <literal>root</literal> user has access to the file containing the <acronym>LDAP</acronym> credentials.
+			On all other system roles the join scripts need to be run manually by invoking <command>univention-run-join-scripts</command> or doing so through <acronym>UMC</acronym>.
 		</para>
 
 	</section>
@@ -125,12 +125,12 @@
 		</title>
 
 		<para>
-			Similar to the Debian maintainer scripts (<xref linkend="deb:scripts"/>) they should be idem-potent:
+			Similar to the Debian maintainer scripts (see <xref linkend="deb:scripts"/>) they should be idem-potent:
 			They should transform the system from any state into the state required by the package, that is:
 		</para>
 		<itemizedlist>
 			<listitem>
-				<simpara>They should create newly introduced LDAP objects</simpara>
+				<simpara>They should create newly introduced objects in the Univention directory service</simpara>
 			</listitem>
 			<listitem>
 				<simpara>They should not fail if the object already exists</simpara>
@@ -141,27 +141,29 @@
 		</itemizedlist>
 		<para>
 			Join scripts may be called from multiple system roles and different versions.
-			Therefore it is important that these script <emphasis>do not destroy or remove data still used by other systems!</emphasis>
+			Therefore it is important that these scripts <emphasis>do not destroy or remove data still used by other systems!</emphasis>
 		</para>
 
 		<section id="join:minimal">
-			<title>Minimal join script example</title>
+			<title>Basic join script example</title>
 			<para>
 				This example provides a template for writing join scripts.
 				The package is called <package>join-template</package> and just contains a join script and an unjoin script, which only demonstrate some commonly used functions.
+			</para>
+			<para>
+				Source code: <ulink url="&websvn;doc/developer-reference/join/join-template/"/>
 			</para>
 			<variablelist>
 				<varlistentry>
 					<term><filename>50join-template.inst</filename></term>
 					<listitem>
 						<para>
-							The join script in UCS packages is normally located in the package root directory.
-							It has the following structure:
+							The join script in UCS packages is typically located in the package root directory.
+							It has the following base structure:
 						</para>
 						<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/50join-template.inst" parse="text"/></programlisting>
 						<para>
-							Please note the argument <option>"$@"</option> when <command>udm</command> is invoked.
-							This is essential to pass on the required LDAP credentials, which is further described in <xref linkend="join:secret"/>.
+							Please note the essential argument <option>"$@"</option> when <command>udm</command> is invoked, which passes on the required <acronym>LDAP</acronym> credentials described in <xref linkend="join:secret"/>.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -169,7 +171,7 @@
 					<term><filename>debian/join-template.install</filename></term>
 					<listitem>
 						<para>
-							The join script needs to be installed into <filename>/usr/lib/univention-install/</filename>:
+							The join script needs to be installed into <filename>/usr/lib/univention-install/</filename>, which is achieved by the following line:
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.install" parse="text"/></programlisting>
 						<para>
@@ -181,7 +183,7 @@
 					<term><filename>debian/join-template.postinst</filename></term>
 					<listitem>
 						<para>
-							The join script should be invoked automatically on &ucsMaster; and &ucsBackup; systems.
+							The join script should be invoked automatically on master and &ucsBackup; systems.
 							On all other system roles an administrator must run the join script manually through <command>univention-run-join-scripts</command>.
 						</para>
 						<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.postinst" parse="text"/></programlisting>
@@ -192,9 +194,11 @@
 					<listitem>
 						<para>
 							The package uses two shell libraries, which are described in more detail in <xref linkend="join:libraries"/>.
-							Both packages providing them must be added as runtime dependencies.
-							The unjoin functions were added to UCS 3.1-0 as errata updates and thus the version must be set explicitely.
-							Starting with UCS 3.2 the version is not necessary.
+							Both packages providing them must be added as additional runtime dependencies.
+						</para>
+						<para>
+							The unjoin functions were added to UCS 3.1-0 only as <ulink url="http://errata.univention.de/ucs/3.1/80.html">erratum update 81</ulink>.
+							Because of this the minimum versions must be specified explicitly.
 						</para>
 						<programlisting language="debcontrol"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/control" parse="text"/></programlisting>
 					</listitem>
@@ -203,7 +207,7 @@
 		</section>
 
 		<section id="join:exitcode">
-			<title>join script exit codes
+			<title>Join script exit codes
 				<indexterm><primary>join script</primary><secondary>exit codes</secondary></indexterm>
 				<indexterm><primary>join script</primary><secondary>return codes</secondary><see>exit codes</see></indexterm>
 			</title>
@@ -215,8 +219,8 @@
 					<term><literal>0</literal></term>
 					<listitem>
 						<para>
-							The join script was successful and completed all task to join the system into the domain.
-							All entries in <acronym>LDAP</acronym> were created or do already exist as expected.
+							The join script was successful and completed all tasks to join the software package on the system into the domain.
+							All required entries in the Univention directory service were created or do already exist as expected.
 						</para>
 						<para>
 							The script will be marked as successfully run.
@@ -232,7 +236,7 @@
 							Some entries could not be created in <acronym>LDAP</acronym> or exist in a state, which is incompatible with this version of the package.
 						</para>
 						<para>
-							The script needs to be run again, either manually or automatically.
+							The script needs to be run again after fixing the problem, either manually or automatically.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -252,7 +256,7 @@
 		</section>
 
 		<section id="join:libraries">
-			<title>join script libraries
+			<title>Join script libraries
 				<indexterm><primary>join script</primary><secondary>library</secondary></indexterm>
 				<indexterm><primary>join script</primary><secondary>helpers</secondary><see>library</see></indexterm>
 			</title>
@@ -265,14 +269,14 @@
 
 				<para>
 					The package contains the shell library <filename>/usr/share/univention-join/joinscripthelper.lib</filename>.
-					It provides functions related to updating join status file.
+					It provides functions related to updating the join status file.
 				</para>
 				<variablelist>
 					<varlistentry>
 						<term><cmdsynopsis><command>joinscript_init</command></cmdsynopsis></term>
 						<listitem>
 							<para>
-								This function parses the status file and aborts the script, if a record is found with a version greater or equal to <envar>VERSION</envar>.
+								This function parses the status file and skips the script, if a record is found with a version greater or equal to <envar>VERSION</envar>.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -326,7 +330,7 @@
 						<listitem>
 							<para>
 								The check commands mentioned above can also be used in other shell programs, which are not join scripts.
-								There the name of the join script to be checked must be explicitly initialized.
+								There the name of the join script to be checked must be explicitly given.
 								Instead of calling <command>joinscript_init</command>, this function requires an additional argument specifying the name of the <option>join-script</option>.
 							</para>
 						</listitem>
@@ -352,7 +356,7 @@
 						<listitem>
 							<para>
 								A convenience function to exit the join script with an error code.
-								Used to guarantee that LDAP modifications were successful:
+								Used to guarantee that <acronym>LDAP</acronym> modifications were successful:
 								<command>some_udm_create_call || die</command>
 							</para>
 						</listitem>
@@ -367,29 +371,34 @@
 						<listitem>
 							<para>
 								This variable must be set before <command>joinscript_init</command> is invoked.
-								It specifies the version number of the join script and is used twofold:
+								It specifies the version number of the join script and is used twice:
 							</para>
 							<orderedlist>
 								<listitem>
-									<simpara>it suppresses the re-execution of the join script, if it was already executed successfully</simpara>
+									<simpara>
+										It defines the current version of the join script.
+									</simpara>
 								</listitem>
 								<listitem>
-									<simpara>it is used to check if the current version of the join script was successfully executed</simpara>
+									<simpara>
+										If that version is already recorded in the status file, the join script qualifies as having been run successfully and the re-execution is prevented.
+										Otherwise the join status is incomplete and the script needs to be invoked again.
+									</simpara>
 								</listitem>
 							</orderedlist>
 							<para>
-								The version number should be incremented for a new version of the package, when the join script needs to perform additional modification in LDAP compared to any previous packaged version.
+								The version number should be incremented for a new version of the package, when the join script needs to perform additional modifications in LDAP compared to any previous packaged version.
 							</para>
 							<para>
-								The version number must be a non-negative integer.
+								The version number must be a positive integer.
 								The variable assignment in the join script must be on its own line.
 								It may optionally quote the version number with single quotes (<literal>'</literal>) or double quotes (<literal>"</literal>).
 								The following assignment are valid:
 							</para>
 							<programlisting language="sh"><![CDATA[
-VERSION=0
-VERSION='1'
-VERSION="2"
+VERSION=1
+VERSION='2'
+VERSION="3"
 							]]></programlisting>
 						</listitem>
 					</varlistentry>
@@ -417,11 +426,11 @@ VERSION="2"
 						<term><cmdsynopsis>
 								<command>call_joinscript</command>
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
-								<arg><replaceable>join-script</replaceable></arg>
+								<arg><replaceable>XXjoin-script.inst</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								This calls the join script called <filename>join-script</filename> from the directory <filename class="directory">/usr/lib/univention-install/</filename>.
+								This calls the join script called <filename>XXjoin-script.inst</filename> from the directory <filename class="directory">/usr/lib/univention-install/</filename>.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 							</simpara>
 						</listitem>
@@ -430,7 +439,7 @@ VERSION="2"
 						<term><cmdsynopsis>
 								<command>call_joinscript_on_dcmaster</command>
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
-								<arg><replaceable>join-script</replaceable></arg>
+								<arg><replaceable>XXjoin-script.inst</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
@@ -454,11 +463,11 @@ VERSION="2"
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>call_unjoinscript</command>
-								<arg><replaceable>unjoin-script</replaceable></arg>
+								<arg><replaceable>XXunjoin-script.uinst</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								Calls the given unjoin script <option>unjoin-script</option> on &ucsMaster; and &ucsBackup; systems.
+								Calls the given unjoin script <option>unjoin-script</option> on master and &ucsBackup; systems.
 								The file name must be relative to the directory <filename class="directory">/usr/lib/univention-install/</filename>.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 								Afterwards the unjoin script is automatically deleted.
@@ -469,11 +478,11 @@ VERSION="2"
 						<term><cmdsynopsis>
 								<command>delete_unjoinscript</command>
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
-								<arg><replaceable>unjoin-script</replaceable></arg>
+								<arg><replaceable>XXunjoin-script.uinst</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								Deletes the given unjoin script <option>unjoin-script</option> if it does not belong to any package.
+								Deletes the given unjoin script <option>XXunjoin-script.uinst</option> if it does not belong to any package.
 								The file name must be relative to the directory <filename class="directory">/usr/lib/univention-install/</filename>.
 							</simpara>
 						</listitem>
@@ -485,14 +494,14 @@ VERSION="2"
 						<listitem>
 							<simpara>
 								When <command>univention-directory-manager</command> is used the first time a server is started automatically that caches some information about the available modules.
-								When changing some of this information (e.g. when adding or removing extended attributes) it may be a good idea to stop the server manually and do not wait for the automatic timeout.
+								When changing some of this information (e.g. when adding or removing extended attributes) the server should be stopped manually.
 							</simpara>
 						</listitem>
 					</varlistentry>
 				</variablelist>
 				<para>
 					The package also contains the shell library <filename>/usr/share/univention-lib/ldap.sh</filename>.
-					It provides convenience functions to query the LDAP server and modify objects.
+					It provides convenience functions to query the Univention directory service and modify objects.
 					For (un)join scripts the following functions might be important:
 				</para>
 				<variablelist>
@@ -503,12 +512,16 @@ VERSION="2"
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
-							<simpara>
-								Adds <option>servicename</option> to the list of <literal>univentionService</literal> of the LDAP object representing the localhost.
+							<para>
+								Adds <option>servicename</option> to the list of <literal>univentionService</literal> of the LDAP object representing the local host.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
+							</para>
+							<para>
 								Example usage in join script:
-								<command>ucs_addServiceToLocalhost "MyService" "$@"</command>
-							</simpara>
+							</para>
+							<programlisting language="sh">
+ucs_addServiceToLocalhost "MyService" "$@"
+							</programlisting>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
@@ -518,12 +531,16 @@ VERSION="2"
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
-							<simpara>
-								Removes <option>servicename</option> from the list of <literal>univentionService</literal> of the LDAP object representing the localhost, effectively reverting a <command>ucs_addServiceToLocalhost</command> call.
+							<para>
+								Removes <option>servicename</option> from the list of <literal>univentionService</literal> of the LDAP object representing the local host, effectively reverting an <command>ucs_addServiceToLocalhost</command> call.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
+							</para>
+							<para>
 								Example usage in unjoin script:
-								<command>ucs_removeServiceFromLocalhost "MyService" "$@"</command>
-							</simpara>
+							</para>
+							<programlisting language="sh">
+ucs_removeServiceFromLocalhost "MyService" "$@"
+							</programlisting>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
@@ -532,11 +549,18 @@ VERSION="2"
 								<arg choice="plain"><replaceable>servicename</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
-							<simpara>
+							<para>
 								Returns <literal>0</literal> if no LDAP object with a <literal>univentionService</literal> named <option>servicename</option> is found.
+							</para>
+							<para>
 								Example usage in unjoin script:
-								<command>if ucs_isServiceUnused "MyService" "$@"; then uninstall_my_service; fi</command>
-							</simpara>
+							</para>
+							<programlisting language="sh">
+if ucs_isServiceUnused "MyService" "$@"
+then
+	uninstall_my_service
+fi
+							</programlisting>
 						</listitem>
 					</varlistentry>
 				</variablelist>
@@ -548,24 +572,10 @@ VERSION="2"
 	<section id="join:unjoin">
 		<title>Writing unjoin scripts</title>
 		<para>
-			On package removal packages might want to clean up the data in LDAP.
-			Removing data from LDAP also requires appropriate credentials, while removing a package only required local <literal>root</literal> privileges.
-			Therefore UCS provides support for so-called <firstterm>unjoin scripts</firstterm>, which re-use the functionality already provided for join scripts.
-		</para>
-		<para>
-			In most cases an unjoin script belongs to a certain join script and reverts that script's changes.
-			Just like join scripts an unjoin script is prefixed with a two-digit-number for the same reason (lexicographical order when executing all join scripts);
-			this number should be 100 minus that of the corresponding join script, so that the scripts will be executed in the reverse order.
-			The suffix of an unjoin script is <literal>.uinst</literal>.
-			As of UCS 3.1 <literal>.inst</literal> and <literal>.uinst</literal> are not distinguished by the <emphasis>UMC Join module</emphasis> so one should name the script as the join script and prepend <literal>-uninstall</literal> for users to recognize it as an unjoin script.
-			Because <command>univention-run-join-scripts</command> executes all (un)join scripts in <filename class="directory">/usr/lib/univention-install/</filename> it may not live there as long as the package is installed.
-			By convention an unjoin script is installed in <filename class="directory">/usr/lib/univention-uninstall/</filename> and copied to the join script directory when needed.
-			Note that first all join scripts (ordered by their prefix) and after that the unjoin scripts are executed (again ordered by their prefix).
-		</para>
-		<para>
-			Example:
-			The package <package>univention-fetchmail</package> provides both a join script and an unjoin script.
-			The join script is installed at <filename>/usr/lib/univention-install/91univention-fetchmail.inst</filename> and the corresponding unjoin script in <filename>/usr/lib/univention-uninstall/09univention-fetchmail-uninstall.uinst</filename>.
+			On package removal packages should clean up the data in Univention directory service.
+			Removing data from LDAP also requires appropriate credentials, while removing a package only requires local <literal>root</literal> privileges.
+			Therefore UCS provides support for so-called <firstterm>unjoin scripts</firstterm>, which re-use the functionality of the shell libraries.
+			In most cases an unjoin script reverts the changes of a certain join script.
 		</para>
 		<warning>
 			<para>
@@ -574,12 +584,33 @@ VERSION="2"
 				There might still be other systems in the domain which still require the data.
 			</para>
 			<para>
-				Therefore <quote>the first system to come</quote> should setup the data, while only <quote>the last system to go</quote> might clean up the data.
-				In <package>univention-fetchmail</package> this is achieved by using <command>ucs_addServiceFromLocalhost "Fetchmail" "$@"</command> in the join script and <command>ucs_removeServiceFromLocalhost "Fetchmail" "$@"</command> in the unjoin script.
-				Most of the unjoin script is executed only if <command>ucs_isServiceUnused "Fetchmail" "$@"</command>.
-				As a side effect it is easy to see which servers are currently providing the fetchmail service.
+				Therefore <quote>the first system to come</quote> should setup the data, while only <quote>the last system to go</quote> may clean up the data.
 			</para>
 		</warning>
+		<para>
+			Just like join scripts an unjoin script is prefixed with a two-digit number for lexicographical ordering.
+			To reverse the order of the unjoin scripts in comparison to the corresponding join scripts, the number of the unjoin script should be 100 minus the number of the corresponding join script.
+			The suffix of an unjoin script is <literal>-uninstall.uinst</literal> and it should be installed in <filename class="directory">/usr/lib/univention-uninstall/</filename>.
+		</para>
+		<para>
+			On package removal the unjoin script would be deleted as well, while the Univention directory service might still contain data managed by the package.
+			Therefore the script must be copied from there to <filename class="directory">/usr/lib/univention-install/</filename> in the <filename>prerm</filename> maintainer script.
+		</para>
+		<para>
+			Example:
+			The package <package>univention-fetchmail</package> provides both a join script <filename>/usr/lib/univention-install/91univention-fetchmail.inst</filename> and the corresponding unjoin script as <filename>/usr/lib/univention-uninstall/09univention-fetchmail-uninstall.uinst</filename>.
+		</para>
+		<para>
+			As of UCS 3.1 <literal>.inst</literal> and <literal>.uinst</literal> are not distinguishable in the <emphasis>UMC Join module</emphasis> by the user.
+			Therefore it is important to use the <literal>-uninstall</literal> suffix to give users a hint.
+			Internally on the other hand join scripts are always executed before unjoin scripts, both ordered lexicographically by their prefix.
+		</para>
+		<para>
+			To decide if an unjoin script is the last instance and should remove the data from <acronym>LDAP</acronym>, a service can be registered for each host where the package is installed.
+			The package <package>univention-fetchmail</package> for example uses <command>ucs_addServiceFromLocalhost "Fetchmail" "$@"</command> in the join script to register and <command>ucs_removeServiceFromLocalhost "Fetchmail" "$@"</command> in the unjoin script to unregister a service for the host.
+			The data is removed from <acronym>LDAP</acronym> when in the unjoin script <command>ucs_isServiceUnused "Fetchmail" "$@"</command> returns 0.
+			As a side effect it is easy to see which servers are currently providing the fetchmail service.
+		</para>
 		<variablelist>
 			<varlistentry>
 				<term><filename>50join-template-uninstall.uinst</filename></term>
@@ -594,7 +625,7 @@ VERSION="2"
 				<term><filename>debian/join-template.prerm</filename></term>
 				<listitem>
 					<para>
-						The unjoin script has to be copied to the join script dir before it gets removed.
+						The unjoin script has to be copied to the join script directory before it gets removed:
 					</para>
 					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.prerm" parse="text"/></programlisting>
 				</listitem>
@@ -603,20 +634,19 @@ VERSION="2"
 				<term><filename>debian/join-template.postrm</filename></term>
 				<listitem>
 					<para>
-						The unjoin script should be invoked automatically on &ucsMaster; and &ucsBackup; systems after the package is removed.
+						The unjoin script should be invoked automatically on master and &ucsBackup; systems after the package is removed.
 						On all other system roles an administrator must run the join script manually through <command>univention-run-join-scripts</command>.
 					</para>
 					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.postrm" parse="text"/></programlisting>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><filename>debian/join-template.preinst</filename></term>
+				<term><filename>debian/join-template.postinst</filename></term>
 				<listitem>
 					<para>
-						In case the unjoin script is still present in join dir (it has never been executed), but the package is to
-						be installed again, the unjoin script is removed.
+						In case the package is installed again but the unjoin script still exists, because it was never executed, the unjoin script must be removed:
 					</para>
-					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.preinst" parse="text"/></programlisting>
+					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.postinst" parse="text"/></programlisting>
 				</listitem>
 			</varlistentry>
 		</variablelist>
@@ -627,7 +657,7 @@ VERSION="2"
 			<indexterm><primary>domain join</primary><secondary>secrets</secondary></indexterm>
 		</title>
 		<para>
-			The credentials for different LDAP accounts are stored in plain-text files on some UCS systems.
+			The credentials for different UCS domain accounts are stored in plain-text files on some UCS systems.
 			The files are named <filename>/etc/<replaceable>*</replaceable>.secret</filename>.
 			They are owned by the user <literal>root</literal> and allow read-access for different groups.
 		</para>
@@ -637,7 +667,7 @@ VERSION="2"
 				<listitem>
 					<simpara>
 						This account has full write access to all LDAP entries.
-						The file is only available on &ucsMaster; and &ucsBackup; systems and is owned by the group <literal>DC Backup Hosts</literal>.
+						The file is only available on master and &ucsBackup; systems and is owned by the group <literal>DC Backup Hosts</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -656,9 +686,9 @@ VERSION="2"
 				<term><filename>/etc/machine.secret</filename> for <uri><replaceable>$ldap_hostdn</replaceable></uri></term>
 				<listitem>
 					<simpara>
-						Each hosts uses its account to get at least read-access to LDAP.
+						Each host uses its account to get at least read-access to LDAP.
 						Domain controllers in the container <uri>cn=dc,cn=computers,<replaceable>$ldap_base</replaceable></uri> get additional rights to access LDAP attributes.
-						The file is available on all joined systems roles and is owned by the local <literal>root</literal> user and group.
+						The file is available on all joined system roles and is readable only by the local <literal>root</literal> user and group.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -684,11 +714,11 @@ VERSION="2"
 			-->
 		</variablelist>
 		<para>
-			During package installation, only the maintainer scripts (<xref linkend="deb:scripts"/>) on &ucsMaster; and &ucsBackup; can use their <literal>root</literal> permission to directly read <filename>/etc/ldap.secret</filename>.
-			Thus only on those roles are the join scripts automatically executed, when the package is installed.
+			During package installation, only the maintainer scripts (see <xref linkend="deb:scripts"/>) on master and &ucsBackup; can use their <literal>root</literal> permission to directly read <filename>/etc/ldap.secret</filename>.
+			Thus only on those roles the join scripts get automatically executed when the package is installed.
 			On all other system roles, the join scripts need to be executed manually.
 			This can either be done through the <emphasis>UMC Join module</emphasis> or through the command line tool <command>univention-run-join-scripts</command>.
-			Both methods require appropriate credentials to be entered.
+			Both methods require appropriate credentials.
 		</para>
 
 		<section id="join:secret:change">
@@ -698,40 +728,40 @@ VERSION="2"
 			</title>
 
 			<para>
-				To guarantee the trust relation between UCS systems, computers need to regularly change the password associated with the machine account.
+				To reconfirm the trust relation between UCS systems, computers need to regularly change the password associated with the machine account.
 				This is controlled through the &ucsUCRV; <envar>server/password/change</envar>.
-				For UCS servers this is evaluated by <filename>/usr/lib/univention-server/server_password_change</filename>, which is invoked nightly at 01:00 by <citerefentry><refentrytitle>cron</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
+				For UCS servers this is evaluated by the script <filename>/usr/lib/univention-server/server_password_change</filename>, which is invoked nightly at 01:00 by <citerefentry><refentrytitle>cron</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
 				The interval is controlled through a second &ucsUCRV; <envar>server/password/interval</envar>, which defaults to 21 days.
 			</para>
 			<para>
 				The password is stored in the plain text file <filename>/etc/machine.secret</filename>.
-				Many long running services only read these credentials on startup, which breaks when the password is changed while they are still running.
+				Many long running services read these credentials only on startup, which breaks when the password is changed while they are still running.
 				Therefore UCS provides a mechanism to invoke arbitrary commands, when the machine password is changed.
-				This can be used for example to restart said services.
+				This can be used for example to restart specific services.
 			</para>
 			<para>
 				Hook scripts should be placed in the directory <filename class="directory">/usr/lib/univention-server/server_password_change.d/</filename>.
 				The name must consist of only digits, upper and lower ASCII characters, hyphens and underscores.
 				They file must be executable and is called via <citerefentry><refentrytitle>run-parts</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
-				It receives one argument, which is used to distinguish two phases:
+				It receives one argument, which is used to distinguish three phases:
 			</para>
 			<procedure>
 				<title>Server password change procedure</title>
 				<step>
 					<para>
-						Each script will be called with argument <literal>prechange</literal> before the password is changed.
-						If any scripts aborts with an exit status unequal zero, the change is aborted.
+						Each script will be called with the argument <literal>prechange</literal> before the password is changed.
+						If any script terminates with an exit status unequal zero, the change is aborted.
 					</para>
 				</step>
 				<step>
 					<para>
 						A new password is generated locally using <citerefentry><refentrytitle>makepasswd</refentrytitle><manvolnum>1</manvolnum></citerefentry>.
-						It is changed in LDAP via UDM and stored in <filename>/etc/machine.secret</filename>.
+						It is changed in the Univention directory service via UDM and stored in <filename>/etc/machine.secret</filename>.
 						<remark>PMH: hard coded to 8 characters Bug #31281</remark>
 						The old password is logged in <filename>/etc/machine.secret.old</filename>.
 					</para>
 					<para>
-						If anything goes wrong in this step, the change is aborted and the changes are rolled back.
+						If anything goes wrong in this step, the change is aborted and the changes need to be rolled back.
 					</para>
 				</step>
 				<step>
@@ -742,13 +772,13 @@ VERSION="2"
 						<step>
 							<para>
 								If the password change was successful, <option>postchange</option> gets passed to the hook scripts.
-								This should complete any change done in the <literal>prechange</literal> phase.
+								This should complete any change prepared in the <literal>prechange</literal> phase.
 							</para>
 						</step>
 						<step>
 							<para>
 								If the password change failed for any reason, all hook scripts are called with the argument <option>nochange</option>.
-								This should undo any change already done in the <literal>prechange</literal> phase.
+								This should undo any action already done in the <literal>prechange</literal> phase.
 							</para>
 						</step>
 					</stepalternatives>

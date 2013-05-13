@@ -4,7 +4,7 @@
 	%entities;
 ]>
 <chapter id="chap:ucr">
-	<title>Config Registry
+	<title>Univention Config Registry (<acronym>UCR</acronym>)
 		<indexterm><primary>Config Registry</primary></indexterm>
 		<indexterm><primary>UCR</primary><see>Config Registry</see></indexterm>
 		<indexterm><primary>Registry</primary><see>Config Registry</see></indexterm>
@@ -13,8 +13,8 @@
 		The Univention Config Registry (<acronym>UCR</acronym>) is a local mechanism, which is used on all <acronym>UCS</acronym> system roles to consistently configure all services and applications.
 		It consists of a database, were the currently configured values are stored, and a mechanism to trigger certain actions, when values are changed.
 		This is mostly used to create configuration files from templates by filling in the configured values.
-		In addition to using simple place holders its also possible to use Python code for more advanced templates or to call external programs when values are changes.
-		UCR values can also be configured through an LDAP policy, which allows values to be set consistently for multiple hosts of a domain.
+		In addition to using simple place holders its also possible to use Python code for more advanced templates or to call external programs when values are changed.
+		<acronym>UCR</acronym> values can also be configured through an <acronym>UDM</acronym> policy in Univention directory service (<acronym>LDAP</acronym>), which allows values to be set consistently for multiple hosts of a domain.
 	</para>
 	<remark>PMH: Bug #29471</remark>
 
@@ -25,7 +25,7 @@
 
 		<section id="ucr:usage:shell"><title>Using UCR from shell</title>
 			<para>
-				<command>ucr</command> (and its alias <command>univention-config-registry</command>) can be invoked directly from shell.
+				<command>univention-config-registry</command> (and its alias <command>ucr</command>) can be invoked directly from shell.
 				The most commonly used functions are:
 			</para>
 			<variablelist>
@@ -47,7 +47,7 @@
 					<listitem>
 						<para>
 							Set &ucsUCRV; <varname>key</varname> to the given <varname>value</varname>.
-							Using <literal>=</literal> forces an assignment, while <literal>?</literal> only sets the value, if the variable is unset.
+							Using <literal>=</literal> forces an assignment, while <literal>?</literal> only sets the value if the variable is unset.
 						</para>
 						<example>
 							<title>Use of <command>ucr set</command></title>
@@ -83,8 +83,9 @@ esac
 								]]></programlisting>
 						</example>
 						<para>
-							For variables containing boolean values the shell-function <function>is_ucr_true <replaceable>key</replaceable></function> from <filename>/usr/share/univention-lib/ucr.sh</filename> should be used.
-							It returns 0 (success) for the values <simplelist type="inline"><member>1</member><member>yes</member><member>on</member><member>true</member><member>enable</member><member>enabled</member></simplelist>, 1 for the negated values, and 2 for all other values.
+							For variables containing boolean values the shell-library-function <function>is_ucr_true <replaceable>key</replaceable></function> from <filename>/usr/share/univention-lib/ucr.sh</filename> should be used.
+							It returns 0 (success) for the values <simplelist type="inline"><member>"1"</member><member>"yes"</member><member>"on"</member><member>"true"</member><member>"enable"</member><member>"enabled"</member></simplelist>, 1 for the negated values <simplelist type="inline"><member>"0"</member><member>"no"</member><member>"off"</member><member>"false"</member><member>"disable"</member><member>"disabled"</member></simplelist>.
+							For all other values it returns a value of 2 to indicate inappropriate usage.
 						</para>
 						<example>
 							<title>Use of <command>is_ucr_true</command></title>
@@ -132,8 +133,8 @@ ucr unset print/papersize variable/namme
 					</term>
 					<listitem>
 						<para>
-							Export some or all &ucsUCRV; in a shell compatible manner as environment variables.
-							All shell-incompatible characters in variable names are substituted by <literal>_</literal>.
+							Export some or all &ucsUCRV;s in a shell compatible manner as environment variables.
+							All shell-incompatible characters in variable names are substituted by underscores (<literal>_</literal>).
 						</para>
 						<example>
 							<title>Use of <command>ucr shell</command></title>
@@ -151,8 +152,8 @@ esac
 						</para>
 						<warning>
 							<para>
-								Be careful with shell quoting, since several &ucsUCRV; contain shell meta characters.
-								Use <command>eval "$(ucr shell)"</command>!
+								Be careful with shell quoting, since several &ucsUCRV;s contain shell meta characters.
+								Use <command>eval "$(ucr shell)"</command>.
 							</para>
 						</warning>
 					</listitem>
@@ -161,7 +162,7 @@ esac
 			<note>
 				<para>
 					<command>ucr</command> is installed as <filename>/usr/sbin/ucr</filename>, which is not on the search path <envar>$PATH</envar> of normal users.
-					Changing variables required root access to <filename>/etc/univention/base.conf</filename>, but reading works for normal users too, if <filename>/usr/sbin/ucr</filename> is invoked directly.
+					Changing variables requires root access to <filename>/etc/univention/base.conf</filename>, but reading works for normal users too, if <filename>/usr/sbin/ucr</filename> is invoked directly.
 				</para>
 			</note>
 		</section>
@@ -169,11 +170,11 @@ esac
 		<section id="ucr:usage:python"><title>Using UCR from Python</title>
 			<para>
 				<acronym>UCR</acronym> also provides a Python binding, which can be used from any Python program.
-				For reading an instance of <classname>univention.config_registry.ConfigRegistry</classname> needs to be crated first.
-				After loading the current state with <methodname>load()</methodname> the values can be accessed by using the instance like a Python dictionary:
+				An instance of <classname>univention.config_registry.ConfigRegistry</classname> needs to be crated first.
+				After loading the current database state with <methodname>load()</methodname> the values can be accessed by using the instance like a Python dictionary:
 			</para>
 			<example>
-				<title>Reading &ucsUCRV; in Python</title>
+				<title>Reading a &ucsUCRV; in Python</title>
 				<programlisting><![CDATA[
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
@@ -184,11 +185,11 @@ print ucr.get('variable/name', '<not set>')
 			</example>
 			<para>
 				For variables containing boolean values the methods <methodname>is_true()</methodname> and <methodname>is_false()</methodname> should be used.
-				The former returns <literal>True</literal> for the values <simplelist type="inline"><member>1</member><member>yes</member><member>on</member><member>true</member><member>enable</member><member>enabled</member></simplelist>, while the later one returns <literal>True</literal> for the negated values.
-				Both methods accept an optional argument <option>default</option>, which is returned as-is when the variable is unset.
+				The former returns <literal>True</literal> for the values <simplelist type="inline"><member>"1"</member><member>"yes"</member><member>"on"</member><member>"true"</member><member>"enable"</member><member>"enabled"</member></simplelist>, while the later one returns <literal>True</literal> for the negated values <simplelist type="inline"><member>"0"</member><member>"no"</member><member>"off"</member><member>"false"</member><member>"disable"</member><member>"disabled"</member></simplelist>.
+				Both methods accept an optional argument <option>default</option>, which is returned as-is when the variable is not set.
 			</para>
 			<example>
-				<title>Reading boolean &ucsUCRV; in Python</title>
+				<title>Reading boolean &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
 if ucr.is_true('repository/online/unmaintained'):
 	print "unmaintained is explicitly enabled"
@@ -205,7 +206,7 @@ if ucr.is_false('repository/online/unmaintained', True):
 				Two functions <function>handler_set()</function> and <function>handler_unset()</function> can be used to set and unset variables.
 			</para>
 			<example>
-				<title>Changing &ucsUCRV; in Python</title>
+				<title>Changing &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
 from univention.config_registry import handler_set, handler_unset
 handler_set([
@@ -216,7 +217,7 @@ handler_unset(['foo', 'bar'])
 				]]></programlisting>
 			</example>
 			<para>
-				As <function>handler_set()</function> and <function>handler_unset()</function> don't automatically update any instance of <classname>ConfigRegistry</classname>, <methodname>load()</methodname> has to be called manually.
+				As <function>handler_set()</function> and <function>handler_unset()</function> don't automatically update any instance of <classname>ConfigRegistry</classname>, the <methodname>load()</methodname> method has to be called manually afterwards to reflect the updated values.
 			</para>
 		</section>
 	</section>
@@ -224,7 +225,12 @@ handler_unset(['foo', 'bar'])
 	<section><title>Configuration files</title>
 		<para>
 			Packages can use the <acronym>UCR</acronym> functionality to create customized configuration files themselves.
-			For this packages need to ship additional files:
+			<acronym>UCR</acronym> <firstterm>diverts</firstterm> files shipped by Debian packages and replaces them by generated files.
+			If variables are changed, the affected files are <firstterm>committed</firstterm>, which regenerated their content.
+			This diversion is persistent and even outlives updates, so they are not overwritten by configuration files of new packages.
+		</para>
+		<para>
+			For this, packages need to ship additional files:
 		</para>
 		<variablelist>
 			<varlistentry>
@@ -242,8 +248,8 @@ handler_unset(['foo', 'bar'])
 				<term>debian/<replaceable>package</replaceable>.univention-config-registry</term>
 				<listitem>
 					<simpara>
-						This mandatory information file describe the each template file.
-						If specifies the type of the template and lists the <acronym>UCR</acronym> variable names, which trigger the re-generation of the target file.
+						This mandatory information file describes the each template file.
+						It specifies the type of the template and lists the <acronym>UCR</acronym> variable names, which shall trigger the regeneration of the target file.
 						See <xref linkend="ucr:info"/> below for more information.
 					</simpara>
 				</listitem>
@@ -252,7 +258,7 @@ handler_unset(['foo', 'bar'])
 				<term>debian/<replaceable>package</replaceable>.univention-config-registry-variables</term>
 				<listitem>
 					<simpara>
-						This optional file can add descriptions to <acronym>UCR</acronym> variables, which should describe the function of and allowed values for the variable.
+						This optional file can add descriptions to <acronym>UCR</acronym> variables, which should describe the use of the variable, its default and allowed values.
 						See <xref linkend="ucr:variables"/> below for more information.
 					</simpara>
 				</listitem>
@@ -277,9 +283,9 @@ handler_unset(['foo', 'bar'])
 			</varlistentry>
 		</variablelist>
 		<para>
-			In addition to these files code needs to be inserted into the maintainer scripts, which registers and unregisters these files.
-			This is done by <command>univention-install-config-registry</command>, which is part of the <package>univention-config-dev</package> package.
-			This build dependency needs to be added as a <literal>Build-Depends</literal> in the source package.
+			In addition to these files code needs to be inserted into the package maintainer scripts (see <xref linkend="deb:scripts"/>), which registers and unregisters these files.
+			This is done by calling <command>univention-install-config-registry</command> from <filename>debian/rules</filename> during the package build <literal>binary</literal> phase.
+			The command is part of the <package>univention-config-dev</package> package, which needs to be added as a <literal>Build-Depends</literal> build dependency of the source package in <filename>debian/control</filename>.
 		</para>
 
 		<section id="ucr:info">
@@ -288,12 +294,12 @@ handler_unset(['foo', 'bar'])
 			</title>
 			<para>
 				This file describes all template files in the package.
-				The file is processed and copied by <command>univention-install-config-registry</command> into <filename class="directory">/etc/univention/templates/info/</filename> when the package is build.
+				The file is processed and copied by <command>univention-install-config-registry</command> into <filename class="directory">/etc/univention/templates/info/</filename> when the package is built.
 			</para>
 			<para>
 				It can consist of multiple sections, where sections are separated by one blank line.
 				Each section consists of multiple key-value-pairs separated by a colon followed by one blank.
-				A typical entry hat the following structure:
+				A typical entry has the following structure:
 			</para>
 			<programlisting><![CDATA[
 Type: <type>
@@ -302,7 +308,7 @@ Type: <type>
 Variables: <variable1>
 ... ]]></programlisting>
 			<para>
-				<literal>Type</literal> specified the type of the template, which the following sections describe in more detail.
+				<literal>Type</literal> specifies the type of the template, which the following sections describe in more detail.
 			</para>
 
 			<section id="ucr:file">
@@ -345,10 +351,9 @@ Postinst: <module>
 						<term><literal>Variables</literal> (optional)</term>
 						<listitem>
 							<para>
-								This key can be given multiple times and specifies the name of <acronym>UCR</acronym> variables, which trigger the file creation process.
-								This is normally only required for templates using <literal>@!@</literal> regions
-								Variables used in <literal>@%@</literal> sections must not be listed explicitly, since <command>ucr</command> extracts them automatically.
-								This is mostly needed for Python code in <literal>@%@</literal> sections.
+								This key can be given multiple times and specifies the name of <acronym>UCR</acronym> variables, which trigger the file commit process.
+								This is normally only required for templates using <literal>@!@</literal> Python code regions.
+								Variables used in <literal>@%@</literal> sections do not need to be listed explicitly, since <command>ucr</command> extracts them automatically.
 							</para>
 							<para>
 								The variable name is actually a Python regular expression, which can be used to match, for example, all variable names starting with a common prefix.
@@ -362,7 +367,7 @@ Postinst: <module>
 						<listitem>
 							<simpara>
 								These specify the symbolic name of the user, group and octal file permissions for the created target file.
-								If no values are explicitly provided, the <literal>root:root</literal> is used by default and the file mode is copied from the source template.
+								If no values are explicitly provided, then <literal>root:root</literal> is used by default and the file mode is inherited from the source template.
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -381,11 +386,11 @@ def postinst(config_registry, changes):
 	pass]]></synopsis>
 							<para>
 								Each function receives two arguments:
-								The first argument <varname>config_registry</varname >is a reference to an instance of <classname>ConfigRegistry</classname>.
+								The first argument <varname>config_registry</varname> is a reference to an instance of <classname>ConfigRegistry</classname>.
 								The second argument <varname>changes</varname> is a dictionary of 2-tuples, which maps the names of all changed variables to (<varname>old-value</varname>, <varname>new-value</varname>).
 							</para>
 							<para>
-								The module file is installed to <filename class="directory">/etc/univention/templates/modules/</filename>.
+								<command>univention-install-config-registry</command> installes the module file to <filename class="directory">/etc/univention/templates/modules/</filename>.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -399,7 +404,7 @@ def postinst(config_registry, changes):
 				<para>
 					A multi file template is specified once as type <literal>multifile</literal>, which describes the target file name.
 					In addition to that multiple sections of type <literal>subfile</literal> are used to describe source file fragments, which are concatenated to form the final target file.
-					A typical multifile hat the following structure:
+					A typical multifile has the following structure:
 				</para>
 				<programlisting><![CDATA[
 Type: multifile
@@ -433,12 +438,12 @@ Variables: <variable1>
 						<term><literal>Subfile</literal> (required)</term>
 						<listitem>
 							<para>
-								The source file containing the template fragment must be put below the <filename class="directory">conffiles/</filename> directory.
+								The source file containing the template fragment must be put below the <filename class="directory">conffiles/</filename> directory in the Debian source package.
 								The file can contain any textual content and is processed as described in <xref linkend="ucr:conffiles"/>.
 								The template file is installed to <filename class="directory">/etc/univention/templates/files/</filename>.
 							</para>
 							<para>
-								Common best practice is start the filename with two digits to allow sorting and to put the file in the directory named named after the target filename suffixed by <literal>.d</literal>, that is <filename class="directory">conffiles/<replaceable>target-filename</replaceable>.d/<replaceable>00fragment-filename</replaceable></filename>.
+								Common best practice is to start the filename with two digits to allow consistent sorting and to put the file in the directory named like the target filename suffixed by <literal>.d</literal>, that is <filename class="directory">conffiles/<replaceable>target-filename</replaceable>.d/<replaceable>00fragment-filename</replaceable></filename>.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -447,7 +452,7 @@ Variables: <variable1>
 						<listitem>
 							<simpara>
 								Variables can be declared in both the <literal>multifile</literal> and <literal>subfile</literal> sections.
-								The variables from the union of all sections trigger the regeneration.
+								The variables from all sections trigger the commit of the target file.
 								Until UCS-2.4 only the <literal>multifile</literal> section was used, since UCS-3.0 the <literal>subfile</literal> section should be preferred (if needed).
 							</simpara>
 						</listitem>
@@ -470,8 +475,8 @@ Variables: <variable1>
 					<indexterm><primary>Config Registry</primary><secondary>Template</secondary><tertiary>Script</tertiary></indexterm>
 				</title>
 				<para>
-					A script template allows an external program to be called when <acronym>UCR</acronym> variables are changed.
-					A typical script entry hat the following structure:
+					A script template allows an external program to be called when specific <acronym>UCR</acronym> variables are changed.
+					A typical script entry has the following structure:
 				</para>
 				<programlisting><![CDATA[
 Type: script
@@ -488,7 +493,7 @@ Variables: <variable1>]]></programlisting>
 								Specifies the filename of an executable, which is installed to <filename class="directory">/etc/univention/templates/scripts/</filename>.
 							</para>
 							<para>
-								The script receives on standard input the list of changed variables.
+								The script receives the list of changed variables on standard input.
 								For each changed variable a line containing the name of the variable, the old value, and the new value separated by <literal>@%@</literal> is sent.
 							</para>
 						</listitem>
@@ -509,8 +514,8 @@ Variables: <variable1>]]></programlisting>
 					<indexterm><primary>Config Registry</primary><secondary>Template</secondary><tertiary>Module</tertiary></indexterm>
 				</title>
 				<para>
-					A module template allows an Python module to be called when <acronym>UCR</acronym> variables are changed.
-					A typical module entry hat the following structure:
+					A module template allows a Python module to be run when specific <acronym>UCR</acronym> variables are changed.
+					A typical module entry has the following structure:
 				</para>
 				<programlisting><![CDATA[
 Type: module
@@ -539,7 +544,7 @@ def handler(config_registry, changes):
 								The second argument <varname>changes</varname> is a dictionary of 2-tuples, which maps the names of all changed variables to (<varname>old-value</varname>, <varname>new-value</varname>).
 							</para>
 							<para>
-								The module is installed to <filename class="directory">/etc/univention/templates/modules/</filename>.
+								<command>univention-install-config-registry</command> installs the module to <filename class="directory">/etc/univention/templates/modules/</filename>.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -565,9 +570,9 @@ def handler(config_registry, changes):
 				It can also be queried by running <command>ucr info <replaceable>variable/name</replaceable></command> on the command line.
 			</para>
 			<para>
-				The description is provided on a per-package-bases as a file, which uses the <abbrev>ini</abbrev>-style.
+				The description is provided on a per-package basis as a file, which uses the <abbrev>ini</abbrev>-style format.
 				The file is processed and copied by <command>univention-install-config-registry-info</command> into <filename class="directory">/etc/univention/registry.info/variables/</filename>.
-				<command>univention-install-config-registry-info</command> is invoked indirectly by <command>univention-install-config-registry</command>, which should be called instead.
+				The command <command>univention-install-config-registry-info</command> is invoked indirectly by <command>univention-install-config-registry</command>, which should be called instead from <filename>debian/rules</filename>.
 			</para>
 			<para>
 				For each variable a section of the following structure is defined:
@@ -584,12 +589,12 @@ Categories=<category,...>]]></programlisting>
 					<term><literal>[</literal><replaceable>variable/name</replaceable><literal>]</literal> (required)</term>
 					<listitem>
 						<para>
-							For each variable description one sections needs to be created.
+							For each variable description one section needs to be created.
 							The name of the section must match the variable name.
 						</para>
 						<para>
 							To describe multiple variables with a common prefix and/or suffix, the regular expression <literal>.*</literal> can be used to match any sequence of characters.
-							This ist the only supported regular expression!
+							This is the only supported regular expression!
 						</para>
 					</listitem>
 				</varlistentry>
@@ -598,6 +603,7 @@ Categories=<category,...>]]></programlisting>
 					<listitem>
 						<simpara>
 							A descriptive text for the variable.
+							It should mention the valid and default values.
 							The description can be given in multiple languages, using the two-letter-code following <citation><xref linkend="ISO639"/></citation>.
 						</simpara>
 					</listitem>
@@ -607,7 +613,7 @@ Categories=<category,...>]]></programlisting>
 					<listitem>
 						<simpara>
 							The syntax type for the value.
-							This is unused as of UCS-3.1, but future versions might use this for validating the input.
+							This is unused in UCS-3.1, but future versions might use this for validating the input.
 							Valid values include <literal>str</literal> for strings, <literal>bool</literal> for boolean values, and <literal>int</literal> for integers.
 						</simpara>
 					</listitem>
@@ -628,7 +634,7 @@ Categories=<category,...>]]></programlisting>
 						<simpara>
 							A list of categories, separated by comma.
 							This is used to group related <acronym>UCR</acronym> variables.
-							New categories don't need ne be declared explicitly, but it is recommended to do so following <xref linkend="ucr:categories"/>.
+							New categories don't need to be declared explicitly, but it is recommended to do so following <xref linkend="ucr:categories"/>.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -640,14 +646,14 @@ Categories=<category,...>]]></programlisting>
 				<indexterm><primary>Config Registry</primary><secondary>Categories</secondary></indexterm>
 			</title>
 			<para>
-				<acronym>UCR</acronym> variables can be grouped into categories, which can help administrator to find related settings.
-				Categories are referenced from <filename>.univention-config-registry-variables</filename> files (<xref linkend="ucr:variables"/>).
+				<acronym>UCR</acronym> variables can be grouped into categories, which can help administrators to find related settings.
+				Categories are referenced from <filename>.univention-config-registry-variables</filename> files (see <xref linkend="ucr:variables"/>).
 				They are created on-the-fly, but can be described further by explicitly defining them in a <filename>.univention-config-registry-categories</filename> file.
 			</para>
 			<para>
-				The description is provided on a per-package-bases as a file, which uses the <abbrev>ini</abbrev>-style.
+				The description is provided on a per-package basis as a file, which uses the <abbrev>ini</abbrev>-style format.
 				The file is processed and copied by <command>univention-install-config-registry-info</command> into <filename class="directory">/etc/univention/registry.info/categories/</filename>.
-				<command>univention-install-config-registry-info</command> is invoked indirectly by <command>univention-install-config-registry</command>, which should be called instead.
+				The command <command>univention-install-config-registry-info</command> is invoked indirectly by <command>univention-install-config-registry</command>, which should be called instead from <filename>debian/rules</filename>.
 			</para>
 			<para>
 				For each category a section of the following structure is defined:
@@ -662,7 +668,7 @@ icon=<file-name>]]></programlisting>
 					<term><literal>[</literal><replaceable>category-name</replaceable><literal>]</literal></term>
 					<listitem>
 						<simpara>
-							For each category description one sections needs to be created.
+							For each category description one section needs to be created.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -679,8 +685,8 @@ icon=<file-name>]]></programlisting>
 					<term><literal>icon</literal> (required)</term>
 					<listitem>
 						<simpara>
-							The file name of an icon in either Portable Network Format (<acronym>PNG</acronym>) or Graphics Interchange Format (<acronym>GIF</acronym>) format.
-							This is unused as of UCS-3.1, but future versions might display this icon for variables in this category.
+							The file name of an icon in either the Portable Network Graphics (<acronym>PNG</acronym>) format or Graphics Interchange Format (<acronym>GIF</acronym>).
+							This is unused in UCS-3.1, but future versions might display this icon for variables in this category.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -696,9 +702,9 @@ icon=<file-name>]]></programlisting>
 				This enables administrators to control these daemons using the <acronym>UMC</acronym> module <emphasis>System services</emphasis>.
 			</para>
 			<para>
-				The description is provided on a per-package-bases as a file, which uses the <abbrev>ini</abbrev>-style.
+				The description is provided on a per-package basis as a file, which uses the <abbrev>ini</abbrev>-style format.
 				The file is processed and copied by <command>univention-install-service-info</command> into <filename class="directory">/etc/univention/service.info/services/</filename>.
-				<command>univention-install-service-info</command> is invoked indirectly by <command>univention-install-config-registry</command>, which should be called instead.
+				The command <command>univention-install-service-info</command> is invoked indirectly by <command>univention-install-config-registry</command>, which should be called instead from <filename>debian/rules</filename>.
 			</para>
 			<para>
 				For each service a section of the following structure is defined:
@@ -714,7 +720,7 @@ programs=<executable>]]></programlisting>
 					<term><literal>[</literal><replaceable>service-name</replaceable><literal>]</literal></term>
 					<listitem>
 						<simpara>
-							For each daemon one sections needs to be created.
+							For each daemon one section needs to be created.
 							The service-name should match the name of the init-script in <filename class="directory">/etc/init.d/</filename>.
 						</simpara>
 					</listitem>
@@ -743,7 +749,7 @@ programs=<executable>]]></programlisting>
 					<term><literal>programs</literal> (required)</term>
 					<listitem>
 						<simpara>
-							A comma separated list of commands, which must be running to count the service as running.
+							A comma separated list of commands, which must be running to qualify the service as running.
 							Each command name is checked against <filename>/proc/*/cmdline</filename>.
 							To check the processes for additional arguments, the command can also consist of additional shell-escaped arguments.
 						</simpara>
@@ -753,8 +759,8 @@ programs=<executable>]]></programlisting>
 					<term><literal>icon</literal> (optional)</term>
 					<listitem>
 						<simpara>
-							The file name of an icon in either Portable Network Format (<acronym>PNG</acronym>) or Graphics Interchange Format (<acronym>GIF</acronym>) format.
-							This is unused as of UCS-3.1, but future versions might display the icon for the service.
+							The file name of an icon in either Portable Network Graphics (<acronym>PNG</acronym>) format or Graphics Interchange Format (<acronym>GIF</acronym>) format.
+							This is unused in UCS-3.1, but future versions might display the icon for the service.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -764,16 +770,16 @@ programs=<executable>]]></programlisting>
 	</section>
 
 	<section id="ucr:conffiles">
-		<title>conffiles/<replaceable>path/to/file</replaceable>
+		<title>UCR Template files <filename>conffiles/<replaceable>path/to/file</replaceable></filename>
 			<indexterm><primary>Config Registry</primary><secondary>Template file</secondary></indexterm>
 		</title>
 		<para>
-			For each file, which should be replaced, one or more template files need be to created below the <filename class="directory">conffiles/</filename> directory.
-			For a single-File template (<xref linkend="ucr:file"/>), the filename must match the filename given in the <literal>File:</literal> stanza of the <emphasis>file</emphasis> entry itself.
-			For a Multifile-template (<xref linkend="ucr:multifile"/>), the filename must match the filename given in the <literal>File:</literal> stanza of the <emphasis>subfile</emphasis> entries.
+			For each file, which should be written, one or more template files need be to created below the <filename class="directory">conffiles/</filename> directory.
+			For a single-File template (see <xref linkend="ucr:file"/>), the filename must match the filename given in the <literal>File:</literal> stanza of the <emphasis>file</emphasis> entry itself.
+			For a Multifile template (see <xref linkend="ucr:multifile"/>), the filename must match the filename given in the <literal>File:</literal> stanza of the <emphasis>subfile</emphasis> entries.
 		</para>
 		<para>
-			Each template file is normally a text file, where certain sections are replaced by computed values.
+			Each template file is normally a text file, where certain sections get substituted by computed values during the file commit.
 			Each section starts and ends with a special marker.
 			<acronym>UCR</acronym> currently supports the following kinds of markers:
 		</para>
@@ -788,8 +794,8 @@ programs=<executable>]]></programlisting>
 					</para>
 					<para>
 						<command>ucr</command> scans all <literal>file</literal>s and <literal>subfile</literal>s on registration.
-						All &ucsUCRV;s used in <literal>@%@</literal> are automatically extracted and added registered for triggering the template mechanism.
-						They don't need to be explicitly enumerated with <literal>Variables:</literal>-statements in .  the <filename>debian/<replaceable>package</replaceable>.univention-config-registry</filename> file.
+						All &ucsUCRV;s used in <literal>@%@</literal> are automatically extracted and registered for triggering the template mechanism.
+						They don't need to be explicitly enumerated with <literal>Variables:</literal>-statements in the file <filename>debian/<replaceable>package</replaceable>.univention-config-registry</filename>.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -797,8 +803,8 @@ programs=<executable>]]></programlisting>
 				<term><literal>@!@</literal> Python code</term>
 				<listitem>
 					<para>
-						Sections enclosed in <literal>@%@</literal> contains Python code.
-						Everything printed to <acronym>STDOUT</acronym> is inserted into the generated file.
+						Sections enclosed in <literal>@!@</literal> contain Python code.
+						Everything printed to <acronym>STDOUT</acronym> by these sections is inserted into the generated file.
 						The Python code can access the <varname>configRegistry</varname><footnote>
 							<simpara>
 								Historically &ucsUCR; was named <quote>Univention Base Config</quote>.
@@ -810,6 +816,7 @@ programs=<executable>]]></programlisting>
 					</para>
 					<para>
 						All &ucsUCRV;s used in a <literal>@!@</literal> Python section must be manually matched by a <literal>Variables:</literal> statement in the <filename>debian/<replaceable>package</replaceable>.univention-config-registry</filename> file.
+						Otherwise the file is not updated on changes of the <acronym>UCR</acronym> variable.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -835,8 +842,8 @@ programs=<executable>]]></programlisting>
 					]]></screen>
 					<para>
 						It should be inserted once at the top to prevent the user from editing the generated file.
-						For a single File templates, it should be on the top of the template file itself.
-						For a Multifile templates, it should be on the top the first subfile.
+						For single File templates, it should be on the top of the template file itself.
+						For Multifile templates, it should only be on the top the first subfile.
 					</para>
 					<para>
 						Everything between the equal sign and the closing <literal>@%@</literal> defines the <replaceable>PREFIX</replaceable>, which is inserted at the beginning of each line of the warning text.
@@ -851,7 +858,7 @@ programs=<executable>]]></programlisting>
 						</para>
 					</warning>
 					<para>
-						The <literal>UCRWARNING_ASCII</literal> variante only emits 7 bit ASCII characters, which can be used for files, which are not 8 bit clean or unicode aware.
+						The <literal>UCRWARNING_ASCII</literal> variant only emits 7-bit ASCII characters, which can be used for files, which are not 8 bit clean or unicode aware.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -871,12 +878,12 @@ override_dh_auto_install:
 		]]></programlisting>
 		<para>
 			This invocation copies the referenced files to the right location in the binary package staging area <filename>debian/<replaceable>package</replaceable>/etc/univention/</filename>.
-			Internally <command>univention-install-config-registry-info</command> and <command>univention-install-service-info</command> are invoked, which don't should be called explicitly anymore.
-			The calls also insert code into <filename>debian/<replaceable>package</replaceable>.postinst.subst</filename> and <filename>debian/<replaceable>package</replaceable>.postinst.subst</filename> to register and un-register the templates.
-			Therefore it's important that customized maintainer scripts use the <literal>#DEBHELPER#</literal> marker, so that the generated code gets inserted.
+			Internally <command>univention-install-config-registry-info</command> and <command>univention-install-service-info</command> are invoked, which should not be called explicitly anymore.
+			The calls also insert code into the files <filename>debian/<replaceable>package</replaceable>.preinst.subst</filename>, <filename>debian/<replaceable>package</replaceable>.postinst.subst</filename> and <filename>debian/<replaceable>package</replaceable>.postrm.subst</filename> to register and un-register the templates.
+			Therefore it's important that customized maintainer scripts use the <literal>#DEBHELPER#</literal> marker, so that the generated code gets inserted into the corresponding <filename>preinst</filename>, <filename>postinst</filename> and <filename>postrm</filename> files of the generated binary package.
 		</para>
 		<para>
-			The invocation also adds <package>univention-config</package> to <varname>${misc:Depends}</varname> to ensure that the package is available during package configuration time.
+			The invocation also adds <package>univention-config</package> to <varname>misc:Depends</varname> to ensure that the package is available during package configuration time.
 			Therefore it's important that <varname>${misc:Depends}</varname> is used in the <literal>Depends</literal> line of the package section in the <filename>debian/control</filename> file.
 		</para>
 		<programlisting><![CDATA[
@@ -906,13 +913,16 @@ Depends: ..., ${misc:Depends}, ...
 				This example provides a template for <filename>/etc/papersize</filename>, which is used to configure the default paper size.
 				A &ucsUCRV; <envar>print/papersize</envar> is registered, which can be used to configure the papersize.
 			</para>
+			<para>
+				Source code: <ulink url="&websvn;doc/developer-reference/ucr/papersize/"/>
+			</para>
 			<variablelist>
 				<varlistentry>
 					<term><filename>conffiles/etc/papersize</filename></term>
 					<listitem>
 						<para>
 							The template file only contains one line.
-							Please not, that this file does not start with the <quote>UCRWARNING</quote>, since the file must only contain the paper size and no comments.
+							Please note that this file does not start with the <quote>UCRWARNING</quote>, since the file must only contain the paper size and no comments.
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="papersize/conffiles/etc/papersize" parse="text"/></programlisting>
 						<para>
@@ -941,7 +951,7 @@ Depends: ..., ${misc:Depends}, ...
 					<term><filename>debian/papersize.postinst</filename></term>
 					<listitem>
 						<para>
-							Set the &ucsUCRV; so a default value after package installation.
+							Sets the &ucsUCRV; to a default value after package installation.
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="papersize/debian/papersize.postinst" parse="text"/></programlisting>
 					</listitem>
@@ -951,9 +961,12 @@ Depends: ..., ${misc:Depends}, ...
 					<listitem>
 						<para>
 							Invoke <command>univention-install-config-registry</command> during package build to install the files to the appropriate location.
-							It also creates the right commands for the maintainer scripts (<xref linkend="deb:scripts"/>) to register and unregister the templates.
+							It also creates the required commands for the maintainer scripts (see <xref linkend="deb:scripts"/>) to register and unregister the templates during package installation and removal.
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="papersize/debian/rules" parse="text"/></programlisting>
+						<para>
+							Note that tabulators must be used for indention in this <application>Makefile</application>-type file.
+						</para>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
@@ -973,8 +986,11 @@ Depends: ..., ${misc:Depends}, ...
 				<indexterm><primary>Config Registry</primary><secondary>Examples</secondary><tertiary>Multifile</tertiary></indexterm>
 			</title>
 			<para>
-				This example provides a template for <filename>/etc/hosts.allow</filename>, which is used to control access to system services.
+				This example provides templates for <filename>/etc/hosts.allow</filename> and <filename>/etc/hosts.deny</filename>, which is used to control access to system services.
 				See <citerefentry><refentrytitle>hosts_access</refentrytitle><manvolnum>5</manvolnum></citerefentry> for more details.
+			</para>
+			<para>
+				Source code: <ulink url="&websvn;doc/developer-reference/ucr/hosts/"/>
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -998,8 +1014,6 @@ Depends: ..., ${misc:Depends}, ...
 							A second file fragment, which uses Python code to insert access control entries configured through the &ucsUCRV;s <literal>hosts/allow/</literal> and <literal>hosts/deny/</literal>.
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="hosts/conffiles/etc/hosts.allow.d/50dynamic" parse="text"/></programlisting>
-						<para>
-						</para>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
@@ -1009,6 +1023,15 @@ Depends: ..., ${misc:Depends}, ...
 							The file defines the templates and is processed by <command>univention-install-config-registry</command>.
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="hosts/debian/hosts.univention-config-registry" parse="text"/></programlisting>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>debian/hosts.univention-config-registry-variables</filename></term>
+					<listitem>
+						<para>
+							The file describes the newly defined &ucsUCRV;s.
+						</para>
+						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="hosts/debian/hosts.univention-config-registry-variables" parse="text"/></programlisting>
 					</listitem>
 				</varlistentry>
 			</variablelist>
@@ -1021,18 +1044,22 @@ Depends: ..., ${misc:Depends}, ...
 			<remark>SG: This is not directly UCR</remark>
 			<remark>PMH: It shows how an existing init-script is modified to use the autostart-UCRV. univention-install-service-info is also automatically invoked through univention-install-config-registry. The logic is in univention-config, UMC only adds the graphical UI.</remark>
 			<para>
-				This example provides a template to control the <command>atd</command> service through an &ucsUCRV; <envar>autostart</envar>.
+				This example provides a template to control the <command>atd</command> service through an &ucsUCRV; <envar>atd/autostart</envar>.
+			</para>
+			<para>
+				Source code: <ulink url="&websvn;doc/developer-reference/ucr/service/"/>
 			</para>
 			<variablelist>
 				<varlistentry>
 					<term><filename>conffiles/etc/init.d/atd</filename></term>
 					<listitem>
 						<para>
-							The template replaces the original file with a version, which checks the &ucsUCRV; <envar>autostart</envar> before starting the <command>at</command> daemon.
-							Please not that the <quote>UCRWARNING</quote> is put after the hash-bash line.
+							The template replaces the original file with a version, which checks the &ucsUCRV; <envar>atd/autostart</envar> before starting the <command>at</command> daemon.
+							Please note that the <quote>UCRWARNING</quote> is put after the hash-bash line.
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="service/conffiles/etc/init.d/atd" parse="text"/></programlisting>
 						<para>
+							Note the inclusion of <filename>init-autostart.lib</filename> and use of <command>check_autostart</command>.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -1041,16 +1068,18 @@ Depends: ..., ${misc:Depends}, ...
 					<listitem>
 						<para>
 							The file defines the templates.
-							Note the additional <literal>Mode</literal> statement to mark the file as executable.
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="service/debian/service.univention-config-registry" parse="text"/></programlisting>
+						<para>
+							Note the additional <literal>Mode</literal> statement to mark the file as executable.
+						</para>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
 					<term><filename>debian/service.univention-config-registry-variables</filename></term>
 					<listitem>
 						<para>
-							The file adds a description for the <envar>atd/autostart</envar> &ucsUCRV;.
+							The file adds a description for the &ucsUCRV; <envar>atd/autostart</envar>.
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="service/debian/service.univention-config-registry-variables" parse="text"/></programlisting>
 					</listitem>
@@ -1068,7 +1097,7 @@ Depends: ..., ${misc:Depends}, ...
 					<term><filename>debian/control</filename></term>
 					<listitem>
 						<para>
-							<package>univention-base-files</package> must be added manually as a dependency, since it is used from within the shell code.
+							<package>univention-base-files</package> must be added manually as an additional dependency, since it is used from within the shell code.
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="service/debian/control" parse="text"/></programlisting>
 					</listitem>

@@ -84,7 +84,7 @@ Subfile: var/www/ucs-overview/en.html.d/50univention-wiki.html
 	</section>
 
 	<section id="www:rest" status="draft">
-		<title>Restful</title>
+		<title>RESTful</title>
 		<para>
 			See <command>umd-client</command> and <command>umc-command</command>.
 			Until then: JSON.

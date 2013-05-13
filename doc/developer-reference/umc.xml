@@ -4,7 +4,7 @@
 	%entities;
 ]>
 <chapter id="chap:umc" status="draft">
-	<title>Management Console
+	<title>Univention Management Console
 		<indexterm><primary>Management Console</primary></indexterm>
 		<indexterm><primary>Univention Management Console</primary><see>Management Console</see></indexterm>
 		<indexterm><primary>UMC</primary><see>Management Console</see></indexterm>
@@ -97,7 +97,7 @@ Icons: umc/icons
 		</section>
 
 		<section id="umc:xml">
-			<title>UMC XML file
+			<title>UMC Module Declaration File
 				<indexterm><primary>Management Console</primary><secondary>XML</secondary></indexterm>
 			</title>
 			<para>
@@ -122,7 +122,7 @@ Icons: umc/icons
 		</section>
 
 		<section id="umc:translation">
-			<title>UMC translation files
+			<title>UMC Translation Files
 				<indexterm><primary>Management Console</primary><secondary>Translations</secondary></indexterm>
 			</title>
 			<para>
@@ -134,7 +134,7 @@ Icons: umc/icons
 	</section>
 
 	<section id="umc:module">
-		<title>Local system module
+		<title>Local System Module
 			<indexterm><primary>Management Console</primary><secondary>Module</secondary><tertiary>System</tertiary></indexterm>
 		</title>
 		<para>
@@ -144,7 +144,7 @@ Icons: umc/icons
 	</section>
 
 	<section id="umc:udm">
-		<title>Domain LDAP module
+		<title>Domain LDAP Module
 			<indexterm><primary>Management Console</primary><secondary>Module</secondary><tertiary>LDAP</tertiary></indexterm>
 		</title>
 		<para>
@@ -172,7 +172,7 @@ Icons: umc/icons
 	</section>
 
 	<section id="umc:module:disable">
-		<title>Disbale a module
+		<title>Disabling a Module
 			<indexterm><primary>Management Console</primary><secondary>Module</secondary><tertiary>Disable</tertiary></indexterm>
 		</title>
 		<para>

@@ -23,3 +23,6 @@
   <!ENTITY  ucsUCS                 "Univention Corporate Server" >
 
   <!ENTITY  ar                     "-&gt;" >
+
+  <!ENTITY  websvn                 "http://forge.univention.org/svn/dev/branches/ucs-3.1/ucs-3.1-2/" >
+  <!ENTITY  webdoc                 "http://docs.univention.de/" >

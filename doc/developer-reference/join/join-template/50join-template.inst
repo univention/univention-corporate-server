@@ -12,7 +12,7 @@ ucs_addServiceToLocalhost "$SERVICE" "$@"
 
 udm "computers/$server_role" modify "$@" \
 	--dn "$ldap_hostdn" \
-	--set univentionFreeAttribute1="Test1" || die
+	--set reinstall=0 || die
 
 # create container for extended attributes to be placed in
 udm container/cn create "$@"

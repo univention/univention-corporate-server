@@ -4,7 +4,7 @@
 	%entities;
 ]>
 <chapter id="chap:udm" status="draft">
-	<title>LDAP
+	<title>Univention Directory Manager (<acronym>UDM</acronym>)
 		<indexterm><primary>Directory Manager</primary><see>LDAP</see></indexterm>
 		<indexterm><primary>Univention Directory Manager</primary><see>LDAP</see></indexterm>
 		<indexterm><primary>UDM</primary><see>LDAP</see></indexterm>
@@ -105,7 +105,7 @@ __LDIF__
 	</section>
 
 	<section id="udm:modules">
-		<title>UDM modules</title>
+		<title>UDM Modules</title>
 		<remark>PMH: Bug #29525</remark>
 		<para>
 			<ulink url="http://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager"/>
@@ -121,7 +121,7 @@ __LDIF__
 	</section>
 
 	<section id="udm:hook">
-		<title>EA Hooks</title>
+		<title>Extended Attribute Hooks</title>
 		<remark>PMH: Bug #25053</remark>
 		<para>
 			<ulink url="http://wiki.univention.de/index.php?title=Erstellen_eines_erweiterten_Attributs_mit_Hook"/>
@@ -140,7 +140,7 @@ __LDIF__
 	</section>
 
 	<section id="udm:ldap:common-attributes">
-		<title>Common LDAP attributes
+		<title>Common LDAP Attributes
 			<indexterm><primary>LDAP</primary><secondary>attributes</secondary></indexterm>
 		</title>
 		<para>

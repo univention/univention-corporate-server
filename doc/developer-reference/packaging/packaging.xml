@@ -25,7 +25,7 @@
 		</para>
 		<para>
 			On UCS systems the administrator is not supposed to use these tools directly.
-			Instead all software maintenance is done through the UMC, which maps the requests to invocations of the commands given above.
+			Instead all software maintenance can be done through the UMC, which maps the requests to invocations of the commands given above.
 		</para>
 	</section>
 
@@ -37,7 +37,7 @@
 			<package>build-essential</package> must be installed for building the package.
 		</para>
 		<para>
-			This can be archived by running the following command as user <literal>root</literal>:
+			This can be achieved by running the following command as user <literal>root</literal>:
 		</para>
 		<programlisting>apt-get install subversion build-essential</programlisting>
 	</section>
@@ -46,10 +46,13 @@
 		<title>Example: Re-building an UCS package
 			<indexterm><primary>Packaging</primary><secondary>Modifying existing package</secondary></indexterm>
 		</title>
+		<para>
+			Source code: <ulink url="&websvn;doc/developer-reference/packaging/testdeb/"/>
+		</para>
 		<procedure>
 			<title>Checking out and building a UCS package</title>
 			<step performance="optional">
-				<para>Create top level working directory</para>
+				<para>Create the top level working directory</para>
 				<programlisting><![CDATA[
 mkdir work
 cd work/
@@ -57,7 +60,7 @@ cd work/
 			</step>
 			<step>
 				<para>
-					Either fetch the latest source code from the Subversion version control system or download the source code of the current packaged version.
+					Either fetch the latest source code from the Subversion version control system or download the source code of the currently packaged version.
 				</para>
 				<stepalternatives>
 					<step>
@@ -69,7 +72,7 @@ cd univention-ssh/
 							]]></programlisting>
 					</step>
 					<step>
-						<para>Fetch source code from Univention Repository server</para>
+						<para>Fetch the source code from the Univention Repository server</para>
 						<substeps>
 							<step>
 								<para>Enable unmaintained and source repository once</para>
@@ -91,19 +94,19 @@ cd univention-ssh-*/
 				</stepalternatives>
 			</step>
 			<step performance="optional">
-				<para>Increment version number of package to ensure a newer package</para>
+				<para>Increment the version number of package to define a newer package</para>
 				<programlisting><![CDATA[
 debchange --local work 'Private package rebuild'
 					]]></programlisting>
 			</step>
 			<step>
-				<para>Build package</para>
+				<para>Build the binary package</para>
 				<programlisting><![CDATA[
 dpkg-buildpackage -uc -us -b
 					]]></programlisting>
 			</step>
 			<step>
-				<para>Install locally build package</para>
+				<para>Locally install the new binary package</para>
 				<programlisting><![CDATA[
 sudo dpkg -i ../univention-ssh_*_*.deb
 					]]></programlisting>
@@ -112,7 +115,7 @@ sudo dpkg -i ../univention-ssh_*_*.deb
 	</section>
 
 	<section id="pkg:new">
-		<title>Example: Createing a new UCS package
+		<title>Example: Creating a new UCS package
 			<indexterm><primary>Packaging</primary><secondary>New package</secondary></indexterm>
 		</title>
 		<para>
@@ -120,7 +123,7 @@ sudo dpkg -i ../univention-ssh_*_*.deb
 			It creates a file <filename>testdeb-<replaceable>DATE</replaceable>-<replaceable>time</replaceable></filename> in the <filename class="directory">/tmp/</filename> directory.
 		</para>
 		<para>
-			A directory needs to be crated for each source package, into which all other files and sub-directories are put.
+			A directory needs to be crated for each source package, which hosts all other files and sub-directories.
 		</para>
 		<programlisting>
 mkdir testdeb-0.1
@@ -132,7 +135,7 @@ cd testdeb-0.1
 		<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/testdeb.py" parse="text"/></programlisting>
 		<para>
 			In addition to the files to be installed some meta-data needs to be created in the <filename class="directory">debian/</filename> sub-directory.
-			This directory contains several control files, which are needed to build a Debian package.
+			This directory contains several files, which are needed to build a Debian package.
 			The files and their format will be described in the following sections.
 		</para>
 		<para>
@@ -163,9 +166,10 @@ Hit <enter> to confirm:
 			After pressing the <keycap function="enter">enter</keycap> key some warning message will be shown:
 		</para>
 		<screen><![CDATA[
-Currently there is no top level Makefile. This may require additional tuning.
-Done. Please edit the files in the debian/ subdirectory now. You should also
-check that the testdeb Makefiles install into $DESTDIR and not in / .
+Currently there is no top level Makefile. This may require additional
+tuning. Done. Please edit the files in the debian/ subdirectory now.
+You should also check that the testdeb Makefiles install into $DESTDIR
+and not in / .
 		]]></screen>
 		<para>
 			Since this example is created from scratch, the missing <filename>Makefile</filename> is normal and this warning can be ignored.
@@ -173,7 +177,8 @@ check that the testdeb Makefiles install into $DESTDIR and not in / .
 		</para>
 		<para>
 			Since the command completed successfully, several files were created in the <filename class="directory">debian/</filename> directory.
-			Most of them are template files, which are unused and should be deleted to improve understandability.
+			Most of them are template files, which are unused in this example.
+			To improve understandability they are deleted:
 		</para>
 		<programlisting><![CDATA[
 rm debian/*.ex debian/*.EX
@@ -198,10 +203,13 @@ rm debian/README* debian/doc
 				<term><filename>debian/rules</filename></term>
 				<listitem>
 					<para>
-						This <application>Makefile</application> like file controls the package build process.
+						This file has a <application>Makefile</application> syntax and controls the package build process.
 						Because there is no special handling needed in this example, the default file can be used unmodified.
 					</para>
 					<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/debian/rules" parse="text"/></programlisting>
+					<para>
+						Note that tabulators must be used for indention in this file.
+					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
@@ -213,14 +221,17 @@ rm debian/README* debian/doc
 						To install the program into <filename class="directory">/usr/bin/</filename>, the file needs to be created manually containing the following single line:
 					</para>
 					<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/debian/testdeb.install" parse="text"/></programlisting>
+					<para>
+						Note that the path is not absolute but relative.
+					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
 				<term><filename>debian/testdeb.postinst</filename></term>
 				<listitem>
 					<para>
-						Since the program should be invoked automatically on package installation, this file needs to be crated.
-						In addition to just invoking the program shipped with the package itself, it also shows how &ucsUCRV;s can be set (<xref linkend="ucr:usage:shell"/>):
+						Since for this example the program should be invoked automatically during package installation, this file needs to be crated.
+						In addition to just invoking the program shipped with the package itself, it also shows how &ucsUCRV;s can be set (see <xref linkend="ucr:usage:shell"/>):
 					</para>
 					<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/debian/testdeb.postinst" parse="text"/></programlisting>
 				</listitem>
@@ -246,6 +257,9 @@ rm debian/README* debian/doc
 					<!--
 					<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/debian/copyright" parse="text"/></programlisting>
 					-->
+					<para>
+						The <filename>copyright</filename> and <filename>changelog</filename> file are installed to the <filename class="directory">/usr/share/doc/testdeb/</filename> directory on the target system.
+					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
@@ -254,7 +268,7 @@ rm debian/README* debian/doc
 				<listitem>
 					<para>
 						These files control some internal aspects of the package build process.
-						They can be ignored for the moment and are further describes in <xref linkend="deb:debian"/>.
+						They can be ignored for the moment and are further described in <xref linkend="deb:debian"/>.
 					</para>
 					<!--
 					<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="testdeb/debian/compat" parse="text"/></programlisting>
@@ -268,7 +282,7 @@ rm debian/README* debian/doc
 		</para>
 		<programlisting>dpkg-buildpackage -us -uc</programlisting>
 		<para>
-			The command should then product the following output:
+			The command should then produce the following output:
 		</para>
 		<screen><![CDATA[
 dpkg-buildpackage: source package testdeb
@@ -343,9 +357,9 @@ dpkg-genchanges: binary-only upload - not including any source code
 dpkg-buildpackage: full upload; Debian-native package (full source is included)
 		]]></screen>
 		<para>
-			The binary package file <filename>testdeb_0.1-1_all.deb</filename>is stored in the parent directory.
+			The binary package file <filename>testdeb_0.1-1_all.deb</filename> is stored in the parent directory.
 			When it is installed manually using <command>dpkg -i ../testdeb_0.1-2_all.deb</command> as root, the Python script is installed as <filename>/usr/bin/testdeb.py</filename>.
-			It is automatically invoked by the <filename>postint</filename> script, so a file names <filename>/tmp/testdeb-<replaceable>date</replaceable>-<replaceable>time</replaceable></filename> has been created, too.
+			It is automatically invoked by the <filename>postint</filename> script, so a file named <filename>/tmp/testdeb-<replaceable>date</replaceable>-<replaceable>time</replaceable></filename> has been created, too.
 		</para>
 		<para>
 			Congratulations!
@@ -358,37 +372,39 @@ dpkg-buildpackage: full upload; Debian-native package (full source is included)
 			<indexterm><primary>Packaging</primary><secondary>Repository</secondary><see>Repository</see></indexterm>
 		</title>
 		<para>
-			Until now the binary package is only available locally, that it for installation it must be copied manually to each host and must be installed manually using <command>dpkg -i</command>.
+			Until now the binary package is only available locally, thus for installation it needs to be copied manually to each host and must be installed manually using <command>dpkg -i</command>.
 			If the package required additional dependencies, the installation process will abort, since packages are not downloaded by <command>dpkg</command>, but by <command>apt</command>.
-			To support automatic installation and dependency resolution, the package must be put into a <application>apt</application> repository, which needs to be made available through <uri>http</uri> or some other mechanism.
+			To support automatic installation and dependency resolution, the package must be put into an <application>apt</application> repository, which needs to be made available through <uri>http</uri> or some other mechanism.
 		</para>
 		<para>
-			For this example the repository is put below <filename class="directory">/var/www/repository/</filename>, which is exported on all UCS systems, where <application>apache2</application> is installed.
+			For this example the repository is created below <filename class="directory">/var/www/repository/</filename>, which is exported by default on all UCS systems, where <application>apache2</application> is installed.
 			Below that directory several other sub-directories and files must be created to be compatible with the <application>UCS Updater</application>.
-			The following example creates a repository for UCS version 3.1 using the component name <replaceable>testcomp</replaceable>:
+			The following example commands create a repository for UCS version 3.1 with the component name <replaceable>testcomp</replaceable>:
 		</para>
 		<programlisting><![CDATA[
 WWW_BASE=/var/www/repository/3.1/maintained"
 TESTCOMP="components/testcomp/all"
-mkdir -p "$WWW_BASE/$TESTCOMP"
-install -m644 -t "$WWW_MATINAINED/$TESTCOMP" *.deb
-( cd "$WWW_MAINTAINED" &&
-  apt-ftparchive package "$TESTCOMP" > "$TESTCOMP/Packages" &&
-  gzip -9 < "$TESTCOMP/Packages" > "$TESTCOMP/Packages.gz" )
+install -m755 -d "$WWW_BASE/$TESTCOMP"
+install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
+( cd "$WWW_BASE" &&
+  rm -f "$TESTCOMP/Packages"* &&
+  apt-ftparchive package "$TESTCOMP" > "Packages" &&
+  gzip -9 < "Packages" > "$TESTCOMP/Packages.gz" &&
+  mv "Packages" > "$TESTCOMP/Packages" )
 		]]></programlisting>
 		<para>
-			This repository can be included on any UCS system by appending the following line to <filename>/etc/apt/sources.list</filename>, assuming the host providing the repository is named <replaceable>repository.server</replaceable>:
+			This repository can be included on any UCS system by appending the following line to <filename>/etc/apt/sources.list</filename>, assuming the <acronym>FQDN</acronym> of the host providing the repository is named <replaceable>repository.server</replaceable>:
 		</para>
 		<programlisting>deb http://repository.server/repository/3.1/maintained components/testcomp/all/</programlisting>
 		<note>
 			<para>
-				It is important that the directory, from were <command>apt-ftparchive</command> command is invoked, matches the first string given in the <filename>sources.list</filename> file after the <literal>deb</literal> prefix.
-				The URI together with the <literal>components/testcomp/all/</literal> suffix not only specifies the location of the <filename>Packages</filename> file, but also is used as the base URL for all packages listed in the <filename>Packages</filename> file.
+				It is important that the directory, from were the <command>apt-ftparchive</command> command is invoked, matches the first string given in the <filename>sources.list</filename> file after the <literal>deb</literal> prefix.
+				The <acronym>URL</acronym> together with the suffix <literal>components/testcomp/all/</literal> not only specifies the location of the <filename>Packages</filename> file, but is also used as the base <acronym>URL</acronym> for all packages listed in the <filename>Packages</filename> file.
 			</para>
 		</note>
 		<para>
-			The repository can also be included as a component, which can be configured by setting several UCR variables.
-			As UCR variables can also be configured through UDM policies, this simplifies the task of installing packages from such a repository on may hosts.
+			Instead of editing the <filename>sources.list</filename> file directly, the repository can also be included as a component, which can be configured by setting several <acronym>UCR</acronym> variables.
+			As <acronym>UCR</acronym> variables can also be configured through <acronym>UDM</acronym> policies, this simplifies the task of installing packages from such a repository on may hosts.
 			For the repository above the following variables need to be set:
 			<indexterm><primary>Config Registry</primary><secondary>Repository</secondary></indexterm>
 		</para>

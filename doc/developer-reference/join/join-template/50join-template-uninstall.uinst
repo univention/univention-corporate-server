@@ -9,17 +9,12 @@ SERVICE="MyService"
 
 eval "$(ucr shell)"
 
-# Shall be removed in any case
-udm "computers/$server_role" modify "$@" \
-	--dn "$ldap_hostdn" \
-	--set univentionFreeAttribute1="" || die
-
 . /usr/share/univention-lib/ldap.sh
 ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 if ucs_isServiceUnused "$SERVICE" "$@"
 then
-	# was last server to implement service. now the extended
-	# attributes may be removed
+	# was last server to implement service. now the data
+	# may be removed
 	univention-directory-manager container/cn remove "$@" \
 		--dn "cn=myservice,cn=custom attributes,cn=univention,$ldap_base" || die
 

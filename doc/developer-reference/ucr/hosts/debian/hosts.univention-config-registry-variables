@@ -1,12 +1,12 @@
 [hosts/allow/.*]
-Description[en]=An permissive access control entry for system services.
-Description[de]=Eine erlaubende Zugriffsregel für Systemdienste.
+Description[en]=An permissive access control entry for system services, e.g. "ALL: LOCAL"
+Description[de]=Eine erlaubende Zugriffsregel für Systemdienste, z.B. "ALL: LOCAL".
 Type=str
 Categories=service-net
 
 [hosts/deny/.*]
-Description[en]=An denying access control entry for system services.
-Description[de]=Eine verbietende Zugriffsregel für Systemdienste.
+Description[en]=An denying access control entry for system services, e.g. "ALL: ALL".
+Description[de]=Eine verbietende Zugriffsregel für Systemdienste, z.B. "ALL: ALL".
 Type=str
 Categories=service-net
 

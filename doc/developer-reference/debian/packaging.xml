@@ -10,7 +10,7 @@
 	</title>
 
 	<para>
-		This chapter describes how software for is packaged in the Debian format.
+		This chapter describes how software for &ucsUCS; is packaged in the Debian format.
 		It allows proper dependency handling and guarantees proper tracking of file ownership.
 		Customers can package their own internal software or use the package mechanism to distribute configuration files consistently to different machines.
 	</para>
@@ -18,11 +18,11 @@
 		Software is packaged as a <emphasis>source package</emphasis><indexterm><primary>package</primary><secondary>source-</secondary></indexterm>, from which one or more <emphasis>binary packages</emphasis><indexterm><primary>package</primary><secondary>binary-</secondary></indexterm> can be created.
 		This is useful to create different packages from the same source package.
 		For example the <application>Samba</application> source package creates multiple binary packages: one containing the file server, one containing the client commands to access the server, and several other packages containing documentation, libraries, and common files shared between those packages,
-		The directory should be named <filename class="directory"><replaceable>package name</replaceable>-<replaceable>version</replaceable></filename>.
+		The directory should be named <filename class="directory"><replaceable>package_name</replaceable>-<replaceable>version</replaceable></filename>.
 	</para>
 
-	<section id="deb:prerequisits">
-		<title>Pre-requisits and preparation
+	<section id="deb:prerequisites">
+		<title>Prerequisites and preparation
 			<indexterm><primary>Packaging</primary><secondary>Build dependencies</secondary></indexterm>
 		</title>
 		<para>
@@ -40,7 +40,7 @@
 			<varlistentry><term><package>devscripts</package></term>
 				<listitem>
 					<para>
-						This package contains additional script to modify source package files like for example <filename>debian/changelog</filename>.
+						This package contains additional scripts to modify source package files like for example <filename>debian/changelog</filename>.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -63,7 +63,7 @@
 			<command>dh_make</command>
 		</title>
 		<para>
-			<command>dh_make</command> is a tool, which helps with creating the initial <filename class="directory">debian/</filename> directory.
+			<command>dh_make</command> is a tool, which helps creating the initial <filename class="directory">debian/</filename> directory.
 			It is interactive by default and asks several questions about the package to be created.
 		</para>
 		<screen><![CDATA[
@@ -76,7 +76,7 @@ Type of package: single binary, indep binary, multiple binary, library, kernel m
 				<listitem>
 					<para>
 						A single architecture specific binary package is created from the source package.
-						This is for software, which needs to be compiled individually for different CPU architectures like <literal>i386</literal> and <literal>amd64</literal>.
+						This is for software which needs to be compiled individually for different CPU architectures like <literal>i386</literal> and <literal>amd64</literal>.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -85,7 +85,7 @@ Type of package: single binary, indep binary, multiple binary, library, kernel m
 				<listitem>
 					<para>
 						A single architecture-independent binary package is created from the source package.
-						This is for software, which runs unmodified on all CPU architectures.
+						This is for software which runs unmodified on all CPU architectures.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -99,30 +99,30 @@ Type of package: single binary, indep binary, multiple binary, library, kernel m
 				<term><keycap>l</keycap>, library</term>
 				<listitem>
 					<para>
-						Two or more binary package are created for a compiled library package.
-						The runtime package consists of one the shared object file, which is required for running programs using that library.
-						The development package contains the header files and other files, which are only needed when compiling and linking programs on the development system.
+						Two or more binary packages are created for a compiled library package.
+						The runtime package consists of the shared object file, which is required for running programs using that library.
+						The development package contains the header files and other files, which are only needed when compiling and linking programs on a development system.
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><keycap>k</keycap>, kernen module</term>
+				<term><keycap>k</keycap>, kernel module</term>
 				<listitem>
 					<para>
 						A single kernel-dependent binary package is created from the source package.
 						Kernel modules need to be compiled for each kernel flavour.
 						<package>dkms</package> should probably be used instead.
-						This type of packages is not descried in this manual.
+						This type of packages is not described in this manual.
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term><keycap>n</keycap>, kernen patch</term>
+				<term><keycap>n</keycap>, kernel patch</term>
 				<listitem>
 					<para>
 						A single kernel-independent package is created from the source package, which contains a patch to be applied against an unpacked Linux kernel source tree.
 						<package>dkms</package> should probably be used instead.
-						This type of packages is not descried in this manual.
+						This type of packages is not described in this manual.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -132,7 +132,7 @@ Type of package: single binary, indep binary, multiple binary, library, kernel m
 			This collection is extended by a Debian specific second <acronym>TAR</acronym> archive or a patch file, which adds the <filename class="directory">debian/</filename> directory and might also modify upstream files for better integration into a Debian system.
 		</para>
 		<para>
-			When the package is built, <citerefentry><refentrytitle>dpkg-source</refentrytitle><manvolnum>1</manvolnum></citerefentry> separates the files belonging to the packaging process from files belonging to the upstream package.
+			When a source package is built, <citerefentry><refentrytitle>dpkg-source</refentrytitle><manvolnum>1</manvolnum></citerefentry> separates the files belonging to the packaging process from files belonging to the upstream package.
 			For this to work, <command>dpkg-source</command> needs the original source either provided as a <acronym>TAR</acronym> archive or a separate directory containing the unpacked source.
 			If neither of these is found and <option>--native</option> is not given, <command>dh_make</command> prints the following warning:
 		</para>
@@ -142,8 +142,8 @@ Either specify an alternate file to use with -f,
 or add --createorig to create one.
 		]]></screen>
 		<para>
-			The warning from <command>dh_make</command> states, that no pristine upstream archive was found, which prohibits the creation of the Debian specific patch, since the Debian packaging tools have no way to separate upstream files from packaging specific files.
-			The option <option>--createorig</option> can be used to instruct <command>dh_make</command> to create a <filename class="extension">.orig.tar.gz</filename> archive before creating the <filename class="directory">debian/</filename> directory.
+			The warning from <command>dh_make</command> states that no pristine upstream archive was found, which prohibits the creation of the Debian specific patch, since the Debian packaging tools have no way to separate upstream files from files specific to Debian packaging.
+			The option <option>--createorig</option> can be passed to <command>dh_make</command> to create a <filename class="extension">.orig.tar.gz</filename> archive before creating the <filename class="directory">debian/</filename> directory, if such separation is required.
 		</para>
 	</section>
 
@@ -166,7 +166,7 @@ or add --createorig to create one.
 			Their filename is prefixed with the name of the binary package,
 			<footnote>
 				<para>
-					If only a single binary package is build from the source package, this prefix can be skipped.
+					If only a single binary package is build from the source package, this prefix can be skipped, but it is good practice to always use the prefix.
 				</para>
 			</footnote>
 		</para>
@@ -224,7 +224,7 @@ or add --createorig to create one.
 					</para>
 					<para>
 						The new format <literal>3.0 (quilt)</literal> replaces the patch file with a second <acronym>TAR</acronym> archive containing the <filename class="directory">debian/</filename> direcory.
-						Changes to upstream files are no longer applies as one giant patch, but split into logical changes and applied using a built-in <citerefentry><refentrytitle>quilt</refentrytitle><manvolnum>1</manvolnum></citerefentry>.
+						Changes to upstream files are no longer applied as one giant patch, but split into logical changes and applied using a built-in <citerefentry><refentrytitle>quilt</refentrytitle><manvolnum>1</manvolnum></citerefentry>.
 					</para>
 					<para>
 						For simple packages, where there is no distinction between upstream and the packaging entity, the <literal>3.0 (native)</literal> format can be used instead, were all files including the <filename class="directory">debian/</filename> directory are contained in a single <acronym>TAR</acronym> file.
@@ -240,14 +240,14 @@ or add --createorig to create one.
 				<listitem>
 					<para>
 						Notes regarding package specific changes and differences to default options, for example compiler options.
-						Will be installed into <filename class="directory">/usr/share/doc/<replaceable>package name</replaceable>/README.Debian</filename>.
+						Will be installed into <filename class="directory">/usr/share/doc/<replaceable>package_name</replaceable>/README.Debian</filename>.
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><filename><replaceable>package</replaceable>.cron.d</filename></term>
 				<listitem>
 					<para>
-						Cron tab entries to be installed
+						Cron tab entries to be installed.
 						See <citerefentry><refentrytitle>dh_installcron</refentrytitle><manvolnum>1</manvolnum></citerefentry> for more details.
 					</para>
 				</listitem>
@@ -255,7 +255,7 @@ or add --createorig to create one.
 			<varlistentry><term><filename><replaceable>package</replaceable>.dirs</filename></term>
 				<listitem>
 					<para>
-						List of extra directories to be created
+						List of extra directories to be created.
 						See <citerefentry><refentrytitle>dh_installdirs</refentrytitle><manvolnum>1</manvolnum></citerefentry> for more details.
 						<footnote>
 							<simpara>
@@ -269,7 +269,7 @@ or add --createorig to create one.
 				<listitem>
 					<para>
 						List of files and directories to be copied into the package.
-						This is normally used to partition all files to be installed into separated packages, but can also be used to install arbitrary files into packages.
+						This is normally used to partition all files to be installed into separate packages, but can also be used to install arbitrary files into packages.
 						See <citerefentry><refentrytitle>dh_install</refentrytitle><manvolnum>1</manvolnum></citerefentry> for more details.
 					</para>
 				</listitem>
@@ -277,7 +277,7 @@ or add --createorig to create one.
 			<varlistentry><term><filename><replaceable>package</replaceable>.docs</filename></term>
 				<listitem>
 					<para>
-						List of documentation files to be installed in <filename class="directory">/usr/share/doc/<replaceable>package</replaceable>/</filename>
+						List of documentation files to be installed in <filename class="directory">/usr/share/doc/<replaceable>package</replaceable>/</filename>.
 						See <citerefentry><refentrytitle>dh_installdocs</refentrytitle><manvolnum>1</manvolnum></citerefentry> for more details.
 					</para>
 				</listitem>
@@ -287,7 +287,7 @@ or add --createorig to create one.
 				<term><filename><replaceable>package</replaceable>.emacsen-startup</filename></term>
 				<listitem>
 					<para>
-						Emacs specific files to be installed below <filename class="directory">/usr/share/emacs-common/<replaceable>package</replaceable>/</filename>
+						Emacs specific files to be installed below <filename class="directory">/usr/share/emacs-common/<replaceable>package</replaceable>/</filename>.
 						See <citerefentry><refentrytitle>dh_installemacsen</refentrytitle><manvolnum>1</manvolnum></citerefentry> for more details.
 					</para>
 				</listitem>
@@ -432,14 +432,14 @@ Description: <insert up to 60 chars description>
 								<listitem>
 									<para>
 										Package is not installed by default.
-										This level should be used by default.
+										This level is recommended for most packages.
 									</para>
 								</listitem>
 							</varlistentry>
 							<varlistentry><term><literal>extra</literal></term>
 								<listitem>
 									<para>
-										This contains all packages that conflict with others packages.
+										This contains all packages that conflict with some other packages.
 									</para>
 								</listitem>
 							</varlistentry>
@@ -457,7 +457,7 @@ Description: <insert up to 60 chars description>
 					<term><literal>Build-Depends-Indep</literal></term>
 					<listitem>
 						<para>
-							A list of packages, which are required for building the package.
+							A list of packages which are required for building the package.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -480,7 +480,7 @@ Description: <insert up to 60 chars description>
 						<para>
 							The name of the binary package.
 							The name must only consist of lower case letters, digits and dashes.
-							If only a single binary package is build from a source package, the name us usually the same as the source package name.
+							If only a single binary package is build from a source package, the name is usually the same as the source package name.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -488,20 +488,20 @@ Description: <insert up to 60 chars description>
 					<listitem>
 						<para>
 							Basically there are two types of packages:
-							Architecture dependent packages must be build for each architecture like <literal>i386</literal> and <literal>amd64</literal>, since for example binaries created on one architecture do not run on other architectures.
-							A list of architectures can be explicitly given, or <literal>any</literal> can be used, which is then automatically replaced by the Architecture when the package ist built.
+							Architecture dependent packages must be build for each architecture like <literal>i386</literal> and <literal>amd64</literal>, since binaries created on one architecture do not run on other architectures.
+							A list of architectures can be explicitly given, or <literal>any</literal> can be used, which is then automatically replaced by the architecture of the system where the package is built.
 						</para>
 						<para>
-							Architecture independent packages only need to be build once, but can be installed on all architectures.
+							Architecture independent packages only need to be built once, but can be installed on all architectures.
 							Examples are documentation, scripts and graphics files.
-							They are declares using <literal>all</literal> in the architecture field.
+							They are declared using <literal>all</literal> in the architecture field.
 						</para>
 					</listitem>
 				</varlistentry>
 				<varlistentry><term><literal>Description</literal></term>
 					<listitem>
 						<para>
-							The first line should contain a short description of up to 60 characters, which should describe sufficiently the purpose of the package.
+							The first line should contain a short description of up to 60 characters, which should describe the purpose of the package sufficiently.
 							A longer description can be given after that, where each line is indented by a single space.
 							An empty line can be inserted by putting a single dot after the leading space.
 						</para>
@@ -509,14 +509,14 @@ Description: <insert up to 60 chars description>
 				</varlistentry>
 			</variablelist>
 			<para>
-				Most packages are not self-contained but need other packages to function properly.
+				Most packages are not self-contained but need other packages for proper function.
 				Debian supports different kinds of dependencies.
 			</para>
 			<variablelist>
 				<varlistentry><term><literal>Depends</literal></term>
 					<listitem>
 						<para>
-							A essential dependency on some other packets, which must be already installed and configured before this package is configured.
+							A essential dependency on some other packages, which must be already installed and configured before this package is configured.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -524,7 +524,7 @@ Description: <insert up to 60 chars description>
 					<listitem>
 						<para>
 							A strong dependency on some other packets, which should normally be co-installed with this package, but can be removed.
-							This is useful for additional software like plug-ins, which extends the functionality of this package, but are not strictly required.
+							This is useful for additional software like plug-ins, which extends the functionality of this package, but is not strictly required.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -549,7 +549,7 @@ Description: <insert up to 60 chars description>
 					<listitem>
 						<para>
 							A negative dependency, which prevents the package to be installed while the other package is already installed.
-							This should be used for package, which contain the same files or use the same resources, for example TCP port numbers.
+							This should be used for packages, which contain the same files or use the same resources, for example TCP port numbers.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -572,7 +572,9 @@ Description: <insert up to 60 chars description>
 					<listitem>
 						<para>
 							A negative dependency, which requests the other package to be upgraded before this package can be installed.
-							This is a lesser form of <literal>Conflicts</literal>, which is almost always used with a version specification.
+							This is a lesser form of <literal>Conflicts</literal>.
+							<literal>Breaks</literal> is almost always used with a version specification in the form <literal>Breaks: <replaceable>package</replaceable> (&lt;&lt; <replaceable>version</replaceable>)</literal>:
+							This forces <replaceable>package</replaceable> to be upgraded to a version greater than <replaceable>version</replaceable> before this package is installed.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -584,7 +586,7 @@ Description: <insert up to 60 chars description>
 			<variablelist>
 				<varlistentry>
 					<term><envar>${shlibs:Depends}</envar></term>
-					<listitem><simpara><command>dh_shlibdeps</command> automatically determines the shared library used by the programs and libraries of is package and stored the package names providing them in this variable.</simpara></listitem>
+					<listitem><simpara><command>dh_shlibdeps</command> automatically determines the shared library used by the programs and libraries of the package and stores the package names providing them in this variable.</simpara></listitem>
 				</varlistentry>
 				<varlistentry>
 					<term><envar>${python:Depends}</envar></term>
@@ -677,7 +679,7 @@ License: AGPL
 
 		<section id="deb:changelog"><title>debian/changelog</title>
 			<para>
-				The <filename>changelog</filename> file documents the changes applied to this package.
+				The <filename>changelog</filename> file documents the changes applied to this Debian package.
 				The initial file created by <command>dh_make</command> only contains a single entry and looks like this:
 			</para>
 			<programlisting><![CDATA[
@@ -688,7 +690,7 @@ testdeb (0.1-1) unstable; urgency=low
  -- John Doe <user@example.com>  Mon, 21 Mar 2013 13:46:39 +0100
 			]]></programlisting>
 			<para>
-				For each new package release a new entry must be put before all previous entries.
+				For each new package release a new entry must be prepended before all previous entries.
 				The version number needs to be incremented and a descriptive text should be added to describe the change.
 			</para>
 			<para>
@@ -717,15 +719,19 @@ testdeb (0.1-1) unstable; urgency=low
 				<command>debchange</command> automatically inserts and updates the current date.
 				Alternatively <command>date -R</command> can be used on the command line to create the correct format.
 			</para>
+			<para>
+				For UCS it is best practice to mention the bug ID of the UCS bug tracker (see <xref linkend="chap:bug"/>) to reference additional details of the bug fixed.
+				Other parties are encouraged to devise similar comments, e.g. <acronym>URL</acronym>s to other bug tracking systems.
+			</para>
 		</section>
 
 		<section id="deb:rules"><title>debian/rules</title>
 			<para>
-				The <filename>rules</filename> describes the commands to build the package.
+				The file <filename>rules</filename> describes the commands needed to build the package.
 				It must use the <application>Make</application> syntax <citation><xref linkend="make"/></citation>.
 				It consists of several rules, which have the following structure:
 			</para>
-			<programlisting><![CDATA[
+			<programlisting language="make"><![CDATA[
 target: dependencies
 	command
 	...
@@ -739,7 +745,7 @@ target: dependencies
 					<term><literal>clean</literal></term>
 					<listitem>
 						<simpara>
-							This rule must remove all temporary files and must return the state of all files back to the same state as when the package is freshly extracted.
+							This rule must remove all temporary files created during package built and must return the state of all files back to the same state as when the package is freshly extracted.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -749,8 +755,8 @@ target: dependencies
 					<term><literal>build-indep</literal></term>
 					<listitem>
 						<simpara>
-							These rules should configure the package and build all, all architecture dependent or all architecture independent files.
-							These rule is called without root permissions.
+							These rules should configure the package and build either all, all architecture dependent or all architecture independent files.
+							These rules are called without root permissions.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -761,6 +767,7 @@ target: dependencies
 					<listitem>
 						<simpara>
 							These rules should install the package into a temporary staging area.
+							By default this is the directory <filename class="directory">debian/tmp/</filename> below the source package root directory.
 							From there files are distributed to individual packages, which are created as the result of these rules.
 							These rules are called with root permissions.
 						</simpara>
@@ -773,11 +780,11 @@ target: dependencies
 			</para>
 			<para>
 				Each rule describes a dependency between the target and its dependencies.
-				<command>make</command> considers a target to be out-dated, when a file with that name does not exists or when the file is older than one of its dependent files.
-				In that case <command>make</command> invokes the commands to re-create the target.
+				<command>make</command> considers a target to be out-of-date, when a file with that name <filename>target</filename> does not exists or when the file is older than one of the files it depends on.
+				In that case <command>make</command> invokes the given commands to re-create the target.
 			</para>
 			<para>
-				In addition to using file names also any other word can be used for target names and in dependencies.
+				In addition to file names also any other word can be used for target names and in dependencies.
 				This is most often used to define <quote>phony</quote> targets, which can be given on the command line invocation to trigger some tasks.
 				The above mentioned <literal>clean</literal>, <literal>build</literal> and <literal>binary</literal> targets are examples for that kind of targets.
 			</para>
@@ -810,8 +817,8 @@ target: dependencies
 				</para>
 			</tip>
 			<para>
-				In most cases it's sufficient to just provide additional configuration files for the individual <application>debhelper</application> as described in <xref linkend="deb:debian"/>.
-				If this is not sufficient, any <application>debhelper</application> command can be individually overwritten by adding an <emphasis>override</emphasis> target to the <filename>rules</filename> file.
+				In most cases it's sufficient to just provide additional configuration files for the individual <application>debhelper</application> commands as described in <xref linkend="deb:debian"/>.
+				If this is not sufficient, any <application>debhelper</application> command can be individually overridden by adding an <emphasis>override</emphasis> target to the <filename>rules</filename> file.
 				For example the following snippet disables the automatic detection of the build system used to build the package and passes additional options:
 			</para>
 			<programlisting><![CDATA[
@@ -822,13 +829,13 @@ override_dh_auto_configure:
 				Without that explicit override <command>dh_auto_configure</command> would be called, which normally automatically detects several build systems like <application>cmake</application>, <application>setup.py</application>, <application>autoconf</application> and others. For these <command>dh</command> also passes the right options to configure the default prefix <filename class="directory">/usr</filename> and use the right compiler flags.
 			</para>
 			<para>
-				After configuration the package is build and installed to the temporary staging area in <filename class="directory">debian/tmp/</filename>.
+				After configuration the package is built and installed to the temporary staging area in <filename class="directory">debian/tmp/</filename>.
 				From there <command>dh_install</command> partitions individual files and directories to binary packages.
 				This is controlled through the <filename>debian/<replaceable>package</replaceable>.install</filename> files.
 			</para>
 			<para>
 				This file can also be used for simple packages, where no build system is used.
-				If a path given in the <filename>debian/<replaceable>package</replaceable>.install</filename> file is not found below <filename class="directory">debian/tmp/</filename>, the path is interpreted relative source package root directory.
+				If a path given in the <filename>debian/<replaceable>package</replaceable>.install</filename> file is not found below <filename class="directory">debian/tmp/</filename>, the path is interpreted as relative to the source package root directory.
 				This mechanism is sufficient to install simple files, but fails when files must be renamed or file permissions must be modified.
 			</para>
 		</section>
@@ -836,7 +843,7 @@ override_dh_auto_configure:
 		<section id="deb:scripts"><title>debian/preinst, debian/prerm, debian/postinst, debian/postrm</title>
 			<para>
 				In addition to distributing only files packages can also be used to run arbitrary commands on installation, upgrades or removal.
-				This is handled by four the <quote>Maintainer scripts</quote>, which are called before and after files are unpacked or removed:
+				This is handled by the four <quote>Maintainer scripts</quote>, which are called before and after files are unpacked or removed:
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -852,7 +859,7 @@ override_dh_auto_configure:
 					<listitem>
 						<simpara>
 							called after files are unpacked.
-							Mostly used to start services after package installation or upgrades.
+							Mostly used to (re-)start services after package installation or upgrades.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -869,30 +876,30 @@ override_dh_auto_configure:
 					<term><filename>debian/<replaceable>package</replaceable>.postrm</filename></term>
 					<listitem>
 						<simpara>
-							called after files are removed.
+							called after files have been removed.
 						</simpara>
 					</listitem>
 				</varlistentry>
 			</variablelist>
 			<para>
-				The scripts themselves must be shell scripts, which should contain a <literal>#DEBHELPER#</literal> marker, where the shell script fragments created by the <command>dh_</command> programs is inserted.
+				The scripts themselves must be shell scripts, which should contain a <literal>#DEBHELPER#</literal> marker, where the shell script fragments created by the <command>dh_</command> programs are inserted.
 				Each script is invoked with several parameters, from which the script can determine, if the package is freshly installed, upgraded from a previous version, or removed.
 				The exact arguments are described in the template files generated by <command>dh_make</command>.
 			</para>
 			<para>
 				The maintainer scripts can be called multiple times, especially when errors occur.
-				Because of that the scripts should be idempotent, that is they should be written to <quote>archive a state</quote> instead of blindly doing the same sequence of commands again and again.
+				Because of that the scripts should be idempotent, that is they should be written to <quote>achieve a consistent state</quote> instead of blindly doing the same sequence of commands again and again.
 				A bad example would be to append some lines to a file on each invocation.
 				The right approach would be to add a check, if that line was already added and only do it otherwise.
 			</para>
 			<warning>
 				<para>
 					It is important that these scripts handle error conditions properly:
-					Maintainer scripts should terminate with <command>exit 0</command> on success and fail, if things go catastrophically wrong.
+					Maintainer scripts should terminate with <command>exit 0</command> on success and <command>exit 1</command> on fail, if things go catastrophically wrong.
 				</para>
 				<para>
 					On the other hand an exit code unequal to zero usually aborts any package installation, upgrade or removal process.
-					This prevents any automatic package maintenance and usually required manual intervention of a human administrator.
+					This prevents any automatic package maintenance and usually requires manual intervention of a human administrator.
 					Therefore it is essential that maintainer scrips handle error conditions properly and are able to recover an inconsistent state.
 				</para>
 			</warning>
@@ -901,7 +908,7 @@ override_dh_auto_configure:
 
 	<section id="deb:build"><title>Building</title>
 		<para>
-			Before the first build is started, remove all unused files from the <filename class="directory">debian/</filename>.
+			Before the first build is started, remove all unused files from the <filename class="directory">debian/</filename> directory.
 			This simplifies maintenance of the package and helps other maintainers to concentrate on only the relevant differences from standard packages.
 		</para>
 		<para>

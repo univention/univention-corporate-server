@@ -4,6 +4,8 @@
   <xsl:param name="section.label.includes.component.label" select="1"/>
   <xsl:param name="toc.section.depth" select="3"/>
   <xsl:param name="xref.with.number.and.title" select="0"/>
+  <xsl:param name="variablelist.term.separator" select="','"/>
+  <xsl:param name="variablelist.term.break.after" select="1"/>
 
   <!-- command -->
   <xsl:template match="command">

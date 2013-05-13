@@ -2,6 +2,12 @@
 
 #DEBHELPER#
 
+if [ "$1" = "configure" ]
+then
+	[ -e /usr/lib/univention-install/50join-template-uninstall.uinst ] &&
+		rm /usr/lib/univention-install/50join-template-uninstall.uinst
+fi
+
 . /usr/share/univention-lib/base.sh
 call_joinscript 50join-template.inst
 
