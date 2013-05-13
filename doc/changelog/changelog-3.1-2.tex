@@ -407,6 +407,9 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 \item The function \ucsName{user\_create} from the internal test framework now checks whether the
 mail domain exists or not. If the mail domain for the local domain does not exist the user is
 created without a mail address (\ucsBug{31296}).
+\item The test case for validating that groupname LDAP locking objects
+  are removed properly will not be executed on DC slaves anymore
+  (\ucsBug{11417})
 
 
 \end{itemize}
