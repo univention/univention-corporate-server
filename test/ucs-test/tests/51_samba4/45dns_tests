@@ -26,7 +26,7 @@ trap 'cleanup' INT TERM EXIT
 #CNAME RECORD
 echo "----Create CNAME record"
 /usr/sbin/univention-directory-manager dns/alias create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name=alias1 --set cname="$hostname.$domainname"
-if [ $? != 0 ];then
+if [ "$?" != 0 ];then
 	fail_test 1 "Could not create CNAME record." 
 fi
 
@@ -40,21 +40,21 @@ fi
 #SRV RECORD
 echo "----Create SRV record"
 /usr/sbin/univention-directory-manager dns/srv_record create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name="45dnstest_srv_record tcp foobar" --set location="0 100 389 $hostname.$domainname"
-if [ $? != 0 ]; then
+if [ "$?" != 0 ]; then
 	fail_test 1 "Could not create SRV record." 
 fi
 sleep 8
 
 echo "----Check functionality of SRV record"
 srv_test="$(dig SRV "_test._tcp.foobar.$domainname" | grep "ANSWER SECTION")"
-if [ -z srv_test ]; then
+if [ -z "$srv_test" ]; then
 	fail_test 1 "Created SRV record could not be found." 
 fi
 
 #A RECORD
 echo "----Create A record"
 /usr/sbin/univention-directory-manager dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --append a="111.111.111.111"
-if [ $? != 0 ];then
+if [ "$?" != 0 ];then
 	fail_test 1 "Could not modify Forward Zone."
 fi
 sleep 8
