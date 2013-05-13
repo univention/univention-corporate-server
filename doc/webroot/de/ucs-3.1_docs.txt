@@ -4,3 +4,4 @@ Extended computer management documentation (nur in Englisch verfügbar); ../comp
 Extended IP and network management documentation (nur in Englisch verfügbar); ../networks-3.1.html; ../networks-3.1.pdf
 UCS performance guide (nur in Englisch verfügbar); ../performance-guide-3.1.html; ../performance-guide-3.1.pdf
 Einsatzszenarien für Univention Corporate Server; ../scenarios-de.html; ../scenarios-de.pdf
+Entwicklungshandbuch (nur in Englisch verfügbar); ../developer-reference-3.1.html; ../developer-reference-3.1.pdf

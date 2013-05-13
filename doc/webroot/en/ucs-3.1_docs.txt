@@ -4,3 +4,4 @@ Extended computer management documentation; ../computers-3.1.html; ../computers-
 Extended IP and network management documentation; ../networks-3.1.html; ../networks-3.1.pdf
 UCS performance guide; ../performance-guide-3.1.html; ../performance-guide-3.1.pdf
 Scenarios for Univention Corporate Server; ../scenarios-en.html; ../scenarios-en.pdf
+Developer Reference; ../developer-reference-3.1.html; ../developer-reference-3.1.pdf
