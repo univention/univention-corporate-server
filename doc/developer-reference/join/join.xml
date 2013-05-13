@@ -193,9 +193,8 @@
 						<para>
 							The package uses two shell libraries, which are described in more detail in <xref linkend="join:libraries"/>.
 							Both packages providing them must be added as runtime dependencies.
-							The unjoin functions were added to UCS 3.1-0 as errata updates and
-							thus the version must be set explicitely. Starting with UCS 3.2
-							the version is not necessary.
+							The unjoin functions were added to UCS 3.1-0 as errata updates and thus the version must be set explicitely.
+							Starting with UCS 3.2 the version is not necessary.
 						</para>
 						<programlisting language="debcontrol"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/control" parse="text"/></programlisting>
 					</listitem>
@@ -341,8 +340,8 @@
 							<para>
 								Removes the given join script from the join script status file <filename>/var/univention-join/status</filename>.
 								The <option>name</option> should be the basename of the joinscript without the prefixed digits and the suffix <literal>.inst</literal>.
-								So if the joinscript <filename>/var/lib/univention-install/50join-template.inst</filename> shall be removed, one has to execute
-								<command>joinscript_remove_script_from_status_file join-template</command>. Primarily used in unjoin scripts.
+								So if the joinscript <filename>/var/lib/univention-install/50join-template.inst</filename> shall be removed, one has to execute <command>joinscript_remove_script_from_status_file join-template</command>.
+								Primarily used in unjoin scripts.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -485,10 +484,8 @@ VERSION="2"
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								When <command>univention-directory-manager</command> is used the first time a server is started automatically that caches
-								some information about the available modules.
-								When changing some of this information (e.g. when adding or removing extended attributes) it may be a good idea to stop the
-								server manually and do not wait for the automatic timeout.
+								When <command>univention-directory-manager</command> is used the first time a server is started automatically that caches some information about the available modules.
+								When changing some of this information (e.g. when adding or removing extended attributes) it may be a good idea to stop the server manually and do not wait for the automatic timeout.
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -502,43 +499,43 @@ VERSION="2"
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>ucs_addServiceToLocalhost</command>
-								<arg choice="plain">servicename</arg>
+								<arg choice="plain"><replaceable>servicename</replaceable></arg>
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								Adds <option>servicename</option> to the list of <literal>univentionService</literal> of the LDAP object
-								representing the localhost.
+								Adds <option>servicename</option> to the list of <literal>univentionService</literal> of the LDAP object representing the localhost.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
-								Example usage in join script: <command>ucs_addServiceToLocalhost "MyService" "$@"</command>
+								Example usage in join script:
+								<command>ucs_addServiceToLocalhost "MyService" "$@"</command>
 							</simpara>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>ucs_removeServiceFromLocalhost</command>
-								<arg choice="plain">servicename</arg>
+								<arg choice="plain"><replaceable>servicename</replaceable></arg>
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								Removes <option>servicename</option> from the list of <literal>univentionService</literal> of the LDAP object
-								representing the localhost, effectively reverting a <command>ucs_addServiceToLocalhost</command> call.
+								Removes <option>servicename</option> from the list of <literal>univentionService</literal> of the LDAP object representing the localhost, effectively reverting a <command>ucs_addServiceToLocalhost</command> call.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
-								Example usage in unjoin script: <command>ucs_removeServiceFromLocalhost "MyService" "$@"</command>
+								Example usage in unjoin script:
+								<command>ucs_removeServiceFromLocalhost "MyService" "$@"</command>
 							</simpara>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>ucs_isServiceUnused</command>
-								<arg choice="plain">servicename</arg>
+								<arg choice="plain"><replaceable>servicename</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								Returns <literal>0</literal> if no LDAP object with a <literal>univentionService</literal> named
-								<option>servicename</option> is found.
-								Example usage in unjoin script: <command>if ucs_isServiceUnused "MyService" "$@"; then uninstall_my_service; fi</command>
+								Returns <literal>0</literal> if no LDAP object with a <literal>univentionService</literal> named <option>servicename</option> is found.
+								Example usage in unjoin script:
+								<command>if ucs_isServiceUnused "MyService" "$@"; then uninstall_my_service; fi</command>
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -556,19 +553,19 @@ VERSION="2"
 			Therefore UCS provides support for so-called <firstterm>unjoin scripts</firstterm>, which re-use the functionality already provided for join scripts.
 		</para>
 		<para>
-			In most cases an unjoin script belongs to a certain join script and reverts that script's changes. Just like join scripts an unjoin script is prefixed with a
-			two-digit-number for the same reason (lexicographical order when executing all join scripts); this number should be 100 minus that of the corresponding join script,
-			so that the scripts will be executed in the reverse order. The suffix of an unjoin script is <literal>.uinst</literal>. As of UCS 3.1 <literal>.inst</literal> and
-			<literal>.uinst</literal> are not distinguished by the <emphasis>UMC Join module</emphasis> so one should name the script as the join script and prepend
-			<literal>-uninstall</literal> for users to recognize it as an unjoin script. Because <command>univention-run-join-scripts</command> executes all (un)join scripts
-			in <filename class="directory">/usr/lib/univention-install/</filename> it may not live there as long as the package is installed. By convention an unjoin script is
-			installed in <filename class="directory">/usr/lib/univention-uninstall/</filename> and copied to the join script directory when needed. Note that first all join
-			scripts (ordered by their prefix) and after that the unjoin scripts are executed (again ordered by their prefix).
+			In most cases an unjoin script belongs to a certain join script and reverts that script's changes.
+			Just like join scripts an unjoin script is prefixed with a two-digit-number for the same reason (lexicographical order when executing all join scripts);
+			this number should be 100 minus that of the corresponding join script, so that the scripts will be executed in the reverse order.
+			The suffix of an unjoin script is <literal>.uinst</literal>.
+			As of UCS 3.1 <literal>.inst</literal> and <literal>.uinst</literal> are not distinguished by the <emphasis>UMC Join module</emphasis> so one should name the script as the join script and prepend <literal>-uninstall</literal> for users to recognize it as an unjoin script.
+			Because <command>univention-run-join-scripts</command> executes all (un)join scripts in <filename class="directory">/usr/lib/univention-install/</filename> it may not live there as long as the package is installed.
+			By convention an unjoin script is installed in <filename class="directory">/usr/lib/univention-uninstall/</filename> and copied to the join script directory when needed.
+			Note that first all join scripts (ordered by their prefix) and after that the unjoin scripts are executed (again ordered by their prefix).
 		</para>
 		<para>
-			Example: The package <package>univention-fetchmail</package> provides both a join script and an unjoin script. The join script is installed at
-			<filename>/usr/lib/univention-install/91univention-fetchmail.inst</filename> and the corresponding unjoin script in
-			<filename>/usr/lib/univention-uninstall/09univention-fetchmail-uninstall.uinst</filename>.
+			Example:
+			The package <package>univention-fetchmail</package> provides both a join script and an unjoin script.
+			The join script is installed at <filename>/usr/lib/univention-install/91univention-fetchmail.inst</filename> and the corresponding unjoin script in <filename>/usr/lib/univention-uninstall/09univention-fetchmail-uninstall.uinst</filename>.
 		</para>
 		<warning>
 			<para>
@@ -578,9 +575,9 @@ VERSION="2"
 			</para>
 			<para>
 				Therefore <quote>the first system to come</quote> should setup the data, while only <quote>the last system to go</quote> might clean up the data.
-				In <package>univention-fetchmail</package> this is achieved by using <command>ucs_addServiceFromLocalhost "Fetchmail" "$@"</command> in the join script
-				and <command>ucs_removeServiceFromLocalhost "Fetchmail" "$@"</command> in the unjoin script. Most of the unjoin script is executed only if
-				<command>ucs_isServiceUnused "Fetchmail" "$@"</command>. As a side effect it is easy to see which servers are currently providing the fetchmail service.
+				In <package>univention-fetchmail</package> this is achieved by using <command>ucs_addServiceFromLocalhost "Fetchmail" "$@"</command> in the join script and <command>ucs_removeServiceFromLocalhost "Fetchmail" "$@"</command> in the unjoin script.
+				Most of the unjoin script is executed only if <command>ucs_isServiceUnused "Fetchmail" "$@"</command>.
+				As a side effect it is easy to see which servers are currently providing the fetchmail service.
 			</para>
 		</warning>
 		<variablelist>
