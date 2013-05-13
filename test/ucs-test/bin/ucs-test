@@ -99,7 +99,7 @@ class TestSet(object):
 		self.format.begin_run(self.test_environment, self.max_count)
 		try:
 			count = 0
-			for section, cases in sorted(self.tests.items()):
+			for section, cases in sorted(self.tests.items(), key=operator.itemgetter(1)):
 				self.format.begin_section(section)
 				try:
 					for fname in cases:
