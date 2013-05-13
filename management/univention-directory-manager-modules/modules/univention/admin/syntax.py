@@ -2463,13 +2463,13 @@ class LDAP_Search( select ):
 		syntax_name: name of the syntax LDAP object
 
 		filter: an LDAP filter to find the LDAP objects providing the
-		list of choices. The filter may contain patterns, that are
+		list of choices. The filter may contain patterns, that are ...
 
 		attribute: a list of UDM module attributes definitions like
 		'shares/share: dn' to be used as human readable representation
 		for each element of the choices.
 
-		value: the UDM modul attribute that will be stored to identify
+		value: the UDM module attribute that will be stored to identify
 		the selected element. The value is specified like 'shares/share:
 		dn'
 

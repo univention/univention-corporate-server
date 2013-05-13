@@ -423,7 +423,7 @@ msgid "Editable"
 msgstr "Editierbar"
 
 #: extended_options.py:121
-msgid "Option may be repeatly turned on and off."
+msgid "Option may be repeatedly turned on and off."
 msgstr "Die Option kann wiederholg gesetzt und entfernt werden."
 
 #: extended_options.py:131

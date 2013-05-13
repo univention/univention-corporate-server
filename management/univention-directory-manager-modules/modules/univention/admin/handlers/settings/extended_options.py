@@ -118,7 +118,7 @@ property_descriptions = {
 		),
 		'editable': univention.admin.property(
 			short_description=_('Editable'),
-			long_description=_('Option may be repeatly turned on and off.'),
+			long_description=_('Option may be repeatedly turned on and off.'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=False,
 			options=[],
