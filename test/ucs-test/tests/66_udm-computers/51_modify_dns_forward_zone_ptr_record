@@ -32,7 +32,9 @@ if __name__ == '__main__':
 	udm.modify_object('computers/windows', dn = computer, dnsEntryZoneForward = '%s 10.20.40.40' % dnsZone2)
 	
 	
-	if len(ldap.search(filter = '(&(relativeDomainName=40)(pTRRecord=%s))' % ptrRecordEntry)[0][1]['pTRRecord']) > 1: # more than the expected entry in ptr_record?
+	ptr = ldap.search(filter = '(&(relativeDomainName=40)(pTRRecord=%s))' % ptrRecordEntry)[0][1]['pTRRecord']
+	print 'PTR entries: %r' % ptr
+	if len(ptr) > 1: # more than the expected entry in ptr_record?
 		sys.exit(1)
 	
 	

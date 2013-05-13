@@ -6,7 +6,6 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
-##  - domaincontroller_slave
 ## tags: [basic]
 ## packages: [univention-directory-manager-tools]
 ## exposure: dangerous

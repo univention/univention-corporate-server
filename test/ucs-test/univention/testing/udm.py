@@ -47,6 +47,7 @@ The API is currently under heavy development and may/will change before next UCS
 import subprocess
 import os
 import psutil
+import copy
 import univention.testing.ucr
 import univention.testing.strings as uts
 
@@ -66,6 +67,8 @@ class UCSTestUDM_NoModification(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_ModifyUDMUnknownDN(UCSTestUDM_Exception):
 	pass
+class UCSTestUDM_RemoveUDMObjectFailed(UCSTestUDM_Exception):
+	pass
 class UCSTestUDM_CleanupFailed(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
@@ -79,10 +82,6 @@ class UCSTestUDM(object):
 	def __init__(self):
 		self.ucr = univention.testing.ucr.UCSTestConfigRegistry()
 		self.ucr.load()
-		self._reinit_cleanup()
-
-
-	def _reinit_cleanup(self):
 		self._cleanup = {}
 
 
@@ -101,6 +100,10 @@ class UCSTestUDM(object):
 		else:
 			cmd.extend( [ '--dn', kwargs.get('dn') ] )
 
+		if 'binddn' in kwargs:
+			cmd.extend( ['--binddn', kwargs.get('binddn')] )
+		if 'bindpwd' in kwargs:
+			cmd.extend( ['--bindpwd', kwargs.get('bindpwd')] )
 		if 'superordinate' in kwargs:
 			cmd.extend( ['--superordinate', kwargs.get('superordinate')] )
 		
@@ -109,7 +112,7 @@ class UCSTestUDM(object):
 
 		# set all other properties
 		for arg in kwargs:
-			if not arg in ('position', 'superordinate', 'dn', 'options'):
+			if not arg in ('binddn', 'bindpwd', 'position', 'superordinate', 'dn', 'options'):
 				if type(kwargs.get(arg)) == list:
 					for item in kwargs.get(arg):
 						cmd.extend( [ '--append', '%s=%s' % (arg, item) ] )
@@ -174,20 +177,39 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while modifying object: ''' % (child.returncode,)
+			print 'UDM-CLI returned exitcode %s while modifying object: ' % (child.returncode,)
 			raise UCSTestUDM_ModifyUDMObjectFailed(modulename, kwargs, stdout, stderr)
+
+		# find DN of freshly created object
+		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
+			if line.startswith('Object modified: '):
+				dn = line.split('Object modified: ', 1)[-1]
+				assert(dn in self._cleanup.get(modulename, []))
+				break
+			elif line.startswith('No modification: '):
+				raise UCSTestUDM_NoModification(modulename, kwargs, stdout, stderr)
 		else:
-			# find DN of freshly created object
-			for line in stdout.splitlines(): # :pylint: disable-msg=E1103
-				if line.startswith('Object modified: '):
-					dn = line.split('Object modified: ', 1)[-1]
-					assert(dn in self._cleanup.get(modulename, []))
-					break
-				elif line.startswith('No modification: '):
-					raise UCSTestUDM_NoModification(modulename, kwargs, stdout, stderr)
-			else:
-				raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
 		return dn
+
+
+	def remove_object(self, modulename, **kwargs):
+		if not modulename:
+			raise UCSTestUDM_MissingModulename()
+		if not kwargs.get('dn'):
+			raise UCSTestUDM_MissingDn()
+
+		cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
+		print 'Removing %s object with %r' % (modulename, kwargs)
+		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=False)
+		(stdout, stderr) = child.communicate()
+		
+		if child.returncode:
+			print 'UDM-CLI returned exitcode %s while removing object: ' % (child.returncode,)
+			raise UCSTestUDM_RemoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
+		
+		if kwargs['dn'] in self._cleanup.get(modulename, []):
+			self._cleanup[modulename].remove(kwargs['dn'])
 
 
 	def create_user(self, **kwargs): # :pylint: disable-msg=W0613
@@ -202,20 +224,15 @@ class UCSTestUDM(object):
 
 		If username is missing, a random user name will be used.
 
-		Return value: (username, dn)
+		Return value: (dn, username)
 		"""
 
-		if not 'username' in kwargs:
-			kwargs['username'] = uts.random_username()
+		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=users,%s' % self.ucr.get('ldap/base') ),
+											    ( 'password', 'univention' ),
+											    ( 'username', uts.random_username(), )
+											    ( 'lastname', uds.random_name() )))
 
-		for prop, default in (('position', 'cn=users,%s' % self.ucr.get('ldap/base')),
-							  ('password', 'univention'),
-							  ('firstname', 'Foo Bar'),
-							  ('lastname', kwargs.get('username'))):
-			if not prop in kwargs:
-				kwargs[prop] = default
-
-		return (kwargs['username'], self.create_udm_object('users/user', **kwargs))
+		return (self.create_object('users/user', **attr), attr['username'])
 
 
 	def create_group(self, **kwargs): # :pylint: disable-msg=W0613
@@ -225,18 +242,25 @@ class UCSTestUDM(object):
 		position: 'cn=users,$ldap_base'
 		name: <random value>
 
-		If "name" is missing, a random group name will be used.
+		If "groupname" is missing, a random group name will be used.
 
-		Return value: (groupname, dn)
+		Return value: (dn, groupname)
 		"""
+		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=groups,%s' % self.ucr.get('ldap/base') ),
+											   ( 'name', uts.random_groupname() ) ))
+		return  (self.create_object('groups/group', **attr), attr['name'])
 
-		if not 'groupname' in kwargs:
-			kwargs['name'] = uts.random_string(length=1, alpha=True, numeric=False) + uts.random_string(length=9, alpha=True, numeric=True)
-		if not 'position' in kwargs:
-			kwargs['position'] = 'cn=groups,%s' % self.ucr.get('ldap/base')
 
-		return (kwargs['name'], self.create_udm_object('groups/group', **kwargs))
-
+	def _set_module_default_attr(self, attributes, defaults):
+		"""
+		Returns the given attributes, extented by every property given in defaults if not yet set.
+		"defaults" should be a tupel containing tupels like "('username', <default_value>)".
+		"""
+		attr = copy.deepcopy(attributes)
+		for prop, value in defaults:
+			if not prop in attr:
+				attr[prop] = value
+		return attr
 
 	def cleanup(self):
 		"""
@@ -259,7 +283,7 @@ class UCSTestUDM(object):
 
 		print 'UCSTestUDM cleanup done'
 		# reinit list of objects to cleaned up
-		self._reinit_cleanup()
+		self._cleanup = {}
 
 
 	def stop_cli_server(self):
@@ -271,10 +295,10 @@ class UCSTestUDM(object):
 					print 'sending signal %s to process %s (%r)''' % (signal, proc.pid, proc.cmdline,)
 					os.kill(proc.pid, signal)
 
-#	def __enter__(self):
-#		return self
-#	def __exit__(self, exc_type, exc_value, traceback):
-#		self.cleanup()
+	def __enter__(self):
+		return self
+	def __exit__(self, exc_type, exc_value, traceback):
+		self.cleanup()
 
 
 if __name__ == '__main__':

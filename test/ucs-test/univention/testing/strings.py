@@ -56,10 +56,14 @@ def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='u
 	return result.encode(encoding)
 
 
+def random_name(length=10):
+	"""
+	create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)
+	"""
+	return random_string(length=1, alpha=True, numeric=False) + random_string(length=(length-2), alpha=True, numeric=True) + random_string(length=1, alpha=True, numeric=False)
+
 def random_username(length=10):
-	"""
-	create random username (1 ALPHA, 8 ALPHANUM, 1 ALPHA)
-	"""
-	return random_string(length=1, alpha=True, numeric=False) + \
-		random_string(length=(length-2), alpha=True, numeric=True) + \
-		random_string(length=1, alpha=True, numeric=False)
+	return random_name(length)
+
+def random_groupname(length=10):
+	return random_name(length)

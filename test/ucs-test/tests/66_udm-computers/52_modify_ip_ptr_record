@@ -28,7 +28,9 @@ if __name__ == '__main__':
 	computer = udm.create_object('computers/windows', name = uts.random_string(), ip = '10.20.30.60', dnsEntryZoneForward = '%s 10.20.30.60' % dnsZone, dnsEntryZoneReverse = '%s 10.20.30.60' % rdnsZone)
 	udm.modify_object('computers/windows', dn = computer, ip = '10.20.30.50')
 
-	if len( ldap.search(filter='(&(relativeDomainName=50)(pTRRecord=%s))' % ptrRecordEntry)) < 1:
+	ptr = ldap.search(filter='(&(relativeDomainName=50)(pTRRecord=%s))' % ptrRecordEntry)
+	print 'PTR: %r' % ptr
+	if len(ptr) < 1:
 		print 'Could not find PTR record anymore'
 		sys.exit(1)
 	

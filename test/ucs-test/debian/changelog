@@ -1,3 +1,15 @@
+ucs-test (3.0.45-1) unstable; urgency=low
+
+  * added a little more logging to 51_modify_dns_forward_zone_ptr_record and
+    52_modify_ip_ptr_record (Bug #31041)
+  * only execute 00_base/53 on master and backup, at least for now
+    (Bug #11417)
+  * added possibility to pass binddn and bindpwd to python udm cli API
+  * added function to group creation to python udm CLI API
+  (Bug #30560)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 13 May 2013 14:27:58 +0200
+
 ucs-test (3.0.44-1) unstable; urgency=low
 
   * added exception which will be thrown by UCSTestUDM.modify_object if no
