@@ -1,3 +1,11 @@
+univention-postgresql (5.0.1-2) unstable; urgency=low
+
+  * Create empty postgresql config files in during postrm so that 
+    postgresql can be reinstalled (Bug #27786)
+  * Restart postgresql server in postinst (Bug #27786)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 14 May 2013 11:43:30 +0200
+
 univention-postgresql (5.0.1-1) unstable; urgency=low
 
   * commit postgresql/pam_ldap.conf in join script (Bug #28795)
