@@ -274,6 +274,7 @@ class UDM_Objects( ISyntax ):
 	depends = None
 	error_message = _( "Not a valid LDAP DN" )
 	simple = False # by default a MultiObjectSelect widget is used; if simple == True a ComboBox is used
+	use_objects = True
 
 	@classmethod
 	def parse( self, text ):
@@ -1603,9 +1604,11 @@ class soundModule(select):
 
 class GroupDN( UDM_Objects ):
 	udm_modules = ( 'groups/group', )
+	use_objects = False
 
 class UserDN( UDM_Objects ):
 	udm_modules = ( 'users/user', )
+	use_objects = False
 
 class HostDN( UDM_Objects ):
 	udm_modules = ( 'computers/computer', )
@@ -1689,12 +1692,15 @@ class DNS_ForwardZone( UDM_Objects ):
 	udm_modules = ( 'dns/forward_zone', )
 	empty_value = True
 	size = 'TwoThirds'
+	use_objects = False
 
 class DNS_ReverseZone( UDM_Objects ):
  	description=_('DNS reverse zone')
 	udm_modules = ( 'dns/reverse_zone', )
+	label = '%(subnet)s'
 	empty_value = True
 	size = 'TwoThirds'
+	use_objects = False
 
 class dnsEntry( complex ):
  	description=_('DNS Entry')
@@ -1736,8 +1742,10 @@ class DHCP_Option( complex ):
 class WritableShare( UDM_Objects ):
 	udm_modules = ( 'shares/share', )
 	udm_filter = 'writeable=1'
+	label = _('%(name)s (%(path)s on %(host)s)') # ldap-optimized for shares/share.description()
 	size = 'OneAndAHalf'
 	empty_value = True
+	use_objects = False
 
 # class share(ldapDnOrNone):
 # 	searchFilter='(objectClass=univentionShare)'
@@ -2550,7 +2558,6 @@ class LDAP_Search( select ):
 
 class nfsShare(UDM_Objects):
 	udm_modules = ( 'shares/share', )
-	key = 'dn'
 	label = '%(printablename)s'
 	udm_filter = 'objectClass=univentionShareNFS'
 

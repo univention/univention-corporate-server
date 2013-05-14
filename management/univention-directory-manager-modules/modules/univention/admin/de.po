@@ -221,6 +221,10 @@ msgstr "Nagios-Unterstützung"
 msgid "cannot find fqdn of "
 msgstr "FQDN konnte nicht gefunden werden: "
 
+#: syntax.py:1743
+msgid "%(name)s (%(path)s on %(host)s)"
+msgstr "%(name)s (%(path)s auf %(host)s)"
+
 #: syntax.py:109 syntax.py:162 syntax.py:298
 msgid "Invalid value"
 msgstr "Ungültiger Wert"

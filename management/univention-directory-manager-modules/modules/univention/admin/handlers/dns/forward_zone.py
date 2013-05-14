@@ -326,20 +326,20 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.hasChanged('serial'):
 			self['serial']=str(int(self['serial'])+1)
 
+def lookup_filter(filter_s=None):
+	lookup_filter = \
+		univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'dNSZone'),
+			univention.admin.filter.expression('relativeDomainName', '@'),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4)]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6)]),
+		])
+	lookup_filter.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+	return lookup_filter
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'dNSZone'),
-		univention.admin.filter.expression('relativeDomainName', '@'),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP4)]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6)]),
-		])
-
-	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
+	filter=lookup_filter(filter_s)
 	res=[]
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
 		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes = attrs )))

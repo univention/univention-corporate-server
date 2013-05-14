@@ -900,7 +900,6 @@ class object(univention.admin.handlers.simpleLdap):
 		if not hasattr(self,"options"):
 			self.open()
 		if 'nfs' in self.options:
-			ulist=[]
 			searchstring="*"+self['host']+":"+self['path']+"*"
 			searchResult=self.lo.searchDn(base=self.position.getDomain(), filter='(&(objectClass=person)(automountInformation=%s))'%searchstring, scope='domain')
 			if searchResult:
@@ -932,17 +931,17 @@ class object(univention.admin.handlers.simpleLdap):
 	def description(self):
 		return _('%s (%s on %s)') % (self['name'], self['path'], self['host'])
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionShare'),
-		univention.admin.filter.expression('cn', '*'),
+def lookup_filter(filter_s=None):
+	lookup_filter = \
+		univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('objectClass', 'univentionShare'),
+			univention.admin.filter.expression('cn', '*'),
 		])
+	lookup_filter.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+	return lookup_filter
 
-	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+	filter=lookup_filter(filter_s)
 	res=[]
 	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
 		res.append(object(co, lo, None, dn))
