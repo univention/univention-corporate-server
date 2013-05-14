@@ -26,8 +26,8 @@
 			Packages requiring write access to the Univention directory service can provide so called <firstterm>join scripts</firstterm>.
 			They are installed into <filename class="directory">/usr/lib/univention-install/</filename>.
 			The name of each join script is normally derived from the name of the binary package containing it.
-			It is prefixed with a two-digit-number, which is used to order the scripts lexicographically.
-			The filename either ends in <literal>.inst</literal> or <literal>.uinst</literal>, which distinguishes between join script and unjoin script (also see <xref linkend="join:unjoin"/>).
+			It is prefixed with a two-digit number, which is used to order the scripts lexicographically.
+			The filename either ends in <literal>.inst</literal> or <literal>.uinst</literal>, which distinguishes between join script and unjoin script (see <xref linkend="join:unjoin"/>).
 		</para>
 	</section>
 
@@ -112,7 +112,7 @@
 		</variablelist>
 		<para>
 			When packages are installed, it depends on the server role, if join scripts are invoked automatically from the <literal>postinst</literal> Debian maintainer script or not.
-			This only happens on &ucsMaster; and &ucsBackup; system roles, where the local <literal>root</literal> user has access to the file containing the <acronym>LDAP</acronym> credentials.
+			This only happens on master and &ucsBackup; system roles, where the local <literal>root</literal> user has access to the file containing the <acronym>LDAP</acronym> credentials.
 			On all other system roles the join scripts need to be run manually by invoking <command>univention-run-join-scripts</command> or doing so through <acronym>UMC</acronym>.
 		</para>
 
@@ -148,7 +148,8 @@
 			<title>Basic join script example</title>
 			<para>
 				This example provides a template for writing join scripts.
-				The package is called <package>join-template</package> and just contains a join script and an unjoin script, which only demonstrate some commonly used functions.
+				The package is called <package>join-template</package> and just contains a join and an unjoin script.
+				They demonstrate some commonly used functions.
 			</para>
 			<para>
 				Source code: <ulink url="&websvn;doc/developer-reference/join/join-template/"/>
@@ -171,7 +172,7 @@
 					<term><filename>debian/join-template.install</filename></term>
 					<listitem>
 						<para>
-							The join script needs to be installed into <filename>/usr/lib/univention-install/</filename>, which is achieved by the following line:
+							The scripts need to be installed into <filename>/usr/lib/univention-install/</filename>, which is achieved by the following lines:
 						</para>
 						<programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.install" parse="text"/></programlisting>
 						<para>
@@ -277,6 +278,7 @@
 						<listitem>
 							<para>
 								This function parses the status file and skips the script, if a record is found with a version greater or equal to <envar>VERSION</envar>.
+								The name of the join script is derived from <envar>$0</envar>.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -443,7 +445,7 @@ VERSION="3"
 						</cmdsynopsis></term>
 						<listitem>
 							<simpara>
-								Similar to <command>call_joinscript</command>, but also checks the system role and only executes the script on <literal>domaincontroller_master</literal>s.
+								Similar to <command>call_joinscript</command>, but also checks the system role and only executes the script on the &ucsMaster;.
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -574,13 +576,13 @@ fi
 		<para>
 			On package removal packages should clean up the data in Univention directory service.
 			Removing data from LDAP also requires appropriate credentials, while removing a package only requires local <literal>root</literal> privileges.
-			Therefore UCS provides support for so-called <firstterm>unjoin scripts</firstterm>, which re-use the functionality of the shell libraries.
-			In most cases an unjoin script reverts the changes of a certain join script.
+			Therefore UCS provides support for so-called <firstterm>unjoin scripts</firstterm>.
+			In most cases it reverts the changes of a corresponding join script.
 		</para>
 		<warning>
 			<para>
 				A domain is a distributed system.
-				Just because one local system no longer wants to store some information in LDAP does not mean that the data should be deleted.
+				Just because one local system no longer wants to store some information in Univention directory service does not mean that the data should be deleted.
 				There might still be other systems in the domain which still require the data.
 			</para>
 			<para>

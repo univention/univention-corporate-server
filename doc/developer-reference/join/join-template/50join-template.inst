@@ -15,7 +15,7 @@ udm "computers/$server_role" modify "$@" \
 	--set reinstall=0 || die
 
 # create container for extended attributes to be placed in
-udm container/cn create "$@"
+udm container/cn create "$@" \
 	--ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name="myservice" || die
