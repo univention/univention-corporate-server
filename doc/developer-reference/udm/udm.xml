@@ -23,34 +23,550 @@
 	</para>
 
 	<section><title>Introduction</title>
-		<programlisting language="sh"><![CDATA[
+		<para>
+			The command line client <command>udm</command> provides different modi of operation.
+			<cmdsynopsis>
+				<command>udm</command>
+				<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
+				<arg><replaceable>module</replaceable></arg>
+				<arg><replaceable>mode</replaceable></arg>
+				<arg choice="opt"><replaceable>options</replaceable></arg>
+			</cmdsynopsis>
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Creating object: <cmdsynopsis>
+						<command>udm</command>
+						<arg choice="plain"><replaceable>module</replaceable></arg>
+						<arg choice="plain">create</arg>
+						<arg choice="plain" rep="repeat">--set <replaceable>property</replaceable>=<replaceable>value</replaceable></arg>
+					</cmdsynopsis>
+				</term>
+				<listitem>
+					<programlisting language="sh"><![CDATA[
 eval "$(ucr shell)"
 udm container/ou create --position "$ldap_base" name="xxx"
-		]]></programlisting>
-		<programlisting language="sh"><![CDATA[
+					]]></programlisting>
+					<para>
+						Multiple <option>--set</option>s may be used to set the values of a multivalued property.
+					</para>
+					<para>
+						The equivalent <acronym>LDAP</acronym> command would look like this:
+					</para>
+					<programlisting language="sh"><![CDATA[
 eval "$(ucr shell)"
 ldapadd -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<__LDIF__
 dn: uid=xxx,$ldap_base
 objectClass: organizationalRole
 cn: xxx
 __LDIF__
-		]]></programlisting>
+					]]></programlisting>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<variablelist>
+			<varlistentry>
+				<term>List object: <cmdsynopsis>
+						<command>udm</command>
+						<arg choice="plain"><replaceable>module</replaceable></arg>
+						<arg choice="plain">list</arg>
+						<group choice="opt">
+							<arg choice="plain">--dn <replaceable>dn</replaceable></arg>
+							<arg choice="plain">--filter <replaceable>property</replaceable>=<replaceable>value</replaceable></arg>
+						</group>
+					</cmdsynopsis>
+				</term>
+				<listitem>
+					<programlisting language="sh"><![CDATA[
+udm container/ou list --filter name="xxx"
+					]]></programlisting>
+					<programlisting language="sh"><![CDATA[
+univention-ldapsearch cn=xxx
+					]]></programlisting>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<variablelist>
+			<varlistentry>
+				<term>Modify object: <cmdsynopsis>
+						<command>udm</command>
+						<arg choice="plain"><replaceable>module</replaceable></arg>
+						<arg choice="plain">modify</arg>
+						<group choice="opt">
+							<arg choice="plain">--dn <replaceable>dn</replaceable></arg>
+							<arg choice="plain">--filter <replaceable>property</replaceable>=<replaceable>value</replaceable></arg>
+						</group>
+						<group choice="opt" rep="repeat">
+							<arg choice="plain">--set <replaceable>property</replaceable>=<replaceable>value</replaceable></arg>
+							<arg choice="plain">--append <replaceable>property</replaceable>=<replaceable>value</replaceable></arg>
+							<arg choice="plain">--remove <replaceable>property</replaceable>=<replaceable>value</replaceable></arg>
+						</group>
+					</cmdsynopsis>
+				</term>
+				<listitem>
+					<programlisting language="sh"><![CDATA[
+udm container/ou modify --dn "cn=xxx,$ldap_base" --set name="xxx"
+					]]></programlisting>
+					<para>
+						For multivalued attributes <option>--append</option> and <option>--remove</option> can be used to add additional values or remove existing values.
+						<option>--set</option> overwrites any previous value, but can also be used multiple times to specify further values.
+						<option>--set</option> and <option>--append</option> should not be mixed for any property in one invocation.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<variablelist>
+			<varlistentry>
+				<term>Delete object: <cmdsynopsis>
+						<command>udm</command>
+						<arg choice="plain"><replaceable>module</replaceable></arg>
+						<arg choice="plain">remove</arg>
+						<group choice="opt">
+							<arg choice="plain">--dn <replaceable>dn</replaceable></arg>
+							<arg choice="plain">--filter <replaceable>property</replaceable>=<replaceable>value</replaceable></arg>
+						</group>
+					</cmdsynopsis>
+				</term>
+				<listitem>
+					<programlisting language="sh"><![CDATA[
+udm container/ou delete --dn "cn=xxx,$ldap_base"
+					]]></programlisting>
+					<para>
+						If <option>--filter</option> is used, it must match exactly one object.
+						Otherwise <command>udm</command> refuses to delete any object.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
 	</section>
 
 	<section id="udm:ea">
 		<title>Packaging Extended Attributes</title>
 		<para>
-			Extended attribute can be used to extend <acronym>UDM</acronym> modules.
-			Each module provides a set of mappings from <acronym>LDAP</acronym> attributes to properties.
+			Each <acronym>UDM</acronym> module provides a set of mappings from <acronym>LDAP</acronym> attributes to properties.
 			This set is not complete, because <acronym>LDAP</acronym> objects can be extended with additional <emphasis>auxiliary objectClasses</emphasis>
+			<firstterm>Extended Attributes</firstterm> can be used to extend modules to show additional properties.
+			These properties can be mapped to any already defined <acronym>LDAP</acronym> attribute, but objects can also be extended by adding additional auxiliary object classes, which can provide new attributes.
 		</para>
 		<para>
-			udm settings/extended_attributes create "$@"
+			For packing purpose any additional LDAP schema needs to be registered on the &ucsMaster;, which is replicated from there to all other Domaincontrollers via the Listener/Notifier mechanism (see <xref linkend="chap:listener"/>).
+			This is best done trough a separate schema package, which should be installed on the &ucsMaster; and &ucsBackup;.
+			Since Extended Attributes are declared in <acronym>LDAP</acronym>, the commands to create them can be put into any join script (<xref linkend="chap:join"/>).
+			To be convenient, the declaration should be also included with the schema package, since installing it there does not require the Administrator to provide additional <acronym>LDAP</acronym> credentials.
 		</para>
 		<para>
+			An Extended Attribute is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
+			The module is called <literal>settings/extended_attribute</literal>.
+			Extended Attributes can be stored anywhere in the <acronym>LDAP</acronym>, but the default location would be <literal>cn=custom attributes,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
+			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code when the object already exists in <acronym>LDAP</acronym>.
+		</para>
+		<para>
+			The module <literal>settings/extended_attribute</literal> requires many parameters.
+			They are described in <olink targetdoc="manual-3.1-1" targetptr="central:extendedattrs"/>.
+		</para>
+		<variablelist>
+			<varlistentry><term><literal>name</literal> (required)</term>
+				<listitem>
+					<simpara>
+						Name of the attribute.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>CLIName</literal> (required)</term>
+				<listitem>
+					<simpara>
+						An alternative name for the command line version of <acronym>UDM</acronym>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>shortDescription</literal> (required)</term>
+				<listitem>
+					<simpara>
+						Default short description.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>translationShortDescription</literal> (optional, multiple)</term>
+				<listitem>
+					<simpara>
+						Translation of short description.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>longDescription</literal> (required)</term>
+				<listitem>
+					<simpara>
+						Default long description.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>translationLongDescription</literal> (optional, multiple)</term>
+				<listitem>
+					<simpara>
+						Translation of long description.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>objectClass</literal> (required)</term>
+				<listitem>
+					<simpara>
+						The name of an <acronym>LDAP</acronym> object class which is added to store this property.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>deleteObjectClass</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						Remove the object class when the property is unset.
+						<remark>PMH: this does only work for syntax=boolean or something like that</remark>
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>ldapMapping</literal> (required)</term>
+				<listitem>
+					<simpara>
+						The name of the <acronym>LDAP</acronym> attribute the property matches to.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>syntax</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						A syntax class, which also controls the visual representation in <acronym>UDM</acronym>.
+						Defaults to <literal>string</literal>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>default</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						The default value is used when a new <acronym>UDM</acronym> object is created.
+						<remark>PMH: check next</remark>
+						It is also used when for an object an option is enabled, which only then activates a property.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>valueRequired</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						An value must be entered for the property.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>multivalue</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						Controls if only a singe value or multiple values can be entered.
+						This must be in sync with the <literal>SINGLE-VALUE</literal> setting of the attribute in the <acronym>LDAP</acronym> schema.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>mayChange</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						The property may be modified later.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>notEditable</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						Disable all modification of the property, even when the object is first created.
+						The property is only modified through hooks.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>hook</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						The name of a Python class implementing hook functions.
+						See <xref linkend="udm:hook"/> for more information.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>doNotSearch</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						If this is enabled, the property is not show in the drop-down list of properties when searching for <acronym>UDM</acronym> objects.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>tabName</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						The name of the tab in the <acronym>UMC</acronym> where the property should be displayed.
+						The name of existing tabs can be copied from <acronym>UMC</acronym> session with the <literal>English</literal> locale.
+						A new tab is automatically created for new names.
+						<remark>PMH: check next</remark>
+						If no name is given, ???
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>translationTabName</literal> (optional, multiple)</term>
+				<listitem>
+					<simpara>
+						Translation of tab name.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>tabPosition</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						This setting is only relevant, when a new tab is created by using a <literal>tabName</literal>, for which no tab exists.
+						The integer value defines the position where the newly tab is inserted.
+						By default the newly created tab is appended at the end, but before the <emphasis>Extended settings</emphasis> tab.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>overwriteTab</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						If enabled, the tab declared by the <acronym>UDM</acronym> module with the name from the <literal>tabName</literal> settings is replaces by a new clean tab with only the properties defined by Extended Attributes.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>tabAdvanced</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						If this setting is enabled, the tab is created inside the <emphasis>Extended settings</emphasis> tab instead of being a tab by its own.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>groupName</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						The name of the group inside a tab where the property should be displayed.
+						The name of existing groups can be copied from <acronym>UMC</acronym> session with the <literal>English</literal> locale.
+						A new tab is automatically created for new names.
+						If no name is given, the property is placed before the first tab.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>translationGroupName</literal> (optional, multiple)</term>
+				<listitem>
+					<simpara>
+						Translation of group name.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>groupPosition</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						This setting is only relevant, when a new group is created by using a <literal>groupName</literal>, for which no group exists.
+						The integer value defines the position where the newly group is inserted.
+						By default the newly created group is appended at the end.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>overwritePosition</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						The name of an existing property this property wants to overwrite.
+						<remark>PMH: In UCS-2.x this was the position number, in UCS-3.x it must be the name</remark>
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>disableUDMWeb</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						Disables showing this property in the <acronym>UMC</acronym>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>fullWidth</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						The widget for the property should span both columns.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>module</literal> (required, multiple)</term>
+				<listitem>
+					<simpara>
+						A list of module names where this Extended Attribute should be added to.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>options</literal> (required, multiple)</term>
+				<listitem>
+					<simpara>
+						A list of options, which enable this Extended Attribute.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>version</literal> (required)</term>
+				<listitem>
+					<simpara>
+						The version of the Extended Attribute format.
+						The current version is <literal>2</literal>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<tip>
+			<para>
+				Create the Extended Attribute first through <acronym>UMC-UDM</acronym>.
+				Modify it until you're satisfied.
+				Only than dump it using <command>udm settings/extended_attribute list</command> and convert the output to an equivalent shell script creating it.
+			</para>
+		</tip>
+
+		<example id="udm:ea-with-schema">
+			<title>Extended Attribute for custom LDAP schema</title>
+			<para>
+				This example provides a simple <acronym>LDAP</acronym> schema called <filename>extended-attribute.schema</filename>, which declares one object class <literal>univentionExamplesUdmOC</literal> and one attribute <literal>univentionExamplesUdmAttribute</literal>.
+			</para>
+			<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ea/extended-attribute.schema" parse="text"/></programlisting>
+			<para>
+				The schema is shipped as <filename>/usr/share/extended-attribute/extended-attribute.schema</filename> and installed by calling <command>ucs_registerLDAPSchema</command> from the <filename>debian/<replaceable>package</replaceable>.postinst</filename>
+			</para>
+			<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ea/debian/extended-attribute.postinst" parse="text"/></programlisting>
+			<para>
+				This also calls a join-script <filename>50extended-attribute.inst</filename>, which created an Extended Attribute by using the <command>udm</command> command line interface:
+			</para>
+			<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ea/50extended-attribute.inst" parse="text"/></programlisting>
+			<para>
+				This example is deliberately missing an unjoin-script (see <xref linkend="join:unjoin"/>)  to keep this example simple.
+				It should check if the Extended Attribute is no longer used in the domain and than remove it.
+			</para>
+		</example>
+
+		<section id="udm:ea:issues">
+			<title>Known issues</title>
+			<itemizedlist>
+				<listitem>
+					<simpara>
+						The <literal>tabName</literal> and <literal>groupName</literal> values must exactly match the values already used in the modules.
+						If they do not match, a new tab or group is added.
+						This also applies to the translation:
+						They must match the already translated strings and must be repeated for every Extended Attribute again and again.
+						The untranslated strings are best extracted directly from the Python source code of the modules in <filename>/usr/share/pyshared/univention/admin/handlers/*/*.py</filename>.
+						For the translated strings run <command>msgunfmt /usr/share/locale/<replaceable>language-code</replaceable>/LC_MESSAGES/univention-admin*.mo</command>.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						The <literal>overwritePosition</literal> values must exactly match the name of an already defined property.
+						Otherwise <acronym>UDM</acronym> will crash.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Extended Attributes may be removed, when matching data is still stored in <acronym>LDAP</acronym>.
+						The schema on the other hand must only be removed when all matching data is removed.
+						Otherwise the server <command>slapd</command> will fail to start.
+					</simpara>
+				</listitem>
+				<listitem>
+					<simpara>
+						Removing <literal>objectClass</literal>es from <acronym>LDAP</acronym> objects must be done manually.
+						Currently <acronym>UDM</acronym> does not provide any functionality to remove unneeded object classes or methods to force-remove an object class including all attributes, for which the object class is required.
+					</simpara>
+				</listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="udm:ea:option">
+			<title>Extended Options</title>
 			<remark>PMH: Bug #21912</remark>
-			Options: <ulink url="https://forge.univention.org/bugzilla/show_bug.cgi?id=21912"/>.
-		</para>
+			<para>
+				<acronym>UDM</acronym> properties can be enabled and disabled via <firstterm>options</firstterm>.
+				For example all properties of an user related to samba can be switched on or off to reduce the settings shown to an administrator.
+				If may Extended Attributes are added to an <acronym>UDM</acronym> module, it might proof necessary to also create new options.
+				Options are per <acronym>UDM</acronym> module.
+			</para>
+			<para>
+				Similar to Extended Attributes an Extended Options is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
+				The module is called <literal>settings/extended_options</literal>.
+				Extended Options can be stored anywhere in the <acronym>LDAP</acronym>, but the default location would be <literal>cn=custom attributes,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
+				Since the join script creating the option may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code when the object already exists in <acronym>LDAP</acronym>.
+			</para>
+			<para>
+				The module <literal>settings/extended_options</literal> requires many parameters.
+			</para>
+			<variablelist>
+				<varlistentry><term><literal>name</literal> (required)</term>
+					<listitem>
+						<simpara>
+							Name of the option.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry><term><literal>shortDescription</literal> (required)</term>
+					<listitem>
+						<simpara>
+							Default short description.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry><term><literal>translationShortDescription</literal> (optional, multiple)</term>
+					<listitem>
+						<simpara>
+							Translation of short description.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry><term><literal>longDescription</literal> (required)</term>
+					<listitem>
+						<simpara>
+							Default long description.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry><term><literal>translationLongDescription</literal> (optional, multiple)</term>
+					<listitem>
+						<simpara>
+							Translation of long description.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry><term><literal>default</literal> (optional)</term>
+					<listitem>
+						<simpara>
+							Enable the option by default.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry><term><literal>editable</literal> (optional)</term>
+					<listitem>
+						<simpara>
+							Option may be repeatedly turned on and off.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry><term><literal>module</literal> (required, multiple)</term>
+					<listitem>
+						<simpara>
+							A list of module names where this Extended Option should be added to.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry><term><literal>objectClass</literal> (optional, multiple)</term>
+					<listitem>
+						<simpara>
+							A list of <acronym>LDAP</acronym> object classes, which when found, enable this option.
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<example id="udm:eo">
+				<title>Extended Option</title>
+				<programlisting language="sh">
+eval "$(ucr shell)"
+udm settings/extended_options create "$@" --ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="My Option" \
+	--set shortDescription="Example option" \
+	--set translationShortDescription='"de_DE" "Beispieloption"' \
+	--set longDescription="An example option" \
+	--set translationLongDescription='"de_DE" "Eine Beispieloption"' \
+	--set default=0 \
+	--set editable=0 \
+	--set module="users/user" \
+	--set objectClass=univentionExamplesUdmOC
+				</programlisting>
+			</example>
+		</section>
 	</section>
 
 	<section id="udm:ldap">
@@ -115,6 +631,12 @@ __LDIF__
 	<section id="udm:syntax">
 		<title>UDM Syntax</title>
 		<remark>PMH: Bug #24236</remark>
+		<para>
+			udm settings/syntax
+		</para>
+		<para>
+			ucr set udm/.../syntax=
+		</para>
 		<para>
 			<filename>/usr/share/pyshared/univention/admin/syntax.py</filename>
 		</para>

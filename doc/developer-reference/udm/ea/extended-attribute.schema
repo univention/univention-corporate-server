@@ -1,0 +1,24 @@
+#objectIdentifier univention 1.3.6.1.4.1.10176
+#objectIdentifier univentionCustomers univention:99999
+#objectIdentifier univentionExamples univentionCustomers:0
+objectIdentifier univentionExamples 1.3.6.1.4.1.10176:99999:0
+objectIdentifier univentionExmaplesUdm univentionExamples:1
+objectIdentifier univentionExmaplesUdmAttributeType univentionExmaplesUdm:1
+objectIdentifier univentionExmaplesUdmObjectClass univentionExmaplesUdm:2
+
+attributetype ( univentionExmaplesUdmAttributeType:1
+	NAME 'univentionExamplesUdmAttribute'
+	DESC 'An example attribute for UDM'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{42}
+	SINGLE-VALUE
+	)
+
+objectClass ( univentionExmaplesUdmObjectClass:1
+	NAME 'univentionExamplesUdmOC'
+	DESC 'An example object class for UDM'
+	SUP top
+	AUXILIARY
+	MUST ( univentionExamplesUdmAttribute )
+	)
