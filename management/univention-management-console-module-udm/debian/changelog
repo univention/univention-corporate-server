@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.78-2) unstable; urgency=low
+
+  * Bug #30991: Greatly speedup syntax lookup if syntax allows it
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 May 2013 19:37:46 +0200
+
 univention-management-console-module-udm (3.0.78-1) unstable; urgency=low
 
   * Bug #14123: adjusted texts for GPL license
