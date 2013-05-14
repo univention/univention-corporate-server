@@ -146,6 +146,10 @@
   module and ,,Next IP'' in the network module have been removed from the advanced search as they
   are not searchable in the UMC (\ucsBug{28803}).
 \item A broken LDAP authentification in \ucsName{proof\_dns\_dhcp\_records} has been corrected (\ucsBug{30903}).
+\item The following syntax classes received aggressive lookup optimizations
+  which result in faster object opening especially in larger environments:
+  ,,UserDN'', ,,GroupDN'', ,,DNS\_ForwardZone'', ,,DNS\_ReverseZone'',
+  ,,WritableShare'' (\ucsBug{30991}).
 \item All syntax files and hooks files are re-evaluated every time a new
   session is created. This prevents errors caused by referenced classes unknown
   during \ucsName{univention-management-console-server} startup
@@ -418,7 +422,7 @@ created without a mail address (\ucsBug{31296}).
 
 \section{mail}
 \begin{itemize}
-\item \ucsName{univention-mail-cyrus} has been modified. UCR variable mail/cyrus/imap/duplicatesuppression added. Default value is 'yes'. If set the variable to 'yes' lmtpd will suppress delivery of a message to a mailbox if same message with the same message-id (or resent-message-id) has already been delivered to the mailbox (\ucsBug{22429}).
+\item \ucsName{univention-mail-cyrus} has been modified. UCR variable mail/cyrus/imap/duplicatesuppression added. Default value is ``yes''. If set the variable to ``yes'' lmtpd will suppress delivery of a message to a mailbox if same message with the same message-id (or resent-message-id) has already been delivered to the mailbox (\ucsBug{22429}).
 
 \item \ucsName{univention-antivir-mail} has been modified. Postfix configuration will be reloaded after installation (\ucsBug{17967}).
 
