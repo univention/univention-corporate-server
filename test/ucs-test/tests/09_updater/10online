@@ -21,7 +21,7 @@ config_repo repository/online=no
 
 (
 	set -e
-	grep -v '^#\|^[[:space:]]*$' /etc/apt/sources.list.d/* && false
+	grep -v '^#\|^[[:space:]]*$' /etc/apt/sources.list.d/*.list && false
 	ucr set repository/online=yes
 	checkapt "http://localhost\(:80\)\?/${repoprefix}/" "${DIR}"
 	apt-get -qq update
