@@ -940,23 +940,23 @@ class object(univention.admin.handlers.simpleLdap):
 				self.lo.modify(dn, [ ('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [newSid]) ] )
 			self.update_sambaPrimaryGroupSid = False
 
+def lookup_filter(filter_s=None):
+	lookup_filter = \
+		univention.admin.filter.conjunction('&', [
+			univention.admin.filter.expression('cn', '*'),
+			univention.admin.filter.conjunction('|', [
+				univention.admin.filter.conjunction('&',
+					[univention.admin.filter.expression('objectClass', 'univentionGroup'),]),
+				univention.admin.filter.conjunction('&',
+					[univention.admin.filter.expression('objectClass', 'sambaGroupMapping'),])
+			])
+		])
+	lookup_filter.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+	return lookup_filter
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('cn', '*'),
-		univention.admin.filter.conjunction('|',
-		  [univention.admin.filter.conjunction('&',
-				[univention.admin.filter.expression('objectClass', 'univentionGroup'),]),
-		   univention.admin.filter.conjunction('&',
-				[univention.admin.filter.expression('objectClass', 'sambaGroupMapping'),])
-		   ])
-		])
-
-	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
+	filter=lookup_filter(filter_s)
 	res=[]
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
 		res.append( object( co, lo, None, dn, attributes = attrs ) )

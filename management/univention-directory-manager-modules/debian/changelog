@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.144-1) unstable; urgency=low
+
+  * Bug #30991: Preliminary work for agressive syntax lookup optimizations
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 14 May 2013 20:00:10 +0200
+
 univention-directory-manager-modules (8.0.143-13) unstable; urgency=low
 
   * Bug #31154: Import hook files every time udm_modules.update() is called

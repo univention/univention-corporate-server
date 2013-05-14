@@ -82,6 +82,12 @@ class conjunction:
 		'''
 		return '%s(%r, %r)' % (self.__class__._type_, self.type, self.expressions)
 
+	def append_unmapped_filter_string(self, filter_s, rewrite_function, mapping):
+		if filter_s:
+			filter_p = parse(filter_s)
+			walk(filter_p, rewrite_function, arg=mapping)
+			self.expressions.append(filter_p)
+
 class expression:
 	"""LDAP filter expression."""
 	_type_='expression'

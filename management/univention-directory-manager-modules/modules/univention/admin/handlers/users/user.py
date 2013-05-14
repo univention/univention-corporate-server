@@ -2759,32 +2759,32 @@ def rewrite(filter, mapping):
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
+def lookup_filter(filter_s=None):
+	lookup_filter = \
+		univention.admin.filter.conjunction('&', [
+			univention.admin.filter.conjunction('|', [
+				univention.admin.filter.conjunction('&', [
+					univention.admin.filter.expression('objectClass', 'posixAccount'),
+					univention.admin.filter.expression('objectClass', 'shadowAccount'),
+				]),
+				univention.admin.filter.expression('objectClass', 'univentionMail'),
+				univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
+				univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
+				univention.admin.filter.conjunction('&', [
+					univention.admin.filter.expression('objectClass', 'person'),
+					univention.admin.filter.expression('objectClass', 'organizationalPerson'),
+					univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
+				]),
+			]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
+			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
+		])
+	# ATTENTION: has its own rewrite function.
+	lookup_filter.append_unmapped_filter_string(filter_s, rewrite, mapping)
+	return lookup_filter
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-
-	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.conjunction('|', [
-			univention.admin.filter.conjunction('&', [
-				univention.admin.filter.expression('objectClass', 'posixAccount'),
-				univention.admin.filter.expression('objectClass', 'shadowAccount'),
-			]),
-			univention.admin.filter.expression('objectClass', 'univentionMail'),
-			univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
-			univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
-			univention.admin.filter.conjunction('&', [
-				univention.admin.filter.expression('objectClass', 'person'),
-				univention.admin.filter.expression('objectClass', 'organizationalPerson'),
-				univention.admin.filter.expression('objectClass', 'inetOrgPerson'),
-			]),
-		]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uidNumber', '0')]),
-		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('uid', '*$')]),
-	])
-
-	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
+	filter=lookup_filter(filter_s)
 	res=[]
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
 		res.append( object( co, lo, None, dn, attributes = attrs ) )
