@@ -58,9 +58,16 @@
 %\begin{itemize}
 %\end{itemize}
 
-%%\subsection{OpenLDAP}
-%%\begin{itemize}
-%%\end{itemize}
+\subsection{OpenLDAP}
+\begin{itemize}
+\item A segmentation fault in the slapd LDAP server process in cases where
+non-UTF-8 passwords were used for LDAP bind against the {K5KEY} scheme has
+been fixes (\ucsBug{31352}).
+
+\item The slapcat output could get trunkated during univention-ldap-backup.
+This issue has been fixed (\ucsBug{31170}).
+
+\end{itemize}
 
 %\subsection{LDAP ACL changes}
 %\begin{itemize}
