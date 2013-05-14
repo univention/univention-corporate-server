@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: openldap
-fix: 2.4.31-1.79.201305141154
+fix: 2.4.31-1.80.201305141336
 note:
 version: [0,1]
 desc: |
