@@ -327,6 +327,8 @@ true, \ucsBug{30779}).
 \begin{itemize}
 \item The config option nss\_srv (to deny dns srv record lookups) has
 been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
+\item Create empty \ucsName{postgresql} config files during postrm so that postgresql can be reinstalled (\ucsBug{27786}).
+\item Restart \ucsName{postgresql} server in postinst (\ucsBug{27786}).
 \end{itemize}
 
 
@@ -383,7 +385,7 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 \item Joining into a new \ucsName{samba4/join/site} without Samba4 on the Master now repects the chosen \ucsName{samba4/dc} (\ucsBug{30792}).
 \item The sysvol-sync.py script did not preserve timestamps, now it does (\ucsBug{30823}).
 \item The sysvol-cleanup.py script moved the PolicyDefinitions away. Now it considers only GPO paths (\ucsBug{31186}).
-\item The unused UCR variables \ucsUCRV{samba/client_use_spnego} and \ucsUCRV{samba/time_server} has been removed (\ucsBug{26389}).
+\item The unused UCR variables \ucsUCRV{samba/client\_use\_spnego} and \ucsUCRV{samba/time\_server} has been removed (\ucsBug{26389}).
 \end{itemize}
 
 %\subsection{Univention S4 Connector}
@@ -424,7 +426,7 @@ created without a mail address (\ucsBug{31296}).
 
 \section{base}
 \begin{itemize}
-\item \ucsName{univention-lib}. base.sh file: function call_joinscript() has been modified. The start and end of  every executed joinscript will be displayed on console. Assist for a better tracing (\ucsBug{29263}).
+\item \ucsName{univention-lib}. base.sh file: function call\_joinscript() has been modified. The start and end of  every executed joinscript will be displayed on console. Assist for a better tracing (\ucsBug{29263}).
 
 \end{itemize}
 
