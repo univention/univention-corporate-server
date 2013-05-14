@@ -567,6 +567,196 @@ udm settings/extended_options create "$@" --ignore_exists \
 				</programlisting>
 			</example>
 		</section>
+
+		<section id="udm:hook">
+			<title>Extended Attribute Hooks</title>
+			<remark>PMH: Bug #25053</remark>
+			<!-- http://wiki.univention.de/index.php?title=Erstellen_eines_erweiterten_Attributs_mit_Hook -->
+			<para>
+				Hooks provide a mechanism to pre- and post-process the values of Extended Attributes.
+				Normally <acronym>UDM</acronym> properties are are stored as-is in <acronym>LDAP</acronym> attributes.
+				Hooks can modify the <acronym>LDAP</acronym> operations when an object is created, modified, deleted or retrieved.
+				They are implemented in Python and the file must be placed in the directory <filename class="directory">/usr/share/pyshared/univention/admin/hooks.d/</filename><footnote>
+					<simpara>
+						This assumes that the hook file is packaged and linked by <command>dh_pysupport</command> to <filename>/usr/lib/pymodules/python<replaceable>2.6</replaceable>/univention/admin/hooks.d/</filename> for Python 2.6 or whatever Python version is used.
+						If the file is installed manually, it must be placed on a path listed in <literal>sys.path</literal>.
+					</simpara>
+				</footnote>.
+			</para>
+			<para>
+				The module <package>univention.admin.hook</package> provides the class <classname>simplehook</classname>, which implements all required hook functions.
+				By default they don't modify any request but do log all calls.
+				This class should be used as a base class for inheritance.
+			</para>
+			<!-- http://wiki.univention.de/index.php?title=Entwicklung_und_Integration_eigener_Module_in_Univention_Directory_Manager -->
+			<variablelist>
+				<varlistentry>
+					<term>
+						<methodsynopsis>
+							<methodname>hook_open</methodname>
+							<methodparam><parameter>self</parameter></methodparam>
+						</methodsynopsis>
+					</term>
+					<listitem>
+						<simpara>
+							This method is called by the default <methodname>open</methodname> handler just before the current state of all properties is saved.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<methodsynopsis>
+							<methodname>hook_ldap_pre_create</methodname>
+							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
+						</methodsynopsis>
+					</term>
+					<listitem>
+						<simpara>
+							This method is called before an <acronym>UDM</acronym> object is created.
+							It is called after the module validated all properties but before the <firstterm>add-list</firstterm> is created.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<methodsynopsis>
+							<type>list</type>
+							<methodname>hook_ldap_addlist</methodname>
+							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>al</parameter><initializer>[]</initializer></methodparam>
+						</methodsynopsis>
+					</term>
+					<listitem>
+						<simpara>
+							This method is called before an <acronym>UDM</acronym> object is created.
+							It gets passed a list of two-tuples <literal>(ldap-attribute-name, list-of-values)</literal> which will be used to create the <acronym>LDAP</acronym> object.
+							The method must return the (modified) list.
+							Notice that <methodname>hook_ldap_modlist</methodname> will also be called next.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<methodsynopsis>
+							<methodname>hook_ldap_post_create</methodname>
+							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
+						</methodsynopsis>
+					</term>
+					<listitem>
+						<simpara>
+							This method is called after the object was created in <acronym>LDAP</acronym>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<methodsynopsis>
+							<methodname>hook_ldap_pre_modify</methodname>
+							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
+						</methodsynopsis>
+					</term>
+					<listitem>
+						<simpara>
+							This method is called before an <acronym>UDM</acronym> object is modified.
+							It is called after the module validated all properties but before the <firstterm>modification-list</firstterm> is created.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<methodsynopsis>
+							<type>list</type>
+							<methodname>hook_ldap_modlist</methodname>
+							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
+							<methodparam><parameter>ml</parameter><initializer>[]</initializer></methodparam>
+						</methodsynopsis>
+					</term>
+					<listitem>
+						<simpara>
+							This method is called before an <acronym>UDM</acronym> object is created or modified.
+							It gets passed a list of tuples, which are either two-tuples <literal>(ldap-attribute-name, list-of-new-values)</literal> or three-tuples <literal>(ldap-attribute-name, list-of-old-values, list-of-new-values)</literal>.
+							It will be used to create or modify the <acronym>LDAP</acronym> object.
+							The method must return the (modified) list.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<methodsynopsis>
+							<methodname>hook_ldap_post_modify</methodname>
+							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
+						</methodsynopsis>
+					</term>
+					<listitem>
+						<simpara>
+							This method is called after the object was modified in <acronym>LDAP</acronym>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<methodsynopsis>
+							<methodname>hook_ldap_pre_remove</methodname>
+							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
+						</methodsynopsis>
+					</term>
+					<listitem>
+						<simpara>
+							This method is called before an <acronym>UDM</acronym> object is removed.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<methodsynopsis>
+							<methodname>hook_ldap_post_remove</methodname>
+							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
+						</methodsynopsis>
+					</term>
+					<listitem>
+						<simpara>
+							This method is called after the object was removed from <acronym>LDAP</acronym>.
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
+				The following example implements a hook, which removes the object-class <literal>univentionFreeAttributes</literal> if the property <literal>isSampleUser</literal> is no longer set.
+			</para>
+			<programlisting language="python"><![CDATA[
+from univention.admin.hook import simpleHook
+
+class RemoveObjClassUnused(simpleHook):
+	type = 'RemoveObjClassUnused'
+
+	def hook_ldap_post_modify(self, module):
+		"""Remove unused objectClass."""
+		ext_attr_name = 'isSampleUser'
+		class_name = 'univentionFreeAttributes'
+
+		if module.oldinfo.get(ext_attr_name) in ('1',) and \
+				module.info.get(ext_attr_name) in ('0', None):
+			if class_name in module.oldattr.get('objectClass', []):
+				module.lo.modify(module.dn,
+					[('objectClass', class_name, '')])
+			]]></programlisting>
+			<para>
+				After installing the file the hook can be activated by setting the <literal>hook</literal> property of an Extended Attribute to <classname>RemoveObjClassUnused</classname>:
+			</para>
+			<programlisting language="python"><![CDATA[
+udm settings/extended_attribute modify \
+	--dn ... \
+	--set hook=RemoveObjClassUnused
+			]]></programlisting>
+			</section>
 	</section>
 
 	<section id="udm:ldap">
@@ -1118,14 +1308,6 @@ udm settings/syntax create "$@" --ignore_exists \
 				</varlistentry>
 			</variablelist>
 		</section>
-	</section>
-
-	<section id="udm:hook">
-		<title>Extended Attribute Hooks</title>
-		<remark>PMH: Bug #25053</remark>
-		<para>
-			<ulink url="http://wiki.univention.de/index.php?title=Erstellen_eines_erweiterten_Attributs_mit_Hook"/>
-		</para>
 	</section>
 
 	<section id="udm:acl">
