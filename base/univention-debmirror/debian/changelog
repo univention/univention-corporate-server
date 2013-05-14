@@ -1,3 +1,11 @@
+univention-debmirror (5.0.5-6) unstable; urgency=low
+
+  * Added univention-debmirror.postrm and univention.debmirror.prerm.
+    prerm deletes symlink "/etc/apache2/sites-enabled/univention-repository"
+    postrm restarts apache2 (Bug #29262).
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 14 May 2013 13:20:01 +0200
+
 univention-debmirror (5.0.5-2) UNRELEASED; urgency=low
 
   * Fix undefined FQDN (Bug #30409)
