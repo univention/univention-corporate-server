@@ -1,4 +1,4 @@
-univention-directory-manager-modules (8.0.144-1) unstable; urgency=low
+univention-directory-manager-modules (8.0.143-14) unstable; urgency=low
 
   * Bug #30991: Preliminary work for agressive syntax lookup optimizations
 
