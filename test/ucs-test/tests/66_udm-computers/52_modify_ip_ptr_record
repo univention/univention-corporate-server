@@ -29,9 +29,8 @@ if __name__ == '__main__':
 	udm.modify_object('computers/windows', dn = computer, ip = '10.20.30.50')
 
 	ptr = ldap.search(filter='(&(relativeDomainName=50)(pTRRecord=%s))' % ptrRecordEntry)
-	print 'PTR: %r' % ptr
 	if len(ptr) < 1:
-		print 'Could not find PTR record anymore'
+		print 'Test FAILED. Could not find PTR record created anymore after modifying computers IP'
 		sys.exit(1)
 	
 	

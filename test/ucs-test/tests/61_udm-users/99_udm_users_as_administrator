@@ -13,12 +13,16 @@ import sys
 import subprocess
 
 if __name__ == '__main__':
-	udm = subprocess.Popen(['su', 'Administrator', '-c', '/usr/sbin/univention-directory-manager users/user list --filter uid=Administrator'], stdout=subprocess.PIPE)
+	cmd = ['su', 'Administrator', '-c', '/usr/sbin/univention-directory-manager users/user list --filter uid=Administrator']
+	udm = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+	
+	
+	returncode = udm.wait() 
+	if returncode != 0:
+		print 'Test FAILED. UDM-CLI returned %i while trying to execute "%s" as Adminstrator. Returncode of "0" was expected.' % ( returncode, cmd[3:] )
+		sys.exit(1) # udm has returned an error or did not successfully print the Administrator object to stdout
 
-	if udm.wait() != 0 or not 'DN: uid=Administrator' in udm.stdout.read():
-		sys.exit(110) # udm has returned an error or did not successfully print the Administrator object to stdout
-
-	sys.exit(0) # nothing went wrong, test passed
-
-
-
+	output = udm.stdout.read()
+	if not 'DN: uid=Administrator' in output:
+		print 'Test FAILED. Can not find DN of user "Administrator" in UDM-CLI output:\n%s' % output
+		sys.exit(1)

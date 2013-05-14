@@ -1,0 +1,29 @@
+#!/usr/share/ucs-test/runner python
+## desc: Try to use one uid two times
+## tags: [udm-users]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import sys
+import random
+import univention.testing as testlib
+import univention.testing.udm as udm_test
+
+
+if __name__ == '__main__':
+	if testlib.package_installed('univention-ox'):
+		sys.exit(138)
+
+	uid = str( random.randint(3000, 5000) )
+	with udm_test.UCSTestUDM() as udm:
+		udm.create_user(uidNumber = uid)
+		try:
+			udm.create_user(uidNumber = uid)
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			sys.exit(0)
+
+	print 'Test FAILED. Successfully created an user with an "uid" which is already in use, which should not be possible.'
+	sys.exit(1)

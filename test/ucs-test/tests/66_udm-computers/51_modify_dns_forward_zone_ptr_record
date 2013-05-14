@@ -28,14 +28,16 @@ if __name__ == '__main__':
 	ptrRecordEntry = '%s.%s.%s.' % (uts.random_string(numeric=False), uts.random_string(numeric=False), uts.random_string(numeric=False))
 	ptrRecord = udm.create_object( 'dns/ptr_record', superordinate = rdnsZone, address = '40', ptr_record = ptrRecordEntry)
 	
-	computer = udm.create_object('computers/windows', name = uts.random_string(), ip = '10.20.40.40', dnsEntryZoneForward = '%s 10.20.40.40' % dnsZone, dnsEntryZoneReverse = '%s 10.20.40.40' % rdnsZone2)
+	computerName = uts.random_string()
+	computer = udm.create_object('computers/windows', name = computerName, ip = '10.20.40.40', dnsEntryZoneForward = '%s 10.20.40.40' % dnsZone, dnsEntryZoneReverse = '%s 10.20.40.40' % rdnsZone2)
 	udm.modify_object('computers/windows', dn = computer, dnsEntryZoneForward = '%s 10.20.40.40' % dnsZone2)
 	
 	
 	ptr = ldap.search(filter = '(&(relativeDomainName=40)(pTRRecord=%s))' % ptrRecordEntry)[0][1]['pTRRecord']
-	print 'PTR entries: %r' % ptr
-	if len(ptr) > 1: # more than the expected entry in ptr_record?
-		sys.exit(1)
+	for entry in ptr:
+		if entry.startswith(computerName):
+			print 'Test FAILED. Found entry of the modified computer in the PTR record. PTR: %r' % ptr
+			sys.exit(1)
 	
 	
 

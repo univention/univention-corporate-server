@@ -50,6 +50,7 @@ import psutil
 import copy
 import univention.testing.ucr
 import univention.testing.strings as uts
+import univention.uldap
 
 class UCSTestUDM_Exception(Exception):
 	pass
@@ -73,7 +74,8 @@ class UCSTestUDM_CleanupFailed(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 	pass
-
+class UCSTestUDM_CouldNotVerifyUserThroughLDAPSearch(UCSTestUDM_Exception):
+	pass
 
 
 class UCSTestUDM(object):
@@ -83,6 +85,7 @@ class UCSTestUDM(object):
 		self.ucr = univention.testing.ucr.UCSTestConfigRegistry()
 		self.ucr.load()
 		self._cleanup = {}
+		self.lo = univention.uldap.getMachineConnection(ldap_master = False)
 
 
 	def _build_udm_cmdline(self, modulename, action, kwargs):
@@ -136,7 +139,7 @@ class UCSTestUDM(object):
 		cmd = self._build_udm_cmdline(modulename, 'create', kwargs)
 
 		print 'Creating %s object with %r' % (modulename, kwargs)
-		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=False)
+		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
@@ -173,7 +176,7 @@ class UCSTestUDM(object):
 
 		cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
 		print 'Modifying %s object with %r' % (modulename, kwargs)
-		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=False)
+		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
@@ -201,7 +204,7 @@ class UCSTestUDM(object):
 
 		cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
 		print 'Removing %s object with %r' % (modulename, kwargs)
-		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=False)
+		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 		(stdout, stderr) = child.communicate()
 		
 		if child.returncode:
@@ -210,6 +213,7 @@ class UCSTestUDM(object):
 		
 		if kwargs['dn'] in self._cleanup.get(modulename, []):
 			self._cleanup[modulename].remove(kwargs['dn'])
+
 
 
 	def create_user(self, **kwargs): # :pylint: disable-msg=W0613
@@ -229,10 +233,13 @@ class UCSTestUDM(object):
 
 		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=users,%s' % self.ucr.get('ldap/base') ),
 											    ( 'password', 'univention' ),
-											    ( 'username', uts.random_username(), )
-											    ( 'lastname', uds.random_name() )))
+											    ( 'username', uts.random_username()),
+											    ( 'lastname', uts.random_name()) ))
 
-		return (self.create_object('users/user', **attr), attr['username'])
+		user = (self.create_object('users/user', **attr), attr['username'])
+		if not user[0] in self.lo.searchDn(filter = '(uid=%s)' % user[1]):
+			raise UCSTestUDM_CouldNotVerifyUserThroughLDAPSearch(user[0])
+		return user
 
 
 	def create_group(self, **kwargs): # :pylint: disable-msg=W0613
@@ -274,7 +281,7 @@ class UCSTestUDM(object):
 				print 'Removing object of type %s: %s' % (module, dn)
 				cmd = [ '/usr/sbin/univention-directory-manager', module, 'remove', '--dn', dn ]
 
-				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=False)
+				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 				(stdout, stderr) = child.communicate()
 
 #				if child.returncode or not 'Object removed:' in stdout:

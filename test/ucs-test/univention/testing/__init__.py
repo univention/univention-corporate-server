@@ -26,6 +26,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
+import subprocess
 
 def package_installed(package):
 	with open('/dev/null', 'w') as null:

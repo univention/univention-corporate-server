@@ -1,0 +1,28 @@
+#!/usr/share/ucs-test/runner python
+## desc: Try to use one username two times
+## tags: [udm-users]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import sys
+import univention.testing as testlib
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+if __name__ == '__main__':
+	if testlib.package_installed('univention-ox'):
+		sys.exit(138)
+
+	with udm_test.UCSTestUDM() as udm:
+		name = udm.create_user()[1]
+		try:
+			udm.create_user(username = name)
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			sys.exit(0)
+
+	print 'Test FAILED. Successfully created an user with an username which is already in use, which should not be possible.'
+	sys.exit(1)

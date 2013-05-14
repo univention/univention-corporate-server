@@ -1,0 +1,28 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create a user and set jpegPhoto attribute
+## tags: [udm-users]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import sys
+import base64
+import univention.testing as testlib
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+if __name__ == '__main__':
+	if testlib.package_installed('univention-ox'):
+		sys.exit(138)
+
+	with udm_test.UCSTestUDM() as udm:
+		user = udm.create_user()
+		userJpegPhoto = base64.b64encode(uts.random_string())
+		udm.modify_object('users/user', dn = user[0], jpegPhoto = userJpegPhoto)
+		
+		setUserJpegPhoto = udm.lo.search(filter = '(uid=%s)' % user[1], attr = ['jpegPhoto'])[0][1]['jpegPhoto'][0]
+		if userJpegPhoto != setUserJpegPhoto:
+			print 'Test FAILED. "jpegPhoto" of %s was expected to be set to "%s", but found "%r".' % (user[0], userJpegPhoto, setUserJpegPhoto)
+			sys.exit(1)

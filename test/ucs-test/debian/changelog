@@ -1,3 +1,12 @@
+ucs-test (3.0.47-1) unstable; urgency=low
+
+  * ported certain udm-users test from UCS 3.0 (Bug #27664)
+  * verify user existence through ldap search after creating user through UDM
+  	test python API (Bug #30560)
+  * added some additional logging to 62_udm-computers/51+52 (Bug #31041)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 14 May 2013 17:35:05 +0200
+
 ucs-test (3.0.46-2) UNRELEASED; urgency=low
 
   * Only check /etc/apt/sources.list.d/*.list files (Bug #18111)
