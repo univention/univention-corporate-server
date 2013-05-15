@@ -1,3 +1,10 @@
+univention-lib (2.0.26-3) unstable; urgency=low
+
+  * Bug #31155: Mark all packages installed explicitely by PackageManager as
+    user-installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 May 2013 11:11:50 +0200
+
 univention-lib (2.0.26-2) unstable; urgency=low
 
   * Fixed resolving dependencies: Catch errors of apt (Bug #31230)

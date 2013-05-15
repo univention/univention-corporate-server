@@ -84,7 +84,7 @@ delete_unjoinscript ()
 	# Does the script ends with uinst?
 	echo "$joinscript" | grep -q ".uinst$" || return 1
 
-	# Remove the script only if it does not be part of a package
+	# Remove the script only if it is not part of a package
 	dpkg -S "$joinscript" >/dev/null 2>&1 && return 1
 
 	# Do it
