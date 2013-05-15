@@ -139,7 +139,10 @@ This issue has been fixed (\ucsBug{31170}).
 \item \emph{UNIVENTION\_DEBUG\_BEGIN} and \emph{UNIVENTION\_DEBUG\_END}
   information are no longer logged (\ucsBug{29603}).
 \item Fixed resolving dependencies of packages: Errors from apt are handled
-  correctly (\ucsBug{31230}).
+  correctly (\ucsBug{31055}).
+\item Under certain circumstances packages installed directly by the App Center
+  could be marked as automatically installed and thus be autoremoved. This has
+  been corrected (\ucsBug{31155}).
 \item A problem which caused to crash the UMC server when setting an
   invalid locale has been corrected (\ucsBug{28657}).
 \item Fixed a segfault that happened while upgrading an app under certain
