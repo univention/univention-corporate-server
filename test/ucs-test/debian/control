@@ -243,15 +243,15 @@ Description: Test scripts for the dns/* modules of the UDM.
  This package includes some scripts for testing the functionality of the domain
  name services of the UDM.
 
-#Package: ucs-test-udm-printers
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for the printers/* modules of the UDM.
-# This package includes some scripts for testing the functionality of the
-# printers services of the UDM.
+Package: ucs-test-udm-printers
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for the printers/* modules of the UDM.
+ This package includes some scripts for testing the functionality of the
+ printers services of the UDM.
 
 #Package: ucs-test-udm-dhcp
 #Architecture: all
@@ -273,15 +273,15 @@ Description: Test scripts for the computers/* modules of UDM.
  This package includes some scripts for testing the functionality of the
  computers of the UDM.
 
-#Package: ucs-test-udm-containers
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for UDM containers.
-# This package includes some scripts for testing the functionality of the
-# default containers (OU/CN) of the UDM.
+Package: ucs-test-udm-containers
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for UDM containers.
+ This package includes some scripts for testing the functionality of the
+ default containers (OU/CN) of the UDM.
 
 #Package: ucs-test-udm-net
 #Architecture: all

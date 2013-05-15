@@ -19,10 +19,11 @@ if __name__ == '__main__':
 
 	with udm_test.UCSTestUDM() as udm:
 		user = udm.create_user()
-		userJpegPhoto = base64.b64encode(uts.random_string())
-		udm.modify_object('users/user', dn = user[0], jpegPhoto = userJpegPhoto)
+	
+		userJpegPhoto = uts.random_string()
+		udm.modify_object('users/user', dn = user[0], jpegPhoto = base64.b64encode(userJpegPhoto))
 		
 		setUserJpegPhoto = udm.lo.search(filter = '(uid=%s)' % user[1], attr = ['jpegPhoto'])[0][1]['jpegPhoto'][0]
 		if userJpegPhoto != setUserJpegPhoto:
-			print 'Test FAILED. "jpegPhoto" of %s was expected to be set to "%s", but found "%r".' % (user[0], userJpegPhoto, setUserJpegPhoto)
+			print 'Test FAILED. "jpegPhoto" of created user was expected to be set to "%s", but "%s" was found.' % (userJpegPhoto, setUserJpegPhoto)
 			sys.exit(1)

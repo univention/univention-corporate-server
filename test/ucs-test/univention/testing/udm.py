@@ -76,6 +76,9 @@ class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_CouldNotVerifyUserThroughLDAPSearch(UCSTestUDM_Exception):
 	pass
+class UCSTestUDM_MoveUDMUnknownDN(UCSTestUDM_Exception):
+	pass
+
 
 
 class UCSTestUDM(object):
@@ -171,8 +174,6 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_MissingModulename()
 		if not kwargs.get('dn'):
 			raise UCSTestUDM_MissingDn()
-		if not kwargs.get('dn') in self._cleanup.get(modulename, []):
-			raise UCSTestUDM_CannotModifyExistingObject(kwargs.get('dn'))
 
 		cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
 		print 'Modifying %s object with %r' % (modulename, kwargs)
@@ -183,7 +184,6 @@ class UCSTestUDM(object):
 			print 'UDM-CLI returned exitcode %s while modifying object: ' % (child.returncode,)
 			raise UCSTestUDM_ModifyUDMObjectFailed(modulename, kwargs, stdout, stderr)
 
-		# find DN of freshly created object
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
 				dn = line.split('Object modified: ', 1)[-1]
@@ -191,6 +191,30 @@ class UCSTestUDM(object):
 				break
 			elif line.startswith('No modification: '):
 				raise UCSTestUDM_NoModification(modulename, kwargs, stdout, stderr)
+		else:
+			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
+		return dn
+
+	def move_object(self, modulename, **kwargs):
+		if not modulename:
+			raise UCSTestUDM_MissingModulename()
+		if not kwargs.get('dn'):
+			raise UCSTestUDM_MissingDn()
+
+		cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
+		print 'Moving %s object %r' % (modulename, kwargs)
+		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
+		(stdout, stderr) = child.communicate()
+
+		if child.returncode:
+			print 'UDM-CLI returned exitcode %s while modifying object: ' % (child.returncode,)
+			raise UCSTestUDM_MoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
+
+		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
+			if line.startswith('Object modified: '):
+				dn = line.split('Object modified: ', 1)[-1]
+				assert(dn in self._cleanup.get(modulename, []))
+				break
 		else:
 			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
 		return dn
@@ -203,7 +227,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_MissingDn()
 
 		cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
-		print 'Removing %s object with %r' % (modulename, kwargs)
+		print 'Removing %s object %r' % (modulename, kwargs)
 		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 		(stdout, stderr) = child.communicate()
 		

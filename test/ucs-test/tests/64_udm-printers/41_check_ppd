@@ -1,0 +1,65 @@
+#!/usr/share/ucs-test/runner python
+## desc: Checking PPD files
+## tags: [udm-printers]
+## roles:
+##   - domaincontroller_master
+##   - domaincontroller_slave
+##   - domaincontroller_backup
+##   - memberserver
+##   - managedclient
+## exposure: safe
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+##   - univention-printserver
+
+
+import sys
+import os
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	ldap = uldap.getMachineConnection(ldap_master = False)
+
+	ldapPrinterModels = []
+	for dn, attr in ldap.search(filter = '(objectClass=univentionPrinterModels)', attr = ['printerModel']):
+		for printerModel in attr.get('printerModel', ()):
+			try:
+				model = printerModel.split()[0].split('/')[-1].strip('"')
+				if model.endswith('.ppd') or model.endswith('.ppd.gz'):
+					ldapPrinterModels.append(model)
+			except:
+				pass
+
+	printerFiles = []
+	for root, dirs, files in os.walk()
+
+	with open('/root/ldap', 'w') as fp:
+		for l in ldapPrinterModels:
+			fp.write('%s\n' % l)
+
+	with open('/root/files', 'w') as fp:
+		for f in printerFiles:
+			fp.write('%s\n' % f)
+
+
+	printerModelsLackingFile = []
+	filesLackingPrinterModel = []
+	
+	for printerModel in ldapPrinterModels:
+		if not printerModel in printerFiles:
+			printerModelsLackingFile.append(printerModel)
+	
+	for printerFile in printerFiles:
+		if not printerFile in ldapPrinterModels:
+			filesLackingPrinterModel.append(printerFile)
+
+
+	
+	if printerModelsLackingFile or filesLackingPrinterModel:
+		print 'Test FAILED.'
+		if printerModelsLackingFile:
+			print 'No PPD file found for the following printer models: %r' % printerModelsLackingFile
+		if filesLackingPrinterModel:
+			print 'No printer model found in LDAP for the following PPD files: %r' % filesLackingPrinterModel
+		sys.exit(1)

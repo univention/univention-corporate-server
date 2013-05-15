@@ -1,3 +1,10 @@
+ucs-test (3.0.49-1) unstable; urgency=low
+
+  * ported udm-printer tests from ucs-3.0 (Bug #27664)
+  * fixed teet "34_create_user_with_jpegPhoto_attr" (Bug #27664)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 15 May 2013 20:00:26 +0200
+
 ucs-test (3.0.48-1) unstable; urgency=low
 
   * fixed checking of the SRV record in 51_samba4/45dns_tests (Bug #29063)
