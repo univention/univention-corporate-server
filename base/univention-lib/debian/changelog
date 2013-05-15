@@ -7,7 +7,7 @@ univention-lib (2.0.26-3) unstable; urgency=low
 
 univention-lib (2.0.26-2) unstable; urgency=low
 
-  * Fixed resolving dependencies: Catch errors of apt (Bug #31230)
+  * Fixed resolving dependencies: Catch errors of apt (Bug #31055)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 29 Apr 2013 17:02:40 +0200
 
