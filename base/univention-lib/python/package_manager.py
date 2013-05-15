@@ -516,6 +516,7 @@ class PackageManager(object):
 		for pkg in install:
 			try:
 				pkg.mark_install(auto_fix=False)
+				pkg.mark_auto(False)
 			except SystemError:
 				broken.add(pkg.name)
 			else:

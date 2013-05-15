@@ -1,3 +1,10 @@
+univention-lib (2.0.28-1) unstable; urgency=low
+
+  * Bug #31155: Mark all packages installed explicitely by PackageManager as
+    user-installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 May 2013 11:07:12 +0200
+
 univention-lib (2.0.27-2) unstable; urgency=low
 
    * base.sh: call_joinscript(): added console output of start and finish notice

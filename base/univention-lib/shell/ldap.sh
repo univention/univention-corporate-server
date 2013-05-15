@@ -66,9 +66,9 @@ ucs_convertUID2DN() { # <uid> [<ldapsearch-credentials>]
 }
 
 #
-# ucs_convertUID2DN returns UID of user object for specified DN
-# ucs_convertUID2DN <user dn> [<ldapsearch-credentials>]
-# e.g. ucs_convertUID2DN "uid=testuser,cn=users,dc=test,dc=system"
+# ucs_convertDN2UID returns UID of user object for specified DN
+# ucs_convertDN2UID <user dn> [<ldapsearch-credentials>]
+# e.g. ucs_convertDN2UID "uid=testuser,cn=users,dc=test,dc=system"
 #
 ucs_convertDN2UID() { # <userdn> [<ldapsearch-credentials>]
 	local userdn="$1"
@@ -159,8 +159,8 @@ ucs_addServiceToHost () { # <servicename> <udm-module-name> <dn> [options]
 		echo "ucs_addServiceToHost: wrong argument number" >&2
 		return 2
 	fi
-	univention-directory-manager container/cn	  create "$@" --ignore_exists --set name="services" --position "cn=univention,$ldap_base"
-	univention-directory-manager settings/service  create "$@" --ignore_exists --set name="$servicename"  --position "cn=services,cn=univention,$ldap_base"
+	univention-directory-manager container/cn create "$@" --ignore_exists --set name="services" --position "cn=univention,$ldap_base"
+	univention-directory-manager settings/service create "$@" --ignore_exists --set name="$servicename" --position "cn=services,cn=univention,$ldap_base"
 	univention-directory-manager "computers/$modulename" modify "$@" --dn "$hostdn" --append service="$servicename"
 }
 
@@ -199,7 +199,7 @@ ucs_removeServiceFromHost () { # <servicename> <udm-module-name> <dn> [options]
 	fi
 	univention-directory-manager "computers/$modulename" modify "$@" --dn "$hostdn" --remove service="$servicename"
 	if ucs_isServiceUnused "$servicename" "$@" ; then
-		univention-directory-manager settings/service  remove "$@" --ignore_exists --dn "cn=$servicename,cn=services,cn=univention,$ldap_base"
+		univention-directory-manager settings/service remove "$@" --ignore_exists --dn "cn=$servicename,cn=services,cn=univention,$ldap_base"
 	fi
 }
 
