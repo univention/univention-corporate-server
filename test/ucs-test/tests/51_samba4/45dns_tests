@@ -46,7 +46,7 @@ fi
 sleep 8
 
 echo "----Check functionality of SRV record"
-srv_test="$(dig SRV "_test._tcp.foobar.$domainname" | grep "ANSWER SECTION")"
+srv_test="$(dig SRV "_45dnstest_srv_record._tcp.foobar.$domainname" | grep "ANSWER SECTION")"
 if [ -z "$srv_test" ]; then
 	fail_test 1 "Created SRV record could not be found." 
 fi
