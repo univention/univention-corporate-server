@@ -10,12 +10,6 @@ Description[en]=Default port of ldap server
 Type=int
 Categories=service-ldap
 
-[ldap/server/additional]
-Description[de]=Eine Liste weiterer LDAP-Server
-Description[en]=A list of additinal ldap server
-Type=str
-Categories=service-ldap
-
 [ldap/master]
 Description[de]=Name des DC Masters in der UCS-Domäne
 Description[en]=Name of DC master in the UCS domain
