@@ -1,3 +1,10 @@
+univention-ldap (9.0.27-2) unstable; urgency=low
+
+  * Removed description of ucr-variable 'ldap/server/additional'
+    in file 'debian/univention-ldap-client.univention-config-registry-variables' (Bug #24507)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Wed, 15 May 2013 08:36:56 +0200
+
 univention-ldap (9.0.27-1) unstable; urgency=low
 
   * improved logging for univention-backup2master (Bug #29085) 
