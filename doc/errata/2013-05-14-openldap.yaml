@@ -9,6 +9,5 @@ desc: |
   This update fixes two bugs in the package openldap:
   * segmentation fault in the slapd LDAP server process in cases where
     non-UTF-8 passwords were used for LDAP bind against the {K5KEY} scheme.
-  * slapcat output could get trunkated during univention-ldap-backup
+  * slapcat output could get truncated during univention-ldap-backup
 bug: [31352, 31170]
-
