@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-directory-manager-modules
-fix: 8.0.143-14.1010.201305142002
+fix: 8.0.143-15.1011.201305161445
 note:
 version: [1]
 desc: |
@@ -11,4 +11,5 @@ desc: |
     was added.
   * Several syntax classes received lookup optimizations that result in faster
     opening of objects in the UDM frontend especially in larger environments.
-bug: [31154, 30991]
+  * During license check temporary user objects are no longer taken into account.
+bug: [31154, 30991, 31167]
