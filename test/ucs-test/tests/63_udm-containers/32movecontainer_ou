@@ -1,0 +1,35 @@
+#!/usr/share/ucs-test/runner python
+## desc: Testing the base functionality to move an OU
+## tags: [udm-containers]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		ouName = uts.random_name()
+		ou = udm.create_object('container/ou', name = ouName)
+		ou2 = udm.create_object('container/ou', name = uts.random_name())
+		udm.move_object('container/ou', dn = ou, position = ou2)
+		expectedDN = 'ou=%s,%s' % (ouName, ou2)
+
+		ldap = uldap.getAdminConnection()
+		result = ldap.searchDn(filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName)
+		for dn in result:
+			if dn == expectedDN:
+				break
+		else:
+			print 'Test FAILED. Created OU was expected to be at "%s" after moving, but could not be found there.\nThe following OUs matching the created OUs name ("%s") have been found:' % (expectedDN, ouName)
+			for dn in result:
+				print '    %s' % dn
+			sys.exit(1)
+
+

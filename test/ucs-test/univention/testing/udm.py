@@ -64,6 +64,8 @@ class UCSTestUDM_CreateUDMUnknownDN(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_ModifyUDMObjectFailed(UCSTestUDM_Exception):
 	pass
+class UCSTestUDM_MoveUDMObjectFailed(UCSTestUDM_Exception):
+	pass
 class UCSTestUDM_NoModification(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_ModifyUDMUnknownDN(UCSTestUDM_Exception):
@@ -75,8 +77,6 @@ class UCSTestUDM_CleanupFailed(UCSTestUDM_Exception):
 class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_CouldNotVerifyUserThroughLDAPSearch(UCSTestUDM_Exception):
-	pass
-class UCSTestUDM_MoveUDMUnknownDN(UCSTestUDM_Exception):
 	pass
 
 
@@ -100,19 +100,11 @@ class UCSTestUDM(object):
 		"""
 		cmd = [ '/usr/sbin/univention-directory-manager', modulename, action ]
 
-		if action == 'create':
-			if 'position' in kwargs:
-				cmd.extend( [ '--position', kwargs['position'] ] )
-		else:
-			cmd.extend( [ '--dn', kwargs.get('dn') ] )
 
-		if 'binddn' in kwargs:
-			cmd.extend( ['--binddn', kwargs.get('binddn')] )
-		if 'bindpwd' in kwargs:
-			cmd.extend( ['--bindpwd', kwargs.get('bindpwd')] )
-		if 'superordinate' in kwargs:
-			cmd.extend( ['--superordinate', kwargs.get('superordinate')] )
-		
+		for arg in ('binddn', 'bindpwd', 'dn', 'position', 'superordinate'):
+			if arg in kwargs:
+				cmd.extend(['--%s' % arg, kwargs[arg]])
+
 		for option in kwargs.get('options', []):
 			cmd.extend(['--option', option ])
 
@@ -302,7 +294,7 @@ class UCSTestUDM(object):
 		print 'Performing UCSTestUDM cleanup...'
 		for module in self._cleanup:
 			for dn in self._cleanup[module]:
-				print 'Removing object of type %s: %s' % (module, dn)
+#				print 'Removing object of type %s: %s' % (module, dn)
 				cmd = [ '/usr/sbin/univention-directory-manager', module, 'remove', '--dn', dn ]
 
 				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
