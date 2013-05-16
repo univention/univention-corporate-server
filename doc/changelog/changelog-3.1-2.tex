@@ -332,9 +332,12 @@ is locked or disabled (\ucsBug{29492}).
 
 \subsection{PAM / Local group cache}
 \begin{itemize}
-\item The \ucsUCRV{nssldap/nss\_srv} has been added to specify whether or
-not libnss-ldap is allowed to perform dns srv record lookups (default:
-true, \ucsBug{30779}).
+\item The \ucsUCRV{nssldap/nss\_srv} has been added to
+\ucsName{univention-pam} to specify whether or not \ucsName{libnss-ldap}
+is allowed to perform dns srv record lookups (default: true,
+\ucsBug{30779}).
+\item Added a test in \ucsName{libnss-ldap} postinst to prevent override
+of libnss-ldap.secret if it is a link \ucsBug{30779}).
 \end{itemize}
 
 \subsection{Other services}
