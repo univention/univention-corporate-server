@@ -9,6 +9,7 @@ desc: |
   This errata update fixes severeal issues in univention-add-app:
   * Adjusted the help text of univention-add-app: --all and --master do a
     dist-upgrade only if the app is upgraded.
-  * Fixed --all and --master when pointing to an outdated app version.
+  * Fixed app installation with --all and --master when pointing to an
+    outdated app version.
   * Added --latest switch to always use the latest version of an app.
 bug: [31278, 31279, 31157]
