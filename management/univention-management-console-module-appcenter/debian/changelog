@@ -1,6 +1,6 @@
 univention-management-console-module-appcenter (2.0.139-10) unstable; urgency=low
 
-  * Prevent concurrent package operations during the same session (Bug #30611)
+  * Prevent concurrent package operations in the same session (Bug #31382)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 16 May 2013 23:31:35 +0200
 
