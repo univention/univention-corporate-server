@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: libnss-ldap
-fix: 264-2.2.47.201304251546
+fix: 264-2.2.49.201305160947
 note: |
   libnss-ldap uses in some environments the 
   DNS SRV LDAP record to look up the LDAP
@@ -15,5 +15,7 @@ note: |
   to false.
 version: [1]
 desc: |
-  Added config option nss_srv to deny dns srv record lookups
+  This update fixes several issues:
+  * Added config option nss_srv to deny dns srv record lookups
+  * Prevent override of libnss-ldap.secret in postinst if it is a link
 bug: [30779]
