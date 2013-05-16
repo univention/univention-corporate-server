@@ -1,3 +1,9 @@
+univention-kernel-image (6.0.1-2) unstable; urgency=low
+
+  * Depend on new kernel (Bug #31366)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 16 May 2013 10:38:00 +0200
+
 univention-kernel-image (6.0.1-1) unstable; urgency=low
 
   * Update kernel to 3.2.39 (Bug #30505)
