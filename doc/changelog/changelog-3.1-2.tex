@@ -118,6 +118,8 @@ This issue has been fixed (\ucsBug{31170}).
   The backend shut down the module when no further requests regarding the
   progress of an installation was sent. When this happened during installation
   the package database could become temporarily broken (\ucsBug{30611}).
+\item Prevent concurrent package operations in the same session
+  (\ucsBug{31382}).
 \item Added a progress bar while fetching software changes in App Center and
   speeded up the process of retrieving this information (\ucsBug{30798}).
 \item Made free memory calculation more robust in OpenVZ environments
