@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.156-1) unstable; urgency=low
+
+  * do not take temporary user objects into account (Bug #31165)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 15 May 2013 20:12:46 +0200
+
 univention-directory-manager-modules (8.0.155-1) unstable; urgency=low
 
   * Bug #30991: Preliminary work for agressive syntax lookup optimizations
