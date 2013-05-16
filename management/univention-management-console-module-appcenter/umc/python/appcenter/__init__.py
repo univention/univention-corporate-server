@@ -85,6 +85,7 @@ class Instance(umcm.Base):
 			lock=False,
 			always_noninteractive=True,
 		)
+		self.package_manager.set_finished() # currently not working. accepting new tasks
 		self.uu = UniventionUpdater(False)
 		self.component_manager = util.ComponentManager(self.ucr, self.uu)
 
@@ -183,6 +184,9 @@ class Instance(umcm.Base):
 		only_master_packages = send_as.endswith('schema')
 		MODULE.process('Try to %s (%s) %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, application_id, force, only_master_packages, dont_remote_install, only_dry_run))
 		try:
+			if self._working():
+				# make it multi-tab safe (same session many buttons to be clicked)
+				raise LockError()
 			# make sure that the application cane be installed/updated
 			can_continue = True
 			serious_problems = False
@@ -347,6 +351,9 @@ class Instance(umcm.Base):
 		function = request.options.get('function')
 
 		try:
+			if self._working():
+				# make it multi-tab safe (same session many buttons to be clicked)
+				raise LockError()
 			with self.package_manager.locked(reset_status=True):
 				not_found = [pkg_name for pkg_name in packages if self.package_manager.get_package(pkg_name) is None]
 				self.finished(request.id, {'not_found' : not_found})
@@ -369,6 +376,16 @@ class Instance(umcm.Base):
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager
 			raise umcm.UMC_CommandError(_('Another package operation is in progress'))
+
+	def _working(self):
+		return not self.package_manager.progress_state._finished
+
+	@simple_response
+	def working(self):
+		# TODO: PackageManager needs is_idle() or something
+		#   preferably the package_manager can tell what is currently executed:
+		#   package_manager.is_working() => False or _('Installing UCC')
+		return self._working()
 
 	@simple_response
 	def progress(self):

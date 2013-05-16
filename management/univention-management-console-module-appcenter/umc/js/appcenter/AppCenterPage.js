@@ -38,6 +38,7 @@ define([
 	"dojo/store/Memory",
 	"dojo/topic",
 	"dojo/regexp",
+	"dojo/Deferred",
 	"dojox/image/LightboxNano",
 	"umc/app",
 	"umc/dialog",
@@ -56,7 +57,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, query, domClass, Memory, topic, regexp, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
+], function(declare, lang, array, when, query, domClass, Memory, topic, regexp, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
 
 	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
@@ -173,103 +174,117 @@ define([
 			this._progressBar = new ProgressBar();
 			this.own(this._progressBar);
 
-			this._appCenterInformation =
-				'<p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
-				'<p>' + _('Univention always receives an estranged notification for statistical purposes upon installation and uninstallation of an application in Univention App Center that is only saved at Univention for data processing and will not be forwarded to any third party.') + '</p>' +
-				'<p>' + _('Depending on the guideline of the respective application vendor an updated UCS license key with so-called key identification (Key ID) is required for the installation of an application. In this case, the Key ID will be sent to Univention together with the notification. As a result the application vendor receives a message from Univention with the following information:') +
-					'<ul>' +
-						'<li>' + _('Name of the installed application') + '</li>' +
-						'<li>' + _('Registered email address') + '</li>' +
-					'</ul>' +
-				_('The description of every application includes a respective indication for such cases.') + '</p>' +
-				'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
-				'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p>';
-
-			this._searchWidget = new _SearchWidget({
-				region: 'left'
-			});
-			this.addChild(this._searchWidget);
-
-			var titlePane = new ExpandingTitlePane({
-				title: _('Applications')
-			});
-
-			this._grid = new GalleryPane({
-				baseClass: "umcAppCenter",
-
-				style: 'height: 100%; width: 100%;',
-
-				getIconClass: function(item) {
-					return tools.getIconClass(item.icon, 50, 'umcAppCenter');
-				},
-
-				getStatusIconClass: function(item) {
-					var iconClass = '';
-					if (! item.can_update && item.candidate_version && item.cannot_update_reason != 'not_installed') {
-						iconClass = tools.getIconClass('appcenter-cannot_update', 24, 'umcAppCenter');
-					} else if (item.can_update) {
-						iconClass = tools.getIconClass('appcenter-can_update', 24, 'umcAppCenter');
-					} else if (item.is_installed) {
-						iconClass = tools.getIconClass('appcenter-is_installed', 24, 'umcAppCenter');
-					}
-					return iconClass;
+			this._initialCheckDeferred = new Deferred();
+			this.standby(true);
+			tools.umcpCommand('appcenter/working').then(lang.hitch(this, function(data) {
+				this.standby(false);
+				var working = data.result;
+				if (working) {
+					// this._initialCheckDeferred is resolved there
+					this._switch_to_progress_bar(_('Another package operation is in progress'), null, 'watching', false);
+				} else {
+					this._initialCheckDeferred.resolve();
 				}
-			});
+			}), lang.hitch(this, function() {
+				this.standby(false);
+				this._initialCheckDeferred.resolve();
+			}));
 
-			titlePane.addChild(this._grid);
-			this.addChild(titlePane);
+			this._initialCheckDeferred.then(lang.hitch(this, function() {
+				this._appCenterInformation =
+					'<p>' + _('Univention App Center is the simplest method to install or uninstall applications on Univention Corporate Server.') + '</p>' +
+					'<p>' + _('Univention always receives an estranged notification for statistical purposes upon installation and uninstallation of an application in Univention App Center that is only saved at Univention for data processing and will not be forwarded to any third party.') + '</p>' +
+					'<p>' + _('Depending on the guideline of the respective application vendor an updated UCS license key with so-called key identification (Key ID) is required for the installation of an application. In this case, the Key ID will be sent to Univention together with the notification. As a result the application vendor receives a message from Univention with the following information:') +
+						'<ul>' +
+							'<li>' + _('Name of the installed application') + '</li>' +
+							'<li>' + _('Registered email address') + '</li>' +
+						'</ul>' +
+					_('The description of every application includes a respective indication for such cases.') + '</p>' +
+					'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
+					'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p>';
 
-			if (this.autoStart) {
-				tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
-					if (tools.isTrue(prefs.appcenterSeen)) {
-						// load apps
-						this.updateApplications();
-					} else {
-						dialog.confirmForm({
-							title: _('Univention App Center'),
-							widgets: [
-								{
-									type: Text,
-									name: 'help_text',
-									content: '<div style="width: 535px">' + this._appCenterInformation + '</div>'
-								},
-								{
-									type: CheckBox,
-									name: 'show_again',
-									label: _("Show this message again")
-								}
-							],
-							buttons: [{
-								name: 'submit',
-								'default': true,
-								label: _('Continue')
-							}]
-						}).then(
-							lang.hitch(this, function(data) {
-								tools.setUserPreference({appcenterSeen: data.show_again ? 'false' : 'true'});
-								this.updateApplications();
-							}),
-							lang.hitch(this, function() {
-								this.updateApplications();
-							})
-						);
+				this._searchWidget = new _SearchWidget({
+					region: 'left'
+				});
+				this.addChild(this._searchWidget);
+
+				var titlePane = new ExpandingTitlePane({
+					title: _('Applications')
+				});
+
+				this._grid = new GalleryPane({
+					baseClass: "umcAppCenter",
+
+					style: 'height: 100%; width: 100%;',
+
+					getIconClass: function(item) {
+						return tools.getIconClass(item.icon, 50, 'umcAppCenter');
+					},
+
+					getStatusIconClass: function(item) {
+						var iconClass = '';
+						if (! item.can_update && item.candidate_version && item.cannot_update_reason != 'not_installed') {
+							iconClass = tools.getIconClass('appcenter-cannot_update', 24, 'umcAppCenter');
+						} else if (item.can_update) {
+							iconClass = tools.getIconClass('appcenter-can_update', 24, 'umcAppCenter');
+						} else if (item.is_installed) {
+							iconClass = tools.getIconClass('appcenter-is_installed', 24, 'umcAppCenter');
+						}
+						return iconClass;
 					}
-				}), lang.hitch(this, function() {
-					this.updateApplications();
-				}));
-			}
-		},
+				});
 
-		postCreate: function() {
-			this.inherited(arguments);
+				titlePane.addChild(this._grid);
+				this.addChild(titlePane);
 
-			// register event handlers
-			this._searchWidget.on('search', lang.hitch(this, 'filterApplications'));
+				if (this.autoStart) {
+					tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
+						if (tools.isTrue(prefs.appcenterSeen)) {
+							// load apps
+							this.updateApplications();
+						} else {
+							dialog.confirmForm({
+								title: _('Univention App Center'),
+								widgets: [
+									{
+										type: Text,
+										name: 'help_text',
+										content: '<div style="width: 535px">' + this._appCenterInformation + '</div>'
+									},
+									{
+										type: CheckBox,
+										name: 'show_again',
+										label: _("Show this message again")
+									}
+								],
+								buttons: [{
+									name: 'submit',
+									'default': true,
+									label: _('Continue')
+								}]
+							}).then(
+								lang.hitch(this, function(data) {
+									tools.setUserPreference({appcenterSeen: data.show_again ? 'false' : 'true'});
+									this.updateApplications();
+								}),
+								lang.hitch(this, function() {
+									this.updateApplications();
+								})
+							);
+						}
+					}), lang.hitch(this, function() {
+						this.updateApplications();
+					}));
+				}
 
-			this.own(this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
-				this._show_details(this._grid.row(evt));
-				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this._grid.row(evt).id, 'show');
-			})));
+				// register event handlers
+				this._searchWidget.on('search', lang.hitch(this, 'filterApplications'));
+
+				this.own(this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
+					this._show_details(this._grid.row(evt));
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this._grid.row(evt).id, 'show');
+				})));
+			}));
 		},
 
 		formatTxt: function(txt) {
@@ -526,10 +541,10 @@ define([
 						confirmationRequired = true;
 						var mayContinue = !result.serious_problems;
 						var no_host_info = true;
-						tools.forIn(result.hosts_info, lang.hitch(function() {
+						tools.forIn(result.hosts_info, function() {
 							no_host_info = false;
 							return false;
-						}));
+						});
 						if (func == 'update') {
 							container.addChild(new Text({
 								content: _('These changes contain <strong>all package upgrades available</strong> and thus may <strong>include errata updates</strong>. If this is not intended, the corresponding components have to be temporarily deactivated first using the tab "%s" above.', _('Repository Settings')),
@@ -867,7 +882,7 @@ define([
 
 		getApplications: function() {
 			if (!this._applications) {
-				return tools.umcpCommand('appcenter/query', {}).then(lang.hitch(function(data) {
+				return tools.umcpCommand('appcenter/query', {}).then(lang.hitch(this, function(data) {
 					// sort by name
 					this._applications = data.result;
 					this._applications.sort(tools.cmpObjects({
@@ -989,7 +1004,7 @@ define([
 			}
 		},
 
-		_switch_to_progress_bar: function(msg, app, func) {
+		_switch_to_progress_bar: function(msg, app, func, keep_alive) {
 			// One request needs to be active otherwise
 			// module might be killed if user logs out
 			// during installation: dpkg will be in a
@@ -997,12 +1012,15 @@ define([
 			// dont handle any errors. a timeout is not
 			// important. this command is just for the module
 			// to stay alive
-			tools.umcpCommand('appcenter/keep_alive', {}, false);
+			if (keep_alive !== false) {
+				tools.umcpCommand('appcenter/keep_alive', {}, false);
+			}
 			this.standby(true, this._progressBar);
 			this._progressBar.reset(msg);
 			this._progressBar.auto('appcenter/progress',
 				{},
 				lang.hitch(this, function() {
+					this._initialCheckDeferred.resolve();
 					if (func === 'install' && app.umc_module) {
 						// hack it into favorites: the app is yet unknown
 						UMCApplication.addFavoriteModule(app.umc_module, app.umc_flavor);
