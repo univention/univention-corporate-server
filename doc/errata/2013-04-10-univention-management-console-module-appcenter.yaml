@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-module-appcenter
-fix: 2.0.139-9.131.201305071151
+fix: 2.0.139-10.134.201305162350
 note:
 version: [1]
 desc: |
@@ -25,4 +25,5 @@ desc: |
   * Fixed a segfault that happened while upgrading an app under certain
     circumstances. Now the package manager always uses the latest package
     cache.
-bug: [30611, 30798, 30659, 30796, 31184, 31166, 31129, 31282]
+  * Prevent concurrent package operations in the same session.
+bug: [30611, 30798, 30659, 30796, 31184, 31166, 31129, 31282, 31382]
