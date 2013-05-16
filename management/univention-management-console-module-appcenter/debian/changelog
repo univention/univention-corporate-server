@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.139-10) unstable; urgency=low
+
+  * Prevent concurrent package operations during the same session (Bug #30611)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 16 May 2013 23:31:35 +0200
+
 univention-management-console-module-appcenter (2.0.139-9) unstable; urgency=low
 
   * Work with latest package cache if installing an app (Bug #31282)

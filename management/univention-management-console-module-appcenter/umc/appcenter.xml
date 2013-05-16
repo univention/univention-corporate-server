@@ -7,6 +7,7 @@
 			<category name="system"/>
 		</categories>
 
+		<command name="appcenter/working" function="working" />
 		<command name="appcenter/version" function="version" />
 		<command name="appcenter/request_new_license" function="request_new_license" />
 		<command name="appcenter/query" function="query" />
