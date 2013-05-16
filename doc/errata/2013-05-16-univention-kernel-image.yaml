@@ -7,7 +7,7 @@ fix: 6.0.1-2.36.201305161101
 desc: |
   This update fixes a local privilege escalation (CVE-2013-2094)
 note: |
-  This is the 2nd part of the fix, which updates the kernel meta packages to
+  This is the second part of the fix, which updates the kernel meta packages to
   automatically install the new kernel package provided by the previous errata
   update.
 cve:
