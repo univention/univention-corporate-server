@@ -33,7 +33,7 @@
 
 \subsection{Univention Configuration Registry}
 \begin{itemize}
-\item The process handling in \ucsName{univention"=config"=registry} has been improved to prevent issues with process
+\item The process handling in \ucsName{univention-config-registry} has been improved to prevent issues with process
   signals during system calls (\ucsBug{31140}).
 \end{itemize}
 
@@ -61,12 +61,13 @@
 \subsection{OpenLDAP}
 \begin{itemize}
 \item A segmentation fault in the slapd LDAP server process in cases where
-non-UTF-8 passwords were used for LDAP bind against the {K5KEY} scheme has
+non-UTF-8 passwords were used for LDAP bind against the \{K5KEY\} scheme has
 been fixes (\ucsBug{31352}).
 
-\item The slapcat output could get trunkated during univention-ldap-backup.
+\item The slapcat output could get truncated during univention-ldap-backup.
 This issue has been fixed (\ucsBug{31170}).
 
+\item The unused \ucsUCRV{ldap/server/additional} has been removed from \ucsName{univention-ldap}; use \ucsCommand{\ucsBCindex{ldap/server/addition}} instead (\ucsBug{24507}).
 \end{itemize}
 
 %\subsection{LDAP ACL changes}
@@ -449,13 +450,6 @@ created without a mail address (\ucsBug{31296}).
 \item \ucsName{univention-debmirror}. When uninstall package symlink '/etc/apache2/sites-enabled/univention-repository' will be removed. (\ucsBug{29262}).
 
 \end{itemize}
-
-\section{LDAP}
-\begin{itemize}
-\item \ucsName{univention-ldap}. The functionless ucr-variable 'ldap/server/additional' removed. Use ldap/server/addition (\ucsBug{24507}).
-
-\end{itemize}
-
 
 
 \section{Other changes}
