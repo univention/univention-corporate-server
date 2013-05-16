@@ -28,19 +28,15 @@ if __name__ == '__main__':
 				model = printerModel.split()[0].split('/')[-1].strip('"')
 				if model.endswith('.ppd') or model.endswith('.ppd.gz'):
 					ldapPrinterModels.append(model)
-			except:
+			except IndexError:
 				pass
 
 	printerFiles = []
-	for root, dirs, files in os.walk()
+	for root, dirs, files in os.walk('/usr/share/ppd/'):
+		for file in files:
+			if file.endswith('.ppd') or file.endswith('ppd.gz'):
+				printerFiles.append(file)
 
-	with open('/root/ldap', 'w') as fp:
-		for l in ldapPrinterModels:
-			fp.write('%s\n' % l)
-
-	with open('/root/files', 'w') as fp:
-		for f in printerFiles:
-			fp.write('%s\n' % f)
 
 
 	printerModelsLackingFile = []
@@ -59,7 +55,11 @@ if __name__ == '__main__':
 	if printerModelsLackingFile or filesLackingPrinterModel:
 		print 'Test FAILED.'
 		if printerModelsLackingFile:
-			print 'No PPD file found for the following printer models: %r' % printerModelsLackingFile
+			print 'No PPD file found for the following printer models:'
+			for printerModel in printerModelsLackingFile:
+				print '    %s' % printerModel
 		if filesLackingPrinterModel:
-			print 'No printer model found in LDAP for the following PPD files: %r' % filesLackingPrinterModel
+			print 'No printer model found in LDAP for the following PPD files:'
+			for file in filesLackingPrinterModel:
+				print '    %s' % file
 		sys.exit(1)

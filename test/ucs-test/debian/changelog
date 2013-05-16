@@ -1,3 +1,9 @@
+ucs-test (3.0.50-1) unstable; urgency=low
+
+  * fixed test tests/64_udm-printers/41_check_ppd (Bug #27664)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 16 May 2013 09:47:46 +0200
+
 ucs-test (3.0.49-1) unstable; urgency=low
 
   * ported udm-printer tests from ucs-3.0 (Bug #27664)
