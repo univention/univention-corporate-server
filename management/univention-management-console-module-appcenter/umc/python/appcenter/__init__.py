@@ -187,66 +187,69 @@ class Instance(umcm.Base):
 			if self._working():
 				# make it multi-tab safe (same session many buttons to be clicked)
 				raise LockError()
-			# make sure that the application cane be installed/updated
-			can_continue = True
-			serious_problems = False
-			result = {
-				'install' : [],
-				'remove' : [],
-				'broken' : [],
-				'unreachable' : [],
-				'master_unreachable' : False,
-				'serious_problems' : False,
-				'hosts_info' : {},
-				'problems_with_hosts' : False,
-				'serious_problems_with_hosts' : False,
-			}
-			if not application:
-				MODULE.process('Application not found: %s' % application_id)
-				can_continue = False
-			elif function == 'install' and not only_master_packages and not application.can_be_installed(self.package_manager):
-				MODULE.process('Application cannot be installed: %s' % application_id)
-				can_continue = False
-			elif function == 'update' and not only_master_packages and not application.can_be_updated(self.package_manager):
-				MODULE.process('Application cannot be updated: %s' % application_id)
-				can_continue = False
-
-			if can_continue and function in ('install', 'update'):
-				remove_component = only_dry_run
-				result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
-				serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
-				if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
-					MODULE.process('Problems encountered or confirmation required. Removing component %s' % application.id)
-					if not remove_component:
-						# component was not removed automatically after dry_run
-						if application.candidate:
-							self.component_manager.remove_app(application.candidate)
-						else:
-							self.component_manager.remove_app(application)
-						self.package_manager.update()
-					result['serious_problems'] = serious_problems
+			with self.package_manager.locked(reset_status=True):
+				# make sure that the application cane be installed/updated
+				can_continue = True
+				serious_problems = False
+				result = {
+					'install' : [],
+					'remove' : [],
+					'broken' : [],
+					'unreachable' : [],
+					'master_unreachable' : False,
+					'serious_problems' : False,
+					'hosts_info' : {},
+					'problems_with_hosts' : False,
+					'serious_problems_with_hosts' : False,
+				}
+				if not application:
+					MODULE.process('Application not found: %s' % application_id)
 					can_continue = False
-			elif can_continue and function in ('uninstall',) and not force:
-				result['remove'] = application.uninstall_dry_run(self.package_manager)
-				can_continue = False
-			result['can_continue'] = can_continue
-			self.finished(request.id, result)
+				elif function == 'install' and not only_master_packages and not application.can_be_installed(self.package_manager):
+					MODULE.process('Application cannot be installed: %s' % application_id)
+					can_continue = False
+				elif function == 'update' and not only_master_packages and not application.can_be_updated(self.package_manager):
+					MODULE.process('Application cannot be updated: %s' % application_id)
+					can_continue = False
 
-			if can_continue and not only_dry_run:
-				def _thread(module, application, function):
-					with module.package_manager.locked(reset_status=True, set_finished=True):
-						with module.package_manager.no_umc_restart(exclude_apache=True):
-							if function in ('install', 'update'):
-								# dont have to add component: already added during dry_run
-								return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install)
+				if can_continue and function in ('install', 'update'):
+					remove_component = only_dry_run
+					result = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
+					serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
+					if serious_problems or (not force and (result['unreachable'] or result['install'] or result['remove'] or result['problems_with_hosts'])):
+						MODULE.process('Problems encountered or confirmation required. Removing component %s' % application.id)
+						if not remove_component:
+							# component was not removed automatically after dry_run
+							if application.candidate:
+								self.component_manager.remove_app(application.candidate)
 							else:
-								return application.uninstall(module.package_manager, module.component_manager)
-				def _finished(thread, result):
-					if isinstance(result, BaseException):
-						MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
-				thread = notifier.threads.Simple('invoke',
-					notifier.Callback(_thread, self, application, function), _finished)
-				thread.run()
+								self.component_manager.remove_app(application)
+							self.package_manager.update()
+						result['serious_problems'] = serious_problems
+						can_continue = False
+				elif can_continue and function in ('uninstall',) and not force:
+					result['remove'] = application.uninstall_dry_run(self.package_manager)
+					can_continue = False
+				result['can_continue'] = can_continue
+				self.finished(request.id, result)
+
+				if can_continue and not only_dry_run:
+					def _thread(module, application, function):
+						with module.package_manager.locked(set_finished=True):
+							with module.package_manager.no_umc_restart(exclude_apache=True):
+								if function in ('install', 'update'):
+									# dont have to add component: already added during dry_run
+									return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self._password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install)
+								else:
+									return application.uninstall(module.package_manager, module.component_manager)
+					def _finished(thread, result):
+						if isinstance(result, BaseException):
+							MODULE.warn('Exception during %s %s: %s' % (function, application_id, str(result)))
+					thread = notifier.threads.Simple('invoke',
+						notifier.Callback(_thread, self, application, function), _finished)
+					thread.run()
+				else:
+					self.package_manager.set_finished() # nothing to do, ready to take new commands
 		except LockError:
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager
@@ -372,6 +375,8 @@ class Instance(umcm.Base):
 					thread = notifier.threads.Simple('invoke',
 						notifier.Callback(_thread, self.package_manager, function, packages), _finished)
 					thread.run()
+				else:
+					self.package_manager.set_finished() # nothing to do, ready to take new commands
 		except LockError:
 			# make it thread safe: another process started a package manager
 			# this module instance already has a running package manager
