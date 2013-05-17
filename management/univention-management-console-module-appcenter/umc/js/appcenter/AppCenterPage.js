@@ -175,6 +175,7 @@ define([
 			this.own(this._progressBar);
 
 			this._initialCheckDeferred = new Deferred();
+			this._buildRenderingDeferred = new Deferred();
 			this.standby(true);
 			tools.umcpCommand('appcenter/working').then(lang.hitch(this, function(data) {
 				this.standby(false);
@@ -284,6 +285,8 @@ define([
 					this._show_details(this._grid.row(evt));
 					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this._grid.row(evt).id, 'show');
 				})));
+
+				this._buildRenderingDeferred.resolve(); // for apps.js
 			}));
 		},
 
