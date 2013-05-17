@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.139-12) unstable; urgency=low
+
+  * Bug #30659: Even more robust free memory calculation in OpenVZ environment
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 May 2013 11:11:32 +0200
+
 univention-management-console-module-appcenter (2.0.139-11) unstable; urgency=low
 
   * Prevent concurrent package operations in the same session (Bug #31382)
