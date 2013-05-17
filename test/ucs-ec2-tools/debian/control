@@ -9,7 +9,7 @@ Standards-Version: 3.7.2
 Package: ucs-ec2-tools
 Architecture: all
 Depends: ${misc:Depends},
- python-boto,
+ python-boto (>> 2.2.2),
  python-paramiko,
  python
 Description: Tools to create test environments via EC2
