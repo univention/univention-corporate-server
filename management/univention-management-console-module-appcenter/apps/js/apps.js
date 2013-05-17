@@ -74,22 +74,24 @@ define([
 					this.updateApplication();
 				})
 			});
-			this._appcenterPage._grid.categoriesDisplayed = false; // dont show categories in app center icon (can go beyond title pane)
-			this.own(this._appcenterPage);
-			var buttons = [{
-				name: 'close',
-				label: _('Close'),
-				align: 'left',
-				callback: lang.hitch( this, function() {
-					topic.publish('/umc/tabs/close', this);
-				})
-			}];
-			this._page = new Page({
-				footerButtons: buttons
-			});
-			this.addChild(this._page);
-			this._container = null;
-			this.updateApplication();
+			this._appcenterPage._buildRenderingDeferred.then(lang.hitch(this, function() {
+				this._appcenterPage._grid.categoriesDisplayed = false; // dont show categories in app center icon (can go beyond title pane)
+				this.own(this._appcenterPage);
+				var buttons = [{
+					name: 'close',
+					label: _('Close'),
+					align: 'left',
+					callback: lang.hitch( this, function() {
+						topic.publish('/umc/tabs/close', this);
+					})
+				}];
+				this._page = new Page({
+					footerButtons: buttons
+				});
+				this.addChild(this._page);
+				this._container = null;
+				this.updateApplication();
+			}));
 		},
 
 		updateApplication: function() {

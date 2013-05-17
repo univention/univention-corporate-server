@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.149-1) unstable; urgency=low
+
+  * Bug #31382: Fix regression introduced in 2.0.148-1 relating to installed
+    apps.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 May 2013 10:02:31 +0200
+
 univention-management-console-module-appcenter (2.0.148-1) unstable; urgency=low
 
   * Prevent concurrent package operations in the same session (Bug #31382)
