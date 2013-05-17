@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (2.0.151-1) unstable; urgency=low
+
+  * Bug #31382: If another app is being installed show an error message to the
+    user of the other session.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 17 May 2013 17:31:54 +0200
+
 univention-management-console-module-appcenter (2.0.150-1) unstable; urgency=low
 
   * Bug #30659: Even more robust free memory calculation in OpenVZ environment
