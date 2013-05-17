@@ -64,6 +64,10 @@ def main():
 			print 'AMI:    %s' % instance.id
 			print 'Status: %s' % instance.state
 			print 'Key:    %s' % instance.key_name
+			if instance.vpc_id:
+				print 'IP:     %s' % instance.private_ip_address
+			else:
+				print 'IP:     %s' % instance.ip_address
 			print
 
 

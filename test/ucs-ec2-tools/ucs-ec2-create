@@ -42,7 +42,6 @@ from select import select
 
 import boto
 from boto.ec2 import regions
-from boto.vpc import VPCConnection
 
 
 class VM:
@@ -53,7 +52,7 @@ class VM:
 
 		# Copy some global settings to the local VM config
 		# but only if the setting is not set in the local VM section
-		params = ['ec2_ami', 'ec2_security_group', 'ec2_instance_type', 'ec2_keypair', 'ec2_region']
+		params = ['ec2_ami', 'ec2_security_group', 'ec2_instance_type', 'ec2_keypair', 'ec2_region', 'ec2_subnet_id']
 		for key in params:
 			if not config.has_option(section, key):
 				if config.has_option('Global', key):
@@ -111,12 +110,23 @@ class VM:
 
 		user_data = ''
 
-		self.ec2 = boto.connect_ec2(**aws_cfg)
 		if self.aws_cfg.get('ec2_reuse'):
+			self.ec2 = boto.connect_vpc(**aws_cfg)
 			reservation = self.ec2.get_all_instances(instance_ids=[self.aws_cfg.get('ec2_reuse')])[0]
+		elif self.aws_cfg.get('ec2_subnet_id'):
+			self.ec2 = boto.connect_vpc(**aws_cfg)
+			ami = self.ec2.get_image(self.aws_cfg['ec2_ami'])
+			reservation = ami.run(min_count=1,
+				max_count=1,
+				key_name=self.aws_cfg['ec2_keypair'],
+				subnet_id=self.aws_cfg['ec2_subnet_id'],
+				user_data=user_data,
+				security_group_ids=[self.aws_cfg['ec2_security_group']],
+				instance_type=self.aws_cfg['ec2_instance_type'],
+				instance_initiated_shutdown_behavior='terminate',  # 'save'
+				)
 		else:
-			# TODO: support VPC
-			# self.ec2 = VPCConnection(**aws_cfg)
+			self.ec2 = boto.connect_ec2(**aws_cfg)
 			ami = self.ec2.get_image(self.aws_cfg['ec2_ami'])
 			reservation = ami.run(min_count=1,
 				max_count=1,
@@ -225,7 +235,7 @@ class VM:
 		''' Run all commands for a given phase e.g. for command1 '''
 		for cmdline in self.commands[phase]:
 			try:
-				_print_process('  ' + cmdline)
+				_print_process('  %s' % cmdline)
 				rt = self._ssh_exec(cmdline)
 				if rt != 0:
 					_print_done('fail (return code %s)' % rt)
@@ -240,9 +250,15 @@ class VM:
 		''' Retrun the  IP address of the started VM '''
 		return len(self.commands)
 
+	def is_vpc(self):
+		return self.instance.vpc_id
+
 	def get_ip(self):
 		''' Retrun the IP address of the started VM '''
-		return self.instance.ip_address
+		if self.instance.vpc_id:
+			return self.instance.private_ip_address
+		else:
+			return self.instance.ip_address
 
 	def get_name(self):
 		'''	Return the configured name for the VM, this is the section for
@@ -264,11 +280,11 @@ class VM:
 				if r_list:
 					if session.recv_ready():
 						data = session.recv(4096)
-						self._log(data)
+						self._log(data, newline=False)
 						continue
 					elif session.recv_stderr_ready():
 						data = session.recv_stderr(4096)
-						self._log(data)
+						self._log(data, newline=False)
 						continue
 					else:
 						pass  # EOF
@@ -304,12 +320,13 @@ class VM:
 			self._remote_mkdir(directory.rsplit("/", 1)[0])
 
 	# Write a message to the log file
-	def _log(self, msg):
+	def _log(self, msg, newline=True):
 		'''	Write a message to self.logfile '''
 		if self.logfile:
 			fd = open(self.logfile, 'a+')
 			fd.write(str(msg))
-			fd.write('\n')
+			if newline:
+				fd.write('\n')
 			fd.close()
 		else:
 			print 'I: no logfile is configured, print to stdout'
@@ -317,7 +334,10 @@ class VM:
 	
 def _print_process(msg):
 	'''	Print s status line '''
-	print '%-65s' % msg,
+	if len(msg) > 64:
+		print '%s..' % msg[:63],
+	else:
+		print '%-65s' % msg,
 	sys.stdout.flush()
 
 def _print_done(msg='done'):
@@ -364,7 +384,7 @@ def main():
 	if os.path.exists(os.path.expanduser('~/.boto')):
 		_print_done()
 	else:
-		_print_done('fail (See http://code.google.com/p/boto/wiki/BotoConfig)')
+		_print_done('fail (See http://code.google.com/p/boto/wiki/BotoConfig or https://hutten.knut.univention.de/mediawiki/index.php/UCS_EC2_Tools#.boto_Datei)')
 
 	for host in config.hosts():
 		_print_process('Creating VM [%s]' % host)
@@ -382,6 +402,15 @@ def main():
 		_print_process('Connect to VM %s' % vm.get_name())
 		vm.connect()
 		_print_done()
+
+	# replace profile variables
+	replace_list = []
+	for vm in vms:
+		replace_list.append( ('[%s_IP]' % vm.section, vm.get_ip()) )
+	for vm in vms:
+		if vm.profile:
+			for (host_str, ip) in replace_list:
+				vm.profile = vm.profile.replace(host_str, ip)
 
 	# create profiles
 	for vm in vms:
