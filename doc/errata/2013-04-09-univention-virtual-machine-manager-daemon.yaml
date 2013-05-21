@@ -7,8 +7,9 @@ note:
 version: [1]
 desc: |
   This update fixes several issues:
-  * This update fixes the broken context menu for active instances on
-    the devices page.
-  * A typo in the german translation has been fixed
-  * A problem with the ordering of snapshot savepoints has been corrected
+  * The context menu on the devices page of active VMs no longer disappears
+    when the mouse is moved.
+  * A typo in the German translation has been fixed.
+  * To fix the ordering of snapshots their creation time is now display in
+    ISO 8601 format.
 bug: [29261, 22377, 29901]
