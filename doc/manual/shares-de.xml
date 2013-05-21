@@ -1008,43 +1008,68 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 		  Speicherplatzverbrauch weiterhin unter dem Hard-Limit, wird dem Benutzer eine
 		  Übergangsfrist von sieben Tagen eingeräumt um unbenutzte Daten zu löschen. Nach Ablauf der
 		  sieben Tage können keine weiteren Dateien mehr angelegt oder verändert werden. Benutzern,
-		  die über CIFS auf ein Dateisystem mit erschöpfter Quota zugreifen, wird eine Warnung angezeigt.
+		  die über CIFS auf ein Dateisystem mit erschöpfter Quota zugreifen, wird eine Warnung
+		  angezeigt (als Schwellwert wird dabei das Soft-Limit angesetzt).
 		</para>
 	  </listitem>
 	</itemizedlist>
   </para>
 
   <para>
-	Quotas gelten immer für eine komplette Partition. Sie können entweder über das UMC-Modul
-	<guimenu>Dateisystem Quota</guimenu> oder über eine Richtlinie für Freigaben definiert werden.
+	Quotas können entweder über das UMC-Modul
+	<guimenu>Dateisystem Quota</guimenu> oder über eine Richtlinie für Freigaben definiert werden,
+	siehe <xref linkend="shares::quota::policy"/>.
   </para>
 
   <para>
 	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen ext2, ext3, ext4 und xfs
-	angelegt werden. Die Verwendung von Dateisystem-Quota auf der /-Partition muss manuell aktiviert
-	werden, siehe <xref linkend="shares::quota::umc"/>.
+	angelegt werden. Bevor Dateisystem-Quota konfiguriert werden, muss der Quota-Support pro
+	Partition aktiviert werden, siehe <xref linkend="shares::quota::umc"/>.
   </para>
 
-
   <section id="shares::quota::umc">
-	<title>Quota-Verwaltung in der UMC</title>
+	<title>Aktivierung von Dateisystem-Quota</title>
 	<para>
 	  Im UMC-Modul <guimenu>Dateisystem Quota</guimenu> werden alle Partitionen aufgeführt, auf
 	  denen Quota eingerichtet werden können. Es werden nur Partitionen angezeigt, die aktuell unter
 	  einem Mount Point eingebunden sind.
 	</para>
 
+	<figure>
+	  <title>Aktivierung von Quota</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/quota-overview-en.png"/>
+	</figure>
+
 	<para>
 	  Der aktuelle Quota-Status (Aktiviert/Deaktiviert) wird angezeigt und kann mit
-	  <guimenu>Aktivieren</guimenu> und <guimenu>Deaktivieren</guimenu> verändert werden. Für alle
+	  <guimenu>Aktivieren</guimenu> und <guimenu>Deaktivieren</guimenu> verändert werden.
+	</para>
+
+	<para>
+	  Um auf der Root-Partition Quota zu konfigurieren, müssen zusätzliche Einstellungen vorgenommen
+	  werden, siehe <xref linkend="shares::quota::root"/>.
+	</para>
+
+  </section>
+
+  <section id="shares::quota::policy">
+	<title>Konfiguration von Dateisystem-Quota</title>
+	<para>
+	  Quotas können entweder über das UMC-Modul
+	  <guimenu>Dateisystem Quota</guimenu> oder über eine Richtlinie für Freigaben definiert
+	  werden. Die Konfiguration über die Richtlinie erlaubt die Festlegung eines Standard-Werts für
+	  alle Benutzer, während das UMC-Modul eher für die flexible Konfiguration von Benutzer-Quota
+	  für einzelne Benutzer geeignet ist.
+	</para>
+
+	<para>
+	  Die benutzerspezifischen Quota können im UMC-Modul <guimenu>Dateisystem Quota</guimenu>
+	  editiert werden. Für alle
 	  aktivierten Partitionen kann mit dem Bleistift-Symbol die erlaubten Speichermengen festgelegt
 	  werden. Alle Einstellungen werden benutzerspezifisch festgelegt. Mit <guimenu>Benutzer hinzufügen</guimenu>
 	  können die Schwellwerte für Soft- und Hard-Limits für einen Benutzer festgelegt werden.
 	</para>
-  </section>
 
-  <section id="shares::quota::policy">
-	<title>Quota-Verwaltung für Freigaben</title>
 	<para>
 	  Die Quota-Einstellungen können auch über eine Freigaben-Richtlinie von Typ <guimenu>Benutzer-Quota</guimenu> festgelegt werden. Die
 	  Einstellungen gelten für alle Benutzer eine Freigabe; es ist nicht möglich an einer Richtlinie
@@ -1058,6 +1083,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 
 	<note>
 	  <para>
+		Dateisystem-Quota können immer nur auf vollständige Partitionen angewendet werden
 		Auch wenn die Richtlinien für Freigaben definiert werden, werden sie auf vollständige
 		Partitionen angewendet. Wenn also beispielsweise auf einem Server drei Freigaben
 		bereitgestellt werden, die alle auf der separaten <filename>/var</filename>-Partition abgelegt werden und werden
@@ -1091,8 +1117,28 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	<title>Abfrage des Quota-Status durch Administratoren oder Benutzer</title>
 	<para>
 	  Die für ein System definierten Quota-Begrenzungen können als Benutzer mit dem Befehl
-	  <command>repquota -va</command> aufgelistet werden.
+	  <command>repquota -va</command> aufgelistet werden, z.B.:
 	</para>
+
+<programlisting>
+root@system:/var/shares/example1# repquota -va
+*** Report für user Quotas auf Gerät /dev/vdb1
+Blockgnadenfrist: 7days; Inodegnadenfrist: 7days
+                        Block Limits                Dateilimits
+Benutzer        belegt  weich   hart  Gnade   belegt weich hart  Gnade
+----------------------------------------------------------------------
+root      --      20       0       0              2     0     0       
+Administrator --       0       0  102400              0     0     0       
+user01    --  234472 2048000 4096000              2     0     0       
+user02    --       0 2048000 4096000              0     0     0       
+
+Statistik:
+Gesamtblockzahl: 8
+Datenblöcke: 1
+Enträge: 4
+Durchschnittlich verwendet: 4,000000
+</programlisting>
+
 
 	<para>
 	  Angemeldete Benutzer können mit dem Befehl <command>quota -v</command> die für sie geltenden
@@ -1114,14 +1160,46 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 		  Die &ucsUCRV; <envar>grub/append</envar> muss um <emphasis>root2flags=quota</emphasis>
 		  ergänzt werden. Als Trennzeichen zu bereits gesetzten Werten wird dabei ein Leerzeichen
 		  verwendet. Hierdurch wird der Quota-Support für die Root-Partition als
-		  Bootparameter gesetzt. Die Änderung wird automatisch in den Bootrecord geschrieben.
+		  Bootparameter gesetzt. Die Änderung wird automatisch in den Bootrecord geschrieben, z.B:
+
+<programlisting>
+root@system:~# ucr get grub/append
+nosplash
+root@system:~# ucr set grub/append="noplash root2flags=quota"
+Setting grub/append
+File: /etc/default/grub
+Generating grub.cfg ...
+Found background: /boot/grub/uniboot.png
+Found background image: /boot/grub/uniboot.png
+Found linux image: /boot/vmlinuz-3.2.0-ucs27-686-pae
+Found initrd image: /boot/initrd.img-3.2.0-ucs27-686-pae
+Found memtest86+ image: /boot/memtest86+.bin
+done
+Generating legacy menu.lst from current kernels
+</programlisting>
+
+
 		</para>
 		</listitem>
 
 		<listitem> <para>
 		  Bei ext2, ext3 und ext4-Dateisystemen muss der Parameter <emphasis>usrquota</emphasis> für die root-Partition
 		  in der Datei <filename>/etc/fstab</filename> ergänzt werden. Für XFS-Dateisysteme ist dies
-		  nicht notwendig.
+		  nicht notwendig. Ein Beispiel:
+
+<programlisting>
+root@system:~# cat /etc/fstab
+# /etc/fstab: static file system information.
+#
+# &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+UUID=64cff02c-0870-4890-9fb6-7b502ed1aa12       /       ext3    acl,errors=remount-ro,user_xattr,usrquota       0       1
+proc    /proc   proc    defaults        0       0
+UUID=1bb33966-bc9b-4d41-97e8-476b9effe515       none    swap    sw      0       0
+/dev/sr0        /cdrom  auto    user,noauto,exec        0       0
+/dev/fd0        /floppy vfat    user,noauto,exec        0       0
+</programlisting>
+
+
 		</para></listitem>
 
 		<listitem> <para>

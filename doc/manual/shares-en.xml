@@ -973,42 +973,68 @@ Microsoft Distributed File System Tree'.
 		  limit - and the storage space used is still below the hard limit, the user is given a
 		  grace period of seven days to delete unused data. Once seven days have elapsed, it is
 		  no longer possible to save or change additional files. A warning is displayed to users who
-		  access a file system with an exceeded quota via CIFS.
+		  access a file system with an exceeded quota via CIFS (the threshold is based on the soft
+		  limit).
 		</para>
 	  </listitem>
 	</itemizedlist>
   </para>
 
   <para>
-	Quotas always apply to full partitions. They can either be defined via the UMC module
-	<guimenu>Filesystem quotas</guimenu> or a policy for shares.
+	Quotas can either be defined via the UMC module
+	<guimenu>Filesystem quotas</guimenu> or a policy for shares, see <xref linkend="shares::quota::policy"/>.
   </para>
 
   <para>
 	File system quotas can only be applied on partitions with the file systems ext2, ext3, ext4 and
-	xfs. The use of file system quotas on the / partition must be manually activated, see <xref
-	linkend="shares::quota::umc"/>.
+	xfs. Before filesystem quotas can be configured, the use of file system quotas needs to be
+	activated per partition, see <xref linkend="shares::quota::umc"/>.
   </para>
 
   <section id="shares::quota::umc">
-	<title>Quota administration in the UMC</title>
+	<title>Activating filesystem quota</title>
 	<para>
 	  In the UMC module <guimenu>Filesystem quotas</guimenu>, all the partitions are listed on which
 	  quotas can be set up. Only partitions are shown which are currently mounted under a mount
 	  point.
 	</para>
 
+	<figure>
+	  <title>Managing quota in the UMC</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/quota-overview-en.png"/>
+	</figure>
+
 	<para>
 	  The current quota status (activated/deactivated) is shown and can be changed with
-	  <guimenu>Activate</guimenu> and <guimenu>Deactivate</guimenu>. The permitted storage quantities can
+	  <guimenu>Activate</guimenu> and <guimenu>Deactivate</guimenu>. 
+	</para>
+
+	<para>
+	  To configure quota limits on the root partition, additional configuration changes need to be
+	  made, see <xref linkend="shares::quota::root"/>.
+	</para>
+
+  </section>
+
+  <section id="shares::quota::policy">
+	<title>Configuring filesystem quota</title>
+
+	<para>
+	  Quotas can either be defined via the UMC module
+	  <guimenu>Filesystem quotas</guimenu> or a policy for shares, see <xref
+	  linkend="shares::quota::policy"/>. The configuration through a policy allows setting a default
+	  value for all users, while the UMC module allows easy configuration of user-specific quota
+	  values.
+	</para>
+
+	<para>
+	  The user-specific quota settings can be configured with the UMC module <guimenu>Filesystem
+	  quotas</guimenu>. The permitted storage quantities can
 	  be set with the pencil symbol for all enabled partitions. All the settings are set
 	  user-specifically. <guimenu>Add user</guimenu> can be used to set the thresholds for soft and
 	  hard limits for a user.
 	</para>
-  </section>
 
-  <section id="shares::quota::policy">
-	<title>Quota administration for shares</title>
 	<para>
 	  The quota settings can also be set with a <guimenu>User quota</guimenu> share policy. The
 	  settings apply for all users of a share; it is not possible to establish different quota
@@ -1022,6 +1048,7 @@ Microsoft Distributed File System Tree'.
 
 	<note>
 	  <para>
+		Filesystem quotas alway apply to a full partition.
 		Even if the policies are defined for shares, they are used on complete partitions. If, for
 		example, three shares are provided on one server which are all saved on the separate
 		<filename>/var</filename> partition and three different policies are configured and used,
@@ -1053,8 +1080,33 @@ Microsoft Distributed File System Tree'.
 	<title>Querying the quota status by administrators or users</title>
 	<para>
 	  A user can view the quota limits defined for a system using the command <command>repquota
-	  -va</command>.
+	  -va</command>, e.g.:
 	</para>
+
+<programlisting>
+root@system:/var/shares/example1# repquota -va
+*** Report for user quotas on device /dev/vdb1
+Block grace time: 7days; Inode grace time: 7days
+                        Block limits                File limits
+User            used    soft    hard  grace    used  soft  hard  grace
+----------------------------------------------------------------------
+root      --      20       0       0              2     0     0       
+Administrator --       0       0  102400              0     0     0       
+user01    --  234472 2048000 4096000              2     0     0       
+user02    --       0 2048000 4096000              0     0     0       
+
+Statistics:
+Total blocks: 8
+Data blocks: 1
+Entries: 4
+Used average: 4.000000
+</programlisting>
+
+	<figure>
+	  <title>Managing quota in the UMC</title>
+	  <graphic scalefit="1" width="50%" fileref="illustrations/quota-overview-en.png"/>
+	</figure>
+
 
 	<para>
 	  Logged in users can use the <command>quota -v</command> command to view the applicable quota
@@ -1075,14 +1127,44 @@ Microsoft Distributed File System Tree'.
 		  The &ucsUCRV; <envar>grub/append</envar> must be expanded with
 		  <emphasis>root2flags=quota</emphasis>. A blank space is used to separate already set
 		  values. This sets the quota support for the root partition as a boot parameter. The change
-		  is written automatically in the boot record.
+		  is written automatically in the boot record, e.g.:
+
+<programlisting>
+root@system:~# ucr get grub/append
+nosplash
+root@system:~# ucr set grub/append="noplash root2flags=quota"
+Setting grub/append
+File: /etc/default/grub
+Generating grub.cfg ...
+Found background: /boot/grub/uniboot.png
+Found background image: /boot/grub/uniboot.png
+Found linux image: /boot/vmlinuz-3.2.0-ucs27-686-pae
+Found initrd image: /boot/initrd.img-3.2.0-ucs27-686-pae
+Found memtest86+ image: /boot/memtest86+.bin
+done
+Generating legacy menu.lst from current kernels
+</programlisting>
+
 		</para>
 		</listitem>
 
 		<listitem> <para>
 		  On ext2, ext3 and ext4 file systems, the <emphasis>usrquota</emphasis> parameter for the
 		  root partition must be expanded in the file <filename>/etc/fstab</filename>. This is not
-		  necessary on XFS file systems.
+		  necessary on XFS file systems, e.g:
+
+<programlisting>
+root@system:~# cat /etc/fstab
+# /etc/fstab: static file system information.
+#
+# &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+UUID=64cff02c-0870-4890-9fb6-7b502ed1aa12       /       ext3    acl,errors=remount-ro,user_xattr,usrquota       0       1
+proc    /proc   proc    defaults        0       0
+UUID=1bb33966-bc9b-4d41-97e8-476b9effe515       none    swap    sw      0       0
+/dev/sr0        /cdrom  auto    user,noauto,exec        0       0
+/dev/fd0        /floppy vfat    user,noauto,exec        0       0
+</programlisting>
+
 		</para></listitem>
 
 		<listitem> <para>
