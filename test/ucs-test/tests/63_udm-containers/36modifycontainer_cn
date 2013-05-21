@@ -24,7 +24,7 @@ if __name__ == '__main__':
 		udm.modify_object('container/cn', dn = cn, description = cnDescription)
 		
 		ldap = uldap.getAdminConnection()
-		setCnDescription = ldap.search(filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName, attr = ['description'])[0][1]['description'][0]
-		if setCnDescription != cnDescription:
-			print 'Test FAILED. Expected "description" of created CN to be set to "%s" after modification, but "%s" was found.' % (cnDescription, setCnDescription)
+		setCnDescription = ldap.search(filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName, attr = ['description'])[0][1]['description']
+		if setCnDescription != [cnDescription]:
+			print 'Test FAILED. Expected "description" of created CN to be set to %r after modification, but %r was found.' % ([cnDescription], setCnDescription)
 			sys.exit(1)

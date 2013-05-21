@@ -1,0 +1,32 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create and remove DHCP service
+## tags: [udm-dhcp]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		dhcpServiceName = uts.random_name()
+		dhcpService = udm.create_object('dhcp/service', service = dhcpServiceName)
+
+		ldap = uldap.getAdminConnection()
+		ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpService))' % dhcpServiceName
+		if not dhcpService in ldap.searchDn(filter = ldapFilter):
+			print 'Test FAILED. Could not find created DHCP service "%s" in LDAP' % dhcpService
+			sys.exit(1)
+
+		udm.remove_object('dhcp/service', dn = dhcpService)
+		if dhcpService in ldap.searchDn(filter = ldapFilter):
+			print 'Test FAILED. Could still find DHCP service "%s" in LDAP after removing it' % dhcpService
+			sys.exit(1)
+

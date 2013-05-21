@@ -19,7 +19,7 @@ if __name__ == '__main__':
 		cn = udm.create_object('container/cn', name = cnName)
 
 		ldap = uldap.getAdminConnection()
-		if not ldap.searchDn(filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName):
-			print 'Test FAILED. Could not find created CN "%s" in LDAP.' % cnName
+		if not cn in ldap.searchDn(filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName):
+			print 'Test FAILED. Could not find created CN "%s" in LDAP.' % cn
 			sys.exit(1)
 

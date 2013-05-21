@@ -1,0 +1,34 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create and remove DHCP shared network
+## tags: [udm-dhcp]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcpSharedNetworkName = uts.random_name()
+		dhcpSharedNetwork = udm.create_object('dhcp/shared', name = dhcpSharedNetworkName, superordinate = dhcpService)
+
+		ldap = uldap.getAdminConnection()
+		ldapFilter = '(&(cn=%s)(objectClass=dhcpSharedNetwork))' % dhcpSharedNetworkName
+		if not dhcpSharedNetwork in ldap.searchDn(base = dhcpService, filter = ldapFilter):
+			print 'Test FAILED. Could not find created DHCP shared network "%s" in LDAP.' % dhcpSharedNetwork
+			sys.exit(1)
+
+
+		udm.remove_object('dhcp/shared', dn = dhcpSharedNetwork, superordinate = dhcpService)
+		if dhcpSharedNetwork in ldap.searchDn(base = dhcpService, filter = ldapFilter):
+			print 'Test FAILED. Could still find created DHCP shared network in LDAP after removing it.'
+			sys.exit(1)

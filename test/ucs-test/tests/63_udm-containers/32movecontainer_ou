@@ -22,14 +22,12 @@ if __name__ == '__main__':
 		expectedDN = 'ou=%s,%s' % (ouName, ou2)
 
 		ldap = uldap.getAdminConnection()
-		result = ldap.searchDn(filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName)
+		result = ldap.searchDn(base = ou2, filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName)
 		for dn in result:
 			if dn == expectedDN:
 				break
 		else:
-			print 'Test FAILED. Created OU was expected to be at "%s" after moving, but could not be found there.\nThe following OUs matching the created OUs name ("%s") have been found:' % (expectedDN, ouName)
-			for dn in result:
-				print '    %s' % dn
+			print 'Test FAILED. Created OU was expected to be at "%s" after moving, but could not be found there.' % expectedDN
 			sys.exit(1)
 
 

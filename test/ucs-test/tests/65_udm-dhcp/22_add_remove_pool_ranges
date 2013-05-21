@@ -1,0 +1,45 @@
+#!/usr/share/ucs-test/runner python
+## desc: DHCP pool, test to add and remove DHCP ranges
+## tags: [udm-dhcp]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcpSubnet = udm.create_object('dhcp/subnet', subnet = '10.20.30.0', subnetmask = '24', superordinate = dhcpService)
+		
+		dhcpPoolName = uts.random_string()
+		dhcpRanges = ['10.20.30.1 10.20.30.5', '10.20.30.6 10.20.30.10']	
+		moreDhcpRanges = ['10.20.30.11 10.20.30.15', '10.20.30.16 10.20.30.20', '10.20.30.21 10.20.30.25', '10.20.30.26 10.20.30.30']
+		dhcpPool = udm.create_object('dhcp/pool', name = dhcpPoolName, range = dhcpRanges, superordinate = dhcpSubnet)
+		
+		udm.modify_object('dhcp/pool', dn = dhcpPool, append = {'range': moreDhcpRanges})
+
+		ldap = uldap.getAdminConnection()
+		ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpPool))' % dhcpPoolName
+		result = ldap.search(base = dhcpSubnet, filter = ldapFilter, attr = ['dhcpRange'])[0][1]['dhcpRange']
+		for dhcpRange in dhcpRanges+moreDhcpRanges:
+			if not dhcpRange in result:
+				print 'Test FAILED. Expected "dhcpRanges" attribute of created DHCP pool to contain "%s" after appending it, but could not find the value in there: %r' % (dhcpRange, result)
+				sys.exit(1)
+
+		udm.modify_object('dhcp/pool', dn = dhcpPool, remove = {'range': dhcpRanges})
+
+		result = ldap.search(base = dhcpSubnet, filter = ldapFilter, attr = ['dhcpRange'])[0][1]['dhcpRange']
+		for dhcpRange in dhcpRanges:
+			if dhcpRange in result:
+				print 'Test FAILED. "dhcpRanges" attribute of created DHCP pool still contained value "%s" after removing it: %r' % (dhcpRange, result)
+				sys.exit(1)
+

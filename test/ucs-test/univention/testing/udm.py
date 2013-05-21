@@ -99,23 +99,32 @@ class UCSTestUDM(object):
 		>>> ['/usr/sbin/univention-directory-manager', 'users/user', 'create', …]
 		"""
 		cmd = [ '/usr/sbin/univention-directory-manager', modulename, action ]
-
+		args = copy.deepcopy(kwargs)
 
 		for arg in ('binddn', 'bindpwd', 'dn', 'position', 'superordinate'):
-			if arg in kwargs:
-				cmd.extend(['--%s' % arg, kwargs[arg]])
+			if arg in args:
+				cmd.extend(['--%s' % arg, args[arg]])
+				del args[arg]
 
-		for option in kwargs.get('options', []):
-			cmd.extend(['--option', option ])
+		if 'options' in args:
+			for option in args['options']:
+				cmd.extend(['--option', option ])
+			del args['options']
 
-		# set all other properties
-		for arg in kwargs:
-			if not arg in ('binddn', 'bindpwd', 'position', 'superordinate', 'dn', 'options'):
-				if type(kwargs.get(arg)) == list:
-					for item in kwargs.get(arg):
-						cmd.extend( [ '--append', '%s=%s' % (arg, item) ] )
-				else:
-					cmd.extend( [ '--set', '%s=%s' % (arg, kwargs.get(arg)) ] )
+		for operation in ('append', 'remove'):
+			if operation in args:
+				for key, values in args[operation].items():
+					for value in values:
+						cmd.extend(['--%s' % operation, '%s=%s' % (key, value)])
+				del args[operation]
+
+		# set all other remaining properties
+		for arg in args:
+			if type(args.get(arg)) == list:
+				for item in args.get(arg):
+					cmd.extend( [ '--append', '%s=%s' % (arg, item) ] )
+			else:
+				cmd.extend( [ '--set', '%s=%s' % (arg, args.get(arg)) ] )
 		return cmd
 
 

@@ -1,3 +1,12 @@
+ucs-test (3.0.52-1) unstable; urgency=low
+
+  * ported first DHCP tests from ucs-3.0 branch (Bug #27664)
+  * improved logging in UDM container tests (Bug #27664)
+  * added possibility to explicitly remove/append values to UDM attributes
+    via python test API (Bug #30560)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 21 May 2013 16:56:20 +0200
+
 ucs-test (3.0.51-1) unstable; urgency=low
 
   * in UCSTestUDM.cleanup(), do not log every object removal (Bug #30560)

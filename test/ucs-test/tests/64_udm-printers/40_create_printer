@@ -33,23 +33,23 @@ if __name__ == '__main__':
 		printer = udm.create_object('shares/printer', position = printerContainer, **printerProperties)
 		
 		ldapFilter = '(&(cn=%s)(objectClass=univentionPrinter))' % printerProperties['name']
-		for dn, attr in ldap.search(base = printerContainer, filter = ldapFilter):
+		for dn, attr in ldap.search(base = printerContainer, filter = ldapFilter, attr = ldapMapping.values()):
 			if dn == printer:
 				for attribute, expectedValue in printerProperties.items():
 					if attribute == 'uri':
 						expectedValue = expectedValue.replace(' ', '')
-					ldapValue = attr.get(ldapMapping[attribute], [None])[0]
-					if expectedValue != ldapValue:
-						print 'Test FAILED. Expected "%s" of created printer to be "%s", but "%s" was found.' % (ldapMapping[attribute], expectedValue, ldapValue)
+					ldapValue = attr.get(ldapMapping[attribute], [])
+					if [expectedValue] != ldapValue:
+						print 'Test FAILED. Expected "%s" of created printer to be %r, but %r was found instead.' % (ldapMapping[attribute], [expectedValue], ldapValue)
 						sys.exit(1)
 				break
 		else:
-			print 'Test FAILED. Could not find DN ("%s") of created printer in LDAP.' % printer
+			print 'Test FAILED. Could not find DN (%s) of created printer in LDAP.' % printer
 			sys.exit(1)
 
 		printerSambaName = uts.random_name()
 		udm.modify_object('shares/printer', dn = printer, sambaName = printerSambaName)
-		setPrinterSambaName = ldap.search(base = printerContainer, filter = ldapFilter, attr = ['univentionPrinterSambaName'])[0][1]['univentionPrinterSambaName'][0]
-		if printerSambaName != setPrinterSambaName:
-			print 'Test FAILED. "univentionPrinterSambaName" of the created printer was expected to be set to "%s" after modification, but "%s" was found.' % (printerSambaName, setPrinterSambaName)
+		setPrinterSambaName = ldap.search(base = printerContainer, filter = ldapFilter, attr = ['univentionPrinterSambaName'])[0][1]['univentionPrinterSambaName']
+		if [printerSambaName] != setPrinterSambaName:
+			print 'Test FAILED. "univentionPrinterSambaName" of the created printer was expected to be set to %r after modification, but %r was found instead.' % ([printerSambaName], setPrinterSambaName)
 			sys.exit(1)

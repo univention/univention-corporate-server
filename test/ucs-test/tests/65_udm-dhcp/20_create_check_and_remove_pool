@@ -1,0 +1,57 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create DHCP pool, check it's attributes and remove it again
+## tags: [udm-dhcp]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcpSubnet = udm.create_object('dhcp/subnet', subnet = '10.20.30.0', subnetmask = '24', superordinate = dhcpService)
+
+		dhcpPoolProperties = {
+			'name': uts.random_string(),
+			'range': '10.20.30.40 10.20.30.50',
+			'failover_peer': uts.random_string(),
+			'known_clients': 'deny',
+			'unknown_clients': 'allow',
+			'dynamic_bootp_clients': 'deny',
+			'all_clients': 'allow'
+		}
+		dhcpPool = udm.create_object('dhcp/pool', superordinate = dhcpSubnet, **dhcpPoolProperties)
+
+		ldap = uldap.getAdminConnection()
+		ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpPool))' % dhcpPoolProperties['name']
+		expectedLdap = {
+			'dhcpRange': [dhcpPoolProperties['range']],
+			'univentionDhcpFailoverPeer': [dhcpPoolProperties['failover_peer']],
+			'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients']
+		}
+		result = ldap.search(base = dhcpSubnet, filter = ldapFilter)
+		for dn, attr in result:
+			if dn == dhcpPool:
+				for attribute, values in expectedLdap.items():
+					for value in values:
+						if not value in attr.get(attribute, []):
+							print 'Test FAILED. Expected "%s" of the created DHCP pool to contain "%s", but could not find the value in there: %r.' % (attribute, value, attr.get(attribute, []))
+							sys.exit(1)
+				break
+		else:
+			print 'Test FAILED. Could not find created DHCP pool "%s" in LDAP.' % dhcpPool
+			sys.exit(1)
+
+		udm.remove_object('dhcp/pool', dn = dhcpPool, superordinate = dhcpSubnet)
+
+		if dhcpPool in ldap.searchDn(base = dhcpSubnet, filter = ldapFilter):
+			print 'Test FAILED. Could still find DHCP pool "%s" in LDAP after removing it.' % dhcpPool
+			sys.exit(1)

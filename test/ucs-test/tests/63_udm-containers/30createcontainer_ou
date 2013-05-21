@@ -20,8 +20,8 @@ if __name__ == '__main__':
 		ou = udm.create_object('container/ou', name = ouName)
 		
 		ldap = uldap.getAdminConnection()
-		if not ldap.searchDn(filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName):
-			print 'Test FAILED. Could not find created OU "%s" in LDAP.' % ouName
+		if not ou in ldap.searchDn(filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName):
+			print 'Test FAILED. Could not find created OU "%s" in LDAP.' % ou
 			sys.exit(1)
 
 
