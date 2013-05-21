@@ -1,3 +1,10 @@
+univention-printserver (6.0.22-1) unstable; urgency=low
+
+  * changed cupsd.conf file. SystemGroups are now separated by a blank character 
+    and not by a comma (Bug #28884)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 21 May 2013 13:27:11 +0200
+
 univention-printserver (6.0.21-1) unstable; urgency=low
 
   * added -h localhost to lpadmin call in univention-lpadmin (Bug #28476) 
