@@ -319,11 +319,7 @@ define([
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
 					var txt = "<h1>" + _("Details for Application '%(name)s'", app) + "</h1>";
-					if (this._compareVersion(tools.status('version'), '2.0.244-9.632.201304151736') >= 0) {
-						txt += "<table>\n";
-					} else {
-						txt += lang.replace("<table style=\"width: {0}px;\">\n", [ width ]);
-					}
+					txt += "<table>\n";
 					var fields = this._detail_field_order();
 					array.forEach(fields, lang.hitch(this, function(key) {
 						var label = this._detail_field_label(key);
@@ -1062,38 +1058,6 @@ define([
 			this.updateApplications();
 
 			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.'));
-		},
-
-		_compareVersion: function(base, compare) {
-			// Remove this function? Check bug #28044 for more details!
-
-			// Convert string to a array of numbers
-			var _stringToArray = function(obj) {
-				return array.map(obj.split(/\D/), function(item) {
-					return parseInt(item, 10);
-				});
-			};
-
-			var baseParts = _stringToArray(base);
-			var compareParts = _stringToArray(compare);
-			var len = Math.min(baseParts.length, compareParts.length);
-
-			for (var i = 0; i < len; ++i) {
-				if (baseParts[i] > compareParts[i]) {
-					return 1;
-				} else if (baseParts[i] < compareParts[i]) {
-					return -1;
-				}
-			}
-			if (baseParts.length > compareParts.length) {
-				return 1;
-			}
-			if (compareParts.length > baseParts.length) {
-				return -1;
-			}
-
-			return 0;
 		}
-
 	});
 });

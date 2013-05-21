@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (2.0.152-1) unstable; urgency=low
+
+  * Bug #30796: Remove backward compatibility for older versions of the UMC
+    frontend (< 2.0.254-1) because the required version will be shipped with
+    UCS 3.1-2
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 21 May 2013 15:41:08 +0200
+
 univention-management-console-module-appcenter (2.0.151-1) unstable; urgency=low
 
   * Bug #31382: If another app is being installed show an error message to the
