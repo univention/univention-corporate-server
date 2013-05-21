@@ -69,8 +69,10 @@ It is not necessary to write an installation profile from scratch
 every time: The settings performed in the Univention Installer in an
 interactive installation are saved in
 the <filename>/etc/univention/installation_profile</filename> file (with the
-exception of the root password). This file can be used as a template
-for an installation profile.
+exception of the root password). This file can be used as a template for an installation profile.
+Note that the partitioning information from that file cannot be reused, is needs to be specified as
+documented in  <xref linkend="extinstallation:profilevars:part"/>.
+
 </para>
 </section>
 
@@ -603,7 +605,8 @@ Example: proxy_http=http://proxy.company.example:8080
 </table>
 </section>
 
-<section><title>Profile variables - software selection</title>
+<section id="extinstallation:profilevars:part">
+  <title>Profile variables - software selection</title>
 <para>
 The following profile variables refer to software packages which are
 to be installed on the computer.
@@ -650,6 +653,7 @@ manual <citation>ucs-handbuch</citation>.
 
 
 <section><title>Profile variables - Partitioning</title>
+
 <para>
 The configuration of the partition settings can be performed
 completely profiled-baseds. Existing partitions can be deleted or
