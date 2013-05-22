@@ -260,6 +260,7 @@ layout = [
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('gidNumber', 'gidNumber', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('sambaGroupType', 'sambaGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
@@ -372,8 +373,6 @@ class object(univention.admin.handlers.simpleLdap):
 				self.options.append( 'samba' )
 		else:
 			self._define_options( options )
-
-		self.info['gidNumber'] = self.oldattr.get('gidNumber', [''])[0]
 
 		if 'samba' in self.options:
 			sid = self.oldattr.get('sambaSID', [''])[0]

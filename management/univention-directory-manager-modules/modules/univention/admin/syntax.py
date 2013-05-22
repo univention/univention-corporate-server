@@ -1619,6 +1619,7 @@ class UserID( UDM_Objects ):
 	label = '%(username)s'
 	regex = re.compile( '^[0-9]+$' )
 	static_values = ( ( '0', 'root' ), )
+	use_objects = False
 
 class GroupID( UDM_Objects ):
 	udm_modules = ( 'groups/group', )
@@ -1626,6 +1627,7 @@ class GroupID( UDM_Objects ):
 	label = '%(name)s'
 	regex = re.compile( '^[0-9]+$' )
 	static_values = ( ( '0', 'root' ), )
+	use_objects = False
 
 class IComputer_FQDN( UDM_Objects ):
 	udm_modules = ()
@@ -1643,6 +1645,9 @@ class Windows_Server( IComputer_FQDN ):
 
 class UCS_Server( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+	key = '%(name)s.%(domain)s' # ldap optimized '%(fqdn)s'
+	label = '%(name)s.%(domain)s'
+	use_objects = False
 
 class ServicePrint_FQDN( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
