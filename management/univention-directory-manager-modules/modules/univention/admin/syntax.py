@@ -1645,9 +1645,6 @@ class Windows_Server( IComputer_FQDN ):
 
 class UCS_Server( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
-	key = '%(name)s.%(domain)s' # ldap optimized '%(fqdn)s'
-	label = '%(name)s.%(domain)s'
-	use_objects = False
 
 class ServicePrint_FQDN( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
