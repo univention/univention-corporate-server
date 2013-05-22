@@ -1102,12 +1102,6 @@ Entries: 4
 Used average: 4.000000
 </programlisting>
 
-	<figure>
-	  <title>Managing quota in the UMC</title>
-	  <graphic scalefit="1" width="50%" fileref="illustrations/quota-overview-en.png"/>
-	</figure>
-
-
 	<para>
 	  Logged in users can use the <command>quota -v</command> command to view the applicable quota
 	  limits and the current utilisation.

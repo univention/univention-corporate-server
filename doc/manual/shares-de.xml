@@ -1072,7 +1072,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 
 	<para>
 	  Die Quota-Einstellungen können auch über eine Freigaben-Richtlinie von Typ <guimenu>Benutzer-Quota</guimenu> festgelegt werden. Die
-	  Einstellungen gelten für alle Benutzer eine Freigabe; es ist nicht möglich an einer Richtlinie
+	  Einstellungen gelten für alle Benutzer einer Freigabe; es ist nicht möglich an einer Richtlinie
 	  für verschiedene Benutzer unterschiedliche Quota-Limitierungen festzulegen.
 	</para>
 
@@ -1083,7 +1083,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 
 	<note>
 	  <para>
-		Dateisystem-Quota können immer nur auf vollständige Partitionen angewendet werden
+		Dateisystem-Quota können immer nur auf vollständige Partitionen angewendet werden.
 		Auch wenn die Richtlinien für Freigaben definiert werden, werden sie auf vollständige
 		Partitionen angewendet. Wenn also beispielsweise auf einem Server drei Freigaben
 		bereitgestellt werden, die alle auf der separaten <filename>/var</filename>-Partition abgelegt werden und werden
