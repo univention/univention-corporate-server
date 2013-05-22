@@ -1,4 +1,4 @@
-univention-management-console (5.0.62-2) unstable; urgency=low
+univention-management-console (5.0.62-3) unstable; urgency=low
 
   * Do not log UNIVENTION_DEBUG_{BEGIN, END} information (Bug #29603)
   * Fix a crash when setting an invalid locale (Bug #28657)
