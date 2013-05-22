@@ -1,6 +1,6 @@
 product: ucs
 release: "3.1"
-scope: ucs_3.1-0-errata3.1-1
+scope: ucs_3.1-0-errata3.1-0
 src: univention-join
 fix: 5.0.20-1.442.201304160803
 note:
