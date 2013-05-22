@@ -1071,6 +1071,9 @@
 		d.h. alle Funktionen der Webschnittstelle stehen auch im
 		Kommandozeilen-Interface zur Verfügung.
 	</para>
+
+	<section id="central:udm:parms">
+	  <title>Aufrufparameter der Kommandozeilenschnittstelle</title>
 	<para>
 		Eine komplette Liste der verfügbaren Module wird angezeigt, wenn
 		<command>udm</command> mit dem Parameter <command>modules</command> aufgerufen wird:
@@ -1258,8 +1261,17 @@ univention-directory-manager groups/group modify \
 			</programlisting>
 		</listitem>
 	</itemizedlist>
-	<!-- Beispielaufrufe für Univention Directory Manager finden sich im Univention -->
-	<!-- Wiki unter WIKIREF-24587 -->
+	</section>
+
+	<section id="central:udm:example">
+	  <title>Beispielaufrufe für die Kommandozeilenschnittstelle</title>
+	  <para>
+
+
+	  </para>
+	</section>
+
+
 </section>
 <section id="central:reports">
 <title>Auswertung von Daten aus dem LDAP-Verzeichnis mit Univention Directory Reports</title>

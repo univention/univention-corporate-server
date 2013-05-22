@@ -1021,6 +1021,10 @@
 		all functions of the web interface are also available in the command
 		line interface.
 	</para>
+
+
+	<section id="central:udm:parms">
+	  <title>Parameters of the command line interface</title>
 	<para>
 		A complete list of available modules is displayed if the
 		<command>udm</command> is run with the <command>modules</command> parameter:
@@ -1204,10 +1208,19 @@ univention-directory-manager groups/group modify \
     --append users="uid=smith,cn=users,dc=company,dc=example" \
     --remove users="uid=miller,cn=users,dc=company,dc=example"
 			</programlisting>
-			<!-- Example commands for Univention Directory Manager can be found in the -->
-			<!-- Univention Wiki under WIKIREF-24587. -->
 		</listitem>
 	</itemizedlist>
+	</section>
+
+	<section id="central:udm:example">
+	  <title>Example invocations of the command line interface</title>
+	  <para>
+
+
+	  </para>
+	</section>
+
+
 </section>
 <section id="central:reports">
 <title>Evaluation of data from the LDAP directory with Univention Directory Reports</title>
