@@ -4,18 +4,14 @@ scope: ucs_3.1-0-errata3.1-1
 src: univention-pam
 fix: 6.0.13-4.210.201304251654
 note: |
+version: [1]
+desc: |
   libnss-ldap uses in some environments the
   DNS SRV LDAP record to look up the LDAP
   server instead of using the configured LDAP
   sever from /etc/libnss-ldap.conf.
-  This erratum added a configuration switch to
-  libnss-ldap.conf to disable the DNS look up.
-  The default is unchanged and the DNS look up
-  can be disabled by setting nssldap/nss_srv
-  to false.
-version: [1]
-desc: |
-  Added ucrv nssldap/nss_srv specify whether or 
-  not libnss-ldap is allowed to perform
-  dns srv record lookups (default: true) 
+  This erratum added the new UCR variable
+  nssldap/nss_srv to specify whether or not
+  libnss-ldap is allowed to perform dns srv
+  record lookups (default: true)
 bug: [30779]
