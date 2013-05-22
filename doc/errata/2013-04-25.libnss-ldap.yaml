@@ -6,11 +6,11 @@ fix: 264-2.2.49.201305160947
 note: |
 version: [1]
 desc: |
-  libnss-ldap uses in some environments the DNS SRV LDAP record to look up the
-  LDAP server instead of using the configured LDAP sever from
+  In some environments libnss-ldap uses the DNS SRV LDAP record to look up the
+  LDAP server instead of using the configured LDAP server from
   /etc/libnss-ldap.conf. This erratum added a configuration switch to
   libnss-ldap.conf to disable the DNS look up. The default is unchanged and the
-  DNS look up can be disabled by setting nssldap/nss_srv to false. This update
-  also fixes an issue to prevent override of libnss-ldap.secret in postinst if
+  DNS lookup can be disabled by setting nssldap/nss_srv to false. This update
+  also fixes an issue to prevent the override of libnss-ldap.secret in postinst if
   it is a link.
 bug: [30779]
