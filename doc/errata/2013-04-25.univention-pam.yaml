@@ -6,8 +6,8 @@ fix: 6.0.13-4.210.201304251654
 note: |
 version: [1]
 desc: |
-  libnss-ldap uses in some environments the DNS SRV LDAP record to look up the
-  LDAP server instead of using the configured LDAP sever from
+  In some environments libnss-ldap uses the DNS SRV LDAP record to look up the
+  LDAP server instead of using the configured LDAP server from
   /etc/libnss-ldap.conf. This erratum added the new UCR variable nssldap/nss_srv
   to specify whether or not libnss-ldap is allowed to perform dns srv record
   lookups (default: true)
