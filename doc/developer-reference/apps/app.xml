@@ -1,0 +1,275 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
+	%entities;
+]>
+<chapter id="chap:app" status="draft">
+	<title>App center
+		<indexterm><primary>App center</primary></indexterm>
+	</title>
+	<remark>PMH: Bug #31226</remark>
+	<important>
+		<para>
+			This chapter is a draft and work in progress!  Feedback is very much
+			appreciated.
+		</para>
+	</important>
+	<para>
+		The Univention App Center provides a platform for software vendors and an
+		easy-to-use entry point for &ucsUCS; to extend their environment with
+		business software.
+	</para>
+
+	<section id="app:package">
+		<title>Packaging for the App Center</title>
+		<para>
+			The App Center reuses the package system from Debian (and &ucsUCS;
+			itself). In fact installing an application from withing the App Center is
+			technically (a bit more than) adding a new repository to the system (one
+			that lies on the App Center Server) and <command>apt-get
+				install</command>ing the requested package. This means that 3rd party
+			vendors need to package their application as a <literal>.deb</literal>
+			file and send that to Univention.
+		</para>
+		<para>
+			It is recommended (and probably necessary) to provide at least one
+			additional package that arranges for deeper integration into &ucsUCS;.
+			This package could be named
+			<package>univention-<replaceable>appname</replaceable></package> and have
+			a Dependency on the core application (on <literal>dpkg</literal> level).
+			Depending on whether the application wants to extend the LDAP another
+			(independent) package needs to be provided, say,
+			<package>univention-<replaceable>appname</replaceable></package>. It does
+			not need to be installed on each system the core application is installed
+			but needs to stay installed even when the core application is removed.
+			Thus it should be as independent as possible from the the core
+			application (and
+			<package>univention-<replaceable>appname</replaceable></package>).
+		</para>
+		<para>
+			See <xref linkend="chap:debian"/> for further details on how to build
+			Debian packages.
+		</para>
+	</section>
+	<section id="app:files">
+		<title>Additional files to be shipped with the application</title>
+		<para>
+			The App Center needs some meta information about the application to
+			handle the installation and to present information to the user. The
+			application needs a so-called <literal>ini-file</literal> for that.
+		</para>
+		<para>
+			A minimal example along with some comments on the variables is attached:
+		</para>
+		<programlisting language="ini"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="application.ini" parse="text"/></programlisting>
+		<para>
+			This file needs to be shipped with the application and should be updated
+			with each new version of the application at least changing
+			<literal>Version</literal>.
+		</para>
+		<para>
+			A few variables need further explanation:
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>ID</term>
+				<listitem>
+					<simpara>
+						Needs to stay the same all the time. It is used to connect
+						different versions.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Version</term>
+				<listitem>
+					<simpara>
+						Has to rise every time. Needs to be comparable, i.e. versions
+						consisting only of a codename are not useful. In the App Center,
+						only the newest version (or the currently installed one) is shown.
+						It is possible to install one specific version but this needs
+						knowledge of internal IDs (beyond control even for the application
+						vendor).
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>MinPhysicalRAM</term>
+				<listitem>
+					<simpara>
+						The minimal amount of free memory in MB when trying to install the
+						application. The application should work fluently above that limit
+						at least for smaller environments. If this limit is set very high
+						many testers will be unable to install this application as there is
+						no easy way to skip this test.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>ConflictedSystemPackages</term>
+				<listitem>
+					<simpara>
+						Package names that may not be installed along with the application.
+						It is highly recommended that this list is reflected on
+						<literal>dpkg</literal> level in some other package of the
+						application. This list is just to show the user conflicts
+						<emphasis>before</emphasis> the application is to be installed.
+						Conflicts on package level are resolved automatically and the user
+						has to confirm if some packages will be uninstalled. Same for
+						<literal>ConflictedApps</literal>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>DefaultPackages</term>
+				<listitem>
+					<simpara>
+						A list of packages that will be installed. It is recommended to
+						keep this list as small as possible and install other packages as
+						Dependencies as this is less error prone. Preferably only a package
+						like
+						<package>univention-<replaceable>appname</replaceable></package> is
+						given here.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>DefaultPackagesMaster</term>
+				<listitem>
+					<simpara>
+						Installing an application may require an extension of the LDAP
+						schema. This is done by providing a separate package for this
+						schema file and install it on the &ucsMaster; (and all &ucsBackup;
+						servers). The App Center will install these packages automatically
+						throughout the domain — in opposite to the
+						<literal>DefaultPackages</literal> which are only installed
+						locally. Another difference is that these packages will not be
+						uninstalled even when the whole application is removed because a
+						schema that was used before it is removed again will break the
+						whole LDAP server.
+					</simpara>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			There are more files that can be shipped with the Application, each of
+			them optionally:
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Screenshot</term>
+				<listitem>
+					<simpara>
+						A screenshot showing the application in action. JPG or (preferably)
+						PNG.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>LICENSE_AGREEMENT</term>
+				<listitem>
+					<simpara>
+						A file the user has to accept before the installation starts.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_UPDATE</term>
+				<listitem>
+					<simpara>
+						A file that is presented to the user before upgrading, listing
+						changes. Note that a user may only upgrade to the newest version
+						and does it in one step. Only the latest
+						<literal>README_UPDATE</literal> is shown.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_EN</term>
+				<listitem>
+					<simpara>
+						A README file that the user may see in a dedicated Univention
+						Management Console Module for the installed application. Should
+						contain something like first steps with the installed application
+						and explain what can be done with it and how. HTML is allowed.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_DE</term>
+				<listitem>
+					<simpara>
+						Same as <literal>README_EN</literal> but in German.
+					</simpara>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</section>
+	<section id="app:integration">
+		<title>Integrating the Application in UCS</title>
+		<para>
+			Reuse users, groups, computers already administered in domain.
+			See <xref linkend="udm:ldap:common-attributes"/>.
+		</para>
+		<para>
+			An Application may need more attributes than there are present. For
+			example something like <emphasis>This user is allowed to use the
+				app</emphasis>. For this an app will have to extend the LDAP schema
+			(this should be done in the <literal>DefaultPackagesMaster</literal> of
+			the Application). Furthermore it needs to add Extended Attributes (see
+			<xref linkend="udm:ea"/>) in a Join Script (see <xref
+				linkend="chap:join"/>) in a package from
+			<literal>DefaultPackages</literal>.
+		</para>
+		<para>
+			If the application wants to sync certain attributes (for example
+			passwords) there are listener modules. See <xref
+				linkend="chap:listener"/>.
+		</para>
+	</section>
+
+	<section id="app:bestpractices">
+		<title>Best practices</title>
+		<para>
+			TBD. Minimal example app. Examples. Important: ucs_registerSchema, #DEBHELPER#.
+		</para>
+	</section>
+
+	<section id="app:checklist">
+		<title>Checklist</title>
+		<para>
+			Any Application needs to pass the following tests:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<simpara>
+					App can be installed. Does not break UCS functionality
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					App can be removed. Does not break UCS functionality
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					App cleans up every change it made. This holds especially for extended attributes. See <xref linkend="join:unjoin"/>
+				</simpara>
+			</listitem>
+			<listitem>
+				<simpara>
+					Can be upgraded.
+				</simpara>
+			</listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="app:testcenter">
+		<title>Setup test app center</title>
+		<para>
+			TBD
+		</para>
+	</section>
+
+</chapter>
+<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
