@@ -1205,6 +1205,9 @@ def unmapHomePostalAddress(old):
 	return new
 
 mapping=univention.admin.mapping.mapping()
+mapping.register('username', 'uid', None, univention.admin.mapping.ListToString)
+mapping.register('uidNumber', 'uidNumber', None, univention.admin.mapping.ListToString)
+mapping.register('gidNumber', 'gidNumber', None, univention.admin.mapping.ListToString)
 mapping.register('title', 'title', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('organisation', 'o', None, univention.admin.mapping.ListToString)
@@ -1412,7 +1415,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					username_match=s.parse(uid)
 				except univention.admin.uexceptions.valueError,e: # uid contains already mixed case umlauts, so we switch
 					self.set_uid_umlauts()
-				self['username']=uid
 			# FIXME: we should NEVER catch all exceptions
 			except Exception, e:
 				# at least write some debuging output..
@@ -1499,9 +1501,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						self['primaryGroup']=None
 						self.save()
 						raise univention.admin.uexceptions.primaryGroup
-
-					self.info['uidNumber'] = self.oldattr.get('uidNumber', [''])[0]
-					self.info['gidNumber'] = self.oldattr.get('gidNumber', [''])[0]
 
 			if self['passwordexpiry']:
 				today=time.strftime('%Y-%m-%d').split('-')

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.143-16) unstable; urgency=low
+
+  * Bug #30991: Further syntax lookup optimizations
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 22 May 2013 12:42:14 +0200
+
 univention-directory-manager-modules (8.0.143-15) unstable; urgency=low
 
   * do not take temporary user objects into account (Bug #31167)
