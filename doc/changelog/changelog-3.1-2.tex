@@ -160,10 +160,11 @@ This issue has been fixed (\ucsBug{31170}).
   module and ,,Next IP'' in the network module have been removed from the advanced search as they
   are not searchable in the UMC (\ucsBug{28803}).
 \item A broken LDAP authentification in \ucsName{proof\_dns\_dhcp\_records} has been corrected (\ucsBug{30903}).
-\item The following syntax classes received aggressive lookup optimizations
+\item The following syntax classes received lookup optimizations
   which result in faster object opening especially in larger environments:
-  ,,UserDN'', ,,GroupDN'', ,,DNS\_ForwardZone'', ,,DNS\_ReverseZone'',
-  ,,WritableShare'' (\ucsBug{30991}).
+  ,,UserDN'', ,,UserID'', ,,GroupDN'', ,,GroupID'', ,,UCS\_Server'',
+  ,,DNS\_ForwardZone'', ,,DNS\_ReverseZone'', ,,WritableShare''
+  (\ucsBug{30991}).
 \item All syntax files and hooks files are re-evaluated every time a new
   session is created. This prevents errors caused by referenced classes unknown
   during \ucsName{univention-management-console-server} startup
