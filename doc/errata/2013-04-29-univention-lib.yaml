@@ -7,7 +7,7 @@ note:
 version: [1]
 desc: |
   This errata addresses several issues:
-  * Fixed resolving dependencies of packages: Errors from apt are handled
+  * Fixed resolving dependencies of packages: Errors from apt are now handled
     correctly.
   * Under certain circumstances packages installed directly by the App Center
     could be marked as automatically installed and thus be autoremoved. This
