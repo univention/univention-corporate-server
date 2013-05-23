@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/host)"
+. /usr/share/univention-samba4/lib/base.sh
+
+eval "$(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/host samba4/sysvol/sync/setfacl/AU)"
 
 SYSVOL_PATH='/var/lib/samba/sysvol'
 SYSVOL_SYNCDIR='/var/cache/univention-samba4/sysvol-sync'
@@ -42,7 +44,9 @@ fi
 chgrp 'DC Slave Hosts' "$SYSVOL_SYNC_TRIGGERDIR"
 chmod g+w "$SYSVOL_SYNC_TRIGGERDIR"
 
-setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
+if ! univention_samba4_is_ucr_false samba4/sysvol/sync/setfacl/AU; then
+	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
+fi
 
 ## merge updates pushed to us by other s4DCs
 for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -type f); do

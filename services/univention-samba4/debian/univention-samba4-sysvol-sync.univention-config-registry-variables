@@ -22,4 +22,8 @@ Description[en]=Additional parameters for sysvol cleanup cron job
 Type=str
 Categories=service-samba
 
-
+[samba4/sysvol/sync/setfacl/AU]
+Description[de]=Bei jeder Synchronisation die sysvol fACLs für Authenticated Users setzen
+Description[en]=Set sysvol fACLs for Authenticated Users during each synchronization
+Type=str
+Categories=service-samba
