@@ -1214,8 +1214,307 @@ univention-directory-manager groups/group modify \
 
 	<section id="central:udm:example">
 	  <title>Example invocations of the command line interface</title>
-	  <para>
 
+	  <!-- <para> -->
+	  <!-- 	Die folgenden Beispielaufrufe des Kommandozeilen-Frontend &ucsUDM; können als Vorlagen für eigene -->
+	  <!-- 	Skripte verwendet werden: -->
+	  <!-- </para> -->
+
+	  <section id="central:udm:example:users">
+		<title>Benutzer</title>
+		<para>
+		  <!-- Anlegen eines Benutzers im Standard-Benutzer-Container: -->
+
+<programlisting>
+univention-directory-manager users/user create \
+--position="cn=users,dc=example,dc=com" \
+--set username="user01" \
+--set firstname="Random" \
+--set lastname="User" \
+--set organisation="Example company LLC" \
+--set mailPrimaryAddress="mail@example.com" \
+--set password="secretpassword" \
+</programlisting>
+		</para>
+
+		<para>
+		  <!-- Nachträgliches Hinzufügen der postalischen Adresse zum gerade angelegten Benutzer: -->
+
+<programlisting>
+univention-directory-manager users/user modify \
+--dn="uid=user01,cn=users,dc=example,dc=com" \
+--set street="Exemplary Road 42" \
+--set postcode="28239" \
+--set city="Bremen"
+</programlisting>
+		</para>
+
+
+		<para>
+		  <!-- Mit diesem Befehl werden alle Benutzer angezeigt, deren Benutzername mit <emphasis>user</emphasis> -->
+		  <!-- beginnt: -->
+
+<programlisting>
+univention-directory-manager users/user list \
+--filter uid=user*
+</programlisting>
+		</para>
+
+		<para>
+		  <!-- Die Suche nach Objekten mit filter kann auch auf eine Position im LDAP-Verzeichnis -->
+		  <!-- eingeschränkt werden, in diesem Fall auf alle Benutzer im Container -->
+		  <!-- <emphasis>cn=bremen,cn=users,dc=example,dc=com</emphasis>: -->
+
+<programlisting>
+univention-directory-manager users/user list \
+--filter uid=user* \
+--position cn=bremen,cn=users,dc=example,dc=com
+</programlisting>
+		</para>
+
+		<para>
+		  <!-- Dieser Aufruf entfernt einen Benutzer <emphasis>user04</emphasis>: -->
+
+<programlisting>
+univention-directory-manager users/user remove \
+--dn="uid=user04,cn=users,dc=example,dc=com" 
+</programlisting>
+		</para>
+
+		<para>
+		  <!-- Eine Firma hat zwei Standorte mit eigens dafür angelegten Containern. Mit dem folgenden -->
+		  <!-- Befehl wird ein Benutzer aus dem Container für den Standort Hamburg in den Container für -->
+		  <!-- den Standort Bremen verschoeben: -->
+
+<programlisting>
+univention-directory-manager users/user move \
+--dn="uid=user03,cn=hamburg,cn=users,dc=example,dc=com" \
+--position="cn=bremen,cn=users,dc=example,dc=com"
+</programlisting>
+		</para>
+	  </section>
+
+	  <section id="central:udm:example:groups">
+		<title>Gruppen</title>
+		<para>
+		  <!-- Anlegen einer Gruppe <emphasis>Example Users</emphasis> und Hinzufügen des Benutzers -->
+		  <!-- <emphasis>user01</emphasis> in diese Gruppe: -->
+
+<programlisting>
+univention-directory-manager groups/group create \
+--position="cn=groups,dc=example,dc=com" \
+--set name="Example Users" \
+--set users="uid=user01,cn=users,dc=example,dc=com"
+</programlisting>
+		</para>
+
+		<para>
+		  <!-- Nachträgliches Hinzufügen des Benutzers <emphasis>user02</emphasis> zur gerade angelegten -->
+		  <!-- Gruppe: -->
+
+<programlisting>
+univention-directory-manager groups/group modify \
+--dn="cn=Example Users,cn=groups,dc=example,dc=com" \
+--append users="uid=user02,cn=users,dc=example,dc=com" \
+</programlisting>
+
+		</para>
+
+		<!-- <caution> -->
+		<!--   Ein <emphasis>set</emphasis> des Attributs users überschreibt im Gegensatz zu -->
+		<!--   <emphasis>append</emphasis> die Liste der Gruppenmitglieder. -->
+		<!-- </caution> -->
+
+
+		<para>
+		  <!-- Nachträgliches Entfernen des Benutzers <emphasis>user01</emphasis> aus der Gruppe: -->
+
+<programlisting>
+univention-directory-manager groups/group modify \
+--dn="cn=Example Users,cn=groups,dc=example,dc=com" \
+--remove users="uid=user01,cn=users,dc=example,dc=com"
+</programlisting>
+		</para>
+	  </section>
+
+	  <section id="central:udm:example:cn-policies">
+		<title>Container / Policies</title>
+		<para>
+		  <!-- Dieser Aufruf legt unterhalb des Standard-Containers <emphasis>cn=computers</emphasis> -->
+		  <!-- einen Container <emphasis>cn=Bremen</emphasis> für die Rechnerobjekte am Firmenstandort -->
+		  <!-- Bremen an. Durch die zusätzliche Option <emphasis>computerPath</emphasis> wird dieser -->
+		  <!-- Container auch direkt als Standardcontainer für Rechnerobjekte registriert (siehe <xref -->
+		  <!-- linkend="central:cn-and-ous"/>): -->
+
+<programlisting>
+univention-directory-manager container/cn create \
+ --position="cn=computers,dc=example,dc=com" \
+ --set name="bremen" \
+ --set computerPath=1 
+</programlisting>
+		</para>
+
+		<para>
+		  <!-- Dieser Befehl legt eine Mail-Quota-Richtlinie mit dem Namen "Default quota" an, in der ein -->
+		  <!-- 1 GB Quota definiert wird: -->
+
+<programlisting>
+univention-directory-manager policies/mailquota create \ 
+--position "cn=policies,dc=example,dc=com" \
+--set name="Default quota" \
+--set MailQuota=1024
+</programlisting>
+		</para>
+
+		<para>
+		  <!-- Diese Richtlinie wird nun an den Benutzer-Container <emphasis>cn=users</emphasis> gebunden: -->
+
+<programlisting>
+univention-directory-manager container/cn modify \
+--dn cn=users,dc=example,dc=com \
+--policy-reference "cn=Default quota,cn=policies,dc=example,dc=com"
+</programlisting>
+		</para>
+	  </section>
+
+	  <section id="central:udm:example:cn-computers">
+		<title>Computers</title>
+		<para>
+		  <!-- In folgendem Beispiel wird ein Windows-Client angelegt. Tritt dieser Client später der -->
+		  <!-- Samba-Domäne bei (siehe <xref linkend="windows-domaenenbeitritt"/>), wird das Rechnerkonto -->
+		  <!-- dann automatisch verwendet: -->
+
+<programlisting>
+univention-directory-manager computers/windows create \
+--position="cn=computers,dc=example,dc=com" \
+--set name=WinClient01 \
+--set mac=aa:bb:cc:aa:bb:cc \
+--set ip=192.168.0.10
+</programlisting>
+		</para>
+	  </section>
+
+	  <section id="central:udm:example:shares">
+		<title>Shares</title>
+		<para>
+		  <!-- Der folgende Befehl legt eine Freigabe <emphasis>Documentation</emphasis> auf dem Server -->
+		  <!-- <emphasis>fileserver.example.com</emphasis> an. Sofern -->
+		  <!-- <filename>/var/shares/documentation</filename> auf dem Server noch nicht existiert, wird -->
+		  <!-- es durch diesen Aufruf auch gleich angelegt. -->
+
+<programlisting>
+univention-directory-manager shares/share create \
+--position="cn=shares,dc=example,dc=com" \
+--set name="Documentation" \
+--set host="fileserver.example.com" \
+--set path="/var/shares/documentation" \
+</programlisting>
+		</para>
+	  </section>
+
+	  <section id="central:udm:example:printer">
+		<title>Printers</title>
+		<para>
+		  <!-- Anlegen einer Druckerfreigabe <emphasis>LaserPrinter01</emphasis> auf dem Druckserver -->
+		  <!-- <emphasis>printserver.example.com</emphasis>. Die Eigenschaften des Druckers sind in der -->
+		  <!-- PPD-Datei spezifiziert, deren Name relativ zum Verzeichnis -->
+		  <!-- <filename>/usr/share/ppd</filename> angegeben wird. Der angebundene Drucker ist -->
+		  <!-- netzwerkfähig und wird über das IPP-Protokoll angebunden. -->
+
+<programlisting>
+univention-directory-manager shares/printer create \
+--position="cn=printers,dc=example,dc=com" \
+--set name="LaserPrinter01"  \
+--set spoolHost="printserver.example.com" \
+--set uri="ipp:// 192.168.0.100" \
+--set model="foomatic-rip/HP-Color_LaserJet_9500-Postscript.ppd" \
+--set location="Head office" \
+--set producer="producer: cn=HP,cn=cups,cn=univention,dc=example,dc=com"
+</programlisting>
+		</para>
+
+		<!-- <note> -->
+		<!--   Im Parameter <emphasis>uri</emphasis> muss ein Leerzeichen zwischen dem Druckprotokoll -->
+		<!--   und dem URL-Zielpfad verwendet werden. Eine Auftstellung der Druckprotokolle findet sich -->
+		<!--   in  <xref linkend="print::shares"/> -->
+		<!-- </note> -->
+
+		<para>
+		  <!-- Drucker können zur einfacheren Verwaltung in einer Druckergruppe zusammengefasst -->
+		  <!-- werden. Weitere Informationen zu Druckergruppen finden sich in <xref -->
+		  <!-- linkend="druckergruppen"/>. -->
+
+<programlisting>
+univention-directory-manager shares/printergroup create \
+--set name=LaserPrinters \
+--set spoolHost="printserver.example.com"
+--append groupMember=LaserPrinter01
+--append groupMember=LaserPrinter02
+</programlisting>
+		</para>
+	  </section>
+
+	  <section id="central:udm:example:dnsdhcp">
+		<title>DNS/DHCP</title>
+		<para>
+		  <!-- Um eine IP-Vergabe über DHCP zu konfigurieren, muss ein DHCP-Rechner-Eintrag für die -->
+		  <!-- MAC-Adresse registriert werden. Weitere Informationen zu DHCP finden sich in <xref -->
+		  <!-- linkend="module:dhcp:dhcp"/>. -->
+
+<programlisting>
+univention-directory-manager dhcp/host create \
+--superordinate="cn=example.com,cn=dhcp,dc=example,dc=com" \
+--set host="Client222" \
+--set fixedaddress="192.168.0.110" \
+--set hwaddress="ethernet 00:11:22:33:44:55"
+</programlisting>
+		</para>
+	  </section>
+
+		<para>
+		  <!-- Soll ein Rechnername über DNS auflösbar sein, kann mit den folgenden Befehlen eine -->
+		  <!-- Vorwärts- (host record) und Reverse-Auflösung (ptr record) konfiguriert werden: -->
+
+<programlisting>
+univention-directory-manager dns/host_record create \
+--superordinate="zoneName=example.com,cn=dns,dc=example,dc=com" \
+--set name="Client222" \
+--set a="192.168.0.110"
+
+univention-directory-manager dns/ptr_record create \
+--superordinate="zoneName=0.168.192.in-addr.arpa,cn=dns,dc=example,dc=com" \
+--set address="110" \
+--set ptr_record="Client222.example.com."
+</programlisting>
+		</para>
+
+		<!-- Weitere Informationn zu DNS finden sich in <xref linkend="module:dhcp:dhcp"/>. -->
+	</section>
+
+
+	  <section id="central:udm:example:extendedattr">
+		<title>Extended attributes</title>
+		<para>
+		  <!-- Mit erweiterten Attributen lässt sich der Funktionsumfang der &ucsUMC; flexibel -->
+		  <!-- erweitern, siehe <xref linkend="central:extendedattrs"/>. Im folgenden Beispiel wird ein -->
+		  <!-- neues Attribut eingefügt, an dem pro Benutzer das KFZ-Kennzeichen des Dienstwagens -->
+		  <!-- gespeichert wird. Die Werte werden in einer extra für diesen Zweck vorgesehenen Objektklasse -->
+		  <!-- <emphasis>univentionFreeAttributes</emphasis> verwaltet: -->
+
+<programlisting>
+univention-directory-manager settings/extended_attribute create \
+--position="cn=custom attributes,cn=univention,dc=example,dc=com" \
+--set name="CarLicense" \
+--set module="users/user" \
+--set ldapMapping="univentionFreeAttribute01" \
+--set objectClass="univentionFreeAttributes" \
+--set longDescription="License plate number of the company car" \
+--set tabName="Company car" \
+--set multivalue=0 \
+--set syntax="string" \
+--set module=users/user \
+--set shortDescription="Car license"
+</programlisting>
 
 	  </para>
 	</section>
