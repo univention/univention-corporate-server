@@ -35,6 +35,7 @@ VERSION=3
 joinscript_init
 
 . /usr/share/univention-lib/all.sh
+. /usr/share/univention-samba4/lib/all.sh
 
 eval "$(univention-config-registry shell)"
 
@@ -190,6 +191,9 @@ if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
 fi
 
+## Do not synchronize Enterprise Domain Controllers. This is set with ? in postinst, but we need to make shure that it is really filtered out to not collide with the Samba4 foreignSecurityPrincipal
+univention_samba4_append_to_ucr connector/s4/mapping/group/ignorelist 'Enterprise Domain Controllers'
+
 if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide this service
 
 	LDB_URI="tdb:///var/lib/samba/private/sam.ldb"
@@ -244,6 +248,9 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 	fi
 
 	/etc/init.d/univention-s4-connector restart
+
+	## Note: This group is created only once (usually during initial join) by the host providing the S4 Connector service
+	create_Enterprise_Domain_Controllers "$@"
 
 	univention-config-registry set dns/backend=samba4
 	if [ -x /etc/init.d/bind9 ]; then
