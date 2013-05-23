@@ -1375,6 +1375,31 @@ univention-directory-manager container/cn modify \
 --policy-reference "cn=Default quota,cn=policies,dc=example,dc=com"
 </programlisting>
 		</para>
+
+		<para>
+		  <!-- Anlegen einer &ucsUCR;-Richtlinie, mit der die Vorhaltezeit der Logdateien auf ein Jahr -->
+		  <!-- eingestellt wird. Als Trennzeichen zwischen Name und Wert der Variable wird ein -->
+		  <!-- Leerzeichen verwendet: -->
+
+<programlisting>
+udm policies/registry create \
+--position "cn=config-registry,cn=policies,dc=example,dc=com" \
+--set name="default UCR settings" \
+--set registry="logrotate/rotate/count 52"
+</programlisting>
+		</para>
+
+		<para>
+		  <!-- Mit diesem Befehl wird an die angelegte Richtlinie ein weiterer Wert angehängt: -->
+
+<programlisting>
+udm policies/registry modify \
+--dn "cn=default UCR settings,cn=config-registry,cn=policies,dc=example,dc=com" \
+--append registry='"logrotate/compress" "no"'
+</programlisting>
+		</para>
+
+
 	  </section>
 
 	  <section id="central:udm:example:cn-computers">
