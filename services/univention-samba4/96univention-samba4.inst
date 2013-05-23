@@ -594,6 +594,14 @@ if [ "$samba4_role" = 'DC' ]; then
 	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+		## add server to Enterprise Domain Controllers group if it exists
+		if univention-ldapsearch -x sambaSID='S-1-5-9' cn | grep -q '^cn:'; then
+			# While Bug #28756 is not fixed, do not die
+			udm groups/group modify "$@" --ignore_exists \
+							--dn "cn=Enterprise Domain Controllers,cn=groups,$ldap_base" \
+							--append hosts="$ldap_hostdn" >/dev/null 2>&1
+		fi
+
 		## set the default sysvol and GPO NTACLs
 		samba-tool ntacl sysvolreset
 
