@@ -1,3 +1,11 @@
+univention-samba4 (2.0.48-1) unstable; urgency=low
+
+  * Support code to make sysvol readable for group
+    Enterprise Domain Controllers (Bug #31437)
+  * Version updated for ucs3.1-2
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 May 2013 22:13:24 +0200
+
 univention-samba4 (2.0.47-4) unstable; urgency=low
 
   * removed UCR variables samba/client_use_spnego and samba/time_server (Bug #26389)

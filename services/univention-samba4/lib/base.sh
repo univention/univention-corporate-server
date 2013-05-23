@@ -1,4 +1,4 @@
-# Univention Samba4 Shell Library
+# Univention Samba4 Shell Library (bash)
 #
 # Copyright 2012-2013 Univention GmbH
 #
@@ -58,3 +58,54 @@ extract_binddn_and_bindpwd_from_args() {
 	done
 }
 
+univention_samba4_append_to_ucr() {
+	key="${1?append_to_ucr needs two parameters, called without any}"
+	value="${2?append_to_ucr needs two parameters, called only with \""$@"\"}"
+	separator=','
+
+	python <<-%EOF
+	from univention.config_registry import ConfigRegistry
+	ucr = ConfigRegistry()
+	ucr.load()
+	valuelist = ucr.get('$key', '').split('$separator')
+	if not '$value' in valuelist:
+	    valuelist.append('$value')
+		ucr['$key'] = '$separator'.join(valuelist)
+	    ucr.save()
+	%EOF
+}
+
+create_Enterprise_Domain_Controllers() {
+	## Note: This is actually joinscript code, but needs to be put here, to be called also from
+	##       univention-s4-connector.postinst because the joinscript version could not be increased
+	##       for the errata update.
+	## Note: S4 Connector currently does not synchronize it to the Samba4 foreignSecurityPrincipal
+	##       having the same builtin SID. Additionally it should be put to the group/ignorelist,
+	##       as it would cause rejects.
+	##
+	## attempt to create group with correct builtin SID
+	if /usr/share/univention-samba4/scripts/create_group_Enterprise_Domain_Controllers.py "$@"; then
+
+		## update local group cache
+		if [ -x /usr/lib/univention-pam/ldap-group-to-file.py ]; then
+			/usr/lib/univention-pam/ldap-group-to-file.py --check_member
+		fi
+
+		## wait for samba4-idmap listener to update idmap.ldb
+		gidnumber=$(univention-ldapsearch -xLLL sambaSid="$groupsid" gidNumber | sed -n 's/gidNumber: //p')
+		xidnumber=''
+		echo -n "Waiting for samba4-idmap listener to update idmap.ldb"
+		while [ "$xidnumber" != "$gidnumber" ]; do
+			sleep 1
+			xidnumber=$(ldbsearch -H /var/lib/samba/private/idmap.ldb objectSid=S-1-5-9 xidNumber | sed -n 's/xidNumber: //p')
+			echo -n '.'
+		done
+		echo '.'
+
+		## Next we need to fix the GID of the group in the fACLs of the GPO files in the sysvol
+		if [ "$JS_PACKAGE" != "univention-s4-connector" ]; then	## not in 97univention-s4-connector.inst
+			## During initial join this is done by running "samba-tool ntacl sysvolreset" in 98univention-samba4-dns.inst
+			samba-tool ntacl sysvolreset
+		fi
+	fi
+}
