@@ -1,3 +1,10 @@
+univention-samba4 (2.0.48-2) unstable; urgency=low
+
+  * Add new joined Samba4 DCs to group Enterprise Domain Controllers
+    (Bug #31437)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 May 2013 22:25:41 +0200
+
 univention-samba4 (2.0.48-1) unstable; urgency=low
 
   * Support code to make sysvol readable for group

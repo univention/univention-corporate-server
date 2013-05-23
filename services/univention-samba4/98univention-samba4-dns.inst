@@ -65,6 +65,7 @@ if [ "$samba4_role" != "RODC" ]; then
 fi
 
 # Reset NTACLs after the connector has synced the accounts
+
 if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 	## set the default sysvol and GPO NTACLs
 	samba-tool ntacl sysvolreset
