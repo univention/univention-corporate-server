@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY introduction SYSTEM "introduction-en.xml">
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+  <!ENTITY installation SYSTEM "installation-en.xml">
+  <!ENTITY domain-ldap SYSTEM "domain-ldap-en.xml">
+  <!ENTITY central-management-umc SYSTEM "central-management-umc-en.xml">
+  <!ENTITY user-management SYSTEM "user-management-en.xml">
+  <!ENTITY groups SYSTEM "groups-en.xml">
+  <!ENTITY computers SYSTEM "computers-en.xml">
+  <!ENTITY windows SYSTEM "windows-en.xml">
+  <!ENTITY ip-config SYSTEM "ip-config-en.xml">
+  <!ENTITY shares SYSTEM "shares-en.xml">
+  <!ENTITY print-services SYSTEM "print-services-en.xml">
+  <!ENTITY nagios SYSTEM "nagios-en.xml">
+  <!ENTITY uvmm SYSTEM "uvmm-en.xml">
+  <!ENTITY backup SYSTEM "backup-en.xml">
+  <!ENTITY mail SYSTEM "mail-en.xml">
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+
+  %entities;
+]>
+<book lang="en" id="ucs-3.1-2">
+  <bookinfo>
+    <title>
+      Univention Corporate Server
+    </title>
+    <subtitle>
+      Manual for users and administrators
+    </subtitle>
+    <legalnotice>
+      <literallayout>
+Version 3.1-2
+Date: May 23, 2013
+      </literallayout>
+
+      <literallayout>
+Alle Rechte vorbehalten./ All rights reserved.
+(c) 2002-2013
+Univention GmbH
+Mary-Somerville-Straße 1
+28359 Bremen
+Deutschland
+feedback@univention.de
+      </literallayout>
+
+      <para>
+	Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer jeweiligen eingetragenen Rechtsinhaber.
+	Linux ist ein eingetragenes Warenzeichen von Linus Torvalds.
+      </para>
+
+      <para>
+	The mentioned brand names and registered trademarks are owned by the respective legal owners in each case.
+	Linux is a registered trademark of Linus Torvalds.
+      </para>
+    </legalnotice>
+  </bookinfo>
+
+  &introduction;
+  &installation;
+  &domain-ldap;
+  &central-management-umc;
+  &user-management;
+  &groups;
+  &computers;
+  &windows;
+  &ip-config;
+  &shares;
+  &print-services;
+  &mail;
+  &nagios;
+  &uvmm;
+  &backup;
+  &bibliography;
+
+  <?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>

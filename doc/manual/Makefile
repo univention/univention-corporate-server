@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
-MAIN_de := handbuch-3.1-1 handbuch-3.1
-MAIN_en := manual-3.1-1 manual-3.1
+MAIN_de := handbuch-3.1-2 handbuch-3.1
+MAIN_en := manual-3.1-2 manual-3.1
 MAIN := $(MAIN_de) $(MAIN_en)
 
 STYLESHEETS_DIR := /usr/share/xml/docbook/stylesheet
