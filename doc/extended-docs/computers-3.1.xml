@@ -7,15 +7,15 @@
 
   %entities;
 ]>
-<book lang="en" id="computers-3.1">
+<book lang="en" id="computers-3.1-1">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended computer management documentation</subtitle>
 
         <revhistory>
             <revision>
-                <revnumber>3.1</revnumber>
-                <date>21 Dec 2012</date>
+                <revnumber>3.1-1</revnumber>
+                <date>23 May 2013</date>
             </revision>
         </revhistory>
     </bookinfo>
@@ -468,6 +468,94 @@ udm uvmm/profile list --filter interface=eth0 |
             </para>
         </section>
     </chapter>
+
+    <chapter>
+        <title>Integration of Ubuntu clients into a UCS domain</title>
+        <para>
+		  Univention Corporate Server allows the integration of Ubuntu clients. Initially a
+		  standard Ubuntu installation needs to be performed. The following section describe the
+		  configuration changes, which need to be made to integrate the Ubuntu client into the UCS
+		  domain. After successful integration users can authenticate on the Ubuntu clients with
+		  their standard UCS domain password and user name.
+		</para>
+
+        <para>
+		  This configuration has been tested with Ubuntu 12.04 LTS and 12.10 as well as Kubuntu
+		  12.04 LTS and 12.10.
+		</para>
+
+        <section>
+            <title>Integration into the LDAP directory and the SSL certificate authority</title>
+            <para>
+			  After Ubuntu has been installed, some of it's configuration files need to be
+			  modified. To simplify the setup, the default configuration of the UCS master domain
+			  controller should be copied to the Ubuntu system, for example:
+
+<programlisting>
+# Become root
+sudo bash
+ 
+# Set the IP address of the UCS DC Master, 192.168.0.3 in this example
+export MASTER_IP=192.168.0.3
+ 
+mkdir /etc/univention
+ssh root@${MASTER_IP} ucr shell | grep -v ^hostname= >/etc/univention/ucr_master
+echo "master_ip=${MASTER_IP}" >>/etc/univention/ucr_master
+. /etc/univention/ucr_master
+ 
+echo "${MASTER_IP} ${ldap_master}" >>/etc/hosts
+ 
+# Exit sudo bash
+exit
+</programlisting>
+			</para>
+
+            <para>
+			  In the default configuration of UCS only authenticated users can search in the LDAP
+			  directory (see TODOREF). As such, the Ubuntu client needs an account in the UCS domain
+			  to gain read access to the LDAP directory:
+
+<programlisting>
+# Become root
+sudo bash
+ 
+# Set some environment variables
+. /etc/univention/ucr_master
+ 
+# Download the SSL certificate
+mkdir -p /etc/univention/ssl/ucsCA/
+wget -O /etc/univention/ssl/ucsCA/CAcert.pem http://${ldap_master}/ucs-root-ca.crt
+ 
+# Create an account and save the password
+password="$(&lt; /dev/urandom tr -dc A-Za-z0-9_ | head -c8)"
+if [ "$version_version" = 3.0 ] &amp;&amp; [ "$version_patchlevel" -lt 2 ]; then
+    ssh root@${ldap_master} udm computers/managedclient create --position "cn=computers,${ldap_base}" \
+        --set name=$(hostname) --set password="${password}"
+else
+    ssh root@${ldap_master} udm computers/ubuntu create --position "cn=computers,${ldap_base}" \
+        --set name=$(hostname) --set password="${password}" \
+        --set operatingSystem="$(lsb_release -is)" \
+        --set operatingSystemVersion="$(lsb_release -rs)"
+fi
+echo "${password}" > /etc/ldap.secret
+ 
+# Create ldap.conf
+cat >/etc/ldap/ldap.conf &lt;&lt;__EOF__
+TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem
+URI ldap://$ldap_master:7389
+BASE $ldap_base
+__EOF__
+ 
+# Exit sudo bash
+exit
+</programlisting>
+			</para>
+		</section>
+
+
+
+	</chapter>
+
     <?dbhtml-include href="../stylesheets/piwiki.html"?>
 </book>
 <!-- vim:set sw=4 ts=4 et: -->
