@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-5) unstable; urgency=low
+
+  * New UCR variable samba4/sysvol/sync/setfacl/AU (Bug #31271)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 May 2013 23:15:37 +0200
+
 univention-samba4 (2.0.44-4) unstable; urgency=low
 
   * Add copyright header (Bug #31437)
