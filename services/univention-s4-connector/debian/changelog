@@ -1,3 +1,11 @@
+univention-s4-connector (7.0.33-1) unstable; urgency=low
+
+  * Make sysvol readable for members of the group
+    "Enterprise Domain Controllers" (Bug #31437)
+  * Version updated for ucs3.1-2
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 May 2013 22:34:45 +0200
+
 univention-s4-connector (7.0.32-1) unstable; urgency=low
 
   * Added UCC objectClass to match filter (Bug #29872)

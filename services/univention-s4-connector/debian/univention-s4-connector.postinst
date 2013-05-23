@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Univention Samba4 Connector
 #  postinst script of the samba4 connector package
@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 . /usr/share/univention-lib/all.sh
+. /usr/share/univention-samba4/lib/all.sh
 
 create_logfile /var/log/univention/connector-s4.log "root:adm" 640
 create_logfile /var/log/univention/connector-s4-status.log "root:adm" 640
@@ -49,7 +50,7 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/mapping/sid?true \
 							   connector/s4/mapping/gpo?true \
 							   connector/s4/mapping/user/ignorelist?"root,pcpatch,ucs-s4sync" \
-							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody" \
+							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers" \
 							   connector/s4/mapping/container/ignorelist?"mail,kerberos,MicrosoftDNS" \
 							   connector/s4/mapping/dns/ignorelist?"DC=_ldap._tcp.Default-First-Site-Name._site"
 
@@ -82,8 +83,56 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 		restart=true
 	fi
 
+	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.32-2; then
+		## Do not synchronize group 'Enterprise Domain Controllers'
+		univention_samba4_append_to_ucr connector/s4/mapping/group/ignorelist 'Enterprise Domain Controllers'
+		restart=true
+	fi
+
 	if [ "$restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart
+	fi
+
+	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.32-2; then
+		server_role="$(ucr get server/role)"
+		if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ] ; then
+			ldap_base=$(ucr get ldap/base)
+			if [ -r "/etc/ldap.secret" ]; then
+				binddn="cn=admin,$ldap_base"
+				bindpwd=$(< /etc/ldap.secret)
+			else
+				echo "ERROR: /etc/ldap.secret not present"
+				exit 1
+			fi
+			## store the binddn and bindpwd options in UDM_ARGV
+			UDM_ARGV=("--binddn" "$binddn" --bindpwd "$bindpwd")
+			set -- "${UDM_ARGV[@]}"
+
+			NAME="S4 Connector"
+			s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
+
+			if [ -z "$s4connectorservicehost_dns" ]; then	## this system will provide the S4 Connector Service
+				## Note: This group is created only once on the host providing the S4 Connector service
+				create_Enterprise_Domain_Controllers "$@"
+			fi
+		elif [ "$server_role" = "domaincontroller_slave" ] ; then
+			if is_ucr_true connector/s4/allow/secondary; then
+				## we are in a Slave PDC scenario, probably ucs-school-slave.
+				## in this case, the 'Enterprise Domain Controllers' group may have been created on the
+				## Master/Backup (by the errata update) before the connector/s4/mapping/group/ignorelist
+				## was adjusted on the ucs-school-slave
+				## and the group was already replicated to the local sam.ldb
+				reject_file_list=$(sqlite3 /etc/univention/connector/s4internal.sqlite "select key from 'UCS rejected' where value='cn=Enterprise Domain Controllers,cn=groups,$ldap_base'")
+				if [ -n "$reject_file_list" ]; then
+					invoke-rc.d univention-s4-connector stop
+					while read reject_filename; do
+						rm "$reject_filename"
+					done <<<"$reject_file_list"
+					sqlite3 /etc/univention/connector/s4internal.sqlite "delete from 'UCS rejected' where value='cn=Enterprise Domain Controllers,cn=groups,$ldap_base'"
+					invoke-rc.d univention-s4-connector start
+				fi
+			fi
+		fi
 	fi
 fi
 
