@@ -963,6 +963,12 @@ slapcat > ldapdata.txt
 		period can be specified with the &ucsUCRV; <envar>ssl/validity/warning</envar>;
 		the standard value is 30 days).
 	</para>
+
+	<para>
+	  The renewal of the root certificate and the other host certificates is documented in
+	  <xref linkend="sdb-sslchange"/>.
+	</para>
+
 	<para>
 		On UCS systems, a Cron job verifies the validity of the local computer
 		certificate and the root certificate daily and records the expiry date in the

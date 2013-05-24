@@ -1002,6 +1002,12 @@ slapcat > ldapdaten.txt
 			standardmäßig 30 Tage).
 		</para>
 	</caution>
+
+	<para>
+	  Die Erneuerung des Root-Zertifikats und der übrigen Rechnerzertifikate ist in <xref
+	  linkend="sdb-sslchange"/> dokumentiert.
+	</para>
+
 	<para>
 	  Auf UCS-Systemen überprüft ein Cronjob täglich die Gültigkeit des lokalen Rechnerzertifikats
 	  und des Root-Zertifikats und schreibt das Ablaufdatum in die &ucsUCR;-Variablen
