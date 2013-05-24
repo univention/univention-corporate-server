@@ -1,3 +1,9 @@
+univention-samba4 (2.0.48-5) unstable; urgency=low
+
+  * fix whitespace mix in univention_samba4_append_to_ucr (Bug #31437)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 24 May 2013 14:07:16 +0200
+
 univention-samba4 (2.0.48-4) unstable; urgency=low
 
   * New UCR variable samba4/sysvol/sync/setfacl/AU (Bug #31271)
