@@ -1,3 +1,9 @@
+univention-config-registry (8.0.7-3) unstable; urgency=low
+
+  * Fix layer priorities (Bug #29632)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 May 2013 07:32:21 +0200
+
 univention-config-registry (8.0.7-2) unstable; urgency=low
 
   * use subprocess.communicate() to prevent problems with EINTR (Bug #31140)

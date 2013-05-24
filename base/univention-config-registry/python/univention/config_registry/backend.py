@@ -189,7 +189,13 @@ class ConfigRegistry(dict):
 	def _merge(self, getscope=False):
 		"""Merge sub registry."""
 		merge = {}
-		for reg in range(ConfigRegistry.MAX):
+		for reg in (
+				ConfigRegistry.FORCED,
+				ConfigRegistry.SCHEDULE,
+				ConfigRegistry.LDAP,
+				ConfigRegistry.NORMAL,
+				ConfigRegistry.CUSTOM,
+				):
 			registry = self._registry[reg]
 			if not isinstance(registry, _ConfigRegistry):
 				continue
