@@ -35,6 +35,8 @@
 \begin{itemize}
 \item The process handling in \ucsName{univention-config-registry} has been improved to prevent issues with process
   signals during system calls (\ucsBug{31140}).
+
+\item The Univention Config Registry layers were processed in the wrong order when using the 'search' subcommand. Now all commands consistently return the value from the layer with the highest priority, which are 'force', 'schedule', 'ldap' and 'normal' (\ucsBug{29632}).
 \end{itemize}
 
 %% \subsubsection{Changes to templates and modules}
