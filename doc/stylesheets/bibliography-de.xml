@@ -142,13 +142,6 @@
   <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=Citrix_Xen_Server"/></releaseinfo>
 </biblioentry>
 
-<biblioentry id="ubuntu-integration">
-  <publishername>Univention GmbH</publishername>
-  <pubdate>2012</pubdate>
-  <title>Ubuntu Integration</title>
-  <releaseinfo><ulink url="http://wiki.univention.de/index.php?title=Ubuntu"/></releaseinfo>
-</biblioentry>
-
 <biblioentry id="bacula-config-example">
   <publishername>Univention GmbH</publishername>
   <pubdate>2012</pubdate>
@@ -158,7 +151,7 @@
 
 <biblioentry id="ext-doc-computers">
   <publishername>Univention GmbH</publishername>
-  <pubdate>2012</pubdate>
+  <pubdate>2013</pubdate>
   <title>Extended computer management documentation</title>
   <releaseinfo><ulink url="http://docs.univention.de/computers-3.1.pdf"/></releaseinfo>
 </biblioentry>
