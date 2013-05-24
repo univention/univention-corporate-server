@@ -1,3 +1,11 @@
+univention-printserver (6.0.23-1) unstable; urgency=low
+
+  * Always create a samba printers config 
+    (/etc/samba/printers.conf.d/<printer>) and not only if client driver
+    is activated, the samba name is set or ACLs are defined (Bug #30432)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 May 2013 13:51:31 +0200
+
 univention-printserver (6.0.22-1) unstable; urgency=low
 
   * changed cupsd.conf file. SystemGroups are now separated by a blank character 

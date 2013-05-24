@@ -327,51 +327,47 @@ def handler(dn, new, old):
 			filename = '/etc/samba/printers.conf.d/%s' % printername
 			listener.setuid(0)
 
-			if new.get('univentionPrinterSambaName') or \
-					new.get('univentionPrinterACLtype', EMPTY)[0] in ("allow", "deny") or \
-						new.get('univentionPrinterUseClientDriver', EMPTY)[0] == '1':
+			# samba permissions
+			perm = ""
 
-				# samba permissions
-				perm = ""
+			# users
+			for dn in new.get('univentionPrinterACLUsers', ()):
+				user = dn[dn.find('=')+1:dn.find(',')]
+				if " " in user:
+					user = "\"" + user + "\""
+				perm = perm + " " + user
+			# groups
+			for dn in new.get('univentionPrinterACLGroups', ()):
+				group = "@" + dn[dn.find('=')+1:dn.find(',')]
+				if " " in group:
+					group = "\"" + group + "\""
+				perm = perm + " " + group
 
-				# users
-				for dn in new.get('univentionPrinterACLUsers', ()):
-					user = dn[dn.find('=')+1:dn.find(',')]
-					if " " in user:
-						user = "\"" + user + "\""
-					perm = perm + " " + user
-				# groups
-				for dn in new.get('univentionPrinterACLGroups', ()):
-					group = "@" + dn[dn.find('=')+1:dn.find(',')]
-					if " " in group:
-						group = "\"" + group + "\""
-					perm = perm + " " + group
+			try:
+				fp = open(filename, 'w')
 
-				try:
-					fp = open(filename, 'w')
+				print >>fp, '[%s]' % printername
+				print >>fp, 'printer name = %s' % new['cn'][0]
+				print >>fp, 'path = /tmp'
+				print >>fp, 'guest ok = yes'
+				print >>fp, 'printable = yes'
+				if perm:
+					if new['univentionPrinterACLtype'][0] == 'allow':
+						print >>fp, 'valid users = %s' % perm
+					if new['univentionPrinterACLtype'][0] == 'deny':
+						print >>fp, 'invalid users = %s' %perm
 
-					print >>fp, '[%s]' % printername
-					print >>fp, 'printer name = %s' % new['cn'][0]
-					print >>fp, 'path = /tmp'
-					print >>fp, 'guest ok = yes'
-					print >>fp, 'printable = yes'
-					if perm:
-						if new['univentionPrinterACLtype'][0] == 'allow':
-							print >>fp, 'valid users = %s' % perm
-						if new['univentionPrinterACLtype'][0] == 'deny':
-							print >>fp, 'invalid users = %s' %perm
+				if new['univentionPrinterUseClientDriver'][0] == '1':
+					print >>fp, 'use client driver = yes'
 
-					if new['univentionPrinterUseClientDriver'][0] == '1':
-						print >>fp, 'use client driver = yes'
+				uid = 0
+				gid = 0
+				mode = '0755'
 
-					uid = 0
-					gid = 0
-					mode = '0755'
-
-					os.chmod(filename,int(mode,0))
-					os.chown(filename,uid,gid)
-				finally:
-					listener.unsetuid()
+				os.chmod(filename,int(mode,0))
+				os.chown(filename,uid,gid)
+			finally:
+				listener.unsetuid()
 
 		if need_to_reload_cups:
 			reload_daemon ('cups', 'cups-printers: ')
