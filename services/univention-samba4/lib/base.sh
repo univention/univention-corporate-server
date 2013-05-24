@@ -70,7 +70,7 @@ univention_samba4_append_to_ucr() {
 	valuelist = ucr.get('$key', '').split('$separator')
 	if not '$value' in valuelist:
 	    valuelist.append('$value')
-		ucr['$key'] = '$separator'.join(valuelist)
+	    ucr['$key'] = '$separator'.join(valuelist)
 	    ucr.save()
 	%EOF
 }
