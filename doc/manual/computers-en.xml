@@ -415,8 +415,8 @@
 		</para>
 		<para>
 			Some configuration adjustments need to be performed on Ubuntu systems;
-			these are documented in the Univention Wiki <xref
-			linkend="ubuntu-integration"/>.
+			these are documented in the extended documentation <xref
+			linkend="ext-doc-computers"/>.
 		</para>
 	</section>
 </section>

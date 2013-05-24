@@ -424,10 +424,10 @@
             </para>
             <para>
                 Auf den Ubuntu-Systemen müssen einige Konfigurationsanpassungen
-                vorgenommen werden, die im Univention Wiki dokumentiert sind <xref linkend="ubuntu-integration"/>.
+                vorgenommen werden, die in der erweiterten Dokumentation beschrieben sind <xref linkend="ext-doc-computers"/>.
             </para>
-        </section><!-- Integration von Ubuntu-Clients -->
-    </section><!-- Verwaltung der Rechnerkonten in der Univention Management Console -->
+        </section>
+    </section>
 
     <section id="computers:Konfiguration_von_Hardware_und_Treibern"><title>Konfiguration von Hardware und Treibern</title>
         <section id="computers:Verfuegbare_Kernel-Varianten"><title>Verfügbare Kernel-Varianten</title>
