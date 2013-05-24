@@ -74,7 +74,7 @@ else:
 
 
 def run_filter(template, directory, srcfiles=set(), opts=dict()):
-	"""Process a template file: susbstitute variables."""
+	"""Process a template file: substitute variables."""
 	while True:
 		i = VARIABLE_TOKEN.finditer(template)
 		try:
