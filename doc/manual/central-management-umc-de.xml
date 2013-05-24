@@ -1405,7 +1405,7 @@ univention-directory-manager container/cn create \
 		</para>
 
 		<para>
-		  Dieser Befehl legt eine Mail-Quota-Richtlinie mit dem Namen "Default quota" an, in der ein
+		  Dieser Befehl legt eine Mail-Quota-Richtlinie mit dem Namen <emphasis>Default quota</emphasis> an, in der ein
 		  1 GB Quota definiert wird:
 
 <programlisting>
@@ -1563,7 +1563,7 @@ univention-directory-manager dns/ptr_record create \
 </programlisting>
 		</para>
 
-		Weitere Informationn zu DNS finden sich in <xref linkend="module:dhcp:dhcp"/>.
+		Weitere Informationn zu DNS finden sich in <xref linkend="networks:dns"/>.
 	</section>
 
 

@@ -1215,15 +1215,15 @@ univention-directory-manager groups/group modify \
 	<section id="central:udm:example">
 	  <title>Example invocations of the command line interface</title>
 
-	  <!-- <para> -->
-	  <!-- 	Die folgenden Beispielaufrufe des Kommandozeilen-Frontend &ucsUDM; können als Vorlagen für eigene -->
-	  <!-- 	Skripte verwendet werden: -->
-	  <!-- </para> -->
+	  <para>
+		The following example execution of the command line front end &ucsUDM; can be used as
+		templates for your own scripts:
+	  </para>
 
 	  <section id="central:udm:example:users">
-		<title>Benutzer</title>
+		<title>Users</title>
 		<para>
-		  <!-- Anlegen eines Benutzers im Standard-Benutzer-Container: -->
+		  Creating a user in the standard user container:
 
 <programlisting>
 univention-directory-manager users/user create \
@@ -1238,7 +1238,7 @@ univention-directory-manager users/user create \
 		</para>
 
 		<para>
-		  <!-- Nachträgliches Hinzufügen der postalischen Adresse zum gerade angelegten Benutzer: -->
+		  Subsequent addition of the postal address for an existing user:
 
 <programlisting>
 univention-directory-manager users/user modify \
@@ -1251,8 +1251,8 @@ univention-directory-manager users/user modify \
 
 
 		<para>
-		  <!-- Mit diesem Befehl werden alle Benutzer angezeigt, deren Benutzername mit <emphasis>user</emphasis> -->
-		  <!-- beginnt: -->
+		  This command can be used to display all the users whose user name begins with
+		  <emphasis>user</emphasis>:
 
 <programlisting>
 univention-directory-manager users/user list \
@@ -1261,9 +1261,9 @@ univention-directory-manager users/user list \
 		</para>
 
 		<para>
-		  <!-- Die Suche nach Objekten mit filter kann auch auf eine Position im LDAP-Verzeichnis -->
-		  <!-- eingeschränkt werden, in diesem Fall auf alle Benutzer im Container -->
-		  <!-- <emphasis>cn=bremen,cn=users,dc=example,dc=com</emphasis>: -->
+		  Searching for objects with the <emphasis>--filter</emphasis> can also be limited to a
+		  position in the LDAP directory; in this case, to all users in the container
+		  <emphasis>cn=bremen,cn=users,dc=example,dc=com</emphasis>:
 
 <programlisting>
 univention-directory-manager users/user list \
@@ -1273,7 +1273,7 @@ univention-directory-manager users/user list \
 		</para>
 
 		<para>
-		  <!-- Dieser Aufruf entfernt einen Benutzer <emphasis>user04</emphasis>: -->
+		  This call removes a user <emphasis>user04</emphasis>:
 
 <programlisting>
 univention-directory-manager users/user remove \
@@ -1282,9 +1282,9 @@ univention-directory-manager users/user remove \
 		</para>
 
 		<para>
-		  <!-- Eine Firma hat zwei Standorte mit eigens dafür angelegten Containern. Mit dem folgenden -->
-		  <!-- Befehl wird ein Benutzer aus dem Container für den Standort Hamburg in den Container für -->
-		  <!-- den Standort Bremen verschoeben: -->
+		  A company has two sites with containers created for each. The following command can be
+		  used to transfer a user from the container for the Hamburg site to the container for the
+		  Bremen site:
 
 <programlisting>
 univention-directory-manager users/user move \
@@ -1295,10 +1295,10 @@ univention-directory-manager users/user move \
 	  </section>
 
 	  <section id="central:udm:example:groups">
-		<title>Gruppen</title>
+		<title>Groups</title>
 		<para>
-		  <!-- Anlegen einer Gruppe <emphasis>Example Users</emphasis> und Hinzufügen des Benutzers -->
-		  <!-- <emphasis>user01</emphasis> in diese Gruppe: -->
+		  Creating a group <emphasis>Example Users</emphasis> and adding a user 
+		  <emphasis>user01</emphasis> to this group:
 
 <programlisting>
 univention-directory-manager groups/group create \
@@ -1309,8 +1309,7 @@ univention-directory-manager groups/group create \
 		</para>
 
 		<para>
-		  <!-- Nachträgliches Hinzufügen des Benutzers <emphasis>user02</emphasis> zur gerade angelegten -->
-		  <!-- Gruppe: -->
+		  Subsequent addition of the user <emphasis>user02</emphasis> to the existing group:
 
 <programlisting>
 univention-directory-manager groups/group modify \
@@ -1320,14 +1319,14 @@ univention-directory-manager groups/group modify \
 
 		</para>
 
-		<!-- <caution> -->
-		<!--   Ein <emphasis>set</emphasis> des Attributs users überschreibt im Gegensatz zu -->
-		<!--   <emphasis>append</emphasis> die Liste der Gruppenmitglieder. -->
-		<!-- </caution> -->
+		<caution>
+		  A <emphasis>--set</emphasis> on the attribute <emphasis>users</emphasis> overwrites the
+		  list of group members in contrast to <emphasis>--append</emphasis>.
+		</caution>
 
 
 		<para>
-		  <!-- Nachträgliches Entfernen des Benutzers <emphasis>user01</emphasis> aus der Gruppe: -->
+		  Subsequent removal of the user <emphasis>user01</emphasis> from the group:
 
 <programlisting>
 univention-directory-manager groups/group modify \
@@ -1340,11 +1339,10 @@ univention-directory-manager groups/group modify \
 	  <section id="central:udm:example:cn-policies">
 		<title>Container / Policies</title>
 		<para>
-		  <!-- Dieser Aufruf legt unterhalb des Standard-Containers <emphasis>cn=computers</emphasis> -->
-		  <!-- einen Container <emphasis>cn=Bremen</emphasis> für die Rechnerobjekte am Firmenstandort -->
-		  <!-- Bremen an. Durch die zusätzliche Option <emphasis>computerPath</emphasis> wird dieser -->
-		  <!-- Container auch direkt als Standardcontainer für Rechnerobjekte registriert (siehe <xref -->
-		  <!-- linkend="central:cn-and-ous"/>): -->
+		  This call creates a <emphasis>cn=Bremen</emphasis> container beneath the standard
+		  container <emphasis>cn=computers</emphasis> for the computers at the Bremen site. The
+		  additional option <emphasis>computerPath</emphasis> also registers this container directly
+		  as the standard container for computer objects (see <xref linkend="central:cn-and-ous"/>):
 
 <programlisting>
 univention-directory-manager container/cn create \
@@ -1355,8 +1353,8 @@ univention-directory-manager container/cn create \
 		</para>
 
 		<para>
-		  <!-- Dieser Befehl legt eine Mail-Quota-Richtlinie mit dem Namen "Default quota" an, in der ein -->
-		  <!-- 1 GB Quota definiert wird: -->
+		  This command creates a mail quota policy with the name <emphasis>Default quota</emphasis>,
+		  in which a 1 GB quota is defined:
 
 <programlisting>
 univention-directory-manager policies/mailquota create \ 
@@ -1367,7 +1365,7 @@ univention-directory-manager policies/mailquota create \
 		</para>
 
 		<para>
-		  <!-- Diese Richtlinie wird nun an den Benutzer-Container <emphasis>cn=users</emphasis> gebunden: -->
+		  This policy is now linked to the user container <emphasis>cn=users</emphasis>:
 
 <programlisting>
 univention-directory-manager container/cn modify \
@@ -1377,9 +1375,8 @@ univention-directory-manager container/cn modify \
 		</para>
 
 		<para>
-		  <!-- Anlegen einer &ucsUCR;-Richtlinie, mit der die Vorhaltezeit der Logdateien auf ein Jahr -->
-		  <!-- eingestellt wird. Als Trennzeichen zwischen Name und Wert der Variable wird ein -->
-		  <!-- Leerzeichen verwendet: -->
+		  Creating a &ucsUCR; policy with which the storage time for log files can be set to one
+		  year. A blank space is used to separate the name and value of the variable:
 
 <programlisting>
 udm policies/registry create \
@@ -1390,7 +1387,7 @@ udm policies/registry create \
 		</para>
 
 		<para>
-		  <!-- Mit diesem Befehl wird an die angelegte Richtlinie ein weiterer Wert angehängt: -->
+		  This command can be used to attach an additional value to the created policy:
 
 <programlisting>
 udm policies/registry modify \
@@ -1398,16 +1395,14 @@ udm policies/registry modify \
 --append registry='"logrotate/compress" "no"'
 </programlisting>
 		</para>
-
-
 	  </section>
 
 	  <section id="central:udm:example:cn-computers">
 		<title>Computers</title>
 		<para>
-		  <!-- In folgendem Beispiel wird ein Windows-Client angelegt. Tritt dieser Client später der -->
-		  <!-- Samba-Domäne bei (siehe <xref linkend="windows-domaenenbeitritt"/>), wird das Rechnerkonto -->
-		  <!-- dann automatisch verwendet: -->
+		  In the following example, a Windows client is created. If this client joins the Samba
+		  domain at a later point in time (see <xref linkend="windows-domaenenbeitritt"/>), the
+		  computer account is then automatically used:
 
 <programlisting>
 univention-directory-manager computers/windows create \
@@ -1422,10 +1417,10 @@ univention-directory-manager computers/windows create \
 	  <section id="central:udm:example:shares">
 		<title>Shares</title>
 		<para>
-		  <!-- Der folgende Befehl legt eine Freigabe <emphasis>Documentation</emphasis> auf dem Server -->
-		  <!-- <emphasis>fileserver.example.com</emphasis> an. Sofern -->
-		  <!-- <filename>/var/shares/documentation</filename> auf dem Server noch nicht existiert, wird -->
-		  <!-- es durch diesen Aufruf auch gleich angelegt. -->
+		  The following command creates the share <emphasis>Documentation</emphasis> on the server
+		  <emphasis>fileserver.example.com</emphasis>. As long as
+		  <filename>/var/shares/documentation</filename> does not yet exist on the server, it is
+		  also created automatically:
 
 <programlisting>
 univention-directory-manager shares/share create \
@@ -1440,11 +1435,11 @@ univention-directory-manager shares/share create \
 	  <section id="central:udm:example:printer">
 		<title>Printers</title>
 		<para>
-		  <!-- Anlegen einer Druckerfreigabe <emphasis>LaserPrinter01</emphasis> auf dem Druckserver -->
-		  <!-- <emphasis>printserver.example.com</emphasis>. Die Eigenschaften des Druckers sind in der -->
-		  <!-- PPD-Datei spezifiziert, deren Name relativ zum Verzeichnis -->
-		  <!-- <filename>/usr/share/ppd</filename> angegeben wird. Der angebundene Drucker ist -->
-		  <!-- netzwerkfähig und wird über das IPP-Protokoll angebunden. -->
+		  Creating a printer share <emphasis>LaserPrinter01</emphasis> on the print server
+		  <emphasis>printserver.example.com</emphasis>. The properties of the printer are specified
+		  in the PPD file, the name of which is given relative to the directory
+		  <filename>/usr/share/ppd</filename>. The connected printer is network-compatible and is
+		  connected via the IPP protocol.
 
 <programlisting>
 univention-directory-manager shares/printer create \
@@ -1458,16 +1453,15 @@ univention-directory-manager shares/printer create \
 </programlisting>
 		</para>
 
-		<!-- <note> -->
-		<!--   Im Parameter <emphasis>uri</emphasis> muss ein Leerzeichen zwischen dem Druckprotokoll -->
-		<!--   und dem URL-Zielpfad verwendet werden. Eine Auftstellung der Druckprotokolle findet sich -->
-		<!--   in  <xref linkend="print::shares"/> -->
-		<!-- </note> -->
+		<note>
+		  There must be a blank space between the print protocol and the URL target path in the
+		  parameter <emphasis>uri</emphasis>. A list of the print protocols can be found in <xref
+		  linkend="print::shares"/>
+		</note>
 
 		<para>
-		  <!-- Drucker können zur einfacheren Verwaltung in einer Druckergruppe zusammengefasst -->
-		  <!-- werden. Weitere Informationen zu Druckergruppen finden sich in <xref -->
-		  <!-- linkend="druckergruppen"/>. -->
+		  Printers can be grouped in a printer group for simpler administration. Further information
+		  on printer groups can be found in <xref linkend="druckergruppen"/>.
 
 <programlisting>
 univention-directory-manager shares/printergroup create \
@@ -1482,9 +1476,9 @@ univention-directory-manager shares/printergroup create \
 	  <section id="central:udm:example:dnsdhcp">
 		<title>DNS/DHCP</title>
 		<para>
-		  <!-- Um eine IP-Vergabe über DHCP zu konfigurieren, muss ein DHCP-Rechner-Eintrag für die -->
-		  <!-- MAC-Adresse registriert werden. Weitere Informationen zu DHCP finden sich in <xref -->
-		  <!-- linkend="module:dhcp:dhcp"/>. -->
+		  To configure an IP assignment via DHCP, a DHCP computer entry must be registered for the
+		  MAC address. Further information on DHCP can be found in <xref
+		  linkend="module:dhcp:dhcp"/>.
 
 <programlisting>
 univention-directory-manager dhcp/host create \
@@ -1497,8 +1491,9 @@ univention-directory-manager dhcp/host create \
 	  </section>
 
 		<para>
-		  <!-- Soll ein Rechnername über DNS auflösbar sein, kann mit den folgenden Befehlen eine -->
-		  <!-- Vorwärts- (host record) und Reverse-Auflösung (ptr record) konfiguriert werden: -->
+		  If it should be possible for a computer name to be resolved via DNS, the following
+		  commands can be used to configure a forward (host record) and reverse resolution (ptr
+		  record).
 
 <programlisting>
 univention-directory-manager dns/host_record create \
@@ -1513,18 +1508,17 @@ univention-directory-manager dns/ptr_record create \
 </programlisting>
 		</para>
 
-		<!-- Weitere Informationn zu DNS finden sich in <xref linkend="module:dhcp:dhcp"/>. -->
-	</section>
-
+		Further information on DNS can be found in <xref linkend="networks:dns"/>.
+	  </section>
 
 	  <section id="central:udm:example:extendedattr">
 		<title>Extended attributes</title>
 		<para>
-		  <!-- Mit erweiterten Attributen lässt sich der Funktionsumfang der &ucsUMC; flexibel -->
-		  <!-- erweitern, siehe <xref linkend="central:extendedattrs"/>. Im folgenden Beispiel wird ein -->
-		  <!-- neues Attribut eingefügt, an dem pro Benutzer das KFZ-Kennzeichen des Dienstwagens -->
-		  <!-- gespeichert wird. Die Werte werden in einer extra für diesen Zweck vorgesehenen Objektklasse -->
-		  <!-- <emphasis>univentionFreeAttributes</emphasis> verwaltet: -->
+		  Extended attributes can be used to expand the functional scope of the &ucsUMC;,
+		  see <xref linkend="central:extendedattrs"/>. In the following example, a new attribute is
+		  added, where the car license number of the company car can be saved for each user. The
+		  values are managed in an object class created specially for this purpose
+		  <emphasis>univentionFreeAttributes</emphasis>:
 
 <programlisting>
 univention-directory-manager settings/extended_attribute create \
@@ -1542,9 +1536,8 @@ univention-directory-manager settings/extended_attribute create \
 </programlisting>
 
 	  </para>
-	</section>
-
-
+	  </section>
+  
 </section>
 <section id="central:reports">
 <title>Evaluation of data from the LDAP directory with Univention Directory Reports</title>
