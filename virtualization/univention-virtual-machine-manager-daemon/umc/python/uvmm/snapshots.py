@@ -44,16 +44,28 @@ from notifier import Callback
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 class Snapshots( object ):
+	"""
+	UMC functions for UVMM snapshot handling.
+	"""
+
 	def snapshot_query( self, request ):
-		"""Returns a list of snapshots of a domain
+		"""
+		Returns a list of snapshots of a domain
 
-		options: { 'domainURI': <domain URI> }
+		options: {'domainURI': <domain URI>}
 
-		return: [ { 'id' : <snapshot name>, 'label' : <snapshot name>, 'time' : <creation time> }, ... ]
+		return: [{
+			'id': <string: snapshot name>,
+			'label': <string: snapshot name>,
+			'time': <string: creation time as ISO>,
+			}, ...]
 		"""
 		self.required_options( request, 'domainURI' )
 
 		def _finished( thread, result, request ):
+			"""
+			Process asynchronous UVMM DOMAIN_INFO answer.
+			"""
 			if self._check_thread_error( thread, result, request ):
 				return
 
@@ -85,11 +97,15 @@ class Snapshots( object ):
 
 
 	def snapshot_create( self, request ):
-		"""Create a snapshot for a domain
+		"""
+		Create a snapshot for a domain
 
-		options: { 'domainURI': <domain URI>. 'snapshotName' : <snapshot name> }
+		options: {
+			'domainURI': <domain URI>,
+			'snapshotName': <snapshot name>,
+			}
 
-		return: { 'success' : (True|False), 'data' : <details> }
+		return:
 		"""
 		self.required_options( request, 'domainURI', 'snapshotName' )
 
@@ -103,11 +119,15 @@ class Snapshots( object ):
 				)
 
 	def snapshot_remove( self, request ):
-		"""Returns a list of snapshots of a domain
+		"""
+		Returns a list of snapshots of a domain
 
-		options: { 'domainURI': <domain URI>. 'name' : <snapshot name> }
+		options: {
+			'domainURI': <domain URI>,
+			'snapshotName': <snapshot name>,
+			}
 
-		return: { 'success' : (True|False), 'data' : <details> }
+		return:
 		"""
 		self.required_options( request, 'domainURI', 'snapshotName' )
 
@@ -121,9 +141,13 @@ class Snapshots( object ):
 				)
 
 	def snapshot_revert( self, request ):
-		"""Returns a list of snapshots of a domain
+		"""
+		Returns a list of snapshots of a domain
 
-		options: { 'domainURI': <domain URI>. 'snapshotName' : <snapshot name> }
+		options: {
+			'domainURI': <domain URI>,
+			'snapshotName': <snapshot name>,
+			}
 
 		return:
 		"""

@@ -37,7 +37,9 @@ import re
 BASE_TYPES = ( int, float, long, bool, basestring, NoneType, list, tuple )
 
 def object2dict( obj ):
-	"""Converts the attributes of an object to a dictionary."""
+	"""
+	Converts the attributes of an object to a dictionary.
+	"""
 	if isinstance( obj, BASE_TYPES ):
 		return obj
 	attrs = {}
@@ -65,13 +67,16 @@ def object2dict( obj ):
 
 
 class MemorySize( object ):
-	"""Parse and convert size with optional prefix from and to numbers."""
+	"""
+	Parse and convert size with optional prefix from and to numbers.
+	"""
 	UNITS = ('', 'K', 'M', 'G', 'T', 'P')
 	SIZE_REGEX = re.compile('^ *(?P<size>[0-9]+(?:[,.][0-9]+)?)[ \t]*(?:(?P<unit>[%s])(?:[Ii]?[Bb])?|[Bb])? *$' % (''.join(UNITS) + ''.join(UNITS).lower(),))
 
 	@staticmethod
 	def num2str( size, unit = 'B' ):
-		"""Pretty-print number to string consisting of size and optional prefix.
+		"""
+		Pretty-print number to string consisting of size and optional prefix.
 		>>> MemorySize.num2str(512)
 		'512 B'
 		>>> MemorySize.num2str(512, unit='MB')
@@ -97,7 +102,8 @@ class MemorySize( object ):
 
 	@staticmethod
 	def str2num( size, block_size = 1, unit = 'B' ):
-		"""Parse string consisting of size and prefix into number.
+		"""
+		Parse string consisting of size and prefix into number.
 		>>> MemorySize.str2num('512')
 		512L
 		>>> MemorySize.str2num('512 B')
@@ -147,7 +153,8 @@ class MemorySize( object ):
 
 	@staticmethod
 	def str2str( size, unit = 'B' ):
-		"""Normalize string consisting of size and prefix.
+		"""
+		Normalize string consisting of size and prefix.
 		>>> MemorySize.str2str('0.5 MB')
 		'512.0 KB'
 		"""

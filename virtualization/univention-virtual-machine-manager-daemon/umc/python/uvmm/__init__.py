@@ -49,6 +49,9 @@ from .snapshots import Snapshots
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
+	"""
+	UMC functions for UVMM handling.
+	"""
 	DOMAIN_STATES = ( 'RUN', 'PAUSE', 'SHUTDOWN', 'RESTART', 'SUSPEND' )
 
 	def __init__( self ):
@@ -57,12 +60,17 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 		self.uvmm = UVMM_RequestBroker()
 
 	def init( self ):
+		"""
+		Initialize UVMM UMC module instance.
+		"""
 		self.read_profiles()
 
 	def _check_thread_error( self, thread, result, request ):
-		"""Checks if the thread returned an exception. In that case in
+		"""
+		Checks if the thread returned an exception. In that case in
 		error response is send and the function returns True. Otherwise
-		False is returned."""
+		False is returned.
+		"""
 		if not isinstance( result, BaseException ):
 			return False
 
@@ -72,9 +80,11 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 		return True
 
 	def _thread_finish( self, thread, result, request ):
-		"""This method is invoked when a threaded request function is
+		"""
+		This method is invoked when a threaded request function is
 		finished. The result is send back to the client. If the result
-		is an instance of BaseException an error is returned."""
+		is an instance of BaseException an error is returned.
+		"""
 		if self._check_thread_error( thread, result, request ):
 			return
 
@@ -86,9 +96,11 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 			self.finished( request.id, data )
 
 	def _thread_finish_success( self, thread, result, request ):
-		"""This method is invoked when a threaded request function is
+		"""
+		This method is invoked when a threaded request function is
 		finished. The result is send back to the client. If the result
-		is an instance of BaseException an error is returned."""
+		is an instance of BaseException an error is returned.
+		"""
 		if self._check_thread_error( thread, result, request ):
 			return
 
@@ -97,11 +109,19 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 		self.finished( request.id, { 'success' : success, 'data' : data } )
 
 	def query( self, request ):
-		"""Meta query function for nodes and domains.
+		"""
+		Meta query function for groups, nodes and domains.
 
-		options: { 'type' : (group|node|domain), 'nodePattern': <node pattern>, [ 'domainPattern' : <domain pattern> ] }
+		options: {
+			'type': (group|node|domain),
+			'nodePattern': <node pattern>,
+			['domainPattern': <domain pattern>]
+			}
 
-		return: { 'success' : (True|False), 'message' : <details> }
+		return: {
+			'success': (True|False),
+			'message': <details>
+			}
 		"""
 		self.required_options( request, 'type', 'nodePattern' )
 
@@ -115,6 +135,9 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 			raise UMC_OptionTypeError( _( 'Unknown query type' ) )
 
 	def group_query( self, request ):
+		"""
+		Get server groups.
+		"""
 		self.uvmm.send(
 				'GROUP_LIST',
 				Callback(self._thread_finish, request)

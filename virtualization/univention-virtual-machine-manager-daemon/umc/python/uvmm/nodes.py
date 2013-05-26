@@ -42,28 +42,47 @@ from notifier import Callback
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 class Nodes( object ):
-	"""Handler for all commands regarding nodes"""
+	"""
+	UMC functions for UVMM node handling.
+	"""
 
 	def _node_thread_finished( self, thread, result, request, parent ):
-		"""This method is invoked when a threaded request for the
+		"""
+		This method is invoked when a threaded request for the
 		navigation is finished. The result is send back to the
 		client. If the result is an instance of BaseException an error
-		is returned."""
+		is returned.
+		"""
 		if self._check_thread_error( thread, result, request ):
 			return
 
 	def node_query( self, request ):
-		"""Searches nodes by the given pattern
+		"""
+		Searches nodes by the given pattern
 
-		options: { 'nodePattern': <pattern> }
+		options: {'nodePattern': <pattern>}
 
-		return: [ { 'id' : <node URI>, 'label' : <node name>, 'group' : 'default', 'type' : 'node', 'virtech' : <virtualization technology>,
-					'memUsed' : <used amount of memory in B>, 'memAvailable' : <amount of physical memory in B>, 'cpus' : <number of CPUs>,
-					'cpuUsage' : <cpu usage in %>, 'available' : (True|False), 'supports_suspend' : (True|False), 'supports_snapshot' : (True|False) }, ... ]
+		return: [{
+			'id': <node URI>,
+			'label': <node name>,
+			'group': 'default',
+			'type': 'node',
+			'virtech': <virtualization technology>,
+			'memUsed': <used amount of memory in B>,
+			'memAvailable': <amount of physical memory in B>,
+			'cpus': <number of CPUs>,
+			'cpuUsage': <cpu usage in %>,
+			'available': (True|False),
+			'supports_suspend': (True|False),
+			'supports_snapshot': (True|False)
+			}, ...]
 		"""
 		self.required_options( request, 'nodePattern' )
 
 		def _finished( thread, result, request ):
+			"""
+			Process asynchronous UVMM NODE_LIST answer.
+			"""
 			if self._check_thread_error( thread, result, request ):
 				return
 

@@ -45,11 +45,19 @@ _ = Translation( 'univention-management-console-module-uvmm' ).translate
 _uvmm_locale = Translation( 'univention-virtual-machine-manager' ).translate
 
 class UVMM_Error( Exception ):
-	"""UVMM-request was not successful."""
+	"""
+	UVMM request was not successful.
+	"""
 	pass
 
 class UVMM_Request( object ):
+	"""
+	UVMM request.
+	"""
 	def request( self, command, **kwargs ):
+		"""
+		Send request to UVMMd.
+		"""
 		MODULE.info( 'Sending request %s to UVMM daemon ...' % command )
 		try:
 			class_name = 'Request_%s' % (command,)
@@ -77,6 +85,9 @@ class UVMM_Request( object ):
 		return self.response( data )
 
 	def response( self, result ):
+		"""
+		Process UVMMd response.
+		"""
 		data = None
 		success = result.status == 'OK'
 		if isinstance( result, protocol.Response_DUMP ):
@@ -88,6 +99,9 @@ class UVMM_Request( object ):
 		return ( success, data )
 
 class UVMM_ConnectionThread( Simple, UVMM_Request ):
+	"""
+	Thread to handle one UVMM request.
+	"""
 	SOCKET_PATH = '/var/run/uvmm.socket'
 
 	counter = 0
@@ -109,6 +123,9 @@ class UVMM_ConnectionThread( Simple, UVMM_Request ):
 		return True
 
 	def _finished( self, thread, result ):
+		"""
+		Process asynchronous UVMM answer.
+		"""
 		MODULE.info( 'Thread returned result: %s' % str( result ) )
 		if not isinstance( result, BaseException ):
 			self._user_callback( thread, result )
@@ -119,10 +136,16 @@ class UVMM_ConnectionThread( Simple, UVMM_Request ):
 		MODULE.info( 'Thread is free for another request' )
 
 class UVMM_RequestBroker( list ):
+	"""
+	Handle multiple outstanding UVMM requests.
+	"""
 	def __init__( self ):
 		list.__init__( self )
 
 	def send( self, request, callback, **kwargs ):
+		"""
+		Send request to UVMMd.
+		"""
 		MODULE.info( 'Sending request %s to UVMMd' % request )
 
 		if callback is None: # synchron call
