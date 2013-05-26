@@ -1083,24 +1083,23 @@ Microsoft Distributed File System Tree'.
 	  -va</command>, e.g.:
 	</para>
 
-<programlisting>
-root@system:/var/shares/example1# repquota -va
+<screen>
 *** Report for user quotas on device /dev/vdb1
 Block grace time: 7days; Inode grace time: 7days
                         Block limits                File limits
 User            used    soft    hard  grace    used  soft  hard  grace
 ----------------------------------------------------------------------
-root      --      20       0       0              2     0     0       
-Administrator --       0       0  102400              0     0     0       
-user01    --  234472 2048000 4096000              2     0     0       
-user02    --       0 2048000 4096000              0     0     0       
+root      --      20       0       0              2     0     0
+Administrator --       0       0  102400              0     0     0
+user01    --  234472 2048000 4096000              2     0     0
+user02    --       0 2048000 4096000              0     0     0
 
 Statistics:
 Total blocks: 8
 Data blocks: 1
 Entries: 4
 Used average: 4.000000
-</programlisting>
+</screen>
 
 	<para>
 	  Logged in users can use the <command>quota -v</command> command to view the applicable quota
@@ -1117,13 +1116,14 @@ Used average: 4.000000
 	<para>
 	  To enable a quota for the root partition, proceed as follows:
 	  <itemizedlist>
-		<listitem> <para>
+		<listitem>
+			<para>
 		  The &ucsUCRV; <envar>grub/append</envar> must be expanded with
 		  <emphasis>root2flags=quota</emphasis>. A blank space is used to separate already set
 		  values. This sets the quota support for the root partition as a boot parameter. The change
 		  is written automatically in the boot record, e.g.:
-
-<programlisting>
+			</para>
+			<screen>
 root@system:~# ucr get grub/append
 nosplash
 root@system:~# ucr set grub/append="noplash root2flags=quota"
@@ -1137,29 +1137,26 @@ Found initrd image: /boot/initrd.img-3.2.0-ucs27-686-pae
 Found memtest86+ image: /boot/memtest86+.bin
 done
 Generating legacy menu.lst from current kernels
-</programlisting>
-
-		</para>
+</screen>
 		</listitem>
 
-		<listitem> <para>
+		<listitem>
+			<para>
 		  On ext2, ext3 and ext4 file systems, the <emphasis>usrquota</emphasis> parameter for the
 		  root partition must be expanded in the file <filename>/etc/fstab</filename>. This is not
 		  necessary on XFS file systems, e.g:
-
-<programlisting>
-root@system:~# cat /etc/fstab
+			</para>
+			<programlisting><![CDATA[
 # /etc/fstab: static file system information.
 #
-# &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+# >file system> <mount point>   <type>  <options>       <dump>  <pass>
 UUID=64cff02c-0870-4890-9fb6-7b502ed1aa12       /       ext3    acl,errors=remount-ro,user_xattr,usrquota       0       1
 proc    /proc   proc    defaults        0       0
 UUID=1bb33966-bc9b-4d41-97e8-476b9effe515       none    swap    sw      0       0
 /dev/sr0        /cdrom  auto    user,noauto,exec        0       0
 /dev/fd0        /floppy vfat    user,noauto,exec        0       0
-</programlisting>
-
-		</para></listitem>
+]]></programlisting>
+		</listitem>
 
 		<listitem> <para>
 		  The system must then be restarted.

@@ -1120,25 +1120,23 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	  <command>repquota -va</command> aufgelistet werden, z.B.:
 	</para>
 
-<programlisting>
-root@system:/var/shares/example1# repquota -va
+<screen>
 *** Report für user Quotas auf Gerät /dev/vdb1
 Blockgnadenfrist: 7days; Inodegnadenfrist: 7days
                         Block Limits                Dateilimits
 Benutzer        belegt  weich   hart  Gnade   belegt weich hart  Gnade
 ----------------------------------------------------------------------
-root      --      20       0       0              2     0     0       
-Administrator --       0       0  102400              0     0     0       
-user01    --  234472 2048000 4096000              2     0     0       
-user02    --       0 2048000 4096000              0     0     0       
+root      --      20       0       0              2     0     0
+Administrator --       0       0  102400              0     0     0
+user01    --  234472 2048000 4096000              2     0     0
+user02    --       0 2048000 4096000              0     0     0
 
 Statistik:
 Gesamtblockzahl: 8
 Datenblöcke: 1
 Enträge: 4
 Durchschnittlich verwendet: 4,000000
-</programlisting>
-
+</screen>
 
 	<para>
 	  Angemeldete Benutzer können mit dem Befehl <command>quota -v</command> die für sie geltenden
@@ -1156,13 +1154,14 @@ Durchschnittlich verwendet: 4,000000
 	  Wenn Quota für die Root-Partition aktiviert werden soll, muss wie folgt
 	  vorgegangen werden:
 	  <itemizedlist>
-		<listitem> <para>
+		<listitem>
+			<para>
 		  Die &ucsUCRV; <envar>grub/append</envar> muss um <emphasis>root2flags=quota</emphasis>
 		  ergänzt werden. Als Trennzeichen zu bereits gesetzten Werten wird dabei ein Leerzeichen
 		  verwendet. Hierdurch wird der Quota-Support für die Root-Partition als
 		  Bootparameter gesetzt. Die Änderung wird automatisch in den Bootrecord geschrieben, z.B:
-
-<programlisting>
+			</para>
+			<screen>
 root@system:~# ucr get grub/append
 nosplash
 root@system:~# ucr set grub/append="noplash root2flags=quota"
@@ -1176,31 +1175,26 @@ Found initrd image: /boot/initrd.img-3.2.0-ucs27-686-pae
 Found memtest86+ image: /boot/memtest86+.bin
 done
 Generating legacy menu.lst from current kernels
-</programlisting>
-
-
-		</para>
+</screen>
 		</listitem>
 
-		<listitem> <para>
+		<listitem>
+			<para>
 		  Bei ext2, ext3 und ext4-Dateisystemen muss der Parameter <emphasis>usrquota</emphasis> für die root-Partition
 		  in der Datei <filename>/etc/fstab</filename> ergänzt werden. Für XFS-Dateisysteme ist dies
 		  nicht notwendig. Ein Beispiel:
-
-<programlisting>
-root@system:~# cat /etc/fstab
+			</para>
+			<programlisting><![CDATA[
 # /etc/fstab: static file system information.
 #
-# &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
 UUID=64cff02c-0870-4890-9fb6-7b502ed1aa12       /       ext3    acl,errors=remount-ro,user_xattr,usrquota       0       1
 proc    /proc   proc    defaults        0       0
 UUID=1bb33966-bc9b-4d41-97e8-476b9effe515       none    swap    sw      0       0
 /dev/sr0        /cdrom  auto    user,noauto,exec        0       0
 /dev/fd0        /floppy vfat    user,noauto,exec        0       0
-</programlisting>
-
-
-		</para></listitem>
+]]></programlisting>
+		</listitem>
 
 		<listitem> <para>
 		  Anschließend muss das System neu gestartet werden.
