@@ -74,13 +74,19 @@ define([
 						depends: ['driveType'],
 						label: _('Drive type'),
 						sortDynamicValues: false,
-						dynamicValues: function(options) {
+						dynamicValues: lang.hitch(this, function(options) {
 							// show depending on the drive type only specific values
-							return array.filter(types.diskChoice, function(iitem) {
-								return	(options.driveType != 'disk' && iitem.id != 'new') ||
-										(options.driveType == 'disk' && iitem.id != 'empty');
-							});
-						},
+							return array.filter(types.diskChoice, lang.hitch(this, function(iitem) {
+								if (this.domain.domain_type === 'xen' && this.domain.os_type === 'xen' && iitem.id === 'empty') {
+									return false;
+								}
+								if (options.driveType == 'disk') {
+									return iitem.id != 'empty';
+								} else { // cdrom floppy
+									return iitem.id != 'new';
+								}
+							}));
+						}),
 						onChange: lang.hitch(this, '_updateDriveWidgets')
 					}, {
 						name: 'pool_new',

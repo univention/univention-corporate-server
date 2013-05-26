@@ -1297,8 +1297,12 @@ def domain_define( uri, domain ):
 				for xml in live_updates:
 					try:
 						logger.debug('DEVICE_UPDATE: %s' % xml)
-						# As of qemu-0.14.1 and libvirt-0.8.4, only updating live domains works.
-						rv = old_dom.updateDeviceFlags(xml, libvirt.VIR_DOMAIN_DEVICE_MODIFY_LIVE)
+						rv = old_dom.updateDeviceFlags(
+								xml, (
+									libvirt.VIR_DOMAIN_DEVICE_MODIFY_LIVE |
+									libvirt.VIR_DOMAIN_DEVICE_MODIFY_CONFIG
+									)
+								)
 						if rv != 0:
 							warnings.append(_('Failed to update device.'))
 					except libvirt.libvirtError, ex:

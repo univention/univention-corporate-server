@@ -513,7 +513,7 @@ define([
 					this._advancedForm._widgets.vnc_port.set('visible', Boolean(this._advancedForm._widgets.vnc_port.get('value')));
 
 					// deactivate most input field when domain is running
-					var domainActive = Boolean(this._domain.state == 'RUNNING' || this._domain.state == 'IDLE' || this._domain.state == 'PAUSED' || this._domain.suspended);
+					var domainActive = types.isActive(this._domain);
 					if (domainActive) {
 						this._generalPage.addNote( _( 'While the virtual machine is running most of the settings can not be changed.' ) );
 					} else if ( ! domainActive ) {

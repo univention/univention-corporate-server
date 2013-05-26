@@ -77,6 +77,10 @@ define([
 			}
 			return text;
 		},
+		activeStates: {'RUNNING': true, 'IDLE': true, 'PAUSED': true},
+		isActive: function(domain) {
+			return Boolean(domain.state in self.activeStates || domain.suspended);
+		},
 		parseStorageSize: function(size) {
 			var pattern = /^([0-9]+(?:[,.][0-9]+)?)[ \t]*(?:([KkMmGgTtPp])(?:[Ii]?[Bb])?|[Bb])?$/;
 			var match = pattern.exec(size);
