@@ -121,30 +121,3 @@ class Instance( Base, Nodes, Profiles, Storages, Domains, Snapshots ):
 				'GROUP_LIST',
 				Callback(self._thread_finish, request)
 				)
-
-	def nic_get( self, request ):
-		self.finished( request.id )
-
-	def nic_add( self, request ):
-		self.finished( request.id )
-
-	def nic_put( self, request ):
-		self.finished( request.id )
-
-	def snapshot_get( self, request ):
-		self.finished( request.id )
-
-	def snapshot_add( self, request ):
-		self.finished( request.id )
-
-	def snapshot_set( self, request ):
-		self.finished( request.id )
-
-	def device_get( self, request ):
-		self.finished( request.id )
-
-	def device_add( self, request ):
-		self.finished( request.id )
-
-	def device_put( self, request ):
-		self.finished( request.id )
