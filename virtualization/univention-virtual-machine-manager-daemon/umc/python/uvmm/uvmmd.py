@@ -61,7 +61,9 @@ class UVMM_Request( object ):
 	def request( self, command, **kwargs ):
 		MODULE.info( 'Sending request %s to UVMM daemon ...' % command )
 		try:
-			request = eval( 'protocol.Request_%s()' % command )
+			class_name = 'Request_%s' % (command,)
+			clazz = getattr(protocol, class_name)
+			request = clazz()
 		except (NameError, AttributeError):
 			MODULE.error( 'Failed to create request %s' % command )
 			raise UVMM_Error( _( 'The given UVMM command is not known' ) )
