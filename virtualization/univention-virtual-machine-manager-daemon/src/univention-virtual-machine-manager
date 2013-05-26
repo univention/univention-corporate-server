@@ -349,7 +349,7 @@ class Client(object):
 
 		Change the state of domain <domain> on the virtualization server specifies by
 		<uri> to the given state <state>, which can be one of
-		  RUN, PAUSE, SUSPEND, RESTART, SHUTDOWN
+		  RUN, PAUSE, SUSPEND, RESTART, SHUTDOWN, SHUTOFF
 		Examples:
 			%prog state xen://server.domain.name/ 1-2-3-4-5 PAUSE
 		"""

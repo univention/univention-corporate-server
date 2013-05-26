@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 1.0.103-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-10-26 11:49+0200\n"
+"POT-Creation-Date: 2013-05-21 16:30+0200\n"
 "PO-Revision-Date: 2012-08-06 11:45+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -56,6 +56,21 @@ msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ausgewählt"
 #: umc/js/uvmm/types.js:76
 msgid "(saved state)"
 msgstr "(gespeicherter Zustand)"
+
+#: umc/js/uvmm.js:564
+msgid ""
+"<div>Shutting down virtual machines required the cooperation of their guest "
+"operating system.</div><dl><dt>For UCS</dt><dd>Install the package \"acpid\" "
+"and \"acpi-support-base\"</dd><dt>For Windows</dt><dd>Enable ACPI</dd></"
+"dl><div>If the operating system does not cooperate, \"Stop\" can be used to "
+"forcefully turn off the virtual machine.</div>"
+msgstr ""
+"<div>Das Herunterfahren virtueller Maschinen benötigt die Kooperation der "
+"Gastbetriebssysteme.</div><dl><dt>Für UCS</dt><dd>Die Pakete \"acpid\" und "
+"\"acpi-support-base\" müssen installiert sein</dd><dt>Für Windows</dt><dd>ACPI "
+"muß aktiviert sein</dd></dl><div>Wenn das Betriebssystem nicht kooperiert kann "
+"\"Beenden\" benutzt serden, um die virtuelle Maschine zwangsweise "
+"auszuschalten."
 
 #: umc/js/uvmm.js:362 umc/js/uvmm/DomainPage.js:456
 msgid ""
@@ -88,15 +103,14 @@ msgid ""
 "<p>This module provides a management interface for physical servers that are "
 "registered within the UCS domain.</p><p>The tree view on the left side shows "
 "an overview of all existing physical servers and the residing virtual "
-"machines. By selecting one of the physical servers statistics of the "
-"current state are displayed to get an impression of the health of the "
-"hardware system. Additionally actions like start, stop, suspend and resume "
-"for each virtual machine can be invoked on each of the machines.</"
-"p><p>Also possible is direct access to virtual machines. Therefor it must "
-"be activated in the configuration.</p><p>Each virtual machine entry in the "
-"tree view provides access to detailed information und gives the possibility "
-"to change the configuration or state and migrated it to another physical "
-"server.</p>"
+"machines. By selecting one of the physical servers statistics of the current "
+"state are displayed to get an impression of the health of the hardware "
+"system. Additionally actions like start, stop, suspend and resume for each "
+"virtual machine can be invoked on each of the instances.</p><p>Also possible "
+"is direct access to virtual machines. Therefor it must be activated in the "
+"configuration.</p><p>Each virtual machine entry in the tree view provides "
+"access to detailed information und gives the possibility to change the "
+"configuration or state and migrated it to another physical server.</p>"
 msgstr ""
 "<p>Dieses Modul stellt eine Managementoberfläche für Virtualisierungsserver "
 "zur Verfügung, die im UCS-Managementsystem als solche eingetragen sind.</"
@@ -106,16 +120,17 @@ msgstr ""
 "Statistiken über den aktuellen Zustand angezeigt, um einen Eindruck von der "
 "Auslastung des Systems zu bekommen. Zusätzlich gibt es die Möglichkeit "
 "Aktion wie das Starten, Beenden, Pausieren oder Fortführung durchzuführen.</"
-"p><p> Des weiteren kann, wenn aktiviert, auch ein Direktzugriff durchgeführt "
+"p><p>Des weiteren kann, wenn aktiviert, auch ein Direktzugriff durchgeführt "
 "werden. Dafür muss dieser in der Konfiguration aktiviert sein.</p><p>Jeder "
 "Eintrag einer virtuellen Maschine in der Baumansicht führt zu einer "
 "detaillierten Anzeige von Einstellungen. Diese können dort entsprechend "
-"bearbeitet und gespeichert werden.</p>"
+"bearbeitet, gesteuert, oder zu einem anderen physischen Server migriert "
+"werden.</p>"
 
 #: umc/js/uvmm/DomainWizard.js:110
 msgid ""
-"A name for the virtual machine is required and should not be the same as "
-"the given name prefix"
+"A name for the virtual machine is required and should not be the same as the "
+"given name prefix"
 msgstr ""
 "Der Name für die virtuelle Maschine wird benötigt und sollte nicht der "
 "vorgeschlagenen Namenspräfix entsprechen"
@@ -136,10 +151,11 @@ msgstr ""
 
 #: umc/js/uvmm/SnapshotGrid.js:135
 msgid ""
-"A valid snapshot name cannot contain \"/\", \"&\" or \"<\", and may not start with \".\" ."
+"A valid snapshot name cannot contain \"/\", \"&\" or \"<\", and may not "
+"start with \".\" ."
 msgstr ""
-"Ein gültiger Sicherungspunktname darf keine \"/\", \"&\" oder \"<\" enthalten und kann nicht "
-"mit \".\" beginnen."
+"Ein gültiger Sicherungspunktname darf keine \"/\", \"&\" oder \"<\" "
+"enthalten und kann nicht mit \".\" beginnen."
 
 #: umc/js/uvmm/DriveWizard.js:64 umc/js/uvmm/DriveGrid.js:415
 msgid "Add a new drive"
@@ -224,10 +240,10 @@ msgstr "Bridge"
 msgid ""
 "By selecting a profile for the virtual machine most of the settings will be "
 "set to default values. In the following steps some of these values might be "
-"modified. After the creation of the virtual machine all parameters, "
-"extended settings und attached drives can be adjusted. It should be ensured "
-"that the profile is for the correct architecture as this option can not be "
-"changed afterwards."
+"modified. After the creation of the virtual machine all parameters, extended "
+"settings und attached drives can be adjusted. It should be ensured that the "
+"profile is for the correct architecture as this option can not be changed "
+"afterwards."
 msgstr ""
 "Durch die Auswahl eines Profils für eine virtuelle Maschine werden die "
 "meisten Einstellungen mit Vorgabewerten ausgefüllt. In den folgenden "
@@ -297,14 +313,6 @@ msgstr "Erstellen eines Klons"
 msgid "Create a new image"
 msgstr "Erstellen einer neuen Image-Datei"
 
-#: umc/js/uvmm/SnapshotGrid.js:112
-msgid "Creating a snapshots is not possible, because the domain contains writeable raw images!"
-msgstr "Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain ein schreibbares Raw-Datei-Image enthält!"
-
-#: umc/js/uvmm/SnapshotGrid.js:115
-msgid "Creating a snapshot is not possible, because the domain does not have at least one qcow2 image!"
-msgstr "Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain nicht wenigstens ein Qcow2-Datei-Image enthält!"
-
 #: umc/js/uvmm/DomainWizard.js:79
 msgid "Create a virtual machine"
 msgstr "Erstellen einer virtuellen Maschine"
@@ -321,6 +329,22 @@ msgstr "Neuen Sicherungspunkt erstellen"
 #: umc/js/uvmm.js:853
 msgid "Create virtual machine"
 msgstr "Erstellen einer virtuellen Maschine"
+
+#: umc/js/uvmm/SnapshotGrid.js:112
+msgid ""
+"Creating a snapshot is not possible, because the domain does not have at "
+"least one qcow2 image!"
+msgstr ""
+"Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain nicht "
+"wenigstens ein Qcow2-Datei-Image enthält!"
+
+#: umc/js/uvmm/SnapshotGrid.js:115
+msgid ""
+"Creating a snapshots is not possible, because the domain contains writeable "
+"raw images!"
+msgstr ""
+"Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain ein "
+"schreibbares Raw-Datei-Image enthält!"
 
 #: umc/js/uvmm/types.js:129
 msgid "Croatian"
@@ -424,7 +448,11 @@ msgstr "Bearbeiten"
 msgid "Edit drive"
 msgstr "Laufwerk bearbeiten"
 
-#: umc/js/uvmm.js:758
+#: umc/js/uvmm/InterfaceWizard.js:114 umc/js/uvmm/InterfaceGrid.js:189
+msgid "Edit network interface"
+msgstr "Bearbeiten einer Netzwerkschnittstelle"
+
+#: umc/js/uvmm.js:783
 msgid "Edit the configuration of the virtual machine"
 msgstr "Konfiguration der virtuellen Maschinen bearbeiten"
 
@@ -703,13 +731,13 @@ msgstr "Netzwerkschnittstellen"
 msgid "No %(objPlural)s could be found"
 msgstr "Es konnten keine %(objPlural)s gefunden werden"
 
-#: umc/js/uvmm/types.js:226
-msgid "No host caching, no forced sync (none)"
-msgstr "Kein Host-Caching, kein erzwungenes sync (none)"
-
 #: umc/js/uvmm/types.js:229
 msgid "No host caching, forced sync (direct-sync)"
 msgstr "Kein Host-Caching, erzwungenes sync (direct-sync)"
+
+#: umc/js/uvmm/types.js:226
+msgid "No host caching, no forced sync (none)"
+msgstr "Kein Host-Caching, kein erzwungenes sync (none)"
 
 #: umc/js/uvmm/types.js:222
 msgid "No media"
@@ -751,7 +779,11 @@ msgstr "Paravirtualisiertes Gerät (xen)"
 msgid "Paravirtual drive"
 msgstr "Paravirtualisiertes Laufwerk"
 
-#: umc/js/uvmm/DriveGrid.js:209
+#: umc/js/uvmm/types.js:105
+msgid "Paravirtualization (XEN)"
+msgstr "Paravirtualisierung (XEN)"
+
+#: umc/js/uvmm/DriveGrid.js:204
 msgid ""
 "Paravirtualization is a special variant of virtualization in which the "
 "virtualized operating system is adapted to the underlying virtualization "
@@ -768,10 +800,6 @@ msgstr ""
 "versehen. Auf Windows-Systemen müssen entsprechende Unterstützungstreiber "
 "installiert werden, siehe <a href=\"http://wiki.univention.de/index.php?"
 "title=UVMM_Technische_Details\">Univention Wiki.</a>"
-
-#: umc/js/uvmm/types.js:105
-msgid "Paravirtualization (XEN)"
-msgstr "Paravirtualisierung (XEN)"
 
 #: umc/js/uvmm.js:784
 msgid "Pause"
@@ -859,7 +887,11 @@ msgstr "Löschen"
 msgid "Remove a virtual machine"
 msgstr "Löschen einer virtuellen Maschine"
 
-#: umc/js/uvmm.js:804
+#: umc/js/uvmm.js:815
+msgid "Request virtual machine shutdown using ACPI"
+msgstr "Herunterfahren der virtuellen Maschine mittels ACPI"
+
+#: umc/js/uvmm.js:844
 msgid "Restart"
 msgstr "Neu starten"
 
@@ -913,11 +945,19 @@ msgstr ""
 msgid "Should the selected virtual machine {label} be removed?"
 msgstr "Soll die ausgewählte virtuelle Maschine {label} gelöscht werden?"
 
-#: umc/js/uvmm.js:775
+#: umc/js/uvmm.js:568
+msgid "Show this message again"
+msgstr "Diese Nachricht später wieder zeigen"
+
+#: umc/js/uvmm.js:800
 msgid "Shut off the virtual machine"
 msgstr "Ausschalten einer virtuellen Maschine"
 
-#: umc/js/uvmm/types.js:270
+#: umc/js/uvmm.js:813
+msgid "Shutdown"
+msgstr "Herunterfahren"
+
+#: umc/js/uvmm/types.js:289
 msgid "Simple format (raw)"
 msgstr "Einfaches Format (raw)"
 
@@ -965,8 +1005,11 @@ msgid "Start the virtual machine"
 msgstr "Starten einer virtuellen Maschine"
 
 #: umc/js/uvmm.js:941
-msgid "State: {state}<br>Server: {node}<br>Description: {description}<br>{vnc_port}"
-msgstr "Status: {state}<br>Server: {node}<br>Beschreibung: {description}<br>{vnc_port}"
+msgid ""
+"State: {state}<br>Server: {node}<br>Description: {description}<br>{vnc_port}"
+msgstr ""
+"Status: {state}<br>Server: {node}<br>Beschreibung: {description}<br>"
+"{vnc_port}"
 
 #: umc/js/uvmm.js:773 umc/js/uvmm.js:778
 msgid "Stop"
@@ -974,7 +1017,7 @@ msgstr "Beenden"
 
 #: umc/js/uvmm.js:778
 msgid ""
-"Stopping virtual machines will turn them off without shutting down the "
+"Stopping the virtual machine will turn it off without shutting down the "
 "operating system. Should the operation be continued?"
 msgstr ""
 "Das Beenden der virtuellen Maschine schaltet diese aus ohne das "
@@ -992,7 +1035,7 @@ msgstr "Schwedisch"
 msgid "Thai"
 msgstr "Thailand"
 
-#: umc/js/uvmm/DriveWizard.js:256 umc/js/uvmm/DomainPage.js:399
+#: umc/js/uvmm/DomainPage.js:399 umc/js/uvmm/DriveWizard.js:271
 msgid "The entered data is not valid. Please correct your input."
 msgstr ""
 "Die eingegebenen Daten sind nicht gültig. Bitte korrigieren Sie ihre Eingabe."
@@ -1083,17 +1126,17 @@ msgid ""
 "Two types of network interfaces are support. The first one is <i>Bridge</i> "
 "that requires a static network connection on the physical server that is "
 "configurated to be used for bridging. By default the network interface "
-"called eth0 is setup for such a case on each UVMM node. If a virtual "
-"machine should have more than one bridging network interface, additional "
-"network interfaces on the physical server must be configured first. The "
-"second type is <i>NAT</i> provides a private network for virtual machines "
-"on the physical server and permits access to the external network. This "
-"network typ is useful for computers with varying network connections like "
-"notebooks. For such an interface the network configuration of the UVMM node "
-"needs to be modified. This is done automatically by the UVMM service when "
-"starting the virtual machine. Further details about the network "
-"configuration can be found in <a target=\"_blank\" href=\"http://sdb."
-"univention.de/1172\">this article</a>."
+"called eth0 is setup for such a case on each UVMM node. If a virtual machine "
+"should have more than one bridging network interface, additional network "
+"interfaces on the physical server must be configured first. The second type "
+"is <i>NAT</i> provides a private network for virtual machines on the "
+"physical server and permits access to the external network. This network typ "
+"is useful for computers with varying network connections like notebooks. For "
+"such an interface the network configuration of the UVMM node needs to be "
+"modified. This is done automatically by the UVMM service when starting the "
+"virtual machine. Further details about the network configuration can be "
+"found in <a target=\"_blank\" href=\"http://sdb.univention.de/1172\">this "
+"article</a>."
 msgstr ""
 "Zwei Typen von Netzwerkschnittstellen werden unterstützt. Der erste Typ "
 "<i>Bridge</i> benötigt eine statische Netzwerkverbindung auf dem "
@@ -1144,6 +1187,10 @@ msgstr "Anzeigen"
 msgid "Virtual machine"
 msgstr "Virtuelle Maschine"
 
+#: umc/js/uvmm.js:559
+msgid "Virtual machine shutdown"
+msgstr "Virtuelle Maschine herunterfahren"
+
 #: umc/js/uvmm/DomainPage.js:137
 #, python-format
 msgid "Virtual machine: %s"
@@ -1159,8 +1206,7 @@ msgstr "Welche Art von Laufwerk soll erstellt werden?"
 
 #: umc/js/uvmm/DomainPage.js:528
 msgid ""
-"While the virtual machine is running most of the settings can not be "
-"changed."
+"While the virtual machine is running most of the settings can not be changed."
 msgstr ""
 "Während die virtuelle Maschine läuft können die meisten Einstellungen nicht "
 "verändert werden"
@@ -1398,9 +1444,6 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 
 #~ msgid "Edit drive settings"
 #~ msgstr "Bearbeiten der Laufwerkskonfiguration"
-
-#~ msgid "Edit network interface"
-#~ msgstr "Bearbeiten einer Netzwerkschnittstelle"
 
 #~ msgid "Eject or change media from device"
 #~ msgstr "Medium eines Geräts auswerfen oder wechseln"
@@ -1925,9 +1968,6 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 
 #~ msgid "Virtual instance %(domain)s - <i>%(tech)s</i>"
 #~ msgstr "Virtuelle Instanz %(domain)s - <i>%(tech)s</i>"
-
-#~ msgid "Virtual machine"
-#~ msgstr "Virtuelle Maschine"
 
 #~ msgid "Virtualization sever"
 #~ msgstr "Virtualisierungsserver"
