@@ -562,11 +562,9 @@ define([
 
 			var sourceURI = ids[ 0 ].slice( 0, ids[ 0 ].indexOf( '#' ) );
 
-			if ( ids.length > 1 ) {
-				if ( ! this._grid.canExecuteOnSelection( action, items ).length ) {
-					dialog.alert( _( 'The state of the selected virtual machine can not be changed' ) );
-					return;
-				}
+			if (!this._grid.canExecuteOnSelection(action, items).length) {
+				dialog.alert(_('The state of the selected virtual machines can not be changed'));
+				return;
 			}
 
 			form = new Form({
@@ -604,9 +602,9 @@ define([
 			var deferred = new Deferred();
 			deferred.resolve();
 
-			if ( ids.length > 1 && action !== null ) {
-				if ( ! this._grid.canExecuteOnSelection( action, items ).length ) {
-					dialog.alert( _( 'The state of the selected virtual machine can not be changed' ) );
+			if (action !== null) {
+				if (!this._grid.canExecuteOnSelection(action, items ).length) {
+					dialog.alert(_('The state of the selected virtual machines can not be changed'));
 					return;
 				}
 			}
