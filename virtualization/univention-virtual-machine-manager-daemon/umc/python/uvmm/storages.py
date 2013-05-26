@@ -287,4 +287,4 @@ class Storages( object ):
 		if pool is None:
 			return None
 
-		return Disk.TYPE_FILE == Storage.POOLS_TYPE[pool['type']]
+		return Disk.TYPE_FILE == Storages.POOLS_TYPE[pool['type']]
