@@ -35,12 +35,11 @@ import os
 from univention.lib.i18n import Translation
 
 from univention.management.console.log import MODULE
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
+from univention.management.console.modules import UMC_OptionTypeError
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from univention.uvmm.protocol import Disk
 # get the URI parser for nodes
-import univention.uvmm.helpers
 import urlparse
 
 from notifier import Callback
@@ -248,7 +247,7 @@ class Storages( object ):
 		try:
 			pools = self.storage_pools[node_uri]
 		except LookupError:
-			success, data = self.uvmm.send(
+			_success, data = self.uvmm.send(
 					'STORAGE_POOLS',
 					None,
 					uri=node_uri
@@ -260,7 +259,7 @@ class Storages( object ):
 			return pools.get(pool_name)
 
 		if pool_path:
-			for uri, pool in pools.items():
+			for _uri, pool in pools.items():
 				if pool_path.startswith(pool['path']):
 					return pool
 

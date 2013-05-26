@@ -32,11 +32,9 @@
 
 from univention.lib.i18n import Translation
 
-from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 # for urlparse extensions
-from univention.uvmm import helpers
 import urlparse
 
 from notifier import Callback

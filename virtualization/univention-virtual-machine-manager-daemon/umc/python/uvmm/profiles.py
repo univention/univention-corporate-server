@@ -35,16 +35,14 @@ import univention.admin.handlers.uvmm.profile as uvmm_profile
 
 from univention.lib.i18n import Translation
 
-from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 # get the URI parser for nodes
-import univention.uvmm.helpers
 import urlparse
 
 from notifier import Callback
 
-from .udm import LDAP_Connection, LDAP_ConnectionError
+from .udm import LDAP_Connection
 from .tools import object2dict
 
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
