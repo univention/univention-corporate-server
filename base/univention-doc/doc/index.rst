@@ -45,7 +45,7 @@ Makefile and the index.rst from the UMC source package
 `Web SVN access to UMC <https://forge.univention.org/websvn/listing.php?repname=dev&path=%2Fbranches%2Fucs-3.0%2Fucs%2Fmanagement%2Funivention-management-console%2F&#a163ea89c19c4eaaad2950435ff70dc08>`_
 
 When you have copied the files you should at least replace all
-occurances of *Univention Management Console*. After that you can start
+occurrences of *Univention Management Console*. After that you can start
 writing your documentation.
 
 =========
@@ -56,26 +56,28 @@ To package the documentation just a few steps are necessary:
 
 1. Add a new binary package to your source package, like ::
 
-     Package: univention-management-console-doc
+     Package: <package name>-doc
      Architecture: all
      Depends: ${misc:Depends},
       univention-doc
-     Description: UCS Management Console - documentation
+     Description: <package description> - documentation
 
-2. Create an *.install* file for the binary package containing at least the following entries ::
+   Replace *<package name>* and *<package description>* with some useful texts.
 
-     doc/*.rst usr/share/univention-doc/src/umc/
-     doc/*.png usr/share/univention-doc/src/umc/
-     doc/*.py usr/share/univention-doc/src/umc/
-     
-   Replace *umc* with a short identifier for your package.
+2. Create an *debian/<package name>-doc.install* file for the binary package containing at least the following entries ::
 
-3. Create a *.postinst* file for the binary package and add at least the following line ::
+     doc/*.rst usr/share/univention-doc/src/<package name>/
+     doc/*.png usr/share/univention-doc/src/<package name>/
+     doc/*.py usr/share/univention-doc/src/<package name>/
 
-     univention-doc install <short identifier>
+   Replace *<package name>* with the name of your package.
 
-4. Create a *.prerm* file for the binary package and add at least the following line ::
+3. Create a *debian/<package name>.postinst* file for the binary package and add at least the following line ::
 
-     univention-doc uninstall <short identifier>
+     univention-doc install <package name>
+
+4. Create a *debian/<package name>.prerm* file for the binary package and add at least the following line ::
+
+     univention-doc uninstall <package name>
 
 
