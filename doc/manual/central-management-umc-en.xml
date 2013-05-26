@@ -1,7 +1,8 @@
 <chapter id="central:general">
 <title>Central domain management with UMC</title>
+
 <section id="central-management-umc:Introduction">
-<title>Introduction</title>
+	<title>Introduction</title>
 	<para>
 		&ucsUMC; (UMC) is the central tool for web-based administration of
 		the UCS domain. UMC supports two basic module types:
@@ -38,10 +39,12 @@
 		domain management is described in the <xref linkend="central:udm"/>.
 	</para>
 </section>
+
 <section id="central:user-interface">
-<title>Operating instructions for &ucsUMC;</title>
+	<title>Operating instructions for &ucsUMC;</title>
+
 	<section id="central-management-umc:Login">
-	<title>Login</title>
+		<title>Login</title>
 		<para>
 		&ucsUMC; uses numerous Javascript and CSS functions to display the
 		web interface. Cookies need to be permitted in the browser.
@@ -110,8 +113,9 @@
 			<envar>umc/http/session/timeout</envar>.
 		</para>
 	</section>
+
 	<section id="central:license">
-	<title>Activation of UCS license / license overview</title>
+		<title>Activation of UCS license / license overview</title>
 		<para>
 			The UCS license can be set up by clicking on the gear-wheel symbol in
 			the top right line of the screen. To do so, the <guimenu>License</guimenu>
@@ -119,7 +123,7 @@
 			under <guimenu>Current license</guimenu>.
 		</para>
 		<figure id="umc-license">
-		<title>Displaying the UCS license</title>
+			<title>Displaying the UCS license</title>
 			<graphic scalefit="1" width="40%" fileref="illustrations/umc_ffpu_en.png"/>
 		</figure>
 		<para>
@@ -135,15 +139,16 @@
 		  message is displayed on the UMC start page if the licence is exceeded.
 		</para>
 	</section>
+
 	<section id="central-management-umc:Operating_instructions_for_domain_modules">
-	<title>Operating instructions for domain modules</title>
+		<title>Operating instructions for domain modules</title>
 		<para>
 			All of the domain modules in &ucsUMC; are controlled identically from
 			a structural perspective. The following examples are presented using
 			the user management but apply equally for all modules.
 		</para>
 		<figure id="umc-modules">
-		<title>Module overview</title>
+			<title>Module overview</title>
 			<graphic scalefit="1" width="80%" fileref="illustrations/umc_modules_en.png"/>
 		</figure>
 		<para>
@@ -167,8 +172,9 @@
 			navigation (<xref linkend="central:navigation"/>) are described
 			separately.
 		</para>
+
 		<section id="central-management-umc:Searching_for_objects">
-		<title>Searching for objects</title>
+			<title>Searching for objects</title>
 			<para>
 				The module overview lists all the objects managed by this
 				module. The <guimenu>Property</guimenu> selection field can be used to
@@ -179,7 +185,7 @@
 				display only the user names beginning with <emphasis>m</emphasis>.
 			</para>
 			<figure id="umc-search">
-			<title>Searching for users</title>
+				<title>Searching for users</title>
 				<graphic scalefit="1" width="80%" fileref="illustrations/umc_user_en.png"/>
 			</figure>
 			<para>
@@ -191,8 +197,9 @@
 				be found in <xref linkend="central:cn-and-ous"/>.
 			</para>
 		</section>
+
 		<section id="central-management-umc:Creating_objects">
-		<title>Creating objects</title>
+			<title>Creating objects</title>
 			<para>
 				The lowest line of the screen includes an action line for creating a
 				new object. The menu entries have the same names as the module name,
@@ -200,8 +207,9 @@
 				be selected (see <xref linkend="users:templates"/>).
 			</para>
 		</section>
+
 		<section id="central:user-interface:edit">
-		<title>Editing objects</title>
+			<title>Editing objects</title>
 			<para>
 				Clicking on the stylised pen behind an LDAP object in the search
 				overview allows to edit the object. The individual attributes are
@@ -222,8 +230,9 @@
 				Only objects of the same type can be edited.
 			</para>
 		</section>
+
 		<section id="central-management-umc:Deleting_objects">
-		<title>Deleting objects</title>
+			<title>Deleting objects</title>
 			<para>
 				Clicking on the stylised minus sign behind an LDAP object in the
 				search overview allows to delete the object. The prompt must be
@@ -237,8 +246,9 @@
 				is also possible to delete multiple objects at once.
 			</para>
 		</section>
+
 		<section id="central-management-umc:Moving_objects">
-		<title>Moving objects</title>
+			<title>Moving objects</title>
 			<para>
 				The <guimenu>more</guimenu> selection field behind an LDAP object in the
 				search overview can be used, after the selection
@@ -253,7 +263,7 @@
 	</section>
 
 	<section id="central-management-umc:Favorites">
-	<title>Favorites</title>
+		<title>Favorites</title>
 		<para>
 		  Commonly used UMC modules are shown in a submenu <guimenu>Favorites</guimenu>. If you move
 		  the mouse right over the icon of a module already marked as a favorite, a translucent red
@@ -264,13 +274,12 @@
 	</section>
 
 	<section id="central-management-umc:feedback">
-	<title>Feedback on UMC and UCS</title>
+		<title>Feedback on UMC and UCS</title>
 	<para>
 	  The <guimenu>Feedback</guimenu> option can be reached by clicking on the question mark symbol
 	  in the top menu bar. Here you can provide feedback on UCS and the &ucsUMC; via a web form.
 	</para>
 	</section>
-
 </section>
 
 <section id="central-management-umc:piwik">
@@ -298,14 +307,14 @@
 </section>
 
 <section id="central:navigation">
-<title>LDAP directory browser</title>
+	<title>LDAP directory browser</title>
 	<para>
 		The <guimenu>LDAP directory</guimenu> domain module can be used to navigate
 		through the LDAP directory. When doing so, new objects can be created,
 		modified or deleted in the LDAP directory.
 	</para>
 	<figure id="umc-navigation">
-	<title>Navigating the LDAP directory</title>
+		<title>Navigating the LDAP directory</title>
 		<graphic scalefit="1" width="80%" fileref="illustrations/umc_navigation_en.png"/>
 	</figure>
 	<para>
@@ -327,7 +336,7 @@
 		deleted or moved here.
 	</para>
 	<figure id="umc-container-edit">
-	<title>Editing LDAP container settings</title>
+		<title>Editing LDAP container settings</title>
 		<graphic scalefit="1" width="20%" fileref="illustrations/umc_navigation_edit_en.png"/>
 	</figure>
 	<para>
@@ -335,8 +344,9 @@
 		the properties of the container or the LDAP base with <guimenu>Edit</guimenu>.
 	</para>
 </section>
+
 <section id="central:policies">
-<title>Policies</title>
+	<title>Policies</title>
 	<para>
 		<emphasis>Policies</emphasis> describe administrative settings which can be
 		practically be used on more than one object. They facilitate the
@@ -367,8 +377,9 @@
 		Every policy applies to a certain type of UMC domain object, e.g., for
 		users or DHCP subnets.
 	</para>
+
 	<section id="central-management-umc:Creating_a_policy">
-	<title>Creating a policy</title>
+		<title>Creating a policy</title>
 		<para>
 			Policies can be managed via the <guimenu>Policies</guimenu> module of
 			the &ucsUMC;. The operation is the same as for the functions
@@ -424,8 +435,9 @@
 			</listitem>
 		</itemizedlist>
 	</section>
+
 	<section id="central:policies:assign">
-	<title>Applying policies</title>
+		<title>Applying policies</title>
 		<para>
 			Policies can be assigned in two ways:
 		</para>
@@ -469,7 +481,9 @@
 			cannot apply to this policy are not affected.
 		</para>
 	</section>
-	<section id="central-management-umc:Editing_a_policy"><title>Editing a policy</title>
+
+	<section id="central-management-umc:Editing_a_policy">
+		<title>Editing a policy</title>
 		<para>
 			Policies can be edited and deleted in the UMC domain module
 			<guimenu>Policies</guimenu>. The interface is described in
@@ -490,8 +504,9 @@
 		</para>
 	</section>
 </section>
+
 <section id="central:extendedattrs">
-<title>Expansion of the attributes managed in UMC with extended attributes</title>
+	<title>Expansion of the attributes managed in UMC with extended attributes</title>
 	<para>
 		The domain management of the &ucsUMC; allows the comprehensive
 		management of the data in a domain. <emphasis>Extended attributes</emphasis>
@@ -509,7 +524,7 @@
 		here with <guimenu>Add LDAP object</guimenu>.
 	</para>
 	<figure id="umc-extended-attr">
-	<title>Extended attribute for managing a car license</title>
+		<title>Extended attribute for managing a car license</title>
 		<graphic scalefit="1" width="80%" fileref="illustrations/umc_extended_attribute_en.png"/>
 	</figure>
 	<para>
@@ -572,6 +587,7 @@
 			</tbody>
 		</tgroup>
 	</table>
+
 	<table>
 		<title>UDM Web</title>
 		<tgroup cols="2">
@@ -702,6 +718,7 @@
 			</tbody>
 		</tgroup>
 	</table>
+
 	<table>
 		<title>UDM General</title>
 		<tgroup cols="2">
@@ -751,6 +768,7 @@
 			</tbody>
 		</tgroup>
 	</table>
+
 	<table>
 		<title>Data type</title>
 		<tgroup cols="2">
@@ -843,6 +861,7 @@
 			</tbody>
 		</tgroup>
 	</table>
+
 	<table>
 		<title>LDAP</title>
 		<tgroup cols="2">
@@ -896,8 +915,9 @@
 		</tgroup>
 	</table>
 </section>
+
 <section id="central:cn-and-ous">
-<title>Structuring of the domain with user-defined LDAP structures</title>
+	<title>Structuring of the domain with user-defined LDAP structures</title>
 	<para>
 		Containers and organisational units (OU) are used to structure the
 		data in the LDAP directory. There is no technical difference between
@@ -928,6 +948,7 @@
 		Containers and OUs can in principle be added at any position in the
 		LDAP; however, OUs cannot be created below containers.
 	</para>
+
 	<table>
 		<title>'General' tab</title>
 		<tgroup cols="2">
@@ -955,6 +976,7 @@
 			</tbody>
 		</tgroup>
 	</table>
+
 	<table>
 		<title>'Advanced settings' tab</title>
 		<tgroup cols="2">
@@ -1002,8 +1024,9 @@
 		</tgroup>
 	</table>
 </section>
+
 <section id="central:udm">
-<title>Command line interface of domain management (Univention Directory Manager)</title>
+	<title>Command line interface of domain management (Univention Directory Manager)</title>
 	<para>
 		The &ucsUDM; is the command line interface of the domain management
 		function of &ucsUMC;. It expands the web-based interface of the
@@ -1022,14 +1045,13 @@
 		line interface.
 	</para>
 
-
 	<section id="central:udm:parms">
 	  <title>Parameters of the command line interface</title>
 	<para>
 		A complete list of available modules is displayed if the
 		<command>udm</command> is run with the <command>modules</command> parameter:
 	</para>
-	<programlisting>
+	<screen>
 # univention-directory-manager modules
 Available Modules are:
   computers/managedclient
@@ -1038,7 +1060,7 @@ Available Modules are:
   computers/domaincontroller_master
   computers/domaincontroller_slave
  [...]
-	</programlisting>
+	</screen>
 	<para>
 		There are up to five operations for every module:
 	</para>
@@ -1084,7 +1106,7 @@ move options:
 		the options for every module. This also displays all attributes of the
 		module:
 	</para>
-	<programlisting>
+	<programlisting language="sh">
 univention-directory-manager &lt;category/modulename&gt;
 	</programlisting>
 	<para>
@@ -1118,38 +1140,38 @@ users/user variables:
 	<itemizedlist>
 		<listitem>
 			<para>
-				The parameter <emphasis>--dn</emphasis> is used to specify the LDAP
+				The parameter <option>--dn</option> is used to specify the LDAP
 				position of the object during modifications or deletion. The
 				complete DN must be entered, e.g.,
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-directory-manager users/user remove \
-    --dn="uid=ldapadmin,cn=users,dc=company,dc=example"
+    --dn "uid=ldapadmin,cn=users,dc=company,dc=example"
 			</programlisting>
 		</listitem>
 		<listitem>
 			<para>
-				The <emphasis>--position</emphasis> parameter is used to specify at
+				The <option>--position</option> parameter is used to specify at
 				which LDAP position an object should be created. If no
-				<emphasis>--position</emphasis> is entered, the object is created below the
+				<option>--position</option> is entered, the object is created below the
 				LDAP base! In the <emphasis>move</emphasis> operation, this parameter specifies
 				to which position an object should be moved, e.g:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-directory-manager computers/managedclient move \
-    --dn="cn=desk01,cn=management,cn=computers,dc=company,dc=com" \
-    --position="cn=finance,cn=computers,dc=company,dc=example"
+    --dn "cn=desk01,cn=management,cn=computers,dc=company,dc=com" \
+    --position "cn=finance,cn=computers,dc=company,dc=example"
 			</programlisting>
 		</listitem>
 		<listitem>
 			<para>
-				The <emphasis>--set</emphasis> parameter specifies that the given
+				The <option>--set</option> parameter specifies that the given
 				value should be assigned to the following attribute. The parameter
 				must be used per attribute value pair, e.g:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-directory-manager users/user create \
-    --position="cn=users,dc=compaby,dc=example" \
+    --position "cn=users,dc=compaby,dc=example" \
     --set username="jsmith" \
     --set firstname="John" \
     --set lastname="Smith" \
@@ -1158,53 +1180,53 @@ univention-directory-manager users/user create \
 		</listitem>
 		<listitem>
 			<para>
-				<emphasis>--option</emphasis> defines the LDAP object classes of an
+				<option>--option</option> defines the LDAP object classes of an
 				object. If, for example, only <emphasis>posix</emphasis> and <emphasis>person</emphasis>
 				are provided as options for a user object, it is not possible to
 				specify a <emphasis>mailPrimaryAddress</emphasis> for this user as this
 				attribute is part of the <emphasis>mail</emphasis> option:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-directory-manager users/user modify \
-    --option="posix" --option="mail" --option="kerberos"
+    --option "posix" --option "mail" --option "kerberos"
 			</programlisting>
 		</listitem>
 		<listitem>
 			<simpara>
-			<emphasis>--superordinate</emphasis> is used to specify dependent,
+			<option>--superordinate</option> is used to specify dependent,
 			superordinate modules. A DHCP object, for example, requires a DHCP
 			service object under which it can be stored. This is transferred
-			with the <emphasis>--superordinate</emphasis> option.
+			with the <option>--superordinate</option> option.
 			</simpara>
 		</listitem>
 		<listitem>
 			<para>
-				The <emphasis>--policy-reference</emphasis> parameter allows the
+				The <option>--policy-reference</option> parameter allows the
 				assignment of policies to objects (and similarly their deletion with
-				<emphasis>--policy-dereference</emphasis>). If a policy is linked to an
+				<option>--policy-dereference</option>). If a policy is linked to an
 				object, the settings from the policy are used for the object, e.g.:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-directory-manager &lt;category/modulename&gt; &lt;Operation&gt; \
-    --policy-reference="cn=sales,cn=pwhistory,\
-cn=users,cn=policies,dc=company,dc=example"
+    --policy-reference "cn=sales,cn=pwhistory,"\
+"cn=users,cn=policies,dc=company,dc=example"
 			</programlisting>
 		</listitem>
 		<listitem>
 			<simpara>
-			The <emphasis>--ignore_exists</emphasis> parameters skips existing
+			The <option>--ignore_exists</option> parameters skips existing
 			objects. If it is not possible to create an object, as it already
 			exists, the error code 0 (no error) is still returned.
 			</simpara>
 		</listitem>
 		<listitem>
 			<para>
-				<emphasis>--append</emphasis> and <emphasis>--remove</emphasis> are used to
+				<option>--append</option> and <option>--remove</option> are used to
 				add/remove a value from a multi-value field, e.g.:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-directory-manager groups/group modify \
-    --dn="cn=staff,cn=groups,dc=company,dc=example" \
+    --dn "cn=staff,cn=groups,dc=company,dc=example" \
     --append users="uid=smith,cn=users,dc=company,dc=example" \
     --remove users="uid=miller,cn=users,dc=company,dc=example"
 			</programlisting>
@@ -1214,7 +1236,6 @@ univention-directory-manager groups/group modify \
 
 	<section id="central:udm:example">
 	  <title>Example invocations of the command line interface</title>
-
 	  <para>
 		The following example execution of the command line front end &ucsUDM; can be used as
 		templates for your own scripts:
@@ -1224,74 +1245,68 @@ univention-directory-manager groups/group modify \
 		<title>Users</title>
 		<para>
 		  Creating a user in the standard user container:
-
-<programlisting>
-univention-directory-manager users/user create \
---position="cn=users,dc=example,dc=com" \
---set username="user01" \
---set firstname="Random" \
---set lastname="User" \
---set organisation="Example company LLC" \
---set mailPrimaryAddress="mail@example.com" \
---set password="secretpassword" \
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager users/user create \
+    --position "cn=users,dc=example,dc=com" \
+    --set username="user01" \
+    --set firstname="Random" \
+    --set lastname="User" \
+    --set organisation="Example company LLC" \
+    --set mailPrimaryAddress="mail@example.com" \
+    --set password="secretpassword"
+</programlisting>
 
 		<para>
 		  Subsequent addition of the postal address for an existing user:
-
-<programlisting>
-univention-directory-manager users/user modify \
---dn="uid=user01,cn=users,dc=example,dc=com" \
---set street="Exemplary Road 42" \
---set postcode="28239" \
---set city="Bremen"
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager users/user modify \
+    --dn "uid=user01,cn=users,dc=example,dc=com" \
+    --set street="Exemplary Road 42" \
+    --set postcode="28239" \
+    --set city="Bremen"
+</programlisting>
 
 
 		<para>
 		  This command can be used to display all the users whose user name begins with
 		  <emphasis>user</emphasis>:
-
-<programlisting>
-univention-directory-manager users/user list \
---filter uid=user*
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager users/user list \
+    --filter uid=user*
+</programlisting>
 
 		<para>
-		  Searching for objects with the <emphasis>--filter</emphasis> can also be limited to a
+		  Searching for objects with the <option>--filter</option> can also be limited to a
 		  position in the LDAP directory; in this case, to all users in the container
 		  <emphasis>cn=bremen,cn=users,dc=example,dc=com</emphasis>:
-
-<programlisting>
-univention-directory-manager users/user list \
---filter uid=user* \
---position cn=bremen,cn=users,dc=example,dc=com
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager users/user list \
+    --filter uid="user*" \
+    --position "cn=bremen,cn=users,dc=example,dc=com"
+</programlisting>
 
 		<para>
 		  This call removes a user <emphasis>user04</emphasis>:
-
-<programlisting>
-univention-directory-manager users/user remove \
---dn="uid=user04,cn=users,dc=example,dc=com" 
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager users/user remove \
+    --dn "uid=user04,cn=users,dc=example,dc=com"
+</programlisting>
 
 		<para>
 		  A company has two sites with containers created for each. The following command can be
 		  used to transfer a user from the container for the Hamburg site to the container for the
 		  Bremen site:
-
-<programlisting>
-univention-directory-manager users/user move \
---dn="uid=user03,cn=hamburg,cn=users,dc=example,dc=com" \
---position="cn=bremen,cn=users,dc=example,dc=com"
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager users/user move \
+    --dn "uid=user03,cn=hamburg,cn=users,dc=example,dc=com" \
+    --position "cn=bremen,cn=users,dc=example,dc=com"
+</programlisting>
 	  </section>
 
 	  <section id="central:udm:example:groups">
@@ -1299,41 +1314,38 @@ univention-directory-manager users/user move \
 		<para>
 		  Creating a group <emphasis>Example Users</emphasis> and adding a user 
 		  <emphasis>user01</emphasis> to this group:
-
-<programlisting>
-univention-directory-manager groups/group create \
---position="cn=groups,dc=example,dc=com" \
---set name="Example Users" \
---set users="uid=user01,cn=users,dc=example,dc=com"
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager groups/group create \
+    --position "cn=groups,dc=example,dc=com" \
+    --set name="Example Users" \
+    --set users="uid=user01,cn=users,dc=example,dc=com"
+</programlisting>
 
 		<para>
 		  Subsequent addition of the user <emphasis>user02</emphasis> to the existing group:
-
-<programlisting>
+		</para>
+		<programlisting language="sh">
 univention-directory-manager groups/group modify \
---dn="cn=Example Users,cn=groups,dc=example,dc=com" \
---append users="uid=user02,cn=users,dc=example,dc=com" \
+    --dn "cn=Example Users,cn=groups,dc=example,dc=com" \
+    --append users="uid=user02,cn=users,dc=example,dc=com"
 </programlisting>
 
-		</para>
-
 		<caution>
-		  A <emphasis>--set</emphasis> on the attribute <emphasis>users</emphasis> overwrites the
-		  list of group members in contrast to <emphasis>--append</emphasis>.
+			<para>
+		  A <option>--set</option> on the attribute <emphasis>users</emphasis> overwrites the
+		  list of group members in contrast to <option>--append</option>.
+			</para>
 		</caution>
-
 
 		<para>
 		  Subsequent removal of the user <emphasis>user01</emphasis> from the group:
-
-<programlisting>
-univention-directory-manager groups/group modify \
---dn="cn=Example Users,cn=groups,dc=example,dc=com" \
---remove users="uid=user01,cn=users,dc=example,dc=com"
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager groups/group modify \
+    --dn "cn=Example Users,cn=groups,dc=example,dc=com" \
+    --remove users="uid=user01,cn=users,dc=example,dc=com"
+</programlisting>
 	  </section>
 
 	  <section id="central:udm:example:cn-policies">
@@ -1343,58 +1355,54 @@ univention-directory-manager groups/group modify \
 		  container <emphasis>cn=computers</emphasis> for the computers at the Bremen site. The
 		  additional option <emphasis>computerPath</emphasis> also registers this container directly
 		  as the standard container for computer objects (see <xref linkend="central:cn-and-ous"/>):
-
-<programlisting>
-univention-directory-manager container/cn create \
- --position="cn=computers,dc=example,dc=com" \
- --set name="bremen" \
- --set computerPath=1 
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager container/cn create \
+    --position "cn=computers,dc=example,dc=com" \
+    --set name="bremen" \
+    --set computerPath=1
+</programlisting>
 
 		<para>
 		  This command creates a mail quota policy with the name <emphasis>Default quota</emphasis>,
 		  in which a 1 GB quota is defined:
-
-<programlisting>
-univention-directory-manager policies/mailquota create \ 
---position "cn=policies,dc=example,dc=com" \
---set name="Default quota" \
---set MailQuota=1024
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager policies/mailquota create \
+    --position "cn=policies,dc=example,dc=com" \
+    --set name="Default quota" \
+    --set MailQuota=1024
+</programlisting>
 
 		<para>
 		  This policy is now linked to the user container <emphasis>cn=users</emphasis>:
-
-<programlisting>
-univention-directory-manager container/cn modify \
---dn cn=users,dc=example,dc=com \
---policy-reference "cn=Default quota,cn=policies,dc=example,dc=com"
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager container/cn modify \
+    --dn "cn=users,dc=example,dc=com" \
+    --policy-reference "cn=Default quota,cn=policies,dc=example,dc=com"
+</programlisting>
 
 		<para>
 		  Creating a &ucsUCR; policy with which the storage time for log files can be set to one
 		  year. A blank space is used to separate the name and value of the variable:
-
-<programlisting>
-udm policies/registry create \
---position "cn=config-registry,cn=policies,dc=example,dc=com" \
---set name="default UCR settings" \
---set registry="logrotate/rotate/count 52"
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager policies/registry create \
+    --position "cn=config-registry,cn=policies,dc=example,dc=com" \
+    --set name="default UCR settings" \
+    --set registry="logrotate/rotate/count 52"
+</programlisting>
 
 		<para>
 		  This command can be used to attach an additional value to the created policy:
-
-<programlisting>
-udm policies/registry modify \
---dn "cn=default UCR settings,cn=config-registry,cn=policies,dc=example,dc=com" \
---append registry='"logrotate/compress" "no"'
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager policies/registry modify \
+    --dn "cn=default UCR settings,cn=config-registry,"\
+"cn=policies,dc=example,dc=com" \
+    --append registry='"logrotate/compress" "no"'
+</programlisting>
 	  </section>
 
 	  <section id="central:udm:example:cn-computers">
@@ -1403,15 +1411,14 @@ udm policies/registry modify \
 		  In the following example, a Windows client is created. If this client joins the Samba
 		  domain at a later point in time (see <xref linkend="windows-domaenenbeitritt"/>), the
 		  computer account is then automatically used:
-
-<programlisting>
-univention-directory-manager computers/windows create \
---position="cn=computers,dc=example,dc=com" \
---set name=WinClient01 \
---set mac=aa:bb:cc:aa:bb:cc \
---set ip=192.168.0.10
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager computers/windows create \
+    --position "cn=computers,dc=example,dc=com" \
+    --set name=WinClient01 \
+    --set mac=aa:bb:cc:aa:bb:cc \
+    --set ip=192.168.0.10
+</programlisting>
 	  </section>
 
 	  <section id="central:udm:example:shares">
@@ -1421,15 +1428,14 @@ univention-directory-manager computers/windows create \
 		  <emphasis>fileserver.example.com</emphasis>. As long as
 		  <filename>/var/shares/documentation</filename> does not yet exist on the server, it is
 		  also created automatically:
-
-<programlisting>
-univention-directory-manager shares/share create \
---position="cn=shares,dc=example,dc=com" \
---set name="Documentation" \
---set host="fileserver.example.com" \
---set path="/var/shares/documentation" \
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager shares/share create \
+    --position "cn=shares,dc=example,dc=com" \
+    --set name="Documentation" \
+    --set host="fileserver.example.com" \
+    --set path="/var/shares/documentation"
+</programlisting>
 	  </section>
 
 	  <section id="central:udm:example:printer">
@@ -1440,37 +1446,38 @@ univention-directory-manager shares/share create \
 		  in the PPD file, the name of which is given relative to the directory
 		  <filename>/usr/share/ppd</filename>. The connected printer is network-compatible and is
 		  connected via the IPP protocol.
-
-<programlisting>
-univention-directory-manager shares/printer create \
---position="cn=printers,dc=example,dc=com" \
---set name="LaserPrinter01"  \
---set spoolHost="printserver.example.com" \
---set uri="ipp:// 192.168.0.100" \
---set model="foomatic-rip/HP-Color_LaserJet_9500-Postscript.ppd" \
---set location="Head office" \
---set producer="producer: cn=HP,cn=cups,cn=univention,dc=example,dc=com"
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager shares/printer create \
+    --position "cn=printers,dc=example,dc=com" \
+    --set name="LaserPrinter01"  \
+    --set spoolHost="printserver.example.com" \
+    --set uri="ipp:// 192.168.0.100" \
+    --set model="foomatic-rip/HP-Color_LaserJet_9500-Postscript.ppd" \
+    --set location="Head office" \
+    --set producer="producer: "\
+"cn=HP,cn=cups,cn=univention,dc=example,dc=com"
+</programlisting>
 
 		<note>
+			<para>
 		  There must be a blank space between the print protocol and the URL target path in the
 		  parameter <emphasis>uri</emphasis>. A list of the print protocols can be found in <xref
 		  linkend="print::shares"/>
+			</para>
 		</note>
 
 		<para>
 		  Printers can be grouped in a printer group for simpler administration. Further information
 		  on printer groups can be found in <xref linkend="druckergruppen"/>.
-
-<programlisting>
-univention-directory-manager shares/printergroup create \
---set name=LaserPrinters \
---set spoolHost="printserver.example.com"
---append groupMember=LaserPrinter01
---append groupMember=LaserPrinter02
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager shares/printergroup create \
+    --set name=LaserPrinters \
+    --set spoolHost="printserver.example.com"
+    --append groupMember=LaserPrinter01
+    --append groupMember=LaserPrinter02
+</programlisting>
 	  </section>
 
 	  <section id="central:udm:example:dnsdhcp">
@@ -1479,37 +1486,37 @@ univention-directory-manager shares/printergroup create \
 		  To configure an IP assignment via DHCP, a DHCP computer entry must be registered for the
 		  MAC address. Further information on DHCP can be found in <xref
 		  linkend="module:dhcp:dhcp"/>.
-
-<programlisting>
-univention-directory-manager dhcp/host create \
---superordinate="cn=example.com,cn=dhcp,dc=example,dc=com" \
---set host="Client222" \
---set fixedaddress="192.168.0.110" \
---set hwaddress="ethernet 00:11:22:33:44:55"
-</programlisting>
 		</para>
+		<programlisting language="sh">
+univention-directory-manager dhcp/host create \
+    --superordinate "cn=example.com,cn=dhcp,dc=example,dc=com" \
+    --set host="Client222" \
+    --set fixedaddress="192.168.0.110" \
+    --set hwaddress="ethernet 00:11:22:33:44:55"
+</programlisting>
 	  </section>
 
 		<para>
 		  If it should be possible for a computer name to be resolved via DNS, the following
 		  commands can be used to configure a forward (host record) and reverse resolution (ptr
 		  record).
-
-<programlisting>
+		</para>
+		<programlisting language="sh">
 univention-directory-manager dns/host_record create \
---superordinate="zoneName=example.com,cn=dns,dc=example,dc=com" \
---set name="Client222" \
---set a="192.168.0.110"
+    --superordinate "zoneName=example.com,cn=dns,dc=example,dc=com" \
+    --set name="Client222" \
+    --set a="192.168.0.110"
 
 univention-directory-manager dns/ptr_record create \
---superordinate="zoneName=0.168.192.in-addr.arpa,cn=dns,dc=example,dc=com" \
---set address="110" \
---set ptr_record="Client222.example.com."
+    --superordinate "zoneName=0.168.192.in-addr.arpa,cn=dns,"\
+"dc=example,dc=com" \
+    --set address="110" \
+    --set ptr_record="Client222.example.com."
 </programlisting>
-		</para>
-
+		<para>
 		Further information on DNS can be found in <xref linkend="networks:dns"/>.
-	  </section>
+		</para>
+	</section>
 
 	  <section id="central:udm:example:extendedattr">
 		<title>Extended attributes</title>
@@ -1519,28 +1526,26 @@ univention-directory-manager dns/ptr_record create \
 		  added, where the car license number of the company car can be saved for each user. The
 		  values are managed in an object class created specially for this purpose
 		  <emphasis>univentionFreeAttributes</emphasis>:
-
-<programlisting>
+		</para>
+		<programlisting language="sh">
 univention-directory-manager settings/extended_attribute create \
---position="cn=custom attributes,cn=univention,dc=example,dc=com" \
---set name="CarLicense" \
---set module="users/user" \
---set ldapMapping="univentionFreeAttribute01" \
---set objectClass="univentionFreeAttributes" \
---set longDescription="License plate number of the company car" \
---set tabName="Company car" \
---set multivalue=0 \
---set syntax="string" \
---set module=users/user \
---set shortDescription="Car license"
+    --position "cn=custom attributes,cn=univention,dc=example,dc=com" \
+    --set name="CarLicense" \
+    --set module="users/user" \
+    --set ldapMapping="univentionFreeAttribute01" \
+    --set objectClass="univentionFreeAttributes" \
+    --set longDescription="License plate number of the company car" \
+    --set tabName="Company car" \
+    --set multivalue=0 \
+    --set syntax="string" \
+    --set module=users/user \
+    --set shortDescription="Car license"
 </programlisting>
-
-	  </para>
 	  </section>
-  
 </section>
+
 <section id="central:reports">
-<title>Evaluation of data from the LDAP directory with Univention Directory Reports</title>
+	<title>Evaluation of data from the LDAP directory with Univention Directory Reports</title>
 	<para>
 		Univention Directory Reports offers the possibility of creating
 		predefined reports for any objects to be managed in the directory
@@ -1570,8 +1575,9 @@ univention-directory-manager settings/extended_attribute create \
 		Reports can be created via a command line program or via the &ucsUMC;
 		web interface.
 	</para>
+
 	<section id="central-management-umc:Creating_reports_in_the_Univention_Management_Console">
-	<title>Creating reports in the Univention Management Console</title>
+		<title>Creating reports in the Univention Management Console</title>
 		<para>
 			To create a report, you need to switch to the domain module for users,
 			groups or hosts. The report is created for all the objects shown in
@@ -1582,7 +1588,7 @@ univention-directory-manager settings/extended_attribute create \
 			<guimenu>Standard CSV Report</guimenu> in CSV format.
 		</para>
 		<figure id="umc-report">
-		<title>Creating a report</title>
+			<title>Creating a report</title>
 			<graphic scalefit="1" width="20%" fileref="illustrations/umc_report_en2.png"/>
 		</figure>
 		<para>
@@ -1606,8 +1612,9 @@ univention-directory-manager settings/extended_attribute create \
 			</listitem>
 		</itemizedlist>
 	</section>
+
 	<section id="central-management-umc:Creating_reports_on_the_command_line">
-	<title>Creating reports on the command line</title>
+		<title>Creating reports on the command line</title>
 		<para>
 			Reports can also be created via the command line with the
 			<command>univention-directory-reports</command> program. Information on the
@@ -1617,12 +1624,13 @@ univention-directory-manager settings/extended_attribute create \
 			The following command can be used to list the report templates
 			available to users, for example:
 		</para>
-		<programlisting>
+		<programlisting language="sh">
 univention-directory-reports -m users/user -l
 		</programlisting>
 	</section>
+
 	<section id="central-management-umc:Adjustment_expansion_of_Univention_Directory_Reports">
-	<title>Adjustment/expansion of Univention Directory Reports</title>
+		<title>Adjustment/expansion of Univention Directory Reports</title>
 		<para>
 			Existing reports can be created directly with the presettings. Some
 			presettings can be adapted using &ucsUCR;. For example, it is
@@ -1641,4 +1649,5 @@ univention-directory-reports -m users/user -l
 		</para>
 	</section>
 </section>
+
 </chapter>
