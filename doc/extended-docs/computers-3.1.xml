@@ -7,7 +7,7 @@
 
   %entities;
 ]>
-<book lang="en" id="computers-3.1-1">
+<book lang="en" id="computers-3.1">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended computer management documentation</subtitle>
@@ -490,102 +490,102 @@ udm uvmm/profile list --filter interface=eth0 |
 			  After Ubuntu has been installed, some of it's configuration files need to be
 			  modified. To simplify the setup, the default configuration of the UCS master domain
 			  controller should be copied to the Ubuntu system, for example:
-
-<programlisting>
+			</para>
+			<programlisting language="sh">
 # Become root
 sudo bash
- 
+
 # Set the IP address of the UCS DC Master, 192.168.0.3 in this example
 export MASTER_IP=192.168.0.3
- 
+
 mkdir /etc/univention
-ssh root@${MASTER_IP} ucr shell | grep -v ^hostname= \
-   >/etc/univention/ucr_master
+ssh root@${MASTER_IP} ucr shell |
+    grep -v ^hostname= >/etc/univention/ucr_master
 echo "master_ip=${MASTER_IP}" >>/etc/univention/ucr_master
 . /etc/univention/ucr_master
- 
+
 echo "${MASTER_IP} ${ldap_master}" >>/etc/hosts
- 
+
 # Exit sudo bash
 exit
 </programlisting>
-			</para>
 
             <para>
 			  In the default configuration of UCS only authenticated users can search in the LDAP
 			  directory (see TODOREF). As such, the Ubuntu client needs an account in the UCS domain
 			  to gain read access to the LDAP directory:
-
-<programlisting>
+			</para>
+            <programlisting language="sh"><![CDATA[
 # Become root
 sudo bash
- 
+
 # Set some environment variables
 . /etc/univention/ucr_master
- 
+
 # Download the SSL certificate
 mkdir -p /etc/univention/ssl/ucsCA/
-wget -O /etc/univention/ssl/ucsCA/CAcert.pem \ 
+wget -O /etc/univention/ssl/ucsCA/CAcert.pem \
     http://${ldap_master}/ucs-root-ca.crt
- 
+
 # Create an account and save the password
-password="$(&lt; /dev/urandom tr -dc A-Za-z0-9_ | head -c8)"
-if [ "$version_version" = 3.0 ] &amp;&amp; [ "$version_patchlevel" -lt 2 ]; then
-    ssh root@${ldap_master} udm computers/managedclient create --position "cn=computers,${ldap_base}" \
+password="$(tr -dc A-Za-z0-9_ </dev/urandom | head -c8)"
+if [ "$version_version" = 3.0 ] && [ "$version_patchlevel" -lt 2 ]
+then
+    ssh root@${ldap_master} udm computers/managedclient create \
+        --position "cn=computers,${ldap_base}" \
         --set name=$(hostname) --set password="${password}"
 else
-    ssh root@${ldap_master} udm computers/ubuntu create --position "cn=computers,${ldap_base}" \
+    ssh root@${ldap_master} udm computers/ubuntu create \
+        --position "cn=computers,${ldap_base}" \
         --set name=$(hostname) --set password="${password}" \
         --set operatingSystem="$(lsb_release -is)" \
         --set operatingSystemVersion="$(lsb_release -rs)"
 fi
 echo "${password}" > /etc/ldap.secret
- 
+
 # Create ldap.conf
-cat >/etc/ldap/ldap.conf &lt;&lt;__EOF__
+cat >/etc/ldap/ldap.conf <<__EOF__
 TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem
 URI ldap://$ldap_master:7389
 BASE $ldap_base
 __EOF__
- 
+
 # Exit sudo bash
 exit
-</programlisting>
-			</para>
+]]></programlisting>
 		</section>
 
         <section>
             <title>Configuration of the System Security Services Daemon (SSSD)</title>
             <para>
 			  SSSD provides a set of daemons to manage access to remote directories and
-			  authentication mechanisms. 
-
-<programlisting>
+			  authentication mechanisms.
+            </para>
+            <programlisting language="sh"><![CDATA[
 # Become root
 sudo bash
- 
+
 # Set some environment variables
 . /etc/univention/ucr_master
- 
+
 # Install SSSD based configuration
 DEBIAN_FRONTEND=noninteractive apt-get -y install sssd
- 
- 
+
 # Create sssd.conf
-cat >/etc/sssd/sssd.conf &lt;&lt;__EOF__
+cat >/etc/sssd/sssd.conf <<__EOF__
 [sssd]
 config_file_version = 2
 reconnection_retries = 3
 sbus_timeout = 30
 services = nss, pam, sudo
 domains = $kerberos_realm
- 
+
 [nss]
 reconnection_retries = 3
- 
+
 [pam]
 reconnection_retries = 3
- 
+
 [domain/$kerberos_realm]
 auth_provider = krb5
 krb5_kdcip = ${master_ip}
@@ -604,49 +604,53 @@ ldap_default_authtok_type = password
 ldap_default_authtok = $(cat /etc/ldap.secret)
 __EOF__
 chmod 600 /etc/sssd/sssd.conf
- 
+
 # Install auth-client-config
 DEBIAN_FRONTEND=noninteractive apt-get -y install auth-client-config
- 
+
 # Create an auth config profile for sssd
-cat > /etc/auth-client-config/profile.d/sss &lt;&lt;__EOF__
+cat >/etc/auth-client-config/profile.d/sss <<__EOF__
 [sss]
-nss_passwd=     passwd:         compat sss
-nss_group=      group:          compat sss
-nss_shadow=     shadow:         compat
-nss_netgroup=   netgroup:       nis
- 
-pam_auth=       auth    [success=3 default=ignore]      pam_unix.so nullok_secure try_first_pass
-                auth    requisite                       pam_succeed_if.so uid >= 500 quiet
-                auth    [success=1 default=ignore]      pam_sss.so use_first_pass
-                auth    requisite                       pam_deny.so
-                auth    required                        pam_permit.so
- 
-pam_account=    account required                                        pam_unix.so
-                account sufficient                                      pam_localuser.so
-                account sufficient                                      pam_succeed_if.so uid &lt; 500 quiet
-                account [default=bad success=ok user_unknown=ignore]    pam_sss.so
-                account required                                        pam_permit.so
- 
-pam_password=   password        sufficient      pam_unix.so obscure sha512
-                password        sufficient      pam_sss.so use_authtok
-                password        required        pam_deny.so
- 
-pam_session=    session required                        pam_mkhomedir.so skel=/etc/skel/ umask=0077
-                session optional                        pam_keyinit.so revoke
-                session required                        pam_limits.so
-                session [success=1 default=ignore]      pam_sss.so
-                session required                        pam_unix.so
+nss_passwd=   passwd:   compat sss
+nss_group=    group:    compat sss
+nss_shadow=   shadow:   compat
+nss_netgroup= netgroup: nis
+
+pam_auth=
+	auth [success=3 default=ignore] pam_unix.so nullok_secure \
+		try_first_pass
+	auth requisite pam_succeed_if.so uid >= 500 quiet
+	auth [success=1 default=ignore] pam_sss.so use_first_pass
+	auth requisite pam_deny.so
+	auth required pam_permit.so
+
+pam_account=
+	account required pam_unix.so
+	account sufficient pam_localuser.so
+	account sufficient pam_succeed_if.so uid < 500 quiet
+	account [default=bad success=ok user_unknown=ignore] pam_sss.so
+	account required pam_permit.so
+
+pam_password=
+	password sufficient pam_unix.so obscure sha512
+	password sufficient pam_sss.so use_authtok
+	password required pam_deny.so
+
+pam_session=
+	session required pam_mkhomedir.so skel=/etc/skel/ umask=0077
+	session optional pam_keyinit.so revoke
+	session required pam_limits.so
+	session [success=1 default=ignore] pam_sss.so
+	session required pam_unix.so
 __EOF__
 auth-client-config -n -a -p sss
- 
+
 # Start sssd
 service sssd start
- 
+
 # Exit sudo bash
 exit
-</programlisting>
-			</para>
+]]></programlisting>
 
 			<para>
 			  The commands <command>getent passwd</command> and <command>getent group</command>
@@ -658,68 +662,65 @@ exit
             <title>Configuring user logins</title>
             <para>
 			  The home directory of a user should be created automatically during login:
-
-<programlisting>
+            </para>
+            <programlisting language="sh"><![CDATA[
 # Become root
 sudo bash
- 
-cat >/usr/share/pam-configs/ucs_mkhomedir &lt;&lt;__EOF__
+
+cat >/usr/share/pam-configs/ucs_mkhomedir <<__EOF__
 Name: activate mkhomedir
 Default: yes
 Priority: 900
 Session-Type: Additional
 Session:
-        required                        pam_mkhomedir.so umask=0022 skel=/etc/skel
+    required    pam_mkhomedir.so umask=0022 skel=/etc/skel
 __EOF__
- 
+
 DEBIAN_FRONTEND=noninteractive pam-auth-update
- 
+
 exit
-</programlisting>
-			</para>
+]]></programlisting>
 
             <para>
 			  During login users should also be added to some system groups:
-
-<programlisting>
+            </para>
+            <programlisting language="sh"><![CDATA[
 # Become root
 sudo bash
- 
+
 echo '*;*;*;Al0000-2400;audio,cdrom,dialout,floppy,plugdev,adm' \
    >>/etc/security/group.conf
- 
-cat >>/usr/share/pam-configs/local_groups &lt;&lt;__EOF__
+
+cat >>/usr/share/pam-configs/local_groups <<__EOF__
 Name: activate /etc/security/group.conf
 Default: yes
 Priority: 900
 Auth-Type: Primary
 Auth:
-        required                        pam_group.so use_first_pass
+    required    pam_group.so use_first_pass
 __EOF__
- 
-DEBIAN_FRONTEND=noninteractive pam-auth-update 
- 
+
+DEBIAN_FRONTEND=noninteractive pam-auth-update
+
 exit
-</programlisting>
-			</para>
+]]></programlisting>
 
             <para>
 			  By default the Ubuntu login manager only displays a list of local users during
 			  login. After adding the following lines an arbitrary user name can be used:
-
-<programlisting>
+            </para>
+            <programlisting language="sh"><![CDATA[
 # Become root
 sudo bash
- 
+
 # Add a field for a user name
 echo "greeter-show-manual-login=true" >>/etc/lightdm/lightdm.conf
- 
+
 # Optional: Disable the user selection at the login screen
 echo "greeter-hide-users=true" >>/etc/lightdm/lightdm.conf
- 
+
 exit
-</programlisting>
-			</para>
+]]></programlisting>
 
             <para>
 			  Kubuntu 12.10 uses AccountService, a D-Bus interface for use account management, which
@@ -740,52 +741,51 @@ exit
 			  Every UCS domain provides a Kerberos domain. Since Kerberos relies on DNS, the
 			  Ubuntu client should use a UCS domain controller as its DNS server. The following
 			  steps provide an example configuration for Kerberos:
-
-<programlisting>
+            </para>
+            <programlisting language="sh"><![CDATA[
 # Become root
 sudo bash
- 
+
 # Set some environment variables
 . /etc/univention/ucr_master
- 
+
 # Install required packages
 DEBIAN_FRONTEND=noninteractive apt-get install -y heimdal-clients
- 
+
 # Default krb5.conf
-cat >/etc/krb5.conf &amp;&amp;__EOF__
+cat >/etc/krb5.conf <<__EOF__
 [libdefaults]
     default_realm = $kerberos_realm
     kdc_timesync = 1
     ccache_type = 4
     forwardable = true
     proxiable = true
- 
+
 [realms]
 $kerberos_realm = {
    kdc = $master_ip $ldap_master
    admin_server = $master_ip $ldap_master
 }
 __EOF__
- 
+
 # Stop and disable the avahi daemon
 service avahi-daemon stop
 sed -i 's|start on (|start on (never and |' /etc/init/avahi-daemon.conf
- 
+
 # Synchronize the time with the UCS system
 ntpdate $ldap_master
- 
+
 # Test Kerberos
 kinit Administrator
- 
+
 # Requires domain password
 krsh Administrator@$ldap_master ls /etc/univention
- 
+
 # Destroy the kerberos ticket
 kdestroy
- 
+
 exit
-</programlisting>
-			</para>
+]]></programlisting>
 		</section>
 
         <section>
@@ -799,15 +799,12 @@ exit
 
         <section>
             <title>Additional references</title>
-            <para>
 			  <itemizedlist>
 				<listitem><para><ulink url="https://help.ubuntu.com/community/LDAPClientAuthentication"/></para></listitem>
 				<listitem><para><ulink url="https://help.ubuntu.com/community/SingleSignOn"/></para></listitem>
 				<listitem><para><ulink url="https://help.ubuntu.com/community/PamCcredsHowto"/></para></listitem>
 				<listitem><para><ulink url="http://www.opinsys.fi/en/user-management-with-sssd-on-shared-laptops"/></para></listitem>
 			  </itemizedlist>
-			</para>
-
 		</section>
 	</chapter>
 
