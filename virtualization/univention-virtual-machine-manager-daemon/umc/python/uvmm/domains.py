@@ -184,7 +184,7 @@ class Domains(object):
 
 			# STOP here if domain is not available
 			if not json['available']:
-				MODULE.info('Domain is not available: %s' % str(json))
+				MODULE.info('Domain is not available: %s' % (json,))
 				self.finished(request.id, json)
 				return
 
@@ -325,7 +325,7 @@ class Domains(object):
 			drive.source = disk['source']
 
 		MODULE.info('Creating a %s drive' % (
-			'paravirtual' if driver_pv else 'emulated'
+			'paravirtual' if driver_pv else 'emulated',
 			))
 
 		try:
@@ -387,7 +387,7 @@ class Domains(object):
 			else:
 				drive.driver = 'phy'
 		else:
-			raise ValueError('Unknown virt-tech "%s"' % node_uri)
+			raise ValueError('Unknown virt-tech "%s"' % (node_uri,))
 
 		return drive
 
@@ -423,7 +423,7 @@ class Domains(object):
 			else:
 				raise UMC_OptionTypeError(_('Unknown profile given'))
 			domain_info.annotations['profile'] = profile_dn
-			MODULE.info('Creating new domain using profile %s' % str(object2dict(profile)))
+			MODULE.info('Creating new domain using profile %s' % (object2dict(profile),))
 			domain_info.annotations['os'] = getattr(profile, 'os')
 		else:
 			domain_info.annotations['os'] = domain.get('os', '')

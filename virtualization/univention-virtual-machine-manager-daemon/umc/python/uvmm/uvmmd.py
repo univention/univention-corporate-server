@@ -60,13 +60,13 @@ class UVMM_Request(object):
 		"""
 		Send request to UVMMd.
 		"""
-		MODULE.info('Sending request %s to UVMM daemon ...' % command)
+		MODULE.info('Sending request %s to UVMM daemon ...' % (command,))
 		try:
 			class_name = 'Request_%s' % (command,)
 			clazz = getattr(protocol, class_name)
 			request = clazz()
 		except (NameError, AttributeError):
-			MODULE.error('Failed to create request %s' % command)
+			MODULE.error('Failed to create request %s' % (command,))
 			raise UVMM_Error(_('The given UVMM command is not known'))
 		MODULE.info('Setting request arguments ...')
 		for key, value in kwargs.items():
@@ -74,13 +74,13 @@ class UVMM_Request(object):
 		try:
 			MODULE.info('Creating UVMM daemon connection')
 			uvmm_client = client.UVMM_ClientUnixSocket(UVMM_ConnectionThread.SOCKET_PATH)
-			MODULE.info('Sending request: %s' % str(request))
+			MODULE.info('Sending request: %s' % (request,))
 			data = uvmm_client.send(request)
-			MODULE.info('Received response: %s' % str(data))
+			MODULE.info('Received response: %s' % (data,))
 			uvmm_client.close()
 			MODULE.info('Connection to UVMMd is closed')
 		except client.ClientError, ex:
-			MODULE.info('The UVMM client raised an exception: %s' % str(ex))
+			MODULE.info('The UVMM client raised an exception: %s' % (ex,))
 			raise UVMM_Error(str(ex))
 
 		MODULE.info('Returning result from UVMMd')
@@ -112,7 +112,7 @@ class UVMM_ConnectionThread(Simple, UVMM_Request):
 	def __init__(self):
 		Simple.__init__(
 				self,
-				'UVMM_Connection-%d' % UVMM_ConnectionThread.counter,
+				'UVMM_Connection-%d' % (UVMM_ConnectionThread.counter,),
 				None,
 				Callback(self._finished)
 				)
@@ -157,7 +157,7 @@ class UVMM_RequestBroker(list):
 		"""
 		Send request to UVMMd.
 		"""
-		MODULE.info('Sending request %s to UVMMd' % request)
+		MODULE.info('Sending request %s to UVMMd' % (request,))
 
 		if callback is None: # synchron call
 			request_obj = UVMM_Request()
@@ -172,5 +172,5 @@ class UVMM_RequestBroker(list):
 		free_thread = UVMM_ConnectionThread()
 		self.append(free_thread)
 
-		MODULE.info('There are currently %d threads running' % len(self))
+		MODULE.info('There are currently %d threads running' % (len(self),))
 		free_thread(callback, request, **kwargs)
