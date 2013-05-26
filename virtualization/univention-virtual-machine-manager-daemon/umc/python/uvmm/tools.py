@@ -57,9 +57,12 @@ def object2dict(obj):
 					attr = True
 				attrs[slot] = attr
 			elif isinstance(attr, (list, tuple)):
-				attrs[slot] = map(lambda x: object2dict(x), attr)
+				attrs[slot] = [object2dict(_) for _ in attr]
 			elif isinstance(attr, dict):
-				attrs[slot] = dict(map(lambda item: (item[0], object2dict(item[1])), attr.items()))
+				attrs[slot] = dict([
+					(key, object2dict(value))
+					for key, value in attr.items()
+					])
 			else:
 				attrs[slot] = object2dict(attr)
 
