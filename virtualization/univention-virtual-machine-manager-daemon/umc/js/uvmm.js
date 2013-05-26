@@ -765,7 +765,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'RUN', 'start' ),
 				canExecute: function(item) {
-					return item.state != 'RUNNING' && item.state != 'IDLE' && item.node_available;
+					return !(item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
 				}
 			}, {
 				name: 'stop',
@@ -776,7 +776,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_maybeChangeState', _( 'Stopping virtual machine will turn them off without shutting down the operating system. Should the operation be continued?' ), _( 'Stop' ), 'SHUTDOWN', 'stop' ),
 				canExecute: function(item) {
-					return item.state == 'RUNNING' || item.state == 'IDLE' && item.node_available;
+					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
 				}
 			}, {
 				name: 'pause',
@@ -786,7 +786,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'PAUSE', 'pause' ),
 				canExecute: function(item) {
-					return item.state == 'RUNNING' || item.state == 'IDLE' && item.node_available;
+					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
 				}
 			}, {
 				name: 'suspend',
@@ -796,7 +796,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'SUSPEND', 'suspend' ),
 				canExecute: function(item) {
-					return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && types.getNodeType( item.id ) == 'qemu' && item.node_available;
+					return (item.state == 'RUNNING' || item.state == 'IDLE') && types.getNodeType(item.id) == 'qemu' && item.node_available;
 				}
 			}, /* { FIXME: not yet fully supported
 				name: 'restart',
@@ -805,7 +805,7 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'RESTART', 'restart' ),
 				canExecute: function(item) {
-					return item.state == 'RUNNING' || item.state == 'IDLE';
+					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
 				}
 			}, */ {
 				name: 'clone',
@@ -827,7 +827,7 @@ define([
 				} ),
 				callback: lang.hitch(this, 'vncLink' ),
 				canExecute: function(item) {
-					return ( item.state == 'RUNNING' || item.state == 'IDLE' ) && item.vnc_port && item.node_available;
+					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.vnc_port && item.node_available;
 				}
 			}, {
 				name: 'migrate',
