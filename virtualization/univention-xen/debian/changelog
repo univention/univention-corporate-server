@@ -1,3 +1,9 @@
+univention-xen (4.0.1-1) ucs-3.1-1-0; urgency=low
+
+  * Load loop kernel module by default (Bug #23394)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 23 May 2013 13:06:19 +0200
+
 univention-xen (4.0.0-3) ucs-3-0-0-0; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
