@@ -390,11 +390,16 @@ def postinst(config_registry, changes):
 								The second argument <varname>changes</varname> is a dictionary of 2-tuples, which maps the names of all changed variables to (<varname>old-value</varname>, <varname>new-value</varname>).
 							</para>
 							<para>
-								<command>univention-install-config-registry</command> installes the module file to <filename class="directory">/etc/univention/templates/modules/</filename>.
+								<command>univention-install-config-registry</command> installs the module file to <filename class="directory">/etc/univention/templates/modules/</filename>.
 							</para>
 						</listitem>
 					</varlistentry>
 				</variablelist>
+				<para>
+					If a script <filename>/etc/univention/templates/scripts/<replaceable>full path to file</replaceable></filename> exists, it will be called after the file is committed.
+					The script is called with the argument <option>postinst</option>.
+					It receives the list of changed variables as documented in <xref linkend="ucr:script"/>.
+				</para>
 			</section>
 
 			<section id="ucr:multifile">
@@ -468,6 +473,9 @@ Variables: <variable1>
 						</listitem>
 					</varlistentry>
 				</variablelist>
+				<para>
+					The same script hook as above for <literal>file</literal> is also supported.
+				</para>
 			</section>
 
 			<section id="ucr:script">
@@ -493,7 +501,8 @@ Variables: <variable1>]]></programlisting>
 								Specifies the filename of an executable, which is installed to <filename class="directory">/etc/univention/templates/scripts/</filename>.
 							</para>
 							<para>
-								The script receives the list of changed variables on standard input.
+								The script is called with the argument <option>generate</option>.
+								It receives the list of changed variables on standard input.
 								For each changed variable a line containing the name of the variable, the old value, and the new value separated by <literal>@%@</literal> is sent.
 							</para>
 						</listitem>
