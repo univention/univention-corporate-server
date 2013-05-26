@@ -376,9 +376,12 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 \item To fix the ordering of snapshots their creation time is now display in ISO 8601 format (\ucsBug{29901}).
 \end{itemize}
 
-%\subsection{Xen}
-%\begin{itemize}
-%\end{itemize}
+\subsection{Xen}
+\begin{itemize}
+\item A logic bug in the init script for \ucsName{xenstore} was fixed (\ucsBug{28309}).
+\item Shutting down virtual machines using 'ACPI power off' was added (\ucsBug{21397}).
+\item CD-ROM media changes is now also supported with Xen-HVM domains (\ucsBug{23394}).
+\end{itemize}
 
 %\subsection{QEMU/kvm}
 %\begin{itemize}
