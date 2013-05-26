@@ -57,6 +57,8 @@ class Domains(object):
 	"""
 
 	STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
+	TARGET_STATES = ('RUN', 'PAUSE', 'SHUTDOWN', 'RESTART', 'SUSPEND')
+
 	RE_VNC = re.compile(r'^(IPv[46])(?: (.+))?$|^(?:NAME(?: (.+=.*))?)$')
 	SOCKET_FAMILIES = {
 			'IPv4': socket.AF_INET,
@@ -609,7 +611,7 @@ class Domains(object):
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		MODULE.info('nodeURI: %s, domainUUID: %s' % (node_uri, domain_uuid))
 		state = request.options['domainState']
-		if state not in self.DOMAIN_STATES:
+		if state not in self.TARGET_STATES:
 			raise UMC_OptionTypeError(_('Invalid domain state: %s') % state)
 		self.uvmm.send(
 				'DOMAIN_STATE',
