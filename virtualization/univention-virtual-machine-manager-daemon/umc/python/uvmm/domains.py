@@ -222,7 +222,7 @@ class Domains(object):
 					# vnc_password will not be send to frontend
 					port = int(json['graphics'][0]['port'])
 					if port == -1:
-						raise ValueError()
+						raise ValueError(json['graphics'][0]['port'])
 					host = node_uri.netloc
 					vnc_link_format = ucr.get('uvmm/umc/vnc/host', 'IPv4') or ''
 					match = Domains.RE_VNC.match(vnc_link_format)
@@ -312,7 +312,7 @@ class Domains(object):
 			# new drive
 			drive.size = MemorySize.str2num(disk.get('size') or '12', unit='MB')
 			if not pool:
-				raise ValueError('Pool "%s" not found' % disk.get('pool'))
+				raise ValueError('Pool "%s" not found' % (pool_name,))
 			drive.source = os.path.join(pool['path'], disk['volumeFilename'])
 
 			if profile:
