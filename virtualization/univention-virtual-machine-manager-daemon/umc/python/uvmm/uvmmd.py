@@ -62,7 +62,7 @@ class UVMM_Request( object ):
 		MODULE.info( 'Sending request %s to UVMM daemon ...' % command )
 		try:
 			request = eval( 'protocol.Request_%s()' % command )
-		except NameError, AttributeError:
+		except (NameError, AttributeError):
 			MODULE.error( 'Failed to create request %s' % command )
 			raise UVMM_Error( _( 'The given UVMM command is not known' ) )
 		MODULE.info( 'Setting request arguments ...' )
@@ -76,9 +76,9 @@ class UVMM_Request( object ):
 			MODULE.info( 'Received response: %s' % str( data ) )
 			uvmm_client.close()
 			MODULE.info( 'Connection to UVMMd is closed' )
-		except client.ClientError, e:
-			MODULE.info( 'The UVMM client raised an exception: %s' % str( e ) )
-			raise UVMM_Error( str( e ) )
+		except client.ClientError, ex:
+			MODULE.info('The UVMM client raised an exception: %s' % str(ex))
+			raise UVMM_Error(str(ex))
 
 		MODULE.info( 'Returning result from UVMMd' )
 		return self.response( data )
