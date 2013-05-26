@@ -39,13 +39,15 @@ from ldap import LDAPError
 _ldap_connection = None
 _ldap_position = None
 
-class LDAP_ConnectionError( Exception ):
+
+class LDAP_ConnectionError(Exception):
 	"""
 	Error connecting LDAP server.
 	"""
 	pass
 
-def LDAP_Connection( func ):
+
+def LDAP_Connection(func):
 	"""
 	This decorator function provides an open LDAP connection that can
 	be accessed via the variable ldap_connection and a vaild position
@@ -64,7 +66,7 @@ def LDAP_Connection( func ):
 		  ldap_connection.searchDn(..., position=ldap_position)
 		  ...
 	"""
-	def wrapper_func( *args, **kwargs ):
+	def wrapper_func(*args, **kwargs):
 		global _ldap_connection, _ldap_position
 
 		if _ldap_connection is not None:
@@ -72,27 +74,27 @@ def LDAP_Connection( func ):
 			po = _ldap_position
 		else:
 			try:
-				lo, po = udm_uldap.getMachineConnection( ldap_master = False )
+				lo, po = udm_uldap.getMachineConnection(ldap_master=False)
 			except LDAPError, ex:
 				raise LDAP_ConnectionError('Opening LDAP connection failed: %s' % str(ex))
 
-		kwargs[ 'ldap_connection' ] = lo
-		kwargs[ 'ldap_position' ] = po
+		kwargs['ldap_connection'] = lo
+		kwargs['ldap_position'] = po
 		try:
-			ret = func( *args, **kwargs )
+			ret = func(*args, **kwargs)
 			_ldap_connection = lo
 			_ldap_position = po
 			return ret
 		except udm_errors.base:
 			try:
-				lo, po = udm_uldap.getMachineConnection( ldap_master = False )
+				lo, po = udm_uldap.getMachineConnection(ldap_master=False)
 			except LDAPError, ex:
 				raise LDAP_ConnectionError('Opening LDAP connection failed: %s' % str(ex))
 
-			kwargs[ 'ldap_connection' ] = lo
-			kwargs[ 'ldap_position' ] = po
+			kwargs['ldap_connection'] = lo
+			kwargs['ldap_position'] = po
 			try:
-				ret = func( *args, **kwargs )
+				ret = func(*args, **kwargs)
 				_ldap_connection = lo
 				_ldap_position = po
 				return ret
@@ -102,4 +104,3 @@ def LDAP_Connection( func ):
 		return []
 
 	return wrapper_func
-
