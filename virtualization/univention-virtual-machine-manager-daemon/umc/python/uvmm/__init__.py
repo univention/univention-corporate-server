@@ -77,7 +77,7 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots):
 		msg = '%s\n%s: %s\n' % (
 				''.join(traceback.format_tb(thread.exc_info[2])),
 				thread.exc_info[ 0 ].__name__,
-				str(thread.exc_info[1])
+				thread.exc_info[1],
 				)
 		MODULE.process('An internal error occurred: %s' % msg)
 		self.finished(request.id, None, msg, False)
