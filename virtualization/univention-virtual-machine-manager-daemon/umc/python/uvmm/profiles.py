@@ -37,9 +37,7 @@ from univention.lib.i18n import Translation
 
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
-# get the URI parser for nodes
-import urlparse
-
+from urlparse import urlsplit
 from notifier import Callback
 
 from .udm import LDAP_Connection
@@ -95,7 +93,7 @@ class Profiles(object):
 		"""
 		Return profiles valid for node.
 		"""
-		uri = urlparse.urlsplit(node_pd.uri)
+		uri = urlsplit(node_pd.uri)
 		tech = uri.scheme == 'qemu' and 'kvm' or uri.scheme # set default virtualization technology
 		tech_types = []
 		archs = set([t.arch for t in node_pd.capabilities]) # read architectures from capabilities

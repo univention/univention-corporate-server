@@ -31,15 +31,12 @@
 # <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
+from urlparse import urldefrag
+from notifier import Callback
 
 from univention.lib.i18n import Translation
 
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
-
-# for urlparse extensions
-import urlparse
-
-from notifier import Callback
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
@@ -92,7 +89,7 @@ class Snapshots(object):
 						status=MODULE_ERR_COMMAND_FAILED
 						)
 
-		node_uri, domain_uuid = urlparse.urldefrag(request.options['domainURI'])
+		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_INFO',
 				Callback(_finished, request),
@@ -113,7 +110,7 @@ class Snapshots(object):
 		"""
 		self.required_options(request, 'domainURI', 'snapshotName')
 
-		node_uri, domain_uuid = urlparse.urldefrag(request.options['domainURI'])
+		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_SNAPSHOT_CREATE',
 				Callback(self._thread_finish, request),
@@ -135,7 +132,7 @@ class Snapshots(object):
 		"""
 		self.required_options(request, 'domainURI', 'snapshotName')
 
-		node_uri, domain_uuid = urlparse.urldefrag(request.options['domainURI'])
+		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_SNAPSHOT_DELETE',
 				Callback(self._thread_finish, request),

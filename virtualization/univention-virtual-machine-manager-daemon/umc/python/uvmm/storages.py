@@ -39,9 +39,8 @@ from univention.management.console.modules import UMC_OptionTypeError
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from univention.uvmm.protocol import Disk
-# get the URI parser for nodes
-import urlparse
 
+from urlparse import urldefrag
 from notifier import Callback
 
 from .tools import object2dict
@@ -287,7 +286,7 @@ class Storages(object):
 			# safe default: not deletable
 			volume['deletable'] = None
 
-			node_uri, domain_uuid = urlparse.urldefrag(volume['domainURI'])
+			node_uri, domain_uuid = urldefrag(volume['domainURI'])
 			# Must be in a pool
 			pool = self.get_pool(node_uri, volume['pool'])
 			if not pool:

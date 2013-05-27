@@ -42,9 +42,8 @@ from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
-# for urlparse extensions
-import urlparse
 
+from urlparse import urlsplit, urldefrag
 from notifier import Callback
 
 from .tools import object2dict, MemorySize
@@ -105,7 +104,7 @@ class Domains(object):
 			if success:
 				domain_list = []
 				for node_uri, domains in data.items():
-					uri = urlparse.urlsplit( node_uri )
+					uri = urlsplit(node_uri)
 					for domain in domains:
 						if domain['uuid'] == '00000000-0000-0000-0000-000000000000':
 							# ignore domain-0 of Xen
@@ -167,8 +166,8 @@ class Domains(object):
 						)
 				return
 
-			node_uri = urlparse.urlsplit(request.options['domainURI'])
-			uri, _uuid = urlparse.urldefrag(request.options['domainURI'])
+			node_uri = urlsplit(request.options['domainURI'])
+			uri, _uuid = urldefrag(request.options['domainURI'])
 			json = object2dict(data)
 
 			## re-arrange a few attributes for the frontend
@@ -277,7 +276,7 @@ class Domains(object):
 			self.finished(request.id, json)
 
 		self.required_options(request, 'domainURI')
-		node_uri, domain_uuid = urlparse.urldefrag(request.options['domainURI'])
+		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_INFO',
 				Callback(_finished, request),
@@ -289,7 +288,7 @@ class Domains(object):
 		"""
 		Convert single disk from JSON to Python UVMM Disk object.
 		"""
-		uri = urlparse.urlsplit(node_uri)
+		uri = urlsplit(node_uri)
 
 		driver_pv = disk.get('paravirtual', False) # by default no paravirtual devices
 
@@ -408,7 +407,7 @@ class Domains(object):
 		domain_info = Data_Domain()
 		# when we edit a domain there must be a UUID
 		if 'domainURI' in domain:
-			_node_uri, domain_uuid = urlparse.urldefrag(domain['domainURI'])
+			_node_uri, domain_uuid = urldefrag(domain['domainURI'])
 			domain_info.uuid = domain_uuid
 
 		# annotations & profile

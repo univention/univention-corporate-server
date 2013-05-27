@@ -34,9 +34,7 @@ from univention.lib.i18n import Translation
 
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
-# for urlparse extensions
-import urlparse
-
+from urlparse import urlsplit
 from notifier import Callback
 
 _ = Translation('univention-management-console-modules-uvmm').translate
@@ -90,7 +88,7 @@ class Nodes(object):
 			success, data = result
 			if success:
 				for node_pd in data:
-					node_uri = urlparse.urlsplit(node_pd.uri)
+					node_uri = urlsplit(node_pd.uri)
 					nodes.append({
 						'id': node_pd.uri,
 						'label': node_pd.name,
