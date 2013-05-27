@@ -47,24 +47,25 @@ def object2dict(obj):
 		if slot.startswith('__') and slot.endswith('__'):
 			continue
 		attr = getattr(obj, slot)
-		if not isinstance(attr, (BuiltinMethodType, MethodType, FunctionType, TypeType)):
-			if isinstance(attr, (int, float, long, bool, NoneType)):
-				attrs[slot] = attr
-			elif isinstance(attr, basestring):
-				if attr in ('0', 'FALSE'):
-					attr = False
-				elif attr in ('1', 'TRUE'):
-					attr = True
-				attrs[slot] = attr
-			elif isinstance(attr, (list, tuple)):
-				attrs[slot] = [object2dict(_) for _ in attr]
-			elif isinstance(attr, dict):
-				attrs[slot] = dict([
-					(key, object2dict(value))
-					for key, value in attr.items()
-					])
-			else:
-				attrs[slot] = object2dict(attr)
+		if isinstance(attr, (BuiltinMethodType, MethodType, FunctionType, TypeType)):
+			continue
+		if isinstance(attr, (int, float, long, bool, NoneType)):
+			attrs[slot] = attr
+		elif isinstance(attr, basestring):
+			if attr in ('0', 'FALSE'):
+				attr = False
+			elif attr in ('1', 'TRUE'):
+				attr = True
+			attrs[slot] = attr
+		elif isinstance(attr, (list, tuple)):
+			attrs[slot] = [object2dict(_) for _ in attr]
+		elif isinstance(attr, dict):
+			attrs[slot] = dict([
+				(key, object2dict(value))
+				for key, value in attr.items()
+				])
+		else:
+			attrs[slot] = object2dict(attr)
 
 	return attrs
 
