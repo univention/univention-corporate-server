@@ -822,9 +822,9 @@ udm settings/extended_attribute modify \
 		<title>UDM Syntax</title>
 		<remark>PMH: Bug #24236</remark>
 		<para>
-			Every <acronym>UDM</acronym> property has a syntax, which is used to check the valu for correctness.
+			Every <acronym>UDM</acronym> property has a syntax, which is used to check the value for correctness.
 			&ucsUCS; already provides several syntax types, which are defined in the Python file <filename>/usr/share/pyshared/univention/admin/syntax.py</filename>.
-			The following list of syntaxes is not complete, for a complete overview it is recommended to directly look at this file.
+			The following list of syntaxes is not complete, for a complete overview the file should be consulted directly.
 		</para>
 		<variablelist>
 			<varlistentry>
@@ -850,7 +850,7 @@ udm settings/extended_attribute modify \
 				<term>...</term>
 				<listitem>
 					<simpara>
-						Different string classes with restrictions on the allowed characters set.
+						Different string classes with restrictions on the allowed character set.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -945,11 +945,11 @@ udm settings/extended_attribute modify \
 		</para>
 
 		<section id="udm:syntax:overwrite">
-			<title>UDM Syntax Overwrite</title>
+			<title>UDM Syntax Override</title>
 			<para>
-				Some times the pre-defined syntax is inappropriate in some scenarios.
+				Sometimes the pre-defined syntax is inappropriate in some scenarios.
 				This can be because of performance problems with <acronym>LDAP</acronym> searches or the need for more restrictive or lenient value checking.
-				The latest case might require an change to the <acronym>LDAP</acronym> schema, since <command>slapd</command> also checks the provided values for correctness.
+				The latter case might require a change to the <acronym>LDAP</acronym> schema, since <command>slapd</command> also checks the provided values for correctness.
 			</para>
 			<para>
 				The syntax of UDM properties can be overwritten by using &ucsUCRV;s.
@@ -978,10 +978,10 @@ udm settings/extended_attribute modify \
 						<!-- univention-management-console-module-udm/umc/python/udm/udm_ldap.py -->
 						<para>
 							This class does an <acronym>UDM</acronym> search.
-							For each found object all values of an multi-valued property are returned.
+							For each object found all values of a multi-valued property are returned.
 						</para>
 						<para>
-							For a derived class the following class variables cam ne used to customize the search:
+							For a derived class the following class variables can be used to customize the search:
 						</para>
 						<variablelist>
 							<varlistentry><term>udm_module</term>
@@ -1002,7 +1002,7 @@ udm settings/extended_attribute modify \
 							<varlistentry><term>attribute</term>
 								<listitem>
 									<simpara>
-										The name of a multi-valued <acronym>UDM</acronym> property, which stored the values to be returned.
+										The name of a multi-valued <acronym>UDM</acronym> property which stores the values to be returned.
 									</simpara>
 								</listitem>
 							</varlistentry>
@@ -1036,7 +1036,7 @@ udm settings/extended_attribute modify \
 							<varlistentry><term>empty_value</term>
 								<listitem>
 									<simpara>
-										If set to <literal>True</literal>, the empty value in inserted before all other static and dynamic entries.
+										If set to <literal>True</literal>, the empty value is inserted before all other static and dynamic entries.
 									</simpara>
 								</listitem>
 							</varlistentry>
@@ -1045,15 +1045,15 @@ udm settings/extended_attribute modify \
 									<simpara>
 										This variable may contain the name of another property, which this property depends on.
 										This can be used to link two properties.
-										For example, one property can be used to select a server, while the second dependant property than only lists the services provided by that selected host..
-										For the dependant syntax <varname>attribute</varname> must be set to <literal>dn</literal>.
+										For example, one property can be used to select a server, while the second dependent property than only lists the services provided by that selected host.
+										For the dependent syntax <varname>attribute</varname> must be set to <literal>dn</literal>.
 									</simpara>
 								</listitem>
 							</varlistentry>
 							<varlistentry><term>error_message</term>
 								<listitem>
 									<simpara>
-										This error message is shown, when the user enters a value, which is not in the set of allowed values.
+										This error message is shown when the user enters a value which is not in the set of allowed values.
 									</simpara>
 								</listitem>
 							</varlistentry>
@@ -1072,10 +1072,10 @@ class DelegateTelephonedNumber(UDM_Attribute):
 				<varlistentry><term><classname>UDM_Objects</classname></term>
 					<listitem>
 						<para>
-							This class does an <acronym>UDM</acronym> search returning each found object.
+							This class performs an <acronym>UDM</acronym> search returning each object found.
 						</para>
 						<para>
-							For a derived class the following class variables cam ne used to customize the search:
+							For a derived class the following class variables can be used to customize the search:
 						</para>
 						<variablelist>
 							<varlistentry><term>udm_modules</term>
@@ -1088,7 +1088,7 @@ class DelegateTelephonedNumber(UDM_Attribute):
 							<varlistentry><term>key</term>
 								<listitem>
 									<simpara>
-										A Python format string, which is used to generate a key value used to identify the selected object.
+										A Python format string generating the key value used to identify the selected object.
 										The default is <literal>dn</literal>, which uses the distinguished name of the object.
 									</simpara>
 								</listitem>
@@ -1096,7 +1096,7 @@ class DelegateTelephonedNumber(UDM_Attribute):
 							<varlistentry><term>label</term>
 								<listitem>
 									<simpara>
-										A Python format string, which is used to generate a label display to represent the selected object.
+										A Python format string generating the display label to represent the selected object.
 										The default is <literal>None</literal>, which uses the <acronym>UDM</acronym> specific <varname>description</varname>.
 										<literal>dn</literal> can be used to use the distinguished name.
 									</simpara>
@@ -1153,10 +1153,30 @@ class MyServers(UDM_Objects):
 						<para>
 							This is the old implementation, which should only be used, if <classname>UDM_Attribute</classname> and <classname>UDM_Objects</classname> are not sufficient.
 							It has the drawback that &ucsUMC; can not do as much caching, which can lead to severe performance problems.
-							On the other hand these syntaxes can also be declared via <acronym>UDM</acronym>.
 						</para>
 						<para>
-							The program API uses the following variables:
+							<acronym>LDAP</acronym> search syntaxes can be declared in two equivalent ways:
+						</para>
+						<variablelist>
+							<varlistentry>
+								<term><firstterm>Python API</firstterm></term>
+								<listitem>
+									<simpara>
+										By implementing a Python class derived from <classname>LDAP_Search</classname> and providing that implementation in <filename>/usr/share/pyshared/univention/admin/syntax.d/</filename>.
+									</simpara>
+								</listitem>
+							</varlistentry>
+							<varlistentry>
+								<term><firstterm>UDM API</firstterm></term>
+								<listitem>
+									<simpara>
+										By creating an <acronym>UDM</acronym> object in <acronym>LDAP</acronym> using the module <literal>settings/syntax</literal>.
+									</simpara>
+								</listitem>
+							</varlistentry>
+						</variablelist>
+						<para>
+							The Python API uses the following variables:
 						</para>
 						<variablelist>
 							<varlistentry><term><varname>syntax_name</varname></term>
@@ -1177,7 +1197,7 @@ class MyServers(UDM_Objects):
 							<varlistentry><term><varname>attribute</varname></term>
 								<listitem>
 									<simpara>
-										A list of <acronym>UDM</acronym> module property definitions like <literal>shares/share: dn</literal>.
+										A list of <acronym>UDM</acronym> module property definitions like "<literal>shares/share: dn</literal>".
 										They are used as the human readable label for each element of the choices.
 									</simpara>
 								</listitem>
@@ -1241,7 +1261,6 @@ class MyServers(LDAP_Search):
 								<listitem>
 									<simpara>
 										Some descriptive text.
-										Mostly unused.
 									</simpara>
 								</listitem>
 							</varlistentry>
