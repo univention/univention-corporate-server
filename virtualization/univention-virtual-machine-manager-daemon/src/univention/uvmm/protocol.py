@@ -160,7 +160,7 @@ class Request_DOMAIN_STATE(Request):
 		self.command = 'DOMAIN_STATE'
 		self.uri = None
 		self.domain = None
-		self.state = None # RUN PAUSE SHUTDOWN RESTART
+		self.state = None # RUN PAUSE SHUTDOWN SHUTOFF RESTART
 class Request_DOMAIN_SAVE(Request):
 	"""Save defined domain."""
 	def _default(self):

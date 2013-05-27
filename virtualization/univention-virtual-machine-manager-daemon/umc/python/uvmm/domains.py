@@ -524,21 +524,22 @@ class Domains( object ):
 	def domain_state( self, request ):
 		"""Set the state a domain domainUUID on node nodeURI.
 
-		options: { 'domainURI': <domain uri>, 'domainState': (RUN|SHUTDOWN|PAUSE|RESTART|SUSPEND) }
+		options: { 'domainURI': <domain uri>, 'domainState': (RUN|SHUTDOWN|SHUTOFF|PAUSE|RESTART|SUSPEND) }
 
 		return: 
 		"""
 		self.required_options( request, 'domainURI', 'domainState' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
 		MODULE.info( 'nodeURI: %s, domainUUID: %s' % ( node_uri, domain_uuid ) )
-		if request.options[ 'domainState' ] not in self.DOMAIN_STATES:
-			raise UMC_OptionTypeError( _( 'Invalid domain state' ) )
+		state = request.options['domainState']
+		if state not in self.DOMAIN_STATES:
+			raise UMC_OptionTypeError(_('Invalid domain state: %s') % state)
 		self.uvmm.send(
 				'DOMAIN_STATE',
 				Callback(self._thread_finish, request),
 				uri=node_uri,
 				domain=domain_uuid,
-				state=request.options['domainState']
+				state=state,
 				)
 
 	def domain_migrate( self, request ):

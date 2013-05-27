@@ -389,8 +389,9 @@ msgid "Image size"
 msgstr "Image-Größe"
 
 #: umc/python/uvmm/domains.py:471
-msgid "Invalid domain state"
-msgstr "Ungültiger Domain Status"
+#, python-format
+msgid "Invalid domain state: %s"
+msgstr "Ungültiger Domain Status: %s"
 
 #: umc/python/uvmm/wizards.py:143 umc/python/uvmm/drive.py:259
 msgid "Local directory"
