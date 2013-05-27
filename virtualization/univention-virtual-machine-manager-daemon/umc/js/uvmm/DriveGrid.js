@@ -97,9 +97,26 @@ define([
 					isMultiAction: false,
 					isStandardAction: false,
 					callback: lang.hitch(this, '_changeMedium'),
-					canExecute: function( item ) {
-						return item.device == 'cdrom' || item.device == 'floppy';
-					}
+					canExecute: lang.hitch(this, function(item) {
+						if (item.device !== 'cdrom' && item.device !== 'floppy') {
+							return false;
+						}
+						if (!types.isActive(this.domain)) {
+							return true;
+						}
+						if (this.domain.domain_type === 'kvm') {
+							return true;
+						} else if (this.domain.domain_type === 'xen') {
+							if (this.domain.os_type === 'xen') {
+								return false;
+							} else if (this.domain.os_type === 'hvm') {
+								if (item.driver === 'file') {
+									return true;
+								}
+							}
+						}
+						return false;
+					})
 				}, {
 					name: 'delete',
 					label: _('Delete'),
