@@ -1,3 +1,10 @@
+univention-samba4 (2.0.50-1) unstable; urgency=low
+
+  * avoid sysvolreset and waiting for the listener in the
+    create_Enterprise_Domain_Controllers shell function (Bug #31437)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 27 May 2013 18:54:35 +0200
+
 univention-samba4 (2.0.49-1) unstable; urgency=low
 
   * samba-shares.py: refresh shares.conf in postrun again  (Bug #29399)

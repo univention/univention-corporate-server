@@ -90,22 +90,5 @@ create_Enterprise_Domain_Controllers() {
 		if [ -x /usr/lib/univention-pam/ldap-group-to-file.py ]; then
 			/usr/lib/univention-pam/ldap-group-to-file.py --check_member
 		fi
-
-		## wait for samba4-idmap listener to update idmap.ldb
-		gidnumber=$(univention-ldapsearch -xLLL sambaSid="$groupsid" gidNumber | sed -n 's/gidNumber: //p')
-		xidnumber=''
-		echo -n "Waiting for samba4-idmap listener to update idmap.ldb"
-		while [ "$xidnumber" != "$gidnumber" ]; do
-			sleep 1
-			xidnumber=$(ldbsearch -H /var/lib/samba/private/idmap.ldb objectSid=S-1-5-9 xidNumber | sed -n 's/xidNumber: //p')
-			echo -n '.'
-		done
-		echo '.'
-
-		## Next we need to fix the GID of the group in the fACLs of the GPO files in the sysvol
-		if [ "$JS_PACKAGE" != "univention-s4-connector" ]; then	## not in 97univention-s4-connector.inst
-			## During initial join this is done by running "samba-tool ntacl sysvolreset" in 98univention-samba4-dns.inst
-			samba-tool ntacl sysvolreset
-		fi
 	fi
 }
