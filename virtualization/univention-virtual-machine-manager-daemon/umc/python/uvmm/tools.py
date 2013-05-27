@@ -75,7 +75,16 @@ class MemorySize(object):
 	Parse and convert size with optional prefix from and to numbers.
 	"""
 	UNITS = ('', 'K', 'M', 'G', 'T', 'P')
-	SIZE_REGEX = re.compile('^ *(?P<size>[0-9]+(?:[,.][0-9]+)?)[ \t]*(?:(?P<unit>[%s])(?:[Ii]?[Bb])?|[Bb])? *$' % (''.join(UNITS) + ''.join(UNITS).lower(),))
+	SIZE_REGEX = re.compile(
+			r'''
+			^\s*
+			(?P<size>[0-9]+(?:[,.][0-9]+)?)
+			\s*
+			(?:(?P<unit>[%s])(?:I?B)?|B)?
+			\s*$
+			''' % (''.join(UNITS),),
+			re.IGNORECASE | re.VERBOSE
+			)
 
 	@staticmethod
 	def num2str(size, unit='B'):
