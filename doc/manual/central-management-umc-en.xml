@@ -1237,7 +1237,7 @@ univention-directory-manager groups/group modify \
 	<section id="central:udm:example">
 	  <title>Example invocations of the command line interface</title>
 	  <para>
-		The following example execution of the command line front end &ucsUDM; can be used as
+		The following examples for the command line front end of &ucsUDM; can be used as
 		templates for your own scripts:
 	  </para>
 
@@ -1290,7 +1290,7 @@ univention-directory-manager users/user list \
 </programlisting>
 
 		<para>
-		  This call removes a user <emphasis>user04</emphasis>:
+		  This call removes the user <emphasis>user04</emphasis>:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user remove \
@@ -1299,8 +1299,8 @@ univention-directory-manager users/user remove \
 
 		<para>
 		  A company has two sites with containers created for each. The following command can be
-		  used to transfer a user from the container for the Hamburg site to the container for the
-		  Bremen site:
+		  used to transfer a user from the container for the site "Hamburg" to the container for the
+		  site "Bremen":
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user move \
@@ -1312,7 +1312,7 @@ univention-directory-manager users/user move \
 	  <section id="central:udm:example:groups">
 		<title>Groups</title>
 		<para>
-		  Creating a group <emphasis>Example Users</emphasis> and adding a user 
+		  Creating a group <emphasis>Example Users</emphasis> and adding the user
 		  <emphasis>user01</emphasis> to this group:
 		</para>
 		<programlisting language="sh">
@@ -1351,8 +1351,8 @@ univention-directory-manager groups/group modify \
 	  <section id="central:udm:example:cn-policies">
 		<title>Container / Policies</title>
 		<para>
-		  This call creates a <emphasis>cn=Bremen</emphasis> container beneath the standard
-		  container <emphasis>cn=computers</emphasis> for the computers at the Bremen site. The
+		  This call creates a container <emphasis>cn=Bremen</emphasis> beneath the standard
+		  container <emphasis>cn=computers</emphasis> for the computers at the "Bremen" site. The
 		  additional option <emphasis>computerPath</emphasis> also registers this container directly
 		  as the standard container for computer objects (see <xref linkend="central:cn-and-ous"/>):
 		</para>
@@ -1385,7 +1385,7 @@ univention-directory-manager container/cn modify \
 
 		<para>
 		  Creating a &ucsUCR; policy with which the storage time for log files can be set to one
-		  year. A blank space is used to separate the name and value of the variable:
+		  year. One space is used to separate the name and value of the variable:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager policies/registry create \
@@ -1409,7 +1409,7 @@ univention-directory-manager policies/registry modify \
 		<title>Computers</title>
 		<para>
 		  In the following example, a Windows client is created. If this client joins the Samba
-		  domain at a later point in time (see <xref linkend="windows-domaenenbeitritt"/>), the
+		  domain at a later point in time (see <xref linkend="windows-domaenenbeitritt"/>), this
 		  computer account is then automatically used:
 		</para>
 		<programlisting language="sh">
@@ -1424,9 +1424,9 @@ univention-directory-manager computers/windows create \
 	  <section id="central:udm:example:shares">
 		<title>Shares</title>
 		<para>
-		  The following command creates the share <emphasis>Documentation</emphasis> on the server
+		  The following command creates a share <emphasis>Documentation</emphasis> on the server
 		  <emphasis>fileserver.example.com</emphasis>. As long as
-		  <filename>/var/shares/documentation</filename> does not yet exist on the server, it is
+		  <filename class="directory">/var/shares/documentation/</filename> does not yet exist on the server, it is
 		  also created automatically:
 		</para>
 		<programlisting language="sh">
@@ -1444,7 +1444,7 @@ univention-directory-manager shares/share create \
 		  Creating a printer share <emphasis>LaserPrinter01</emphasis> on the print server
 		  <emphasis>printserver.example.com</emphasis>. The properties of the printer are specified
 		  in the PPD file, the name of which is given relative to the directory
-		  <filename>/usr/share/ppd</filename>. The connected printer is network-compatible and is
+		  <filename class="directory">/usr/share/ppd/</filename>. The connected printer is network-compatible and is
 		  connected via the IPP protocol.
 		</para>
 		<programlisting language="sh">
@@ -1474,8 +1474,8 @@ univention-directory-manager shares/printer create \
 		<programlisting language="sh">
 univention-directory-manager shares/printergroup create \
     --set name=LaserPrinters \
-    --set spoolHost="printserver.example.com"
-    --append groupMember=LaserPrinter01
+    --set spoolHost="printserver.example.com" \
+    --append groupMember=LaserPrinter01 \
     --append groupMember=LaserPrinter02
 </programlisting>
 	  </section>
@@ -1524,8 +1524,7 @@ univention-directory-manager dns/ptr_record create \
 		  Extended attributes can be used to expand the functional scope of the &ucsUMC;,
 		  see <xref linkend="central:extendedattrs"/>. In the following example, a new attribute is
 		  added, where the car license number of the company car can be saved for each user. The
-		  values are managed in an object class created specially for this purpose
-		  <emphasis>univentionFreeAttributes</emphasis>:
+		  values are managed in the object class <emphasis>univentionFreeAttributes</emphasis> created specially for this purpose:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager settings/extended_attribute create \
@@ -1538,7 +1537,6 @@ univention-directory-manager settings/extended_attribute create \
     --set tabName="Company car" \
     --set multivalue=0 \
     --set syntax="string" \
-    --set module=users/user \
     --set shortDescription="Car license"
 </programlisting>
 	  </section>

@@ -1281,7 +1281,7 @@ univention-directory-manager groups/group modify \
 	<section id="central:udm:example">
 	  <title>Beispielaufrufe für die Kommandozeilenschnittstelle</title>
 	  <para>
-		Die folgenden Beispielaufrufe des Kommandozeilen-Frontend &ucsUDM; können als Vorlagen für eigene
+		Die folgenden Beispielaufrufe des Kommandozeilen-Frontend von &ucsUDM; können als Vorlagen für eigene
 		Skripte verwendet werden:
 	  </para>
 
@@ -1311,7 +1311,6 @@ univention-directory-manager users/user modify \
     --set postcode="28239" \
     --set city="Bremen"
 </programlisting>
-
 
 		<para>
 		  Mit diesem Befehl werden alle Benutzer angezeigt, deren Benutzername mit <emphasis>user</emphasis>
@@ -1343,8 +1342,8 @@ univention-directory-manager users/user remove \
 
 		<para>
 		  Eine Firma hat zwei Standorte mit eigens dafür angelegten Containern. Mit dem folgenden
-		  Befehl wird ein Benutzer aus dem Container für den Standort Hamburg in den Container für
-		  den Standort Bremen verschoeben:
+		  Befehl wird ein Benutzer aus dem Container für den Standort "Hamburg" in den Container für
+		  den Standort "Bremen" verschoeben:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user move \
@@ -1456,7 +1455,7 @@ univention-directory-manager policies/registry modify \
 		<title>Rechner</title>
 		<para>
 		  In folgendem Beispiel wird ein Windows-Client angelegt. Tritt dieser Client später der
-		  Samba-Domäne bei (siehe <xref linkend="windows-domaenenbeitritt"/>), wird das Rechnerkonto
+		  Samba-Domäne bei (siehe <xref linkend="windows-domaenenbeitritt"/>), wird dieses Rechnerkonto
 		  dann automatisch verwendet:
 		</para>
 		<programlisting language="sh">
@@ -1473,7 +1472,7 @@ univention-directory-manager computers/windows create \
 		<para>
 		  Der folgende Befehl legt eine Freigabe <emphasis>Documentation</emphasis> auf dem Server
 		  <emphasis>fileserver.example.com</emphasis> an. Sofern
-		  <filename>/var/shares/documentation</filename> auf dem Server noch nicht existiert, wird
+		  <filename class="directory">/var/shares/documentation/</filename> auf dem Server noch nicht existiert, wird
 		  es durch diesen Aufruf auch gleich angelegt.
 		</para>
 		<programlisting language="sh">
@@ -1491,7 +1490,7 @@ univention-directory-manager shares/share create \
 		  Anlegen einer Druckerfreigabe <emphasis>LaserPrinter01</emphasis> auf dem Druckserver
 		  <emphasis>printserver.example.com</emphasis>. Die Eigenschaften des Druckers sind in der
 		  PPD-Datei spezifiziert, deren Name relativ zum Verzeichnis
-		  <filename>/usr/share/ppd</filename> angegeben wird. Der angebundene Drucker ist
+		  <filename class="directory">/usr/share/ppd/</filename> angegeben wird. Der angebundene Drucker ist
 		  netzwerkfähig und wird über das IPP-Protokoll angebunden.
 		</para>
 		<programlisting language="sh">
@@ -1522,8 +1521,8 @@ univention-directory-manager shares/printer create \
 		<programlisting language="sh">
 univention-directory-manager shares/printergroup create \
     --set name=LaserPrinters \
-    --set spoolHost="printserver.example.com"
-    --append groupMember=LaserPrinter01
+    --set spoolHost="printserver.example.com" \
+    --append groupMember=LaserPrinter01 \
     --append groupMember=LaserPrinter02
 </programlisting>
 	  </section>
@@ -1585,7 +1584,6 @@ univention-directory-manager settings/extended_attribute create \
     --set tabName="Company car" \
     --set multivalue=0 \
     --set syntax="string" \
-    --set module=users/user \
     --set shortDescription="Car license"
 </programlisting>
 	  </section>
