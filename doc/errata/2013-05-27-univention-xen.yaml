@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-xen
+fix: 4.0.0-4.66.201305271359
+note:
+version: [1]
+desc: |
+ This erratum fixes a logic bug, which prevented the xenstore database being
+ cleared on reboots.
+bug: [28309]

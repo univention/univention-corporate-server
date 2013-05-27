@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-virtual-machine-manager-daemon
+fix: 2.0.36-7.445.201305271400
+note:
+version: [1]
+desc: |
+ This erratum implements the following changes:
+ - Media change is now also supported for Xen-HVM domains.
+ - Domains can be shut down using ACPI power-off events.
+ - The UVMM UMC module has been cleaned up to improve the code quality
+   for robustness.
+bug: [30897, 30897]
