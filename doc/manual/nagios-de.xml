@@ -947,11 +947,6 @@
 				</tbody>
 			</tgroup>
 		</table>
-		<!--
-		<comment>
-		Hinweise zur Behebung von Schleifen finden sich im Univention Wiki unter WIKIREF-23921.
-		</comment>
-		-->
 	</section>
 
 	<section id="nagios:Einbindung_von_manuell_erstellten_Konfigurationsdateien">
@@ -997,4 +992,104 @@
 	</comment>
 	-->
 </section>
+
+
+<section id="nagios:newplugins">
+  <title>Integration eigener Plugins</title>
+  <para>
+	Die in UCS mitgelieferten und vorkonfigurierten Nagios-Plugins können durch selbst geschriebene
+	oder externe Plugins ergänzt werden. Unter <uri>http://exchange.nagios.org</uri> findet sich
+	eine Vielzahl verfügbarer Module.
+  </para>
+
+  <para>
+	Dieser Abschnitt beschreibt am Beispiel des Plugins check_e2fs_next_fsck die Einbindung eines
+	externen Plugins. Das Plugin prüft, ob ein Filesystem-Check ansteht und liefert eine Warnung wenn
+	dieser sieben oder weniger Tage bevorsteht und einen Fehlerzustand, wenn beim nächsten Reboot
+	ein Filesystem-Check stattfindet.
+  </para>
+
+  <para>
+	Je nachdem ob das Plugin über NRPE aufgerufen wird oder nicht, unterscheidet sich die Installation:
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  Wird das Plugin über NRPE aufgerufen, muss es auf allen Nagios-Servern und auf allen zu
+		  prüfenden Systemen in das Verzeichnis <filename>/usr/lib/nagios/plugins</filename> kopiert
+		  werden.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Benötigt das Plugin keinen lokalen Zugriff, muss es nur auf den Nagios-Server(n) in das
+		  Verzeichnis <filename>/usr/lib/nagios/plugins</filename> kopiert werden.
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+
+	Das Plugin muss als ausführbare Datei markiert sein (<command>chmod a+x PLUGIN</command>).
+  </para>
+
+  <para>
+	Einige Plugins sind ausschließlich in Perl, Python oder Shell geschrieben und benötigen keine
+	externen Bibliotheken oder Programme. Diese Interpreter sind auf allen UCS-Systemen immer
+	installiert. Wenn das Plugin hingegen externe Programme oder Bibliotheken verwendet, muss
+	sichergestellt werden, das diese auf allen zu prüfenden Systemen (NRPE-Plugin) oder auf den
+	Nagios-Servern (Fern-Prüfung) installiert sind.
+  </para>
+
+  <para>	
+	Das Nagios-Plugin muss nun registriert werden. Dies erfolgt durch ein Makro im
+	Verzeichnis <filename>/etc/nagios-plugins/config/</filename>. Hierbei kann z.B. eine Datei wie
+	<emphasis>local.cfg</emphasis> verwendet werden, in der dann alle lokal registrierten Plugins
+	eingetragen werden. Das folgende Beispiel registriert das 
+	Plugin check_e2fs_next_fsck:
+
+<programlisting language="sh">
+define command{
+  command_name   check_fsck
+  command_line   /usr/lib/nagios/plugins/check_e2fs_next_fsck
+}
+</programlisting>
+  </para>
+
+  <para>	
+	Viele Plugins verwenden auch Parameter, um die Schwellwerte für Warnungen und Fehler zu
+	konfigurieren. Diese werden dann in der <emphasis>command_line</emphasis>-Zeile festgelegt.
+  </para>
+
+  <para>	
+	Analog zu dem Plugin selbst muss die Makro-Datei bei Verwendung von NRPE auf alle zu
+	überwachenden Systeme kopiert werden.
+  </para>
+
+  <para>
+	Die Plugins, Makros und eventuellen Abhängigkeiten können auch in ein Debian-Paket paketiert
+	werden. Weitere Hinweise dazu finden sich in <xref linkend="developer-reference"/>.
+  </para>
+
+  <para>
+	Nun muss der Nagios-Dienst neu gestartet werden:
+<programlisting language="sh">
+/etc/init.d/nagios3 restart
+</programlisting>
+  </para>
+
+  <para>
+	Abschließend muss das neue Plugin noch in der &ucsUMC; als <guimenu>Nagios-Dienst</guimenu>
+	registriert werden, siehe <xref linkend="Nagios:Dienst"/>. Als
+	<guimenu>Plugin-Kommando</guimenu> muss der unter <emphasis>command_name</emphasis>
+	in der Makro-Datei registriert Name angegeben werden, in diesem Beispiel
+	<emphasis>check_fsck</emphasis> und die Option <guimenu>NRPE benutzen</guimenu> aktiviert
+	werden.
+  </para>
+
+  <para>
+	Der neu registrierte Dienst kann nun einzelnen Systemen zugewiesen werden, siehe <xref
+	linkend="nagios::hostconfig"/>.
+  </para>
+
+</section>
+
+
 </chapter>
