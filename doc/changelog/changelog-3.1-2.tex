@@ -405,11 +405,11 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 \item The winbind init script did not ensure that the daemon actually got stopped. This could lead
  to a non running winbind daemon after the server password change. This issue has been fixed
  (\ucsBug{31289}).
+\item The file \ucsFile{/etc/samba/shares.conf} is now refreshed directly after changing a share (\ucsBug{29399}).
 \end{itemize}
 
 \subsection{Samba 4}
 \begin{itemize}
-\item The file \ucsFile{/etc/shares.conf} is now refreshed directly after removing a share (\ucsBug{29399}).
 \item \ucsUCRV{windows/wins-server} is now initiated when joining  (\ucsBug{30813}).
 \item Samba 4 does now support quota on XFS file systems (\ucsBug{31234}).
 \item Joining into a new \ucsName{samba4/join/site} without Samba4 on the Master now repects the chosen \ucsName{samba4/dc} (\ucsBug{30792}).
