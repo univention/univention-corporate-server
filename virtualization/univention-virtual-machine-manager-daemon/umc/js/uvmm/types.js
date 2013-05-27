@@ -92,12 +92,16 @@ define([
 			switch (unit) {
 				case 'P': case 'p':
 					mem *= 1024;
+					/* falls through */
 				case 'T': case 't':
 					mem *= 1024;
+					/* falls through */
 				case 'G': case 'g':
 					mem *= 1024;
+					/* falls through */
 				case 'M': case 'm':
 					mem *= 1024;
+					/* falls through */
 				case 'K': case 'k':
 					mem *= 1024;
 			}
@@ -231,7 +235,7 @@ define([
 			'writethrough': _('Read caching, forced sync (write-through)'),
 			'writeback': _('Read/write caching, no forced sync (write-back)'),
 			'directsync': _('No host caching, forced sync (direct-sync)'),
-			'unsafe': _('Read/write caching, sync filtered out (unsafe)'),
+			'unsafe': _('Read/write caching, sync filtered out (unsafe)')
 		},
 		POOLS_RW: { // storage pools which support creating new volumes
 			dir: true,
@@ -288,20 +292,20 @@ define([
 				return [];
 			});
 		},
+		ISO: {id: 'iso', label: _('ISO format (iso)')},
+		RAW: {id: 'raw', label: _('Simple format (raw)')},
+		QCOW2: {id: 'qcow2', label: _('Extended format (qcow2)'), preselected: true},
 		getImageFormat: function(options) {
-			ISO = {id: 'iso', label: _('ISO format (iso)')};
-			RAW = {id: 'raw', label: _('Simple format (raw)')};
-			QCOW2 = {id: 'qcow2', label: _('Extended format (qcow2)'), preselected: true};
 			var list = [];
 			if (options.type == 'cdrom') {
-				list.push(ISO);
+				list.push(self.ISO);
 			} else if (options.type == 'floppy') {
-				list.push(RAW);
+				list.push(self.RAW);
 			} else {
-				list.push(RAW);
+				list.push(self.RAW);
 				if (options.domain_type == 'kvm') { // TODO: Check self.POOLS_FILE
 					// add qcow2 as pre-selected item
-					list.push(QCOW2);
+					list.push(self.QCOW2);
 				}
 			}
 			return list;

@@ -111,7 +111,7 @@ define([
 		},
 
 		_setInitialValues: function() {
-			this.getPage('interface').set('headerText', _('Edit network interface'))
+			this.getPage('interface').set('headerText', _('Edit network interface'));
 			this.getWidget('interface', 'type').set('value', this.values.type);
 			this.getWidget('interface', 'model').set('value', this.values.model);
 			this.getWidget('interface', 'source').set('value', this.values.source);
