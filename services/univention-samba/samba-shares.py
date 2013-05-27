@@ -219,6 +219,18 @@ def handler(dn, new, old, command):
 		finally:
 			listener.unsetuid()
 
+	if ( not (new and old) ) or (new['univentionShareSambaName'][0] != old['univentionShareSambaName'][0]):
+		listener.setuid(0)
+		try:
+			fp = open('/etc/samba/shares.conf', 'w')
+			print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgender Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
+
+			for f in os.listdir('/etc/samba/shares.conf.d'):
+				print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
+			fp.close()
+		finally:
+			listener.unsetuid()
+
 def initialize():
 	if not os.path.exists('/etc/samba/shares.conf.d'):
 		listener.setuid(0)
@@ -242,12 +254,6 @@ def clean():
 def postrun():
 	listener.setuid(0)
 	try:
-		fp = open('/etc/samba/shares.conf', 'w')
-		print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgende Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
-
-		for f in os.listdir('/etc/samba/shares.conf.d'):
-			print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
-		fp.close()
 		initscript='/etc/init.d/samba'
 		os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
 	finally:

@@ -1,3 +1,9 @@
+univention-samba (7.0.18-1) unstable; urgency=low
+
+  * When changing a share shares.conf is refreshed directly (Bug #29399)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 27 May 2013 15:47:40 +0200
+
 univention-samba (7.0.17-9) unstable; urgency=low
 
   * Added a service definition for winbind (Bug #9560)
