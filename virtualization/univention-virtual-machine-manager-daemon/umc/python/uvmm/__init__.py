@@ -53,7 +53,6 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots):
 	"""
 	UMC functions for UVMM handling.
 	"""
-	DOMAIN_STATES = ('RUN', 'PAUSE', 'SHUTDOWN', 'RESTART', 'SUSPEND')
 
 	def __init__(self):
 		Base.__init__(self)
