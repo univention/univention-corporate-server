@@ -32,10 +32,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-management-console-module-uvmm 1.0.103-1\n"
+"Project-Id-Version: univention-management-console-module-uvmm 2.0.40-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-11-25 20:38+0100\n"
-"PO-Revision-Date: 2012-02-15 16:09+0100\n"
+"POT-Creation-Date: 2013-05-23 09:14+0200\n"
+"PO-Revision-Date: 2013-05-23 09:17+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: \n"
@@ -43,77 +43,96 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/uvmm/storages.py:176
+#: umc/python/uvmm/domains.py:416
+msgid "Could not determine architecture for domain"
+msgstr "Die Architektur der Instanz konnte nicht ermittelt werden"
+
+#: umc/python/uvmm/domains.py:530
+msgid "Could not determine the keyboard layout for the VNC access"
+msgstr ""
+"Das Tastaturlayout für den VNC Direktzugriff konnte nicht ermittelt werden"
+
+#: umc/python/uvmm/domains.py:514
+msgid "Could not determine the list of boot devices for domain"
+msgstr "Die Liste der Boot-Devices der Instanz konnte nicht ermittelt werden"
+
+#: umc/python/uvmm/domains.py:486
+msgid "Could not determine virtualization technology for domain"
+msgstr ""
+"Die Virtualisierungstechnologie der Instanz konnte nicht ermittelt werden"
+
+#: umc/python/uvmm/storages.py:335
 #, python-format
 msgid "Could not retrieve details for domain %s"
 msgstr "Die Details zur virtuellen Instanz %s konnten nicht abgerufen werden"
 
-#: umc/python/uvmm/storages.py:166
+#: umc/python/uvmm/storages.py:317
 msgid "Failed to check if the drive is used by any other virtual instance"
 msgstr ""
 "Die Prüfung ob das Laufwerk von einer anderen virtuellen Instanz verwendet "
 "wird ist fehlgeschlagen."
 
-#: umc/python/uvmm/domains.py:333
+#: umc/python/uvmm/domains.py:463
 #, python-format
 msgid "Failed to retrieve details for the server %(nodeURI)s"
 msgstr ""
 "Das Abrufen der Details zum physikalischen Server %(nodeURI)s ist "
 "fehlgeschlagen"
 
-#: umc/python/uvmm/profiles.py:65
+#: umc/python/uvmm/profiles.py:77
 msgid "Full virtualization (KVM)"
 msgstr "Voll-Virtualisierung (KVM)"
 
-#: umc/python/uvmm/profiles.py:66
+#: umc/python/uvmm/profiles.py:78
 msgid "Full virtualization (XEN)"
 msgstr "Voll-Virtualisierung (XEN)"
 
-#: umc/python/uvmm/domains.py:471
+#: umc/python/uvmm/domains.py:626
 #, python-format
 msgid "Invalid domain state: %s"
 msgstr "Ungültiger Domain Status: %s"
 
-#: umc/python/uvmm/domains.py:221
-#, python-format
-msgid "No valid source for disk \"%s\" found"
-msgstr "Es fehlt eine gültige Quelle für das Gerät \"%s\""
-
-#: umc/python/uvmm/profiles.py:67
+#: umc/python/uvmm/profiles.py:79
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: umc/python/uvmm/__init__.py:115
-#: umc/python/uvmm/nodes.py:78
+#: umc/python/uvmm/nodes.py:102 umc/python/uvmm/__init__.py:145
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
-#: umc/python/uvmm/uvmmd.py:67
+#: umc/python/uvmm/uvmmd.py:68
 msgid "The given UVMM command is not known"
 msgstr "Der gegebene UVMM Befehl ist unbekannt"
 
-#: umc/python/uvmm/storages.py:140
+#: umc/python/uvmm/storages.py:255
 msgid "The given pool could not be found or is no file pool"
 msgstr ""
 "Der angegebene Speicherbereich konnte nicht gefunden werden oder ist kein "
 "Verzeichnis"
 
-#: umc/python/uvmm/domains.py:335
+#: umc/python/uvmm/domains.py:467
 #, python-format
 msgid "Unknown physical server %(nodeURI)s"
 msgstr "Unbekannter physikalischer Server %(nodeURI)s"
 
-#: umc/python/uvmm/profiles.py:122
+#: umc/python/uvmm/profiles.py:176
 msgid "Unknown profile"
 msgstr "Unbekanntes Profil"
 
-#: umc/python/uvmm/domains.py:312
+#: umc/python/uvmm/domains.py:437
 msgid "Unknown profile given"
-msgstr "Unbekanntes profil wurde angegeben"
+msgstr "Unbekanntes Profil wurde angegeben"
 
-#: umc/python/uvmm/__init__.py:117
+#: umc/python/uvmm/__init__.py:150
 msgid "Unknown query type"
 msgstr "Unbekannter Anfragetyp"
 
+#: umc/python/uvmm/domains.py:505
+msgid "vcpus must be a number"
+msgstr "vcpus muß numerisch sein"
+
 #~ msgid "Could not find the drive"
 #~ msgstr "Das Laufwerk konnte nicht gefunden werden"
+
+#~ msgid "No valid source for disk \"%s\" found"
+#~ msgstr "Es fehlt eine gültige Quelle für das Gerät \"%s\""

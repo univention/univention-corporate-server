@@ -410,7 +410,9 @@ class Domains( object ):
 		elif profile:
 			domain_info.arch = profile.arch
 		else:
-			raise UMC_CommandError( 'Could not determine architecture for domain' )
+			raise UMC_CommandError(
+					_('Could not determine architecture for domain')
+					)
 
 		if domain_info.arch == 'automatic':
 			success, node_list = self.uvmm.send(
@@ -439,7 +441,9 @@ class Domains( object ):
 			if profile:
 				domain_info.domain_type, domain_info.os_type = profile.virttech.split( '-' )
 			else:
-				raise UMC_CommandError( 'Could not determine virtualization technology for domain' )
+				raise UMC_CommandError(
+						_('Could not determine virtualization technology for domain')
+						)
 
 		# check configuration for para-virtualized machines
 		if domain_info.os_type == 'xen':
@@ -465,7 +469,9 @@ class Domains( object ):
 		elif profile:
 			domain_info.boot = getattr( profile, 'bootdev', None )
 		else:
-			raise UMC_CommandError( 'Could not determine the list of boot devices for domain' )
+			raise UMC_CommandError(
+					_('Could not determine the list of boot devices for domain')
+					)
 
 		# VNC
 		if domain[ 'vnc' ]:
@@ -479,7 +485,9 @@ class Domains( object ):
 			elif profile:
 				gfx.keymap = profile.kblayout
 			else:
-				raise UMC_CommandError( 'Could not determine the keyboard layout for the VNC access' )
+				raise UMC_CommandError(
+						_('Could not determine the keyboard layout for the VNC access')
+						)
 			if domain.get( 'vnc_password', None ):
 				gfx.passwd = domain[ 'vnc_password' ]
 
