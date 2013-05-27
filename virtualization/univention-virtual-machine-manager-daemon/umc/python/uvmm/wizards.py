@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager
 #  module: wizards for devices and virtual instances
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2010-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
