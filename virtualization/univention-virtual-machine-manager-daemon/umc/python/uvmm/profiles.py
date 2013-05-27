@@ -89,7 +89,7 @@ class Profiles(object):
 				required=False,
 				unique=False
 				)
-		self.profiles = map(lambda obj: (obj.dn, Profile(obj.info)), res)
+		self.profiles = [(obj.dn, Profile(obj.info)) for obj in res]
 
 	def _filter_profiles(self, node_pd):
 		"""

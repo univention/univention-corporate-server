@@ -231,7 +231,7 @@ class Storages(object):
 			success, data = result
 			if success:
 				if isinstance(data, (list, tuple)):
-					data = map(lambda x: '#'.join(x), data)
+					data = ['#'.join(obj) for obj in data]
 				self.finished(request.id, data)
 			else:
 				self.finished(
