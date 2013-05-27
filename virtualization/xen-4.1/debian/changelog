@@ -1,3 +1,10 @@
+xen-4.1 (4.1.3-9+1) ucs3-1-2-0; urgency=low
+
+  * Fix media change (Bug #23394)
+  * Synchronize xencommons to clean xenstore on reboot (Bug #28309)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 24 May 2013 19:26:53 +0200
+
 xen-4.1 (4.1.3-9) ucs3-1-0-0; urgency=low
 
   * Bump version for import (Bug #30389)
@@ -13,7 +20,7 @@ xen-4.1 (4.1.3-8) ucs3-1-0-0; urgency=low
 xen-4.1 (4.1.3-7) ucs3-1-0-0; urgency=low
 
   * Import bugfix from Debian Squeeze point update 6.0.7, which could lead to
-    clock jumps (fix-x86-time-scale-asm.patch) (Bug #30438)  	
+    clock jumps (fix-x86-time-scale-asm.patch) (Bug #30438)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 28 Feb 2013 13:35:04 +0100
 
