@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+
+  %entities;
+]>
+<book lang="en" id="printers-3.1">
+  <bookinfo>
+	<title>Univention Corporate Server</title>
+	<subtitle>Extended print services documentation</subtitle>
+
+	<revhistory>
+	  <revision>
+		<revnumber>3.1-1</revnumber>
+		<date>27 May 2013</date>
+	  </revision>
+	</revhistory>
+  </bookinfo>
+
+  <chapter>
+	<title>Print quota configuration</title>
+	<section>
+	  <title></title>
+	  <para>
+	  </para>
+	</section>
+	
+  </chapter>
+  <?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>
