@@ -3,6 +3,7 @@ univention-virtual-machine-manager-daemon (2.0.36-7) unstable; urgency=low
   * Add ACPI shutdown action (Bug #21397)
   * Disable action if node is unavailable.
   * Check action even on single selections.
+  * Remove unused code (Bug #30897)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 21 May 2013 20:17:09 +0200
 

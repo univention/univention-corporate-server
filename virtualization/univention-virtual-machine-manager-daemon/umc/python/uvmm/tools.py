@@ -68,15 +68,6 @@ def object2dict( obj ):
 
 	return attrs
 
-def str2pat( string ):
-	if not string:
-		return '*'
-	if not string[ -1 ] == '*':
-		string += '*'
-	if not string[ 0 ] == '*':
-		string = '*' + string
-
-	return string
 
 class MemorySize( object ):
 	"""Parse and convert size with optional prefix from and to numbers."""
