@@ -1149,7 +1149,7 @@ Generating legacy menu.lst from current kernels
 			<programlisting><![CDATA[
 # /etc/fstab: static file system information.
 #
-# >file system> <mount point>   <type>  <options>       <dump>  <pass>
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
 UUID=64cff02c-0870-4890-9fb6-7b502ed1aa12       /       ext3    acl,errors=remount-ro,user_xattr,usrquota       0       1
 proc    /proc   proc    defaults        0       0
 UUID=1bb33966-bc9b-4d41-97e8-476b9effe515       none    swap    sw      0       0
