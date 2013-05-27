@@ -191,7 +191,7 @@
 					<row>
 						<entry>UNIVENTION_DISK_ROOT</entry>
 						<entry>
-							monitors how full the <filename>/</filename> partition
+							monitors how full the <filename class="partition">/</filename> partition
 							is. An error status is raised if the remaining free space falls
 							below 25% or 10% in the default setting.
 						</entry>
@@ -394,7 +394,7 @@
 						<entry>UNIVENTION_SMART_SDA</entry>
 						<entry>
 							<para>
-							tests the S.M.A.R.T. status of the hard drive <filename>/dev/sda</filename>.
+							tests the S.M.A.R.T. status of the hard drive <filename class="devicefile">/dev/sda</filename>.
 							Corresponding Nagios services exist for the hard drives sdb, sdc and sdd.
 							</para>
 						</entry>
@@ -532,7 +532,7 @@
 							<para>
 							The plugin command to be requested. Each plugin command specifies a
 							predefined plugin execution. These are defined in the configuration
-							files in the <filename>/etc/nagios-plugins/config/</filename> directory,
+							files in the <filename class="directory">/etc/nagios-plugins/config/</filename> directory,
 							e.g., <emphasis>check_disk</emphasis>.
 							</para>
 						</entry>
@@ -974,14 +974,14 @@
 		<para>
 		If you wish to add expansions to the Nagios server configuration files
 		created by the listener module, the manually created configuration
-		files can be stored in the <filename>/etc/nagios3/conf.local.d/</filename>
+		files can be stored in the <filename class="directory">/etc/nagios3/conf.local.d/</filename>
 		directory. The added configuration files are only taken into account
 		after the next restart of the server.
 		</para>
 
 		<para>
 		Expansions to the NRPE configurations can be stored in
-		the <filename>/etc/nagios/nrpe.local.d/</filename> directory. Changes are only
+		the <filename class="directory">/etc/nagios/nrpe.local.d/</filename> directory. Changes are only
 		applied after the next restart of the Nagios NRPE Daemon.
 		</para>
 	</section>
@@ -1014,7 +1014,7 @@
 <!--   <title>Integration eigener Plugins</title> -->
 <!--   <para> -->
 <!-- 	Die in UCS mitgelieferten und vorkonfigurierten Nagios-Plugins können durch selbst geschriebene -->
-<!-- 	oder externe Plugins ergänzt werden. Unter <uri>http://exchange.nagios.org</uri> findet sich -->
+<!-- 	oder externe Plugins ergänzt werden. Unter <ulink url="http://exchange.nagios.org"/> findet sich -->
 <!-- 	eine Vielzahl verfügbarer Module. -->
 <!--   </para> -->
 
@@ -1027,22 +1027,23 @@
 
 <!--   <para> -->
 <!-- 	Je nachdem ob das Plugin über NRPE aufgerufen wird oder nicht, unterscheidet sich die Installation: -->
+<!--   </para> -->
 <!-- 	<itemizedlist> -->
 <!-- 	  <listitem> -->
 <!-- 		<simpara> -->
 <!-- 		  Wird das Plugin über NRPE aufgerufen, muss es auf allen Nagios-Servern und auf allen zu -->
-<!-- 		  prüfenden Systemen in das Verzeichnis <filename>/usr/lib/nagios/plugins</filename> kopiert -->
+<!-- 		  prüfenden Systemen in das Verzeichnis <filename class="directory">/usr/lib/nagios/plugins</filename> kopiert -->
 <!-- 		  werden. -->
 <!-- 		</simpara> -->
 <!-- 	  </listitem> -->
 <!-- 	  <listitem> -->
 <!-- 		<simpara> -->
 <!-- 		  Benötigt das Plugin keinen lokalen Zugriff, muss es nur auf den Nagios-Server(n) in das -->
-<!-- 		  Verzeichnis <filename>/usr/lib/nagios/plugins</filename> kopiert werden. -->
+<!-- 		  Verzeichnis <filename class="directory">/usr/lib/nagios/plugins</filename> kopiert werden. -->
 <!-- 		</simpara> -->
 <!-- 	  </listitem> -->
 <!-- 	</itemizedlist> -->
-
+<!--   <para> -->
 <!-- 	Das Plugin muss als ausführbare Datei markiert sein (<command>chmod a+x PLUGIN</command>). -->
 <!--   </para> -->
 
@@ -1054,27 +1055,26 @@
 <!-- 	Nagios-Servern (Fern-Prüfung) installiert sind. -->
 <!--   </para> -->
 
-<!--   <para>	 -->
+<!--   <para> -->
 <!-- 	Das Nagios-Plugin muss nun registriert werden. Dies erfolgt durch ein Makro im -->
 <!-- 	Verzeichnis <filename>/etc/nagios-plugins/config/</filename>. Hierbei kann z.B. eine Datei wie -->
 <!-- 	<emphasis>local.cfg</emphasis> verwendet werden, in der dann alle lokal registrierten Plugins -->
 <!-- 	eingetragen werden. Das folgende Beispiel registriert das  -->
 <!-- 	Plugin check_e2fs_next_fsck: -->
-
+<!--   </para> -->
 <!-- <programlisting language="sh"> -->
 <!-- define command{ -->
 <!--   command_name   check_fsck -->
 <!--   command_line   /usr/lib/nagios/plugins/check_e2fs_next_fsck -->
 <!-- } -->
 <!-- </programlisting> -->
-<!--   </para> -->
 
-<!--   <para>	 -->
+<!--   <para> -->
 <!-- 	Viele Plugins verwenden auch Parameter, um die Schwellwerte für Warnungen und Fehler zu -->
 <!-- 	konfigurieren. Diese werden dann in der <emphasis>command_line</emphasis>-Zeile festgelegt. -->
 <!--   </para> -->
 
-<!--   <para>	 -->
+<!--   <para> -->
 <!-- 	Analog zu dem Plugin selbst muss die Makro-Datei bei Verwendung von NRPE auf alle zu -->
 <!-- 	überwachenden Systeme kopiert werden. -->
 <!--   </para> -->
@@ -1086,10 +1086,10 @@
 
 <!--   <para> -->
 <!-- 	Nun muss der Nagios-Dienst neu gestartet werden: -->
+<!--   </para> -->
 <!-- <programlisting language="sh"> -->
 <!-- /etc/init.d/nagios3 restart -->
 <!-- </programlisting> -->
-<!--   </para> -->
 
 <!--   <para> -->
 <!-- 	Abschließend muss das neue Plugin noch in der &ucsUMC; als <guimenu>Nagios-Dienst</guimenu> -->
