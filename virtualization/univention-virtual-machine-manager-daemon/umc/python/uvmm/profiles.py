@@ -94,16 +94,17 @@ class Profiles(object):
 		Return profiles valid for node.
 		"""
 		uri = urlsplit(node_pd.uri)
-		tech = uri.scheme == 'qemu' and 'kvm' or uri.scheme # set default virtualization technology
-		tech_types = []
-		archs = set([t.arch for t in node_pd.capabilities]) # read architectures from capabilities
+		# set default virtualization technology
+		tech = 'kvm' if uri.scheme == 'qemu' else uri.scheme
+		tech_types = set()
+		# read architectures from capabilities
+		archs = set([t.arch for t in node_pd.capabilities]) | set(('automatic',))
 
 		for template in node_pd.capabilities:
 			template_tech = '%s-%s' % (template.domain_type, template.os_type)
 			if not template_tech in Profiles.VIRTTECH_MAPPING:
 				continue
-			if not template_tech in tech_types:
-				tech_types.append(template_tech)
+			tech_types.add(template_tech)
 
 		# Set tech to xen-xen because the CPU extensions are not available
 		if 'xen-xen' in tech_types and not 'xen-hvm' in tech_types:
@@ -112,7 +113,7 @@ class Profiles(object):
 		return [
 				(dn, item)
 				for dn, item in self.profiles
-				if (item.arch in archs or item.arch == 'automatic') and item.virttech.startswith(tech)
+				if item.arch in archs and item.virttech.startswith(tech)
 				]
 
 	def profile_query(self, request):
