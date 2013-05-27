@@ -33,16 +33,25 @@ univention-config-registry set xen/repository?"file:///var/lib/univention-server
 
 eval "$(univention-config-registry shell kernel/modules)"
 
-modules=
-echo "$kernel_modules" | grep -qs '\<xen[_-]evtchn\>' || modules="$modules;xen-evtchn"
-echo "$kernel_modules" | grep -qs '\<xenfs\>' || modules="$modules;xenfs"
-echo "$kernel_modules" | grep -qs '\<xen-blkfront\>' || modules="$modules;xen-blkfront"
-echo "$kernel_modules" | grep -qs '\<blktap\>' || modules="$modules;blktap"
+modules () {
+	local mod arg IFS=';'
+	set -- $kernel_modules # IFS
+	for mod in xen-evtchn xenfs xen-blkfront blktap loop
+	do
+		for arg in "$@"
+		do
+			[ "$mod" = "$arg" ] && continue 2
+		done
+		set -- "$@" "$mod"
+	done
+	[ $# -ge 1 ] && univention-config-registry set kernel/modules="$*"
 
-[ -n "$modules" ] && univention-config-registry set kernel/modules="${kernel_modules}${modules}"
-
-lsmod | grep -qs '\<xen-blkfront\>' || modprobe xen-blkfront
-lsmod | grep -qs '\<blktap\>' || modprobe blktap
+	for mod in xen-blkfront blktap loop
+	do
+		grep -qsFw "$mod" /proc/modules || modprobe "$mod" || true
+	done
+}
+modules
 
 #DEBHELPER#
 
