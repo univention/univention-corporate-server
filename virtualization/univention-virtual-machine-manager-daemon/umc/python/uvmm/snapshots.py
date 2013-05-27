@@ -30,19 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
 from datetime import datetime
 
 from univention.lib.i18n import Translation
 
-from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
-from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
-from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
 # for urlparse extensions
-from univention.uvmm import helpers
 import urlparse
 
 from notifier import Callback
@@ -63,7 +57,6 @@ class Snapshots( object ):
 			if self._check_thread_error( thread, result, request ):
 				return
 
-			node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
 			success, data = result
 
 			if success:

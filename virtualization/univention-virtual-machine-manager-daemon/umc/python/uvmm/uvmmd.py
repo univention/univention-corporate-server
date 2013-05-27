@@ -31,24 +31,15 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
-import fnmatch
-import os
-import socket
-import time
 
 from univention.management.console.log import MODULE
 
 from notifier import Callback
-from notifier.signals import Provider
-from notifier.popen import CountDown
 from notifier.threads import Simple
 
 from univention.lib.i18n import Translation
 
-from univention.uvmm import protocol, node, client
-
-import univention.debug as ud
-import traceback
+from univention.uvmm import protocol, client
 
 _ = Translation( 'univention-management-console-module-uvmm' ).translate
 _uvmm_locale = Translation( 'univention-virtual-machine-manager' ).translate

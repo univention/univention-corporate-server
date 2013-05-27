@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #
+# -*- coding: utf-8 -*-
 # Univention Management Console
 #  module: management of virtualization servers
 #
@@ -37,13 +37,12 @@ import re
 from univention.lib.i18n import Translation
 
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
+from univention.management.console.modules import UMC_OptionTypeError, UMC_CommandError
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
 # for urlparse extensions
-from univention.uvmm import helpers
 import urlparse
 
 from notifier import Callback
@@ -126,7 +125,7 @@ class Domains( object ):
 				return
 
 			node_uri = urlparse.urlsplit( request.options[ 'domainURI' ] )
-			uri, uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+			uri, _uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
 			json = object2dict( data )
 
 			## re-arrange a few attributes for the frontend
@@ -349,7 +348,7 @@ class Domains( object ):
 		domain_info = Data_Domain()
 		# when we edit a domain there must be a UUID
 		if 'domainURI' in domain:
-			node_uri, domain_uuid = urlparse.urldefrag( domain[ 'domainURI' ] )
+			_node_uri, domain_uuid = urlparse.urldefrag( domain[ 'domainURI' ] )
 			domain_info.uuid = domain_uuid
 
 		# annotations & profile
@@ -512,14 +511,7 @@ class Domains( object ):
 				domain=domain_info
 				)
 
-	def domain_put( self, request ):
-		"""Modifies a domain domainUUID on node nodeURI.
-
-		options: { 'domainURI': <domain uri>, 'domain' : {} }
-
-		return: 
-		"""
-		self.domain_add( request )
+	domain_put = domain_add
 
 	def domain_state( self, request ):
 		"""Set the state a domain domainUUID on node nodeURI.

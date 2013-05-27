@@ -30,14 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from types import BuiltinMethodType, MethodType, FunctionType, TypeType, NoneType, InstanceType
-
-from univention.lib.i18n import Translation
+from types import BuiltinMethodType, MethodType, FunctionType, TypeType, NoneType
 
 import re
-import math
-
-_ = Translation('univention-management-console-modules-uvmm').translate
 
 BASE_TYPES = ( int, float, long, bool, basestring, NoneType, list, tuple )
 
