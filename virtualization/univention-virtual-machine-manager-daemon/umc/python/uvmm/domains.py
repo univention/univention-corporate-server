@@ -52,6 +52,10 @@ from .tools import object2dict, MemorySize
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 class Domains( object ):
+	"""
+	UMC functions for UVMM domain handling.
+	"""
+
 	STATES = ( 'NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED' )
 	RE_VNC = re.compile(r'^(IPv[46])(?: (.+))?$|^(?:NAME(?: (.+=.*))?)$')
 	SOCKET_FAMILIES = {
@@ -64,14 +68,34 @@ class Domains( object ):
 			}
 
 	def domain_query( self, request ):
-		"""Returns a list of domains matching domainPattern on the nodes matching nodePattern.
+		"""
+		Returns a list of domains matching domainPattern on the nodes matching nodePattern.
 
-		options: { 'nodepattern': <node name pattern>, 'domainPattern' : <domain pattern> }
+		options: {
+			['nodePattern': <node name pattern>,]
+			['domainPattern': <domain pattern>,]
+			}
 
-		return: { 'id': <domain uri>, 'name' : <name>, 'nodeName' : <node>, 'mem' : <ram>, 'state' : <state>, 'cpu_usage' : <percentage>, 'type' : 'domain' }, ... ], ... }
+		return: [{
+			'cpuUsage': <float>,
+			'description': <string>,
+			'id': <domain uri>,
+			'label': <name>,
+			'mem': <ram>,
+			'nodeName': <node>,
+			'node_available': <boolean>,
+			'state': <state>,
+			'suspended': <boolean>,
+			'type': 'domain',
+			'vnc': <boolean>,
+			'vnc_port': <int>,
+			}, ...]
 		"""
 
 		def _finished( thread, result, request ):
+			"""
+			Process asynchronous UVMM DOMAIN_LIST answer.
+			"""
 			if self._check_thread_error( thread, result, request ):
 				return
 
@@ -109,13 +133,18 @@ class Domains( object ):
 				)
 
 	def domain_get( self, request ):
-		"""Returns details about a domain domainUUID.
+		"""
+		Returns details about a domain domainUUID.
 
-		options: { 'domainURI': <domain uri> }
+		options: {'domainURI': <domain uri>}
 
-		return:
+		return: {...}
 		"""
 		def _finished( thread, result, request ):
+			"""
+			Process asynchronous UVMM DOMAIN_INFO answer.
+			Convert UVMM protocol to JSON.
+			"""
 			if self._check_thread_error( thread, result, request ):
 				return
 
@@ -234,7 +263,9 @@ class Domains( object ):
 				)
 
 	def _create_disk( self, node_uri, disk, domain_info, profile = None ):
-		"""Convert single disk from JSON to Python UVMM Disk object."""
+		"""
+		Convert single disk from JSON to Python UVMM Disk object.
+		"""
 		uri = urlparse.urlsplit( node_uri )
 
 		driver_pv = disk.get('paravirtual', False) # by default no paravirtual devices
@@ -335,9 +366,13 @@ class Domains( object ):
 		return drive
 
 	def domain_add( self, request ):
-		"""Creates a new domain on nodeURI.
+		"""
+		Creates a new domain on nodeURI.
 
-		options: { 'nodeURI': <node uri>, 'domain' : {} }
+		options: {
+			'nodeURI': <node uri>,
+			'domain': {...},
+			}
 
 		return:
 		"""
@@ -492,6 +527,9 @@ class Domains( object ):
 			domain_info.interfaces.append( iface )
 
 		def _finished( thread, result, request ):
+			"""
+			Process asynchronous UVMM DOMAIN_DEFINE answer.
+			"""
 			if self._check_thread_error( thread, result, request ):
 				return
 
@@ -514,11 +552,15 @@ class Domains( object ):
 	domain_put = domain_add
 
 	def domain_state( self, request ):
-		"""Set the state a domain domainUUID on node nodeURI.
+		"""
+		Set the state a domain domainUUID on node nodeURI.
 
-		options: { 'domainURI': <domain uri>, 'domainState': (RUN|SHUTDOWN|SHUTOFF|PAUSE|RESTART|SUSPEND) }
+		options: {
+			'domainURI': <domain uri>,
+			'domainState': (RUN|SHUTDOWN|SHUTOFF|PAUSE|RESTART|SUSPEND),
+			}
 
-		return: 
+		return:
 		"""
 		self.required_options( request, 'domainURI', 'domainState' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -535,11 +577,15 @@ class Domains( object ):
 				)
 
 	def domain_migrate( self, request ):
-		"""Migrates a domain from sourceURI to targetURI.
+		"""
+		Migrates a domain from sourceURI to targetURI.
 
-		options: { 'domainURI': <domain uri>, 'targetNodeURI': <target node uri> }
+		options: {
+			'domainURI': <domain uri>,
+			'targetNodeURI': <target node uri>,
+			}
 
-		return: 
+		return:
 		"""
 		self.required_options( request, 'domainURI', 'targetNodeURI' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -552,11 +598,16 @@ class Domains( object ):
 				)
 
 	def domain_clone( self, request ):
-		"""Clones an existing domain.
+		"""
+		Clones an existing domain.
 
-		options: { 'domainURI': <domain uri>, 'cloneName': <name of clone>, 'macAddress' : (clone|auto) }
+		options: {
+			'domainURI': <domain uri>,
+			'cloneName': <name of clone>,
+			'macAddress' : (clone|auto),
+			}
 
-		return: 
+		return:
 		"""
 		self.required_options( request, 'domainURI', 'cloneName' )
 		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
@@ -570,11 +621,17 @@ class Domains( object ):
 				)
 
 	def domain_remove( self, request ):
-		"""Removes a domain. Optional a list of volumes can bes specified that should be removed
+		"""
+		Removes a domain. Optional a list of volumes can be specified that should be removed.
 
-		options: { 'domainURI': <domain uri>, 'volumes' : [ { 'pool' : <pool name>, 'volumeFilename' : <filename> }, ... ] }
+		options: {
+			'domainURI': <domain uri>,
+			'volumes': [{
+				'pool': <pool name>,
+				'volumeFilename': <filename>,
+			}, ...]}
 
-		return: 
+		return:
 		"""
 		self.required_options( request, 'domainURI', 'volumes' )
 		volume_list = []
@@ -595,7 +652,9 @@ class Domains( object ):
 				)
 
 class Bus( object ):
-	"""Periphery bus like IDE-, SCSI-, Xen-, VirtIO- und FDC-Bus."""
+	"""
+	Periphery bus like IDE-, SCSI-, Xen-, VirtIO- und FDC-Bus.
+	"""
 	def __init__( self, name, prefix, default = False, unsupported = ( Disk.DEVICE_FLOPPY, ) ):
 		self._next_letter = 'a'
 		self._connected = set()
@@ -605,21 +664,27 @@ class Bus( object ):
 		self.unsupported = unsupported
 
 	def compatible( self, dev ):
-		'''Checks the compatibility of the given device with the bus
+		"""
+		Checks the compatibility of the given device with the bus
 		specification: the device type must be supported by the bus and
 		if the bus of the device is set it must match otherwise the bus
-		must be defined as default.'''
+		must be defined as default.
+		"""
 		return ( not dev.device in self.unsupported ) and ( dev.target_bus == self.name or ( not dev.target_bus and self.default ) )
 
 	def attach( self, devices ):
-		"""Register each device in devices list at bus."""
+		"""
+		Register each device in devices list at bus.
+		"""
 		for dev in devices:
 			if dev.target_dev and ( dev.target_bus == self.name or ( not dev.target_bus and self.default ) ):
 				letter = dev.target_dev[ -1 ]
 				self._connected.add(letter)
 
 	def connect( self, dev ):
-		"""Connect new device at bus and assign new drive letter."""
+		"""
+		Connect new device at bus and assign new drive letter.
+		"""
 		if not self.compatible( dev ) or dev.target_dev:
 			return False
 		self.next_letter()
@@ -629,7 +694,8 @@ class Bus( object ):
 		return True
 
 	def next_letter( self ):
-		"""Find and return next un-used drive letter.
+		"""
+		Find and return next un-used drive letter.
 		>>> b = Bus('', '')
 		>>> b._next_letter = 'a' ; b._connected.add('a') ; b.next_letter()
 		'b'
@@ -641,6 +707,9 @@ class Bus( object ):
 		return self._next_letter
 
 def verify_device_files( domain_info ):
+	"""
+	Verify block devices are connected to allowed buses.
+	"""
 	if domain_info.domain_type == 'xen' and domain_info.os_type == 'xen':
 		busses = (
 				Bus('ide', 'hd%s'),

@@ -49,6 +49,10 @@ from .tools import object2dict
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 class Storages( object ):
+	"""
+	UMC functions for UVMM storage pool handling.
+	"""
+
 	POOLS_RW = set(('dir', 'disk', 'fs', 'netfs', 'logical'))
 	POOLS_TYPE = {
 			'dir': Disk.TYPE_FILE,
@@ -64,6 +68,23 @@ class Storages( object ):
 		self.storage_pools = {}
 
 	def storage_pool_query( self, request ):
+		"""
+		Query function for storage pools.
+
+		options: {
+			'nodeURI': <node uri>,
+			}
+
+		return: [{
+			'active': <boolean>,
+			'available': <int: size in B>,
+			'capacity': <int: size in B>,
+			'name': <string: pool name>,
+			'path': <string: directory>,
+			'type': (dir|disk|fs|iscsi|logical|mpath|netfs|scsi|...),
+			'uuid': <string: pool UUID>,
+			}, ...]
+		"""
 		self.required_options( request, 'nodeURI' )
 		uri = request.options['nodeURI']
 		if uri in self.storage_pools:
@@ -71,6 +92,9 @@ class Storages( object ):
 			return
 
 		def _finished( thread, result, request ):
+			"""
+			Process asynchronous UVMM STORAGE_POOLS answer.
+			"""
 			success, data = result
 			if success:
 				self.storage_pools[uri] = dict([(pool.name, object2dict(pool)) for pool in data])
@@ -85,15 +109,35 @@ class Storages( object ):
 				)
 
 	def storage_volume_query( self, request ):
-		"""Returns a list of volumes located in the given pool.
+		"""
+		Returns a list of volumes located in the given pool.
 
-		options: { 'nodeURI': <node uri>, 'pool' : <pool name>[, 'type' : (disk|cdrom|floppy)] }
+		options: {
+			'nodeURI': <node uri>,
+			'pool': <pool name>,
+			['type': (disk|cdrom|floppy)],
+			}
 
-		return: [ { <volume description> }, ... ]
+		return: [{
+			'device': (cdrom|disk),
+			'driver': None,
+			'driver_cache': (default|...),
+			'driver_type': (iso|raw|qcow2|...),
+			'pool': <string: pool name>,
+			'readonly': <boolean>,
+			'size': <int: size in B>,
+			'source': <string: filename>,
+			'target_bus': None,
+			'target_dev': '',
+			'type': (file|block|...),
+			}, ...]
 		"""
 		self.required_options( request, 'nodeURI', 'pool' )
 
 		def _finished( thread, result, request ):
+			"""
+			Process asynchronous UVMM STORAGE_VOLUMES answer.
+			"""
 			success, data = result
 			if success:
 				volume_list = []
@@ -117,11 +161,18 @@ class Storages( object ):
 				)
 
 	def storage_volume_remove( self, request ):
-		"""Removes a list of volumes located in the given pool.
+		"""
+		Removes a list of volumes located in the given pool.
 
-		options: { 'nodeURI': <node uri>, 'volumes' : [ { 'pool' : <pool name>, 'volumeFilename' : <filename> }, ... ] }
+		options: {
+			'nodeURI': <node uri>,
+			'volumes': [{
+				'pool': <pool name>,
+				'volumeFilename': <filename>,
+				}, ...]
+				}
 
-		return: 
+		return:
 		"""
 		self.required_options( request, 'nodeURI', 'volumes' )
 		volume_list = []
@@ -140,15 +191,23 @@ class Storages( object ):
 				)
 
 	def storage_volume_usedby( self, request ):
-		"""Returns a list of domains that use the given volume.
+		"""
+		Returns a list of domains that use the given volume.
 
-		options: { 'nodeURI' : <node URI>, 'pool' : <pool name>, 'volumeFilename': <filename> }
+		options: {
+			'nodeURI': <node URI>,
+			'pool': <pool name>,
+			'volumeFilename': <filename>
+			}
 
-		return: [ <domain URI>, ... ]
+		return: [<domain URI>, ...]
 		"""
 		self.required_options( request, 'nodeURI', 'pool', 'volumeFilename' )
 
 		def _finished( thread, result, request ):
+			"""
+			Process asynchronous UVMM STORAGE_VOLUME_USEDBY answer.
+			"""
 			if self._check_thread_error( thread, result, request ):
 				return
 
@@ -172,11 +231,21 @@ class Storages( object ):
 				)
 
 	def storage_volume_deletable( self, request ):
-		"""Returns a list of domains that use the given volume.
+		"""
+		Returns a list of domains that use the given volume.
 
-		options: [{'domainURI': <domain URI>, 'pool': <pool name>, 'volumeFilename': <filename> }, ...]
+		options: [{
+			'domainURI': <domain URI>,
+			'pool': <pool name>,
+			'volumeFilename': <filename>
+			}, ...]
 
-		return: [{'domainURI': <domain URI>, 'pool': <pool name>, 'volumeFilename': <filename>, 'deletable': (True|False|None)}, ...]
+		return: [{
+			'domainURI': <domain URI>,
+			'pool': <pool name>,
+			'volumeFilename': <filename>,
+			'deletable': (True|False|None)
+			}, ...]
 
 		where 'deletebale' is
 		  True: disk can be deleted
@@ -243,7 +312,9 @@ class Storages( object ):
 
 	# helper functions
 	def get_pool( self, node_uri, pool_name = None, pool_path = None ):
-		"""Returns a pool object or None if the pool could not be found"""
+		"""
+		Returns a pool object or None if the pool could not be found.
+		"""
 		try:
 			pools = self.storage_pools[node_uri]
 		except LookupError:
@@ -266,22 +337,27 @@ class Storages( object ):
 		return None
 
 	def get_pool_path( self, node_uri, pool_name ):
-		"""returns the absolute path for the given pool name on the node
-		node_uri"""
+		"""
+		returns the absolute path for the given pool name on the node node_uri.
+		"""
 		pool = self.get_pool( node_uri, pool_name )
 		if pool is None:
 			return None
 		return pool[ 'path' ]
 
 	def get_pool_name( self, node_uri, pool_path ):
-		"""returns the pool name for the given pool path on the node
-		node_uri"""
+		"""
+		returns the pool name for the given pool path on the node node_uri.
+		"""
 		pool = self.get_pool( node_uri, pool_path = pool_path )
 		if pool is None:
 			return None
 		return pool[ 'name' ]
 
 	def is_file_pool( self, node_uri, pool_name ):
+		"""
+		returns if the storage pool uses files for storage volumes.
+		"""
 		pool = self.get_pool( node_uri, pool_name )
 		if pool is None:
 			return None

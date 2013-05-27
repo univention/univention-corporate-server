@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.admin.modules
+import univention.admin.modules  # required for UDM
 import univention.admin.handlers.uvmm.profile as uvmm_profile
 
 from univention.lib.i18n import Translation
@@ -48,6 +48,9 @@ from .tools import object2dict
 _ = Translation( 'univention-management-console-modules-uvmm' ).translate
 
 class Profile( object ):
+	"""
+	Single UVMM profile.
+	"""
 	def __init__( self, profile ):
 		for key, value in profile.items():
 			if key not in ( 'cpus', ):
@@ -58,6 +61,10 @@ class Profile( object ):
 			setattr( self, key, value )
 
 class Profiles( object ):
+	"""
+	UVMM profiles.
+	"""
+
 	PROFILE_RDN = 'cn=Profiles,cn=Virtual Machine Manager'
 	VIRTTECH_MAPPING = {
 		'kvm-hvm' : _( 'Full virtualization (KVM)' ),
@@ -67,11 +74,17 @@ class Profiles( object ):
 
 	@LDAP_Connection
 	def read_profiles( self, ldap_connection = None, ldap_position = None ):
+		"""
+		Read all profiles from LDAP.
+		"""
 		base = "%s,%s" % ( Profiles.PROFILE_RDN, ldap_position.getDn() )
 		res = uvmm_profile.lookup( None, ldap_connection, '', base = base, scope='sub', required = False, unique = False )
 		self.profiles = map( lambda obj: ( obj.dn, Profile( obj.info ) ), res )
 
 	def _filter_profiles( self, node_pd ):
+		"""
+		Return profiles valid for node.
+		"""
 		uri = urlparse.urlsplit( node_pd.uri )
 		tech = uri.scheme == 'qemu' and 'kvm' or uri.scheme # set default virtualization technology
 		tech_types = []
@@ -91,10 +104,15 @@ class Profiles( object ):
 		return [ ( dn, item ) for dn, item in self.profiles if ( item.arch in archs or item.arch == 'automatic' ) and item.virttech.startswith( tech ) ]
 
 	def profile_query( self, request ):
-		"""Returns a list of profiles for the given virtualization technology"""
+		"""
+		Returns a list of profiles for the given virtualization technology.
+		"""
 		self.required_options( request, 'nodeURI' )
 
 		def _finished( thread, result, request ):
+			"""
+			Process asynchronous UVMM NODE_LIST answer.
+			"""
 			if self._check_thread_error( thread, result, request ):
 				return
 
@@ -114,7 +132,9 @@ class Profiles( object ):
 				)
 
 	def profile_get( self, request ):
-		"""Returns a list of profiles for the given virtualization technology"""
+		"""
+		Returns a list of profiles for the given virtualization technology.
+		"""
 		self.required_options( request, 'profileDN' )
 
 		for dn, profile in self.profiles:

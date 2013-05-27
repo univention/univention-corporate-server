@@ -40,10 +40,14 @@ _ldap_connection = None
 _ldap_position = None
 
 class LDAP_ConnectionError( Exception ):
+	"""
+	Error connecting LDAP server.
+	"""
 	pass
 
 def LDAP_Connection( func ):
-	"""This decorator function provides an open LDAP connection that can
+	"""
+	This decorator function provides an open LDAP connection that can
 	be accessed via the variable ldap_connection and a vaild position
 	within the LDAP directory in the variable ldap_position. It reuses
 	an already open connection or creates a new one. If the function
@@ -55,9 +59,9 @@ def LDAP_Connection( func ):
 
 	example:
 	  @LDAP_Connection
-	  def do_ldap_stuff( arg1, arg2, ldap_connection = None, ldap_positio = None ):
+	  def do_ldap_stuff(arg1, arg2, ldap_connection=None, ldap_positio=None):
 		  ...
-		  ldap_connection.searchDn( ..., position = ldap_position )
+		  ldap_connection.searchDn(..., position=ldap_position)
 		  ...
 	"""
 	def wrapper_func( *args, **kwargs ):
