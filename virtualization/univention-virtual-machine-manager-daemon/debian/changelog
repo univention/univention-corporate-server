@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (2.0.40-2) unstable; urgency=low
+
+  * Support Xen-HVM media change (Bug #23394)
+  * Cleanup JavaScript code (Bug #30897)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 May 2013 11:16:03 +0200
+
 univention-virtual-machine-manager-daemon (2.0.40-1) unstable; urgency=low
 
   * Add ACPI shutdown action (Bug #21397)

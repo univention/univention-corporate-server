@@ -118,7 +118,7 @@ define([
 						required: true,
 						label: _('Filename'),
 						validator: lang.hitch(this, function(val) {
-							var regExp = /^[^./][^/]*$/;
+							var regExp = /^[^.\/][^\/]*$/;
 							return regExp.test(val) && (!this._volumes || !(val in this._volumes));
 						}),
 						invalidMessage: _('A valid filename cannot contain "/", may not start with "." and may not already exist in the storage pool.'),
@@ -259,9 +259,9 @@ define([
 				volumeType: mode
 			};
 			if (mode === 'new') {
-				values['source'] = null; // trigger volume creation
+				values.source = null; // trigger volume creation
 			} else {
-				values['source'] = values['volumeFilename'];
+				values.source = values.volumeFilename;
 			}
 			return values;
 		},
