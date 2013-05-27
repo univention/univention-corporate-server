@@ -39,24 +39,24 @@ import urlparse
 
 from notifier import Callback
 
-_ = Translation( 'univention-management-console-modules-uvmm' ).translate
+_ = Translation('univention-management-console-modules-uvmm').translate
 
-class Nodes( object ):
+class Nodes(object):
 	"""
 	UMC functions for UVMM node handling.
 	"""
 
-	def _node_thread_finished( self, thread, result, request, parent ):
+	def _node_thread_finished(self, thread, result, request, parent):
 		"""
 		This method is invoked when a threaded request for the
 		navigation is finished. The result is send back to the
 		client. If the result is an instance of BaseException an error
 		is returned.
 		"""
-		if self._check_thread_error( thread, result, request ):
+		if self._check_thread_error(thread, result, request):
 			return
 
-	def node_query( self, request ):
+	def node_query(self, request):
 		"""
 		Searches nodes by the given pattern
 
@@ -77,37 +77,43 @@ class Nodes( object ):
 			'supports_snapshot': (True|False)
 			}, ...]
 		"""
-		self.required_options( request, 'nodePattern' )
+		self.required_options(request, 'nodePattern')
 
-		def _finished( thread, result, request ):
+		def _finished(thread, result, request):
 			"""
 			Process asynchronous UVMM NODE_LIST answer.
 			"""
-			if self._check_thread_error( thread, result, request ):
+			if self._check_thread_error(thread, result, request):
 				return
 
 			nodes = []
 			success, data = result
 			if success:
 				for node_pd in data:
-					node_uri = urlparse.urlsplit( node_pd.uri )
-					nodes.append( { 'id' : node_pd.uri,
-									'label' : node_pd.name,
-									'group' : _( 'Physical servers' ),
-									'type' : 'node',
-									'virtech' : node_uri.scheme,
-									'memUsed' : node_pd.curMem,
-									'memAvailable' : node_pd.phyMem,
-									'cpuUsage' : ( node_pd.cpu_usage or 0 ) / 10.0,
-									'available' : node_pd.last_try == node_pd.last_update,
-									'cpus' : node_pd.cpus,
-									'supports_suspend' : node_pd.supports_suspend,
-									'supports_snapshot' : node_pd.supports_snapshot,
-									} )
+					node_uri = urlparse.urlsplit(node_pd.uri)
+					nodes.append({
+						'id': node_pd.uri,
+						'label': node_pd.name,
+						'group': _('Physical servers'),
+						'type': 'node',
+						'virtech': node_uri.scheme,
+						'memUsed': node_pd.curMem,
+						'memAvailable': node_pd.phyMem,
+						'cpuUsage': (node_pd.cpu_usage or 0) / 10.0,
+						'available': node_pd.last_try == node_pd.last_update,
+						'cpus': node_pd.cpus,
+						'supports_suspend': node_pd.supports_suspend,
+						'supports_snapshot': node_pd.supports_snapshot,
+						})
 
-				self.finished( request.id, nodes )
+				self.finished(request.id, nodes)
 			else:
-				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
 
 		self.uvmm.send(
 				'NODE_LIST',

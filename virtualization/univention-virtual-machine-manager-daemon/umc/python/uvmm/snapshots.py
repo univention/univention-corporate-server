@@ -41,14 +41,14 @@ import urlparse
 
 from notifier import Callback
 
-_ = Translation( 'univention-management-console-modules-uvmm' ).translate
+_ = Translation('univention-management-console-modules-uvmm').translate
 
-class Snapshots( object ):
+class Snapshots(object):
 	"""
 	UMC functions for UVMM snapshot handling.
 	"""
 
-	def snapshot_query( self, request ):
+	def snapshot_query(self, request):
 		"""
 		Returns a list of snapshots of a domain
 
@@ -60,13 +60,13 @@ class Snapshots( object ):
 			'time': <string: creation time as ISO>,
 			}, ...]
 		"""
-		self.required_options( request, 'domainURI' )
+		self.required_options(request, 'domainURI')
 
-		def _finished( thread, result, request ):
+		def _finished(thread, result, request):
 			"""
 			Process asynchronous UVMM DOMAIN_INFO answer.
 			"""
-			if self._check_thread_error( thread, result, request ):
+			if self._check_thread_error(thread, result, request):
 				return
 
 			success, data = result
@@ -75,19 +75,24 @@ class Snapshots( object ):
 				snapshot_list = []
 				if success and data.snapshots is not None:
 					for name, info in data.snapshots.items():
-						creation = datetime.fromtimestamp( info.ctime )
+						creation = datetime.fromtimestamp(info.ctime)
 						snapshot = {
 							'id': name,
 							'label': name,
 							'time': creation.isoformat(' '),
 							}
-						snapshot_list.append( snapshot )
+						snapshot_list.append(snapshot)
 
-				self.finished( request.id, snapshot_list )
+				self.finished(request.id, snapshot_list)
 			else:
-				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
 
-		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+		node_uri, domain_uuid = urlparse.urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_INFO',
 				Callback(_finished, request),
@@ -95,8 +100,7 @@ class Snapshots( object ):
 				domain=domain_uuid
 				)
 
-
-	def snapshot_create( self, request ):
+	def snapshot_create(self, request):
 		"""
 		Create a snapshot for a domain
 
@@ -107,9 +111,9 @@ class Snapshots( object ):
 
 		return:
 		"""
-		self.required_options( request, 'domainURI', 'snapshotName' )
+		self.required_options(request, 'domainURI', 'snapshotName')
 
-		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+		node_uri, domain_uuid = urlparse.urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_SNAPSHOT_CREATE',
 				Callback(self._thread_finish, request),
@@ -118,7 +122,7 @@ class Snapshots( object ):
 				snapshot=request.options['snapshotName']
 				)
 
-	def snapshot_remove( self, request ):
+	def snapshot_remove(self, request):
 		"""
 		Returns a list of snapshots of a domain
 
@@ -129,9 +133,9 @@ class Snapshots( object ):
 
 		return:
 		"""
-		self.required_options( request, 'domainURI', 'snapshotName' )
+		self.required_options(request, 'domainURI', 'snapshotName')
 
-		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+		node_uri, domain_uuid = urlparse.urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_SNAPSHOT_DELETE',
 				Callback(self._thread_finish, request),
@@ -140,7 +144,7 @@ class Snapshots( object ):
 				snapshot=request.options['snapshotName']
 				)
 
-	def snapshot_revert( self, request ):
+	def snapshot_revert(self, request):
 		"""
 		Returns a list of snapshots of a domain
 
@@ -151,9 +155,9 @@ class Snapshots( object ):
 
 		return:
 		"""
-		self.required_options( request, 'domainURI', 'snapshotName' )
+		self.required_options(request, 'domainURI', 'snapshotName')
 
-		node_uri, domain_uuid = urlparse.urldefrag( request.options[ 'domainURI' ] )
+		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_SNAPSHOT_REVERT',
 				Callback(self._thread_finish, request),
@@ -161,4 +165,3 @@ class Snapshots( object ):
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
 				)
-

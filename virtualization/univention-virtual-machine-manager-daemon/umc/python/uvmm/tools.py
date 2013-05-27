@@ -34,39 +34,39 @@ from types import BuiltinMethodType, MethodType, FunctionType, TypeType, NoneTyp
 
 import re
 
-BASE_TYPES = ( int, float, long, bool, basestring, NoneType, list, tuple )
+BASE_TYPES = (int, float, long, bool, basestring, NoneType, list, tuple)
 
-def object2dict( obj ):
+def object2dict(obj):
 	"""
 	Converts the attributes of an object to a dictionary.
 	"""
-	if isinstance( obj, BASE_TYPES ):
+	if isinstance(obj, BASE_TYPES):
 		return obj
 	attrs = {}
 	for slot in obj.__dict__:
-		if slot.startswith( '__' ) and slot.endswith( '__' ):
+		if slot.startswith('__') and slot.endswith('__'):
 			continue
-		attr = getattr( obj, slot )
-		if not isinstance( attr, ( BuiltinMethodType, MethodType, FunctionType, TypeType ) ):
-			if isinstance( attr, ( int, float, long, bool, NoneType ) ):
-				attrs[ slot ] = attr
-			elif isinstance( attr, basestring ):
-				if attr in ( '0', 'FALSE' ):
+		attr = getattr(obj, slot)
+		if not isinstance(attr, (BuiltinMethodType, MethodType, FunctionType, TypeType)):
+			if isinstance(attr, (int, float, long, bool, NoneType)):
+				attrs[slot] = attr
+			elif isinstance(attr, basestring):
+				if attr in ('0', 'FALSE'):
 					attr = False
-				elif attr in ( '1', 'TRUE' ):
+				elif attr in ('1', 'TRUE'):
 					attr = True
-				attrs[ slot ] = attr
-			elif isinstance( attr, ( list, tuple ) ):
-				attrs[ slot ] = map( lambda x: object2dict( x ), attr )
-			elif isinstance( attr, dict ):
-				attrs[ slot ] = dict( map( lambda item: ( item[ 0 ], object2dict( item[ 1 ] ) ), attr.items() ) )
+				attrs[slot] = attr
+			elif isinstance(attr, (list, tuple)):
+				attrs[slot] = map(lambda x: object2dict(x), attr)
+			elif isinstance(attr, dict):
+				attrs[slot] = dict(map(lambda item: (item[0], object2dict(item[1])), attr.items()))
 			else:
-				attrs[ slot ] = object2dict( attr )
+				attrs[slot] = object2dict(attr)
 
 	return attrs
 
 
-class MemorySize( object ):
+class MemorySize(object):
 	"""
 	Parse and convert size with optional prefix from and to numbers.
 	"""
@@ -74,7 +74,7 @@ class MemorySize( object ):
 	SIZE_REGEX = re.compile('^ *(?P<size>[0-9]+(?:[,.][0-9]+)?)[ \t]*(?:(?P<unit>[%s])(?:[Ii]?[Bb])?|[Bb])? *$' % (''.join(UNITS) + ''.join(UNITS).lower(),))
 
 	@staticmethod
-	def num2str( size, unit = 'B' ):
+	def num2str(size, unit='B'):
 		"""
 		Pretty-print number to string consisting of size and optional prefix.
 		>>> MemorySize.num2str(512)
@@ -89,9 +89,9 @@ class MemorySize( object ):
 				break
 			else:
 				block_size <<= 10
-		size = long( size ) * float( block_size )
+		size = long(size) * float(block_size)
 		unit = 0
-		while size > 1024.0 and unit < ( len( MemorySize.UNITS ) - 1 ):
+		while size > 1024.0 and unit < (len(MemorySize.UNITS) - 1):
 			size /= 1024.0
 			unit += 1
 
@@ -101,7 +101,7 @@ class MemorySize( object ):
 			return '%.0f %sB' % (size, MemorySize.UNITS[unit])
 
 	@staticmethod
-	def str2num( size, block_size = 1, unit = 'B' ):
+	def str2num(size, block_size=1, unit='B'):
 		"""
 		Parse string consisting of size and prefix into number.
 		>>> MemorySize.str2num('512')
@@ -131,7 +131,7 @@ class MemorySize( object ):
 		>>> MemorySize.str2num('2', unit='BI')
 		-1
 		"""
-		match = MemorySize.SIZE_REGEX.match( size )
+		match = MemorySize.SIZE_REGEX.match(size)
 		if not match:
 			return -1 # raise ValueError(size)
 
@@ -149,19 +149,20 @@ class MemorySize( object ):
 		else:
 			return -1 # raise ValueError(unit)
 
-		return long( size / float( block_size ) )
+		return long(size / float(block_size))
 
 	@staticmethod
-	def str2str( size, unit = 'B' ):
+	def str2str(size, unit='B'):
 		"""
 		Normalize string consisting of size and prefix.
 		>>> MemorySize.str2str('0.5 MB')
 		'512.0 KB'
 		"""
-		num = MemorySize.str2num( size, unit = unit )
+		num = MemorySize.str2num(size, unit=unit)
 		if num == -1:
 			return ''
-		return MemorySize.num2str( num )
+		return MemorySize.num2str(num)
+
 
 if __name__ == '__main__':
 	import doctest

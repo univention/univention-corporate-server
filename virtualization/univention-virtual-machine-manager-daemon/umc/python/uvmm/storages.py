@@ -46,9 +46,10 @@ from notifier import Callback
 
 from .tools import object2dict
 
-_ = Translation( 'univention-management-console-modules-uvmm' ).translate
+_ = Translation('univention-management-console-modules-uvmm').translate
 
-class Storages( object ):
+
+class Storages(object):
 	"""
 	UMC functions for UVMM storage pool handling.
 	"""
@@ -64,10 +65,11 @@ class Storages( object ):
 			'netfs': Disk.TYPE_FILE,
 			'scsi': Disk.TYPE_BLOCK,
 			}
-	def __init__( self ):
+
+	def __init__(self):
 		self.storage_pools = {}
 
-	def storage_pool_query( self, request ):
+	def storage_pool_query(self, request):
 		"""
 		Query function for storage pools.
 
@@ -85,22 +87,30 @@ class Storages( object ):
 			'uuid': <string: pool UUID>,
 			}, ...]
 		"""
-		self.required_options( request, 'nodeURI' )
+		self.required_options(request, 'nodeURI')
 		uri = request.options['nodeURI']
 		if uri in self.storage_pools:
 			self.finished(request.id, self.storage_pools[uri].values())
 			return
 
-		def _finished( thread, result, request ):
+		def _finished(thread, result, request):
 			"""
 			Process asynchronous UVMM STORAGE_POOLS answer.
 			"""
 			success, data = result
 			if success:
-				self.storage_pools[uri] = dict([(pool.name, object2dict(pool)) for pool in data])
+				self.storage_pools[uri] = dict([
+					(pool.name, object2dict(pool))
+					for pool in data
+					])
 				self.finished(request.id, self.storage_pools[uri].values())
 			else:
-				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
 
 		self.uvmm.send(
 				'STORAGE_POOLS',
@@ -108,7 +118,7 @@ class Storages( object ):
 				uri=uri
 				)
 
-	def storage_volume_query( self, request ):
+	def storage_volume_query(self, request):
 		"""
 		Returns a list of volumes located in the given pool.
 
@@ -132,9 +142,9 @@ class Storages( object ):
 			'type': (file|block|...),
 			}, ...]
 		"""
-		self.required_options( request, 'nodeURI', 'pool' )
+		self.required_options(request, 'nodeURI', 'pool')
 
-		def _finished( thread, result, request ):
+		def _finished(thread, result, request):
 			"""
 			Process asynchronous UVMM STORAGE_VOLUMES answer.
 			"""
@@ -142,14 +152,19 @@ class Storages( object ):
 			if success:
 				volume_list = []
 				for vol in data:
-					vol = object2dict( vol )
-					vol[ 'volumeFilename' ] = os.path.basename( vol.get( 'source', '' ) )
-					volume_list.append( vol )
-				self.finished( request.id, volume_list )
+					vol = object2dict(vol)
+					vol['volumeFilename'] = os.path.basename(vol.get('source', ''))
+					volume_list.append(vol)
+				self.finished(request.id, volume_list)
 			else:
-				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
 
-		drive_type = request.options.get( 'type', None )
+		drive_type = request.options.get('type', None)
 		if drive_type == 'floppy': # not yet supported
 			drive_type = 'disk'
 		self.uvmm.send(
@@ -160,7 +175,7 @@ class Storages( object ):
 				type=drive_type
 				)
 
-	def storage_volume_remove( self, request ):
+	def storage_volume_remove(self, request):
 		"""
 		Removes a list of volumes located in the given pool.
 
@@ -174,15 +189,17 @@ class Storages( object ):
 
 		return:
 		"""
-		self.required_options( request, 'nodeURI', 'volumes' )
+		self.required_options(request, 'nodeURI', 'volumes')
 		volume_list = []
-		node_uri = request.options[ 'nodeURI' ]
-		for vol in request.options[ 'volumes' ]:
-			path = self.get_pool_path( node_uri, vol[ 'pool' ] )
+		node_uri = request.options['nodeURI']
+		for vol in request.options['volumes']:
+			path = self.get_pool_path(node_uri, vol['pool'])
 			if not path:
-				MODULE.warn( 'Could not remove volume %(volumeFilename)s. The pool %(pool)s is not known' % vol )
+				MODULE.warn(
+						'Could not remove volume %(volumeFilename)s. The pool %(pool)s is not known' % vol
+						)
 				continue
-			volume_list.append( os.path.join( path, vol[ 'volumeFilename' ] ) )
+			volume_list.append(os.path.join(path, vol['volumeFilename']))
 		self.uvmm.send(
 				'STORAGE_VOLUMES_DESTROY',
 				Callback(self._thread_finish, request),
@@ -190,7 +207,7 @@ class Storages( object ):
 				volumes=volume_list
 				)
 
-	def storage_volume_usedby( self, request ):
+	def storage_volume_usedby(self, request):
 		"""
 		Returns a list of domains that use the given volume.
 
@@ -202,35 +219,47 @@ class Storages( object ):
 
 		return: [<domain URI>, ...]
 		"""
-		self.required_options( request, 'nodeURI', 'pool', 'volumeFilename' )
+		self.required_options(request, 'nodeURI', 'pool', 'volumeFilename')
 
-		def _finished( thread, result, request ):
+		def _finished(thread, result, request):
 			"""
 			Process asynchronous UVMM STORAGE_VOLUME_USEDBY answer.
 			"""
-			if self._check_thread_error( thread, result, request ):
+			if self._check_thread_error(thread, result, request):
 				return
 
 			success, data = result
 			if success:
-				if isinstance( data, ( list, tuple ) ):
-					data = map( lambda x: '#'.join( x ), data )
-				self.finished( request.id, data )
+				if isinstance(data, (list, tuple)):
+					data = map(lambda x: '#'.join(x), data)
+				self.finished(request.id, data)
 			else:
-				self.finished( request.id, None, message = str( data ), status = MODULE_ERR_COMMAND_FAILED )
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
 
-
-		pool_path = self.get_pool_path( request.options[ 'nodeURI' ], request.options[ 'pool' ] )
+		pool_path = self.get_pool_path(
+				request.options['nodeURI'],
+				request.options['pool']
+				)
 		if pool_path is None:
-			raise UMC_OptionTypeError( _( 'The given pool could not be found or is no file pool' ) )
-		volume = os.path.join( pool_path, request.options[ 'volumeFilename' ] )
+			raise UMC_OptionTypeError(
+					_('The given pool could not be found or is no file pool')
+					)
+		volume = os.path.join(
+				pool_path,
+				request.options['volumeFilename']
+				)
 		self.uvmm.send(
 				'STORAGE_VOLUME_USEDBY',
 				Callback(_finished, request),
 				volume=volume
 				)
 
-	def storage_volume_deletable( self, request ):
+	def storage_volume_deletable(self, request):
 		"""
 		Returns a list of domains that use the given volume.
 
@@ -258,7 +287,7 @@ class Storages( object ):
 			# safe default: not deletable
 			volume['deletable'] = None
 
-			node_uri, domain_uuid = urlparse.urldefrag( volume[ 'domainURI' ] )
+			node_uri, domain_uuid = urlparse.urldefrag(volume['domainURI'])
 			# Must be in a pool
 			pool = self.get_pool(node_uri, volume['pool'])
 			if not pool:
@@ -270,7 +299,7 @@ class Storages( object ):
 			pool_path = pool['path']
 			if not pool_path:
 				continue
-			volume_path = os.path.join( pool_path, volume[ 'volumeFilename' ] )
+			volume_path = os.path.join(pool_path, volume['volumeFilename'])
 
 			# check if volume is used by any other domain
 			success, result = self.uvmm.send(
@@ -279,10 +308,12 @@ class Storages( object ):
 					volume=volume_path
 					)
 			if not success:
-				raise UMC_OptionTypeError( _( 'Failed to check if the drive is used by any other virtual instance' ) )
+				raise UMC_OptionTypeError(
+						_('Failed to check if the drive is used by any other virtual instance')
+						)
 
-			if len( result ) > 1: # is used by at least one other domain
-				volume[ 'deletable' ] = False
+			if len(result) > 1:  # is used by at least one other domain
+				volume['deletable'] = False
 				continue
 
 			try:
@@ -295,7 +326,9 @@ class Storages( object ):
 						domain=domain_uuid
 						)
 				if not success:
-					raise UMC_OptionTypeError(_('Could not retrieve details for domain %s') % domain_uuid)
+					raise UMC_OptionTypeError(
+							_('Could not retrieve details for domain %s') % domain_uuid
+							)
 				_tmp_cache[volume['domainURI']] = domain
 
 			drive = None
@@ -311,7 +344,8 @@ class Storages( object ):
 		self.finished(request.id, request.options)
 
 	# helper functions
-	def get_pool( self, node_uri, pool_name = None, pool_path = None ):
+
+	def get_pool(self, node_uri, pool_name=None, pool_path=None):
 		"""
 		Returns a pool object or None if the pool could not be found.
 		"""
@@ -336,29 +370,29 @@ class Storages( object ):
 
 		return None
 
-	def get_pool_path( self, node_uri, pool_name ):
+	def get_pool_path(self, node_uri, pool_name):
 		"""
 		returns the absolute path for the given pool name on the node node_uri.
 		"""
-		pool = self.get_pool( node_uri, pool_name )
+		pool = self.get_pool(node_uri, pool_name)
 		if pool is None:
 			return None
-		return pool[ 'path' ]
+		return pool['path']
 
-	def get_pool_name( self, node_uri, pool_path ):
+	def get_pool_name(self, node_uri, pool_path):
 		"""
 		returns the pool name for the given pool path on the node node_uri.
 		"""
-		pool = self.get_pool( node_uri, pool_path = pool_path )
+		pool = self.get_pool(node_uri, pool_path=pool_path)
 		if pool is None:
 			return None
-		return pool[ 'name' ]
+		return pool['name']
 
-	def is_file_pool( self, node_uri, pool_name ):
+	def is_file_pool(self, node_uri, pool_name):
 		"""
 		returns if the storage pool uses files for storage volumes.
 		"""
-		pool = self.get_pool( node_uri, pool_name )
+		pool = self.get_pool(node_uri, pool_name)
 		if pool is None:
 			return None
 
