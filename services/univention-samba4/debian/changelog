@@ -1,3 +1,10 @@
+univention-samba4 (2.0.44-7) unstable; urgency=low
+
+  * avoid sysvolreset and waiting for the listener in the
+    create_Enterprise_Domain_Controllers shell function (Bug #31437)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 27 May 2013 18:56:03 +0200
+
 univention-samba4 (2.0.44-6) unstable; urgency=low
 
   * fix whitespace mix in univention_samba4_append_to_ucr (Bug #31437)
