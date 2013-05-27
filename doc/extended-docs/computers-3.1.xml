@@ -512,7 +512,7 @@ exit
 
             <para>
 			  In the default configuration of UCS only authenticated users can search in the LDAP
-			  directory (see TODOREF). As such, the Ubuntu client needs an account in the UCS domain
+			  directory. As such, the Ubuntu client needs an account in the UCS domain
 			  to gain read access to the LDAP directory:
 			</para>
             <programlisting language="sh"><![CDATA[
