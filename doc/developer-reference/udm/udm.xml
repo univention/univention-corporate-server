@@ -158,7 +158,7 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 			An Extended Attribute is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
 			The module is called <literal>settings/extended_attribute</literal>.
 			Extended Attributes can be stored anywhere in the <acronym>LDAP</acronym>, but the default location would be <literal>cn=custom attributes,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
-			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code when the object already exists in <acronym>LDAP</acronym>.
+			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
 			The module <literal>settings/extended_attribute</literal> requires many parameters.
@@ -472,17 +472,17 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 			<para>
 				<acronym>UDM</acronym> properties can be enabled and disabled via <firstterm>options</firstterm>.
 				For example all properties of an user related to samba can be switched on or off to reduce the settings shown to an administrator.
-				If may Extended Attributes are added to an <acronym>UDM</acronym> module, it might proof necessary to also create new options.
+				If many Extended Attributes are added to an <acronym>UDM</acronym> module, it might proof necessary to also create new options.
 				Options are per <acronym>UDM</acronym> module.
 			</para>
 			<para>
-				Similar to Extended Attributes an Extended Options is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
+				Similar to Extended Attributes an Extended Option is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
 				The module is called <literal>settings/extended_options</literal>.
 				Extended Options can be stored anywhere in the <acronym>LDAP</acronym>, but the default location would be <literal>cn=custom attributes,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
-				Since the join script creating the option may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code when the object already exists in <acronym>LDAP</acronym>.
+				Since the join script creating the option may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 			</para>
 			<para>
-				The module <literal>settings/extended_options</literal> requires many parameters.
+				The module <literal>settings/extended_options</literal> has the following properties:
 			</para>
 			<variablelist>
 				<varlistentry><term><literal>name</literal> (required)</term>
