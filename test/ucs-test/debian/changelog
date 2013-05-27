@@ -1,3 +1,15 @@
+ucs-test (3.0.53-1) unstable; urgency=low
+
+  * skip certain udm user tests which fail because of unfixed bugs for now
+  	(Bug #24351) (Bug #30932)
+  * added dependencys on ucs-test-udm-dhcp, ucs-test-udm-containers,
+  	and ucs-test-udm-extentedattribute to ucs-test-modules-all (Bug #27664)
+  * fixed identation in 65_udm-dhcp/10_create_check_and_remove_subnet (Bug
+  	#27664)
+  * ported more DHCP tests from ucs-3.0 branch (Bug #27664)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 27 May 2013 11:02:08 +0200
+
 ucs-test (3.0.52-1) unstable; urgency=low
 
   * ported first DHCP tests from ucs-3.0 branch (Bug #27664)

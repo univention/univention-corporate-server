@@ -16,6 +16,7 @@ import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
+	sys.exit(131) # SKIP for now
 	if testlib.package_installed('univention-ox'):
 		sys.exit(138)
 

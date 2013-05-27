@@ -35,9 +35,9 @@ if __name__ == '__main__':
 						print 'Test FAILED. Expected "%s" of created DHCP subnet to be %r, but %r was found instead.' % (ldapMapping[attribute], [value], attr[ldapMapping[attribute]])
 						sys.exit(1)
 				break
-			else:
-				print 'Test FAILED. Could not find created DHCP subnet "%s" in LDAP.' % dhcpSubnet
-				sys.exit(1)
+		else:
+			print 'Test FAILED. Could not find created DHCP subnet "%s" in LDAP.' % dhcpSubnet
+			sys.exit(1)
 
 		udm.remove_object('dhcp/subnet', dn = dhcpSubnet, superordinate = dhcpService)
 		if dhcpSubnet in ldap.searchDn(base = dhcpService, filter = ldapFilter):

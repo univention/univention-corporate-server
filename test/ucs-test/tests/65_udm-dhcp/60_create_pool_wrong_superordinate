@@ -1,0 +1,27 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create DHCP pool with wrong superordinate
+## tags: [udm-dhcp]
+## roles: [domaincontroller_master]
+## bugs: [13817, 31518]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_string())
+		try:
+			udm.create_object('dhcp/pool', name = uts.random_string(), range = '10.20.30.1 10.20.30.154', superordinate = dhcpService)
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			sys.exit(0)
+
+		print 'Test FAILED. UDM did not report an error while trying to create a DHCP pool with DHCP service as superordinate.'
+		sys.exit(1)
