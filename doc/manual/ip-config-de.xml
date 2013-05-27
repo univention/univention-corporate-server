@@ -1736,9 +1736,8 @@
 	  dem Paket benötigten Ports wieder freigeben.
 	</para>
 	<para>
-	  Die Konfiguration erfolgt im Wesentlichen über
-	  &ucsUCR;-Variablen.
-	  <!-- Die Definition von solchen Paketfilter-Regeln ist im Univention Wiki unter WIKIREF-24589 dokumentiert. -->
+	  Die Konfiguration erfolgt im Wesentlichen über &ucsUCR;-Variablen. Die Definition von solchen
+	  Paketfilter-Regeln ist in <xref linkend="developer-reference"/> dokumentiert.
 	</para>
 	<para>
 	  Darüber hinaus werden die im Verzeichnis

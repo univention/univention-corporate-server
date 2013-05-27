@@ -2086,8 +2086,10 @@ closest to the object always applies.
 	  package again.
 	</para>
 	<para>
-	  The configuration is primarily performed via &ucsUCR; variables.
-	  <!-- The definition of this type of packet filter rules is documented in the Univention Wiki under WIKIREF-24589.-->
+	  The configuration is primarily performed via &ucsUCR; variables. The definition of this type
+	  of packet filter rules is documented in <xref linkend="developer-reference"/>.
+	</para>
+	<para>
 	  In addition, the configuration scripts in the
 	  <filename>/etc/security/packetfilter.d/</filename> directory are listed in
 	  alphabetic order. The names of all scripts begin with two digits,
