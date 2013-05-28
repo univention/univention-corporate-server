@@ -1,3 +1,14 @@
+univention-system-setup (6.0.77-1) unstable; urgency=low
+
+  * UCRV apache2/startsite will be set to correct values when reinstalling 
+    and uninstalling univention-system-setup-boot (Bug #31385) 
+  * Added error handling in case the download of required packages for
+    univention-system-setup-boot failed. This could prevent a 
+    role switch when configuring the system in appliance setup. (Bug #30896)
+  * Disabled Firefox update popups during appliance setup (Bug #30980) 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 28 May 2013 10:32:49 +0200
+
 univention-system-setup (6.0.76-15) unstable; urgency=low
 
   * adapt NetworkPage; Bug #28389
