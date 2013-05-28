@@ -32,7 +32,7 @@
 
 . /usr/share/univention-samba4/lib/base.sh
 
-eval "$(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/host samba4/sysvol/sync/setfacl/AU)"
+eval "$(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/host)"
 
 SYSVOL_PATH='/var/lib/samba/sysvol'
 SYSVOL_SYNCDIR='/var/cache/univention-samba4/sysvol-sync'
