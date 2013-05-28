@@ -4,7 +4,7 @@
 	%entities;
 ]>
 <chapter id="chap:umc" status="draft">
-	<title>Univention Management Console
+	<title>Univention Management Console (<acronym>UMC</acronym>)
 		<indexterm><primary>Management Console</primary></indexterm>
 		<indexterm><primary>Univention Management Console</primary><see>Management Console</see></indexterm>
 		<indexterm><primary>UMC</primary><see>Management Console</see></indexterm>
