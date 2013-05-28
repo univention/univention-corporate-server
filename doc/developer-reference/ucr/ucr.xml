@@ -93,7 +93,7 @@ esac
 . /usr/share/univention-lib/ucr.sh
 if is_ucr_true repository/online/unmaintained
 then
-		echo "Unmaintained is enabled"
+	echo "Unmaintained is enabled"
 fi
 								]]></programlisting>
 						</example>
@@ -396,7 +396,7 @@ def postinst(config_registry, changes):
 					</varlistentry>
 				</variablelist>
 				<para>
-					If a script <filename>/etc/univention/templates/scripts/<replaceable>full path to file</replaceable></filename> exists, it will be called after the file is committed.
+					If a script <filename>/etc/univention/templates/scripts/<replaceable>full-path-to-file</replaceable></filename> exists, it will be called after the file is committed.
 					The script is called with the argument <option>postinst</option>.
 					It receives the list of changed variables as documented in <xref linkend="ucr:script"/>.
 				</para>
