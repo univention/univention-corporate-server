@@ -87,8 +87,13 @@ create_Enterprise_Domain_Controllers() {
 	if /usr/share/univention-samba4/scripts/create_group_Enterprise_Domain_Controllers.py "$@"; then
 
 		## update local group cache
-		if [ -x /usr/lib/univention-pam/ldap-group-to-file.py ]; then
-			/usr/lib/univention-pam/ldap-group-to-file.py --check_member
+		. /usr/share/univention-lib/ucr.sh
+		is_ucr_true nss/group/cachefile
+		if [ $? != 1 ]; then	## $? = 2 would indicate an unset variable.
+			if is_ucr_true nss/group/cachefile/check_member; then
+				option='--check_member'
+			fi
+			/usr/lib/univention-pam/ldap-group-to-file.py "${option[@]}"
 		fi
 	fi
 }
