@@ -1,3 +1,12 @@
+ucs-test (3.0.55-1) unstable; urgency=low
+
+  * skip certain udm dhcp test which currently fail due to known Bugs (Bug
+  	#31518) (Bug #31519)
+  * ported udm-net tests from ucs-3.0 branchs (Bug #27664)
+  * fixed header of udm-users/35_create_user_with_umlaut_in_uid (Bug #27664)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 28 May 2013 12:09:36 +0200
+
 ucs-test (3.0.54-1) unstable; urgency=low
 
   * Added s4 connector test case for synchronization of maxPwdAge

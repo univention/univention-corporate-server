@@ -283,15 +283,15 @@ Description: Test scripts for UDM containers.
  This package includes some scripts for testing the functionality of the
  default containers (OU/CN) of the UDM.
 
-#Package: ucs-test-udm-net
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for udm net.
-# This package includes some scripts for testing the functionality of the
-# Network module of the UDM.
+Package: ucs-test-udm-net
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for udm net.
+ This package includes some scripts for testing the functionality of the
+ Network module of the UDM.
 
 Package: ucs-test-updater
 Architecture: all
@@ -377,7 +377,7 @@ Depends:
  ucs-test-udm-users,
 # ucs-test-udm-groups,
 # ucs-test-system-setup,
-# ucs-test-udm-net,
+ ucs-test-udm-net,
  ucs-test-ucr,
  ucs-test-adconnector,
 # ucs-test-ucsschool,
