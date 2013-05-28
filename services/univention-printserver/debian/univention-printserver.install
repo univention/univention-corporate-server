@@ -1,3 +1,4 @@
+cupsd.conf etc/univention/templates/scripts/etc/cups/
 univention-lpadmin usr/sbin/
 univention-cupsadmin usr/sbin/
 cups-printers.py usr/lib/univention-directory-listener/system/

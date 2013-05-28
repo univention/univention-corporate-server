@@ -38,7 +38,8 @@ create_logfile /var/log/univention/printserver-start.log "root:adm" 640
 
 univention-config-registry set cups/server?"localhost" \
 	cups/admin?"root@"$domainname \
-	cups/systemgroup?"Printer-Admins,lp" \
+	cups/systemgroup?"Printer-Admins lp" \
+	cups/errorpolicy?"stop-printer" \
 	cups/location/base?"networks" \
 	cups/location/admin?"networks" \
 	cups/filedevice?yes \

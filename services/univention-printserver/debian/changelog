@@ -1,6 +1,12 @@
+univention-printserver (6.0.24-1) unstable; urgency=low
+
+  * Added ErrorPolicy in template for cups. ErrorPolicy can be set over ucr vari    able cups/errorpolicy (Bug #28877)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 28 May 2013 13:36:34 +0200
+
 univention-printserver (6.0.23-1) unstable; urgency=low
 
-  * Always create a samba printers config 
+  * Always create a samba printers config
     (/etc/samba/printers.conf.d/<printer>) and not only if client driver
     is activated, the samba name is set or ACLs are defined (Bug #30432)
 

@@ -3,6 +3,7 @@ File: etc/cups/cupsd.conf
 Variables: interfaces/eth.*/network
 Variables: interfaces/eth.*/netmask
 Variables: cups/admin
+Variables: cups/errorpolicy
 Variables: cups/systemgroup
 Variables: cups/filedevice
 Variables: cups/location/base
