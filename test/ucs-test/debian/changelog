@@ -1,3 +1,10 @@
+ucs-test (3.0.54-1) unstable; urgency=low
+
+  * Added s4 connector test case for synchronization of maxPwdAge
+    (Bug #29775)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 May 2013 11:23:29 +0200
+
 ucs-test (3.0.53-1) unstable; urgency=low
 
   * skip certain udm user tests which fail because of unfixed bugs for now
