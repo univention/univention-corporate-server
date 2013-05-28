@@ -954,7 +954,7 @@ udm settings/extended_attribute modify \
 			<para>
 				The syntax of UDM properties can be overwritten by using &ucsUCRV;s.
 				For each module and each property the variable <envar>directory/manager/web/modules/<replaceable>module</replaceable>/properties/<replaceable>property</replaceable>/syntax</envar> can be set to the name of a syntax class.
-				For example <envar>directory/manager/web/modules/users/user/properties/username</envar><literal>=uid</literal> would restrict the name of users to not contain umlauts.
+				For example <envar>directory/manager/web/modules/users/user/properties/username/syntax</envar><literal>=uid</literal> would restrict the name of users to not contain umlauts.
 			</para>
 			<para>
 				Since UCR variables only affect the local system, the variables must be set on all systems were <acronym>UDM</acronym> is used.
