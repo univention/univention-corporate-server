@@ -10,6 +10,5 @@ desc: |
   * Samba4 DCs are now added to the group Enterprise Domain Controllers
     This will become important for sysvol replication in upcoming UCS releases.
   * The attribute sambaMaxPwdAge can be set to -1 in OpenLDAP. This will now
-    be mapped to 0 in Samba 4 since -1 is not allowed for the attribute
-    maxPwdAge (\ucsBug{29775}).
+    be mapped to 0 in Samba 4.
 bug: [31437, 29775]
