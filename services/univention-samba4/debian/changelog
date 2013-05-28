@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-8) unstable; urgency=low
+
+  * remove unused UCR shell variable (Bug #31437)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 28 May 2013 12:07:58 +0200
+
 univention-samba4 (2.0.44-7) unstable; urgency=low
 
   * avoid sysvolreset and waiting for the listener in the
