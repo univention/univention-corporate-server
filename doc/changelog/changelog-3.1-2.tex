@@ -427,6 +427,10 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 \item The sysvol-sync.py script did not preserve timestamps, now it does (\ucsBug{30823}).
 \item The sysvol-cleanup.py script moved the PolicyDefinitions away. Now it considers only GPO paths (\ucsBug{31186}).
 \item The unused UCR variables \ucsUCRV{samba/client\_use\_spnego} and \ucsUCRV{samba/time\_server} has been removed (\ucsBug{26389}).
+\item Periodic refresh of sysvol fACLs for the group Authenticated Users can
+now be disabled with the new \ucsUCRV{samba4/sysvol/sync/setfacl/AU} \ucsBug{31271}).
+\item Samba4 DCs are now added to the group Enterprise Domain Controllers
+by default during initial join (\ucsBug{31437}).
 \end{itemize}
 
 \subsection{Univention S4 Connector}
@@ -434,6 +438,7 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 \item The attribute sambaMaxPwdAge can be set to -1 in OpenLDAP. This will
   now be mapped to 0 in Samba 4 since -1 is not allowed for the attribute
   maxPwdAge (\ucsBug{29775}).
+\item Samba4 DCs are now added to the group Enterprise Domain Controllers (\ucsBug{31437}).
 \end{itemize}
 
 %\subsection{Univention Active Directory Connector}
