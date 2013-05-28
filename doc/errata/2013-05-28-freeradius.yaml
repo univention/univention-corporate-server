@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: freeradius
+fix: 2.1.10+dfsg-2.75.201305231557
+note: This update fixes these vulnerabilities
+version: [1]
+desc: |
+  The password expiry field wasn't correctly evaluated.
+cve:
+ - CVE-2011-4966
