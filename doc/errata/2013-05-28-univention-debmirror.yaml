@@ -1,0 +1,17 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-debmirror
+fix: 5.0.5-2.68.201305280846
+note:
+version: [1]
+desc: |
+  An update for the Univention Debmirror package was missed for UCS-3.1-1,
+  which includs a fix for bug 30409:
+
+  http://updates.software-univention.de/ is now always configured as the
+  initial repository server, because some external DNS servers always return a
+  valid address for univention-repository.$domainname. If a local repository is
+  used, the Univention Config Registry variable repository/online/server must
+  be changed manually, best through a Repository Policy.
+bug: [30990, 30409]
