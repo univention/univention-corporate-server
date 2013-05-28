@@ -1,3 +1,11 @@
+univention-management-console-frontend (2.0.256-1) unstable; urgency=low
+
+  * The internal caching mechanism for list entries (e.g., DHCP/DNS entries and
+    IP/MAC addresses for computers) has been improved as it could previously
+    lead to inconsistencies in rare cases (Bug #31510)
+
+ -- Jascha Geerds <geerds@univention.de>  Tue, 28 May 2013 16:37:54 +0200
+
 univention-management-console-frontend (2.0.255-1) unstable; urgency=low
 
   * Bug #31293: fixed script tests/post.sh

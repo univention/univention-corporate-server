@@ -94,16 +94,19 @@ define([
 			// same result in order to have a caching mechanism for multiple queries.
 			var _valueOrDeferred = null;
 			var _lastCall = 0;
+			var _lastOptions = undefined;
 
 			return function(iname, options) {
 				// current timestamp
 				var currentTime = (new Date()).getTime();
 				var elapsedTime = Math.abs(currentTime - _lastCall);
+				var optionsChanged = !tools.isEqual(options, _lastOptions);
 				_lastCall = currentTime;
+				_lastOptions = options;
 
 				// if the elapsed time is too big, or we have not a Deferred object (i.e., value
 				// are directly computed by a function without AJAX calls), execute the function
-				if (elapsedTime > 100 || !(lang.getObject('then', false, _valueOrDeferred) && lang.getObject('cancel', false, _valueOrDeferred))) {
+				if (elapsedTime > 100 || !(lang.getObject('then', false, _valueOrDeferred) && lang.getObject('cancel', false, _valueOrDeferred)) || optionsChanged) {
 					_valueOrDeferred = ifunc(options);
 				}
 				//console.log('# new deferred: ', iname, ' elapsedTime: ', elapsedTime, ' options: ', json.stringify(options), ' values: ', _valueOrDeferred);
