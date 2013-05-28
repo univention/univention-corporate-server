@@ -427,9 +427,12 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 \item The unused UCR variables \ucsUCRV{samba/client\_use\_spnego} and \ucsUCRV{samba/time\_server} has been removed (\ucsBug{26389}).
 \end{itemize}
 
-%\subsection{Univention S4 Connector}
-%\begin{itemize}
-%\end{itemize}
+\subsection{Univention S4 Connector}
+\begin{itemize}
+\item The attribute sambaMaxPwdAge can be set to -1 in OpenLDAP. This will
+  now be mapped to 0 in Samba 4 since -1 is not allowed for the attribute
+  maxPwdAge (\ucsBug{29775}).
+\end{itemize}
 
 %\subsection{Univention Active Directory Connector}
 %\begin{itemize}
