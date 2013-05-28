@@ -51,7 +51,9 @@ modrdn='1'
 
 ### Globals
 lp = LoadParm()
+listener.setuid(0)
 lp.load('/etc/samba/smb.conf')
+listener.unsetuid()
 
 sidAttribute='sambaSID'
 if listener.configRegistry.is_false('connector/s4/mapping/sid', False):
