@@ -1,3 +1,10 @@
+univention-s4-connector (7.0.32-4) unstable; urgency=low
+
+  * "Enterprise Domain Controllers" is now created as a builtin group,
+    eliminating the need to extend the group/ignorefilter (Bug #31437)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 May 2013 12:51:54 +0200
+
 univention-s4-connector (7.0.32-3) unstable; urgency=low
 
   * In OpenLDAP the attribute sambaMaxPwdAge can be set to -1. This will
