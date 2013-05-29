@@ -58,7 +58,7 @@ def log_init( filename, log_level = 2 ):
 
 	if filename[ 0 ] != '/':
 		filename = '/var/log/univention/%s.log' % filename
-	fd = ud.init( filename, ud.NO_FLUSH, ud.NO_FUNCTION )
+	fd = ud.init( filename, ud.FLUSH, ud.NO_FUNCTION )
 	adm = grp.getgrnam( 'adm' )
 	os.chown( filename, 0, adm.gr_gid )
 	os.chmod( filename, 0640 )

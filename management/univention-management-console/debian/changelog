@@ -1,3 +1,10 @@
+univention-management-console (5.0.62-4) unstable; urgency=low
+
+  * Set debug option "NO_FLUSH" to "FLUSH" in order to prevent partial or
+    missing lines in the log file (Bug #31421)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 29 May 2013 10:15:53 +0200
+
 univention-management-console (5.0.62-3) unstable; urgency=low
 
   * Do not log UNIVENTION_DEBUG_{BEGIN, END} information (Bug #29603)
