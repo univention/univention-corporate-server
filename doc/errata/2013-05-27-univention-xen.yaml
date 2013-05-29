@@ -6,6 +6,6 @@ fix: 4.0.0-4.66.201305271359
 note:
 version: [1]
 desc: |
- This erratum fixes a logic bug, which prevented the xenstore database being
- cleared on reboots.
-bug: [28309]
+ The loop-back kernel module is now loaded again to allow media changes for
+ Xen-HVM domains.
+bug: [23394]
