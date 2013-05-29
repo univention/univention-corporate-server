@@ -140,12 +140,22 @@ create_site() {
 		exit 1
 	fi
 
-	if ldbsearch -k no -U"$dcaccount"%"$bindpwd" -H "ldap://$ldap_master" -s base > /dev/null 2>&1; then
+	if [ -n "$samba4_dc" ]; then
+		ucr_variable='samba4/dc'
+	else
+		ucr_variable='ldap/master'
+	fi
+
+	try_server=$(ucr get $ucr_variable)
+	if ldbsearch -k no -U"$dcaccount"%"$bindpwd" -H "ldap://$try_server" -s base > /dev/null 2>&1; then
 		/usr/share/univention-samba4/scripts/univention-samba4-site-tool.py \
-				-H "ldap://$ldap_master" \
+				-H "ldap://$try_server" \
 				-U"$dcaccount"%"$bindpwd" \
 				--site "$1" --createsite \
 				--ignore-exists
+	else
+		echo "create_site: LDAP bind to Samba4 directory on $ucr_variable='$try_server' failed!"
+		exit 1
 	fi
 }
 

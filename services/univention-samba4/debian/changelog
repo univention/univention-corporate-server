@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-11) unstable; urgency=low
+
+  * consider samba4/dc during create_site in joinscript (Bug #30792)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 May 2013 10:06:33 +0200
+
 univention-samba4 (2.0.44-10) unstable; urgency=low
 
   * make samba4-idmap.py also work in case smb.conf includes files readable
