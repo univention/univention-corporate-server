@@ -1,3 +1,9 @@
+univention-samba4 (2.0.52-1) unstable; urgency=low
+
+  * don't exit 1 if create_site fails in joinscript (Bug #30792)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 May 2013 10:36:49 +0200
+
 univention-samba4 (2.0.51-1) unstable; urgency=low
 
   * make samba4-idmap.py also work in case smb.conf includes files readable
