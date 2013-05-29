@@ -1,3 +1,10 @@
+univention-samba4 (2.0.44-16) unstable; urgency=low
+
+  * "Enterprise Domain Controllers" should be created as a builtin group
+    (Bug #31437)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 May 2013 12:49:44 +0200
+
 univention-samba4 (2.0.44-15) unstable; urgency=low
 
   * Adjusted message about create_site failure (Bug #30792)
