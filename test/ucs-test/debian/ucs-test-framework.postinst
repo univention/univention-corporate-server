@@ -39,4 +39,5 @@ eval "$(ucr shell)"
 ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$ldap_base" \
 		tests/domainadmin/pwd?univention \
 		tests/domainadmin/pwdfile?"/usr/share/ucs-test/pwdfile"
-		
+
+chmod 600 /usr/share/ucs-test/pwdfile

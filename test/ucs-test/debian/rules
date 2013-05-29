@@ -36,9 +36,7 @@ export DH_ALWAYS_EXCLUDE=.svn
 	dh $@
 
 override_dh_install:
-	install -m 600 pwdfile /usr/share/ucs-test/
 	dh_install --sourcedir=$(CURDIR)
-	echo $(CURDIR)
 
 override_dh_auto_test:
 	! find -type f -exec grep '^source\>' {} +

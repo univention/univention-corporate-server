@@ -1,3 +1,9 @@
+ucs-test (3.0.56-2) unstable; urgency=low
+
+  * fix permission of /usr/share/ucs-test/pwdfile (Bug #31250)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 29 May 2013 16:37:01 +0200
+
 ucs-test (3.0.56-1) unstable; urgency=low
 
   * skip certain udm dhcp test which currently fail due to known Bugs (Bug
