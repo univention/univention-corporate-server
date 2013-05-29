@@ -93,7 +93,7 @@ def getLDAPGPOs(options):
 	return ldapGPOs
 
 def getFileSystemGPOs(sysvolDirectory):
-	return os.listdir(sysvolDirectory)
+	return filter( lambda x: x.startswith('{'), os.listdir(sysvolDirectory) )
 	
 if __name__ == '__main__':
 	usage = '''%s [options]''' % sys.argv[0]

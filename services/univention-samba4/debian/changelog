@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-13) unstable; urgency=low
+
+  * sysvol-cleanup: only consider directories startig with { (Bug #31186)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 May 2013 10:07:44 +0200
+
 univention-samba4 (2.0.44-12) unstable; urgency=low
 
   * sysvol-sync: preserve timestamps (Bug #30823)
