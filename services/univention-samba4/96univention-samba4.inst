@@ -154,7 +154,7 @@ create_site() {
 				--site "$1" --createsite \
 				--ignore-exists
 	else
-		echo "create_site: LDAP bind to Samba4 directory on $ucr_variable='$try_server' failed!"
+		echo "create_site: looks like there is no Samba4 on $ucr_variable='$try_server', site creation skipped."
 	fi
 }
 

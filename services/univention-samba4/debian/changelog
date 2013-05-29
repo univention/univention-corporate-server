@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-15) unstable; urgency=low
+
+  * Adjusted message about create_site failure (Bug #30792)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 May 2013 11:51:55 +0200
+
 univention-samba4 (2.0.44-14) unstable; urgency=low
 
   * don't exit 1 if create_site fails in joinscript (Bug #30792)
