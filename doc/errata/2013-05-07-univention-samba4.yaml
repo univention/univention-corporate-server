@@ -7,7 +7,9 @@ note:
 version: [1]
 desc: |
   This errata update fixes several bugs in the package univention-samba4:
-  * Join into a new samba4/join/site without Samba4 on the Master failed.
+  * Joining into a new samba4/join/site without Samba4 on the Master now
+    repects the chosen samba4/dc.
+  * Join into a new samba4/join/site without Samba4 on the master failed.
     Now the chosen samba4/dc is respected also in this case.
   * The sysvol-sync.py script did not preserve timestamps, now it does.
   * The sysvol-cleanup.py script moved the PolicyDefinitions away.
