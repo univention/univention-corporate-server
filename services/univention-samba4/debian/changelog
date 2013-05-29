@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-14) unstable; urgency=low
+
+  * don't exit 1 if create_site fails in joinscript (Bug #30792)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 May 2013 10:38:12 +0200
+
 univention-samba4 (2.0.44-13) unstable; urgency=low
 
   * sysvol-cleanup: only consider directories startig with { (Bug #31186)

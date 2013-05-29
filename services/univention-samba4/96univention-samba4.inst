@@ -155,7 +155,6 @@ create_site() {
 				--ignore-exists
 	else
 		echo "create_site: LDAP bind to Samba4 directory on $ucr_variable='$try_server' failed!"
-		exit 1
 	fi
 }
 
