@@ -41,6 +41,7 @@
 
 <!-- 	  <para> -->
 <!-- 		Für die Druckquota existieren zwei Schwellwerte: -->
+<!-- 	  </para> -->
 <!-- 		<itemizedlist> -->
 <!-- 		  <listitem><simpara> -->
 <!-- 			Das <emphasis>Hard-Limit</emphasis> ist die maximale Anzahl druckbarer Seiten. Weitere -->
@@ -55,7 +56,6 @@
 <!-- 			deaktiviert. -->
 <!-- 		  </simpara></listitem> -->
 <!-- 		</itemizedlist> -->
-<!-- 	  </para> -->
 
 <!-- 	  <para> -->
 <!-- 		Pykota interpretiert Druckaufträge in den folgenden Druckformaten: PostScript, PDF, PCL1, -->
@@ -121,6 +121,7 @@
 <!-- 			gesetzten Werte werden immer abzüglich 1 interpretiert; bekommt also ein Benutzer ein -->
 <!-- 			Hard-Limit von 100, so können maximal 99 Seiten gedruckt werden. Daraus ergeben sich -->
 <!-- 			folgende Sonderwerte: -->
+<!-- 		  </para> -->
 
 <!-- 			<itemizedlist> -->
 <!-- 			  <listitem><simpara> -->
@@ -131,10 +132,10 @@
 <!-- 				<emphasis>1</emphasis>: Der Benutzer oder die Gruppe kann überhaupt keine Seiten drucken -->
 <!-- 			  </simpara></listitem> -->
 <!-- 			</itemizedlist> -->
-<!-- 		  </para> -->
 
 <!-- 		  <para> -->
 <!-- 			Die Zuweisung kann auf verschiedenen Wegen erfolgen: -->
+<!-- 		  </para> -->
 
 <!-- 			<itemizedlist> -->
 <!-- 			  <listitem><simpara> -->
@@ -153,7 +154,6 @@
 <!-- 				dieses Kontingent nutzen. -->
 <!-- 			  </simpara></listitem> -->
 <!-- 			</itemizedlist> -->
-<!-- 		  </para> -->
 <!-- 		</section> -->
 
 <!-- 		<section id="printquota:umcmodule"> -->
@@ -192,20 +192,20 @@
 <!-- 	  <para> -->
 <!-- 		Der Seitenzähler eines Benutzers kann entweder mit dem UMC-Modul <guimenu>Printer -->
 <!-- 		moderation</guimenu>(siehe <xref linkend="printquota:umcmodule"/>  ) oder auf dem -->
-<!-- 		Kommandozeile mit dem Befehl <command>edpykota reset </command>zurückgesetzt werden: -->
+<!-- 		Kommandozeile mit dem Befehl <command>edpykota reset <replaceable>user</replaceable></command> zurückgesetzt werden: -->
+<!-- 	  </para> -->
 
-<!-- <programlisting> -->
+<!-- <screen> -->
 <!-- :~# edpykota reset user01 -->
 <!-- Extracting datas... -->
 <!-- Modification... -->
 <!-- Done.    -->
-<!-- </programlisting> -->
+<!-- </screen> -->
 
-<!-- 	  </para> -->
 <!-- 	</section> -->
 
 	</section>
-	
+
   </chapter>
   <?dbhtml-include href="../stylesheets/piwiki.html"?>
 </book>

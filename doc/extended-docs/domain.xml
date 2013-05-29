@@ -7,7 +7,7 @@
 
   %entities;
 ]>
-<book lang="en" id="networks-3.1">
+<book lang="en" id="domain">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended domain services documentation</subtitle>
