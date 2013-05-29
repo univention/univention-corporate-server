@@ -80,7 +80,7 @@ def create_group_Enterprise_Domain_Controllers(lo):
 	al = [("objectClass", ocs)]
 	al.append(("gidNumber", [gidNumber]))
 	al.append(("sambaSID", [sambaSID]))
-	al.append(("sambaGroupType", ["2"]))
+	al.append(("sambaGroupType", ["5"]))
 	al.append(("uniqueMember", s4dc_dnlist))
 	al.append(("memberUid", s4dc_uidlist))
 	al.append(("univentionObjectType", "groups/group"))
