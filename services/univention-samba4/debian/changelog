@@ -1,3 +1,10 @@
+univention-samba4 (2.0.52-4) unstable; urgency=low
+
+  * univention-samba4-sysvol-sync currently cannot rely on
+    univention-samba4/lib (Bug #31271)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 29 May 2013 14:15:21 +0200
+
 univention-samba4 (2.0.52-3) unstable; urgency=low
 
   * "Enterprise Domain Controllers" should be created as a builtin group
