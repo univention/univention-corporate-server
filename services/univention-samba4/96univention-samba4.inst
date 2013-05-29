@@ -617,7 +617,9 @@ if [ "$samba4_role" = 'DC' ]; then
 		samba-tool ntacl sysvolreset
 
 		## set default ACLs so sysvol-sync can read files and directories
-		set_default_fACL /var/lib/samba/sysvol
+		if ! univention_samba4_is_ucr_false samba4/sysvol/sync/setfacl/AU; then
+			set_default_fACL /var/lib/samba/sysvol
+		fi
 	fi
 
 	## activate sysvol replication
@@ -692,7 +694,9 @@ elif [ "$samba4_role" = "RODC" ]; then
 		samba-tool ntacl sysvolreset
 
 		## set default ACLs so sysvol-sync can read files and directories
-		set_default_fACL /var/lib/samba/sysvol
+		if ! univention_samba4_is_ucr_false samba4/sysvol/sync/setfacl/AU; then
+			set_default_fACL /var/lib/samba/sysvol
+		fi
 	fi
 
 	## activate sysvol replication
