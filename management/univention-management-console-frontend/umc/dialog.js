@@ -305,7 +305,7 @@ define([
 			// summary:
 			// 		Popup a confirmation dialog containing a `umc.widgets.Form' build from the given widgets
 			// options:
-			// 		Form form: if not given a `umc.widgets.Form' with the igiven widgets and layout will be created.
+			// 		Form form: if not given a `umc.widgets.Form' with the given widgets and layout will be created.
 			// 		Object[] widgets: the form widgets
 			// 		Object[] layout: the form layout
 			// 		String title: the confirmation dialog title (default: 'Confirmation')
@@ -342,7 +342,7 @@ define([
 
 			// check if the submit button is the default action
 			if (array.some(buttons, function(button) { return (button.name === 'submit' && button['default']); })) {
-				// confirm the dialog if form was submitet
+				// confirm the dialog if form was submitted
 				form.on('submit', function() {
 					confirmDialog.onConfirm('submit');
 				});

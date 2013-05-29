@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.36-8) UNRELEASED; urgency=low
+
+  * Rework ACPI shutdown dialog (Bug #21397)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 29 May 2013 18:49:14 +0200
+
 univention-virtual-machine-manager-daemon (2.0.36-7) unstable; urgency=low
 
   * Add ACPI shutdown action (Bug #21397)
