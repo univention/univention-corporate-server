@@ -103,6 +103,13 @@ if __name__ == "__main__":
 	ucr = ConfigRegistry()
 	ucr.load()
 
+	if not opts.binddn:
+		try:
+			opts.bindpw = open('/etc/ldap.secret').read().rstrip('\n')
+			opts.binddn = "cn=admin,%s" % ucr['ldap/base']
+		except IOError:
+			fatal('Could not read /etc/ldap.secret')
+
 	if opts.bindpwdfile and not opts.bindpw:
 		opts.bindpw = open(opts.bindpwdfile, 'r').read().strip()
 
