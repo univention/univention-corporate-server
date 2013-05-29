@@ -83,12 +83,6 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 		restart=true
 	fi
 
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.32-2; then
-		## Do not synchronize group 'Enterprise Domain Controllers'
-		univention_samba4_append_to_ucr connector/s4/mapping/group/ignorelist 'Enterprise Domain Controllers'
-		restart=true
-	fi
-
 	if [ "$restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart
 	fi
@@ -114,23 +108,6 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 			if [ -z "$s4connectorservicehost_dns" ]; then	## this system will provide the S4 Connector Service
 				## Note: This group is created only once on the host providing the S4 Connector service
 				create_Enterprise_Domain_Controllers "$@"
-			fi
-		elif [ "$server_role" = "domaincontroller_slave" ] ; then
-			if is_ucr_true connector/s4/allow/secondary; then
-				## we are in a Slave PDC scenario, probably ucs-school-slave.
-				## in this case, the 'Enterprise Domain Controllers' group may have been created on the
-				## Master/Backup (by the errata update) before the connector/s4/mapping/group/ignorelist
-				## was adjusted on the ucs-school-slave
-				## and the group was already replicated to the local sam.ldb
-				reject_file_list=$(sqlite3 /etc/univention/connector/s4internal.sqlite "select key from 'UCS rejected' where value='cn=Enterprise Domain Controllers,cn=groups,$ldap_base'")
-				if [ -n "$reject_file_list" ]; then
-					invoke-rc.d univention-s4-connector stop
-					while read reject_filename; do
-						rm "$reject_filename"
-					done <<<"$reject_file_list"
-					sqlite3 /etc/univention/connector/s4internal.sqlite "delete from 'UCS rejected' where value='cn=Enterprise Domain Controllers,cn=groups,$ldap_base'"
-					invoke-rc.d univention-s4-connector start
-				fi
 			fi
 		fi
 	fi
