@@ -57,7 +57,7 @@ class Domains(object):
 	"""
 
 	STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
-	TARGET_STATES = ('RUN', 'PAUSE', 'SHUTDOWN', 'RESTART', 'SUSPEND')
+	TARGET_STATES = ('RUN', 'PAUSE', 'SHUTDOWN', 'SHUTOFF', 'RESTART', 'SUSPEND')
 
 	RE_VNC = re.compile(r'^(IPv[46])(?: (.+))?$|^(?:NAME(?: (.+=.*))?)$')
 	SOCKET_FAMILIES = {
