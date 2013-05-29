@@ -1,10 +1,3 @@
-univention-samba4 (2.0.52-5) unstable; urgency=low
-
-  * Avoid re-setting fACLs for sysvol to Authenticated Users on re-join
-    (Bug #31271)
-
- -- Arvid Requate <requate@univention.de>  Wed, 29 May 2013 15:17:04 +0200
-
 univention-samba4 (2.0.52-4) unstable; urgency=low
 
   * univention-samba4-sysvol-sync currently cannot rely on
