@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-samba4
-fix: 2.0.44-10.448.201305281458
+fix: 2.0.44-13.450.201305291032
 note:
 version: [1]
 desc: |
