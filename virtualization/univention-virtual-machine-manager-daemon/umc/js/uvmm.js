@@ -554,28 +554,32 @@ define([
 
 		_shutdown: function(ids, items) {
 			tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
-				if (!tools.isTrue(prefs.uvmmShutdownSeen)) {
+				if (tools.isTrue(prefs.uvmmShutdownSeen)) {
+					this._changeState('SHUTDOWN', 'shutdown', ids, items);
+				} else {
 					dialog.confirmForm({
 						title: _('Virtual machine shutdown'),
 						widgets: [
 							{
 								type: Text,
 								name: 'info_text',
-								content: _('<div>Shutting down virtual machines required the cooperation of their guest operating system.</div><dl><dt>For UCS</dt><dd>Install the package "acpid" and "acpi-support-base"</dd><dt>For Windows</dt><dd>Enable ACPI</dd></dl><div>If the operating system does not cooperate, "Stop" can be used to forcefully turn off the virtual machine.</div>')
+								content: _('<p>Shutting down virtual machines cleanly required the cooperation of their guest operating system.</p><p>For UCS the packages "acpid" and "acpi-support-base" must be installed.</p><p>For Windows ACPI must be enabled.</p><p>If the operating system does not cooperate, "Stop" can be used to forcefully turn off the virtual machine.</p>')
 							}, {
 								type: CheckBox,
+								value: true,
 								name: 'show_again',
-								label: _("Show this message again")
+								label: _("Show this warning again")
 							}
-						]
+						],
+						submit: _('Shutdown')
 					}).then(
 						lang.hitch(this, function(data) {
 							tools.setUserPreference({uvmmShutdownSeen: data.show_again ? 'false' : 'true'});
+							this._changeState('SHUTDOWN', 'shutdown', ids, items);
 						})
 					);
 				}
 			}));
-			this._changeState('SHUTDOWN', 'shutdown', ids, items);
 		},
 
 		_maybeChangeState: function(/*String*/ question, /*String*/ buttonLabel, /*String*/ newState, /*String*/ action, ids, items ) {
