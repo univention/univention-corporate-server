@@ -23,9 +23,187 @@
   <chapter>
 	<title>Print quota configuration</title>
 	<section>
-	  <title></title>
-	  <para>
-	  </para>
+
+	  <!-- TODO: Screenshots integrieren und mehr Beispiele auf der CLI -->
+
+<!-- 	  <title>Funktionsweise</title> -->
+<!-- 	  <para> -->
+<!-- 		Der UCS-Druckdienst erlaubt die Verwendung von Druckquota. Druckquota können über -->
+<!-- 		Richtlinien für Drucker und Druckergruppen definiert werden. -->
+<!-- 	  </para> -->
+
+<!-- 	  <para> -->
+<!-- 		Druckquota werden über die Komponente Pykota realisiert. Sie realisiert eine Schnittstelle -->
+<!-- 		zwischen Cups - dem Druckserver - und dem angebundenen Drucker. Bevor der Druckauftrag an -->
+<!-- 		den Drucker weitergereicht wird, wird geprüft, ob der Benutzer weiterhin druckberechtigt -->
+<!-- 		ist. Außerdem wird jeder Druckauftrag protokolliert, was z.B. Auswertungen erlaubt.  -->
+<!-- 	  </para> -->
+
+<!-- 	  <para> -->
+<!-- 		Für die Druckquota existieren zwei Schwellwerte: -->
+<!-- 		<itemizedlist> -->
+<!-- 		  <listitem><simpara> -->
+<!-- 			Das <emphasis>Hard-Limit</emphasis> ist die maximale Anzahl druckbarer Seiten. Weitere -->
+<!-- 			Druckaufträge werden verweigert. Der Benutzer wird per E-Mail benachrichtigt. -->
+<!-- 		  </simpara></listitem> -->
+
+<!-- 		  <listitem><simpara> -->
+<!-- 			Bei Erreichen des <emphasis>Soft-Limits</emphasis> kann eine Mail an den betreffenden -->
+<!-- 			Benutzer geschickt werden, in der der Benutzer gewarnt wird, dass das Hard-Limit bald -->
+<!-- 			erreicht ist. Dazu muss die &ucsUCRV; <envar>cups/quota/inform</envar> auf -->
+<!-- 			<emphasis>yes</emphasis> gesetzt werden. Standardmässig ist die Benachrichtigung -->
+<!-- 			deaktiviert. -->
+<!-- 		  </simpara></listitem> -->
+<!-- 		</itemizedlist> -->
+<!-- 	  </para> -->
+
+<!-- 	  <para> -->
+<!-- 		Pykota interpretiert Druckaufträge in den folgenden Druckformaten: PostScript, PDF, PCL1, -->
+<!-- 		PCL2, PCL3, PCL4, PCL5, PCLXL, PCL6 und ESC/P2. -->
+<!-- 	  </para> -->
+
+<!-- 	  <para> -->
+<!-- 		Die Speicherung erfolgt nicht im LDAP-Verzeichnisdienst, sondern in einer separaten -->
+<!-- 		Postgres-SQL-Datenbank, die über das Paket <emphasis>univention-printquotadb</emphasis> -->
+<!-- 		automatisch eingerichtet wird. -->
+<!-- 	  </para> -->
+<!-- 	</section> -->
+
+<!-- 	<section> -->
+<!-- 	  <title>Installation</title> -->
+<!-- 	  <para> -->
+<!-- 		Die Unterstützung von Druckquota ist standardmäßig nicht aktiviert. Sie muss nachträglich -->
+<!-- 		durch Installation des Pakets <emphasis>univention-printquota</emphasis> eingerichtet -->
+<!-- 		werden. -->
+<!-- 	  </para> -->
+
+<!-- 	  <para> -->
+<!-- 		Die Aktivierung der Druckquota führt zu einer intern veränderten -->
+<!-- 		Druckerverwaltung. <emphasis>univention-printquota</emphasis> muss daher auf allen -->
+<!-- 		Druckservern installiert werden, d.h. auf allen Systemen, auf denen -->
+<!-- 		<emphasis>univention-printserver</emphasis> installiert ist. -->
+<!-- 	  </para> -->
+<!-- 	</section> -->
+
+<!-- 	<section> -->
+<!-- 	  <title>Konfiguration von Druckquota</title> -->
+
+<!-- 	  <section id="quota:config:activate"> -->
+<!-- 		<title>Aktivierung der Druckquota</title> -->
+<!-- 		<para> -->
+<!-- 		  Bevor einem Drucker oder einer Druckergruppe Druckquota zugewiesen werden kann, muss die -->
+<!-- 		  Option <guimenu>Enable quota support</guimenu> aktivieren werden. -->
+<!-- 		</para> -->
+
+<!-- 		<note> -->
+<!-- 		  <para> -->
+<!-- 			Druckquota können nur für Drucker verwendet werden, die über die Protokolle -->
+<!-- 			<emphasis>lpd</emphasis>, <emphasis>ipp</emphasis>, <emphasis>http</emphasis> -->
+<!-- 			<emphasis>socket</emphasis> und <emphasis>smb</emphasis> angebundne sind. Für Drucker, -->
+<!-- 			die über <emphasis>usb</emphasis>, <emphasis>parallel</emphasis> und -->
+<!-- 			<emphasis>file</emphasis>-URIs angebunden sind kann keine Druckquota festgelegt werden. -->
+<!-- 		  </para> -->
+<!-- 		</note> -->
+<!-- 	  </section> -->
+
+<!-- 	  <section> -->
+<!-- 		<title>Assigning quota limits to users and groups</title> -->
+<!-- 		<para> -->
+<!-- 		  Die Druckerquota kann dann auf zwei Wegen zugewiesen werden; über eine Richtlinie oder -->
+<!-- 		  benutzerbezogen im UMC-Modul "Printer administration". -->
+<!-- 		</para> -->
+
+<!-- 		<section> -->
+<!-- 		  <title>Zuweisung über eine Richtlinie</title> -->
+<!-- 		  <para> -->
+<!-- 			Anschließend kann über eine Druck-Quota-Richtlinie die Quota jeweils als Soft-Limit -->
+<!-- 			(Warn-Wert) und Hard-Limit (maximal druckbare Seitenzahl) konfiguriert werden. Die -->
+<!-- 			gesetzten Werte werden immer abzüglich 1 interpretiert; bekommt also ein Benutzer ein -->
+<!-- 			Hard-Limit von 100, so können maximal 99 Seiten gedruckt werden. Daraus ergeben sich -->
+<!-- 			folgende Sonderwerte: -->
+
+<!-- 			<itemizedlist> -->
+<!-- 			  <listitem><simpara> -->
+<!-- 				<emphasis>0</emphasis>: Das Druckvolumen ist nicht limitiert -->
+<!-- 			  </simpara></listitem> -->
+
+<!-- 			  <listitem><simpara> -->
+<!-- 				<emphasis>1</emphasis>: Der Benutzer oder die Gruppe kann überhaupt keine Seiten drucken -->
+<!-- 			  </simpara></listitem> -->
+<!-- 			</itemizedlist> -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Die Zuweisung kann auf verschiedenen Wegen erfolgen: -->
+
+<!-- 			<itemizedlist> -->
+<!-- 			  <listitem><simpara> -->
+<!-- 				<guimenu>Print quota for users</guimenu>: Die Druckquota gilt für den oder die -->
+<!-- 				angegebenen Benutzer individuell -->
+<!-- 			  </simpara></listitem> -->
+
+<!-- 			  <listitem><simpara> -->
+<!-- 				<guimenu>Print quota for groups per user</guimenu>: Für jeden Benutzer der hier -->
+<!-- 				angegebenen Gruppe wird das Limit einzeln ausgewertet. -->
+<!-- 			  </simpara></listitem> -->
+
+<!-- 			  <listitem><simpara> -->
+<!-- 				<guimenu>Print quota for groups</guimenu>: Die hier angegebene Gruppe erhält ein -->
+<!-- 				gemeinsames Kontingent zugewiesen. Alle Benutzer, die zu der Gruppe gehören, können -->
+<!-- 				dieses Kontingent nutzen. -->
+<!-- 			  </simpara></listitem> -->
+<!-- 			</itemizedlist> -->
+<!-- 		  </para> -->
+<!-- 		</section> -->
+
+<!-- 		<section id="printquota:umcmodule"> -->
+<!-- 		  <title>Zuweisung über das UMC-Modul</title> -->
+<!-- 		  <para> -->
+<!-- 			Das UMC-Modul <guimenu>Printer Administration</guimenu> erlaubt die Konfiguration -->
+<!-- 			benutzerbezogener Drucker-Quota. Für alle Drucker, an denen Quota aktiviert ist (siehe -->
+<!-- 			<xref linkend="quota:config:activate"/>.), kann unter <guimenu>more -> Edit -->
+<!-- 			quota</guimenu> Quota für Benutzer zugewiesen werden. Es wird eine Liste mit allen -->
+<!-- 			Benutzern angezeigt, für die Quota konfiguriert sind. Mit <guimenu>Add new -->
+<!-- 			record</guimenu> kann ein weiterer Eintrag hinzugefügt werden: Unter <guimenu>User -->
+<!-- 			name</guimenu> wird ein Benutzer ausgewählt und ein <guimenu>Soft limit</guimenu> und -->
+<!-- 			<guimenu>Hard limit</guimenu> vergeben. Unter <guimenu>more -> Reset user -->
+<!-- 			quota</guimenu> kann der Seitenzähler wieder auf Null gesetzt werden. -->
+<!-- 		  </para> -->
+<!-- 		</section> -->
+<!-- 	  </section> -->
+<!-- 	</section> -->
+
+<!-- 	<section> -->
+<!-- 	  <title>Abfrage der Druckquota</title> -->
+<!-- 	  <para> -->
+<!-- 		Die Quota-Daten können nur abgefragt werden, wenn auf min. einer Druckerfreigabe Druckquota -->
+<!-- 		aktiviert ist, ansonsten liefert Repykota die Fehlermeldung <command>/usr/bin/repykota : -->
+<!-- 		There's no printer matching *</command>. -->
+<!-- 	  </para> -->
+
+<!-- 	  <para> -->
+<!-- 		Der Quotastatus kann mit dem Befehl <command>repykota</command> für alle Benutzer abgefragt -->
+<!-- 		werden oder alternativ mit <command>repykota USERNAME</command> für einen einzelnen -->
+<!-- 		Benutzer: -->
+<!-- 	  </para> -->
+
+<!-- 	<section> -->
+<!-- 	  <title>Zurücksetzen der Druckerquota</title> -->
+<!-- 	  <para> -->
+<!-- 		Der Seitenzähler eines Benutzers kann entweder mit dem UMC-Modul <guimenu>Printer -->
+<!-- 		moderation</guimenu>(siehe <xref linkend="printquota:umcmodule"/>  ) oder auf dem -->
+<!-- 		Kommandozeile mit dem Befehl <command>edpykota reset </command>zurückgesetzt werden: -->
+
+<!-- <programlisting> -->
+<!-- :~# edpykota reset user01 -->
+<!-- Extracting datas... -->
+<!-- Modification... -->
+<!-- Done.    -->
+<!-- </programlisting> -->
+
+<!-- 	  </para> -->
+<!-- 	</section> -->
+
 	</section>
 	
   </chapter>
