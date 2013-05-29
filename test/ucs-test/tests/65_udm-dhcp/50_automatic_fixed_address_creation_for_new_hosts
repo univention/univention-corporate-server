@@ -39,7 +39,7 @@ if __name__ == '__main__':
 					if [value] != attr[key]:
 						print 'Test FAILED. Expected "%s" of created DHCP host object to be %r, but found %r instead.' % (key, [value], attr[key])
 						sys.exit(1)
-				break
-		else:
-			print 'Test FAILED. Could not find DN "%s" of DHCP host object in LDAP.' % expectedDhcpHostDn
-			sys.exit(1)
+				sys.exit(0)
+		
+		print 'Test FAILED. Could not find expected DN "%s" of DHCP host object in LDAP.' % expectedDhcpHostDn
+		sys.exit(1)

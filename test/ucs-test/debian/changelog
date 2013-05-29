@@ -1,7 +1,17 @@
-ucs-test (3.0.55-1) unstable; urgency=low
+ucs-test (3.0.56-1) unstable; urgency=low
 
   * skip certain udm dhcp test which currently fail due to known Bugs (Bug
   	#31518) (Bug #31519)
+  * added ucr variables to configure domain admin credentials to be used in
+  	ucs-test (Bug #31250)
+  * ported certain udm-dns tests from ucs-3.0 branchs (Bug #27664)
+  * reverted changes to udm-users/35_create_user_with_umlaut_in_uid from last
+  	version (Bug #27664)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 29 May 2013 10:34:28 +0200
+
+ucs-test (3.0.55-1) unstable; urgency=low
+
   * ported udm-net tests from ucs-3.0 branchs (Bug #27664)
   * fixed header of udm-users/35_create_user_with_umlaut_in_uid (Bug #27664)
 

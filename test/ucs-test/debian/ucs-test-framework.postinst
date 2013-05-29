@@ -1,7 +1,7 @@
-#!/usr/bin/make -f
+#!/bin/sh
 #
-# Univention UCS test
-#  rules file for the debian package
+# UCS test
+#  postinst script for the ucs-test-framework package
 #
 # Copyright 2013 Univention GmbH
 #
@@ -30,15 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-export DH_ALWAYS_EXCLUDE=.svn
+#DEBHELPER#
 
-%:
-	dh $@
 
-override_dh_install:
-	install -m 600 pwdfile /usr/share/ucs-test/
-	dh_install --sourcedir=$(CURDIR)
-	echo $(CURDIR)
 
-override_dh_auto_test:
-	! find -type f -exec grep '^source\>' {} +
+eval "$(ucr shell)"
+
+ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$ldap_base" \
+		tests/domainadmin/pwd?univention \
+		tests/domainadmin/pwdfile?"/usr/share/ucs-test/pwdfile"
+		

@@ -30,7 +30,7 @@ if __name__ == '__main__':
 		result = ldap.searchDn(base = ','.join(expectedDN.split(',')[1:]), filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName)
 		for dn in result:
 			if dn == expectedDN:
-				break
-		else:
-			print 'Test FAILED. Expected created OU to be at "%s" after moving, but could not be found there.' % expectedDN
-			sys.exit(1)
+				sys.exit(0)
+
+		print 'Test FAILED. Expected created OU to be at "%s" after moving, but could not be found there.' % expectedDN
+		sys.exit(1)
