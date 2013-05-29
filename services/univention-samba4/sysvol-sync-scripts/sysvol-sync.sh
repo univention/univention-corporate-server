@@ -62,11 +62,11 @@ for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -t
 	importdir="${SYSVOL_SYNCDIR}/${s4dc}"
 
 	## step one: pull over network from downstream s4dc
-	univention-ssh-rsync /etc/machine.secret -aAX --delete \
+	univention-ssh-rsync /etc/machine.secret -atAX --delete \
 		"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$importdir" 2>/dev/null
 
 	## step two: sync into hot target dir with local filesystem speed
-	rsync -auAX "$importdir"/ "$SYSVOL_PATH"
+	rsync -autAX "$importdir"/ "$SYSVOL_PATH"
 done
 
 for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
@@ -75,7 +75,7 @@ for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
 	fi
 
 	## pull from parent s4dc
-	univention-ssh-rsync /etc/machine.secret -auAX \
+	univention-ssh-rsync /etc/machine.secret -autAX \
 		"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$SYSVOL_PATH" 2>/dev/null
 
 	## trigger the next pull by the parent s4dc
