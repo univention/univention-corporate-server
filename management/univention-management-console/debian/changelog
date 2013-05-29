@@ -1,3 +1,10 @@
+univention-management-console (5.0.65-1) unstable; urgency=low
+
+  * Set debug option "NO_FLUSH" to "FLUSH" in order to prevent partial or
+    missing lines in the log file (Bug #31421)
+
+ -- Jascha Geerds <geerds@univention.de>  Wed, 29 May 2013 10:42:18 +0200
+
 univention-management-console (5.0.64-1) unstable; urgency=low
 
   * Fix another crash when setting an invalid locale (Bug #28657)
