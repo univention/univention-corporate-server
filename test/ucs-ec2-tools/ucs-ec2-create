@@ -269,6 +269,7 @@ class VM:
 	def _ssh_exec(self, command):
 		'''	Execute command using ssh and writes output to logfile.'''
 		transport = self.client.get_transport()
+		transport.set_keepalive(15)
 		session = transport.open_session()
 		try:
 			self._log('Execute: %s' % command)
