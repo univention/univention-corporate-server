@@ -530,38 +530,6 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 	  </para>
 	</section>
 
-	<section id="domain-ldap:Managed_Client">
-		<title>Managed Client</title>
-		<para>
-			Ein Managed Client ist ein stationäres Linux-Desktop-System auf Basis von
-			&ucsUCD;.
-		</para>
-	</section>
-
-	<section id="domain-ldap:Mobile_Client">
-		<title>Mobile Client</title>
-		<para>
-			Ein Mobile Client ist ein mobiles Linux-Desktop-System auf Basis von
-			&ucsUCD;.
-		</para>
-	</section>
-
-	<section id="domain-ldap:Thin_Client">
-		<title>Thin Client</title>
-		<para>
-			Ein Thin Client ist ein festplattenloser Rechner, der über das Netz
-			gebootet wird und der auf einem Terminal-Server (Linux oder Windows)
-			ausgeführte Anwendungen darstellt.
-		</para>
-		<para>
-			Auf dem Thin Client ist also kein Betriebssystem installiert, wodurch er
-			sehr wartungsarm ist.
-		</para>
-		<para>
-			Unterstützung für Thin Clients bietet die UCS-Komponente &ucsTCS;.
-		</para>
-	</section>
-
 	<section id="domain-ldap:Domain_Trust_Account">
 		<title>Domain Trust Account</title>
 		<para>

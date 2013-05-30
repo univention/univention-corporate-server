@@ -815,13 +815,7 @@
 			value supported by the monitor.
 		</para>
 		<para>
-			Managed and mobile clients (only installable with &ucsUCD;) and thin clients
-			(only installable with &ucsTCS;) can also be manually configured with a
-			<guimenu>Display</guimenu> policy. The settings can be set with a &ucsUCR;
-			policy on the remaining system roles.
-		</para>
-		<para>
-			Manual configuration is also necessary if dual monitor operation is to be
+			The settings can be set with a &ucsUCR; policy. Manual configuration is also necessary if dual monitor operation is to be
 			used. The following provides a selection of the important settings and the
 			corresponding UCR variables in brackets:
 		</para>

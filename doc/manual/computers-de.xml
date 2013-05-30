@@ -201,8 +201,7 @@
                             werden. Das ist nur notwendig, wenn von den automatisch eingestellten
                             Vorgabewerten abgewichen werden soll. Der Vorgabewert für einen
                             DC Master oder DC Backup lautet <emphasis>DC Backup Hosts</emphasis>, für einen
-                            DC Slave <emphasis>DC Slave Hosts</emphasis> und für &ucsMember;, Managed Clients
-                            und Mobile Clients <emphasis>Computers</emphasis>.
+                            DC Slave <emphasis>DC Slave Hosts</emphasis> und für &ucsMember; <emphasis>Computers</emphasis>.
                         </entry>
                     </row>
                 </tbody>
@@ -805,11 +804,7 @@
                 gesetzt.
             </para>
             <para>
-                Managed und Mobile Clients (nur installierbar mit &ucsUCD;) und Thin
-                Clients (nur installierbar mit &ucsTCS;) können auch auch manuell
-                über eine <guimenu>Display</guimenu>-Richtlinie konfiguriert werden. Auf
-                den übrigen Systemrollen können die Einstellungen über eine
-                &ucsUCR;-Richtlinie gesetzt werden.
+                Die Einstellungen können auch über eine &ucsUCR;-Richtlinie gesetzt werden.
                 Die manuelle Konfguration ist auch nötig, wenn ein Dual-Monitor-Betrieb verwendet
                 werden soll. Im folgenden eine Auswahl der wichtigen Einstellungen
                 und die dazugehörigen UCR-Variablen in Klammern:
