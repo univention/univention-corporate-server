@@ -503,66 +503,64 @@ exit
 <!-- 		  </para> -->
 <!-- 		</section> -->
 
-		<!-- <section> -->
-		<!--   <title>Integrating into Kerberos</title> -->
-<!-- 		  <para> -->
-<!-- 			UCS verwendet die Kerberos-Implementierung Heimdal. Auf dem Unix-System sollte daher für -->
-<!-- 			den Zugriff auf die Kerberos-Realm ebenfalls Heimdal verwendet werden. Auf dem -->
-<!-- 			Unix-System müssen nur die Heimdal-Client-Bibliotheken installiert werden. -->
-<!-- 		  </para> -->
+		<section>
+		  <title>Integrating into Kerberos</title>
+		  <para>
+			UCS employs the Kerberos implementation Heimdal. For this reason, Heimdal should also be
+			used to access the Kerberos realm on the Unix system. Only the Heimdal client libraries
+			need to be installed on the Unix system.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Kerberos erfordert eine korrekte Zeitsynchonisation, siehe <xref linkend="ext-dom-time"/>. -->
-<!-- 		  </para> -->
+		  <para>
+			Kerberos requires correct time synchronisation, see <xref linkend="ext-dom-time"/>.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Die Konfigurationen wird in den meisten Systemen in der Datei -->
-<!-- 			<filename>/etc/krb5.conf</filename> vorgenommen. Hier eine Beispielkonfiguration: -->
+		  <para>
+			The configuration is performed in the <filename>/etc/krb5.conf</filename> file on most
+			systems. Here is an example configuration:
 
-<!-- 			<itemizedlist> -->
-<!-- 			  <listitem><simpara> -->
-<!-- 				KERBEROSREALM muss durch den Namen der Realm der UCS-Domäne ersetzt werden -->
-<!-- 				(gespeichert in der &ucsUCRV; <envar>kerberos/realm</envar>). -->
-<!-- 			  </simpara></listitem> -->
+			<itemizedlist>
+			  <listitem><simpara>
+				KERBEROSREALM must be replaced by the name of the UCS Kerberos realm (saved in the
+				&ucsUCRV; <envar>kerberos/realm</envar>).
+			  </simpara></listitem>
 
-<!-- 			  <listitem><simpara> -->
-<!-- 				MASTERIP muss durch die die IP-Adresse des &ucsMaster; ersetzt werden. -->
-<!-- 			  </simpara></listitem> -->
+			  <listitem><simpara>
+				MASTERIP must be replaced by the IP address of the &ucsMaster;.
+			  </simpara></listitem>
 
-<!-- 			  <listitem><simpara> -->
-<!-- 				MASTERFQDN muss durch den fully qualified domain name des &ucsMaster; ersetzt -->
-<!-- 				werden. -->
-<!-- 			  </simpara></listitem> -->
-<!-- 			</itemizedlist> -->
+			  <listitem><simpara>
+				MASTERFQDN must be replaced by the fully qualified domain name of the &ucsMaster;.
+			  </simpara></listitem>
+			</itemizedlist>
 
-<!-- <programlisting> -->
-<!-- [libdefaults] -->
-<!--     default_realm = KERBEROSREALM -->
-<!--     kdc_timesync = 1 -->
-<!--     ccache_type = 4 -->
-<!--     forwardable = true -->
-<!--     proxiable = true -->
+<programlisting>
+[libdefaults]
+    default_realm = KERBEROSREALM
+    kdc_timesync = 1
+    ccache_type = 4
+    forwardable = true
+    proxiable = true
  
-<!-- [realms] -->
-<!-- KERBEROSREAKM = { -->
-<!--    kdc = MASTERIP MASTERFQDN -->
-<!--    admin_server = MASTERIP MASTERFQDN -->
-<!-- } -->
-<!-- </programlisting> -->
+[realms]
+KERBEROSREAKM = {
+   kdc = MASTERIP MASTERFQDN
+   admin_server = MASTERIP MASTERFQDN
+}
+</programlisting>
 
-<!-- 		  </para> -->
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Abschließend muss das Heimdal-PAM-Modul installiert werden. Im Regelfall sollte die -->
-<!-- 			Installation des Moduls die PAM-Konfiguration automatisch anpassen. -->
-<!-- 		  </para> -->
+		  <para>
+			The Heimdal PAM module then needs to be installed. In general, the installation of the
+			module should adapt the PAM configuration automatically.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Danach sollte eine Kerberos-Authentifizierung über PAM im Rahmen der Anmeldung -->
-<!-- 			funktionieren und Passwortänderungen über <command>kpasswd</command> möglich sein. -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
-
+		  <para>
+			Then Kerberos authentication during login should work via PAM  and password
+			changes should be possible via <command>kpasswd</command>.
+		  </para>
+		</section>
 
 		<section>
 		  <title>Accessing a UCS print server</title>
