@@ -1,3 +1,10 @@
+univention-demo-configuration (1.0.4-4) unstable; urgency=low
+
+  * Update module .xml-files in order to allow two new UMCP commands
+    (Bug #31567)
+
+ -- Jascha Geerds <geerds@univention.de>  Thu, 30 May 2013 10:05:44 +0200
+
 univention-demo-configuration (1.0.4-3) unstable; urgency=low
 
   * Bug #31091: adapted login.html for 3.1-1, allow UMC command join/master
