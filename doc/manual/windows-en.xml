@@ -266,29 +266,38 @@ see <xref linkend="networks:dhcp:wins"/>.
 </section>
 </section>
 
-<section id="windows:Configuration_and_management_of_Windows_desktops"><title>Configuration and management of Windows desktops</title>
-<section id="gruppenrichtlinien"><title>Group policies</title>
-<figure><title>Group policy editor</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/win_policy_en.png"/>
- </figure>
-<para>
-Group policies are an Active Directory feature which allows the
-central configuration of computers and user settings. They are only
-supported by Samba 4.
-</para>
-<para>
-The setting up of group policies can be performed with
-the <emphasis>Remote Server Administration Tools (RSAT) for Windows 7</emphasis>
-<footnote><para><ulink url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>.
-or the <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
-<footnote><para><ulink url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>.
-</para>
-<para>
-The group policies are saved in the SYSVOL share.
-</para>
-<para>
-  Windows Group Policies are not supported by Mac OS X clients.
-</para>
+<section id="windows:Configuration_and_management_of_Windows_desktops">
+  <title>Configuration and management of Windows desktops</title>
+
+  <section id="gruppenrichtlinien"><title>Group policies</title>
+  <figure><title>Group policy editor</title>
+  <graphic scalefit="1" width="80%" fileref="illustrations/win_policy_en.png"/>
+  </figure>
+  <para>
+	Group policies are an Active Directory feature which allows the central configuration of
+	computers and user settings. They are only supported by Samba 4.
+  </para>
+
+  <para>
+	The setting up of group policies can be performed with the <emphasis>Remote Server
+	Administration Tools (RSAT) for Windows 7</emphasis> <footnote><para><ulink
+	url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
+	or the <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
+	<footnote><para><ulink
+	url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>.
+	After the installation has been completed, the group policy editor must be activated in the
+	Control Panel, by enabling the option <guimenu>Group Policy Management Tools</guimenu> under
+	<guimenu>Programs -> Turn Windows features on or off -> Remote Server Administration Tools ->
+	Feature Administration Tools</guimenu>.
+  </para>
+
+  <para>
+	The group policies are saved in the SYSVOL share.
+  </para>
+
+  <para>
+	Windows Group Policies are not supported by Mac OS X clients.
+  </para>
 </section>
 
 <section id="netlogon-freigabe"><title>Logon scripts / NETLOGON share</title>

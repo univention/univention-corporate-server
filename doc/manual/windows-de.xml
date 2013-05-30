@@ -284,33 +284,44 @@ zugewiesen werden, siehe <xref linkend="networks:dhcp:wins"/>.
 </section>
 </section>
 
-<section id="windows:Konfiguration_und_Management_von_Windows-Desktops"><title>Konfiguration und Management von Windows-Desktops</title>
-<section id="gruppenrichtlinien"><title>Gruppenrichtlinien</title>
-<para>
-<figure><title>Gruppenrichtlinien-Editor</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/win_policy_de.png"/>
- </figure>
-</para>
-<para>
-Gruppenrichtlinien sind eine Active Directory-Funktion, die die
-zentrale Konfiguration von Rechner- und Benutzereinstellungen
-erlaubt. Sie werden nur von Samba 4 unterstützt.
-</para>
-<para>
-Die Einrichtung von Gruppenrichtlinien kann mit dem <emphasis>Remote
-Server Administration Tools (RSAT) for Windows 7</emphasis>
-<footnote><para><ulink url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>.
-oder den <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
-<footnote><para><ulink url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>.
-erfolgen.
-</para>
-<para>
-Die Gruppenrichtlinien werden in der SYSVOL-Freigabe gespeichert.
-</para>
-<para>
-  Gruppenrichtlinien werden von Mac OS X-Clients nicht unterstützt.
-</para>
-</section>
+<section id="windows:Konfiguration_und_Management_von_Windows-Desktops">
+  <title>Konfiguration und Management von Windows-Desktops</title>
+  <section id="gruppenrichtlinien"><title>Gruppenrichtlinien</title>
+  <para>
+	<figure><title>Gruppenrichtlinien-Editor</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/win_policy_de.png"/>
+	</figure>
+  </para>
+
+  <para>
+	Gruppenrichtlinien sind eine Active Directory-Funktion, die die zentrale Konfiguration von
+	Rechner- und Benutzereinstellungen erlaubt. Sie werden nur von Samba 4 unterstützt.
+  </para>
+
+  <para>
+	Die Einrichtung von Gruppenrichtlinien kann mit dem <emphasis>Remote Server Administration Tools
+	(RSAT) for Windows 7</emphasis> <footnote><para><ulink
+	url="http://www.microsoft.com/downloads/details.aspx?FamilyID=7d2f6ad7-656b-4313-a005-4e344e43997d"/></para></footnote>
+	oder den <emphasis>Remote Server Administration Tools (RSAT) for Windows 8</emphasis>
+	<footnote><para><ulink
+	url="http://www.microsoft.com/de-de/download/details.aspx?id=28972"/></para></footnote>
+	erfolgen.
+	Nach der Installation muss der Gruppenrichtlinieneditor in der Windows-Systemsteuerung aktiviert
+	werden, in dem unter <guimenu>Start -> Systemsteuerung -> Programme -> Windows-Funktionen
+	aktivieren und deaktivieren -> Remoteserver-Verwaltungstools ->
+	Featureverwaltungs-Tools</guimenu> die Option <guimenu>Tools für die
+	Gruppenrichtlinienverwaltung</guimenu> aktiviert wird.
+  </para>
+
+  <para>
+	Die Gruppenrichtlinien werden in der SYSVOL-Freigabe gespeichert. 
+  </para>
+
+  <para>
+	Gruppenrichtlinien werden von Mac OS X-Clients nicht unterstützt.
+  </para>
+
+  </section>
 
 <section id="netlogon-freigabe"><title>Anmeldeskripte / NETLOGON-Freigabe</title>
 <para>
