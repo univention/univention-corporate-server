@@ -359,8 +359,8 @@ exit
 		</section>
 	</chapter>
 
-<!--     <chapter> -->
-<!--         <title>Integration of Linux/Unix systems into a UCS domain</title> -->
+    <chapter>
+        <title>Integration of Linux/Unix systems into a UCS domain</title>
 <!--         <para> -->
 <!-- 		  Dies ist eine allgemeine Integrationsanleitung für die Eindung Unix/Linux-basierter -->
 <!-- 		  Nicht-UCS-Systeme - im folgenden einfach als Unix-System bezeichnet - in den -->
@@ -403,7 +403,7 @@ exit
 <!-- 		  </para> -->
 <!-- 		</section> -->
 
-<!--         <section> -->
+<!--         <section id="ext-dom-time"> -->
 <!-- 		  <title>Konfiguration der Namensauflösung</title> -->
 <!-- 		  <para> -->
 <!-- 			Das Unix-System sollte einen Nameserver aus der UCS-Umgebung verwenden. Alle -->
@@ -503,9 +503,81 @@ exit
 <!-- 		  </para> -->
 <!-- 		</section> -->
 
+		<!-- <section> -->
+		<!--   <title>Integrating into Kerberos</title> -->
+<!-- 		  <para> -->
+<!-- 			UCS verwendet die Kerberos-Implementierung Heimdal. Auf dem Unix-System sollte daher für -->
+<!-- 			den Zugriff auf die Kerberos-Realm ebenfalls Heimdal verwendet werden. Auf dem -->
+<!-- 			Unix-System müssen nur die Heimdal-Client-Bibliotheken installiert werden. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Kerberos erfordert eine korrekte Zeitsynchonisation, siehe <xref linkend="ext-dom-time"/>. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Die Konfigurationen wird in den meisten Systemen in der Datei -->
+<!-- 			<filename>/etc/krb5.conf</filename> vorgenommen. Hier eine Beispielkonfiguration: -->
+
+<!-- 			<itemizedlist> -->
+<!-- 			  <listitem><simpara> -->
+<!-- 				KERBEROSREALM muss durch den Namen der Realm der UCS-Domäne ersetzt werden -->
+<!-- 				(gespeichert in der &ucsUCRV; <envar>kerberos/realm</envar>). -->
+<!-- 			  </simpara></listitem> -->
+
+<!-- 			  <listitem><simpara> -->
+<!-- 				MASTERIP muss durch die die IP-Adresse des &ucsMaster; ersetzt werden. -->
+<!-- 			  </simpara></listitem> -->
+
+<!-- 			  <listitem><simpara> -->
+<!-- 				MASTERFQDN muss durch den fully qualified domain name des &ucsMaster; ersetzt -->
+<!-- 				werden. -->
+<!-- 			  </simpara></listitem> -->
+<!-- 			</itemizedlist> -->
+
+<!-- <programlisting> -->
+<!-- [libdefaults] -->
+<!--     default_realm = KERBEROSREALM -->
+<!--     kdc_timesync = 1 -->
+<!--     ccache_type = 4 -->
+<!--     forwardable = true -->
+<!--     proxiable = true -->
+ 
+<!-- [realms] -->
+<!-- KERBEROSREAKM = { -->
+<!--    kdc = MASTERIP MASTERFQDN -->
+<!--    admin_server = MASTERIP MASTERFQDN -->
+<!-- } -->
+<!-- </programlisting> -->
+
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Abschließend muss das Heimdal-PAM-Modul installiert werden. Im Regelfall sollte die -->
+<!-- 			Installation des Moduls die PAM-Konfiguration automatisch anpassen. -->
+<!-- 		  </para> -->
+
+<!-- 		  <para> -->
+<!-- 			Danach sollte eine Kerberos-Authentifizierung über PAM im Rahmen der Anmeldung -->
+<!-- 			funktionieren und Passwortänderungen über <command>kpasswd</command> möglich sein. -->
+<!-- 		  </para> -->
+<!-- 		</section> -->
 
 
-<!-- 	</chapter> -->
+		<section>
+		  <title>Accessing a UCS print server</title>
+		  <para>
+			UCS uses the <emphasis>Common Unix Printing System</emphasis> (CUPS) to implement print
+			services. The Unix system can use the UCS print servers by installing the CUPS client
+			programs. In addition the CUPS server needs to be configured, typically in the
+			configuration file <filename>/etc/cups/client.conf</filename>, e.g.:
+
+<programlisting>
+ServerName printserver.example.com
+</programlisting>
+		  </para>
+		</section>
+	</chapter>
 
     <chapter>
         <title>Managing additional certificates with univention-certificate</title>
