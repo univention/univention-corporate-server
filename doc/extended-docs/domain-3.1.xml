@@ -580,7 +580,10 @@ ServerName printserver.example.com
 	</chapter>
 
     <chapter>
-        <title>Managing additional certificates with univention-certificate</title>
+	  <title>Advanced SSL certificate handling</title>
+
+	  <section>
+		<title>Managing additional certificates with univention-certificate</title>
         <para>
 		  Jede UCS-Domäne verfügt über eine eigene SSL Certificate Authority. Für alle UCS-Systeme
 		  werden die SSL-Zertifikate automatisch bei der Installation (&ucsMaster;) oder während des
@@ -663,7 +666,45 @@ univention-certificate new -name fullyqualifiedhostname
 			  <envar>ssl/default/days</envar> geändert werden.
 			</para>
 		</section>
+	  </section>
 
+<!-- 	  <section> -->
+<!-- 		<title>Signieren von Certificate Signing Requests durch die UCS Certificate Authority</title> -->
+<!--         <para> -->
+<!-- 		  Ein Certificate signing request (CSR) ist eine Anfrage an eine Certificate Authority (CA), -->
+<!-- 		  in der eine digitale Signatur angefordert wird. Ein CSR erfolgt typischerweise in Form -->
+<!-- 		  einer Datei. Dieser Abschnitt beschreibt wie ein CSR von der UCS CA signiert werden kann. -->
+<!-- 		</para> -->
+
+<!--         <para> -->
+<!-- 		  CERTIFICATE ist der Dateiname des zu erstellenden Zertifikats. -->
+<!-- 		</para> -->
+
+<!--         <para> -->
+<!-- 		  REQUEST ist die Datei mit dem CSR im PEM-Format (Eine Datei im PEM-Format ist eine -->
+<!-- 		  Textdatei, die einen Base64-codierten Block enthält, der von BEGIN CERTIFICATE und END -->
+<!-- 		  CERTIFICATE umgefasst wird). -->
+<!-- 		</para> -->
+
+<!--         <para> -->
+<!-- 		  Wenn die Anfrage im DER-Format vorliegt, kann sie mit dem folgenden Befehl umgewandelt -->
+<!-- 		  werden: -->
+
+<!-- <programlisting> -->
+<!-- openssl x509 -inform der -outform pem -in request.der -out req.pem -->
+<!-- </programlisting> -->
+<!-- 		</para> -->
+
+<!--         <para> -->
+<!-- 		  Der folgende Befehl signiert dann den CSR: -->
+
+<!-- <programlisting> -->
+<!-- openssl ca -batch -config /etc/univention/ssl/openssl.cnf    \ -->
+<!-- -in REQUEST -out CERTIFICATE                              \   -->
+<!-- -passin pass:"$(cat /etc/univention/ssl/password)" -->
+<!-- </programlisting> -->
+<!-- 		</para> -->
+<!-- 	  </section> -->
 	</chapter>
 
 
