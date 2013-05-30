@@ -7,6 +7,7 @@
 			<category name="system"/>
 		</categories>
 
+		<command name="appcenter/working" function="working" />
 		<command name="appcenter/query" function="query" />
 		<command name="appcenter/get" function="get" />
 		<!-- ATTENTION: same progress function as in packages -->
