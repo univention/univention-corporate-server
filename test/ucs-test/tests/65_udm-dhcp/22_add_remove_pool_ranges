@@ -32,14 +32,14 @@ if __name__ == '__main__':
 		result = ldap.search(base = dhcpSubnet, filter = ldapFilter, attr = ['dhcpRange'])[0][1]['dhcpRange']
 		for dhcpRange in dhcpRanges+moreDhcpRanges:
 			if not dhcpRange in result:
-				print 'Test FAILED. Expected "dhcpRanges" attribute of created DHCP pool to contain "%s" after appending it, but could not find the value in there: %r' % (dhcpRange, result)
+				print 'Test FAILED. Expected "dhcpRanges" attribute of created DHCP pool to contain "%s" after appending it, but could not find it in there: %r' % (dhcpRange, result)
 				sys.exit(1)
 
 		udm.modify_object('dhcp/pool', dn = dhcpPool, remove = {'range': dhcpRanges})
 
-		result = ldap.search(base = dhcpSubnet, filter = ldapFilter, attr = ['dhcpRange'])[0][1]['dhcpRange']
+		result = ldap.search(base = dhcpSubnet, filter = ldapFilter, attr = ['dhcpRange'])[0][1].get('dhcpRange', [])
 		for dhcpRange in dhcpRanges:
 			if dhcpRange in result:
-				print 'Test FAILED. "dhcpRanges" attribute of created DHCP pool still contained value "%s" after removing it: %r' % (dhcpRange, result)
+				print 'Test FAILED. "dhcpRanges" attribute of created DHCP pool still contained value "%s" after it should have been removed: %r' % (dhcpRange, result)
 				sys.exit(1)
 

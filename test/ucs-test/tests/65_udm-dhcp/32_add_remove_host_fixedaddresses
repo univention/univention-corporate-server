@@ -27,15 +27,19 @@ if __name__ == '__main__':
 
 		ldap = uldap.getAdminConnection()
 		ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpHost))' % dhcpHostName
-		result = ldap.search(base = dhcpService, filter = ldapFilter, attr = ['univentionDhcpFixedAddress'])[0][1]['univentionDhcpFixedAddress']
+		result = ldap.search(base = dhcpService, filter = ldapFilter, attr = ['univentionDhcpFixedAddress'])[0][1].get('univentionDhcpFixedAddress', [])
 		for fixedAddress in [dhcpHostFixedaddress] + moreDhcpHostFixedaddresses:
 			if not fixedAddress in result:
 				print 'Test FAILED. Expected "univentionDhcpFixedAddress" attribute of created DHCP host to contain "%s" after appending it, but could not find the value in there: %r.' % (fixedAddress, result)
 				sys.exit(1)
 
 		udm.modify_object('dhcp/host', dn = dhcpHost, remove = {'fixedaddress': moreDhcpHostFixedaddresses[2:]}, superordinate = dhcpService)
-		result = ldap.search(base = dhcpService, filter = ldapFilter, attr = ['univentionDhcpFixedAddress'])[0][1]['univentionDhcpFixedAddress']
+		result = ldap.search(base = dhcpService, filter = ldapFilter, attr = ['univentionDhcpFixedAddress'])[0][1].get('univentionDhcpFixedAddress', [])
 		for fixedAddres in moreDhcpHostFixedaddresses[2:]:
 			if fixedAddress in result:
 				print 'Test FAILED. "univentionDhcpFixedAddress" attribute of created DHCP pool still contained value "%s" after removing it: %r' % (fixedAddress, result)
+				sys.exit(1)
+		for fixedAddress in [dhcpHostFixedaddress] + moreDhcpHostFixedaddresses[:2]:
+			if not fixedAddress in result:
+				print 'Test FAILED. Removal of certain values from "univentionDhcpFixedAddress" attribute of created DHCP pool also lead to the removal of "%s" from the attribute.' % fixedAddress
 				sys.exit(1)

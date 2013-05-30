@@ -1,0 +1,58 @@
+#!/usr/share/ucs-test/runner python
+## desc: DNS forward zone, add and remove records
+## tags: [udm-dns]
+## roles: [domaincontroller_master]
+## bugs: [15654]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
+		initialRecords = {
+			'mx': ['10 %s' % uts.random_string(), '20 %s' % uts.random_string()],
+			'txt': [uts.random_string(), uts.random_string()],
+			'nameserver': [uts.random_string(), uts.random_string()]
+		}
+
+		moreRecords = {
+			'mx': ['30 %s' % uts.random_string(), '40 %s' % uts.random_string()],
+			'txt': [uts.random_string(), uts.random_string()],
+			'nameserver': [uts.random_string(), uts.random_string()]
+		}
+		forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, append = initialRecords)
+		ldap = uldap.getAdminConnection()
+		ldapFilter = '(&(zoneName=%s)(relativeDomainName=@)(objectClass=dNSZone))' % forwardZoneName
+		ldapMapping = {'mx':'mXRecord', 'txt':'tXTRecord', 'nameserver':'nSRecord'}
+		
+		
+		udm.modify_object('dns/forward_zone', dn = forwardZone, append = moreRecords)
+		result = ldap.search(filter = ldapFilter, attr = ldapMapping.values())[0][1]
+		for recordType, recordMapping in ldapMapping.items():
+			for record in initialRecords[recordType] + moreRecords[recordType]:
+				if not record in result[recordMapping]:
+					print 'Test FAILED. Expected "%s" attribute of created DNS forward zone to contain "%s" after modification, but could not find it in there: %r' % (recordMapping, record, result[recordMapping])
+					sys.exit(1)
+		
+		udm.modify_object('dns/forward_zone', dn = forwardZone, remove = initialRecords)
+		result = ldap.search(filter = ldapFilter, attr = ldapMapping.values())[0][1]
+		for recordType, recordMapping in ldapMapping.items():
+			for record in initialRecords[recordType]:
+				if record in result[recordMapping]:
+					print 'Test FAILED. "%s" attribute of created DNS forward zone did still contain "%s" after the value should have been removed: %r' % (recordMapping, record, result[recordMapping])
+					sys.exit(1)
+			for record in moreRecords[recordType]:
+				if not record in result[recordMapping]:
+					print 'Test FAILED. Removal of certain values in "%s" attribute of created DNS forward zone also lead to the removal "%s" from the attribute.' % (recordType, record)
+					sys.exit(1)
+

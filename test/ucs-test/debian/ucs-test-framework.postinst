@@ -40,4 +40,7 @@ ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$ldap_base" \
 		tests/domainadmin/pwd?univention \
 		tests/domainadmin/pwdfile?"/usr/share/ucs-test/pwdfile"
 
+if [ ! -f /usr/share/ucs-test/pwdfile ]; then
+	echo univention > /usr/share/ucs-test/pwdfile
+fi
 chmod 600 /usr/share/ucs-test/pwdfile

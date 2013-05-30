@@ -1,3 +1,11 @@
+ucs-test (3.0.57-1) unstable; urgency=low
+
+  * create pwdfile in postinst instead of maintaining the file in the package
+  	(Bug #31250)
+  * ported certain udm-dns tests from ucs-3.0 branchs (Bug #27664)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 30 May 2013 17:06:05 +0200
+
 ucs-test (3.0.56-2) unstable; urgency=low
 
   * fix permission of /usr/share/ucs-test/pwdfile (Bug #31250)

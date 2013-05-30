@@ -24,7 +24,7 @@ if __name__ == '__main__':
 		udm.modify_object('dhcp/subnet', dn = dhcpSubnet, range = [ranges[1], ranges[2]]) # UCSTestUDM will automatically use '--append' when a given keyword attribute is a list
 
 		ldap = uldap.getAdminConnection()
-		setDhcpRanges = ldap.search(base = dhcpService, filter = '(&(cn=10.20.0.0)(dhcpNetMask=16)(objectClass=univentionDhcpSubnet))', attr = ['dhcpRange'])[0][1]['dhcpRange']
+		setDhcpRanges = ldap.search(base = dhcpService, filter = '(&(cn=10.20.0.0)(dhcpNetMask=16)(objectClass=univentionDhcpSubnet))', attr = ['dhcpRange'])[0][1].get('dhcpRange', [])
 		missingRanges = []
 		for range in ranges:
 			if not range in setDhcpRanges:
