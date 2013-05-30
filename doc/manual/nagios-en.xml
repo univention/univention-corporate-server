@@ -1010,102 +1010,98 @@
 	-->
 </section>
 
-<!-- <section id="nagios:newplugins"> -->
-<!--   <title>Integration eigener Plugins</title> -->
-<!--   <para> -->
-<!-- 	Die in UCS mitgelieferten und vorkonfigurierten Nagios-Plugins können durch selbst geschriebene -->
-<!-- 	oder externe Plugins ergänzt werden. Unter <ulink url="http://exchange.nagios.org"/> findet sich -->
-<!-- 	eine Vielzahl verfügbarer Module. -->
-<!--   </para> -->
+<section id="nagios:newplugins">
+  <title>Integration of additional plugins</title>
+  <para>
+	The preconfigured Nagios plugins supplied with UCS can be complemented with additional
+	plugins. A variety of available modules can be found at <ulink url="http://exchange.nagios.org"/>.
+  </para>
 
-<!--   <para> -->
-<!-- 	Dieser Abschnitt beschreibt am Beispiel des Plugins check_e2fs_next_fsck die Einbindung eines -->
-<!-- 	externen Plugins. Das Plugin prüft, ob ein Filesystem-Check ansteht und liefert eine Warnung wenn -->
-<!-- 	dieser sieben oder weniger Tage bevorsteht und einen Fehlerzustand, wenn beim nächsten Reboot -->
-<!-- 	ein Filesystem-Check stattfindet. -->
-<!--   </para> -->
+  <para>
+	This section describes the integration of an external plugin taking the plugin
+	<emphasis>check_e2fs_next_fsck</emphasis> as an example. The plugin checks whether a file system
+	check is scheduled and emits a warning if one is scheduled within seven days and an error status
+	if a file system check is scheduled for the next reboot.
+  </para>
 
-<!--   <para> -->
-<!-- 	Je nachdem ob das Plugin über NRPE aufgerufen wird oder nicht, unterscheidet sich die Installation: -->
-<!--   </para> -->
-<!-- 	<itemizedlist> -->
-<!-- 	  <listitem> -->
-<!-- 		<simpara> -->
-<!-- 		  Wird das Plugin über NRPE aufgerufen, muss es auf allen Nagios-Servern und auf allen zu -->
-<!-- 		  prüfenden Systemen in das Verzeichnis <filename class="directory">/usr/lib/nagios/plugins</filename> kopiert -->
-<!-- 		  werden. -->
-<!-- 		</simpara> -->
-<!-- 	  </listitem> -->
-<!-- 	  <listitem> -->
-<!-- 		<simpara> -->
-<!-- 		  Benötigt das Plugin keinen lokalen Zugriff, muss es nur auf den Nagios-Server(n) in das -->
-<!-- 		  Verzeichnis <filename class="directory">/usr/lib/nagios/plugins</filename> kopiert werden. -->
-<!-- 		</simpara> -->
-<!-- 	  </listitem> -->
-<!-- 	</itemizedlist> -->
-<!--   <para> -->
-<!-- 	Das Plugin muss als ausführbare Datei markiert sein (<command>chmod a+x PLUGIN</command>). -->
-<!--   </para> -->
+  <para>
+	The installation differs depending on whether the plugin is run via NRPE or not:
+  </para>
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  If the plugin is run via NRPE, it must be copied into the
+		  <filename>/usr/lib/nagios/plugins</filename> directory on all Nagios servers and on all
+		  the systems to be checked.
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  If the plugin does not require local access, it need only be copied into the
+		  <filename>/usr/lib/nagios/plugins</filename> directory on the Nagios server(s).
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+  <para>
+	The plugin must be marked as an executable file (<command>chmod a+x PLUGIN</command>).
+  </para>
 
-<!--   <para> -->
-<!-- 	Einige Plugins sind ausschließlich in Perl, Python oder Shell geschrieben und benötigen keine -->
-<!-- 	externen Bibliotheken oder Programme. Diese Interpreter sind auf allen UCS-Systemen immer -->
-<!-- 	installiert. Wenn das Plugin hingegen externe Programme oder Bibliotheken verwendet, muss -->
-<!-- 	sichergestellt werden, das diese auf allen zu prüfenden Systemen (NRPE-Plugin) oder auf den -->
-<!-- 	Nagios-Servern (Fern-Prüfung) installiert sind. -->
-<!--   </para> -->
+  <para>
+	Some plugins are exclusively written in Perl, Python or Shell and do not require any external
+	libraries or programs. These interpreters are always installed on all UCS systems. In contrast,
+	if the plugin uses external programs or libraries, it must be ensured that these are installed
+	on all the systems to be checked (for NRPE plugins) or on the Nagios servers (for remote plugins).
+  </para>
 
-<!--   <para> -->
-<!-- 	Das Nagios-Plugin muss nun registriert werden. Dies erfolgt durch ein Makro im -->
-<!-- 	Verzeichnis <filename>/etc/nagios-plugins/config/</filename>. Hierbei kann z.B. eine Datei wie -->
-<!-- 	<emphasis>local.cfg</emphasis> verwendet werden, in der dann alle lokal registrierten Plugins -->
-<!-- 	eingetragen werden. Das folgende Beispiel registriert das  -->
-<!-- 	Plugin check_e2fs_next_fsck: -->
-<!--   </para> -->
-<!-- <programlisting language="sh"> -->
-<!-- define command{ -->
-<!--   command_name   check_fsck -->
-<!--   command_line   /usr/lib/nagios/plugins/check_e2fs_next_fsck -->
-<!-- } -->
-<!-- </programlisting> -->
+  <para>
+	The Nagios plugin must now be registered. This is done using a macro in the
+	<filename>/etc/nagios-plugins/config/</filename> directory. For this, a file such as
+	<emphasis>local.cfg</emphasis> can be used, in which all the locally registered plugins are
+	entered. The following example registers the plugin <emphasis>check_e2fs_next_fsck</emphasis>:
+  </para>
+<programlisting language="sh">
+define command{
+  command_name   check_fsck
+  command_line   /usr/lib/nagios/plugins/check_e2fs_next_fsck
+}
+</programlisting>
 
-<!--   <para> -->
-<!-- 	Viele Plugins verwenden auch Parameter, um die Schwellwerte für Warnungen und Fehler zu -->
-<!-- 	konfigurieren. Diese werden dann in der <emphasis>command_line</emphasis>-Zeile festgelegt. -->
-<!--   </para> -->
+  <para>
+	Many plugins also use parameters to configure the thresholds for warnings and errors. These are
+	determined in the <emphasis>command_line</emphasis> line.
+  </para>
 
-<!--   <para> -->
-<!-- 	Analog zu dem Plugin selbst muss die Makro-Datei bei Verwendung von NRPE auf alle zu -->
-<!-- 	überwachenden Systeme kopiert werden. -->
-<!--   </para> -->
+  <para>
+	Similarly to the plugin itself, the macro file must also be copied onto all the systems to be
+	monitored when using NRPE.
+  </para>
 
-<!--   <para> -->
-<!-- 	Die Plugins, Makros und eventuellen Abhängigkeiten können auch in ein Debian-Paket paketiert -->
-<!-- 	werden. Weitere Hinweise dazu finden sich in <xref linkend="developer-reference"/>. -->
-<!--   </para> -->
+  <para>
+	The plugins, macros and any dependencies can also be bundled in a Debian package. Further
+	information is available in <xref linkend="developer-reference"/>.
+  </para>
 
-<!--   <para> -->
-<!-- 	Nun muss der Nagios-Dienst neu gestartet werden: -->
-<!--   </para> -->
-<!-- <programlisting language="sh"> -->
-<!-- /etc/init.d/nagios3 restart -->
-<!-- </programlisting> -->
+  <para>
+	The Nagios service must now be restarted:
+  </para>
+<programlisting language="sh">
+/etc/init.d/nagios3 restart
+</programlisting>
 
-<!--   <para> -->
-<!-- 	Abschließend muss das neue Plugin noch in der &ucsUMC; als <guimenu>Nagios-Dienst</guimenu> -->
-<!-- 	registriert werden, siehe <xref linkend="Nagios:Dienst"/>. Als -->
-<!-- 	<guimenu>Plugin-Kommando</guimenu> muss der unter <emphasis>command_name</emphasis> -->
-<!-- 	in der Makro-Datei registriert Name angegeben werden, in diesem Beispiel -->
-<!-- 	<emphasis>check_fsck</emphasis> und die Option <guimenu>NRPE benutzen</guimenu> aktiviert -->
-<!-- 	werden. -->
-<!--   </para> -->
+  <para>
+	The new plugin then only needs to be registered in the &ucsUMC; as a
+	<guimenu>Nagios service</guimenu>, see <xref linkend="Nagios:Dienst"/>. The name registered under
+	<emphasis>command_name</emphasis> in the macro file must be entered as the
+	<guimenu>Plugin command</guimenu>, in this example <emphasis>check_fsck</emphasis>, and the
+	option <guimenu>Use NRPE</guimenu> enabled.
+  </para>
 
-<!--   <para> -->
-<!-- 	Der neu registrierte Dienst kann nun einzelnen Systemen zugewiesen werden, siehe <xref -->
-<!-- 	linkend="nagios::hostconfig"/>. -->
-<!--   </para> -->
+  <para>
+	The newly registered service can now be assigned to individual systems, see <xref
+	linkend="nagios::hostconfig"/>.
+  </para>
 
-<!-- </section> -->
+</section>
 
 
 </chapter>
