@@ -583,43 +583,52 @@ ServerName printserver.example.com
 	  <section>
 		<title>Managing additional certificates with univention-certificate</title>
         <para>
-		  Jede UCS-Domäne verfügt über eine eigene SSL Certificate Authority. Für alle UCS-Systeme
-		  werden die SSL-Zertifikate automatisch bei der Installation (&ucsMaster;) oder während des
-		  Domänenbeitritts (alle anderen Systemrollen) erstellt.
+		  Every UCS domain has its own SSL certificate authority. The SSL certificates are created
+		  automatically for all UCS systems during the installation (&ucsMaster;) or during the domain join
+		  (all other system roles).
 		</para>
 
         <para>
-		  Mit dem Befehl <command>univention-certificate</command> können diese Zertifikate
-		  verwaltet werden, z.B. wenn für die Integration eines externen Systems ein Zertifikat
-		  erzeugt werden soll.
+		  The command <command>univention-certificate</command> can be used to manage these
+		  certificates, e.g., if it proves necessary to create a certificate for the integration of
+		  an external system.
 		</para>
 
         <section>
-            <title>Speicherung der Zertifikate</title>
+            <title>Storage of the certificates</title>
 			<para>
-			  Die Zertifikate werden auf dem &ucsMaster; im Verzeichnis
-			  <filename>/etc/univention/ssl</filename> gespeichert und auf alle &ucsBackup;-Systeme
-			  synchronisiert. Für jedes Zertifikat wird im Verzeichnis
-			  <filename>/etc/univention/ssl/</filename> ein Unterverzeichnis mit dem Namen des
-			  Zertifikats angelegt, das folgende Dateien enthält:
+			  The certificates are stored in the <filename>/etc/univention/ssl</filename> directory
+			  on the &ucsMaster; and synchronised on all &ucsBackup; systems. A subdirectory with
+			  the name of the certificate is kept in the <filename>/etc/univention/ssl/</filename>
+			  directory for every certificate, which contains the following files:
+
 			  <itemizedlist>
-				<listitem><para>Die Datei <filename>cert.pem</filename> stellt das eigentliche
-				Zertifikat dar. </para></listitem>
-				<listitem><para>In <filename>openssl.cnf</filename> ist die OpenSSL-Konfiguration
-				zum Zeitpunkt der Zertifikat-Erstellung festgehalten. </para></listitem>
-				<listitem><para>Die Datei <filename>private.key</filename> enthält den privaten
-				Schlüssel zu dem Zertifikat. </para></listitem>
-				<listitem><para>In <filename>req.pem</filename>ist der ursprüngliche Client-Request,
-				mit dem das Zertifikat erstellt wurde, dokumentiert.</para></listitem>
+				<listitem> <para>
+				  The <filename>cert.pem</filename> file represents the actual certificate. 
+				</para> </listitem>
+
+				<listitem><para>
+				  <filename>openssl.cnf</filename> contains the OpenSSL configuration at the time
+				  the certificate was created. 
+				</para></listitem>
+
+				<listitem><para>
+				  The <filename>private.key</filename> file contains the private key for the
+				  certificate. 
+				</para></listitem>
+
+				<listitem><para>
+				  <filename>req.pem</filename> documents the original client request with which the
+				  certificate was created.
+				</para></listitem>
 			  </itemizedlist>
 			</para>
 		</section>
 
         <section>
-            <title>Anzeigen der Zertifikate</title>
+            <title>Displaying the certificates</title>
 			<para>
-			  Mit dem folgenden Befehl wird eine Liste aller vorhandenen, gültigen Zertifikate
-			  ausgegeben:
+			  The following command is used to display a list of all the available, valid certificates:
 
 <programlisting language="sh"><![CDATA[
 univention-certificate list
@@ -627,7 +636,7 @@ univention-certificate list
 			</para>
 
 			<para>
-			  Ein einzelnes SSL-Zertifikat kann mit dem folgenden Befehl angezeigt werden:
+			  An individual SSL certificate can be displayed with the following command:
 
 <programlisting language="sh"><![CDATA[
 univention-certificate dump -name fullyqualifiedhostname 
@@ -636,9 +645,9 @@ univention-certificate dump -name fullyqualifiedhostname
 		</section>
 
         <section>
-            <title>Prüfen der Gültigkeit eines Zertifikats</title>
+            <title>Checking the validity of a certificate</title>
 			<para>
-			  Dieser Befehl prüft, ob ein Zertifikat gültig oder ungültig ist:
+			  This command checks whether a certificate is valid or invalid:
 
 <programlisting language="sh"><![CDATA[
 univention-certificate check -name fullyqualifiedhostname
@@ -646,22 +655,34 @@ univention-certificate check -name fullyqualifiedhostname
 			</para>
 
 			<para>
-			  Ein Zertifikat kann ungültig sein, weil es entweder zurückgezogen wurde oder
-			  abgelaufen ist.
+			  A certificate may be invalid because it has either been revoked or has expired.
 			</para>
 		</section>
 
         <section>
-            <title>Rückzug eines Zertifikats</title>
+            <title>Revoking a certificate</title>
 			<para>
-			  Mit dem Befehl
+			  The command
+<programlisting language="sh"><![CDATA[
+univention-certificate revoke -name fullyqualifiedhostname 
+]]></programlisting>
+			  is used to revoke a certificate. It is then no longer valid, but remains stored in the
+			  file system. Certificates which are created and removed automatically during the
+			  management of UMC computer objects do not need to be revoked manually.
+			</para>
+		</section>
+
+        <section>
+            <title>Creating a certificate</title>
+			<para>
+			  The command
 <programlisting language="sh"><![CDATA[
 univention-certificate new -name fullyqualifiedhostname
 ]]></programlisting>
-			  kann ein neues Zertifikat erzeugt werden. Als Name sollte der fully qualified domain
-			  name des Rechners angegeben werden. In der Grundeinstellung ist das Zertifikate fünf
-			  Jahre gültig. Der Standardwert kann durch Setzen der &ucsUCRV;
-			  <envar>ssl/default/days</envar> geändert werden.
+			  can be used to create a new certificate. The fully qualified domain name of the
+			  computer should be given as the name. In the default setting the certificate is valid
+			  for five years. The standard value can be changed by setting the &ucsUCRV;
+			  <envar>ssl/default/days</envar>.
 			</para>
 		</section>
 	  </section>
