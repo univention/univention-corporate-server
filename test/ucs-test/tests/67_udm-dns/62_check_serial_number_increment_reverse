@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Check DNS forward zone SOA record serial number incrementation
+## desc: Check DNS reverse zone SOA record serial number incrementation
 ## tags: [udm-dns]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -17,8 +17,8 @@ import univention.uldap as uldap
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		forwardZoneProperties = {
-			'zone': '%s.%s' % (uts.random_name(), uts.random_name()),
+		reverseZoneProperties = {
+			'subnet': '10.20.20',
 			'nameserver': uts.random_string(),
 			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
 			'serial': '1',
@@ -28,15 +28,19 @@ if __name__ == '__main__':
 			'ttl': '16',
 			'retry': '8'
 		}
-		forwardZone = udm.create_object('dns/forward_zone', **forwardZoneProperties)
-		udm.modify_object('dns/forward_zone', dn = forwardZone, zonettl='112')
+		reverseZone = udm.create_object('dns/reverse_zone', **reverseZoneProperties)
+		subnet = reverseZoneProperties['subnet'].split('.')
+		subnet.reverse()
+		subnet = '%s.in-addr.arpa' % '.'.join(subnet)
+
+		udm.modify_object('dns/reverse_zone', dn = reverseZone, zonettl='112')
 
 		ldap = uldap.getAdminConnection()
-		ldapFilter = '(&(zoneName=%s)(objectClass=dNSZone)(relativeDomainName=@))' % forwardZoneProperties['zone']
+		ldapFilter = '(&(zoneName=%s)(objectClass=dNSZone)(relativeDomainName=@))' % subnet
 		foundSOASerial = ldap.search(filter = ldapFilter, attr = ['sOARecord'])[0][1]['sOARecord'][0].split()[2]
-		expectedSOASerial = str( int(forwardZoneProperties['serial'])+1 )
+		expectedSOASerial = str( int(reverseZoneProperties['serial'])+1 )
 		if foundSOASerial != expectedSOASerial:
-			print 'Test FAILED. Expected SOA serial of the created forward zone to be "%s" after modification of forward zone\'s "zonettl", but found "%s".' % (expectedSOASerial, foundSOASerial)
+			print 'Test FAILED. Expected SOA serial of the created reverse zone to be "%s" after modification of reverse zone\'s "zonettl", but found "%s".' % (expectedSOASerial, foundSOASerial)
 			sys.exit(1)
 
 

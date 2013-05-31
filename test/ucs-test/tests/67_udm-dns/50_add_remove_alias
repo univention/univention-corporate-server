@@ -1,0 +1,52 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create, check and remove DNS alias
+## tags: [udm-dns]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		forwardZone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
+
+		dnsAliasProperties = {
+			'name': uts.random_name(),
+			'cname': uts.random_name(),
+			'zonettl': '128'
+		}
+		ldapMapping = {
+			'name': 'relativeDomainName',
+			'cname': 'cNAMERecord',
+			'zonettl': 'dNSTTL'
+		}
+		dnsAlias = udm.create_object('dns/alias', superordinate = forwardZone, **dnsAliasProperties)
+
+
+		ldapFilter = '(&(relativeDomainName=%s)(objectClass=dNSZone))' % dnsAliasProperties['name']
+		ldap = uldap.getAdminConnection()
+		for dn, attr in ldap.search(base = forwardZone, filter = ldapFilter, attr = ldapMapping.values()):
+			if dn == dnsAlias:
+				for key, value in dnsAliasProperties.items():
+					if [value] != attr[ldapMapping[key]]:
+						print 'Test FAILED. Expected "%s" of created DNS alias to be %r, but found %r instead.' % (ldapMapping[key], [value], attr[ldapMapping[key]])
+						sys.exit(1)
+				break
+		else:
+			print 'Test FAILED. Could not find DN "%s" of created DNS alias in LDAP.' % dnsAlias
+			sys.exit(1)
+
+		udm.remove_object('dns/alias', dn = dnsAlias, superordinate = forwardZone)
+		if dnsAlias in ldap.searchDn(base = forwardZone, filter = ldapFilter):
+			print 'Test FAILED. Could still find DN "%s" of DNS alias in LDAP after it should have been removed.' % dnsAlias
+			sys.exit(1)

@@ -1,0 +1,42 @@
+#!/usr/share/ucs-test/runner python
+## desc: DNS reverse zone, append and remove NS record
+## tags: [udm-dns]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		nameServers = [uts.random_string(), uts.random_string()]
+		moreNameServers = [uts.random_string(), uts.random_string()]
+		reverseZone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', append = {'nameserver': nameServers})
+		udm.modify_object('dns/reverse_zone', dn = reverseZone, append = {'nameserver': moreNameServers})
+
+		ldap = uldap.getAdminConnection()
+		ldapFilter = '(&(zoneName=30.20.10.in-addr.arpa)(objectClass=dNSZone))'
+		foundNameServers = ldap.search(filter = ldapFilter, attr = ['nSRecord'])[0][1].get('nSRecord', [])
+		for nameServer in nameServers + moreNameServers:
+			if not nameServer in foundNameServers:
+				print 'Test FAILED. Expected "nNSRecord" attribute of DNS reverse zone to contain "%s" after modification, but could not find it in there: %r' % (nameServer, foundNameServers)
+				sys.exit(1)
+
+		udm.modify_object('dns/reverse_zone', dn = reverseZone, remove = {'nameserver': nameServers})
+		foundNameServers = ldap.search(filter = ldapFilter, attr = ['nSRecord'])[0][1].get('nSRecord', [])
+		for nameServer in nameServers:
+			if nameServer in foundNameServers:
+				print 'Test FAILED. "nSRecord" attribute of created DNS reverse zone still contained "%s" after the value should have been removed: %r' % (nameServer, foundNameServers)
+				sys.exit(1)
+		for nameServer in moreNameServers:
+			if not nameServer in foundNameServers:
+				print 'Test FAILED. Removal of certain values from "nSRecord" attribute of DNS reverse zone also lead to the removal of "%s" from the attribute.' % (nameServer)
+				sys.exit(1)

@@ -1,3 +1,10 @@
+ucs-test (3.0.58-1) unstable; urgency=low
+
+  * fixed typo in 63_udm-containers/32movecontainer_ou (Bug #27664)
+  * ported several udm-dns tests from ucs-3.0 branch (Bug #27664)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 31 May 2013 17:37:41 +0200
+
 ucs-test (3.0.57-1) unstable; urgency=low
 
   * create pwdfile in postinst instead of maintaining the file in the package

@@ -1,0 +1,56 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create, check and remove DNS host record
+## tags: [udm-dns]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
+		forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = uts.random_string())
+
+		hostRecordProperties = {
+			'name': uts.random_name(),
+			'zonettl': '128',
+			'a': '10.20.30.40',
+			'mx': '50 %s' % uts.random_string(),
+			'txt': uts.random_string()
+		}
+		ldapMapping = {
+			'name': 'relativeDomainName',
+			'zonettl': 'dNSTTL',
+			'a': 'aRecord',
+			'txt': 'tXTRecord',
+			'mx': 'mXRecord'
+		}
+		hostRecord = udm.create_object('dns/host_record', superordinate = forwardZone, **hostRecordProperties)
+
+		ldap = uldap.getAdminConnection()
+		ldapFilter = '(&(relativeDomainName=%s)(zoneName=%s)(objectClass=dNSZone))' % (hostRecordProperties['name'], forwardZoneName)
+		for dn, attr in ldap.search(base = forwardZone, filter = ldapFilter, attr = ldapMapping.values()):
+			if dn == hostRecord:
+				for key, value in hostRecordProperties.items():
+					if [value] != attr[ldapMapping[key]]:
+						print 'Test FAILED. Expected "%s" of created DNS host record to be %r, but found %r instead.' % (ldapMapping[key], [value], attr[ldapMapping[key]])
+						sys.exit(1)
+
+				break
+		else:
+			print 'Test FAILED. Did not find DN "%s" of created DNS host record in LDAP.'
+			sys.exit(1)
+
+		udm.remove_object('dns/host_record', dn = hostRecord, superordinate = forwardZone)
+		if hostRecord in ldap.searchDn(base = forwardZone, filter = ldapFilter):
+			print 'Test FAILED. Could still find DN "%s" of DNS host record in LDAP after it should have been removed.' % hostRecord
+			sys.exit(1)
