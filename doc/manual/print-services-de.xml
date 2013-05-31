@@ -60,8 +60,8 @@
 		Mit dem Druck-Quota-System, das über das
 		Paket <package>univention-printquota</package> installiert wird, kann eine
 		Erweiterung zur Ermittlung angefallener Druckkosten und zur
-		Limitierung zu druckender Seiten installiert werden.
-		<!-- Die Einrichtung und Konfiguration ist im Univention Wiki unter WIKIREF-22767 dokumentiert. -->
+		Limitierung zu druckender Seiten installiert werden. Die Einrichtung und Konfiguration ist
+		in der erweiterten Dokumentation beschrieben <xref linkend="ext-print-doc"/>.
 	</para>
 	<para>
 		Es können auch Druckerfreigaben von Windows-Systemen in den
@@ -275,7 +275,8 @@
 							Quota-Einstellungen der Richtlinie <guimenu>[Druck-Quota]</guimenu>.
 						</para>
 						<para>
-							Hierfür muss das Druck-Quota-System installiert sein.
+							Hierfür muss das Druck-Quota-System installiert sein, siehe <xref
+							linkend="ext-print-doc"/>.
 						</para>
 					</entry>
 				</row>
@@ -476,7 +477,7 @@
 							Quota-Einstellungen der Richtlinie <guimenu>[Druck-Quota]</guimenu>.
 						</para>
 						<para>
-							Hierfür muss das Druck-Quota-System installiert sein.
+							Hierfür muss das Druck-Quota-System installiert sein, siehe <xref linkend="ext-print-doc"/>.
 						</para>
 					</entry>
 				</row>
@@ -535,6 +536,12 @@
 		<guimenu>deaktivieren</guimenu> bzw. <guimenu>aktivieren</guimenu>, kann der Status
 		mehrerer Drucker gleichzeitig geändert werden.
 	</para>
+
+	<para>
+	  Die Konfiguration der Druck-Quota-Einstellungen ist in der erweiterten Dokumentation
+	  beschrieben <xref linkend="ext-print-doc"/>.
+	</para>
+
 	<para>
 		Durch den Klick auf einen Druckernamen können Details zu dem ausgewählten
 		Drucker angezeigt werden. Zu den angezeigten Informationen gehört auch eine Liste
