@@ -1,4 +1,0 @@
-Type: file
-File: etc/plymouth/plymouthd.conf
-Postinst: bootsplash.py
-Variables: bootsplash/theme

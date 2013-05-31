@@ -1,8 +1,0 @@
-libuniventionpolicy.so.0 libunivention-policy0 #MINVER#
- univention_ldap_close@Base 5.0.0
- univention_ldap_new@Base 5.0.0
- univention_ldap_open@Base 5.0.0
- univention_ldap_set_admin_connection@Base 5.0.0
- univention_policy_close@Base 5.0.0
- univention_policy_get@Base 5.0.0
- univention_policy_open@Base 5.0.0

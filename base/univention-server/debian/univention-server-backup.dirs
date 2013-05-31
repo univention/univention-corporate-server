@@ -1,7 +1,0 @@
-/usr/lib/univention-server
-etc/univention/daemons
-etc/network/if-up.d/
-etc/network/if-down.d/
-etc/bootsplash/themes/domaincontroller_backup/images
-etc/bootsplash/themes/domaincontroller_backup/config
-usr/sbin

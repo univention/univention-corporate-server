@@ -1,3 +1,0 @@
-univention-mount-homedir usr/sbin
-univention-umount-homedirs usr/sbin
-

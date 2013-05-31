@@ -1,5 +1,0 @@
-[bootsplash/theme]
-Description[de]=Name des Bootsplash Design (eines von "plymouth-set-default-theme -l")
-Description[en]=Name of the bootsplash theme (one of "plymouth-set-default-theme -l")
-Type=str
-Categories=system-base

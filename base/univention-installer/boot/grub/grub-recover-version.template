@@ -1,5 +1,0 @@
-menuentry 'UCS Recover Kernel @%@KERNEL@%@' {
-	linux /boot/linux-@%@KERNEL@%@ root=/dev/ram ro ramdisk_size=160120 flavor=linux nomodeset recover vga=788
-	initrd /boot/linux-recover-@%@KERNEL@%@.bin
-}
-

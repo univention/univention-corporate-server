@@ -1,9 +1,0 @@
-Type: file
-File: etc/motd.setup
-Variables: interfaces/.*
-Variables: server/amazon
-
-Type: subfile
-Multifile: etc/pam.d/common-session
-Subfile: etc/pam.d/common-session.d/20system-setup-login-message
-Variables: system/setup/showloginmessage

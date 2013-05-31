@@ -1,2 +1,0 @@
-usr/share/univention-managed-client/check_connection etc/network/if-up.d/05_auth
-usr/share/univention-managed-client/check_connection etc/network/if-down.d/05_auth

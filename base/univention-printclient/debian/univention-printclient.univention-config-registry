@@ -1,4 +1,0 @@
-Type: file
-File: etc/cups/client.conf
-Variables: ldap/server/name
-Variables: cups/server

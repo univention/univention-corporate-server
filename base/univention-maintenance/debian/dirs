@@ -1,6 +1,0 @@
-etc/univention
-usr/sbin
-var/log/univention
-var/univention-backup/etc
-var/www/statistik
-var/www/mrtg

@@ -1,7 +1,0 @@
-lib/univention-installer
-lib/univention-installer-scripts.d
-lib/univention-installer-startup.d
-etc/apt/
-sbin
-boot/grub
-profiles/
