@@ -1,3 +1,11 @@
+univention-spamassassin (4.0.3-4) unstable; urgency=low
+
+  * Removed  obsolete ucr variable "mail/antispam/globalfolder" from
+    file "univention-spamassassin.univention-config-registry-variables".
+    The variable was no longer in use. (Bug #31072)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Fri, 31 May 2013 14:31:23 +0200
+
 univention-spamassassin (4.0.3-3) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)

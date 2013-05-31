@@ -1,9 +1,3 @@
-[mail/antispam/globalfolder]
-Description[de]=Globales Spamverzeichnis
-Description[en]=Global spam folder
-Type=str
-Categories=service-mail
-
 [mail/antispam/learndaily]
 Description[de]=Lerne täglich Ham und Spam Nachrichten
 Description[en]=Learn ham and spam messages daily
