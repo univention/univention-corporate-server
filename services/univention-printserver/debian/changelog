@@ -1,6 +1,15 @@
+univention-printserver (6.0.25-1) unstable; urgency=low
+
+  * Added to "79univention-printserver.inst" and "79univention-printserver-pdf.inst" files,
+    a "univention-ldapsearch -h $ldap_master -p $ldap_master_port"
+    in order to request LDAP on DC master (Bug #19101)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Fri, 31 May 2013 13:24:40 +0200
+
 univention-printserver (6.0.24-1) unstable; urgency=low
 
-  * Added ErrorPolicy in template for cups. ErrorPolicy can be set over ucr vari    able cups/errorpolicy (Bug #28877)
+  * Added ErrorPolicy in template for cups.
+    ErrorPolicy can be set over ucr vari    able cups/errorpolicy (Bug #28877)
 
  -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 28 May 2013 13:36:34 +0200
 
