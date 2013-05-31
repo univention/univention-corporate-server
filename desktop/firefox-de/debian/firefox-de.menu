@@ -1,5 +1,0 @@
-?package(firefox):needs="x11" section="Apps/Net" \
-	title="Firefox" \
-	icon="/usr/share/pixmaps/firefox.xpm" \
-	command="firefox" hints="Web Browsers"
-

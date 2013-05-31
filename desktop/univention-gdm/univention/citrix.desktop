@@ -1,8 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=KDE
-Comment=Citrix Client
-Exec=/etc/gdm/Sessions/cirtix
-Icon=
-Type=Application
-
