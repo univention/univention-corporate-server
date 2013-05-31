@@ -56,7 +56,7 @@ fi
 if [ $JS_LAST_EXECUTED_VERSION -le 7 ]; then
 	if [ "$cups_keep_ppds" != "true" ]; then
 		backupfile=/var/backups/ldap-hp-ppds-`date +"%d-%m-%y-%H-%M-%S"`
-		univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" uid=Administrator 'objectclass=univentionPrinterModels' >  $backupfile
+		univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" 'objectclass=univentionPrinterModels' >  $backupfile
 		IFS=":"
 		for i in $(udm settings/printermodel list "$@" | grep ^DN:| sed 's|^DN: |:|'); do
 			if [ -n "$i" ]; then

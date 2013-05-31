@@ -43,7 +43,7 @@ univention-directory-manager settings/printeruri modify "$@" \
 
 if [ $JS_LAST_EXECUTED_VERSION -le 2 ]; then
 	if [ "$cups_keep_ppds" != "true" ]; then
-		if univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" uid=Administrator "(&(objectclass=univentionPrinterModels)(cn=PDF))" dn | grep -q ^dn:
+		if univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" "(&(objectclass=univentionPrinterModels)(cn=PDF))" dn | grep -q ^dn:
 		then
 			univention-directory-manager settings/printermodel remove "$@" \
 				--dn "cn=PDF,cn=cups,cn=univention,$ldap_base" || die
