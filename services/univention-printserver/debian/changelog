@@ -1,3 +1,9 @@
+univention-printserver (6.0.25-2) unstable; urgency=low
+
+  * Removed erroneous "uid=Administrator" from univentin-ldapsearch request (Bug #19101)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Fri, 31 May 2013 15:56:09 +0200
+
 univention-printserver (6.0.25-1) unstable; urgency=low
 
   * Added to "79univention-printserver.inst" and "79univention-printserver-pdf.inst" files,
