@@ -4,9 +4,7 @@
 all: pdf
 
 .PHONY: pdf
-pdf:: release-notes-3.1.pdf release-notes-3.1_en.pdf
-pdf:: release-notes-3.1-1.pdf release-notes-3.1-1_en.pdf
-pdf:: release-notes-3.1-2.pdf release-notes-3.1-2_en.pdf
+pdf:: release-notes-3.2.pdf release-notes-3.2_en.pdf
 release-notes-%.pdf: release-notes-%.tex changelog-%.tex
 	./pdf-latex.py $<
 release-notes-%_en.pdf: release-notes-%_en.tex changelog-%.tex
