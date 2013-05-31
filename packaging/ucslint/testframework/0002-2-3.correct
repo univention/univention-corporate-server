@@ -1,6 +1,0 @@
-E:0002-2: debian/postinst:7: contains invalid basedn
-E:0002-2: debian/postinst:8: contains invalid basedn
-E:0002-2: debian/postinst:9: contains invalid basedn
-E:0002-3: debian/postinst:10: contains invalid domainname
-E:0002-3: debian/postinst:11: contains invalid domainname
-E:0002-3: debian/postinst:12: contains invalid domainname

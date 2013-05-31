@@ -1,5 +1,0 @@
-[interfaces/eth*/]
-Description[de]=test
-Description[en]=test
-Type=str
-Category=test

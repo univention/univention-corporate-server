@@ -1,1 +1,0 @@
-W:0004-55: debian/test1.univention-config-registry: UCR .info-file may contain globbing pattern instead of regular expression: "interfaces/eth*"

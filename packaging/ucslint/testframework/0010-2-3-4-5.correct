@@ -1,4 +1,0 @@
-E:0010-2: 34univention-management-console-server.inst: file contains no copyright text block
-E:0010-2: conffiles/etc/cron.daily/univention-ssl-validity: file contains no copyright text block
-E:0010-4: make-certificates.sh: cannot find copyright line containing year
-E:0010-5: debian/copyright: file is missing

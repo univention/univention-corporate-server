@@ -1,3 +1,0 @@
-E:0004-13: conffiles/etc/hosts.d/99-ucs-test: template contains invalid UCR variable names:
-      - also/not/v(a)lid
-      - my/invalid/chäracter/variable

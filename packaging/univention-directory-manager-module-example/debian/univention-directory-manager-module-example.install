@@ -1,3 +1,0 @@
-# Install example script
-scripts/ip-phone-tool usr/sbin/
-modules/univention/admin/handlers/test/*.py usr/share/pyshared/univention/admin/handlers/test/
