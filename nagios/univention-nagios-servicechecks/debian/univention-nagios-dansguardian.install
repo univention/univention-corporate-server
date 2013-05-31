@@ -1,2 +1,0 @@
-35univention-nagios-dansguardian.inst usr/lib/univention-install/
-check_univention_dansguardian usr/lib/nagios/plugins/

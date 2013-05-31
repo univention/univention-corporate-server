@@ -1,2 +1,0 @@
-35univention-nagios-squid.inst usr/lib/univention-install/
-check_univention_squid usr/lib/nagios/plugins/
