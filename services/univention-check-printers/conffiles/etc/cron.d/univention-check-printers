@@ -1,6 +1,0 @@
-@%@UCRWARNING=# @%@
-
-PATH=/usr/sbin:/usr/bin:/sbin:/bin
-
-@%@cups/checkprinters/cron@%@   root   if [ -x /usr/sbin/univention-check-printers ]; then /usr/sbin/univention-check-printers; fi
-

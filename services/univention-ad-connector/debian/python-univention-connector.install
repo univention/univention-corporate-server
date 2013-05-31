@@ -1,2 +1,0 @@
-modules/univention/connector/*.py usr/share/pyshared/univention/connector/
-

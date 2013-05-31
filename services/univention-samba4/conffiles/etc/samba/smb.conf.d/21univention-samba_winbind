@@ -1,4 +1,0 @@
-	
-	winbind separator = +
-	template shell = /bin/bash
-	template homedir = /home/%D-%U

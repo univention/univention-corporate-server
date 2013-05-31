@@ -1,2 +1,0 @@
-79univention-printserver-pdf.inst usr/lib/univention-install/
-cups-pdf.py usr/lib/univention-directory-listener/system

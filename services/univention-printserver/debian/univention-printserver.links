@@ -1,6 +1,0 @@
-/usr/share/ppd /usr/share/cups/model
-/usr/sbin/univention-cupsadmin /usr/sbin/univention-cups-reject
-/usr/sbin/univention-cupsadmin /usr/sbin/univention-cups-accept
-/usr/sbin/univention-cupsadmin /usr/bin/univention-cups-disable
-/usr/sbin/univention-cupsadmin /usr/bin/univention-cups-enable
-

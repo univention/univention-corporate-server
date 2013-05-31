@@ -1,5 +1,0 @@
-@%@UCRWARNING=# @%@
-
-config_version=1
-run_mode=as_daemons
-smbpasswd_created=yes

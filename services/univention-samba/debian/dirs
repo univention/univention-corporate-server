@@ -1,9 +1,0 @@
-usr/bin
-usr/sbin
-etc
-etc/samba
-etc/univention/daemons
-usr/lib/univention-ldap/modules
-usr/share/univention-samba
-var/lib/samba/drivers
-usr/lib/univention-install

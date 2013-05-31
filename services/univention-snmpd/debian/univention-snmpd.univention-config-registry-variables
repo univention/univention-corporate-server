@@ -1,5 +1,0 @@
-[snmpd/autostart]
-Description[de]=Definiert, ob der SNMP-Dienst automatisch gestartet werden soll
-Description[en]=Defines, whether the SNMP service should be started automatically
-Type=str
-Categories=system-network

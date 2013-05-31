@@ -1,9 +1,0 @@
-Type: file
-File: etc/cron.d/sysvol-sync
-Variables: samba4/sysvol/sync/cron
-Variables: samba4/sysvol/sync/jitter
-
-Type: file
-File: etc/cron.d/sysvol-cleanup
-Variables: samba4/sysvol/cleanup/cron
-Variables: samba4/sysvol/cleanup/parameters

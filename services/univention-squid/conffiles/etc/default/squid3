@@ -1,5 +1,0 @@
-@%@UCRWARNING=#@%@
-
-KRB5_KTNAME="/var/lib/samba/private/http-proxy-@%@hostname@%@.keytab"
-export KRB5_KTNAME
-

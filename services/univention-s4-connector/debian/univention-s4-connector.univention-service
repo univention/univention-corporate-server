@@ -1,6 +1,0 @@
-[univention-s4-connector]
-Description[de]=Univention S4 Connector
-Description[en]=Univention S4 Connector
-programs=/usr/lib/pymodules/python2.6/univention/s4connector/s4/main.py
-icon=service/s4-connector
-start_type=connector/s4/autostart

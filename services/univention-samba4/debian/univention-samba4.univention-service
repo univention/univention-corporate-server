@@ -1,5 +1,0 @@
-[samba4]
-description[de]=Stellt Dienste für Windows Systeme zur Verfügung
-description[en]=Provides Services for Windows
-icon=service/samba
-programs=/usr/sbin/samba

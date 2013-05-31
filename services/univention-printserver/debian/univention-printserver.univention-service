@@ -1,6 +1,0 @@
-[cups]
-description[de]=Druck-Server
-description[en]=Print Server
-icon=service/cups
-start_type=cups/autostart
-programs=/usr/sbin/cupsd
