@@ -1,6 +1,0 @@
-etc/pki/libvirt/private
-etc/pki/libvirt
-etc/pki/CA
-var/backups/univention-virtual-machine-manager-daemon
-var/cache/univention-virtual-machine-manager-daemon
-var/cache/univention-virtual-machine-manager-daemon/snapshots

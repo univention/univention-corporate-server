@@ -1,1 +1,0 @@
-see http://wiki.xensource.com/xenwiki/XenWindowsGplPv for details

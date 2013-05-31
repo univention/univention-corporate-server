@@ -1,8 +1,0 @@
-<volume>
-<name>dos5.img</name>
-<allocation unit="G">0</allocation>
-<capacity unit="G">8</capacity>
-<target>
-<format type="raw"/>
-</target>
-</volume>

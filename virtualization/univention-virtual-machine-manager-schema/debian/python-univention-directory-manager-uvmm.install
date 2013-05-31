@@ -1,2 +1,0 @@
-modules/univention/admin/handlers/uvmm/*.py usr/share/pyshared/univention/admin/handlers/uvmm
-modules/i18n/* usr/share/locale/

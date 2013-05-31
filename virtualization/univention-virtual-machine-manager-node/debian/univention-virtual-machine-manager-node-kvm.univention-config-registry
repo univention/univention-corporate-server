@@ -1,7 +1,0 @@
-Type: file
-File: etc/libvirt/qemu.conf
-Variables: uvmm/kvm/qemu/.*
-
-Type: file
-File: etc/udev/rules.d/99-uvmm-node-kvm.rules
-Variables: uvmm/kvm/qemu/group

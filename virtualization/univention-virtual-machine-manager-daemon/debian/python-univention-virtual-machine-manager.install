@@ -1,2 +1,0 @@
-src/univention/uvmm/*.py usr/share/pyshared/univention/uvmm
-src/i18n/* usr/share/locale/
