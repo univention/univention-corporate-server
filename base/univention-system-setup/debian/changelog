@@ -1,3 +1,11 @@
+univention-system-setup (6.0.78-1) unstable; urgency=low
+
+  * Removed usr variable setting for "mail/antispam/globalfolder" from file 
+    univention-system-setup/scripts/basis/10hostname and 12domainname. Bug #31072.
+
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Fri, 31 May 2013 14:57:19 +0200
+
 univention-system-setup (6.0.77-1) unstable; urgency=low
 
   * UCRV apache2/startsite will be set to correct values when reinstalling 
