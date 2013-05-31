@@ -1,4 +1,0 @@
-tests/51_samba4 usr/share/ucs-test/
-tests/50_samba/10samba-share-options usr/share/ucs-test/51_samba4/
-tests/50_samba/15nfs-share-options usr/share/ucs-test/51_samba4/
-tests/50_samba/50quota usr/share/ucs-test/51_samba4/
