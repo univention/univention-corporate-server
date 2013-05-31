@@ -1,6 +1,0 @@
-[fetchmail/autostart]
-Description[de]=Automatischer Start des Fetchmail-Dienstes beim Systemstart
-Description[en]=Automatically start of the fetchmail-service at system startup
-Type=bool
-Categories=service-mail,system-services
-
