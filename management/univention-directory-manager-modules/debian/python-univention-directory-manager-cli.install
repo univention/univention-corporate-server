@@ -1,5 +1,0 @@
-modules/univention/admincli/__init__.py usr/share/pyshared/univention/admincli/
-modules/univention/admincli/admin.py usr/share/pyshared/univention/admincli/
-modules/univention/admincli/adduser.py usr/share/pyshared/univention/admincli/
-modules/univention/admincli/passwd.py usr/share/pyshared/univention/admincli/
-modules/univention/admincli/license_check.py usr/share/pyshared/univention/admincli/

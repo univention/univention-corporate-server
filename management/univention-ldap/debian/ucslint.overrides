@@ -1,2 +1,0 @@
-0010-2: conffiles/etc/init.d/slapd
-0006-2: debian/univention-ldap-server.postinst

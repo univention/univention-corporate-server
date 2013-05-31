@@ -1,6 +1,0 @@
-univention-backup2master usr/lib/univention-ldap/
-univention-ldap-backup usr/sbin/
-01univention-ldap-server-init.inst usr/lib/univention-install/
-10univention-ldap-server.inst usr/lib/univention-install/
-scripts/convert_shadowMax.py usr/share/univention-ldap/
-scripts/convert_univentionMailSharedFolderDeliveryAddress.py usr/share/univention-ldap/

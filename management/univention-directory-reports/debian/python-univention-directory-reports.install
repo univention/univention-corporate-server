@@ -1,2 +1,0 @@
-modules/univention/directory/*.py usr/share/pyshared/univention/directory/
-modules/univention/directory/reports/*.py usr/share/pyshared/univention/directory/reports/

@@ -1,4 +1,0 @@
-dev/dh-umc-* usr/bin
-dev/umc-create-module usr/bin
-dev/dh_umc.py usr/share/pyshared/univention/
-umc-module-templates usr/share/univention-management-console-dev

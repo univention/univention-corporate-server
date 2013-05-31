@@ -1,4 +1,0 @@
-[service-ldap]
-name[de]=Dienst: LDAP Konfiguration
-name[en]=Service: LDAP Configuration
-icon=service-ldap.gif

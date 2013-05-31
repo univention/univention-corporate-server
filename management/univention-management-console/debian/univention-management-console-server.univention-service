@@ -1,7 +1,0 @@
-[univention-management-console-server]
-Description[de]=Univention Management Console Server
-Description[en]=Univention Management Console Server
-programs=/usr/sbin/univention-management-console-server
-icon=service/umc-server
-start_type=umc/server/autostart
-

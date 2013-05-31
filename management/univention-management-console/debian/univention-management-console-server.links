@@ -1,7 +1,0 @@
-usr/sbin/univention-management-console-server usr/sbin/umc-server
-usr/sbin/univention-management-console-client usr/sbin/umc-client
-usr/sbin/univention-management-console-client usr/sbin/umc-command
-usr/sbin/univention-management-console-client usr/sbin/umc-upload
-usr/sbin/univention-management-console-client usr/sbin/umc-get
-usr/sbin/univention-management-console-client usr/sbin/umc-set
-usr/sbin/univention-management-console-acls usr/sbin/umc-acls

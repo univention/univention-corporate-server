@@ -1,6 +1,0 @@
-debian/tmp/usr/sbin/univention-management-console-acls
-debian/tmp/usr/sbin/univention-management-console-client
-debian/tmp/usr/sbin/univention-management-console-module
-debian/tmp/usr/sbin/univention-management-console-server
-debian/tmp/usr/share/univention-management-console/*
-debian/tmp/usr/share/locale/*
