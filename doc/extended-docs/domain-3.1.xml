@@ -374,7 +374,7 @@ exit
 
         <para>
 		  The integration of Mac OS X clients is documented with example step-by-step instructions
-		  in <xref linkend="ucs-handbuch"/>. Mac OS systems use a deviating domain integration based
+		  in the UCS manual. Mac OS systems use a deviating domain integration based
 		  on Samba 4.
 		</para>
 
