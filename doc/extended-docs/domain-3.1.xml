@@ -361,147 +361,138 @@ exit
 
     <chapter>
         <title>Integration of Linux/Unix systems into a UCS domain</title>
-<!--         <para> -->
-<!-- 		  Dies ist eine allgemeine Integrationsanleitung für die Eindung Unix/Linux-basierter -->
-<!-- 		  Nicht-UCS-Systeme - im folgenden einfach als Unix-System bezeichnet - in den -->
-<!-- 		  Vertrauenskontext der UCS-Domäne. -->
-<!-- 		</para> -->
+        <para>
+		  These are general instructions for the integration of Unix/Linux-based non-UCS
+		  systems - referred to in the following simply as Unix systems - in the trust context
+		  of the UCS domain.
+		</para>
 
-<!--         <para> -->
-<!-- 		  Die Einbindung von Ubuntu-Clients ist mit exemplarischen Schritt-für-Schritt-Anleitungen -->
-<!-- 		  in <xref linkend="ext-dom-ubuntu"/> dokumentiert. Hier werden einige für Desktops nötige Schritte gesondert -->
-<!-- 		  beschrieben. -->
-<!-- 		</para> -->
+        <para>
+		  The integration of Ubuntu clients is documented with example step-by-step instructions in
+		  <xref linkend="ext-dom-ubuntu"/>.
+		</para>
 
-<!--         <para> -->
-<!-- 		  Die Einbindung von Mac OS X-Clients ist mit exemplarischen Schritt-für-Schritt-Anleitungen -->
-<!-- 		  in <xref linkend="ucs-handbuch"/> dokumentiert. Mac OS-Systeme verwenden eine abweichende Domänenintegration. -->
-<!-- 		</para> -->
+        <para>
+		  The integration of Mac OS X clients is documented with example step-by-step instructions
+		  in <xref linkend="ucs-handbuch"/>. Mac OS systems use a deviating domain integration based
+		  on Samba 4.
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Es müssen nicht alle Integrationsschritte durchgeführt werden. So kann beispielsweise ein -->
-<!-- 		  Unix-System nur in die IP-Verwaltung integriert werden und auf den NTP-Server zugegreifen -->
-<!-- 		  ohne das System in die UCS-Benutzerverwaltung einzubinden (z.B. wenn es sich um einen -->
-<!-- 		  Datenbankserver handelt, auf dem ohnehin keine Benutezranmeldung erfolgen soll). -->
-<!-- 		</para> -->
+		<para>
+		  Not all integration steps need to be performed. In this way, for example, a Unix system
+		  can merely be integrated in the IP management and access the NTP server without integrating
+		  the system in the UCS user management (e.g., if it is a database server on which no user
+		  login is performed anyway).
+		</para>
 
-<!--         <section> -->
-<!-- 		  <title>Verwaltung der Systeme in der &uscUMC;</title> -->
-<!-- 		  <para> -->
-<!-- 			Für die Verwaltung der Unix-Systeme in der UMC wird in der Rechnerverwaltung der UMC ein -->
-<!-- 			Objekt vom Typ <guimenu>Computer: Linux</guimenu> angelegt werden. -->
-<!-- 		  </para> -->
+        <section>
+		  <title>Managing the systems in the &uscUMC;</title>
+		  <para>
+			A <guimenu>Computer: Linux</guimenu> object can be created in the UMC computer
+			management. This allows the integration of the Unix system in the DNS/DHCP and network
+			administration of the &uscUMC;
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Dies erlaubt die Einbindung des Unix-Systems in die DNS/DHCP- und Netzwerkverwaltung der -->
-<!-- 			&uscUMC; -->
-<!-- 		  </para> -->
+		  <para>
+			If the Nagios support is enabled under <guimenu>[Options]</guimenu>, Nagios checks can
+			also be applied on the system.
+		  </para>
+		</section>
 
-<!-- 		  <para> -->
-<!-- 			Wird unter Options der Nagios-Support aktiviert, können auch Nagios-Prüfungen auf das -->
-<!-- 			System angewendet werden. -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+        <section id="ext-dom-time">
+		  <title>Configuration of the name resolution</title>
+		  <para>
+			The Unix system should use a name server from the UCS domain: All UCS domain controllers
+			(i.e., &ucsMaster;, &ucsBackup; and &ucsSlave;) operate a DNS server. One or more of
+			these UCS system should be entered in the <filename>/etc/resolv.conf</filename>, e.g.:
 
-<!--         <section id="ext-dom-time"> -->
-<!-- 		  <title>Konfiguration der Namensauflösung</title> -->
-<!-- 		  <para> -->
-<!-- 			Das Unix-System sollte einen Nameserver aus der UCS-Umgebung verwenden. Alle -->
-<!-- 			UCS-Domänencontroller (also &ucsMaster;, &ucsBackup; und &ucsSlave;) betreiben einen -->
-<!-- 			DNS-Server. Eines oder mehrere dieser UCS-Systeme sollte in die -->
-<!-- 			<filename>/etc/resolv.conf</filename> eingetragen werden, z.B: -->
+<programlisting>
+domain  example.com
+nameserver  10.200.3.108
+nameserver  10.200.3.99
+</programlisting>
+		  </para>
+		</section>
 
-<!-- <programlisting> -->
-<!-- domain  example.com -->
-<!-- nameserver  10.200.3.108 -->
-<!-- nameserver  10.200.3.99 -->
-<!-- </programlisting> -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+        <section>
+		  <title>Configuration of the time server</title>
+		  <para>
+			All UCS domain controllers (i.e., &ucsMaster;, &ucsBackup; and &ucsSlave;) operate a NTP
+			server.
+		  </para>
 
-<!--         <section> -->
-<!-- 		  <title>Konfiguration der Zeitserver</title> -->
-<!-- 		  <para> -->
-<!-- 			Alle UCS-Domänencontroller (also &ucsMaster;, &ucsBackup; und &ucsSlave;) betreiben -->
-<!-- 			einen NTP-Server. -->
-<!-- 		  </para> -->
+		  <para>
+			The configuration differs depending on the NTP software used, but is set under
+			<filename>/etc/ntp.conf</filename> on most Linux systems, e.g.:
 
-<!-- 		  <para> -->
-<!-- 			Die Konfiguration unterscheidet sich je nach eingesetzter NTP-Softwar, wird aber auf -->
-<!-- 			vielen Linux-Systemen unter <filename>/etc/ntp.conf</filename> eingestellt, z.B: -->
+<programlisting>
+server master.example.com
+server backup.example.com
+</programlisting>
+		  </para>
+		</section>
 
-<!-- <programlisting> -->
-<!-- server master.example.com -->
-<!-- server backup.example.com -->
-<!-- </programlisting> -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+		<section>
+		  <title>Access to user and group information of the UCS domain</title>
+		  <para>
+			The <emphasis>Name Service Switch</emphasis> (NSS) is an interface for configuring the
+			data sources for users, groups and computers. NSS is present on all Linux versions and
+			most Unix systems.
+		  </para>
 
-<!-- 		<section> -->
-<!-- 		  <title>Zugriff auf Benutzer- und Gruppeninformationen der UCS-Domäne</title> -->
-<!-- 		  <para> -->
-<!-- 			Der <emphasis>Name Service Switch</emphasis> (NSS) ist eine Schnittstelle zur -->
-<!-- 			Konfiguration der Datenquellen für Benutzer, Gruppen und Rechner. NSS ist auf allen -->
-<!-- 			Linux-Varianten und den meisten Unix-Systemen vorhanden. -->
-<!-- 		  </para> -->
+		  <para>
+			If the Unix system used provides support for an NSS module for LDAP access - as is the
+			case in most Linux distributions - user and group information can be read out of the
+			UCS LDAP directory.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Wenn das eingesetzte Unix-System über Unterstützung für ein NSS-Modul für LDAP-Zugriff -->
-<!-- 			verfügt - in den meisten Linux-Distributionen ist das der Fall - können Benutzer- und -->
-<!-- 			Gruppeninformationen aus dem UCS-LDAP ausgelesen werden. -->
-<!-- 		  </para> -->
+		  <para>
+			The configuration files of the NSS LDAP module differ depending on the Linux/Unix
+			version. 
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Die Konfigurationsdateien des NSS-LDAP-Moduls unterscheiden sich je nach -->
-<!-- 			Linux/Unix-Variante.  -->
-<!-- 		  </para> -->
+		  <para>
+			As a general rule, the following settings must be set there:
 
-<!-- 		  <para> -->
-<!-- 			Generell müssen die folgenden Einstellungen vorgenommen werden: -->
+			<itemizedlist>
+			  <listitem><simpara>
+				The DN of the LDAP base of the UCS domain (saved in the &ucsUCRV;
+				<envar>ldap/base</envar> on UCS servers) needs to be configured on the system.
+			  </simpara></listitem>
 
-<!-- 			<itemizedlist> -->
-<!-- 			  <listitem><simpara> -->
-<!-- 				Die DN der LDAP-Basis der UCS-Domäne (auf UCS-Servern in der &ucsUCRV; -->
-<!-- 				<envar>ldap/base</envar> gespeichert) -->
+			  <listitem><simpara>
+				The LDAP servers to be used. The fully qualified domain names of one or more UCS
+				domain controllers should be entered here.
+			  </simpara></listitem>
 
-<!-- 				needs to be configured on the system. -->
-<!-- 			  </simpara></listitem> -->
+			  <listitem><para>
+				In the standard setting, only TLS-secured access is possible on UCS-LDAP
+				servers. The accessing Unix system must therefore use the root certificate of the
+				UCS-CA. The certificate can be found on the &ucsMaster; in the file
+				<filename>/etc/univention/ssl/udsCA/CAcert.pem</filename> and can be copied into any
+				directory, e.g., <filename>/etc/ucs-ssl/</filename>. The UCS root certificate must
+				then be configured in the LDAP configuration files. If the Unix system uses OpenLDAP
+				as the LDAP implementation, it is usually the file
+				<filename>/etc/openldap/ldap.conf</filename> or
+				<filename>/etc/ldap/ldap.conf</filename>. The line for OpenLDAP is as follows:
 
-<!-- 			  <listitem><simpara> -->
-<!-- 				Der/die zu verwendenden LDAP-Server. Hier sollten die fully qualified domain names -->
-<!-- 				eines oder mehrerer UCS Domänencontroller angegeben werden. -->
-<!-- 			  </simpara></listitem> -->
+<programlisting>
+TLS_CACERT /etc/ucs-ssl/CAcert.pem
+</programlisting>
+			  </para></listitem>
+			</itemizedlist>
+		  </para>
 
-<!-- 			  <listitem><simpara> -->
-<!-- 				Auf UCS-LDAP-Server kann in der Grundeinstellung nur TLS-gesichert zugegriffen -->
-<!-- 				werden. Das zugreifende Unix-System muss daher das Root-Zertifikat der UCS-CA -->
-<!-- 				einbinden. Das Zertifikat befindet sich auf dem &ucsMaster; in der Datei -->
-<!-- 				<filename>/etc/univention/ssl/udsCA/CAcert.pem</filename> und kann in ein beliebiges -->
-<!-- 				Verzeichnis kopiert werden, z.b. <filename>/etc/ucs-ssl/</filename>. Das -->
-<!-- 				UCS-Root-Zertifikat muss nun in der LDAP-Konfigurationsdatei registriert -->
-<!-- 				werden. Verwendet das Unix-System OpenLDAP als LDAP-Implementierung ist das in der -->
-<!-- 				Regel die Datei <filename>/etc/openldap/ldap.conf</filename> oder -->
-<!-- 				<filename>/etc/ldap/ldap.conf</filename>. -->
-<!-- 			  </simpara></listitem> -->
-<!-- 			</itemizedlist> -->
+		  <para>
+			If the NSS LDAP service has been set up correctly, the following two commands should
+			output all users and groups:
 
-<!-- 			Für OpenLDAP sieht die Zeile folgendermassen aus: -->
-
-<!-- <programlisting> -->
-<!-- TLS_CACERT /etc/ssl/CAcert.pem -->
-<!-- </programlisting> -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Wenn der NSS-LDAP-Dienst korrekt eingerichtet wurde, sollten die beiden folgenden -->
-<!-- 			Befehle alle Benutzer und Gruppen ausgeben: -->
-
-<!-- <programlisting> -->
-<!-- getent passwd -->
-<!-- getent group -->
-<!-- </programlisting> -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+<programlisting>
+getent passwd
+getent group
+</programlisting>
+		  </para>
+		</section>
 
 		<section>
 		  <title>Integrating into Kerberos</title>
