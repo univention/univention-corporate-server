@@ -202,16 +202,40 @@ in <xref linkend="windows:File_services"/> must be taken into consideration.
 </para>
 </section>
 
-<section id="windows:Univention_S4_connector"><title>Univention S4 connector</title>
+<section id="windows:Univention_S4_connector"><title>Univention S4 connector / Samba 4 LDAP directory</title>
 <para>
 In Samba 4, the Samba user accounts are managed completely by
-Samba. The synchronisation between the UCS LDAP and Samba occurs via
+Samba. 
+<!-- Samba 4 stellt einen separaten LDAP-Verzeichnisdienst bereit. -->
+The synchronisation between the UCS LDAP and the Samba LDAP occurs via
 an internal system service, the Univention S4 connector.
 </para>
 <para>
 Further information on the status of the synchronisation can be found
 in the log file <filename>/var/log/univention/connector-s4.log</filename>.
 </para>
+
+<para>
+  <!-- Mit dem Befehl <command>univention-s4search</command> kann im Samba-Verzeichnisdienst gesucht -->
+  <!-- werden. <command>univention-s4search</command> ist ein Wrapper um das Kommando -->
+  <!-- <command>ldbsearch</command>. Wird es als Benutzer <emphasis>root</emphasis> aufgerufen, werden -->
+  <!-- automatisch die nötigen Credentials des Maschinenkontos verwendet: -->
+
+<programlisting>
+root@master:~# univention-s4search sAMAccountName=Administrator
+# record 1
+dn: CN=Administrator,CN=Users,DC=example,DC=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+cn: Administrator
+instanceType: 4
+(..)
+</programlisting>
+</para>
+
+
 </section>
 
 <section id="windows:NetBIOS_name_service"><title>NetBIOS name service</title>

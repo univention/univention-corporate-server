@@ -216,16 +216,38 @@ Einschränkungen zu beachten.
 </para>
 </section>
 
-<section id="windows:Univention_S4_Connector"><title>Univention S4 Connector</title>
+<section id="windows:Univention_S4_Connector"><title>Univention S4 Connector / Samba 4-LDAP-Verzeichnis</title>
 <para>
 Unter Samba 4 werden die Samba-Benutzerkonten komplett durch Samba
-verwaltet. Die Synchronisation zwischen den UCS-LDAP und Samba erfolgt
+verwaltet. Samba 4 stellt einen separaten LDAP-Verzeichnisdienst bereit.
+Die Synchronisation zwischen dem UCS-LDAP und dem Samba-LDAP erfolgt
 durch einen internen Systemdienst, den Univention-S4-Connector.
 </para>
 <para>
 Hinweise zum Status der Synchronisation finden sich in der
 Logdatei <filename>/var/log/univention/connector-s4.log</filename>.
 </para>
+
+<para>
+  Mit dem Befehl <command>univention-s4search</command> kann im Samba-Verzeichnisdienst gesucht
+  werden. <command>univention-s4search</command> ist ein Wrapper um das Kommando
+  <command>ldbsearch</command>. Wird es als Benutzer <emphasis>root</emphasis> aufgerufen, werden
+  automatisch die nötigen Credentials des Maschinenkontos verwendet:
+
+<programlisting>
+root@master:~# univention-s4search sAMAccountName=Administrator
+# record 1
+dn: CN=Administrator,CN=Users,DC=example,DC=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+cn: Administrator
+instanceType: 4
+(..)
+</programlisting>
+</para>
+
 </section>
 
 <section id="windows:NetBIOS-Netzwerkdienst"><title>NetBIOS-Netzwerkdienst</title>
