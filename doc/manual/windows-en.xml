@@ -132,6 +132,12 @@ and <package>winbind</package> must be subsequently installed.
 The signing of NTP replies should be set on all Samba domain
 controllers, see <xref linkend="basicservices::ntp"/>.
 </para>
+
+<!-- <para> -->
+<!--   Samba 4 unterstützt auf den Betrieb als <emphasis>read-only domain controller</emphasis>. Die -->
+<!--   Einrichtung ist in <xref linkend="ext-doc-win"/> dokumentiert. -->
+<!-- </para> -->
+
 <para>
 Samba 4 implements Active Directory directory services which allow a multi-master replication, i.e.,
 the writing changes of several domain controllers are synchronised at protocol level. Consequently,
