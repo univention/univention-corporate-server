@@ -678,43 +678,133 @@ univention-certificate new -name fullyqualifiedhostname
 		</section>
 	  </section>
 
-<!-- 	  <section> -->
-<!-- 		<title>Signieren von Certificate Signing Requests durch die UCS Certificate Authority</title> -->
-<!--         <para> -->
-<!-- 		  Ein Certificate signing request (CSR) ist eine Anfrage an eine Certificate Authority (CA), -->
-<!-- 		  in der eine digitale Signatur angefordert wird. Ein CSR erfolgt typischerweise in Form -->
-<!-- 		  einer Datei. Dieser Abschnitt beschreibt wie ein CSR von der UCS CA signiert werden kann. -->
-<!-- 		</para> -->
+	  <section>
+		<title>Signing of certificate signing requests by the UCS certificate authority</title>
+        <para>
+		  A certificate signing request (CSR) is a request submitted to a certificate authority (CA)
+		  for a digital signature. A CSR typically occurs in the form of a file. This section
+		  describes how a CRS is signed by the UCS CA.
+		</para>
 
-<!--         <para> -->
-<!-- 		  CERTIFICATE ist der Dateiname des zu erstellenden Zertifikats. -->
-<!-- 		</para> -->
+        <para>
+		  CERTIFICATE is the file name of the certificate to be created.
+		</para>
 
-<!--         <para> -->
-<!-- 		  REQUEST ist die Datei mit dem CSR im PEM-Format (Eine Datei im PEM-Format ist eine -->
-<!-- 		  Textdatei, die einen Base64-codierten Block enthält, der von BEGIN CERTIFICATE und END -->
-<!-- 		  CERTIFICATE umgefasst wird). -->
-<!-- 		</para> -->
+        <para>
+		  REQUEST is the file with the CSR in PEM format (a file in PEM format is a text file
+		  containing a Base64-encoded block enclosed by BEGIN CERTIFICATE and END CERTIFICATE).
+		</para>
 
-<!--         <para> -->
-<!-- 		  Wenn die Anfrage im DER-Format vorliegt, kann sie mit dem folgenden Befehl umgewandelt -->
-<!-- 		  werden: -->
+        <para>
+		  If the request is in DER format, it can be converted with the following command:
 
-<!-- <programlisting> -->
-<!-- openssl x509 -inform der -outform pem -in request.der -out req.pem -->
-<!-- </programlisting> -->
-<!-- 		</para> -->
+<programlisting>
+openssl x509 -inform der -outform pem -in request.der -out req.pem
+</programlisting>
+		</para>
 
-<!--         <para> -->
-<!-- 		  Der folgende Befehl signiert dann den CSR: -->
+        <para>
+		  The following command then signs the CSR:
 
-<!-- <programlisting> -->
-<!-- openssl ca -batch -config /etc/univention/ssl/openssl.cnf    \ -->
-<!-- -in REQUEST -out CERTIFICATE                              \   -->
-<!-- -passin pass:"$(cat /etc/univention/ssl/password)" -->
-<!-- </programlisting> -->
-<!-- 		</para> -->
-<!-- 	  </section> -->
+<programlisting>
+openssl ca -batch -config /etc/univention/ssl/openssl.cnf    \
+-in REQUEST -out CERTIFICATE                              \
+-passin pass:"$(cat /etc/univention/ssl/password)"
+</programlisting>
+		</para>
+	  </section>
+
+	  <section>
+		<title>Signing of the UCS certificate authority by another superordinate CA</title>
+        <para>
+		  The certificate authority (CA) integrated in UCS can be certified by another CA. In this
+		  case, the UCS CA - which is a root CA as standard - is converted a sub CA.
+		</para>
+
+        <para>
+		  The following steps are necessary for this:
+		  
+		  <itemizedlist>
+			<listitem><para>
+			  Firstly, a backup copy of <filename>/etc/univention/ssl</filename> should be created.
+			</para></listitem>
+
+			<listitem><para>
+			  The <emphasis>certificate signing request</emphasis> (CSR) can be found in the
+			  <filename>/etc/univention/ssl/ucsCA/CAreq.pem</filename> directory on the &ucsMaster;
+			  This file can be used to request a certificate in PEM format from the superordinate
+			  CA. (PEM is a standardised format in which the certificate is saved
+			  Base64-encoded). If the received certificate is not in PEM format, but is sent in DER
+			  format instead, it must be converted with the following command:
+
+<programlisting>
+openssl x509 -inform der        \
+  -outform pem -in filename.der \ 
+  -out filename.pem
+</programlisting>
+			</para></listitem>
+
+			<listitem><para>
+			  The new certificate must be stored at several positions in the file system. The
+			  following steps copy it:
+<programlisting>
+cd /etc/univention/ssl
+cp NEWCERT.pem ucsCA/CAcert.pem
+cp ucsCA/CAcert.pem ucsCA/newcerts/00.pem
+cp ucsCA/CAcert.pem /var/www/ucs-root-ca.crt
+source /usr/share/univention-ssl/make-certificates.sh
+move_cert ucsCA/newcerts/00.pem
+</programlisting>
+			</para></listitem>
+
+			<listitem><para>
+			  The last command transfers the certificate from the
+			  <filename>/etc/univention/ssl/ucsCA/newcerts/</filename> directory to the
+			  <filename>/etc/univention/ssl/ucsCA/certs/</filename> directory and creates a link to
+			  the certificate there.
+			</para></listitem>
+
+			<listitem><para>
+			  The CA certificate of the signing, superordinate CA is copied and saved in the
+			  <filename>/etc/univention/ssl/mca/</filename> directory:
+
+<programlisting>
+mkdir -p /etc/univention/ssl/mca/
+cp CA.pem /etc/univention/ssl/mca/
+</programlisting>
+			</para></listitem>
+
+			<listitem><para>
+			  The certificate chain is now generated:
+
+<programlisting>
+cd /etc/univention/ssl
+cat ucsCA/CAcert.pem >> CAChain.pem
+cat mca/CA.pem >> CAChain.pem
+</programlisting>
+			</para></listitem>
+
+			<listitem><para>
+			  The web server must be set up in such a way that it sends the chain file to the
+			  clients together with its certificate. This is done by setting the &ucsUCRV;
+			  <envar>apache2/ssl/certificatechain</envar> to
+			  <filename>/etc/univention/ssl/CAChain.pem</filename> and restarting the web server:
+
+<programlisting>
+ucr set apache2/ssl/certificatechain=/etc/univention/ssl/CAChain.pem 
+/etc/init.d/apache2 restart
+</programlisting>
+			</para></listitem>
+
+			<listitem><para>
+			  The CA certificate of the superordinate CA must be imported on all clients so that the
+			  clients can verify other certificates accordingly that are overwritten by the UCS-CA.
+			</para></listitem>
+		  </itemizedlist>
+		</para>
+	  </section>
+
+
 	</chapter>
 
 
