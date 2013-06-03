@@ -55,7 +55,12 @@
 	<para>
 		Ein UCS, Ubuntu- oder Windows-System muss nach der Installation der Domäne
 		beitreten. Im Folgenden werden die verschiedenen Möglichkeiten hierzu
-		vorgestellt:
+		vorgestellt.
+	</para>
+
+	<para>
+	  Neben UCS, Ubuntu und Mac OS X können auch weitere Unix-Systeme in die Domäne integriert
+	  werden; dies ist in <xref linkend="ext-doc-domain"/> beschrieben.
 	</para>
 
 	<section id="linux-domaenenbeitritt">
@@ -510,7 +515,8 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		<title>Linux</title>
 		<para>
 		  Diese Systemrolle wird für die Integration von anderen Linux-Systemen als UCS und Ubuntu
-		  verwendet, z.B. für Debian- oder CentOS-Systeme.
+		  verwendet, z.B. für Debian- oder CentOS-Systeme. Die Integration wird in <xref
+		  linkend="ext-doc-domain"/> beschrieben.
 		</para>
 	</section>
 

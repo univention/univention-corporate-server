@@ -55,6 +55,12 @@
 		following describes the different possibilities to do this:
 	</para>
 
+	<para>
+	  In addition to UCS, Ubuntu and Mac OS X, arbitrary Unix systems can be integrated into the
+	  domain. This is documented in <xref linkend="ext-doc-domain"/>.
+	</para>
+
+
 	<section id="linux-domaenenbeitritt">
 		<title>How UCS systems join domains</title>
 		<para>
@@ -496,7 +502,9 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 	<section id="domain-ldap:Linux">
 		<title>Linux</title>
 		<para>
-		  This system role is used for the integration of other Linux systems than UCS and Ubuntu, e.g., for Debian or CentOS systems.
+		  This system role is used for the integration of other Linux systems than UCS and Ubuntu,
+		  e.g., for Debian or CentOS systems. The integration is documented in <xref
+		  linkend="ext-doc-domain"/>.
 		</para>
 	</section>
 
