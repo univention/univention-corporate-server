@@ -563,7 +563,7 @@ define([
 							{
 								type: Text,
 								name: 'info_text',
-								content: _('<p>Shutting down virtual machines cleanly required the cooperation of their guest operating system.</p><p>For UCS the packages "acpid" and "acpi-support-base" must be installed.</p><p>For Windows ACPI must be enabled.</p><p>If the operating system does not cooperate, "Stop" can be used to forcefully turn off the virtual machine.</p>')
+								content: _('<p>Shutting down virtual machines cleanly required the cooperation of their guest operating system.</p><p>For Linux the packages "acpid" and "acpi-support-base" must be installed.</p><p>For Windows ACPI must be enabled.</p><p>If the operating system does not cooperate, "Stop" can be used to forcefully turn off the virtual machine.</p>')
 							}, {
 								type: CheckBox,
 								value: true,

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (2.0.40-5) unstable; urgency=low
+
+  * Change ACPI shutdown text (Bug #21397)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 03 Jun 2013 09:23:59 +0200
+
 univention-virtual-machine-manager-daemon (2.0.40-4) unstable; urgency=low
 
   * Add SHUTOFF action (Bug #21397)
