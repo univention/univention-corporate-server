@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+
+  %entities;
+]>
+<book lang="en" id="windows-3.1">
+    <bookinfo>
+      <title>Univention Corporate Server</title>
+      <subtitle>Extended Windows integration documentation</subtitle>
+
+        <revhistory>
+            <revision>
+                <revnumber>3.1-1</revnumber>
+                <date>3 Jun 2013</date>
+            </revision>
+        </revhistory>
+    </bookinfo>
+
+    <chapter>
+        <title>Advanced Samba documentation</title>
+        <section>
+            <title>Operating Samba 4 as a read-only domain controller</title>
+<!-- 			<para> -->
+<!-- 			  Active Directory bietet einen Betriebsmodus namens <emphasis>ready-only domain -->
+<!-- 			  controller</emphasis> (RODC) mit den folgenden Eigenschaften: -->
+
+<!-- 			  <itemizedlist> -->
+<!-- 				<listitem><para> -->
+<!-- 				  Die Daten werden nur ready-only vorgehalten, alle schreibenden Änderungen müssen -->
+<!-- 				  an einem anderen Domänencontroller vorgenommen werden. -->
+<!-- 				</para></listitem> -->
+
+<!-- 				<listitem><para> -->
+<!-- 				  Die Replikation erfolgt daher nur unidirektional. -->
+<!-- 				</para></listitem> -->
+<!-- 			  </itemizedlist> -->
+
+<!-- 			  Eine ausführliche Beschreibung findet sich in der Microsoft TechNet Library <xref -->
+<!-- 			  linkend="technet-rodc"/>. -->
+<!-- 			</para> -->
+
+<!-- 			<para> -->
+<!-- 			  Ein Samba 4-Domänencontroller kann im RODC-Modus betrieben werden (auf beispielsweise -->
+<!-- 			  einen &ucsSlave;). Vor der Installation von <emphasis>univention-samba4</emphasis> -->
+<!-- 			  muss die &ucsUCRV; <envar>samba4/role</envar> auf <emphasis>RODC</emphasis> gesetzt -->
+<!-- 			  werden: -->
+
+<!-- <programlisting> -->
+<!-- ucr set samba4/role=RODC -->
+<!-- univention-install univention-samba4 -->
+<!-- univention-run-join-scripts -->
+<!-- </programlisting> -->
+<!-- 			</para> -->
+
+        </section>
+    </chapter>
+    <?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>
