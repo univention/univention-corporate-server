@@ -1,8 +1,8 @@
 univention-printserver (6.0.25-3) unstable; urgency=low
 
- * Set executable file permissions on cupsd.conf (Bug #31072)
+  * Set executable file permissions on cupsd.conf (Bug #31072)
 
- -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 04 Jun 2013 15:41:49 +0200
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 04 Jun 2013 16:04:04 +0200
 
 univention-printserver (6.0.25-2) unstable; urgency=low
 
