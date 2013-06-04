@@ -1,0 +1,10 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-management-console
+fix: 5.0.62-5.735.201306041035
+note:
+version: [1]
+desc: |
+  UMC server and module crashs will now be logged
+bug: [31130]
