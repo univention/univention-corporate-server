@@ -1,3 +1,9 @@
+univention-management-console (5.0.62-5) unstable; urgency=low
+
+  * Bug #31130: log tracebacks if module or server crashs
+
+ -- Florian Best <best@univention.de>  Tue, 04 Jun 2013 10:29:52 +0200
+
 univention-management-console (5.0.62-4) unstable; urgency=low
 
   * Set debug option "NO_FLUSH" to "FLUSH" in order to prevent partial or

@@ -108,4 +108,11 @@ if __name__ == '__main__':
 
 	module = umcp.ModuleServer( options.socket, options.module, check_acls = False, timeout = session_timeout )
 
-	notifier.loop()
+	try:
+		notifier.loop()
+	except (SystemExit, KeyboardInterrupt):
+		raise
+	except:
+		import traceback
+		MODULE.error(traceback.format_exc())
+		raise
