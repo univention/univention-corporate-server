@@ -183,6 +183,8 @@ define([
 			//		open modules from other modules without requiring 'umc/app'.
 			// module:
 			//		Module ID as string
+			// flavor:
+			//		The module flavor as string.
 			// props:
 			//		Optional properties that are handed over to the module constructor.
 
@@ -202,7 +204,7 @@ define([
 				var params = lang.mixin({
 					title: module.name,
 					iconClass: tools.getIconClass(module.icon),
-					closable: tools.status('overview'),  // closing tabs is only enabled of the overview is visible
+					closable: tools.status('overview'),  // closing tabs is only enabled if the overview is visible
 					moduleFlavor: module.flavor,
 					moduleID: module.id,
 					description: module.description
