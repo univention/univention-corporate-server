@@ -59,5 +59,9 @@ override_dh_auto_install:
 		install -m 644 $$i $$o;\
 	done
 
+override_dh_fixperms:
+	chmod 755 debian/univention-printserver/etc/univention/templates/scripts/etc/cups/cupsd.conf
+	dh_fixperms
+
 %:
 	dh $@

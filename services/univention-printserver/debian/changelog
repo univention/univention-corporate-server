@@ -1,6 +1,13 @@
+univention-printserver (6.0.25-4) unstable; urgency=low
+
+  * Set executable file permissions '755' in debian/rules override_dh_fixperms: 
+    on /etc/univention/templates/scripts/etc/cups/cupsd.conf (Bug #28877)
+
+ -- Liam Schwez <lschwez@micke.knut.univention.de>  Wed, 05 Jun 2013 08:36:52 +0200
+
 univention-printserver (6.0.25-3) unstable; urgency=low
 
-  * Set executable file permissions on cupsd.conf (Bug #31072)
+  * Set executable file permissions on cupsd.conf (Bug #28877)
 
  -- Liam Schwez <lschwez@micke.knut.univention.de>  Tue, 04 Jun 2013 16:04:04 +0200
 
