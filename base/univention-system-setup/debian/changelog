@@ -1,3 +1,12 @@
+univention-system-setup (7.0.0-1) unstable; urgency=low
+
+  * Fixed setting of ucrv apache2/startsite during postinst. The variable
+    will not be changed when updating univention-system-setup-boot on a joined
+    system (Bug #31643)
+  * Version Bump for UCS 3.2
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 06 Jun 2013 12:01:37 +0200
+
 univention-system-setup (6.0.78-1) unstable; urgency=low
 
   * Removed usr variable setting for "mail/antispam/globalfolder" from file 

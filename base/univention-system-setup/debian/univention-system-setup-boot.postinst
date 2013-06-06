@@ -89,11 +89,10 @@ if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 	fi
 fi
 
-if [ "$1" = configure ]; then
-
-	# Redirect the apache start site to the wizard module
+# do not change the startsite if updating a joined system, in other cases, set appliance setup startsite
+if [ "$1" = configure ] && [ -z "$2" -o ! -e /var/univention-join/joined ] && [ "$server_role" = "domaincontroller_master" ]; then
 	system_setup_boot_startsite='univention-management-console/?module=setup\&username=root'
-	if [ "$apache2_startsite" != "$system_setup_boot_startsite" ] ; then
+	if [ "$apache2_startsite" != "$system_setup_boot_startsite" ]; then
 		ucr set system/setup/prev/apache2/startsite="$apache2_startsite"
 		ucr set apache2/startsite="$system_setup_boot_startsite"
 		if [ -x /etc/init.d/apache2 ]; then
