@@ -1,5 +1,6 @@
 @!@
 @%@UCRWARNING=# @%@
+
 if   configRegistry['server/role'] == 'fatclient':
 	menutitle="Univention Managed Client"
 elif configRegistry['server/role'] =='mobileclient':
@@ -15,5 +16,22 @@ elif configRegistry['server/role'] =='memberserver':
 else:
 	menutitle="Univention Corporate Server"
 
-print  '%s %s-%s' % (menutitle, configRegistry['version/version'], configRegistry['version/patchlevel'])
+if configRegistry.get('version/version'):
+	print  '%s %s-%s:' % (menutitle, configRegistry['version/version'], configRegistry['version/patchlevel'])
+else:
+	print 'Univention Thin Client'
+
+print
+managementsystem=configRegistry['ldap/master']
+
+if configRegistry['server/role'] =='domaincontroller_master':
+	managementsystem = managementsystem + " (" + configRegistry['interfaces/eth0/address'] + ")"
+
+print 'The UCS management system is available at https://%s' % managementsystem
+print
+print 'You can log into the Univention Management Console - the principal tool to manage '
+print 'users, groups, etc. - using the "Administrator" account and the password selected '
+print 'for the root user on the master domain controller.'
+
 @!@
+
