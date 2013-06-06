@@ -1,3 +1,12 @@
+univention-base-files (2.0.14-3) unstable; urgency=low
+
+  * Refer to start page and handle interface/primary (Bug #31094)
+  * Make the sshd banner configurable through the UCR variable sshd/banner
+    and set in postinst, That way the content of /etc/issue is shown during
+    login. (Bug #31096)	 
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 06 Jun 2013 16:04:13 +0200
+
 univention-base-files (2.0.14-2) unstable; urgency=low
 
   * Add a note to /etc/issue and /etc/issue where to find the UCS management
