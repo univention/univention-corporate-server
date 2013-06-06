@@ -386,11 +386,11 @@ exit
 		</para>
 
         <section>
-		  <title>Managing the systems in the &uscUMC;</title>
+		  <title>Managing the systems in the &ucsUMC;</title>
 		  <para>
 			A <guimenu>Computer: Linux</guimenu> object can be created in the UMC computer
 			management. This allows the integration of the Unix system in the DNS/DHCP and network
-			administration of the &uscUMC;
+			administration of the &ucsUMC;
 		  </para>
 
 		  <para>
