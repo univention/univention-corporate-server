@@ -14,6 +14,7 @@ Variables: sshd/xdisplayoffset
 Variables: sshd/xuselocalhost
 Variables: sshd/challengeresponse
 Variables: sshd/passwordauthentication
+Variables: sshd/banner
 
 Type: file
 File: etc/lsb-release
@@ -168,12 +169,21 @@ File: etc/issue
 Variables: version/version
 Variables: version/patchlevel
 Variables: server/role
+Variables: hostname
+Variables: domainname
+Variables: interfaces/[^/]*/.*
+Variables: interfaces/primary
+
 
 Type: file
 File: etc/issue.net
 Variables: version/version
 Variables: version/patchlevel
 Variables: server/role
+Variables: hostname
+Variables: domainname
+Variables: interfaces/[^/]*/.*
+Variables: interfaces/primary
 
 Type: file
 File: etc/bash.bashrc

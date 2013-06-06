@@ -122,6 +122,7 @@ univention-config-registry set sshd/port?22 \
 	sshd/permitroot?yes \
 	sshd/xforwarding?no \
 	sshd/challengeresponse?yes \
+	sshd/banner?/etc/issue.net \
 	sshd/passwordauthentication?no
 
 # http://en.wikipedia.org/wiki/Nothofagus_solandri
