@@ -133,10 +133,10 @@ The signing of NTP replies should be set on all Samba domain
 controllers, see <xref linkend="basicservices::ntp"/>.
 </para>
 
-<!-- <para> -->
-<!--   Samba 4 unterstützt auf den Betrieb als <emphasis>read-only domain controller</emphasis>. Die -->
-<!--   Einrichtung ist in <xref linkend="ext-doc-win"/> dokumentiert. -->
-<!-- </para> -->
+<para>
+  Samba 4 supports the operation as a <emphasis>read-only domain controller</emphasis>. The setup is
+  documented in <xref linkend="ext-doc-win"/>.
+</para>
 
 <para>
 Samba 4 implements Active Directory directory services which allow a multi-master replication, i.e.,
@@ -210,22 +210,21 @@ in <xref linkend="windows:File_services"/> must be taken into consideration.
 
 <section id="windows:Univention_S4_connector"><title>Univention S4 connector / Samba 4 LDAP directory</title>
 <para>
-In Samba 4, the Samba user accounts are managed completely by
-Samba. 
-<!-- Samba 4 stellt einen separaten LDAP-Verzeichnisdienst bereit. -->
-The synchronisation between the UCS LDAP and the Samba LDAP occurs via
-an internal system service, the Univention S4 connector.
-</para>
-<para>
-Further information on the status of the synchronisation can be found
-in the log file <filename>/var/log/univention/connector-s4.log</filename>.
+  In Samba 4, the Samba user accounts are managed completely bySamba. Samba 4 provides a separate
+  LDAP directory service. The synchronisation between the UCS LDAP and the Samba LDAP occurs via an
+  internal system service, the Univention S4 connector.
 </para>
 
 <para>
-  <!-- Mit dem Befehl <command>univention-s4search</command> kann im Samba-Verzeichnisdienst gesucht -->
-  <!-- werden. <command>univention-s4search</command> ist ein Wrapper um das Kommando -->
-  <!-- <command>ldbsearch</command>. Wird es als Benutzer <emphasis>root</emphasis> aufgerufen, werden -->
-  <!-- automatisch die nötigen Credentials des Maschinenkontos verwendet: -->
+  Further information on the status of the synchronisation can be found in the log file
+  <filename>/var/log/univention/connector-s4.log</filename>.
+</para>
+
+<para>
+  The <command>univention-s4search</command> command can be used to search in the Samba directory
+  service. <command>univention-s4search</command> is a wrapper for the command
+  <command>ldbsearch</command>. If it is run as the <emphasis>root</emphasis> user, the required
+  credentials of the machine account are used automatically:
 
 <programlisting>
 root@master:~# univention-s4search sAMAccountName=Administrator
