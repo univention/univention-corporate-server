@@ -22,12 +22,28 @@ else:
 	print 'Univention Thin Client'
 
 print
-managementsystem=configRegistry['ldap/master']
+startsite = ""
+host = configRegistry['hostname']
+domain = configRegistry['domainname']
+
+if host and domain:
+	startsite = host + "." + domain
+
+if configRegistry['interfaces/primary']:
+	ip = configRegistry['interfaces/' + configRegistry['interfaces/primary'] + '/address']
+else:
+	ip = configRegistry['interfaces/eth0/address']
+
+if ip:
+	startsite = startsite + " (" + ip + ")"
 
 if configRegistry['server/role'] =='domaincontroller_master':
-	managementsystem = managementsystem + " (" + configRegistry['interfaces/eth0/address'] + ")"
+	print 'The UCS management system is available at https:/' + startsite
+else:
+	print 'The UCS management system can be reached by following the link to the domain controller'
+	print 'master at https://' + startsite + ' and selecting the'
+	print 'Univention Management Console'
 
-print 'The UCS management system is available at https://%s' % managementsystem
 print
 print 'You can log into the Univention Management Console - the principal tool to manage '
 print 'users, groups, etc. - using the "Administrator" account and the password selected '
