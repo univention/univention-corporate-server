@@ -962,15 +962,10 @@
 				</tbody>
 			</tgroup>
 		</table>
-		<!--
-		<comment>
-		Information on removing loops can be found in the Univention Wiki under WIKIREF-23921.
-		</comment>
-		-->
 	</section>
 
 	<section id="nagios:Einbindung_von_manuell_erstellten_Konfigurationsdateien">
-		<title>Einbindung von manuell erstellten Konfigurationsdateien</title>
+		<title>Integration of additional Nagios plugin configurations</title>
 		<para>
 		If you wish to add expansions to the Nagios server configuration files
 		created by the listener module, the manually created configuration
