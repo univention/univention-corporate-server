@@ -1,3 +1,10 @@
+univention-base-files (2.0.14-2) unstable; urgency=low
+
+  * Add a note to /etc/issue and /etc/issue where to find the UCS management
+    system (Bug #31094)	 
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 06 Jun 2013 12:30:13 +0200
+
 univention-base-files (2.0.14-1) unstable; urgency=low
 
   * added UCR variable ntp/tinker/panic, which can be used to configure the
