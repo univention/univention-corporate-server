@@ -1,4 +1,4 @@
-univention-system-setup (7.0.0-1) unstable; urgency=low
+univention-system-setup (7.0.0-2) unstable; urgency=low
 
   * Fixed setting of ucrv apache2/startsite during postinst. The variable
     will not be changed when updating univention-system-setup-boot on a joined
