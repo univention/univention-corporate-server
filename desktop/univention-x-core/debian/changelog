@@ -1,3 +1,10 @@
+univention-x-core (7.0.0-1) unstable; urgency=low
+
+  * converted hard dependency to univention-gdm to 
+    recommend (Bug #31004) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Jun 2013 15:39:59 +0200
+
 univention-x-core (6.0.6-1) unstable; urgency=low
 
   * Added support for ucrv xorg/device/driver="" which writes no

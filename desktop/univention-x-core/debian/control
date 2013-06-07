@@ -13,7 +13,6 @@ Pre-Depends: univention-config-registry
 Depends: ${misc:Depends},
  univention-policy-tools,
  ldap-utils,
- univention-gdm,
  xserver-xorg (>> 1:7.3),
  xbase-clients,
  univention-fonts,
@@ -24,6 +23,7 @@ Depends: ${misc:Depends},
  xserver-xorg-video-openchrome,
  xserver-xorg-input-kbd,
  xserver-xorg-input-mouse
+Recommends: univention-gdm
 Conflicts: xserver-xfree86 (<< 6.8.2)
 Description: UCS - X Window System
  This package contain a meta-package, that sets up a graphical login.
