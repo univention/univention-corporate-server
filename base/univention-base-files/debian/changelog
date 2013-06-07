@@ -1,3 +1,10 @@
+univention-base-files (2.0.14-4) unstable; urgency=low
+
+  * Use univention.config_registry.interfaces to determine the IP address of
+    the primary interface (Bug #31094)  
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 07 Jun 2013 13:16:33 +0200
+
 univention-base-files (2.0.14-3) unstable; urgency=low
 
   * Refer to start page and handle interface/primary (Bug #31094)
