@@ -1,3 +1,14 @@
+ucs-ec2-tools (0.1.4-1) unstable; urgency=low
+
+  * Support local commands
+  * Dump tracebacks to the logfile
+  * Reconnect if the SSH session disconnected
+  * Also replace the [hostname_IP] string in the command list for
+    example to allow a file copy from the remote machine to the local
+  (Bug #31283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 07 Jun 2013 06:04:15 +0200
+
 ucs-ec2-tools (0.1.3-1) unstable; urgency=low
 
   * Fixed NAT timeout by activating ssh keep alive (Bug #31283)

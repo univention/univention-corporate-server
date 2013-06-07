@@ -37,6 +37,7 @@ import subprocess
 import sys
 import glob
 import time
+import traceback
 from socket import error as socket_error
 from select import select
 
@@ -230,21 +231,75 @@ class VM:
 
 		self._close_sftp_connection()
 
+	def _is_local_command(self, command):
+		if not command:
+			return False
+		if command.startswith('LOCAL'):
+			return True
+
+		return False
+
+	def _exec_local(self, cmdline):
+		self._log('Execute local command: %s' % cmdline)
+
+		self._open_logfile()
+			
+		rt = subprocess.call(cmdline, shell=True, stdout=self.logfile_fd, stderr=self.logfile_fd)
+
+		self._close_logfile()
+
+		return rt
+
+	def _open_logfile(self):
+		if self.logfile:
+			self.logfile_fd = open(self.logfile, 'a+')
+		else:
+			self.logfile_fd = sys.stdout
+		
+	def _close_logfile(self):
+		if self.logfile_fd:
+			self.logfile_fd.close()
+		self.logfile_fd = None
 
 	def run_commands(self, phase):
 		''' Run all commands for a given phase e.g. for command1 '''
 		for cmdline in self.commands[phase]:
 			try:
 				_print_process('  %s' % cmdline)
-				rt = self._ssh_exec(cmdline)
+				if self._is_local_command(cmdline):
+					local_cmdline = self._remove_local_from_cmd(cmdline)
+					rt = self._exec_local(local_cmdline)
+				else:
+					rt = self._ssh_exec(cmdline)
 				if rt != 0:
 					_print_done('fail (return code %s)' % rt)
 				else:
 					_print_done()
-			except:
+			except paramiko.ssh_exception.SSHException:
+				self.connect()
+				try:
+					rt = self._ssh_exec(cmdline)
+					if rt != 0:
+						_print_done('fail (return code %s)' % rt)
+					else:
+						_print_done()
+				except Exception,e:
+					self._print_exception_to_file()
+					_print_done('fail')
+					pass
+			except Exception,e:
+				self._print_exception_to_file()
 				_print_done('fail')
 				pass
 		pass
+
+	def _remove_local_from_cmd(self, cmd):
+		return string.replace(cmd, 'LOCAL', '', 1).strip()
+
+	def _print_exception_to_file(self):
+		self._open_logfile()
+		traceback.print_exc(file=self.logfile_fd)
+		self._close_logfile()
 
 	def command_count(self):
 		''' Retrun the  IP address of the started VM '''
@@ -404,7 +459,7 @@ def main():
 		vm.connect()
 		_print_done()
 
-	# replace profile variables
+	# replace profile variables and commands
 	replace_list = []
 	for vm in vms:
 		replace_list.append( ('[%s_IP]' % vm.section, vm.get_ip()) )
@@ -412,6 +467,9 @@ def main():
 		if vm.profile:
 			for (host_str, ip) in replace_list:
 				vm.profile = vm.profile.replace(host_str, ip)
+		for i in range(0,len(vm.commands)):
+			for (host_str, ip) in replace_list:
+				vm.commands[i] = [cmd.replace(host_str, ip) for cmd in vm.commands[i]]
 
 	# create profiles
 	for vm in vms:
@@ -433,7 +491,7 @@ def main():
 	for phase in range(0,max_command):
 		for vm in vms:
 			print 'Running command phase (%d/%d) on VM %s' % (phase+1, max_command, vm.get_name())
-			vm.run_commands(phase=phase)
+			vm.run_commands(phase)
 
 if __name__ == '__main__':
 	main()
