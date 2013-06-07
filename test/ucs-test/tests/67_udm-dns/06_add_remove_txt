@@ -1,0 +1,45 @@
+#!/usr/share/ucs-test/runner python
+## desc: DNS forward zone, test setting, appending and removing TXT records
+## tags: [udm-dns]
+## roles: [domaincontroller_master]
+## bugs: [15654]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	sys.exit(131) # skip for now
+
+	forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
+	TXTrecords = (uts.random_string(), uts.random_string(), uts.random_string())
+
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(zoneName=%s)(relativeDomainName=@)(objectClass=dNSZone))' % forwardZoneName
+
+	with udm_test.UCSTestUDM() as udm:
+		forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = uts.random_string(), txt = TXTrecords[0])
+		
+		udm.modify_object('dns/forward_zone', dn = forwardZone, append = {'txt': TXTrecords[1:]})
+		foundTXTrecords = ldap.search(filter = ldapFilter, attr = ['tXTRecord'])[0][1].get('tXTRecord', [])
+		for TXTrecord in TXTrecords:
+			if not TXTrecord in foundTXTrecords:
+				test.fail('Expected "tXTRecord" attribute of DNS forward zone to contain "%s", but could not find it in there\n"tXTRecord": %r' % (TXTrecord, foundTXTrecords))
+		
+		udm.modify_object('dns/forward_zone', dn = forwardZone, remove = {'txt': TXTrecords[:2]})
+		foundTXTrecords = ldap.search(filter = ldapFilter, attr = ['tXTecord'])[0][1].get('tXTRecord', [])
+		for TXTrecord in TXTrecords[:2]:
+			if TXTrecord in foundTXTrecords:
+				test.fail('"tXTRecord" attribute of DNS forward zone still contained "%s" after the value should have been removed\n"tXTRecord": %r' % (TXTrecord, foundTXTrecords))
+
+		if not TXTrecords[2] in foundTXTrecords:
+			test.fail('Removing the values %r from "tXTRecord" attribute of DNS forward zone also lead to the removal of value "%s" from the attribute\n"tXTRecord": %r' % (TXTrecords[:2], TXTrecords[2], foundTXTrecords))

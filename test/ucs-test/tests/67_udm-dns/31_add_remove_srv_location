@@ -17,34 +17,31 @@ import univention.uldap as uldap
 
 
 if __name__ == '__main__':
+	forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
+	
+	srvRecordName = '%s tcp %s' % (uts.random_string(), uts.random_string())
+	srvRecordNameSplit = srvRecordName.split()
+	locations = ['0 1 2 %s' % forwardZoneName, '4 5 6 %s' % forwardZoneName, '7 8 9 %s' % forwardZoneName, '10 11 12 %s' % forwardZoneName]
+	
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(zoneName=%s)(relativeDomainName=_%s._%s.%s)(sRVRecord=*)(objectClass=dNSZone))' % (forwardZoneName, srvRecordNameSplit[0], srvRecordNameSplit[1], srvRecordNameSplit[2])
+
 	with udm_test.UCSTestUDM() as udm:
-		forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
 		forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = uts.random_string())
-		locations = ['0 1 2 %s' % forwardZoneName, '4 5 6 %s' % forwardZoneName]
-		moreLocations = ['7 8 9 %s' % forwardZoneName, '10 11 12 %s' % forwardZoneName]
-		srvRecordName = '%s tcp %s' % (uts.random_string(), uts.random_string())
-		srvRecordNameSplit = srvRecordName.split()
+		srvRecord = udm.create_object('dns/srv_record', superordinate = forwardZone, name = srvRecordName, append = {'location': locations[:2]})
 		
-		srvRecord = udm.create_object('dns/srv_record', superordinate = forwardZone, name = srvRecordName, append = {'location': locations})
-		udm.modify_object('dns/srv_record', superordinate = forwardZone, dn = srvRecord, append = {'location': moreLocations})
-		ldap = uldap.getAdminConnection()
-		ldapFilter = '(&(zoneName=%s)(relativeDomainName=_%s._%s.%s)(sRVRecord=*)(objectClass=dNSZone))' % (forwardZoneName, srvRecordNameSplit[0], srvRecordNameSplit[1], srvRecordNameSplit[2])
-		
+		udm.modify_object('dns/srv_record', superordinate = forwardZone, dn = srvRecord, append = {'location': locations[2:]})
 		result = ldap.search(base = forwardZone, filter = ldapFilter, attr = ['sRVRecord'])[0][1].get('sRVRecord', [])
 		for location in locations:
 			if not location in result:
-				print 'Test FAILED. Expected "sRVRecord" attribute of created DNS service record to contain "%s", but could not find it in there: %r' % (location, result)
-				sys.exit(1)
+				test.fail('Expected "sRVRecord" attribute of created DNS service record to contain "%s", but could not find it in there\n"sRVRecord": %r' % (location, result))
 
-		udm.modify_object('dns/srv_record', superordinate = forwardZone, dn = srvRecord, remove = {'location': locations})
-
+		udm.modify_object('dns/srv_record', superordinate = forwardZone, dn = srvRecord, remove = {'location': locations[:2]})
 		result = ldap.search(base = forwardZone, filter = ldapFilter, attr = ['sRVRecord'])[0][1].get('sRVRecord', [])
-		for location in locations:
+		for location in locations[:2]:
 			if location in result:
-				print 'Test FAILED. "sRVRecord" attribute of created DNS service record still contained "%s" after the value should have been removed: ' % (location, result)
-				sys.exit(1)
-		for location in moreLocations:
+				test.fail('"sRVRecord" attribute of created DNS service record still contained "%s" after the value should have been removed\n"sRVRrecord": %r ' % (location, result))
+		for location in locations[2:]:
 			if not location in result:
-				print 'Test FAILED. Removal of certain values from "sRVRecord" attribute of created DNS service record also lead to the removal of "%s" from the attribute.' % location
-				sys.exit(1)
+				test.fail('Removal of certain values from "sRVRecord" attribute of created DNS service record also lead to the removal of "%s" from the attribute\n"sRVRrecord":' % (location, result))
 

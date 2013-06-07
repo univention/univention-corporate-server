@@ -11,12 +11,12 @@
 
 import sys
 import subprocess
-import univention.testing as testlib
+import univention.testing as test
 import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
-	if testlib.package_installed('univention-ox'):
+	if test.package_installed('univention-ox'):
 		sys.exit(138)
 
 	license_check = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE)
@@ -31,5 +31,5 @@ if __name__ == '__main__':
 	license_after = license_check.stdout.read()
 
 	if license_before != license_after:
-		print 'Test FAILED. The license before creating a simple-auth user ("%s") differs from the license after creating the user ("%s").' % (license_before, license_after)
+		test.fail('The license before creating a simple-auth user ("%s") differs from the license after creating the user ("%s").' % (license_before, license_after))
 	

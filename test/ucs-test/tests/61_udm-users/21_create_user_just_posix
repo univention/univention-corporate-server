@@ -9,12 +9,12 @@
 
 
 import sys
-import univention.testing as testlib
+import univention.testing as test
 import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
-	if testlib.package_installed('univention-ox'):
+	if test.package_installed('univention-ox'):
 		sys.exit(138)
 	
 	with udm_test.UCSTestUDM() as udm:

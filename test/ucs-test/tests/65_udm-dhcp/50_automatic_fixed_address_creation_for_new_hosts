@@ -10,6 +10,7 @@
 
 
 import sys
+import univention.testing as test
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
@@ -17,15 +18,14 @@ import univention.uldap as uldap
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+	
 		hostProperties = {
 			'name': uts.random_name(),
 			'ip': '10.20.30.40',
 			'mac': '00:11:22:33:44:55',
 			'dhcpEntryZone': '%s 10.20.30.40 00:11:22:33:44:55' % dhcpService
 		}
-		udm.create_object('computers/windows', **hostProperties)
 
-		expectedDhcpHostDn = 'cn=%s,%s' % (hostProperties['name'], dhcpService)
 		ldap = uldap.getAdminConnection()
 		ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpHost))' % hostProperties['name']
 		expectedLdap = {
@@ -33,13 +33,16 @@ if __name__ == '__main__':
 			'univentionDhcpFixedAddress': hostProperties['ip'],
 			'dhcpHWAddress': 'ethernet %s' % hostProperties['mac']
 		}
+	
+		udm.create_object('computers/windows', **hostProperties)
+
+		expectedDhcpHostDn = 'cn=%s,%s' % (hostProperties['name'], dhcpService)
+		
 		for dn, attr in ldap.search(base = dhcpService, filter = ldapFilter, attr = expectedLdap.keys()):
 			if dn == expectedDhcpHostDn:
 				for key, value in expectedLdap.items():
 					if [value] != attr[key]:
-						print 'Test FAILED. Expected "%s" of created DHCP host object to be %r, but found %r instead.' % (key, [value], attr[key])
-						sys.exit(1)
+						test.fail('Expected "%s" of created DHCP host object to be %r, but found %r instead' % (key, [value], attr[key]))
 				sys.exit(0)
 		
-		print 'Test FAILED. Could not find expected DN "%s" of DHCP host object in LDAP.' % expectedDhcpHostDn
-		sys.exit(1)
+		test.fail('Could not find expected DN "%s" of DHCP host object in LDAP' % expectedDhcpHostDn)

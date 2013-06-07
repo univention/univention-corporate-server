@@ -9,12 +9,12 @@
 
 import sys
 import time
-import univention.testing as testlib
+import univention.testing as test
 import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
-	if testlib.package_installed('univention-ox'):
+	if test.package_installed('univention-ox'):
 		sys.exit(138)
 
 	date = time.gmtime( time.time() )
@@ -25,6 +25,5 @@ if __name__ == '__main__':
 		krbPasswordEnd = udm.lo.search(filter = '(uid=%s)' % user[1], attr = ['krb5PasswordEnd'])[0][1]['krb5PasswordEnd'][0]
 		expectedKrbPasswordEnd = time.strftime('%Y%m%d', date) + '000000Z'
 		if krbPasswordEnd != expectedKrbPasswordEnd:
-			print 'Test FAILED. "krb5PasswordEnd" of %s was expected to be "%s", but "%s" was found.' % (user[0], expectedKrbPasswordEnd, krbPasswordEnd)
-			sys.exit(1)
+			test.fail('"krb5PasswordEnd" of %s was expected to be "%s", but "%s" was found.' % (user[0], expectedKrbPasswordEnd, krbPasswordEnd))
 

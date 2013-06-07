@@ -1,0 +1,51 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create, check and remove PTR record
+## tags: [udm-dns]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		reverseZoneName = '10.20.30'
+		reverseZone = udm.create_object('dns/reverse_zone', subnet = reverseZoneName, nameserver = uts.random_string())
+		
+		reverseZoneName = reverseZoneName.split('.')
+		reverseZoneName.reverse()
+		reverseZoneName = '.'.join(reverseZoneName) + '.in-addr.arpa'
+		ptrRecordProperties = {
+			'address': '10.20.30.40',
+			'ptr_record': '%s.%s.%s.' % (uts.random_name(), uts.random_name(), uts.random_name())
+		}
+		expectedLdap = {
+			'relativeDomainName': ptrRecordProperties['address'],
+			'zoneName': reverseZoneName,
+			'pTRRecord': ptrRecordProperties['ptr_record']
+		}
+
+		ptrRecord = udm.create_object('dns/ptr_record', superordinate = reverseZone, **ptrRecordProperties)
+		ldap = uldap.getAdminConnection()
+		ldapFilter = '(&(relativeDomainName=%s)(objectClass=dNSZone))' % expectedLdap['relativeDomainName']
+		for dn, attr in ldap.search(base = reverseZone, filter = ldapFilter, attr = expectedLdap.keys()):
+			if dn == ptrRecord:
+				for key, value in expectedLdap.items():
+					if [value] != attr[key]:
+						test.fail('Expected "%s" of created PTR record to be %r, but found %r instead' % (key, [value], attr[key]))
+				break
+		else:
+			test.fail('Could not find created PTR record "%s" in LDAP' % ptrRecord)
+
+		udm.remove_object('dns/ptr_record', dn = ptrRecord, superordinate = reverseZone)
+		if ptrRecord in ldap.searchDn(base = reverseZone, filter = ldapFilter):
+			test.fail('Could still PTR record "%s" in LDAP after it should have been removed' % ptrRecord)

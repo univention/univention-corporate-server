@@ -25,10 +25,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
+import sys
 import subprocess
 
 def package_installed(package):
 	with open('/dev/null', 'w') as null:
 		dpkg = subprocess.Popen(['dpkg-query', '-W', package], stderr=null)
 		return dpkg.wait() == 0
+
+
+
+def fail(log_message, returncode = 1):
+	print 'Test FAILED.\n%s' % log_message
+	sys.exit(returncode)

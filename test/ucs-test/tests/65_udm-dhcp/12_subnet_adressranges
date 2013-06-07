@@ -10,26 +10,26 @@
 
 
 import sys
+import univention.testing as test
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
 
 if __name__ == '__main__':
+	ranges = ('10.20.10.1 10.20.10.254', '10.20.30.1 10.20.30.254', '10.20.50.1 10.20.50.254')
+	ldap = uldap.getAdminConnection()
+
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
 		dhcpSubnet = udm.create_object('dhcp/subnet', subnet = '10.20.0.0', subnetmask = '16', superordinate = dhcpService)
-		ranges = ('10.20.10.1 10.20.10.254', '10.20.30.1 10.20.30.254', '10.20.50.1 10.20.50.254')
 
 		udm.modify_object('dhcp/subnet', dn = dhcpSubnet, range = ranges[0])
-		udm.modify_object('dhcp/subnet', dn = dhcpSubnet, range = [ranges[1], ranges[2]]) # UCSTestUDM will automatically use '--append' when a given keyword attribute is a list
+		udm.modify_object('dhcp/subnet', dn = dhcpSubnet, append = {'range': ranges[1:]})
 
-		ldap = uldap.getAdminConnection()
 		setDhcpRanges = ldap.search(base = dhcpService, filter = '(&(cn=10.20.0.0)(dhcpNetMask=16)(objectClass=univentionDhcpSubnet))', attr = ['dhcpRange'])[0][1].get('dhcpRange', [])
-		missingRanges = []
 		for range in ranges:
 			if not range in setDhcpRanges:
-				print 'Test FAILED. Expected "dhcpRange" attribute of created subnet to contain "%s" after modification, but could not find the value in there: %r' % (range, setDhcpRanges)
-				sys.exit(1)
+				test.fail('Expected "dhcpRange" attribute of created subnet to contain "%s" after modification, but could not find it in there\n"dhcpRange": %r' % (range, setDhcpRanges))
 
 
 

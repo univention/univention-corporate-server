@@ -10,23 +10,24 @@
 
 
 import sys
+import univention.testing as test
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
 
 if __name__ == '__main__':
+	dnsAliasZoneTTL = '128'
+	dnsAliasName = uts.random_name()
+
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(relativeDomainName=%s)(objectClass=dNSZone))' % dnsAliasName
+	
 	with udm_test.UCSTestUDM() as udm:
 		forwardZone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
-		dnsAliasName = uts.random_name()
 		dnsAlias = udm.create_object('dns/alias', name = dnsAliasName, cname = uts.random_name(), superordinate = forwardZone)
-		dnsAliasZoneTTL = '128'
 
 		udm.modify_object('dns/alias', dn = dnsAlias, superordinate = forwardZone, zonettl = dnsAliasZoneTTL)
-		
-		ldap = uldap.getAdminConnection()
-		ldapFilter = '(&(relativeDomainName=%s)(objectClass=dNSZone))' % dnsAliasName
 		result = ldap.search(base = forwardZone, filter = ldapFilter, attr = ['dNSTTL'])[0][1].get('dNSTTL', [])
 		if result != [dnsAliasZoneTTL]:
-			print 'Test FAILED. Expected "dNSTTL" of created DNS alias to be %r after modification, but found %r instead.' % ([dnsAliasZoneTTL], result)
-			sys.exit(1)
+			test.fail('Expected "dNSTTL" of created DNS alias to be %r after modification, but found %r instead.' % ([dnsAliasZoneTTL], result))
 

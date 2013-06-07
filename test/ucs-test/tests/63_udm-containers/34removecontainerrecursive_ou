@@ -9,6 +9,7 @@
 
 
 import sys
+import univention.testing as test
 import univention.uldap as uldap
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -29,5 +30,4 @@ if __name__ == '__main__':
 
 		ldap = uldap.getAdminConnection()
 		if ou in ldap.searchDn(filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName):
-			print 'Test FAILED. After moving the created OU to another OU and removing the latter one, the OU (%s) could still be found in LDAP.' % ou
-			sys.exit(1)
+			test.fail('After moving the created OU into another OU and removing the latter one, the OU (%s) could still be found in LDAP' % ou)

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: DNS reverse zone, append and remove NS record
+## desc: DNS reverse zone, append and remove NS records
 ## tags: [udm-dns]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -10,6 +10,7 @@
 
 
 import sys
+import univention.testing as test
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
@@ -27,16 +28,13 @@ if __name__ == '__main__':
 		foundNameServers = ldap.search(filter = ldapFilter, attr = ['nSRecord'])[0][1].get('nSRecord', [])
 		for nameServer in nameServers + moreNameServers:
 			if not nameServer in foundNameServers:
-				print 'Test FAILED. Expected "nNSRecord" attribute of DNS reverse zone to contain "%s" after modification, but could not find it in there: %r' % (nameServer, foundNameServers)
-				sys.exit(1)
+				test.fail('Expected "nNSRecord" attribute of DNS reverse zone to contain "%s" after modification, but could not find it in there\n"nSRecord": %r' % (nameServer, foundNameServers))
 
 		udm.modify_object('dns/reverse_zone', dn = reverseZone, remove = {'nameserver': nameServers})
 		foundNameServers = ldap.search(filter = ldapFilter, attr = ['nSRecord'])[0][1].get('nSRecord', [])
 		for nameServer in nameServers:
 			if nameServer in foundNameServers:
-				print 'Test FAILED. "nSRecord" attribute of created DNS reverse zone still contained "%s" after the value should have been removed: %r' % (nameServer, foundNameServers)
-				sys.exit(1)
+				test.fail('"nSRecord" attribute of created DNS reverse zone still contained "%s" after the value should have been removed\n"nSRecord": %r' % (nameServer, foundNameServers))
 		for nameServer in moreNameServers:
 			if not nameServer in foundNameServers:
-				print 'Test FAILED. Removal of certain values from "nSRecord" attribute of DNS reverse zone also lead to the removal of "%s" from the attribute.' % (nameServer)
-				sys.exit(1)
+				test.fail('Removal of certain values from "nSRecord" attribute of DNS reverse zone also lead to the removal of "%s" from the attribute\n"nSRecord": ' % (nameServer, foundNameServers))

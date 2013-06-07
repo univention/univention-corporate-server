@@ -10,6 +10,7 @@
 
 
 import sys
+import univention.testing as test
 import univention.uldap as uldap
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -24,7 +25,6 @@ if __name__ == '__main__':
 		udm.modify_object('container/ou', dn = ou, description = ouDescription)
 		
 		ldap = uldap.getAdminConnection()
-		setOuDescription = ldap.search(filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName, attr = ['description'])[0][1]['description']
+		setOuDescription = ldap.search(filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName, attr = ['description'])[0][1].get('description', [])
 		if setOuDescription != [ouDescription]:
-			print 'Test FAILED. Expected "description" of created OU to be set to %r after modification, but %r was found.' % ([ouDescription], setOuDescription)
-			sys.exit(1)
+			test.fail('Expected "description" of created OU to be %r after modification, but found %r instead' % ([ouDescription], setOuDescription))

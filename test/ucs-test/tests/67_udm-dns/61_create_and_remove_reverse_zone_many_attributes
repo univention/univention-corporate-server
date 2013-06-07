@@ -10,54 +10,45 @@
 
 
 import sys
+import univention.testing as test
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
 
 
 if __name__ == '__main__':
+	reverseZoneProperties = {
+		'subnet': '10.20.30',
+		'nameserver': uts.random_string(),
+		'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+		'serial': '1',
+		'zonettl': '128',
+		'refresh': '64',
+		'expire': '32',
+		'ttl': '16',
+		'retry': '8'
+	}
+
+	expectedSOARecord = ['%s %s. %s %s %s %s %s' % (reverseZoneProperties['nameserver'],
+											   reverseZoneProperties['contact'].replace('@', '.'),
+											   reverseZoneProperties['serial'],
+											   reverseZoneProperties['refresh'],
+											   reverseZoneProperties['retry'],
+											   reverseZoneProperties['expire'],
+											   reverseZoneProperties['ttl'])]
+	ldap = uldap.getAdminConnection()
 	with udm_test.UCSTestUDM() as udm:
-		reverseZoneProperties = {
-			'subnet': '10.20.30',
-			'nameserver': uts.random_string(),
-			'contact': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
-			'serial': '1',
-			'zonettl': '128',
-			'refresh': '64',
-			'expire': '32',
-			'ttl': '16',
-			'retry': '8'
-		}
 		reverseZone = udm.create_object('dns/reverse_zone', **reverseZoneProperties)
-		reverseZoneProperties['subnet'] = reverseZoneProperties['subnet'].split('.')
-		reverseZoneProperties['subnet'].reverse()
-		reverseZoneProperties['subnet'] = '%s.in-addr.arpa' % '.'.join(reverseZoneProperties['subnet'])
+		zoneName = reverseZoneProperties['subnet'].split('.')
+		zoneName.reverse()
+		zoneName = '%s.in-addr.arpa' % '.'.join(zoneName)
 
-		expectedSOARecord = ['%s %s. %s %s %s %s %s' % (reverseZoneProperties['nameserver'],
-												   reverseZoneProperties['contact'].replace('@', '.'),
-												   reverseZoneProperties['serial'],
-												   reverseZoneProperties['refresh'],
-												   reverseZoneProperties['retry'],
-												   reverseZoneProperties['expire'],
-												   reverseZoneProperties['ttl'])]
-
-		ldap = uldap.getAdminConnection()
-		ldapFilter = '(&(zoneName=%s)(objectClass=dNSZone)(relativeDomainName=@))' % reverseZoneProperties['subnet']
-		for dn, attr in ldap.search(filter = ldapFilter, attr = ['sOARecord']):
+		for dn, attr in ldap.search(filter = '(&(zoneName=%s)(objectClass=dNSZone)(relativeDomainName=@))' % zoneName
+, attr = ['sOARecord']):
 			if dn == reverseZone:
 				if attr['sOARecord'] != expectedSOARecord:
-					print 'Test FAILED. Expected "sOAREcord" of created DNS reverse zone to be %r, but found %r instead.' % (expectedSOARecord, attr['sOARecord'])
-					sys.exit(1)
-				break
-		else:
-			print 'Test FAIELD. Could not find created DNS reverse zone "%s" in LDAP.' % reverseZone
-			sys.exit(1)
+					test.fail('Expected "sOAREcord" of created DNS reverse zone to be %r, but found %r instead' % (expectedSOARecord, attr['sOARecord']))
+				sys.exit(0)
+		
+		test.fail('Could not find created DNS reverse zone "%s" in LDAP' % reverseZone)
 
-
-
-
-
-
-
-
-						

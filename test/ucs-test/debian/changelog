@@ -1,3 +1,12 @@
+ucs-test (3.0.59-1) unstable; urgency=low
+
+  * added library function to abbort test with log message
+  * adapted existing udm tests to use new library function to abbort on fail
+  * ported several udm-dns tests from ucs-3.0 branch
+  (Bug #27664)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 07 Jun 2013 13:18:03 +0200
+
 ucs-test (3.0.58-1) unstable; urgency=low
 
   * fixed typo in 63_udm-containers/32movecontainer_ou (Bug #27664)

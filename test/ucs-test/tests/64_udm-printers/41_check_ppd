@@ -16,6 +16,7 @@
 
 import sys
 import os
+import univention.testing as test
 import univention.uldap as uldap
 
 if __name__ == '__main__':
@@ -36,30 +37,11 @@ if __name__ == '__main__':
 		for file in files:
 			if file.endswith('.ppd') or file.endswith('ppd.gz'):
 				printerFiles.append(file)
-
-
-
-	printerModelsLackingFile = []
-	filesLackingPrinterModel = []
 	
 	for printerModel in ldapPrinterModels:
 		if not printerModel in printerFiles:
-			printerModelsLackingFile.append(printerModel)
+			test.fail('No PPD file found for LDAP printer "%s"' % printerModel)
 	
 	for printerFile in printerFiles:
 		if not printerFile in ldapPrinterModels:
-			filesLackingPrinterModel.append(printerFile)
-
-
-	
-	if printerModelsLackingFile or filesLackingPrinterModel:
-		print 'Test FAILED.'
-		if printerModelsLackingFile:
-			print 'No PPD file found for the following printer models:'
-			for printerModel in printerModelsLackingFile:
-				print '    %s' % printerModel
-		if filesLackingPrinterModel:
-			print 'No printer model found in LDAP for the following PPD files:'
-			for file in filesLackingPrinterModel:
-				print '    %s' % file
-		sys.exit(1)
+			test.fail('No LDAP printer found for PPD file "%s"' % printerFile)

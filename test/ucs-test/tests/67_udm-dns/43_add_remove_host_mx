@@ -1,0 +1,44 @@
+#!/usr/share/ucs-test/runner python
+## desc: DNS host, test setting, appending and removing A records
+## tags: [udm-dns]
+## roles: [domaincontroller_master]
+## bugs: [15654]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	hostName = uts.random_name()
+	MXrecords = ('1 10.20.30.40', '2 10.20.30.41', '3 10.20.30.42')
+
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(relativeDomainName=%s)(objectClass=dNSZone))' % hostName
+
+	with udm_test.UCSTestUDM() as udm:
+		forwardZone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
+		hostRecord = udm.create_object('dns/host_record', superordinate = forwardZone, name = hostName, mx = MXrecords[0])
+		
+		udm.modify_object('dns/host_record', dn = hostRecord, superordinate = forwardZone, append = {'mx': MXrecords[1:]})
+		foundMXrecords = ldap.search(filter = ldapFilter, attr = ['mXRecord'])[0][1].get('mXRecord', [])
+		for MXrecord in MXrecords:
+			if not MXrecord in foundMXrecords:
+				test.fail('Expected "mXRecord" attribute of DNS forward zone to contain "%s", but could not find it in there\n"mXRecord": %r' % (MXrecord, foundMXrecords))
+		
+		udm.modify_object('dns/host_record', dn = hostRecord, superordinate = forwardZone, remove = {'mx': MXrecords[:2]})
+		foundMXrecords = ldap.search(filter = ldapFilter, attr = ['mXRecord'])[0][1].get('mXRecord', [])
+		for MXrecord in MXrecords[:2]:
+			if MXrecord in foundMXrecords:
+				test.fail('"mXRecord" attribute of DNS forward zone still contained "%s" after the value should have been removed\n"mXRecord": %r' % (MXrecord, foundMXrecords, foundMXrecords))
+
+		if not MXrecords[2] in foundMXrecords:
+			test.fail('Removing the values %r from "mXRecord" attribute of DNS forward zone also lead to the removal of value "%s" from the attribute\n"mXRecord": %r' % (MXrecords[:2], MXrecords[2], foundMXrecords))

@@ -9,6 +9,7 @@
 
 
 import sys
+import univention.testing as test
 import univention.uldap as uldap
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -30,5 +31,4 @@ if __name__ == '__main__':
 
 		ldap = uldap.getAdminConnection()
 		if cn in ldap.searchDn(filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName):
-			print 'Test FAILED. After moving the created CN to another CN and removing the latter one, the CN (%s) could still be found in LDAP.' % cn
-			sys.exit(1)
+			test.fail('After moving the created CN into another CN and removing the latter one, the CN (%s) could still be found in LDAP' % cn)

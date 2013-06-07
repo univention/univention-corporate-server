@@ -9,6 +9,7 @@
 
 
 import sys
+import univention.testing as test
 import univention.uldap as uldap
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -32,5 +33,4 @@ if __name__ == '__main__':
 			if dn == expectedDN:
 				sys.exit(0)
 
-		print 'Test FAILED. Expected created OU to be at "%s" after moving, but could not be found there.' % expectedDN
-		sys.exit(1)
+		test.fail('Expected created OU to be at "%s" after moving, but could not be found there' % expectedDN)

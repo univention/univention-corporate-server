@@ -9,12 +9,12 @@
 
 import sys
 import random
-import univention.testing as testlib
+import univention.testing as test
 import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
-	if testlib.package_installed('univention-ox'):
+	if test.package_installed('univention-ox'):
 		sys.exit(138)
 
 	uid = str( random.randint(3000, 5000) )
@@ -25,5 +25,4 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 
-	print 'Test FAILED. Successfully created an user with an "uid" which is already in use, which should not be possible.'
-	sys.exit(1)
+	test.fail('Successfully created an user with an "uid" which is already in use, which should not be possible')

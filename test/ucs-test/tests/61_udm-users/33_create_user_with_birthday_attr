@@ -8,11 +8,11 @@
 ##   - univention-directory-manager-tools
 
 import sys
-import univention.testing as testlib
+import univention.testing as test
 import univention.testing.udm as udm_test
 
 if __name__ == '__main__':
-	if testlib.package_installed('univention-ox'):
+	if test.package_installed('univention-ox'):
 		sys.exit(138)
 
 	with udm_test.UCSTestUDM() as udm:
@@ -22,5 +22,4 @@ if __name__ == '__main__':
 
 		setUserBirthday = udm.lo.search(filter = '(uid=%s)' % user[1], attr = ['univentionBirthday'])[0][1]['univentionBirthday'][0]
 		if userBirthday != setUserBirthday:
-			print 'Test FAILED. "univentionBirthday" of created user was expected to be set to "%s", but "%s" was found.' % (userBirthday, setUserBirthday)
-			sys.exit(1)
+			test.fail('"univentionBirthday" of created user was expected to be set to "%s", but "%s" was found.' % (userBirthday, setUserBirthday))

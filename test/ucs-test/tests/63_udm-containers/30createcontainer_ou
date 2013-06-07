@@ -9,6 +9,7 @@
 
 
 import sys
+import univention.testing as test
 import univention.uldap as uldap
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -21,7 +22,6 @@ if __name__ == '__main__':
 		
 		ldap = uldap.getAdminConnection()
 		if not ou in ldap.searchDn(filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName):
-			print 'Test FAILED. Could not find created OU "%s" in LDAP.' % ou
-			sys.exit(1)
+			test.fail('Could not find created OU "%s" in LDAP' % ou)
 
 
