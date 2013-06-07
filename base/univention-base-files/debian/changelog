@@ -1,3 +1,10 @@
+univention-base-files (2.0.14-5) unstable; urgency=low
+
+  * Reload SSHD after setting the variables to ensure that the settings
+    are put into effect rightaway (Bug #31096)	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 07 Jun 2013 13:58:25 +0200
+
 univention-base-files (2.0.14-4) unstable; urgency=low
 
   * Use univention.config_registry.interfaces to determine the IP address of
