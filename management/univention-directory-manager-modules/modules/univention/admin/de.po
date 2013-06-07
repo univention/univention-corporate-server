@@ -347,6 +347,10 @@ msgstr ""
 "Ziffer oder einem Buchstaben beginnen und enden, und darf nicht \"admin\" "
 "sein."
 
+#: syntax.py:719
+msgid "Spaces not allowed in username!"
+msgstr "Der Benutzername darf keine Leerzeichen enthalten!"
+
 #: syntax.py:719 syntax.py:736
 msgid ""
 "Username must only contain numbers, letters and dots, and may not be 'admin'!"
