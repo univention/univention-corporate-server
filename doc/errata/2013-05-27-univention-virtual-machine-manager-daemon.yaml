@@ -11,4 +11,4 @@ desc: |
  - Domains can be shut down using ACPI power-off events.
  - The UVMM UMC module has been cleaned up to improve the code quality
    for robustness.
-bug: [30897, 30897]
+bug: [21397, 23394, 30897]
