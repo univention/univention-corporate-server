@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.1-1) unstable; urgency=low
+
+  * removed set_uid_umlauts stuff (Bug #28671) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 07 Jun 2013 13:50:57 +0200
+
 univention-directory-manager-modules (9.0.0-1) unstable; urgency=low
 
   * disable spaces in username (Bug #19441)

@@ -1407,22 +1407,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						       self.oldattr['sambaKickoffTime'][0])
 				self.info['userexpiry']=time.strftime("%Y-%m-%d",time.gmtime(long(self.oldattr['sambaKickoffTime'][0])+(3600*24)))
 
-		uid=self.oldattr.get('uid',[''])[0]
-		if uid:
-			try:
-				s=self.descriptions['username'].syntax
-				try:
-					username_match=s.parse(uid)
-				except univention.admin.uexceptions.valueError,e: # uid contains already mixed case umlauts, so we switch
-					self.set_uid_umlauts()
-			# FIXME: we should NEVER catch all exceptions
-			except Exception, e:
-				# at least write some debuging output..
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Caught exception: %s' % e )
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Continuing without dn..')
-				self.dn=None
-				return
-
 		try:
 			givenName=self.oldattr.get('givenName',[''])[0]
 			if givenName:
