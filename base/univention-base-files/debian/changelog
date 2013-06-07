@@ -1,3 +1,10 @@
+univention-base-files (2.0.14-6) unstable; urgency=low
+
+  * Restart the sshd at a later point, otherwise /etc/issue.net is not yet
+    updated (Bug #31096)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 07 Jun 2013 14:29:50 +0200
+
 univention-base-files (2.0.14-5) unstable; urgency=low
 
   * Reload SSHD after setting the variables to ensure that the settings

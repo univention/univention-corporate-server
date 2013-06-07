@@ -77,10 +77,6 @@ univention-config-registry set cron/autostart?yes \
 	sshd/autostart?yes \
 	portmap/autostart?yes \
 
-if test -x /etc/init.d/ssh; then
-    /etc/init.d/ssh reload
-fi
-
 # syslog
 if [ "$1" = configure -a -z "$2" ]; then
 	# installation
@@ -216,6 +212,8 @@ dpkg-statoverride --update --add root root 0640 /var/log/bootstrap.log || true
 dpkg-statoverride --update --add root root 0640 /var/log/lastlog || true
 dpkg-statoverride --update --add root root 0640 /var/log/faillog || true
 
-
+if test -x /etc/init.d/ssh; then
+    /etc/init.d/ssh reload
+fi
 
 exit 0
