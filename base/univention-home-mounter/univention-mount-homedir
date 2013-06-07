@@ -32,10 +32,10 @@
 
 
 if [ -n "$1" ]; then
-	username=$1
-	USER=$1
+	username="$1"
+	USER="$1"
 else
-	username=$USER
+	username="$USER"
 fi
 
 # Get the passwd line for current user.
@@ -49,7 +49,7 @@ first_numeric=`echo "$username" | egrep ^[0-9].*$` || true
 eval "$(univention-config-registry shell ldap/hostdn)"
 
 if [ -z "$numeric" ] && [ -z "$first_numeric" ]; then
-	pw_entry=`getent passwd $username `
+	pw_entry=`getent passwd "$username"`
 
 	for i in 1 2 3 4 5 6; do
 		pw_fields[$i]=`echo $pw_entry | awk -F ':' '{ print $'$i' }'`
@@ -65,7 +65,7 @@ else
 		UID_NUMBER=`echo "$ldap_result" | grep ^uidNumber | sed -e 's|uidNumber: ||'`
 		GID_NUMBER=`echo "$ldap_result" | grep ^gidNumber | sed -e 's|gidNumber: ||'`
 	else
-		pw_entry=`grep ^$username /etc/passwd`
+		pw_entry=`grep ^"$username" /etc/passwd`
 
 		for i in 1 2 3 4 5 6; do
 			pw_fields[$i]=`echo $pw_entry | awk -F ':' '{ print $'$i' }'`
@@ -149,7 +149,7 @@ if [ -z "$homeattr" ]; then
 			# In case a numerical username identical with the
 			# given uid exists, chown would set the numerical username
 			# as owner.
-			chown $username:$GID_NUMBER "$REALHOME"
+			chown "$username":$GID_NUMBER "$REALHOME"
 			chmod go-rw "$REALHOME"
 		fi
 		exit 0
@@ -182,7 +182,7 @@ if ! [ -e "$REALHOME" ]; then
 	# In case a numerical username identical with the
 	# given uid exists, chown would set the numerical username
 	# as owner.
-	chown $username:$GID_NUMBER "$REALHOME"
+	chown "$username":$GID_NUMBER "$REALHOME"
 	chmod go-rw "$REALHOME"
 fi
 
