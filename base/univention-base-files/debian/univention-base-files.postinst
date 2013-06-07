@@ -77,6 +77,10 @@ univention-config-registry set cron/autostart?yes \
 	sshd/autostart?yes \
 	portmap/autostart?yes \
 
+if test -x /etc/init.d/ssh; then
+    /etc/init.d/ssh reload
+fi
+
 # syslog
 if [ "$1" = configure -a -z "$2" ]; then
 	# installation
