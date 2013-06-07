@@ -1,0 +1,222 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention System Setup
+#  network configuration script
+#
+# Copyright 2004-2013 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import sys
+
+sys.exit(0) # WIP
+
+import os.path
+import glob
+
+import univention.admin.modules as modules
+import univention.admin.objects as objects
+modules.update()
+
+from univention.config_registry import ConfigRegistry
+from univention.management.console.modules.setup.setup_script import SetupScript, main, _
+from univention.management.console.modules.setup.network import Interfaces
+
+ucr = ConfigRegistry()
+ucr.load()
+
+HOOKDIR = '/var/lib/univention-system-setup/interfaces.post'
+UNIVENTION_CONF_D = '/etc/bind/univention.conf.d'
+PXE_CFG = '/var/lib/univention-client-boot/pxelinux.cfg'
+WINS_DAT = '/var/lib/samba/wins.dat'
+UNIVENTION_DNSEDIT='/usr/share/univention-directory-manager-tools/univention-dnsedit'
+
+class InterfaceScript(SetupScript):
+	name = _('Configuring network interfaces')
+	script_name = os.path.abspath(__file__)
+
+	def up(self):
+		super(SoftwareScript, self).up()
+
+		self.network_only = '--network-only' in sys.argv
+		self.appliance_mode = '--appliance-mode' in sys.argv
+
+		self.server_role = self.get_ucr_var('server_role')
+		self.serversystem = self.server_role in ('domaincontroller_master', 'domaincontroller_slave', 'domaincontroller_backup', 'memberserver')
+
+		self.interfaces_handler = self.get_ucr_var('interfaces/handler')
+
+		# TODO: check if this format is needet, else remove this
+		# strings for hook script arguments
+		self.oldvalues = ''
+		self.newvalues = ''
+
+	def service_stop(self, service):
+		pass
+
+	def unset_ucr_var(self, var):
+		# TODO: implement directly in SetupScript
+		pass
+
+	def inner_run(self):
+		# set the primary network interface
+		interfaces_primary = self.get_profile_var('interfaces/primary', None)
+		if interfaces_primary is not None:
+			self.set_ucr_var('interfaces/primary', interfaces_primary)
+
+		# stop services
+		if self.network_only:
+			self.service_stop('nscd')
+			self.service_stop('samba')
+			self.service_stop('cupsys')
+
+		self.get_profile_var('') # make sure the profile vars are loaded
+		interfaces = Interfaces.from_ucr(self._profile_vars)
+
+		# change or create interfaces
+		for device in interfaces.values():
+			interface = device.name
+			new_ucr = device.to_ucr()
+
+			new_ip, new_netmask = device.primary_ip4
+			old_ip, old_netmask = self.get_ucr_var('interfaces/%s/address' % (interface)), self.get_ucr_var('interfaces/%s/netmask' % (interface))
+
+			# set the new UCR vars
+			for key, val in new_ucr.iteritems():
+				if val is not None:
+					self.set_ucr_var(key, val)
+				else:
+					self.unset_ucr_var(key)
+
+			new_network, old_network = None, None # TODO
+
+			# interface did not exists before
+			if not old_ip:
+				continue
+
+			# LDAP changes
+			if self.ldap_available:
+				computer_module = modules.get('computers/%s' % (self.server_role))
+				computers = computer_module.lookup(None, self.lo, '(&(cn=%s)(aRecord=%s))' % (self.hostname, old_ip))
+				if computers:
+					ldap_dn = computers[0].dn
+					computer = objects.get(computer_module, None, self.lo, self.po, ldap_dn)
+					computer.open()
+					if not new_ip:
+						computer.ip = ''
+						#mac=`/sbin/ifconfig $device | grep HWaddr | cut -c 39-55`
+						#computer.mac = mac
+					else:
+						# check reverse zone
+					#	reverse="$(univention-ipcalc6 --netmask "$new_netmask" --ip "$new_ip" --output reverse --calcdns)"
+					#	UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse $reverse add zone root@$domainname. 1 28800 10800 604800 108001 $hostname.$domainname.
+
+					#	ptr="$(univention-ipcalc6 --netmask "$new_netmask" --ip "$new_ip" --output pointer --calcdns)"
+					#	UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse $reverse add ptr $ptr $hostname.$domainname.
+
+						computer.ip = new_ip
+
+						if new_network and self.server_role == 'domaincontroller_master':
+							n = modules.get('networks/network')
+							n = objects.get(n, None, self.lo, self.po, 'cn=default,cn=networks,%s' % (self.ldap_base))
+							n['network'] = new_network
+							n.modify()
+					computer.modify()
+
+			# update arguments for hooks
+			self.oldvalues += '#%s-%s-%s-%s' % (interface, old_ip, old_network, old_netmask)
+			self.newvalues += '#%s-%s-%s-%s' % (interface, new_ip, new_network, new_netmask)
+
+			# update IP in all baseconfig variables
+			# e.g. in ldap/server/ip
+			if old_ip != new_ip:
+				for key, val in ucr.iteritems():
+					if val == old_ip:
+						self.set_ucr_var(key, new_ip)
+
+			# set new values in /etc files
+			for file in glob.glob('%s/*' % (UNIVENTION_CONF_D)):
+				subprocess.call(['sed', '-i', r's|%s\([:/].\)|%s\1|g' % (old_ip, new_ip), file])
+
+			for file in glob.glob('%s/*' % (PXE_CFG)):
+				subprocess.call(['sed', '-i', 's|%s:|%s:|g' % (old_ip, new_ip), file])
+
+			if os.path.isfile(WINS_DAT):
+				subprocess.call(['sed', '-i', 's|%s |%s |g' % (old_ip, new_ip), WINS_DAT])
+
+			# changes to the network
+			def replace_ip(admin_module, ldap_attribute, admin_attribute, array=False):
+				admin_module = modules.get(admin_module)
+				for obj in admin_module.lookup(None, self.lo, '(%s=%s)' % (ldap_attribute, old_ip)):
+					if not array:
+						obj[admin_attribute] = new_ip
+					else:
+						obj[admin_attribute].pop(old_ip, None)
+						obj[admin_attribute].append(new_ip)
+					obj.open()
+					obj.modify()
+
+			if self.ldap_available:
+				#create new DHCP zone
+				dhcp_service = modules.get('dhcp/service')
+
+				#univention-directory-manager dhcp/service list --binddn "$binddn" --bindpwd "$bindpwd" | sed -ne 's|^DN: ||p;T;q' | while read super; do
+				#	univention-directory-manager dhcp/subnet list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter cn=$old_network | sed -ne 's|^DN: ||p;T;q' | while read old_subnet_dn; do
+				#		univention-directory-manager dhcp/subnet create --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --ignore_exists --set subnet="$net" --set subnetmask="$mask"
+				#	done
+				#done
+
+				replace_ip("policies/thinclient", "univentionFileServer", "fileServer")
+				replace_ip("policies/thinclient", "univentionAuthServer", "authServer")
+				replace_ip("policies/thinclient", "univentionDesktopServer", "linuxTerminalServer")
+				replace_ip("policies/ldapserver", "univentionLDAPServer", "ldapServer")
+				replace_ip("policies/dhcp_boot", "univentionDhcpBootServer", "boot_server", True)
+				replace_ip("policies/dhcp_dns", "univentionDhcpDomainNameServers", "domain_name_servers")
+				replace_ip("policies/dhcp_netbios", "univentionDhcpNetbiosNameServers", "netbios_name_servers")
+				replace_ip("policies/dhcp_routing", "univentionDhcpRouters", "routers")
+				replace_ip("policies/printserver", "univentionPrintServer", "printServer")
+				replace_ip("policies/repositoryserver", "univentionRepositoryServer", "repositoryServer")
+				replace_ip("shares/share", "univentionShareHost", "host", True)
+				replace_ip("shares/printer", "univentionPrinterSpoolHost", "spoolHost")
+
+				# Change IP at the forward_zone, need by Samba 4
+				replace_ip("dns/forward_zone", "aRecord", "a")
+
+		return True
+
+	def down(self):
+		# TODO: check if restart ifplugd is required or already triggert through UCR change
+		# TODO: shutdown IFs, commit /etc/resolv.conf, startup interfaces restart ifplugd, restart apachectl, start nscd, restart univention-bind univention-bind-proxy univentiondhcp 
+		# heimdal-kdc cupsys samba univention-directory-listener postgresql samba4
+
+		# call hook scripts
+		if os.path.isidr(HOOKDIR):
+			subprocess.call(['run-parts', HOOKDIR, '--arg=%s' % (self.oldvalues), '--arg=%s' % (self.newvalues)])
+
+if __name__ == '__main__':
+	script = InterfaceScript()
+	main(script)
