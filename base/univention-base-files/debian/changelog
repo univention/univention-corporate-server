@@ -3,6 +3,8 @@ univention-base-files (3.0.0-1) unstable; urgency=low
   * Bump version for UCS 3.2
   * Add a note to /etc/issue and /etc/issue where to find the UCS management
     system (Bug #31094)
+  * Use univention.config_registry.interfaces to determine the IP address of
+    the primary interface
   * Make the sshd banner configurable through the UCR variable sshd/banner
     and set in postinst, That way the content of /etc/issue is shown during
     login. (Bug #31096)
