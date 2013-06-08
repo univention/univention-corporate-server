@@ -1,3 +1,10 @@
+univention-updater (9.0.0-1) unstable; urgency=low
+
+  * Adjust preup.sh / postup.sh to UCS 3.2 (Bug #31676)
+  * Bump version number to UCS 3.2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Jun 2013 13:39:16 +0200
+
 univention-updater (8.0.81-1) unstable; urgency=low
 
   * Bug #31278: univention-add-app --all or --master do a dist-upgrade only if

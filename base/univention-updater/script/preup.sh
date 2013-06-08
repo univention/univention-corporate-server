@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: http://download.univention.de/doc/release-notes-3.1-1_en.pdf"
-echo " German version:  http://download.univention.de/doc/release-notes-3.1-1.pdf"
+echo " English version: http://download.univention.de/doc/release-notes-3.2-0_en.pdf"
+echo " German version:  http://download.univention.de/doc/release-notes-3.2-0.pdf"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -98,7 +98,7 @@ echo ""
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update31_ignoressh" != "yes" ]; then
+	if [ "$update32_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
 		exit 1
@@ -106,7 +106,7 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update31_ignoreterm" != "yes" ]; then
+	if [ "$update32_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
 		exit 1
