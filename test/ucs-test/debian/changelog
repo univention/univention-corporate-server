@@ -1,3 +1,11 @@
+ucs-test (3.0.60-1) unstable; urgency=low
+
+  * Re-order connector tests, first all snyc tests are executed, after
+    that all read test and at last the write tests. This prevents the
+    connector restart (Bug #31677)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Jun 2013 14:51:27 +0200
+
 ucs-test (3.0.59-1) unstable; urgency=low
 
   * added library function to abbort test with log message
