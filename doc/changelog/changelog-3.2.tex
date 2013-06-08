@@ -419,7 +419,7 @@ been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
 
 \section{Desktop packages}
 \begin{itemize}
-\ucsName{univention-x-core} no longer depends on the package
+\item \ucsName{univention-x-core} no longer depends on the package
 \ucsName{univention-gdm} but recommends it (\ucsBug{31004}).
 \end{itemize}
 
@@ -486,6 +486,8 @@ created without a mail address (\ucsBug{31296}).
     \ucsUCRV{tests/domainadmin/pwd} and \ucsUCRV{tests/domainadmin/pwdfile}
     have been added. They can be used to configure which domain administrator
     credentials UCS test should use when running tests (\ucsBug{31250}).
+
+\item The connector tests have been reordered to avoid a connector restart for every test (\ucsBug{31677}).
 
 
 \end{itemize}
