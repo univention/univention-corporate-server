@@ -511,6 +511,13 @@ created without a mail address (\ucsBug{31296}).
 
 \item \ucsName{univention-debmirror}. When uninstall package symlink '/etc/apache2/sites-enabled/univention-repository' will be removed. (\ucsBug{29262}).
 
+\item The generation of internally used passwords (e.g. machine passwords) has
+been unified. Several packages now using a special function from
+\ucsName{shell-univention-lib} respectively \ucsName{python-univention-lib} to
+create such password. The length and complexity can be configured via the
+\ucsUCRV{machine/password/length} and
+\ucsCommand{\ucsBCindex{machine/password/complexity}} (\ucsBug{31281}).
+
 \end{itemize}
 
 
