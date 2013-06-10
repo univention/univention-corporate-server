@@ -35,3 +35,4 @@ from univention.lib.error import *
 from univention.lib.shell import *
 from univention.lib.locking import *
 from univention.lib.i18n import *
+from univention.lib.misc import *

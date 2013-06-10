@@ -1,3 +1,9 @@
+univention-lib (3.0.1-2) unstable; urgency=low
+
+  * added create_machine_password to python lib (Bug #31281) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 13:50:10 +0200
+
 univention-lib (3.0.1-1) unstable; urgency=low
 
   * added dependency to pwgen (Bug #31281) 

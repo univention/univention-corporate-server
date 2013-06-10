@@ -236,10 +236,10 @@ create_machine_password () {
 		length=20
 	fi
 	if [ -z "$compl" ]; then
-		compl="-scn"
+		compl="scn"
 	fi
 	
-	echo "$(pwgen -1 $compl $length)"
+	echo "$(pwgen -1 -${compl} ${length})"
 }
 
 # vim:set sw=4 ts=4 noet:
