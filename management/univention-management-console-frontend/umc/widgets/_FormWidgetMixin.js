@@ -127,7 +127,11 @@ define([
 		},
 
 		validate: function() {
-			return this.isValid();
+			var val = this.inherited(arguments);
+			if (val === undefined) {
+				return this.isValid();
+			}
+			return val;
 		},
 
 		show: function() {
