@@ -19,7 +19,7 @@ Depends: ${misc:Depends},
  univention-config-registry,
  postgresql-client,
  univention-pkgdb-tools,
- shell-univention-lib (>= 1.0.23),
+ shell-univention-lib (>= 3.0.1-1),
  python-univention-lib (>= 1.0.25-1),
  univention-management-console-module-pkgdb
 Description: UCS - PkgDB

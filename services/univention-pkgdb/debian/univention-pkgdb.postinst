@@ -49,7 +49,7 @@ case "$1" in
 			su - postgres -c "createuser --adduser --no-createdb pkgdbu"
 		fi
 		newPwdFile=$(mktemp /etc/postgresql/pkgdb.secret.XXXXXX)
-		makepasswd --char 16 | tr -d '\n' > "$newPwdFile"
+		create_machine_password | tr -d '\n' > "$newPwdFile"
 		chmod ug=r,o= "$newPwdFile"
 		chown postgres:www-data "$newPwdFile"
 		if su - postgres -c "psql -c \"ALTER USER pkgdbu WITH PASSWORD '$(cat "$newPwdFile")';\" template1"
