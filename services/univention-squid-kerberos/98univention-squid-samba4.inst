@@ -32,6 +32,7 @@
 
 VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/all.sh
 joinscript_init
 
 eval "$(univention-config-registry shell)"
@@ -66,7 +67,7 @@ service_accountname="$servicename-$hostname"
 keytab_filename="$service_accountname.keytab"
 keytab_path="$samba_private_dir/$keytab_filename"
 
-password=$(makepasswd)
+password=$(create_machine_password)
 
 ## create service_accountname via udm, but servicePrincipalName is missing
 univention-directory-manager users/user create "$@" \

@@ -9,7 +9,7 @@ Build-Depends: debhelper,
 Package: univention-squid-kerberos
 Architecture: all
 Depends: ${misc:Depends},
- shell-univention-lib,
+ shell-univention-lib (>= 3.0.1-1),
  univention-squid,
  univention-samba4,
  univention-heimdal-common (>>5.0.24-1)
