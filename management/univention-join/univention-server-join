@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/all.sh
+
 export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
 
 if [ -d "$HOME" ]; then
@@ -333,7 +335,7 @@ if [ -n "$IP" ]; then
 	log 0 "	dhcpEntry $dhcpEntry"
 fi
 
-computerPassword="$(makepasswd --chars=8)"
+computerPassword="$(create_machine_password)"
 
 case "$ROLE" in
 domaincontroller_master)

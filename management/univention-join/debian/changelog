@@ -1,3 +1,10 @@
+univention-join (6.0.0-1) unstable; urgency=low
+
+  * replaced makepasswd with create_machine_password (Bug #31281)
+  * bump version for UCS 3.2
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 12:27:57 +0200
+
 univention-join (5.0.47-1) unstable; urgency=low
 
   * Invalidate nscd hosts cache before joining the computer account

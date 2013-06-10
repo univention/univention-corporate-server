@@ -42,13 +42,13 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	if test -e /etc/slave-join.secret; then
 		slave_join_pwd=`cat /etc/slave-join.secret`
 	else
-		slave_join_pwd=$(makepasswd --chars 8)
+		slave_join_pwd=$(create_machine_password)
 		echo -n "$slave_join_pwd" >/etc/slave-join.secret
 	fi
 	if test -e /etc/backup-join.secret; then
 		backup_join_pwd=`cat /etc/backup-join.secret`
 	else
-		backup_join_pwd=$(makepasswd --chars 8)
+		backup_join_pwd=$(create_machine_password)
 		echo -n "$backup_join_pwd" >/etc/backup-join.secret
 	fi
 
