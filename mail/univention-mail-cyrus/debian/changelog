@@ -1,3 +1,10 @@
+univention-mail-cyrus (6.0.0-1) unstable; urgency=low
+
+  * replaced makepasswd with create_machine_password (Bug #31281)
+  * bump version for UCS 3.2 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 11:49:41 +0200
+
 univention-mail-cyrus (5.0.7-1) unstable; urgency=low
 
   * added "duplicatesuppression" UCR variable (Bug #22429)

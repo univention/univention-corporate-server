@@ -107,13 +107,10 @@ dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
 
 # create cyrus password
 if [ ! -e /etc/cyrus.secret ]; then
-	TMP=$(tempfile)
-	makepasswd --nocrypt > $TMP
-	PASSWD=$(cat $TMP)
-	PASSWD_CRYPT=$(mkpasswd --hash=md5 -s < $TMP)
-	rm -f $TMP
+	. /usr/share/univention-lib/base.sh
+	create_machine_password > /etc/cyrus.secret
+	PASSWD_CRYPT=$(mkpasswd --hash=md5 -s < /etc/cyrus.secret)
 	usermod -p "$PASSWD_CRYPT" cyrus
-	echo "$PASSWD" >/etc/cyrus.secret
 	chmod 600  /etc/cyrus.secret
 fi
 chown cyrus /etc/cyrus.secret

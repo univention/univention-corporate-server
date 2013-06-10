@@ -25,7 +25,7 @@ Depends: ${misc:Depends},
  python-pexpect,
  univention-sasl,
  python-univention,
- shell-univention-lib (>> 1.0.16)
+ shell-univention-lib (>= 3.0.1-1)
 Conflicts: univention-mail-cyrus-kolab2
 Replaces: univention-mail-cyrus-pop,
  univention-mail-cyrus-imap
