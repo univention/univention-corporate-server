@@ -1,3 +1,9 @@
+ucs-test (3.0.61-1) unstable; urgency=low
+
+  * Ignore non-templated Updater files (Bug #18111)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 10 Jun 2013 11:02:32 +0200
+
 ucs-test (3.0.60-6) unstable; urgency=low
 
   * Only run 51_samba4/45dns_tests if samba 4 is installed (Bug #31679)
@@ -226,8 +232,8 @@ ucs-test (3.0.39-2) unstable; urgency=low
 
 ucs-test (3.0.39-1) unstable; urgency=low
 
-  * Set homedir/mount=false when 51_samba4/35smbclient_auth is running (Bug #26807)  
-  * Changed distribution for similar tests in samba and samba4 - 
+  * Set homedir/mount=false when 51_samba4/35smbclient_auth is running (Bug #26807)
+  * Changed distribution for similar tests in samba and samba4 -
     10samba-share-options (Bug #28341)
   * Changed distribution for similar tests in samba and samba4 -
   	15nfs-share-options (Bug #28342)
@@ -400,13 +406,13 @@ ucs-test (3.0.25-8) unstable; urgency=low
 
 ucs-test (3.0.25-7) unstable; urgency=low
 
-  * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317) 
+  * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317)
 
  -- Felix Botner <botner@univention.de>  Wed, 06 Mar 2013 13:14:28 +0100
 
 ucs-test (3.0.25-6) unstable; urgency=low
 
-  * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317) 
+  * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317)
 
  -- Felix Botner <botner@univention.de>  Wed, 06 Mar 2013 11:32:20 +0100
 
@@ -445,7 +451,7 @@ ucs-test (3.0.25-1) unstable; urgency=low
 
 ucs-test (3.0.24-4) unstable; urgency=low
 
-  * improved all samba4 Tests again (Bug #28262) 
+  * improved all samba4 Tests again (Bug #28262)
 
  -- Tobias Peters <peters@univention.de>  Mon, 28 Jan 2013 18:19:43 +0100
 
@@ -458,7 +464,7 @@ ucs-test (3.0.24-3) unstable; urgency=low
 ucs-test (3.0.24-2) unstable; urgency=low
 
   * various improvements in all samba4 Tests (Bug #28262)
-  
+
  -- Tobias Peters <peters@univention.de>  Thu, 24 Jan 2013 18:31:13 +0100
 
 ucs-test (3.0.24-1) unstable; urgency=low
@@ -469,7 +475,7 @@ ucs-test (3.0.24-1) unstable; urgency=low
 
 ucs-test (3.0.23-1) unstable; urgency=low
 
-  * Added new test 00_base/25check-permissions-etc-secret which looks for 
+  * Added new test 00_base/25check-permissions-etc-secret which looks for
     *secret files in /etc that are readable by group "other" (Bug #29477)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 03 Jan 2013 11:20:38 +0100
@@ -488,7 +494,7 @@ ucs-test (3.0.22-17) unstable; urgency=low
 
 ucs-test (3.0.22-16) unstable; urgency=low
 
-  * 51/35 and 50/35: added description (Bug #28348) 
+  * 51/35 and 50/35: added description (Bug #28348)
 
  -- Tobias Peters <peters@univention.de>  Tue, 18 Dec 2012 18:38:36 +0100
 
@@ -551,7 +557,7 @@ ucs-test (3.0.22-7) unstable; urgency=low
 
 ucs-test (3.0.22-6) unstable; urgency=low
 
-  * added 51_samba4/36_printer (Bug #29059) 
+  * added 51_samba4/36_printer (Bug #29059)
 
  -- Tobias Peters <peters@univention.de>  Fri, 23 Nov 2012 16:39:16 +0100
 
@@ -579,7 +585,7 @@ ucs-test (3.0.22-2) unstable; urgency=low
 
   * 51_samba4/40password-policies now fails when it should (Bug #29057)
   * 51_samba4/41password_change now fails when it should (Bug #29058)
-  
+
  -- Tobias Peters <peters@univention.de>  Wed, 14 Nov 2012 18:32:15 +0100
 
 ucs-test (3.0.22-1) unstable; urgency=low
@@ -600,7 +606,7 @@ ucs-test (3.0.21-1) unstable; urgency=low
 
 ucs-test (3.0.20-1) unstable; urgency=low
 
-  * resolved the issue that some tests in 51_samba4 failed when the password for 
+  * resolved the issue that some tests in 51_samba4 failed when the password for
     Administrator is not the default one (Bug #29060)
   * temporarily disabled 51_samba4/40password-policies (Bug #29057)
 
@@ -659,7 +665,7 @@ ucs-test (3.0.16-6) unstable; urgency=low
 
 ucs-test (3.0.16-5) unstable; urgency=low
 
-  * Added test 51_samba4/43sysvol (Bug #29060) 
+  * Added test 51_samba4/43sysvol (Bug #29060)
 
  -- Tobias Peters <peters@univention.de>  Wed, 07 Nov 2012 16:32:21 +0100
 
@@ -691,7 +697,7 @@ ucs-test (3.0.16-1) unstable; urgency=low
 
 ucs-test (3.0.15-2) unstable; urgency=low
 
-  * changed "udm --bindpw" to "udm --bindpwd" in some tests (Bug #28903) 
+  * changed "udm --bindpw" to "udm --bindpwd" in some tests (Bug #28903)
 
  -- Tobias Peters <peters@univention.de>  Fri, 26 Oct 2012 09:46:45 +0200
 
@@ -1109,7 +1115,7 @@ ucs-test (1.3.303-1) unstable; urgency=low
 
   * fixed wrong prefixes in
     scripts-80_ucsschool/01disable_noneducational_objects which caused
-    inappropriate on productive system (Bug #20640) 
+    inappropriate on productive system (Bug #20640)
   * added missing tests in
     scripts-80_ucsschool/02_create_ou--sharefileserver (Bug #20640)
 
@@ -1143,7 +1149,7 @@ ucs-test (1.3.299-1) unstable; urgency=low
 
 ucs-test (1.3.298-1) unstable; urgency=low
 
-  * fixed 20_check-standard-folder Bug #18767 
+  * fixed 20_check-standard-folder Bug #18767
 
  -- Felix Botner <botner@univention.de>  Wed, 10 Nov 2010 09:21:19 +0100
 
@@ -1393,7 +1399,7 @@ ucs-test (1.3.260-1) unstable; urgency=low
 
 ucs-test (1.3.259-1) unstable; urgency=low
 
-  * 50_samba/25domain-join-without-admin-rights: now receiving the rights only by "net rpc rights" (Bug #14849) 
+  * 50_samba/25domain-join-without-admin-rights: now receiving the rights only by "net rpc rights" (Bug #14849)
 
  -- de Groot <bdegroot@mammut.knut.univention.de>  Wed, 11 Aug 2010 15:24:39 +0200
 
@@ -1685,7 +1691,7 @@ ucs-test (1.3.221-1) unstable; urgency=low
 
 ucs-test (1.3.220-1) unstable; urgency=low
 
-  * added var/log/univention/updater.log.gz to 99check_log_files (Bug #18043) 
+  * added var/log/univention/updater.log.gz to 99check_log_files (Bug #18043)
 
  -- Felix Botner <botner@univention.de>  Fri, 23 Jul 2010 14:04:56 +0200
 
