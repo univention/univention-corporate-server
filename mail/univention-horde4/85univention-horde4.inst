@@ -43,7 +43,7 @@ if [ ! -e /etc/horde.secret ]; then
 	touch /etc/horde.secret
 	chmod 600 /etc/horde.secret
 	chown www-data /etc/horde.secret
-	makepasswd > /etc/horde.secret
+	create_machine_password > /etc/horde.secret
 fi
 passwd=$(cat /etc/horde.secret)
 univention-config-registry commit /etc/horde4/horde/conf.d/10-ucs.php

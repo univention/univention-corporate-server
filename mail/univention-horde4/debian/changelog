@@ -1,3 +1,10 @@
+univention-horde4 (3.0.0-1) unstable; urgency=low
+
+  * replaced makepasswd with create_machine_password (Bug #31281)
+  * bump version for UCS 3.2 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 11:55:31 +0200
+
 univention-horde4 (2.0.1-1) unstable; urgency=low
 
   * added packages dependencies to php5-suhosin
