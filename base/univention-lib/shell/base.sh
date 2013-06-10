@@ -225,5 +225,21 @@ check_package_status ()
         echo "$(dpkg --get-selections "$1" 2>/dev/null | awk '{print $2}')"
 }
 
+#
+# create passwort
+#
+create_machine_password () {
+	local length="$(ucr get machine/password/length)"
+	local compl="$(ucr get machine/password/complexity)"
+	
+	if [ -z "$length" ]; then
+		length=20
+	fi
+	if [ -z "$compl" ]; then
+		compl="-scn"
+	fi
+	
+	echo "$(pwgen -1 $compl $length)"
+}
 
 # vim:set sw=4 ts=4 noet:
