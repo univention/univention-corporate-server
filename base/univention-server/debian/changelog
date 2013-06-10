@@ -1,3 +1,10 @@
+univention-server (9.0.0-1) unstable; urgency=low
+
+  * bump version for UCS 3.2
+  * replaced makepasswd with create_machine_password (Bug #31281) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 11:12:49 +0200
+
 univention-server (8.0.3-1) unstable; urgency=low
 
   * specific parts of server_password_change moved to univention-samba

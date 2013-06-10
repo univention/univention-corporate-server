@@ -9,7 +9,9 @@ Standards-Version: 3.5.2
 
 Package: univention-server-master
 Architecture: all
-Pre-Depends: univention-ssl
+Pre-Depends: univention-ssl,
+ shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 3.0.1-1) 
 Recommends: univention-nagios-client,
  openssh-server,
  python-univention-license
@@ -56,6 +58,8 @@ Depends: ${misc:Depends},
  univention-management-console-module-udm,
  univention-management-console-module-ipchange,
  univention-management-console,
+ shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 3.0.1-1)
 Conflicts: exim
 Description: UCS - backup domain controller
  This package installs a UCS backup domain controller.
@@ -81,6 +85,8 @@ Depends: ${misc:Depends},
  univention-directory-replication,
  univention-ldap-acl-slave,
  ntp | ntp-server,
+ shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 3.0.1-1)
 Conflicts: exim
 Description: UCS - slave domain controller
  This package installs a UCS slave domain controller.
@@ -101,6 +107,8 @@ Depends: ${misc:Depends},
  univention-role-server-common (= ${source:Version}),
  univention-heimdal-member,
  ntp | ntp-server,
+ shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 3.0.1-1)
 Conflicts: exim
 Description: UCS - member server
  This package installs a UCS member server.
