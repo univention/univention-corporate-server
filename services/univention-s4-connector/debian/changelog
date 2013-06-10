@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.0-1) unstable; urgency=low
+
+  * replaced makepasswd with univention.lib.createMachinePassword (Bug #31281)
+  * bump version for UCS 3.2  
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 13:58:12 +0200
+
 univention-s4-connector (7.0.35-1) unstable; urgency=low
 
   * "Enterprise Domain Controllers" is now created as a builtin group,
