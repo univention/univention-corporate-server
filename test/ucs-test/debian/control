@@ -168,6 +168,7 @@ Package: ucs-test-s4connector
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
+ shell-univention-lib,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for the S4 connector

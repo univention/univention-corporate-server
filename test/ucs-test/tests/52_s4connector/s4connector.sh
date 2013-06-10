@@ -77,6 +77,8 @@ AD_ESTIMATED_MAX_COMPUTATION_TIME=3
 # with the normal checks in your testcase.
 #
 
+. /usr/share/univention-lib/all.sh
+
 function ad_is_connector_running () {
 	if ps ax | grep -v "grep" | grep -qs "/usr/lib/pymodules/python2.6/univention/s4connector/s4/main.py"
 	then
@@ -584,6 +586,13 @@ function ad_set_retry_rejected ()
 		fi
 	fi
 }
+
+function connector_running_on_this_host ()
+{
+	is_ucr_true connector/s4/autostart
+	return $?
+}
+
 
 # vim:syntax=sh
 # Local Variables:

@@ -10,6 +10,7 @@
 
 . "s4connector.sh" || exit 137
 test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
 
 G00="$(random_chars)"
 G01="$(random_chars)"

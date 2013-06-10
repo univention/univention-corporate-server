@@ -18,6 +18,7 @@ exit 131
 
 . "s4connector.sh" || exit 137
 test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
 
 UDM_users_user_username="$(random_chars)"
 AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
