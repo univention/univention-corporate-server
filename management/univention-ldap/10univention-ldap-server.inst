@@ -92,7 +92,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		if [ -z "$forwardZone" ]; then echo "DNS forward zone not found"; exit 1; fi
 		if [ -z "$reverseZone" ]; then echo "DNS reverse zone not found"; exit 1; fi
 
-		computerPassword=$(makepasswd --chars 8)
+		computerPassword=$(create_machine_password)
 
 		searchResult=$(univention-directory-manager computers/domaincontroller_master list "$@" | grep "name: $hostname")
 		if [ -z "$searchResult" -a $server_role = "domaincontroller_master" ]; then

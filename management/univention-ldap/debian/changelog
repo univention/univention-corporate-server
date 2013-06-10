@@ -1,3 +1,10 @@
+univention-ldap (10.0.0-1) unstable; urgency=low
+
+  * replaced makepasswd with create_machine_password (Bug #31281)
+  * bump version for UCS 3.0 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 12:20:51 +0200
+
 univention-ldap (9.0.28-1) unstable; urgency=low
 
   * added new attribute univentionObjectFlag to objectclass univentionObject (Bug #31165)
