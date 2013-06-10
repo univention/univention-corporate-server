@@ -706,7 +706,7 @@ Type=int
 Categories=service-base
 
 [machine/password/complexity]
-Description[de]=Komplexität der intern genutzten Maschinen-Passwörter, als pwgen Option (default: -scn)
-Description[en]=Complexity of the internally used machine passwords, as pwgen option (default: -scn)
+Description[de]=Komplexität der intern genutzten Maschinen-Passwörter, als pwgen Option (default: scn)
+Description[en]=Complexity of the internally used machine passwords, as pwgen option (default: scn)
 Type=str
 Categories=service-base

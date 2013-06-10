@@ -1,3 +1,9 @@
+univention-base-files (3.0.1-2) unstable; urgency=low
+
+  * fixed description for machine/password/complexity (Bug #31281) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 13:41:59 +0200
+
 univention-base-files (3.0.1-1) unstable; urgency=low
 
   * added description for machine/password/length and
