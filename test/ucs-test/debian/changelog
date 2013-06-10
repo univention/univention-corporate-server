@@ -1,3 +1,11 @@
+ucs-test (3.0.60-3) unstable; urgency=low
+
+  * Added /var/log/apache2/other_vhosts_access.log.*,
+    /var/log/apt/history.log.* and /var/log/dpkg.log.* as exception for
+    logfile permissions (Bug #23351)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Jun 2013 07:42:10 +0200
+
 ucs-test (3.0.60-2) unstable; urgency=low
 
   * Ensure the ldap/master variable is not changed while a test DC
