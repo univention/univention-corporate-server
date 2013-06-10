@@ -1,3 +1,10 @@
+univention-samba4 (3.0.0-1) unstable; urgency=low
+
+  * replaced makepasswd with create_machine_password (Bug #31281)
+  * bump version for UCS 3.2 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 13:18:08 +0200
+
 univention-samba4 (2.0.52-5) unstable; urgency=low
 
   * Try to use cn=admin if no credentials are given to

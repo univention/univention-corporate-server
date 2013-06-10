@@ -104,7 +104,7 @@ create_spn_account() {
 		exit 1
 	fi
 
-	spn_account_name_password=$(makepasswd --chars=18)
+	spn_account_name_password=$(create_machine_password)
 
 	spn_secrets_ldif=$(ldbsearch -H /var/lib/samba/private/secrets.ldb "(servicePrincipalName=$servicePrincipalName)" \
 			| ldapsearch-wrapper | ldapsearch-decode64)
@@ -145,7 +145,7 @@ create_spn_account() {
 			elif [ "$i" -lt 9 ]; then
 				## sometimes the random password does not meet the passwort complexity requirements..
 				echo -n "Trying again with new password: "
-				spn_account_name_password=$(makepasswd --chars=18)
+				spn_account_name_password=$(create_machine_password)
 			fi
 		done
 		if [ -z "$password_set" ]; then
