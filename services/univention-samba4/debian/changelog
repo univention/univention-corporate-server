@@ -1,3 +1,9 @@
+univention-samba4 (3.0.1-1) unstable; urgency=low
+
+  * Ensure that the ntp_signd socket directory exists (Bug #31109)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 10 Jun 2013 18:20:55 +0200
+
 univention-samba4 (3.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)
