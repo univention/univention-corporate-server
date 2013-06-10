@@ -119,8 +119,9 @@ fi
 
 # cleanup secrets
 if [ "$server_role" = "domaincontroller_master" ]; then
-	echo -n "$(makepasswd)" > /etc/ldap.secret
-	echo -n "$(makepasswd)" > /etc/ldap-backup.secret
+	. /usr/share/univention-lib/base.sh
+	echo -n "$(create_machine_password)" > /etc/ldap.secret
+	echo -n "$(create_machine_password)" > /etc/ldap-backup.secret
 else
 	rm -f /etc/ldap.secret /etc/ldap-backup.secret
 fi

@@ -1,3 +1,9 @@
+univention-system-setup (7.0.1-1) unstable; urgency=low
+
+  * replaced makepasswd with create_machine_password (Bug #31281) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 11:20:52 +0200
+
 univention-system-setup (7.0.0-2) unstable; urgency=low
 
   * Fixed setting of ucrv apache2/startsite during postinst. The variable
