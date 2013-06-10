@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-frontend
-fix: 2.0.244-10.633.201305281655
+fix: 2.0.244-11.635.201306101401
 note:
 version: [1]
 desc: |
@@ -16,4 +16,6 @@ desc: |
   * The internal caching mechanism for list entries (e.g., DHCP/DNS entries and
     IP/MAC addresses for computers) has been improved as it could previously
     lead to inconsistencies in rare cases.
-bug: [30889, 28810, 29555, 27989, 30796, 31510]
+  * The validate function of the "Form" widget has been corrected. Previously,
+    no exclamation mark has been displayed when a widget had an invalid value.
+bug: [30889, 28810, 29555, 27989, 30796, 31510, 31337]
