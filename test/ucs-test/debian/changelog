@@ -1,3 +1,10 @@
+ucs-test (3.0.60-2) unstable; urgency=low
+
+  * Ensure the ldap/master variable is not changed while a test DC
+    master is created (Bug #31680)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Jun 2013 07:26:16 +0200
+
 ucs-test (3.0.60-1) unstable; urgency=low
 
   * Re-order connector tests, first all snyc tests are executed, after
