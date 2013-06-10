@@ -45,6 +45,8 @@ dpkg-maintscript-helper mv_conffile \
 
 #DEBHELPER#
 
+. /usr/share/univention-lib/all.sh
+
 if [ -e /etc/pykota/pykota.secret ]; then
 	# always create a new password
 	rm /etc/pykota/pykota.secret
@@ -54,7 +56,7 @@ if [ ! -d /etc/pykota ]; then
 	mkdir /etc/pykota
 fi
 
-makepasswd --char 16 >/etc/pykota/pykota.secret
+create_machine_password > /etc/pykota/pykota.secret
 chmod ug=r,o= /etc/pykota/pykota.secret
 
 eval "$(univention-config-registry shell)"
