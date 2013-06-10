@@ -260,7 +260,8 @@ init () {
 	if ! test -e "$SSLBASE/password"; then
 		touch "$SSLBASE/password"
 		chmod 600 "$SSLBASE/password"
-		makepasswd > "$SSLBASE/password"
+		. /usr/share/univention-lib/base.sh
+		create_machine_password > "$SSLBASE/password"
 	fi
 	local PASSWD=`cat "$SSLBASE/password"`
 

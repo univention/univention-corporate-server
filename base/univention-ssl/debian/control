@@ -12,11 +12,10 @@ Architecture: all
 Pre-Depends: rdate
 Depends: ${misc:Depends},
  openssl,
- makepasswd,
  univention-directory-listener,
  openssl-blacklist,
- shell-univention-lib (>= 1.0.25-1),
- python-univention-lib (>= 1.0.25-1)
+ shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 3.0.1-1)
 Description: UCS - SSL/TLS certificates
  This packages can create a root CA certificate to be used
  with UCS. It provides facilities to create further
