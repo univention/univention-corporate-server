@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-19) unstable; urgency=low
+
+  * Ensure that the ntp_signd socket directory exists (Bug #31109)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 10 Jun 2013 18:18:13 +0200
+
 univention-samba4 (2.0.44-18) unstable; urgency=low
 
   * Try to use cn=admin if no credentials are given to

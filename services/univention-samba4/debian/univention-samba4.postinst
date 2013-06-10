@@ -267,6 +267,9 @@ secret: $machine_secret
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
+	if [ ! -d "$ntp_socket_dir" ]; then
+		mkdir -p "$ntp_socket_dir"
+	fi
 	if [ "$(stat --printf '%G' "$ntp_socket_dir")" != 'ntp' ]; then
 		echo "fixing group ownership of $ntp_socket_dir"
 		chgrp ntp "$ntp_socket_dir"
