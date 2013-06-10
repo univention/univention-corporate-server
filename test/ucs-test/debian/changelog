@@ -1,3 +1,9 @@
+ucs-test (3.0.60-6) unstable; urgency=low
+
+  * Only run 51_samba4/45dns_tests if samba 4 is installed (Bug #31679)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Jun 2013 10:21:20 +0200
+
 ucs-test (3.0.60-5) unstable; urgency=low
 
   * Use ldap-group-to-file.py instead of nscd -i xyz to ensure the

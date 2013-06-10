@@ -5,6 +5,8 @@
 ## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
+## packages:
+##  - univention-samba4
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
