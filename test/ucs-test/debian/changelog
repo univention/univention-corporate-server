@@ -1,3 +1,10 @@
+ucs-test (3.0.60-5) unstable; urgency=low
+
+  * Use ldap-group-to-file.py instead of nscd -i xyz to ensure the
+    replication is ready (Bug #31680)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Jun 2013 09:59:52 +0200
+
 ucs-test (3.0.60-4) unstable; urgency=low
 
   * Only run S4 connector tests if the connector autostart is activated

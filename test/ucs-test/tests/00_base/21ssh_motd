@@ -14,9 +14,13 @@ sshKnownHostsFile="$(mktemp)"
 user_create "$username" \
 	--set groups="cn=Administrators,cn=groups,$ldap_base"
 
-# wait for the ldap replication
-sleep 15
-nscd -i passwd
+for((i=0;i<20;i++)); do
+	if univention-ldapsearch uid="$username" dn | grep ^dn:; then
+		break
+	fi
+	sleep 1
+done
+/usr/lib/univention-pam/ldap-group-to-file.py
 
 python -c "#BEGIN PYTHON SCRIPT
 import pexpect
