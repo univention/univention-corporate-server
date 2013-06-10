@@ -1,3 +1,10 @@
+univention-base-files (3.0.1-1) unstable; urgency=low
+
+  * added description for machine/password/length and
+    machine/password/complexity (Bug #31281) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 09:54:31 +0200
+
 univention-base-files (3.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2
@@ -10,7 +17,7 @@ univention-base-files (3.0.0-1) unstable; urgency=low
   * Make the sshd banner configurable through the UCR variable sshd/banner
     and set in postinst, That way the content of /etc/issue is shown during
     login. (Bug #31096)
-	
+
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 06 Jun 2013 12:28:38 +0200
 
 univention-base-files (2.0.14-1) unstable; urgency=low
