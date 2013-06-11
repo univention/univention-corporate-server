@@ -1,3 +1,10 @@
+univention-samba4 (2.0.44-20) unstable; urgency=low
+
+  * Use generate_random_password function from samba4 to ensure
+    password complexity requirements are met (Bug #31649)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 11 Jun 2013 18:19:28 +0200
+
 univention-samba4 (2.0.44-19) unstable; urgency=low
 
   * Ensure that the ntp_signd socket directory exists (Bug #31109)
