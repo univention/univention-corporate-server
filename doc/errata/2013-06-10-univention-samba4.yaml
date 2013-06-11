@@ -2,11 +2,15 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-samba4
-fix: 2.0.44-19.458.201306101824
+fix: 2.0.44-20.461.201306111827
 note:
 version: [1]
 desc: |
-  This errata update fixes several bugs in the package univention-samba4:
+  This errata update fixes two bugs in the package univention-samba4:
   * The ntp_signd socket directory is now created during package
     installation, so required group ownership can be set.
-bug: [31109]
+  * The Joinscript 98univention-samba4-dns fails if the complexity of
+    the random password generated for the dns-$hostname service
+    account was too low. A more suitable algorithm is use now for
+    password genration in this case.
+bug: [31109, 31649]
