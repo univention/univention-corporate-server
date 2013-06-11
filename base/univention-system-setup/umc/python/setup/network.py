@@ -68,7 +68,7 @@ class Interfaces(dict):
 
 							# TODO: check netmask
 					except ipaddr.AddressValueError:
-						raise ValueError('%s: Invalid IPv4 address %r' % (device.name, ip4[0])
+						raise ValueError('%s: Invalid IPv4 address %r' % (device.name, ip4[0]))
 					all_ip4s.add(ip4[0])
 			if not device.ip6dynamic:
 				for ip6 in device.ip6:

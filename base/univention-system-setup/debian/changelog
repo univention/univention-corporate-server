@@ -1,3 +1,9 @@
+univention-system-setup (7.0.2-1) unstable; urgency=low
+
+  * [WIP] Bug #28389: fixed syntax error
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 11 Jun 2013 14:05:00 +0200
+
 univention-system-setup (7.0.1-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281) 
