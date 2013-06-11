@@ -1,3 +1,10 @@
+univention-samba4 (3.0.2-1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * fixed create_spn_account.sh (Bug #31281)
+
+ -- Felix Botner <botner@univention.de>  Tue, 11 Jun 2013 09:07:34 +0200
+
 univention-samba4 (3.0.1-1) unstable; urgency=low
 
   * Ensure that the ntp_signd socket directory exists (Bug #31109)
