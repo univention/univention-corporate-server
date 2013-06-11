@@ -286,7 +286,7 @@ operated on another server by setting the &ucsUCRV; <envar>windows/wins-support<
 adjustments on one Samba server in the domain; distribution across
 several servers requires the setup of WINS replication. Information
 on the commissioning of the WINS replication can be found in the
-Univention Support database at <ulink url="http://sdb.univention.de/1107"/>
+Univention Support database at <ulink url="http://sdb.univention.de/1107"/>.
 </para>
 <para>
 The WINS server can assign Windows clients via a DHCP-NetBIOS policy,

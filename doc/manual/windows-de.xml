@@ -303,7 +303,7 @@ einem Samba-Server der Domäne betrieben werden, die Verteilung auf
 mehrere Server erfordert die Einrichtung von WINS-Replikation.
 Informationen zur Inbetriebnahme der WINS-Replikation finden sich in
 der Univention Support Datenbank
-unter <ulink url="http://sdb.univention.de/1107"/>
+unter <ulink url="http://sdb.univention.de/1107"/>.
 </para>
 <para>
 Der WINS-Server kann Windows-Clients in der &ucsUMC; über eine DHCP-NetBIOS-Richtlinie

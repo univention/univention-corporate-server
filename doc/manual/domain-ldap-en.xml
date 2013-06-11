@@ -253,7 +253,7 @@
 			  Windows 8.
 			</para>
 			<para>
-			  When using Windows 7 to a domain based on Samba 3, certain settings must be
+			  When using Windows 8 to a domain based on Samba 3, certain settings must be
 			  made in the Windows registry before joining the domain. A corresponding REG
 			  file can be downloaded from <ulink url="http://sdb.univention.de/1102"/>. The
 			  system must then be restarted. This step is not necessary with Samba 4.
@@ -946,7 +946,7 @@ slapcat &gt; ldapdata.txt
 		certificate and the root certificate daily and records the expiry date in the
 		&ucsUCR; variables <envar>ssl/validity/host</envar> (host certificate) and
 		<envar>ssl/validity/root</envar> (root certificate). The values entered there reflect
-		the number of days since the 1.1.1970.
+		the number of days since the 1/1/1970.
 	</para>
 
 	<para>
