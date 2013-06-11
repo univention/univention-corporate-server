@@ -1,4 +1,4 @@
-univention-management-console-frontend (2.0.257-1) unstable; urgency=low
+univention-management-console-frontend (3.0.1-1) unstable; urgency=low
 
   * The validate function of the "Form" widget has been corrected. Previously,
     no exclamation mark has been displayed when a widget had an invalid value.
