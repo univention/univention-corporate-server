@@ -1804,7 +1804,7 @@
 		Werden Änderungen an der Konfiguration vorgenommen, muss Squid
 		neu gestartet werden. Dies kann entweder über die &ucsUMC;
 		oder auf der Kommandozeile erfolgen:
-		<programlisting>
+		<programlisting language="sh">
 /etc/init.d/squid3 restart
 		</programlisting>
 	  </para>
@@ -1868,7 +1868,7 @@
 		Proxy-Server zugreifen. Weitere Netzwerke können über die
 		&ucsUCRV; <envar>squid/allowfrom</envar> angegeben werden. Dabei muss die CIDR-Notation
 		verwendet werden, mehrere Netzwerke sind durch Leerzeichen zu trennen.
-		<programlisting>
+		<programlisting language="sh">
 univention-config-registry set squid/allowfrom="192.168.2.0/24 192.168.3.0/24"
 		</programlisting>
 		Nach einem Neustart von Squid ist jetzt der Zugriff aus den Netzwerken
@@ -1909,7 +1909,7 @@ univention-config-registry set squid/allowfrom="192.168.2.0/24 192.168.3.0/24"
 		Die Liste der erlaubten Ports kann über die &ucsUCRV; <envar>squid/webports</envar> geändert werden,
 		mehrere Angaben sind dabei durch Leerzeichen zu trennen:
 		</para>
-		<programlisting>
+		<programlisting language="sh">
 univention-config-registry set squid/webports="80 443"
 		</programlisting>
 		<para>
@@ -2047,7 +2047,7 @@ univention-config-registry set squid/webports="80 443"
 		das <guimenu>Systemdienste</guimenu>-Modul der &ucsUMC; oder auf der Kommandozeile durch den
 		Befehl:
 	  </para>
-<programlisting>
+<programlisting language="sh">
 /etc/init.d/dansguardian restart
 </programlisting>
 
@@ -2055,7 +2055,7 @@ univention-config-registry set squid/webports="80 443"
 		Für Änderungen von Filterregeln reicht es aus die Konfigurationsdateien mit dem folgenden
 		Kommando neu einzulesen:
 	  </para>
-<programlisting>
+<programlisting language="sh">
 dansguardian -g
 </programlisting>
 

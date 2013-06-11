@@ -609,7 +609,7 @@ in the DNS management module of the &ucsUMC; (see <xref linkend="networks::dns::
 <para>
 Alternatively, a static entry can also be adopted in <filename>/etc/hosts</filename> via &ucsUCR;, e.g.
 </para>
-<programlisting>
+<programlisting language="sh">
 ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 </programlisting>
 <para>
@@ -867,7 +867,7 @@ displayed.
 <para>
 Example:
 </para>
-<programlisting>
+<programlisting language="sh">
 univention-adsearch cn=administrator cn givenName
 </programlisting>
 </section>
@@ -1163,7 +1163,7 @@ A trust relationship must be created on the Windows PDC.
 If Univention Firewall is used, replies to NetBIOS broadcasts need to
 be allowed:
 </para>
-<programlisting>
+<programlisting language="sh">
 echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
     &gt;&gt; /etc/security/packetfilter.d/50_local.sh
 /etc/init.d/univention-firewall restart
@@ -1175,7 +1175,7 @@ The instructions available on UCS Bug 25254 should currently be considered.
 The trust relationship is now initiated and Winbind restarted.
 This command must be run on all Samba login servers:
 </para>
-<programlisting>
+<programlisting language="sh">
 net rpc trustdom establish &lt;Windows domain&gt;
 /etc/init.d/winbind restart
 </programlisting>
@@ -1183,7 +1183,7 @@ net rpc trustdom establish &lt;Windows domain&gt;
 The following command can be used to check that the trust relationship
 has been added correctly:
 </para>
-<programlisting>
+<programlisting language="sh">
 net rpc trustdom list
 </programlisting>
 </section>

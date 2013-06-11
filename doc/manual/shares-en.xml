@@ -927,7 +927,7 @@ within the share <emphasis>fa</emphasis> to share <emphasis>fb</emphasis> on the
 <emphasis>sb</emphasis>, the following command has to be
 executed in directory <emphasis>fa</emphasis>:
 </para>
-<programlisting>
+<programlisting language="sh">
 ln -s msdfs:sb\\fb zufb
 </programlisting>
 <para>

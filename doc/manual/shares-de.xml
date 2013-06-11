@@ -961,7 +961,7 @@ Um einen Verweis mit dem Namen <emphasis>zufb</emphasis> von Server <emphasis>sa
 Freigabe <emphasis>fb</emphasis> des Servers <emphasis>sb</emphasis> anzulegen muss im Ordner <emphasis>fa</emphasis>
 folgender Befehl ausgeführt werden.
 </para>
-<programlisting>
+<programlisting language="sh">
 ln -s msdfs:sb\\fb zufb
 </programlisting>
 <para>

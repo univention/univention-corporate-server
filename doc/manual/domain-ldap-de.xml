@@ -423,9 +423,9 @@
 			Der Domänenbeitritt kann auch auf der Kommandozeile mit dem Befehl
 			<command>dsconfigad</command> erfolgen:
 		  </para>
-	    <programlisting>
+	    <programlisting language="sh">
 dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ldap_base&gt;" \
--u &lt;Domain Administrator&gt; -mobile enable
+  -u &lt;Domain Administrator&gt; -mobile enable
 	    </programlisting>
 		  <para>
 	    Weitere Optionen werden mit <command>dsconfigad -help</command> angezeigt.
@@ -679,15 +679,15 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 			übergeben werden, im folgenden Beispiel wird der Administrator anhand der
 			User-ID gesucht:
 		</para>
-		<programlisting>
+		<programlisting language="sh">
 univention-ldapsearch uid=Administrator
 		</programlisting>
 		<para>
 			Der Befehl <command>slapcat</command> ermöglicht die Speicherung der
 			aktuellen LDAP-Daten in einer Textdatei im LDIF-Format, z.B.:
 		</para>
-		<programlisting>
-slapcat > ldapdaten.txt
+		<programlisting language="sh">
+slapcat &gt; ldapdaten.txt
 		</programlisting>
 	</section>
 
@@ -1079,7 +1079,7 @@ slapcat > ldapdaten.txt
 	  Abgleich der installierten Pakete zu erlauben. Die Paketliste kann mit dem folgenden Befehl
 	  erstellt werden:
 	</para>
-	  <programlisting>
+	  <programlisting language="sh">
 COLUMNS=200 dpkg --list &gt; dateiliste.txt
 	  </programlisting>
 	<para>
@@ -1087,7 +1087,7 @@ COLUMNS=200 dpkg --list &gt; dateiliste.txt
 	  Konfigurationsanpassungen auch auf dem neuen &ucsMaster; abgleichen zu können. Dies kann mit
 	  dem folgenden Befehl erfolgen:
 	</para>
-	  <programlisting>
+	  <programlisting language="sh">
 ucr dump &gt; ucr.txt
 	  </programlisting>
 	<para>

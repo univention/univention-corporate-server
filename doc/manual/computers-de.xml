@@ -1027,7 +1027,7 @@
                         Einstellung ebenso wie Variablen der Schedule-Ebene überstimmt und
                         statt dessen der angegebene Wert für das lokale System festgelegt. Beispiel:
 						</para>
-                        <programlisting>
+                        <programlisting language="sh">
 univention-config-registry set --force mail/messagesizelimit=1000000
 					</programlisting>
 					</listitem>
@@ -1090,14 +1090,14 @@ univention-config-registry set --force mail/messagesizelimit=1000000
                     Eine einzelne &ucsUCR;-Variable kann mit dem Aufrufparameter
                     <emphasis>get</emphasis> ausgelesen werden:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-config-registry get ldap/server/ip
                     </programlisting>
                 <para>
                     Mit dem Aufrufparameter <emphasis>dump</emphasis> können auch alle aktuell
                     gesetzten Variablen ausgegeben werden:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-config-registry dump
                     </programlisting>
             </section><!-- Abfrage einer UCR-Variable -->
@@ -1109,7 +1109,7 @@ univention-config-registry dump
                     ausschließlich aus Buchstaben, Punkten, Zahlen, Binde- und
                     Schrägstrichen bestehen.
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-config-registry set VARIABLENNAME=WERT
                     </programlisting>
                 <para>
@@ -1132,8 +1132,8 @@ univention-config-registry set VARIABLENNAME=WERT
                     möglich. Wenn sich diese auf ein- und dieselbe Konfigurationsdatei
                     beziehen, wird diese nur einmal neu geschrieben:
                 </para>
-                    <programlisting>
-# univention-config-registry set \
+                    <programlisting language="sh">
+univention-config-registry set \
     dns/forwarder1=192.168.0.2 \
     sshd/xforwarding="no" \
     sshd/port=2222
@@ -1145,7 +1145,7 @@ univention-config-registry set VARIABLENNAME=WERT
                     ein Fragezeichen statt des Gleichheitszeichens beim Zuweisen des
                     Wertes erreicht werden:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-config-registry set dns/forwarder1?192.168.0.2
                     </programlisting>
             </section><!-- Setzen von UCR-Variablen -->
@@ -1156,7 +1156,7 @@ univention-config-registry set dns/forwarder1?192.168.0.2
                     werden. Dieser Befehl sucht nach Variablennamen, welche die Zeichenkette
                     <emphasis>nscd</emphasis> enthalten und gibt diese mit den aktuellen Belegungen aus:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-config-registry search nscd
                     </programlisting>
                 <para>
@@ -1164,7 +1164,7 @@ univention-config-registry search nscd
                     werden. Dieser Aufruf sucht nach allen Variablen, die auf
                     <emphasis>master.example.com</emphasis> gesetzt sind:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-config-registry search --value master.example.com
                     </programlisting>
                 <para>
@@ -1180,7 +1180,7 @@ univention-config-registry search --value master.example.com
                     Das folgende Beispiel löscht die Variable <emphasis>dns/forwarder2</emphasis>. Auch hier
                     können mehrere zu löschende Variablen übergeben werden:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-config-registry unset dns/forwarder2
                     </programlisting>
             </section><!-- Löschen von UCR-Variablen -->
@@ -1191,7 +1191,7 @@ univention-config-registry unset dns/forwarder2
                     aus ihrem Template neu erzeugt. Der Name der Konfigurationsdatei ist
                     als Parameter anzugeben, z.B.:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-config-registry commit /etc/samba/smb.conf
                     </programlisting>
                 <para>
@@ -1212,7 +1212,7 @@ univention-config-registry commit /etc/samba/smb.conf
                     und ihre aktuellen Belegungen in einem Format ausgegeben, das in
                     Shell-Skripten verwendet werden kann:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-config-registry shell ldap/server/name
                     </programlisting>
                 <para>
@@ -1226,7 +1226,7 @@ univention-config-registry shell ldap/server/name
                     Shell-Skript eingelesen werden, muss die Ausgabe von &ucsUCR;
                     durch den Befehl <emphasis>eval</emphasis> ausgeführt werden:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 # eval "$(univention-config-registry shell ldap/server/name)"
 # echo "$ldap_server_name"
 master.firma.de
@@ -1807,7 +1807,7 @@ auth/sshd/restrict: yes
                 invalidieren. Die kann individuell pro Cache-Tabelle durch folgende Befehle
                 geschehen:
             </para>
-                <programlisting>
+                <programlisting language="sh">
 nscd -i passwd
 nscd -i hosts
                 </programlisting>
@@ -2239,7 +2239,7 @@ nscd -i hosts
                 <para>
                     Eine Übersicht über die möglichen Optionen kann mit folgendem Befehl aufgerufen werden:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-repository-update -h
                     </programlisting>
                 <para>
@@ -2512,13 +2512,13 @@ univention-repository-update -h
                 <para>
                     Die Installation einzelner Pakete erfolgt mit dem Kommando
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-install PAKETNAME
                     </programlisting>
                 <para>
 				  Pakete können mit dem folgenden Befehl entfernt werden:
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 univention-remove PAKETNAME
                     </programlisting>
                 <para>
@@ -2527,7 +2527,7 @@ univention-remove PAKETNAME
                     können Teile des Namens oder Wörter, die in der Beschreibung eines Paketes
                     vorkommen angegeben werden, z.B.
                 </para>
-                    <programlisting>
+                    <programlisting language="sh">
 apt-cache search fax
                     </programlisting>
             </section><!-- Installation/Deinstallation von einzelnen Paketen auf der Kommandozeile -->
@@ -2882,7 +2882,7 @@ apt-cache search fax
                     Um beispielsweise die UCS@school-Komponente einzubinden müssen
                     folgende Variablen gesetzt werden:
                 </para>
-                <programlisting>
+                <programlisting language="sh">
 ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
  repository/online/component/ucsschool/server=updates.software-univention.de \
  repository/online/component/ucsschool=yes
@@ -3002,7 +3002,7 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
             <para>
 			  Mit dem folgenden Befehl kann der Programmbestand eines Systems wieder aus der Datenbank entfernt werden:
 			</para>
-                <programlisting>
+                <programlisting language="sh">
 univention-pkgdb-scan --remove-system RECHNERNAME
 				</programlisting>
         </section><!-- Zentrale Überwachung von Softwareinstallationsständen mit dem Software-Monitor -->

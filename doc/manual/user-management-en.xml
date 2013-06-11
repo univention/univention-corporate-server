@@ -1116,7 +1116,7 @@
         <para>
             A list of possible attributes can be displayed with the command:
         </para>
-            <programlisting>
+            <programlisting language="sh">
 univention-director-manager users/user
             </programlisting>
         <para>

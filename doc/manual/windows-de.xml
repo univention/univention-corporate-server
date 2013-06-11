@@ -642,7 +642,7 @@ in der DNS-Verwaltung der &ucsUMC; angelegt werden (siehe <xref linkend="network
 <para>
 Alternativ kann auch über &ucsUCR; ein statischer Eintrag in <filename>/etc/hosts</filename> aufgenommen werden, z.B. mit
 </para>
-<programlisting>
+<programlisting language="sh">
 ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 </programlisting>
 <para>
@@ -910,7 +910,7 @@ weiterhin in einem LDAP-Unterbaum vorgehalten). Als erste Option erwartet das Sk
 einen LDAP-Filter, die zweite Option kann eine Liste der anzuzeigenden
 LDAP-Attribute sein, z.B.:
 </para>
-<programlisting>
+<programlisting language="sh">
 univention-adsearch cn=administrator cn givenName
 </programlisting>
 </section>
@@ -1197,7 +1197,7 @@ Auf dem Windows-PDC muss nun eine Vertrauensstellung angelegt werden.
 Wird Univention Firewall verwendet, müssen Antworten auf
 NetBIOS-Broadcasts zugelassen werden:
 </para>
-<programlisting>
+<programlisting language="sh">
 echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
     &gt;&gt; /etc/security/packetfilter.d/50_local.sh
 /etc/init.d/univention-firewall restart
@@ -1209,7 +1209,7 @@ Für weitere notwendige Anpassungen sollte aktuell UCS Bug 25254 beachtet werden
 Nun wird die Vertrauensstellung initiiert und Winbind neu gestartet:
 Dies muss auf allen Samba-Anmeldeservern ausgeführt werden.
 </para>
-<programlisting>
+<programlisting language="sh">
 net rpc trustdom establish &lt;Windowsdomain&gt;
 /etc/init.d/winbind restart
 </programlisting>
@@ -1217,7 +1217,7 @@ net rpc trustdom establish &lt;Windowsdomain&gt;
 Mit folgendem Befehl kann geprüft werden, ob die Vertrauensstellung
 korrekt hinzugefügt wurde:
 </para>
-<programlisting>
+<programlisting language="sh">
 net rpc trustdom list
 </programlisting>
 </section>

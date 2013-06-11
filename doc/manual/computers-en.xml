@@ -1033,7 +1033,7 @@
 				the schedule level are overruled and the given value for the local system fixed
 				instead. An example:
 				</para>
-				<programlisting>
+				<programlisting language="sh">
 univention-config-registry set --force mail/messagesizelimit=1000000
 				</programlisting>
 			</listitem>
@@ -1095,14 +1095,14 @@ univention-config-registry set --force mail/messagesizelimit=1000000
 				A single &ucsUCR; variable can be queried with the parameter
 				<emphasis>get</emphasis>:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-config-registry get ldap/server/ip
 			</programlisting>
 			<para>
 				The parameter <emphasis>dump</emphasis> can also be used to display all
 				currently set variables:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-config-registry dump
 			</programlisting>
 
@@ -1113,7 +1113,7 @@ univention-config-registry dump
 					can be given any name consisting exclusively of letters, full stops, figures,
 					hyphens and forward slashes.
 				</para>
-				<programlisting>
+				<programlisting language="sh">
 univention-config-registry set VARIABLENAME=VALUE
 				</programlisting>
 				<para>
@@ -1136,8 +1136,8 @@ univention-config-registry set VARIABLENAME=VALUE
 					command line. If these refer to the same configuration file, the file is only
 					rewritten once.
 				</para>
-				<programlisting>
-# univention-config-registry set \
+				<programlisting language="sh">
+univention-config-registry set \
     dns/forwarder1=192.168.0.2 \
     sshd/xforwarding="no" \
     sshd/port=2222
@@ -1148,7 +1148,7 @@ univention-config-registry set VARIABLENAME=VALUE
 					done by entering a question mark instead of the equals sign when assigning
 					values.
 				</para>
-				<programlisting>
+				<programlisting language="sh">
 univention-config-registry set dns/forwarder1?192.168.0.2
 				</programlisting>
 			</section>
@@ -1160,7 +1160,7 @@ univention-config-registry set dns/forwarder1?192.168.0.2
 					variable. This command searches for variable names which contain
 					<emphasis>nscd</emphasis> and displays these with their current assignments:
 				</para>
-				<programlisting>
+				<programlisting language="sh">
 univention-config-registry search nscd
 				</programlisting>
 				<para>
@@ -1168,7 +1168,7 @@ univention-config-registry search nscd
 					request searches for all variables set to
 					<emphasis>master.example.com</emphasis>:
 				</para>
-				<programlisting>
+				<programlisting language="sh">
 univention-config-registry search --value master.example.com
 				</programlisting>
 				<para>
@@ -1185,7 +1185,7 @@ univention-config-registry search --value master.example.com
 					following example deletes the variable <emphasis>dns/forwarder2</emphasis>. It
 					is also possible here to specify several variables to be deleted:
 				</para>
-				<programlisting>
+				<programlisting language="sh">
 univention-config-registry unset dns/forwarder2
 				</programlisting>
 			</section>
@@ -1197,7 +1197,7 @@ univention-config-registry unset dns/forwarder2
 					file from its template. The name of the configuration file is entered as a
 					parameter, e.g.:
 				</para>
-				<programlisting>
+				<programlisting language="sh">
 univention-config-registry commit /etc/samba/smb.conf
 				</programlisting>
 				<para>
@@ -1218,7 +1218,7 @@ univention-config-registry commit /etc/samba/smb.conf
 					variables and their current assignments in a format that can be used in shell
 					scripts.
 				</para>
-				<programlisting>
+				<programlisting language="sh">
 univention-config-registry shell ldap/server/name
 				</programlisting>
 				<para>
@@ -1232,7 +1232,7 @@ univention-config-registry shell ldap/server/name
 					<emphasis>eval</emphasis> for &ucsUCR; variables to be able to be read in a
 					shell script as environment variables:
 				</para>
-				<programlisting>
+				<programlisting language="sh">
 # eval "$(univention-config-registry shell ldap/server/name)"
 # echo "$ldap_server_name"
 master.firma.de
@@ -1852,7 +1852,7 @@ auth/sshd/restrict: yes
 			NSCD. This can be done individually for each cache table with the following
 			commands:
 		</para>
-		<programlisting>
+		<programlisting language="sh">
 nscd -i passwd
 nscd -i hosts
 		</programlisting>
@@ -2283,7 +2283,7 @@ nscd -i hosts
 				An overview of the possible options is displayed with the following
 				command:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-repository-update -h
 			</programlisting>
 			<para>
@@ -2567,14 +2567,14 @@ univention-repository-update -h
 			<para>
 				Individual packages are installed using the command
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 univention-install PACKAGENAME
 			</programlisting>
 			<para>
 			  Packages can be removed with the following command:
 			</para>
 			<para>
-			  <programlisting>
+			  <programlisting language="sh">
 univention-remove PACKAGENAME
 			  </programlisting>
 			</para>
@@ -2583,7 +2583,7 @@ univention-remove PACKAGENAME
 				search</command> can be used to search for the package. Parts of the name or
 				words which appear in the description of the package are listed, e.g.:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 apt-cache search fax
 			</programlisting>
 		</section>
@@ -2935,7 +2935,7 @@ apt-cache search fax
 				For example, to integrate the UCS@School component, the following variables
 				must be set:
 			</para>
-			<programlisting>
+			<programlisting language="sh">
 ucr set repository/online/component/ucsschool/description="UCS@School packages" \
  repository/online/component/ucsschool/server=updates.software-univention.de \
  repository/online/component/ucsschool=yes
@@ -3055,7 +3055,7 @@ ucr set repository/online/component/ucsschool/description="UCS@School packages" 
 		<para>
 		  The following command can be used to remove a system's program inventory from the database again:
 		</para>
-		  <programlisting>
+		  <programlisting language="sh">
 univention-pkgdb-scan --remove-system RECHNERNAME
 		  </programlisting>
 	</section>

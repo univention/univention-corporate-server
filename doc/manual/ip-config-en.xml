@@ -2155,7 +2155,7 @@ closest to the object always applies.
 		restarted. This can be performed either via the &ucsUMC; or the
 		command line:
 	  </para>
-		<programlisting>
+		<programlisting language="sh">
 /etc/init.d/squid3 restart
 		</programlisting>
 	  <para>
@@ -2215,7 +2215,7 @@ closest to the object always applies.
 	  <para>
 		Example:
 	  </para>
-		<programlisting>
+		<programlisting language="sh">
 univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/24&quot;
 		</programlisting>
 	  <para>
@@ -2263,7 +2263,7 @@ univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/
 		<para>
 		  Example:
 		</para>
-		  <programlisting>
+		  <programlisting language="sh">
 univention-config-registry set squid/webports=&quot;80 443&quot;
 		  </programlisting>
 		<para>
@@ -2391,7 +2391,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		either in the <guimenu>System services</guimenu> module of the &ucsUMC; or on the
 		commandline using the command
 	  </para>
-<programlisting>
+<programlisting language="sh">
 /etc/init.d/dansguardian restart
 </programlisting>
 
@@ -2399,7 +2399,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		For changes to filter rules, it is sufficient to reload the configuration using the
 		following command:
 	  </para>
-<programlisting>
+<programlisting language="sh">
 dansguardian -g
 </programlisting>
 

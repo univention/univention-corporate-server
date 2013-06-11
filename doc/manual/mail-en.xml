@@ -763,7 +763,7 @@
 	  <para>
 		The command
 	  </para>
-		<programlisting>
+		<programlisting language="sh">
 postmap /etc/postfix/smtp_auth
 		</programlisting>
 	  <para>

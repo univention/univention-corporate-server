@@ -60,7 +60,6 @@
 	  domain. This is documented in <xref linkend="ext-doc-domain"/>.
 	</para>
 
-
 	<section id="linux-domaenenbeitritt">
 		<title>How UCS systems join domains</title>
 		<para>
@@ -403,21 +402,15 @@
 		  <para>
 			The domain join can also be performed on the command line using <command>dsconfigad</command>:
 		  </para>
-	    <programlisting>
+	    <programlisting language="sh">
 dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ldap_base&gt;" \
--u &lt;Domain Administrator&gt; -mobile enable
+  -u &lt;Domain Administrator&gt; -mobile enable
 	    </programlisting>
 		  <para>
 	    Additional configuration options are available through <command>dsconfigad -help</command>.
 		  </para>
 		</section>
-
-
 	</section>
-
-
-
-
 </section>
 
 <section id="systemrollen">
@@ -660,15 +653,15 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 			argument; in the following example, the administrator is searched for using the
 			user ID:
 		</para>
-		<programlisting>
+		<programlisting language="sh">
 univention-ldapsearch uid=Administrator
 		</programlisting>
 		<para>
 			The <command>slapcat</command> command makes it possible to save the current
 			LDAP data in a text file in LDIF format, e.g.:
 		</para>
-		<programlisting>
-slapcat > ldapdata.txt
+		<programlisting language="sh">
+slapcat &gt; ldapdata.txt
 		</programlisting>
 	</section>
 
@@ -1043,14 +1036,14 @@ slapcat > ldapdata.txt
 		The package list of the old &ucsMaster; should be saved prior to the promotion in order to
 		allow subsequent comparison of the installed packages. The package list can be created with
 		the following command:
-	  <programlisting>
+	  <programlisting language="sh">
 COLUMNS=200 dpkg --list &gt; packagelist.txt
 	  </programlisting>
 	  In addition, the &ucsUCR; inventory needs to be saved so that it is possible to compare the
 	  configuration adjustments on the new &ucsMaster;. This can be achieved with the following
 	  command:
 	</para>
-	  <programlisting>
+	  <programlisting language="sh">
 ucr dump &gt; ucr.txt
 	  </programlisting>
 	<para>
