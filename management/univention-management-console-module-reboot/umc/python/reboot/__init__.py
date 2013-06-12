@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import locale
 import subprocess
 
 import univention.management.console as umc
@@ -38,32 +39,35 @@ import univention.management.console.modules as umcm
 from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
 
 from univention.management.console.modules.decorators import sanitize
-from univention.management.console.modules.sanitizers import StringSanitizer, ChoicesSanitizer
+from univention.management.console.modules.sanitizers import StringSanitizer, MappingSanitizer
 
 _ = umc.Translation('univention-management-console-module-reboot').translate
 
 class Instance(umcm.Base):
-	@sanitize(action=ChoicesSanitizer(['reboot', 'halt'], required=True),
-		message=StringSanitizer(required=True))
+	@sanitize(action=MappingSanitizer({
+				u'halt': u'h',
+				u'reboot': u'r',
+				}, required=True),
+	          message=StringSanitizer())
 	def reboot(self, request):
-		message = None
-		if request.options['action'] == 'halt':
-			do = 'h'
-			target = _('The system is going down for system halt NOW '
-			           'with following message: ')
-		elif request.options['action'] == 'reboot':
-			do = 'r'
-			target = _('The system is going down for reboot NOW '
-			           'with following message: ')
+		def _encode(string):
+			return string.encode(locale.getpreferredencoding())
 
-		unicode_message = '%s%s' % (target, request.options['message'])
-		message = unicode_message.encode('utf-8')
+		if request.options[u'action'] == u'h':
+			message = _(u'The system will now be shut down')
+		else:
+			message = _(u'The system will now be restarted')
+		if request.options[u'message']:
+			message = u'%s (%s)' % (message, request.options[u'message'], )
+
 		subprocess.call(('/usr/bin/logger', '-f', '/var/log/syslog',
-		                 '-t', 'UMC', message))
-		shutdown_failed = subprocess.call(('/sbin/shutdown', '-%s' %do,
-		                                   'now', message))
-		if shutdown_failed:
-			message = _('System could not reboot/shutdown')
+		                 '-t', 'UMC', _encode(message)))
+		process_result = subprocess.call(('/sbin/shutdown',
+		                                  '-%s' % (_encode(request.options[u'action']), ),
+		                                  'now', _encode(message)))
+
+		if process_result:
+			message = _(u'System could not reboot/shutdown')
 			request.status = MODULE_ERR
 		else:
 			request.status = SUCCESS

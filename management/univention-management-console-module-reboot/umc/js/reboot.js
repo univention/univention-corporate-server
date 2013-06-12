@@ -116,6 +116,7 @@ define([
 					this.umcpCommand('reboot/reboot', data);
 				})
 			}, {
+				'default': true,
 				label: _('Cancel')
 			}]);
 		}
