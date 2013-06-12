@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-21) unstable; urgency=low
+
+  * create ntp_signd socket directory with mode 750 (Bug #31649)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 12 Jun 2013 12:17:09 +0200
+
 univention-samba4 (2.0.44-20) unstable; urgency=low
 
   * Use generate_random_password function from samba4 to ensure
