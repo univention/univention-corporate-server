@@ -1,6 +1,12 @@
+ucs-test (3.0.62-4) unstable; urgency=low
+
+  * Added ucs-test-ldap.install (Bug #27662)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Jun 2013 07:40:52 +0200
+
 ucs-test (3.0.62-3) unstable; urgency=low
 
-  * Build ldap tests (Bug #31680, Bug #31679)
+  * Build ldap tests (Bug #27662)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Jun 2013 07:38:35 +0200
 
