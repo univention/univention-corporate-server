@@ -7,8 +7,13 @@ note:
 version: [1]
 desc: |
  This erratum implements the following changes:
- - Media change is now also supported for Xen-HVM domains.
- - Domains can be shut down using ACPI power-off events.
- - The UVMM UMC module has been cleaned up to improve the code quality
+ * Media change is now also supported for Xen-HVM domains.
+ * Domains can be shut down using ACPI power-off events.
+ * The UVMM UMC module has been cleaned up to improve the code quality
    for robustness.
-bug: [21397, 23394, 30897]
+ * The context menu on the devices page of active VMs no longer disappears
+   when the mouse is moved.
+ * A typo in the German translation has been fixed.
+ * To fix the ordering of snapshots their creation time is now display in
+   ISO 8601 format.
+bug: [21397, 23394, 30897, 29261, 22377, 29901]
