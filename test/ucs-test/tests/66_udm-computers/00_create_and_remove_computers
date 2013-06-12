@@ -5,7 +5,6 @@
 ## - univention-directory-manager-tools
 ## roles:
 ## - domaincontroller_master
-## - domaincontroller_backup
 
 . "$TESTLIBPATH/udm.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137

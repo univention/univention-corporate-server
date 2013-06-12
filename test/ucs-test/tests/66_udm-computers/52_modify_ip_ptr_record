@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check if changing IP address of a computer does only result in removing the related PTR record if his entry was the last in it
 ## tags: [udm-computers]
-## roles: [domaincontroller_master, domaincontroller_backup, domaincontroller_slave]
+## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
 ##   - univention-config
