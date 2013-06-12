@@ -1,4 +1,4 @@
-univention-management-console-module-reboot (2.0.3-1) unstable; urgency=low
+univention-management-console-module-reboot (3.0.1-1) unstable; urgency=low
 
   * Update internal package structure
   * Make "cancel" the default action in the confirmation dialog
