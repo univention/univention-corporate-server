@@ -80,15 +80,15 @@ Description: UCR tests
 #Description: Quota tests
 # This package includes some scripts for testing file quota.
 
-#Package: ucs-test-ldap
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for LDAP and replication
-# This package includes some scripts for testing the UCS LDAP and the
-# replication.
+Package: ucs-test-ldap
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for LDAP and replication
+ This package includes some scripts for testing the UCS LDAP and the
+ replication.
 
 #Package: ucs-test-dns
 #Architecture: all
@@ -354,7 +354,7 @@ Architecture: all
 Depends:
  ucs-test-base,
 # ucs-test-quota,
-# ucs-test-ldap,
+ ucs-test-ldap,
 # ucs-test-dns,
 # ucs-test-mail,
 # ucs-test-kolab,
