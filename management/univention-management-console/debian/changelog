@@ -1,4 +1,4 @@
-univention-management-console (5.0.62-5) unstable; urgency=low
+univention-management-console (5.0.62-6) unstable; urgency=low
 
   * Bug #31130: log tracebacks if module or server crashs
 

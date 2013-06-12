@@ -189,14 +189,7 @@ class UMC_Daemon( DaemonRunner ):
 		self.server = Server( port = self.options.port )
 
 		CORE.process( 'Server started' )
-		try:
-			notifier.loop()
-		except (SystemExit, KeyboardInterrupt):
-			raise
-		except:
-			import traceback
-			CORE.error(traceback.format_exc())
-			raise
+		notifier.loop()
 
 	def signal_hang_up( self, signal, frame ):
 		if hasattr( self, 'server' ):
@@ -211,11 +204,16 @@ class UMC_Daemon( DaemonRunner ):
 		raise SystemExit( 'Shutting down UMC server' )
 
 if __name__ == "__main__":
-	umc_daemon = UMC_Daemon()
 	try:
+		umc_daemon = UMC_Daemon()
 		umc_daemon.do_action()
 	except DaemonRunnerStopFailureError, e:
 		CORE.process( 'Failed to shutdown server gracefully (may be its already dead): %s' % str( e ) )
 	except DaemonRunnerStartFailureError, e:
 		CORE.process( 'Failed to start server: %s' % str( e ) )
-
+	except (SystemExit, KeyboardInterrupt):
+		raise
+	except:
+		import traceback
+		CORE.error(traceback.format_exc())
+		raise
