@@ -1,5 +1,5 @@
 Module: reboot
-Python: umc/module
+Python: umc/python
 Definition: umc/reboot.xml
 Javascript: umc/js
 Icons: umc/icons
