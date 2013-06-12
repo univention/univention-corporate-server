@@ -6,7 +6,8 @@ fix: 5.0.62-6.738.201306121615
 note:
 version: [1]
 desc: |
-  The debug output is now explicitly flushed in order to prevent partial or
-  missing lines in the log file.
-  UMC server and module crashs will now be logged.
+  This erratum addresses the following problems:
+  * The debug output is now explicitly flushed in order to prevent partial or
+    missing lines in the log file.
+  * UMC server and module crashs will now be logged.
 bug: [31421,31130]
