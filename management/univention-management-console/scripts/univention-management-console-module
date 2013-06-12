@@ -106,9 +106,9 @@ if __name__ == '__main__':
 	except TypeError, ValueError:
 		CORE.warn( 'Failed to read module timeout from UCR variable umc/module/timeout. Using default of 300 seconds' )
 
-	module = umcp.ModuleServer( options.socket, options.module, check_acls = False, timeout = session_timeout )
-
 	try:
+		module = umcp.ModuleServer( options.socket, options.module, check_acls = False, timeout = session_timeout )
+
 		notifier.loop()
 	except (SystemExit, KeyboardInterrupt):
 		raise
