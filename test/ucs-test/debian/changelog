@@ -1,3 +1,9 @@
+ucs-test (3.0.62-1) unstable; urgency=low
+
+  * Start 52proofuniquemember on DC master only (Bug #31680)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Jun 2013 06:36:40 +0200
+
 ucs-test (3.0.61-1) unstable; urgency=low
 
   * Ignore non-templated Updater files (Bug #18111)
