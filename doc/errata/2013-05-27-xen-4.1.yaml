@@ -7,6 +7,6 @@ note:
 version: [1]
 desc: |
  This erratum implements the following changes:
- - Media change is now also possible for Xen-HVM domains.
- - A logic bug prevented the xenstore database from being cleared on reboots.
+ * Media change is now also possible for Xen-HVM domains.
+ * A logic bug prevented the xenstore database from being cleared on reboots.
 bug: [23394, 28309]
