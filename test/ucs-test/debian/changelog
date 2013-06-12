@@ -1,3 +1,9 @@
+ucs-test (3.0.63-1) unstable; urgency=low
+
+  * Increased the time between user creation and password change  (Bug #29058)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 12 Jun 2013 12:39:05 +0200
+
 ucs-test (3.0.62-4) unstable; urgency=low
 
   * Added ucs-test-ldap.install (Bug #27662)
