@@ -20,7 +20,7 @@ ucr set "${PREFIX}_400=value400"
 while [ 1=1 ]; do if [ "$(ucr get ${PREFIX}_400)" != "value400" ]; then echo "Error at $(date)" | tee -a $resultFile; fi;done &
 
 echo "Setting UCR variables"
-for((i=0;i<$VAR_COUNT;i++)); do ucr set "${PREFIX}_$i=value$i" >/dev/null; done
+for((i=0;i<$VAR_COUNT;i++)); do ucr set "${PREFIX}_$i=value$i"; done
 
 kill $!
 wait
