@@ -1,3 +1,11 @@
+ucs-test (3.0.64-1) unstable; urgency=low
+
+  * Added a test case for concurrent setting and getting of UCR
+    variables (Bug #31725)
+  * ucs-test-ucr: added a dependency to ucs-test-libs
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Jun 2013 11:22:12 +0200
+
 ucs-test (3.0.63-2) unstable; urgency=low
 
   * Added debug messages in 51_samba4/41_password_change (Bug #29058)
