@@ -1,3 +1,12 @@
+ucs-ec2-tools (0.1.4-2) unstable; urgency=low
+
+  * Added locale/default to the templates
+  * Updated examples
+  * Fixed a logger typo
+  (Bug #31283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Jun 2013 14:56:07 +0200
+
 ucs-ec2-tools (0.1.4-1) unstable; urgency=low
 
   * Support local commands
