@@ -316,9 +316,10 @@ class _ConfigRegistry(dict):
 
 	def __save_file(self, filename):
 		"""Save sub registry to file."""
+		temp_filename = '%s.temp' % filename
 		try:
 			# open temporary file for writing
-			reg_file = open(filename, 'w')
+			reg_file = open(temp_filename, 'w')
 			# write data to file
 			reg_file.write('# univention_ base.conf\n\n')
 			reg_file.write(self.__str__())
@@ -327,6 +328,8 @@ class _ConfigRegistry(dict):
 			os.fsync(reg_file.fileno())
 			# close fd
 			reg_file.close()
+			if os.path.exists(temp_filename):
+				os.rename(temp_filename, filename)
 		except EnvironmentError, ex:
 			# suppress certain errors
 			if ex.errno != errno.EACCES:

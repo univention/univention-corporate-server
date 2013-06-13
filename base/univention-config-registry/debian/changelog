@@ -1,3 +1,11 @@
+univention-config-registry (8.0.7-4) unstable; urgency=low
+
+  * Write changes to a temporary file first and rename the file in a second
+    step, otherwise the file might not be fully written if UCR tries to read
+    a variable (Bug #31725)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Jun 2013 12:02:22 +0200
+
 univention-config-registry (8.0.7-3) unstable; urgency=low
 
   * Fix layer priorities (Bug #29632)
