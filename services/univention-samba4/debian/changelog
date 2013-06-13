@@ -1,3 +1,9 @@
+univention-samba4 (3.0.3-1) unstable; urgency=low
+
+  * create ntp_signd socket directory with mode 750 (Bug #31109)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 13 Jun 2013 15:22:02 +0200
+
 univention-samba4 (3.0.2-1) unstable; urgency=low
 
   * Non-maintainer upload.

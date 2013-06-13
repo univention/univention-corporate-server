@@ -265,19 +265,27 @@ secret: $machine_secret
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
+	ntp_needs_restart=false
 	if [ ! -d "$ntp_socket_dir" ]; then
-		mkdir -p "$ntp_socket_dir"
-	fi
-	if [ "$(stat --printf '%G' "$ntp_socket_dir")" != 'ntp' ]; then
-		echo "fixing group ownership of $ntp_socket_dir"
+		mkdir -p -m 750 "$ntp_socket_dir"
 		chgrp ntp "$ntp_socket_dir"
+		ntp_needs_restart=true
+	else
+		if [ "$(stat --printf '%G' "$ntp_socket_dir")" != 'ntp' ]; then
+			echo "fixing group ownership of $ntp_socket_dir"
+			chgrp ntp "$ntp_socket_dir"
+			ntp_needs_restart=true
+		fi
 
 		mode=$(stat --printf '%a' "$ntp_socket_dir")
 		if [ $((0$mode & 0010)) -ne $((0010)) ]; then
 			echo "fixing group executable bit of $ntp_socket_dir"
 			chmod g+x "$ntp_socket_dir"
+			ntp_needs_restart=true
 		fi
+	fi
 
+	if [ "$ntp_needs_restart" = 'true' ]; then
 		if test -x /etc/init.d/ntp; then
 			## simulate a crestart
 			if /etc/init.d/ntp status >/dev/null 2>&1; then
