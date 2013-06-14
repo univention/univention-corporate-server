@@ -359,7 +359,7 @@ exit
 		</section>
 	</chapter>
 
-    <chapter>
+    <chapter id="ext-dom-unix">
         <title>Integration of Linux/Unix systems into a UCS domain</title>
         <para>
 		  These are general instructions for the integration of Unix/Linux-based non-UCS
@@ -405,13 +405,12 @@ exit
 			The Unix system should use a name server from the UCS domain: All UCS domain controllers
 			(i.e., &ucsMaster;, &ucsBackup; and &ucsSlave;) operate a DNS server. One or more of
 			these UCS system should be entered in the <filename>/etc/resolv.conf</filename>, e.g.:
-
+		  </para>
 <programlisting>
 domain  example.com
 nameserver  10.200.3.108
 nameserver  10.200.3.99
 </programlisting>
-		  </para>
 		</section>
 
         <section>
@@ -424,12 +423,11 @@ nameserver  10.200.3.99
 		  <para>
 			The configuration differs depending on the NTP software used, but is set under
 			<filename>/etc/ntp.conf</filename> on most Linux systems, e.g.:
-
+		  </para>
 <programlisting>
 server master.example.com
 server backup.example.com
 </programlisting>
-		  </para>
 		</section>
 
 		<section>
@@ -448,11 +446,12 @@ server backup.example.com
 
 		  <para>
 			The configuration files of the NSS LDAP module differ depending on the Linux/Unix
-			version. 
+			version.
 		  </para>
 
 		  <para>
 			As a general rule, the following settings must be set there:
+		  </para>
 
 			<itemizedlist>
 			  <listitem><simpara>
@@ -475,23 +474,21 @@ server backup.example.com
 				as the LDAP implementation, it is usually the file
 				<filename>/etc/openldap/ldap.conf</filename> or
 				<filename>/etc/ldap/ldap.conf</filename>. The line for OpenLDAP is as follows:
-
+			  </para>
 <programlisting>
 TLS_CACERT /etc/ucs-ssl/CAcert.pem
 </programlisting>
-			  </para></listitem>
+			  </listitem>
 			</itemizedlist>
-		  </para>
 
 		  <para>
 			If the NSS LDAP service has been set up correctly, the following two commands should
 			output all users and groups:
-
-<programlisting>
+		  </para>
+<programlisting language="sh">
 getent passwd
 getent group
 </programlisting>
-		  </para>
 		</section>
 
 		<section>
@@ -532,14 +529,13 @@ getent group
     ccache_type = 4
     forwardable = true
     proxiable = true
- 
+
 [realms]
 KERBEROSREAKM = {
    kdc = MASTERIP MASTERFQDN
    admin_server = MASTERIP MASTERFQDN
 }
 </programlisting>
-
 		  </para>
 
 		  <para>
@@ -560,11 +556,10 @@ KERBEROSREAKM = {
 			services. The Unix system can use the UCS print servers by installing the CUPS client
 			programs. In addition the CUPS server needs to be configured, typically in the
 			configuration file <filename>/etc/cups/client.conf</filename>, e.g.:
-
+		  </para>
 <programlisting>
 ServerName printserver.example.com
 </programlisting>
-		  </para>
 		</section>
 	</chapter>
 
@@ -592,20 +587,21 @@ ServerName printserver.example.com
 			  on the &ucsMaster; and synchronised on all &ucsBackup; systems. A subdirectory with
 			  the name of the certificate is kept in the <filename>/etc/univention/ssl/</filename>
 			  directory for every certificate, which contains the following files:
+			</para>
 
 			  <itemizedlist>
 				<listitem> <para>
-				  The <filename>cert.pem</filename> file represents the actual certificate. 
+				  The <filename>cert.pem</filename> file represents the actual certificate.
 				</para> </listitem>
 
 				<listitem><para>
 				  <filename>openssl.cnf</filename> contains the OpenSSL configuration at the time
-				  the certificate was created. 
+				  the certificate was created.
 				</para></listitem>
 
 				<listitem><para>
 				  The <filename>private.key</filename> file contains the private key for the
-				  certificate. 
+				  certificate.
 				</para></listitem>
 
 				<listitem><para>
@@ -613,38 +609,33 @@ ServerName printserver.example.com
 				  certificate was created.
 				</para></listitem>
 			  </itemizedlist>
-			</para>
 		</section>
 
         <section>
             <title>Displaying the certificates</title>
 			<para>
 			  The following command is used to display a list of all the available, valid certificates:
-
+			</para>
 <programlisting language="sh"><![CDATA[
 univention-certificate list
 ]]></programlisting>
-			</para>
 
 			<para>
 			  An individual SSL certificate can be displayed with the following command:
-
-<programlisting language="sh"><![CDATA[
-univention-certificate dump -name fullyqualifiedhostname 
-]]></programlisting>
 			</para>
+<programlisting language="sh"><![CDATA[
+univention-certificate dump -name fullyqualifiedhostname
+]]></programlisting>
 		</section>
 
         <section>
             <title>Checking the validity of a certificate</title>
 			<para>
 			  This command checks whether a certificate is valid or invalid:
-
+			</para>
 <programlisting language="sh"><![CDATA[
 univention-certificate check -name fullyqualifiedhostname
 ]]></programlisting>
-			</para>
-
 			<para>
 			  A certificate may be invalid because it has either been revoked or has expired.
 			</para>
@@ -654,9 +645,11 @@ univention-certificate check -name fullyqualifiedhostname
             <title>Revoking a certificate</title>
 			<para>
 			  The command
+			</para>
 <programlisting language="sh"><![CDATA[
-univention-certificate revoke -name fullyqualifiedhostname 
+univention-certificate revoke -name fullyqualifiedhostname
 ]]></programlisting>
+			<para>
 			  is used to revoke a certificate. It is then no longer valid, but remains stored in the
 			  file system. Certificates which are created and removed automatically during the
 			  management of UMC computer objects do not need to be revoked manually.
@@ -667,9 +660,11 @@ univention-certificate revoke -name fullyqualifiedhostname
             <title>Creating a certificate</title>
 			<para>
 			  The command
+			</para>
 <programlisting language="sh"><![CDATA[
 univention-certificate new -name fullyqualifiedhostname
 ]]></programlisting>
+			<para>
 			  can be used to create a new certificate. The fully qualified domain name of the
 			  computer should be given as the name. In the default setting the certificate is valid
 			  for five years. The standard value can be changed by setting the &ucsUCRV;
@@ -693,25 +688,20 @@ univention-certificate new -name fullyqualifiedhostname
         <para>
 		  REQUEST is the file with the CSR in PEM format (a file in PEM format is a text file
 		  containing a Base64-encoded block enclosed by BEGIN CERTIFICATE and END CERTIFICATE).
-		</para>
-
-        <para>
 		  If the request is in DER format, it can be converted with the following command:
-
-<programlisting>
+		</para>
+<programlisting language="sh">
 openssl x509 -inform der -outform pem -in request.der -out req.pem
 </programlisting>
-		</para>
 
         <para>
 		  The following command then signs the CSR:
-
-<programlisting>
+		</para>
+<programlisting language="sh">
 openssl ca -batch -config /etc/univention/ssl/openssl.cnf    \
 -in REQUEST -out CERTIFICATE                              \
 -passin pass:"$(cat /etc/univention/ssl/password)"
 </programlisting>
-		</para>
 	  </section>
 
 	  <section>
@@ -723,7 +713,8 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf    \
 
         <para>
 		  The following steps are necessary for this:
-		  
+		</para>
+
 		  <itemizedlist>
 			<listitem><para>
 			  Firstly, a backup copy of <filename>/etc/univention/ssl</filename> should be created.
@@ -736,18 +727,19 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf    \
 			  CA. (PEM is a standardised format in which the certificate is saved
 			  Base64-encoded). If the received certificate is not in PEM format, but is sent in DER
 			  format instead, it must be converted with the following command:
-
-<programlisting>
+			</para>
+<programlisting language="sh">
 openssl x509 -inform der        \
-  -outform pem -in filename.der \ 
+  -outform pem -in filename.der \
   -out filename.pem
 </programlisting>
-			</para></listitem>
+			</listitem>
 
 			<listitem><para>
 			  The new certificate must be stored at several positions in the file system. The
 			  following steps copy it:
-<programlisting>
+			</para>
+<programlisting language="sh">
 cd /etc/univention/ssl
 cp NEWCERT.pem ucsCA/CAcert.pem
 cp ucsCA/CAcert.pem ucsCA/newcerts/00.pem
@@ -755,7 +747,7 @@ cp ucsCA/CAcert.pem /var/www/ucs-root-ca.crt
 source /usr/share/univention-ssl/make-certificates.sh
 move_cert ucsCA/newcerts/00.pem
 </programlisting>
-			</para></listitem>
+			</listitem>
 
 			<listitem><para>
 			  The last command transfers the certificate from the
@@ -767,46 +759,42 @@ move_cert ucsCA/newcerts/00.pem
 			<listitem><para>
 			  The CA certificate of the signing, superordinate CA is copied and saved in the
 			  <filename>/etc/univention/ssl/mca/</filename> directory:
-
-<programlisting>
+			</para>
+<programlisting language="sh">
 mkdir -p /etc/univention/ssl/mca/
 cp CA.pem /etc/univention/ssl/mca/
 </programlisting>
-			</para></listitem>
+			</listitem>
 
 			<listitem><para>
 			  The certificate chain is now generated:
-
-<programlisting>
+			</para>
+<programlisting language="sh">
 cd /etc/univention/ssl
 cat ucsCA/CAcert.pem >> CAChain.pem
 cat mca/CA.pem >> CAChain.pem
 </programlisting>
-			</para></listitem>
+			</listitem>
 
 			<listitem><para>
 			  The web server must be set up in such a way that it sends the chain file to the
 			  clients together with its certificate. This is done by setting the &ucsUCRV;
 			  <envar>apache2/ssl/certificatechain</envar> to
 			  <filename>/etc/univention/ssl/CAChain.pem</filename> and restarting the web server:
-
-<programlisting>
-ucr set apache2/ssl/certificatechain=/etc/univention/ssl/CAChain.pem 
+			</para>
+<programlisting language="sh">
+ucr set apache2/ssl/certificatechain=/etc/univention/ssl/CAChain.pem
 /etc/init.d/apache2 restart
 </programlisting>
-			</para></listitem>
+			</listitem>
 
 			<listitem><para>
 			  The CA certificate of the superordinate CA must be imported on all clients so that the
 			  clients can verify other certificates accordingly that are overwritten by the UCS-CA.
 			</para></listitem>
 		  </itemizedlist>
-		</para>
 	  </section>
-
-
 	</chapter>
-
 
     <?dbhtml-include href="../stylesheets/piwiki.html"?>
 </book>

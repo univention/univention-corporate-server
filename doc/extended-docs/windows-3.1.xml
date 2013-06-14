@@ -47,13 +47,12 @@
 			  A Samba 4 domain controller can be operated in RODC mode (on a &ucsSlave; for
 			  example). Prior to the installation of <emphasis>univention-samba4</emphasis>, the
 			  &ucsUCRV; <envar>samba4/role</envar> must be set to <emphasis>RODC</emphasis>:
-
-<programlisting>
+			</para>
+<programlisting language="sh">
 ucr set samba4/role=RODC
 univention-install univention-samba4
 univention-run-join-scripts
 </programlisting>
-			</para>
 
         </section>
     </chapter>
