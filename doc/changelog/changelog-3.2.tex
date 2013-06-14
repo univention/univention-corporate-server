@@ -477,7 +477,7 @@ only for root (\ucsBug{31538}).
 %\end{itemize}
 
 
-\section{ucs-test framework}
+\section{UCS test framework}
 \begin{itemize}
 \item A test has been added to check if the ,,Administrator'' user may execute
   \ucsCommand{univention-directory-manager users/user list --filter uid=Administrator} (\ucsBug{30116}).
@@ -498,6 +498,8 @@ created without a mail address (\ucsBug{31296}).
     credentials UCS test should use when running tests (\ucsBug{31250}).
 
 \item The connector tests have been reordered to avoid a connector restart for every test (\ucsBug{31677}).
+
+\item The different return codes of ucs-test have been merged (\ucsBug{31734}).
 
 
 \end{itemize}
