@@ -337,6 +337,7 @@ univention-config-registry set \
 	ldap/server/type=master \
 	server/role=domaincontroller_master \
 	kerberos/adminserver="$hostname.$domainname" \
+	kerberos/kpasswdserver="$hostname.$domainname" \
 	windows/wins-support=yes \
 	ldap/translogfile=/var/lib/univention-ldap/listener/listener
 
