@@ -1,17 +1,17 @@
 [mrtg/cron]
-Description[de]=Definiert, ob und wann univention-maintenance über cron ausgeführt wird.
-Description[en]=Defines whether and when to run univention-maintenance from cron.
+Description[de]=Diese Variable konfiguriert, in welchem Intervall Auslastungsstatistiken für das UMC-Modul 'Systemstatistiken' erzeugt werden. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'.
+Description[en]=This variable configures the interval in which system statistics are collected for the UMC module 'Statistics'. The configuration is done in Cron syntax, see 'man 5 crontab'.
 Type=str
 Categories=system-statistics
 
 [system/stats]
-Description[de]=Definiert, ob Systemstatistiken mit univention-system-stats per cron gesammelt werden sollen.
-Description[en]=Defines whether system statistics are collected with univention-system-stats via cron.
+Description[de]=Wird diese Option aktiviert, werden Systemparameter wie die aktuellen Prozesse, der freie Platten- und Arbeitsspeicher, die Uptime und die aktuellen Samba-Verbindungen regelmässig in der Datei /var/log/univention/system-stats.log protokolliert.
+Description[en]=If this option is enabled, system properties such as the active processes, free disk space/system memory, the uptime and active Samba connections are logged regularly in the file /var/log/univention/system-stats.log.
 Type=str
 Categories=system-statistics
 
 [system/stats/cron]
-Description[de]=Definiert das Intervall, in der Systemstatistiken mit univention-system-stats per cron gesammelt werden sollen.
-Description[en]=Defines the cron interval for collecting system statistics with univention-system-stats.
+Description[de]=Definiert das Intervall, in die Systemstatistiken gesammelt werden. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'.
+Description[en]=Defines the interval for collecting system statistics. The configuration is done in Cron syntax, see 'man 5 crontab'.
 Type=str
 Categories=system-statistics

@@ -1,3 +1,10 @@
+univention-maintenance (6.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30943)	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 10 Jun 2013 15:01:58 +0200
+
 univention-maintenance (5.0.3-1) unstable; urgency=low
 
   * added .htaccess to protect /var/www/statistik/ (Bug #22513) 
