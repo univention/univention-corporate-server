@@ -583,32 +583,46 @@ ServerName printserver.example.com
         <section>
             <title>Storage of the certificates</title>
 			<para>
-			  The certificates are stored in the <filename>/etc/univention/ssl</filename> directory
+			  The certificates are stored in the directory <filename class="directory">/etc/univention/ssl/</filename>
 			  on the &ucsMaster; and synchronised on all &ucsBackup; systems. A subdirectory with
-			  the name of the certificate is kept in the <filename>/etc/univention/ssl/</filename>
-			  directory for every certificate, which contains the following files:
+			  the name of the certificate is kept in the directory <filename class="directory">/etc/univention/ssl/</filename>
+			  for every certificate, which contains the following files:
 			</para>
 
-			  <itemizedlist>
-				<listitem> <para>
-				  The <filename>cert.pem</filename> file represents the actual certificate.
-				</para> </listitem>
-
-				<listitem><para>
-				  <filename>openssl.cnf</filename> contains the OpenSSL configuration at the time
-				  the certificate was created.
-				</para></listitem>
-
-				<listitem><para>
-				  The <filename>private.key</filename> file contains the private key for the
-				  certificate.
-				</para></listitem>
-
-				<listitem><para>
-				  <filename>req.pem</filename> documents the original client request with which the
-				  certificate was created.
-				</para></listitem>
-			  </itemizedlist>
+			<variablelist>
+				<varlistentry>
+					<term><filename>req.pem</filename></term>
+					<listitem>
+						<para>
+							This file contains the original request with which the certificate was created.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>openssl.cnf</filename></term>
+					<listitem>
+						<simpara>
+							This file contains the OpenSSL configuration at the time the certificate was created.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>cert.pem</filename></term>
+					<listitem>
+						<simpara>
+							The file represents the actual certificate.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term><filename>private.key</filename></term>
+					<listitem>
+						<simpara>
+							The file contains the private key for the certificate.
+						</simpara>
+					</listitem>
+				</varlistentry>
+			</variablelist>
 		</section>
 
         <section>
@@ -644,28 +658,27 @@ univention-certificate check -name fullyqualifiedhostname
         <section>
             <title>Revoking a certificate</title>
 			<para>
-			  The command
+			  The following command is used to revoke a certificate:
 			</para>
 <programlisting language="sh"><![CDATA[
 univention-certificate revoke -name fullyqualifiedhostname
 ]]></programlisting>
 			<para>
-			  is used to revoke a certificate. It is then no longer valid, but remains stored in the
-			  file system. Certificates which are created and removed automatically during the
-			  management of UMC computer objects do not need to be revoked manually.
+				It is then no longer valid, but remains stored in the file system.
+				Certificates of UMC computer objects do not need to be revoked manually.
 			</para>
 		</section>
 
         <section>
             <title>Creating a certificate</title>
 			<para>
-			  The command
+			  The following command can be used to create a new certificate:
 			</para>
 <programlisting language="sh"><![CDATA[
 univention-certificate new -name fullyqualifiedhostname
 ]]></programlisting>
 			<para>
-			  can be used to create a new certificate. The fully qualified domain name of the
+			  The fully qualified domain name of the
 			  computer should be given as the name. In the default setting the certificate is valid
 			  for five years. The standard value can be changed by setting the &ucsUCRV;
 			  <envar>ssl/default/days</envar>.
@@ -677,8 +690,8 @@ univention-certificate new -name fullyqualifiedhostname
 		<title>Signing of certificate signing requests by the UCS certificate authority</title>
         <para>
 		  A certificate signing request (CSR) is a request submitted to a certificate authority (CA)
-		  for a digital signature. A CSR typically occurs in the form of a file. This section
-		  describes how a CRS is signed by the UCS CA.
+		  to create a digital signature. A CSR typically occurs in the form of a file. This section
+		  describes how a CSR is signed by the UCS CA.
 		</para>
 
         <para>
@@ -686,21 +699,23 @@ univention-certificate new -name fullyqualifiedhostname
 		</para>
 
         <para>
-		  REQUEST is the file with the CSR in PEM format (a file in PEM format is a text file
-		  containing a Base64-encoded block enclosed by BEGIN CERTIFICATE and END CERTIFICATE).
-		  If the request is in DER format, it can be converted with the following command:
+			REQUEST is the file with the CSR in either PEM or DER format.
+			A file in PEM format is a text file containing a Base64-encoded block enclosed between <literal>BEGIN CERTIFICATE</literal> and <literal>END CERTIFICATE</literal>.
+			A request in binary DER format must be first converted to the PEM format with the following command:
 		</para>
 <programlisting language="sh">
-openssl x509 -inform der -outform pem -in request.der -out req.pem
+openssl req \
+  -inform  der -in  request.der \
+  -outform pem -out req.pem
 </programlisting>
 
         <para>
-		  The following command then signs the CSR:
+		  The following command then processes the CSR and creates the certificate:
 		</para>
 <programlisting language="sh">
-openssl ca -batch -config /etc/univention/ssl/openssl.cnf    \
--in REQUEST -out CERTIFICATE                              \
--passin pass:"$(cat /etc/univention/ssl/password)"
+openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
+  -in REQUEST -out CERTIFICATE \
+  -passin file:/etc/univention/ssl/password
 </programlisting>
 	  </section>
 
@@ -742,10 +757,9 @@ openssl x509 -inform der        \
 <programlisting language="sh">
 cd /etc/univention/ssl
 cp NEWCERT.pem ucsCA/CAcert.pem
-cp ucsCA/CAcert.pem ucsCA/newcerts/00.pem
-cp ucsCA/CAcert.pem /var/www/ucs-root-ca.crt
-source /usr/share/univention-ssl/make-certificates.sh
-move_cert ucsCA/newcerts/00.pem
+cp NEWCERT.pem ucsCA/newcerts/00.pem
+cp NEWCERT.pem /var/www/ucs-root-ca.crt
+c_rehash ucsCA/certs
 </programlisting>
 			</listitem>
 
@@ -771,8 +785,7 @@ cp CA.pem /etc/univention/ssl/mca/
 			</para>
 <programlisting language="sh">
 cd /etc/univention/ssl
-cat ucsCA/CAcert.pem >> CAChain.pem
-cat mca/CA.pem >> CAChain.pem
+cat ucsCA/CAcert.pem mca/CA.pem > CAChain.pem
 </programlisting>
 			</listitem>
 
