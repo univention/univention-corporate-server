@@ -239,7 +239,7 @@ create_machine_password () {
 		compl="scn"
 	fi
 	
-	echo "$(pwgen -1 -${compl} ${length})"
+	pwgen -1 -${compl} ${length}
 }
 
 # vim:set sw=4 ts=4 noet:
