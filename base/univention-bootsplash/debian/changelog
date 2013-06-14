@@ -1,3 +1,10 @@
+univention-bootsplash (5.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30943)	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 10 Jun 2013 14:25:24 +0200
+
 univention-bootsplash (4.0.8-1) unstable; urgency=low
 
   * Redraw background when printing a message (Bug #29768)
