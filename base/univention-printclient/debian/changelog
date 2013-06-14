@@ -1,3 +1,10 @@
+univention-printclient (7.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 10 Jun 2013 16:04:32 +0200
+
 univention-printclient (6.0.4-3) unstable; urgency=low
 
   * move old template in preinst (Bug #25472) 

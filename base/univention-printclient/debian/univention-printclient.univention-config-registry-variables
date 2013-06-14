@@ -1,5 +1,5 @@
 [cups/server]
-Description[de]=FQDN des CUPS-Druckservers
-Description[en]=FQDN of the CUPS printserver
+Description[de]=Mit dem hier angegebenen CUPS-Druckserver werden Druckaufträge auf diesen System verarbeitet.
+Description[en]=Print jobs on this system are processed with the CUPS print server specified here.
 Type=str
 Categories=service-cups
