@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.0-2) unstable; urgency=low
+
+  * fixed password generation (Bug #31281) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 14 Jun 2013 11:11:04 +0200
+
 univention-pkgdb (7.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)

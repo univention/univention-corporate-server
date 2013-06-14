@@ -48,16 +48,14 @@ case "$1" in
 			# only, if pkgdbu not exists
 			su - postgres -c "createuser --adduser --no-createdb pkgdbu"
 		fi
-		newPwdFile=$(mktemp /etc/postgresql/pkgdb.secret.XXXXXX)
-		create_machine_password | tr -d '\n' > "$newPwdFile"
-		chmod ug=r,o= "$newPwdFile"
-		chown postgres:www-data "$newPwdFile"
-		if su - postgres -c "psql -c \"ALTER USER pkgdbu WITH PASSWORD '$(cat "$newPwdFile")';\" template1"
-		then
-			mv "$newPwdFile" /etc/postgresql/pkgdb.secret
-		else
-			rm "$newPwdFile"
+
+		# password
+		newPwd="$(create_machine_password)"
+		if su - postgres -c "psql -c \"ALTER USER pkgdbu WITH PASSWORD '$newPwd';\" template1"; then
+			printf "$newPwd" >/etc/postgresql/pkgdb.secret
 		fi
+		chmod ug=r,o= /etc/postgresql/pkgdb.secret
+		chown postgres:www-data /etc/postgresql/pkgdb.secret
 
 		if [ -z "$2" ]
 		then # installation
