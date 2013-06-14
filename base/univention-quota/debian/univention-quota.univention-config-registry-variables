@@ -1,11 +1,18 @@
 [quota/logfile]
-Description[de]=Datei in der Aufrufe von univention-user-quota protokolliert werden sollen.
-Description[en]=File in which calls to univention-user-quota are logged.
+Description[de]=Die im UCS-Managementsystem definierten Quota-Einstellungen werden bei der Anmeldung an UCS-Systemen durch das im PAM-Stack aufgerufene Tool univention-user-quota ausgewertet und aktiviert. Die Aufrufe können in die hier konfigurierte Datei protokolliert werden.
+Description[en]=The quota settings defined in the UCS management system are evaluated and enabled during login to UCS systems by the tool univention-user-quota run in the PAM stack. The calls can be logged in the file specified here.
 Type=str
 Categories=system-base
 
 [samba/quota/command]
-Description[de]=Kommando, dass in samba 'set quota command' verwendet werden soll.
-Description[en]=Command that is used in samba 'set quota command'.
+Description[de]=Das hier konfigurierte Kommando wird von Samba aufgerufen, um Quotaeinstellungen zu setzen.
+Description[en]=The command configured here is executed by Samba to update quota settings.
 Type=str
 Categories=service-samba
+
+[quota/userdefault]
+Description[de]=Die im UCS-Managementsystem definierten Quota-Einstellungen werden bei der Anmeldung an UCS-Systemen durch das im PAM-Stack aufgerufene Tool univention-user-quota ausgewertet und aktiviert. Wird diese Variable auf 'no' gesetzt, wird diese Auswertung deaktiviert.
+Description[en]=The quota settings defined in the UCS management system are evaluated and enabled during login to UCS systems by the tool univention-user-quota run in the PAM stack. If this variable is set to 'no', this evaluation is deactivated.
+Type=str
+Categories=system-base
+
