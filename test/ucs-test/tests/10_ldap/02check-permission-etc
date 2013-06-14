@@ -21,7 +21,7 @@ def main():
 	"""A main method stores almost completely code."""
 	exit_code = None # use for exitcode of the entire test
 
-	filenames_groups = [("/etc/ldap.secret", "DC Backup Hosts"), ("/etc/ldap-backup.secret", "Slave Join"), ("/etc/slave-join.secret", "Slave Join"), ]  # filepaths and groupnames to check
+	filenames_groups = [("/etc/ldap.secret", "DC Backup Hosts"), ("/etc/ldap-backup.secret", "DC Backup Hosts"), ("/etc/slave-join.secret", "Slave Join"), ]  # filepaths and groupnames to check
 	shouldowner = "root"
 
 	try:

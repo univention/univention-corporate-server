@@ -1,3 +1,14 @@
+ucs-test (3.0.64-3) unstable; urgency=low
+
+  * 25check-permissions: ignore /var/run/*.MainThread-* as well
+    (Bug #29450)
+  * 02check-permission-etc: ldap-backup.secret belongs to DC Backup
+    Hosts, this was changed with Bug #15557 (Bug #27662)
+  * framework: simplify return strings (Bug #31734)
+  * 50_samba/50quota: wait until the replication is ready (Bug #31687)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Jun 2013 07:05:18 +0200
+
 ucs-test (3.0.64-2) unstable; urgency=low
 
   * 67ucr_concurrent_set_get: show ucr set commands in logfile (Bug #31725)

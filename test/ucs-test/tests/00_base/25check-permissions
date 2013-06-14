@@ -47,7 +47,7 @@ find / \
 		-o -path "/tmp/.ICE-unix" \
 		-o -path "/tmp/.winbindd/pipe" \
 		-o -path "/var/run/umc-web-server.pid.lock" \
-		-o -path "/var/run/$(hostname).MainThread-*" \
+		-o -path "/var/run/*.MainThread-*" \
 		-o -path "/var/lib/php5" \
 		-o -path "/var/lock" \
 		-o -path "/var/run/avahi-daemon/socket" \
