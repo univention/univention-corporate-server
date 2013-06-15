@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.4-7) unstable; urgency=low
+
+  * Switch to m1.medium for ec2 examples (Bug #31283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 15 Jun 2013 17:09:29 +0200
+
 ucs-ec2-tools (0.1.4-6) unstable; urgency=low
 
   * jenkins examples: start ucs-test in UTF-8 env (Bug #31283)
