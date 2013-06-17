@@ -35,7 +35,7 @@ udm-test users/user create --position=cn=users,"$ldap_base" \
 	--set organisation=firma.de_GmbH \
 	--set mailPrimaryAddress="$username@$domainname" \
 	--set password=univention \
-	--option=kerberos --option=posix --option=samba \
+	--option=kerberos --option=posix --option=samba
 if [ "$?" != 0 ];then
 	fail_fast 1 "User could not be created"
 fi
