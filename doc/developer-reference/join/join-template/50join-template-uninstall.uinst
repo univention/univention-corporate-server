@@ -15,8 +15,8 @@ if ucs_isServiceUnused "$SERVICE" "$@"
 then
 	# was last server to implement service. now the data
 	# may be removed
-	univention-directory-manager container/cn remove "$@" \
-		--dn "cn=myservice,cn=custom attributes,cn=univention,$ldap_base" || die
+	univention-directory-manager container/cn remove "$@" --dn \
+		"cn=myservice,cn=custom attributes,cn=univention,$ldap_base" || die
 
 	# Terminate UDM server to force module reload
 	. /usr/share/univention-lib/base.sh
