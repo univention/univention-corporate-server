@@ -151,8 +151,12 @@ class _TestReader(object):  # pylint: disable-msg=R0903
 			if not line:
 				return ''  # EOF
 			if line.startswith('## '):
-				self.digest.update(line)
 				return line[3:]
+			if not line.startswith('#'):
+				while line:
+					self.digest.update(line)
+					line = self.stream.readline(size)
+					
 
 class Verdict(object):
 	"""

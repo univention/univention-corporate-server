@@ -1,3 +1,10 @@
+ucs-test (4.0.1-1) unstable; urgency=low
+
+  * ignore test header in md5 sum, and ignore lines beginning with a single
+  	hashtag in in test header (Bug #31652)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 17 Jun 2013 15:52:03 +0200
+
 ucs-test (4.0.0-1) unstable; urgency=low
 
   * univention.testing.ldap: added wait_for_replication and
@@ -13,7 +20,7 @@ ucs-test (4.0.0-1) unstable; urgency=low
 ucs-test (3.1.0-1) unstable; urgency=low
   
   * version bump for UCS 3.2-0
-  * do not stop reading test header lines on first line not starting with
+  * do not stop reading test header on first line not starting with
   "## " 
   (Bug #31652)
 
