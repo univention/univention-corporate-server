@@ -34,14 +34,4 @@
 
 
 
-eval "$(ucr shell)"
-
-ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$ldap_base" \
-		tests/domainadmin/pwd?univention \
-		tests/domainadmin/pwdfile?"/var/ucs-test/pwdfile"
-
-if [ ! -f /var/ucs-test/pwdfile ]; then
-	mkdir -p /var/ucs-test/
-	echo -n $tests_domainadmin_pwd > /var/ucs-test/pwdfile
-fi
-chmod 600 /var/ucs-test/pwdfile
+rm -rf /var/ucs-test/

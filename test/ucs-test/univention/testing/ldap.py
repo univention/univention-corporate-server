@@ -17,7 +17,7 @@ def getLdapConnection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 
 	if pwdfile:
 		with open(ucr['tests/domainadmin/pwdfile']) as f:
-			bindpw = f.read()[:-1]
+			bindpw = f.read().strip('\n')
 	else:
 		bindpw = ucr['tests/domainadmin/pwd']
 
