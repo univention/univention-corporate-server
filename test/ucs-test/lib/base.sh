@@ -72,23 +72,6 @@ conflictsoftware () { # check if conflicting package $1 is installed
 	fi
 }
 
-univention-directory-manager () {
-	if [ "$ldap_server_type" = "master" ]
-	then
-		/usr/sbin/univention-directory-manager "$@"
-	else
-		/usr/sbin/univention-directory-manager "$@" --binddn "$BINDDN" --bindpwd "$BINDPWD"
-	fi
-}
-udm () {
-	if [ "$ldap_server_type" = "master" ]
-	then
-		/usr/sbin/udm "$@"
-	else
-		/usr/sbin/udm "$@" --binddn "$BINDDN" --bindpwd "$BINDPWD"
-	fi
-}
-
 verify_value () {
 	local name=$1
 	local actual_value=$2
@@ -220,6 +203,27 @@ current_ucs_version_less_equal () {
 
 	local ucsversion="$(ucs_version_string_to_integer "$(get_current_ucs_version_string)")"
 	[ "$ucsversion" -le "$versionstring" ] && :
+}
+
+wait_for_replication () {
+	echo "Waiting for replication:"
+	for((i=0;i<300;i++)); do
+		/usr/lib/nagios/plugins/check_univention_replication && break
+		sleep 1
+	done
+	if [ "$i" -ge 299 ]; then
+		echo "Error: replication incomplete."
+		return 1
+	fi
+	echo "Done: replication complete."
+	return 0
+}
+wait_for_replication_and_postrun () {
+	wait_for_replication
+	rc=$?
+	echo "Waiting for postrun"
+	sleep 17
+	return $rc
 }
 
 # vim:set filetype=sh ts=4:

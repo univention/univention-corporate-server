@@ -18,11 +18,11 @@ eval "$(/usr/sbin/univention-config-registry shell)"
 ## some globals
 sharename="$(random_share)"
 SHARE_POSITION="cn=shares,$ldap_base"
-fqdn="$(host "$hostname" | awk {'print $1'})"
+fqdn="$hostname.$domainname"
 echo "hostname: $hostname"
 echo "fqdn: $fqdn"
 etc="/etc/exports"
-available_options="$(/usr/sbin/univention-directory-manager shares/share create | grep  --regex "(nfs)" | awk  {'print $1'})"
+available_options="$(udm-test shares/share create | grep  --regex "(nfs)" | awk  {'print $1'})"
 
 ## here we have the udm_option/nfs_value/udm_value
 options="
@@ -34,44 +34,27 @@ root_squash/root_squash/1
 
 ## delete share even on abnormal exits
 #trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}"' INT TERM EXIT
-if [ "$server_role" = "memberserver" ]; then
-	trap '/usr/sbin/univention-directory-manager shares/share remove --dn "$SHARE_DN" --binddn "$ADMINISTRATOR_DN" --bindpwd "$ADMINISTRATOR_PASSWORD";
-rm -rf "/opt/${sharename:?}"' INT TERM EXIT
-else
-	trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}";' INT TERM EXIT
-fi
-
-ADMINISTRATOR_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
+trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}";' INT TERM EXIT
 
 ## create share
 echo "----create share"
-if [ "$server_role" = "memberserver" ]; then
-	/usr/sbin/univention-directory-manager shares/share create \
-		--position="$SHARE_POSITION" \
-		--option nfs \
-		--set name="$sharename" \
-		--set path="/opt/$sharename" \
-		--set host="$fqdn" \
-		--binddn "$ADMINISTRATOR_DN" --bindpwd "$ADMINISTRATOR_PASSWORD"
-else
-	/usr/sbin/univention-directory-manager shares/share create \
-		--position="$SHARE_POSITION" \
-		--option nfs \
-		--set name="$sharename" \
-		--set path="/opt/$sharename" \
-		--set host="$fqdn"
-fi
+udm-test shares/share create \
+	--position="$SHARE_POSITION" \
+	--option nfs \
+	--set name="$sharename" \
+	--set path="/opt/$sharename" \
+	--set host="$fqdn" \
+	--binddn "$tests_domainadmin_account" \
+	--bindpwd "$tests_domainadmin_pwdfile"
 
 if [ "$?" != 0 ]; then
 	fail_fast 1 "could not create share"
 fi
 
-SHARE_DN="$(/usr/sbin/univention-directory-manager shares/share list --filter name="$sharename" | sed -ne 's/^DN: //p')"
+SHARE_DN="$(udm-test shares/share list --filter name="$sharename"  --binddn "$tests_domainadmin_account" --bindpwd "$tests_domainadmin_pwdfile" | sed -ne 's/^DN: //p')"
 echo "$SHARE_DN"
 
-## wait for nfs conf file
-echo "----wait for the changes to be written in the nfs configuration file"
-sleep 10
+wait_for_replication_and_postrun
 
 echo "----check whether the nfs configuration file exists"
 if [ ! -f "$etc" ]; then
@@ -94,16 +77,12 @@ while read option_line; do
 
 	# modify share
 	echo "Debug: Options: $option_line"
-	echo "Debug: udm call: /usr/sbin/univention-directory-manager shares/share modify --dn=\"cn=$sharename,cn=shares,$ldap_base\" --set \"$udm_option=$udm_value\""
-	if [ "$server_role" = "memberserver" ]; then
-		/usr/sbin/univention-directory-manager shares/share modify \
-			--dn="cn=$sharename,cn=shares,$ldap_base" \
-			--set "$udm_option=$udm_value" \
-			--binddn "$ADMINISTRATOR_DN" \
-			--bindpwd "$ADMINISTRATOR_PASSWORD"
-	else
-		/usr/sbin/univention-directory-manager shares/share modify --dn="cn=$sharename,cn=shares,$ldap_base" --set "$udm_option=$udm_value"
-	fi
+	echo "Debug: udm call: udm-test shares/share modify --dn=\"cn=$sharename,cn=shares,$ldap_base\" --set \"$udm_option=$udm_value\""
+	udm-test shares/share modify \
+		--dn="cn=$sharename,cn=shares,$ldap_base" \
+		--set "$udm_option=$udm_value" \
+		--binddn "$tests_domainadmin_account" \
+		--bindpwd "$tests_domainadmin_pwdfile"
 	if [ "$?" != 0 ]; then
 		fail_fast 1 "could not set $udm_option to $udm_value"
 	fi
@@ -122,8 +101,7 @@ ${udm_option}:DELIMETER:${nfs_value}:DELIMETER:${udm_value}"
 
 done <<<"$options"
 
-## wait a moment to let udm prepare the samba conf file
-sleep 3
+wait_for_replication_and_postrun
 
 ## check the nfs conf file
 echo "----test the nfs configuration file"

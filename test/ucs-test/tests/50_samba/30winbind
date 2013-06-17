@@ -27,27 +27,11 @@ if ! user_create "$username"; then
 	fail_fast 1 "Failed to create user";
 fi
 
-##wait for the user to be created
-echo "----wait for the user to be created"
-i=0
-while ! output="$(net rpc user info $username -U"$username%$password" 2>&1)"
-do
-	let i="$i"+1
-	sleep 1
-	if [ "$i" = 20 ]; then
-		echo "$output"
-		echo "TIMEOUT: The user which has been created in UDM could not be found in samba after $i seconds"
-		break
-	fi
-done
-
-
+wait_for_replication_and_postrun
 
 if [ "$(/usr/sbin/univention-config-registry get server/role)" = "memberserver" ]; then
 	NAME="$(/usr/sbin/univention-config-registry get windows/domain)+$username"
 fi
-
-nscd -i passwd
 
 ##wbinfo tests
 echo "----wbinfo -t"

@@ -5,6 +5,7 @@
 ##  - univention-samba
 ## roles: [memberserver]
 ## tags: [basic]
+
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 
@@ -14,15 +15,20 @@ if ! current_ucs_version_greater_equal 2.3; then
 	exit 131
 fi
 
+s4_dcs="$(univention-ldapsearch '(&(univentionService=Samba 4)(objectClass=univentionDomainController))' -LLL dn | sed -ne 's|dn: ||p')"
+if [ -n "$s4_dcs" ]; then
+	echo "This is a S4 domain, skip test"
+	exit 137
+fi
+
 username="$(user_randomname)"
 password="univention"
-trap '/usr/sbin/univention-directory-manager users/user remove --binddn "$ADMINISTRATOR_DN" --bindpwd "$ADMINISTRATOR_PASSWORD" --dn "$USER_DN";
+trap 'udm-test users/user remove --dn "$USER_DN";
 rm /tmp/25testpwd.txt;' INT TERM EXIT
 
 ## create user
 echo "----create user"
-ADMINISTRATOR_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
-/usr/sbin/univention-directory-manager users/user create --position=cn=users,"$ldap_base" \
+udm-test users/user create --position=cn=users,"$ldap_base" \
 	--set username="$username" \
 	--set firstname=Max \
 	--set lastname=Muster \
@@ -30,29 +36,15 @@ ADMINISTRATOR_DN="$(/usr/sbin/univention-directory-manager users/user list --fil
 	--set mailPrimaryAddress="$username@$domainname" \
 	--set password=univention \
 	--option=kerberos --option=posix --option=samba \
-	--binddn "$ADMINISTRATOR_DN" --bindpwd "$ADMINISTRATOR_PASSWORD"
 if [ "$?" != 0 ];then
 	fail_fast 1 "User could not be created"
 fi
 
-USER_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+USER_DN="$(udm-test users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 
-echo "$ADMINISTRATOR_PASSWORD" > "/tmp/25testpwd.txt"
+echo "$password" > "/tmp/25testpwd.txt"
 
-## wait for the user to be created
-echo "----wait for the user to be created"
-i=0
-while ! echo "$output" | grep "$username" > /dev/null
-do
-	output="$(univention-ssh "/tmp/25testpwd.txt" "$ADMINISTRATOR_USER"@"$ldap_master" "net rpc user -U$ADMINISTRATOR_DN%$ADMINISTRATOR_PASSWORD")"
-	let i="$i"+1
-	sleep 1
-	if [ "$i" = 20 ]; then
-		echo "$output"
-		fail_fast 1 "The User which has been created in UDM could not be found in samba."
-	fi
-done
-
+wait_for_replication_and_postrun
 
 ## join domain without the SeMachineAccountPrivilege
 echo "----join domain without the SeMachineAccountPrivilege"
@@ -63,9 +55,7 @@ fi
 
 ## grant SeMachineAccountPrivilege
 echo "----grant SeMachineAccountPrivilege"
-output="$(/usr/sbin/univention-directory-manager users/user modify \
---binddn "$ADMINISTRATOR_DN" \
---bindpwd "$ADMINISTRATOR_PASSWORD" \
+output="$(udm-test users/user modify \
 --dn "$USER_DN" \
 --set "sambaPrivileges=SeMachineAccountPrivilege")"
 if [ "$?" != 0 ]; then

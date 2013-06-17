@@ -23,8 +23,9 @@ password="univention"
 trap 'user_remove "$name" ; group_remove "$name"' INT TERM EXIT
 
 echo "----create group"
-/usr/sbin/univention-directory-manager groups/group create \
-        --position="cn=groups,$ldap_base" \
+udm-test groups/group create \
+	--binddn "$tests_domainadmin_account" --bindpwd "$tests_domainadmin_pwdfile" \
+	--position="cn=groups,$ldap_base" \
 	--set name="$name"
 if [ $? != 0 ]; then
 	fail_fast 1 "Group could not be created"
@@ -44,6 +45,7 @@ if ! [ -x /usr/bin/net ]; then
 	fail_fast 1 "net is not available";
 fi;
 
+wait_for_replication_and_postrun
 
 info "Querying group members"
 

@@ -1,4 +1,5 @@
 import ldap
+import time
 import univention.uldap as uldap
 import univention.config_registry
 
@@ -29,3 +30,22 @@ def getLdapConnection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 		except ldap.SERVER_DOWN:
 			pass
 	raise ldap.SERVER_DOWN
+
+def wait_for_replication():
+	print 'Waiting for replication:'
+	for i in range(0,300):
+		rc = subprocess.call('/usr/lib/nagios/plugins/check_univention_replication')
+		if rc == 0:
+			break
+		time.sleep(1)
+	if i >= 300:
+		print 'Error: replication incomplete.'
+		return 1
+	print 'Done: replication complete.'
+	return 0
+
+def wait_for_replication_and_postrun ():
+	rc = wait_for_replication ()
+	print "Waiting for postrun"
+	time.sleep(17)
+	return rc

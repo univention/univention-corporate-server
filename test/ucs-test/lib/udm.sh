@@ -184,7 +184,7 @@ udm_exists () {
 	local ldaplocation="${4:-$superordinate}"
 	local objectname="${5:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 
-	local cmd="univention-directory-manager '$module' list"
+	local cmd="udm-test '$module' list"
 	if [ -n "$superordinate" ]; then
 		cmd+=" --superordinate '$superordinate'"
 	fi
@@ -216,7 +216,7 @@ udm_create () {
 	local objectname="${1:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 	shift
 
-	local cmd="univention-directory-manager '$module' create"
+	local cmd="udm-test '$module' create"
 	if [ -n "$superordinate" ]; then
 		cmd+=" --superordinate '$superordinate'"
 	fi
@@ -256,7 +256,7 @@ udm_modify () {
 	local objectname="${1:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 	shift
 
-	local cmd="univention-directory-manager '$module' modify"
+	local cmd="udm-test '$module' modify"
 	if [ -n "$superordinate" ]; then
 		cmd+=" --superordinate '$superordinate'"
 	fi
@@ -287,7 +287,7 @@ udm_remove () {
 	local objectname="${1:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 	shift
 
-	local cmd="univention-directory-manager '$module' remove"
+	local cmd="udm-test '$module' remove"
 	if [ -n "$superordinate" ]; then
 		cmd+=" --superordinate '$superordinate'"
 	fi
@@ -340,19 +340,19 @@ udm_purge () {
 udm_get_required_module_attributes () {
 	local module="$1"
 
-	let local linecount="$(univention-directory-manager "$module" | wc -l)"
-	let local syntaxbeginning="$(univention-directory-manager "$module" | grep -n "$module variables:" | sed "s#:$module variables:##")"
+	let local linecount="$(udm-test "$module" | wc -l)"
+	let local syntaxbeginning="$(udm-test "$module" | grep -n "$module variables:" | sed "s#:$module variables:##")"
 	let local tailcount="$linecount-$syntaxbeginning"
 
 
-	local output="$(univention-directory-manager "$module" | tail -n2 | grep -n "^$" | head -n 1)"
+	local output="$(udm-test "$module" | tail -n2 | grep -n "^$" | head -n 1)"
 	if [ -n "$output" ]; then
 		let local relativesyntaxend="${output/:/}"
 	else
 		let local relativesyntaxend="$tailcount"
 	fi
 
-	univention-directory-manager "$module" \
+	udm-test "$module" \
 		| tail -n "$tailcount" \
 		| head -n "$relativesyntaxend" \
 		| egrep -v "^  .*:$" \
@@ -364,18 +364,18 @@ udm_get_required_module_attributes () {
 udm_get_plain_module_attributes () {
 	local module="$1"
 
-	let local linecount="$(univention-directory-manager "$module" | wc -l)"                                                             
-	let local syntaxbeginning="$(univention-directory-manager "$module" | grep -n "$module variables:" | sed "s#:$module variables:##")"
+	let local linecount="$(udm-test "$module" | wc -l)"                                                             
+	let local syntaxbeginning="$(udm-test "$module" | grep -n "$module variables:" | sed "s#:$module variables:##")"
 	let local tailcount="$linecount - $syntaxbeginning"                                                                                 
 	                                                                                                                                    
-	local output="$(univention-directory-manager "$module" | tail -n "$tailcount" | grep -n "^$" | head -n 1)"
+	local output="$(udm-test "$module" | tail -n "$tailcount" | grep -n "^$" | head -n 1)"
 	if [ -n "$output" ]; then
 	        let local relativesyntaxend="${output/:/}"
 	else
 	        let local relativesyntaxend="$tailcount"
 	fi
 	
-	univention-directory-manager "$module" \
+	udm-test "$module" \
 	        | tail -n "$tailcount" \
 	        | head -n "$relativesyntaxend" \
 	        | egrep -v "^  .*:$" \
@@ -389,18 +389,18 @@ udm_get_tab_entries () {
 	local module="$1"
 	local tabname="$2"
 
-	let local linecount="$(univention-directory-manager "$module" | wc -l)"
-	let local tabbeginning="$(univention-directory-manager "$module" | grep -n "$tabname:" | sed "s#: *$tabname:##")"
+	let local linecount="$(udm-test "$module" | wc -l)"
+	let local tabbeginning="$(udm-test "$module" | grep -n "$tabname:" | sed "s#: *$tabname:##")"
 	let local tailcount="$linecount - $tabbeginning"
 
-	local output="$(univention-directory-manager "$module" | tail -n "$tailcount" | egrep -n ".*:\$" | head -n 1 | sed "s#:.*##")"
+	local output="$(udm-test "$module" | tail -n "$tailcount" | egrep -n ".*:\$" | head -n 1 | sed "s#:.*##")"
 	if [ -n "$output" ]; then
 		let local relativetabend="$output - 1"
 	else
 		let local relativetabend="$tailcount + 1"
 	fi
 
-	univention-directory-manager "$module" \
+	udm-test "$module" \
 		| tail -n "$tailcount" \
 		| head -n "$relativetabend" \
 		| sed "s/^ *//"
@@ -500,7 +500,7 @@ udm_get_udm_attribute () {
 	local ldaplocation="$5"
 	local objectname="${6:-$(udm_get_identifier_value "$module" "$variableprefix")}"
 
-	local cmd="univention-directory-manager '$module' list"
+	local cmd="udm-test '$module' list"
 	if [ -n "$superordinate" ]; then
 		cmd+=" --superordinate '$superordinate'"
 	fi

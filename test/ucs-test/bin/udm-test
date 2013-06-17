@@ -1,0 +1,10 @@
+#!/bin/bash
+
+eval "$(ucr shell server/role tests/domainadmin/account tests/domainadmin/pwd)"
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/sbin/univention-directory-manager "$@"
+else
+	/usr/sbin/univention-directory-manager "$@" --binddn "$tests_domainadmin_account" --bindpwd "$tests_domainadmin_pwd"
+fi
+

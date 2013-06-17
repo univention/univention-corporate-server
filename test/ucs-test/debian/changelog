@@ -1,3 +1,15 @@
+ucs-test (4.0.0-1) unstable; urgency=low
+
+  * univention.testing.ldap: added wait_for_replication and
+    wait_for_replication_and postrun (Bug #31687)
+  * lib/base.sh: added wait_for_replication and wait_for_replication_and
+    postrun (Bug #31687)
+  * Added udm-test which detects if --binddn and --bindpwd should be
+    used (Bug #31678)
+  * Use check_join_status script instead of a seperate implementation
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Jun 2013 15:08:52 +0200
+
 ucs-test (3.1.0-1) unstable; urgency=low
   
   * version bump for UCS 3.2-0

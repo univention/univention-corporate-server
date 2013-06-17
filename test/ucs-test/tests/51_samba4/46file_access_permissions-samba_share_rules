@@ -32,7 +32,7 @@ fi
 echo "----create Share"
 #----create Share
 SHARE_POSITION="cn=shares,$ldap_base"
-/usr/sbin/univention-directory-manager shares/share create --position="$SHARE_POSITION" \
+udm-test shares/share create --position="$SHARE_POSITION" \
 	--set name="$sharename" \
 	--set path="/$sharename" \
 	--set directorymode=0777 \
@@ -41,9 +41,9 @@ if [ $? != 0 ]; then
 	fail_fast 1 "could not create share"
 fi
 
-SHARE_DN="$(/usr/sbin/univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
+SHARE_DN="$(udm-test shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
 
-USER_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+USER_DN="$(udm-test users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 
 ## wait for user replication
 echo "----wait for user replication"
@@ -88,7 +88,7 @@ if [ "$?" != 0 ];then
 	fail_test 1 "Failed to make a folder even though it should work."
 fi
 
-if ! /usr/sbin/univention-directory-manager shares/share modify --dn="$SHARE_DN" --set "sambaInvalidUsers=$username"; then 
+if ! udm-test shares/share modify --dn="$SHARE_DN" --set "sambaInvalidUsers=$username"; then 
 	fail_test 1 "Could not modify share $sharename."
 fi
 #----making a folder without permission

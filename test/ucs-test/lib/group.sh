@@ -29,7 +29,7 @@ group_create () { #Creates a group named like supplied in the first argument of 
 	debug "Locale is $(/usr/sbin/ucr get locale/default)"
 
 	info "create group $GROUPNAME with Mailaddress $MAILADDR"
-	univention-directory-manager groups/group create \
+	udm-test groups/group create \
 		--position="cn=groups,$ldap_base" \
 		--set name="$GROUPNAME" \
 		--set mailAddress="$MAILADDR@$domainname"
@@ -40,13 +40,13 @@ group_create () { #Creates a group named like supplied in the first argument of 
 
 group_dn (){ #echos the DN of a Group. E.g. group_dn $GROUPNAME
 	local GROUPNAME=${1?:missing parameter: groupname}
-	univention-directory-manager groups/group list --filter cn="$GROUPNAME" | sed -ne 's/^DN: //p'
+	udm-test groups/group list --filter cn="$GROUPNAME" | sed -ne 's/^DN: //p'
 }
 
 group_remove () { # Remove a Group. E.g. group_remove $GROUPNAME
 	local GROUPNAME=${1?:missing parameter: group name}
 	info "group remove $GROUPNAME"
-	univention-directory-manager groups/group remove --dn="cn=$GROUPNAME,cn=groups,$ldap_base"
+	udm-test groups/group remove --dn="cn=$GROUPNAME,cn=groups,$ldap_base"
 }
 
 group_adduser () { # Add User to Group. E.g. group_adduser $USERNAME $GROUPNAME
@@ -54,7 +54,7 @@ group_adduser () { # Add User to Group. E.g. group_adduser $USERNAME $GROUPNAME
 	local GROUPNAME=${2?:missing parameter: group name}
 
 	info "add user $USERNAME to group $GROUPNAME"
-	univention-directory-manager groups/group modify \
+	udm-test groups/group modify \       
 		--dn="cn=$GROUPNAME,cn=groups,$ldap_base" \
 		--append users="uid=$USERNAME,cn=users,$ldap_base"
 
@@ -67,7 +67,7 @@ group_addcomputer () { # Add Computer to Group. group_addcomputer $COMPUTERNAME 
 
 	info "add computer $COMPUTERNAME to group $GROUPNAME"
 
-	univention-directory-manager groups/group modify \
+	udm-test groups/group modify \
 		--dn="cn=$GROUPNAME,cn=groups,$ldap_base" \
 		--append hosts="cn=$COMPUTERNAME,cn=computers,$ldap_base"
 }
@@ -78,7 +78,7 @@ group_addgroup () { # Add Group to Group. E.g. group_addgroup $GROUPTOADD $GROUP
 
 	info "add group $GROUPTOADD to group $GROUPNAME"
 
-	univention-directory-manager groups/group modify \
+	udm-test groups/group modify \
 		--dn="cn=$GROUPNAME,cn=groups,$ldap_base" \
 		--append nestedGroup="cn=$GROUPTOADD,cn=groups,$ldap_base"
 
@@ -91,7 +91,7 @@ group_removeuser () { # Remove User from Group. E.g. group_removeuser $USERNAME 
 
 	info "remove user $USERNAME from group $GROUPNAME"
 
-	univention-directory-manager groups/group modify \
+	udm-test groups/group modify \
 		--dn="cn=$GROUPNAME,cn=groups,$ldap_base" \
 		--remove users="uid=$USERNAME,cn=users,$ldap_base"
 	local rc=$?
@@ -105,7 +105,7 @@ group_removegroup () { # Remove Group from Group. E.g. group_removegroup $GROUPT
 
 	info "remove group $GROUPTOREM from group $GROUPNAME"
 
-	univention-directory-manager groups/group modify \
+	udm-test groups/group modify \
 		--dn="cn=$GROUPNAME,cn=groups,$ldap_base" \
 		--remove nestedGroup="cn=$GROUPTOREM,cn=groups,$ldap_base"
 }
@@ -116,7 +116,7 @@ group_rename () { # Rename a group. E.g. group_rename $GROUPNAMEOLD $GROUPNAMENE
 
 	info "rename group $GROUPNAMEOLD to $GROUPNAMENEW"
 
-	univention-directory-manager groups/group modify \
+	udm-test groups/group modify \
 		--dn="cn=$GROUPNAMEOLD,cn=groups,$ldap_base" \
 		--set name="$GROUPNAMENEW"
 }
@@ -130,14 +130,14 @@ group_exists () { # Returns 0, if a Group exists, otherwise 1. E.g. group_exists
 group_hasgroupmember () { # Checks, whether a Group has a specific group as member. Returns 0 if it is and 1 if not. E.g. group_hasgroupmember $GROUPNAME $GROUPMEMBER
 	local GROUPNAME=${1?:missing parameter: group name}
 	local GROUPMEMBER=${2?:missing parameter: nested group name}
-	univention-directory-manager groups/group list --filter "cn=$GROUPNAME" | \
+	udm-test groups/group list --filter "cn=$GROUPNAME" | \
 		grep -q "nestedGroup: cn=$GROUPMEMBER,"
 }
 
 group_hasusermember () { # Checks, whether a Group has a specific user as member. Returns 0 if it is and 1 if not. E.g. group_hasusermember $GROUPNAME $USERNAME
 	local GROUPNAME=${1?:missing parameter: group name}
 	local USERNAME=${2?:missing parameter: user name}
-	univention-directory-manager groups/group list --filter "cn=$GROUPNAME" | \
+	udm-test groups/group list --filter "cn=$GROUPNAME" | \
 		grep -q "users: uid=$USERNAME,"
 }
 
@@ -151,21 +151,21 @@ group_hascomputermember () { # Checks, whether a Group has a Computer-Member. E.
 	iconv --from-code=ISO-8859-1 --to-code=UTF-8 "$tmp1" >"$tmp2"
 	COMPUTERNAME=$(cat "$tmp2")
 	rm -f "$tmp1" "$tmp2"
-	univention-directory-manager groups/group list --filter "cn=$GROUPNAME" | \
+	udm-test groups/group list --filter "cn=$GROUPNAME" | \
 		grep -q "cn=$COMPUTERNAME"
 }
 
 group_ismemberof () { # Checks, whether a Group is member of a specific group. Returns 0 if it is and 1 if not. E.g. group_ismemberof $MEMBERGROUP $GROUPNAME
 	local GROUPMEMBER=${1?:missing parameter: member group name}
 	local GROUPNAME=${2?:missing parameter: group name}
-	univention-directory-manager groups/group list --filter cn="$GROUPTOADD" | \
+	udm-test groups/group list --filter cn="$GROUPTOADD" | \
 		grep -q "memberOf: cn=$GROUPNAME,"
 }
 
 group_userismemberof () { # Checks, whether a user is member of a specific group. Returns 0 it is an 1 if not. E.g. group_userismemberof $USERNAME $GROUPNAME
 	local USERNAME=${1?:missing parameter: user name}
 	local GROUPNAME=${2?:missing parameter: group name}
-	univention-directory-manager users/user list --filter "uid=$USERNAME" | \
+	udm-test users/user list --filter "uid=$USERNAME" | \
 		grep -q "cn=$GROUPNAME"
 }
 

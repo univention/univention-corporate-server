@@ -17,7 +17,7 @@ eval "$(/usr/sbin/univention-config-registry shell)"
 
 sharename="$(random_share)"
 SHARE_POSITION="cn=shares,$ldap_base"
-fqdn="$(host "$hostname" | awk {'print $1'})"
+fqdn="$hostname.$domainname"
 samba_etc="/etc/samba/shares.conf.d/"
 
 options="
@@ -62,55 +62,29 @@ sambaBlockSize/block size/1024
 sambaCscPolicy/csc policy/manual
 "
 
-available_options="$(/usr/sbin/univention-directory-manager shares/share create | grep  --regex "samba\w" | awk  {'print $1'})"
+available_options="$(udm-test shares/share create | grep  --regex "samba\w" | awk  {'print $1'})"
 
 ## delete share even on abnormal exits
-if [ "$server_role" = "memberserver" ]; then
-	trap '/usr/sbin/univention-directory-manager shares/share remove --dn "$SHARE_DN" --binddn "$ADMINISTRATOR_DN" --bindpwd "$ADMINISTRATOR_PASSWORD";
-rm -rf "/opt/${sharename:?}"' INT TERM EXIT
-else
-	trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}";' INT TERM EXIT
-fi
+trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}";' INT TERM EXIT
 
-ADMINISTRATOR_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
+ADMINISTRATOR_DN="$(udm-test users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
 
 echo "----create share"
 ## create share
-if [ "$server_role" = "memberserver" ]; then
-	/usr/sbin/univention-directory-manager shares/share create \
-		--position="$SHARE_POSITION" \
-		--option samba \
-		--set name="$sharename" \
-		--set path="/opt/$sharename" \
-		--set host="$fqdn" \
-		--set sambaWriteList="workaround for bug #11972" \
-		--binddn "$ADMINISTRATOR_DN" --bindpwd "$ADMINISTRATOR_PASSWORD"
-else
-	/usr/sbin/univention-directory-manager shares/share create \
-		--position="$SHARE_POSITION" \
-		--option samba \
-		--set name="$sharename" \
-		--set path="/opt/$sharename" \
-		--set host="$fqdn" \
-		--set sambaWriteList="workaround for bug #11972"
-fi
+udm-test shares/share create \
+	--position="$SHARE_POSITION" \
+	--option samba \
+	--set name="$sharename" \
+	--set path="/opt/$sharename" \
+	--set host="$fqdn" \
+	--set sambaWriteList="workaround for bug #11972"
 if [ "$?" != 0 ]; then
 	fail_fast 1 "could not create share"
 fi
 
-SHARE_DN="$(/usr/sbin/univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
+SHARE_DN="udm-test shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
 
-echo "----waiting for share to be replicated"
-## waiting for share to be replicated
-i=0
-while ! [ -f "$samba_etc/$sharename" ]
-do
-	let i="$i"+1
-	sleep 1
-	if [ "$i" = 10 ]; then
-		fail_fast 1 "samba config file for share $sharename not found"	
-	fi
-done
+wait_for_replication_and_postrun
 
 echo "----get the samba options and set them to a value"
 ## set samba options via udm and check samba config file
@@ -133,17 +107,9 @@ while read option_line; do
 	fi
 
 	## modify share
-	if [ "$server_role" = "memberserver" ]; then
-	/usr/sbin/univention-directory-manager shares/share modify \
+	udm-test shares/share modify \
 		--dn="cn=$sharename,cn=shares,$ldap_base" \
-		--set "$udm_option=$value" \
-		--binddn "$ADMINISTRATOR_DN" \
-		--bindpwd "$ADMINISTRATOR_PASSWORD"
-	else
-		/usr/sbin/univention-directory-manager shares/share modify \
-			--dn="cn=$sharename,cn=shares,$ldap_base" \
-			--set "$udm_option=$value" 
-	fi
+		--set "$udm_option=$value"
 	if [ "$?" != 0 ]; then
 		fail_test 121 "could not set $udm_option to $value."
 	fi
@@ -180,8 +146,7 @@ while read option_line; do
 
 done <<<"$options"
 
-## wait a moment to let udm prepare the samba conf file
-sleep 3
+wait_for_replication_and_postrun
 
 echo "----check the samba configuration file"
 ## check the samba conf file
@@ -192,6 +157,7 @@ while read search_line; do
 
 	cat "$samba_etc/$sharename" | grep -q -E --regex "$search"
 	if [ "$?" != 0 ]; then
+		cat "$samba_etc/$sharename"
 		fail_test 1 "samba config file <-> udm settings mismatch udm option:$udm samba options and value: $search udm value:$value"
 	fi
 done <<<"$samba_search"

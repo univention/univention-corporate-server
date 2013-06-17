@@ -89,10 +89,10 @@ for FS in xfs ext2 ext3 ext4; do
 	 --set firstname="$user" \
 	 --set password=univention || fail_test 110
 
-	for((i=0;i<120;i++)); do
-		smbclient -U Administrator%univention //$hostname/$share -c ls && break
-		sleep 1
-	done
+	wait_for_replication_and_postrun
+
+	# wait for samba reload
+	sleep 5
 
 	if [ "${FS}" != "xfs" ]; then
 		quotacheck -u "$mountpoint" || fail_test 110

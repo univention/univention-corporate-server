@@ -8,6 +8,7 @@
 ## - memberserver
 ## tags: [basic]
 
+. "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 
 SAMBA="true"
@@ -27,20 +28,7 @@ if ! user_create "$username"; then
 	fail_fast 1 "Failed to create user"
 fi
 
-##wait for the user to be created
-echo "----wait for the user to be created"
-i=0
-while ! output="$(net rpc user info "$username" -U "$username%$password")"
-do
-	let i="$i"+1
-	sleep 1
-	if [ "$i" = 20 ]; then
-		echo "$output"
-		fail_fast 1 "The User which has been created in UDM could not be found in samba."
-
-	fi
-done
-
+wait_for_replication
 
 ## display samba groups
 echo "----display samba groups"

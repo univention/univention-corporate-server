@@ -25,7 +25,7 @@ password=univention
 trap '
 user_remove "$username";
 rm -rf "/tmp/$printername"/ /tmp/print_input;
-univention-directory-manager shares/printer remove --dn="$PRINTER_DN"
+udm-test shares/printer remove --dn="$PRINTER_DN"
 ' INT TERM EXIT
 user_create "$username" || fail_fast 1 "Could not create user $username."
 
@@ -43,7 +43,7 @@ done
 
 #create printer
 echo "----create printer"
-univention-directory-manager shares/printer create \
+udm-test shares/printer create \
 	--set "name=$printername" \
 	--set "spoolHost=$hostname.$domainname" \
 	--set "uri=file:/ tmp/$printername" \

@@ -7,6 +7,8 @@
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup
+
+. "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
@@ -25,28 +27,15 @@ password="univention"
 trap '
 user_remove "$username";
 rm -rf "/tmp/$printername"/ /tmp/print_input;
-/usr/sbin/univention-directory-manager shares/printer remove --dn="$PRINTER_DN"
+udm-test shares/printer remove --dn="$PRINTER_DN"
 ' INT TERM EXIT
 
 if ! user_create "$username"; then
 	fail_fast 1 "User could not be created"
 fi
 
-##wait for the user to be created
-echo "----wait for the user to be created"
-i=0
-while ! output="$(net rpc user info $username -U"$username%$password" 2>&1)"
-do
-	let i="$i"+1
-	if [ "$i" = 20 ]; then
-		echo "$output"
-		echo "TIMEOUT: The User which has been created in UDM could not be found in samba ldb"
-	fi
-	sleep 1
-done
-
 ##create printer
-/usr/sbin/univention-directory-manager shares/printer create \
+udm-test shares/printer create \
 	--set "name=$printername" \
 	--set "spoolHost=$hostname.$domainname" \
 	--set "uri=file:/ tmp/$printername" \
@@ -55,10 +44,9 @@ if [ "$?" != 0 ];then
 	fail_fast 1 "failed to create printer"
 fi
 
-##wait for printer
-sleep 10
+wait_for_replication_and_postrun
 
-/usr/sbin/univention-directory-manager shares/printer list --filter cn="$printername" | sed -ne 's/^DN: //p' | grep "$printername"
+udm-test shares/printer list --filter cn="$printername" | sed -ne 's/^DN: //p' | grep "$printername"
 if [ "$?" != 0 ];then
 	fail_fast 1 "failed to modify printer"
 fi

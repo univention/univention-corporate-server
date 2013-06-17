@@ -96,9 +96,9 @@ class UCSTestUDM(object):
 		Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
 		to _build_udm_cmdline to build a command for UDM CLI.
 		>>> _build_udm_cmdline('users/user', 'create', username='foobar', password='univention', lastname='bar')
-		>>> ['/usr/sbin/univention-directory-manager', 'users/user', 'create', …]
+		>>> ['/usr/sbin/udm-test', 'users/user', 'create', …]
 		"""
-		cmd = [ '/usr/sbin/univention-directory-manager', modulename, action ]
+		cmd = [ '/usr/sbin/udm-test', modulename, action ]
 		args = copy.deepcopy(kwargs)
 
 		for arg in ('binddn', 'bindpwd', 'dn', 'position', 'superordinate'):
@@ -304,7 +304,7 @@ class UCSTestUDM(object):
 		for module in self._cleanup:
 			for dn in self._cleanup[module]:
 #				print 'Removing object of type %s: %s' % (module, dn)
-				cmd = [ '/usr/sbin/univention-directory-manager', module, 'remove', '--dn', dn ]
+				cmd = [ '/usr/sbin/udm-test', module, 'remove', '--dn', dn ]
 
 				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 				(stdout, stderr) = child.communicate()
