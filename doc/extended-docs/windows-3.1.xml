@@ -39,8 +39,7 @@
 				</para></listitem>
 			  </itemizedlist>
 
-			  A comprehensive description can be found in the Microsoft TechNet Library <xref
-			  linkend="technet-rodc"/>.
+			  A comprehensive description can be found in the Microsoft TechNet Library <xref linkend="technet-rodc"/>.
 			</para>
 
 			<para>
@@ -56,5 +55,8 @@ univention-run-join-scripts
 
         </section>
     </chapter>
+
+&bibliography;
+
     <?dbhtml-include href="../stylesheets/piwiki.html"?>
 </book>
