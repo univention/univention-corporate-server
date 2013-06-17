@@ -1,0 +1,17 @@
+cups/checkprinters/mail/subject
+Description[de]=Mail Betreff der Warnungen des Drucker-Monitoring Programm univention-check-printers (default: [univention-check-printers] Deaktivierter Drucker)
+Description[en]=Mail subject for warning mails from the printers monitoring tool univention-check-printers (default: [univention-check-printers] Deaktivierter Drucker)
+Type=str
+Categories=service-cups
+
+cups/checkprinters/mail/address
+Description[de]=Empfänger Adresse für Warnungen des Drucker-Monitoring Programm univention-check-printers (default: root@localhost)
+Description[en]=Recipient address for warning mails from the printers monitoring tool univention-check-printers (default: root@localhost)
+Type=str
+Categories=service-cups
+
+cups/checkprinters/cron
+Description[de]=Cron Intervall für das Drucker-Monitoring Programm univention-check-printers (default: */10 * * * *)
+Description[en]=Cron interval for the cups printers monitoring tool univention-check-printers (default: */10 * * * *)
+Type=str
+Categories=service-cups
