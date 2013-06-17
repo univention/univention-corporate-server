@@ -42,6 +42,6 @@ ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$ldap_base" \
 
 if [ ! -f /var/ucs-test/pwdfile ]; then
 	mkdir -p /var/ucs-test/
-	echo -n $tests_domainadmin_pwd > /var/ucs-test/pwdfile
+	echo -n "$tests_domainadmin_pwd" > "$tests_domainadmin_pwdfile"
 fi
-chmod 600 /var/ucs-test/pwdfile
+chmod 600 "$tests_domainadmin_pwdfile"

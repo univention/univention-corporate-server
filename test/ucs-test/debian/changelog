@@ -1,3 +1,13 @@
+ucs-test (4.0.1-2) unstable; urgency=low
+
+  * when installing, store password in file as saved in UCRV
+  	tests/domainadmin/pwdfile
+  * improved quoting when reading password from UCRV tests/domainadmin/pwd and
+  	writing it to file
+  (Bug #31250)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 17 Jun 2013 16:47:01 +0200
+
 ucs-test (4.0.1-1) unstable; urgency=low
 
   * ignore test header in md5 sum, and ignore lines beginning with a single
