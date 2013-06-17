@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manages Univention Config Registry variables
 #
-# Copyright 2006-2012 Univention GmbH
+# Copyright 2006-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -198,7 +198,7 @@ class Instance( Base ):
 		def _match_all(name, var):
 			return _match_value(name, var) or _match_description(name, var) or _match_key(name, var)
 
-		func = eval('_match_%s' % key)
+		func = locals().get('_match_%s' % key)
 		for name, var in base_info.get_variables(category).iteritems():
 			if func(name, var):
 				variables.append({'key': name,

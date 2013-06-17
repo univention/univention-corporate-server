@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -158,7 +158,7 @@ define([
 
 		clearForm: function() {
 			var emptyValues = {};
-			tools.forIn(this._form.gatherFormValues(), function(ikey) {
+			tools.forIn(this._form.get('value'), function(ikey) {
 				emptyValues[ikey] = '';
 			});
 			this._form.setFormValues(emptyValues);
@@ -191,7 +191,7 @@ define([
 			// description:
 			//		Collect a property map of all currently entered/selected values.
 
-			return this._form.gatherFormValues();
+			return this._form.get('value');
 		},
 
 		onSubmit: function(values) {
