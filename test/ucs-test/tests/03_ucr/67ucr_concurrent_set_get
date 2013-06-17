@@ -17,7 +17,13 @@ resultFile=$(mktemp)
 echo "Starting at $(date)"
 ucr set "${PREFIX}_400=value400"
 
-while [ 1=1 ]; do if [ "$(ucr get ${PREFIX}_400)" != "value400" ]; then echo "Error at $(date)" | tee -a $resultFile; fi;done &
+while true
+do
+	if [ "$(ucr get "${PREFIX}_400")" != "value400" ]
+	then
+		echo "Error at $(date)" | tee -a "$resultFile"
+	fi
+done &
 
 echo "Setting UCR variables"
 for((i=0;i<$VAR_COUNT;i++)); do ucr set "${PREFIX}_$i=value$i"; done
@@ -28,15 +34,14 @@ echo "Stopping at $(date)"
 
 if [ -s "$resultFile" ]; then
 	echo "UCR get failed at:"
-	cat $resultFile
+	cat "$resultFile"
 	fail_test 110
 fi
 
-rm -f $resultFile
+rm -f "$resultFile"
 
 echo "Starting cleanup"
 
 for((i=0;i<$VAR_COUNT;i++)); do ucr unset "${PREFIX}_$i"; done
 
 exit $RETVAL
-
