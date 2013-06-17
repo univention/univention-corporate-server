@@ -1,3 +1,12 @@
+ucs-test (3.1.0-1) unstable; urgency=low
+  
+  * version bump for UCS 3.2-0
+  * do not stop reading test header lines on first line not starting with
+  "## " 
+  (Bug #31652)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 17 Jun 2013 14:58:03 +0200
+
 ucs-test (3.0.65-1) unstable; urgency=low
 
   * store password in /var/ucs-test/pwdfile, not /usr/share/ucs-test/pwdfile
