@@ -188,7 +188,7 @@ class Instance( Base ):
 				for item in ( 'licenses', 'real' ):
 					license_data[ item ] = {}
 					for lic_type in ( 'CLIENT', 'ACCOUNT', 'DESKTOP', 'GROUPWARE' ):
-						count = getattr( udm_license._license, item )[udm_license._license.version][ eval( 'udm_license.License.%s' % lic_type ) ]
+						count = getattr( udm_license._license, item )[udm_license._license.version][ getattr(udm_license.License, lic_type) ]
 						if isinstance( count, basestring ):
 							try:
 								count = int( count )
@@ -202,7 +202,7 @@ class Instance( Base ):
 				for item in ( 'licenses', 'real' ):
 					license_data[ item ] = {}
 					for lic_type in ( 'SERVERS', 'USERS', 'MANAGEDCLIENTS', 'CORPORATECLIENTS', 'VIRTUALDESKTOPUSERS', 'VIRTUALDESKTOPCLIENTS' ):
-						count = getattr( udm_license._license, item )[udm_license._license.version][ eval( 'udm_license.License.%s' % lic_type ) ]
+						count = getattr( udm_license._license, item )[udm_license._license.version][ getattr(udm_license.License, lic_type) ]
 						if isinstance( count, basestring ):
 							try:
 								count = int( count )
