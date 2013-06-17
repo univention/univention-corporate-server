@@ -54,7 +54,7 @@ group_adduser () { # Add User to Group. E.g. group_adduser $USERNAME $GROUPNAME
 	local GROUPNAME=${2?:missing parameter: group name}
 
 	info "add user $USERNAME to group $GROUPNAME"
-	udm-test groups/group modify \       
+	udm-test groups/group modify \
 		--dn="cn=$GROUPNAME,cn=groups,$ldap_base" \
 		--append users="uid=$USERNAME,cn=users,$ldap_base"
 
