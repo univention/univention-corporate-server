@@ -35,6 +35,7 @@ import os
 import fcntl
 import re
 import errno
+import time
 
 __all__ = ['StrictModeException', 'exception_occured',
 		'SCOPE', 'ConfigRegistry']
@@ -275,7 +276,7 @@ class _ConfigRegistry(dict):
 		except EnvironmentError:
 			import_failed = True
 		else:
-			if len(reg_file.readlines()) < 3:  # comment or nothing
+			if len(reg_file.readlines()) < 2:  # comment or nothing
 				import_failed = True
 
 		if import_failed:
@@ -328,8 +329,19 @@ class _ConfigRegistry(dict):
 			os.fsync(reg_file.fileno())
 			# close fd
 			reg_file.close()
-			if os.path.exists(temp_filename):
+			try:
 				os.rename(temp_filename, filename)
+			except OSError:
+				# In this case the temp file created above in this
+				# function was already moved by a concurrent UCR
+				# operation. Dump the current state to a backup file
+				temp_filename = '%s.concurrent_%s' % (filename, time.time())
+				reg_file = open(temp_filename, 'w')
+				reg_file.write('# univention_ base.conf\n\n')
+				reg_file.write(self.__str__())
+				reg_file.close()
+				pass
+				
 		except EnvironmentError, ex:
 			# suppress certain errors
 			if ex.errno != errno.EACCES:

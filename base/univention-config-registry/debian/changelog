@@ -1,3 +1,9 @@
+univention-config-registry (8.0.7-5) unstable; urgency=low
+
+  * Don't ignores files with only 2 lines (Bug #31725)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Jun 2013 16:41:31 +0200
+
 univention-config-registry (8.0.7-4) unstable; urgency=low
 
   * Write changes to a temporary file first and rename the file in a second
