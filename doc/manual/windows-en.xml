@@ -221,6 +221,11 @@ in <xref linkend="windows:File_services"/> must be taken into consideration.
 </para>
 
 <para>
+  The command <command>unvention-s4connector-list-rejected</command> lists all objects which cannot
+  be synchronised.
+</para>
+
+<para>
   The <command>univention-s4search</command> command can be used to search in the Samba directory
   service. <command>univention-s4search</command> is a wrapper for the command
   <command>ldbsearch</command>. If it is run as the <emphasis>root</emphasis> user, the required

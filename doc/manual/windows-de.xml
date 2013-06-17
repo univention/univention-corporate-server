@@ -235,6 +235,11 @@ Logdatei <filename>/var/log/univention/connector-s4.log</filename>.
 </para>
 
 <para>
+  Der Befehl <command>unvention-s4connector-list-rejected</command> zeigt alle nicht
+  synchronisierbaren Objekt an.
+</para>
+
+<para>
   Mit dem Befehl <command>univention-s4search</command> kann im Samba-Verzeichnisdienst gesucht
   werden. <command>univention-s4search</command> ist ein Wrapper um das Kommando
   <command>ldbsearch</command>. Wird es als Benutzer <emphasis>root</emphasis> aufgerufen, werden
