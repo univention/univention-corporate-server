@@ -330,9 +330,9 @@ class Instance(umcm.Base):
 		# our own instance that has the name of the query name (with '_opt_' prepended),
 		# and that method is supposed to accept the options and to return changed options.
 		options = request.options
-		optfunc = '_opt_' + options.get('key','')
+		optfunc = getattr(self, '_opt_%s' % (options.get('key', '')), None)
 		try:
-			options = eval('self.%s(options=options)' % optfunc)
+			options = optfunc(options=options)
 
 			# -------------- DEBUG ----------------
 			MODULE.info("   ++ changed options:")
@@ -519,7 +519,7 @@ class Instance(umcm.Base):
 			# starts with underscore? try to call it as a method of 'self'
 			if isinstance(result, str) and result.startswith('_'):
 				try:
-					r = eval('self.%s()' % result)
+					r = getattr(self, result)()
 					result = r
 				finally:
 					pass
