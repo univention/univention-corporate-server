@@ -1,3 +1,10 @@
+univention-antivir-mail (5.0.0-1) unstable; urgency=low
+
+  * removed scalix stuff (Bug #30900)
+  * version bump for 3.2 
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Jun 2013 14:15:43 +0200
+
 univention-antivir-mail (4.0.4-2) unstable; urgency=low
 
   * added "/etc/init.d/postfix reload" to file univention-antivir-mail.postfix
