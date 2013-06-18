@@ -43,15 +43,13 @@ udm-test shares/share create \
 	--option nfs \
 	--set name="$sharename" \
 	--set path="/opt/$sharename" \
-	--set host="$fqdn" \
-	--binddn "$tests_domainadmin_account" \
-	--bindpwd "$tests_domainadmin_pwdfile"
+	--set host="$fqdn"
 
 if [ "$?" != 0 ]; then
 	fail_fast 1 "could not create share"
 fi
 
-SHARE_DN="$(udm-test shares/share list --filter name="$sharename"  --binddn "$tests_domainadmin_account" --bindpwd "$tests_domainadmin_pwdfile" | sed -ne 's/^DN: //p')"
+SHARE_DN="$(udm-test shares/share list --filter name="$sharename" | sed -ne 's/^DN: //p')"
 echo "$SHARE_DN"
 
 wait_for_replication_and_postrun
@@ -80,9 +78,7 @@ while read option_line; do
 	echo "Debug: udm call: udm-test shares/share modify --dn=\"cn=$sharename,cn=shares,$ldap_base\" --set \"$udm_option=$udm_value\""
 	udm-test shares/share modify \
 		--dn="cn=$sharename,cn=shares,$ldap_base" \
-		--set "$udm_option=$udm_value" \
-		--binddn "$tests_domainadmin_account" \
-		--bindpwd "$tests_domainadmin_pwdfile"
+		--set "$udm_option=$udm_value"
 	if [ "$?" != 0 ]; then
 		fail_fast 1 "could not set $udm_option to $udm_value"
 	fi
