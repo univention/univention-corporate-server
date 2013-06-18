@@ -10,21 +10,8 @@
 ##  - ldap-utils
 ## exposure: dangerous
 
-#################
-#  Information  #
-#################
-# This script only applies to domaincontroller_backup and domaincontroller_slave.
-# It creates and modifies a container per UDM on the domaincontroller_master using ssh and the machine account.
-# Modification of the container is acieved by removing and creating it, because domaincontroller_slave does not have the rights to modify.
 # Modification is done 8 times in rapid succession, then 4 times in 4 seconds, then rapidly 8 times again.
 # Finally this script waits for the container to appear in the local directory and checks that the latest modification was replicated.
-#################
-# Configuration #
-#################
-MAX_WAIT=100 # wait this many seconds for the container to appear in local directory
-#################
-# Program  code #
-#################
 
 . "$TESTLIBPATH/base.sh" || exit 1
 . "$TESTLIBPATH/random.sh" || exit 1
@@ -37,50 +24,29 @@ set -o nounset #If expansion is attempted on an unset variable or parameter --> 
 
 container_name="$(random_chars 20 "${_lowerletters}${_upperletters}${_ciphers}")"
 echo "Creating and modifiying object:"
-echo "<univention-ssh>"
-# Warning: univention-ssh requires another level of quoting
-univention-ssh -timeout 100 "/etc/machine.secret" "$hostname\$@$ldap_master" \
-"\" /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
-        --set description=original --set name=$container_name --position cn=computers,$ldap_base
+udm-test container/cn create --set description=original --set name=$container_name --position cn=computers,$ldap_base
 
-for i in \$(seq 1 8)
+for i in $(seq 1 8)
 do
-    /usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
-        --dn cn=$container_name,cn=computers,$ldap_base
-    /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
-        --set description=other\$i --set name=$container_name --position cn=computers,$ldap_base
+    udm-test container/cn remove --dn cn=$container_name,cn=computers,$ldap_base
+    udm-test container/cn create --set description=other$i --set name=$container_name --position cn=computers,$ldap_base
 done
 
-for i in \$(seq 9 12)
+for i in $(seq 9 12)
 do
-    /usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
-        --dn cn=$container_name,cn=computers,$ldap_base
-    /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
-        --set description=other\$i --set name=$container_name --position cn=computers,$ldap_base
+    udm-test container/cn remove --dn cn=$container_name,cn=computers,$ldap_base
+    udm-test container/cn create --set description=other$i --set name=$container_name --position cn=computers,$ldap_base
     sleep 1s
 done
 
-for i in \$(seq 13 20)
+for i in $(seq 13 20)
 do
-    /usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
-        --dn cn=$container_name,cn=computers,$ldap_base
-    /usr/sbin/univention-directory-manager container/cn create --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
-        --set description=other\$i --set name=$container_name --position cn=computers,$ldap_base
-done\""
-echo "</univention-ssh>"
-echo -n "Waiting for replication of object... "
-
-i=0
-for i in $(seq 0 $MAX_WAIT)
-do
-        if univention-ldapsearch -LLL -x -b "cn=$container_name,cn=computers,$ldap_base" &> "/dev/zero"
-        then
-                break
-        fi
-        echo -n "."
-        sleep 1s
+    udm-test container/cn remove --dn cn=$container_name,cn=computers,$ldap_base
+    udm-test container/cn create --set description=other$i --set name=$container_name --position cn=computers,$ldap_base
 done
-echo "Waited $i seconds."
+
+wait_for_replication
+
 if ! univention-ldapsearch -LLL -x -b "cn=$container_name,cn=computers,$ldap_base"
 then
         echo 'ERROR: container not found!'
@@ -104,11 +70,6 @@ else
         fi
 fi
 echo "Removing object:"
-echo "<univention-ssh>"
-univention-ssh "/etc/machine.secret" "$hostname\$@$ldap_master" \
-"\"/usr/sbin/univention-directory-manager container/cn remove --binddn cn=$hostname,cn=dc,cn=computers,$ldap_base --bindpwd $(cat /etc/machine.secret) \
-        --dn cn=$container_name,cn=computers,$ldap_base
-\""
-echo "</univention-ssh>"
+udm-test container/cn remove --dn cn=$container_name,cn=computers,$ldap_base
 
 exit $RETVAL

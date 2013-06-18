@@ -1,3 +1,9 @@
+ucs-test (4.0.3-1) unstable; urgency=low
+
+  * 10_ldap/40replication: simplify code and test structure (Bug #31679)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jun 2013 14:01:56 +0200
+
 ucs-test (4.0.2-3) unstable; urgency=low
 
   * regard passed removal mode in ucs-test-framework.postrm

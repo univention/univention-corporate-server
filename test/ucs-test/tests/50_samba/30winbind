@@ -27,7 +27,7 @@ if ! user_create "$username"; then
 	fail_fast 1 "Failed to create user";
 fi
 
-wait_for_replication_and_postrun
+wait_for_replication
 
 if [ "$(/usr/sbin/univention-config-registry get server/role)" = "memberserver" ]; then
 	NAME="$(/usr/sbin/univention-config-registry get windows/domain)+$username"
