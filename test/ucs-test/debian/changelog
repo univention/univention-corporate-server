@@ -1,3 +1,10 @@
+ucs-test (4.0.7-1) unstable; urgency=low
+
+  * 51_samba4/kpasswd_change_pwd.py: added utf-8 coding line
+    (Bug #29058)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jun 2013 21:35:37 +0200
+
 ucs-test (4.0.6-1) unstable; urgency=low
 
   * 50_samba/25domain-join-without-admin-rights: if the first join

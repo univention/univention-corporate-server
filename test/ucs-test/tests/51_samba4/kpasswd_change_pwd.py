@@ -1,4 +1,5 @@
 #!/usr/bin/python 
+# -*- coding: utf-8 -*
 import pexpect
 import sys
 import univention.config_registry
