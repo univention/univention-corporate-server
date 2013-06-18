@@ -312,9 +312,21 @@ value attribute (\ucsBug{28667}, \ucsBug{31103}).
 %%\end{itemize}
 
 
-%\section{Univention Library}
-%\begin{itemize}
-%\end{itemize}
+\section{Univention Library}
+\begin{itemize}
+
+\item \ucsName{univention-lib}. base.sh file: function call\_joinscript() has
+been modified. The start and end of  every executed joinscript will be
+displayed on console. Assist for a better tracing (\ucsBug{29263}).
+
+\item The generation of internally used passwords (e.g. machine passwords) has
+been unified. Several packages now using a special function from
+\ucsName{shell-univention-lib} respectively \ucsName{python-univention-lib} to
+create such password. The length and complexity can be configured via the
+\ucsUCRV{machine/password/length} and
+\ucsCommand{\ucsBCindex{machine/password/complexity}} (\ucsBug{31281}).
+
+\end{itemize}
 
 
 \section{System services}
@@ -327,17 +339,36 @@ value attribute (\ucsBug{28667}, \ucsBug{31103}).
 %\begin{itemize}
 %\end{itemize}
 
-%\subsection{Cyrus}
-%\begin{itemize}
-%\end{itemize}
+\subsection{Cyrus}
+\begin{itemize}
 
-%\subsection{Postfix}
-%\begin{itemize}
-%\end{itemize}
+\item \ucsName{univention-mail-cyrus} has been modified. UCR variable
+mail/cyrus/imap/duplicatesuppression added. Default value is ``yes''. If set
+the variable to ``yes'' lmtpd will suppress delivery of a message to a mailbox
+if same message with the same message-id (or resent-message-id) has already
+been delivered to the mailbox (\ucsBug{22429}).
 
-%\subsection{Spam/virus detection and countermeasures}
-%\begin{itemize}
-%\end{itemize}
+\end{itemize}
+
+\subsection{Postfix}
+\begin{itemize}
+
+\item The new \ucsUCRV{mail/postfix/smtpd/debug} has been added to configure
+whether the smtpd should be started in debug mode (\ucsBug{29593}).
+
+\end{itemize}
+
+\subsection{Spam/virus detection and countermeasures}
+\begin{itemize}
+
+\item \ucsName{univention-antivir-mail} has been modified. Postfix
+configuration will be reloaded after installation (\ucsBug{17967}).
+
+\item \ucsName{univention-spamassassin} has been modified. Obsolete
+\ucsUCRV{mail/antispam/globalfolder} has been removed (\ucsBug{31072}).
+
+\end{itemize}
+
 
 \subsection{Printing services}
 \begin{itemize}
@@ -396,10 +427,19 @@ of libnss-ldap.secret if it is a link \ucsBug{30779}).
 
 \subsection{Other services}
 \begin{itemize}
+
 \item The config option nss\_srv (to deny dns srv record lookups) has
 been add to \ucsName{libnss-ldap} (\ucsBug{30779}).
-\item Create empty \ucsName{postgresql} config files during postrm so that postgresql can be reinstalled (\ucsBug{27786}).
+
+\item Create empty \ucsName{postgresql} config files during postrm so that
+postgresql can be reinstalled (\ucsBug{27786}).
+
 \item Restart \ucsName{postgresql} server in postinst (\ucsBug{27786}).
+
+\item The rotation of machine passwords is now performed after amount of days
+in the \ucsUCRV{server/password/change} since the last password change
+(\ucsBug{31068}).
+
 \end{itemize}
 
 
@@ -505,38 +545,7 @@ created without a mail address (\ucsBug{31296}).
 
 \item The different return codes of ucs-test have been merged (\ucsBug{31734}).
 
-
 \end{itemize}
-
-\section{mail}
-\begin{itemize}
-\item \ucsName{univention-mail-cyrus} has been modified. UCR variable mail/cyrus/imap/duplicatesuppression added. Default value is ``yes''. If set the variable to ``yes'' lmtpd will suppress delivery of a message to a mailbox if same message with the same message-id (or resent-message-id) has already been delivered to the mailbox (\ucsBug{22429}).
-
-\item \ucsName{univention-antivir-mail} has been modified. Postfix configuration will be reloaded after installation (\ucsBug{17967}).
-
-\item \ucsName{univention-spamassassin} has been modified. Obsolete \ucsUCRV{mail/antispam/globalfolder} has been removed (\ucsBug{31072}).
-
-\end{itemize}
-
-\section{base}
-\begin{itemize}
-\item \ucsName{univention-lib}. base.sh file: function call\_joinscript() has been modified. The start and end of  every executed joinscript will be displayed on console. Assist for a better tracing (\ucsBug{29263}).
-
-\item \ucsName{univention-debmirror}. When uninstall package symlink '/etc/apache2/sites-enabled/univention-repository' will be removed. (\ucsBug{29262}).
-
-\item The generation of internally used passwords (e.g. machine passwords) has
-been unified. Several packages now using a special function from
-\ucsName{shell-univention-lib} respectively \ucsName{python-univention-lib} to
-create such password. The length and complexity can be configured via the
-\ucsUCRV{machine/password/length} and
-\ucsCommand{\ucsBCindex{machine/password/complexity}} (\ucsBug{31281}).
-
-\item The rotation of machine passwords is now performed after amount of days
-in \ucsUCRV{server/password/change} since the last password change
-(\ucsBug{31068}).
-
-\end{itemize}
-
 
 \section{Other changes}
 \begin{itemize}
@@ -550,6 +559,10 @@ in \ucsUCRV{server/password/change} since the last password change
 \item The packages \ucsName{libdbd-mysql}, \ucsName{libjs-jquery} and
 \ucsName{libjs-jquery-ui} have been added to the maintained section of the
 software repository (\ucsBug{31562}).
+
+\item \ucsName{univention-debmirror}. When uninstall package symlink
+'/etc/apache2/sites-enabled/univention-repository' will be removed.
+(\ucsBug{29262}).
 
 \end{itemize}
 
