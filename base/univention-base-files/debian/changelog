@@ -1,3 +1,9 @@
+univention-base-files (3.0.1-4) unstable; urgency=low
+
+  * Set UCS 3.2 codename to Borgfeld (Bug #31686)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 18 Jun 2013 14:34:39 +0200
+
 univention-base-files (3.0.1-3) unstable; urgency=low
 
   * Don't set sshd/banner by default. It might break programs parsing the SSH

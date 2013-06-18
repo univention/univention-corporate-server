@@ -140,7 +140,10 @@ univention-config-registry set sshd/port?22 \
 # univention-config-registry set version/releasename="Horn-Lehe" # UCS 3.0
 
 # http://de.wikipedia.org/wiki/Findorff_%28Bremen%29
-univention-config-registry set version/releasename="Findorff" # UCS 3.1
+# univention-config-registry set version/releasename="Findorff" # UCS 3.1
+
+# http://de.wikipedia.org/wiki/Borgfeld
+univention-config-registry set version/releasename="Borgfeld" # UCS 3.2
 
 if [ -x /etc/init.d/ntpdate -a -x /etc/rcS.d/S51ntpdate ]; then
 	update-rc.d -f ntpdate remove >/dev/null 2>&1 || true
