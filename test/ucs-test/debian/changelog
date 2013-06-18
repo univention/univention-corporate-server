@@ -1,4 +1,4 @@
-ucs-test (4.0.3-1) unstable; urgency=low
+ucs-test (4.0.4-1) unstable; urgency=low
 
   * removed unused imports from certain udm-dns tests
   * ported remaining udm-dns test cases from ucs-3.0 branch (Bug #31653)
