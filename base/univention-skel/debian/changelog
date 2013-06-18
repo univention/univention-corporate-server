@@ -1,3 +1,9 @@
+univention-skel (6.0.0-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 18 Jun 2013 16:30:23 +0200
+
 univention-skel (6.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013

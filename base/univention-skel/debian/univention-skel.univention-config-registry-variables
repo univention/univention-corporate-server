@@ -7,7 +7,6 @@ Categories=system-base
 [skel/permissions/directory]
 Description[de]=Neu angelegte Verzeichnisses werden mit diesen Berechtigungen angelegt. Die Angabe erfolgt als oktale Berechtigungsmaske siehe 'man chmod'.
 Description[en]=Newly created directories are created with these permissions. The value is specified as an octal permission set, see 'man chown'.
-Permissions for directories
 Type=int
 Categories=system-base
 
