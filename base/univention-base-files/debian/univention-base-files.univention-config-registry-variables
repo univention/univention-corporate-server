@@ -1,78 +1,79 @@
 [proxy/http]
-Description[de]=Proxy für HTTP-Verbindungen
-Description[en]=Proxy for HTTP connections
+Description[de]=Der Proxyserver, der für HTTP-Verbindungen genutzt werden soll, z.B. http://192.168.1.100:3128. Wenn der Proxy eine Authenzifizierung erfordert, kann Benutzername und Passwort im Format http://benutzername:passwort@192.168.1.100:3128 angegeben werden.
+Description[en]=The proxy server for HTTP connections, e.g.http://192.168.1.100:3128. If the proxy requires authentication, the username and the password
+can be provided in the format http://username:password@192.168.1.100:3128.
 Type=str
 Categories=system-base
 
 [proxy/no_proxy]
-Description[de]=Kommaseparierte Liste von Domänennamen für die der Proxy nicht verwendet werden soll
-Description[en]=Comma-separated list of domain names for which the proxy should not be consulted
+Description[de]=Kommaseparierte Liste von Domänennamen, für die der Proxy nicht verwendet werden soll. Eine Ausnahme für eine Domäne wie univention.de wirkt sich auch auf eine Unterdomäne wie apt.univention.de aus.
+Description[en]=Comma-separated list of domain names for which the proxy should not be consulted. An exception for a domain like univention.de also applies to a subdomain like apt.univention.de.
 Type=str
 Categories=system-base
 
 [locale/default]
-Description[de]=Standard-Lokalisierung (Sprache der Oberfläche, Zeichensätze, etc.)
-Description[en]=Default localisation (Interface language, character sets, etc.)
+Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable definiert die Standard-Locale des Systems.
+Description[en]=Localisation properties such as time/date formats and the preferred translation are specified in locales. The installed locales can be selected using the UMC module 'System settings'. This variable selects the default locale for the system.
 Type=str
 Categories=system-base
 
 [umask]
-Description[de]=Standard umask für Benutzer
-Description[en]=Default umask for Users
+Description[de]=Die Umask legt fest, mit welchen Berechtigungen Dateien standardmässig angelegt werden (sofern keine abweichenden Rechte gesetzt wurden). Die Berechtigungen werden als oktale Bitmaske übergeben (das Format der Bitmaske ist identisch zu dem vom chown (das mit 'man chown' auf einer Shell abgerufen werden). Änderungen an der Umask sollten sorgfältig geprüft werden, eine zu laxe Umask kann zu Sicherheitsproblemen führen.
+Description[en]=The umask configures the file permissions, with which files are created by default (unless other permissions are given). The permissions are configured as an octal bitmask (the format is identical to the chown command documented in 'man chown'). Changes to the umask should be tested carefully, since a too permissive umask may lead to security problems.
 Type=int
 Categories=system-base
 
 [sshd/autostart]
-Description[de]=Automatischer Start des SSH-Dienstes beim Systemstart
-Description[en]=Automatically start the SSH daemon on system startup
+Description[de]=Die Variable konfiguriert den Startmodus des SSH-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the SSH service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
 Type=bool
 Categories=service-ssh
 
 [sshd/port]
-Description[de]=Port für den SSH-Dienst
-Description[en]=Port for the SSH daemon
+Description[de]=Konfiguriert den Port, auf dem der SSH-Dienst auf eingehende Verbindungen wartet. Ist der SSH-Server öffentlich erreichbar, können so simple Brute-Force-Angriffe auf Passwörter reduziert werden.
+Description[en]=Configures the port on which the SSH daemon is listening for incoming connections. This may prevent simple brute force attacks on passwords ff the SSH server is publicly accessible.
 Type=int
 Categories=service-ssh
 
 [sshd/permitroot]
-Description[de]=root Zugang per SSH erlauben
-Description[en]=permit root access via SSH
+Description[de]=Konfiguriert, ob der Benutzer 'root' sich per SSH anmelden kann: Der Wert 'yes' erlaubt die Anmeldung ohne Einschränkung, 'without-password' erlaubt nur die Public-Key-Authentizierung ohne Passwörter und 'no' unterbindet die root-Anmeldung komplett.
+Description[en]=Configures, whether the user root can login via SSH: The value 'yes' permits the login without limitations, 'without-password' only allows public key authentication without passwords and 'no' denies the root login altogether.
 Type=bool
 Categories=service-ssh
 
 [sshd/xforwarding]
-Description[de]=Portweiterleitung für die X-Sitzung
-Description[en]=Port forwarding for the X session
+Description[de]=Die Einstellung ('yes'/'no') legt fest, ob eine auf dem entfernten Rechner gestartete X11-Verbindung weitergeleitet wird. Diese Einstellung muss aktiviert sein, um Benutzern einen grafischen SSH-Login auf dem Server zu ermöglichen.
+Description[en]=This setting ('yes'/'no') configures, whether a X11 connection on the remote host is forwarded. This setting needs to be activated to allow users a graphical login to the server.
 Type=bool
 Categories=service-ssh
 
 [sshd/xdisplayoffset]
-Description[de]=Erster Port für die Weiterleitung der X-Sitzung
-Description[en]=First port for forwarded X sessions
+Description[de]=X11-Anzeigeoberflächen (Displays) sind beginnend mit 0 durchnumeriert. Diese Variable legt das erste Display fest, das im Rahmen der X11-Weiterleitung verwendet werden soll.
+Description[en]=X11 displays are numbered starting with 0. This variable specifies the first display to be used during X11 forwarding.
 Type=int
 Categories=service-ssh
 
 [sshd/xuselocalhost]
-Description[de]=Den lokalen Rechner die Weiterleitung verwenden
-Description[en]=Use localhost for the port forwarding
+Description[de]=Diese Variable legt fest, ob im Rahmen der X11-Weiterleitung die DISPLAY-Umgebungsvariable auf 'localhost' gesetzt wird. Dies verhindert, das der SSH-Client auf das X11-Display des weiterleitenden Servers zugreifen kann.
+Description[en]=This variable configures, whether the DISPLAY variable is mapped to 'localhost' during X11 forwarding. This prevents the access of the SSH client to the X11 display of the forwarding server.
 Type=bool
 Categories=service-ssh
 
 [sshd/challengeresponse]
-Description[de]=Aktiviere/Deaktiviere challenge response authentication
-Description[en]=Enable/Disable challenge response authentication
+Description[de]=Konfiguriert die Authentifizierung mittels Challenge Response Authentication (yes/no)
+Description[en]=Configures the use of challenge response for authentication (yes/no)
 Type=bool
 Categories=service-ssh
 
 [sshd/passwordauthentication]
-Description[de]=Aktiviere/Deaktiviere password authentication direkt über sshd
-Description[en]=Enable/Disable password authentication via sshd directly
+Description[de]=Konfiguriert, ob eine Anmeldung über Passwörter möglich ist (yes/no)
+Description[en]=Configures whether a password-based login is possible (yes/no)
 Type=bool
 Categories=service-ssh
 
 [domainname]
-Description[de]=DNS-Domäne
-Description[en]=DNS domain
+Description[de]=Der Name der DNS-Domäne des Systems. Dieser Domänenname muss nicht mit dem externen DNS-Domänenname (etwa der Webpräsenz) übereinstimmen.
+Description[en]=The name of the system's DNS domain. This domain name does not need to match the externally used DNS domain name (e.g. of the web site)
 Type=str
 Categories=system-network
 ReadOnly=yes
@@ -90,57 +91,57 @@ Type=str
 Categories=system-network
 
 [windows/domain]
-Description[de]=Windows Domänenname
-Description[en]=Windows domainname
+Description[de]=Der NetBIOS-Domänenname (verwendet in Samba 3, in Samba 4 wird überwiegend der DNS/Kerberos-Domänenname verwendet)
+Description[en]=The NetBIOS domain name (used in Samba 3, Samba 4 predominantly uses the DNS/Kerberos domainname)
 Type=str
 Categories=system-network
 ReadOnly=yes
 
 [gateway]
-Description[de]=Standard-IPv4-Gateway
-Description[en]=Default IPv4 gateway
+Description[de]=Die IPv4-Adresse des Standard-Gateways
+Description[en]=The IPv4 address of the standard gateway
 Type=str
 Categories=system-network
 
 [ipv6/gateway]
-Description[de]=Standard-IPv6-Gateway
-Description[en]=Default IPv6 gateway
+Description[de]=Die IPv6-Adresse des Standard-Gateways
+Description[en]=The IPv6 address of the standard gateway
 Type=str
 Categories=system-network
 
 [hostname]
-Description[de]=Name des Rechners
-Description[en]=Name of the computer
+Description[de]=Der Name des Rechners
+Description[en]=The name of the system / host name
 Type=str
 Categories=system-network
 ReadOnly=yes
 
 [interfaces/.*/address]
-Description[de]=IPv4-Adresse der Netzschnittstelle
+Description[de]=IPv4-Adresse der Netzwerkschnittstelle
 Description[en]=IPv4 address of the network interface
 Type=str
 Categories=system-network
 
 [interfaces/.*/broadcast]
-Description[de]=IPv4-Broadcast-Adresse der Netzschnittstelle
+Description[de]=IPv4-Broadcast-Adresse der Netzwekschnittstelle
 Description[en]=IPv4 broadcast address of the network interface
 Type=str
 Categories=system-network
 
 [interfaces/.*/mac]
-Description[de]=MAC-Adresse der Netzschnittstelle
+Description[de]=MAC-Adresse der Netzwekschnittstelle
 Description[en]=MAC address of the network interface
 Type=str
 Categories=system-network
 
 [interfaces/.*/netmask]
-Description[de]=IPv4-Netzmaske der Netzschnittstelle
+Description[de]=IPv4-Netzmaske der Netzwerkschnittstelle
 Description[en]=IPv4 netmask of the network interface
 Type=str
 Categories=system-network
 
 [interfaces/.*/network]
-Description[de]=IPv4-Netzwerk der Netzschnittstelle
+Description[de]=IPv4-Netzwerk der Netzwerkschnittstelle
 Description[en]=IPv4 network of the network interface
 Type=str
 Categories=system-network
@@ -152,14 +153,14 @@ Type=int
 Categories=system-network
 
 [interfaces/.*/start]
-Description[de]=Aktiviere/Deaktiviere das automatische Starten der Netzwerkschnittstelle [yes]
-Description[en]=Enable/Disable automatic start of network interfaces [yes]
+Description[de]=Konfiguriert das automatische Starten der Netzwerkschnittstelle ('yes'/'no')
+Description[en]=Configures the automatic start of network interfaces ('yes'/'no')
 Type=bool
 Categories=system-network
 
 [interfaces/.*/type]
-Description[de]=Netztypen für die einzelnen Interfaces
-Description[en]=Type of network for each network interface
+Description[de]=Zwei Arten der IP-Zuweisung sind möglich: 'static' legt die Netzkonfiguration anhand weiterer Variablen fest (z.B. interfaces/eth0/address). 'dhcp' konfiguriert eine dynamische Zuweisung über DHCP.
+Description[en]=Two types of IP assignment are possible: 'static' configures the interface according to the values configured in additional variables (e.g. interfaces/eth0/address). 'dhcp' configures dynamic assignment over DHCP.
 Type=str
 Categories=system-network
 
@@ -170,8 +171,8 @@ Type=str
 Categories=Network
 
 [interfaces/.*/route/.*]
-Description[de]=Zusätzliche Routen für die einzelnen Interfaces
-Description[en]=Additional routing entries for each network interface
+Description[de]=Zusätzliche Routen für die einzelnen Netzwerkschnittstellen
+Description[en]=Additional routing entries for network interface
 Type=str
 Categories=system-network
 
@@ -182,7 +183,7 @@ Type=str
 Categories=system-network
 
 [interfaces/.*/ipv6/.*/address]
-Description[de]=IPv6-Adresse der Netzschnittstelle
+Description[de]=IPv6-Adresse der Netzswerkchnittstelle
 Description[en]=IPv6 address of the network interface
 Type=str
 Categories=system-network
@@ -194,26 +195,26 @@ Type=int
 Categories=system-network
 
 [interfaces/.*/ipv6/acceptRA]
-Description[de]=Neighbour Discovery Protocol (NDP) Router Advertisements akzeptieren um die Netzschnittstelle zu konfigurieren
-Description[en]=Accept neighbour discovery protocol (NDP) router advertisements (RA) to configure this interface
+Description[de]=Diese Einstellung konfiguriert, ob zur Konfiguration der Netzwerkschnittstellen Neighbour Discovery Protocol (NDP) Router Advertisements (RA) akzeptiert werden.
+Description[en]=This setting configures, whether router advertisements (RA) of the neighbour discovery protocol (NDP) are accepted to to configure this interface.
 Type=bool
 Categories=system-network
 
 [interfaces/restart/auto]
-Description[de]=Aktiviere/Deaktiviere den automatischen Netzwerk Neustart beim Setzen von Netzwerk UCR Variablen
-Description[en]=Enable/Disable automatic network restart while setting network UCR variables
+Description[de]=Diese Einstellung legt fest, ob beim Setzen von Netzwerk-UCR-Variablen (interfaces/*) automatisch die betroffene Netzwerkschnittstelle neu gestartet wird.
+Description[en]=This variables configures, whether network interfaces are automatically restarted if the network-related UCR variables (interfaces/*) are modified.
 Type=bool
 Categories=system-network
 
 [interfaces/handler]
-Description[de]=Legt das Programm zur Verwaltung der Netzwerke fest: ifplugd
-Description[en]=Defines the program to manage the networks: ifplugd
+Description[de]=Konfiguriert das Programm zur Verwaltung der Netzwerkverbindungen: 'ifplugd' oder 'networkmanager'
+Description[en]=Defines the program to manage network connections: 'ifplugd' or 'networkmanager'
 Type=str
 Categories=system-network
 
 [interfaces/primary]
-Description[de]=Legt das primäre Netzwerkinterface fest [eth0]
-Description[en]=Defines the primary network interface [eth0]
+Description[de]=Existieren mehrere Netzwerkschnittstellen auf einem System, kann mit dieser Variable die primäre angegeben werden. Ist hier kein Wert gesetzt, wird 'eth0' verwendet.
+Description[en]=If multiple network interfaces exist on a system, this variable allows configuring the primary interface. If no value is set, 'eth0' is assumed.
 Type=str
 Categories=system-network
 
@@ -224,8 +225,8 @@ Type=str
 Categories=Network
 
 [kernel/modules]
-Description[de]=Kernel Module die geladen werden sollen
-Description[en]=Kernel modules to load
+Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrfache Einträge müssen durch ein Semikolon getrennt werden.
+Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows the loading of modules, which couldn't/cannot be automatically detected. If multiple modules are needed, they must be separated with a semicolon.
 Type=str
 Categories=system-base
 
@@ -250,12 +251,6 @@ Categories=system-base
 [kernel/postinst_hook]
 Description[de]=Script das vor dem starten des Bootloaders ausgeführt wird
 Description[en]=Script to be executed before running the bootloader
-Type=str
-Categories=system-base
-
-[kernel/ramdisk]
-Description[de]=Programm das die initiale RAM-Disk erzeugt
-Description[en]=Executable that creates an initial RAM disk
 Type=str
 Categories=system-base
 
@@ -710,3 +705,9 @@ Description[de]=Komplexität der intern genutzten Maschinen-Passwörter, als pwg
 Description[en]=Complexity of the internally used machine passwords, as pwgen option (default: scn)
 Type=str
 Categories=service-base
+
+[sshd/motd]
+Description[de]=Mit dieser Variable kann konfiguriert werden, ob  beim SSH-Login ein Hinweis auf das UCS-Managementsystem angezeigt wird. Ist die Variable nicht gesetzt wird der Hinweis angezeigt.
+Description[en]=This variable configures, whether a hint towards the UCS management system is displayed during SSH login. If the variable is not set, the hint isn't shown.
+Type=bool
+Categories=service-ssh

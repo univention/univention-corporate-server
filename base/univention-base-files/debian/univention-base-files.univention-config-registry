@@ -180,10 +180,17 @@ File: etc/issue.net
 Variables: version/version
 Variables: version/patchlevel
 Variables: server/role
+
+Type: file
+File: etc/welcome.msg
+Variables: version/version
+Variables: version/patchlevel
+Variables: server/role
 Variables: hostname
 Variables: domainname
 Variables: interfaces/[^/]*/.*
 Variables: interfaces/primary
+
 
 Type: file
 File: etc/bash.bashrc
@@ -253,3 +260,9 @@ Variables: logrotate/.*
 Type: file
 File: etc/cron.d/univention-config-registry-backup
 Variables: ucr/backup/enabled
+
+Type: subfile
+Multifile: etc/pam.d/common-session
+Subfile: etc/pam.d/common-session.d/20welcome-message-ssh
+Variables: system/setup/showloginmessage
+Variables: sshd/motd

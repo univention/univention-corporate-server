@@ -1,3 +1,12 @@
+univention-base-files (3.0.1-3) unstable; urgency=low
+
+  * Don't set sshd/banner by default. It might break programs parsing the SSH
+    output through expect.
+  * Configure the motd through a UCR subfile. This can be disabled by setting
+    sshd/motd to false (Bug #31096)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 18 Jun 2013 10:06:46 +0200
+
 univention-base-files (3.0.1-2) unstable; urgency=low
 
   * fixed description for machine/password/complexity (Bug #31281) 

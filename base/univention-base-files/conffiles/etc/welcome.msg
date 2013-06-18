@@ -1,0 +1,51 @@
+@!@
+@%@UCRWARNING=# @%@
+
+if   configRegistry.get('server/role') == 'fatclient':
+	menutitle="Univention Managed Client"
+elif configRegistry.get('server/role') =='mobileclient':
+	menutitle="Univention Mobile Client"
+elif configRegistry.get('server/role') =='domaincontroller_master':
+	menutitle="Univention DC Master"
+elif configRegistry.get('server/role') =='domaincontroller_backup':
+	menutitle="Univention DC Backup"
+elif configRegistry.get('server/role') =='domaincontroller_slave':
+	menutitle="Univention DC Slave"
+elif configRegistry.get('server/role') =='memberserver':
+	menutitle="Univention Memberserver"
+else:
+	menutitle="Univention Corporate Server"
+
+if configRegistry.get('version/version'):
+	print  '%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))
+else:
+	print 'Univention Thin Client'
+
+print
+startsite = ""
+host = configRegistry.get('hostname')
+domain = configRegistry.get('domainname')
+
+if host and domain:
+	startsite = host + "." + domain + "/"
+
+from univention.config_registry.interfaces import Interfaces
+ip = str(Interfaces(configRegistry).get_default_ip_address().ip)
+
+if ip:
+	startsite = startsite + " (" + ip + ")"
+
+if configRegistry.get('server/role') =='domaincontroller_master':
+	print 'The UCS management system is available at https://' + startsite
+else:
+	print 'The UCS management system can be reached by following the link to the domain controller'
+	print 'master at https://' + startsite + ' and selecting the'
+	print 'Univention Management Console.'
+
+print
+print 'You can log into the Univention Management Console - the principal tool to manage '
+print 'users, groups, etc. - using the "Administrator" account and the password selected '
+print 'for the root user on the master domain controller.'
+
+@!@
+
