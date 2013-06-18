@@ -2,3 +2,4 @@ etc/pykota
 usr/sbin
 usr/lib/univention-server/server_password_change.d
 usr/lib/univention-directory-listener/system
+usr/lib/univention-install

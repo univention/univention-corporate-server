@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
-# Univention Print Quota
-#  postinst script for the debian package
+# Univention Print Server
+#  join script
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,39 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+VERSION=1
+
+. /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
 
-chmod 0600 /etc/univention/templates/files/etc/pykota/pykotadmin.conf
-#DEBHELPER#
+joinscript_init
 
-chown -R pykota.pykota /etc/pykota
-chmod -R g+rw /etc/pykota
+ucs_addServiceToLocalhost 'PrintQuota' "$@"
 
-# should be enabled for cups 1.2
-# chmod o+r /etc/pykota/pykotadmin.conf /etc/pykota/pykota.conf
-
-# if all users have access to /usr/share/pykota/cupspykota thenn 
-# pykota will run as user lp
-dpkg-statoverride --update --add root root 700 /usr/share/pykota/cupspykota >/dev/null || true
-
-adduser lp pykota
-/etc/init.d/cups restart
-
-univention-config-registry set pykota/policy/debug?1
-
-if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-directory-listener; then
-	/etc/init.d/univention-directory-listener crestart
-	fi
-fi
-
-dest="/etc/pykota.secret"
-if [ ! -f "$dest" ] ; then
-    cp /etc/machine.secret "$dest"
-    chown pykota:root "$dest"
-    chmod 600  "$dest"
-fi
-
-call_joinscript 80univention-printquota.inst
+joinscript_save_current_version
 
 exit 0
