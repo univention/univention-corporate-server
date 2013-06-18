@@ -1,4 +1,12 @@
-ucs-test (4.0.5-2) unstable; urgency=low
+ucs-test (4.0.6-1) unstable; urgency=low
+
+  * 50_samba/25domain-join-without-admin-rights: if the first join
+    failed, try again with -S like the univention-samba join script does
+    (Bug #31678)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jun 2013 21:25:11 +0200
+
+ucs-test (4.0.5-1) unstable; urgency=low
 
   * 51_samba4/36_printer: use a random printer name
   * 51_samba4/36_printer: fix race condition (Bug #31764)

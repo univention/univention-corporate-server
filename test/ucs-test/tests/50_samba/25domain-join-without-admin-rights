@@ -65,8 +65,11 @@ fi
 
 ## join domain with the SeMachineAccountPrivilege
 echo "----join domain with the SeMachineAccountPrivilege"
-net rpc join -U "$username"%"$password"
-if [ "$?" != 0 ]; then
+if net rpc join -U "$username"%"$password"; then
+	echo "Domain join was successful."
+elif net rpc join -U "$username"%"$password" -S$ldap_master; then
+	echo "Domain join with -S$ldap_master was successful."
+else
 	fail_test 1 "Domain join failed"
 fi
 
