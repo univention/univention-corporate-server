@@ -32,29 +32,20 @@
 
 eval "$(univention-config-registry shell cups/checkprinters/mail/subject cups/checkprinters/mail/address)"
 
-# printer list
-printers="$(LC_ALL=C lpstat -a | awk '{print $1}')"
-
-# search disabled printers
-disabled=""
-for printer in $printers; do
-	if LC_ALL=C lpstat -p $printer | grep -qi 'disabled'; then
-		disabled="$disabled $printer"
-	fi
-done
+disabled_printers="$(LC_ALL=C lpstat -p | awk '{if($3=="disabled") print $2}')"
 
 # send report mail for disabled printers
-if [ -n "$disabled" ]; then
-	(
-		for printer in $disabled; do
-			/usr/bin/lpq -P $printer
-			echo
-		done
-	) | mail -s "$cups_checkprinters_mail_subject" "$cups_checkprinters_mail_address"
-	# re-enable the printers
-	for printer in $disabled; do
-		/usr/bin/univention-cups-enable $printer &>/dev/null
-	done
+if [ -n "$disabled_printers" ]; then
+        (
+                for printer in $disabled_printers; do
+                    /usr/bin/lpq -P $printer
+                    echo
+                done
+        ) | mail -s "$cups_checkprinters_mail_subject" "$cups_checkprinters_mail_address"
+        # re-enable the printers
+        for printer in $disabled_printers; do
+                /usr/bin/univention-cups-enable $printer &>/dev/null
+        done
 fi
 
 exit 0

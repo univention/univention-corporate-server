@@ -1,3 +1,10 @@
+univention-check-printers (7.0.1-1) unstable; urgency=low
+
+  * modified univention-check-printers.
+    Searches and selects only disabled printers (Bug #28558)
+
+ -- Liam Schwez <lschwez@sansad.knut.univention.de>  Tue, 18 Jun 2013 10:53:27 +0200
+
 univention-check-printers (7.0.0-1) unstable; urgency=low
 
   * added description for ucr variables (Bug #22544)
