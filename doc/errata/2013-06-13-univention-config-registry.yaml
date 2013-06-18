@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-config-registry
-fix: 8.0.7-4.428.201306131342
+fix: 8.0.7-5.430.201306171642
 note:
 version: [1]
 desc: |
