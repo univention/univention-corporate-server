@@ -1,3 +1,10 @@
+ucs-test (4.0.5-2) unstable; urgency=low
+
+  * 51_samba4/36_printer: use a random printer name
+  * 51_samba4/36_printer: fix race condition (Bug #31764)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jun 2013 20:52:18 +0200
+
 ucs-test (4.0.4-1) unstable; urgency=low
 
   * removed unused imports from certain udm-dns tests
