@@ -1,0 +1,32 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test whether creating an alias with reverse zone as superordinate is possible (which should not)
+## tags: [udm-dns]
+## roles: [domaincontroller_master]
+## bugs: [15660]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		reverseZone = udm.create_object('dns/reverse_zone', nameserver = uts.random_string(), subnet = '10.20.30')
+		try:
+			dnsAlias = udm.create_object('dns/alias', name = uts.random_name(), superordinate = reverseZone)
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			sys.exit(0)
+
+
+
+		ldap = uldap.getAdminConnection()
+		ldap.delete(dnsAlias)
+		test.fail('UDM did not report an error while trying to create an host record with reverse zone as superordinate')

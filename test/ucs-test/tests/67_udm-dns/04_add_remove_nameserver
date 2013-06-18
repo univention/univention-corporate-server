@@ -10,7 +10,6 @@
 
 
 
-import sys
 import univention.testing as test
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts

@@ -34,6 +34,7 @@
 
 
 
+eval "$(ucr shell ldap/base)"
 
 ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$ldap_base" \
 		tests/domainadmin/pwd?univention \

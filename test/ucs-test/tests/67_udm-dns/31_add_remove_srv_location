@@ -9,7 +9,6 @@
 
 
 
-import sys
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
