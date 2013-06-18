@@ -34,14 +34,16 @@
 
 
 
-eval "$(ucr shell)"
 
 ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$ldap_base" \
 		tests/domainadmin/pwd?univention \
-		tests/domainadmin/pwdfile?"/var/ucs-test/pwdfile"
+		tests/domainadmin/pwdfile?"/var/lib/ucs-test/pwdfile"
 
-if [ ! -f /var/ucs-test/pwdfile ]; then
-	mkdir -p /var/ucs-test/
+eval "$(ucr shell)"
+
+if [ ! -f "$tests_domainadmin_pwdfile" ]
+then
+	mkdir -p "${tests_domainadmin_pwdfile%/*}"
 	echo -n "$tests_domainadmin_pwd" > "$tests_domainadmin_pwdfile"
 fi
 chmod 600 "$tests_domainadmin_pwdfile"

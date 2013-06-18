@@ -1,3 +1,13 @@
+ucs-test (4.0.2-3) unstable; urgency=low
+
+  * regard passed removal mode in ucs-test-framework.postrm
+  * by default, store domainadmin pwd in /var/lib/ucs-test/pwdfile, not
+  	/var/ucs-test/pwdfile
+  * added /var/lib/ucs-test to ucs-test-framework.dirs
+  (Bug #31250)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 18 Jun 2013 10:28:05 +0200
+
 ucs-test (4.0.2-2) unstable; urgency=low
 
   * lib/group.sh: fixed typo from previous commit (Bug #31678)
