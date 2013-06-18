@@ -34,12 +34,6 @@ Description[en]=Mails to the given domains are delivered via the local_transport
 Type=str
 Categories=service-mail
 
-[mail/relay]
-Description[de]=Liste von Relay-Hosts (hauptsächlich verwendet von Univention Policy)
-Description[en]=List of relay hosts (mainly used by Univention Policy)
-Type=str
-Categories=service-mail
-
 [mail/relayhost]
 Description[de]=FQDN des zu verwendenden Relay-Server
 Description[en]=FQDN of the relay host to use
