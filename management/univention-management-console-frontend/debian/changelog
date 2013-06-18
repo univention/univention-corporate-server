@@ -1,4 +1,4 @@
-univention-management-console-frontend (2.0.245-1) unstable; urgency=low
+univention-management-console-frontend (2.0.244-12) unstable; urgency=low
 
   * Bug #31318: fixed static array reference in umc/widgets/MultiSelect
 
