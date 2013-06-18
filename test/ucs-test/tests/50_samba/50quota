@@ -16,18 +16,7 @@ eval "$(ucr shell)"
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/base.sh" || exit 137
 
-# Currenty we need a domain admin account, see 
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=31250
-if ! smbclient -L $hostname -UAdministrator%univention; then
-	echo  "Error: Currently Administrator/univention must be a valid login"
-	exit 137
-fi
-if [ -e /etc/ldap.secret ]; then
-	bind_cred=""
-else
-	bind_cred="--binddn uid=Administrator,cn=users,$ldap_base --bindpwd univention"
-
-fi
+account="$(echo ${tests_domainadmin_account} | sed -e 's|uid=||;s|,.*||')"
 
 SOFTLIMIT=10485760
 HARDLIMIT=15728640
@@ -67,13 +56,13 @@ for FS in xfs ext2 ext3 ext4; do
 		exit 110
 	fi
 
-	udm policies/share_userquota create $bind_cred \
+	udm-test policies/share_userquota create \
 	 --position "cn=userquota,cn=shares,cn=policies,$ldap_base" \
 	 --set name="$share" \
 	 --set softLimitSpace=$SOFTLIMIT \
 	 --set hardLimitSpace=$HARDLIMIT || fail_test 110
 
-	udm shares/share create $bind_cred \
+	udm-test shares/share create \
 	 --position "cn=shares,$ldap_base" \
 	 --set name="$share" \
 	 --set host="$hostname.$domainname" \
@@ -82,7 +71,7 @@ for FS in xfs ext2 ext3 ext4; do
 	 --set group=5001 \
 	 --policy-reference "cn=$share,cn=userquota,cn=shares,cn=policies,$ldap_base" || fail_test 110
 
-	udm users/user create $bind_cred \
+	udm-test users/user create \
 	 --position "cn=users,$ldap_base" \
 	 --set username="$user" \
 	 --set lastname="$user" \
@@ -91,7 +80,7 @@ for FS in xfs ext2 ext3 ext4; do
 
 	wait_for_replication_and_postrun
 
-	# wait for samba reload
+	# wait for samba reload and group-to-file
 	sleep 5
 
 	if [ "${FS}" != "xfs" ]; then
@@ -111,7 +100,7 @@ for FS in xfs ext2 ext3 ext4; do
 		chown $user "$mountpoint/file$i"
 		sync
 
-		res_smbcquota=$(smbcquotas -u $user -U Administrator%univention //$hostname/$share | awk '{print $3 $4 $5}')
+		res_smbcquota=$(smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share | awk '{print $3 $4 $5}')
 		res_repquota=$(repquota -v $mountpoint | grep "$user" | awk '{print $3*1024"/"$4*1024"/"$5*1024}')
 		echo "Result smbcquotas: $res_smbcquota"
 		echo "Result repquota  : $res_repquota"
@@ -134,9 +123,9 @@ for FS in xfs ext2 ext3 ext4; do
 
 
 	# do cleanup
-	udm users/user remove $bind_cred --dn "uid=$user,cn=users,$ldap_base"
-	udm shares/share remove $bind_cred --dn "cn=$share,cn=shares,$ldap_base"
-	udm policies/share_userquota remove $bind_cred --dn "cn=$share,cn=userquota,cn=shares,cn=policies,$ldap_base"
+	udm-test users/user remove --dn "uid=$user,cn=users,$ldap_base"
+	udm-test shares/share remove --dn "cn=$share,cn=shares,$ldap_base"
+	udm-test policies/share_userquota remove --dn "cn=$share,cn=userquota,cn=shares,cn=policies,$ldap_base"
 	umount "$mountpoint"
 	rm "$image"
 done

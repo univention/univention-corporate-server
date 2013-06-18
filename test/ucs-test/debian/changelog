@@ -1,3 +1,10 @@
+ucs-test (4.0.7-2) unstable; urgency=low
+
+  * 50_samba/50quota: Switch to udm-test and tests/domainadmin vars
+    (Bug #31679)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jun 2013 22:26:50 +0200
+
 ucs-test (4.0.7-1) unstable; urgency=low
 
   * 51_samba4/kpasswd_change_pwd.py: added utf-8 coding line
