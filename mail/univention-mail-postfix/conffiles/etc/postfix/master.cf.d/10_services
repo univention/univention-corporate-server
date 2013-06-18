@@ -5,7 +5,10 @@
 # 		(yes)	(yes)	(yes)	(never)	(50)
 # ==========================================================================
 @!@
-print '%s      inet  n       -       n       -       -       smtpd' % configRegistry.get('mail/smtpport', '25')
+smtp = '%s      inet  n       -       n       -       -       smtpd' % configRegistry.get('mail/smtpport', '25')
+if configRegistry.is_true("mail/postfix/smtpd/debug", False):
+	smtp += " -v"
+print smtp
 @!@
 #628      inet  n       -       n       -       -       qmqpd
 pickup    fifo  n       -       n       60      1       pickup
@@ -23,7 +26,12 @@ error     unix  -       -       n       -       -       error
 local     unix  -       n       n       -       -       local
 #virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       n       -       -       lmtp
-465       inet  n       -       n       -       -       smtpd -v -o smtpd_tls_wrappermode=yes -o smtpd_sasl_auth_enable=yes
+@!@
+ssmtp = "465       inet  n       -       n       -       -       smtpd -o smtpd_tls_wrappermode=yes -o smtpd_sasl_auth_enable=yes"
+if configRegistry.is_true("mail/postfix/smtpd/debug", False):
+	ssmtp += " -v"
+print ssmtp
+@!@
 #587      inet  n       -       n       -       -       smtpd -v -o smtpd_enforce_tls=yes -o smtpd_sasl_auth_enable=yes
 relay    unix  -       -       n       -       -       smtp
 trace    unix  -       -       n       -       0       bounce

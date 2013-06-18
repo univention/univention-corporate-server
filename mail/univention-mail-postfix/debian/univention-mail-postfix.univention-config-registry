@@ -83,6 +83,7 @@ Variables: ldap/server
 Variables: mail/smtpport
 Variables: mail/postfix/policy/listfilter
 Variables: mail/postfix/policy/listfilter/maxproc
+Variables: mail/postfix/smtpd/debug
 
 Type: subfile
 Multifile: etc/postfix/master.cf
