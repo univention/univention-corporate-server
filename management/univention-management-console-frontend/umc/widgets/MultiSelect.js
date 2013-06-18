@@ -51,7 +51,7 @@ define([
 
 		// value: String[]
 		//		The widgets value, an array of strings containing all elements that are selected.
-		value: [],
+		value: null,
 
 		_loadingDeferred: null,
 
