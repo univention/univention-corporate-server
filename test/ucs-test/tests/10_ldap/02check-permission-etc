@@ -13,6 +13,7 @@ import os
 import grp
 import pwd
 import stat
+import univention.config_registry
 
 RETURN_PASS_CODE = 100
 RETURN_FAIL_CODE = 110
@@ -24,8 +25,16 @@ def main():
 	filenames_groups = [("/etc/ldap.secret", "DC Backup Hosts"), ("/etc/ldap-backup.secret", "DC Backup Hosts"), ("/etc/slave-join.secret", "Slave Join"), ]  # filepaths and groupnames to check
 	shouldowner = "root"
 
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
 	try:
 		for file_prefs in filenames_groups:
+			if not os.path.exists(file_prefs[1]):
+				if file_prefs[0] == '/etc/slave-join.secret' and ucr.get('server/role') == 'domaincontroller_backup':
+					# see https://forge.univention.org/bugzilla/show_bug.cgi?id=27662
+					print 'Ignore /etc/slave-join.secret on DC Backup'
+					continue
 			return_code = check_owner_groupname(file_prefs[0], shouldowner, file_prefs[1])
 			if not return_code:
 				exit_code = RETURN_FAIL_CODE

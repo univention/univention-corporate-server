@@ -1,3 +1,10 @@
+ucs-test (4.0.8-4) unstable; urgency=low
+
+  * 10_ldap/02check-permission-etc: /etc/slave-join.secret does not
+    exist on DC backups (Bug #27662, Bug #31680)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Jun 2013 11:13:19 +0200
+
 ucs-test (4.0.8-3) unstable; urgency=low
 
   * 51_samba4/kpasswd_change_pwd.py: fixed typo in coding line (Bug #29058)
