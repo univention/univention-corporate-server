@@ -1,3 +1,9 @@
+ucs-test (4.0.8-3) unstable; urgency=low
+
+  * 51_samba4/kpasswd_change_pwd.py: fixed typo in coding line (Bug #29058)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Jun 2013 08:49:39 +0200
+
 ucs-test (4.0.8-2) unstable; urgency=low
 
   * 51_samba4/54ntp_permissions: added test case for ntp dir permissions
