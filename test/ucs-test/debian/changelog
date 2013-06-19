@@ -1,3 +1,12 @@
+ucs-test (4.0.10-1) unstable; urgency=low
+
+  * 50_samba/50quota: wait for the replication (Bug #31649)
+  * 51_samba4/36_printer: added some more debug
+  * 00_base/45license_v2: wait for ldap replication
+  * 00_base/02server_password_change: wait for ldap replication
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Jun 2013 20:21:44 +0200
+
 ucs-test (4.0.9-1) unstable; urgency=low
 
   * Changed some tests in 51_samba to use the Administrator credentials

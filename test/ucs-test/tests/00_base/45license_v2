@@ -109,6 +109,8 @@ for m in "computers/ipmanagedclient"; do
 
 	createObject "$m" "$name"
 
+	wait_for_replication
+
 	newValueManaged="$(getManagedClient)"
 	newValueUsers="$(getUsers)"
 	newValueServers="$(getServers)"
@@ -139,6 +141,8 @@ for m in "computers/memberserver" "computers/domaincontroller_slave" \
 	oldValueDVSClients="$(getDVSClients)"
 
 	createObject "$m" "$name"
+
+	wait_for_replication
 
 	newValueManaged="$(getManagedClient)"
 	newValueUsers="$(getUsers)"

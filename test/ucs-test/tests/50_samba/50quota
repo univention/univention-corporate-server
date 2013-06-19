@@ -130,5 +130,7 @@ for FS in xfs ext2 ext3 ext4; do
 	rm "$image"
 done
 
+wait_for_replication_and_postrun
+
 exit $RETVAL
 

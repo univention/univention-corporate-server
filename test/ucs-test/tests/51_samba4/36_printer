@@ -25,7 +25,7 @@ password=univention
 trap '
 user_remove "$username";
 rm -rf "/tmp/$printername"/ /tmp/print_input;
-udm-test shares/printer remove --dn="$PRINTER_DN"
+udm-test shares/printer remove --dn="$printername,$ldap_base"
 wait_for_replication_and_postrun
 ' INT TERM EXIT
 user_create "$username" || fail_fast 1 "Could not create user $username."
@@ -51,22 +51,7 @@ udm-test shares/printer create \
 	--set "model=None"
 
 wait_for_replication_and_postrun
-
-#get the printer DN
-echo "----get the printer DN"
-i=0
-while true
-do
-	let i=$i+1
-	sleep 1
-	PRINTER_DN="$(univention-ldapsearch cn=$printername | sed -ne 's/^dn: //p')" && break
-	echo "$PRINTER_DN"
-	if [ $i == 100 ]; then
-		echo "Could not get printer DN"
-		break
-	fi
-done
-
+sleep 2
 
 ## look for printer
 echo "----Looking for samba printer share '$printername'"
@@ -104,7 +89,7 @@ i=0
 while ! grep -q "$(uname -a)" "/tmp/$printername"
 do
 	let i=$i+1
-	if [ $i = 10 ]; then
+	if [ $i = 20 ]; then
 		fail_fast "Nothing has been printed to the output file."
 	fi
 	sleep 1
