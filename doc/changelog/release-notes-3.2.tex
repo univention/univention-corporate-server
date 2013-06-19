@@ -72,8 +72,33 @@ sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem
 weiterläuft. Hierfür können beispielsweise die Tools \ucsCommand{screen} oder
 \ucsCommand{at} eingesetzt werden, die auf allen Systemrollen installiert sind.
 
+\section{System mit dem cyrus IMAP Server (univention-mail-cyrus)}
 
+Mit UCS 3.2 wird von
+\ucsName{univention-mail-cyrus} ein neues \ucsUCR{} Template
+\ucsURL{/var/lib/cyrus/db/DB_CONFIG} für die Konfiguration der cyrus DBD
+Datenbank installiert. Default-Werte für die cyrus DB\_CONFIG sind:
 
+\texttt{mail/cyrus/bdb/dbconfig/set\_lg\_regionmax=\symbol{34}2097152\symbol{34}}\newline
+\texttt{mail/cyrus/bdb/dbconfig/set\_cachesize=\symbol{34}0 2097152 1\symbol{34}}
+
+Eine bereits vorhandene cyrus DBD Konfiguration wird während des Update nach
+\ucsURL{/var/lib/cyrus/db/DB_CONFIG.debian} kopiert. Sollten die neuen
+Default-Werte den alten, bereits vorhandenen Konfiguration nicht entsprechen
+oder sind verwendete Optionen nicht in den neuen Default-Werten vorhanden,
+können die entsprechenden \ucsUCR{} Variablen vor dem Update gesetzt
+werden, z.B.:
+
+\ucsCommand{ucr set mail/cyrus/bdb/dbconfig/set\_cachesize=\symbol{34}0 4097152 1\symbol{34}}\newline
+\ucsCommand{ucr set mail/cyrus/bdb/dbconfig/set\_lg\_regionmax=\symbol{34}2097152\symbol{34}}\newline
+\ucsCommand{ucr set mail/cyrus/bdb/dbconfig/set\_lg\_max=\symbol{34}1048576\symbol{34}}
+
+Nach dem Update würde sich daraus folgende \ucsURL{/var/lib/cyrus/db/DB\_CONFIG} ergeben:
+
+\texttt{set\_cachesize 0 4097152 1\newline
+set\_lg\_regionmax 2097152\newline
+set\_lg\_max 1048576\newline
+} 
 
 \chapter{Nachbereitung des Updates}
 
