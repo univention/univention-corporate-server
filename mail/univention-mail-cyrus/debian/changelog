@@ -1,3 +1,9 @@
+univention-mail-cyrus (6.0.2-3) unstable; urgency=low
+
+  * updated copyright (Bug #29605) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Jun 2013 17:54:32 +0200
+
 univention-mail-cyrus (6.0.2-2) unstable; urgency=low
 
   * fixed last commit (Bug #29605) 
@@ -725,7 +731,7 @@ univention-mail-cyrus-kolab2 (1.0.13-4) unstable; urgency=low
 
 univention-mail-cyrus-kolab2 (1.0.13-3) unstable; urgency=low
 
-  * supply FQDN to unviention-cyrus-murder-movemailbox, important for setups
+  * supply FQDN to univention-cyrus-murder-movemailbox, important for setups
     with DNS subdomain structure (Bug #14178)
   * remove syntax error
 

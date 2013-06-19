@@ -3,7 +3,7 @@
 # Univention Mail Cyrus
 #  listener module: creating mailboxes and sieve scripts
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -251,7 +251,7 @@ def handler(dn, new, old, command):
 					if not is_cyrus_murder_backend():
 						if newMailPrimaryAddress:
 							create_cyrus_mailbox(newMailPrimaryAddress.lower())
-					else
+					else:
 						if oldMailPrimaryAddress and newMailPrimaryAddress:
 							move_cyrus_murder_mailbox(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
 
