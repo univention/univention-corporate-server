@@ -1366,7 +1366,7 @@ closest to the object always applies.
 		<title>Administration of DHCP subnets</title>
 		<para>
 		  DHCP subnets are managed in the <emphasis>DHCP</emphasis> module of
-		  the &ucsUMC;. To create an additional DHCP server entry, a DHCP
+		  the &ucsUMC;. To create an additional DHCP subnet entry, a DHCP
 		  service must be selected as <guimenu>Superordinate</guimenu>.
 		</para>
 		<para>

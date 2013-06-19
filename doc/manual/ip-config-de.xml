@@ -1149,7 +1149,7 @@
 		<title>Verwaltung von DHCP-Subnetzen</title>
 		<para>
 		  DHCP-Subnetze werden im Modul <emphasis>DHCP</emphasis> der &ucsUMC;
-		  verwaltet. Um einen weiteren DHCP-Server-Eintrag anzulegen, muss als
+		  verwaltet. Um einen weiteren DHCP-Subnet-Eintrag anzulegen, muss als
 		  <guimenu>Übergeordnetes Objekt</guimenu> ein DHCP-Service ausgewählt werden.
 		</para>
 		<para>
