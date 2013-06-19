@@ -53,7 +53,13 @@ if test -f /proc/xen/capabilities && \
 fi
 
 do_start () {
-        local time=0
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		. "/usr/share/univention-config-registry/init-autostart.lib"
+		check_autostart xencommons xen/xencommons/autostart
+	fi
+        
+	local time=0
 	local timeout=30
 
 	mkdir -p /var/run/xenstored

@@ -29,7 +29,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-config-registry set xen/repository?"file:///var/lib/univention-server-cdrom"
+univention-config-registry set xen/repository?"file:///var/lib/univention-server-cdrom" \
+	xen/xencommons/autostart?yes \
+	xen/xendomains/autostart?yes \
+	xen/xend/autostart?yes
 
 eval "$(univention-config-registry shell kernel/modules)"
 

@@ -1,3 +1,9 @@
+univention-xen (5.0.1-1) unstable; urgency=low
+
+  * Add support for system services module (Bug #10962) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 19 Jun 2013 12:21:03 +0200
+
 univention-xen (4.0.1-1) ucs-3.1-1-0; urgency=low
 
   * Load loop kernel module by default (Bug #23394)

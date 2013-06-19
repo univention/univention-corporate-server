@@ -81,3 +81,21 @@ Description[de]=Aktiviert/Deaktiviert den Xen-XMLRPC-Dienst per TCP/IP-Socket [n
 Description[en]=Enable/Disable the Xen XMLRPC service via TCP/IP socket [no]
 Type=bool
 Categories=service-xen
+
+[xen/xencommons/autostart]
+Description[de]=Definiert, ob der xencommons Dienst automatisch beim Systemstart gestartet werden soll
+Description[en]=Defines if the xencommons service should be started automatically at system startup
+Type=bool
+Categories=service-xen
+
+[xen/xend/autostart]
+Description[de]=Definiert, ob der xend Dienst automatisch beim Systemstart gestartet werden soll
+Description[en]=Defines if the xend service should be started automatically at system startup
+Type=bool
+Categories=service-xen
+
+[xen/xendomains/autostart]
+Description[de]=Definiert, ob der xendomains Dienst automatisch beim Systemstart gestartet werden soll
+Description[en]=Defines if the xendomains service should be started automatically at system startup
+Type=bool
+Categories=service-xen

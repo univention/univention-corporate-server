@@ -234,6 +234,12 @@ is_running()
 
 start() 
 {
+    # check ucr autostart setting
+    if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+        . "/usr/share/univention-config-registry/init-autostart.lib"
+        check_autostart xendomains xen/xendomains/autostart
+    fi
+    
     if [ -f $LOCKFILE ]; then 
 	echo -e "xendomains already running (lockfile exists)"
 	return; 
