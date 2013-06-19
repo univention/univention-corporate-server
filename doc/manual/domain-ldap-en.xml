@@ -229,7 +229,7 @@
 			<graphic scalefit="1" width="80%" fileref="illustrations/win7-join_2-en.png"/>
 		</figure>
 		<para>
-			Domain names must be limited to 15 characters as they are otherwise truncated
+			Domain names must be limited to 13 characters as they are otherwise truncated
 			at the Windows client and this can lead to log-in errors.
 		</para>
 		<para>

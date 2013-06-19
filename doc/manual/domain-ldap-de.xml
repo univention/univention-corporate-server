@@ -240,7 +240,7 @@
 			Änderungen in Kraft zu setzen.
 		</para>
 		<para>
-			Domänennamen sollten auf 15 Zeichen beschränkt werden, da diese auf Seite
+			Domänennamen sollten auf 13 Zeichen beschränkt werden, da diese auf Seite
 			der Windows-Clients ansonsten verkürzt dargestellt werden, was zu
 			Anmeldefehlern führen kann.
 		</para>

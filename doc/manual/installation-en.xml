@@ -312,7 +312,7 @@
 	<para>
 		Host names must consist of a combination of the following characters:
 		letters a-z in lower case, numerals 0-9, hyphens, and underlines. A host
-		name has to begin with a letter and must not be longer than 15 characters.
+		name has to begin with a letter and must not be longer than 13 characters.
 	</para>
 	<para>
 		Once the domain name is set, the fields <guimenu>LDAP base</guimenu> and <guimenu>Windows domain</guimenu> will
@@ -322,7 +322,7 @@
 		rejected.
 	</para>
 	<para>
-		The name of the Windows domain may have a maximum length of 15
+		The name of the Windows domain may have a maximum length of 13
 		characters; it may consists of letters, numerals and hyphens exclusively. The
 		entry field <guimenu>LDAP base</guimenu> appears solely in the system role of
 		&ucsMaster;.

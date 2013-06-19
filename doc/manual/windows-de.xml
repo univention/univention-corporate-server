@@ -269,7 +269,7 @@ TCP/IP aufsetzt. Samba bildet NetBIOS-Funktionalität durch den
 Systemdienst <emphasis>nmbd</emphasis> ab.
 </para>
 <para>
-NetBIOS-Rechnernamen können maximal 15 Zeichen
+NetBIOS-Rechnernamen können maximal 13 Zeichen
 umfassen. Der NetBIOS-Name eines UCS-Systems entspricht
 standardmäßig dem Rechnernamen. Mit der &ucsUCRV; <envar>samba/netbios/name</envar>
 kann ein abweichender Name konfiguriert werden und mit der

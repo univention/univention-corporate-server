@@ -255,7 +255,7 @@ resolving host names and for network communication. Samba provides
 NetBIOS functions with the <emphasis>nmbd</emphasis> system service.
 </para>
 <para>
-NetBIOS computer names can have a maximum of 15 characters. The
+NetBIOS computer names can have a maximum of 13 characters. The
 NetBIOS name of a UCS system corresponds to the host name by
 default. A different name can be configured with
 the &ucsUCRV; <envar>samba/netbios/name</envar> and alias names defined with

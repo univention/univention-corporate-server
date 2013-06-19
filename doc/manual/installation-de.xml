@@ -304,7 +304,7 @@
 	<para>
 		Für Rechnernamen dürfen ausschließlich die Buchstaben a-z in
 		Kleinschreibung, die Ziffern 0-9 und Bindestriche verwendet werden. Der
-		Rechnername muss mit einem Buchstaben beginnen und darf maximal 15 Zeichen lang sein.
+		Rechnername muss mit einem Buchstaben beginnen und darf maximal 13 Zeichen lang sein.
 	</para>
 	<para>
 		Nachdem der Domänenname gesetzt wurde, werden die Felder <guimenu>LDAP-Basis</guimenu> und
@@ -312,7 +312,7 @@
 		werden soll, müssen die Konventionen für die Benennung von DNs beachtet werden.
 		Die Basis-DN muss mit <emphasis>cn=</emphasis>, <emphasis>dc=</emphasis>, <emphasis>c=</emphasis>, <emphasis>l=</emphasis> oder <emphasis>o=</emphasis> beginnen.
 		Basis-DNs, die diese Konventionen verletzen, werden abgewiesen. Der Name der
-		Windows-Domäne darf maximal 15 Zeichen lang sein und nur aus Buchstaben, Zahlen
+		Windows-Domäne darf maximal 13 Zeichen lang sein und nur aus Buchstaben, Zahlen
 		und Bindestrichen bestehen. Das Eingabefeld <guimenu>LDAP-Basis</guimenu> erscheint nur bei der
 		Systemrolle &ucsMaster;.
 	</para>
