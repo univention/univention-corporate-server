@@ -1,3 +1,11 @@
+univention-mail-cyrus (6.0.2-1) unstable; urgency=low
+
+  * merged cyrus-mailboxrename.py and cyrus.py
+    to cyrus.py 
+  * create mailbox only if home server is given (Bug #29605)
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Jun 2013 16:56:29 +0200
+
 univention-mail-cyrus (6.0.1-1) unstable; urgency=low
 
   * added template for var/lib/cyrus/db/DB_CONFIG (Bug #28464)

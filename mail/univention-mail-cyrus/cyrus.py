@@ -31,13 +31,24 @@
 # <http://www.gnu.org/licenses/>.
 
 __package__='' 	# workaround for PEP 366
+
 import listener
-import os, string, pwd, grp, univention.debug, subprocess
+import univention.debug
+
+import os
+import pwd
+import grp
+import subprocess
+import glob
+import copy
+import cPickle
 
 name='cyrus'
-description='Create default imap folders'
+description='manage imap folders'
 filter='(&(objectClass=univentionMail)(uid=*))'
 attributes=['uid', 'mailPrimaryAddress', 'univentionMailHomeServer']
+FN_CACHE='/var/cache/univention-mail-cyrus/cyrus-mailboxrename.pickle'
+modrdn='1'
 
 def is_cyrus_murder_backend():
 	if (listener.baseConfig.get('mail/cyrus/murder/master') and listener.baseConfig.get('mail/cyrus/murder/backend/hostname')):
@@ -46,81 +57,222 @@ def is_cyrus_murder_backend():
 	else:
 		return False
 
-def create_cyrus_userlogfile(mailaddress):
-	userlogfiles = listener.baseConfig.get('mail/cyrus/userlogfiles')
-	if userlogfiles and userlogfiles.lower() in ['true', 'yes']:
-		path='/var/lib/cyrus/log/%s' % (mailaddress)
+def cyrus_usermailbox_delete(old):
 
-		cyrus_id=pwd.getpwnam('cyrus')[2]
-		mail_id=grp.getgrnam('mail')[2]
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'cyrus: delete mailbox %s' % old)
 
-		if not os.path.exists( path ):
-			os.mkdir(path)
-		os.chmod(path,0750)
-		os.chown(path,cyrus_id, mail_id)
+	# delete mailbox and logfiles
+	if listener.baseConfig.is_true('mail/cyrus/mailbox/delete', False):
+		try:
+			listener.setuid(0)
+			subprocess.call(['/usr/sbin/univention-cyrus-mailbox-delete', '--user', old])
+			if listener.baseConfig.is_true('mail/cyrus/userlogfiles', False):
+				oldpath = '/var/lib/cyrus/log/%s' % old
+				if os.path.exists(oldpath):
+					r = glob.glob('%s/*' % oldpath)
+					for i in r:
+						os.unlink(i)
+					os.rmdir(oldpath)
+		finally:
+		    listener.unsetuid()
+
+def cyrus_usermailbox_rename(old, new):
+
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'cyrus: rename mailbox %s to %s' % (old, new))
+
+
+	# rename mailbox and rename/create logfiles
+	if listener.baseConfig.is_true('mail/cyrus/mailbox/rename', False):
+		try:
+			listener.setuid(0)
+			returncode = subprocess.call(['/usr/sbin/univention-cyrus-mailbox-rename', '--user', old, new])
+			if listener.baseConfig.is_true('mail/cyrus/userlogfiles', False):
+				newpath = '/var/lib/cyrus/log/%s' % new
+				oldpath = '/var/lib/cyrus/log/%s' % old
+				cyrus_id = pwd.getpwnam('cyrus')[2]
+				mail_id = grp.getgrnam('mail')[2]
+				if os.path.exists(oldpath):
+					os.rename(oldpath, newpath)
+				else:
+					os.mkdir(newpath)
+				os.chmod(newpath, 0750)
+				os.chown(newpath, cyrus_id, mail_id)
+		finally:
+			listener.unsetuid()
 
 def create_cyrus_mailbox(new):
-	if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
-		mailAddress = string.lower(new['mailPrimaryAddress'][0])
-		try:
-			listener.setuid(0)
-			subprocess.call(("/usr/sbin/univention-cyrus-mkdir", mailAddress))
-			create_cyrus_userlogfile(mailAddress)
-		finally:
-			listener.unsetuid()
 
-def move_cyrus_murder_mailbox(new, old):
-	if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0] and old.has_key('mailPrimaryAddress') and old['mailPrimaryAddress'][0]:
-		try:
-			listener.setuid(0)
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'cyrus: create mailbox %s' % new)
 
-			oldemail=string.lower(old['mailPrimaryAddress'][0])
-			localCyrusMurderBackendFQDN = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
-			if ( localCyrusMurderBackendFQDN.find('.') == -1 ):
-				localCyrusMurderBackendFQDN = '%s.%s' % (listener.baseConfig.get('mail/cyrus/murder/backend/hostname'), listener.baseConfig.get('domainname'))
+	try:
+		listener.setuid(0)
+		subprocess.call(("/usr/sbin/univention-cyrus-mkdir", new))
+		create_cyrus_userlogfile(new)
+	finally:
+		listener.unsetuid()
 
-			returncode = subprocess.call("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (oldemail, localCyrusMurderBackendFQDN), shell=True)
+def create_cyrus_userlogfile(mailaddress):
+	if listener.baseConfig.is_true('mail/cyrus/userlogfiles', False):
+		path = '/var/lib/cyrus/log/%s' % (mailaddress)
+		cyrus_id = pwd.getpwnam('cyrus')[2]
+		mail_id = grp.getgrnam('mail')[2]
+		if not os.path.exists(path):
+			os.mkdir(path)
+		os.chmod(path, 0750)
+		os.chown(path, cyrus_id, mail_id)
 
-			if ( returncode != 0 ):
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: Cyrus Murder mailbox rename failed for %s' % (name, oldemail))
+def move_cyrus_murder_mailbox(old, new):
 
-			create_cyrus_userlogfile(string.lower(new['mailPrimaryAddress'][0]))
-		finally:
-			listener.unsetuid()
+	localCyrusMurderBackendFQDN = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
+	if not "." in localCyrusMurderBackendFQDN:
+		localCyrusMurderBackendFQDN = '%s.%s' % (localCyrusMurderBackendFQDN, listener.baseConfig.get('domainname'))
 
-def handler(dn, new, old):
+	univention.debug.debug(
+		univention.debug.LISTENER,
+		univention.debug.INFO,
+		'cyrus: muder move mailbox %s to %s' % (old, localCyrusMurderBackendFQDN))
+
+	try:
+		listener.setuid(0)
+		localCyrusMurderBackendFQDN = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
+		if not "." in localCyrusMurderBackendFQDN:
+			localCyrusMurderBackendFQDN = '%s.%s' % (localCyrusMurderBackendFQDN, listener.baseConfig.get('domainname'))
+
+		returncode = subprocess.call("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (old, localCyrusMurderBackendFQDN), shell=True)
+
+		if (returncode != 0):
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.ERROR,
+				'%s: Cyrus Murder mailbox rename failed for %s' % (name, oldemail))
+
+		create_cyrus_userlogfile(new)
+	finally:
+		listener.unsetuid()
+
+def handler(dn, new, old, command):
+
 	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
-	if new:
 
-		# ignore changes if we are not the univentionMailHomeServer
-		if new.has_key('univentionMailHomeServer') and new['univentionMailHomeServer'][0] and new['univentionMailHomeServer'][0] != fqdn:
+	# copy object "old" - otherwise it gets modified for other listener modules
+	old = copy.deepcopy(old)
+
+	# do nothing if command is 'r' ==> modrdn
+	if command == 'r':
+		listener.setuid(0)
+		try:
+			with open(FN_CACHE, 'w+') as f:
+				os.chmod(FN_CACHE, 0600)
+				cPickle.dump(old, f)
+		except Exception, e:
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.ERROR,
+				'cyrus: failed to open/write pickle file: %s' % str(e))
+		listener.unsetuid()
+		return
+
+	# check modrdn changes
+	if os.path.exists(FN_CACHE):
+		listener.setuid(0)
+		try:
+			with open(FN_CACHE,'r') as f:
+				old = cPickle.load(f)
+		except Exception, e:
+		    univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.ERROR,
+				'cyrus: failed to open/read pickle file: %s' % str(e))
+		try:
+			os.remove(FN_CACHE)
+		except Exception, e:
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.ERROR,
+				'cyrus: cannot remove pickle file: %s' % str(e))
+			univention.debug.debug(
+				univention.debug.LISTENER,
+				univention.debug.ERROR,
+				'cyrus: for safty reasons cyrus-mailboxrename ignores change of LDAP object: %s' % dn)
+			listener.unsetuid()
 			return
 
-		# new account
-		if not old:
-				create_cyrus_mailbox(new)
-		# modification
-		else:
-			oldMailPrimaryAddress = old.get('mailPrimaryAddress', [''])[0]
-			oldHomeServer = old.get('univentionMailHomeServer', [''])[0]
-			mailboxrename = listener.baseConfig.get('mail/cyrus/mailbox/rename')
+		listener.unsetuid()	
 
-			# i am not a cyrus murder
-			if not is_cyrus_murder_backend():
-				if oldMailPrimaryAddress and mailboxrename and mailboxrename.lower() in ['true', 'yes']:
-					if oldHomeServer and oldHomeServer != fqdn:
+
+	# new
+	if new and not old:
+		newHomeServer = new.get('univentionMailHomeServer', [''])[0]
+		newMailPrimaryAddress = new.get('mailPrimaryAddress', [''])[0]
+		if newHomeServer == fqdn:
+			# create mailbox if we are the home server 
+			if newMailPrimaryAddress:
+				create_cyrus_mailbox(newMailPrimaryAddress.lower())
+
+	# modified
+	if new and old:
+		oldMailPrimaryAddress = old.get('mailPrimaryAddress', [''])[0]
+		oldHomeServer = old.get('univentionMailHomeServer', [''])[0]
+		newMailPrimaryAddress = new.get('mailPrimaryAddress', [''])[0]
+		newHomeServer = new.get('univentionMailHomeServer', [''])[0]
+
+		# change stuff only if we are the home server or
+		# no home server is configured
+		if newHomeServer == fqdn:
+
+			# mailPrimaryAddress new
+			if not oldMailPrimaryAddress and newMailPrimaryAddress:
+				create_cyrus_mailbox(newMailPrimaryAddress.lower())
+
+			# mailPrimaryAddress changed, but same home server
+			if oldMailPrimaryAddress and newMailPrimaryAddress:
+				if oldMailPrimaryAddress.lower() != newMailPrimaryAddress.lower():
+						if newHomeServer == oldHomeServer:
+							cyrus_usermailbox_rename(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
+
+			# univentionMailHomeServer new
+			if not oldHomeServer and newHomeServer:
+				if newMailPrimaryAddress:
+					create_cyrus_mailbox(newMailPrimaryAddress.lower())
+
+			# univentionMailHomeServer changed
+			if oldHomeServer and newHomeServer:
+				if newHomeServer.lower() != oldHomeServer.lower():
+					if oldHomeServer != fqdn:
 						# univentionMailHomeServer has changed, create a new mailbox
-						create_cyrus_mailbox(new)
+						# or move murder mailbox
+						if not is_cyrus_murder_backend():
+							if newMailPrimaryAddress:
+								create_cyrus_mailbox(newMailPrimaryAddress.lower())
+						else:
+							if oldMailPrimaryAddress and newMailPrimaryAddress:
+								move_cyrus_murder_mailbox(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
 					else:
-						# cyrus-mailboxrename.py will take care of this case
-						pass
-				else:
-					create_cyrus_mailbox(new)
-			# cyrus murder
-			else:
-				if oldHomeServer and oldHomeServer != fqdn:
-					# the univentionMailHomeServer changed:
-					move_cyrus_murder_mailbox(new, old)
-				#elif (oldHomeServer == fqdn):
-					# cyrus-mailboxrename.py will take care of this case
+						# univentionMailHomeServer delete old mailbox
+						# on the old home server
+						if not is_cyrus_murder_backend():
+							if oldMailPrimaryAddress:
+								cyrus_usermailbox_delete(oldMailPrimaryAddress.lower())
+
+		# univentionMailHomeServer or MailPrimaryAddress deleted
+		if not newHomeServer or not newMailPrimaryAddress:
+			if oldHomeServer == fqdn and oldMailPrimaryAddress:
+				cyrus_usermailbox_delete(oldMailPrimaryAddress.lower())
+
+	# delete
+	if old and not new:
+		oldHomeServer = old.get('univentionMailHomeServer', [''])[0]
+		oldMailPrimaryAddress = old.get('mailPrimaryAddress', [''])[0]
+		# delete maibox if we are the home server
+		if oldHomeServer == fqdn and oldMailPrimaryAddress:
+			cyrus_usermailbox_delete(oldMailPrimaryAddress.lower())
 
