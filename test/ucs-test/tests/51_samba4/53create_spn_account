@@ -16,7 +16,7 @@
 eval "$(ucr shell)"
 
 RETVAL=100
-MAX_COUNT=20
+MAX_COUNT=40
 
 prefix="$(random_chars 4)"
 
@@ -32,7 +32,7 @@ for((i=0;i<$MAX_COUNT;i++)); do
                 --samaccountname "$prefix-$hostname-$i" \
                 --serviceprincipalname "$prefix-$i/$hostname.$domainname" \
                 --privatekeytab dns.keytab || fail_test 110
-        samba-tool user delete "$prefix-$hostname-$i"
+        samba-tool user delete "$prefix-$hostname-$i" || fail_test 110
 done
 if [ -n "$reset_password_complexity" ]; then
 	samba-tool domain passwordsettings set --complexity=$old_password_complexity

@@ -1,0 +1,31 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Checks permissions for /var/lib/samba/ntp_signd"
+## exposure: dangerous
+## bugs:
+## - 31109
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+ls -la /var/lib/samba/ntp_signd
+
+dir_owner=$(stat /var/lib/samba/ntp_signd --print=%G)
+test "$dir_owner" != "ntp" && fail_test 110 "/var/lib/samba/ntp_signd does not belong to ntp: $dir_owner"
+
+permissions=$(stat /var/lib/samba/ntp_signd --print=%a)
+
+permissions_owner=${permissions:0:1}
+test "$permissions_owner" = 7 -o "$permissions_owner" = 5 || fail_test 110 "Wrong user permissions for /var/lib/samba/ntp_signd: $permissions_owner"
+
+permissions_group=${permissions:1:1}
+test "$permissions_group" = 7 -o "$permissions_group" = 5 || fail_test 110 "Wrong group permissions for /var/lib/samba/ntp_signd: $permissions_group"
+
+exit $RETVAL
+
