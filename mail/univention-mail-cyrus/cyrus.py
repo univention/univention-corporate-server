@@ -162,6 +162,7 @@ def move_cyrus_murder_mailbox(old, new):
 def handler(dn, new, old, command):
 
 	fqdn = '%s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
+	fqdn = fqdn.lower()
 
 	# copy object "old" - otherwise it gets modified for other listener modules
 	old = copy.deepcopy(old)
@@ -213,7 +214,7 @@ def handler(dn, new, old, command):
 	if new and not old:
 		newHomeServer = new.get('univentionMailHomeServer', [''])[0]
 		newMailPrimaryAddress = new.get('mailPrimaryAddress', [''])[0]
-		if newHomeServer == fqdn:
+		if newHomeServer.lower() == fqdn:
 			# create mailbox if we are the home server 
 			if newMailPrimaryAddress:
 				create_cyrus_mailbox(newMailPrimaryAddress.lower())
@@ -225,47 +226,45 @@ def handler(dn, new, old, command):
 		newMailPrimaryAddress = new.get('mailPrimaryAddress', [''])[0]
 		newHomeServer = new.get('univentionMailHomeServer', [''])[0]
 
-		# change stuff only if we are the home server or
-		# no home server is configured
-		if newHomeServer == fqdn:
-
-			# mailPrimaryAddress new
-			if not oldMailPrimaryAddress and newMailPrimaryAddress:
+		# mailPrimaryAddress new
+		if not oldMailPrimaryAddress and newMailPrimaryAddress:
+			if newHomeServer.lower() == fqdn:
 				create_cyrus_mailbox(newMailPrimaryAddress.lower())
 
-			# mailPrimaryAddress changed, but same home server
-			if oldMailPrimaryAddress and newMailPrimaryAddress:
-				if oldMailPrimaryAddress.lower() != newMailPrimaryAddress.lower():
-						if newHomeServer == oldHomeServer:
-							cyrus_usermailbox_rename(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
+		# mailPrimaryAddress changed, but same home server
+		if oldMailPrimaryAddress and newMailPrimaryAddress:
+			if oldMailPrimaryAddress.lower() != newMailPrimaryAddress.lower():
+				if newHomeServer.lower() == oldHomeServer.lower() == fqdn:
+					cyrus_usermailbox_rename(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
 
-			# univentionMailHomeServer new
-			if not oldHomeServer and newHomeServer:
-				if newMailPrimaryAddress:
-					create_cyrus_mailbox(newMailPrimaryAddress.lower())
+		# univentionMailHomeServer new
+		if not oldHomeServer and newHomeServer.lower() == fqdn:
+			if newMailPrimaryAddress:
+				create_cyrus_mailbox(newMailPrimaryAddress.lower())
 
-			# univentionMailHomeServer changed
-			if oldHomeServer and newHomeServer:
-				if newHomeServer.lower() != oldHomeServer.lower():
-					if oldHomeServer != fqdn:
-						# univentionMailHomeServer has changed, create a new mailbox
-						# or move murder mailbox
-						if not is_cyrus_murder_backend():
-							if newMailPrimaryAddress:
-								create_cyrus_mailbox(newMailPrimaryAddress.lower())
-						else:
-							if oldMailPrimaryAddress and newMailPrimaryAddress:
-								move_cyrus_murder_mailbox(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
-					else:
-						# univentionMailHomeServer delete old mailbox
-						# on the old home server
-						if not is_cyrus_murder_backend():
-							if oldMailPrimaryAddress:
-								cyrus_usermailbox_delete(oldMailPrimaryAddress.lower())
+		# univentionMailHomeServer changed
+		if oldHomeServer and newHomeServer:
+			if newHomeServer.lower() != oldHomeServer.lower():
+				if newHomeServer.lower() == fqdn:
+					# univentionMailHomeServer has changed, create a new mailbox
+					# or move murder mailbox
+					if not is_cyrus_murder_backend():
+						if newMailPrimaryAddress:
+							create_cyrus_mailbox(newMailPrimaryAddress.lower())
+					else
+						if oldMailPrimaryAddress and newMailPrimaryAddress:
+							move_cyrus_murder_mailbox(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
+
+				if oldHomeServer.lower() == fqdn:
+					# delete mailbox on old home server
+					# if we are not a cyrus murder
+					if not is_cyrus_murder_backend():
+						if oldMailPrimaryAddress:
+							cyrus_usermailbox_delete(oldMailPrimaryAddress.lower())
 
 		# univentionMailHomeServer or MailPrimaryAddress deleted
 		if not newHomeServer or not newMailPrimaryAddress:
-			if oldHomeServer == fqdn and oldMailPrimaryAddress:
+			if oldHomeServer.lower() == fqdn and oldMailPrimaryAddress:
 				cyrus_usermailbox_delete(oldMailPrimaryAddress.lower())
 
 	# delete
