@@ -29,6 +29,13 @@ Group: sasl
 Mode: 0640
 
 Type: file
+File: var/lib/cyrus/db/DB_CONFIG
+Variables: mail/cyrus/bdb/dbconfig/.*
+User: cyrus
+Group: mail
+Mode: 600
+
+Type: file
 File: etc/pam.d/imap
 Variables: ldap/base
 Variables: ldap/server/name

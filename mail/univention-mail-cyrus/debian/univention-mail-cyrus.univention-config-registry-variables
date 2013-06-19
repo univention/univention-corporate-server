@@ -195,3 +195,10 @@ Description[de]=Dateiname des Initskripts der installierten Cyrus version
 Description[en]=Filename of the installed cyrus version's init script
 Type=str
 Categories=service-mail
+
+
+[mail/cyrus/bdb/dbconfig/.*]
+Description[de]=DBD Konfiguration für die cyrus Datenbank in /var/lib/cyrus/db/DB_CONFIG, nach Änderungen muss der cyrus server neu gestartet werden.
+Description[en]=DBD configuration for the cyrus database in /var/lib/cyrus/db/DB_CONFIG, after changing these variables the cyrus server has to be restarted
+Type=str
+Categories=service-mail

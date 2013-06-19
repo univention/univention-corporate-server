@@ -1,3 +1,9 @@
+univention-mail-cyrus (6.0.1-1) unstable; urgency=low
+
+  * added template for var/lib/cyrus/db/DB_CONFIG (Bug #28464)
+
+ -- Felix Botner <botner@univention.de>  Wed, 19 Jun 2013 10:53:05 +0200
+
 univention-mail-cyrus (6.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)
