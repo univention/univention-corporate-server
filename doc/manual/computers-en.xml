@@ -194,8 +194,7 @@
 						field. This is only necessary when they deviate from the automatically created
 						default values. The default value for a DC master or DC backup is <emphasis>DC
 						Backup Hosts</emphasis>, for a DC slave <emphasis>DC Slave Hosts</emphasis> and
-						for member services, managed clients and mobile clients
-						<emphasis>Computers</emphasis>.
+						for member servers <emphasis>Computers</emphasis>.
 					</entry>
 				</row>
 			</tbody>

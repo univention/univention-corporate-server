@@ -4,7 +4,7 @@
 	%entities;
 ]>
 <chapter id="chap:join">
-	<title>Join
+	<title>Domain Join
 		<indexterm><primary>domain join</primary></indexterm>
 		<indexterm><primary>join</primary><see>domain join</see></indexterm>
 	</title>

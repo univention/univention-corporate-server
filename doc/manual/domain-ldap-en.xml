@@ -466,7 +466,7 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 	</section>
 
 	<section id="domain-ldap:Member_server">
-		<title>&ucsMember;</title>
+		<title>Member server</title>
 		<para>
 			&ucsMember; are server systems without a local LDAP server. Access to domain
 			data here is performed via other servers in the domain.
