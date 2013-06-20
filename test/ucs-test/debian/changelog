@@ -1,3 +1,10 @@
+ucs-test (4.0.15-1) unstable; urgency=low
+
+  * Moved tests which are identical for samba and samba4
+    to the package samba-common (Bug #31780)
+
+ -- Tobias Peters <peters@univention.de>  Thu, 20 Jun 2013 14:02:39 +0200
+
 ucs-test (4.0.14-1) unstable; urgency=low
 
   * 50_samba/41password_change: use tests/domainadmin/* variables
