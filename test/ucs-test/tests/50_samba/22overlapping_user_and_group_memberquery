@@ -17,31 +17,31 @@ KERBEROS="false"
 PERSON="true"
 POSIX="true"
 
-name="$(group_randomnameme)"
+uname="$(random_chars)"
+gname="$(random_chars)"
 password="univention"
 
-trap 'user_remove "$name" ; group_remove "$name"' INT TERM EXIT
+trap 'user_remove "$uname" ; group_remove "$gname"' INT TERM EXIT
 
 admin_account="$(echo ${tests_domainadmin_account} | sed -e 's|uid=||;s|,.*||')"
 
 echo "----create group"
 udm-test groups/group create \
-	--binddn "$tests_domainadmin_account" --bindpwd "$tests_domainadmin_pwdfile" \
 	--position="cn=groups,$ldap_base" \
-	--set name="$name"
+	--set name="$gname"
 if [ $? != 0 ]; then
 	fail_fast 1 "Group could not be created"
 fi
 
 echo "----create user"
-user_create "$name"
+user_create "$uname"
 if [ $? != 0 ];then
 	fail_fast 1 "User could not be created"
 fi
 
 
 echo "----add user to group"
-group_adduser "$name" "$name"
+group_adduser "$uname" "$gname"
 
 if ! [ -x /usr/bin/net ]; then
 	fail_fast 1 "net is not available";
@@ -52,7 +52,7 @@ wait_for_replication_and_postrun
 info "Querying group members"
 
 echo "----query group members"
-OUTPUT="$(net rpc -d1 group members "$name" -U "$admin_account%$tests_domainadmin_pwd" 2>&1)"
+OUTPUT="$(net rpc -d1 group members "$gname" -U "$admin_account%$tests_domainadmin_pwd" 2>&1)"
 
 info "Got the following answer:"
 info "$OUTPUT"

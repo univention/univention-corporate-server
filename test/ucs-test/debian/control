@@ -147,6 +147,7 @@ Package: ucs-test-samba
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
+ ucs-test-samba-common,
  shell-univention-lib,
  python-pexpect,
  ${misc:Depends}
@@ -159,6 +160,7 @@ Package: ucs-test-samba4
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
+ ucs-test-samba-common,
  shell-univention-lib,
  python-pexpect,
  ${misc:Depends}

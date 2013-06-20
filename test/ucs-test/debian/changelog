@@ -1,3 +1,9 @@
+ucs-test (4.0.17-1) unstable; urgency=low
+
+  * 50_samba/*: avoid endless loops (Bug #29052)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jun 2013 14:40:34 +0200
+
 ucs-test (4.0.16-1) unstable; urgency=low
 
   * 50_samba/41password_change and 50_samba/40password-policies: replace
