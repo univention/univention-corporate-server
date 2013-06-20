@@ -1,3 +1,10 @@
+univention-mail-cyrus (6.0.2-5) unstable; urgency=low
+
+  * create/delete if pri.mail. changed and 
+    mail/cyrus/mailbox/rename=no is set (Bug #29605)
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Jun 2013 09:49:28 +0200
+
 univention-mail-cyrus (6.0.2-4) unstable; urgency=low
 
   * code cleanup (Bug #29605) 

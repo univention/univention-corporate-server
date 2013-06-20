@@ -59,13 +59,14 @@ def is_cyrus_murder_backend():
 
 def cyrus_usermailbox_delete(old):
 
-	univention.debug.debug(
-		univention.debug.LISTENER,
-		univention.debug.INFO,
-		'cyrus: delete mailbox %s' % old)
-
 	# delete mailbox and logfiles
 	if listener.baseConfig.is_true('mail/cyrus/mailbox/delete', False):
+
+		univention.debug.debug(
+			univention.debug.LISTENER,
+			univention.debug.INFO,
+			'cyrus: delete mailbox %s' % old)
+
 		try:
 			listener.setuid(0)
 			subprocess.call(['/usr/sbin/univention-cyrus-mailbox-delete', '--user', old])
@@ -81,13 +82,14 @@ def cyrus_usermailbox_delete(old):
 
 def cyrus_usermailbox_rename(old, new):
 
-	univention.debug.debug(
-		univention.debug.LISTENER,
-		univention.debug.INFO,
-		'cyrus: rename mailbox %s to %s' % (old, new))
-
 	# rename mailbox and rename/create logfiles
 	if listener.baseConfig.is_true('mail/cyrus/mailbox/rename', False):
+
+		univention.debug.debug(
+			univention.debug.LISTENER,
+			univention.debug.INFO,
+			'cyrus: rename mailbox %s to %s' % (old, new))
+
 		try:
 			listener.setuid(0)
 			returncode = subprocess.call(['/usr/sbin/univention-cyrus-mailbox-rename', '--user', old, new])
@@ -231,7 +233,13 @@ def handler(dn, new, old, command):
 		if oldMailPrimaryAddress and newMailPrimaryAddress:
 			if oldMailPrimaryAddress.lower() != newMailPrimaryAddress.lower():
 				if newHomeServer.lower() == oldHomeServer.lower() == fqdn:
-					cyrus_usermailbox_rename(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
+					if listener.baseConfig.is_true('mail/cyrus/mailbox/rename', False):
+						# rename
+						cyrus_usermailbox_rename(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
+					else:
+						# create new, delete old
+						create_cyrus_mailbox(newMailPrimaryAddress.lower())
+						cyrus_usermailbox_delete(oldMailPrimaryAddress.lower())
 
 		# univentionMailHomeServer new
 		if not oldHomeServer and newHomeServer.lower() == fqdn:
