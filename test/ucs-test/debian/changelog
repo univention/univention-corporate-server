@@ -1,3 +1,10 @@
+ucs-test (4.0.16-1) unstable; urgency=low
+
+  * 50_samba/41password_change and 50_samba/40password-policies: replace
+    net_rpc_change_pwd.py with a simple net rpc call (Bug #29052)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jun 2013 14:12:23 +0200
+
 ucs-test (4.0.15-1) unstable; urgency=low
 
   * Moved tests which are identical for samba and samba4
