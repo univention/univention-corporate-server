@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.5-1) unstable; urgency=low
+
+  * jenkins examples: fixed typo in the domainname (Bug #31775)
+
+ -- Tobias Peters <peters@univention.de>  Thu, 20 Jun 2013 11:29:23 +0200
+
 ucs-ec2-tools (0.1.4-7) unstable; urgency=low
 
   * Switch to m1.medium for ec2 examples (Bug #31283)
