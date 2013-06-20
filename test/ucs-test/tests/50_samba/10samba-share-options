@@ -67,8 +67,6 @@ available_options="$(udm-test shares/share create | grep  --regex "samba\w" | aw
 ## delete share even on abnormal exits
 trap 'share_remove "$sharename";rm -rf "/opt/${sharename:?}";' INT TERM EXIT
 
-ADMINISTRATOR_DN="$(udm-test users/user list --filter uid="$ADMINISTRATOR_USER" | sed -ne 's/^DN: //p')"
-
 echo "----create share"
 ## create share
 udm-test shares/share create \
