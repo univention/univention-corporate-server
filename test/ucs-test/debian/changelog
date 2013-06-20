@@ -1,3 +1,11 @@
+ucs-test (4.0.13-1) unstable; urgency=low
+
+  * 50_samba/22overlapping_user_and_group_memberquery and
+    50_samba/40password-policies: use test/tests_domainadmin variables
+    (Bug #31680)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jun 2013 09:44:03 +0200
+
 ucs-test (4.0.12-1) unstable; urgency=low
 
   * 51_samba4/45dns_tests: replace the sleep 8 with a for loop and wait

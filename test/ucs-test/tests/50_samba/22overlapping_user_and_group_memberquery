@@ -22,6 +22,8 @@ password="univention"
 
 trap 'user_remove "$name" ; group_remove "$name"' INT TERM EXIT
 
+admin_account="$(echo ${tests_domainadmin_account} | sed -e 's|uid=||;s|,.*||')"
+
 echo "----create group"
 udm-test groups/group create \
 	--binddn "$tests_domainadmin_account" --bindpwd "$tests_domainadmin_pwdfile" \
@@ -50,13 +52,13 @@ wait_for_replication_and_postrun
 info "Querying group members"
 
 echo "----query group members"
-OUTPUT="$(net rpc -d1 group members "$name" -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" 2>&1)"
+OUTPUT="$(net rpc -d1 group members "$name" -U "$admin_account%$tests_domainadmin_pwd" 2>&1)"
 
 info "Got the following answer:"
 info "$OUTPUT"
 
 if echo "$OUTPUT" | grep -qs NT_STATUS_LOGON_FAILURE; then
-	fail_test 137 "Credentials for login not accepted. Probably they're different from the \$ADMINISTRATOR_USER%\$ADMINISTRATOR_PASSWORD ($ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD) on this system"
+	fail_test 137 "Credentials for login not accepted. Probably they're different from the \$admin_account%\$admin_account ($admin_account%$admin_account) on this system"
 fi
 
 if echo "$OUTPUT" | grep -qs NT_STATUS_NO_SUCH_GROUP; then

@@ -1,5 +1,6 @@
 import ldap
 import time
+import subprocess
 import univention.uldap as uldap
 import univention.config_registry
 
