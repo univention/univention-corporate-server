@@ -359,6 +359,11 @@ DB\_CONFIG file. Default settings for the DB\_CONFIG file are
 \texttt{mail/cyrus/bdb/dbconfig/set\_lg\_regionmax=\symbol{34}2097152\symbol{34}} and
 \texttt{mail/cyrus/bdb/dbconfig/set\_cachesize=\symbol{34}0 2097152 1\symbol{34}} (\ucsBug{28464}).
 
+\item The listener module for the management of imap mailboxes has been
+revised. Only if a mailHomeServer ist set for the user, the mailbox is
+created. If the mailHomeServer attribute is removed from a user, the mailbox
+will be deleted. (\ucsBug{29605})
+
 \end{itemize}
 
 \subsection{Postfix}
