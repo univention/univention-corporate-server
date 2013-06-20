@@ -70,6 +70,7 @@ for m in "computers/linux" "computers/macos" "computers/managedclient" \
 			"computers/mobileclient" \
 			"computers/ubuntu" "computers/windows" \
 			"computers/windows_domaincontroller"; do
+
 	name="$(random_chars)"
 
 	oldValueManaged="$(getManagedClient)"
@@ -80,6 +81,8 @@ for m in "computers/linux" "computers/macos" "computers/managedclient" \
 	oldValueDVSClients="$(getDVSClients)"
 
 	createObject "$m" "$name"
+
+	wait_for_replication
 
 	newValueManaged="$(getManagedClient)"
 	newValueUsers="$(getUsers)"
@@ -100,6 +103,9 @@ done
 
 ### # These objects shouldn't be counted
 for m in "computers/ipmanagedclient"; do
+
+	name="$(random_chars)"
+
 	oldValueManaged="$(getManagedClient)"
 	oldValueUsers="$(getUsers)"
 	oldValueServers="$(getServers)"
@@ -133,6 +139,9 @@ ucr set --force ldap/master="$ldap_master"
 ### These objects should be counted as servers
 for m in "computers/memberserver" "computers/domaincontroller_slave" \
 			"computers/domaincontroller_backup" "computers/domaincontroller_master"; do
+
+	name="$(random_chars)"
+
 	oldValueManaged="$(getManagedClient)"
 	oldValueUsers="$(getUsers)"
 	oldValueServers="$(getServers)"

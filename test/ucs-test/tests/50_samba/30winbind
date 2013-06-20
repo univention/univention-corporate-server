@@ -5,7 +5,6 @@
 ##  - winbind
 ## roles-not:
 ## - basesystem
-## - memberserver
 ## tags: [basic]
 
 . "$TESTLIBPATH/base.sh" || exit 137

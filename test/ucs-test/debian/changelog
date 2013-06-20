@@ -1,3 +1,12 @@
+ucs-test (4.0.11-1) unstable; urgency=low
+
+  * 00_base/45license_v2: use a random name for every computer type
+  * 10_ldap/40replication: create the temp container under cn=univention
+    so the connector will ignore it (Bug #27662)
+  * 50_samba/30winbind: activate on memberserver (Bug #31678)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jun 2013 07:30:32 +0200
+
 ucs-test (4.0.10-1) unstable; urgency=low
 
   * 50_samba/50quota: wait for the replication (Bug #31649)
