@@ -1330,7 +1330,7 @@ udm settings/syntax create "$@" --ignore_exists \
 	</section>
 
 	<section id="udm:acl">
-		<title>LDAP Accress Control Lists
+		<title>LDAP Access Control Lists
 			<indexterm><primary>LDAP</primary><secondary>ACL</secondary></indexterm>
 		</title>
 		<remark>SG: might be too much</remark>
