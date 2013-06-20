@@ -25,6 +25,8 @@ function cleanup() {
 
 trap 'cleanup' INT TERM EXIT
 
+REPLICATION_TIME=30
+
 #CNAME RECORD
 echo "----Create CNAME record"
 udm-test dns/alias create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name=alias1 --set cname="$hostname.$domainname"
@@ -33,11 +35,12 @@ if [ "$?" != 0 ];then
 fi
 
 echo "----Check functionality of CNAME record"
-sleep 8
-alias_test="$(dig "alias1.$domainname" | grep "alias1.$domainname" | grep CNAME | grep "$hostname.$domainname")"
-if [ -z "$alias_test" ]; then
-	fail_test 1 "Created CNAME record could not be found." 
-fi
+for((i=0;i<$REPLICATION_TIME;i++)); do
+	alias_test="$(dig "alias1.$domainname" | grep "alias1.$domainname" | grep CNAME | grep "$hostname.$domainname")"
+	test -n "$alias_test" && break
+	sleep 1
+done
+test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created CNAME record could not be found." 
 
 #SRV RECORD
 echo "----Create SRV record"
@@ -48,10 +51,12 @@ fi
 sleep 8
 
 echo "----Check functionality of SRV record"
-srv_test="$(dig SRV "_45dnstest_srv_record._tcp.foobar.$domainname" | grep "ANSWER SECTION")"
-if [ -z "$srv_test" ]; then
-	fail_test 1 "Created SRV record could not be found." 
-fi
+for((i=0;i<$REPLICATION_TIME;i++)); do
+	srv_test="$(dig SRV "_45dnstest_srv_record._tcp.foobar.$domainname" | grep "ANSWER SECTION")"
+	test -n "$srv_test" && break
+	sleep 1
+done
+test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created SRV record could not be found." 
 
 #A RECORD
 echo "----Create A record"
@@ -62,10 +67,11 @@ fi
 sleep 8
 
 echo "----Check functionality of A record"
-a_test="$(dig "$domainname" | grep "$domainname" | grep A | grep 111.111.111.111)"
-if [ -z "$a_test" ]; then
-	fail_test 1 "Created A record could not be found." 
-fi
-
+for((i=0;i<$REPLICATION_TIME;i++)); do
+	a_test="$(dig "$domainname" | grep "$domainname" | grep A | grep 111.111.111.111)"
+	test -n "$a_test" && break
+	sleep 1
+done
+test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created A record could not be found." 
 
 exit $RETVAL

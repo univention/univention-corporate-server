@@ -1,3 +1,10 @@
+ucs-test (4.0.12-1) unstable; urgency=low
+
+  * 51_samba4/45dns_tests: replace the sleep 8 with a for loop and wait
+    up to 30 seconds for the LDAP and DRS replication (Bug #31680)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jun 2013 09:30:18 +0200
+
 ucs-test (4.0.11-1) unstable; urgency=low
 
   * 00_base/45license_v2: use a random name for every computer type
