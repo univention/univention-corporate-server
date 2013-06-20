@@ -1,3 +1,9 @@
+univention-mail-cyrus (6.0.2-4) unstable; urgency=low
+
+  * code cleanup (Bug #29605) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 20 Jun 2013 09:23:30 +0200
+
 univention-mail-cyrus (6.0.2-3) unstable; urgency=low
 
   * updated copyright (Bug #29605) 

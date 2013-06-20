@@ -86,7 +86,6 @@ def cyrus_usermailbox_rename(old, new):
 		univention.debug.INFO,
 		'cyrus: rename mailbox %s to %s' % (old, new))
 
-
 	# rename mailbox and rename/create logfiles
 	if listener.baseConfig.is_true('mail/cyrus/mailbox/rename', False):
 		try:
@@ -114,6 +113,7 @@ def create_cyrus_mailbox(new):
 		'cyrus: create mailbox %s' % new)
 
 	try:
+		# create mailbox
 		listener.setuid(0)
 		subprocess.call(("/usr/sbin/univention-cyrus-mkdir", new))
 		create_cyrus_userlogfile(new)
@@ -121,6 +121,8 @@ def create_cyrus_mailbox(new):
 		listener.unsetuid()
 
 def create_cyrus_userlogfile(mailaddress):
+
+	# create log file directory
 	if listener.baseConfig.is_true('mail/cyrus/userlogfiles', False):
 		path = '/var/lib/cyrus/log/%s' % (mailaddress)
 		cyrus_id = pwd.getpwnam('cyrus')[2]
@@ -132,29 +134,23 @@ def create_cyrus_userlogfile(mailaddress):
 
 def move_cyrus_murder_mailbox(old, new):
 
-	localCyrusMurderBackendFQDN = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
-	if not "." in localCyrusMurderBackendFQDN:
-		localCyrusMurderBackendFQDN = '%s.%s' % (localCyrusMurderBackendFQDN, listener.baseConfig.get('domainname'))
+	murderBackend = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
+	if not "." in murderBackend:
+		murderBackend = '%s.%s' % (murderBackend, listener.baseConfig.get('domainname'))
 
 	univention.debug.debug(
 		univention.debug.LISTENER,
 		univention.debug.INFO,
-		'cyrus: muder move mailbox %s to %s' % (old, localCyrusMurderBackendFQDN))
+		'cyrus: muder move mailbox %s to %s' % (old, murderBackend))
 
 	try:
 		listener.setuid(0)
-		localCyrusMurderBackendFQDN = listener.baseConfig.get('mail/cyrus/murder/backend/hostname')
-		if not "." in localCyrusMurderBackendFQDN:
-			localCyrusMurderBackendFQDN = '%s.%s' % (localCyrusMurderBackendFQDN, listener.baseConfig.get('domainname'))
-
-		returncode = subprocess.call("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (old, localCyrusMurderBackendFQDN), shell=True)
-
+		returncode = subprocess.call("/usr/sbin/univention-cyrus-murder-movemailbox %s %s" % (old, murderBackend), shell=True)
 		if (returncode != 0):
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
 				'%s: Cyrus Murder mailbox rename failed for %s' % (name, oldemail))
-
 		create_cyrus_userlogfile(new)
 	finally:
 		listener.unsetuid()
