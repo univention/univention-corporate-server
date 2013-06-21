@@ -1,3 +1,10 @@
+ucs-test (4.0.19-1) unstable; urgency=low
+
+  * 51_samba4/35smbclient_auth: readded waitForUserCreation function
+    bacause we have to wait for the DRS replication (Bug #29052)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jun 2013 06:23:55 +0200
+
 ucs-test (4.0.18-1) unstable; urgency=low
 
   * Fix 30winbind on Memberservers (Bug #31772)

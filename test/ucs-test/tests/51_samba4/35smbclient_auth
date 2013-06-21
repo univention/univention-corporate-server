@@ -110,6 +110,17 @@ def calculateInnerDelay(roundTime,amountPerRound):
 		sum2=sum2+delayArray[i]
 	return delayArray
 
+##connect to //localhost/sysvol to make sure that it and the user exist
+def waitForUserCreation(username,password):
+	print "Wait for the user to be created"
+	for i in range(10):
+		output=pexpect.run("/usr/bin/smbclient -U%s%%%s //localhost/sysvol" % (username,password))
+		if output.find("smb: \>") >=0 :
+			print "%i. Try:  Successfull connection." % (i+1)
+			break
+		time.sleep(3)
+
+
 def checkResult(expectedResult):
 	for i in range(20):
 
@@ -140,6 +151,9 @@ if __name__ == "__main__":
 	atexit.register(cleanup, username, homedir_mount)
 
 	wait_for_replication()
+
+	# DRS replication
+	waitForUserCreation(username,password)
 
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()
 	innerDelay=calculateInnerDelay(roundTime,amountPerRound)
