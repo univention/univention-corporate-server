@@ -4,7 +4,9 @@
 ##  This scripts tests if the local UIDs and GIDs are not in the range 1000-29999, so they will not collide with users from the LDAP.
 ##  It does so by parsing the "/etc/passwd" and "/etc/group" an checking every ID.
 ## bugs: [13153, 18315]
-## tags: basic
+## tags:
+##  - basic
+##  - apptest
 ## exposure: safe
 set -o errexit -o nounset -o pipefail
 

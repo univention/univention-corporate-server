@@ -1,7 +1,9 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking for filesystem permissions on machine.secret
 ## roles-not: basesystem
-## tags: basic
+## tags:
+## - basic
+## - apptest
 ## exposure: safe
 
 . "$TESTLIBPATH/base.sh" || exit 137

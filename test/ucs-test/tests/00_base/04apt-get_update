@@ -2,7 +2,9 @@
 ## desc: |
 ##  Test apt-get update
 ##  This script test if "apt-get update" runs without errors.
-## tags: basic
+## tags:
+##  - basic
+##  - apptest
 ## exposure: careful
 set -o errexit -o nounset -o pipefail
 

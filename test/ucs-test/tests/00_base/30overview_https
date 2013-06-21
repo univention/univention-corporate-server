@@ -2,6 +2,9 @@
 ## desc: Check if overview.html links to master via HTTPS
 ## bugs: [11504]
 ## roles-not: [domaincontroller_master]
+## tags:
+##  - basic
+##  - apptest
 ## joined: true
 ## exposure: safe
 eval "$(univention-config-registry shell ldap/master)"

@@ -2,6 +2,9 @@
 ## desc: World-readable Univention-specific logfiles
 ## bugs: [11431]
 ## exposure: safe
+## tags:
+##  - basic
+##  - apptest
 ## versions:
 ##  2.4-0: fixed
 

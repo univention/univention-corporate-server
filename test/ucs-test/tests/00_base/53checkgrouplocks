@@ -6,7 +6,9 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## packages: [univention-directory-manager-tools]
 ## exposure: dangerous
 . "$TESTLIBPATH/base.sh" || exit 137

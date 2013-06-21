@@ -1,5 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking for filesystem permissions
+## tags:
+##  - basic
+##  - apptest
 ## bugs: [25162]
 ## exposure: safe
 

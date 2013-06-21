@@ -1,6 +1,9 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check if overview.html links to master only if joined
 ## bugs: [11505]
+## tags:
+##  - basic
+##  - apptest
 ## roles-not: [domaincontroller_master]
 ## joined: false
 

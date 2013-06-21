@@ -4,6 +4,9 @@
 ##  This script checks that the file "/etc/krb5.keytab" does exist and is not empty on member servers.
 ## roles:
 ##  - memberserver
+## tags:
+##  - basic
+##  - apptest
 ## exposure: safe
 
 set -o nounset -o errexit -o pipefail

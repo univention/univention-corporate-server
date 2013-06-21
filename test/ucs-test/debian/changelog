@@ -1,3 +1,10 @@
+ucs-test (4.0.19-2) unstable; urgency=low
+
+  * Added new tag apptest to mark the tests which should also be started
+    in App Center installation tests (Bug #31785)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jun 2013 10:06:26 +0200
+
 ucs-test (4.0.19-1) unstable; urgency=low
 
   * 51_samba4/35smbclient_auth: readded waitForUserCreation function

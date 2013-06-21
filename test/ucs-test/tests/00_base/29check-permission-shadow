@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking for filesystem permissions on /etc/shadow
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## exposure: safe
 
 . "$TESTLIBPATH/base.sh" || exit 137

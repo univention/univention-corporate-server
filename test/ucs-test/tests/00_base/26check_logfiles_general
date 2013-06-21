@@ -2,6 +2,9 @@
 ## desc: Sensitive logfiles are not world-readable
 ## bugs: [11431, 25164]
 ## exposure: safe
+## tags:
+##  - basic
+##  - apptest
 ## versions:
 ##  2.4-0: found
 

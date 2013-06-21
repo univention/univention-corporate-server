@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking, whether LSB distributor ID is set to Univention
-## tags: [basic]
+## tags: [basic,apptest]
 ## packages: [lsb-release]
 ## exposure: safe
 
