@@ -1,0 +1,38 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create and delete an UCS-Container in write mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_container_cn_name="$(random_chars)"
+AD_CONTAINER_DN="CN=$UDM_container_cn_name,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "write"
+
+udm_create "container/cn" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "container/cn"; fail_bool 0 110
+ad_exists "$AD_CONTAINER_DN"; fail_bool 0 110
+
+udm_remove "container/cn" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "container/cn"; fail_bool 1 110
+ad_exists "$AD_CONTAINER_DN"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

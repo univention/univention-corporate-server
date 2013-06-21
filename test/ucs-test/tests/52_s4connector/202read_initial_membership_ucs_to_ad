@@ -1,0 +1,120 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Test an initial sync of group memberships from UCS to AD in read-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_users_user_lastname="$(random_chars)"
+# If the password doesn't adhere the configured Windows-Password-Guidelines
+# weird things might happen when the user is synced to AD.
+UDM_users_user_password="U$(random_chars)123"
+
+G1="$(random_chars)"
+G2="$(random_chars)"
+B1="$(random_chars)"
+B2="$(random_chars)"
+
+AD_G1_DN="CN=$G1,CN=groups,$(ad_get_base)"
+AD_G2_DN="CN=$G2,CN=groups,$(ad_get_base)"
+AD_B1_DN="CN=$B1,CN=Users,$(ad_get_base)"
+AD_B2_DN="CN=$B2,CN=Users,$(ad_get_base)"
+
+UDM_G1_DN="cn=$G1,cn=groups,$ldap_base"
+UDM_G2_DN="cn=$G2,cn=groups,$ldap_base"
+UDM_B1_DN="uid=$B1,cn=users,$ldap_base"
+UDM_B2_DN="uid=$B2,cn=users,$ldap_base"
+
+invoke-rc.d univention-s4-connector stop
+
+UDM_groups_group_name="$G1"
+udm_create "groups/group" || fail_test 110
+UDM_users_user_username="$B1"
+udm_create "users/user" || fail_test 110
+UDM_groups_group_name="$G2"
+udm_create "groups/group" || fail_test 110
+UDM_users_user_username="$B2"
+udm_create "users/user" || fail_test 110
+
+UDM_users_user_username="$B1"
+udm_modify "users/user" "" "" "" "" \
+	--append groups="$UDM_G1_DN" || fail_test 110
+UDM_users_user_username="$B2"
+udm_modify "users/user" "" "" "" "" \
+	--append groups="$UDM_G1_DN" || fail_test 110
+UDM_groups_group_name="$G2"
+udm_modify "groups/group" "" "" "" "" \
+	--append users="$UDM_B1_DN" || fail_test 110
+udm_modify "groups/group" "" "" "" "" \
+	--append users="$UDM_B2_DN" || fail_test 110
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "read"
+invoke-rc.d univention-s4-connector start
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_G1_DN"; fail_bool 1 110
+ad_exists "$AD_G2_DN"; fail_bool 1 110
+ad_exists "$AD_B1_DN"; fail_bool 1 110
+ad_exists "$AD_B2_DN"; fail_bool 1 110
+UDM_groups_group_name="$G1"
+udm_exists "groups/group"; fail_bool 0 110
+UDM_groups_group_name="$G2"
+udm_exists "groups/group"; fail_bool 0 110
+UDM_users_user_username="$B1"
+udm_exists "users/user"; fail_bool 0 110
+UDM_users_user_username="$B2"
+udm_exists "users/user"; fail_bool 0 110
+
+UDM_groups_group_name="$G1"
+udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B1_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B2_DN" "groups/group"; fail_bool 0 110
+UDM_groups_group_name="$G2"
+udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B1_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "users" "$UDM_B2_DN" "groups/group"; fail_bool 0 110
+
+UDM_users_user_username="$B1"
+udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G1_DN" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G2_DN" "users/user"; fail_bool 0 110
+UDM_users_user_username="$B2"
+udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G1_DN" "users/user"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" "$UDM_G2_DN" "users/user"; fail_bool 0 110
+
+section "Clean up"
+
+UDM_users_user_username="$B1"
+udm_remove "users/user" || fail_test 110
+UDM_users_user_username="$B2"
+udm_remove "users/user" || fail_test 110
+UDM_groups_group_name="$G1"
+udm_remove "groups/group" || fail_test 110
+UDM_groups_group_name="$G2"
+udm_remove "groups/group" || fail_test 110
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_G1_DN"; fail_bool 1 110
+ad_exists "$AD_G2_DN"; fail_bool 1 110
+ad_exists "$AD_B1_DN"; fail_bool 1 110
+ad_exists "$AD_B2_DN"; fail_bool 1 110
+UDM_groups_group_name="$G1"
+udm_exists "groups/group"; fail_bool 1 110
+UDM_groups_group_name="$G2"
+udm_exists "groups/group"; fail_bool 1 110
+UDM_users_user_username="$B1"
+udm_exists "users/user"; fail_bool 1 110
+UDM_users_user_username="$B2"
+udm_exists "users/user"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

@@ -1,0 +1,84 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create and modify AD-User and verify attributes in read-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+UDM_users_user_firstname="$(random_chars)"
+UDM_users_user_description="$(random_chars)"
+UDM_users_user_street="$(random_chars)"
+UDM_users_user_city="$(random_chars)"
+UDM_users_user_postcode="$(random_chars)"
+UDM_users_user_profilepath="$(random_chars)"
+UDM_users_user_scriptpath="$(random_chars)"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "read"
+
+#We have to wait between all the AD-Commands: See #18501
+ad_createuser "$UDM_users_user_username" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "sn" "$UDM_users_user_lastname" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "description" "$UDM_users_user_description" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+if [ "$connector_s4_windows_version" != "win2000" \
+	-o "$connector_s4_mapping_user_win2000_description" != "false" ]
+then
+	udm_verify_udm_attribute "description" "$UDM_users_user_description" "users/user"; fail_bool 0 121 "See #18501"
+fi
+udm_verify_udm_attribute "username" "$UDM_users_user_username" "users/user"; fail_bool 0 121 "See #18501"
+udm_verify_udm_attribute "firstname" "$UDM_users_user_firstname" "users/user"; fail_bool 0 121 "See #18501"
+udm_verify_udm_attribute "lastname" "$UDM_users_user_lastname" "users/user"; fail_bool 0 121 "See #18501"
+udm_verify_udm_attribute "street" "$UDM_users_user_street" "users/user"; fail_bool 0 121 "See #18501"
+udm_verify_udm_attribute "city" "$UDM_users_user_city" "users/user"; fail_bool 0 121 "See #18501"
+udm_verify_udm_attribute "postcode" "$UDM_users_user_postcode" "users/user"; fail_bool 0 121 "See #18501"
+udm_verify_udm_attribute "profilepath" "$UDM_users_user_profilepath" "users/user"; fail_bool 0 121 "See #18501"
+udm_verify_udm_attribute "scriptpath" "$UDM_users_user_scriptpath" "users/user"; fail_bool 0 121 "See #18501"
+
+ad_verify_attribute "$AD_DN" "description" "$UDM_users_user_description"; fail_bool 0 110
+ad_verify_attribute	"$AD_DN" "sAMAccountName" "$UDM_users_user_username"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "sn" "$UDM_users_user_lastname"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street"; fail_bool 0 110
+
+ad_delete "$AD_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_DN"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

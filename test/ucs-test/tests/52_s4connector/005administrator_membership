@@ -1,0 +1,44 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Check if Administrator is still member of Domain Admins"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## bugs:
+##  - 28845
+## tags:
+##  - basic
+##  - apptest
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137 
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+# Is Administrator still member of Domain Admins?
+UDM_groups_group_name="Domain Admins"
+UDM_users_user_username="Administrator"
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=Administrator,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+
+# Change Domain Admins on UCS side
+description="$(random_chars)"
+udm_modify "groups/group" "" "" "" "" \
+	--set description="$description" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+UDM_groups_group_name="Domain Admins"
+UDM_users_user_username="Administrator"
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=Administrator,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+
+ad_set_sync_mode "$SYNCMODE"
+exit "$RETVAL"
+

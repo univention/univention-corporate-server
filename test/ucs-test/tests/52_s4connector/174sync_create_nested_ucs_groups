@@ -1,0 +1,79 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create two nested groups on ucs-side and unnest them in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+INNER_GROUP="$(random_chars)"
+OUTER_GROUP="$(random_chars)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+UDM_groups_group_name="$INNER_GROUP"
+udm_create "groups/group" || fail_test 110
+UDM_groups_group_name="$OUTER_GROUP"
+udm_create "groups/group" || fail_test 110 
+
+UDM_groups_group_name="$INNER_GROUP"
+udm_modify "groups/group" "" "" "" "" \
+	--append memberOf="cn=$OUTER_GROUP,cn=groups,$ldap_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
+ad_exists "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
+
+UDM_groups_group_name="$INNER_GROUP"
+udm_exists "groups/group"; fail_bool 0 110
+UDM_groups_group_name="$OUTER_GROUP"
+udm_exists "groups/group"; fail_bool 0 110
+
+UDM_groups_group_name="$OUTER_GROUP"
+udm_verify_multi_value_udm_attribute_contains "nestedGroup" \
+	"cn=$INNER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+UDM_groups_group_name="$INNER_GROUP"
+udm_verify_multi_value_udm_attribute_contains "memberOf" \
+	"cn=$OUTER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
+
+ad_verify_multi_value_attribute_contains "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
+	"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "CN=$INNER_GROUP,CN=groups,$(ad_get_base)" \
+	"memberOf" "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
+
+UDM_groups_group_name="$INNER_GROUP"
+udm_modify "groups/group" "" "" "" "" \
+	--remove memberOf="cn=$OUTER_GROUP,cn=groups,$ldap_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+UDM_groups_group_name="$OUTER_GROUP"
+udm_verify_multi_value_udm_attribute_contains "nestedGroup" \
+	"cn=$INNER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 1 110
+UDM_groups_group_name="$INNER_GROUP"
+udm_verify_multi_value_udm_attribute_contains "memberOf" \
+	"cn=$OUTER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 1 110
+
+ad_verify_multi_value_attribute_contains "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
+	"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 1 110
+ad_verify_multi_value_attribute_contains "CN=$INNER_GROUP,CN=groups,$(ad_get_base)" \
+	"memberOf" "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 1 110
+
+section "Clean up"
+
+UDM_groups_group_name="$INNER_GROUP"
+udm_remove "groups/group" || fail_test 110
+UDM_groups_group_name="$OUTER_GROUP"
+udm_remove "groups/group" || fail_test 110 
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

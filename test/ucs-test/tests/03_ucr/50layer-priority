@@ -5,6 +5,9 @@
 ##  - apptest
 ## bugs: [29632]
 ## exposure: careful
+## versions:
+##  3.1-1: skip
+##  3.2-0: fixed
 
 failed=()
 

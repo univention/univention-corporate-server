@@ -1,0 +1,109 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Move an UCS-user out of the User-Ignore-Subtree in write-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## bugs:
+##  - 28702
+## versions:
+##  3.0-0: skip
+
+# skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=28696
+exit 131
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137 
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+# If the password doesn't adhere the configured Windows-Password-Guidelines
+# weird things might happen when the user is synced to AD.
+UDM_users_user_password="U$(random_chars)123"
+UDM_groups_group_name="$(random_chars)"
+UDM_GROUP_DN="cn=$UDM_groups_group_name,cn=groups,$ldap_base"
+AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
+AD_GROUP_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+CONTAINER_NAME="$(random_chars)"
+AD_CONTAINER_USER_DN="CN=$UDM_users_user_username,CN=$CONTAINER_NAME,$(ad_get_base)"
+UDM_CONTAINER_USER_DN="uid=$UDM_users_user_username,cn=$CONTAINER_NAME,$ldap_base"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "write"
+
+section "Create new container"
+
+udm container/cn create --set name="$CONTAINER_NAME" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "Modify User-Ignore-Subtree"
+
+invoke-rc.d univention-ad-connector stop
+
+MAIN_FILE="/usr/share/pyshared/univention/connector/ad/main.py"
+cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+sed -i "s/import mapping/import mapping\nmapping.ad_mapping ['user'].ignore_subtree = mapping.ad_mapping ['user'].ignore_subtree + ['cn=$CONTAINER_NAME,$ldap_base']/" "$MAIN_FILE"
+
+ad_set_sync_mode "sync"
+invoke-rc.d univention-ad-connector start
+
+section "Create user and group"
+
+udm_create "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base" || fail_test 110
+udm_create "groups/group" || fail_test 110
+udm_modify "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base" "" \
+	--append groups="$UDM_GROUP_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 0 110
+ad_exists "$AD_CONTAINER_USER_DN"; fail_bool 1 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"$UDM_CONTAINER_USER_DN" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" ""; fail_bool 1 110
+
+section "Move user out of ignored subtree"
+
+udm users/user move --dn "$UDM_CONTAINER_USER_DN" \
+	--position "cn=users,$ldap_base" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 0 110
+ad_exists "$AD_CONTAINER_USER_DN"; fail_bool 1 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+
+section "Clean up"
+
+udm_remove "users/user" || fail_test 110
+udm_remove "groups/group" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_GROUP_DN"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
+
+udm container/cn remove --dn "cn=$CONTAINER_NAME,$ldap_base"
+
+invoke-rc.d univention-ad-connector stop
+mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+ad_set_sync_mode "$SYNCMODE"
+invoke-rc.d univention-ad-connector start
+
+exit "$RETVAL"

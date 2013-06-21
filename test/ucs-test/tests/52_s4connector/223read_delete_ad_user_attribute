@@ -1,0 +1,55 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Delete an attribute of an AD-User in read-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_description="$(random_chars)"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "read"
+
+ad_createuser "$UDM_users_user_username" "$UDM_users_user_description" || fail_test 110
+
+UDM_users_user_city="$(random_chars)"
+
+#We have to wait between all the AD-Commands: See #18501
+ad_delete_attribute "$AD_DN" "description" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_set_attribute "$AD_DN" "l" "$UDM_users_user_city" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_verify_attribute "$AD_DN" "description" ""; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; fail_bool 0 110
+
+#With w2k and w2k3 the value for description would be "", with w2k8 it is "None".
+#As we can't distinguish the two cases we only test for the value not being the
+#original one
+udm_verify_udm_attribute "description" "$UDM_users_user_description" "users/user"; fail_bool 1 110
+udm_verify_udm_attribute "city" "$UDM_users_user_city" "users/user"; fail_bool 0 110
+
+udm_remove "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 1 121 "See: #20005"
+ad_exists "$AD_DN"; fail_bool 0 110
+
+ad_delete "$AD_DN" || fail_test 110
+ad_exists "$AD_DN"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

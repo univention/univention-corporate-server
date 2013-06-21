@@ -1,0 +1,76 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check User-Mail-Attributes in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_users_user_username="$(random_chars)"
+UDM_users_user_lastname="$(random_chars)"
+# If the password doesn't adhere the configured Windows-Password-Guidelines
+# weird things might happen when the user is synced to AD.
+UDM_users_user_password="U$(random_chars)123"
+UDM_users_user_firstname="$(random_chars)"
+UDM_users_user_description="$(random_chars)"
+UDM_users_user_street="$(random_chars)"
+UDM_mail_domain_name="$(random_chars)"
+UDM_users_user_mailPrimaryAddress="$(random_chars)@${UDM_mail_domain_name}"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+SYNCPRIMARYMAIL="$(ucr get connector/s4/mapping/user/primarymail)"
+
+udm_create mail/domain "" "" "cn=domain,cn=mail,$ldap_base"
+
+invoke-rc.d univention-s4-connector stop
+ucr set connector/s4/mapping/user/primarymail=true
+#ucr set connector/s4/mapping/user/exchange=true
+ad_set_sync_mode "sync"
+invoke-rc.d univention-s4-connector start
+
+udm_create "users/user" "" "" "" "" \
+	--option=person --option=mail --option=posix --option=samba --option=pki --option=kerberos || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 0 110
+ad_exists "$AD_DN"; fail_bool 0 110
+
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+
+UDM_users_user_mailPrimaryAddress="$(random_chars)@${UDM_mail_domain_name}"
+udm_modify "users/user" "" "" "" "" \
+		   --set mailPrimaryAddress="$UDM_users_user_mailPrimaryAddress" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
+
+UDM_users_user_mailPrimaryAddress="$(random_chars)@${UDM_mail_domain_name}"
+ad_set_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+udm_verify_udm_attribute "mailPrimaryAddress" "$UDM_users_user_mailPrimaryAddress" "users/user"; fail_bool 0 110
+
+udm_remove "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_DN"; fail_bool 1 110
+
+udm_remove mail/domain "" "" "cn=domain,cn=mail,$ldap_base"
+
+invoke-rc.d univention-s4-connector stop
+ucr set connector/s4/mapping/user/primarymail="$SYNCPRIMARYMAIL"
+ad_set_sync_mode "$SYNCMODE"
+invoke-rc.d univention-s4-connector start
+
+exit "$RETVAL"

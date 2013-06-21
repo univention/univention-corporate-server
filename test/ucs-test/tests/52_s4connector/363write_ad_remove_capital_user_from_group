@@ -1,0 +1,65 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Remove user from group both starting with capital letters on ad-side in write mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_groups_group_name="A$(random_chars)"
+UDM_users_user_username="B$(random_chars)"
+AD_GROUP_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+UDM_GROUP_DN="cn=$UDM_groups_group_name,cn=groups,$ldap_base"
+AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "write"
+
+section "Create user and group"
+
+ad_group_create "$UDM_groups_group_name" || fail_test 110
+ad_createuser "$UDM_users_user_username" || fail_test 110
+
+section "Add user to group"
+
+ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_USER_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_GROUP_DN"; fail_bool 0 110
+udm_exists "groups/group"; fail_bool 1 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+udm_exists "users/user"; fail_bool 1 110
+
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+
+section "Remove user"
+
+ad_delete "$AD_USER_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
+
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 1 110
+
+section "Clean up"
+
+ad_delete "$AD_GROUP_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_GROUP_DN"; fail_bool 1 110
+udm_exists "groups/group"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

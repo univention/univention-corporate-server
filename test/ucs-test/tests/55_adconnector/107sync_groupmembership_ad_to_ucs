@@ -1,0 +1,189 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Test sync of group memberships from AD to UCS in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+G00="$(random_chars)"
+G01="$(random_chars)"
+G02="$(random_chars)"
+G03="$(random_chars)"
+G04="$(random_chars)"
+G05="$(random_chars)"
+G06="$(random_chars)"
+G07="$(random_chars)"
+G08="$(random_chars)"
+G09="$(random_chars)"
+B00="$(random_chars)"
+B01="$(random_chars)"
+B02="$(random_chars)"
+B03="$(random_chars)"
+B04="$(random_chars)"
+B05="$(random_chars)"
+B06="$(random_chars)"
+B07="$(random_chars)"
+B08="$(random_chars)"
+B09="$(random_chars)"
+B10="$(random_chars)"
+B11="$(random_chars)"
+B12="$(random_chars)"
+B13="$(random_chars)"
+B14="$(random_chars)"
+B15="$(random_chars)"
+B16="$(random_chars)"
+B17="$(random_chars)"
+B18="$(random_chars)"
+B19="$(random_chars)"
+
+AD_G00_DN="CN=$G00,CN=groups,$(ad_get_base)"
+AD_G01_DN="CN=$G01,CN=groups,$(ad_get_base)"
+AD_G02_DN="CN=$G02,CN=groups,$(ad_get_base)"
+AD_G03_DN="CN=$G03,CN=groups,$(ad_get_base)"
+AD_G04_DN="CN=$G04,CN=groups,$(ad_get_base)"
+AD_G05_DN="CN=$G05,CN=groups,$(ad_get_base)"
+AD_G06_DN="CN=$G06,CN=groups,$(ad_get_base)"
+AD_G07_DN="CN=$G07,CN=groups,$(ad_get_base)"
+AD_G08_DN="CN=$G08,CN=groups,$(ad_get_base)"
+AD_G09_DN="CN=$G09,CN=groups,$(ad_get_base)"
+AD_B00_DN="CN=$B00,CN=Users,$(ad_get_base)"
+AD_B01_DN="CN=$B01,CN=Users,$(ad_get_base)"
+AD_B02_DN="CN=$B02,CN=Users,$(ad_get_base)"
+AD_B03_DN="CN=$B03,CN=Users,$(ad_get_base)"
+AD_B04_DN="CN=$B04,CN=Users,$(ad_get_base)"
+AD_B05_DN="CN=$B05,CN=Users,$(ad_get_base)"
+AD_B06_DN="CN=$B06,CN=Users,$(ad_get_base)"
+AD_B07_DN="CN=$B07,CN=Users,$(ad_get_base)"
+AD_B08_DN="CN=$B08,CN=Users,$(ad_get_base)"
+AD_B09_DN="CN=$B09,CN=Users,$(ad_get_base)"
+AD_B10_DN="CN=$B10,CN=Users,$(ad_get_base)"
+AD_B11_DN="CN=$B11,CN=Users,$(ad_get_base)"
+AD_B12_DN="CN=$B12,CN=Users,$(ad_get_base)"
+AD_B13_DN="CN=$B13,CN=Users,$(ad_get_base)"
+AD_B14_DN="CN=$B14,CN=Users,$(ad_get_base)"
+AD_B15_DN="CN=$B15,CN=Users,$(ad_get_base)"
+AD_B16_DN="CN=$B16,CN=Users,$(ad_get_base)"
+AD_B17_DN="CN=$B17,CN=Users,$(ad_get_base)"
+AD_B18_DN="CN=$B18,CN=Users,$(ad_get_base)"
+AD_B19_DN="CN=$B19,CN=Users,$(ad_get_base)"
+
+UDM_G00_DN="cn=$G00,cn=groups,$ldap_base"
+UDM_G01_DN="cn=$G01,cn=groups,$ldap_base"
+UDM_G02_DN="cn=$G02,cn=groups,$ldap_base"
+UDM_G03_DN="cn=$G03,cn=groups,$ldap_base"
+UDM_G04_DN="cn=$G04,cn=groups,$ldap_base"
+UDM_G05_DN="cn=$G05,cn=groups,$ldap_base"
+UDM_G06_DN="cn=$G06,cn=groups,$ldap_base"
+UDM_G07_DN="cn=$G07,cn=groups,$ldap_base"
+UDM_G08_DN="cn=$G08,cn=groups,$ldap_base"
+UDM_G09_DN="cn=$G09,cn=groups,$ldap_base"
+UDM_B00_DN="uid=$B00,cn=users,$ldap_base"
+UDM_B01_DN="uid=$B01,cn=users,$ldap_base"
+UDM_B02_DN="uid=$B02,cn=users,$ldap_base"
+UDM_B03_DN="uid=$B03,cn=users,$ldap_base"
+UDM_B04_DN="uid=$B04,cn=users,$ldap_base"
+UDM_B05_DN="uid=$B05,cn=users,$ldap_base"
+UDM_B06_DN="uid=$B06,cn=users,$ldap_base"
+UDM_B07_DN="uid=$B07,cn=users,$ldap_base"
+UDM_B08_DN="uid=$B08,cn=users,$ldap_base"
+UDM_B09_DN="uid=$B09,cn=users,$ldap_base"
+UDM_B10_DN="uid=$B10,cn=users,$ldap_base"
+UDM_B11_DN="uid=$B11,cn=users,$ldap_base"
+UDM_B12_DN="uid=$B12,cn=users,$ldap_base"
+UDM_B13_DN="uid=$B13,cn=users,$ldap_base"
+UDM_B14_DN="uid=$B14,cn=users,$ldap_base"
+UDM_B15_DN="uid=$B15,cn=users,$ldap_base"
+UDM_B16_DN="uid=$B16,cn=users,$ldap_base"
+UDM_B17_DN="uid=$B17,cn=users,$ldap_base"
+UDM_B18_DN="uid=$B18,cn=users,$ldap_base"
+UDM_B19_DN="uid=$B19,cn=users,$ldap_base"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+invoke-rc.d univention-ad-connector restart
+
+for g in "$G00" "$G01" "$G02" "$G03" "$G04" "$G05" "$G06" "$G07" "$G08" "$G09"; do
+	ad_group_create "$g" || fail_test 110
+done
+for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09" "$B10" "$B11" "$B12" "$B13" "$B14" "$B15" "$B16" "$B17" "$B18" "$B19"; do
+	ad_createuser "$b" || fail_test 110
+done
+for b_ad_dn in "$AD_B00_DN" "$AD_B01_DN" "$AD_B02_DN" "$AD_B03_DN" "$AD_B04_DN" "$AD_B05_DN" "$AD_B06_DN" "$AD_B07_DN" "$AD_B08_DN" "$AD_B09_DN" "$AD_B10_DN" "$AD_B11_DN" "$AD_B12_DN" "$AD_B13_DN" "$AD_B14_DN" "$AD_B15_DN" "$AD_B16_DN" "$AD_B17_DN" "$AD_B18_DN" "$AD_B19_DN" ; do
+	for g_ad_dn in "$AD_G00_DN" "$AD_G01_DN" "$AD_G02_DN" "$AD_G03_DN" "$AD_G04_DN" "$AD_G05_DN" "$AD_G06_DN" "$AD_G07_DN" "$AD_G08_DN" "$AD_G09_DN"; do
+		ad_append_to_attribute "$g_ad_dn" "member" "$b_ad_dn" || fail_test 110
+	done
+done
+
+# lets wait at least two times because of so many users
+ad_wait_for_synchronization; fail_bool 0 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+for ad_dn in "$AD_G00_DN" "$AD_G01_DN" "$AD_G02_DN" "$AD_G03_DN" "$AD_G04_DN" "$AD_G05_DN" "$AD_G06_DN" "$AD_G07_DN" "$AD_G08_DN" "$AD_G09_DN"; do
+	ad_exists "$ad_dn"; fail_bool 0 110
+done
+for g in "$G00" "$G01" "$G02" "$G03" "$G04" "$G05" "$G06" "$G07" "$G08" "$G09"; do
+	UDM_groups_group_name="$g"
+	udm_exists "groups/group"; fail_bool 0 110
+done
+
+for ad_dn in "$AD_G00_DN" "$AD_G01_DN" "$AD_G02_DN" "$AD_G03_DN" "$AD_G04_DN" "$AD_G05_DN" "$AD_G06_DN" "$AD_G07_DN" "$AD_G08_DN" "$AD_G09_DN"; do
+	for ad_dn_user in "$AD_B00_DN" "$AD_B01_DN" "$AD_B02_DN" "$AD_B03_DN" "$AD_B04_DN" "$AD_B05_DN" "$AD_B06_DN" "$AD_B07_DN" "$AD_B08_DN" "$AD_B09_DN" "$AD_B10_DN" "$AD_B11_DN" "$AD_B12_DN" "$AD_B13_DN" "$AD_B14_DN" "$AD_B15_DN" "$AD_B16_DN" "$AD_B17_DN" "$AD_B18_DN" "$AD_B19_DN"; do
+		ad_verify_multi_value_attribute_contains "$ad_dn" "member" "$ad_dn_user"; fail_bool 0 110
+	done
+done
+
+for ad_dn_user in "$AD_B00_DN" "$AD_B01_DN" "$AD_B02_DN" "$AD_B03_DN" "$AD_B04_DN" "$AD_B05_DN" "$AD_B06_DN" "$AD_B07_DN" "$AD_B08_DN" "$AD_B09_DN" "$AD_B10_DN" "$AD_B11_DN" "$AD_B12_DN" "$AD_B13_DN" "$AD_B14_DN" "$AD_B15_DN" "$AD_B16_DN" "$AD_B17_DN" "$AD_B18_DN" "$AD_B19_DN"; do
+	for ad_dn in "$AD_G00_DN" "$AD_G01_DN" "$AD_G02_DN" "$AD_G03_DN" "$AD_G04_DN" "$AD_G05_DN" "$AD_G06_DN" "$AD_G07_DN" "$AD_G08_DN" "$AD_G09_DN"; do
+		ad_verify_multi_value_attribute_contains "$ad_dn_user" "memberOf" "$ad_dn"; fail_bool 0 110
+	done
+done
+
+for g in "$G00" "$G01" "$G02" "$G03" "$G04" "$G05" "$G06" "$G07" "$G08" "$G09"; do
+	for b in "$UDM_B00_DN" "$UDM_B01_DN" "$UDM_B02_DN" "$UDM_B03_DN" "$UDM_B04_DN" "$UDM_B05_DN" "$UDM_B06_DN" "$UDM_B07_DN" "$UDM_B08_DN" "$UDM_B09_DN" "$UDM_B10_DN" "$UDM_B11_DN" "$UDM_B12_DN" "$UDM_B13_DN" "$UDM_B14_DN" "$UDM_B15_DN" "$UDM_B16_DN" "$UDM_B17_DN" "$UDM_B18_DN" "$UDM_B19_DN"; do
+		UDM_groups_group_name="$g"
+		udm_verify_multi_value_udm_attribute_contains "users" "$b" "groups/group"; fail_bool 0 110
+	done
+done
+
+for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09" "$B10" "$B11" "$B12" "$B13" "$B14" "$B15" "$B16" "$B17" "$B18" "$B19"; do
+	UDM_users_user_username="$b"
+	for g in "$UDM_G00_DN" "$UDM_G01_DN" "$UDM_G02_DN" "$UDM_G03_DN" "$UDM_G04_DN" "$UDM_G05_DN" "$UDM_G06_DN" "$UDM_G07_DN" "$UDM_G08_DN" "$UDM_G09_DN"; do
+		udm_verify_multi_value_udm_attribute_contains "groups" "$g" "users/user"; fail_bool 0 110
+	done
+done
+
+section "Clean up"
+
+for b in "$AD_B00_DN" "$AD_B01_DN" "$AD_B02_DN" "$AD_B03_DN" "$AD_B04_DN" "$AD_B05_DN" "$AD_B06_DN" "$AD_B07_DN" "$AD_B08_DN" "$AD_B09_DN" \
+		"$AD_B10_DN" "$AD_B11_DN" "$AD_B12_DN" "$AD_B13_DN" "$AD_B14_DN" "$AD_B15_DN" "$AD_B16_DN" "$AD_B17_DN" "$AD_B18_DN" "$AD_B19_DN" ; do
+	ad_delete "$b" || fail_test 110
+done
+for g in "$AD_G00_DN" "$AD_G01_DN" "$AD_G02_DN" "$AD_G03_DN" "$AD_G04_DN" "$AD_G05_DN" "$AD_G06_DN" "$AD_G07_DN" "$AD_G08_DN" "$AD_G09_DN" ; do
+	ad_delete "$g" || fail_test 110
+done
+
+ad_wait_for_synchronization; fail_bool 0 110
+
+for ad_dn in "$AD_G00_DN" "$AD_G01_DN" "$AD_G02_DN" "$AD_G03_DN" "$AD_G04_DN" "$AD_G05_DN" "$AD_G06_DN" "$AD_G07_DN" "$AD_G08_DN" "$AD_G09_DN"; do
+	ad_exists "$ad_dn"; fail_bool 1 110
+done
+
+for g in "$G00" "$G01" "$G02" "$G03" "$G04" "$G05" "$G06" "$G07" "$G08" "$G09"; do
+	UDM_groups_group_name="$g"
+	udm_exists "groups/group"; fail_bool 1 110
+done
+
+for b in "$B00" "$B01" "$B02" "$B03" "$B04" "$B05" "$B06" "$B07" "$B08" "$B09" "$B10" "$B11" "$B12" "$B13" "$B14" "$B15" "$B16" "$B17" "$B18" "$B19"; do
+	UDM_users_user_username="$b"
+	udm_exists "users/user"; fail_bool 1 110
+done
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

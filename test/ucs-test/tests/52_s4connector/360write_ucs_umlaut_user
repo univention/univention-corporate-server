@@ -1,0 +1,92 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create and modify UCS-User with umlauts in write-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_users_user_username="ü$(random_chars)ß"
+UDM_users_user_lastname="ö$(random_chars)ä"
+# If the password doesn't adhere the configured Windows-Password-Guidelines
+# weird things might happen when the user is synced to AD.
+UDM_users_user_password="U$(random_chars)123"
+UDM_users_user_firstname="ß$(random_chars)ä"
+AD_DN="CN=$UDM_users_user_username,CN=users,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "write"
+
+udm_create "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_verify_attribute	"$AD_DN" "sAMAccountName" "$UDM_users_user_username"; fail_bool 0 110
+ad_verify_attribute	"$AD_DN" "givenName" "$UDM_users_user_firstname"; fail_bool 0 110
+ad_verify_attribute	"$AD_DN" "sn" "$UDM_users_user_lastname"; fail_bool 0 110
+
+udm_verify_udm_attribute "username" "$UDM_users_user_username" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "firstname" "$UDM_users_user_firstname" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "lastname" "$UDM_users_user_lastname" "users/user"; fail_bool 0 110
+
+UDM_users_user_firstname="ä$(random_chars)"
+UDM_users_user_lastname="ö$(random_chars)"
+UDM_users_user_description="ü$(random_chars)"
+UDM_users_user_street="ß$(random_chars)"
+UDM_users_user_city="ä$(random_chars)"
+UDM_users_user_postcode="ö$(random_chars)"
+UDM_users_user_profilepath="ü$(random_chars)"
+UDM_users_user_scriptpath="ß$(random_chars)"
+
+udm_modify "users/user" "" "" "" "" \
+		   --set firstname="$UDM_users_user_firstname" \
+		   --set lastname="$UDM_users_user_lastname" \
+		   --set description="$UDM_users_user_description" \
+		   --set street="$UDM_users_user_street" \
+		   --set city="$UDM_users_user_city" \
+		   --set postcode="$UDM_users_user_postcode" \
+		   --set profilepath="$UDM_users_user_profilepath" \
+		   --set scriptpath="$UDM_users_user_scriptpath" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+if [ "$connector_s4_windows_version" != "win2000" \
+	-o "$connector_s4_mapping_user_win2000_description" != "false" ]
+then
+	ad_verify_attribute "$AD_DN" "description" "$UDM_users_user_description"; fail_bool 0 110
+fi
+ad_verify_attribute	"$AD_DN" "sAMAccountName" "$UDM_users_user_username"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "givenName" "$UDM_users_user_firstname"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "sn" "$UDM_users_user_lastname"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "streetAddress" "$UDM_users_user_street"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "l" "$UDM_users_user_city"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "postalCode" "$UDM_users_user_postcode"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "profilePath" "$UDM_users_user_profilepath"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "scriptPath" "$UDM_users_user_scriptpath"; fail_bool 0 110
+
+udm_verify_udm_attribute "username" "$UDM_users_user_username" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "firstname" "$UDM_users_user_firstname" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "lastname" "$UDM_users_user_lastname" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "description" "$UDM_users_user_description" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "street" "$UDM_users_user_street" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "city" "$UDM_users_user_city" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "postcode" "$UDM_users_user_postcode" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "profilepath" "$UDM_users_user_profilepath" "users/user"; fail_bool 0 110
+udm_verify_udm_attribute "scriptpath" "$UDM_users_user_scriptpath" "users/user"; fail_bool 0 110
+
+udm_remove "users/user" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_DN"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

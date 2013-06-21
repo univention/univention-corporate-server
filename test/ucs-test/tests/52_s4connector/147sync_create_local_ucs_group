@@ -1,0 +1,40 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create local group on ucs-side in sync-mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_groups_group_name="$(random_chars)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+#Local UCS-Groups are expected to be synced as global AD-Groups
+udm_create "groups/group" "" "" "" "" --set sambaGroupType=3 || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "groups/group"; fail_bool 0 110
+ad_exists "CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"; fail_bool 0 110
+
+ad_verify_attribute "CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)" \
+	"sAMAccountType" "268435456"; fail_bool 0 110
+
+udm_verify_udm_attribute "sambaGroupType" "3" "groups/group"; fail_bool 0 110
+
+section "Clean up"
+
+udm_remove "groups/group" || fail_test 110 
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"

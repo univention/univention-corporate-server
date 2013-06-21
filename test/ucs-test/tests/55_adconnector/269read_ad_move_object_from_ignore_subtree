@@ -1,0 +1,94 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Move an AD-user out of the User-Ignore-Subtree in read-mode"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137 
+
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+
+UDM_users_user_username="$(random_chars)"
+UDM_groups_group_name="$(random_chars)"
+UDM_GROUP_DN="cn=$UDM_groups_group_name,cn=groups,$ldap_base"
+AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
+AD_GROUP_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+CONTAINER_NAME="$(random_chars)"
+AD_CONTAINER_USER_DN="CN=$UDM_users_user_username,CN=$CONTAINER_NAME,$(ad_get_base)"
+UDM_CONTAINER_USER_DN="uid=$UDM_users_user_username,cn=$CONTAINER_NAME,$ldap_base"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "sync"
+
+section "Create new container"
+
+ad_container_create "$CONTAINER_NAME" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+section "Modify User-Ignore-Subtree"
+
+invoke-rc.d univention-ad-connector stop
+
+MAIN_FILE="/usr/share/pyshared/univention/connector/ad/main.py"
+cp -f "$MAIN_FILE" "$MAIN_FILE".ucs-test-backup
+sed -i "s/import mapping/import mapping\nmapping.ad_mapping ['user'].ignore_subtree = mapping.ad_mapping ['user'].ignore_subtree + ['cn=$CONTAINER_NAME,$ldap_base']/" "$MAIN_FILE"
+
+ad_set_sync_mode "read"
+invoke-rc.d univention-ad-connector start
+
+section "Create user and group"
+
+ad_createuser "$UDM_users_user_username" "" "CN=$CONTAINER_NAME,$(ad_get_base)" || fail_test 110
+ad_group_create "$UDM_groups_group_name" || fail_test 110
+ad_append_to_attribute "$AD_GROUP_DN" "member" "$AD_CONTAINER_USER_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 1 110
+ad_exists "$AD_CONTAINER_USER_DN"; fail_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 1 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_CONTAINER_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_CONTAINER_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+
+section "Move user out of ignored subtree"
+
+ad_move "$AD_CONTAINER_USER_DN" "CN=$UDM_users_user_username,CN=Users,$(ad_get_base)" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+udm_exists "users/user" "" "" "cn=$CONTAINER_NAME,$ldap_base"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 0 110
+ad_exists "$AD_CONTAINER_USER_DN"; fail_bool 1 110
+ad_exists "$AD_USER_DN"; fail_bool 0 110
+
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "groups" \
+	"cn=$UDM_groups_group_name,cn=groups,$ldap_base" "users/user"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_GROUP_DN" "member" "$AD_USER_DN"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_USER_DN" "memberOf" "$AD_GROUP_DN"; fail_bool 0 110
+
+section "Clean up"
+
+ad_delete "$AD_USER_DN" || fail_test 110
+ad_delete "$AD_GROUP_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_USER_DN"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
+ad_exists "$AD_GROUP_DN"; fail_bool 1 110
+udm_exists "users/user"; fail_bool 1 110
+
+ad_delete "CN=$CONTAINER_NAME,$(ad_get_base)"
+
+invoke-rc.d univention-ad-connector stop
+mv -f "$MAIN_FILE".ucs-test-backup "$MAIN_FILE"
+ad_set_sync_mode "$SYNCMODE"
+invoke-rc.d univention-ad-connector start
+
+exit "$RETVAL"

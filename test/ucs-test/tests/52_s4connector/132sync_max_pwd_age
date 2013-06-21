@@ -1,0 +1,70 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check synchronisation of maxPwdAge"
+## exposure: dangerous
+## roles:
+##  - domaincontroller_master
+## packages:
+## - univention-s4-connector
+## bugs: [29775]
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. "s4connector.sh" || exit 137
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+get_ucs_age ()
+{
+	univention-ldapsearch sambaDomainName=$windows_domain | sed -ne 's|sambaMaxPwdAge: ||p'
+}
+
+get_s4_age ()
+{
+	univention-s4search -s base maxPwdAge | sed -ne 's|^maxPwdAge: ||p'
+}
+
+check_s4_age ()
+{
+	s4_age=$(get_s4_age)
+	expected_age=$1
+	if [ "$s4_age" != "$expected_age" ]; then
+		echo "maxPwdAge is $s4_age, expected: $expected_age"
+		fail_test 110
+	fi
+}
+
+set_ucs_age ()
+{
+	dn="$(univention-ldapsearch sambaDomainName=$windows_domain -LLL dn |ldapsearch-wrapper| sed -ne 's|dn: ||p')"
+	echo "dn: $dn
+changetype: modify
+replace: sambaMaxPwdAge
+sambaMaxPwdAge: $1
+" | ldapmodify -x -D cn=admin,$ldap_base -w "$(</etc/ldap.secret)" 
+}
+
+OLD_VALUE=$(get_ucs_age)
+
+set_ucs_age 864000
+ad_wait_for_synchronization; fail_bool 0 110
+check_s4_age -8640000000000
+
+set_ucs_age -1
+ad_wait_for_synchronization; fail_bool 0 110
+check_s4_age 0
+
+set_ucs_age 864000
+ad_wait_for_synchronization; fail_bool 0 110
+check_s4_age -8640000000000
+
+set_ucs_age 0
+ad_wait_for_synchronization; fail_bool 0 110
+check_s4_age 0
+
+set_ucs_age $OLD_VALUE
+ad_wait_for_synchronization; fail_bool 0 110
+
+exit "$RETVAL"

@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Create and remove an AD-Ou in read mode"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+UDM_container_ou_name="$(random_chars)"
+UDM_container_ou_description="$(random_chars)"
+AD_OU_DN="OU=$UDM_container_ou_name,$(ad_get_base)"
+
+SYNCMODE="$(ad_get_sync_mode)"
+
+ad_set_sync_mode "read"
+
+ad_createou "$UDM_container_ou_name" "$UDM_container_ou_description" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_OU_DN"; fail_bool 0 110
+udm_exists "container/ou"; fail_bool 0 110
+
+ad_delete "$AD_OU_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_exists "$AD_OU_DN"; fail_bool 1 110
+udm_exists "container/ou"; fail_bool 1 110
+
+ad_set_sync_mode "$SYNCMODE"
+
+exit "$RETVAL"
