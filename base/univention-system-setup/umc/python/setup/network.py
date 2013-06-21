@@ -101,7 +101,7 @@ class Interfaces(dict):
 
 					# make sure that used interfaces can not be used by other interfaces, too
 					if idevice.name in devices_in_use:
-						raise DeviceError(_('Device %r is already in use by %r') % (idevice.name, devices_in_use[idevice.name])), device.name)
+						raise DeviceError(_('Device %r is already in use by %r') % (idevice.name, devices_in_use[idevice.name]), device.name)
 					devices_in_use[idevice.name] = device.name
 
 			if not device.ip4dynamic:
@@ -516,7 +516,7 @@ class Bond(Device):
 		'balance-tlb': 5,
 		'balance-alb': 6
 	}
-	modes_r = dict(v,k for k,v in modes.iteritems())
+	modes_r = dict((v,k) for k,v in modes.iteritems())
 
 	def clear(self):
 		super(Bond, self).clear()
