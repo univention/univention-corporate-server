@@ -11,7 +11,7 @@ SHARE_DIRECTORYMODE=0755
 share_create () {
 	local name=${1?:missing parameter: share name}
 	local path=${2?:missing parameter: share path}
-	univention-directory-manager shares/share create \
+	udm-test shares/share create \
 		--set name="$name" \
 		--set path="$path" \
 		--position "$SHARE_POSITION" \
@@ -24,13 +24,13 @@ share_create () {
 
 share_exists () {
 	local name=${1?:missing parameter: share name}
-	univention-directory-manager shares/share list --filter "cn=$name" | \
+	udm-test shares/share list --filter "cn=$name" | \
 		grep -q "^DN: cn=$1,$SHARE_POSITION"
 }
 
 share_remove () {
 	local name=${1?:missing parameter: share name}
-	univention-directory-manager shares/share remove --dn "cn=$name,$SHARE_POSITION"
+	udm-test shares/share remove --dn "cn=$name,$SHARE_POSITION"
 }
 
 share_mountlocal_nfs () {

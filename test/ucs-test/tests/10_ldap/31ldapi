@@ -1,6 +1,9 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Try to bind to ldapi as normal user (Bug #10529)
 ## bugs: [10529]
+## tags:
+##  - basic
+##  - apptest
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
@@ -14,24 +17,17 @@
 . "$TESTLIBPATH/base.sh" || exit 1
 . "$TESTLIBPATH/random.sh" || exit 1
 . "$TESTLIBPATH/user.sh" || exit 1
+. "$TESTLIBPATH/maildomain.sh" || exit 1
 
 eval "$(ucr shell)"
 
-setdomain=1
-# create domain part in configured mail domains list
-if ! udm mail/domain create --set name=$domainname ; then
-	echo "Mail/domain object already exists or could not be created. Continue testing..."
-	setdomain=0
-fi
+create_mail_domain "$domainname"
+rc=$?
 
 cleanup () {
-
-	if [[ "$setdomain" -ne 0 ]]; then
-		if ! udm mail/domain remove --dn "cn=$domainname,$ldap_base" ; then
-			echo "Could not remove main/domain cn=$domainname,$ldap_base. Continue testing..."
-		fi
+	if [ "$rc" = "0" ]; then
+		delete_mail_domain "$domainname" || fail_test 1
 	fi
-
 }
 
 trap cleanup EXIT
@@ -52,7 +48,6 @@ do
 		echo "Waiting for replication longer than two minutes. Replication is probably broken. Test failed."
 		user_remove "$USERNAME"
 		exit 1
-
 	fi
 	i=`expr $i + 1`
 done

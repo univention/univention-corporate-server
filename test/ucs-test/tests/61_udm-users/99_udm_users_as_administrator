@@ -1,0 +1,27 @@
+#!/usr/share/ucs-test/runner python
+## desc: Try excecuting udm users/user list as Administrator
+## tags: [udm-users,apptest]
+## roles:
+##   - domaincontroller_master
+##   - domaincontroller_backup
+## exposure: secure
+## packages:
+##   - univention-directory-manager-tools
+
+
+import sys
+import subprocess
+import univention.testing as test
+
+if __name__ == '__main__':
+	cmd = ['su', 'Administrator', '-c', '/usr/sbin/univention-directory-manager users/user list --filter uid=Administrator']
+	udm = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+	
+	
+	returncode = udm.wait() 
+	if returncode != 0:
+		test.fail('UDM-CLI returned %i while trying to execute "%s" as Adminstrator. Returncode of "0" was expected.' % ( returncode, cmd[3:] ))
+
+	output = udm.stdout.read()
+	if not 'DN: uid=Administrator' in output:
+		test.fail('Can not find DN of user "Administrator" in UDM-CLI output:\n%s' % output)

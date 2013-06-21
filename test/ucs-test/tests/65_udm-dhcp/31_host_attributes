@@ -1,0 +1,40 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check DHCP host attributes
+## tags: [udm-dhcp,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	dhcpHostProperties = {'host':uts.random_name(), 'hwaddress':'ethernet 01:ff:78:38:ab:24', 'fixedaddress':'10.20.30.40'}
+
+	ldap = uldap.getAdminConnection()
+	ldapMapping = {'host':'cn', 'hwaddress':'dhcpHWAddress', 'fixedaddress':'univentionDhcpFixedAddress'}
+	ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpHost))' % dhcpHostProperties['host']
+
+	with udm_test.UCSTestUDM() as udm:
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcpHost = udm.create_object('dhcp/host', superordinate = dhcpService, **dhcpHostProperties)
+
+		for dn, attr in ldap.search(base = dhcpService, filter = ldapFilter, attr = ldapMapping.values()):
+			if dn == dhcpHost:
+				for attribute, value in dhcpHostProperties.items():
+					if [value] != attr[ldapMapping[attribute]]:
+						test.fail('Expected attribute "%s" of created DHCP host to be %r, but found %r instead' % (attribute, [value], attr[ldapMapping[attribute]]))
+				break
+		else:
+			test.fail('Could not find created DHCP host "%s" in LDAP' % dhcpHost)
+
+		udm.remove_object('dhcp/host', dn = dhcpHost, superordinate = dhcpService)
+		if dhcpHost in ldap.searchDn(base = dhcpService, filter = ldapFilter):
+			test.fail('Could still find DHCP host "%s" in LDAP after it should have been removed' % dhcpHost)

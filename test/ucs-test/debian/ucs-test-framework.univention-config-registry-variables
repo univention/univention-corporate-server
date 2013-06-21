@@ -1,0 +1,17 @@
+[tests/domainadmin/account]
+Description[de]=In UCS-Test zu verwendende Domänen Administrator BindDN
+Description[en]=Domain administrator bind DN to be used in UCS test
+Type=str
+Categories=ucs-test
+
+[tests/domainadmin/pwd]
+Description[de]=In UCS-Test zu verwendendes Domänenadministrator Passwort
+Description[en]=Domain administrator password to be used in UCS test
+Type=str
+Categories=ucs-test
+
+[tests/domainadmin/pwdfile]
+Description[de]=Datei aus der das in UCS-Test zu verwendende Domänenadministrator Password gelesend werden soll
+Description[en]=File to read the domain administrator password from which should be used in UCS test
+Type=str
+Categories=ucs-test

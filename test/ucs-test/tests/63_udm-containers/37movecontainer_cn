@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner python
+## desc: Testing the base functionality to move an CN
+## tags: [udm-containers,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		cnName = uts.random_name()
+		cn = udm.create_object('container/cn', name = cnName)
+		cn2 = udm.create_object('container/cn', name = uts.random_name())
+		udm.move_object('container/cn', dn = cn, position = cn2)
+		expectedDN = 'cn=%s,%s' % (cnName, cn2)
+
+		ldap = uldap.getAdminConnection()
+		result = ldap.searchDn(base = cn2, filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName)
+		for dn in result:
+			if dn == expectedDN:
+				sys.exit(0)
+			
+		test.fail('Expected created CN to be at "%s" after moving, but could find it there' % expectedDN)
+
+

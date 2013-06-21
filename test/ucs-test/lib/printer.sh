@@ -18,7 +18,7 @@ function create_localprinter () { #Creates a printer. E.g. createlocalprinter $P
 
     info "create printer $TMP_PRINTERNAME"
 
-    univention-directory-manager shares/printer create --position "cn=printers,$ldap_base" --set "name=$TMP_PRINTERNAME" --set "spoolHost=$hostname.$domainname" --set "uri=parallel:/ /dev/lp0" --set "model=foomatic-ppds/Apple/Apple-12_640ps-Postscript.ppd.gz"
+    udm-test shares/printer create --position "cn=printers,$ldap_base" --set "name=$TMP_PRINTERNAME" --set "spoolHost=$hostname.$domainname" --set "uri=parallel:/ /dev/lp0" --set "model=foomatic-ppds/Apple/Apple-12_640ps-Postscript.ppd.gz"
 
 }
 
@@ -31,7 +31,7 @@ function remove_printer () { # Remove a printer. E.g. removeprinter $PRINTERNAME
 	return 1
     fi
     info "remove printer $TMP_PRINTERNAME"
-    univention-directory-manager shares/printer remove --dn="cn=$TMP_PRINTERNAME,cn=printers,$ldap_base"
+    udm-test shares/printer remove --dn="cn=$TMP_PRINTERNAME,cn=printers,$ldap_base"
 }
 
 function set_printer_sambaname () { # Set the Sambaname for a printer. E.g. setsambaname $PRINTERNAME $PRINTERSAMBANAME
@@ -51,7 +51,7 @@ function set_printer_sambaname () { # Set the Sambaname for a printer. E.g. sets
     fi
 
     info  "setting the sambaName for printer $PRINTERNAME to the value $SAMBANAME"
-    univention-directory-manager shares/printer modify --dn="cn=$PRINTERNAME,cn=printers,$ldap_base" --set sambaName="$SAMBANAME"
+    udm-test shares/printer modify --dn="cn=$PRINTERNAME,cn=printers,$ldap_base" --set sambaName="$SAMBANAME"
 
 }
 

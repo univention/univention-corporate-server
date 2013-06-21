@@ -1,0 +1,30 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test the base functionality to modify an CN
+## tags: [udm-containers,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.uldap as uldap
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		cnName = uts.random_string()
+		cn = udm.create_object('container/cn', name = cnName)
+		
+		cnDescription = uts.random_string()
+		udm.modify_object('container/cn', dn = cn, description = cnDescription)
+		
+		ldap = uldap.getAdminConnection()
+		setCnDescription = ldap.search(filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName, attr = ['description'])[0][1].get('description', [])
+		if setCnDescription != [cnDescription]:
+			test.fail('Expected "description" of created CN to be set to %r after modification, but %r was found' % ([cnDescription], setCnDescription))

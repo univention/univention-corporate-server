@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check for the system role package state
-## tags: [basic]
+## tags: [basic,apptest]
 ## exposure: safe
 
 . "$TESTLIBPATH/base.sh" || exit 137

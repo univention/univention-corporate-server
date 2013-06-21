@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test slapd for a correct stop and start
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup

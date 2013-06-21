@@ -1,3 +1,209 @@
+ucs-test (3.0.30-4) unstable; urgency=low
+
+  * Merge from UCS 3.2 (4.0.20-1)
+    * Set apptest tag to various test cases (Bug #31785)
+    * Added new tag apptest to mark the tests which should also be started
+      in App Center installation tests (Bug #31785)
+    * 51_samba4/35smbclient_auth: readded waitForUserCreation function
+      bacause we have to wait for the DRS replication (Bug #29052)
+    * Fix 30winbind on Memberservers (Bug #31772)
+    * 50_samba/*: avoid endless loops (Bug #29052)
+    * 50_samba/41password_change and 50_samba/40password-policies: replace
+      net_rpc_change_pwd.py with a simple net rpc call (Bug #29052)
+    * Moved tests which are identical for samba and samba4
+      to the package samba-common (Bug #31780)
+    * 50_samba/41password_change: use tests/domainadmin/* variables
+      (Bug #31680)
+    * 50_samba/22overlapping_user_and_group_memberquery and
+      50_samba/40password-policies: use test/tests_domainadmin variables
+      (Bug #31680)
+    * 51_samba4/45dns_tests: replace the sleep 8 with a for loop and wait
+      up to 30 seconds for the LDAP and DRS replication (Bug #31680)
+    * 00_base/45license_v2: use a random name for every computer type
+    * 10_ldap/40replication: create the temp container under cn=univention
+      so the connector will ignore it (Bug #27662)
+    * 50_samba/30winbind: activate on memberserver (Bug #31678)
+    * 50_samba/50quota: wait for the replication (Bug #31649)
+    * 51_samba4/36_printer: added some more debug
+    * 00_base/45license_v2: wait for ldap replication
+    * 00_base/02server_password_change: wait for ldap replication
+    * Changed some tests in 51_samba to use the Administrator credentials
+      provided by the ucs-test framework (Bug #28262)
+    * 10_ldap/02check-permission-etc: /etc/slave-join.secret does not
+      exist on DC backups (Bug #27662, Bug #31680)
+    * 51_samba4/kpasswd_change_pwd.py: fixed typo in coding line (Bug #29058)
+    * 51_samba4/54ntp_permissions: added test case for ntp dir permissions
+      (Bug #31109)
+    * 51_samba4/53create_spn_account: some minor fixes
+    * 51_samba4/53create_spn_account: added test case for Bug #31649
+    * 50_samba/50quota: Switch to udm-test and tests/domainadmin vars
+      (Bug #31679)
+    * 51_samba4/kpasswd_change_pwd.py: added utf-8 coding line
+      (Bug #29058)
+    * 50_samba/25domain-join-without-admin-rights: if the first join
+      failed, try again with -S like the univention-samba join script does
+      (Bug #31678)
+    * 51_samba4/36_printer: use a random printer name
+    * 51_samba4/36_printer: fix race condition (Bug #31764)
+    * removed unused imports from certain udm-dns tests
+    * ported remaining udm-dns test cases from ucs-3.0 branch (Bug #31653)
+    * call "eval ucr shell ldap/base" at the beginning of
+    	ucs-test-framework.postinst (Bug #31250)
+    * 50_samba/15nfs-share-options: fixed binddn handling (Bug #31679)
+    * 10_ldap/40replication: simplify code and test structure (Bug #31679)
+    * regard passed removal mode in ucs-test-framework.postrm
+    * by default, store domainadmin pwd in /var/lib/ucs-test/pwdfile, not
+    	/var/ucs-test/pwdfile
+    * added /var/lib/ucs-test to ucs-test-framework.dirs
+    (Bug #31250)
+    * lib/group.sh: fixed typo from previous commit (Bug #31678)
+    * 50_samba/25domain-join-without-admin-rights: fixed syntax error
+      (Bug #31678)
+    * when installing, store password in file as saved in UCRV
+    	tests/domainadmin/pwdfile
+    * improved quoting when reading password from UCRV tests/domainadmin/pwd and
+    	writing it to file
+    (Bug #31250)
+    * ignore test header in md5 sum, and ignore lines beginning with a single
+    	hashtag in in test header (Bug #31652)
+    * univention.testing.ldap: added wait_for_replication and
+      wait_for_replication_and postrun (Bug #31687)
+    * lib/base.sh: added wait_for_replication and wait_for_replication_and
+      postrun (Bug #31687)
+    * Added udm-test which detects if --binddn and --bindpwd should be
+      used (Bug #31678)
+    * Use check_join_status script instead of a seperate implementation
+    * do not stop reading test header on first line not starting with
+    "## " 
+    (Bug #31652)
+    * store password in /var/ucs-test/pwdfile, not /usr/share/ucs-test/pwdfile
+    * when creating /var/ucs-test/pwdfile, read password from UCR
+    * added postrm script for ucs-test-framework to remove /var/ucs-test/ on
+    	packet removal
+    (Bug #31250)
+    * 25check-permissions: ignore /var/run/*.MainThread-* as well
+      (Bug #29450)
+    * 02check-permission-etc: ldap-backup.secret belongs to DC Backup
+      Hosts, this was changed with Bug #15557 (Bug #27662)
+    * framework: simplify return strings (Bug #31734)
+    * 50_samba/50quota: wait until the replication is ready (Bug #31687)
+    * 67ucr_concurrent_set_get: show ucr set commands in logfile (Bug #31725)
+    * Added a test case for concurrent setting and getting of UCR
+      variables (Bug #31725)
+    * ucs-test-ucr: added a dependency to ucs-test-libs
+    * Added debug messages in 51_samba4/41_password_change (Bug #29058)
+    * Increased the time between user creation and password change  (Bug #29058)
+    * Added ucs-test-ldap.install (Bug #27662)
+    * Build ldap tests (Bug #27662)
+    * Start UDM computers tests on DC master only (Bug #31680)
+    * Start 52proofuniquemember on DC master only (Bug #31680)
+    * Ignore non-templated Updater files (Bug #18111)
+    * Only run 51_samba4/45dns_tests if samba 4 is installed (Bug #31679)
+    * Use ldap-group-to-file.py instead of nscd -i xyz to ensure the
+      replication is ready (Bug #31680)
+    * Only run S4 connector tests if the connector autostart is activated
+      (Bug #31680)
+    * Added /var/log/apache2/other_vhosts_access.log.*,
+      /var/log/apt/history.log.* and /var/log/dpkg.log.* as exception for
+      logfile permissions (Bug #23351)
+    * Ensure the ldap/master variable is not changed while a test DC
+      master is created (Bug #31680)
+    * Re-order connector tests, first all snyc tests are executed, after
+      that all read test and at last the write tests. This prevents the
+      connector restart (Bug #31677)
+    * added library function to abbort test with log message
+    * adapted existing udm tests to use new library function to abbort on fail
+    * ported several udm-dns tests from ucs-3.0 branch
+    (Bug #27664)
+    * fixed typo in 63_udm-containers/32movecontainer_ou (Bug #27664)
+    * ported several udm-dns tests from ucs-3.0 branch (Bug #27664)
+    * create pwdfile in postinst instead of maintaining the file in the package
+    	(Bug #31250)
+    * ported certain udm-dns tests from ucs-3.0 branchs (Bug #27664)
+    * fix permission of /usr/share/ucs-test/pwdfile (Bug #31250)
+    * skip certain udm dhcp test which currently fail due to known Bugs (Bug
+    	#31518) (Bug #31519)
+    * added ucr variables to configure domain admin credentials to be used in
+    	ucs-test (Bug #31250)
+    * ported certain udm-dns tests from ucs-3.0 branchs (Bug #27664)
+    * reverted changes to udm-users/35_create_user_with_umlaut_in_uid from last
+    	version (Bug #27664)
+    * ported udm-net tests from ucs-3.0 branchs (Bug #27664)
+    * fixed header of udm-users/35_create_user_with_umlaut_in_uid (Bug #27664)
+    * Added s4 connector test case for synchronization of maxPwdAge
+      (Bug #29775)
+    * skip certain udm user tests which fail because of unfixed bugs for now
+    	(Bug #24351) (Bug #30932)
+    * added dependencys on ucs-test-udm-dhcp, ucs-test-udm-containers,
+    	and ucs-test-udm-extentedattribute to ucs-test-modules-all (Bug #27664)
+    * fixed identation in 65_udm-dhcp/10_create_check_and_remove_subnet (Bug
+    	#27664)
+    * ported more DHCP tests from ucs-3.0 branch (Bug #27664)
+    * ported first DHCP tests from ucs-3.0 branch (Bug #27664)
+    * improved logging in UDM container tests (Bug #27664)
+    * added possibility to explicitly remove/append values to UDM attributes
+      via python test API (Bug #30560)
+    * in UCSTestUDM.cleanup(), do not log every object removal (Bug #30560)
+    * ported udm-containers tests from ucs-3.0 (Bug #27664)
+    * fixed test tests/64_udm-printers/41_check_ppd (Bug #27664)
+    * ported udm-printer tests from ucs-3.0 (Bug #27664)
+    * fixed teet "34_create_user_with_jpegPhoto_attr" (Bug #27664)
+    * fixed checking of the SRV record in 51_samba4/45dns_tests (Bug #29063)
+    * ported certain udm-users test from UCS 3.0 (Bug #27664)
+    * verify user existence through ldap search after creating user through UDM
+    	test python API (Bug #30560)
+    * added some additional logging to 62_udm-computers/51+52 (Bug #31041)
+    * Only check /etc/apt/sources.list.d/*.list files (Bug #18111)
+    * fixed a typo in 51_samba4/45dns_tests (Bug #29063)
+    * added a little more logging to 51_modify_dns_forward_zone_ptr_record and
+      52_modify_ip_ptr_record (Bug #31041)
+    * only execute 00_base/53 on master and backup, at least for now
+      (Bug #11417)
+    * added possibility to pass binddn and bindpwd to python udm cli API
+    * added function to group creation to python udm CLI API
+    (Bug #30560)
+    * added exception which will be thrown by UCSTestUDM.modify_object if no
+      modification was made (Bug #30560)
+    * added tests to confirm that required=1 is enforced for extented attributes
+      (Bug #21742)
+    * The function user_create from lib/user.sh now checks whether the
+      mail domain exists or not. If the mail domain for the local domain
+      does not exist the user is created without a mail address
+      (Bug #31296)
+    * Added a tes case for chainging the server password (Bug #31295)
+    * Added a test case for winbind restart (Bug #31289)
+    * added test 51_modify_dns_forward_zone_ptr_record (Bug #31041)
+    * added test 52_modify_ip_ptr_record (Bug #31041)
+    * added possibility to pass options and position to UDM test python API
+      (Bug #30560)
+    * code cleanup for UDM test python API (Bug #30560)
+    * In 51_samba4/35smbclient_auth there is now a check that the user has been
+    	created. (Bug #26807)
+    * Set homedir/mount=false when 51_samba4/35smbclient_auth is running (Bug #26807)
+    * Changed distribution for similar tests in samba and samba4 -
+      10samba-share-options (Bug #28341)
+    * Changed distribution for similar tests in samba and samba4 -
+    	15nfs-share-options (Bug #28342)
+    * Added a dependency to python-pexpect for samba test packages
+      (Bug #29058)
+    * 50quota: use binddn and bindpwd to support tests on memberserver and
+      dc slave (Bug #31210)
+    * Added a simple Samba quota test case (Bug #31210)
+    * readded fixed version of 07kpasswd_output to base section (Bug #30750)
+    * do not use pexpect in 99_udm_users_as_administrator (Bug #30116)
+    * Added a simple test for univention-dnsedit (Bug #31104)
+    * Install udm user tests
+    * modified test 99_udm_users_as_administrator in order to also make it fail
+      when the UDM return code is not equal to zero (Bug #30116)
+    * version bump (Bug #30116)
+    * added test to determine whether 'Administrator' may execute udm/users
+    list with filter "uid=Administrator" (which he should) (Bug #30116)
+    * applied patch to 51_samba4/41password_change (Bug #29058)
+    * removed ssh connection from 51_samba4/35smbclient_auth (Bug #28348)
+    * removed ssh connection from 50_samba/35smbclient_auth (Bug #26807)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jun 2013 15:34:19 +0200
+
 ucs-test (3.0.30-3) unstable; urgency=low
 
   * 00_base/82https_logged: fixed typo (Bug #30734)
@@ -96,13 +302,13 @@ ucs-test (3.0.25-8) unstable; urgency=low
 
 ucs-test (3.0.25-7) unstable; urgency=low
 
-  * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317) 
+  * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317)
 
  -- Felix Botner <botner@univention.de>  Wed, 06 Mar 2013 13:14:28 +0100
 
 ucs-test (3.0.25-6) unstable; urgency=low
 
-  * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317) 
+  * fixed desc in 07sync_groupmembership_ad_to_ucs (Bug #30317)
 
  -- Felix Botner <botner@univention.de>  Wed, 06 Mar 2013 11:32:20 +0100
 
@@ -141,7 +347,7 @@ ucs-test (3.0.25-1) unstable; urgency=low
 
 ucs-test (3.0.24-4) unstable; urgency=low
 
-  * improved all samba4 Tests again (Bug #28262) 
+  * improved all samba4 Tests again (Bug #28262)
 
  -- Tobias Peters <peters@univention.de>  Mon, 28 Jan 2013 18:19:43 +0100
 
@@ -154,7 +360,7 @@ ucs-test (3.0.24-3) unstable; urgency=low
 ucs-test (3.0.24-2) unstable; urgency=low
 
   * various improvements in all samba4 Tests (Bug #28262)
-  
+
  -- Tobias Peters <peters@univention.de>  Thu, 24 Jan 2013 18:31:13 +0100
 
 ucs-test (3.0.24-1) unstable; urgency=low
@@ -165,7 +371,7 @@ ucs-test (3.0.24-1) unstable; urgency=low
 
 ucs-test (3.0.23-1) unstable; urgency=low
 
-  * Added new test 00_base/25check-permissions-etc-secret which looks for 
+  * Added new test 00_base/25check-permissions-etc-secret which looks for
     *secret files in /etc that are readable by group "other" (Bug #29477)
 
  -- Erik Damrose <damrose@univention.de>  Thu, 03 Jan 2013 11:20:38 +0100
@@ -184,7 +390,7 @@ ucs-test (3.0.22-17) unstable; urgency=low
 
 ucs-test (3.0.22-16) unstable; urgency=low
 
-  * 51/35 and 50/35: added description (Bug #28348) 
+  * 51/35 and 50/35: added description (Bug #28348)
 
  -- Tobias Peters <peters@univention.de>  Tue, 18 Dec 2012 18:38:36 +0100
 
@@ -247,7 +453,7 @@ ucs-test (3.0.22-7) unstable; urgency=low
 
 ucs-test (3.0.22-6) unstable; urgency=low
 
-  * added 51_samba4/36_printer (Bug #29059) 
+  * added 51_samba4/36_printer (Bug #29059)
 
  -- Tobias Peters <peters@univention.de>  Fri, 23 Nov 2012 16:39:16 +0100
 
@@ -275,7 +481,7 @@ ucs-test (3.0.22-2) unstable; urgency=low
 
   * 51_samba4/40password-policies now fails when it should (Bug #29057)
   * 51_samba4/41password_change now fails when it should (Bug #29058)
-  
+
  -- Tobias Peters <peters@univention.de>  Wed, 14 Nov 2012 18:32:15 +0100
 
 ucs-test (3.0.22-1) unstable; urgency=low
@@ -296,7 +502,7 @@ ucs-test (3.0.21-1) unstable; urgency=low
 
 ucs-test (3.0.20-1) unstable; urgency=low
 
-  * resolved the issue that some tests in 51_samba4 failed when the password for 
+  * resolved the issue that some tests in 51_samba4 failed when the password for
     Administrator is not the default one (Bug #29060)
   * temporarily disabled 51_samba4/40password-policies (Bug #29057)
 
@@ -355,7 +561,7 @@ ucs-test (3.0.16-6) unstable; urgency=low
 
 ucs-test (3.0.16-5) unstable; urgency=low
 
-  * Added test 51_samba4/43sysvol (Bug #29060) 
+  * Added test 51_samba4/43sysvol (Bug #29060)
 
  -- Tobias Peters <peters@univention.de>  Wed, 07 Nov 2012 16:32:21 +0100
 
@@ -387,7 +593,7 @@ ucs-test (3.0.16-1) unstable; urgency=low
 
 ucs-test (3.0.15-2) unstable; urgency=low
 
-  * changed "udm --bindpw" to "udm --bindpwd" in some tests (Bug #28903) 
+  * changed "udm --bindpw" to "udm --bindpwd" in some tests (Bug #28903)
 
  -- Tobias Peters <peters@univention.de>  Fri, 26 Oct 2012 09:46:45 +0200
 
@@ -805,7 +1011,7 @@ ucs-test (1.3.303-1) unstable; urgency=low
 
   * fixed wrong prefixes in
     scripts-80_ucsschool/01disable_noneducational_objects which caused
-    inappropriate on productive system (Bug #20640) 
+    inappropriate on productive system (Bug #20640)
   * added missing tests in
     scripts-80_ucsschool/02_create_ou--sharefileserver (Bug #20640)
 
@@ -839,7 +1045,7 @@ ucs-test (1.3.299-1) unstable; urgency=low
 
 ucs-test (1.3.298-1) unstable; urgency=low
 
-  * fixed 20_check-standard-folder Bug #18767 
+  * fixed 20_check-standard-folder Bug #18767
 
  -- Felix Botner <botner@univention.de>  Wed, 10 Nov 2010 09:21:19 +0100
 
@@ -1089,7 +1295,7 @@ ucs-test (1.3.260-1) unstable; urgency=low
 
 ucs-test (1.3.259-1) unstable; urgency=low
 
-  * 50_samba/25domain-join-without-admin-rights: now receiving the rights only by "net rpc rights" (Bug #14849) 
+  * 50_samba/25domain-join-without-admin-rights: now receiving the rights only by "net rpc rights" (Bug #14849)
 
  -- de Groot <bdegroot@mammut.knut.univention.de>  Wed, 11 Aug 2010 15:24:39 +0200
 
@@ -1381,7 +1587,7 @@ ucs-test (1.3.221-1) unstable; urgency=low
 
 ucs-test (1.3.220-1) unstable; urgency=low
 
-  * added var/log/univention/updater.log.gz to 99check_log_files (Bug #18043) 
+  * added var/log/univention/updater.log.gz to 99check_log_files (Bug #18043)
 
  -- Felix Botner <botner@univention.de>  Fri, 23 Jul 2010 14:04:56 +0200
 

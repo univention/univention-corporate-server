@@ -5,15 +5,16 @@
 ##  - winbind
 ## roles-not:
 ## - basesystem
-## - memberserver
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 
 SAMBA="true"
 MAIL="false"
-KERBEROS="false"
+KERBEROS="true"
 PERSON="false"
 POSIX="true"
 
@@ -22,60 +23,30 @@ username="$(user_randomname)"
 trap 'user_remove "$username"' INT TERM EXIT
 
 ##create User
-echo "----create User"
+echo "##  create User"
 if ! user_create "$username"; then
 	fail_fast 1 "Failed to create user";
 fi
 
-##wait for the user to be created
-echo "----wait for the user to be created"
-i=0
-while ! output="$(net rpc user info $username -U"$username%$password" 2>&1)"
-do
-	let i="$i"+1
-	sleep 1
-	if [ "$i" = 20 ]; then
-		echo "$output"
-		echo "TIMEOUT: The user which has been created in UDM could not be found in samba after $i seconds"
-		break
-	fi
-done
-
-
-
-if [ "$(/usr/sbin/univention-config-registry get server/role)" = "memberserver" ]; then
-	NAME="$(/usr/sbin/univention-config-registry get windows/domain)+$username"
-fi
-
-nscd -i passwd
+wait_for_replication
 
 ##wbinfo tests
-echo "----wbinfo -t"
+echo "##  wbinfo -t"
 if ! wbinfo -t; then
 	fail_fast 1 "Checking shared secret failed"
 fi
 
-echo "----wbinfo --ping"
+echo "##  wbinfo --ping"
 if ! wbinfo --ping; then
 	fail_fast 1 "failed to ping the winbind-daemon";
 fi
 
-echo "----wbinfo --ping-dc"
+echo "##  wbinfo --ping-dc"
 if ! wbinfo --ping-dc; then
 	fail_fast 1 "No connection to NETLOGON"
 fi
 
-echo "----wbinfo --krb5auth"
-if ! wbinfo --krb5auth="$username"%"$password"; then
-	fail_fast 1 "failed to authenticate testuser"
-fi
-
-echo "----wbinfo -a"
-if ! wbinfo -a "$(wbinfo -s "$(wbinfo -U "$(wbinfo -S "$(wbinfo -n "$username" | cut -d' '  -f1)" | cut -d' ' -f1)"  | cut -d' ' -f1)" | cut -d' '  -f1)%$password"; then
-	fail_fast 1 "User authentification failed"
-fi
-
-echo "----wbinfo -D"
+echo "##  wbinfo -D"
 for i in $(wbinfo --trusted-domains);
 do
 	if ! output="$(wbinfo -D "$i")"; then
@@ -84,13 +55,95 @@ do
 	fi
 done
 
-echo "----wbinfo -Y"
-for groupsid in $(wbinfo --user-domgroups="$(wbinfo -n "$username" | cut -d' ' -f1)");
-do
-	wbinfo -Y $(wbinfo -n "$(wbinfo -s "$(wbinfo -G "$(wbinfo -Y $groupsid)" )" | sed 's/ [0-9]*$//')" | cut -d' '  -f1 )
-	if [ "$?" != 0 ]; then
-		fail_fast 1 "Group lookup failed";
+if [ "$(/usr/sbin/univention-config-registry get server/role)" = "memberserver" ]; then
+	winbind_separator=$(wbinfo --separator)
+	NAME="$(/usr/sbin/univention-config-registry get windows/domain)$winbind_separator$username"
+fi
+
+echo "##  wbinfo --authenticate"
+max_auth_attempts=30
+for try in $(seq 1 "$max_auth_attempts"); do
+	wbinfo -a "$NAME%$password"
+	res="$?"
+	if [ "$res" == 0 ]; then
+		break
+	else
+		echo .
+		sleep 1
 	fi
 done
+if [ "$res" != 0 ]; then
+	fail_fast 1 "wbinfo --authenticate '$NAME%$password' failed after $max_auth_attempts attempts"
+fi
+
+echo "##  wbinfo --name-to-sid"
+output=$(wbinfo -n "$username")
+if [ $? != 0 ]; then
+	fail_fast 1 "wbinfo --name-to-sid '$username' failed"
+else
+	user_sid=$(echo "$output" | cut -d' '  -f1)
+fi
+
+echo "##  wbinfo --sid-to-uid"
+user_uid=$(wbinfo -S "$user_sid")
+if [ $? != 0 ]; then
+	fail_fast 1 "wbinfo --sid-to-uid '$user_sid' failed"
+fi
+
+echo "##  wbinfo --uid-to-sid"
+user_sid2=$(wbinfo -U "$user_uid")
+if [ $? != 0 ]; then
+	fail_fast 1 "wbinfo --uid-to-sid '$user_uid' failed"
+fi
+
+echo "##  wbinfo --sid-to-name"
+output=$(wbinfo -s "$user_sid2")
+if [ $? != 0 ]; then
+	fail_fast 1 "wbinfo --sid-to-name '$user_sid2' failed"
+else
+	user_name2=$(echo "$output" | cut -d' '  -f1)
+fi
+
+if [ "$user_name2" != "$NAME" ]; then
+	fail_fast 1 "Unexpected user name obtained from SID lookup: $user_name2, expected: $NAME"
+fi
+
+echo "##  wbinfo --user-domgroups"
+for group_sid in $(wbinfo --user-domgroups="$user_sid");
+do
+	echo "## wbinfo --user-domgroups returned $group_sid"
+	## wbinfo -Y $(wbinfo -n "$(wbinfo -s "$(wbinfo -G "$(wbinfo -Y $group_sid)" )" | sed 's/ [0-9]*$//')" | cut -d' '  -f1 )
+	echo "##  wbinfo --sid-to-gid"
+	group_gid=$(wbinfo -Y "$group_sid")
+	if [ "$?" != 0 ]; then
+		fail_fast 1 "wbinfo --sid-to-gid '$group_sid' failed"
+	fi
+	echo "##  wbinfo --gid-to-sid"
+	output=$(wbinfo -G "$group_gid")
+	if [ "$?" != 0 ]; then
+		fail_fast 1 "wbinfo --gid-to-sid '$group_gid' failed"
+	else
+		group_sid2=$(echo "$output")
+	fi
+	echo "##  wbinfo --sid-to-name"
+	output=$(wbinfo -s "$group_sid2")
+	if [ "$?" != 0 ]; then
+		fail_fast 1 "wbinfo --sid-to-name '$group_sid2' failed"
+	else
+		group_name2=$(echo "$output" | sed 's/ [0-9]*$//')
+	fi
+	echo "##  wbinfo --name-to-sid"
+	output=$(wbinfo -n "$group_name2")
+	if [ "$?" != 0 ]; then
+		fail_fast 1 "wbinfo --name-to-sid '$group_name2' failed"
+	else
+		group_sid3=$(echo "$output" | cut -d' '  -f1)
+	fi
+done
+
+echo "##  wbinfo --krb5auth"
+if ! wbinfo --krb5auth "$NAME"%"$password"; then
+	fail_fast 1 "wbinfo --krb5auth '$NAME%$password' failed"
+fi
 
 exit 0

@@ -1,0 +1,32 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create and remove minimal DNS forward zone
+## tags: [udm-dns,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
+
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(zoneName=%s)(relativeDomainName=@)(objectClass=dNSZone))' % forwardZoneName
+
+	with udm_test.UCSTestUDM() as udm:
+		forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = uts.random_string())
+
+		if not forwardZone in ldap.searchDn(filter = ldapFilter):
+			test.fail('Could not find created DNS forward zone "%s" in LDAP' % forwardZone)
+
+		udm.remove_object('dns/forward_zone', dn = forwardZone)
+		if forwardZone in ldap.searchDn(filter = ldapFilter):
+			test.fail('Could still find DNS forward zone "%s" after it should have been removed.' % forwardZone)

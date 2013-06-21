@@ -9,7 +9,9 @@
 ## roles-not: 
 ## - basesystem
 ## - memberserver
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## join: true
 
 . "$TESTLIBPATH/base.sh" || exit 137
@@ -23,7 +25,7 @@ trap 'user_remove "$username"' INT TERM EXIT
 
 echo "----Create Domain Admin"
 ## create samba domain admin
-udm users/user create --option posix --option samba \
+udm-test users/user create --option posix --option samba \
 	--set "primaryGroup=cn=Domain Admins,cn=groups,$ldap_base" \
 	--set "unixhome=/tmp" \
 	--set "password=$password" \

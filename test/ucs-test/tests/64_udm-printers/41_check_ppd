@@ -1,0 +1,47 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check PPD files
+## tags: [udm-printers]
+## roles:
+##   - domaincontroller_master
+##   - domaincontroller_slave
+##   - domaincontroller_backup
+##   - memberserver
+##   - managedclient
+## exposure: safe
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+##   - univention-printserver
+
+
+import sys
+import os
+import univention.testing as test
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	ldap = uldap.getMachineConnection(ldap_master = False)
+
+	ldapPrinterModels = []
+	for dn, attr in ldap.search(filter = '(objectClass=univentionPrinterModels)', attr = ['printerModel']):
+		for printerModel in attr.get('printerModel', ()):
+			try:
+				model = printerModel.split()[0].split('/')[-1].strip('"')
+				if model.endswith('.ppd') or model.endswith('.ppd.gz'):
+					ldapPrinterModels.append(model)
+			except IndexError:
+				pass
+
+	printerFiles = []
+	for root, dirs, files in os.walk('/usr/share/ppd/'):
+		for file in files:
+			if file.endswith('.ppd') or file.endswith('ppd.gz'):
+				printerFiles.append(file)
+	
+	for printerModel in ldapPrinterModels:
+		if not printerModel in printerFiles:
+			test.fail('No PPD file found for LDAP printer "%s"' % printerModel)
+	
+	for printerFile in printerFiles:
+		if not printerFile in ldapPrinterModels:
+			test.fail('No LDAP printer found for PPD file "%s"' % printerFile)

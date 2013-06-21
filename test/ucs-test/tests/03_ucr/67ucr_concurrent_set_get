@@ -1,0 +1,47 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Concurrent setting and getting of UCR variables
+## bugs: [31725]
+## tags: [basic]
+## exposure: careful
+
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=0
+
+VAR_COUNT=500
+PREFIX="$(random_chars 128)"
+
+resultFile=$(mktemp)
+
+echo "Starting at $(date)"
+ucr set "${PREFIX}_400=value400"
+
+while true
+do
+	if [ "$(ucr get "${PREFIX}_400")" != "value400" ]
+	then
+		echo "Error at $(date)" | tee -a "$resultFile"
+	fi
+done &
+
+echo "Setting UCR variables"
+for((i=0;i<$VAR_COUNT;i++)); do ucr set "${PREFIX}_$i=value$i"; done
+
+kill $!
+wait
+echo "Stopping at $(date)"
+
+if [ -s "$resultFile" ]; then
+	echo "UCR get failed at:"
+	cat "$resultFile"
+	fail_test 110
+fi
+
+rm -f "$resultFile"
+
+echo "Starting cleanup"
+
+for((i=0;i<$VAR_COUNT;i++)); do ucr unset "${PREFIX}_$i"; done
+
+exit $RETVAL

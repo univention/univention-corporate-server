@@ -1,0 +1,26 @@
+#!/usr/share/ucs-test/runner python
+## desc: Mark the password of a user to be altered on next login
+## tags: [udm-users,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+
+
+if __name__ == '__main__':
+	if test.package_installed('univention-ox'):
+		sys.exit(138)
+
+	with udm_test.UCSTestUDM() as udm:
+		user = udm.create_user(options = ['posix'])
+		udm.modify_object('users/user', dn = user[0], pwdChangeNextLogin = '1')
+	
+		shadowMax = udm.lo.search(filter = '(uid=%s)' % user[1], attr = ['shadowMax'])[0][1]['shadowMax'][0]
+		if shadowMax != '1':
+			test.fail('"shadowMax" of %s was expected to be "1", but "%s" was found.' % (user[0], shadowMax))
+

@@ -1,0 +1,30 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test whether creating a PTR record with forward zone as superordinate is possible (which should not)
+## tags: [udm-dns,apptest]
+## roles: [domaincontroller_master]
+## bugs: [15660]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		forwardZone = udm.create_object('dns/forward_zone', nameserver = uts.random_string(), zone = '%s.%s' % (uts.random_name(), uts.random_name()))
+		try:
+			ptr = udm.create_object('dns/ptr_record', address = '40', superordinate = forwardZone)
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			sys.exit(0)
+
+		ldap = uldap.getAdminConnection()
+		ldap.delete(ptr)
+		test.fail('UDM did not report an error while trying to create an PTR record with forward zone as superordinate')

@@ -1,0 +1,52 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create DNS service record, check if attributes are set correctly and remove it again
+## tags: [udm-dns,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+
+if __name__ == '__main__':
+	forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
+	srvRecordProperties = {
+		'name': '%s tcp %s' % (uts.random_string(), uts.random_string()),
+		'location': '0 1 2 %s.%s' % (uts.random_name(), uts.random_name()),
+		'zonettl' : '128'
+	}
+	srvRecordNameSplit = srvRecordProperties['name'].split()
+	expectedLdap = {
+		'sRVRecord': srvRecordProperties['location'],
+		'dNSTTL': srvRecordProperties['zonettl'],
+		'relativeDomainName': '_%s._%s.%s' % (srvRecordNameSplit[0], srvRecordNameSplit[1], srvRecordNameSplit[2])
+	}
+
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(zoneName=%s)(relativeDomainName=%s)(sRVRecord=%s)(objectClass=dNSZone))' % (forwardZoneName, expectedLdap['relativeDomainName'], expectedLdap['sRVRecord'])
+
+	with udm_test.UCSTestUDM() as udm:
+		forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = uts.random_string())
+		srvRecord = udm.create_object('dns/srv_record', superordinate = forwardZone, **srvRecordProperties)
+		
+		for dn, attr in ldap.search(base = forwardZone, filter = ldapFilter, attr = expectedLdap.keys()):
+			if dn == srvRecord:
+				for key, value in expectedLdap.items():
+					if [value] != attr[key]:
+						test.fail('Expected attribute "%s" of created DNS service record to be %r, but found %r instead' % (key, value, attr[key]))
+				break
+		else:
+			test.fail('Could not find created DNS service "%s" record in LDAP' % srvRecord)
+
+		udm.remove_object('dns/srv_record', dn = srvRecord, superordinate = forwardZone)
+		if srvRecord in ldap.searchDn(base = forwardZone, filter = ldapFilter):
+			test.fail('Could still find DNS service record "%s" in LDAP after it should have been removed' % (srvRecord))
+
+

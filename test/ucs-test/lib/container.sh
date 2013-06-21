@@ -8,7 +8,7 @@ container_create () {
 	info "create new $container named $NAME"
 	local DESCRIPTION=${2:-cn named $1}
 	local POSITION=${3:-$ldap_base}
-	univention-directory-manager "container/$container" create \
+	udm-test "container/$container" create \
 		--set name="$NAME" \
 		--set description="$DESCRIPTION" \
 		--position "$POSITION" >&2
@@ -26,7 +26,7 @@ container_create () {
 container_exists () {
 	local NAME=${1?:missing parameter: container name}
 	info "checks wheter a $container with the dn $NAME exists"
-	if univention-directory-manager "container/$container" list | grep -q "^DN: $NAME"
+	if udm-test "container/$container" list | grep -q "^DN: $NAME"
 	then
 		info "$container exists"
 		return 0
@@ -39,21 +39,21 @@ container_exists () {
 container_remove () {
 	local NAME=${1?:missing parameter: container name}
 	info "remove $container with the dn $NAME"
-	univention-directory-manager "container/$container" remove --dn "$NAME"
+	udm-test "container/$container" remove --dn "$NAME"
 }
 
 container_move () {
 	local NAMEOLD=${1?:missing parameter: old container name}
 	local NAMENEW=${2?:missing parameter: new container name}
 	info "move $container with the dn $NAMEOLD to the position $NAMENEW"
-	udm "container/$container" move --dn "$NAMEOLD" --position "$NAMENEW"
+	udm-test "container/$container" move --dn "$NAMEOLD" --position "$NAMENEW"
 }
 
 container_modify () {
 	local NAME=${1?:missing parameter: container name}
 	local DESCRIPTION=${2?:missing parameter: description}
 	info "modify $container with the dn $NAME, set description to $DESCRIPTION"
-	univention-directory-manager "container/$container" modify \
+	udm-test "container/$container" modify \
 		--dn "$NAME" \
 		--set description="$DESCRIPTION"
 }

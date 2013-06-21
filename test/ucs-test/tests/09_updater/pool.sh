@@ -153,7 +153,7 @@ config_repo () { # Configure use of repository from local apache
 		repository/online/port="${port}" \
 		repository/online/prefix="${prefix}" \
 		"${extra[@]}" >&3 2>&3
-	ucr commit /etc/apt/sources.list.d/* >&3 2>&3
+	ucr commit /etc/apt/sources.list.d/*.list >&3 2>&3
 	ucr set update/available= >&3 2>&3
 }
 
@@ -405,7 +405,7 @@ split_repo_path () { # Split repository path into atoms
 }
 
 checkapt () { # Check for apt-source statement ${1}
-	local files=/etc/apt/sources.list.d/*
+	local files=/etc/apt/sources.list.d/*.list
 	local prefix=deb
 	local pattern
 	while [ $# -ge 1 ]

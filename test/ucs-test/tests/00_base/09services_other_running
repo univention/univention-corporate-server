@@ -2,7 +2,7 @@
 ## desc: Test if installed services are running
 ## roles:
 ##  - domaincontroller_master
-## tags: [basic]
+## tags: [basic,apptest]
 ## optional-packages:
 ##  - apache2 | apache2-mpm-prefork
 ##  - nscd

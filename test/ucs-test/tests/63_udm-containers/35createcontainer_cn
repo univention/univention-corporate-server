@@ -1,0 +1,25 @@
+#!/usr/share/ucs-test/runner python
+## desc: Testing the base functionality to create a CN
+## tags: [udm-containers,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		cnName = uts.random_name()
+		cn = udm.create_object('container/cn', name = cnName)
+
+		ldap = uldap.getAdminConnection()
+		if not cn in ldap.searchDn(filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName):
+			test.fail('Could not find created CN "%s" in LDAP' % cn)
+

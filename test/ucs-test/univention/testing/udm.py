@@ -47,14 +47,14 @@ The API is currently under heavy development and may/will change before next UCS
 import subprocess
 import os
 import psutil
+import copy
 import univention.testing.ucr
 import univention.testing.strings as uts
+import univention.uldap
 
 class UCSTestUDM_Exception(Exception):
 	pass
 class UCSTestUDM_MissingModulename(UCSTestUDM_Exception):
-	pass
-class UCSTestUDM_MissingPosition(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_MissingDn(UCSTestUDM_Exception):
 	pass
@@ -64,11 +64,19 @@ class UCSTestUDM_CreateUDMUnknownDN(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_ModifyUDMObjectFailed(UCSTestUDM_Exception):
 	pass
+class UCSTestUDM_MoveUDMObjectFailed(UCSTestUDM_Exception):
+	pass
+class UCSTestUDM_NoModification(UCSTestUDM_Exception):
+	pass
 class UCSTestUDM_ModifyUDMUnknownDN(UCSTestUDM_Exception):
+	pass
+class UCSTestUDM_RemoveUDMObjectFailed(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_CleanupFailed(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
+	pass
+class UCSTestUDM_CouldNotVerifyUserThroughLDAPSearch(UCSTestUDM_Exception):
 	pass
 
 
@@ -79,14 +87,8 @@ class UCSTestUDM(object):
 	def __init__(self):
 		self.ucr = univention.testing.ucr.UCSTestConfigRegistry()
 		self.ucr.load()
-		self.hostname = self.ucr.get('hostname')
-		self.domainname = self.ucr.get('domainname')
-		self.fqdn = '%s.%s' % (self.hostname, self.domainname)
-		self._reinit_cleanup()
-
-
-	def _reinit_cleanup(self):
 		self._cleanup = {}
+		self.lo = univention.uldap.getMachineConnection(ldap_master = False)
 
 
 	def _build_udm_cmdline(self, modulename, action, kwargs):
@@ -94,30 +96,39 @@ class UCSTestUDM(object):
 		Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
 		to _build_udm_cmdline to build a command for UDM CLI.
 		>>> _build_udm_cmdline('users/user', 'create', username='foobar', password='univention', lastname='bar')
-		>>> ['/usr/sbin/univention-directory-manager', 'users/user', 'create', …]
+		>>> ['/usr/sbin/udm-test', 'users/user', 'create', …]
 		"""
-		cmd = [ '/usr/sbin/univention-directory-manager', modulename, action ]
+		cmd = [ '/usr/sbin/udm-test', modulename, action ]
+		args = copy.deepcopy(kwargs)
 
-		if action == 'create':
-			cmd.extend( [ '--position', kwargs.get('position') ] )
-		else:
-			cmd.extend( [ '--dn', kwargs.get('dn') ] )
+		for arg in ('binddn', 'bindpwd', 'dn', 'position', 'superordinate'):
+			if arg in args:
+				cmd.extend(['--%s' % arg, args[arg]])
+				del args[arg]
 
-		if 'superordinate' in kwargs:
-			cmd.extend( ['--superordinate', kwargs.get('superordinate')] )
+		if 'options' in args:
+			for option in args['options']:
+				cmd.extend(['--option', option ])
+			del args['options']
 
-		# set all other properties
-		for arg in kwargs:
-			if arg not in ('position', 'superordinate', 'dn'):
-				if type(kwargs.get(arg)) == list:
-					for item in kwargs.get(arg):
-						cmd.extend( [ '--append', '%s=%s' % (arg, item) ] )
-				else:
-					cmd.extend( [ '--set', '%s=%s' % (arg, kwargs.get(arg)) ] )
+		for operation in ('append', 'remove'):
+			if operation in args:
+				for key, values in args[operation].items():
+					for value in values:
+						cmd.extend(['--%s' % operation, '%s=%s' % (key, value)])
+				del args[operation]
+
+		# set all other remaining properties
+		for arg in args:
+			if type(args.get(arg)) == list:
+				for item in args.get(arg):
+					cmd.extend( [ '--append', '%s=%s' % (arg, item) ] )
+			else:
+				cmd.extend( [ '--set', '%s=%s' % (arg, args.get(arg)) ] )
 		return cmd
 
 
-	def create_udm_object(self, modulename, **kwargs):
+	def create_object(self, modulename, **kwargs):
 		"""
 		Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -125,82 +136,112 @@ class UCSTestUDM(object):
 		modulename: name of UDM module (e.g. 'users/user')
 
 		"""
+		dn = None
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
-		if not kwargs.get('position'):
-			raise UCSTestUDM_MissingPosition()
 
 		cmd = self._build_udm_cmdline(modulename, 'create', kwargs)
 
 		print 'Creating %s object with %r' % (modulename, kwargs)
-		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=False)
+		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 		(stdout, stderr) = child.communicate()
 
-		print 'cmd=%r\nstdout=%s\nstderr=%s\n' % (cmd, stdout, stderr)
-
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while creating object: ''' % (child.returncode,)
+			print 'UDM-CLI returned exitcode %s while creating object' % (child.returncode,)
 			raise UCSTestUDM_CreateUDMObjectFailed(modulename, kwargs, stdout, stderr)
+		
+		# find DN of freshly created object and add it to cleanup list
+		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
+			if line.startswith('Object created: '):
+				dn = line.split('Object created: ', 1)[-1]
+				self._cleanup.setdefault(modulename, []).append(dn)
+				break
 		else:
-			# find DN of freshly created object and add it to cleanup list
-			for line in stdout.splitlines(): # :pylint: disable-msg=E1103
-				if line.startswith('Object created: '):
-					dn = line.split('Object created: ', 1)[-1]
-					self._cleanup.setdefault(modulename, []).append(dn)
-					break
-			else:
-				print 'Cannot find DN of created object in stdout:\nstdout=%s' % (stdout,)
-				print 'stderr=%s' % (stderr,)
-				raise UCSTestUDM_CreateUDMUnknownDN(modulename, kwargs, stdout, stderr)
-
-			return dn
-		return None
+			raise UCSTestUDM_CreateUDMUnknownDN(modulename, kwargs, stdout, stderr)
+		return dn
 
 
-	def modify_udm_object(self, modulename, **kwargs):
+	def modify_object(self, modulename, **kwargs):
 		"""
 		Modifies a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
-		Please note: the object has to be created by create_udm_object otherwise this call will raise an exception!
+		Please note: the object has to be created by create_object otherwise this call will raise an exception!
 
 		modulename: name of UDM module (e.g. 'users/user')
 
 		"""
+		dn = None
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		if not kwargs.get('dn'):
 			raise UCSTestUDM_MissingDn()
-		if not kwargs.get('dn') in self._cleanup.get(modulename, []):
-			raise UCSTestUDM_CannotModifyExistingObject(kwargs.get('dn'))
 
 		cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
-
 		print 'Modifying %s object with %r' % (modulename, kwargs)
-		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=False)
+		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 		(stdout, stderr) = child.communicate()
 
-		print 'cmd=%r\nstdout=%s\nstderr=%s\n' % (cmd, stdout, stderr)
+		if child.returncode:
+			print 'UDM-CLI returned exitcode %s while modifying object: ' % (child.returncode,)
+			raise UCSTestUDM_ModifyUDMObjectFailed(modulename, kwargs, stdout, stderr)
+
+		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
+			if line.startswith('Object modified: '):
+				dn = line.split('Object modified: ', 1)[-1]
+				assert(dn in self._cleanup.get(modulename, []))
+				break
+			elif line.startswith('No modification: '):
+				raise UCSTestUDM_NoModification(modulename, kwargs, stdout, stderr)
+		else:
+			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
+		return dn
+
+	def move_object(self, modulename, **kwargs):
+		if not modulename:
+			raise UCSTestUDM_MissingModulename()
+		if not kwargs.get('dn'):
+			raise UCSTestUDM_MissingDn()
+
+		cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
+		print 'Moving %s object %r' % (modulename, kwargs)
+		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
+		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while modifying object: ''' % (child.returncode,)
-			raise UCSTestUDM_ModifyUDMObjectFailed(modulename, kwargs, stdout, stderr)
+			print 'UDM-CLI returned exitcode %s while modifying object: ' % (child.returncode,)
+			raise UCSTestUDM_MoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
+
+		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
+			if line.startswith('Object modified: '):
+				dn = line.split('Object modified: ', 1)[-1]
+				assert(dn in self._cleanup.get(modulename, []))
+				break
 		else:
-			# find DN of freshly created object and add it to cleanup list
-			for line in stdout.splitlines(): # :pylint: disable-msg=E1103
-				if line.startswith('Object modified: '):
-					dn = line.split('Object modified: ', 1)[-1]
-					assert(dn in self._cleanup.get(modulename, []))
-					break
-			else:
-				print 'Cannot find DN of modified object in stdout:\nstdout=%s' % (stdout,)
-				print 'stderr=%s' % (stderr,)
-				raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
-
-			return dn
-		return None
+			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
+		return dn
 
 
-	def create_user(self, *args, **kwargs): # :pylint: disable-msg=W0613
+	def remove_object(self, modulename, **kwargs):
+		if not modulename:
+			raise UCSTestUDM_MissingModulename()
+		if not kwargs.get('dn'):
+			raise UCSTestUDM_MissingDn()
+
+		cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
+		print 'Removing %s object %r' % (modulename, kwargs)
+		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
+		(stdout, stderr) = child.communicate()
+		
+		if child.returncode:
+			print 'UDM-CLI returned exitcode %s while removing object: ' % (child.returncode,)
+			raise UCSTestUDM_RemoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
+		
+		if kwargs['dn'] in self._cleanup.get(modulename, []):
+			self._cleanup[modulename].remove(kwargs['dn'])
+
+
+
+	def create_user(self, **kwargs): # :pylint: disable-msg=W0613
 		"""
 		Creates an user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -212,41 +253,46 @@ class UCSTestUDM(object):
 
 		If username is missing, a random user name will be used.
 
-		Return value: (username, dn)
+		Return value: (dn, username)
 		"""
 
-		if not 'username' in kwargs:
-			kwargs['username'] = self.random_username()
+		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=users,%s' % self.ucr.get('ldap/base') ),
+											    ( 'password', 'univention' ),
+											    ( 'username', uts.random_username()),
+											    ( 'lastname', uts.random_name()) ))
 
-		for prop, default in (('position', 'cn=users,%s' % self.ucr.get('ldap/base')),
-							  ('password', 'univention'),
-							  ('firstname', 'Foo Bar'),
-							  ('lastname', kwargs.get('username'))):
-			if not prop in kwargs:
-				kwargs[prop] = default
-
-		return (kwargs['username'], self.create_udm_object('users/user', **kwargs))
+		user = (self.create_object('users/user', **attr), attr['username'])
+		if not user[0] in self.lo.searchDn(filter = '(uid=%s)' % user[1]):
+			raise UCSTestUDM_CouldNotVerifyUserThroughLDAPSearch(user[0])
+		return user
 
 
-	def create_group(self, *args, **kwargs): # :pylint: disable-msg=W0613
+	def create_group(self, **kwargs): # :pylint: disable-msg=W0613
 		"""
 		Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
 		position: 'cn=users,$ldap_base'
 		name: <random value>
 
-		If "name" is missing, a random group name will be used.
+		If "groupname" is missing, a random group name will be used.
 
-		Return value: (groupname, dn)
+		Return value: (dn, groupname)
 		"""
+		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=groups,%s' % self.ucr.get('ldap/base') ),
+											   ( 'name', uts.random_groupname() ) ))
+		return  (self.create_object('groups/group', **attr), attr['name'])
 
-		if not 'groupname' in kwargs:
-			kwargs['name'] = uts.random_string(length=1, alpha=True, numeric=False) + uts.random_string(length=9, alpha=True, numeric=True)
-		if not 'position' in kwargs:
-			kwargs['position'] = 'cn=groups,%s' % self.ucr.get('ldap/base')
 
-		return (kwargs['name'], self.create_udm_object('groups/group', **kwargs))
-
+	def _set_module_default_attr(self, attributes, defaults):
+		"""
+		Returns the given attributes, extented by every property given in defaults if not yet set.
+		"defaults" should be a tupel containing tupels like "('username', <default_value>)".
+		"""
+		attr = copy.deepcopy(attributes)
+		for prop, value in defaults:
+			if not prop in attr:
+				attr[prop] = value
+		return attr
 
 	def cleanup(self):
 		"""
@@ -257,28 +303,19 @@ class UCSTestUDM(object):
 		print 'Performing UCSTestUDM cleanup...'
 		for module in self._cleanup:
 			for dn in self._cleanup[module]:
-				print 'Removing object of type %s: %s' % (module, dn)
-				cmd = [ '/usr/sbin/univention-directory-manager', module, 'remove', '--dn', dn ]
+#				print 'Removing object of type %s: %s' % (module, dn)
+				cmd = [ '/usr/sbin/udm-test', module, 'remove', '--dn', dn ]
 
-				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell=False)
+				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 				(stdout, stderr) = child.communicate()
 
-				print 'cmd=%r\nstdout=%s\nstderr=%s\n' % (cmd, stdout, stderr)
-
-				if child.returncode or not 'Object removed:' in stdout:
-					print 'UDM-CLI returned exitcode %s while removing object %s''' % (child.returncode, dn)
-					print 'cmd=%r''' % (cmd,)
-					failedObjects.append((module, dn))
-
-		self.ucr.revert_to_original_registry()
+#				if child.returncode or not 'Object removed:' in stdout:
+#					print 'UDM-CLI returned exitcode %s while removing object %s''' % (child.returncode, dn)
+#					failedObjects.append((module, dn))
 
 		print 'UCSTestUDM cleanup done'
-
 		# reinit list of objects to cleaned up
-		self._reinit_cleanup()
-
-		if failedObjects:
-			raise UCSTestUDM_CleanupFailed(failedObjects)
+		self._cleanup = {}
 
 
 	def stop_cli_server(self):
@@ -290,11 +327,8 @@ class UCSTestUDM(object):
 					print 'sending signal %s to process %s (%r)''' % (signal, proc.pid, proc.cmdline,)
 					os.kill(proc.pid, signal)
 
-
 	def __enter__(self):
 		return self
-
-
 	def __exit__(self, exc_type, exc_value, traceback):
 		self.cleanup()
 
@@ -311,7 +345,7 @@ if __name__ == '__main__':
 		groupname, dnGroup = udm.create_group()
 
 		# modify user from above
-		udm.modify_udm_object('users/user', dn=dnUser, description='Foo Bar')
+		udm.modify_object('users/user', dn=dnUser, description='Foo Bar')
 
 		# test with malformed arguments
 		try:
@@ -321,6 +355,6 @@ if __name__ == '__main__':
 
 		# try to modify object not created by create_udm_object()
 		try:
-			udm.modify_udm_object('users/user', dn='uid=Administrator,cn=users,%s' % udm.ucr.get('ldap/base'), description='Foo Bar')
+			udm.modify_object('users/user', dn='uid=Administrator,cn=users,%s' % udm.ucr.get('ldap/base'), description='Foo Bar')
 		except UCSTestUDM_CannotModifyExistingObject, ex:
 			print 'Caught anticipated exception UCSTestUDM_CannotModifyExistingObject - SUCCESS'

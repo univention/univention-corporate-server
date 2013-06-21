@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner /usr/bin/python2.6
 ## desc: Checking for UCR template warnings in all UCR conffiles
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## exposure: safe
 
 import os

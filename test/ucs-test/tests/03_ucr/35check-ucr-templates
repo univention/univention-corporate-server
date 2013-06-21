@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking for modified UCR templates
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## exposure: safe
 ## versions:
 ##  1.0-0: skip

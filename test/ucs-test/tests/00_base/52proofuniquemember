@@ -3,7 +3,6 @@
 ## bugs: [12061]
 ## roles:
 ##  - domaincontroller_master
-##  - domaincontroller_backup
 ## packages: [ldap-utils, univention-directory-manager-tools]
 ## exposure: dangerous
 . "$TESTLIBPATH/base.sh" || exit 137

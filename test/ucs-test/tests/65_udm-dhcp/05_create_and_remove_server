@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create and remove DHCP server
+## tags: [udm-dhcp,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	dhcpServerName = uts.random_name()
+	
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(cn=%s)(objectClass=dhcpServer))' % dhcpServerName
+	
+	with udm_test.UCSTestUDM() as udm:
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcpServer = udm.create_object('dhcp/server', server = dhcpServerName, superordinate = dhcpService)
+
+		if not dhcpServer in ldap.searchDn(base = dhcpService, filter = ldapFilter):
+			test.fail('Could not find created DHCP server "%s" in LDAP' % dhcpServer)
+
+		udm.remove_object('dhcp/server', dn = dhcpServer, superordinate = dhcpService)
+		if dhcpServer in ldap.searchDn(base = dhcpService, filter = ldapFilter):
+			test.fail('Could still find DHCP server "%s" in LDAP after it should have been removed' % dhcpServer)

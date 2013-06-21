@@ -1,3 +1,4 @@
 bin/ucs-test usr/sbin/
 bin/runner usr/share/ucs-test/
+bin/udm-test usr/sbin/
 univention/testing usr/share/pyshared/univention

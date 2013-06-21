@@ -1,0 +1,59 @@
+#!/usr/share/ucs-test/runner python
+## desc: Testing the basic functionality to create a printer and rename it
+## tags: [udm-printers,apptest]
+## roles:
+##   - domaincontroller_master
+##   - domaincontroller_slave
+##   - domaincontroller_backup
+##   - memberserver
+##   - managedclient
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.ucr
+import univention.uldap as uldap
+
+if __name__ == '__main__':
+	ucr = univention.testing.ucr.UCSTestConfigRegistry()
+	ucr.load()
+	printerProperties = {
+		'model': 'foomatic-ppds/Apple/Apple-12_640ps-Postscript.ppd.gz',
+		'uri': 'paralell /dev/lp0',
+		'spoolHost': '%s.%s' % (ucr['hostname'], ucr['domainname']),
+		'name': uts.random_name()
+	}
+	printerSambaName = uts.random_name()
+	printerContainer = 'cn=printers,%s' % ucr['ldap/base']
+
+	expectedLdap = {
+		'cn': [printerProperties['name']],
+		'univentionPrinterModel': [printerProperties['model']],
+		'univentionPrinterURI': [printerProperties['uri'].replace(' ', '')],
+		'univentionPrinterSpoolHost': [printerProperties['spoolHost']]
+	}
+	ldap = uldap.getMachineConnection(ldap_master = False)
+	ldapFilter = '(&(cn=%s)(objectClass=univentionPrinter))' % printerProperties['name']
+
+	with udm_test.UCSTestUDM() as udm:
+		printer = udm.create_object('shares/printer', position = printerContainer, **printerProperties)
+		for dn, attr in ldap.search(base = printerContainer, filter = ldapFilter, attr = expectedLdap.keys()):
+			if dn == printer:
+				for attribute, expectedValue in expectedLdap.items():
+					ldapValue = attr.get(attribute, [])
+					if expectedValue != ldapValue:
+						test.fail('Expected "%s" of created printer to be %r, but found %r instead' % (attribute, expectedValue, ldapValue))
+				break
+		else:
+			test.fail('Could nod find created printer "%s" in LDAP' % printer)
+
+		udm.modify_object('shares/printer', dn = printer, sambaName = printerSambaName)
+		setPrinterSambaName = ldap.search(base = printerContainer, filter = ldapFilter, attr = ['univentionPrinterSambaName'])[0][1].get('univentionPrinterSambaName', [])
+		if [printerSambaName] != setPrinterSambaName:
+			test.fail('"univentionPrinterSambaName" of the created printer was expected to be set to %r after modification, but %r was found instead' % ([printerSambaName], setPrinterSambaName))

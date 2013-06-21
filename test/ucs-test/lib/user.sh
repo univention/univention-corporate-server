@@ -7,6 +7,11 @@ user_randomname () { #Generates a random string as username an echoes it. Usage:
 	random_string
 }
 
+mail_domain_exists () {
+	univention-ldapsearch "(&(objectClass=univentionMailDomainname)(cn=$1))" | grep -q "^cn: $1"
+	return $?
+}
+
 user_create () { #Creates a user named like the first argument, supplied to the function.
 	#The Time consumed to create the User is stored in $TIMETOCREATEUSER (in nsecs)
 	# Possible Options are:
@@ -40,18 +45,20 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 	fi
 	if [ -z "$MAILADDR" ]
 	then
-		MAILADDR=$(random_mailaddress)
+		if mail_domain_exists "$domainname"; then
+			MAILADDR=$(random_mailaddress)
+			mail="--set mailPrimaryAddress="$MAILADDR@$domainname""
+		fi
 	fi
 	shift 1
 
 	info "create user $USERNAME"
-	declare -a CMD=(univention-directory-manager users/user create \
+	declare -a CMD=(udm-test users/user create \
 		--position="cn=users,$ldap_base" \
 		--set username="$USERNAME" \
 		--set firstname=Max \
 		--set lastname=Muster \
-		--set organisation=firma.de_GmbH \
-		--set mailPrimaryAddress="$MAILADDR@$domainname" \
+		--set organisation=firma.de_GmbH $mail \
 		--set password=univention)
 
 	[ "$UIDTEST" = true ] && CMD+=(--set uidNumber=1234)
@@ -92,7 +99,7 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 
 user_dn () { #echos the DN of User named $NAME
 	local USERNAME=${1:-$NAME}
-	univention-directory-manager users/user list --filter uid="$USERNAME" | sed -ne 's/^DN: //p'
+	udm-test users/user list --filter uid="$USERNAME" | sed -ne 's/^DN: //p'
 }
 
 user_remove () { # Remove User named like the first argument, supplied to the function.
@@ -100,7 +107,7 @@ user_remove () { # Remove User named like the first argument, supplied to the fu
 
 	info "remove user $USERNAME"
 
-	if univention-directory-manager users/user remove --dn="uid=$USERNAME,cn=users,$ldap_base"
+	if udm-test users/user remove --dn="uid=$USERNAME,cn=users,$ldap_base"
 	then
 		debug "user $USERNAME removed"
 	else
@@ -123,7 +130,7 @@ user_exists () { #returns 0, if user exits or 1 if he doesn't. Example: userexit
 	local USERNAME=${1?:missing parameter: name}
 	info "checking whether the user $USERNAME is really removed"
 
-	if univention-directory-manager users/user list --filter uid="$USERNAME" | egrep "^DN:"
+	if udm-test users/user list --filter uid="$USERNAME" | egrep "^DN:"
 	then
 		debug "user $USERNAME exists"
 		return 0
@@ -137,7 +144,7 @@ user_change_pw_next_login () { # Set the Flag for changing the Password on the n
 	local USERNAME=${1?:missing parameter: user name}
 	info "user $USERNAME must change password on next login"
 
-	univention-directory-manager users/user modify \
+	udm-test users/user modify \
 		--dn="uid=$USERNAME,cn=users,$ldap_base" \
 		--set pwdChangeNextLogin=1
 }
@@ -146,7 +153,7 @@ user_check_pw_expiry () { # Checks if there is an expiry-date for the password o
 	local USERNAME=${1?:missing parameter: name}
 	info "check the password expriry of user $USERNAME"
 
-	univention-directory-manager users/user list --filter "username=$USERNAME" | \
+	udm-test users/user list --filter "username=$USERNAME" | \
 		grep passwordexpiry | cut -c19-26 | grep -qv None
 }
 
@@ -155,7 +162,7 @@ user_rename () { # Rename a user # Example: renameuser $NAMEOLD $NAMENEW
 	local USERNAMENEW=${2?:missing parameter: new name}
 
 	info  "rename user $USERNAMEOLD to $USERNAMENEW"
-	univention-directory-manager users/user modify \
+	udm-test users/user modify \
 		--dn="uid=$USERNAMEOLD,cn=users,$ldap_base" \
 		--set username="$USERNAMENEW"
 }
@@ -168,8 +175,8 @@ user_set_attr () {
 
 	local dn=$(user_dn "$name")
 
-	univention-directory-manager users/user modify --dn="$dn" --set "$attr=$value"
-	[ domaincontroller_master = "$server_role" ] || sleep 5 # wait for replication
+	udm-test users/user modify --dn="$dn" --set "$attr=$value"
+	wait_for_replication
 	if [ -n "$ldap" ]
 	then
 		univention-ldapsearch -x "uid=$name" "$ldap" | ldapsearch-wrapper | grep -q "^$ldap"

@@ -1,0 +1,45 @@
+#!/usr/share/ucs-test/runner python
+## desc: DHCP pool, add and remove DHCP ranges
+## tags: [udm-dhcp,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	dhcpHostName = uts.random_name()
+	dhcpHostFixedAddress = '10.20.30.40'
+	moreDhcpHostFixedAddresses = ['10.20.30.41', '10.20.30.42', '10.20.30.43', '10.20.30.44']
+
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpHost))' % dhcpHostName
+
+	with udm_test.UCSTestUDM() as udm:
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcpHost = udm.create_object('dhcp/host', host = dhcpHostName, hwaddress = 'ethernet af:e2:39:14:cb:15', fixedaddress = dhcpHostFixedAddress, superordinate = dhcpService)
+
+		udm.modify_object('dhcp/host', dn = dhcpHost, append = {'fixedaddress': moreDhcpHostFixedAddresses}, superordinate = dhcpService)
+
+		result = ldap.search(base = dhcpService, filter = ldapFilter, attr = ['univentionDhcpFixedAddress'])[0][1].get('univentionDhcpFixedAddress', [])
+		for fixedAddress in [dhcpHostFixedAddress] + moreDhcpHostFixedAddresses:
+			if not fixedAddress in result:
+				test.fail('Expected "univentionDhcpFixedAddress" attribute of created DHCP host to contain "%s" after appending it, but could not find the value in there\n"univentionDhcpFixedAddress": %r' % (fixedAddress, result))
+
+		udm.modify_object('dhcp/host', dn = dhcpHost, remove = {'fixedaddress': moreDhcpHostFixedAddresses[2:]}, superordinate = dhcpService)
+		result = ldap.search(base = dhcpService, filter = ldapFilter, attr = ['univentionDhcpFixedAddress'])[0][1].get('univentionDhcpFixedAddress', [])
+		for fixedAddres in moreDhcpHostFixedAddresses[2:]:
+			if fixedAddress in result:
+				test.fail('"univentionDhcpFixedAddress" attribute of created DHCP pool still contained value "%s" after removing it\n"univentionDhcpFixedAddress": %r' % (fixedAddress, result))
+		for fixedAddress in [dhcpHostFixedAddress] + moreDhcpHostFixedAddresses[:2]:
+			if not fixedAddress in result:
+				test.fail('Removal of certain values from "univentionDhcpFixedAddress" attribute of created DHCP pool also lead to the removal of "%s" from the attribute\n"univentionDhcpFixedAddress": %r' % (fixedAddress, result))

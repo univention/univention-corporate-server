@@ -43,15 +43,25 @@ do
 	fi
 done
 
-## in case password is not the default one
-if [ $(univention-config-registry get server/role) = "domaincontroller_master" -a -e /root/root.secret ];then
-	echo "Found /root/root.secret, using that secret for Administrator access"
-	ADMINISTRATOR_PASSWORD="$(cat /root/root.secret)"
+ADMINISTRATOR_DN="$tests_domainadmin_account"
+if [ -z "$tests_domainadmin_account" ]; then
+	ADMIN_DN=$(/usr/sbin/univention-directory-manager users/user list --filter uid="Administrator" | sed -ne 's/^DN: //p')
+fi
+
+ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$ADMINISTRATOR_DN" uid | grep uid | sed -ne 's/^uid: //p')"
+
+ADMINISTRATOR_PASSWORD="$tests_domainadmin_pwd"
+if [ -z "$ADMINISTRATOR_PASSWORD" -a -e "$tests_domainadmin_pwdfile" ]; then
+	ADMINISTRATOR_PASSWORD="$(cat $tests_domainadmin_pwdfile)"
+	
+fi
+if [ -z "$ADMINISTRATOR_PASSWORD" ]; then
+	ADMINISTRATOR_PASSWORD="univention"
 fi
 
 ##Put a file on sysvol as Administrator
 echo "----Put a file on sysvol as Administrator"
-output="$(smbclient //localhost/sysvol -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" -c "put /etc/hosts $domainname/t1" 2>&1)"
+output="$(smbclient //localhost/sysvol -U"$ADMINISTRATOR_NAME%$ADMINISTRATOR_PASSWORD" -c "put /etc/hosts $domainname/t1" 2>&1)"
 if [ $? != 0 ]; then
 	echo "$output"
 	fail_test 1 "Could not put file on sysvol as Administrator"

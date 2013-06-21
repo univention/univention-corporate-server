@@ -2,7 +2,9 @@
 ## desc: |
 ##  Test the correct behavior of univention-updater-check
 ## roles-not: [basesystem]
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous

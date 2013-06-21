@@ -1,0 +1,42 @@
+#!/usr/share/ucs-test/runner python
+## desc: PTR record, append and remove entries
+## tags: [udm-dns,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## bugs: [15822]
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	ptrRecordAddress = '10.20.30.40'
+	ptrRecordEntries = [uts.random_name(), uts.random_name(), uts.random_name(), uts.random_name()]
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(relativeDomainName=%s)(objectClass=dNSZone))' % ptrRecordAddress
+
+	with udm_test.UCSTestUDM() as udm:
+		reverseZone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string())
+		ptrRecord = udm.create_object('dns/ptr_record', superordinate = reverseZone, address = ptrRecordAddress, append = {'ptr_record': ptrRecordEntries[:2]})
+		
+		udm.modify_object('dns/ptr_record', dn = ptrRecord, superordinate = reverseZone, append = {'ptr_record': ptrRecordEntries[2:]})
+		foundPtrRecordEntries = ldap.search(base = reverseZone, filter = ldapFilter, attr = ['pTRRecord'])[0][1].get('pTRRecord', [])
+		for entry in ptrRecordEntries:
+			if not entry in foundPtrRecordEntries:
+				test.fail('Expected "pTRRecord" attribute of created PTR record to contain "%s" after appending it, but could not find it in there\n"pTRRecord": %r' % (entry, foundPtrRecordEntries))
+
+		udm.modify_object('dns/ptr_record', dn = ptrRecord, superordinate = reverseZone, remove = {'ptr_record': ptrRecordEntries[:2]})
+		foundPtrRecordEntries = ldap.search(base = reverseZone, filter = ldapFilter, attr = ['pTRRecord'])[0][1].get('pTRRecord', [])
+		for entry in ptrRecordEntries[:2]:
+			if entry in foundPtrRecordEntries:
+				test.fail('"pTRRecord" attribute of created PTR record still contained "%s" after the value should have been removed\n"pTRRecord": %r' % (entry, foundPtrRecordEntries))
+		for entry in ptrRecordEntries[2:]:
+			if not entry in foundPtrRecordEntries:
+				test.fail('Removing certain values from "pTRRecord" attribute of created PTR record also lead to removal of "%s" from the attribute\n"pTRRecord": %r' % (entry, foundPtrRecordEntries))

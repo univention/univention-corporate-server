@@ -10,6 +10,7 @@
 
 . "s4connector.sh" || exit 137
 test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
@@ -23,7 +24,7 @@ ad_wait_for_synchronization; fail_bool 0 110
 AD_DN="CN=$UDM_computers_windows_name,CN=computers,$(ad_get_base)"
 ad_exists "$AD_DN"; fail_bool 0 110
 
-univention-directory-manager 'computers/windows' modify --dn "cn=$UDM_computers_windows_name,cn=computers,$(ucr get ldap/base)" --set operatingSystem="Mac OS X" || fail_test 110
+udm-test 'computers/windows' modify --dn "cn=$UDM_computers_windows_name,cn=computers,$(ucr get ldap/base)" --set operatingSystem="Mac OS X" || fail_test 110
 
 ad_wait_for_synchronization; fail_bool 0 110
 

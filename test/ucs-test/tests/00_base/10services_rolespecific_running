@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test if system role specific services are running
-## tags: [basic]
+## tags: [basic,apptest]
 ## exposure: safe
 
 slapd="/usr/sbin/slapd"

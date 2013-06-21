@@ -1,7 +1,9 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check if the User 'Administrator' is in the right Groups
 ## roles-not: [basesystem]
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## exposure: safe
 
 RETVAL=100

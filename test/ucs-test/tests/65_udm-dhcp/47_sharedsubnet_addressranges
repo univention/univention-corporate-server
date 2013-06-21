@@ -1,0 +1,36 @@
+#!/usr/share/ucs-test/runner python
+## desc: Set and append ranges to DHCP shared subnet address range
+## tags: [udm-dhcp,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing as test
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.uldap as uldap
+
+
+if __name__ == '__main__':
+	dhcpSharedSubnetName = '10.20.30.0'
+	dhcpSharedSubnetRanges = ('10.20.30.1 10.20.30.5', '10.20.30.6 10.20.30.10', '10.20.30.11 10.20.30.15')
+
+	ldap = uldap.getAdminConnection()
+	ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpSharedSubnet))' % dhcpSharedSubnetName
+
+	with udm_test.UCSTestUDM() as udm:
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcpSharedNetwork = udm.create_object('dhcp/shared', name = uts.random_name(), superordinate = dhcpService)
+		dhcpSharedSubnet = udm.create_object('dhcp/sharedsubnet', subnet = dhcpSharedSubnetName, subnetmask = '24', range = dhcpSharedSubnetRanges[0], superordinate = dhcpSharedNetwork)
+
+		udm.modify_object('dhcp/sharedsubnet', dn = dhcpSharedSubnet, superordinate = dhcpSharedNetwork, append = {'range': dhcpSharedSubnetRanges[1:]})
+
+		foundRanges = ldap.search(base = dhcpSharedNetwork, filter = ldapFilter, attr = ['dhcpRange'])[0][1].get('dhcpRange', [])
+		for range in dhcpSharedSubnetRanges:
+			if not range in foundRanges:
+				test.fail('Expected "dhcpRange" attribute of created DHCP shared subnet to contain "%s", but could not find it in there\n"dhcpRange": %r' % (range, foundRanges))

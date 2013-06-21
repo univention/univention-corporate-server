@@ -6,11 +6,16 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
+## tags:
+##  - basic
+##  - apptest
 ## versions:
 ##  3.1-0: fixed
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
+
+eval "$(ucr shell)"
 
 licenseVersion="$(univention-ldapsearch '(&(cn=admin)(objectClass=univentionLicense))' -LLL univentionLicenseVersion | sed -ne 's|univentionLicenseVersion: ||p')"
 
@@ -68,6 +73,7 @@ for m in "computers/linux" "computers/macos" "computers/managedclient" \
 			"computers/mobileclient" \
 			"computers/ubuntu" "computers/windows" \
 			"computers/windows_domaincontroller"; do
+
 	name="$(random_chars)"
 
 	oldValueManaged="$(getManagedClient)"
@@ -78,6 +84,8 @@ for m in "computers/linux" "computers/macos" "computers/managedclient" \
 	oldValueDVSClients="$(getDVSClients)"
 
 	createObject "$m" "$name"
+
+	wait_for_replication
 
 	newValueManaged="$(getManagedClient)"
 	newValueUsers="$(getUsers)"
@@ -98,6 +106,9 @@ done
 
 ### # These objects shouldn't be counted
 for m in "computers/ipmanagedclient"; do
+
+	name="$(random_chars)"
+
 	oldValueManaged="$(getManagedClient)"
 	oldValueUsers="$(getUsers)"
 	oldValueServers="$(getServers)"
@@ -106,6 +117,8 @@ for m in "computers/ipmanagedclient"; do
 	oldValueDVSClients="$(getDVSClients)"
 
 	createObject "$m" "$name"
+
+	wait_for_replication
 
 	newValueManaged="$(getManagedClient)"
 	newValueUsers="$(getUsers)"
@@ -124,9 +137,14 @@ for m in "computers/ipmanagedclient"; do
 	removeObject "$m" "$name"
 done
 
+ucr set --force ldap/master="$ldap_master"
+
 ### These objects should be counted as servers
 for m in "computers/memberserver" "computers/domaincontroller_slave" \
 			"computers/domaincontroller_backup" "computers/domaincontroller_master"; do
+
+	name="$(random_chars)"
+
 	oldValueManaged="$(getManagedClient)"
 	oldValueUsers="$(getUsers)"
 	oldValueServers="$(getServers)"
@@ -135,6 +153,8 @@ for m in "computers/memberserver" "computers/domaincontroller_slave" \
 	oldValueDVSClients="$(getDVSClients)"
 
 	createObject "$m" "$name"
+
+	wait_for_replication
 
 	newValueManaged="$(getManagedClient)"
 	newValueUsers="$(getUsers)"
@@ -152,5 +172,8 @@ for m in "computers/memberserver" "computers/domaincontroller_slave" \
 
 	removeObject "$m" "$name"
 done
+
+ucr unset --force ldap/master
+ucr set ldap/master="$ldap_master"
 
 exit "$RETVAL"

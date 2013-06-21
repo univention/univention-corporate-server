@@ -33,7 +33,7 @@ fi
 #----create Share
 echo "----create share"
 SHARE_POSITION="cn=shares,$ldap_base"
-/usr/sbin/univention-directory-manager shares/share create --position="$SHARE_POSITION" \
+udm-test shares/share create --position="$SHARE_POSITION" \
 	--set name="$sharename" \
 	--set path="/$sharename" \
 	--set host="$hostname.$domainname"
@@ -43,9 +43,9 @@ fi
 
 
 
-SHARE_DN="$(/usr/sbin/univention-directory-manager shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
+SHARE_DN="$(udm-test shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
 
-USER_DN="$(/usr/sbin/univention-directory-manager users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+USER_DN="$(udm-test users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 
 ## wait for user replication
 echo "----wait for user replication"
@@ -93,7 +93,7 @@ if [ $? != 0 ];then
 fi
 
 #----changing the folder's directorymode 
-/usr/sbin/univention-directory-manager shares/share modify --binddn "cn=admin,$ldap_base" --bindpwd "$(cat /etc/ldap.secret)" --dn "$SHARE_DN" --set "directorymode=0777"
+udm-test shares/share modify --binddn "cn=admin,$ldap_base" --bindpwd "$(cat /etc/ldap.secret)" --dn "$SHARE_DN" --set "directorymode=0777"
 
 #----making a folder
 echo "----making a folder with permission"
