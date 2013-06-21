@@ -10,7 +10,8 @@
 ##  - basic
 ##  - apptest
 ## versions:
-##  3.1-0: fixed
+##  3.1-1: skip
+##  3.2-0: fixed
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
