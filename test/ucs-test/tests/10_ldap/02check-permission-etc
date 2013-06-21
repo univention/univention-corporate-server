@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner python2.6
 ## desc: Check for filesystem permissions on ldap.secret, ldap-backup.secret, slave-join.secret
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup

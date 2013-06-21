@@ -8,6 +8,9 @@
 ##  - univention-samba4
 ##  - python-pexpect
 ## exposure: safe
+## tags:
+##  - basic
+##  - apptest
 
 import os
 import pexpect

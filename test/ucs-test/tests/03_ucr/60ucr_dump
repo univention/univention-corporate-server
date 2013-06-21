@@ -1,6 +1,9 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test Univention Config Registry dump
 ## bugs: [16637]
+## tags:
+##  - basic
+##  - apptest
 ## exposure: safe
 
 BASECONFIG=univention-baseconfig

@@ -1,7 +1,9 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test Univention Config Registry search
 ## bugs: [16637]
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## exposure: careful
 
 . "$TESTLIBPATH/ucr.sh" || exit 137

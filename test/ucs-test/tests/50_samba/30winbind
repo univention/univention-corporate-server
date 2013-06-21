@@ -5,7 +5,9 @@
 ##  - winbind
 ## roles-not:
 ## - basesystem
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137

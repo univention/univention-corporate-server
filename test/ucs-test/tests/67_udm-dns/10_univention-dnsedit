@@ -1,6 +1,9 @@
 #!/usr/share/ucs-test/runner bash 
 ## desc: "Test univention-dnsedit"
 ## exposure: dangerous
+## tags:
+##  - basic
+##  - apptest
 ## packages:
 ## - univention-directory-manager-tools
 ## roles:

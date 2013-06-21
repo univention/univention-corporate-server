@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check UCR layer priorities
-## tags: basic
+## tags:
+##  - basic
+##  - apptest
 ## bugs: [29632]
 ## exposure: careful
 

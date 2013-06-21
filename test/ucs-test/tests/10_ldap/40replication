@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: LDAP-replication to backup and slave
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave

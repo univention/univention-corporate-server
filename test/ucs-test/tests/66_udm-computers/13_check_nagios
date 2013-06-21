@@ -1,6 +1,9 @@
 #!/usr/share/ucs-test/runner bash 
 ## desc: "Check nagios for all computer roles"
 ## exposure: dangerous
+## tags:
+##  - basic
+##  - apptest
 ## packages:
 ## - univention-directory-manager-tools
 ## roles:

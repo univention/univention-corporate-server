@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create, check and remove PTR record
-## tags: [udm-dns]
+## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

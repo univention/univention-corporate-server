@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: DNS reverse zone, append and remove NS records
-## tags: [udm-dns]
+## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

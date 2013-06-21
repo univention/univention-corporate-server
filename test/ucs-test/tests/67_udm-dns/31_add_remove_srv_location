@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: DNS service record, append and remove locations
-## tags: [udm-dns]
+## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

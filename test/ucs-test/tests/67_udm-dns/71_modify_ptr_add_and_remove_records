@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: PTR record, append and remove entries
-## tags: [udm-dns]
+## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## bugs: [15822]

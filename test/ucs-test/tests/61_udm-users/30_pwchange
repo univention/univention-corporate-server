@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Mark the password of a user to be altered on next login
-## tags: [udm-users]
+## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

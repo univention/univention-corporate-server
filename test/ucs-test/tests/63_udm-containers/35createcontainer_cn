@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Testing the base functionality to create a CN
-## tags: [udm-containers]
+## tags: [udm-containers,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: DNS host, test setting, appending and removing TXT records
-## tags: [udm-dns]
+## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [15654]
 ## exposure: careful

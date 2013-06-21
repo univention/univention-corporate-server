@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check whether a simple-auth-account appears in the license-check
-## tags: [udm-users]
+## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## Bugs: [13721]
 ## exposure: careful

@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Checking function of ldap group to file
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## roles-not: [basesystem]
 ## packages:
 ##  - univention-ldap-server

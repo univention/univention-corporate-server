@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Try to use one mailaddress two times
-## tags: [udm-users]
+## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

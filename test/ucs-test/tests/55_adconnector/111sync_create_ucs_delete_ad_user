@@ -3,6 +3,9 @@
 ## exposure: dangerous
 ## packages:
 ## - univention-ad-connector
+## tags:
+##  - basic
+##  - apptest
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137

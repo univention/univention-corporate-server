@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create DNS forward zone with many attribute and check if the resulting SOA record is correct
-## tags: [udm-dns]
+## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

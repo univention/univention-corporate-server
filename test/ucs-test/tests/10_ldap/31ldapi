@@ -1,6 +1,9 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Try to bind to ldapi as normal user (Bug #10529)
 ## bugs: [10529]
+## tags:
+##  - basic
+##  - apptest
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup

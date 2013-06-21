@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test whether creating a PTR record with forward zone as superordinate is possible (which should not)
-## tags: [udm-dns]
+## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [15660]
 ## exposure: careful

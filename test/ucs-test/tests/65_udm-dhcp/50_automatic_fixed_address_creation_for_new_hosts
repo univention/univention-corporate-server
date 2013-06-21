@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test if UDM correctly creates a DHCP host object when a computer object with given dhcpEntryZone is created
-## tags: [udm-test]
+## tags: [udm-test,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

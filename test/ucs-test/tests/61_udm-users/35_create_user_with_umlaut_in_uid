@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 # -*- coding: utf-8 -*-
 ## desc: Create user with umlaut in username
-## tags: [udm-users]
+## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## Bugs: [11415]

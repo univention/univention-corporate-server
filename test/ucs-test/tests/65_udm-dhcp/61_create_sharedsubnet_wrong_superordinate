@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create DHCP shared subnet with wrong superordinate
-## tags: [udm-dhcp]
+## tags: [udm-dhcp,apptest]
 ## bugs: [31519]
 ## roles: [domaincontroller_master]
 ## exposure: careful

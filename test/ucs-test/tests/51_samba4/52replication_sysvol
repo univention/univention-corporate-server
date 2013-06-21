@@ -5,7 +5,9 @@
 ##  - univention-samba4
 ## roles:
 ## - domaincontroller_master
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 
 . "$TESTLIBPATH/shares.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137

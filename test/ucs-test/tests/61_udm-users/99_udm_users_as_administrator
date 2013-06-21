@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Try excecuting udm users/user list as Administrator
-## tags: [udm-users]
+## tags: [udm-users,apptest]
 ## roles:
 ##   - domaincontroller_master
 ##   - domaincontroller_backup

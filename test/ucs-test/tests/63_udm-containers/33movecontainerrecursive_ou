@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the base functionality to move an OU recursively
-## tags: [udm-containers]
+## tags: [udm-containers,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

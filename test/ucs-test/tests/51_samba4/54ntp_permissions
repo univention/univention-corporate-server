@@ -9,6 +9,9 @@
 ## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
+## tags:
+##  - basic
+##  - apptest
 
 . "$TESTLIBPATH/base.sh" || exit 137
 

@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check listener functionality
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## roles-not: [basesystem]
 ## packages:
 ##  - univention-directory-listener

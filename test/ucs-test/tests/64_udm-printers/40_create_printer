@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Testing the basic functionality to create a printer and rename it
-## tags: [udm-printers]
+## tags: [udm-printers,apptest]
 ## roles:
 ##   - domaincontroller_master
 ##   - domaincontroller_slave

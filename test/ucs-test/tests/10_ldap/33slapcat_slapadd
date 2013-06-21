@@ -1,5 +1,8 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Testing slapcat and slapadd
+## tags:
+##  - basic
+##  - apptest
 ## packages:
 ##  - univention-ldap-server
 ##  - univention-config-registry

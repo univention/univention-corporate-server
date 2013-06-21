@@ -9,7 +9,9 @@
 ## roles-not: 
 ## - basesystem
 ## - memberserver
-## tags: [basic]
+## tags:
+##  - basic
+##  - apptest
 ## join: true
 
 . "$TESTLIBPATH/base.sh" || exit 137
