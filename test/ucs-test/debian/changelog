@@ -1,3 +1,10 @@
+ucs-test (3.0.30-6) unstable; urgency=low
+
+  * Merge from UCS 3.2 (4.0.21-1)
+    * Skip some tests in app center environment (Bug #31785)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 23 Jun 2013 10:03:11 +0200
+
 ucs-test (3.0.30-5) unstable; urgency=low
 
   * Merge from UCS 3.2 (4.0.20-2)
