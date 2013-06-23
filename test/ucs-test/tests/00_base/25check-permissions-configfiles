@@ -2,7 +2,6 @@
 ## desc: Check permissions of config files
 ## tags:
 ##  - basic
-##  - apptest
 ## tags: [basic]
 ## exposure: safe
 ## packages: [univention-kolab2-webclient]
