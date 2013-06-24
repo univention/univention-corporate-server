@@ -403,10 +403,24 @@ def _print_done(msg='done'):
 
 
 class Parser(ConfigParser.ConfigParser):
+	def set_filename(self, filename):
+		self._filename = filename
+
 	def hosts(self):
 		''' Gives a list of all sections expect Global '''
-		hosts = self.sections()
-		hosts.remove('Global')
+		hosts = []
+		fp = open(self._filename, 'r')
+		while True:
+			line = fp.readline()
+			if not line:
+				break
+			if line.strip() == '' or line[0] in '#;':
+				continue
+			mo = ConfigParser.ConfigParser.SECTCRE.match(line)
+			if mo:
+				sectname = mo.group('header')
+				if sectname != 'Global':
+					hosts.append(sectname)
 		return hosts
 
 def main():
@@ -431,6 +445,7 @@ def main():
 
 	# config parser
 	config = Parser()
+	config.set_filename(options.config_file)
 	config.read(options.config_file)
 	_print_done()
 
