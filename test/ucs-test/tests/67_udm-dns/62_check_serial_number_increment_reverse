@@ -9,10 +9,9 @@
 
 
 
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 
 if __name__ == '__main__':
@@ -27,26 +26,18 @@ if __name__ == '__main__':
 		'ttl': '16',
 		'retry': '8'
 	}
-	subnet = reverseZoneProperties['subnet'].split('.')
-	subnet.reverse()
-	subnet = '%s.in-addr.arpa' % '.'.join(subnet)
-	expectedSOASerial = str( int(reverseZoneProperties['serial'])+1 )
-
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(zoneName=%s)(objectClass=dNSZone)(relativeDomainName=@))' % subnet
 	
 	with udm_test.UCSTestUDM() as udm:
 		reverseZone = udm.create_object('dns/reverse_zone', **reverseZoneProperties)
-		udm.modify_object('dns/reverse_zone', dn = reverseZone, zonettl='12')
-		foundSOASerial = ldap.search(filter = ldapFilter, attr = ['sOARecord'])[0][1]['sOARecord'][0].split()[2]
-		if foundSOASerial != expectedSOASerial:
-			test.fail('Expected SOA serial of the created reverse zone to be "%s" after modification of reverse zone\'s "zonettl", but found "%s" instead' % (expectedSOASerial, foundSOASerial))
+		reverseZoneProperties['ttl'] = '12'
+		udm.modify_object('dns/reverse_zone', dn = reverseZone, ttl = reverseZoneProperties['ttl'])
 
-
-
-
-
-
-
-
-						
+		if not utils.verify_ldap_object(reverseZone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (reverseZoneProperties['nameserver'],
+											   reverseZoneProperties['contact'].replace('@', '.'),
+											   '2',
+											   reverseZoneProperties['refresh'],
+											   reverseZoneProperties['retry'],
+											   reverseZoneProperties['expire'],
+											   reverseZoneProperties['ttl'])]
+		}):
+			utils.fail()

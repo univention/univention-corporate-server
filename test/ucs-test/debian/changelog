@@ -1,3 +1,37 @@
+ucs-test (4.0.24-1) unstable; urgency=low
+
+  * moved contents from ldap.py and __init__.py to utils.py
+  * added copyright header to utils.py
+  * added function to verify that a certain DN exists (and optionally whether
+  	it's attributes are set correctly) to utils.py
+  * by default, wait for ldap replication when creating objects via UDM-CLI
+  	interface in udm.py
+  (Bug #31766)
+
+  * as user objects are not anymore automatically verified due LDAP call when created
+  	via UDM-CLI API, do so in every single udm-users test case, using the
+  	newly added function verify_ldap_object() from ldap.py
+  * modified test descriptions in certain udm-users tests
+  * removed test for presence of "univention-ox" from udm-users tests
+  (Bug #31652)
+
+  * also use verify_ldap_object() in udm-printers, udm-containers, udm-dhcp,
+  	udm-net and udm-dns tests, instead of verifying objects
+  	manually
+  (Bug #31653, Bug #31654, Bug #31655, Bug #31656, Bug #31658)
+
+  * do not return DN in udm.py.UCSTestUDM().move_object()
+  * removed automatic LDAP object validation from user creation interface in
+  	udm.py
+  * when creating users, also add a default first name
+  (Bug #30560)
+
+  * skip test
+    68_udm-extentedattribute/62_check_multivalue_extented_attribute_required
+  (Bug #31302)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 24 Jun 2013 09:23:00 +0200
+
 ucs-test (4.0.23-2) unstable; urgency=low
 
   * 03/61: do not check for additional lines (Bug #31795)

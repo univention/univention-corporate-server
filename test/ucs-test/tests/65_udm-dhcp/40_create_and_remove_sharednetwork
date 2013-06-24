@@ -9,26 +9,19 @@
 
 
 
-import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 
 if __name__ == '__main__':
-	dhcpSharedNetworkName = uts.random_name()
-	
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(cn=%s)(objectClass=dhcpSharedNetwork))' % dhcpSharedNetworkName
-
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
-		dhcpSharedNetwork = udm.create_object('dhcp/shared', name = dhcpSharedNetworkName, superordinate = dhcpService)
+		dhcpSharedNetwork = udm.create_object('dhcp/shared', name = uts.random_name(), superordinate = dhcpService)
 
-		if not dhcpSharedNetwork in ldap.searchDn(base = dhcpService, filter = ldapFilter):
-			test.fail('Could not find created DHCP shared network "%s" in LDAP' % dhcpSharedNetwork)
+		if not utils.verify_ldap_object(dhcpSharedNetwork):
+			utils.fail()
 
 		udm.remove_object('dhcp/shared', dn = dhcpSharedNetwork, superordinate = dhcpService)
-		if dhcpSharedNetwork in ldap.searchDn(base = dhcpService, filter = ldapFilter):
-			test.fail('Could still find created DHCP shared network "%s" in LDAP after it should have been removed' % dhcpSharedNetwork)
+		if utils.verify_ldap_object(dhcpSharedNetwork):
+			utils.fail('Could still find created DHCP shared network "%s" in LDAP after it should have been removed' % dhcpSharedNetwork)

@@ -8,9 +8,7 @@
 ##   - univention-directory-manager-tools
 
 
-import sys
-import univention.testing as test
-import univention.uldap as uldap
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
@@ -25,12 +23,7 @@ if __name__ == '__main__':
 
 		udm.move_object('container/cn', dn = cn, position = cn2)
 		udm.move_object('container/cn', dn = cn2, position = cn3)
-
 		expectedDN = 'cn=%s,cn=%s,%s' % (cnName, cn2Name, cn3)
-		ldap = uldap.getAdminConnection()
-		result = ldap.searchDn(base = ','.join(expectedDN.split(',')[1:]), filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName)
-		for dn in result:
-			if dn == expectedDN:
-				sys.exit(0)
 
-		test.fail('Expected created CN to be at "%s" after moving, but could not be found there' % expectedDN)
+		if not utils.verify_ldap_object(expectedDN):
+			utils.fail('Expected created CN to be at "%s" after moving, but could not be found there' % expectedDN)

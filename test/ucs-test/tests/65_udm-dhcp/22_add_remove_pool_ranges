@@ -9,37 +9,23 @@
 
 
 
-import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 
 if __name__ == '__main__':
-	dhcpPoolName = uts.random_string()
-	dhcpRanges = ['10.20.30.1 10.20.30.5', '10.20.30.6 10.20.30.10']	
-	moreDhcpRanges = ['10.20.30.11 10.20.30.15', '10.20.30.16 10.20.30.20', '10.20.30.21 10.20.30.25', '10.20.30.26 10.20.30.30']
-
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpPool))' % dhcpPoolName
+	dhcpRanges = ['10.20.30.11 10.20.30.15', '10.20.30.16 10.20.30.20', '10.20.30.21 10.20.30.25', '10.20.30.26 10.20.30.30']
 
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
 		dhcpSubnet = udm.create_object('dhcp/subnet', subnet = '10.20.30.0', subnetmask = '24', superordinate = dhcpService)
-		dhcpPool = udm.create_object('dhcp/pool', name = dhcpPoolName, range = dhcpRanges, superordinate = dhcpSubnet)
+		dhcpPool = udm.create_object('dhcp/pool', name = uts.random_string(), range = dhcpRanges[:2], superordinate = dhcpSubnet)
 		
-		udm.modify_object('dhcp/pool', dn = dhcpPool, append = {'range': moreDhcpRanges})
+		udm.modify_object('dhcp/pool', dn = dhcpPool, append = {'range': dhcpRanges[2:]})
+		if not utils.verify_ldap_object(dhcpPool, {'dhcpRange': dhcpRanges}):
+			utils.fail()
 
-		result = ldap.search(base = dhcpSubnet, filter = ldapFilter, attr = ['dhcpRange'])[0][1].get('dhcpRange', [])
-		for dhcpRange in dhcpRanges+moreDhcpRanges:
-			if not dhcpRange in result:
-				test.fail('Test FAILED. Expected "dhcpRange" attribute of created DHCP pool to contain "%s" after appending it, but could not find it in there\n"dhcpRange": %r' % (dhcpRange, result))
-
-		udm.modify_object('dhcp/pool', dn = dhcpPool, remove = {'range': dhcpRanges})
-
-		result = ldap.search(base = dhcpSubnet, filter = ldapFilter, attr = ['dhcpRange'])[0][1].get('dhcpRange', [])
-		for dhcpRange in dhcpRanges:
-			if dhcpRange in result:
-				test.fail('"dhcpRange" attribute of created DHCP pool still contained value "%s" after it should have been removed\n"dhcpRange": %r' % (dhcpRange, result))
-
+		udm.modify_object('dhcp/pool', dn = dhcpPool, remove = {'range': dhcpRanges[:2]})
+		if not utils.verify_ldap_object(dhcpPool, {'dhcpRange': dhcpRanges[2:]}):
+			utils.fail()

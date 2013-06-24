@@ -9,11 +9,9 @@
 
 
 
-import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 
 if __name__ == '__main__':
@@ -29,26 +27,14 @@ if __name__ == '__main__':
 		'retry': '8'
 	}
 
-	expectedSOARecord = ['%s %s. %s %s %s %s %s' % (reverseZoneProperties['nameserver'],
+	with udm_test.UCSTestUDM() as udm:
+		reverseZone = udm.create_object('dns/reverse_zone', **reverseZoneProperties)
+		if not utils.verify_ldap_object(reverseZone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (reverseZoneProperties['nameserver'],
 											   reverseZoneProperties['contact'].replace('@', '.'),
 											   reverseZoneProperties['serial'],
 											   reverseZoneProperties['refresh'],
 											   reverseZoneProperties['retry'],
 											   reverseZoneProperties['expire'],
 											   reverseZoneProperties['ttl'])]
-	ldap = uldap.getAdminConnection()
-	with udm_test.UCSTestUDM() as udm:
-		reverseZone = udm.create_object('dns/reverse_zone', **reverseZoneProperties)
-		zoneName = reverseZoneProperties['subnet'].split('.')
-		zoneName.reverse()
-		zoneName = '%s.in-addr.arpa' % '.'.join(zoneName)
-
-		for dn, attr in ldap.search(filter = '(&(zoneName=%s)(objectClass=dNSZone)(relativeDomainName=@))' % zoneName
-, attr = ['sOARecord']):
-			if dn == reverseZone:
-				if attr['sOARecord'] != expectedSOARecord:
-					test.fail('Expected "sOAREcord" of created DNS reverse zone to be %r, but found %r instead' % (expectedSOARecord, attr['sOARecord']))
-				sys.exit(0)
-		
-		test.fail('Could not find created DNS reverse zone "%s" in LDAP' % reverseZone)
-
+		}):
+			utils.fail()

@@ -11,18 +11,16 @@
 
 import sys
 import traceback
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
 if __name__ == '__main__':
 	sys.exit(131) # SKIP for now
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
 
 	with udm_test.UCSTestUDM() as udm:
 		try:
 			user = udm.create_user(primaryGroup = 'cn=Domain Admins,cn=groups,%s' % udm.ucr['ldap/base'], options = ['samba', 'person', 'mail', 'kerberos'])
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed as ex:
-			test.fail('See Bug #30932:\n%s' % traceback.format_exc(ex), 121)
+			utils.fail('See Bug #30932:\n%s' % traceback.format_exc(ex), 121)
 
 

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Try to use one uid two times
+## desc: Try to use one uid two times (should not be possible)
 ## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -9,14 +9,11 @@
 
 import sys
 import random
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
-
 	uid = str( random.randint(3000, 5000) )
 	with udm_test.UCSTestUDM() as udm:
 		udm.create_user(uidNumber = uid)
@@ -25,4 +22,4 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 
-	test.fail('Successfully created an user with an "uid" which is already in use, which should not be possible')
+	utils.fail('Successfully created an user with an "uid" which is already in use, which should not be possible')

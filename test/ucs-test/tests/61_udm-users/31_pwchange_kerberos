@@ -7,23 +7,17 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import sys
 import time
-import univention.testing as test
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 
 if __name__ == '__main__':
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
-
 	date = time.gmtime( time.time() )
 	with udm_test.UCSTestUDM() as udm:
-		user = udm.create_user(options = ['kerberos', 'person'])
-		udm.modify_object('users/user', dn = user[0], pwdChangeNextLogin = '1')
+		user = udm.create_user(options = ['kerberos', 'person'])[0]
+		udm.modify_object('users/user', dn = user, pwdChangeNextLogin = '1')
 	
-		krbPasswordEnd = udm.lo.search(filter = '(uid=%s)' % user[1], attr = ['krb5PasswordEnd'])[0][1]['krb5PasswordEnd'][0]
-		expectedKrbPasswordEnd = time.strftime('%Y%m%d', date) + '000000Z'
-		if krbPasswordEnd != expectedKrbPasswordEnd:
-			test.fail('"krb5PasswordEnd" of %s was expected to be "%s", but "%s" was found.' % (user[0], expectedKrbPasswordEnd, krbPasswordEnd))
+		if not utils.verify_ldap_object(user, {'krb5PasswordEnd': [time.strftime('%Y%m%d', date) + '000000Z']}):
+			utils.fail()
 

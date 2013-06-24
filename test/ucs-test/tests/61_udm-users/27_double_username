@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Try to use one username two times
+## desc: Try to use one username two times (should not be possible)
 ## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -9,14 +9,11 @@
 
 
 import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 if __name__ == '__main__':
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
-
 	with udm_test.UCSTestUDM() as udm:
 		name = udm.create_user()[1]
 		try:
@@ -24,4 +21,4 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 
-	test.fail(' Successfully created an user with an username which is already in use, which should not be possible')
+	utils.fail('Successfully created an user with an username which is already in use, which should not be possible')

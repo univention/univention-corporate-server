@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test whether creating a service record with reverse zone as superordinate is possible (which should not)
+## desc: Test whether creating a service record with reverse zone as superordinate is possible (should not be possible)
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [15660]
@@ -11,7 +11,7 @@
 
 
 import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.uldap as uldap
@@ -30,4 +30,4 @@ if __name__ == '__main__':
 
 		ldap = uldap.getAdminConnection()
 		ldap.delete(srvRecord)
-		test.fail('UDM did not report an error while trying to create an service record with reverse zone as superordinate')
+		utils.fail('UDM did not report an error while trying to create an service record with reverse zone as superordinate')
