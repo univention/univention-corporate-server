@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.7-1) unstable; urgency=low
+
+  * Read config in defined order (Bug #31283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Jun 2013 09:27:23 +0200
+
 ucs-ec2-tools (0.1.6-1) unstable; urgency=low
 
   * Set updater/identify to UCS (EC2 Test) (Bug #31283)
