@@ -80,8 +80,12 @@ for FS in xfs ext2 ext3 ext4; do
 
 	wait_for_replication_and_postrun
 
-	# wait for samba reload and group-to-file
-	sleep 5
+	# wait until the share is ready
+	for((i=0;i<60;i++)); do
+		if smbcquotas -u $user -U ${account}%${tests_domainadmin_pwd} //$hostname/$share; then
+			break
+		fi
+	done
 
 	if [ "${FS}" != "xfs" ]; then
 		quotacheck -u "$mountpoint" || fail_test 110

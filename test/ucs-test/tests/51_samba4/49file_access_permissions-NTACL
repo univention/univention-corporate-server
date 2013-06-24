@@ -26,6 +26,7 @@ sharename="$(random_share)"
 trap 'user_remove "$username";
 share_remove "$sharename";
 rm -rf "/${sharename:?}";
+wait_for_replication_and_postrun;
 ' INT TERM EXIT
 if ! user_create "$username"; then
 	fail_fast 1 "User could not be created"
