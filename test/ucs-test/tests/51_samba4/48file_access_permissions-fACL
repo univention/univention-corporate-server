@@ -25,7 +25,7 @@ username2="$(user_randomname)"
 password="univention"
 sharename="$(random_share)"
 
-trap 'user_remove "$username";user_remove "$username2";share_remove $sharename;rm -rf "/${sharename:?}"' INT TERM EXIT
+trap 'user_remove "$username";user_remove "$username2";share_remove $sharename; wait_for_replication_and_postrun; rm -rf "/${sharename:?}"' INT TERM EXIT
 if ! user_create "$username"; then
 	fail_fast 1 "Could not create user $username."
 fi
