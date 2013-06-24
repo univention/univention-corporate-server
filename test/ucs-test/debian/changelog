@@ -1,3 +1,12 @@
+ucs-test (4.0.28-1) unstable; urgency=low
+
+  * Check that Default Domain GPOs are not writable for Domain
+    Users  (Bug #31776)
+  * Check that the filesystem ownership of the Default Domain
+    GPO is okay (Bug #31777)
+
+ -- Tobias Peters <peters@univention.de>  Thu, 24 Jun 2013 15:22:23 +0200
+	
 ucs-test (4.0.27-1) unstable; urgency=low
 
   * Fix 30winbind on DC Master (Bug #31772)
