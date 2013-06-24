@@ -1,3 +1,17 @@
+ucs-test (4.0.25-1) unstable; urgency=low
+
+  * skip test
+    68_udm-extentedattribute/62_check_multivalue_extented_attribute_required
+  (Bug #31302)
+
+  * do not return DN in udm.py.UCSTestUDM().move_object()
+  * removed automatic LDAP object validation from user creation interface in
+  	udm.py
+  * when creating users, also add a default first name
+  (Bug #30560)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 24 Jun 2013 11:51:22 +0200
+
 ucs-test (4.0.24-1) unstable; urgency=low
 
   * moved contents from ldap.py and __init__.py to utils.py
@@ -19,16 +33,6 @@ ucs-test (4.0.24-1) unstable; urgency=low
   	udm-net and udm-dns tests, instead of verifying objects
   	manually
   (Bug #31653, Bug #31654, Bug #31655, Bug #31656, Bug #31658)
-
-  * do not return DN in udm.py.UCSTestUDM().move_object()
-  * removed automatic LDAP object validation from user creation interface in
-  	udm.py
-  * when creating users, also add a default first name
-  (Bug #30560)
-
-  * skip test
-    68_udm-extentedattribute/62_check_multivalue_extented_attribute_required
-  (Bug #31302)
 
  -- Lukas Walter <walter@univention.de>  Mon, 24 Jun 2013 09:23:00 +0200
 
