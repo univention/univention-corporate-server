@@ -9,9 +9,7 @@
 
 
 
-import sys
-import univention.testing as test
-import univention.uldap as uldap
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
@@ -19,12 +17,10 @@ import univention.testing.strings as uts
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		ouName = uts.random_string()
-		ou = udm.create_object('container/ou', name = ouName)
-		
 		ouDescription = uts.random_string()
-		udm.modify_object('container/ou', dn = ou, description = ouDescription)
 		
-		ldap = uldap.getAdminConnection()
-		setOuDescription = ldap.search(filter = '(&(ou=%s)(objectClass=organizationalUnit))' % ouName, attr = ['description'])[0][1].get('description', [])
-		if setOuDescription != [ouDescription]:
-			test.fail('Expected "description" of created OU to be %r after modification, but found %r instead' % ([ouDescription], setOuDescription))
+		ou = udm.create_object('container/ou', name = ouName)
+		udm.modify_object('container/ou', dn = ou, description = ouDescription)
+	
+		if not utils.verify_ldap_object(ou, {'description': [ouDescription]}):
+			utils.fail()

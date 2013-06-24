@@ -9,11 +9,9 @@
 
 
 
-import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 if __name__ == '__main__':
 	dhcpSubnetProperties = {
@@ -23,14 +21,14 @@ if __name__ == '__main__':
 		'range': '10.20.30.1 10.20.30.254'
 	}
 
-	ldapMapping = {'cn':'subnet', 'dhcpNetMask':'subnetmask', 'univentionDhcpBroadcastAddress':'broadcastaddress', 'dhcpRange':'range'}
-	ldapFilter = '(&(cn=10.20.30.0)(objectClass=univentionDhcpSubnet))'
-	ldap = uldap.getAdminConnection()
-
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
 		dhcpSubnet = udm.create_object('dhcp/subnet', superordinate = dhcpService, **dhcpSubnetProperties)
 
-		for attr, value in ldap.search(base = dhcpService, filter = ldapFilter, attr = ldapMapping.values())[0][1].items():
-			if value != [dhcpSubnetProperties[ldapMapping[attr]]]:
-				test.fail('Expected "%s" of created DHCP subnet to be %r, but found %r instead' % (attr, [dhcpSubnetProperties[ldapMapping[attr]]], value))
+		if not utils.verify_ldap_object(dhcpSubnet, {
+			'cn': [dhcpSubnetProperties['subnet']],
+			'dhcpNetMask': [dhcpSubnetProperties['subnetmask']],
+			'univentionDhcpBroadcastAddress': [dhcpSubnetProperties['broadcastaddress']],
+			'dhcpRange': [dhcpSubnetProperties['range']]
+		}):
+			utils.fail()

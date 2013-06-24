@@ -62,7 +62,8 @@ fi
 ##Put a file on sysvol as Administrator
 echo "----Put a file on sysvol as Administrator"
 output="$(smbclient //localhost/sysvol -U"$ADMINISTRATOR_NAME%$ADMINISTRATOR_PASSWORD" -c "put /etc/hosts $domainname/t1" 2>&1)"
-if [ $? != 0 ]; then
+echo "$output"
+if [ "$?" != 0 ]; then
 	echo "$output"
 	fail_test 1 "Could not put file on sysvol as Administrator"
 fi
@@ -70,7 +71,7 @@ fi
 ##Access the folder Policies on sysvol as a user
 echo "----Access the folder Policies on sysvol as a user"
 output="$(smbclient //localhost/sysvol -U"$username%$password" -c "ls $domainname/Policies" 2>&1)"
-if [ $? != 0 ]; then
+if [ "$?" != 0 ]; then
 	echo "$output"
 	fail_test 1 "Could not access Policies on sysvol as a user"
 fi
@@ -78,9 +79,43 @@ fi
 ##Put a file in the folder Policies on sysvol as a user
 echo "----Put a file in the folder Policies on sysvol as a user"
 output="$(smbclient //localhost/sysvol -U"$username%$password" -c "put /etc/hosts $domainname/t1"  2>&1)"
-if [ $? = 0 ]; then
+if [ "$?" = 0 ]; then
 	echo "$output"
 	fail_test 1 "Successfully put a file on sysvol as a user"
 fi
+
+
+##Replace GPT.ini of the default domain policies as a user
+echo "----Replace GPT.ini of the default domain policies as a user"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "cd $domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9};get GPT.INI /tmp/GPT.INI;put /tmp/GPT.INI GPT.INI" 2>&1)"
+if [ "$?" = 0 ]; then
+	echo "$output"
+	fail_test 1 "GPT.ini of the default domain policies could be replaced"
+fi
+
+##Remove GPT.ini of the default domain policies as a user
+echo "----Remove GPT.ini of the default domain policies as a user"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "cd $domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9};rm GPT.INI" 2>&1)"
+if [ "$?" = 0 ]; then
+	echo "$output"
+	fail_test 1 "GPT.ini of the default domain policies could be removed"
+fi
+
+##Put a file in the Machine folder of the default domain policies as a user
+echo "----Put a file in the Machine folder of the default domain policies as a user"
+output="$(smbclient //localhost/sysvol -U"$username%$password" -c "put /etc/hosts $domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/MACHINE/hosts"  2>&1)"
+if [ "$?" = 0 ]; then
+	echo "$output"
+	fail_test 1 "Successfully put a file in the machines folder of the default domain policy as a user"
+fi
+
+##Check that the file ownership of the default domain policy is okay
+echo "----Check that the file ownership of the default domain policy is okay"
+output="$(stat --printf '%U' "/var/lib/samba/sysvol/$domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}" 2>&1)"
+if [ "$output" != "Administrator" ]; then
+	echo "$output"
+	fail_test 1 "The file ownership of the default domain policy is not okay"
+fi
+
 
 exit $RETVAL

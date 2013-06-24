@@ -9,16 +9,12 @@
 ##   - univention-directory-manager-tools
 
 
-import sys
 import subprocess
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
-
 	license_check = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE)
 	license_check.wait()
 	license_before = license_check.stdout.read()
@@ -31,5 +27,5 @@ if __name__ == '__main__':
 	license_after = license_check.stdout.read()
 
 	if license_before != license_after:
-		test.fail('The license before creating a simple-auth user ("%s") differs from the license after creating the user ("%s").' % (license_before, license_after))
+		utils.fail('The license before creating a simple-auth user differs from the license after creating the user\nLicense before: %s\nLicense after: %s' % (license_before, license_after))
 	

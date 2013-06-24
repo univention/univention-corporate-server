@@ -10,33 +10,21 @@
 
 
 
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 
 if __name__ == '__main__':
-	forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
-	NSrecords = (uts.random_string(), uts.random_string(), uts.random_string())
-
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(zoneName=%s)(relativeDomainName=@)(objectClass=dNSZone))' % forwardZoneName
+	NSrecords = [uts.random_string(), uts.random_string(), uts.random_string()]
 
 	with udm_test.UCSTestUDM() as udm:
-		forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = NSrecords[0])
+		forwardZone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = NSrecords[0])
 		
 		udm.modify_object('dns/forward_zone', dn = forwardZone, append = {'nameserver': NSrecords[1:]})
-		foundNSrecords = ldap.search(filter = ldapFilter, attr = ['nSRecord'])[0][1].get('nSRecord', [])
-		for NSrecord in NSrecords:
-			if not NSrecord in foundNSrecords:
-				test.fail('Expected "nSRecord" attribute of DNS forward zone to contain "%s", but could not find it in there\n"nSRecord": %r' % (NSrecord, foundNSrecords))
+		if not utils.verify_ldap_object(forwardZone, {'nSRecord': NSrecords}):
+			utils.fail()
 		
 		udm.modify_object('dns/forward_zone', dn = forwardZone, remove = {'nameserver': NSrecords[:2]})
-		foundNSrecords = ldap.search(filter = ldapFilter, attr = ['nSRecord'])[0][1].get('nSRecord', [])
-		for NSrecord in NSrecords[:2]:
-			if NSrecords in foundNSrecords:
-				test.fail('"nSRecord" attribute of DNS forward zone still contained "%s" after the value should have been removed\n"nSRecord": %r' % (NSrecord, foundNSrecords))
-
-		if not NSrecords[2] in foundNSrecords:
-			test.fail('Removing the values %r from "nSRecord" attribute of DNS forward zone also lead to the removal of value "%s" from the attribute\n"nSRecord": ' % (NSrecords[:2], NSrecords[2], foundNSrecords))
+		if not utils.verify_ldap_object(forwardZone, {'nSRecord': NSrecords[2:]}):
+			utils.fail()

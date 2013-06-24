@@ -9,25 +9,18 @@
 
 
 
-import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 if __name__ == '__main__':
-	hostName = uts.random_name()
-
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpHost))' % hostName
-	
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
-		dhcpHost = udm.create_object('dhcp/host', superordinate = dhcpService, host = hostName, hwaddress = 'ethernet 01:ff:78:38:ab:24', fixedaddress = '10.20.30.40')
+		dhcpHost = udm.create_object('dhcp/host', superordinate = dhcpService, host = uts.random_name(), hwaddress = 'ethernet 01:ff:78:38:ab:24', fixedaddress = '10.20.30.40')
 		
-		if not dhcpHost in ldap.searchDn(base = dhcpService, filter = ldapFilter):
-			test.fail('Could not find created DHCP host "%s" in LDAP' % dhcpHost)
-
+		if not utils.verify_ldap_object(dhcpHost):
+			utils.fail()
+		
 		udm.remove_object('dhcp/host', dn = dhcpHost, superordinate = dhcpService)
-		if dhcpHost in ldap.searchDn(base = dhcpService, filter = ldapFilter):
-			test.fail('Could stil find DHCP host "%s" in LDAP after it should have been removed' % dhcpHost)
+		if utils.verify_ldap_object(dhcpHost):
+			utils.fail('Could still find DHCP host "%s" in LDAP after it should have been removed' % dhcpHost)

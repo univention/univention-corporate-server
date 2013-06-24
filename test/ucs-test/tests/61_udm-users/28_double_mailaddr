@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Try to use one mailaddress two times
+## desc: Try to use one mailaddress two times (should not be possible)
 ## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -8,15 +8,12 @@
 ##   - univention-directory-manager-tools
 
 import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 
 if __name__ == '__main__':
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
-
 	mailDomainName = '%s.%s' % (uts.random_name(), uts.random_name())
 	emailaddr = uts.random_name()
 	with udm_test.UCSTestUDM() as udm:
@@ -27,6 +24,6 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 
-	test.fail('Successfully created an user with a "mailPrimaryAddres" which is already in use, which should not be possible.')
+	utils.fail('Successfully created an user with a "mailPrimaryAddres" which is already in use, which should not be possible.')
 	
 

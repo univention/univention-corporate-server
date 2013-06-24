@@ -1,3 +1,31 @@
+# Copyright 2013 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+
 # vim: set fileencoding=utf-8 ft=python sw=4 ts=4 et :
 """Common functions for test finding and setup."""
 import sys
@@ -5,6 +33,12 @@ import re
 import os
 import operator
 import logging
+import subprocess
+import ldap
+import time
+
+import univention.config_registry
+import univention.uldap as uldap
 
 __all__ = ['TEST_BASE', 'LOG_BASE', 'setup_environment', 'setup_debug',
 		'strip_indent', 'get_sections', 'get_tests', 'UCSVersion']
@@ -14,6 +48,95 @@ RE_SECTION = re.compile(r'^[0-9]{2}_(.+)$')
 RE_PREFIX = re.compile(r'^[0-9]{2}(.+)')
 RE_SUFFIX = re.compile(r'\.lib$|\.sh$|\.py[co]?$|\.bak$|~$')
 LOG_BASE = '/var/log/univention/test_%d.log'
+
+
+
+
+class LDAPReplicationFailed(Exception):
+	pass
+
+
+def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	port = int(ucr.get('ldap/server/port', 7389))
+	binddn = ucr.get('tests/domainadmin/account', 'uid=Administrator,cn=users,%s' % ucr['ldap/base'])
+	bindpw = None
+	ldapServers = []
+	if ucr['ldap/server/name']:
+		ldapServers.append(ucr['ldap/server/name'])
+	if ucr['ldap/servers/addition']:
+		ldapServers.extend(ucr['ldap/server/addition'].split())
+
+	if pwdfile:
+		with open(ucr['tests/domainadmin/pwdfile']) as f:
+			bindpw = f.read().strip('\n')
+	else:
+		bindpw = ucr['tests/domainadmin/pwd']
+	
+	for ldapServer in ldapServers:
+		try:
+			return uldap.access(host=ldapServer, port=port, base=ucr['ldap/base'], binddn=binddn, bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+		except ldap.SERVER_DOWN():
+			pass
+	raise ldap.SERVER_DOWN()
+
+
+def verify_ldap_object(dn, expected_attr = {}):
+	if not dn:
+		print 'Could not find DN "%s" of object in LDAP'
+		return False
+
+	try:
+		dn, attr = get_ldap_connection().search(filter = '(objectClass=*)', base = dn, attr = expected_attr.keys())[0]
+	except ldap.NO_SUCH_OBJECT:
+		return False
+
+	for attribute, exptected_values in expected_attr.items():
+		found_values = attr.get(attribute, [])
+		for expected_value in exptected_values:
+			if not expected_value in found_values:
+				print 'Expected "%s" attribute of LDAP object to contain "%s", but could not find it in there.\n"%s": %r' % (attribute, expected_value, attribute, found_values)
+				return False
+		for found_value in found_values:
+			if not found_value in exptected_values:
+				print 'Found unexptected value "%s" in "%s" attribute of LDAP object.\n"%s": %r' % (found_value, attribute, attribute, found_values)
+				return False
+	return True
+
+
+def wait_for_replication():
+	print 'Waiting for replication:'
+	for i in range(0,300):
+		rc = subprocess.call('/usr/lib/nagios/plugins/check_univention_replication')
+		if rc == 0:
+			print 'Done: replication complete.'
+			return
+		time.sleep(1)
+
+	print 'Error: replication incomplete.'
+	raise LDAPReplicationFailed()
+
+
+def wait_for_replication_and_postrun ():
+	wait_for_replication ()
+	print "Waiting for postrun"
+	time.sleep(17)
+
+
+def package_installed(package):
+	with open('/dev/null', 'w') as null:
+		dpkg = subprocess.Popen(['dpkg-query', '-W', package], stderr=null)
+		return dpkg.wait() == 0
+
+
+
+def fail(log_message = None, returncode = 1):
+	print 'Test FAILED'
+	if log_message:
+		print log_message
+	sys.exit(returncode)
 
 
 def setup_environment():

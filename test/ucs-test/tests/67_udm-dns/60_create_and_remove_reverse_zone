@@ -9,22 +9,17 @@
 
 
 
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 
 if __name__ == '__main__':
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(zoneName=30.20.10.in-addr.arpa)(objectClass=dNSZone))'
-
 	with udm_test.UCSTestUDM() as udm:
 		reverseZone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string())
-
-		if not reverseZone in ldap.searchDn(filter = ldapFilter):
-			test.fail('Could not find created DNS reverse zone "%s" in LDAP' % reverseZone)
+		if not utils.verify_ldap_object(reverseZone):
+			utils.fail()
 
 		udm.remove_object('dns/reverse_zone', dn = reverseZone)
-		if reverseZone in ldap.searchDn(filter = ldapFilter):
-			test.fail('Could still find DNS reverse zone "%s" in LDAP after it should have been removed' % reverseZone)
+		if utils.verify_ldap_object(reverseZone):
+			utils.fail('Could still find DNS reverse zone "%s" in LDAP after it should have been removed' % reverseZone)

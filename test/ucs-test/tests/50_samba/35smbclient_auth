@@ -21,7 +21,7 @@ import univention.config_registry
 import random
 import subprocess
 import time
-from univention.testing.ldap import wait_for_replication
+from univention.testing.utils import wait_for_replication
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 

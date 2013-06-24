@@ -11,36 +11,22 @@
 
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
+import univention.testing.utils as utils
 
 
 
 if __name__ == '__main__':
 	forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
-	
-	srvRecordName = '%s tcp %s' % (uts.random_string(), uts.random_string())
-	srvRecordNameSplit = srvRecordName.split()
 	locations = ['0 1 2 %s' % forwardZoneName, '4 5 6 %s' % forwardZoneName, '7 8 9 %s' % forwardZoneName, '10 11 12 %s' % forwardZoneName]
-	
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(zoneName=%s)(relativeDomainName=_%s._%s.%s)(sRVRecord=*)(objectClass=dNSZone))' % (forwardZoneName, srvRecordNameSplit[0], srvRecordNameSplit[1], srvRecordNameSplit[2])
 
 	with udm_test.UCSTestUDM() as udm:
 		forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = uts.random_string())
-		srvRecord = udm.create_object('dns/srv_record', superordinate = forwardZone, name = srvRecordName, append = {'location': locations[:2]})
+		srvRecord = udm.create_object('dns/srv_record', superordinate = forwardZone, name = '%s tcp %s' % (uts.random_string(), uts.random_string()), append = {'location': locations[:2]})
 		
 		udm.modify_object('dns/srv_record', superordinate = forwardZone, dn = srvRecord, append = {'location': locations[2:]})
-		result = ldap.search(base = forwardZone, filter = ldapFilter, attr = ['sRVRecord'])[0][1].get('sRVRecord', [])
-		for location in locations:
-			if not location in result:
-				test.fail('Expected "sRVRecord" attribute of created DNS service record to contain "%s", but could not find it in there\n"sRVRecord": %r' % (location, result))
+		if not utils.verify_ldap_object(forwardZone, {'sRVRecord': locations}):
+			utils.fail()
 
 		udm.modify_object('dns/srv_record', superordinate = forwardZone, dn = srvRecord, remove = {'location': locations[:2]})
-		result = ldap.search(base = forwardZone, filter = ldapFilter, attr = ['sRVRecord'])[0][1].get('sRVRecord', [])
-		for location in locations[:2]:
-			if location in result:
-				test.fail('"sRVRecord" attribute of created DNS service record still contained "%s" after the value should have been removed\n"sRVRrecord": %r ' % (location, result))
-		for location in locations[2:]:
-			if not location in result:
-				test.fail('Removal of certain values from "sRVRecord" attribute of created DNS service record also lead to the removal of "%s" from the attribute\n"sRVRrecord":' % (location, result))
-
+		if not utils.verify_ldap_object(srvRecord, {'sRVRecord': locations[2:]}):
+			utils.fail()

@@ -9,10 +9,9 @@
 
 
 
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 
 if __name__ == '__main__':
@@ -28,24 +27,18 @@ if __name__ == '__main__':
 		'retry': '8'
 	}
 
-	expectedSOARecord = ['%s %s. %s %s %s %s %s' % (forwardZoneProperties['nameserver'],
+	
+
+	with udm_test.UCSTestUDM() as udm:
+		forwardZone = udm.create_object('dns/forward_zone', **forwardZoneProperties)
+
+		if not utils.verify_ldap_object(forwardZone, {'sOARecord': [ '%s %s. %s %s %s %s %s' % (
+											   forwardZoneProperties['nameserver'],
 											   forwardZoneProperties['contact'].replace('@', '.'),
 											   forwardZoneProperties['serial'],
 											   forwardZoneProperties['refresh'],
 											   forwardZoneProperties['retry'],
 											   forwardZoneProperties['expire'],
-											   forwardZoneProperties['ttl'])]
-
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(zoneName=%s)(objectClass=dNSZone)(relativeDomainName=@))' % forwardZoneProperties['zone']
-
-	with udm_test.UCSTestUDM() as udm:
-		forwardZone = udm.create_object('dns/forward_zone', **forwardZoneProperties)
-
-		for dn, attr in ldap.search(filter = ldapFilter, attr = ['sOARecord']):
-			if dn == forwardZone:
-				if attr['sOARecord'] != expectedSOARecord:
-					test.fail('Expected "sOAREcord" of created DNS forward zone to be %r, but found %r instead' % (expectedSOARecord, attr['sOARecord']))
-				break
-		else:
-			test.fail('Could not find created DNS forward zone "%s" in LDAP' % forwardZone)
+											   forwardZoneProperties['ttl']) ]
+		}):
+			utils.fail()

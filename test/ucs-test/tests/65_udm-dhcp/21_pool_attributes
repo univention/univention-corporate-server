@@ -9,11 +9,9 @@
 
 
 
-import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 if __name__ == '__main__':
 	dhcpPoolProperties = {
@@ -26,19 +24,16 @@ if __name__ == '__main__':
 		'all_clients': 'allow'
 	}
 
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpPool))' % dhcpPoolProperties['name']
-	expectedLdap = {
-		'dhcpRange': [dhcpPoolProperties['range']],
-		'univentionDhcpFailoverPeer': [dhcpPoolProperties['failover_peer']],
-		'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients']
-	}
-
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
 		dhcpSubnet = udm.create_object('dhcp/subnet', subnet = '10.20.30.0', subnetmask = '24', superordinate = dhcpService)
 		dhcpPool = udm.create_object('dhcp/pool', superordinate = dhcpSubnet, **dhcpPoolProperties)
 
-		for attr, value in ldap.search(base = dhcpSubnet, filter = ldapFilter, attr = expectedLdap.keys())[0][1].items():
-			if value != expectedLdap[attr]:
-				test.fail('Expected "%s" of the created DHCP pool to be %r, but found %r instead' % (attr, expectedLdap[attr], value))
+		if not utils.verify_ldap_object(dhcpPool, {
+			'cn': [dhcpPoolProperties['name']],
+			'dhcpRange': [dhcpPoolProperties['range']],
+			'univentionDhcpFailoverPeer': [dhcpPoolProperties['failover_peer']],
+			'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients']
+		}):
+			utils.fail()
+

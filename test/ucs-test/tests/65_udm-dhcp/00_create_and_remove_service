@@ -9,23 +9,17 @@
 
 
 
-import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 if __name__ == '__main__':
-	dhcpServiceName = uts.random_name()
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(cn=%s)(objectClass=univentionDhcpService))' % dhcpServiceName
-
 	with udm_test.UCSTestUDM() as udm:
-		dhcpService = udm.create_object('dhcp/service', service = dhcpServiceName)
-		if not dhcpService in ldap.searchDn(filter = ldapFilter):
-			test.fail('Could not find created DHCP service "%s" in LDAP' % dhcpService)
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		if not utils.verify_ldap_object(dhcpService):
+			utils.fail()
 
 		udm.remove_object('dhcp/service', dn = dhcpService)
-		if dhcpService in ldap.searchDn(filter = ldapFilter):
-			test.fail('Could still find DHCP service "%s" in LDAP after it should have been removed' % dhcpService)
+		if utils.verify_ldap_object(dhcpService):
+			utils.fail('Could still find DHCP service "%s" in LDAP after it should have been removed' % dhcpService)
 

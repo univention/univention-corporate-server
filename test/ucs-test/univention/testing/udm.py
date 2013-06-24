@@ -50,7 +50,7 @@ import psutil
 import copy
 import univention.testing.ucr
 import univention.testing.strings as uts
-import univention.uldap
+import univention.testing.utils as utils
 
 class UCSTestUDM_Exception(Exception):
 	pass
@@ -76,8 +76,6 @@ class UCSTestUDM_CleanupFailed(UCSTestUDM_Exception):
 	pass
 class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 	pass
-class UCSTestUDM_CouldNotVerifyUserThroughLDAPSearch(UCSTestUDM_Exception):
-	pass
 
 
 
@@ -88,7 +86,6 @@ class UCSTestUDM(object):
 		self.ucr = univention.testing.ucr.UCSTestConfigRegistry()
 		self.ucr.load()
 		self._cleanup = {}
-		self.lo = univention.uldap.getMachineConnection(ldap_master = False)
 
 
 	def _build_udm_cmdline(self, modulename, action, kwargs):
@@ -128,7 +125,7 @@ class UCSTestUDM(object):
 		return cmd
 
 
-	def create_object(self, modulename, **kwargs):
+	def create_object(self, modulename, wait_for_replication = True, **kwargs):
 		"""
 		Creates a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -158,10 +155,13 @@ class UCSTestUDM(object):
 				break
 		else:
 			raise UCSTestUDM_CreateUDMUnknownDN(modulename, kwargs, stdout, stderr)
+
+		if wait_for_replication:
+			utils.wait_for_replication()
 		return dn
 
 
-	def modify_object(self, modulename, **kwargs):
+	def modify_object(self, modulename, wait_for_replication = True, **kwargs):
 		"""
 		Modifies a LDAP object via UDM. Values for UDM properties can be passed via keyword arguments
 		only and have to exactly match UDM property names (case-sensitive!).
@@ -194,9 +194,12 @@ class UCSTestUDM(object):
 				raise UCSTestUDM_NoModification(modulename, kwargs, stdout, stderr)
 		else:
 			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
+
+		if wait_for_replication:
+			utils.wait_for_replication()
 		return dn
 
-	def move_object(self, modulename, **kwargs):
+	def move_object(self, modulename, wait_for_replication = True, **kwargs):
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		if not kwargs.get('dn'):
@@ -213,15 +216,15 @@ class UCSTestUDM(object):
 
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
-				dn = line.split('Object modified: ', 1)[-1]
-				assert(dn in self._cleanup.get(modulename, []))
 				break
 		else:
 			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
-		return dn
+
+		if wait_for_replication:
+			utils.wait_for_replication()
 
 
-	def remove_object(self, modulename, **kwargs):
+	def remove_object(self, modulename, wait_for_replication = True, **kwargs):
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
 		if not kwargs.get('dn'):
@@ -239,9 +242,12 @@ class UCSTestUDM(object):
 		if kwargs['dn'] in self._cleanup.get(modulename, []):
 			self._cleanup[modulename].remove(kwargs['dn'])
 
+		if wait_for_replication:
+			utils.wait_for_replication()
 
 
-	def create_user(self, **kwargs): # :pylint: disable-msg=W0613
+
+	def create_user(self, wait_for_replication = True, **kwargs): # :pylint: disable-msg=W0613
 		"""
 		Creates an user via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -259,15 +265,13 @@ class UCSTestUDM(object):
 		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=users,%s' % self.ucr.get('ldap/base') ),
 											    ( 'password', 'univention' ),
 											    ( 'username', uts.random_username()),
-											    ( 'lastname', uts.random_name()) ))
+											    ( 'lastname', uts.random_name()),
+											    ( 'firstname', uts.random_name()) ))
 
-		user = (self.create_object('users/user', **attr), attr['username'])
-		if not user[0] in self.lo.searchDn(filter = '(uid=%s)' % user[1]):
-			raise UCSTestUDM_CouldNotVerifyUserThroughLDAPSearch(user[0])
-		return user
+		return (self.create_object('users/user', wait_for_replication, **attr), attr['username'])
 
 
-	def create_group(self, **kwargs): # :pylint: disable-msg=W0613
+	def create_group(self, wait_for_replication = True, **kwargs): # :pylint: disable-msg=W0613
 		"""
 		Creates a group via UDM CLI. Values for UDM properties can be passed via keyword arguments only and
 		have to exactly match UDM property names (case-sensitive!). Some properties have default values:
@@ -280,8 +284,8 @@ class UCSTestUDM(object):
 		"""
 		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=groups,%s' % self.ucr.get('ldap/base') ),
 											   ( 'name', uts.random_groupname() ) ))
-		return  (self.create_object('groups/group', **attr), attr['name'])
-
+		
+		return (self.create_object('groups/group', wait_for_replication, **attr), attr['name'])
 
 	def _set_module_default_attr(self, attributes, defaults):
 		"""

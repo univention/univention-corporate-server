@@ -7,19 +7,16 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import sys
-import univention.testing as test
 import univention.testing.udm as udm_test
+import univention.testing.utils as utils
 
 if __name__ == '__main__':
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
-
 	with udm_test.UCSTestUDM() as udm:
-		user = udm.create_user()
-		userBirthday = '2005-01-01'
-		udm.modify_object('users/user', dn = user[0], birthday = userBirthday)
+		user = udm.create_user()[0]
 
-		setUserBirthday = udm.lo.search(filter = '(uid=%s)' % user[1], attr = ['univentionBirthday'])[0][1]['univentionBirthday'][0]
-		if userBirthday != setUserBirthday:
-			test.fail('"univentionBirthday" of created user was expected to be set to "%s", but "%s" was found.' % (userBirthday, setUserBirthday))
+		userBirthday = '2005-01-01'
+		udm.modify_object('users/user', dn = user, birthday = userBirthday)
+
+		if not utils.verify_ldap_object(user, {'univentionBirthday': [userBirthday]}):
+			utils.fail()
+

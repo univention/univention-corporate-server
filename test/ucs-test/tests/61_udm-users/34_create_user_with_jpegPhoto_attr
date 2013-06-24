@@ -7,22 +7,18 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-import sys
 import base64
-import univention.testing as test
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
+import univention.testing.utils as utils
+
 
 if __name__ == '__main__':
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
-
 	with udm_test.UCSTestUDM() as udm:
-		user = udm.create_user()
+		user = udm.create_user()[0]
 	
 		userJpegPhoto = uts.random_string()
-		udm.modify_object('users/user', dn = user[0], jpegPhoto = base64.b64encode(userJpegPhoto))
-		
-		setUserJpegPhoto = udm.lo.search(filter = '(uid=%s)' % user[1], attr = ['jpegPhoto'])[0][1]['jpegPhoto'][0]
-		if userJpegPhoto != setUserJpegPhoto:
-			test.fail('"jpegPhoto" of created user was expected to be set to "%s", but "%s" was found.' % (userJpegPhoto, setUserJpegPhoto))
+		udm.modify_object('users/user', dn = user, jpegPhoto = base64.b64encode(userJpegPhoto))
+	
+		if not utils.verify_ldap_object(user, {'jpegPhoto': [userJpegPhoto]}):
+			utils.fail()

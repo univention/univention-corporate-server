@@ -11,7 +11,7 @@
 
 
 import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
@@ -25,4 +25,4 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 
-		test.fail('UDM did not report an error while trying to create a DHCP shared subnet with DHCP service as superordinate')
+		utils.fail('UDM did not report an error while trying to create a DHCP shared subnet with DHCP service as superordinate')

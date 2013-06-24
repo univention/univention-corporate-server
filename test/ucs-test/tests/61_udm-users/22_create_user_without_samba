@@ -8,17 +8,15 @@
 ##   - univention-directory-manager-tools
 
 
-import sys
-import univention.testing as test
 import univention.testing.udm as udm_test
-
+import univention.testing.utils as utils
 
 if __name__ == '__main__':
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
-	
 	with udm_test.UCSTestUDM() as udm:
-		udm.create_user(options = ['kerberos', 'posix', 'person', 'mail'])
+		user = udm.create_user(options = ['kerberos', 'posix', 'person', 'mail'])[0]
 
+		if not utils.verify_ldap_object(user):
+			utils.fail()
 
+		
 

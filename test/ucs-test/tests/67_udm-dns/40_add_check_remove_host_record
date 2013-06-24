@@ -9,10 +9,9 @@
 
 
 
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
-import univention.uldap as uldap
 
 
 if __name__ == '__main__':
@@ -32,23 +31,19 @@ if __name__ == '__main__':
 		'mx': 'mXRecord'
 	}
 
-	ldap = uldap.getAdminConnection()
-	ldapFilter = '(&(relativeDomainName=%s)(objectClass=dNSZone))' % (hostRecordProperties['name'])
-
 	with udm_test.UCSTestUDM() as udm:
 		forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = uts.random_string())
 		hostRecord = udm.create_object('dns/host_record', superordinate = forwardZone, **hostRecordProperties)
 
-		for dn, attr in ldap.search(base = forwardZone, filter = ldapFilter, attr = ldapMapping.values()):
-			if dn == hostRecord:
-				for key, value in hostRecordProperties.items():
-					if [value] != attr[ldapMapping[key]]:
-						test.fail('Expected "%s" of created DNS host record to be %r, but found %r instead' % (ldapMapping[key], [value], attr[ldapMapping[key]]))
-
-				break
-		else:
-			test.fail('Did not find created DNS host record "%s" in LDAP' % hostRecord)
+		if not utils.verify_ldap_object(hostRecord, {
+			'relativeDomainName': [hostRecordProperties['name']],
+			'dNSTTL': [hostRecordProperties['zonettl']],
+			'aRecord': [hostRecordProperties['a']],
+			'tXTRecord': [hostRecordProperties['txt']],
+			'mXRecord': [hostRecordProperties['mx']]
+		}):
+			utils.fail()
 
 		udm.remove_object('dns/host_record', dn = hostRecord, superordinate = forwardZone)
-		if hostRecord in ldap.searchDn(base = forwardZone, filter = ldapFilter):
-			test.fail('Could still find DNS host record "%s" in LDAP after it should have been removed' % hostRecord)
+		if utils.verify_ldap_object(hostRecord):
+			utils.fail('Could still find DNS host record "%s" in LDAP after it should have been removed' % hostRecord)

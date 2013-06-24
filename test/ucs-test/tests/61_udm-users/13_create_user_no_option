@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create a user with no option set
+## desc: Create a user with no option set (should not be possible)
 ## tags: [udm-users]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -9,19 +9,16 @@
 
 
 import sys
-import univention.testing as test
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
 if __name__ == '__main__':
-	if test.package_installed('univention-ox'):
-		sys.exit(138)
-
 	with udm_test.UCSTestUDM() as udm:
 		try:
 			udm.create_user(options=[''])
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed: # failed as expected
 			sys.exit(0)
 
-	test.fail('Successfully created user with no options set, which should not be possible')
+	utils.fail('Successfully created user with no options set, which should not be possible')
 
 

@@ -8,9 +8,7 @@
 ##   - univention-directory-manager-tools
 
 
-import sys
-import univention.testing as test
-import univention.uldap as uldap
+import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
@@ -29,6 +27,5 @@ if __name__ == '__main__':
 
 		udm.remove_object('container/cn', dn = cn3)
 
-		ldap = uldap.getAdminConnection()
-		if cn in ldap.searchDn(filter = '(&(cn=%s)(objectClass=organizationalRole))' % cnName):
-			test.fail('After moving the created CN into another CN and removing the latter one, the CN (%s) could still be found in LDAP' % cn)
+		if utils.verify_ldap_object(cn):
+			utils.fail('After moving the created CN into another CN and removing the latter one, the CN (%s) could still be found in LDAP' % cn)
