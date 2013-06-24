@@ -224,6 +224,25 @@ def handler(dn, new, old, command):
 		finally:
 			listener.unsetuid()
 
+	if ( not (new and old) ) or (new['univentionShareSambaName'][0] != old['univentionShareSambaName'][0]):
+		global ucr_handlers
+		listener.setuid(0)
+		try:
+			run_ucs_commit = False
+			if not os.path.exists('/etc/samba/shares.conf'):
+				run_ucs_commit = True
+			fp = open('/etc/samba/shares.conf.temp', 'w')
+			print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgende Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
+
+			for f in os.listdir('/etc/samba/shares.conf.d'):
+				print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
+			fp.close()
+			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
+			if run_ucs_commit:
+				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
+		finally:
+			listener.unsetuid()
+
 def initialize():
 	if not os.path.exists('/etc/samba/shares.conf.d'):
 		listener.setuid(0)
@@ -255,20 +274,8 @@ def clean():
 		listener.unsetuid()
 
 def postrun():
-	global ucr_handlers
 	listener.setuid(0)
 	try:
-		run_ucs_commit = False
-		if not os.path.exists('/etc/samba/shares.conf'):
-			run_ucs_commit = True
-		fp = open('/etc/samba/shares.conf', 'w')
-		print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-directory-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-directory-listener Modul überschrieben werden. \n#          Ergänzungen können an folgender Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
-
-		for f in os.listdir('/etc/samba/shares.conf.d'):
-			print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
-		fp.close()
-		if run_ucs_commit:
-			ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
 		initscript='/etc/init.d/samba4'
 		os.spawnv(os.P_WAIT, initscript, ['samba4', 'reload'])
 	finally:

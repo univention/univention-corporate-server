@@ -1,3 +1,10 @@
+univention-samba4 (3.0.4-1) unstable; urgency=low
+
+  * Update shares.conf directly in case a share was added/removed or
+    renamed (Bug #31800)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Jun 2013 17:19:54 +0200
+
 univention-samba4 (3.0.3-1) unstable; urgency=low
 
   * create ntp_signd socket directory with mode 750 (Bug #31109)
