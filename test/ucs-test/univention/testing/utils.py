@@ -106,7 +106,7 @@ def verify_ldap_object(dn, expected_attr = {}):
 	return True
 
 
-def wait_for_ldap_replication():
+def wait_for_replication():
 	print 'Waiting for replication:'
 	for i in range(0,300):
 		rc = subprocess.call('/usr/lib/nagios/plugins/check_univention_replication')
@@ -119,8 +119,8 @@ def wait_for_ldap_replication():
 	raise LDAPReplicationFailed()
 
 
-def wait_for_ldap_replication_and_postrun ():
-	wait_for_ldap_replication ()
+def wait_for_replication_and_postrun ():
+	wait_for_replication ()
 	print "Waiting for postrun"
 	time.sleep(17)
 

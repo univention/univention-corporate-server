@@ -157,7 +157,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_CreateUDMUnknownDN(modulename, kwargs, stdout, stderr)
 
 		if wait_for_replication:
-			utils.wait_for_ldap_replication()
+			utils.wait_for_replication()
 		return dn
 
 
@@ -196,7 +196,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
 
 		if wait_for_replication:
-			utils.wait_for_ldap_replication()
+			utils.wait_for_replication()
 		return dn
 
 	def move_object(self, modulename, wait_for_replication = True, **kwargs):
@@ -221,7 +221,7 @@ class UCSTestUDM(object):
 			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
 
 		if wait_for_replication:
-			utils.wait_for_ldap_replication()
+			utils.wait_for_replication()
 
 
 	def remove_object(self, modulename, wait_for_replication = True, **kwargs):
@@ -243,7 +243,7 @@ class UCSTestUDM(object):
 			self._cleanup[modulename].remove(kwargs['dn'])
 
 		if wait_for_replication:
-			utils.wait_for_ldap_replication()
+			utils.wait_for_replication()
 
 
 

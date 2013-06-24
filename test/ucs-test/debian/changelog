@@ -1,3 +1,15 @@
+ucs-test (4.0.29-2) unstable; urgency=low
+
+  * fixed identation in
+  	68_udm-extentedattribute/62_check_multivalue_extented_attribute_required
+  (Bug #31302)
+  * renamed "wait_for_ldap_replication()" and
+  	"wait_for_ldap_replication_and_postrun()" in utils.py in
+  	"wait_for_replication()" and "wait_for_replication_and_postrun()"
+  (Bug #31766)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 24 Jun 2013 15:23:34 +0200
+
 ucs-test (4.0.28-1) unstable; urgency=low
 
   * Check that Default Domain GPOs are not writable for Domain
