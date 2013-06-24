@@ -1,3 +1,9 @@
+ucs-test (4.0.23-2) unstable; urgency=low
+
+  * 03/61: do not check for additional lines (Bug #31795)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 24 Jun 2013 10:34:08 +0200
+
 ucs-test (4.0.22-1) unstable; urgency=low
 
   * Some more ucs-test updates (Bug #31790)

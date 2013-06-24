@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Test Univention Config Registry set
-## bugs: [11655]
+## bugs: [11655,31795]
 ## tags:
 ##  - basic
 ##  - apptest
@@ -27,7 +27,8 @@ debug Create nameserver3
 ucr set nameserver3=192.168.0.3 >"$out"
 Assert "$(sed -ne 's/^File: //p' "$out")" "/etc/resolv.conf"
 Assert "$(awk  'NR==1 {print $1}' "$out")" "Create"
-Assert "$(grep -v '^File:\|^Create' "$out")" ""
+# Disabled, because 3rd party extensions may register additional modules
+#Assert "$(grep -v '^File:\|^Create' "$out")" ""
 
 debug Get nameserver3
 ucr get nameserver3 > "$out"
