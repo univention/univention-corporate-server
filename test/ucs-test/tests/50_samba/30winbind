@@ -27,6 +27,9 @@ if ! user_create "$username"; then
 	fail_fast 1 "Failed to create user";
 fi
 
+winbind_separator=$(wbinfo --separator)
+FQUSERNAME="$(/usr/sbin/univention-config-registry get windows/domain)$winbind_separator$username"
+
 wait_for_replication
 
 ##wbinfo tests
@@ -55,24 +58,20 @@ do
 done
 
 if [ "$(/usr/sbin/univention-config-registry get server/role)" = "memberserver" ]; then
-	winbind_separator=$(wbinfo --separator)
-	NAME="$(/usr/sbin/univention-config-registry get windows/domain)$winbind_separator$username"
+	NAME="$FQUSERNAME"
+else
+	NAME="$username"
 fi
 
-echo "##  wbinfo --authenticate"
-max_auth_attempts=30
-for try in $(seq 1 "$max_auth_attempts"); do
-	wbinfo -a "$NAME%$password"
-	res="$?"
-	if [ "$res" == 0 ]; then
-		break
-	else
-		echo .
+sambaSID=$(univention-ldapsearch -xLLL uid=$username sambaSID | sed -n 's/^sambaSID: //p')
+if [ -z "${sambaSID%S-1-4*}" ]; then
+	echo -n "Waiting for replication of domain sambaSID for user $username (current: $sambaSID)."
+	while [ -z "${sambaSID%S-1-4*}" ]; do
 		sleep 1
-	fi
-done
-if [ "$res" != 0 ]; then
-	fail_fast 1 "wbinfo --authenticate '$NAME%$password' failed after $max_auth_attempts attempts"
+		echo -n "."
+		sambaSID=$(univention-ldapsearch -xLLL uid=$username sambaSID | sed -n 's/^sambaSID: //p')
+	done
+	echo
 fi
 
 echo "##  wbinfo --name-to-sid"
@@ -103,7 +102,7 @@ else
 	user_name2=$(echo "$output" | cut -d' '  -f1)
 fi
 
-if [ "$user_name2" != "$NAME" ]; then
+if [ "$user_name2" != "$FQUSERNAME" ]; then
 	fail_fast 1 "Unexpected user name obtained from SID lookup: $user_name2, expected: $NAME"
 fi
 
@@ -111,7 +110,6 @@ echo "##  wbinfo --user-domgroups"
 for group_sid in $(wbinfo --user-domgroups="$user_sid");
 do
 	echo "## wbinfo --user-domgroups returned $group_sid"
-	## wbinfo -Y $(wbinfo -n "$(wbinfo -s "$(wbinfo -G "$(wbinfo -Y $group_sid)" )" | sed 's/ [0-9]*$//')" | cut -d' '  -f1 )
 	echo "##  wbinfo --sid-to-gid"
 	group_gid=$(wbinfo -Y "$group_sid")
 	if [ "$?" != 0 ]; then
@@ -139,6 +137,12 @@ do
 		group_sid3=$(echo "$output" | cut -d' '  -f1)
 	fi
 done
+
+echo "##  wbinfo --authenticate"
+wbinfo -a "$NAME%$password"
+if [ "$?" != 0 ]; then
+	fail_fast 1 "wbinfo --authenticate '$NAME%$password' failed"
+fi
 
 echo "##  wbinfo --krb5auth"
 if ! wbinfo --krb5auth "$NAME"%"$password"; then
