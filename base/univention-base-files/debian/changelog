@@ -1,3 +1,9 @@
+univention-base-files (2.0.14-8) unstable; urgency=low
+
+  * Fix typo in template (Bug #31096)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 25 Jun 2013 12:09:42 +0200
+
 univention-base-files (2.0.14-7) unstable; urgency=low
 
   * Don't set sshd/banner by default. It might break programs parsing the SSH
