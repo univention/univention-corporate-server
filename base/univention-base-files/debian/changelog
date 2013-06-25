@@ -1,3 +1,9 @@
+univention-base-files (2.0.14-9) unstable; urgency=low
+
+  * Fix variable English description for sshd/motd (Bug #31096)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 25 Jun 2013 12:33:37 +0200
+
 univention-base-files (2.0.14-8) unstable; urgency=low
 
   * Fix typo in template (Bug #31096)

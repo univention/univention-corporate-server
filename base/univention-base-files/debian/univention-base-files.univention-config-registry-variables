@@ -706,8 +706,8 @@ Type=str
 Categories=service-base
 
 [sshd/motd]
-Description[de]=Mit dieser Variable kann konfiguriert werden, ob  beim SSH-Login ein Hinweis auf das UCS-Managementsystem angezeigt wird. Ist die Variable nicht gesetzt wird der Hinweis angezeigt.
-Description[en]=This variable configures, whether a hint towards the UCS management system is displayed during SSH login. If the variable is not set, the hint isn't shown.
+Description[de]=Mit dieser Variable kann konfiguriert werden, ob  beim SSH-Login ein Hinweis auf das UCS-Managementsystem angezeigt wird. Ist die Variable nicht gesetzt, wird der Hinweis angezeigt.
+Description[en]=This variable configures, whether a hint towards the UCS management system is displayed during SSH login. If the variable is not set, the hint is shown.
 Type=bool
 Categories=service-ssh
 
