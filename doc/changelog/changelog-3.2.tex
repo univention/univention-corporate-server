@@ -5,6 +5,10 @@
 %\section{General}
 \begin{itemize}
 \item The codename for UCS 3.2 is Borgfeld (\ucsBug{31686})
+
+\item The welcome message is now shown through \ucsFile{/etc/issue}..
+(\ucsBug{31094}).
+
 \end{itemize}
 
 
@@ -468,6 +472,12 @@ postgresql can be reinstalled (\ucsBug{27786}).
 \item The rotation of machine passwords is now performed after amount of days
 in the \ucsUCRV{server/password/change} since the last password change
 (\ucsBug{31068}).
+
+\item The welcome message for SSH is now shown through motd. It is
+  only displayed if the message from appliance mode isn't enabled. It
+  can be disabled by setting the \ucsUCRV{sshd/motd} to \emph{false}.
+(\ucsBug{31096}). The new \ucsUCRV{sshd/banner} can be used to
+  configure a banner display for SSH logins.
 
 \end{itemize}
 
