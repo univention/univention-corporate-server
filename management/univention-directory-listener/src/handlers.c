@@ -938,7 +938,7 @@ int handlers_set_data_all(char *key, char *value)
 	PyObject *argtuple;
 	int rv = 1;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "setting data for all handlers: key=%s  value=%s", key, value);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "setting data for all handlers: key=%s  value=%s", key, strcmp("bindpw", key) ? value : "<HIDDEN>");
 
 	/* make argument list */
 	if ((argtuple = PyTuple_New(2)) == NULL)
