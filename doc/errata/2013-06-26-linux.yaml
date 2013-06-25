@@ -1,0 +1,53 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: linux
+fix: 3.2.46-1.31.201306180902
+desc: |
+  This update fixes multiple security issues:
+  * Denial of service in the RDS implementation (CVE-2012-2372)
+  * Denial of sercice in memory hotplug handling (CVE-2012-5517)
+  * Info leaks in the UDF filesystem implementation (CVE-2012-6548)
+  * Keystroke timing information leak (CVE-2013-0160)
+  * Buffer overflow in the kernel host accelator for virtio (CVE-2013-0311)
+  * Heap overflow in i915 DRM driver (CVE-2013-0913)
+  * Information leak in signal handling (CVE-2013-0914)
+  * Use-after-free in tmpfs (CVE-2013-1767)
+  * NULL pointer dereference in keyring handling (CVE-2013-1792)
+  * KVM: Buffer overflow when parsing the system time (CVE-2013-1796)
+  * KVM: Use-after-free in system time handling (CVE-2013-1797)
+  * KVM: Insufficient bounds checking when accessing the ioapic registers (CVE-2013-1798)
+  * Format string issue in ext3 printk logging (CVE-2013-1848)
+  * Buffer overflow in cdc-wdm USB driver (CVE-2013-1860)
+  * Information leak in tkill/tgkill (CVE-2013-2141)
+  * Denial of service in perf (CVE-2013-2146)
+  * Information leak in crypto API (CVE-2013-2546, CVE-2013-2547,CVE-2013-2548)
+  * Kernel stack leak in Netlink interfaces (CVE-2013-2634, CVE-2013-2635)
+  * Buffer overflow in iSCSI subsystem (CVE-2013-2850)
+note: |
+  This is the first part of the fix, which provides the new kernel package.
+cve:
+ - CVE-2012-2372
+ - CVE-2012-5517
+ - CVE-2012-6548
+ - CVE-2013-0160
+ - CVE-2013-0311
+ - CVE-2013-0913
+ - CVE-2013-0914
+ - CVE-2013-1767
+ - CVE-2013-1792
+ - CVE-2013-1796
+ - CVE-2013-1797
+ - CVE-2013-1798
+ - CVE-2013-1848
+ - CVE-2013-1860
+ - CVE-2013-2141
+ - CVE-2013-2146
+ - CVE-2013-2546
+ - CVE-2013-2547
+ - CVE-2013-2548
+ - CVE-2013-2634
+ - CVE-2013-2635
+ - CVE-2013-2850
+bug: [31366,30812]
