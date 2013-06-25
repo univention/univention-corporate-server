@@ -1,8 +1,8 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# TODO: add description
-# 
+# Univention Management Console Module System-Setup
+# Network interfaces
 #
 # Copyright 2013 Univention GmbH
 #
@@ -44,7 +44,7 @@ ucr.load()
 
 _ = Translation('univention-management-console-module-setup').translate
 
-RE_INTERFACE = re.compile(r'^interfaces/([^/_]+)(_[^/]+)?/')
+RE_INTERFACE = re.compile(r'^interfaces/([^/_]+)(_[0-9]+)?/')
 RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+\z')
 
 class DeviceError(ValueError):
@@ -67,16 +67,74 @@ class IP6Set(set):
 		return set.__contains__(self, ipaddr.IPv6Address(ip))
 
 class Interfaces(dict):
-	""""""
+	"""All network interfaces"""
+
+	@property
+	def primary(self):
+		"""Returns the primary network interface if exists else None"""
+		for device in self.values():
+			if device.primary:
+				return device
+
+	@primary.setter
+	def primary(self, primary):
+		current = self.primary
+		if current:
+			current.primary = False
+		self[primary].primary = True
 
 	def __init__(self, *args, **kwargs):
+		"""Loads all network devices from UCR variables"""
 		super(Interfaces, self).__init__(*args, **kwargs)
 
+		ucr.load()
+
+		# get all available interfaces
+		interfaces = set(RE_INTERFACE.match(key).group(1) for key in ucr if RE_INTERFACE.match(key))
+		for name in interfaces:
+			device = Device(name)
+			device.parse_ucr()
+			self[device.name] = device
+
+	def from_dict(self, interfaces):
+		"""Replaces all interfaces with the given interfaces and removes non existing interfaces"""
+		ucr.load()
+
+		# remove old devices
+		to_remove = set(self.keys()).difference(set(interfaces.keys()))
+		for name in to_remove:
+			device = _RemovedDevice(name)
+			self[device.name] = device
+
+		# append new devices
+		for values in interfaces.values():
+			device = Device.from_dict(values)
+			self[device.name] = device
+
+	def to_ucr(self):
+		"""Returns a UCR representation of all interfaces"""
+		ucr.load()
+
+		ucrv = {'interfaces/primary': None}
+		for device in self.values():
+			ucrv.update(device.to_ucr())
+
+		return ucrv
+
+	def get_ucr_diff(self):
+		ucrv = self.to_ucr()
+		return dict((key, ucrv[key]) for key in ucrv.keys() if ucr.get(key, None) != ucrv[key])
+
+	def to_dict(self):
+		"""Returns a dict structure of all interfaces"""
+		return dict((device.name, device.dict) for device in self.values())
+
 	def check_consistency(self):
-		"""checks and partly enforces the consistency of all network interfaces"""
+		"""Checks and partly enforces the consistency of all network interfaces"""
 
 		devices_in_use = {}
 		all_ip4s, all_ip6s = IP4Set(), IP6Set()
+
 		for device in self.values():
 			# validate IP addresses, netmasks, etc.
 			device.validate()
@@ -166,11 +224,11 @@ class Interfaces(dict):
 
 				if isinstance(self[device.parent_device], VLAN):
 					# unsupported
-					raise DeviceError('', device.name)
+					raise DeviceError('Nested VLAN-devices are currently unsupported.', device.name)
 
 		# make sure at least one interface is configured with an IPv4 or IPv6 address
 		if not self or not any(device.ip4 or device.ip6 for device in self.values()):
-			raise DeviceError(_('There is no interface configured.'))
+			raise DeviceError(_('There is no interface configured. At least one IPv4 or IPv6 address or DHCP or SLAAC has to be specified.'))
 
 		if not any(isinstance(device, (VLAN, Bridge, Bond)) for device in self.values()):
 			# no VLAN, Bridge or Bond devices
@@ -202,53 +260,13 @@ class Interfaces(dict):
 				i += 1
 			devices = dict((device, (subdevs - stack)) for device, subdevs in devices.iteritems() if device not in stack)
 
-	def persist(self):
-		self.check_consistency()
-		ucr.load()
-		for device in self.values():
-			for key, value in device.to_ucr().iteritems():
-				if value is None:
-					if key in ucr:
-						del ucr[key]
-				else:
-					ucr[key] = value
-		ucr.save()
-
-	@classmethod
-	def from_ucr(cls, ucrv=ucr):
-		ucr.load()
-
-		names = {}
-		# get all available interfaces
-		for key in ucrv:
-			match = RE_INTERFACE.match(key)
-			if match:
-				name = match.group(1)
-				if name not in names:
-					names[name] = Device(name)
-
-		self = cls()
-		for device in names.values():
-			device.parse_ucr(ucrv)
-			if device.options:
-				# detect type of interface
-				if any(opt.startswith('bridge_ports') for opt in device.options):
-					device = Bridge(device.name)
-					device.parse_ucr(ucrv)
-				elif any(opt.startswith('bond-primary') for opt in device.options):
-					device = Bond(device.name)
-					device.parse_ucr(ucrv)
-			self[device.name] = device
-
-		return self
-
 class Device(object):
-	u"""A network interface"""
+	"""Abstract base class for network interfaces"""
 
-	def __new__(cls, *args, **kwargs):
+	def __new__(cls, name):
 		# make it abstract ;)
-		if cls is Device and args:
-			device = Ethernet(*args, **kwargs)
+		if cls is Device:
+			device = Ethernet(name)
 			device.parse_ucr()
 			# detect type of interface
 			cls = Ethernet
@@ -257,7 +275,7 @@ class Device(object):
 					cls = Bridge
 				elif any(opt.startswith('bond-primary') for opt in device.options):
 					cls = Bond
-		return object.__new__(cls, *args, **kwargs)
+		return object.__new__(cls)
 
 	@property
 	def primary_ip4(self):
@@ -317,7 +335,7 @@ class Device(object):
 
 				# validate netmask
 				try:
-					ipaddr.IPv4Network('%s/%s' % (address, netmask))
+					network = ipaddr.IPv4Network('%s/%s' % (address, netmask))
 				except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
 					raise DeviceError(_('Invalid IPv4 netmask %r') % (netmask), self.name)
 
@@ -344,15 +362,14 @@ class Device(object):
 			if self.ip6 and not any(identifier == 'default' for address, prefix, identifier in self.ip6):
 				raise DeviceError(_('Missing IPv6 default identifier'), self.name)
 
-	def parse_ucr(self, ucrv=ucr):
+	def parse_ucr(self):
 		name = self.name
-		ucr.load()
 		self.clear()
 
 		pattern = re.compile(r'^interfaces/%s(?:_[0-9]+)?/' % re.escape(name))
-		vals = dict((key, ucrv[key]) for key in ucrv if pattern.match(key))
+		vals = dict((key, ucr[key]) for key in ucr if pattern.match(key))
 
-		self.primary = ucrv.get('interfaces/primary') == name
+		self.primary = ucr.get('interfaces/primary') == name
 
 		self.start = ucr.is_true(value=vals.pop('interfaces/%s/start' % (name), None))
 
@@ -364,12 +381,18 @@ class Device(object):
 		if order.isdigit():
 			self.order = int(order)
 
-		self.ip4dynamic = 'dhcp' == self.type
-		self.ip6dynamic = ucr.is_true(value=vals.pop('interfaces/%s/ipv6/acceptRA' % (name), None))
+		self.network = vals.pop('interfaces/%s/network' % (name), '')
+		self.broadcast = vals.pop('interfaces/%s/broadcast' % (name), '')
 
 		address, netmask = vals.pop('interfaces/%s/address' % (name), ''), vals.pop('interfaces/%s/netmask' % (name), '24')
 		if address:
 			self.ip4.append((address, netmask))
+			# a link local address indicates that this interface is DHCP
+			if address.startswith('169.254.'):
+				self.type = 'dhcp'
+
+		self.ip4dynamic = 'dhcp' == self.type
+		self.ip6dynamic = ucr.is_true(value=vals.pop('interfaces/%s/ipv6/acceptRA' % (name), None))
 
 		for key in vals.copy():
 			if re.match('^interfaces/%s/options/[0-9]+$' % re.escape(name), key):
@@ -394,10 +417,9 @@ class Device(object):
 		self._leftover.sort()
 
 	def to_ucr(self):
-		u"""Return a dict of UCR variables to set or unset.
+		"""Returns a dict of UCR variables to set or unset.
 			Values which are None should be unset.
 		"""
-		ucr.load()
 		name = self.name
 
 		pattern = re.compile('^interfaces/%s(?:_[0-9]+)?/.*' % re.escape(name))
@@ -418,11 +440,18 @@ class Device(object):
 		if isinstance(self.order, int):
 			vals['interfaces/%s/order' % (name)] = str(self.order)
 
+		vals['interfaces/%s/network' % (name)] = None
+		vals['interfaces/%s/broadcast' % (name)] = None
+
 		if not self.ip4dynamic:
 			if self.ip4:
 				address, netmask = self.ip4[0]
 				vals['interfaces/%s/address' % (name)] = address
 				vals['interfaces/%s/netmask' % (name)] = netmask
+
+				network = ipaddr.IPv4Network('%s/%s' % (address, netmask))
+				vals['interfaces/%s/network' % (name)] = str(network.network)
+				vals['interfaces/%s/broadcast' % (name)] = str(network.broadcast)
 
 			for i, (address, netmask) in enumerate(self.ip4[1:]):
 				vals['interfaces/%s_%s/address' % (name, i)] = address
@@ -455,6 +484,8 @@ class Device(object):
 		d.update(dict(
 			interfaceType=self.__class__.__name__,
 		))
+		for key in ('options', '_leftover', 'network', 'broadcast'):
+			d.pop(key, None)
 		return d
 
 	@staticmethod
@@ -464,16 +495,24 @@ class Device(object):
 			'VLAN': VLAN,
 			'Bridge': Bridge,
 			'Bond': Bond
-		}[device['interfaceType']]
+		}.get(device['interfaceType'], Device)
 		interface = DeviceType(device['name'])
 		interface.parse_ucr()
 		interface.__dict__.update(dict((k, device[k]) for k in set(interface.dict.keys()) if k in device))
 		return interface
 
+class _RemovedDevice(Device):
+	"""Internal class representing that a device have to be removed from UCR"""
+	def to_ucr(self):
+		return dict((key, None) for key in ucr.iterkeys() if RE_INTERFACE.match(key))
+
 class Ethernet(Device):
+	"""A physical network interface"""
 	pass
 
 class VLAN(Device):
+	"""A virtual network interface (VLAN)"""
+
 	@property
 	def vlan_id(self):
 		if '.' in self.name:
@@ -506,6 +545,7 @@ class VLAN(Device):
 		return d
 
 class Bond(Device):
+	"""A network bonding interface"""
 
 	modes = {
 		'balance-rr': 0,
@@ -573,6 +613,8 @@ class Bond(Device):
 		return vals
 
 class Bridge(Device):
+	"""A network bridge interface"""
+
 	def clear(self):
 		super(Bridge, self).clear()
 		self.bridge_ports = []
