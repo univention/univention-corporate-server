@@ -96,7 +96,7 @@ class Interfaces(dict):
 		# get all available interfaces
 		interfaces = set(RE_INTERFACE.match(key).group(1) for key in ucr if RE_INTERFACE.match(key))
 		for name in interfaces:
-			device = Device(name)
+			device = Device(name, self)
 			device.parse_ucr()
 			self[device.name] = device
 
@@ -107,12 +107,12 @@ class Interfaces(dict):
 		# remove old devices
 		to_remove = set(self.keys()).difference(set(interfaces.keys()))
 		for name in to_remove:
-			device = _RemovedDevice(name)
+			device = _RemovedDevice(name, self)
 			self[device.name] = device
 
 		# append new devices
 		for values in interfaces.values():
-			device = Device.from_dict(values)
+			device = Device.from_dict(values, self)
 			self[device.name] = device
 
 	def to_ucr(self):
@@ -138,7 +138,7 @@ class Interfaces(dict):
 
 		for device in self.values():
 			device.prepare_consistency(self)
-			device.validate_global_consistency(self)
+			device.validate(self)
 
 		self.check_unique_ip4_address()
 		self.check_unique_ip6_address()
@@ -196,18 +196,21 @@ class Interfaces(dict):
 class Device(object):
 	"""Abstract base class for network interfaces"""
 
-	def __new__(cls, name):
+	def __new__(cls, name, interfaces):
 		# make it abstract ;)
 		if cls is Device:
-			device = Ethernet(name)
-			device.parse_ucr()
-			# detect type of interface
-			cls = Ethernet
-			if device.options:
-				if any(opt.startswith('bridge_ports') for opt in device.options):
-					cls = Bridge
-				elif any(opt.startswith('bond-primary') for opt in device.options):
-					cls = Bond
+			if '.' in name:
+				cls = VLAN
+			else:
+				device = Ethernet(name, interfaces)
+				device.parse_ucr()
+				# detect type of interface
+				cls = Ethernet
+				if device.options:
+					if any(opt.startswith('bridge_ports') for opt in device.options):
+						cls = Bridge
+					elif any(opt.startswith('bond-primary') for opt in device.options):
+						cls = Bond
 		return object.__new__(cls)
 
 	@property
@@ -216,9 +219,16 @@ class Device(object):
 			return self.ip4[0]
 		return (None, None)
 
-	def __init__(self, name):
-		# the interface name, e.g. wlan0, eth0, br0, eth0.2, bond0
+	def __init__(self, name, interfaces):
+		"""
+			:param name: the interface name, e.g. wlan0, eth0, br0, eth0.2, bond0
+
+			:param interfaces: a Interfaces instance
+			:type  interfaces: Interfaces
+		"""
+
 		self.name = name
+		self.interfaces = interfaces
 
 		# set initial values
 		self.clear()
@@ -256,15 +266,19 @@ class Device(object):
 
 		# TODO: MAC address ?
 
-	def get_subdevices(self, interfaces):
-		"""Returns a set of subdevices of this device if there are any, leavong out not existing devices"""
+	@property
+	def subdevices(self):
 		return set()
 
-	def prepare_consistency(self, interfaces):
+	def get_subdevices(self):
+		"""Returns a set of subdevices of this device if there are any, leavong out not existing devices"""
+		return set([self.interfaces[name] for name in self.subdevices if name in self.interfaces])
+
+	def prepare_consistency(self):
 		self.order = None
 		self.start = True
 
-	def validate(self):
+	def validate_ip4(self):
 		# validate IPv4
 		if not self.ip4dynamic:
 			for address, netmask in self.ip4:
@@ -280,6 +294,7 @@ class Device(object):
 				except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
 					raise DeviceError(_('Invalid IPv4 netmask %r') % (netmask), self.name)
 
+	def validate_ip6(self):
 		# validate IPv6
 		if not self.ip6dynamic:
 			for address, prefix, identifier in self.ip6:
@@ -303,16 +318,22 @@ class Device(object):
 			if self.ip6 and not any(identifier == 'default' for address, prefix, identifier in self.ip6):
 				raise DeviceError(_('Missing IPv6 default identifier'), self.name)
 
-	def check_unique_interface_usage(self, interfaces):
+	def limit_ip4_address(self):
+		if len(self.ip4) > 1:
+			# UCR can't support multiple IPv4 addresses on VLAN, Bridge and Bond interfaces; Bug #31767
+			raise DeviceError(_('Multiple IPv4 addresses are not supported on this interface.'), self.name)
+
+	def check_unique_interface_usage(self):
 		# make sure that used interfaces can not be used by other interfaces, too
-		for device in interfaces.values():
+		for device in self.interfaces.values():
 			if device.name != self.name:
-				for idevice in self.get_subdevices(interfaces):
-					if idevice in device.get_subdevices(interfaces):
+				for idevice in self.get_subdevices():
+					if idevice in device.get_subdevices(self.interfaces):
 						raise DeviceError(_('Device %r is already in use by %r') % (idevice.name, device.name), self.name)
 
-	def validate_global_consistency(self, interfaces):
-		self.validate()
+	def validate(self):
+		self.validate_ip4()
+		self.validate_ip6()
 
 	def disable_ips(self):
 		self.ip4 = []
@@ -442,19 +463,19 @@ class Device(object):
 		d.update(dict(
 			interfaceType=self.__class__.__name__,
 		))
-		for key in ('options', '_leftover', 'network', 'broadcast'):
+		for key in ('interfaces', 'options', '_leftover', 'network', 'broadcast'):
 			d.pop(key, None)
 		return d
 
 	@staticmethod
-	def from_dict(device):
+	def from_dict(device, interfaces):
 		DeviceType = {
 			'Ethernet': Ethernet,
 			'VLAN': VLAN,
 			'Bridge': Bridge,
 			'Bond': Bond
 		}.get(device['interfaceType'], Device)
-		interface = DeviceType(device['name'])
+		interface = DeviceType(device['name'], interfaces)
 		interface.parse_ucr()
 		interface.__dict__.update(dict((k, device[k]) for k in set(interface.dict.keys()) if k in device))
 		return interface
@@ -488,25 +509,20 @@ class VLAN(Device):
 	def parent_device(self, parent_device):
 		self.name = '%s.%d' % (parent_device, self.vlan_id)
 
-	def get_subdevices(self, interfaces):
-		if self.parent_device in interfaces:
-			return set([interfaces[self.parent_device]])
-		return set()
+	@property
+	def subdevices(self):
+		return set([self.parent_device])
 
 	def validate(self):
 		super(VLAN, self).validate()
-		if len(self.ip4) > 1:
-			# UCR can't support multiple IPv4 addresses on VLAN, Bridge and Bond interfaces; Bug #31767
-			raise DeviceError(_('Multiple IPv4 addresses are not supported on this interface.'), self.name)
 
-	def validate_global_consistency(self, interfaces):
-		super(VLAN, self).validate_global_consistency(interfaces)
+		self.limit_ip4_address()
 
 		# parent interface must exists
-		if self.parent_device not in interfaces:
+		if self.parent_device not in self.interfaces:
 			raise DeviceError(_('Missing interface %r') % (name), self.name)
 
-		if isinstance(interfaces[self.parent_device], VLAN):
+		if isinstance(self.interfaces[self.parent_device], VLAN):
 			# unsupported
 			raise DeviceError('Nested VLAN-devices are currently unsupported.', self.name)
 
@@ -541,8 +557,8 @@ class Bond(Device):
 
 		# TODO: arp_interval arp_ip_target downdelay lacp_rate max_bonds primary updelay use_carrier xmit_hash_policy 
 
-	def prepare_consistency(self, interfaces):
-		for idevice in self.get_subdevices(interfaces):
+	def prepare_consistency(self):
+		for idevice in self.get_subdevices():
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
 
@@ -550,32 +566,24 @@ class Bond(Device):
 
 	def validate(self):
 		super(Bond, self).validate()
-		if len(self.ip4) > 1:
-			# UCR can't support multiple IPv4 addresses on VLAN, Bridge and Bond interfaces; Bug #31767
-			raise DeviceError(_('Multiple IPv4 addresses are not supported on this interface.'), self.name)
 
-	def validate_global_consistency(self, interfaces):
-		super(Bond, self).validate_global_consistency(interfaces)
+		self.limit_ip4_address()
 
 		# at least one interface must exists in a bonding
 		if not self.bond_slaves or not self.bond_primary:
 			raise DeviceError(_('Missing interface for bond interface'), self.name)
 
 		for name in set(self.bond_slaves + self.bond_primary):
-			# no self dependencies
-			if name == self.name:
-				raise DeviceError(_('Self-dependency not allowed'), name)
-
 			# all interfaces must exists
-			if name not in interfaces:
+			if name not in self.interfaces:
 				raise DeviceError(_('Missing interface %r') % (name), self.name)
 
 			# all interfaces must be physical
-			if not isinstance(interfaces[name], Ethernet) or not name in PHYSICAL_INTERFACES:
+			if not isinstance(self.interfaces[name], Ethernet) or not name in PHYSICAL_INTERFACES:
 				raise DeviceError(_('Interfaces used in a bonding must be physical: %s is not') % (name), self.name)
 
 			# all used interfaces in a bonding must be unconfigured
-			interface = interfaces[name]
+			interface = self.interfaces[name]
 			if interface.ip4 or interface.ip6:
 				raise DeviceError(_('Cannot use configured interface %s') % (name), self.name)
 
@@ -585,8 +593,9 @@ class Bond(Device):
 
 		self.check_unique_interface_usage()
 
-	def get_subdevices(self, interfaces):
-		return set([interfaces[name] for name in self.bond_slaves if name in interfaces])
+	@property
+	def subdevices(self):
+		return set(self.bond_slaves)
 
 	def parse_ucr(self):
 		super(Bond, self).parse_ucr()
@@ -637,11 +646,12 @@ class Bridge(Device):
 
 		# TODO: bridge_ageing bridge_bridgeprio bridge_gcint bridge_hello bridge_hw bridge_maxage bridge_maxwait bridge_pathcost bridge_portprio bridge_stp bridge_waitport
 
-	def get_subdevices(self, interfaces):
-		return set([interfaces[name] for name in self.bridge_ports if name in interfaces])
+	@property
+	def subdevices(self):
+		return set([self.bridge_ports])
 
-	def prepare_consistency(self, interfaces):
-		for idevice in self.get_subdevices(interfaces):
+	def prepare_consistency(self):
+		for idevice in self.get_subdevices():
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
 
@@ -649,24 +659,16 @@ class Bridge(Device):
 
 	def validate(self):
 		super(Bridge, self).validate()
-		if len(self.ip4) > 1:
-			# UCR can't support multiple IPv4 addresses on VLAN, Bridge and Bond interfaces; Bug #31767
-			raise DeviceError(_('Multiple IPv4 addresses are not supported on this interface.'), self.name)
 
-	def validate_global_consistency(self, interfaces):
-		super(Bridge, self).validate_global_consistency(interfaces)
+		self.limit_ip4_address()
 
 		for name in self.bridge_ports:
-			# no self dependencies
-			if name == self.name:
-				raise DeviceError(_('Self-dependency not allowed'), name)
-
 			# all interfaces must exists
-			if name not in interfaces:
+			if name not in self.interfaces:
 				raise DeviceError(_('Missing interface %r') % (name), self.name)
 
 			# interface can't be a Bridge
-			if isinstance(interfaces[name], Bridge):
+			if isinstance(self.interfaces[name], Bridge):
 				raise DeviceError(_('Interface cannot use Bridge %r as bridge-port') % (name), self.name)
 
 		self.check_unique_interface_usage()
