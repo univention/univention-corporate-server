@@ -39,7 +39,6 @@ import univention.config_registry
 
 args=sys.argv[1:]
 
-
 baseConfig=univention.config_registry.ConfigRegistry()
 baseConfig.load()
 
@@ -70,9 +69,36 @@ timeout=60
 attempt=0
 rc = 0
 
+def show_child_before_message(child):
+	""" Method shows only lpadmin error/info message that comes only with "lpadmin: """
+	for stdout_line in child.before.splitlines():
+		if "lpadmin: " in stdout_line:
+			print stdout_line.strip()
+
+
+def enableaccept(command, groupname, timeout, machine_password):
+	""" Method for enabling and accept classes """
+	i = 0
+	child = spawn(command, [groupname])
+	#print child
+	while not i == 3:
+		i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
+		#print command, " %s" % i
+		if i in [0,1,2]:
+			child.sendline(machine_password)
+
+	if child.isalive():
+		child.close()
+
+	if child.exitstatus and child.exitstatus != 0:
+		print 'The command "%s %s" returned %d' % (command, groupname, child.exitstatus)
+		sys.exit(child.exitstatus)
+
+
 while not i == 3:
 	i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
 	if i in [0,1,2]:
+		show_child_before_message(child)
 		child.sendline(machine_password)
 		attempt += 1
 
@@ -82,41 +108,24 @@ while not i == 3:
 		print 'Please check the machine account or the PAM configuration.'
 		sys.exit(1)
 
+
+show_child_before_message(child)
+
 if child.isalive():
 	child.close()
+
 if child.exitstatus and child.exitstatus != 0:
 	print 'The command "%s %s" returned %d' % (lpadminexec, ' '.join(args) , child.exitstatus)
 	sys.exit(child.exitstatus)
 
+# check for several classes
 if '-c' in args:
-	groupname = args[args.index('-c')+1]
-	#print 'found %s' % groupname
-	i = 0
-	child = spawn(enableexec, [groupname])
-	while not i == 3:
-		i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
-		#print "enable %s" % i
-		if i in [0,1,2]:
-			child.sendline(machine_password)
-
-	if child.isalive():
-		child.close()
-	if child.exitstatus and child.exitstatus != 0:
-		print 'The command "%s %s" returned %d' % (enableexec, groupname, cild.exitstatus)
-		sys.exit(child.exitstatus)
-
-	i = 0
-	child = spawn(acceptexec, [groupname])
-	while not i == 3:
-		i = child.expect(['%s\.%s.*\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s.*\?' % baseConfig['hostname'], 'localhost.*\?', EOF], timeout=timeout)
-		#print "accept %s" % i
-		if i in [0,1,2]:
-			child.sendline(machine_password)
-
-	if child.isalive():
-		child.close()
-	if child.exitstatus and child.exitstatus != 0:
-		print 'The command "%s %s" returned %d' % (acceptexec, groupname, child.exitstatus)
-		sys.exit(child.exitstatus)
+	i=0
+	for arg in args:
+		if arg == '-c':
+			#print "arg: ", args[i+1]
+			enableaccept(enableexec, args[i+1], timeout, machine_password)
+			enableaccept(acceptexec, args[i+1], timeout, machine_password)
+		i += 1
 
 sys.exit(0)

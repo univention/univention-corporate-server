@@ -1,3 +1,13 @@
+univention-printserver (6.0.25-5) unstable; urgency=low
+
+  * Modified univention-lpadmin. Enabled lpadmin output (Bug# 17660)
+  * Modified cups/systemgroup ucr variable in univention-printserver.postinst. 
+    Set comma as separator (Bug #28884)
+  * Modified description of ucr variable 
+    in univention-printserver.univention-config-registry-variables (Bug #28877)
+
+ -- Liam Schwez <lschwez@sansad.knut.univention.de>  Tue, 25 Jun 2013 09:55:44 +0200
+
 univention-printserver (6.0.25-4) unstable; urgency=low
 
   * Set executable file permissions '755' in debian/rules override_dh_fixperms: 

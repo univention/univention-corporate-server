@@ -5,8 +5,8 @@ Type=str
 Categories=service-cups
 
 [cups/errorpolicy]
-Description[de]=Die Parameter von ErrorPolicy werden verwendet, falls das Backend nicht mehr in der Lage ist, einen Druckauftrag an einen Drucker zu senden. (abort-job, retry-job, retry-current-job) (dafault stop-printer).
-Description[en]=The ErrorPolicy directive defines the default policy that is used when a backend is unable to send a print job to the printer. (abort-job, retry-job, retry-current-job) (dafault stop-printer).
+Description[de]=Die Parameter von ErrorPolicy werden verwendet, falls das Backend nicht mehr in der Lage ist, einen Druckauftrag an einen Drucker zu senden. (abort-job, retry-job, retry-current-job) (default stop-printer).
+Description[en]=The ErrorPolicy directive defines the default policy that is used when a backend is unable to send a print job to the printer. (abort-job, retry-job, retry-current-job) (default stop-printer).
 Type=str
 Categories=service-cups
 
@@ -29,8 +29,8 @@ Type=str
 Categories=service-cups
 
 [cups/systemgroup]
-Description[de]=Gruppen mit Administrationszugriff auf die Drucker
-Description[en]=Groups with printer administration access
+Description[de]=Gruppen mit Administrationszugriff auf die Drucker. Komma als Trennzeichen. Z.B.: 'Printer-Admins,lp,printergroup' 
+Description[en]=Groups with printer administration access. Comma as delimeter. E.g. 'Printer-Admins,lp,printergroup'
 Type=str
 Categories=service-cups
 
