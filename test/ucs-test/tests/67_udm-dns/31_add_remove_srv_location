@@ -24,7 +24,7 @@ if __name__ == '__main__':
 		srvRecord = udm.create_object('dns/srv_record', superordinate = forwardZone, name = '%s tcp %s' % (uts.random_string(), uts.random_string()), append = {'location': locations[:2]})
 		
 		udm.modify_object('dns/srv_record', superordinate = forwardZone, dn = srvRecord, append = {'location': locations[2:]})
-		if not utils.verify_ldap_object(forwardZone, {'sRVRecord': locations}):
+		if not utils.verify_ldap_object(srvRecord, {'sRVRecord': locations}):
 			utils.fail()
 
 		udm.modify_object('dns/srv_record', superordinate = forwardZone, dn = srvRecord, remove = {'location': locations[:2]})
