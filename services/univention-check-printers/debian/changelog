@@ -1,3 +1,9 @@
+univention-check-printers (7.0.1-2) unstable; urgency=low
+
+  * Add dependencies of 'univention-printserver' and 'bsd-mailx' (Bug #29123)
+
+ -- Liam Schwez <lschwez@sansad.knut.univention.de>  Tue, 25 Jun 2013 14:19:33 +0200
+
 univention-check-printers (7.0.1-1) unstable; urgency=low
 
   * modified univention-check-printers.
