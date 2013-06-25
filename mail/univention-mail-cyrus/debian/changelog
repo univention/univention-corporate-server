@@ -1,3 +1,10 @@
+univention-mail-cyrus (6.0.3-1) unstable; urgency=low
+
+  * Modifiend /conffiles/etc/imapd/imapd.conf 
+    to ucr variable duplicatesuppression (Bug #22429)
+
+ -- Liam Schwez <lschwez@sansad.knut.univention.de>  Tue, 25 Jun 2013 11:51:51 +0200
+
 univention-mail-cyrus (6.0.2-5) unstable; urgency=low
 
   * create/delete if pri.mail. changed and 
