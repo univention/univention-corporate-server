@@ -145,14 +145,6 @@ PackageList=[
 					'Description': _('Standard mail services with postfix and cyrus (SMTP/POP/IMAP)'),
 				},
 				{
-					'Name': _('Webmailer (Horde4)'),
-					'Packages': ['univention-horde4'],
-					'Edition': [ 'ucs' ],
-					'Active': [''],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-					'Description': _('Groupware based on Horde4 framework'),
-				},
-				{
 					'Name': _('DHCP server'),
 					'Packages': ['univention-dhcp'],
 					'Edition': [ 'ucs' ],
