@@ -1,3 +1,10 @@
+ucs-test (4.0.34-1) unstable; urgency=low
+
+  * Make 53_samba-common/20grouplist more robust against DRS replication
+    delays (Bug #28343)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Jun 2013 19:29:07 +0200
+
 ucs-test (4.0.33-1) unstable; urgency=low
 
   * 10_ldap/62check_ldap_group_to_file: use wait_for_replication
