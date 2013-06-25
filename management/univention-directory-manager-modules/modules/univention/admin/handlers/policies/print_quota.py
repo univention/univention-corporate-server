@@ -208,14 +208,14 @@ class object(univention.admin.handlers.simplePolicy):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicySharePrintQuota']) ]
 
 	def check_entries(self):
-		if self.hasChanged('quotaGroups'):
-			for entry in self.info['quotaGroups']:
+		if self.hasChanged('quotaGroups') and self.info.get('quotaGroups'):
+			for entry in self.info.get('quotaGroups'):
 				group_dn=self.lo.searchDn(filter='(&(objectClass=posixGroup)(cn=%s))' % entry[2])
 				if len(group_dn) < 1 and entry[2] != 'root':
 					raise univention.admin.uexceptions.notValidGroup,_('%s is not valid. ') % entry[2]
 
-		if self.hasChanged('quotaUsers'):
-			for entry in self.info['quotaUsers']:
+		if self.hasChanged('quotaUsers') and self.info.get('quotaUsers'):
+			for entry in self.info.get('quotaUsers'):
 				user_dn=self.lo.searchDn(filter='(&(objectClass=posixAccount)(uid=%s))' % entry[2])
 				if len(user_dn) < 1 and entry[2] != 'root':
 					raise univention.admin.uexceptions.notValidUser,_('%s is not valid. ') % entry[2]

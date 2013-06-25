@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.143-17) unstable; urgency=low
+
+  * fixed print_quota policy (Bug #31703)  
+
+ -- Felix Botner <botner@univention.de>  Tue, 25 Jun 2013 17:11:50 +0200
+
 univention-directory-manager-modules (8.0.143-16) unstable; urgency=low
 
   * Bug #30991: Further syntax lookup optimizations
