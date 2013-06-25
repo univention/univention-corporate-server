@@ -74,6 +74,8 @@ weiterläuft. Hierfür können beispielsweise die Tools \ucsCommand{screen} oder
 
 \section{System mit dem cyrus IMAP Server (univention-mail-cyrus)}
 
+\subsection{Cyrus Datenbank Konfiguration}
+
 Mit UCS 3.2 wird von
 \ucsName{univention-mail-cyrus} ein neues \ucsUCR{} Template
 \ucsURL{/var/lib/cyrus/db/DB_CONFIG} für die Konfiguration der cyrus DBD
@@ -99,6 +101,18 @@ Nach dem Update würde sich daraus folgende \ucsURL{/var/lib/cyrus/db/DB\_CONFIG
 set\_lg\_regionmax 2097152\newline
 set\_lg\_max 1048576\newline
 } 
+
+\subsection{Cyrus Benutzermanagement}
+
+Das Listener Modul für die Verwaltung der Postfächer wurde überarbeitet.
+Postfächer werden nun nur noch angelegt, wenn das Attribut \emph{mailHomeServer} am
+Benutzer gesetzt ist. Falls diese Attribut vom Benutzerobjekt entfernt wird,
+wird das Postfach gelöscht (sofern
+\texttt{mail/cyrus/mailbox/delete=\symbol{34}yes\symbol{34}} auf dem
+Mailserver gesetzt ist.)
+
+Bitte stellen Sie die Korrekheit des Attributes \emph{mailHomeServer} an den
+Benutzerobjekten vor dem Update sicher.
 
 \chapter{Nachbereitung des Updates}
 
