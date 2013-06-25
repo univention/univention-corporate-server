@@ -1,3 +1,9 @@
+univention-kernel-image (6.0.1-3) unstable; urgency=low
+
+  * Update to 3.2.46 (Bug #30887)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 25 Jun 2013 13:28:25 +0200
+
 univention-kernel-image (6.0.1-2.1) unstable; urgency=low
 
   * Update to 3.2.46 (Bug #30887)
