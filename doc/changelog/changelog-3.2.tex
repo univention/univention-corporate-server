@@ -395,18 +395,19 @@ from \ucsName{univention-antivir-mail} (\ucsBug{30900}).
 
 \subsection{Printing services}
 \begin{itemize}
-\item Changed in \ucsName{univention-printserver} SystemGroup parameter. SystemGroups are now separated by a blank character and not by a comma in cupsd.conf (\ucsBug{28884}).
+\item Changed in \ucsName{univention-printserver} SystemGroup parameter. SystemGroups are now separated by a blank character and not by a comma in cupsd.conf. Ucr variable must remain a comma separated-list though. (\ucsBug{28884}).
 
 \item Always create a samba printers config file
 (/etc/samba/printers.conf.d/<printer>) and not only if client driver is
 activated, the samba name is set or ACLs are defined (\ucsBug{30432}).
 
-\item Added in \ucsName{univention-printserver} ErrorPolicy to the cups template. ErrorPolicy can be set over ucr varibale 'cups/errorpolicy'. The change will be applied to all printers. (\ucsBug{28877}).
+\item Added in \ucsName{univention-printserver} ErrorPolicy to the cups template. ErrorPolicy can be set over ucr varibale \ucsUCRV{cups/errorpolicy}. The change will be applied to all printers. (\ucsBug{28877}).
 
 \item Modified in \ucsName{univention-printserver} "univention-ldapsearch" in join scripts to request LDAP on DC-Master not on local DC.(\ucsBug{19101}).
 
-\item Descriptions for the Univention Configuration Registry variables used in
-\ucsName{univention-check-printers} have been added (\ucsBug{22544}).
+\item Modified in \ucsName{univention-printserver} "univention-lpadmin". "Lpadmin" output (info, errors, warnings) enabled.(\ucsBug{17660}).
+
+\item Descriptions for the Univention Configuration Registry variables used in \ucsName{univention-check-printers} have been added (\ucsBug{22544}).
 
 \item Modified and improved checking for disabled printers in \ucsName{univention-check-printers}  (\ucsBug{28558}).
 
