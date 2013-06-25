@@ -17,18 +17,17 @@ Assert () { # Assert $1 = $2, optional error message $3
 	fi
 }
 
-##### Beginning ##### 
+##### Beginning #####
 out="$(mktemp)"
 trap "rm -f '$out' ; ucr_restore >/dev/null" EXIT
 ucr unset nameserver3 foo bar >/dev/null 2>&1
 
-##### Test nameserver3 ##### 
+##### Test nameserver3 #####
 debug Create nameserver3
 ucr set nameserver3=192.168.0.3 >"$out"
 Assert "$(sed -ne 's/^File: //p' "$out")" "/etc/resolv.conf"
 Assert "$(awk  'NR==1 {print $1}' "$out")" "Create"
-# Disabled, because 3rd party extensions may register additional modules
-#Assert "$(grep -v '^File:\|^Create' "$out")" ""
+Assert "$(grep -Ev '^(File|Module|Script):|^Create' "$out")" ""
 
 debug Get nameserver3
 ucr get nameserver3 > "$out"
@@ -39,29 +38,29 @@ ucr set nameserver3="192.168.0.3" >"$out"
 ucr get nameserver3 >"$out"
 Assert "$(cat "$out")" "192.168.0.3"
 
-##### Test foo and bar ##### 
+##### Test foo and bar #####
 debug Create foo
 ucr set foo=foo >"$out"
 Assert "$(awk 'NR==1 {print $1}' "$out")" "Create"
-Assert "$(grep -v '^Create' "$out")" ""
+Assert "$(grep -Ev '^(File|Module|Script):|^Create' "$out")" ""
 
 debug Change foo
 ucr set foo=bar >"$out"
 Assert "$(awk 'NR==1 {print $1}' "$out")" "Setting"
-Assert "$(grep -v '^Setting' "$out")" ""
+Assert "$(grep -Ev '^(File|Module|Script):|^Setting' "$out")" ""
 
 debug Set foo foo
 ucr set foo=bar foo=bar >"$out"
-Assert "$(awk '{print $1}' "$out")" $'Setting\nSetting'
+Assert "$(awk '$0 !~ /^(Module|Script):/ {print $1}' "$out")" $'Setting\nSetting'
 
 debug Unset foo
 ucr unset foo >"$out"
-Assert "$(awk 'NR==1 {print $1}' "$out")" "Unsetting" # Bug 11655
-#Assert "$(grep -v '^Delete' "$out")" "" # TODO: update with bug 11655
+Assert "$(awk 'NR==1 {print $1}' "$out")" "Unsetting"
+Assert "$(grep -Ev '^(File|Module|Script):|^Unsetting' "$out")" ""
 
 debug Set foo bar
 ucr set foo=bar bar=foo >"$out"
-Assert "$(awk '{print $1}' "$out")" $'Create\nCreate'
+Assert "$(awk '$0 !~ /^(Module|Script):/ {print $1}' "$out")" $'Create\nCreate'
 
 debug Get foo bar
 ucr get foo >"$out"
@@ -72,8 +71,8 @@ Assert "$(cat "$out")" "foo"
 
 debug Unset foo bar
 ucr unset foo bar >"$out"
-Assert "$(awk '{print $1}' "$out")" $'Unsetting\nUnsetting' # Bug 11655
-# Assert "$(cat $out | grep -ve '^Delete')" "" # TODO: update with bug 11655
+Assert "$(awk '$0 !~ /^(Module|Script):/ {print $1}' "$out")" $'Unsetting\nUnsetting'
+Assert "$(grep -Ev '^(File|Module|Script):|^Unsetting' "$out")" ""
 
 debug Get foo bar
 ucr get foo >"$out"
@@ -82,5 +81,5 @@ Assert "$(cat "$out")" ""
 ucr get bar > "$out"
 Assert "$(cat "$out")" ""
 
-##### End ##### 
+##### End #####
 exit 0
