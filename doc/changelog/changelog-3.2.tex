@@ -87,7 +87,7 @@ This issue has been fixed (\ucsBug{31170}).
 
 \subsection{Listener/Notifier domain replication}
 \begin{itemize}
-\item The password is hidden from the logfile on high debug levels (\ucsBug{31053}).
+\item The password used by the listener to access the LDAP directory is no longer shown in the logfile (\ucsBug{31053}).
 \end{itemize}
 
 %\subsection{Domain joins of UCS systems}
@@ -537,6 +537,7 @@ by default during initial join (\ucsBug{31437}).
 \item The listener module samba4-idmap now also works in case smb.conf includes files readable
 only for root (\ucsBug{31538}).
 \item Fixed file permissions of \ucsFile{/var/lib/samba/ntp\_signd} (\ucsBug{31109}).
+\item To minimize the time where \ucsURL{/etc/samba/shares.conf} includes non-existing files, it is now updated directly after a share was added/removed or renamed (\ucsBug{31800}).
 \end{itemize}
 
 \subsection{Univention S4 Connector}
