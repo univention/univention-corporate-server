@@ -1,3 +1,10 @@
+ucs-test (4.0.34-2) unstable; urgency=low
+
+  * Make 51_samba4/35smbclient_auth more robust against DRS replication
+    delays (Bug #28348)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 25 Jun 2013 20:55:52 +0200
+
 ucs-test (4.0.34-1) unstable; urgency=low
 
   * Make 53_samba-common/20grouplist more robust against DRS replication
