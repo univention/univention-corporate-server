@@ -1,3 +1,10 @@
+univention-nagios (7.0.0-1) unstable; urgency=low
+
+  * changed default for nagios/server/checkexternalcmd to yes (Bug #29839)
+  * bump version for UCS 3.1
+
+ -- Felix Botner <botner@univention.de>  Wed, 26 Jun 2013 11:30:38 +0200
+
 univention-nagios (6.0.5-1) unstable; urgency=low
 
   * apply UNIVENTION_NTP to memberserver too (Bug #30041) 

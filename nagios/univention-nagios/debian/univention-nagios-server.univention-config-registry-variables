@@ -11,8 +11,8 @@ Type=str
 Categories=service-nagios
 
 [nagios/server/checkexternalcmd]
-Description[de]=Aktiviere/Deaktiviere das Übergeben von Kommandos aus dem Webfrontend
-Description[en]=Enable/Disable the ability to run commands through the web frontend
+Description[de]=Aktiviere/Deaktiviere das Übergeben von Kommandos aus dem Webfrontend (default: yes)
+Description[en]=Enable/Disable the ability to run commands through the web frontend (default: yes)
 Type=str
 Categories=service-nagios
 
