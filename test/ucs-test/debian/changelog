@@ -1,3 +1,10 @@
+ucs-test (4.0.37-1) unstable; urgency=low
+
+  * 03: Disable cron during updater tests (Bug #31773)
+  * 03: Save all UCR layers.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 26 Jun 2013 13:57:21 +0200
+
 ucs-test (4.0.36-2) unstable; urgency=low
 
   * Add samba.sh (Bug #28343)
@@ -41,7 +48,7 @@ ucs-test (4.0.33-1) unstable; urgency=low
 ucs-test (4.0.32-1) unstable; urgency=low
 
   * fixed copy&paste error in
-  	67_udm-dns/31_add_remove_srv_location (Bug #27664)
+    67_udm-dns/31_add_remove_srv_location (Bug #27664)
 
  -- Lukas Walter <walter@univention.de>  Tue, 25 Jun 2013 10:06:17 +0200
 
