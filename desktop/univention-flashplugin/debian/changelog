@@ -1,3 +1,9 @@
+univention-flashplugin (7.0.3-1) unstable; urgency=low
+
+  * update to new Flash download URL (Bug #30767)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 26 Jun 2013 17:28:16 +0200
+
 univention-flashplugin (7.0.2-2) unstable; urgency=low
 
   * The Flash plugin for Linux is in maintenance mode, only security fixes are
