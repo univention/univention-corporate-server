@@ -1,3 +1,10 @@
+ucs-test (4.0.36-1) unstable; urgency=low
+
+  * Add library functions wait_for_drs_replication and force_drs_replication
+    (Bug #28348 and Bug #28343)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 26 Jun 2013 13:18:50 +0200
+
 ucs-test (4.0.35-1) unstable; urgency=low
 
   * 50_samba/4*password*: skip on 3.1-1 (Bug #31790)

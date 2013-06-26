@@ -22,6 +22,7 @@ import random
 import subprocess
 import time
 import univention.testing.utils as utils
+from univention.testing.samba import wait_for_drs_replication, force_drs_replication
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -110,22 +111,6 @@ def calculateInnerDelay(roundTime,amountPerRound):
 		sum2=sum2+delayArray[i]
 	return delayArray
 
-def waitForDRSReplication(samaccountname):
-	print "Wait for the objectSid",
-	t0=time.time()
-	for i in range(360):
-		p = subprocess.Popen(["/usr/bin/ldbsearch", "-H", "/var/lib/samba/private/sam.ldb" , "--controls=domain_scope:0", "(sAMAccountName=%s)" % (samaccountname, ), "objectSid"], stdout=subprocess.PIPE)
-		stdout, stderr = p.communicate()
-		sidlist = [line[11:] for line in stdout.split('\n') if line.startswith('objectSid: ')]
-		if sidlist:
-			break
-		time.sleep(3)
-		print ".",
-	t=time.time()
-	if not sidlist:
-		utils.fail("Account '%s' not replicated to local sam.ldb after %d seconds" % (t-t0, ))
-	print "DRS replication took %d seconds" % (t-t0, )
-
 def checkResult(expectedResult):
 	for i in range(20):
 
@@ -156,9 +141,9 @@ if __name__ == "__main__":
 	atexit.register(cleanup, username, homedir_mount)
 
 	utils.wait_for_replication()
-
 	# DRS replication
-	waitForDRSReplication(username)
+	# force_drs_replication(ucr['ldap/master'], ucr['samba4/ldap/base'])
+	wait_for_drs_replication("(sAMAccountName=%s)" % (username, ), attrs="objectSid")
 
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()
 	innerDelay=calculateInnerDelay(roundTime,amountPerRound)
