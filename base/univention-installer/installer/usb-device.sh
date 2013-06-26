@@ -3,7 +3,7 @@
 # Univention Installer
 #  helper script: scanning for USB mass storage devices
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
