@@ -50,7 +50,7 @@ class object(content):
 	def layout(self):
 		msg = [
 			_('Univention Installer has been started with the'),
-			_('Software RAID option. The hard disk has to be'),
+			_('expert partitioning option. The hard disk has to be'),
 			_('partitioned and formatted manually.'),
 			' ',
 			_('By pressing'),

@@ -15,7 +15,7 @@ menuentry 'Univention Installer (normal mode)' {
 	initrd /boot/linux-@%@KERNEL@%@.bin
 }
 
-menuentry 'Univention Installer Software RAID (expert mode)' {
+menuentry 'Univention Installer expert partitioning (e.g. for crypto or software raid setups)' {
 	linux /boot/linux-@%@KERNEL@%@ root=/dev/ram ro ramdisk_size=160120 flavor=linux nomodeset expert_partition quiet loglevel=0 vga=788 text
 	initrd /boot/linux-@%@KERNEL@%@.bin
 }

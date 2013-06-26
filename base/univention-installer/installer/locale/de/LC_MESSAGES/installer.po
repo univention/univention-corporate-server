@@ -1303,11 +1303,11 @@ msgstr "Optionen"
 
 #: installer/modules/60_expert_partition.py:52
 msgid "Univention Installer has been started with the"
-msgstr "Der Univention Installer wurde mit der Software RAID"
+msgstr "Der Univention Installer wurde mit der expert"
 
 #: installer/modules/60_expert_partition.py:53
-msgid "Software RAID option. The hard disk has to be"
-msgstr "Option gestartet. Die Festplatte muss manuell"
+msgid "expert partitioning option. The hard disk has to be"
+msgstr "partitioning Option gestartet. Die Festplatte muss manuell"
 
 #: installer/modules/60_expert_partition.py:54
 msgid "partitioned and formatted manually."

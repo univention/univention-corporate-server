@@ -16,7 +16,7 @@ title Univention Installer (normal mode)
 kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=1 vga=771 ramdisk_size=65536 flavor=linux nomodeset text quiet
 initrd (cd)/boot/linux-@%@KERNEL@%@.bin
 
-title Univention Installer Software RAID (expert mode)
+title Univention Installer expert partitioning (e.g. for crypto or software raid setups)
 kernel (cd)/boot/linux-@%@KERNEL@%@ root=/dev/ram ro vt.default_utf8=1 vga=771 ramdisk_size=65536 flavor=linux nomodeset text expert_partition quiet
 initrd (cd)/boot/linux-@%@KERNEL@%@.bin
 
