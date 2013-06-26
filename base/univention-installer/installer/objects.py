@@ -205,8 +205,9 @@ class input(baseObject_2):
 		elif input == 10:
 			return 'tab'
 		else:
-			self.text = self.text[:self.cursor]+chr(input)+self.text[self.cursor:]
-			self.set_cursor(1)
+			if input < 128:
+				self.text = self.text[:self.cursor]+chr(input)+self.text[self.cursor:]
+				self.set_cursor(1)
 		self.paste_text()
 		self.draw()
 

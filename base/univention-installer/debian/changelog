@@ -1,3 +1,9 @@
+univention-installer (9.0.1-1) unstable; urgency=low
+
+  * disbale input of non ascii characters (> 127) (Bug #24904) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 26 Jun 2013 15:14:32 +0200
+
 univention-installer (9.0.0-1) unstable; urgency=low
 
   * UCS-3.2 version bump
