@@ -125,13 +125,14 @@ class object(content):
 			if self.all_results.has_key('ldap_base') and self.all_results['ldap_base']:
 				self.guessed[ 'ldap_base' ] = self.all_results['ldap_base']+'already_initialize'
 
-		# windom
-		self.add_elem('TXT_WINDOMAIN', textline(_('Windows domain name:'), self.minY+index, self.minX+5))#8
-		index += 1
-		self.add_elem('IN_WINDOMAIN', input(self.all_results['windows_domain'], self.minY+index, self.minX+5,30))#9
-		index += 2
-		if self.all_results.has_key('windows_domain') and self.all_results['windows_domain']:
-			self.guessed[ 'windows_domain' ] = self.all_results['windows_domain']+'already_initialize'
+		# windos (samba) domain
+		if self.all_results.has_key('system_role') and self.all_results['system_role'] == 'domaincontroller_master':
+			self.add_elem('TXT_WINDOMAIN', textline(_('Windows domain name:'), self.minY+index, self.minX+5))#8
+			index += 1
+			self.add_elem('IN_WINDOMAIN', input(self.all_results['windows_domain'], self.minY+index, self.minX+5,30))#9
+			index += 2
+			if self.all_results.has_key('windows_domain') and self.all_results['windows_domain']:
+				self.guessed[ 'windows_domain' ] = self.all_results['windows_domain']+'already_initialize'
 
 		# password
 		self.add_elem('TXT_ROOTPW1', textline(_('Root password:'),self.minY+index,self.minX+5)) #10
@@ -161,6 +162,7 @@ class object(content):
 				# master -> ldapbase
 				if self.all_results.has_key( 'system_role' ) and \
 				self.all_results['system_role'] == 'domaincontroller_master':
+
 					element = self.get_elem('IN_LDAPBASE')
 					if not len(element.text) or not self.guessed.has_key('ldap_base') \
 					or self.guessed['ldap_base'] == element.text:
@@ -174,8 +176,7 @@ class object(content):
 								element.set_off()
 								element.draw()
 								self.draw()
-				# rest -> win dom
-				else:
+
 					element = self.get_elem('IN_WINDOMAIN')
 					if not len(element.text) or not self.guessed.has_key('windows_domain') \
 					or self.guessed['windows_domain'] == element.text:
@@ -190,28 +191,6 @@ class object(content):
 								element.set_off()
 								element.draw()
 								self.draw()
-
-		# win dom for ucs master
-		elem_id = "IN_LDAPBASE"
-		if self.all_results.has_key( 'system_role' ) and \
-		self.all_results['system_role'] == 'domaincontroller_master':
-			if self.current == self.get_elem_id(elem_id):
-				elem_fqdn = self.get_elem('IN_FQDN')
-				element = self.get_elem("IN_WINDOMAIN")
-				if not len(element.text) or not self.guessed.has_key('windows_domain') \
-				or self.guessed['windows_domain'] == element.text:
-					fqdn = elem_fqdn.text
-					if fqdn and "." in fqdn:
-						tmp = fqdn.split('.')
-						if len(tmp) > 0:
-							text = tmp[1].upper()
-							text = re.sub("^\d*", "", text)
-							self.guessed['windows_domain'] = text
-							element.text = text
-							element.cursor=len(text)
-							element.set_off()
-							element.draw()
-							self.draw()
 
 		# upper case win dom
 		if self.current == self.get_elem_id('IN_WINDOMAIN'):
@@ -235,41 +214,44 @@ class object(content):
 			return self.get_elem_by_id(self.current).key_event(key)
 
 	def check_values (self, hostname, domainname, windows_domain, ldap_base, root_password1, root_password2, focus=True):
-		if not windows_domain.strip() == '':
-			if not self.syntax_is_windowsdomainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
+
+		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
+
+			if not windows_domain.strip() == '':
+				if not self.syntax_is_windowsdomainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
+					if not self.ignore('windows_domain'):
+						if focus:
+							self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+						return _("Please enter a valid windows domain name.")
+	
+			if len(windows_domain.strip()) > 14:
 				if not self.ignore('windows_domain'):
 					if focus:
 						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-					return _("Please enter a valid windows domain name.")
-
-		if len(windows_domain.strip()) > 14:
-			if not self.ignore('windows_domain'):
-				if focus:
-					self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-				return _("The length of the windows domain name is greater than 14 characters.")
-
-		# no . in windom
-		if not windows_domain.find(".") == -1:
-			if not self.ignore('windows_domain'):
-				if focus:
-					self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-				return _("Periods are not allowed in windows domain names.")
-
-		# windom != dns
-		if windows_domain.strip().lower() == domainname.strip().lower():
-			if not self.ignore('windows_domain'):
-				if focus:
-					self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-				return _("The windows domain and the domain name may not be the same.")
-
-		if windows_domain.strip().lower() == hostname.strip().lower():
-			if not self.ignore('windows_domain'):
-				# The warning will be displayed only once
-				if windows_domain != self.windomain_last_warning:
-					self.windomain_last_warning = windows_domain
+					return _("The length of the windows domain name is greater than 14 characters.")
+	
+			# no . in windom
+			if not windows_domain.find(".") == -1:
+				if not self.ignore('windows_domain'):
 					if focus:
 						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-					return _("For Active Directory domains the hostname and the windows domain name may not be the same. This warning is shown only once, the installation can be continued with the name currently given.")
+					return _("Periods are not allowed in windows domain names.")
+	
+			# windom != dns
+			if windows_domain.strip().lower() == domainname.strip().lower():
+				if not self.ignore('windows_domain'):
+					if focus:
+						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+					return _("The windows domain and the domain name may not be the same.")
+	
+			if windows_domain.strip().lower() == hostname.strip().lower():
+				if not self.ignore('windows_domain'):
+					# The warning will be displayed only once
+					if windows_domain != self.windomain_last_warning:
+						self.windomain_last_warning = windows_domain
+						if focus:
+							self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+						return _("For Active Directory domains the hostname and the windows domain name may not be the same. This warning is shown only once, the installation can be continued with the name currently given.")
 
 		if hostname.strip() == '' or hostname.strip() in ['localhost', 'local'] or hostname.strip().find(' ') != -1 or not self.syntax_is_hostname(hostname):
 			if not self.ignore('hostname'):
@@ -392,7 +374,6 @@ class object(content):
 		return 0
 
 	def incomplete(self):
-		ldap_base=''
 
 		if '.' in self.get_elem('IN_FQDN').text:
 			hostname, domainname = self.get_elem('IN_FQDN').result().strip().lower().split('.', 1)
@@ -400,10 +381,13 @@ class object(content):
 			hostname = self.get_elem('IN_FQDN').result().strip().lower()
 			domainname = ''
 
+		ldap_base = ''
 		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 			ldap_base=self.get_elem('IN_LDAPBASE').result()
 
-		windomain = self.get_elem('IN_WINDOMAIN').result()
+		windomain = ''
+		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
+			windomain = self.get_elem('IN_WINDOMAIN').result()
 
 		if self.all_results.has_key('root_password_crypted'):
 			root_password1='XXXXXXXXXX'
@@ -432,7 +416,8 @@ class object(content):
 		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 			result['ldap_base']='%s' % self.get_elem('IN_LDAPBASE').result().strip()
 
-		result['windows_domain']='%s' % self.get_elem('IN_WINDOMAIN').result().strip().upper()
+		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
+			result['windows_domain']='%s' % self.get_elem('IN_WINDOMAIN').result().strip().upper()
 
 		if self.all_results.has_key('root_password_crypted'):
 			result['root_password_crypted']=self.all_results['root_password_crypted']

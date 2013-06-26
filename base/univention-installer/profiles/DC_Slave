@@ -33,7 +33,6 @@ domainname='example.com'
 hostname='dc-slave'
 ldap_base='dc=example,dc=com'
 fqdn='dc-slave.example.com'
-windows_domain='EXAMPLE'
 ## determine hostname by reverse DNS lookup of IP, works only with valid nameserver_1:
 #scan=hostname
 ## use root_password with care

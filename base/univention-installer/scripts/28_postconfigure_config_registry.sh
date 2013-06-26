@@ -87,12 +87,14 @@ chroot /instmnt ./hostname.sh
 
 cat >/instmnt/postconfigure_config_registry.sh <<__EOT__
 #!/bin/sh
-univention-config-registry set \
-	domainname="$domainname" \
-	windows/domain="$windows_domain"
-__EOT__
 
-cat >>/instmnt/postconfigure_config_registry.sh <<__EOT__
+univention-config-registry set domainname="$domainname" 
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	if [ -n "$windows_domain" ]; then
+		univention-config-registry set windows/domain="$windows_domain"
+	fi
+fi
 
 if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 	univention-config-registry set create/home/share=true
