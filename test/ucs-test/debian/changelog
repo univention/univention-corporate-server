@@ -1,3 +1,14 @@
+ucs-test (3.0.30-11) unstable; urgency=low
+
+  * Merge from UCS 3.2 (4.0.35-1)
+    * 50_samba/4*password*: skip on 3.1-1 (Bug #31790)
+    * Make 51_samba4/35smbclient_auth more robust against DRS replication
+      delays (Bug #28348)
+    * Make 53_samba-common/20grouplist more robust against DRS replication
+      delays (Bug #28343)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Jun 2013 07:16:54 +0200
+
 ucs-test (3.0.30-10) unstable; urgency=low
 
   * Merge from UCS 3.2 (4.0.33-1)

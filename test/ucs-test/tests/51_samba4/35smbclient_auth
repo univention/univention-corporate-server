@@ -21,7 +21,7 @@ import univention.config_registry
 import random
 import subprocess
 import time
-from univention.testing.utils import wait_for_replication
+import univention.testing.utils as utils
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -64,7 +64,6 @@ def get_unique_username():
 			return randomname # randomname is unique
 
 def create_user(username, password):
-	mailaddress = "%s@%s" % (username, ucr["domainname"])
 	udm = subprocess.Popen(["udm-test",
 				"users/user", "create",
 				"--set", "password=%s" % password,
@@ -85,14 +84,12 @@ def cleanup(username,homedir_mount):
 				"users/user", "remove",
 				"--dn", "uid=%s,cn=users,%s" % (username, ucr["ldap/base"],)])
 
-		
 	return udm.wait() == 0
 
 
 def smbclient(username,password,number,innerDelay):
 	for i in range(number):
-#		print '/usr/bin/smbclient -U%s%%%s //localhost/sysvol' % (username,password)
-		subprocess.Popen(["/usr/bin/smbclient", "-U%s%%%s" % (username,password), "//localhost/sysvol"],stdin=subprocess.PIPE)
+		subprocess.Popen(["/usr/bin/smbclient", "-U%s%%%s" % (username,password), "//localhost/sysvol"], stdin=subprocess.PIPE)
 		time.sleep(innerDelay[i])
 
 def calculateInnerDelay(roundTime,amountPerRound):
@@ -113,16 +110,21 @@ def calculateInnerDelay(roundTime,amountPerRound):
 		sum2=sum2+delayArray[i]
 	return delayArray
 
-##connect to //localhost/sysvol to make sure that it and the user exist
-def waitForUserCreation(username,password):
-	print "Wait for the user to be created"
-	for i in range(10):
-		output=pexpect.run("/usr/bin/smbclient -U%s%%%s //localhost/sysvol" % (username,password))
-		if output.find("smb: \>") >=0 :
-			print "%i. Try:  Successfull connection." % (i+1)
+def waitForDRSReplication(samaccountname):
+	print "Wait for the objectSid",
+	t0=time.time()
+	for i in range(360):
+		p = subprocess.Popen(["/usr/bin/ldbsearch", "-H", "/var/lib/samba/private/sam.ldb" , "--controls=domain_scope:0", "(sAMAccountName=%s)" % (samaccountname, ), "objectSid"], stdout=subprocess.PIPE)
+		stdout, stderr = p.communicate()
+		sidlist = [line[11:] for line in stdout.split('\n') if line.startswith('objectSid: ')]
+		if sidlist:
 			break
 		time.sleep(3)
-
+		print ".",
+	t=time.time()
+	if not sidlist:
+		utils.fail("Account '%s' not replicated to local sam.ldb after %d seconds" % (t-t0, ))
+	print "DRS replication took %d seconds" % (t-t0, )
 
 def checkResult(expectedResult):
 	for i in range(20):
@@ -153,23 +155,21 @@ if __name__ == "__main__":
 
 	atexit.register(cleanup, username, homedir_mount)
 
-	wait_for_replication()
+	utils.wait_for_replication()
 
 	# DRS replication
-	waitForUserCreation(username,password)
+	waitForDRSReplication(username)
 
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()
 	innerDelay=calculateInnerDelay(roundTime,amountPerRound)
 
 	for index in range(totalRounds):
-		smbclient(username,password,amountPerRound,innerDelay)    
-#	time.sleep(20)
+		smbclient(username,password,amountPerRound,innerDelay)
 	expectedResult=amountPerRound*totalRounds
 	result=checkResult(expectedResult)
 	print "%s of %s have been successfull." % (result,expectedResult)
 	if result == expectedResult:
 		sys.exit(0)
 	else:
-		sys.exit(1)
-
+		utils.fail()
 
