@@ -1,11 +1,12 @@
 [listener/shares/rename]
-Description[de]="yes" gibt an, dass der Directory Listener Verzeichnisse von Freigaben (NFS, Samba) verschieben soll, wenn der Freigabepfad geändert wird (Standard: "no"=ein neues Verzeichnis mit dem neuen Freigabepfad wird angelegt).
-Description[en]="yes" specifies that the Directory Listener should move directories of shares (NFS, Samba), if the share path is changed (default: "no"=a new directory with the new share path is created).
+Description[de]=Ist diese Variable aktiviert, wird bei Änderung des Speicherpfads einer NFS- oder CIFS-Freigabe der Inhalt der Freigabe verschoben. Ist die Variable nicht gesetzt oder deaktiviert, wird bei Änderung des Speicherpfads ein neues Verzeichnis angelegt.
+Description[en]=If this variable is activated the content of a NFS or CIFS share is moved if the storage path is changed. If the variable isn't set or deactivated, a new directory is created if the storage path is changed.
 Type=bool
 Categories=service-misc
 
 [listener/shares/rename/fstypes]
-Description[de]=Doppelunkt-separierte Liste von Dateisystemtypen, auf denen das Umbenennen von Verzeichnissen von Freigaben erlaubt ist (Standard: ext2/ext3:ext2:ext3:ext4:xfs:btrfs)
-Description[en]=colon separated list of file system types on which renaming of directories of shares is allowed (default: ext2/ext3:ext2:ext3:ext4:xfs:btrfs)
+Description[de]=Das automatische Verschieben von Dateifreigaben - konfigurierbar über die Variable listener/shares/rename - ist nur für die hier definierten Dateisysteme erlaubt.
+Mehrfache Einträge müssen durch einen Doppelpunkt getrennt werden. Ist die Variable nicht gesetzt, gilt 'ext2/ext3:ext2:ext3:ext4:xfs:btrfs'.
+Description[en]=The automatic move of file shares - configurable through the variable listener/shares/rename - is only allowed for the filesystems defined here. Multiple entries need to be separated with a colon. If the variable isn't set 'ext2/ext3:ext2:ext3:ext4:xfs:btrfs' applies.
 Type=str
 Categories=service-misc
