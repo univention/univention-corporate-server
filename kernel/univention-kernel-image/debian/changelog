@@ -1,3 +1,11 @@
+univention-kernel-image (7.0.0-1) unstable; urgency=low
+
+  * Bump version for 3.2
+  * Update copyright
+  * Drop 2.6.32 transition packages (Bug #31593)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 26 Jun 2013 11:15:25 +0200
+
 univention-kernel-image (6.0.2-1) unstable; urgency=low
 
   * Depend on new kernel (Bug #31366)
