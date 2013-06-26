@@ -61,15 +61,10 @@ class object(content):
 		return True
 
 	def layout(self):
-		oxae = False
-		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
-			oxae = True
 
 		self.reset_layout()
 
-		if oxae:
-			self.add_elem('create_local_repo', textline('[ ] %s' % _('Create local repository'), self.minY+1, self.minX+2,40,40,))
-		elif self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup' ]:
+		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup' ]:
 			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[]))
 		else:
 			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[]))
@@ -97,7 +92,7 @@ class object(content):
 			else:
 				return self.get_elem_by_id(self.current).key_event(key)
 		except AttributeError:
-			# it might be possible, that the focus is on the textline (OXAE). Bug #12205
+			# it might be possible, that the focus is on the textline. Bug #12205
 			return
 
 	def incomplete(self):
@@ -112,17 +107,10 @@ class object(content):
 	def result(self):
 		result={}
 
-		oxae = False
-		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
-			oxae = True
-
-		if oxae:
-			result['local_repository']='false'
+		if len(self.get_elem('create_local_repo').selected) > 0:
+			result['local_repository']='true'
 		else:
-			if len(self.get_elem('create_local_repo').selected) > 0:
-				result['local_repository']='true'
-			else:
-				result['local_repository']='false'
+			result['local_repository']='false'
 
 		if not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
 			if len(self.get_elem('create_home_share').selected) > 0:

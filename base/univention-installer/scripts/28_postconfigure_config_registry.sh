@@ -174,10 +174,6 @@ if [ -n "$xkbLayout" ]; then
 	univention-config-registry set xorg/keyboard/options/XkbLayout="$xkbLayout"
 fi
 
-if [ -n "$ox_primary_maildomain" ] ; then
-	univention-config-registry set ox/mail/domain/primary="$ox_primary_maildomain"
-fi
-
 univention-config-registry set \
 	version/version="$version_version" \
 	version/patchlevel="$version_patchlevel" \

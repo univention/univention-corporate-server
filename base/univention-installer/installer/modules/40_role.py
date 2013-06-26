@@ -75,35 +75,22 @@ class object(content):
 			return 'basesystem'
 
 	def layout(self):
-		oxae = False
-		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
-			oxae = True
 
 		self.elements.append(textline(_('Select the system role:'), self.minY-11, self.minX+5))#2
 		dict={}
 		dict[_('Master domain controller')]=['domaincontroller_master',0]
-		if not oxae:
-			dict[_('Backup domain controller')]=['domaincontroller_backup',1]
-			dict[_('Slave domain controller')]=['domaincontroller_slave',2]
-			dict[_('Member server')]=['memberserver',3]
-			dict[_('Base system')]=['basesystem',4]
+		dict[_('Backup domain controller')]=['domaincontroller_backup',1]
+		dict[_('Slave domain controller')]=['domaincontroller_slave',2]
+		dict[_('Member server')]=['memberserver',3]
+		dict[_('Base system')]=['basesystem',4]
 
-			list=['domaincontroller_master','domaincontroller_backup','domaincontroller_slave','memberserver','basesystem']
-			select=0
-			if self.all_results.has_key('system_role'):
-				select=list.index(self.mapping(self.all_results['system_role']))
-		else:
-			select=0
+		list=['domaincontroller_master','domaincontroller_backup','domaincontroller_slave','memberserver','basesystem']
+		select=0
+		if self.all_results.has_key('system_role'):
+			select=list.index(self.mapping(self.all_results['system_role']))
 
 		self.add_elem('RADIO', radiobutton(dict,self.minY-9,self.minX+7,40,10,[select]))#3
 		self.elements[3].current=select
-
-		if oxae:
-			self.elements.append(textline('[ ] %s' % _('Backup domain controller'),self.minY-8,self.minX+7,40,40))#4
-			self.elements.append(textline('[ ] %s' % _('Slave domain controller'),self.minY-7,self.minX+7,40,40))#5
-			self.elements.append(textline('[ ] %s' % _('Member server'),self.minY-6,self.minX+7,40,40))#6
-			self.elements.append(textline('[ ] %s' % _('Base system'),self.minY-5,self.minX+7,40,40))#7
-
 		self.add_elem('TXT_DESCRIPTION', textline( _('Further information for selected system role:'), self.minY-3, self.minX+5))
 		self.add_elem('TEXTAREA', dummy())
 		self.add_elem('CALL_MASTER_JOINSCRIPTS', dummy())

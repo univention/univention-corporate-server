@@ -93,9 +93,6 @@ class object(content):
 		self.ask_forwarder = True
 		self.warning_shown_for_ipv6addr = []  # list of IPv6 addresses
 
-		# boolean: True, if edition "oxae" is specified
-		self.is_ox = 'oxae' in self.cmdline.get('edition',[])
-
 	def depends(self):
 		self.debug('depends()')
 		return {'system_role': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem', 'managed_client', 'mobile_client'] }
@@ -502,8 +499,8 @@ class object(content):
 
 		offsetGy += 1
 		# True, if system role is domaincontroller or system is an OX system
-		self.ask_domainnameserver = ( self.all_results.get('system_role') not in ['domaincontroller_master', 'basesystem'] ) or self.is_ox
-		self.debug('ask_domainnameserver=%s  (%s, %s)' % (self.ask_domainnameserver, self.all_results.get('system_role'), self.is_ox))
+		self.ask_domainnameserver = self.all_results.get('system_role') not in ['domaincontroller_master', 'basesystem']
+		self.debug('ask_domainnameserver=%s  (%s)' % (self.ask_domainnameserver, self.all_results.get('system_role')))
 		if self.ask_domainnameserver:
 			offsetGy += 1
 			# - Domain Nameserver
@@ -513,8 +510,8 @@ class object(content):
 			self.add_elem('BTN_MORE_NAMESERVER', button(_('More'), offsetGy, offsetGx+22+LEN_IPv6_ADDR+4))
 
 		# True, if system role is domaincontroller or system is an OX system
-		self.ask_forwarder = ( self.all_results.get('system_role') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'basesystem'] ) and not self.is_ox
-		self.debug('ask_forwarder=%s  (%s, %s)' % (self.ask_forwarder, self.all_results.get('system_role'), self.is_ox))
+		self.ask_forwarder = self.all_results.get('system_role') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'basesystem']
+		self.debug('ask_forwarder=%s  (%s)' % (self.ask_forwarder, self.all_results.get('system_role')))
 		if self.ask_forwarder:
 			offsetGy += 1
 			# - DNS Forwarder

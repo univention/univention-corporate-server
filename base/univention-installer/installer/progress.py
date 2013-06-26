@@ -274,18 +274,6 @@ class ProgressDialog(object):
 
 			fqdn = '%s.%s' % (self.profile.get('hostname'), self.profile.get('domainname'))
 
-			# open xchange stuff
-			if self.profile.get('ox_primary_maildomain'):
-				msg.append( _('  Open-Xchange frontend'))
-				msg.append( _('    https://%s/ox6/') % fqdn[:80] )
-				if self.profile.get('hostaddress'):
-					address = self.profile.get('hostaddress')
-					if ':' in address:
-						address = '[%s]' % address
-					msg.append( _('    https://%s/ox6/') % address )
-				msg.append( _('    Administrative account name: oxadmin') )
-				msg.append( '' )
-
 			msg.append( _('  Univention Management Console') )
 			msg.append( _('    https://%s/umc/') % fqdn[:80] )
 			if self.profile.get('hostaddress'):
