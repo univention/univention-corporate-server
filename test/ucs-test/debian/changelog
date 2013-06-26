@@ -1,3 +1,9 @@
+ucs-test (4.0.35-1) unstable; urgency=low
+
+  * 50_samba/4*password*: skip on 3.1-1 (Bug #31790)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Jun 2013 07:14:30 +0200
+
 ucs-test (4.0.34-2) unstable; urgency=low
 
   * Make 51_samba4/35smbclient_auth more robust against DRS replication
