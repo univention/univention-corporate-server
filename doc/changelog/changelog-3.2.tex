@@ -358,10 +358,10 @@ create such password. The length and complexity can be configured via the
 \subsection{Cyrus}
 \begin{itemize}
 
-\item \ucsName{univention-mail-cyrus} has been modified. UCR variable
-mail/cyrus/imap/duplicatesuppression added. Default value is ``yes''. If set
-the variable to ``yes'' lmtpd will suppress delivery of a message to a mailbox
-if same message with the same message-id (or resent-message-id) has already
+\item The \ucsUCRV{mail/cyrus/imap/duplicatesuppression} (default: yes) has
+been added to \ucsName{univention-mail-cyrus}. If set to ``yes'', lmtpd will
+suppress delivery of a message to a mailbox if same message with the same
+message-id (or resent-message-id) has already
 been delivered to the mailbox (\ucsBug{22429}).
 
 \item A new \ucsUCR{} template \ucsURL{/var/lib/cyrus/db/DB_CONFIG} for the cyrus
