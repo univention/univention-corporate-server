@@ -8,6 +8,7 @@ from samba.param import LoadParm
 import ldb
 import time
 import socket
+import re
 
 def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1):
 	if not lp:
@@ -39,8 +40,31 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 	print "\nDRS replication took %d seconds" % (t-t0, )
 	return res
 
-def force_drs_replication(source_dc, partition_dn):
-	hostname = socket.gethostname()
-	p = subprocess.Popen(["/usr/bin/samba-tool", "drs", "replicate", hostname, source_dc, partition_dn])	
+def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
+	if not source_dc:
+		p = subprocess.Popen(["/usr/bin/univention-ldapsearch", "-xLLL", "(univentionService=S4 Connector)", "uid"], stdout=subprocess.PIPE)
+		stdout, stderr = p.communicate()
+		if stdout:
+			matches = re.compile('^uid: (.*)\$$', re.M).findall(stdout)
+			if len(matches) == 1:
+				source_dc = matches[0]
+		else:
+			print "WARNING: Automatic S4 Connector host detection failed"
+			return 1
+
+	if not destination_dc:
+		destination_dc = socket.gethostname()
+
+	if not partition_dn:
+		lp = LoadParm()
+		lp.load('/etc/samba/smb.conf')
+		samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
+		partition_dn=str(samdb.domain_dn())
+		print "USING partition_dn:", partition_dn
+
+	if direction == "in":
+		p = subprocess.Popen(["/usr/bin/samba-tool", "drs", "replicate", destination_dc, source_dc, partition_dn])	
+	else:
+		p = subprocess.Popen(["/usr/bin/samba-tool", "drs", "replicate", source_dc, destination_dc, partition_dn])	
 	return p.wait()
 

@@ -22,7 +22,7 @@ import random
 import subprocess
 import time
 import univention.testing.utils as utils
-from univention.testing.samba import wait_for_drs_replication, force_drs_replication
+from univention.testing.ucs_samba import wait_for_drs_replication, force_drs_replication
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
 	utils.wait_for_replication()
 	# DRS replication
-	# force_drs_replication(ucr['ldap/master'], ucr['samba4/ldap/base'])
+	# force_drs_replication()
 	wait_for_drs_replication("(sAMAccountName=%s)" % (username, ), attrs="objectSid")
 
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()

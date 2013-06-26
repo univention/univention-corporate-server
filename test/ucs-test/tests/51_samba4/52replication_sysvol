@@ -5,6 +5,8 @@
 ##  - univention-samba4
 ## roles:
 ## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
 ## tags:
 ##  - basic
 
@@ -117,7 +119,7 @@ i=0
 while ! echo "$BINDPWD" | univention-ssh /dev/stdin root@"$s4host.$domainname" test -d "/var/lib/samba/sysvol/$domainname/Policies/$gpo_cn" > /dev/null
 do
 	let i="$i"+1
-	if [ "$i" =  300 ]; then
+	if [ "$i" =  600 ]; then
 		fail_fast 1 "remote directory for GPO has not been created"
 	fi
 	sleep 3

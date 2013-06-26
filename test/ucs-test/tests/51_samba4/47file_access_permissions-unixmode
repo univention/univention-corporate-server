@@ -11,6 +11,7 @@
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/shares.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
 
 #----create User
 echo "----create user"
@@ -47,18 +48,9 @@ SHARE_DN="$(udm-test shares/share list --filter sambaName="$sharename" | sed -ne
 
 USER_DN="$(udm-test users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 
-## wait for user replication
-echo "----wait for user replication"
-i=0
-sleep_seconds=3
-while ! ldbsearch -H "ldap://localhost" -U"$username%$password" "cn=$username" dn 2>&1 | grep -q '^dn:'
-do
-	let i=$i+1
-	if [ "$i" = 10 ]; then
-    		fail_fast 1 "TIMEOUT: The user could not be found in samba ldb after $((i * $sleep_seconds)) seconds"
-	fi
-	sleep "$sleep_seconds"
-done
+wait_for_replication
+# force_drs_replication
+wait_for_drs_replication "(sAMAccountName=$username)"
 
 ## wait for samba share export
 echo "----wait for samba share export"
