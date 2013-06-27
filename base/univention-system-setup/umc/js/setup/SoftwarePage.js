@@ -143,8 +143,9 @@ define([
 			if (this._orgComponents === undefined) {
 				this._orgComponents = {};
 				array.forEach(components, function(icomponent) {
-					if(icomponent !== "")
+					if(icomponent !== "") {
 						this._orgComponents[icomponent] = true;
+					}
 				}, this);
 			}
 

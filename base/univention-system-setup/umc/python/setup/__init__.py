@@ -54,6 +54,8 @@ from univention.management.console.protocol.definitions import *
 from univention.management.console.modules.sanitizers import PatternSanitizer
 from univention.management.console.modules.decorators import sanitize, simple_response
 
+from univention.management.console.modules.setup.network import Interfaces, DeviceError
+
 ucr=univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -62,13 +64,7 @@ _ = Translation('univention-management-console-module-setup').translate
 PATH_SYS_CLASS_NET = '/sys/class/net'
 
 RE_IPV4 = re.compile(r'^interfaces/(([^/_]+)(_[0-9])?)/(address|netmask)$')
-RE_IPV4_ADDRESS = re.compile(r'^interfaces/(([^/_]+)(_[0-9])?)/address$')
-RE_IPV4_DYNAMIC = re.compile(r'^interfaces/(([^/_]+)(_[0-9])?)/type$')
-RE_IPV6 = re.compile(r'^interfaces/([^/]+)/ipv6/([^/]+)/(prefix|address)$')
-RE_IPV6_ADDRESS = re.compile(r'^interfaces/([^/]+)/ipv6/([^/]+)/address$')
 RE_IPV6_DEFAULT = re.compile(r'^interfaces/([^/]+)/ipv6/default/(prefix|address)$')
-RE_IPV6_DYNAMIC = re.compile(r'^interfaces/([^/]+)/ipv6/acceptRA$')
-RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+$')
 RE_SPACE = re.compile(r'\s+')
 RE_SSL = re.compile(r'^ssl/.*')
 
@@ -218,11 +214,11 @@ class Instance(umcm.Base):
 
 				# on unjoined DC master the nameserver must be set to the external nameserver
 				if newrole == 'domaincontroller_master' and not orgValues.get('joined'):
-					for i in range(1,4):
+					for i in range(1, 4):
 						# overwrite these values only if they are set, because the UMC module
 						# will save only changed values
-						if values.get( 'dns/forwarder%d'%i ):
-							values[ 'nameserver%d'%i ] = values.get( 'dns/forwarder%d'%i )
+						if values.get( 'dns/forwarder%d' % i ):
+							values[ 'nameserver%d' % i ] = values.get( 'dns/forwarder%d' % i )
 
 				MODULE.info('saving profile values')
 				util.write_profile(values)
@@ -377,62 +373,15 @@ class Instance(umcm.Base):
 		_check('ssl/email', lambda x: x.find('@') >= 0, _("Please enter a valid email address"))
 
 		# net
+		try:
+			interfaces = Interfaces()
+			interfaces.from_dict(allValues.get('interfaces', {}))
+			interfaces.check_consistency()
+		except DeviceError as exc:
+			_append('interfaces', str(exc))
+
 		# validate the primary network interface
-		ucr.load()
-		_check('interfaces/primary', lambda x: (not x) or any(k.startswith('interfaces/%s/' % x) for k in values.keys() + ucr.keys()), _('The primary interface must be an existing interface'))
-
-		# validate all ipv4 addresses and there netmask
-		checkedIpv4 = set()
-		for ikey, ival in values.iteritems():
-			if not ival:
-				continue
-			m = RE_IPV4.match(ikey)
-			if m:
-				# get the parts
-				iname, idev, ivirt, itype = m.groups()
-
-				# have we already tested this device?
-				addressKey = 'interfaces/%s/address' % iname
-				maskKey = 'interfaces/%s/netmask' % iname
-				if addressKey in checkedIpv4:
-					continue
-				checkedIpv4.add(addressKey)
-
-				# make sure that address and netmask are correct
-				virtStr = ''
-				if ivirt:
-					virtStr = _(' (virtual)')
-				if not util.is_ipv4addr(allValues.get(addressKey)):
-					_append(addressKey, _('IPv4 address is not valid [%s%s]: "%s"') % (idev, virtStr, allValues.get(addressKey)))
-				elif not allValues.get(maskKey) or not util.is_ipv4netmask('%s/%s' % (allValues.get(addressKey), allValues.get(maskKey))):
-					_append(maskKey, _('IPv4 netmask is not valid [%s%s]: "%s"') % (idev, virtStr, allValues.get(maskKey, '')))
-
-		# validate all ipv6 addresses, their prefix, and identifier
-		checkedIpv6 = set()
-		for ikey, ival in values.iteritems():
-			if not ival:
-				continue
-			m = RE_IPV6.match(ikey)
-			if m:
-				# get the parts
-				idev, iid, itype = m.groups()
-
-				# have we already tested this device?
-				addressKey = 'interfaces/%s/ipv6/%s/address' % (idev, iid)
-				prefixKey = 'interfaces/%s/ipv6/%s/prefix' % (idev, iid)
-				if addressKey in checkedIpv6:
-					continue
-				checkedIpv6.add(addressKey)
-
-				# make sure that the ID is correct
-				if not RE_IPV6_ID.match(iid):
-					_append(addressKey, _('The specified IPv6 identifier may only consist of letters and numbers: %s') % iid)
-
-				# make sure that address and prefix are correct
-				if not util.is_ipv6addr(allValues.get(addressKey)):
-					_append(addressKey, _('IPv6 address is not valid [%s]: %s') % (idev, allValues.get(addressKey)))
-				if not allValues.get(prefixKey) or not util.is_ipv6netmask('%s/%s' % (allValues.get(addressKey), allValues.get(prefixKey))):
-					_append(prefixKey, _('IPv6 prefix is not valid [%s]: %s') % (idev, allValues.get(prefixKey, '')))
+		_check('interfaces/primary', lambda x: not x or x in interfaces, _('The primary interface must be an existing interface'))
 
 		# check nameservers
 		for ikey, iname in [('nameserver[1-3]', _('Domain name server')), ('dns/forwarder[1-3]', _('External name server'))]:
@@ -444,6 +393,9 @@ class Instance(umcm.Base):
 						continue
 					_check(jkey, util.is_ipaddr, _('The specified IP address (%s) is not valid: %s') % (iname, jval))
 
+		if not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()) and not allValues.get('nameserver1') and not allValues.get('nameserver2') and not allValues.get('nameserver3'):
+			_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
+
 		# check gateways
 		if values.get('gateway'): # allow empty value
 			_check('gateway', util.is_ipv4addr, _('The specified gateway IPv4 address is not valid: %s') % values.get('gateway'))
@@ -452,83 +404,6 @@ class Instance(umcm.Base):
 
 		# proxy
 		_check('proxy/http', util.is_proxy, _('The specified proxy address is not valid (e.g., http://10.201.1.1:8080): %s') % allValues.get('proxy/http', ''))
-
-		# check global network settings
-		isSetIpv4 = False
-		ipv4HasAddress = False
-		ipv4HasDynamic = False
-		devIpv4VirtualDevices = set()
-
-		isSetIpv6 = False
-		ipv6HasAddress = False
-		hasIpv6DefaultDevices = True
-		ipv6HasDynamic = False
-
-		tmpUCR = univention.config_registry.ConfigRegistry()
-		devIpv6HasDefaultID = {}
-		for ikey, ival in allValues.iteritems():
-			m = RE_IPV6_ADDRESS.match(ikey)
-			if m:
-				idev, iid = m.groups()
-
-				# see whether the device is in the dict
-				if idev not in devIpv6HasDefaultID:
-					devIpv6HasDefaultID[idev] = False
-
-				# identifier 'default'
-				devIpv6HasDefaultID[idev] |= (iid == 'default')
-
-				# ipv6 address
-				ipv6HasAddress |= util.is_ipv6addr(ival)
-
-			# ipv4 address
-			if RE_IPV4_ADDRESS.match(ikey):
-				ipv4HasAddress |= util.is_ipv4addr(ival)
-
-			# dynamic ipv4
-			ipv4HasDynamic |= bool(RE_IPV4_DYNAMIC.match(ikey) and ival in ('dynamic', 'dhcp'))
-
-			# dynamic ipv6
-			if RE_IPV6_DYNAMIC.match(ikey):
-				tmpUCR[ikey] = ival;
-				if tmpUCR.is_true(ikey):
-					ipv6HasDynamic = True
-
-			# ipv6 configuration
-			if RE_IPV6.match(ikey) and ival:
-				isSetIpv6 = True
-
-			# ipv4 configuration
-			m = RE_IPV4.match(ikey)
-			if m and ival:
-				isSetIpv4 = True
-
-				# check whether this entry is a virtual device
-				idev, ivirt = m.groups()[1:3]
-				if ivirt:
-					devIpv4VirtualDevices.add(idev)
-
-		# check whether all virtual devices have a real device that is defined
-		for idev in devIpv4VirtualDevices:
-			mask = allValues.get('interfaces/%s/netmask' % idev)
-			address = allValues.get('interfaces/%s/address' % idev)
-			if not mask or not address or not util.is_ipv4netmask('%s/%s' % (address, mask)):
-				_append('interfaces/%s/address' % idev, _('A virtual device cannot be specified alone: %s') % idev)
-				break
-
-		# check whether all devices have a default entry
-		for idev, iset in devIpv6HasDefaultID.iteritems():
-			hasIpv6DefaultDevices &= iset
-
-		# global checks
-		if not (isSetIpv4 or ipv4HasDynamic) and not (isSetIpv6 or ipv6HasDynamic):
-			_append('interfaces/eth0/address', _('At least one network device (either IPv4 or IPv6) needs to be configured.'))
-		if isSetIpv6 and not hasIpv6DefaultDevices:
-			_append('interfaces/eth0/ipv6/default/address', _('A default entry with the identifier "default" needs to be specified for each network device.'))
-		if newrole in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'] and isSetIpv4 and not ipv4HasAddress:
-			_append('interfaces/eth0/address', _('At least one IPv4 address needs to be specified.'))
-		if not ipv4HasDynamic and not ipv6HasDynamic and not allValues.get('nameserver1') and not allValues.get('nameserver2') and not allValues.get('nameserver3'):
-			_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
 
 		# software checks
 		if 'univention-virtual-machine-manager-node-kvm' in packages and 'univention-virtual-machine-manager-node-xen' in packages:

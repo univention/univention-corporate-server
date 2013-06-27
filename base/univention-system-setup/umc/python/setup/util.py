@@ -38,7 +38,6 @@ import tempfile
 import subprocess
 import threading
 import univention.config_registry
-from univention.config_registry.interfaces import RE_IFACE
 import time
 import re
 import sys
@@ -106,19 +105,10 @@ def load_values():
 	values = dict([ (ikey, ucr[ikey]) for ikey in UCR_VARIABLES ])
 
 	# net
-	net_values = {}
-	link_locals = []
-	for k, v in ucr.items():
-		match = RE_IFACE.match(k)
-		if match:
-			iface, attr, ipv6 = match.groups()
-			if attr == 'address' and v.startswith('169.254.'):
-				link_locals.append(iface)
-			net_values[k] = v
-	for link_local in link_locals:
-		net_values['interfaces/%s/type' % link_local] = 'dhcp'
-	values.update(net_values)
-	values['interfaces'] = [idev['name'] for idev in detect_interfaces()]
+	from univention.management.console.modules.setup.network import Interfaces
+	interfaces = Interfaces()
+	values['interfaces'] = interfaces.to_dict()
+	values['physical_interfaces'] = [idev['name'] for idev in detect_interfaces()]
 
 	# see whether the system has been joined or not
 	values['joined'] = os.path.exists('/var/univention-join/joined')
@@ -128,25 +118,15 @@ def load_values():
 
 	# get timezone
 	if os.path.exists('/etc/timezone'):
-		f=open('/etc/timezone')
-		values['timezone']=f.readline().strip()
-		f.close()
+		with open('/etc/timezone') as fd:
+			values['timezone'] = fd.readline().strip()
 	else:
 		values['timezone']=''
-
-#	if values['locale']:
-#		locales = values['locale'].split()
-#		pattern = re.compile(r'^(?:%s)$' % ('|'.join(map(lambda s: re.escape(s.replace(':UTF-8', '')), locales)))) # fallbacklocale
-#		pattern = re.compile(r'^(?:%s)$' % ('|'.join(map(lambda s: re.escape(s[:2]), locales)))) # langcode
-#		values['locale'] = list(filter(lambda d: d['id'] in locales, get_available_locales(pattern, 'langcode')))
-#	else:
-#		values['locale'] = []
 
 	# get installed components
 	values['components'] = ' '.join([icomp['id'] for icomp in get_installed_components()])
 
 	return values
-
 
 def _xkeymap(keymap):
 	'''Determine the x-keymap which belongs to 'keymap' by
@@ -168,32 +148,15 @@ def _xkeymap(keymap):
 def pre_save(newValues, oldValues):
 	'''Modify the final dict before saving it to the profile file.'''
 
-	# add broadcast addresses for ipv4 addresses using the ipaddr library
-	for ikey, ival in copy.copy( newValues ).iteritems():
-		m = RE_IPV4_DEVICE.match(ikey)
-		if m:
-			vals = m.groupdict()
-			if vals['type'] == 'address' or vals['type'] == 'netmask':
-				# new value might already exist
-				broadcastKey = 'interfaces/%(device)s/broadcast' % vals
-				networkKey = 'interfaces/%(device)s/network' % vals
-				maskKey = 'interfaces/%(device)s/netmask' % vals
-				addressKey = 'interfaces/%(device)s/address' % vals
-
-				# try to compute the broadcast address
-				address = newValues.get(addressKey, oldValues.get(addressKey, ''))
-				mask = newValues.get(maskKey, oldValues.get(maskKey, ''))
-				broadcast = get_broadcast(address, mask)
-				network = get_network(address, mask)
-				if broadcast:
-					# we could compute a broadcast address
-					newValues[broadcastKey] = broadcast
-				if network:
-					# we could compute a network address
-					newValues[networkKey] = network
-
 	# use new system role (or as fallback the current system role)
 	role = newValues.get('server/role', ucr.get('server/role'))
+
+	# network interfaces
+	from univention.management.console.modules.setup.network import Interfaces
+	if 'interfaces' in newValues:
+		interfaces = Interfaces()
+		interfaces.from_dict(newValues.pop('interfaces'))
+		newValues.update(dict((key, value or '') for key, value in interfaces.get_ucr_diff().iteritems()))
 
 	# add lists with all packages that should be removed/installed on the system
 	if 'components' in newValues:
@@ -508,34 +471,20 @@ def detect_interfaces():
 	"""
 	interfaces = []
 
-	dirnames = os.listdir(PATH_SYS_CLASS_NET)
+	dirnames = [dirname for dirname in os.listdir(PATH_SYS_CLASS_NET) if os.path.isdir(os.path.join(PATH_SYS_CLASS_NET, dirname))]
 	for dirname in dirnames:
-		if os.path.isdir( os.path.join(PATH_SYS_CLASS_NET, dirname) ) and dirname.startswith('eth'):
-			idev = { 'name': dirname }
-			# try to read mac address of interface
-			try:
-				idev['mac'] = open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'address'),'r').read().strip()
-			except:
-				pass
-			interfaces.append(idev)
+		mac = None
+		try:
+			# filter out lo, etc. interfaces
+			if open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'type'),'r').read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
+				continue
+			# try to read mac address
+			mac = open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'address'),'r').read().strip()
+		except (OSError, IOError):
+			pass
+		interfaces.append({'name': dirname, 'mac': mac})
 
 	return interfaces
-
-def get_broadcast(ip, netmask):
-	try:
-		ip = ipaddr.IPv4Network('%s/%s' % ( ip, netmask ) )
-		return ip.broadcast
-	except ValueError:
-		pass
-	return None
-
-def get_network(ip, netmask):
-	try:
-		ip = ipaddr.IPv4Network('%s/%s' % ( ip, netmask ) )
-		return ip.network
-	except ValueError:
-		pass
-	return None
 
 def dhclient(interface, timeout=None):
 	"""

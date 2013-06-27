@@ -37,14 +37,13 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/TextBox",
-	"umc/widgets/ComboBox",
 	"umc/widgets/MultiInput",
 	"umc/widgets/Form",
 	"umc/modules/setup/InterfaceGrid",
-	"umc/i18n!umc/modules/setup",
 	"umc/modules/setup/types",
+	"umc/i18n!umc/modules/setup",
 	"umc/modules/setup/InterfaceWizard"
-], function(declare, lang, array, aspect, tools, Page, StandbyMixin, TextBox, ComboBox, MultiInput, Form, InterfaceGrid, _) {
+], function(declare, lang, array, aspect, tools, Page, StandbyMixin, TextBox, MultiInput, Form, InterfaceGrid, types, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -91,7 +90,7 @@ define([
 //				dynamicValues: lang.hitch(this, function(values) {
 //					// The primary interface can be of any type
 //					return array.map(values.interfaces, function(iface) {
-//						return {id: iface['interface'], label: iface['interface']};
+//						return {id: iface.name, label: iface.name};
 //					});
 //				})
 			}, {
@@ -145,11 +144,13 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
+
 			// The grid contains changes if a DHCP request was made
 			this._form._widgets.interfaces.watch('gateway', lang.hitch(this, function(name, old, value) {
 				// set gateway from dhcp request
 				this._form._widgets.gateway.set('value', value);
 			}));
+
 			this._form._widgets.interfaces.watch('nameserver', lang.hitch(this, function(name, old, value) {
 				// read nameserver or dns/forwarder
 				var nameserverWidget;
@@ -162,6 +163,7 @@ define([
 				// set nameserver from dhcp request
 				nameserverWidget.set('value', value);
 			}));
+
 			this.own(this._form._widgets.interfaces.watch('interfaces/primary', lang.hitch(this, function(name, old, value) {
 				// set new primary interface
 				this._form._widgets['interfaces/primary'].set('value', value);
@@ -180,7 +182,7 @@ define([
 			}, this);
 
 			// set all available interfaces
-			this.physical_interfaces = _vals.interfaces;
+			this.physical_interfaces = _vals.physical_interfaces;
 
 			// copy values that do not change in their name
 			var vals = {};
@@ -206,187 +208,11 @@ define([
 				});
 			});
 
-			var interfaces = {};
-			// create the scheme
-			r = /interfaces\/(([^_\/]+)[0-9.]+)\//; // TODO: enhance?
-			tools.forIn(_vals, function(ikey) {
-				var match = ikey.match(r);
-				if (match) {
-					var name = match[1];
-					var vlan_id = null;
-
-					if (interfaces[name]) {
-						return; // already parsed
-					}
-
-					var interfaceType = 'eth';
-					// vlan device?
-					if(/[.]/.test(match[2])) {
-						vlan_id = parseInt(match[2].match(/[^.]+[.]([0-9]+)/)[1], 10);
-						interfaceType = 'vlan';
-					}
-
-					var primary = _vals['interfaces/primary'] === name;
-
-					interfaces[name] = {
-						// every device
-						'interface': name,
-						interfaceType: interfaceType, // eth|vlan|bond|br
-						ip4: [['', '']],
-						ip6: [['', '', '']],
-						ip4dynamic: null,
-						ip6dynamic: null,
-						start: null, // true|false
-						type: null, // static|dhcp|manual
-						primary: primary,
-
-						// for vlan devices
-						vlan_id: vlan_id,
-
-						// for bonding devices
-						'bond-mode': null,
-						'bond-slaves': [],
-						'bond-primary': [],
-						miimon: null,
-
-						// for bridge devices
-						bridge_ports: [],
-						bridge_fd: 0
-					};
-				}
+			vals.interfaces = {};
+			tools.forIn(_vals.interfaces, function(iname, iface) {
+				vals.interfaces[iface.name] = types.getDevice(iface);
 			});
 
-			var stored = {};
-			// parse (also virtual) interfaces
-			r = /interfaces\/(([^_\/]+)(_([0-9]+))?)\/(.+)/;
-			this._unknownValues = {};
-			tools.forIn(_vals, lang.hitch(this, function(ikey, typeval) {
-				var match = ikey.match(r);
-				if (match) {
-					var iorig = match[1]; // the whole interface string
-					var iname = match[2]; // the device name
-					var ivirtual = parseInt(match[4], 10); // the virtual id number or NaN
-					var virtual = !isNaN(ivirtual);
-					var type = match[5]; // the rest of the string
-
-					var temp = stored[iname] || {};
-					temp.data = temp.data || {};
-					temp.virtual = temp.virtual || {};
-					temp.ip6 = temp.ip6 || {};
-					temp.options = temp.options || {};
-
-					if (virtual) {
-						// virtual device
-						if (type == 'address' || type == 'netmask') {
-							temp.virtual[ivirtual] = temp.virtual[ivirtual] || {};
-							temp.virtual[ivirtual][type] = typeval;
-						} else {
-							// unknown key
-							this._unknownValues[ikey] = typeval;
-						}
-					} else {
-						// real device
-						var ip6match = type.match(/ipv6\/([^\/]+)\/(.+)/);
-						var roptions = type.match(/options\/([0-9]+)$/);
-
-						if (array.indexOf(['address', 'netmask', 'type', 'start', 'ipv6/acceptRA'], type) !== -1) {
-							temp.data[type] = typeval;
-						} else if (ip6match) {
-							var identifier = ip6match[1];
-							var type6 = ip6match[2];
-							temp.ip6[identifier] = temp.ip6[identifier] || {};
-							if (type6 == 'address' || type6 == 'prefix') {
-								temp.ip6[identifier][type6] = typeval;
-							} else {
-								// unknown key
-								this._unknownValues[ikey] = typeval;
-							}
-						} else if (roptions) {
-							var num = roptions[1];
-							var not_matched = true;
-
-							// parse interface options
-							tools.forIn({
-								miimon: function(val) { return parseInt(val, 10); },
-								'bond-mode': function(val) { return parseInt(val, 10); },
-								'bond-slaves': function(val) { return val.split(' '); },
-								'bond-primary': function(val) { return val.split(' '); },
-								bridge_ports: function(val) { return val.split(' '); },
-								bridge_fd: function(val) { return parseInt(val, 10); }
-							}, function(opt, formatter) {
-								var r = new RegExp('^' + opt + '\\s*(.*)\\s*$');
-								match = typeval.match(r);
-								if (match) {
-									temp.options[opt] = formatter(match[1]);
-									not_matched = false;
-									return false; // break loop
-								}
-							});
-
-							if (not_matched) {
-								// FIXME: don't overwrite; we have to store the /$id/ also to not rename the UCR variable
-								this._unknownValues[ikey] = typeval;
-							}
-						} else {
-							// unknown key
-							this._unknownValues[ikey] = typeval;
-						}
-					}
-
-					stored[iname] = temp;
-				}
-			}));
-
-			tools.forIn(stored, function(iname, ivalue, iobj) {
-
-				// set interfaceType
-				if (interfaces[iname].interfaceType !== 'vlan') {
-					if (ivalue.options['bond-primary']) {
-						interfaces[iname].interfaceType = 'bond';
-					} else if (ivalue.options['bridge_ports']) {
-						interfaces[iname].interfaceType = 'br';
-					}
-				}
-
-				// DHCP
-				interfaces[iname].ip4dynamic = (ivalue.data.type === 'dhcp');
-
-				if (ivalue.data.address) {
-					// set primary IP address
-					interfaces[iname].ip4[0][0] = ivalue.data.address;
-					interfaces[iname].ip4[0][1] = ivalue.data.netmask || "";
-				}
-
-				// set virtual IP addresses
-				tools.forIn(ivalue.virtual, function(inum, ivirt) {
-					interfaces[iname].ip4.push([ivirt.address || "", ivirt.netmask || ""]);
-				});
-
-				// SLAAC
-				if (undefined !== ivalue.data['ipv6/acceptRA']) {
-					interfaces[iname].ip6dynamic = tools.isTrue(ivalue.data['ipv6/acceptRA']);
-				}
-
-				// set primary IP6 address
-				if (ivalue.ip6['default']) {
-					interfaces[iname].ip6[0] = [ivalue.ip6['default'].address || "", ivalue.ip6['default'].prefix || "", 'default'];
-				}
-
-				// set virtual IP6 addresses
-				tools.forIn(ivalue.ip6, function(id, ival) {
-					if (id === 'default') {
-						return; // already entered
-					}
-					interfaces[iname].ip6.push([ival.address || "", ival.prefix || "", id]);
-				});
-
-				// set options
-				tools.forIn(ivalue.options, function(ikey, ival) {
-					 interfaces[iname][ikey] = ival;
-				});
-			});
-
-			vals.interfaces = interfaces;
 			// set all physical interfaces for the grid here, the info does not exists on grid creation
 			this._form._widgets.interfaces.set('physical_interfaces', this.physical_interfaces);
 
@@ -426,114 +252,16 @@ define([
 				vals[ikey] = _vals[ikey];
 			});
 
+			vals.interfaces = {}
+			array.forEach(_vals.interfaces, function(iface) {
+				vals.interfaces[iface.name] = iface.toObject();
+			});
+
 			// copy lists of nameservers/forwarders
 			array.forEach(['nameserver', 'dns/forwarder'], function(iname) {
 				array.forEach(_vals[iname], function(jval, j) {
 					vals[iname + (j + 1)] = jval;
 				});
-			});
-
-			array.forEach(_vals.interfaces, lang.hitch(this, function(iface) {
-				var iname = iface['interface'];
-
-				// restore original values for every non eth interface
-				if (iface.interfaceType !== 'eth') {
-					tools.forIn(this._orgValues, function(ikey, ival) {
-						// set original values for every non eth interface
-						if ((new RegExp('^interfaces/' + iname + '/')).test(ikey)) {
-							vals[ikey] = ival;
-						}
-					});
-
-					return;
-				}
-
-			// no eth bond br ---
-			//	iface.type !== undefined && iface.type !== null && (vals['interfaces/' + iname + '/type'] = iface.type);
-			//	iface.start !== undefined && iface.start !== null && (vals['interfaces/' + iname + '/start'] = iface.start);
-			//	-----
-				if (this._orgValues['interfaces/' + iname + '/start'] !== undefined) {
-					vals['interfaces/' + iname + '/start'] = this._orgValues['interfaces/' + iname + '/start'];
-				}
-				if (this._orgValues['interfaces/' + iname + '/type'] !== undefined) {
-					vals['interfaces/' + iname + '/type'] = this._orgValues['interfaces/' + iname + '/type'];
-				}
-
-//				if (array.some(_vals.interfaces, function(iiface) {
-//					var ikey = iiface.interfaceType === 'bond' ? 'bond-slaves' : 'bridge_ports';
-//					return (iiface.interfaceType === 'bond' || iiface.interfaceType === 'br') && -1 !== array.indexOf(iiface[ikey], iname);
-//				})) {
-//					// The device is used in a bridge or bonding, so remove its IPs
-//				//	vals['interfaces/' + iname + '/address'] = '';
-//				//	vals['interfaces/' + iname + '/netmask'] = '';
-//
-//					// assert iface.interfaceType === 'eth' || iface.interfaceType === 'vlan') && iface.type === 'manual'
-//
-//				} else {
-					// the device is not used by a bridge or bonding, so we configure its IP addresses
-
-//					if (iface.interfaceType === 'br' || iface.interfaceType === 'bond') {
-//						// for bonding and bridging this must/should be set
-//						// for eth and vlan we don't want to overwrite existing settings
-//						vals['interfaces/' + iname + '/start'] = iface.start;
-//						if (iface.interfaceType === 'br') {
-//							// FIXME: this could overwrite additional existing options
-//							var bp = iface.bridge_ports.length ? iface.bridge_ports.join(' ') : 'none';
-//							vals['interfaces/' + iname + '/options/0'] = 'bridge_ports ' + bp;
-//							vals['interfaces/' + iname + '/options/1'] = 'bridge_fd ' + iface.bridge_fd;
-//						} else if(iface.interfaceType === 'bond') {
-//							vals['interfaces/' + iname + '/options/0'] = 'bond-slaves ' + iface['bond-slaves'].join(' ');
-//							vals['interfaces/' + iname + '/options/1'] = 'bond-primary ' + iface['bond-primary'].join(' ');
-//							vals['interfaces/' + iname + '/options/2'] = 'bond-mode ' + iface['bond-mode'];
-//							vals['interfaces/' + iname + '/options/3'] = 'miimon ' + iface.miimon;
-//						}
-//					}
-
-					if (iface.ip4dynamic) {
-						// DHCP
-						vals['interfaces/' + iname + '/type'] = 'dhcp';
-					}
-
-					// IPv4
-					array.forEach(iface.ip4, function(virtval, i) {
-						var iaddress = virtval[0];
-						var imask = virtval[1];
-						if (!iaddress) {
-							// empty MultiInput value
-							return;
-						}
-						if (i === 0) {
-							// primary IP address
-							vals['interfaces/' + iname + '/address'] = iaddress;
-							vals['interfaces/' + iname + '/netmask'] = imask;
-						} else {
-							// virtual ip adresses
-							vals['interfaces/' + iname + '_' + (i-1) + '/address'] = iaddress;
-							vals['interfaces/' + iname + '_' + (i-1) + '/netmask'] = imask;
-						}
-					});
-
-					// IPv6 SLAAC
-					vals['interfaces/' + iname + '/ipv6/acceptRA'] = iface.ip6dynamic ? 'true' : 'false';
-
-					// IPv6
-					array.forEach(iface.ip6, function(ip6val) {
-						var iaddress = ip6val[0];
-						var iprefix = ip6val[1];
-						var iidentifier = ip6val[2];
-						if (!iidentifier) {
-							// empty MultiInput value
-							return;
-						}
-						vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/address'] = iaddress;
-						vals['interfaces/' + iname + '/ipv6/' + iidentifier + '/prefix'] = iprefix;
-					});
-//				}
-			}));
-
-			// restore original values of unknown UCR variables
-			tools.forIn(this._unknownValues, function(ikey, ival) {
-				vals[ikey] = ival;
 			});
 
 			// add empty entries for all original entries that are not used anymore
@@ -550,18 +278,18 @@ define([
 			// a list of all components with their labels
 
 			var allInterfaces = array.map(this._form._widgets.interfaces.get('value'), function(item) {
-				return item['interface'];
+				return item.name;
 			});
 
 			// list of all IPv4 network devices
 			var vals = this._form.get('value');
 			var ipv4Str = array.map(array.filter(vals.interfaces, function(idev) {
-				return (idev.ip4.length || idev.ip4dynamic) && idev.interfaceType === 'eth';
+				return (idev.ip4.length || idev.ip4dynamic) && idev.isEthernet();
 			}), function(idev) {
 				if (idev.ip4dynamic) {
-					return idev['interface'] + ': ' + _('Dynamic (DHCP)');
+					return idev.name + ': ' + _('Dynamic (DHCP)');
 				}
-				return idev['interface'] + ': ' + array.map(array.filter(idev.ip4, function(ip4) { return ip4[0] && ip4[1]; }), function(ip4) {
+				return idev.name + ': ' + array.map(array.filter(idev.ip4, function(ip4) { return ip4[0] && ip4[1]; }), function(ip4) {
 					// address/netmask
 					return ip4[0] + '/' + ip4[1];
 				}).join(', ');
@@ -570,12 +298,12 @@ define([
 			ipv4Str = ipv4Str.length ? '<ul><li>' + ipv4Str.join('</li><li>') + '</li></ul>' : '';
 
 			var ipv6Str = array.map(array.filter(vals.interfaces, function(idev) {
-				return idev.ip6.length && idev.interfaceType === 'eth';
+				return idev.ip6.length && idev.isEthernet();
 			}), function(idev) {
 			//	if (idev.ip6dynamic) {
-			//		return idev['interface'] + ': ' + _('Autoconfiguration (SLAAC)');
+			//		return idev.name + ': ' + _('Autoconfiguration (SLAAC)');
 			//	}
-				return idev['interface'] + ': ' + array.map(array.filter(idev.ip6, function(ip6) { return ip6[0] && ip6[1]; }), function(ip6) {
+				return idev.name + ': ' + array.map(array.filter(idev.ip6, function(ip6) { return ip6[0] && ip6[1]; }), function(ip6) {
 					// identifier: address/prefix
 					return ip6[2] + ': ' + ip6[0] + '/' + ip6[1];
 				}).join(', '); // TODO: <br> or <li>?
@@ -619,7 +347,7 @@ define([
 			}, {
 				variables: [/^interfaces\/[^\/]+\/ipv6\/acceptRA/],
 				description: _('IPv6 interfaces with autoconfiguration (SLAAC)'),
-				values: array.map(array.filter(vals.interfaces, function(iface) { return iface.ip6dynamic; }), function(iface) { return iface['interface']; }).join(', ') || _('No device')
+				values: array.map(array.filter(vals.interfaces, function(iface) { return iface.ip6dynamic; }), function(iface) { return iface.name; }).join(', ') || _('No device')
 			}];
 		},
 

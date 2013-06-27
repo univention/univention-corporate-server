@@ -49,7 +49,7 @@ _ = Translation('univention-management-console-module-setup').translate
 RE_INTERFACE = re.compile(r'^interfaces/(?!(?:primary|restart/auto|handler)$)([^/_]+)(_[0-9]+)?/')
 RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+\z')
 
-PHYSICAL_INTERFACES = detect_interfaces()
+PHYSICAL_INTERFACES = [dev['name'] for dev in detect_interfaces()]
 
 class DeviceError(ValueError):
 	def __init__(self, msg, device=None):
@@ -119,6 +119,9 @@ class Interfaces(dict):
 		"""Returns a UCR representation of all interfaces"""
 		ucr.load()
 
+		# TODO: create a new method e.g. finalize
+		# self.check_consistency()
+
 		ucrv = {'interfaces/primary': None}
 		for device in self.values():
 			ucrv.update(device.to_ucr())
@@ -137,8 +140,8 @@ class Interfaces(dict):
 		"""Checks and partly enforces the consistency of all network interfaces"""
 
 		for device in self.values():
-			device.prepare_consistency(self)
-			device.validate(self)
+			device.prepare_consistency()
+			device.validate()
 
 		self.check_unique_ip4_address()
 		self.check_unique_ip6_address()
@@ -175,7 +178,7 @@ class Interfaces(dict):
 			# we don't need to set the device order
 			return
 
-		devices = dict((device, device.get_subdevices(self)) for device in self.values())
+		devices = dict((device, device.subdevices) for device in self.values())
 
 		i = 1
 		while True:
@@ -199,12 +202,12 @@ class Device(object):
 	def __new__(cls, name, interfaces):
 		# make it abstract ;)
 		if cls is Device:
+			# detect type of interface
 			if '.' in name:
 				cls = VLAN
 			else:
 				device = Ethernet(name, interfaces)
 				device.parse_ucr()
-				# detect type of interface
 				cls = Ethernet
 				if device.options:
 					if any(opt.startswith('bridge_ports') for opt in device.options):
@@ -267,16 +270,20 @@ class Device(object):
 		# TODO: MAC address ?
 
 	@property
-	def subdevices(self):
+	def subdevice_names(self):
 		return set()
 
-	def get_subdevices(self):
+	@property
+	def subdevices(self):
 		"""Returns a set of subdevices of this device if there are any, leavong out not existing devices"""
-		return set([self.interfaces[name] for name in self.subdevices if name in self.interfaces])
+		return set([self.interfaces[name] for name in self.subdevice_names if name in self.interfaces])
 
 	def prepare_consistency(self):
 		self.order = None
 		self.start = True
+
+		if self.ip4dynamic:
+			self.type = 'dhcp'
 
 	def validate_ip4(self):
 		# validate IPv4
@@ -327,8 +334,8 @@ class Device(object):
 		# make sure that used interfaces can not be used by other interfaces, too
 		for device in self.interfaces.values():
 			if device.name != self.name:
-				for idevice in self.get_subdevices():
-					if idevice in device.get_subdevices(self.interfaces):
+				for idevice in self.subdevices:
+					if idevice in device.subdevices:
 						raise DeviceError(_('Device %r is already in use by %r') % (idevice.name, device.name), self.name)
 
 	def validate(self):
@@ -413,7 +420,7 @@ class Device(object):
 		if self.start is not None:
 			vals['interfaces/%s/start' % (name)] = str(bool(self.start)).lower()
 
-		if self.type in ('static', 'manual', 'dhcp'):
+		if self.type in ('static', 'manual', 'dhcp'): # TODO: add appliance mode temporary
 			vals['interfaces/%s/type' % (name)] = self.type
 
 		if isinstance(self.order, int):
@@ -463,7 +470,7 @@ class Device(object):
 		d.update(dict(
 			interfaceType=self.__class__.__name__,
 		))
-		for key in ('interfaces', 'options', '_leftover', 'network', 'broadcast'):
+		for key in ('interfaces', '_leftover', 'network', 'broadcast', 'start', 'type', 'order'):
 			d.pop(key, None)
 		return d
 
@@ -475,9 +482,13 @@ class Device(object):
 			'Bridge': Bridge,
 			'Bond': Bond
 		}.get(device['interfaceType'], Device)
+
 		interface = DeviceType(device['name'], interfaces)
 		interface.parse_ucr()
-		interface.__dict__.update(dict((k, device[k]) for k in set(interface.dict.keys()) if k in device))
+		interface.__dict__.update(dict((k, device[k]) for k in set(interface.dict.keys())-set(['start', 'type', 'order']) if k in device))
+		if interface.ip4dynamic:
+			interface.type = 'dhcp'
+
 		return interface
 
 class _RemovedDevice(Device):
@@ -510,7 +521,7 @@ class VLAN(Device):
 		self.name = '%s.%d' % (parent_device, self.vlan_id)
 
 	@property
-	def subdevices(self):
+	def subdevice_names(self):
 		return set([self.parent_device])
 
 	def validate(self):
@@ -530,7 +541,8 @@ class VLAN(Device):
 	def dict(self):
 		d = super(VLAN, self).dict
 		d.update(dict(
-			vlan_id=self.vlan_id
+			vlan_id=self.vlan_id,
+			parent_device=self.parent_device
 		))
 		return d
 
@@ -558,7 +570,7 @@ class Bond(Device):
 		# TODO: arp_interval arp_ip_target downdelay lacp_rate max_bonds primary updelay use_carrier xmit_hash_policy 
 
 	def prepare_consistency(self):
-		for idevice in self.get_subdevices():
+		for idevice in self.subdevices:
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
 
@@ -594,7 +606,7 @@ class Bond(Device):
 		self.check_unique_interface_usage()
 
 	@property
-	def subdevices(self):
+	def subdevice_names(self):
 		return set(self.bond_slaves)
 
 	def parse_ucr(self):
@@ -647,11 +659,11 @@ class Bridge(Device):
 		# TODO: bridge_ageing bridge_bridgeprio bridge_gcint bridge_hello bridge_hw bridge_maxage bridge_maxwait bridge_pathcost bridge_portprio bridge_stp bridge_waitport
 
 	@property
-	def subdevices(self):
-		return set([self.bridge_ports])
+	def subdevice_names(self):
+		return set(self.bridge_ports)
 
 	def prepare_consistency(self):
-		for idevice in self.get_subdevices():
+		for idevice in self.subdevices:
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
 
