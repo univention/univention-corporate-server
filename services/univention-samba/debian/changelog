@@ -1,3 +1,11 @@
+univention-samba (8.0.0-1) unstable; urgency=low
+
+  * removed setting of windows/domain in postinst and
+    fixed template for non existing windows/domain (Bug #24442)
+  * version bump for UCS 3.2-0
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Jun 2013 10:56:35 +0200
+
 univention-samba (7.0.18-1) unstable; urgency=low
 
   * When changing a share shares.conf is refreshed directly (Bug #29399)

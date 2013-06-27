@@ -3,7 +3,7 @@
 # Univention Samba
 #  postinst script for the debian package
 #
-# Copyright 2001-2012 Univention GmbH
+# Copyright 2001-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -92,11 +92,6 @@ then
 fi
 
 #DEBHELPER#
-
-if [ -z "$windows_domain" ]; then
-	domain=`echo $domainname | cut -d"." -f 1 | tr "[:lower:]" "[:upper:]"`
-	univention-config-registry set windows/domain=$domain
-fi
 
 univention-config-registry set samba/debug/level?0 \
 							   samba/os/level?65
