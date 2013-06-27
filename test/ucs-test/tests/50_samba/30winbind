@@ -10,6 +10,7 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
 
 SAMBA="true"
 MAIL="false"
@@ -63,16 +64,7 @@ else
 	NAME="$username"
 fi
 
-sambaSID=$(univention-ldapsearch -xLLL uid=$username sambaSID | sed -n 's/^sambaSID: //p')
-if [ -z "${sambaSID%S-1-4*}" ]; then
-	echo -n "Waiting for replication of domain sambaSID for user $username (current: $sambaSID)."
-	while [ -z "${sambaSID%S-1-4*}" ]; do
-		sleep 1
-		echo -n "."
-		sambaSID=$(univention-ldapsearch -xLLL uid=$username sambaSID | sed -n 's/^sambaSID: //p')
-	done
-	echo
-fi
+wait_for_LDAP_replication_of_domain_sambaSid "$username"
 
 echo "##  wbinfo --name-to-sid"
 output=$(wbinfo -n "$username")

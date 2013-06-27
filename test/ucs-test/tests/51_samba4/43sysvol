@@ -11,6 +11,7 @@
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/shares.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
 
 ##create User
 echo "----create User"
@@ -27,21 +28,6 @@ trap 'user_remove "$username"' INT TERM EXIT
 if ! user_create "$username"; then
 	fail_fast 1 "User could not be created"
 fi
-
-
-##waiting for user to be created
-echo "Waiting for user to be created"
-i=0
-while true
-do
-	let i=$i+1
-	sleep 3
-	ldbsearch -H ldap://localhost -U"$username%$password" "cn=$username" | grep dn: && break
-	if [ "$i" = 10 ]; then
-		echo "TIMEOUT: The user or share could not be found in samba ldb"
-		break
-	fi
-done
 
 ADMINISTRATOR_DN="$tests_domainadmin_account"
 if [ -z "$tests_domainadmin_account" ]; then
@@ -67,6 +53,10 @@ if [ "$?" != 0 ]; then
 	echo "$output"
 	fail_test 1 "Could not put file on sysvol as Administrator"
 fi
+
+wait_for_replication
+# force_drs_replication
+wait_for_drs_replication "(sAMAccountName=$username)"
 
 ##Access the folder Policies on sysvol as a user
 echo "----Access the folder Policies on sysvol as a user"

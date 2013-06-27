@@ -4,7 +4,6 @@
 ## packages:
 ##  - univention-samba4
 ## roles:
-## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
 ## tags:
@@ -14,6 +13,7 @@
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/shares.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
 
 #----create User
 SAMBA="true"
@@ -30,16 +30,7 @@ if ! user_create "$username"; then
 	fail_fast 1 "User could not be created"
 fi
 
-sleep 5	## wait a bit to give replication a head start
-
-i=0
-while ! ldbsearch -H /var/lib/samba/private/sam.ldb "samaccountname=$username" | grep -q '^dn:'
-do
-	let i="$i"+1
-	if [ "$i" = 20 ]; then
-		fail_fast 1 "TIMEOUT: the user account '$username' was not replicated in $i seconds"
-	fi
-	sleep 1
-done
+wait_for_replication
+wait_for_drs_replication "(sAMAccountName=$username)"
 
 exit $RETVAL

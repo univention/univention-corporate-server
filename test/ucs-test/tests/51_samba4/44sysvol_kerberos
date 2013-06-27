@@ -28,18 +28,9 @@ if ! user_create "$username"; then
 fi
 
 
-## Wait for user to be created
-echo "----Wait for user to be created"
-i=0
-while ! output="$(ldbsearch -H "ldap://localhost" -U"$username%$password" "cn=$username" dn | grep -q '^dn:' 2>&1)"
-do
-	let i=$i+1
-	if [ "$i" = 10 ]; then
-		echo "$output"
-		fail_fast "TIMEOUT: The user or share could not be found in samba ldb"
-	fi
-	sleep 3
-done
+wait_for_replication
+# force_drs_replication
+wait_for_drs_replication "(sAMAccountName=$username)"
 
 ## Authentification with kinit
 echo "----Authentification with kinit"

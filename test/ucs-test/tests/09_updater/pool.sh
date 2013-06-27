@@ -29,7 +29,7 @@ echo "BASEDIR=\"${BASEDIR}\"" >&3
 # Need to be accessible by apache2, otherwise 403 FORBIDDEN
 chmod 755 "${BASEDIR}"
 # Make a backup
-cp /etc/univention/base.conf "${BASEDIR}/base.conf"
+cp /etc/univention/base*.conf "${BASEDIR}/"
 cp /etc/apt/trusted.gpg "${BASEDIR}/trusted.gpg"
 
 # Wrap univention-config-registry to later undo any changes
@@ -74,8 +74,10 @@ cleanup () { # Undo all changes
 	done
 	[ -n "${remove}" ] && univention-config-registry unset "${remove[@]}" >&3 2>&3
 	[ -n "${reset}" ] && univention-config-registry set "${reset[@]}" >&3 2>&3
-	cp "${BASEDIR}/base.conf" /etc/univention/base.conf
+	cp "${BASEDIR}"/base*.conf /etc/univention/
 	cp "${BASEDIR}/trusted.gpg" /etc/apt/trusted.gpg
+
+	[ -x /etc/init.d/cron ] && [ -f "${BASEDIR}/reenable_cron" ] && invoke-rc.d cron start >&3 2>&3 3>&-
 
 	rm -rf "${BASEDIR}"
 	echo "=== RESULT: ${RETVAL} ==="
@@ -145,6 +147,11 @@ config_repo () { # Configure use of repository from local apache
 		esac
 		shift
 	done
+	if [ -x /etc/init.d/cron ] && pidof cron >/dev/null
+	then
+		touch "${BASEDIR}/reenable_cron"
+		invoke-rc.d cron stop
+	fi
 	ucr set \
 		local/repository=no \
 		repository/mirror=no \
@@ -175,6 +182,11 @@ config_mirror () { # Configure mirror to use repository from local apache
 		shift
 	done
 	mkdir -p "${mirror}"
+	if [ -x /etc/init.d/cron ] && pidof cron >/dev/null
+	then
+		touch "${BASEDIR}/reenable_cron"
+		invoke-rc.d cron stop
+	fi
 	ucr set \
 		local/repository=yes \
 		repository/online=no \
