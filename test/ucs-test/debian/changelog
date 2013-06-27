@@ -1,3 +1,19 @@
+ucs-test (4.0.39-1) unstable; urgency=low
+
+  * added function "random_int()" to strings.py. Despite it's name, it will
+  	return a numeric string (by default containing a value between 0 and 9)
+  * also remove referring objects in UCSTestUDM.cleanup()
+  * log erros occuring during UCSTestUDM.cleanup()
+  * per default, also remove referring objects when removing objects with
+  	UCSTestUDM().remove() (pass "remove_referring=False" to change this
+  	behaviour)
+  (Bug #30560)
+
+  * ported certain udm-computers tests
+  (Bug #31659)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 25 Jun 2013 10:51:08 +0200
+
 ucs-test (4.0.38-2) unstable; urgency=low
 
   * use samba shell library function in 30winbind (Bug #31772)

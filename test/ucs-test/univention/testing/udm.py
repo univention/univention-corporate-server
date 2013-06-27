@@ -98,10 +98,14 @@ class UCSTestUDM(object):
 		cmd = [ '/usr/sbin/udm-test', modulename, action ]
 		args = copy.deepcopy(kwargs)
 
-		for arg in ('binddn', 'bindpwd', 'dn', 'position', 'superordinate'):
+		for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate'):
 			if arg in args:
 				cmd.extend(['--%s' % arg, args[arg]])
 				del args[arg]
+
+		if args.get('remove_referring', True) and action == 'remove':
+			cmd.append('--remove_referring')
+			del args['remove_referring']
 
 		if 'options' in args:
 			for option in args['options']:
@@ -146,7 +150,7 @@ class UCSTestUDM(object):
 		if child.returncode:
 			print 'UDM-CLI returned exitcode %s while creating object' % (child.returncode,)
 			raise UCSTestUDM_CreateUDMObjectFailed(modulename, kwargs, stdout, stderr)
-		
+
 		# find DN of freshly created object and add it to cleanup list
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object created: '):
@@ -303,18 +307,18 @@ class UCSTestUDM(object):
 		Automatically removes LDAP objects via UDM CLI that have been created before.
 		"""
 
-		failedObjects = []
+#		failedObjects = []
 		print 'Performing UCSTestUDM cleanup...'
 		for module in self._cleanup:
 			for dn in self._cleanup[module]:
 #				print 'Removing object of type %s: %s' % (module, dn)
-				cmd = [ '/usr/sbin/udm-test', module, 'remove', '--dn', dn ]
+				cmd = [ '/usr/sbin/udm-test', module, 'remove', '--dn', dn, '--remove_referring']
 
 				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 				(stdout, stderr) = child.communicate()
 
-#				if child.returncode or not 'Object removed:' in stdout:
-#					print 'UDM-CLI returned exitcode %s while removing object %s''' % (child.returncode, dn)
+				if child.returncode or not 'Object removed:' in stdout:
+					print 'UDM-CLI returned exitcode %s while removing object %s during cleanup' % (child.returncode, dn)
 #					failedObjects.append((module, dn))
 
 		print 'UCSTestUDM cleanup done'
@@ -328,7 +332,7 @@ class UCSTestUDM(object):
 		for signal in (15, 9):
 			for proc in psutil.process_iter():
 				if len(proc.cmdline) >= 2 and proc.cmdline[0].startswith('/usr/bin/python') and proc.cmdline[1] == self.PATH_UDM_CLI_SERVER:
-					print 'sending signal %s to process %s (%r)''' % (signal, proc.pid, proc.cmdline,)
+					print 'sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline,)
 					os.kill(proc.pid, signal)
 
 	def __enter__(self):
