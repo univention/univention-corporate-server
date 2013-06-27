@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.0-1) unstable; urgency=low
+
+  * Bug #31699: fixed icon (was not centered)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 27 Jun 2013 15:28:49 +0200
+
 univention-management-console-module-appcenter (2.0.152-1) unstable; urgency=low
 
   * Bug #30796: Remove backward compatibility for older versions of the UMC
