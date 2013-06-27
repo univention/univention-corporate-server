@@ -4,8 +4,5 @@
 		<category priority="3" id="system">
 			<name>System</name>
 		</category>
-		<category priority="2" id="wizards">
-			<name>Wizards</name>
-		</category>
 	</categories>
 </umc>

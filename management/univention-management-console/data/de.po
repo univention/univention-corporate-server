@@ -12,14 +12,5 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Favorites"
-msgstr "Favoriten"
-
-msgid "Surveillance"
-msgstr "Überwachung"
-
-msgid "System {hostname}.{domainname}"
-msgstr "System {hostname}.{domainname}"
-
-msgid "Wizards"
-msgstr "Wizards"
+msgid "System"
+msgstr "System"
