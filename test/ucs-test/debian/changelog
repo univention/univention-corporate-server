@@ -4,6 +4,10 @@ ucs-test (4.0.40-1) unstable; urgency=low
   	roles is possible
   (Bug #31659)
 
+  * added constant array containing strings represanting all computer modules to
+  	udm.py.UCSTestUDM()
+  (Bug #30560)
+
  -- Lukas Walter <walter@univention.de>  Thu, 27 Jun 2013 17:39:04 +0200
 
 ucs-test (4.0.39-1) unstable; urgency=low
