@@ -1,3 +1,9 @@
+univention-management-console (6.0.2-1) unstable; urgency=low
+
+  * Bug #31699: removed unused categories
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 27 Jun 2013 15:25:15 +0200
+
 univention-management-console (6.0.1-1) unstable; urgency=low
 
   * Bug #31130: log tracebacks if module or server crashs
