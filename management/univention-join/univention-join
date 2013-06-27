@@ -64,17 +64,18 @@ display_help() {
 	  univention-join [options]
 
 	Options:
-	  -dcname <fqdn>:          DC master fqdn
-	  -dcaccount <account>:    name of DC master account
-	  -dcpwd <password file>:  file with DC master password
-	  -type <type>:            type of computer, e.g. "client"
-	  -ldapbase <ldap base>:   LDAP Base DN, e.g. dc=test,dc=local
-	  -realm <kerberos realm>: Kerberos realm, e.g. TEST.LOCAL
-	  -disableVersionCheck     Disable version check against _dcname_
-	  -verbose                 Enable verbose logging (/var/log/univention/join.log)
+	  -dcname <fqdn>:                DC master fqdn
+	  -dcaccount <account>:          Name of DC master account
+	  -dcpwd <password file>:        File with DC master password
+	  -type <type>:                  Type of computer, e.g. "client"
+	  -ldapbase <ldap base>:         LDAP Base DN, e.g. dc=test,dc=local
+	  -realm <kerberos realm>:       Kerberos realm, e.g. TEST.LOCAL
+	  -windom <windows domain name>: Name of the windows (samba) domain
+	  -disableVersionCheck           Disable version check against _dcname_
+	  -verbose                       Enable verbose logging (/var/log/univention/join.log)
 
-	  -h | --help | -?:        print this usage message and exit program
-	  --version:               print version information and exit program
+	  -h | --help | -?:              Print this usage message and exit program
+	  --version:                     Print version information and exit program
 
 	Description:
 	  univention-join joins a computer to an ucs domain,
@@ -231,7 +232,11 @@ do
 			shift 2 || exit 2
 			;;
 		"-realm")
-			REALM="${2:?missing Kerberos real}"
+			REALM="${2:?missing kerberos realm}"
+			shift 2 || exit 2
+			;;
+		"-windom")
+			WINDOM="${2:?missing windows domain name}"
 			shift 2 || exit 2
 			;;
 		"-type")
@@ -605,6 +610,23 @@ set_kerberos_realm () {
 	univention-config-registry set kerberos/realm="$realm" >>/var/log/univention/join.log 2>&1
 }
 
+set_windows_domain () {
+
+	local dcpwd="$1"
+	local dcaccount="$2"
+	local dcname="$3"
+	local windom="$4"
+
+	if [ -z "$windom" ]; then
+		windom="$(univention-ssh "$dcpwd" "${dcaccount}@${dcname}" '/usr/sbin/univention-config-registry get windows/domain')" >>/var/log/univention/join.log 2>&1
+		if [ $? != 0 -o -z "$windom" ]; then
+			echo "Unable to retrieve the windows/domain. Try to use option -windom <windows/domain>"
+			exit 1
+		fi
+	fi
+	univention-config-registry set windows/domain="$windom" >>/var/log/univention/join.log 2>&1
+}
+
 if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	if [ -e "/etc/ldap.secret" ]; then cat /etc/ldap.secret >>/etc/ldap.secret.SAVE; fi
@@ -683,7 +705,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 		kerberos/adminserver?"$DCNAME" \
 		>>/var/log/univention/join.log 2>&1
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
-
+	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	eval "$(univention-config-registry shell)"
 
 	mkdir -p /var/lib/univention-ldap/notify/
@@ -753,7 +775,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 		kerberos/adminserver?"$DCNAME" \
 		>>/var/log/univention/join.log 2>&1
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
-
+	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	echo -n "0" >/var/lib/univention-ldap/schema/id/id
 	chown listener /var/lib/univention-ldap/schema/id/id
 
@@ -795,7 +817,7 @@ elif [ "$server_role" = "memberserver" ]; then
 		kerberos/adminserver?"$DCNAME" \
 		>>/var/log/univention/join.log 2>&1
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
-
+	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	touch /var/univention-join/joined
 	ln -sf /var/univention-join/joined /usr/share/univention-join/.joined
 
@@ -833,6 +855,7 @@ else
 		nsswitch/ldap=yes \
 		>>/var/log/univention/join.log 2>&1
 	set_kerberos_realm "$DCPWD" "$DCACCOUNT" "$DCNAME" "$REALM"
+	set_windows_domain "$DCPWD" "$DCACCOUNT" "$DCNAME" "$WINDOM"
 	grep -q '^TLS_CACERT' /etc/ldap/ldap.conf || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
 	touch /var/univention-join/joined
