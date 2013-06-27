@@ -122,7 +122,7 @@ define([
 		isBond: function() { return this.interfaceType === 'Bond'; },
 		isVLAN: function() { return this.interfaceType === 'VLAN'; },
 
-		configuration_description: function() {
+		getConfigurationDescription: function() {
 			var back = '';
 
 			// display IP addresses
@@ -158,6 +158,13 @@ define([
 			}
 
 			return back;
+		},
+		getSummary: function() {
+			var description = this.getConfigurationDescription();
+			if (description) {
+				return this.name + ': <br><ul><li>' + description.replace(/<br>/g, '</li><li>') + '</li></ul>';
+			}
+			return '';
 		}
 	});
 	self.Device = Device;
@@ -183,7 +190,7 @@ define([
 		}
 
 		return arr;
-	}
+	};
 	self.Ethernet = declare('umc.modules.setup.types.Ethernet', [Device], {});
 	self.Ethernet.getPossibleSubdevices = function(all_interfaces, physical_interfaces, devicename) {
 		// all physical interfaces which are not already in the grid
@@ -252,7 +259,7 @@ define([
 		getSubdevices: function()  {
 			return this.bond_slaves;
 		},
-		configuration_description: function() {
+		getConfigurationDescription: function() {
 			var back = this.inherited(arguments);
 			if (back) {
 				back += '<br>';
@@ -292,7 +299,7 @@ define([
 		getSubdevices: function()  {
 			return this.bridge_ports;
 		},
-		configuration_description: function() {
+		getConfigurationDescription: function() {
 			var back = this.inherited(arguments);
 			if (back) {
 				back += '<br>';

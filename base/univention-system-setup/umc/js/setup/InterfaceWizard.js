@@ -111,7 +111,7 @@ define([
 						value: device.name,
 						type: TextBox,
 						validate: function(value) {
-							return /^[a-z]+[0-9]+(\.[0-9]+)?$/.test(value);
+							return (/^[a-z]+[0-9]+(\.[0-9]+)?$/).test(value);
 						},
 						visible: false
 					}, {
@@ -121,7 +121,7 @@ define([
 						size: 'Half',
 						type: TextBox,
 						validate: function(value) {
-							return /^[a-zA-Z]+[0-9]+$/.test(value);
+							return (/^[a-zA-Z]+[0-9]+$/).test(value);
 						},
 						onChange: lang.hitch(this, function(name) {
 							if (!this.getWidget('name_b').get('visible')) { return; }
@@ -415,7 +415,9 @@ define([
 			this.inherited(arguments);
 
 			this.getWidget('name').watch('value', lang.hitch(this, function(name, old, value) {
-				this.set('name', value);
+				if (value) {
+					this.set('name', value);
+				}
 			}));
 
 			this.getWidget('interfaceType').watch('value', lang.hitch(this, function(name, old, value) {
@@ -440,6 +442,13 @@ define([
 
 		},
 
+		getValues: function() {
+			var values = this.inherited(arguments);
+			values.name = this.name;
+			values.interfaceType = this.interfaceType;
+			return values;
+		},
+
 		setValues: function(values) {
 			// set values and trigger onChange event
 			tools.forIn(this._pages, function(pagename, ipage) {
@@ -457,17 +466,12 @@ define([
 			this.setValues(this.values);
 		},
 
-		// TODO: remove this function, replace by isValid()
 		canFinish: function(values) {
-			return true;
 
-			// TODO: conflict if two bonds wants to use the same interface
 			var valid = this.interfaceType && this.name; // both must be set
 			if (!valid) {
 				dialog.alert(_('You have to specify a valid interface and interfaceType. Please correct your input.'));
 			}
-
-			var interfaceType = this.interfaceType === 'VLAN' ? 'Ethernet' : this.interfaceType; // The pagename for vlan interfaces is Ethernet
 
 			if (this.interfaceType === 'Ethernet') {
 				if (!(values.ip4.length || values.ip4dynamic || values.ip6.length || values.ip6dynamic)) {
@@ -475,10 +479,6 @@ define([
 					return false;
 				}
 			}
-//			if (this.interfaceType === 'Bond' && values['bond_slaves'].length < 1) {
-//				dialog.alert(_('At least two interfaces have to be used for this bond device'));
-//				return false;
-//			}
 
 			if (array.filter(values.ip6, function(ip6) {
 				return (!ip6[2] && (ip6[0] || ip6[1]));
@@ -486,10 +486,23 @@ define([
 				dialog.alert(_('Each IPv6 interface must have an identifier'));
 			}
 
-			tools.forIn(this._pages[interfaceType]._form._widgets, function(iname, iwidget) {
-				valid = valid && (!iwidget.get('visible') || (!iwidget.isValid || false !== iwidget.isValid()));
-				return valid;
-			}, this);
+			var pages = ['network'];
+			if (this.creation) {
+				pages.push('interfaceType');
+			}
+			array.forEach(['Bond', 'Bridge'], lang.hitch(this, function(type) {
+				if (this.interfaceType === type) {
+					pages.push(type);
+				}
+			}));
+
+			array.forEach(pages, lang.hitch(this, function(page) {
+				tools.forIn(this._pages[page]._form._widgets, function(iname, iwidget) {
+					valid = valid && (!iwidget.get('visible') || (!iwidget.isValid || false !== iwidget.isValid()));
+					valid = valid && (!iwidget.get('visible') || (!iwidget.validate || false !== iwidget.validate()));
+					return valid;
+				}, this);
+			}));
 
 			if (!valid) {
 				dialog.alert(_('The entered data is not valid. Please correct the input.'));
@@ -558,49 +571,6 @@ define([
 		previous: function(currentPage) {
 			return (this.pageMap[this.creation ? 'true' : 'false'][this.interfaceType][currentPage ? currentPage : 'null'] || [undefined, undefined])[0];
 		},
-
-//		hasNext: function(currentPage) {
-//			if (currentPage === null) {
-//				return true;
-//			}
-//			return ((this.creation && currentPage === 'interfaceType') || currentPage === 'Bridge' || currentPage === 'Bond');
-//		},
-//
-//		next: function(pageName) {
-//			if (pageName === null) {
-//				if (this.creation) {
-//					return 'interfaceType';
-//				}
-//				if (this.interfaceType === 'VLAN') {
-//					// The page for vlan interfaces is the same as normal Ethernet interfaces
-//					return 'Ethernet';
-//				}
-//				return this.interfaceType;
-//			} 
-//			if(pageName === 'Bridge' || pageName === 'Bond') {
-//				return 'Ethernet';
-//			}
-//			if (this.interfaceType === 'Bridge' || this.interfaceType === 'Bond') {
-//				return this.interfaceType;
-//			}
-//		},
-//
-//		hasPrevious: function(currentPage) {
-//			if (this.creation) {
-//				return currentPage !== 'interfaceType';
-//			}
-//			return currentPage === 'Ethernet' && (this.interfaceType === 'Bridge' || this.interfaceType === 'Bond');
-//		},
-//
-//		previous: function(pageName) {
-//			if (this.creation) {
-//				if (pageName === 'Bridge' || pageName === 'Bond' || (pageName === 'Ethernet' && (this.interfaceType === 'Ethernet' || this.interfaceType === 'VLAN'))) {
-//					return 'interfaceType';
-//				}
-//				return this.interfaceType;
-//			}
-//			return this.interfaceType;
-//		},
 
 		_dhcpQuery: function(interfaceName) {
 			// TODO: show a progressbar and success message?

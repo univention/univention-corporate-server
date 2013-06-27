@@ -252,7 +252,7 @@ define([
 				vals[ikey] = _vals[ikey];
 			});
 
-			vals.interfaces = {}
+			vals.interfaces = {};
 			array.forEach(_vals.interfaces, function(iface) {
 				vals.interfaces[iface.name] = iface.toObject();
 			});
@@ -277,39 +277,15 @@ define([
 		getSummary: function() {
 			// a list of all components with their labels
 
-			var allInterfaces = array.map(this._form._widgets.interfaces.get('value'), function(item) {
-				return item.name;
-			});
-
-			// list of all IPv4 network devices
 			var vals = this._form.get('value');
-			var ipv4Str = array.map(array.filter(vals.interfaces, function(idev) {
-				return (idev.ip4.length || idev.ip4dynamic) && idev.isEthernet();
-			}), function(idev) {
-				if (idev.ip4dynamic) {
-					return idev.name + ': ' + _('Dynamic (DHCP)');
+
+			var network_summary = '';
+			array.forEach(vals.interfaces, function(iface) {
+				var summary = iface.getSummary();
+				if (summary) {
+					network_summary += summary + '<br>';
 				}
-				return idev.name + ': ' + array.map(array.filter(idev.ip4, function(ip4) { return ip4[0] && ip4[1]; }), function(ip4) {
-					// address/netmask
-					return ip4[0] + '/' + ip4[1];
-				}).join(', ');
 			});
-
-			ipv4Str = ipv4Str.length ? '<ul><li>' + ipv4Str.join('</li><li>') + '</li></ul>' : '';
-
-			var ipv6Str = array.map(array.filter(vals.interfaces, function(idev) {
-				return idev.ip6.length && idev.isEthernet();
-			}), function(idev) {
-			//	if (idev.ip6dynamic) {
-			//		return idev.name + ': ' + _('Autoconfiguration (SLAAC)');
-			//	}
-				return idev.name + ': ' + array.map(array.filter(idev.ip6, function(ip6) { return ip6[0] && ip6[1]; }), function(ip6) {
-					// identifier: address/prefix
-					return ip6[2] + ': ' + ip6[0] + '/' + ip6[1];
-				}).join(', '); // TODO: <br> or <li>?
-			});
-
-			ipv6Str = ipv6Str.length ? '<ul><li>' + ipv6Str.join('</li><li>') + '</li></ul>' : '';
 
 			// create a verbose list of all settings
 			return [{
@@ -333,21 +309,13 @@ define([
 				description: _('HTTP proxy'),
 				values: vals['proxy/http']
 			}, {
-				variables: [(/^interfaces\/[^_\/]+(_[0-9]+)?\/(?!ipv6).*/)],
-				description: _('IPv4 network devices'),
-				values: ipv4Str
-			}, {
-				variables: [(/^interfaces\/[^\/]+\/ipv6\/.*\/(prefix|address)$/)],
-				description: _('IPv6 network devices'),
-				values: ipv6Str
+				variables: ['interfaces'],
+				description: _('Network devices'),
+				values: network_summary
 			}, {
 				variables: ['interfaces/primary'],
-				description: _('primary network interface'),
+				description: _('Primary network interface'),
 				values: vals['interfaces/primary']
-			}, {
-				variables: [/^interfaces\/[^\/]+\/ipv6\/acceptRA/],
-				description: _('IPv6 interfaces with autoconfiguration (SLAAC)'),
-				values: array.map(array.filter(vals.interfaces, function(iface) { return iface.ip6dynamic; }), function(iface) { return iface.name; }).join(', ') || _('No device')
 			}];
 		},
 

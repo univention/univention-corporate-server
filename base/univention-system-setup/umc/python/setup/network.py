@@ -38,6 +38,7 @@ import ipaddr
 
 from univention.lib.i18n import Translation
 from univention.config_registry import ConfigRegistry
+from univention.management.console.log import MODULE
 
 from .util import detect_interfaces
 
@@ -285,6 +286,15 @@ class Device(object):
 		if self.ip4dynamic:
 			self.type = 'dhcp'
 
+	def validate(self):
+		self.validate_name()
+		self.validate_ip4()
+		self.validate_ip6()
+
+	def validate_name(self):
+		if not re.match('^[a-zA-Z]+[0-9]+$', self.name):
+			raise DeviceError(_('Invalid device name %r') % (self.name))
+
 	def validate_ip4(self):
 		# validate IPv4
 		if not self.ip4dynamic:
@@ -313,9 +323,9 @@ class Device(object):
 
 				# validate IPv6 netmask
 				try:
-					ipaddr.IPv6Network('%s/%s' % (address, netmask))
+					ipaddr.IPv6Network('%s/%s' % (address, prefix))
 				except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
-					raise DeviceError(_('Invalid IPv6 netmask %r') % (netmask), self.name)
+					raise DeviceError(_('Invalid IPv6 netmask %r') % (prefix), self.name)
 
 				# validate IPv6 identifier
 				if not RE_IPV6_ID.match(identifier):
@@ -337,10 +347,6 @@ class Device(object):
 				for idevice in self.subdevices:
 					if idevice in device.subdevices:
 						raise DeviceError(_('Device %r is already in use by %r') % (idevice.name, device.name), self.name)
-
-	def validate(self):
-		self.validate_ip4()
-		self.validate_ip6()
 
 	def disable_ips(self):
 		self.ip4 = []
@@ -420,7 +426,9 @@ class Device(object):
 		if self.start is not None:
 			vals['interfaces/%s/start' % (name)] = str(bool(self.start)).lower()
 
-		if self.type in ('static', 'manual', 'dhcp'): # TODO: add appliance mode temporary
+		if isinstance(self.type, str):
+			if self.type not in ('static', 'manual', 'dhcp', 'appliance-mode-temporary'):
+				MODULE.warn('Unknown interfaces/%s/type: %r' % (self.name, self.type))
 			vals['interfaces/%s/type' % (name)] = self.type
 
 		if isinstance(self.order, int):
@@ -537,6 +545,12 @@ class VLAN(Device):
 			# unsupported
 			raise DeviceError('Nested VLAN-devices are currently unsupported.', self.name)
 
+	def validate_name(self):
+		if not re.match('^[a-zA-Z]+[0-9]+\.[0-9]+$', self.name):
+			raise DeviceError(_('Invalid device name %r') % (self.name))
+		if not (1 <= self.vlan_id <= 4096):
+			raise DeviceError(_('Invalid VLAN ID. Must be between 1 and 4096.'), self.name)
+
 	@property
 	def dict(self):
 		d = super(VLAN, self).dict
@@ -581,7 +595,11 @@ class Bond(Device):
 
 		self.limit_ip4_address()
 
+		self.validate_bond_mode()
+
 		# at least one interface must exists in a bonding
+		# FIXME: must bond_slaves contain at least 2 interfaces?
+		# FIXME: must bond_primary be set?
 		if not self.bond_slaves or not self.bond_primary:
 			raise DeviceError(_('Missing interface for bond interface'), self.name)
 
@@ -604,6 +622,11 @@ class Bond(Device):
 			raise DeviceError(_('Bond-primary must exist in bond-slaves'))
 
 		self.check_unique_interface_usage()
+
+	def validate_bond_mode(self):
+		if self.bond_mode is not None:
+			if self.bond_mode not in self.modes_r or self.bond_mode not in self.modes:
+				raise DeviceError(_('Invalid bond-mode %r') % (self.bond_mode), self.name)
 
 	@property
 	def subdevice_names(self):

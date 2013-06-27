@@ -1,3 +1,9 @@
+univention-system-setup (7.0.6-1) unstable; urgency=low
+
+  * [WIP] Bug #28389: support Bridge, Bond, VLAN in UMC module
+
+ -- Florian Best <best@univention.de>  Thu, 27 Jun 2013 17:18:20 +0200
+
 univention-system-setup (7.0.5-1) unstable; urgency=low
 
   * disbale windows/domain in basic settings for 

@@ -381,7 +381,7 @@ define([
 		},
 
 		save: function() {
-			// helper function 
+			// helper function
 			var matchesSummary = function(key, summary) {
 				var matched = false;
 				// iterate over all assigned variables
@@ -450,6 +450,7 @@ define([
 						}
 						var target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=' + username);
 
+						// FIXME: !!!
 						// Consider IP changes, replace old ip in url by new ip
 						tools.forIn(this._orgValues, function(ikey, ival) {
 							// 1. check if value is equal to the current IP
@@ -500,10 +501,11 @@ define([
 							orgVal = tmpOrgVal;
 						}
 					}
-					if (json.stringify(orgVal) != json.stringify(newVal)) {
+					if (!tools.isEqual(orgVal, newVal)) {
 						values[ikey] = newVal;
 						++nchanges;
 
+						// FIXME: !!!
 						// check whether a redirect to a new IP address is necessary
 						if ( umc_url === null ) {
 							if ( ikey == 'interfaces/eth0/address' && newVal ) {
@@ -625,7 +627,7 @@ define([
 
 				// function to ask the user for DC account data
 				var _password = lang.hitch(this, function() {
-					var msg = '<p>' + _('The specified settings will be applied to the system and the system will be joined into the domain. Please enter username and password of a domain administrator account.') + '</p>'; 
+					var msg = '<p>' + _('The specified settings will be applied to the system and the system will be joined into the domain. Please enter username and password of a domain administrator account.') + '</p>';
 					var deferred = new Deferred();
 					var _dialog = null;
 					var form = new Form({
@@ -733,7 +735,7 @@ define([
 							'setup/finished',
 							{},
 							lang.hitch(deferred, 'resolve'),
-							lang.replace( _( 'The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the {linkStart}new address{linkEnd}.' ), { 
+							lang.replace( _( 'The connection to the server could not be established after {time} seconds. This problem can occur due to a change of the IP address. In this case, please login to Univention Management Console again at the {linkStart}new address{linkEnd}.' ), {
 								time: '{time}',
 								linkStart : umc_url ? '<a href="' + umc_url + '">' : '',
 								linkEnd : umc_url ? '</a>' : ''
@@ -839,7 +841,7 @@ define([
 				deferred.then(
 					function() {},
 					lang.hitch(this, function() {
-						this.standby(false); 
+						this.standby(false);
 					})
 				);
 			}), lang.hitch(this, function() {

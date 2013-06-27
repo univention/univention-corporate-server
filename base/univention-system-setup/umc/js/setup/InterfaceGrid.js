@@ -39,13 +39,11 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Grid",
-	"umc/widgets/Form",
 	"umc/widgets/_FormWidgetMixin",
-	"umc/widgets/ComboBox",
 	"umc/modules/setup/InterfaceWizard",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, on, Memory, Observable, Dialog, dialog, tools, Grid, Form, _FormWidgetMixin, ComboBox, InterfaceWizard, types, _) {
+], function(declare, lang, array, on, Memory, Observable, Dialog, dialog, tools, Grid, _FormWidgetMixin, InterfaceWizard, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
 
@@ -79,7 +77,7 @@ define([
 					label: _('Configuration'),
 					formatter: lang.hitch(this, function(val, row, scope) {
 						var iface = this.getRowValues(row);
-						return this.getItem(iface.name).configuration_description();
+						return this.getItem(iface.name).getConfigurationDescription();
 					}),
 					width: '70%'
 				}],

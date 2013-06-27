@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-06-26 02:04+0200\n"
+"POT-Creation-Date: 2013-06-26 05:26+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,7 +107,7 @@ msgstr "Ein Netzwerkgerät hinzufügen"
 msgid "Add interface"
 msgstr "Netzwerkgerät hinzufügen"
 
-#: umc/js/setup/InterfaceWizard.js:406
+#: umc/js/setup/InterfaceWizard.js:405
 msgid "Advanced configuration"
 msgstr "Erweiterte Konfiguration"
 
@@ -119,7 +119,7 @@ msgstr "Änderungen anwenden"
 msgid "Apply settings"
 msgstr "Einstellungen anwenden"
 
-#: umc/js/setup/InterfaceWizard.js:475
+#: umc/js/setup/InterfaceWizard.js:469
 msgid ""
 "At least one ip address have to be specified or DHCP or SLACC have to be "
 "enabled."
@@ -127,12 +127,7 @@ msgstr ""
 "Mindestens eine IP-Adresse muss angegeben werden oder DHCP oder SLAAC muss "
 "eingeschaltet sein."
 
-#: umc/js/setup/InterfaceWizard.js:480
-msgid "At least two interfaces have to be used for this bond device"
-msgstr ""
-
-#: umc/js/setup/InterfaceWizard.js:244 umc/js/setup/NetworkPage.js:304
-#: umc/js/setup/types.js:142
+#: umc/js/setup/InterfaceWizard.js:240 umc/js/setup/types.js:142
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
@@ -148,19 +143,19 @@ msgstr "Basissystem"
 msgid "Basic settings"
 msgstr "Basis-Einstellungen"
 
-#: umc/js/setup/InterfaceWizard.js:333
+#: umc/js/setup/InterfaceWizard.js:331
 msgid "Bond configuration"
 msgstr "Bond konfiguration"
 
-#: umc/js/setup/InterfaceWizard.js:403
+#: umc/js/setup/InterfaceWizard.js:402
 msgid "Bond device configuration"
 msgstr "Bond Gerätekonfiguration"
 
-#: umc/js/setup/InterfaceWizard.js:350
+#: umc/js/setup/InterfaceWizard.js:348
 msgid "Bond primary"
 msgstr ""
 
-#: umc/js/setup/InterfaceWizard.js:337 umc/js/setup/types.js:233
+#: umc/js/setup/InterfaceWizard.js:335 umc/js/setup/types.js:263
 msgid "Bond slaves"
 msgstr ""
 
@@ -172,15 +167,15 @@ msgstr ""
 msgid "Bridge"
 msgstr ""
 
-#: umc/js/setup/InterfaceWizard.js:302
+#: umc/js/setup/InterfaceWizard.js:299
 msgid "Bridge configuration"
 msgstr "Bridge konfiguration"
 
-#: umc/js/setup/InterfaceWizard.js:328
+#: umc/js/setup/InterfaceWizard.js:326
 msgid "Bridge device configuration"
 msgstr "Bridge Gerätekonfiguration"
 
-#: umc/js/setup/types.js:262
+#: umc/js/setup/types.js:303
 msgid "Bridge ports"
 msgstr "Bridge ports"
 
@@ -251,12 +246,12 @@ msgstr "Konfiguration abgeschlossen"
 msgid "Configuration of the UCS system role"
 msgstr "Konfiguration der UCS-Systemrolle"
 
-#: umc/js/setup/InterfaceWizard.js:180
+#: umc/js/setup/InterfaceWizard.js:176
 msgid "Configure as primary network interface"
 msgstr "Als primäres Netzwerkgerät konfigurieren"
 
-#: umc/js/setup/InterfaceWizard.js:177 umc/js/setup/InterfaceWizard.js:303
-#: umc/js/setup/InterfaceWizard.js:334
+#: umc/js/setup/InterfaceWizard.js:173 umc/js/setup/InterfaceWizard.js:300
+#: umc/js/setup/InterfaceWizard.js:332
 #, python-format
 msgid "Configure the %s network interface %s"
 msgstr "Konfiguriere das %s Netzwerkgerät %s"
@@ -281,11 +276,11 @@ msgstr "Ländercode"
 msgid "Currently selected system role"
 msgstr "Aktuell ausgewählte Systemrolle"
 
-#: umc/js/setup/InterfaceWizard.js:624 umc/js/setup/InterfaceWizard.js:659
+#: umc/js/setup/InterfaceWizard.js:584 umc/js/setup/InterfaceWizard.js:619
 msgid "DHCP query failed."
 msgstr "DHCP-Anfrage schlug fehl."
 
-#: umc/js/setup/InterfaceWizard.js:274
+#: umc/js/setup/InterfaceWizard.js:271
 msgid "DHCP-Query"
 msgstr ""
 
@@ -309,7 +304,7 @@ msgstr "Domänencontroller Master"
 msgid "Domain controller slave"
 msgstr "Domänencontroller Slave"
 
-#: umc/js/setup/NetworkPage.js:325
+#: umc/js/setup/NetworkPage.js:296
 msgid "Domain name server"
 msgstr "Domänen-DNS-Server"
 
@@ -317,12 +312,11 @@ msgstr "Domänen-DNS-Server"
 msgid "Domain name server (max. 3)"
 msgstr "Domänen-DNS-Server (max. 3)"
 
-#: umc/js/setup/InterfaceWizard.js:212 umc/js/setup/NetworkPage.js:290
-#: umc/js/setup/types.js:136
+#: umc/js/setup/InterfaceWizard.js:208 umc/js/setup/types.js:136
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: umc/js/setup/InterfaceWizard.js:487
+#: umc/js/setup/InterfaceWizard.js:477
 msgid "Each IPv6 interface must have an identifier"
 msgstr ""
 
@@ -342,7 +336,7 @@ msgstr "E-Mailadresse"
 msgid "Ethernet"
 msgstr ""
 
-#: umc/js/setup/NetworkPage.js:329
+#: umc/js/setup/NetworkPage.js:300
 msgid "External name server"
 msgstr "Externer DNS-Server "
 
@@ -379,11 +373,11 @@ msgstr "Vollständiger Rechnername"
 msgid "Fully qualified domain name (e.g. master.example.com)"
 msgstr "Vollständiger Rechnername (z.B. master.example.com)"
 
-#: umc/js/setup/NetworkPage.js:99 umc/js/setup/NetworkPage.js:317
+#: umc/js/setup/NetworkPage.js:99 umc/js/setup/NetworkPage.js:288
 msgid "Gateway (IPv4)"
 msgstr "Gateway (IPv4)"
 
-#: umc/js/setup/NetworkPage.js:103 umc/js/setup/NetworkPage.js:321
+#: umc/js/setup/NetworkPage.js:103 umc/js/setup/NetworkPage.js:292
 msgid "Gateway (IPv6)"
 msgstr "Gateway (IPv6)"
 
@@ -399,7 +393,7 @@ msgstr "Allgemeine Einstellungen"
 msgid "Global network settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: umc/js/setup/NetworkPage.js:119 umc/js/setup/NetworkPage.js:333
+#: umc/js/setup/NetworkPage.js:119 umc/js/setup/NetworkPage.js:304
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
@@ -419,31 +413,27 @@ msgstr "Hostname und Windows-Domäne dürfen nicht gleich sein."
 msgid "IP network devices"
 msgstr "IP Netzwerkgeräte"
 
-#: umc/js/setup/InterfaceWizard.js:191
+#: umc/js/setup/InterfaceWizard.js:187
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
-#: umc/js/setup/InterfaceWizard.js:285 umc/js/setup/NetworkPage.js:337
+#: umc/js/setup/InterfaceWizard.js:282
 msgid "IPv4 network devices"
 msgstr "IPv4-Netzwerkgeräte"
 
-#: umc/js/setup/InterfaceWizard.js:220
+#: umc/js/setup/InterfaceWizard.js:216
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
-#: umc/js/setup/NetworkPage.js:349
-msgid "IPv6 interfaces with autoconfiguration (SLAAC)"
-msgstr "IPv6-Netzwerkgeräte mit automatische Konfiguration (SLAAC)"
-
-#: umc/js/setup/InterfaceWizard.js:288 umc/js/setup/NetworkPage.js:341
+#: umc/js/setup/InterfaceWizard.js:285
 msgid "IPv6 network devices"
 msgstr "IPv6-Netzwerkgeräte"
 
-#: umc/js/setup/InterfaceWizard.js:227
+#: umc/js/setup/InterfaceWizard.js:223
 msgid "IPv6 prefix"
 msgstr "IPv6-Präfix"
 
-#: umc/js/setup/InterfaceWizard.js:235
+#: umc/js/setup/InterfaceWizard.js:231
 msgid "Identifier"
 msgstr "Bezeichner"
 
@@ -575,7 +565,7 @@ msgstr "Ort"
 msgid "Location settings"
 msgstr "Standorteinstellungen"
 
-#: umc/js/setup/InterfaceWizard.js:387
+#: umc/js/setup/InterfaceWizard.js:385
 msgid "MII link monitoring frequency"
 msgstr ""
 
@@ -583,7 +573,7 @@ msgstr ""
 msgid "Member server"
 msgstr "Member-Server"
 
-#: umc/js/setup/InterfaceWizard.js:361
+#: umc/js/setup/InterfaceWizard.js:359
 msgid "Mode"
 msgstr "Modus"
 
@@ -591,7 +581,7 @@ msgstr "Modus"
 msgid "Name"
 msgstr "Name"
 
-#: umc/js/setup/InterfaceWizard.js:198
+#: umc/js/setup/InterfaceWizard.js:194
 msgid "Netmask"
 msgstr "Netzmaske"
 
@@ -599,9 +589,13 @@ msgstr "Netzmaske"
 msgid "Network"
 msgstr "Netzwerk"
 
-#: umc/js/setup/InterfaceWizard.js:176
+#: umc/js/setup/InterfaceWizard.js:172
 msgid "Network device configuration"
 msgstr "Netzwerkgerätkonfiguration"
+
+#: umc/js/setup/NetworkPage.js:308
+msgid "Network devices"
+msgstr "Netzwerkgeräte"
 
 #: umc/js/setup/NetworkPage.js:72
 msgid "Network settings"
@@ -618,10 +612,6 @@ msgstr "Vor"
 #: umc/js/setup.js:529
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen vorgenommen."
-
-#: umc/js/setup/NetworkPage.js:350
-msgid "No device"
-msgstr "Kein Gerät"
 
 #: umc/js/setup.js:763
 msgid "Not all changes could be applied successfully:"
@@ -643,7 +633,7 @@ msgstr "Einstellungen über die Organisation"
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/js/setup/InterfaceWizard.js:611
+#: umc/js/setup/InterfaceWizard.js:571
 msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen Sie ein Netzwerkgerät bevor Sie eine DHCP-Adresse anfragen."
@@ -659,6 +649,10 @@ msgid ""
 msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
+
+#: umc/js/setup/NetworkPage.js:312
+msgid "Primary network interface"
+msgstr "Primäres Netzwerkgerät"
 
 #: umc/js/setup.js:808
 msgid "Reconfigure, retry"
@@ -690,7 +684,7 @@ msgstr ""
 "Soll das UMC-Modul geschlossen werden? Alle nicht gespeicherten Änderungen "
 "gehen verloren"
 
-#: umc/js/setup/InterfaceWizard.js:645
+#: umc/js/setup/InterfaceWizard.js:605
 #, python-format
 msgid "Should the nameserver and gateway be set: %s"
 msgstr "Sollen der Nameserver und Gateway gesetzt werden: %s"
@@ -753,7 +747,7 @@ msgstr ""
 "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der {linkStart}neuen Adresse{linkEnd} ein."
 
-#: umc/js/setup/InterfaceWizard.js:496
+#: umc/js/setup/InterfaceWizard.js:499
 msgid "The entered data is not valid. Please correct the input."
 msgstr "Die eingegeben Daten sind nicht gültig. Bitte Eingaben korrigieren."
 
@@ -816,7 +810,7 @@ msgstr "Zeitzonen- und Tastatureinstellungen"
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/setup/InterfaceWizard.js:319 umc/js/setup/InterfaceWizard.js:394
+#: umc/js/setup/InterfaceWizard.js:316 umc/js/setup/InterfaceWizard.js:392
 msgid "UCR options"
 msgstr ""
 
@@ -840,7 +834,7 @@ msgstr ""
 msgid "Virtual LAN"
 msgstr "virtuelles LAN"
 
-#: umc/js/setup/InterfaceWizard.js:168
+#: umc/js/setup/InterfaceWizard.js:164
 msgid "Virtual interface ID"
 msgstr "virtuelle Geräte ID"
 
@@ -848,7 +842,7 @@ msgstr "virtuelle Geräte ID"
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: umc/js/setup/InterfaceWizard.js:468
+#: umc/js/setup/InterfaceWizard.js:464
 msgid ""
 "You have to specify a valid interface and interfaceType. Please correct your "
 "input."
@@ -865,35 +859,35 @@ msgstr ""
 "System ist dann nicht Teil der Domäne. Sie können es zu einem späteren "
 "Zeitpunkt mit dem UMC-Modul \"Domänenbeitritt\" hinzufügen."
 
-#: umc/js/setup/InterfaceWizard.js:306
+#: umc/js/setup/InterfaceWizard.js:303
 msgid "bridge ports"
 msgstr ""
 
-#: umc/js/setup/InterfaceWizard.js:645
+#: umc/js/setup/InterfaceWizard.js:605
 msgid "don't set"
 msgstr "nicht setzen"
 
-#: umc/js/setup/InterfaceWizard.js:313
+#: umc/js/setup/InterfaceWizard.js:310
 msgid "forwarding delay"
 msgstr ""
 
-#: umc/js/setup/InterfaceWizard.js:636
+#: umc/js/setup/InterfaceWizard.js:596
 msgid "gateway"
 msgstr "Gateway"
 
-#: umc/js/setup/InterfaceWizard.js:641
+#: umc/js/setup/InterfaceWizard.js:601
 msgid "nameserver"
 msgstr "DNS-Server"
 
-#: umc/js/setup/InterfaceWizard.js:282
+#: umc/js/setup/InterfaceWizard.js:279
 msgid "network device"
 msgstr "Netzwerkgerät"
 
-#: umc/js/setup/NetworkPage.js:88 umc/js/setup/NetworkPage.js:345
+#: umc/js/setup/NetworkPage.js:88
 msgid "primary network interface"
 msgstr "primäres Netzwerkgerät"
 
-#: umc/js/setup/InterfaceWizard.js:645
+#: umc/js/setup/InterfaceWizard.js:605
 msgid "set"
 msgstr "setzen"
 
@@ -1025,6 +1019,9 @@ msgstr "setzen"
 #~ msgid "IP addresses"
 #~ msgstr "IP-Adressen"
 
+#~ msgid "IPv6 interfaces with autoconfiguration (SLAAC)"
+#~ msgstr "IPv6-Netzwerkgeräte mit automatische Konfiguration (SLAAC)"
+
 #~ msgid "Information"
 #~ msgstr "Informationen"
 
@@ -1043,6 +1040,9 @@ msgstr "setzen"
 #~ msgstr ""
 #~ "Es wurden keine Änderungen vorgenommen. Bitte bestätigen Sie, um mit dem "
 #~ "Boot-Prozess fortzufahren."
+
+#~ msgid "No device"
+#~ msgstr "Kein Gerät"
 
 #~ msgid "Note that some changes may require a new join into the UCS domain."
 #~ msgstr ""
