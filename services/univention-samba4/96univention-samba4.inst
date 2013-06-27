@@ -257,7 +257,9 @@ samba_domain_join() {
 
 	if [ -n "$samba4_dc" ]; then
 		samba-tool domain join "$domainname" "$samba4_role" --server "$samba4_dc" \
-							"${samba_join_options[@]}" && success=true
+							"${samba_join_options[@]}" && success=true \
+							&& univention-config-registry set windows/wins-server?"$samba4_dc"
+
 	else
 		samba-tool domain join "$domainname" "$samba4_role" \
 							"${samba_join_options[@]}" && success=true
@@ -271,6 +273,7 @@ samba_domain_join() {
 				samba-tool domain join "$domainname" "$samba4_role" --server "$name.$domainname" \
 								"${samba_join_options[@]}" && success=true
 				if [ -n "$success" ]; then
+					univention-config-registry set windows/wins-server?"$name.$domainname"
 					break
 				fi
 			done
@@ -504,11 +507,13 @@ if [ "$samba4_role" = 'DC' ]; then
 	/etc/init.d/samba4 stop
 
 	is_ucr_true samba4/provision/primary
-	if [ $? -eq 0 ] || [ -z "$samba4servicedcs" ]; then	## we are the first domainctontroller to provide this service
+	if [ $? -eq 0 ] || [ -z "$samba4servicedcs" ]; then	## we are the first domaincontroller to provide this service
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 			run_samba_provision "$@"
 		fi
+
+		univention-config-registry set windows/wins-support=yes
 
 		## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "${SITE_OPTION[@]}"
@@ -541,6 +546,8 @@ if [ "$samba4_role" = 'DC' ]; then
 				## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
 
+				univention-config-registry set windows/wins-support=yes
+
 				if ! univention_samba4_is_ucr_false dns/register/srv_records/kerberos; then
 					remove_non_samba4_dc_srv_records
 				fi
@@ -563,7 +570,7 @@ if [ "$samba4_role" = 'DC' ]; then
 					exit 1
 				fi
 
-				univention-config-registry set windows/wins-server?$ldap_master
+				univention-config-registry set windows/wins-support?no
 
 				remove_dc_ntds_guid_records_from_dns "$@"
 
