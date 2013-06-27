@@ -27,8 +27,8 @@ msgstr "DHCP"
 msgid "DNS"
 msgstr "DNS"
 
-msgid "Domain {domainname}"
-msgstr "Domäne {domainname}"
+msgid "Domain"
+msgstr "Domäne"
 
 msgid "Groups"
 msgstr "Gruppen"
