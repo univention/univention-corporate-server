@@ -160,11 +160,11 @@ define([
 			});
 
 			_set('fqdn', !this.wizard_mode && role != 'basesystem', true, this.wizard_mode && this._firstSetValues);
-			_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues);
+			_set('windows/domain', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues, role == 'domaincontroller_master' || role == 'basesystem');
 			_set('ldap/base', !this.wizard_mode && role != 'basesystem', role != 'basesystem', this.wizard_mode && this._firstSetValues, role == 'domaincontroller_master' || role == 'basesystem');
 			_set('root_password', false, this.wizard_mode && this.local_mode);
 
-			if (role != 'basesystem' && this.wizard_mode) {
+			if (role == 'domaincontroller_master' && this.wizard_mode) {
 				// add dynamic value computation from FQDN for windows domain
 				this._form.getWidget('windows/domain').set('dynamicValue', function(deps) {
 					var l = (deps.fqdn || '').split('.');
@@ -202,6 +202,11 @@ define([
 				delete vals['ldap/base'];
 			}
 
+			if (!this._form.getWidget('windows/domain').get('visible')) {
+				// remove the windows/domain entry
+				delete vals['windows/domain'];
+			}
+
 			return vals;
 		},
 
@@ -236,9 +241,11 @@ define([
 
 		validate: function() {
 			var values = this.getValues();
-			if (values.hostname.toLowerCase() == values['windows/domain'].toLowerCase()) {
-				dialog.alert(_('Hostname and windows domain may not be equal.'));
-				return false;
+			if (values['server/role'] == 'domaincontroller_master' ) {
+				if (values.hostname.toLowerCase() == values['windows/domain'].toLowerCase()) {
+					dialog.alert(_('Hostname and windows domain may not be equal.'));
+					return false;
+				}
 			}
 			var warnings = [];
 			if (values.hostname.length > 13) {

@@ -1,3 +1,10 @@
+univention-system-setup (7.0.5-1) unstable; urgency=low
+
+  * disbale windows/domain in basic settings for 
+    non DC master systems (Bug #24442) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 27 Jun 2013 15:20:13 +0200
+
 univention-system-setup (7.0.4-1) unstable; urgency=low
 
   * [WIP] Bug #28389: support Bridge, Bond, VLAN in UMC module
