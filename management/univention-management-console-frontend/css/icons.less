@@ -5,22 +5,22 @@
  */
 
 /* add nice star when hovering */
-.dgrid.umcOverviewCategory .umcGalleryItem:hover {
-	.umcGalleryStatusIcon {
+.dgrid.umcOverviewCategory {
+
+	.umcGalleryItem:hover .umcGalleryStatusIcon {
+		visibility: visible;
 		.opacity(0.4);
-		background-image: url(icons/24x24/star.png);
 	}
 
-	.umcGalleryStatusIcon.icon24-star {
-		/* if the status icon is already marked with a star, show an 'X' for deletion */
-		background-image: url(icons/24x24/delete.png);
-	}
-}
-
-/* change the opacity when clicked on the icon to 100% */
-.dgrid.umcOverviewCategory, .dgrid.umcOverviewFavorites {
-	.umcGalleryItem .umcGalleryStatusIcon:active {
-		.opacity(1);
+	.umcGalleryItem {
+		.umcGalleryStatusIcon {
+			visibility: hidden;
+		}
+		/* change the opacity when clicked on the icon to 100% */
+		.umcGalleryStatusIcon:active {
+			visibility: visible;
+			.opacity(1);
+		}
 	}
 }
 

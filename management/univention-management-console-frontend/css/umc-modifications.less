@@ -2086,7 +2086,15 @@ textarea {
 }
 
 .dijitLayoutContainer {
-	overflow: visible !important;
+	overflow: visible;
+}
+
+//#dijit_layout_TabContainer_0_tablist .dijitTabListWrapper {
+//	padding-bottom: 15px;
+//}
+
+.umc .umcPage {
+	padding-top: 15px;
 }
 
 /* @group Header */
@@ -2285,19 +2293,21 @@ p {
 }
 .umcAppCenter .umcButton .dijitButtonText {
 	text-decoration: none;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 .umcAppCenter .umcButton.umcCategorySelected .dijitButtonText {
 	font-weight: bold;
 }
 .umcAppCenter .umcButton .dijitButtonNode {
-	width: 100px;
 	text-align: left;
+	display: block;
 }
 .umcAppCenter .dijitButtonHover .dijitButtonNode {
 	text-shadow: none;
 }
-.umcAppCenter .dijitButtonHover,
-.umcAppCenter .dijitButtonActive {
+.umcAppCenter .dijitButtonHover .dijitButtonNode,
+.umcAppCenter .dijitButtonActive .dijitButtonNode {
 	background-color: #ededee;
 	border-radius: 5px;
 }
@@ -2341,7 +2351,7 @@ p {
 	color: grey;
 }
 .umcGalleryPane.dgrid .dgrid-scroller {
-	position: relative;
+	//position: relative;
 	overflow: visible;
 	outline: none;
 	//margin: 0;
@@ -2349,17 +2359,51 @@ p {
 .umcGalleryPane .dgrid-selected {
 	background-color: inherit;
 }
+.umcGalleryHeaderModules, .umcGalleryHeaderFavoriteModules {
+	display: block;
+	border-bottom: 1px solid #b5bcc7;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	font-size: 14px;
+}
+.umcGalleryHeaderModules {
+	clear: left;
+	margin-top: 15px;
+}
+
+.umcOverviewCategory {
+	.umcGalleryItem {
+		height: 55px;
+		width: 305px;
+
+		.umcGalleryIcon {
+			margin: 0;
+			padding-bottom: 0;
+			position: absolute;
+		}
+
+		.umcGalleryName, .umcGalleryDescription {
+			text-align: left;
+			display: block;
+			padding-left: 60px;
+		}
+	}
+}
 
 /* App Center */
-.dgrid.umcAppCenter {
+.dgrid.umcAppCenter,
+.digrd.umcOverviewCategory {
 	height: 100%;
 }
 
-.dgrid.umcAppCenter .umcGalleryItem {
+.dgrid.umcAppCenter .umcGalleryItem,
+.dgrid.umcOverviewCategory .umcGalleryItem {
 	margin: 10px 10px 0 10px;
 }
 
-.dgrid.umcAppCenter .dgrid-scroller {
+.dgrid.umcAppCenter .dgrid-scroller,
+.digrd.umcOverviewCategory .digrd-scroller {
 	/* fix scroll bars */
 	position: absolute;
 	overflow-x: auto;

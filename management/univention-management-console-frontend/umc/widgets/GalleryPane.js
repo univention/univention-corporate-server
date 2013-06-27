@@ -32,38 +32,28 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/query",
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojo/dom-construct",
-	"dijit/registry",
+	"dojo/aspect",
+	"dijit/Destroyable",
 	"umc/tools",
 	"umc/widgets/Tooltip",
 	"umc/widgets/ContainerWidget",
 	"dgrid/OnDemandList",
 	"dgrid/Selection",
-	"put-selector/put"
-], function(declare, lang, array, domClass, domStyle, domConstruct, registry, tools, Tooltip, ContainerWidget, List, Selection, put) {
-	return declare("umc.widgets.GalleryPane", [ List, Selection ], {
+	"dgrid/extensions/DijitRegistry",
+	"put-selector/put",
+	"umc/i18n!umc/app"
+], function(declare, lang, array, query, domClass, domStyle, domConstruct, aspect, Destroyable,
+		tools, Tooltip, ContainerWidget, List, Selection, DijitRegistry, put, _) {
+	return declare("umc.widgets.GalleryPane", [ List, Selection, DijitRegistry, Destroyable ], {
 		baseClass: "",
 
 		style: "",
 
-		categoriesDisplayed: true,
-
-		constructor: function() {
-			this.id = registry.getUniqueId(this.declaredClass.replace(/\./g,"_"));
-			registry.add(this);
-			// really a container, no widget
-			// is never shown, just keeps track of
-			// all created tooltips and destroys them
-			this._tooltipContainer = new ContainerWidget({});
-		},
-
-		destroy: function() {
-			this.inherited(arguments);
-			registry.remove(this.id);
-			this._tooltipContainer.destroyRecursive();
-		},
+		showTooltips: true,
 
 		postCreate: function() {
 			this.inherited(arguments);
@@ -96,22 +86,49 @@ define([
 			}
 		},
 
+		getItemDescription: function(item) {
+			return item.categories.join(', ');
+		},
+
+		getCategoryString: function(item) {
+			if (item.category && typeof item.category == 'string') {
+				// we have a property category -> done
+				return item.category;
+			}
+
+			// transform categories to a comma separated list
+			var entries = [];
+			array.forEach(item.categories || [], function(icat) {
+				if (typeof icat == 'string') {
+					entries.push(icat);
+				}
+				else {
+					entries.push(icat.id);
+				}
+			});
+			return entries.join(',');
+		},
+
 		renderRow: function(item, options) {
 			// create gallery item
-			var div = put("div");
-			var categories = this.categoriesDisplayed ? item.categories.join(', ') : '';
-			domConstruct.create('div', {'class': 'umcGalleryIcon ' + this.getIconClass(item)}, div);
-			domConstruct.create('div', {'class': 'umcGalleryName', 'innerHTML': item.name}, div);
-			domConstruct.create('div', {'class': 'umcGalleryDescription', 'innerHTML': categories}, div);
-			domClass.add(div, 'umcGalleryItem');
+			var div = put(lang.replace('div.umcGalleryItem[categories={category}]', {
+				category: this.getCategoryString(item)
+			}));
+			var description = this.getItemDescription(item);
+			put(div, 'div.umcGalleryIcon.' + this.getIconClass(item));
+			put(div, 'div.umcGalleryName', item.name);
+			put(div, 'div.umcGalleryDescription', description);
 
 			// Tooltip
-			var tooltip = new Tooltip({
-				label: item.description,
-				connectId: [ div ]
-			});
-			this._tooltipContainer.own(tooltip);
+			if (this.showTooltips && description) {
+				var tooltip = new Tooltip({
+					label: description,
+					connectId: [ div ]
+				});
+				this.own(tooltip);
+			}
 
+			// create status icon
 			var statusIconClass = this.getStatusIconClass(item);
 			if (typeof statusIconClass === 'string') {
 				var statusIconDiv = domConstruct.create('div', {'class': 'umcGalleryStatusIcon ' + statusIconClass}, div);
@@ -121,7 +138,7 @@ define([
 						label: statusIconLabel,
 						connectId: [ statusIconDiv ]
 					});
-					this._tooltipContainer.own(statusIconTooltip);
+					this.own(statusIconTooltip);
 				}
 			}
 

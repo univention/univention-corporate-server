@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.3-1) unstable; urgency=low
+
+  * Bug #31699: WIP - revising UMC overview page
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 27 Jun 2013 15:23:14 +0200
+
 univention-management-console-frontend (3.0.2-1) unstable; urgency=low
 
   * Bug #31318: fixed static array reference in umc/widgets/MultiSelect

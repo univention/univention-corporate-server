@@ -34,10 +34,12 @@ define([
 	"dojo/_base/kernel",
 	"dojo/_base/array",
 	"dojo/_base/window",
+	"dojo/query",
 	"dojo/window",
 	"dojo/on",
 	"dojo/aspect",
 	"dojo/has",
+	"dojo/regexp",
 	"dojo/Evented",
 	"dojo/Deferred",
 	"dojo/promise/all",
@@ -46,8 +48,10 @@ define([
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dojo/dom-style",
+	"dojo/dom-attr",
 	"dojo/dom-class",
 	"dojo/dom-geometry",
+	"dojo/dom-construct",
 	"dijit/Dialog",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -57,6 +61,7 @@ define([
 	"dijit/form/DropDownButton",
 	"dijit/layout/BorderContainer",
 	"dijit/layout/TabContainer",
+	"dijit/layout/ContentPane",
 	"umc/tools",
 	"umc/dialog",
 	"umc/help",
@@ -65,13 +70,16 @@ define([
 	"umc/widgets/GalleryPane",
 	"umc/widgets/TitlePane",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/TextBox",
+	"umc/widgets/ExpandingTitlePane",
+	"umc/widgets/LabelPane",
 	"umc/widgets/TouchScrollContainerWidget",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, win, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domClass, domGeometry, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, TouchScrollContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, regexp, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -88,6 +96,216 @@ define([
 	var _cmpFavorites = function(x, y) {
 		return x._favoritePos - y._favoritePos;
 	};
+
+	var _SearchWidget = declare([ContainerWidget], {
+
+		category: null,
+
+		style: 'overflow: auto;',
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			var widthContainer = new ContainerWidget();
+			this._searchTextBox = new TextBox({
+				label: _("Search term"),
+				style: 'width: 135px;'
+			});
+			var searchLabel = new LabelPane({
+				content: this._searchTextBox
+			});
+			widthContainer.addChild(searchLabel);
+			this.addChild(widthContainer);
+
+			this._categoryContainer = new ContainerWidget({});
+			this.addChild(this._categoryContainer);
+		},
+
+		postCreate: function() {
+			this.inherited(arguments);
+			this._searchTextBox.on('keyup', lang.hitch(this, function() {
+				this._updateCss(); // ... just to be sure
+				this.onSearch();
+			}));
+		},
+
+		_isInSearchMode: function() {
+			return Boolean(lang.trim(this.get('value')));
+		},
+
+		_getValueAttr: function() {
+			return this._searchTextBox.get('value');
+		},
+
+		_getCategoryAll: function() {
+			var result = array.filter(this.get('categories'), function(icat) {
+				return icat && icat.id == '$all$';
+			});
+			if (result.length) {
+				return result[0];
+			}
+			return null;
+		},
+
+		_getCategoryAttr: function() {
+			if (this._isInSearchMode()) {
+				// in search mode, the current category is always the "all" category
+				return this._getCategoryAll();
+			}
+			return this.category;
+		},
+
+		_setCategoryAttr: function(category) {
+			this._set('category', category);
+			this._updateCss();
+			this.onSearch();
+		},
+
+		_clearCategoryNodes: function() {
+			array.forEach(this._categoryContainer.getChildren(), lang.hitch(this, function(category) {
+				this._categoryContainer.removeChild(category);
+				category.destroyRecursive();
+			}));
+		},
+
+		_setCategoriesAttr: function(_categories) {
+			this._clearCategoryNodes();
+
+			// add new categories
+			var categories = lang.clone(_categories);
+
+			// add generic categories
+			categories.unshift({
+				name: _('All'),
+				id: '$all$'
+			});
+			categories.unshift({
+				name: _('Favorites'),
+				id: '$favorites$'
+			});
+
+			// add one node elements for each category
+			array.forEach(categories, lang.hitch(this, function(category) {
+				this._categoryContainer.addChild(new Button({
+					label: category.name,
+					_categoryID: category.id,
+					callback: lang.hitch(this, 'set', 'category', category)
+				}));
+			}));
+
+			this._set('categories', categories);
+
+			// preselect the first category
+			this.set('category', categories[0]);
+		},
+
+		_updateCss: function() {
+			var categories = this._categoryContainer.getChildren();
+			var currentCategory = this.get('category');
+			array.forEach(categories, lang.hitch(this, function(ibutton) {
+				var isSelected = (currentCategory && currentCategory.id == ibutton._categoryID) || (!currentCategory && ibutton._categoryID == '$all$');
+				domClass.toggle(ibutton.domNode, 'umcCategorySelected', isSelected);
+			}));
+		},
+
+		focus: function() {
+			this._searchTextBox.focus();
+		},
+
+		onSearch: function() {
+			// event stub
+		}
+	});
+
+	var _OverviewPane = declare([ GalleryPane ], {
+		showTooltips: false,
+		categories: null,
+
+		constructor: function(props) {
+			lang.mixin(this, props);
+		},
+
+		postMixInProperties: function() {
+			this.queryOptions = {
+				sort: [{
+					attribute: '$firstCategoryPriority$',
+					descending: true
+				}, {
+					attribute: '$firstCategory$',
+					descending: false
+				}, {
+					attribute: 'name',
+					descending: false
+				}]
+			};
+		},
+
+		_getCategoryFromNode: function(node) {
+			var categoryIDs = domAttr.get(node, 'categories').split(',');
+			if (!categoryIDs.length) {
+				return null;
+			}
+			var categories = array.filter(this.categories, function(icat) {
+				return icat.id == categoryIDs[0];
+			});
+			if (!categories.length) {
+				return null;
+			}
+			return categories[0];
+		},
+
+		_addCategoryNode: function(followingNode, label, categoryID) {
+			// make sure that the node has not been rendered already
+			var selectStr = lang.replace('.umcGalleryHeaderModules[categoryID={category}]', {
+				category: categoryID
+			});
+			var previousHeaderNode = query(selectStr, this.contentNode);
+			if (!previousHeaderNode.length) {
+				// node does not exist
+				domConstruct.create('div', {
+					'class': 'umcGalleryHeaderModules',
+					innerHTML: label,
+					'categoryID': categoryID
+				}, followingNode, 'before');
+			}
+		},
+
+		renderArray: function() {
+			var result = this.inherited(arguments);
+
+			// add separators
+			var lastCategory = null;
+			var firstCategory = null;
+			var firstNode = null;
+			var nCategories = 0;
+			var i = 0;
+			query('.umcGalleryItem', this.contentNode).forEach(lang.hitch(this, function(inode) {
+				var category = this._getCategoryFromNode(inode);
+				firstCategory = firstCategory || category; // remember the first category
+				firstNode = firstNode || inode;
+				if (!lastCategory || category.id != lastCategory.id) {
+					++nCategories;
+					lastCategory = category;
+					this._addCategoryNode(inode, category.name, category.id);
+				}
+			}));
+
+			return result
+		},
+		getStatusIconClass: function(item) {
+			return tools.getIconClass(item._isFavorite ? 'delete' : 'star', 24);
+		},
+		getStatusIconTooltip: lang.hitch(this, function(item) {
+			if (item._isFavorite) {
+				return _('Remove from favorites');
+			} else {
+				return _('Add to favorites');
+			}
+		}),
+		getItemDescription: function(item) {
+			return item.description;
+		}
+	});
 
 	var _App = declare([ Evented ], {
 		start: function(/*Object*/ props) {
@@ -208,12 +426,6 @@ define([
 					moduleFlavor: module.flavor,
 					moduleID: module.id,
 					description: module.description
-					//items: [ new module.BaseClass() ],
-					//layout: 'fit',
-					//closable: true,
-					//autoScroll: true
-					//autoWidth: true,
-					//autoHeight: true
 				}, props);
 				var tab = new module.BaseClass(params);
 				this._tabContainer.addChild(tab);
@@ -257,12 +469,7 @@ define([
 		},
 
 		_moduleStore: null,
-		_categories: [{
-			// default category for favorites
-			id: '$favorites$',
-			name: _('Favorites'),
-			priority: 100
-		}],
+		_categories: [],
 		_modulesLoaded: false,
 		loadModules: function() {
 			// make sure that we don't load the modules twice
@@ -350,24 +557,13 @@ define([
 				});
 
 				// get all modules
-				array.forEach(_modules, lang.hitch(this, function(module, i) {
-					// try to load the module
-					try {
-						require(['umc/modules/' + module.id], lang.hitch(this, function(baseClass) {
-							if (typeof baseClass == "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
-								// add module config class to internal list of available modules
-								modules.push(lang.mixin({
-									BaseClass: baseClass,
-									_orgIndex: i  // save the element's original index
-								}, module));
-							}
-							incDeps(module.name);
-						}));
-					} catch (err) {
+				array.forEach(_modules, lang.hitch(this, function(imod, i) {
+					this._tryLoadingModule(imod, i).then(lang.hitch(this, function(loadedModule) {
+						modules.push(loadedModule);
+						incDeps(imod.name);
+					}), function() {
 						console.log('Error loading module ' + module.id + ':', err);
-					}
-
-					// return deferred that fires when all dependencies are loaded
+					});
 				}));
 
 				// resolve the deferred object directly if there are no modules available
@@ -377,18 +573,8 @@ define([
 
 				return modulesLoaded;
 			})).then(lang.hitch(this, function() {
-				// sort the internal list of modules
-				modules.sort(_cmp);
-
-				// create a store for the module items
-				array.forEach(modules, function(item) {
-					// we need a uniqe ID for the store
-					item.$id$ = item.id + ':' + item.flavor;
-				});
-				this._moduleStore = new Observable(new Memory({
-					data: modules,
-					idProperty: '$id$'
-				}));
+				this._moduleStore = this._createModuleStore(modules);
+				this._pruneEmptyCategories();
 
 				// make sure that we do not overwrite an explicitely stated value of 'overview'
 				if (getQuery('overview') === undefined) {
@@ -420,6 +606,68 @@ define([
 					require(['umc/piwik'], function() {});
 				}
 			});
+		},
+
+		_populateFavoriteCategory: function() {
+			var favoritesStr = _userPreferences.favorites || _ucr['umc/web/favorites/default'] || '';
+			array.forEach(lang.trim(favoritesStr).split(/\s*,\s*/), function(ientry) {
+				this.addFavoriteModule.apply(this, ientry.split(':'));
+			}, this);
+		},
+
+		_tryLoadingModule: function(_module, i) {
+			var deferred = new Deferred();
+			try {
+				require(['umc/modules/' + _module.id], lang.hitch(this, function(baseClass) {
+					var module = _module;
+					if (typeof baseClass == "function" && tools.inheritsFrom(baseClass.prototype, 'umc.widgets._ModuleMixin')) {
+						// add module config class to internal list of available modules
+						module = lang.mixin({
+							BaseClass: baseClass,
+							_orgIndex: i  // save the element's original index
+						}, _module);
+					}
+					deferred.resolve(module);
+				}));
+			} catch (err) {
+				deferred.cancel();
+			}
+			return deferred;
+		},
+
+		_createModuleStore: function(modules) {
+			// sort the internal list of modules
+			modules.sort(_cmp);
+
+			// prune modules that cannot be loade
+			modules = array.filter(modules, function(imod) {
+				return Boolean(imod.BaseClass);
+			});
+
+			// create a store for the module items
+			array.forEach(modules, function(item) {
+				// we need a uniqe ID for the store
+				item.$id$ = item.id + ':' + item.flavor;
+				item.$firstCategory$ = '' + item.categories[0];
+				item.$firstCategoryPriority$ = this.getCategory(item.categories[0]).priority;
+			}, this);
+			return new Observable(new Memory({
+				data: modules,
+				idProperty: '$id$'
+			}));
+		},
+
+		_pruneEmptyCategories: function() {
+			var nonEmptyCategories = {};
+			this._moduleStore.query().forEach(function(imod) {
+				array.forEach(imod.categories, function(icat) {
+					nonEmptyCategories[icat] = true;
+				});
+			});
+			var categories = array.filter(this._categories, function(icat) {
+				return nonEmptyCategories[icat.id] === true;
+			});
+			this._categories = categories;
 		},
 
 		getModules: function(/*String?*/ category) {
@@ -498,13 +746,7 @@ define([
 
 			// get all favorite modules
 			var modules = this._moduleStore.query({
-				categories: {
-					test: function(categories) {
-						return array.indexOf(categories, '$favorites$') >= 0;
-					}
-				}
-//			}, {
-//				sort: _cmpFavorites
+				_isFavorite: true
 			});
 			tools.forIn(this._favorites_for_not_existing_modules, function(ikey, ivalue) {
 				modules.push(ivalue);
@@ -522,11 +764,11 @@ define([
 
 		_favoriteIdx: 0,
 		addFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
-			if (this.getModule(id, flavor, '$favorites$')) {
+			var mod = this.getModule(id, flavor);
+			if (mod && mod._isFavorite) {
 				// module has already been added to the favorites
 				return;
 			}
-			var mod = this.getModule(id, flavor);
 			if (!mod) {
 				// module does not exist (on this server), we add a dummy module
 				var $id$ = id + ':' + flavor;
@@ -541,8 +783,9 @@ define([
 			}
 
 			// add a module clone for favorite category
-			mod.categories.push('$favorites$');
+			//mod.categories.push('$favorites$');
 			mod._favoritePos = this._favoriteIdx;
+			mod._isFavorite = true;
 			this._favoriteIdx++;
 			this._moduleStore.put(mod);
 
@@ -551,18 +794,19 @@ define([
 		},
 
 		removeFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
-			var mod = this.getModule(id, flavor, '$favorites$');
+			var mod = this.getModule(id, flavor);
 			if (!mod) {
 				// module is not part of the favorites
 				delete this._favorites_for_not_existing_modules[id + ':' + flavor];
 				return;
 			}
+			if (!mod._isFavorite) {
+				// module is not a favorite
+				return;
+			}
 
 			// remove favorites category
-			var idx = array.indexOf(mod.categories, '$favorites$');
-			if (idx >= 0) {
-				mod.categories.splice(idx, 1);
-			}
+			mod._isFavorite = false;
 			this._moduleStore.put(mod);
 
 			// save settings
@@ -611,16 +855,11 @@ define([
 				//     -> This could probably be fixed by calling layout() after adding a new tab!
 				this._overviewPage = new Page({
 					title: _('umcOverviewTabTitle'),
-					headerText: _('umcOverviewHeader'),
+					//headerText: _('umcOverviewHeader'),
 					iconClass: tools.getIconClass('univention'),
-					helpText: _('umcOverviewHelpText')
+					//helpText: _('umcOverviewHelpText'),
+					'class': 'umcAppCenter umcPage'
 				});
-
-				// prepare the widget displaying all categories
-				this._categoriesContainer = new TouchScrollContainerWidget({
-					scrollable: true
-				});
-				this._overviewPage.addChild(this._categoriesContainer);
 				this._tabContainer.addChild(this._overviewPage);
 
 				// check validity of SSL certificates
@@ -704,105 +943,26 @@ define([
 					);
 				}
 
-				// helper function for rendering a category
-				var _renderCategory = function(icat) {
-					// ignore empty categories
-					var modules = this.getModules(icat.id);
-					if (0 === modules.length) {
-						return;
-					}
+				this._populateFavoriteCategory();
 
-					// create a new category for all modules in the given category
-					var titlepane = new TitlePane({
-						title: icat.name,
-						open: true //('favorites' == icat.id)
-					});
-					var gallery = new GalleryPane({
-						baseClass: !this._favoritesEnabled ? null : (icat.id == '$favorites$') ? 'umcOverviewFavorites' : 'umcOverviewCategory',
-						store: this._moduleStore,
-						categoriesDisplayed: false,
-						getStatusIconClass: function(item) {
-							if (icat.id === '$favorites$') {
-								return null;
-							} else if (array.indexOf(item.categories, '$favorites$') >= 0) {
-								return tools.getIconClass('star', 24);
-							}
-							return '';
-						},
-						getStatusIconTooltip: lang.hitch(this, function(item) {
-							if (this._favoritesEnabled) {
-								if (icat.id === '$favorites$') {
-									return null;
-								} else if (array.indexOf(item.categories, '$favorites$') >= 0) {
-									return _('Remove from favorites');
-								} else {
-									return _('Add to favorites');
-								}
-							}
-						}),
-						query: {
-							categories: {
-								test: function(categories) {
-									return array.indexOf(categories, icat.id) >= 0;
-								}
-							}
-						},
-						queryOptions: {
-							sort: icat.id == '$favorites$' ? _cmpFavorites : _cmp
-						}
-					});
-					titlepane.addChild(gallery);
+				// add search widget
+				this._searchWidget = new _SearchWidget({
+					style: 'width:150px',
+					region: 'left'
+				});
+				this._overviewPage.addChild(this._searchWidget);
+				this._searchWidget.set('categories', this.getCategories());
 
-					if (this._favoritesEnabled) {
-						// register to requests for adding a module to the favorites
-						gallery.on('.umcGalleryStatusIcon:click', lang.hitch(this, function(evt) {
-							// prevent event bubbling
-							evt.stopImmediatePropagation();
-
-							var item = gallery.row(evt).data;
-							if (array.indexOf(item.categories, '$favorites$') >= 0) {
-								// for the favorite category, remove the moduel from the favorites
-								this.removeFavoriteModule(item.id, item.flavor);
-								topic.publish('/umc/actions', 'overview', 'favorites', item.id, item.flavor, 'remove');
-							}
-							else {
-								// for any other category, add the module to the favorites
-								this.addFavoriteModule(item.id, item.flavor);
-								topic.publish('/umc/actions', 'overview', 'favorites', item.id, item.flavor, 'add');
-							}
-
-							// hide any tooltip
-							setTimeout(function() {
-								Tooltip._masterTT && Tooltip._masterTT.fadeOut.play();
-							}, 10);
-						}));
-					}
-
-					// register to requests for opening a module
-					gallery.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
-						var item = gallery.row(evt).data;
-						this.openModule(gallery.row(evt).data);
-					}));
-
-					// add category to overview page
-					this._categoriesContainer.addChild(titlepane);
-				};
-
-				if (this._moduleStore.query().length > 4) {
-					// handle favorites category... query user preferences and
-					// use as fallback the corresponding UCR variable...
-					var favoritesStr = _userPreferences.favorites || _ucr['umc/web/favorites/default'] || '';
-					array.forEach(lang.trim(favoritesStr).split(/\s*,\s*/), function(ientry) {
-						this.addFavoriteModule.apply(this, ientry.split(':'));
-					}, this);
-				}
-				else {
-					// disable favorites for modules <= 4 completely
-					this._favoritesEnabled = false;
-				}
-
-				// render all standard categories
-				array.forEach(this.getCategories(), lang.hitch(this, _renderCategory));
+				this._grid = new _OverviewPane({
+					categories: this.getCategories(),
+					baseClass: 'umcOverviewCategory',
+					style: 'height:auto;width:auto;',
+					store: this._moduleStore,
+					region: 'center'
+				});
+				this._overviewPage.addChild(this._grid);
+ 				this._registerGridEvents();
+				this._updateQuery();
 			}
 
 			// add the TabContainer to the main BorderContainer
@@ -816,6 +976,84 @@ define([
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
+			window.setTimeout(lang.hitch(this._searchWidget, 'focus', 0));
+		},
+
+		_registerGridEvents: function() {
+			this._searchWidget.on('search', lang.hitch(this, '_updateQuery'));
+
+			this._grid.on('.umcGalleryStatusIcon:click', lang.hitch(this, function(evt) {
+				// prevent event bubbling
+				evt.stopImmediatePropagation();
+
+				var item = this._grid.row(evt).data;
+				if (item._isFavorite) {
+					// for the favorite category, remove the moduel from the favorites
+					this.removeFavoriteModule(item.id, item.flavor);
+					topic.publish('/umc/actions', 'overview', 'favorites', item.id, item.flavor, 'remove');
+				}
+				else {
+					// for any other category, add the module to the favorites
+					this.addFavoriteModule(item.id, item.flavor);
+					topic.publish('/umc/actions', 'overview', 'favorites', item.id, item.flavor, 'add');
+				}
+
+				// hide any tooltip
+				setTimeout(function() {
+					Tooltip._masterTT && Tooltip._masterTT.fadeOut.play();
+				}, 10);
+			}));
+
+			this._grid.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
+				var item = this._grid.row(evt).data;
+				this.openModule(this._grid.row(evt).data);
+			}));
+
+		},
+
+		_updateQuery: function() {
+
+			// option for querying for the search pattern
+			var query = {};
+			var searchPattern = lang.trim(this._searchWidget.get('value'));
+			if (searchPattern) {
+				// sanitize the search pattern
+				searchPattern = regexp.escapeString(searchPattern);
+				searchPattern = searchPattern.replace(/\\\*/g, '.*');
+				searchPattern = searchPattern.replace(/ /g, '\\s+');
+
+				// build together the search function
+				var regex  = new RegExp(searchPattern, 'i');
+				query.name = {
+					test: function(value, obj) {
+						var string = lang.replace(
+							'{name} {description} {categories}', {
+								name: obj.name,
+								description: obj.description,
+								categories: obj.categories.join(' ')
+							});
+						return regex.test(string);
+					}
+				};
+			}
+
+			// option for querying for the correct category
+			var category = this._searchWidget.get('category');
+			if (category.id == '$favorites$') {
+				// search in virtual category "favorites"
+				query._isFavorite = true;
+			}
+			else if (category.id != '$all$') {
+				query.categories = {
+					test: function(categories) {
+						return (array.indexOf(categories, category.id) >= 0);
+					}
+				};
+			}
+
+			// set query options and refresh grid
+			this._grid.set('query', query);
+			//this._grid.refresh();
 		},
 
 		_setupStaticGui: false,
@@ -981,14 +1219,6 @@ define([
 					tools.preferences('tooltips', this.checked);
 				}
 			}));
-			/*this._settingsMenu.addChild(new CheckedMenuItem({
-				label: _('Confirmations'),
-				checked: true,
-				checked: tools.preferences('confirm'),
-				onClick: function() {
-					tools.preferences('confirm', this.checked);
-				}
-			}));*/
 			this._settingsMenu.addChild(new CheckedMenuItem({
 				label: _('Module help description'),
 				checked: tools.preferences('moduleHelpText'),

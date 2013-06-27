@@ -60,7 +60,7 @@ define([
 
 		// headerText: String
 		//		Text that will be displayed as header title.
-		headerText: '&lt;Title missing&gt;',
+		headerText: null,
 
 		// footer: Object[]?
 		//		Optional array of dicts that describes buttons that shall be added
@@ -110,14 +110,20 @@ define([
 		},
 
 		_setHeaderTextAttr: function(newVal) {
-			this.headerText = newVal;
+			console.log('_setHeaderTextAttr:', newVal);
 			if (this._headerTextPane) {
+				// hide header if empty string
+				style.set(this._headerTextPane.domNode, {
+					display: newVal ? 'block' : 'none'
+				});
 				this._headerTextPane.set('content', '<h1>' + newVal + '</h1>');
 				this.layout();
 			}
+			this._set('headerText', newVal);
 		},
 
 		postMixInProperties: function() {
+			console.log('postMixInProperties');
 			this.inherited(arguments);
 
 			// remove title from the attributeMap
@@ -125,18 +131,20 @@ define([
 
 			// initiate array for notes
 			this._notes = [];
+			console.log('postMixInProperties done');
 		},
 
 		buildRendering: function() {
+			console.log('buildRendering');
 			this.inherited(arguments);
 
 			// add the header
 			this._headerTextPane = new Text({
-				content: '<h1>' + this.headerText + '</h1>',
 				region: 'top',
 				'class': 'umcPageHeader'
 			});
 			this.addChild(this._headerTextPane);
+			this.set('headerText', this.headerText);
 
 			if (tools.preferences('moduleHelpText') && this.helpText) {
 				// display the module helpText
@@ -174,6 +182,7 @@ define([
 					this._footerButtons = buttons;
 				}
 			}
+			console.log('buildRendering done');
 		},
 
 		postCreate: function() {
