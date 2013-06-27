@@ -26,6 +26,9 @@ partitioning} (\ucsBug{24051}).
 
 \item Some deprecated code blocks have been removed (\ucsBug{31825}).
 
+\item The query for the windos domain name in the basic settings has been
+removed for non DC master systems (\ucsBug{24442}).
+
 \end{itemize}
 
 %%\subsection{Profile-based installation}
@@ -107,9 +110,13 @@ This issue has been fixed (\ucsBug{31170}).
 \item The password used by the listener to access the LDAP directory is no longer shown in the logfile (\ucsBug{31053}).
 \end{itemize}
 
-%\subsection{Domain joins of UCS systems}
-%\begin{itemize}
-%\end{itemize}
+\subsection{Domain joins of UCS systems}
+\begin{itemize}
+
+\item The \ucsUCRV{windows/domain} is now set in \ucsName{univention-join} to
+the value of \ucsCommand{windows/domain} on the DC master (\ucsBug{24442}).
+
+\end{itemize}
 
 
 \section{Univention Management Console}
@@ -220,6 +227,10 @@ uninstalling and updating univention-system-setup-boot (\ucsBug{31385} \ucsBug{3
 \ucsName{univention-system-setup-boot} failed. This could prevent a
 role switch when configuring the system in appliance setup (\ucsBug{30896}).
 \item Disabled Firefox update popups during appliance setup (\ucsBug{30980}).
+
+\item The windows domain name is no longer queried (or displayed) in the basic
+settings on non  DC master systems (\ucsBug{24442}).
+
 \end{itemize}
 
 \subsubsection{Users module}
@@ -551,6 +562,8 @@ in the \ucsUCRV{server/password/change} since the last password change
  to a non running winbind daemon after the server password change. This issue has been fixed
  (\ucsBug{31289}).
 \item The file \ucsFile{/etc/samba/shares.conf} is now refreshed directly after changing a share (\ucsBug{29399}).
+\item The configuration of the \ucsUCRV{windows/domain} has been removed from
+the postinst script of \ucsName{univention-samba} (\ucsBug{24442}).
 \end{itemize}
 
 \subsection{Samba 4}
