@@ -1,3 +1,11 @@
+ucs-test (4.0.40-1) unstable; urgency=low
+
+  * added test case to verify that creating minimal objects of all computer
+  	roles is possible
+  (Bug #31659)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 27 Jun 2013 17:39:04 +0200
+
 ucs-test (4.0.39-1) unstable; urgency=low
 
   * added function "random_int()" to strings.py. Despite it's name, it will

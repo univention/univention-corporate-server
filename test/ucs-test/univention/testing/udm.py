@@ -79,8 +79,21 @@ class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 
 
 
+
+
 class UCSTestUDM(object):
 	PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
+	COMPUTER_MODULES = ('ubuntu',
+						'linux',
+						'windows',
+						'windows_domaincontroller',
+						'domaincontroller_master',
+						'domaincontroller_backup',
+						'domaincontroller_slave',
+						'memberserver',
+						'macos',
+						'ipmanagedclient')
+
 
 	def __init__(self):
 		self.ucr = univention.testing.ucr.UCSTestConfigRegistry()
