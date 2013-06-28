@@ -32,8 +32,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/aspect",
 	"dojo/when",
 	"dojo/Deferred",
+	"umc/app",
 	"umc/store",
 	"umc/widgets/Module",
 	"umc/widgets/TabContainer",
@@ -42,7 +44,33 @@ define([
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter" // not needed atm
-], function(declare, lang, array, when, Deferred, store, Module, TabContainer, AppCenterPage, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, aspect, when, Deferred, UMCApplication, store, Module, TabContainer, AppCenterPage, PackagesPage, SettingsPage, DetailsPage, _) {
+
+	// TODO: ugly workaround for making the app center module unique
+	//   (no two modules open at the same time). See Bug #31662.
+	//   Maybe put generically in umc/app.js and state only unique: true here?
+	aspect.before(UMCApplication, 'openModule', function(module, flavor, props) {
+		var module_id = 'appcenter';
+		if (typeof(module) == 'string') {
+			module = this.getModule(module, flavor);
+		}
+		if (module && module.id != module_id) {
+			// default behaviour for all modules except this one
+			return arguments;
+		}
+		// check whether such a module has already been opened
+		var sameModules = array.filter(UMCApplication._tabContainer.getChildren(), function(i) {
+			return i.moduleID == module_id;
+		});
+		if (!sameModules.length) {
+			// module is not open yet, open it
+			return arguments;
+		} else {
+			UMCApplication.focusTab(sameModules[0]);
+			return [];
+		}
+	});
+
 	return declare("umc.modules.appcenter", [ Module ], {
 
 		idProperty: 'package',

@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (2.0.139-14) unstable; urgency=low
+
+  * Bug #31354: Do not check hardware requirements when upgrading an app.
+  * Bug #31662: Do not allow a second App Center module opened in UMC.
+  * Bug #31625: Add a link to the campaign "Vote for app!"
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 28 Jun 2013 14:35:55 +0200
+
 univention-management-console-module-appcenter (2.0.139-13) unstable; urgency=low
 
   * Bug #31382: If another app is being installed show an error message to the

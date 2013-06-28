@@ -31,8 +31,10 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/kernel",
 	"dojo/_base/array",
 	"dojo/when",
+	"dojo/dom-construct",
 	"dojo/query",
 	"dojo/dom-class",
 	"dojo/store/Memory",
@@ -57,7 +59,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, when, query, domClass, Memory, topic, regexp, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
+], function(declare, lang, kernel, array, when, domConstruct, query, domClass, Memory, topic, regexp, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
 
 	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
 
@@ -170,6 +172,21 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+
+			var locale = kernel.locale.slice( 0, 2 ).toLowerCase();
+			var href = 'https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/';
+			if (locale == 'de') {
+				href = 'https://www.univention.de/produkte/ucs/app-katalog/vote-for-app/';
+			}
+			var footerRight = this._footer.getChildren()[1];
+			var voteForAppAnchor = domConstruct.create('a', {
+				href: href,
+				target: '_blank',
+				style: {color: '#414142'},
+				title: _('Let us know, if you you miss any application in Univention App Center!'),
+				innerHTML: _('Suggest new app')
+			});
+			domConstruct.place(voteForAppAnchor, footerRight.domNode);
 
 			this._progressBar = new ProgressBar();
 			this.own(this._progressBar);
