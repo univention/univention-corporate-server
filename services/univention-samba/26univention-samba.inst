@@ -188,14 +188,15 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	machine_secret="$(cat /etc/machine.secret)"
 	# Join against the global workgroup
 	if $JOIN_CMD -U${samba_account}%${samba_pwd} machinepass="$machine_secret"; then
-		:
+		univention-config-registry set windows/wins-support?no
 	# try to join directly against the DC master
 	elif $JOIN_CMD -U${samba_account}%${samba_pwd} -S${ldap_master} machinepass="$machine_secret"; then
+		univention-config-registry set windows/wins-support?no
 		#The join against the ldap_master was successful, set him as wins server
 		univention-config-registry set windows/wins-server?"${ldap_master}"
 	# try to join against localhost
 	elif $JOIN_CMD -U${samba_account}%${samba_pwd} -Slocalhost machinepass="$machine_secret"; then
-		:
+		univention-config-registry set windows/wins-support=yes
 	else
 		echo "ERROR: Failed to join via $JOIN_CMD. Please check your Samba DCs and your DNS and WINS configuration."
 		exit 1

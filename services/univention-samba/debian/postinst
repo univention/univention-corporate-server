@@ -100,15 +100,6 @@ if [ "$1" = "configure" ]; then
 	if [ -z "$2" ]; then
 		# only set this for new installations
 		univention-config-registry set samba/autostart="no"
-
-		if [ "$server_role" = "domaincontroller_master" ]; then
-			univention-config-registry set windows/wins-support=yes
-		else
-			univention-config-registry set windows/wins-support?no
-			if [ -n "$ldap_master" ]; then
-				univention-config-registry set windows/wins-server?$ldap_master
-			fi
-		fi
 	fi
 fi
 

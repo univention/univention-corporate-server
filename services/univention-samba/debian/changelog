@@ -1,3 +1,10 @@
+univention-samba (8.0.1-1) unstable; urgency=low
+
+  * The UCR variables windows/wins-server and windows/wins-support
+    are now set in the Samba joinscript (Bug #31814)
+
+ -- Tobias Peters <peters@univention.de>  , 28 Fri 2013 10:01:40 +0200
+
 univention-samba (8.0.0-1) unstable; urgency=low
 
   * removed setting of windows/domain in postinst and
