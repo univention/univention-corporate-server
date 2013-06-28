@@ -242,7 +242,7 @@
 
 .dj_gecko .umc .dijitTextBox .dijitInputInner,
 .dj_webkit .umc .dijitTextBox .dijitInputInner {
-  padding: 4px 3px 3px;
+  padding: 4px 3px 3px !important;
 }
 
 .dj_gecko .umc .umcComboBox .dijitInputInner,
@@ -2364,12 +2364,10 @@ p {
 	border-bottom: 1px solid #b5bcc7;
 	padding-bottom: 5px;
 	margin-bottom: 5px;
-	margin-top: 5px;
 	font-size: 14px;
 }
 .umcGalleryHeaderModules {
 	clear: left;
-	margin-top: 15px;
 }
 
 .umcOverviewCategory {
@@ -2390,6 +2388,25 @@ p {
 		}
 	}
 }
+
+.dijitTextBox {
+	.umcInlineLabel {
+		visibility: hidden;
+		position: absolute;
+		top: 5px;
+		left: 5px;
+		color: gray;
+	}
+
+	.umcInlineLabel.umcEmptyValue {
+		visibility: visible;
+	}
+}
+
+.dijitTextBox.dijitFocused .umcInlineLabel {
+	color: lightGray;
+}
+
 
 /* App Center */
 .dgrid.umcAppCenter,

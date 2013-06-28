@@ -57,13 +57,11 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var widthContainer = new ContainerWidget();
 			this._searchTextBox = new TextBox({
-				label: _("Search term"),
+				inlineLabel: _('Search term'),
 				style: 'width: 135px;'
 			});
-			widthContainer.addChild(this._searchTextBox);
-			this.addChild(widthContainer);
+			this.addChild(this._searchTextBox);
 
 			this._categoryContainer = new ContainerWidget({});
 			this.addChild(this._categoryContainer);

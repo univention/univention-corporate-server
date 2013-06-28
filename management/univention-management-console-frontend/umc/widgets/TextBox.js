@@ -31,11 +31,12 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"put-selector/put",
 	"dojo/when",
 	"dijit/form/ValidationTextBox",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/tools"
-], function(declare, lang, when, ValidationTextBox, _FormWidgetMixin, tools) {
+], function(declare, lang, put, when, ValidationTextBox, _FormWidgetMixin, tools) {
 	return declare("umc.widgets.TextBox", [ ValidationTextBox, _FormWidgetMixin ], {
 		// the widget's class name as CSS class
 		'class': 'umcTextBox',
@@ -56,6 +57,26 @@ define([
 		//		etc., it can be necessary to specify a module specific umcpCommand
 		//		method.
 		umcpCommand: tools.umcpCommand,
+
+		// inlineLabel: String
+		//		If specified, the given string ias positioned as label above the input field.
+		inlineLabel: null,
+		_inlineLabelNode: null,
+
+		postCreate: function() {
+			this.inherited(arguments);
+			if (this.inlineLabel) {
+				this._inlineLabelNode = put(this.focusNode, '-span.umcInlineLabel', this.inlineLabel);
+				this._updateInlineLabel();
+				this.on('keyup', lang.hitch(this, '_updateInlineLabel'));
+				this.on('focus', lang.hitch(this, '_updateInlineLabel'));
+				this.on('blur', lang.hitch(this, '_updateInlineLabel'));
+			}
+		},
+
+		_updateInlineLabel: function() {
+			put(this._inlineLabelNode, this.get('value') ? '!umcEmptyValue' : '.umcEmptyValue');
+		},
 
 		//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,
 		//       and the check for all met dependencies should be done in the Form
