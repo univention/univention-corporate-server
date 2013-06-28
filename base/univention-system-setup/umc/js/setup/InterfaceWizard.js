@@ -372,9 +372,9 @@ define([
 						name: 'bond_primary',
 						label: _('Bond primary'),
 						type: MultiInput,
-						depends: ['bond_slaves'],
 						subtypes: [{
 							type: ComboBox,
+							depends: ['bond_slaves'],
 							dynamicValues: lang.hitch(this, function(vals) {
 								return vals['bond_slaves'];
 							})
@@ -476,13 +476,11 @@ define([
 
 		setValues: function(values) {
 			// set values and trigger onChange event
-			tools.forIn(this._pages, function(pagename, ipage) {
-				tools.forIn(values, function(iname, ivalue) {
-					if (ipage._form._widgets[iname]) {
-						ipage._form._widgets[iname].set('value', ivalue);
-						ipage._form._widgets[iname]._set('value', ivalue); // FIXME: how to trigger onChange events // required?
-					}
-				}, this);
+			tools.forIn(values, function(iname, ivalue) {
+				var iwidget = this.getWidget(iname);
+				if (iwidget) {
+					iwidget.set('value', ivalue);
+				}
 			}, this);
 		},
 

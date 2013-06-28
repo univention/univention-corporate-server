@@ -191,6 +191,14 @@ define([
 						}
 						var filtered = {}; tools.forIn(iiface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
 						this._cachedInterfaces[iiface.name] = lang.clone(filtered);
+
+						iiface.ip4 = []
+						iiface.ip6 = []
+						iiface.ip4dynamic = False;
+						iiface.ip6dynamic = False;
+						setTimeout(lang.hitch(this, function() {
+							this.moduleStore.put(iiface);
+						}), 0);
 					}));
 				}
 			} else {
