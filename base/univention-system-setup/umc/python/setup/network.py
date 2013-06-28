@@ -625,7 +625,11 @@ class Bond(Device):
 
 	def validate_bond_mode(self):
 		if self.bond_mode is not None:
-			if self.bond_mode not in self.modes_r or self.bond_mode not in self.modes:
+			try:
+				bond_mode = int(self.bond_mode)
+				if bond_mode not in self.modes_r and bond_mode not in self.modes:
+					raise ValueError
+			except ValueError:
 				raise DeviceError(_('Invalid bond-mode %r') % (self.bond_mode), self.name)
 
 	@property

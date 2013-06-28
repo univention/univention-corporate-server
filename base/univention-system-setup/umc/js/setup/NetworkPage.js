@@ -86,13 +86,6 @@ define([
 				type: TextBox,
 				name: 'interfaces/primary',
 				label: _('primary network device')
-//				depends: ['interfaces', 'gateway']
-//				dynamicValues: lang.hitch(this, function(values) {
-//					// The primary interface can be of any type
-//					return array.map(values.interfaces, function(iface) {
-//						return {id: iface.name, label: iface.name};
-//					});
-//				})
 			}, {
 				type: TextBox,
 				name: 'gateway',
@@ -279,13 +272,14 @@ define([
 
 			var vals = this._form.get('value');
 
-			var network_summary = '';
+			var network_summary = '<ul>';
 			array.forEach(vals.interfaces, function(iface) {
-				var summary = iface.getSummary();
-				if (summary) {
-					network_summary += summary + '<br>';
-				}
+				network_summary += '<li>';
+				network_summary += iface.name + ': ';
+				network_summary += iface.getSummary();
+				network_summary += '</li>';
 			});
+			network_summary += '</ul>';
 
 			// create a verbose list of all settings
 			return [{

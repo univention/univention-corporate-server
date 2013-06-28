@@ -479,7 +479,11 @@ define([
 			tools.forIn(values, function(iname, ivalue) {
 				var iwidget = this.getWidget(iname);
 				if (iwidget) {
-					iwidget.set('value', ivalue);
+					if (iwidget.setInitialValue) {
+						iwidget.setInitialValue(ivalue);
+					} else {
+						iwidget.set('value', ivalue);
+					}
 				}
 			}, this);
 		},

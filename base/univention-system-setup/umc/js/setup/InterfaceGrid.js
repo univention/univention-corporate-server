@@ -194,8 +194,8 @@ define([
 
 						iiface.ip4 = []
 						iiface.ip6 = []
-						iiface.ip4dynamic = False;
-						iiface.ip6dynamic = False;
+						iiface.ip4dynamic = false;
+						iiface.ip6dynamic = false;
 						setTimeout(lang.hitch(this, function() {
 							this.moduleStore.put(iiface);
 						}), 0);

@@ -136,9 +136,9 @@ define([
 		getSummary: function() {
 			var description = this.getConfigurationDescription();
 			if (description) {
-				return this.name + ': <br><ul><li>' + description.replace(/<br>/g, '</li><li>') + '</li></ul>';
+				return description;
 			}
-			return '';
+			return _('Unconfigured');
 		}
 	});
 	self.Device = Device;
