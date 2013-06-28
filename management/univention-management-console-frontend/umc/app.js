@@ -39,7 +39,6 @@ define([
 	"dojo/on",
 	"dojo/aspect",
 	"dojo/has",
-	"dojo/regexp",
 	"dojo/Evented",
 	"dojo/Deferred",
 	"dojo/promise/all",
@@ -80,7 +79,7 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, regexp, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, help, about, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, help, about, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -835,12 +834,23 @@ define([
 					region: 'left'
 				});
 				this._overviewPage.addChild(this._searchSidebar);
-				this._searchSidebar.set('categories', this.getCategories());
 
+				// set the categories
+				var categories = this.getCategories();
+				categories.unshift({
+					label: _('All'),
+					id: '$all$'
+				});
+				categories.unshift({
+					label: _('Favorites'),
+					id: '$favorites$'
+				});
+				this._searchSidebar.set('categories', this.getCategories());
+				this._searchSidebar.set('allCategory', categories[1]);
+
+				// add the grid
 				this._grid = new _OverviewPane({
 					categories: this.getCategories(),
-					baseClass: 'umcOverviewCategory',
-					style: 'height:auto;width:auto;',
 					store: this._moduleStore,
 					region: 'center'
 				});
@@ -903,24 +913,7 @@ define([
 			var query = {};
 			var searchPattern = lang.trim(this._searchSidebar.get('value'));
 			if (searchPattern) {
-				// sanitize the search pattern
-				searchPattern = regexp.escapeString(searchPattern);
-				searchPattern = searchPattern.replace(/\\\*/g, '.*');
-				searchPattern = searchPattern.replace(/ /g, '\\s+');
-
-				// build together the search function
-				var regex  = new RegExp(searchPattern, 'i');
-				query.name = {
-					test: function(value, obj) {
-						var string = lang.replace(
-							'{name} {description} {categories}', {
-								name: obj.name,
-								description: obj.description,
-								categories: obj.categories.join(' ')
-							});
-						return regex.test(string);
-					}
-				};
+				query.name = this._searchSidebar.getSearchQuery(searchPattern);
 			}
 
 			// only show modules with valid BaseClass
@@ -946,7 +939,6 @@ define([
 
 			// set query options and refresh grid
 			this._grid.set('query', query);
-			//this._grid.refresh();
 		},
 
 		_setupStaticGui: false,

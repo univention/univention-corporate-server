@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.7-1) unstable; urgency=low
+
+  * [WIP] Bug #31699: merged App Center and overview page
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Jun 2013 19:44:42 +0200
+
 univention-management-console-frontend (3.0.6-1) unstable; urgency=low
 
   * [WIP] Bug #31699: added inline label to live search

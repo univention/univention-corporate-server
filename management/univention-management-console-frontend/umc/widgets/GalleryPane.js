@@ -49,11 +49,11 @@ define([
 ], function(declare, lang, array, query, domClass, domStyle, domConstruct, aspect, Destroyable,
 		tools, Tooltip, ContainerWidget, List, Selection, DijitRegistry, put, _) {
 	return declare("umc.widgets.GalleryPane", [ List, Selection, DijitRegistry, Destroyable ], {
-		baseClass: "",
-
 		style: "",
 
 		showTooltips: true,
+
+		baseClass: 'umcGalleryPane',
 
 		postCreate: function() {
 			this.inherited(arguments);
@@ -62,7 +62,6 @@ define([
 			this.domNode.setAttribute("widgetId", this.id);
 
 			// add specific DOM classes
-			domClass.add(this.domNode, 'umcGalleryPane');
 			if (this.baseClass) {
 				domClass.add(this.domNode, this.baseClass);
 			}
@@ -92,7 +91,7 @@ define([
 		},
 
 		getItemDescription: function(item) {
-			return item.categories.join(', ');
+			return item.description;
 		},
 
 		getCategoryString: function(item) {

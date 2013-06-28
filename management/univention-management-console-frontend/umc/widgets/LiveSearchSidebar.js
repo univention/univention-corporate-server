@@ -33,24 +33,34 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom-class",
+	"dojo/regexp",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/TextBox",
 	"umc/widgets/LabelPane",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app"
-], function(declare, lang, array, domClass, ContainerWidget, TextBox, LabelPane, Button, _) {
+], function(declare, lang, array, domClass, regexp, ContainerWidget, TextBox, LabelPane, Button, _) {
 	return declare("umc.widgets.LiveSearchSidebar", [ContainerWidget], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
 		//		This class is used in the UMC overview and the App Center.
 
-		// categories: Object[]
-		// 		Array of categories exposing at least the fields 'id' and 'label'.
+		// categories: Object[]|String[]
+		// 		Array of categories exposing at least the fields 'id' and 'label'
+		// 		or array of strings.
 		categories: null,
 
-		// category: Object
+		_categoriesAsIdLabelPairs: true,
+
+		// category: Object|String
 		//		Reference to the currently selected category
 		category: null,
+
+		// category: Object|String
+		//		Reference to the 'all' category
+		allCategory: null,
+
+		baseClass: 'umcLiveSearchSidebar',
 
 		style: 'overflow: auto;',
 
@@ -75,6 +85,14 @@ define([
 			}));
 		},
 
+		_getUniformCategory: function(category) {
+			if (typeof category == 'string') {
+				this._categoriesAsIdLabelPairs = false;
+				return { id: category, label: category };
+			}
+			return category;
+		},
+
 		_isInSearchMode: function() {
 			return Boolean(lang.trim(this.get('value')));
 		},
@@ -83,26 +101,20 @@ define([
 			return this._searchTextBox.get('value');
 		},
 
-		_getCategoryAll: function() {
-			var result = array.filter(this.get('categories'), function(icat) {
-				return icat && icat.id == '$all$';
-			});
-			if (result.length) {
-				return result[0];
-			}
-			return null;
-		},
-
 		_getCategoryAttr: function() {
-			if (this._isInSearchMode()) {
+			var category = this.category;
+			if (this._isInSearchMode() && this.allCategory) {
 				// in search mode, the current category is always the "all" category
-				return this._getCategoryAll();
+				category = this._getUniformCategory(this.allCategory);
 			}
-			return this.category;
+			if (!this._categoriesAsIdLabelPairs) {
+				return category.id;
+			}
+			return category;
 		},
 
-		_setCategoryAttr: function(category) {
-			this._set('category', category);
+		_setCategoryAttr: function(_category) {
+			this._set('category', this._getUniformCategory(_category));
 			this._updateCss();
 			this.onSearch();
 		},
@@ -114,24 +126,12 @@ define([
 			}));
 		},
 
-		_setCategoriesAttr: function(_categories) {
+		_setCategoriesAttr: function(categories) {
 			this._clearCategoryNodes();
 
-			// add new categories
-			var categories = lang.clone(_categories);
-
-			// add generic categories
-			categories.unshift({
-				label: _('All'),
-				id: '$all$'
-			});
-			categories.unshift({
-				label: _('Favorites'),
-				id: '$favorites$'
-			});
-
 			// add one node elements for each category
-			array.forEach(categories, lang.hitch(this, function(category) {
+			array.forEach(categories, lang.hitch(this, function(_category) {
+				var category = this._getUniformCategory(_category);
 				this._categoryContainer.addChild(new Button({
 					label: category.label,
 					_categoryID: category.id,
@@ -147,11 +147,33 @@ define([
 
 		_updateCss: function() {
 			var categories = this._categoryContainer.getChildren();
-			var currentCategory = this.get('category');
+			var currentCategory = this._getUniformCategory(this.get('category'));
 			array.forEach(categories, lang.hitch(this, function(ibutton) {
 				var isSelected = (currentCategory && currentCategory.id == ibutton._categoryID) || (!currentCategory && ibutton._categoryID == '$all$');
 				domClass.toggle(ibutton.domNode, 'umcCategorySelected', isSelected);
 			}));
+		},
+
+		getSearchQuery: function(searchPattern) {
+			// sanitize the search pattern
+			searchPattern = regexp.escapeString(searchPattern);
+			searchPattern = searchPattern.replace(/\\\*/g, '.*');
+			searchPattern = searchPattern.replace(/ /g, '\\s+');
+
+			// build together the search function
+			var regex  = new RegExp(searchPattern, 'i');
+			query = {
+				test: function(value, obj) {
+					var string = lang.replace(
+						'{name} {description} {categories}', {
+							name: obj.name,
+							description: obj.description,
+							categories: obj.categories.join(' ')
+						});
+					return regex.test(string);
+				}
+			};
+			return query;
 		},
 
 		focus: function() {

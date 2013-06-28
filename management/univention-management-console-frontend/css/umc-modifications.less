@@ -2284,32 +2284,40 @@ p {
 	background-image: none;
 }
 
-/* AppCenter */
-.umcAppCenter .umcButton {
-	display: block;
-}
-.umcAppCenter .umcButton .dijitButtonContents {
-	outline: none;
-}
-.umcAppCenter .umcButton .dijitButtonText {
-	text-decoration: none;
-	padding-left: 5px;
-	padding-right: 5px;
-}
-.umcAppCenter .umcButton.umcCategorySelected .dijitButtonText {
-	font-weight: bold;
-}
-.umcAppCenter .umcButton .dijitButtonNode {
-	text-align: left;
-	display: block;
-}
-.umcAppCenter .dijitButtonHover .dijitButtonNode {
-	text-shadow: none;
-}
-.umcAppCenter .dijitButtonHover .dijitButtonNode,
-.umcAppCenter .dijitButtonActive .dijitButtonNode {
-	background-color: #ededee;
-	border-radius: 5px;
+/* LiveSearchSidebar */
+.umcLiveSearchSidebar {
+	.umcButton {
+		display: block;
+
+		.dijitButtonContents {
+			outline: none;
+		}
+
+		.dijitButtonText {
+			text-decoration: none;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+
+		.dijitButtonNode {
+			text-align: left;
+			display: block;
+		}
+	}
+
+	.umcButton.umcCategorySelected .dijitButtonText {
+		font-weight: bold;
+	}
+
+	.dijitButtonHover .dijitButtonNode {
+		text-shadow: none;
+	}
+
+	.dijitButtonHover .dijitButtonNode,
+	.dijitButtonActive .dijitButtonNode {
+		background-color: #ededee;
+		border-radius: 5px;
+	}
 }
 
 /* GalleryPane */
@@ -2317,63 +2325,49 @@ p {
 	overflow: auto;
 	height: auto;
 	border: none;
-}
-.umcGalleryPane .umcGalleryItem {
-	position: relative;
-	height: 105px;
-	width: 90px;
-	padding: 15px;
-	margin: 0 20px 5px 0;
-	float: left;
-	outline: none;
-}
-.umcGalleryPane .umcGalleryItem:hover {
-	background-color: #ededee;
-	border-radius: 5px;
-	cursor: pointer;
-}
-.umcGalleryPane .umcGalleryItem .umcGalleryIcon {
-	margin: auto;
-	padding-bottom: 10px;
-}
-.umcGalleryPane .umcGalleryItem .umcGalleryStatusIcon {
-	position: absolute;
-	top: 5px;
-	right: 15px;
-	width: 24px;
-	height: 24px;
-}
-.umcGalleryPane .umcGalleryItem .umcGalleryName,
-.umcGalleryPane .umcGalleryItem .umcGalleryDescription {
-	text-align: center;
-}
-.umcGalleryPane .umcGalleryItem .umcGalleryDescription {
-	color: grey;
-}
-.umcGalleryPane.dgrid .dgrid-scroller {
-	//position: relative;
-	overflow: visible;
-	outline: none;
-	//margin: 0;
-}
-.umcGalleryPane .dgrid-selected {
-	background-color: inherit;
-}
-.umcGalleryHeaderModules, .umcGalleryHeaderFavoriteModules {
-	display: block;
-	border-bottom: 1px solid #b5bcc7;
-	padding-bottom: 5px;
-	margin-bottom: 5px;
-	font-size: 14px;
-}
-.umcGalleryHeaderModules {
-	clear: left;
+
+	.dgrid-scroller {
+		overflow: visible;
+		outline: none;
+	}
+
+	.dgrid-selected {
+		background-color: inherit;
+	}
 }
 
-.umcOverviewCategory {
+.umcGalleryPane {
+	.umcGalleryHeaderModules, .umcGalleryHeaderFavoriteModules {
+		display: block;
+		border-bottom: 1px solid #b5bcc7;
+		padding-bottom: 5px;
+		margin-bottom: 5px;
+		font-size: 14px;
+	}
+
+	.umcGalleryHeaderModules {
+		clear: left;
+	}
+
 	.umcGalleryItem {
+		position: relative;
+		padding: 15px;
+		margin: 0 20px 5px 0;
+		float: left;
+		outline: none;
 		height: 55px;
 		width: 305px;
+
+		.umcGalleryName,
+		.umcGalleryDescription {
+			text-align: left;
+			display: block;
+			padding-left: 60px;
+		}
+
+		.umcGalleryDescription {
+			color: grey;
+		}
 
 		.umcGalleryIcon {
 			margin: 0;
@@ -2381,14 +2375,35 @@ p {
 			position: absolute;
 		}
 
-		.umcGalleryName, .umcGalleryDescription {
-			text-align: left;
-			display: block;
-			padding-left: 60px;
+		.umcGalleryStatusIcon {
+			visibility: hidden;
+			position: absolute;
+			top: 5px;
+			right: 15px;
+			width: 24px;
+			height: 24px;
 		}
 	}
+
+	.umcGalleryItem:hover {
+		background-color: #ededee;
+		border-radius: 5px;
+		cursor: pointer;
+
+		.umcGalleryStatusIcon {
+			visibility: visible;
+			.opacity(0.4);
+		}
+
+		.umcGalleryStatusIcon:active {
+			visibility: visible;
+			.opacity(1);
+		}
+	}
+
 }
 
+/* TextBox - CSS for inline label */
 .dijitTextBox {
 	.umcInlineLabel {
 		visibility: hidden;
@@ -2406,25 +2421,4 @@ p {
 .dijitTextBox.dijitFocused .umcInlineLabel {
 	color: lightGray;
 }
-
-
-/* App Center */
-.dgrid.umcAppCenter,
-.digrd.umcOverviewCategory {
-	height: 100%;
-}
-
-.dgrid.umcAppCenter .umcGalleryItem,
-.dgrid.umcOverviewCategory .umcGalleryItem {
-	margin: 10px 10px 0 10px;
-}
-
-.dgrid.umcAppCenter .dgrid-scroller,
-.digrd.umcOverviewCategory .digrd-scroller {
-	/* fix scroll bars */
-	position: absolute;
-	overflow-x: auto;
-	overflow-y: scroll;
-}
-
 
