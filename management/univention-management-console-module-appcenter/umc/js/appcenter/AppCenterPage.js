@@ -39,7 +39,6 @@ define([
 	"dojo/dom-class",
 	"dojo/store/Memory",
 	"dojo/topic",
-	"dojo/regexp",
 	"dojo/Deferred",
 	"dojox/image/LightboxNano",
 	"umc/app",
@@ -50,7 +49,6 @@ define([
 	"umc/widgets/ProgressBar",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/TitlePane",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
@@ -58,97 +56,9 @@ define([
 	"umc/widgets/LabelPane",
 	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
+	"umc/widgets/LiveSearchSidebar",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, when, domConstruct, query, domClass, Memory, topic, regexp, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, ExpandingTitlePane, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, _) {
-
-	var _SearchWidget = declare("umc.modules.appcenter._SearchWidget", [ContainerWidget], {
-
-		category: null,
-
-		style: 'overflow: auto;',
-
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			var widthContainer = new ContainerWidget();
-			this._searchTextBox = new TextBox({
-				label: _("Search term"),
-				style: 'width: 135px;'
-			});
-			var searchLabel = new LabelPane({
-				content: this._searchTextBox
-			});
-			widthContainer.addChild(searchLabel);
-			this.addChild(widthContainer);
-
-			this._categoryContainer = new ContainerWidget({
-				label: _("Categories")
-			});
-			var categoryLabel = new LabelPane({
-				content: this._categoryContainer
-			});
-			this.addChild(categoryLabel);
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-			this._searchTextBox.on('keyup', lang.hitch(this, 'onSearch'));
-		},
-
-		_getValueAttr: function() {
-			return this._searchTextBox.get('value');
-		},
-
-		_getCategoryAttr: function() {
-			return this.category;
-		},
-
-		_setCategoriesAttr: function(categories) {
-			// remove all existing categories
-			array.forEach(this._categoryContainer.getChildren(), lang.hitch(this, function(category) {
-				this._categoryContainer.removeChild(category);
-				category.destroyRecursive();
-			}));
-
-			// add new categories
-			this._categoryContainer.addChild(new Button({
-				label: _('All'),
-				callback: lang.hitch(this, function() {
-					this.category = null;
-					this._updateCss();
-					this.onSearch();
-				})
-			}));
-			array.forEach(categories, lang.hitch(this, function(category) {
-				this._categoryContainer.addChild(new Button({
-					label: category,
-					callback: lang.hitch(this, function() {
-						this.category = category;
-						this._updateCss();
-						this.onSearch();
-					})
-				}));
-			}));
-
-			this._updateCss();
-		},
-
-		_updateCss: function() {
-			var categories = this._categoryContainer.getChildren();
-			var label;
-			array.forEach(categories, lang.hitch(this, function(category) {
-				label = category.get('label');
-				if (this.category == label || (! this.category && label == _('All'))) {
-					domClass.add(category.domNode, 'umcCategorySelected');
-				} else {
-					domClass.remove(category.domNode, 'umcCategorySelected');
-				}
-			}));
-		},
-
-		onSearch: function() {
-		}
-	});
+], function(declare, lang, kernel, array, when, domConstruct, query, domClass, Memory, topic, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, LiveSearchSidebar, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -221,17 +131,13 @@ define([
 					'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
 					'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p>';
 
-				this._searchWidget = new _SearchWidget({
+				this._searchSidebar = new LiveSearchSidebar({
 					region: 'left'
 				});
-				this.addChild(this._searchWidget);
-
-				var titlePane = new ExpandingTitlePane({
-					title: _('Applications')
-				});
+				this.addChild(this._searchSidebar);
 
 				this._grid = new GalleryPane({
-					baseClass: "umcAppCenter",
+					region: 'center',
 
 					style: 'height: 100%; width: 100%;',
 
@@ -251,9 +157,7 @@ define([
 						return iconClass;
 					}
 				});
-
-				titlePane.addChild(this._grid);
-				this.addChild(titlePane);
+				this.addChild(this._grid);
 
 				if (this.autoStart) {
 					tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
@@ -296,7 +200,7 @@ define([
 				}
 
 				// register event handlers
-				this._searchWidget.on('search', lang.hitch(this, 'filterApplications'));
+				this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));
 
 				this.own(this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
 					this._show_details(this._grid.row(evt));
@@ -928,7 +832,10 @@ define([
 							}
 						});
 					});
-					this._searchWidget.set('categories', categories.sort());
+					categories.sort();
+					categories.unshift(_('All'));
+					this._searchSidebar.set('categories', categories);
+					this._searchSidebar.set('allCategory', categories[0]);
 				}),
 				lang.hitch(this, function() {
 					this.standby(false);
@@ -937,39 +844,25 @@ define([
 		},
 
 		filterApplications: function() {
-			// sanitize the search pattern
-			var searchPattern = lang.trim(this._searchWidget.get('value'));
-			searchPattern = regexp.escapeString(searchPattern);
-			searchPattern = searchPattern.replace(/\\\*/g, '.*');
-			searchPattern = searchPattern.replace(/ /g, '\\s+');
+			// query logic for search pattern
+			var query = {};
+			var searchPattern = lang.trim(this._searchSidebar.get('value'));
+			if (searchPattern) {
+				query.name = this._searchSidebar.getSearchQuery(searchPattern);
+			}
 
-			var regex  = new RegExp(searchPattern, 'i');
-			var category = this._searchWidget.get('category');
-
-			var query = {
-				test: function(value, obj) {
-					var string = lang.replace(
-						'{name} {description} {categories}', {
-							name: obj.name,
-							description: obj.description,
-							categories: category ? '' : obj.categories.join(' ')
-						});
-					return regex.test(string);
-				}
-			};
-			this._grid.query.name = query;
-
-			if (! category) {
-				delete this._grid.query.categories;
-			} else {
-				this._grid.query.categories = {
+			// query logic for categories
+			var category = this._searchSidebar.get('category');
+			if (category != _('All')) {
+				query.categories = {
 					test: function(categories) {
 						return (array.indexOf(categories, category) >= 0);
 					}
 				};
 			}
 
-			this._grid.refresh();
+			// set query options and refresh grid
+			this._grid.set('query', query);
 		},
 
 		_show_license_request: function() {

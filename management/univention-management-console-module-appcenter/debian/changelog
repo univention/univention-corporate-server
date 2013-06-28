@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.2-1) unstable; urgency=low
+
+  * Bug #31699: merged changes from UMC overview page
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 28 Jun 2013 19:43:14 +0200
+
 univention-management-console-module-appcenter (3.0.1-1) unstable; urgency=low
 
   * Bug #31354: Do not check hardware requirements when upgrading an app.
