@@ -86,6 +86,11 @@ define([
 			}
 		},
 
+		isLeftToRight: function() {
+			// needed for Dojo 1.9
+			return true;
+		},
+
 		getItemDescription: function(item) {
 			return item.categories.join(', ');
 		},
@@ -111,8 +116,9 @@ define([
 
 		renderRow: function(item, options) {
 			// create gallery item
-			var div = put(lang.replace('div.umcGalleryItem[categories={category}]', {
-				category: this.getCategoryString(item)
+			var div = put(lang.replace('div.umcGalleryItem[categories={category}][moduleID={moduleID}]', {
+				category: this.getCategoryString(item),
+				moduleID: item.$id$
 			}));
 			var description = this.getItemDescription(item);
 			put(div, 'div.umcGalleryIcon.' + this.getIconClass(item));
@@ -146,7 +152,10 @@ define([
 		},
 
 		getIconClass: function(item) {
-			return tools.getIconClass(item.icon, 50);
+			if (item.icon) {
+				return tools.getIconClass(item.icon, 50);
+			}
+			return '';
 		},
 
 		getStatusIconClass: function(item) {

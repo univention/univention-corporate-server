@@ -67,6 +67,7 @@ define([
 	"umc/help",
 	"umc/about",
 	"umc/widgets/ProgressInfo",
+	"umc/widgets/LiveSearchSidebar",
 	"umc/widgets/GalleryPane",
 	"umc/widgets/TitlePane",
 	"umc/widgets/ContainerWidget",
@@ -79,143 +80,18 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, regexp, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, help, about, ProgressInfo, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, regexp, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, help, about, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
 
 	// helper function for sorting, sort indeces with priority < 0 to be at the end
-	var _cmp = function(x, y) {
+	var _cmpPriority = function(x, y) {
 		if (y.priority == x.priority) {
 			return x._orgIndex - y._orgIndex;
 		}
 		return y.priority - x.priority;
 	};
-
-	// helper function that sorts using the favorites position
-	var _cmpFavorites = function(x, y) {
-		return x._favoritePos - y._favoritePos;
-	};
-
-	var _SearchWidget = declare([ContainerWidget], {
-
-		category: null,
-
-		style: 'overflow: auto;',
-
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			var widthContainer = new ContainerWidget();
-			this._searchTextBox = new TextBox({
-				label: _("Search term"),
-				style: 'width: 135px;'
-			});
-			var searchLabel = new LabelPane({
-				content: this._searchTextBox
-			});
-			widthContainer.addChild(searchLabel);
-			this.addChild(widthContainer);
-
-			this._categoryContainer = new ContainerWidget({});
-			this.addChild(this._categoryContainer);
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-			this._searchTextBox.on('keyup', lang.hitch(this, function() {
-				this._updateCss(); // ... just to be sure
-				this.onSearch();
-			}));
-		},
-
-		_isInSearchMode: function() {
-			return Boolean(lang.trim(this.get('value')));
-		},
-
-		_getValueAttr: function() {
-			return this._searchTextBox.get('value');
-		},
-
-		_getCategoryAll: function() {
-			var result = array.filter(this.get('categories'), function(icat) {
-				return icat && icat.id == '$all$';
-			});
-			if (result.length) {
-				return result[0];
-			}
-			return null;
-		},
-
-		_getCategoryAttr: function() {
-			if (this._isInSearchMode()) {
-				// in search mode, the current category is always the "all" category
-				return this._getCategoryAll();
-			}
-			return this.category;
-		},
-
-		_setCategoryAttr: function(category) {
-			this._set('category', category);
-			this._updateCss();
-			this.onSearch();
-		},
-
-		_clearCategoryNodes: function() {
-			array.forEach(this._categoryContainer.getChildren(), lang.hitch(this, function(category) {
-				this._categoryContainer.removeChild(category);
-				category.destroyRecursive();
-			}));
-		},
-
-		_setCategoriesAttr: function(_categories) {
-			this._clearCategoryNodes();
-
-			// add new categories
-			var categories = lang.clone(_categories);
-
-			// add generic categories
-			categories.unshift({
-				name: _('All'),
-				id: '$all$'
-			});
-			categories.unshift({
-				name: _('Favorites'),
-				id: '$favorites$'
-			});
-
-			// add one node elements for each category
-			array.forEach(categories, lang.hitch(this, function(category) {
-				this._categoryContainer.addChild(new Button({
-					label: category.name,
-					_categoryID: category.id,
-					callback: lang.hitch(this, 'set', 'category', category)
-				}));
-			}));
-
-			this._set('categories', categories);
-
-			// preselect the first category
-			this.set('category', categories[0]);
-		},
-
-		_updateCss: function() {
-			var categories = this._categoryContainer.getChildren();
-			var currentCategory = this.get('category');
-			array.forEach(categories, lang.hitch(this, function(ibutton) {
-				var isSelected = (currentCategory && currentCategory.id == ibutton._categoryID) || (!currentCategory && ibutton._categoryID == '$all$');
-				domClass.toggle(ibutton.domNode, 'umcCategorySelected', isSelected);
-			}));
-		},
-
-		focus: function() {
-			this._searchTextBox.focus();
-		},
-
-		onSearch: function() {
-			// event stub
-		}
-	});
 
 	var _OverviewPane = declare([ GalleryPane ], {
 		showTooltips: false,
@@ -281,20 +157,25 @@ define([
 			var i = 0;
 			query('.umcGalleryItem', this.contentNode).forEach(lang.hitch(this, function(inode) {
 				var category = this._getCategoryFromNode(inode);
+				if (!category) {
+					return;
+				}
 				firstCategory = firstCategory || category; // remember the first category
 				firstNode = firstNode || inode;
 				if (!lastCategory || category.id != lastCategory.id) {
 					++nCategories;
 					lastCategory = category;
-					this._addCategoryNode(inode, category.name, category.id);
+					this._addCategoryNode(inode, category.label, category.id);
 				}
 			}));
 
 			return result
 		},
+
 		getStatusIconClass: function(item) {
 			return tools.getIconClass(item._isFavorite ? 'delete' : 'star', 24);
 		},
+
 		getStatusIconTooltip: lang.hitch(this, function(item) {
 			if (item._isFavorite) {
 				return _('Remove from favorites');
@@ -302,6 +183,7 @@ define([
 				return _('Add to favorites');
 			}
 		}),
+
 		getItemDescription: function(item) {
 			return item.description;
 		}
@@ -529,9 +411,10 @@ define([
 				// get all categories
 				array.forEach(lang.getObject('categories', false, data), lang.hitch(this, function(icat, i) {
 					icat._orgIndex = i;  // save the element's original index
+					icat.label = icat.name;
 					this._categories.push(icat);
 				}));
-				this._categories.sort(_cmp);
+				this._categories.sort(_cmpPriority);
 
 				// register error handler
 				var ndeps = 0;
@@ -543,9 +426,7 @@ define([
 					if (ndeps >= _modules.length) {
 						// all modules have been loaded
 						modulesLoaded.resolve();
-						progressDialog.hide().then(function() {
-							progressInfo.destroyRecursive();
-						});
+						progressDialog.hide().then(lang.hitch(progressDialog, 'destroyRecursive'));
 					}
 				};
 				var errHandle = require.on('error', function(err) {
@@ -574,6 +455,10 @@ define([
 				return modulesLoaded;
 			})).then(lang.hitch(this, function() {
 				this._moduleStore = this._createModuleStore(modules);
+				this._moduleStore.query().observe(lang.hitch(this, function(item, removedFrom, insertedInto) {
+					console.log('### change: item.$id$', item);
+				}), true);
+
 				this._pruneEmptyCategories();
 
 				// make sure that we do not overwrite an explicitely stated value of 'overview'
@@ -635,22 +520,29 @@ define([
 			return deferred;
 		},
 
-		_createModuleStore: function(modules) {
-			// sort the internal list of modules
-			modules.sort(_cmp);
-
-			// prune modules that cannot be loade
-			modules = array.filter(modules, function(imod) {
-				return Boolean(imod.BaseClass);
-			});
-
-			// create a store for the module items
-			array.forEach(modules, function(item) {
-				// we need a uniqe ID for the store
-				item.$id$ = item.id + ':' + item.flavor;
+		_createModuleItem: function(_item) {
+			// we need a uniqe ID for the store
+			var item = lang.mixin({
+				categories: []
+			}, _item);
+			item.$id$ = item.id + ':' + item.flavor;
+			if (item.categories.length) {
 				item.$firstCategory$ = '' + item.categories[0];
 				item.$firstCategoryPriority$ = this.getCategory(item.categories[0]).priority;
-			}, this);
+			}
+			else {
+				item.$firstCategory$ = '';
+				item.$firstCategoryPriority$ = 0;
+			}
+			return item;
+		},
+
+		_createModuleStore: function(_modules) {
+			// sort the internal list of modules
+			_modules.sort(_cmpPriority);
+
+			// create a store for the module items
+			modules = array.map(_modules, lang.hitch(this, '_createModuleItem'));
 			return new Observable(new Memory({
 				data: modules,
 				idProperty: '$id$'
@@ -685,7 +577,7 @@ define([
 					}
 				};
 			}
-			return this._moduleStore.query(query, { sort: _cmp } );
+			return this._moduleStore.query(query, { sort: _cmpPriority } );
 		},
 
 		getModule: function(/*String?*/ id, /*String?*/ flavor, /*String?*/ category) {
@@ -738,7 +630,6 @@ define([
 			return res[0];
 		},
 
-		_favorites_for_not_existing_modules: {},
 		_saveFavorites: function() {
 			if (!tools.status('setupGui')) {
 				return;
@@ -748,10 +639,6 @@ define([
 			var modules = this._moduleStore.query({
 				_isFavorite: true
 			});
-			tools.forIn(this._favorites_for_not_existing_modules, function(ikey, ivalue) {
-				modules.push(ivalue);
-			});
-			modules.sort(_cmpFavorites);
 
 			// save favorites as a comma separated list
 			var favoritesStr = array.map(modules, function(imod) {
@@ -762,7 +649,6 @@ define([
 			tools.setUserPreference({favorites: favoritesStr});
 		},
 
-		_favoriteIdx: 0,
 		addFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
 			var mod = this.getModule(id, flavor);
 			if (mod && mod._isFavorite) {
@@ -771,22 +657,17 @@ define([
 			}
 			if (!mod) {
 				// module does not exist (on this server), we add a dummy module
-				var $id$ = id + ':' + flavor;
-				if (!this._favorites_for_not_existing_modules[$id$]) {
-					this._favorites_for_not_existing_modules[$id$] = {
-						id: id,
-						flavor: flavor,
-						_favoritePos: this._favoriteIdx++
-					};
-				}
-				return;
+				// (this is important when installing a new app which is automatically
+				// added to the favorites)
+				mod = this._createModuleItem({
+					id: id,
+					flavor: flavor,
+					name: id
+				});
 			}
 
 			// add a module clone for favorite category
-			//mod.categories.push('$favorites$');
-			mod._favoritePos = this._favoriteIdx;
 			mod._isFavorite = true;
-			this._favoriteIdx++;
 			this._moduleStore.put(mod);
 
 			// save settings
@@ -946,12 +827,12 @@ define([
 				this._populateFavoriteCategory();
 
 				// add search widget
-				this._searchWidget = new _SearchWidget({
+				this._searchSidebar = new LiveSearchSidebar({
 					style: 'width:150px',
 					region: 'left'
 				});
-				this._overviewPage.addChild(this._searchWidget);
-				this._searchWidget.set('categories', this.getCategories());
+				this._overviewPage.addChild(this._searchSidebar);
+				this._searchSidebar.set('categories', this.getCategories());
 
 				this._grid = new _OverviewPane({
 					categories: this.getCategories(),
@@ -976,11 +857,11 @@ define([
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
-			window.setTimeout(lang.hitch(this._searchWidget, 'focus', 0));
+			window.setTimeout(lang.hitch(this._searchSidebar, 'focus', 0));
 		},
 
 		_registerGridEvents: function() {
-			this._searchWidget.on('search', lang.hitch(this, '_updateQuery'));
+			this._searchSidebar.on('search', lang.hitch(this, '_updateQuery'));
 
 			this._grid.on('.umcGalleryStatusIcon:click', lang.hitch(this, function(evt) {
 				// prevent event bubbling
@@ -1012,10 +893,9 @@ define([
 		},
 
 		_updateQuery: function() {
-
 			// option for querying for the search pattern
 			var query = {};
-			var searchPattern = lang.trim(this._searchWidget.get('value'));
+			var searchPattern = lang.trim(this._searchSidebar.get('value'));
 			if (searchPattern) {
 				// sanitize the search pattern
 				searchPattern = regexp.escapeString(searchPattern);
@@ -1037,8 +917,15 @@ define([
 				};
 			}
 
+			// only show modules with valid BaseClass
+			query.BaseClass = {
+				test: function(value, obj) {
+					return Boolean(value);
+				}
+			};
+
 			// option for querying for the correct category
-			var category = this._searchWidget.get('category');
+			var category = this._searchSidebar.get('category');
 			if (category.id == '$favorites$') {
 				// search in virtual category "favorites"
 				query._isFavorite = true;
