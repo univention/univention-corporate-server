@@ -660,6 +660,7 @@ class Bond(Device):
 					pass
 			else:
 				options.append(option)
+		self.options = options
 
 	def to_ucr(self):
 		vals = super(Bond, self).to_ucr()

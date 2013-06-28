@@ -91,7 +91,7 @@ define([
 					callback: lang.hitch(this, '_editInterfaces')
 				}, {
 					name: 'add',
-					label: _('Add interface'),
+					label: _('Add device'),
 					iconClass: 'umcIconAdd',
 					isMultiAction: false,
 					isStandardAction: false,
@@ -158,9 +158,11 @@ define([
 
 			var items = array.filter(this.getAllItems(), function(item) { return item !== null; });
 			array.forEach(items, function(iface) {
-				array.forEach(iface.getSubdevices(), function(name) {
-					to_disable[name] = true;
-				});
+				if (!iface.isVLAN()) {
+					array.forEach(iface.getSubdevices(), function(name) {
+						to_disable[name] = true;
+					});
+				}
 			});
 
 			array.forEach(items, lang.hitch(this, function(iface) {
@@ -244,7 +246,7 @@ define([
 				}
 			}
 
-			if (!data.create) {
+			if (!data.creation) {
 				//this.moduleStore.put( iface ); // FIXME: put does not work
 				this.moduleStore.remove(iface.name);
 				this.moduleStore.add( iface );
@@ -252,7 +254,6 @@ define([
 				try {
 					this.moduleStore.add( iface );
 				} catch(error) {
-					// TODO: this happened when renaming an vlan interface but is fixed. can we remove it?
 					console.log(error);
 					dialog.alert(_('Interface "%s" already exists.', iface.name));
 				}
@@ -261,12 +262,12 @@ define([
 
 		_editInterfaces: function(name, devices) {
 			// grid action
-			this._showWizard({device: devices[0], create: false});
+			this._showWizard({device: devices[0], creation: false});
 		},
 
 		_addInterface: function() {
 			// grid action
-			this._showWizard({device: { interfaceType: 'Ethernet', name: ''}, create: true});
+			this._showWizard({device: { interfaceType: 'Ethernet', name: ''}, creation: true});
 		},
 
 		_showWizard: function(props) {
@@ -283,7 +284,7 @@ define([
 				var data = {};
 				data.gateway = values.gateway;
 				data.nameserver = values.nameserver;
-				data.create = values.create;
+				data.creation = values.creation;
 				data.device = types.getDevice(values);
 				this.updateInterface(data);
 				_cleanup();
@@ -295,14 +296,14 @@ define([
 				interfaceType: props.device.interfaceType,
 				physical_interfaces: this.physical_interfaces,
 				available_interfaces: this.get('value'),
-				create: props.create,
+				creation: props.creation,
 				onCancel: _cleanup,
 				onFinished: _finished
 			};
 			wizard = new InterfaceWizard(propvals);
 
 			_dialog = new Dialog({
-				title: props.create ? _('Add a network interface') : _('Edit a network interface'),
+				title: props.creation ? _('Add a network device') : _('Edit a network device'),
 				content: wizard
 			});
 			_dialog.own(wizard);

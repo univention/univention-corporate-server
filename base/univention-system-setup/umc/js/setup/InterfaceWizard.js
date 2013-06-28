@@ -60,18 +60,21 @@ define([
 		style: 'width: 650px; height: 650px;',
 
 		constructor: function(props) {
-			//lang.mixin(this, props);
 			var device = props.device;
+			this.creation = props.creation;
 			this.values = device;
-			this.creation = props.create;
-
 			this.name = device.name;
 			this.interfaceType = device.interfaceType;
 
 			this.physical_interfaces = props.physical_interfaces || [];
 			this.available_interfaces = props.available_interfaces || [];
 
-			var primary = !props.create && this.name === props['interfaces/primary'];
+			if (this.creation) {
+				// WORKAROUND: the interfaceType widget must have an initial value, we set the first available by hand here
+				try {
+					this.values.interfaceType = types.Device.getPossibleDevices(this.available_interfaces, this.physical_interfaces, this.name)[0].id;
+				} catch (AttributeError) {}
+			}
 
 			lang.mixin(this, {
 				pages: [{
@@ -95,6 +98,7 @@ define([
 									break;
 								case 'VLAN':
 									visibility = {name_eth: false, name_b: false, vlan_id: true, parent_device: true};
+									// TODO: re set vlan_id by count up to next available
 									break;
 								case 'Bridge':
 								case 'Bond':
@@ -110,26 +114,29 @@ define([
 						name: 'name',
 						value: device.name,
 						type: TextBox,
-						validate: function(value) {
+						validator: function(value) {
 							return (/^[a-z]+[0-9]+(\.[0-9]+)?$/).test(value);
 						},
 						visible: false
 					}, {
 						name: 'name_b',
-						label: _('Interface'),
+						label: _('Device'),
 						value: device.name,
 						size: 'Half',
 						type: TextBox,
-						validate: function(value) {
-							return (/^[a-zA-Z]+[0-9]+$/).test(value);
-						},
+						validator: lang.hitch(this, function(value) {
+							if (this.interfaceType === 'Bond' || this.interfaceType === 'Bridge') {
+								return (/^[a-zA-Z]+[0-9]+$/).test(value);
+							}
+							return true;
+						}),
 						onChange: lang.hitch(this, function(name) {
 							if (!this.getWidget('name_b').get('visible')) { return; }
 							this.getWidget('name').set('value', name);
 						})
 					}, {
 						name: 'name_eth',
-						label: _('Interface'),
+						label: _('Device'),
 						type: ComboBox,
 						dynamicValues: lang.hitch(this, function() {
 							return types.Ethernet.getPossibleSubdevices(this.available_interfaces, this.physical_interfaces, this.name);
@@ -140,6 +147,7 @@ define([
 						})
 					}, {
 						name: 'parent_device',
+						label: _('Parent device'),
 						type: ComboBox,
 						dynamicValues: lang.hitch(this, function() {
 							return types.VLAN.getPossibleSubdevices(this.available_interfaces, this.physical_interfaces, this.name);
@@ -150,6 +158,7 @@ define([
 						})
 					}, {
 						name: 'vlan_id',
+						label: _('Virtual device ID'),
 						type: NumberSpinner,
 						size: 'Half',
 						value: lang.hitch(this, function() {
@@ -161,7 +170,10 @@ define([
 							return vlan_id;
 						})(),
 						constraints: { min: 1, max: 4096 },
-						label: _('Virtual interface ID'),
+						validator: lang.hitch(this, function(value) {
+							var name = this.name;
+							return array.every(this.available_interfaces, function(iface) { return iface.name !== name; });
+						}),
 						onChange: lang.hitch(this, function(vlan_id) {
 							if (!this.getWidget('vlan_id').get('visible')) { return; }
 							this.getWidget('name').set('value', this.getWidget('parent_device').get('value') + '.' + String(vlan_id));
@@ -170,12 +182,12 @@ define([
 				}, {
 					name: 'network',
 					headerText: _('Network device configuration'),
-					helpText: _('Configure the %s network interface %s', device.label, device.name),
+					helpText: _('Configure the %s network device %s', device.label, device.name),
 					widgets: [{
 						name: 'primary',
-						label: _('Configure as primary network interface'),
+						label: _('Configure as primary network device'),
 						type: CheckBox,
-						value: primary
+						value: !props.creation && this.name === props['interfaces/primary']
 					}, {
 						type: MultiInput,
 						name: 'ip4',
@@ -257,9 +269,9 @@ define([
 						visible: false
 					}, {
 						// shall the interface be created in the grid do we edit a existing interface?
-						name: 'create',
+						name: 'creation',
 						type: CheckBox,
-						value: props.create,
+						value: props.creation,
 						disabled: true,
 						visible: false
 					}],
@@ -297,7 +309,7 @@ define([
 					// A network bridge (software side switch)
 					name: 'Bridge',
 					headerText: _('Bridge configuration'),
-					helpText: _('Configure the %s network interface %s', device.label, device.name),
+					helpText: _('Configure the %s network device %s', device.label, device.name),
 					widgets: [{
 						name: 'bridge_ports',
 						label: _('bridge ports'),
@@ -329,7 +341,7 @@ define([
 				}, {
 					name: 'Bond',
 					headerText: _('Bond configuration'),
-					helpText: _('Configure the %s network interface %s', device.label, device.name),
+					helpText: _('Configure the %s network device %s', device.label, device.name),
 					widgets: [{
 						name: 'bond_slaves',
 						label: _('Bond slaves'),
@@ -468,9 +480,9 @@ define([
 
 		canFinish: function(values) {
 
-			var valid = this.interfaceType && this.name; // both must be set
+			var valid = values.interfaceType && values.name; // both must be set
 			if (!valid) {
-				dialog.alert(_('You have to specify a valid interface and interfaceType. Please correct your input.'));
+				dialog.alert(_('A valid device and device type have to be specified. Please correct your input.'));
 			}
 
 			if (this.interfaceType === 'Ethernet') {
@@ -483,7 +495,7 @@ define([
 			if (array.filter(values.ip6, function(ip6) {
 				return (!ip6[2] && (ip6[0] || ip6[1]));
 			}).length) {
-				dialog.alert(_('Each IPv6 interface must have an identifier'));
+				dialog.alert(_('Each IPv6 device must have an identifier'));
 			}
 
 			var pages = ['network'];

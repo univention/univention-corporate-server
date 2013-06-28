@@ -85,7 +85,7 @@ define([
 			}, {
 				type: TextBox,
 				name: 'interfaces/primary',
-				label: _('primary network interface')
+				label: _('primary network device')
 //				depends: ['interfaces', 'gateway']
 //				dynamicValues: lang.hitch(this, function(values) {
 //					// The primary interface can be of any type
@@ -314,7 +314,7 @@ define([
 				values: network_summary
 			}, {
 				variables: ['interfaces/primary'],
-				description: _('Primary network interface'),
+				description: _('Primary network device'),
 				values: vals['interfaces/primary']
 			}];
 		},

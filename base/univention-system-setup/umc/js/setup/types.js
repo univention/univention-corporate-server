@@ -58,32 +58,6 @@ define([
 					label: self.interfaceTypes[id]
 				};
 			});
-		},
-		filterInterfaces: function(/*String[]*/ interfaces, /*Object[]*/ available_interfaces) {
-			// filter interfaces, which are available for use (because no interface already uses one of the interface)
-			return array.filter(array.map(interfaces, function(/*String*/iface) {
-				if (available_interfaces.length && !array.every(available_interfaces, function(/*Object*/item) {
-
-					if (item.isBridge() || item.isBond()) {
-						// the interface is a bridge or bonding so it can contain subinterfaces
-						var subdevs = item.getSubdevices();
-						if(subdevs.length) {
-							return array.every(subdevs, function(/*String*/_iface) {
-								return _iface !== item.name;
-							});
-						}
-						return true; // no subtypes (bridge)
-					}
-
-					return true; // interface without subinterfaces
-				})) {
-					return null;
-				}
-				return {
-					id: iface,
-					label: iface
-				};
-			}), function(v) { return v !== null; });
 		}
 	};
 
@@ -215,7 +189,7 @@ define([
 	});
 	self.VLAN.getPossibleSubdevices = function(all_interfaces, physical_interfaces, devicename) {
 		// return all interfaces which are not vlans
-		// NOTE: if the physical interface is not defined in the grid this could lead to errors, but the backend catches this
+		// NOTE: if the physical interface is not defined in the grid this could lead to errors, but the backend would catch this
 
 		var availableInterfaces = array.map(all_interfaces, function(item) {
 			return item.name;
@@ -229,7 +203,7 @@ define([
 			if (array.every(all_interfaces, function(idevice) {
 				if (devicename != idevice.name) {
 					if (idevice.isVLAN()) {
-						return false;
+						return idevice.parent_device === device;
 					}
 					return (-1 === idevice.getSubdevices().indexOf(device));
 				}
@@ -315,14 +289,14 @@ define([
 
 		availableInterfaces = lang.clone(physical_interfaces).concat(availableInterfaces);
 
-		// all interfaces which are not already in use
+		// all interfaces which are not already in use and are not Bridges itself
 		var devices = [];
 		array.forEach(availableInterfaces, function(device) {
 			if (array.every(all_interfaces, function(idevice) {
 				if (devicename != idevice.name) {
 					return (-1 === idevice.getSubdevices().indexOf(device));
 				}
-				return true;
+				return !idevice.isBridge();
 			})) {
 				devices.push(device);
 			}
