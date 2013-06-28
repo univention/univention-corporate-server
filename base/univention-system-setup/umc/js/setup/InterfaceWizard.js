@@ -79,8 +79,8 @@ define([
 			lang.mixin(this, {
 				pages: [{
 					name: 'interfaceType',
-					headerText: '',
-					helpText: '',
+					headerText: _('Choose device type'),
+					helpText: _('Several network types can be chosen. <i>Ethernet</i> is a standard physical device. ...'),
 					widgets: [{
 						// required to rename
 						name: 'original_name',
@@ -97,7 +97,7 @@ define([
 							return types.Device.getPossibleDevices(this.available_interfaces, this.physical_interfaces, this.name);
 						}),
 						onChange: lang.hitch(this, function(interfaceType) {
-							// update visibility
+							// adapt the visibility
 							var visibility = {};
 							switch(interfaceType) {
 								case 'Ethernet':
@@ -116,6 +116,7 @@ define([
 								this.getWidget(widget).set('visible', visible);
 							}));
 							this.getWidget('name').set('value', this.name);
+							this.getWidget('name_b').set('required', interfaceType == 'Bridge' || interfaceType == 'Bond');
 
 							// A restriction in UCR enforces that Bridge, VLAN and Bond interfaces can not have multiple IP addresses (Bug #31767)
 							if (interfaceType !== 'Ethernet') {

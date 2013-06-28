@@ -47,9 +47,9 @@ define([
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
 
-		style: 'width: 100%; height: 350px;',
+		style: 'width: 100%; height: 225px;',
 		query: {},
-		sortIndex: null,
+		sortIndex: 1,
 
 		physical_interfaces: [],
 
@@ -64,7 +64,7 @@ define([
 				columns: [{
 					name: 'name',
 					label: _('Interface'),
-					width: '15%'
+					width: '18%'
 				}, {
 					name: 'interfaceType',
 					label: _('Type'),
@@ -79,7 +79,7 @@ define([
 						var iface = this.getRowValues(row);
 						return this.getItem(iface.name).getConfigurationDescription();
 					}),
-					width: '70%'
+					width: '67%'
 				}],
 				actions: [{
 					name: 'edit',
@@ -146,14 +146,17 @@ define([
 				this._consistence(iface, -1, 0);
 			}));
 
-			this.moduleStore.query().observe(lang.hitch(this, '_consistence'), true);
+			this.moduleStore.query().observe(lang.hitch(this, function(iface, removedFrom, insertedInto) {
+				this._consistence(iface, removedFrom, insertedInto);
+				setTimeout(lang.hitch(this, '_disableUsedInterfaces'), 250);
+			}), true);
 
 			setTimeout(lang.hitch(this._grid, '_refresh'), 0);
 
 			this._set('value', this.get('value'));
 		},
 
-		disableUsedInterfaces: function() {
+		_disableUsedInterfaces: function() {
 			var to_disable = {};
 
 			var items = array.filter(this.getAllItems(), function(item) { return item !== null; });
@@ -209,8 +212,6 @@ define([
 					}
 				}));
 			}
-
-			on.once(this, 'filterDone', lang.hitch(this, 'disableUsedInterfaces'));
 
 			this._set('value', this.get('value'));
 		},
@@ -275,8 +276,7 @@ define([
 			var _dialog = null, wizard = null;
 
 			var _cleanup = function() {
-				_dialog.hide();
-				_dialog.destroyRecursive();
+				_dialog.hide().then(lang.hitch(_dialog, 'destroyRecursive'));
 			};
 
 			var _finished = lang.hitch(this, function(values) {
