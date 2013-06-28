@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.3-1) unstable; urgency=low
+
+  * Removed duplicate mapping.register call for 
+    univentionInventoryNumber (Bug #24102)
+  * Updated copyright
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 28 Jun 2013 14:51:52 +0200
+
 univention-directory-manager-modules (9.0.2-1) unstable; urgency=low
 
   * fixed print_quota policy (Bug #31703) 

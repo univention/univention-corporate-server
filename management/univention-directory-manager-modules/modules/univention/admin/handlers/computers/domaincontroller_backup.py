@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for the DC Backup hosts 
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -369,7 +369,6 @@ mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString)
-mapping.register('inventoryNumber', 'univentionInventoryNumber')
 mapping.register('serverRole', 'univentionServerRole')
 mapping.register('mac', 'macAddress' )
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
