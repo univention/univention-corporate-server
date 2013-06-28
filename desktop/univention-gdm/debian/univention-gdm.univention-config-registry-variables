@@ -47,31 +47,25 @@ Type=str
 Categories=system-desktop
 
 [gdm/session/dir]
-Description[de]=Verzeichnis mit den verfügbaren Sitzungsbeschreibungen
-Description[en]=Directory with descriptions of available sessions
+Description[de]=Das Verzeichnis, aus dem die GDM-Anmeldeskripte geladen werden. Ist die Variable nicht gesetzt, wird /etc/gdm/sessions/ verwendet.
+Description[en]=The directory from which the GDM session scripts are loaded. If the variable is unset, /etc/gdm/sessions/ is used.
 Type=str
 Categories=system-desktop
 
 [gdm/session/default]
-Description[de]=Standard-GDM-Sitzungsskript
-Description[en]=Default GDM session script
+Description[de]=Mit dieser Variable kann das Standard-Anmeldeskript festgelegt werden. Anzugeben ist der Dateiname in dem Verzeichnis, das mit der Variable 'gdm/session/dir' konfiguriert wird. Ist die Variable nicht gesetzt, wird 'Linux-Arbeitsplatz' verwendet.
+Description[en]=This variable configures the default session script. It needs to be specified as a filename in the directory configured with the variable 'gdm/session/dir'. If the variable is unset, 'Linux-Arbeitsplatz' is used.
 Type=str
 Categories=Desktop
 
 [univentionAutoStartScript]
-Description[de]=Aktiviere automatischen Login
-Description[en]=Enable automatic login
-Type=bool
-Categories=system-desktop
-
-[gdm/autostart/user]
-Description[de]=Der angegebene Benutzer wird für den automatischen Login verwendet. (default: autostart)
-Description[en]=The given user will be used for automatic login (default: autostart)
+Description[de]=Mit dieser Variable wird ein Skript unterhalb des Verzeichnis /etc/gdm/Autostart/ konfiguriert, das für einen automatischen Login ohne Benutzeranmeldung verwendet wird.
+Description[en]=This variable configures a script in the directory /etc/gdm/Autostart, which is used for an automated login without user interaction.
 Type=str
 Categories=system-desktop
 
-[gdm/autostart/permitteduser]
-Description[de]=Benutzer, welche berechtigt sind, einen XServer zu starten - mögliche Werte: "rootonly", "console" or "anybody"
-Description[en]=Users who are allowed to start a xserver - possible values: "rootonly", "console", "anybody"
+[gdm/autostart/user]
+Description[de]=Der hier angegebene Benutzer wird für den automatischen Login (siehe Variable 'univentionAutoStartScript') verwendet. Ist die Variable nicht gesetzt, wird der Systembenutzer autostart verwendet.
+Description[en]=The given user will be used for the automated login (see variable 'univentionAutoStartScript'). If the variable is unset, the system user autostart is used.
 Type=str
 Categories=system-desktop

@@ -1,3 +1,10 @@
+univention-gdm (10.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30944)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 28 Jun 2013 09:52:43 +0200
+
 univention-gdm (9.0.3-1) unstable; urgency=low
 
   * simplified changes made for Bug #28372
