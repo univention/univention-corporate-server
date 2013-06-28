@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-management-console-module-appcenter
+fix: 2.0.139-14.143.201306281536
+note:
+version: [1]
+desc: |
+  This update fixes several issues:
+  * Checking hardware requirements when upgrading an app has been disabled.
+  * Opening a second App Center module in UMC is now prevented.
+  * Added a link to the campaign "Vote for app!".
+bug: [31354, 31662, 31625]
