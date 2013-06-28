@@ -294,9 +294,13 @@ define([
 		array.forEach(availableInterfaces, function(device) {
 			if (array.every(all_interfaces, function(idevice) {
 				if (devicename != idevice.name) {
+					if (device == idevice.name && idevice.isBridge()) {
+						return false;
+					}
 					return (-1 === idevice.getSubdevices().indexOf(device));
+				} else {
+					return (-1 !== idevice.getSubdevices().indexOf(device));
 				}
-				return !idevice.isBridge();
 			})) {
 				devices.push(device);
 			}
