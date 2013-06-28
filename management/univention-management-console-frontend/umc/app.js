@@ -425,8 +425,10 @@ define([
 					progressInfo.update(ndeps, moduleName ? _('Loaded module %s', moduleName) : '&nbsp;');
 					if (ndeps >= _modules.length) {
 						// all modules have been loaded
-						modulesLoaded.resolve();
-						progressDialog.hide().then(lang.hitch(progressDialog, 'destroyRecursive'));
+						progressDialog.hide().then(lang.hitch(this, function() {
+							progressDialog.destroyRecursive();
+							modulesLoaded.resolve();
+						}));
 					}
 				};
 				var errHandle = require.on('error', function(err) {
@@ -742,6 +744,7 @@ define([
 					'class': 'umcAppCenter umcPage'
 				});
 				this._tabContainer.addChild(this._overviewPage);
+				this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
 
 				// check validity of SSL certificates
 				var hostCert = parseInt( _ucr[ 'ssl/validity/host' ], 10 );
@@ -857,7 +860,10 @@ define([
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
-			window.setTimeout(lang.hitch(this._searchSidebar, 'focus', 0));
+		},
+
+		_focusSearchField: function() {
+			this._searchSidebar.focus();
 		},
 
 		_registerGridEvents: function() {
