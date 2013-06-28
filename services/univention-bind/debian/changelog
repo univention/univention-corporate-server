@@ -1,3 +1,10 @@
+univention-bind (8.0.0-1) unstable; urgency=low
+
+  * Delete cached zonefile upon zone deletion (Bug #16270)
+  * UCS 3.2 Version Bump and updated copyright year
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 28 Jun 2013 13:58:43 +0200
+
 univention-bind (7.0.14-1) unstable; urgency=low
 
   * Reload listener ucr in bind.py listener module, otherwise

@@ -9,7 +9,7 @@ the proxy.
 During the quiet period check the cache directory (is-state) against the
 configuration directory (should-state) and reload/restart as appropriate.
 """
-# Copyright 2001-2012 Univention GmbH
+# Copyright 2001-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -151,12 +151,16 @@ def _remove_zone(zonename):
 	"""Handle removal of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Removing zone %s' % (zonename,))
 	zonefile = os.path.join(NAMED_CONF_DIR, zonename)
+	cached_zonefile = os.path.join(NAMED_CACHE_DIR, zonename + '.zone')
 	# Remove zone file
 	if os.path.exists(zonefile):
 		os.unlink(zonefile)
 	# Remove proxy configuration file
 	if os.path.exists(zonefile + '.proxy'):
 		os.unlink(zonefile + '.proxy')
+	# Remove cached zone file
+	if os.path.exists(cached_zonefile):
+		os.unlink(cached_zonefile)
 	global __zone_created_or_removed
 	__zone_created_or_removed = True
 
