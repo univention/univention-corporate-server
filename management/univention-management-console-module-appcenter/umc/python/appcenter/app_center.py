@@ -530,7 +530,7 @@ class Application(object):
 			# check if installed. can have candidate without being installed
 			#   e.g. only master packages installed
 			if self.is_installed(package_manager):
-				return self.candidate.cannot_install_reason(package_manager, check_is_installed=False)
+				return self.candidate.cannot_install_reason(package_manager, check_is_installed=False, check_memory=False)
 			else:
 				return 'not_installed', None
 		else:
@@ -539,7 +539,10 @@ class Application(object):
 	def can_be_updated(self, package_manager):
 		return self.cannot_update_reason(package_manager)[0] is None
 
-	def cannot_install_reason(self, package_manager, check_is_installed=True):
+	# TODO: check_memory is a temporary hack to disable checking memory during update
+	#   (because this very app is probably running and memory-consuming)
+	# See Bug #31354. Should be converted into a warning in UCS 3.2 during update and install
+	def cannot_install_reason(self, package_manager, check_is_installed=True, check_memory=True):
 		is_joined = os.path.exists('/var/univention-join/joined')
 		server_role = ucr.get('server/role')
 		if check_is_installed and self.is_installed(package_manager):
@@ -548,7 +551,7 @@ class Application(object):
 			return 'not_joined', None
 		elif self.get('serverrole') and server_role not in self.get('serverrole'):
 			return 'wrong_serverrole', server_role
-		elif self.get('minphysicalram') and get_current_ram_available() < self.get('minphysicalram'):
+		elif check_memory and self.get('minphysicalram') and get_current_ram_available() < self.get('minphysicalram'):
 			return 'hardware_requirements', _('The application requires %(minimum)d MB of free RAM but only %(current)d MB are available.') % {'minimum' : self.get('minphysicalram'), 'current' : get_current_ram_available()}
 		else:
 			conflict_packages = []
