@@ -228,35 +228,34 @@ define([
 				this.set('nameserver', data.nameserver);
 			}
 
-			// set this interface as primary interface if it was selected
+			// set or remove interfaces/primary if device was (de)selected as primary
 			if (iface.primary) {
 				this.set('interfaces/primary', iface.name);
-			} else {
-				// FIXME: why this?
+			} else if (this.get('interfaces/primary') === iface.name) {
 				this.set('interfaces/primary', '');
 			}
 
-			if (iface.isVLAN()) {
-				// build the interface name from name "." vlan_id
-				var ifacename = String(iface.name);
-				iface.name = iface.name.split('.', 1) + '.' + String(iface.vlan_id); // TODO: use iface.parent_device
-				if (ifacename !== iface.name) {
-					// if the interface id was renamed the identifier changed... so delete the old row
-					setTimeout(lang.hitch(this, function() { this.moduleStore.remove(ifacename); }), 0);
+			var renamed = false;
+			if (!data.creation) {
+				renamed = iface.name != data.original_name;
+				if (!renamed) {
+					//this.moduleStore.put( iface ); // FIXME: put does not work
+					this.moduleStore.remove(iface.name);
+					this.moduleStore.add( iface );
+					return;
 				}
 			}
-
-			if (!data.creation) {
-				//this.moduleStore.put( iface ); // FIXME: put does not work
-				this.moduleStore.remove(iface.name);
+			try {
 				this.moduleStore.add( iface );
-			} else {
-				try {
-					this.moduleStore.add( iface );
-				} catch(error) {
-					console.log(error);
-					dialog.alert(_('Interface "%s" already exists.', iface.name));
-				}
+			} catch(error) {
+				console.log(error);
+				dialog.alert(_('Interface "%s" already exists.', iface.name));
+				return;
+			}
+
+			if (renamed) {
+				// remove old interface after the new has been added
+				setTimeout(lang.hitch(this, function() { this.moduleStore.remove(data.original_name); }), 0);
 			}
 		},
 
@@ -286,11 +285,13 @@ define([
 				data.nameserver = values.nameserver;
 				data.creation = values.creation;
 				data.device = types.getDevice(values);
+				data.original_name = values.original_name;
 				this.updateInterface(data);
 				_cleanup();
 			});
 	
 			var propvals = {
+				original_name: props.device.name,
 				device: types.getDevice(props.device),
 				name: props.device.name,
 				interfaceType: props.device.interfaceType,

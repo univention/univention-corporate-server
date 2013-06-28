@@ -82,6 +82,12 @@ define([
 					headerText: '',
 					helpText: '',
 					widgets: [{
+						// required to rename
+						name: 'original_name',
+						type: TextBox,
+						value: props.original_name,
+						visible: false
+					}, {
 						name: 'interfaceType',
 						type: ComboBox,
 						label: _('Interface type'),
@@ -91,6 +97,7 @@ define([
 							return types.Device.getPossibleDevices(this.available_interfaces, this.physical_interfaces, this.name);
 						}),
 						onChange: lang.hitch(this, function(interfaceType) {
+							// update visibility
 							var visibility = {};
 							switch(interfaceType) {
 								case 'Ethernet':
@@ -109,6 +116,11 @@ define([
 								this.getWidget(widget).set('visible', visible);
 							}));
 							this.getWidget('name').set('value', this.name);
+
+							// A restriction in UCR enforces that Bridge, VLAN and Bond interfaces can not have multiple IP addresses (Bug #31767)
+							if (interfaceType !== 'Ethernet') {
+								this.getWidget('ip4').set('max', 1);
+							}
 						})
 					}, {
 						name: 'name',
