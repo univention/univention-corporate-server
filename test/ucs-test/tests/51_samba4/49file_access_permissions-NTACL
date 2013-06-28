@@ -66,9 +66,9 @@ wait_for_drs_replication "(sAMAccountName=$username)"
 ## wait for samba share export
 i=0
 sleep_seconds=3
-while ! output=$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)
+while ! output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
 do
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 10 ]; then
 		print "$output"
 		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
@@ -79,8 +79,8 @@ done
 ##--Tests
 
 echo "----create a folder as Administrator, so that the testuser has no rights to write in it"
-output=$(smbclient -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)
-if [ -n "$output" ] && echo $output | grep -q "^NT_STATUS_"; then
+output="$(smbclient -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
+if [ -n "$output" ] && echo "$output" | grep -q "^NT_STATUS_"; then
 	echo "$output"
 	fail_fast 1 "Failed to make a folder as Administrator even though it should work."
 fi
@@ -95,14 +95,14 @@ if ! echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"; then
 fi
 
 ## get objectSID
-sid=$(ldbsearch -H ldap://localhost -U"$username%$first_password" cn=$username | sed -n 's/^objectSid: //p')
+sid="$(ldbsearch -H ldap://localhost -U"$username%$first_password" cn=$username | sed -n 's/^objectSid: //p')"
 if [ -z "$sid" ]; then
 	fail_fast 1 "Could not retrieve objectSid of samba user account '$username'"
 fi
 
 ## get and set NTACL
 echo "----get NTACL"
-NTACL_old=$(samba-tool ntacl get "/$sharename/folder" --as-sddl 2>/dev/null)
+NTACL_old="$(samba-tool ntacl get "/$sharename/folder" --as-sddl 2>/dev/null)"
 if ! echo "$NTACL_old" | grep -q "^O:"; then
 	fail_test 1 "Could not retrieve NTACL"
 fi
@@ -112,7 +112,7 @@ if ! samba-tool ntacl set "$NTACL_old""(A;;CC;;;$sid)" "/$sharename/folder"; the
 fi
 
 echo "----attempt to create a folder with permission"
-if ! output=$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder3")
+if ! output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder3")"
 then
 	if [ -n "$output" ]; then
 		echo "$output"

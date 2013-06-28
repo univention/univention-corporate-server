@@ -38,7 +38,7 @@ udm-test shares/share create --position="$SHARE_POSITION" \
 	--set name="$sharename" \
 	--set path="/$sharename" \
 	--set host="$hostname.$domainname"
-if [ $? != 0 ]; then
+if [ "$?" != 0 ]; then
 	fail_fast 1 "could not create share"
 fi
 
@@ -58,7 +58,7 @@ i=0
 sleep_seconds=3
 while ! output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
 do
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 10 ]; then
 		echo "$output"
 		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
@@ -71,8 +71,8 @@ done
 #----Testing general connection
 echo "----Testing general connection"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
-if [ $? != 0 ];then
-	echo $output
+if [ "$?" != 0 ];then
+	echo "$output"
 	fail_test "Could not connect to the share."
 fi
 
@@ -80,7 +80,7 @@ fi
 echo "----making a folder without permission"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
 echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"
-if [ $? != 0 ];then
+if [ "$?" != 0 ];then
 	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
 fi
 
@@ -90,7 +90,7 @@ udm-test shares/share modify --binddn "cn=admin,$ldap_base" --bindpwd "$(cat /et
 #----making a folder
 echo "----making a folder with permission"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder2" >/dev/null 2>&1)"
-if [ $? != 0 ]; then
+if [ "$?" != 0 ]; then
 	echo "$output"
 	fail_test 1 "Failed to make a folder even though it should work."
 fi

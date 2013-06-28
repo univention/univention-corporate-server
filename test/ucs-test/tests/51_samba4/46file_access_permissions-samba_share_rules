@@ -38,7 +38,7 @@ udm-test shares/share create --position="$SHARE_POSITION" \
 	--set path="/$sharename" \
 	--set directorymode=0777 \
 	--set host="$hostname.$domainname"
-if [ $? != 0 ]; then
+if [ "$?" != 0 ]; then
 	fail_fast 1 "could not create share"
 fi
 
@@ -58,7 +58,7 @@ while ! output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$s
 do
 	let i="$i"+1
 	if [ "$i" = 10 ]; then
-		echo "$output"
+       		echo "$output"
 		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
 	fi
 	sleep "$sleep_seconds"
@@ -86,8 +86,8 @@ fi
 #----making a folder without permission
 echo "----Try to make a folder in the share withouth permission"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
-echo $output | grep -q "NT_STATUS_ACCESS_DENIED"
+echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"
 if [ "$?" != 0 ]; then
 	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
 fi
-exit $RETVAL
+exit "$RETVAL"
