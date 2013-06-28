@@ -20,12 +20,6 @@ if __name__ == '__main__':
 	ucr = configRegistry.ConfigRegistry()
 	ucr.load()
 
-	s4Connector = None
-	if ucr.is_true('directory/manager/samba3/legacy', False):
-		s4Connector = False
-	elif ucr.is_false('directory/manager/samba3/legacy', False):
-		s4Connector = True
-
 	objectType = 'computers/windows_domaincontroller'
 	with udm_test.UCSTestUDM() as udm:
 		dhcpZone = udm.create_object('dhcp/service', service = uts.random_name())
@@ -51,7 +45,8 @@ if __name__ == '__main__':
 			'serverRole': uts.random_string()
 		}
 		properties['dhcpEntryZone'] = '%s %s %s' % (dhcpZone, properties['ip'], properties['mac'])
-		
+
+
 		expectedLdap = {
 			'cn': [properties['name']],
 			'sn': [properties['name']],
@@ -70,11 +65,14 @@ if __name__ == '__main__':
 			'univentionServerRole': [properties['serverRole'], 'windows_domaincontroller'],
 			'gidNumber': ldap.search(base = properties['primaryGroup'], attr = ['gidNumber'])[0][1].get('gidNumber', []),
 			'univentionInventoryNumber': [properties['inventoryNumber']],
-			'sambaSID': ['S-1-4-%s' % str( int(ldap.getAttr('cn=uidNumber,cn=temporary,cn=univentoin,%s' % ucr['ldap/base'], 'univentionLastUsedValue')[0])+1 ) if s4Connector else '%s-%s' % (ldap.search(filter = 'objectClass=sambaDomain', attr = ['sambaSID'])[0][1]['sambaSID'][0], properties['sambaRID'])],
+			'sambaSID': ['S-1-4-%s' % str( int(ldap.getAttr('cn=uidNumber,cn=temporary,cn=univention,%s' % ucr['ldap/base'], 'univentionLastUsedValue')[0])+1 ) if utils.s4connector_present() else '%s-%s' % (ldap.search(filter = 'objectClass=sambaDomain', attr = ['sambaSID'])[0][1]['sambaSID'][0], properties['sambaRID'])],
 			'sambaPrimaryGroupSID': [ldap.getAttr(properties['primaryGroup'], 'sambaSID')[0]],
 			'krb5PrincipalName': ['host/%s.%s@%s' % (properties['name'], properties['domain'].lower(), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
 		}
 
+		udm.addCleanupLock('aRecord', expectedLdap['aRecord'])
+		udm.addCleanupLock('mac', expectedLdap['macAddress'])
+		udm.addCleanupLock('sid', expectedLdap['sambaSID'])
 
 		# validate computer ldap object
 		computerDN = udm.create_object(objectType, **properties)
@@ -88,7 +86,7 @@ if __name__ == '__main__':
 		}):
 			utils.fail('Automatically created DHCP host object differs from expectation')
 
-		# validate relalted A record
+		# validate related A record
 		if not utils.verify_ldap_object('relativeDomainName=%s,%s' % (properties['name'], properties['dnsEntryZoneForward']), {
 			'aRecord': [properties['ip']],
 			'relativeDomainName': [properties['name']],

@@ -1,3 +1,26 @@
+ucs-test (4.0.42-1) unstable; urgency=low
+
+  * added function to determine whether a s4 connector is present in domain or
+  	not to utils.py
+  * fixed some typos in certain udm-computers test cases
+  * fixed s4 connector detection in udm-computers test cases
+  * udm-computers test will remove created locking objects after test end
+  * added test to validate that "ntCompatibility=1" is handled correctly in
+    computers/windows module
+  * do not set "ntCompatibility=1" in
+    66_udm-computers/01_create_and_validate_windows.py
+  (Bug #31659)
+
+  * if UCSTestUDM.cleanup() failed to remove one or more objects during the cleanup,
+  	it will try to remove them again
+  * added function to add locks to a removal list for cleanup to UCSTestUDM()
+  (Bug #30560)
+
+  * skip test 66_udm-computers/08_create_and_validate_macos.py for now
+  (Bug #31832)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 28 Jun 2013 15:40:54 +0200
+
 ucs-test (4.0.41-2) unstable; urgency=low
 
   * Fixed quoting in some tests in 51_samba4 (Bug #29230)

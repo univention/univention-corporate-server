@@ -106,6 +106,28 @@ def verify_ldap_object(baseDn, expected_attr = {}):
 	return True
 
 
+def remove_ldap_lock(dn):
+	try:
+		get_ldap_connection().remove(dn)
+	except:
+		pass
+
+
+def s4connector_present():
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	if ucr.is_true('directory/manager/samba3/legacy', False):
+		return False
+	if ucr.is_false('directory/manager/samba3/legacy', False):
+		return True
+
+	for dn, attr in get_ldap_connection().search(filter = '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord']):
+		if 'aRecord' in attr:
+			return True
+
+
+
 def wait_for_replication():
 	print 'Waiting for replication:'
 	for i in range(0,300):

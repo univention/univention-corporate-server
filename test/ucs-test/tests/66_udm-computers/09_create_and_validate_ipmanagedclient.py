@@ -12,20 +12,9 @@ import smbpasswd
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.utils as utils
-import univention.config_registry as configRegistry
 
 
 if __name__ == '__main__':
-	ldap = utils.get_ldap_connection()
-	ucr = configRegistry.ConfigRegistry()
-	ucr.load()
-
-	s4Connector = None
-	if ucr.is_true('directory/manager/samba3/legacy', False):
-		s4Connector = False
-	elif ucr.is_false('directory/manager/samba3/legacy', False):
-		s4Connector = True
-
 	objectType = 'computers/ipmanagedclient'
 	with udm_test.UCSTestUDM() as udm:
 		dhcpZone = udm.create_object('dhcp/service', service = uts.random_name())
@@ -42,7 +31,7 @@ if __name__ == '__main__':
 			'inventoryNumber': uts.random_string(),
 		}
 		properties['dhcpEntryZone'] = '%s %s %s' % (dhcpZone, properties['ip'], properties['mac'])
-		
+
 		expectedLdap = {
 			'cn': [properties['name']],
 			'sn': [properties['name']],
@@ -53,6 +42,9 @@ if __name__ == '__main__':
 			'aRecord': [properties['ip']],
 			'univentionInventoryNumber': [properties['inventoryNumber']],
 		}
+
+		udm.addCleanupLock('aRecord', expectedLdap['aRecord'])
+		udm.addCleanupLock('mac', expectedLdap['macAddress'])
 
 
 		# validate computer ldap object
@@ -67,7 +59,7 @@ if __name__ == '__main__':
 		}):
 			utils.fail('Automatically created DHCP host object differs from expectation')
 
-		# validate relalted A record
+		# validate related A record
 		if not utils.verify_ldap_object('relativeDomainName=%s,%s' % (properties['name'], properties['dnsEntryZoneForward']), {
 			'aRecord': [properties['ip']],
 			'relativeDomainName': [properties['name']],
