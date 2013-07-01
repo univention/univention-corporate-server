@@ -91,6 +91,8 @@ tries to read a variable (\ucsBug{31725}).
 non-UTF-8 passwords were used for LDAP bind against the \{K5KEY\} scheme has
 been fixes (\ucsBug{31352}).
 
+\item When slapd could not be started by its initscript, slapschema is called to determine the cause and the output is displayed (\ucsBug{23055}).
+
 \item The slapcat output could get truncated during univention-ldap-backup.
 This issue has been fixed (\ucsBug{31170}).
 
@@ -222,6 +224,7 @@ the value of \ucsCommand{windows/domain} on the DC master (\ucsBug{24442}).
   (\ucsBug{31154}).
 \item The debug output is now explicitly flushed in order to prevent
   partial or missing lines in the log file (\ucsBug{31421}).
+\item Removed duplicate mapping.register call for univentionInventoryNumber (\ucsBug{24102}).
 \end{itemize}
 
 \subsubsection{Basic settings / Univention System Setup}
@@ -376,9 +379,10 @@ create such password. The length and complexity can be configured via the
 %\begin{itemize}
 %\end{itemize}
 
-%\subsection{DNS}
-%\begin{itemize}
-%\end{itemize}
+\subsection{DNS}
+\begin{itemize}
+\item Delete cached dns zonefile upon zone deletion (\ucsBug{16270}).
+\end{itemize}
 
 \subsection{Cyrus}
 \begin{itemize}
