@@ -1,3 +1,13 @@
+ucs-test-tools (3.0.0-1) unstable; urgency=low
+
+  * import_ldif_*: added two new tools to import a test
+    environment. One uses ldapadd which goes through the listener and
+    the other one uses slapadd which ignores the listener (Bug #29418)
+  * UCS 3.2 version bump
+  * Update copyright year
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 01 Jul 2013 11:42:32 +0200
+
 ucs-test-tools (2.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.
