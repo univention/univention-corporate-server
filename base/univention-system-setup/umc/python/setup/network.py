@@ -149,7 +149,7 @@ class Interfaces(dict):
 
 		# make sure at least one interface is configured with an IPv4 or IPv6 address
 		if not self or not any(device.ip4 or device.ip6 or device.ip4dynamic or device.ip6dynamic for device in self.values()):
-			raise DeviceError(_('There is no interface configured. At least one IPv4 or IPv6 address or DHCP or SLAAC has to be specified.'))
+			raise DeviceError(_('There is no device configured. At least one IPv4 or IPv6 address or DHCP or SLAAC has to be specified.'))
 
 		self.set_device_order()
 
@@ -160,7 +160,7 @@ class Interfaces(dict):
 				for address, netmask in device.ip4:
 					# check for duplicated IP's
 					if address in all_ip4s:
-						raise DeviceError(_('Duplicated IP address %r') % (address), device.name)
+						raise DeviceError(_('Duplicated IP address: %r') % (address), device.name)
 					all_ip4s.add(address)
 
 	def check_unique_ip6_address(self):
@@ -170,7 +170,7 @@ class Interfaces(dict):
 				for address, prefix, identifier in device.ip6:
 					# check for duplicated IP's
 					if address in all_ip6s:
-						raise DeviceError(_('Duplicated IP address %r') % (address), device.name)
+						raise DeviceError(_('Duplicated IP address: %r') % (address), device.name)
 					all_ip6s.add(address)
 
 	def set_device_order(self):
@@ -293,7 +293,7 @@ class Device(object):
 
 	def validate_name(self):
 		if not re.match('^[a-zA-Z]+[0-9]+$', self.name):
-			raise DeviceError(_('Invalid device name %r') % (self.name))
+			raise DeviceError(_('Invalid device name: %r') % (self.name))
 
 	def validate_ip4(self):
 		# validate IPv4
@@ -303,13 +303,13 @@ class Device(object):
 				try:
 					iaddress = int(ipaddr.IPv4Address(address))
 				except (ValueError, ipaddr.AddressValueError):
-					raise DeviceError(_('Invalid IPv4 address %r') % (address), self.name)
+					raise DeviceError(_('Invalid IPv4 address: %r') % (address), self.name)
 
 				# validate netmask
 				try:
 					network = ipaddr.IPv4Network('%s/%s' % (address, netmask))
 				except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
-					raise DeviceError(_('Invalid IPv4 netmask %r') % (netmask), self.name)
+					raise DeviceError(_('Invalid IPv4 netmask: %r') % (netmask), self.name)
 
 	def validate_ip6(self):
 		# validate IPv6
@@ -319,17 +319,17 @@ class Device(object):
 				try:
 					iaddress = int(ipaddr.IPv6Address(address))
 				except ipaddr.AddressValueError:
-					raise DeviceError(_('Invalid IPv6 address %r') % (address), self.name)
+					raise DeviceError(_('Invalid IPv6 address: %r') % (address), self.name)
 
 				# validate IPv6 netmask
 				try:
 					ipaddr.IPv6Network('%s/%s' % (address, prefix))
 				except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
-					raise DeviceError(_('Invalid IPv6 netmask %r') % (prefix), self.name)
+					raise DeviceError(_('Invalid IPv6 netmask: %r') % (prefix), self.name)
 
 				# validate IPv6 identifier
 				if not RE_IPV6_ID.match(identifier):
-					raise DeviceError(_('Invalid IPv6 identifier %r') % (identifier), self.name)
+					raise DeviceError(_('Invalid IPv6 identifier: %r') % (identifier), self.name)
 
 			# There must be a 'default' identifier
 			if self.ip6 and not any(identifier == 'default' for address, prefix, identifier in self.ip6):
@@ -338,7 +338,7 @@ class Device(object):
 	def limit_ip4_address(self):
 		if len(self.ip4) > 1:
 			# UCR can't support multiple IPv4 addresses on VLAN, Bridge and Bond interfaces; Bug #31767
-			raise DeviceError(_('Multiple IPv4 addresses are not supported on this interface.'), self.name)
+			raise DeviceError(_('Multiple IPv4 addresses are not supported on this device.'), self.name)
 
 	def check_unique_interface_usage(self):
 		# make sure that used interfaces can not be used by other interfaces, too
@@ -539,7 +539,7 @@ class VLAN(Device):
 
 		# parent interface must exists
 		if self.parent_device not in self.interfaces:
-			raise DeviceError(_('Missing interface %r') % (name), self.name)
+			raise DeviceError(_('Missing device: %r') % (name), self.name)
 
 		if isinstance(self.interfaces[self.parent_device], VLAN):
 			# unsupported
@@ -547,7 +547,7 @@ class VLAN(Device):
 
 	def validate_name(self):
 		if not re.match('^[a-zA-Z]+[0-9]+\.[0-9]+$', self.name):
-			raise DeviceError(_('Invalid device name %r') % (self.name))
+			raise DeviceError(_('Invalid device name: %r') % (self.name))
 		if not (1 <= self.vlan_id <= 4096):
 			raise DeviceError(_('Invalid VLAN ID. Must be between 1 and 4096.'), self.name)
 
@@ -600,22 +600,22 @@ class Bond(Device):
 		# at least one interface must exists in a bonding
 		# FIXME: must bond_slaves contain at least 2 interfaces?
 		# FIXME: must bond_primary be set?
-		if not self.bond_slaves or not self.bond_primary:
-			raise DeviceError(_('Missing interface for bond interface'), self.name)
+		if not self.bond_slaves: # or not self.bond_primary:
+			raise DeviceError(_('Missing device for bond-slaves'), self.name)
 
 		for name in set(self.bond_slaves + self.bond_primary):
 			# all interfaces must exists
 			if name not in self.interfaces:
-				raise DeviceError(_('Missing interface %r') % (name), self.name)
+				raise DeviceError(_('Missing device: %r') % (name), self.name)
 
 			# all interfaces must be physical
 			if not isinstance(self.interfaces[name], Ethernet) or not name in PHYSICAL_INTERFACES:
-				raise DeviceError(_('Interfaces used in a bonding must be physical: %s is not') % (name), self.name)
+				raise DeviceError(_('Devices used in a bonding must be physical: %s is not') % (name), self.name)
 
 			# all used interfaces in a bonding must be unconfigured
 			interface = self.interfaces[name]
 			if interface.ip4 or interface.ip6:
-				raise DeviceError(_('Cannot use configured interface %s') % (name), self.name)
+				raise DeviceError(_('Cannot use device %s: Device must be unconfigured') % (name), self.name)
 
 		# all bond-primaries must exists as bond-slaves
 		if not set(self.bond_primary).issubset(set(self.bond_slaves)):
@@ -630,7 +630,7 @@ class Bond(Device):
 				if bond_mode not in self.modes_r and bond_mode not in self.modes:
 					raise ValueError
 			except ValueError:
-				raise DeviceError(_('Invalid bond-mode %r') % (self.bond_mode), self.name)
+				raise DeviceError(_('Invalid bond-mode: %r') % (self.bond_mode), self.name)
 
 	@property
 	def subdevice_names(self):
@@ -705,11 +705,11 @@ class Bridge(Device):
 		for name in self.bridge_ports:
 			# all interfaces must exists
 			if name not in self.interfaces:
-				raise DeviceError(_('Missing interface %r') % (name), self.name)
+				raise DeviceError(_('Missing device: %r') % (name), self.name)
 
 			# interface can't be a Bridge
 			if isinstance(self.interfaces[name], Bridge):
-				raise DeviceError(_('Interface cannot use Bridge %r as bridge-port') % (name), self.name)
+				raise DeviceError(_('Cannot use Bridge %r as bridge-port') % (name), self.name)
 
 		self.check_unique_interface_usage()
 

@@ -90,7 +90,7 @@ define([
 					}, {
 						name: 'interfaceType',
 						type: ComboBox,
-						label: _('Interface type'),
+						label: _('Device type'),
 						value: device.interfaceType,
 						sortDynamicValues: false,
 						dynamicValues: lang.hitch(this, function() {
@@ -143,30 +143,37 @@ define([
 							}
 							return true;
 						}),
+						visible: false,
 						onChange: lang.hitch(this, function(name) {
 							if (!this.getWidget('name_b').get('visible')) { return; }
+							if (!this.creation) { return; }
 							this.getWidget('name').set('value', name);
 						})
 					}, {
 						name: 'name_eth',
 						label: _('Device'),
+						value: device.name,
 						type: ComboBox,
 						dynamicValues: lang.hitch(this, function() {
 							return types.Ethernet.getPossibleSubdevices(this.available_interfaces, this.physical_interfaces, this.name);
 						}),
+						visible: false,
 						onChange: lang.hitch(this, function(name) {
 							if (!this.getWidget('name_eth').get('visible')) { return; }
+							if (!this.creation) { return; }
 							this.getWidget('name').set('value', name);
 						})
 					}, {
 						name: 'parent_device',
 						label: _('Parent device'),
 						type: ComboBox,
+						visible: false,
 						dynamicValues: lang.hitch(this, function() {
 							return types.VLAN.getPossibleSubdevices(this.available_interfaces, this.physical_interfaces, this.name);
 						}),
 						onChange: lang.hitch(this, function(parent_device) {
 							if (!this.getWidget('parent_device').get('visible')) { return; }
+							if (!this.creation) { return; }
 							this.getWidget('name').set('value', parent_device + '.' + String(this.getWidget('vlan_id').get('value')));
 						})
 					}, {
@@ -187,15 +194,16 @@ define([
 							var name = this.name;
 							return array.every(this.available_interfaces, function(iface) { return iface.name !== name; });
 						}),
+						visible: false,
 						onChange: lang.hitch(this, function(vlan_id) {
 							if (!this.getWidget('vlan_id').get('visible')) { return; }
+							if (!this.creation) { return; }
 							this.getWidget('name').set('value', this.getWidget('parent_device').get('value') + '.' + String(vlan_id));
 						})
 					}]
 				}, {
 					name: 'network',
 					headerText: _('Network device configuration'),
-					helpText: _('Configure the %s network device %s', device.label, device.name),
 					widgets: [{
 						name: 'primary',
 						label: _('Configure as primary network device'),
@@ -322,7 +330,6 @@ define([
 					// A network bridge (software side switch)
 					name: 'Bridge',
 					headerText: _('Bridge configuration'),
-					helpText: _('Configure the %s network device %s', device.label, device.name),
 					widgets: [{
 						name: 'bridge_ports',
 						label: _('bridge ports'),
@@ -354,7 +361,6 @@ define([
 				}, {
 					name: 'Bond',
 					headerText: _('Bond configuration'),
-					helpText: _('Configure the %s network device %s', device.label, device.name),
 					widgets: [{
 						name: 'bond_slaves',
 						label: _('Bond slaves'),
@@ -376,7 +382,7 @@ define([
 							type: ComboBox,
 							depends: ['bond_slaves'],
 							dynamicValues: lang.hitch(this, function(vals) {
-								return vals['bond_slaves'];
+								return vals.bond_slaves;
 							})
 						}]
 					}, {
@@ -495,11 +501,6 @@ define([
 
 		canFinish: function(values) {
 
-			var valid = values.interfaceType && values.name; // both must be set
-			if (!valid) {
-				dialog.alert(_('A valid device and device type have to be specified. Please correct your input.'));
-			}
-
 			if (this.interfaceType === 'Ethernet') {
 				if (!(values.ip4.length || values.ip4dynamic || values.ip6.length || values.ip6dynamic)) {
 					dialog.alert(_('At least one ip address have to be specified or DHCP or SLACC have to be enabled.'));
@@ -523,6 +524,7 @@ define([
 				}
 			}));
 
+			var valid = true;
 			array.forEach(pages, lang.hitch(this, function(page) {
 				tools.forIn(this._pages[page]._form._widgets, function(iname, iwidget) {
 					valid = valid && (!iwidget.get('visible') || (!iwidget.isValid || false !== iwidget.isValid()));

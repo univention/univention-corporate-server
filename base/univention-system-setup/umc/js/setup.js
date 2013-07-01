@@ -35,7 +35,6 @@ define([
 	"dojo/promise/all",
 	"dojo/topic",
 	"dojo/when",
-	"dojo/json",
 	"dojo/Deferred",
 	"dijit/Dialog",
 	"dojox/timing/_base",
@@ -56,7 +55,7 @@ define([
 	"umc/modules/setup/SoftwarePage",
 	"umc/modules/setup/SystemRolePage",
 	"umc/modules/setup/HelpPage"
-], function(declare, lang, array, all, topic, when, json, Deferred, DijitDialog, timing,
+], function(declare, lang, array, all, topic, when, Deferred, DijitDialog, timing,
 	tools, dialog, Text, Form, Module, TabContainer, ProgressBar, libServer, _) {
 
 	var CancelDialogException = declare("umc.modules.setup.CancelDialogException", null, {
@@ -450,14 +449,18 @@ define([
 						}
 						var target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=' + username);
 
-						// FIXME: !!!
 						// Consider IP changes, replace old ip in url by new ip
-						tools.forIn(this._orgValues, function(ikey, ival) {
+						tools.forIn(this._orgValues.interfaces, function(ikey, iface) {
 							// 1. check if value is equal to the current IP
-							// 2. check if the key for this value startswith interfaces/
-							// 3. check if a new value was set
-							if ((ival == window.location.host) && (array.indexOf(ikey, 'interfaces/') === 0)  && (values[ikey])) {
-								target = target.replace(new RegExp(ival+"/univention-management-console", "g"), values[ikey]+"/univention-management-console");
+							// 2. check if a new value was set
+							var oldIp = iface.ip4[0] && iface.ip4[0][0];
+							var oldIp6 = iface.ip6[0] && iface.ip6[0][0];
+							var newIp = values.interfaces[ikey] && values.interfaces[ikey].ip4[0] && values.interfaces[ikey].ip4[0][0];
+							var newIp6 = values.interfaces[ikey] && values.interfaces[ikey].ip6[0] && values.interfaces[ikey].ip6[0][0];
+							if ((oldIp == window.location.host) && newIp) {
+								target = target.replace(new RegExp(oldIp+"/univention-management-console", "g"), newIp+"/univention-management-console");
+							} else if ((oldIp6 == window.location.host) && newIp6) {
+								target = target.replace(new RegExp(oldIp6+"\\]/univention-management-console", "g"), newIp6+"]/univention-management-console");
 							}
 						});
 
@@ -505,13 +508,24 @@ define([
 						values[ikey] = newVal;
 						++nchanges;
 
-						// FIXME: !!!
-						// check whether a redirect to a new IP address is necessary
-						if ( umc_url === null ) {
-							if ( ikey == 'interfaces/eth0/address' && newVal ) {
-								umc_url = 'https://' + newVal + '/umc/';
-							} else if ( ikey == 'interfaces/eth0/ipv6/default/address' && newVal ) {
-								umc_url = 'https://[' + newVal + ']/umc/';
+						if (ikey === 'interfaces' && umc_url === null) {
+							// check whether a redirect to a new IP address is necessary
+							var device = pageVals['interfaces/primary'] || 'eth0';
+							var iface = ival[device];
+							var oldIface = orgVal[device];
+							if (iface) {
+								if (iface.ip4[0]) {
+									var newIp = iface.ip4[0][0];
+									if (newIp && (!oldIface || newIp !==  oldIface.ip4[0][0])) {
+										umc_url = 'https://' + newIp + '/umc/';
+									}
+
+								} else if(iface.ip6[0]) {
+									var newIp6 = iface.ip6[0][0];
+									if (newIp6 && (!oldIface || newIp6 != oldIface.ip6[0][0])) {
+										umc_url = 'https://[' + newIp6 + ']/umc/';
+									}
+								}
 							}
 						}
 					}
@@ -576,7 +590,7 @@ define([
 
 				// construct message for validation
 				array.forEach(summaries, function(idesc) {
-					//console.log('#', json.stringify(idesc));
+					//console.log('#', require('dojo/json').stringify(idesc));
 					array.forEach(idesc.validationMessages || [], function(imsg) {
 						validationMessage += '<li>' + idesc.description + ': ' + imsg + '</li>';
 					});

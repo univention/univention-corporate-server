@@ -32,7 +32,6 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
 	"dijit/Dialog",
@@ -43,7 +42,7 @@ define([
 	"umc/modules/setup/InterfaceWizard",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, on, Memory, Observable, Dialog, dialog, tools, Grid, _FormWidgetMixin, InterfaceWizard, types, _) {
+], function(declare, lang, array, Memory, Observable, Dialog, dialog, tools, Grid, _FormWidgetMixin, InterfaceWizard, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
 
@@ -63,7 +62,7 @@ define([
 			lang.mixin(this, {
 				columns: [{
 					name: 'name',
-					label: _('Interface'),
+					label: _('Network device'),
 					width: '18%'
 				}, {
 					name: 'interfaceType',
@@ -142,9 +141,12 @@ define([
 
 			this._cachedInterfaces = {};
 
+			this._ready = false;
 			array.forEach(this.moduleStore.query(), lang.hitch(this, function(iface) {
 				this._consistence(iface, -1, 0);
 			}));
+			this._ready = true;
+			this._disableUsedInterfaces();
 
 			this.moduleStore.query().observe(lang.hitch(this, function(iface, removedFrom, insertedInto) {
 				this._consistence(iface, removedFrom, insertedInto);
@@ -159,7 +161,7 @@ define([
 		_disableUsedInterfaces: function() {
 			var to_disable = {};
 
-			var items = array.filter(this.getAllItems(), function(item) { return item !== null; });
+			var items = this.get('value');
 			array.forEach(items, function(iface) {
 				if (!iface.isVLAN()) {
 					array.forEach(iface.getSubdevices(), function(name) {
@@ -192,20 +194,18 @@ define([
 						var filtered = {}; tools.forIn(iiface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
 						this._cachedInterfaces[iiface.name] = lang.clone(filtered);
 
-						iiface.ip4 = []
-						iiface.ip6 = []
-						iiface.ip4dynamic = false;
-						iiface.ip6dynamic = false;
-						setTimeout(lang.hitch(this, function() {
-							this.moduleStore.put(iiface);
-						}), 0);
+						if (this._ready) {
+							iiface.ip4 = [];
+							iiface.ip6 = [];
+							iiface.ip4dynamic = false;
+							iiface.ip6dynamic = false;
+							setTimeout(lang.hitch(this, function() {
+								this.moduleStore.put(iiface);
+							}), 0);
+						}
 					}));
 				}
 			} else {
-
-				if (iface.name === this['interfaces/primary']) {
-					this.set('interfaces/primary', '');
-				}
 
 				// restore original values
 				array.forEach(iface.getSubdevices(), lang.hitch(this, function(ikey) {
@@ -258,7 +258,7 @@ define([
 				this.moduleStore.add( iface );
 			} catch(error) {
 				console.log(error);
-				dialog.alert(_('Interface "%s" already exists.', iface.name));
+				dialog.alert(_('Device "%s" already exists.', iface.name));
 				return;
 			}
 
@@ -276,6 +276,20 @@ define([
 		_addInterface: function() {
 			// grid action
 			this._showWizard({device: { interfaceType: 'Ethernet', name: ''}, creation: true});
+		},
+
+		_removeInterfaces: function(ids) {
+			// grid action
+			// remove the interfaces from grid
+			array.forEach(ids, function(iid) {
+				var iface = this.getItem(iid);
+				if (iface && iface.name === this['interfaces/primary']) {
+					this.set('interfaces/primary', '');
+				}
+
+				this.moduleStore.remove(iid);
+			}, this);
+			this._set('value', this.get('value'));
 		},
 
 		_showWizard: function(props) {
@@ -318,15 +332,6 @@ define([
 			_dialog.own(wizard);
 			this.own(_dialog);
 			_dialog.show();
-		},
-
-		_removeInterfaces: function(ids) {
-			// grid action
-			// remove the interfaces from grid
-			array.forEach(ids, function(iid) {
-				this.moduleStore.remove(iid);
-			}, this);
-			this._set('value', this.get('value'));
 		},
 
 		onChange: function() {

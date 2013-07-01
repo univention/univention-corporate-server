@@ -131,7 +131,7 @@ define([
 
 			// FIXME: as the grid is a border container it has to be resized manually if it is used as form element
 			this.own(aspect.after(this, 'resize', lang.hitch(this, function() {
-					this._form._widgets.interfaces.resize();
+				this._form._widgets.interfaces.resize();
 			})));
 		},
 
@@ -275,7 +275,7 @@ define([
 			var network_summary = '<ul>';
 			array.forEach(vals.interfaces, function(iface) {
 				network_summary += '<li>';
-				network_summary += iface.name + ': ';
+				network_summary += iface.name + ' (' + iface.label + '): ';
 				network_summary += iface.getSummary();
 				network_summary += '</li>';
 			});

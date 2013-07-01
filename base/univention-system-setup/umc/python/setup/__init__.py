@@ -381,7 +381,7 @@ class Instance(umcm.Base):
 			_append('interfaces', str(exc))
 
 		# validate the primary network interface
-		_check('interfaces/primary', lambda x: not x or x in interfaces, _('The primary interface must be an existing interface'))
+		_check('interfaces/primary', lambda x: not x or x in interfaces, _('The primary network device must exist.'))
 
 		# check nameservers
 		for ikey, iname in [('nameserver[1-3]', _('Domain name server')), ('dns/forwarder[1-3]', _('External name server'))]:

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-06-28 13:34+0200\n"
+"POT-Creation-Date: 2013-06-29 00:30+0200\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,21 +91,15 @@ msgstr ""
 "Die <i>Spracheinstellungen</i> beinhalten alle sprachrelevanten "
 "Einstellungsmöglichkeiten wie Zeitzone, Tastaturlayout und Systemsprache."
 
-#: umc/js/setup/InterfaceWizard.js:500
-msgid ""
-"A valid device and device type have to be specified. Please correct your "
-"input."
-msgstr ""
-
 #: umc/js/setup/BasisPage.js:101
 msgid "Access settings"
 msgstr "Zugriffseinstellungen"
 
-#: umc/js/setup.js:674
+#: umc/js/setup.js:689
 msgid "Account data"
 msgstr "Kontodaten"
 
-#: umc/js/setup/InterfaceGrid.js:315
+#: umc/js/setup/InterfaceGrid.js:320
 msgid "Add a network device"
 msgstr "Ein Netzwerkgerät hinzufügen"
 
@@ -113,11 +107,11 @@ msgstr "Ein Netzwerkgerät hinzufügen"
 msgid "Add device"
 msgstr "Netzwerkgerät hinzufügen"
 
-#: umc/js/setup/InterfaceWizard.js:430
+#: umc/js/setup/InterfaceWizard.js:427
 msgid "Advanced configuration"
 msgstr "Erweiterte Konfiguration"
 
-#: umc/js/setup.js:285 umc/js/setup.js:618 umc/js/setup.js:698
+#: umc/js/setup.js:285 umc/js/setup.js:633 umc/js/setup.js:713
 msgid "Apply changes"
 msgstr "Änderungen anwenden"
 
@@ -125,7 +119,7 @@ msgstr "Änderungen anwenden"
 msgid "Apply settings"
 msgstr "Einstellungen anwenden"
 
-#: umc/js/setup/InterfaceWizard.js:505
+#: umc/js/setup/InterfaceWizard.js:497
 msgid ""
 "At least one ip address have to be specified or DHCP or SLACC have to be "
 "enabled."
@@ -133,7 +127,7 @@ msgstr ""
 "Mindestens eine IP-Adresse muss angegeben werden oder DHCP oder SLAAC muss "
 "eingeschaltet sein."
 
-#: umc/js/setup/InterfaceWizard.js:265 umc/js/setup/types.js:116
+#: umc/js/setup/InterfaceWizard.js:264 umc/js/setup/types.js:116
 msgid "Autoconfiguration (SLAAC)"
 msgstr "Automatische Konfiguration (SLAAC)"
 
@@ -149,19 +143,19 @@ msgstr "Basissystem"
 msgid "Basic settings"
 msgstr "Basis-Einstellungen"
 
-#: umc/js/setup/InterfaceWizard.js:356
+#: umc/js/setup/InterfaceWizard.js:354
 msgid "Bond configuration"
 msgstr "Bond konfiguration"
 
-#: umc/js/setup/InterfaceWizard.js:427
+#: umc/js/setup/InterfaceWizard.js:424
 msgid "Bond device configuration"
 msgstr "Bond Gerätekonfiguration"
 
-#: umc/js/setup/InterfaceWizard.js:373
+#: umc/js/setup/InterfaceWizard.js:370
 msgid "Bond primary"
 msgstr ""
 
-#: umc/js/setup/InterfaceWizard.js:360 umc/js/setup/types.js:241
+#: umc/js/setup/InterfaceWizard.js:357 umc/js/setup/types.js:241
 msgid "Bond slaves"
 msgstr ""
 
@@ -173,11 +167,11 @@ msgstr ""
 msgid "Bridge"
 msgstr ""
 
-#: umc/js/setup/InterfaceWizard.js:324
+#: umc/js/setup/InterfaceWizard.js:323
 msgid "Bridge configuration"
 msgstr "Bridge konfiguration"
 
-#: umc/js/setup/InterfaceWizard.js:351
+#: umc/js/setup/InterfaceWizard.js:349
 msgid "Bridge device configuration"
 msgstr "Bridge Gerätekonfiguration"
 
@@ -189,8 +183,8 @@ msgstr "Bridge ports"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/js/setup.js:279 umc/js/setup.js:404 umc/js/setup.js:615
-#: umc/js/setup.js:662 umc/js/setup.js:694 umc/js/setup/InterfaceGrid.js:111
+#: umc/js/setup.js:279 umc/js/setup.js:404 umc/js/setup.js:630
+#: umc/js/setup.js:677 umc/js/setup.js:709 umc/js/setup/InterfaceGrid.js:111
 #: umc/js/setup/BasisPage.js:263
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -248,7 +242,7 @@ msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: umc/js/setup.js:743
+#: umc/js/setup.js:758
 msgid "Configuration finished"
 msgstr "Konfiguration abgeschlossen"
 
@@ -256,21 +250,15 @@ msgstr "Konfiguration abgeschlossen"
 msgid "Configuration of the UCS system role"
 msgstr "Konfiguration der UCS-Systemrolle"
 
-#: umc/js/setup/InterfaceWizard.js:201
+#: umc/js/setup/InterfaceWizard.js:200
 msgid "Configure as primary network device"
 msgstr "Als primäres Netzwerkgerät konfigurieren"
-
-#: umc/js/setup/InterfaceWizard.js:198 umc/js/setup/InterfaceWizard.js:325
-#: umc/js/setup/InterfaceWizard.js:357
-#, python-format
-msgid "Configure the %s network device %s"
-msgstr "Konfiguriere das %s Netzwerkgerät %s"
 
 #: umc/js/setup.js:407 umc/js/setup/BasisPage.js:267
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: umc/js/setup.js:810
+#: umc/js/setup.js:825
 msgid "Continue unjoined"
 msgstr "Ungejoint fortfahren"
 
@@ -286,11 +274,11 @@ msgstr "Ländercode"
 msgid "Currently selected system role"
 msgstr "Aktuell ausgewählte Systemrolle"
 
-#: umc/js/setup/InterfaceWizard.js:620 umc/js/setup/InterfaceWizard.js:655
+#: umc/js/setup/InterfaceWizard.js:613 umc/js/setup/InterfaceWizard.js:648
 msgid "DHCP query failed."
 msgstr "DHCP-Anfrage schlug fehl."
 
-#: umc/js/setup/InterfaceWizard.js:296
+#: umc/js/setup/InterfaceWizard.js:295
 msgid "DHCP-Query"
 msgstr ""
 
@@ -306,6 +294,15 @@ msgstr "Löschen"
 msgid "Device"
 msgstr "Gerät"
 
+#: umc/js/setup/InterfaceGrid.js:266
+#, python-format
+msgid "Device \"%s\" already exists."
+msgstr "Netzwerkgerät \"%s\" existiert bereits."
+
+#: umc/js/setup/InterfaceWizard.js:93
+msgid "Device type"
+msgstr "Netzwerkgerätetyp"
+
 #: umc/js/setup/SystemRolePage.js:74
 msgid "Domain controller backup"
 msgstr "Domänencontroller Backup"
@@ -318,7 +315,7 @@ msgstr "Domänencontroller Master"
 msgid "Domain controller slave"
 msgstr "Domänencontroller Slave"
 
-#: umc/js/setup/NetworkPage.js:300
+#: umc/js/setup/NetworkPage.js:295
 msgid "Domain name server"
 msgstr "Domänen-DNS-Server"
 
@@ -326,19 +323,19 @@ msgstr "Domänen-DNS-Server"
 msgid "Domain name server (max. 3)"
 msgstr "Domänen-DNS-Server (max. 3)"
 
-#: umc/js/setup/InterfaceWizard.js:233 umc/js/setup/types.js:110
+#: umc/js/setup/InterfaceWizard.js:232 umc/js/setup/types.js:110
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: umc/js/setup/InterfaceWizard.js:513
+#: umc/js/setup/InterfaceWizard.js:505
 msgid "Each IPv6 device must have an identifier"
-msgstr ""
+msgstr "Jedes IPv6 Gerät muss einen Bezeichnet haben"
 
 #: umc/js/setup/InterfaceGrid.js:86
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: umc/js/setup/InterfaceGrid.js:315
+#: umc/js/setup/InterfaceGrid.js:320
 msgid "Edit a network device"
 msgstr "Bearbeite ein Netzwerkgerät"
 
@@ -350,7 +347,7 @@ msgstr "E-Mailadresse"
 msgid "Ethernet"
 msgstr ""
 
-#: umc/js/setup/NetworkPage.js:304
+#: umc/js/setup/NetworkPage.js:299
 msgid "External name server"
 msgstr "Externer DNS-Server "
 
@@ -387,11 +384,11 @@ msgstr "Vollständiger Rechnername"
 msgid "Fully qualified domain name (e.g. master.example.com)"
 msgstr "Vollständiger Rechnername (z.B. master.example.com)"
 
-#: umc/js/setup/NetworkPage.js:92 umc/js/setup/NetworkPage.js:292
+#: umc/js/setup/NetworkPage.js:92 umc/js/setup/NetworkPage.js:287
 msgid "Gateway (IPv4)"
 msgstr "Gateway (IPv4)"
 
-#: umc/js/setup/NetworkPage.js:96 umc/js/setup/NetworkPage.js:296
+#: umc/js/setup/NetworkPage.js:96 umc/js/setup/NetworkPage.js:291
 msgid "Gateway (IPv6)"
 msgstr "Gateway (IPv6)"
 
@@ -407,7 +404,7 @@ msgstr "Allgemeine Einstellungen"
 msgid "Global network settings"
 msgstr "Globale Netzwerk-Einstellungen"
 
-#: umc/js/setup/NetworkPage.js:112 umc/js/setup/NetworkPage.js:308
+#: umc/js/setup/NetworkPage.js:112 umc/js/setup/NetworkPage.js:303
 msgid "HTTP proxy"
 msgstr "HTTP-Proxy"
 
@@ -427,27 +424,27 @@ msgstr "Hostname und Windows-Domäne dürfen nicht gleich sein."
 msgid "IP network devices"
 msgstr "IP Netzwerkgeräte"
 
-#: umc/js/setup/InterfaceWizard.js:212
+#: umc/js/setup/InterfaceWizard.js:211
 msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
-#: umc/js/setup/InterfaceWizard.js:307
+#: umc/js/setup/InterfaceWizard.js:306
 msgid "IPv4 network devices"
 msgstr "IPv4-Netzwerkgeräte"
 
-#: umc/js/setup/InterfaceWizard.js:241
+#: umc/js/setup/InterfaceWizard.js:240
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
-#: umc/js/setup/InterfaceWizard.js:310
+#: umc/js/setup/InterfaceWizard.js:309
 msgid "IPv6 network devices"
 msgstr "IPv6-Netzwerkgeräte"
 
-#: umc/js/setup/InterfaceWizard.js:248
+#: umc/js/setup/InterfaceWizard.js:247
 msgid "IPv6 prefix"
 msgstr "IPv6-Präfix"
 
-#: umc/js/setup/InterfaceWizard.js:256
+#: umc/js/setup/InterfaceWizard.js:255
 msgid "Identifier"
 msgstr "Bezeichner"
 
@@ -479,7 +476,7 @@ msgstr ""
 msgid "Information about the initial configuration"
 msgstr "Informationen über die Erstkonfiguration"
 
-#: umc/js/setup.js:718
+#: umc/js/setup.js:733
 msgid "Initialize the configuration process ..."
 msgstr "Initialisiere den Konfigurationsvorgang ..."
 
@@ -509,19 +506,6 @@ msgstr ""
 msgid "Installing software components"
 msgstr "Installation von Softwarekomponenten"
 
-#: umc/js/setup/InterfaceGrid.js:66
-msgid "Interface"
-msgstr "Netzwerkgerät"
-
-#: umc/js/setup/InterfaceGrid.js:261
-#, python-format
-msgid "Interface \"%s\" already exists."
-msgstr "Netzwerkgerät \"%s\" existiert bereits."
-
-#: umc/js/setup/InterfaceWizard.js:93
-msgid "Interface type"
-msgstr "Netzwerkgerätetyp"
-
 #: umc/js/setup/SoftwarePage.js:118
 msgid ""
 "It is not possible to mix NT and Active Directory compatible "
@@ -542,7 +526,7 @@ msgstr ""
 "gleichzeitig zu verwenden. Stellen sie sicher, dass die existierende UCS-"
 "Domäne NT-kompatibel (Samba 3) ist."
 
-#: umc/js/setup.js:649
+#: umc/js/setup.js:664
 msgid "Join"
 msgstr "Join"
 
@@ -578,7 +562,7 @@ msgstr "Ort"
 msgid "Location settings"
 msgstr "Standorteinstellungen"
 
-#: umc/js/setup/InterfaceWizard.js:410
+#: umc/js/setup/InterfaceWizard.js:407
 msgid "MII link monitoring frequency"
 msgstr ""
 
@@ -586,7 +570,7 @@ msgstr ""
 msgid "Member server"
 msgstr "Member-Server"
 
-#: umc/js/setup/InterfaceWizard.js:384
+#: umc/js/setup/InterfaceWizard.js:381
 msgid "Mode"
 msgstr "Modus"
 
@@ -594,7 +578,7 @@ msgstr "Modus"
 msgid "Name"
 msgstr "Name"
 
-#: umc/js/setup/InterfaceWizard.js:219
+#: umc/js/setup/InterfaceWizard.js:218
 msgid "Netmask"
 msgstr "Netzmaske"
 
@@ -602,11 +586,15 @@ msgstr "Netzmaske"
 msgid "Network"
 msgstr "Netzwerk"
 
+#: umc/js/setup/InterfaceGrid.js:66
+msgid "Network device"
+msgstr "Netzwerkgerät"
+
 #: umc/js/setup/InterfaceWizard.js:197
 msgid "Network device configuration"
 msgstr "Netzwerkgerätkonfiguration"
 
-#: umc/js/setup/NetworkPage.js:312
+#: umc/js/setup/NetworkPage.js:307
 msgid "Network devices"
 msgstr "Netzwerkgeräte"
 
@@ -622,15 +610,15 @@ msgstr "Neues Root-Passwort"
 msgid "Next"
 msgstr "Vor"
 
-#: umc/js/setup.js:531
+#: umc/js/setup.js:546
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen vorgenommen."
 
-#: umc/js/setup.js:765
+#: umc/js/setup.js:780
 msgid "Not all changes could be applied successfully:"
 msgstr "Nicht alle Änderungen konnten erfolgreich übernommen werden."
 
-#: umc/js/setup.js:769
+#: umc/js/setup.js:784
 msgid "Ok"
 msgstr "Ok"
 
@@ -646,11 +634,11 @@ msgstr "Einstellungen über die Organisation"
 msgid "Parent device"
 msgstr "Übergeordnetes Netzwerkgerät"
 
-#: umc/js/setup.js:645
+#: umc/js/setup.js:660
 msgid "Password"
 msgstr "Passwort"
 
-#: umc/js/setup/InterfaceWizard.js:607
+#: umc/js/setup/InterfaceWizard.js:600
 msgid "Please choose a network device before querying a DHCP address."
 msgstr ""
 "Bitte wählen Sie ein Netzwerkgerät bevor Sie eine DHCP-Adresse anfragen."
@@ -660,18 +648,18 @@ msgstr ""
 msgid "Please confirm the removal of the %d selected interfaces!"
 msgstr "Bitte Löschung der %d Netzwerkgeräte bestätigen!"
 
-#: umc/js/setup.js:610
+#: umc/js/setup.js:625
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
-#: umc/js/setup/NetworkPage.js:316
+#: umc/js/setup/NetworkPage.js:311
 msgid "Primary network device"
 msgstr "Primäres Netzwerkgerät"
 
-#: umc/js/setup.js:810
+#: umc/js/setup.js:825
 msgid "Reconfigure, retry"
 msgstr "Ändern, wiederholen"
 
@@ -707,7 +695,7 @@ msgstr ""
 "Soll das UMC-Modul geschlossen werden? Alle nicht gespeicherten Änderungen "
 "gehen verloren"
 
-#: umc/js/setup/InterfaceWizard.js:641
+#: umc/js/setup/InterfaceWizard.js:634
 #, python-format
 msgid "Should the nameserver and gateway be set: %s"
 msgstr "Sollen der Nameserver und Gateway gesetzt werden: %s"
@@ -747,18 +735,18 @@ msgstr ""
 "und Domänenname, LDAP-Basis, Windows-Domänename und das Passwort für die "
 "Systemadministration (root) fest. "
 
-#: umc/js/setup.js:753 umc/js/setup.js:759
+#: umc/js/setup.js:768 umc/js/setup.js:774
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
-#: umc/js/setup.js:804
+#: umc/js/setup.js:819
 msgid ""
 "The configuration was successful. Please confirm to complete the process."
 msgstr ""
 "Die Konfiguration war erfolgreich. Bitte bestätigen Sie, um den Vorgang "
 "abzuschließen."
 
-#: umc/js/setup.js:738
+#: umc/js/setup.js:753
 msgid ""
 "The connection to the server could not be established after {time} seconds. "
 "This problem can occur due to a change of the IP address. In this case, "
@@ -770,19 +758,19 @@ msgstr ""
 "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der {linkStart}neuen Adresse{linkEnd} ein."
 
-#: umc/js/setup/InterfaceWizard.js:535
+#: umc/js/setup/InterfaceWizard.js:528
 msgid "The entered data is not valid. Please correct the input."
 msgstr "Die eingegeben Daten sind nicht gültig. Bitte Eingaben korrigieren."
 
-#: umc/js/setup.js:604
+#: umc/js/setup.js:619
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
-#: umc/js/setup.js:541
+#: umc/js/setup.js:556
 msgid "The following entries could not be validated:"
 msgstr "Die folgenden Einträge konnte nicht validiert werden:"
 
-#: umc/js/setup.js:815
+#: umc/js/setup.js:830
 msgid ""
 "The settings can be changed in the UMC module \"Basic settings\" after the "
 "join process has been completed. Please confirm now to complete the process."
@@ -791,7 +779,7 @@ msgstr ""
 "\"Basis-Einstellungen\" geändert werden. Bitte bestätigen Sie, um den "
 "Vorgang abzuschließen."
 
-#: umc/js/setup.js:630
+#: umc/js/setup.js:645
 msgid ""
 "The specified settings will be applied to the system and the system will be "
 "joined into the domain. Please enter username and password of a domain "
@@ -801,7 +789,7 @@ msgstr ""
 "das System der Domäne beitreten. Bitte geben Sie dafür Benutzernamen und "
 "Password eines Administrator-Kontos der Domäne an."
 
-#: umc/js/setup.js:691
+#: umc/js/setup.js:706
 msgid ""
 "The specified settings will be applied to the system. This may take some "
 "time. Please confirm to proceed."
@@ -809,11 +797,11 @@ msgstr ""
 "Die angegebenen Einstellungen werden auf das System übertragen, dies kann "
 "einen Moment dauern. Bitte bestätigen Sie um fortzufahren."
 
-#: umc/js/setup.js:807
+#: umc/js/setup.js:822
 msgid "The system join was not successful."
 msgstr "Der Domänenbeitritt war nicht erfolgreich."
 
-#: umc/js/setup.js:813
+#: umc/js/setup.js:828
 msgid ""
 "The system join was successful, however, errors occurred while applying the "
 "configuration settings:"
@@ -833,19 +821,19 @@ msgstr "Zeitzonen- und Tastatureinstellungen"
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/setup/InterfaceWizard.js:341 umc/js/setup/InterfaceWizard.js:417
+#: umc/js/setup/InterfaceWizard.js:339 umc/js/setup/InterfaceWizard.js:414
 msgid "UCR options"
-msgstr ""
+msgstr "UCR Optionen"
 
 #: umc/js/setup/HelpPage.js:61
 msgid "UCS initial configuration"
 msgstr "UCS Erstkonfiguration"
 
-#: umc/js/setup/NetworkPage.js:283
+#: umc/js/setup/types.js:141
 msgid "Unconfigured"
 msgstr "Unkonfiguriert"
 
-#: umc/js/setup.js:641
+#: umc/js/setup.js:656
 msgid "Username"
 msgstr "Benutzername"
 
@@ -859,17 +847,17 @@ msgstr ""
 
 #: umc/js/setup/types.js:49
 msgid "Virtual LAN"
-msgstr "virtuelles LAN"
+msgstr "Virtuelles LAN"
 
 #: umc/js/setup/InterfaceWizard.js:174
 msgid "Virtual device ID"
-msgstr "virtuelle Geräte ID"
+msgstr "Virtuelle Geräte ID"
 
 #: umc/js/setup/BasisPage.js:88 umc/js/setup/BasisPage.js:225
 msgid "Windows domain"
 msgstr "Windows-Domäne"
 
-#: umc/js/setup.js:809
+#: umc/js/setup.js:824
 msgid ""
 "You may return, reconfigure the settings, and retry the join process. You "
 "may also continue and end the wizard leaving the system unjoined. The system "
@@ -880,27 +868,27 @@ msgstr ""
 "System ist dann nicht Teil der Domäne. Sie können es zu einem späteren "
 "Zeitpunkt mit dem UMC-Modul \"Domänenbeitritt\" hinzufügen."
 
-#: umc/js/setup/InterfaceWizard.js:328
+#: umc/js/setup/InterfaceWizard.js:326
 msgid "bridge ports"
 msgstr ""
 
-#: umc/js/setup/InterfaceWizard.js:641
+#: umc/js/setup/InterfaceWizard.js:634
 msgid "don't set"
 msgstr "nicht setzen"
 
-#: umc/js/setup/InterfaceWizard.js:335
+#: umc/js/setup/InterfaceWizard.js:333
 msgid "forwarding delay"
 msgstr ""
 
-#: umc/js/setup/InterfaceWizard.js:632
+#: umc/js/setup/InterfaceWizard.js:625
 msgid "gateway"
 msgstr "Gateway"
 
-#: umc/js/setup/InterfaceWizard.js:637
+#: umc/js/setup/InterfaceWizard.js:630
 msgid "nameserver"
 msgstr "DNS-Server"
 
-#: umc/js/setup/InterfaceWizard.js:304
+#: umc/js/setup/InterfaceWizard.js:303
 msgid "network device"
 msgstr "Netzwerkgerät"
 
@@ -908,239 +896,6 @@ msgstr "Netzwerkgerät"
 msgid "primary network device"
 msgstr "primäres Netzwerkgerät"
 
-#: umc/js/setup/InterfaceWizard.js:641
+#: umc/js/setup/InterfaceWizard.js:634
 msgid "set"
 msgstr "setzen"
-
-#~ msgid ""
-#~ "<h2>Base system</h2>A base system is an independent system. It is not a "
-#~ "member of a domain and does not maintain trust relationships with other "
-#~ "servers or domains. A base system is thus suitable for services which are "
-#~ "operated outside of the trust context of the domain, such as a web server "
-#~ "or a firewall. The services of a base system cannot be configured over "
-#~ "the UCS management system. However, it is possible to configure DNS and "
-#~ "DHCP settings for base systems via the Univention management system as "
-#~ "long as the base system is entered as an IP managed client in the "
-#~ "directory service."
-#~ msgstr ""
-#~ "<h2>Basissystem</h2>Ein Basissystem ist ein eigenständiges System. Es ist "
-#~ "nicht Mitglied einer Domäne und unterhält keine Vertrauensbeziehungen zu "
-#~ "anderen Servern oder Domänen. Ein Basissystem bietet sich somit für "
-#~ "Dienste an, die außerhalb des Vertrauenskontextes der Domäne betrieben "
-#~ "werden, etwa als Web-Server oder Firewall. Die Dienste eines Basissystems "
-#~ "können nicht über das UCS-Managementsystem konfiguriert werden. Es können "
-#~ "aber DNS- und DHCP-Einstellungen für Basissysteme über das Univention "
-#~ "Management System, sofern das betreffende Basissystem als IP-Managed-"
-#~ "Client im Verzeichnisdienst eingetragen wurde."
-
-#~ msgid ""
-#~ "<h2>Domain controller backup</h2>Servers with the role of domain "
-#~ "controller backup (DC backup for short) contain a replicated copy of the "
-#~ "entire LDAP directory, which cannot be changed as all write accesses "
-#~ "occur exclusively on the DC master. A copy of all SSL certificates "
-#~ "including the private key of the root CA is kept on the DC backup. The DC "
-#~ "backup is as such a backup copy of the DC master.  If the DC master "
-#~ "should collapse completely, running a special command allows the DC "
-#~ "backup to take over the role of the DC master permanently in a very short "
-#~ "time."
-#~ msgstr ""
-#~ "<h2>Domänencontroller Backup</h2>Auf Servern mit der Rolle "
-#~ "Domänencontroller Backup (kurz DC Backup) befindet sich eine replizierte "
-#~ "Kopie des gesamten LDAP-Verzeichnisses, die nicht verändert werden kann, "
-#~ "da alle Schreibzugriffe grundsätzlich am DC Master durchgeführt werden. "
-#~ "Ausserdem wird eine Kopie aller SSL-Zertifikate einschließlich des "
-#~ "privaten Schlüssels der Root-CA auf dem DC Backup vorgehalten. Der DC "
-#~ "Backup dient somit als Sicherheitskopie des DC Master.  Sollte der DC "
-#~ "Master dauerhaft ausfallen, kann ein DC Backup innerhalb kürzester Zeit "
-#~ "durch Aufruf eines Befehls die Rolle des DC Master dauerhaft übernehmen. "
-#~ "Dies ist nur notwendig, wenn Änderungen am LDAP-Verzeichnis vorgenommen "
-#~ "oder neue Zertifikate ausgestellt werden sollen, weil diese Aufgaben nur "
-#~ "von einem DC Master durchgeführt werden können."
-
-#~ msgid ""
-#~ "<h2>Domain controller master</h2>The domain controller master (DC master "
-#~ "for short) contains the original dataset for the entire LDAP directory. "
-#~ "Changes to the LDAP directory are only performed on this server. For this "
-#~ "reason, this must be the first system to be commissioned and there can "
-#~ "only be one of them within a domain. In addition, the Root Certification "
-#~ "Authority (root CA) is also on the DC master. All SSL certificates "
-#~ "created are archived on the DC master."
-#~ msgstr ""
-#~ "<h2>Domänencontroller Master</h2>Auf dem Domänencontroller Master (kurz "
-#~ "DC Master) befindet sich der Originaldatenbestand des gesamten LDAP-"
-#~ "Verzeichnisses. Änderungen im LDAP-Verzeichnis werden nur auf diesem "
-#~ "Server vorgenommen. Deswegen muss dieser als erstes System in Betrieb "
-#~ "genommen werden und kann innerhalb einer Domäne nur einmal existieren. "
-#~ "Außerdem befindet sich die Root Certification Authority (Root-CA) auf dem "
-#~ "DC Master. Alle ausgestellten SSL-Zertifikate werden auf dem DC Master "
-#~ "archiviert."
-
-#~ msgid ""
-#~ "<h2>Domain controller slave</h2>Each domain controller slave (DC slave "
-#~ "for short) contains a replicated copy of the entire LDAP directory, which "
-#~ "cannot be changed as all write accesses occur on the DC master. The copy "
-#~ "can either contain the entire directory or be limited to the files "
-#~ "required by a location through selective replication. The DC slave only "
-#~ "stores a copy of its own and the public SSL certificate of the root CA. A "
-#~ "DC slave system cannot be promoted to a DC master."
-#~ msgstr ""
-#~ "<h2>Domänencontroller Slave</h2>Auf einem Domänencontroller Slave (kurz "
-#~ "DC Slave) befindet sich eine replizierte Kopie des LDAP-Verzeichnisses, "
-#~ "die nicht verändert werden kann, da alle Schreibzugriffe am DC Master "
-#~ "durchgeführt werden. Die Kopie kann das gesamte Verzeichnis umfassen oder "
-#~ "durch selektive Replikation auf an einem Standort benötigte Daten "
-#~ "eingeschränkt werden. Auf einem DC Slave wird nur das eigene und das "
-#~ "öffentliche SSL-Zertifikat der Root-CA vorgehalten. Ein DC Slave-System "
-#~ "kann nicht zum DC Master hochgestuft werden."
-
-#~ msgid ""
-#~ "<h2>Member server</h2>Member servers are members of a LDAP domain and "
-#~ "offer services such as file storage for the domain. Member servers do not "
-#~ "contain a copy of the LDAP directory. It only stores a copy of its own "
-#~ "and the public SSL certificate of the root CA."
-#~ msgstr ""
-#~ "<h2>Member-Server</h2>Member-Server sind Mitglieder einer LDAP-Domäne und "
-#~ "bieten Dienste wie z.B. Datenspeicherung für die Domäne an. Auf einem "
-#~ "Member-Server befindet sich keine Kopie des LDAP-Verzeichnisses. Auf ihm "
-#~ "wird nur das eigene und das öffentliche SSL-Zertifikat der Root-CA "
-#~ "vorgehalten."
-
-#~ msgid "A virtual network device cannot be used for DHCP."
-#~ msgstr "Ein virtuelles Netzwerkgerät kann nicht für DHCP benutzt werden."
-
-#~ msgid "Activated"
-#~ msgstr "Aktiviert"
-
-#~ msgid "Basis"
-#~ msgstr "Allgemein"
-
-#~ msgid ""
-#~ "Changes for software components may result in restarting or stopping "
-#~ "services. This can have severe side-effects when the system is in "
-#~ "productive use at the moment."
-#~ msgstr ""
-#~ "Die Installation oder das Entfernen von Softwarekomponenten kann Neustart "
-#~ "oder Anhalten von diversen Diensten zur Folge haben. Dies kann ernsthafte "
-#~ "Auswirkungen haben, sollte sich das System im Produktiveinsatz befinden."
-
-#~ msgid "Changes to system setting may have a severe effect on your system."
-#~ msgstr ""
-#~ "Änderungen der Systemeinstellungen kann tiefgreifende Auswirkungen auf "
-#~ "Ihr System haben."
-
-#~ msgid "DHCP server"
-#~ msgstr "DHCP-Server"
-
-#~ msgid "Deactivated"
-#~ msgstr "Deaktiviert"
-
-#~ msgid "Desktop environment"
-#~ msgstr "Desktop-Umgebung"
-
-#~ msgid "IP addresses"
-#~ msgstr "IP-Adressen"
-
-#~ msgid "IPv6 interfaces with autoconfiguration (SLAAC)"
-#~ msgstr "IPv6-Netzwerkgeräte mit automatische Konfiguration (SLAAC)"
-
-#~ msgid "Information"
-#~ msgstr "Informationen"
-
-#~ msgid "Interface configuration"
-#~ msgstr "Netzwerkgerätekonfiguration"
-
-#~ msgid "Interfaces"
-#~ msgstr "Netzwerkgeräte"
-
-#~ msgid "Locality"
-#~ msgstr "Ort"
-
-#~ msgid ""
-#~ "No changes have been made. Please confirm to continue with the boot "
-#~ "process."
-#~ msgstr ""
-#~ "Es wurden keine Änderungen vorgenommen. Bitte bestätigen Sie, um mit dem "
-#~ "Boot-Prozess fortzufahren."
-
-#~ msgid "Note that some changes may require a new join into the UCS domain."
-#~ msgstr ""
-#~ "Nach bestimmten Änderungen kann ein neuer Join des Systems in die UCS-"
-#~ "Domäne notwendig sein."
-
-#~ msgid "Please confirm to continue with the boot process."
-#~ msgstr "Bitte bestätigen Sie, um mit dem Boot-Prozess fortzufahren."
-
-#~ msgid "Save"
-#~ msgstr "Speichern"
-
-#~ msgid "Server role"
-#~ msgstr "Systemrolle"
-
-#~ msgid "Server settings"
-#~ msgstr "Server-Einstellungen"
-
-#~ msgid "System role 5"
-#~ msgstr "Systemrolle 5"
-
-#~ msgid "The boot process will then continue automatically."
-#~ msgstr "Der Bootvorgang wird danach automatisch weiterlaufen."
-
-#~ msgid ""
-#~ "The changes could not be applied successfully. Please contact the "
-#~ "Administrator. Details follow."
-#~ msgstr ""
-#~ "Die Änderungen konnten nicht erfolgreich übernommen werden. Bitte wenden "
-#~ "Sie sich an den Administrator. Es folgt eine Auflistung der Fehler."
-
-#~ msgid ""
-#~ "The configuration was not successful, but the system has joined and thus "
-#~ "the wizard ends here. Please confirm to complete the process. Details "
-#~ "follow."
-#~ msgstr ""
-#~ "Die Konfiguration war nicht erfolgreich, der System Join konnte aber "
-#~ "durchgeführt werden. Bitte bestätigen Sie, um den Vorgang abzuschließen. "
-#~ "Es folgt eine Auflistung der Fehler."
-
-#~ msgid "The device must be one of the physical interfaces: "
-#~ msgstr ""
-#~ "Das Netzwerkgerät muss eins der physikalischen Netzwerkgeräte sein: "
-
-#~ msgid ""
-#~ "The system join was not successful. You may continue and end the wizard "
-#~ "leaving the system unjoined; it can be joined later with the dedicated "
-#~ "module. Or you may cancel and return to the wizard, change some fields "
-#~ "and retry. Details follow."
-#~ msgstr ""
-#~ "Der Join ist fehlgeschlagen. Sie können dennoch fortfahren und den Wizard "
-#~ "beenden, das System bleibt dann ungejoint. Sie können es zu einem "
-#~ "späteren Zeitpunkt mit dem dafür vorgesehenen Modul joinen. Oder Sie "
-#~ "brechen ab und kehren zum Wizard zurück, ändern die Werte und versuchen "
-#~ "es noch einmal. Es folgt eine Auflistung der Fehler."
-
-#~ msgid "There are no further interfaces to configure."
-#~ msgstr "Es existieren keine weiteren konfigurierbaren Netzwerkgeräte."
-
-#~ msgid "UCS appliance"
-#~ msgstr "UCS Appliance"
-
-#~ msgid "UCS server role 2"
-#~ msgstr "ffUCS-Systemrolle"
-
-#~ msgid "UCS system role"
-#~ msgstr "UCS-Systemrolle"
-
-#~ msgid "UCS system role 2"
-#~ msgstr "UCS-Systemrolle"
-
-#~ msgid ""
-#~ "Your session should be shut down automatically. If this has not happened "
-#~ "so far, you may force a shutdown by pressing Ctrl+Q."
-#~ msgstr ""
-#~ "Ihre Session sollte automatisch beendet werden. Ist dies nicht der Fall, "
-#~ "kann das Beenden mittels der Tastenkombination Ctrl+Q forciert werden."
-
-#~ msgid "enable Virtual LAN"
-#~ msgstr "virtuelles LAN aktivieren"
-
-#~ msgid "virtual"
-#~ msgstr "virtuell"
