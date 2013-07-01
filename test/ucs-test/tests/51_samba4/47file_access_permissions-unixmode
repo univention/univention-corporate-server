@@ -31,6 +31,28 @@ if ! user_create "$username"; then
 fi
 
 
+ADMIN_DN="$tests_domainadmin_account"
+echo "admin_dn1=$ADMIN_DN"
+if [ -z "$tests_domainadmin_account" ]; then
+	ADMIN_DN=$(/usr/sbin/univention-directory-manager users/user list --filter uid="Administrator" | sed -ne 's/^DN: //p')
+	echo "admin_dn2=$ADMIN_DN"
+fi
+
+ADMIN_NAME="$(univention-ldapsearch -b "$ADMIN_DN" uid | grep uid | sed -ne 's/^uid: //p')"
+echo "admin_name=$ADMIN_NAME"
+
+ADMIN_PASSWORD="$tests_domainadmin_pwd"
+echo "admin_password1=$tests_domainadmin_pwd"
+if [ -z "$ADMIN_PASSWORD" -a -e "$tests_domainadmin_pwdfile" ]; then
+	ADMIN_PASSWORD="$(cat $tests_domainadmin_pwdfile)"
+	echo "admin_password2=$ADMIN_PASSWORD"
+	
+fi
+if [ -z "$ADMIN_PASSWORD" ]; then
+	ADMIN_PASSWORD="univention"
+	echo "admin_password3=$ADMIN_PASSWORD"
+fi
+
 #----create Share
 echo "----create share"
 SHARE_POSITION="cn=shares,$ldap_base"
@@ -85,7 +107,7 @@ if [ "$?" != 0 ];then
 fi
 
 #----changing the folder's directorymode 
-udm-test shares/share modify --binddn "cn=admin,$ldap_base" --bindpwd "$(cat /etc/ldap.secret)" --dn "$SHARE_DN" --set "directorymode=0777"
+udm-test shares/share modify --binddn "ADMIN_DN" --bindpwd "ADMIN_PASSWORD" --dn "$SHARE_DN" --set "directorymode=0777"
 
 #----making a folder
 echo "----making a folder with permission"
