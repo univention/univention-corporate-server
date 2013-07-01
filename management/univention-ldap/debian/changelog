@@ -1,3 +1,11 @@
+univention-ldap (10.0.2-1) unstable; urgency=low
+
+  * Exit with error and display slapschema output when slapd initscript
+    could not start slapd (Bug #23055)
+  * Updated copyright
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 01 Jul 2013 11:32:40 +0200
+
 univention-ldap (10.0.1-1) unstable; urgency=low
 
   * also replace kerberos/adminserver in back2master (Bug #31077)

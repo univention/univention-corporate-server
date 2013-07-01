@@ -157,7 +157,7 @@ if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
 @!@
 
 	log_action_begin_msg "Starting ldap server(s): slapd "
-	(
+	
 @!@
 uris=['ldapi:///']
 for p in configRegistry.get('slapd/port', '7389').split(','):
@@ -169,8 +169,12 @@ if configRegistry.get('ldap/maxopenfiles'):
 	print '\t\tulimit -n %s' % configRegistry['ldap/maxopenfiles']
 @!@		start-stop-daemon --start --quiet --pidfile "$pidfile" \
 			--exec $DAEMON -- -h "${uris}"
-	)
-	log_action_end_msg 0
+	rvalue=$?
+	log_action_end_msg $rvalue
+	if [ $rvalue != 0 ]; then
+		[ -e /usr/sbin/slapschema ] && log_action_msg $(/usr/sbin/slapschema 2>&1)
+		exit $rvalue
+	fi
 
 	test -e /var/run/slapd/ldapi && ln -sf /var/run/slapd/ldapi /var/run/ldapi
 
