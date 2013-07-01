@@ -931,14 +931,14 @@ class object(univention.admin.handlers.simpleLdap):
 	def description(self):
 		return _('%s (%s on %s)') % (self['name'], self['path'], self['host'])
 
-def lookup_filter(filter_s=None):
-	lookup_filter = \
+def lookup_filter(filter_s=None, lo=None):
+	lookup_filter_obj = \
 		univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionShare'),
 			univention.admin.filter.expression('cn', '*'),
 		])
-	lookup_filter.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-	return lookup_filter
+	lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+	return lookup_filter_obj
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	filter=lookup_filter(filter_s)

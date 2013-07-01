@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.4-1) unstable; urgency=low
+
+  * Bug #31560: Improve lookup speedup of UCS_Server and DomainController
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 01 Jul 2013 14:54:52 +0200
+
 univention-directory-manager-modules (9.0.3-1) unstable; urgency=low
 
   * Removed duplicate mapping.register call for 

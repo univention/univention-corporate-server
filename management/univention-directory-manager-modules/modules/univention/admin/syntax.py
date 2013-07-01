@@ -1633,20 +1633,22 @@ class GroupID( UDM_Objects ):
 
 class IComputer_FQDN( UDM_Objects ):
 	udm_modules = ()
-	key = '%(fqdn)s'
-	label = '%(fqdn)s'
+	key = '%(name)s.%(domain)s' # '%(fqdn)s' optimized for LDAP lookup. Has to be in sync with the computer handlers' info['fqdn']
+	label = '%(name)s.%(domain)s' # '%(fqdn)s'
 	regex = re.compile( '(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)' ) #'(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
 	error_message = _( 'Not a valid FQDN' )
 	simple = True
 
 class DomainController( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave' )
+	use_objects = False
 
 class Windows_Server( IComputer_FQDN ):
 	udm_modules = ( 'computers/windows', 'computers/windows_domaincontroller' )
 
 class UCS_Server( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
+	use_objects = False
 
 class ServicePrint_FQDN( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )

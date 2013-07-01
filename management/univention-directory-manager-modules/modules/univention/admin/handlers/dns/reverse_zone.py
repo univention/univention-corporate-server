@@ -286,8 +286,8 @@ class object(univention.admin.handlers.simpleLdap):
 			return unmapSubnet(rdn_value)
 
 
-def lookup_filter(filter_s=None):
-	lookup_filter = \
+def lookup_filter(filter_s=None, lo=None):
+	lookup_filter_obj = \
 		univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'dNSZone'),
 			univention.admin.filter.expression('relativeDomainName', '@'),
@@ -296,8 +296,8 @@ def lookup_filter(filter_s=None):
 				univention.admin.filter.expression('zoneName', '*%s' % ARPA_IP6)
 			]),
 		])
-	lookup_filter.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
-	return lookup_filter
+	lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
+	return lookup_filter_obj
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
