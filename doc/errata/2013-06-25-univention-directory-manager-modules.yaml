@@ -2,10 +2,14 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-directory-manager-modules
-fix: 8.0.143-17.1020.201306251718
+fix: 8.0.143-18.1022.201307011502
 note:
 version: [1]
 desc: |
-  The removal of user and group quotas in policies/print_quota
-  has been fixed.
-bug: [31703]
+  This update fixes several issues:
+  * The removal of user and group quotas in policies/print_quota has been
+    fixed.
+  * Improved lookup speed of two more syntax classes which should result in
+    faster opening of objects in the UDM frontend especially in larger
+    environments.
+bug: [31703, 31560]
