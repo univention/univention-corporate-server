@@ -158,6 +158,9 @@ class object(univention.admin.handlers.simpleLdap):
 	def open( self ):
 		super( object, self ).open()
 		if 'name' in self.info and 'domain' in self.info:
+			# in syntax.py IComputer_FQDN key and label are '%(name)s.%(domain)s' for
+			#   performance reasons. These statements and this fqdn over here have to
+			#   be in sync.
 			self[ 'fqdn' ] = '%s.%s' % ( self[ 'name' ], self[ 'domain' ] )
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
