@@ -1,3 +1,10 @@
+univention-kde (8.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30944)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 01 Jul 2013 14:34:52 +0200
+
 univention-kde (7.0.9-1) unstable; urgency=low
 
   * moved autostart of univention-root-login-notification to autostart

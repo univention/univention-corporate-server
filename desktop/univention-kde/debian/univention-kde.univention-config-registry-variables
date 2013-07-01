@@ -1,5 +1,5 @@
 [hal/devices/group]
-Description[de]=Hal Geräte Gruppe
-Description[en]=Hal device group
+Description[de]=Mit dieser Variable kann eine Gruppe oder ein Benutzer konfiguriert werde, der auf dem KDE-Desktop die folgenden Berechtigungen erhält: Suspend/Herunterfahren des Systems, Konfiguration der Helligkeitseinstellungen von Notebook-Displays, Einbinden/Aushängen von Dateisystemen.
+Description[en]=With this variable a group or user can be configured who is granted the following permissions: Suspend/shutdown of the system, configuration of brightness settings of a notebook display, mount/umount of filesystems.
 Type=str
 Categories=system-desktop
