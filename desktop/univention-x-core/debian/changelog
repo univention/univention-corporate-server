@@ -1,3 +1,10 @@
+univention-x-core (7.0.0-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30944)
+  * Update copyright years for 2013
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 01 Jul 2013 16:14:20 +0200
+
 univention-x-core (7.0.0-1) unstable; urgency=low
 
   * converted hard dependency to univention-gdm to 

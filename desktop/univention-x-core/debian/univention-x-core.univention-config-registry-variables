@@ -1,199 +1,108 @@
-[xorg/.*]
-Description[de]=Xorg Konfigurationsvariable
-Description[en]=Xorg configuration variable
-Type=str
+[xorg/autodetect]
+Description[de]=Ist diese Variable aktiviert, wird die Hardware (Grafikkarte, Monitor und Eingabegeräte) automatisch erkannt und konfiguriert.
+Description[en]=If this variable is activated, the hardware (graphics adapter, display and input devices) is automatically detected and configured.
+Type=bool
 Categories=system-desktop
 
 [xorg/resolution]
-Description[de]=Bildschirm-Auflösung (Breite x Höhe in Pixeln)
-Description[en]=Display resolution
+Description[de]=Diese Variable gibt die unterstützen Auflösungen des angeschlossenen Monitors an. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=This variable specifies the supported resolutions of the connected monitor. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
 [xorg/module/load]
-Description[de]=Beim X-Serverstart zu ladende Xorg-Module
-Description[en]=X.org modules to load on X11 startup
-Type=str
-Categories=system-desktop
-
-[xorg/screen/DefaultDepth]
-Description[de]=Standard-Farbtiefe (in Bit)
-Description[en]=Default color depth (in bits)
-Type=str
-Categories=system-desktop
-
-
-[xorg/serverflags/.*]
-Description[de]=Xorg Serverflags-Sektion
-Description[en]=Xorg serverflags section
+Description[de]=Beim X-Serverstart zu ladende Xorg-Module. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=X.org modules to load on Xserver startup. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
 [xorg/serverflags/options/.*]
-Description[de]=Xorg Serverflags-Optionen
-Description[en]=Xorg serverflags options
-Type=str
-Categories=system-desktop
-
-[xorg/serverflags/options/AllowMouseOpenFail]
-Description[de]=Starte auch wenn die Maus nicht initialisiert werden konnte
-Description[en]=Start up even if the mouse device can't be opened/initialised
-Type=str
-Categories=system-desktop
-
-[xorg/serverflags/options/AllowEmptyInput]
-Description[de]=Deaktiviert die Benutzung der Standard-Treiber für Maus und Tastatur
-Description[en]=Deactivates the use of the default drivers for mouse and keyboard
-Type=str
-Categories=system-desktop
-
-[xorg/mouse/.*]
-Description[de]=Xorg Maus-Sektion
-Description[en]=Xorg mouse section
-Type=str
-Categories=system-desktop
-
-[xorg/mouse/.*/Driver]
-Description[de]=Maustreiber
-Description[en]=Mouse driver module
+Description[de]=Mit Variablen der Form 'xorg/serverflags/options/OPTIONSNAME=WERT' kann die globale XServer-Option OPTIONSNAME auf den Wert WERT gesetzt werden. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=With variables in the form 'xorg/serverflags/options/OPTIONNAME=VALUE' the global xserver option OPTIONNAME can be set to the value VALUE. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
 [xorg/mouse/.*/Identifier]
-Description[de]=Name der Maus
-Description[en]=Name of the mouse device
+Description[de]=Mit einer Variable der Form 'xorg/mouse/NAME/Identifier' wird ein Eingabegerät registriert. Zusätzlich müssen noch die Variablen 'xorg/mouse/NAME/Driver' und optional 'xorg/mouse/NAME/options/OPTIONSNAME' gesetzt werden. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=A variable in the form 'xorg/mouse/NAME/Identifier' registers an input device. In addition the variables 'xorg/mouse/NAME/Driver' and optionally 'xorg/mouse/NAME/options/OPTIONSAME' need to be set. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
+Type=str
+Categories=system-desktop
+
+[xorg/mouse/.*/Driver]
+Description[de]=Diese Variable konfiguriert den Treiber für Xorg-Eingabegeräte (siehe 'xorg/mouse/NAME/Identifier'). Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=This variables configures the driver for Xorg input devices (see 'xorg/mouse/NAME/Identifier'). This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
 [xorg/mouse/.*/options/.*]
-Description[de]=Xorg Mausoptionen
-Description[en]=Xorg mouse options
+Description[de]=Variablen in der Form xorg/mouse/NAME/options/OPTIONSNAME=WERT konfigurieren beliebige Optionen für Xorg-Eingabegeräte (siehe 'xorg/mouse/NAME/Identifier'). Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=Variables in the form xorg/mouse/NAME/options/OPTIONNAME=VALUE configure arbitrary options for Xorg input devices (see 'xorg/mouse/NAME/Identifier'). This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
-
-[xorg/mouse/.*/options/Buttons]
-Description[de]=Anzahl an Maustasten
-Description[en]=Amount of mouse buttons
-Type=str
-Categories=system-desktop
-
-[xorg/mouse/.*/options/Emulate3Buttons]
-Description[de]=Emuliere eine dritte Maustaste
-Description[en]=Emulate third mouse button
-Type=str
-Categories=system-desktop
-
-[xorg/mouse/.*/options/Emulate3Timeout]
-Description[de]=Zeitspanne vor der Entscheidung ob zwei Maustasten für die drei-Tasten Emulation gedrückt wurden
-Description[en]=Timeout before deciding if two buttons where pressed for 3 button emulation
-Type=str
-Categories=system-desktop
-
-[xorg/mouse/.*/options/SendCoreEvents]
-Description[de]=Lässt das Eingabegerät immer Core-Events melden
-Description[en]=Cause the input device to always report core events
-Type=str
-Categories=system-desktop
-
-[xorg/mouse/.*/options/device]
-Description[de]=Gerätedatei über die auf die Maus zugegriffen werden kann
-Description[en]=Device through which the mouse can be accessed
-Type=str
-Categories=system-desktop
-
-[xorg/mouse/.*/options/protocol]
-Description[de]=Zu verwendendes Mausprotokoll
-Description[en]=Specify the mouse protocol
-Type=str
-Categories=system-desktop
-
 
 [xorg/monitor/HorizSync]
-Description[de]=Bereich der horizontalen Sync-Frequenzen die vom Monitor unterstützt werden
-Description[en]=Range of horizontal sync frequencies supported by the monitor
+Description[de]=Der Bereich der horizontalen Synchronisations-Frequenzen in KHz, die vom Monitor unterstützt werden, z.B. '50-70'. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=The range of horizontal sync frequencies in KHz supported by the monitor, e.g. '50-70'. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
 [xorg/monitor/VertRefresh]
-Description[de]=Bereich der vertikalen Bildwiederholfrequenzen die vom Monitor unterstützt werden
-Description[en]=Range of vertical refresh frequencies supported by the monitor
+Description[de]=Der Bereich der vertikalen Bildwiederholfrequenzen in Hertz, die vom Monitor unterstützt werden. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=The range of vertical refresh frequencies in Hz supported by the monitor. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
 [xorg/monitor/DisplaySize]
-Description[de]=Breite und Höhe des sichtbaren Bereichs des Monitors (in mm)
-Description[en]=Width and height of the picture area of the monitor (in millimetres)
-Type=str
-Categories=system-desktop
-
-[xorg/device/.*]
-Description[de]=Xorg Grafikkarten-Sektion
-Description[en]=Xorg graphics device section
-Type=str
-Categories=system-desktop
-
-[xorg/device/BoardName]
-Description[de]=Name der Grafikkarte
-Description[en]=Name of the graphics device
-Type=str
-Categories=system-desktop
-
-[xorg/device/VendorName]
-Description[de]=Hersteller der Grafikkarte
-Description[en]=The graphics device manufacturer
+Description[de]=Breite und Höhe des sichtbaren Bereichs des Monitors (in mm). Die Angabe ist optional. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=Width and height of the picture area of the monitor (in millimetres). This variable is optional. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
 [xorg/device/driver]
-Description[de]=Treibermodul für die Grafikkarte
-Description[en]=Name of the driver module to use with the graphics device
+Description[de]=Mit dieser Variable wird das Treibermodul für die Grafikkarte konfiguriert. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=This variable configures the driver module for the graphics adapter. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
 [xorg/device/options/.*]
-Description[de]=Xorg Grafikartenoptionen
-Description[en]=Xorg device options
-Type=str
-Categories=system-desktop
-
-[xorg/device/options/VideoRam]
-Description[de]=Verfügbarer Grafikspeicher auf der Grafikkarte (in kB)
-Description[en]=Amount of video memory installed on the graphics board (in kB)
+Description[de]=Variablen in der Form 'xorg/device/NAME/options/OPTIONSNAME=WERT' konfigurieren beliebige Optionen für die Grafikkarte. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=Variables in the form 'xorg/device/NAME/options/OPTIONNAME=VALUE' configure arbitrary options for the graphics adapter. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
+Xorg device options
 Type=str
 Categories=system-desktop
 
 [xorg/display/virtual]
-Description[de]=Die Größe des virtuellen Gesamt-Displays im Dualmonitorbetrieb (im Format "x y")
-Description[en]=The overall size of the virtual display when running in dual monitor mode (format "x y")
+Description[de]=Die Größe des virtuellen Gesamt-Displays im Dualmonitorbetrieb (im Format "x y"). Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=The overall size of the virtual display when running in dual monitor mode (format "x y"). This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
 [xorg/resolution/secondary]
-Description[de]=Bildschirm-Auflösung des sekundären Monitor (Breite x Höhe in Pixeln)
-Description[en]=Display resolution for the secondary monitor
+Description[de]=Die Bildschirm-Auflösung des sekundären Monitor (Breite x Höhe in Pixeln).
+Description[en]=The display resolution for the secondary monitor.
 Type=str
 Categories=system-desktop
 
 [xorg/display/primary]
-Description[de]=Der Xserver-interne Bezeichner für den primären Monitor (ermittelbar durch Aufruf von xrandr)
-Description[en]=The Xserver internal specifier for the primary monitor (can be queried with xrandr)
+Description[de]=Der Xserver-interne Bezeichner für den primären Monitor (ermittelbar durch Aufruf von 'xrandr'). Der Name muss angegeben werden, wenn eine Dual-Monitorkonfiguration erstellt werden soll.
+Description[en]=The Xserver internal specifier for the primary monitor (can be queried with 'xrandr'). The name needs to be specified to configure a dual monitor setup.
 Type=str
 Categories=system-desktop
 
 [xorg/display/secondary]
-Description[de]=Der Xserver-interne Bezeichner für den sekundären Monitor (ermittelbar durch Aufruf von xrandr)
-Description[en]=The Xserver internal specifier for the secondary monitor (can be queried with xrandr)
+Description[de]=Der Xserver-interne Bezeichner für den sekundären Monitor (ermittelbar durch Aufruf von 'xrandr'). Der Name muss angegeben werden, wenn eine Dual-Monitorkonfiguration erstellt werden soll.
+Description[en]=The Xserver internal specifier for the secondary monitor (can be queried with 'xrandr'). The name needs to be specified to configure a dual monitor setup.
 Type=str
 Categories=system-desktop
 
 [xorg/display/relative-position]
-Description[de]=Die relative Position des zweiten Monitors gegenüber dem primären (mögliche Werte: left, right, above, below)
-Description[en]=The relative position of the secondary monitor to the first primary (mögliche Werte: left, right, above, below)
+Description[de]=Die relative Position des zweiten Monitors gegenüber dem primären (mögliche Werte: left, right, above, below). Die Variablen 'xorg/display/primary' und xorg/display/secondary' müssen gesetzt sein.
+Description[en]=The relative position of the secondary monitor to the first primary (mögliche Werte: left, right, above, below). The variables 'xorg/display/primary' and xorg/display/secondary' must be set.
 Type=str
 Categories=system-desktop
 
 [xorg/autodetect/dri]
-Description[de]=Definiert, ob im Autodetect Modus des X Server DRI aktiviert wird.
-Description[en]=Defines if DRI is enabled in the X servers autodetect mode.
-Type=str
+Description[de]=Definiert, ob bei Verwendung der automatischen Xorg-Konfiguration (siehe 'xorg/autodetect') das Direct Rendering Interface aktiviert werden soll. Ist die Variable nicht gesetzt, wird DRI aktiviert.
+Description[en]=Configures whether the Direct Rendering Interface is activated if the automatic Xorg configuration is used (see 'xorg/autodetect'). If the variable is unset, DRI is used.
+Type=bool
 Categories=system-desktop
