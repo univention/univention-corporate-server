@@ -28,26 +28,12 @@ trap 'user_remove "$username"' INT TERM EXIT
 if ! user_create "$username"; then
 	fail_fast 1 "User could not be created"
 fi
-
-ADMINISTRATOR_DN="$tests_domainadmin_account"
-if [ -z "$tests_domainadmin_account" ]; then
-	ADMIN_DN=$(/usr/sbin/univention-directory-manager users/user list --filter uid="Administrator" | sed -ne 's/^DN: //p')
-fi
-
-ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$ADMINISTRATOR_DN" uid | grep uid | sed -ne 's/^uid: //p')"
-
-ADMINISTRATOR_PASSWORD="$tests_domainadmin_pwd"
-if [ -z "$ADMINISTRATOR_PASSWORD" -a -e "$tests_domainadmin_pwdfile" ]; then
-	ADMINISTRATOR_PASSWORD="$(cat $tests_domainadmin_pwdfile)"
-	
-fi
-if [ -z "$ADMINISTRATOR_PASSWORD" ]; then
-	ADMINISTRATOR_PASSWORD="univention"
-fi
+check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
+ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | grep uid | sed -ne 's/^uid: //p')"
 
 ##Put a file on sysvol as Administrator
 echo "----Put a file on sysvol as Administrator"
-output="$(smbclient //localhost/sysvol -U"$ADMINISTRATOR_NAME%$ADMINISTRATOR_PASSWORD" -c "put /etc/hosts $domainname/t1" 2>&1)"
+output="$(smbclient //localhost/sysvol -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" -c "put /etc/hosts $domainname/t1" 2>&1)"
 echo "$output"
 if [ "$?" != 0 ]; then
 	echo "$output"
@@ -102,7 +88,7 @@ fi
 ##Check that the file ownership of the default domain policy is okay
 echo "----Check that the file ownership of the default domain policy is okay"
 output="$(stat --printf '%U' "/var/lib/samba/sysvol/$domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}" 2>&1)"
-if [ "$output" != "Administrator" ]; then
+if [ "$output" != "$ADMINISTRATOR_NAME" ]; then
 	echo "$output"
 	fail_test 1 "The file ownership of the default domain policy is not okay"
 fi

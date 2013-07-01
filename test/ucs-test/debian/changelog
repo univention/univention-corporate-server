@@ -1,3 +1,11 @@
+ucs-test (4.0.43-2) unstable; urgency=low
+
+  * Get the admin credentials in multiple tests in 51_samba4
+    from the corresponding UCR variables (Bug #29056)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 01 Jul 2013 11:17:18 +0200
+
+
 ucs-test (4.0.43-1) unstable; urgency=low
 
   * Get the admin credentials in 51_samba4/47file_access_permissions-unixmode                                                                                                                    from the corresponding UCR variables (Bug #29056)
