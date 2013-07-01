@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.2-1) unstable; urgency=low
+
+  * Bug #31560: Improve lookup speedup of UCS_Server and DomainController
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 01 Jul 2013 15:00:42 +0200
+
 univention-management-console-module-udm (4.0.1-1) unstable; urgency=low
 
   * Bug #31699: adjusted category name
