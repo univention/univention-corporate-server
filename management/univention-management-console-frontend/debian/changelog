@@ -1,3 +1,10 @@
+univention-management-console-frontend (2.0.244-13) unstable; urgency=low
+
+  * Bug #30961: As page URLs for Piwik, only the origin host without path is
+    specified now
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 01 Jul 2013 14:25:49 +0200
+
 univention-management-console-frontend (2.0.244-12) unstable; urgency=low
 
   * Bug #31318: fixed static array reference in umc/widgets/MultiSelect
