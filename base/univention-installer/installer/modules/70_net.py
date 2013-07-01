@@ -92,6 +92,7 @@ class object(content):
 		self.dummy_interface = False
 		self.ask_forwarder = True
 		self.warning_shown_for_ipv6addr = []  # list of IPv6 addresses
+		self.lastDhcpCBStatus = ""
 
 	def depends(self):
 		self.debug('depends()')
@@ -433,7 +434,6 @@ class object(content):
 				cb_ipv4dhcp = [0]
 			val_ipv4dhcp={_('Dynamic (DHCP)'): ['dynamic',0]}
 			card.add_elem('CB_IPv4DHCP', checkbox(val_ipv4dhcp, 4, 3, 18,2, cb_ipv4dhcp, position_parent=card))
-			card.add_elem('BTN_DHCLIENT', button('F5-'+_('DHCP Query'), 4, 27, position_parent=card))
 
 			# IPv4 Address
 			val_ipv4addr = self.container.get('%s_ip' % iface.name, '')
@@ -443,6 +443,9 @@ class object(content):
 			val_ipv4netmask = self.container.get('%s_netmask' % iface.name, '')
 			card.add_elem('TXT_IPv4NETMASK', textline(_('Netmask'), 6, 3, position_parent=card))
 			card.add_elem('INP_IPv4NETMASK', input(val_ipv4netmask, 6, 21, LEN_IPv4_ADDR+4, position_parent=card))
+
+			# dhcp warning
+			card.add_elem('TXTAREA_IPv4DHCPSTATUS', textarea("", 4, 43, 4, 29, position_parent=card, warning=True))
 
 			# activate checkbox if IPv6 address is present
 			val_ipv6={_('Enable IPv6'): ['dynamic', 0]}
@@ -584,7 +587,6 @@ class object(content):
 			if self.get_elem('CB_IPv4').result():
 				# IPv4 is enabled ==> enable CB for DHCP
 				self.get_elem('CB_IPv4DHCP').enable()
-				self.get_elem('BTN_DHCLIENT').enable()
 				for name in [ 'INP_IPv4ADDR', 'INP_IPv4NETMASK' ]:
 					if self.get_elem('CB_IPv4DHCP').result():
 						# dhcp is on ==> turn off IPv4 address fields
@@ -592,10 +594,34 @@ class object(content):
 					else:
 						# dhcp is off ==> turn on IPv4 address fields
 						self.get_elem(name).enable()
+
+					if self.get_elem('CB_IPv4DHCP').result():
+						if not self.lastDhcpCBStatus == self.get_elem('CB_IPv4DHCP').result():
+							self.debug("starting dhclient")
+							self.get_elem('TXTAREA_IPv4DHCPSTATUS').erase()
+							self.act = dhclient_active(self, _('DHCP Query'), _('Please wait ...'), name='act')
+							self.act.draw()
+							if not self.dhcpanswer:
+								for element in ["INP_IPv4ADDR", "INP_IPv4NETMASK"]:
+									einput = self.get_elem(element)
+									einput.set_cursor(-len(einput.text))
+									einput.text = ""
+									einput.paste_text()
+									einput.draw()
+								dhcp4warn = self.get_elem('TXTAREA_IPv4DHCPSTATUS')
+								dhcp4warn.set_text(_('No DHCP answer, please check DHCP server and network connectivity.'))
+					else:
+						self.get_elem('TXTAREA_IPv4DHCPSTATUS').erase()
+
+					# save last CB_IPv4DHCP status
+					self.lastDhcpCBStatus = self.get_elem('CB_IPv4DHCP').result()
 			else:
-				for name in [ 'CB_IPv4DHCP', 'BTN_DHCLIENT', 'INP_IPv4ADDR', 'INP_IPv4NETMASK' ]:
+				self.get_elem('TXTAREA_IPv4DHCPSTATUS').erase()
+				for name in [ 'CB_IPv4DHCP', 'INP_IPv4ADDR', 'INP_IPv4NETMASK' ]:
 					self.get_elem(name).set_off()
 					self.get_elem(name).disable()
+				if self.get_elem('CB_IPv4DHCP').result():
+					self.get_elem('CB_IPv4DHCP').select()
 
 		# enable more button if at least forwarder1 has been set
 		if self.elem_exists('INP_FORWARDER1'):
@@ -717,32 +743,6 @@ class object(content):
 			self.get_elem('CARDBOX1').next_card()
 			self.update_widget_states()
 			self.draw()
-		elif key == curses.KEY_F5 or ( key in [ 10, 32 ] and self.get_elem('BTN_DHCLIENT').get_status() ):
-			self.act = dhclient_active(self, _('DHCP Query'), _('Please wait ...'), name='act')
-			self.act.draw()
-			if not self.dhcpanswer:
-				self.draw()
-				self.sub = warning(_('No DHCP answer, please check DHCP server and network connectivity.'), self.pos_y+39, self.pos_x+93)
-				self.sub.draw()
-				r1 = random.randrange(1, 255)
-				r2 = random.randrange(0, 255)
-				ip_input = self.get_elem('INP_IPv4ADDR')
-				ip_input.text = "169.254.%s.%s" % (r1, r2)
-				ip_input.set_cursor(len(ip_input.text))
-				ip_input.paste_text()
-				ip_input.draw()
-				netmask_input = self.get_elem('INP_IPv4NETMASK')
-				netmask_input.text = "255.255.0.0"
-				netmask_input.set_cursor(len(netmask_input.text))
-				netmask_input.paste_text()
-				netmask_input.draw()
-			else:
-				addr_elem = self.get_elem('INP_IPv4ADDR')
-				if addr_elem.result():
-					self.elements[self.current].set_off()		# reset actual focus highlight
-					self.current = self.get_elem_id('BTN_DHCLIENT')	# set the tab cursor
-					self.elements[self.current].set_on()		# set actual focus highlight
-				self.draw()
 		elif key in [ 10, 32 ] and self.ask_domainnameserver and self.get_elem('BTN_MORE_NAMESERVER').get_status(): # Enter & Button: "[More]" Nameserver
 			self.sub = morewindow(self, self.minY, self.minX+1, self.maxWidth+18, self.maxHeight-18, morewindow.DOMAINDNS)
 			self.sub.draw()
@@ -1024,8 +1024,6 @@ class dhclient_active(act_win):
 				if self.parent.elem_exists('INP_NAMESERVER1'):
 					self.parent.containers['nameserver_3'] = nameserver3_str
 
-			# update widgets and save values
-			self.parent.update_widget_states()
 
 
 class morewindow(subwin):

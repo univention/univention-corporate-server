@@ -1,3 +1,10 @@
+univention-installer (9.0.6-1) unstable; urgency=low
+
+  * DHCP QUERY button in network settings has been removed
+    dhcp query is performed when dhcp was selected (Bug #31174)
+
+ -- Felix Botner <botner@univention.de>  Mon, 01 Jul 2013 14:30:44 +0200
+
 univention-installer (9.0.5-1) unstable; urgency=low
 
   * disable windows domain in basic settings for all
