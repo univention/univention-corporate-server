@@ -220,8 +220,8 @@ the value of \ucsCommand{windows/domain} on the DC master (\ucsBug{24442}).
 \item The following syntax classes received lookup optimizations
   which result in faster object opening especially in larger environments:
   ,,UserDN'', ,,UserID'', ,,GroupDN'', ,,GroupID'', ,,UCS\_Server'',
-  ,,DNS\_ForwardZone'', ,,DNS\_ReverseZone'', ,,WritableShare''
-  (\ucsBug{30991}).
+  ,,DNS\_ForwardZone'', ,,DNS\_ReverseZone'', ,,WritableShare'',
+  ,,DomainController'' (\ucsBug{30991}, \ucsBug{31560}).
 \item All syntax files and hooks files are re-evaluated every time a new
   session is created. This prevents errors caused by referenced classes unknown
   during \ucsName{univention-management-console-server} startup
