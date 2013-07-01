@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.8-1) unstable; urgency=low
+
+  * Bug #30961: As page URLs for Piwik, only the origin host without path is
+    specified now
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 01 Jul 2013 14:33:53 +0200
+
 univention-management-console-frontend (3.0.7-1) unstable; urgency=low
 
   * [WIP] Bug #31699: merged App Center and overview page

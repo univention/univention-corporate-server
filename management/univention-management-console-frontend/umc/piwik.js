@@ -26,12 +26,26 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require*/
+/*global define require location*/
 
 define([
 	"dojo/topic",
 	"dojo/_base/array"
 ], function(topic, array) {
+	var _buildSiteTitle = function(parts) {
+		var titleStr = [];
+		array.forEach(parts, function(i) {
+			if (i) {
+				// ignore values that are: null, undefined, ''
+				i = i + ''; // force element to be string...
+				titleStr.push(i.replace(/\//g, '-'));
+			}
+		});
+
+		// join elements with '/' -> such that a hierarchy can be recongnized by Piwik
+		return titleStr.join('/');
+	};
+
 	require(["https://www.piwik.univention.de/piwik.js"], function() {
 		// make sure piwik has been included
 		if (!Piwik) {
@@ -44,17 +58,9 @@ define([
 		piwikTracker.enableLinkTracking();
 
 		// subscribe to all topics containing interesting actions
-		topic.subscribe('/umc/actions', function(/*moduleID?, flavor?, action*/) {
-			var titleStr = [];
-			array.forEach(arguments, function(i) {
-				if (i) {
-					// ignore values that are: null, undefined, ''
-					i = i + '';
-					titleStr.push(i.replace(/\//g, '-'));
-				}
-			});
-			titleStr = titleStr.join('/');
-			piwikTracker.setDocumentTitle(titleStr);
+		topic.subscribe('/umc/actions', function() {
+			piwikTracker.setDocumentTitle(_buildSiteTitle(arguments));
+			piwikTracker.setCustomUrl(location.origin);
 			piwikTracker.trackPageView();
 		});
 
