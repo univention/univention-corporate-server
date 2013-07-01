@@ -67,7 +67,6 @@ Categories=system-desktop
 [xorg/device/options/.*]
 Description[de]=Variablen in der Form 'xorg/device/NAME/options/OPTIONSNAME=WERT' konfigurieren beliebige Optionen für die Grafikkarte. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
 Description[en]=Variables in the form 'xorg/device/NAME/options/OPTIONNAME=VALUE' configure arbitrary options for the graphics adapter. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
-Xorg device options
 Type=str
 Categories=system-desktop
 
