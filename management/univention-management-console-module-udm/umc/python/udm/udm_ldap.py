@@ -233,10 +233,10 @@ class UDM_Module( object ):
 		self.module = _module_cache.get( module, force_reload=force_reload )
 
 	def allows_simple_lookup( self ):
-		return self.lookup_filter() is not None
+		return bool(getattr( self.module, 'lookup_filter' ))
 
-	def lookup_filter( self, filter_s=None ):
-		return getattr( self.module, 'lookup_filter', lambda x: None )(filter_s)
+	def lookup_filter( self, filter_s=None, lo=None ):
+		return getattr( self.module, 'lookup_filter' )( filter_s, lo )
 
 	def __getitem__( self, key ):
 		props = getattr( self.module, 'property_descriptions', {} )
@@ -428,11 +428,14 @@ class UDM_Module( object ):
 		try:
 			sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000'))
 			if simple and self.allows_simple_lookup():
-				lookup_filter = unicode(self.lookup_filter(filter))
-				if simple_attrs is not None:
-					result = ldap_connection.search( filter = lookup_filter, base = container, scope = scope, sizelimit = sizelimit, attr = simple_attrs )
+				lookup_filter = self.lookup_filter(filter, ldap_connection)
+				if lookup_filter is None:
+					result = []
 				else:
-					result = ldap_connection.searchDn( filter = lookup_filter, base = container, scope = scope, sizelimit = sizelimit )
+					if simple_attrs is not None:
+						result = ldap_connection.search( filter = unicode(lookup_filter), base = container, scope = scope, sizelimit = sizelimit, attr = simple_attrs )
+					else:
+						result = ldap_connection.searchDn( filter = unicode(lookup_filter), base = container, scope = scope, sizelimit = sizelimit )
 			else:
 				result = self.module.lookup( None, ldap_connection, filter_s, base = container, superordinate = superordinate, scope = scope, sizelimit = sizelimit )
 		except udm_errors.insufficientInformation, e:
