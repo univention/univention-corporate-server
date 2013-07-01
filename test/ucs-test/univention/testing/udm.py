@@ -118,10 +118,6 @@ class UCSTestUDM(object):
 				cmd.extend(['--%s' % arg, args[arg]])
 				del args[arg]
 
-		if args.get('remove_referring', True) and action == 'remove':
-			cmd.append('--remove_referring')
-			del args['remove_referring']
-
 		if 'options' in args:
 			for option in args['options']:
 				cmd.extend(['--option', option ])
@@ -133,6 +129,12 @@ class UCSTestUDM(object):
 					for value in values:
 						cmd.extend(['--%s' % operation, '%s=%s' % (key, value)])
 				del args[operation]
+
+		if action == 'remove':
+			if args.get('remove_referring', True):
+				cmd.append('--remove_referring')
+				if 'remove_referring' in args:
+					del args['remove_referring']
 
 		# set all other remaining properties
 		for arg in args:

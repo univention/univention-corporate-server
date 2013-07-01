@@ -1,3 +1,13 @@
+ucs-test (4.0.44-1) unstable; urgency=low
+
+  * reimplemented 66_udm-computers/13_check_nagios in python
+  (Bug #31659)
+
+  * fixexd keyerror in udm.py
+  (Bug #30560)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 01 Jul 2013 14:28:39 +0200
+
 ucs-test (4.0.43-2) unstable; urgency=low
 
   * Get the admin credentials in multiple tests in 51_samba4

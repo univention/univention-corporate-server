@@ -1,81 +1,55 @@
-#!/usr/share/ucs-test/runner bash 
-## desc: "Check nagios for all computer roles"
-## exposure: dangerous
-## tags:
-##  - basic
-##  - apptest
+#!/usr/share/ucs-test/runner python
+## desc: Validate nagios for all computer roles
+## tags: [udm-computers]
+## roles: [domaincontroller_master]
+## exposure: careful
 ## packages:
-## - univention-directory-manager-tools
-## roles:
-## - domaincontroller_master
+##   - univention-config
+##   - univention-directory-manager-tools
 
-. "$TESTLIBPATH/udm.sh" || exit 137
-. "$TESTLIBPATH/ldap.sh" || exit 137
-. "$TESTLIBPATH/random.sh" || exit 137
 
-UDM_dns_forward_zone_zone="$(random_chars)"
-UDM_dns_forward_zone_nameserver="$(random_chars)"
-udm_create "dns/forward_zone"
-udm_exists "dns/forward_zone" || fail_test 110
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+import univention.config_registry as configRegistry
 
-UDM_dns_reverse_zone_nameserver="$(random_chars)"
-UDM_dns_reverse_zone_subnet="1.2"
-udm_create "dns/reverse_zone"
-UDM_dns_reverse_zone_subnet="2.1.in-addr.arpa"
-udm_exists "dns/reverse_zone" || fail_test 110
+if __name__ == '__main__':
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
 
-UDM_computers_domaincontroller_backup_name="$(random_chars)"
-UDM_computers_domaincontroller_backup_ip="1.2.3.4"
-UDM_computers_domaincontroller_backup_dnsEntryZoneForward="zoneName=$UDM_dns_forward_zone_zone,cn=dns,$ldap_base $UDM_computers_domaincontroller_backup_ip"
-UDM_computers_domaincontroller_backup_dnsEntryZoneReverse="zoneName=$UDM_dns_reverse_zone_subnet,cn=dns,$ldap_base $UDM_computers_domaincontroller_backup_ip"
-udm_create "computers/domaincontroller_backup" "" "" "" "" --option nagios || fail_test 110
-udm_exists "computers/domaincontroller_backup" || fail_test 110
+	ldap = utils.get_ldap_connection()
 
-UDM_computers_name="$(random_chars)"
-UDM_computers_mac="06:05:04:03:02:01"
-UDM_computers_ip="1.2.3.5"
-UDM_computers_dnsEntryZoneForward="zoneName=$UDM_dns_forward_zone_zone,cn=dns,$ldap_base $UDM_computers_ip"
-UDM_computers_dnsEntryZoneReverse="zoneName=$UDM_dns_reverse_zone_subnet,cn=dns,$ldap_base $UDM_computers_ip"
-UDM_computers_nagiosServices="cn=UNIVENTION_PING,cn=nagios,$ldap_base"
-UDM_computers_nagiosContactEmail="$(random_chars)@$(random_chars).$(random_chars)"
-UDM_computers_nagiosParents="cn=$UDM_computers_domaincontroller_backup_name,cn=computers,$ldap_base"
+	with udm_test.UCSTestUDM() as udm:
+		for role in udm.COMPUTER_MODULES:
+			forwardZone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
 
-# We want to test the UDM modules, so we stop the S4 connector to prevent side effects
-test -x /etc/init.d/univention-s4-connector && /etc/init.d/univention-s4-connector stop
+			parentBackupName = uts.random_name()
+			parentBackup = udm.create_object('computers/domaincontroller_backup', name = parentBackupName, options = ['nagios'], ip = '10.20.30.2', dnsEntryZoneForward = forwardZone)
 
-for role in $UDM_ALL_COMPUTER_ROLES; do
+			nagiosService = udm.create_object('nagios/service', name = uts.random_name(), checkCommand = uts.random_string(), checkPeriod = uts.random_string(), notificationPeriod = uts.random_string())
 
-	info "*** $role ***"
+			properties = {
+				'dnsEntryZoneForward': forwardZone,
+				'nagiosServices': nagiosService,
+				'nagiosContactEmail': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+				'nagiosParents': parentBackup,
+				'name': uts.random_name(),
+				'ip': '10.20.30.3',
+			}
 
-	if ! udm_create "$role" "UDM_computers_" "" "" "" --option nagios; then
-		error "Failed creating $role object"
-		error "Maybe the reason is #15699 or #15721"
-		fail_test 121
-	fi
+			computer = udm.create_object('computers/%s' % role, options = ['nagios'], **properties)
+				
+			if not utils.verify_ldap_object(computer, {
+				'univentionNagiosEmail': [properties['nagiosContactEmail']],
+				'univentionNagiosEnabled': ['1'],
+				'univentionNagiosParent': ['%s.%s' % (parentBackupName, ldap.getAttr(parentBackup, 'associatedDomain')[0])]
+			}):
+				utils.fail('Nagios properties of created %s differ from expectatations' % role)
 
-	if ! udm_exists "$role" "UDM_computers_"; then
-		error "Can't find computer-object with 'udm $role list'"
-		error "See: #15729"
-		fail_test 121
-	fi
+			if not utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (properties['name'], ldap.getAttr(computer, 'associatedDomain')[0])]}):
+				utils.fail('Could not find created %s at nagios service as expected')
 
-	udm_verify_udm_attribute nagiosServices "$UDM_computers_nagiosServices" "$role" "UDM_computers_" || fail_test 110
-	udm_verify_udm_attribute nagiosContactEmail "$UDM_computers_nagiosContactEmail" "$role" "UDM_computers_" || fail_test 110
-	udm_verify_udm_attribute nagiosParents "$UDM_computers_nagiosParents" "$role" "UDM_computers_" || fail_test 110
 
-	udm_remove "$role" "UDM_computers_" "" "" "" --remove_referring || fail_test 110
-	! udm_exists "$role" "UDM_computers_" || fail_test 110
-done
 
-udm_remove "computers/domaincontroller_backup" "" "" "" "" --remove_referring || fail_test 110
-! udm_exists "computers/domaincontroller_backup" || fail_test 110
-
-udm_remove "dns/reverse_zone" || fail_test 110
-! udm_exists "dns/reverse_zone" || fail_test 110
-
-udm_remove "dns/forward_zone" || fail_test 110
-! udm_exists "dns/forward_zone" || fail_test 110
-
-test -x /etc/init.d/univention-s4-connector && /etc/init.d/univention-s4-connector start
-
-exit "$RETVAL"
+			# full reset for next role
+			udm.cleanup()
