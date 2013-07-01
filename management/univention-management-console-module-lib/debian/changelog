@@ -1,3 +1,9 @@
+univention-management-console-module-lib (2.0.0-1) unstable; urgency=low
+
+  * Bug #31642: keep session active during dialog for server restart
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 01 Jul 2013 16:37:47 +0200
+
 univention-management-console-module-lib (1.0.4-1) unstable; urgency=low
 
   * Bug #30577: publish restart actions

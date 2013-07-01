@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.management.console.log import MODULE
+from univention.management.console.modules.decorators import simple_response
 
 from univention.lib.i18n import Translation
 
@@ -63,3 +64,6 @@ class Server( object ):
 		out, err = p.communicate()
 		MODULE.info('enabling server restart:\n%s' % out)
 
+	@simple_response
+	def ping(self):
+		return dict(success=True)
