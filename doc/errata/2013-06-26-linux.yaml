@@ -7,7 +7,6 @@ fix: 3.2.46-1.31.201306180902
 desc: |
   The Linux kernel has been updated to 3.2.46, which provides many
   bugfixes. In addition this update fixes multiple security issues:
-  * Denial of service in the RDS implementation (CVE-2012-2372)
   * Denial of sercice in memory hotplug handling (CVE-2012-5517)
   * Info leaks in the UDF filesystem implementation (CVE-2012-6548)
   * Keystroke timing information leak (CVE-2013-0160)
@@ -29,7 +28,6 @@ desc: |
 note: |
   This is the first part of the fix, which provides the new kernel package.
 cve:
- - CVE-2012-2372
  - CVE-2012-5517
  - CVE-2012-6548
  - CVE-2013-0160
