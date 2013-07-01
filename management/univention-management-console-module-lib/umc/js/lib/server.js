@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define window*/
+/*global define window setTimeout*/
 
 define([
 	"dojo/_base/lang",
@@ -43,10 +43,29 @@ define([
 ], function(lang, style, Deferred, topic, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
 
 	return {
+		_askingForRestart: false,
+		_keepSessionOpen: function() {
+			if (!this._askingForRestart) {
+				// stop when dialog has been closed
+				return;
+			}
+
+			var timeout = 1000 * Math.min(tools.status('sessionTimeout') / 2, 30);
+			setTimeout(lang.hitch(this, function() {
+				this.ping().then(
+					lang.hitch(this, '_keepSessionOpen'),
+					lang.hitch(this, '_keepSessionOpen')
+				); // ignore errors
+			}), timeout);
+		},
+
 		askRestart: function(_msg) {
 			// TODO: first call to: lib/server/restart/isNeeded
 			//       if no restart is needed -> do not show any alert
 			topic.publish('/umc/actions', 'lib', 'server', 'askRestart');
+
+			this._askingForRestart = true;
+			this._keepSessionOpen();
 
 			var msg = '';
 			if (_msg) {
@@ -62,6 +81,7 @@ define([
 				'default': true,
 				label: _('Restart')
 			}]).then(lang.hitch(this, function(response) {
+				this._askingForRestart = false;
 				if (response == 'restart') {
 					return this.restart();
 				}
@@ -114,6 +134,11 @@ define([
 			});
 
 			return deferred;
+		},
+
+		ping: function() {
+			// ignore errors from pinging
+			return tools.umcpCommand('lib/server/ping', {}, false);
 		}
 	};
 
