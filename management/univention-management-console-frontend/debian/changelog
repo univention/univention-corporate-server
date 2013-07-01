@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.9-1) unstable; urgency=low
+
+  * Bug #31308: allow action specific tooltip class
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 01 Jul 2013 15:28:51 +0200
+
 univention-management-console-frontend (3.0.8-1) unstable; urgency=low
 
   * Bug #30961: As page URLs for Piwik, only the origin host without path is

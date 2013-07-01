@@ -83,6 +83,7 @@ define([
 		//		'canExecute': function that specifies whether an action can be excuted for
 		//		              a particular item; the function receives a dict of all item
 		//		              properties as parameter
+		//		'iconClass': specifies a different tooltip class than umc/widgets/Tooltip
 		//		TODO: explain isContextAction, isStandardAction, isMultiAction
 		//		TODO: explain also the 'adjust' value for columns
 		//		TODO: iconClass, label -> may be of type string or function
@@ -407,7 +408,7 @@ define([
 							btn = new Button( props );
 							if ( iaction.description ) {
 								var idescription = typeof  iaction.description  == "function" ? iaction.description( item ) : iaction.description;
-								var tooltip = new Tooltip( {
+								var tooltip = new (iaction.tooltipClass || Tooltip)( {
 									label: idescription,
 									connectId: [ btn.domNode ]
 								});
