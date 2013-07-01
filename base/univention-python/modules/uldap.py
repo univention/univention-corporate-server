@@ -3,7 +3,7 @@
 # Univention Python
 #  LDAP access
 #
-# Copyright 2002-2012 Univention GmbH
+# Copyright 2002-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -459,35 +459,7 @@ class access:
 				val=newvalue
 			elif oldvalue and not newvalue:
 				op=ldap.MOD_DELETE
-				if key == 'homePostalAddress':
-					op=ldap.MOD_REPLACE
-					homePostalAddress=self.getAttr(dn, 'homePostalAddress')
-					for i in range(0,len(oldvalue)):
-						if oldvalue[i] in homePostalAddress:
-							homePostalAddress.remove(oldvalue[i])
-					val=homePostalAddress
-				elif key == 'pager':
-					op=ldap.MOD_REPLACE
-					postalAddress=self.getAttr(dn, 'pager')
-					for i in range(0,len(oldvalue)):
-						if oldvalue[i] in postalAddress:
-							postalAddress.remove(oldvalue[i])
-					val=postalAddress
-				elif key == 'mobile':
-					op=ldap.MOD_REPLACE
-					mobileTelephoneNumber=self.getAttr(dn, 'mobile')
-					for i in range(0,len(oldvalue)):
-						if oldvalue[i] in mobileTelephoneNumber:
-							mobileTelephoneNumber.remove(oldvalue[i])
-					val=mobileTelephoneNumber
-				elif key == 'pagerTelephoneNumber':
-					op=ldap.MOD_REPLACE
-					pagerTelephoneNumber=self.getAttr(dn, 'pagerTelephoneNumber')
-					for i in range(0,len(oldvalue)):
-						if oldvalue[i] in pagerTelephoneNumber:
-							pagerTelephoneNumber.remove(oldvalue[i])
-					val=pagerTelephoneNumber
-				elif key == "jpegPhoto":
+				if key == "jpegPhoto":
 					val=None
 				else:
 					val=oldvalue

@@ -1,3 +1,10 @@
+univention-python (7.0.2-1) unstable; urgency=low
+
+  * Removed deprecated multivalue checks for some attributes (Bug #18929)
+  * Updated copyright 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 01 Jul 2013 14:24:57 +0200
+
 univention-python (7.0.1-1) unstable; urgency=low
 
   * Fix ldap/server/addition handling (Bug #30436)
