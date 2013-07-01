@@ -1,0 +1,18 @@
+#! /bin/sh
+set -e
+
+case "$1" in
+configure)
+	a2ensite univention-identity-provider-apache
+	/etc/init.d/apache2 reload
+
+	;;
+abort-upgrade|abort-remove|abort-deconfigure)
+	;;
+*)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 1
+	;;
+esac
+
+exit 0

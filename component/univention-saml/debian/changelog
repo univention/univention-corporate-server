@@ -1,0 +1,5 @@
+univention-identity-provider (0.0.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Univention GmbH <packages@univention.de>  Mon, 01 Jul 2013 09:24:45 -0400

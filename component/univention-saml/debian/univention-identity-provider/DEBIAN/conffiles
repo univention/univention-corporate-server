@@ -1,0 +1,5 @@
+/etc/apache2/sites-available/univention-identity-provider-apache
+/etc/simplesamlphp/config.php
+/etc/simplesamlphp/metadata/saml20-sp-remote.php
+/etc/simplesamlphp/metadata/saml20-idp-hosted.php
+/etc/simplesamlphp/authsources.php
