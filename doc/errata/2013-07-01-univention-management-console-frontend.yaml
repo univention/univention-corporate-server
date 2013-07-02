@@ -1,0 +1,16 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-management-console-frontend
+fix: 2.0.244-12.640.201306181525
+note:
+version: [1]
+desc: |
+  This update addresses the following issues:
+  * A static array reference in umc/widgets/MultiSelect causing re-occurring
+    entries in umc/widgets/MultiUploader has been corrected
+  * As page URLs for Piwik, only the origin host without path is specified
+  * Allow to specify tooltip class for actions in umc/widgets/Grid
+  * Problems with standby overlay animations not covering the full underlying
+    area
+bug: [31318,30961,31308,31581]
