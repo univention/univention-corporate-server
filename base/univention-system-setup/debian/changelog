@@ -1,3 +1,10 @@
+univention-system-setup (7.0.13-1) unstable; urgency=low
+
+  * Bug #30776: adapt link to SDB article
+  * Bug #30816: remove unused script
+
+ -- Florian Best <best@univention.de>  Tue, 02 Jul 2013 10:43:43 +0200
+
 univention-system-setup (7.0.12-1) unstable; urgency=low
 
   * Bug #30816: support Bridge, Bond, VLAN in UMC module
