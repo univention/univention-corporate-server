@@ -36,6 +36,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring online repository")
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 if [ -n "$system_role" ]; then
 	export server_role="$system_role"
 fi

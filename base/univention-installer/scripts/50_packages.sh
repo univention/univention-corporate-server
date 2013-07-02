@@ -36,6 +36,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Installing selected software co
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 default_packages="isc-dhcp-client openssh-client"
 
 if [ -n "$system_role" ]; then

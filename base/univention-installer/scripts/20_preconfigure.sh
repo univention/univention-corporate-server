@@ -36,6 +36,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring basesystem")" >&9
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 architecture=`/bin/uname -m`
 mkdir -p /instmnt/etc/univention/
 cp /etc/univention/base.conf /instmnt/etc/univention/

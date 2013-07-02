@@ -36,6 +36,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Updating udev rules")" >&9
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 UDEVDIR="/instmnt/etc/udev/rules.d"
 mkdir -p "$UDEVDIR"
 export UDEVRULEFN="${UDEVDIR}/70-persistent-net.rules"

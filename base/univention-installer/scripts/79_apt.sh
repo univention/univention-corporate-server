@@ -34,6 +34,10 @@
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 cat >> /instmnt/apt.sh <<"__EOT__"
 #!/bin/sh
 eval "$(univention-config-registry shell)"

@@ -34,6 +34,10 @@
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 export server_role="$system_role"
 
 if [ "$update_system_after_installation" = "true" ] || [ "$update_system_after_installation" = "yes" ]; then

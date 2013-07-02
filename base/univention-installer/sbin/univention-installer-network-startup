@@ -230,4 +230,23 @@ if [ -n "$proxy_http" ]; then
 	python2.6 /sbin/univention-config-registry set proxy/ftp=$proxy_http
 fi
 
-
+# scan hostname and save it in installation_profile_scanned if found
+if [ -n "$to_scan" ] || [ -n "$scan" ]; then
+	host=""
+    for ts in $to_scan $scan; do
+        if [ "$ts" = "hostname" ]; then
+            ipcmd="$(cat /proc/cmdline | grep ip | sed -e 's/.*ip=//g')"
+            myip="$(echo $ipcmd | awk -F ':' '{print $1}')"
+            if [ -n "$nameserver1" ]; then
+                host="$(host $myip $nameserver1 |tail -1 | awk '{print $5}' | awk -F '.' '{print $1}')"
+            elif [ -n "$nameserver_1" ]; then
+                host="$(host $myip $nameserver_1 |tail -1 | awk '{print $5}' | awk -F '.' '{print $1}')"
+            else
+                host="$(host $myip | tail -1 | awk '{print $5}' | awk -F '.' '{print $1}')"
+            fi
+        fi
+    done
+	if [ -n "$host" ]; then
+		echo "hostname='$host'" >> /tmp/installation_profile_scanned
+	fi
+fi

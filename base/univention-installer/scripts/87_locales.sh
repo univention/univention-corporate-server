@@ -36,6 +36,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Generating locales")" >&9
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 cat >/instmnt/locales.sh <<__EOT__
 #!/bin/sh
 echo "Generating locales (this might take a while)"

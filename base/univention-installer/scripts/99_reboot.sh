@@ -32,6 +32,10 @@
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 /bin/umount /instmnt/proc/fs/nfsd > /dev/null 2>&1
 /bin/umount /instmnt/proc > /dev/null 2>&1
 /bin/umount /instmnt/sys > /dev/null 2>&1

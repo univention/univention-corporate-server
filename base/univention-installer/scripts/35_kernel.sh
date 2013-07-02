@@ -36,6 +36,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Installing kernel and bootloade
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 PIPE="yes yes '' |"
 
 #loaded_modules=`cat /proc/modules | awk '{print $1}' | grep -v ^Module`

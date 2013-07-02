@@ -36,6 +36,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring Univention base pac
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 architecture=`/bin/uname -m`
 
 acpi_off=`grep "acpi=off" /proc/cmdline`
@@ -62,22 +66,7 @@ if [ -n "$system_role" ]; then
 fi
 cat >/instmnt/hostname.sh <<__EOT__
 #!/bin/sh
-if [ -n "$to_scan" ] || [ -n "$scan" ]; then
-	for ts in $to_scan $scan; do
-		if [ "\$ts" = "hostname" ]; then
-			ipcmd=\`sed -ne 's/.*ip=//gp' </proc/cmdline\`
-			myip=\`echo \$ipcmd | awk -F ':' '{print \$1}'\`
-			if [ -n "$nameserver1" ]; then
-				host=\`host \$myip $nameserver1 |tail -1 | awk '{print \$5}' | awk -F '.' '{print \$1}'\`
-			elif [ -n "$nameserver_1" ]; then
-				host=\`host \$myip $nameserver_1 |tail -1 | awk '{print \$5}' | awk -F '.' '{print \$1}'\`
-			fi
-		fi
-	done
-fi
-if [ -n "\$host" ]; then
-	univention-config-registry set hostname=\$host
-elif [ -n "$hostname" ]; then
+if [ -n "$hostname" ]; then
 	univention-config-registry set hostname=$hostname
 fi
 hostname \`univention-config-registry get hostname\`		# finally

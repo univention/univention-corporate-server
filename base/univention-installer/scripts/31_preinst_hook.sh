@@ -36,6 +36,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Calling preinstallation hooks")
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 for i in $preinst_hook; do
 	if [ -e "/instmnt/sourcedevice/script/$i" ]; then
 		mkdir -p /instmnt/etc/univention/preinst

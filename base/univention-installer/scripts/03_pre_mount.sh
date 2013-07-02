@@ -36,6 +36,10 @@ echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Mounting source device")" >&9
 
 . /tmp/installation_profile
 
+if [ -e /tmp/installation_profile_scanned ]; then
+	. /tmp/installation_profile_scanned
+fi
+
 if [ -n "$cdrom_device" ]; then
 	nfs=`echo $cdrom_device | grep "nfs:"`
 	smbfs=`echo $cdrom_device | grep "smbfs:"`
