@@ -1,3 +1,11 @@
+univention-admingrp-user-passwordreset (4.0.0-1) unstable; urgency=low
+
+  * Update to make package work on UCS 3.2 (Bug #25408)
+  * Add default policy to group 'User Password Admins'
+  * UCS 3.2 Version Bump and update copyright
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 02 Jul 2013 12:59:08 +0200
+
 univention-admingrp-user-passwordreset (3.0.0-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
