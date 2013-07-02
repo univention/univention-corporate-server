@@ -1,3 +1,9 @@
+univention-initrd (6.0.0-3) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 02 Jul 2013 16:12:30 +0200
+
 univention-initrd (6.0.0-2) unstable; urgency=low
 
   * Tighten the dependency on initramfs-tools. It is needed to generate initrds
