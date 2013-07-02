@@ -1,3 +1,11 @@
+univention-initrd (6.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update the UCR template for /usr/share/initramfs-tools/ with the new version
+    from initramfs-tools 0.112, needed for a more recent kernel (Bug #31701)	 
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 02 Jul 2013 11:10:03 +0200
+
 univention-initrd (5.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump
