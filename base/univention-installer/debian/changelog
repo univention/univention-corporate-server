@@ -1,3 +1,10 @@
+univention-installer (9.0.7-1) unstable; urgency=low
+
+  * added check if hostname starts with digits in
+    base settings (Bug #29349) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Jul 2013 12:53:00 +0200
+
 univention-installer (9.0.6-1) unstable; urgency=low
 
   * DHCP QUERY button in network settings has been removed

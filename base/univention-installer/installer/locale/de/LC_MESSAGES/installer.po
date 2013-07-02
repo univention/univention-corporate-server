@@ -1093,6 +1093,10 @@ msgstr ""
 msgid "Root password:"
 msgstr "Root-Passwort:"
 
+#: installer/modules/50_basis.py:140
+msgid "The hostname may not start with digits."
+msgstr "Der Rechnername darf nicht mit Ziffern beginnen."
+
 #: installer/modules/45_password.py:100 installer/modules/50_basis.py:156
 msgid "Root password (retype):"
 msgstr "Passwort (zur Bestätigung bitte nochmal eingeben):"

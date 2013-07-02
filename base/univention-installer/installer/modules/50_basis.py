@@ -253,6 +253,14 @@ class object(content):
 							self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
 						return _("For Active Directory domains the hostname and the windows domain name may not be the same. This warning is shown only once, the installation can be continued with the name currently given.")
 
+		# hostname may not start with digits
+		digitsAtStart = re.compile("^[0-9]+.*$")
+		if digitsAtStart.match(hostname):
+			if not self.ignore('hostname'):
+				if focus:
+					self.move_focus(self.get_elem_id('IN_FQDN'))
+				return _("The hostname may not start with digits.")
+
 		if hostname.strip() == '' or hostname.strip() in ['localhost', 'local'] or hostname.strip().find(' ') != -1 or not self.syntax_is_hostname(hostname):
 			if not self.ignore('hostname'):
 				if focus:
@@ -264,6 +272,7 @@ class object(content):
 			if hostname != self.hostname_last_warning:
 				self.hostname_last_warning = hostname
 				return _("A valid netbios name can not be longer than 13 characters. If samba is installed, the hostname should be shortened.")
+
 		if domainname.strip() == '' or domainname.strip().find(' ') != -1 or not self.syntax_is_domainname(domainname):
 			if not self.ignore('domainname'):
 				if focus:
