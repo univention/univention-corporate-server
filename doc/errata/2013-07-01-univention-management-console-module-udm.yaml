@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-module-udm
-fix: 3.0.78-3.320.201307011450
+fix: 3.0.78-4.322.201307021551
 note:
 version: [1]
 desc: |
