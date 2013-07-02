@@ -1,8 +1,9 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create maximal computers/macos and validate it's attributes as well as automatically created referring objects and group memberships
-## tags: [udm-dns]
+## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
+## bugs: [31832]
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools

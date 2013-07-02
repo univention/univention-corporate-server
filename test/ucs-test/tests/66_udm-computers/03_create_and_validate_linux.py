@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create maximal computers/linux and validate it's attributes as well as automatically created referring objects and group memberships
-## tags: [udm-dns]
+## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

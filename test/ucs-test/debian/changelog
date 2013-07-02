@@ -1,3 +1,13 @@
+ucs-test (4.0.46-1) unstable; urgency=low
+
+  * corrected tag for some udm-computers tests
+  * added test to validate that network properties are correctly adopted by
+  	computer objects
+  * added bug number to 66_udm-computers/08_create_and_validate_macos.py
+  (Bug #31659)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 02 Jul 2013 18:02:37 +0200
+
 ucs-test (4.0.45-1) unstable; urgency=low
 
   * 00_base/17app_status: added a test case to check if the apps are
