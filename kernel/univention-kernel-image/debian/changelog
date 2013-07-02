@@ -1,3 +1,11 @@
+univention-kernel-image (7.0.0-2) unstable; urgency=low
+
+  * Depend on a version of univention-initrd suitable for initramfs-tools 0.112 
+    (which is required for the more recent kernel)
+  * Depend on 3.10-rc7. The kernel will be updated later again. (Bug #31701)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 02 Jul 2013 13:15:46 +0200
+
 univention-kernel-image (7.0.0-1) unstable; urgency=low
 
   * Bump version for 3.2
