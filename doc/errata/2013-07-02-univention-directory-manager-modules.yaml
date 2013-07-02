@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-directory-manager-modules
+fix: 8.0.143-20.1026.201307021308
+note:
+version: [1]
+desc: |
+  In the user module, the mail option has been detached from password
+  related properties.
+bug: [31868]
