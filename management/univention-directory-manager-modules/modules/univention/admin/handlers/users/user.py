@@ -1280,9 +1280,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	module=module
 
 	def __pwd_is_locked(self, password):
-		if password.startswith('{crypt}!') or password.startswith('{LANMAN}!'):
-			return True
-		return False
+		return password and (password.startswith('{crypt}!') or password.startswith('{LANMAN}!'))
 
 	def __pwd_unlocked(self, password):
 		if self.__pwd_is_locked(password):
@@ -1649,7 +1647,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				return 'D' in acctFlags or \
 				       '254' in krb5Flags or \
 						'1' in shadowExpire
-		elif key == 'locked' and self.get('password', False):
+		elif key == 'locked':
 			password  = self['password']
 			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0]).decode()
 			if not password and not acctFlags:
@@ -2237,7 +2235,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 							shadowExpire=''
 						ml.append(('shadowExpire', self.oldattr.get('shadowExpire', [''])[0], shadowExpire))
 		if self.hasChanged('locked'):
-			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') or 'mail' in self.options:
+			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') in self.options:
 				# if self.modifypassword is set the password was already locked
 				if not self.modifypassword: 
 					if self['locked'] in ['all', 'posix']:
