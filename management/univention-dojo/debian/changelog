@@ -1,3 +1,9 @@
+univention-dojo (7.0.1-1) unstable; urgency=low
+
+  * Bug #31581: added patch for dojox/widget/Standby
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Jul 2013 14:57:31 +0200
+
 univention-dojo (7.0.0-1) unstable; urgency=low
 
   * Bug #31639: updated dojo to verison 1.9 and dgrid, xstyle, put-selector to
