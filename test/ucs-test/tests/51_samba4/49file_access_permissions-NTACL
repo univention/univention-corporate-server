@@ -29,9 +29,14 @@ share_remove "$sharename";
 rm -rf "/${sharename:?}";
 wait_for_replication_and_postrun;
 ' INT TERM EXIT
+
+check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
+ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | grep uid | sed -ne 's/^uid: //p')"
+
 if ! user_create "$username"; then
 	fail_fast 1 "User could not be created"
 fi
+
 
 ##----create Share
 SHARE_POSITION="cn=shares,$ldap_base"
@@ -43,21 +48,6 @@ fi
 sleep 10	## wait a bit for listener module postrun
 
 
-ADMINISTRATOR_DN="$tests_domainadmin_account"
-if [ -z "$tests_domainadmin_account" ]; then
-	ADMIN_DN=$(/usr/sbin/univention-directory-manager users/user list --filter uid="Administrator" | sed -ne 's/^DN: //p')
-fi
-
-ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$ADMINISTRATOR_DN" uid | grep uid | sed -ne 's/^uid: //p')"
-
-ADMINISTRATOR_PASSWORD="$tests_domainadmin_pwd"
-if [ -z "$ADMINISTRATOR_PASSWORD" -a -e "$tests_domainadmin_pwdfile" ]; then
-	ADMINISTRATOR_PASSWORD="$(cat $tests_domainadmin_pwdfile)"
-	
-fi
-if [ -z "$ADMINISTRATOR_PASSWORD" ]; then
-	ADMINISTRATOR_PASSWORD="univention"
-fi
 
 wait_for_replication
 # force_drs_replication
@@ -66,9 +56,9 @@ wait_for_drs_replication "(sAMAccountName=$username)"
 ## wait for samba share export
 i=0
 sleep_seconds=3
-while ! output=$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)
+while ! output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
 do
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 10 ]; then
 		print "$output"
 		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
@@ -79,8 +69,8 @@ done
 ##--Tests
 
 echo "----create a folder as Administrator, so that the testuser has no rights to write in it"
-output=$(smbclient -U "$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)
-if [ -n "$output" ] && echo $output | grep -q "^NT_STATUS_"; then
+output="$(smbclient -U "$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
+if [ -n "$output" ] && echo "$output" | grep -q "^NT_STATUS_"; then
 	echo "$output"
 	fail_fast 1 "Failed to make a folder as Administrator even though it should work."
 fi
@@ -95,14 +85,14 @@ if ! echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"; then
 fi
 
 ## get objectSID
-sid=$(ldbsearch -H ldap://localhost -U"$username%$first_password" cn=$username | sed -n 's/^objectSid: //p')
+sid="$(ldbsearch -H ldap://localhost -U"$username%$first_password" cn=$username | sed -n 's/^objectSid: //p')"
 if [ -z "$sid" ]; then
 	fail_fast 1 "Could not retrieve objectSid of samba user account '$username'"
 fi
 
 ## get and set NTACL
 echo "----get NTACL"
-NTACL_old=$(samba-tool ntacl get "/$sharename/folder" --as-sddl 2>/dev/null)
+NTACL_old="$(samba-tool ntacl get "/$sharename/folder" --as-sddl 2>/dev/null)"
 if ! echo "$NTACL_old" | grep -q "^O:"; then
 	fail_test 1 "Could not retrieve NTACL"
 fi
@@ -112,7 +102,7 @@ if ! samba-tool ntacl set "$NTACL_old""(A;;CC;;;$sid)" "/$sharename/folder"; the
 fi
 
 echo "----attempt to create a folder with permission"
-if ! output=$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder3")
+if ! output="$(smbclient -U "$username%$first_password" "//$hostname.$domainname/$sharename" -c "mkdir folder\folder3")"
 then
 	if [ -n "$output" ]; then
 		echo "$output"

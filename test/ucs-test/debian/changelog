@@ -1,3 +1,53 @@
+ucs-test (3.0.30-13) unstable; urgency=low
+
+  * Merge from UCS 3.2 (4.0.44-1)
+
+    [ Lukas Walter ]
+    * reimplemented 66_udm-computers/13_check_nagios in python
+      (Bug #31659)
+    * fixexd keyerror in udm.py
+      (Bug #30560)
+    * added function to determine whether a s4 connector is present in domain or
+      not to utils.py
+    * fixed some typos in certain udm-computers test cases
+    * fixed s4 connector detection in udm-computers test cases
+    * udm-computers test will remove created locking objects after test end
+    * added test to validate that "ntCompatibility=1" is handled correctly in
+      computers/windows module
+    * do not set "ntCompatibility=1" in
+      66_udm-computers/01_create_and_validate_windows.py
+      (Bug #31659)
+    * if UCSTestUDM.cleanup() failed to remove one or more objects during the cleanup,
+      it will try to remove them again
+    * added function to add locks to a removal list for cleanup to UCSTestUDM()
+      (Bug #30560)
+    * skip test 66_udm-computers/08_create_and_validate_macos.py for now
+      (Bug #31832)
+    * added test case to verify that creating minimal objects of all computer
+      roles is possible (Bug #31659)
+    * added constant array containing strings represanting all computer modules to
+      udm.py.UCSTestUDM() (Bug #30560)
+    * added function "random_int()" to strings.py. Despite it's name, it will
+      return a numeric string (by default containing a value between 0 and 9)
+    * also remove referring objects in UCSTestUDM.cleanup()
+    * log erros occuring during UCSTestUDM.cleanup()
+    * per default, also remove referring objects when removing objects with
+      UCSTestUDM().remove() (pass "remove_referring=False" to change this
+      behaviour)
+      (Bug #30560)
+    * ported certain udm-computers tests
+      (Bug #31659)
+  
+    [ Tobias Peters ]
+    * Get the admin credentials in multiple tests in 51_samba4
+      from the corresponding UCR variables (Bug #29056)
+    * Get the admin credentials in 51_samba4/47file_access_permissions-unixmode
+      from the corresponding UCR variables (Bug #29056)
+    * Fixed quoting in some tests in 51_samba4 (Bug #29230)
+    * The net join call has been removed from 50_samba/05domain-join-ntlm-auth (Bug #31835)
+  
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Jul 2013 07:12:56 +0200
+
 ucs-test (3.0.30-12) unstable; urgency=low
 
   * Merge from UCS 3.2 (4.0.38-2)

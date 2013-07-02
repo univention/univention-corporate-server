@@ -58,7 +58,7 @@ i=0
 sleep_seconds=3
 while ! output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" 2>&1)"
 do
-	let i=$i+1
+	let i="$i"+1
 	if [ "$i" = 10 ]; then
 		echo "$output"
 		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
@@ -71,16 +71,16 @@ done
 #----Testing general connection
 echo "----Testing general connection"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
-if [ $? != 0 ]; then
-	echo $output
+if [ "$?" != 0 ]; then
+	echo "$output"
 	fail_test 1 "Could not connect to the share."
 fi
 
 #----making a folder as another user, so that the other user is not the owner which is important for the ACL tests
 echo "----making a folder as another user"
 output="$(smbclient -U "$username2%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder3" >/dev/null 2>&1)"
-if [ $? != 0 ]; then
-	echo $output
+if [ "$?" != 0 ]; then
+	echo "$output"
 	fail_test 1 "Failed to make a folder as a second user even though it should work."
 fi
 
@@ -89,9 +89,9 @@ fi
 echo "----accessing a folder without permission"
 setfacl -m "user:$username:---" "/$sharename/folder3"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "ls folder3\*")"
-echo $output | grep "NT_STATUS_ACCESS_DENIED"
-if [ $? != 0 ]; then
-	echo $output
+echo "$output" | grep "NT_STATUS_ACCESS_DENIED"
+if [ "$?" != 0 ]; then
+	echo "$output"
 	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
 fi
 
@@ -99,17 +99,17 @@ fi
 echo "----accessing a folder"
 setfacl -m "user:$username:r-x" "/$sharename/folder3"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "ls folder3\*")"
-if [ $? != 0 ]; then
-	echo $output
+if [ "$?" != 0 ]; then
+	echo "$output"
 	fail_test 1 "Failed to access the folder even though it should work.."
 fi
 
 #----making a folder without permission
 echo "----making a folder without permission"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder3\folder4")"
-echo $output | grep "NT_STATUS_ACCESS_DENIED"
-if [ $? != 0 ]; then
-	echo $output
+echo "$output" | grep "NT_STATUS_ACCESS_DENIED"
+if [ "$?" != 0 ]; then
+	echo "$output"
 	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
 fi
 
@@ -117,8 +117,8 @@ fi
 echo "----making a folder"
 setfacl -m "user:$username:rwx" "/$sharename/folder3"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder3\folder5")"
-if [ $? != 0 ]; then
-	echo $output
+if [ "$?" != 0 ]; then
+	echo "$output"
 	fail_test 1 "Failed to make a folder even though it should work."
 fi
 

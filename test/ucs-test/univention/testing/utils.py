@@ -83,14 +83,14 @@ def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 	raise ldap.SERVER_DOWN()
 
 
-def verify_ldap_object(dn, expected_attr = {}):
-	if not dn:
-		print 'Could not find DN "%s" of object in LDAP'
-		return False
-
+def verify_ldap_object(baseDn, expected_attr = {}):
 	try:
-		dn, attr = get_ldap_connection().search(filter = '(objectClass=*)', base = dn, attr = expected_attr.keys())[0]
+		dn, attr = get_ldap_connection().search(filter = '(objectClass=*)', base = baseDn, attr = expected_attr.keys())[0]
 	except ldap.NO_SUCH_OBJECT:
+		print 'Could not find DN "%s" in LDAP' % baseDn
+		return False
+	except IndexError:
+		print 'Could not find DN "%s" in LDAP' % baseDn
 		return False
 
 	for attribute, exptected_values in expected_attr.items():
@@ -104,6 +104,28 @@ def verify_ldap_object(dn, expected_attr = {}):
 				print 'Found unexptected value "%s" in "%s" attribute of LDAP object.\n"%s": %r' % (found_value, attribute, attribute, found_values)
 				return False
 	return True
+
+
+def remove_ldap_lock(dn):
+	try:
+		get_ldap_connection().remove(dn)
+	except:
+		pass
+
+
+def s4connector_present():
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	if ucr.is_true('directory/manager/samba3/legacy', False):
+		return False
+	if ucr.is_false('directory/manager/samba3/legacy', False):
+		return True
+
+	for dn, attr in get_ldap_connection().search(filter = '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord']):
+		if 'aRecord' in attr:
+			return True
+
 
 
 def wait_for_replication():

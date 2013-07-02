@@ -50,13 +50,6 @@ do
 	fi
 done
 
-## domain join
-echo "----join domain"
-net join "$windows_domain" -U"$username%$password"
-if [ "$?" != 0 ];then
-	fail_fast 1 "could not join into windows domain"
-fi
-
 ## start/restart winbind
 echo "----restart winbind"
 /etc/init.d/winbind restart

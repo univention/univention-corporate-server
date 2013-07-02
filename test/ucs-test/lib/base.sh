@@ -225,7 +225,11 @@ wait_for_replication_and_postrun () {
 	sleep 17
 	return $rc
 }
-
+check_domainadmin_credentials () {
+if [ -z "$tests_domainadmin_pwd" -o -z "$tests_domainadmin_pwdfile" -o -z "$tests_domainadmin_account" ]; then
+        return 1
+fi
+}
 # vim:set filetype=sh ts=4:
 # Local Variables:
 # mode: sh

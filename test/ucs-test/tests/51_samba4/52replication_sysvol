@@ -33,21 +33,8 @@ fi
 gponame="$(random_chars 8 "${_upperletters}${_lowerletters}${_ciphers}")"	## samba RC6 seems to dislike UTF-8 in GPO names
 echo gponame "$gponame"
 
-ADMINISTRATOR_DN="$tests_domainadmin_account"
-if [ -z "$tests_domainadmin_account" ]; then
-	ADMIN_DN=$(/usr/sbin/univention-directory-manager users/user list --filter uid="Administrator" | sed -ne 's/^DN: //p')
-fi
-
-ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$ADMINISTRATOR_DN" uid | grep uid | sed -ne 's/^uid: //p')"
-
-ADMINISTRATOR_PASSWORD="$tests_domainadmin_pwd"
-if [ -z "$ADMINISTRATOR_PASSWORD" -a -e "$tests_domainadmin_pwdfile" ]; then
-	ADMINISTRATOR_PASSWORD="$(cat $tests_domainadmin_pwdfile)"
-	
-fi
-if [ -z "$ADMINISTRATOR_PASSWORD" ]; then
-	ADMINISTRATOR_PASSWORD="univention"
-fi
+check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
+ADMINISTRATOR_NAME="$(univention-ldapsearch -b "$tests_domainadmin_account" uid | grep uid | sed -ne 's/^uid: //p')"
 
 ## general sanity check: wait for the samba-share.py Listener to synchronize /etc/samba/shares.conf and /etc/samba/shares.conf.d (Bug #29399)
 i=0
@@ -61,12 +48,11 @@ do
 	sleep 2
 done
 
-
 ## create the GPO
 echo "----create the GPO"
-gpo_cn="$(samba-tool gpo create "$gponame" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD" | sed -n "s/GPO '$gponame' created as //p")"
+gpo_cn="$(samba-tool gpo create "$gponame" -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" | sed -n "s/GPO '$gponame' created as //p")"
 if [ -n "$gpo_cn" ]; then
-	trap 'samba-tool gpo del "$gpo_cn" -U"$ADMINISTRATOR_USER%$ADMINISTRATOR_PASSWORD"' INT TERM EXIT
+	trap 'samba-tool gpo del "$gpo_cn" -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd"' INT TERM EXIT
 else
 	fail_fast 1 "WARNING: samba-tool gpo create did not return a GPO cn"
 fi
@@ -88,7 +74,7 @@ do
 	sleep 1
 done
 
-echo "----check whether the directory for the GPO hast been created"
+echo "----check whether the directory for the GPO has been created"
 i=0
 while ! [ -d "/var/lib/samba/sysvol/$domainname/Policies/$gpo_cn" ]
 do
