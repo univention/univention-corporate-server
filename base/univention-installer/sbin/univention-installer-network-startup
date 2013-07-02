@@ -113,6 +113,8 @@ for interface in $interfaces; do
 	
 		# use link local address if no dhcp address
 		# was offered
+		address="${!addressVar}"
+		netmask="${!netmaskVar}"
 		if [ -z "$address" -o -z "$netmask" ]; then
 			r1=$((RANDOM % 254 + 1))
 			r2=$((RANDOM % 255))
@@ -227,3 +229,5 @@ if [ -n "$proxy_http" ]; then
 	python2.6 /sbin/univention-config-registry set proxy/http=$proxy_http
 	python2.6 /sbin/univention-config-registry set proxy/ftp=$proxy_http
 fi
+
+
