@@ -2235,7 +2235,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 							shadowExpire=''
 						ml.append(('shadowExpire', self.oldattr.get('shadowExpire', [''])[0], shadowExpire))
 		if self.hasChanged('locked'):
-			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') in self.options:
+			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root'):
 				# if self.modifypassword is set the password was already locked
 				if not self.modifypassword: 
 					if self['locked'] in ['all', 'posix']:
