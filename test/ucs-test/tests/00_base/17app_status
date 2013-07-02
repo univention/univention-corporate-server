@@ -1,0 +1,57 @@
+#!/usr/share/ucs-test/runner python
+## desc: Checks if the apps are installed
+## tags: [basic,apptest]
+## roles-not: [basesystem]
+## exposure: safe
+## packages:
+##   - univention-directory-manager-tools
+
+
+import os.path
+import sys
+
+from univention.lib.package_manager import PackageManager
+from univention.management.console.modules.appcenter.app_center import Application
+from univention.config_registry import ConfigRegistry
+
+if not os.path.exists('/var/cache/appcenter-installed.txt'):
+	print '/var/cache/appcenter-installed.txt does not exist'
+	sys.exit(137)
+
+fd = open('/var/cache/appcenter-installed.txt')
+
+pm = PackageManager()
+pm.update()
+
+ucr = ConfigRegistry()
+ucr.load()
+
+def check_package(package):
+	print '  package: %s' % package
+	if not pm.is_installed(package):
+		print 'Test failed: %s is not installed but requested' % (package)
+		return False
+	return True
+
+returncode = 100
+
+for appID in fd.readlines():
+	appID = appID.strip()
+
+	print 'Checking App: %s' % appID
+	requested_app = Application.find(appID)
+	if not requested_app:
+		print ' Test failed: Requested App not found: %s' % appID
+		returncode = 1
+		continue
+
+	for package in requested_app.get('defaultpackages'):
+		if not check_package(package):
+			returncode = 1
+
+	if ucr.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
+		for package in requested_app.get('defaultpackagesmaster'):
+			if not check_package(package):
+				returncode = 1
+		
+sys.exit(returncode)

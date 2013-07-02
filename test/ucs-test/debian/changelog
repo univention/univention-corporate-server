@@ -1,3 +1,10 @@
+ucs-test (4.0.45-1) unstable; urgency=low
+
+  * 00_base/17app_status: added a test case to check if the apps are
+    really installed (Bug #31793)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Jul 2013 15:09:26 +0200
+
 ucs-test (4.0.44-1) unstable; urgency=low
 
   * reimplemented 66_udm-computers/13_check_nagios in python
@@ -18,7 +25,8 @@ ucs-test (4.0.43-2) unstable; urgency=low
 
 ucs-test (4.0.43-1) unstable; urgency=low
 
-  * Get the admin credentials in 51_samba4/47file_access_permissions-unixmode                                                                                                                    from the corresponding UCR variables (Bug #29056)
+  * Get the admin credentials in 51_samba4/47file_access_permissions-unixmode
+    from the corresponding UCR variables (Bug #29056)
 
  -- Tobias Peters <peters@univention.de>  Mon, 01 Jul 2013 11:17:18 +0200
 
