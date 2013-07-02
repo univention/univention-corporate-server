@@ -1,3 +1,10 @@
+univention-samba4 (3.0.5-2) unstable; urgency=low
+
+  * windows/wins-support initialization is now removed from postinst
+    (Bug #30813)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Jul 2013 16:35:26 +0200
+
 univention-samba4 (3.0.5-1) unstable; urgency=low
 
   * The UCR variable windows/wins-server is now set to the server it

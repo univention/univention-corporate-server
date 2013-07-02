@@ -279,6 +279,9 @@ samba_domain_join() {
 			done
 		fi
 	fi
+
+	univention-config-registry set windows/wins-support?no
+
 	if [ -z "$success" ]; then
 		echo "Failed to join the domain."
 		exit 1
@@ -569,8 +572,6 @@ if [ "$samba4_role" = 'DC' ]; then
 					echo "to complete the domain join."
 					exit 1
 				fi
-
-				univention-config-registry set windows/wins-support?no
 
 				remove_dc_ntds_guid_records_from_dns "$@"
 

@@ -156,10 +156,7 @@ if [ "$1" = "configure" ]; then
 
 		# only set this for new installations
 		if [ "$server_role" = "domaincontroller_master" ]; then
-			univention-config-registry set windows/wins-support=yes \
-										samba/domain/master?yes
-		else
-			univention-config-registry set windows/wins-support?no
+			univention-config-registry set samba/domain/master?yes
 		fi
 
 		## New installation, remove leftover samba3.x rc?.d links 
