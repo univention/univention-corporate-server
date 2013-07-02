@@ -257,7 +257,7 @@ property_descriptions={
 			long_description=_('Enter date as day.month.year.'),
 			syntax=univention.admin.syntax.date,
 			multivalue=0,
-			options=['posix', 'samba', 'kerberos', 'mail'],
+			options=['posix', 'samba', 'kerberos'],
 			editable=0,
 			required=0,
 			may_change=1,
@@ -269,7 +269,7 @@ property_descriptions={
 			long_description=_('Change password on next login'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
-			options=['posix', 'samba', 'kerberos', 'mail'],
+			options=['posix', 'samba', 'kerberos'],
 			required=0,
 			may_change=1,
 			dontsearch=1,
@@ -291,7 +291,7 @@ property_descriptions={
 			long_description='',
 			syntax=univention.admin.syntax.locked,
 			multivalue=0,
-			options=['samba', 'posix', 'mail'],
+			options=['samba', 'posix'],
 			required=0,
 			may_change=1,
 			identifies=0,
@@ -302,7 +302,7 @@ property_descriptions={
 			long_description='',
 			syntax=univention.admin.syntax.userPasswd,
 			multivalue=0,
-			options=['posix', 'samba', 'kerberos', 'mail', 'ldap_pwd' ],
+			options=['posix', 'samba', 'kerberos', 'ldap_pwd' ],
 			required=1,
 			may_change=1,
 			identifies=0,
@@ -595,7 +595,7 @@ property_descriptions={
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
-			options=['samba', 'posix', 'mail'],
+			options=['samba', 'posix'],
 			required=0,
 			dontsearch=1,
 			may_change=1,
@@ -606,7 +606,7 @@ property_descriptions={
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
-			options=['samba', 'posix', 'mail'],
+			options=['samba', 'posix'],
 			required=0,
 			dontsearch=1,
 			may_change=1,
@@ -1649,7 +1649,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				return 'D' in acctFlags or \
 				       '254' in krb5Flags or \
 						'1' in shadowExpire
-		elif key == 'locked':
+		elif key == 'locked' and self.get('password', False):
 			password  = self['password']
 			acctFlags = univention.admin.samba.acctFlags(self.oldattr.get("sambaAcctFlags", [''])[0]).decode()
 			if not password and not acctFlags:

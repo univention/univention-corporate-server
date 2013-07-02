@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.5-1) unstable; urgency=low
+
+  * detached mail option from password related properties
+  (Bug #31868)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 02 Jul 2013 11:18:55 +0200
+
 univention-directory-manager-modules (9.0.4-1) unstable; urgency=low
 
   * Bug #31560: Improve lookup speedup of UCS_Server and DomainController
