@@ -1,3 +1,12 @@
+univention-initrd (6.0.0-2) unstable; urgency=low
+
+  * Tighten the dependency on initramfs-tools. It is needed to generate initrds
+    compatible with Linux 3.10 (Bug #31701)
+  * Update UCR template for /etc/initramfs-tools/initramfs.conf	based on current
+    version from 0.112	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 02 Jul 2013 12:44:19 +0200
+
 univention-initrd (6.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
