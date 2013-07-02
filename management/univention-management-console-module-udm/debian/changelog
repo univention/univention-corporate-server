@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.3-1) unstable; urgency=low
+
+  * Bug #31161: publish saving and cancel actions when editing UDM objects
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Jul 2013 15:50:10 +0200
+
 univention-management-console-module-udm (4.0.2-1) unstable; urgency=low
 
   * Bug #31560: Improve lookup speedup of UCS_Server and DomainController
