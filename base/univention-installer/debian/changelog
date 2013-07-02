@@ -1,3 +1,9 @@
+univention-installer (9.0.9-1) unstable; urgency=low
+
+  * fixed language order (Bug #24361) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Jul 2013 18:05:01 +0200
+
 univention-installer (9.0.8-1) unstable; urgency=low
 
   * fixed scan=hostname (Bug #29469) 

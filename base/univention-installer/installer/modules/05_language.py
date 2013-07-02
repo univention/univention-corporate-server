@@ -97,7 +97,6 @@ class object(content):
 			if int(supported_environments) >= 4:
 				continue
 
-			counter = counter + 1
 			#dict[language_en + " (" + language_orig + ")"] = [langcode, counter]
 			dict[language_en] = [langcode, counter]
 			langConfig[langcode] = {}
@@ -107,6 +106,8 @@ class object(content):
 
 			if langcode == presLanguage:
 				selectedLangLine = counter
+
+			counter = counter + 1
 
 		return dict, langConfig, selectedLangLine, presLanguage
 
