@@ -33,9 +33,9 @@ done
 
 ## create the GPO
 echo "----create the GPO"
-gpo_cn="$(samba-tool gpo create "$gponame" -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" | sed -n "s/GPO '$gponame' created as //p")"
+gpo_cn="$(samba-tool gpo create "$gponame" -H ldap://"$hostname.$domainname" -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd" | sed -n "s/GPO '$gponame' created as //p")"
 if [ -n "$gpo_cn" ]; then
-	trap 'samba-tool gpo del "$gpo_cn" -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd"' INT TERM EXIT
+	trap 'samba-tool gpo del "$gpo_cn" -H ldap://"$hostname.$domainname" -U"$ADMINISTRATOR_NAME%$tests_domainadmin_pwd"' INT TERM EXIT
 else
 	fail_fast 1 "WARNING: samba-tool gpo create did not return a GPO cn"
 fi
@@ -74,7 +74,7 @@ done
 ##check whether the GPO is listed in samba-tool
 echo "----check whether the GPO is listed in samba-tool"
 i=0
-while ! ( output="$(samba-tool gpo show "$gpo_cn")" && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output" > /dev/null )
+while ! ( output=$(samba-tool gpo show "$gpo_cn" 2>&1) && grep -Eq "^GPO\s+:\s$gpo_cn" <<<"$output" > /dev/null )
 do
 	let i="$i"+1
 	if [ "$i" = 10 ]; then

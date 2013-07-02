@@ -1,3 +1,11 @@
+ucs-test (4.0.47-1) unstable; urgency=low
+
+  * 51_samba4/51create_gpo now always creates the GPO locally (Bug #29328)
+  * 51_samba4/52replication_sysvol now always creates the GPO remotely
+    (Bug #29062)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Jul 2013 18:35:48 +0200
+
 ucs-test (4.0.46-1) unstable; urgency=low
 
   * corrected tag for some udm-computers tests
