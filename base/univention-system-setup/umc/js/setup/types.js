@@ -203,7 +203,7 @@ define([
 			if (array.every(all_interfaces, function(idevice) {
 				if (devicename != idevice.name) {
 					if (idevice.isVLAN()) {
-						return idevice.parent_device === device;
+						return true;
 					}
 					return (-1 === idevice.getSubdevices().indexOf(device));
 				}

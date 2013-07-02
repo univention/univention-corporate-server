@@ -723,7 +723,11 @@ class Bridge(Device):
 				name, value = option, ''
 
 			if name == 'bridge_ports':
-				self.bridge_ports = value.split()
+				# TODO: support 'all' and 'bridge_ports all regex if.0 noregex ext0 regex vif.*'
+				if value.strip().lower() == 'none':
+					self.bridge_ports = []
+				else:
+					self.bridge_ports = value.split()
 			elif name == 'bridge_fd':
 				try:
 					self.bridge_fd = int(value)
