@@ -150,6 +150,9 @@ define([
 
 		_bundledCommands: null,
 
+		// reference to the parent UMC module instance
+		_parentModule: null,
+
 		// LDAP object type name in singular and plural
 		objectNameSingular: '',
 		objectNamePlural: '',
@@ -220,6 +223,11 @@ define([
 			}), lang.hitch(this, function() {
 				this.standby(false);
 			}));
+		},
+
+		startup: function() {
+			this.inherited(arguments);
+			this._parentModule = tools.getParentModule(this);
 		},
 
 		renderDetailPage: function(_properties, _layout, policies, _template) {
@@ -626,7 +634,10 @@ define([
 			}, {
 				name: 'close',
 				label: closeLabel,
-				callback: lang.hitch(this, 'onCloseTab'),
+				callback: lang.hitch(this, function() {
+					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
+					this.onCloseTab();
+				}),
 				style: 'float: left'
 			}], this);
 			var footer = new ContainerWidget({
@@ -1236,6 +1247,7 @@ define([
 			//		Save the user changes for the edited object.
 
 			var deferred = null;
+			topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'save');
 			if (this._multiEdit) {
 				// save the changes for each object once
 				var transaction = this.moduleStore.transaction();
