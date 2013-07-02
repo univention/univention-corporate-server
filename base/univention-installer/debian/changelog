@@ -1,3 +1,9 @@
+univention-installer (9.0.7-2) unstable; urgency=low
+
+  * readded dhclient call in univention-installer-network-startup (Bug #31174) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 02 Jul 2013 14:38:10 +0200
+
 univention-installer (9.0.7-1) unstable; urgency=low
 
   * added check if hostname starts with digits in

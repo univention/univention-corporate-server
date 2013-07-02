@@ -95,6 +95,21 @@ for interface in $interfaces; do
 	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
 	
 		python2.6 /sbin/univention-config-registry set interfaces/$interface/type=dhcp
+
+		# dhclient only if no address is set
+		if [ -z "$address" -o -z "$netmask" ]; then
+			ifconfig $interface up
+			outfile="/tmp/dhclient-$interface.$$"
+			mkdir -p /var/lib/dhcp3/
+			dhclient -1 \
+				-sf /lib/univention-installer/dhclient-script-wrapper \
+				-e dhclientscript_outputfile="$outfile" \
+				$interface
+			if [ -s "$outfile" ]; then
+				. "$outfile"
+				rm -f "$outfile"
+			fi 
+		fi
 	
 		# use link local address if no dhcp address
 		# was offered
@@ -212,5 +227,3 @@ if [ -n "$proxy_http" ]; then
 	python2.6 /sbin/univention-config-registry set proxy/http=$proxy_http
 	python2.6 /sbin/univention-config-registry set proxy/ftp=$proxy_http
 fi
-
-
