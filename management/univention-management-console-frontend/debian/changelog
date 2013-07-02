@@ -1,3 +1,9 @@
+univention-management-console-frontend (2.0.244-15) unstable; urgency=low
+
+  * Bug #31308: replace partly unsupported reference to location.origin
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Jul 2013 13:15:54 +0200
+
 univention-management-console-frontend (2.0.244-14) unstable; urgency=low
 
   * Bug #31308: allow action specific tooltip class

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require location*/
+/*global define require window*/
 
 define([
 	"dojo/topic",
@@ -60,7 +60,7 @@ define([
 		// subscribe to all topics containing interesting actions
 		topic.subscribe('/umc/actions', function() {
 			piwikTracker.setDocumentTitle(_buildSiteTitle(arguments));
-			piwikTracker.setCustomUrl(location.origin);
+			piwikTracker.setCustomUrl(window.location.protocol + "//" + window.location.host);
 			piwikTracker.trackPageView();
 		});
 
