@@ -6,7 +6,10 @@ fix: 3.0.78-3.320.201307011450
 note:
 version: [1]
 desc: |
-  This errata fixes a problem especially in larger environments: Two syntax
-  classes received lookup optimizations that result in faster opening of
-  objects in the UDM frontend.
-bug: [31560]
+  This errata addresses the following issues:
+  * Problems especially in larger environments: Two syntax classes received
+    lookup optimizations that result in faster opening of objects in the UDM
+    frontend.
+  * The actions for saving and cancel editing UDM objects are published now for
+    Piwik system.
+bug: [31560,31161]
