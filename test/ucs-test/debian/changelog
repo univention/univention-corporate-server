@@ -1,3 +1,9 @@
+ucs-test (4.0.50-1) unstable; urgency=low
+
+  * Workaround for Bug #31794
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 17:35:07 +0200
+
 ucs-test (4.0.49-1) unstable; urgency=low
 
   * 02_import-performance/1*: count users (Bug #31695)
