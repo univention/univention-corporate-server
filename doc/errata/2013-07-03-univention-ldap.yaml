@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-ldap
+fix: 9.0.27-4.593.201307032003
+note:
+version: [1]
+desc: |
+  This errata update fixes a bug in the package univention-ldap:
+  * If Samba4 DCs are detected during join, port 7389 is not added
+    but removed from the _ldap._tcp SRV DNS record.
+bug: [31887]
