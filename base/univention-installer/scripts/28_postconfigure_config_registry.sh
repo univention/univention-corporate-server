@@ -153,7 +153,7 @@ fi
 echo "$timezone" >/etc/timezone
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
 
-mkdir -p /etc/console
+mkdir -m 0755 -p /etc/console
 
 univention-config-registry set locale/keymap="$keymap"
 

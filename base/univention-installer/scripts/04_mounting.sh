@@ -81,7 +81,7 @@ do
 			elif [ "$mp" = 'None' -o "$mp" = "none" -o "$mp" = 'unknown' -o "$mp" = '/' ]; then
 				true
 			else
-				mkdir -p /instmnt/$mp
+				mkdir -m 0755 -p /instmnt/$mp
 				/bin/mount -t $fs $name /instmnt/$mp
 				echo -n "  $name ($mp)" >>/instmnt/.log
 				echo -n "  $name ($mp)"
@@ -100,5 +100,5 @@ done < $tmp
 
 rm -f $tmp
 
-mkdir -p /instmnt/tmp
-mkdir -p /tmp/logging
+mkdir -m 0755 -p /instmnt/tmp
+mkdir -m 0755 -p /tmp/logging

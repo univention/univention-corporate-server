@@ -114,7 +114,7 @@ get_device_disk ()
 }
 
 if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-	mkdir -p /dev/iseries
+	mkdir -m 0755 -p /dev/iseries
 	mknod /dev/iseries/vcda b 113 0
 	mknod /dev/iseries/vda b 112 0
 	mknod /dev/iseries/vdb b 112 8

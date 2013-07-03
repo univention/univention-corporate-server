@@ -41,7 +41,7 @@ if [ -e /tmp/installation_profile_scanned ]; then
 fi
 
 UDEVDIR="/instmnt/etc/udev/rules.d"
-mkdir -p "$UDEVDIR"
+mkdir -m 0755 -p "$UDEVDIR"
 export UDEVRULEFN="${UDEVDIR}/70-persistent-net.rules"
 
 # if dummy network interface is in use, delete mapping from existing rules file

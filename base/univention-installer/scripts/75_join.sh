@@ -53,7 +53,7 @@ cat /tmp/installation_profile | sed -e "s|root_password=.*|#root_password=''|" |
 sync
 
 if [ ! -e /instmnt/var/lib/univention-ldap ]; then
-	mkdir -p /instmnt/var/lib/univention-ldap
+	mkdir -m 0755 -p /instmnt/var/lib/univention-ldap
 fi
 echo -n "$root_password" >/instmnt/var/lib/univention-ldap/root.secret
 chmod 600 /instmnt/var/lib/univention-ldap/root.secret
@@ -91,8 +91,8 @@ if [ "$server_role" != "domaincontroller_master" ] && [ -n "$domain_controller_a
 fi
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-    mkdir -p /var/univention-join/
-    mkdir -p /usr/share/univention-join/
+    mkdir -m 0755 -p /var/univention-join/
+    mkdir -m 0755 -p /usr/share/univention-join/
 
     if [ "$call_master_joinscripts" = "false" -o "$call_master_joinscripts" = "no" ] ; then
         echo "Warning: Join script execution has been disabled via call_master_joinscripts=$call_master_joinscripts"

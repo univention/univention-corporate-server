@@ -34,8 +34,8 @@
 . /tmp/progress.lib
 echo "__MSG__:$(LC_ALL=$INSTALLERLOCALE gettext "Configuring basesystem")" >&9
 
-mkdir -p /instmnt/etc/apt/
-mkdir -p /instmnt/sourcedevice
+mkdir -m 0755 -p /instmnt/etc/apt/
+mkdir -m 0755 -p /instmnt/sourcedevice
 ## check for repository structure
 # old repository (DVD)
 if [ -d /mnt/packages ]; then

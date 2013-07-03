@@ -42,7 +42,7 @@ fi
 
 for i in $preinst_hook; do
 	if [ -e "/instmnt/sourcedevice/script/$i" ]; then
-		mkdir -p /instmnt/etc/univention/preinst
+		mkdir -m 0755 -p /instmnt/etc/univention/preinst
 		cp "/instmnt/sourcedevice/script/$i" /instmnt/etc/univention/preinst/
 		chmod 700 "/instmnt/etc/univention/preinst/$i"
 		chroot /instmnt /etc/univention/preinst/$i

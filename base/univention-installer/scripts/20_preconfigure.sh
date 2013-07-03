@@ -41,7 +41,7 @@ if [ -e /tmp/installation_profile_scanned ]; then
 fi
 
 architecture=`/bin/uname -m`
-mkdir -p /instmnt/etc/univention/
+mkdir -m 0755 -p /instmnt/etc/univention/
 cp /etc/univention/base.conf /instmnt/etc/univention/
 
 # preconfigure for nfs mounts
@@ -104,7 +104,7 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-mkdir -p /var/log/univention
+mkdir -m 0755 -p /var/log/univention
 touch /var/log/univention/join.log
 chown root:root /var/log/univention/join.log
 chmod 600 /var/log/univention/join.log

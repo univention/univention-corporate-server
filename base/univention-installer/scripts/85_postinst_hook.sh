@@ -42,7 +42,7 @@ fi
 
 for i in $postinst_hook; do
 	if [ -e "/instmnt/sourcedevice/script/$i" ]; then
-		mkdir -p /instmnt/etc/univention/postinst
+		mkdir -m 0755 -p /instmnt/etc/univention/postinst
 		cp "/instmnt/sourcedevice/script/$i" /instmnt/etc/univention/postinst/
 		chmod 700 "/instmnt/etc/univention/postinst/$i"
 		chroot /instmnt /etc/univention/postinst/$i

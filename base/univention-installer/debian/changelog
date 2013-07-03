@@ -1,3 +1,9 @@
+univention-installer (9.0.10-1) unstable; urgency=low
+
+  * Create directories with 0755 permissions (Bug #29450)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 03 Jul 2013 13:42:18 +0200
+
 univention-installer (9.0.9-2) unstable; urgency=low
 
   * fixed scan=hostname (Bug #29469) 

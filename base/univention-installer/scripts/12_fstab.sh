@@ -134,29 +134,28 @@ if [ ! -z "$CDROM_DEVICES" ]; then
 		cat >>/instmnt/etc/fstab <<__EOT__
 /dev/cdrom$j    /cdrom$j     auto    user,noauto,exec             0       0
 __EOT__
-		mkdir /instmnt/cdrom$j
+		mkdir -m 0755 -p /instmnt/cdrom$j
 		if [ -z $j ]; then j=1; else j=$(($j+1)); fi
 	done
 elif [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	cat >>/instmnt/etc/fstab <<__EOT__
 /dev/iseries/vcda  /cdrom     auto    user,noauto,exec            0       0
 __EOT__
-	mkdir -p /instmnt/cdrom
 # xen
 elif [ -d "/proc/xen" ]; then
         . /tmp/installation_profile
         cat >>/instmnt/etc/fstab <<__EOT__
 $cdrom_device  /cdrom     auto    user,noauto,exec            0       0
 __EOT__
-	mkdir -p /instmnt/cdrom
+	mkdir -m 0755 -p /instmnt/cdrom
 else
 	cat >>/instmnt/etc/fstab <<__EOT__
 /dev/sr0  /cdrom     auto    user,noauto,exec            0       0
 __EOT__
-	mkdir -p /instmnt/cdrom
+	mkdir -m 0755 -p /instmnt/cdrom
 fi
 
 cat >>/instmnt/etc/fstab <<__EOT__
 /dev/fd0  /floppy     vfat    user,noauto,exec            0       0
 __EOT__
-mkdir /instmnt/floppy
+mkdir -m 0755 -p /instmnt/floppy
