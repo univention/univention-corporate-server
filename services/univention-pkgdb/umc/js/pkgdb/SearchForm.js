@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -43,7 +43,7 @@ define([
 	return declare("umc.modules.pkgdb.SearchForm", [ Form ], {
 
 		// Some status variables
-		_pattern_needed:		true,		// true if a pattern is required by this key+operator 
+		_pattern_needed:		true,		// true if a pattern is required by this key+operator
 		_pattern_is_list:		false,		// true if pattern is ComboBox. false if TextBox.
 		_submit_allowed:		false,		// true if current input allows SUBMIT (including that no queries are pending)
 
@@ -62,7 +62,6 @@ define([
 							name:					'key',
 							label:					_("Search for:"),
 							size:					'TwoThirds',
-							staticValues:			[{id:'_', label: _("--- Please select ---")}],
 							sortDynamicValues:		false,
 							dynamicValues:			'pkgdb/keys',
 							dynamicOptions:			{page:this.pageKey},
@@ -128,7 +127,7 @@ define([
 			this.inherited(arguments);
 
 		},
-		
+
 		buildRendering: function() {
 
 			this.inherited(arguments);
@@ -238,7 +237,7 @@ define([
 		// dynamic options for the ComboBox that presents comparison operators
 		// suitable for a given key
 		_operators_query: function() {
-			
+
 			if (this._operators_pending)
 			{
 				//alert("OPERATORS already pending!");
@@ -274,7 +273,7 @@ define([
 			try
 			{
 				var key = this.getWidget('key').get('value');
-				
+
 				return tools.umcpCommand('pkgdb/proposals',{
 					page:		this.pageKey,
 					key:		key
@@ -327,7 +326,7 @@ define([
 			}
 
 			this.showWidget('operator',o_show);
-			
+
 			if (p_show)
 			{
 				this.showWidget('pattern_text',!this._pattern_is_list);
@@ -342,7 +341,7 @@ define([
 			this.getWidget('pattern_text').set('label',p_label);
 			this.getWidget('pattern_list').set('label',p_label);
 		},
-		
+
 		// handles the result (and especially: the result type) of the
 		// proposals returned by the 'pkgdb/proposals' query
 		_handle_proposals: function(values) {
@@ -368,7 +367,7 @@ define([
 		// sets state of 'this query is pending' in a boolean variable
 		// and in the 'disabled' state of the corresponding dialog element(s)
 		_set_query_pending: function(element,on) {
-			
+
 			var bv = '_' + element + 's_pending';
 			this.set(bv,on);
 
@@ -390,7 +389,7 @@ define([
 	//		}
 
 		},
-		
+
 		_set_selection_to_first_element: function(name) {
 
 			var widget = this.getWidget(name);
@@ -404,12 +403,12 @@ define([
 		// explicitly set a widget to invalid... why do widgets have this
 		// feature if the form doesn't honor it?
 		onSubmit: function() {
-			
+
 			// the 'onChange' handler of the textbox is not invoked until the focus
 			// has left the field... so we have to do a last check here in case
 			// the text changed.
 			this._handle_query_changes();
-			
+
 			if (this._submit_allowed)
 			{
 				this.onExecuteQuery(this.getQuery());

@@ -4,7 +4,7 @@
 '''Univention Package Database
     python module for the package database'''
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -314,13 +314,19 @@ def sql_get_systems_by_query(cursor, query):
 	sqlcmd = "SELECT sysname, sysversion, sysrole, to_char(scandate,'YYYY-MM-DD HH24:MI:SS'), ldaphostdn FROM systems WHERE " + query + " ORDER BY sysname" # FIXME
 	return sql_select(cursor, sqlcmd)
 
-def sql_get_packages_in_systems_by_query(cursor, query, join_systems):
+def sql_get_packages_in_systems_by_query(cursor, query, join_systems, limit=None, orderby='sysname, pkgname, vername'):
 	if not query:
 		return []
 	if join_systems:
-		sqlcmd = "SELECT sysname, pkgname, vername, to_char(packages_on_systems.scandate, 'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems JOIN systems USING(sysname) WHERE " + query + " ORDER BY sysname, pkgname, vername" # FIXME
+		sqlcmd = "SELECT sysname, pkgname, vername, to_char(packages_on_systems.scandate, 'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems JOIN systems USING(sysname) WHERE " + query # FIXME
 	else:
-		sqlcmd = "SELECT sysname, pkgname, vername, to_char(packages_on_systems.scandate, 'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems WHERE " + query + " ORDER BY sysname, pkgname, vername" # FIXME
+		sqlcmd = "SELECT sysname, pkgname, vername, to_char(packages_on_systems.scandate, 'YYYY-MM-DD HH24:MI:SS'), inststatus, selectedstate, inststate, currentstate FROM packages_on_systems WHERE " + query # FIXME
+
+	if orderby:
+		sqlcmd += " ORDER BY %s" % (orderby)
+
+	if limit is not None:
+		sqlcmd += " LIMIT %d" % (limit)
 	return sql_select(cursor, sqlcmd)
 
 def dump_systems(cursor):

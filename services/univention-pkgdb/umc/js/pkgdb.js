@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -39,6 +39,9 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
+			// trigger a reload of initial values on every module opening, even if the modul process already exists
+			this.umcpCommand('/pkgdb/reinit');
+
 			var syspage = new Page({
 				title:			_("Systems"),
 				headerText:		_("Search systems"),
@@ -54,15 +57,6 @@ define([
 				pageKey:		'packages'
 			});
 			this.addChild(packpage);
-
-			var propage = new Page({
-				title:			_("Problems"),
-				headerText:		_("Identify problems"),
-				helpText:		_("Find problems related to software package installation"),
-				pageKey:		'problems'
-			});
-			this.addChild(propage);
-			
 		}
 	});
 });

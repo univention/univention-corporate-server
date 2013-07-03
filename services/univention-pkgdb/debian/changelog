@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.2-1) unstable; urgency=low
+
+  * Bug #30967: Code cleanup
+
+ -- Florian Best <best@univention.de>  Wed, 03 Jul 2013 14:54:56 +0200
+
 univention-pkgdb (7.0.1-1) unstable; urgency=low
 
   * Bug #31523: use getattr instead of eval

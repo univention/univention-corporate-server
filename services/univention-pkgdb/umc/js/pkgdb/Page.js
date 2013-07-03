@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -54,7 +54,7 @@ define([
 	// attribute being set by the constructor call.
 	//
 	return declare("umc.modules.pkgdb.Page", [ Page, StandbyMixin, KeyTranslator], {
-		
+
 		_grid:						null,			// holds the results grid if query was invoked at least once
 		_last_table_structure:		null,			// remember last table structure
 		_current_query:				null,			// what is being executed right now
@@ -80,6 +80,11 @@ define([
 			}));
 		},
 
+		postCreate: function() {
+			this.inherited(arguments);
+			this._execute_query(this._searchform.getQuery());
+		},
+
 		// fetches the structure of the result grid. The callback returns
 		// the current query to us.
 		_execute_query: function(query) {
@@ -102,7 +107,7 @@ define([
 		},
 
 		// Creates the given result table. 'fields' is an array of column names.
-		// The corresponding query is already stored in this._current_query. 
+		// The corresponding query is already stored in this._current_query.
 		_create_table: function(fields) {
 
 			try
@@ -116,11 +121,11 @@ define([
 					{
 						grid_usable = true;
 					}
-				}			
+				}
 				this._last_table_structure = sig;
 
 				if (! grid_usable)
-				{			
+				{
 					var columns = [];
 
 					for (var f in fields)

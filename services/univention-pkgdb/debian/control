@@ -75,6 +75,7 @@ Package: univention-management-console-module-pkgdb
 Architecture: all
 Depends: univention-management-console-server,
  univention-directory-manager-tools (>> 7.0.147),
+ univention-pkgdb (= ${source:Version})
 Description: UMC module for software monitor
  This package contains the UMC module for the software monitor.
  .

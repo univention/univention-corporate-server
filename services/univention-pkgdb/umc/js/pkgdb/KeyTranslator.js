@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -41,7 +41,7 @@ define([
 		// structural information is kept in the Python module, the design properties
 		// of the frontend should be concentrated in the JS part.
 		_field_options: function(key) {
-			
+
 			var t = {
 				'inststate': {
 					label:		_("Installation<br/>state"),
@@ -65,7 +65,7 @@ define([
 					width:		'adjust'
 				},
 				'sysname': {
-					label:		_("System name")
+					label:		_("Hostname")
 				},
 				'sysrole': {
 					label:		_("System role")
@@ -74,10 +74,8 @@ define([
 					label:		_("UCS version")
 				}
 			};
-			
-			if (t[key]) { return t[key]; }
-			
-			return null;
+
+			return t[key] || null;
 		}
 
 	});

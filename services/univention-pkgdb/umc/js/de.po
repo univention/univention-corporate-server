@@ -12,10 +12,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/_pkgdb/SearchForm.js:67
-msgid "--- Please select ---"
-msgstr "--- Bitte wählen ---"
-
 #: umc/js/pkgdb.js:66
 msgid "Find problems related to software package installation"
 msgstr "Probleme bezüglich aktuell installierter Pakete finden"
@@ -26,11 +22,11 @@ msgstr "Identifizierung potentieller Probleme"
 
 #: umc/js/_pkgdb/KeyTranslator.js:54
 msgid "Installation<br/>state"
-msgstr "Installations-<br/>Status"
+msgstr "Installations-<br/>status"
 
 #: umc/js/_pkgdb/KeyTranslator.js:58
 msgid "Inventory date"
-msgstr "Erfaßt am"
+msgstr "Erfasst am"
 
 #: umc/js/_pkgdb/SearchForm.js:80
 msgid "Operator"
@@ -83,15 +79,15 @@ msgstr "Suche nach erfassten Paketen"
 
 #: umc/js/pkgdb.js:49
 msgid "Search systems"
-msgstr "Such nach erfassten Systeme"
+msgstr "Suche nach erfassten Systemen"
 
 #: umc/js/_pkgdb/KeyTranslator.js:71
 msgid "Selection<br/>state"
 msgstr "Selektions-<br/>status"
 
 #: umc/js/_pkgdb/KeyTranslator.js:75
-msgid "System name"
-msgstr "Systemname"
+msgid "Hostname"
+msgstr "Rechnername"
 
 #: umc/js/_pkgdb/KeyTranslator.js:78
 msgid "System role"

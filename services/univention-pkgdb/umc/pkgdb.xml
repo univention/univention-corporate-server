@@ -7,31 +7,11 @@
 			<category name="system"/>
 		</categories>
 
-		<!-- the big worker function that realizes the invocation
-		of the requested query.
-
-		Filter is an array containing dicts with 'key','operator' and 'pattern'.
-		Currently the frontend posts only a single entry, but the backend
-		code is already prepared to handle multiple conditions.
-		-->
+		<command name="pkgdb/reinit" function="reinit" />
 		<command name="pkgdb/query" function="query" />
-
-		<!-- Helper queries for the query editors. We want to centralise
-		all structural information here, along with the functions that
-		do the actual filtering and queries. Helpers are:-
-
-		KEYS:			return the allowed filter keys for a given page
-		OPERATORS:		return the allowed comparison operators for a given page+key
-		PROPOSALS:		return proposed values for a given page+key
-		COLUMNS:		return the table structure for a given query (page+key)
-		-->
-
 		<command name="pkgdb/keys" function="keys" />
-
 		<command name="pkgdb/operators" function="operators" />
-
 		<command name="pkgdb/proposals" function="proposals" />
-
 		<command name="pkgdb/columns" function="columns" />
 	</module>
 </umc>
