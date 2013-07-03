@@ -6,6 +6,6 @@ fix: 1.0.4-2.10.201307011640
 note:
 version: [1]
 desc: |
-  The UMC session is now kep active during the dialog for restarting the UMC
+  The UMC session is now kept active during the dialog for restarting the UMC
   server.
 bug: [31642]
