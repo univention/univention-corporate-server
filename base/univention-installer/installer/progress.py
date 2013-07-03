@@ -182,13 +182,14 @@ class ProgressDialog(object):
 	def read_installation_profile(self):
 		self.profile = {}
 		try:
-			lines = open('/tmp/installation_profile', 'r').readlines()
-			for line in lines:
-				try:
-					key, val = line.split('=',1)
-					self.profile[key] = val.strip('\n\r"\' ')
-				except:
-					pass
+			for ifile in ["installation_profile", "installation_profile_scanned"]:
+				lines = open('/tmp/%s' % ifile, 'r').readlines()
+				for line in lines:
+					try:
+						key, val = line.split('=',1)
+						self.profile[key] = val.strip('\n\r"\' ')
+					except:
+						pass
 		except:
 			pass
 
