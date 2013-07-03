@@ -1,0 +1,16 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: curl
+fix: 7.21.0-4.31.201307031259
+desc: |
+ Two security issues have been found in Curl, a library for managing
+ downloads: Domain name matching in cookie validation was implemented
+ incorrectly in some cornercases and a buffer overflow has been found
+ in the curl_easy_unescape() function
+A buffer overflow was found in the argument processing of grep.
+note: This update fixes these vulnerabilities
+cve:
+ - CVE-2013-1944
+ - CVE-2013-2174
