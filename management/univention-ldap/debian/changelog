@@ -1,3 +1,9 @@
+univention-ldap (10.0.3-3) unstable; urgency=low
+
+  * Wait for named and exit on failure (Bug #29462)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 20:24:03 +0200
+
 univention-ldap (10.0.3-2) unstable; urgency=low
 
   * Remove port 7389 from SRV record if Samba 4 DCs are present during

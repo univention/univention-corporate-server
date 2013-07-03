@@ -79,8 +79,9 @@ if ! local_is_ucr_false dns/register/srv_records/ldap; then
 			"$domainname" add srv ldap tcp 0 100 7389 "$hostname.$domainname." || die
 	else
 		echo "SRV record _ldap._tcp for port 7389 not created because Samba4 DCs are present: $(printf "$S4_DCS" | tr -s "$(printf '\n\r')" ',')"
+		wait_named
 		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists \
-			"$domainname" remove srv ldap tcp 0 100 7389 "$hostname.$domainname."
+			"$domainname" remove srv ldap tcp 0 100 7389 "$hostname.$domainname." || die
 	fi
 fi
 
