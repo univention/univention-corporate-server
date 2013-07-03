@@ -147,6 +147,7 @@ if [ -n "$dc" ]; then
 		### ldap servers
 		## _ldap._tcp              IN SRV 0 100 389        qamaster
 		/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap tcp 0 100 389 $hostname.$domainname.
+		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" remove srv ldap tcp 0 100 7389 "$hostname.$domainname."
 		## _ldap._tcp.dc._msdcs    IN SRV 0 100 389        qamaster
 		/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap._tcp.dc msdcs 0 100 389 $hostname.$domainname.
 

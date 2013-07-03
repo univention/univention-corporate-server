@@ -1,3 +1,10 @@
+univention-samba4 (2.0.44-22) unstable; urgency=low
+
+  * Remove port 7389 from _ldap._tcp SRV record during join
+    (Bug #31887)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 19:36:45 +0200
+
 univention-samba4 (2.0.44-21) unstable; urgency=low
 
   * create ntp_signd socket directory with mode 750 (Bug #31649)
