@@ -1,3 +1,13 @@
+univention-samba4 (3.0.5-3) unstable; urgency=low
+
+  * remove _ldap._tcp SRV record for port 7389 in setup-dns-in-ucsldap,
+    necessary on DC Master (Bug #29462)
+  * replace univention-admin-tools by univention-directory-manager-tools,
+    fix some quoting and simplify some trivial sed expressions
+    in the setup-dns-in-ucsldap script
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 19:29:55 +0200
+
 univention-samba4 (3.0.5-2) unstable; urgency=low
 
   * windows/wins-support initialization is now removed from postinst
