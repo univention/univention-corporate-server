@@ -681,6 +681,8 @@ systems in \ucsName{ucs-test}, for example \ucsName{udm-test} or
 \item Now there is a test block \emph{samba-common} for tests that are common to Samba versions 3 and 4.
 The robustness against DRS and rsync replication delays has been improved in some tests (\ucsBug{28343}, \ucsBug{28348}, \ucsBug{29057}, \ucsBug{29058}, \ucsBug{29062}). The Samba3 join test has been removed (\ucsBug{31835}). Samba4 NTACL tests have been improved a bit (\ucsBug{29230}).
 
+\item Under certain circumstances samba 3.6.8 reports a timeout for the unix password sync during password changes. Since the password change is successful nonetheless, two test cases have been adjusted to tolerate this flaw (\ucsBug{31794}).
+
 \item Several UDM test cases have been added (\ucsBug{31652}, \ucsBug{31653}, \ucsBug{31654}, \ucsBug{31655}, \ucsBug{31656}, \ucsBug{31658}).
 
 \item The tools \ucsName{import\_ldif\_with\_listener}, \ucsName{import\_ldif\_without\_listener}
