@@ -1,6 +1,14 @@
+ucs-test (4.0.48-3) unstable; urgency=low
+
+  * added csv file for 65000 users (Bug #31695)
+  * 02_import-performance/performanceutils.py: return 0 by default
+    (Bug #31695)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Jul 2013 13:22:37 +0200
+
 ucs-test (4.0.48-2) unstable; urgency=low
 
-  * 02_import-performance/performanceutils.p: return 0 by default
+  * 02_import-performance/performanceutils.py: return 0 by default
     (Bug #31695)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Jul 2013 12:40:05 +0200

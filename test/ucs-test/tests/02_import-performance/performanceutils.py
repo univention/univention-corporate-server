@@ -14,6 +14,7 @@ import univention.uldap
 
 def import_users(file):
 	subprocess.call('/usr/share/ucs-school-import/scripts/ucs-school-import %s' % file, shell=True)
+	return 0
 
 def _start_time():
 	return time.time()
