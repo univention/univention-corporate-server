@@ -20,6 +20,6 @@ Variables: logrotate/.*
 Type: file
 File: usr/share/univention-heimdal/check_cracklib.py
 Mode: 755
-Owner: root
+User: root
 Group: root
 Variables: kerberos/password/quality/.*

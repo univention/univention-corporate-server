@@ -1,3 +1,10 @@
+univention-heimdal (6.0.13-1) unstable; urgency=low
+
+  * Fix ownership of usr/share/univention-heimdal/check_cracklib.py
+    (Bug #22926)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 20:32:14 +0200
+
 univention-heimdal (6.0.12-1) unstable; urgency=low
 
   * Added realm section for the netbios on a S4 DC (Bug #28819)
