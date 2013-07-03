@@ -1,8 +1,11 @@
 univention-base-files (3.0.1-5) unstable; urgency=low
 
   * Add the UCR variable kernel/blacklist to blacklist kernel modules (Bug #19892)
+    and set it to "nouveau" by default (the KMS module is incompatible with the Xorg
+    in UCS 3.2)
   * Update copyright years
-	
+  * Remove obsolete transition code in postinst
+
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 03 Jul 2013 15:47:31 +0200
 
 univention-base-files (3.0.1-4) unstable; urgency=low
