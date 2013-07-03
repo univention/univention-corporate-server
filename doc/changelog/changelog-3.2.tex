@@ -74,6 +74,12 @@ to 0755 (\ucsBug{29450}).
   \ucsUCRV{update/reboot/required}, which triggers a note to the user
   that the system requires a reboot to complete the update (\ucsBug{24287}).
 
+\item The \ucsUCRV{kernel/blacklist} can now be used to prevent kernel
+  modules from being loaded. Multiple entries need to be separated
+  with a semicolon. By default the nouveau module is now blacklisted
+  since the kernel module from 3.10 is incompatible with the Xorg
+  userland (\ucsBug{19892}).
+
 \end{itemize}
 
 \subsection{Univention Configuration Registry}
