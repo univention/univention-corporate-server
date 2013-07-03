@@ -65,6 +65,12 @@ Description[en]=Configures the use of challenge response for authentication (yes
 Type=bool
 Categories=service-ssh
 
+[sshd/banner]
+Description[de]=Die hier angegebene Datei wird bei Anmeldungen per SSH als Hinweis-Banner angezeigt. Wird die Variable auf einen leeren String gesetzt, wird keine Datei angezeigt.
+Description[en]=The file specified here is shown during SSH logins. If the variable is set to an empty string, no file is shown.
+Type=str
+Categories=service-ssh
+
 [sshd/passwordauthentication]
 Description[de]=Konfiguriert, ob eine Anmeldung über Passwörter möglich ist (yes/no)
 Description[en]=Configures whether a password-based login is possible (yes/no)
@@ -227,6 +233,12 @@ Categories=Network
 [kernel/modules]
 Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrfache Einträge müssen durch ein Semikolon getrennt werden.
 Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows the loading of modules, which couldn't/cannot be automatically detected. If multiple modules are needed, they must be separated with a semicolon.
+Type=str
+Categories=system-base
+
+[kernel/blacklist]
+Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module aufgeführt werden, die nicht geladen werden sollen. Mehrfache Einträge müssen durch ein Semikolon getrennt werden.
+Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows a selection of moules which should not be loaded. If multiple modules are needed, they must be separated with a semicolon.
 Type=str
 Categories=system-base
 
@@ -707,7 +719,7 @@ Type=str
 Categories=service-base
 
 [sshd/motd]
-Description[de]=Mit dieser Variable kann konfiguriert werden, ob  beim SSH-Login ein Hinweis auf das UCS-Managementsystem angezeigt wird. Ist die Variable nicht gesetzt wird der Hinweis angezeigt.
-Description[en]=This variable configures, whether a hint towards the UCS management system is displayed during SSH login. If the variable is not set, the hint isn't shown.
+Description[de]=Mit dieser Variable kann konfiguriert werden, ob  beim SSH-Login ein Hinweis auf das UCS-Managementsystem angezeigt wird. Ist die Variable nicht gesetzt, wird der Hinweis angezeigt.
+Description[en]=This variable configures, whether a hint towards the UCS management system is displayed during SSH login. If the variable is not set, the hint is shown.
 Type=bool
 Categories=service-ssh
