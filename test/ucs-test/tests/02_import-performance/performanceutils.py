@@ -104,7 +104,7 @@ def execute_timing(description, allowedTime, callback, *args):
 	result = callback(*args)
 	duration = _stop_time(startTime)
 	
-	print 'INFO: %s took %ld (allowed time: %ld)' % (description, duration, allowedTime)
+	print 'INFO: %s took %ld seconds (allowed time: %ld seconds)' % (description, duration, allowedTime)
 
 	if result != 0:
 		print 'Error: callback returned: %d' % result
@@ -116,3 +116,43 @@ def execute_timing(description, allowedTime, callback, *args):
 
 	return True
 
+def count_ldap_users():
+	count = 0
+
+	udmsearch = subprocess.Popen("udm users/user list", shell=True, stdout=subprocess.PIPE)
+	udmresult = udmsearch.communicate()
+	for line in udmresult[0].split('\n'):
+		line = line.strip()
+		if line.startswith('DN: '):
+			count += 1
+
+	print 'INFO: Found %d OpenLDAP users' % count
+
+	return count
+
+def count_samba4_users():
+	count = 0
+
+	ldbsearch = subprocess.Popen("ldbsearch -H /var/lib/samba/private/sam.ldb objectClass=user dn", shell=True, stdout=subprocess.PIPE)
+	ldbresult = ldbsearch.communicate()
+	for line in ldbresult[0].split('\n'):
+		line = line.strip()
+		if line.startswith('dn: '):
+			count += 1
+
+	print 'INFO: Found %d Samba4 users' % count
+
+	return count
+
+def count_users(needed):
+	users = count_ldap_users()
+	if users < needed:
+		print 'ERROR: Not all users were found in OpenLDAP'
+		returnCode = False
+
+	users = count_samba4_users()
+	if users < needed:
+		print 'ERROR: Not all users were found in Samba4'
+		returnCode = False
+
+	return True

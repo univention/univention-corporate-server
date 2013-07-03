@@ -13,12 +13,12 @@ from performanceutils import *
 
 if __name__ == '__main__':
 
-	MAX_SECONDS_IMPORT = 5*60
-	MAX_SECONDS_SAMBA_IMPORT = 10*60
+	MAX_SECONDS_IMPORT = 8*60
+	MAX_SECONDS_SAMBA_IMPORT = 15*60
 	MAX_SECONDS_ADMIN_AUTH = 5
 	MAX_SECONDS_USER_CREATION = 25
 	MAX_SECONDS_USER_AUTH = 5
-	MAX_SECONDS_PASSWORD_RESET = 60
+	MAX_SECONDS_PASSWORD_RESET = 90
 
 	CSV_IMPORT_FILE='500.csv'
 
@@ -42,6 +42,9 @@ if __name__ == '__main__':
 	user_dns = get_user_dn_list(CSV_IMPORT_FILE)
 	
 	if not execute_timing('user password reset', MAX_SECONDS_PASSWORD_RESET, reset_passwords, user_dns):
+		returnCode = 1
+
+	if not count_users(needed=500):
 		returnCode = 1
 
 	sys.exit(returnCode)

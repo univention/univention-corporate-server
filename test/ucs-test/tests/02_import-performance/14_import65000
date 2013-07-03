@@ -44,6 +44,9 @@ if __name__ == '__main__':
 	if not execute_timing('user password reset', MAX_SECONDS_PASSWORD_RESET, reset_passwords, user_dns):
 		returnCode = 1
 
+	if not count_users(needed=65000):
+		returnCode = 1
+
 	sys.exit(returnCode)
 
 # vim: set filetype=py
