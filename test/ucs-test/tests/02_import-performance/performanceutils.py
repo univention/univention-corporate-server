@@ -60,7 +60,7 @@ def wait_for_s4connector():
 		print 'Counter: %d' % static_count
 
 	conn.close()
-	return True
+	return 0
 
 def test_umc_admin_auth():
 	result = subprocess.call('umc-command  -U Administrator -P univention udm/get -f users/user -l -o "uid=Administrator,cn=users,$(ucr get ldap/base)"', shell=True)
@@ -74,6 +74,7 @@ def reset_passwords(user_dns):
 	for dn in user_dns:
 		subprocess.call('udm users/user modify --dn "%s" --set password="Univention.991"' %  dn, shell=True)
 	wait_for_s4connector()
+	return 0
 
 def get_user_dn_list(CSV_IMPORT_FILE):
 	user_dns = []
@@ -93,6 +94,7 @@ def create_test_user():
 	udm = udm_test.UCSTestUDM()
 	username = udm.create_user()[1]
 	wait_for_s4connector()
+	return 0
 
 def execute_timing(description, allowedTime, callback, *args):
 	print 'Starting %s' % description

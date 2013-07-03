@@ -1,3 +1,10 @@
+ucs-test (4.0.48-2) unstable; urgency=low
+
+  * 02_import-performance/performanceutils.p: return 0 by default
+    (Bug #31695)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 03 Jul 2013 12:40:05 +0200
+
 ucs-test (4.0.48-1) unstable; urgency=low
 
   * Added performance tests for UCS@school import (Bug #31695)
