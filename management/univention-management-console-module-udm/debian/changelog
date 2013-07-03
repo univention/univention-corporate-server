@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.4-1) unstable; urgency=low
+
+  * Bug #31885: some clean up and refactorization for better readability
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 03 Jul 2013 15:13:59 +0200
+
 univention-management-console-module-udm (4.0.3-1) unstable; urgency=low
 
   * Bug #31161: publish saving and cancel actions when editing UDM objects

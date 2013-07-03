@@ -824,7 +824,7 @@ define([
 				policyDN: 'None' == policyDN || !policyDN ? null : policyDN,
 				policyType: policyType,
 				objectDN: this.ldapName || null,
-				container: this.newObjectOptions ? this.newObjectOptions.container : null 
+				container: this.newObjectOptions ? this.newObjectOptions.container : null
 			}).then(lang.hitch(this, function(data) {
 				tools.forIn(this._policyWidgets[policyType], function(iname, iwidget) {
 					if (iname == '$policy$') {
@@ -1067,6 +1067,30 @@ define([
 			} ) );
 		},
 
+		haveValuesChanged: function() {
+			var nChanges = 0;
+			var regKey = /\$.*\$/;
+			tools.forIn(this.getAlteredValues(), function(ikey) {
+				if (!regKey.test(ikey) || ikey == '$options$') {
+					// key does not start and end with '$' and is thus a regular key
+					++nChanges;
+				}
+			});
+			return nChanges > 0;
+		},
+
+		havePolicyReferencesChanged: function() {
+			var nChanges = 0;
+			tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
+				var ival = iwidgets.$policy$.get('value');
+				var iresetValue = iwidgets.$policy$._resetValue;
+				if (iresetValue != ival) {
+					++nChanges;
+				}
+			}, this);
+			return nChanges > 0;
+		},
+
 		validateChanges: function(e) {
 			// summary:
 			//		Validate the user input through the server and save changes upon success.
@@ -1076,10 +1100,6 @@ define([
 
 			// get all values that have been altered
 			var vals = this.getAlteredValues();
-
-			// copy dict and remove the ID
-			var valsNoID = lang.mixin({}, vals);
-			delete valsNoID[this.moduleStore.idProperty];
 
 			// reset changed headings
 			array.forEach(this._detailPages, function(ipage) {
@@ -1123,24 +1143,7 @@ define([
 			}, this);
 			errMessage += '</ul>';
 
-			// check whether any changes are made at al
-			var nChanges = 0;
-			var regKey = /\$.*\$/;
-			tools.forIn(vals, function(ikey) {
-				if (!regKey.test(ikey) || ikey == '$options$') {
-					// key does not start and end with '$' and is thus a regular key
-					++nChanges;
-				}
-			});
-			tools.forIn(this._policyWidgets, function(ipolicyType, iwidgets) {
-				var ival = iwidgets.$policy$.get('value');
-				var iresetValue = iwidgets.$policy$._resetValue;
-				if (iresetValue != ival) {
-					++nChanges;
-				}
-			}, this);
-
-			if (!nChanges) {
+			if (!this.haveValuesChanged() && !this.havePolicyReferencesChanged()) {
 				dialog.alert(_('No changes have been made.'));
 				return;
 			}
@@ -1153,13 +1156,17 @@ define([
 
 			// before storing the values, make a syntax check of the user input on the server side
 			var valsNonEmpty = {};
-			tools.forIn(valsNoID, function(ikey, ival) {
+			tools.forIn(vals, function(ikey, ival) {
+				if (ikey == this.moduleStore.idProperty) {
+					// ignore the ID
+					return;
+				}
 				var tmpVal = json.stringify(ival);
 				var isEmpty = tmpVal == '""' || tmpVal == '[]' || tmpVal == '{}';
 				if (!isEmpty) {
 					valsNonEmpty[ikey] = ival;
 				}
-			});
+			}, this);
 			var params = {
 				objectType: this._editedObjType,
 				properties: valsNonEmpty
@@ -1336,6 +1343,7 @@ define([
 				// set the LDAP DN
 				newVals[this.moduleStore.idProperty] = vals[this.moduleStore.idProperty];
 			}
+
 			return newVals;
 		},
 
