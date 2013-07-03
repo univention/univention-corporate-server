@@ -1,3 +1,9 @@
+univention-kernel-image (7.0.0-4) unstable; urgency=low
+
+  * Fix ucslint error (Bug #24287)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 03 Jul 2013 15:17:05 +0200
+
 univention-kernel-image (7.0.0-3) unstable; urgency=low
 
   * Set update/reboot/required in postinst. This way, the UMC and univention-upgrade
