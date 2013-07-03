@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: grep
+fix: 2.6.3-3.49.201305301647
+desc: |
+ A buffer overflow was found in the argument processing of grep.
+note: This update fixes these vulnerabilities
+cve:
+ - CVE-2012-5667
