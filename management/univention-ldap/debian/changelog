@@ -1,3 +1,10 @@
+univention-ldap (10.0.3-2) unstable; urgency=low
+
+  * Remove port 7389 from SRV record if Samba 4 DCs are present during
+    join (Bug #29462)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 19:57:52 +0200
+
 univention-ldap (10.0.3-1) unstable; urgency=low
 
   * Don't register SRV record for port 7389 if Samba 4 DCs are present
