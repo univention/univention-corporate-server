@@ -216,14 +216,8 @@ class object(content):
 	def check_values (self, hostname, domainname, windows_domain, ldap_base, root_password1, root_password2, focus=True):
 
 		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
-
-			if not windows_domain.strip() == '':
-				if not self.syntax_is_windowsdomainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
-					if not self.ignore('windows_domain'):
-						if focus:
-							self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-						return _("Please enter a valid windows domain name.")
 	
+			# not longer than 14 chars
 			if len(windows_domain.strip()) > 14:
 				if not self.ignore('windows_domain'):
 					if focus:
@@ -243,7 +237,16 @@ class object(content):
 					if focus:
 						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
 					return _("The windows domain and the domain name may not be the same.")
-	
+
+			# windom syntax
+			if not windows_domain.strip() == '':
+				if not self.syntax_is_windowsdomainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
+					if not self.ignore('windows_domain'):
+						if focus:
+							self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+						return _("Please enter a valid windows domain name.")
+
+			# windows domain != hostname warning
 			if windows_domain.strip().lower() == hostname.strip().lower():
 				if not self.ignore('windows_domain'):
 					# The warning will be displayed only once
@@ -261,24 +264,36 @@ class object(content):
 					self.move_focus(self.get_elem_id('IN_FQDN'))
 				return _("The hostname may not start with digits.")
 
-		if hostname.strip() == '' or hostname.strip() in ['localhost', 'local'] or hostname.strip().find(' ') != -1 or not self.syntax_is_hostname(hostname):
-			if not self.ignore('hostname'):
-				if focus:
-					self.move_focus( self.get_elem_id('IN_FQDN') )
-				return _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com).")
-
+		# hostname more than 13 chars
 		if len(hostname) > 13:
 			# The warning will be displayed only once
 			if hostname != self.hostname_last_warning:
 				self.hostname_last_warning = hostname
 				return _("A valid netbios name can not be longer than 13 characters. If samba is installed, the hostname should be shortened.")
 
+		# hostname + domainname more than 63 chars
+		if len(hostname.strip()+domainname.strip()) >= 63:
+			if not self.ignore('hostname') and not self.ignore('domainname'):
+				if focus:
+					self.move_focus( self.get_elem_id('IN_FQDN') )
+				return _('The length of fully qualified domain name is greater than 63 characters.')
+
+
+		# hostname not empty, localhost, no space and is hostname syntax
+		if hostname.strip() == '' or hostname.strip() in ['localhost', 'local'] or hostname.strip().find(' ') != -1 or not self.syntax_is_hostname(hostname):
+			if not self.ignore('hostname'):
+				if focus:
+					self.move_focus( self.get_elem_id('IN_FQDN') )
+				return _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com).")
+
+		# domainname syntax
 		if domainname.strip() == '' or domainname.strip().find(' ') != -1 or not self.syntax_is_domainname(domainname):
 			if not self.ignore('domainname'):
 				if focus:
 					self.move_focus( self.get_elem_id('IN_FQDN') )
 				return _("Please enter a valid fully qualified domain name in lowercase (e.g. host.example.com).")
 
+		# no "." in domainname
 		if domainname.find('.') == -1:
 			if not self.ignore('domainname'):
 				# The warning will be displayed only once
@@ -288,12 +303,7 @@ class object(content):
 						self.move_focus( self.get_elem_id('IN_FQDN') )
 					return _("For Active Directory domains the fully qualified domain name must have at least two dots (e.g. host.example.com). This warning is shown only once, the installation can be continued with the name currently given.")
 
-		if len(hostname.strip()+domainname.strip()) >= 63:
-			if not self.ignore('hostname') and not self.ignore('domainname'):
-				if focus:
-					self.move_focus( self.get_elem_id('IN_FQDN') )
-				return _('The length of fully qualified domain name is greater than 63 characters.')
-
+		# hostname equal domainname
 		if hostname.strip() == domainname.strip().split('.')[0]:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
 				if focus:

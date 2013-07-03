@@ -1805,24 +1805,25 @@ class content:
 		pass
 
 	def syntax_is_hostname(self, hostname):
-		#_re=re.compile("^[a-z]{1}[a-z,0-9,_,-]*$")
 		_re=re.compile("^[a-z]([a-z0-9-]*[a-z0-9])*$")
 		if _re.match(hostname):
 			return True
 		return False
+
 	def syntax_is_domainname(self, domainname):
-		#_re=re.compile("^[a-z,0-9]{1}[-,a-z,.,0-9]*$")
-		_re=re.compile("^([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*$")
+		if "-." in domainname or ".-" in domainname:
+			return False
+		_re=re.compile("^[a-z0-9]+[a-z0-9-.]*[a-z0-9]+$")
 		if _re.match(domainname):
 			return True
 		return False
 
 	def syntax_is_windowsdomainname(self, domainname):
-		#_re=re.compile("^[a-z,0-9]{1}[-,a-z,.,0-9]*$")
 		_re=re.compile("^([a-z]([a-z0-9-]*[a-z0-9])*[.])*[a-z]([a-z0-9-]*[a-z0-9])*$")
 		if _re.match(domainname):
 			return True
 		return False
+
 	def syntax_is_domaincontroller(self, domaincontroller):
 		_re=re.compile("^[a-zA-Z].*\..*$")
 		if _re.match(domaincontroller):
