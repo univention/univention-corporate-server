@@ -43,6 +43,8 @@ if __name__ == '__main__':
 			'univentionInventoryNumber': [properties['inventoryNumber']],
 		}
 
+
+		# FIXME: workaround for remaining locks
 		udm.addCleanupLock('aRecord', expectedLdap['aRecord'])
 		udm.addCleanupLock('mac', expectedLdap['macAddress'])
 

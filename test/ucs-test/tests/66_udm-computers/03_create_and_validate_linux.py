@@ -67,6 +67,9 @@ if __name__ == '__main__':
 			'krb5PrincipalName': ['host/%s.%s@%s' % (properties['name'], properties['domain'].lower(), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
 		}
 
+
+
+		# FIXME: workaround for remaining locks
 		udm.addCleanupLock('aRecord', expectedLdap['aRecord'])
 		udm.addCleanupLock('mac', expectedLdap['macAddress'])
 		udm.addCleanupLock('sid', expectedLdap['sambaSID'])

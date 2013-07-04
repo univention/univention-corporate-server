@@ -1,3 +1,14 @@
+ucs-test (4.0.52-1) unstable; urgency=low
+
+  * udm.py.UCSTestUDM().COMPUTER_MODULES does now contain the full module
+  	name, e.g "computers/linux" instead of "linux"
+  (Bug #30560)
+
+  * added more udm-computers test cases
+  (Bug #31659)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 03 Jul 2013 10:03:45 +0200
+
 ucs-test (4.0.51-1) unstable; urgency=low
 
   * Adjust allowed time for 30.000 user test case (Bug #31695)

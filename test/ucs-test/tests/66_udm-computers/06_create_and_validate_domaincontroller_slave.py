@@ -74,6 +74,9 @@ if __name__ == '__main__':
 			'univentionServerReinstall': [properties['reinstall']]
 		}
 
+
+
+		# FIXME: workaround for remaining locks
 		udm.addCleanupLock('aRecord', expectedLdap['aRecord'])
 		udm.addCleanupLock('mac', expectedLdap['macAddress'])
 		udm.addCleanupLock('sid', expectedLdap['sambaSID'])
