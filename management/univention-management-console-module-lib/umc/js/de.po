@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-07-05 17:05+0200\n"
+"POT-Creation-Date: 2013-07-04 16:17+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,18 +12,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/lib/server.js:53
+#: umc/js/lib/server.js:76
 msgid ""
 "<b>Note:</b> After the restart you will be redirected to the login page."
 msgstr ""
 "<b>Hinweis:</b> Nach dem Neustart werden Sie zur Login-Seite weitergeleitet "
 "werden."
 
-#: umc/js/lib/server.js:56
+#: umc/js/lib/server.js:82
 msgid "Cancel"
 msgstr ""
 
-#: umc/js/lib/server.js:52
+#: umc/js/lib/server.js:75
 msgid ""
 "Please confirm to restart UMC server components and the HTTP web server. "
 "This will take approximately 10 seconds."
@@ -31,7 +31,7 @@ msgstr ""
 "Bitte bestätigen Sie den Neustart der UMC-Server-Komponenten und des HTTP-"
 "Web-Servers. Dies wird ungefähr 10 Sekunden dauern."
 
-#: umc/js/lib/server.js:73
+#: umc/js/lib/server.js:120
 msgid ""
 "Please wait while UMC server components and HTTP web server are being "
 "restarted."
@@ -39,10 +39,14 @@ msgstr ""
 "Bitte warten Sie während die UMC-Server-Komponenten und der HTTP-Web-Server "
 "neu gestartet werden."
 
-#: umc/js/lib/server.js:60
+#: umc/js/lib/server.js:86
 msgid "Restart"
 msgstr "Neustart"
 
-#: umc/js/lib/server.js:80
+#: umc/js/lib/server.js:127
 msgid "Restarting server"
+msgstr "Server-Neustart"
+
+#: umc/js/lib/server.js:78
+msgid "Server restart"
 msgstr "Server-Neustart"

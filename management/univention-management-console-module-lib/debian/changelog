@@ -1,3 +1,9 @@
+univention-management-console-module-lib (1.0.5-1) unstable; urgency=low
+
+  * Bug #31642: added translation
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 04 Jul 2013 16:18:20 +0200
+
 univention-management-console-module-lib (1.0.4-3) unstable; urgency=low
 
   * Bug #31642: handle escape and Dialog 'x'-button
