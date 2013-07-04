@@ -406,21 +406,21 @@ class mods:
 		self.obj[self.current].refresh_modheader()
 
 		if self.current == len(self.modules)-1 and self.current == 0:
-			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
+			self.window.noutrefresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline1.draw()
 		elif self.current == 0:
-			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
+			self.window.noutrefresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline2.draw()
 		elif self.current == len(self.modules)-1:
-			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
+			self.window.noutrefresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline3.draw()
 		else:
-			self.window.refresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
+			self.window.noutrefresh(0,0,self.max_y/2+18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 			self.footline4.draw()
 		self.obj[self.current].draw()
 
 	def draw_all(self):
-		self.window.refresh(0,0,self.max_y/2-18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
+		self.window.noutrefresh(0,0,self.max_y/2-18,self.max_x/2-50,self.max_y/2+18,self.max_x/2+50)
 		self.headerline.draw()
 		if self.current == len(self.modules)-1 and self.current == 0:
 			self.footline1.draw()
@@ -431,6 +431,7 @@ class mods:
 		else:
 			self.footline4.draw()
 		self.draw()
+		curses.doupdate()
 
 	def left_menu(self):
 		debug('leftmenu')
@@ -720,6 +721,7 @@ try:
 								break
 							elif act == 'tab':
 								installer.tab()
+				curses.doupdate()
 
 	else:
 		# interactive installation
@@ -771,6 +773,7 @@ try:
 					break
 				else:
 					installer.draw_all()
+			curses.doupdate()
 except KeyboardInterrupt:
 	#info = sys.exc_info()
 	exit_curses()
@@ -803,6 +806,7 @@ except:
 		for line in apply(traceback.format_exception,info):
 			debug(line)
 		error.draw()
+		curses.doupdate()
 		while 1:
 			c = stdscr.getch()
 			if error.input(c):

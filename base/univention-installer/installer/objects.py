@@ -106,7 +106,7 @@ class baseObject:
 		self.pos_y=pos_y
 
 	def draw(self):
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
 
 	def set_indent(self, text):
 		self.indent = 1
@@ -141,7 +141,7 @@ class baseObject_2(baseObject):
 	def draw(self):
 		self.pad.addch(0,0,"[")
 		self.pad.addch(0,self.width-2,"]")
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
 
 
 class button(baseObject_2):
@@ -169,7 +169,7 @@ class boolitem(baseObject):
 		self.indent = 0
 
 	def draw(self):
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
 
 
 class input(baseObject_2):
@@ -255,8 +255,8 @@ class input(baseObject_2):
 			position=0
 		self.pad.addch(0,0,"[")
 		self.pad.addch(0,self.width-2,"]")
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
-		self.invert.refresh(0,0,self.pos_y,self.pos_x+position,self.pos_y,self.pos_x+position)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
+		self.invert.noutrefresh(0,0,self.pos_y,self.pos_x+position,self.pos_y,self.pos_x+position)
 
 	def paste_text(self):
 		if len(self.text) > self.width-3:
@@ -296,8 +296,8 @@ class password(input):
 			position=0
 		self.pad.addch(0,0,"[")
 		self.pad.addch(0,self.width-2,"]")
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
-		self.invert.refresh(0,0,self.pos_y,self.pos_x+position,self.pos_y,self.pos_x+position)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+1,self.pos_x+self.width-2)
+		self.invert.noutrefresh(0,0,self.pos_y,self.pos_x+position,self.pos_y,self.pos_x+position)
 
 class select:
 	def __init__(self, dict, pos_y, pos_x, width, visible, status=0, line=1, longline=0):
@@ -591,7 +591,7 @@ class textline:
 		return self.text
 
 	def draw(self):
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 
 	def usable(self):
 		return 0
@@ -662,7 +662,7 @@ class textarea:
 		return len(self.lines)
 
 	def draw(self):
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 
 	def usable(self):
 		return 0
@@ -756,7 +756,7 @@ class card:
 		"""
 		draw header/tab for this card
 		"""
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 
 	def draw(self):
 		"""
@@ -805,10 +805,10 @@ class cardbox:
 
 		if onlyChilds:
 			# draw only top line of border
-			self.pad.refresh(0,0,self.pos_y+2,self.pos_x,self.pos_y+2,self.pos_x+self.width)
+			self.pad.noutrefresh(0,0,self.pos_y+2,self.pos_x,self.pos_y+2,self.pos_x+self.width)
 		else:
 			# draw complete pad
-			self.pad.refresh(0,0,self.pos_y+2,self.pos_x,self.pos_y+self.height-1,self.pos_x+self.width)
+			self.pad.noutrefresh(0,0,self.pos_y+2,self.pos_x,self.pos_y+self.height-1,self.pos_x+self.width)
 		# draw content of active card
 		self.cards[self.active].draw()
 
@@ -959,7 +959,7 @@ class border:
 		self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
 
 	def draw(self):
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 
 	def usable(self):
 		return 0
@@ -1014,7 +1014,7 @@ class help_win:
 			self.scrollbar = scrollbar(self.pos_y+2,self.pos_x+self.width-2,self.text_height,len(self.rows)-self.text_height)
 			self.scrollbar.color(4)
 		self.scroll_draw(1)
-		self.shadow.refresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
+		self.shadow.noutrefresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
 
 	def headline(self):
 		return _(' Help')
@@ -1033,11 +1033,12 @@ class help_win:
 
 	def draw(self):
 		self.scroll_draw()
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 		self.headline.draw()
 		self.footline.draw()
 		if len(self.rows) > self.text_height:
 			self.scrollbar.draw(self.current)
+		curses.doupdate()
 
 	def set(self,diff):
 		temp = self.current
@@ -1103,7 +1104,7 @@ class scrollbar:
 		if self.curs > self.height-1:
 			self.curs=self.height-1
 		self.pad.addch(self.curs,0,curses.MY_BOARD)
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height-1,self.pos_x)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height-1,self.pos_x)
 
 	def usable(self):
 		return 0
@@ -1120,7 +1121,7 @@ class vLine:
 		self.pad.bkgd(curses.MY_VLINE,curses.color_pair(2))
 
 	def draw(self):
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height-1,self.pos_x)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height-1,self.pos_x)
 
 	def usable(self):
 		return 0
@@ -1133,7 +1134,7 @@ class hLine:
 		self.pad.bkgd(curses.MY_HLINE,curses.color_pair(2))
 
 	def draw(self):
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y,self.pos_x+self.height-1)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y,self.pos_x+self.height-1)
 
 	def usable(self):
 		return 0
@@ -1606,7 +1607,7 @@ class content:
 					self.tab()
 					self.tab()
 
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 		self.header.draw()
 		for element in self.elements:
 			element.draw()
@@ -1805,11 +1806,11 @@ class content:
 		pass
 
 	def syntax_is_hostname(self, hostname):
+		#_re=re.compile("^[a-z]{1}[a-z,0-9,_,-]*$")
 		_re=re.compile("^[a-z]([a-z0-9-]*[a-z0-9])*$")
 		if _re.match(hostname):
 			return True
 		return False
-
 	def syntax_is_domainname(self, domainname):
 		if "-." in domainname or ".-" in domainname:
 			return False
@@ -1819,11 +1820,11 @@ class content:
 		return False
 
 	def syntax_is_windowsdomainname(self, domainname):
+		#_re=re.compile("^[a-z,0-9]{1}[-,a-z,.,0-9]*$")
 		_re=re.compile("^([a-z]([a-z0-9-]*[a-z0-9])*[.])*[a-z]([a-z0-9-]*[a-z0-9])*$")
 		if _re.match(domainname):
 			return True
 		return False
-
 	def syntax_is_domaincontroller(self, domaincontroller):
 		_re=re.compile("^[a-zA-Z].*\..*$")
 		if _re.match(domaincontroller):
@@ -1908,8 +1909,8 @@ class subwin:
 			self.sub.draw()
 		else:
 			if self.show_shadow:
-				self.shadow.refresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
-			self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+				self.shadow.noutrefresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
+			self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 			self.header.draw()
 			for element in self.elements:
 				element.draw()
@@ -2156,7 +2157,8 @@ class activity:
 		self.current += self.direction
 		self.pad.erase()
 		self.pad.addch(0,self.current,curses.MY_BOARD)
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y,self.pos_x+self.width-1)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y,self.pos_x+self.width-1)
+		curses.doupdate()
 
 
 	def usable(self):
@@ -2186,8 +2188,8 @@ class act_win:
 		self.act=1
 
 	def draw(self):
-		self.shadow.refresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
-		self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
+		self.shadow.noutrefresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
+		self.pad.noutrefresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
 		self.header.draw()
 		self.description.draw()
 		thread.start_new_thread(self.loop,())
@@ -2197,6 +2199,7 @@ class act_win:
 		delattr(self.parent,self.name)
 		time.sleep(0.03)
 		self.parent.draw()
+		curses.doupdate()
 
 	def loop(self):
 		while self.act:
