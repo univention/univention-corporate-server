@@ -50,38 +50,38 @@ RECORD_LIMIT = 100000			# never return more than this many records
 
 CRITERIA = {
 	'systems': [
-		'sysname','sysrole','sysversion'
+		'all_properties', 'sysname','sysrole','sysversion', 'sysversion_greater', 'sysversion_lower'
 	],
 	'packages':	[
-		'pkgname','vername',							# head fields
-		'selectedstate','inststate','currentstate',		# state fields
-		'sysversion'									# informational
+		'pkgname',									# head fields
+		'selectedstate','inststate','currentstate',	# state fields
 	]
 }
 
-OPERATORS = {
-	'string':	[ '~','!~',],							# string match. missing asterisk is replaced by edge expression (^ or $)
-	'number':	[ '<','>','<=','>=','=','!='],			# suitable for numeric comparisons
-	'choice':	[ '=','!=']								# selections (combobox): checked only for (non-)equality
+CRITERIA_OPERATOR = {
+	'sysname': '~',
+	'pkgname': '~',
+	'sysversion': '=',
+	'vername': '=',
+	'sysrole': '=',
+	'selectedstate': '=',
+	'inststate': '=',
+	'currentstate': '=',
+	'sysversion_greater': '>',
+	'sysversion_lower': '<',
+	'all_properties': '~',
 }
 
-CRITERIA_TYPES = {
-	'sysname':				'string',
-	'pkgname':				'string',
-	'sysversion':			'number',
-	'vername':				'number',
-	'sysrole':				'choice',
-	'selectedstate':		'choice',
-	'inststate':			'choice',
-	'currentstate':			'choice',
+MAPPED_TABLES = {
+	'all_properties': ['sysname', 'sysrole', 'sysversion'],
+	'sysversion_greater': ['sysversion'],
+	'sysversion_lower': ['sysversion'],
 }
 
 # Search string proposals:
 #
 #	-	array: turns into a ComboBox
 #	-	string:	turns into a TextBox
-#	-	string starting with '_': interpreted as method name of our
-#		module class, result will be treated as above.
 #
 # *** NOTE ***	the 'system_roles' and 'ucs_version' lists are fetched
 #				dynamically from the pkgdb object.
@@ -111,12 +111,12 @@ PROPOSALS = {
 QUERIES = {
 	# 'select sysname,sysversion,sysrole,to_char(scandate,\'YYYY-MM-DD HH24:MI:SS\'),ldaphostdn from systems where '+query+' order by sysname
 	'systems': {
-		'columns':	['sysname','sysversion','sysrole','inventory_date' ],
+		'columns':	['sysname','sysversion','sysrole','inventory_date'],
 		'function':	updb.sql_get_systems_by_query
 	},
 	# 'select sysname,pkgname,vername,to_char(packages_on_systems.scandate,\'YYYY-MM-DD HH24:MI:SS\'),inststatus,selectedstate,inststate,currentstate from packages_on_systems join systems using(sysname) where '+query+' order by sysname,pkgname,vername
 	'packages': {
-		'columns':		['sysname','pkgname','vername','inventory_date',              'selectedstate','inststate','currentstate' ],
+		'columns':		['sysname','pkgname','vername',                               'selectedstate','inststate','currentstate' ],
 		'db_fields':	['sysname','pkgname','vername','inventory_date', 'inststatus','selectedstate','inststate','currentstate' ],
 		'function':		updb.sql_get_packages_in_systems_by_query,
 		# They allow querying for the UCS version, and then they don't display it? Who would use that at all?
@@ -152,26 +152,20 @@ DECODED_VALUES = dict((f, dict((CODED_VALUES[f][key], key) for key in CODED_VALU
 # or such things as we don't have any name clashes.
 LABELS = {
 	# ------------- search fields (keys) ---------
-	'incomplete_packages':		_("Find packages installed incompletely"),
+#	'incomplete_packages':		_("Find packages installed incompletely"),
 	'inststate':				_("Installation state"),
 	'inventory_date':			_("Inventory date"),
-	'compare_with_version':		_("Compared to version"),
+#	'compare_with_version':		_("Compared to version"),
 	'pkgname':					_("Package name"),
-	'vername':					_("Package version"),
+#	'vername':					_("Package version"),
 	'currentstate':				_("Package state"),
 	'selectedstate':			_("Selection state"),
-	'sysname':					_("System name"),
+	'sysname':					_("Hostname"),
 	'sysrole':					_("System role"),
 	'sysversion':				_("UCS Version"),
-	# --------------- comparison operators -----------
-	'=':						_("is"),
-	'!=':						_("is not"),
-	'~':						_("matches"),
-	'!~':						_("doesn't match"),
-	'>':						_("is greater than"),
-	'>=':						_("is greater or equal"),
-	'<':						_("is smaller than"),
-	'<=':						_("is smaller or equal"),
+	'sysversion_greater':		_("UCS Version is greater than"),
+	'sysversion_lower':			_("UCS Version is lower than"),
+	'all_properties':			_("All properties"),
 	# ----------- server roles --------------------
 	'domaincontroller_master':	_("Domaincontroller Master"),
 	'domaincontroller_backup':	_("Domaincontroller Backup"),
@@ -222,6 +216,9 @@ class Instance(Base):
 
 		PROPOSALS['sysversion'] = self._get_system_versions()
 
+		PROPOSALS['sysversion_lower'] = PROPOSALS['sysversion']
+		PROPOSALS['sysversion_greater'] = PROPOSALS['sysversion']
+
 	def _get_system_roles(self):
 		return [role[0] for role in updb.sql_getall_systemroles(self.cursor)]
 
@@ -230,23 +227,22 @@ class Instance(Base):
 
 	@sanitize(
 		page=ChoicesSanitizer(choices=PAGES, required=True),
-		operator=ChoicesSanitizer(choices=set([op for ops in OPERATORS.values() for op in ops]))
+		key=ChoicesSanitizer(choices=CRITERIA_OPERATOR.keys())
 	)
 	@simple_response
-	def query(self, page, key='', operator='', pattern=''):
+	def query(self, page, key, pattern=''):
 		""" Query to fill the grid. The structure of the corresponding grid
 			has already been fetched by the 'pkgdb/columns' command.
 		"""
 
 		desc = QUERIES[page]
+		operator = CRITERIA_OPERATOR[key]
 
 		function = desc['function']
 
 		kwargs = desc.get('args', {})
-		if key and operator and pattern:
-			kwargs['query'] = _make_query(key, operator, pattern)
-		else:
-			kwargs['query'] = None
+		keys = MAPPED_TABLES.get(key, [key])
+		kwargs['query'] = ' OR '.join(_make_query(key, operator, pattern) for key in keys)
 
 		result = function(self.cursor, **kwargs)
 
@@ -263,28 +259,7 @@ class Instance(Base):
 	@sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
 	@simple_response
 	@log
-	def operators(self, page, key=''):
-		"""	returns the query operators that are suitable for
-			the given page+key combination. The selection is
-			made of 'id' values directly usable as SQL comparison
-			operators, and the 'label's are already localized here.
-		"""
-
-		result = []
-		c_type = CRITERIA_TYPES.get(key)
-		if c_type in OPERATORS:
-			result = _combobox_data(OPERATORS[c_type])
-		else:
-			# a single operator will not show up in the 'operators' ComboBox: the ComboBox
-			# will be hidden, and only the 'pattern' argument will be shown, labelled by
-			# this result value (already localized).
-			result = _id_to_label(c_type)
-		return result
-
-	@sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
-	@simple_response
-	@log
-	def proposals(self, page, key='', operator=''):
+	def proposals(self, page, key=''):
 		"""	returns proposals for the query pattern that can be
 			presented in the frontend. This can be a single pattern
 			(the corresponding field will turn into a text entry)
@@ -296,7 +271,7 @@ class Instance(Base):
 			return _combobox_data(PROPOSALS[key])
 
 		# fallback for everything not explicit listed here.
-		return '*'
+		return ''
 
 	@sanitize(page=ChoicesSanitizer(choices=PAGES, required=True))
 	@simple_response
@@ -321,34 +296,31 @@ def _make_query(key, operator, pattern):
 				regular expression
 	"""
 
-	MODULE.info("make_query('%s','%s','%s')" % (key, operator, pattern, ))
+	if not key:
+		return None
+
 	# Translate keyed values. That function returns the input
 	# value unchanged if there's no reason to translate anything.
 	pattern = _coded_value(key, pattern)
 
-	# For matching operators, we have to tweak the expression:
-	#
-	#	(1)	force the pattern to match the whole field
-	#	(2)	force dot to lose special meaning by prefixing it '.' -> '\.'
-	#	(3)	translate glob '*' into regexp '.*'
-	#
+	pattern = pgdb.escape_string(pattern)
+	key = key.replace('"', r'\"')
+
 	if '~' in operator:
 
-		# (1a) anchor at string start if not starting with wildcard
-		if not pattern.startswith('*'):
-			pattern = '^%s' % pattern
-
-		# (1b) anchor at string end if not ending with wildcard
-		if not pattern.endswith('*'):
-			pattern = '%s$' % pattern
-
-		# (2) dot is not a wildcard here but rather a literal dot
+		# 1. dot is not a wildcard here but rather a literal dot
 		pattern = pattern.replace('.','\.')
 
-		# (3) asterisk means: any char, 0-n times (.*)
-		pattern = pattern.replace('*','.*')
+		# 2. a * indicates to not do a substring search
+		if '*' in pattern:
+			pattern = pattern.replace('*','.*')
+			pattern = '^%s$' % (pattern)
 
-	return "%s %s '%s'" % (pgdb.escape_string(key), operator, pgdb.escape_string(pattern), )
+		# 3. empty pattern means search for everything
+		if pattern == '':
+			pattern = '.*'
+
+	return "\"%s\" %s '%s'" % (key, operator, pattern)
 
 def _decoded_value(field, key):
 	"""	accepts a field name and the database value of this field

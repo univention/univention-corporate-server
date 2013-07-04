@@ -44,16 +44,14 @@ define([
 
 			var syspage = new Page({
 				title:			_("Systems"),
-				headerText:		_("Search systems"),
-				helpText:		_("Search for systems with specific software properties"),
+				headerText:		_("Search UCS systems"),
 				pageKey:		'systems'
 			});
 			this.addChild(syspage);
 
 			var packpage = new Page({
 				title:			_("Packages"),
-				headerText:		_("Search packages"),
-				helpText:		_("Search for packages with specific software properties"),
+				headerText:		_("Search software packages"),
 				pageKey:		'packages'
 			});
 			this.addChild(packpage);

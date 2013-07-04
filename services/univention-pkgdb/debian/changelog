@@ -1,6 +1,16 @@
+univention-pkgdb (7.0.3-1) unstable; urgency=low
+
+  * Bug #30967: adapt UMC module, unify layout
+  * Bug #28787: fix some typos
+
+ -- Florian Best <best@univention.de>  Thu, 04 Jul 2013 10:37:58 +0200
+
 univention-pkgdb (7.0.2-1) unstable; urgency=low
 
   * Bug #30967: Code cleanup
+  * Bug #28804: Remove weird caching behavior
+  * Bug #29610: Add dependency to univention-pkgdb
+  * Bug #24360, Bug #24633: Remove useless search possibilities
 
  -- Florian Best <best@univention.de>  Wed, 03 Jul 2013 14:54:56 +0200
 

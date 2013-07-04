@@ -43,83 +43,56 @@ define([
 	return declare("umc.modules.pkgdb.SearchForm", [ Form ], {
 
 		// Some status variables
-		_pattern_needed:		true,		// true if a pattern is required by this key+operator
+		_pattern_needed:		true,		// true if a pattern is required by this key
 		_pattern_is_list:		false,		// true if pattern is ComboBox. false if TextBox.
 		_submit_allowed:		false,		// true if current input allows SUBMIT (including that no queries are pending)
 
 		// true while the corresponding query is pending
 		_keys_pending:			true,
-		_operators_pending:		false,
 		_proposals_pending:		false,
 
 		postMixInProperties: function() {
 
 			lang.mixin(this,{
-				widgets:
-					[
-						{
-							type:					ComboBox,
-							name:					'key',
-							label:					_("Search for:"),
-							size:					'TwoThirds',
-							sortDynamicValues:		false,
-							dynamicValues:			'pkgdb/keys',
-							dynamicOptions:			{page:this.pageKey},
-							onDynamicValuesLoaded:	lang.hitch(this, function(values) {
-								this._set_selection_to_first_element('key');
-								this._set_query_pending('key',false);
-							})
-						},
-						{
-							type:					ComboBox,
-							name:					'operator',
-							depends:				'key',
-							label:					_("Operator"),
-							size:					'TwoThirds',
-							sortDynamicValues:		false,
-							dynamicValues:			lang.hitch(this, function() {
-								return this._operators_query();
-							}),
-							onDynamicValuesLoaded:	lang.hitch(this, function(values) {
-								this._handle_operators(values);
-								this._set_query_pending('operator',false);
-							})
-						},
-						{
-							type:					ComboBox,
-							name:					'pattern_list',
-							depends:				'key',
-							label:					_("Pattern"),
-							sortDynamicValues:		false,
-							dynamicValues:			lang.hitch(this, function() {
-								return this._proposals_query();
-							}),
-							onDynamicValuesLoaded:	lang.hitch(this, function(values) {
-								this._handle_proposals(values);
-								this._set_query_pending('proposal',false);
-							})
-						},
-						{
-							type:					TextBox,
-							name:					'pattern_text',
-							label:					_("Pattern"),
-							// inherits from dijit.form.ValidationTextBox, so we can use its
-							// validation abilities
-							regExp:					'^[A-Za-z0-9_.*?-]+$'		// [:alnum:] and these: _ - . * ?
-						}
-					],
-				layout:
-					[
-						['key','operator','pattern_text','pattern_list', 'submit']
-					],
-				buttons:
-					[
-						{
-							name:		'submit',
-							label:		_("Search"),
-							disabled:	true
-						}
-					]
+				widgets: [{
+					type:					ComboBox,
+					name:					'key',
+					label:					_("Search for:"),
+					size:					'TwoThirds',
+					sortDynamicValues:		false,
+					dynamicValues:			'pkgdb/keys',
+					dynamicOptions:			{page:this.pageKey},
+					onDynamicValuesLoaded:	lang.hitch(this, function(values) {
+						this._set_selection_to_first_element('key');
+						this._set_query_pending('key',false);
+					})
+				}, {
+					type:					ComboBox,
+					name:					'pattern_list',
+					depends:				'key',
+					label:					_("Pattern"),
+					sortDynamicValues:		false,
+					dynamicValues:			lang.hitch(this, function() {
+						return this._proposals_query();
+					}),
+					onDynamicValuesLoaded:	lang.hitch(this, function(values) {
+						this._handle_proposals(values);
+						this._set_query_pending('proposal',false);
+					})
+				}, {
+					type:					TextBox,
+					name:					'pattern_text',
+					label:					_("Pattern"),
+					// inherits from dijit.form.ValidationTextBox, so we can use its
+					// validation abilities
+					regExp:					'^[A-Za-z0-9_.*?-]+$'		// [:alnum:] and these: _ - . * ?
+				}],
+				layout: [ ['key','pattern_text','pattern_list', 'submit'] ],
+				buttons: [{
+					name:		'submit',
+					label:		_("Search"),
+					disabled:	true
+				}]
 			});
 
 			// call the postMixinProperties of inherited classes AFTER! we have
@@ -134,13 +107,9 @@ define([
 
 			this.showWidget('pattern_text',false);
 			this.showWidget('pattern_list',false);
-			this.showWidget('operator',false);
 
 			// whenever one of our 'pending' vars is changed...
 			this.own(this.watch('_keys_pending',lang.hitch(this,function(name,oldval,value) {
-				this._handle_query_changes(name,value);
-			})));
-			this.own(this.watch('_operators_pending',lang.hitch(this,function(name,oldval,value) {
 				this._handle_query_changes(name,value);
 			})));
 			this.own(this.watch('_proposals_pending',lang.hitch(this,function(name,oldval,value) {
@@ -150,9 +119,6 @@ define([
 			// whenever one of the dialog values is being changed...
 			this.own(this.getWidget('key').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('key',value);
-			})));
-			this.own(this.getWidget('operator').watch('value', lang.hitch(this, function(name,oldval,value) {
-				this._handle_query_changes('operator',value);
 			})));
 			this.own(this.getWidget('pattern_text').watch('value', lang.hitch(this, function(name,oldval,value) {
 				this._handle_query_changes('pattern_text',value);
@@ -203,7 +169,6 @@ define([
 				query['key'] = crit;
 				if (this._submit_allowed)
 				{
-					query['operator'] = this.getWidget('operator').get('value');
 					if (this._pattern_is_list)
 					{
 						query['pattern'] = this.getWidget('pattern_list').get('value');
@@ -234,35 +199,8 @@ define([
 		//
 		// -------------------------------------------------------------------
 
-		// dynamic options for the ComboBox that presents comparison operators
-		// suitable for a given key
-		_operators_query: function() {
-
-			if (this._operators_pending)
-			{
-				//alert("OPERATORS already pending!");
-			}
-			this._set_query_pending('operator',true);
-			try
-			{
-				var value = this.getWidget('key').get('value');
-
-				return tools.umcpCommand('pkgdb/operators',{
-					page:		this.pageKey,
-					key:		value
-				}).then(function(data) { return data.result; });
-			}
-			catch(error)
-			{
-				console.error("operators_query: " + error.message);
-			}
-			// What should I return if the combobox is invisible and the query
-			// does not make sense at all?
-			return null;
-		},
-
-		// returns proposals for the 'pattern' field for a given combination of
-		// key and operator. (pageKey is added silently)
+		// returns proposals for the 'pattern' field for a given
+		// key. (pageKey is added silently)
 		_proposals_query: function() {
 
 			if (this._proposals_pending)
@@ -291,56 +229,6 @@ define([
 		//		handlers for return values
 		//
 		// ------------------------------------------------------------
-
-		// handles the result of the operators query. Special functions are:-
-		//
-		//	-	if the value is not an array: hide the operators combobox
-		//		and use the returned value as 'label' property for the
-		//		pattern entry, be it the ComboBox or the TextBox.
-		//	-	if the result set is empty: hide operators AND patterns
-		//		entirely.
-		//
-		_handle_operators: function(values) {
-
-			var p_label = _("Pattern");
-			var o_show  = false;
-			var p_show  = true;
-			if (values instanceof Array)
-			{
-				if (values.length)
-				{
-					this._set_selection_to_first_element('operator');
-					this._pattern_needed = true;
-					o_show = true;
-				}
-				else
-				{
-					this._pattern_needed = false;
-					p_show = false;
-				}
-			}
-			else
-			{
-				this._pattern_needed = true;
-				p_label = values;
-			}
-
-			this.showWidget('operator',o_show);
-
-			if (p_show)
-			{
-				this.showWidget('pattern_text',!this._pattern_is_list);
-				this.showWidget('pattern_list',this._pattern_is_list);
-			}
-			else
-			{
-				this.showWidget('pattern_text',false);
-				this.showWidget('pattern_list',false);
-			}
-
-			this.getWidget('pattern_text').set('label',p_label);
-			this.getWidget('pattern_list').set('label',p_label);
-		},
 
 		// handles the result (and especially: the result type) of the
 		// proposals returned by the 'pkgdb/proposals' query
@@ -378,7 +266,7 @@ define([
 	//		var ele = this.getWidget(element);
 	//		if (ele)
 	//		{
-	//			// applies to 'key' and 'operator' ComboBox
+	//			// applies to 'key' ComboBox
 	//			ele.set('disabled',on);
 	//		}
 	//		else
@@ -416,14 +304,14 @@ define([
 			return this.inherited(arguments);
 		},
 
-		// an internal callback for everything that changes a query, operator or pattern.
+		// an internal callback for everything that changes a query or pattern.
 		// should call the external callback 'onQueryChanged' only if something has
 		// changed. This maintains all internal variables that reflect the state of
 		// the current entry and the executability of the query.
 		_handle_query_changes: function(name,value) {
 
 			// start with: allowed if none of our dynamicValues queries is pending
-			var allow = ! (this._keys_pending || this._operators_pending || this._proposals_pending);
+			var allow = ! (this._keys_pending || this._proposals_pending);
 
 			// only allow if the 'key' position is not '--- select one ---'
 			allow = allow && (this.getWidget('key').get('value')!='_');
