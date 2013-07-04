@@ -1,3 +1,9 @@
+univention-system-setup (7.0.15-1) unstable; urgency=low
+
+  * Bug #30773: unify wording of "DC slave"
+
+ -- Florian Best <best@univention.de>  Thu, 04 Jul 2013 15:40:14 +0200
+
 univention-system-setup (7.0.14-1) unstable; urgency=low
 
   * Bug #28574: fix endless loop when validating domain and windows hostnames

@@ -85,12 +85,12 @@ define([
 				type: Text,
 				label: '',
 				name: 'text_domaincontroller_backup',
-				content: _('<h2>Backup domain controller</h2>All the domain data and SSL security certificates are saved as read-only copies on servers with the backup domain controller role (backup DC for short). The backup domain controller is the fallback system for the master DC. If the latter should fail, a backup DC can take over the role of the DC master permanently.')
+				content: _('<h2>Backup domain controller</h2>All the domain data and SSL security certificates are saved as read-only copies on servers with the backup domain controller role (DC backup for short). The backup domain controller is the fallback system for the DC master. If the latter should fail, a DC backup can take over the role of the DC master permanently.')
 			}, {
 				type: Text,
 				label: '',
 				name: 'text_domaincontroller_slave',
-				content: _('<h2>Slave domain controller</h2>All the domain data are saved as read-only copies on servers with the slave domain controller role (slave DC for short). In contrast to the backup domain controller, however, not all security certificates are synchronised. As access to the services running on a slave domain controller are performed against the local LDAP server, slave DC systems are ideal for site servers and the distribution of load-intensive services. A slave DC system cannot be promoted to a master DC.')
+				content: _('<h2>Slave domain controller</h2>All the domain data are saved as read-only copies on servers with the slave domain controller role (DC slave for short). In contrast to the backup domain controller, however, not all security certificates are synchronised. As access to the services running on a slave domain controller are performed against the local LDAP server, DC slave systems are ideal for site servers and the distribution of load-intensive services. A DC slave system cannot be promoted to a DC master.')
 			}, {
 				type: Text,
 				label: '',
