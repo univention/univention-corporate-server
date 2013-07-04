@@ -9,7 +9,6 @@ desc: |
  downloads: Domain name matching in cookie validation was implemented
  incorrectly in some cornercases and a buffer overflow has been found
  in the curl_easy_unescape() function
-A buffer overflow was found in the argument processing of grep.
 note: This update fixes these vulnerabilities
 cve:
  - CVE-2013-1944
