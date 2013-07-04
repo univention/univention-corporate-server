@@ -1,3 +1,9 @@
+ucs-test (4.0.51-1) unstable; urgency=low
+
+  * Adjust allowed time for 30.000 user test case (Bug #31695)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 04 Jul 2013 08:07:29 +0200
+
 ucs-test (4.0.50-1) unstable; urgency=low
 
   * Workaround for Bug #31794

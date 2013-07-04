@@ -64,7 +64,7 @@ def wait_for_s4connector():
 	return 0
 
 def test_umc_admin_auth():
-	result = subprocess.call('umc-command  -U Administrator -P univention udm/get -f users/user -l -o "uid=Administrator,cn=users,$(ucr get ldap/base)"', shell=True)
+	result = subprocess.call('umc-command -U Administrator -P univention udm/get -f users/user -l -o "uid=Administrator,cn=users,$(ucr get ldap/base)"', shell=True)
 	return result
 
 def s4_user_auth(username, password):
