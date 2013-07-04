@@ -215,47 +215,6 @@ class object(content):
 
 	def check_values (self, hostname, domainname, windows_domain, ldap_base, root_password1, root_password2, focus=True):
 
-		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
-	
-			# not longer than 14 chars
-			if len(windows_domain.strip()) > 14:
-				if not self.ignore('windows_domain'):
-					if focus:
-						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-					return _("The length of the windows domain name is greater than 14 characters.")
-	
-			# no . in windom
-			if not windows_domain.find(".") == -1:
-				if not self.ignore('windows_domain'):
-					if focus:
-						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-					return _("Periods are not allowed in windows domain names.")
-	
-			# windom != dns
-			if windows_domain.strip().lower() == domainname.strip().lower():
-				if not self.ignore('windows_domain'):
-					if focus:
-						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-					return _("The windows domain and the domain name may not be the same.")
-
-			# windom syntax
-			if not windows_domain.strip() == '':
-				if not self.syntax_is_windowsdomainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
-					if not self.ignore('windows_domain'):
-						if focus:
-							self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-						return _("Please enter a valid windows domain name.")
-
-			# windows domain != hostname warning
-			if windows_domain.strip().lower() == hostname.strip().lower():
-				if not self.ignore('windows_domain'):
-					# The warning will be displayed only once
-					if windows_domain != self.windomain_last_warning:
-						self.windomain_last_warning = windows_domain
-						if focus:
-							self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
-						return _("For Active Directory domains the hostname and the windows domain name may not be the same. This warning is shown only once, the installation can be continued with the name currently given.")
-
 		# hostname may not start with digits
 		digitsAtStart = re.compile("^[0-9]+.*$")
 		if digitsAtStart.match(hostname):
@@ -310,12 +269,14 @@ class object(content):
 					self.move_focus( self.get_elem_id('IN_FQDN') )
 				return _("Hostname is equal to domain name.")
 
+		# ldap base
 		if (ldap_base.strip() == '') and (self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master'):
 			if not self.ignore('ldap_base'):
 				if focus:
-					self.move_focus( 7 )
+					self.move_focus( self.get_elem_id('IN_LDAPBASE') )
 				return _("Please enter the LDAP base.")
 
+		# ldap base
 		if (ldap_base.strip() != '') and ((self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master')) or ldap_base.strip().find(' ') != -1:
 
 			if not self.ignore('ldap_base'):
@@ -323,17 +284,61 @@ class object(content):
 				for dc in ldap_base.strip().split(','):
 					if len(dc.split('='))>2:
 						if focus:
-							self.move_focus( 7 )
+							self.move_focus( self.get_elem_id('IN_LDAPBASE') )
 						return message
 					elif not dc.split('=')[0] in ['dc', 'cn', 'c', 'o', 'l']:
 						if focus:
-							self.move_focus( 7 )
+							self.move_focus( self.get_elem_id('IN_LDAPBASE') )
 						return message
 				if ldap_base.strip().find(' ') != -1:
 					if focus:
-						self.move_focus( 7 )
+						self.move_focus( self.get_elem_id('IN_LDAPBASE') )
 					return message
 
+		# windows domain on dc master
+		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
+	
+			# not longer than 14 chars
+			if len(windows_domain.strip()) > 14:
+				if not self.ignore('windows_domain'):
+					if focus:
+						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+					return _("The length of the windows domain name is greater than 14 characters.")
+	
+			# no . in windom
+			if not windows_domain.find(".") == -1:
+				if not self.ignore('windows_domain'):
+					if focus:
+						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+					return _("Periods are not allowed in windows domain names.")
+	
+			# windom != dns
+			if windows_domain.strip().lower() == domainname.strip().lower():
+				if not self.ignore('windows_domain'):
+					if focus:
+						self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+					return _("The windows domain and the domain name may not be the same.")
+
+			# windom syntax
+			if not windows_domain.strip() == '':
+				if not self.syntax_is_windowsdomainname(windows_domain.lower()) or not windows_domain == windows_domain.upper():
+					if not self.ignore('windows_domain'):
+						if focus:
+							self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+						return _("Please enter a valid windows domain name.")
+
+			# windows domain != hostname warning
+			if windows_domain.strip().lower() == hostname.strip().lower():
+				if not self.ignore('windows_domain'):
+					# The warning will be displayed only once
+					if windows_domain != self.windomain_last_warning:
+						self.windomain_last_warning = windows_domain
+						if focus:
+							self.move_focus( self.get_elem_id('IN_WINDOMAIN') )
+						return _("For Active Directory domains the hostname and the windows domain name may not be the same. This warning is shown only once, the installation can be continued with the name currently given.")
+
+
+		# root password
 		if not self.all_results.has_key('root_password_crypted'):
 			if root_password1.strip() == '':
 				if not self.ignore('password'):

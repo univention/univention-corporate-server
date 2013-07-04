@@ -1,3 +1,9 @@
+univention-installer (9.0.12-1) unstable; urgency=low
+
+  * simplified syntax_is_windowsdomainname regex (Bug #24888) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 04 Jul 2013 16:47:00 +0200
+
 univention-installer (9.0.11-1) unstable; urgency=low
 
   * replaced "cursespad".refresh() with "cursespad".noutrefresh()
@@ -6,7 +12,7 @@ univention-installer (9.0.11-1) unstable; urgency=low
     to speed performance and perhaps reduce screen flicker
     especially for the xencenter vnc console (Bug #31051)
     
-  * simplified is_domainname regex r41947 
+  * simplified is_domainname regex r41947 (Bug #24888)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Jul 2013 14:48:21 +0200
 
