@@ -61,6 +61,9 @@ date >>"$UPDATER_LOG" 2>&1
 
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 
+# Remove VNC module; Bug #30158
+univention-remove -y --purge univention-management-console-module-vnc
+
 if [ "$update31_hold_fetchmail" = "true" ]; then
 	echo "univention-fetchmail install" | dpkg --set-selections
 	echo "univention-fetchmail-schema install" | dpkg --set-selections
