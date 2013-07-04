@@ -1,5 +1,5 @@
 [openoffice/database/default]
-Description[de]=Standard Openoffice Datenbank
-Description[en]=Default openoffive database
+Description[de]=Der Standarddatenbanktyp in OpenOffice. Mögliche Werte: 'hsqldb' oder 'dbase'.
+Description[en]=The default database type in OpenOffice: Possible values: 'hsqldb' or 'dbase'.
 Type=str
 Categories=system-desktop
