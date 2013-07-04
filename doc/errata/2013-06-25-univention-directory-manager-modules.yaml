@@ -12,4 +12,8 @@ desc: |
   * Improved lookup speed of five more syntax classes which should result in
     faster opening of objects in the UDM frontend especially in larger
     environments.
-bug: [31703, 31560]
+  * In the user module, the mail option has been detached from password
+    related properties.
+  * A traceback which occured when creating a user with just the person
+    option set has been corrected.
+bug: [31703, 31560, 31868, 24351]
