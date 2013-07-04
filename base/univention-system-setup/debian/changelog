@@ -1,3 +1,9 @@
+univention-system-setup (7.0.14-1) unstable; urgency=low
+
+  * Bug #28574: fix endless loop when validating domain and windows hostnames
+
+ -- Florian Best <best@univention.de>  Thu, 04 Jul 2013 15:10:54 +0200
+
 univention-system-setup (7.0.13-1) unstable; urgency=low
 
   * Bug #30776: adapt link to SDB article
