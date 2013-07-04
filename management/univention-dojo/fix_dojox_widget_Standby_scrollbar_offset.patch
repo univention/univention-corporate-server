@@ -4,8 +4,8 @@
  				}
  				
  				//Shift the parent width/height a bit if scollers are present.
-+				var pnOverflowX = domStyle.get(pn, 'overflow-x');
-+				var pnOverflowY = domStyle.get(pn, 'overflow-y');
++				var pnOverflowX = domStyle.get(pn, 'overflow-x') || domStyle.get(pn, 'overflow');
++				var pnOverflowY = domStyle.get(pn, 'overflow-y') || domStyle.get(pn, 'overflow');
  				pnBox.w -= pn.scrollHeight > pn.clientHeight &&
 +					pnOverflowX != 'hidden' && pnOverflowX != 'visible' &&
  					pn.clientHeight > 0 ? scrollers.v: 0;
