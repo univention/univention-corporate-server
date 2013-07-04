@@ -37,10 +37,11 @@ define([
 	"umc/dialog",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/ConfirmDialog",
 	"dijit/Dialog",
 	"dijit/ProgressBar",
 	"umc/i18n!umc/modules/lib"
-], function(lang, style, Deferred, topic, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
+], function(lang, style, Deferred, topic, tools, dialog, Text, ContainerWidget, ConfirmDialog, DijitDialog, DijitProgressBar, _) {
 
 	return {
 		_askingForRestart: false,
@@ -73,21 +74,42 @@ define([
 			}
 			msg += '<p>' + _('Please confirm to restart UMC server components and the HTTP web server. This will take approximately 10 seconds.') + '</p>';
 			msg += '<p>' + _('<b>Note:</b> After the restart you will be redirected to the login page.') + '</p>';
-			return dialog.confirm(msg, [{
-				name: 'cancel',
-				label: _('Cancel')
-			}, {
-				name: 'restart',
-				'default': true,
-				label: _('Restart')
-			}]).then(lang.hitch(this, function(response) {
+			var _dialog = new ConfirmDialog({
+				title: _('Server restart'),
+				message: msg,
+				options: [{
+					name: 'cancel',
+					label: _('Cancel')
+				}, {
+					name: 'restart',
+					'default': true,
+					label: _('Restart')
+				}]
+			});
+
+			// handle user feedback
+			var deferred = new Deferred();
+			_dialog.on('confirm', lang.hitch(this, function(response) {
 				this._askingForRestart = false;
 				if (response == 'restart') {
-					return this.restart();
+					deferred.resolve(this.restart());
 				}
-				// throw error two break the deferred chain
-				throw new Error('restart canceled');
+				// break the deferred chain
+				deferred.cancel();
+				_dialog.close();
 			}));
+
+			// in case the user clicks on 'x' button or hits escape
+			_dialog.on('hide', lang.hitch(this, function() {
+				this._askingForRestart = false;
+				if (!deferred.isFulfilled()) {
+					deferred.cancel();
+				}
+				_dialog.destroyRecursive();
+			}));
+
+			_dialog.show();
+			return deferred;
 		},
 
 		restart: function() {
