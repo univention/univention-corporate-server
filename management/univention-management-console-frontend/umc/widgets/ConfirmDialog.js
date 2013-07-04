@@ -113,9 +113,6 @@ define([
 		// the widget's class name as CSS class
 		'class': 'umcConfirmDialog',
 
-		// our own settings
-		closable: false,
-
 		_container: null,
 
 		_setMessageAttr: function(message) {
@@ -207,6 +204,9 @@ define([
 			this._container = new ContainerWidget({});
 			this._container.addChild(buttons);
 			this._container.startup();
+
+			// explicitely set 'closable' here, otherwise it does not have any effect
+			this.set('closable', false);
 
 			// attach layout to dialog
 			this.set('content', this._container);
