@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/Deferred",
 	"dojo/aspect",
+	"dojo/topic",
 	"dojo/dom-class",
 	"umc/tools",
 	"umc/store",
@@ -43,7 +44,7 @@ define([
 	"umc/modules/pkgdb/SearchForm",
 	"umc/modules/pkgdb/KeyTranslator",
 	"umc/i18n!umc/modules/pkgdb"
-], function(declare, lang, Deferred, aspect, domClass, tools, store, Grid, Page, StandbyMixin, ExpandingTitlePane, SearchForm, KeyTranslator, _) {
+], function(declare, lang, Deferred, aspect, topic, domClass, tools, store, Grid, Page, StandbyMixin, ExpandingTitlePane, SearchForm, KeyTranslator, _) {
 
 	// Page with a unified layout
 	//
@@ -93,6 +94,8 @@ define([
 				// Execute the given query (a.k.a. filter) on the grid
 				this._grid.filter(lang.mixin({page: this.pageKey }, this._current_query));
 			}));
+
+			topic.publish('/umc/actions', 'pkgdb', this.pageKey, query.key, 'search');
 		},
 
 		// fetches the structure of the result grid.
