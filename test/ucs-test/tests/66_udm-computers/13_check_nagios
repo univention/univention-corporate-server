@@ -16,13 +16,11 @@ import univention.config_registry as configRegistry
 if __name__ == '__main__':
 	ucr = configRegistry.ConfigRegistry()
 	ucr.load()
-
 	ldap = utils.get_ldap_connection()
 
-	with udm_test.UCSTestUDM() as udm:
-		for role in udm.COMPUTER_MODULES:
+	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
+		with udm_test.UCSTestUDM() as udm:
 			forwardZone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
-
 			parentBackupName = uts.random_name()
 			parentBackup = udm.create_object('computers/domaincontroller_backup', name = parentBackupName, options = ['nagios'], ip = '10.20.30.2', dnsEntryZoneForward = forwardZone)
 
@@ -37,7 +35,11 @@ if __name__ == '__main__':
 				'ip': '10.20.30.3',
 			}
 
-			computer = udm.create_object('computers/%s' % role, options = ['nagios'], **properties)
+
+			# FIXME: workaround for remaining locks
+			udm.addCleanupLock('aRecord', properties['ip'])
+
+			computer = udm.create_object(role, options = ['nagios'], **properties)
 				
 			if not utils.verify_ldap_object(computer, {
 				'univentionNagiosEmail': [properties['nagiosContactEmail']],
@@ -48,8 +50,3 @@ if __name__ == '__main__':
 
 			if not utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (properties['name'], ldap.getAttr(computer, 'associatedDomain')[0])]}):
 				utils.fail('Could not find created %s at nagios service as expected')
-
-
-
-			# full reset for next role
-			udm.cleanup()

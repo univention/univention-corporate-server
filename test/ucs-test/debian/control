@@ -365,6 +365,16 @@ Description: Test scripts for univention-ad-connector.
 #Description: Test scripts for UCS@school.
 # This package includes the test-cases for UCS@school.
 
+Package: ucs-test-import-performance
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts to test the import performance
+ This package includes the test-cases for importing two large
+ schools one with 30.000 users and one with 65.000 users.
+
 Package: ucs-test-modules-all
 Architecture: all
 Depends:

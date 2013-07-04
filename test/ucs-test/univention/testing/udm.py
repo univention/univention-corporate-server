@@ -84,16 +84,16 @@ class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 
 class UCSTestUDM(object):
 	PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
-	COMPUTER_MODULES = ('ubuntu',
-						'linux',
-						'windows',
-						'windows_domaincontroller',
-						'domaincontroller_master',
-						'domaincontroller_backup',
-						'domaincontroller_slave',
-						'memberserver',
-						'macos',
-						'ipmanagedclient')
+	COMPUTER_MODULES = ('computers/ubuntu',
+						'computers/linux',
+						'computers/windows',
+						'computers/windows_domaincontroller',
+						'computers/domaincontroller_master',
+						'computers/domaincontroller_backup',
+						'computers/domaincontroller_slave',
+						'computers/memberserver',
+						'computers/macos',
+						'computers/ipmanagedclient')
 
 	def __init__(self):
 		self._ucr = univention.testing.ucr.UCSTestConfigRegistry()
@@ -138,7 +138,7 @@ class UCSTestUDM(object):
 
 		# set all other remaining properties
 		for arg in args:
-			if type(args.get(arg)) == list:
+			if type(args.get(arg)) in (list, tuple):
 				for item in args.get(arg):
 					cmd.extend( [ '--append', '%s=%s' % (arg, item) ] )
 			else:

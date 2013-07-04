@@ -1,3 +1,43 @@
+ucs-test (3.0.30-14) unstable; urgency=low
+
+  * Merge from UCS 3.2 (4.0.53-1)
+
+    [Lukas Walter]
+    * added more udm-computers test cases and slightly renamed some others
+    (Bug #31659)
+    * fixed changelog identation
+    * udm.py.UCSTestUDM().COMPUTER_MODULES does now contain the full module
+      name, e.g "computers/linux" instead of "linux"
+    (Bug #30560)
+    * corrected tag for some udm-computers tests
+    * added test to validate that network properties are correctly adopted by
+      computer objects
+    * added bug number to 66_udm-computers/08_create_and_validate_macos.py
+    (Bug #31659)
+   
+    * added more udm-computers test cases
+    (Bug #31659)
+   
+    [ Stefan Gohmann ]
+    * Adjust allowed time for 30.000 user test case (Bug #31695)
+    * 02_import-performance/1*: count users (Bug #31695)
+    * added csv file for 65000 users (Bug #31695)
+    * 02_import-performance/performanceutils.py: return 0 by default
+      (Bug #31695)
+    * 02_import-performance/performanceutils.py: return 0 by default
+      (Bug #31695)
+    * Added performance tests for UCS@school import (Bug #31695)
+    * 00_base/17app_status: added a test case to check if the apps are
+      really installed (Bug #31793)
+   
+    [ Arvid Requate ]
+    * Workaround for Bug #31794
+    * 51_samba4/51create_gpo now always creates the GPO locally (Bug #29328)
+    * 51_samba4/52replication_sysvol now always creates the GPO remotely
+      (Bug #29062)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 02 Jul 2013 15:24:12 +0200
+
 ucs-test (3.0.30-13) unstable; urgency=low
 
   * Merge from UCS 3.2 (4.0.44-1)

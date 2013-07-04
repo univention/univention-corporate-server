@@ -58,7 +58,7 @@ while ! output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$s
 do
 	let i="$i"+1
 	if [ "$i" = 10 ]; then
-       		echo "$output"
+		echo "$output"
 		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
 	fi
 	sleep "$sleep_seconds"
