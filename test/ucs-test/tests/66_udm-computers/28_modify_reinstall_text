@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test modifying reinstall for computers/domaincontroller_master, computers/domaincontroller_slave, computers/domaincontroller_backup and computers/memberserver
-## tags: [udm-computers, new]
+## desc: Test modifying reinstalltext for computers/domaincontroller_master, computers/domaincontroller_slave, computers/domaincontroller_backup and computers/memberserver
+## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
@@ -14,11 +14,11 @@ import univention.testing.utils as utils
 
 
 if __name__ == '__main__':
-	reinstall = '1'
+	reinstalltext = '1'
 	
 	with udm_test.UCSTestUDM() as udm:
 		for role in ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup' , 'computers/memberserver'):
 			computer = udm.create_object(role, name = uts.random_name())
-			udm.modify_object(role, dn = computer, reinstall = reinstall)
-			if not utils.verify_ldap_object(computer, {'univentionServerReinstall': [reinstall]}):
-				utils.fail('"univentionServerReinstall" of %s differed from expectation after modification')
+			udm.modify_object(role, dn = computer, reinstalltext = reinstalltext)
+			if not utils.verify_ldap_object(computer, {'univentionServerInstallationText': [reinstalltext]}):
+				utils.fail('"univentionServerInstallationText" of %s differed from expectation after modification' % role)

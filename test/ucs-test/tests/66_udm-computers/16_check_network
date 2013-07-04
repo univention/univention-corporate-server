@@ -21,10 +21,14 @@ if __name__ == '__main__':
 	ucr = configRegistry.ConfigRegistry()
 	ucr.load()
 
-
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		if role == 'computers/macos':
 			continue
+
+		computerProperties = {
+			'mac': '01:23:45:67:89:ab',
+			'name': uts.random_name()
+		}
 
 		with udm_test.UCSTestUDM() as udm:
 			# FIXME: workaround for remaining locks
@@ -33,10 +37,7 @@ if __name__ == '__main__':
 			udm.addCleanupLock('mac', '01:23:45:67:89:ab')
 
 
-			computerProperties = {
-				'mac': '01:23:45:67:89:ab',
-				'name': uts.random_name()
-			}
+
 
 			forwardZone1Name = '%s.%s' % (uts.random_name(), uts.random_name())
 			forwardZone2Name = '%s.%s' % (uts.random_name(), uts.random_name())
@@ -73,6 +74,7 @@ if __name__ == '__main__':
 
 
 			computer = udm.create_object(role, network = network1, **computerProperties)
+			# verify that properties have been adopted correctly during creation
 			if not utils.verify_ldap_object(computer, {
 				'univentionNetworkLink': [network1],
 				'aRecord': ['10.20.30.2']
@@ -87,6 +89,7 @@ if __name__ == '__main__':
 
 
 			udm.modify_object(role, dn = computer, network = network2)
+			# verify that new properties have been adopted correctly during modification
 			if not utils.verify_ldap_object(computer, {
 				'univentionNetworkLink': [network2],
 				'aRecord': ['10.20.40.2']
@@ -99,6 +102,8 @@ if __name__ == '__main__':
 			if not utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService2), {'univentionDhcpFixedAddress': ['10.20.40.2']}):
 				utils.fail('DHCP entry for %s differed from expectation after modification' % role)
 
+
+			# old DHCP/DNS objects created when setting the first network should have been removed from LDAP
 			if utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone1)):
 				utils.fail('Could still find old DNS host record of %s after the nework link has been changed' % role)
 			if utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone1):

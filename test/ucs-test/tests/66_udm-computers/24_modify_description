@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test modifying description for all computer roles
-## tags: [udm-computers, new]
+## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
@@ -14,11 +14,12 @@ import univention.testing.utils as utils
 
 
 if __name__ == '__main__':
-	description = uts.random_string()
 	
 	with udm_test.UCSTestUDM() as udm:
 		for role in udm.COMPUTER_MODULES:
+			description = uts.random_string()
+
 			computer = udm.create_object(role, name = uts.random_name())
 			udm.modify_object(role, dn = computer, description = description)
 			if not utils.verify_ldap_object(computer, {'description': [description]}):
-				utils.fail('"description" of %s differed from expectation after modification')
+				utils.fail('"description" of %s differed from expectation after modification' % role)

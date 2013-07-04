@@ -37,12 +37,12 @@ if __name__ == '__main__':
 
 
 			udm.modify_object(role, dn = computer, remove = {'groups': groups[:2]})
-			# validate that group memberships of groups removed during modification have been decomposed
+			# validate that group memberships of groups removed during seccond modification have been decomposed
 			for group in groups[:2]:
 				if not utils.verify_ldap_object(group, {'memberUid': [], 'uniqueMember': []}):
 					utils.fail('Group membership of %s in group %s was not fully decomposed after trying to remove groups %r' % (role, group, groups[:2]))
 
-			# validate that the other group memberships are still unimpaired
+			# validate that the other group memberships are still unimpaired after seccond modification
 			for group in groups[2:]:
 				if not utils.verify_ldap_object(group, {'memberUid': ['%s$' % computerName], 'uniqueMember': [computer]}):
 					utils.fail('Group membership of %s in group %s was decomposed while removing groups %r' % (role, group, groups[:2]))

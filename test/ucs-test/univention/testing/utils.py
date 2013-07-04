@@ -86,10 +86,7 @@ def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 def verify_ldap_object(baseDn, expected_attr = {}):
 	try:
 		dn, attr = get_ldap_connection().search(filter = '(objectClass=*)', base = baseDn, attr = expected_attr.keys())[0]
-	except ldap.NO_SUCH_OBJECT:
-		print 'Could not find DN "%s" in LDAP' % baseDn
-		return False
-	except IndexError:
+	except (ldap.NO_SUCH_OBJECT, IndexError):
 		print 'Could not find DN "%s" in LDAP' % baseDn
 		return False
 

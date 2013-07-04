@@ -1,3 +1,14 @@
+ucs-test (4.0.54-1) unstable; urgency=low
+
+  * renamed another udm-computers test
+  * added more udm-computers tests
+  * also validate "univentionServerInstallationText" in
+    66_udm-computers/*create_maximal*
+  * removed debug tag from certain udm-computers test headers
+  (Bug #31659)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 04 Jul 2013 13:52:51 +0200
+
 ucs-test (4.0.53-1) unstable; urgency=low
 
   * added more udm-computers test cases and slightly renamed some others
