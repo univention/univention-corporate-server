@@ -1,84 +1,77 @@
 [nagios/server/autostart]
-Description[de]=Starte Nagios-Server bei Systemstart
-Description[en]=Start Nagios server during system startup
-Type=str
-Categories=service-nagios,system-services
-
-[nagios/server/authenticate]
-Description[de]=Aktiviere/Deaktiviere die Anmeldung am Nagios-Webfrontend
-Description[en]=Enable/Disable authentication for the Nagios web frontend
-Type=str
-Categories=service-nagios
-
-[nagios/server/checkexternalcmd]
-Description[de]=Aktiviere/Deaktiviere das Übergeben von Kommandos aus dem Webfrontend (default: yes)
-Description[en]=Enable/Disable the ability to run commands through the web frontend (default: yes)
+Description[de]=Werden Änderungen an der Nagios-Konfiguration im LDAP-Verzeichnis vorgenommen, wird der Nagios-Server automatisch neu gestartet. Dies kann mit 'no' deaktiviert werden. Ist die Variable nicht gesetzt, erfolgt ein automatischer Neustart.
+Description[en]=If changes to the Nagios configuration are made in the LDAP directory, the Nagios server is restarted automatically. This can be deactivated with 'no'. If the variable is unset, an automatic restart occurs.
 Type=str
 Categories=service-nagios
 
 [nagios/server/refreshrate]
-Description[de]=Automatischer Aktualisierungsintervall des Nagios-Webfrontends (in Sekunden)
-Description[en]=Refresh rate of the Nagios web frontend in seconds
+Description[de]=Die Status-Seiten der Nagios-Weboberfläche aktualisieren sich automatisch in regelmäßigen Abständen. Der Zeitraum zwischen zwei Aktualisierungen kann hier in Sekunden angegeben werden.
+Description[en]=The status pages in the Nagios web interface are automatically refreshed in periodic intervals. The time span in seconds between two refresh can be specified here.
 Type=str
 Categories=service-nagios
 
-[nagios/server/theme]
-Description[de]=Name des zu verwendenden Nagios-Themes
-Description[en]=Name of the Nagios theme to use
-Type=str
-Categories=service-nagios
-
-[nagios/server/user/allcmd]
-Description[de]=Erlaube diesen Benutzern dienstbezogene Kommandos zu starten
-Description[en]=Allow these users to run service specific commands
-Type=str
-Categories=service-nagios
-
-[nagios/server/user/allinfo]
-Description[de]=Erlaube diesen Benutzern alle Rechner- und Dienst-informationen einzusehen
-Description[en]=Allow these users to view all available system and process information
-Type=str
-Categories=service-nagios
-
-[nagios/server/user/configinfo]
-Description[de]=Erlaube den angegebenen Benutzer Lesezugriff auf die Nagios-Konfiguration
-Description[en]=Grant read access to the Nagios configuration to the given users
-Type=str
-Categories=service-nagios
-
-[nagios/server/user/systemcmd]
-Description[de]=Erlaube den angegebenen Benutzern das Ausführen von Systemkommandos
-Description[en]=Allow the given users to run system commands
+[nagios/server/authenticate]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, muss sich der Benutzer für den Zugriff auf die Nagios-Weboberfläche authentifizieren. Steht sie auf 'no', kann auch ohne Angabe eines gültigen Benutzerkontos auf die Weboberfläche zugegriffen werden.
+Description[en]=If this variable is set to 'yes' a user accessing the Nagios web interface needs to authenticate. If set to 'no' the web interface can be accessed without a valid user account.
 Type=str
 Categories=service-nagios
 
 [nagios/server/user/systeminfo]
-Description[de]=Nur hier angegebene Benutzer können System und Prozessinformationen einsehen (* für alle)
-Description[en]=Show system and process informations to this users only (* means all)
+Description[de]=Der Zugriff auf die System- und Prozess-Informationen in der Nagios-Weboberfläche (unter 'Configuration') ist auf die hier angegebenen Benutzer beschränkt. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
+Description[en]=The access to the system and process information in the Nagios web interface (under 'Configuration') is restricted to the users specified here. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Type=str
+Categories=service-nagios
+
+[nagios/server/user/configinfo]
+Description[de]=Die Nagios-Weboberfläche erlaubt unter 'Configuation -> View Config' die Anzeige der Nagios-Konfiguration. Nur die in dieser Variable festgelegten Benutzer dürfen auf die Konfiguration zugreifen. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
+Description[en]=The Nagios web interface allows the display of the Nagios configuration under 'Configuation -> View Config'. Only the users specified with this variable may access the configuration. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Type=str
+Categories=service-nagios
+
+[nagios/server/user/systemcmd]
+Description[de]=Das Veranlassen von Systemkommandos (z.B. das Herunterfahren oder Neustarten des Nagios-Servers) über die Nagios-Weboberfläche ist auf die hier angegebenen Benutzer beschränkt. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
+Description[en]=The execution of system commands (e.g. the shutdown or restart of the Nagios server) over the Nagios web interface is limited to the users specified here. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Type=str
+Categories=service-nagios
+
+[nagios/server/user/allinfo]
+Description[de]=Die hier angegebenen Benutzer dürfen den Nagios-Status aller Rechner und Dienste in der Nagios-Weboberfläche abfragen. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
+Description[en]=The users specified here may access the Nagios status of alle hosts and services in the Nagios web interface. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Type=str
+Categories=service-nagios
+
+[nagios/server/user/allcmd]
+Description[de]=Die hier angegebenene Benutzer können dienstbezogenen Kommandos (z.B. das Aussetzen/Reaktivieren einer Dienstüberwachung) für alle Rechner/Dienste über die Nagios-Weboberfläche ausführen. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
+Description[en]=The users specified here can execute service commands in the Nagios web interface (e.g. activation/deactivation of a service scan) for all hosts/services. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Type=str
+Categories=service-nagios
+
+[nagios/server/checkexternalcmd]
+Description[de]=Ist die Variable auf 'yes' gesetzt, können über die Nagios-Weboberfläche Kommandos auf dem Nagios-Server ausgeführt werden, z.B. zum direkten Ausführen einer Nagiosprüfung.
+Description[en]=If this variable is set to 'yes' commands on the Nagios server can be executed through the Nagios web interface, e.g. to trigger the direct execution of a Nagios check.
 Type=str
 Categories=service-nagios
 
 [nagios/server/hostcheck/enable]
-Description[de]=Aktiviere/Deaktiviere die regelmäßige Erreichbarkeitsprüfung aller Nagios-Rechner
-Description[en]=Enable/Disable regular availability checks for all Nagios hosts
-Type=str
+Description[de]=Ist diese Variable aktiviert, überprüft Nagios regelmäßig die Erreichbarkeit aller eingetragenen Rechner und versendet im Falle der Nichterreichbarkeit eine Nachricht an die eingetragenen Kontaktpersonen. Ist die Variable nicht gesetzt, erfolgt keine Prüfung der Erreichbarkeit.
+Description[en]=If this variable is activated, Nagios regularly checks the availability of all Nagios hosts. If they cannot be reached a notification is sent to the contact persons specified. If the variable is unset no availability check is performed.
+Type=bool
 Categories=service-nagios
 
 [nagios/server/hostcheck/notificationinterval]
-Description[de]=Zeitspanne in Minuten bevor eine erneute Hostcheck-Benachrichtigung versendet wird
-Description[en]=Time span in minutes before resending a host check notification (in minutes)
-Type=str
+Description[de]=Wurde die automatische Erreichbarkeitsprüfung über die Variable 'nagios/server/hostcheck/enable' aktiviert, kann hier Zeitspanne in Minuten definiert werden, die vergangen sein müssen bevor eine erneute Benachrichtigung versendet wird.
+Description[en]=If the automatic availability check has been activated through the variable 'nagios/server/hostcheck/enable', the time span in minutes can be defined here which needs to have passed before a new host check notification is sent.
+Type=int
 Categories=service-nagios
 
-[auth/nagios/accessfile]
-Description[de]=Dateiname für die Konfigurationsdatei zur Zugangskontrolle über pam_access
-Description[en]=Filename of pam_access config file for nagios access control
+[nagios/server/theme]
+Description[de]=Diese Variable konfiguriert das zu verwendende Theme-Designpaket für die Nagios-Weboberfläche. Ist die Variable nicht gesetzt, wird das Standard-Nagios-Theme verwendet. 
+Description[en]=This variable configures the theme design package to be used for the Nagios web interface. If the variable is unset, the standard Nagios theme is used.
 Type=str
 Categories=service-nagios
 
 [nagios/plugin/check_nrpe/timeout]
-Description[de]=Zeitspanne in Sekunden bevor die NRPE-Verbindung in einen Timeout läßuft
-Description[en]=Number of seconds before the nrpe connection times out
-Type=str
+Description[de]=Diese Variable bestimmt die Zeitspanne in Sekunden, die der Nagios-Server auf das Beenden von NRPE-Anfragen wartet.
+Description[en]=This variable configures the time span in seconds the Nagios is waiting until NRPE requests time out.
+Type=int
 Categories=service-nagios
-

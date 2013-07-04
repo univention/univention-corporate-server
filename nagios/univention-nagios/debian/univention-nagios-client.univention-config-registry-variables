@@ -1,24 +1,26 @@
-[nagios/client/allowedhosts]
-Description[de]=Rechnern denen der Zugriff auf den NRPE-Dienst gestattet ist
-Description[en]=Hosts that are allowed to access the NRPE-service
+[nagios/client/autostart]
+Description[de]=Werden Änderungen an der Nagios-Konfiguration im LDAP-Verzeichnis vorgenommen und ist diese Variable auf 'yes' gesetzt, wird der Nagios-NRPE-Server automatisch neu gestartet.
+Description[en]=If changes to the Nagios configuration are made in the LDAP directory and if this variable is set to 'yes', the Nagios NRPE server is restarted automatically. 
 Type=str
 Categories=service-nagios
+
+[nagios/client/allowedhosts]
+Description[de]=Diese Variable beschränkt den Kreis der Rechner, die auf den gestarteten NRPE-Dienst zugreifen dürfen. Die Angabe der erlaubten Rechner erfolgt über ihren Rechnernamen oder ihre IP-Adresse. Ist Variable nicht gesetzt, wird der Domänencontroller Master zugelassen. Mehrfache Einträge müssen durch Kommata getrennt werden.
+Description[en]=This variable limits the hosts which can access the NRPE service. The hosts need to be specified through their hostname or with an IP address. If the variable is unset, the master domain controller is used. Multiple entries need to be seperated with commas.
 
 [nagios/client/checkraid]
-Description[de]=Prüfe lokale Raid-Systeme regelmäßig
-Description[en]=Check local harddisk raids regularly
-Type=str
-Categories=service-nagios
-
-[nagios/client/autostart]
-Description[de]=Starte Nagios bei Systemstart
-Description[en]=Start Nagios client during system startup
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird durch einen Crobjob jede Minute der Zustand des lokalen Festplatten-RAID-Systems geprüft.
+Description[en]=If this variable is set to 'yes' the state of the local harddisk RAID system is checked every minute.
 Type=str
 Categories=service-nagios
 
 [nagios/client/autoregister]
-Description[de]=Aktiviere/Deaktiviere automatische Registrierung von Standard-Diensten beim Nagios Server
-Description[en]=Enable/Disable the automatic registration of standard services on the Nagios server
+Description[de]=Das Join-Skript von univention-nagios-client richtet für den Client die Überwachung der Standarddienste ein. Um dies zu unterbinden, kann vor der Installation des Pakets die Variable auf 'no' gesetzt werden.
+Description[en]=univention-nagios-client registers the client for the monitoring of standard services. To prevent that the variable can be set to 'no' prior to the installation of the package.
 Type=str
 Categories=service-nagios
+
+
+
+
 
