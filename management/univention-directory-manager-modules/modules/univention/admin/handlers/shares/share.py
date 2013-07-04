@@ -827,6 +827,11 @@ class object(univention.admin.handlers.simpleLdap):
 			if 'univentionShareNFS' in self.oldattr['objectClass']:
 				self.options.append( 'nfs' )
 			try:
+				# Attention: Because of performance reasons, the syntax
+				#   class nfsShare uses '%(name)s (%(host)s)' as label, not
+				#   '%(printablename)s' (may be looked up in ldap directly).
+				#   If you change printablename here you probably want to change
+				#   nfsShare.label, too.
 				self['printablename'] = "%s (%s)" % (self['name'], self['host'])
 			except:
 				pass

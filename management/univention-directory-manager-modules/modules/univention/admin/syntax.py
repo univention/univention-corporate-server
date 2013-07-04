@@ -1244,12 +1244,14 @@ class GroupName( UDM_Objects ):
 	key = '%(name)s'
 	regex = re.compile( '^.+$' )
 	simple = True
+	use_objects = False
 
 class UserName( UDM_Objects ):
 	udm_modules = ( 'users/user', )
 	key = '%(username)s'
 	regex = re.compile( '^.+$' )
 	simple = True
+	use_objects = False
 
 class SharedFolderUserACL( complex ):
 	subsyntaxes = ( ( _( 'User' ), UserMailAddress ), ( _( 'Access right' ), IMAP_Right ) )
@@ -2564,8 +2566,9 @@ class LDAP_Search( select ):
 
 class nfsShare(UDM_Objects):
 	udm_modules = ( 'shares/share', )
-	label = '%(printablename)s'
+	label = '%(name)s (%(host)s)' # '%(printablename)s' optimized for performance...
 	udm_filter = 'objectClass=univentionShareNFS'
+	use_objects = False
 
 class nfsMounts(complex):
 	subsyntaxes=[(_('NFS share'), nfsShare), ('Mount point', string)]
