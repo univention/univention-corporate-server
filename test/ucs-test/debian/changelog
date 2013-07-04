@@ -1,7 +1,15 @@
+ucs-test (4.0.53-1) unstable; urgency=low
+
+  * added more udm-computers test cases and slightly renamed some others
+  (Bug #31659)
+  * fixed changelog identation
+
+ -- Lukas Walter <walter@univention.de>  Thu, 04 Jul 2013 13:34:17 +0200
+
 ucs-test (4.0.52-1) unstable; urgency=low
 
   * udm.py.UCSTestUDM().COMPUTER_MODULES does now contain the full module
-  	name, e.g "computers/linux" instead of "linux"
+    name, e.g "computers/linux" instead of "linux"
   (Bug #30560)
 
   * added more udm-computers test cases
@@ -60,7 +68,7 @@ ucs-test (4.0.46-1) unstable; urgency=low
 
   * corrected tag for some udm-computers tests
   * added test to validate that network properties are correctly adopted by
-  	computer objects
+    computer objects
   * added bug number to 66_udm-computers/08_create_and_validate_macos.py
   (Bug #31659)
 
@@ -112,7 +120,7 @@ ucs-test (4.0.42-1) unstable; urgency=low
   (Bug #31659)
 
   * if UCSTestUDM.cleanup() failed to remove one or more objects during the cleanup,
-  	it will try to remove them again
+    it will try to remove them again
   * added function to add locks to a removal list for cleanup to UCSTestUDM()
   (Bug #30560)
 
@@ -152,8 +160,8 @@ ucs-test (4.0.39-1) unstable; urgency=low
   * also remove referring objects in UCSTestUDM.cleanup()
   * log erros occuring during UCSTestUDM.cleanup()
   * per default, also remove referring objects when removing objects with
-  	UCSTestUDM().remove() (pass "remove_referring=False" to change this
-  	behaviour)
+    UCSTestUDM().remove() (pass "remove_referring=False" to change this
+    behaviour)
   (Bug #30560)
 
   * ported certain udm-computers tests
@@ -405,7 +413,7 @@ ucs-test (4.0.12-1) unstable; urgency=low
 
   * 51_samba4/45dns_tests: replace the sleep 8 with a for loop and wait
     up to 30 seconds for the LDAP and DRS replication (Bug #31680)
-
+    
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jun 2013 09:30:18 +0200
 
 ucs-test (4.0.11-1) unstable; urgency=low

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test appending and removing dhcpEntryZones for all computer roles
-## tags: [udm-computers, new]
+## desc: Test appending and removing dhcpEntryZone for all computer roles
+## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
