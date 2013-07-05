@@ -42,6 +42,7 @@ import re
 # related third party
 import notifier
 import notifier.threads
+import apt # for independent apt.Cache
 
 # univention
 from univention.lib.package_manager import PackageManager, LockError
@@ -290,7 +291,8 @@ class Instance(umcm.Base):
 		""" fills the 'sections' combobox in the search form """
 
 		sections = set()
-		for package in self.package_manager.packages():
+		cache = apt.Cache()
+		for package in cache:
 			sections.add(package.section)
 
 		return sorted(sections)

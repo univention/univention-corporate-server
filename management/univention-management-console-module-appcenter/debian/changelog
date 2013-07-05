@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.3-1) unstable; urgency=low
+
+  * Use independent apt.Cache when getting package sections (Bug #31662)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jul 2013 13:03:39 +0200
+
 univention-management-console-module-appcenter (3.0.2-1) unstable; urgency=low
 
   * Bug #31699: merged changes from UMC overview page
