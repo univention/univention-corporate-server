@@ -11,7 +11,6 @@ Architecture: i386 amd64
 Depends: ${misc:Depends}, ${perl:Depends},
  xen-4.1,
  libc6-xen [i386],
- univention-kernel-image-2.6.32-xen,
  bridge-utils
 Suggests: xen-tools,
  wget

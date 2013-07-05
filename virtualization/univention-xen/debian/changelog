@@ -1,3 +1,11 @@
+univention-xen (5.0.1-2) unstable; urgency=low
+
+  * Remove dependency on obsolete transition package univention-kernel-image-2.6.32-xen
+    (Bug #31373)
+  * Update copyright years for 2013.
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 05 Jul 2013 08:59:55 +0200
+
 univention-xen (5.0.1-1) unstable; urgency=low
 
   * Add support for system services module (Bug #10962) 
