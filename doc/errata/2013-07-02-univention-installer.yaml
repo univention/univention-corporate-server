@@ -8,5 +8,5 @@ version: [1]
 desc: |
   The horde groupware solution has been removed from the installers package
   list and from the list of software components in the UMC basic settings. 
-  From now on, horde is available in the Univention AppCenter.
+  From now on, horde is available in the Univention App Center.
 bug: [31866]
