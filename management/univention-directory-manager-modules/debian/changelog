@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.8-1) unstable; urgency=low
+
+  * Bug #21997: fix typo in german translation
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jul 2013 12:53:12 +0200
+
 univention-directory-manager-modules (9.0.7-1) unstable; urgency=low
 
   * Bug #31560: Improve lookup speedup of UserName, GroupName, nfsShare

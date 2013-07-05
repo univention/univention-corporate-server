@@ -1095,7 +1095,7 @@ msgstr "Liste der erlaubten UMC Operationen"
 #~ msgstr "Vertikale Wiederholfrequenz des sekundären Monitors"
 
 #~ msgid "Graphics adapter driver"
-#~ msgstr "Graphikkarten-Treiber"
+#~ msgstr "Grafikkarten-Treiber"
 
 #~ msgid "Display size of primary display"
 #~ msgstr "Display-Grösse des primären Monitor"

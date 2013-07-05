@@ -231,7 +231,7 @@ msgstr "Vertikale Wiederholfrequenz des sekundären Monitors"
 
 #: xfree.py:58 xfree.py:228
 msgid "Graphics adapter driver"
-msgstr "Graphikkarten-Treiber"
+msgstr "Grafikkarten-Treiber"
 
 #: xfree.py:59
 msgid "Display size of primary display"
