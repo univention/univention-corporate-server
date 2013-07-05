@@ -33,6 +33,8 @@
 from univention.lib.i18n import Translation
 
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import SearchSanitizer
 
 from urlparse import urlsplit
 from notifier import Callback
@@ -54,6 +56,7 @@ class Nodes(object):
 		if self._check_thread_error(thread, result, request):
 			return
 
+	@sanitize(nodePattern=SearchSanitizer(default='*'))
 	def node_query(self, request):
 		"""
 		Searches nodes by the given pattern
@@ -117,5 +120,5 @@ class Nodes(object):
 				'NODE_LIST',
 				Callback(_finished, request),
 				group='default',
-				pattern=request.options.get('nodePattern', '*')
+				pattern=request.options['nodePattern']
 				)

@@ -40,6 +40,8 @@ from univention.management.console.config import ucr
 from univention.management.console.modules import UMC_OptionTypeError, UMC_CommandError
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import SearchSanitizer
 
 from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
 
@@ -69,6 +71,10 @@ class Domains(object):
 			socket.AF_INET6: '[%s]',
 			}
 
+	@sanitize(
+		nodePattern=SearchSanitizer(default='*'),
+		domainPattern=SearchSanitizer(default='*')
+	)
 	def domain_query(self, request):
 		"""
 		Returns a list of domains matching domainPattern on the nodes matching nodePattern.
@@ -138,8 +144,8 @@ class Domains(object):
 		self.uvmm.send(
 				'DOMAIN_LIST',
 				Callback(_finished, request),
-				uri=request.options.get('nodePattern', '*'),
-				pattern=request.options.get('domainPattern', '*')
+				uri=request.options['nodePattern'],
+				pattern=request.options['domainPattern']
 				)
 
 	def domain_get(self, request):
@@ -391,6 +397,7 @@ class Domains(object):
 
 		return drive
 
+	@sanitize(nodeURI=SearchSanitizer(required=True))
 	def domain_add(self, request):
 		"""
 		Creates a new domain on nodeURI.

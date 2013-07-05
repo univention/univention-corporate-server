@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (3.0.0-1) unstable; urgency=low
+
+  * Bug #28260: use SearchSanitizer to prevent regex DoS
+  * version bump (UCS 3.2)
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jul 2013 10:33:55 +0200
+
 univention-virtual-machine-manager-daemon (2.0.40-5) unstable; urgency=low
 
   * Change ACPI shutdown text (Bug #21397)
