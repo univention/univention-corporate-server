@@ -1,3 +1,9 @@
+univention-kernel-image (7.0.0-5) unstable; urgency=low
+
+  * Update to the latest kernel build (Bug #31701).
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 05 Jul 2013 09:09:11 +0200
+
 univention-kernel-image (7.0.0-4) unstable; urgency=low
 
   * Fix ucslint error (Bug #24287)
