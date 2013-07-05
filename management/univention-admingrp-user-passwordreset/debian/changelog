@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (4.0.1-1) unstable; urgency=low
+
+  * Replaced hardcoded ldap base with ucr variable value (Bug #25408)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 05 Jul 2013 10:03:14 +0200
+
 univention-admingrp-user-passwordreset (4.0.0-1) unstable; urgency=low
 
   * Update to make package work on UCS 3.2 (Bug #25408)
