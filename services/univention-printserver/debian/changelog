@@ -1,3 +1,10 @@
+univention-printserver (7.0.0-1) unstable; urgency=low
+
+  * Bug #28260: Code cleanup, use PatternSanitizer
+  * version bump (UCS 3.2)
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jul 2013 09:05:55 +0200
+
 univention-printserver (6.0.25-5) unstable; urgency=low
 
   * Modified univention-lpadmin. Enabled lpadmin output (Bug# 17660)

@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: updater
 #
-# Copyright 2011-2012 Univention GmbH
+# Copyright 2011-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,11 +38,12 @@ import univention.management.console.modules as umcm
 import univention.config_registry
 import univention.admin.uldap
 
-from fnmatch import *
 import re
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
+from univention.management.console.modules.decorators import simple_response, log, sanitize
+from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer
 
 _ = umc.Translation('univention-management-console-module-printers').translate
 
@@ -55,130 +56,54 @@ class Instance(umcm.Base):
 
 		self._hostname = self.ucr.get('hostname')
 
-
-	def list_printers(self,request):
+	@sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(choices=['printer', 'description', 'location'], required=True))
+	@simple_response
+	def list_printers(self, key, pattern):
 		""" Lists the printers for the overview grid. """
-
-		# ----------- DEBUG -----------------
-		MODULE.info("printers/query invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
-		key = request.options.get('key','printer')
-		pattern = request.options.get('pattern','*')
 
 		quota = self._quota_enabled()		# we need it later
 
 		result = []
 		plist = self._list_printers()
 		for element in plist:
-			try:
-				printer = element['printer']
-				data = self._printer_details(printer)
-				for field in data:
-					element[field] = data[field]
-				# filter according to query
-				if fnmatch(element[key],pattern):
-					if printer in quota:
-						element['quota'] = quota[printer]
-					else:
-						element['quota'] = False
-					result.append(element)
-			except:
-				pass
+			printer = element['printer']
+			data = self._printer_details(printer)
+			for field in data:
+				element[field] = data[field]
+			# filter according to query
+			if pattern.match(element[key]):
+				if printer in quota:
+					element['quota'] = quota[printer]
+				else:
+					element['quota'] = False
+				result.append(element)
 
-		# ---------- DEBUG --------------
-		MODULE.info("printers/query returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = ''
-		if len(result) > 5:
-			tmp = result[0:5]
-			MODULE.info("   >> %d entries, first 5 are:" % len(result))
-			st = pp.pformat(tmp).split("\n")
-		else:
-			st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
+		return result
 
-		self.finished(request.id,result)
-
-	def get_printer(self,request):
+	@simple_response
+	@log
+	def get_printer(self, printer=''):
 		""" gets detail data for one printer. """
 
-		# ----------- DEBUG -----------------
-		MODULE.info("printers/get invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
-		printer = request.options.get('printer','')
 		result = self._printer_details(printer)
 		result['printer'] = printer
 		result['status'] = self._printer_status(printer)
 		result['quota'] = self._quota_enabled(printer)
+		return result
 
-		# ---------- DEBUG --------------
-		MODULE.info("printers/get returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id,result)
-
-	def list_jobs(self,request):
+	@simple_response
+	def list_jobs(self, printer=''):
 		""" returns list of jobs for one printer. """
 
-		# ----------- DEBUG -----------------
-		MODULE.info("printers/jobs/query invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
+		return self._job_list(printer)
 
-		printer = request.options.get('printer','')
-		result = self._job_list(printer)
-
-		# ---------- DEBUG --------------
-		MODULE.info("printers/jobs/query returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = ''
-		if len(result) > 5:
-			tmp = result[0:5]
-			MODULE.info("   >> %d entries, first 5 are:" % len(result))
-			st = pp.pformat(tmp).split("\n")
-		else:
-			st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id,result)
-
-	def list_quota(self,request):
+	@simple_response
+	def list_quota(self, printer=''):
 		""" lists all quota entries related to this printer. """
-
-		# ----------- DEBUG -----------------
-		MODULE.info("printers/quota/query invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
-		printer = request.options.get('printer','')
 
 		result = []
 
-		(stdout,stderr,status) = self._shell_command(['/usr/bin/pkusers','--list'],{'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/pkusers', '--list'], {'LANG':'C'})
 		users = []
 		expr = re.compile('^\s*(.*?)\s+\-\s\<')
 		if status == 0:
@@ -189,17 +114,17 @@ class Instance(umcm.Base):
 
 		result = []
 		for user in users:
-			(stdout,stderr,status) = self._shell_command(['/usr/bin/repykota','-P',printer,user],{'LANG':'C'})
+			(stdout, stderr, status) = self._shell_command(['/usr/bin/repykota', '-P', printer, user], {'LANG':'C'})
 			if status == 0:
 				for line in stdout.split("\n"):
 					data = line[16:].split()		# ignore possibly truncated user name
 					if len(data) >= 7:
 						ok = True
-						for n in (2,3,4,len(data)-3):
+						for n in (2, 3,4, len(data)-3):
 							if not data[n].isdigit():
 								ok = False
 						if ok:
-							MODULE.info("      -> user='%s' used=%s soft=%s hard=%s total=%s" % (user,data[2],data[3],data[4],data[len(data)-3]))
+							MODULE.info("      -> user='%s' used=%s soft=%s hard=%s total=%s" % (user, data[2], data[3], data[4], data[len(data)-3]))
 							entry = {
 								'user':		user,
 								'used':		data[2],
@@ -208,26 +133,12 @@ class Instance(umcm.Base):
 								'total':	data[len(data)-3]
 							}
 							result.append(entry)
+		return result
 
-		# ---------- DEBUG --------------
-		MODULE.info("printers/quota/query returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = ''
-		if len(result) > 5:
-			tmp = result[0:5]
-			MODULE.info("   >> %d entries, first 5 are:" % len(result))
-			st = pp.pformat(tmp).split("\n")
-		else:
-			st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id,result)
-
-	def list_users(self,request):
+	@simple_response
+	def list_users(self):
 		""" convenience function for the username entry. Lists
-			all user names. We don't return this as an array of {id,label}
+			all user names. We don't return this as an array of {id, label}
 			tuples because:
 
 			(1) id and label are always the same here
@@ -236,163 +147,60 @@ class Instance(umcm.Base):
 			(3)	the ComboBox is able to handle a plain array.
 		"""
 
-		# ----------- DEBUG -----------------
-		MODULE.info("printers/users/query invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
 		self.lo, self.position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 		objs = self.lo.search(base=self.position.getDomain(), filter='(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*$)))', attr=['uid'])
-		result = [ obj[1]["uid"][0] for obj in objs ]
+		return [ obj[1]["uid"][0] for obj in objs ]
 
-		# ---------- DEBUG --------------
-		MODULE.info("printers/users/query returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = ''
-		if len(result) > 5:
-			tmp = result[0:5]
-			MODULE.info("   >> %d entries, first 5 are:" % len(result))
-			st = pp.pformat(tmp).split("\n")
-		else:
-			st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id,result)
-
-	def enable_printer(self,request):
+	@simple_response
+	@log
+	def enable_printer(self, printer='', on=False):
 		""" can enable or disable a printer, depending on args.
 			returns empty string on success, else error message.
 		"""
 
-		# ----------- DEBUG -----------------
-		MODULE.info("printers/enable invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
+		return self._enable_printer(printer, on)
 
-		printer = request.options.get('printer','')
-		on = request.options.get('on',False)
-
-		result = self._enable_printer(printer,on)
-
-		# ---------- DEBUG --------------
-		MODULE.info("printers/enable returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id, result)
-
-	def cancel_jobs(self,request):
+	@simple_response
+	@log
+	def cancel_jobs(self, jobs, printer=''):
 		""" cancels one or more print jobs. Job IDs are passed
 			as an array that can be directly passed on to the
 			_shell_command() method
 		"""
 
-		# ----------- DEBUG -----------------
-		MODULE.info("printers/jobs/cancel invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
-		jobs = request.options['jobs']
-		printer = request.options.get('printer','')
-		result = self._cancel_jobs(printer,jobs)
-
-		# ---------- DEBUG --------------
-		MODULE.info("printers/jobs/cancel returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id, result)
+		return self._cancel_jobs(printer, jobs)
 
 
-	def set_quota(self,request):
-		""" sets quota limits for a (printer,user) combination.
+	@simple_response
+	@log
+	def set_quota(self, printer='', user='', soft=0, hard=0):
+		""" sets quota limits for a (printer, user) combination.
 			optionally tries to create the corresponding user entry.
 		"""
 
-		# ----------- DEBUG -----------------
-		MODULE.info("printers/quota/set invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
-		printer = request.options.get('printer','')
-		user = request.options.get('user','')
-		soft = request.options.get('soft',0)
-		hard = request.options.get('hard',0)
-
 		if printer=='' or user=='':
-			result = "Required parameter missing"
+			return "Required parameter missing"
 		else:
-			result = self._set_quota(printer,user,soft,hard)
+			return self._set_quota(printer, user, soft, hard)
 
-		# ---------- DEBUG --------------
-		MODULE.info("printers/quota/set returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
+	@simple_response
+	@log
+	def reset_quota(self, printer='', users=None):
+		""" resets quota for a (printer, user) combination."""
+		users = users or []
 
-		self.finished(request.id, result)
-
-
-	def reset_quota(self,request):
-		""" resets quota for a (printer,user) combination.
-		"""
-
-		# ----------- DEBUG -----------------
-		MODULE.info("printers/quota/reset invoked with:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(request.options).split("\n")
-		for s in st:
-			MODULE.info("   << %s" % s)
-		# -----------------------------------
-
-		printer = request.options.get('printer','')
-		users = request.options.get('users',[])
-
-		result = self._reset_quota(printer,users)
-
-		# ---------- DEBUG --------------
-		MODULE.info("printers/quota/reset returns:")
-		pp = pprint.PrettyPrinter(indent=4)
-		st = pp.pformat(result).split("\n")
-		for s in st:
-			MODULE.info("   >> %s" % s)
-		# --------------------------------
-
-		self.finished(request.id, result)
-
+		return self._reset_quota(printer, users)
 
 	# ----------------------- Internal functions -------------------------
 
-	def _job_list(self,printer):
+	def _job_list(self, printer):
 		""" lists jobs for a given printer, directly suitable for the grid """
 
 		# *** NOTE *** we don't set language to 'neutral' since it is useful
 		#				to get localized date/time strings.
 
 		result = []
-		(stdout,stderr,status) = self._shell_command(['/usr/bin/lpstat','-o',printer])
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-o', printer])
 		expr = re.compile('\s*(\S+)\s+(\S+)\s+(\d+)\s*(.*?)$')
 		if status == 0:
 			for line in stdout.split("\n"):
@@ -412,7 +220,7 @@ class Instance(umcm.Base):
 
 		result = []
 		expr = re.compile('printer\s+(\S+)\s.*?(\S+abled)')
-		(stdout,stderr,status) = self._shell_command(['/usr/bin/lpstat','-p'],{'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p'], {'LANG':'C'})
 		if status == 0:
 			for line in stdout.split("\n"):
 				mobj = expr.match(line)
@@ -421,10 +229,10 @@ class Instance(umcm.Base):
 					result.append(entry)
 		return result
 
-	def _printer_status(self,printer):
+	def _printer_status(self, printer):
 		""" returns the 'enabled' status of a printer """
 
-		(stdout,stderr,status) = self._shell_command(['/usr/bin/lpstat','-p',printer],{'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-p', printer], {'LANG':'C'})
 		if status == 0:
 			if ' enabled ' in stdout:
 				return 'enabled'
@@ -432,12 +240,12 @@ class Instance(umcm.Base):
 				return 'disabled'
 		return 'unknown'
 
-	def _printer_details(self,printer):
+	def _printer_details(self, printer):
 		""" returns as much as possible details about a printer. """
 
 		result = {}
 		expr = re.compile('\s+([^\s\:]+)\:\s*(.*?)$')
-		(stdout,stderr,status) = self._shell_command(['/usr/bin/lpstat','-l','-p',printer],{'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-l', '-p', printer], {'LANG':'C'})
 		if status == 0:
 			for line in stdout.split("\n"):
 				mobj = expr.match(line)
@@ -446,13 +254,13 @@ class Instance(umcm.Base):
 		result['server'] = self._hostname
 		return result
 
-	def _enable_printer(self,printer,on):
+	def _enable_printer(self, printer, on):
 		""" internal function that enables/disables a printer.
 			returns empty string or error message.
 		"""
 
 		cmd = 'univention-cups-enable' if on else 'univention-cups-disable'
-		(stdout,stderr,status) = self._shell_command([cmd,printer])
+		(stdout, stderr, status) = self._shell_command([cmd, printer])
 
 		if status:
 			return stderr
@@ -465,29 +273,29 @@ class Instance(umcm.Base):
 		#
 		# Q: What do these tools print on success?
 		# A: Two newlines, instead of nothing.
-		if re.search('\S',stdout):
+		if re.search('\S', stdout):
 			return stdout
 
 		return ''
 
-	def _set_quota(self,printer,user,soft,hard):
+	def _set_quota(self, printer, user, soft, hard):
 		""" sets a quota entry. Can also add a user """
 
 		# Before we can set quota we have to ensure that the user is
 		# already known to PyKota. Fortunately these tools don't complain
 		# if we try to create a user that doesn't already exist.
 
-		self._shell_command(['/usr/bin/pkusers','--skipexisting','--add',user],{'LANG':'C'})
+		self._shell_command(['/usr/bin/pkusers', '--skipexisting', '--add', user], {'LANG':'C'})
 
 		# Caution! order of args is important!
 
-		(stdout,stderr,status) = self._shell_command([
+		(stdout, stderr, status) = self._shell_command([
 			'/usr/bin/edpykota',
-			'--printer',printer,
-			'--softlimit',str(soft),
-			'--hardlimit',str(hard),
-			'--add',user
-		],{'LANG':'C'})
+			'--printer', printer,
+			'--softlimit', str(soft),
+			'--hardlimit', str(hard),
+			'--add', user
+		], {'LANG':'C'})
 
 		# not all errors are propagated in exit codes...
 		# but at least they adhere to the general rule that
@@ -497,29 +305,29 @@ class Instance(umcm.Base):
 
 		return ''
 
-	def _reset_quota(self,printer,users):
+	def _reset_quota(self, printer, users):
 		""" resets the 'used' counter on a quota entry. """
 
-		cmd = [	'/usr/bin/edpykota','--printer',printer,'--reset' ]
+		cmd = [	'/usr/bin/edpykota', '--printer', printer, '--reset' ]
 		# appending user names to the args array -> spaces in user names
 		# don't confuse edpykota (In 2.4, this was a problem)
 		for user in users:
 			cmd.append(user)
-		(stdout,stderr,status) = self._shell_command(cmd,{'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(cmd, {'LANG':'C'})
 
 		if status or len(stderr):
 			return stderr
 
 		return ''
 
-	def _quota_enabled(self,printer=None):
+	def _quota_enabled(self, printer=None):
 		""" returns a dictionary with printer names and their 'quota active' status.
 			if printer is specified, returns only quota status for this printer.
 		"""
 
 		result = {}
 		expr = re.compile('device for (\S+)\:\s*(\S+)$')
-		(stdout,stderr,status) = self._shell_command(['/usr/bin/lpstat','-v'],{'LANG':'C'})
+		(stdout, stderr, status) = self._shell_command(['/usr/bin/lpstat', '-v'], {'LANG':'C'})
 		if status == 0:
 			for line in stdout.split("\n"):
 				match = expr.match(line)
@@ -537,25 +345,25 @@ class Instance(umcm.Base):
 			return result[printer]
 		return False
 
-	def _cancel_jobs(self,printer,jobs):
+	def _cancel_jobs(self, printer, jobs):
 		""" internal function that cancels a list of jobs.
 			returns empty string or error message.
 		"""
 
-		args = ['/usr/bin/cancel','-U','%s$' % self._hostname]
+		args = ['/usr/bin/cancel', '-U', '%s$' % self._hostname]
 		for job in jobs:
 			args.append(job)
 		args.append(printer)
-		(stdout,stderr,status) = self._shell_command(args)
+		(stdout, stderr, status) = self._shell_command(args)
 
 		if status:
 			return stderr
 		return ''
 
-	def _shell_command(self,args,env=None):
+	def _shell_command(self, args, env=None):
 
 		proc = subprocess.Popen(args=args, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
 		outputs = proc.communicate()
 
-		return (outputs[0],outputs[1],proc.returncode)
+		return (outputs[0], outputs[1], proc.returncode)
 

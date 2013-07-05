@@ -4,7 +4,7 @@
 # Univention Management Console
 #  cups module: revamp module command result for the specific user interface
 #
-# Copyright 2007-2012 Univention GmbH
+# Copyright 2007-2013 Univention GmbH
 #
 # http://www.univention.de/
 #

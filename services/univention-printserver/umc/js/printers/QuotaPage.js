@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -43,7 +43,7 @@ define([
 	"umc/i18n!umc/modules/printers"
 ], function(declare, lang, when, dialog, store, tools, Page, Grid, Text, ExpandingTitlePane, QuotaDialog, _) {
 
-	return declare("umc.modules.printers.QuotaPage", [ Page ], { 
+	return declare("umc.modules.printers.QuotaPage", [ Page ], {
 		
 		postMixInProperties: function() {
 			

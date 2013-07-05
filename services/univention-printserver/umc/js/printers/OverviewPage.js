@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -43,7 +43,7 @@ define([
 ], function(declare, lang, dialog, store, Page, Grid, SearchForm, TextBox, ComboBox, ExpandingTitlePane, _) {
 	return declare("umc.modules.printers.OverviewPage", [ Page ], {
 
-		_last_filter:			{ key: 'printer', pattern: '*' },
+		_last_filter:			{ key: 'printer', pattern: '' },
 		
 		postMixInProperties: function() {
 			
@@ -66,147 +66,131 @@ define([
 			
 			this._form = new SearchForm({
 				region:					'top',
-				widgets: [
-			  	  {
-				  	  name:				'key',
-				  	  type:				ComboBox,
-				  	  label:			_("Search key"),
-				  	  staticValues: [
+				widgets: [{
+					name:				'key',
+					type:				ComboBox,
+					label:			_("Search key"),
+					staticValues: [
 					 	 { id: 'printer',		label: _("Printer name")},
 					 	 { id: 'description',	label: _("Description")},
 					 	 { id: 'location',		label: _("Location") }
-				  	  ],
-				  	  sortStaticValues:	false
-			  	  },
-			  	  {
-				  	  name:				'pattern',
-				  	  type:				TextBox,
-				  	  label:			_("Pattern"),
-				  	  value:			'*'
-			  	  }
-				],
+					],
+					sortStaticValues:	false
+				}, {
+					name:				'pattern',
+					type:				TextBox,
+					label:			_("Pattern"),
+					value:			''
+				}],
 				layout: [
-			   	   [ 'key', 'pattern', 'submit' ]
+			 	 [ 'key', 'pattern', 'submit' ]
 				],
 				onSearch: lang.hitch(this, function(values) {
 					this._enable_search_button(false);
 					this._last_filter = values;			// save for easy refresh
 					this._grid.filter(values);
 				})
-			});		
+			});
 			this._enable_search_button(false);
 			pane.addChild(this._form);
 			
-			var columns =  [
-				{
-					name:		'server',
-					label:		_("Server")
-				},
-				{
-					name:		'printer',
-					label:		_("Printer")
-				},
-				{
-					name:		'status',
-					label:		_("Status"),
-					// 'enabled'/'disabled' are kind of keywords, just as they're returned
-					// from cups if invoked without locale (LANG=C).
-					// Our wording for this is 'active'/'inactive'.
-					formatter:	lang.hitch(this,function(value) {
-						switch(value)
-						{
-							case 'enabled': 	return _("active");
-							case 'disabled':	return _("inactive");
-						}
-						return _("unknown");
-					})
-				},
-				{
-					name:		'quota',
-					label:		_("Quota"),
-					formatter:	lang.hitch(this,function(value) {
-						if (value)		// only true or false?
-						{
-							return _("active");
-						}
-						return _("inactive");
-					})
-				},
-				{
-					name:		'location',
-					label:		_("Location")
-				},
-				{
-					name:		'description',
-					label:		_("Description")
-				}
-			];
+			var columns = [{
+				name:		'server',
+				label:		_("Server")
+			}, {
+				name:		'printer',
+				label:		_("Printer")
+			}, {
+				name:		'status',
+				label:		_("Status"),
+				// 'enabled'/'disabled' are kind of keywords, just as they're returned
+				// from cups if invoked without locale (LANG=C).
+				// Our wording for this is 'active'/'inactive'.
+				formatter:	lang.hitch(this,function(value) {
+					switch(value)
+					{
+						case 'enabled': 	return _("active");
+						case 'disabled':	return _("inactive");
+					}
+					return _("unknown");
+				})
+			}, {
+				name:		'quota',
+				label:		_("Quota"),
+				formatter:	lang.hitch(this,function(value) {
+					if (value)		// only true or false?
+					{
+						return _("active");
+					}
+					return _("inactive");
+				})
+			}, {
+				name:		'location',
+				label:		_("Location")
+			}, {
+				name:		'description',
+				label:		_("Description")
+			}];
 			
-			var actions = [
-				{
-					name:		'open',
-					label:		_("View details"),
-					callback:	lang.hitch(this,function(id,values) {
-						// 2.4 uses the printer ID as key property, so we do that as well.
-						this.openDetail(id[0]);
-					})
-				},
-				{
-					name:		'activate',
-					label:		_("Activate"),
-					callback:	lang.hitch(this, function(ids) {
-						// no multi action for now, but who knows...
-						for (var p in ids)
-						{
-							this.managePrinter(ids[p],'activate',
-								lang.hitch(this, function(success,message) {
-									this._manage_callback(success,message);
-								})
-							);
-						}
-					}),
-					canExecute: lang.hitch(this, function(values) {
-						return (values.status == 'disabled');
-					})
-				},
-				{
-					name:		'deactivate',
-					label:		_("Deactivate"),
-					callback:	lang.hitch(this, function(ids) {
-						// no multi action for now, but who knows...
-						for (var p in ids)
-						{
-							this.managePrinter(ids[p],'deactivate',
-								lang.hitch(this, function(success,message) {
-									this._manage_callback(success,message);
-								})
-							);
-						}
-					}),
-					canExecute: lang.hitch(this, function(values) {
-						return (values.status == 'enabled');
-					})
-				},
-				{
-					name:				'editquota',
-					label:				_("Edit quota"),
-					isStandardAction:	false,
-					callback:	lang.hitch(this,function(ids) {
-						this.editQuota(ids[0]);
-					}),
-					canExecute:	lang.hitch(this,function(values) {
-						return (values.quota);	// true or false
-					})
-				},
-				{
-					name:				'refresh',
-					label:				_("Refresh printer list"),
-					isContextAction:	false,
-					callback: lang.hitch(this, function() {
-						this._refresh_view();
-					})
-				}
-			];
+			var actions = [{
+				name:		'open',
+				label:		_("View details"),
+				callback:	lang.hitch(this,function(id,values) {
+					// 2.4 uses the printer ID as key property, so we do that as well.
+					this.openDetail(id[0]);
+				})
+			}, {
+				name:		'activate',
+				label:		_("Activate"),
+				callback:	lang.hitch(this, function(ids) {
+					// no multi action for now, but who knows...
+					for (var p in ids)
+					{
+						this.managePrinter(ids[p],'activate',
+							lang.hitch(this, function(success,message) {
+								this._manage_callback(success,message);
+							})
+						);
+					}
+				}),
+				canExecute: lang.hitch(this, function(values) {
+					return (values.status == 'disabled');
+				})
+			}, {
+				name:		'deactivate',
+				label:		_("Deactivate"),
+				callback:	lang.hitch(this, function(ids) {
+					// no multi action for now, but who knows...
+					for (var p in ids)
+					{
+						this.managePrinter(ids[p],'deactivate',
+							lang.hitch(this, function(success,message) {
+								this._manage_callback(success,message);
+							})
+						);
+					}
+				}),
+				canExecute: lang.hitch(this, function(values) {
+					return (values.status == 'enabled');
+				})
+			}, {
+				name:				'editquota',
+				label:				_("Edit quota"),
+				isStandardAction:	false,
+				callback:	lang.hitch(this,function(ids) {
+					this.editQuota(ids[0]);
+				}),
+				canExecute:	lang.hitch(this,function(values) {
+					return (values.quota);	// true or false
+				})
+			}, {
+				name:				'refresh',
+				label:				_("Refresh printer list"),
+				isContextAction:	false,
+				callback: lang.hitch(this, function() {
+					this._refresh_view();
+				})
+			}];
 
 			this._grid = new Grid({
 				columns:			columns,
