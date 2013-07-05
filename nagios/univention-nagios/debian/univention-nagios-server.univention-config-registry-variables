@@ -6,7 +6,7 @@ Categories=service-nagios
 
 [nagios/server/refreshrate]
 Description[de]=Die Status-Seiten der Nagios-Weboberfläche aktualisieren sich automatisch in regelmäßigen Abständen. Der Zeitraum zwischen zwei Aktualisierungen kann hier in Sekunden angegeben werden.
-Description[en]=The status pages in the Nagios web interface are automatically refreshed in periodic intervals. The time span in seconds between two refresh can be specified here.
+Description[en]=The status pages in the Nagios web interface are automatically refreshed in periodic intervals. The time span in seconds between two refreshes can be specified here.
 Type=str
 Categories=service-nagios
 
@@ -17,7 +17,7 @@ Type=str
 Categories=service-nagios
 
 [nagios/server/user/systeminfo]
-Description[de]=Der Zugriff auf die System- und Prozess-Informationen in der Nagios-Weboberfläche (unter 'Configuration') ist auf die hier angegebenen Benutzer beschränkt. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
+Description[de]=Der Zugriff auf die System- und Prozessinformationen in der Nagios-Weboberfläche (unter 'Configuration') ist auf die hier angegebenen Benutzer beschränkt. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
 Description[en]=The access to the system and process information in the Nagios web interface (under 'Configuration') is restricted to the users specified here. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
 Type=str
 Categories=service-nagios
@@ -36,7 +36,7 @@ Categories=service-nagios
 
 [nagios/server/user/allinfo]
 Description[de]=Die hier angegebenen Benutzer dürfen den Nagios-Status aller Rechner und Dienste in der Nagios-Weboberfläche abfragen. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
-Description[en]=The users specified here may access the Nagios status of alle hosts and services in the Nagios web interface. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Description[en]=The users specified here may access the Nagios status of all hosts and services in the Nagios web interface. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
 Type=str
 Categories=service-nagios
 
@@ -59,7 +59,7 @@ Type=bool
 Categories=service-nagios
 
 [nagios/server/hostcheck/notificationinterval]
-Description[de]=Wurde die automatische Erreichbarkeitsprüfung über die Variable 'nagios/server/hostcheck/enable' aktiviert, kann hier Zeitspanne in Minuten definiert werden, die vergangen sein müssen bevor eine erneute Benachrichtigung versendet wird.
+Description[de]=Wurde die automatische Erreichbarkeitsprüfung über die Variable 'nagios/server/hostcheck/enable' aktiviert, kann hier eine Zeitspanne in Minuten definiert werden, die vergangen sein muss bevor eine erneute Benachrichtigung versendet wird.
 Description[en]=If the automatic availability check has been activated through the variable 'nagios/server/hostcheck/enable', the time span in minutes can be defined here which needs to have passed before a new host check notification is sent.
 Type=int
 Categories=service-nagios

@@ -1,5 +1,5 @@
 [nagios/common/defaultservices/autocreate]
-Description[de]=Mit der Installation der Paket univention-nagios-server oder univention-nagios-client werden über ein Join-Skript zahlreiche Standard-Nagios-Dienste im LDAP registriert. Die Erstellung dieser Dienst-Objekte kann verhindert werden, wenn vor der Installation der Pakete diese Variable deaktiviert wird.
-Description[en]=During the installtion of the packages univention-nagios-server or univention-nagios-client multiple default Nagios service objects are created through a join script. To prevent the creation of the service objects, this variable can be deactivated before the installation of the packages.
+Description[de]=Mit der Installation der Pakete univention-nagios-server oder univention-nagios-client werden über ein Join-Skript zahlreiche Standard-Nagios-Dienste im LDAP registriert. Die Erstellung dieser Dienst-Objekte kann verhindert werden, wenn vor der Installation der Pakete diese Variable deaktiviert wird.
+Description[en]=During the installation of the packages univention-nagios-server or univention-nagios-client multiple default Nagios service objects are created through a join script. To prevent the creation of the service objects, this variable can be deactivated before the installation of the packages.
 Type=bool
 Categories=service-nagios
