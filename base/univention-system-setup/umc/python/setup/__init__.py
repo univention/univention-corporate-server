@@ -115,21 +115,21 @@ class Instance(umcm.Base):
 
 		self.finished( request.id, result )
 
-	def load(self, request):
+	@simple_response
+	def load(self):
 		'''Return a dict with all necessary values for system-setup read from the current
 		status of the system.'''
-		values = util.load_values()
-		self.finished(request.id, values)
+		return util.load_values()
 
-	def save_keymap(self, request):
+	@simple_response
+	def save_keymap(self, keymap=None):
 		'''Set the systems x-keymap according to
 		request.options[keymap]'''
 
-		keymap = request.options.get('keymap')
 		if keymap:
 			xkeymap = util._xkeymap(keymap)
 			subprocess.call(['/usr/bin/setxkbmap', '-display', ':0', '-layout', xkeymap['layout'], '-variant', xkeymap['variant']])
-		self.finished(request.id, True)
+		return True
 
 	def save(self, request):
 		'''Reconfigures the system according to the values specified in the dict given as
@@ -298,14 +298,15 @@ class Instance(umcm.Base):
 		else:
 			MODULE.warn('... cleanup operation failed')
 
-	def validate(self, request):
+	@simple_response
+	def validate(self, values=None):
 		'''Validate the specified values given in the dict as option named "values".
 		Return a dict (with variable names as key) of dicts with the structure:
 		{ "valid": True/False, "message": "..." }'''
 
 		# init variables
 		messages = []
-		values = request.options.get('values', {})
+		values = values or {}
 		orgValues = util.load_values()
 
 		# determine new system role
@@ -411,7 +412,7 @@ class Instance(umcm.Base):
 		if 'univention-samba' in packages and 'univention-samba4' in packages:
 			_append('components', _('It is not possible to install Samba 3 and Samba 4 on one system. Please select only one of these components.'))
 
-		self.finished(request.id, messages)
+		return messages
 
 	@sanitize(pattern=PatternSanitizer(default='.*', required=True, add_asterisks=False))
 	@simple_response
@@ -508,33 +509,21 @@ class Instance(umcm.Base):
 
 		self.finished(request.id, countries)
 
-
-	def net_read(self, request):
-		'''Return a dict of all current network settings.'''
-
-	def net_interfaces(self, request):
+	@simple_response
+	def net_interfaces(self):
 		'''Return a list of all available network interfaces.'''
-		interfaces = [ idev['name'] for idev in util.detect_interfaces() ]
-		self.finished(request.id, interfaces)
+		return [ idev['name'] for idev in util.detect_interfaces() ]
 
-	def net_dhclient(self, request):
+	@simple_response
+	def net_dhclient(self, interface, timeout=45):
 		'''Request a DHCP address. Expects as options a dict containing the key
 		"interface" and optionally the key "timeout" (in seconds).'''
-		interface = request.options.get('interface')
-		timeout = request.options.get('timeout', 45)
-		if not interface:
-			message = 'No property "interface" given for dhclient().'
-			MODULE.error(message)
-			self.finished(request.id, None, success = False, message = message)
-			return
 
-		res = util.dhclient(interface, timeout)
-		self.finished(request.id, res)
+		return util.dhclient(interface, timeout)
 
-	def software_components(self, request):
+	@simple_response
+	def software_components(self, role=None):
 		'''Return a list of all available software packages. Entries have the properties
 		"id", "label", and "packages" which is an array of the Debian package names.'''
-		role = request.options.get('role')
-		choices = [ { 'id': i['id'], 'label': i['Name'], 'packages': i['Packages'] }
+		return [ { 'id': i['id'], 'label': i['Name'], 'packages': i['Packages'] }
 				for i in util.get_components(role=role) ]
-		self.finished(request.id, choices)

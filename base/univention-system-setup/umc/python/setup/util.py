@@ -632,31 +632,21 @@ def is_ipv6netmask(addr_netmask):
 
 # from univention-installer/installer/objects.py
 def is_hostname(hostname):
-	if is_hostname.RE.match(hostname):
-		return True
-	return False
+	return is_hostname.RE.match(hostname) is not None
 is_hostname.RE = re.compile("^[a-z]([a-z0-9-]*[a-z0-9])*$")
 
 def is_domainname(domainname):
 	if "-." in domainname or ".-" in domainname:
 		return False
-	if is_domainname.RE.match(domainname):
-		return True
-	return False
-is_domainname.RE = re.compile("^[a-z0-9]+[a-z0-9-.]*[a-z0-9]+$")
+	return is_domainname.RE.match(domainname) is not None
+is_domainname.RE = re.compile("^[a-z0-9][a-z0-9-.]*[a-z0-9]$")
 
 def is_windowsdomainname(domainname):
-	if "-." in domainname or ".-" in domainname:
-		return False
-	if is_windowsdomainname.RE.match(domainname):
-		return True
-	return False
-is_windowsdomainname.RE = re.compile(r"^([A-Z][A-Z0-9]+[A-Z0-9-]\.)*[A-Z][A-Z0-9]*$")
+	return is_windowsdomainname.RE.match(domainname) is not None
+is_windowsdomainname.RE = re.compile(r"^[A-Z][A-Z0-9-]*[A-Z0-9]$")
 
 def is_domaincontroller(domaincontroller):
-	if is_domaincontroller.RE.match(domaincontroller):
-		return True
-	return False
+	return is_domaincontroller.RE.match(domaincontroller) is not None
 is_domaincontroller.RE = re.compile("^[a-zA-Z].*\..*$")
 
 # new defined methods

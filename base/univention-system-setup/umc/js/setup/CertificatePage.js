@@ -60,7 +60,7 @@ define([
 		_doShowNote: false,
 
 		_orgVals: null,
-		old_ssl_email: null,
+		_old_vals: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -150,12 +150,26 @@ define([
 		},
 
 		setValues: function(_vals) {
-			// update ssl/email on FQDN changes if not manually changed
-			if(!this.old_ssl_email) {
-				this.old_ssl_email = this._orgVals['ssl/email'];
-			}
-			if( _vals['ssl/email'] === this.old_ssl_email) {
-				_vals['ssl/email'] = this.old_ssl_email = 'ssl@' + _vals.domainname;
+			if (this.wizard_mode) {
+				// update some values if not manually changed
+				tools.forIn({
+					'ssl/email': 'ssl@'+_vals.domainname,
+					'ssl/country': (_vals['locale/default'].match(/^.._(..)/) || [0, ''])[1].toUpperCase() || _vals['ssl/country'],
+					'ssl/state': (_vals['locale/default'].match(/^.._(..)/) || [0, ''])[1].toUpperCase() || _vals['ssl/state'],
+					'ssl/locality': (_vals['locale/default'].match(/^.._(..)/) || [0, ''])[1].toUpperCase() || _vals['ssl/locality'],
+					'ssl/organization': (_vals['locale/default'].match(/^.._(..)/) || [0, ''])[1].toUpperCase() || _vals['ssl/organization']
+				}, lang.hitch(this, function(key, val) {
+					if (!this._old_vals) {
+						this._old_vals = {};
+					}
+					if (!this._old_vals[key]) {
+						this._old_vals[key] = this._orgVals[key];
+					}
+					if (_vals[key] === this._old_vals[key]) {
+						_vals[key] = this._old_vals[key] = val;
+					}
+				
+				}));
 			}
 
 			this._form.setFormValues(_vals);

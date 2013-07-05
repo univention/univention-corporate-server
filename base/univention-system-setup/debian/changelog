@@ -1,3 +1,10 @@
+univention-system-setup (7.0.16-1) unstable; urgency=low
+
+  * Bug #29658: autofillin SSL values in appliance mode
+  * Bug #28574: adapt windowsdomainname regex
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jul 2013 15:03:14 +0200
+
 univention-system-setup (7.0.15-1) unstable; urgency=low
 
   * Bug #30773: unify wording of "DC slave"

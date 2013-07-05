@@ -163,6 +163,13 @@ define([
 			});
 			this._form.on('submit', lang.hitch(this, 'onSave'));
 
+			this.own(this._form.getWidget('locale/default').watch('value', lang.hitch(this, function(name, old, value) {
+				if (value) {
+					// FIXME: this causes that ComboBox values are not loaded properly
+					this.onValuesChanged();
+				}
+			})));
+
 			this.addChild(this._form);
 
 		},
@@ -178,12 +185,12 @@ define([
 				vals['locale/default'] = default_locale_default;
 				this.umcpCommand('setup/lang/default_keymap', {
 					'countrycode': countrycode
-				}).then(lang.hitch(this, function(data) { 
+				}).then(lang.hitch(this, function(data) {
 					this._form.getWidget('locale/keymap').set('value', data.result);
 				}));
 				this.umcpCommand('setup/lang/default_timezone', {
 					'countrycode': countrycode
-				}).then(lang.hitch(this, function(data) { 
+				}).then(lang.hitch(this, function(data) {
 					this._form.getWidget('timezone').set('value', data.result);
 				}));
 			}
@@ -238,6 +245,10 @@ define([
 				description: _('Default system locale'),
 				values: allLocales[vals['locale/default']]
 			}];
+		},
+
+		onValuesChanged: function() {
+			// event stub
 		},
 
 		onSave: function() {
