@@ -1,3 +1,11 @@
+univention-config-registry (8.0.7-6) unstable; urgency=low
+
+  * Since 8.0.7-4 all changes to UCR are written to a temporary file
+    first. Now the permissions are copied from the original file
+    (Bug #31853)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Jul 2013 17:02:27 +0200
+
 univention-config-registry (8.0.7-5) unstable; urgency=low
 
   * Don't ignores files with only 2 lines (Bug #31725)

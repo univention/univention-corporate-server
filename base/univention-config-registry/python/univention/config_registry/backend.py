@@ -319,6 +319,15 @@ class _ConfigRegistry(dict):
 		"""Save sub registry to file."""
 		temp_filename = '%s.temp' % filename
 		try:
+			try:
+				file_stat = os.stat(filename)
+				mode = file_stat.st_mode
+				user = file_stat.st_uid
+				group = file_stat.st_gid
+			except:
+				mode = 00744
+				user = 0
+				group = 0
 			# open temporary file for writing
 			reg_file = open(temp_filename, 'w')
 			# write data to file
@@ -330,6 +339,8 @@ class _ConfigRegistry(dict):
 			# close fd
 			reg_file.close()
 			try:
+				os.chmod(temp_filename, mode)
+				os.chown(temp_filename, user, group)
 				os.rename(temp_filename, filename)
 			except OSError:
 				# In this case the temp file created above in this
