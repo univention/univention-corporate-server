@@ -35,12 +35,13 @@ define([
 	"dojo/Deferred",
 	"dojo/query",
 	"dojox/grid/EnhancedGrid",
+	"umc/tools",
 	"umc/widgets/_SelectMixin",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/widgets/StandbyMixin",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/cells"
-], function(declare, lang, array, Deferred, query, EnhancedGrid, _SelectMixin, _FormWidgetMixin, StandbyMixin) {
+], function(declare, lang, array, Deferred, query, EnhancedGrid, tools, _SelectMixin, _FormWidgetMixin, StandbyMixin) {
 	return declare("umc.widgets.MultiSelect", [ EnhancedGrid, _FormWidgetMixin, _SelectMixin, StandbyMixin ], {
 		// summary:
 		//		This class represents a MultiSelect widget. Essentially, it adapts a DataGrid
@@ -120,6 +121,11 @@ define([
 			// ignore anything that is not an array at this point
 			if (!(values instanceof Array)) {
 				values = [];
+			}
+
+			if (tools.isEqual(values, this.get('value'))) {
+				// value did not change
+				return;
 			}
 
 			// cache results

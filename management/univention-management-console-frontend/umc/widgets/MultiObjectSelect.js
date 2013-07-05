@@ -299,6 +299,11 @@ define([
 				// sort the array according to the labels
 				values.sort(tools.cmpObjects('label'));
 
+				if (tools.isEqual(values, this._multiSelect.get('staticValues'))) {
+					// value did not change
+					return;
+				}
+
 				// callback handler
 				this._multiSelect.set('staticValues', values);
 

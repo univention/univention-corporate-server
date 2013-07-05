@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.12-1) unstable; urgency=low
+
+  * Bug #29658: fix set of values if unchanged in MultiSelect and
+  	MultiObjectSelect
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jul 2013 13:28:59 +0200
+
 univention-management-console-frontend (3.0.11-1) unstable; urgency=low
 
   * Bug #31642: make sure that ConfirmDialogs are not closable via escape or
