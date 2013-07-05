@@ -1,3 +1,10 @@
+univention-updater (9.0.2-1) unstable; urgency=low
+
+  * Bug #30158: redirect output to logfile when uninstalling VNC module in
+  	postup.sh
+
+ -- Florian Best <best@univention.de>  Fri, 05 Jul 2013 13:40:05 +0200
+
 univention-updater (9.0.1-1) unstable; urgency=low
 
   * Bug #30158: remove univention-management-console-module-vnc in postup.sh
