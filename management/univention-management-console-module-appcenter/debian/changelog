@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.139-15) unstable; urgency=low
+
+  * Use independent apt.Cache when getting package sections (Bug #31662)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jul 2013 13:04:28 +0200
+
 univention-management-console-module-appcenter (2.0.139-14) unstable; urgency=low
 
   * Bug #31354: Do not check hardware requirements when upgrading an app.
