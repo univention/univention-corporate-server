@@ -1,3 +1,10 @@
+ucs-test (4.0.55-1) unstable; urgency=low
+
+  * 50_samba/42file_access_permissions: prevent an endless loop
+    (Bug #29054)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Jul 2013 14:53:41 +0200
+
 ucs-test (4.0.54-1) unstable; urgency=low
 
   * renamed another udm-computers test
