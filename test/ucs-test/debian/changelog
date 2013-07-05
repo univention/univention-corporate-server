@@ -1,3 +1,10 @@
+ucs-test (4.0.55-2) unstable; urgency=low
+
+  * 03_ucr/67ucr_concurrent_set_get: activate for 3.1-1 since it was
+    fixed with errata130 (Bug #31725)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Jul 2013 19:18:30 +0200
+
 ucs-test (4.0.55-1) unstable; urgency=low
 
   * 50_samba/42file_access_permissions: prevent an endless loop
