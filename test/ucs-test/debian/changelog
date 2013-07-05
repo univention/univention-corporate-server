@@ -1,3 +1,9 @@
+ucs-test (3.0.30-15) unstable; urgency=low
+
+  * Remove empty files from last commit (Bug #31659)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Jul 2013 10:24:20 +0200
+
 ucs-test (3.0.30-14) unstable; urgency=low
 
   * Merge from UCS 3.2 (4.0.53-1)
@@ -14,7 +20,6 @@ ucs-test (3.0.30-14) unstable; urgency=low
       computer objects
     * added bug number to 66_udm-computers/08_create_and_validate_macos.py
     (Bug #31659)
-   
     * added more udm-computers test cases
     (Bug #31659)
    
