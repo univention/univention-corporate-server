@@ -6,7 +6,7 @@ fix: 8.0.7-6.431.201307051709
 note:
 version: [1]
 desc: |
-  Since errata 130 UCR writes all changes to a temporary file first. Now
+  Since erratum 130 UCR writes all changes to a temporary file first. Now
   the file permissions are copied from the original file. This prevents
   errors while joining via UMC.
 bug: [31853]
