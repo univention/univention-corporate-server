@@ -388,7 +388,7 @@ install -m755 -d "$WWW_BASE/$TESTCOMP"
 install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
 ( cd "$WWW_BASE" &&
   rm -f "$TESTCOMP/Packages"* &&
-  apt-ftparchive package "$TESTCOMP" > "Packages" &&
+  apt-ftparchive packages "$TESTCOMP" > "Packages" &&
   gzip -9 < "Packages" > "$TESTCOMP/Packages.gz" &&
   mv "Packages" > "$TESTCOMP/Packages" )
 		]]></programlisting>
