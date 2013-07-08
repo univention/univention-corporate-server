@@ -137,12 +137,12 @@ class UCSTestUDM(object):
 					del args['remove_referring']
 
 		# set all other remaining properties
-		for arg in args:
-			if type(args.get(arg)) in (list, tuple):
-				for item in args.get(arg):
-					cmd.extend( [ '--append', '%s=%s' % (arg, item) ] )
-			else:
-				cmd.extend( [ '--set', '%s=%s' % (arg, args.get(arg)) ] )
+		for key, value in args.items():
+			if type(value) in (list, tuple):
+				for item in value:
+					cmd.extend( [ '--append', '%s=%s' % (key, item) ] )
+			elif value:
+				cmd.extend( [ '--set', '%s=%s' % (key, value) ] )
 		return cmd
 
 

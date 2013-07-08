@@ -1,3 +1,16 @@
+ucs-test (4.0.58-1) unstable; urgency=low
+
+  * added test to verify that it is possible to create a user with only person
+    and mail options set
+  (Bug #31868)
+
+  * passing attributes set to values interpreted as false (e.g False, None,
+    '') to UCSTestUDM._build_cmd_line() will lead to this attributes not
+    being set
+  (Bug #30560)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 08 Jul 2013 14:21:20 +0200
+
 ucs-test (4.0.57-2) unstable; urgency=low
 
   * Fixed the package dependencies in 
