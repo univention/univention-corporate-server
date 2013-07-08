@@ -1,3 +1,10 @@
+ucs-test (4.0.57-2) unstable; urgency=low
+
+  * Fixed the package dependencies in 
+    53_samba-common/46file_access_permissions-samba_share_rules (Bug #29229)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 08 Jul 2013 12:31:29 +0200
+
 ucs-test (4.0.57-1) unstable; urgency=low
 
   * Add more checks to 51_samba4/46file_access_permissions-samba_share_rules and
