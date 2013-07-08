@@ -1,6 +1,12 @@
+univention-management-console-frontend (3.0.14-2) unstable; urgency=low
+
+  * Bug #31318: version bump
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 08 Jul 2013 15:57:24 +0200
+
 univention-management-console-frontend (3.0.14-1) unstable; urgency=low
 
-  * Bug #31308: replace static array reference in umc/widgest/MultiUploader
+  * Bug #31318: replace static array reference in umc/widgest/MultiUploader
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 08 Jul 2013 15:51:53 +0200
 
