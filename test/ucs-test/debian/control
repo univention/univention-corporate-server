@@ -121,18 +121,6 @@ Description: Test scripts for LDAP and replication
 #Description: Test scripts for mail
 # This package includes some scripts for testing mail.
 
-#Package: ucs-test-kolab
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# swaks,
-# libnet-ssleay-perl,
-# python,
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for Kolab groupware suite
-# This package includes some scripts for testing Kolab.
-
 #Package: ucs-test-iptables
 #Architecture: all
 #Recommends: ucs-test-framework
@@ -339,6 +327,14 @@ Provides: ucs-test-module
 Description: Test scripts for the settings/customattribute module of UDM.
  This package includes some scripts for testing UDM custom attributes.
 
+Package: ucs-test-umc
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Description: Test scripts for UMC
+ This package includes some scripts for testing UMC
+
 #Package: ucs-test-system-setup
 #Architecture: all
 #Depends: ucs-test-framework (= ${source:Version}),
@@ -383,7 +379,7 @@ Depends:
  ucs-test-ldap,
 # ucs-test-dns,
 # ucs-test-mail,
-# ucs-test-kolab,
+ ucs-test-umc,
 # ucs-test-iptables,
  ucs-test-samba,
  ucs-test-samba4,
@@ -392,7 +388,6 @@ Depends:
  ucs-test-udm-dns,
  ucs-test-udm-computers,
  ucs-test-udm-containers,
-# ucs-test-kolab,
  ucs-test-updater,
  ucs-test-udm-extendedattribute,
 # ucs-test-udm-customattribute,
