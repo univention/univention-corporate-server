@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.13-1) unstable; urgency=low
+
+  * Bug #31699: fixed problems with umc/widgets/GalleryPane
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 08 Jul 2013 15:35:04 +0200
+
 univention-management-console-frontend (3.0.12-1) unstable; urgency=low
 
   * Bug #29658: fix set of values if unchanged in MultiSelect and

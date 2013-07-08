@@ -91,7 +91,7 @@ define([
 		},
 
 		getItemDescription: function(item) {
-			return item.description;
+			return item.description || '';
 		},
 
 		getCategoryString: function(item) {
@@ -121,7 +121,7 @@ define([
 			}));
 			var description = this.getItemDescription(item);
 			put(div, 'div.umcGalleryIcon.' + this.getIconClass(item));
-			put(div, 'div.umcGalleryName', item.name);
+			put(div, 'div.umcGalleryName', item.name || '');
 			put(div, 'div.umcGalleryDescription', description);
 
 			// Tooltip
