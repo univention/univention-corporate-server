@@ -42,13 +42,17 @@ if [ "$?" != 0 ]; then
 	fail_fast 1 "could not create share"
 fi
 
+wait_for_replication_and_postrun
+
+if dpkg -s samba4 2>&1 | grep "install ok installed" > /dev/null; then
+# force_drs_replication
+	wait_for_drs_replication "(sAMAccountName=$username)"
+fi
+
 SHARE_DN="$(udm-test shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
 
 USER_DN="$(udm-test users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
 
-wait_for_replication
-# force_drs_replication
-wait_for_drs_replication "(sAMAccountName=$username)"
 
 ## wait for samba share export
 echo "----wait for samba share export"
@@ -83,11 +87,42 @@ fi
 if ! udm-test shares/share modify --dn="$SHARE_DN" --set "sambaInvalidUsers=$username"; then 
 	fail_test 1 "Could not modify share $sharename."
 fi
-#----making a folder without permission
-echo "----Try to make a folder in the share withouth permission"
+
+#----making a folder with the user listed on sambaInvalidUsers
+echo "----Try to make a folder in the share with the user listed on sambaInvalidUsers"
 output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
 echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"
 if [ "$?" != 0 ]; then
 	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
 fi
+
+USER_GROUPID=$(univention-ldapsearch -b "$USER_DN" | sed -ne 's/^gidNumber: //p')
+USER_GROUP=$(udm-test groups/group list --filter gidNumber="$USER_GROUPID" | sed -ne 's/^  name: //p')
+
+if ! udm-test shares/share modify --dn="$SHARE_DN" --remove "sambaInvalidUsers=$username" || ! udm-test shares/share modify --dn="$SHARE_DN" --set "sambaValidUsers=$username" || ! udm-test shares/share modify --dn="$SHARE_DN" --set sambaInvalidUsers=@"\"$USER_GROUP\""; then 
+	fail_test 1 "Could not modify share $sharename."
+fi
+
+#----try to connect to a share with the user listed on sambaValidUsers and the user's group listed on sambaInvalidUsers
+echo "----Try to make a folder in the share with the user listed on sambaInvalidUsers and the user's group listed on sambaInvalidUsers"
+output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
+echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"
+if [ "$?" != 0 ]; then
+	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
+fi
+
+
+#----making a folder in a share with sambaWriteable=No"
+if ! udm-test shares/share modify --dn="$SHARE_DN" --remove sambaInvalidUsers=@"\"$USER_GROUP\"" || ! udm-test shares/share modify --dn="$SHARE_DN" --set "sambaWriteable=0"; then 
+	fail_test 1 "Could not modify share $sharename."
+fi
+
+echo "----Try to make a folder in a share with sambaWriteable=No"
+output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder3" 2>&1)"
+echo "$output" | grep -q "NT_STATUS_MEDIA_WRITE_PROTECTED"
+if [ "$?" != 0 ]; then
+	fail_test 1 "Expected return value NT_STATUS_MEDIA_WRITE_PROTECTED, but received: $output"
+fi
+
+
 exit "$RETVAL"

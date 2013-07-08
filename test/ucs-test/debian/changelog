@@ -1,3 +1,10 @@
+ucs-test (4.0.57-1) unstable; urgency=low
+
+  * Add more checks to 51_samba4/46file_access_permissions-samba_share_rules and
+    move the test to 53_samba-common(Bug #29229)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 08 Jul 2013 12:25:12 +0200
+
 ucs-test (4.0.56-1) unstable; urgency=low
 
   * 60_umc/03_acls: Added test case for UMC ACLs (Bug #28059)
@@ -135,7 +142,6 @@ ucs-test (4.0.43-2) unstable; urgency=low
     from the corresponding UCR variables (Bug #29056)
 
  -- Tobias Peters <peters@univention.de>  Mon, 01 Jul 2013 11:17:18 +0200
-
 
 ucs-test (4.0.43-1) unstable; urgency=low
 
