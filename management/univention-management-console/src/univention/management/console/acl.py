@@ -127,57 +127,28 @@ class ACLs( object ):
 		else:
 			self.acls = map( lambda x: Rule( x ), acls )
 
-		# internal cache for the hosts
-		self.__cache = {}
-
 	def _expand_hostlist( self, hostlist ):
 		hosts = []
 		if self.__ldap_base is None:
 			self.__ldap_base = ucr.get( 'ldap/base', None )
 
-		servers = []
 		for host in hostlist:
 			if host.startswith( 'systemrole:' ):
-				host = host[ len( 'systemrole:' ) : ]
-				if host == 'domaincontroller_master':
-					servers = dc_master.lookup( None, self.lo, None, base=self.__ldap_base )
-				elif host == 'domaincontroller_backup':
-					servers = dc_backup.lookup( None, self.lo, None, base=self.__ldap_base )
-				elif host == 'domaincontroller_slave':
-					servers = dc_slave.lookup( None, self.lo, None, base=self.__ldap_base )
-				elif host == 'memberserver':
-					servers = memberserver.lookup( None, self.lo, None, base=self.__ldap_base )
-
-				hosts.extend( filter( lambda server: 'name' in server, servers ) )
-
+				role = host[ len( 'systemrole:' ) : ]
+				if role.lower() == ucr.get('server/role').lower():
+					hosts.append(ucr['hostname'])
 			elif host.startswith( 'service:' ):
-				host = host[ len( 'service:' ) : ]
+				service = host[ len( 'service:' ) : ]
 				for role in ACLs._systemroles:
-					servers += role.lookup( None, self.lo, 'univentionService=%s' % host, base=self.__ldap_base )
-
-				hosts.extend( filter( lambda server: 'name' in server, servers ) )
-
+					servers = role.lookup( None, self.lo, 'univentionService=%s' % service, base=self.__ldap_base )
+					for server in servers:
+						hosts.append(server.get('name'))
 			elif host == '*':
-				if not self.__ldap_base in self.__cache:
-					self.__cache[ self.__ldap_base ] = [ ]
+				hosts.append(ucr['hostname'])
+			elif host == ucr['hostname']:
+				hosts.append(ucr['hostname'])
 
-					for role in ACLs._systemroles:
-						servers += role.lookup( None, self.lo, None, base=self.__ldap_base )
-
-						new_hosts = filter( lambda server: 'name' in server, servers )
-
-					hosts.extend( new_hosts )
-					self.__cache[ self.__ldap_base ].extend( new_hosts )
-				else:
-					hosts += self.__cache[ self.__ldap_base ]
-
-			else:
-				for role in ACLs._systemroles:
-					servers += role.lookup( None, self.lo, 'cn=%s' % host, base=self.__ldap_base )
-
-				hosts.extend( filter( lambda server: 'name' in server, servers ) )
-
-		return map( lambda server: server[ 'name' ], hosts )
+		return hosts
 
 	def __parse_command( self, command ):
 		if command.find( ':' ) != -1:
