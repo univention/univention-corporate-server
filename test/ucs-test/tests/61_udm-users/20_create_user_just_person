@@ -9,19 +9,11 @@
 ##   - univention-directory-manager-tools
 
 
-import sys
-import traceback
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 
 
 if __name__ == '__main__':
-	sys.exit(131) # SKIP for now
-
-	with udm_test.UCSTestUDM() as udm:
-		try:
-			udm.create_user(options = ['person'])
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed as ex:
-			utils.fail('See Bug #24351:\n%s' % traceback.format_exc(ex), 121)
+	utils.verify_ldap_object(udm.create_user(options = ['person']))
 
 

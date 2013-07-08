@@ -1,3 +1,10 @@
+ucs-test (4.0.59-1) unstable; urgency=low
+
+  * re-enabled 61_udm-users/20_create_user_just_person
+  (Bug #31868)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 08 Jul 2013 14:32:09 +0200
+
 ucs-test (4.0.58-1) unstable; urgency=low
 
   * added test to verify that it is possible to create a user with only person
