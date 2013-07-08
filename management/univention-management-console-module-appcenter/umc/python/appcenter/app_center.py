@@ -66,9 +66,8 @@ import univention.uldap as uldap
 import univention.management.console as umc
 
 # local application
-from util import urlopen, get_current_ram_available, component_registered, UMCConnection, get_master, get_all_backups
+from util import urlopen, get_current_ram_available, component_registered, UMCConnection, get_master, get_all_backups, set_save_commit_load
 
-LOGFILE = '/var/log/univention/appcenter.log' # UNUSED! see /var/log/univention/management-console-module-appcenter.log
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
 ucr = ConfigRegistry()
@@ -867,17 +866,23 @@ class Application(object):
 					# already have installed 50%
 					package_manager.progress_state._start_steps = 100 # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
 
-			# remove all existing component versions
-			for iapp in self.versions:
-				# dont remove yourself (if already added)
-				if iapp is not self:
-					component_manager.remove_app(iapp)
-			package_manager.reopen_cache()
+			with set_save_commit_load(ucr) as super_ucr:
+				# remove all existing component versions
+				for iapp in self.versions:
+					# dont remove yourself (if already added)
+					if iapp is not self:
+						component_manager.remove_app(iapp, super_ucr)
 
-			# add the new repository component for the app
+				# add the new repository component for the app
+				if add_component:
+					component_manager.put_app(self, super_ucr)
+
 			if add_component:
-				component_manager.put_app(self)
+				# component was added. apt-get update
 				package_manager.update()
+			else:
+				# component was not added; use new cache anyway (maybe an old version was removed?)
+				package_manager.reopen_cache()
 
 			# install + (dist_upgrade if update)
 			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))

@@ -311,30 +311,29 @@ class ComponentManager(object):
 	def is_registered(self, component_id):
 		return component_registered(component_id, self.ucr)
 
-	def put_app(self, app):
-		# ATTENTION: changes made here have to be done
-		# in univention-add-app
+	def put_app(self, app, super_ucr=None):
+		if super_ucr is None:
+			with set_save_commit_load(self.ucr) as super_ucr:
+				return self.put_app(app, super_ucr)
 		app_data = {
 			'server' : app.get_server(),
 			'prefix' : '',
 			'unmaintained' : False,
 			'enabled' : True,
 			'name' : app.component_id,
-			'description' : app.get('description'),
+			'description' : app.name,
 			'username' : '',
 			'password' : '',
 			'version' : 'current',
 			'localmirror' : 'false',
 		}
-		with set_save_commit_load(self.ucr) as super_ucr:
-			self.put(app_data, super_ucr)
+		self.put(app_data, super_ucr)
 
-	def remove_app(self, app):
-		with set_save_commit_load(self.ucr) as super_ucr:
-			self._remove(app.component_id, super_ucr)
-			# errata component was added before Bug #30406
-			# -> remove them if installed
-			self._remove(app.component_id + '-errata', super_ucr)
+	def remove_app(self, app, super_ucr=None):
+		if super_ucr is None:
+			with set_save_commit_load(self.ucr) as super_ucr:
+				return self.remove_app(app, super_ucr)
+		self._remove(app.component_id, super_ucr)
 
 	def put(self, data, super_ucr):
 		"""	Does the real work of writing one component definition back.
