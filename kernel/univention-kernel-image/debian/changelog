@@ -1,3 +1,9 @@
+univention-kernel-image (7.0.0-6) unstable; urgency=low
+
+  * Update to the latest kernel build (Bug #31701).
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 08 Jul 2013 07:49:13 +0200
+
 univention-kernel-image (7.0.0-5) unstable; urgency=low
 
   * Update to the latest kernel build (Bug #31701).
