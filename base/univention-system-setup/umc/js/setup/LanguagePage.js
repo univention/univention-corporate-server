@@ -165,7 +165,6 @@ define([
 
 			this.own(this._form.getWidget('locale/default').watch('value', lang.hitch(this, function(name, old, value) {
 				if (value) {
-					// FIXME: this causes that ComboBox values are not loaded properly
 					this.onValuesChanged();
 				}
 			})));

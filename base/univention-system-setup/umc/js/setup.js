@@ -245,9 +245,6 @@ define([
 					this.addChild(ipage);
 					this._pages.push(ipage);
 
-					// connect to valuesChanged callback of every page
-					ipage.setValues(values);
-					ipage.on('valuesChanged', lang.hitch(this, 'updateAllValues'));
 				}, this);
 				// Now we know which pages were loaded, adjust HelpPage text
 				array.forEach(this._pages, lang.hitch(this, function(page) {
@@ -314,10 +311,6 @@ define([
 					tabContainer.addChild(ipage);
 					this._pages.push(ipage);
 
-					// connect to valuesChanged callback of every page
-					ipage.setValues(values);
-					ipage.on('valuesChanged', lang.hitch(this, 'updateAllValues'));
-
 					// hide tab if page is not visible
 					this.own(ipage.watch('visible', function(name, oldval, newval) {
 						if ((newval === true) || (newval === undefined)) {
@@ -339,8 +332,22 @@ define([
 				tabInDomDeferred.resolve();
 			}
 
+			// connect to valuesChanged callback of every page
+			array.forEach(this._pages, lang.hitch(this, function(ipage) {
+				ipage.on('valuesChanged', lang.hitch(this, function() {
+					this.ready().then(lang.hitch(this, 'updateAllValues'));
+				}));
+				ipage.setValues(values);
+			}));
+
 			this.startup();
 			this.standby(false);
+		},
+
+		ready: function() {
+			return all(array.map(array.filter(this._pages, function(ipage) {
+				return !!ipage._form;
+			}), function(ipage) { return ipage._form.ready(); }));
 		},
 
 		updateAllValues: function(name, old, values) {
