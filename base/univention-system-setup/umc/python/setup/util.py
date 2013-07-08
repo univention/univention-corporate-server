@@ -636,10 +636,25 @@ def is_hostname(hostname):
 is_hostname.RE = re.compile("^[a-z]([a-z0-9-]*[a-z0-9])*$")
 
 def is_domainname(domainname):
-	if "-." in domainname or ".-" in domainname:
-		return False
-	return is_domainname.RE.match(domainname) is not None
-is_domainname.RE = re.compile("^[a-z0-9][a-z0-9-.]*[a-z0-9]$")
+	"""
+	Check if domainname is a valid DNS domainname accoring to RFC952/1123.
+	>>> is_domainname('foo')
+	True
+	>>> is_domainname('f00.bar')
+	True
+	>>> is_domainname('-f.bar')
+	False
+	>>> is_domainname('f-.bar')
+	False
+	>>> is_domainname('f..bar')
+	False
+	>>> is_domainname('#.bar')
+	False
+	>>> is_domainname('1234567890123456789012345678901234567890123456789012345678901234.bar')
+	False
+	"""
+	return all(is_domainname.RE.match(_) for _ in domainname.split('.'))
+is_domainname.RE = re.compile(r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$', re.I)
 
 def is_windowsdomainname(domainname):
 	return is_windowsdomainname.RE.match(domainname) is not None
