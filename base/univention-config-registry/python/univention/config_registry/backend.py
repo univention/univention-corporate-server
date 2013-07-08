@@ -325,7 +325,7 @@ class _ConfigRegistry(dict):
 				user = file_stat.st_uid
 				group = file_stat.st_gid
 			except:
-				mode = 00744
+				mode = 00644
 				user = 0
 				group = 0
 			# open temporary file for writing
