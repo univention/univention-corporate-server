@@ -1,3 +1,10 @@
+ucs-test (4.0.55-3) unstable; urgency=low
+
+  * tests/02_import-performance: Don't wait for the replication during
+    the user creation (Bug #31695)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Jul 2013 07:50:15 +0200
+
 ucs-test (4.0.55-2) unstable; urgency=low
 
   * 03_ucr/67ucr_concurrent_set_get: activate for 3.1-1 since it was

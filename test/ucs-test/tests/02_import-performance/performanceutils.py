@@ -93,7 +93,7 @@ def get_user_dn_list(CSV_IMPORT_FILE):
 
 def create_test_user():
 	udm = udm_test.UCSTestUDM()
-	username = udm.create_user()[1]
+	username = udm.create_user(wait_for_replication=False)[1]
 	wait_for_s4connector()
 	return 0
 
