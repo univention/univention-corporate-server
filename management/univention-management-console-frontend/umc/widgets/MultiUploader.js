@@ -62,7 +62,7 @@ define([
 
 		// value: String[]
 		//		'value' contains an array of the uploaded file names.
-		value: [],
+		value: null,
 
 		// maxSize: Number
 		//		A size limit for the uploaded file.
@@ -103,6 +103,7 @@ define([
 		constructor: function() {
 			this.buttonLabel = _('Upload');
 			this._uploadingFiles = [];
+			this.value = [];
 		},
 
 		buildRendering: function() {

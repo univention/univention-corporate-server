@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.14-1) unstable; urgency=low
+
+  * Bug #31308: replace static array reference in umc/widgest/MultiUploader
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 08 Jul 2013 15:51:53 +0200
+
 univention-management-console-frontend (3.0.13-1) unstable; urgency=low
 
   * Bug #31699: fixed problems with umc/widgets/GalleryPane
