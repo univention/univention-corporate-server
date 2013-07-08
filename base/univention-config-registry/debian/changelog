@@ -1,3 +1,10 @@
+univention-config-registry (8.0.7-7) unstable; urgency=low
+
+  * Use 00644 as default mode for UCR files instead of 00744
+    (Bug #31853)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 08 Jul 2013 16:12:03 +0200
+
 univention-config-registry (8.0.7-6) unstable; urgency=low
 
   * Since 8.0.7-4 all changes to UCR are written to a temporary file
