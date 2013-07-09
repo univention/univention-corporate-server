@@ -313,7 +313,7 @@ msgstr "DHCP-Anfrage schlug fehl."
 
 #: umc/js/setup/InterfaceWizard.js:316
 msgid "DHCP-Query"
-msgstr ""
+msgstr "DHCP-Anfrage"
 
 #: umc/js/setup/LanguagePage.js:143 umc/js/setup/LanguagePage.js:238
 msgid "Default system locale"
