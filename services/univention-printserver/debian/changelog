@@ -1,3 +1,10 @@
+univention-printserver (7.0.1-1) unstable; urgency=low
+
+  * Modified /umc/python/printers/__init__.py and /umc/python/printers/de.po 
+    for checking of univention-printquota package (Bug #29001)
+
+ -- Liam Schwez <lschwez@sansad.knut.univention.de>  Tue, 09 Jul 2013 11:25:22 +0200
+
 univention-printserver (7.0.0-1) unstable; urgency=low
 
   * Bug #28260: Code cleanup, use PatternSanitizer

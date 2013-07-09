@@ -33,8 +33,11 @@
 
 import pprint
 import subprocess
+import os
 import univention.management.console as umc
 import univention.management.console.modules as umcm
+from univention.management.console.modules import UMC_CommandError
+
 import univention.config_registry
 import univention.admin.uldap
 
@@ -103,6 +106,9 @@ class Instance(umcm.Base):
 
 		result = []
 
+		if not os.path.exists('/usr/bin/pkusers'):
+                        raise UMC_CommandError(_('Univention package univention-printquota missing.'))
+
 		(stdout, stderr, status) = self._shell_command(['/usr/bin/pkusers', '--list'], {'LANG':'C'})
 		users = []
 		expr = re.compile('^\s*(.*?)\s+\-\s\<')
@@ -114,6 +120,9 @@ class Instance(umcm.Base):
 
 		result = []
 		for user in users:
+			if not os.path.exists('/usr/bin/repykota'):
+                                raise UMC_CommandError(_('Univention package univention-printquota missing.'))
+
 			(stdout, stderr, status) = self._shell_command(['/usr/bin/repykota', '-P', printer, user], {'LANG':'C'})
 			if status == 0:
 				for line in stdout.split("\n"):
