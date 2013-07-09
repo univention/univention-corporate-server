@@ -286,11 +286,11 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.hasChanged(['nameserver', 'contact', 'serial', 'refresh', 'retry', 'expire', 'ttl']):
 			if self['contact'] and not self['contact'].endswith('.'):
 				self['contact'] += '.'
-			if len (self['nameserver'][0]) > 0 \
-				and ':' not in self['nameserver'][0] \
-				and '.' in self['nameserver'][0] \
-				and not self['nameserver'][0].endswith('.'):
-				self['nameserver'][0] += '.'
+			for i in range(0, len(self['nameserver'])):
+				if len (self['nameserver'][i]) > 0 \
+					and ':' not in self['nameserver'][i] \
+					and not self['nameserver'][i].endswith('.'):
+					self['nameserver'][i] += '.'
 			refresh = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'refresh' ] )
 			retry = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'retry' ] )
 			expire = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'expire' ] )

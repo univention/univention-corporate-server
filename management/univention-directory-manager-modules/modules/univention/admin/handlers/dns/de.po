@@ -217,16 +217,16 @@ msgid "superordinate object not present"
 msgstr "Ein übergeordnetes Objekt ist nicht vorhanden"
 
 #: ptr_record.py:46
-msgid "DNS: Pointer"
-msgstr "DNS: Pointer"
+msgid "DNS: Pointer record"
+msgstr "DNS: Pointer Record"
 
 #: ptr_record.py:52
 msgid "Address"
 msgstr "Adresse"
 
 #: ptr_record.py:62
-msgid "Pointer"
-msgstr "Pointer"
+msgid "Pointer record"
+msgstr "Pointer Record"
 
 #: ptr_record.py:63
 msgid "FQDNs must end with '.'"

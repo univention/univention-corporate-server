@@ -43,7 +43,7 @@ operations=['add','edit','remove','search']
 superordinate='dns/reverse_zone'
 usewizard=1
 childs=0
-short_description=_('DNS: Pointer')
+short_description=_('DNS: Pointer record')
 long_description=''
 options={
 }
@@ -60,7 +60,7 @@ property_descriptions={
 		identifies = True
 		),
 	'ptr_record': univention.admin.property(
-			short_description=_('Pointer'),
+			short_description=_('Pointer record'),
 			long_description=_("FQDNs must end with '.'"),
 			syntax=univention.admin.syntax.dnsName,
 			multivalue=1,
