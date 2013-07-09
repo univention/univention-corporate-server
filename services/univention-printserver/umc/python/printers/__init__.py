@@ -107,7 +107,7 @@ class Instance(umcm.Base):
 		result = []
 
 		if not os.path.exists('/usr/bin/pkusers'):
-                        raise UMC_CommandError(_('Univention package univention-printquota missing.'))
+			raise UMC_CommandError(_('The print quota settings are currently disabled. Please install the package univention-printquota to enable them.'))
 
 		(stdout, stderr, status) = self._shell_command(['/usr/bin/pkusers', '--list'], {'LANG':'C'})
 		users = []
@@ -121,7 +121,7 @@ class Instance(umcm.Base):
 		result = []
 		for user in users:
 			if not os.path.exists('/usr/bin/repykota'):
-                                raise UMC_CommandError(_('Univention package univention-printquota missing.'))
+				raise UMC_CommandError(_('The print quota settings are currently disabled. Please install the package univention-printquota to enable them.'))
 
 			(stdout, stderr, status) = self._shell_command(['/usr/bin/repykota', '-P', printer, user], {'LANG':'C'})
 			if status == 0:
