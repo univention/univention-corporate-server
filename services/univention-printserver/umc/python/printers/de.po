@@ -13,5 +13,5 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: umc/python/printers/__init__.py:109 umc/python/printers/__init__.py:123
-msgid "Univention package univention-printquota missing."
-msgstr "Univention paket univention-prinquota wurde nicht gefunden."
+msgid "The print quota settings are currently disabled. Please install the package univention-printquota to enable them."
+msgstr "Die Quota Einstellungen sind momentan nicht verfügbar. Bitte installieren Sie das Paket univention-printquota, damit Quota Einstellungen wirksam werden."
