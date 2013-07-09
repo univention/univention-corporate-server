@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Online Software Update"
-msgstr "Online Software Update"
+msgid "Online software update"
+msgstr "Online Software-Update"
 
-msgid "Online Update"
-msgstr "Online Update"
+msgid "Online update"
+msgstr "Online-Update"
