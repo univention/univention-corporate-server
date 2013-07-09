@@ -145,7 +145,7 @@ property_descriptions={
 			options=['posix','samba']
 		),
 	'gidNumber': univention.admin.property(
-			short_description=_('Group ID'),
+			short_description=_('Group ID of the primary group'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -647,7 +647,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'sambaLogonHours': univention.admin.property(
-			short_description=_('Samba User Login Times'),
+			short_description=_('Permitted times for Windows logins'),
 			long_description=(""),
 			syntax=univention.admin.syntax.SambaLogonHours,
 			multivalue = False,
@@ -658,7 +658,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'jpegPhoto': univention.admin.property(
-			short_description=_("jpeg photo"),
+			short_description=_("Picture of the user (JPEG format)"),
 			long_description=_( 'Picture for user account in JPEG format' ),
 			syntax=univention.admin.syntax.jpegPhoto,
 			multivalue=0,

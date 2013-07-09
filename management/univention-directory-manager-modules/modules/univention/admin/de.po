@@ -83,7 +83,7 @@ msgstr "Client-Drucker beim Anmelden verbinden"
 #: mungeddial.py:93
 msgid ""
 "Make client default printer the default printer for Windows terminal services"
-msgstr "Standardmäßig der Client Hauptdrucker"
+msgstr "Standard-Drucker des zugreifenden Clients als Standard-Drucker verwenden"
 
 #: mungeddial.py:105
 msgid "CTX Flags1"
@@ -143,11 +143,11 @@ msgstr "Laufwerksbuchstabe für das Basisverzeichnis des Terminalservers"
 
 #: mungeddial.py:273
 msgid "Profile directory for Windows terminal services"
-msgstr "Windows Terminalserver Profilpfad"
+msgstr "Windows-Terminalserver Profilpfad"
 
 #: mungeddial.py:285
 msgid "Use client configuration for startup command"
-msgstr "Client Konfiguration übernehmen für das Startprogramm"
+msgstr "Client-Konfiguration übernehmen für das Startprogramm"
 
 #: mungeddial.py:297 mungeddial.py:340
 msgid "Startup command"
@@ -163,11 +163,11 @@ msgstr "CTX RAS Einwahl"
 
 #: mungeddial.py:335
 msgid "Windows terminal server"
-msgstr "Windows Terminalserver"
+msgstr "Windows-Terminalserver"
 
 #: mungeddial.py:335
 msgid "Windows Terminal server settings"
-msgstr "Windows Terminalservereinstellungen"
+msgstr "Windows-Terminalservereinstellungen"
 
 #: mungeddial.py:336
 msgid "Directories"
@@ -413,11 +413,11 @@ msgid "Not a valid netmask!"
 msgstr "Keine gültige Netzwerkmaske."
 
 #: syntax.py:904 syntax.py:910
-msgid "First Address"
+msgid "First address"
 msgstr "Erste Adresse"
 
 #: syntax.py:905 syntax.py:911
-msgid "Last Address"
+msgid "Last address"
 msgstr "Letzte Adresse"
 
 #: syntax.py:931
@@ -1534,10 +1534,10 @@ msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
 #~ msgstr "Gruppen-ID"
 
 #~ msgid "Windows Terminal Server Hosts"
-#~ msgstr "Windows Terminalserver"
+#~ msgstr "Windows-Terminalserver"
 
 #~ msgid "Linux Terminal Server Hosts"
-#~ msgstr "Linux Terminalserver"
+#~ msgstr "Linux-Terminalserver"
 
 #~ msgid "Authentication Server"
 #~ msgstr "Authentisierungsserver"

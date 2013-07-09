@@ -641,8 +641,8 @@ layout = [
 			'directorymode'
 		] ),
 	] ),
-	Tab(_('NFS general'),_('General NFS settings'), layout = [
-		Group( _( 'NFS general' ), layout = [
+	Tab(_('NFS'),_('General NFS settings'), layout = [
+		Group( _( 'NFS' ), layout = [
 			'writeable',
 			'subtree_checking',
 			'root_squash',
@@ -650,8 +650,8 @@ layout = [
 			'nfs_hosts',
 		] ),
 	] ),
-	Tab( _( 'Samba general' ), _( 'General Samba settings' ), layout = [
-		Group( _( 'Samba general' ), layout = [
+	Tab( _( 'Samba' ), _( 'General Samba settings' ), layout = [
+		Group( _( 'Samba' ), layout = [
 			'sambaName',
 			'sambaBrowseable',
 			'sambaPublic',
@@ -681,8 +681,8 @@ layout = [
 			[ 'sambaForceSecurityMode', 'sambaForceDirectorySecurityMode' ],
 		] ),
 	] ),
-	Tab( _( 'Samba performance' ), _( 'Samba performance settings' ), advanced = True, layout = [
-		Group( _( 'Samba performance' ), layout = [
+	Tab( _( 'Samba options' ), _( 'Samba options' ), advanced = True, layout = [
+		Group( _( 'Samba options' ), layout = [
 			[ 'sambaLocking', 'sambaBlockingLocks' ],
 			[ 'sambaStrictLocking', 'sambaOplocks' ],
 			[ 'sambaLevel2Oplocks', 'sambaFakeOplocks' ],

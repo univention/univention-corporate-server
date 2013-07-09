@@ -118,10 +118,6 @@ msgstr "Mail-Adresse"
 msgid "Member of"
 msgstr "Mitglied von"
 
-#: group.py:193
-msgid "Nested group"
-msgstr "enthaltene Gruppe"
-
 #: group.py:204
 msgid "Users that are allowed to send e-mails to the group"
 msgstr "Benutzer, die berechtigt sind, E-Mails an diese Gruppe zu versenden"

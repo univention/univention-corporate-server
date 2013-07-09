@@ -44,7 +44,7 @@ operations = ['add', 'edit', 'remove', 'search', 'move']
 superordinate = 'settings/cn'
 
 childs = 0
-short_description = _('Settings: extended options')
+short_description = _('Settings: Extended options')
 long_description = _('Options for extended attributes')
 
 options = {
@@ -74,7 +74,7 @@ property_descriptions = {
 			identifies=False
 		),
 		'longDescription': univention.admin.property(
-			short_description=_('Default Long Description'),
+			short_description=_('Default long description'),
 			long_description=_('Long description for the option as shown on the Option tab.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=False,
@@ -127,7 +127,7 @@ property_descriptions = {
 			identifies=False
 		),
 		'module': univention.admin.property(
-			short_description=_('Needed Module'),
+			short_description=_('Needed module'),
 			long_description=_('List of modules this option applies to.'),
 			syntax=univention.admin.syntax.univentionAdminModules,
 			multivalue=True,
@@ -137,7 +137,7 @@ property_descriptions = {
 			identifies=False
 		),
 		'objectClass': univention.admin.property(
-			short_description=_('Object Class'),
+			short_description=_('Object class'),
 			long_description=_('Mapping to LDAP objectClasses'),
 			syntax=univention.admin.syntax.string,
 			multivalue=True,
@@ -149,7 +149,7 @@ property_descriptions = {
 }
 
 layout = [
-	Tab(_('General'), _('Basic Values'), layout = [
+	Tab(_('General'), _('Basic values'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			[ "shortDescription", "longDescription" ],

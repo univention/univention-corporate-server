@@ -193,7 +193,7 @@ property_descriptions={
 			identifies=0
 		),
 	'nestedGroup': univention.admin.property(
-			short_description=_('Nested group'),
+			short_description=_('Groups'),
 			long_description='',
 			syntax=univention.admin.syntax.GroupDN,
 			multivalue=1,

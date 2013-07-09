@@ -67,7 +67,7 @@ msgstr "Allgemein"
 #: cn.py:65 default.py:144 directory.py:179 extended_attribute.py:373
 #: extended_options.py:152 sambaconfig.py:183 sambadomain.py:230 service.py:65
 #: syntax.py:160 usertemplate.py:352
-msgid "Basic Values"
+msgid "Basic values"
 msgstr "Grundeinstellungen"
 
 #: default.py:48
@@ -211,7 +211,7 @@ msgid "Default short description"
 msgstr "Standard-Kurzbeschreibung"
 
 #: extended_attribute.py:74 extended_options.py:77
-msgid "Default Long Description"
+msgid "Default long description"
 msgstr "Ausführliche Standardbeschreibung"
 
 #: extended_attribute.py:85 extended_options.py:88
@@ -239,11 +239,11 @@ msgid "Hook"
 msgstr "Hook"
 
 #: extended_attribute.py:147
-msgid "Multivalue"
+msgid "Multi value"
 msgstr "Mehrfachwert"
 
 #: extended_attribute.py:158
-msgid "Default Value"
+msgid "Default value"
 msgstr "Vorgabewert"
 
 #: extended_attribute.py:168
@@ -251,7 +251,7 @@ msgid "Do not show in UMC"
 msgstr "In UMC nicht anzeigen"
 
 #: extended_attribute.py:178
-msgid "Tab Name"
+msgid "Tab name"
 msgstr "Name der Karteikarte"
 
 #: extended_attribute.py:188
@@ -267,7 +267,7 @@ msgid "Position number of group"
 msgstr "Positionsnummer der Gruppe"
 
 #: extended_attribute.py:218
-msgid "Advanced tab"
+msgid "Tab with advanced settings"
 msgstr "Karteikarte mit erweiterten Einstellungen"
 
 #: extended_attribute.py:228
@@ -287,7 +287,7 @@ msgid "LDAP mapping"
 msgstr "LDAP-Abbildung"
 
 #: extended_attribute.py:268
-msgid "May change"
+msgid "Editable after creation"
 msgstr "Nachträglich modifizierbar"
 
 #: extended_attribute.py:278
@@ -305,16 +305,16 @@ msgid "Value required"
 msgstr "Wert wird benötigt"
 
 #: extended_attribute.py:299 extended_options.py:140
-msgid "Object Class"
+msgid "Object class"
 msgstr "Objektklasse"
 
 # customattribute.py:06
 #: extended_attribute.py:309
-msgid "Delete Object Class"
+msgid "Delete object class"
 msgstr "Objektklasse löschen"
 
 #: extended_attribute.py:319 extended_options.py:130
-msgid "Needed Module"
+msgid "Needed module"
 msgstr "Benötigtes Modul"
 
 #: extended_attribute.py:320
@@ -378,7 +378,7 @@ msgid "LDAP"
 msgstr "LDAP"
 
 #: extended_options.py:47
-msgid "Settings: extended options"
+msgid "Settings: Extended options"
 msgstr "Einstellungen: Erweiterte Optionen"
 
 #: extended_options.py:48
@@ -957,7 +957,7 @@ msgstr "Einstellungen: Benutzervorlage"
 
 #: usertemplate.py:63
 msgid "Title"
-msgstr "Titel"
+msgstr "Anrede"
 
 #: usertemplate.py:84
 msgid "Display name"
@@ -1162,210 +1162,3 @@ msgstr "Bildschirm Grösse (mm)"
 #: xconfig_choices.py:169
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
-
-#~ msgid "Preferences: Univention Directory Manger Global Settings"
-#~ msgstr "Einstellungen: Univention Directory Manager Globale Einstellungen"
-
-#~ msgid "Visible Wizards"
-#~ msgstr "Sichtbare Assistenten"
-
-#~ msgid "Visible Modules"
-#~ msgstr "Sichtbare Module"
-
-#~ msgid "Preferences: Univention Directory Manager user settings"
-#~ msgstr "Einstellungen: Univention Directory Manager Benutzereinstellungen"
-
-#~ msgid "User name"
-#~ msgstr "Benutzername"
-
-#~ msgid "Visible wizards"
-#~ msgstr "Sichtbare Assistenten"
-
-#~ msgid "Accessible user attributes"
-#~ msgstr "Sichtbare Benutzerattribute"
-
-#~ msgid "Show these attributes in search results"
-#~ msgstr "In Suchergebnissen werden diese Attribute angezeigt"
-
-#~ msgid "Show these attributes in the navigation"
-#~ msgstr "Zeige diese Attribute in der Navigation"
-
-#~ msgid "Visible modules"
-#~ msgstr "Sichtbare Module"
-
-#~ msgid "LDAP base DN"
-#~ msgstr "LDAP Basis-DN"
-
-#~ msgid "Univention Directory Manager"
-#~ msgstr "Univention Directory Manager"
-
-#~ msgid "Univention Directory Manager User Settings"
-#~ msgstr "Univention Directory Manager Benutzer Einstellungen"
-
-#~ msgid "Default Kolab Home Server"
-#~ msgstr "Standard Kolab Home Server"
-
-#~ msgid "Default Scalix Mailnode"
-#~ msgstr "Standard Scalix Mailnode"
-
-#~ msgid "Groupware"
-#~ msgstr "Groupware"
-
-#~ msgid "Computers"
-#~ msgstr "Rechner"
-
-#~ msgid "Policy"
-#~ msgstr "Richtlinie"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
-
-#~ msgid "DHCP"
-#~ msgstr "DHCP"
-
-#~ msgid "Network"
-#~ msgstr "Netz"
-
-#~ msgid "Shares"
-#~ msgstr "Freigaben"
-
-#~ msgid "Printers"
-#~ msgstr "Drucker"
-
-#~ msgid "Use Global Spam Folder"
-#~ msgstr "Globalen Spam-Ordner verwenden"
-
-#~ msgid "Move Spam to a global spam folder instead of a local folder"
-#~ msgstr "Spam in einen globalen statt in einen lokalen Ordner verschieben"
-
-#~ msgid "Forward Mail"
-#~ msgstr "Mails weiterleiten"
-
-#~ msgid "Forward Address"
-#~ msgstr "E-Mail-Adresse für Mailweiterleitung"
-
-#~ msgid "Forward Keep Copy"
-#~ msgstr "Kopie erstellen bei Mailweiterleitung"
-
-#~ msgid "Kolab Home Server"
-#~ msgstr "Kolab Home Server"
-
-#~ msgid "Forward Spam"
-#~ msgstr "Spam weiterleiten"
-
-#~ msgid "Activate folderdelivery"
-#~ msgstr "Eingehende Mails in einen ausgewählten Ordner verschieben"
-
-#~ msgid "Deliver to Folder"
-#~ msgstr "Ordner für eingehende Mails"
-
-#~ msgid "Delegates"
-#~ msgstr "Authorisierte E-Mail-Adressen"
-
-#~ msgid "Vacation Address"
-#~ msgstr "E-Mail-Adressen für Abwesenheitsnotiz"
-
-#~ msgid "Activate Vacation"
-#~ msgstr "Aktiviere Abwesenheitsnotiz"
-
-#~ msgid "Vacation Text"
-#~ msgstr "Abwesenheitstext"
-
-#~ msgid "Vacation Resend Interval"
-#~ msgstr "Interval: Abwesenheitsnotiz erneut senden (Tage)"
-
-#~ msgid "Vacation Spam Reply"
-#~ msgstr "Abwesenheitsnotiz als Antwort auf Spam Mails senden"
-
-#~ msgid "React Domain"
-#~ msgstr "Abwesenheitsnotiz an folgende Domänen senden"
-
-#~ msgid "No React Domain"
-#~ msgstr "Abwesenheitsnotiz an folgende nicht senden Domänen"
-
-#~ msgid "Invitation Policy"
-#~ msgstr "Richtlinien automatische Terminannahme"
-
-#~ msgid "Vacation"
-#~ msgstr "Abwesenheitsnotiz"
-
-#~ msgid "Groupware Settings"
-#~ msgstr "Groupware-Einstellungen"
-
-#~ msgid "Invitation"
-#~ msgstr "Terminannahme"
-
-#~ msgid "Settings: UMC ACLs"
-#~ msgstr "Einstellungen: UMC ACLs"
-
-#~ msgid "List of ACLs for Univention Management Console"
-#~ msgstr "Liste der ACLs für Univention Management Console"
-
-#~ msgid "Category"
-#~ msgstr "Kategorie"
-
-#~ msgid "Console ACL Category"
-#~ msgstr "UMC ACL Kategorie"
-
-#~ msgid "Hosts"
-#~ msgstr "Rechner"
-
-#~ msgid "Hosts or host group for this ACL"
-#~ msgstr "Rechner oder Rechnergruppe für die ACLs"
-
-#~ msgid "LDAP search base"
-#~ msgstr "LDAP Basis"
-
-#~ msgid "Console command"
-#~ msgstr "UMC Kommando"
-
-#~ msgid "Operation"
-#~ msgstr "Operation"
-
-#~ msgid "List of Console operations"
-#~ msgstr "Liste von UMC-Operationen"
-
-#~ msgid "Settings: Attribute"
-#~ msgstr "Einstellungen: Attribut"
-
-#~ msgid "Short Description"
-#~ msgstr "Kurzbeschreibung"
-
-#~ msgid "Number on Tab"
-#~ msgstr "Nummer auf der Karteikarte"
-
-#~ msgid "LDAP Mapping"
-#~ msgstr "LDAP-Abbildung"
-
-#~ msgid "Object Classes"
-#~ msgstr "Objektklassen"
-
-#~ msgid "Object classes needed for this Attribute"
-#~ msgstr "Objektklassen, die für dieses Attribut benötigt werden"
-
-#~ msgid "Corresponding LDAP Attributes"
-#~ msgstr "Zugehöriges LDAP-Attribut"
-
-#~ msgid "None"
-#~ msgstr "Nichts"
-
-#~ msgid "Default value"
-#~ msgstr "Vorgabewert"
-
-#~ msgid "Enable editing"
-#~ msgstr "Erlaubt das Editieren"
-
-#~ msgid "Settings: UDM property"
-#~ msgstr "Einstellungen: UDM Property"
-
-#~ msgid "Version of UDM Property"
-#~ msgstr "Einstellungen: UDM Property"
-
-#~ msgid "Visible Univention Admin Wizards"
-#~ msgstr "Sichtbare Univention Admin Assistenten"
-
-#~ msgid "Visible Univention Admin Modules"
-#~ msgstr "Sichtbare Univention Admin Module"
-
-#~ msgid "Univention Admin"
-#~ msgstr "Univention Admin"

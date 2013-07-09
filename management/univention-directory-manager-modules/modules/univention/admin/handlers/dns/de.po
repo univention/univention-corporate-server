@@ -193,7 +193,7 @@ msgid "Text Record"
 msgstr "Text Record"
 
 #: host_record.py:104 txt_record.py:86
-msgid "Basic Values"
+msgid "Basic values"
 msgstr "Grundeinstellungen"
 
 #: host_record.py:111

@@ -132,8 +132,8 @@ msgid "User ID"
 msgstr "Benutzer-ID"
 
 #: user.py:153
-msgid "Group ID"
-msgstr "Gruppen-ID"
+msgid "Group ID of the primary group"
+msgstr "Gruppen-ID der primären Gruppe"
 
 #: user.py:164
 msgid "First name"
@@ -145,7 +145,7 @@ msgstr "Nachname"
 
 #: user.py:185
 msgid "GECOS"
-msgstr ""
+msgstr "GECOS"
 
 #: user.py:196
 msgid "Display name"
@@ -153,15 +153,15 @@ msgstr "Anzeigename"
 
 #: user.py:207
 msgid "Title"
-msgstr "Titel"
+msgstr "Anrede"
 
 #: user.py:217
 msgid "Samba privileges"
-msgstr "Samba Privilegien"
+msgstr "Samba-Privilegien"
 
 #: user.py:218
 msgid "Manage samba privileges"
-msgstr "Samba Privilegien verwalten"
+msgstr "Samba-Privilegien verwalten"
 
 #: user.py:228
 msgid "Description"
@@ -201,7 +201,7 @@ msgstr "Straße"
 
 #: user.py:325
 msgid "E-mail address(es)"
-msgstr "E-Mail-Adresse"
+msgstr "E-Mail-Adresse(n)"
 
 #: user.py:336
 msgid "Postal code"
@@ -213,7 +213,7 @@ msgstr "Stadt"
 
 #: user.py:356
 msgid "Telephone number(s)"
-msgstr "Telefonnummer"
+msgstr "Telefonnummer(n)"
 
 #: user.py:366
 msgid "Employee number"
@@ -336,12 +336,12 @@ msgid "Allow the authentication only on these Microsoft Windows hosts"
 msgstr "Anmeldung nur an diesen Microsoft Windows-Rechnern zulassen"
 
 #: user.py:653
-msgid "Samba User Login Times"
-msgstr "Samba Anmeldezeitraum"
+msgid "Permitted times for Windows logins"
+msgstr "Erlaubte Zeiten für Windows-Anmeldungen"
 
 #: user.py:664
-msgid "jpeg photo"
-msgstr "JPEG Foto"
+msgid "Picture of the user (JPEG format)"
+msgstr "Bild des Benutzers (JPEG-Format)"
 
 #: user.py:665
 msgid "Picture for user account in JPEG format"
@@ -513,7 +513,7 @@ msgstr "Grundeinstellungen"
 
 #: user.py:903
 msgid "User account"
-msgstr "Benutzer-Konto"
+msgstr "Benutzerkonto"
 
 #: user.py:925
 msgid "Additional groups"

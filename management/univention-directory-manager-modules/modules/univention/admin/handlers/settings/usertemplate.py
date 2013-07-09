@@ -349,7 +349,7 @@ for key, value in mungeddial.properties.items():
 	property_descriptions[ key ] = value
 
 layout = [
-	Tab(_('General'),_('Basic Values'), layout = [
+	Tab(_('General'),_('Basic values'), layout = [
 		Group( _( 'General' ), layout = [
 			[ "name","description" ],
 			[  "title", "organisation" ],

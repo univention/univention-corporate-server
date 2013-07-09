@@ -859,16 +859,16 @@ msgid "Set new custom share settings"
 msgstr "Setzen von erweiterten Einstellungen im Key-Value-Format"
 
 #: share.py:641 share.py:642
-msgid "NFS general"
-msgstr "NFS-Allgemein"
+msgid "NFS"
+msgstr "NFS"
 
 #: share.py:641
 msgid "General NFS settings"
 msgstr "NFS-Grundeinstellungen"
 
 #: share.py:648 share.py:649
-msgid "Samba general"
-msgstr "Samba-Allgemein"
+msgid "Samba"
+msgstr "Samba"
 
 #: share.py:648
 msgid "General Samba settings"
@@ -891,12 +891,8 @@ msgid "Samba extended permission settings"
 msgstr "Samba erweiterte Zugriffsrechte"
 
 #: share.py:676 share.py:677
-msgid "Samba performance"
-msgstr "Samba-Performance"
-
-#: share.py:676
-msgid "Samba performance settings"
-msgstr "Samba-Performance-Einstellungen"
+msgid "Samba options"
+msgstr "Samba-Optionen"
 
 #: share.py:684 share.py:685
 msgid "Samba custom settings"

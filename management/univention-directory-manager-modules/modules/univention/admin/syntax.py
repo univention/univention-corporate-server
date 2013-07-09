@@ -904,14 +904,14 @@ class netmask(simple):
 
 class IPv4_AddressRange( complex ):
 	subsyntaxes = (
-		(_('First Address'), ipv4Address),
-		(_( 'Last Address'), TwoThirdsString),
+		(_('First address'), ipv4Address),
+		(_( 'Last address'), TwoThirdsString),
 		)
 
 class IP_AddressRange( complex ):
 	subsyntaxes = (
-		(_('First Address'), ipAddress),
-		(_( 'Last Address'), ipAddress),
+		(_('First address'), ipAddress),
+		(_( 'Last address'), ipAddress),
 		)
 
 class ipProtocol(select):

@@ -71,7 +71,7 @@ property_descriptions={
 			identifies=0
 		),
 	'longDescription': univention.admin.property(
-			short_description=_('Default Long Description'),
+			short_description=_('Default long description'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -144,7 +144,7 @@ property_descriptions={
 			identifies=0
 		),
 	'multivalue': univention.admin.property(
-			short_description=_('Multivalue'),
+			short_description=_('Multi value'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -155,7 +155,7 @@ property_descriptions={
 			identifies=0
 		),
 	'default': univention.admin.property(
-			short_description=_('Default Value'),
+			short_description=_('Default value'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -175,7 +175,7 @@ property_descriptions={
 			identifies=0
 		),
 	'tabName': univention.admin.property(
-			short_description=_('Tab Name'),
+			short_description=_('Tab name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -215,7 +215,7 @@ property_descriptions={
 			identifies = False
 		),
 	'tabAdvanced': univention.admin.property(
-			short_description=_('Advanced tab'),
+			short_description=_('Tab with advanced settings'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -265,7 +265,7 @@ property_descriptions={
 			identifies=0
 		),
 	'mayChange': univention.admin.property(
-			short_description=_('May change'),
+			short_description=_('Editable after creation'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -296,7 +296,7 @@ property_descriptions={
 			identifies=0
 		),
 	'objectClass': univention.admin.property(
-			short_description=_('Object Class'),
+			short_description=_('Object class'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -306,7 +306,7 @@ property_descriptions={
 			identifies=0
 		),
 	'deleteObjectClass': univention.admin.property(
-			short_description=_('Delete Object Class'),
+			short_description=_('Delete object class'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -316,7 +316,7 @@ property_descriptions={
 			identifies=0
 		),
 	'module': univention.admin.property(
-			short_description=_( 'Needed Module' ),
+			short_description=_( 'Needed module' ),
 			long_description = _( '"users/user" or "computer/thinclient"' ),
 			syntax = univention.admin.syntax.univentionAdminModules,
 			multivalue = True,
@@ -370,7 +370,7 @@ property_descriptions={
 }
 
 layout = [
-	Tab(_('General'),_('Basic Values'), layout = [
+	Tab(_('General'),_('Basic values'), layout = [
 		Group( _( 'General' ), layout = [
 			"name",
 			[ "shortDescription", "longDescription" ],

@@ -244,7 +244,7 @@ msgstr "Gruppen"
 #: domaincontroller_slave.py:316 memberserver.py:317
 #: windows_domaincontroller.py:297 windows.py:287
 msgid "Relative ID"
-msgstr ""
+msgstr "Relative ID"
 
 #: domaincontroller_backup.py:329 domaincontroller_master.py:329
 #: domaincontroller_slave.py:329 ipmanagedclient.py:200 linux.py:271
@@ -401,7 +401,7 @@ msgid "Machine Password"
 msgstr "Rechner Passwort"
 
 #: trustaccount.py:91
-msgid "Basic Values"
+msgid "Basic values"
 msgstr "Grundeinstellungen"
 
 #: trustaccount.py:92

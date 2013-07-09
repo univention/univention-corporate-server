@@ -75,7 +75,7 @@ property_descriptions={
 		),
 	'lease_time_default': univention.admin.property(
 			short_description=_('Default lease time'),
-			long_description=_('Lease time used, if the client does not request a specific expiration time'),
+			long_description=_('Lease time used if the client does not request a specific expiration time'),
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],
@@ -85,7 +85,7 @@ property_descriptions={
 		),
 	'lease_time_max': univention.admin.property(
 			short_description=_('Maximum lease time'),
-			long_description=_('Maximum lease time, that the server will accept if asked for'),
+			long_description=_('Maximum lease time that the server will accept if asked for'),
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
 			multivalue=0,
 			options=[],

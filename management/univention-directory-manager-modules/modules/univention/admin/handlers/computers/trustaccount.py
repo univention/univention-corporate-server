@@ -88,7 +88,7 @@ property_descriptions={
 }
 
 layout = [
-	Tab( _( 'General' ), _( 'Basic Values' ), layout = [
+	Tab( _( 'General' ), _( 'Basic values' ), layout = [
 		Group( _( 'Trust account' ), layout = [
 			[ "name", "description" ],
 			"password"

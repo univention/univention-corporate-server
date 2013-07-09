@@ -62,7 +62,7 @@ property_descriptions={
 	}
 
 layout = [
-	Tab(_('General'),_('Basic Values'),[
+	Tab(_('General'),_('Basic values'),[
 		Group( _( 'General' ), layout = [
 			"name",
 		] ),
