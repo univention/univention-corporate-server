@@ -1,3 +1,9 @@
+univention-ldap (10.0.4-1) unstable; urgency=low
+
+  * Set ldap/server/port by default to 7389 (Bug #26888)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Jul 2013 14:56:36 +0200
+
 univention-ldap (10.0.3-3) unstable; urgency=low
 
   * Wait for named and exit on failure (Bug #29462)
@@ -35,7 +41,7 @@ univention-ldap (10.0.1-1) unstable; urgency=low
 univention-ldap (10.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)
-  * bump version for UCS 3.0 
+  * bump version for UCS 3.2
 
  -- Felix Botner <botner@univention.de>  Mon, 10 Jun 2013 12:20:51 +0200
 
