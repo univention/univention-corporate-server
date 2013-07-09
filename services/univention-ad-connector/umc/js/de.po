@@ -34,7 +34,7 @@ msgstr "Debug-Ausgaben für Funktionen ausgeben"
 
 #: umc/js/adconnector.js:199
 msgid "Automatic determination of the LDAP configuration"
-msgstr "Automatische Ermittlung der LDAP Konfiguration"
+msgstr "Automatische Ermittlung der LDAP-Konfiguration"
 
 #: umc/js/adconnector.js:129
 msgid "Configuration"

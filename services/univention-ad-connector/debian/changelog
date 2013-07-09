@@ -1,3 +1,9 @@
+univention-ad-connector (7.0.19-1) unstable; urgency=low
+
+  * Bug #24727: adapt wording
+
+ -- Florian Best <best@univention.de>  Tue, 09 Jul 2013 13:04:04 +0200
+
 univention-ad-connector (7.0.18-1) unstable; urgency=low
 
   * Consider password/samba/lmhash for LM hash message and not for NT
