@@ -1,26 +1,29 @@
+ucs-test (4.0.60-1) unstable; urgency=low
+
+  * 09/35: Workaround APT caching bug (Bug #31733)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Jul 2013 17:23:33 +0200
+
 ucs-test (4.0.59-1) unstable; urgency=low
 
-  * re-enabled 61_udm-users/20_create_user_just_person
-  (Bug #31868)
+  * re-enabled 61_udm-users/20_create_user_just_person (Bug #31868)
 
  -- Lukas Walter <walter@univention.de>  Mon, 08 Jul 2013 14:32:09 +0200
 
 ucs-test (4.0.58-1) unstable; urgency=low
 
   * added test to verify that it is possible to create a user with only person
-    and mail options set
-  (Bug #31868)
+    and mail options set (Bug #31868)
 
   * passing attributes set to values interpreted as false (e.g False, None,
     '') to UCSTestUDM._build_cmd_line() will lead to this attributes not
-    being set
-  (Bug #30560)
+    being set (Bug #30560)
 
  -- Lukas Walter <walter@univention.de>  Mon, 08 Jul 2013 14:21:20 +0200
 
 ucs-test (4.0.57-2) unstable; urgency=low
 
-  * Fixed the package dependencies in 
+  * Fixed the package dependencies in
     53_samba-common/46file_access_permissions-samba_share_rules (Bug #29229)
 
  -- Tobias Peters <peters@univention.de>  Mon, 08 Jul 2013 12:31:29 +0200
@@ -65,15 +68,14 @@ ucs-test (4.0.54-1) unstable; urgency=low
   * added more udm-computers tests
   * also validate "univentionServerInstallationText" in
     66_udm-computers/*create_maximal*
-  * removed debug tag from certain udm-computers test headers
-  (Bug #31659)
+  * removed debug tag from certain udm-computers test headers (Bug #31659)
 
  -- Lukas Walter <walter@univention.de>  Thu, 04 Jul 2013 13:52:51 +0200
 
 ucs-test (4.0.53-1) unstable; urgency=low
 
   * added more udm-computers test cases and slightly renamed some others
-  (Bug #31659)
+    (Bug #31659)
   * fixed changelog identation
 
  -- Lukas Walter <walter@univention.de>  Thu, 04 Jul 2013 13:34:17 +0200
@@ -81,11 +83,9 @@ ucs-test (4.0.53-1) unstable; urgency=low
 ucs-test (4.0.52-1) unstable; urgency=low
 
   * udm.py.UCSTestUDM().COMPUTER_MODULES does now contain the full module
-    name, e.g "computers/linux" instead of "linux"
-  (Bug #30560)
+    name, e.g "computers/linux" instead of "linux" (Bug #30560)
 
-  * added more udm-computers test cases
-  (Bug #31659)
+  * added more udm-computers test cases (Bug #31659)
 
  -- Lukas Walter <walter@univention.de>  Wed, 03 Jul 2013 10:03:45 +0200
 
@@ -142,7 +142,7 @@ ucs-test (4.0.46-1) unstable; urgency=low
   * added test to validate that network properties are correctly adopted by
     computer objects
   * added bug number to 66_udm-computers/08_create_and_validate_macos.py
-  (Bug #31659)
+    (Bug #31659)
 
  -- Lukas Walter <walter@univention.de>  Tue, 02 Jul 2013 18:02:37 +0200
 
@@ -155,11 +155,9 @@ ucs-test (4.0.45-1) unstable; urgency=low
 
 ucs-test (4.0.44-1) unstable; urgency=low
 
-  * reimplemented 66_udm-computers/13_check_nagios in python
-  (Bug #31659)
+  * reimplemented 66_udm-computers/13_check_nagios in python (Bug #31659)
 
-  * fixexd keyerror in udm.py
-  (Bug #30560)
+  * fixexd keyerror in udm.py (Bug #30560)
 
  -- Lukas Walter <walter@univention.de>  Mon, 01 Jul 2013 14:28:39 +0200
 
@@ -180,23 +178,22 @@ ucs-test (4.0.43-1) unstable; urgency=low
 ucs-test (4.0.42-1) unstable; urgency=low
 
   * added function to determine whether a s4 connector is present in domain or
-  	not to utils.py
+    not to utils.py
   * fixed some typos in certain udm-computers test cases
   * fixed s4 connector detection in udm-computers test cases
   * udm-computers test will remove created locking objects after test end
   * added test to validate that "ntCompatibility=1" is handled correctly in
     computers/windows module
   * do not set "ntCompatibility=1" in
-    66_udm-computers/01_create_and_validate_windows.py
-  (Bug #31659)
+    66_udm-computers/01_create_and_validate_windows.py (Bug #31659)
 
-  * if UCSTestUDM.cleanup() failed to remove one or more objects during the cleanup,
-    it will try to remove them again
+  * if UCSTestUDM.cleanup() failed to remove one or more objects during the
+    cleanup, it will try to remove them again
   * added function to add locks to a removal list for cleanup to UCSTestUDM()
-  (Bug #30560)
+    (Bug #30560)
 
   * skip test 66_udm-computers/08_create_and_validate_macos.py for now
-  (Bug #31832)
+    (Bug #31832)
 
  -- Lukas Walter <walter@univention.de>  Fri, 28 Jun 2013 15:40:54 +0200
 
@@ -215,28 +212,24 @@ ucs-test (4.0.41-1) unstable; urgency=low
 ucs-test (4.0.40-1) unstable; urgency=low
 
   * added test case to verify that creating minimal objects of all computer
-  	roles is possible
-  (Bug #31659)
+    roles is possible (Bug #31659)
 
   * added constant array containing strings represanting all computer modules to
-  	udm.py.UCSTestUDM()
-  (Bug #30560)
+    udm.py.UCSTestUDM() (Bug #30560)
 
  -- Lukas Walter <walter@univention.de>  Thu, 27 Jun 2013 17:39:04 +0200
 
 ucs-test (4.0.39-1) unstable; urgency=low
 
   * added function "random_int()" to strings.py. Despite it's name, it will
-  	return a numeric string (by default containing a value between 0 and 9)
+    return a numeric string (by default containing a value between 0 and 9)
   * also remove referring objects in UCSTestUDM.cleanup()
   * log erros occuring during UCSTestUDM.cleanup()
   * per default, also remove referring objects when removing objects with
     UCSTestUDM().remove() (pass "remove_referring=False" to change this
-    behaviour)
-  (Bug #30560)
+    behaviour) (Bug #30560)
 
-  * ported certain udm-computers tests
-  (Bug #31659)
+  * ported certain udm-computers tests (Bug #31659)
 
  -- Lukas Walter <walter@univention.de>  Tue, 25 Jun 2013 10:51:08 +0200
 
@@ -384,7 +377,7 @@ ucs-test (4.0.24-1) unstable; urgency=low
     newly added function verify_ldap_object() from ldap.py
   * modified test descriptions in certain udm-users tests
   * removed test for presence of "univention-ox" from udm-users tests
-  (Bug #31652)
+    (Bug #31652)
 
   * also use verify_ldap_object() in udm-printers, udm-containers, udm-dhcp,
     udm-net and udm-dns tests, instead of verifying objects
@@ -484,7 +477,7 @@ ucs-test (4.0.12-1) unstable; urgency=low
 
   * 51_samba4/45dns_tests: replace the sleep 8 with a for loop and wait
     up to 30 seconds for the LDAP and DRS replication (Bug #31680)
-    
+
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jun 2013 09:30:18 +0200
 
 ucs-test (4.0.11-1) unstable; urgency=low
