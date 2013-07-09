@@ -443,8 +443,8 @@ msgid "Move to..."
 msgstr "Verschieben nach..."
 
 #: umc/js/udm.js:1363
-msgid "NFS general"
-msgstr "NFS-Allgemein"
+msgid "NFS"
+msgstr "NFS"
 
 #: umc/js/udm.js:175
 msgid "Nagios object"
@@ -602,8 +602,8 @@ msgid "Report has been created"
 msgstr "Report wurde erstellt"
 
 #: umc/js/udm.js:1365
-msgid "Samba general"
-msgstr "Samba-Allgemein"
+msgid "Samba"
+msgstr "Samba"
 
 #: umc/js/udm/DetailPage.js:618
 msgid "Save changes"
@@ -792,7 +792,7 @@ msgstr "Zertifikat hochladen"
 
 #: umc/js/udm.js:1370
 msgid "User Account"
-msgstr "Benutzer-Konto"
+msgstr "Benutzerkonto"
 
 #: umc/js/udm.js:1371
 msgid "User Contact"
@@ -922,11 +922,3 @@ msgstr "Benutzer"
 #: umc/js/udm.js:166
 msgid "users"
 msgstr "Benutzer"
-
-#~ msgid ""
-#~ "The value for the specified object property on which the query is "
-#~ "filtered."
-#~ msgstr "Der Wert der Objekteigenschaft, nach der gesucht wird."
-
-#~ msgid "Type: GPL"
-#~ msgstr "Typ: GPL"
