@@ -202,14 +202,14 @@ define([
 				var params = lang.mixin({
 					title: module.name,
 					iconClass: tools.getIconClass(module.icon),
-					closable: tools.status('overview'),  // closing tabs is only enabled of the overview is visible
+					closable: tools.status('overview'),  // closing tabs is only enabled if the overview is visible
 					moduleFlavor: module.flavor,
 					moduleID: module.id,
 					description: module.description
 					//items: [ new module.BaseClass() ],
 					//layout: 'fit',
 					//closable: true,
-					//autoScroll: true
+					//autoScroll: true,
 					//autoWidth: true,
 					//autoHeight: true
 				}, props);
