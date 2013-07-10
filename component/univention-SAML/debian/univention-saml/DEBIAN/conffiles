@@ -1,9 +1,0 @@
-/etc/univention/templates/info/univention-identity-provider.info
-/etc/univention/templates/files/etc/simplesamlphp/metadata/saml20-sp-remote.php.d/00PHPheader
-/etc/univention/templates/files/etc/simplesamlphp/metadata/saml20-sp-remote.php.d/20googleSP
-/etc/univention/templates/files/etc/simplesamlphp/metadata/saml20-sp-remote.php.d/10salesforceSP
-/etc/univention/templates/files/etc/simplesamlphp/metadata/saml20-sp-remote.php.d/40ExampleUMC-SP
-/etc/univention/templates/files/etc/simplesamlphp/config.php.d/config.php
-/etc/univention/templates/files/etc/simplesamlphp/authsources.php.d/authsources.php
-/etc/apache2/sites-available/univention-identity-provider-apache
-/etc/simplesamlphp/metadata/saml20-idp-hosted.php

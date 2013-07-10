@@ -1,5 +1,0 @@
-# Automatically added by univention-install-config-registry
-if [ "$1" = "install" ] ; then
-  [ -e /etc/univention/templates/removed/univention-identity-provider.info ] && [ ! -e /etc/univention/templates/info/univention-identity-provider.info ] && mv /etc/univention/templates/removed/univention-identity-provider.info /etc/univention/templates/info/univention-identity-provider.info || true
-fi
-# End automatically added section

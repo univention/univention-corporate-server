@@ -1,6 +1,0 @@
-# Automatically added by univention-install-config-registry
-if [ "$1" = "abort-remove" ]; then
-  [ -e /etc/univention/templates/removed/univention-identity-provider.info ] && mv /etc/univention/templates/removed/univention-identity-provider.info /etc/univention/templates/info/univention-identity-provider.info || true
-fi
-[ -x /usr/sbin/univention-config-registry ] && univention-config-registry register univention-identity-provider || true
-# End automatically added section
