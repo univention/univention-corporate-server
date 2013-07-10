@@ -46,3 +46,31 @@ def getLDAPURIs(configRegistryInstance = None):
 
 	return uri_string
 
+def getLDAPServersCommaList(configRegistryInstance = None):
+	"""
+	Returns a comma-separated string with all configured LDAP servers,
+	 ldap/server/name and ldap/server/additional
+	Optional a UCR instance ca be given as parameter, for example
+	if the function is used in a UCR template
+	"""
+	if configRegistryInstance:
+		ucr = configRegistryInstance
+	else:
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+
+	ldap_servers = ''
+	ldaphosts=[]
+	ldap_server_name = ucr.get('ldap/server/name')
+	ldap_server_addition = ucr.get('ldap/server/addition')
+
+	if ldap_server_name:
+		ldaphosts.append(ldap_server_name)
+	if ldap_server_addition:
+		ldaphosts.extend(ldap_server_addition.split())
+	if ldaphosts:
+		ldap_servers = ','.join(ldaphosts)
+
+	return ldap_servers
+
+
