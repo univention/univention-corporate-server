@@ -1,2 +1,0 @@
-conf/univention-identity-provider-apache	etc/apache2/sites-available/
-conf/saml20-idp-hosted.php	etc/simplesamlphp/metadata/

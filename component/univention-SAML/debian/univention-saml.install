@@ -1,0 +1,2 @@
+conffiles/etc/apache2/sites-available/*	etc/apache2/sites-available/
+conffiles/etc/simplesamlphp/metadata/saml20-idp-hosted.php etc/simplesamlphp/metadata/

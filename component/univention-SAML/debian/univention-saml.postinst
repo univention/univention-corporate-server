@@ -1,0 +1,20 @@
+#! /bin/sh
+set -e
+
+case "$1" in
+configure)
+	ucr set ldap/acl/read/anonymous=yes
+
+	a2ensite univention-saml-apache
+	/etc/init.d/apache2 reload
+
+	;;
+abort-upgrade|abort-remove|abort-deconfigure)
+	;;
+*)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 1
+	;;
+esac
+#DEBHELPER#
+exit 0

@@ -1,0 +1,17 @@
+# simpleSAMLphp example Apache config snippet.
+# To include this in your Apache configuration:
+# Apache 2.2 and earlier:
+#   ln -s /etc/apache2/conf-available/simplesamlphp.conf /etc/apache2/conf.d/simplesamlphp.conf
+# Apache 2.4 and later:
+#   a2enconf simplesamlphp
+
+Alias /simplesamlphp /usr/share/simplesamlphp/www
+
+<Directory /usr/share/simplesamlphp/www/>
+	Order allow,deny
+	Allow from all
+        php_admin_value suhosin.get.max_value_length "2048"
+#	Apache 2.4-style:
+#	Require all granted
+</Directory>
+

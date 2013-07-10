@@ -1,0 +1,28 @@
+Package: univention-identity-provider
+Version: 0.0.0-1
+Architecture: amd64
+Maintainer: Univention GmbH <packages@univention.de>
+Installed-Size: 176
+Depends: univention-config-dev, univention-config (>= 7.0.25), apache2, php-xml-parser, php5-mcrypt, php-openid, php5-ldap, simplesamlphp (>= 1.11.0-1)
+Section: univention
+Priority: optional
+Homepage: <http://simplesamlphp.org/docs/stable/>
+Description: Integrates simpleSAMLphp Identity Provider into UCS
+ This packages provides the basic configuration for the
+ simpleSAMLphp Identity Provider which is an authentication and federation application
+ supporting several protocols simpleSAMLphp, with its support for several authentication
+ mechanisms and federation protocols, can be used for local authentication, as a
+ service provider or identity provider. It currently supports the
+ following protocols:
+ .
+  * SAML 2.0 as a Service or Identity Provider.
+  * Shiboleth 1.3 as a Service or Identity Provider.
+  * A-Select as a Service or Identity Provider
+  * CAS for remote authentication
+  * OpenID as a Provider or Consumer
+  * WS-Federation as a Service Provider
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated Single Sign-On technology for corporate useage.
+ For more information about UCS,
+ refer to: http://www.univention.de

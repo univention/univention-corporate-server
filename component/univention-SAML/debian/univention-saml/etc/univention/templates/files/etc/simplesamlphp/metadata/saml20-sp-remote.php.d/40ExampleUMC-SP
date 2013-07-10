@@ -1,0 +1,50 @@
+@!@
+if not configRegistry.is_true('saml/idp/service/umc/enable'):
+        print "/**"
+@!@
+$metadata['http://ec2-54-216-34-148.eu-west-1.compute.amazonaws.com/sp/sp.xml'] = array (
+  'entityid' => 'http://ec2-54-216-34-148.eu-west-1.compute.amazonaws.com/sp/sp.xml',
+  'contacts' => 
+  array (
+  ),
+  'metadata-set' => 'saml20-sp-remote',
+  'AssertionConsumerService' => 
+  array (
+    0 => 
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+      'Location' => 'http://ec2-54-216-34-148.eu-west-1.compute.amazonaws.com/sp/acs/redirect',
+      'index' => 1,
+    ),
+    1 => 
+    array (
+      'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+      'Location' => 'http://ec2-54-216-34-148.eu-west-1.compute.amazonaws.com/sp/acs/post',
+      'index' => 2,
+    ),
+  ),
+  'SingleLogoutService' => 
+  array (
+  ),
+  'keys' => 
+  array (
+    0 => 
+    array (
+      'encryption' => true,
+      'signing' => false,
+      'type' => 'X509Certificate',
+      'X509Certificate' => 'MIIC8jC.....',
+    ),
+    1 => 
+    array (
+      'encryption' => false,
+      'signing' => true,
+      'type' => 'X509Certificate',
+      'X509Certificate' => 'MIIC8jCC...',
+    ),
+  ),
+);
+@!@
+if not configRegistry.is_true('saml/idp/service/umc/enable'):
+        print "**/"
+@!@
