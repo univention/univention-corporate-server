@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.3-1) unstable; urgency=low
+
+  * Use ldap/server/addition in postfix pam configuration (Bug #19753)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Jul 2013 08:41:16 +0200
+
 univention-mail-postfix (8.0.2-1) unstable; urgency=low
 
   * Use ldap/server/addition in postfix configuration (Bug #19753)
