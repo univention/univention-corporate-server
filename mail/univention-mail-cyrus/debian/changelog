@@ -1,3 +1,9 @@
+univention-mail-cyrus (6.0.4-1) unstable; urgency=low
+
+  * Use ldap/server/addition in cyrus pam configuration (Bug #19753)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Jul 2013 08:40:10 +0200
+
 univention-mail-cyrus (6.0.3-1) unstable; urgency=low
 
   * Modified /conffiles/etc/imapd/imapd.conf 

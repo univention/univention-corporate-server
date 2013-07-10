@@ -2,8 +2,9 @@
 
 auth sufficient pam_unix.so
 @!@
+from univention.lib.misc import getLDAPServersCommaList
 auth  = "auth requisite pam_univentionmailcyrus.so"
-auth += " ldap_host=%s" % configRegistry.get("ldap/server/name")
+auth += " ldap_host=%s" % getLDAPServersCommaList(configRegistry)
 auth += " ldap_base=%s" % configRegistry.get("ldap/base")
 auth += " from_attr=mailPrimaryAddress to_attr=uid"
 auth += " binddn=%s " % configRegistry.get("ldap/hostdn")
