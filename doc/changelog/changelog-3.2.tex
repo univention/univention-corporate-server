@@ -189,6 +189,9 @@ the value of \ucsCommand{windows/domain} on the DC master (\ucsBug{24442}).
   corrected (\ucsBug{30796}).
 \item UMC login problems with the demo configuration package installed have
   been corrected (\ucsBug{31091}).
+\item Fixed problems in the login dialog when changing an expired password.
+  Under some circumstances the username sent was wrong and the standby
+  animation did never stop (\ucsBug{31898}).
 \item The internal caching mechanism for list entries (e.g., DHCP/DNS
   entries and IP/MAC addresses for computers) has been improved as it
   could previously lead to inconsistencies in rare cases (\ucsBug{31510}).
@@ -203,7 +206,7 @@ the value of \ucsCommand{windows/domain} on the DC master (\ucsBug{24442}).
 \item A static array reference in \ucsName{umc/widgets/MultiSelect} causing re-occurring
   entries in \ucsName{umc/widgets/MultiUploader} has been corrected (\ucsBug{31318}).
 \item As page URLs for Piwik, only the origin host without path is specified (\ucsBug{30961}).
-\item In \ucsName{umc/widgets/Grid:actions} a specify tooltip class can now be defined for actions (\ucsBug{31308}).
+\item In \ucsName{umc/widgets/Grid:actions} a specific tooltip class can now be defined for actions (\ucsBug{31308}).
 \item The UMC session is now kept active during the dialog for restarting the UMC server (\ucsBug{31642}).
 \item Problems with standby overlay animations not covering the full underlying area have been corrected (\ucsBug{31581});
 \item The actions saving and cancel editing UDM objects are published now for the Piwik system (\ucsBug{31161}).
