@@ -220,9 +220,13 @@ define([
 								domClass.remove('umc_OuterLabelPane_NewPasswordRetype', 'dijitHidden');
 								if (this._username) {
 									dom.byId('umc_UsernameInput').value = this._username;
+									tools.status('username', this._username); // already set status, otherwise _setInitialFocus may cause problems
 								}
 								if (this._password) {
 									dom.byId('umc_PasswordInput').value = this._password;
+								}
+								if (!has('touch')) {
+									dom.byId('umc_NewPasswordInput').focus()
 								}
 							}
 						}));
@@ -391,10 +395,10 @@ define([
 				this.onLogin(username);
 				this.hide();
 			}), lang.hitch(this, function(error) {
-				this._setInitialFocus();
-				Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 				// disable standby in any case
 				this.standby(false);
+				this._setInitialFocus();
+				Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 				Dialog._DialogLevelManager.hide(this);
 			}));
 		},

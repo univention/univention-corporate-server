@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.15-1) unstable; urgency=low
+
+  * Bug #31898: Fix problems in LoginDialog when changing expired password.
+    Under some circumstances the username sent was wrong and the standby
+    animation did never stop.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Jul 2013 15:47:22 +0200
+
 univention-management-console-frontend (3.0.14-2) unstable; urgency=low
 
   * Bug #31318: version bump
