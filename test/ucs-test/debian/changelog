@@ -1,3 +1,10 @@
+ucs-test (4.0.63-1) unstable; urgency=low
+
+  * rename 25domain-join-without-admin-rights to run at the end
+    (Bug #31772)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 10 Jul 2013 16:50:36 +0200
+
 ucs-test (4.0.62-1) unstable; urgency=low
 
   * increased granularity of udm-dhcp tests
