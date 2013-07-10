@@ -22,14 +22,11 @@ if __name__ == '__main__':
 	}
 
 	with udm_test.UCSTestUDM() as udm:
-		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
-		dhcpSharedNetwork = udm.create_object('dhcp/shared', name = uts.random_name(), superordinate = dhcpService)
+		dhcpSharedNetwork = udm.create_object('dhcp/shared', name = uts.random_name(), superordinate = udm.create_object('dhcp/service', service = uts.random_name()))
 		dhcpSharedSubnet = udm.create_object('dhcp/sharedsubnet', superordinate = dhcpSharedNetwork, **dhcpSharedSubnetProperties)
 
-		if not utils.verify_ldap_object(dhcpSharedSubnet, {
-			'cn': [dhcpSharedSubnetProperties['subnet']],
+		utils.verify_ldap_object(dhcpSharedSubnet, {
 			'dhcpNetMask': [dhcpSharedSubnetProperties['subnetmask']],
 			'dhcpRange': [dhcpSharedSubnetProperties['range']],
 			'univentionDhcpBroadcastAddress': [dhcpSharedSubnetProperties['broadcastaddress']]
-		}):
-			utils.fail()
+		})

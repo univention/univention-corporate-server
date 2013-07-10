@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create and remove DHCP shared network
+## desc: Remove DHCP shared network
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -19,9 +19,5 @@ if __name__ == '__main__':
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
 		dhcpSharedNetwork = udm.create_object('dhcp/shared', name = uts.random_name(), superordinate = dhcpService)
 
-		if not utils.verify_ldap_object(dhcpSharedNetwork):
-			utils.fail()
-
 		udm.remove_object('dhcp/shared', dn = dhcpSharedNetwork, superordinate = dhcpService)
-		if utils.verify_ldap_object(dhcpSharedNetwork):
-			utils.fail('Could still find created DHCP shared network "%s" in LDAP after it should have been removed' % dhcpSharedNetwork)
+		utils.verify_ldap_object(dhcpSharedNetwork, should_exist = False)

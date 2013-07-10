@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner python
+## desc: Append fixedaddresses during DHCP host modification
+## tags: [udm-dhcp,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+if __name__ == '__main__':
+	fixedAddresses = ['10.20.30.40', '10.20.30.50']
+
+	with udm_test.UCSTestUDM() as udm:
+		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+		dhcpHost = udm.create_object('dhcp/host', host = uts.random_name(), hwaddress = 'ethernet 01:ff:78:38:ab:24', superordinate = dhcpService)
+
+		udm.modify_object('dhcp/host', dn = dhcpHost, append = {'fixedaddress': fixedAddresses}, superordinate = dhcpService)
+		utils.verify_ldap_object(dhcpHost, {'univentionDhcpFixedAddress': fixedAddresses})

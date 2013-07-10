@@ -25,15 +25,18 @@ if __name__ == '__main__':
 	}
 
 	with udm_test.UCSTestUDM() as udm:
-		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
-		dhcpSubnet = udm.create_object('dhcp/subnet', subnet = '10.20.30.0', subnetmask = '24', superordinate = dhcpService)
-		dhcpPool = udm.create_object('dhcp/pool', superordinate = dhcpSubnet, **dhcpPoolProperties)
-
-		if not utils.verify_ldap_object(dhcpPool, {
-			'cn': [dhcpPoolProperties['name']],
-			'dhcpRange': [dhcpPoolProperties['range']],
-			'univentionDhcpFailoverPeer': [dhcpPoolProperties['failover_peer']],
-			'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients']
-		}):
-			utils.fail()
+		utils.verify_ldap_object(udm.create_object('dhcp/pool',
+												   superordinate = udm.create_object('dhcp/subnet',
+																					 subnet = '10.20.30.0',
+																					 subnetmask = '24',
+																					 superordinate = udm.create_object('dhcp/service', service = uts.random_name())
+																					),
+												   **dhcpPoolProperties
+												  ),
+								 {
+									'dhcpRange': [dhcpPoolProperties['range']],
+									'univentionDhcpFailoverPeer': [dhcpPoolProperties['failover_peer']],
+									'dhcpPermitList': ['deny known clients', 'allow unknown clients', 'deny dynamic bootp clients', 'allow all clients']
+								 }
+								)
 

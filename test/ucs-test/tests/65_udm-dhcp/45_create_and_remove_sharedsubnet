@@ -15,14 +15,12 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
-		dhcpSharedNetwork = udm.create_object('dhcp/shared', name = uts.random_name(), superordinate = dhcpService)
+		dhcpSharedNetwork = udm.create_object('dhcp/shared', name = uts.random_name(), superordinate = udm.create_object('dhcp/service', service = uts.random_name()))
 		dhcpSharedSubnet = udm.create_object('dhcp/sharedsubnet', superordinate = dhcpSharedNetwork, subnet = '10.20.30.0', subnetmask = '24')
 
-		if not utils.verify_ldap_object(dhcpSharedSubnet):
-			utils.fail()
+		utils.verify_ldap_object(dhcpSharedSubnet)
 
 		udm.remove_object('dhcp/sharedsubnet', dn = dhcpSharedSubnet, superordinate = dhcpSharedNetwork)
-		if utils.verify_ldap_object(dhcpSharedSubnet):
-			utils.fail('Could still find DHCP shared subnet in LDAP after it should have been removed')
+		utils.verify_ldap_object(dhcpSharedSubnet, should_exist = False)
+
 

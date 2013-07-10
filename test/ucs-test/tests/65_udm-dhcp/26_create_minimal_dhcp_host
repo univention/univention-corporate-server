@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create and remove DHCP service
+## desc: Create minimal DHCP host
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -15,11 +15,8 @@ import univention.testing.strings as uts
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
-		if not utils.verify_ldap_object(dhcpService):
-			utils.fail()
-
-		udm.remove_object('dhcp/service', dn = dhcpService)
-		if utils.verify_ldap_object(dhcpService):
-			utils.fail('Could still find DHCP service "%s" in LDAP after it should have been removed' % dhcpService)
-
+		utils.verify_ldap_object(udm.create_object('dhcp/host',
+												   host = uts.random_name(),
+												   hwaddress = 'ethernet 01:ff:78:38:ab:24', superordinate = udm.create_object('dhcp/service', service = uts.random_name())
+												  )
+								)

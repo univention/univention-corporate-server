@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create and remove DHCP server
+## desc: Remove DHCP service
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -16,11 +16,7 @@ import univention.testing.strings as uts
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
-		dhcpServer = udm.create_object('dhcp/server', server = uts.random_name(), superordinate = dhcpService)
 
-		if not utils.verify_ldap_object(dhcpServer):
-			utils.fail()
+		udm.remove_object('dhcp/service', dn = dhcpService)
+		utils.verify_ldap_object(dhcpService, should_exist = False)
 
-		udm.remove_object('dhcp/server', dn = dhcpServer, superordinate = dhcpService)
-		if utils.verify_ldap_object(dhcpServer):
-			utils.fail('Could still find DHCP server "%s" in LDAP after it should have been removed' % dhcpServer)

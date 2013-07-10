@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create and remove DHCP subnet
+## desc: Set range during DHCP subnet modification
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -14,13 +14,12 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 if __name__ == '__main__':
+	range = '10.20.10.1 10.20.10.254'
+
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
-		dhcpSubnet = udm.create_object('dhcp/subnet', superordinate = dhcpService, subnet = '10.20.30.0', subnetmask = '24')
+		dhcpSubnet = udm.create_object('dhcp/subnet', subnet = '10.20.0.0', subnetmask = '16', superordinate = dhcpService)
 
-		if not utils.verify_ldap_object(dhcpSubnet):
-			utils.fail()
+		udm.modify_object('dhcp/subnet', dn = dhcpSubnet, range = range, superordinate = dhcpService)
+		utils.verify_ldap_object(dhcpSubnet, {'dhcpRange': [range]})
 
-		udm.remove_object('dhcp/subnet', dn = dhcpSubnet, superordinate = dhcpService)
-		if utils.verify_ldap_object(dhcpSubnet):
-			utils.fail('Could still find created DHCP subnet "%s" in LDAP after it should have been removed' % dhcpSubnet)
