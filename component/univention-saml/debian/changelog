@@ -1,5 +1,5 @@
-univention-identity-provider (0.0.0-1) unstable; urgency=low
+univention-saml (0.0.0-1) unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Bug #25408: Initial release
 
- -- Univention GmbH <packages@univention.de>  Wed, 10 Jul 2013 08:19:58 -0400
+ -- Jacek Groth <groth@univention.de>  Wed, 10 Jul 2013 08:19:58 -0400

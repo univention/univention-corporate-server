@@ -4,8 +4,8 @@ set -e
 
 if [ install = "$1" -o upgrade = "$1" ]; then 
 	echo "PRE-INST"
-	dpkg-divert --package univention-identity-provider --add --rename --divert /etc/simplesamlphp/config.php.debian-orginal /etc/simplesamlphp/config.php
-	dpkg-divert --package univention-identity-provider --add --rename --divert /etc/simplesamlphp/authsources.php.debian-orginal /etc/simplesamlphp/authsources.php
+	dpkg-divert --package univention-saml --add --rename --divert /etc/simplesamlphp/config.php.debian-orginal /etc/simplesamlphp/config.php
+	dpkg-divert --package univention-saml --add --rename --divert /etc/simplesamlphp/authsources.php.debian-orginal /etc/simplesamlphp/authsources.php
 fi  
 
 #DEBHELPER#
