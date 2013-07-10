@@ -7,7 +7,7 @@ Standards-Version: 3.8.4
 Homepage: <http://simplesamlphp.org/docs/stable/>
 
 Package: univention-saml
-Architecture: any
+Architecture: al
 Depends: ${shlibs:Depends}, 
  univention-config-dev,
  ${misc:Depends},
