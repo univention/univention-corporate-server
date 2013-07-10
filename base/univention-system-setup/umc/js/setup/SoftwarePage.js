@@ -171,7 +171,7 @@ define([
 		_getComponents: function() {
 			// return a dict of currently selected components
 			var components = {};
-			array.forEach(this._form.gatherFormValues().components, function(icomp) {
+			array.forEach(this._form.get('value').components, function(icomp) {
 				components[icomp] = true;
 			});
 			return components;

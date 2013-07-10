@@ -564,13 +564,17 @@ define([
 				if (!ipage._form) {
 					return true;
 				}
-				tools.forIn(ipage._form._widgets, function(ikey, iwidget) {
+				tools.forIn(ipage._form._widgets, lang.hitch(this, function(ikey, iwidget) {
 					if (iwidget.isValid && false === iwidget.isValid()) {
+						if (allValid) {
+							// jump to the first invalid widget
+							this.selectPage(ipage);
+						}
 						allValid = false;
 						validationMessage += '<li>' + ipage.get('title') + '/' + iwidget.get('label') + '</li>';
 					}
-				});
-			});
+				}));
+			}, this);
 			if (!allValid) {
 				this.standby(false);
 				dialog.alert(validationMessage);
@@ -581,8 +585,18 @@ define([
 			this.standby(true);
 			this.umcpCommand('setup/validate', { values: values }).then(lang.hitch(this, function(data) {
 				var allValid = true;
-				array.forEach(data.result, function(ivalidation) {
-					allValid = allValid && ivalidation.valid;
+				array.forEach(data.result, lang.hitch(this, function(ivalidation) {
+					if (!ivalidation.valid) {
+						if (allValid) {
+							// focus the first invalid page
+							array.forEach(this._pages, function(ipage) {
+								if (ipage._form && ipage._form.getWidget(ivalidation.key)) {
+									this.selectPage(ipage);
+								}
+							}, this);
+						}
+						allValid = false;
+					}
 					if (ivalidation.message) {
 						// find the correct description to be displayed
 						array.forEach(summaries, function(idesc) {
@@ -593,7 +607,7 @@ define([
 						});
 
 					}
-				});
+				}));
 
 				// construct message for validation
 				array.forEach(summaries, function(idesc) {
@@ -890,6 +904,14 @@ define([
 				html = html + last;
 			}
 			return html;
+		},
+
+		selectPage: function(page) {
+			if (this.wizard_mode) {
+				return this.selectChild(page);
+			}
+			var tabcontainer = this.getChildren()[0];
+			return tabcontainer.selectChild(page);
 		},
 
 		selectChildIfValid: function(nextpage) {

@@ -1,3 +1,9 @@
+univention-system-setup (7.0.20-1) unstable; urgency=low
+
+  * Bug #31021: enhance validation handling
+
+ -- Florian Best <best@univention.de>  Wed, 10 Jul 2013 12:38:53 +0200
+
 univention-system-setup (7.0.19-1) unstable; urgency=low
 
   * Bug #24727: adapt wording

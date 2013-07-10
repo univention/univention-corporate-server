@@ -815,7 +815,7 @@ msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
 #: umc/js/setup.js:555
 msgid "The following entries could not be validated:"
-msgstr "Die folgenden Einträge konnte nicht validiert werden:"
+msgstr "Die folgenden Einträge konnten nicht validiert werden:"
 
 #: umc/js/setup.js:829
 msgid ""
