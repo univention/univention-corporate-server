@@ -2,7 +2,7 @@
  * PAM Univention Mail Cyrus
  *  PAM Module to change username from email@address.com to username
  *
- * Copyright 2005-2012 Univention GmbH
+ * Copyright 2005-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -139,9 +139,10 @@ static int mapuser(const char *fromuser, char *touser)
    struct berval **values = NULL;
    int ret = PAM_USER_UNKNOWN;
    univention_ldap_parameters_t *lp;
+   char *host;
+   char *saved;
 
    lp = univention_ldap_new();
-   lp->host = strdup(ldap_host);
    lp->port = ldap_port;
    lp->base = strdup(ldap_base);
    lp->binddn = strdup(binddn);
@@ -150,9 +151,18 @@ static int mapuser(const char *fromuser, char *touser)
 
    snprintf(filter, BUFSIZ, "(&(%s=%s)(%s=*))", fromattr, fromuser, toattr);
 
-   if (univention_ldap_open(lp) != 0) {
-       _log_err(LOG_NOTICE, "Failed to connect to LDAP server %s:%d", ldap_host, ldap_port);
-       goto cleanup;
+   for(host=strtok_r(ldap_host, ",", &saved); host != NULL; host=strtok_r(NULL, ",", &saved)) {
+      lp->host = strdup(host);
+      if (univention_ldap_open(lp) != 0) {
+         _log_err(LOG_NOTICE, "Failed to connect to LDAP server %s:%d", host, ldap_port);
+         free(lp->host);
+         continue;
+      }
+      break;
+   }
+   if(host == NULL) {
+      _log_err(LOG_NOTICE, "Failed to connect to the configured LDAP servers");
+      goto cleanup;
    }
    if ((msgid = ldap_search_ext_s(lp->ld, ldap_base, scope, filter, attrs,
                    attrsonly, serverctrls, clientctrls, &timeout, sizelimit, &res)) != LDAP_SUCCESS) {
