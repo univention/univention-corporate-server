@@ -682,6 +682,7 @@ in the \ucsUCRV{server/password/change} since the last password change
 \item The configuration of the \ucsUCRV{windows/domain} has been removed from
 the postinst script of \ucsName{univention-samba} (\ucsBug{24442}).
 \item \ucsUCRV{windows/wins-server} and \ucsUCRV{windows/wins-support} are now set in the Samba joinscript (\ucsBug{31814}).
+\item To minimize the time where \ucsURL{/etc/samba/shares.conf} includes non-existing files, it is now updated directly after a share was added/removed or renamed (\ucsBug{29399}).
 \end{itemize}
 
 \subsection{Samba 4}
