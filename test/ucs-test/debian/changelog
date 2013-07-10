@@ -1,3 +1,10 @@
+ucs-test (4.0.61-1) unstable; urgency=low
+
+  * 02_import-performance: increase the connector wait for connector
+    interval (Bug #31695)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Jul 2013 06:50:15 +0200
+
 ucs-test (4.0.60-1) unstable; urgency=low
 
   * 09/35: Workaround APT caching bug (Bug #31733)
