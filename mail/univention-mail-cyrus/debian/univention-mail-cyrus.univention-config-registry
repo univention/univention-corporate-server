@@ -40,6 +40,7 @@ File: etc/pam.d/imap
 Variables: ldap/base
 Variables: ldap/server/name
 Variables: ldap/server/port
+Variables: ldap/server/addition
 Variables: ldap/hostdn
 Variables: mail/cyrus/imap/quotawarnpercent
 Variables: mail/cyrus/imap/quotawarnkb
@@ -50,6 +51,7 @@ File: etc/pam.d/pop
 Variables: ldap/base
 Variables: ldap/server/name
 Variables: ldap/server/port
+Variables: ldap/server/addition
 Variables: ldap/hostdn
 Variables: mail/cyrus/imap/quotawarnpercent
 Variables: mail/cyrus/imap/quotawarnkb
@@ -60,6 +62,7 @@ File: etc/pam.d/sieve
 Variables: ldap/base
 Variables: ldap/server/name
 Variables: ldap/server/port
+Variables: ldap/server/addition
 Variables: ldap/hostdn
 
 Type: multifile
