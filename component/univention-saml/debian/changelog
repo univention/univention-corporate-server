@@ -1,3 +1,9 @@
+univention-saml (0.0.1-1) unstable; urgency=low
+
+  * Bug #25408: minor fixes to make the package build
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Jul 2013 15:03:42 +0200
+
 univention-saml (0.0.0-1) unstable; urgency=low
 
   * Bug #25408: Initial release

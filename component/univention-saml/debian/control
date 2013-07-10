@@ -4,11 +4,11 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 7.0.50~)
 Standards-Version: 3.8.4
-Homepage: <http://simplesamlphp.org/docs/stable/>
+Homepage: http://simplesamlphp.org/docs/stable/
 
 Package: univention-saml
-Architecture: al
-Depends: ${shlibs:Depends}, 
+Architecture: all
+Depends: ${shlibs:Depends},
  univention-config-dev,
  ${misc:Depends},
  apache2,
@@ -16,11 +16,11 @@ Depends: ${shlibs:Depends},
  php5-mcrypt,
  php-openid,
  php5-ldap,
- simplesamlphp (>= 1.11.0-1) 
+ simplesamlphp (>= 1.11.0-1)
 Description: Integrates simpleSAMLphp Identity Provider into UCS
  This packages provides the basic configuration for the
  simpleSAMLphp Identity Provider which is an authentication and federation application
- supporting several protocols simpleSAMLphp, with its support for several authentication 
+ supporting several protocols simpleSAMLphp, with its support for several authentication
  mechanisms and federation protocols, can be used for local authentication, as a
  service provider or identity provider. It currently supports the
  following protocols:
@@ -36,4 +36,3 @@ Description: Integrates simpleSAMLphp Identity Provider into UCS
  integrated Single Sign-On technology for corporate useage.
  For more information about UCS,
  refer to: http://www.univention.de
-License: AGPL
