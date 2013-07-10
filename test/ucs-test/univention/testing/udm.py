@@ -339,7 +339,7 @@ class UCSTestUDM(object):
 				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 				(stdout, stderr) = child.communicate()
 
-				if (child.returncode or not 'Object removed:' in stdout) and utils.verify_ldap_object(dn):
+				if child.returncode or not 'Object removed:' in stdout:
 					failedObjects.setdefault(module, []).append(dn)
 
 
@@ -351,7 +351,6 @@ class UCSTestUDM(object):
 
 				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 				(stdout, stderr) = child.communicate()
-
 				if child.returncode or not 'Object removed:' in stdout:
 					print 'Error while removing %s object "%s" during UDM cleanup: stdout=%s, stderr=%s' % (module,  dn, stdout, stderr)
 		self._cleanup = {}
