@@ -7,9 +7,9 @@ note:
 version: [1]
 desc: |
   This errata addresses the following issues:
-  * Problems especially in larger environments: Five syntax classes received
-    lookup optimizations that result in faster opening of objects in the UDM
-    frontend.
-  * The actions for saving and cancel editing UDM objects are published now for
-    the Piwik system.
+  * Five syntax classes received lookup optimizations that result in faster opening 
+    of objects in the UDM frontend. This addresses performance problems in large 
+    environments.
+  * The actions for saving and canceling the editing of UDM objects are published 
+    now for the Piwik system.
 bug: [31560,31161]
