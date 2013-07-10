@@ -122,6 +122,7 @@ File: etc/pam.d/smtp
 Variables: ldap/base
 Variables: ldap/server/name
 Variables: ldap/server/port
+Variables: ldap/server/addition
 Variables: ldap/hostdn
 
 Type: file
