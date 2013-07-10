@@ -1,3 +1,11 @@
+univention-directory-replication (7.0.1-1) unstable; urgency=low
+
+  * replication.py: support for empty values in failed.ldif (Bug #25579)
+  * Update copyright year
+  * Bump version for UCS 3.2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Jul 2013 10:10:08 +0200
+
 univention-directory-replication (6.0.6-1) unstable; urgency=low
 
   * removed unnecessary log messages in replication.py (Bug #15567) 

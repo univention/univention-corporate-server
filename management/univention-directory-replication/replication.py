@@ -3,7 +3,7 @@
 # Univention Directory Replication
 #  listener module for Directory replication
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -483,6 +483,9 @@ class LDIFObject:
 			value=base64.encodestring(value).replace('\n', '')
 		else:
 			print >>self.fp, '%s:' % attribute,
+
+		if not value:
+			print >>self.fp
 
 		while value:
 			if pos == 1:
