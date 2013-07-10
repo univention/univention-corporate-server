@@ -1,21 +1,5 @@
-#!/bin/sh
-
-set -e
-
-if [ install = "$1" -o upgrade = "$1" ]; then 
-	echo "PRE-INST"
-	dpkg-divert --package univention-identity-provider --add --rename --divert /etc/simplesamlphp/config.php.debian-orginal /etc/simplesamlphp/config.php
-	dpkg-divert --package univention-identity-provider --add --rename --divert /etc/simplesamlphp/authsources.php.debian-orginal /etc/simplesamlphp/authsources.php
-fi  
-
 # Automatically added by univention-install-config-registry
 if [ "$1" = "install" ] ; then
   [ -e /etc/univention/templates/removed/univention-identity-provider.info ] && [ ! -e /etc/univention/templates/info/univention-identity-provider.info ] && mv /etc/univention/templates/removed/univention-identity-provider.info /etc/univention/templates/info/univention-identity-provider.info || true
 fi
 # End automatically added section
-
-
-exit 0
-
-
-

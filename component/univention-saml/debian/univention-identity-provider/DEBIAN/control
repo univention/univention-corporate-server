@@ -2,8 +2,8 @@ Package: univention-identity-provider
 Version: 0.0.0-1
 Architecture: amd64
 Maintainer: Univention GmbH <packages@univention.de>
-Installed-Size: 124
-Depends: apache2, php-xml-parser, php5-mcrypt, php-openid, simplesamlphp (>= 1.11.0-1)
+Installed-Size: 172
+Depends: univention-config-dev, univention-config (>= 7.0.25), apache2, php-xml-parser, php5-mcrypt, php-openid, php5-ldap, simplesamlphp (>= 1.11.0-1)
 Section: univention
 Priority: optional
 Homepage: <http://simplesamlphp.org/docs/stable/>

@@ -3,6 +3,8 @@ set -e
 
 case "$1" in
 configure)
+	ucr set ldap/acl/read/anonymous=yes
+
 	a2ensite univention-identity-provider-apache
 	/etc/init.d/apache2 reload
 

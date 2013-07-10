@@ -10,6 +10,7 @@ Alias /simplesamlphp /usr/share/simplesamlphp/www
 <Directory /usr/share/simplesamlphp/www/>
 	Order allow,deny
 	Allow from all
+        php_admin_value suhosin.get.max_value_length "2048"
 #	Apache 2.4-style:
 #	Require all granted
 </Directory>

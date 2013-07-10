@@ -2,24 +2,24 @@
 
 set -e
 
-if [ "$1" = "remove" ]; then
+if [ "$1" = "purge" ]; then
 	#remove all diversions associated with this package
-#	LC_ALL=C dpkg-divert --list univention-identity-provider | sed 's/diversion of \(.*\) to .*/\1/' | while read file
-#	do
-#	[ -e "$file" ] && rm -f "$file"  # make sure that also config files are removed
-
 	dpkg-divert --package univention-identity-provider --remove --rename /etc/simplesamlphp/config.php
 	dpkg-divert --package univention-identity-provider --remove --rename /etc/simplesamlphp/authsources.php
+	if [ -f /etc/simplesamlphp/authsources.php.dpkg-dist ] ;then
+		mv /etc/simplesamlphp/authsources.php.dpkg-dist /etc/simplesamlphp/authsources.php
+	fi
 
-#	dpkg-divert --package univention-identity-provider --remove --rename "$file"
-#	done
+	if [ -f /etc/simplesamlphp/config.php.dpkg-dist ] ;then
+		mv /etc/simplesamlphp/config.php.dpkg-dist /etc/simplesamlphp/config.php
+	fi
 
 	# apache stuff
 	a2dissite univention-identity-provider-apache
 	/etc/init.d/apache2 reload	
 
 	# suhosins stuff
-
+	# ...
 fi
 #DEBHELPER#
 

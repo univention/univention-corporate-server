@@ -1,5 +1,9 @@
+/etc/univention/templates/info/univention-identity-provider.info
+/etc/univention/templates/files/etc/simplesamlphp/metadata/saml20-sp-remote.d/00PHPheader
+/etc/univention/templates/files/etc/simplesamlphp/metadata/saml20-sp-remote.d/20googleSP
+/etc/univention/templates/files/etc/simplesamlphp/metadata/saml20-sp-remote.d/10salesforceSP
+/etc/univention/templates/files/etc/simplesamlphp/metadata/saml20-sp-remote.d/40ExampleUMC-SP
+/etc/univention/templates/files/etc/simplesamlphp/conf.d/config.php
+/etc/univention/templates/files/etc/simplesamlphp/conf.d/authsources.php
 /etc/apache2/sites-available/univention-identity-provider-apache
-/etc/simplesamlphp/config.php
-/etc/simplesamlphp/metadata/saml20-sp-remote.php
 /etc/simplesamlphp/metadata/saml20-idp-hosted.php
-/etc/simplesamlphp/authsources.php

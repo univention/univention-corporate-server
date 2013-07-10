@@ -9,11 +9,13 @@ Homepage: <http://simplesamlphp.org/docs/stable/>
 Package: univention-identity-provider
 Architecture: any
 Depends: ${shlibs:Depends}, 
+ univention-config-dev,
  ${misc:Depends},
  apache2,
  php-xml-parser,
  php5-mcrypt,
  php-openid,
+ php5-ldap,
  simplesamlphp (>= 1.11.0-1) 
 Description: Integrates simpleSAMLphp Identity Provider into UCS
  This packages provides the basic configuration for the
