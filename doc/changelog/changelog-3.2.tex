@@ -442,6 +442,13 @@ create such password. The length and complexity can be configured via the
 \ucsUCRV{machine/password/length} and
 \ucsCommand{\ucsBCindex{machine/password/complexity}} (\ucsBug{31281}).
 
+\item The function \ucsName{getLDAPURIs} has been added to the python lib. This
+function returns a string with all configured LDAP URIs (\ucsBug{19753}).
+
+\item The function \ucsName{getLDAPServersCommaList} has been added to the
+python lib. This function returns a comma-seperated string with all configured
+LDAP servers (\ucsBug{19753}).
+
 \end{itemize}
 
 
@@ -478,6 +485,11 @@ revised. Only if a mailHomeServer ist set for the user, the mailbox is
 created. If the mailHomeServer attribute is removed from a user, the mailbox
 will be deleted. (\ucsBug{29605})
 
+\item The cyrus configuration now uses the LDAP servers configured through the
+\ucsUCRV{ldpa/server/addition} too (\ucsBug{19753}).
+
+\item The PAM tool \ucsName{pam\_univentionmailcyrus} supports a comma-seperated
+list for the option \ucsName{ldap\_host} (\ucsBug{19753}).
 \end{itemize}
 
 \subsection{Postfix}
@@ -488,6 +500,9 @@ whether the smtpd should be started in debug mode (\ucsBug{29593}).
 
 \item The description for an obsolete \ucsUCRV{} has been removed in
 \ucsName{univention-mail-postfix} (\ucsBug{24715}).
+
+\item The postfix configuration now uses the LDAP servers configured through the
+\ucsUCRV{ldpa/server/addition} too (\ucsBug{19753}).
 
 \end{itemize}
 
