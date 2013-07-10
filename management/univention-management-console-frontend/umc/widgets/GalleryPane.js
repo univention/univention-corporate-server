@@ -41,19 +41,41 @@ define([
 	"umc/tools",
 	"umc/widgets/Tooltip",
 	"umc/widgets/ContainerWidget",
-	"dgrid/OnDemandList",
-	"dgrid/Selection",
+	"dgrid/List",
+	"dgrid/TouchScroll",
 	"dgrid/extensions/DijitRegistry",
 	"put-selector/put",
 	"umc/i18n!umc/app"
 ], function(declare, lang, array, query, domClass, domStyle, domConstruct, aspect, Destroyable,
-		tools, Tooltip, ContainerWidget, List, Selection, DijitRegistry, put, _) {
-	return declare("umc.widgets.GalleryPane", [ List, Selection, DijitRegistry, Destroyable ], {
+		tools, Tooltip, ContainerWidget, List, TouchScroll, DijitRegistry, put, _) {
+	return declare("umc.widgets.GalleryPane", [ List, TouchScroll, DijitRegistry, Destroyable ], {
 		style: "",
 
-		showTooltips: true,
-
 		baseClass: 'umcGalleryPane',
+
+		query: {},
+
+		queryOptions: {},
+
+		_setStore: function(value) {
+			this.store = value;
+			this._renderQuery();
+		},
+
+		_setQuery: function(value) {
+			this.query = value;
+			this._renderQuery();
+		},
+
+		_setQueryOptions: function(value) {
+			this.queryOptions = value;
+			this._renderQuery();
+		},
+
+		_renderQuery: function() {
+			this.refresh();
+			this.renderArray(this.store.query(this.query, this.queryOptions));
+		},
 
 		postCreate: function() {
 			this.inherited(arguments);
@@ -85,6 +107,13 @@ define([
 			}
 		},
 
+		startup: function() {
+			this.inherited(arguments);
+			if (this.store) {
+				this.renderArray(this.store.query(this.query, this.queryOptions));
+			}
+		},
+
 		isLeftToRight: function() {
 			// needed for Dojo 1.9
 			return true;
@@ -94,44 +123,15 @@ define([
 			return item.description || '';
 		},
 
-		getCategoryString: function(item) {
-			if (item.category && typeof item.category == 'string') {
-				// we have a property category -> done
-				return item.category;
-			}
-
-			// transform categories to a comma separated list
-			var entries = [];
-			array.forEach(item.categories || [], function(icat) {
-				if (typeof icat == 'string') {
-					entries.push(icat);
-				}
-				else {
-					entries.push(icat.id);
-				}
-			});
-			return entries.join(',');
-		},
-
 		renderRow: function(item, options) {
 			// create gallery item
-			var div = put(lang.replace('div.umcGalleryItem[categories={category}][moduleID={moduleID}]', {
-				category: this.getCategoryString(item),
+			var div = put(lang.replace('div.umcGalleryItem[moduleID={moduleID}]', {
 				moduleID: item.$id$
 			}));
 			var description = this.getItemDescription(item);
 			put(div, 'div.umcGalleryIcon.' + this.getIconClass(item));
 			put(div, 'div.umcGalleryName', item.name || '');
 			put(div, 'div.umcGalleryDescription', description);
-
-			// Tooltip
-			if (this.showTooltips && description) {
-				var tooltip = new Tooltip({
-					label: description,
-					connectId: [ div ]
-				});
-				this.own(tooltip);
-			}
 
 			// create status icon
 			var statusIconClass = this.getStatusIconClass(item);

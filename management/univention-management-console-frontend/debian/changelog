@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.16-1) unstable; urgency=low
+
+  * Bug #31699: finalized usability enhancements for UMC overview page
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Jul 2013 17:07:08 +0200
+
 univention-management-console-frontend (3.0.15-1) unstable; urgency=low
 
   * Bug #31898: Fix problems in LoginDialog when changing expired password.
@@ -40,7 +46,7 @@ univention-management-console-frontend (3.0.11-1) unstable; urgency=low
 
 univention-management-console-frontend (3.0.10-1) unstable; urgency=low
 
-  * Bug #31308: replace partly unsupported reference to location.origin
+  * Bug #30961: replace partly unsupported reference to location.origin
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 02 Jul 2013 13:17:39 +0200
 

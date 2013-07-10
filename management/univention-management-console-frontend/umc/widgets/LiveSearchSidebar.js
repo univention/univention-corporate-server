@@ -101,6 +101,10 @@ define([
 			return this._searchTextBox.get('value');
 		},
 
+		_setValueAttr: function(value) {
+			return this._searchTextBox.set('value', value);
+		},
+
 		_getCategoryAttr: function() {
 			var category = this.category;
 			if (this._isInSearchMode() && this.allCategory) {
@@ -135,7 +139,10 @@ define([
 				this._categoryContainer.addChild(new Button({
 					label: category.label,
 					_categoryID: category.id,
-					callback: lang.hitch(this, 'set', 'category', category)
+					callback: lang.hitch(this, function() {
+						this.set('value', '');
+						this.set('category', category);
+					})
 				}));
 			}));
 

@@ -41,6 +41,7 @@ define([
 	"dojo/has",
 	"dojo/Evented",
 	"dojo/Deferred",
+	"dojo/when",
 	"dojo/promise/all",
 	"dojo/cookie",
 	"dojo/topic",
@@ -79,10 +80,11 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, help, about, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, help, about, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
+	var _favoritesDisabled = false;
 
 	// helper function for sorting, sort indeces with priority < 0 to be at the end
 	var _cmpPriority = function(x, y) {
@@ -91,6 +93,12 @@ define([
 		}
 		return y.priority - x.priority;
 	};
+
+	// "short" cut (well at least more verbose) for checking for favorite module
+	var isFavoriteModule = function(mod) {
+		return mod.category == '_favorites_';
+	};
+
 
 	var _OverviewPane = declare([ GalleryPane ], {
 		showTooltips: false,
@@ -103,10 +111,10 @@ define([
 		postMixInProperties: function() {
 			this.queryOptions = {
 				sort: [{
-					attribute: '$firstCategoryPriority$',
+					attribute: 'categoryPriority',
 					descending: true
 				}, {
-					attribute: '$firstCategory$',
+					attribute: 'category',
 					descending: false
 				}, {
 					attribute: 'name',
@@ -115,13 +123,9 @@ define([
 			};
 		},
 
-		_getCategoryFromNode: function(node) {
-			var categoryIDs = domAttr.get(node, 'categories').split(',');
-			if (!categoryIDs.length) {
-				return null;
-			}
+		_getCategory: function(categoryID) {
 			var categories = array.filter(this.categories, function(icat) {
-				return icat.id == categoryIDs[0];
+				return icat.id == categoryID;
 			});
 			if (!categories.length) {
 				return null;
@@ -129,54 +133,40 @@ define([
 			return categories[0];
 		},
 
-		_addCategoryNode: function(followingNode, label, categoryID) {
-			// make sure that the node has not been rendered already
-			var selectStr = lang.replace('.umcGalleryHeaderModules[categoryID={category}]', {
-				category: categoryID
-			});
-			var previousHeaderNode = query(selectStr, this.contentNode);
-			if (!previousHeaderNode.length) {
-				// node does not exist
-				domConstruct.create('div', {
-					'class': 'umcGalleryHeaderModules',
-					innerHTML: label,
-					'categoryID': categoryID
-				}, followingNode, 'before');
+		renderRow: function(item, options) {
+			var row = this.inherited(arguments);
+			if (item._isSeparator) {
+				var category = this._getCategory(item.category);
+				row = domConstruct.create('div', {
+					'class': 'umcGalleryCategoryHeader',
+					innerHTML: category.label,
+					'categoryID': category.id
+				});
 			}
+			return row;
 		},
 
-		renderArray: function() {
+		renderArray: function(items) {
 			var result = this.inherited(arguments);
-
-			// add separators
-			var lastCategory = null;
-			var firstCategory = null;
-			var firstNode = null;
-			var nCategories = 0;
-			var i = 0;
-			query('.umcGalleryItem', this.contentNode).forEach(lang.hitch(this, function(inode) {
-				var category = this._getCategoryFromNode(inode);
-				if (!category) {
-					return;
+			query('.umcGalleryCategoryHeader', this.contentNode).forEach(function(inode) {
+				// hide category headers with no entry
+				var category = domAttr.get(inode, 'categoryID');
+				var hasItems = array.some(items, function(iitem) {
+					return !iitem._isSeparator && iitem.category == category;
+				});
+				if (!hasItems) {
+					style.set(inode, 'display', 'none');
 				}
-				firstCategory = firstCategory || category; // remember the first category
-				firstNode = firstNode || inode;
-				if (!lastCategory || category.id != lastCategory.id) {
-					++nCategories;
-					lastCategory = category;
-					this._addCategoryNode(inode, category.label, category.id);
-				}
-			}));
-
-			return result
+			});
+			return result;
 		},
 
 		getStatusIconClass: function(item) {
-			return tools.getIconClass(item._isFavorite ? 'delete' : 'star', 24);
+			return _favoritesDisabled ? null : tools.getIconClass(isFavoriteModule(item) ? 'delete' : 'star', 24);
 		},
 
 		getStatusIconTooltip: lang.hitch(this, function(item) {
-			if (item._isFavorite) {
+			if (isFavoriteModule(item)) {
 				return _('Remove from favorites');
 			} else {
 				return _('Add to favorites');
@@ -185,6 +175,271 @@ define([
 
 		getItemDescription: function(item) {
 			return item.description;
+		},
+
+		updateQuery: function(searchPattern, searchQuery, category) {
+			var query = function(obj) {
+				// sub conditions
+				var allCategories = category.id == '$all$';
+				var displayItem = obj._isSeparator || obj.BaseClass;
+				var matchesPattern = obj._isSeparator || !searchPattern
+					// for a given pattern, ignore 'pseudo' entries in _favorites_ category
+					|| (searchQuery.test(null, obj) && obj.category != '_favorites_');
+				var matchesCategory = obj.category == category.id;
+				if (category.id == '$all$') {
+					matchesCategory = true;
+				}
+				else if (category.id == '_favorites_') {
+					// allow all separators AND favorite items of categories != _favorites_
+					matchesCategory = obj.category != '_favorites_' && (obj._isSeparator || obj._isFavorite);
+				}
+
+				// match separators OR modules with a valid class
+				return displayItem && matchesPattern && matchesCategory;
+			};
+
+			// set query
+			this.set('query', query);
+		}
+	});
+
+
+	var _ProgressDialog = declare([Dialog], {
+		_progressInfo: null,
+		postMixInProperties: function() {
+			this.inherited(arguments);
+			this.content = this._progressInfo = new ProgressInfo({});
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			this._progressInfo.updateTitle(_('Loading modules'));
+			this._progressInfo.updateInfo('&nbsp;');
+		},
+
+		_setMaximumAttr: function(value) {
+			this._set('maximum', value);
+			this._progressInfo.update(0);
+		},
+
+		update: function(ndeps, moduleName) {
+			this._progressInfo.update(ndeps, moduleName ? _('Loaded module %s', moduleName) : '&nbsp;');
+		},
+
+		close: function() {
+			var hideDeferred = this.hide();
+			if (hideDeferred) {
+				return hideDeferred.then(lang.hitch(this, 'destroyRecursive'));
+			}
+		}
+	});
+
+
+	var _ModuleStore = declare([Memory], {
+		data: null,
+		modules: null,
+
+		categories: null,
+
+		favoritesDisabled: false,
+
+		idProperty: '$id$',
+
+		constructor: function(modules, categories, favoritesStr) {
+			this.categories = this._createCategoryList(categories);
+			this.setData(this._createModuleList(modules));
+			this._pruneEmptyCategories();
+			this._addFavoriteCategory();
+			this._addSeparatorItems();
+		},
+
+		_createModuleList: function(_modules) {
+			_modules = _modules.sort(_cmpPriority);
+			var modules = [];
+			array.forEach(_modules, function(imod) {
+				array.forEach(imod.categories || [], function(icat) {
+					modules.push(this._createModuleItem(imod, icat));
+				}, this)
+			}, this);
+			return modules;
+		},
+
+		_createModuleItem: function(_item, categoryID) {
+			// we need a uniqe ID for the store
+			var item = lang.mixin({
+				categories: []
+			}, _item);
+			item.$id$ = item.id + ':' + item.flavor;
+
+			if (categoryID) {
+				item.$id$ += '#' + categoryID;
+				item.category = '' + categoryID;
+				item.categoryPriority = lang.getObject('priority', false, this.getCategory(categoryID)) || 0;
+			}
+			else {
+				item.category = '';
+				item.categoryPriority = 0;
+			}
+			return item;
+		},
+
+		_createCategoryList: function(_categories) {
+			var categories = array.map(_categories, function(icat, i) {
+				return lang.mixin(icat, {
+					_orgIndex: i,  // save the element's original index
+					label: icat.name
+				});
+			});
+			return categories.sort(_cmpPriority);
+		},
+
+		_pruneEmptyCategories: function() {
+			var nonEmptyCategories = {};
+			this.query().forEach(function(imod) {
+				array.forEach(imod.categories, function(icat) {
+					nonEmptyCategories[icat] = true;
+				});
+			});
+			var categories = array.filter(this.categories, function(icat) {
+				return nonEmptyCategories[icat.id] === true;
+			});
+			this.categories = categories;
+		},
+
+		_addSeparatorItems: function() {
+			array.forEach(this.categories, function(icat) {
+				this.put(this._createModuleItem({
+					id: '_separator_',
+					name: '',
+					description: '',
+					_isSeparator: true
+				}, icat.id));
+			}, this);
+		},
+
+		_addFavoriteCategory: function() {
+			this.categories.unshift({
+				label: _('Favorites'),
+				id: '_favorites_',
+				priority: Number.POSITIVE_INFINITY
+			});
+		},
+
+		setFavoritesString: function(favoritesStr) {
+			var favoritesStr = favoritesStr || '';
+			array.forEach(lang.trim(favoritesStr).split(/\s*,\s*/), function(ientry) {
+				this.addFavoriteModule.apply(this, ientry.split(':'));
+			}, this);
+		},
+
+		_saveFavorites: function() {
+			if (!tools.status('setupGui')) {
+				return;
+			}
+
+			// get all favorite modules
+			var modules = this.query({
+				category: '_favorites_'
+			});
+
+			// save favorites as a comma separated list
+			var favoritesStr = array.map(modules, function(imod) {
+				return imod.flavor ? imod.id + ':' + imod.flavor : imod.id;
+			}).join(',');
+
+			// store updated favorites
+			tools.setUserPreference({favorites: favoritesStr});
+		},
+
+		getCategories: function() {
+			return this.categories; // Object[]
+		},
+
+		getCategory: function(/*String*/ id) {
+			var res = array.filter(this.categories, function(icat) {
+				return icat.id == id;
+			});
+			if (res.length <= 0) {
+				return undefined; // undefined
+			}
+			return res[0];
+		},
+
+		getModules: function(/*String?*/ category) {
+			var query = {};
+			if (category) {
+				query.categories = {
+					test: function(categories) {
+						return array.indexOf(categories, category) >= 0;
+					}
+				};
+			}
+			return this.query(query, {
+				sort: _cmpPriority
+			});
+		},
+
+		getModule: function(/*String?*/ id, /*String?*/ flavor, /*String?*/ category) {
+			var query = {
+				id: id,
+				flavor: flavor || /.*/,
+				// by default, match categories != favorites category
+				category: category || /^((?!_favorites_).)*$/
+			};
+			var res = this.query(query);
+			if (res.length) {
+				return res[0];
+			}
+			return undefined;
+		},
+
+		addFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
+			var favoriteModule = this.getModule(id, flavor, '_favorites_');
+			if (favoriteModule) {
+				// module has already been added to the favorites
+				return;
+			}
+			var _mod = this.getModule(id, flavor);
+			if (_mod) {
+				// update _isFavorite flag
+				_mod._isFavorite = true;
+				this.put(_mod);
+			}
+			else {
+				// module does not exist (on this server), we add a dummy module
+				// (this is important when installing a new app which is automatically
+				// added to the favorites)
+				_mod = {
+					id: id,
+					flavor: flavor,
+					name: id
+				};
+			}
+
+			// add a module clone for favorite category
+			var mod = this._createModuleItem(_mod, '_favorites_');
+			this.put(mod);
+
+			// save settings
+			this._saveFavorites();
+		},
+
+		removeFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
+			// remove favorite module
+			var favoriteModule = this.getModule(id, flavor, '_favorites_');
+			if (favoriteModule) {
+				this.remove(favoriteModule.$id$);
+			}
+
+			// update _isFavorite module
+			var mod = this.getModule(id, flavor);
+			if (mod && mod._isFavorite) {
+				mod._isFavorite = false;
+				this.put(mod);
+			}
+
+			// save settings
+			this._saveFavorites();
 		}
 	});
 
@@ -261,7 +516,7 @@ define([
 			this.setupStaticGui();
 
 			// load the modules
-			this.loadModules();
+			this.load();
 		},
 
 		_tabContainer: null,
@@ -272,7 +527,7 @@ define([
 		_settingsMenu: null,
 		_hostInfo: null,
 		_categoriesContainer: null,
-		_favoritesEnabled: true,
+		_favoritesDisabled: false,
 
 		openModule: function(/*String|Object*/ module, /*String?*/ flavor, /*Object?*/ props) {
 			// summary:
@@ -333,8 +588,8 @@ define([
 			}
 		},
 
-		onModulesLoaded: function() {
-			// load required ucr variables
+		onLoaded: function() {
+			// updated status information from ucr variables
 			tools.status('sessionTimeout', parseInt( _ucr['umc/http/session/timeout'] , 10 ) || tools.status('sessionTimeout'));
 			tools.status('feedbackAddress', _ucr['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
 			tools.status('feedbackSubject', _ucr['umc/web/feedback/description'] || tools.status('feedbackSubject'));
@@ -351,16 +606,52 @@ define([
 
 		_moduleStore: null,
 		_categories: [],
-		_modulesLoaded: false,
-		loadModules: function() {
+		_loaded: false,
+		load: function() {
 			// make sure that we don't load the modules twice
-			if (this._modulesLoaded) {
-				this.onModulesLoaded();
+			if (this._loaded) {
+				this.onLoaded();
 				return;
 			}
 
-			// load some important UCR variables
-			var ucrDeferred = tools.ucr([
+			// prompt a dialog showing the progress of loading modules
+			var progressDialog = new _ProgressDialog({});
+			progressDialog.show();
+
+			// load data dynamically
+			var ucrDeferred = this._loadUcrVariables();
+			var userPreferencesDefered = this._loadUserPreferences();
+			var modulesDeferred = this._loadModules(progressDialog);
+
+			// wait for modules, the UCR variables, and user preferences to load
+			all([modulesDeferred, ucrDeferred, userPreferencesDefered]).then(lang.hitch(this, function() {
+				// loading is done
+				this._moduleStore.setFavoritesString(_userPreferences.favorites || _ucr['umc/web/favorites/default']);
+				when(progressDialog.close(), lang.hitch(this, function() {
+					this._loaded = true;
+					this.onLoaded();
+				}));
+			}), lang.hitch(this, function() {
+				// something went wrong... try to login again
+				when(progressDialog.close(), lang.hitch(this, function() {
+					dialog.login().then(lang.hitch(this, 'onLogin'));
+				}));
+			}));
+
+			// perform actions that depend on the UCR variables
+			ucrDeferred.then(function(res) {
+				var piwikUcrv = _ucr['umc/web/piwik'];
+				var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
+				var ffpuLicense = _ucr['license/base'] == 'Free for personal use edition';
+				if (tools.isTrue(_ucr['umc/web/piwik']) || (!piwikUcrvIsSet && ffpuLicense)) {
+					// use piwik for user action feedback if it is not switched off explicitely
+					require(['umc/piwik'], function() {});
+				}
+			});
+		},
+
+		_loadUcrVariables: function() {
+			return tools.ucr([
 				'server/role',
 				'system/setup/showloginmessage', // set to true when not joined
 				'domainname',
@@ -380,40 +671,29 @@ define([
 				// save the ucr variables in a local variable
 				lang.mixin(_ucr, res);
 			}));
+		},
 
-			// load user settings
-			var userPreferencesDefered = tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
+		_loadUserPreferences: function() {
+			return tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
+				// save the preferences in a local variable
 				lang.mixin(_userPreferences, prefs);
-				this._favoritesEnabled = true;
-			}), lang.hitch(this, function() {
-				// user preferences disabled
-				this._favoritesEnabled = false;
+			})).then(function() {
+				// nothing to do
+			}, lang.hitch(this, function() {
+				_favoritesDisabled = true;
 			}));
+		},
 
-			// prompt a dialog showing the progress of loading modules
-			var progressInfo = new ProgressInfo({});
-			var progressDialog = new Dialog({
-				content: progressInfo
-			});
-			progressInfo.updateTitle(_('Loading modules'));
-			progressInfo.updateInfo('&nbsp;');
-			progressDialog.show();
-
-			// load the modules dynamically
+		_loadModules: function(progressDialog) {
 			var modules = [];
-			var modulesDeferred = tools.umcpCommand('get/modules/list', null, false).then(lang.hitch(this, function(data) {
+			var categories = [];
+			return tools.umcpCommand('get/modules/list', null, false).then(lang.hitch(this, function(data) {
 				// update progress
 				var _modules = lang.getObject('modules', false, data) || [];
-				progressInfo.maximum = _modules.length;
-				progressInfo.update(0);
+				progressDialog.set('maximum', _modules.length);
 
-				// get all categories
-				array.forEach(lang.getObject('categories', false, data), lang.hitch(this, function(icat, i) {
-					icat._orgIndex = i;  // save the element's original index
-					icat.label = icat.name;
-					this._categories.push(icat);
-				}));
-				this._categories.sort(_cmpPriority);
+				// get categories
+				categories = data.categories;
 
 				// register error handler
 				var ndeps = 0;
@@ -421,18 +701,13 @@ define([
 				var incDeps = function(moduleName) {
 					// helper function
 					++ndeps;
-					progressInfo.update(ndeps, moduleName ? _('Loaded module %s', moduleName) : '&nbsp;');
+					progressDialog.update(ndeps, moduleName);
 					if (ndeps >= _modules.length) {
-						// all modules have been loaded
-						progressDialog.hide().then(lang.hitch(this, function() {
-							progressDialog.destroyRecursive();
-							modulesLoaded.resolve();
-						}));
+						modulesLoaded.resolve();
 					}
 				};
 				var errHandle = require.on('error', function(err) {
 					// count the loaded dependencies
-					// TODO: revise this error handling
 					if (err.message == 'scriptError') {
 						incDeps();
 					}
@@ -455,12 +730,7 @@ define([
 
 				return modulesLoaded;
 			})).then(lang.hitch(this, function() {
-				this._moduleStore = this._createModuleStore(modules);
-				this._moduleStore.query().observe(lang.hitch(this, function(item, removedFrom, insertedInto) {
-					console.log('### change: item.$id$', item);
-				}), true);
-
-				this._pruneEmptyCategories();
+				this._moduleStore = this._createModuleStore(modules, categories);
 
 				// make sure that we do not overwrite an explicitely stated value of 'overview'
 				if (getQuery('overview') === undefined) {
@@ -468,37 +738,6 @@ define([
 					tools.status('overview', modules.length !== 1 && tools.status('overview'));
 				}
 			}));
-
-			// wait for modules, the UCR variables, and user preferences to load
-			all([modulesDeferred, ucrDeferred, userPreferencesDefered]).then(lang.hitch(this, function() {
-				// loading is done
-				this.onModulesLoaded();
-				this._modulesLoaded = true;
-			}), lang.hitch(this, function() {
-				// something went wrong... try to login again
-				progressDialog.hide().then(function() {
-					progressInfo.destroyRecursive();
-				});
-				dialog.login().then(lang.hitch(this, 'onLogin'));
-			}));
-
-			// perform actions that depend on the UCR variables
-			ucrDeferred.then(function(res) {
-				var piwikUcrv = _ucr['umc/web/piwik'];
-				var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
-				var ffpuLicense = _ucr['license/base'] == 'Free for personal use edition';
-				if (tools.isTrue(_ucr['umc/web/piwik']) || (!piwikUcrvIsSet && ffpuLicense)) {
-					// use piwik for user action feedback if it is not switched off explicitely
-					require(['umc/piwik'], function() {});
-				}
-			});
-		},
-
-		_populateFavoriteCategory: function() {
-			var favoritesStr = _userPreferences.favorites || _ucr['umc/web/favorites/default'] || '';
-			array.forEach(lang.trim(favoritesStr).split(/\s*,\s*/), function(ientry) {
-				this.addFavoriteModule.apply(this, ientry.split(':'));
-			}, this);
 		},
 
 		_tryLoadingModule: function(_module, i) {
@@ -521,46 +760,8 @@ define([
 			return deferred;
 		},
 
-		_createModuleItem: function(_item) {
-			// we need a uniqe ID for the store
-			var item = lang.mixin({
-				categories: []
-			}, _item);
-			item.$id$ = item.id + ':' + item.flavor;
-			if (item.categories.length) {
-				item.$firstCategory$ = '' + item.categories[0];
-				item.$firstCategoryPriority$ = this.getCategory(item.categories[0]).priority;
-			}
-			else {
-				item.$firstCategory$ = '';
-				item.$firstCategoryPriority$ = 0;
-			}
-			return item;
-		},
-
-		_createModuleStore: function(_modules) {
-			// sort the internal list of modules
-			_modules.sort(_cmpPriority);
-
-			// create a store for the module items
-			modules = array.map(_modules, lang.hitch(this, '_createModuleItem'));
-			return new Observable(new Memory({
-				data: modules,
-				idProperty: '$id$'
-			}));
-		},
-
-		_pruneEmptyCategories: function() {
-			var nonEmptyCategories = {};
-			this._moduleStore.query().forEach(function(imod) {
-				array.forEach(imod.categories, function(icat) {
-					nonEmptyCategories[icat] = true;
-				});
-			});
-			var categories = array.filter(this._categories, function(icat) {
-				return nonEmptyCategories[icat.id] === true;
-			});
-			this._categories = categories;
+		_createModuleStore: function(modules, categories, favoritesStr) {
+			return new Observable(new _ModuleStore(modules, categories, favoritesStr));
 		},
 
 		getModules: function(/*String?*/ category) {
@@ -569,16 +770,8 @@ define([
 			//		The returned array contains objects with the properties
 			//		{ BaseClass, id, title, description, categories }.
 			// categoryID:
-			//		Optional category name.
-			var query = {};
-			if (category) {
-				query.categories = {
-					test: function(categories) {
-						return array.indexOf(categories, category) >= 0;
-					}
-				};
-			}
-			return this._moduleStore.query(query, { sort: _cmpPriority } );
+			//		Optional category name.a
+			return this._moduleStore.getModules(category);
 		},
 
 		getModule: function(/*String?*/ id, /*String?*/ flavor, /*String?*/ category) {
@@ -592,107 +785,21 @@ define([
 			//		The module flavor as string.
 			// category:
 			//		Restricts the search only to the given category.
-
-			var query = {
-				id: id,
-				flavor: flavor || /.*/
-			};
-			if (category) {
-				query.categories = {
-					test: function(categories) {
-						return array.indexOf(categories, category) >= 0;
-					}
-				};
-			}
-			var res = this._moduleStore.query(query);
-			if (res.length) {
-				return res[0];
-			}
-			return undefined;
+			return this._moduleStore.getModule(id, flavor, category);
 		},
 
 		getCategories: function() {
 			// summary:
 			//		Get all categories as an array. Each entry has the following properties:
 			//		{ id, description }.
-			return this._categories; // Object[]
+			return this._moduleStore.getCategories()
 		},
 
 		getCategory: function(/*String*/ id) {
 			// summary:
 			//		Get all categories as an array. Each entry has the following properties:
 			//		{ id, description }.
-			var res = array.filter(this._categories, function(icat) {
-				return icat.id == id;
-			});
-			if (res.length <= 0) {
-				return undefined; // undefined
-			}
-			return res[0];
-		},
-
-		_saveFavorites: function() {
-			if (!tools.status('setupGui')) {
-				return;
-			}
-
-			// get all favorite modules
-			var modules = this._moduleStore.query({
-				_isFavorite: true
-			});
-
-			// save favorites as a comma separated list
-			var favoritesStr = array.map(modules, function(imod) {
-				return imod.flavor ? imod.id + ':' + imod.flavor : imod.id;
-			}).join(',');
-
-			// store updated favorites
-			tools.setUserPreference({favorites: favoritesStr});
-		},
-
-		addFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
-			var mod = this.getModule(id, flavor);
-			if (mod && mod._isFavorite) {
-				// module has already been added to the favorites
-				return;
-			}
-			if (!mod) {
-				// module does not exist (on this server), we add a dummy module
-				// (this is important when installing a new app which is automatically
-				// added to the favorites)
-				mod = this._createModuleItem({
-					id: id,
-					flavor: flavor,
-					name: id
-				});
-			}
-
-			// add a module clone for favorite category
-			mod._isFavorite = true;
-			this._moduleStore.put(mod);
-
-			// save settings
-			this._saveFavorites();
-		},
-
-		removeFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
-			var mod = this.getModule(id, flavor);
-			if (!mod) {
-				// module is not part of the favorites
-				delete this._favorites_for_not_existing_modules[id + ':' + flavor];
-				return;
-			}
-			if (!mod._isFavorite) {
-				// module is not a favorite
-				return;
-			}
-
-			// remove favorites category
-			mod._isFavorite = false;
-			this._moduleStore.put(mod);
-
-			// save settings
-			this._saveFavorites();
+			return this._moduleStore.getCategory(id);
 		},
 
 		setupGui: function() {
@@ -742,91 +849,18 @@ define([
 					//helpText: _('umcOverviewHelpText'),
 					'class': 'umcAppCenter umcPage'
 				});
-				this._tabContainer.addChild(this._overviewPage);
 				this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
+				this._tabContainer.addChild(this._overviewPage);
 
-				// check validity of SSL certificates
-				var hostCert = parseInt( _ucr[ 'ssl/validity/host' ], 10 );
-				var rootCert = parseInt( _ucr[ 'ssl/validity/root' ], 10 );
-				var warning = parseInt( _ucr[ 'ssl/validity/warning' ], 10 );
-				var certExp = rootCert;
-				var certType = _('SSL root certificate');
-				if (rootCert >= hostCert) {
-					certExp = hostCert;
-					certType = _('SSL host certificate');
-				}
-				var today = new Date().getTime() / 1000 / 60 / 60 / 24; // now in days
-				var days = certExp - today;
-				if ( days <= warning ) {
-					this._overviewPage.addNote( _( 'The %s will expire in %d days and should be renewed!', certType, days ) );
-				}
-
-				// check license
-				if ( this.getModule( 'udm' ) ) {
-					// taken from udm.js
-					tools.umcpCommand('udm/license', {}, false).then(lang.hitch(this, function(data) {
-						var msg = data.result.message;
-						if (msg) {
-							this._overviewPage.addNote(msg);
-						}
-					}), function() {
-						console.log('WARNING: An error occurred while verifying the license. Ignoring error.');
-					});
-				}
-				// check if updates are available
-				if ( this.getModule('updater') && tools.isTrue(_ucr['update/available']) ) {
-					var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'updater\')"';
-					this._overviewPage.addNote( _( 'An update for UCS is available. Please visit <a %s>Online Update Module</a> to install the updates.', link ) );
-				}
-				if (has('ie') < 9 || has('ff') < 4) {
-					// supported browsers are FF 3.6 and IE 8
-					// they should work with UMC. albeit, they are
-					// VERY slow and escpecially IE 8 may take minutes (!)
-					// to load a heavy UDM object (on a slow computer at least).
-					// IE 8 is also known to cause timeouts when under heavy load
-					// (presumably because of many async requests to the server
-					// during UDM-Form loading)
-					this._overviewPage.addNote( _( 'Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.' ) );
-				}
-				if (tools.status('username') == 'root' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {
-					var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
-					if (_ucr['server/role'] == 'domaincontroller_slave') {
-						this._overviewPage.addNote( _( 'As %s you do not have access to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
-					} else { // master, backup
-						this._overviewPage.addNote( _( 'As %s you have neither access to the domain administration nor to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
-					}
-				}
-
-				// check if system reboot is required
-				if ( this.getModule('reboot') && tools.isTrue(_ucr['update/reboot/required']) ) {
-					var link_reboot = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'reboot\')"';
-					this._overviewPage.addNote( _( 'This system has been updated recently. Please visit the <a %s>Reboot Module</a> and reboot this system to finish the update.', link_reboot ) );
-				}
-
-				// check join status
-				if (this.getModule('join')) {
-					all([
-						tools.umcpCommand('join/joined', null, false),
-						tools.umcpCommand('join/scripts/query', null, false)
-					]).then(
-						lang.hitch(this, function(data) {
-							var systemJoined = data[0].result;
-							var allScriptsConfigured = array.every(data[1].result, function(item) {
-								return item.configured;
-							});
-							var joinModuleLink = '<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'join\')"';
-							if (!systemJoined) {
-								this._overviewPage.addNote(_('The system has not been joined into a domain so far. Please visit <a %s>Domain Join Module</a> to join the system.', joinModuleLink));
-							} else if (!allScriptsConfigured) {
-								this._overviewPage.addNote(_('Not all installed components have been registered. Please visit <a %s>Domain Join Module</a> to register the remaining components.', joinModuleLink));
-							}
-						}), function() {
-							console.log('WARNING: An error occurred while verifying the join state. Ignoring error.');
-						}
-					);
-				}
-
-				this._populateFavoriteCategory();
+				// run several checks
+				this._checkCertificateValidity();
+				this._checkLicense();
+				this._checkUpdateAvailable();
+				this._checkBrowser();
+				this._checkForUserRoot();
+				this._checkRebootRequired();
+				this._checkJoinStatus();
+				this._checkNoModuleAvailable();
 
 				// add search widget
 				this._searchSidebar = new LiveSearchSidebar({
@@ -836,17 +870,13 @@ define([
 				this._overviewPage.addChild(this._searchSidebar);
 
 				// set the categories
-				var categories = this.getCategories();
+				var categories = lang.clone(this.getCategories());
 				categories.unshift({
 					label: _('All'),
 					id: '$all$'
 				});
-				categories.unshift({
-					label: _('Favorites'),
-					id: '$favorites$'
-				});
-				this._searchSidebar.set('categories', this.getCategories());
-				this._searchSidebar.set('allCategory', categories[1]);
+				this._searchSidebar.set('categories', categories);
+				this._searchSidebar.set('allCategory', categories[0]);
 
 				// add the grid
 				this._grid = new _OverviewPane({
@@ -862,83 +892,153 @@ define([
 			// add the TabContainer to the main BorderContainer
 			this._topContainer.addChild(this._tabContainer);
 
-			// show a message in case no module is available
-			if (!this._moduleStore.query().length) {
-				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
-			}
-
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
 		},
 
+		_checkCertificateValidity: function() {
+			var hostCert = parseInt( _ucr[ 'ssl/validity/host' ], 10 );
+			var rootCert = parseInt( _ucr[ 'ssl/validity/root' ], 10 );
+			var warning = parseInt( _ucr[ 'ssl/validity/warning' ], 10 );
+			var certExp = rootCert;
+			var certType = _('SSL root certificate');
+			if (rootCert >= hostCert) {
+				certExp = hostCert;
+				certType = _('SSL host certificate');
+			}
+			var today = new Date().getTime() / 1000 / 60 / 60 / 24; // now in days
+			var days = certExp - today;
+			if ( days <= warning ) {
+				this._overviewPage.addNote( _( 'The %s will expire in %d days and should be renewed!', certType, days ) );
+			}
+		},
+
+		_checkLicense: function() {
+			if ( this.getModule( 'udm' ) ) {
+				// taken from udm.js
+				tools.umcpCommand('udm/license', {}, false).then(lang.hitch(this, function(data) {
+					var msg = data.result.message;
+					if (msg) {
+						this._overviewPage.addNote(msg);
+					}
+				}), function() {
+					console.log('WARNING: An error occurred while verifying the license. Ignoring error.');
+				});
+			}
+		},
+
+		_checkUpdateAvailable: function() {
+			if ( this.getModule('updater') && tools.isTrue(_ucr['update/available']) ) {
+				var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'updater\')"';
+				this._overviewPage.addNote( _( 'An update for UCS is available. Please visit <a %s>Online Update Module</a> to install the updates.', link ) );
+			}
+		},
+
+		_checkBrowser: function() {
+			if (has('ie') < 9 || has('ff') < 4) {
+				// supported browsers are FF 3.6 and IE 8
+				// they should work with UMC. albeit, they are
+				// VERY slow and escpecially IE 8 may take minutes (!)
+				// to load a heavy UDM object (on a slow computer at least).
+				// IE 8 is also known to cause timeouts when under heavy load
+				// (presumably because of many async requests to the server
+				// during UDM-Form loading)
+				this._overviewPage.addNote( _( 'Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.' ) );
+			}
+		},
+
+		_checkForUserRoot: function() {
+			if (tools.status('username') == 'root' && tools.isFalse(_ucr['system/setup/showloginmessage'])) {
+				var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
+				if (_ucr['server/role'] == 'domaincontroller_slave') {
+					this._overviewPage.addNote( _( 'As %s you do not have access to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
+				} else { // master, backup
+					this._overviewPage.addNote( _( 'As %s you have neither access to the domain administration nor to the App Center. For this you need to log in as %s.', '<strong>root</strong>', login_as_admin_tag ) );
+				}
+			}
+		},
+
+		_checkRebootRequired: function() {
+			if ( this.getModule('reboot') && tools.isTrue(_ucr['update/reboot/required']) ) {
+				var link_reboot = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'reboot\')"';
+				this._overviewPage.addNote( _( 'This system has been updated recently. Please visit the <a %s>Reboot Module</a> and reboot this system to finish the update.', link_reboot ) );
+			}
+		},
+
+		_checkJoinStatus: function() {
+			if (this.getModule('join')) {
+				all([
+					tools.umcpCommand('join/joined', null, false),
+					tools.umcpCommand('join/scripts/query', null, false)
+				]).then(
+					lang.hitch(this, function(data) {
+						var systemJoined = data[0].result;
+						var allScriptsConfigured = array.every(data[1].result, function(item) {
+							return item.configured;
+						});
+						var joinModuleLink = '<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'join\')"';
+						if (!systemJoined) {
+							this._overviewPage.addNote(_('The system has not been joined into a domain so far. Please visit <a %s>Domain Join Module</a> to join the system.', joinModuleLink));
+						} else if (!allScriptsConfigured) {
+							this._overviewPage.addNote(_('Not all installed components have been registered. Please visit <a %s>Domain Join Module</a> to register the remaining components.', joinModuleLink));
+						}
+					}), function() {
+						console.log('WARNING: An error occurred while verifying the join state. Ignoring error.');
+					}
+				);
+			}
+		},
+
+		_checkNoModuleAvailable: function() {
+			var launchableModules = this._moduleStore.query(function(item) {
+				return item.BaseClass;
+			});
+			if (!launchableModules.length) {
+				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
+			}
+		},
+
 		_focusSearchField: function() {
-			this._searchSidebar.focus();
+			if (!has('touch')) {
+				this._searchSidebar.focus();
+			}
 		},
 
 		_registerGridEvents: function() {
 			this._searchSidebar.on('search', lang.hitch(this, '_updateQuery'));
 
 			this._grid.on('.umcGalleryStatusIcon:click', lang.hitch(this, function(evt) {
-				// prevent event bubbling
 				evt.stopImmediatePropagation();
-
-				var item = this._grid.row(evt).data;
-				if (item._isFavorite) {
-					// for the favorite category, remove the moduel from the favorites
-					this.removeFavoriteModule(item.id, item.flavor);
-					topic.publish('/umc/actions', 'overview', 'favorites', item.id, item.flavor, 'remove');
-				}
-				else {
-					// for any other category, add the module to the favorites
-					this.addFavoriteModule(item.id, item.flavor);
-					topic.publish('/umc/actions', 'overview', 'favorites', item.id, item.flavor, 'add');
-				}
-
-				// hide any tooltip
-				setTimeout(function() {
-					Tooltip._masterTT && Tooltip._masterTT.fadeOut.play();
-				}, 10);
+				var module = this._grid.row(evt).data;
+				this._toggleFavoriteModule(module);
 			}));
 
 			this._grid.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
-				var item = this._grid.row(evt).data;
-				this.openModule(this._grid.row(evt).data);
+				var module = this._grid.row(evt).data;
+				this.openModule(module);
 			}));
 
 		},
 
 		_updateQuery: function() {
-			// option for querying for the search pattern
-			var query = {};
 			var searchPattern = lang.trim(this._searchSidebar.get('value'));
-			if (searchPattern) {
-				query.name = this._searchSidebar.getSearchQuery(searchPattern);
-			}
+			var searchQuery = this._searchSidebar.getSearchQuery(searchPattern);
+			var searchCategory = this._searchSidebar.get('category');
+			this._grid.updateQuery(searchPattern, searchQuery, searchCategory);
+		},
 
-			// only show modules with valid BaseClass
-			query.BaseClass = {
-				test: function(value, obj) {
-					return Boolean(value);
-				}
-			};
-
-			// option for querying for the correct category
-			var category = this._searchSidebar.get('category');
-			if (category.id == '$favorites$') {
-				// search in virtual category "favorites"
-				query._isFavorite = true;
+		_toggleFavoriteModule: function(module) {
+			if (isFavoriteModule(module)) {
+				// for the favorite category, remove the moduel from the favorites
+				this._moduleStore.removeFavoriteModule(module.id, module.flavor);
+				topic.publish('/umc/actions', 'overview', 'favorites', module.id, module.flavor, 'remove');
 			}
-			else if (category.id != '$all$') {
-				query.categories = {
-					test: function(categories) {
-						return (array.indexOf(categories, category.id) >= 0);
-					}
-				};
+			else {
+				// for any other category, add the module to the favorites
+				this._moduleStore.addFavoriteModule(module.id, module.flavor);
+				topic.publish('/umc/actions', 'overview', 'favorites', module.id, module.flavor, 'add');
 			}
-
-			// set query options and refresh grid
-			this._grid.set('query', query);
 		},
 
 		_setupStaticGui: false,

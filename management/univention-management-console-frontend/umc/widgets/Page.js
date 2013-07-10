@@ -110,7 +110,6 @@ define([
 		},
 
 		_setHeaderTextAttr: function(newVal) {
-			console.log('_setHeaderTextAttr:', newVal);
 			if (this._headerTextPane) {
 				// hide header if empty string
 				style.set(this._headerTextPane.domNode, {
@@ -123,7 +122,6 @@ define([
 		},
 
 		postMixInProperties: function() {
-			console.log('postMixInProperties');
 			this.inherited(arguments);
 
 			// remove title from the attributeMap
@@ -131,11 +129,9 @@ define([
 
 			// initiate array for notes
 			this._notes = [];
-			console.log('postMixInProperties done');
 		},
 
 		buildRendering: function() {
-			console.log('buildRendering');
 			this.inherited(arguments);
 
 			// add the header
@@ -182,7 +178,6 @@ define([
 					this._footerButtons = buttons;
 				}
 			}
-			console.log('buildRendering done');
 		},
 
 		postCreate: function() {
