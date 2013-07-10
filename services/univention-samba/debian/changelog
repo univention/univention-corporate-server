@@ -1,9 +1,16 @@
+univention-samba (8.0.2-1) unstable; urgency=low
+
+  * When deleting a share, /etc/samba/shares.conf is refreshed
+    in an atomic operation (Bug #29399)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 10 Jul 2013 16:47:23 +0200
+
 univention-samba (8.0.1-1) unstable; urgency=low
 
   * The UCR variables windows/wins-server and windows/wins-support
     are now set in the Samba joinscript (Bug #31814)
 
- -- Tobias Peters <peters@univention.de>  , 28 Fri 2013 10:01:40 +0200
+ -- Tobias Peters <peters@univention.de>  Fri, 28 Jun 2013 10:01:40 +0200
 
 univention-samba (8.0.0-1) unstable; urgency=low
 
