@@ -334,7 +334,7 @@ if __name__ == '__main__':
 		  udm policies/registry create \
 		    --position "cn=config-registry,cn=policies,%(ldap/base)s" \
 		    --set name="global settings" \
-		    --set registry="update/secure no"
+		    --set registry="update/secure_apt no"
 		  udm container/dc modify \
 		    --dn "%(ldap/base)s" \
 		    --policy-reference "cn=global settings,cn=config-registry,cn=policies,%(ldap/base)s" \
