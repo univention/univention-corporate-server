@@ -1,3 +1,9 @@
+univention-ldap (10.0.6-1) unstable; urgency=low
+
+  * Allow substring search for univentionShareHost (Bug #31208)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Jul 2013 09:48:37 +0200
+
 univention-ldap (10.0.5-1) unstable; urgency=low
 
   * Use getLDAPURIs from python-univention-lib (Bug #19753)
