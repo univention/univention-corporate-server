@@ -1,3 +1,10 @@
+univention-quota (7.0.5-10) unstable; urgency=low
+
+  * fixed typo in "univention-user-quota" which caused a traceback (Bug
+  	#31957)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 11 Jul 2013 13:05:29 +0200
+
 univention-quota (7.0.5-9) unstable; urgency=low
 
   * use os.environ['USER'] as fallback if no username is passed to
