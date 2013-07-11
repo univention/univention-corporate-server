@@ -259,6 +259,14 @@ secret: $machine_secret
 			/etc/init.d/samba4 start
 		fi
 
+		### The following block of code may be removed after ucs_3.2-0
+		if dpkg --compare-versions "$2" lt-nl "2.0.44-24"; then
+			gpo_dir_owner="$(stat --printf '%U' "/var/lib/samba/sysvol/$domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}" 2>&1)"
+			if [ "$gpo_dir_owner" = "UNKNOWN" ]; then
+				samba-tool ntacl sysvolreset 
+			fi
+		fi
+
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
