@@ -95,6 +95,11 @@ define([
 		_addSnapshot: function() {
 			var _dialog = null, form = null;
 
+			if (this.domain.suspended) {
+					dialog.alert(_('Creating a snapshots is not possible, because the domain is currently suspended!'));
+					return;
+			}
+
 			var qcow2_images = 0;
 			var snapshots_possible = array.every(this.domain.disks, function(disk) {
 				if (!disk.source) {

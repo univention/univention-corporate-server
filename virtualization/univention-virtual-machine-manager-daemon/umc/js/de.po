@@ -330,6 +330,13 @@ msgstr "Erstellen einer virtuellen Maschine"
 
 #: umc/js/uvmm/SnapshotGrid.js:116
 msgid ""
+"Creating a snapshots is not possible, because the domain is currently suspended!"
+msgstr ""
+"Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain "
+"momentan 'gespeichert und beendet' ist!"
+
+#: umc/js/uvmm/SnapshotGrid.js:
+msgid ""
 "Creating a snapshot is not possible, because the domain does not have at "
 "least one qcow2 image!"
 msgstr ""
