@@ -389,7 +389,7 @@ msgstr "Gerätedateiname"
 msgid "Devices"
 msgstr "Geräte"
 
-#: umc/js/uvmm/DomainPage.js:243
+#: umc/js/uvmm/DomainPage.js:243 umc/js/uvmm/DomainWizard.js:155
 msgid "Direct access (VNC)"
 msgstr "Direktzugriff (VNC)"
 
@@ -460,10 +460,6 @@ msgstr "Bearbeiten einer Netzwerkschnittstelle"
 #: umc/js/uvmm.js:785
 msgid "Edit the configuration of the virtual machine"
 msgstr "Konfiguration der virtuellen Maschinen bearbeiten"
-
-#: umc/js/uvmm/DomainWizard.js:155
-msgid "Enable direct access"
-msgstr "Direktzugriff aktivieren"
 
 #: umc/js/uvmm/types.js:128
 msgid "English-America"
