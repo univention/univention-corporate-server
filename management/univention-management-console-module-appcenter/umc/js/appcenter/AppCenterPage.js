@@ -203,8 +203,9 @@ define([
 				this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));
 
 				this.own(this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
-					this._show_details(this._grid.row(evt));
-					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this._grid.row(evt).id, 'show');
+					var app = this._grid.row(evt).data;
+					this._show_details(app);
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
 				})));
 
 				this._buildRenderingDeferred.resolve(); // for apps.js

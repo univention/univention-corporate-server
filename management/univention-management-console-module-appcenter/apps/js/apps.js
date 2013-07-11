@@ -139,9 +139,10 @@ define([
 
 				// show appcenter-icon to the left of the table
 				var iconDiv = domConstruct.create('div', {'class': 'umcGalleryPane'});
-				var appIcon = this._appcenterPage._grid.renderRow(lang.mixin({}, app, {description: null})); // no tooltip
+				var appIcon = this._appcenterPage._grid.renderRow(lang.mixin({}, app, {description: null, name: null})); // just logo and status
 				domStyle.set(appIcon, 'cursor', 'default'); // without hover effects (as clicking on it does not open any dialog)
 				domStyle.set(appIcon, 'backgroundColor', 'inherit');
+				domStyle.set(appIcon, 'width', '90px');
 				domConstruct.place(appIcon, iconDiv, 'only');
 				domConstruct.place(iconDiv, this._table, 'before');
 

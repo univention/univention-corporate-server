@@ -149,7 +149,7 @@ class Application(object):
 					loc = loc.split('_')[0]
 				if config.has_section(loc):
 					for k, v in config.items(loc):
-						self._options[k] = v
+						self._options[k] = cgi.escape(v)
 
 		# parse boolean values
 		for ikey in ('notifyvendor', 'useractivationrequired'):
@@ -272,9 +272,6 @@ class Application(object):
 			cls.get_server(with_scheme=True),
 			ucr.get('version/version', ''),
 		)
-
-	# regular expression to parse the apache HTML directory listing
-	_reg_dir_listing = re.compile(""".*<td.*<a href="(?P<name>[^"/]+\.ini)">[^<]+</a>.*</td>.*""")
 
 	@classmethod
 	def find(cls, application_id):
