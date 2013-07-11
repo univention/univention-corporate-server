@@ -1,3 +1,10 @@
+univention-kernel-image (7.0.0-7) unstable; urgency=low
+
+  * Add firmware-adi (which was recently added in firmware-nonfree 0.37) to the
+    dependencies (Bug #31701).
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 11 Jul 2013 15:48:01 +0200
+
 univention-kernel-image (7.0.0-6) unstable; urgency=low
 
   * Update to the latest kernel build (Bug #31701).
