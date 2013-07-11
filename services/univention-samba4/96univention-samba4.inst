@@ -240,6 +240,7 @@ run_samba_provision() {
 	if [ "$rc" != 0 ]; then
 		exit "$rc"
 	fi
+	univention-config-registry set windows/wins-support=yes
 }
 
 samba_domain_join() {
@@ -454,6 +455,18 @@ remove_dc_ntds_guid_records_from_dns() {
 	done
 }
 
+sysvol_fixup() {
+	## determine default sysvol parent for this host from univentionService="S4 Connector"
+	set_samba4_sysvol_sync_host
+	/usr/share/univention-samba4/scripts/sysvol-sync.sh
+
+	## set the default sysvol and GPO NTACLs
+	samba-tool ntacl sysvolreset
+
+	## set default ACLs so sysvol-sync can read files and directories
+	set_default_fACL /var/lib/samba/sysvol
+}
+
 ### --- END helper functions ---
 
 extract_binddn_and_bindpwd_from_args "$@"
@@ -516,7 +529,10 @@ if [ "$samba4_role" = 'DC' ]; then
 			run_samba_provision "$@"
 		fi
 
-		univention-config-registry set windows/wins-support=yes
+		## provision erases the idmap.ldb
+		/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
+
+		sysvol_fixup
 
 		## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 		/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc --gc --pdc "${SITE_OPTION[@]}"
@@ -546,10 +562,13 @@ if [ "$samba4_role" = 'DC' ]; then
 				## this is similar to univention-samba-slave-pdc
 				run_samba_provision "$@"
 
+				## provision erases the idmap.ldb
+				/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
+
+				sysvol_fixup
+
 				## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
-
-				univention-config-registry set windows/wins-support=yes
 
 				if ! univention_samba4_is_ucr_false dns/register/srv_records/kerberos; then
 					remove_non_samba4_dc_srv_records
@@ -592,6 +611,11 @@ if [ "$samba4_role" = 'DC' ]; then
 
 			fi
 
+			## write UCS posix IDs into the idmap.ldb
+			/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
+
+			sysvol_fixup
+
 			## Add DNS records, allowing finer control over gc and pdc records than samba_dnsupdate
 			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh "$@" --dc "${SITE_OPTION[@]}"
 
@@ -606,10 +630,6 @@ if [ "$samba4_role" = 'DC' ]; then
 		## Start samba daemon
 		/etc/init.d/samba4 start
 
-		## determine default sysvol parent for this host from univentionService="S4 Connector"
-		set_samba4_sysvol_sync_host
-		/usr/share/univention-samba4/scripts/sysvol-sync.sh
-
 	fi
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
@@ -621,11 +641,6 @@ if [ "$samba4_role" = 'DC' ]; then
 							--append hosts="$ldap_hostdn" >/dev/null 2>&1
 		fi
 
-		## set the default sysvol and GPO NTACLs
-		samba-tool ntacl sysvolreset
-
-		## set default ACLs so sysvol-sync can read files and directories
-		set_default_fACL /var/lib/samba/sysvol
 	fi
 
 	## activate sysvol replication
@@ -679,6 +694,8 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 		samba_domain_join "${samba_join_options[@]}"
 
+		sysvol_fixup
+
 		## if the key version number increased, merge the old keys into the new keytab
 		merge_backup_samba4_keytab
 
@@ -690,18 +707,6 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 	## Start samba daemon
 	/etc/init.d/samba4 start
-
-	## determine default sysvol parent for this host from univentionService="S4 Connector"
-	set_samba4_sysvol_sync_host
-	/usr/share/univention-samba4/scripts/sysvol-sync.sh
-
-	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-		## set the default sysvol and GPO NTACLs
-		samba-tool ntacl sysvolreset
-
-		## set default ACLs so sysvol-sync can read files and directories
-		set_default_fACL /var/lib/samba/sysvol
-	fi
 
 	## activate sysvol replication
 	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
@@ -770,9 +775,6 @@ if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 			--set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1 || die
 	univention-config-registry unset create/home/share
 fi
-
-## provision erases the idmap.ldb
-/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
 
 /etc/init.d/samba4 restart
 

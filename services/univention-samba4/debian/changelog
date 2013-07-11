@@ -1,3 +1,13 @@
+univention-samba4 (3.0.6-1) unstable; urgency=low
+
+  * Always sync UCS PosixIDs to idmap.ldb directly after provision/join
+    before running sysvolreset instead of after (Bug #31640)
+  * Consolidate common sysvol fixup code into one shell function.
+  * move common windows/wins-support=yes initialization
+    to provision shell function
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Jul 2013 13:36:46 +0200
+
 univention-samba4 (3.0.5-3) unstable; urgency=low
 
   * remove _ldap._tcp SRV record for port 7389 in setup-dns-in-ucsldap,
