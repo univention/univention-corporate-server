@@ -152,7 +152,7 @@ define([
 					}, {
 						name: 'vnc',
 						type: CheckBox,
-						label: _('Enable direct access')
+						label: _('Direct access (VNC)')
 					}]
 				}, {
 					name: 'drives',

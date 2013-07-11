@@ -330,6 +330,13 @@ msgstr "Erstellen einer virtuellen Maschine"
 
 #: umc/js/uvmm/SnapshotGrid.js:116
 msgid ""
+"Creating a snapshots is not possible, because the domain is currently suspended!"
+msgstr ""
+"Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain "
+"momentan 'gespeichert und beendet' ist!"
+
+#: umc/js/uvmm/SnapshotGrid.js:
+msgid ""
 "Creating a snapshot is not possible, because the domain does not have at "
 "least one qcow2 image!"
 msgstr ""
@@ -382,7 +389,7 @@ msgstr "Gerätedateiname"
 msgid "Devices"
 msgstr "Geräte"
 
-#: umc/js/uvmm/DomainPage.js:243
+#: umc/js/uvmm/DomainPage.js:243 umc/js/uvmm/DomainWizard.js:155
 msgid "Direct access (VNC)"
 msgstr "Direktzugriff (VNC)"
 
@@ -453,10 +460,6 @@ msgstr "Bearbeiten einer Netzwerkschnittstelle"
 #: umc/js/uvmm.js:783
 msgid "Edit the configuration of the virtual machine"
 msgstr "Konfiguration der virtuellen Maschinen bearbeiten"
-
-#: umc/js/uvmm/DomainWizard.js:155
-msgid "Enable direct access"
-msgstr "Direktzugriff aktivieren"
 
 #: umc/js/uvmm/types.js:128
 msgid "English-America"

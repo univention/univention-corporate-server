@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-daemon (2.0.36-11) unstable; urgency=low
+
+  * Prevent snapshots of suspended VMs (Bug #23436)
+  * Add missing "(VNC)" label (Bug #31858)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Jul 2013 17:55:01 +0200
+
 univention-virtual-machine-manager-daemon (2.0.36-10) unstable; urgency=low
 
   * Change ACPI shutdown text (Bug #21397)
