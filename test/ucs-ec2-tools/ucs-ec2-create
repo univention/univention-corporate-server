@@ -42,7 +42,7 @@ from socket import error as socket_error
 from select import select
 
 import boto
-from boto.ec2 import regions
+from boto.ec2 import regions,blockdevicemapping
 
 
 class VM:
@@ -53,7 +53,7 @@ class VM:
 
 		# Copy some global settings to the local VM config
 		# but only if the setting is not set in the local VM section
-		params = ['ec2_ami', 'ec2_security_group', 'ec2_instance_type', 'ec2_keypair', 'ec2_region', 'ec2_subnet_id']
+		params = ['ec2_ami', 'ec2_security_group', 'ec2_instance_type', 'ec2_keypair', 'ec2_region', 'ec2_subnet_id', 'ec2_partition_size']
 		for key in params:
 			if not config.has_option(section, key):
 				if config.has_option('Global', key):
@@ -100,6 +100,15 @@ class VM:
 			fd.write('Created instance %s at %s\n' % (section, time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 			fd.close()
 
+	def _get_blockdevicemapping(self):
+		bdm = None
+		if self.aws_cfg.get('ec2_subnet_id'):
+			dev_sda1 = blockdevicemapping.EBSBlockDeviceType()
+			dev_sda1.size = self.aws_cfg.get('ec2_partition_size')
+			bdm = blockdevicemapping.BlockDeviceMapping()
+			bdm['/dev/sda1'] = dev_sda1 
+		return bdm
+
 	def start(self):
 		''' Start the VM '''
 		# self.ec2 = boto.connect_ec2(**self.aws_cfg)
@@ -125,6 +134,7 @@ class VM:
 				security_group_ids=[self.aws_cfg['ec2_security_group']],
 				instance_type=self.aws_cfg['ec2_instance_type'],
 				instance_initiated_shutdown_behavior='terminate',  # 'save'
+				block_device_map = self._get_blockdevicemapping()
 				)
 		else:
 			self.ec2 = boto.connect_ec2(**aws_cfg)
@@ -136,6 +146,7 @@ class VM:
 				security_groups=[self.aws_cfg['ec2_security_group']],
 				instance_type=self.aws_cfg['ec2_instance_type'],
 				instance_initiated_shutdown_behavior='terminate',  # 'save'
+				block_device_map = self._get_blockdevicemapping()
 				)
 
 		self.instance = reservation.instances[0]

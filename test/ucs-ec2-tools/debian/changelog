@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.7-3) unstable; urgency=low
+
+  * Added support for a partition size in cfg file. This is needed for the
+    performance tests to prevent no space left on device (Bug #31283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Jul 2013 08:56:33 +0200
+
 ucs-ec2-tools (0.1.7-2) unstable; urgency=low
 
   * Use security group SSH and HTTP for public instance (Bug #31283)
