@@ -69,6 +69,11 @@ class UniventionMirror( UniventionUpdater ):
 		self.sources = self.configRegistry.is_true('repository/mirror/sources', False)
 		self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
 
+	def release_update_available(self, ucs_version=None, errorsto='stderr'):
+		'''Check if an update is available for the ucs_version'''
+		if not ucs_version:
+			ucs_version = self.current_version
+		return self.get_next_version(UCS_Version(ucs_version), [], errorsto)
 
 	def mirror_repositories( self ):
 		'''uses apt-mirror to copy a repository'''

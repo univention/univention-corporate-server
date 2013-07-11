@@ -1,3 +1,9 @@
+univention-updater (9.0.4-2) unstable; urgency=low
+
+  * Ignore components for repository update test (Bug #31060)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 10 Jul 2013 17:18:08 +0200
+
 univention-updater (9.0.4-1) unstable; urgency=low
 
   * Fix UCRV update/secure_apt (Bug #24808)
@@ -13,7 +19,7 @@ univention-updater (9.0.3-1) unstable; urgency=low
 univention-updater (9.0.2-1) unstable; urgency=low
 
   * Bug #30158: redirect output to logfile when uninstalling VNC module in
-  	postup.sh
+    postup.sh
 
  -- Florian Best <best@univention.de>  Fri, 05 Jul 2013 13:40:05 +0200
 
@@ -109,7 +115,7 @@ univention-updater (8.0.71-1) unstable; urgency=low
 
 univention-updater (8.0.70-1) unstable; urgency=low
 
-  * fixed filesystem check error message in preup (Bug #30100) 
+  * fixed filesystem check error message in preup (Bug #30100)
 
  -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 17:02:23 +0100
 
@@ -216,7 +222,7 @@ univention-updater (8.0.60-1) unstable; urgency=low
 
 univention-updater (8.0.59-1) unstable; urgency=low
 
-  * Removed deprecated univention-errata-update call from cron file 
+  * Removed deprecated univention-errata-update call from cron file
     (Bug #29367)
 
  -- Erik Damrose <edamrose@mammut.knut.univention.de>  Mon, 17 Dec 2012 15:34:01 +0100
@@ -254,7 +260,7 @@ univention-updater (8.0.54-3) unstable; urgency=low
 univention-updater (8.0.54-2) unstable; urgency=low
 
   * Prevent updates if univention-kernel-image-2.6.32 is still installed
-    (Bug #29384)	
+    (Bug #29384)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 26 Nov 2012 14:49:58 +0100
 
@@ -832,7 +838,7 @@ univention-updater (7.0.162-1) unstable; urgency=low
 
 univention-updater (7.0.161-1) unstable; urgency=low
 
-  * delete /etc/cron.d/univention-shares in postup (Bug #24610) 
+  * delete /etc/cron.d/univention-shares in postup (Bug #24610)
 
  -- Felix Botner <botner@univention.de>  Wed, 06 Jun 2012 17:42:35 +0200
 
