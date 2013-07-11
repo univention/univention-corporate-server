@@ -628,6 +628,11 @@ in the \ucsUCRV{server/password/change} since the last password change
 (\ucsBug{31096}). The new \ucsUCRV{sshd/banner} can be used to
   configure a banner display for SSH logins.
 
+\item By default the mysql server package does not set a password for the mysql root user during a
+noninteractive installation. With this update the mysql package sets a password and writes the
+password to /etc/mysql.secret. This file can be read by root.  If a password is already set, nothing
+will be done (\ucsBug{19354}).
+
 \end{itemize}
 
 
