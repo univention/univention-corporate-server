@@ -2,6 +2,7 @@ univention-updater (9.0.4-2) unstable; urgency=low
 
   * Ignore components for repository update test (Bug #31060)
   * Mirror updater scripts of disabled components (Bug #30756)
+  * Don't use self as mirror source (Bug #31426)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 10 Jul 2013 17:18:08 +0200
 
