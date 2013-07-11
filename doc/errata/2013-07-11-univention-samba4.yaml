@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-samba4
+fix: 2.0.44-24.470.201307111347
+note:
+version: [1]
+desc: |
+  This errata update fixes a bug in the package univention-samba4:
+  * In some cases the sysvol ownership was not yet updated correctly
+    after the installation or join of univention-samba4.
+bug: [31640]
