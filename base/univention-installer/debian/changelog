@@ -1,3 +1,10 @@
+univention-installer (9.0.13-1) unstable; urgency=low
+
+  * Fix samba package order in package_list for current uninstallation
+    algorithm implemented in univention.lib.package_manager (Bug #30982)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Jul 2013 19:43:44 +0200
+
 univention-installer (9.0.12-1) unstable; urgency=low
 
   * simplified syntax_is_windowsdomainname regex (Bug #24888) 
