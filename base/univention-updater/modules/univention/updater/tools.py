@@ -60,6 +60,7 @@ import logging
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
+RE_COMPONENT = re.compile(r'^repository/online/component/([^/]+)$')
 
 MIN_GZIP = 100  # size of non-empty gzip file
 
@@ -843,14 +844,16 @@ class UniventionUpdater:
 			repository/online/component/%s is used (backward compatibility).
 		'''
 		components = set()
-		for key in self.configRegistry.keys():
-			if key.startswith('repository/online/component/'):
-				component_part = key[len('repository/online/component/'):]
-				component_enabled = self.configRegistry.is_true(key)
-				if '/' not in component_part and (
-					( not only_localmirror_enabled and component_enabled ) or
-					( only_localmirror_enabled and self.configRegistry.is_true('repository/online/component/%s/localmirror' % component_part, component_enabled) ) ):
-					components.add(component_part)
+		for key, value in self.configRegistry.items():
+			match = RE_COMPONENT.match(key)
+			if not match:
+				continue
+			component, = match.groups()
+			enabled = self.configRegistry.is_true(value=value)
+			if only_localmirror_enabled:
+				enabled = self.configRegistry.is_true(key + '/localmirror', enabled)
+			if enabled:
+				components.add(component)
 		return components
 
 	def get_current_components(self):

@@ -1,3 +1,12 @@
+univention-updater (8.0.78-6) unstable; urgency=low
+
+  * Fix UCRV update/secure_apt (Bug #24808)
+  * Ignore components for repository update test (Bug #31060)
+  * Mirror updater scripts of disabled components (Bug #30756)
+  * Don't use self as mirror source (Bug #31426)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 09 Jul 2013 20:07:30 +0200
+
 univention-updater (8.0.78-5) unstable; urgency=low
 
   * Bug #31278: univention-add-app --all or --master do a dist-upgrade only if
@@ -71,7 +80,7 @@ univention-updater (8.0.71-1) unstable; urgency=low
 
 univention-updater (8.0.70-1) unstable; urgency=low
 
-  * fixed filesystem check error message in preup (Bug #30100) 
+  * fixed filesystem check error message in preup (Bug #30100)
 
  -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 17:02:23 +0100
 
@@ -178,7 +187,7 @@ univention-updater (8.0.60-1) unstable; urgency=low
 
 univention-updater (8.0.59-1) unstable; urgency=low
 
-  * Removed deprecated univention-errata-update call from cron file 
+  * Removed deprecated univention-errata-update call from cron file
     (Bug #29367)
 
  -- Erik Damrose <edamrose@mammut.knut.univention.de>  Mon, 17 Dec 2012 15:34:01 +0100
@@ -216,7 +225,7 @@ univention-updater (8.0.54-3) unstable; urgency=low
 univention-updater (8.0.54-2) unstable; urgency=low
 
   * Prevent updates if univention-kernel-image-2.6.32 is still installed
-    (Bug #29384)	
+    (Bug #29384)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 26 Nov 2012 14:49:58 +0100
 
@@ -794,7 +803,7 @@ univention-updater (7.0.162-1) unstable; urgency=low
 
 univention-updater (7.0.161-1) unstable; urgency=low
 
-  * delete /etc/cron.d/univention-shares in postup (Bug #24610) 
+  * delete /etc/cron.d/univention-shares in postup (Bug #24610)
 
  -- Felix Botner <botner@univention.de>  Wed, 06 Jun 2012 17:42:35 +0200
 

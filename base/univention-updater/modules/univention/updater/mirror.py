@@ -69,6 +69,11 @@ class UniventionMirror( UniventionUpdater ):
 		self.sources = self.configRegistry.is_true('repository/mirror/sources', False)
 		self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
 
+	def release_update_available(self, ucs_version=None, errorsto='stderr'):
+		'''Check if an update is available for the ucs_version'''
+		if not ucs_version:
+			ucs_version = self.current_version
+		return self.get_next_version(UCS_Version(ucs_version), [], errorsto)
 
 	def mirror_repositories( self ):
 		'''uses apt-mirror to copy a repository'''
@@ -107,7 +112,7 @@ class UniventionMirror( UniventionUpdater ):
 		end_errata = UCS_Version((end.major, end.minor, 999)) # get all available for mirror
 		errata = self._iterate_errata_repositories(start_errata, end_errata, parts, archs) # returns generator
 
-		components = self.get_components()
+		components = self.get_components(only_localmirror_enabled=True)
 		comp = self._iterate_component_repositories(components, start, end, archs, for_mirror_list=True) # returns generator
 
 		all_repos = itertools.chain(repos, errata, comp) # concatenate all generators into a single one
