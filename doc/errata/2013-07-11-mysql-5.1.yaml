@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: mysql-5.1
+fix: 5.1.66-0.28.201307110918
+note:
+version: [1]
+desc: |
+  By default the mysql server package does not set a password for
+  the mysql root user during a noninteractive installation. With
+  this update the mysql package sets a password and writes the
+  password to /etc/mysql.secret. This file can be read by root.
+  If a password is already set, nothing will be done.
+bug: [19354]
