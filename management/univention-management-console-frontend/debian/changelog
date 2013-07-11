@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.17-1) unstable; urgency=low
+
+  * Bug #31699: replaced lessc version for rhion with a version for nodejs
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Jul 2013 16:01:47 +0200
+
 univention-management-console-frontend (3.0.16-1) unstable; urgency=low
 
   * Bug #31699: finalized usability enhancements for UMC overview page
