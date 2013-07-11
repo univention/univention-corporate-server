@@ -422,13 +422,17 @@ value attribute (\ucsBug{28667}, \ucsBug{31103}).
 %\end{itemize}
 
 
-%\section{Software deployment}
+\section{Software deployment}
 %\begin{itemize}
 %\end{itemize}
 
-%%\subsection{Repository handling}
-%%\begin{itemize}
-%%\end{itemize}
+\subsection{Repository handling}
+\begin{itemize}
+\item The recommendation for setting up a UCR policy has been fixed to mention the correct \ucsUCRV{updater/secure\_apt} (\ucsBug{24808}).
+\item A locally required and mirrored component from a separate repository in same cases blocked the update of the local repository. This has been changed to now always update the local repository as soon as a new release is available. The condition is still check by each host individually (\ucsBug{31060}).
+\item The pre- and post-updater scripts of locally mirrored but disabled components are now also retrieved (\ucsBug{30756}).
+\item On a local repository server a repository policy no longer sets the source server to itself (\ucsBug{31426}).
+\end{itemize}
 
 %%\subsection{Software deployment command line tools}
 %%\begin{itemize}
@@ -642,6 +646,7 @@ in the \ucsUCRV{server/password/change} since the last password change
 \item To fix the ordering of snapshots their creation time is now display in ISO 8601 format (\ucsBug{29901}).
 \item Shutting down virtual machines using 'ACPI power off' and 'Xen shutdown' was added (\ucsBug{21397}).
 \item The internal code of UVMM was cleaned up (\ucsBug{30897}).
+\item Support for the \ucsName{system services} module has been added (\ucsBug{10962}).
 \end{itemize}
 
 \subsection{Xen}
