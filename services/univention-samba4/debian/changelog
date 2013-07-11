@@ -1,3 +1,11 @@
+univention-samba4 (2.0.44-24) unstable; urgency=low
+
+  * Always sync UCS PosixIDs to idmap.ldb directly after provision/join
+    before running sysvolreset instead of after (Bug #31640)
+  * Consolidate common sysvol fixup code into one shell function.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Jul 2013 13:30:26 +0200
+
 univention-samba4 (2.0.44-23) unstable; urgency=low
 
   * Bump version for reverted change (Bug #31887)
