@@ -270,7 +270,7 @@ if __name__ == '__main__':
 		sys.exit(5)
 	try:
 		if command == 'net':
-			local_server = '%(hostname)s.%(domainname)s' % configRegistry['hostname']
+			local_server = '%(hostname)s.%(domainname)s' % configRegistry
 			# BUG: The localhost has many names, FQDNs and adresses ...
 			if configRegistry['repository/mirror/server'] == local_server:
 				print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
