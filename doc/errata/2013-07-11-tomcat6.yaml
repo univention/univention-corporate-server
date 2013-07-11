@@ -1,0 +1,27 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: tomcat6
+fix: 6.0.35-1.46.201307111140
+desc: |
+ Multiple security problems have been corrected in the Tomcat application
+ server:
+ * Denial of service through overly large HTTP request-size-headers
+ * Denial of service through incorrect implementation of chunked
+   encodings
+ * Security constraints and CSRF filters could be bypassed
+ * Denial of service in the NIO connector
+ * Multiple implementation errors in the HTTP DIGEST implementation
+ * Session fixation vulnerability in FORM authentication
+note: This update fixes these vulnerabilities
+cve:
+ - CVE-2012-2733
+ - CVE-2012-3544
+ - CVE-2012-3546
+ - CVE-2012-4431
+ - CVE-2012-4534
+ - CVE-2012-5885
+ - CVE-2012-5886
+ - CVE-2012-5887
+ - CVE-2013-2067
