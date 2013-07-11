@@ -155,6 +155,6 @@ if __name__ == '__main__':
 					set_quota = subprocess.Popen(['/usr/sbin/setquota', '-u', user, str(mp['spaceSoftLimit']), str(mp['spaceHardLimit']), str(mp['inodeSoftLimit']), str(mp['inodeHardLimit']), mountpoint_path])
 					set_quota.wait()
 				else:
-					log.write('no quota for %s\n') % mountpoint_path
+					log.write('no quota for %s\n' % mountpoint_path)
 
 	log.write('-------------------------------------------------------- exit\n')

@@ -1,3 +1,10 @@
+univention-quota (8.0.1-1) unstable; urgency=low
+
+  * fixed typo in "univention-user-quota" which caused a traceback (Bug
+    #31957)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 11 Jul 2013 13:07:02 +0200
+
 univention-quota (8.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
