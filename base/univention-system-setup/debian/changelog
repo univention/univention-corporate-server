@@ -1,3 +1,9 @@
+univention-system-setup (7.0.21-1) unstable; urgency=low
+
+  * Bug #30816: detect ip changes
+
+ -- Florian Best <best@univention.de>  Fri, 12 Jul 2013 09:09:39 +0200
+
 univention-system-setup (7.0.20-1) unstable; urgency=low
 
   * Bug #31021: enhance validation handling

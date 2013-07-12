@@ -386,6 +386,41 @@ define([
 			}));
 		},
 
+		_getNewIpAddress: function(interfaces, primary_interface) {
+			var newIpAddress = null;
+			var prim = interfaces[primary_interface];
+			var currentIP = window.location.host;
+			tools.forIn(this._orgValues.interfaces, function(ikey, iface) {
+				// 1. check if value is equal to the current IP
+				// 2. check if a new value was set or use IP from new primary interface
+				var oldIp = iface.ip4[0] && iface.ip4[0][0];
+				var oldIp6 = iface.ip6[0] && iface.ip6[0][0];
+				var newIp = interfaces[ikey] && interfaces[ikey].ip4[0] && interfaces[ikey].ip4[0][0];
+				var newIp6 = interfaces[ikey] && interfaces[ikey].ip6[0] && interfaces[ikey].ip6[0][0];
+				if (oldIp == currentIP) {
+					if (newIp) {
+						newIpAddress = newIp;
+					} else if (prim && prim.ip4[0] && prim.ip4[0][0]) {
+						newIpAddress = prim.ip4[0][0];
+					}
+				} else if (oldIp6 == currentIP) {
+					if (newIp6) {
+						newIpAddress = newIp6;
+					} else if(prim && prim.ip6[0] && prim.ip6[0][0]) {
+						newIpAddress = prim.ip6[0][0];
+					}
+				}
+			});
+			if (newIpAddress == currentIP) {
+				newIpAddress = null;
+			}
+			if (newIpAddress && !/[.]/.test(newIpAddress)) {
+				// ipv6
+				newIpAddress = '[' + newIpAddress + ']';
+			}
+			return newIpAddress;
+		},
+
 		save: function() {
 			// helper function
 			var matchesSummary = function(key, summary) {
@@ -457,19 +492,15 @@ define([
 						var target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=' + username);
 
 						// Consider IP changes, replace old ip in url by new ip
-						tools.forIn(this._orgValues.interfaces, function(ikey, iface) {
-							// 1. check if value is equal to the current IP
-							// 2. check if a new value was set
-							var oldIp = iface.ip4[0] && iface.ip4[0][0];
-							var oldIp6 = iface.ip6[0] && iface.ip6[0][0];
-							var newIp = values.interfaces[ikey] && values.interfaces[ikey].ip4[0] && values.interfaces[ikey].ip4[0][0];
-							var newIp6 = values.interfaces[ikey] && values.interfaces[ikey].ip6[0] && values.interfaces[ikey].ip6[0][0];
-							if ((oldIp == window.location.host) && newIp) {
-								target = target.replace(new RegExp(oldIp+"/univention-management-console", "g"), newIp+"/univention-management-console");
-							} else if ((oldIp6 == window.location.host) && newIp6) {
-								target = target.replace(new RegExp(oldIp6+"\\]/univention-management-console", "g"), newIp6+"]/univention-management-console");
+						var newIp = this._getNewIpAddress(values.interfaces, values['interfaces/primary'] || 'eth0');
+						if (newIp) {
+							var oldIp = window.location.host;
+							if (!/[.]/.test(oldIp)) {
+								// ipv6
+								oldIp = '\\[' + oldIp + '\\]';
 							}
-						});
+							target = target.replace(new RegExp(oldIp+"/univention-management-console", "g"), newIp+"/univention-management-console");
+						}
 
 						// give the restart/services function 10 seconds time to restart the services
 						setTimeout(function () {
@@ -495,17 +526,14 @@ define([
 				tools.forIn(pageVals, function(ikey, ival) {
 					inverseKey2Page[ikey] = ipage;
 					var orgVal = this._orgValues[ikey];
-					orgVal = undefined === orgVal || null === orgVal ? '' : orgVal;
-					var newVal = undefined === ival || null === ival ? '' : ival;
+					orgVal = (undefined === orgVal || null === orgVal) ? '' : orgVal;
+					var newVal = (undefined === ival || null) === ival ? '' : ival;
 					// some variables (notably locale)
 					// were sent as [{id:id, label:label}, ...]
 					// but will be returned as [id, ...]
 					if (orgVal instanceof Array) {
-						var tmpOrgVal = [];
-						array.forEach(orgVal, function(iOrgVal) {
-							if (iOrgVal.id !== undefined && iOrgVal.label !== undefined) {
-								tmpOrgVal.push(iOrgVal.id);
-							}
+						var tmpOrgVal = array.filter(orgVal, function(iOrgVal) {
+							return (iOrgVal && iOrgVal.id !== undefined && iOrgVal.label !== undefined);
 						});
 						if (tmpOrgVal.length) {
 							orgVal = tmpOrgVal;
@@ -516,23 +544,9 @@ define([
 						++nchanges;
 
 						if (ikey === 'interfaces' && umc_url === null) {
-							// check whether a redirect to a new IP address is necessary
-							var device = pageVals['interfaces/primary'] || 'eth0';
-							var iface = ival[device];
-							var oldIface = orgVal[device];
-							if (iface) {
-								if (iface.ip4[0]) {
-									var newIp = iface.ip4[0][0];
-									if (newIp && (!oldIface || newIp !==  oldIface.ip4[0][0])) {
-										umc_url = 'https://' + newIp + '/umc/';
-									}
-
-								} else if(iface.ip6[0]) {
-									var newIp6 = iface.ip6[0][0];
-									if (newIp6 && (!oldIface || newIp6 != oldIface.ip6[0][0])) {
-										umc_url = 'https://[' + newIp6 + ']/umc/';
-									}
-								}
+							var newIp = this._getNewIpAddress(ival, pageVals['interfaces/primary'] || 'eth0');
+							if (newIp) {
+								umc_url = 'https://' + newIp + '/umc/';
 							}
 						}
 					}
