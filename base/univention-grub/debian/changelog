@@ -1,3 +1,14 @@
+univention-grub (7.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Add a new UCR variable grub/rootdelay, which configures the time the initrd waits
+    until a mount of the root device is attempted. This prevents boot failures for 
+    some hardware setups, which initialises the root device slowly. By default five
+    seconds are being waited, this can be disabled by setting the variable to 0.
+    Bug #31071
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 12 Jul 2013 12:39:07 +0200
+
 univention-grub (6.0.5-1) unstable; urgency=low
 
   * reverted EFI changes (Bug #28672, #29445)

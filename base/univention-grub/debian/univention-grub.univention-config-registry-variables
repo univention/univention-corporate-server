@@ -76,6 +76,12 @@ Description[en]=Grub vga code
 Type=str
 Categories=system-base
 
+[grub/rootdelay]
+Description[de]=Diese Variable konfiguriert eine Zeitspanne in Sekunden, die gewartet wird, bevor die Initial Ramdisk das Root-Device einbindet. Durch Setzen der Variable auf '0' kann die Wartezeit deaktiviert werden. Ist die Variable nicht gesetzt, gelten fünf Sekunden.
+Description[en]=This variable configures a time span in seconds, which is being waited until the initial ramdisk mounts the root device. Setting the variable to '0' deactivates the delay. If the variable is unset, five seconds are waited.
+Type=str
+Categories=system-base
+
 [grub/generate-menu-lst]
 Description[de]=Wenn diese Option aktiviert ist, wird zusätzlich eine /boot/grub/menu.lst im Format von Grub 1 generiert
 Description[en]=If this option is activated, an additional /boot/grub/menu.lst is generated in Grub 1 format
