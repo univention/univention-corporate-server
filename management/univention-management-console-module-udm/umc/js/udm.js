@@ -698,21 +698,18 @@ define([
 
 			// reload the superordinates in case an object has been added, it might be a new superordinate
 			if (superordinates && superordinates.length) {
-				//TODO: enable this behaviour
-				/*
-				this.own(this.on(this.moduleStore, 'onChange', function() {
-					this.umcpCommand('udm/superordinates').then(lang.hitch(this, function(data) {
-						var widget = this._searchForm.getWidget('superordinate');
-						if (widget) {
-							var currentVals = array.map(widget.get('staticValues'), function(i) { return i.id; }).sort();
-							var newVals = array.map(data.result, function(i) { return i.id; }).sort();
-							if (json.stringify(currentVals) != json.stringify(newVals)) {
+				this.own(this.moduleStore.on('Change', lang.hitch(this, function() {
+					var widget = this._searchForm.getWidget('superordinate');
+					if (widget) {
+						this.umcpCommand('udm/superordinates').then(lang.hitch(this, function(data) {
+							var currentVals = array.map(widget.get('staticValues'), function(i) { return i.id; });
+							var newVals = array.map(data.result, function(i) { return i.id; });
+							if (!tools.isEqual(currentVals, newVals)) {
 								widget.set('staticValues', data.result);
 							}
-						}
-					}));
-				});
-				*/
+						}));
+					}
+				})));
 			}
 
 			// focus and select text when the objectPropertyValue has been loaded

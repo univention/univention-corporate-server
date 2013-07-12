@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.6-1) unstable; urgency=low
+
+  * Bug #25008: reload superordinates after object modification
+
+ -- Florian Best <best@univention.de>  Fri, 12 Jul 2013 12:34:01 +0200
+
 univention-management-console-module-udm (4.0.5-1) unstable; urgency=low
 
   * Bug #24727: adapt wording
