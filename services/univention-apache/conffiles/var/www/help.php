@@ -1,5 +1,5 @@
 <?php
-@%@BCWARNING=// @%@
+@%@UCRWARNING=// @%@
 /*
  * Univention Webui
  *  help.php
