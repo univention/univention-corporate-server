@@ -1,3 +1,10 @@
+univention-nfs (6.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 12 Jul 2013 14:58:38 +0200
+
 univention-nfs (5.0.8-1) unstable; urgency=low
 
   * Added nfs to system services module (Bug #27783)
