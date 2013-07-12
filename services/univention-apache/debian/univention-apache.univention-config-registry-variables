@@ -1,42 +1,42 @@
 [apache2/allowoverride]
 Description[de]=htaccess-Dateien erlauben verzeichnisspezifische Konfigurationseinstellungen. Diese Variable legt fest, welche Optionen der systemweiten Apache-Konfiguration durch htaccess-Dateien überschrieben werden können. Mögliche Einstellungen sind 'All', 'None' oder eine Aufstellung einzelner Konfigurationsgruppen (siehe http://httpd.apache.org/docs/2.2/mod/core.html#allowoverride). Ist die Variable nicht gesetzt, sind die Konfigurationsdirektiven 'AuthConfig Limit FileInfo' erlaubt.
-Description[en]=htaccess file allow the directory-specific configuration of settings. This variable configures which options of the systemwide Apache configuration can be overridden through htaccess files. Possible values are 'All', 'None' or a list of configuration directives (see http://httpd.apache.org/docs/2.2/mod/core.html#allowoverride). If the variable is unset, the configuration directives 'AuthConfig Limit FileInfo' are allowed.
+Description[en]=htaccess files allow the directory-specific configuration of settings. This variable configures which options of the systemwide Apache configuration can be overridden through htaccess files. Possible values are 'All', 'None' or a list of configuration directives (see http://httpd.apache.org/docs/2.2/mod/core.html#allowoverride). If the variable is unset, the configuration directives 'AuthConfig Limit FileInfo' are allowed.
 Type=str
 Categories=service-apache
 
 [apache2/startsite]
-Description[de]=Wird die URL des Apache-Servers über die reine IP-Adresse oder den Hostnamen aufgerufen, wird in der Grundeinstellung eine Weiterleitung auf die UCS-Startseite durchgeführt. Diese Variable erlaubt die Konfiguration der Unterseite, auf die verwiesen werden soll.
-Description[en]=If the URL of the Apache server is accessed over the IP address or the hostname a redirect to the UCS startpage is done in the standard setting. This variable allows the configuration of the subpage where the redirect points to.
+Description[de]=Wird die URL des Apache-Servers über die IP-Adresse oder den Hostnamen aufgerufen, wird in der Grundeinstellung eine Weiterleitung auf die UCS-Startseite durchgeführt. Diese Variable erlaubt die Konfiguration der Unterseite, auf die dabei verwiesen werden soll.
+Description[en]=If the URL of the Apache server is accessed over the IP address or the hostname, a redirect to the UCS startpage is done in the standard setting. This variable allows the configuration of the subpage where the redirect points to.
 Type=str
 Categories=service-apache
 
 [php/memory/limit]
 Description[de]=Der maximale Speicher, den ein PHP-Skript in Anspruch nehmen kann. Um z.B. 256 Megabyte zu konfigurieren, muss '256M' angegeben werden. Ist die Variable nicht gesetzt, können 128 MB benutzt werden.
-memoDescription[en]=The maximum memory that a PHP script can use. E.g., to configure 256 megabytes, '256M' needs to be specified. If the variable is unset, 128 MB are permitted.
+Description[en]=The maximum memory that a PHP script can use. E.g., to configure 256 megabytes, '256M' needs to be specified. If the variable is unset, 128 MB are permitted.
 Type=str
 Categories=service-apache
 
 [php/limit/postsize]
 Description[de]=Die maximale Größe von POST-Daten in einem PHP-Skript, d.h. die Datenmenge die maximal an einen HTTP-Server gesendet werden kann. Um z.B. 16 Megabyte zu konfigurieren, muss '16M' angegeben werden. Ist die Variable nicht gesetzt, können 8 MB gesendet werden.
-memoDescription[en]=The maximum size of POST data in a PHP script, i.e. the maximum data that can be send to a HTTP server. E.g., to configure 16 megabytes, '16M' needs to be specified. If the variable is unset, 8 MB are permitted.
+Description[en]=The maximum size of POST data in a PHP script, i.e. the maximum data that can be send to a HTTP server. E.g., to configure 16 megabytes, '16M' needs to be specified. If the variable is unset, 8 MB are permitted.
 Type=str
 Categories=service-apache
 
 [php/limit/filesize]
 Description[de]=Die maximale Größe für Datei-Uploads in einem PHP-Skript. Um z.B. 4 Megabyte zu konfigurieren, muss '4M' angegeben werden. Ist die Variable nicht gesetzt, können bis zu 2 MB große Dateien geladen werden.
-memoDescription[en]=The maximum size for file uploads in a PHP script. E.g., to configure 4 megabytes, '4M' needs to be specified. If the variable is unset, uploads up to 2 MB are permitted.
+Description[en]=The maximum size for file uploads in a PHP script. E.g., to configure 4 megabytes, '4M' needs to be specified. If the variable is unset, uploads up to 2 MB are permitted.
 Type=str
 Categories=service-apache
 
 [php/limit/inputtime]
-Description[de]=Die maximale Zeit in Sekunden, die einem PHP-Skript erlaubt ist um empfangene Eingaben zu verarbeiten. Ist die Variable nicht gesetzt, beträgt der Wert eine Minute.
-memoDescription[en]=The maximum time in seconds granted to a PHP script to process received data. If the variable is unset, a minute applies.
+Description[de]=Die maximale Zeit in Sekunden, die einem PHP-Skript erlaubt ist, um empfangene Eingaben zu verarbeiten. Ist die Variable nicht gesetzt, beträgt der Wert eine Minute.
+Description[en]=The maximum time in seconds granted to a PHP script to process received data. If the variable is unset, a minute applies.
 Type=str
 Categories=service-apache
 
 [php/limit/inputtime]
 Description[de]=Die maximale Zeit in Sekunden, die ein PHP-Skript auf Socketeingaben wartet. Ist die Variable nicht gesetzt, beträgt der Wert eine Minute.
-memoDescription[en]=The maximum time in seconds a PHP waits for input on sockets. If the variable is unset, a minute applies.
+Description[en]=The maximum time in seconds a PHP waits for input on sockets. If the variable is unset, a minute applies.
 Type=str
 Categories=service-apache
 
@@ -47,7 +47,7 @@ Type=bool
 Categories=service-apache,system-services
 
 [apache2/proxy/access/order]
-Description[de]=Diese Variable konfiguriert die Auswertungsreihenfolge der Zugriffsberechtigungen im mod_proxyModul. Eine detaillierte Beschreibung findet sich unter http://httpd.apache.org/docs/2.2/mod/mod_proxy.html. Ist die Variable nicht gesetzt, greift 'allow,deny'.
+Description[de]=Diese Variable konfiguriert die Auswertungsreihenfolge der Zugriffsberechtigungen im mod_proxy-Modul. Eine detaillierte Beschreibung findet sich unter http://httpd.apache.org/docs/2.2/mod/mod_proxy.html. Ist die Variable nicht gesetzt, greift 'allow,deny'.
 Description[en]=This variable configures the evaluation order of access permissions in the mod_proxy module. A detailed description can be found at http://httpd.apache.org/docs/2.2/mod/mod_proxy.html. If the variable is unset, 'allow,deny' applies.
 Type=str
 Categories=service-apache
@@ -102,6 +102,6 @@ Categories=service-apache
 
 [apache2/loglevel]
 Description[de]=Diese Variable konfiguriert den Detailgrad der Apache-Logmeldungen. Mögliche Werte sind: emerg alert crit error warn notice info debug
-Description[en]=This variable configures the verbosity level for the web server: emerg alert crit error warn notice info debug
+Description[en]=This variable configures the verbosity level for the Apache web server: emerg alert crit error warn notice info debug
 Type=str
 Categories=service-apache
