@@ -47,61 +47,61 @@ Type=bool
 Categories=service-apache,system-services
 
 [apache2/proxy/access/order]
-Description[de]=Reihenfolge der mod_access Regeln (http://httpd.apache.org/docs/2.0/mod/mod_access.html)
-Description[en]=Order of the mod_access Rules (http://httpd.apache.org/docs/2.0/mod/mod_access.html)
+Description[de]=Diese Variable konfiguriert die Auswertungsreihenfolge der Zugriffsberechtigungen im mod_proxyModul. Eine detaillierte Beschreibung findet sich unter http://httpd.apache.org/docs/2.2/mod/mod_proxy.html. Ist die Variable nicht gesetzt, greift 'allow,deny'.
+Description[en]=This variable configures the evaluation order of access permissions in the mod_proxy module. A detailed description can be found at http://httpd.apache.org/docs/2.2/mod/mod_proxy.html. If the variable is unset, 'allow,deny' applies.
 Type=str
 Categories=service-apache
 
 [apache2/proxy/access/allow]
-Description[de]=Liste von Domainennamen, die vom proxy Modul bedient werden sollen (getrennt durch Leerzeichen)
-Description[en]=List of Domainnames that shall be served by the proxy module (space separated)
+Description[de]=Diese Variable konfiguriert die Liste der zugriffsberechtigten Domänen im mod_proxy-Modul. Eine detaillierte Beschreibung findet sich unter http://httpd.apache.org/docs/2.2/mod/mod_proxy.html. Ist die Variable nicht gesetzt, greift 'all' (alle Domänen sind damit erlaubt).
+Description[en]=This variable configures the domains which are granted access to the mod_proxy module. A detailed description can be found at http://httpd.apache.org/docs/2.2/mod/mod_proxy.html. If the variable is unset, 'all' applies (i.e. all domains are allowed).
 Type=str
 Categories=service-apache
 
 [apache2/proxy/access/deny]
-Description[de]=Liste von Domainennamen, denen der Zugriff vom proxy Modul verweigert werden soll (Trennung: Leerzeichen)
-Description[en]=List of domainnames that shall be denied access by the proxy module (space separated)
+Description[de]=Diese Variable konfiguriert die Liste der zugriffsverweigerten Domänen im mod_proxy-Modul. Eine detaillierte Beschreibung findet sich unter http://httpd.apache.org/docs/2.2/mod/mod_proxy.html. 
+Description[en]=This variable configures the domains which are denied access to the mod_proxy module. A detailed description can be found at http://httpd.apache.org/docs/2.2/mod/mod_proxy.html.
 Type=str
 Categories=service-apache
 
 [apache2/maxclients]
-Description[de]=Wie viele Verbindungen gleichzeitig verarbeitet werden
-Description[en]=Maximum number of connections that will be processed simultaneously
+Description[de]=Diese Variable konfiguriert die maximale Anzahl von HTTP-Anfragen, die von Apache bedient werden kann.
+Description[en]=This variable configures the maximum number of HTTP requests which can be served by Apache.
 Type=int
 Categories=service-apache
 
 [apache2/ssl/certificate]
-Description[de]=Pfad zur PEM-codierten SSL-Zertifikat .crt Datei.
-Description[en]=Path to the PEM-encodet SSL certificate .crt file.
+Description[de]=Der absolute Pfad zur SSL-Zertifikatsdatei für mod_ssl. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/FQDN/cert.pem).
+Description[en]=The absolute path to the SSL certificate file for mod_ssl. The certificate needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/FQDN/cert.pem).
 Type=str
 Categories=service-apache
 
 [apache2/ssl/key]
-Description[de]=Pfad zur PEM-codierten privaten .key Schlüsseldatei. Der Schlüssel muss ein RSA oder DSA-Key sein.
-Description[en]=Path to the PEM-encodet private key (.key) file. The key must be a RSA or DSA-Key.
+Description[de]=Der absolute Pfad zum privaten RSA/DSA-Schlüssel der SSL-Zertifikatsdatei für mod_ssl. Der Schlüssel muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/FQDN/private.key).
+Description[en]=The absolute path to the private RSA/DSA key of the SSL certificate file for mod_ssl. The key needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/FQDN/private.key).
 Type=str
 Categories=service-apache
 
 [apache2/ssl/ca]
-Description[de]=Pfad zur PEM-codierten Zertifikatsdatei der Zertifizierungsstelle (CACert) für Clientauthentifizierung. Der Schlüssel muss ein RSA oder DSA-Key sein.
-Description[en]=Path to the PEM-encoded certificate authority file used for client authentication. The key must be a RSA or DSA-Key.
+Description[de]=Der absolute Pfad zum Zertifikat der Zertifizierungsstelle (CA) für mod_ssl. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/ucsCA/CAcert.pem).
+Description[en]=The absolute path to the certificate of the certificate authority (CA) for mod_ssl. The certificate needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/ucsCA/CAcert.pem).
 Type=str
 Categories=service-apache
 
 [apache2/ssl/certificatechain]
-Description[de]=Pfad zur Zertifikatskettendatei um einem Clientbrowser zusätzliche Zertifikate mitzuteilen. Die Schlüssel müssen entweder im RSA oder DSA Format sein.
-Description[en]=Path to the certificate chain file to inform client browsers about additional certificates. The keys must be either in RSA or DSA format.
+Description[de]=Der Pfad zur Zertifikatskettendatei um einem Clientbrowser zusätzliche Zertifikate mitzuteilen. Die Schlüssel müssen entweder im RSA oder DSA Format sein.
+Description[en]=The path to the certificate chain file to inform client browsers about additional certificates. The keys must be either in RSA or DSA format.
 Type=str
 Categories=service-apache
 
 [apache2/documentroot]
-Description[de]=Wurzelverzeichnis für die Dokumente des Web-Server [/var/www/]
-Description[en]=Root directory for documents of the web server [/var/www/]
+Description[de]=Das Wurzelverzeichnis für die von Apache bereitgestellten Daten.
+Description[en]=The root directory for the data served by Apache.
 Type=str
 Categories=service-apache
 
 [apache2/loglevel]
-Description[de]=Loglevel für den Web-Server: emerg alert crit error warn notice info debug [warn]
-Description[en]=Log level for the web server: emerg alert crit error warn notice info debug [warn]
+Description[de]=Diese Variable konfiguriert den Detailgrad der Apache-Logmeldungen. Mögliche Werte sind: emerg alert crit error warn notice info debug
+Description[en]=This variable configures the verbosity level for the web server: emerg alert crit error warn notice info debug
 Type=str
 Categories=service-apache
