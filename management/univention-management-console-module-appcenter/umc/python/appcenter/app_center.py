@@ -64,9 +64,10 @@ from univention.management.console.log import MODULE
 from univention.config_registry import ConfigRegistry, handler_commit
 import univention.uldap as uldap
 import univention.management.console as umc
+from univention.lib.umc_connection import UMCConnection
 
 # local application
-from util import urlopen, get_current_ram_available, component_registered, UMCConnection, get_master, get_all_backups, set_save_commit_load
+from util import urlopen, get_current_ram_available, component_registered, get_master, get_all_backups, set_save_commit_load
 
 CACHE_DIR = '/var/cache/univention-management-console/appcenter'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
@@ -632,7 +633,7 @@ class Application(object):
 			def _check_remote_host(application_id, host, host_is_master, username, password, force, remote_function):
 				MODULE.process('Starting dry_run for %s on %s' % (application_id, host))
 				try:
-					connection = UMCConnection(host)
+					connection = UMCConnection(host, error_handler=MODULE.warn)
 					connection.auth(username, password)
 				except HTTPException as e:
 					MODULE.warn('%s: %s' % (host, e))
@@ -733,7 +734,7 @@ class Application(object):
 			function = 'update-schema'
 		else:
 			function = 'install-schema'
-		connection = UMCConnection(host, username, password)
+		connection = UMCConnection(host, username, password, error_handler=MODULE.warn)
 		result = connection.request('appcenter/invoke', {'function' : function, 'application' : self.id, 'force' : True, 'dont_remote_install' : True})
 		if result['can_continue']:
 			all_errors = set()
