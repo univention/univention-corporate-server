@@ -1,3 +1,9 @@
+ucs-test (4.0.64-1) unstable; urgency=low
+
+  * 02_import-performance/*.csv: fix import files (Bug #31695)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Jul 2013 10:49:13 +0200
+
 ucs-test (4.0.63-1) unstable; urgency=low
 
   * rename 25domain-join-without-admin-rights to run at the end
