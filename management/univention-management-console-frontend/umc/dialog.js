@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/parser",
 	"dojo/on",
 	"dojo/topic",
 	"dojo/Deferred",
@@ -44,7 +45,7 @@ define([
 	"umc/tools",
 	"umc/i18n/tools",
 	"umc/i18n!umc/app"
-], function(lang, array, on, topic, Deferred, domClass, domStyle, LoginDialog, Toaster, ConfirmDialog, Text, Form, tools, i18nTools, _) {
+], function(lang, array, parser, on, topic, Deferred, domClass, domStyle, LoginDialog, Toaster, ConfirmDialog, Text, Form, tools, i18nTools, _) {
 	var dialog = {};
 	lang.mixin(dialog, {
 		_loginDialog: null, // internal reference to the login dialog
@@ -178,6 +179,7 @@ define([
 				this._alertDialog = new ConfirmDialog({
 					title: title || _('Notification'),
 					style: 'max-width: 650px;',
+					closable: true,
 					options: [{
 						label: buttonLabel || _('Ok'),
 						callback: lang.hitch(this, function() {
@@ -198,7 +200,7 @@ define([
 			//this._alertDialog.startup();
 			this._alertDialog.show();
 		},
-		
+
 		centerAlertDialog: function() {
 			this._alertDialog._relativePosition = null;
 			this._alertDialog._position();
@@ -396,6 +398,10 @@ define([
 			require([lang.replace('dojo/text!{0}/{1}', [templateModule, templateFile])], function(message) {
 				message = lang.replace( message, keys );
 				var widget = new Text( {  content : message } );
+				if (message.indexOf('data-dojo-type=') >= 0) {
+					// we need to parse the html code with the dojo parser
+					parser.parse(widget.domNode);
+				}
 				domClass.add( widget.domNode, 'umcPopup' );
 				dialog.alert( widget, title || 'UMC', buttonLabel );
 			});

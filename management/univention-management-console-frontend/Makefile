@@ -46,7 +46,7 @@ umcLessFiles:=$(shell find css -name "*.less" | sed 's|^css/|$(themesDir)/umc/|'
 lessFiles:=$(claroLessFiles) $(umcLessFiles)
 cssFiles:=$(lessFiles:%.less=%.css)
 
-.PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(tmpDir)/umc/login.html $(buildDir)/index.html $(buildDir)/debug.html
+.PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(tmpDir)/umc/app/login.html $(buildDir)/index.html $(buildDir)/debug.html
 
 build: build-common $(buildDir)/js/dojo/dojo.js.uncompressed.js $(themesDir)/umc
 
@@ -89,7 +89,7 @@ $(buildDir)/debug.html: $(buildDir) index.html
 	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' index.html > $@
 
 # login page
-$(tmpDir)/umc/login.html: login.html
+$(tmpDir)/umc/app/login.html: login.html
 	mkdir -p $(dir $@)
 	sed 's/%HASH%/_$(timestamp)/;' login.html > $@
 	cp $@ $(dir $@)/blank.html
@@ -141,7 +141,7 @@ build-dev: build-common
 	mkdir -p $(themesDir)/umc/icons/
 	cp -frsn /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/* $(themesDir)/umc/icons/
 
-build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(themesDir)/umc $(themesDir)/umc/icons $(cssFiles) $(tmpDir)/umc/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
+build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(themesDir)/umc $(themesDir)/umc/icons $(cssFiles) $(tmpDir)/umc/app/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html
 	@# symlink to javascript dir with timestamp
 	rm -f "$(buildDir)/js_"*
 	ln -s "js" "$(buildDir)/js_"'$(timestamp)'

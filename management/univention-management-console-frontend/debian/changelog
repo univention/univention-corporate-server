@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.19-1) unstable; urgency=low
+
+  * Bug #30811: refactored menu dialogs, integrated startup dialog, extended
+    piwik module to be switched on/off
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 12 Jul 2013 19:45:09 +0200
+
 univention-management-console-frontend (3.0.18-1) unstable; urgency=low
 
   * Bug #31377: add more locales to default UMC languages
@@ -6,7 +13,7 @@ univention-management-console-frontend (3.0.18-1) unstable; urgency=low
 
 univention-management-console-frontend (3.0.17-1) unstable; urgency=low
 
-  * Bug #31699: replaced lessc version for rhion with a version for nodejs
+  * Bug #31699: replaced lessc version for rhino with a version for nodejs
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 11 Jul 2013 16:01:47 +0200
 

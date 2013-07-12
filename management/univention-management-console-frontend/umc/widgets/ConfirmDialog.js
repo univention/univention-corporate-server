@@ -110,6 +110,8 @@ define([
 		//		'name' property of the button.
 		options: [],
 
+		closable: false,
+
 		// the widget's class name as CSS class
 		'class': 'umcConfirmDialog',
 
@@ -206,7 +208,7 @@ define([
 			this._container.startup();
 
 			// explicitely set 'closable' here, otherwise it does not have any effect
-			this.set('closable', false);
+			this.set('closable', this.closable);
 
 			// attach layout to dialog
 			this.set('content', this._container);

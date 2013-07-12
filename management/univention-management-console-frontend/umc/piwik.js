@@ -30,8 +30,10 @@
 
 define([
 	"dojo/topic",
-	"dojo/_base/array"
-], function(topic, array) {
+	"dojo/_base/array",
+	"umc/store",
+	"umc/tools"
+], function(topic, array, store, tools) {
 	var _buildSiteTitle = function(parts) {
 		var titleStr = [];
 		array.forEach(parts, function(i) {
@@ -46,26 +48,79 @@ define([
 		return titleStr.join('/');
 	};
 
-	require(["https://www.piwik.univention.de/piwik.js"], function() {
-		// make sure piwik has been included
-		if (!Piwik) {
+	var _disablePiwik = false;
+	var piwikTracker = null;
+	var sendAction = function() {
+		console.log('### sendAction');
+		if (!piwikTracker || _disablePiwik) {
+			console.log('###   ', piwikTracker, _disablePiwik);
+			return;
+		}
+		console.log('###   ', arguments);
+		piwikTracker.setDocumentTitle(_buildSiteTitle(arguments));
+		piwikTracker.setCustomUrl(window.location.protocol + "//" + window.location.host);
+		piwikTracker.trackPageView();
+	};
+
+	var disablePiwik = function(disable) {
+		console.log('### disablePiwik:', disable);
+		// send that piwik has been disabled
+		tools.status('piwikEnabled', !disable);
+		_disablePiwik = false;
+		sendAction('piwik', disable ? 'disable' : 'enable');
+		_disablePiwik = disable;
+
+		if (!require('umc/modules/ucr')) {
+			// UCR UMC module is not available
 			return;
 		}
 
-		// create a new tracker instance
-		var piwikTracker = {};
-		piwikTracker = Piwik.getTracker('https://www.piwik.univention.de/piwik.php', 14);
-		piwikTracker.enableLinkTracking();
+		// set the UCR variable accordingly
+		var ucrStore = store('key', 'ucr');
+		if (disable) {
+			// explicitely set UCR variable to false
+			topic.publish('/umc/actions', 'menu-help', 'piwik');
+			ucrStore.put({
+				key: 'umc/web/piwik',
+				value: 'false'
+			});
+		} else {
+			// remove UCR variable to obtain the default behaviour
+			ucrStore.remove('umc/web/piwik');
+		}
+	};
 
-		// subscribe to all topics containing interesting actions
-		topic.subscribe('/umc/actions', function() {
-			piwikTracker.setDocumentTitle(_buildSiteTitle(arguments));
-			piwikTracker.setCustomUrl(window.location.protocol + "//" + window.location.host);
-			piwikTracker.trackPageView();
+	var loadPiwik = function() {
+		console.log('### loadPiwik');
+		tools.status('piwikEnabled', true);
+		require(["https://www.piwik.univention.de/piwik.js"], function() {
+			// create a new tracker instance
+			piwikTracker = Piwik.getTracker('https://www.piwik.univention.de/piwik.php', 14);
+			piwikTracker.enableLinkTracking();
+
+			// send login action
+			topic.publish('/umc/actions', 'session', 'login');
 		});
+	};
 
-		// send login action
-		topic.publish('/umc/actions', 'session', 'login');
+	// subscribe to all topics containing interesting actions
+	topic.subscribe('/umc/actions', sendAction)
+
+	// subscribe for disabling piwik
+	topic.subscribe('/umc/piwik/disable', disablePiwik)
+
+	// check whether piwik is enabled
+	tools.ucr([
+		'umc/web/piwik',
+		'license/base'
+	]).then(function(result) {
+		var piwikUcrv = result['umc/web/piwik'];
+		var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
+		var ffpuLicense = result['license/base'] == 'Free for personal use edition';
+		if (tools.isTrue(result['umc/web/piwik']) || (!piwikUcrvIsSet && ffpuLicense)) {
+			// use piwik for user action feedback if it is not switched off explicitely
+			loadPiwik();
+		}
 	});
 });
 

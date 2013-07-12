@@ -36,19 +36,17 @@ define([
 	"dojo/dom-class",
 	"dojo/dom-style",
 	"dojo/dom-construct",
-	"dojo/aspect",
 	"dijit/Destroyable",
 	"umc/tools",
 	"umc/widgets/Tooltip",
 	"umc/widgets/ContainerWidget",
 	"dgrid/List",
-	"dgrid/TouchScroll",
 	"dgrid/extensions/DijitRegistry",
 	"put-selector/put",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, query, domClass, domStyle, domConstruct, aspect, Destroyable,
-		tools, Tooltip, ContainerWidget, List, TouchScroll, DijitRegistry, put, _) {
-	return declare("umc.widgets.GalleryPane", [ List, TouchScroll, DijitRegistry, Destroyable ], {
+], function(declare, lang, array, query, domClass, domStyle, domConstruct, Destroyable,
+		tools, Tooltip, ContainerWidget, List, DijitRegistry, put, _) {
+	return declare("umc.widgets.GalleryPane", [ List, DijitRegistry, Destroyable ], {
 		style: "",
 
 		baseClass: 'umcGalleryPane',

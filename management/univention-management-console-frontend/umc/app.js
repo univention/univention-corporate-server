@@ -52,6 +52,7 @@ define([
 	"dojo/dom-class",
 	"dojo/dom-geometry",
 	"dojo/dom-construct",
+	"dojo/date/locale",
 	"dijit/Dialog",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -64,8 +65,8 @@ define([
 	"dijit/layout/ContentPane",
 	"umc/tools",
 	"umc/dialog",
-	"umc/help",
-	"umc/about",
+	"umc/store",
+	"umc/app/StartupDialog",
 	"umc/widgets/ProgressInfo",
 	"umc/widgets/LiveSearchSidebar",
 	"umc/widgets/GalleryPane",
@@ -79,12 +80,17 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
-	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, help, about, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
+	"dojo/sniff", // has("ie"), has("ff")
+	"umc/piwik"
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
 	var _favoritesDisabled = false;
+
+	var _getLang = function() {
+		return kernel.locale.split('-')[0];
+	};
 
 	// helper function for sorting, sort indeces with priority < 0 to be at the end
 	var _cmpPriority = function(x, y) {
@@ -259,7 +265,7 @@ define([
 			array.forEach(_modules, function(imod) {
 				array.forEach(imod.categories || [], function(icat) {
 					modules.push(this._createModuleItem(imod, icat));
-				}, this)
+				}, this);
 			}, this);
 			return modules;
 		},
@@ -326,7 +332,7 @@ define([
 		},
 
 		setFavoritesString: function(favoritesStr) {
-			var favoritesStr = favoritesStr || '';
+			favoritesStr = favoritesStr || '';
 			array.forEach(lang.trim(favoritesStr).split(/\s*,\s*/), function(ientry) {
 				this.addFavoriteModule.apply(this, ientry.split(':'));
 			}, this);
@@ -640,13 +646,6 @@ define([
 
 			// perform actions that depend on the UCR variables
 			ucrDeferred.then(function(res) {
-				var piwikUcrv = _ucr['umc/web/piwik'];
-				var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
-				var ffpuLicense = _ucr['license/base'] == 'Free for personal use edition';
-				if (tools.isTrue(_ucr['umc/web/piwik']) || (!piwikUcrvIsSet && ffpuLicense)) {
-					// use piwik for user action feedback if it is not switched off explicitely
-					require(['umc/piwik'], function() {});
-				}
 			});
 		},
 
@@ -664,9 +663,7 @@ define([
 				'ssl/validity/root',
 				'ssl/validity/warning',
 				'update/available',
-				'update/reboot/required',
-				'umc/web/piwik',
-				'license/base'
+				'update/reboot/required'
 			]).then(lang.hitch(this, function(res) {
 				// save the ucr variables in a local variable
 				lang.mixin(_ucr, res);
@@ -718,8 +715,8 @@ define([
 					this._tryLoadingModule(imod, i).then(lang.hitch(this, function(loadedModule) {
 						modules.push(loadedModule);
 						incDeps(imod.name);
-					}), function() {
-						console.log('Error loading module ' + module.id + ':', err);
+					}), function(err) {
+						console.log('Error loading module ' + imod.id + ':', err);
 					});
 				}));
 
@@ -792,7 +789,7 @@ define([
 			// summary:
 			//		Get all categories as an array. Each entry has the following properties:
 			//		{ id, description }.
-			return this._moduleStore.getCategories()
+			return this._moduleStore.getCategories();
 		},
 
 		getCategory: function(/*String*/ id) {
@@ -847,7 +844,7 @@ define([
 					//headerText: _('umcOverviewHeader'),
 					iconClass: tools.getIconClass('univention'),
 					//helpText: _('umcOverviewHelpText'),
-					'class': 'umcAppCenter umcPage'
+					style: 'margin-top:15px;'
 				});
 				this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
 				this._tabContainer.addChild(this._overviewPage);
@@ -861,6 +858,7 @@ define([
 				this._checkRebootRequired();
 				this._checkJoinStatus();
 				this._checkNoModuleAvailable();
+				this._checkShowStartupDialog();
 
 				// add search widget
 				this._searchSidebar = new LiveSearchSidebar({
@@ -997,6 +995,11 @@ define([
 			if (!launchableModules.length) {
 				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
 			}
+		},
+
+		_checkShowStartupDialog: function() {
+			//var startupDialog = new StartupDialog({});
+			//startupDialog.show();
 		},
 
 		_focusSearchField: function() {
@@ -1222,28 +1225,19 @@ define([
 			this._helpMenu = new Menu({});
 			this._helpMenu.addChild(new MenuItem({
 				label: _('Help'),
-				onClick : function() {
-					topic.publish('/umc/actions', 'menu-help', 'help');
-					help();
-				}
+				onClick : lang.hitch(this, '_showHelpDialog')
 			}));
 			this._helpMenu.addChild(new MenuItem({
 				label: _('Feedback'),
-				onClick : lang.hitch(this, function() {
-					topic.publish('/umc/actions', 'menu-help', 'feedback');
-					var url = _('umcFeedbackUrl') + '?umc=' + this._tabContainer.get('selectedChildWidget').title;
-					var w = window.open(url, 'umcFeedback');
-					w.focus();
-				})
+				onClick : lang.hitch(this, '_showFeedbackPage')
+			}));
+			this._helpMenu.addChild(new MenuItem({
+				label: _('Usage statistics'),
+				onClick : lang.hitch(this, '_showPiwikDialog')
 			}));
 			this._helpMenu.addChild(new MenuItem({
 				label: _('About UMC'),
-				onClick : function() {
-					topic.publish('/umc/actions', 'menu-help', 'about');
-					tools.umcpCommand( 'get/info' ).then( function( data ) {
-						about( data.result );
-					} );
-				}
+				onClick : lang.hitch(this, '_showAboutDialog')
 			}));
 			this._helpMenu.addChild(new MenuSeparator({}));
 			this._helpMenu.addChild(new MenuItem({
@@ -1279,6 +1273,51 @@ define([
 			topic.subscribe('/umc/tabs/focus', lang.hitch(this, 'focusTab'));
 
 			this._setupStaticGui = true;
+		},
+
+		_showAboutDialog: function() {
+			var _formatDate = function(timestamp) {
+				return locale.format(new Date(timestamp), {
+					fullYear: true,
+					timePattern: " ",
+					formatLength: "long"
+				});
+			};
+
+			// query data from server
+			topic.publish('/umc/actions', 'menu-help', 'about');
+			tools.umcpCommand('get/info').then(function(response) {
+				var data = response.result;
+				array.forEach(['ssl_validity_host', 'ssl_validity_root'], function(ikey) {
+					data[ikey] = _formatDate(data[ikey]);
+				});
+				dialog.templateDialog('umc/app', 'about.' + _getLang() + '.html', data, _('About UMC'), _('Close'));
+			} );
+		},
+
+		_showHelpDialog: function() {
+			topic.publish('/umc/actions', 'menu-help', 'help');
+			dialog.templateDialog('umc/app', 'help.' + _getLang()  + '.html', {
+				path: require.toUrl('umc/app')
+			}, _('Help'), _('Close'));
+		},
+
+		_showPiwikDialog: function() {
+			topic.publish('/umc/actions', 'menu-help', 'piwik');
+			dialog.templateDialog('umc/app', 'feedback.' + _getLang()  + '.html', {
+				path: require.toUrl('umc/app')
+			}, _('Usage statistics'), _('Close'));
+		},
+
+		_showFeedbackPage: function() {
+			topic.publish('/umc/actions', 'menu-help', 'feedback');
+			var url = _('umcFeedbackUrl') + '?umc=' + this._tabContainer.get('selectedChildWidget').title;
+			var w = window.open(url, 'umcFeedback');
+			w.focus();
+		},
+
+		_disablePiwik: function(disable) {
+			topic.publish('/umc/piwik/disable', disable);
 		},
 
 		relogin: function(username) {
