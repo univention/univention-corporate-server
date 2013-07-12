@@ -1,4 +1,4 @@
-univention-lib (3.0.5-1) unstable; urgency=low
+univention-lib (3.0.5-2) unstable; urgency=low
 
   * Added UMCConnection (Bug #31058)
 

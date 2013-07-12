@@ -31,8 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# stdlib
 from httplib import HTTPSConnection, HTTPException
-from simplejson import loads, dumps
+from json import loads, dumps
+from socket import error as SocketError
+
+# univention
+from univention.config_registry import ConfigRegistry
+ucr = ConfigRegistry()
+ucr.load()
 
 class UMCConnection(object):
 	def __init__(self, host, username=None, password=None, error_handler=None):
@@ -45,11 +52,36 @@ class UMCConnection(object):
 			self.auth(username, password)
 
 	def get_connection(self):
+		'''Creates a new HTTPSConnection to the host'''
 		# once keep-alive is over, the socket closes
 		#   so create a new connection on every request
 		return HTTPSConnection(self._host)
 
+	@classmethod
+	def get_machine_connection(cls, error_handler=None):
+		'''Creates a connection with the credentials of the local host
+		to the DC Master'''
+		username = '%s$' % ucr.get('hostname')
+		password = ''
+		try:
+			with open('/etc/machine.secret') as machine_file:
+				password = machine_file.readline().strip()
+		except (OSError, IOError) as e:
+			if error_handler:
+				error_handler('Could not read /etc/machine.secret: %s' % e)
+		try:
+			connection = UMCConnection(ucr.get('ldap/master'))
+			connection.auth(username, password)
+			return connection
+		except (HTTPException, SocketError) as e:
+			if error_handler:
+				error_handler('Could not connect to UMC on %s: %s' % (ucr.get('ldap/master'), e))
+		return None
+
 	def auth(self, username, password):
+		'''Tries to authenticate against the host and preserves the
+		cookie. Has to be done only once (but keep in mind that the
+		session probably expires after 10 minutes of inactivity)'''
 		data = self.build_data({'username' : username, 'password' : password})
 		con = self.get_connection()
 		try:
@@ -74,12 +106,15 @@ class UMCConnection(object):
 				raise HTTPException(error_message)
 
 	def build_data(self, data, flavor=None):
+		'''Returns a dictionary as expected by the UMC Server'''
 		data = {'options' : data}
 		if flavor:
 			data['flavor'] = flavor
 		return dumps(data)
 
 	def request(self, url, data=None, flavor=None):
+		'''Sends a request and returns the data from the response. url
+		as in the XML file of that UMC module'''
 		if data is None:
 			data = {}
 		data = self.build_data(data, flavor)
@@ -93,7 +128,7 @@ class UMCConnection(object):
 				#   or command is known but forbidden
 				if self._error_handler:
 					self._error_handler(error_message)
-				raise NotImplementedError
+				raise NotImplementedError('command forbidden: %s' % url)
 			raise HTTPException(error_message)
 		content = response.read()
 		return loads(content)['result']
