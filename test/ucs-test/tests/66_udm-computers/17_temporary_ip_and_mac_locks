@@ -34,13 +34,9 @@ if __name__ == '__main__':
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		with udm_test.UCSTestUDM() as udm:
 			computer = udm.create_object(role, name = uts.random_name(), **properties)
-			if utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (properties['ip'], lockContainer)):
-				utils.fail('Could still find lock for IP %s after creation of %s' % (properties['ip'], role))
-			if utils.verify_ldap_object('cn=%s,cn=mac,%s' % (properties['mac'], lockContainer)):
-				utils.fail('Could still find lock for MAC %s after creation of %s' % (properties['mac'], role))
+			utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (properties['ip'], lockContainer), should_exist = False)
+			utils.verify_ldap_object('cn=%s,cn=mac,%s' % (properties['mac'], lockContainer), should_exist = False)
 
 			udm.modify_object(role, dn = computer, **newProperties)
-			if utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (newProperties['ip'], lockContainer)):
-				utils.fail('Could still find lock for IP %s after creation of %s' % (newProperties['ip'], role))
-			if utils.verify_ldap_object('cn=%s,cn=mac,%s' % (newProperties['mac'], lockContainer)):
-				utils.fail('Could still find lock for MAC %s after creation of %s' % (newProperties['mac'], role))
+			utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (newProperties['ip'], lockContainer), should_exist = False)
+			utils.verify_ldap_object('cn=%s,cn=mac,%s' % (newProperties['mac'], lockContainer), should_exist = False)

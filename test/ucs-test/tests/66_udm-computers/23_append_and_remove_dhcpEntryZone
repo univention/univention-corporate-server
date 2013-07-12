@@ -31,11 +31,10 @@ if __name__ == '__main__':
 				'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]]
 			})
 			for service, ip, mac in dhcpEntryZones[:2]:
-				if not utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {
+				utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {
 					'univentionDhcpFixedAddress': [ip],
 					'dhcpHWAddress': ['ethernet %s' % mac]
-				}):
-					utils.fail('DHCP host object for %s in %s differed from expectation' % (role, service))
+				})
 
 			udm.modify_object(role, dn = computer, append = {
 				'ip': [zone[1] for zone in dhcpEntryZones[2:]],
@@ -43,11 +42,10 @@ if __name__ == '__main__':
 				'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[2:]]
 			})
 			for service, ip, mac in dhcpEntryZones:
-				if not utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {
+				utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {
 					'univentionDhcpFixedAddress': [ip],
 					'dhcpHWAddress': ['ethernet %s' % mac]
-				}):
-					utils.fail('DHCP host object for %s in %s differed from expectation' % (role, service))
+				})
 		
 			udm.modify_object(role, dn = computer, remove = {
 				'ip': [zone[1] for zone in dhcpEntryZones[:2]],
@@ -55,13 +53,10 @@ if __name__ == '__main__':
 				'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]]
 			})
 			for service, ip, mac in dhcpEntryZones[:2]:
-				if utils.verify_ldap_object('cn=%s,%s' % (computerName, service)):
-					utils.fail('Could still find DHCP host object for %s in %s after the related dhcpEntryZone entry should have been removed' % (role, service))
+				utils.verify_ldap_object('cn=%s,%s' % (computerName, service), should_exist = False)
 
 			for service, ip, mac in dhcpEntryZones[2:]:
-				if not utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {
+				utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {
 					'univentionDhcpFixedAddress': [ip],
 					'dhcpHWAddress': ['ethernet %s' % mac]
-				}):
-					utils.fail('DHCP host object for %s in %s has been removed eventhough it should have not' % (role, service))
-
+				})

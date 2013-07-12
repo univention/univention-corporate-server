@@ -77,33 +77,28 @@ if __name__ == '__main__':
 
 		# validate computer ldap object
 		computerDN = udm.create_object(objectType, **properties)
-		if not utils.verify_ldap_object(computerDN, expectedLdap):
-			utils.fail()
+		utils.verify_ldap_object(computerDN, expectedLdap)
 
 		# validate related DHCP host object
-		if not utils.verify_ldap_object('cn=%s,%s' % (properties['name'], dhcpZone), {
+		utils.verify_ldap_object('cn=%s,%s' % (properties['name'], dhcpZone), {
 			'dhcpHWAddress': ['ethernet %s' % properties['mac']],
 			'univentionDhcpFixedAddress': [properties['ip']]
-		}):
-			utils.fail('Automatically created DHCP host object differs from expectation')
+		})
 
 		# validate related A record
-		if not utils.verify_ldap_object('relativeDomainName=%s,%s' % (properties['name'], properties['dnsEntryZoneForward']), {
+		utils.verify_ldap_object('relativeDomainName=%s,%s' % (properties['name'], properties['dnsEntryZoneForward']), {
 			'aRecord': [properties['ip']],
 			'relativeDomainName': [properties['name']],
 			'zoneName': [properties['dnsEntryZoneForward'].split('zoneName=')[1].split(',')[0]]
-		}):
-			utils.fail('Automatically created A record differs from expectation')
+		})
 		
 		# validate related PTR record
-		if not utils.verify_ldap_object('relativeDomainName=2,%s' % properties['dnsEntryZoneReverse'], {
+		utils.verify_ldap_object('relativeDomainName=2,%s' % properties['dnsEntryZoneReverse'], {
 			'relativeDomainName': '2',
 			'pTRRecord': ['%s.%s.' % (properties['name'], properties['dnsEntryZoneForward'].split('zoneName=')[1].split(',')[0])],
 			'zoneName': [properties['dnsEntryZoneReverse'].split('zoneName=')[1].split(',')[0]]
-		}):
-			utils.fail('Automatically created PTR record differs from expectation')
+		})
 
 
 		for group in [properties['primaryGroup']] + properties['groups']:
-			if not utils.verify_ldap_object(group, {'memberUid': ['%s$' % properties['name']], 'uniqueMember': [computerDN]}):
-				utils.fail('Broken group membership of created %s in group "%s"' % (objectType, group))
+			utils.verify_ldap_object(group, {'memberUid': ['%s$' % properties['name']], 'uniqueMember': [computerDN]})

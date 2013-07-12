@@ -20,5 +20,4 @@ if __name__ == '__main__':
 		userJpegPhoto = uts.random_string()
 		udm.modify_object('users/user', dn = user, jpegPhoto = base64.b64encode(userJpegPhoto))
 	
-		if not utils.verify_ldap_object(user, {'jpegPhoto': [userJpegPhoto]}):
-			utils.fail()
+		utils.verify_ldap_object(user, {'jpegPhoto': [userJpegPhoto]})

@@ -20,5 +20,4 @@ if __name__ == '__main__':
 	
 			computer = udm.create_object(role, name = uts.random_name())
 			udm.modify_object(role, dn = computer, inventoryNumber = inventoryNumber)
-			if not utils.verify_ldap_object(computer, {'univentionInventoryNumber': [inventoryNumber]}):
-				utils.fail('"univentionInventoryNumber" of %s differed from expectation after modification')
+			utils.verify_ldap_object(computer, {'univentionInventoryNumber': [inventoryNumber]})

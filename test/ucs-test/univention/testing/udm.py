@@ -205,7 +205,7 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while modifying object: ' % (child.returncode,)
+			print 'UDM-CLI returned exitcode %s while modifying object' % (child.returncode,)
 			raise UCSTestUDM_ModifyUDMObjectFailed(modulename, kwargs, stdout, stderr)
 
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
@@ -234,7 +234,7 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while modifying object: ' % (child.returncode,)
+			print 'UDM-CLI returned exitcode %s while modifying object' % (child.returncode,)
 			raise UCSTestUDM_MoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
 
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
@@ -259,7 +259,7 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 		
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while removing object: ' % (child.returncode,)
+			print 'UDM-CLI returned exitcode %s while removing object' % (child.returncode,)
 			raise UCSTestUDM_RemoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
 		
 		if kwargs['dn'] in self._cleanup.get(modulename, []):
@@ -351,8 +351,6 @@ class UCSTestUDM(object):
 
 				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 				(stdout, stderr) = child.communicate()
-				if child.returncode or not 'Object removed:' in stdout:
-					print 'Error while removing %s object "%s" during UDM cleanup: stdout=%s, stderr=%s' % (module,  dn, stdout, stderr)
 		self._cleanup = {}
 
 		for lockDN in self._cleanupLocks:

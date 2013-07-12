@@ -20,5 +20,4 @@ if __name__ == '__main__':
 		for role in ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup' , 'computers/memberserver'):
 			computer = udm.create_object(role, name = uts.random_name())
 			udm.modify_object(role, dn = computer, reinstalltext = reinstalltext)
-			if not utils.verify_ldap_object(computer, {'univentionServerInstallationText': [reinstalltext]}):
-				utils.fail('"univentionServerInstallationText" of %s differed from expectation after modification' % role)
+			utils.verify_ldap_object(computer, {'univentionServerInstallationText': [reinstalltext]})

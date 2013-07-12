@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Mark the password of a kerberos-user to be altered on next login
+## desc: Mark the password of a kerberos user to be altered on next login
 ## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -18,6 +18,4 @@ if __name__ == '__main__':
 		user = udm.create_user(options = ['kerberos', 'person'])[0]
 		udm.modify_object('users/user', dn = user, pwdChangeNextLogin = '1')
 	
-		if not utils.verify_ldap_object(user, {'krb5PasswordEnd': [time.strftime('%Y%m%d', date) + '000000Z']}):
-			utils.fail()
-
+	 	utils.verify_ldap_object(user, {'krb5PasswordEnd': [time.strftime('%Y%m%d', date) + '000000Z']})

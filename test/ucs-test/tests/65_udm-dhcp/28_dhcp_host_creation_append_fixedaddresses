@@ -14,14 +14,9 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 if __name__ == '__main__':
-	fixedAddresses = ['10.20.30.40', '10.20.30.50']
-
 	with udm_test.UCSTestUDM() as udm:
-		utils.verify_ldap_object(udm.create_object('dhcp/host',
-												   host = uts.random_name(),
-												   hwaddress = 'ethernet 01:ff:78:38:ab:24',
-												   append = {'fixedaddress': fixedAddresses},
-												   superordinate = udm.create_object('dhcp/service', service = uts.random_name())
-												  ),
-								 {'univentionDhcpFixedAddress': fixedAddresses}
-								)
+		dhcp_service = udm.create_object('dhcp/service', service = uts.random_name())
+
+		fixed_addresses = ['10.20.30.40', '10.20.30.50']
+		dhcp_host = udm.create_object('dhcp/host', host = uts.random_name(), hwaddress = 'ethernet 01:ff:78:38:ab:24', append = {'fixedaddress': fixed_addresses}, superordinate = dhcp_service)
+		utils.verify_ldap_object(dhcp_host, {'univentionDhcpFixedAddress': fixed_addresses})

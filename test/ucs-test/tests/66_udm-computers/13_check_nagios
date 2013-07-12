@@ -35,18 +35,19 @@ if __name__ == '__main__':
 				'nagiosParents': udm.create_object('computers/domaincontroller_backup', dnsEntryZoneForward = forwardZone, **nagiosParentProperties),
 				'name': uts.random_name(),
 				'ip': '10.20.30.3',
+				'options': ['nagios']
 			}
 			# FIXME: workaround for remaining locks
 			udm.addCleanupLock('aRecord', computerProperties['ip'])
 
-			computer = udm.create_object(role, options = ['nagios'], **computerProperties)
-				
-			if not utils.verify_ldap_object(computer, {
+			computer = udm.create_object(role, **computerProperties)
+			
+			# validate that nagios related properties of computer are set correctly
+			utils.verify_ldap_object(computer, {
 				'univentionNagiosEmail': [computerProperties['nagiosContactEmail']],
 				'univentionNagiosEnabled': ['1'],
 				'univentionNagiosParent': ['%s.%s' % (nagiosParentProperties['name'], ldap.getAttr(computerProperties['nagiosParents'], 'associatedDomain')[0])]
-			}):
-				utils.fail('Nagios properties of created %s differed from expectatation' % role)
+			})
 
-			if not utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerProperties['name'], ldap.getAttr(computer, 'associatedDomain')[0])]}):
-				utils.fail('Could not find created %s at nagios service %s as expected' % role)
+			# check if computer has been added to nagios service
+			utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerProperties['name'], ldap.getAttr(computer, 'associatedDomain')[0])]})

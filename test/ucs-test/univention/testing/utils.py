@@ -102,11 +102,11 @@ def verify_ldap_object(baseDn, expected_attr = {}, strict = True, should_exist =
 		dn, attr = get_ldap_connection().search(filter = '(objectClass=*)', base = baseDn, attr = expected_attr.keys())[0]
 	except (ldap.NO_SUCH_OBJECT, IndexError):
 		if should_exist:
-			raise LDAPObjectNotFound('Could not find object %s in LDAP' % baseDn)
+			raise LDAPObjectNotFound('DN: %s' % baseDn)
 		return
 	
 	if not should_exist:
-		raise LDAPUnexpectedObjectFound('Could find object %s in LDAP eventhough it should not exist')
+		raise LDAPUnexpectedObjectFound('DN: %s' % baseDn)
 
 	for attribute, expected_values in expected_attr.items():
 		found_values = set(attr.get(attribute, []))
@@ -114,12 +114,12 @@ def verify_ldap_object(baseDn, expected_attr = {}, strict = True, should_exist =
 
 		difference = expected_values - found_values
 		if difference:
-			raise LDAPObjectValueMissing('Attribute %r of LDAP object %s does not contain the values %r as expected\n%s: %r' % (attribute, baseDn, ' ,'.join(difference), attribute, list(found_values)))
+			raise LDAPObjectValueMissing('DN: %s\n%s: %r, missing: \'%s\'' % (baseDn, attribute, list(found_values), '\' ,'.join(difference)))
 
 		if strict:
 			difference = found_values - expected_values
 			if difference:
-				raise LDAPObjectUnexpectedValue('Attribute %r of LDAP object %s contains the unexpected values %r\n%s: %r' % (attribute, baseDn, ' ,'.join(difference), attribute, list(found_values)))
+				raise LDAPObjectUnexpectedValue('DN: %s\n%s: %r, unexpected: \'%s\'' % (baseDn, attribute, list(found_values), '\' ,'.join(difference)))
 
 
 def remove_ldap_lock(dn):

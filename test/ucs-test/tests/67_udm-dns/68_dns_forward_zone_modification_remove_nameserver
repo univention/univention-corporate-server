@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner python
+## desc: Remove nameserver during DNS forward zone modification
+## tags: [udm-dns,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+
+import sys
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		ns_records = [uts.random_string(), uts.random_string(), uts.random_string(), uts.random_string()]
+		forward_zone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), append = {'nameserver': ns_records})
+
+		udm.modify_object('dns/forward_zone', dn = forward_zone, remove = {'nameserver': ns_records[2:]})
+		utils.verify_ldap_object(forward_zone, {'nSRecord': ns_records[:2]})

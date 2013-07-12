@@ -17,6 +17,5 @@ if __name__ == '__main__':
 		userBirthday = '2005-01-01'
 		udm.modify_object('users/user', dn = user, birthday = userBirthday)
 
-		if not utils.verify_ldap_object(user, {'univentionBirthday': [userBirthday]}):
-			utils.fail()
+		utils.verify_ldap_object(user, {'univentionBirthday': [userBirthday]})
 

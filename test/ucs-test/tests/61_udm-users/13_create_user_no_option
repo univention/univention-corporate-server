@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create a user with no option set (should not be possible)
+## desc: Create a user with no option set
 ## tags: [udm-users]
 ## roles: [domaincontroller_master]
 ## exposure: careful

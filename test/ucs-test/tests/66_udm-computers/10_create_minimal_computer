@@ -17,6 +17,5 @@ if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
 		for role in udm.COMPUTER_MODULES:
 			computer = udm.create_object(role, name = uts.random_string())
-			if not utils.verify_ldap_object(computer):
-				utils.fail('Could not find created %s %s in LDAP' % (role, computer))
+			utils.verify_ldap_object(computer)
 			

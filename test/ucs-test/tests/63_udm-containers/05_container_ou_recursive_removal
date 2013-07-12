@@ -1,0 +1,34 @@
+#!/usr/share/ucs-test/runner python
+## desc: Remove an OU container recursively
+## tags: [udm-containers,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import sys
+
+
+if __name__ == '__main__':
+	# Skip this test
+	#   https://forge.univention.org/bugzilla/show_bug.cgi?id=20841
+	sys.exit(131)
+
+	with udm_test.UCSTestUDM() as udm:
+		ou_name = uts.random_string()
+		ou2_name = uts.random_string()
+
+		ou = udm.create_object('container/ou', name = ou_name)
+		ou2 = udm.create_object('container/ou', name = ou2_name)
+		ou3 = udm.create_object('container/ou', name = uts.random_name())
+
+		udm.move_object('container/ou', dn = ou, position = ou2)
+		udm.move_object('container/ou', dn = ou2, position = ou3)
+		ou = 'ou=%s,ou=%s,%s' % (ou_name, ou2_name, ou3)
+		udm.remove_object('container/ou', dn = ou3)
+		utils.verify_ldap_object(ou, should_exist = False)

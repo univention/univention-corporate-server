@@ -75,40 +75,30 @@ if __name__ == '__main__':
 
 			computer = udm.create_object(role, network = network1, **computerProperties)
 			# verify that properties have been adopted correctly during creation
-			if not utils.verify_ldap_object(computer, {
+			utils.verify_ldap_object(computer, {
 				'univentionNetworkLink': [network1],
 				'aRecord': ['10.20.30.2']
-			}):
-				utils.fail('%s did not adopt all properties from network link during creation as expected' % role)
-			if not utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone1), {'aRecord': ['10.20.30.2']}):
-				utils.fail('DNS host record for %s differed from expectation after creation' % role)
-			if not utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone1, {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZone1Name)]}):
-				utils.fail('DNS PTR record for %s differed from expectation after creation' % role)
-			if not utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService1), {'univentionDhcpFixedAddress': ['10.20.30.2']}):
-				utils.fail('DHCP entry for %s differed from expectation after creation' % role)
+			})
+
+			utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone1), {'aRecord': ['10.20.30.2']})
+			utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone1, {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZone1Name)]})
+			utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService1), {'univentionDhcpFixedAddress': ['10.20.30.2']})
 
 
 			udm.modify_object(role, dn = computer, network = network2)
 			# verify that new properties have been adopted correctly during modification
-			if not utils.verify_ldap_object(computer, {
+			utils.verify_ldap_object(computer, {
 				'univentionNetworkLink': [network2],
 				'aRecord': ['10.20.40.2']
-			}):
-				utils.fail('%s did not adopt all properties from network link during modification as expected' % role)
-			if not utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone2), {'aRecord': ['10.20.40.2']}):
-				utils.fail('DNS host record for %s differed from expectation after modification' % role)
-			if not utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone2, {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZone2Name)]}):
-				utils.fail('DNS PTR record for %s differed from expectation after modification' % role)
-			if not utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService2), {'univentionDhcpFixedAddress': ['10.20.40.2']}):
-				utils.fail('DHCP entry for %s differed from expectation after modification' % role)
+			})
+			utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone2), {'aRecord': ['10.20.40.2']})
+			utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone2, {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZone2Name)]})
+			utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService2), {'univentionDhcpFixedAddress': ['10.20.40.2']})
 
 
-			# old DHCP/DNS objects created when setting the first network should have been removed from LDAP
-			if utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone1)):
-				utils.fail('Could still find old DNS host record of %s after the nework link has been changed' % role)
-			if utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone1):
-				utils.fail('Could still find old DNS PTR record of %s after the network link has been changed' % role)
-			if utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService1)):
-				utils.fail('Could still find old DHCP entry of %s after the network link has been changed' % role)
+			# old DHCP/DNS objects created when setting the first network should have been removed
+			utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone1), should_exist = False)
+			utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone1, should_exist = False)
+			utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService1), should_exist = False)
 
 
