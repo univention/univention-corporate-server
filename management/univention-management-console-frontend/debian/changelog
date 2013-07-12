@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.18-1) unstable; urgency=low
+
+  * Bug #31377: add more locales to default UMC languages
+
+ -- Florian Best <best@univention.de>  Fri, 12 Jul 2013 14:48:36 +0200
+
 univention-management-console-frontend (3.0.17-1) unstable; urgency=low
 
   * Bug #31699: replaced lessc version for rhion with a version for nodejs
