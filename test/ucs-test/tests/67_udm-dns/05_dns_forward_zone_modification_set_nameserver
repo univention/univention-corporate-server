@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Set nameserver during DNS forward zone modification
+## desc: Set nameserver during dns/forward_zone modification
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [15654]
@@ -21,4 +21,4 @@ if __name__ == '__main__':
 
 		ns_record = uts.random_string()
 		udm.modify_object('dns/forward_zone', dn = forward_zone, nameserver = ns_record)
-		utils.verify_ldap_object(forward_zone, {'nSRecord': [ns_record]})
+		utils.verify_ldap_object(forward_zone, {'nSRecord': ['%s.' % ns_record]})

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create a user with just the samba option set
+## desc: Create users/user with just the posix option unset
 ## tags: [udm-users]
 ## roles: [domaincontroller_master]
 ## bugs: [30932]
@@ -17,14 +17,14 @@ import univention.testing.ucr as ucr_test
 
 if __name__ == '__main__':
 	sys.exit(131) # SKIP for now
-	
+
 	ucr = ucr_test.UCSTestConfigRegistry()
 	ucr.load()
 
 	with udm_test.UCSTestUDM() as udm:
 		try:
-			utils.verify_ldap_object(udm.create_user(primaryGroup = 'cn=Domain Admins,cn=groups,%s' % ucr['ldap/base'], options = ['samba'])[0])
+			user = udm.create_user(primaryGroup = 'cn=Domain Admins,cn=groups,%s' % ucr['ldap/base'], options = ['samba', 'person', 'mail', 'kerberos'])
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed as ex:
 			utils.fail('See Bug #30932:\n%s' % traceback.format_exc(ex), 121)
 
-			
+

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Set range during DHCP subnet modification
+## desc: Set range during dhcp/subnet modification
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

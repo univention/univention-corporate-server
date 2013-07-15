@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test appending and removing MAC addresses for all computer roles
+## desc: Append macs during modification for all computer roles
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -14,18 +14,14 @@ import univention.testing.utils as utils
 
 
 if __name__ == '__main__':
-	macAddresses = ('11:11:11:11:11:11', '22:22:22:22:22:22', '33:33:33:33:33:33', '44:44:44:44:44:44')
+	macAddresses = ['11:11:11:11:11:11', '22:22:22:22:22:22']
 	
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
 		with udm_test.UCSTestUDM() as udm:
 			for mac in macAddresses: #FIXME: workaround for remaining locks
 				udm.addCleanupLock('mac', mac)
 
-			computer = udm.create_object(role, name = uts.random_name(), append = {'mac': macAddresses[:2]})
-			utils.verify_ldap_object(computer, {'macAddress': macAddresses[:2]})
+			computer = udm.create_object(role, name = uts.random_name())
 
-			udm.modify_object(role, dn = computer, append = {'mac': macAddresses[2:]})
+			udm.modify_object(role, dn = computer, append = {'mac': macAddresses[:2]})
 			utils.verify_ldap_object(computer, {'macAddress': macAddresses})
-
-			udm.modify_object(role, dn = computer, remove = {'mac': macAddresses[:2]})
-			utils.verify_ldap_object(computer, {'macAddress': macAddresses[2:]})

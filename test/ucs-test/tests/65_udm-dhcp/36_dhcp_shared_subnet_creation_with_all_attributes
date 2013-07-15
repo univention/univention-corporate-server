@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create DHCP shared subnet with all attributes set
+## desc: Create dhcp/sharedsubnet with all attributes set
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

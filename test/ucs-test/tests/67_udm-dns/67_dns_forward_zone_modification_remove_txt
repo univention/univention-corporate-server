@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Remove txt during DNS forward zone modification
+## desc: Remove txt during dns/forward_zone modification
 ## tags: [udm-dns,apptest]
 ## bugs: [15654]
 ## roles: [domaincontroller_master]

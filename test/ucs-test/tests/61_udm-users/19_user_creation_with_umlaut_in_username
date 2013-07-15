@@ -1,16 +1,23 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create a user with just the kerberos option unset
-## tags: [udm-users]
+# -*- coding: utf-8 -*-
+## desc: Create users/user with umlaut in username
+## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
+## Bugs: [11415]
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
 
 import univention.testing.udm as udm_test
+import univention.testing.strings as uts
 import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		utils.verify_ldap_object(udm.create_user(options = ['samba', 'posix', 'mail', 'person'])[0])
+		utils.verify_ldap_object(udm.create_user( username =  '%säÄöÖüÜ%s' % (uts.random_name(length=4), uts.random_name(length=4)) )[0])
+
+
+
+

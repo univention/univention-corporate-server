@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Try to use one mailaddress two times (should not be possible)
+## desc: Create users/user with mailPrimaryAddress which is already in use
 ## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

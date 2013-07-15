@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Set mx during DNS host record modification
+## desc: Set mx during dns/host modification
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

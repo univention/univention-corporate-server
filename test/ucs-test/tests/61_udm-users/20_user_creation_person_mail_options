@@ -1,22 +1,20 @@
 #!/usr/share/ucs-test/runner python
-# -*- coding: utf-8 -*-
-## desc: Create user with umlaut in username
-## tags: [udm-users,apptest]
+## desc: Create users/user with person and mail option set, without password
+## tags: [udm-users]
 ## roles: [domaincontroller_master]
+## bugs: [31868]
 ## exposure: careful
-## Bugs: [11415]
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
 
 import univention.testing.udm as udm_test
-import univention.testing.strings as uts
 import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		utils.verify_ldap_object(udm.create_user( username =  '%säÄöÖüÜ%s' % (uts.random_name(length=4), uts.random_name(length=4)) )[0])
+		utils.verify_ldap_object(udm.create_user(options = ['person', 'mail'], password = None)[0])
 
 
 

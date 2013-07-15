@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Append a during DNS host record creation
+## desc: Append a during dns/host creation
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

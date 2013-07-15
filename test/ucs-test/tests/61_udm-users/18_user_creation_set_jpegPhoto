@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create a user and set jpegPhoto attribute
+## desc: Set jpegPhoto during users/user modification
 ## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

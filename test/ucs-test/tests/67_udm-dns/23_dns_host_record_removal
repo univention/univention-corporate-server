@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Remove DNS host record
+## desc: Remove dns/host
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -8,13 +8,15 @@
 ##   - univention-directory-manager-tools
 
 
-
+import sys
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 
 if __name__ == '__main__':
+	sys.exit(131) # SKIP
+
 	with udm_test.UCSTestUDM() as udm:
 		forward_zone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
 

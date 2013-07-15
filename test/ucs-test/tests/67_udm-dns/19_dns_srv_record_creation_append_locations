@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Append locations during DNS service record creation
+## desc: Append locations during dns/srv_record creation
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

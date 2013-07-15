@@ -1,16 +1,21 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create a user with just the samba option unset
-## tags: [udm-users]
+## desc: Set userBirthday during users/user modification
+## tags: [udm-users,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
-
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		utils.verify_ldap_object(udm.create_user(options = ['kerberos', 'posix', 'person', 'mail'])[0])
+		user = udm.create_user()[0]
+
+		userBirthday = '2005-01-01'
+		udm.modify_object('users/user', dn = user, birthday = userBirthday)
+
+		utils.verify_ldap_object(user, {'univentionBirthday': [userBirthday]})
+

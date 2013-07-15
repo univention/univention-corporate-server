@@ -1,8 +1,7 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create a user with person and mail option set, without password
+## desc: Create users/user with just the person option unset
 ## tags: [udm-users]
 ## roles: [domaincontroller_master]
-## bugs: [31868]
 ## exposure: careful
 ## packages:
 ##   - univention-config
@@ -14,8 +13,4 @@ import univention.testing.utils as utils
 
 if __name__ == '__main__':
 	with udm_test.UCSTestUDM() as udm:
-		utils.verify_ldap_object(udm.create_user(options = ['person', 'mail'], password = None)[0])
-
-
-
-
+		utils.verify_ldap_object(udm.create_user(options = ['samba', 'posix', 'mail', 'kerberos'])[0])

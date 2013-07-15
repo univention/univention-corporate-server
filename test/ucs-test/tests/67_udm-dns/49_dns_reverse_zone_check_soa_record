@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Check DNS reverse zone SOA record
+## desc: Check dns/reverse_zone SOA record
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 
 		reverse_zone = udm.create_object('dns/reverse_zone', **reverse_zone_properties)
-		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (reverse_zone_properties['nameserver'],
+		utils.verify_ldap_object(reverse_zone, {'sOARecord': ['%s. %s. %s %s %s %s %s' % (reverse_zone_properties['nameserver'],
 											   reverse_zone_properties['contact'].replace('@', '.'),
 											   reverse_zone_properties['serial'],
 											   reverse_zone_properties['refresh'],

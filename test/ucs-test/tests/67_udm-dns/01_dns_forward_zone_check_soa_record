@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Check DNS forward zone SOA record
+## desc: Check dns/forward_zone SOA record
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 		forward_zone = udm.create_object('dns/forward_zone', **forward_zone_properties)
 
-		utils.verify_ldap_object(forward_zone, {'sOARecord': [ '%s %s. %s %s %s %s %s' % (
+		utils.verify_ldap_object(forward_zone, {'sOARecord': [ '%s. %s. %s %s %s %s %s' % (
 											   forward_zone_properties['nameserver'],
 											   forward_zone_properties['contact'].replace('@', '.'),
 											   forward_zone_properties['serial'],

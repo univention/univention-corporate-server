@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Move OU container into another OU container and the latter one into another OU container
+## desc: Move container/ou into another container/ou and the latter one into another container/ou
 ## tags: [udm-containers,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

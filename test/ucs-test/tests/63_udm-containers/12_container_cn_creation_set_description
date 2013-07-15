@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Set description during CN container creation
+## desc: Set description during container/cn creation
 ## tags: [udm-containers,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

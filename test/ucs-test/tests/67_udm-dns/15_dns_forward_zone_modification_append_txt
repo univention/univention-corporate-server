@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Append txt during DNS forward zone modification
+## desc: Append txt during dns/forward_zone modification
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Remove DHCP shared subnet
+## desc: Remove dhcp/sharedsubnet
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

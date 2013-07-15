@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Append mx during DNS forward zone creation
+## desc: Append mx during dns/forward_zone creation
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [15654]

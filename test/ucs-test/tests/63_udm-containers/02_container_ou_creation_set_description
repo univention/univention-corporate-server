@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Set description during OU container creation
+## desc: Set description during container/ou creation
 ## tags: [udm-containers,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Append ranges during DHCP pool modification
+## desc: Append ranges during dhcp/pool modification
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

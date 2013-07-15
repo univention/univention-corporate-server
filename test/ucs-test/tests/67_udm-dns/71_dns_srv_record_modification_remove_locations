@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Remove locations during DNS service record modification
+## desc: Remove locations during dns/srv_record modification
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

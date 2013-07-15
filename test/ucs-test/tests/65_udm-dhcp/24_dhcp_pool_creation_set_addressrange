@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Set range during DHCP pool creation
+## desc: Set range during dhcp/pool creation
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

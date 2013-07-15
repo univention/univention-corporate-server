@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Sed range during DHCP shared subnet modification
+## desc: Sed range during dhcp/sharedsubnet modification
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create DHCP host
+## desc: Create dhcp/host
 ## tags: [udm-dhcp,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

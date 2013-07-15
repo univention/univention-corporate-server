@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create DNS PTR
+## desc: Create dns/ptr_record
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

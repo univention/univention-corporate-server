@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create maximal computers/ubuntu and validate it's attributes as well as automatically created referring objects and group memberships
+## desc: Create computers/ubuntu with all attributes set
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -20,7 +20,7 @@ if __name__ == '__main__':
 	ucr = configRegistry.ConfigRegistry()
 	ucr.load()
 
-	objectType = 'computers/ubuntu'
+	
 	with udm_test.UCSTestUDM() as udm:
 		dhcpZone = udm.create_object('dhcp/service', service = uts.random_name())
 		
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 		udm.addCleanupLock('sid', expectedLdap['sambaSID'])
 
 		# validate computer ldap object
-		computerDN = udm.create_object(objectType, **properties)
+		computerDN = udm.create_object('computers/ubuntu', **properties)
 		utils.verify_ldap_object(computerDN, expectedLdap)
 
 		# validate related DHCP host object

@@ -166,8 +166,7 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while creating object' % (child.returncode,)
-			raise UCSTestUDM_CreateUDMObjectFailed(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_CreateUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
 		# find DN of freshly created object and add it to cleanup list
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
@@ -176,7 +175,7 @@ class UCSTestUDM(object):
 				self._cleanup.setdefault(modulename, []).append(dn)
 				break
 		else:
-			raise UCSTestUDM_CreateUDMUnknownDN(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
 		if wait_for_replication:
 			utils.wait_for_replication()
@@ -205,8 +204,7 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while modifying object' % (child.returncode,)
-			raise UCSTestUDM_ModifyUDMObjectFailed(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
@@ -214,9 +212,9 @@ class UCSTestUDM(object):
 				assert(dn in self._cleanup.get(modulename, []))
 				break
 			elif line.startswith('No modification: '):
-				raise UCSTestUDM_NoModification(modulename, kwargs, stdout, stderr)
+				raise UCSTestUDM_NoModification({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 		else:
-			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
 		if wait_for_replication:
 			utils.wait_for_replication()
@@ -234,14 +232,13 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while modifying object' % (child.returncode,)
-			raise UCSTestUDM_MoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_MoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
 				break
 		else:
-			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
 		if wait_for_replication:
 			utils.wait_for_replication()
@@ -259,8 +256,7 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 		
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while removing object' % (child.returncode,)
-			raise UCSTestUDM_RemoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 		
 		if kwargs['dn'] in self._cleanup.get(modulename, []):
 			self._cleanup[modulename].remove(kwargs['dn'])

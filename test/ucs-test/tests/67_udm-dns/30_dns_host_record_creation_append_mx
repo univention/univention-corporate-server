@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Append mx during DNS host record creation
+## desc: Append mx during dns/host creation
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful

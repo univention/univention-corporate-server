@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create DNS host record
+## desc: Create dns/host
 ## tags: [udm-dns,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
