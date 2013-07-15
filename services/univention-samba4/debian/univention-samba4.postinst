@@ -266,7 +266,10 @@ secret: $machine_secret
 				samba-tool ntacl sysvolreset 
 			fi
 		fi
-
+		### The following block of code may be removed after ucs_3.2-0
+		if dpkg --compare-versions "$2" lt-nl "3.0.6-5"; then
+			univention-config-registry commit /etc/krb5.conf
+		fi
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'

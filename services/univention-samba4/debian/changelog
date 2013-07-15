@@ -1,3 +1,9 @@
+univention-samba4 (3.0.6-5) unstable; urgency=low
+
+  * Commit /etc/krb5.conf on update (Bug #31306)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Jul 2013 21:00:31 +0200
+
 univention-samba4 (3.0.6-4) unstable; urgency=low
 
   * configure samba4 DCs to use the local KDC (Bug #29291)
