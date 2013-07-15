@@ -24,7 +24,6 @@ Variables: samba/charset.*
 Variables: samba/enable-privileges
 Variables: samba/socket_options
 Variables: samba/max_open_files
-Variables: samba/max_protocol
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -113,6 +112,8 @@ Variables: samba/preserve_case
 Variables: samba/short_preserve_case
 Variables: samba/time_server
 Variables: samba/wide_links
+Variables: samba/max/protocol
+Variables: samba/client/use/spnego/principal
 
 Type: subfile
 Multifile: etc/samba/smb.conf

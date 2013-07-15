@@ -1,3 +1,9 @@
+univention-samba (8.0.3-1) unstable; urgency=low
+
+  * Fix duplicate UCR variable samba/max[/_]protocol (Bug #31921)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Jul 2013 19:42:19 +0200
+
 univention-samba (8.0.2-1) unstable; urgency=low
 
   * When deleting a share, /etc/samba/shares.conf is refreshed

@@ -365,8 +365,8 @@ Type=str
 Categories=service-samba
 
 [samba/max/protocol]
-Description[de]=Dieser Parameter definiert das höchte Protokoll, welches dieser Server unterstützt (gültige Werte: CORE, COREPLUS, LANMAN1, LANMAN2, NT1)
-Description[en]=This parameter defines the highest protocol level that will be supported by the server (valid values: CORE, COREPLUS, LANMAN1, LANMAN2, NT1)
+Description[de]=Dieser Parameter definiert das höchte Protokoll, welches dieser Server unterstützt (gültige Werte: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2)
+Description[en]=This parameter defines the highest protocol level that will be supported by the server (valid values: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2)
 Type=str
 Categories=service-samba
 
@@ -427,12 +427,6 @@ Categories=service-samba
 [samba/vfs/acl_xattr/ignore_system_acls]
 Description[de]=Soll das VFS Modul acl_xattr die Posix ACLs von Dateien und Ordnern ignorieren und nicht mit NTACLs synchronisieren? (Default: Nein, nicht ignorieren)
 Description[en]=Shall the VFS module acl_xattr ignore the Posix ACLs of files and folders and not synchronize them with NTACLs? (default: No, don't ignore)
-Type=str
-Categories=service-samba
-
-[samba/max_protocol]
-Description[de]=SMB-Protokoll Version (Default: NT1)
-Description[en]=SMB protocol version (default: NT1)
 Type=str
 Categories=service-samba
 
