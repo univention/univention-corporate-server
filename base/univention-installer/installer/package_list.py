@@ -57,7 +57,7 @@ PackageList=[
 			[
 				{
 					'Name': _('Active Directory-compatible domaincontroller (Samba 4)'),
-					'Packages': ['univention-samba4''univention-samba-local-config', 'samba4'],
+					'Packages': ['univention-samba4', 'univention-samba-local-config', 'samba4'],
 					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': [ 'domaincontroller_slave'],

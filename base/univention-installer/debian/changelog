@@ -1,3 +1,9 @@
+univention-installer (9.0.13-2) unstable; urgency=low
+
+  * fix typo (Bug #30982)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Jul 2013 11:00:16 +0200
+
 univention-installer (9.0.13-1) unstable; urgency=low
 
   * Fix samba package order in package_list for current uninstallation
