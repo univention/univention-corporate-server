@@ -142,7 +142,7 @@ define([
 				name: 'pattern',
 				label: _('Query pattern'),
 				size: 'One',
-				value: '*'
+				value: ''
 			}];
 			var layout = [[ 'type', 'pattern', 'submit' ]];
 
@@ -1005,7 +1005,6 @@ define([
 
 			// validate the search form
 			var _vals = this._searchForm.gatherFormValues();
-			_vals.pattern = _vals.pattern === '' ? '*' : _vals.pattern;
 			if (!this._searchForm.getWidget('type').isValid()) {
 				dialog.alert(_('Please select a valid search type.'));
 				return;
@@ -1023,8 +1022,8 @@ define([
 			// build the query we need to send to the server
 			var vals = {
 				type: _vals.type,
-				domainPattern: '*',
-				nodePattern: '*'
+				domainPattern: '',
+				nodePattern: ''
 			};
 			if (vals.type == 'domain') {
 				vals.domainPattern = _vals.pattern;

@@ -91,8 +91,8 @@ define([
 
 			this.umcpCommand('uvmm/query', {
 				type: parentItem.type == 'root' ? 'group' : 'node',
-				domainPattern: '*',
-				nodePattern: '*'
+				domainPattern: '',
+				nodePattern: ''
 			}).then(lang.hitch(this, function(data) {
 				// sort items alphabetically
 				var results = data.result instanceof Array ? data.result : [];

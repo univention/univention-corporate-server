@@ -313,7 +313,7 @@ define([
 		getNodes: function() {
 			return tools.umcpCommand('uvmm/query', {
 				type: 'node',
-				nodePattern: '*'
+				nodePattern: ''
 			}).then(function(data) {
 				return array.filter( data.result, function( node ) {
 					return node.available;
