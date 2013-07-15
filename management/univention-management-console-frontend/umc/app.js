@@ -80,8 +80,7 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
-	"dojo/sniff", // has("ie"), has("ff")
-	"umc/piwik"
+	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
@@ -600,7 +599,7 @@ define([
 			tools.status('feedbackAddress', _ucr['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
 			tools.status('feedbackSubject', _ucr['umc/web/feedback/description'] || tools.status('feedbackSubject'));
 
-			// setup the dynamic part of the GUI
+			this._loadPiwik();
 			this.setupGui();
 
 			// if only one module exists open it
@@ -647,6 +646,10 @@ define([
 			// perform actions that depend on the UCR variables
 			ucrDeferred.then(function(res) {
 			});
+		},
+
+		_loadPiwik: function() {
+			require(["umc/piwik"], function() {});
 		},
 
 		_loadUcrVariables: function() {
@@ -998,8 +1001,8 @@ define([
 		},
 
 		_checkShowStartupDialog: function() {
-			var startupDialog = new StartupDialog({});
-			startupDialog.show();
+			//var startupDialog = new StartupDialog({});
+			//startupDialog.show();
 		},
 
 		_focusSearchField: function() {

@@ -32,8 +32,9 @@ define([
 	"dojo/topic",
 	"dojo/_base/array",
 	"umc/store",
-	"umc/tools"
-], function(topic, array, store, tools) {
+	"umc/tools",
+	"umc/dialog"
+], function(topic, array, store, tools, dialog) {
 	var _buildSiteTitle = function(parts) {
 		var titleStr = [];
 		array.forEach(parts, function(i) {
