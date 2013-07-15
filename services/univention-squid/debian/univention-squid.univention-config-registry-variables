@@ -124,6 +124,13 @@ Description[de]=Squid ntlm authentication tool
 Type=str
 Categories=service-webproxy
 
+[squid/krb5auth/tool]
+Description[de]=Programm für die Squid negotiate Authentifizierung
+Description[de]=Squid negotiate authentication tool
+Type=str
+Categories=service-webproxy
+
+
 [squid/krb5auth]
 Description[de]=Squid Modul zur Kerberos Authentifikation aktivieren
 Description[en]=Configure squid helper for kerberos authentication

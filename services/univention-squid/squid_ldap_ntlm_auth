@@ -39,6 +39,19 @@
 #   * http://www.innovation.ch/personal/ronald/ntlm.html
 #   * http://www.koders.com/python/fidEE921E55A2EC9CF12BE39BFAA74346769EE6F2FF.aspx
 
+# # auth negotiate
+# auth_param negotiate program /usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego
+# auth_param negotiate children 10
+# 
+# # auth ntlm
+# auth_param ntlm program /usr/lib/squid3/squid_ldap_ntlm_auth 
+# auth_param ntlm children 10
+# auth_param ntlm keep_alive on
+#
+# # debug
+# squid/debug/level: ALL,1 29,9
+# /usr/lib/squid3/squid_ldap_ntlm_auth --debug
+
 import sys
 import time
 import struct
@@ -50,10 +63,10 @@ import string
 import Crypto.Cipher.DES
 import optparse
 import os
+import subprocess
 
 import univention.uldap
 import univention.config_registry
-
 
 NTLM_NegotiateUnicode                =  0x00000001
 NTLM_NegotiateOEM                    =  0x00000002
@@ -95,6 +108,8 @@ NTLM_TYPE2_FLAGS = (NTLM_NegotiateUnicode | \
 	NTLM_NegotiateNTLM | \
 	NTLM_NegotiateExtendedSecurity | \
 	NTLM_Negotiate128 | \
+	NTLM_NegotiateTargetInfo | \
+	NTLM_TargetTypeDomain | \
 	NTLM_Negotiate56)
 
 def dumpNegotiateFlags(NegotiateFlags):
@@ -150,6 +165,7 @@ def parseNtlmTypeThree(data):
 	data = base64.b64decode(data)
 	signature = data[0:8]
 	type = struct.unpack("<I", data[8:12])[0]
+	lmLen = struct.unpack("<h", data[12:14])[0]
 	lmOffset = struct.unpack("<l", data[16:20])[0]
 	ntLen = struct.unpack("<h", data[20:22])[0]
 	ntOffset = struct.unpack("<l", data[24:28])[0]
@@ -163,7 +179,7 @@ def parseNtlmTypeThree(data):
 	username = data[usernameOffset:hostOffset]
 	domain = data[domainOffset:usernameOffset]
 	host = data[hostOffset:hostOffset + hostLength]
-	lmResp = data[lmOffset:ntOffset]
+	lmResp = data[lmOffset:(lmOffset + lmLen)]
 	ntResp = data[ntOffset:(ntOffset + ntLen)]	
 
 	if domainOffset == 0:
@@ -323,6 +339,8 @@ def getNtHash(user):
 				debug("  found sambaNTPassword in ldap for user %s with sambaAcctFlags %s" % (user, sambaAcctFlags))
 			ntHash = tmp
 			users[user] = [ntHash, time.time(), sambaAcctFlags]
+	else:
+		users[user] = ["", time.time(), ""]
 
 	return ntHash
 
@@ -340,7 +358,7 @@ def verifyNtlmTypeThree(data, challenge):
 	# get nt hash
 	ntHash = getNtHash(username)
 	if not ntHash:
-		return "NA no ntHash found"
+		return "NA no ntHash found for user %s" % username
 	else:
 		ntHash = ntHash.decode("hex") + '\x00'*5
 
@@ -363,6 +381,7 @@ def verifyNtlmTypeThree(data, challenge):
 		for i in dumpNegotiateFlags(flags):
 			debug("    %s" % i)
 		debug("  ntHash: " + ntHash.encode("hex"))
+		debug("  lm response: " + lmResp.encode("hex"))
 		debug("  nt response: " + ntResp.encode("hex"))
 
 	# test domain if specified
@@ -374,11 +393,16 @@ def verifyNtlmTypeThree(data, challenge):
 	mode = "NTLM"
 	# indicates that the NTLM2/NTLMv2 signing and sealing scheme should be used
 	if flags & NTLM_NegotiateExtendedSecurity:
-
 		# NTLM2
 		if len(ntResp) == 24:
-			myResp = verifyNtlm2(ntHash, challenge, lmResp[0:8])
-			mode = "NTLM2"
+			# if last 16 byte are NULL, then we have NTLM2
+			# othewise still NTLM
+			if lmResp[8:24] == "\x00" * 16:
+				myResp = verifyNtlm2(ntHash, challenge, lmResp[0:8])
+				mode = "NTLM2"
+			else:
+				myResp = verifyNtlm(ntHash, challenge)
+				mode = "NTLM"
 		# NTLMv2
 		else:
 			myResp = verifyNtlmV2(ntResp, challenge, username, domain, ntHash)
@@ -393,7 +417,10 @@ def verifyNtlmTypeThree(data, challenge):
 
 	# return username if respones are equal
 	if ntResp == myResp:
-		return "AF %s" % username
+		if options.gssSpnego:
+			return "AF * %s" % username
+		else:
+			return "AF %s" % username
 	
 	# not authenticated
 	return "NA end of verifyNtlmTypeThree() and still not authenticated"
@@ -418,16 +445,56 @@ def parseNtlmTypeTwo(msg):
 def createNtlmTypeTwo():
 
 	challenge = "".join(random.sample(string.printable + "0123456789", 8))
+
+	domain = cr.get("windows/domain", "").upper()
+	domain = domain.encode('utf-16le')
+	target = cr.get("windows/domain", "").upper()
+	target = target.encode('utf-16le')
+	server = cr.get("hostname", "").upper()
+	server = server.encode('utf-16le')
+	dns = cr.get("domainname", "")
+	dns = dns.encode('utf-16le')
+	fqdn =  cr.get("hostname", "") + "." + cr.get("domainname", "")
+	fqdn = fqdn.encode('utf-16le')
+
 	ms = 'NTLMSSP\x00'
+	# 12 -> l
 	ms += struct.pack("<l", NTLMSSP_CHALLENGE)
-	ms += struct.pack("<h", 0)
-	ms += struct.pack("<h", 0)
-	ms += struct.pack("<l", 40)
+	# 20 Target Name Security Buffer:
+	ms += struct.pack("<H", len(target))
+	ms += struct.pack("<H", len(target))
+	ms += struct.pack("<I", 48)
+	# 20 flags
 	ms += struct.pack('<I', NTLM_TYPE2_FLAGS)
+	# 24 challenge
 	ms += challenge
+	# 32 context?
 	ms += struct.pack("<l", 0)
 	ms += struct.pack("<l", 0)
-	tt = "TT " + base64.encodestring(ms)
+	# 40 Target Information Security Buffer
+	mylen = len(domain) + len(server) + len(dns) + len(fqdn) + 20
+	ms += struct.pack("<H", mylen)
+	ms += struct.pack("<H", mylen)
+	ms += struct.pack("<I", 48 + len(target))
+	# 48 target-type-domain
+	ms  += target
+	# Target Information Data
+	ms += struct.pack("<H", 2)
+	ms += struct.pack("<H", len(domain))
+	ms += domain
+	ms += struct.pack("<H", 1)
+	ms += struct.pack("<H", len(server))
+	ms += server
+	ms += struct.pack("<H", 4)
+	ms += struct.pack("<H", len(dns))
+	ms += dns
+	ms += struct.pack("<H", 3)
+	ms += struct.pack("<H", len(fqdn))
+	ms += fqdn
+
+	ms += '\0' * 4
+
+	tt = "TT " + base64.encodestring(ms).replace('\n', '')
 
 	if options.debug:
 		debug("NTLM Type 2 Message:")
@@ -435,7 +502,7 @@ def createNtlmTypeTwo():
 		debug("  flags:")
 		for i in dumpNegotiateFlags(NTLM_TYPE2_FLAGS):
 			debug("    %s" % i)
-	
+
 	return tt, challenge
 
 # YR TlRMTVNTUAABAAAAB7IIogUABQAsAAAABAAEACgAAAAFASgKAAAAD1RFU1RTUVVJRJ==
@@ -481,7 +548,7 @@ assert f == 2726855173
 
 # test NTML
 resp = "1cffa87d8b48ce73a71e3e6c9a9dd80f112d48dfeea8792c"
-assert resp == verifyNtlm ("CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex") + '\x00'*5, "L)eNCnxD").encode("hex")
+assert resp == verifyNtlm("CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex") + '\x00'*5, "L)eNCnxD").encode("hex")
 
 # test NTML2
 a = verifyNtlm2(
@@ -503,11 +570,21 @@ resp = "16bae73559708bcd091f34a43f21bcf30101000000000000a826ec08dcfacc01e45112e4
 assert resp.decode("hex") == verifyNtlmV2(resp.decode("hex"),
 	"11111111", "Administrator", "UNIVENTION", "CAA1239D44DA7EDF926BCE39F5C65D0F".decode("hex"))
 
+# konquerer
+kk = "TlRMTVNTUAADAAAAGAAYAFgAAAAYABgAQAAAAAgACABwAAAACgAKAHgAAAAWABYAggAAAAAAAAAAAAAABQKJoKjmNy4NeB+jX9LglfZCgLox0goV9JvPzYSVXuDFp+pqwDYcEKPhwLWqOaxk1HGQI0gAQQBOAFMAdABlAHMAdAAxAFcATwBSAEsAUwBUAEEAVABJAE8ATgA="
+challenge = "5e39365709660d4c"
+a, b, c, d, e, f = parseNtlmTypeThree(kk)
+assert "test1" == a
+assert "HANS" == b
+assert "WORKSTATION" == c
+assert "84955ee0c5a7ea6ac0361c10a3e1c0b5aa39ac64d4719023".decode("hex") == d
+assert "a8e6372e0d781fa35fd2e095f64280ba31d20a15f49bcfcd".decode("hex") == e
+assert "2693333509" == "%s" % f
+
 # ipad
 kk = "TlRMTVNTUAADAAAAGAAYAEAAAAAYABgAWAAAAAAAAAAAAAAAGgAaAHAAAAAIAAgAigAAAAAAAAAAAAAABQIIAJEPdnUglFZTAAAAAAAAAAAAAAAAAAAAADMFtY9sMPhP1jShGSWXgOE2e8gvtwdPAGEAZABtAGkAbgBpAHMAdAByAGEAdABvAHIAaQBQAGEAZAA="
-ntResp = "3305b58f6c30f84fd634a119259780e1367bc82fb7074f00"
 a, b, c, d, e, f = parseNtlmTypeThree(kk)
-assert ntResp.decode("hex") == e
+assert "3305b58f6c30f84fd634a119259780e1367bc82fb7074f00".decode("hex") == e
 
 # main
 if __name__ == '__main__':
@@ -521,12 +598,22 @@ if __name__ == '__main__':
 		action="store_true", default=False)
 	parser.add_option("-f", "--debug-file", dest="debugFile", help="debug file (/tmp/squid-ntlm-auth.log)",
 		action="store_true", default="/tmp/squid-ntlm-auth.log")
+	parser.add_option("-g", "--gss-spnego", dest="gssSpnego", help="gss spnego mode for ntlm answer",
+		action="store_true", default=False)
+	parser.add_option("-s", "--gss-spnego-strip-realm", dest="gssSpnegoStripRealm",
+		help="strip realm from login name if gss spnego mode is uses for authentication",
+		action="store_true", default=False)
 	(options, args) = parser.parse_args()
 
 	cr = univention.config_registry.ConfigRegistry()
 	cr.load()
 	users = {}
 	challenge = ""
+
+	# open pipe to squid_kerb_auth for kerberos stuff
+	kerbPipe = None
+	if options.gssSpnego:
+		kerbPipe = subprocess.Popen(['/usr/lib/squid3/squid_kerb_auth'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
 	while True:
 	
@@ -537,13 +624,47 @@ if __name__ == '__main__':
 
 		if options.debug:
 			debug("from squid -> " + data)
-	
+
 		if data:
-			if data.startswith("YR ") and ntlmTypeOne(data):
-				try:
-					answer, challenge = createNtlmTypeTwo()
-				except Exception, e:
-					answer = "BH failed to createNtlmTypeTwo(): %s" % e
+			if data.startswith("YR "): 
+				if ntlmTypeOne(data):
+					try:
+						answer, challenge = createNtlmTypeTwo()
+					except Exception, e:
+						answer = "BH failed to createNtlmTypeTwo(): %s" % e
+				else:
+					if options.debug:
+						debug("negotiate kerberos authentication" + data)
+					# kerberos
+					try:
+						if kerbPipe:
+							if options.debug:
+								debug("asking kerb tool")
+							kerbPipe.stdin.write(data + "\n")
+							kerbPipe.stdin.flush()
+							answer = kerbPipe.stdout.readline()
+							if options.debug:
+								debug("real answer %s" % answer)
+							# remove realm from login
+							if options.gssSpnegoStripRealm:
+								tmp = answer.split()
+								if len(tmp) > 2 and tmp[0] == "AF":
+									login = tmp[2].split("@", 1)[0]
+									answer = "%s %s %s" % (tmp[0], tmp[1], login)
+								if options.debug:
+									debug("fixed answer %s" % answer)
+						# this whole stuff could also be done by
+						# python kerberos
+						#  result, context = kerberos.authGSSServerInit('HTTP')
+						#  r = kerberos.authGSSServerStep(context, data.replace("YR ", "", 1))
+						#  gssstring = kerberos.authGSSServerResponse(context)
+						#  login = kerberos.authGSSServerUserName(context)
+						#  login = login.split("@", 1)[0]
+						#  kerberos.authGSSServerClean(context)
+						#  answer = "AF %s %s" % (gssstring, login)
+					except Exception, e:
+						answer = "BH failed doing kerberos: %s" % e
+						
 			if data.startswith("KK "):
 				try:
 					answer = verifyNtlmTypeThree(data, challenge)
