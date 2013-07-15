@@ -1,0 +1,24 @@
+@%@UCRWARNING=# @%@
+
+# Do we start the KDC?
+KDC_ENABLED=yes
+KDC_PARAMS="--config-file=/etc/heimdal-kdc/kdc.conf"
+
+# the kpasswdd?
+@!@
+if configRegistry.get('server/role') == 'domaincontroller_master':
+	print "KPASSWDD_ENABLED=yes"
+else:
+	print "KPASSWDD_ENABLED=no"
+@!@
+KPASSWDD_PARAMS=""
+
+# kprop master?
+MASTER_ENABLED=no
+
+# How about the kprop slave?
+SLAVE_ENABLED=no
+
+# Add at least your master server name here when using iprop-replication
+# otherwise it would fail silently.
+SLAVE_PARAMS=""

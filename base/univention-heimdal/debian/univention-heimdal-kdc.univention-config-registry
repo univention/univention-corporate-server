@@ -23,3 +23,7 @@ Mode: 755
 User: root
 Group: root
 Variables: kerberos/password/quality/.*
+
+Type: file
+File: etc/default/heimdal-kdc
+Variables: server/role
