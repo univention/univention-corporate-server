@@ -1,3 +1,9 @@
+univention-heimdal (6.0.13-3) unstable; urgency=low
+
+  * straighten univention-heimdal-kdc.postinst (Bug #20167)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Jul 2013 14:23:59 +0200
+
 univention-heimdal (6.0.13-2) unstable; urgency=low
 
   * enable kpasswdd only on the UCS master (Bug #20167)

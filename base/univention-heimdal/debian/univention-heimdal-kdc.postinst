@@ -36,7 +36,8 @@
 
 eval "$(univention-config-registry shell)"
 
-univention-config-registry set kerberos/autostart?yes
+univention-config-registry set kerberos/autostart?yes \
+	kerberos/password/quality/check?yes
 
 call_joinscript 11univention-heimdal-init.inst
 call_joinscript 15univention-heimdal-kdc.inst
@@ -68,28 +69,29 @@ for fn in kdc.conf kadmind.acl ; do
 	fi
 done
 
-if [ "$1" = "configure" -a -n "$2" ]; then
-	/etc/init.d/heimdal-kdc restart
-fi
-
-univention-config-registry set kerberos/password/quality/check?yes
-
-# Bug #19020, use $hostname.$domainname in kerberos/kdc
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3-1; then
-	if [ -n "$kerberos_kdc" -a "$kerberos_kdc" = "$hostname" ]; then
-		univention-config-registry set kerberos/kdc="$hostname.$domainname"
-	fi
-fi
-
-if [ "$1" = "configure" -a -z "$2" ]; then
-	/usr/sbin/update-inetd --disable telnet		# enabled in heimdal-servers postinst
-fi
-
 if [ "$1" = "configure" ]; then
+
+	if [ -z "$2" ]; then	## fresh install
+
+		/usr/sbin/update-inetd --disable telnet		# enabled in heimdal-servers postinst
+
+	else					## package update
+
+		/etc/init.d/heimdal-kdc restart
+
+		# Bug #19020, use $hostname.$domainname in kerberos/kdc
+		if dpkg --compare-versions "$2" lt 4.0.3-1; then
+			if [ -n "$kerberos_kdc" -a "$kerberos_kdc" = "$hostname" ]; then
+				univention-config-registry set kerberos/kdc="$hostname.$domainname"
+			fi
+		fi
+	fi
+
 	if test -f /etc/init.d/univention-directory-listener
 		then
 		/etc/init.d/univention-directory-listener crestart
 	fi
+
 fi
 
 hdbdir='/var/lib/heimdal-kdc'	## configured by heimdal/debian/rules
