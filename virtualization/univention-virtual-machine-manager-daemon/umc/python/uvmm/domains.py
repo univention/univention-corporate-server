@@ -397,7 +397,6 @@ class Domains(object):
 
 		return drive
 
-	@sanitize(nodeURI=SearchSanitizer(required=True))
 	def domain_add(self, request):
 		"""
 		Creates a new domain on nodeURI.
