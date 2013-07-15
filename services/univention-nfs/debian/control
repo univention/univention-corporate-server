@@ -13,6 +13,7 @@ Depends: ${misc:Depends},
  univention-config (>= 8.0.2),
  univention-directory-manager-tools (>> 7.0.147),
  univention-directory-listener,
+ univention-base-files,
  python-univention-lib (>= 1.0.45)
 Description: UCS - NFS server
  This package configures the Network FileSystem (NFS).
