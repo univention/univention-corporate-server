@@ -4,8 +4,8 @@
 	<p>Wenn Sie die Erzeugung von Statistiken nicht wünschen, kann diese untenstehend deaktiviert werden. (Auf Systemen mit regulärer UCS-Lizenz werden keine Statistiken erzeugt.)</p>
 	<p>
 		<form>
-			<input id="umc_app_feedback_checkbox" name="disablePiwik" data-dojo-type="umc/widgets/CheckBox" onChange="require('umc/app')._disablePiwik(this.get('value'));">
-			<label for="umc_app_feedback_checkbox">Erzeugung von Nutzungsstatistiken deaktivieren</label>
+			<input name="disablePiwik" data-dojo-type="dijit/form/CheckBox" {disablePiwikChecked} onChange="require('umc/app')._disablePiwik(this.get('checked'));">
+			<label for="disablePiwik">Erzeugung von Nutzungsstatistiken deaktivieren</label>
 		</form>
 	</p>
 </div>

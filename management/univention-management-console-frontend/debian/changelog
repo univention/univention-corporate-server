@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.20-1) unstable; urgency=low
+
+  * Bug #30811: minor adjustments
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Jul 2013 16:09:32 +0200
+
 univention-management-console-frontend (3.0.19-1) unstable; urgency=low
 
   * Bug #30811: refactored menu dialogs, integrated startup dialog, extended

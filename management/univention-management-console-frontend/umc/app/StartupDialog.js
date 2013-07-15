@@ -45,24 +45,40 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/app"
 ], function(declare, lang, kernel, array, parser, domClass, Deferred, when, Dialog, StackContainer, tools, Text, ContainerWidget, Button, _) {
-	// load HTML template documents
-	var _loadingDeferred = new Deferred();
+	// load UCR variables
+	var _disablePiwik = false;
+	var _ucrDeferred = tools.ucr('umc/web/piwik').then(function(results) {
+		_disablePiwik = results['umc/web/piwik'] !== null && tools.isFalse(results['umc/web/piwik']);
+		console.log('### piwikDisabled:', _disablePiwik);
+	});
+
+	var _replaceVariablesInDocument = function(doc) {
+		return lang.replace(doc, {
+			path: require.toUrl('umc/app'),
+			feedbackUrl: _('umcFeedbackUrl'),
+			disablePiwikChecked: _disablePiwik ? 'checked' : ''
+		});
+	};
+
 	var _lang = kernel.locale.split('-')[0];
-	var _docDependencies = array.map(['welcome', 'feedback', 'help'], function(ikey) {
+	var _getDocumentDependency = function(key) {
 		return lang.replace('dojo/text!umc/app/{key}.{lang}.html', {
-			key: ikey,
+			key: key,
 			lang: _lang
 		});
-	});
+	};
+
+	// load HTML template documents
+	var _loadingDeferred = new Deferred();
+	var _docDependencies = array.map(['welcome', 'feedback', 'help'], _getDocumentDependency);
 	require(_docDependencies, function(/*...*/) {
+		var _docs = arguments;
+
 		// replace variables in each template
-		var docs = array.map(arguments, function(idoc) {
-			return lang.replace(idoc, {
-				path: require.toUrl('umc/app'),
-				feedbackUrl: _('umcFeedbackUrl')
-			});
+		when(_ucrDeferred, function(ucr) {
+			var docs = array.map(_docs, _replaceVariablesInDocument)
+			_loadingDeferred.resolve(docs);
 		});
-		_loadingDeferred.resolve(docs);
 	});
 
 	return declare(Dialog, {
@@ -105,15 +121,6 @@ define([
 						}));
 					}
 
-					// 'back' button
-					if (idx > 0) {
-						footer.addChild(new Button({
-							label: _('Back'),
-							callback: lang.hitch(this, '_gotoPage', idx - 1),
-							style: 'float:left'
-						}));
-					}
-
 					// 'close' button
 					if (idx == docs.length - 1) {
 						footer.addChild(new Button({
@@ -121,6 +128,24 @@ define([
 							callback: lang.hitch(this, 'close'),
 							style: 'float:right',
 							defaultButton: true
+						}));
+					}
+
+					// 'back' button
+					if (idx > 0) {
+						footer.addChild(new Button({
+							label: _('Back'),
+							callback: lang.hitch(this, '_gotoPage', idx - 1),
+							style: 'float:right'
+						}));
+					}
+
+					// 'cancel' button
+					if (idx < docs.length - 1) {
+						footer.addChild(new Button({
+							label: _('Cancel'),
+							callback: lang.hitch(this, 'close'),
+							style: 'float:left'
 						}));
 					}
 

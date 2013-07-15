@@ -51,21 +51,21 @@ define([
 	var _disablePiwik = false;
 	var piwikTracker = null;
 	var sendAction = function() {
-		console.log('### sendAction');
+		//console.log('### sendAction');
 		if (!piwikTracker || _disablePiwik) {
-			console.log('###   ', piwikTracker, _disablePiwik);
+			//console.log('###   ', piwikTracker, _disablePiwik);
 			return;
 		}
-		console.log('###   ', arguments);
+		//console.log('###   ', arguments);
 		piwikTracker.setDocumentTitle(_buildSiteTitle(arguments));
 		piwikTracker.setCustomUrl(window.location.protocol + "//" + window.location.host);
 		piwikTracker.trackPageView();
 	};
 
 	var disablePiwik = function(disable) {
-		console.log('### disablePiwik:', disable);
+		//console.log('### disablePiwik:', disable);
 		// send that piwik has been disabled
-		tools.status('piwikEnabled', !disable);
+		tools.status('piwikDisabled', disable);
 		_disablePiwik = false;
 		sendAction('piwik', disable ? 'disable' : 'enable');
 		_disablePiwik = disable;
@@ -91,8 +91,7 @@ define([
 	};
 
 	var loadPiwik = function() {
-		console.log('### loadPiwik');
-		tools.status('piwikEnabled', true);
+		//console.log('### loadPiwik');
 		require(["https://www.piwik.univention.de/piwik.js"], function() {
 			// create a new tracker instance
 			piwikTracker = Piwik.getTracker('https://www.piwik.univention.de/piwik.php', 14);
@@ -119,7 +118,10 @@ define([
 		var ffpuLicense = result['license/base'] == 'Free for personal use edition';
 		if (tools.isTrue(result['umc/web/piwik']) || (!piwikUcrvIsSet && ffpuLicense)) {
 			// use piwik for user action feedback if it is not switched off explicitely
+			tools.status('piwikDisabled', false);
 			loadPiwik();
+		} else {
+			tools.status('piwikDisabled', true);
 		}
 	});
 });

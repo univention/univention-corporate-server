@@ -998,8 +998,8 @@ define([
 		},
 
 		_checkShowStartupDialog: function() {
-			//var startupDialog = new StartupDialog({});
-			//startupDialog.show();
+			var startupDialog = new StartupDialog({});
+			startupDialog.show();
 		},
 
 		_focusSearchField: function() {
@@ -1305,7 +1305,8 @@ define([
 		_showPiwikDialog: function() {
 			topic.publish('/umc/actions', 'menu-help', 'piwik');
 			dialog.templateDialog('umc/app', 'feedback.' + _getLang()  + '.html', {
-				path: require.toUrl('umc/app')
+				path: require.toUrl('umc/app'),
+				disablePiwikChecked: tools.status('piwikDisabled') ? 'checked' : ''
 			}, _('Usage statistics'), _('Close'));
 		},
 
