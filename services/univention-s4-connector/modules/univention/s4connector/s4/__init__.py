@@ -2226,9 +2226,15 @@ class s4(univention.s4connector.ucs):
 									modlist.append((ldap.MOD_REPLACE, attr, value))
 								else:
 									modlist.append((ldap.MOD_DELETE, attr, None))
-				ud.debug(ud.LDAP, ud.INFO, "addlist: %s" % compatible_addlist(addlist))
 
-				self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=ctrls) #FIXME encoding
+				ud.debug(ud.LDAP, ud.INFO, "to add: %s" % object['dn'])
+				try:
+					ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: addlist: %s" % addlist)
+					self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=ctrls) #FIXME encoding
+				except:
+					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during add object: %s" % object['dn'])
+					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to addlist: %s" % addlist)
+					raise
 
 				if property_type == 'group':
 					self.group_members_cache_con[object['dn'].lower()] = []
@@ -2238,9 +2244,15 @@ class s4(univention.s4connector.ucs):
 					for f in self.property[property_type].post_con_create_functions:
 						f(self, property_type, object)
 
-				ud.debug(ud.LDAP, ud.INFO, "to modify: %s"%object['dn'])
+				ud.debug(ud.LDAP, ud.INFO, "and modify: %s" % object['dn'])
 				if modlist:
-					self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=ctrls)
+					ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
+					try:
+						self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=ctrls)
+					except:
+						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
+						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
+						raise
 
 				if hasattr(self.property[property_type],"post_con_modify_functions"):
 					for f in self.property[property_type].post_con_modify_functions:
@@ -2321,9 +2333,15 @@ class s4(univention.s4connector.ucs):
 						if value != None:
 							modlist.append((ldap.MOD_DELETE, yank_empty_attr, None))
 
+				ud.debug(ud.LDAP, ud.INFO, "to modify: %s" % object['dn'])
 				if modlist:
-					ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: modlist: %s" % modlist)
-					self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=self.serverctrls_for_add_and_modify)
+					ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: modlist: %s" % modlist)
+					try:
+						self.lo_s4.lo.modify_ext_s(compatible_modstring(object['dn']), compatible_modlist(modlist), serverctrls=self.serverctrls_for_add_and_modify)
+					except:
+						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during modify object: %s" % object['dn'])
+						ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback due to modlist: %s" % modlist)
+						raise
 
 
 				if hasattr(self.property[property_type],"post_con_modify_functions"):

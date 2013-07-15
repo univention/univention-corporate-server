@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.1-1) unstable; urgency=low
+
+  * log addlist and modlist on debug level INFO (Bug #31133)
+  * log addlist, modlist and traceback on debug level ERROR 
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Jul 2013 18:17:41 +0200
+
 univention-s4-connector (8.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with univention.lib.createMachinePassword (Bug #31281)
