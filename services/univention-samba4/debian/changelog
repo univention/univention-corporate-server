@@ -1,3 +1,9 @@
+univention-samba4 (3.0.6-3) unstable; urgency=low
+
+  * Support UCR variable samba/max/protocol (Bug #31145)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Jul 2013 20:19:22 +0200
+
 univention-samba4 (3.0.6-2) unstable; urgency=low
 
   * On updates check if the ownership of the Default Domain Policy GPO
