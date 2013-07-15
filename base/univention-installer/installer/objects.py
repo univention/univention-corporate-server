@@ -1813,7 +1813,7 @@ class content:
 		return False
 
 	def syntax_is_domainname(self, domainname):
-		if "-." in domainname or ".-" in domainname:
+		if "-." in domainname or ".-" in domainname or ".." in domainname:
 			return False
 		_re=re.compile("^[a-z0-9][a-z0-9-.]*[a-z0-9]$")
 		if _re.match(domainname):
