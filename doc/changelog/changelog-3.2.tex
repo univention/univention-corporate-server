@@ -774,7 +774,13 @@ systems in \ucsName{ucs-test}, for example \ucsName{udm-test} or
 \item The winbind test has been improved to work more reliable on UCS memberservers in Samba4 domains (\ucsBug{31772}).
 
 \item Now there is a test block \emph{samba-common} for tests that are common to Samba versions 3 and 4.
-The robustness against DRS and rsync replication delays has been improved in some tests (\ucsBug{28343}, \ucsBug{28348}, \ucsBug{29057}, \ucsBug{29058}, \ucsBug{29062}). The Samba3 join test has been removed (\ucsBug{31835}). Samba4 NTACL tests have been improved a bit (\ucsBug{29230}).
+The robustness against DRS and rsync replication delays has been improved in some tests (\ucsBug{28343}, \ucsBug{28348}, \ucsBug{29057}, \ucsBug{29058}, \ucsBug{29062}).
+
+\item The Samba3 join test has been removed (\ucsBug{31835}).
+
+\item Samba4 NTACL tests have been improved a bit (\ucsBug{29230}). 
+
+\item The tests for Samba share permissions have been improved (\ucsBug{29054}).
 
 \item Under certain circumstances samba 3.6.8 reports a timeout for the unix password sync during password changes. Since the password change is successful nonetheless, two test cases have been adjusted to tolerate this flaw (\ucsBug{31794}).
 
