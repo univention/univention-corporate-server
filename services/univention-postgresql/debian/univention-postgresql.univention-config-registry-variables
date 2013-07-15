@@ -1,23 +1,23 @@
 [postgres/autostart]
-Description[de]=Automatischer Start der PostgreSQL 7.4 Datenbank
-Description[en]=Automatically start of the postgres 7.4 database
-Type=str
+Description[de]=Die Variable konfiguriert den Startmodus des PostgreSQL 7.4-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the PostgreSQL 7.4 service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=bool
 Categories=system-services
 
 [postgres8/autostart]
-Description[de]=Automatischer Start der PostgreSQL 8.3 Datenbank
-Description[en]=Automatically start of the postgres 8.3 database
-Type=str
+Description[de]=Die Variable konfiguriert den Startmodus des PostgreSQL 8-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the PostgreSQL 8 service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=bool
 Categories=system-services
 
 [postgres8/maxconnections]
-Description[de]=Maximal gleichzeitige Verbindungen
-Description[en]=Maximum of simultaneous connections
+Description[de]=Diese Variable konfiguriert die maximale Anzahl gleichzeitiger Verbindungen beim Zugriff auf den PostgresSQL-8-Datenbankserver. Ist die Variable nicht gesetzt, ist das Limit 200 Verbindungen.
+Description[en]=This variable configures the maximum amount of concurrent connections when accessing the PostgresSQL 8 database server. If the variable is unset, the limit is 200 connections.
 Type=str
 Categories=System
 
 [postgres8/listenaddress]
-Description[de]=IP Adresse(n) über die Verbindungen angenommen werden
-Description[en]=IP address(es) to accept connections on
+Description[de]=Verfügt der Server auf dem PostgreSQL 8 läuft über mehr als ein Netzwerkinterface, kann mit dieser Variable die IP-Adresse(n) beschränkt werden, unter denen auf Anfragen gewartet wird. Ist die Variable nicht gesetzt, bedient PostgreSQL Anfragen auf allen Interfaces. Mehrere IP-Adressen müssen mit einem Komma getrennt werden.
+Description[en]=If the server running PostgreSQL has more than one network interface this variable allows the restriction of IP addresses on which PostgreSQL is listening for connections. If the variable is unset all interfaces are served. Multiple IP addresses need to be seperated with a comma.
 Type=str
 Categories=System
