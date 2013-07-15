@@ -5,19 +5,19 @@ Type=bool
 Categories=nfs
 
 [nfs/ports]
-Description[de]=Bei 'static' werden feste IP-Portnummern für die NFS-Dienste vergeben [static]
-Description[en]=With 'static' fixed IP port numbers are assigned to NFS services [static]
+Description[de]=Ist diese Variable auf 'static' gesetzt, werden feste Ports für die NFS-Dienste verwendet: 32767 für RPC-Mounts, 32765/32766 für statd und 32769 für den Quota-Dienst. Ansonsten werden die Ports dynamisch vergeben.
+Description[en]=If this variable is set to 'static', fixed ports are used for the NFS services: 32767 for RPC mounts, 32765/32766 for statd and 32769 for the quota service. Otherwise the ports are assigned dynamically.
 Type=str
 Categories=nfs
 
 [nfs/nfsd/nfs4]
-Description[de]=Nfs V4 im rpc.nfsd Server Prozess aktivieren/deaktivieren (default: false)
-Description[en]=Enable/disable nfs v4 for the rpc.nfsd server process (default: false)
+Description[de]=Ist diese Variable aktiviert, verwendet der NFS-Server NFSv4. Für eine vollständige Aktivierung von NFS muss in der Regel auch der IDMAPD-Prozess eingerichtet werden.
+Description[en]=If this variable is activated the NFS server uses NFSv4. Usually the IDMAPD process must be enabled in addition for a full activation of NFS4.
 Type=str
 Categories=nfs
 
 [nfs/create/homesharepath]
-Description[de]=Definiert, ob das Listener Modul nfs-home das homeSharePath Verzeichnis von Benutzern anlegen soll (default: yes)
-Description[en]=Defines, whether the listener modul nfs-home shall create the homeSharePath directory for users (default: yes)
-Type=str
+Description[de]=Ist diese Variable aktiviert, wird das für einen Benutzer in den Attributen 'Heimatverzeichnisfreigabe' und 'Pfad zum Heimatverzeichnis' festgelegte Heimatverzeichnis durch ein Univention-Directory-Listener-Modul automatisch angelegt.
+Description[en]=If this variable is activated, the home directory configured for a user in the attributes 'Home share' and 'Home share path' is automatically created through a Univention Directory Listener module.
+Type=bool
 Categories=nfs
