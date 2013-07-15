@@ -708,6 +708,7 @@ will be done (\ucsBug{19354}).
 the postinst script of \ucsName{univention-samba} (\ucsBug{24442}).
 \item \ucsUCRV{windows/wins-server} and \ucsUCRV{windows/wins-support} are now set in the Samba joinscript (\ucsBug{31814}).
 \item To minimize the time where \ucsURL{/etc/samba/shares.conf} includes non-existing files, it is now updated directly after a share was added/removed or renamed (\ucsBug{29399}).
+\item The \ucsUCRV{samba/max\_protocol} has been renamed to \ucsUCRV{samba/max/protocol} (\ucsBug{31921}).
 \end{itemize}
 
 \subsection{Samba 4}
@@ -727,6 +728,7 @@ only for root (\ucsBug{31538}).
 \item Fixed file permissions of \ucsFile{/var/lib/samba/ntp\_signd} (\ucsBug{31109}).
 \item To minimize the time where \ucsURL{/etc/samba/shares.conf} includes non-existing files, it is now updated directly after a share was added/removed or renamed (\ucsBug{31800}).
 \item In case a Samba 4 service is detected in the domain during join, UCS LDAP servers now take care that they are not registered with port 7389 in the \_ldap.\_tcp SRV DNS record (\ucsBug{29462}).
+\item Support for the \ucsUCRV{samba/max/protocol} has been added (\ucsBug{31145}).
 \end{itemize}
 
 \subsection{Univention S4 Connector}
