@@ -522,6 +522,12 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	/etc/init.d/samba4 stop
 
+	univention-config-registry set \
+		kerberos/defaults/dns_lookup_kdc?no \
+		kerberos/kdc?127.0.0.1 \
+		kerberos/adminserver?127.0.0.1 \
+		kerberos/kpasswdserver?127.0.0.1
+
 	is_ucr_true samba4/provision/primary
 	if [ $? -eq 0 ] || [ -z "$samba4servicedcs" ]; then	## we are the first domaincontroller to provide this service
 

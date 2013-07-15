@@ -1,3 +1,9 @@
+univention-samba4 (3.0.6-4) unstable; urgency=low
+
+  * configure samba4 DCs to use the local KDC (Bug #29291)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Jul 2013 20:58:14 +0200
+
 univention-samba4 (3.0.6-3) unstable; urgency=low
 
   * Support UCR variable samba/max/protocol (Bug #31145)
