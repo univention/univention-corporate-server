@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console*/
+/*global define require console setTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -36,7 +36,6 @@ define([
 	"dojo/when",
 	"dojo/dom-construct",
 	"dojo/query",
-	"dojo/dom-class",
 	"dojo/store/Memory",
 	"dojo/topic",
 	"dojo/Deferred",
@@ -53,12 +52,10 @@ define([
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/LabelPane",
-	"umc/widgets/Button",
 	"umc/widgets/GalleryPane",
 	"umc/widgets/LiveSearchSidebar",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, when, domConstruct, query, domClass, Memory, topic, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, TitlePane, TextBox, CheckBox, ContainerWidget, LabelPane, Button, GalleryPane, LiveSearchSidebar, _) {
+], function(declare, lang, kernel, array, when, domConstruct, query, Memory, topic, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, TitlePane, TextBox, CheckBox, ContainerWidget, GalleryPane, LiveSearchSidebar, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -227,7 +224,6 @@ define([
 				lang.hitch(this, function(data) {
 					this.standby(false);
 					var app = data.result;
-					var width = 550;        // mimic the default of dialog.confirm
 
 					var label_style = 'vertical-align:top;text-align:right;padding-left:1em;padding-right:.5em;white-space:nowrap;font-weight:bold;';
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
@@ -254,13 +250,13 @@ define([
 					}));
 					txt += "</table>\n";
 					var buttons = [];
-					if (!app.allows_using && this._udm_accessible) {
+					if (!app.allows_using) {
 						var label = app.can_update ? _('Upgrade') : _('Install'); // call it Install/Upgrade, although it is request
 						buttons.push({
 							name: 'request',
 							label: label,
 							callback: lang.hitch(this, function() {
-								this._show_license_request();
+								this.showLicenseRequest(app, label);
 							})
 						});
 					}
@@ -618,9 +614,9 @@ define([
 		},
 
 		_detail_field_custom_defaultpackagesmaster: function(values) {
-			var master_packages = values.defaultpackagesmaster;
-			var can_install = values.can_install;
-			var can_update = values.can_update;
+			// var master_packages = values.defaultpackagesmaster;
+			// var can_install = values.can_install;
+			// var can_update = values.can_update;
 			var allows_using = values.allows_using;
 			if (allows_using && values.cannot_install_reason == 'not_joined') {
 				return '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('The system has to join a domain before the application can be installed!');
@@ -842,7 +838,7 @@ define([
 					array.forEach(applications, function(application) {
 						array.forEach(application.categories, function(category) {
 							if (array.indexOf(categories, category) < 0) {
-							     categories.push(category);
+								categories.push(category);
 							}
 						});
 					});
@@ -879,7 +875,7 @@ define([
 			this._grid.set('query', query);
 		},
 
-		_show_license_request: function() {
+		showLicenseRequest: function(app, action) {
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'request-license');
 			if (this._udm_accessible) {
 				dialog.confirmForm({
@@ -924,6 +920,24 @@ define([
 							this.standby(false);
 						}));
 				}));
+			} else {
+				// UDM is not present. Either because this is
+				// not the DC Master or because the user is no
+				// Administrator
+				var msg;
+				if (app.is_master) {
+					var login_as_admin_tag = '<a href="javascript:void(0)" onclick="require(\'umc/app\').relogin(\'Administrator\')">Administrator</a>';
+					msg =
+						'<p>' + _('You need to request and install a new license in order to use the Univention App Center.') + '</p>' +
+						'<p>' + _('To do this please log in as %s and repeat the steps taken until this dialog. You will be guided through the installation.', login_as_admin_tag) + '</p>';
+				} else {
+					var host_link = '<a target="_blank" href="https://' + app.host_master + '/univention-management-console">' + app.host_master + '</a>';
+					msg =
+						'<p>' + _('You need to request and install a new license in order to use the Univention App Center.') + '</p>' +
+						'<p>' + _('To do this please log in on %(host)s. Open the App Center there and click on "%(app)s" and "%(action)s". The process will not start, instead you will be guided through the steps of installing a license.', {host: host_link, action: action, app: app.name}) + '<p>' +
+						'<p>' + _('After that you can "%(action)s" "%(app)s" here on this system.', {action: action, app: app.name}) + '</p>';
+				}
+				dialog.alert(msg);
 			}
 		},
 

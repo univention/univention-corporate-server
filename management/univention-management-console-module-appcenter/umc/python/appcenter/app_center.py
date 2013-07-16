@@ -505,15 +505,7 @@ class Application(object):
 		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
-		res['show_ldap_schema_confirmation'] = False # is done automatically
-		#if res['is_master']:
-		#	try:
-		#		from univention.admin.handlers.computers import domaincontroller_backup
-		#		lo = uldap.getMachineConnection()
-		#		res['show_ldap_schema_confirmation'] = 0 < len(domaincontroller_backup.lookup(None, lo, None))
-		#		del lo
-		#	except (LDAPError, ImportError):
-		#		res['show_ldap_schema_confirmation'] = True
+		res['host_master'] = ucr.get('ldap/master')
 		res['server'] = self.get_server()
 		res['server_version'] = ucr.get('version/version')
 		res['umc_module'] = 'apps'

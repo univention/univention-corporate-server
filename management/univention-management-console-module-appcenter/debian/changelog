@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.7-1) unstable; urgency=low
+
+  * Bug #30629: Show helpful messages when new license is not yet installed
+    and no UDM is present.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Jul 2013 15:27:09 +0200
+
 univention-management-console-module-appcenter (3.0.6-1) unstable; urgency=low
 
   * Bug #31803: Supporting new HTML READMEs INSTALL, POST_UPDATE, POST_INSTALL
@@ -22,6 +29,7 @@ univention-management-console-module-appcenter (3.0.4-1) unstable; urgency=low
 univention-management-console-module-appcenter (3.0.3-1) unstable; urgency=low
 
   * Use independent apt.Cache when getting package sections (Bug #31662)
+  * Performance: Speedup updates by committing files only once (Bug #31228)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jul 2013 13:03:39 +0200
 
