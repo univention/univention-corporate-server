@@ -11,8 +11,12 @@
 \end{itemize}
 
 
+\section{Upgrade provisions (preup and postup scripts)}
+
 \section{Univention Installer}
 \begin{itemize}
+\item The LDAP schema is now checked in preup.sh if slapd is installed (\ucsBug{25674}).
+\end{itemize}
 
 \item \ucsName{univention-horde4} has been removed from the software
 selection. \ucsName{Horde} is available in the UCS AppCenter
