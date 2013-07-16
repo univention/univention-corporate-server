@@ -1,6 +1,6 @@
 univention-management-console-frontend (3.0.21-1) unstable; urgency=low
 
-  * Bug #31699: CSS clean up
+  * Bug #31639: CSS clean up
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 15 Jul 2013 19:39:07 +0200
 
