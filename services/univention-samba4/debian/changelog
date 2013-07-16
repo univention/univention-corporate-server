@@ -1,3 +1,10 @@
+univention-samba4 (3.0.6-6) unstable; urgency=low
+
+  * Change default to samba4/sysvol/sync/setfacl/AU?false (Bug #31275)
+  * Updated copyright
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Jul 2013 15:37:57 +0200
+
 univention-samba4 (3.0.6-5) unstable; urgency=low
 
   * Commit /etc/krb5.conf on update (Bug #31306)
