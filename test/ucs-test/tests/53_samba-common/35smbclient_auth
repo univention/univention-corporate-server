@@ -5,7 +5,7 @@
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
 ## packages:
-##  - univention-samba4
+##  - univention-samba | univention-samba4
 ##  - python-pexpect
 ## exposure: safe
 ## tags:
@@ -22,7 +22,11 @@ import random
 import subprocess
 import time
 import univention.testing.utils as utils
-from univention.testing.ucs_samba import wait_for_drs_replication, force_drs_replication
+try:
+	from univention.testing.ucs_samba import wait_for_drs_replication, force_drs_replication
+	python_samba4=True
+except:
+	python_samba4=False
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -90,7 +94,7 @@ def cleanup(username,homedir_mount):
 
 def smbclient(username,password,number,innerDelay):
 	for i in range(number):
-		subprocess.Popen(["/usr/bin/smbclient", "-U%s%%%s" % (username,password), "//localhost/sysvol"], stdin=subprocess.PIPE)
+		subprocess.Popen(["/usr/bin/smbclient", "-U%s%%%s" % (username,password), "//localhost/netlogon"], stdin=subprocess.PIPE)
 		time.sleep(innerDelay[i])
 
 def calculateInnerDelay(roundTime,amountPerRound):
@@ -114,7 +118,7 @@ def calculateInnerDelay(roundTime,amountPerRound):
 def checkResult(expectedResult):
 	for i in range(20):
 
-		output = pexpect.run('/bin/bash -c "smbstatus 2>&1 | grep -c sysvol"')
+		output = pexpect.run('/bin/bash -c "smbstatus 2>&1 | grep -c netlogon"')
 		try:
 			output_int=int(output)
 		except Exception, e:
@@ -141,9 +145,10 @@ if __name__ == "__main__":
 	atexit.register(cleanup, username, homedir_mount)
 
 	utils.wait_for_replication()
-	# DRS replication
-	# force_drs_replication()
-	wait_for_drs_replication("(sAMAccountName=%s)" % (username, ), attrs="objectSid")
+	if python_samba4:
+		# DRS replication
+		# force_drs_replication()
+		wait_for_drs_replication("(sAMAccountName=%s)" % (username, ), attrs="objectSid")
 
 	(totalRounds,amountPerRound,roundTime,delay)=initValues()
 	innerDelay=calculateInnerDelay(roundTime,amountPerRound)

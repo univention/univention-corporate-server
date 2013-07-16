@@ -2,7 +2,7 @@
 ## desc: "Test whether unixmode permissions set with UDM are working"
 ## exposure: safe
 ## packages:
-## - univention-samba4
+## - univention-samba | univention-samba4
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup
@@ -49,10 +49,9 @@ USER_DN="$(udm-test users/user list --filter uid="$username" | sed -ne 's/^DN: /
 
 wait_for_replication
 # force_drs_replication
-wait_for_drs_replication "(sAMAccountName=$username)"
 
 ## wait for samba share export
-echo "----wait for samba share export"
+echo "----wait for samba share export and that the user has been replicated"
 i=0
 sleep_seconds=3
 while ! output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
@@ -64,7 +63,6 @@ do
 	fi
 	sleep "$sleep_seconds"
 done
-
 
 #--Tests
 #----Testing general connection
