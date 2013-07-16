@@ -49,7 +49,7 @@ define([
 		return titleStr.join('/');
 	};
 
-	var _disablePiwik = false;
+	var _disablePiwik = tools.status('piwikDisabled');
 	var piwikTracker = null;
 	var sendAction = function() {
 		//console.log('### sendAction');
@@ -63,6 +63,23 @@ define([
 		piwikTracker.trackPageView();
 	};
 
+	var loadPiwik = function() {
+		//console.log('### loadPiwik');
+		if (piwikTracker) {
+			// piwik has already been loaded
+			return;
+		}
+
+		require(["https://www.piwik.univention.de/piwik.js"], function() {
+			// create a new tracker instance
+			piwikTracker = Piwik.getTracker('https://www.piwik.univention.de/piwik.php', 14);
+			piwikTracker.enableLinkTracking();
+
+			// send login action
+			topic.publish('/umc/actions', 'session', 'login');
+		});
+	};
+
 	var disablePiwik = function(disable) {
 		//console.log('### disablePiwik:', disable);
 		// send that piwik has been disabled
@@ -70,6 +87,10 @@ define([
 		_disablePiwik = false;
 		sendAction('piwik', disable ? 'disable' : 'enable');
 		_disablePiwik = disable;
+
+		if (!piwikTracker) {
+			loadPiwik();
+		}
 
 		if (!require('umc/modules/ucr')) {
 			// UCR UMC module is not available
@@ -91,39 +112,14 @@ define([
 		}
 	};
 
-	var loadPiwik = function() {
-		//console.log('### loadPiwik');
-		require(["https://www.piwik.univention.de/piwik.js"], function() {
-			// create a new tracker instance
-			piwikTracker = Piwik.getTracker('https://www.piwik.univention.de/piwik.php', 14);
-			piwikTracker.enableLinkTracking();
-
-			// send login action
-			topic.publish('/umc/actions', 'session', 'login');
-		});
-	};
+	if (!tools.status('piwikDisabled')) {
+		loadPiwik();
+	}
 
 	// subscribe to all topics containing interesting actions
 	topic.subscribe('/umc/actions', sendAction)
 
 	// subscribe for disabling piwik
 	topic.subscribe('/umc/piwik/disable', disablePiwik)
-
-	// check whether piwik is enabled
-	tools.ucr([
-		'umc/web/piwik',
-		'license/base'
-	]).then(function(result) {
-		var piwikUcrv = result['umc/web/piwik'];
-		var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
-		var ffpuLicense = result['license/base'] == 'Free for personal use edition';
-		if (tools.isTrue(result['umc/web/piwik']) || (!piwikUcrvIsSet && ffpuLicense)) {
-			// use piwik for user action feedback if it is not switched off explicitely
-			tools.status('piwikDisabled', false);
-			loadPiwik();
-		} else {
-			tools.status('piwikDisabled', true);
-		}
-	});
 });
 

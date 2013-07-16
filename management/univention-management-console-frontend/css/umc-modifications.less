@@ -926,6 +926,7 @@
 //
 .umc .dijitProgressBarEmpty {
   background: white url(images/progressBarEmpty.png) repeat-none left;
+  border-color: @greenMantis;
 }
 
 
@@ -2142,6 +2143,10 @@ p {
 		margin-bottom: 5px;
 		font-size: 14px;
 		clear: left;
+		// on the android tablet the border would only be displayed at width ~300px
+		// this background image hack fixes the problem, see:
+		//   http://stackoverflow.com/a/13550951
+		background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
 	}
 
 	.umcGalleryItem {

@@ -45,21 +45,6 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/app"
 ], function(declare, lang, kernel, array, parser, domClass, Deferred, when, Dialog, StackContainer, tools, Text, ContainerWidget, Button, _) {
-	// load UCR variables
-	var _disablePiwik = false;
-	var _ucrDeferred = tools.ucr('umc/web/piwik').then(function(results) {
-		_disablePiwik = results['umc/web/piwik'] !== null && tools.isFalse(results['umc/web/piwik']);
-		console.log('### piwikDisabled:', _disablePiwik);
-	});
-
-	var _replaceVariablesInDocument = function(doc) {
-		return lang.replace(doc, {
-			path: require.toUrl('umc/app'),
-			feedbackUrl: _('umcFeedbackUrl'),
-			disablePiwikChecked: _disablePiwik ? 'checked' : ''
-		});
-	};
-
 	var _lang = kernel.locale.split('-')[0];
 	var _getDocumentDependency = function(key) {
 		return lang.replace('dojo/text!umc/app/{key}.{lang}.html', {
@@ -68,18 +53,20 @@ define([
 		});
 	};
 
-	// load HTML template documents
-	var _loadingDeferred = new Deferred();
+	// pre-load HTML template documents
+	var _docDeferred = new Deferred();
 	var _docDependencies = array.map(['welcome', 'feedback', 'help'], _getDocumentDependency);
 	require(_docDependencies, function(/*...*/) {
-		var _docs = arguments;
-
-		// replace variables in each template
-		when(_ucrDeferred, function(ucr) {
-			var docs = array.map(_docs, _replaceVariablesInDocument)
-			_loadingDeferred.resolve(docs);
-		});
+		_docDeferred.resolve(arguments);
 	});
+
+	var _replaceVariablesInDocument = function(piwikDisabled, doc) {
+		return lang.replace(doc, {
+			path: require.toUrl('umc/app'),
+			feedbackUrl: _('umcFeedbackUrl'),
+			disablePiwikChecked: piwikDisabled ? 'checked' : ''
+		});
+	};
 
 	return declare(Dialog, {
 		// summary:
@@ -103,7 +90,10 @@ define([
 			});
 
 			this._pages = [];
-			when(_loadingDeferred, lang.hitch(this, function(docs) {
+			when(_docDeferred, lang.hitch(this, function(_docs) {
+				// note that way can only access 'piwikDisabled' here, as we cannot
+				// be sure that the variable has been set before (in umc/app)
+				var docs = array.map(_docs, lang.hitch(this, _replaceVariablesInDocument, tools.status('piwikDisabled')));
 				array.forEach(docs, function(idoc, idx) {
 					// build footer
 					var footer = new ContainerWidget({

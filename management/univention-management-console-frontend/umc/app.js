@@ -91,6 +91,10 @@ define([
 		return kernel.locale.split('-')[0];
 	};
 
+	var _hasFFPULicense = function() {
+		return _ucr['license/base'] == 'Free for personal use edition';
+	};
+
 	// helper function for sorting, sort indeces with priority < 0 to be at the end
 	var _cmpPriority = function(x, y) {
 		if (y.priority == x.priority) {
@@ -599,7 +603,6 @@ define([
 			tools.status('feedbackAddress', _ucr['umc/web/feedback/mail'] || tools.status('feedbackAddress'));
 			tools.status('feedbackSubject', _ucr['umc/web/feedback/description'] || tools.status('feedbackSubject'));
 
-			this._loadPiwik();
 			this.setupGui();
 
 			// if only one module exists open it
@@ -649,7 +652,15 @@ define([
 		},
 
 		_loadPiwik: function() {
-			require(["umc/piwik"], function() {});
+			var piwikUcrv = _ucr['umc/web/piwik'];
+			var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
+			if (tools.isTrue(_ucr['umc/web/piwik']) || (!piwikUcrvIsSet && _hasFFPULicense())) {
+				// use piwik for user action feedback if it is not switched off explicitely
+				tools.status('piwikDisabled', false);
+				require(["umc/piwik"], function() {});
+			} else {
+				tools.status('piwikDisabled', true);
+			}
 		},
 
 		_loadUcrVariables: function() {
@@ -666,10 +677,13 @@ define([
 				'ssl/validity/root',
 				'ssl/validity/warning',
 				'update/available',
-				'update/reboot/required'
+				'update/reboot/required',
+				'umc/web/piwik',
+				'license/base'
 			]).then(lang.hitch(this, function(res) {
 				// save the ucr variables in a local variable
 				lang.mixin(_ucr, res);
+				this._loadPiwik();
 			}));
 		},
 
@@ -1001,8 +1015,8 @@ define([
 		},
 
 		_checkShowStartupDialog: function() {
-			//var startupDialog = new StartupDialog({});
-			//startupDialog.show();
+			var startupDialog = new StartupDialog({});
+			startupDialog.show();
 		},
 
 		_focusSearchField: function() {
