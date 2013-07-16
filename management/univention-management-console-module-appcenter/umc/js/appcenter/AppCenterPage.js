@@ -952,7 +952,7 @@ define([
 					}
 					var readmeRead;
 					if (func === 'install') {
-						readmeRead = this.showReadme(app.readmepostinstall, _('Installation Information'));
+						readmeRead = this.showReadme(app.readmepostinstall, _('Install Information'));
 					} else {
 						readmeRead = this.showReadme(app.candidate_readmepostupdate, _('Upgrade Information'));
 					}
