@@ -740,6 +740,7 @@ only for root (\ucsBug{31538}).
 \item Support for the \ucsUCRV{samba/max/protocol} has been added (\ucsBug{31145}).
 \item Samba4 DCs are now configured to use the local KDC (\ucsBug{29291}).
 \item The config file \ucsURL{/etc/krb5.conf} will get commited from the updated UCR template on update (\ucsBug{31306}).
+\item The default for the \ucsUCRV{samba4/sysvol/sync/setfacl/AU} has been changed to \emph{false}, so the sysvol-sync script does not set read access fACLs for the group \emph{Authenticated Users} each time it is run by cron (\ucsBug{31275}).
 \end{itemize}
 
 \subsection{Univention S4 Connector}
