@@ -10,7 +10,7 @@
 	<remark>PMH: Bug #31226</remark>
 	<important>
 		<para>
-			This chapter is a draft and work in progress!  Feedback is very much
+			This chapter is a draft and work in progress! Feedback is very much
 			appreciated.
 		</para>
 	</important>
@@ -169,7 +169,40 @@
 				<term>LICENSE_AGREEMENT</term>
 				<listitem>
 					<simpara>
-						A file the user has to accept before the installation starts.
+						A file the user has to accept before the installation starts. As of
+						UCS 3.2 HTML in this file is allowed and it may be localised by
+						using the files <literal>LICENSE_AGREEMENT_EN</literal> resp.
+						<literal>LICENSE_AGREEMENT_DE</literal>.
+					</simpara>
+					<important>
+						<para>
+							As stated above HTML in this file is now allowed (and enforced).
+							It was not in UCS 3.1 but received some simple auto formatting.
+							You may have to convert an existing
+							<literal>LICENSE_AGREEMENT</literal>.
+						</para>
+					</important>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_INSTALL</term>
+				<listitem>
+					<simpara>
+						A file that is presented to the user before installation (but after
+						<literal>LICENSE_AGREEMENT</literal>). HTML is allowed. It may be
+						localised by using the files <literal>README_INSTALL_EN</literal>
+						resp. <literal>README_INSTALL_DE</literal>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_POST_INSTALL</term>
+				<listitem>
+					<simpara>
+						A file that is presented to the user after installation. HTML is
+						allowed. It may be localised by using the files
+						<literal>README_POST_INSTALL_EN</literal> resp.
+						<literal>README_POST_INSTALL_DE</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -179,27 +212,45 @@
 					<simpara>
 						A file that is presented to the user before upgrading, listing
 						changes. Note that a user may only upgrade to the newest version
-						and does it in one step. Only the latest
+						and does so in one step. Only the latest
 						<literal>README_UPDATE</literal> is shown.
+						As of UCS 3.2 it may be localised by using the files
+						<literal>README_UPDATE_EN</literal> resp.
+						<literal>README_UPDATE_DE</literal>.
+					</simpara>
+					<important>
+						<para>
+							As stated above HTML in this file is now allowed (and enforced).
+							It was not in UCS 3.1 but received some simple auto formatting.
+							You may have to convert an existing
+							<literal>README_UPDATE</literal>.
+						</para>
+					</important>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_POST_UPDATE</term>
+				<listitem>
+					<simpara>
+						A file that is presented to the user after upgrading. Note that a
+						user may only upgrade to the newest version and does so in one
+						step. Only the latest <literal>README_POST_UPDATE</literal> is
+						shown. HTML is allowed. It may be localised by using the files
+						<literal>README_POST_UPDATE_EN</literal> resp.
+						<literal>README_POST_UPDATE_DE</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>README_EN</term>
+				<term>README</term>
 				<listitem>
 					<simpara>
 						A README file that the user may see in a dedicated Univention
 						Management Console Module for the installed application. Should
 						contain something like first steps with the installed application
-						and explain what can be done with it and how. HTML is allowed.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>README_DE</term>
-				<listitem>
-					<simpara>
-						Same as <literal>README_EN</literal> but in German.
+						and explain what can be done with it and how. HTML is allowed. It
+						may be localised by using the files <literal>README_EN</literal>
+						resp <literal>README_DE</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
