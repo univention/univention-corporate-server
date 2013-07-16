@@ -181,8 +181,7 @@ define([
 					this.addToDetails(appCenterTranslate('Uninstall'), uninstallButton);
 				}
 
-				var locale = kernel.locale.slice( 0, 2 ).toLowerCase();
-				var usage = app['readme_' + locale] || app.readme_en;
+				var usage = app.readme;
 				if (usage) {
 					usage = lang.replace(usage, app);
 				} else {

@@ -103,6 +103,8 @@ define([
 
 			this._initialCheckDeferred = new Deferred();
 			this._buildRenderingDeferred = new Deferred();
+			this._afterAppOperation = false;
+			this._pingWhileAfterAppOperation();
 			this.standby(true);
 			tools.umcpCommand('appcenter/working').then(lang.hitch(this, function(data) {
 				this.standby(false);
@@ -213,17 +215,7 @@ define([
 		},
 
 		formatTxt: function(txt) {
-			// do not allow HTML
-			txt = txt.replace(/</g, '&lt;');
-			txt = txt.replace(/>/g, '&gt;');
-
-			// insert links
-			txt = txt.replace(/(https?:\/\/\S*)/g, '<a target="_blank" href="$1">$1</a>');
-
-			// format line breakes
-			txt = txt.replace(/\n\n\n/g, '\n<br>\n<br>\n<br>\n');
-			txt = txt.replace(/\n\n/g, '\n<br>\n<br>\n');
-
+			// do not format txt. HTML is allowed and should be used
 			return txt;
 		},
 
@@ -277,27 +269,11 @@ define([
 							name: 'install',
 							label: _("Install"),
 							callback: lang.hitch(this, function() {
-								if (app.licenseagreement) {
-									// before installing, user must agree on license terms
-									var content = '<h1>' + _('License agreement') + '</h1>';
-									content += '<div style="max-height:250px; overflow:auto;">' +
-										this.formatTxt(app.licenseagreement) +
-										'</div>';
-									dialog.confirm(content, [{
-										name: 'decline',
-										label: _('Cancel'),
-										'default': true
-									}, {
-										name: 'accept',
-										label: _('Accept license')
-									}], _('License agreement')).then(lang.hitch(this, function(response) {
-										if (response == 'accept') {
-											this._call_installer('install', app);
-										}
+								this.showReadme(app.licenseagreement, _('License agreement'), _('Accept license')).then(lang.hitch(this, function() {
+									this.showReadme(app.readmeinstall, _('Install Information'), _('Install')).then(lang.hitch(this, function() {
+										this._call_installer('install', app);
 									}));
-								} else {
-									this._call_installer('install', app);
-								}
+								}));
 							})
 						});
 					}
@@ -777,28 +753,65 @@ define([
 			return labels[key];
 		},
 
-		upgradeApp: function(app) {
-			if (app.candidate_readmeupdate) {
-				// before updating, show update README file
-				var content = '<h1>' + _('Upgrade information') + '</h1>';
-				content += '<div style="max-height:250px; overflow:auto;">' +
-					this.formatTxt(app.candidate_readmeupdate) +
-					'</div>';
-				dialog.confirm(content, [{
-					name: 'decline',
-					label: _('Cancel'),
-					'default': true
-				}, {
-					name: 'update',
-					label: _('Upgrade')
-				}], _('Upgrade information')).then(lang.hitch(this, function(response) {
-					if (response == 'update') {
-						this._call_installer('update', app);
-					}
-				}));
+		_pingWhileAfterAppOperation: function() {
+			var timeout = 1000 * Math.min(tools.status('sessionTimeout') / 2, 30);
+			setTimeout(lang.hitch(this, function() {
+				if (this._afterAppOperation) {
+					tools.umcpCommand('appcenter/ping', {}, false).then(
+						lang.hitch(this, function() {
+							this._pingWhileAfterAppOperation();
+						}),
+						lang.hitch(this, function() {
+							this._pingWhileAfterAppOperation();
+						})
+					);
+				} else {
+					this._pingWhileAfterAppOperation();
+				}
+			}), timeout);
+		},
+
+		showReadme: function(readme, title, acceptButtonLabel) {
+			var readmeDeferred = new Deferred();
+			if (!readme) {
+				readmeDeferred.resolve();
 			} else {
-				this._call_installer('update', app);
+				var buttons;
+				if (acceptButtonLabel) {
+					buttons = [{
+						name: 'no',
+						label: _('Cancel'),
+						'default': true
+					}, {
+						name: 'yes',
+						label: acceptButtonLabel
+					}];
+				} else {
+					buttons = [{
+						name: 'yes',
+						label: _('Continue')
+					}];
+				}
+				var content = '<h1>' + title + '</h1>';
+				content += '<div style="max-height:250px; overflow:auto;">' +
+					this.formatTxt(readme) +
+					'</div>';
+				dialog.confirm(content, buttons, title).then(function(response) {
+					if (response == 'yes') {
+						readmeDeferred.resolve();
+					} else {
+						readmeDeferred.reject();
+					}
+				});
 			}
+			return readmeDeferred;
+		},
+
+		upgradeApp: function(app) {
+			// before installing, user must read update readme
+			this.showReadme(app.candidate_readmeupdate, _('Upgrade Information'), _('Upgrade')).then(lang.hitch(this, function() {
+				this._call_installer('update', app);
+			}));
 		},
 
 		getApplications: function() {
@@ -875,7 +888,7 @@ define([
 						{
 							type: Text,
 							name: 'help_text',
-							content: '<h2>' + _('Provision of an updated UCS license key') + '</h2><div style="width: 535px"><p>' + _('Please provide a valid email address such that an updated license can be sent to you. This may take a few minutes. You can then upload the updated license key directly in the following license dialog.') + '</p>'
+							content: '<h2>' + _('Provision of an updated UCS license key') + '</h2><div style="width: 535px"><p>' + _('Please provide a valid email address such that an updated license can be sent to you. This may take a few minutes. You can then upload the updated license key directly in the following license dialog.') + '</p></div>'
 						},
 						{
 							type: TitlePane,
@@ -931,12 +944,19 @@ define([
 				{},
 				lang.hitch(this, function() {
 					this._initialCheckDeferred.resolve();
+					this._afterAppOperation = true;
 					if (func === 'install' && app.umc_module) {
-						// hack it into favorites: the app is yet unknown
+						// hack it into favorites: the app is not yet known
 						UMCApplication.addFavoriteModule(app.umc_module, app.umc_flavor);
 						UMCApplication._saveFavorites();
 					}
-					this._markupErrors();
+					var readmeRead;
+					if (func === 'install') {
+						readmeRead = this.showReadme(app.readmepostinstall, _('Installation Information'));
+					} else {
+						readmeRead = this.showReadme(app.candidate_readmepostupdate, _('Upgrade Information'));
+					}
+					readmeRead.then(lang.hitch(this, '_markupErrors'));
 				}),
 				undefined,
 				undefined,
@@ -967,8 +987,14 @@ define([
 		_restartOrReload: function() {
 			// update the list of apps
 			this.updateApplications();
-
-			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.'));
+			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
+				lang.hitch(this, function() {
+					this._afterAppOperation = false;
+				}),
+				lang.hitch(this, function() {
+					this._afterAppOperation = false;
+				})
+			);
 		}
 	});
 });

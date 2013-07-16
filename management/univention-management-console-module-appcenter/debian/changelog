@@ -1,6 +1,14 @@
+univention-management-console-module-appcenter (3.0.6-1) unstable; urgency=low
+
+  * Bug #31803: Supporting new HTML READMEs INSTALL, POST_UPDATE, POST_INSTALL
+  * Bug #31886: Keeping session alive after having installed an app until
+    confirmation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Jul 2013 12:24:45 +0200
+
 univention-management-console-module-appcenter (3.0.5-1) unstable; urgency=low
 
-  * Now use UMCConnection univention.lib (Bug #31908)
+  * Now use UMCConnection from univention.lib (Bug #31908)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 12 Jul 2013 15:06:47 +0200
 

@@ -196,10 +196,12 @@ class Application(object):
 			self.component_id = m.groupdict()['id']
 		self.icon = self._options['icon'] = 'apps-%s' % self.component_id
 
-		self._fetch_file('readme_en', 'README_EN')
-		self._fetch_file('readme_de', 'README_DE')
-		self._fetch_file('licenseagreement', 'LICENSE_AGREEMENT')
-		self._fetch_file('readmeupdate', 'README_UPDATE')
+		self._fetch_file('readme', 'README', localize)
+		self._fetch_file('licenseagreement', 'LICENSE_AGREEMENT', localize)
+		self._fetch_file('readmeupdate', 'README_UPDATE', localize)
+		self._fetch_file('readmepostupdate', 'README_POST_UPDATE', localize)
+		self._fetch_file('readmeinstall', 'README_INSTALL', localize)
+		self._fetch_file('readmepostinstall', 'README_POST_INSTALL', localize)
 
 		# candidate is for upgrading an already installed app
 		# is set by all()
@@ -214,15 +216,21 @@ class Application(object):
 			return ''
 		return v
 
-	def _fetch_file(self, key, file_ext):
-		try:
-			# open the license file
-			filename = os.path.join(CACHE_DIR, '%s.%s' % (self.component_id, file_ext))
-			with open(filename, 'rb') as fp:
-				self._options[key] = ''.join(fp.readlines()).strip()
-		except IOError:
-			pass
-			# MODULE.warn('No information for %s available (%s): %s' % (key, e, filename))
+	def _fetch_file(self, key, file_ext, localize=True):
+		loc = locale.getlocale()[0]
+		if localize and isinstance(loc, basestring):
+			loc = loc.split('_')[0].upper()
+		else:
+			loc = 'EN'
+		for localised_file_ext in [file_ext + '_%s' % loc, file_ext + '_EN', file_ext]:
+			try:
+				# open the license file
+				filename = os.path.join(CACHE_DIR, '%s.%s' % (self.component_id, localised_file_ext))
+				with open(filename, 'rb') as fp:
+					self._options[key] = ''.join(fp.readlines()).strip()
+					return
+			except IOError:
+				pass
 
 	@classmethod
 	def get_appcenter_version(cls):
@@ -517,6 +525,7 @@ class Application(object):
 			res['candidate_component_id'] = self.candidate.component_id
 			res['candidate_server_role'] = self.candidate.get('serverrole')
 			res['candidate_readmeupdate'] = self.candidate.get('readmeupdate')
+			res['candidate_readmepostupdate'] = self.candidate.get('readmepostupdate')
 		return res
 
 	def __repr__(self):

@@ -135,12 +135,6 @@ class Instance(umcm.Base):
 		for application in applications:
 			if pattern.search(application.name):
 				props = application.to_dict(self.package_manager)
-
-				# delete larger entries
-				for ikey in ('readmeupdate', 'licenseagreement'):
-					if ikey in props:
-						del props[ikey]
-
 				result.append(props)
 		return result
 
@@ -272,6 +266,10 @@ class Instance(umcm.Base):
 		thread = notifier.threads.Simple('keep_alive',
 			notifier.Callback(_thread), _finished)
 		thread.run()
+
+	@simple_response
+	def ping(self):
+		return True
 
 	@simple_response
 	def app_center_app_license(self, application):

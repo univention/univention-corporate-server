@@ -18,6 +18,7 @@
 		<!-- ATTENTION: same progress function as in packages -->
 		<command name="appcenter/progress" function="progress"/>
 		<command name="appcenter/keep_alive" function="keep_alive"/>
+		<command name="appcenter/ping" function="ping"/>
 
 		<!-- Query: all args are filter args. -->
 		<command name="appcenter/packages/query" function="packages_query" />
