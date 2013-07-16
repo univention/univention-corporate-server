@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #
 # Univention Print Server
 #  join script
@@ -40,7 +40,6 @@ eval "$(univention-config-registry shell)"
 
 getent group lp | grep -q "$hostname" || adduser $hostname\$ lp || true
 
-
 # Copy the previously fetched SSL certificates to the Cups directory:
 if test -e "/etc/univention/ssl/$hostname.$domainname/cert.pem"; then
 	rm -f /etc/cups/ssl/server.crt
@@ -52,11 +51,31 @@ if test -e "/etc/univention/ssl/$hostname.$domainname/private.key"; then
       ln -s /etc/univention/ssl/$hostname.$domainname/private.key /etc/cups/ssl/server.key
 fi
 
+# redefine credentials --binddn to -D and --bindpwd to -w in case of server/role is backup or slave
+credentials=()
+while getopts  "h-:" option; do
+    case "${option}" in
+        -)
+            case "${OPTARG}" in
+                binddn)
+                    credentials+=("-D" "${!OPTIND}")
+                    OPTIND=$((OPTIND+1))
+                    ;;
+                bindpwd)
+                    credentials+=("-w" "${!OPTIND}")
+                    OPTIND=$((OPTIND+1))
+                    ;;
+            esac;;
+        *) ;;
+    esac
+done
+
+
 # keep/delete old printer ppds
 if [ $JS_LAST_EXECUTED_VERSION -le 7 ]; then
 	if [ "$cups_keep_ppds" != "true" ]; then
 		backupfile=/var/backups/ldap-hp-ppds-`date +"%d-%m-%y-%H-%M-%S"`
-		univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" 'objectclass=univentionPrinterModels' >  $backupfile
+		univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" ${credentials[@]} 'objectclass=univentionPrinterModels' >  $backupfile
 		IFS=":"
 		for i in $(udm settings/printermodel list "$@" | grep ^DN:| sed 's|^DN: |:|'); do
 			if [ -n "$i" ]; then
