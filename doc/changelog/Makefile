@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN := release-notes-3.2-en
+MAIN := release-notes-3.2-en release-notes-3.2-de
 STYLESHEET := univention_extdocs
 
 COMMON_DIR := ../../../doc-common/docbook

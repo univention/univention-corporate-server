@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+
+  %entities;
+]>
+<book lang="de" id="releasenotes-3.2-de">
+    <bookinfo>
+      <title>UCS 3.2 Release Notes</title>
+      <subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von Univention Corporate Server (UCS) 3.2</subtitle>
+        <revhistory>
+            <revision>
+                <revnumber>3.2-0</revnumber>
+                <date>16 Jul 2013</date>
+            </revision>
+        </revhistory>
+    </bookinfo>
+
+    <chapter>
+	  <title>Release-Highlights</title>
+	  <section>
+		<para>
+		  Mit Univention Corporate Server 3.2 steht das zweite Point-Release für Univention
+		  Corporate Server (UCS) zur Verfügung. Es umfasst diverse Detailverbesserungen und
+		  Fehlerkorrekturen:
+		</para>
+
+		<itemizedlist>
+		  <listitem>
+			<para> 
+			  TODO
+			</para>
+		  </listitem>
+		</itemizedlist>
+	  </section>
+    </chapter>
+
+    <chapter>
+	  <title>Empfohlene Update-Reihenfolge für Umgebungen mit mehr als einem UCS-Server / Update von Systemen mit UCS-Komponenten</title>
+	  <section>
+		<para>
+		  In Umgebungen mit mehr als einem UCS-System muss die Update-Reihenfolge der UCS-Systeme
+		  beachtet werden:
+		</para>
+
+		<para>
+		  Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des
+		  LDAP-Verzeichnis-dienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne
+		  repliziert wird. Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten
+		  können muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
+		</para>
+
+		<para>
+		  Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem Wartungsfenster zu
+		  aktualisieren.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Hinweise zu Umgebungen mit anderer Dritt-Software</title>
+		<para>
+		  Bei der Verwendung von 3rd-Party-Software ist generell <emphasis>vor</emphasis> dem Update
+		  mit dem Hersteller/Vertriebspartner der Software zu klären, ob diese mit der neuen Version
+		  von Univention Corporate Server weiterhin uneingeschränkt einsetzbar ist. 
+		</para>
+
+		<para>
+		  Die Hersteller/Vertriebspartner von auf Univention Corporate Server basierenden Produkten
+		  sorgen eigenständig für die Veröffentlichung. Updates müssen daher von dort bezogen
+		  werden.
+		</para>
+
+		<para>
+		  Falls Ihnen von Univention angepasste Paketversionen bereitgestellt wurden, so sollte
+		  geprüft werden, ob durch die Aktualisierung angepasste Pakete überschrieben werden -
+		  vorzugsweise in einer Testumgebung. Sollten Sie hier Probleme feststellen, so wenden Sie
+		  sich bitte an Univention.
+		</para>
+	  </section>
+	</chapter>
+
+    <chapter>
+	  <title>Vorbereitung des Updates</title>
+	  <section>
+		<para>
+		  Es sollte geprüft werden, ob ausreichend Festplattenplatz verfügbar ist. Eine
+		  Standard-Installation benötigt min. 6 GB Speicherplatz. Das Update benötigt je nach Umfang
+		  der vorhanden Installation mindestens 1 GB weiteren Speicherplatz zum Herunterladen und
+		  Installieren der Pakete.
+		</para>
+
+		<para>
+		  Für das Update sollte eine Anmeldung auf der Console mit dem Benutzer
+		  <emphasis>root</emphasis> durchgeführt und das Update dort gestartet werden. Alternativ
+		  kann das Update über die &ucsUMC; durchgeführt werden.
+		</para>
+
+		<para>
+		  Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies beispielsweise bei
+		  Unterbrechung der Netzverbindung zum Abbruch des Update-Vorgangs und zu einer
+		  Beeinträchtigung des Systems führen kann. Sollte dennoch eine Aktualisierung über eine
+		  Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung
+		  der Netzverbindung trotzdem weiterläuft. Hierfür können beispielsweise die Tools
+		  <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen
+		  Systemrollen installiert sind.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Prüfung der BDB-Einstellungen bei Systemen mit Cyrus IMAP-Server (univention-mail-cyrus)</title>
+		<para>
+		  Ab UCS 3.2 wird von dem Paket univention-mail-cyrus ein neues &ucsUCR;-Template für die
+		  Konfigurationsdatei der Cyrus-BDB-Datenbank
+		  (<filename>/var/lib/cyrus/db/DB_CONFIG</filename>) ausgeliefert.
+		</para>
+
+		<para>
+		  Die Default-Werte der UCR-Variablen für die Konfiguration der BDB-Datenbank sind:
+
+		  <itemizedlist>
+			<listitem><para> 
+			  mail/cyrus/bdb/dbconfig/set_lg_regionmax : "2097152"
+			</para></listitem>
+
+			<listitem><para> 
+			  mail/cyrus/bdb/dbconfig/set_cachesize : "0 2097152 1"
+			</para></listitem>
+		  </itemizedlist>
+		</para>
+
+		<para>
+		  Eine bereits vorhandene Cyrus BDD-Konfiguration wird während des Update nach
+		  <filename>/var/lib/cyrus/db/DB_CONFIG.debian</filename> kopiert. Sollten die neuen
+		  Default-Werte den alten, bereits vorhandenen Konfiguration nicht entsprechen oder sind
+		  verwendete Optionen nicht in den neuen Default-Werten vorhanden, sollten die
+		  entsprechenden &ucsUCR;-Variablen vor dem Update gesetzt werden, z.B.:
+
+<programlisting>
+ucr set mail/cyrus/bdb/dbconfig/set_cachesize="0 4097152 1"
+ucr set mail/cyrus/bdb/dbconfig/set_lg_regionmax="2097152"
+ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
+</programlisting>
+		</para>
+	  </section>
+
+	  <section>
+		<title>Anpassungen am Univention Directory Listener-Modul für Cyrus-Benutzer</title>
+		<para>
+		  Das Listener Modul für die Verwaltung der Postfächer wurde überarbeitet. Postfächer werden
+		  nun nur noch angelegt, wenn das Attribut <emphasis>mailHomeServer</emphasis> am Benutzer
+		  gesetzt ist (in der UMC unter <guimenu>Erweiterte Einstellungen -> Mail Home Server
+		  </guimenu>).
+		</para>
+
+		<para>
+		  Ist die &ucsUCRV; <envar>mail/cyrus/mailbox/delete</envar> auf dem Mailserver aktiviert
+		  wurde und wird das Attribut vom Benutzerobjekt entfernt, wird das dadurch das Postfach
+		  gelöscht.
+		</para>
+
+		<para>
+		  Vor dem Update sollte geprüft werden, ob der Mail Home Server für alle Cyrus-Benutzer
+		  gesetzt ist.
+		</para>
+	  </section>
+	</chapter>
+
+    <chapter>
+	  <title>Nachbereitung des Updates</title>
+	  <section>
+		<para>
+		  Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden. Dies
+		  kann auf zwei Wegen erfolgen: Entweder über das UMC-Modul
+		  <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls
+		  <command>univention-run-join-scripts</command> als Benutzer <emphasis>root</emphasis>.
+		</para>
+
+		<para>
+		  Anschließend sollte das UCS-System neu gestartet werden.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Migration auf Grub 2</title>
+		<para>
+		  Bei einer Neuinstallation ab UCS 3.0 wird vom Univention Installer direkt GRUB 2 in den
+		  Bootsektor geschrieben.
+		</para>
+
+		<para>
+		  Bei einem Update bleibt GRUB 1 im Master Boot Record (MBR) installiert. GRUB 2 richtet
+		  einen Eintrag "Chainload into Grub" ein, der dann das eigentliche GRUB 2 lädt.
+		</para>
+
+		<para>
+		  Eine Dokumentation, um auch auf aktualisierten Systemen Grub 2 direkt in den MBR zu
+		  schreiben wird in der Univention Supportdatenbank bereitgestellt
+		  (<ulink>http://sdb.univention.de/1218</ulink>).
+		</para>
+	  </section>
+
+	  <section>
+		<title>Migration von PostgreSQL 8.3 auf PostgreSQL 8.4</title>
+		<para>
+		  Ab UCS 3.0 wird neben PostgreSQL 8.3 auch PostgreSQL 8.4 angeboten. Bei Aktualisierungen
+		  von Systemen mit PostgreSQL 8.3 auf UCS 3.0 wird aber die installierte PostgreSQL Version
+		  beibehalten.
+		</para>
+
+		<para>
+		  Das Update auf PostgreSQL 8.4 ist im SDB-Artikel <ulink
+		  url="http://sdb.univention.de/1220"/> beschrieben.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Update/Installation der Horde Grouware Webmail Edition</title>
+		<para>
+		  Ab UCS 3.2 wird die Horde Grouware Webmail Edition nicht mehr über das Paket
+		  <emphasis>univention-horde4</emphasis> sondern über das Univention App Center
+		  bereitgestellt. Das Update von univention-horde4 auf bzw. die Neuinstallation von Horde
+		  5.1.0 erfolgt über die Installation der App <emphasis>Horde Grouware Webmail
+		  Edition</emphasis> im UniventionApp Center.
+		</para>
+	  </section>
+	</chapter>
+
+    <chapter>
+	  <title>Hinweise zum Einsatz einzelner Pakete</title>
+
+	  <section>
+		<title>Erfassung von Nutzungsstatistiken bei Verwendung der Free-For-Personal-Use-Version</title>
+		<para>
+		  Bei Verwendung der <emphasis>Free for personal use</emphasis>-Version von UCS (die in der
+		  Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur
+		  Verwendung der &ucsUMC; erzeugt. Die aufgerufenen Module werden dabei von einer Instanz
+		  des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die
+		  Entwicklung der &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und
+		  Usability-Verbesserungen vorzunehmen.
+		</para>
+
+		<para>
+		  Diese Protokollierung erfolgt nur bei Verwendung der Free-for-Personal-Use-Lizenz. Der
+		  Lizenzstatus kann durch einen Klick auf das Zahnrad-Symbol in der rechten, oberen Ecke der
+		  &ucsUMC; und die Auswahl von <guimenu>Lizenz</guimenu> geprüft werden. Steht hier unter
+		  <guimenu>LDAP-Basis</guimenu> <emphasis>Free for personal use edition</emphasis> wird eine
+		  solche Version verwendet. Bei Einsatz einer regulären UCS-Lizenz erfolgt keine
+		  Nutzungsstatistik.
+		</para>
+
+		<para>
+		  Die Protokollierung kann unabhängig von der verwendeten Lizenz durch Setzen der
+		  &ucsUCR;-Variable <envar>umc/web/piwik</envar> auf <emphasis>false</emphasis> deaktiviert
+		  werden.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Bootprobleme bei Verwendung der UEFI-Installations-DVD</title>
+		<para>
+		  Ab UCS 3.1 steht für amd64 neben der Standard-Installations-DVD auch ein Medium mit
+		  Unterstützung für den Unified Extensible Firmware Interface-Standard (UEFI) bereit.
+		</para>
+
+		<para>
+		  Auf Systemen, die nur einen UEFI-Start unterstützen, kann sie anstelle der Standard-DVD
+		  verwendet werden.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Umfang des Sicherheits-Supports von Webkit, Konqueror und QtWebKit</title>
+		<para>
+		  Webkit, Konqueror und QtWebkit werden in UCS im maintained-Zweig des Repositorys
+		  mitgeliefert, aber nicht durch Sicherheits-Updates unterstützt. Webkit wird vor allem für
+		  die Darstellung von HTML-Hilfeseiten u.ä. verwendet. Als Web-Browser sollte Firefox
+		  eingesetzt werden.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Empfohlene Browser für den Zugriff auf die Univention Management Console</title>
+		<para>
+		  &ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche Javascript- und
+		  CSS-Funktionen. Cookies müssen im Browser zugelassen sein. Die folgenden Browser werden
+		  empfohlen:
+
+		  <itemizedlist>
+			<listitem>
+			  <para> Chrome ab Version 14 </para>
+			</listitem>
+
+			<listitem>
+			  <para> Firefox ab Version 10 </para>
+			</listitem>
+
+			<listitem>
+			  <para> Internet Explorer ab Version 9 </para>
+			</listitem>
+
+			<listitem>
+			  <para> Safari (auf dem iPad 2)</para>
+			</listitem>
+		  </itemizedlist>
+		</para>
+
+		<para>
+		  Auf älteren Browsern können Darstellungs- oder Performanceprobleme auftreten. 
+		</para>
+	  </section>
+
+	  <section>
+		<title>Einschränkungen im Samba 4-Betrieb</title>
+		<para>
+		  Die aktuell vom Samba-Projekt veröffentlichten Versionen von Samba 4 unterliegen in der
+		  Weiterentwicklung noch stärkeren Änderungen als Samba 3. Einige Funktionalitäten stehen
+		  daher noch nicht vollständig zur Verfügung:
+
+		  <itemizedlist>
+			<listitem>
+			  <para> 
+				Microsoft Windows Domänencontroller dürfen aktuell nicht in eine Samba 4-Domäne
+				gejoint werden.
+			  </para>
+			</listitem>
+
+			<listitem>
+			  <para>
+				Eine selektive Replikation ist mit Samba 4 nicht möglich, da diese durch Active
+				Directory prinzipiell nicht unterstützt wird (in UCS@school basiert die selektive
+				Replikation auf der Listener/Notifier-Replikation).
+			  </para>
+			</listitem>
+
+			<listitem>
+			  <para>
+				Samba 4 unterstützt aktuell keine Forest-Domänen. 
+			  </para>
+			</listitem>
+
+			<listitem>
+			  <para> 
+				Samba 4 unterstützt aktuell keine Vertrauensstellungen.
+			  </para>
+			</listitem>
+		  </itemizedlist>
+		</para>
+
+		<para>
+		  Weitere Hinweise finden sich in Kapitel 8 des UCS-Handbuchs <xref
+		  linkend="UCS-Handbuch"/>.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Installation in VirtualBox</title>
+		<para>
+		  Bei der Installation von UCS in der Virtualisierungslösung VirtualBox vor Version 4.2 kann
+		  folgender Bug auftreten: Wenn von der Installations-DVD gebotet wird bietet GRUB die
+		  Option <guimenu>Boot from first harddisk partition</guimenu> an. Wählt man diese Option
+		  aus, friert VirtualBox ein.
+		</para>
+
+		<para>
+		  Als Workaround muß vor dem Neustart der UCS-VM entweder die Installations-DVD aus den
+		  Laufwerkseinstellungen der VirtualBox-VM entfernt werden oder beim Start der virtuellen
+		  Instanz F12 gedrückt werden und die Festplatte als Bootpartition ausgewählt werden.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Migration einer Samba 3-Umgebung auf Samba 4</title>
+		<para>
+		  Es existieren zwei grundlegende Verfahren zur Migration von Samba 3 auf Samba 4:
+
+		<itemizedlist>
+		<listitem>
+		  <para> 
+			Aufbau einer parallelen Samba 4-Domäne. Beide Domänen verwenden unterschiedliche
+			NetBIOS-Namen und SIDs. Die Clients treten dann schrittweise der Samba 4-Domäne bei.
+		  </para>
+		</listitem>
+
+		<listitem>
+		  <para> 
+			Migration aller Systeme innerhalb eines Wartungsfensters.
+		  </para>
+		</listitem>
+		</itemizedlist>
+		</para>
+
+		<para>
+		  Beide Verfahren sind im Univention Wiki ausführlich dokumentiert: <ulink
+		  url="http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4"/>.
+		</para>
+	  </section>
+
+	  <section>
+		<title>Xen</title>
+		<para> 
+		  Wenn der Xen Hypervisor benutzt wird und das Speicherlimit über die &ucsUCR;-Variable
+		  <envar>grub/xenhopt</envar> begrenzt wurde, sollte der Wert aktualisiert und um die
+		  <emphasis>,max:</emphasis>-Angabe erweitert werden. Weitere Details finden sich unter
+		  <ulink>http://wiki.univention.de/index.php?title=UVMM_Quickstart-3.1#Konfiguration_der_Dom0</ulink>.
+		</para>
+	  </section>
+	</chapter>
+
+    <chapter>
+	  <title>Changelog</title>
+	  <section>
+		<para>
+		  Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch
+		  gepflegt. Aufgeführt sind die Änderung seit UCS 3.1-1:
+
+		</para>
+
+	  </section>
+	</chapter>
+
+    <?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>
