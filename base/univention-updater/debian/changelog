@@ -1,3 +1,9 @@
+univention-updater (9.0.5-1) unstable; urgency=low
+
+  * Check LDAP schema in preup.sh if slapd is installed (Bug #31676)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Jul 2013 14:34:47 +0200
+
 univention-updater (9.0.4-3) unstable; urgency=low
 
   * Fix svn42278: (Bug #31426)

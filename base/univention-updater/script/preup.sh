@@ -261,6 +261,17 @@ if [ $? = 0 ]; then
 fi
 echo "OK"
 
+if [ -x /usr/sbin/slapschema ]; then
+	echo -n "Checking LDAP schema: "
+	if ! /usr/sbin/slapschema >&3 2>&3; then
+		echo "failed"
+		echo "ERROR: There is a problem with the LDAP schema on this system."
+		echo "       Please check $UPDATER_LOG or run 'slapschema' manually."
+		exit 1
+	fi
+	echo "OK"
+fi
+
 # check for valid machine account
 if [ -f /var/univention-join/joined -a ! -f /etc/machine.secret ]
 then
