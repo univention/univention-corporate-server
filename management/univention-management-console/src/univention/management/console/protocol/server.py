@@ -211,6 +211,7 @@ class MagicBucket( object ):
 			res.status = BAD_REQUEST_UNAUTH
 			self._response( res, state )
 		elif msg.command == 'AUTH':
+			ucr.load()
 			state.authResponse = Response( msg )
 			try:
 				state.authenticate( msg.body[ 'username' ], msg.body[ 'password' ], msg.body.get( 'new_password' ) )
@@ -218,6 +219,7 @@ class MagicBucket( object ):
 				state.authResponse.status = BAD_REQUEST_INVALID_OPTS
 				state.authResponse.message = 'insufficient authentification information'
 		elif msg.command == 'GET' and ( 'ucr' in msg.arguments or 'info' in msg.arguments ):
+			ucr.load()
 			response = Response( msg )
 			response.result = {}
 			response.status = SUCCESS
@@ -379,9 +381,6 @@ class Server( signals.Provider ):
 			CORE.info( 'Loading resources ...' )
 			self.reload()
 
-		# register dispatch function to reload UCR Variables on change
-		notifier.dispatcher_add(self._get_ucr_inotify_callback())
-
 		CORE.info( 'Initialising server process' )
 		self.__port = port
 		self.__unix = unix
@@ -467,36 +466,6 @@ class Server( signals.Provider ):
 		CORE.info( '__verify_cert_cb: Got certificate issuer: %s' % cert.get_issuer() )
 		CORE.info( '__verify_cert_cb: errnum=%d  depth=%d	 ok=%d' % (errnum, depth, ok) )
 		return ok
-
-	def _get_ucr_inotify_callback(self):
-		''' returns a function which calls an event to reload UCR Variables if they have changed '''
-		class UCR_update_handler(pyinotify.ProcessEvent):
-			def __init__(self):
-				self.running = None
-			def process(self):
-				''' reloads UCR Variables '''
-				ucr.load()
-				CORE.info('UCR Variables have been reloaded')
-				self.running = None
-				return False # destroy timer
-			def process_IN_MODIFY(self, event):
-				if self.running:
-					# remove running timer
-					notifier.timer_remove(self.running)
-				# add a timer which reloads UCR Variables in 10 seconds
-				self.running = notifier.timer_add( 10000, self.process )
-				return True
-
-		wm = pyinotify.WatchManager()
-		wm.add_watch('/etc/univention/base.conf', pyinotify.IN_MODIFY)
-		ucr_notifier = pyinotify.Notifier(wm, UCR_update_handler())
-
-		def cb():
-			ucr_notifier.process_events()
-			if ucr_notifier.check_events(10):
-				ucr_notifier.read_events()
-			return True
-		return cb
 
 	def _connection( self, socket ):
 		'''Signal callback: Invoked on incoming connections.'''

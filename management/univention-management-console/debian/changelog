@@ -1,3 +1,9 @@
+univention-management-console (6.0.4-1) unstable; urgency=low
+
+  * Bug #31752: remove UCR inotify reload mechanism
+
+ -- Florian Best <best@univention.de>  Mon, 15 Jul 2013 13:56:06 +0200
+
 univention-management-console (6.0.3-1) unstable; urgency=low
 
   * Simplify the UMC ACLs evaluation which improves the UMC login
