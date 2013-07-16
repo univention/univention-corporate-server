@@ -101,7 +101,7 @@ property_descriptions={
 	'spoolHost': univention.admin.property(
 			short_description=_('Spool host'),
 			long_description='',
-			syntax=univention.admin.syntax.UCS_Server,
+			syntax=univention.admin.syntax.ServicePrint_FQDN,
 			multivalue=1,
 			options=[],
 			required=1,

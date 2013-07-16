@@ -74,7 +74,7 @@ property_descriptions={
 	'printServer': univention.admin.property(
 			short_description=_('Print server'),
 			long_description='',
-			syntax=univention.admin.syntax.UCS_Server,
+			syntax=univention.admin.syntax.ServicePrint_FQDN,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
