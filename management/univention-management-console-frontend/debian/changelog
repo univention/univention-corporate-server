@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.23-1) unstable; urgency=low
+
+  * Bug #30811: deactivate startup dialog
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 16 Jul 2013 11:50:15 +0200
+
 univention-management-console-frontend (3.0.22-1) unstable; urgency=low
 
   * Bug #30811: fixed UCR dependency problem
