@@ -1,3 +1,10 @@
+univention-virtual-machine-manager-schema (4.0.1-1) unstable; urgency=low
+
+  * Improve LDAP regex ACLs (Bug #29421)
+  * Version bump for UCS 3.2
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Jul 2013 19:19:53 +0200
+
 univention-virtual-machine-manager-schema (3.0.6-1) unstable; urgency=low
 
   * added ucslint (Bug #30757) 
