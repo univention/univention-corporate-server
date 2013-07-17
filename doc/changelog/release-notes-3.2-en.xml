@@ -4,6 +4,7 @@
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
   <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+  <!ENTITY changelog SYSTEM "changelog-3.2.xml">
 
   %entities;
 ]>
@@ -358,14 +359,12 @@
 
     <chapter>
 	  <title>Changelog</title>
-	  <section>
-		<para>
-		  Listed are the changes since UCS 3.1-1:
+	  <para>
+		Listed are the changes since UCS 3.1-1:
+	  </para>
 
+	  &changelog;
 
-		</para>
-
-	  </section>
 	</chapter>
 
     <?dbhtml-include href="../stylesheets/piwiki.html"?>

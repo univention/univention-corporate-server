@@ -2,8 +2,9 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
+  <!ENTITY changelog SYSTEM "changelog-3.2.xml">
 
   %entities;
 ]>
@@ -26,6 +27,8 @@
 		  Mit Univention Corporate Server 3.2 steht das zweite Point-Release für Univention
 		  Corporate Server (UCS) zur Verfügung. Es umfasst diverse Detailverbesserungen und
 		  Fehlerkorrekturen:
+
+		  &ucsBug;2000
 		</para>
 
 		<itemizedlist>
@@ -411,14 +414,13 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 
     <chapter>
 	  <title>Changelog</title>
-	  <section>
-		<para>
-		  Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch
-		  gepflegt. Aufgeführt sind die Änderung seit UCS 3.1-1:
+	  <para>
+		Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch
+		gepflegt. Aufgeführt sind die Änderung seit UCS 3.1-1:
+	  </para>
 
-		</para>
+	  &changelog;
 
-	  </section>
 	</chapter>
 
     <?dbhtml-include href="../stylesheets/piwiki.html"?>
