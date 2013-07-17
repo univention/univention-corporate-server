@@ -1,3 +1,9 @@
+univention-ldap (10.0.9-1) unstable; urgency=low
+
+  * Improve LDAP regex ACLs (Bug #29421)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Jul 2013 19:18:10 +0200
+
 univention-ldap (10.0.8-1) unstable; urgency=low
 
   * Remove Samba4 related objects during backup2master (Bug #27893)
