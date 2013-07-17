@@ -1015,8 +1015,8 @@ define([
 		},
 
 		_checkShowStartupDialog: function() {
-			var startupDialog = new StartupDialog({});
-			startupDialog.show();
+			//var startupDialog = new StartupDialog({});
+			//startupDialog.show();
 		},
 
 		_focusSearchField: function() {

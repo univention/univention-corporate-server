@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.26-1) unstable; urgency=low
+
+  * Bug #30811: deactivate startup dialog
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Jul 2013 17:54:41 +0200
+
 univention-management-console-frontend (3.0.25-1) unstable; urgency=low
 
   * Bug #31639: adapted CSS for mobile browsers (convert px to em)
