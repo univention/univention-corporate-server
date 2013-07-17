@@ -2,12 +2,13 @@
 ## desc: "Creating a shared printer and printing from smbclient"
 ## exposure: safe
 ## packages:
-##  - univention-samba4
+##  - univention-samba | univention-samba4
 ##  - univention-printserver
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_backup
 ## - domaincontroller_slave
+## - memberserver
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
@@ -23,6 +24,8 @@ username="$(user_randomname)"
 printername="$(random_chars 12)"
 password=univention
 
+eval "$(ucr shell)"
+
 trap '
 user_remove "$username";
 rm -rf "/tmp/$printername"/ /tmp/print_input;
@@ -30,18 +33,6 @@ udm-test shares/printer remove --dn="$printername,$ldap_base"
 wait_for_replication_and_postrun
 ' INT TERM EXIT
 user_create "$username" || fail_fast 1 "Could not create user $username."
-
-#wait for the user to be created
-echo "----wait for the user to be created"
-i=0
-while ! ldbsearch -H "/var/lib/samba/private/sam.ldb" -U"$username%$password" "cn=$username" | grep -q '^dn:'
-do
-	let i=$i+1
-	if [ $i = 20 ]; then
-		fail_fast 1 "TIMEOUT: The User which has been created in UDM could not be found in samba ldb"
-	fi
-	sleep 1
-done
 
 #create printer
 echo "----create printer"
@@ -54,17 +45,21 @@ udm-test shares/printer create \
 wait_for_replication_and_postrun
 sleep 2
 
-## look for printer
-echo "----Looking for samba printer share '$printername'"
+## look for printer and user
+echo "----Testing wether printer share '$printername' and user '$username' have been created"
 i=0
-while ! smbclient -NL localhost | grep -qE "^\s+$printername\s+Printer"
+while ! output="$(smbclient //localhost/$printername -U "$username%$password" -c "exit" 2>&1)"
 do
-	echo '.'
-	let i=$i+1
-	if [ $i = 20 ]; then
-		fail_fast 1 "Samba did not provide the printer share 20 seconds after creation"
-	fi
-	sleep 1
+        echo '.'
+        let i=$i+1
+        if [ $i = 20 ]; then
+		if echo "$output" | grep NT_STATUS_ACCESS_DENIED; then
+			fail_fast 1 "User was not provided 20 seconds after creation"
+		else
+			fail_fast 1 "Samba did not provide the printer share 20 seconds after creation"
+		fi
+        fi
+        sleep 1
 done
 
 #create input file

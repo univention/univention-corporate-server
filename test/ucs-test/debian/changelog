@@ -1,3 +1,10 @@
+ucs-test (4.0.69-1) unstable; urgency=low
+ 
+  * Merged 36_printer from 51_samba4 and 50_samba to
+    53_samba-common/36_printer (Bug #31764)
+
+ -- Tobias Peters <peters@univention.de>  Wed, 17 Jul 2013 17:22:14 +0200
+
 ucs-test (4.0.68-1) unstable; urgency=low
 
   * fixed validation of sambaSID in udm-computer tests
