@@ -1,3 +1,9 @@
+univention-ldap (10.0.8-1) unstable; urgency=low
+
+  * Remove Samba4 related objects during backup2master (Bug #27893)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Jul 2013 17:31:46 +0200
+
 univention-ldap (10.0.7-1) unstable; urgency=low
 
   * Add graceful-restart and graceful-stop functionality to init script

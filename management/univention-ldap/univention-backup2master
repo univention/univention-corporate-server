@@ -409,6 +409,68 @@ srv_dn=$(univention-directory-manager dns/srv_record list --superordinate zoneNa
 univention-directory-manager dns/srv_record modify --superordinate zoneName="$domainname,cn=dns,$ldap_base" --dn "$srv_dn" --set location="0 0 0 $hostname.$domainname."
 
 old_ldap_master_hostname=$(echo "$old_ldap_master" | awk -F '.' '{print $1}')
+
+## =========================== <remove Samba objects> ===========================
+samdb='/var/lib/samba/private/sam.ldb'
+
+remove_NTDS_objectGUID_alias() {
+	local NTDS_objectGUID="$1"
+	if [ -n "$NTDS_objectGUID" ]; then
+		NTDS_alias_dn=$(univention-ldapsearch -x relativeDomainName="$NTDS_objectGUID._msdcs" | ldapsearch-wrapper | sed -n 's/^dn: //p')
+		if [ -n "$NTDS_alias_dn" ]; then
+			univention-directory-manager dns/alias remove --superordinate "${NTDS_alias_dn%%,*}" --dn "$NTDS_alias_dn"
+		fi
+	fi
+}
+
+samdb_remove_dc_account(){
+	local machine_name="$1"
+	if [ -n "$machine_name" ]; then
+		machine_samaccountname="$machine_name\$"
+		machine_ldif=$(univention-s4search --controls domain_scope:0 \
+					sAMAccountName="$machine_samaccountname" serverReferenceBL | ldapsearch-wrapper)
+		machine_dn=$(echo "$machine_ldif" | sed -n 's/^dn: //p')
+
+		if [ -n "$machine_dn" ]; then
+			server_dn=$(echo "$machine_ldif" | sed -n 's/^serverReferenceBL: //p')
+		fi
+
+		if [ -z "$machine_dn" ] || [ -z "$server_dn" ]; then	## search again directly for objectClass=server
+			server_ldif=$(univention-s4search -b "CN=Configuration,$samba4_ldap_base" --controls domain_scope:0 \
+						"(&(objectClass=server)(name=$machine_name))" | ldapsearch-wrapper)
+			server_dn=$(echo "$server_ldif" | sed -n 's/^dn: //p')
+		fi
+
+		if [ -n "$server_dn" ]; then
+			NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_dn" \
+							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
+			remove_NTDS_objectGUID_alias "$NTDS_objectGUID"
+		fi
+
+		if [ -n "$server_dn" ]; then
+			ldbdel -H "$samdb" --recursive "$server_dn"
+		fi
+		if [ -n "$machine_dn" ]; then
+			ldbdel -H "$samdb" --recursive "$machine_dn"
+		fi
+	fi
+}
+
+udm_remove_dns_service_account(){
+	local machine_name="$1"
+	dns_service_account_dn=$(udm users/user list --filter "username=dns-$machine_name" | sed -n 's/^DN: //p')
+	if [ -n "$dns_service_account_dn" ]; then
+		univention-directory-manager users/user remove --dn "$dns_service_account_dn"
+	fi
+}
+
+udm_remove_dns_service_account "$old_ldap_master_hostname"
+
+if [ -e "$samdb" ]; then
+	samdb_remove_dc_account "$old_ldap_master_hostname"
+fi
+## =========================== </remove Samba objects> ===========================
+
 univention-directory-manager computers/domaincontroller_master remove --filter name="$old_ldap_master_hostname" --remove_referring
 
 res=$(ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL "(&(relativeDomainName=univention-directory-manager)(cNameRecord=$old_ldap_master_hostname))")
