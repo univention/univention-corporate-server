@@ -51,6 +51,8 @@ define([
 
 		baseClass: 'umcGalleryPane',
 
+		bounceDuration: 150,
+
 		query: {},
 
 		queryOptions: {},

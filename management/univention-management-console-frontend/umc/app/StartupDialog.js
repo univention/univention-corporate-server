@@ -64,7 +64,7 @@ define([
 		return lang.replace(doc, {
 			path: require.toUrl('umc/app'),
 			feedbackUrl: _('umcFeedbackUrl'),
-			disablePiwikChecked: piwikDisabled ? 'checked' : ''
+			enablePiwikChecked: piwikDisabled ? '' : 'checked'
 		});
 	};
 
@@ -144,7 +144,7 @@ define([
 					});
 					var html = new Text({
 						content: idoc,
-						style: 'width:600px; height:260px;'
+						style: 'width:600px; max-height:280px; overflow-y:auto; overflow-x:hidden;'
 					});
 					parser.parse(html.domNode);
 					page.addChild(html);

@@ -126,16 +126,10 @@
 //  background-image: url(form/images/error.png);
 //}
 //
-.dj_gecko .umc .dijitTextBox .dijitInputInner,
-.dj_webkit .umc .dijitTextBox .dijitInputInner {
-  padding: 4px 3px 3px !important;
+.umc .dijitTextBox .dijitInputInner,
+.umc .umcComboBox .dijitInputInner {
+  padding: 4px 3px 3px 4px !important;
 }
-
-.dj_gecko .umc .umcComboBox .dijitInputInner,
-.dj_webkit .umc .umcComboBox .dijitInputInner {
-	padding-top: 5px;
-}
-
 
 //###.umc .dijitTextBox,
 //.umc .dijitTextBox .dijitButtonNode {
@@ -260,11 +254,16 @@
   box-shadow: none; /* DEL */
 }
 
+.umcPageFooter .umcButton {
+  padding: 2px 2px 1px 2px;
+}
+
 .umcSubmitButton {
   height: 16px;
   color: white;
   font-size: 14px;
   padding: 2px 2px 5px 2px;
+  margin-top: 1px;
   background-image: url(form/images/button.png);
   background-position: left top;
   background-repeat: repeat-x;
@@ -1096,10 +1095,11 @@
   padding: 0 7px 3px 7px !important;
 }
 
-.umc .umcConfirmDialog {
-  .dijitTitlePane {
-    width: 535px;
-  }
+.umc .umcConfirmDialog,
+.umc .dijitDialog {
+//###  .dijitTitlePane {
+//###    width: 535px;
+//###  }
   .dijitTitlePaneTitle {
     border: none;
     background: none;
@@ -2166,7 +2166,7 @@ p {
 		}
 
 		.umcGalleryDescription {
-			color: grey;
+			color: @gray;
 		}
 
 		.umcGalleryIcon {
@@ -2210,7 +2210,7 @@ p {
 		position: absolute;
 		top: 5px;
 		left: 5px;
-		color: @grayShip;
+		color: @gray;
 	}
 
 	.umcInlineLabel.umcEmptyValue {
@@ -2222,3 +2222,7 @@ p {
 	color: @gray;
 }
 
+input {
+	box-sizing: border-box;
+	line-height: 22px;
+}

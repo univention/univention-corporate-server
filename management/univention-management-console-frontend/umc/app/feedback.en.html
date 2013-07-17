@@ -1,11 +1,18 @@
 <h1>Feedback durch Nutzungsstatistiken</h1>
-<div style='background:url({path}/statistics.png) no-repeat; background-size:150px; background-position:5px 5px; padding-left:165px; min-height:205px;'>
-	<p>Auf UCS-Evaluationssystemen werden anonyme Nutzungsstatistiken zur Verwendung von Univention Management Console erzeugt und über die Software Piwik ausgewertet. Dies ermöglicht es, die Management Console beständig an die Anwenderbedürfnisse anzupassen.</p>
-	<p>Wenn Sie die Erzeugung von Statistiken nicht wünschen, kann diese untenstehend deaktiviert werden. (Auf Systemen mit regulärer UCS-Lizenz werden keine Statistiken erzeugt.)</p>
+<div style='background:url({path}/statistics.png) no-repeat; background-position:5px 5px; padding-left:165px; min-height:160px;'>
+	<p>Auf UCS-Evaluationssystemen werden anonyme Nutzungsstatistiken erzeugt und an Univention gesendet. Dies ermöglicht es, UCS beständig an die konkreten Anwenderbedürfnisse anzupassen.</p>
+	<p>Die Informationen umfassen zum einen anonyme UMC-Nutzungsstatistiken sowie grundlegende Informationen über die Hardware.</p>
+		<div data-dojo-type="umc/widgets/TitlePane" title="Details zu den Nutzungsstatistiken" data-dojo-props="open:false">
+		<p>Die Statistiken über die Nutzung von UMC erfassen welche Module geöffnet und welche Aktionen (bspw. Anlegen oder Löschen eines Benutzers) durchgeführt werden. Es werden hierbei keine Parameter (bspw. Name des angelegten oder gelöschten Benutzers) gespeichert, sondern lediglich die Art der Aktion. Dies ermöglicht es, häufig genutzte UMC-Module und -Aktionen zu erkennen, um den Arbeitsablauf zielgerichtet zu verbessern.</p>
+		<p>Die Hardware-Informationen werden einmalig erfasst. Zu diesen Informationen gehören bspw. CPU-Typ, Anzahl der CPUs, größe des Arbeitspeichers oder Art der Festplattencontroller. Dies erlaubt es häufig genutzte Hardware zu ermitteln und zukünftig besser zu unterstützen. Die erfassten Hardware-Informationen können <a href="" target="_blank">unter diesem Link</a> eingesehen werden.</p>
+	</div>
+<!--	<p>Auf UCS-Evaluationssystemen werden anonyme Nutzungsstatistiken zur Verwendung von Univention Management Console erzeugt und über die Software Piwik ausgewertet. Dies ermöglicht es, die Management Console beständig an die Anwenderbedürfnisse anzupassen.</p>
+<p>Wenn Sie die Erzeugung von Statistiken nicht wünschen, kann diese untenstehend deaktiviert werden. (Auf Systemen mit regulärer UCS-Lizenz werden keine Statistiken erzeugt.)</p>-->
+	<p>Wenn Sie die Erzeugung von Statistiken nicht wünschen, kann dies untenstehend deaktiviert werden.</p>
 	<p>
 		<form>
-			<input id="umc_app_feedback_checkbox" name="disablePiwik" data-dojo-type="umc/widgets/CheckBox" {disablePiwikChecked} onChange="require('umc/app')._disablePiwik(this.get('value'));">
-			<label for="umc_app_feedback_checkbox">Erzeugung von Nutzungsstatistiken deaktivieren</label>
+			<input name="enablePiwik" data-dojo-type="dijit/form/CheckBox" {enablePiwikChecked} onChange="require('umc/app')._disablePiwik(!this.get('checked'));">
+			<label for="enablePiwik">Erzeugung von Nutzungsstatistiken aktivieren</label>
 		</form>
 	</p>
 </div>

@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.24-1) unstable; urgency=low
+
+  * Bug #31639: adapt CSS for IE
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Jul 2013 14:38:38 +0200
+
 univention-management-console-frontend (3.0.23-1) unstable; urgency=low
 
   * Bug #30811: deactivate startup dialog
