@@ -189,19 +189,19 @@ define([
 		updateQuery: function(searchPattern, searchQuery, category) {
 			var query = function(obj) {
 				// sub conditions
-				var allCategories = category.id == '$all$';
+				var allCategories = category.id == '_all_';
 				var displayItem = obj._isSeparator || obj.BaseClass;
 				var matchesPattern = obj._isSeparator || !searchPattern
 					// for a given pattern, ignore 'pseudo' entries in _favorites_ category
 					|| (searchQuery.test(null, obj) && obj.category != '_favorites_');
 				var matchesCategory = obj.category == category.id;
-				if (category.id == '$all$') {
+				if (category.id == '_all_') {
 					matchesCategory = true;
 				}
-				else if (category.id == '_favorites_') {
-					// allow all separators AND favorite items of categories != _favorites_
-					matchesCategory = obj.category != '_favorites_' && (obj._isSeparator || obj._isFavorite);
-				}
+				//else if (category.id == '_favorites_') {
+				//	// allow all separators AND favorite items of categories != _favorites_
+				//	matchesCategory = obj.category != '_favorites_' && (obj._isSeparator || obj._isFavorite);
+				//}
 
 				// match separators OR modules with a valid class
 				return displayItem && matchesPattern && matchesCategory;
@@ -888,7 +888,7 @@ define([
 				var categories = lang.clone(this.getCategories());
 				categories.unshift({
 					label: _('All'),
-					id: '$all$'
+					id: '_all_'
 				});
 				this._searchSidebar.set('categories', categories);
 				this._searchSidebar.set('allCategory', categories[0]);

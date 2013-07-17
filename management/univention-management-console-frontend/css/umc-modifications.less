@@ -91,7 +91,7 @@
 
 
 .dijitTab .tabLabel {
-	font-size: 14px;
+	font-size: 1.166em;
 }
 
 .dijitStackContainer-child {
@@ -128,7 +128,8 @@
 //
 .umc .dijitTextBox .dijitInputInner,
 .umc .umcComboBox .dijitInputInner {
-  padding: 4px 3px 3px 4px !important;
+  padding: 0.3em 0.25em 0.3em 0.25em !important;
+  //padding: 4px 3px 4px 3px !important;
 }
 
 //###.umc .dijitTextBox,
@@ -146,7 +147,7 @@
 
 .umc .umcLabelPaneCheckBox .umcLabelPaneLabeNodeRight {
 	display: inline-block;
-	padding-left: 5px;
+	padding-left: 0.416em;
 }
 
 .umc .umcLabelPaneCheckBox label {
@@ -191,7 +192,7 @@
 //###background-image: url(form/images/commonFormArrows.png);
   background-position: -33px 53%;
   width: 21px;
-  height: 22px !important;
+  height: 1.8em !important;
   border: 0 none;
 }
 
@@ -255,14 +256,16 @@
 }
 
 .umcPageFooter .umcButton {
+  //padding: 0.166em 0.166em 0.083em 0.166em;
   padding: 2px 2px 1px 2px;
 }
 
 .umcSubmitButton {
-  height: 16px;
+  height: 1.333em;
   color: white;
-  font-size: 14px;
-  padding: 2px 2px 5px 2px;
+  font-size: 1.166em;
+  //padding: 0.166em 0.166em 0.416em 0.166em;
+  padding: 1px 2px 5px 2px;
   margin-top: 1px;
   background-image: url(form/images/button.png);
   background-position: left top;
@@ -276,8 +279,8 @@
 .umc .dijitButtonText {
   padding: inherit; /* DEL */
   display: table-cell;
-  height: 20px;
-  padding: 0 10px;
+  height: 1.6em;
+  padding: 0 0.833em;
   vertical-align: middle;
 }
 
@@ -803,8 +806,8 @@
 }
 
 .umc .dijitMenu .dijitMenuItem td {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 0.416em;
+  padding-bottom: 0.416em;
 }
 
 .umc .dijitMenuPassive .dijitMenuItemHover,
@@ -1579,7 +1582,7 @@
 
 .umcLoginDialogFormContainer {
 	width: 225px;
-	height: 210px;
+	height: 17.5em;
 }
 
 .umcLoginForm {
@@ -1594,11 +1597,11 @@
 }
 
 .umcLoginForm .umcSubmitButton {
-	margin-top: 10px;
+	margin-top: 0.8em;
 	margin-right: 8px;
 	float: right;
 	position: relative;
-	top: 58px;
+	top: 4em;
 }
 
 .umcLoginForm .umcLabelPane {
@@ -1607,7 +1610,7 @@
 
 .umcLoginDialogFormContainer .umcLabelPane {
 	position: relative;
-	top: -100px;
+	top: -8.3em;
 }
 
 .umcLoginForm .dijitTextBox {
@@ -1620,41 +1623,6 @@
 
 /* @end */
 
-/* @group Main Icons */
-
-.umcCategoryPane .modLaunchButton {
-	position: relative;
-	/*float: left;*/
-	height: 105px;
-	width: 85px;
-	padding: 15px;
-	margin: 0 27px 5px 0;
-	background-position: center 10px;
-/**
- * No float, but 'display:inline-block' instead... hack for IE, see:
- * http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/ 
- */
-	display: inline-block;
-	vertical-align:
-	top;zoom:1;
-	*display:inline;
-}
-//.umcCategoryPane #umc_widgets__CategoryItem_14 {
-//	height: 105px;
-//}
-
-/* @end */
-
-.modLaunchButton div {
-	margin-top: 60px;
-	text-align: center;
-}
-
-.umcCategoryPane .modLaunchButtonHover {
-	background-color: @grayAthens;
-	cursor: pointer;
-	border-radius: 5px;
-}
 
 .umcCategoryPane .dojoxGridCell .dijitButtonNode {
 	background: none;
@@ -1665,9 +1633,9 @@
 }
 
 .umcGridFooter {
-	margin-bottom: 5px;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	margin-bottom: 0.416em;
+	padding-top: 0.416em;
+	padding-bottom: 0.416em;
 	background-color: @grayAthens;
 	border-top: 1px solid black;
 	border-bottom: 2px solid @grayDusty;
@@ -1692,7 +1660,7 @@
 }
 
 .umcLabelPaneLabelNode {
-	margin-bottom: 5px;
+	margin-bottom: 0.416em;
 }
 
 .umc .umcMultiSelect, .umc .umcMultiObjectSelect {
@@ -1701,7 +1669,7 @@
 
 .umc .umcLabelPaneCheckBox .umcLabelPaneLabeNodeTop {
 	display: inline-block !important;
-	padding-left: 5px;
+	padding-left: 0.416em;
 }
 
 .umc .umcMultiInput {
@@ -1737,7 +1705,7 @@
 }
 .umcCategoryPane .dijitAlignBottom .dijitButtonText {
 	display: inline-block;
-	padding: 0 0 0 5px;
+	padding: 0 0 0 0.416em;
 	height: auto;
 	text-align: left;
 }
@@ -1791,7 +1759,7 @@
 .umc .dojoxGridCell .dijitButtonText,
 .umc .umcGridFooter .dijitButtonText {
   color: @grayShip !important;
-  font-size: 12px;
+  font-size: 1em;
   text-decoration: underline;
   padding-left: 0;
   padding-right: 0;
@@ -1805,7 +1773,7 @@
 /* @end */
 
 .umcPageHelpText {
-	margin-bottom: 15px;
+	margin-bottom: 1.25em;
 }
 
 .umcButton span.dijitIcon,
@@ -1814,7 +1782,7 @@
 }
 
 .umcButton span.dijitButtonText {
-	padding-top: 2px;
+	padding-top: 0.166em;
 	text-decoration: underline;
 }
 
@@ -1863,9 +1831,10 @@ html {
 }
 
 body {
-	font-family: Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
+	//font-family: Helvetica, "Helvetica Neue", Arial, "Droid Sans", Geneva, sans-serif;
 	/* disable scrollbars for the main window, long combo boxes may cause scrollbars to be shown */
 	overflow-y: hidden;
+	color: @grayShip;
 	height: 100%;
 	width: 100%;
 }
@@ -1925,14 +1894,19 @@ textarea {
 
 .umcPageHeader h1 {
 	margin: 15px 0;
-	padding: 0 0 10px 7px;
+	padding: 0 0 0.833em 0.583em;
 	border-bottom: 1px solid @grayDusty;
+	// on the android tablet the border would not be displayed at full width
+	// this background image hack fixes the problem, see:
+	//   http://stackoverflow.com/a/13550951
+	background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
 }
 
 .umcPageNote {
-	margin-bottom: 15px;
+	margin-bottom: 1.2em;
 	border: 2px solid @grayAlto;
-	padding: 10px;
+	padding: 0.833em;
+	height: 1.166em;
 }
 
 .umcPopup .dijitDialogPaneContent {
@@ -1942,7 +1916,11 @@ textarea {
 .umcPopup h1 {
 	margin: 15px 0;
 	border-bottom: 1px solid @grayDusty;
-	padding-bottom: 10px;
+	padding-bottom: 0.833em;
+	// on the android tablet the border would not be displayed at full width
+	// this background image hack fixes the problem, see:
+	//   http://stackoverflow.com/a/13550951
+	background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
 }
 
 .umcPopup table {
@@ -1950,7 +1928,7 @@ textarea {
 	padding-bottom: 15px;
 }
 .umcPopup p {
-	padding-bottom: 5px;
+	padding-bottom: 0.416em;
 }
 
 .umcPopup form {
@@ -1972,23 +1950,23 @@ textarea {
 }
 
 .umc .dijitButton .dijitButtonNode {
-  height: 20px;
-  padding: 0 2px;
+  height: 1.666em;
+  padding: 0 0.166em;
 }
 
 /* @group notifications */
 .dijitToasterContent {
   padding-top: 2px !important;
   padding-bottom: 5px !important;
-  font-size: 12px !important;
+  font-size: 1em !important;
 }
 /* @end */
 
 /* @group footer */
 .umcPageFooter {
   border-top: 1px solid @grayShip;
-  margin-top: 10px;
-  padding-top: 10px;
+  margin-top: 0.833em;
+  padding-top: 0.833em;
 }
 /* @end */
 
@@ -2024,7 +2002,7 @@ p {
 }
 
 .umcButtonRow {
-	padding-top: 5px;
+	padding-top: 0.416em;
 }
 
 .umcProgressInfo {
@@ -2033,7 +2011,7 @@ p {
 }
 
 .umc .umcMultiObjectSelectDetailDialog form {
-	padding-bottom: 10px
+	padding-bottom: 0.833em
 }
 
 /* set nice margins for h1 tag in dialogs */
@@ -2095,8 +2073,8 @@ p {
 
 		.dijitButtonText {
 			text-decoration: none;
-			padding-left: 5px;
-			padding-right: 5px;
+			padding-left: 0.416em;
+			padding-right: 0.416em;
 		}
 
 		.dijitButtonNode {
@@ -2139,9 +2117,9 @@ p {
 	.umcGalleryCategoryHeader {
 		display: block;
 		border-bottom: 1px solid @border-color;
-		padding-bottom: 5px;
+		padding-bottom: 0.416em;
 		margin-bottom: 5px;
-		font-size: 14px;
+		font-size: 1.166em;
 		clear: left;
 		// on the android tablet the border would only be displayed at width ~300px
 		// this background image hack fixes the problem, see:
@@ -2151,8 +2129,8 @@ p {
 
 	.umcGalleryItem {
 		position: relative;
-		padding: 15px;
-		margin: 0 20px 5px 0;
+		padding: 1.25em;
+		margin: 0 1.666em 0.416em 0;
 		float: left;
 		outline: none;
 		height: 55px;
@@ -2179,7 +2157,7 @@ p {
 			visibility: hidden;
 			position: absolute;
 			top: 5px;
-			right: 15px;
+			right: 10px;
 			width: 24px;
 			height: 24px;
 		}
@@ -2222,7 +2200,3 @@ p {
 	color: @gray;
 }
 
-input {
-	box-sizing: border-box;
-	line-height: 22px;
-}
