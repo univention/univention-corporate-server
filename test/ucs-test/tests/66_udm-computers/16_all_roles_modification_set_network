@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Validate adoption of network properties during creation and modification for all computer roles
+## desc: Test setting network during creation for all computer roles
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful

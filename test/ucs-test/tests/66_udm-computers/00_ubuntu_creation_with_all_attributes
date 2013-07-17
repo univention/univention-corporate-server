@@ -62,20 +62,34 @@ if __name__ == '__main__':
 			'loginShell': [properties['shell']],
 			'gidNumber': ldap.search(base = properties['primaryGroup'], attr = ['gidNumber'])[0][1].get('gidNumber', []),
 			'univentionInventoryNumber': [properties['inventoryNumber']],
-			'sambaSID': ['S-1-4-%s' % str( int(ldap.getAttr('cn=uidNumber,cn=temporary,cn=univention,%s' % ucr['ldap/base'], 'univentionLastUsedValue')[0])+1 ) if utils.s4connector_present() else '%s-%s' % (ldap.search(filter = 'objectClass=sambaDomain', attr = ['sambaSID'])[0][1]['sambaSID'][0], properties['sambaRID'])],
 			'sambaPrimaryGroupSID': [ldap.getAttr(properties['primaryGroup'], 'sambaSID')[0]],
 			'krb5PrincipalName': ['host/%s.%s@%s' % (properties['name'], properties['domain'].lower(), ldap.getAttr(ucr['ldap/base'], 'krb5RealmName')[0])]
 		}
 
 
+		# create object
+		computer_DN = udm.create_object('computers/ubuntu', **properties)
+		computer_sambaSID = ldap.getAttr(computer_DN, 'sambaSID')[0]
+		computer_aRecord = ldap.getAttr(computer_DN, 'aRecord')[0]
+		computer_macAddress = ldap.getAttr(computer_DN, 'macAddress')[0]
+		
 		# FIXME: workaround for remaining locks
-		udm.addCleanupLock('aRecord', expectedLdap['aRecord'])
-		udm.addCleanupLock('mac', expectedLdap['macAddress'])
-		udm.addCleanupLock('sid', expectedLdap['sambaSID'])
+		udm.addCleanupLock('aRecord', computer_aRecord)
+		udm.addCleanupLock('mac', computer_macAddress)
+		udm.addCleanupLock('sid', computer_sambaSID)
 
 		# validate computer ldap object
-		computerDN = udm.create_object('computers/ubuntu', **properties)
-		utils.verify_ldap_object(computerDN, expectedLdap)
+		utils.verify_ldap_object(computer_DN, expectedLdap)
+
+		# validate computer sambaSID
+		if utils.s4connector_present():
+			if not computer_sambaSID.startswith('S-1-4'):
+				utils.fail('"sambaSID" of %s did not start with "S-1-4-" as expected' % computer_DN)
+		else:
+			sambaDomainSID = ldap.search(filter = 'objectClass=sambaDomain', attr = ['sambaSID'])[0][1]['sambaSID'][0]
+			if not computer_sambaSID.startswith(sambaDomainSID):
+				utils.fail('"sambaSID" of %s did not start with "%s" as expected' % (computer_DN, sambaDomainSID))
+
 
 		# validate related DHCP host object
 		utils.verify_ldap_object('cn=%s,%s' % (properties['name'], dhcpZone), {
@@ -98,4 +112,4 @@ if __name__ == '__main__':
 		})
 
 		for group in [properties['primaryGroup']] + properties['groups']:
-			utils.verify_ldap_object(group, {'memberUid': ['%s$' % properties['name']], 'uniqueMember': [computerDN]})
+			utils.verify_ldap_object(group, {'memberUid': ['%s$' % properties['name']], 'uniqueMember': [computer_DN]})

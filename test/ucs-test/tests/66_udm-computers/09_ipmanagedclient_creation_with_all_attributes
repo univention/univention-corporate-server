@@ -15,7 +15,8 @@ import univention.testing.utils as utils
 
 
 if __name__ == '__main__':
-	objectType = 'computers/ipmanagedclient'
+	ldap = utils.get_ldap_connection()
+
 	with udm_test.UCSTestUDM() as udm:
 		dhcpZone = udm.create_object('dhcp/service', service = uts.random_name())
 		
@@ -44,14 +45,17 @@ if __name__ == '__main__':
 		}
 
 
+		# create object
+		computer_DN = udm.create_object('computers/ipmanagedclient', **properties)
+		computer_aRecord = ldap.getAttr(computer_DN, 'aRecord')[0]
+		computer_macAddress = ldap.getAttr(computer_DN, 'macAddress')[0]
+		
 		# FIXME: workaround for remaining locks
-		udm.addCleanupLock('aRecord', expectedLdap['aRecord'])
-		udm.addCleanupLock('mac', expectedLdap['macAddress'])
-
+		udm.addCleanupLock('aRecord', computer_aRecord)
+		udm.addCleanupLock('mac', computer_macAddress)
 
 		# validate computer ldap object
-		computerDN = udm.create_object(objectType, **properties)
-		utils.verify_ldap_object(computerDN, expectedLdap)
+		utils.verify_ldap_object(computer_DN, expectedLdap)
 
 		# validate related DHCP host object
 		utils.verify_ldap_object('cn=%s,%s' % (properties['name'], dhcpZone), {

@@ -229,15 +229,15 @@ Description: Test scripts for the users/user-module of the UDM
  This package includes some scripts for testing the functionality of the
  users/user-module of the UDM.
 
-#Package: ucs-test-udm-groups
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for the groups/group-module of the UDM
-# This package includes some scripts for testing the functionality of the
-# groups/group-module of the UDM.
+Package: ucs-test-udm-groups
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for the groups/group-module of the UDM
+ This package includes some scripts for testing the functionality of the
+ groups/group-module of the UDM.
 
 Package: ucs-test-udm-dns
 Architecture: all
