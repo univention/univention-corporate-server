@@ -656,7 +656,8 @@ define([
 				widgets: widgets,
 				content: borderLayout,
 				moduleStore: this.moduleStore,
-				onSubmit: lang.hitch(this, 'validateChanges')
+				onSubmit: lang.hitch(this, 'validateChanges'),
+				style: 'margin:0'
 			}))[0];
 			this._policyDeferred.then(lang.hitch(this, function() {
 				this.set('content', this._form);

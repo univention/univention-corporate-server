@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.7-1) unstable; urgency=low
+
+  * Bug #31639: CSS clean up
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Jul 2013 13:57:18 +0200
+
 univention-management-console-module-udm (4.0.6-1) unstable; urgency=low
 
   * Bug #25008: reload superordinates after object modification
