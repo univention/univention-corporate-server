@@ -19,6 +19,37 @@
                 <date>16 Jul 2013</date>
             </revision>
         </revhistory>
+
+		<legalnotice>
+		  <para>
+			Alle Rechte vorbehalten. / All rights reserved.
+		  </para>
+
+		  <para>
+			(c) 2002 bis 2013 Univention GmbH
+		  </para>
+
+		  <para>
+			Mary-Somerville-Straße 1, 28359 Bremen, Deutschland/Germany
+		  </para>
+
+		  <para>
+			feedback@univention.de
+		  </para>
+
+		  <para>
+			Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum
+			ihrer jeweiligen eingetragenen Rechtsinhaber. Linux ist ein
+			eingetragenes Warenzeichen von Linus Torvalds.
+		  </para>
+
+		  <para>
+			The mentioned brand names and registered trademarks are owned by
+			the respective legal owners in each case. Linux is a registered
+			trademark of Linus Torvalds.
+		  </para>
+		</legalnotice>
+
     </bookinfo>
 
     <chapter>
