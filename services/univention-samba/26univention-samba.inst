@@ -189,6 +189,9 @@ if [ -n "$samba_account" -a -n "$samba_pwd" ]; then
 	# Join against the global workgroup
 	if $JOIN_CMD -U${samba_account}%${samba_pwd} machinepass="$machine_secret"; then
 		univention-config-registry set windows/wins-support?no
+		if [ -n "$ldap_master" ]; then
+			univention-config-registry set windows/wins-server?$ldap_master
+		fi
 	# try to join directly against the DC master
 	elif $JOIN_CMD -U${samba_account}%${samba_pwd} -S${ldap_master} machinepass="$machine_secret"; then
 		univention-config-registry set windows/wins-support?no
