@@ -224,8 +224,21 @@ if baseConfig['ldap/server/type']=="master":
 		log_action_msg "No slapd process found, no restart needed"
 	fi
 	;;
+  graceful-stop)
+	log_action_begin_msg "Sending HUP to ldap server(s): slapd "
+	start-stop-daemon --stop --quiet -s HUP --retry 120 \
+		--pidfile "$pidfile" \
+		--exec /usr/sbin/slapd 2>&1
+	log_action_end_msg 0
+	;;
+  graceful-restart)
+	log_action_msg "Initiating graceful reload of ldap server(s)"
+	$0 graceful-stop
+	sleep 2 # give it some time to die
+	$0 start
+	;;
   *)
-	echo "Usage: $0 {start|stop|restart|force-stop|crestart}"
+	echo "Usage: $0 {start|stop|restart|force-stop|crestart|graceful-stop|graceful-restart}"
 	exit 1
 	;;
 esac

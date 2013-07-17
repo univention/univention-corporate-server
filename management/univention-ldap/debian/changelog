@@ -1,3 +1,10 @@
+univention-ldap (10.0.7-1) unstable; urgency=low
+
+  * Add graceful-restart and graceful-stop functionality to init script
+    (Bug #31998)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Jul 2013 15:04:39 +0200
+
 univention-ldap (10.0.6-1) unstable; urgency=low
 
   * Allow substring search for univentionShareHost (Bug #31208)
