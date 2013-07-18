@@ -10,16 +10,17 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-ldif=`mktemp`
-ldif2=`mktemp`
+temp_dir=`mktemp -d`
+trap "rm -rf '$temp_dir'" EXIT
+
+mkdir "$temp_dir/bak"
+ldif="$temp_dir/1"
+ldif2="$temp_dir/2"
 
 /etc/init.d/slapd stop
-
 slapcat > "$ldif"
 
-temp_dir=`mktemp -d`
-
-mv /var/lib/univention-ldap/ldap/* "$temp_dir/"
+mv /var/lib/univention-ldap/ldap/* "$temp_dir/bak/"
 
 ucr commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
@@ -34,13 +35,10 @@ then
         echo "There was an error testing slapcat and slapadd, trying to restore the old ldap database"
         /etc/init.d/slapd stop
         rm /var/lib/univention-ldap/ldap/*
-        mv $temp_dir/* /var/lib/univention-ldap/ldap/
+	mv "$temp_dir/bak/"* /var/lib/univention-ldap/ldap/
         /etc/init.d/slapd start
         fail_test 1
 fi
-
-rm "$ldif" "$ldif2"
-rm -r "$temp_dir"
 
 # check if slapd running
 if ! pidof -s "slapd" > /dev/null; then
