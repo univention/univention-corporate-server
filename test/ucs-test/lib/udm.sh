@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. "$TESTLIBPATH/base.sh" || exit 140
-. "$TESTLIBPATH/ldap.sh" || exit 140
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/ldap.sh" || exit 137
 
 UDM_ALL_COMPUTER_ROLES="computers/domaincontroller_backup
 computers/domaincontroller_master

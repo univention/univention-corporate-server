@@ -9,16 +9,14 @@
 ## exposure: dangerous
 
 
-. "$TESTLIBPATH/base.sh" || exit 1
-. "$TESTLIBPATH/random.sh" || exit 1
-. "$TESTLIBPATH/joincheck.sh" || exit 1
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/joincheck.sh" || exit 137
 
 if check_join_status; then
 	error "Expected system not to be joined"
 	exit 135
 fi
-
-eval "$(ucr shell)"
 
 DCNAME=
 LDAP_BASE=

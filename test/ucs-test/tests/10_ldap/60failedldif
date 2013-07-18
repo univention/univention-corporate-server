@@ -9,9 +9,7 @@
 ##  - ldap-utils
 ## exposure: dangerous
 
-. "$TESTLIBPATH/base.sh" || exit 1
-
-eval "$(ucr shell)"
+. "$TESTLIBPATH/base.sh" || exit 137
 
 function testldif () {
 

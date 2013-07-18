@@ -8,7 +8,7 @@
 ##  - univention-config-registry
 ## exposure: dangerous
 
-. "$TESTLIBPATH/base.sh" || exit 1
+. "$TESTLIBPATH/base.sh" || exit 137
 
 ldif=`mktemp`
 ldif2=`mktemp`

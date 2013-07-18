@@ -15,10 +15,8 @@
 # Modification is done 8 times in rapid succession, then 4 times in 4 seconds, then rapidly 8 times again.
 # Finally this script waits for the container to appear in the local directory and checks that the latest modification was replicated.
 
-. "$TESTLIBPATH/base.sh" || exit 1
-. "$TESTLIBPATH/random.sh" || exit 1
-
-eval "$(ucr shell)"
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
 
 set -o errexit #"script bail out when it detects an error (a non-zero exit code).
 set -o pipefail

@@ -11,10 +11,8 @@
 ##  - ldap-utils
 ## exposure: dangerous
 
-. "$TESTLIBPATH/base.sh" || exit 1
-. "$TESTLIBPATH/maildomain.sh" || exit 1
-
-eval "$(ucr shell)"
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/maildomain.sh" || exit 137
 
 section "Preparing"
 sleep 3s
