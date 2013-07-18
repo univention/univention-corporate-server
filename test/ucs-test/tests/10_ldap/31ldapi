@@ -35,7 +35,7 @@ user_create "$USERNAME"
 
 # wait for the replication
 i=0
-while sleep 1s;
+while sleep 1s
 do
 	if [ $i -lt 120 ]; then
 		echo "Waiting for replication..."
@@ -51,9 +51,8 @@ do
 done
 
 echo -e "\n\n***Try to call ldapdelete via the ldapi interface. This shouln't work."
-su - "$USERNAME" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ldap_base' && echo 'Error: Removed the object as user $USERNAME via ldapi socket.' && exit 1 || exit 0"
-
-if [ $? -ne 0 ]; then
+if ! su - "$USERNAME" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ldap_base' && echo 'Error: Removed the object as user $USERNAME via ldapi socket.' && exit 1 || exit 0"
+then
 	fail_test 1
 fi
 

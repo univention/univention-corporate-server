@@ -46,7 +46,7 @@ user_create "$USERNAME"
 
 echo "Waiting for replication..."
 i=0
-while sleep 1s;
+while sleep 1s
 do
 	if [ $i -lt 120 ]; then
 		if getent passwd "$USERNAME"; then
@@ -59,8 +59,8 @@ do
 	i=`expr $i + 1`
 done
 
-grep "New User: $USERNAME" $tempFile
-if [ $? = 0 ]; then
+if grep "New User: $USERNAME" "$tempFile"
+then
         echo "Found username ($USERNAME) in tempfile ($tempFile)"
 else
         echo "Did not found username ($USERNAME) in tempfile ($tempFile)"

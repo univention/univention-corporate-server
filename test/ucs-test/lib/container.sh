@@ -8,13 +8,10 @@ container_create () {
 	info "create new $container named $NAME"
 	local DESCRIPTION=${2:-cn named $1}
 	local POSITION=${3:-$ldap_base}
-	udm-test "container/$container" create \
+	if udm-test "container/$container" create \
 		--set name="$NAME" \
 		--set description="$DESCRIPTION" \
 		--position "$POSITION" >&2
-	local rc=$?
-
-	if [ $rc -eq 0 ]
 	then
 		echo "$container=$1,$POSITION"
 		return 0

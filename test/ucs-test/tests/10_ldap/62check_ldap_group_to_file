@@ -66,7 +66,7 @@ wait_for_replication_and_postrun
 
 echo "Waiting for NSS update script"
 i=0
-while sleep 1s;
+while sleep 1s
 do
 	if [ $i -lt "$TIME_TO_WAIT" ]; then
 		if getent group "$GROUPNAME" | grep -q "$USERNAME"; then
@@ -87,7 +87,7 @@ wait_for_replication_and_postrun
 
 echo "Waiting for NSS update script..."
 i=0
-while sleep 1s;
+while sleep 1s
 do
 	if [ $i -lt "$TIME_TO_WAIT" ]; then
 		if ! getent group "$GROUPNAME" | grep -q "$USERNAME"; then

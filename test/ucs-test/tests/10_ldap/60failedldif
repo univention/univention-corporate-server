@@ -66,7 +66,7 @@ fi
 
 /etc/init.d/slapd start
 
-for replayed in "$ldif_path"/replayed.ldif_*;
+for replayed in "$ldif_path"/replayed.ldif_*
 do
     testldif "$replayed"
 done
