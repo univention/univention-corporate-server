@@ -70,6 +70,6 @@ master_udm_installed () { # checks if UDM is installed on the master
 	# return values:
 	#	0 = no UDM is installed
 	#	1 = UDM is installed
-	[ -n "$(get_udm_version)" ] && :
+	[ -n "$(master_udm_version)" ] && :
 }
 # vim:set filetype=sh ts=4:
