@@ -1333,6 +1333,12 @@
 		  <emphasis>PrintQuota</emphasis> (<ulink
 		  url="&ucsbug;23884">Bug 23884</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Added support for denying client access based on ip addresses, configurable via &ucsUCRV; 
+		  <envar>cups/printmode/hosts/none</envar>. This functionality is needed for UCS@School. 
+		  (<ulink url="https://forge.univention.org/bugzilla/show_bug.cgi?id=31902">Bug 31902</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>
