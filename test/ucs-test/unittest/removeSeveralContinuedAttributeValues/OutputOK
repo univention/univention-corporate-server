@@ -1,0 +1,19 @@
+ dn: cn=samba2,dc=liam,dc=local
+ univentionObjectType: container/cn
+-objectClass: univentionObjectuniventionObject1univentionObject2univentionObject3
++objectClass: univentionObjectuniventionObject1
+ objectClass: univentionObject1234567
+ objectClass: univentionObject1234
+ objectClass: top
+ cn: samba
+
+ dn: cn=samba,dc=liam,dc=local
+ univentionObjectType: container/cn
+-objectClass2: univentionObjectuniventionObject2ctuniventionObject3
++objectClass2: univentionObjectuniventionObject2
+ objectClass: univentionObject1234567
+ objectClass: univentionObject1234
+ objectClass: univentionObject
+ objectClass: top
+ cn: samba
+
