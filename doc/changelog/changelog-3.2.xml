@@ -536,7 +536,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Removed HTML evaluation of localised values in ini file (<ulink
+		  Allow HTML in the LongDescription of the ini file (<ulink
 		  url="&ucsbug;31185">Bug 31185</ulink>).
 		</simpara></listitem>
 
