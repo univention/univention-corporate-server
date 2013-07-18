@@ -117,14 +117,14 @@ do
 done
 
 # display header only if username and password are not provided #29432
-if [[ -z "$DCACCOUNT" && -z "$DCPWD" ]] ; then
+if [ -z "$DCACCOUNT" ] && [ -z "$DCPWD" ] ; then
 	display_header
 fi
 
 if [ ! -e /var/univention-join/joined ]; then
-    echo "The system hasn't been joined yet. univention-run-join-scripts can only be"
-    echo "used after an initial, successful join. You should run univention-join instead."
-    exit 1
+	echo "The system hasn't been joined yet. univention-run-join-scripts can only be"
+	echo "used after an initial, successful join. You should run univention-join instead."
+	exit 1
 fi
 
 if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
@@ -137,7 +137,7 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 		read -s password
 		DCPWD=$(mktemp)
 		trap "rm -f '$DCPWD'" EXIT
-		echo "$password" >>$DCPWD
+		echo -n "$password" >>"$DCPWD"
 		echo ""
 		echo ""
 	fi
@@ -145,33 +145,36 @@ if [ ! "$server_role" = "domaincontroller_master" ] || [ -n "$ASK_PASS" ] ; then
 	echo -n "Search LDAP binddn "
 
 	# First use udm to search the user DN
-	binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
-		/usr/sbin/udm users/user list --filter uid=$DCACCOUNT --logfile /dev/null | sed -ne 's|DN: ||p')"
-
+	OLDIFS="$IFS" IFS="
+"
+	binddn=($(univention-ssh --no-split "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
+		/usr/sbin/udm users/user list --filter "'uid=$DCACCOUNT'" --logfile /dev/null |
+		sed -ne 's|DN: ||p'))
 	if [ -z "$binddn" ]; then
 		# Next check is the local ldapi interface
-		binddn="$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
-			ldapsearch -x LLL -H ldapi:/// "(&(uid=$DCACCOUNT)(objectClass=person))" dn | ldapsearch-decode64 | sed -ne 's|^dn: ||p;s|^DN: ||p')"
+		binddn=($(univention-ssh --no-split "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
+			ldapsearch -x -LLL -H ldapi:/// "'(&(uid=$DCACCOUNT)(objectClass=person))'" dn |
+			ldapsearch-wrapper |
+			ldapsearch-decode64 |
+			sed -ne 's|^dn: ||p'))
 	fi
-
 	if [ -z "$binddn" ]; then
 		# Check with anonymous bind
-		ldap_result=$(univention-ssh "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
-			   "ldapsearch -x -LLL \'\(\&\(uid=$DCACCOUNT\)\(objectClass=person\)\)\' dn")
-		for i in $(echo "$ldap_result" | ldapsearch-wrapper | sed -n 's/^dn: \(.*\)/\1/p'); do
-			if [ -n "$binddn" ]; then
-				failed_message "binddn for user $DCACCOUNT not unique, $i and $binddn"
-			fi
-			binddn="$i"
-		done
-
+		binddn=($(univention-ssh --no-split "$DCPWD" "$DCACCOUNT"@"$ldap_master" \
+			ldapsearch -x -LLL "'(&(uid=$DCACCOUNT)(objectClass=person))'" dn |
+			ldapsearch-wrapper |
+			ldapsearch-decode64 |
+			sed -ne 's|^dn: ||p'))
 	fi
+	[ ${#binddn[@]} -gt 1 ] &&
+			failed_message "binddn for user $DCACCOUNT not unique: ${binddn[*]}"
+	IFS="$OLDIFS"
 
 	if [ -z "$binddn" ]; then
 		failed_message "binddn for user $DCACCOUNT not found"
 	else
-		ldapsearch -x -LLL -b "$ldap_base" -D "$binddn" -w `cat $DCPWD` -LLL -s base >/dev/null 2>&1
-		if [ $? != 0 ]; then
+		if ! ldapsearch -x -LLL -b "$ldap_base" -D "$binddn" -y "$DCPWD" -LLL -s base >/dev/null 2>&1
+		then
 			failed_message "Invalid credentials"
 		else
 			echo -e "\033[60Gdone"
@@ -186,9 +189,10 @@ SCRIPTS=(/usr/lib/univention-install/*.{inst,uinst})
 if [ -n "$RUN_SCRIPTS" ]; then
 	# evaluate specified join scripts
 	SCRIPTS=()
-	for iscript in $@; do
+	for iscript in "$@"
+	do
 		# guess full path of join script
-		iscript=/usr/lib/univention-install/$iscript
+		iscript="/usr/lib/univention-install/$iscript"
 		if [ ! -e "$iscript" ]; then
 			# expand .inst or .uinst suffix if not specified
 			test -e "$iscript.uinst" && iscript=$iscript.uinst
@@ -198,7 +202,7 @@ if [ -n "$RUN_SCRIPTS" ]; then
 			# error ... join script does not exist
 			failed_message "The given joinscript '$iscript' does not exists"
 		fi
-		SCRIPTS[${#SCRIPTS[@]}]=$iscript
+		SCRIPTS+=("$iscript")
 	done
 fi
 
