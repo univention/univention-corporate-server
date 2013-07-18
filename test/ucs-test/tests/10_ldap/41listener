@@ -21,7 +21,7 @@ touch /usr/lib/univention-directory-listener/system/"$ucstest".py
 tempFile="$(mktemp)"
 
 cat <<__HERE__ >/usr/lib/univention-directory-listener/system/"$ucstest".py
-import os, listener
+import listener
 description='set up a new handler (with an new uid entry in tmp-file) for listener'
 name='ucstest'
 filter='(objectClass=posixAccount)'
