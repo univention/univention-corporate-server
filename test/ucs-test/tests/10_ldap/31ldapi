@@ -51,7 +51,7 @@ do
 done
 
 echo -e "\n\n***Try to call ldapdelete via the ldapi interface. This shouln't work."
-su - "$USERNAME" -c "ldapdelete -x -H ldapi:/// \"uid=$USERNAME,cn=users,$ldap_base\" && echo \"Error: Removed the object as user $USERNAME via ldapi socket.\" && exit 1 || exit 0"
+su - "$USERNAME" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ldap_base' && echo 'Error: Removed the object as user $USERNAME via ldapi socket.' && exit 1 || exit 0"
 
 if [ $? -ne 0 ]; then
 	fail_test 1
