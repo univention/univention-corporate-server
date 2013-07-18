@@ -272,7 +272,7 @@ class PackageManager(object):
 				pkgs = []
 			self._always_install = pkgs
 		for pkg in self._always_install:
-			if pkg.is_installed:
+			if self.is_installed(pkg):
 				pkg.mark_keep()
 			else:
 				pkg.mark_install()
@@ -446,7 +446,7 @@ class PackageManager(object):
 		'''
 		return filter(None, map(self.get_package, pkg_names))
 
-	def get_package(self, pkg_name):
+	def get_package(self, pkg_name, raise_key_error=False):
 		'''Get Package-object for package_name
 		Otherwise write an error
 		'''
@@ -456,20 +456,25 @@ class PackageManager(object):
 		try:
 			return self.cache[pkg_name]
 		except KeyError:
-			self.progress_state.error('%s: %s' % (pkg_name, _('No such package')))
+			if raise_key_error:
+				raise
+			else:
+				self.progress_state.error('%s: %s' % (pkg_name, _('No such package')))
 
-	def is_installed(self, pkg_name, reopen=True):
+	def is_installed(self, pkg_name, reopen=False):
 		'''Returns whether a package is installed.
 		Returns None if package is not found.
 		'''
 		if reopen:
 			self.reopen_cache()
 		try:
-			package = self.cache[pkg_name]
+			package = self.get_package(pkg_name, raise_key_error=True)
 		except KeyError:
 			return None
 		else:
-			return package.is_installed
+			# Bug #31261 - apt.Package thinks unpacked but unconfigured packages are installed
+			# return package.is_installed
+			return package._pkg.current_state == apt_pkg.CURSTATE_INSTALLED
 
 	def packages(self, reopen=False):
 		'''Yields all packages in cache'''
@@ -572,12 +577,12 @@ class PackageManager(object):
 		for pkg in remove:
 			if not pkg.marked_delete:
 				# maybe its already removed...
-				if pkg.marked_install or pkg.is_installed:
+				if pkg.marked_install or self.is_installed(pkg):
 					broken.add(pkg.name)
 		for pkg in install:
 			if not pkg.marked_install:
 				# maybe its already installed...
-				if pkg.marked_delete or not pkg.is_installed:
+				if pkg.marked_delete or not self.is_installed(pkg):
 					broken.add(pkg.name)
 		if dry_run:
 			self.reopen_cache()
@@ -641,14 +646,12 @@ class PackageManager(object):
 
 		# check whether all packages have been installed
 		for pkg in install:
-			pkg = self.cache[pkg.name] # fresh from cache
-			if not pkg.is_installed:
+			if not self.is_installed(pkg.name): # fresh from cache
 				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to install')))
 
 		# check whether all packages have been removed
 		for pkg in remove:
-			pkg = self.cache[pkg.name] # fresh from cache
-			if pkg.is_installed:
+			if self.is_installed(pkg.name): # fresh from cache
 				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to uninstall')))
 
 		return result

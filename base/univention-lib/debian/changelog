@@ -1,3 +1,9 @@
+univention-lib (3.0.6-1) unstable; urgency=low
+
+  * PackageManager now checks installation status correctly (Bug #31261)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 18 Jul 2013 12:40:05 +0200
+
 univention-lib (3.0.5-2) unstable; urgency=low
 
   * Added UMCConnection (Bug #31058)
