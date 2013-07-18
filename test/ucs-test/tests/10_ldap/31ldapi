@@ -43,9 +43,7 @@ do
 			break
 		fi
 	else
-		echo "Waiting for replication longer than two minutes. Replication is probably broken. Test failed."
-		user_remove "$USERNAME"
-		exit 1
+		fail_fast 1 "Waiting for replication longer than two minutes. Replication is probably broken. Test failed."
 	fi
 	i=`expr $i + 1`
 done

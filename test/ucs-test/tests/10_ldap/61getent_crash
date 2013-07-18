@@ -70,8 +70,7 @@ $GRP
 EOF
         getent group 2>&1 > /dev/null
         if [ "$?" = "134" ] ; then
-                echo "ERROR OCCURRED WITH i=$i"
-		fail_test 1
+		fail_fast 1 "ERROR OCCURRED WITH i=$i"
         exit "$RETVAL"
     fi
 done
@@ -104,9 +103,7 @@ EOF
 
         getent group 2>&1 > /dev/null
         if [ "$?" = "134" ] ; then
-                echo "ERROR OCCURRED WITH i=$i"
-                echo "The testscript, testing for the crash, doing a \"getent group\" failed due to Bug: #10558"
-        fail_test 111
+		fail_fast 111 "ERROR OCCURRED WITH i=$i"
     fi
 done
 echo "The testscript, testing for the crash, doing a \"getent group\" went like it should, everything is fine."

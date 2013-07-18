@@ -32,7 +32,7 @@ slapcat > "$ldif2"
 
 if ! diff "$ldif" "$ldif2"
 then
-        echo "There was an error testing slapcat and slapadd, trying to restore the old ldap database"
+	error "There was an error testing slapcat and slapadd, trying to restore the old ldap database"
         /etc/init.d/slapd stop
         rm /var/lib/univention-ldap/ldap/*
 	mv "$temp_dir/bak/"* /var/lib/univention-ldap/ldap/
@@ -42,8 +42,7 @@ fi
 
 # check if slapd running
 if ! pidof -s "slapd" > /dev/null; then
-	echo "Slapd is not running. Test failed."
-    fail_test 1
+	fail_test 1 "Slapd is not running."
 fi
 
 exit $RETVAL

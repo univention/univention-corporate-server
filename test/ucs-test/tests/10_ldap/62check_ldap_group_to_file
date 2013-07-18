@@ -50,9 +50,7 @@ USERNAME=$(user_randomname)
 user_create "$USERNAME" || fail_test 1
 
 if [ "$USERNAME" == "Administrator" ]; then
-	echo "Can not be an Administrator as user."
-	fail_test 1
-	exit "$RETVAL"
+	fail_fast 1 "Can not be an Administrator as user."
 fi
 
 GROUPNAME="$(group_randomnameme)"

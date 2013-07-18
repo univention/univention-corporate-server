@@ -21,11 +21,9 @@ testldif () {
 	declare -i OTHERS_PERM="${PERM:2:1}"
 
 	if [ "$GROUP_PERM" -gt 0 ]; then
-		echo "... Wrong group permissions on file $1"
-		fail_test 1
+		fail_test 1 "Wrong group permissions $PERM on file $1"
 	elif [ "$OTHERS_PERM" -gt 0 ]; then
-		echo "... Wrong other users permissions on file $1"
-		fail_test 1
+		fail_test 1 "Wrong other users permissions $PERM on file $1"
 	elif [ "$OWNER" != "root" ]; then
 		echo "... Wrong owner $OWNER (not root) on file $1"
 		fail_test 1
@@ -58,8 +56,7 @@ done
 
 if ! [ -e "$ldif" ] #failed ldif not exists
 then
-    echo "File not created"
-    fail_test 1
+	fail_test 1 "File not created"
 else
 	testldif "$ldif"
 fi

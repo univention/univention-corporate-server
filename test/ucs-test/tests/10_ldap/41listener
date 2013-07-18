@@ -61,10 +61,9 @@ done
 
 if grep "New User: $USERNAME" "$tempFile"
 then
-        echo "Found username ($USERNAME) in tempfile ($tempFile)"
+	echo "Found username '$USERNAME' in tempfile '$tempFile'"
 else
-        echo "Did not found username ($USERNAME) in tempfile ($tempFile)"
-        fail_test 1
+	fail_test 1 "Did not find username '$USERNAME' in tempfile '$tempFile'"
 fi
 
 #cleanup
