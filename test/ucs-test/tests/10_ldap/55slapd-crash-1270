@@ -17,27 +17,33 @@
 . "$TESTLIBPATH/group.sh" || exit 137
 . "$TESTLIBPATH/printer.sh" || exit 137
 . "$TESTLIBPATH/maildomain.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
 
 if [ -z "$(pidof slapd)" ]; then
         echo "There is actually no slapd-process"
         exit 120
 fi
 
+create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
+
 echo -e "\n\n***Create a test user with UDM CLI"
 
 PRINTERNAME="$(getprintername)"
-create_localprinter "$PRINTERNAME" || fail_test 1
-
-create_mail_domain "$domainname"
-rc=$?
+create_localprinter "$PRINTERNAME" &&
+	undo remove_printer "$PRINTERNAME" ||
+	fail_test 1
 
 USERNAME=$(user_randomname)
-user_create "$USERNAME" || fail_test 1
+user_create "$USERNAME" &&
+	undo user_remove "$USERNAME" ||
+		fail_test 1
 
 echo -e "\n\n***Create a test group with UDM CLI and add the specified user"
 
 GROUPNAME="$(group_randomnameme)"
-group_create "$GROUPNAME" || fail_test 1
+group_create "$GROUPNAME" &&
+	undo group_remove "$GROUPNAME" ||
+	fail_test 1
 
 echo "$USERNAME" "$GROUPNAME"
 echo "$PRINTERNAME"
@@ -45,37 +51,18 @@ echo "$PRINTERNAME"
 group_adduser "$USERNAME" "$GROUPNAME" || fail_test 1
 
 echo -e "\n\n***Adding the new group to \"Domain Admins\""
-
-group_addgroup "$GROUPNAME" "Domain Admins" || fail_test 1
+group_addgroup "$GROUPNAME" "Domain Admins" &&
+	undo group_removegroup "$GROUPNAME" "Domain Admins" ||
+	fail_test 1
 
 echo -e "\n\n***Displaying the created printer, using the account of the created user:"
-
-ldapsearch -x -D "uid=$USERNAME,cn=users,$ldap_base" -w univention "cn=$PRINTERNAME"
-
-RET=$?
-
-section "Cleanup"
-
-user_remove "$USERNAME" || fail_test 1
-
-group_removegroup "$GROUPNAME" "Domain Admins" || fail_test 1
-
-group_remove "$GROUPNAME" || fail_test 1
-
-remove_printer "$PRINTERNAME" || fail_test 1
-
-if [ "$rc" = "0" ]; then
-	delete_mail_domain "$domainname" || fail_test 1
-fi
-
-if [ ! "$RET" = "0" ] ; then
+if ! ldapsearch -x -D "uid=$USERNAME,cn=users,$ldap_base" -w univention "cn=$PRINTERNAME"
+then
         if [ -z "$(pidof slapd)" ] ; then
-                echo " The slapd crashed. See Bug #9738."
                 /etc/init.d/slapd start
-                fail_test 1
+		fail_test 1 "The slapd crashed. See Bug #9738."
         else
-                echo "Failed to search!"
-                fail_test 1
+		fail_test 1 "Failed to search!"
         fi
 else
         echo "Everthing was fine. The slapd did not crash."

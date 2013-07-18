@@ -18,20 +18,15 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/maildomain.sh" || exit 137
-
-create_mail_domain "$domainname"
-rc=$?
-
-cleanup () {
-	if [ "$rc" = "0" ]; then
-		delete_mail_domain "$domainname" || fail_test 1
-	fi
-}
-
-trap cleanup EXIT
+. "$TESTLIBPATH/undo.sh" || exit 137
 
 USERNAME=$(user_randomname)
-user_create "$USERNAME"
+
+create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
+
+user_create "$USERNAME" &&
+	undo user_remove "$USERNAME" ||
+	fail_fast 1 "Failed to create user $USERNAME"
 
 # wait for the replication
 i=0
@@ -53,7 +48,5 @@ if ! su - "$USERNAME" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ld
 then
 	fail_test 1
 fi
-
-user_remove "$USERNAME"
 
 exit "$RETVAL"

@@ -11,16 +11,14 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/maildomain.sh" || exit 137
-
-DOMAIN="$(ucr get domainname)"
-LDAPBASE="$(ucr get ldap/base)"
-
-ucstest="ucstest_$(random_chars)"
-touch /usr/lib/univention-directory-listener/system/"$ucstest".py
+. "$TESTLIBPATH/undo.sh" || exit 137
 
 tempFile="$(mktemp)"
+undo rm -f "$tempFile"
 
-cat <<__HERE__ >/usr/lib/univention-directory-listener/system/"$ucstest".py
+ucstest="ucstest_$(random_chars)"
+listener="/usr/lib/univention-directory-listener/system/$ucstest.py"
+cat >"$listener" <<__HERE__
 import listener
 description='set up a new handler (with an new uid entry in tmp-file) for listener'
 name='ucstest'
@@ -34,15 +32,17 @@ def handler(dn, new, old):
                 listener.unsetuid()
 
 __HERE__
-
+undo /etc/init.d/univention-directory-listener restart # Reversed order
+undo rm -f "$listener"
 /etc/init.d/univention-directory-listener restart
 
 # create domain part in configured mail domains list
-create_mail_domain "$domainname"
-rc=$?
+create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
 
 USERNAME=$(user_randomname)
-user_create "$USERNAME"
+user_create "$USERNAME" &&
+	undo user_remove "$USERNAME" ||
+	fail_fast 1 "Failed to create user $USERNAME"
 
 echo "Waiting for replication..."
 i=0
@@ -64,20 +64,6 @@ then
 	echo "Found username '$USERNAME' in tempfile '$tempFile'"
 else
 	fail_test 1 "Did not find username '$USERNAME' in tempfile '$tempFile'"
-fi
-
-#cleanup
-rm -f /usr/lib/univention-directory-listener/system/"$ucstest".py || fail_test 1
-rm -f "$tempFile" || fail_test 1
-
-/etc/init.d/univention-directory-listener restart || fail_test 1
-
-#removing users/user
-user_remove "$USERNAME" || fail_test 1
-
-
-if [ "$rc" = "0" ]; then
-    delete_mail_domain "$domainname" || fail_test 1
 fi
 
 exit "$RETVAL"

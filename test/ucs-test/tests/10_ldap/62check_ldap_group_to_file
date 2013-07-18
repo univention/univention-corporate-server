@@ -12,52 +12,33 @@
 . "$TESTLIBPATH/user.sh" || exit 137
 . "$TESTLIBPATH/group.sh" || exit 137
 . "$TESTLIBPATH/maildomain.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
 
-#Backup
-OLD_NSS_GROUP_CACHEFILE="$(ucr get nss/group/cachefile)"
-
-DOMAIN="$(ucr get domainname)"
-LDAPBASE="$(ucr get ldap/base)"
 TIME_TO_WAIT=600 # time to waitf for NSS update script
 
-ucr set nss/group/cachefile="yes"
-
-/etc/init.d/univention-directory-listener restart
-
-cleanup () {
-
-	#backup mail/domain
-    if [ "$rc" = "0" ]; then
-        delete_mail_domain "$DOMAIN" || fail_test 1
-    fi
-
-	#backup nss/group/cachefile
-	if [ -n "$OLD_NSS_GROUP_CACHEFILE" ] ; then
-		ucr set nss/group/cachefile="$OLD_NSS_GROUP_CACHEFILE"
-	fi
-
-	/etc/init.d/univention-directory-listener restart
-
-}
-
-# create domain part in configured mail domains list
-create_mail_domain "$DOMAIN"
-rc=$?
-
-trap cleanup EXIT
-
 USERNAME=$(user_randomname)
-user_create "$USERNAME" || fail_test 1
-
 if [ "$USERNAME" == "Administrator" ]; then
 	fail_fast 1 "Can not be an Administrator as user."
 fi
-
 GROUPNAME="$(group_randomnameme)"
-group_create "$GROUPNAME" || fail_test 1
 
-group_adduser "$USERNAME" "$GROUPNAME" || fail_test 1
+ucr set nss/group/cachefile="yes"
+undo /etc/init.d/univention-directory-listener crestart # reversed order
+undo ucr_restore
+/etc/init.d/univention-directory-listener restart
 
+# create domain part in configured mail domains list
+undo wait_for_replication_and_postrun # Reversed order
+create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
+user_create "$USERNAME" &&
+	undo user_remove "$USERNAME" ||
+	fail_test 1
+group_create "$GROUPNAME" &&
+	undo group_remove "$GROUPNAME" ||
+	fail_test 1
+group_adduser "$USERNAME" "$GROUPNAME" ||
+	fail_test 1
 wait_for_replication_and_postrun
 
 #group_removeuser $USERNAME $GROUPNAME || fail_test 1
@@ -99,11 +80,5 @@ do
 	fi
 	i=`expr $i + 1`
 done
-
-user_remove $USERNAME || fail_test 1
-
-group_remove $GROUPNAME || fail_test 1
-
-wait_for_replication_and_postrun
 
 exit "$RETVAL"
