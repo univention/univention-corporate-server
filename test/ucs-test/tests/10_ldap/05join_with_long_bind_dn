@@ -14,7 +14,6 @@
 . "$TESTLIBPATH/master.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 
-DCNAME=
 BINDUSERNAME="$(random_chars)"
 BINDPASSWORD="$(random_chars)"
 DNPART="$(random_chars)"
@@ -24,6 +23,7 @@ echo -n "Search DC Master: "
 #echo "$interfaces_eth0_address"
 #echo "$nameserver1"
 
+DCNAME=
 if [ "$interfaces_eth0_type" = "dhcp" ]; then
 	DCNAME=`host -t SRV _domaincontroller_master._tcp.$domainname | grep -v "not found" | grep -v "reached" | tail -1 | sed -e 's|.* ||g' | sed -e 's|\.$||'`
 	if [ -n "$DCNAME" ]; then
@@ -42,7 +42,6 @@ else
 		fi
 	done
 fi
-
 if [ -z "$DCNAME" ]; then
 	error "Unable to find a suitable master to join with"
 	exit 1 # This exit-code isn't defined, but there seems to
@@ -51,23 +50,14 @@ fi
 
 LDAP_BASE="$(master_ucr_get ldap/base)"
 
-i=0
-while [ $i -le 10 ]
-do
 PREF=
-	j=0
-	while [ $j -lt $i ]
-	do
-		PREF+="cn=$DNPART,"
-		j=`expr $j + 1`
-	done
-
+for ((i=0; i<=10; i+=1))
+do
 	on_master_escaped \
 		univention-directory-manager container/cn create \
 		--set name="${DNPART}" \
 		--position "${PREF}cn=users,$LDAP_BASE" || fail_test 1
-
-	i=`expr $i + 1`
+	PREF="cn=${DNPART},${PREF}"
 done
 
 if [ "$server_role" == "domaincontroller_backup" ]; then
