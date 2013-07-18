@@ -30,7 +30,7 @@ slapcat > "$ldif2"
 
 /etc/init.d/slapd start
 
-if ! diff "$ldif" "$ldif2"
+if ! ldiff "$ldif" "$ldif2"
 then
 	error "There was an error testing slapcat and slapadd, trying to restore the old ldap database"
 	/etc/init.d/slapd stop
