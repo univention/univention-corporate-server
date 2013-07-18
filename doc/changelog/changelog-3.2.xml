@@ -1134,6 +1134,11 @@
 		(<ulink url="https://forge.univention.org/bugzilla/show_bug.cgi?id=31058">Bug 31058</ulink>,
 		<ulink url="https://forge.univention.org/bugzilla/show_bug.cgi?id=31908">Bug 31908</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		PackageManager now checks installation status correctly
+		(<ulink url="https://forge.univention.org/bugzilla/show_bug.cgi?id=31261">Bug 31261</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
   </para>
 </section>
