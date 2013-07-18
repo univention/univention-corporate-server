@@ -33,9 +33,6 @@ user_create () { #Creates a user named like the first argument, supplied to the 
 	# USERNAME=$(user_randomname)
 	# user_create "$USERNAME"
 
-	debug "Locale is $(/usr/sbin/ucr get locale/default)"
-	debug "locale: $(locale)"
-
 	local USERNAME=${1:-$NAME}
 	if [ -z "$USERNAME" ]
 	then

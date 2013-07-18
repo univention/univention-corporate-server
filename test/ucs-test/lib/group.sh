@@ -26,8 +26,6 @@ group_create () { #Creates a group named like supplied in the first argument of 
 		local MAILADDR=$(random_mailaddress)
 	fi
 
-	debug "Locale is $(/usr/sbin/ucr get locale/default)"
-
 	info "create group $GROUPNAME with Mailaddress $MAILADDR"
 	udm-test groups/group create \
 		--position="cn=groups,$ldap_base" \
