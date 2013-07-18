@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-printserver
+fix: 6.0.21-2.613.201307181044
+note:
+version: [1]
+desc: |
+  This errata adds functionality to block printer access by clients
+  based on ip addresses, similar to the feature provided by univention-samba
+  for samba printer shares. The blocked access can be configured with
+  the UCR variable cups/printmode/hosts/none.
+bug: [31902]
