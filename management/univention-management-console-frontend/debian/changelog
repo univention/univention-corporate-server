@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.29-1) unstable; urgency=low
+
+  * Bug #30744: reload host list at every login
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jul 2013 14:12:15 +0200
+
 univention-management-console-frontend (3.0.28-1) unstable; urgency=low
 
   * Bug #30744: The host field in the UMC header is now a dropdown to

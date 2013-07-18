@@ -844,7 +844,8 @@ define([
 
 			// update the host information in the header
 			var fqdn = _ucr.hostname + '.' + _ucr.domainname;
-			this._hostInfo.set('value', fqdn);
+			this._hostInfo.set('dynamicValues', 'get/hosts/list');
+			this._hostInfo.setInitialValue(fqdn);
 
 			// save hostname and domainname as status information
 			tools.status('domainname', _ucr.domainname);
@@ -1198,8 +1199,7 @@ define([
 			this._hostInfo = new ComboBox( {
 				id: 'umcMenuHostInfo',
 				'class': 'umcHeaderText',
-				value: '',
-				dynamicValues: 'get/hosts/list'
+				value: ''
 			} );
 			this._headerRight.addChild(this._hostInfo);
 			var hostInfo = this._hostInfo;
