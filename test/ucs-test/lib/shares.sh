@@ -11,6 +11,7 @@ SHARE_DIRECTORYMODE=0755
 share_create () {
 	local name=${1?:missing parameter: share name}
 	local path=${2?:missing parameter: share path}
+	shift 2
 	udm-test shares/share create \
 		--set name="$name" \
 		--set path="$path" \
@@ -19,7 +20,8 @@ share_create () {
 		--set owner="$SHARE_OWNER" \
 		--set group="$SHARE_GROUP" \
 		--set directorymode="$SHARE_DIRECTORYMODE" \
-		--set host="$SHARE_HOST"
+		--set host="$SHARE_HOST" \
+		"$@"
 }
 
 share_exists () {

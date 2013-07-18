@@ -20,6 +20,7 @@ group_create () { #Creates a group named like supplied in the first argument of 
 			GROUPNAME=$(random_mailaddress)
 		fi
 	fi
+	shift
 
 	if [ -z "${MAILADDR:-}" ]
 	then
@@ -30,7 +31,8 @@ group_create () { #Creates a group named like supplied in the first argument of 
 	udm-test groups/group create \
 		--position="cn=groups,$ldap_base" \
 		--set name="$GROUPNAME" \
-		--set mailAddress="$MAILADDR@$domainname"
+		--set mailAddress="$MAILADDR@$domainname" \
+		"$@"
 	local rc=$?
 	MAILADDR=
 	return $rc

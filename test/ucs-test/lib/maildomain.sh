@@ -13,7 +13,11 @@ create_mail_domain () { #Creates a mail/domain name like the first argument, sup
 	# MAILDOMAINNAME=$(maildomain_name_randomname)
 	# create_mail_domain "$MAILDOMAINNAME"
 	local domain="${1?-mail domain, e.g. \$(maildomain_name_randomname)}"
-	udm-test mail/domain create --position="cn=domain,cn=mail,$ldap_base" --set name="$domain"
+	shift
+	udm-test mail/domain create \
+		--position="cn=domain,cn=mail,$ldap_base" \
+		--set name="$domain" \
+		"$@"
 	return $?
 }
 

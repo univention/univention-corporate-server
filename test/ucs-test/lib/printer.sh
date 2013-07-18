@@ -9,6 +9,7 @@ getprintername () { # Generate a name for a printer. E.g. PRINTERNAME=$(getprint
 
 create_localprinter () { #Creates a printer. E.g. createlocalprinter $PRINTERNAME
 	TMP_PRINTERNAME="${i?-printername, e.g \$(getprintername)}"
+	shift
 	info "create printer $TMP_PRINTERNAME"
 
 	udm-test shares/printer create \
@@ -16,7 +17,8 @@ create_localprinter () { #Creates a printer. E.g. createlocalprinter $PRINTERNAM
 		--set name="$TMP_PRINTERNAME" \
 		--set spoolHost="$hostname.$domainname" \
 		--set uri="parallel:/ /dev/lp0" \
-		--set model="foomatic-ppds/Apple/Apple-12_640ps-Postscript.ppd.gz"
+		--set model="foomatic-ppds/Apple/Apple-12_640ps-Postscript.ppd.gz" \
+		"$@"
 }
 
 remove_printer () { # Remove a printer. E.g. removeprinter $PRINTERNAME
