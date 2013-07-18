@@ -83,7 +83,12 @@ class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 
 
 class UCSTestUDM(object):
+	_lo = utils.get_ldap_connection()
+	_ucr = univention.testing.ucr.UCSTestConfigRegistry()
+	_ucr.load()
+
 	PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
+	
 	COMPUTER_MODULES = ('computers/ubuntu',
 						'computers/linux',
 						'computers/windows',
@@ -95,12 +100,16 @@ class UCSTestUDM(object):
 						'computers/macos',
 						'computers/ipmanagedclient')
 
+
+	UNIVENTION_TEMPORARY_CONTAINER = 'cn=temporary,cn=univention,%s' % _ucr['ldap/base']
+	DEFAULT_USER_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % _ucr['ldap/base'], 'univentionUsersObject')[0]
+	DEFAULT_GROUP_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % _ucr['ldap/base'], 'univentionGroupsObject')[0]
+
+	
+
 	def __init__(self):
-		self._ucr = univention.testing.ucr.UCSTestConfigRegistry()
-		self._ucr.load()
-		self._lo = utils.get_ldap_connection()
 		self._cleanup = {}
-		self._cleanupLocks = []
+		self._cleanupLocks = {}
 
 
 	def _build_udm_cmdline(self, modulename, action, kwargs):
@@ -281,7 +290,7 @@ class UCSTestUDM(object):
 		Return value: (dn, username)
 		"""
 
-		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=users,%s' % self._ucr.get('ldap/base') ),
+		attr = self._set_module_default_attr(kwargs, (( 'position', self.DEFAULT_USER_CONTAINER ),
 											    ( 'password', 'univention' ),
 											    ( 'username', uts.random_username()),
 											    ( 'lastname', uts.random_name()),
@@ -301,7 +310,7 @@ class UCSTestUDM(object):
 
 		Return value: (dn, groupname)
 		"""
-		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=groups,%s' % self._ucr.get('ldap/base') ),
+		attr = self._set_module_default_attr(kwargs, (( 'position', self.DEFAULT_GROUP_CONTAINER ),
 											   ( 'name', uts.random_groupname() ) ))
 		
 		return (self.create_object('groups/group', wait_for_replication, **attr), attr['name'])
@@ -319,7 +328,7 @@ class UCSTestUDM(object):
 
 
 	def addCleanupLock(self, lockType, lockValue):
-			self._cleanupLocks.append('cn=%s,cn=%s,cn=temporary,cn=univention,%s' % (lockValue, lockType, self._ucr['ldap/base']))
+			self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
 	def cleanup(self):
 		"""
@@ -349,14 +358,16 @@ class UCSTestUDM(object):
 				(stdout, stderr) = child.communicate()
 		self._cleanup = {}
 
-		for lockDN in self._cleanupLocks:
-			try:
-				self._lo.delete(lockDN)
-			except ldap.NO_SUCH_OBJECT:
-				pass
-			except Exception as ex:
-				print 'Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex)
-		self._cleanupLocks = []
+		for lock_type, values in self._cleanupLocks.items():
+			for value in values:
+				lockDN = 'cn=%s,cn=%s,%s' % (value, lock_type, self.UNIVENTION_TEMPORARY_CONTAINER)
+				try:
+					self._lo.delete(lockDN)
+				except ldap.NO_SUCH_OBJECT:
+					pass
+				except Exception as ex:
+					print 'Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex)
+		self._cleanupLocks = {}
 
 		print 'UCSTestUDM cleanup done'
 

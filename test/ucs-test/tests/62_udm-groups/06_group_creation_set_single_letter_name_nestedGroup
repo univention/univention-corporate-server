@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Add nestedGroup with single letter name to groups/group
+## desc: Add nestedGroup with single letter name to groups/group during creation
 ## tags: [udm-groups]
 ## roles: [domaincontroller_master]
 ## exposure: careful

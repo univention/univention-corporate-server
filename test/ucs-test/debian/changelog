@@ -1,3 +1,14 @@
+ucs-test (4.0.73-1) unstable; urgency=low
+
+  * added variables containing DNs of univention temporary, default user and
+    default group containers to udm.py.UCSTestUDM
+  (Bug #30560)
+
+  * added certain udm-groups tests
+  (Bug #31657)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 18 Jul 2013 15:56:51 +0200
+
 ucs-test (4.0.72-2) unstable; urgency=low
 
   * lib: Fix ${var?-msg} to ${var:?msg} (Bug #28699)
