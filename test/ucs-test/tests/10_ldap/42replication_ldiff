@@ -1,0 +1,94 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check LDAP-replication to backup and slave by LDIFF
+## bugs: [31722]
+## tags:
+##  - basic
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+## packages:
+##  - univention-config
+##  - univention-directory-manager-tools
+##  - ldap-utils
+## exposure: dangerous
+
+ccount=1 gcount=5 ucount=20
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/container.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/group.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/maildomain.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
+
+set -o errexit #"script bail out when it detects an error (a non-zero exit code).
+set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
+
+declare -r unique="${0##*/}_${$}_${RANDOM}"
+section "Creating environment '$unique' for $ccount containers, $gcount groups, $ucount users"
+
+create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
+
+containers=()
+for ((c=0; c<ccount; c++))
+do
+	containername=$(random_mailaddress)
+	container_dn=$(container_create "$containername" "$unique" "$ldap_base") &&
+		undo container_remove "$container_dn" ||
+		fail_fast 1 "Failed to create container $containername"
+	containers+=("$containername")
+done
+
+groups=()
+for ((g=0; g<gcount; g++))
+do
+	groupname="$(group_randomnameme)"
+	group_create "$groupname" --set description="$unique" &&
+		undo group_remove "$groupname" ||
+		fail_fast 1 "Failed to create group $groupname"
+	groups+=("$groupname")
+done
+
+users=()
+for ((u=0; u<ucount; u++))
+do
+	username="$(user_randomname)"
+	user_create "$username" --set description="$unique" &&
+		undo user_remove "$username" ||
+		fail_fast 1 "Failed to create user $username"
+	users+=("$username")
+	group_adduser "$username" "${groups[u % ${#groups[@]}]}" || fail_test 1
+done
+
+section "Now testing replication..."
+wait_for_replication
+
+tmpdir=$(mktemp -d)
+undo "rm -rf '$tmpdir'"
+
+ldapsearch -x -LLL \
+	-h "$ldap_master" \
+	-p "$ldap_master_port" \
+	-D "$tests_domainadmin_account" \
+	-y "$tests_domainadmin_pwdfile" \
+	"(description=$unique)" >"$tmpdir/master.ldif" ||
+	fail_fast 1 "Failure to dump master"
+[ $(grep -c '^dn:' "$tmpdir/master.ldif") -lt $((ccount+gcount+ucount)) ] &&
+	fail_test 1 "Too few entries in LDIF of master"
+
+ldapsearch -x -LLL \
+	-h "$ldap_server_name" \
+	-p "$ldap_server_port" \
+	-D "$tests_domainadmin_account" \
+	-y "$tests_domainadmin_pwdfile" \
+	"(description=$unique)" >"$tmpdir/server.ldif" ||
+	fail_fast 1 "Failure to dump server"
+[ $(grep -c '^dn:' "$tmpdir/server.ldif") -lt $((ccount+gcount+ucount)) ] &&
+	fail_test 1 "Too few entries in LDIF of server"
+
+ldiff "$tmpdir/master.ldif" "$tmpdir/server.ldif" ||
+	fail_test 1 "Difference between master and server"
+
+exit $RETVAL
