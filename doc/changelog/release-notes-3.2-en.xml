@@ -54,7 +54,7 @@
 
     <chapter>
 	  <title>Release highlights</title>
-	  <section>
+
 		<para>
 		  With Univention Corporate Server 3.2, the first point release for Univention Corporate
 		  Server (UCS) 3.1 is now available. It provides several improvements and bugfixes:
@@ -67,12 +67,11 @@
 			</para>
 		  </listitem>
 		</itemizedlist>
-	  </section>
     </chapter>
 
     <chapter>
 	  <title>Recommended update order for environments with more than one UCS server / Updating systems with UCS components</title>
-	  <section>
+
 		<para>
 		  In environments with more than one UCS system, the update order of the UCS systems must be
 		  borne in mind:
@@ -89,7 +88,6 @@
 		  It is generally advisable to update all UCS systems in one maintenance window whenever
 		  possible. 
 		</para>
-	  </section>
 
 	  <section>
 		<title>Information on environments with third-party software</title>
@@ -114,7 +112,7 @@
 
     <chapter>
 	  <title>Preparation of update</title>
-	  <section>
+
 		<para>
 		  It must be checked whether sufficient disk space is available. A standard installation
 		  requires a minimum of 6 GB of memory. Depending on the scope of the existing installation,
@@ -136,7 +134,6 @@
 		  done, for example, using the tools <command>screen</command> and <command>at</command>,
 		  which are installed on all system roles.
 		</para>
-	  </section>
 
 	  <section>
 		<title>Checking the size of the BDB database of systems with Cyrus IMAP server (univention-mail-cyrus)</title>
@@ -165,14 +162,13 @@
 		  default values do not correspond to the old, existing configuration or if options used are
 		  not available in the new default values, the corresponding &ucsUCR; variables should be
 		  set prior to the update. E.g.:
+		</para>
 
-<programlisting>
+<programlisting language="sh">
 ucr set mail/cyrus/bdb/dbconfig/set_cachesize="0 4097152 1"
 ucr set mail/cyrus/bdb/dbconfig/set_lg_regionmax="2097152"
 ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 </programlisting>
-		</para>
-
 	  </section>
 
 	  <section>
@@ -197,7 +193,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 
     <chapter>
 	  <title>Postprocessing of the update</title>
-	  <section>
+
 		<para>
 		  Following the update, new or updated join scripts need to be executed. This can be done in
 		  two ways: Either using the UMC module  <guimenu>Domain join</guimenu> or by running the
@@ -208,7 +204,6 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		<para>
 		  Subsequently the UCS system should be restarted.
 		</para>
-	  </section>
 
 	  <section>
 		<title>Migration to Grub 2</title>
@@ -225,7 +220,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		<para>
 		  Documentation explaining how to write Grub 2 directly in the MBR on updated systems is
 		  provided in the Univention Support Database
-		  (<ulink>http://sdb.univention.de/1218</ulink>).
+		  (<ulink url="http://sdb.univention.de/1218"/>).
 		</para>
 	  </section>
 
@@ -310,25 +305,25 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		<para>
 		  &ucsUMC; uses numerous Javascript and CSS functions to display the web interface. Cookies
 		  need to be permitted in the browser. The following browsers are recommended:
+		</para>
 
 		  <itemizedlist>
 			<listitem>
-			  <para> Chrome as of version 14 </para>
+			  <para>Chrome as of version 14</para>
 			</listitem>
 
 			<listitem>
-			  <para> Firefox as of version 10 </para>
+			  <para>Firefox as of version 10</para>
 			</listitem>
 
 			<listitem>
-			  <para> Internet Explorer as of version 9</para>
+			  <para>Internet Explorer as of version 9</para>
 			</listitem>
 
 			<listitem>
-			  <para> Safari (on the iPad 2)</para>
+			  <para>Safari (on the iPad 2)</para>
 			</listitem>
 		  </itemizedlist>
-		</para>
 
 		<para>
 		  Users with older browsers may experience display or performance problems. 
@@ -341,6 +336,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  The versions of Samba 4 currently published by the Samba project are undergoing more
 		  intensive changes in their further development than Samba 3. For this reason, some
 		  functions are not yet completely available:
+		</para>
 
 		  <itemizedlist>
 			<listitem>
@@ -370,11 +366,9 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 			  </para>
 			</listitem>
 		  </itemizedlist>
-		</para>
 
 		<para>
-		  Further information can be found in Chapter 8 of the UCS manual <xref
-		  linkend="UCS-Handbuch"/>.
+		  Further information can be found in Chapter 8 of the UCS manual <citation>UCS-Handbuch</citation>.
 		</para>
 	  </section>
 
@@ -399,6 +393,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		<title>Migration of a Samba 3 environment to Samba 4</title>
 		<para>
 		  There are two basic procedures for migrating Samba 3 to Samba 4:
+		</para>
 
 		<itemizedlist>
 		<listitem>
@@ -414,7 +409,6 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  </para>
 		</listitem>
 		</itemizedlist>
-		</para>
 
 		<para>
 		  Both procedures are documented in detail in the Univention Wiki:
@@ -428,7 +422,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  If the Xen hypervisor is used and the memory limit for the Dom0 has been configured using
 		  the &ucsUCR;-Variable <envar>grub/xenhopt</envar>, the value should be updated to include
 		  the <emphasis>,max:</emphasis> part as well. See the
-		  <ulink>http://wiki.univention.de/index.php?title=UVMM_Quickstart-3.1/en#Configuring_the_Dom0</ulink>
+		  <ulink url="http://wiki.univention.de/index.php?title=UVMM_Quickstart-3.1/en#Configuring_the_Dom0"/>
 		  for details.
 		</para>
 	  </section>
