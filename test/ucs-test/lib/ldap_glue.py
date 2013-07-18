@@ -4,10 +4,10 @@ from ldap.controls import LDAPControl
 import ldap.modlist as modlist
 try:
 	from univention.connector.ad import compatible_modstring
-except ImportError, e:
+except ImportError:
 	try:
 		from univention.s4connector.s4 import compatible_modstring
-	except ImportError, e:
+	except ImportError:
 		def compatible_modstring(dn):
 			return dn
 
