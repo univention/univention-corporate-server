@@ -1,6 +1,6 @@
 wait_for_LDAP_replication_of_domain_sambaSid () {
 	local username t0 t sambaSID
-	username="${1?-username}"
+	username="${1:?username}"
 	t0=$(date +%Y%m%d%H%M%S)
 	t=t0
 	sambaSID=$(univention-ldapsearch -xLLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
@@ -32,7 +32,7 @@ wait_for_drs_replication () {
 		esac
 	done
 
-	ldap_filter="${1?-ldap_filter}"
+	ldap_filter="${1:?ldap_filter}"
 	attr="${2:-dn}"
 	t0=$(date +%Y%m%d%H%M%S)
 	t=t0

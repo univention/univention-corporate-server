@@ -12,7 +12,7 @@ create_mail_domain () { #Creates a mail/domain name like the first argument, sup
 	# creating a mail/domain name could be like:
 	# MAILDOMAINNAME=$(maildomain_name_randomname)
 	# create_mail_domain "$MAILDOMAINNAME"
-	local domain="${1?-mail domain, e.g. \$(maildomain_name_randomname)}"
+	local domain="${1:?mail domain, e.g. \$(maildomain_name_randomname)}"
 	shift
 	udm-test mail/domain create \
 		--position="cn=domain,cn=mail,$ldap_base" \
@@ -25,7 +25,7 @@ delete_mail_domain () { # Deletes a mail/domain name like the first argument, su
 	# creating a mail/domain name could be like:
 	# MAILDOMAINNAME=$(maildomain_name_randomname)
 	# create_mail_domain "$MAILDOMAINNAME"
-	local domain="${1?-mail domain, e.g. \$(maildomain_name_randomname)}"
+	local domain="${1:?mail domain, e.g. \$(maildomain_name_randomname)}"
 	udm-test mail/domain remove --dn "cn=$domain,cn=domain,cn=mail,$ldap_base"
 	return $?
 }

@@ -8,7 +8,7 @@ getprintername () { # Generate a name for a printer. E.g. PRINTERNAME=$(getprint
 }
 
 create_localprinter () { #Creates a printer. E.g. createlocalprinter $PRINTERNAME
-	TMP_PRINTERNAME="${i?-printername, e.g \$(getprintername)}"
+	TMP_PRINTERNAME="${i:?printername, e.g \$(getprintername)}"
 	shift
 	info "create printer $TMP_PRINTERNAME"
 
@@ -22,15 +22,15 @@ create_localprinter () { #Creates a printer. E.g. createlocalprinter $PRINTERNAM
 }
 
 remove_printer () { # Remove a printer. E.g. removeprinter $PRINTERNAME
-	TMP_PRINTERNAME="${1?-printername}"
+	TMP_PRINTERNAME="${1:?printername}"
 	info "remove printer $TMP_PRINTERNAME"
 	udm-test shares/printer remove \
 		--dn "cn=$TMP_PRINTERNAME,cn=printers,$ldap_base"
 }
 
 set_printer_sambaname () { # Set the Sambaname for a printer. E.g. setsambaname $PRINTERNAME $PRINTERSAMBANAME
-	PRINTERNAME="${1?-printer name}"
-	SAMBANAME="${2?-samba printer name}"
+	PRINTERNAME="${1:?printer name}"
+	SAMBANAME="${2:?samba printer name}"
 	info  "setting the sambaName for printer $PRINTERNAME to the value $SAMBANAME"
 	udm-test shares/printer modify \
 		--dn "cn=$PRINTERNAME,cn=printers,$ldap_base" \
