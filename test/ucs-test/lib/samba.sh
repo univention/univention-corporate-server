@@ -1,10 +1,6 @@
 wait_for_LDAP_replication_of_domain_sambaSid() {
 	local username t0 t sambaSID
-	username="$1"
-	if [ -z "$username" ]; then
-		echo "usage: $0 <username>"
-		return 1
-	fi
+	username="${1?-username}"
 	t0=$(date +%Y%m%d%H%M%S)
 	t=t0
 	sambaSID=$(univention-ldapsearch -xLLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
@@ -36,16 +32,8 @@ wait_for_drs_replication() {
 		esac
 	done
 
-	ldap_filter="$1"
-	if [ -z "$ldap_filter" ]; then
-		echo "usage: $0 <ldap_filter>"
-		return 1
-	fi
-	attr="$2"
-	if [ -z "$attr" ]; then
-		attr='dn'
-	fi
-
+	ldap_filter="${1?-ldap_filter}"
+	attr="${2:-dn}"
 	t0=$(date +%Y%m%d%H%M%S)
 	t=t0
 	output=$(ldbsearch -H /var/lib/samba/private/sam.ldb "${opts[@]}" "$ldap_filter" "$attr")
@@ -86,7 +74,7 @@ force_drs_replication() {
 		esac
 	done
 		
-	source_dc="$1"
+	source_dc="${1:-}"
 	if [ -z "$source_dc" ]; then
 		s4_connector_hosts=$(univention-ldapsearch -x -b "cn=computers,$ldap_base" univentionService="S4 Connector" uid | sed -nr 's/^uid: (.*)\$$/\1/p')
 		if [ "$(wc -w <<<"$s4_connector_hosts")" -eq 1 ]; then
@@ -95,14 +83,8 @@ force_drs_replication() {
 			echo "WARNING: Automatic S4 Connector host detection failed"
 		fi
 	fi
-	destination_dc="$2"
-	if [ -z "$destination_dc" ]; then
-		destination_dc=$(ucr get hostname)
-	fi
-	partition_dn="$3"
-	if [ -z "$partition_dn" ]; then
-		partition_dn=$(ucr get samba4/ldap/base)
-	fi
+	destination_dc="${2:-$(ucr get hostname)}"
+	partition_dn="${3:-$(ucr get samba4/ldap/base)}"
 
 	hostname=$(ucr get hostname)
 	if [ "$direction" = "in" ]; then

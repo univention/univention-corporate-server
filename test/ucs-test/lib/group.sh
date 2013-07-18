@@ -11,17 +11,17 @@ group_create () { #Creates a group named like supplied in the first argument of 
 	#GROUPNAME=$(group_randomnameme)
 	#group_create "$GROUPNAME"
 
-	if [ -n "$1" ]
+	if [ -n "${1:-}" ]
 	then
 		local GROUPNAME="$1"
 	else
-		if [ -z "$GROUPNAME" ]
+		if [ -z "${GROUPNAME:-}" ]
 		then
 			GROUPNAME=$(random_mailaddress)
 		fi
 	fi
 
-	if [ -z "$MAILADDR" ]
+	if [ -z "${MAILADDR:-}" ]
 	then
 		local MAILADDR=$(random_mailaddress)
 	fi

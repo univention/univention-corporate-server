@@ -8,14 +8,7 @@ function getprintername () { # Generate a name for a printer. E.g. PRINTERNAME=$
 }
 
 function create_localprinter () { #Creates a printer. E.g. createlocalprinter $PRINTERNAME
-    if [ -n "$1" ]
-    then
-        TMP_PRINTERNAME="$1"
-    else
-        error "You have to supply a printername to the function createlocalprinter. (E.g. PRINTERNAME=\$(getprintername) and then createlocalprinter \$PRINTERNAME)"
-	return 1
-    fi
-
+	TMP_PRINTERNAME="${i?-printername, e.g \$(getprintername)}"
     info "create printer $TMP_PRINTERNAME"
 
     udm-test shares/printer create --position "cn=printers,$ldap_base" --set "name=$TMP_PRINTERNAME" --set "spoolHost=$hostname.$domainname" --set "uri=parallel:/ /dev/lp0" --set "model=foomatic-ppds/Apple/Apple-12_640ps-Postscript.ppd.gz"
@@ -23,33 +16,14 @@ function create_localprinter () { #Creates a printer. E.g. createlocalprinter $P
 }
 
 function remove_printer () { # Remove a printer. E.g. removeprinter $PRINTERNAME
-    if [ -n "$1" ]
-    then
-        TMP_PRINTERNAME="$1"
-    else
-        error "You have to supply a printername to the function removeprinter. E.g. removeprinter \$PRINTERNAME"
-	return 1
-    fi
+	TMP_PRINTERNAME="${1?-printername}"
     info "remove printer $TMP_PRINTERNAME"
     udm-test shares/printer remove --dn="cn=$TMP_PRINTERNAME,cn=printers,$ldap_base"
 }
 
 function set_printer_sambaname () { # Set the Sambaname for a printer. E.g. setsambaname $PRINTERNAME $PRINTERSAMBANAME
-    if [ -n "$1" ]
-    then
-	PRINTERNAME="$1"
-    else
-        error "You have to supply a printername to the function set_printer_sambaname. E.g. setsambaname $PRINTERNAME $PRINTERSAMBANAME"
-	return 1
-    fi
-    if [ -n "$2" ]
-    then
-	SAMBANAME="$2"
-    else
-        error "You have to supply a sambaname to the function set_printer_sambaname. E.g. setsambaname $PRINTERNAME $PRINTERSAMBANAME"
-	return 1
-    fi
-
+	PRINTERNAME="${1?-printer name}"
+	SAMBANAME="${2?-samba printer name}"
     info  "setting the sambaName for printer $PRINTERNAME to the value $SAMBANAME"
     udm-test shares/printer modify --dn="cn=$PRINTERNAME,cn=printers,$ldap_base" --set sambaName="$SAMBANAME"
 

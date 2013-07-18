@@ -9,24 +9,24 @@ eval "$(univention-config-registry shell)"
 
 tty <&2 >/dev/null && _B=$(tput rev 2>/dev/null) _N=$(tput sgr0 2>/dev/null) || unset _B _N
 error () { #DEBUGLEVEL 0
-	echo -e "${_B}error${_N} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
+	echo -e "${_B:-}error${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
 }
 warning () { #DEBUGLEVEL 1
 	if [ "$DEBUGLEVEL" -ge 1 ]
 	then
-		echo -e "${_B}warning${_N} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
+		echo -e "${_B:-}warning${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
 	fi
 }
 info () { #DEBUGLEVEL 2
 	if [ "$DEBUGLEVEL" -ge 2 ]
 	then
-		echo -e "${_B}info${_N} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
+		echo -e "${_B:-}info${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
 	fi
 }
 debug () { #DEBUGLEVEL 3
 	if [ "$DEBUGLEVEL" -ge 3 ]
 	then
-		echo -e "${_B}debug${_N} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
+		echo -e "${_B:-}debug${_N:-} $(date +"%Y-%m-%d %H:%M:%S\t") $*" >&2
 	fi
 }
 section () { #This is intended to make life easier for readers of test-logs with #a lot of content. If your testcase performs multiple similar checks #each producing a lot of output visually dividing these checks into #sections will help a lot. You should use this function only on the #top level, i.e. directly in the test-script and not in any library #functions.
@@ -121,7 +121,7 @@ RETVAL=100
 ALREADY_FAILED=false
 fail_test () { #This is intended to make life easier for readers of test-logs while #searching the spot where a testcase failed first.  #In order for this to work you should consequently call fail_test #with the corresponding error-code in your test-case instead of directly #using exit and when you really want to exit do so with "exit $RETVAL" #The first occurence of an error will then be marked specially in #the log file.
 	local errorcode="$1"
-	local failure_message="$2"
+	local failure_message="${2:-}"
 
 	if ! $ALREADY_FAILED
 	then
@@ -146,7 +146,7 @@ fail_bool () { #This is intended to be called directly after functions that are 
 	local rc=$?
 	local expected_retval="${1:-0}"
 	local errorcode="${2:-110}"
-	local failure_message="$3"
+	local failure_message="${3:-}"
 
 	if [ -z "$failure_message" ]
 	then
@@ -229,9 +229,10 @@ wait_for_replication_and_postrun () { #wait for listener/notifier replicaion and
 }
 
 check_domainadmin_credentials () { # check ldap credentials are available
-if [ -z "$tests_domainadmin_pwd" -o -z "$tests_domainadmin_pwdfile" -o -z "$tests_domainadmin_account" ]; then
-	return 1
-fi
+	if [ -z "${tests_domainadmin_pwd:-}" -o -z "${tests_domainadmin_pwdfile:-}" -o -z "${tests_domainadmin_account:-}" ]
+	then
+		return 1
+	fi
 }
 # vim:set filetype=sh ts=4:
 # Local Variables:
