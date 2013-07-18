@@ -8,6 +8,7 @@ ucs-test (4.0.72-1) unstable; urgency=low
   * Fix ldif comparator (Bug #29337)
   * 10/05: Move to new section: 11_join
   * 10/42: Check replication using LDIFf (Bug #31722)
+  * 10/43: Check replication performance (Bug #31721)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 15 Jul 2013 10:50:04 +0200
 

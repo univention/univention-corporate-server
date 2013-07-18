@@ -1,0 +1,92 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check LDAP-replication performance
+## bugs: [31721]
+## tags:
+##  - basic
+##  - performance
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+## packages:
+##  - univention-config
+##  - univention-directory-manager-tools
+##  - ldap-utils
+## exposure: dangerous
+
+ccount=50 gcount=50 ucount=50 max=60""000000000 # ns
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/container.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/group.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/maildomain.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
+
+set -o errexit #"script bail out when it detects an error (a non-zero exit code).
+set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
+
+info "Stopping replication..."
+wait_for_replication ||
+	fail_fast 1 "Initial replication failed"
+/etc/init.d/univention-directory-listener stop
+
+
+declare -r unique="${0##*/}_${$}_${RANDOM}"
+section "Creating environment '$unique' for $ccount containers, $gcount groups, $ucount users"
+
+create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
+
+containers=()
+for ((c=0; c<ccount; c++))
+do
+	containername=$(random_mailaddress)
+	container_dn=$(container_create "$containername" "$unique" "$ldap_base") &&
+		undo container_remove "$container_dn" ||
+		fail_fast 1 "Failed to create container $containername"
+	containers+=("$containername")
+done
+
+groups=()
+for ((g=0; g<gcount; g++))
+do
+	groupname="$(group_randomnameme)"
+	group_create "$groupname" --set description="$unique" &&
+		undo group_remove "$groupname" ||
+		fail_fast 1 "Failed to create group $groupname"
+	groups+=("$groupname")
+done
+
+users=()
+for ((u=0; u<ucount; u++))
+do
+	username="$(user_randomname)"
+	groupdn="cn=${groups[u % ${#groups[@]}]},cn=groups,$ldap_base"
+	user_create "$username" --set description="$unique" \
+		--append groups="$groupdn" &&
+		undo user_remove "$username" ||
+		fail_fast 1 "Failed to create user $username"
+	users+=("$username")
+done
+
+
+section "Restarting replication..."
+
+starttime=$(date +%s%N)
+info "Start: $(printf "%'d" $starttime) ns"
+
+/etc/init.d/univention-directory-listener start
+wait_for_replication ||
+	fail_test 1 "Replication timed out"
+
+stopptime=$(date +%s%N)
+info "Stopp: $(printf "%'d" $stopptime) ns"
+
+delta=$((stopptime - starttime))
+info "Delta: $(printf "%'d" $delta) ns"
+
+[ $delta -ge $max ] &&
+	fail_test 1 "Replication took more than $(printf "%'d" $max) ns"
+
+exit $RETVAL
