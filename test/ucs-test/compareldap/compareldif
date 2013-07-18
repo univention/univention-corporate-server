@@ -158,7 +158,7 @@ def line_validation(ldifline):
 def cleanup(tmp_file):
 	""" The method converts the tmp_file with an algorithm 
 		that make the "diff"-comparison possible into another tmp file"""
-	if tmp_file == None:
+	if tmp_file is None:
 		delete_tmp_file()
 	attrlist = [] # list of ldap attributes of an ldap object
 	attrtype = "" # types of the ldap entries

@@ -76,7 +76,7 @@ class S4Connection(ldap_glue_s4.LDAPConnection):
 		import re
 		regex = '^(.*?)-%s$' % primaryGroupID
 		for r in res:
-			if r[0] == None or r[0] == 'None':
+			if r[0] is None or r[0] == 'None':
 				continue # Referral
 			if re.search (regex, s4.decode_sid(r[1]['objectSid'][0])):
 				return r[0]

@@ -1,12 +1,12 @@
 import ldap
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 from ldap.controls import LDAPControl
 import ldap.modlist as modlist
 import time
 import univention.s4connector.s4 as s4
 import univention.uldap
 
-baseConfig = univention_baseconfig.baseConfig()
+baseConfig = ConfigRegistry()
 baseConfig.load()
 
 def get_rdn(dn):
@@ -82,9 +82,9 @@ class LDAPConnection:
 
 	def get_attribute(self, dn, attribute):
 		res = self.lo.search_ext_s(dn, ldap.SCOPE_BASE, timeout=10)
-		if res[0][1].has_key (attribute):
+		try:
 			return res[0][1][attribute]
-		else:
+		except LookupError:
 			return []
 
 	def create(self, dn, attrs):

@@ -1,8 +1,9 @@
 Source: ucs-test
-Section: tools
+Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 8.0.0),
+ ucslint,
  python-support
 Standards-Version: 3.6.1
 
@@ -341,7 +342,7 @@ Description: Test scripts for UMC
 # ${misc:Depends}
 #Provides: ucs-test-module,
 #Description: Test scripts for univention-system-setup.
-# This package includes the test-cases for unvention-system-setup.
+# This package includes the test-cases for univention-system-setup.
 
 Package: ucs-test-adconnector
 Architecture: all
@@ -350,7 +351,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for univention-ad-connector.
- This package includes the test-cases for unvention-ad-connector.
+ This package includes the test-cases for univention-ad-connector.
 
 #Package: ucs-test-ucsschool
 #Architecture: all

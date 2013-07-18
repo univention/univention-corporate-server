@@ -1,3 +1,9 @@
+ucs-test (4.0.72-1) unstable; urgency=low
+
+  * Use ucslint (Bug #28699)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Jul 2013 10:50:04 +0200
+
 ucs-test (4.0.71-1) unstable; urgency=low
 
   * 00_base/45license_v2: limit test on DC master (Bug #31680)
@@ -39,11 +45,10 @@ ucs-test (4.0.67-1) unstable; urgency=low
 ucs-test (4.0.66-1) unstable; urgency=low
 
   * changed description of udm-tests. It now contains the effective module
-  	name (e.g dns/host, users/user, dhcp/service)
+    name (e.g dns/host, users/user, dhcp/service)
   * removed unused code from 64_udm-printers/41_check_ppd
   * renamed udm-users tests
-  * fixed "nameserver" attribute related udm-dns tests
-  (Bug #27664)
+  * fixed "nameserver" attribute related udm-dns tests (Bug #27664)
 
  -- Lukas Walter <walter@univention.de>  Mon, 15 Jul 2013 11:52:42 +0200
 
