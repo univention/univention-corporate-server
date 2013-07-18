@@ -42,6 +42,22 @@ from objects import *
 from local import _
 import os
 
+def human_readable(size, precision=2, base=1000.0):
+	"""
+	Convert number to human readable number.
+	>>> human_readable(0)
+	'0 B'
+	>>> human_readable(1)
+	'1 B'
+	>>> human_readable(999)
+	'999 B'
+	>>> human_readable(1000)
+	'1.00 KB'
+	"""
+	size, fac = reduce(lambda (val, suf), fac: (val, suf) if val < base else (val / base, fac), "KMGTPEZY", (size, ''))
+	return "%.*f %sB" % (precision if fac else 0, size, fac)
+
+
 class object(content):
 	def __init__(self, max_y, max_x, last, file, cmdline):
 		self.guessed = {}
@@ -65,9 +81,9 @@ class object(content):
 		self.debug('bootloader => run profiled')
 		if len(self.devices) == 1:
 			self.debug("  using found device %s" % self.devices.keys()[0])
-			return {'bootloader_record' : self.devices.keys()[0]}	
+			return {'bootloader_record' : self.devices.keys()[0]}
 		return {}
-	
+
 	def profile_complete(self):
 		self.debug("bootloader => profile complete")
 		if self.check('bootloader_record'):
@@ -143,10 +159,25 @@ class object(content):
 
 			# valid device
 			fullname = '/dev/%s' % device
-			self.devices[ fullname ] = [ fullname, len(self.devices) ]
-
-			if len(fullname)+3 > self.max_length:
-				self.max_length = len(fullname) + 3
+			try:
+				vendor = open('%s/device/vendor' % prefix, 'r').readline().strip()
+			except IOError, ex:
+				self.debug('WARNING: cannot read %s/device/vendor: %s' % (prefix, ex))
+				vendor = 'Unknown'
+			try:
+				model = open('%s/device/model' % prefix, 'r').readline().strip()
+			except IOError, ex:
+				self.debug('WARNING: cannot read %s/device/model: %s' % (prefix, ex))
+				model = 'Unknown'
+			try:
+				size = open('%s/size' % prefix, 'r').readline().strip()
+				size = human_readable(long(size) * 512L)
+			except IOError, ex:
+				self.debug('WARNING: cannot read %s/size: %s' % (prefix, ex))
+				size = '? B'
+			label = '%s (%s: %s) - %s' % (fullname, vendor, model, size)
+			self.devices[label] = (fullname, len(self.devices))
+			self.max_length = max(self.max_length, len(label) + 3)
 
 		self.debug('Possible bootloader devices: %s' % self.devices)
 
@@ -210,3 +241,7 @@ class object(content):
 	def result(self):
 		result = { 'bootloader_record': '%s' % self.get_elem('DEVICE').result()[0] }
 		return result
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
