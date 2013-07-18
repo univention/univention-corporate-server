@@ -138,9 +138,14 @@ class Application(object):
 		self.raw_config = config
 		url = urljoin('%s/' % self.get_metainf_url(), os.path.basename(ini_file))
 
+		def _escape_value(key, value):
+			if key in ['longdescription']:
+				return value
+			return cgi.escape(value)
+
 		# copy values from config file
 		for k, v in config.items('Application'):
-			self._options[k] = cgi.escape(v)
+			self._options[k] = _escape_value(k, v)
 
 		if localize:
 			# overwrite english values with localized translations
@@ -150,7 +155,7 @@ class Application(object):
 					loc = loc.split('_')[0]
 				if config.has_section(loc):
 					for k, v in config.items(loc):
-						self._options[k] = cgi.escape(v)
+						self._options[k] = _escape_value(k, v)
 
 		# parse boolean values
 		for ikey in ('notifyvendor', 'useractivationrequired'):
@@ -317,6 +322,7 @@ class Application(object):
 
 	@classmethod
 	def sync_with_server(cls):
+		return
 		something_changed = False
 		json_url = urljoin('%s/' % cls.get_metainf_url(), 'index.json.gz')
 		MODULE.process('Downloading "%s"...' % json_url)
@@ -554,13 +560,13 @@ class Application(object):
 		else:
 			conflict_packages = []
 			for package in self.get('conflictedsystempackages'):
-				if package_manager.is_installed(package, reopen=False):
+				if package_manager.is_installed(package):
 					conflict_packages.append(package)
 			for app in self.all():
 				if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
-					if any(package_manager.is_installed(package, reopen=False) for package in app.get('defaultpackages')):
+					if any(package_manager.is_installed(package) for package in app.get('defaultpackages')):
 						if app.name not in conflict_packages:
-							# can conflict multiple times: conflicts with 
+							# can conflict multiple times: conflicts with
 							# APP-1.1 and APP-1.2, both named APP
 							conflict_packages.append(app.name)
 			if conflict_packages:
@@ -568,7 +574,7 @@ class Application(object):
 		return None, None
 
 	def is_installed(self, package_manager):
-		return all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages'))
+		return all(package_manager.is_installed(package) for package in self.get('defaultpackages'))
 
 	def can_be_installed(self, package_manager, check_is_installed=True):
 		return not bool(self.cannot_install_reason(package_manager, check_is_installed)[0])

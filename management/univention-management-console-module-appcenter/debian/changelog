@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.8-1) unstable; urgency=low
+
+  * Allow HTML in LongDescription of ini file (Bug #31185)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 18 Jul 2013 13:47:08 +0200
+
 univention-management-console-module-appcenter (3.0.7-1) unstable; urgency=low
 
   * Bug #30629: Show helpful messages when new license is not yet installed
