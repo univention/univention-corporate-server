@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.7-4) unstable; urgency=low
+
+  * Import the logging module, the paramiko module uses it (Bug #31283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Jul 2013 06:51:50 +0200
+
 ucs-ec2-tools (0.1.7-3) unstable; urgency=low
 
   * Added support for a partition size in cfg file. This is needed for the

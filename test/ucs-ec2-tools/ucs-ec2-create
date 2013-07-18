@@ -40,6 +40,7 @@ import time
 import traceback
 from socket import error as socket_error
 from select import select
+import logging
 
 import boto
 from boto.ec2 import regions,blockdevicemapping
@@ -460,6 +461,8 @@ def main():
 	config.read(options.config_file)
 	_print_done()
 
+	# The paramiko module uses the logging module
+	logging.basicConfig(level=logging.WARNING)
 	
 	_print_process('Checking for ~/.boto')
 
