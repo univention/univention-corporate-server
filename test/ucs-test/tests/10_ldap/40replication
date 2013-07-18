@@ -24,15 +24,24 @@ set -o nounset #If expansion is attempted on an unset variable or parameter --> 
 
 container_name="$(random_chars 20 "${_lowerletters}${_upperletters}${_ciphers}")"
 container_position="cn=univention,$ldap_base"
-echo "Creating and modifiying object:"
-udm-test container/cn create --set description=original --set name=$container_name --position "$container_position"
 
-remove_create_container_with_description ()
-{
-	description=$1
-	udm-test container/cn remove --dn cn=$container_name,"$container_position"
-	udm-test container/cn create --set description=$description --set name=$container_name --position "$container_position"
+create_container_with_description () {
+	local description=$1
+	udm-test container/cn create \
+		--set description="$description" \
+		--set name="$container_name" \
+		--position "$container_position"
 }
+remove_container_with_description () {
+	udm-test container/cn remove --dn "cn=$container_name,$container_position"
+}
+remove_create_container_with_description () {
+	remove_container_with_description
+	create_container_with_description "$1"
+}
+
+echo "Creating and modifiying object:"
+create_container_with_description "original"
 for i in $(seq 1 8)
 do
 	remove_create_container_with_description "other$i"
@@ -74,6 +83,6 @@ else
         fi
 fi
 echo "Removing object:"
-udm-test container/cn remove --dn cn=$container_name,$container_position
+remove_container_with_description
 
 exit $RETVAL
