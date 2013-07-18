@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Try to bind to ldapi as normal user (Bug #10529)
+## desc: Try to bind to ldapi as normal user
 ## bugs: [10529]
 ## tags:
 ##  - basic

@@ -1,5 +1,6 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Join to a master when the dn of the bind-user is very long (provoking a linebreak #16210)##
+## desc: Join to a master when the dn of the bind-user is very long (provoking a linebreak)
+## bugs: [16210]
 ## roles:
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave

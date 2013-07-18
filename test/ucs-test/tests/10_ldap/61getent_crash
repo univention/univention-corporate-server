@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Checking for getent group crash (Bug #10558)
+## desc: Checking for getent group crash
 ## bugs: [10558]
 ## tags: [BASIC]
 ## roles:

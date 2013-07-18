@@ -6,6 +6,7 @@ ucs-test (4.0.72-1) unstable; urgency=low
   * lib/group,user: Remove debug output of locale information.
   * Use stored passwords (Bug #31250)
   * Fix ldif comparator (Bug #29337)
+  * 10/05: Move to new section: 11_join
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 15 Jul 2013 10:50:04 +0200
 

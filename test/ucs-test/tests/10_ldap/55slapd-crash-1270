@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Checking for slapd crash (Bug #9738)
+## desc: Checking for slapd crash
 ## bugs: [9738]
 ## roles:
 ##  - domaincontroller_master
