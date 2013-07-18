@@ -344,20 +344,28 @@ class VM:
 			# Close STDIN for remote command
 			session.shutdown_write()
 			while True:
-				r_list, _w_list, _e_list = select([session], [], [], 10)
-				if r_list:
-					if session.recv_ready():
-						data = session.recv(4096)
-						self._log(data, newline=False)
-						continue
-					elif session.recv_stderr_ready():
-						data = session.recv_stderr(4096)
-						self._log(data, newline=False)
-						continue
-					else:
-						pass  # EOF
-				if session.exit_status_ready():
-					break
+				try:
+					r_list, _w_list, _e_list = select([session], [], [], 10)
+					if r_list:
+						if session.recv_ready():
+							data = session.recv(4096)
+							self._log(data, newline=False)
+							continue
+						elif session.recv_stderr_ready():
+							data = session.recv_stderr(4096)
+							self._log(data, newline=False)
+							continue
+						else:
+							pass  # EOF
+					if session.exit_status_ready():
+						break
+				except paramiko.ssh_exception.SSHException as e:
+					# Try to get rid of:
+					#  The Python “Connection Reset By Peer” Problem
+					#  http://www.itmaybeahack.com/homepage/iblog/C551260341/E20081031204203.html
+					print 'Catch exception: %s' % e
+					self._log('Catch exception: %s' % e)
+					pass
 			if session.exit_status != 0:
 				self._log('*** Failed %d: %s' % (session.exit_status, command))
 		finally:
