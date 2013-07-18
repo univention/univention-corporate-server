@@ -53,7 +53,14 @@ def wait_for_s4connector():
 		print highestCommittedUSN
 
 		previous_lastUSN = lastUSN
-		c.execute('select value from S4 where key=="lastUSN"')
+		try:
+			c.execute('select value from S4 where key=="lastUSN"')
+		except sqlite3.OperationalError as e:
+			static_count = 0
+			print 'Reset counter: sqlite3.OperationalError: %s' % e
+			print 'Counter: %d' % static_count
+			continue
+			
 		conn.commit()
 		lastUSN = c.fetchone()[0]
 
