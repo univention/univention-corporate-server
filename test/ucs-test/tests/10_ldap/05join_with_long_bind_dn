@@ -7,17 +7,12 @@
 ## packages:
 ##  - univention-join
 ## exposure: dangerous
+## join: false
 
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/master.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
-. "$TESTLIBPATH/joincheck.sh" || exit 137
-
-if check_join_status; then
-	error "Expected system not to be joined"
-	exit 135
-fi
 
 DCNAME=
 BINDUSERNAME="$(random_chars)"
