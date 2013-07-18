@@ -21,3 +21,8 @@ File: etc/pam.d/cups
 Type: file
 File: etc/logrotate.d/univention-printserver
 Variables: logrotate/.*
+
+Type: file
+File: etc/cups/cups-access-limit.conf
+Variables: cups/printmode/hosts/all
+Variables: cups/printmode/hosts/none

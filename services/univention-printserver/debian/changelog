@@ -1,3 +1,11 @@
+univention-printserver (7.0.3-1) unstable; urgency=low
+
+  * Added support for denying client access based on ip addresses,
+    configurable via UCRV cups/printmode/hosts/none. This funtionality
+    is needed for UCS@School. (Bug #31902)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 18 Jul 2013 14:07:26 +0200
+
 univention-printserver (7.0.2-1) unstable; urgency=low
 
   * Added to "79univention-printserver.inst" 
