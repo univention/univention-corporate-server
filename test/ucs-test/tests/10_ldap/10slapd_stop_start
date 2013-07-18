@@ -16,21 +16,15 @@ returnOK=0
 returnERROR=1
 returnCode=$returnOK
 
-#List of services to be stopped and started
-service_count=1
-
-service_path[0]="/etc/init.d/slapd"
-service_binarys[0]="/usr/sbin/slapd"
-server_roles[0]="domaincontroller_master domaincontroller_backup domaincontroller_slave"
-
 echo "Check if services can be correctly stopped"
 role=$(/usr/sbin/univention-config-registry get server/role)
-nr=0
-while [ $nr -lt $service_count ] ; do
-        name="$(basename "${service_path[$nr]}")"
+while IFS='	' read spath sbinarys sroles
+do
+        name="$(basename "$spath")"
         echo -ne "Check if we can test the service \"$name\" on server role \"$role\"\t"
         found=0
-        for r in ${server_roles[$nr]} ; do
+        for r in $sroles # IFS
+        do
                 if [ "$r" == "$role" ] ; then
                         found=1
                 fi
@@ -38,34 +32,35 @@ while [ $nr -lt $service_count ] ; do
         if [ $found -eq 1 ] ; then
                 echo "Yes"
                 echo -ne "Trying to stop service $name\t"
-                "${service_path[$nr]}" stop
+                "$spath" stop
                 echo "Done"
 
                 echo -ne "Has the service been stopped?\t"
-                running=$(ps axu | grep "${service_binarys[$nr]}" | grep -v grep)
-                if [ -z "$running" ] ; then
-                        echo "Ok"
-                else
+                if pgrep -f "$sbinarys"
+                then
                         echo "Error"
                         returnCode=$returnERROR
+                else
+                        echo "Ok"
                 fi
 
-                echo -ne "Trying to start service $(basename "${service_path[$nr]}")\t"
-                "${service_path[$nr]}" start
+                echo -ne "Trying to start service \"$name\"\t"
+                "$spath" start
                 echo "Done"
 
                 echo -ne "Is this service running?\t"
-                running=$(ps axu | grep "${service_binarys[$nr]}" | grep -v grep)
-                if [ -z "$running" ] ; then
+                if pgrep -f "$sbinarys"
+                then
+                        echo "Ok"
+                else
                         echo "Error"
                         returnCode=$returnERROR
-                else
-                        echo "Ok"
                 fi
         else
                 echo "No - skipping test"
         fi
-        nr=$(($nr + 1))
-done
+done <<EOF
+/etc/init.d/slapd	/usr/sbin/slapd	domaincontroller_master domaincontroller_backup domaincontroller_slave
+EOF
 
 exit $returnCode
