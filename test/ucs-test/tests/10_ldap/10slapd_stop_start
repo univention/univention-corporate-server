@@ -22,14 +22,15 @@ while IFS='	' read spath sbinarys sroles
 do
         name="$(basename "$spath")"
         echo -ne "Check if we can test the service \"$name\" on server role \"$role\"\t"
-        found=0
+	found=false
         for r in $sroles # IFS
         do
                 if [ "$r" == "$role" ] ; then
-                        found=1
+			found=true
                 fi
         done
-        if [ $found -eq 1 ] ; then
+	if "$found"
+	then
                 echo "Yes"
                 echo -ne "Trying to stop service $name\t"
                 "$spath" stop

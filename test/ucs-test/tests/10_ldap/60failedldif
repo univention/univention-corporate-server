@@ -11,7 +11,7 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-function testldif () {
+testldif () {
 
     echo -n "testing $1"
 
@@ -20,13 +20,13 @@ function testldif () {
 	declare -i GROUP_PERM="${PERM:1:1}"
 	declare -i OTHERS_PERM="${PERM:2:1}"
 
-	if [[ "$GROUP_PERM" -gt 0 ]]; then
+	if [ "$GROUP_PERM" -gt 0 ]; then
 		echo "... Wrong group permissions on file $1"
 		fail_test 1
-	elif [[ "$OTHERS_PERM" -gt 0 ]]; then
+	elif [ "$OTHERS_PERM" -gt 0 ]; then
 		echo "... Wrong other users permissions on file $1"
 		fail_test 1
-	elif [ ! "$OWNER" = "root" ]; then
+	elif [ "$OWNER" != "root" ]; then
 		echo "... Wrong owner $OWNER (not root) on file $1"
 		fail_test 1
 	else
@@ -53,7 +53,7 @@ count=0
 while [ $count -le 360 -a ! -e "$ldif" ]
 do
     sleep 1s
-    count=$[$count+1]
+	count=`expr $count + 1`
 done
 
 if ! [ -e "$ldif" ] #failed ldif not exists

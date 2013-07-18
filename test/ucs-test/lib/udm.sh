@@ -763,7 +763,7 @@ udm_check_syntax_for_attribute () {
 }
 
 udm_kill_univention_cli_server () {
-	local pids="$(ps ax | grep "univention-cli-server" | grep "python" | sed "s/ *//" | sed "s/ .*//")"
+	local pids="$(pgrep -f "univention-cli-server")"
 	for pid in $pids; do
 		info "Killing univention-cli-server with pid $pid"
 		kill "$pid"
@@ -792,4 +792,4 @@ udm_extended_attribute_uninstall_hook () {
 	udm_kill_univention_cli_server
 }
 
-# vim: set ts=8 sw=8 noexpandtab filetype=sh iskeyword=@,48-57,_,192-255 :
+# vim: set ts=4 sw=4 noexpandtab filetype=sh iskeyword=@,48-57,_,192-255 :
