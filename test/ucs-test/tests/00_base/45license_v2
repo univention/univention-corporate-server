@@ -5,7 +5,6 @@
 ## - univention-directory-manager-tools
 ## roles:
 ##  - domaincontroller_master
-##  - domaincontroller_backup
 ## tags:
 ##  - basic
 ##  - apptest
