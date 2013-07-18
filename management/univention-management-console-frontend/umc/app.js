@@ -1228,6 +1228,7 @@ define([
 			var first = false; // The first time the value changes is by setting the original hostname
 			this._hostInfo.watch('value', lang.hitch(this, function(name, old, host) {
 				if (host && first) {
+					topic.publish('/umc/actions', 'switch host');
 					window.location.host = host;
 				} else {
 					this._hostInfo.onBlur();
