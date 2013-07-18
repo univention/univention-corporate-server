@@ -53,7 +53,6 @@ import univention.admin.uexceptions as udm_errors
 
 users_module = None
 
-
 from univention.lib.i18n import Translation, I18N_Error
 
 from .message import Response, Request, MIMETYPE_JSON, InvalidOptionsError
@@ -195,12 +194,8 @@ class Processor( signals.Provider ):
 
 		self.__killtimer = {}
 
-		lo = ldap.open( ucr[ 'ldap/server/name' ], int( ucr.get( 'ldap/server/port', 7389 ) ) )
-
-		try:
-			# get LDAP connection with machine account
-			self.lo, self.po = udm_uldap.getMachineConnection( ldap_master = False )
-
+		self._init_ldap_connection()
+		if self.lo is not None:
 			# get the LDAP DN of the authorized user
 			ldap_dn = self.lo.searchDn( '(&(uid=%s)(objectClass=posixAccount))' % self.__username )
 			if ldap_dn:
@@ -209,25 +204,30 @@ class Processor( signals.Provider ):
 			else:
 				CORE.info( 'The LDAP DN for user %s could not be found' % self.__username )
 
-			# initiate the users/user UDM module
-			udm_modules.update()
-			users_module = udm_modules.get('users/user')
-			udm_modules.init(self.lo, self.po, users_module)
-		except ( ldap.LDAPError, IOError ) as e:
-			# problems connection to LDAP server or the server is not joined (machine.secret is missing)
-			CORE.warn('An error occurred connecting to the LDAP server: %s' % e)
-			self.lo = None
-			users_module = None
-		except udm_errors.base as e:
-			# UDM error, user module coule not be initiated
-			CORE.warn('An error occurred intializing the UDM users/user module: %s' % e)
-			users_module = None
+			try:
+				# initiate the users/user UDM module
+				udm_modules.update()
+				users_module = udm_modules.get('users/user')
+				udm_modules.init(self.lo, self.po, users_module)
+			except udm_errors.base as e:
+				# UDM error, user module coule not be initiated
+				CORE.warn('An error occurred intializing the UDM users/user module: %s' % e)
+				users_module = None
 
 		# read the ACLs
 		self.acls = LDAP_ACLs( self.lo, self.__username, ucr[ 'ldap/base' ] )
 		self.__command_list = moduleManager.permitted_commands( ucr[ 'hostname' ], self.acls )
 
 		self.signal_new( 'response' )
+
+	def _init_ldap_connection(self):
+		try:
+			# get LDAP connection with machine account
+			self.lo, self.po = udm_uldap.getMachineConnection( ldap_master = False )
+		except ( ldap.LDAPError, IOError ) as e:
+			# problems connection to LDAP server or the server is not joined (machine.secret is missing)
+			CORE.warn('An error occurred connecting to the LDAP server: %s' % e)
+			self.lo = None
 
 	def shutdown( self ):
 		"""Instructs the module process to shutdown"""
@@ -355,6 +355,7 @@ class Processor( signals.Provider ):
 		"""
 
 		res = Response( msg )
+		res.status = SUCCESS
 
 		if 'modules/list' in msg.arguments:
 			modules = []
@@ -378,11 +379,9 @@ class Processor( signals.Provider ):
 			res.body[ 'categories' ] = categories
 			CORE.info( 'Modules: %s' % modules )
 			CORE.info( 'Categories: %s' % str( res.body[ 'categories' ] ) )
-			res.status = SUCCESS # Ok
 
 		elif 'categories/list' in msg.arguments:
 			res.body[ 'categories' ] = categoryManager.all()
-			res.status = SUCCESS # Ok
 		elif 'user/preferences' in msg.arguments:
 			# fallback is an empty dict
 			res.body['preferences'] = {}
@@ -391,9 +390,19 @@ class Processor( signals.Provider ):
 			userObj = self._get_user_obj()
 			if userObj:
 				res.body['preferences'] = dict(userObj.info.get('umcProperty', []))
-				res.status = SUCCESS
 			else:
 				res.status = BAD_REQUEST_INVALID_OPTS
+		elif 'hosts/list' in msg.arguments:
+			self._init_ldap_connection()
+			if self.lo:
+				try:
+					domaincontrollers = self.lo.search(filter="(objectClass=univentionDomainController)")
+				except ldap.LDAPError as e:
+					CORE.warn('Could not search for domaincontrollers: %s' % (e))
+					domaincontrollers = []
+				res.result = ['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')]
+			else:
+				res.status = SERVER_ERR
 		else:
 			res.status = BAD_REQUEST_INVALID_ARGS
 
