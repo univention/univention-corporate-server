@@ -33,11 +33,11 @@ slapcat > "$ldif2"
 if ! diff "$ldif" "$ldif2"
 then
 	error "There was an error testing slapcat and slapadd, trying to restore the old ldap database"
-        /etc/init.d/slapd stop
-        rm /var/lib/univention-ldap/ldap/*
+	/etc/init.d/slapd stop
+	rm /var/lib/univention-ldap/ldap/*
 	mv "$temp_dir/bak/"* /var/lib/univention-ldap/ldap/
-        /etc/init.d/slapd start
-        fail_test 1
+	/etc/init.d/slapd start
+	fail_test 1
 fi
 
 # check if slapd running

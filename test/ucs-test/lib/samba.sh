@@ -1,4 +1,4 @@
-wait_for_LDAP_replication_of_domain_sambaSid() {
+wait_for_LDAP_replication_of_domain_sambaSid () {
 	local username t0 t sambaSID
 	username="${1?-username}"
 	t0=$(date +%Y%m%d%H%M%S)
@@ -20,11 +20,11 @@ wait_for_LDAP_replication_of_domain_sambaSid() {
 	echo "S4-Connector and LDAP replication of domain sambaSID took $(($t-$t0)) seconds"
 }
 
-wait_for_drs_replication() {
+wait_for_drs_replication () {
 	local option ldap_filter attr t0 t output value i
 	local -a opts
 	OPTIND=0
-	while getopts  "b:s:" option; do
+	while getopts "b:s:" option; do
 		case "${option}" in
 			b) opts+=("-b" "${OPTARG}"); shift 2; break;;
 			s) opts+=("-s" "${OPTARG}"); shift 2; break;;
@@ -65,15 +65,15 @@ wait_for_drs_replication() {
 	echo "DRS replication took $(($t-$t0)) seconds"
 }
 
-force_drs_replication() {
+force_drs_replication () {
 	local direction="in" option source_dc destination_dc partition_dn
-	while getopts  "o" option; do
+	while getopts "o" option; do
 		case "${option}" in
 			o) direction="out"; shift; break;;
 			*) echo "force_drs_replication [-o] [<source>] [<destination>] [<partition_dn>]"; return 1; break;;
 		esac
 	done
-		
+
 	source_dc="${1:-}"
 	if [ -z "$source_dc" ]; then
 		s4_connector_hosts=$(univention-ldapsearch -x -b "cn=computers,$ldap_base" univentionService="S4 Connector" uid | sed -nr 's/^uid: (.*)\$$/\1/p')
@@ -94,3 +94,4 @@ force_drs_replication() {
 	fi
 }
 
+# vim:set filetype=sh ts=4:

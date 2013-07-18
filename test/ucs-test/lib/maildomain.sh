@@ -4,7 +4,7 @@ CONTROLMODE=true
 . "$TESTLIBPATH/random.sh" || exit 137
 
 maildomain_name_randomname () { #Generates a random string as maildomain an echoes it. Usage: MAILDOMAINNAME=$(maildomain_name_randomname)
-        random_string
+	random_string
 }
 
 
@@ -25,3 +25,5 @@ delete_mail_domain () { # Deletes a mail/domain name like the first argument, su
 	udm-test mail/domain remove --dn "cn=$domain,cn=domain,cn=mail,$ldap_base"
 	return $?
 }
+
+# vim:set filetype=sh ts=4:

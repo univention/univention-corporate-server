@@ -9,7 +9,7 @@ getprintername () { # Generate a name for a printer. E.g. PRINTERNAME=$(getprint
 
 create_localprinter () { #Creates a printer. E.g. createlocalprinter $PRINTERNAME
 	TMP_PRINTERNAME="${i?-printername, e.g \$(getprintername)}"
-    info "create printer $TMP_PRINTERNAME"
+	info "create printer $TMP_PRINTERNAME"
 
 	udm-test shares/printer create \
 		--position "cn=printers,$ldap_base" \
@@ -21,18 +21,18 @@ create_localprinter () { #Creates a printer. E.g. createlocalprinter $PRINTERNAM
 
 remove_printer () { # Remove a printer. E.g. removeprinter $PRINTERNAME
 	TMP_PRINTERNAME="${1?-printername}"
-    info "remove printer $TMP_PRINTERNAME"
+	info "remove printer $TMP_PRINTERNAME"
 	udm-test shares/printer remove \
-		--dn="cn=$TMP_PRINTERNAME,cn=printers,$ldap_base"
+		--dn "cn=$TMP_PRINTERNAME,cn=printers,$ldap_base"
 }
 
 set_printer_sambaname () { # Set the Sambaname for a printer. E.g. setsambaname $PRINTERNAME $PRINTERSAMBANAME
 	PRINTERNAME="${1?-printer name}"
 	SAMBANAME="${2?-samba printer name}"
-    info  "setting the sambaName for printer $PRINTERNAME to the value $SAMBANAME"
+	info  "setting the sambaName for printer $PRINTERNAME to the value $SAMBANAME"
 	udm-test shares/printer modify \
-		--dn="cn=$PRINTERNAME,cn=printers,$ldap_base" \
+		--dn "cn=$PRINTERNAME,cn=printers,$ldap_base" \
 		--set sambaName="$SAMBANAME"
 }
 
-# vim:syntax=sh
+# vim:set filetype=sh ts=4:

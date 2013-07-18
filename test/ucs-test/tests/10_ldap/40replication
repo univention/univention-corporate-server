@@ -50,7 +50,7 @@ done
 for i in $(seq 9 12)
 do
 	remove_create_container_with_description "other$i"
-    sleep 1s
+	sleep 1s
 done
 
 for i in $(seq 13 20)
@@ -64,20 +64,20 @@ if ! univention-ldapsearch -LLL -x -b "cn=$container_name,$container_position"
 then
 	fail_test 1 'container not found!'
 else
-        echo 'OK: container was replicated.'
-        if ! univention-ldapsearch -LLL -x -b "cn=$container_name,$container_position" | grep -qs '^description:'
-        then
+	echo 'OK: container was replicated.'
+	if ! univention-ldapsearch -LLL -x -b "cn=$container_name,$container_position" | grep -qs '^description:'
+	then
 		fail_test 1 'container has no "description"-attribute!'
-        else
-                echo 'OK: container has "description"-attribute.'
-                if ! univention-ldapsearch -LLL -x -b "cn=$container_name,$container_position" | grep -qs '^description:\s*other20$'
-                then
+	else
+		echo 'OK: container has "description"-attribute.'
+		if ! univention-ldapsearch -LLL -x -b "cn=$container_name,$container_position" | grep -qs '^description:\s*other20$'
+		then
 			fail_test 1 'value of "description"-attribute is incorrect!'
-                else
-                        echo 'OK: object was successfully replicated.'
-						#Test passed
-                fi
-        fi
+		else
+			echo 'OK: object was successfully replicated.'
+			#Test passed
+		fi
+	fi
 fi
 echo "Removing object:"
 remove_container_with_description

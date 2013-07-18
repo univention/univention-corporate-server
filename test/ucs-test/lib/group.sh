@@ -121,21 +121,21 @@ group_rename () { # Rename a group. E.g. group_rename $GROUPNAMEOLD $GROUPNAMENE
 
 group_exists () { # Returns 0, if a Group exists, otherwise 1. E.g. group_exists $GROUPNAME
 	local GROUPNAME=${1?:missing parameter: group name}
-	univention-directory-manager groups/group list --filter "cn=$GROUPNAME" | \
+	univention-directory-manager groups/group list --filter "cn=$GROUPNAME" |
 		grep -q "^DN: cn=$GROUPNAME"
 }
 
 group_hasgroupmember () { # Checks, whether a Group has a specific group as member. Returns 0 if it is and 1 if not. E.g. group_hasgroupmember $GROUPNAME $GROUPMEMBER
 	local GROUPNAME=${1?:missing parameter: group name}
 	local GROUPMEMBER=${2?:missing parameter: nested group name}
-	udm-test groups/group list --filter "cn=$GROUPNAME" | \
+	udm-test groups/group list --filter "cn=$GROUPNAME" |
 		grep -q "nestedGroup: cn=$GROUPMEMBER,"
 }
 
 group_hasusermember () { # Checks, whether a Group has a specific user as member. Returns 0 if it is and 1 if not. E.g. group_hasusermember $GROUPNAME $USERNAME
 	local GROUPNAME=${1?:missing parameter: group name}
 	local USERNAME=${2?:missing parameter: user name}
-	udm-test groups/group list --filter "cn=$GROUPNAME" | \
+	udm-test groups/group list --filter "cn=$GROUPNAME" |
 		grep -q "users: uid=$USERNAME,"
 }
 
@@ -149,28 +149,28 @@ group_hascomputermember () { # Checks, whether a Group has a Computer-Member. E.
 	iconv --from-code=ISO-8859-1 --to-code=UTF-8 "$tmp1" >"$tmp2"
 	COMPUTERNAME=$(cat "$tmp2")
 	rm -f "$tmp1" "$tmp2"
-	udm-test groups/group list --filter "cn=$GROUPNAME" | \
+	udm-test groups/group list --filter "cn=$GROUPNAME" |
 		grep -q "cn=$COMPUTERNAME"
 }
 
 group_ismemberof () { # Checks, whether a Group is member of a specific group. Returns 0 if it is and 1 if not. E.g. group_ismemberof $MEMBERGROUP $GROUPNAME
 	local GROUPMEMBER=${1?:missing parameter: member group name}
 	local GROUPNAME=${2?:missing parameter: group name}
-	udm-test groups/group list --filter cn="$GROUPTOADD" | \
+	udm-test groups/group list --filter cn="$GROUPTOADD" |
 		grep -q "memberOf: cn=$GROUPNAME,"
 }
 
 group_userismemberof () { # Checks, whether a user is member of a specific group. Returns 0 it is an 1 if not. E.g. group_userismemberof $USERNAME $GROUPNAME
 	local USERNAME=${1?:missing parameter: user name}
 	local GROUPNAME=${2?:missing parameter: group name}
-	udm-test users/user list --filter "uid=$USERNAME" | \
+	udm-test users/user list --filter "uid=$USERNAME" |
 		grep -q "cn=$GROUPNAME"
 }
 
 group_userisindirectmemberof () { # checks by the command id, whether a user is member of a specific group. E.g. group_userisindirectmemberof $USERNAME $GROUPNAME
 	local USERNAME=${1?:missing parameter: user name}
 	local GROUPNAME=${2?:missing parameter: group name}
-	id "$USERNAME" | grep -q "($GROUPNAME" && \
+	id "$USERNAME" | grep -q "($GROUPNAME" &&
 	su "$USERNAME" -c id | grep -q "($GROUPNAME"
 }
 

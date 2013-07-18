@@ -20,14 +20,13 @@
 . "$TESTLIBPATH/undo.sh" || exit 137
 
 if [ -z "$(pidof slapd)" ]; then
-        echo "There is actually no slapd-process"
-        exit 120
+	echo "There is actually no slapd-process"
+	exit 120
 fi
 
 create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
 
 echo -e "\n\n***Create a test user with UDM CLI"
-
 PRINTERNAME="$(getprintername)"
 create_localprinter "$PRINTERNAME" &&
 	undo remove_printer "$PRINTERNAME" ||
@@ -39,7 +38,6 @@ user_create "$USERNAME" &&
 		fail_test 1
 
 echo -e "\n\n***Create a test group with UDM CLI and add the specified user"
-
 GROUPNAME="$(group_randomnameme)"
 group_create "$GROUPNAME" &&
 	undo group_remove "$GROUPNAME" ||
@@ -58,14 +56,14 @@ group_addgroup "$GROUPNAME" "Domain Admins" &&
 echo -e "\n\n***Displaying the created printer, using the account of the created user:"
 if ! ldapsearch -x -D "uid=$USERNAME,cn=users,$ldap_base" -w univention "cn=$PRINTERNAME"
 then
-        if [ -z "$(pidof slapd)" ] ; then
-                /etc/init.d/slapd start
+	if [ -z "$(pidof slapd)" ] ; then
+		/etc/init.d/slapd start
 		fail_test 1 "The slapd crashed. See Bug #9738."
-        else
+	else
 		fail_test 1 "Failed to search!"
-        fi
+	fi
 else
-        echo "Everthing was fine. The slapd did not crash."
+	echo "Everthing was fine. The slapd did not crash."
 fi
 
 exit "$RETVAL"

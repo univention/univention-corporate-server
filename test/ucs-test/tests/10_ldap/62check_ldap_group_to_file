@@ -61,7 +61,6 @@ do
 done
 
 group_removeuser "$USERNAME" "$GROUPNAME" || fail_test 1
-
 wait_for_replication_and_postrun
 
 echo "Waiting for NSS update script..."

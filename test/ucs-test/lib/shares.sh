@@ -24,7 +24,7 @@ share_create () {
 
 share_exists () {
 	local name=${1?:missing parameter: share name}
-	udm-test shares/share list --filter "cn=$name" | \
+	udm-test shares/share list --filter "cn=$name" |
 		grep -q "^DN: cn=$1,$SHARE_POSITION"
 }
 

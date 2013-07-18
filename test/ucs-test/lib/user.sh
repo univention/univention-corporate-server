@@ -152,7 +152,7 @@ user_check_pw_expiry () { # Checks if there is an expiry-date for the password o
 	local USERNAME=${1?:missing parameter: name}
 	info "check the password expriry of user $USERNAME"
 
-	udm-test users/user list --filter "username=$USERNAME" | \
+	udm-test users/user list --filter "username=$USERNAME" |
 		grep passwordexpiry | cut -c19-26 | grep -qv None
 }
 

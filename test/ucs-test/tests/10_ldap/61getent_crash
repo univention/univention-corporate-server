@@ -48,15 +48,17 @@ sleep 3s
 undo udm-test groups/group remove --dn "cn=supergroup,cn=groups,$ldap_base"
 for i in $(seq 2 140)
 do
-        echo "---"
-        echo "Testing i=$i"
-        GRP="uniqueMember: uid=nsstest1,cn=users,$ldap_base
+	echo "---"
+	echo "Testing i=$i"
+	GRP="uniqueMember: uid=nsstest1,cn=users,$ldap_base
 uniqueMember: cn=subgroup,cn=groups,$ldap_base"
-        for t in $(seq 2 $i); do
-                GRP="$GRP
+	for t in $(seq 2 $i); do
+		GRP="$GRP
 uniqueMember: uid=nsstest$t,cn=users,$ldap_base"
-        done
-        udm-test groups/group create --position "cn=groups,$ldap_base" --set name=supergroup
+	done
+	udm-test groups/group create \
+		--position "cn=groups,$ldap_base" \
+		--set name="supergroup"
 
 	ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<EOF
 dn: cn=supergroup,cn=groups,$ldap_base
@@ -64,10 +66,10 @@ changetype: modify
 replace: uniqueMember
 $GRP
 EOF
-        getent group 2>&1 > /dev/null
+	getent group 2>&1 > /dev/null
 	if [ $? -eq 134 ] ; then
 		fail_fast 1 "ERROR OCCURRED WITH i=$i"
-    fi
+	fi
 	udm-test groups/group remove --dn "cn=supergroup,cn=groups,$ldap_base"
 done
 
@@ -82,27 +84,28 @@ udm-test groups/group create \
 
 for i in $(seq 2 140)
 do
-        echo "---"
-        echo "Testing i=$i"
-        GRP="uniqueMember: uid=nsstest1,cn=users,$ldap_base
+	echo "---"
+	echo "Testing i=$i"
+	GRP="uniqueMember: uid=nsstest1,cn=users,$ldap_base
 uniqueMember: cn=subgroup2,cn=groups,$ldap_base"
-        for t in $(seq 2 $i); do
-                GRP="$GRP
+	for t in $(seq 2 $i); do
+		GRP="$GRP
 uniqueMember: uid=nsstest$t,cn=users,$ldap_base"
-        done
-        udm-test groups/group create --position "cn=groups,$ldap_base" --set name=supergroup
+	done
+	udm-test groups/group create \
+		--position "cn=groups,$ldap_base" \
+		--set name="supergroup"
 
-	ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "cn=admin,$ldap_base" -y "/etc/ldap.secret" <<EOF
+	ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "cn=admin,$ldap_base" -y /etc/ldap.secret <<EOF
 dn: cn=supergroup,cn=groups,$ldap_base
 changetype: modify
 replace: uniqueMember
 $GRP
 EOF
-
-        getent group 2>&1 > /dev/null
+	getent group 2>&1 > /dev/null
 	if [ $? -eq 134 ] ; then
 		fail_fast 111 "ERROR OCCURRED WITH i=$i"
-    fi
+	fi
 	udm-test groups/group remove --dn "cn=supergroup,cn=groups,$ldap_base"
 done
 echo "The testscript, testing for the crash, doing a \"getent group\" went like it should, everything is fine."

@@ -230,6 +230,7 @@ check_domainadmin_credentials () { # check ldap credentials are available
 		return 1
 	fi
 }
+
 # vim:set filetype=sh ts=4:
 # Local Variables:
 # mode: sh
