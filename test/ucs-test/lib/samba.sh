@@ -69,8 +69,8 @@ force_drs_replication() {
 	local direction="in" option source_dc destination_dc partition_dn
 	while getopts  "o" option; do
 		case "${option}" in
-			r) direction="out"; shift; break;;
-			*) echo "force_drs_replication [-r] [<source>] [<destination>] [<partition_dn>]"; return 1; break;;
+			o) direction="out"; shift; break;;
+			*) echo "force_drs_replication [-o] [<source>] [<destination>] [<partition_dn>]"; return 1; break;;
 		esac
 	done
 		
@@ -78,7 +78,7 @@ force_drs_replication() {
 	if [ -z "$source_dc" ]; then
 		s4_connector_hosts=$(univention-ldapsearch -x -b "cn=computers,$ldap_base" univentionService="S4 Connector" uid | sed -nr 's/^uid: (.*)\$$/\1/p')
 		if [ "$(wc -w <<<"$s4_connector_hosts")" -eq 1 ]; then
-			source_dc/"$s4_connector_hosts"
+			source_dc="$s4_connector_hosts"
 		else
 			echo "WARNING: Automatic S4 Connector host detection failed"
 		fi
