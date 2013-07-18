@@ -15,7 +15,7 @@
 DOMAIN="$(ucr get domainname)"
 LDAPBASE="$(ucr get ldap/base)"
 
-ucstest="$(random_chars)"
+ucstest="ucstest_$(random_chars)"
 touch /usr/lib/univention-directory-listener/system/"$ucstest".py
 
 tempFile="$(mktemp)"
