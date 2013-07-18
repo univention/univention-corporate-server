@@ -32,14 +32,14 @@ for i in $(seq 1 200) ; do
 		undo udm-test users/user remove --dn "uid=nsstest$i,cn=users,$ldap_base"
 done
 
-SUBGRP=""
+SUBGRP=()
 for i in $(seq 140 200); do
-        SUBGRP="$SUBGRP --append users=uid=nsstest$i,cn=users,$ldap_base"
+	SUBGRP+=(--append users="uid=nsstest$i,cn=users,$ldap_base")
 done
 
 udm-test groups/group create \
 	--position "cn=groups,$ldap_base" \
-	--set name=subgroup$SUBGRP &&
+	--set name="subgroup" "${SUBGRP[@]}" &&
 	undo udm-test groups/group remove --dn "cn=subgroup,cn=groups,$ldap_base"
 
 section "Testing groups in groups"
@@ -65,7 +65,7 @@ replace: uniqueMember
 $GRP
 EOF
         getent group 2>&1 > /dev/null
-        if [ "$?" = "134" ] ; then
+	if [ $? -eq 134 ] ; then
 		fail_fast 1 "ERROR OCCURRED WITH i=$i"
     fi
 	udm-test groups/group remove --dn "cn=supergroup,cn=groups,$ldap_base"
@@ -76,13 +76,12 @@ sleep 3s
 
 udm-test groups/group create \
 	--position "cn=groups,$ldap_base" \
-	--set name=subgroup2 $SUBGRP \
-	--set "nestedGroup=cn=subgroup,cn=groups,$ldap_base" &&
+	--set name=subgroup2 "${SUBGRP[@]}" \
+	--set nestedGroup="cn=subgroup,cn=groups,$ldap_base" &&
 	undo udm-test groups/group remove --dn "cn=subgroup2,cn=groups,$ldap_base"
 
 for i in $(seq 2 140)
 do
-<<<<<<< HEAD
         echo "---"
         echo "Testing i=$i"
         GRP="uniqueMember: uid=nsstest1,cn=users,$ldap_base
@@ -93,7 +92,7 @@ uniqueMember: uid=nsstest$t,cn=users,$ldap_base"
         done
         udm-test groups/group create --position "cn=groups,$ldap_base" --set name=supergroup
 
-        ldapmodify -x -h $ldap_master -p $ldap_master_port -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) <<EOF
+	ldapmodify -x -h "$ldap_master" -p "$ldap_master_port" -D "cn=admin,$ldap_base" -y "/etc/ldap.secret" <<EOF
 dn: cn=supergroup,cn=groups,$ldap_base
 changetype: modify
 replace: uniqueMember
@@ -101,7 +100,7 @@ $GRP
 EOF
 
         getent group 2>&1 > /dev/null
-        if [ "$?" = "134" ] ; then
+	if [ $? -eq 134 ] ; then
 		fail_fast 111 "ERROR OCCURRED WITH i=$i"
     fi
 	udm-test groups/group remove --dn "cn=supergroup,cn=groups,$ldap_base"

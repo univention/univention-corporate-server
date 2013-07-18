@@ -43,7 +43,12 @@ ldif="$ldif_path/failed.ldif"
 /etc/init.d/slapd stop
 
 # modify $server_role to create failed.ldif file (because slapd is off)
-univention-directory-manager computers/$server_role modify --binddn="$ldap_hostdn" --bindpwd="$(cat /etc/machine.secret)" --dn "$ldap_hostdn" --set password="$(cat /etc/machine.secret)" || fail_test 1
+univention-directory-manager "computers/$server_role" modify \
+	--binddn "$ldap_hostdn" \
+	--bindpwd "$(cat /etc/machine.secret)" \
+	--dn "$ldap_hostdn" \
+	--set password="$(cat /etc/machine.secret)" ||
+	fail_test 1
 
 echo "Wait until failed.ldif is created. Should take max. 6 min..."
 # "replication.py" --> "time.sleep(10)" --> (approx. 30*10 seconds) 5 min. waiting for failed.ldif plus 1 minute of tolerance

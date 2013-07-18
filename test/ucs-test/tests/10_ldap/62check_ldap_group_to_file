@@ -60,7 +60,7 @@ do
 	i=`expr $i + 1`
 done
 
-group_removeuser $USERNAME $GROUPNAME || fail_test 1
+group_removeuser "$USERNAME" "$GROUPNAME" || fail_test 1
 
 wait_for_replication_and_postrun
 
