@@ -6,11 +6,8 @@
 ## exposure: safe
 
 . "$TESTLIBPATH/base.sh" || exit 137
-pwfile="$(mktemp)"
-trap "rm -f '$pwfile'" EXIT
-echo -n "${BINDPWD}" >"$pwfile"
 
-result="$(univention-ssh "$pwfile" "root@${hostname}.${domainname}" echo -n | wc -c ; echo "${PIPESTATUS[0]}")" || exit 110 # ERROR
+result="$(univention-ssh "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}" echo -n | wc -c ; echo "${PIPESTATUS[0]}")" || exit 110 # ERROR
 if [ $'0\n0' = "$result" ]
 then
 	exit 100 # OK

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run commands on ldap/master
-eval "$(ucr shell ldap/master)"
+eval "$(ucr shell ldap/master '^tests/domainadmin/.*')"
 MASTER_SSH_TIMEOUT=20
 
 on_master () { # Execute command on ldap/master through shell
@@ -8,9 +8,6 @@ on_master () { # Execute command on ldap/master through shell
 		-timeout "$MASTER_SSH_TIMEOUT" \
 		"$tests_domainadmin_pwdfile" "root@${ldap_master}" \
 		"$@"
-	local rc=$?
-	rm -f "$password_file"
-	return $rc
 }
 on_master_escaped () { # Execute command on ldap/master
 	local arg= args=()

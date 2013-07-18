@@ -1,10 +1,6 @@
 #!/bin/bash
 DEBUGLEVEL=4
 eval "$(univention-config-registry shell)"
-: ${ADMINISTRATOR_USER:=Administrator}    # to be adjusted
-: ${ADMINISTRATOR_PASSWORD:=univention}   # to be adjusted
-: ${BINDDN:=uid=Administrator,cn=users,$ldap_base}
-: ${BINDPWD:=univention}
 : ${DOMAIN:=$domainname}
 
 tty <&2 >/dev/null && _B=$(tput rev 2>/dev/null) _N=$(tput sgr0 2>/dev/null) || unset _B _N

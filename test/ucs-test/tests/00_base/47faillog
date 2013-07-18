@@ -27,8 +27,6 @@ tdir=$(mktemp -d)
 trap "rm -rf '$tdir' ; udm mail/domain remove --dn 'cn=$domainname,$ldap_base' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
 fake_passwd="$tdir/fake_passwd"
 echo "foobar1234" >"$fake_passwd"
-passwd="$tdir/passwd"
-echo -n "${BINDPWD}" >"$passwd"
 
 ssh_login () {
 	univention-ssh -timeout 10 "$1" -o NumberOfPasswordPrompts=3 "$NAME@$hostname.$domainname" /usr/sbin/ucr get hostname
@@ -45,7 +43,7 @@ info "Login with wrong password via ssh"
 ssh_login "$fake_passwd"
 ssh_login "$fake_passwd"
 ssh_login "$fake_passwd"
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_test 110 "E: The login wasn't successful, but faillog is disabled"
 fi
@@ -55,7 +53,7 @@ ucr set auth/faillog=yes auth/faillog/lock_global=no
 pam_tally --user "$NAME" --reset
 
 info "Login via ssh"
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_test 110 "E: The login wasn't successful: $ssh_hostname $hostname"
 fi
@@ -71,7 +69,7 @@ if [ "$failCount" != "6" ]; then
 	fail_test 110 "E: failCount is $failCount and should be 6"
 fi
 
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" = "$hostname" ]; then
 	fail_test 110 "E: The login was successful, but the user should be locked"
 fi
@@ -80,7 +78,7 @@ info "Reset counter for $NAME"
 pam_tally --user="$NAME" --reset
 
 info "Normal ssh login"
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_test 110 "E: The login wasn't successful, but the user faillog is resetted: $ssh_hostname $hostname"
 fi
@@ -95,7 +93,7 @@ fi
 pam_tally --user="$NAME"
 # reset failCount
 info "Reset counter with a success login"
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_test 110 "E: The login wasn't successful, but the user faillog is lower than the maximum"
 fi
@@ -107,13 +105,13 @@ fi
 info "Activate global lock and a diffrent limit"
 ucr set auth/faillog/limit=6 auth/faillog/lock_global=yes
 ssh_login "$fake_passwd"
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_test 110 "E: The login wasn't successful, but the users faillog is lower than the maximum"
 fi
 ssh_login "$fake_passwd"
 ssh_login "$fake_passwd"
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" = "$hostname" ]; then
 	fail_test 110 "E: The login was successful, but the user should be locked"
 fi
@@ -125,7 +123,7 @@ if [ "$udm_locked" != "  locked: all" ]; then
 fi
 
 user_set_attr "$NAME" locked "" none
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]; then
 	fail_test 110 "E: The login wasn't successful, but the fail counter should be resetted"
 fi

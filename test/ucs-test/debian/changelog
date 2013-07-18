@@ -4,6 +4,7 @@ ucs-test (4.0.72-1) unstable; urgency=low
   * lib: Fix wait4replication to use function local variable.
   * 10: Fix check for filename (Bug #27662)
   * lib/group,user: Remove debug output of locale information.
+  * Use stored passwords (Bug #31250)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 15 Jul 2013 10:50:04 +0200
 
