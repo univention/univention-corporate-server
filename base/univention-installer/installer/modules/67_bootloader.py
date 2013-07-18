@@ -116,10 +116,13 @@ class object(content):
 		# any device name ending with cXdY where X and Y are one or more digits
 		REpartitions = re.compile('^\d+\s+\d+\s+\d+\s+(.*)$')
 		try:
-			lines = [ x.strip() for x in open('/proc/partitions','r').readlines() ]
-		except IOError, e:
-			self.debug('ERROR: cannot read /proc/partitions: %s' % str(e))
+			lines = [line.strip() for line in open('/proc/partitions', 'r')]
+		except IOError, ex:
+			self.debug('ERROR: cannot read /proc/partitions: %s' % (ex,))
 			lines = []
+
+		cdrom_device = self.all_results.get('cdrom_device')
+		cdrom_device = os.path.basename(cdrom_device) if cdrom_device.startswith('/dev') else ''
 
 		for line in lines:
 			match = REpartitions.match(line)
@@ -127,24 +130,28 @@ class object(content):
 				continue
 			device = match.group(1)
 
+			if device == cdrom_device:
+				continue
+
 			# is block device and no partition?
-			if not os.path.exists('/sys/block/%s' % device.replace("/","!")):
+			prefix = "/sys/block/%s" % device.replace("/", "!")
+			if not os.path.exists(prefix):
 				continue
 
 			# is readonly?
 			try:
-				content = open('/sys/block/%s/ro' % device.replace("/","!"),'r').read()
-			except IOError, e:
-				self.debug('WARNING: cannot read /sys/block/%s/ro: e' % (device.replace("/","!"), e))
+				content = open('%s/ro' % prefix, 'r').read()
+			except IOError, ex:
+				self.debug('WARNING: cannot read %s/ro: %s' % (prefix, ex))
 				content = '0'
-			if not content.strip() == '0':
+			if content.strip() != '0':
 				continue
 
 			# check if device is a CDROM
 			try:
-				content = open('/sys/block/%s/capability' % device.replace("/","!"),'r').read()
-			except IOError, e:
-				self.debug('WARNING: cannot read /sys/block/%s/capability: e' % (device.replace("/","!"), e))
+				content = open('%s/capability' % prefix, 'r').read()
+			except IOError, ex:
+				self.debug('WARNING: cannot read %s/capability: %s' % (prefix, ex))
 				content = '0'
 			try:
 				value = int(content, 16)
@@ -154,7 +161,7 @@ class object(content):
 				continue
 
 			# ignore device mapper devices
-			if os.path.isdir('/sys/block/%s/dm' % device.replace("/","!")):
+			if os.path.isdir('%s/dm' % prefix):
 				continue
 
 			# valid device

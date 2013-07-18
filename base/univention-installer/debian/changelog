@@ -2,6 +2,7 @@ univention-installer (9.0.15-1) unstable; urgency=low
 
   * Remove second join password field (Bug #31965)
   * 67: Show boot loader device details (Bug #25046)
+  * 67: Skip source device for boot loader.
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 15 Jul 2013 09:53:40 +0200
 
