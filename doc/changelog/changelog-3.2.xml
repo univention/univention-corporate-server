@@ -342,6 +342,12 @@
 		  the DC master (<ulink
 		  url="&ucsbug;24442">Bug 24442</ulink>).
 		</simpara></listitem>
+
+		<listitem>
+		  <simpara>
+			Several issues regarding handling long DNs and DNs containing non-alphanumeric characters in <command>univention-run-join-scripts</command> have been fixed (<ulink url="&ucsbug;32005">Bug 32005</ulink>).
+		  </simpara>
+		</listitem>
 	  </itemizedlist>
 	</para>
   </section>
