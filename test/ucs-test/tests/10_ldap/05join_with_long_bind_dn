@@ -10,6 +10,7 @@
 
 
 . "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/master.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
 . "$TESTLIBPATH/joincheck.sh" || exit 137
 
@@ -19,7 +20,6 @@ if check_join_status; then
 fi
 
 DCNAME=
-LDAP_BASE=
 BINDUSERNAME="$(random_chars)"
 BINDPASSWORD="$(random_chars)"
 DNPART="$(random_chars)"
@@ -54,15 +54,7 @@ if [ -z "$DCNAME" ]; then
 	# be no suitable exit-code for this case
 fi
 
-
-pwfile="$(mktemp)"
-trap "rm -f '$pwfile'" EXIT
-
-echo -n "$ADMINISTRATOR_PASSWORD" > "$pwfile"
-
-LDAP_BASE="$(univention-ssh "$pwfile" "root@$DCNAME" \
-	ucr get ldap/base)"
-LDAP_BASE="$(echo "$LDAP_BASE" | grep dc)"
+LDAP_BASE="$(master_ucr_get ldap/base)"
 
 i=0
 while [ $i -le 10 ]
@@ -75,35 +67,35 @@ PREF=
 		j=`expr $j + 1`
 	done
 
-	univention-ssh "$pwfile" "root@$DCNAME" \
+	on_master_escaped \
 		univention-directory-manager container/cn create \
-		--set "name=${DNPART}" \
+		--set name="${DNPART}" \
 		--position "${PREF}cn=users,$LDAP_BASE" || fail_test 1
 
 	i=`expr $i + 1`
 done
 
 if [ "$server_role" == "domaincontroller_backup" ]; then
-	univention-ssh "$pwfile" "root@$DCNAME" \
+	on_master_escaped \
 		univention-directory-manager users/user create \
-		--set "username=${BINDUSERNAME}" \
-		--set "password=${BINDPASSWORD}" \
-		--set "lastname=$(random_chars)" \
-		--set '\"'primaryGroup=cn=Domain Admins,cn=groups,$LDAP_BASE'\"' \
-		--append '\"'groups=cn=DC Backup Hosts,cn=groups,$LDAP_BASE'\"' \
+		--set username="${BINDUSERNAME}" \
+		--set password="${BINDPASSWORD}" \
+		--set lastname="$(random_chars)" \
+		--set primaryGroup="cn=Domain Admins,cn=groups,$LDAP_BASE" \
+		--append groups="cn=DC Backup Hosts,cn=groups,$LDAP_BASE" \
 		--position "${PREF}cn=users,$LDAP_BASE" || fail_test 1
 else
-	univention-ssh "$pwfile" "root@$DCNAME" \
+	on_master_escaped \
 		univention-directory-manager users/user create \
-		--set "username=${BINDUSERNAME}" \
-		--set "password=${BINDPASSWORD}" \
-		--set "lastname=$(random_chars)" \
-		--set '\"'primaryGroup=cn=Domain Admins,cn=groups,$LDAP_BASE'\"' \
+		--set username="${BINDUSERNAME}" \
+		--set password="${BINDPASSWORD}" \
+		--set lastname="$(random_chars)" \
+		--set primaryGroup="cn=Domain Admins,cn=groups,$LDAP_BASE" \
 		--position "${PREF}cn=users,$LDAP_BASE" || fail_test 1
 fi
 
-univention-ssh "${pwfile}" "root@$DCNAME" \
-  'while sleep 1s ; do echo waiting for nscd update ; if getent group \"Domain Admins\" | grep -F '"${BINDUSERNAME}"' ; then break; fi; done'
+on_master \
+	'while sleep 1s ; do echo waiting for nscd update ; if getent group 'Domain Admins' | grep -F '${BINDUSERNAME}' ; then break; fi; done'
 
 BINDPWDFILE="/tmp/bindpwd"
 echo -n "$BINDPASSWORD" > "$BINDPWDFILE"
@@ -114,7 +106,7 @@ if ! check_join_status; then
 	fail_test 1
 fi
 
-univention-ssh "$pwfile" "root@$DCNAME" \
+on_master_escaped \
 	univention-directory-manager container/cn remove \
 	--dn "cn=${DNPART},cn=users,$LDAP_BASE" || fail_test 1
 
