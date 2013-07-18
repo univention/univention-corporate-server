@@ -654,6 +654,7 @@ define([
 		_loadPiwik: function() {
 			var piwikUcrv = _ucr['umc/web/piwik'];
 			var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
+			tools.status('hasFFPULicense', _hasFFPULicense());
 			if (tools.isTrue(_ucr['umc/web/piwik']) || (!piwikUcrvIsSet && _hasFFPULicense())) {
 				// use piwik for user action feedback if it is not switched off explicitely
 				tools.status('piwikDisabled', false);

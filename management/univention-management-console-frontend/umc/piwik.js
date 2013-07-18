@@ -99,15 +99,14 @@ define([
 
 		// set the UCR variable accordingly
 		var ucrStore = store('key', 'ucr');
-		if (disable) {
-			// explicitely set UCR variable to false
-			topic.publish('/umc/actions', 'menu-help', 'piwik');
+		if (disable || tools.status('hasFFPULicense')) {
+			// explicitely set UCR variable to false or false/true on licensed systems
 			ucrStore.put({
 				key: 'umc/web/piwik',
-				value: 'false'
+				value: disable ? 'false' : 'true'
 			});
 		} else {
-			// remove UCR variable to obtain the default behaviour
+			// remove UCR variable to obtain the default behaviour on FFPU systems
 			ucrStore.remove('umc/web/piwik');
 		}
 	};

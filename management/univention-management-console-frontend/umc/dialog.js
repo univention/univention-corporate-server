@@ -189,6 +189,14 @@ define([
 						'default': true
 					}]
 				});
+
+				// destroy the dialog when it is being closed
+				this._alertDialog.on('hide', lang.hitch(this, function() {
+					setTimeout(lang.hitch(this, function() {
+						this._alertDialog.destroyRecursive();
+						this._alertDialog = null;
+					}), 0);
+				}));
 			}
 
 			// show the confirmation dialog

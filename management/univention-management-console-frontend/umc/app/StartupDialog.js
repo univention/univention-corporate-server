@@ -156,12 +156,21 @@ define([
 				this.set('content', this._stackContainer);
 			}));
 
-			this.on('hide', lang.hitch(this, 'destroyRecursive'));
+			this.on('hide', lang.hitch(this, function() {
+				setTimeout(lang.hitch(this, 'destroyRecursive'), 0);
+			}));
 		},
 
 		close: function() {
-			when(this.hide(), lang.hitch(this, 'destroyRecursive'));
+			when(this.hide(), lang.hitch(this, function() {
+				setTimeout(lang.hitch(this, 'destroyRecursive'), 0);
+			}));
+		},
+
+		destroyRecursive: function() {
+			this.inherited(arguments);
 		}
+
 	});
 });
 
