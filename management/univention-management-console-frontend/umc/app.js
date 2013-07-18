@@ -1227,7 +1227,6 @@ define([
 
 			var first = false; // The first time the value changes is by setting the original hostname
 			this._hostInfo.watch('value', lang.hitch(this, function(name, old, host) {
-				console.log('value=', host);
 				if (host && first) {
 					window.location.host = host;
 				} else {
