@@ -1,3 +1,9 @@
+univention-installer (9.0.15-1) unstable; urgency=low
+
+  * Remove second join password field (Bug #31965)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Jul 2013 09:53:40 +0200
+
 univention-installer (9.0.14-1) unstable; urgency=low
 
   * deny .. in dns domain (Bug #30982) 

@@ -36,6 +36,7 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
+import os
 from objects import *
 from local import _
 
@@ -91,8 +92,6 @@ class object(content):
 		self.elements.append(textline(_('Password'),self.minY+1,self.minX+5)) #10
 		self.elements.append(password('',self.minY+2,self.minX+5,30)) #11
 
-		self.elements.append(textline(_('Password (retype)'),self.minY+4,self.minX+5)) #12
-		self.elements.append(password('',self.minY+5,self.minX+5,30)) #13
 		self.join_host_search_disabled=1
 		self.elements[7].disable()
 		self.join_disabled=0
@@ -112,13 +111,11 @@ class object(content):
 					self.elements[7].disable()
 				self.elements[9].enable()
 				self.elements[11].enable()
-				self.elements[13].enable()
 			else:
 				self.join_disabled=1
 				self.elements[7].disable()
 				self.elements[9].disable()
 				self.elements[11].disable()
-				self.elements[13].disable()
 			self.draw()
 		elif key in [ 10, 32 ] and self.elements[4].active:
 			self.elements[self.current].key_event(key)
@@ -138,7 +135,7 @@ class object(content):
 
 		global JOINTEST_RETVAL
 
-		if self.elements[7].disabled and self.elements[9].disabled and self.elements[11].disabled and self.elements[13].disabled:
+		if self.elements[7].disabled and self.elements[9].disabled and self.elements[11].disabled:
 			return 0
 
 		message=_('The following value is missing: ')
@@ -148,10 +145,6 @@ class object(content):
 			return message+_('Join account')
 		elif self.elements[11].result().strip() == '':
 			return message+_('Password for Root')
-		elif self.elements[13].result().strip() == '':
-			return message+_('Password for Root (retype)')
-		elif self.elements[11].result().strip() != self.elements[13].result().strip():
-			return _('Passwords did not match.')
 
 		# test join credentials
 		data = {}
@@ -188,7 +181,7 @@ class object(content):
 
 	def result(self):
 		result={}
-		if self.elements[7].disabled and self.elements[9].disabled and self.elements[11].disabled and self.elements[13].disabled:
+		if self.elements[7].disabled and self.elements[9].disabled and self.elements[11].disabled:
 			result['auto_join']='false'
 		else:
 			if self.elements[7].result():
