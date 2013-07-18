@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.7-6) unstable; urgency=low
+
+  * Undo commit: "Try to catch 'Connection reset by peer (104)' errors"
+    (Bug #31283)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Jul 2013 08:33:23 +0200
+
 ucs-ec2-tools (0.1.7-5) unstable; urgency=low
 
   * Try to catch 'Connection reset by peer (104)' errors while preparing
