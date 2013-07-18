@@ -6,23 +6,24 @@
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
-## exposure: dangerous
+## exposure: careful
+
+oldval=$(mktemp)
+univention-config-registry get ldap/schema/export >"$oldval"
+cleanup () {
+	if [ -s "$oldval" ]
+	then
+		ucr set ldap/schema/export="$(<$oldval)"
+	else
+		ucr unset ldap/schema/export
+	fi
+	rm -f "$oldval"
+}
+trap cleanup EXIT
 
 # activate ldap schema download
 univention-config-registry set ldap/schema/export=yes
 /etc/init.d/slapd restart
 
 # try to download schema file
-wget -c $(hostname)/ldap-schema.txt -O /dev/null
-ret=$?
-
-# deactivate ldap schema download
-univention-config-registry unset ldap/schema/export
-/etc/init.d/slapd restart
-
-if [ $ret -eq 0 ]
-then
-        exit 0
-else
-        exit 1
-fi
+wget -c "$(hostname)/ldap-schema.txt" -O /dev/null
