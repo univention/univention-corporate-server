@@ -139,16 +139,58 @@
 	  </section>
 
 	  <section>
-		<title>Prüfung der BDB-Einstellungen bei Systemen mit Cyrus IMAP-Server (univention-mail-cyrus)</title>
+		<title>Checking the size of the BDB database of systems with Cyrus IMAP server (univention-mail-cyrus)</title>
 		<para>
-		  TODO: Merge translation
+		  As of UCS 3.2, the univention-mail-cyrus package includes a new &ucsUCR; template for
+		  the configuration file of the Cyrus BDB database (<filename>/var/lib/cyrus/db/DB_CONFIG</filename>).
 		</para>
+
+		<para>
+		  The default values of the UCR variables for the configuration of the BDB database are:
+
+		  <itemizedlist>
+			<listitem><para> 
+			  mail/cyrus/bdb/dbconfig/set_lg_regionmax : "2097152"
+			</para></listitem>
+
+			<listitem><para> 
+			  mail/cyrus/bdb/dbconfig/set_cachesize : "0 2097152 1"
+			</para></listitem>
+		  </itemizedlist>
+		</para>
+
+		<para>
+		  Any existing Cyrus BDB configuration will be copied to
+		  <filename>/var/lib/cyrus/db/DB_CONFIG.debian</filename> during the update. If the new
+		  default values do not correspond to the old, existing configuration or if options used are
+		  not available in the new default values, the corresponding &ucsUCR; variables should be
+		  set prior to the update. E.g.:
+
+<programlisting>
+ucr set mail/cyrus/bdb/dbconfig/set_cachesize="0 4097152 1"
+ucr set mail/cyrus/bdb/dbconfig/set_lg_regionmax="2097152"
+ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
+</programlisting>
+		</para>
+
 	  </section>
 
 	  <section>
-		<title>Anpassungen am Univention Directory Listener-Modul für Cyrus-Benutzer</title>
+		<title>Updates to the Univention Directory listener module for Cyrus users</title>
 		<para>
-		  TODO: Merge translation
+		  The listener module for the administration of mailboxes has been revised. Mailboxes are
+		  now only created if the <emphasis>mailHomeServer</emphasis> attribute is set for the user
+		  (in the UMC under <guimenu>Advanced settings -> Mail home server </guimenu>).
+		</para>
+
+		<para>
+		  If the <envar>mail/cyrus/mailbox/delete</envar> &ucsUCRV; has been activated on the mail
+		  server and the attribute is removed from the user object, the mailbox is deleted.
+		</para>
+
+		<para>
+		  Prior to the update, a check should be made for whether the mail home server is set for
+		  all Cyrus users.
 		</para>
 	  </section>
 	</chapter>
@@ -202,9 +244,13 @@
 	  </section>
 
 	  <section>
-		<title>Update/Installation der Horde Grouware Webmail Edition</title>
+		<title>Update/installation of the Horde Groupware Webmail Edition</title>
 		<para>
-		  TODO: Merge translation
+		  As of UCS 3.2, the Horde Groupware Webmail Edition will no longer be available via the
+		  <emphasis>univention-horde4</emphasis> package and will be provided instead via the
+		  Univention App Center. The update of univention-horde4 to or initial installation of Horde
+		  5.1.0 is performed by installing the <emphasis>Horde Groupware Webmail Edition</emphasis>
+		  app in the Univention App Center.
 		</para>
 	  </section>
 	</chapter>
