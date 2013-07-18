@@ -1,4 +1,5 @@
 wait_for_LDAP_replication_of_domain_sambaSid() {
+	local username t0 t sambaSID
 	username="$1"
 	if [ -z "$username" ]; then
 		echo "usage: $0 <username>"
@@ -24,6 +25,7 @@ wait_for_LDAP_replication_of_domain_sambaSid() {
 }
 
 wait_for_drs_replication() {
+	local option ldap_filter attr t0 t output value i
 	local -a opts
 	OPTIND=0
 	while getopts  "b:s:" option; do
@@ -76,7 +78,7 @@ wait_for_drs_replication() {
 }
 
 force_drs_replication() {
-	local direction="in"
+	local direction="in" option source_dc destination_dc partition_dn
 	while getopts  "o" option; do
 		case "${option}" in
 			r) direction="out"; shift; break;;

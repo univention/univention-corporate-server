@@ -205,29 +205,32 @@ current_ucs_version_less_equal () {
 	[ "$ucsversion" -le "$versionstring" ] && :
 }
 
-wait_for_replication () {
+wait_for_replication () { # wait for listener/notifier replication to complete (timeout 5m)
+	local i
 	echo "Waiting for replication:"
-	for((i=0;i<300;i++)); do
-		/usr/lib/nagios/plugins/check_univention_replication && break
+	for ((i=0;i<300;i++)); do
+		if /usr/lib/nagios/plugins/check_univention_replication
+		then
+			echo "Done: replication complete."
+			return 0
+		fi
 		sleep 1
 	done
-	if [ "$i" -ge 299 ]; then
-		echo "Error: replication incomplete."
-		return 1
-	fi
-	echo "Done: replication complete."
-	return 0
+	echo "Error: replication incomplete."
+	return 1
 }
-wait_for_replication_and_postrun () {
+wait_for_replication_and_postrun () { #wait for listener/notifier replicaion and listener postrun delay
+	local rc
 	wait_for_replication
 	rc=$?
 	echo "Waiting for postrun"
 	sleep 17
 	return $rc
 }
-check_domainadmin_credentials () {
+
+check_domainadmin_credentials () { # check ldap credentials are available
 if [ -z "$tests_domainadmin_pwd" -o -z "$tests_domainadmin_pwdfile" -o -z "$tests_domainadmin_account" ]; then
-        return 1
+	return 1
 fi
 }
 # vim:set filetype=sh ts=4:
