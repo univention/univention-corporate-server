@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.28-1) unstable; urgency=low
+
+  * Bug #30744: The host field in the UMC header is now a dropdown to
+    switch the server
+
+ -- Florian Best <best@univention.de>  Thu, 18 Jul 2013 12:40:46 +0200
+
 univention-management-console-frontend (3.0.27-1) unstable; urgency=low
 
   * Bug #30811: make label for checkbox clickable, adjust dialog texts

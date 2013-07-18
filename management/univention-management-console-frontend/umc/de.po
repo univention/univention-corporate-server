@@ -673,8 +673,8 @@ msgid "umcFeedbackUrl"
 msgstr "http://www.univention.de/feedback"
 
 #: umc/app.js:787
-msgid "umcHostInfo"
-msgstr "Host: %(host)s.%(domain)s"
+msgid "Host: "
+msgstr "Host: "
 
 #: umc/app.js:1224
 msgid "umcLogoTitle"

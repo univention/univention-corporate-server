@@ -40,7 +40,7 @@ umc_frontend_new_hash
 univention-config-registry set "umc/server/languages/en_US?English" \
 	"umc/server/languages/de_DE?Deutsch" \
 	"umc/server/languages/en_GB?English (United Kingdom)" \
-	"umc/server/languages/de_AU?Deutsch (Österreich)" \
+	"umc/server/languages/de_AT?Deutsch (Österreich)" \
 	"umc/server/languages/de_CH?Deutsch (Schweiz)" \
 	"umc/web/feedback/mail?feedback@univention.de" \
 	"umc/web/feedback/description?[UMC-Feedback] Traceback" \

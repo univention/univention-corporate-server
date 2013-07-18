@@ -2200,3 +2200,47 @@ p {
 	color: @gray;
 }
 
+/* Switch Host ComboBox */
+.umcHeader {
+	#widget_umcMenuHostInfo.dijitTextBoxFocused .dijitInputContainer {
+		background: none;
+	}
+	#widget_umcMenuHostInfo.dijitTextBox {
+		border: 0 none;
+	}
+	#widget_umcMenuHostInfo .dijitArrowButtonInner {
+		background-color: @tuna;
+		background-image: url(form/images/umcHostInfoArrows.png);
+	}
+
+	#umcMenuHostInfo {
+		background-color: @tuna;
+		text-align: right;
+		color: white;
+		box-sizing: border-box;
+		padding-right: 0!important;
+	}
+
+	#widget_umcMenuHostInfo {
+		width: 220px;
+		outline: 0; /* remove chromium border */
+		padding-left: 0;
+		padding-right: 0;
+		padding-top: 13px;
+	}
+}
+
+#widget_umcMenuHostInfo_dropdown {
+	width: 220px;
+	margin-top: 3px;
+}
+
+#widget_umcMenuHostInfo_dropdown .dijitComboBoxMenu .dijitMenuItem {
+	border: 0 none;
+	color: white;
+	background-color: @tuna;
+}
+#widget_umcMenuHostInfo_dropdown .dijitComboBoxMenu .dijitMenuItemHover {
+	background-color: @grayDusty;
+}
+
