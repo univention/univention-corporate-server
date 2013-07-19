@@ -1,3 +1,9 @@
+ucs-test (4.0.74-1) unstable; urgency=low
+
+  * Skip some 67_udm-dns on UCS 3.1-1 (Bug #31653)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Jul 2013 08:05:28 +0200
+
 ucs-test (4.0.73-1) unstable; urgency=low
 
   * added variables containing DNs of univention temporary, default user and
