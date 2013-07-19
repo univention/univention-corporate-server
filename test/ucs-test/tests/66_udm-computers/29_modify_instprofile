@@ -1,0 +1,23 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test modifying instprofile for computers/domaincontroller_master, computers/domaincontroller_slave, computers/domaincontroller_backup and computers/memberserver
+## tags: [udm-computers]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		for role in ('computers/domaincontroller_master', 'computers/domaincontroller_slave', 'computers/domaincontroller_backup' , 'computers/memberserver'):
+			instprofile = uts.random_string()
+
+			computer = udm.create_object(role, name = uts.random_name())
+			udm.modify_object(role, dn = computer, instprofile = instprofile)
+			utils.verify_ldap_object(computer, {'univentionServerInstallationProfile': [instprofile]})

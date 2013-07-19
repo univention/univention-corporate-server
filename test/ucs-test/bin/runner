@@ -44,9 +44,10 @@ def main():
 	test_case = TestCase().load(filename)
 	test_result = TestResult(test_case, test_env).run()
 	format.format(test_result)
+	return 0 if test_result.eofs in 'OS' else 1
 
 if __name__ == '__main__':
 	try:
-		main()
+		sys.exit(main())
 	except KeyboardInterrupt:
 		sys.exit(1)

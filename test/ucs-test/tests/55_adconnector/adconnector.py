@@ -1,12 +1,12 @@
 import ldap
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 from ldap.controls import LDAPControl
 import ldap.modlist as modlist
 import time
 import ldap_glue
 import univention.connector.ad as ad
 
-baseConfig = univention_baseconfig.baseConfig()
+baseConfig = ConfigRegistry()
 baseConfig.load()
 
 class ADConnection(ldap_glue.LDAPConnection):
@@ -73,7 +73,7 @@ class ADConnection(ldap_glue.LDAPConnection):
 		import re
 		regex = '^(.*?)-%s$' % primaryGroupID
 		for r in res:
-			if r[0] == None or r[0] == 'None':
+			if r[0] is None or r[0] == 'None':
 				continue # Referral
 			if re.search (regex, ad.decode_sid(r[1]['objectSid'][0])):
 				return r[0]

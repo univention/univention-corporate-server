@@ -1,0 +1,23 @@
+#!/usr/share/ucs-test/runner python
+# -*- coding: utf-8 -*-
+## desc: Create groups/group with umlaut in name
+## tags: [udm-groups]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import sys
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			group = udm.create_group(name = '%säÄöÖüÜ%s' % (uts.random_groupname(4), uts.random_groupname(4)))[0]
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			sys.exit(0)
+
+		utils.fail('UDM did not report an error during creationg a group with umlaut in name')

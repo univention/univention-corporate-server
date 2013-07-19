@@ -1,0 +1,30 @@
+dn: cn=samba2,dc=liam,dc=local
+cn: samba
+objectClass: top
+objectClass: univentionObject
+objectClass: univentionObject1234
+objectClass: univentionObject1234567
+univentionObjectType: container/cn
+structuralObjectClass: organizationalRole
+entryUUID: 8953932e-9fef-1031-9f01-af93def3082f
+creatorsName:
+createTimestamp: 20121001084128Z
+entryCSN: 20121001084128.377790Z#000000#000#000000
+modifiersName:
+modifyTimestamp: 20121001084128Z
+
+dn: cn=samba,dc=liam,dc=local
+modifyTimestamp: 20121001084128Z
+modifiersName:
+entryCSN: 20121001084128.377790Z#000000#000#000000
+createTimestamp: 20121001084128Z
+creatorsName:
+entryUUID: 8953932e-9fef-1031-9f01-af93def3082f
+structuralObjectClass: organizationalRole
+univentionObjectType: container/cn
+objectClass: univentionObject1234567
+objectClass: univentionObject1234
+objectClass: univentionObject
+objectClass: top
+cn: samba
+

@@ -83,7 +83,12 @@ class UCSTestUDM_CannotModifyExistingObject(UCSTestUDM_Exception):
 
 
 class UCSTestUDM(object):
+	_lo = utils.get_ldap_connection()
+	_ucr = univention.testing.ucr.UCSTestConfigRegistry()
+	_ucr.load()
+
 	PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
+	
 	COMPUTER_MODULES = ('computers/ubuntu',
 						'computers/linux',
 						'computers/windows',
@@ -95,12 +100,16 @@ class UCSTestUDM(object):
 						'computers/macos',
 						'computers/ipmanagedclient')
 
+
+	UNIVENTION_TEMPORARY_CONTAINER = 'cn=temporary,cn=univention,%s' % _ucr['ldap/base']
+	DEFAULT_USER_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % _ucr['ldap/base'], 'univentionUsersObject')[0]
+	DEFAULT_GROUP_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % _ucr['ldap/base'], 'univentionGroupsObject')[0]
+
+	
+
 	def __init__(self):
-		self._ucr = univention.testing.ucr.UCSTestConfigRegistry()
-		self._ucr.load()
-		self._lo = utils.get_ldap_connection()
 		self._cleanup = {}
-		self._cleanupLocks = []
+		self._cleanupLocks = {}
 
 
 	def _build_udm_cmdline(self, modulename, action, kwargs):
@@ -137,12 +146,12 @@ class UCSTestUDM(object):
 					del args['remove_referring']
 
 		# set all other remaining properties
-		for arg in args:
-			if type(args.get(arg)) in (list, tuple):
-				for item in args.get(arg):
-					cmd.extend( [ '--append', '%s=%s' % (arg, item) ] )
-			else:
-				cmd.extend( [ '--set', '%s=%s' % (arg, args.get(arg)) ] )
+		for key, value in args.items():
+			if type(value) in (list, tuple):
+				for item in value:
+					cmd.extend( [ '--append', '%s=%s' % (key, item) ] )
+			elif value:
+				cmd.extend( [ '--set', '%s=%s' % (key, value) ] )
 		return cmd
 
 
@@ -166,8 +175,7 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while creating object' % (child.returncode,)
-			raise UCSTestUDM_CreateUDMObjectFailed(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_CreateUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
 		# find DN of freshly created object and add it to cleanup list
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
@@ -176,7 +184,7 @@ class UCSTestUDM(object):
 				self._cleanup.setdefault(modulename, []).append(dn)
 				break
 		else:
-			raise UCSTestUDM_CreateUDMUnknownDN(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_CreateUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
 		if wait_for_replication:
 			utils.wait_for_replication()
@@ -205,8 +213,7 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while modifying object: ' % (child.returncode,)
-			raise UCSTestUDM_ModifyUDMObjectFailed(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_ModifyUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
@@ -214,9 +221,9 @@ class UCSTestUDM(object):
 				assert(dn in self._cleanup.get(modulename, []))
 				break
 			elif line.startswith('No modification: '):
-				raise UCSTestUDM_NoModification(modulename, kwargs, stdout, stderr)
+				raise UCSTestUDM_NoModification({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 		else:
-			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
 		if wait_for_replication:
 			utils.wait_for_replication()
@@ -234,14 +241,13 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while modifying object: ' % (child.returncode,)
-			raise UCSTestUDM_MoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_MoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
 				break
 		else:
-			raise UCSTestUDM_ModifyUDMUnknownDN(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
 
 		if wait_for_replication:
 			utils.wait_for_replication()
@@ -259,8 +265,7 @@ class UCSTestUDM(object):
 		(stdout, stderr) = child.communicate()
 		
 		if child.returncode:
-			print 'UDM-CLI returned exitcode %s while removing object: ' % (child.returncode,)
-			raise UCSTestUDM_RemoveUDMObjectFailed(modulename, kwargs, stdout, stderr)
+			raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 		
 		if kwargs['dn'] in self._cleanup.get(modulename, []):
 			self._cleanup[modulename].remove(kwargs['dn'])
@@ -285,7 +290,7 @@ class UCSTestUDM(object):
 		Return value: (dn, username)
 		"""
 
-		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=users,%s' % self._ucr.get('ldap/base') ),
+		attr = self._set_module_default_attr(kwargs, (( 'position', self.DEFAULT_USER_CONTAINER ),
 											    ( 'password', 'univention' ),
 											    ( 'username', uts.random_username()),
 											    ( 'lastname', uts.random_name()),
@@ -305,7 +310,7 @@ class UCSTestUDM(object):
 
 		Return value: (dn, groupname)
 		"""
-		attr = self._set_module_default_attr(kwargs, (( 'position', 'cn=groups,%s' % self._ucr.get('ldap/base') ),
+		attr = self._set_module_default_attr(kwargs, (( 'position', self.DEFAULT_GROUP_CONTAINER ),
 											   ( 'name', uts.random_groupname() ) ))
 		
 		return (self.create_object('groups/group', wait_for_replication, **attr), attr['name'])
@@ -323,7 +328,7 @@ class UCSTestUDM(object):
 
 
 	def addCleanupLock(self, lockType, lockValue):
-			self._cleanupLocks.append('cn=%s,cn=%s,cn=temporary,cn=univention,%s' % (lockValue, lockType, self._ucr['ldap/base']))
+			self._cleanupLocks.setdefault(lockType, []).append(lockValue)
 
 	def cleanup(self):
 		"""
@@ -339,7 +344,7 @@ class UCSTestUDM(object):
 				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 				(stdout, stderr) = child.communicate()
 
-				if (child.returncode or not 'Object removed:' in stdout) and utils.verify_ldap_object(dn):
+				if child.returncode or not 'Object removed:' in stdout:
 					failedObjects.setdefault(module, []).append(dn)
 
 
@@ -351,19 +356,18 @@ class UCSTestUDM(object):
 
 				child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
 				(stdout, stderr) = child.communicate()
-
-				if child.returncode or not 'Object removed:' in stdout:
-					print 'Error while removing %s object "%s" during UDM cleanup: stdout=%s, stderr=%s' % (module,  dn, stdout, stderr)
 		self._cleanup = {}
 
-		for lockDN in self._cleanupLocks:
-			try:
-				self._lo.delete(lockDN)
-			except ldap.NO_SUCH_OBJECT:
-				pass
-			except Exception as ex:
-				print 'Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex)
-		self._cleanupLocks = []
+		for lock_type, values in self._cleanupLocks.items():
+			for value in values:
+				lockDN = 'cn=%s,cn=%s,%s' % (value, lock_type, self.UNIVENTION_TEMPORARY_CONTAINER)
+				try:
+					self._lo.delete(lockDN)
+				except ldap.NO_SUCH_OBJECT:
+					pass
+				except Exception as ex:
+					print 'Failed to remove locking object "%s" during cleanup: %r' % (lockDN, ex)
+		self._cleanupLocks = {}
 
 		print 'UCSTestUDM cleanup done'
 

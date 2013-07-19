@@ -31,8 +31,6 @@ tdir=$(mktemp -d)
 trap "rm -rf '$tdir' ; udm mail/domain remove --dn 'cn=$domainname,$ldap_base' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
 fake_passwd="$tdir/fake_passwd"
 echo "foobar1234" >"$fake_passwd"
-passwd="$tdir/passwd"
-echo -n "${BINDPWD}" >"$passwd"
 
 ssh_login () {
 	univention-ssh -timeout 10 "$1" -o NumberOfPasswordPrompts=3 "$NAME@$hostname.$domainname" /usr/sbin/ucr get hostname
@@ -48,7 +46,7 @@ info "Lock after tally"
 ssh_login "$fake_passwd" # 3
 ssh_login "$fake_passwd" # 6
 ssh_login "$fake_passwd" # 9
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" = "$hostname" ]
 then
 	fail_test "ssh login was successful, but the user should be locked"
@@ -57,7 +55,7 @@ fi
 info "Wait for timeout ${LOCKTIME}"
 sleep "${LOCKTIME}"
 
-ssh_hostname="$(ssh_login "$passwd")"
+ssh_hostname="$(ssh_login "$tests_domainadmin_pwdfile")"
 if [ "$ssh_hostname" != "$hostname" ]
 then
 	fail_test "ssh login wasn't successful"

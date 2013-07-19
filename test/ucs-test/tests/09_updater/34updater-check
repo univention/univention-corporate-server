@@ -8,11 +8,34 @@
 ## packages:
 ##  - apache2 | apache2-mpm-prefork
 ## exposure: dangerous
+## bugs: [31773]
 
 RETVAL=110 # Test fehlgeschlagen
 . pool.sh || exit 137
 
 setup_apache "${repoprefix}"
+
+FIXED_31733=false
+BUG31733 () { # expected-value cmd...
+	local expected value
+	expected=$1
+	shift
+	"$@" || return $?
+	value="$(ucr get update/available)"
+	echo "update/available: $value" >&2
+
+	if ! "${FIXED_31733}" && [ "$expected" != "$value" ]
+	then
+		echo "BUG #31733: Force APT cache refresh" >&2
+		touch /var/lib/dpkg/status
+		"$@" || return $?
+		value="$(ucr get update/available)"
+		echo "update/available: $value" >&2
+	fi
+
+	ucr set update/available= # reset the UCR variable
+	[ "$expected" = "$value" ]
+}
 
 (
 	# break upon error
@@ -38,15 +61,13 @@ setup_apache "${repoprefix}"
 	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
 
 	# no update should be available
-	/usr/share/univention-updater/univention-updater-check
-	ucr search --brief ^update/available
-	test no = "$(ucr get update/available)"
-	ucr set update/available="" # reset the UCR variable
+	BUG31733 no /usr/share/univention-updater/univention-updater-check
 
 	# We need to test the behavior for normal and easy update process.
 	# In fact, there is only one difference: for the easy process, an update
 	# is also available in case there is any package with a new version.
-	for easy in false true; do
+	for easy in false true
+	do
 		# set easy ins
 		ucr set update/umc/updateprocess/easy=$easy
 
@@ -60,17 +81,11 @@ setup_apache "${repoprefix}"
 		apt-get -qq update
 
 		# an update should be available
-		/usr/share/univention-updater/univention-updater-check
-		ucr search --brief ^update/available
-		test yes = "$(ucr get update/available)"
-		ucr set update/available="" # reset the UCR variable
+		BUG31733 yes /usr/share/univention-updater/univention-updater-check
 
 		# do the update and make sure update/available has been updated
 		echo "### Update ###"
-		/usr/share/univention-updater/univention-updater net
-		ucr search --brief ^update/available
-		test no = "$(ucr get update/available)"
-		ucr set update/available="" # reset the UCR variable
+		BUG31733 no /usr/share/univention-updater/univention-updater net
 
 
 		# create new package version in the same release
@@ -81,23 +96,17 @@ setup_apache "${repoprefix}"
 		apt-get -qq update
 
 		# an update should be available
-		/usr/share/univention-updater/univention-updater-check
-		ucr search --brief ^update/available
-		test yes = "$(ucr get update/available)"
-		ucr set update/available="" # reset the UCR variable
+		BUG31733 yes /usr/share/univention-updater/univention-updater-check
 
 		# call univention-actualise and make sure update/available has been updated 
 		# without easy update process, the variable should not be modified
 		echo "### Updating packages (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
-		/usr/share/univention-updater/univention-actualise
-		ucr search --brief ^update/available
-		if [ "true" = "$easy" ]; then
-			test no = "$(ucr get update/available)"
+		if "$easy"
+		then
+			BUG31733 no /usr/share/univention-updater/univention-actualise
 		else
-			test -z "$(ucr get update/available)"
+			BUG31733 "" /usr/share/univention-updater/univention-actualise
 		fi
-		ucr set update/available="" # reset the UCR variable
-
 	done
 )
 [ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)

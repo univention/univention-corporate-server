@@ -8,45 +8,44 @@
 ##  - univention-directory-listener
 ## exposure: dangerous
 
-. "$TESTLIBPATH/base.sh" || exit 1
-. "$TESTLIBPATH/user.sh" || exit 1
-. "$TESTLIBPATH/maildomain.sh" || exit 1
-
-DOMAIN="$(ucr get domainname)"
-LDAPBASE="$(ucr get ldap/base)"
-
-ucstest="$(random_chars)"
-touch /usr/lib/univention-directory-listener/system/"$ucstest".py
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/maildomain.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
 
 tempFile="$(mktemp)"
+undo rm -f "$tempFile"
 
-cat <<__HERE__ >/usr/lib/univention-directory-listener/system/"$ucstest".py
-import os, listener
-description='set up a new handler (with an new uid entry in tmp-file) for listener'
-name='ucstest'
-filter='(objectClass=posixAccount)'
+ucstest="ucstest_$(random_chars)"
+listener="/usr/lib/univention-directory-listener/system/$ucstest.py"
+cat >"$listener" <<__HERE__
+import listener
+description = 'set up a new handler (with an new uid entry in tmp-file) for listener'
+name = 'ucstest'
+filter = '(objectClass=posixAccount)'
 def handler(dn, new, old):
-        if new:
-                listener.setuid(0)
-                f=open("$tempFile", 'a+')
-                f.write('New User: %s\n' % new.get('uid')[0])
-                f.close()
-                listener.unsetuid()
-
+	if new:
+		listener.setuid(0)
+		f = open("$tempFile", 'a+')
+		f.write('New User: %s\n' % new.get('uid')[0])
+		f.close()
+		listener.unsetuid()
 __HERE__
-
+undo /etc/init.d/univention-directory-listener restart # Reversed order
+undo rm -f "$listener"
 /etc/init.d/univention-directory-listener restart
 
 # create domain part in configured mail domains list
-create_mail_domain "$domainname"
-rc=$?
+create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
 
 USERNAME=$(user_randomname)
-user_create "$USERNAME"
+user_create "$USERNAME" &&
+	undo user_remove "$USERNAME" ||
+	fail_fast 1 "Failed to create user $USERNAME"
 
 echo "Waiting for replication..."
 i=0
-while sleep 1s;
+while sleep 1s
 do
 	if [ $i -lt 120 ]; then
 		if getent passwd "$USERNAME"; then
@@ -59,26 +58,11 @@ do
 	i=`expr $i + 1`
 done
 
-grep "New User: $USERNAME" $tempFile
-if [ $? = 0 ]; then
-        echo "Found username ($USERNAME) in tempfile ($tempFile)"
+if grep "New User: $USERNAME" "$tempFile"
+then
+	echo "Found username '$USERNAME' in tempfile '$tempFile'"
 else
-        echo "Did not found username ($USERNAME) in tempfile ($tempFile)"
-        fail_test 1
-fi
-
-#cleanup
-rm -f /usr/lib/univention-directory-listener/system/"$ucstest".py || fail_test 1
-rm -f "$tempFile" || fail_test 1
-
-/etc/init.d/univention-directory-listener restart || fail_test 1
-
-#removing users/user
-user_remove "$USERNAME" || fail_test 1
-
-
-if [ "$rc" = "0" ]; then
-    delete_mail_domain "$domainname" || fail_test 1
+	fail_test 1 "Did not find username '$USERNAME' in tempfile '$tempFile'"
 fi
 
 exit "$RETVAL"

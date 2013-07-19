@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test modifying unixhome for all computer roles (except computers/ipmanagedclient)
-## tags: [udm-computers, new]
+## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
@@ -23,5 +23,4 @@ if __name__ == '__main__':
 
 			computer = udm.create_object(role, name = uts.random_name())
 			udm.modify_object(role, dn = computer, unixhome = unixHome)
-			if not utils.verify_ldap_object(computer, {'homeDirectory': [unixHome]}):
-				utils.fail('"homeDirectory" of %s differed from expectation after modification')
+			utils.verify_ldap_object(computer, {'homeDirectory': [unixHome]})

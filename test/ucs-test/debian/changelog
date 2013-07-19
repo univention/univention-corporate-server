@@ -1,3 +1,80 @@
+ucs-test (3.0.30-16) unstable; urgency=low
+
+  * Merge from UCS 3.2 (4.0.73-1)
+    [ Lukas Walter ]
+    * added variables containing DNs of univention temporary, default user and
+      default group containers to udm.py.UCSTestUDM (Bug #30560)
+    * added certain udm-groups tests (Bug #31657)
+    * fixed validation of sambaSID in udm-computer tests
+    * added certain udm-groups tests
+    * activated binary package ucs-test-udm-groups (Bug #27664)
+    * changed description of udm-tests. It now contains the effective module
+      name (e.g dns/host, users/user, dhcp/service)
+    * removed unused code from 64_udm-printers/41_check_ppd
+    * renamed udm-users tests
+    * fixed "nameserver" attribute related udm-dns tests (Bug #27664)
+    * cleanup for udm-dns, udm-containers, udm-dhcp and udm-computers tests
+      (Bug #27664)
+    * library performance and logging improvements
+    * increased granularity of udm-dhcp tests (Bug #31654)
+    * re-enabled 61_udm-users/20_create_user_just_person (Bug #31868)
+    * added test to verify that it is possible to create a user with only person
+      and mail options set (Bug #31868)
+    * passing attributes set to values interpreted as false (e.g False, None,
+      '') to UCSTestUDM._build_cmd_line() will lead to this attributes not
+      being set (Bug #30560)
+    * renamed another udm-computers test
+    * added more udm-computers tests
+    * also validate "univentionServerInstallationText" in
+      66_udm-computers/*create_maximal*
+    * removed debug tag from certain udm-computers test headers (Bug #31659)
+
+    [ Philipp Hahn ]
+    * lib: Fix ${var?-msg} to ${var:?msg} (Bug #28699)
+    * Use ucslint (Bug #28699)
+    * lib: Fix wait4replication to use function local variable.
+    * 10: Fix check for filename (Bug #27662)
+    * lib/group,user: Remove debug output of locale information.
+    * Use stored passwords (Bug #31250)
+    * Fix ldif comparator (Bug #29337)
+    * 10/05: Move to new section: 11_join
+    * 10/42: Check replication using LDIFf (Bug #31722)
+    * 10/43: Check replication performance (Bug #31721)
+    * 09/35: Workaround APT caching bug (Bug #31733)
+
+    [ Stefan Gohmann ]
+    * 00_base/45license_v2: limit test on DC master (Bug #31680)
+    * 02_import-performance: Except sqlite errors (Bug #31695)
+    * 02_import-performance/*.csv: fix import files (Bug #31695)
+    * 02_import-performance: increase the connector wait for connector
+      interval (Bug #31695)
+    * 60_umc/03_acls: Added test case for UMC ACLs (Bug #28059)
+    * tests/02_import-performance: Don't wait for the replication during
+      the user creation (Bug #31695)
+    * 03_ucr/67ucr_concurrent_set_get: activate for 3.1-1 since it was
+      fixed with errata130 (Bug #31725)
+    * 50_samba/42file_access_permissions: prevent an endless loop
+      (Bug #29054)
+
+    [ Tobias Peters ]
+    * Merged 36_printer from 51_samba4 and 50_samba to
+      53_samba-common/36_printer (Bug #31764)
+    * Merged 51_samba4/47file_access_permissions-unixmode and 
+      50_samba/42file_access_permissions into
+      53_samba-common/47file_access_permissions-unixmode (Bug #29056)
+    * Merged the test 35smbclient_auth from 50_samba and 51_samba4 
+      into 53_samba-common/35smbclient_auth (Bug #26807)
+    * Fixed the package dependencies in
+      53_samba-common/46file_access_permissions-samba_share_rules (Bug #29229)
+    * Add more checks to 51_samba4/46file_access_permissions-samba_share_rules and
+      move the test to 53_samba-common(Bug #29229)
+
+   [ Arvid Requate ]
+   * rename 25domain-join-without-admin-rights to run at the end
+     (Bug #31772)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Jul 2013 06:52:08 +0200
+
 ucs-test (3.0.30-15) unstable; urgency=low
 
   * Remove empty files from last commit (Bug #31659)

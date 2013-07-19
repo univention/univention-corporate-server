@@ -8,11 +8,8 @@
 delay=10
 
 . "$TESTLIBPATH/base.sh" || exit 137
-pwfile="$(mktemp)"
-trap "rm -f '$pwfile'" EXIT
-echo -n "${BINDPWD}" >"$pwfile"
 
-univention-ssh "$pwfile" "root@${hostname}.${domainname}" "date +%s ; sleep $delay ; date +%s" | (
+univention-ssh "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}" "date +%s ; sleep $delay ; date +%s" | (
 	read a
 	ta=$(date +%s)
 	echo "1st@$ta: $a"

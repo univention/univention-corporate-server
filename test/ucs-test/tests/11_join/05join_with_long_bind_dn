@@ -1,0 +1,99 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Join to a master when the dn of the bind-user is very long (provoking a linebreak)
+## bugs: [16210]
+## roles:
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
+## packages:
+##  - univention-join
+## exposure: dangerous
+## join: false
+
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/master.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+BINDUSERNAME="$(random_chars)"
+BINDPASSWORD="$(random_chars)"
+DNPART="$(random_chars)"
+
+#This code snippet is taken (almost) 1:1 from univention-join and sets the variable DCNAME
+echo -n "Search DC Master: "
+#echo "$interfaces_eth0_address"
+#echo "$nameserver1"
+
+DCNAME=
+if [ "$interfaces_eth0_type" = "dhcp" ]; then
+	DCNAME=`host -t SRV _domaincontroller_master._tcp.$domainname | grep -v "not found" | grep -v "reached" | tail -1 | sed -e 's|.* ||g' | sed -e 's|\.$||'`
+	if [ -n "$DCNAME" ]; then
+		echo -e "\033[60Gdone"
+	fi
+else
+	for i in "$nameserver" "$nameserver1" "$nameserver2" "$nameserver3" "$dns_forwarder1" "$dns_forwarder2" "$dns_forwarder3"; do
+		if [ -z "$i" ]; then continue; fi
+		DCNAME=`host -t SRV _domaincontroller_master._tcp.$domainname $i | grep -v "not found" | grep -v "reached" | tail -1 | sed -e 's|.* ||g' | sed -e 's|\.$||'`
+		if [ -n "$DCNAME" ]; then
+			echo -e "\033[60Gdone"
+			echo "domain $domainname" >/etc/resolv.conf
+			echo "nameserver $i" >>/etc/resolv.conf
+			test -x /etc/init.d/nscd && /etc/init.d/nscd restart >>/var/log/univention/join.log 2>&1
+			break
+		fi
+	done
+fi
+if [ -z "$DCNAME" ]; then
+	error "Unable to find a suitable master to join with"
+	exit 1 # This exit-code isn't defined, but there seems to
+	# be no suitable exit-code for this case
+fi
+
+LDAP_BASE="$(master_ucr_get ldap/base)"
+
+PREF=
+for ((i=0; i<=10; i+=1))
+do
+	on_master_escaped \
+		univention-directory-manager container/cn create \
+		--set name="${DNPART}" \
+		--position "${PREF}cn=users,$LDAP_BASE" || fail_test 1
+	PREF="cn=${DNPART},${PREF}"
+done
+
+if [ "$server_role" == "domaincontroller_backup" ]; then
+	on_master_escaped \
+		univention-directory-manager users/user create \
+		--set username="${BINDUSERNAME}" \
+		--set password="${BINDPASSWORD}" \
+		--set lastname="$(random_chars)" \
+		--set primaryGroup="cn=Domain Admins,cn=groups,$LDAP_BASE" \
+		--append groups="cn=DC Backup Hosts,cn=groups,$LDAP_BASE" \
+		--position "${PREF}cn=users,$LDAP_BASE" || fail_test 1
+else
+	on_master_escaped \
+		univention-directory-manager users/user create \
+		--set username="${BINDUSERNAME}" \
+		--set password="${BINDPASSWORD}" \
+		--set lastname="$(random_chars)" \
+		--set primaryGroup="cn=Domain Admins,cn=groups,$LDAP_BASE" \
+		--position "${PREF}cn=users,$LDAP_BASE" || fail_test 1
+fi
+
+on_master \
+	'while sleep 1s ; do echo waiting for nscd update ; if getent group 'Domain Admins' | grep -F '${BINDUSERNAME}' ; then break; fi; done'
+
+BINDPWDFILE="/tmp/bindpwd"
+echo -n "$BINDPASSWORD" > "$BINDPWDFILE"
+/usr/sbin/univention-join -dcaccount "$BINDUSERNAME" -dcpwd "$BINDPWDFILE" || fail_test 1
+rm -f "$BINDPWDFILE"
+
+if ! check_join_status; then
+	fail_test 1
+fi
+
+on_master_escaped \
+	univention-directory-manager container/cn remove \
+	--dn "cn=${DNPART},cn=users,$LDAP_BASE" || fail_test 1
+
+exit "$RETVAL"

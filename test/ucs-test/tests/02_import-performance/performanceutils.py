@@ -12,6 +12,10 @@ import univention.testing.strings as uts
 
 import univention.uldap
 
+CONNECTOR_WAIT_INTERVAL=12
+CONNECTOR_WAIT_SLEEP=5
+CONNECTOR_WAIT_TIME=CONNECTOR_WAIT_SLEEP*CONNECTOR_WAIT_INTERVAL
+
 def import_users(file):
 	subprocess.call('/usr/share/ucs-school-import/scripts/ucs-school-import %s' % file, shell=True)
 	return 0
@@ -32,8 +36,8 @@ def wait_for_s4connector():
 
 	highestCommittedUSN = -1
 	lastUSN = -1
-	while static_count < 2:
-		time.sleep(5)
+	while static_count < CONNECTOR_WAIT_INTERVAL:
+		time.sleep(CONNECTOR_WAIT_SLEEP)
 
 		previous_highestCommittedUSN = highestCommittedUSN
 
@@ -49,7 +53,14 @@ def wait_for_s4connector():
 		print highestCommittedUSN
 
 		previous_lastUSN = lastUSN
-		c.execute('select value from S4 where key=="lastUSN"')
+		try:
+			c.execute('select value from S4 where key=="lastUSN"')
+		except sqlite3.OperationalError as e:
+			static_count = 0
+			print 'Reset counter: sqlite3.OperationalError: %s' % e
+			print 'Counter: %d' % static_count
+			continue
+			
 		conn.commit()
 		lastUSN = c.fetchone()[0]
 
@@ -93,9 +104,9 @@ def get_user_dn_list(CSV_IMPORT_FILE):
 
 def create_test_user():
 	udm = udm_test.UCSTestUDM()
-	username = udm.create_user()[1]
+	username = udm.create_user(wait_for_replication=False)[1]
 	wait_for_s4connector()
-	return 0
+	return s4_user_auth(username, 'univention')
 
 def execute_timing(description, allowedTime, callback, *args):
 	print 'Starting %s' % description

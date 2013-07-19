@@ -39,4 +39,5 @@ override_dh_install:
 	dh_install --sourcedir=$(CURDIR)
 
 override_dh_auto_test:
+	ucslint
 	! find -type f -exec grep '^source\>' {} +

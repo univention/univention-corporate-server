@@ -1,0 +1,53 @@
+#!/usr/share/ucs-test/runner python
+## desc: Validate nagios for all computer roles
+## tags: [udm-computers]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+
+if __name__ == '__main__':
+	ldap = utils.get_ldap_connection()
+
+	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
+		with udm_test.UCSTestUDM() as udm:
+			forwardZone = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string())
+			nagiosService = udm.create_object('nagios/service', name = uts.random_name(), checkCommand = uts.random_string(), checkPeriod = uts.random_string(), notificationPeriod = uts.random_string())
+
+			nagiosParentProperties = {
+				'options': ['nagios'],
+				'name': uts.random_name(),
+				'ip': '10.20.30.2'
+			}
+			# FIXME: workaround for remaining locks
+			udm.addCleanupLock('aRecord', nagiosParentProperties['ip'])
+
+			computerProperties = {
+				'dnsEntryZoneForward': forwardZone,
+				'nagiosServices': nagiosService,
+				'nagiosContactEmail': '%s@%s.%s' % (uts.random_name(), uts.random_name(), uts.random_name()),
+				'nagiosParents': udm.create_object('computers/domaincontroller_backup', dnsEntryZoneForward = forwardZone, **nagiosParentProperties),
+				'name': uts.random_name(),
+				'ip': '10.20.30.3',
+				'options': ['nagios']
+			}
+			# FIXME: workaround for remaining locks
+			udm.addCleanupLock('aRecord', computerProperties['ip'])
+
+			computer = udm.create_object(role, **computerProperties)
+			
+			# validate that nagios related properties of computer are set correctly
+			utils.verify_ldap_object(computer, {
+				'univentionNagiosEmail': [computerProperties['nagiosContactEmail']],
+				'univentionNagiosEnabled': ['1'],
+				'univentionNagiosParent': ['%s.%s' % (nagiosParentProperties['name'], ldap.getAttr(computerProperties['nagiosParents'], 'associatedDomain')[0])]
+			})
+
+			# check if computer has been added to nagios service
+			utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerProperties['name'], ldap.getAttr(computer, 'associatedDomain')[0])]})

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test modifying shell for all computer roles (except computers/ipmanagedclient)
-## tags: [udm-computers, new]
+## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
@@ -14,14 +14,14 @@ import univention.testing.utils as utils
 
 
 if __name__ == '__main__':
-	shell = uts.random_string()
 	
 	with udm_test.UCSTestUDM() as udm:
 		for role in udm.COMPUTER_MODULES:
 			if role == 'computers/ipmanagedclient':
 				continue
 
+			shell = uts.random_string()
+
 			computer = udm.create_object(role, name = uts.random_name())
 			udm.modify_object(role, dn = computer, shell = shell)
-			if not utils.verify_ldap_object(computer, {'loginShell': [shell]}):
-				utils.fail('"loginShell" of %s differed from expectation after modification')
+			utils.verify_ldap_object(computer, {'loginShell': [shell]})

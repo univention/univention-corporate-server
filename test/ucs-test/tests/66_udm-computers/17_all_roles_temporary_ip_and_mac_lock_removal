@@ -1,0 +1,42 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if IP and MAC address locks are removed after computer creation and modification for all computer roles
+## tags: [udm-computers]
+## roles: [domaincontroller_master]
+## bugs: [15743]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+import univention.config_registry as configRegistry
+
+
+if __name__ == '__main__':
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
+
+	properties = {
+		'ip': '10.20.30.40',
+		'mac': '01:23:45:67:89:ab'
+	}
+
+	newProperties = {
+		'ip': '10.20.30.41',
+		'mac': '01:23:45:67:89:ac'
+	}
+
+	lockContainer = 'cn=temporary,cn=univention,%s' % ucr['ldap/base']
+
+	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
+		with udm_test.UCSTestUDM() as udm:
+			computer = udm.create_object(role, name = uts.random_name(), **properties)
+			utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (properties['ip'], lockContainer), should_exist = False)
+			utils.verify_ldap_object('cn=%s,cn=mac,%s' % (properties['mac'], lockContainer), should_exist = False)
+
+			udm.modify_object(role, dn = computer, **newProperties)
+			utils.verify_ldap_object('cn=%s,cn=aRecord,%s' % (newProperties['ip'], lockContainer), should_exist = False)
+			utils.verify_ldap_object('cn=%s,cn=mac,%s' % (newProperties['mac'], lockContainer), should_exist = False)

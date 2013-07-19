@@ -1,8 +1,9 @@
 Source: ucs-test
-Section: tools
+Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>= 8.0.0),
+ ucslint,
  python-support
 Standards-Version: 3.6.1
 
@@ -121,18 +122,6 @@ Description: Test scripts for LDAP and replication
 #Description: Test scripts for mail
 # This package includes some scripts for testing mail.
 
-#Package: ucs-test-kolab
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# swaks,
-# libnet-ssleay-perl,
-# python,
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for Kolab groupware suite
-# This package includes some scripts for testing Kolab.
-
 #Package: ucs-test-iptables
 #Architecture: all
 #Recommends: ucs-test-framework
@@ -241,15 +230,15 @@ Description: Test scripts for the users/user-module of the UDM
  This package includes some scripts for testing the functionality of the
  users/user-module of the UDM.
 
-#Package: ucs-test-udm-groups
-#Architecture: all
-#Recommends: ucs-test-framework
-#Depends: ucs-test-libs (= ${source:Version}),
-# ${misc:Depends}
-#Provides: ucs-test-module
-#Description: Test scripts for the groups/group-module of the UDM
-# This package includes some scripts for testing the functionality of the
-# groups/group-module of the UDM.
+Package: ucs-test-udm-groups
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for the groups/group-module of the UDM
+ This package includes some scripts for testing the functionality of the
+ groups/group-module of the UDM.
 
 Package: ucs-test-udm-dns
 Architecture: all
@@ -339,13 +328,21 @@ Provides: ucs-test-module
 Description: Test scripts for the settings/customattribute module of UDM.
  This package includes some scripts for testing UDM custom attributes.
 
+Package: ucs-test-umc
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Description: Test scripts for UMC
+ This package includes some scripts for testing UMC
+
 #Package: ucs-test-system-setup
 #Architecture: all
 #Depends: ucs-test-framework (= ${source:Version}),
 # ${misc:Depends}
 #Provides: ucs-test-module,
 #Description: Test scripts for univention-system-setup.
-# This package includes the test-cases for unvention-system-setup.
+# This package includes the test-cases for univention-system-setup.
 
 Package: ucs-test-adconnector
 Architecture: all
@@ -354,7 +351,7 @@ Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for univention-ad-connector.
- This package includes the test-cases for unvention-ad-connector.
+ This package includes the test-cases for univention-ad-connector.
 
 #Package: ucs-test-ucsschool
 #Architecture: all
@@ -383,7 +380,7 @@ Depends:
  ucs-test-ldap,
 # ucs-test-dns,
 # ucs-test-mail,
-# ucs-test-kolab,
+ ucs-test-umc,
 # ucs-test-iptables,
  ucs-test-samba,
  ucs-test-samba4,
@@ -392,7 +389,6 @@ Depends:
  ucs-test-udm-dns,
  ucs-test-udm-computers,
  ucs-test-udm-containers,
-# ucs-test-kolab,
  ucs-test-updater,
  ucs-test-udm-extendedattribute,
 # ucs-test-udm-customattribute,

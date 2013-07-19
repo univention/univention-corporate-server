@@ -20,8 +20,6 @@ ucr set \
 
 tdir=$(mktemp -d)
 trap "rm -rf '$tdir' ; user_remove '$NAME' ; ucr_restore ; invoke-rc.d ssh restart" EXIT
-passwd="$tdir/passwd"
-echo -n "${BINDPWD}" >"$passwd"
 
 posix_login () {
 	local name pass lstchg min max warn inact expire flag
@@ -93,19 +91,19 @@ do
 
 	sleep 5 # wait for replication
 
-	smb_login "$passwd"
+	smb_login "$tests_domainadmin_pwdfile"
 	if [ $? -ne "$windows" ]
 	then
 		fail_test 110 "Failed Windows login: expected $windows, got $result"
 	fi
 
-	krb_login "$passwd"
+	krb_login "$tests_domainadmin_pwdfile"
 	if [ $? -ne "$kerberos" ]
 	then
 		fail_test 110 "Failed Kerberos login: expected $kerberos, got $result"
 	fi
 
-	posix_login "$passwd"
+	posix_login "$tests_domainadmin_pwdfile"
 	if [ $? -ne "$posix" ]
 	then
 		fail_test 110 "Failed POSIX login: expected $posix, got $result"

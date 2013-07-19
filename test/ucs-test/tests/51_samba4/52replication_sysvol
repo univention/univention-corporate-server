@@ -57,7 +57,7 @@ fi
 ## Tests on remote DC
 echo "## check whether the directory has been created on remote DC $s4host.$domainname"
 i=0
-while ! echo "$BINDPWD" | univention-ssh /dev/stdin "$ADMINISTRATOR_NAME"@"$s4host.$domainname" test -d "/var/lib/samba/sysvol/$domainname/Policies/$gpo_cn" > /dev/null
+while ! univention-ssh "$tests_domainadmin_pwdfile" "$ADMINISTRATOR_NAME"@"$s4host.$domainname" test -d "/var/lib/samba/sysvol/$domainname/Policies/$gpo_cn" > /dev/null
 do
 	let i="$i"+1
 	if [ "$i" =  20 ]; then

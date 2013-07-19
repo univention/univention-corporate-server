@@ -1,0 +1,69 @@
+#!/usr/share/ucs-test/runner python
+## desc: Validate adoption of network properties during creation and modification for all computer roles
+## tags: [udm-computers]
+## roles: [domaincontroller_master]
+## exposure: careful
+## bugs: [15758]
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+import univention.config_registry as configRegistry
+
+
+
+if __name__ == '__main__':
+	ldap = utils.get_ldap_connection()
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
+
+	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
+		if role == 'computers/macos':
+			continue
+
+		computerProperties = {
+			'mac': '01:23:45:67:89:ab',
+			'name': uts.random_name()
+		}
+
+		with udm_test.UCSTestUDM() as udm:
+			# FIXME: workaround for remaining locks
+			udm.addCleanupLock('aRecord', '10.20.30.2')
+			udm.addCleanupLock('aRecord', '10.20.40.2')
+			udm.addCleanupLock('mac', '01:23:45:67:89:ab')
+
+
+
+
+			forwardZone1Name = '%s.%s' % (uts.random_name(), uts.random_name())
+			forwardZone2Name = '%s.%s' % (uts.random_name(), uts.random_name())
+
+
+			forwardZone1 = udm.create_object('dns/forward_zone', zone = forwardZone1Name, nameserver = uts.random_string())
+			reverseZone1 = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string())
+			dhcpService1 = udm.create_object('dhcp/service', service = uts.random_name())
+			network1Properties = {
+				'name': uts.random_name(),
+				'network': '10.20.30.0',
+				'netmask': '24',
+				'dnsEntryZoneForward': forwardZone1,
+				'dnsEntryZoneReverse': reverseZone1,
+				'dhcpEntryZone': dhcpService1,
+				'ipRange': '10.20.30.2 10.20.30.254'
+			}
+			network1 = udm.create_object('networks/network', **network1Properties)
+
+			computer = udm.create_object(role, network = network1, **computerProperties)
+			# verify that properties have been adopted correctly during creation
+			utils.verify_ldap_object(computer, {
+				'univentionNetworkLink': [network1],
+				'aRecord': ['10.20.30.2']
+			})
+
+			utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone1), {'aRecord': ['10.20.30.2']})
+			utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone1, {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZone1Name)]})
+			utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService1), {'univentionDhcpFixedAddress': ['10.20.30.2']})

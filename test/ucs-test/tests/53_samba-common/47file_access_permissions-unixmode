@@ -1,0 +1,95 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Test whether unixmode permissions set with UDM are working"
+## exposure: safe
+## packages:
+## - univention-samba | univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
+
+#----create User
+echo "----create user"
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+username="$(user_randomname)"
+password="univention"
+sharename="$(random_share)"
+
+check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
+
+trap 'user_remove "$username";share_remove $sharename; wait_for_replication_and_postrun; rm -rf "/${sharename:?}"' INT TERM EXIT
+if ! user_create "$username"; then
+	fail_fast 1 "Could not create user $username."
+fi
+
+#----create Share
+echo "----create share"
+SHARE_POSITION="cn=shares,$ldap_base"
+udm-test shares/share create --position="$SHARE_POSITION" \
+	--set name="$sharename" \
+	--set path="/$sharename" \
+	--set host="$hostname.$domainname"
+if [ "$?" != 0 ]; then
+	fail_fast 1 "could not create share"
+fi
+
+SHARE_DN="$(udm-test shares/share list --filter sambaName="$sharename" | sed -ne 's/^DN: //p')"
+
+USER_DN="$(udm-test users/user list --filter uid="$username" | sed -ne 's/^DN: //p')"
+
+wait_for_replication
+# force_drs_replication
+
+## wait for samba share export
+echo "----wait for samba share export and that the user has been replicated"
+i=0
+sleep_seconds=3
+while ! output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
+do
+	let i="$i"+1
+	if [ "$i" = 10 ]; then
+		echo "$output"
+		fail_fast 1 "TIMEOUT: Samba did not export the share '$sharename' after $((i * $sleep_seconds)) seconds"
+	fi
+	sleep "$sleep_seconds"
+done
+
+#--Tests
+#----Testing general connection
+echo "----Testing general connection"
+output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" >/dev/null 2>&1)"
+if [ "$?" != 0 ];then
+	echo "$output"
+	fail_test "Could not connect to the share."
+fi
+
+#----making a folder without permission
+echo "----making a folder without permission"
+output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder" 2>&1)"
+echo "$output" | grep -q "NT_STATUS_ACCESS_DENIED"
+if [ "$?" != 0 ];then
+	fail_test 1 "Expected return value NT_STATUS_ACCESS_DENIED, but received: $output"
+fi
+
+#----changing the folder's directorymode 
+udm-test shares/share modify --binddn "$tests_domainadmin_account" --bindpwd "$tests_domainadmin_pwd" --dn "$SHARE_DN" --set "directorymode=0777"
+
+#----making a folder
+echo "----making a folder with permission"
+output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "mkdir folder2" >/dev/null 2>&1)"
+if [ "$?" != 0 ]; then
+	echo "$output"
+	fail_test 1 "Failed to make a folder even though it should work."
+fi
+
+exit $RETVAL

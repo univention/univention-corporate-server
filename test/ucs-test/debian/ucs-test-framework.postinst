@@ -32,8 +32,6 @@
 
 #DEBHELPER#
 
-
-
 eval "$(ucr shell ldap/base)"
 
 ucr set tests/domainadmin/account?"uid=Administrator,cn=users,$ldap_base" \
@@ -48,3 +46,5 @@ then
 	echo -n "$tests_domainadmin_pwd" > "$tests_domainadmin_pwdfile"
 fi
 chmod 600 "$tests_domainadmin_pwdfile"
+
+exit 0

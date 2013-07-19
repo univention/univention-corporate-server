@@ -1,0 +1,13 @@
+# Invalid domain name
+0002-3: debian/changelog
+# Generic python version
+0009-2: bin/ldiff
+0009-2: bin/runner
+0009-2: bin/ucs-test
+0009-2: tests/09_updater/proxy.py
+0009-2: tests/51_samba4/kpasswd_change_pwd.py
+0011-16: debian/pyversions
+# Copyright
+0010-2
+# Depcreated univention-*
+0016-2: tests/00_base/check_log_files_definitions.py

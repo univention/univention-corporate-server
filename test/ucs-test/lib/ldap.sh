@@ -48,7 +48,7 @@ ldap_delete () {
 
 ldap_move () {
 	local dn=${1?:missing parameter: dn}
-	local dn=${2?:missing parameter: new dn}
+	local newdn=${2?:missing parameter: new dn}
 
 	"$PYTHON" -c "
 import sys

@@ -6,11 +6,8 @@
 ## exposure: safe
 
 . "$TESTLIBPATH/base.sh" || exit 137
-pwfile="$(mktemp)"
-trap "rm -f '$pwfile'" EXIT
-echo -n "${BINDPWD}" >"$pwfile"
 
-if [ yes/no = "$(univention-ssh "$pwfile" "root@${hostname}.${domainname}" echo -n yes/no)" ]
+if [ yes/no = "$(univention-ssh "$tests_domainadmin_pwdfile" "root@${hostname}.${domainname}" echo -n yes/no)" ]
 then
 	exit 100 # OK
 else

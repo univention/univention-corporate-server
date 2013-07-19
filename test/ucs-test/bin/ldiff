@@ -1,0 +1,3 @@
+#!/usr/bin/python
+from univention.testing.ldif import main
+main()

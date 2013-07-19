@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create users/user with kerberos and samba option set
+## tags: [udm-users]
+## roles: [domaincontroller_master]
+## bugs: [30932]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import sys
+import traceback
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.config_registry as configRegistry
+
+
+
+if __name__ == '__main__':
+	sys.exit(131) # SKIP for now
+
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
+
+
+
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			verify_ldap_object(udm.create_user(primaryGroup = 'cn=Domain Admins,cn=groups,%s' % ucr['ldap/base'], options = ['kerberos', 'samba'])[0])
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed as ex:
+			utils.fail('See Bug #30932:\n%s' % traceback.format_exc(ex), 121)
+

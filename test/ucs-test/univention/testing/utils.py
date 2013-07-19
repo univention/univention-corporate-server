@@ -51,8 +51,22 @@ LOG_BASE = '/var/log/univention/test_%d.log'
 
 
 
+class LDAPError(Exception):
+	pass
 
-class LDAPReplicationFailed(Exception):
+class LDAPReplicationFailed(LDAPError):
+	pass
+
+class LDAPObjectNotFound(LDAPError):
+	pass
+
+class LDAPUnexpectedObjectFound(LDAPError):
+	pass
+
+class LDAPObjectValueMissing(LDAPError):
+	pass
+
+class LDAPObjectUnexpectedValue(LDAPError):
 	pass
 
 
@@ -83,27 +97,29 @@ def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 	raise ldap.SERVER_DOWN()
 
 
-def verify_ldap_object(baseDn, expected_attr = {}):
+def verify_ldap_object(baseDn, expected_attr = {}, strict = True, should_exist = True):
 	try:
 		dn, attr = get_ldap_connection().search(filter = '(objectClass=*)', base = baseDn, attr = expected_attr.keys())[0]
-	except ldap.NO_SUCH_OBJECT:
-		print 'Could not find DN "%s" in LDAP' % baseDn
-		return False
-	except IndexError:
-		print 'Could not find DN "%s" in LDAP' % baseDn
-		return False
+	except (ldap.NO_SUCH_OBJECT, IndexError):
+		if should_exist:
+			raise LDAPObjectNotFound('DN: %s' % baseDn)
+		return
+	
+	if not should_exist:
+		raise LDAPUnexpectedObjectFound('DN: %s' % baseDn)
 
-	for attribute, exptected_values in expected_attr.items():
-		found_values = attr.get(attribute, [])
-		for expected_value in exptected_values:
-			if not expected_value in found_values:
-				print 'Expected "%s" attribute of LDAP object to contain "%s", but could not find it in there.\n"%s": %r' % (attribute, expected_value, attribute, found_values)
-				return False
-		for found_value in found_values:
-			if not found_value in exptected_values:
-				print 'Found unexptected value "%s" in "%s" attribute of LDAP object.\n"%s": %r' % (found_value, attribute, attribute, found_values)
-				return False
-	return True
+	for attribute, expected_values in expected_attr.items():
+		found_values = set(attr.get(attribute, []))
+		expected_values = set(expected_values)
+
+		difference = expected_values - found_values
+		if difference:
+			raise LDAPObjectValueMissing('DN: %s\n%s: %r, missing: \'%s\'' % (baseDn, attribute, list(found_values), '\' ,'.join(difference)))
+
+		if strict:
+			difference = found_values - expected_values
+			if difference:
+				raise LDAPObjectUnexpectedValue('DN: %s\n%s: %r, unexpected: \'%s\'' % (baseDn, attribute, list(found_values), '\' ,'.join(difference)))
 
 
 def remove_ldap_lock(dn):

@@ -8,18 +8,19 @@
 ##  - univention-config-registry
 ## exposure: dangerous
 
-. "$TESTLIBPATH/base.sh" || exit 1
-
-ldif=`mktemp`
-ldif2=`mktemp`
-
-/etc/init.d/slapd stop
-
-slapcat > "$ldif"
+. "$TESTLIBPATH/base.sh" || exit 137
 
 temp_dir=`mktemp -d`
+trap "rm -rf '$temp_dir'" EXIT
 
-mv /var/lib/univention-ldap/ldap/* "$temp_dir/"
+mkdir "$temp_dir/bak"
+ldif="$temp_dir/1"
+ldif2="$temp_dir/2"
+
+/etc/init.d/slapd stop
+slapcat > "$ldif"
+
+mv /var/lib/univention-ldap/ldap/* "$temp_dir/bak/"
 
 ucr commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
@@ -29,25 +30,19 @@ slapcat > "$ldif2"
 
 /etc/init.d/slapd start
 
-test=`diff "$ldif" "$ldif2"`
-
-if [ ! "$test" = "" ]; then
-        echo "diff: $test"
-        echo "There was an error testing slapcat and slapadd, trying to restore the old ldap database"
-        /etc/init.d/slapd stop
-        rm /var/lib/univention-ldap/ldap/*
-        mv $temp_dir/* /var/lib/univention-ldap/ldap/
-        /etc/init.d/slapd start
-        fail_test 1
+if ! ldiff "$ldif" "$ldif2"
+then
+	error "There was an error testing slapcat and slapadd, trying to restore the old ldap database"
+	/etc/init.d/slapd stop
+	rm /var/lib/univention-ldap/ldap/*
+	mv "$temp_dir/bak/"* /var/lib/univention-ldap/ldap/
+	/etc/init.d/slapd start
+	fail_test 1
 fi
-
-rm "$ldif" "$ldif2"
-rm -r "$temp_dir"
 
 # check if slapd running
 if ! pidof -s "slapd" > /dev/null; then
-	echo "Slapd is not running. Test failed."
-    fail_test 1
+	fail_test 1 "Slapd is not running."
 fi
 
 exit $RETVAL

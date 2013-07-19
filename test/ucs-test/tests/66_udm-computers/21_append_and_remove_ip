@@ -22,13 +22,10 @@ if __name__ == '__main__':
 				udm.addCleanupLock('aRecord', ip)
 
 			computer = udm.create_object(role, name = uts.random_name(), append = {'ip': ipAddresses[:2]})
-			if not utils.verify_ldap_object(computer, {'aRecord': ipAddresses[:2]}):
-				utils.fail('"aRecord" of %s differed from expectation after trying to append %r during creation' % (role, ipAddresses[:2]))
+			utils.verify_ldap_object(computer, {'aRecord': ipAddresses[:2]})
 
 			udm.modify_object(role, dn = computer, append = {'ip': ipAddresses[2:]})
-			if not utils.verify_ldap_object(computer, {'aRecord': ipAddresses}):
-				utils.fail('"aRecord" of %s differed from expectation after trying to append %r during modification' % (role, ipAddresses[2:]))
+			utils.verify_ldap_object(computer, {'aRecord': ipAddresses})
 
 			udm.modify_object(role, dn = computer, remove = {'ip': ipAddresses[:2]})
-			if not utils.verify_ldap_object(computer, {'aRecord': ipAddresses[2:]}):
-				utils.fail('"aRecord" of %s differed from expectation after trying to remove %r during modification' % (role, ipAddresses[:2]))
+			utils.verify_ldap_object(computer, {'aRecord': ipAddresses[2:]})
