@@ -605,6 +605,10 @@
 		<listitem><simpara>
 		  Opening superordinates which were recently created did not opened correctly (<ulink url="&ucsbug;25008">Bug 25008</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			When a license was imported a success message is displayed (<ulink url="&ucsbug;29713">Bug 29713</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>
