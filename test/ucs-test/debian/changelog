@@ -1,3 +1,9 @@
+ucs-test (4.0.75-1) unstable; urgency=low
+
+  * lib/printer: Fix $i to $1 (Bug #28699)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Jul 2013 08:46:28 +0200
+
 ucs-test (4.0.74-1) unstable; urgency=low
 
   * Skip some 67_udm-dns on UCS 3.1-1 (Bug #31653)
@@ -7,11 +13,9 @@ ucs-test (4.0.74-1) unstable; urgency=low
 ucs-test (4.0.73-1) unstable; urgency=low
 
   * added variables containing DNs of univention temporary, default user and
-    default group containers to udm.py.UCSTestUDM
-  (Bug #30560)
+    default group containers to udm.py.UCSTestUDM (Bug #30560)
 
-  * added certain udm-groups tests
-  (Bug #31657)
+  * added certain udm-groups tests (Bug #31657)
 
  -- Lukas Walter <walter@univention.de>  Thu, 18 Jul 2013 15:56:51 +0200
 

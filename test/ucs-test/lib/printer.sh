@@ -8,7 +8,7 @@ getprintername () { # Generate a name for a printer. E.g. PRINTERNAME=$(getprint
 }
 
 create_localprinter () { #Creates a printer. E.g. createlocalprinter $PRINTERNAME
-	TMP_PRINTERNAME="${i:?printername, e.g \$(getprintername)}"
+	TMP_PRINTERNAME="${1:?printername, e.g \$(getprintername)}"
 	shift
 	info "create printer $TMP_PRINTERNAME"
 
