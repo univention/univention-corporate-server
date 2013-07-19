@@ -1,195 +1,197 @@
-[con.*/s4/listener/dir]
-Description[de]=Verzeichnis, in dem die von UCS nach Samba 4 zu übertragenen Objekte liegen. In diesem Pfad legt das zugehörige Listener-Modul die Änderungen ab, er sollte daher nicht geändert werden.
-Description[en]=Directory in which the objects transferred from UCS to Samba 4 are stored, preset as /var/lib/univention-connector/ad. The corresponding listener module saves the changes in this path; it should thus not be altered.
+[connector/s4/listener/dir]
+Description[de]=Das Verzeichnis, in dem die von UCS nach Samba 4 übertragenen Objekte liegen. Ist die Variable nicht gesetzt, wird /var/lib/univention-connector/s4 verwendet.
+Description[en]=Directory in which the objects transferred from UCS to Samba 4 are stored. If the variable is unset, /var/lib/univention-connector/s4 is used.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/poll/sleep]
-Description[de]= Zeit in Sekunden, die nach einem Lauf ohne Änderungen gewartet wird, bis erneut angefragt wird. Lokal wird dabei nur nach neuen Dateien im oben genannten Verzeichnis gesucht, auf Samba 4-Seite wird eine LDAP-Anfrage gestellt.
-Description[en]=Time in seconds which is waited after a run without changes until the next request is made. Only new files are searched for locally in the directory named above; a LDAP request is made on the Samba 4 side.
+[connector/s4/poll/sleep]
+Description[de]=Die Zeit in Sekunden, die nach einem Lauf ohne Änderungen gewartet wird, bis eine erneute Anfrage gestellt wird. Dabei wird auf UCS-Seite im Laufzeitverzeichnis des Univention Directory Listener-Modul gesucht (siehe 'connector/s4/listener/dir') und auf Samba 4-Seite eine LDAP-Anfrage gestellt.
+Description[en]=The time in seconds which is waited after a run without changes until the next request is made. On the UCS side new files are searched in the runtime directory of the Univention Directory listener module (see 'connector/s4/listener/dir'); a LDAP request is made on the Samba 4 side.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/retryrejected]
-Description[de]=Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-status.log nachvollzogen werden.
-Description[en]=Number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be followed in the /var/log/univention/connector-status.log logfile.
+[connector/s4/retryrejected]
+Description[de]=Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-s4-status.log nachvollzogen werden. Ist die Variable nicht gesetzt, tritt dies nach 10 Anfragen ein.
+Description[en]=Number of requests without new changes after which a new attempt is made to import retained changes. This procedure can be followed in the /univention/connector-s4-status.log. If the variable is unset, it occurs after 10 requests.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/ldap/port]
-Description[de]=TCP-Port über den der LDAP-Dienst des Samba 4-Servers erreichbar ist
-Description[en]=The port of the LDAP service of the Samba 4 server
+[connector/s4/ldap/port]
+Description[de]=TCP-Port über den der LDAP-Dienst des Samba 4-Servers erreichbar ist.
+Description[en]=The port of the LDAP service of the Samba 4 server.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/ldap/host]
-Description[de]=Der Fully Qualified Domain Name des Samba 4 Servers
+[connector/s4/ldap/host]
+Description[de]=Der Fully Qualified Domain Name des Samba 4 Servers.
 Description[en]=The fully qualified domain name of the Samba 4 server.
 Type=str
 Categories=service-adcon
 
-[con.*/debug/function]
-Description[de]=Debug-Level für die Rückverfolgung von Funktionsaufrufen im S4-Connector (0 oder 1). Auf 1 gesetzt werden Funktionsaufrufe als zusätzliche Debug-Information protokolliert.
-Description[en]=Controls, whether function calls should be traced in the debug log (0 or 1) When set to 1 the function calls are also documented as additional debug information
+[connector/debug/function]
+Description[de]=Ist diese Variable auf '1' gesetzt, werden Funktionsaufrufe als zusätzliche Debug-Information protokolliert. Ist die Variable auf '0' gesetzt oder nicht gesetzt, werden die Aufrufe nicht protokolliert.
+Description[en]=If the variable is set to '1' function calls are logged as additional debug information. If the variable is set to '0' or unset no calls are logged.
 Type=str
 Categories=service-adcon
 
-[con.*/debug/level]
-Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector.log (0-4). Voreingestellt ist 2, so dass der aktuelle Synchronisationsstand in den Logdateien geprüft werden kann.
-Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector.log (0-4). Preset as 2, so that the status of the synchronisation is visible in the log files.
+[connector/debug/level]
+Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector-s4.log. Mögliche Werte sind 0-4. Ist die Variable nicht gesetzt gilt '2'.
+Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector-s4.log. Possible values are 0-4. If the variable is unset, '2' applies.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/syncmode]
-Description[de]=Definiert den Sychronisations-Modus, unterstützt werden die Werte "read" (nur lesend von Samba 4 nach UCS), "write" (nur schreiben von UCS nach Samba 4) oder "sync" (bidirektionale Synchronisation).
-Description[en]=Defines the synchronisation mode; "read" (reading only from Samba 4 to UCS), "write" (writing only from UCS to Samba 4) and "sync" (bidirectional synchronisation) are supported. 
+[connector/s4/mapping/syncmode]
+Description[de]=Definiert den Sychronisations-Modus zwischen dem UCS-LDAP und dem Samba 4-LDAP. Unterstützt werden die Werte 'read' (Änderungen können nur im Samba 4-LDAP vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Samba 4-LDAP übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden.
+Description[en]=Defines the synchronisation mode between the UCS LDAP and Samba 4 LDAP. The following values are supported: 'read' (changes can only by made in Samba 4 LDAP and are synchronised to UCS LDAP), 'write' (changes can only by made in UCS LDAP and are synchronised to Samba 4 LDAP) and 'sync' (bidirectional synchronisation, changes can be made in both directory services).
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/dns/syncmode]
-Description[de]=Definiert den Sychronisations-Modus für DNS Daten, unterstützt werden die Werte "read" (nur lesend von Samba 4 nach UCS), "write" (nur schreiben von UCS nach Samba 4) oder "sync" (bidirektionale Synchronisation).
-Description[en]=Defines the synchronisation mode for DNS data; "read" (reading only from Samba 4 to UCS), "write" (writing only from UCS to Samba 4) and "sync" (bidirectional synchronisation) are supported. 
+[connector/s4/mapping/dns/syncmode]
+Description[de]=Definiert den Sychronisations-Modus für DNS-Daten zwischen dem UCS-LDAP und dem Samba 4-LDAP. Unterstützt werden die Werte 'read' (Änderungen können nur im Samba 4-LDAP vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Samba 4-LDAP übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden.
+Description[en]=Defines the synchronisation mode for DNS data between the UCS LDAP and Samba 4 LDAP. The following values are supported: 'read' (changes can only by made in Samba 4 LDAP and are synchronised to UCS LDAP), 'write' (changes can only by made in UCS LDAP and are synchronised to Samba 4 LDAP) and 'sync' (bidirectional synchronisation, changes can be made in both directory services).
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/gpo]
-Description[de]=Definiert ob die MS GPOs synchronisiert werden sollen (Default: true)
-Description[en]=Defines whether the MS GPOs should be synchronized (Default: true)
+[connector/s4/mapping/gpo]
+Description[de]=Die Gruppenrichtlinien werden in Group Policy Objects (GPOs) gespeichert, die auf Samba 4-Domänencontrollern im Verzeichnis /var/lib/samba/sysvol gespeichert werden. Diese GPOs werden im Samba 4-LDAP referenziert. Ist diese Option aktiviert, werden die GPO-Referenzen auch in das UCS-LDAP synchronisiert. Ist die Variable nicht gesetzt, werden die Referenzen synchronisiert.
+Description[en]=Group policies are stored in Group Policy Objects (GPOs) in the directory /var/lib/samba/sysvol on all Samba 4 domain controllers. The GPOs are referenced in Samba 4 LDAP. If this option is activated, GPO references are synchronised to the UCS LDAP. If the variable is unset, the references are synchronised.
+Type=bool
+Categories=service-adcon
+
+[connector/s4/mapping/user/ignorelist]
+Description[de]=Die hier angegebenen Benutzernamen werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden.
+Description[en]=The user names specified here are not synchronised by the connector. Multiple values need to be separated with a comma.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/user/ignorelist]
-Description[de]=Definiert durch Komma separierte Benutzer, welche durch den Connector nicht synchronisert werden (Default ist root,pcpatch,ucs-s4sync)
-Description[en]=Defines a comma separated list of users whom will be ignored by the connector (default is root,pcpatch,ucs-s4sync)
+[connector/s4/mapping/group/ignorelist]
+Description[de]=Die hier angegebenen Gruppenamen werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden.
+Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated with a comma.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/group/ignorelist]
-Description[de]=Definiert durch Komma separierte Gruppen, welche durch den Connector nicht synchronisert werden (Default ist Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody)
-Description[en]=Defines a comma separated list of groups whom will be ignored by the connector (default is Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody)
+[connector/s4/mapping/dc/ignorelist]
+Description[de]=Die hier angegebenen Rechnernamen von Windows-Domänencontrollern werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden. Windows-Clients und Memberserver können mit der Variable 'connector/s4/mapping/windowscomputer/ignorelist' konfiguriert werden.
+Description[en]=The host names of Windows domain controllers specified here are not synchronised by the connector. Multiple values need to be separated with a comma. Windows clients and member servers can be configured via the variable 'connector/s4/mapping/windowscomputer/ignorelist'.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/dc/ignorelist]
-Description[de]=Definiert durch Komma separierte DCs, welche durch den Connector nicht synchronisert werden
-Description[en]=Defines a comma separated list of dc's which will be ignored by the connector
+[connector/s4/mapping/windowscomputer/ignorelist]
+Description[de]=Die hier angegebenen Rechnernamen von Windows-Clients und Memberservern werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden. Windows-Domänencontroller können mit der Variable 'connector/s4/mapping/dc/ignorelist' konfiguriert werden.
+Description[en]=The host names of Windows clients and member servers specified here are not synchronised by the connector. Multiple values need to be separated with a comma. Windows domain controllers can be configured via the variable 'connector/s4/mapping/dc/ignorelist'.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/windowscomputer/ignorelist]
-Description[de]=Definiert durch Komma separierte Windows Rechner, welche durch den Connector nicht synchronisert werden
-Description[en]=Defines a comma separated list of windows computers which will be ignored by the connector
-Type=str
-Categories=service-adcon
-
-[con.*/s4/mapping/container/ignorelist]
-Description[de]=Definiert durch Komma separierte Container, welche durch den Connector nicht synchronisert werden (Default ist mail,kerberos,MicrosoftDNS)
+[connector/s4/mapping/container/ignorelist]
+Description[de]=Die hier angegebenen Namen von LDAP-Containern werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden. Der cn= Teil muss nicht angegeben werden. Um etwa 'cn=mail' zu ignorieren muss nur 'mail' angegeben werden.
+Description[en]=The names of LDAP containers specified here are not synchronised by the connector. Multiple values need to be separated with a comma. The cn= part is not needed. E.g. to ignore 'cn=mail' simply specify 'mail'.
 Description[en]=Defines a comma separated list of containers which will be ignored by the connector (default is mail,kerberos,MicrosoftDNS)
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/ou/ignorelist]
-Description[de]=Definiert durch Komma separierte OU's, welche durch den Connector nicht synchronisert werden
-Description[en]=Defines a comma separated list of OU's which will be ignored by the connector
+[connector/s4/mapping/ou/ignorelist]
+Description[de]=Die hier angegebenen Namen von LDAP-Organisationseinheiten werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden. Der ou= Teil muss nicht angegeben werden. Um etwa 'ou=zentrale' zu ignorieren muss nur 'zentrale' angegeben werden.
+Description[en]=The names of LDAP organisational units specified here are not synchronised by the connector. Multiple values need to be separated with a comma. The ou= part is not needed. E.g. to ignore 'ou=headquarter' simply specify 'headquarter'.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/dns/ignorelist]
-Description[de]=Definiert durch Komma separierte DNS Objekte, welche durch den Connector nicht synchronisert werden (Default ist DC=_ldap._tcp.Default-First-Site-Name._site)
-Description[en]=Defines a comma separated list of DNS objects which will be ignored by the connector (default is DC=_ldap._tcp.Default-First-Site-Name._site)
+[connector/s4/mapping/dns/ignorelist]
+Description[de]=Die hier angegebenen Namen von DNS-Objekten werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden.
+Description[en]=The names of DNS objects specified here are not synchronised by the connector. Multiple values need to be separated with a comma.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/gpo/ignorelist]
-Description[de]=Definiert durch Komma separierte GPO Objekte, welche durch den Connector nicht synchronisert werden
-Description[en]=Defines a comma separated list of GPO objects which will be ignored by the connector
+[connector/s4/mapping/gpo/ignorelist]
+Description[de]=Wenn die Synchronisation von GPO-Referenzen aktiviert wurde (siehe 'connector/s4/mapping/gpo), können hier GPO-Objekte angegeben werden, die durch den Connector nicht synchronisiert werden. Mehrfache Werte müssen durch ein Komma getrennt werden.
+Description[en]=If the synchronisation of GPO objects has been activated (see 'connector/s4/mapping/gpo), GPO objects can be specified here which are not synchronised by the connector. Multiple values need to be separated with a comma.
 Type=str
 Categories=service-adcon
-[con.*/s4/ldap/base]
-Description[de]=Die LDAP-Basis-DN des Samba 4-Servers
+
+[connector/s4/ldap/base]
+Description[de]=Die LDAP-Basis-DN des Samba 4-Servers.
 Description[en]=The LDAP base DN of the Samba 4 server.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/ldap/binddn]
-Description[de]=Mit diesem LDAP-Benutzer nimmt der S4 Connector Änderungen im LDAP des Samba 4 vor
-Description[en]= The Univention S4 connector uses this user to make changes in the LDAP of the Samba 4.
+[connector/s4/ldap/binddn]
+Description[de]=Mit diesem Benutzer nimmt der S4 Connector Änderungen im Samba 4-LDAP vor. Anzugeben ist eine LDAP-DN. Ist die Variable nicht gesetzt, wird der interne Benutzer cn=admin verwendet.
+Description[en]= The Univention S4 connector uses this user to perform changes in the Samba 4 LDAP directory. A LDAP DN needs to be given. If the variable is unset, the internal user cn=admin is used.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/ldap/bindpw]
-Description[de]=Die Datei, die das Passwort des Synchronisationsbenutzers enthält, z.B. /etc/univention/ad.secret. Die Datei sollte genau eine Zeile enthalten.
-Description[en]=The file, which contains the password of the synchronisation user, e.g. /etc/univention/ad.secret. This file should contain exactly one line.
+[connector/s4/ldap/bindpw]
+Description[de]=Die Datei, die das Passwort des Synchronisationsbenutzers (siehe 'connector/s4/ldap/binddn') enthält. Die Datei sollte genau eine Zeile mit dem Passwort enthalten. Ist die Variable nicht gesetzt, wird /etc/ldap.secret verwendet.
+Description[en]=A file containing the password of the synchronisation user (see 'connector/s4/ldap/binddn'). The file should contain exactly one line with the password. If the variable is unset /etc/ldap.secret is used.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/sid]
-Description[de]=Definiert ob die SID synchronisiert werden soll (Default: true)
-Description[en]=Defines whether the SID should be synchronized (Default: true)
-Type=str
+[connector/s4/mapping/sid]
+Description[de]=Ist diese Variable aktiviert, wird der Security Identifier (SID) von Benutzern und Gruppen zwischen dem UCS-LDAP und Samba 4-LDAP synchronisiert. Ist die Variable nicht gesetzt werden die SIDs synchronisiert. Die Deaktivierung der Synchronisation ist normalerweise nur im Rahmen von Migrationen von Samba 3 auf Samba 4 nötig.
+Description[en]=If this variable is activated the Security Identifier (SID) of users and groups is synchronised between UCS LDAP and Samba 4 LDAP. If the variable is unset the SIDs are synchronised. The deactivation of the SID synchronisation is typically only made during migrations from Samba 3 to Samba 4.
+Type=bool
 Categories=service-adcon
 
-[con.*/s4/mapping/sid/sid_to_s4]
+[connector/s4/mapping/sid/sid_to_s4]
 Description[de]=Definiert ob die SID von UCS nach Samba 4 synchronisiert werden soll (Default: false)
 Description[en]=Defines whether the SID should be synchronized from UCS to Samba 4 (Default: false)
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/sid/sid_to_ucs]
+[connector/s4/mapping/sid/sid_to_ucs]
 Description[de]=Definiert ob die SID von Samba 4 nach UCS synchronisiert werden soll (Default: true)
 Description[en]=Defines whether the SID should be synchronized from Samba 4 to UCS (Default: true)
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/dns/forward_zone/.*/static/ipv4]
+[connector/s4/mapping/dns/forward_zone/.*/static/ipv4]
 Description[de]=Eine statische Liste von IPv4 Adressen, die immer an der angegebenen Forward Zone gesetzt werden soll
 Description[en]=A static list of IPv4 addresses, which should always be set at the specified forward zone
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/dns/forward_zone/.*/static/ipv6]
+[connector/s4/mapping/dns/forward_zone/.*/static/ipv6]
 Description[de]=Eine statische Liste von IPv6 Adressen, die immer an der angegebenen Forward Zone gesetzt werden soll
 Description[en]=A static list of IPv6 addresses, which should always be set at the specified forward zone
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/dns/srv_record/.*/location]
+[connector/s4/mapping/dns/srv_record/.*/location]
 Description[de]=Eine statische Liste von SRV Einträgen, die immer an dem angegebenen SRV Record in Samba 4 gesetzt gesetzt werden soll, unabhängig von den SRV Einträgen in UCS, beispielsweise connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 server1.test.local. 100 0 389 server2.test.local.' Wird der Wert auf 'ignore' gesetzt, so wird der SRV Eintrag nicht synchronisiert.
 Description[en]=A static list of SRV locations, which will always be set at the specified SRV record in Samba 4 independent from the SRV locations in UCS, for example connector/s4/mapping/dns/srv_record/_ldap._tcp.test.local/location='100 0 389 server1.test.local. 100 0 389 server2.test.local.'. If the value is set to 'ignore', the SRV record will not be synced.
 Type=str
 Categories=service-adcon
 
-[con.*/ldap/server]
+[connector/ldap/server]
 Description[de]=Der Fully Qualified Domain Name des UCS LDAP Servers. Wenn der Wert nicht gesetzt ist, wird der DC Master verwendet. Dieser Wert sollte nur im write Modus angepasst werden.
 Description[en]=The fully qualified domain name of the UCS LDAP server. If the value is not set, the DC master will be used. This value should only changed in write mode.
 Type=str
 Categories=service-adcon
 
-[con.*/ldap/port]
+[connector/ldap/port]
 Description[de]=TCP-Port über den der LDAP-Dienst des Samba 4-Servers erreichbar ist. Dieser Wert sollte nur im write Modus angepasst werden.
 Description[en]=The port of the LDAP service of the Samba 4 server. This value should only changed in write mode.
 Type=str
 Categories=service-adcon
 
-[con.*/ldap/binddn]
+[connector/ldap/binddn]
 Description[de]=Mit diesem LDAP-Benutzer nimmt der S4 Connector Änderungen im LDAP des UCS vor
 Description[en]= The Univention S4 connector uses this user to make changes in the LDAP of the UCS.
 Type=str
 Categories=service-adcon
 
-[con.*/ldap/bindpw]
+[connector/ldap/bindpw]
 Description[de]=Die Datei, die das Passwort des UCS-Synchronisationsbenutzers enthält, z.B. /etc/ldap.secret. Die Datei sollte genau eine Zeile enthalten.
 Description[en]=The file, which contains the password of the UCS synchronisation user, e.g. /etc/ldap.secret. This file should contain exactly one line.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/allow/secondary]
+[connector/s4/allow/secondary]
 Description[de]=Sofern diese Variable auf true gesetzt ist, kann ein zweiter S4 Connector in der Domäne gestartet werden. Diese Variable sollte nicht manuell gesetzt werden.
 Description[en]=If this variable is set to true, a second S4 connector can be started in the domain. This variable must not be set manually.
 Type=str
 Categories=service-adcon
 
-[con.*/s4/mapping/group/table/.*]
+[connector/s4/mapping/group/table/.*]
 Description[de]=Eine statische Liste von Zuordnungen von Gruppenamen im UCS-LDAP zu Gruppennamen im Samba 4 Benutzerverzeichnis. Gruppennamen im UCS-LDAP sind immer englisch. Beispielsweise sorgt die Zuordnung "connector/s4/mapping/group/table/'Domain Users'=Domänen-Benutzer" dafür, dass der S4-Connector ein Gruppenobjekt, das in UCS-LDAP den Namen "Domain Users" trägt, mit einem Gruppenobjekt mit dem Namen "Domänen-Benutzer" im Samba 4 Benutzerverzeichnis synchronisiert.
 Description[en]=A static list mapping group names in UCS-LDAP to group names in the Samba 4 user directory. Group names in UCS-LDAP are always English. The mapping "connector/s4/mapping/group/table/'Domain Users'=Domänen-Benutzer" e.g. advises the S4 Connector to synchronize a group object called "Domain Users" in UCS-LDAP with a group object called "Domänen-Benutzer" in the Samba 4 user directory.
 Type=str
