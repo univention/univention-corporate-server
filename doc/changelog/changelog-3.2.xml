@@ -744,6 +744,9 @@
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
+			The module now shows available Application updates from the App Center.
+			Updates can be installed in the App Center module (<ulink
+				url="&ucsbug;30548">Bug 30548</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
