@@ -101,6 +101,7 @@ class UCSTestUDM(object):
 						'computers/ipmanagedclient')
 
 
+	UNIVENTION_CONTAINER = 'cn=univention,%s' % _ucr['ldap/base']
 	UNIVENTION_TEMPORARY_CONTAINER = 'cn=temporary,cn=univention,%s' % _ucr['ldap/base']
 	DEFAULT_USER_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % _ucr['ldap/base'], 'univentionUsersObject')[0]
 	DEFAULT_GROUP_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % _ucr['ldap/base'], 'univentionGroupsObject')[0]
@@ -131,6 +132,11 @@ class UCSTestUDM(object):
 			for option in args['options']:
 				cmd.extend(['--option', option ])
 			del args['options']
+
+		if 'set' in args:
+			for key, value in args['set'].items():
+				cmd.extend(['--set', '%s=%s' % (key, value)])
+			del args['set']
 
 		for operation in ('append', 'remove'):
 			if operation in args:

@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner python
+## desc: After an multivalue settings/extended_attribute has been removed, try to still append values for it to users/user object
+## tags: [udm-extendedattribute]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		properties = {
+			'name': uts.random_name(),
+			'shortDescription': uts.random_string(),
+			'CLIName': uts.random_name(),
+			'module': 'users/user',
+			'objectClass': 'univentionFreeAttributes',
+			'ldapMapping': 'univentionFreeAttribute15',
+			'multivalue': '1'
+		}
+
+		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
+		udm.remove_object('settings/extended_attribute', dn = extended_attribute)
+
+		# create user object and set extended attribute
+		extended_attribute_values = [uts.random_string(), uts.random_string()]
+		user = udm.create_user(append = {properties['CLIName']: extended_attribute_values})[0]
+		utils.verify_ldap_object(user, {properties['ldapMapping']: []})

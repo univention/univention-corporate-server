@@ -122,12 +122,6 @@ def verify_ldap_object(baseDn, expected_attr = {}, strict = True, should_exist =
 				raise LDAPObjectUnexpectedValue('DN: %s\n%s: %r, unexpected: \'%s\'' % (baseDn, attribute, list(found_values), '\' ,'.join(difference)))
 
 
-def remove_ldap_lock(dn):
-	try:
-		get_ldap_connection().remove(dn)
-	except:
-		pass
-
 
 def s4connector_present():
 	ucr = univention.config_registry.ConfigRegistry()
@@ -171,9 +165,9 @@ def package_installed(package):
 
 
 def fail(log_message = None, returncode = 1):
-	print 'Test FAILED'
+	print '### FAIL ###'
 	if log_message:
-		print log_message
+		print '%s\n###      ###' % log_message
 	sys.exit(returncode)
 
 

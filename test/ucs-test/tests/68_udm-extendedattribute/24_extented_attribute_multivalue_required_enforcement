@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check that required=1 is enforced for multivalue extended attributes
+## tags: [udm-extendedattribute,apptest]
+## roles: [domaincontroller_master]
+## bugs: [31302]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import sys
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+
+
+if __name__ == '__main__':
+	sys.exit(131) # skip for know
+
+	with udm_test.UCSTestUDM() as udm:
+		udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER,
+			name = uts.random_string(),
+			shortDescription = 'Test short description',
+			CLIName = 'univentionUCSTestAttribute',
+			module = 'users/user',
+			objectClass = 'univentionFreeAttributes',
+			ldapMapping = 'univentionFreeAttribute15',
+			valueRequired = '1',
+			multivalue = '1'
+		)
+
+
+		try:
+			udm.create_user()
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			sys.exit(0)
+		
+		utils.fail('UDM did not report an error while trying to create an object of type users/user eventhough a required multivalue extended attribute was not given')

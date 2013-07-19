@@ -22,9 +22,5 @@ if __name__ == '__main__':
 	ucr.load()
 
 	with udm_test.UCSTestUDM() as udm:
-		try:
-			user = udm.create_user(primaryGroup = 'cn=Domain Admins,cn=groups,%s' % ucr['ldap/base'], options = ['samba', 'person', 'mail', 'kerberos'])
-		except udm_test.UCSTestUDM_CreateUDMObjectFailed as ex:
-			utils.fail('See Bug #30932:\n%s' % traceback.format_exc(ex), 121)
-
-
+		user = udm.create_user(primaryGroup = 'cn=Domain Admins,cn=groups,%s' % ucr['ldap/base'], options = ['samba', 'person', 'mail', 'kerberos'])
+		utils.verify_ldap_object(user)

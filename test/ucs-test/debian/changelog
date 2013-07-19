@@ -1,3 +1,42 @@
+ucs-test (4.0.76-1) unstable; urgency=low
+
+  * added variable containing DN of "univention" container to
+    udm.py#UCSTestUDM
+  * if a keyword argument "set" is passed to
+    udm.py#UCSTestUDM.[modify_object(), create_object()], it will get
+    evaluated as dictionary and it's key-value pairs appended to the CLI cmd
+    line like "--set $key=$value" (neccessary if some module properties have
+    names which are already used as special keyword arguments, e.g "options"
+    in unviention.admin.handlers.settings.extended_attribute)
+  (Bug #30560)
+
+  * added certain udm-extendedattribute-tests
+  (Bug #31661)
+
+  * renamed three udm-users tests:
+        14_user_creation_with_uid_already_in_use ->
+        14_user_creation_with_uidNumber_already_in_use
+
+        17_user_creation_set_birthday ->
+        17_user_modification_set_birthday
+
+        18_user_creation_set_jpegPhoto ->
+        18_user_modification_set_jpegPhoto
+  * use real .jpg file in
+    61_udm-users/tests/61_udm-users/18_user_modification_set_jpegPhoto
+  * 14_user_creation_with_uidNumber_already_in_use: uid -> uidNumber
+  * in udm-users tests, use two lines for creating and validating user
+    object instead of doing it one line for reasons of simplicity
+  * 11_user_creation_without_posix_option: verify ldap object existence after
+    creating user
+  * 12_user_creation_with_username_already_in_use: create users in different
+    containers
+  (Bug #31652)
+
+  * modified format of fail log message in utils.py#fail()
+
+ -- Lukas Walter <walter@univention.de>  Fri, 19 Jul 2013 12:15:48 +0200
+
 ucs-test (4.0.75-2) unstable; urgency=low
 
   * ldap: Wait for replication at end (Bug #31721, #31722)
