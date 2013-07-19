@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
-from functools import reduce
 
 import ipaddr
 
@@ -301,13 +300,13 @@ class Device(object):
 			for address, netmask in self.ip4:
 				# validate IP address
 				try:
-					iaddress = int(ipaddr.IPv4Address(address))
+					int(ipaddr.IPv4Address(address))
 				except (ValueError, ipaddr.AddressValueError):
 					raise DeviceError(_('Invalid IPv4 address: %r') % (address), self.name)
 
 				# validate netmask
 				try:
-					network = ipaddr.IPv4Network('%s/%s' % (address, netmask))
+					ipaddr.IPv4Network('%s/%s' % (address, netmask))
 				except (ValueError, ipaddr.NetmaskValueError, ipaddr.AddressValueError):
 					raise DeviceError(_('Invalid IPv4 netmask: %r') % (netmask), self.name)
 
@@ -317,7 +316,7 @@ class Device(object):
 			for address, prefix, identifier in self.ip6:
 				# validate IP address
 				try:
-					iaddress = int(ipaddr.IPv6Address(address))
+					int(ipaddr.IPv6Address(address))
 				except ipaddr.AddressValueError:
 					raise DeviceError(_('Invalid IPv6 address: %r') % (address), self.name)
 
@@ -539,7 +538,7 @@ class VLAN(Device):
 
 		# parent interface must exists
 		if self.parent_device not in self.interfaces:
-			raise DeviceError(_('Missing device: %r') % (name), self.name)
+			raise DeviceError(_('Missing device: %r') % (self.parent_device), self.name)
 
 		if isinstance(self.interfaces[self.parent_device], VLAN):
 			# unsupported

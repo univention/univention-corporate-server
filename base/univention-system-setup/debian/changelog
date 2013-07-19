@@ -1,3 +1,9 @@
+univention-system-setup (7.0.22-1) unstable; urgency=low
+
+  * Bug #30816: Fix NameError
+
+ -- Florian Best <best@univention.de>  Fri, 19 Jul 2013 16:33:54 +0200
+
 univention-system-setup (7.0.21-1) unstable; urgency=low
 
   * Bug #30816: detect ip changes
