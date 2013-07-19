@@ -140,7 +140,12 @@ class Instance(umcm.Base):
 
 	@simple_response
 	def app_updates(self):
-		return [application.to_dict(self.package_manager) for application in Application.all_installed(self.package_manager) if application.candidate is not None]
+		self.package_manager.reopen_cache()
+		try:
+			applications = Application.all_installed(self.package_manager, force_reread=True)
+		except (urllib2.HTTPError, urllib2.URLError) as e:
+			raise umcm.UMC_CommandError(_('Could not query App Center: %s') % e)
+		return [app.to_dict(self.package_manager) for app in applications if app.candidate is not None]
 
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
