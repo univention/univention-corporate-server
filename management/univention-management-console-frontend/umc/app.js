@@ -1229,7 +1229,8 @@ define([
 			this._hostInfo.watch('value', lang.hitch(this, function(name, old, host) {
 				if (host && first) {
 					topic.publish('/umc/actions', 'switch host');
-					window.location.host = host;
+					var port = window.location.port ? ':' + window.location.port : '';
+					window.location.replace(window.location.protocol + '//' + host + port + window.location.pathname + window.location.search);
 				} else {
 					this._hostInfo.onBlur();
 				}
