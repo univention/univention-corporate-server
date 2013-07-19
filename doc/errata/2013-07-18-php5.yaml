@@ -5,7 +5,7 @@ scope: ucs_3.1-0-errata3.1-1
 src: php5
 fix: 5.3.3-7.178.201307181528
 desc: |
-  Two security problems, a denial of service thorugh external entity expansion
+  Two security problems, a denial of service through external entity expansion
   in php_xml (CVE-2013-1643, CVE-2013-1824) and a heap corruption in the XML
   parser (CVE-2013-4113), have been discovered in PHP5.
 cve:
