@@ -321,10 +321,6 @@ msgstr "Fehler"
 msgid "Expiry date"
 msgstr "Ablaufdatum"
 
-#: umc/js/udm/LicenseDialog.js:98
-msgid "Failed to import license"
-msgstr "Dier Lizenzimport ist fehlgeschlagen"
-
 #: umc/js/udm.js:968
 msgid "Failed to move the following objects:"
 msgstr "Die folgenden Objekte konnten nicht verschoben werden:"
@@ -396,10 +392,6 @@ msgstr "Lizenztext"
 #: umc/js/udm/LicenseDialog.js:89
 msgid "License upload"
 msgstr "Lizenz hochladen"
-
-#: umc/js/udm/LicenseDialog.js:96
-msgid "License was imported successfully"
-msgstr "Die Lizenz wurde erfolgreich importiert"
 
 #: umc/js/udm.js:1359
 msgid "Linux"
@@ -730,7 +722,7 @@ msgid "The import of the license has failed: "
 msgstr "Der Import der Lizenz ist fehlgeschlagen: "
 
 #: umc/js/udm/LicenseDialog.js:124
-msgid "The license has been imported succussfully"
+msgid "The license has been imported successfully"
 msgstr "Die Lizenz wurde erfolgreich importiert"
 
 #: umc/js/udm.js:511 umc/js/udm/MultiObjectSelect.js:106

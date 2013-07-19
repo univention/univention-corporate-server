@@ -93,9 +93,9 @@ define([
 							return;
 						}
 						if ( result.success ) {
-							dialog.notify( _( 'License was imported successfully' ) );
+							dialog.alert( _( 'The license has been imported successfully' ) );
 						} else {
-							dialog.alert( _( 'Failed to import license' ) + ': ' + result.message );
+							dialog.alert( _( 'The import of the license has failed: ' ) + result.message );
 						}
 					} )
 				}, {
@@ -121,7 +121,7 @@ define([
 						if ( ! response.result  instanceof Array || false === response.result[ 0 ].success ) {
 							dialog.alert( _( 'The import of the license has failed: ' ) + response.result[ 0 ].message );
 						} else {
-							dialog.alert( _( 'The license has been imported succussfully' ) );
+							dialog.alert( _( 'The license has been imported successfully' ) );
 						}
 					} ),
 					lang.hitch( this, function( response ) {
@@ -187,7 +187,7 @@ define([
 					title: _('Current license'),
 					type: _('<b>License type:</b> GPL'),
 					info: _('You are using a GPL license which is not eligible for maintenance or support claims.')
-				}
+				};
 			}
 			else {
 

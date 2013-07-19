@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.8-1) unstable; urgency=low
+
+  * Bug #29713: give feedback when successfully imported license
+
+ -- Florian Best <best@univention.de>  Fri, 19 Jul 2013 09:19:07 +0200
+
 univention-management-console-module-udm (4.0.7-1) unstable; urgency=low
 
   * Bug #31639: CSS clean up
