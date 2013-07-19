@@ -10,6 +10,7 @@
 		<command name="appcenter/working" function="working" />
 		<command name="appcenter/version" function="version" />
 		<command name="appcenter/request_new_license" function="request_new_license" />
+		<command name="appcenter/app_updates" function="app_updates" />
 		<command name="appcenter/query" function="query" />
 		<command name="appcenter/get" function="get" />
 		<command name="appcenter/invoke" function="invoke" />

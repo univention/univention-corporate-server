@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.9-1) unstable; urgency=low
+
+  * Added function to query updatable apps (Bug #30548)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 19 Jul 2013 15:36:22 +0200
+
 univention-management-console-module-appcenter (3.0.8-2) unstable; urgency=low
 
   * Allow HTML in LongDescription of ini file (Bug #31185)

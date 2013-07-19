@@ -138,6 +138,10 @@ class Instance(umcm.Base):
 				result.append(props)
 		return result
 
+	@simple_response
+	def app_updates(self):
+		return [application.to_dict(self.package_manager) for application in Application.all_installed(self.package_manager) if application.candidate is not None]
+
 	@sanitize(application=StringSanitizer(minimum=1, required=True))
 	@simple_response
 	def get(self, application):
