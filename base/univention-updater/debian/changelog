@@ -1,3 +1,9 @@
+univention-updater (9.0.6-1) unstable; urgency=low
+
+  * Show available App Center updates (Bug #30548)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 19 Jul 2013 15:38:13 +0200
+
 univention-updater (9.0.5-1) unstable; urgency=low
 
   * Check LDAP schema in preup.sh if slapd is installed (Bug #31676)

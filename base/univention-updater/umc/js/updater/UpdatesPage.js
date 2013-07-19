@@ -252,6 +252,24 @@ define([
 					name:			'erratalink',
 					style:			'width:500px;margin-top:.5em;',
 					content:		''
+				},
+				{
+					type:			'Text',
+					label:			'',
+					name:			'app_center_updates_text',
+					content:		_('... loading data ...')
+				},
+				{
+					type:			'Text',
+					label:			'',
+					name:			'app_center_updates_apps',
+					style:			'width:500px;margin-top:.5em;',
+					content:		''
+				},
+				{
+					type:			'Text',
+					label:			'',
+					name:			'app_center_updates_link'
 				}
 			];
 
@@ -343,6 +361,14 @@ define([
 						['package_update_text1'],
 						['erratalink', 'run_packages_update']
 					]
+				},
+				{
+					label:		_("App Center updates"),
+					layout:
+					[
+						['app_center_updates_text'],
+						['app_center_updates_apps', 'app_center_updates_link']
+					]
 				}
 			];
 
@@ -430,7 +456,14 @@ define([
 				{
 					console.error("onLoaded: " + error.message);
 				}
-				this.standby(false);
+				this._check_app_updates().then(
+					lang.hitch(this, function() {
+						this.standby(false);
+					}),
+					lang.hitch(this, function() {
+						this.standby(false);
+					})
+				);
 			}));
 
 			// call hooks updater_show_message and updater_prohibit_update.
@@ -506,18 +539,41 @@ define([
 			}
 		},
 
+		_check_app_updates: function() {
+			return tools.umcpCommand('appcenter/app_updates', {}, false).then(
+				lang.hitch(this, function(data) {
+					var apps = data.result;
+					var msg;
+					if (apps.length) {
+						msg = _('Application updates available');
+						var appUpdatesInfo = array.map(apps, function(app) {
+							return _('%(name)s: Version %(old)s can be updated to %(new)s', {name: app.name, old: app.version, 'new': app.candidate_version});
+						});
+						var appUpdatesList = '<ul><li>' + appUpdatesInfo.join('</li><li>') + '</li></ul>';
+						this._form.getWidget('app_center_updates_apps').set('content', appUpdatesList);
+						var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'appcenter\')"';
+						this._form.getWidget('app_center_updates_link').set('content', _('Visit the <a %s>App Center Module</a> to install the updates.', link));
+					} else {
+						msg = _('No application updates available');
+					}
+					this._form.getWidget('app_center_updates_text').set('content', msg);
+				}),
+				lang.hitch(this, function(data) {
+					var msg = _('App Center not available');
+					this._form.getWidget('app_center_updates_text').set('content', msg);
+				})
+			);
+		},
+
 		// Internal function that does different things about package updates:
 		//
 		//	- if no package updates are available: check for availability
 		//	- if some are available -> invoke 'onRunDistUpgrade()' callback.
 		_check_dist_upgrade: function() {
 
-			if (this._updates_available)
-			{
+			if (this._updates_available) {
 				this.onRunDistUpgrade();
-			}
-			else
-			{
+			} else {
 				this.standby(true);
 				tools.umcpCommand('updater/updates/available').then(
 					lang.hitch(this, function(data) {
