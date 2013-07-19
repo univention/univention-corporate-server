@@ -29,6 +29,8 @@ set -o nounset #If expansion is attempted on an unset variable or parameter --> 
 declare -r unique="${0##*/}_${$}_${RANDOM}"
 section "Creating environment '$unique' for $ccount containers, $gcount groups, $ucount users"
 
+undo wait_for_replication # wait at end
+
 create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
 
 containers=()

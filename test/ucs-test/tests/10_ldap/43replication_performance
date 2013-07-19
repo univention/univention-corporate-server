@@ -31,6 +31,8 @@ info "Stopping replication..."
 wait_for_replication ||
 	fail_fast 1 "Initial replication failed"
 /etc/init.d/univention-directory-listener stop
+undo wait_for_replication # wait at end
+undo /etc/init.d/univention-directory-listener start
 
 
 declare -r unique="${0##*/}_${$}_${RANDOM}"

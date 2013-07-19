@@ -1,3 +1,9 @@
+ucs-test (4.0.75-2) unstable; urgency=low
+
+  * ldap: Wait for replication at end (Bug #31721, #31722)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Jul 2013 11:25:55 +0200
+
 ucs-test (4.0.75-1) unstable; urgency=low
 
   * lib/printer: Fix $i to $1 (Bug #28699)
