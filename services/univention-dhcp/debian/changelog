@@ -1,3 +1,10 @@
+univention-dhcp (8.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 16 Jul 2013 16:42:20 +0200
+
 univention-dhcp (7.0.1-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753)
