@@ -88,6 +88,7 @@ class UCSTestUDM(object):
 	_ucr.load()
 
 	PATH_UDM_CLI_SERVER = '/usr/share/univention-directory-manager-tools/univention-cli-server'
+	PATH_UDM_CLI_CLIENT = '/usr/sbin/udm'
 	
 	COMPUTER_MODULES = ('computers/ubuntu',
 						'computers/linux',

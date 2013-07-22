@@ -1,0 +1,32 @@
+#!/usr/share/ucs-test/runner python
+## desc: Set settings/extended_attribute value during object creation
+## tags: [udm-extendedattribute]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		properties = {
+			'name': uts.random_name(),
+			'shortDescription': uts.random_string(),
+			'CLIName': uts.random_name(),
+			'module': 'users/user',
+			'objectClass': 'univentionFreeAttributes',
+			'ldapMapping': 'univentionFreeAttribute15'
+		}
+
+		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
+
+
+		user = udm.create_user()[0]
+		extended_attribute_value = uts.random_string()
+		udm.modify_object('users/user', dn = user, **{properties['CLIName']: extended_attribute_value})
+		utils.verify_ldap_object(user, {properties['ldapMapping']: [extended_attribute_value]})
