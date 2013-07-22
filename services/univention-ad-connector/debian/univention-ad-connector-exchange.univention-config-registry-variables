@@ -1,11 +1,11 @@
 [connector/ad/mapping/user/exchange]
-Description[de]=Aktiviert die Synchronisation von Exchange-Attributen an Benutzern zwischen UCS und AD.
-Description[en]=Activates the synchronisation of Exchange user attributes between UCS and AD.
+Description[de]=Ist diese Variable auf 'true' gesetzt, werden die Active Directory-Benutzer-Attribute msExchHomeServerName, homeMDB und mailNickname auf Attribute angebildet, für die das Paket univention-ad-connector-exchange eine UCS-LDAP-Schemaerweiterung mitbringt.
+Description[en]=If this variable is set to 'true' the Active Directory use attributes msExchHomeServerName, homeMDB and mailNickname are mapped to attributes, for which the package univention-ad-connector-exchange provides a UCS LDAP schema extension.
 Type=str
-Categories=AD-Connector
+Categories=service-adcon
 
 [connector/ad/mapping/group/exchange]
-Description[de]=Aktiviert die Synchronisation von Exchange-Attributen an Gruppen zwischen UCS und AD.
-Description[en]=Activates the synchronisation of Exchange group attributes between UCS and AD.
+Description[de]=Ist diese Variable auf 'true' gesetzt, wird das Active Directory-Gruppen-Attribut mailNickname auf ein Attribut angebildet, für das das Paket univention-ad-connector-exchange eine UCS-LDAP-Schemaerweiterung mitbringt.
+Description[en]=If this variable is set to 'true' the Active Directory group attribute mailNickname is mapped to an attribute, for which the package univention-ad-connector-exchange provides a UCS LDAP schema extension.
 Type=str
-Categories=AD-Connector
+Categories=service-adcon

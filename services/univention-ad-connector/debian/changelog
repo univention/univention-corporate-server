@@ -1,3 +1,12 @@
+univention-ad-connector (8.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2
+  * Update/review UCR variable descriptions (Bug #30948)
+  * Add missing depends on univention-base-files, spotted by ucslint
+  * Fix the UCR service registration for univention-ad-connector-exchange
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 22 Jul 2013 12:56:06 +0200
+
 univention-ad-connector (7.0.20-1) unstable; urgency=low
 
   * update copyright; Bug #24727
