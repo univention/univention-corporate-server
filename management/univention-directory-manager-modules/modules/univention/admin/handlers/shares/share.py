@@ -273,7 +273,7 @@ property_descriptions={
 		),
 	'sambaCreateMode': univention.admin.property(
 			short_description=_('File mode'),
-			long_description=_('When a file is created, the necessary permissions are calculated  according to the mapping from DOS modes to UNIX permissions, and the resulting UNIX mode is then bit-wise \'AND\'ed with this parameter. This parameter may be thought of as a bit-wise MASK for the UNIX modes of a file. Any bit not set here will be removed from the modes set on a file when it is created.'),
+			long_description=_('When a file is created, the necessary permissions are calculated according to the mapping from DOS modes to UNIX permissions, and the resulting UNIX mode is then bit-wise \'AND\'ed with this parameter. This parameter may be thought of as a bit-wise MASK for the UNIX modes of a file. Any bit not set here will be removed from the modes set on a file when it is created.'),
 			syntax=univention.admin.syntax.UNIX_AccessRight,
 			multivalue=0,
 			options=['samba'],
