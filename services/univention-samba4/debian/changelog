@@ -1,3 +1,13 @@
+univention-samba4 (3.0.6-9) unstable; urgency=low
+
+  * move remove_non_samba4_dc_srv_records to univention-samba4/lib
+  * for errata update: call remove_non_samba4_dc_srv_records in
+    univention-samba4.postinst if run on a master or backup and
+    the latest version of the joinscript has been executed already.
+    (Bug #29462)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Jul 2013 18:22:16 +0200
+
 univention-samba4 (3.0.6-8) unstable; urgency=low
 
   * remove port 7389 from SRV records after provision (Bug #29462)

@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 . /usr/share/univention-lib/all.sh
+. /usr/share/univention-samba4/lib/base.sh
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	if [ -d '/var/lib/samba' ]; then
@@ -273,6 +274,25 @@ secret: $machine_secret
 		### The following block of code may be removed after ucs_3.2-0
 		if dpkg --compare-versions "$2" lt-nl "3.0.6-5"; then
 			univention-config-registry commit /etc/krb5.conf
+		fi
+		### The following block of code may be removed after ucs_3.2-0
+		if dpkg --compare-versions "$2" lt-nl "2.0.44-27"; then
+			if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+				## Check if current joinscript version has been executed.
+				## In this case remove the non samba4 src records automatically. Otherwise this is done during join.
+				. /usr/share/univention-join/joinscripthelper.lib
+
+				version_4_executed() {
+					local JOINSCRIPT_DEPENDENCY="$1"
+					local JS_PACKAGE
+					JS_SCRIPT_FULLNAME="/usr/lib/univention-install/96univention-samba4.inst" joinscript_get_package_name && joinscript_check_specific_version_executed 4
+					return "$?"
+				}
+
+				if version_4_executed; then
+					remove_non_samba4_dc_srv_records
+				fi
+			fi
 		fi
 	fi
 
