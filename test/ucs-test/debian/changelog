@@ -1,3 +1,9 @@
+ucs-test (4.0.77-1) unstable; urgency=low
+
+  * removed 50_samba/36_printer (Bug #29059)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 22 Jul 2013 16:20:12 +0200
+
 ucs-test (4.0.76-1) unstable; urgency=low
 
   * added variable containing DN of "univention" container to
