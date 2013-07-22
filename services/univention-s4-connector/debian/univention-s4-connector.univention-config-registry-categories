@@ -1,4 +1,4 @@
-[service-adcon]
-name[de]=Dienst: Samba 4 Connector
-name[en]=Service: Samba 4 Connector
+[service-s4con]
+name[de]=Dienst: Univention Samba 4 Connector
+name[en]=Service: Univention Samba 4 connector
 icon=service-s4con.gif

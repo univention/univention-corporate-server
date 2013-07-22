@@ -1,3 +1,13 @@
+univention-s4-connector (8.0.1-2) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30948)
+    One variable was mapped incorrectly: connector/s4/mapping/sid_to_s4	instead
+    of connector/s4/mapping/sid/sid_to_s4. Likewise for *sid_to_ucs
+  * Register variables as UCR variable class s4con instead of adcon
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 22 Jul 2013 09:50:06 +0200
+
 univention-s4-connector (8.0.1-1) unstable; urgency=low
 
   * log addlist and modlist on debug level INFO (Bug #31133)
