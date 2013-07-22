@@ -1,3 +1,9 @@
+univention-samba4 (3.0.6-7) unstable; urgency=low
+
+  * Check if Default Domain GPO directory exists (Bug #31640)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Jul 2013 11:22:27 +0200
+
 univention-samba4 (3.0.6-6) unstable; urgency=low
 
   * Change default to samba4/sysvol/sync/setfacl/AU?false (Bug #31275)
