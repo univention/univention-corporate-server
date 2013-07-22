@@ -11,8 +11,8 @@ Type=str
 Categories=service-s4con
 
 [connector/s4/retryrejected]
-Description[de]=Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-s4-status.log nachvollzogen werden. Ist die Variable nicht gesetzt, tritt dies nach 10 Anfragen ein.
-Description[en]=Number of requests without new changes after which a new attempt is made to import retained changes. This procedure can be followed in the /univention/connector-s4-status.log. If the variable is unset, it occurs after 10 requests.
+Description[de]=Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Ist die Variable nicht gesetzt, tritt dies nach 10 Anfragen ein.
+Description[en]=Number of requests without new changes after which a new attempt is made to import retained changes. If the variable is unset, it occurs after 10 requests.
 Type=str
 Categories=service-s4con
 
@@ -23,7 +23,7 @@ Type=str
 Categories=service-s4con
 
 [connector/s4/ldap/host]
-Description[de]=Der Fully Qualified Domain Name des Samba 4 Servers.
+Description[de]=Der vollständige Rechnername (FQDN) des Samba 4-Servers.
 Description[en]=The fully qualified domain name of the Samba 4 server.
 Type=str
 Categories=service-s4con
@@ -41,13 +41,13 @@ Type=str
 Categories=service-s4con
 
 [connector/s4/mapping/syncmode]
-Description[de]=Definiert den Sychronisations-Modus zwischen dem UCS-LDAP und dem Samba 4-LDAP. Unterstützt werden die Werte 'read' (Änderungen können nur im Samba 4-LDAP vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Samba 4-LDAP übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden.
+Description[de]=Definiert den Sychronisationsmodus zwischen dem UCS-LDAP und dem Samba 4-LDAP. Unterstützt werden die Werte 'read' (Änderungen können nur im Samba 4-LDAP vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Samba 4-LDAP übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden).
 Description[en]=Defines the synchronisation mode between the UCS LDAP and Samba 4 LDAP. The following values are supported: 'read' (changes can only by made in Samba 4 LDAP and are synchronised to UCS LDAP), 'write' (changes can only by made in UCS LDAP and are synchronised to Samba 4 LDAP) and 'sync' (bidirectional synchronisation, changes can be made in both directory services).
 Type=str
 Categories=service-s4con
 
 [connector/s4/mapping/dns/syncmode]
-Description[de]=Definiert den Sychronisations-Modus für DNS-Daten zwischen dem UCS-LDAP und dem Samba 4-LDAP. Unterstützt werden die Werte 'read' (Änderungen können nur im Samba 4-LDAP vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Samba 4-LDAP übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden.
+Description[de]=Definiert den Sychronisations-Modus für DNS-Daten zwischen dem UCS-LDAP und dem Samba 4-LDAP. Unterstützt werden die Werte 'read' (Änderungen können nur im Samba 4-LDAP vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Samba 4-LDAP übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden).
 Description[en]=Defines the synchronisation mode for DNS data between the UCS LDAP and Samba 4 LDAP. The following values are supported: 'read' (changes can only by made in Samba 4 LDAP and are synchronised to UCS LDAP), 'write' (changes can only by made in UCS LDAP and are synchronised to Samba 4 LDAP) and 'sync' (bidirectional synchronisation, changes can be made in both directory services).
 Type=str
 Categories=service-s4con
@@ -65,7 +65,7 @@ Type=str
 Categories=service-s4con
 
 [connector/s4/mapping/group/ignorelist]
-Description[de]=Die hier angegebenen Gruppenamen werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden.
+Description[de]=Die hier angegebenen Gruppennamen werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden.
 Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated with a comma.
 Type=str
 Categories=service-s4con
@@ -85,7 +85,6 @@ Categories=service-s4con
 [connector/s4/mapping/container/ignorelist]
 Description[de]=Die hier angegebenen Namen von LDAP-Containern werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden. Der cn= Teil muss nicht angegeben werden. Um etwa 'cn=mail' zu ignorieren muss nur 'mail' angegeben werden.
 Description[en]=The names of LDAP containers specified here are not synchronised by the connector. Multiple values need to be separated with a comma. The cn= part is not needed. E.g. to ignore 'cn=mail' simply specify 'mail'.
-Description[en]=Defines a comma separated list of containers which will be ignored by the connector (default is mail,kerberos,MicrosoftDNS)
 Type=str
 Categories=service-s4con
 
@@ -162,7 +161,7 @@ Type=str
 Categories=service-s4con
 
 [connector/ldap/server]
-Description[de]=Der Fully Qualified Domain Name des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Domänencontroller Master verwendet. Der Wert sollte nur angepasst werden, wenn 'connector/s4/mapping/syncmode' auf 'write' gesetzt ist.
+Description[de]=Der vollständige Rechnername (FQDN) des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Domänencontroller Master verwendet. Der Wert sollte nur angepasst werden, wenn 'connector/s4/mapping/syncmode' auf 'write' gesetzt ist.
 Description[en]=The fully qualified domain name of the UCS LDAP server used by the connector. If the variable is not set, the master domain controller will be used. This value should only by changed if 'connector/s4/mapping/syncmode' is set to 'write'.
 Type=str
 Categories=service-s4con
@@ -174,8 +173,8 @@ Type=str
 Categories=service-s4con
 
 [connector/ldap/binddn]
-Description[de]=Mit diesem Benutzer nimmt der S4 Connector Änderungen im UCS-LDAP vor. Anzugeben ist eine LDAP-DN. Ist die Variable nicht gesetzt, wird der interne Benutzer cn=admin verwendet.
-Description[en]= The Univention S4 connector uses this user to perform changes in the UCS LDAP directory. A LDAP DN needs to be given. If the variable is unset, the internal user cn=admin is used.
+Description[de]=Mit diesem Benutzer nimmt der Connector Änderungen im UCS-LDAP vor. Anzugeben ist eine LDAP-DN. Ist die Variable nicht gesetzt, wird der interne Benutzer cn=admin verwendet.
+Description[en]= The connector uses this user to perform changes in the UCS LDAP directory. A LDAP DN needs to be given. If the variable is unset, the internal user cn=admin is used.
 Type=str
 Categories=service-s4con
 
