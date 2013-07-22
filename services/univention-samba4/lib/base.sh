@@ -97,3 +97,50 @@ create_Enterprise_Domain_Controllers() {
 		fi
 	fi
 }
+
+remove_non_samba4_dc_srv_records() {
+
+	ldif=$(univention-ldapsearch -LLLx "(&(objectClass=univentionDomainController)(univentionService=Samba 4))" cn associatedDomain | ldapsearch-wrapper)
+
+	samba4_dcs_fqdn_list=("${hostname}.${domainname}")	## initialize with own fqdn for the initial join of the first Samba4 DC
+	while read -d '' record; do
+		if [ -n "$record" ]; then
+			cn=$(sed -n 's/^cn: //p' <<<"$record")
+			associatedDomain=$(sed -n 's/^associatedDomain: //p' <<<"$record")
+			samba4_dcs_fqdn_list+=("${cn}.${associatedDomain}")
+		fi
+	done < <(echo -e "$ldif\n" | sed 's/^$/\x0/')
+
+	relativeDomainName_list=('_kerberos._tcp' '_kerberos._udp' '_kpasswd._tcp' '_kpasswd._udp' '_ldap._tcp')
+
+	for record in "${relativeDomainName_list[@]}"; do
+		ldap_record=$(univention-ldapsearch -LLLx \
+			"(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=$record))" sRVRecord dn \
+			| ldapsearch-wrapper)
+		sRVRecord_DN=$(sed -n 's/^dn: //p' <<<"$ldap_record")
+		sRVRecord_attrs=$(sed -n 's/^sRVRecord: //p' <<<"$ldap_record")
+
+		zoneDN=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
+			| ldapsearch-wrapper | sed -n 's/^dn: //p')
+
+		while read line; do
+			fields=($line)
+			if [ "${#fields[@]}" = 4 ]; then
+				unset offers_samba4_service
+				for fqdn in "${samba4_dcs_fqdn_list[@]}"; do
+					if [ "${fields[3]}" = "$fqdn." ]; then
+						offers_samba4_service=1
+						break
+					fi
+				done
+				if [ -z "$offers_samba4_service" ] || [ "${fields[2]}" -eq 7389 ] ; then
+					echo "${fields[3]%%.} port ${fields[2]} is not offering the Service 'Samba 4'"
+					univention-directory-manager dns/srv_record modify "$@" \
+								--superordinate "$zoneDN" \
+								--dn "$sRVRecord_DN" \
+								--remove location="$line"
+				fi
+			fi
+		done <<<"$sRVRecord_attrs"
+	done
+}
