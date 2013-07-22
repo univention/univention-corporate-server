@@ -1192,6 +1192,12 @@
 		  <envar>cups/printmode/hosts/none</envar>. This functionality is needed for UCS@School.
 		  (<ulink url="&ucsbug;31902">Bug 31902</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  When changing a printer, the &ucsUCRV; <filename>/etc/samba/printers.conf</filename> is refreshed instantly and in an 
+		  atomic operation (<ulink url="&ucsbug;31764">Bug 31764</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
 	</para>
   </section>
