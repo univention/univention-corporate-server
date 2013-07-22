@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-26) unstable; urgency=low
+
+  * Check if Default Domain GPO directory exists (Bug #31640)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Jul 2013 11:24:35 +0200
+
 univention-samba4 (2.0.44-25) unstable; urgency=low
 
   * On updates check if the ownership of the Default Domain Policy GPO
