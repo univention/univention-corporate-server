@@ -39,12 +39,13 @@ define([
 	"dojo/when",
 	"dijit/Dialog",
 	"dijit/layout/StackContainer",
+	"dijit/form/RadioButton",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/i18n!umc/app"
-], function(declare, lang, kernel, array, parser, domClass, Deferred, when, Dialog, StackContainer, tools, Text, ContainerWidget, Button, _) {
+], function(declare, lang, kernel, array, parser, domClass, Deferred, when, Dialog, StackContainer, RadioButton, tools, Text, ContainerWidget, Button, _) {
 	var _lang = kernel.locale.split('-')[0];
 	var _getDocumentDependency = function(key) {
 		return lang.replace('dojo/text!umc/app/{key}.{lang}.html', {
@@ -55,7 +56,7 @@ define([
 
 	// pre-load HTML template documents
 	var _docDeferred = new Deferred();
-	var _docDependencies = array.map(['welcome', 'feedback', 'help'], _getDocumentDependency);
+	var _docDependencies = array.map(['welcome', 'feedback', 'activation', 'help'], _getDocumentDependency);
 	require(_docDependencies, function(/*...*/) {
 		_docDeferred.resolve(arguments);
 	});
@@ -63,8 +64,7 @@ define([
 	var _replaceVariablesInDocument = function(piwikDisabled, doc) {
 		return lang.replace(doc, {
 			path: require.toUrl('umc/app'),
-			feedbackUrl: _('umcFeedbackUrl'),
-			enablePiwikChecked: piwikDisabled ? '' : 'checked'
+			feedbackUrl: _('umcFeedbackUrl')
 		});
 	};
 

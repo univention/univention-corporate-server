@@ -665,6 +665,10 @@ define([
 			}
 		},
 
+		_saveVersionStatus: function() {
+			tools.status('ucsVersion', lang.replace('{version/version}-{version/patchlevel}', _ucr));
+		},
+
 		_loadUcrVariables: function() {
 			return tools.ucr([
 				'server/role',
@@ -681,11 +685,15 @@ define([
 				'update/available',
 				'update/reboot/required',
 				'umc/web/piwik',
-				'license/base'
+				'license/base',
+				'version/erratalevel',
+				'version/patchlevel',
+				'version/version'
 			]).then(lang.hitch(this, function(res) {
 				// save the ucr variables in a local variable
 				lang.mixin(_ucr, res);
 				this._loadPiwik();
+				this._saveVersionStatus();
 			}));
 		},
 

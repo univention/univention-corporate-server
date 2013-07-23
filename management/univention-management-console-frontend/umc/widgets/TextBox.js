@@ -68,14 +68,15 @@ define([
 			if (this.inlineLabel) {
 				this._inlineLabelNode = put(this.focusNode, '-span.umcInlineLabel', this.inlineLabel);
 				this._updateInlineLabel();
-				this.on('keyup', lang.hitch(this, '_updateInlineLabel'));
-				this.on('focus', lang.hitch(this, '_updateInlineLabel'));
-				this.on('blur', lang.hitch(this, '_updateInlineLabel'));
+				this.on('keydown', lang.hitch(this, '_updateInlineLabel', 'keydown'));
+				this.on('focus', lang.hitch(this, '_updateInlineLabel', 'focus'));
+				this.on('blur', lang.hitch(this, '_updateInlineLabel', 'blur'));
 			}
 		},
 
-		_updateInlineLabel: function() {
-			put(this._inlineLabelNode, this.get('value') ? '!umcEmptyValue' : '.umcEmptyValue');
+		_updateInlineLabel: function(eventType) {
+			var showInlineLabel = !this.get('value') && eventType != 'keydown';
+			put(this._inlineLabelNode, showInlineLabel ? '.umcEmptyValue' : '!umcEmptyValue');
 		},
 
 		//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,
