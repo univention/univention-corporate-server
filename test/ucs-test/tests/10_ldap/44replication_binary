@@ -1,0 +1,162 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check LDAP-replication of binary data
+## bugs: [25858, 30165, 32025]
+## versions:
+##  3.0-0: skip
+##  3.0-2: found
+##  3.1-0-55: fixed
+## tags:
+##  - basic
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+## packages:
+##  - univention-config
+##  - univention-directory-manager-tools
+##  - ldap-utils
+##  - openssl
+## exposure: careful
+
+# 3.0-1: UDM is broken and double-bas64-encodes binary data
+
+ucount=10 loop=10
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/maildomain.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
+
+set -o errexit #"script bail out when it detects an error (a non-zero exit code).
+set -o nounset #If expansion is attempted on an unset variable or parameter --> prints error
+
+tmpdir=$(mktemp -d)
+undo "rm -rf '$tmpdir'"
+
+declare -r unique="${0##*/}_${$}_${RANDOM}"
+section "Creating environment '$unique' for $ucount users"
+
+undo wait_for_replication # wait at end
+
+if [ "${listener_debug_level:-0}" -le 2 ]
+then
+	undo /etc/init.d/univention-directory-listener restart # Reversed order
+	ucr set listener/debug/level=2
+	undo ucr_restore
+	/etc/init.d/univention-directory-listener restart
+fi
+log_lines=$(wc -l /var/log/univention/listener.log)
+
+create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
+
+openssl x509 \
+	-inform pem -in "/etc/univention/ssl/$hostname/cert.pem" \
+	-outform der -out "$tmpdir/userCertificate.bin"
+
+users=()
+for ((u=0; u<ucount; u++))
+do
+	username="$(user_randomname)"
+	KERBEROS=true MAIL=true PERSON=true POSIX=true SAMBA=true PKI=true \
+		user_create "$username" \
+			--set description="$unique" \
+			--set displayName='Muster, Max' \
+			--set birthday='2013-07-19' \
+			--set employeeNumber='42' \
+			--set employeeType='boss' \
+			--set phone='+1-555-123' --set phone='+1-555-321' \
+			--set fax-number='+1-555-234' --set fax-number='+1-555-432' \
+			--set roomNumber=1 \
+			--set departmentNumber=1 \
+			--set street="Mayr Somerville Str. 1" \
+			--set postcode="28359" \
+			--set city="Bremen" \
+			--set homeTelephoneNumber='+1-555-345' --set homeTelephoneNumber='+1-555-543' \
+			--set mobileTelephoneNumber='+1-555-456' --set mobileTelephoneNumber='+1-555-654' \
+			--set pagerTelephoneNumber='+1-555-567' --set pagerTelephoneNumber='+1-555-765' \
+			--set homePostalAddress='"Mary Somerville Str. 1" "28359" "Bremen"' \
+			--set homePostalAddress='"Mary-Somerville-Str. 1" "28359" "Bremen"' \
+			--set mailHomeServer="$hostname" \
+			--set userCertificate="$(base64 <"$tmpdir/userCertificate.bin")" &&
+		undo user_remove "$username" ||
+		fail_fast 1 "Failed to create user $username"
+	users+=("uid=$username,cn=users,$ldap_base")
+done
+
+section "Now testing replication..."
+wait_for_replication
+
+validate () {
+	local file="$1" attr="$2" value
+	ldapsearch-wrapper <"$tmpdir/${file}.ldif" |
+		sed -rne "s/^${attr}(;binary)?:: //p" >"$tmpdir/tmp"
+	while read value
+	do
+		base64 -d <<<"$value" | cmp "$tmpdir/$attr.bin" ||
+			fail_test 1 "Difference in '$attr' on $file"
+	done <"$tmpdir/tmp"
+}
+
+for ((; loop>0; loop--))
+do
+	zeros=$((RANDOM % 2048))
+	#width=$((200 + RANDOM % 100)) height=$((200 + RANDOM % 100))
+	###  - imagemagick
+	#convert -size "${width}x${height}" xc: +noise Random jpeg:"$tmpdir/jpegPhoto.bin"
+	#info "loop=${loop} width=${width} height=${height} zeros=${zeros} size=$(stat -c "%s" "$tmpdir/jpegPhoto.bin")"
+	(
+		dd if=/dev/urandom bs=1k count=$((10 + RANDOM % 20))
+		dd if=/dev/zero bs=1 count="${zeros}"
+	) >"$tmpdir/jpegPhoto.bin" 2>/dev/null
+	info "loop=${loop} zeros=${zeros} size=$(stat -c "%s" "$tmpdir/jpegPhoto.bin")"
+
+	for userdn in "${users[@]}"
+	do
+		udm-test users/user modify --dn "$userdn" \
+			--set jpegPhoto="$(base64 <"$tmpdir/jpegPhoto.bin")" ||
+			fail_test 1 "Failed to modify user '$userdn'"
+	done
+
+	wait_for_replication
+
+	ldapsearch -x -LLL \
+		-h "$ldap_master" \
+		-p "$ldap_master_port" \
+		-D "$tests_domainadmin_account" \
+		-y "$tests_domainadmin_pwdfile" \
+		"(description=$unique)" >"$tmpdir/master.ldif" ||
+		>"$tmpdir/master.ldif" ||
+		fail_fast 1 "Failure to dump master"
+	[ $(grep -c '^dn:' "$tmpdir/master.ldif") -ne $ucount ] &&
+		fail_test 1 "Incomplete LDIF of master: $(grep '^dn:' "$tmpdir/master.ldif")"
+	validate master userCertificate
+	validate master jpegPhoto
+
+	ldapsearch -x -LLL \
+		-h "$ldap_server_name" \
+		-p "$ldap_server_port" \
+		-D "$tests_domainadmin_account" \
+		-y "$tests_domainadmin_pwdfile" \
+		"(description=$unique)" >"$tmpdir/server.ldif" ||
+		>"$tmpdir/server.ldif" ||
+		fail_fast 1 "Failure to dump server"
+	[ $(grep -c '^dn:' "$tmpdir/server.ldif") -ne $ucount ] &&
+		fail_fast 1 "Incomplete LDIF of server: $(grep '^dn:' "$tmpdir/server.ldif")"
+	validate server userCertificate
+	validate server jpegPhoto
+
+	ldiff "$tmpdir/master.ldif" "$tmpdir/server.ldif" ||
+		fail_fast 1 "Difference between master and server"
+
+	if tail -n +$log_lines /var/log/univention/listener.log |
+		egrep -m 5 'listener does not have value for key (jpegPhoto|userCertificate)'
+	then
+		fail_fast 1 "Problem replicating binary data"
+	fi
+
+	"$ALREADY_FAILED" && break
+done
+
+exit $RETVAL

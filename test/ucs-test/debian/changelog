@@ -1,10 +1,15 @@
+ucs-test (4.0.79-1) unstable; urgency=low
+
+  * 10/44: Check replication of binary data (Bug #32025)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 19 Jul 2013 16:29:07 +0200
+
 ucs-test (4.0.78-1) unstable; urgency=low
 
   * added variable containing udm symlink path to udm.py#UCSTestUDM
   (Bug #30560)
 
-  * added more udm-extendedattribute tests
-  (Bug #31661)
+  * added more udm-extendedattribute tests (Bug #31661)
 
  -- Lukas Walter <walter@univention.de>  Mon, 22 Jul 2013 17:26:31 +0200
 
@@ -23,11 +28,9 @@ ucs-test (4.0.76-1) unstable; urgency=low
     evaluated as dictionary and it's key-value pairs appended to the CLI cmd
     line like "--set $key=$value" (neccessary if some module properties have
     names which are already used as special keyword arguments, e.g "options"
-    in unviention.admin.handlers.settings.extended_attribute)
-  (Bug #30560)
+    in unviention.admin.handlers.settings.extended_attribute) (Bug #30560)
 
-  * added certain udm-extendedattribute tests
-  (Bug #31661)
+  * added certain udm-extendedattribute tests (Bug #31661)
 
   * renamed three udm-users tests:
         14_user_creation_with_uid_already_in_use ->
@@ -46,8 +49,7 @@ ucs-test (4.0.76-1) unstable; urgency=low
   * 11_user_creation_without_posix_option: verify ldap object existence after
     creating user
   * 12_user_creation_with_username_already_in_use: create users in different
-    containers
-  (Bug #31652)
+    containers (Bug #31652)
 
   * modified format of fail log message in utils.py#fail()
 
