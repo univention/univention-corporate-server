@@ -88,6 +88,10 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
+		The error message has been fixed, which is displayed when the join password is not specified (<ulink url="&ucsbug;23903">Bug 23903</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
 		During the boot loader installation more device details are displayed. The installation device is automatically ignored (<ulink url="&ucsbug;25046">Bug 25046</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>

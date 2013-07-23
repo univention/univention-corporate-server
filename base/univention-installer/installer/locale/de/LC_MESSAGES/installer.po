@@ -2868,8 +2868,8 @@ msgid "Password (retype)"
 msgstr "Passwort (zur Bestätigung bitte nochmal eingeben)"
 
 #: installer/modules/80_join.py:150
-msgid "Password for Root"
-msgstr "Root-Passwort"
+msgid "Password for Join"
+msgstr "Join-Passwort"
 
 #: installer/modules/80_join.py:152
 msgid "Password for Root (retype)"

@@ -144,7 +144,7 @@ class object(content):
 		if self.elements[9].result().strip() == '':
 			return message+_('Join account')
 		elif self.elements[11].result().strip() == '':
-			return message+_('Password for Root')
+			return message+_('Password for Join')
 
 		# test join credentials
 		data = {}
