@@ -13,7 +13,6 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/maildomain.sh" || exit 137
-. "$TESTLIBPATH/ucr.sh" || exit 137
 . "$TESTLIBPATH/undo.sh" || exit 137
 
 section "Preparing"

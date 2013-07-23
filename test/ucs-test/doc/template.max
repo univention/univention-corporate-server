@@ -25,7 +25,7 @@
 ## roles-not:
 ## join: true
 ## components:
-#  tcs: true
+##  tcs: true
 ##  dvs: false
 ## packages:
 ##  - dpkg-dev (>= 1.15)

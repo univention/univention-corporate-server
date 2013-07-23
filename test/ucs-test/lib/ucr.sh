@@ -36,7 +36,7 @@ ucr_restore () { # restore original values
 			remove+=("${name}")
 		fi
 	done
-	[ -n "${remove}" ] && univention-config-registry unset "${remove[@]}"
-	[ -n "${reset}" ] && univention-config-registry set "${reset[@]}"
+	[ -n "${remove:-}" ] && univention-config-registry unset "${remove[@]}"
+	[ -n "${reset:-}" ] && univention-config-registry set "${reset[@]}"
 }
 # vim:set filetype=sh ts=4:
