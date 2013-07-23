@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (4.0.2-1) unstable; urgency=low
+
+  * Use LDAP search for profile link (Bug #24774)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Jul 2013 14:15:37 +0200
+
 univention-virtual-machine-manager-schema (4.0.1-1) unstable; urgency=low
 
   * Improve LDAP regex ACLs (Bug #29421)

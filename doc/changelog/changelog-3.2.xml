@@ -1396,6 +1396,10 @@
 		<listitem><simpara>
 		  The labels to enable VNC have been synchronized (<ulink url="&ucsbug;31947">Bug 31947</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The syntax for the Profile DN in UVMM info LDAP objects has been changed to do an LDAP search and provide a drop-down list of available profiles (<ulink url="&ucsbug;24774">Bug 24774</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>

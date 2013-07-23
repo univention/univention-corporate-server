@@ -90,7 +90,7 @@ property_descriptions={
 	'profile': univention.admin.property(
 			short_description=_('Profile'),
 			long_description=_('Reference to the profile used for defining this VM'),
-			syntax=univention.admin.syntax.ldapDnOrNone,
+			syntax=univention.admin.syntax.UvmmProfiles,
 			multivalue=False,
 			options=[],
 			required=False,
