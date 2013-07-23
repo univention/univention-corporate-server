@@ -1762,9 +1762,9 @@ class WritableShare( UDM_Objects ):
 class AllowDenyIgnore(select):
 	choices=[
 		('', ''),
-		('allow', 'allow'),
-		('deny', 'deny'),
-		('ignore', 'ignore')
+		('allow', _('allow')),
+		('deny', _('deny')),
+		('ignore', _('ignore'))
 	]
 
 class IStates( select ):
@@ -1786,56 +1786,56 @@ class IStates( select ):
 class AllowDeny( IStates ):
 	values = (
 		( None, ('', '') ),
-		( True, ( 'allow', 'allow' ) ),
-		( False, ('deny', 'deny') )
+		( True, ( 'allow', _('allow') ) ),
+		( False, ('deny', _('deny')) )
 	)
 
 class booleanNone( IStates ):
 	values = (
 		( None, ( '', '' ) ),
-		( True, ('yes', 'Yes' ) ),
-		( False, ( 'no', 'No' ) )
+		( True, ('yes', _('Yes') ) ),
+		( False, ( 'no', _('No') ) )
 	)
 
 class TrueFalse( IStates ):
 	values = (
 		( None, ( '', '' ) ),
-		( True, ( 'true', 'True' ) ),
-		( False, ( 'false', 'False') )
+		( True, ( 'true', _('True') ) ),
+		( False, ( 'false', _('False')) )
 	)
 
 class TrueFalseUpper( IStates ):
 	values = (
 		( None, ( '', '' ) ),
-		( True, ( 'TRUE', 'TRUE' ) ),
-		( False, ( 'FALSE', 'FALSE' ) )
+		( True, ( 'TRUE', _('True') ) ),
+		( False, ( 'FALSE', _('False') ) )
 	)
 
 class TrueFalseUp( IStates ):
 	values = (
-		( True, ( 'TRUE', 'TRUE' ) ),
-		( False, ( 'FALSE', 'FALSE' ) )
+		( True, ( 'TRUE', _('True') ) ),
+		( False, ( 'FALSE', _('False') ) )
 	)
 
 class OkOrNot( IStates ):
 	values = (
-		( True, ( 'OK', 'OK' ) ),
-		( False, ( 'Not', 'KO' ) )
+		( True, ( 'OK', _('OK') ) ),
+		( False, ( 'Not', _('Not OK') ) )
 	)
 
 class ddnsUpdateStyle(select):
 	choices=[
 		('', ''),
-		('ad-hoc', 'ad-hoc'),
-		('interim', 'interim'),
-		('none', 'none')
+		('ad-hoc', _('ad-hoc')),
+		('interim', _('interim')),
+		('none', _('none'))
 	]
 
 class ddnsUpdates( IStates ):
 	values = (
 		( None, ( '', '' ) ),
-		( True, ( 'on', 'on' ) ),
-		( False, ( 'off', 'off' ) )
+		( True, ( 'on', _('on') ) ),
+		( False, ( 'off', _('off') ) )
 	)
 
 class netbiosNodeType(select):

@@ -1478,6 +1478,48 @@ msgstr "Authentisierung fehlgeschlagen"
 msgid "Moving childs is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
 
+msgid "allow"
+msgstr "erlauben"
+
+msgid "deny"
+msgstr "verbieten"
+
+msgid "ignore"
+msgstr "ignorieren"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nein"
+
+msgid "True"
+msgstr "Wahr"
+
+msgid "False"
+msgstr "Falsch"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Not OK"
+msgstr "Nicht OK"
+
+msgid "ad-hoc"
+msgstr "ad-hoc"
+
+msgid "interim"
+msgstr "interim"
+
+msgid "none"
+msgstr "kein"
+
+msgid "on"
+msgstr "an"
+
+msgid "off"
+msgstr "aus"
+
 #~ msgid "General"
 #~ msgstr "Allgemein"
 
