@@ -1400,6 +1400,10 @@
 		<listitem><simpara>
 		  The syntax for the Profile DN in UVMM info LDAP objects has been changed to do an LDAP search and provide a drop-down list of available profiles (<ulink url="&ucsbug;24774">Bug 24774</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The syntax for the comment field in UVMM info LDAP objects has been changed to a multi-line text field (<ulink url="&ucsbug;32044">Bug 32044</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>

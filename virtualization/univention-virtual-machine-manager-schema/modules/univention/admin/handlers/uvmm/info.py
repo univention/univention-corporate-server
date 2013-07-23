@@ -61,7 +61,7 @@ property_descriptions={
 	'description': univention.admin.property(
 			short_description= _('Description'),
 			long_description= _('Description of virtual machine'),
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.TextArea,
 			multivalue=False,
 			options=[],
 			required=False,
