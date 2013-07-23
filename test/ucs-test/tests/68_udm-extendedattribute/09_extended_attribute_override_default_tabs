@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Overwrite default tab with settings/extended_attribute
+## desc: Override default tab with settings/extended_attribute
 ## tags: [udm-extendedattribute]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -23,22 +23,21 @@ if __name__ == '__main__':
 			'module': 'users/user',
 			'objectClass': 'univentionFreeAttributes',
 			'ldapMapping': 'univentionFreeAttribute15',
-			'tabName': 'General'
+			'tabName': 'Certificate',
+			'overwriteTab': '1'
 		}
 
 		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
 		
 		module_help_text = subprocess.Popen([udm.PATH_UDM_CLI_CLIENT, properties['module']], stdout = subprocess.PIPE).communicate()[0].splitlines()
 
-
 		for i in range(0, len(module_help_text)):
-			if properties['tabName'] in module_help_text[i]:
+			if module_help_text[i] == '  %s:' % properties['tabName']:
 				if not properties['CLIName'] in module_help_text[i+1]:
-					utils.fail('Could not find settings/extended_attributes CLI name under tab "%s" in module "%s" as expected' % (properties['tabName'], properties['module']))
-				for i2 in range(i, len(module_help_text)-i):
-					if properties['tabName'] in module_help_text[i+i2]:
-						utils.fail('Tab "%s" in "%s" module not overwritten by settings/extended_attribute' % (properties['tabName'], properties['module']))
+					utils.fail('Could not find attribute CLI name under tab')
+				if not module_help_text[i+2].endswith(':'):
+					utils.fail('Tab not overridden')
 				sys.exit(0)
 						
 
-		utils.fail('Could not find tab "%s" in module "%s" ' % (properties['tabName'], properties['module']))
+		utils.fail('Tab not found')

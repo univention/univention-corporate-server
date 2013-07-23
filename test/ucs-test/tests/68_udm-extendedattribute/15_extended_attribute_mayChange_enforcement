@@ -1,0 +1,36 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check that mayChange=0 is enforced for settings/extended_attribute
+## tags: [udm-extendedattribute]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import sys
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		properties = {
+			'name': uts.random_name(),
+			'shortDescription': uts.random_string(),
+			'CLIName': uts.random_name(),
+			'module': 'users/user',
+			'objectClass': 'univentionFreeAttributes',
+			'ldapMapping': 'univentionFreeAttribute15',
+			'mayChange': '0'
+		}
+
+		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
+
+		user = udm.create_user(**{properties['CLIName']: uts.random_string()})[0]
+		try:
+			udm.modify_object('users/user', dn = user, **{properties['CLIName']: uts.random_string()})
+		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
+			sys.exit(0)
+
+		utils.fail('UDM did not report an error while trying to modify a settings/extended_attribute value which may not change')

@@ -31,4 +31,4 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 		
-		utils.fail('UDM did not report an error while trying to create  an object of type users/user eventhough a required single value extended attribute was not given')
+		utils.fail('UDM did not report an error while trying to create an object a required single value extended attribute was not given')

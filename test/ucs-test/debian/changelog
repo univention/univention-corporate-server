@@ -1,3 +1,12 @@
+ucs-test (4.0.80-1) unstable; urgency=low
+
+  * added more udm-extendedattribute tests
+  (Bug #31661)
+
+  * fixed whitespace in logging behaviour of utils.py#fail()
+
+ -- Lukas Walter <walter@univention.de>  Tue, 23 Jul 2013 16:47:43 +0200
+
 ucs-test (4.0.79-1) unstable; urgency=low
 
   * 10/44: Check replication of binary data (Bug #32025)

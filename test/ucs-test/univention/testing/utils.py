@@ -114,12 +114,12 @@ def verify_ldap_object(baseDn, expected_attr = {}, strict = True, should_exist =
 
 		difference = expected_values - found_values
 		if difference:
-			raise LDAPObjectValueMissing('DN: %s\n%s: %r, missing: \'%s\'' % (baseDn, attribute, list(found_values), '\' ,'.join(difference)))
+			raise LDAPObjectValueMissing('DN: %s\n%s: %r, missing: \'%s\'' % (baseDn, attribute, list(found_values), '\', '.join(difference)))
 
 		if strict:
 			difference = found_values - expected_values
 			if difference:
-				raise LDAPObjectUnexpectedValue('DN: %s\n%s: %r, unexpected: \'%s\'' % (baseDn, attribute, list(found_values), '\' ,'.join(difference)))
+				raise LDAPObjectUnexpectedValue('DN: %s\n%s: %r, unexpected: \'%s\'' % (baseDn, attribute, list(found_values), '\', '.join(difference)))
 
 
 
