@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.33-1) unstable; urgency=low
+
+  * Bug #32023: added support for touch devices
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 24 Jul 2013 16:38:32 +0200
+
 univention-management-console-frontend (3.0.32-1) unstable; urgency=low
 
   * Bug #32023: added context menu for favorite modules, fixed status icon CSS

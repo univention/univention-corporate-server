@@ -938,7 +938,23 @@ define([
 		_registerGridEvents: function() {
 			this._searchSidebar.on('search', lang.hitch(this, '_updateQuery'));
 
+			// enable closing of context menu by clicking somewhere
+			// NOTE: event handler works on iPad + desktop browsers
+			this._grid.on('*:click', lang.hitch(this, function() {
+				this._closeModuleContextMenu();
+			}));
+
+			this._registerGridNonTouchEvents();
+			this._registerGridTouchEvents();
+		},
+
+		_registerGridNonTouchEvents: function() {
+			if (has('touch')) {
+				return;
+			}
+
 			// open module upon click on grid item
+			// NOTE: event handler does not work in iPad
 			this._grid.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
 				if (this._closeModuleContextMenu()) {
 					return;
@@ -947,15 +963,45 @@ define([
 				this.openModule(module);
 			}));
 
-			// enable closing of context menu by clicking somewhere
-			this._grid.on('*:click', lang.hitch(this, '_closeModuleContextMenu'));
-
 			// event for context menu
 			this._grid.on('.umcGalleryItem:contextmenu', lang.hitch(this, function(evt) {
 				evt.preventDefault();
 				var item = this._grid.row(evt).data;
 				this._openModuleContextMenu(item, evt.pageX, evt.pageY);
 			}));
+		},
+
+		_registerGridTouchEvents: function() {
+			if (!has('touch')) {
+				return;
+			}
+
+			var _contextTouchTimeout = null;
+			var _cancelContextTouch = function() {
+				if (_contextTouchTimeout !== null) {
+					clearTimeout(_contextTouchTimeout);
+					_contextTouchTimeout = null;
+					return true;
+				}
+				return false;
+			};
+
+			this._grid.on('.umcGalleryItem:touchstart', lang.hitch(this, function(evt) {
+				touchStartBegin = new Date();
+				_contextTouchTimeout = setTimeout(lang.hitch(this, function() {
+					var item = this._grid.row(evt).data;
+					this._openModuleContextMenu(item, evt.pageX, evt.pageY);
+					_contextTouchTimeout = null;
+				}), 1000);
+			}));
+			this._grid.on('.umcGalleryItem:touchend', lang.hitch(this, function(evt) {
+				if (_cancelContextTouch()) {
+					evt.preventDefault();
+					var module = this._grid.row(evt).data;
+					this.openModule(module);
+				}
+			}));
+			this._grid.on('scroll', lang.hitch(this, _cancelContextTouch));
 		},
 
 		_openModuleContextMenu: function(item, x, y) {
