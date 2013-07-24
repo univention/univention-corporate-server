@@ -1194,7 +1194,7 @@
 		<listitem><simpara>
 		  Added support for denying client access based on ip addresses, configurable via &ucsUCRV;
 		  <envar>cups/printmode/hosts/none</envar>. This functionality is needed for UCS@School.
-		  (<ulink url="&ucsbug;31902">Bug 31902</ulink>).
+		  (<ulink url="&ucsbug;32055">Bug 32055</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>

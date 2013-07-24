@@ -1,3 +1,9 @@
+univention-printserver (7.0.3-2) unstable; urgency=low
+
+  * Added UCR variable description (Bug #32055) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 24 Jul 2013 15:52:00 +0200
+
 univention-printserver (7.0.3-1) unstable; urgency=low
 
   * When changing a printer, /etc/samba/printers.conf is refreshed instantly

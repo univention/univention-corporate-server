@@ -75,3 +75,9 @@ Description[de]=Die Variable konfiguriert den Startmodus des Cups-Dienstes. Wird
 Description[en]=This variable configures the start mode of the Cups service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
 Type=bool
 Categories=service-cups
+
+[cups/printmode/hosts/none]
+Description[de]=Eine durch Leerzeichen separierte Liste von IP Adressen, denen das Drucken verboten ist.
+Description[en]=A blank character separated list of ip addresses which are forbidden to print.
+Type=str
+Categories=service-cups
