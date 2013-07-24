@@ -110,7 +110,7 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 			if (this.store) {
-				this.renderArray(this.store.query(this.query, this.queryOptions));
+				this._renderQuery();
 			}
 		},
 

@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.32-1) unstable; urgency=low
+
+  * Bug #32023: added context menu for favorite modules, fixed status icon CSS
+  * [WIP] Bug #30811: adapted wordings for startup dialog
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 24 Jul 2013 15:29:46 +0200
+
 univention-management-console-frontend (3.0.31-1) unstable; urgency=low
 
   * [WIP] Bug #30811: adapatations for startup dialog

@@ -63,6 +63,7 @@ define([
 	"dijit/layout/BorderContainer",
 	"dijit/layout/TabContainer",
 	"dijit/layout/ContentPane",
+	"dijit/popup",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store",
@@ -82,7 +83,7 @@ define([
 	"umc/widgets/ComboBox",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, ComboBox, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, popup, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, ComboBox, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -105,7 +106,7 @@ define([
 	};
 
 	// "short" cut (well at least more verbose) for checking for favorite module
-	var isFavoriteModule = function(mod) {
+	var isInCategoryFavorites = function(mod) {
 		return mod.category == '_favorites_';
 	};
 
@@ -133,6 +134,10 @@ define([
 			};
 		},
 
+		_onNotification: function() {
+			this._updateCategoryHeaderVisiblity(this._lastCollection);
+		},
+
 		_getCategory: function(categoryID) {
 			var categories = array.filter(this.categories, function(icat) {
 				return icat.id == categoryID;
@@ -156,32 +161,21 @@ define([
 			return row;
 		},
 
-		renderArray: function(items) {
-			var result = this.inherited(arguments);
+		_updateCategoryHeaderVisiblity: function(items) {
 			query('.umcGalleryCategoryHeader', this.contentNode).forEach(function(inode) {
-				// hide category headers with no entry
 				var category = domAttr.get(inode, 'categoryID');
 				var hasItems = array.some(items, function(iitem) {
 					return !iitem._isSeparator && iitem.category == category;
 				});
-				if (!hasItems) {
-					style.set(inode, 'display', 'none');
-				}
+				style.set(inode, 'display', hasItems ? 'block' : 'none');
 			});
+		},
+
+		renderArray: function(items) {
+			var result = this.inherited(arguments);
+			this._updateCategoryHeaderVisiblity(items);
 			return result;
 		},
-
-		getStatusIconClass: function(item) {
-			return _favoritesDisabled ? null : tools.getIconClass(isFavoriteModule(item) ? 'delete' : 'star', 24);
-		},
-
-		getStatusIconTooltip: lang.hitch(this, function(item) {
-			if (isFavoriteModule(item)) {
-				return _('Remove from favorites');
-			} else {
-				return _('Add to favorites');
-			}
-		}),
 
 		getItemDescription: function(item) {
 			return item.description;
@@ -428,7 +422,7 @@ define([
 
 			// add a module clone for favorite category
 			var mod = this._createModuleItem(_mod, '_favorites_');
-			this.put(mod);
+			this.add(mod);
 
 			// save settings
 			this._saveFavorites();
@@ -535,6 +529,7 @@ define([
 		_helpMenu: null,
 		_headerRight: null,
 		_settingsMenu: null,
+		_moduleContextMenu: null,
 		_hostInfo: null,
 		_categoriesContainer: null,
 		_favoritesDisabled: false,
@@ -859,59 +854,7 @@ define([
 			tools.status('domainname', _ucr.domainname);
 			tools.status('hostname', _ucr.hostname);
 
-			if (tools.status('overview')) {
-				// the container for all category panes
-				// NOTE: We add the icon here in the first tab, otherwise the tab heights
-				//	   will not be computed correctly and future tabs will habe display
-				//	   problems.
-				//     -> This could probably be fixed by calling layout() after adding a new tab!
-				this._overviewPage = new Page({
-					title: _('umcOverviewTabTitle'),
-					//headerText: _('umcOverviewHeader'),
-					iconClass: tools.getIconClass('univention'),
-					//helpText: _('umcOverviewHelpText'),
-					style: 'margin-top:15px;'
-				});
-				this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
-				this._tabContainer.addChild(this._overviewPage);
-
-				// run several checks
-				this._checkCertificateValidity();
-				this._checkLicense();
-				this._checkUpdateAvailable();
-				this._checkBrowser();
-				this._checkForUserRoot();
-				this._checkRebootRequired();
-				this._checkJoinStatus();
-				this._checkNoModuleAvailable();
-				this._checkShowStartupDialog();
-
-				// add search widget
-				this._searchSidebar = new LiveSearchSidebar({
-					style: 'width:150px',
-					region: 'left'
-				});
-				this._overviewPage.addChild(this._searchSidebar);
-
-				// set the categories
-				var categories = lang.clone(this.getCategories());
-				categories.unshift({
-					label: _('All'),
-					id: '_all_'
-				});
-				this._searchSidebar.set('categories', categories);
-				this._searchSidebar.set('allCategory', categories[0]);
-
-				// add the grid
-				this._grid = new _OverviewPane({
-					categories: this.getCategories(),
-					store: this._moduleStore,
-					region: 'center'
-				});
-				this._overviewPage.addChild(this._grid);
- 				this._registerGridEvents();
-				this._updateQuery();
-			}
+			this._setupOverviewPage();
 
 			// add the TabContainer to the main BorderContainer
 			this._topContainer.addChild(this._tabContainer);
@@ -919,6 +862,148 @@ define([
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
+		},
+
+		_setupOverviewPage: function() {
+			if (!tools.status('overview')) {
+				// no overview page is being displayed
+				// (e.g., system setup in appliance scenario)
+				return;
+			}
+
+			// the container for all category panes
+			// NOTE: We add the icon here in the first tab, otherwise the tab heights
+			//	   will not be computed correctly and future tabs will habe display
+			//	   problems.
+			//     -> This could probably be fixed by calling layout() after adding a new tab!
+			this._overviewPage = new Page({
+				title: _('umcOverviewTabTitle'),
+				//headerText: _('umcOverviewHeader'),
+				iconClass: tools.getIconClass('univention'),
+				//helpText: _('umcOverviewHelpText'),
+				style: 'margin-top:15px;'
+			});
+			this._tabContainer.addChild(this._overviewPage);
+
+			this._setupOverviewSearchSidebar();
+			this._setupOverviewPane();
+			this._runChecks();
+		},
+
+		_setupOverviewSearchSidebar: function() {
+			// add search widget
+			this._searchSidebar = new LiveSearchSidebar({
+				style: 'width:150px',
+				region: 'left'
+			});
+			this._overviewPage.addChild(this._searchSidebar);
+
+			// set the categories
+			var categories = lang.clone(this.getCategories());
+			categories.unshift({
+				label: _('All'),
+				id: '_all_'
+			});
+			this._searchSidebar.set('categories', categories);
+			this._searchSidebar.set('allCategory', categories[0]);
+
+			this._overviewPage.on('show', lang.hitch(this, '_focusSearchField'));
+		},
+
+		_focusSearchField: function() {
+			if (!has('touch')) {
+				this._searchSidebar.focus();
+			}
+		},
+
+		_setupOverviewPane: function() {
+			this._grid = new _OverviewPane({
+				categories: this.getCategories(),
+				store: this._moduleStore,
+				region: 'center'
+			});
+			this._overviewPage.addChild(this._grid);
+			this._registerGridEvents();
+			this._updateQuery();
+		},
+
+		_closeModuleContextMenu: function() {
+			if (this._moduleContextMenu) {
+				this._moduleContextMenu.onCancel();
+				return true;
+			}
+			return false;
+		},
+
+		_registerGridEvents: function() {
+			this._searchSidebar.on('search', lang.hitch(this, '_updateQuery'));
+
+			// open module upon click on grid item
+			this._grid.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
+				if (this._closeModuleContextMenu()) {
+					return;
+				}
+				var module = this._grid.row(evt).data;
+				this.openModule(module);
+			}));
+
+			// enable closing of context menu by clicking somewhere
+			this._grid.on('*:click', lang.hitch(this, '_closeModuleContextMenu'));
+
+			// event for context menu
+			this._grid.on('.umcGalleryItem:contextmenu', lang.hitch(this, function(evt) {
+				evt.preventDefault();
+				var item = this._grid.row(evt).data;
+				this._openModuleContextMenu(item, evt.pageX, evt.pageY);
+			}));
+		},
+
+		_openModuleContextMenu: function(item, x, y) {
+			this._closeModuleContextMenu();
+			var menu = this._moduleContextMenu = this._createModuleContextMenu(item);
+
+			var _close = lang.hitch(this, function() {
+				// close popup and remove internal reference to avoid
+				// collisions with other popups
+				popup.close(menu);
+				this._moduleContextMenu = null;
+			});
+
+			popup.open({
+				popup: menu,
+				parent: this._grid,
+				x: x,
+				y: y,
+				onExecute: _close,
+				onCancel: _close,
+				onClose: lang.hitch(menu, 'destroyRecursive')
+			});
+		},
+
+		_createModuleContextMenu: function(item) {
+			var menu = new Menu({
+				targetNodes: [ this._grid.id ],
+				selector: '.umcGalleryItem'
+			});
+			menu.addChild(new MenuItem({
+				label: item._isFavorite ? _('Remove module from favorites') : _('Add module to favorites'),
+				onClick : lang.hitch(this, '_toggleFavoriteModule', item)
+			}));
+			menu.startup();
+			return menu;
+		},
+
+		_runChecks: function() {
+			// run several checks
+			this._checkCertificateValidity();
+			this._checkLicense();
+			this._checkUpdateAvailable();
+			this._checkBrowser();
+			this._checkForUserRoot();
+			this._checkRebootRequired();
+			this._checkJoinStatus();
+			this._checkNoModuleAvailable();
+			this._checkShowStartupDialog();
 		},
 
 		_checkCertificateValidity: function() {
@@ -1028,28 +1113,6 @@ define([
 			//startupDialog.show();
 		},
 
-		_focusSearchField: function() {
-			if (!has('touch')) {
-				this._searchSidebar.focus();
-			}
-		},
-
-		_registerGridEvents: function() {
-			this._searchSidebar.on('search', lang.hitch(this, '_updateQuery'));
-
-			this._grid.on('.umcGalleryStatusIcon:click', lang.hitch(this, function(evt) {
-				evt.stopImmediatePropagation();
-				var module = this._grid.row(evt).data;
-				this._toggleFavoriteModule(module);
-			}));
-
-			this._grid.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
-				var module = this._grid.row(evt).data;
-				this.openModule(module);
-			}));
-
-		},
-
 		_updateQuery: function() {
 			var searchPattern = lang.trim(this._searchSidebar.get('value'));
 			var searchQuery = this._searchSidebar.getSearchQuery(searchPattern);
@@ -1058,7 +1121,7 @@ define([
 		},
 
 		_toggleFavoriteModule: function(module) {
-			if (isFavoriteModule(module)) {
+			if (module._isFavorite) {
 				// for the favorite category, remove the moduel from the favorites
 				this._moduleStore.removeFavoriteModule(module.id, module.flavor);
 				topic.publish('/umc/actions', 'overview', 'favorites', module.id, module.flavor, 'remove');
