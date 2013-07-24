@@ -1,0 +1,16 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: samba4
+fix: 4.0.3-1.378.201307221033
+note:
+version: [1]
+desc: |
+  This errata update fixes a vulnerability in the package samba4:
+  * A malformed packet can cause the smbd server to loop the CPU
+	performing memory allocations causing a denial of service.
+    A connection to a file share, or a local account is needed to
+	exploit this problem, either authenticated or unauthenticated
+	if guest connections are allowed.
+cve:
+ - CVE-2013-4124
