@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.34-1) unstable; urgency=low
+
+  * Bug #32023: adjusted .po files
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 24 Jul 2013 17:03:46 +0200
+
 univention-management-console-frontend (3.0.33-1) unstable; urgency=low
 
   * Bug #32023: added support for touch devices
