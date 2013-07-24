@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-printserver
-fix: 6.0.21-2.613.201307181044
+fix: 6.0.21-3.615.201307241546
 note:
 version: [1]
 desc: |
@@ -10,4 +10,4 @@ desc: |
   based on ip addresses, similar to the feature provided by univention-samba
   for samba printer shares. The blocked access can be configured with
   the UCR variable cups/printmode/hosts/none.
-bug: [31902]
+bug: [32055]
