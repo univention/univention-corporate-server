@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-squid
-fix: 2.0.44-25.472.201307111409
+fix: 6.0.8-4.198.201307241606
 note:
 version: [1]
 desc: |
