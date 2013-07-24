@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.4-1) unstable; urgency=low
+
+  * Bug #28260: fix search query for domains at a specific node
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jul 2013 09:52:35 +0200
+
 univention-virtual-machine-manager-daemon (3.0.3-1) unstable; urgency=low
 
   * Bug #28260: remove default search values (*)

@@ -1004,52 +1004,44 @@ define([
 			//		and the selected server/group.
 
 			// validate the search form
-			var _vals = this._searchForm.gatherFormValues();
+			var search_vals = this._searchForm.gatherFormValues();
 			if (!this._searchForm.getWidget('type').isValid()) {
 				dialog.alert(_('Please select a valid search type.'));
 				return;
 			}
 
-			var path = this._tree.get('path');
-			var treeType = 'root';
-			var treeID = '';
-			if (path.length) {
-				var item = path[path.length - 1];
-				treeType = item.type || 'node';
-				treeID = item.id;
+			var nodePattern = '', domainPattern = '', type = search_vals.type;
+
+			// apply filter from search
+			if (type == 'domain') {
+				domainPattern = search_vals.pattern;
+
+				// only search for domains of the selected node in the tree
+				var tree_path = this._tree.get('path');
+				var tree_item = lang.clone(tree_path).pop();
+				if (tree_item.type == 'node' && tree_item.id) {
+					nodePattern = tree_item.id;
+				}
+			} else {
+				nodePattern = search_vals.pattern;
 			}
 
-			// build the query we need to send to the server
-			var vals = {
-				type: _vals.type,
-				domainPattern: '',
-				nodePattern: ''
-			};
-			if (vals.type == 'domain') {
-				vals.domainPattern = _vals.pattern;
-			}
-			else {
-				vals.nodePattern = _vals.pattern;
-			}
-			if (treeType == 'node' && vals.type == 'domain') {
-				// search for domains only in the scope of the given node
-				vals.nodePattern = treeID;
-			}
-
-			this._grid.filter(vals);
+			// update grid content and columns
+			this._grid.filter({
+				type: type,
+				domainPattern: domainPattern,
+				nodePattern: nodePattern
+			});
+			var columns = this._getGridColumns(type);
+			var actions = this._getGridActions(type);
+			this._grid.setColumnsAndActions(columns, actions);
 
 			// update tree
-			if ( treeType == 'node' && treeID ) {
-				tools.umcpCommand( 'uvmm/node/query', { nodePattern: treeID } ).then( lang.hitch( this, function( response ) {
-					this._tree.model.changes( response.result );
-				} ) );
-			} else if ( treeType == 'group' ) {
-				tools.umcpCommand( 'uvmm/node/query', { nodePattern: "*" } ).then( lang.hitch( this, function( response ) {
-					this._tree.model.changes( response.result );
-				} ) );
-			}
-			// update the grid columns
-			this._grid.setColumnsAndActions(this._getGridColumns(vals.type), this._getGridActions(vals.type));
+			tools.umcpCommand('uvmm/node/query', {
+				nodePattern: nodePattern
+			}).then(lang.hitch(this, function(response) {
+				this._tree.model.changes(response.result);
+			}));
 		},
 
 		updateProgress: function(i, n) {

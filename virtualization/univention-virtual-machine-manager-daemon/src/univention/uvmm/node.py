@@ -1379,11 +1379,8 @@ def domain_list( uri, pattern = '*' ):
 	"""
 	global nodes
 
-	if uri == '*':
+	if uri in ('*', ''):
 		node_list = nodes.values()
-	elif '*' in uri:
-		regex = re.compile( fnmatch.translate( uri ), re.IGNORECASE )
-		node_list = [n for n in nodes.values() if regex.match( n.pd.name ) is not None]
 	else:
 		node_list = [ node_query(uri) ]
 

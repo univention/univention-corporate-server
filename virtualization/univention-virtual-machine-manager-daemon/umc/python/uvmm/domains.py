@@ -72,7 +72,6 @@ class Domains(object):
 			}
 
 	@sanitize(
-		nodePattern=SearchSanitizer(default='*'),
 		domainPattern=SearchSanitizer(default='*')
 	)
 	def domain_query(self, request):
@@ -144,7 +143,7 @@ class Domains(object):
 		self.uvmm.send(
 				'DOMAIN_LIST',
 				Callback(_finished, request),
-				uri=request.options['nodePattern'],
+				uri=request.options.get('nodePattern', ''),
 				pattern=request.options['domainPattern']
 				)
 
