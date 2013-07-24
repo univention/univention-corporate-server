@@ -17,7 +17,7 @@ if __name__ == '__main__':
 		mail_domain = '%s.%s' % (uts.random_name(), uts.random_name())
 		udm.create_object('mail/domain', name = mail_domain)
 
-		user = udm.create_user(mailPrimaryAddress = '%s@%s' % (uts.random_name(), mail_domain), options = ['posix'])[0]
+		user = udm.create_user(mailPrimaryAddress = '%s@%s' % (uts.random_name(), mail_domain), options = ['mail', 'posix'])[0]
 		udm.modify_object('users/user', dn = user, pwdChangeNextLogin = '1')
 	
 		utils.verify_ldap_object(user, {'shadowMax': ['1']})

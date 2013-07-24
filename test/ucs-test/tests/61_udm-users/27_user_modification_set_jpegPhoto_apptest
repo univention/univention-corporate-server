@@ -18,7 +18,7 @@ if __name__ == '__main__':
 		mail_domain = '%s.%s' % (uts.random_name(), uts.random_name())
 		udm.create_object('mail/domain', name = mail_domain)
 
-		user = udm.create_user(mailPrimaryAddress = '%s@%s' % (uts.random_name(), mail_domain))[0]
+		user = udm.create_user(mailPrimaryAddress = '%s@%s' % (uts.random_name(), mail_domain), options = ['mail', 'person'])[0]
 	
 		with open('/usr/share/ucs-test/61_udm-users/example_user_jpeg_photo.jpg') as jpeg:
 			jpeg_data = jpeg.read()

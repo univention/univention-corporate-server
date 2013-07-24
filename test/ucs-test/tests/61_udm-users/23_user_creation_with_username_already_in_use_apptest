@@ -18,10 +18,13 @@ if __name__ == '__main__':
 		first_user_container = udm.create_object('container/cn', name = uts.random_name())
 		second_user_container = udm.create_object('container/cn', name = uts.random_name())
 
-		username = udm.create_user(position = first_user_container)[1]
+		mail_domain = '%s.%s' % (uts.random_name(), uts.random_name())
+		udm.create_object('mail/domain', name = mail_domain)
+
+		username = udm.create_user(mailPrimaryAddress = '%s@%s' % (uts.random_name(), mail_domain), position = first_user_container, options = ['person', 'mail'])[1]
 			
 		try:
-			udm.create_user(username = username, position = second_user_container)
+			udm.create_user(mailPrimaryAddress = '%s@%s' % (uts.random_name(), mail_domain), username = username, position = second_user_container)
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
 

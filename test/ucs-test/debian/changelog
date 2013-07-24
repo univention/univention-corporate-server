@@ -1,6 +1,16 @@
+ucs-test (4.0.82-1) unstable; urgency=low
+
+  * fixed apptest versions of udm-users tests
+  (Bug #31652)
+
+  * added more udm-extendedattribute tests
+  (Bug #31661)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 24 Jul 2013 16:44:35 +0200
+
 ucs-test (4.0.81-1) unstable; urgency=low
 
-  * added apptest versions of certain udm-users test
+  * added apptest versions of certain udm-users tests
   (Bug #31652)
 
   * removed section equal tag from udm tests and added "udm" instead
