@@ -69,3 +69,9 @@ Description[de]=Definiert, ob der Cups (Druckserver) Dienst automatisch gestarte
 Description[en]=Defines if the cups service should be started automatically (default: true)
 Type=str
 Categories=service-cups
+
+[cups/printmode/hosts/none]
+Description[de]=Eine durch Leerzeichen separierte Liste von IP Adressen, denen das Drucken verboten ist.
+Description[en]=A blank character separated list of ip addresses which are forbidden to print.
+Type=str
+Categories=service-cups

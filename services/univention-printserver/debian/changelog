@@ -1,3 +1,9 @@
+univention-printserver (6.0.21-3) unstable; urgency=low
+
+  * Added UCR variable description for cups/printmode/hosts/none (Bug #32055)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 24 Jul 2013 15:42:20 +0200
+
 univention-printserver (6.0.21-2) unstable; urgency=low
 
   * Added support for denying client access based on ip addresses,
