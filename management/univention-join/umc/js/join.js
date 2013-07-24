@@ -56,6 +56,7 @@ define([
 	var JoinPage = declare("umc.modules.join.JoinPage", [Page], {
 		_titlePane: null,
 		_form: null,
+		_joining: null, // flag for the last executed action
 
 		headerText: _("Initial system join"),
 
@@ -292,7 +293,7 @@ define([
 				password: dataObj.password
 			}, false).then(
 				lang.hitch(this, function(data) {
-					this._joining = false;
+					this._joining = true;
 					this.showProgressBar();
 				}), lang.hitch(this, function(error) {
 					this._joining = false;

@@ -1,3 +1,9 @@
+univention-join (6.0.2-1) unstable; urgency=low
+
+  * Bug #9927: Ask to reboot the system after join progress
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jul 2013 16:28:20 +0200
+
 univention-join (6.0.1-1) unstable; urgency=low
 
   * Fix univention-run-join-scripts (Bug #32005)
