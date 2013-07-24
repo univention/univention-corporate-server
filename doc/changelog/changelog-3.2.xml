@@ -335,6 +335,11 @@
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The UMC overview page has been redesigned along with a search for modules
+		  (Bugs <ulink url="&ucsbug;31699">31699</ulink>, <ulink url="&ucsbug;32022">32022</ulink>, <ulink url="&ucsbug;32023">32023</ulink>, <ulink url="ucsbug;32048">32048</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Fixed regression in form validation with certain FormWidgets (<ulink url="&ucsbug;30965">Bug 30965</ulink>).
 		</simpara></listitem>
 
