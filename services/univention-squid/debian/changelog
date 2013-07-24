@@ -1,3 +1,9 @@
+univention-squid (6.0.8-4) unstable; urgency=low
+
+  * fixed ucrv description (Bug #31967) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Jul 2013 16:04:57 +0200
+
 univention-squid (6.0.8-3) unstable; urgency=low
 
   * added negotiate (krb5, ntlm) mode to squid_ldap_ntlm_auth (Bug #31967)
