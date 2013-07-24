@@ -162,7 +162,7 @@ define([
 
 		_serverRole: null,
 
-		_switch_view: function(code) {
+		_switchView: function(code) {
 			var lastSelectedChild = this.selectedChildWidget;
 
 			var child = {
@@ -220,7 +220,7 @@ define([
 						name: 'run',
 						label: _('Run join scripts'),
 						callback: lang.hitch(this, function() {
-							this.run_scripts(scripts, force, {});
+							this.runJoinScripts(scripts, force, {});
 						})
 					}, {
 						name: 'cancel',
@@ -228,28 +228,28 @@ define([
 						'default': true
 					}]);
 				} else {
-					this._get_credentials(txtscripts).then(lang.hitch(this, function(credentials) {
-						this.run_scripts(scripts, force, credentials);
+					this.getCredentials(txtscripts).then(lang.hitch(this, function(credentials) {
+						this.runJoinScripts(scripts, force, credentials);
 					}));
 				}
 			}));
 
 			// show the join logfile
 			this._statuspage._grid.on('ShowLogfile', lang.hitch(this, function() {
-				this._switch_view('log');
+				this._switchView('log');
 				this._logpage.fetch_log_text();
 			}));
 
 			// rejoin the system
 			this._statuspage._grid.on('Rejoin',  lang.hitch(this, function() {
-//				this._switch_view('join_form');
+//				this._switchView('join_form');
 				dialog.confirmForm({form: new JoinForm({buttons: []}), submit: _('Rejoin system'), style: 'max-width: 350px;'}).then(lang.hitch(this, function(values) {
 					this.join(values);
 				}));
 			}));
 
 			this._logpage.on('ShowGrid', lang.hitch(this, function() {
-				this._switch_view('grid');
+				this._switchView('grid');
 			}));
 
 			all([
@@ -266,14 +266,14 @@ define([
 
 				if (job_running) {
 					// display the running progress
-					this._joinpage.show_progress_bar(_('A join process is already running...'), _('The join scripts have successfully been executed.'));
+					this._joinpage.showProgressBar(_('A join process is already running...'), _('The join scripts have successfully been executed.'));
 				}
 				else if (!joined) {
 					if (this._serverRole == 'domaincontroller_master') {
 						dialog.alert(_('A DC master should be joined by the <a %s>Basic settings</a> module.', 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"'));
 						return;
 					}
-					this._switch_view('join_form');
+					this._switchView('join_form');
 				} else {
 					// grid view is selected by default... refresh the grid
 					this._statuspage._grid.reload_grid();
@@ -281,61 +281,6 @@ define([
 			}), lang.hitch(this, function() {
 				this.standby(false);
 			}));
-		},
-
-		// gets the current join status and switches display mode if needed.
-		reinit: function(restart) {
-			this.standby(true);
-			return this.umcpCommand('join/joined').then(lang.hitch(this, function(data) {
-				// update view
-				var joined = data.result;
-				if (joined) {
-					// show grid with join status, else....
-					this._switch_view('grid');
-				} else {
-					// show affordance to join, nothing more.
-					this._switch_view('join_form');
-				}
-
-				if (restart) {
-					// ask to restart
-					var msg = _('A restart of the UMC server components may be necessary for changes to take effect.');
-					if (joined) {
-						// show a different message for initial join
-						msg = _('A restart of the UMC server components is necessary after an initial join.');
-					}
-					Lib_Server.askRestart(msg);
-				}
-
-				this._statuspage._grid.reload_grid();
-				this.standby(false);
-			}), lang.hitch(this, function(result) {
-				this.standby(false);
-				console.error("reinit ERROR " + result.message);
-			}));
-		},
-
-		_error_handler: function(msg, title) {
-			return lang.hitch(this, function(error) {
-				this.standby(false);
-				if (error.response.status != 400 && error.response.status != 409) {
-					return tools.handleErrorStatus(error.response, true);
-				}
-				var errormessage = '';
-				// lol, we got HTTP errors which are exactly meant the other way round
-				if (error.response.status == 400) {
-					errormessage = msg;
-					errormessage += error.response.data.result.error;
-				} else if (error.response.status == 409) {
-					errormessage = error.response.data.message + ':<br>';
-					_('username'); _('password'); _('hostname');
-					tools.forIn(error.response.data.result, function(key, value) {
-						errormessage += key + ': ' + value + '<br>';
-					});
-				}
-				dialog.alert(errormessage, title || _('Error'));
-				this.reinit(false);
-			});
 		},
 
 		// starts the join process and show progressbar
@@ -346,12 +291,17 @@ define([
 				username: dataObj.username,
 				password: dataObj.password
 			}, false).then(
-				lang.hitch(this, function(data) { this.show_progress_bar(); }),
-				this._error_handler(_("Can't start join process:<br>"))
+				lang.hitch(this, function(data) {
+					this._joining = false;
+					this.showProgressBar();
+				}), lang.hitch(this, function(error) {
+					this._joining = false;
+					this.handleError(error, _("Can't start join process:<br>"));
+				})
 			);
 		},
 
-		run_scripts: function(scripts, force, credentials) {
+		runJoinScripts: function(scripts, force, credentials) {
 			this.standby(true);
 
 			var values = { scripts: scripts, force: force };
@@ -364,34 +314,39 @@ define([
 
 			this.umcpCommand('join/run', values, false).then(
 				lang.hitch(this, function(data) {
+					this._joining = false;
 					// Job is started. Now wait for its completion.
-					this.show_progress_bar();
+					this.showProgressBar();
 				}),
-				this._error_handler(_("Can't run join scripts:<br>"))
+				lang.hitch(this, function(error) {
+					this._joining = false;
+					this.handleError(error, _("Can't run join scripts:<br>"));
+				})
 			);
 		},
 
-		_alert: function(msg, title, callback) {
-			var dialog = new ConfirmDialog({
-				message: msg,
-				title: title,
-				style: 'max-width: 650px;',
-				options: [{
-					label: 'Ok',
-					'default': true,
-					callback: lang.hitch(this, function() {
-						callback();
-						dialog.hide();
-					})
-				}]
-			});
-			this.own(dialog);
-			dialog.on('cancel', function() { callback(); });
-			dialog.show();
-			return dialog;
+		handleError: function(error, msg, title) {
+			this.standby(false);
+			if (error.response.status != 400 && error.response.status != 409) {
+				return tools.handleErrorStatus(error.response, true);
+			}
+			var errormessage = '';
+			// lol, we got HTTP errors which are exactly meant the other way round
+			if (error.response.status == 400) {
+				errormessage = msg;
+				errormessage += error.response.data.result.error;
+			} else if (error.response.status == 409) {
+				errormessage = error.response.data.message + ':<br>';
+				_('username'); _('password'); _('hostname');
+				tools.forIn(error.response.data.result, function(key, value) {
+					errormessage += key + ': ' + value + '<br>';
+				});
+			}
+			dialog.alert(errormessage, title || _('Error'));
+			this.reinit(false);
 		},
 
-		show_progress_bar: function(title, successmsg) {
+		showProgressBar: function(title, successmsg) {
 			this.standby(false);
 			this.standby(true, this._progressBar);
 			// Job is started. Now wait for its completion.
@@ -422,8 +377,59 @@ define([
 			);
 		},
 
+		// gets the current join status and switches display mode if needed.
+		reinit: function(restart) {
+			this.standby(true);
+			return this.umcpCommand('join/joined').then(lang.hitch(this, function(data) {
+				// update view
+				var joined = data.result;
+				if (joined) {
+					// show grid with join status, else....
+					this._switchView('grid');
+				} else {
+					// show affordance to join, nothing more.
+					this._switchView('join_form');
+				}
+
+				if (restart) {
+					// ask to restart / reboot
+					if (this._joining) {
+						Lib_Server.askReboot(_('A reboot of the server is recommended after joining the system.'));
+					} else {
+						Lib_Server.askRestart(_('A restart of the UMC server components may be necessary for changes to take effect.'));
+					}
+				}
+
+				this._statuspage._grid.reload_grid();
+				this.standby(false);
+			}), lang.hitch(this, function(result) {
+				this.standby(false);
+				console.error("reinit ERROR " + result.message);
+			}));
+		},
+
+		_alert: function(msg, title, callback) {
+			var dialog = new ConfirmDialog({
+				message: msg,
+				title: title,
+				style: 'max-width: 650px;',
+				options: [{
+					label: 'Ok',
+					'default': true,
+					callback: lang.hitch(this, function() {
+						callback();
+						dialog.hide();
+					})
+				}]
+			});
+			this.own(dialog);
+			dialog.on('cancel', function() { callback(); });
+			dialog.show();
+			return dialog;
+		},
+
 		// pop up to ask for credentials when running join scripts
-		_get_credentials: function(scripts) {
+		getCredentials: function(scripts) {
 			var msg = _('<p>Please enter credentials of an user account with administrator rights to run the selected join scripts.</p>') + scripts;
 			var deferred = dialog.confirmForm({
 				widgets: [{

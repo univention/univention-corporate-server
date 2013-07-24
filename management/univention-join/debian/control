@@ -37,7 +37,7 @@ Depends: ${misc:Depends},
  univention-management-console-server,
  univention-join (= ${source:Version}),
  univention-updater,
- univention-management-console-module-lib
+ univention-management-console-module-lib (>= 3.0.0-1)
 Description: UMC module for system join
  This package contains the UMC module for system join actions.
  .
