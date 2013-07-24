@@ -3,7 +3,7 @@
 # Univention Management Console
 #  Module lib containing low-lewel commands to control the UMC server
 #
-# Copyright 2012 Univention GmbH
+# Copyright 2012-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,10 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import notifier
-
-from univention.management.console.log import MODULE
-from univention.management.console.config import ucr
 from univention.management.console.modules import Base
 
 from univention.lib.i18n import Translation

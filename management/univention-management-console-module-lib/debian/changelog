@@ -1,3 +1,9 @@
+univention-management-console-module-lib (3.0.0-1) unstable; urgency=low
+
+  * Bug #9927: Add lib function to reboot / shutdown the server
+
+ -- Florian Best <best@univention.de>  Wed, 24 Jul 2013 16:20:22 +0200
+
 univention-management-console-module-lib (2.0.0-1) unstable; urgency=low
 
   * Bug #31642: keep session active during dialog for server restart

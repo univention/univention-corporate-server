@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Univention GmbH
+ * Copyright 2012-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -26,13 +26,14 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define window setTimeout*/
+/*global define window require*/
 
 define([
+	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/dom-style",
 	"dojo/Deferred",
 	"dojo/topic",
+	"dojo/_base/xhr",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Text",
@@ -40,7 +41,34 @@ define([
 	"dijit/Dialog",
 	"dijit/ProgressBar",
 	"umc/i18n!umc/modules/lib"
-], function(lang, style, Deferred, topic, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
+], function(declare, lang, Deferred, topic, basexhr, tools, dialog, Text, ContainerWidget, DijitDialog, DijitProgressBar, _) {
+
+	var _ProgressDialog = declare([DijitDialog], {
+		_progressBar: null,
+		postMixInProperties: function() {
+			this.inherited(arguments);
+
+			var container = new ContainerWidget({});
+			container.addChild(this._message = new Text({}));
+			container.addChild(this._progressBar = new DijitProgressBar({
+				indeterminate: true
+			}));
+
+			this.content = container;
+		},
+
+		update: function(message) {
+			this._message.set('content', '<p>' + message + '</p>');
+			//this._progressBar.update({label: message});
+		},
+
+		close: function() {
+			var hideDeferred = this.hide();
+			if (hideDeferred) {
+				return hideDeferred.then(lang.hitch(this, 'destroyRecursive'));
+			}
+		}
+	});
 
 	return {
 		_askingForRestart: false,
@@ -51,7 +79,7 @@ define([
 			}
 
 			var timeout = 1000 * Math.min(tools.status('sessionTimeout') / 2, 30);
-			setTimeout(lang.hitch(this, function() {
+			window.setTimeout(lang.hitch(this, function() {
 				this.ping().then(
 					lang.hitch(this, '_keepSessionOpen'),
 					lang.hitch(this, '_keepSessionOpen')
@@ -85,37 +113,24 @@ define([
 				if (response == 'restart') {
 					return this.restart();
 				}
-				// throw error two break the deferred chain
+				// throw error to break the deferred chain
 				throw new Error('restart canceled');
-			}));
+			})).then(function() {
+				window.location.reload();
+			});
 		},
 
 		restart: function() {
 			topic.publish('/umc/actions', 'lib', 'server', 'restart');
 
-			var container = new ContainerWidget({});
-			container.addChild(new Text({
-				content: '<p>' + _('Please wait while UMC server components and HTTP web server are being restarted.') + '</p>'
-			}));
-			container.addChild(new DijitProgressBar({
-				indeterminate: true
-			}));
-
-			var _dialog = new DijitDialog({
+			// send the server request
+			var progress = new _ProgressDialog({
 				title: _('Restarting server'),
-				content: container.domNode,
-				closable: false,
-				// overwrite _onKey to avoid closing via escape
-				_onKey: function() {}
+				closable: false
 			});
+			progress.update(_('Please wait while UMC server components and HTTP web server are being restarted.'));
+			progress.show();
 
-			// hide the dialog's close button
-			style.set(_dialog.closeButtonNode, 'display', 'none');
-
-			// show the dialog
-			_dialog.show();
-
-			// sent the server request
 			var deferred = new Deferred();
 			tools.umcpCommand('lib/server/restart', { restart: true }).then(function() {
 				// wait for 10sec before closing the session
@@ -123,14 +138,76 @@ define([
 					// close the session and force the login dialog to appear
 					tools.checkSession(false);
 					tools.closeSession();
+					progress.close();
 					deferred.resolve(true);
-					window.location.reload();
 				}, 10000);
 			}, function() {
-				// error handling
-				_dialog.destroyRecursive();
-				container.destroyRecursive();
-				deferred.cancel();
+				progress.close();
+			});
+
+			return deferred;
+		},
+
+		askReboot: function(_msg) {
+			topic.publish('/umc/actions', 'lib', 'server', 'askReboot');
+
+			var msg = _msg ? '<p>' + _msg + '</p>' : '';
+			msg += '<p>' + _('Please confirm to reboot this server. This will take approximately several minutes.') + '</p>';
+			msg += '<p>' + _('<b>Note:</b> After the restart you will be redirected to the login page.') + '</p>';
+			return dialog.confirm(msg, [{
+				name: 'cancel',
+				label: _('Cancel')
+			}, {
+				name: 'reboot',
+				'default': true,
+				label: _('Reboot')
+			}]).then(lang.hitch(this, function(response) {
+				if (response == 'reboot') {
+					return this.reboot();
+				}
+				// throw error to break the deferred chain
+				throw new Error('restart canceled');
+			})).then(function() {
+				window.location.reload();
+			});
+		},
+
+		reboot: function() {
+			topic.publish('/umc/actions', 'lib', 'server', 'reboot');
+
+			var progress = new _ProgressDialog({
+				title: _('Rebooting server'),
+				closable: false
+			});
+			progress.update(_('Please wait while the server is rebooting.'));
+			progress.show();
+
+			var offline = false;
+			var timer = null;
+			var milliseconds = 5000;
+			var deferred = new Deferred();
+
+			var start_pinging = function() {
+				basexhr("HEAD", {url: require.toUrl("umc/"), timeout: 3000}).then(function() {
+					if (offline) {
+						// online again
+						progress.close(true);
+						deferred.resolve(true);
+						window.clearTimeout(timer);
+						return;
+					}
+					timer = window.setTimeout(start_pinging, milliseconds);
+				}, function() {
+					if (!offline) {
+						progress.update(_('The server is now offline.'));
+					}
+					offline = true;
+					timer = window.setTimeout(start_pinging, milliseconds);
+				});
+			};
+
+			tools.umcpCommand('lib/server/reboot').then(start_pinging, function() {
+				progress.close();
 			});
 
 			return deferred;

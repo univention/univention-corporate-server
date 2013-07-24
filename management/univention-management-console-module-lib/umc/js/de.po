@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-07-05 17:05+0200\n"
+"POT-Creation-Date: 2013-07-21 05:19+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,18 +12,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/lib/server.js:53
+#: umc/js/lib/server.js:104 umc/js/lib/server.js:157
 msgid ""
 "<b>Note:</b> After the restart you will be redirected to the login page."
 msgstr ""
 "<b>Hinweis:</b> Nach dem Neustart werden Sie zur Login-Seite weitergeleitet "
 "werden."
 
-#: umc/js/lib/server.js:56
+#: umc/js/lib/server.js:107 umc/js/lib/server.js:160
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
-#: umc/js/lib/server.js:52
+#: umc/js/lib/server.js:156
+msgid ""
+"Please confirm to reboot this server. This will take approximately several "
+"minutes."
+msgstr ""
+"Bitte bestätigen Sie den Neustart dieses Servers. Die wird einige Minuten dauern."
+
+#: umc/js/lib/server.js:103
 msgid ""
 "Please confirm to restart UMC server components and the HTTP web server. "
 "This will take approximately 10 seconds."
@@ -31,7 +38,7 @@ msgstr ""
 "Bitte bestätigen Sie den Neustart der UMC-Server-Komponenten und des HTTP-"
 "Web-Servers. Dies wird ungefähr 10 Sekunden dauern."
 
-#: umc/js/lib/server.js:73
+#: umc/js/lib/server.js:132
 msgid ""
 "Please wait while UMC server components and HTTP web server are being "
 "restarted."
@@ -39,10 +46,26 @@ msgstr ""
 "Bitte warten Sie während die UMC-Server-Komponenten und der HTTP-Web-Server "
 "neu gestartet werden."
 
-#: umc/js/lib/server.js:60
+#: umc/js/lib/server.js:183
+msgid "Please wait while the server is rebooting."
+msgstr "Bitte warten Sie während der Server neustartet."
+
+#: umc/js/lib/server.js:164
+msgid "Reboot"
+msgstr "Neustart"
+
+#: umc/js/lib/server.js:180
+msgid "Rebooting server"
+msgstr "Server-Neustart"
+
+#: umc/js/lib/server.js:111
 msgid "Restart"
 msgstr "Neustart"
 
-#: umc/js/lib/server.js:80
+#: umc/js/lib/server.js:129
 msgid "Restarting server"
 msgstr "Server-Neustart"
+
+#: umc/js/lib/server.js:203
+msgid "The server is now offline."
+msgstr "Der Server ist nun offline."

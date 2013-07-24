@@ -6,5 +6,7 @@
 	<command name="lib/server/restart" function="restart"></command>
 	<command name="lib/server/restart/isNeeded" function="restart_isNeeded"></command>
 	<command name="lib/server/ping" function="ping"></command>
+	<command name="lib/server/reboot" function="reboot"></command>
+	<command name="lib/server/shutdown" function="shutdown"></command>
   </module>
 </umc>
