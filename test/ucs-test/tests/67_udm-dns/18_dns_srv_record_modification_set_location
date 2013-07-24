@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Set location during dns/srv_record modification
-## tags: [udm-dns,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

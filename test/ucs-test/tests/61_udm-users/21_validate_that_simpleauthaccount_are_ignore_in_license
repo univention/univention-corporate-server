@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check whether a simple-auth-account appears in the license-check
-## tags: [udm-users,apptest]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## Bugs: [13721]
 ## exposure: careful
@@ -19,9 +19,7 @@ if __name__ == '__main__':
 	
 	with udm_test.UCSTestUDM() as udm:
 		udm.create_user(options = ['ldap_pwd'])
-
-
-	license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+		license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 
 	if license_before != license_after:
 		utils.fail('The license before creating a simple-auth user differs from the license after creating the user\nLicense before: %s\nLicense after: %s' % (license_before, license_after))

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Set nameserver during dns/forward_zone modification
-## tags: [udm-dns,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [15654]
 ## exposure: careful

@@ -1,13 +1,14 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create dhcp/sharedsubnet with wrong superordinate
-## tags: [udm-dhcp,apptest]
+## tags: [udm,apptest]
 ## bugs: [31519]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
-
+## versions:
+##  3.1-1: skip
 
 
 import sys
@@ -16,8 +17,6 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 if __name__ == '__main__':
-	sys.exit(131) # skip for now
-
 	with udm_test.UCSTestUDM() as udm:
 		dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
 		try:

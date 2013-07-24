@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Append multivalue settings/extended_attribute values to object
-## tags: [udm-extendedattribute]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create dhcp/shared
-## tags: [udm-dhcp,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Set description during container/ou modification
-## tags: [udm-containers,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

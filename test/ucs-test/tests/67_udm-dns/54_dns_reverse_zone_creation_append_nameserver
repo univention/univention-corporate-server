@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Append nameserver during dns/reverse_zone creation
-## tags: [udm-dns,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

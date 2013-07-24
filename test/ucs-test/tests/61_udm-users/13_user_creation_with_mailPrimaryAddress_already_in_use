@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create users/user with mailPrimaryAddress which is already in use
-## tags: [udm-users,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

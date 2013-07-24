@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Append fixedaddresses during dhcp/host creation
-## tags: [udm-dhcp,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

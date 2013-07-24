@@ -1,0 +1,28 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create users/user with uidNumber which is already in use
+## tags: [udm,apptest]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import sys
+import random
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+if __name__ == '__main__':
+	uid_number = str( random.randint(3000, 5000) )
+	with udm_test.UCSTestUDM() as udm:
+		mail_domain = '%s.%s' % (uts.random_name(), uts.random_name())
+		udm.create_object('mail/domain', name = mail_domain)
+
+		udm.create_user(uidNumber = uid_number, mailPrimaryAddress = '%s@%s' % (uts.random_name(), mail_domain))
+		try:
+			udm.create_user(uidNumber = uid_number)
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			sys.exit(0)
+
+	utils.fail('Successfully created an user with an "uidNumber" which is already in use, which should not be possible')

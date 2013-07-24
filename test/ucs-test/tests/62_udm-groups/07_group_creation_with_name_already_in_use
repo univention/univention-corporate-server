@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create groups/group with name which is already in use
-## tags: [udm-groups]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

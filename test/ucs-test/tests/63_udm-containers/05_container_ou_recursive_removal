@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Remove an container/ou recursively
-## tags: [udm-containers,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

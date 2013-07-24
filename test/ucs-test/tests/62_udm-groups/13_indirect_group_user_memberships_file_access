@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Access file as user of nested group of group of files owner
-## tags: [udm-groups]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

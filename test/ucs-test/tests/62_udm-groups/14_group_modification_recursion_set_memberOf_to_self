@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: groups/group recursion due setting self as memberOf during modification
-## tags: [udm-groups]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## bugs: [13008]
 ## exposure: careful

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create dns/alias with wrong object type as superordinate
-## tags: [udm-dns,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [15660]
 ## exposure: careful

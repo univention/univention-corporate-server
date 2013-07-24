@@ -1,13 +1,15 @@
 #!/usr/share/ucs-test/runner python
-## desc: Create users/user with person and mail option set, without password
-## tags: [udm-users]
+## desc: Create users/user with person and mail option set
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## bugs: [31868]
 ## exposure: careful
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
-
+## versions:
+##  3.1-1: skip
+##  3.2-0: fixed
 
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils

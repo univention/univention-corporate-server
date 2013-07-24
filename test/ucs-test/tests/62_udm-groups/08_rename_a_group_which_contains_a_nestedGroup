@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Rename group/groups which contains a nested groups/group
-## tags: [udm-groups]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

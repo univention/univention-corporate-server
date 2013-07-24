@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: After an singlevalue settings/extended_attribute has been removed, try to still set value for it during object creation
-## tags: [udm-extendedattribute]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

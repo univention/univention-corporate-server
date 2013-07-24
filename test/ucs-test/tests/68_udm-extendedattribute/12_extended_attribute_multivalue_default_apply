@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Default value gets applied for multi value settings/extended_attribute when a value is not explicitly given
-## tags: [udm-extendedattribute]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

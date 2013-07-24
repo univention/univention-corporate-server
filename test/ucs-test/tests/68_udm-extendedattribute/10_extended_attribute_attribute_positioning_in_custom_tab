@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Positioning in custom tabs
-## tags: [udm-extendedattribute]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

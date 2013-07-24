@@ -1,13 +1,14 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check that required=1 is enforced for multivalue extended attributes
-## tags: [udm-extendedattribute,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [31302]
 ## exposure: careful
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
-
+## versions:
+##  3.1-1: skip
 
 import sys
 import univention.testing.udm as udm_test
@@ -16,8 +17,6 @@ import univention.testing.utils as utils
 
 
 if __name__ == '__main__':
-	sys.exit(131) # skip for know
-
 	with udm_test.UCSTestUDM() as udm:
 		udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER,
 			name = uts.random_string(),

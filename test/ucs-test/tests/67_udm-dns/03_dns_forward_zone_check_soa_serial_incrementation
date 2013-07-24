@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check dns/forward_zone SOA record serial number incrementation
-## tags: [udm-dns,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

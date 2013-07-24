@@ -7,9 +7,9 @@
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
+## versions:
+##  3.1-1: skip
 
-
-import sys
 import smbpasswd
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -18,8 +18,6 @@ import univention.config_registry as configRegistry
 
 
 if __name__ == '__main__':
-	sys.exit(131)
-
 	ldap = utils.get_ldap_connection()
 	ucr = configRegistry.ConfigRegistry()
 	ucr.load()

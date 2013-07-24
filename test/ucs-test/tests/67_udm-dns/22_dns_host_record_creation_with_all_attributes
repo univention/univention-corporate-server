@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create dns/host with all attributes set
-## tags: [udm-dns,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

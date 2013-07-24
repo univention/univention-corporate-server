@@ -1,16 +1,15 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create users/user with kerberos and samba option set
-## tags: [udm-users]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## bugs: [30932]
 ## exposure: careful
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
+## versions:
+##  3.1-1: skip
 
-
-import sys
-import traceback
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.config_registry as configRegistry
@@ -18,8 +17,6 @@ import univention.config_registry as configRegistry
 
 
 if __name__ == '__main__':
-	sys.exit(131) # SKIP for now
-
 	ucr = configRegistry.ConfigRegistry()
 	ucr.load()
 

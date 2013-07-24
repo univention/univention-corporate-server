@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Set mx during dns/forward_zone creation
-## tags: [udm-dns,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [15654]
 ## exposure: careful

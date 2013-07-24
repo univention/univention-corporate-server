@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create users/user with just the samba option unset
-## tags: [udm-users]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

@@ -1,16 +1,16 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create dns/host record with wrong object type as superordinate
-## tags: [udm-dns,apptest]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## bugs: [15660]
 ## exposure: careful
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
+## versions:
+##  3.1-1: skip
 
 
-
-import sys
 import univention.testing.utils as util
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
@@ -18,8 +18,6 @@ import univention.uldap as uldap
 
 
 if __name__ == '__main__':
-	sys.exit(131) # skip for now
-
 	with udm_test.UCSTestUDM() as udm:
 		reverse_zone = udm.create_object('dns/reverse_zone', nameserver = uts.random_string(), subnet = '10.20.30')
 		try:

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Find settings/extended_attribute tabName in module help
-## tags: [udm-extendedattribute]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

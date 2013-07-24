@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create groups/group with single letter name
-## tags: [udm-groups]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

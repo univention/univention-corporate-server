@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: After an multivalue settings/extended_attribute has been removed, try to still append values for it to object
-## tags: [udm-extendedattribute]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:
