@@ -311,8 +311,7 @@ define([
 			return list;
 		},
 		getNodes: function() {
-			return tools.umcpCommand('uvmm/query', {
-				type: 'node',
+			return tools.umcpCommand('uvmm/node/query', {
 				nodePattern: ''
 			}).then(function(data) {
 				return array.filter( data.result, function( node ) {

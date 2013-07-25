@@ -83,26 +83,34 @@ define([
 		},
 
 		getChildren: function(parentItem, onComplete) {
-			// we only have three levels: root, groups, nodes
-			if (parentItem.type == 'node') {
+			if (parentItem.type == 'root') {
+				this.umcpCommand('uvmm/group/query', {
+				}).then(lang.hitch(this, function(data) {
+					var results = data.result instanceof Array ? data.result : [];
+					results.sort();
+					onComplete(array.map(results, lang.hitch(this, function(groupname) {
+						return {
+							id: groupname,
+							label: groupname == 'default' ? _('Physical servers') : groupname,
+							type: 'group',
+							icon: 'uvmm-group'
+						};
+					})));
+				}));
+			} else if (parentItem.type == 'group') {
+				this.umcpCommand('uvmm/node/query', {
+					nodePattern: ''
+				}).then(lang.hitch(this, function(data) {
+					var results = data.result instanceof Array ? data.result : [];
+					results.sort(tools.cmpObjects('label'));
+					onComplete(array.map(results, lang.hitch(this, function(node) {
+						node.label = this._cutDomain( node.label );
+						return node;
+					})));
+				}));
+			} else if (parentItem.type == 'node') {
 				onComplete([]);
-				return;
 			}
-
-			this.umcpCommand('uvmm/query', {
-				type: parentItem.type == 'root' ? 'group' : 'node',
-				domainPattern: '',
-				nodePattern: ''
-			}).then(lang.hitch(this, function(data) {
-				// sort items alphabetically
-				var results = data.result instanceof Array ? data.result : [];
-				results.sort(tools.cmpObjects('label'));
-				onComplete( array.map( results, lang.hitch( this, function( node ) {
-					// cut off domain name
-					node.label = this._cutDomain( node.label );
-					return node;
-				} ) ) );
-			}));
 		},
 
 		changes: function( nodes ) {
