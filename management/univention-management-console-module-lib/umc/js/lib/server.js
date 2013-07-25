@@ -188,7 +188,7 @@ define([
 			var deferred = new Deferred();
 
 			var start_pinging = function() {
-				basexhr("HEAD", {url: require.toUrl("umc/"), timeout: 3000}).then(function() {
+				basexhr("HEAD", {url: require.toUrl("umc/").replace(/js_\$.*?\$/, 'js'), timeout: 3000}).then(function() {
 					if (offline) {
 						// online again
 						progress.close(true);
