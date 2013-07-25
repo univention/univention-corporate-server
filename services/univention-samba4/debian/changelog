@@ -1,3 +1,14 @@
+univention-samba4 (3.0.6-11) unstable; urgency=low
+
+  * on update set kerberos/kdc?127.0.0.1
+  * on update change kerberos/kpasswdserver only if it still
+    has the default value
+  * on join set kerberos/kdc=127.0.0.1
+  * on join set kerberos/kpasswdserver=127.0.0.1 (Bug #29291)
+  * don't set kerberos/defaults/dns_lookup_kdc, DNS is only the fallback
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Jul 2013 19:28:08 +0200
+
 univention-samba4 (3.0.6-10) unstable; urgency=low
 
   * turn postinst into a bash script (Bug #29462)

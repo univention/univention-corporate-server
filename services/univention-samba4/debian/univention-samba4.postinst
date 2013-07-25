@@ -272,8 +272,26 @@ secret: $machine_secret
 			fi
 		fi
 		### The following block of code may be removed after ucs_3.2-0
-		if dpkg --compare-versions "$2" lt-nl "3.0.6-5"; then
-			univention-config-registry commit /etc/krb5.conf
+		if dpkg --compare-versions "$2" lt-nl "3.0.6-10"; then
+
+			krb5conf_commit_needed=0
+			if [ -z "$kerberos_kdc" ]; then
+				univention-config-registry set \
+					kerberos/kdc?127.0.0.1
+			else
+				krb5conf_commit_needed=1
+			fi
+
+			if [ "$kerberos_kpasswdserver" == "$ldap_master" ] || [ -z "$kerberos_kpasswdserver" ]; then
+				## only change the default
+				univention-config-registry set \
+					kerberos/kpasswdserver=127.0.0.1
+			elif [ "$krb5conf_commit_needed" -eq 1 ]; then
+					univention-config-registry commit /etc/krb5.conf
+				fi
+			fi
+
+
 		fi
 		### The following block of code may be removed after ucs_3.2-0
 		if dpkg --compare-versions "$2" lt-nl "2.0.44-27"; then
