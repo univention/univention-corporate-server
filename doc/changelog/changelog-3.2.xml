@@ -1473,6 +1473,10 @@
 		<listitem><simpara>
 		  The dialog for editing network interfaces now correctly starts with the currrent values. Multicast MAC addresses are now detected and rejected (<ulink url="&ucsbug;30806">Bug 30806</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  New domains are now created on the selected node by default (<ulink url="&ucsbug;24579">Bug 24579</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>

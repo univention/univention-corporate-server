@@ -56,7 +56,7 @@ define([
 		_driveGrid: null,
 		_driveContainer: null,
 
-		constructor: function() {
+		constructor: function(props, nodeURI) {
 			// grid for the drives
 			this._driveStore = new Observable(new Memory({
 				idProperty: '$id$'
@@ -88,7 +88,8 @@ define([
 						name: 'nodeURI',
 						type: 'ComboBox',
 						label: _('Physical server'),
-						dynamicValues: types.getNodes
+						dynamicValues: types.getNodes,
+						value: nodeURI
 					}, {
 						name: 'profileDN',
 						type: 'ComboBox',
@@ -225,7 +226,6 @@ define([
 
 				if ( null !== nextName ) {
 					this._driveGrid.domain = this.getValues();
-					this._driveGrid.domain.nodeURI = this.getWidget( 'nodeURI' ).get( 'value' );
 					this._driveGrid.domain.profileData = this._profile;
 				}
 			}

@@ -3,6 +3,7 @@ univention-virtual-machine-manager-daemon (3.0.6-1) unstable; urgency=low
   * Move storage capacity validation into frontend (Bug #27778)
   * Warn when storage volume size exceeds available pool size (Bug #19281)
   * Fix interface editing (Bug #30806)
+  * Create new domains on selected host by default (Bug #24579)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 24 Jul 2013 11:16:40 +0200
 
