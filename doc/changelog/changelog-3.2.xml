@@ -1469,6 +1469,10 @@
 		<listitem><simpara>
 		  A warning is printed when the size for a new storage volume exceeds the available size in the storage pool (<ulink url="&ucsbug;19281">Bug 19281</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The dialog for editing network interfaces now correctly starts with the currrent values. Multicast MAC addresses are now detected and rejected (<ulink url="&ucsbug;30806">Bug 30806</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>

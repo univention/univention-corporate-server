@@ -41,16 +41,14 @@ define([
 ], function(declare, lang, domClass, Wizard, ComboBox, Text, TextBox, types, _) {
 
 	return declare("umc.modules.uvmm.InterfaceWizard", [ Wizard ], {
-		
-		domain_type: null,
-		values: {},
 
-		constructor: function() {
+		constructor: function(props, domain_type, values) {
+			values = values || {};
 			// mixin the page structure
 			lang.mixin(this, {
 				pages: [{
 					name: 'interface',
-					headerText: _('Add network interface'),
+					headerText: values ? _('Edit network interface') : _('Add network interface'),
 					helpText: _('Two types of network interfaces are support. The first one is <i>Bridge</i> that requires a static network connection on the physical server that is configurated to be used for bridging. By default the network interface called eth0 is setup for such a case on each UVMM node. If a virtual machine should have more than one bridging network interface, additional network interfaces on the physical server must be configured first. The second type is <i>NAT</i> provides a private network for virtual machines on the physical server and permits access to the external network. This network typ is useful for computers with varying network connections like notebooks. For such an interface the network configuration of the UVMM node needs to be modified. This is done automatically by the UVMM service when starting the virtual machine. Further details about the network configuration can be found in <a target="_blank" href="http://sdb.univention.de/1172">this article</a>.'),
 					widgets: [{
 						name: 'type',
@@ -59,7 +57,7 @@ define([
 						label: _('Type'),
 						staticValues: types.interfaceTypes,
 						onChange: lang.hitch( this, '_typeDescription' ),
-						value: 'bridge'
+						value: values.type || 'bridge'
 					}, {
 						name: 'typeDescription',
 						type: Text,
@@ -71,21 +69,15 @@ define([
 						sizeClass: 'One',
 						type: ComboBox,
 						label: _('Driver'),
-						dynamicOptions: lang.hitch(this, function() {
-							return {
-								domain_type: this.domain_type
-							};
-						}),
-						dynamicValues: types.getInterfaceModels,
-						sortDynamicValues: false,
-						value: 'rtl8139'
+						staticValues: types.getInterfaceModels(domain_type),
+						value: values.model || 'rtl8139'
 					}, {
 						name: 'source',
 						sizeClass: 'OneThird',
 						type: TextBox,
 						label: _('Source'),
 						description: _('The source is the name of the network interface on the phyiscal server that is configured for bridging. By default it is eth0.'),
-						value: 'eth0',
+						value: values.source || 'eth0',
 						required: true
 					}, {
 						name: 'mac_address',
@@ -94,28 +86,15 @@ define([
 						regExp: '^([0-9A-Fa-f]?[02468AaCcEe])(:[0-9A-Fa-f]{1,2}){5}$',
 						invalidMessage: _('Invalid MAC address. The address should have the form, e.g., "02:23:45:67:89:AB".'),
 						label: _('MAC addresss'),
-						value: ''
+						value: values.mac_address || ''
 					}],
-					layout: [ [ 'type', 'model' ], 'typeDescription', [ 'source', 'mac_address' ] ]
+					layout: [
+						['type', 'model'],
+						'typeDescription',
+						['source', 'mac_address']
+						]
 				}]
 			});
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			if (this.values) {
-				// modify an existing interface
-				this._setInitialValues();
-			}
-		},
-
-		_setInitialValues: function() {
-			this.getPage('interface').set('headerText', _('Edit network interface'));
-			this.getWidget('interface', 'type').set('value', this.values.type);
-			this.getWidget('interface', 'model').set('value', this.values.model);
-			this.getWidget('interface', 'source').set('value', this.values.source);
-			this.getWidget('interface', 'mac_address').set('value', this.values.mac_address);
 		},
 
 		_typeDescription: function() {

@@ -205,16 +205,16 @@ define([
 			'netfront': _( 'Paravirtual device (xen)' ),
 			'virtio': _( 'Paravirtual device (virtio)' )
 		},
-		getInterfaceModels: function(options) {
+		getInterfaceModels: function(domain_type) {
 			var list = [];
 			tools.forIn(self.interfaceModels, function(ikey, ilabel) {
 				if (ikey == 'virtio') {
-					if (options.domain_type == 'kvm') {
+					if (domain_type == 'kvm') {
 						list.push({ id: ikey, label: ilabel });
 					}
 				}
 				else if (ikey == 'netfront') {
-					if (options.domain_type == 'xen') {
+					if (domain_type == 'xen') {
 						list.push({ id: ikey, label: ilabel });
 					}
 				}

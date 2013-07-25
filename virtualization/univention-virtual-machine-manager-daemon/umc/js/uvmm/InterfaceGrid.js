@@ -165,8 +165,7 @@ define([
 						$id$: id
 					}, values));
 					this.filter();
-				}
-				else {
+				} else {
 					// generate a new pseudo ID
 					id = this.moduleStore.data.length + 1;
 
@@ -180,17 +179,14 @@ define([
 
 			wizard = new InterfaceWizard({
 				style: 'width: 500px; height:510px;',
-				domain_type: this.domain.domain_type,
-				values: item,
 				onFinished: _finished,
 				onCancel: _cleanup
-			});
+			}, this.domain.domain_type, item);
 			_dialog = new Dialog({
 				title: item ? _('Edit network interface') : _('Add network interface'),
 				content: wizard
 			});
 			_dialog.show();
-
 		},
 
 		filter: function() {
