@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
+	"dijit/form/MappedTextBox",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store",
@@ -56,7 +57,7 @@ define([
 	"umc/modules/uvmm/DriveGrid",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, Memory, Observable, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, ExpandingTitlePane, StandbyMixin,
+], function(declare, lang, array, Memory, Observable, MappedTextBox, tools, dialog, store, Page, Form, ContainerWidget, TabContainer, TitlePane, ExpandingTitlePane, StandbyMixin,
 	TextBox, TextArea, HiddenInput, ComboBox, MultiInput, CheckBox, PasswordBox, SnapshotGrid, InterfaceGrid, DriveGrid, types, _) {
 
 	return declare("umc.modules.uvmm.DomainPage", [ TabContainer, StandbyMixin ], {
@@ -189,11 +190,13 @@ define([
 					dynamicValues: types.getCPUs
 				}, {
 					name: 'maxMem',
-					type: TextBox,
+					type: MappedTextBox,
 					required: true,
 					constraints: {min: 4*1024*1024},
+					format: types.prettyCapacity,
+					parse: types.parseCapacity,
 					validator: function(value, constraints) {
-						var size = types.parseStorageSize(value);
+						var size = types.parseCapacity(value);
 						if (size === null) {
 							return false;
 						}

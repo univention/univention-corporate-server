@@ -33,12 +33,13 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/when",
+	"dijit/form/MappedTextBox",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Wizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, when, tools, dialog, Wizard, types, _) {
+], function(declare, lang, array, when, MappedTextBox, tools, dialog, Wizard, types, _) {
 
 	return declare("umc.modules.uvmm.DriveWizard", [ Wizard ], {
 
@@ -157,10 +158,27 @@ define([
 						})
 					}, {
 						name: 'size_new',
-						type: 'TextBox',
+						type: MappedTextBox,
 						required: true,
+						constraints: {min: 1024*1024},
+						format: types.prettyCapacity,
+						parse: function(value) {
+							return types.parseCapacity(value, 'M');
+						},
+						validator: lang.hitch(this, function(value, constraints) {
+							var valid = true;
+							var size = types.parseCapacity(value, 'M');
+							if (size === null) {
+								valid = false;
+							} else if (constraints.min && size < constraints.min) {
+								valid = false;
+							} else if (constraints.max && size > constraints.max) {
+								valid = false;
+							}
+							return valid;
+						}),
 						label: _('Size (default unit MB)'),
-						value: lang.getObject('domain.profileData.diskspace', false, props) || '12.0 GB'
+						value: types.parseCapacity(lang.getObject('domain.profileData.diskspace', false, props) || '12 GiB')
 					}, {
 						name: 'pool_exists',
 						type: 'ComboBox',

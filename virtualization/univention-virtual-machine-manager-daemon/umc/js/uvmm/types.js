@@ -82,14 +82,14 @@ define([
 		isActive: function(domain) {
 			return Boolean(domain.state in self.activeStates || domain.suspended);
 		},
-		parseStorageSize: function(size) {
-			var pattern = /^([0-9]+(?:[,.][0-9]+)?)[ \t]*(?:([KkMmGgTtPp])(?:[Ii]?[Bb])?|[Bb])?$/;
-			var match = pattern.exec(size);
+		patternCapacity: /^([0-9]+(?:[,.][0-9]+)?)[ \t]*(?:([KkMmGgTtPp])(?:[Ii]?[Bb])?|[Bb])?$/,
+		parseCapacity: function(size, defaultUnit) {
+			var match = self.patternCapacity.exec(size);
 			if (match === null) {
 				return null;
 			}
 			var mem = parseFloat(match[1].replace(',', '.'));
-			var unit = match[2];
+			var unit = match[2] || defaultUnit || '';
 			switch (unit) {
 				case 'P': case 'p':
 					mem *= 1024;
@@ -106,7 +106,7 @@ define([
 				case 'K': case 'k':
 					mem *= 1024;
 			}
-			return mem;
+			return Math.floor(mem);
 		},
 		prettyCapacity: function(val) {
 			// convert storage capacity to pretty human readable text

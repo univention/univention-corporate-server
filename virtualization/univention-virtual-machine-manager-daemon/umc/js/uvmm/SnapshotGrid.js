@@ -123,7 +123,7 @@ define([
 			}
 
 			if (this.domain.state != 'SHUTOFF') {
-				var mem = types.parseStorageSize(this.domain.maxMem);
+				var mem = this.domain.maxMem;
 				if (mem === null) {
 					return null;
 				}

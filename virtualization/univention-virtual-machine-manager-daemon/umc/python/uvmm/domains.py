@@ -48,7 +48,7 @@ from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
 from urlparse import urlsplit, urldefrag
 from notifier import Callback
 
-from .tools import object2dict, MemorySize
+from .tools import object2dict
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
@@ -193,9 +193,6 @@ class Domains(object):
 				self.finished(request.id, json)
 				return
 
-			# RAM
-			json['maxMem'] = MemorySize.num2str(json['maxMem'])
-
 			# interfaces (fake the special type network:<source>)
 			for iface in json['interfaces']:
 				if iface['type'] == Interface.TYPE_NETWORK:
@@ -211,8 +208,6 @@ class Domains(object):
 					disk['pool'] = None
 				disk['paravirtual'] = disk['target_bus'] in ('virtio', 'xen')
 				disk['volumeType'] = disk['type']
-				if isinstance(disk['size'], (int, long)):
-					disk['size'] = MemorySize.num2str(disk['size'])
 
 			# graphics
 			if json['graphics']:
@@ -315,7 +310,7 @@ class Domains(object):
 
 		if disk.get('source', None) is None:
 			# new drive
-			drive.size = MemorySize.str2num(disk.get('size') or '12', unit='MB')
+			drive.size = disk['size']
 			if not pool:
 				raise ValueError('Pool "%s" not found' % (pool_name,))
 			drive.source = os.path.join(pool['path'], disk['volumeFilename'])
@@ -490,7 +485,7 @@ class Domains(object):
 				domain_info.cmdline = domain['cmdline']
 				domain_info.initrd = domain['initrd']
 		# memory
-		domain_info.maxMem = MemorySize.str2num(domain['maxMem'], unit='MB')
+		domain_info.maxMem = domain['maxMem']
 
 		# CPUs
 		try:

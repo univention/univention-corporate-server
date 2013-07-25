@@ -67,15 +67,16 @@ define([
 				columns: [{
 					name: 'device',
 					label: _('Type'),
-					formatter: lang.hitch(this, function(dev) {
+					formatter: function(dev) {
 						return types.blockDevices[dev] || _('unknown');
-					})
+					}
 				}, {
 					name: 'volumeFilename',
 					label: _('Image')
 				}, {
 					name: 'size',
-					label: _('Size')
+					label: _('Size'),
+					formatter: types.prettyCapacity
 				}, {
 					name: 'pool',
 					label: _('Pool')
