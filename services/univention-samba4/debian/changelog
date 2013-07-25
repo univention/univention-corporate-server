@@ -1,3 +1,9 @@
+univention-samba4 (3.0.6-12) unstable; urgency=low
+
+  * fix postinst shell syntax (Bug #29291)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Jul 2013 21:20:42 +0200
+
 univention-samba4 (3.0.6-11) unstable; urgency=low
 
   * on update set kerberos/kdc?127.0.0.1

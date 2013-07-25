@@ -288,7 +288,6 @@ secret: $machine_secret
 					kerberos/kpasswdserver=127.0.0.1
 			elif [ "$krb5conf_commit_needed" -eq 1 ]; then
 					univention-config-registry commit /etc/krb5.conf
-				fi
 			fi
 
 
