@@ -131,7 +131,7 @@ define([
 								// create a map of volumes that exist in the domain and
 								// the storage pool
 								this._volumes = {};
-								array.forEach(this.volumes, function(ivol) {
+								array.forEach(volumes, function(ivol) {
 									this._volumes[ivol] = true;
 								}, this);
 								array.forEach(this.domain.disks, function(idisk) {
