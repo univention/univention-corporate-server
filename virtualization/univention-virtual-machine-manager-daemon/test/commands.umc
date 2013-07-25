@@ -32,46 +32,71 @@
 # <http://www.gnu.org/licenses/>.
 #!/bin/sh
 
-eval "$(ucr shell hostname domainname)"
+eval "$(ucr shell hostname domainname ldap/base)"
+UMCC () {
+	umc-command -U Administrator -P univention "$@"
+}
+: ${MASTER:="qemu://master.$domainname/system"}
+: ${SLAVE:="qemu://slave.$domainname/system"}
+: ${MUUID:="6612fd7c-ef89-cc60-07bc-47aa5b319e13"}
+: ${SUUID:="66e90830-b46b-39c2-873a-8d649f10a011"}
 
 # list groups
-umc-client -U root -P univention command uvmm/group/query
+UMCC uvmm/group/query
 
 # list nodes
-umc-client -U root -P univention command uvmm/node/query -o group=default -o pattern="*"
+UMCC uvmm/node/query -o group=default -o pattern="*"
 
 # query domains of node
-umc-client -U root -P univention command uvmm/domain/query -o nodePattern=qemu://$hostname.$domainname/system -o domainPattern="*"
+UMCC uvmm/domain/query -o nodePattern="$MASTER" -o domainPattern="*"
 
 # query domains of ALL node
-umc-client -U root -P univention command uvmm/domain/query -o nodePattern="*" -o domainPattern="*"
+UMCC uvmm/domain/query -o nodePattern="*" -o domainPattern="*"
 
 # get domain details
-umc-client -U root -P univention command uvmm/domain/get -o "nodeURI=qemu://slave.ucs3.test/system" -o "domainUUID=66e90830-b46b-39c2-873a-8d649f10a011"
+UMCC uvmm/domain/get -o nodeURI="$SLAVE" -o domainUUID="$SUUID"
 
 # start a domain
-umc-client -U root -P univention command uvmm/domain/state -o domainURI="qemu://$hostname.$domainname/system#70ebb8c8-1229-bf60-c0b6-77638ecd35bf" -o domainState=RUN
+UMCC uvmm/domain/state -o domainURI="$MASTER#$MUUID" -o domainState=RUN
 
 # query storage pools
-umc-client -U root -P univention command uvmm/storage/pool/query -o nodeURI=qemu://master.ucs3.test/system
+UMCC uvmm/storage/pool/query -o nodeURI="$MASTER"
 
 # query storage volumes of a pool
-umc-client -U root -P univention command uvmm/storage/volume/query -o nodeURI=qemu://master.ucs3.test/system -o pool=default
+UMCC uvmm/storage/volume/query -o nodeURI="$MASTER" -o pool=default
 
 # query storage volumes of a pool of type cdrom
-umc-client -U root -P univention command uvmm/storage/volume/query -o nodeURI=qemu://master.ucs3.test/system -o pool=default -o type=cdrom
+UMCC uvmm/storage/volume/query -o nodeURI="$MASTER" -o pool=default -o type=cdrom
 
 # create an KVM instance
-umc-command -U root -P univention uvmm/domain/add -e -o "{ 'nodeURI':'qemu://master.ucs3.test/system', 'domain' : { 'name' : 'crunchy1', 'arch' : 'i686', 'type' :'kvm-hvm', 'memory' : '512MB', 'cpus' : 1, 'boot' : [ 'hd', 'cdrom' ], 'vnc' : True, 'kblayout' : 'de', 'os' : 'UCS 4.1', 'description' : 'testing UMC module', 'rtc_offset' : 'utc', 'interface' : 'eth0', 'pvinterface' : True, 'disks' : [], '\$profile\$' : 'cn=UCS 3.0,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,dc=ucs3,dc=test' }}"
+UMCC uvmm/domain/add -e -o "{
+	'nodeURI':'$MASTER',
+	'domain' : {
+		'name' : 'crunchy1',
+		'arch' : 'i686',
+		'type' :'kvm-hvm',
+		'memory' : '512MB',
+		'cpus' : 1,
+		'boot' : [ 'hd', 'cdrom' ],
+		'vnc' : True,
+		'kblayout' : 'de',
+		'os' : 'UCS 4.1',
+		'description' : 'testing UMC module',
+		'rtc_offset' : 'utc',
+		'interface' : 'eth0',
+		'pvinterface' : True,
+		'disks' : [],
+		'\$profile\$' : 'cn=UCS 3.0,cn=kvm,cn=Profiles,cn=Virtual Machine Manager,$ldap_base'
+	}}"
 
 # query snapshots
-umc-command -U Administrator -P univention uvmm/snapshot/query -o 'domainURI=qemu://master.ucs3.test/system#6612fd7c-ef89-cc60-07bc-47aa5b319e13'
+UMCC uvmm/snapshot/query -o domainURI="$MASTER#$MUUID"
 
 # create snapshot
-umc-command -U Administrator -P univention uvmm/snapshot/create -o 'domainURI=qemu://master.ucs3.test/system#6612fd7c-ef89-cc60-07bc-47aa5b319e13' -o snapshotName=test2
+UMCC uvmm/snapshot/create -o domainURI="$MASTER#$MUUID" -o snapshotName=test2
 
 # remove snapshot
-umc-command -U Administrator -P univention uvmm/snapshot/remove -o 'domainURI=qemu://master.ucs3.test/system#6612fd7c-ef89-cc60-07bc-47aa5b319e13' -o snapshotName=test1
+UMCC uvmm/snapshot/remove -o domainURI="$MASTER#$MUUID" -o snapshotName=test1
 
 # revert snapshot
-umc-command -U Administrator -P univention uvmm/snapshot/revert -o 'domainURI=qemu://master.ucs3.test/system#6612fd7c-ef89-cc60-07bc-47aa5b319e13' -o snapshotName=test2
+UMCC uvmm/snapshot/revert -o domainURI="$MASTER#$MUUID" -o snapshotName=test2
