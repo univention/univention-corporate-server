@@ -635,9 +635,9 @@ msgstr "Intel PRO/1000"
 #: umc/js/uvmm/InterfaceWizard.js:95
 msgid ""
 "Invalid MAC address. The address should have the form, e.g., "
-"\"01:23:45:67:89:AB\"."
+"\"02:23:45:67:89:AB\"."
 msgstr ""
-"Ungültige MAC-Adresse. Die Adresse soll die Form \"01:23:45:67:89:AB\" haben."
+"Ungültige MAC-Adresse. Die Adresse soll die Form \"02:23:45:67:89:AB\" haben."
 
 #: umc/js/uvmm/types.js:161
 msgid "Italian"

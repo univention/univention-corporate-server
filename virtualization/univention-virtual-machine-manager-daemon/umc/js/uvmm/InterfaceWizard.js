@@ -91,8 +91,8 @@ define([
 						name: 'mac_address',
 						sizeClass: 'One',
 						type: TextBox,
-						regExp: '^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$',
-						invalidMessage: _('Invalid MAC address. The address should have the form, e.g., "01:23:45:67:89:AB".'),
+						regExp: '^([0-9A-Fa-f]?[02468AaCcEe])(:[0-9A-Fa-f]{1,2}){5}$',
+						invalidMessage: _('Invalid MAC address. The address should have the form, e.g., "02:23:45:67:89:AB".'),
 						label: _('MAC addresss'),
 						value: ''
 					}],
