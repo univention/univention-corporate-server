@@ -1019,7 +1019,7 @@ define([
 				// only search for domains of the selected node in the tree
 				var tree_path = this._tree.get('path');
 				var tree_item = lang.clone(tree_path).pop();
-				if (tree_item.type == 'node' && tree_item.id) {
+				if (tree_item && tree_item.type == 'node' && tree_item.id) {
 					nodePattern = tree_item.id;
 				}
 			} else {

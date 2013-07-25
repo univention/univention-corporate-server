@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.5-1) unstable; urgency=low
+
+  * Bug #28260: fix initial search when tree is not loaded yet
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jul 2013 10:19:18 +0200
+
 univention-virtual-machine-manager-daemon (3.0.4-1) unstable; urgency=low
 
   * Bug #28260: fix search query for domains at a specific node
