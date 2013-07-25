@@ -37,16 +37,15 @@
 //###	margin: inherit; /* DEL */
 //###}
 
-.dijitButtonContents {
-	display: inline-block;
-}
-
-
-.dijitButtonNode {
-	border: inherit; /* DEL */
-	vertical-align: auto;
-	vertical-align: auto;
-}
+//@@@.dijitButtonContents {
+//@@@	display: inline-block;
+//@@@}
+//@@@
+//@@@
+//@@@.dijitButtonNode {
+//@@@	border: inherit; /* DEL */
+//@@@	vertical-align: auto;
+//@@@}
 
 .dijitTextBox {
 	width: 25em;
@@ -259,34 +258,46 @@
   box-shadow: none; /* DEL */
 }
 
-.umcPageFooter .umcButton {
-  //padding: 0.166em 0.166em 0.083em 0.166em;
-  padding: 2px 2px 1px 2px;
-}
+//@@@.umcPageFooter .umcButton {
+//@@@  //padding: 0.166em 0.166em 0.083em 0.166em;
+//@@@  padding: 2px 2px 1px 2px;
+//@@@}
 
 .umcSubmitButton {
-  height: 1.333em;
+//@@@  height: 1.333em;
   color: white;
   font-size: 1.166em;
-  //padding: 0.166em 0.166em 0.416em 0.166em;
-  padding: 1px 2px 5px 2px;
-  margin-top: 1px;
+//@@@  //padding: 0.166em 0.166em 0.416em 0.166em;
+//@@@  padding: 1px 2px 5px 2px;
+//@@@  margin-top: 1px;
+//@@@  background-position: left top;
+  padding: 0.08em 0.3em 0.08em 0.3em;
   background-image: url(form/images/button.png);
-  background-position: left top;
   background-repeat: repeat-x;
+  // resize the button image to fit the font-size
+  background-size: cover;
+  margin: 0.1em 0.4em 0 0.4em;
+}
+
+.dijitToggleButton,
+.dijitButton,
+.dijitDropDownButton,
+.dijitComboButton {
+	margin-left: 0.4em;
+	margin-right: 0.4em;
 }
 
 //###.umc .dijitArrowButtonInner {
 //  background-image: url(form/images/buttonArrows.png);
 //}
 //
-.umc .dijitButtonText {
-  padding: inherit; /* DEL */
-  display: table-cell;
-  height: 1.6em;
-  padding: 0 0.833em;
-  vertical-align: middle;
-}
+//@@@.umc .dijitButtonText {
+//@@@  padding: inherit; /* DEL */
+//@@@  display: table-cell;
+//@@@  height: 1.6em;
+//@@@  padding: 0 0.833em;
+//@@@  vertical-align: middle;
+//@@@}
 
 .umc .dijitDownArrowButton .dijitButtonText {
 	display: inline-block;
@@ -339,25 +350,25 @@
 }
 
 /*TODO: why is this needet?? */
-.umc .dijitButtonDisabled .dijitButtonNode,
-.umc .dijitDropDownButtonDisabled .dijitButtonNode,
-.umc .dijitComboButtonDisabled .dijitButtonNode,
-.umc .dijitToggleButtonDisabled .dijitButtonNode {
-  margin: -1px !important;
-}
+//@@@.umc .dijitButtonDisabled .dijitButtonNode,
+//@@@.umc .dijitDropDownButtonDisabled .dijitButtonNode,
+//@@@.umc .dijitComboButtonDisabled .dijitButtonNode,
+//@@@.umc .dijitToggleButtonDisabled .dijitButtonNode {
+//@@@  margin: -1px !important;
+//@@@}
 
 
 /* disable background and border for buttons of MultiInput widgets
    and the Grid footer */
-.umc .umcGridFooter .dijitButtonDisabled .dijitButtonNode,
-.umc .umcGridFooter .dijitDropDownButtonDisabled .dijitButtonNode,
-.umc .umcGridFooter .dijitComboButtonDisabled .dijitButtonNode,
-.umc .umcGridFooter .dijitToggleButtonDisabled .dijitButtonNode,
-.umc .umcMultiInputRemoveButton.dijitButtonDisabled .dijitButtonNode,
-.umc .umcMultiInputAddButton.dijitButtonDisabled .dijitButtonNode {
-  background: transparent!important;
-  border: solid 1px transparent!important;
-}
+//@@@.umc .umcGridFooter .dijitButtonDisabled .dijitButtonNode,
+//@@@.umc .umcGridFooter .dijitDropDownButtonDisabled .dijitButtonNode,
+//@@@.umc .umcGridFooter .dijitComboButtonDisabled .dijitButtonNode,
+//@@@.umc .umcGridFooter .dijitToggleButtonDisabled .dijitButtonNode,
+//@@@.umc .umcMultiInputRemoveButton.dijitButtonDisabled .dijitButtonNode,
+//@@@.umc .umcMultiInputAddButton.dijitButtonDisabled .dijitButtonNode {
+//@@@  background: transparent;
+//@@@  border: none;
+//@@@}
 
 
 
@@ -1628,26 +1639,17 @@
 /* @end */
 
 
-.umcCategoryPane .dojoxGridCell .dijitButtonNode {
-	background: none;
-}
-
-.umcCategoryPane .dojoxGridRowOver tr {
-	background-color: @grayAlto !important;
-}
-
-.umcGridFooter {
-	margin-bottom: 0.416em;
-	padding-top: 0.416em;
-	padding-bottom: 0.416em;
-	background-color: @grayAthens;
-	border-top: 1px solid black;
-	border-bottom: 2px solid @grayDusty;
-}
-
-.umcCategoryPane .dijitButtonNode {
-	padding-top: 0 !important;
-}
+//###.umcCategoryPane .dojoxGridCell .dijitButtonNode {
+//###	background: none;
+//###}
+//###
+//###.umcCategoryPane .dojoxGridRowOver tr {
+//###	background-color: @grayAlto !important;
+//###}
+//###
+//###.umcCategoryPane .dijitButtonNode {
+//###	padding-top: 0 !important;
+//###}
 
 /* @group Forms */
 
@@ -1694,34 +1696,34 @@
 	margin-top: 0;
 }
 
-.dijitDialog .dijitButtonNode {
-	margin-left: 0 !important;
-}
+//@@@.dijitDialog .dijitButtonNode {
+//@@@	margin-left: 0 !important;
+//@@@}
 
 /* @end */
 
-.umcCategoryPane .dijitAlignBottom .dijitButtonNode {
-	background: none;
-	color: @grayShip;
-}
-.umcCategoryPane .dijitAlignBottom .dijitButtonContents {
-	display: inline;
-}
-.umcCategoryPane .dijitAlignBottom .dijitButtonText {
-	display: inline-block;
-	padding: 0 0 0 0.416em;
-	height: auto;
-	text-align: left;
-}
-
-.umcCategoryPane .dijitAlignBottom .dijitButtonNode .dijitButtonText {
-	text-decoration: underline;
-}
-
-.umcgrid {
-	border-width: 2px;
-	border-bottom-width: 0;
-}
+//###.umcCategoryPane .dijitAlignBottom .dijitButtonNode {
+//###	background: none;
+//###	color: @grayShip;
+//###}
+//###.umcCategoryPane .dijitAlignBottom .dijitButtonContents {
+//###	display: inline;
+//###}
+//###.umcCategoryPane .dijitAlignBottom .dijitButtonText {
+//###	display: inline-block;
+//###	padding: 0 0 0 0.416em;
+//###	height: auto;
+//###	text-align: left;
+//###}
+//###
+//###.umcCategoryPane .dijitAlignBottom .dijitButtonNode .dijitButtonText {
+//###	text-decoration: underline;
+//###}
+//###
+//###.umcgrid {
+//###	border-width: 2px;
+//###	border-bottom-width: 0;
+//###}
 
 .umcMultiSelect {
 	width: 25em;
@@ -1759,20 +1761,51 @@
 	font-family: monospace;
 }
 
-/* @group Tabellen */
-.umc .dojoxGridCell .dijitButtonText,
-.umc .umcGridFooter .dijitButtonText {
-  color: @grayShip !important;
-  font-size: 1em;
-  text-decoration: underline;
-  padding-left: 0;
-  padding-right: 0;
+/* grid styling */
+
+/* handle special styling of action buttons */
+.umc .dojoxGridCell,
+.umc .umcGridFooter {
+	.dijitButton {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.dijitButtonText {
+		text-decoration: underline;
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.dijitButtonDisabled .dijitButtonText,
+	.dijitDropDownButtonDisabled .dijitButtonText {
+		.opacity(0.5);
+	}
 }
+
+//@@@.umc .dojoxGridCell .dijitButtonText,
+//@@@.umc .umcGridFooter .dijitButtonText {
+//@@@  color: @grayShip !important;
+//@@@  font-size: 1em;
+//@@@  text-decoration: underline;
+//@@@  padding-left: 0;
+//@@@  padding-right: 0;
+//@@@}
 
 /* switch off left padding for action buttons in the grid footer */
 .umc .umcGridFooter .dijitButton .dijitButtonNode {
 	padding-left: 0;
 }
+
+.umcGridFooter {
+	margin-bottom: 0.416em;
+	padding-top: 0.416em;
+	padding-bottom: 0.416em;
+	background-color: @grayAthens;
+	border-top: 1px solid black;
+	border-bottom: 2px solid @grayDusty;
+}
+
 
 /* @end */
 
@@ -1780,13 +1813,13 @@
 	margin-bottom: 1.25em;
 }
 
-.umcButton span.dijitIcon,
-.umcButton span.dijitButtonText {
-	float: left;
-}
+//@@@.umcButton span.dijitIcon,
+//@@@.umcButton span.dijitButtonText {
+//@@@	float: left;
+//@@@}
 
 .umcButton span.dijitButtonText {
-	padding-top: 0.166em;
+//@@@	padding-top: 0.166em;
 	text-decoration: underline;
 }
 
@@ -1953,10 +1986,10 @@ textarea {
 	margin: -10px;
 }
 
-.umc .dijitButton .dijitButtonNode {
-  height: 1.666em;
-  padding: 0 0.166em;
-}
+//@@@.umc .dijitButton .dijitButtonNode {
+//@@@  height: 1.666em;
+//@@@  padding: 0 0.166em;
+//@@@}
 
 /* @group notifications */
 .dijitToasterContent {
@@ -1995,10 +2028,10 @@ p {
 	overflow: hidden;
 }
 
-/* lower the distance between icon and button text */
-.umc .dijitButton .dijitIcon {
-	margin-right: -5px;
-}
+//@@@/* lower the distance between icon and button text */
+//@@@.umc .dijitButton .dijitIcon {
+//@@@	margin-right: -5px;
+//@@@}
 
 /* set opacity to 50% for icons of disabled buttons */
 .umc .dijitButtonDisabled .dijitIcon {
@@ -2118,6 +2151,11 @@ p {
 }
 
 .umcGalleryPane {
+	// disable selection on touch devices
+	// taken from: http://stackoverflow.com/a/11237968
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+
 	.umcGalleryCategoryHeader {
 		display: block;
 		border-bottom: 1px solid @border-color;
@@ -2139,8 +2177,6 @@ p {
 		outline: none;
 		height: 55px;
 		width: 305px;
-		-webkit-touch-callout:none;
-		-webkit-user-select:none;
 
 		.umcGalleryName,
 		.umcGalleryDescription {

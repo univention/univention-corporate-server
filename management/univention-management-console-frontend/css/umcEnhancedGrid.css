@@ -1289,7 +1289,7 @@ html > body .dojoxGridSorted .dojoxGridCellSortFocus .dojoxGridSortBtnNested {
 	background: #e0eed5;
 }
 .umc .dojoxGridCell {
-	padding: 0.166em 0.416em;
+	padding: 0.25em 0.4em;
 	border-color: transparent #E5DAC8 #E5DAC8 transparent;
 }
 .dj_ie6 .umc .dojoxGridCell{
