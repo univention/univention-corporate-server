@@ -6,6 +6,6 @@ fix: 7.0.5-10.114.201307111315
 note:
 version: [1]
 desc: |
-    This errata update removes a typo which caused a traceback in the
+    This updates corrects a typo which caused a traceback in the
     univention-user-quota script.
 bug: [31957]

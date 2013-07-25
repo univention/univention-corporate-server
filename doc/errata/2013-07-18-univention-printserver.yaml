@@ -6,8 +6,8 @@ fix: 6.0.21-3.615.201307241546
 note:
 version: [1]
 desc: |
-  This errata adds functionality to block printer access by clients
-  based on ip addresses, similar to the feature provided by univention-samba
+  This errata adds functionality to block printer access for clients
+  based on their IP addresses, similar to the feature provided by univention-samba
   for samba printer shares. The blocked access can be configured with
   the UCR variable cups/printmode/hosts/none.
 bug: [32055]
