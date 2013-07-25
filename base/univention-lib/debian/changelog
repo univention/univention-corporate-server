@@ -1,3 +1,9 @@
+univention-lib (3.0.7-1) unstable; urgency=low
+
+  * Parameter "command" in UMCConnection.request for flexibility (Bug #31058)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Jul 2013 13:05:15 +0200
+
 univention-lib (3.0.6-1) unstable; urgency=low
 
   * PackageManager now checks installation status correctly (Bug #31261)

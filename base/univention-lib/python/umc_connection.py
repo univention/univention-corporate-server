@@ -70,7 +70,7 @@ class UMCConnection(object):
 			if error_handler:
 				error_handler('Could not read /etc/machine.secret: %s' % e)
 		try:
-			connection = UMCConnection(ucr.get('ldap/master'))
+			connection = cls(ucr.get('ldap/master'))
 			connection.auth(username, password)
 			return connection
 		except (HTTPException, SocketError) as e:
@@ -112,14 +112,23 @@ class UMCConnection(object):
 			data['flavor'] = flavor
 		return dumps(data)
 
-	def request(self, url, data=None, flavor=None):
+	def request(self, url, data=None, flavor=None, command='command'):
 		'''Sends a request and returns the data from the response. url
-		as in the XML file of that UMC module'''
+		as in the XML file of that UMC module.
+		command may be anything that UMCP understands, especially:
+		 * command (default)
+		 * get (and url could be 'ucr' then)
+		 * set (and url would be '' and data could be {'locale':'de_DE'})
+		 * upload (url could be 'udm/license/import')
+		'''
 		if data is None:
 			data = {}
 		data = self.build_data(data, flavor)
 		con = self.get_connection()
-		con.request('POST', '/umcp/command/%s' % url, data, headers=self._headers)
+		umcp_command = '/umcp/%s' % command
+		if url:
+			umcp_command = '%s/%s' % (umcp_command, url)
+		con.request('POST', umcp_command, data, headers=self._headers)
 		response = con.getresponse()
 		if response.status != 200:
 			error_message = '%s on %s (%s): %s' % (response.status, self._host, url, response.read())
