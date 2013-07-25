@@ -35,7 +35,6 @@ define([
 	"dojo/string",
 	"dojo/Deferred",
 	"dojox/html/entities",
-	"dojox/string/sprintf",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/layout/ContentPane",
@@ -62,7 +61,7 @@ define([
 	"umc/modules/uvmm/DomainWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, Deferred, entities, sprintf, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, string, Deferred, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, TreeModel, DomainPage, DomainWizard, types, _) {
 
@@ -922,7 +921,10 @@ define([
 			if (item.type == 'node') {
 				// for the node, return a progressbar
 				return new ProgressBar({
-					label: sprintf('%.1f GB / %.1f GB', item.memUsed / 1073741824.0, item.memAvailable / 1073741824.0),
+					label: lang.replace('{used} / {available}', {
+						used: types.prettyCapacity(item.memUsed),
+						available: types.prettyCapacity(item.memAvailable)
+					}),
 					maximum: item.memAvailable,
 					value: item.memUsed
 				});
@@ -930,7 +932,7 @@ define([
 
 			// else: item.type == 'domain'
 			// for the domain, return a simple string
-			return sprintf('%.1f GB', (item.mem || 0) / 1073741824.0);
+			return types.prettyCapacity(item.mem || 0);
 		},
 
 		_iconClass: function(item) {

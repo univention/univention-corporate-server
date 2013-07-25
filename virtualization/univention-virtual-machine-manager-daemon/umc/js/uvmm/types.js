@@ -30,9 +30,10 @@
 
 define([
 	"dojo/_base/array",
+	"dojox/string/sprintf",
 	"umc/tools",
 	"umc/i18n!umc/modules/uvmm"
-], function(array, tools, _) {
+], function(array, sprintf, tools, _) {
 	var self = {
 		dict2list: function(dict) {
 			var list = [];
@@ -106,6 +107,29 @@ define([
 					mem *= 1024;
 			}
 			return mem;
+		},
+		prettyCapacity: function(val) {
+			// convert storage capacity to pretty human readable text
+			var unit;
+			if (val < 1024) {
+				return sprintf('%d B', val);
+			} else if (val < (1024 * 1024)) {
+				unit = 'KiB';
+				val /= 1024.0;
+			} else if (val < (1024 * 1024 * 1024)) {
+				unit = 'MiB';
+				val /= 1024.0 * 1024.0;
+			} else if (val < (1024 * 1024 * 1024 * 1024)) {
+				unit = 'GiB';
+				val /= 1024.0 * 1024.0 * 1024.0;
+			} else if (val < (1024 * 1024 * 1024 * 1024 * 1024)) {
+				unit = 'TiB';
+				val /= 1024.0 * 1024.0 * 1024.0 * 1024.0;
+			} else {
+				unit = 'PiB';
+				val /= 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0;
+			}
+			return sprintf('%2.2lf %s', val, unit);
 		},
 		virtualizationTechnology: [
 			{ id: 'kvm-hvm', label: _( 'Full virtualization (KVM)' ) },
