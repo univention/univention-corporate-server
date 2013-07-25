@@ -237,13 +237,6 @@ define([
 			'directsync': _('No host caching, forced sync (direct-sync)'),
 			'unsafe': _('Read/write caching, sync filtered out (unsafe)')
 		},
-		POOLS_RW: { // storage pools which support creating new volumes
-			dir: true,
-			disk: true,
-			fs: true,
-			netfs: true,
-			logical: true
-		},
 		POOLS_FILE: { // storage pools which contain files
 			dir: true,
 			fs: true,
@@ -258,7 +251,7 @@ define([
 				nodeURI: options.nodeURI
 			}).then(function(data) {
 				return array.map(array.filter(data.result, function(iitem) {
-						return options.create ? self.POOLS_RW[iitem.type] : true;
+						return options.create ? iitem.available > 0 : true;
 					}), function(iitem) {
 					return {
 						id: iitem.name,
