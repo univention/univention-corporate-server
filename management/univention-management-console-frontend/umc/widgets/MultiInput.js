@@ -85,7 +85,7 @@ define([
 
 		_startupDeferred: null,
 
-		 _blockChangeEvents: false,
+		_blockChangeEvents: false,
 
 		_createHandler: function(ifunc) {
 			// This handler will be called by all subwidgets of the MultiInput widget.
@@ -159,13 +159,6 @@ define([
 					iwidget.dynamicValuesInfo = thresholdHandler;
 				}
 			}, this);
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			// add empty element
-			this._appendElements(1);
 		},
 
 		startup: function() {
@@ -245,6 +238,7 @@ define([
 
 			// append an empty element
 			vals.push([]);
+			this._firstElementAdded = true;
 
 			// set the values
 			this._setAllValues(vals);
@@ -544,6 +538,13 @@ define([
 			if (this._widget) {
 				tools.delegateCall(this, arguments, this._widget);
 			}
+		},
+
+		addFirstElement: function() {
+			if (!this._firstElementAdded) {
+				this._appendElements(1);
+			}
+			this._firstElementAdded = true;
 		},
 
 		onValuesLoaded: function(values) {

@@ -209,6 +209,7 @@ define([
 
 
 	var _ProgressDialog = declare([Dialog], {
+		closable: false,
 		_progressInfo: null,
 		postMixInProperties: function() {
 			this.inherited(arguments);

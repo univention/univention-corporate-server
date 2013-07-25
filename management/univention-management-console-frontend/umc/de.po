@@ -41,6 +41,10 @@ msgstr ""
 "Module benutzen zu können.<br>Momentan geöffnete Module funktionieren "
 "möglicherweise nicht mehr korrekt.<br>Soll die Seite neu geladen werden?"
 
+#: umc/widgets/Form.js:612
+msgid "%s loaded"
+msgstr "%s geladen"
+
 #: umc/app.js:1407 umc/app.js:1462
 msgid "About UMC"
 msgstr "Über UMC"

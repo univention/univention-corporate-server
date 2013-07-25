@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.36-1) unstable; urgency=low
+
+  * Adding progress to Form initialization (Bug #31376)
+  * Do not let MultiInput resolve too early (Bug #31376)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Jul 2013 13:48:22 +0200
+
 univention-management-console-frontend (3.0.35-1) unstable; urgency=low
 
   * Bug #31639: adjusted CSS for button alignment

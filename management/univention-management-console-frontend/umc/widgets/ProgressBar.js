@@ -114,6 +114,23 @@ define([
 			}));
 		},
 
+		feedFromDeferred: function(deferred, msg) {
+			this.reset(msg);
+			if (deferred._lastProgress) {
+				// missed the first few updates?
+				var result = deferred._lastProgress;
+				this.setInfo(result.component, result.message, result.percentage, result.errors, result.critical);
+			}
+			deferred.then(
+				function() {}, // resolve()
+				function() {}, // cancel()
+				lang.hitch(this, function(result) { // progress()
+					console.log(result);
+					this.setInfo(result.component, result.message, result.percentage, result.errors, result.critical);
+				})
+			);
+		},
+
 		auto: function(umcpCommand, umcpOptions, callback, pollErrorMsg, stopComponent, dontHandleErrors, untilDeferred) {
 			if (untilDeferred && untilDeferred.isFulfilled()) {
 				// auto caught SIGTERM !

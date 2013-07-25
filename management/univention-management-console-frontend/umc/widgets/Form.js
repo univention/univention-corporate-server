@@ -34,12 +34,14 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/kernel",
 	"dojo/Deferred",
+	"dojo/when",
 	"dojo/promise/all",
 	"dojo/dom-style",
 	"dijit/form/Form",
 	"umc/tools",
-	"umc/render"
-], function(declare, lang, array, kernel, Deferred, all, style, Form, tools, render) {
+	"umc/render",
+	"umc/i18n!umc/app"
+], function(declare, lang, array, kernel, Deferred, when, all, style, Form, tools, render, _) {
 
 	// in order to break circular dependencies (umc.dialog needs a Form and
 	// Form needs umc/dialog), we define umc/dialog as an empty object and
@@ -119,12 +121,15 @@ define([
 
 		_allReadyNamed: null,
 
+		progressDeferred: null,
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
 			// initialize with empty list and empty object
 			this._allReady = [];
 			this._allReadyNamed = {};
+			this.progressDeferred = new Deferred();
 
 			// in case no layout is specified and no content, either, create one automatically
 			if ((!this.layout || !this.layout.length) && !this.content) {
@@ -391,6 +396,11 @@ define([
 					}
 				}
 			}, this);
+			tools.forIn(this._widgets, function(iname, iwidget) {
+				if (tools.inheritsFrom(iwidget, 'umc.widgets.MultiInput')) {
+					iwidget.addFirstElement();
+				}
+			});
 		},
 
 		elementValue: function(element, newVal) {
@@ -583,10 +593,26 @@ define([
 			// wait for all widgets to be ready
 			this._allReady = [];
 			this._allReadyNamed = {};
+			this.progressDeferred = new Deferred();
+			var done = 0;
+			var nWidgets = 0;
+			var lastLabel = null;
 			//console.log('### Form: iterate over widgets.ready');
+			tools.forIn(this._widgets, function() { ++nWidgets; });
 			tools.forIn(this._widgets, function(iname, iwidget) {
 				//console.log('###   ' + iname + ' -> ', iwidget.ready ? iwidget.ready() : null);
 				var iwidgetReadyDeferred = iwidget.ready ? iwidget.ready() : null;
+				when(iwidgetReadyDeferred, lang.hitch(this, function() {
+					done += 1;
+					var percentage = done/nWidgets*100;
+					var progress = {percentage: percentage};
+					if (iwidget.label || lastLabel) {
+						progress.message = _('%s loaded', iwidget.label || lastLabel);
+						lastLabel = iwidget.label || lastLabel;
+					}
+					this.progressDeferred._lastProgress = progress; // to be able to get current progress if one missed the beginning
+					this.progressDeferred.progress(progress);
+				}));
 				this._allReady.push(iwidgetReadyDeferred);
 				this._allReadyNamed[iname] = iwidgetReadyDeferred;
 			}, this);
@@ -602,6 +628,7 @@ define([
 			// empty list when all widgets are ready
 			ret.then(lang.hitch(this, function() {
 				this._allReady = [];
+				this.progressDeferred.resolve();
 				// dont empty _allReadyNamed here
 				// as it is only used internally
 				// and we could introduce a race condition
