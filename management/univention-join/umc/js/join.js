@@ -394,13 +394,14 @@ define([
 
 				if (restart) {
 					// ask to restart / reboot
-					if (this._joining) {
+					if (this._joining && joined) {
 						Lib_Server.askReboot(_('A reboot of the server is recommended after joining the system.'));
 					} else {
 						Lib_Server.askRestart(_('A restart of the UMC server components may be necessary for changes to take effect.'));
 					}
 				}
 
+				this._joining = null;
 				this._statuspage._grid.reload_grid();
 				this.standby(false);
 			}), lang.hitch(this, function(result) {

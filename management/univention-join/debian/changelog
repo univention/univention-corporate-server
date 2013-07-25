@@ -1,3 +1,9 @@
+univention-join (6.0.3-1) unstable; urgency=low
+
+  * Bug #9927: Don't display reboot dialog if joining failed
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jul 2013 09:55:47 +0200
+
 univention-join (6.0.2-1) unstable; urgency=low
 
   * Bug #9927: Ask to reboot the system after join progress
