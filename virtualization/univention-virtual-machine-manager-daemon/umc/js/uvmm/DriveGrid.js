@@ -214,7 +214,6 @@ define([
 
 		_editDrive: function( ids, items ) {
 			var disk = items[ 0 ];
-			var id = ids[ 0 ];
 
 			var intro_msg = _( 'All image files are stored in so-called storage pools. They can be stored in a local directory, an LVM partition or a share (e.g. using iSCSI, NFS or CIFS).' );
 			var kvm_msg = _( 'Hard drive images can be administrated in two ways on KVM systems; by default images are saved in the <i>Extended format (qcow2)</i>. This format supports copy-on-write which means that changes do not overwrite the original version, but store new versions in different locations. The internal references of the file administration are then updated to allow both access to the original and the new version. This technique is a prerequisite for efficiently managing snapshots of virtual machines. Alternatively, you can also access a hard drive image in <i>Simple format (raw)</i>. Snapshots can only be created when using hard drive images in <i>Extended format</i>. Only the <i>Simple format</i> is available on Xen systems.' );
@@ -327,7 +326,7 @@ define([
 			_dialog.show();
 		},
 
-		_removeDrive: function( ids, items ) { 
+		_removeDrive: function( ids, items ) {
 			var disk = items[ 0 ];
 
 			var buttons = [ {

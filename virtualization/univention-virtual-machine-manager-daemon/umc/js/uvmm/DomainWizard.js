@@ -240,7 +240,7 @@ define([
 			// add standard interface
 			values.interfaces = [{
 				model: types.getDefaultInterfaceModel(this.getWidget('domain_type').get('value'), this._profile.pvinterface),
-				source: this._profile['interface']
+				source: this._profile.interface
 			}];
 			return values;
 		}

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console location*/
+/*global define, location*/
 
 define([
 	"dojo/_base/declare",
@@ -402,7 +402,7 @@ define([
 			// special handling for boot devices
 			var paravirtual = this._domain.type == 'xen-xen';
 			if ( paravirtual ) {
-				var disks = [], boot_medium = null;
+				var disks = [];
 				array.forEach( this._domain.disks, function( disk ) {
 					if ( values.boot_pv == disk.source ) {
 						disks.unshift( disk );

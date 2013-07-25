@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define window require*/
+/*global define, window, require*/
 
 define([
 	"dojo/_base/declare",
@@ -415,8 +415,6 @@ define([
 					} ) + '</p>',
 					label: ''
 				} ];
-			var _widgets = null;
-			var drive_list = [];
 
 			var _cleanup = function() {
 				_dialog.hide();
@@ -589,8 +587,6 @@ define([
 				_dialog.hide();
 				form.destroyRecursive();
 			};
-
-			var sourceURI = ids[ 0 ].slice( 0, ids[ 0 ].indexOf( '#' ) );
 
 			if (!this._grid.canExecuteOnSelection(action, items).length) {
 				dialog.alert(_('The state of the selected virtual machines can not be changed'));
@@ -925,7 +921,6 @@ define([
 			var item = this._grid._grid.getItem(rowIndex);
 			if (item.type == 'node') {
 				// for the node, return a progressbar
-				var percentage = Math.round(item.cpuUsage);
 				return new ProgressBar({
 					label: sprintf('%.1f GB / %.1f GB', item.memUsed / 1073741824.0, item.memAvailable / 1073741824.0),
 					maximum: item.memAvailable,
