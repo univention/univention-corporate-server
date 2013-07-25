@@ -9,6 +9,58 @@
 	  <listitem><simpara>
 		The welcome message is now shown through <filename>/etc/issue</filename> (<ulink url="&ucsbug;31094">Bug 31094</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The Debian point update 6.0.8 was incorporated. Among other changes it also fixes several security issues:  <ulink url="&ucsbug;31094">Bug 31094</ulink>).
+
+		<itemizedlist>
+		  <listitem><simpara>
+			libxv: CVE-2013-1989 CVE-2013-2066 (<ulink url="&ucsbug;31446">Bug 31446</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxtst: CVE-2013-2063 (<ulink url="&ucsbug;31483">Bug 31483</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxv: CVE-2013-2002 CVE-2013-2005 (<ulink url="&ucsbug;31495">Bug 31495</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxvmc: CVE-2013-1990 CVE-2013-1999 (<ulink url="&ucsbug;31455">Bug 31455</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxxf86dga: CVE-2013-1991 CVE-2013-2000 (<ulink url="&ucsbug;31498">Bug 31498</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxxf86vm: CVE-2013-2001 (<ulink url="&ucsbug;31501">Bug 31501</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxfixes: CVE-2013-1983 (<ulink url="&ucsbug;31461">Bug 31461</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxrandr: CVE-2013-1986 (<ulink url="&ucsbug;31480">Bug 31480</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxcursor: CVE-2013-2003 (<ulink url="&ucsbug;31470">Bug 31470</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libfs: CVE-2013-1996 (<ulink url="&ucsbug;31476">Bug 31476</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libdmx: CVE-2013-1992 (<ulink url="&ucsbug;31450">Bug 31450</ulink>).
+		  </simpara></listitem>
+
+		</itemizedlist>
+
+	  </simpara></listitem>
 	</itemizedlist>
   </para>
 </section>
