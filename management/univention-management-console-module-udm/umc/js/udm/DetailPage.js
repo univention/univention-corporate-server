@@ -50,6 +50,7 @@ define([
 	"umc/widgets/Form",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
+	"umc/widgets/ProgressBar",
 	"umc/widgets/TabContainer",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
@@ -61,7 +62,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
+], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
 	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -72,7 +73,7 @@ define([
 		umcpCommand: null,
 
 		// moduleStore: Object
-		//		Reference to the module's module store.
+		//		Reference to module store of this module.
 		moduleStore: null,
 
 		// moduleFlavor: String
@@ -169,6 +170,8 @@ define([
 			//		Query necessary information from the server for the object detail page
 			//		and initiate the rendering process.
 			this.inherited(arguments);
+			this._progressBar = new ProgressBar();
+			this.own(this._progressBar);
 
 			// remember the objectType of the object we are going to edit
 			this._editedObjType = this.objectType;
@@ -719,6 +722,10 @@ define([
 
 			// load form data
 			if (this.ldapName && !this._multiEdit) {
+				this._progressBar.feedFromDeferred(this._form.progressDeferred, _('Loading %s...', this.objectNameSingular));
+				// FIXME: this.standby(true, obj) does not work when already running standby
+				this.standby(false);
+				this.standby(true, this._progressBar);
 				this._form.load(this.ldapName).then(lang.hitch(this, function(vals) {
 					// save the original data we received from the server
 					this._receivedObjOrigData = vals;
@@ -762,6 +769,7 @@ define([
 				// hide the type info and ldap path in case of a new object
 				this._form.getWidget( '$objecttype$' ).set( 'visible', false);
 				this._form.getWidget( '$location$' ).set( 'visible', false);
+				this._form.setFormValues();
 			}
 
 			// return the policy deferred object to notify the caller that the page

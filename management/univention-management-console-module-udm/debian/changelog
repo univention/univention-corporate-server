@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.9-1) unstable; urgency=low
+
+  * Use form progress when loading an UDM object (Bug #31376)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Jul 2013 13:50:06 +0200
+
 univention-management-console-module-udm (4.0.8-1) unstable; urgency=low
 
   * Bug #29713: give feedback when successfully imported license
