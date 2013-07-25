@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-virtual-machina-manager-daemon 1.0.103-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-06-04 17:27+0200\n"
-"PO-Revision-Date: 2012-08-06 11:45+0200\n"
+"POT-Creation-Date: 2013-07-24 19:11+0200\n"
+"PO-Revision-Date: 2013-07-24 19:03+0200\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -144,8 +144,8 @@ msgid ""
 "A valid filename cannot contain \"/\", may not start with \".\" and may not "
 "already exist in the storage pool."
 msgstr ""
-"Ein gültiger Dateiname darf keine \"/\" enhalten, nicht mit \".\" beginnen "
-"und der Name daruf nicht in dem Speicherbereich bereits existieren."
+"Ein gültiger Dateiname darf keine \"/\" enthalten, nicht mit \".\" beginnen "
+"und der Name darf nicht in dem Speicherbereich bereits existieren."
 
 #: umc/js/uvmm/SnapshotGrid.js:159
 msgid ""
@@ -328,20 +328,13 @@ msgstr "Neuen Sicherungspunkt erstellen"
 msgid "Create virtual machine"
 msgstr "Erstellen einer virtuellen Maschine"
 
-#: umc/js/uvmm/SnapshotGrid.js:116
-msgid ""
-"Creating a snapshots is not possible, because the domain is currently suspended!"
-msgstr ""
-"Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain "
-"momentan 'gespeichert und beendet' ist!"
-
 #: umc/js/uvmm/SnapshotGrid.js:
 msgid ""
 "Creating a snapshot is not possible, because the domain does not have at "
 "least one qcow2 image!"
 msgstr ""
 "Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain nicht "
-"wenigstens ein Qcow2-Datei-Image enthält!"
+"wenigstens ein qcow2-Datei-Image enthält!"
 
 #: umc/js/uvmm/SnapshotGrid.js:113
 msgid ""
@@ -350,6 +343,14 @@ msgid ""
 msgstr ""
 "Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain ein "
 "schreibbares Raw-Datei-Image enthält!"
+
+#: umc/js/uvmm/SnapshotGrid.js:116
+msgid ""
+"Creating a snapshots is not possible, because the domain is currently "
+"suspended!"
+msgstr ""
+"Das Anlegen eines Sicherungspunktes ist nicht möglich, weil die Domain "
+"momentan 'gespeichert und beendet' ist!"
 
 #: umc/js/uvmm/types.js:137
 msgid "Croatian"
@@ -802,6 +803,10 @@ msgstr "Pausieren"
 msgid "Physical server"
 msgstr "Physikalischer Server"
 
+#: umc/js/uvmm/TreeModel.js:94
+msgid "Physical servers"
+msgstr "Physikalische Server"
+
 #: umc/js/uvmm.js:689
 msgid "Please enter the name for the clone:"
 msgstr "Geben die den Namen für den Klon ein:"
@@ -1052,7 +1057,7 @@ msgstr ""
 #: umc/js/uvmm/DomainPage.js:208 umc/js/uvmm/DomainWizard.js:144
 msgid "The memory size is invalid (e.g. 3GB or 1024 MB), minimum 4 MB"
 msgstr ""
-"Die angegebenen Speichergröße is ungültig (bspw. 3GB oder 1024 MB), Minimum "
+"Die angegebenen Speicherkapazität is ungültig (bspw. 3GB oder 1024 MB), Minimum "
 "4MB"
 
 #: umc/js/uvmm/DriveGrid.js:364
@@ -1094,7 +1099,7 @@ msgid ""
 "The source is the name of the network interface on the phyiscal server that "
 "is configured for bridging. By default it is eth0."
 msgstr ""
-"Die Quelle ist der Name der Netzwerkschnittstelle des pyhsikalischen Server "
+"Die Quelle ist der Name der Netzwerkschnittstelle des physikalischen Server "
 "die als Bridge konfiguriert ist. Normalerweise ist dies eth0."
 
 #: umc/js/uvmm.js:596 umc/js/uvmm.js:637
@@ -1141,11 +1146,11 @@ msgid ""
 msgstr ""
 "Zwei Typen von Netzwerkschnittstellen werden unterstützt. Der erste Typ "
 "<i>Bridge</i> benötigt eine statische Netzwerkverbindung auf dem "
-"phyikalischen Server, die für die Verwendung als Bridge konfiguriert sein "
+"physikalischen Server, die für die Verwendung als Bridge konfiguriert sein "
 "muss. Als Vorgabe wird auf jedem UVMM Server die Netzwerkschnittstelle eth0 "
 "für die Verwendung als Bridge vorkonfiguriert. Soll eine virtuelle Maschine "
-"weitere Bridges haben, müssen zuvor auf dem phsikalischen Server weiter "
-"Netzwerkschnittstellen dementspechend konfiguriert werden. Der zweite Typ "
+"weitere Bridges haben, müssen zuvor auf dem physikalischen Server weiter "
+"Netzwerkschnittstellen dementsprechend konfiguriert werden. Der zweite Typ "
 "<i>NAT</i> stellt ein privates Netzwerk mit Aussenanbindung zur Verfügung. "
 "Dieser Netzwerktyp ist gut für Rechner mit variierenden Netzwerkverbindungen "
 "wie beispielsweise Notebooks geeignet. Für solch eine Netzwerkschnittstelle "
@@ -1570,9 +1575,6 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 
 #~ msgid "Overview"
 #~ msgstr "Überblick"
-
-#~ msgid "Physical servers"
-#~ msgstr "Physikalische Server"
 
 #~ msgid "Qemu copy-on-write 2"
 #~ msgstr "Qemu copy-on-write 2"
