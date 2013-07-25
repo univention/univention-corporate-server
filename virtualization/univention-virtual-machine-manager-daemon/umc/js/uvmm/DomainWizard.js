@@ -180,6 +180,13 @@ define([
 		next: function(pageName) {
 			var nextName = this.inherited(arguments);
 			if (pageName == 'profile') {
+				// put limit on memory
+				try {
+					var nodeURI = this.getWidget('profile', 'nodeURI');
+					var maxMem = nodeURI.store.getValue(nodeURI.item, 'memAvailable');
+					this.getWidget('maxMem').get('constraints').max = maxMem;
+				} catch (err) { }
+
 				// query the profile settings
 				this.standby(true);
 				var profileDN = this.getWidget('profileDN').get('value');
