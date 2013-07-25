@@ -277,11 +277,16 @@ define([
 				return array.map(array.filter(data.result, function(iitem) {
 						return options.create ? iitem.available > 0 : true;
 					}), function(iitem) {
-					return {
-						id: iitem.name,
-						type: iitem.type,
-						label: iitem.name
-					};
+						var label = iitem.name;
+						if (options.create) {
+							label += ' (' + self.prettyCapacity(iitem.available) + ')';
+						}
+						return {
+							id: iitem.name,
+							type: iitem.type,
+							available: iitem.available,
+							label: label
+						};
 				});
 			}, function() {
 				// fallback

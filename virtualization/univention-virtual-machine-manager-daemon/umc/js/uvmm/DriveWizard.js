@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define, require*/
 
 define([
 	"dojo/_base/declare",
@@ -160,13 +160,14 @@ define([
 						name: 'size_new',
 						type: MappedTextBox,
 						required: true,
+						depends: ['pool_new'],
 						constraints: {min: 1024*1024},
 						format: types.prettyCapacity,
 						parse: function(value) {
 							return types.parseCapacity(value, 'M');
 						},
 						validator: lang.hitch(this, function(value, constraints) {
-							var valid = true;
+							var valid = true, warn = false;
 							var size = types.parseCapacity(value, 'M');
 							if (size === null) {
 								valid = false;
@@ -175,8 +176,19 @@ define([
 							} else if (constraints.max && size > constraints.max) {
 								valid = false;
 							}
+							try {
+								var poolWidget = this._pages.drive._form.getWidget('pool_new');
+								var avail = poolWidget.store.getValue(poolWidget.item, "available");
+								warn = size > avail;
+							} catch (err) { }
+							try {
+								this._pages.drive._form.getWidget('hint').set('visible', warn);
+							} catch (err) { }
 							return valid;
 						}),
+						promptMessage: _('Specify the capacity for the new volume'),
+						invalidMessage: _('The volume capacity is invalid'),
+						missingMessage: _('The volume capacity must be specified'),
 						label: _('Size (default unit MB)'),
 						value: types.parseCapacity(lang.getObject('domain.profileData.diskspace', false, props) || '12 GiB')
 					}, {
@@ -253,6 +265,18 @@ define([
 						dynamicValue: function(options) {
 							return types.blockDevicePath[options.driveType] || '';
 						}
+					}, {
+						type: 'Text',
+						name: 'hint',
+						content: lang.replace(
+							'<span><img src="{themeUrl}/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right:5px;"/>{label}</span>', {
+								icon: 'uvmm-warn',
+								height: '16px',
+								width: '16px',
+								label: _('The given volume capacity exceeds the available storage pool capacity'),
+								themeUrl: require.toUrl('dijit/themes/umc')
+							}),
+						visible: false
 					}]
 				}]
 			});
@@ -324,6 +348,9 @@ define([
 		_updateDriveWidgets: function(volumeType) {
 			// update visibility
 			tools.forIn(this._pages.drive._form._widgets, function(iname, iwidget) {
+				if (iname.indexOf('hint') === 0) {
+					return;
+				}
 				var visible = iname.indexOf('_') < 0 || (volumeType && iname.indexOf(volumeType) >= 0);
 				iwidget.set('visible', visible);
 			}, this);

@@ -1465,6 +1465,10 @@
 		<listitem><simpara>
 		  The value for the meory size and storage volumes is now validated in the frontend (<ulink url="&ucsbug;27778">Bug 27778</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  A warning is printed when the size for a new storage volume exceeds the available size in the storage pool (<ulink url="&ucsbug;19281">Bug 19281</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>

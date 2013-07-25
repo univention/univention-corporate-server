@@ -433,7 +433,7 @@ define([
 			});
 
 			wizard = new DriveWizard({
-				style: 'width: 450px; height:450px;',
+				style: 'width: 450px; height:485px;',
 				domain: this.domain,
 				onFinished: _finished,
 				onCancel: _cleanup
