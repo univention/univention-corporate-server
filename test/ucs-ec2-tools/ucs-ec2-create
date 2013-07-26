@@ -94,9 +94,9 @@ class VM:
 		self.private_key = os.path.expanduser(config.get('Global', 'ec2_keypair_file'))
 
 		# Save the profile, it will be later written to the VM
-		if config.has_option(section, 'profile'):
+		try:
 			self.profile = config.get(section, 'profile')
-		else:
+		except ConfigParser.NoOptionError:
 			self.profile = None
 
 		# Read and save the file lines and ignore comments
@@ -118,16 +118,16 @@ class VM:
 			self.commands.append(cmds)
 
 		# logfile
-		for s in section, 'Global':
-			if config.has_option(s, 'logfile'):
-				self.logfile = os.path.expanduser(config.get(s, 'logfile'))
+		for sname in (section, 'Global'):
+			if config.has_option(sname, 'logfile'):
+				self.logfile = os.path.expanduser(config.get(sname, 'logfile'))
 				break
 
 		# Create the logfile
 		if self.logfile:
-			fd = open(self.logfile, 'a+')
-			fd.write('Created instance %s at %s\n' % (section, time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-			fd.close()
+			log = open(self.logfile, 'a+')
+			log.write('Created instance %s at %s\n' % (section, time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+			log.close()
 
 	def _get_blockdevicemapping(self):
 		"""
@@ -275,8 +275,8 @@ class VM:
 
 			for localfile in expanded_files:
 				if os.path.exists(localfile):
-					f = os.path.basename(localfile)
-					remfile = os.path.join(remotedir, f)
+					fname = os.path.basename(localfile)
+					remfile = os.path.join(remotedir, fname)
 					self.sftp.put(localfile, remfile)
 					self.sftp.chmod(remfile, os.stat(localfile).st_mode & 0777)
 
@@ -290,11 +290,11 @@ class VM:
 
 		self._open_logfile()
 
-		rt = subprocess.call(cmdline, shell=True, stdout=self.logfile_fd, stderr=self.logfile_fd)
+		ret = subprocess.call(cmdline, shell=True, stdout=self.logfile_fd, stderr=self.logfile_fd)
 
 		self._close_logfile()
 
-		return rt
+		return ret
 
 	def _open_logfile(self):
 		"""
@@ -320,19 +320,19 @@ class VM:
 				_print_process('  %s' % cmdline)
 				if cmdline.startswith('LOCAL'):
 					cmdline = cmdline[len('LOCAL'):]
-					rt = self._exec_local(cmdline)
+					ret = self._exec_local(cmdline)
 				else:
-					rt = self._ssh_exec(cmdline)
-				if rt != 0:
-					_print_done('fail (return code %s)' % rt)
+					ret = self._ssh_exec(cmdline)
+				if ret != 0:
+					_print_done('fail (return code %s)' % ret)
 				else:
 					_print_done()
 			except paramiko.ssh_exception.SSHException:
 				self.connect()
 				try:
-					rt = self._ssh_exec(cmdline)
-					if rt != 0:
-						_print_done('fail (return code %s)' % rt)
+					ret = self._ssh_exec(cmdline)
+					if ret != 0:
+						_print_done('fail (return code %s)' % ret)
 					else:
 						_print_done()
 				except Exception:
@@ -425,11 +425,11 @@ class VM:
 	def _log(self, msg, newline=True):
 		'''	Write a message to self.logfile '''
 		if self.logfile:
-			fd = open(self.logfile, 'a+')
-			fd.write(str(msg))
+			lfile = open(self.logfile, 'a+')
+			lfile.write(str(msg))
 			if newline:
-				fd.write('\n')
-			fd.close()
+				lfile.write('\n')
+			lfile.close()
 		else:
 			print 'I: no logfile is configured, print to stdout'
 			print msg
@@ -461,16 +461,16 @@ class Parser(ConfigParser.ConfigParser):
 	def hosts(self):
 		''' Gives a list of all sections expect Global '''
 		hosts = []
-		fp = open(self._filename, 'r')
+		ifile = open(self._filename, 'r')
 		while True:
-			line = fp.readline()
+			line = ifile.readline()
 			if not line:
 				break
 			if line.strip() == '' or line[0] in '#;':
 				continue
-			mo = ConfigParser.ConfigParser.SECTCRE.match(line)
-			if mo:
-				sectname = mo.group('header')
+			match = ConfigParser.ConfigParser.SECTCRE.match(line)
+			if match:
+				sectname = match.group('header')
 				if sectname != 'Global':
 					hosts.append(sectname)
 		return hosts
