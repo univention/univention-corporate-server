@@ -184,7 +184,7 @@ define([
 				try {
 					var nodeURI = this.getWidget('profile', 'nodeURI');
 					var maxMem = nodeURI.store.getValue(nodeURI.item, 'memAvailable');
-					this.getWidget('maxMem').get('constraints').max = maxMem;
+					this.getWidget('maxMem').get('constraints').set('max') = maxMem;
 				} catch (err) { }
 
 				// query the profile settings

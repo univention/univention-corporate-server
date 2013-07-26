@@ -1479,7 +1479,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The value for the meory size and storage volumes is now validated in the frontend (<ulink url="&ucsbug;27778">Bug 27778</ulink>).
+		  The value for the memory size and storage volumes is now validated in the frontend (<ulink url="&ucsbug;27778">Bug 27778</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>

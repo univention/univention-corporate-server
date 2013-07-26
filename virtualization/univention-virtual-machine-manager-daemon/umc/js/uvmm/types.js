@@ -111,7 +111,9 @@ define([
 		prettyCapacity: function(val) {
 			// convert storage capacity to pretty human readable text
 			var unit;
-			if (val < 1024) {
+			if (undefined === val || null === val || "" === val) {
+				return this.get("displayedValue");
+			} else if (val < 1024) {
 				return sprintf('%d B', val);
 			} else if (val < (1024 * 1024)) {
 				unit = 'KiB';
