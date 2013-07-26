@@ -1,3 +1,9 @@
+univention-updater (9.0.7-1) unstable; urgency=low
+
+  * Fix problems with standby when searching app updates (Bug #30548)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Jul 2013 16:37:03 +0200
+
 univention-updater (9.0.6-1) unstable; urgency=low
 
   * Show available App Center updates (Bug #30548)

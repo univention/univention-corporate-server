@@ -57,7 +57,8 @@ define([
 			this._updates = new UpdatesPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
-				standby: lang.hitch(this, 'standby')
+				standby: lang.hitch(this, 'standby'),
+				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this._progress = new ProgressPage({});
 

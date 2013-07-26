@@ -32,8 +32,8 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/promise/all",
 	"dojo/dom-class",
-	"dojo/json",
 	"dojo/topic",
 	"umc/dialog",
 	"umc/tools",
@@ -42,12 +42,13 @@ define([
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, domClass, json, topic, dialog, tools, store, TitlePane, Page, Form, _) {
+], function(declare, lang, array, all, domClass, topic, dialog, tools, store, TitlePane, Page, Form, _) {
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
 		_last_reboot:	false,
 		_update_prohibited: false,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
 
 		postMixInProperties: function() {
 
@@ -176,7 +177,7 @@ define([
 								this._set_updates_button(false, _("Package update status not yet checked"));
 							}
 
-							this._check_dist_upgrade();
+							this.standbyDuring(all([this._check_dist_upgrade(), this._check_app_updates()]));
 						}
 						catch(error)
 						{
@@ -295,7 +296,7 @@ define([
 					name:		'run_packages_update',
 					label:		_("Check for package updates"),
 					callback:	lang.hitch(this, function() {
-						this._check_dist_upgrade();
+						this.standbyDuring(this._check_dist_upgrade());
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'package-update');
 					})
 				},
@@ -456,14 +457,6 @@ define([
 				{
 					console.error("onLoaded: " + error.message);
 				}
-				this._check_app_updates().then(
-					lang.hitch(this, function() {
-						this.standby(false);
-					}),
-					lang.hitch(this, function() {
-						this.standby(false);
-					})
-				);
 			}));
 
 			// call hooks updater_show_message and updater_prohibit_update.
@@ -574,17 +567,14 @@ define([
 			if (this._updates_available) {
 				this.onRunDistUpgrade();
 			} else {
-				this.standby(true);
-				tools.umcpCommand('updater/updates/available').then(
+				return tools.umcpCommand('updater/updates/available').then(
 					lang.hitch(this, function(data) {
-						this.standby(false);
 						this._set_updates_button(data.result,
 							data.result ?
 								_("Package updates are available.") :
 								_("There are no package updates available."));
 					}),
 					lang.hitch(this, function() {
-						this.standby(false);
 						this._set_updates_button(false, _("Update availability could not be checked."));
 					})
 				);
@@ -660,15 +650,9 @@ define([
 					{
 						label:		_("Reboot"),
 						callback:	lang.hitch(this, function() {
-							this.standby(true);
-							tools.umcpCommand('updater/installer/reboot').then(lang.hitch(this, function() {
-								this.standby(false);
+							this.standbyDuring(tools.umcpCommand('updater/installer/reboot').then(lang.hitch(this, function() {
 								this._show_reboot_pane(true, true);
-							}),
-							lang.hitch(this, function() {
-								this.standby(false);
-							})
-							);
+							})));
 						})
 					}
 				]
