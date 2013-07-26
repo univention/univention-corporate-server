@@ -637,7 +637,7 @@ msgid ""
 "Invalid MAC address: The address must be unicast and should have the form "
 "\"02:23:45:67:89:AB\"."
 msgstr ""
-"Ungültige MAC-Adresse: Die Adresse muß unicast sein und soll die Form "
+"Ungültige MAC-Adresse: Die Adresse muss unicast sein und soll die Form "
 "\"02:23:45:67:89:AB\" haben."
 
 #: umc/js/uvmm/types.js:161
