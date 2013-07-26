@@ -1545,6 +1545,7 @@
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
+		  QEMU was upgraded to version 1.1.2+dfsg-6 (<ulink url="&ucsbug;29849">Bug 29849</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
