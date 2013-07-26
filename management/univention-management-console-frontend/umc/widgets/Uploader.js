@@ -42,8 +42,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/widgets/_FormWidgetMixin",
-	"umc/i18n!umc/app",
-	"dojox/form/uploader/plugins/IFrame"
+	"umc/i18n!umc/app"
 ], function(declare, lang, array, when, domClass, style, Uploader, tools, dialog, ContainerWidget, Button, _FormWidgetMixin, _) {
 	return declare("umc.widgets.Uploader", [ ContainerWidget, _FormWidgetMixin ], {
 		'class': 'umcUploader',

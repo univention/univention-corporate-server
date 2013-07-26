@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.40-1) unstable; urgency=low
+
+  * Bug #31639: fixed behaviour of 'more' drop down in grid, fixed some CSS
+    issues, removed unnecessary reference to IFrame Uploader plugin
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 Jul 2013 17:09:14 +0200
+
 univention-management-console-frontend (3.0.39-1) unstable; urgency=low
 
   * Bug #31699: added link to UCS start site, added re-focus after click on

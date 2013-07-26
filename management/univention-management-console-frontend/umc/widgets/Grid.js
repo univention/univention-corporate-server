@@ -72,6 +72,16 @@ define([
 		}
 	});
 
+	var _DropDownButton = declare([DropDownButton], {
+		_onClick: function(evt) {
+			// dont propagate any event here - otherwise dropDown gets closed.
+			// this has something to do with the dropdown losing focus in favor
+			// of the underlying td-node. it triggers _HasDropDown's _onBlur
+			this.inherited(arguments);
+			evt.stopPropagation();
+		}
+	});
+
 	return declare("umc.widgets.Grid", [ BorderContainer, StandbyMixin ], {
 		// summary:
 		//		Encapsulates a complex grid with store, UMCP commands and action buttons;
@@ -455,13 +465,8 @@ define([
 							return item._univention_cache_dropDown;
 						}
 
-						var button = new DropDownButton({
+						var button = new _DropDownButton({
 							label: _('more'),
-							_onClick: function() {
-								// dont propagate any event here - otherwise dropDown gets closed.
-								// this has something to do with the dropdown losing focus in favor
-								// of the underlying td-node. it triggers _HasDropDown's _onBlur
-							},
 							dropDown: this._contextMenu
 						});
 						this.own(aspect.before(button, 'openDropDown', lang.hitch(this, '_updateContextItem', {rowIndex: rowIndex})));
@@ -707,7 +712,7 @@ define([
 			// disable actions in footer
 			array.forEach( this._footerCells, lang.hitch( this, function( cell ) {
 				var widget = cell.getChildren()[ 0 ];
-				if ( widget instanceof Button || widget instanceof DropDownButton ) {
+				if ( widget instanceof Button || widget instanceof _DropDownButton ) {
 					widget.set( 'disabled', value );
 				}
 			} ) );
@@ -728,7 +733,7 @@ define([
 			array.forEach( this._footerCells, lang.hitch( this, function( cell ) {
 				var nSelected = this._grid.selection.getSelectedCount();
 				var widget = cell.getChildren()[ 0 ];
-				if ( widget instanceof Button || widget instanceof DropDownButton ) {
+				if ( widget instanceof Button || widget instanceof _DropDownButton ) {
 					widget.set( 'disabled', nSelected === 0 );
 				}
 			} ) );
@@ -895,7 +900,7 @@ define([
 					console.log("WARNING: no footer cell: " + i);
 				}
 				else {
-					this._footerCells[i].addChild(new DropDownButton({
+					this._footerCells[i].addChild(new _DropDownButton({
 						label: _('more'),
 						dropDown: moreActionsMenu
 					}));
