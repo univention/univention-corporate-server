@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.38-1) unstable; urgency=low
+
+  * Bug #32023: fixed behaviour for context menus on touch devices
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 Jul 2013 13:23:25 +0200
+
 univention-management-console-frontend (3.0.37-1) unstable; urgency=low
 
   * Bug #32023: added icon for opening context menu via left click

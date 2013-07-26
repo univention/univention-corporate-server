@@ -949,15 +949,6 @@ define([
 			this._registerGridNonTouchEvents();
 			this._registerGridTouchEvents();
 
-			// enable closing of context menu by clicking somewhere
-			on(this._topContainer.domNode, '*:click', lang.hitch(this, '_closeModuleContextMenu'));
-		},
-
-		_registerGridNonTouchEvents: function() {
-			if (has('touch')) {
-				return;
-			}
-
 			// open module upon click on grid item
 			this._grid.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
 				evt.stopImmediatePropagation();
@@ -967,6 +958,19 @@ define([
 				var module = this._grid.row(evt).data;
 				this.openModule(module);
 			}));
+
+			// enable closing of context menu by clicking somewhere
+			on(this._topContainer.domNode, '*:click', lang.hitch(this, function() {
+				this._closeModuleContextMenu();
+			}));
+
+			this._grid.on('scroll', lang.hitch(this, '_closeModuleContextMenu'));
+		},
+
+		_registerGridNonTouchEvents: function() {
+			if (has('touch')) {
+				return;
+			}
 
 			// event for context menu
 			this._grid.on('.umcGalleryItem:contextmenu', lang.hitch(this, function(evt) {
@@ -1004,10 +1008,8 @@ define([
 				}), 1000);
 			}));
 			this._grid.on('.umcGalleryItem:touchend', lang.hitch(this, function(evt) {
-				if (_cancelContextTouch()) {
+				if (!_cancelContextTouch()) {
 					evt.preventDefault();
-					var module = this._grid.row(evt).data;
-					this.openModule(module);
 				}
 			}));
 			this._grid.on('scroll', lang.hitch(this, _cancelContextTouch));
