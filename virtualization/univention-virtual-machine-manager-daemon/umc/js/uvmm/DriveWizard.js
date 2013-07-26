@@ -59,6 +59,7 @@ define([
 					widgets: [{
 						name: 'driveType',
 						type: 'ComboBox',
+						value: 'disk',
 						staticValues: types.dict2list(types.blockDevices)
 					}]
 				}, {
