@@ -74,6 +74,14 @@
 			libxext: CVE-2013-1982 (<ulink url="&ucsbug;31491">Bug 31491</ulink>).
 		  </simpara></listitem>
 
+		  <listitem><simpara>
+			libxcb: CVE-2013-2064 (<ulink url="&ucsbug;31488">Bug 31488</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxres: CVE-2013-1988 (<ulink url="&ucsbug;31485">Bug 31485</ulink>).
+		  </simpara></listitem>
+
 		</itemizedlist>
 
 	  </simpara></listitem>
