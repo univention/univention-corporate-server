@@ -128,6 +128,12 @@ class VM:
 			log = open(self.logfile, 'a+')
 			log.write('Created instance %s at %s\n' % (section, time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 			log.close()
+		self.logfile_fd = None
+
+		self.ec2 = None
+		self.instance = None
+		self.client = None
+		self.sftp = None
 
 	def _get_blockdevicemapping(self):
 		"""
@@ -480,9 +486,6 @@ def main():
 	Create EC2 instances for testing.
 	"""
 
-	# A list of all VMs
-	vms = []
-
 	# Parse options and the config file
 	_print_process('Parse options and config files')
 	usage = '''%s [options] -c config_file ''' % sys.argv[0]
@@ -514,6 +517,7 @@ def main():
 	else:
 		_print_done('fail (See http://code.google.com/p/boto/wiki/BotoConfig or https://hutten.knut.univention.de/mediawiki/index.php/UCS_EC2_Tools#.boto_Datei)')
 
+	vms = []
 	for host in config.hosts():
 		_print_process('Creating VM [%s]' % host)
 		vms.append( VM(host, config) )
