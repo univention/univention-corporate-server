@@ -36,7 +36,6 @@ import ConfigParser
 from optparse import OptionParser
 import os
 import paramiko
-import string
 import subprocess
 import sys
 import glob
@@ -283,14 +282,6 @@ class VM:
 
 		self._close_sftp_connection()
 
-	def _is_local_command(self, command):
-		if not command:
-			return False
-		if command.startswith('LOCAL'):
-			return True
-
-		return False
-
 	def _exec_local(self, cmdline):
 		"""
 		Execute local command redirecting output to local logfile.
@@ -327,9 +318,9 @@ class VM:
 		for cmdline in self.commands[phase]:
 			try:
 				_print_process('  %s' % cmdline)
-				if self._is_local_command(cmdline):
-					local_cmdline = self._remove_local_from_cmd(cmdline)
-					rt = self._exec_local(local_cmdline)
+				if cmdline.startswith('LOCAL'):
+					cmdline = cmdline[len('LOCAL'):]
+					rt = self._exec_local(cmdline)
 				else:
 					rt = self._ssh_exec(cmdline)
 				if rt != 0:
@@ -350,9 +341,6 @@ class VM:
 			except Exception,e:
 				self._print_exception_to_file()
 				_print_done('fail')
-
-	def _remove_local_from_cmd(self, cmd):
-		return string.replace(cmd, 'LOCAL', '', 1).strip()
 
 	def _print_exception_to_file(self):
 		"""
