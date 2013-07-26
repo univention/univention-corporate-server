@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (4.0.2-2) unstable; urgency=low
+
+  * Speed optimize LDAP search for profile link (Bug #24774)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 26 Jul 2013 13:14:56 +0200
+
 univention-virtual-machine-manager-schema (4.0.2-1) unstable; urgency=low
 
   * Use LDAP search for profile link (Bug #24774)
