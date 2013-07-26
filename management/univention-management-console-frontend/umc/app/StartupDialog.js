@@ -64,7 +64,8 @@ define([
 	var _replaceVariablesInDocument = function(piwikDisabled, doc) {
 		return lang.replace(doc, {
 			path: require.toUrl('umc/app'),
-			feedbackUrl: _('umcFeedbackUrl')
+			feedbackUrl: _('umcFeedbackUrl'),
+			hardwareStatisticsCheckboxDisplay: 'block'
 		});
 	};
 

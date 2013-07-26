@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.39-1) unstable; urgency=low
+
+  * Bug #31699: added link to UCS start site, added re-focus after click on
+    link search categories, conditional include of piwik menu item, only show
+    checkbox for hardware statistics in startup dialog
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 26 Jul 2013 15:35:07 +0200
+
 univention-management-console-frontend (3.0.38-1) unstable; urgency=low
 
   * Bug #32023: fixed behaviour for context menus on touch devices

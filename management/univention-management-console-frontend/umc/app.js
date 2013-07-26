@@ -839,20 +839,9 @@ define([
 			// show the menu bar
 			style.set(this._headerRight.domNode, 'display', 'block');
 
-			// try to insert license dialog
-			if ( this.getModule( 'udm' ) ) {
-				require(['umc/modules/udm/LicenseDialog'], lang.hitch(this, function(LicenseDialog) {
-					this._settingsMenu.addChild(new MenuSeparator({}), 0);
-					this._settingsMenu.addChild(new MenuItem({
-						label: _('License'),
-						onClick : function() {
-							topic.publish('/umc/actions', 'menu-settings', 'license');
-							var dlg = new LicenseDialog();
-							dlg.show();
-						}
-					}), 0);
-				}));
-			}
+			// setup menus
+			this._setupSettingsMenu();
+			this._setupHelpMenu();
 
 			// update the host information in the header
 			var fqdn = _ucr.hostname + '.' + _ucr.domainname;
@@ -871,6 +860,104 @@ define([
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
+		},
+
+		_setupSettingsMenu: function() {
+			this._settingsMenu.addChild(new CheckedMenuItem({
+				label: _('Tooltips'),
+				checked: tools.preferences('tooltips'),
+				onClick: function() {
+					topic.publish('/umc/actions', 'menu-settings', 'tooltips', this.checked ? 'on' : 'off');
+					tools.preferences('tooltips', this.checked);
+				}
+			}));
+			this._settingsMenu.addChild(new CheckedMenuItem({
+				label: _('Module help description'),
+				checked: tools.preferences('moduleHelpText'),
+				onClick: function() {
+					topic.publish('/umc/actions', 'menu-settings', 'module-help-text', this.checked ? 'on' : 'off');
+					tools.preferences('moduleHelpText', this.checked);
+				}
+			}));
+			this._insertLicenseMenuItem();
+		},
+
+		_insertLicenseMenuItem: function() {
+			// try to insert license dialog
+			if (!this.getModule('udm')) {
+				return;
+			}
+
+			require(['umc/modules/udm/LicenseDialog'], lang.hitch(this, function(LicenseDialog) {
+				this._insertSeparatorToSettingsMenu();
+				this._settingsMenu.addChild(new MenuItem({
+					label: _('License'),
+					onClick : function() {
+						topic.publish('/umc/actions', 'menu-settings', 'license');
+						var dlg = new LicenseDialog();
+						dlg.show();
+					}
+				}), 0);
+			}));
+		},
+
+		_insertSeparatorToSettingsMenu: function() {
+			var menuHasSeparator = array.some(this._settingsMenu.getChildren(), function(ientry) {
+				return tools.inheritsFrom(ientry, 'dijit.MenuSeparator');
+			});
+			if (!menuHasSeparator) {
+				this._settingsMenu.addChild(new MenuSeparator({}), 0);
+			}
+		},
+
+		_setupHelpMenu: function() {
+			this._helpMenu.addChild(new MenuItem({
+				label: _('Help'),
+				onClick : lang.hitch(this, '_showHelpDialog')
+			}));
+
+			this._helpMenu.addChild(new MenuItem({
+				label: _('Feedback'),
+				onClick : lang.hitch(this, '_showFeedbackPage')
+			}));
+
+			this._insertPiwikMenuItem();
+
+			this._helpMenu.addChild(new MenuItem({
+				label: _('About UMC'),
+				onClick : lang.hitch(this, '_showAboutDialog')
+			}));
+
+			this._helpMenu.addChild(new MenuSeparator({}));
+
+			this._helpMenu.addChild(new MenuItem({
+				label: _('UCS start site'),
+				onClick: function() {
+					topic.publish('/umc/actions', 'menu-help', 'ucs-start-site');
+					var w = window.open( '/', 'ucs-start-site' );
+					w.focus();
+				}
+			}));
+
+			this._helpMenu.addChild(new MenuItem({
+				label: _('Univention Website'),
+				onClick: function() {
+					topic.publish('/umc/actions', 'menu-help', 'website');
+					var w = window.open( 'http://www.univention.de/', 'univention' );
+					w.focus();
+				}
+			}));
+		},
+
+		_insertPiwikMenuItem: function() {
+			if (!_hasFFPULicense() || !tools.status('username').toLowerCase() == 'administrator') {
+				return;
+			}
+			this._insertSeparatorToSettingsMenu();
+			this._helpMenu.addChild(new MenuItem({
+				label: _('Usage statistics'),
+				onClick : lang.hitch(this, '_showPiwikDialog')
+			}));
 		},
 
 		_setupOverviewPage: function() {
@@ -1390,22 +1477,6 @@ define([
 
 			// the settings context menu
 			this._settingsMenu = new Menu({});
-			this._settingsMenu.addChild(new CheckedMenuItem({
-				label: _('Tooltips'),
-				checked: tools.preferences('tooltips'),
-				onClick: function() {
-					topic.publish('/umc/actions', 'menu-settings', 'tooltips', this.checked ? 'on' : 'off');
-					tools.preferences('tooltips', this.checked);
-				}
-			}));
-			this._settingsMenu.addChild(new CheckedMenuItem({
-				label: _('Module help description'),
-				checked: tools.preferences('moduleHelpText'),
-				onClick: function() {
-					topic.publish('/umc/actions', 'menu-settings', 'module-help-text', this.checked ? 'on' : 'off');
-					tools.preferences('moduleHelpText', this.checked);
-				}
-			}));
 			this._headerRight.addChild(new DropDownButton({
 				id: 'umcMenuSettings',
 				iconClass: 'icon24-umc-menu-settings',
@@ -1414,31 +1485,6 @@ define([
 
 			// the help context menu
 			this._helpMenu = new Menu({});
-			this._helpMenu.addChild(new MenuItem({
-				label: _('Help'),
-				onClick : lang.hitch(this, '_showHelpDialog')
-			}));
-			this._helpMenu.addChild(new MenuItem({
-				label: _('Feedback'),
-				onClick : lang.hitch(this, '_showFeedbackPage')
-			}));
-			this._helpMenu.addChild(new MenuItem({
-				label: _('Usage statistics'),
-				onClick : lang.hitch(this, '_showPiwikDialog')
-			}));
-			this._helpMenu.addChild(new MenuItem({
-				label: _('About UMC'),
-				onClick : lang.hitch(this, '_showAboutDialog')
-			}));
-			this._helpMenu.addChild(new MenuSeparator({}));
-			this._helpMenu.addChild(new MenuItem({
-				label: _('Univention Website'),
-				onClick: function() {
-					topic.publish('/umc/actions', 'menu-help', 'website');
-					var w = window.open( 'http://www.univention.de/', 'univention' );
-					w.focus();
-				}
-			}));
 			this._headerRight.addChild(new DropDownButton({
 				id: 'umcMenuHelp',
 				iconClass: 'icon24-umc-menu-help',
@@ -1497,7 +1543,7 @@ define([
 			topic.publish('/umc/actions', 'menu-help', 'piwik');
 			dialog.templateDialog('umc/app', 'feedback.' + _getLang()  + '.html', {
 				path: require.toUrl('umc/app'),
-				disablePiwikChecked: tools.status('piwikDisabled') ? 'checked' : ''
+				hardwareStatisticsCheckboxDisplay: 'none'
 			}, _('Usage statistics'), _('Close'));
 		},
 

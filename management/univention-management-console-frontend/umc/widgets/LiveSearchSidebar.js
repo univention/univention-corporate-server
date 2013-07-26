@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/has",
 	"dojo/dom-class",
 	"dojo/regexp",
 	"umc/widgets/ContainerWidget",
@@ -39,7 +40,7 @@ define([
 	"umc/widgets/LabelPane",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app"
-], function(declare, lang, array, domClass, regexp, ContainerWidget, TextBox, LabelPane, Button, _) {
+], function(declare, lang, array, has, domClass, regexp, ContainerWidget, TextBox, LabelPane, Button, _) {
 	return declare("umc.widgets.LiveSearchSidebar", [ContainerWidget], {
 		// summary:
 		//		Offers a side bar for live searching, a set of categories can be defined.
@@ -121,6 +122,9 @@ define([
 			this._set('category', this._getUniformCategory(_category));
 			this._updateCss();
 			this.onSearch();
+			if (!has('touch')) {
+				this._searchTextBox.focus();
+			}
 		},
 
 		_clearCategoryNodes: function() {
