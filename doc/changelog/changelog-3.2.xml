@@ -58,6 +58,22 @@
 			libdmx: CVE-2013-1992 (<ulink url="&ucsbug;31450">Bug 31450</ulink>).
 		  </simpara></listitem>
 
+		  <listitem><simpara>
+			libxrender: CVE-2013-1987 (<ulink url="&ucsbug;31464">Bug 31464</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxinerama: CVE-2013-1985 (<ulink url="&ucsbug;31504">Bug 31504</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxi: CVE-2013-1984 CVE-2013-1995 CVE-2013-1998 (<ulink url="&ucsbug;31473">Bug 31473</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxext: CVE-2013-1982 (<ulink url="&ucsbug;31491">Bug 31491</ulink>).
+		  </simpara></listitem>
+
 		</itemizedlist>
 
 	  </simpara></listitem>
