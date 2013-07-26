@@ -140,7 +140,7 @@ class VM:
 		Create explicit block device with given size.
 		"""
 		bdm = None
-		if self.aws_cfg.get('ec2_subnet_id'):
+		if self.aws_cfg.get('ec2_partition_size'):
 			dev_sda1 = blockdevicemapping.EBSBlockDeviceType(
 					size = self.aws_cfg.get('ec2_partition_size'),
 					delete_on_termination=True,
