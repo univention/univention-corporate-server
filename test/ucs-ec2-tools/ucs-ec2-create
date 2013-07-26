@@ -484,23 +484,20 @@ def main():
 	Create EC2 instances for testing.
 	"""
 
-	# Parse options and the config file
-	_print_process('Parse options and config files')
-	usage = '''%s [options] -c config_file ''' % sys.argv[0]
+	usage = '''%prog% [options] -c config_file '''
 	parser = OptionParser(usage=usage)
 	parser.add_option("-c", "--conf", action="store",
-			dest="config_file", help="Config file for %s" % sys.argv[0])
+			dest="config_file", help="Config file")
 
 	(options, _args) = parser.parse_args()
 
 	if not options.config_file:
-		_print_done('fail (-c config_file is required)')
-		sys.exit(2)
+		parser.error('fail: -c config_file is required')
 	if not os.path.exists(options.config_file):
-		_print_done('fail (%s does not exist)' % options.config_file)
-		sys.exit(2)
+		parser.error('fail: "%s" does not exist' % options.config_file)
 
 	# config parser
+	_print_process('Parse options and config files')
 	config = Parser()
 	config.set_filename(options.config_file)
 	config.read(options.config_file)
