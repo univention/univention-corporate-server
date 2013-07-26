@@ -82,6 +82,14 @@
 			libxres: CVE-2013-1988 (<ulink url="&ucsbug;31485">Bug 31485</ulink>).
 		  </simpara></listitem>
 
+		  <listitem><simpara>
+			openvpn: CVE-2013-2061 (<ulink url="&ucsbug;31347">Bug 31347</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			net-snmp: CVE-2012-2141 (<ulink url="&ucsbug;29156">Bug 29156</ulink>).
+		  </simpara></listitem>
+
 		</itemizedlist>
 
 	  </simpara></listitem>
