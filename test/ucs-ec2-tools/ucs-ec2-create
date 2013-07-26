@@ -120,7 +120,8 @@ class VM:
 				aws_cfg['region'] = region
 				break
 
-		user_data = ''
+		env_vars = ('JOB_NAME', 'BUILD_NUMBER')
+		user_data = '\n'.join(['%s=%s' % (v, os.getenv(v, '')) for v in env_vars])
 
 		if self.aws_cfg.get('ec2_reuse'):
 			self.ec2 = boto.connect_vpc(**aws_cfg)
@@ -153,8 +154,6 @@ class VM:
 
 		self.instance = reservation.instances[0]
 
-		self.instance.add_tag('Name', 'Test-%s-%s' % (os.getenv('USER'), self.section))
-
 		start = now = time.time()
 		# TODO: make the timeout configurable
 		timeout = 300
@@ -179,6 +178,11 @@ class VM:
 		else:
 			self._log('Timeout waiting for instance')
 			raise
+
+		self.instance.add_tag('Name', 'Test-%s-%s' % (os.getenv('USER'), self.section))
+		self.instance.add_tag('class', 'ucs-test')
+		for var in env_vars:
+			self.instance.add_tag(var.lower(), os.getenv(var, ''))
 
 	def connect(self):
 		''' Wait until the connection is ready '''
