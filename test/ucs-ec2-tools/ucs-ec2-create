@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # vim:set shiftwidth=4 tabstop=4:
+"""
+Run ucs-test in cloud.
+"""
 #
 # Copyright 2013 Univention GmbH
 #
@@ -48,6 +51,9 @@ from boto.ec2 import regions, blockdevicemapping
 
 
 class VM:
+	"""
+	EC2 instance.
+	"""
 	def __init__(self, section, config):
 		''' Initialize a VM instance '''
 		self.section = section
@@ -270,6 +276,9 @@ class VM:
 		return False
 
 	def _exec_local(self, cmdline):
+		"""
+		Execute local command redirecting output to local logfile.
+		"""
 		self._log('Execute local command: %s' % cmdline)
 
 		self._open_logfile()
@@ -281,12 +290,18 @@ class VM:
 		return rt
 
 	def _open_logfile(self):
+		"""
+		Open internal self.logfile.
+		"""
 		if self.logfile:
 			self.logfile_fd = open(self.logfile, 'a+')
 		else:
 			self.logfile_fd = sys.stdout
 
 	def _close_logfile(self):
+		"""
+		Close internal self.logfile.
+		"""
 		if self.logfile_fd:
 			self.logfile_fd.close()
 		self.logfile_fd = None
@@ -327,6 +342,9 @@ class VM:
 		return string.replace(cmd, 'LOCAL', '', 1).strip()
 
 	def _print_exception_to_file(self):
+		"""
+		Write current exception to self.logfile.
+		"""
 		self._open_logfile()
 		traceback.print_exc(file=self.logfile_fd)
 		self._close_logfile()
@@ -433,7 +451,13 @@ def _print_done(msg='done'):
 
 
 class Parser(ConfigParser.ConfigParser):
+	"""
+	Extended config parser providing ordered sections.
+	"""
 	def set_filename(self, filename):
+		"""
+		Remember the filename.
+		"""
 		self._filename = filename
 
 	def hosts(self):
@@ -454,6 +478,10 @@ class Parser(ConfigParser.ConfigParser):
 		return hosts
 
 def main():
+	"""
+	Create EC2 instances for testing.
+	"""
+
 	# A list of all VMs
 	vms = []
 
