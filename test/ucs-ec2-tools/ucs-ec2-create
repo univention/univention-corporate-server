@@ -531,14 +531,12 @@ def main():
 		_print_done()
 
 	# replace profile variables and commands
-	replace_list = []
-	for vm in vms:
-		replace_list.append( ('[%s_IP]' % vm.section, vm.get_ip()) )
+	replace_list = [('[%s_IP]' % (vm.section,), vm.get_ip()) for vm in vms]
 	for vm in vms:
 		if vm.profile:
 			for (host_str, ip) in replace_list:
 				vm.profile = vm.profile.replace(host_str, ip)
-		for i in range(0,len(vm.commands)):
+		for i in range(len(vm.commands)):
 			for (host_str, ip) in replace_list:
 				vm.commands[i] = [cmd.replace(host_str, ip) for cmd in vm.commands[i]]
 
@@ -554,12 +552,9 @@ def main():
 		vm.copy_files()
 		_print_done()
 
-	max_command = 0
-	for vm in vms:
-		max_command = max(max_command, vm.command_count())
-
 	# run commands
-	for phase in range(0,max_command):
+	max_command = max((_.command_count() for _ in vms))
+	for phase in range(max_command):
 		for vm in vms:
 			print 'Running command phase (%d/%d) on VM %s' % (phase + 1, max_command, vm.get_name())
 			vm.run_commands(phase)
