@@ -317,7 +317,9 @@ define([
 			//var volumeType = this.getWidget('volumeType').getValue('value');
 			var valid = true;
 			tools.forIn(this._pages.drive._form._widgets, function(iname, iwidget) {
-				valid = valid && (!iwidget.get('visible') || false !== iwidget.isValid());
+				if (iwidget.get('visible') && iwidget.isValid) {
+					valid = false !== iwidget.isValid();
+				}
 				return valid;
 			}, this);
 			if (!valid) {

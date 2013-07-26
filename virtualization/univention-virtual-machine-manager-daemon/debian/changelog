@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.6-5) unstable; urgency=low
+
+  * Ignore Text in Form for validation (Bug #32097)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 26 Jul 2013 19:50:30 +0200
+
 univention-virtual-machine-manager-daemon (3.0.6-4) unstable; urgency=low
 
   * Fix translation for MAC validation (Bug #30806)
