@@ -30,14 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.admin.filter
-import univention.admin.handlers
-import univention.admin.syntax
-import univention.admin.localization
+import univention.admin
+import univention.admin.filter as udm_filter
+import univention.admin.mapping as udm_mapping
+from univention.admin.handlers import simpleLdap
+import univention.admin.syntax as udm_syntax
+from univention.admin.localization import translation
 from univention.admin.layout import Tab, Group
 
-translation=univention.admin.localization.translation('univention.admin.handlers.uvmm')
-_=translation.translate
+
+_ = translation('univention.admin.handlers.uvmm').translate
 
 module = 'uvmm/info'
 default_containers = ['cn=Information,cn=Virtual Machine Manager']
@@ -45,13 +47,15 @@ default_containers = ['cn=Information,cn=Virtual Machine Manager']
 childs = 0
 short_description = _('UVMM: Machine information')
 long_description = ''
-operations = [ 'search', 'edit', 'add', 'remove' ]
+operations = ['search', 'edit', 'add', 'remove']
 
-property_descriptions={
+
+# UDM properties
+property_descriptions = {
 	'uuid': univention.admin.property(
 			short_description= _('UUID'),
 			long_description= _('UUID'),
-			syntax=univention.admin.syntax.string,
+			syntax=udm_syntax.string,
 			multivalue=False,
 			options=[],
 			required=True,
@@ -61,7 +65,7 @@ property_descriptions={
 	'description': univention.admin.property(
 			short_description= _('Description'),
 			long_description= _('Description of virtual machine'),
-			syntax=univention.admin.syntax.TextArea,
+			syntax=udm_syntax.TextArea,
 			multivalue=False,
 			options=[],
 			required=False,
@@ -71,7 +75,7 @@ property_descriptions={
 	'os': univention.admin.property(
 			short_description= _('Operating system'),
 			long_description= _('Name of the operation system'),
-			syntax=univention.admin.syntax.string,
+			syntax=udm_syntax.string,
 			multivalue=False,
 			options=[],
 			required=False,
@@ -80,7 +84,7 @@ property_descriptions={
 		),
 	'contact': univention.admin.property(
 			short_description = _('Contact'),
-			syntax=univention.admin.syntax.string,
+			syntax=udm_syntax.string,
 			multivalue = False,
 			options = [],
 			required = False,
@@ -90,7 +94,7 @@ property_descriptions={
 	'profile': univention.admin.property(
 			short_description=_('Profile'),
 			long_description=_('Reference to the profile used for defining this VM'),
-			syntax=univention.admin.syntax.UvmmProfiles,
+			syntax=udm_syntax.UvmmProfiles,
 			multivalue=False,
 			options=[],
 			required=False,
@@ -100,67 +104,85 @@ property_descriptions={
 }
 
 
+# UDM web layout
 layout = [
-	Tab( _( 'General' ), _( 'Virtual machine information' ), layout = [
-		Group( _( 'General' ), layout = [
+	Tab(_('General'), _('Virtual machine information'), layout=[
+		Group(_('General'), layout=[
 			"uuid",
 			"description",
 			"contact",
 			"os",
 			"profile",
-		] )
-	] )
+		])
+	])
 	]
 
-mapping=univention.admin.mapping.mapping()
-mapping.register('uuid', 'univentionVirtualMachineUUID', None, univention.admin.mapping.ListToString)
-mapping.register('description', 'univentionVirtualMachineDescription', None, univention.admin.mapping.ListToString)
-mapping.register('os', 'univentionVirtualMachineOS', None, univention.admin.mapping.ListToString)
-mapping.register('contact', 'univentionVirtualMachineContact', None, univention.admin.mapping.ListToString)
-mapping.register('profile', 'univentionVirtualMachineProfileRef', None, univention.admin.mapping.ListToString)
+
+# Maping between UDM properties and LDAP attributes
+mapping = udm_mapping.mapping()
+mapping.register('uuid', 'univentionVirtualMachineUUID', None, udm_mapping.ListToString)
+mapping.register('description', 'univentionVirtualMachineDescription', None, udm_mapping.ListToString)
+mapping.register('os', 'univentionVirtualMachineOS', None, udm_mapping.ListToString)
+mapping.register('contact', 'univentionVirtualMachineContact', None, udm_mapping.ListToString)
+mapping.register('profile', 'univentionVirtualMachineProfileRef', None, udm_mapping.ListToString)
 
 
-class object(univention.admin.handlers.simpleLdap):
-	module=module
+class object(simpleLdap):
+	"""
+	UDM module to handle UVMM VM info objects.
+	"""
+	module = module
 
-	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
-
-	def exists(self):
-		return self._exists
+		simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('uuid'), mapping.mapValue('uuid', self.info['uuid']), self.position.getDn())
+		"""
+		Populate object with default value before LDAP creation.
+		"""
+		self.dn = '%s=%s,%s' % (
+				mapping.mapName('uuid'),
+				mapping.mapValue('uuid', self.info['uuid']),
+				self.position.getDn()
+				)
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', [ 'univentionVirtualMachine' ] ) ]
+		"""
+		Add additional attributes before LDAP creation.
+		"""
+		return [
+				('objectClass', ['univentionVirtualMachine'])
+				]
+
+
+def lookup_filter(filter_s=None, lo=None):
+	"""
+	Return LDAP search filter for UVMM VM info entries.
+	"""
+	ldap_filter = udm_filter.conjunction('&', [
+				udm_filter.expression('objectClass', 'univentionVirtualMachine'),
+				])
+	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
+	return unicode(ldap_filter)
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-	filter=univention.admin.filter.conjunction('&', [
-				univention.admin.filter.expression('objectClass', 'univentionVirtualMachine'),
-				])
-
-	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter.expressions.append(filter_p)
-
-	res=[]
-	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn))
-	return res
+	"""
+	Perform an LDAP search and return all UVMM VM info entries.
+	"""
+	ldap_filter = lookup_filter(filter_s)
+	return [object(co, lo, None, dn)
+			for dn in lo.searchDn(ldap_filter, base, scope, unique, required, timeout, sizelimit)]
 
 
 def identify(dn, attr, canonical=0):
+	"""
+	Check is the LDAP object is an UVMM VM info entry handles by this module.
+	"""
 	return 'univentionVirtualMachine' in attr.get('objectClass', [])

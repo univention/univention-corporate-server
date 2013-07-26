@@ -31,8 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.admin
-import univention.admin.mapping
 import univention.admin.filter as udm_filter
+import univention.admin.mapping as udm_mapping
 from univention.admin.handlers import simpleLdap
 import univention.admin.syntax as udm_syntax
 from univention.admin.localization import translation
@@ -102,6 +102,7 @@ class DriverCache(udm_syntax.select):
 	]
 
 
+# UDM properties
 property_descriptions = {
 	'name': univention.admin.property(
 			short_description=_('Name'),
@@ -312,6 +313,8 @@ property_descriptions = {
 			),
 }
 
+
+# UDM web layout
 layout = [
 	Tab(_('General'), _('Virtual machine profile'), layout=[
 		Group(_('General'), layout=[
@@ -359,28 +362,29 @@ def str2list(value):
 	return []
 
 
-mapping = univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('name_prefix', 'univentionVirtualMachineProfileNamePrefix', None, univention.admin.mapping.ListToString)
-mapping.register('arch', 'univentionVirtualMachineProfileArch', None, univention.admin.mapping.ListToString)
-mapping.register('cpus', 'univentionVirtualMachineProfileCPUs', None, univention.admin.mapping.ListToString)
-mapping.register('virttech', 'univentionVirtualMachineProfileVirtTech', None, univention.admin.mapping.ListToString)
-mapping.register('ram', 'univentionVirtualMachineProfileRAM', None, univention.admin.mapping.ListToString)
-mapping.register('diskspace', 'univentionVirtualMachineProfileDiskspace', None, univention.admin.mapping.ListToString)
-mapping.register('drivercache', 'univentionVirtualMachineProfileDriverCache', None, univention.admin.mapping.ListToString)
-mapping.register('vnc', 'univentionVirtualMachineProfileVNC', None, univention.admin.mapping.ListToString)
-mapping.register('interface', 'univentionVirtualMachineProfileInterface', None, univention.admin.mapping.ListToString)
-mapping.register('kblayout', 'univentionVirtualMachineProfileKBLayout', None, univention.admin.mapping.ListToString)
-mapping.register('kernel', 'univentionVirtualMachineProfileKernel', None, univention.admin.mapping.ListToString)
-mapping.register('kernel_parameter', 'univentionVirtualMachineProfileKernelParameter', None, univention.admin.mapping.ListToString)
-mapping.register('initramfs', 'univentionVirtualMachineProfileInitRAMfs', None, univention.admin.mapping.ListToString)
-mapping.register('advkernelconf', 'univentionVirtualMachineAdvancedKernelConfig', None, univention.admin.mapping.ListToString)
+# Maping between UDM properties and LDAP attributes
+mapping = udm_mapping.mapping()
+mapping.register('name', 'cn', None, udm_mapping.ListToString)
+mapping.register('name_prefix', 'univentionVirtualMachineProfileNamePrefix', None, udm_mapping.ListToString)
+mapping.register('arch', 'univentionVirtualMachineProfileArch', None, udm_mapping.ListToString)
+mapping.register('cpus', 'univentionVirtualMachineProfileCPUs', None, udm_mapping.ListToString)
+mapping.register('virttech', 'univentionVirtualMachineProfileVirtTech', None, udm_mapping.ListToString)
+mapping.register('ram', 'univentionVirtualMachineProfileRAM', None, udm_mapping.ListToString)
+mapping.register('diskspace', 'univentionVirtualMachineProfileDiskspace', None, udm_mapping.ListToString)
+mapping.register('drivercache', 'univentionVirtualMachineProfileDriverCache', None, udm_mapping.ListToString)
+mapping.register('vnc', 'univentionVirtualMachineProfileVNC', None, udm_mapping.ListToString)
+mapping.register('interface', 'univentionVirtualMachineProfileInterface', None, udm_mapping.ListToString)
+mapping.register('kblayout', 'univentionVirtualMachineProfileKBLayout', None, udm_mapping.ListToString)
+mapping.register('kernel', 'univentionVirtualMachineProfileKernel', None, udm_mapping.ListToString)
+mapping.register('kernel_parameter', 'univentionVirtualMachineProfileKernelParameter', None, udm_mapping.ListToString)
+mapping.register('initramfs', 'univentionVirtualMachineProfileInitRAMfs', None, udm_mapping.ListToString)
+mapping.register('advkernelconf', 'univentionVirtualMachineAdvancedKernelConfig', None, udm_mapping.ListToString)
 mapping.register('bootdev', 'univentionVirtualMachineProfileBootDevices', list2str, str2list )
-mapping.register('os', 'univentionVirtualMachineProfileOS', None, univention.admin.mapping.ListToString)
-mapping.register('pvdisk', 'univentionVirtualMachineProfilePVDisk', None, univention.admin.mapping.ListToString)
-mapping.register('pvinterface', 'univentionVirtualMachineProfilePVInterface', None, univention.admin.mapping.ListToString)
-mapping.register('pvcdrom', 'univentionVirtualMachineProfilePVCDROM', None, univention.admin.mapping.ListToString)
-mapping.register('rtcoffset', 'univentionVirtualMachineProfileRTCOffset', None, univention.admin.mapping.ListToString)
+mapping.register('os', 'univentionVirtualMachineProfileOS', None, udm_mapping.ListToString)
+mapping.register('pvdisk', 'univentionVirtualMachineProfilePVDisk', None, udm_mapping.ListToString)
+mapping.register('pvinterface', 'univentionVirtualMachineProfilePVInterface', None, udm_mapping.ListToString)
+mapping.register('pvcdrom', 'univentionVirtualMachineProfilePVCDROM', None, udm_mapping.ListToString)
+mapping.register('rtcoffset', 'univentionVirtualMachineProfileRTCOffset', None, udm_mapping.ListToString)
 
 
 class object(simpleLdap):
@@ -391,42 +395,42 @@ class object(simpleLdap):
 		global mapping
 		global property_descriptions
 
-		self.co = co
-		self.lo = lo
-		self.dn = dn
-		self.position = position
-		self._exists = 0
 		self.mapping = mapping
 		self.descriptions = property_descriptions
 
 		simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 
-	def exists(self):
-		"""Return 1 if object exists in LDAP."""
-		return self._exists
-
 	def _ldap_pre_create(self):
 		"""Create DN for new UVMM Profile."""
-		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn = '%s=%s,%s' % (
+				mapping.mapName('name'),
+				mapping.mapValue('name', self.info['name']),
+				self.position.getDn()
+				)
 
 	def _ldap_addlist(self):
 		"""Add LDAP objectClass for UVMM Profile."""
-		return [('objectClass', ['univentionVirtualMachineProfile'])]
+		return [
+				('objectClass', ['univentionVirtualMachineProfile'])
+				]
+
+
+def lookup_filter(filter_s=None, lo=None):
+	"""
+	Return LDAP search filter for UVMM VM profile entries.
+	"""
+	ldap_filter = udm_filter.conjunction('&', [
+				udm_filter.expression('objectClass', 'univentionVirtualMachineProfile'),
+				])
+	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
+	return unicode(ldap_filter)
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	"""Search for UVMM profile objects."""
-	filter_expr = udm_filter.conjunction('&', [
-		udm_filter.expression('objectClass', 'univentionVirtualMachineProfile'),
-		])
-
-	if filter_s:
-		filter_p = udm_filter.parse(filter_s)
-		udm_filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
-		filter_expr.expressions.append(filter_p)
-
+	ldap_filter = lookup_filter(filter_s)
 	return [object(co, lo, None, dn)
-			for dn in lo.searchDn(unicode(filter_expr), base, scope, unique, required, timeout, sizelimit)]
+			for dn in lo.searchDn(ldap_filter, base, scope, unique, required, timeout, sizelimit)]
 
 
 def identify(dn, attr, canonical=0):
