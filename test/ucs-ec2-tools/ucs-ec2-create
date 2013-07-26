@@ -231,7 +231,6 @@ class VM:
 				now = time.time()
 		else:
 			raise
-		pass
 
 	def create_profiles(self):
 		''' Write the given profile to the instance '''
@@ -331,12 +330,9 @@ class VM:
 				except Exception,e:
 					self._print_exception_to_file()
 					_print_done('fail')
-					pass
 			except Exception,e:
 				self._print_exception_to_file()
 				_print_done('fail')
-				pass
-		pass
 
 	def _remove_local_from_cmd(self, cmd):
 		return string.replace(cmd, 'LOCAL', '', 1).strip()
