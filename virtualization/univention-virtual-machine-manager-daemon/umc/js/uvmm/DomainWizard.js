@@ -86,13 +86,13 @@ define([
 					helpText: _('By selecting a profile for the virtual machine most of the settings will be set to default values. In the following steps some of these values might be modified. After the creation of the virtual machine all parameters, extended settings und attached drives can be adjusted. It should be ensured that the profile is for the correct architecture as this option can not be changed afterwards.'),
 					widgets: [{
 						name: 'nodeURI',
-						type: 'ComboBox',
+						type: ComboBox,
 						label: _('Physical server'),
 						dynamicValues: types.getNodes,
 						value: nodeURI
 					}, {
 						name: 'profileDN',
-						type: 'ComboBox',
+						type: ComboBox,
 						label: _('Profile'),
 						depends: 'nodeURI',
 						dynamicValues: types.getProfiles
@@ -112,7 +112,7 @@ define([
 						type: HiddenInput
 					}, {
 						name: 'name',
-						type: 'TextBox',
+						type: TextBox,
 						required: true,
 						invalidMessage: _( 'A name for the virtual machine is required and should not be the same as the given name prefix' ),
 						label: _('Name')

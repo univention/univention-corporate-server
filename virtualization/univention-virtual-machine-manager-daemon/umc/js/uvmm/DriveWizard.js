@@ -36,10 +36,14 @@ define([
 	"dijit/form/MappedTextBox",
 	"umc/tools",
 	"umc/dialog",
+	"umc/widgets/ComboBox",
+	"umc/widgets/HiddenInput",
+	"umc/widgets/Text",
+	"umc/widgets/TextBox",
 	"umc/widgets/Wizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, when, MappedTextBox, tools, dialog, Wizard, types, _) {
+], function(declare, lang, array, when, MappedTextBox, tools, dialog, ComboBox, HiddenInput, Text, TextBox, Wizard, types, _) {
 
 	return declare("umc.modules.uvmm.DriveWizard", [ Wizard ], {
 
@@ -58,7 +62,7 @@ define([
 					helpText: _('What type of drive should be created?'),
 					widgets: [{
 						name: 'driveType',
-						type: 'ComboBox',
+						type: ComboBox,
 						value: 'disk',
 						staticValues: types.dict2list(types.blockDevices)
 					}]
@@ -68,11 +72,11 @@ define([
 					helpText: _('For the drive a new image can be created or an existing one can be chosen. An existing image should only be used by one virtual machine at a time.'),
 					widgets: [{
 						name: 'driveType',
-						type: 'HiddenInput',
+						type: HiddenInput,
 						value: ''
 					}, {
 						name: 'volumeType',
-						type: 'ComboBox',
+						type: ComboBox,
 						depends: ['driveType'],
 						label: _('Drive type'),
 						sortDynamicValues: false,
@@ -92,7 +96,7 @@ define([
 						onChange: lang.hitch(this, '_updateDriveWidgets')
 					}, {
 						name: 'pool_new',
-						type: 'ComboBox',
+						type: ComboBox,
 						label: _('Pool'),
 						description: _('Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS).'),
 						dynamicOptions: lang.hitch(this, function(options) {
@@ -104,7 +108,7 @@ define([
 						dynamicValues: types.getPools
 					}, {
 						name: 'driver_type_new',
-						type: 'ComboBox',
+						type: ComboBox,
 						label: _('Image format'),
 						depends: ['driveType'],
 						dynamicOptions: lang.hitch(this, function(options) {
@@ -116,7 +120,7 @@ define([
 						dynamicValues: types.getImageFormat
 					}, {
 						name: 'volumeFilename_new',
-						type: 'TextBox',
+						type: TextBox,
 						required: true,
 						label: _('Filename'),
 						validator: lang.hitch(this, function(val) {
@@ -194,7 +198,7 @@ define([
 						value: types.parseCapacity(lang.getObject('domain.profileData.diskspace', false, props) || '12 GiB')
 					}, {
 						name: 'pool_exists',
-						type: 'ComboBox',
+						type: ComboBox,
 						label: _('Pool'),
 						description: _('Each image is located within a so called storage pool, which might be a local directory, a device, an LVM volume or any type of share (e.g. mounted via iSCSI, NFS or CIFS). When selecting a storage pool the list of available images is updated.'),
 						dynamicOptions: lang.hitch(this, function(options) {
@@ -220,7 +224,7 @@ define([
 						})
 					}, {
 						name: 'volumeFilename_exists',
-						type: 'ComboBox',
+						type: ComboBox,
 						label: _('Drive image'),
 						description: _('If the required image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool local directory. After that go to the previous page an return to this one. The image should now be listed.'),
 						depends: [ 'pool_exists', 'driveType' ],
@@ -246,7 +250,7 @@ define([
 						})
 					}, {
 						name: 'driver_type_exists',
-						type: 'ComboBox',
+						type: ComboBox,
 						label: _('Image format'),
 						depends: ['driveType'],
 						dynamicOptions: lang.hitch(this, function(options) {
@@ -258,7 +262,7 @@ define([
 						dynamicValues: types.getImageFormat
 					}, {
 						name: 'volumeFilename_block',
-						type: 'TextBox',
+						type: TextBox,
 						label: _('Device filename'),
 						required: true,
 						description: _('To bind the drive to a local device the filename of the associated block device must be specified.'),
@@ -267,7 +271,7 @@ define([
 							return types.blockDevicePath[options.driveType] || '';
 						}
 					}, {
-						type: 'Text',
+						type: Text,
 						name: 'hint',
 						content: lang.replace(
 							'<span><img src="{themeUrl}/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right:5px;"/>{label}</span>', {
