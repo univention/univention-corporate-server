@@ -9,8 +9,3 @@ else:
 if configRegistry.get('samba/netbios/aliases'):
 	print '\tnetbios aliases = %s' % configRegistry['samba/netbios/aliases']
 @!@
-
-@!@
-if configRegistry.get('samba/netbios/filter'):
-	print '\tbrowse_dat filter = %s' % configRegistry['samba/netbios/filter']
-@!@
