@@ -330,7 +330,7 @@ class VM:
 				else:
 					ret = self._ssh_exec(cmdline)
 				if ret != 0:
-					_print_done('fail (return code %s)' % ret)
+					_print_done('fail: return code %s' % ret)
 				else:
 					_print_done()
 			except paramiko.ssh_exception.SSHException:
@@ -338,7 +338,7 @@ class VM:
 				try:
 					ret = self._ssh_exec(cmdline)
 					if ret != 0:
-						_print_done('fail (return code %s)' % ret)
+						_print_done('fail: return code %s' % ret)
 					else:
 						_print_done()
 				except Exception:
@@ -510,7 +510,7 @@ def main():
 	if os.path.exists(os.path.expanduser('~/.boto')):
 		_print_done()
 	else:
-		_print_done('fail (See http://code.google.com/p/boto/wiki/BotoConfig or https://hutten.knut.univention.de/mediawiki/index.php/UCS_EC2_Tools#.boto_Datei)')
+		_print_done('fail: See http://code.google.com/p/boto/wiki/BotoConfig or https://hutten.knut.univention.de/mediawiki/index.php/UCS_EC2_Tools#.boto_Datei)')
 
 	vms = []
 	for host in config.hosts():
