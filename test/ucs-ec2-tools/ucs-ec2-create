@@ -50,6 +50,19 @@ import boto
 from boto.ec2 import regions, blockdevicemapping
 
 
+def _split_config(lines):
+	"""
+	Iterate over lines of config option.
+	"""
+	for line in lines.split('\n'):
+		line = line.strip()
+		if not line:
+			continue
+		if line.startswith('#'):
+			continue
+		yield line
+
+
 class VM:
 	"""
 	EC2 instance.
@@ -88,21 +101,22 @@ class VM:
 			self.profile = None
 
 		# Read and save the file lines and ignore comments
-		self.files = []
-		if config.has_option(section, 'files'):
-			for line in config.get(section, 'files').strip().split('\n'):
-				line = line.strip()
-				# ignore comments
-				if line.startswith('#'):
-					continue
-				self.files.append(line)
+		try:
+			lines = config.get(section, 'files').split('\n')
+			self.files = list(_split_config(lines))
+		except ConfigParser.NoOptionError:
+			self.files = []
 
 		# list of commands
 		self.commands = []
-		i=1
-		while config.has_option(section, 'command%d' % i ):
-			self.commands.append(config.get(section, 'command%d' % i).strip().split('\n'))
-			i = i+1
+		while True:
+			try:
+				commands = config.get(self.section,
+						'command%d' % (len(self.commands) + 1,))
+			except ConfigParser.NoOptionError:
+				break
+			cmds = list(_split_config(commands))
+			self.commands.append(cmds)
 
 		# logfile
 		for s in section, 'Global':
@@ -142,11 +156,11 @@ class VM:
 		env_vars = ('JOB_NAME', 'BUILD_NUMBER')
 		user_data = '\n'.join(['%s=%s' % (v, os.getenv(v, '')) for v in env_vars])
 
-		if self.aws_cfg.get('ec2_reuse'):
-			self.ec2 = boto.connect_vpc(**aws_cfg)
-			reservation = self.ec2.get_all_instances(instance_ids=[self.aws_cfg.get('ec2_reuse')])[0]
+		self.ec2 = boto.connect_ec2(**aws_cfg)
+		reuse = self.aws_cfg.get('ec2_reuse')
+		if reuse:
+			reservation = self.ec2.get_all_instances(instance_ids=[reuse])[0]
 		elif self.aws_cfg.get('ec2_subnet_id'):
-			self.ec2 = boto.connect_vpc(**aws_cfg)
 			ami = self.ec2.get_image(self.aws_cfg['ec2_ami'])
 			reservation = ami.run(min_count=1,
 				max_count=1,
@@ -159,7 +173,6 @@ class VM:
 				block_device_map=self._get_blockdevicemapping()
 				)
 		else:
-			self.ec2 = boto.connect_ec2(**aws_cfg)
 			ami = self.ec2.get_image(self.aws_cfg['ec2_ami'])
 			reservation = ami.run(min_count=1,
 				max_count=1,
@@ -173,9 +186,18 @@ class VM:
 
 		self.instance = reservation.instances[0]
 
+		self._wait_instance()
+
+		self.instance.add_tag('Name', 'Test-%s-%s' % (os.getenv('USER'), self.section))
+		self.instance.add_tag('class', 'ucs-test')
+		for var in env_vars:
+			self.instance.add_tag(var.lower(), os.getenv(var, ''))
+
+	def _wait_instance(self, timeout=300):
+		"""
+		Wait until instance is created.
+		"""
 		start = now = time.time()
-		# TODO: make the timeout configurable
-		timeout = 300
 		while now - start < timeout:
 			if self.instance.state == 'running':
 				break
@@ -197,11 +219,6 @@ class VM:
 		else:
 			self._log('Timeout waiting for instance')
 			raise
-
-		self.instance.add_tag('Name', 'Test-%s-%s' % (os.getenv('USER'), self.section))
-		self.instance.add_tag('class', 'ucs-test')
-		for var in env_vars:
-			self.instance.add_tag(var.lower(), os.getenv(var, ''))
 
 	def connect(self):
 		''' Wait until the connection is ready '''
