@@ -4,3 +4,9 @@ class UvmmProfiles(UDM_Objects):
 	label = '%(name)s (%(virttech)s)'
 	empty_value = True
 	use_objects = False
+
+class UvmmCapacity(simple):
+	min_length = 1
+	max_length = 0
+	regex = re.compile(r'^([0-9]+(?:[,.][0-9]+)?)[ \t]*(?:([KkMmGgTtPp])(?:[Ii]?[Bb])?|[Bb])?$')
+	error_message = _("Value must be an positive capacity (xx.x [kmgtp][[i]B])")

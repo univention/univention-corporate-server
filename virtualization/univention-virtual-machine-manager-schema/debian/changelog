@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-schema (4.0.2-3) unstable; urgency=low
 
   * Add search_filter() for new UDM optimization (Bug #24774)
+  * Validate memory and storage size in UVMM profile (Bug #27778)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 26 Jul 2013 18:25:10 +0200
 

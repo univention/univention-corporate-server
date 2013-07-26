@@ -157,7 +157,7 @@ property_descriptions = {
 	'ram': univention.admin.property(
 			short_description=_('Memory'),
 			long_description=_('Amount of memory'),
-			syntax=udm_syntax.string,
+			syntax=udm_syntax.UvmmCapacity,
 			multivalue=False,
 			options=[],
 			required=False,
@@ -167,7 +167,7 @@ property_descriptions = {
 	'diskspace': univention.admin.property(
 			short_description=_('Disk space'),
 			long_description=_('Amount of disk space'),
-			syntax=udm_syntax.string,
+			syntax=udm_syntax.UvmmCapacity,
 			multivalue=False,
 			options=[],
 			required=False,
