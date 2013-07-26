@@ -233,11 +233,11 @@ class VM:
 					username='root',
 					key_filename=self.private_key)
 				break
-			except socket_error, e:
+			except socket_error:
 				self._log('Pending %d...'  % (timeout - now + start))
 				time.sleep(5)
 				now = time.time()
-			except paramiko.AuthenticationException, e:
+			except paramiko.AuthenticationException:
 				self._log('Authentication failed %d...' % (timeout - now + start))
 				time.sleep(5)
 				now = time.time()
@@ -335,10 +335,10 @@ class VM:
 						_print_done('fail (return code %s)' % rt)
 					else:
 						_print_done()
-				except Exception,e:
+				except Exception:
 					self._print_exception_to_file()
 					_print_done('fail')
-			except Exception,e:
+			except Exception:
 				self._print_exception_to_file()
 				_print_done('fail')
 
@@ -353,9 +353,6 @@ class VM:
 	def command_count(self):
 		''' Retrun the  IP address of the started VM '''
 		return len(self.commands)
-
-	def is_vpc(self):
-		return self.instance.vpc_id
 
 	def get_ip(self):
 		''' Retrun the IP address of the started VM '''
@@ -421,7 +418,7 @@ class VM:
 			else:
 				mode = 0777
 			self.sftp.mkdir(directory, mode=mode)
-		except IOError, e:
+		except IOError:
 			self._remote_mkdir(directory.rsplit("/", 1)[0])
 
 	# Write a message to the log file
@@ -493,7 +490,7 @@ def main():
 	parser.add_option("-c", "--conf", action="store",
 			dest="config_file", help="Config file for %s" % sys.argv[0])
 
-	(options, args) = parser.parse_args()
+	(options, _args) = parser.parse_args()
 
 	if not options.config_file:
 		_print_done('fail (-c config_file is required)')
