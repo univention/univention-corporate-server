@@ -44,7 +44,7 @@ from select import select
 import logging
 
 import boto
-from boto.ec2 import regions,blockdevicemapping
+from boto.ec2 import regions, blockdevicemapping
 
 
 class VM:
@@ -55,7 +55,15 @@ class VM:
 
 		# Copy some global settings to the local VM config
 		# but only if the setting is not set in the local VM section
-		params = ['ec2_ami', 'ec2_security_group', 'ec2_instance_type', 'ec2_keypair', 'ec2_region', 'ec2_subnet_id', 'ec2_partition_size']
+		params = [
+				'ec2_ami',
+				'ec2_security_group',
+				'ec2_instance_type',
+				'ec2_keypair',
+				'ec2_region',
+				'ec2_subnet_id',
+				'ec2_partition_size',
+				]
 		for key in params:
 			if not config.has_option(section, key):
 				if config.has_option('Global', key):
@@ -64,7 +72,7 @@ class VM:
 		for key in params + ['ec2_reuse']:
 			if config.has_option(section, key):
 				self.aws_cfg[key] = config.get(section, key)
-					
+
 		self.private_key = os.path.expanduser(config.get('Global', 'ec2_keypair_file'))
 
 		# Save the profile, it will be later written to the VM
@@ -84,7 +92,7 @@ class VM:
 				self.files.append(line)
 
 		# list of commands
-		self.commands=[]
+		self.commands = []
 		i=1
 		while config.has_option(section, 'command%d' % i ):
 			self.commands.append(config.get(section, 'command%d' % i).strip().split('\n'))
@@ -113,7 +121,7 @@ class VM:
 					delete_on_termination=True,
 					)
 			bdm = blockdevicemapping.BlockDeviceMapping()
-			bdm['/dev/sda1'] = dev_sda1 
+			bdm['/dev/sda1'] = dev_sda1
 		return bdm
 
 	def start(self):
@@ -142,7 +150,7 @@ class VM:
 				security_group_ids=[self.aws_cfg['ec2_security_group']],
 				instance_type=self.aws_cfg['ec2_instance_type'],
 				instance_initiated_shutdown_behavior='terminate',  # 'save'
-				block_device_map = self._get_blockdevicemapping()
+				block_device_map=self._get_blockdevicemapping()
 				)
 		else:
 			self.ec2 = boto.connect_ec2(**aws_cfg)
@@ -154,7 +162,7 @@ class VM:
 				security_groups=[self.aws_cfg['ec2_security_group']],
 				instance_type=self.aws_cfg['ec2_instance_type'],
 				instance_initiated_shutdown_behavior='terminate',  # 'save'
-				block_device_map = self._get_blockdevicemapping()
+				block_device_map=self._get_blockdevicemapping()
 				)
 
 		self.instance = reservation.instances[0]
@@ -195,7 +203,7 @@ class VM:
 		self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 		start = now = time.time()
 		# TODO: make the timeout configurable
-		timeout=300
+		timeout = 300
 		while now - start < timeout:
 			try:
 				self.client.connect(self.get_ip(),
@@ -229,7 +237,7 @@ class VM:
 		remote_profile = self.sftp.file('/var/cache/univention-system-setup/profile', 'w')
 		print >> remote_profile, self.profile
 		remote_profile.close()
-		
+
 		self._close_sftp_connection()
 
 	def copy_files(self):
@@ -265,7 +273,7 @@ class VM:
 		self._log('Execute local command: %s' % cmdline)
 
 		self._open_logfile()
-			
+
 		rt = subprocess.call(cmdline, shell=True, stdout=self.logfile_fd, stderr=self.logfile_fd)
 
 		self._close_logfile()
@@ -277,7 +285,7 @@ class VM:
 			self.logfile_fd = open(self.logfile, 'a+')
 		else:
 			self.logfile_fd = sys.stdout
-		
+
 	def _close_logfile(self):
 		if self.logfile_fd:
 			self.logfile_fd.close()
@@ -381,7 +389,7 @@ class VM:
 	def _close_sftp_connection(self):
 		'''	Close the SFTP connection '''
 		self.sftp.close()
-	
+
 	def _remote_mkdir(self, directory):
 		'''	Helpder function to create the given directory structure through
 			the SFTP connection '''
@@ -409,7 +417,7 @@ class VM:
 		else:
 			print 'I: no logfile is configured, print to stdout'
 			print msg
-	
+
 def _print_process(msg):
 	'''	Print s status line '''
 	if len(msg) > 64:
@@ -473,9 +481,8 @@ def main():
 
 	# The paramiko module uses the logging module
 	logging.basicConfig(level=logging.WARNING)
-	
-	_print_process('Checking for ~/.boto')
 
+	_print_process('Checking for ~/.boto')
 	if os.path.exists(os.path.expanduser('~/.boto')):
 		_print_done()
 	else:
@@ -529,9 +536,8 @@ def main():
 	# run commands
 	for phase in range(0,max_command):
 		for vm in vms:
-			print 'Running command phase (%d/%d) on VM %s' % (phase+1, max_command, vm.get_name())
+			print 'Running command phase (%d/%d) on VM %s' % (phase + 1, max_command, vm.get_name())
 			vm.run_commands(phase)
 
 if __name__ == '__main__':
 	main()
-
