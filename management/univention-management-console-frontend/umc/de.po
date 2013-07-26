@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-07-24 11:02-0400\n"
+"POT-Creation-Date: 2013-07-26 03:56-0400\n"
 "PO-Revision-Date: 2012-02-23 16:18+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,11 @@ msgstr "%(label)s (Wiederholung)"
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
+#: umc/widgets/Form.js:610
+#, python-format
+msgid "%s loaded"
+msgstr "%s geladen"
+
 #: umc/widgets/Grid.js:750
 #, python-format
 msgid "1 entry of %d selected"
@@ -41,11 +46,7 @@ msgstr ""
 "Module benutzen zu können.<br>Momentan geöffnete Module funktionieren "
 "möglicherweise nicht mehr korrekt.<br>Soll die Seite neu geladen werden?"
 
-#: umc/widgets/Form.js:612
-msgid "%s loaded"
-msgstr "%s geladen"
-
-#: umc/app.js:1407 umc/app.js:1462
+#: umc/app.js:1425 umc/app.js:1480
 msgid "About UMC"
 msgstr "Über UMC"
 
@@ -57,7 +58,7 @@ msgstr "Zugriff"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: umc/app.js:1035
+#: umc/app.js:1053
 msgid "Add module to favorites"
 msgstr "Modul zu Favoriten hinzufügen"
 
@@ -65,7 +66,7 @@ msgstr "Modul zu Favoriten hinzufügen"
 msgid "Add objects"
 msgstr "Objekte hinzufügen"
 
-#: umc/app.js:904
+#: umc/app.js:913
 msgid "All"
 msgstr "Alle"
 
@@ -80,7 +81,7 @@ msgstr ""
 "Ein Fehler trat während des Verbindungsaufbaus zum Server auf. Bitte "
 "versuchen Sie es später noch einmal."
 
-#: umc/widgets/ProgressBar.js:152
+#: umc/widgets/ProgressBar.js:169
 msgid "An error occurred: "
 msgstr "Ein Fehler ist aufgetreten: "
 
@@ -93,7 +94,7 @@ msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
 "Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch einmal."
 
-#: umc/app.js:1089
+#: umc/app.js:1107
 #, python-format
 msgid ""
 "An update for UCS is available. Please visit <a %s>Online Update Module</a> "
@@ -102,7 +103,7 @@ msgstr ""
 "Ein Update für UCS ist verfügbar. Es kann über das <a %s>Online Update-"
 "Modul</a> im System eingespielt werden."
 
-#: umc/app.js:1110
+#: umc/app.js:1128
 #, python-format
 msgid ""
 "As %s you do not have access to the App Center. For this you need to log in "
@@ -111,7 +112,7 @@ msgstr ""
 "Als %s haben Sie keinen Zugriff auf das App Center. Dafür müssen Sie sich "
 "als %s anmelden."
 
-#: umc/app.js:1112
+#: umc/app.js:1130
 #, python-format
 msgid ""
 "As %s you have neither access to the domain administration nor to the App "
@@ -129,7 +130,7 @@ msgid "Back"
 msgstr "Zurück"
 
 #: umc/tools.js:199 umc/widgets/Wizard.js:87
-#: umc/widgets/MultiObjectSelect.js:139 umc/dialog.js:338 umc/app.js:1506
+#: umc/widgets/MultiObjectSelect.js:139 umc/dialog.js:338 umc/app.js:1524
 #: umc/app/StartupDialog.js:136
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -142,7 +143,7 @@ msgstr "Daten leeren"
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
 
-#: umc/widgets/Page.js:270 umc/app.js:1462 umc/app.js:1470 umc/app.js:1478
+#: umc/widgets/Page.js:270 umc/app.js:1480 umc/app.js:1488 umc/app.js:1496
 #: umc/app/StartupDialog.js:117
 msgid "Close"
 msgstr "Schließen"
@@ -159,19 +160,19 @@ msgstr "Die Anfrage konnte nicht ausgeführt werden."
 msgid "Could not process the request."
 msgstr "Die Anfrage konnte nicht bearbeitet werden."
 
-#: umc/app.js:1493
+#: umc/app.js:1511
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
-#: umc/app.js:326
+#: umc/app.js:335
 msgid "Favorites"
 msgstr "Favoriten"
 
-#: umc/app.js:1399
+#: umc/app.js:1417
 msgid "Feedback"
 msgstr "Feedback"
 
-#: umc/widgets/ProgressBar.js:124
+#: umc/widgets/ProgressBar.js:141
 msgid "Fetching information from the server failed!"
 msgstr "Das Holen von Informationen vom Server schlug fehl!"
 
@@ -200,7 +201,7 @@ msgstr "Hello %(last)s, %(first)s!"
 msgid "Hello %s %s!"
 msgstr "Hello %s %s!"
 
-#: umc/app.js:1395 umc/app.js:1470
+#: umc/app.js:1413 umc/app.js:1488
 msgid "Help"
 msgstr "Hilfe"
 
@@ -208,7 +209,7 @@ msgstr "Hilfe"
 msgid "Hide server error message"
 msgstr "Fehlernachricht des Servers ausblenden"
 
-#: umc/app.js:1342
+#: umc/app.js:1360
 msgid "Host: "
 msgstr "Host: "
 
@@ -273,16 +274,16 @@ msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 msgid "Language"
 msgstr "Sprache"
 
-#: umc/app.js:838
+#: umc/app.js:847
 msgid "License"
 msgstr "Lizenz"
 
-#: umc/app.js:230
+#: umc/app.js:239
 #, python-format
 msgid "Loaded module %s"
 msgstr "Modul %s wurde geladen"
 
-#: umc/app.js:220
+#: umc/app.js:228
 msgid "Loading modules"
 msgstr "Laden der Module"
 
@@ -290,11 +291,11 @@ msgstr "Laden der Module"
 msgid "Login"
 msgstr "Anmelden"
 
-#: umc/app.js:1494
+#: umc/app.js:1512
 msgid "Logout"
 msgstr "Abmelden"
 
-#: umc/app.js:1379
+#: umc/app.js:1397
 msgid "Module help description"
 msgstr "Modul-Hilfetexte"
 
@@ -318,7 +319,7 @@ msgstr "Kein Objekt ausgewählt"
 msgid "No upload in progress"
 msgstr "Keine laufende Dateiübertragung"
 
-#: umc/app.js:1139
+#: umc/app.js:1157
 #, python-format
 msgid ""
 "Not all installed components have been registered. Please visit <a %s>Domain "
@@ -338,6 +339,10 @@ msgstr "Benachrichtigung"
 #: umc/dialog.js:184
 msgid "Ok"
 msgstr "Ok"
+
+#: umc/app.js:185
+msgid "Open context menu"
+msgstr "Kontextmenü öffnen"
 
 #: umc/widgets/UnixAccessRights.js:73
 msgid "Others"
@@ -369,15 +374,15 @@ msgstr "Neu laden"
 msgid "Remove"
 msgstr "Entfernen"
 
-#: umc/app.js:1035
+#: umc/app.js:1053
 msgid "Remove module from favorites"
 msgstr "Modul aus Favoriten entfernen"
 
-#: umc/app.js:1063
+#: umc/app.js:1081
 msgid "SSL host certificate"
 msgstr "SSL Rechner-Zertifikat"
 
-#: umc/app.js:1060
+#: umc/app.js:1078
 msgid "SSL root certificate"
 msgstr "SSL Wurzel-Zertifikat"
 
@@ -429,7 +434,7 @@ msgstr "Die angegebene Sprachdefinition ist nicht verfügbar."
 msgid "Submit"
 msgstr "Absenden"
 
-#: umc/app.js:1068
+#: umc/app.js:1086
 #, python-format
 msgid "The %s will expire in %d days and should be renewed!"
 msgstr "Das %s wird in %d Tagen ablaufen und sollte erneuert werden!"
@@ -484,7 +489,7 @@ msgstr "Der Grund konnte nicht festgestellt werden"
 msgid "The system does not allow changing the password"
 msgstr "Das System erlaubt das Ändern des Passwortes nicht"
 
-#: umc/app.js:1137
+#: umc/app.js:1155
 #, python-format
 msgid ""
 "The system has not been joined into a domain so far. Please visit <a "
@@ -498,7 +503,7 @@ msgstr ""
 msgid "The total cost was %.2f EUR!"
 msgstr "The total cost was %.2f EUR!"
 
-#: umc/app.js:1153
+#: umc/app.js:1171
 #, python-format
 msgid "There is no module available for the authenticated user %s."
 msgstr "Für den angemeldeten Benutzer %s ist kein Modul verfügbar."
@@ -514,7 +519,7 @@ msgstr ""
 "sensiblen Daten werden im Klartext übertragen. Bitte verwenden Sie %s diesen "
 "Link</a> für eine verschlüsselte SSL-Verbindung."
 
-#: umc/app.js:1120
+#: umc/app.js:1138
 #, python-format
 msgid ""
 "This system has been updated recently. Please visit the <a %s>Reboot Module</"
@@ -523,7 +528,7 @@ msgstr ""
 "Dieses System wurde kürzlich aktualisiert. Ein Neustart des Systems über das "
 "<a %s>Neustarten-Modul</a> ist erforderlich, um das Update abzuschließen."
 
-#: umc/app.js:1371
+#: umc/app.js:1389
 msgid "Tooltips"
 msgstr "Tooltips"
 
@@ -535,7 +540,7 @@ msgstr "Translate me!"
 msgid "UMC reload required"
 msgstr "Erneutes Laden der UMC notwendig"
 
-#: umc/app.js:1412
+#: umc/app.js:1430
 msgid "Univention Website"
 msgstr "Univention Webseite"
 
@@ -561,7 +566,7 @@ msgstr "Dateiübertragung... %d von %d Dateien verbleiben"
 msgid "Uploads finished"
 msgstr "Dateiübertragung beendet"
 
-#: umc/app.js:1403 umc/app.js:1478
+#: umc/app.js:1421 umc/app.js:1496
 msgid "Usage statistics"
 msgstr "Nutzungsstatistiken"
 
@@ -610,7 +615,7 @@ msgstr "Schreiben"
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
-#: umc/app.js:1102
+#: umc/app.js:1120
 msgid ""
 "Your Browser is outdated and should be updated. You may continue to use "
 "Univention Management Console but you may experience performance issues and "
@@ -646,23 +651,23 @@ msgstr "mehr"
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
 
-#: umc/app.js:1483 umc/app/StartupDialog.js:67
+#: umc/app.js:1501 umc/app/StartupDialog.js:67
 msgid "umcFeedbackUrl"
 msgstr "http://www.univention.de/feedback"
 
-#: umc/app.js:1305
+#: umc/app.js:1323
 msgid "umcLogoTitle"
 msgstr "Webseite Univention GmbH"
 
-#: umc/app.js:1304
+#: umc/app.js:1322
 msgid "umcLogoUrl"
 msgstr "http://www.univention.de"
 
-#: umc/app.js:881
+#: umc/app.js:890
 msgid "umcOverviewHeader"
 msgstr "Übersicht"
 
-#: umc/app.js:883
+#: umc/app.js:892
 msgid "umcOverviewHelpText"
 msgstr ""
 "Univention Management Console (UMC) ist eine flexible Webanwendung für die "
@@ -670,15 +675,15 @@ msgstr ""
 "Voreinstellungen und Berechtigungen, finden Sie hier umfangreiche Funktionen "
 "zur UCS-Domänenadministration und für die Konfiguration dieses Servers."
 
-#: umc/app.js:880
+#: umc/app.js:889
 msgid "umcOverviewTabTitle"
 msgstr "Übersicht"
 
-#: umc/app.js:1362
+#: umc/app.js:1380
 msgid "umcUserInfo"
 msgstr "Benutzer: %(username)s"
 
-#: umc/widgets/ProgressBar.js:154
+#: umc/widgets/ProgressBar.js:171
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 

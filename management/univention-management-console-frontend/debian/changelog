@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.37-1) unstable; urgency=low
+
+  * Bug #32023: added icon for opening context menu via left click
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 25 Jul 2013 18:11:12 +0200
+
 univention-management-console-frontend (3.0.36-1) unstable; urgency=low
 
   * Adding progress to Form initialization (Bug #31376)

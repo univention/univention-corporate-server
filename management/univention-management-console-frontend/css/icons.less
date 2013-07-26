@@ -4,23 +4,12 @@
  * UMC overview page icons
  */
 
-/* add nice star when hovering */
-.dgrid.umcOverviewCategory {
-
+.umcOverviewPane {
 	.umcGalleryItem:hover .umcGalleryStatusIcon {
 		visibility: visible;
-		.opacity(0.4);
 	}
-
-	.umcGalleryItem {
-		.umcGalleryStatusIcon {
-			visibility: hidden;
-		}
-		/* change the opacity when clicked on the icon to 100% */
-		.umcGalleryStatusIcon:active {
-			visibility: visible;
-			.opacity(1);
-		}
+	.umcGalleryItem	.umcGalleryStatusIcon {
+		visibility: hidden;
 	}
 }
 

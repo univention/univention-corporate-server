@@ -177,6 +177,14 @@ define([
 			return result;
 		},
 
+		getStatusIconClass: function(item) {
+			return tools.getIconClass('context-menu', 24);
+		},
+
+		getStatusIconTooltip: lang.hitch(this, function(item) {
+			return _('Open context menu');
+		}),
+
 		getItemDescription: function(item) {
 			return item.description;
 		},
@@ -209,7 +217,6 @@ define([
 
 
 	var _ProgressDialog = declare([Dialog], {
-		closable: false,
 		_progressInfo: null,
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -220,6 +227,7 @@ define([
 			this.inherited(arguments);
 			this._progressInfo.updateTitle(_('Loading modules'));
 			this._progressInfo.updateInfo('&nbsp;');
+			this.set('closable', false); // need to be set explicitely
 		},
 
 		_setMaximumAttr: function(value) {
@@ -919,6 +927,7 @@ define([
 
 		_setupOverviewPane: function() {
 			this._grid = new _OverviewPane({
+				'class': 'umcOverviewPane',
 				categories: this.getCategories(),
 				store: this._moduleStore,
 				region: 'center'
@@ -928,25 +937,20 @@ define([
 			this._updateQuery();
 		},
 
-		_closeModuleContextMenu: function() {
-			if (this._moduleContextMenu) {
-				this._moduleContextMenu.onCancel();
-				return true;
-			}
-			return false;
-		},
-
 		_registerGridEvents: function() {
 			this._searchSidebar.on('search', lang.hitch(this, '_updateQuery'));
 
-			// enable closing of context menu by clicking somewhere
-			// NOTE: event handler works on iPad + desktop browsers
-			this._grid.on('*:click', lang.hitch(this, function() {
-				this._closeModuleContextMenu();
+			this._grid.on('.umcGalleryStatusIcon:click', lang.hitch(this, function(evt) {
+				evt.stopImmediatePropagation();
+				var item = this._grid.row(evt).data;
+				this._openModuleContextMenu(item, evt.pageX, evt.pageY);
 			}));
 
 			this._registerGridNonTouchEvents();
 			this._registerGridTouchEvents();
+
+			// enable closing of context menu by clicking somewhere
+			on(this._topContainer.domNode, '*:click', lang.hitch(this, '_closeModuleContextMenu'));
 		},
 
 		_registerGridNonTouchEvents: function() {
@@ -955,8 +959,8 @@ define([
 			}
 
 			// open module upon click on grid item
-			// NOTE: event handler does not work in iPad
 			this._grid.on('.umcGalleryItem:click', lang.hitch(this, function(evt) {
+				evt.stopImmediatePropagation();
 				if (this._closeModuleContextMenu()) {
 					return;
 				}
@@ -973,6 +977,10 @@ define([
 		},
 
 		_registerGridTouchEvents: function() {
+			// special handling for touch devices... when pressed long enough,
+			// the context menu is shown, this needs to be handled explicitely
+			// via touchstart and touchend...
+
 			if (!has('touch')) {
 				return;
 			}
@@ -1003,6 +1011,18 @@ define([
 				}
 			}));
 			this._grid.on('scroll', lang.hitch(this, _cancelContextTouch));
+		},
+
+		_closeModuleContextMenu: function() {
+			// force ative tooltips to hide
+			Tooltip._masterTT && Tooltip._masterTT.fadeOut.play();
+
+			// if necessary, close currently open context menu
+			if (this._moduleContextMenu) {
+				this._moduleContextMenu.onCancel();
+				return true;
+			}
+			return false;
 		},
 
 		_openModuleContextMenu: function(item, x, y) {
