@@ -36,7 +36,7 @@ This module implements functions to handle storage on nodes. This is independent
 
 import libvirt
 import logging
-from xml.dom.minidom import getDOMImplementation, parseString
+from xml.dom.minidom import parseString
 from xml.parsers.expat import ExpatError
 from helpers import TranslatableException, N_ as _, TimeoutError, timeout
 from protocol import Disk, Data_Pool

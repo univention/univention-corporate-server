@@ -1493,6 +1493,10 @@
 		<listitem><simpara>
 		  New domains are now created on the selected node by default (<ulink url="&ucsbug;24579">Bug 24579</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Some code issues in UVMM have been fixed (<ulink url="&ucsbug;32091">Bug 32091</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>

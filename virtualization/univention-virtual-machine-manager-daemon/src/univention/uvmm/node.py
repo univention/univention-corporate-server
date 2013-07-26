@@ -41,7 +41,7 @@ from xml.dom.minidom import parseString
 from xml.parsers.expat import ExpatError
 import math
 from helpers import TranslatableException, ms, tuple2version, N_ as _, uri_encode
-from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify, ldap_annotation
+from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modify
 import univention.admin.uexceptions
 from univention.uvmm.eventloop import *
 import threading
@@ -1525,7 +1525,7 @@ def domain_undefine(uri, domain, volumes=[]):
 		destroy_storage_volumes(conn, volumes, ignore_error=True)
 		try:
 			if dom.hasManagedSaveImage(0):
-				ret = dom.managedSaveRemove(0)
+				dom.managedSaveRemove(0)
 		except libvirt.libvirtError, ex:
 			# libvirt returns an 'internal error' when no save image exists
 			if ex.get_error_code() != libvirt.VIR_ERR_INTERNAL_ERROR:

@@ -2,6 +2,7 @@ univention-virtual-machine-manager-daemon (3.0.6-2) unstable; urgency=low
 
   * Fix title in interface dialog  (Bug #30806)
   * DriveWizard: pre-select 'disk' by default.
+  * Fix miscellaneous errors (Bug #32091)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 26 Jul 2013 10:53:11 +0200
 

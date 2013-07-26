@@ -37,8 +37,6 @@ __all__ = [
 		'LIBVIRT_ERR',
 		'ms',
 		'FQDN',
-		'uri_netloc',
-		'match_self',
 		'uri_encode',
 		'uri_decode',
 		'TimeoutError',

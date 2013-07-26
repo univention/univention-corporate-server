@@ -282,7 +282,7 @@ def uvmm_cmd(request, managers=None, cred=None):
 	response = __uvmm.send(request)
 	if response is None:
 		raise ClientError("UVMM daemon did not answer.")
-	if isinstance(response, Response_ERROR):
+	if isinstance(response, protocol.Response_ERROR):
 		raise ClientError(response.msg)
 	return response
 

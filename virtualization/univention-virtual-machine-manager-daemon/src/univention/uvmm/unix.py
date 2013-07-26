@@ -40,7 +40,7 @@ import SocketServer
 import protocol
 from commands import commands, CommandError
 from node import Nodes, node_frequency
-from helpers import TranslatableException, N_ as _
+from helpers import N_ as _
 import socket
 import select
 import logging

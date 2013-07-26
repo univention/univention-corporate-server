@@ -40,7 +40,6 @@ except ImportError:
 import univention.config_registry as ucr
 import univention.uldap
 from ldap import LDAPError, SERVER_DOWN
-import ldapurl
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.handlers.uvmm.info as uvmm_info
