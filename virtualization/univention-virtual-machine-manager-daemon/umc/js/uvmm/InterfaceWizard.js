@@ -48,7 +48,7 @@ define([
 			lang.mixin(this, {
 				pages: [{
 					name: 'interface',
-					headerText: values ? _('Edit network interface') : _('Add network interface'),
+					headerText: values.$id$ ? _('Edit network interface') : _('Add network interface'),
 					helpText: _('Two types of network interfaces are support. The first one is <i>Bridge</i> that requires a static network connection on the physical server that is configurated to be used for bridging. By default the network interface called eth0 is setup for such a case on each UVMM node. If a virtual machine should have more than one bridging network interface, additional network interfaces on the physical server must be configured first. The second type is <i>NAT</i> provides a private network for virtual machines on the physical server and permits access to the external network. This network typ is useful for computers with varying network connections like notebooks. For such an interface the network configuration of the UVMM node needs to be modified. This is done automatically by the UVMM service when starting the virtual machine. Further details about the network configuration can be found in <a target="_blank" href="http://sdb.univention.de/1172">this article</a>.'),
 					widgets: [{
 						name: 'type',
@@ -84,7 +84,7 @@ define([
 						sizeClass: 'One',
 						type: TextBox,
 						regExp: '^([0-9A-Fa-f]?[02468AaCcEe])(:[0-9A-Fa-f]{1,2}){5}$',
-						invalidMessage: _('Invalid MAC address. The address should have the form, e.g., "02:23:45:67:89:AB".'),
+						invalidMessage: _('Invalid MAC address: The address must be unicast and should have the form "02:23:45:67:89:AB".'),
 						label: _('MAC addresss'),
 						value: values.mac_address || ''
 					}],
