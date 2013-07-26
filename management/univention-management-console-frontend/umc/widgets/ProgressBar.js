@@ -122,8 +122,8 @@ define([
 				this.setInfo(result.component, result.message, result.percentage, result.errors, result.critical);
 			}
 			deferred.then(
-				function() {}, // resolve()
-				function() {}, // cancel()
+				undefined, // resolve()
+				undefined, // cancel()
 				lang.hitch(this, function(result) { // progress()
 					console.log(result);
 					this.setInfo(result.component, result.message, result.percentage, result.errors, result.critical);

@@ -117,8 +117,6 @@ define([
 
 		//'class': 'umcNoBorder',
 
-		_allReady: null,
-
 		_allReadyNamed: null,
 
 		progressDeferred: null,
@@ -127,7 +125,6 @@ define([
 			this.inherited(arguments);
 
 			// initialize with empty list and empty object
-			this._allReady = [];
 			this._allReadyNamed = {};
 			this.progressDeferred = new Deferred();
 
@@ -396,11 +393,6 @@ define([
 					}
 				}
 			}, this);
-			tools.forIn(this._widgets, function(iname, iwidget) {
-				if (tools.inheritsFrom(iwidget, 'umc.widgets.MultiInput')) {
-					iwidget.addFirstElement();
-				}
-			});
 		},
 
 		elementValue: function(element, newVal) {
@@ -457,7 +449,8 @@ define([
 			tools.assert(itemID, 'The specifid itemID for umc.widgets.Form.load() must be valid.');
 
 			// query data from server
-			var deferred = this.moduleStore.get(itemID).then(lang.hitch(this, function(data) {
+			var deferred = new Deferred();
+			this.moduleStore.get(itemID).then(lang.hitch(this, function(data) {
 				var values = this.get('value');
 				var newValues = {};
 
@@ -474,11 +467,13 @@ define([
 
 				// fire event
 				this.onLoaded(true);
-
-				return data;
+				// resolve a deferred instead of returning moduleStore.get() directly (also a deferred)
+				//   because this.setFormValues may take some time (MultiInput!)
+				deferred.resolve(data);
 			}), lang.hitch(this, function() {
 				// fire event also in error case
 				this.onLoaded(false);
+				deferred.cancel();
 			}));
 
 			return deferred;
@@ -591,9 +586,8 @@ define([
 
 		_updateAllReady: function() {
 			// wait for all widgets to be ready
-			this._allReady = [];
 			this._allReadyNamed = {};
-			this.progressDeferred = new Deferred();
+			var deferreds = [];
 			var done = 0;
 			var nWidgets = 0;
 			var lastLabel = null;
@@ -602,40 +596,40 @@ define([
 			tools.forIn(this._widgets, function(iname, iwidget) {
 				//console.log('###   ' + iname + ' -> ', iwidget.ready ? iwidget.ready() : null);
 				var iwidgetReadyDeferred = iwidget.ready ? iwidget.ready() : null;
-				when(iwidgetReadyDeferred, lang.hitch(this, function() {
-					done += 1;
-					var percentage = done/nWidgets*100;
-					var progress = {percentage: percentage};
-					if (iwidget.label || lastLabel) {
-						progress.message = _('%s loaded', iwidget.label || lastLabel);
+				when(iwidgetReadyDeferred,
+					lang.hitch(this, function() {
+						done += 1;
+						var percentage = done/nWidgets*100;
+						var progress = {percentage: percentage};
 						lastLabel = iwidget.label || lastLabel;
-					}
-					this.progressDeferred._lastProgress = progress; // to be able to get current progress if one missed the beginning
-					this.progressDeferred.progress(progress);
-				}));
-				this._allReady.push(iwidgetReadyDeferred);
+						if (lastLabel) {
+							progress.message = _('%s loaded', lastLabel);
+						}
+						this.progressDeferred._lastProgress = progress; // to be able to get current progress if one missed the beginning
+						this.progressDeferred.progress(progress);
+					}),
+					undefined, // cancelled
+					lang.hitch(this, function(msg) { // progress
+						var label = iwidget.label || iwidget.name;
+						var progress = {message: lang.replace('{0}: {1}', [label, msg])};
+						this.progressDeferred.progress(progress);
+					})
+				);
 				this._allReadyNamed[iname] = iwidgetReadyDeferred;
+				deferreds.push(iwidgetReadyDeferred);
 			}, this);
+			all(deferreds).then(lang.hitch(this, function() {
+				this.progressDeferred.resolve();
+			}));
 		},
 
 		ready: function() {
 			// update the internal list in order to wait until everybody is ready
-			if (!this._allReady.length) {
+			if (this.progressDeferred.isFulfilled()) {
+				this.progressDeferred = new Deferred();
 				this._updateAllReady();
 			}
-			var ret = all(this._allReady);
-
-			// empty list when all widgets are ready
-			ret.then(lang.hitch(this, function() {
-				this._allReady = [];
-				this.progressDeferred.resolve();
-				// dont empty _allReadyNamed here
-				// as it is only used internally
-				// and we could introduce a race condition
-				// when ret.then fires at the wrong moment
-				// i.e. when _updateDependencies is called
-			}));
-			return ret;
+			return this.progressDeferred;
 		}
 	});
 });

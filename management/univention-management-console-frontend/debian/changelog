@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.41-1) unstable; urgency=low
+
+  * Form initialization progress: Code cleanup for Bug #31376
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 26 Jul 2013 18:08:16 +0200
+
 univention-management-console-frontend (3.0.40-1) unstable; urgency=low
 
   * Bug #31639: fixed behaviour of 'more' drop down in grid, fixed some CSS

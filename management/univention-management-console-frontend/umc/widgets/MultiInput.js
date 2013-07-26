@@ -167,6 +167,13 @@ define([
 			this._startupDeferred.resolve();
 		},
 
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			// add empty element
+			this._appendElements(1);
+		},
+
 		_loadValues: function(depends) {
 			// delegate the call to _loadValues to all widgets
 			this._lastDepends = depends;
@@ -238,7 +245,6 @@ define([
 
 			// append an empty element
 			vals.push([]);
-			this._firstElementAdded = true;
 
 			// set the values
 			this._setAllValues(vals);
@@ -442,6 +448,7 @@ define([
 						iwidget._loadValues(this._lastDepends);
 					}
 				}, this);
+				//this._readyDeferred.progress(_('%(i)s / %(len)s values built', {i: irow, len: nFinal}));
 			}
 
 			// wait for all widgets to be ready
@@ -538,13 +545,6 @@ define([
 			if (this._widget) {
 				tools.delegateCall(this, arguments, this._widget);
 			}
-		},
-
-		addFirstElement: function() {
-			if (!this._firstElementAdded) {
-				this._appendElements(1);
-			}
-			this._firstElementAdded = true;
 		},
 
 		onValuesLoaded: function(values) {

@@ -126,12 +126,24 @@ define([
 
 					// show standby widget
 					this._standbyWidget.show();
-				}
-				else {
+				} else {
 					// hide standby widget
 					this._standbyWidget.hide();
 				}
 			}));
+		},
+
+		standbyDuring: function(deferred, content) {
+			this.standby(true, content);
+			deferred.then(
+				lang.hitch(this, function() {
+					this.standby(false);
+				}),
+				lang.hitch(this, function() {
+					this.standby(false);
+				})
+			);
+			return deferred;
 		}
 	});
 });
