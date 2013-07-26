@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.10-1) unstable; urgency=low
+
+  * Improve form progress when loading an UDM object (Bug #31376)
+  * Fix broken safety net for speedup optimized syntax classes (Bug #32084)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 26 Jul 2013 18:01:44 +0200
+
 univention-management-console-module-udm (4.0.9-1) unstable; urgency=low
 
   * Use form progress when loading an UDM object (Bug #31376)

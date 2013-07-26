@@ -233,7 +233,7 @@ class UDM_Module( object ):
 		self.module = _module_cache.get( module, force_reload=force_reload )
 
 	def allows_simple_lookup( self ):
-		return bool(getattr( self.module, 'lookup_filter' ))
+		return hasattr( self.module, 'lookup_filter' )
 
 	def lookup_filter( self, filter_s=None, lo=None ):
 		return getattr( self.module, 'lookup_filter' )( filter_s, lo )
@@ -1098,6 +1098,8 @@ def read_syntax_choices( syntax_name, options = {}, module_search_options = {}, 
 						break
 			else:
 				simple = True
+			if not simple:
+				MODULE.warn('Syntax %s wants to get optimizations but may not. This is a Bug! We provide a fallback but the syntax will respond much slower than it could!' % syntax_name)
 		def extract_key_label(syn, dn, info):
 			key = label = None
 			if syn.key == 'dn':

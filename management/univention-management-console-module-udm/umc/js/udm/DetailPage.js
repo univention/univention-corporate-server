@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/on",
 	"dojo/Deferred",
+	"dojo/when",
 	"dojo/promise/all",
 	"dojo/dom-style",
 	"dojo/dom-construct",
@@ -62,7 +63,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
+], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
 	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -721,12 +722,9 @@ define([
 			}
 
 			// load form data
+			var loaded = null;
 			if (this.ldapName && !this._multiEdit) {
-				this._progressBar.feedFromDeferred(this._form.progressDeferred, _('Loading %s...', this.objectNameSingular));
-				// FIXME: this.standby(true, obj) does not work when already running standby
-				this.standby(false);
-				this.standby(true, this._progressBar);
-				this._form.load(this.ldapName).then(lang.hitch(this, function(vals) {
+				loaded = this._form.load(this.ldapName).then(lang.hitch(this, function(vals) {
 					// save the original data we received from the server
 					this._receivedObjOrigData = vals;
 
@@ -769,12 +767,18 @@ define([
 				// hide the type info and ldap path in case of a new object
 				this._form.getWidget( '$objecttype$' ).set( 'visible', false);
 				this._form.getWidget( '$location$' ).set( 'visible', false);
-				this._form.setFormValues();
 			}
-
-			// return the policy deferred object to notify the caller that the page
-			// has been set up
-			return this._form.ready();
+			var ready = this._form.ready();
+			this._progressBar.feedFromDeferred(ready, _('Loading %s...', this.objectNameSingular));
+			this.standby(false);
+			this.standby(true, this._progressBar);
+			var ret = new Deferred();
+			when(loaded).then(lang.hitch(this, function() {
+				this._form.ready().then(function() {
+					ret.resolve();
+				});
+			}));
+			return ret;
 		},
 
 		getValues: function() {
