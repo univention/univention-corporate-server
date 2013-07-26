@@ -468,10 +468,7 @@ class Parser(ConfigParser.ConfigParser):
 		''' Gives a list of all sections expect Global '''
 		hosts = []
 		ifile = open(self._filename, 'r')
-		while True:
-			line = ifile.readline()
-			if not line:
-				break
+		for line in ifile:
 			if line.strip() == '' or line[0] in '#;':
 				continue
 			match = ConfigParser.ConfigParser.SECTCRE.match(line)
@@ -479,6 +476,7 @@ class Parser(ConfigParser.ConfigParser):
 				sectname = match.group('header')
 				if sectname != 'Global':
 					hosts.append(sectname)
+		ifile.close()
 		return hosts
 
 def main():
