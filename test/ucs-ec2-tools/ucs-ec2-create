@@ -103,10 +103,15 @@ class VM:
 			fd.close()
 
 	def _get_blockdevicemapping(self):
+		"""
+		Create explicit block device with given size.
+		"""
 		bdm = None
 		if self.aws_cfg.get('ec2_subnet_id'):
-			dev_sda1 = blockdevicemapping.EBSBlockDeviceType()
-			dev_sda1.size = self.aws_cfg.get('ec2_partition_size')
+			dev_sda1 = blockdevicemapping.EBSBlockDeviceType(
+					size = self.aws_cfg.get('ec2_partition_size'),
+					delete_on_termination=True,
+					)
 			bdm = blockdevicemapping.BlockDeviceMapping()
 			bdm['/dev/sda1'] = dev_sda1 
 		return bdm

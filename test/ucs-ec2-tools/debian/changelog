@@ -1,6 +1,7 @@
 ucs-ec2-tools (0.1.8-1) unstable; urgency=low
 
   * Tag instances with Jenkins informations (Bug #31283)
+  * Set delete-on-terminate for manual EBS devices.
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 26 Jul 2013 15:13:17 +0200
 
