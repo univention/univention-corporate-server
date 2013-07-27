@@ -43,6 +43,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: umc/js/types.js:284
+#, python-format
+msgid " ({avail} free)"
+msgstr " ({avail} frei)"
+
 #: umc/js/uvmm.js:174
 #, python-format
 msgid "%(nSelected)d %(objPlural)s of %(nTotal)d selected"

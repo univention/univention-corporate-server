@@ -30,10 +30,11 @@
 
 define([
 	"dojo/_base/array",
+	"dojo/_base/lang",
 	"dojox/string/sprintf",
 	"umc/tools",
 	"umc/i18n!umc/modules/uvmm"
-], function(array, sprintf, tools, _) {
+], function(array, lang, sprintf, tools, _) {
 	var self = {
 		dict2list: function(dict) {
 			var list = [];
@@ -281,7 +282,7 @@ define([
 					}), function(iitem) {
 						var label = iitem.name;
 						if (options.create) {
-							label += ' (' + self.prettyCapacity(iitem.available) + ')';
+							label += lang.replace(_(' ({avail} free)'), {avail: self.prettyCapacity(iitem.available)});
 						}
 						return {
 							id: iitem.name,
