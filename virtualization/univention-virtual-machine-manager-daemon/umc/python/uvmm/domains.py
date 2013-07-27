@@ -200,12 +200,7 @@ class Domains(object):
 
 			# disks
 			for disk in json['disks']:
-				if disk['type'] == Disk.TYPE_FILE:
-					disk['volumeFilename'] = os.path.basename(disk['source'])
-					disk['pool'] = self.get_pool_name(uri, os.path.dirname(disk['source']))
-				else:
-					disk['volumeFilename'] = disk['source']
-					disk['pool'] = None
+				disk['volumeFilename'] = os.path.basename(disk['source']) if disk['pool'] else disk['source']
 				disk['paravirtual'] = disk['target_bus'] in ('virtio', 'xen')
 				disk['volumeType'] = disk['type']
 
