@@ -135,7 +135,8 @@ class Storages(object):
 			'pool': <string: pool name>,
 			'readonly': <boolean>,
 			'size': <int: size in B>,
-			'source': <string: filename>,
+			'source': <string: path>,
+			'volumeFilename': <string: base-filename>,
 			'target_bus': None,
 			'target_dev': '',
 			'type': (file|block|...),
@@ -176,29 +177,18 @@ class Storages(object):
 
 	def storage_volume_remove(self, request):
 		"""
-		Removes a list of volumes located in the given pool.
+		Removes a list of volumes.
 
 		options: {
 			'nodeURI': <node uri>,
-			'volumes': [{
-				'pool': <pool name>,
-				'volumeFilename': <filename>,
-				}, ...]
-				}
+			'volumes': [{source: <file name>}, ...]
+			}
 
 		return:
 		"""
 		self.required_options(request, 'nodeURI', 'volumes')
-		volume_list = []
 		node_uri = request.options['nodeURI']
-		for vol in request.options['volumes']:
-			path = self.get_pool_path(node_uri, vol['pool'])
-			if not path:
-				MODULE.warn(
-						'Could not remove volume %(volumeFilename)s. The pool %(pool)s is not known' % vol
-						)
-				continue
-			volume_list.append(os.path.join(path, vol['volumeFilename']))
+		volume_list = [vol['source'] for vol in request.options['volumes']]
 		self.uvmm.send(
 				'STORAGE_VOLUMES_DESTROY',
 				Callback(self._thread_finish, request),
@@ -213,13 +203,13 @@ class Storages(object):
 		options: [{
 			'domainURI': <domain URI>,
 			'pool': <pool name>,
-			'volumeFilename': <filename>
+			'source': <file name>
 			}, ...]
 
 		return: [{
 			'domainURI': <domain URI>,
 			'pool': <pool name>,
-			'volumeFilename': <filename>,
+			'source': <file name>
 			'deletable': (True|False|None)
 			}, ...]
 
@@ -246,7 +236,7 @@ class Storages(object):
 			pool_path = pool['path']
 			if not pool_path:
 				continue
-			volume_path = os.path.join(pool_path, volume['volumeFilename'])
+			volume_path = volume['source']
 
 			# check if volume is used by any other domain
 			success, result = self.uvmm.send(

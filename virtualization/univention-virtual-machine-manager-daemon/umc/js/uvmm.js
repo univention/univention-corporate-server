@@ -426,7 +426,7 @@ define([
 				var volumes = [];
 				tools.forIn( form._widgets, lang.hitch( this, function( iid, iwidget ) {
 					if ( iwidget instanceof CheckBox && iwidget.get( 'value' ) ) {
-						volumes.push( iwidget.$id$ );
+						volumes.push(iwidget.name);
 					}
 				} ) );
 
@@ -453,7 +453,12 @@ define([
 			deferred = deferred.then( lang.hitch( this, function( response ) {
 				domain_details = response.result;
 				var drive_list = array.map( response.result.disks, function( disk ) {
-					return { domainURI : domainURI, pool : disk.pool, volumeFilename : disk.volumeFilename, source : disk.source };
+					return {
+						domainURI: domainURI,
+						pool: disk.pool,
+						source: disk.source,
+						volumeFilename: disk.volumeFilename
+						};
 				} );
 				return tools.umcpCommand('uvmm/storage/volume/deletable', drive_list );
 			} ) );
@@ -471,7 +476,6 @@ define([
 							name: disk.source,
 							label: lang.replace( _( '{volumeFilename} (Pool: {pool})' ), disk ),
 							value: disk.deletable,
-							$id$: { pool : disk.pool, volumeFilename : disk.volumeFilename }
 						} );
 					} else {
 						failed_disks.push( disk.source );
@@ -484,7 +488,6 @@ define([
 								pool: entities.encode(disk.pool)
 							} ) + '</p>',
 							label: '',
-							$id$: { pool : disk.pool, volumeFilename : disk.volumeFilename }
 						} );
 					}
 				} ) );

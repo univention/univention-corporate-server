@@ -666,25 +666,14 @@ class Domains(object):
 
 		options: {
 			'domainURI': <domain uri>,
-			'volumes': [{
-				'pool': <pool name>,
-				'volumeFilename': <filename>,
-			}, ...]}
+			'volumes': [<filename>...]
+			}
 
 		return:
 		"""
 		self.required_options(request, 'domainURI', 'volumes')
-		volume_list = []
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
-
-		for vol in request.options['volumes']:
-			path = self.get_pool_path(node_uri, vol['pool'])
-			if not path:
-				MODULE.warn(
-						'Could not find volume %(volumeFilename)s. The pool %(pool)s is not known' % vol
-						)
-				continue
-			volume_list.append(os.path.join(path, vol['volumeFilename']))
+		volume_list = request.options['volumes']
 		self.uvmm.send(
 				'DOMAIN_UNDEFINE',
 				Callback(self._thread_finish, request),

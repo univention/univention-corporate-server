@@ -348,11 +348,11 @@ define([
 			var deferred = new Deferred();
 			deferred.resolve();
 			// just of a domain URI is available we need to detach/delete it otherwise we just remove it from the grid
-			if ( undefined !== this.domain.domainURI && disk.volumeFilename && disk.pool) {
+			if (undefined !== this.domain.domainURI && disk.pool && disk.source) {
 				deferred = deferred.then( lang.hitch( this, function() {
 					return tools.umcpCommand('uvmm/storage/volume/deletable', [ {
 						domainURI: this.domain.domainURI,
-						volumeFilename: disk.volumeFilename,
+						source: disk.source,
 						pool: disk.pool
 					} ] );
 				} ) );
@@ -382,8 +382,7 @@ define([
 					if ( action == 'delete' ) {
 						tools.umcpCommand('uvmm/storage/volume/remove', {
 							nodeURI: this.domain.nodeURI,
-							volumes: [ { pool: disk.pool, volumeFilename: disk.volumeFilename } ],
-							pool: disk.pool
+							volumes: [{source: disk.source}],
 						} ).then( lang.hitch( this, function( response ) {
 							this.onUpdateProgress( 1, 1 );
 						} ) );
