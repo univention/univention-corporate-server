@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.6-6) unstable; urgency=low
+
+  * Fix storage pool detection (Bug #32098)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 27 Jul 2013 11:56:31 +0200
+
 univention-virtual-machine-manager-daemon (3.0.6-5) unstable; urgency=low
 
   * Ignore Text in Form for validation (Bug #32097)

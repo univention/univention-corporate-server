@@ -364,7 +364,7 @@ class Storages(object):
 
 		if pool_path:
 			for _uri, pool in pools.items():
-				if pool_path.startswith(pool['path']):
+				if not os.path.relpath(pool_path, pool['path']).startswith('../'):
 					return pool
 
 		return None
