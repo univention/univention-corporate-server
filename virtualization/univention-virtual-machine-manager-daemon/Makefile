@@ -106,3 +106,7 @@ endif
 
 tags: $(shell find src umc -name \*.py)
 	ctags-exuberant -o $@ $^
+
+.PHONY: check
+check:
+	if which jshint >/dev/null; then find umc/js -name \*.js -type f -exec jshint {} +; fi
