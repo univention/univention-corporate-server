@@ -206,58 +206,6 @@ class Storages(object):
 				volumes=volume_list
 				)
 
-	def storage_volume_usedby(self, request):
-		"""
-		Returns a list of domains that use the given volume.
-
-		options: {
-			'nodeURI': <node URI>,
-			'pool': <pool name>,
-			'volumeFilename': <filename>
-			}
-
-		return: [<domain URI>, ...]
-		"""
-		self.required_options(request, 'nodeURI', 'pool', 'volumeFilename')
-
-		def _finished(thread, result, request):
-			"""
-			Process asynchronous UVMM STORAGE_VOLUME_USEDBY answer.
-			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-			if success:
-				if isinstance(data, (list, tuple)):
-					data = ['#'.join(obj) for obj in data]
-				self.finished(request.id, data)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
-
-		pool_path = self.get_pool_path(
-				request.options['nodeURI'],
-				request.options['pool']
-				)
-		if pool_path is None:
-			raise UMC_OptionTypeError(
-					_('The given pool could not be found or is no file pool')
-					)
-		volume = os.path.join(
-				pool_path,
-				request.options['volumeFilename']
-				)
-		self.uvmm.send(
-				'STORAGE_VOLUME_USEDBY',
-				Callback(_finished, request),
-				volume=volume
-				)
-
 	def storage_volume_deletable(self, request):
 		"""
 		Returns a list of domains that use the given volume.
