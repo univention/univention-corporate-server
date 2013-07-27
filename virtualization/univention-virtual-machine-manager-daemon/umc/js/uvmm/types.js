@@ -322,16 +322,22 @@ define([
 		QCOW2: {id: 'qcow2', label: _('Extended format (qcow2)'), preselected: true},
 		getImageFormat: function(options) {
 			var list = [];
-			if (options.type == 'cdrom') {
+			if (!self.POOLS_FILE[options.pool_type]) {
+				list.push(self.RAW);
+			} else if (options.type == 'cdrom') {
 				list.push(self.ISO);
 			} else if (options.type == 'floppy') {
 				list.push(self.RAW);
 			} else {
 				list.push(self.RAW);
-				if (options.domain_type == 'kvm') { // TODO: Check self.POOLS_FILE
+				if (options.domain_type == 'kvm') {
 					// add qcow2 as pre-selected item
 					list.push(self.QCOW2);
 				}
+			}
+			if (list.length === 1) {
+				list = lang.clone(list);
+				list[0].preselected = true;
 			}
 			return list;
 		},

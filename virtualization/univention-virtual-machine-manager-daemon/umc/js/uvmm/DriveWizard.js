@@ -110,9 +110,11 @@ define([
 						name: 'driver_type_new',
 						type: ComboBox,
 						label: _('Image format'),
-						depends: ['driveType'],
+						depends: ['driveType', 'pool_new'],
 						dynamicOptions: lang.hitch(this, function(options) {
+							var poolWidget = this._pages.drive._form.getWidget('pool_new');
 							return {
+								pool_type: poolWidget.store.getValue(poolWidget.item, "type"),
 								type: options.driveType,
 								domain_type: this.domain.domain_type
 							};
@@ -128,7 +130,7 @@ define([
 							return regExp.test(val) && (!this._volumes || !(val in this._volumes));
 						}),
 						invalidMessage: _('A valid filename cannot contain "/", may not start with "." and may not already exist in the storage pool.'),
-						depends: [ 'pool_new', 'driver_type_new' ],
+						depends: ['driver_type_new'], // 'pool_new' by transition
 						dynamicValue: lang.hitch(this, function(options) {
 							return when(types.getVolumes({
 								nodeURI: this._getNodeURI(),
@@ -145,7 +147,9 @@ define([
 								}, this);
 
 								// suggest a filename that does not already exist in the pool
-								var pattern = '{name}-{i}.{format}';
+								var poolWidget = this._pages.drive._form.getWidget('pool_new');
+								var pool_type = poolWidget.store.getValue(poolWidget.item, "type");
+								var pattern = types.POOLS_FILE[pool_type] ? '{name}-{i}.{format}' : '{name}-{i}';
 								var i = 0;
 								var fname = '';
 								do {
@@ -252,9 +256,11 @@ define([
 						name: 'driver_type_exists',
 						type: ComboBox,
 						label: _('Image format'),
-						depends: ['driveType'],
+						depends: ['driveType', 'pool_exists'],
 						dynamicOptions: lang.hitch(this, function(options) {
+							var poolWidget = this._pages.drive._form.getWidget('pool_exists');
 							return {
+								pool_type: poolWidget.store.getValue(poolWidget.item, "type"),
 								type: options.driveType,
 								domain_type: this.domain.domain_type
 							};
