@@ -462,8 +462,9 @@ define([
 				var layout = [ 'question' ];
 				var failed_disks = [];
 				array.forEach( response.result, lang.hitch( this, function( disk ) {
-
-					if ( null !== disk.deletable ) {
+					if (null === disk.pool) {
+						return;
+					} else if (null !== disk.deletable) {
 						layout.push( disk.source );
 						widgets.push( {
 							type: CheckBox,
