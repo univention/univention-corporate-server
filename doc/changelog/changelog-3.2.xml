@@ -1513,6 +1513,10 @@
 		<listitem><simpara>
 		  Some code issues in UVMM have been fixed (<ulink url="&ucsbug;32091">Bug 32091</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The storage pool handling has been overhauled and now better supports different storage pools. Especially a bug has been fixed, which could result in deleting the wrong storage volume when multiple storage pools were used (<ulink url="&ucsbug;32098">Bug 32098</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>
