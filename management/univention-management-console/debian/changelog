@@ -1,3 +1,10 @@
+univention-management-console (6.0.6-1) unstable; urgency=low
+
+  * Bug #32023: make sure an error is thrown if non LDAP user is trying to
+    access user preferences
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 29 Jul 2013 15:16:29 +0200
+
 univention-management-console (6.0.5-1) unstable; urgency=low
 
   * Bug #30744: Add UMCP GET hosts/list command

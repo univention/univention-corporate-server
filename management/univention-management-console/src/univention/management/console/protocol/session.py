@@ -319,6 +319,9 @@ class Processor( signals.Provider ):
 		self.signal_emit( 'response', res )
 
 	def _get_user_obj(self):
+		if not self.__user_dn:
+			# local user (probably root)
+			return None
 		try:
 			# make sure that the UDM users/user module could be initiated
 			if not users_module:
