@@ -88,6 +88,7 @@ char *univention_config_get_string(const char *key)
 			if (!strncmp(line, nvalue, len))
 			{
 				ret = strndup(line + len, strlen(line) - len - 1 ); /* no newline */
+				fclose(file);
 				goto done;
 			}
 		}
@@ -98,8 +99,6 @@ char *univention_config_get_string(const char *key)
     univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO, "Did not find \"%s\"", key);
 done:
 	free(nvalue);
-err:
-	fclose(file);
 	return ret;
 }
 

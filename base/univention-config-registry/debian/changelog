@@ -1,3 +1,9 @@
+univention-config-registry (9.0.3-3) unstable; urgency=low
+
+  * Avoid double fclose in libuniventionconfig (Bug #29964)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Jul 2013 19:14:17 +0200
+
 univention-config-registry (9.0.3-2) unstable; urgency=low
 
   * custom layer not considered in frontend.py, so remove support in
