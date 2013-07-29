@@ -535,6 +535,11 @@
 		  (<ulink url="&ucsbug;28059">Bug 28059</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  Reloading of UCR variables has been improved, and references to the external library pyinotify have been removed
+		  (<ulink url="&ucsbug;31752">Bug 31752</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
 	</para>
   </section>
