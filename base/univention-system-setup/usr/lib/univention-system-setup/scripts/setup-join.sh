@@ -69,7 +69,7 @@ echo "no-ldap" > /var/run/univention-system-setup.ldap
 ucr commit /etc/apt/sources.list.d/*
 
 # Install the server package
-/usr/lib/univention-system-setup/scripts/role/10role
+/usr/lib/univention-system-setup/scripts/05_role/10role
 
 echo "Starting re-configuration of basic settings"
 
@@ -105,7 +105,7 @@ else
 	univention-config-registry unset ldap/translogfile
 fi
 # set root password
-/usr/lib/univention-system-setup/scripts/basis/18root_password
+/usr/lib/univention-system-setup/scripts/10_basis/18root_password
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	realm="$(echo $domainname | tr "[:lower:]" "[:upper:]")"
@@ -127,35 +127,37 @@ else
 fi
 rm -f /etc/machine.secret
 
+# Call scripts which won't be handled by join scripts
+# keyboard, language and timezone
+echo "Starting re-configuration of locales"
+run-parts /usr/lib/univention-system-setup/scripts/15_keyboard/
+run-parts /usr/lib/univention-system-setup/scripts/20_language/
+run-parts /usr/lib/univention-system-setup/scripts/25_defaultlocale/
+
+# Do network stuff
+echo "Starting re-configuration of network"
+run-parts -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/30_net/
+
+run-parts /usr/lib/univention-system-setup/scripts/35_timezone/
+
 # Re-create SSL certificates on DC Master even if the admin didn't change all variables
 # otherwise a lot of appliances will have the same SSL certificate secret
 if [ "$server_role" = "domaincontroller_master" ]; then
 	echo "Starting re-configuration of SSL"
-	/usr/lib/univention-system-setup/scripts/ssl/10ssl --force-recreate
+	/usr/lib/univention-system-setup/scripts/40_ssl/10ssl --force-recreate
 fi
 
 univention-certificate new -name "$hostname.$domainname"
 ln -sf "/etc/univention/ssl/$hostname.$domainname" "/etc/univention/ssl/$hostname"
 
-# Call scripts which won't be handled by join scripts
-# keyboard, language and timezone
-echo "Starting re-configuration of locales"
-run-parts /usr/lib/univention-system-setup/scripts/keyboard/
-run-parts /usr/lib/univention-system-setup/scripts/language/
-run-parts /usr/lib/univention-system-setup/scripts/defaultlocale/
-run-parts /usr/lib/univention-system-setup/scripts/timezone/
-run-parts /usr/lib/univention-system-setup/scripts/modules/
-
-# Do network stuff
-echo "Starting re-configuration of network"
-run-parts -a --network-only -a --appliance-mode -- /usr/lib/univention-system-setup/scripts/net/
+run-parts /usr/lib/univention-system-setup/scripts/45_modules/
 
 # Re-create sources.list files
 ucr commit /etc/apt/sources.list.d/*
 
 # Install selected software
 echo "Starting re-configuration of software packages"
-run-parts /usr/lib/univention-system-setup/scripts/software/
+run-parts /usr/lib/univention-system-setup/scripts/50_software/
 
 eval "$(univention-config-registry shell)"
 
