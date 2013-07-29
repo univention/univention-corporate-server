@@ -579,6 +579,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			Applications now can state that they depend on other Applications (<ulink
+				url="&ucsbug;30077">Bug 30077</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  If an application is installed, the system does not dist-upgrade anymore. If the app is
 		  upgraded, the system still does a dist-upgrade but shows a warning that the dist-upgrade
 		  may include errata updates (<ulink url="&ucsbug;31129">Bug 31129</ulink>, <ulink url="&ucsbug;31278">Bug 31278</ulink>).
