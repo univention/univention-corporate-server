@@ -1,3 +1,10 @@
+univention-config-registry (9.0.3-2) unstable; urgency=low
+
+  * custom layer not considered in frontend.py, so remove support in
+    the C library (Bug #29964)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Jul 2013 18:43:02 +0200
+
 univention-config-registry (9.0.3-1) unstable; urgency=low
 
   * Consider all config_registry layers in the get calls of the C library

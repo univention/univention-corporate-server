@@ -45,7 +45,6 @@
 
 #include <errno.h>
 
-#define BASECONFIG_DIR = "/etc/univention"
 #define BASECONFIG_MAX_LINE 1024
 
 
@@ -95,27 +94,6 @@ char *univention_config_get_string(const char *key)
 
 		fclose(file);
 	}
-
-	char *customfile = getenv( "UNIVENTION_BASECONFIG" );
-	if (customfile) {
-		if ((file = fopen(customfile, "r")) == NULL)
-		{
-			univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "Error on opening \"%s\"", customfile);
-			return NULL;
-		}
-
-
-		while (fgets(line, BASECONFIG_MAX_LINE, file) != NULL)
-		{
-			if (!strncmp(line, nvalue, len))
-			{
-				ret = strndup(line + len, strlen(line) - len - 1 ); /* no newline */
-				goto done;
-			}
-		}
-
-		fclose(file);
-	};
 
     univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO, "Did not find \"%s\"", key);
 done:
