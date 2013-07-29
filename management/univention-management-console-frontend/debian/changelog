@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.42-1) unstable; urgency=low
+
+  * Bug #32023: make sure that non-LDAP users cannot modify favorite modules
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 29 Jul 2013 15:20:31 +0200
+
 univention-management-console-frontend (3.0.41-1) unstable; urgency=low
 
   * Form initialization progress: Code cleanup for Bug #31376

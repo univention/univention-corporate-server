@@ -178,11 +178,15 @@ define([
 		},
 
 		getStatusIconClass: function(item) {
-			return tools.getIconClass('context-menu', 24);
+			if (!_favoritesDisabled) {
+				return tools.getIconClass('context-menu', 24);
+			}
 		},
 
 		getStatusIconTooltip: lang.hitch(this, function(item) {
-			return _('Open context menu');
+			if (!_favoritesDisabled) {
+				return _('Open context menu');
+			}
 		}),
 
 		getItemDescription: function(item) {
@@ -541,7 +545,6 @@ define([
 		_moduleContextMenu: null,
 		_hostInfo: null,
 		_categoriesContainer: null,
-		_favoritesDisabled: false,
 
 		openModule: function(/*String|Object*/ module, /*String?*/ flavor, /*Object?*/ props) {
 			// summary:
@@ -830,6 +833,12 @@ define([
 			return this._moduleStore.getCategory(id);
 		},
 
+		addFavoriteModule: function(/*String*/ id, /*String?*/ flavor) {
+			if (!_favoritesDisabled) {
+				this._moduleStore.addFavoriteModule(id, flavor);
+			}
+		},
+
 		setupGui: function() {
 			// make sure that we have not build the GUI before
 			if (tools.status('setupGui')) {
@@ -1115,6 +1124,10 @@ define([
 		},
 
 		_openModuleContextMenu: function(item, x, y) {
+			if (_favoritesDisabled) {
+				return;
+			}
+
 			this._closeModuleContextMenu();
 			var menu = this._moduleContextMenu = this._createModuleContextMenu(item);
 
