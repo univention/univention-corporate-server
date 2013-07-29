@@ -113,7 +113,7 @@
 						this one correctly. These applications will not be installed
 						automatically if not installed yet but the user has to explicitely
 						install them after getting a message which applications are
-						missing.
+						missing. New in UCS 3.2.
 					</simpara>
 				</listitem>
 			</varlistentry>
