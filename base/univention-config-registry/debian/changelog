@@ -1,3 +1,10 @@
+univention-config-registry (9.0.3-1) unstable; urgency=low
+
+  * Consider all config_registry layers in the get calls of the C library
+    (Bug #29964)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Jul 2013 18:27:15 +0200
+
 univention-config-registry (9.0.2-1) unstable; urgency=low
 
   * Use 00644 as default mode for UCR files instead of 00744

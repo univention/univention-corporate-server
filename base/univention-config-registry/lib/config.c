@@ -45,9 +45,24 @@
 
 #include <errno.h>
 
-#define BASECONFIG_FILE     "/etc/univention/base.conf"
+#define BASECONFIG_DIR = "/etc/univention"
 #define BASECONFIG_MAX_LINE 1024
 
+
+const char *SCOPES[] = {
+	"forced",
+	"schedule",
+	"ldap",
+	"normal",
+	"custom",
+	NULL};
+
+const char *BASES[] = {
+			"/etc/univention/base-forced.conf",
+			"/etc/univention/base-schedule.conf",
+			"/etc/univention/base-ldap.conf",
+			"/etc/univention/base.conf",
+			NULL};
 
 char *univention_config_get_string(const char *key)
 {
@@ -56,25 +71,52 @@ char *univention_config_get_string(const char *key)
 	char *nvalue;
 	int len;
 	char *ret = NULL;
-
-	if ((file = fopen(BASECONFIG_FILE, "r")) == NULL)
-	{
-		univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "Error on opening \"%s\"", BASECONFIG_FILE);
-		return NULL;
-	}
+	int i;
 
 	len = asprintf(&nvalue, "%s: ", key);
 	if (len < 0)
-		goto err;
+		return ret;
 
-	while (fgets(line, BASECONFIG_MAX_LINE, file) != NULL)
-	{
-		if (!strncmp(line, nvalue, len))
+	for (i = 0; BASES[i] != NULL; i++) {
+		if ((file = fopen(BASES[i], "r")) == NULL)
 		{
-			ret = strndup(line + len, strlen(line) - len - 1 ); /* no newline */
-			goto done;
+			univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "Error on opening \"%s\"", BASES[i]);
+			continue;
 		}
+
+		while (fgets(line, BASECONFIG_MAX_LINE, file) != NULL)
+		{
+			if (!strncmp(line, nvalue, len))
+			{
+				ret = strndup(line + len, strlen(line) - len - 1 ); /* no newline */
+				goto done;
+			}
+		}
+
+		fclose(file);
 	}
+
+	char *customfile = getenv( "UNIVENTION_BASECONFIG" );
+	if (customfile) {
+		if ((file = fopen(customfile, "r")) == NULL)
+		{
+			univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "Error on opening \"%s\"", customfile);
+			return NULL;
+		}
+
+
+		while (fgets(line, BASECONFIG_MAX_LINE, file) != NULL)
+		{
+			if (!strncmp(line, nvalue, len))
+			{
+				ret = strndup(line + len, strlen(line) - len - 1 ); /* no newline */
+				goto done;
+			}
+		}
+
+		fclose(file);
+	};
+
     univention_debug(UV_DEBUG_USERS, UV_DEBUG_INFO, "Did not find \"%s\"", key);
 done:
 	free(nvalue);
