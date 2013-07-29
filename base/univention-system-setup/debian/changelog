@@ -1,4 +1,10 @@
-univention-system-setup (7.0.22-2) unstable; urgency=low
+univention-system-setup (7.0.23-2) UNRELEASED; urgency=low
+
+  * fix missing python import (Bug #29714)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Jul 2013 16:39:22 +0200
+
+univention-system-setup (7.0.23-1) unstable; urgency=low
 
   * define sort order for setup scripts (Bug #29714)
 

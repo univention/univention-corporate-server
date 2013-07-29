@@ -45,6 +45,7 @@ import apt
 import psutil
 import csv
 import imp
+import stat
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
