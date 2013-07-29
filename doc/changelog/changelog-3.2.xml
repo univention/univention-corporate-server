@@ -90,6 +90,18 @@
 			net-snmp: CVE-2012-2141 (<ulink url="&ucsbug;29156">Bug 29156</ulink>).
 		  </simpara></listitem>
 
+		  <listitem><simpara>
+			mesa: CVE-2013-1993 (<ulink url="&ucsbug;31458">Bug 31458</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			poppler: CVE-2013-1788 CVE-2013-1790 (<ulink url="&ucsbug;30941">Bug 30941</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			postgres-8.4: CVE-2013-1900 (<ulink url="&ucsbug;30983">Bug 30983</ulink>).
+		  </simpara></listitem>
+
 		</itemizedlist>
 
 	  </simpara></listitem>
