@@ -106,6 +106,18 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
+				<term>RequiredApps</term>
+				<listitem>
+					<simpara>
+						Application IDs for apps that need to be installed in order to run
+						this one correctly. These applications will not be installed
+						automatically if not installed yet but the user has to explicitely
+						install them after getting a message which applications are
+						missing.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
 				<term>ConflictedSystemPackages</term>
 				<listitem>
 					<simpara>
