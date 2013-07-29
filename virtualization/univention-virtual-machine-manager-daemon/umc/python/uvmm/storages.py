@@ -39,6 +39,7 @@ from univention.management.console.modules import UMC_OptionTypeError
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from univention.uvmm.protocol import Disk
+from univention.uvmm.storage import POOLS_RW
 
 from urlparse import urldefrag
 from notifier import Callback
@@ -52,18 +53,6 @@ class Storages(object):
 	"""
 	UMC functions for UVMM storage pool handling.
 	"""
-
-	POOLS_RW = set(('dir', 'disk', 'fs', 'netfs', 'logical'))
-	POOLS_TYPE = {
-			'dir': Disk.TYPE_FILE,
-			'disk': Disk.TYPE_BLOCK,
-			'fs': Disk.TYPE_FILE,
-			'iscsi': Disk.TYPE_BLOCK,
-			'logical': Disk.TYPE_BLOCK,
-			'mpath': Disk.TYPE_BLOCK,
-			'netfs': Disk.TYPE_FILE,
-			'scsi': Disk.TYPE_BLOCK,
-			}
 
 	def __init__(self):
 		self.storage_pools = {}
@@ -230,7 +219,7 @@ class Storages(object):
 			if not pool:
 				continue
 			# Pool must be modifiable
-			if pool['type'] not in Storages.POOLS_RW:
+			if pool['type'] not in POOLS_RW:
 				continue
 			# Pool must be mapped to the file system
 			pool_path = pool['path']

@@ -45,6 +45,18 @@ import univention.config_registry as ucr
 import time
 from xml.sax.saxutils import escape as xml_escape
 
+POOLS_RW = set(('dir', 'disk', 'fs', 'netfs', 'logical'))
+POOLS_TYPE = {
+		'dir': Disk.TYPE_FILE,
+		'disk': Disk.TYPE_BLOCK,
+		'fs': Disk.TYPE_FILE,
+		'iscsi': Disk.TYPE_BLOCK,
+		'logical': Disk.TYPE_BLOCK,
+		'mpath': Disk.TYPE_BLOCK,
+		'netfs': Disk.TYPE_FILE,
+		'scsi': Disk.TYPE_BLOCK,
+		}
+
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
@@ -135,7 +147,7 @@ def create_storage_volume(conn, domain, disk):
 			'size': size,
 			}
 
-	if pool_type in ('dir', 'fs', 'netfs'):
+	if POOLS_TYPE.get(pool_type) == Disk.TYPE_FILE:
 		if hasattr(disk, 'driver_type') and disk.driver_type not in (None, 'iso', 'aio'):
 			values['type'] = xml_escape(disk.driver_type)
 		else:
@@ -228,14 +240,17 @@ def get_storage_volumes(node, pool_name, type=None):
 		target = doc.getElementsByTagName( 'target' )[ 0 ]
 		disk.source = target.getElementsByTagName( 'path' )[ 0 ].firstChild.nodeValue
 
-		if pool_type in ('dir', 'fs', 'netfs'):
+		disk.type = POOLS_TYPE.get(pool_type)
+		if disk.type == Disk.TYPE_FILE:
 			disk.driver_type = target.getElementsByTagName('format')[0].getAttribute('type')
-			disk.type = Disk.TYPE_FILE
 			if disk.driver_type == 'iso':
 				disk.device = Disk.DEVICE_CDROM
 			else:
 				disk.device = Disk.DEVICE_DISK
-		elif pool_type in ('logical', 'disk', 'iscsi', 'scsi', 'mpath') or disk.source.startswith('/dev/'):
+		elif disk.type == Disk.TYPE_BLOCK:
+			disk.device = Disk.DEVICE_DISK
+			disk.driver_type = None # raw
+		elif disk.source.startswith('/dev/'):
 			disk.type = Disk.TYPE_BLOCK
 			disk.device = Disk.DEVICE_DISK
 			disk.driver_type = None # raw

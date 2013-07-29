@@ -44,6 +44,7 @@ from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import SearchSanitizer
 
 from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
+from univention.uvmm.storage import POOLS_TYPE
 
 from urlparse import urlsplit, urldefrag
 from notifier import Callback
@@ -325,7 +326,7 @@ class Domains(object):
 
 		try:
 			pool_type = pool['type']
-			drive.type = self.POOLS_TYPE[pool_type]
+			drive.type = POOLS_TYPE[pool_type]
 		except LookupError:
 			if drive.source.startswith('/dev/'):
 				drive.type = Disk.TYPE_BLOCK
