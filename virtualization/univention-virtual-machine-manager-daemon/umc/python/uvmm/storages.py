@@ -282,7 +282,7 @@ class Storages(object):
 
 	# helper functions
 
-	def get_pool(self, node_uri, pool_name=None, pool_path=None):
+	def get_pool(self, node_uri, pool_name):
 		"""
 		Returns a pool object or None if the pool could not be found.
 		"""
@@ -296,41 +296,5 @@ class Storages(object):
 					)
 			pools = dict([(pool.name, object2dict(pool)) for pool in data])
 			self.storage_pools[node_uri] = pools
+		return pools.get(pool_name)
 
-		if pool_name:
-			return pools.get(pool_name)
-
-		if pool_path:
-			for _uri, pool in pools.items():
-				if not os.path.relpath(pool_path, pool['path']).startswith('../'):
-					return pool
-
-		return None
-
-	def get_pool_path(self, node_uri, pool_name):
-		"""
-		returns the absolute path for the given pool name on the node node_uri.
-		"""
-		pool = self.get_pool(node_uri, pool_name)
-		if pool is None:
-			return None
-		return pool['path']
-
-	def get_pool_name(self, node_uri, pool_path):
-		"""
-		returns the pool name for the given pool path on the node node_uri.
-		"""
-		pool = self.get_pool(node_uri, pool_path=pool_path)
-		if pool is None:
-			return None
-		return pool['name']
-
-	def is_file_pool(self, node_uri, pool_name):
-		"""
-		returns if the storage pool uses files for storage volumes.
-		"""
-		pool = self.get_pool(node_uri, pool_name)
-		if pool is None:
-			return None
-
-		return Disk.TYPE_FILE == Storages.POOLS_TYPE[pool['type']]

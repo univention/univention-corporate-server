@@ -299,7 +299,7 @@ class Domains(object):
 
 		pool_name = disk.get('pool')
 		if pool_name:
-			pool = self.get_pool(node_uri, pool_name=pool_name)
+			pool = self.get_pool(node_uri, pool_name)
 		else:
 			pool = {}
 
