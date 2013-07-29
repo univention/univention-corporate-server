@@ -1,8 +1,15 @@
-univention-system-setup (7.0.23-2) UNRELEASED; urgency=low
+univention-system-setup (7.0.23-3) unstable; urgency=low
+
+  * add traceback to debug message in case an exception is raied during
+    UMC setup save (Bug #29714)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Jul 2013 17:17:48 +0200
+
+univention-system-setup (7.0.23-2) unstable; urgency=low
 
   * fix missing python import (Bug #29714)
 
- -- Arvid Requate <requate@univention.de>  Mon, 29 Jul 2013 16:39:22 +0200
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Jul 2013 17:16:29 +0200
 
 univention-system-setup (7.0.23-1) unstable; urgency=low
 

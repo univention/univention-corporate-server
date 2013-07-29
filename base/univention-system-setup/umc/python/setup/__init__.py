@@ -174,6 +174,9 @@ class Instance(umcm.Base):
 				# done :)
 				self._finishedResult = True
 				return True
+			except:
+				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
+				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
 			finally:
 				obj._finishedLock.release()
 
