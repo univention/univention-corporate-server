@@ -273,6 +273,11 @@
 		  step, otherwise the file might be not completley written if UCR tries to read a variable
 		  (<ulink url="&ucsbug;31725">Bug 31725</ulink>, <ulink url="&ucsbug;31853">Bug 31853</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCRV; C library, used by Univention Directory Listener, now considers all layers of &ucsUCR;
+		  (<ulink url="&ucsbug;29964">Bug 29964</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
 
@@ -771,6 +776,10 @@
 
 		<listitem><simpara>
 		  The wording of DC Slave has been unified (<ulink url="&ucsbug;30773">Bug 30773</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The system setup script order is now defined properly (<ulink url="&ucsbug;29714">Bug 29714</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
