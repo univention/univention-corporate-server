@@ -45,7 +45,7 @@ from uvmm_ldap import ldap_annotation, LdapError, LdapConnectionError, ldap_modi
 import univention.admin.uexceptions
 from univention.uvmm.eventloop import *
 import threading
-from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError, storage_pools
+from storage import create_storage_pool, create_storage_volume, destroy_storage_volumes, get_domain_storage_volumes, StorageError, get_pool_info
 from protocol import Data_Domain, Data_Node, Data_Snapshot, Disk, Interface, Graphic
 from network import network_start, network_find_by_bridge, NetworkError
 import copy
@@ -615,13 +615,15 @@ class Node(PersistentCached):
 
 	def _register_default_pool( self ):
 		'''create a default storage pool if not available'''
-		for pool in storage_pools(node=self):
-			if pool.name == 'default':
-				logger.debug("default pool already registered on %s" % self.pd.name)
-				break
-		else:
+		try:
+			get_pool_info(self, 'default')
+			logger.debug("default pool already registered on %s" % self.pd.name)
+		except KeyError:
 			logger.info("creating default pool on %s" % self.pd.name)
-			create_storage_pool( self.conn, configRegistry.get( 'uvmm/pool/default/path', '/var/lib/libvirt/images' ) )
+			create_storage_pool(
+					self.conn,
+					configRegistry.get('uvmm/pool/default/path', '/var/lib/libvirt/images')
+					)
 
 	def update_once(self):
 		"""Update once on (re-)connect."""

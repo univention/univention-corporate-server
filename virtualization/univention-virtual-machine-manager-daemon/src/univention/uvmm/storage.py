@@ -415,9 +415,21 @@ def destroy_storage_volumes(conn, volumes, ignore_error=False):
 				raise
 
 
-def __get_storage_pool_info(conn, name):
-	"""Get 'protocol.Data_Pool' instance for named pool."""
-	pool = conn.storagePoolLookupByName( name )
+def get_pool_info(node, name):
+	"""
+	Get 'protocol.Data_Pool' instance for named pool.
+	"""
+	try:
+		pool = node.conn.storagePoolLookupByName( name )
+	except libvirt.libvirtError, ex:
+		if ex.get_error_code() == libvirt.VIR_ERR_NO_STORAGE_POOL:
+			raise KeyError(name)
+		logger.error(ex)
+		raise StorageError(
+				_('Error listing pools at "%(uri)s": %(error)s'),
+				uri=node.pd.uri,
+				error=ex.get_error_message(),
+				)
 	xml = pool.XMLDesc( 0 )
 	doc = parseString( xml )
 	res = Data_Pool()
@@ -432,7 +444,9 @@ def __get_storage_pool_info(conn, name):
 
 
 def storage_pools(node):
-	"""Get 'protocol.Data_Pool' instance for all pools."""
+	"""
+	Get 'protocol.Data_Pool' instance for all (active) pools.
+	"""
 	if node.conn is None:
 		raise StorageError(
 				_('Error listing pools at "%(uri)s": %(error)s'),
@@ -441,8 +455,8 @@ def storage_pools(node):
 				)
 	try:
 		pools = []
-		for name in timeout(node.conn.listStoragePools)() + timeout(node.conn.listDefinedStoragePools)():
-			pool = __get_storage_pool_info(node.conn, name)
+		for name in timeout(node.conn.listStoragePools)():
+			pool = get_pool_info(node, name)
 			pools.append( pool )
 		return pools
 	except TimeoutError, ex:

@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.6-7) unstable; urgency=low
+
+  * Ignore inactive storage pools (Bug #32098)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 29 Jul 2013 09:48:25 +0200
+
 univention-virtual-machine-manager-daemon (3.0.6-6) unstable; urgency=low
 
   * Fix storage pool detection (Bug #32098)
