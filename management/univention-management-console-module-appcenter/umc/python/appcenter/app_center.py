@@ -172,7 +172,7 @@ class Application(object):
 				self._options[ikey] = 0
 
 		# parse list values
-		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'serverrole'):
+		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'serverrole'):
 			ival = self.get(ikey)
 			if ival:
 				self._options[ikey] = self._reg_comma.split(ival)
@@ -504,7 +504,9 @@ class Application(object):
 		cannot_install_reason = res['cannot_install_reason']
 
 		res['can_install'] = cannot_install_reason is None
-		res['is_installed'] = res['can_uninstall'] = cannot_install_reason == 'installed'
+		res['is_installed'] = cannot_install_reason == 'installed'
+		res['cannot_uninstall_reason'], res['cannot_uninstall_reason_detail'] = self.cannot_uninstall_reason(package_manager)
+		res['can_uninstall'] = res['cannot_uninstall_reason'] is None
 		res['cannot_update_reason'], res['cannot_update_reason_detail'] = self.cannot_update_reason(package_manager)
 		res['can_update'] = res['cannot_update_reason'] is None # faster than self.can_be_updated()
 		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
@@ -558,6 +560,7 @@ class Application(object):
 			return 'hardware_requirements', _('The application requires %(minimum)d MB of free RAM but only %(current)d MB are available.') % {'minimum' : self.get('minphysicalram'), 'current' : get_current_ram_available()}
 		else:
 			conflict_packages = []
+			unmet_packages = []
 			for package in self.get('conflictedsystempackages'):
 				if package_manager.is_installed(package):
 					conflict_packages.append(package)
@@ -568,8 +571,13 @@ class Application(object):
 							# can conflict multiple times: conflicts with
 							# APP-1.1 and APP-1.2, both named APP
 							conflict_packages.append(app.name)
+				if app.id in self.get('requiredapps'):
+					if not app.is_installed(package_manager):
+						unmet_packages.append(app.name)
 			if conflict_packages:
 				return 'conflict', conflict_packages
+			if unmet_packages:
+				return 'unmet', unmet_packages
 		return None, None
 
 	def is_installed(self, package_manager):
@@ -577,6 +585,20 @@ class Application(object):
 
 	def can_be_installed(self, package_manager, check_is_installed=True):
 		return not bool(self.cannot_install_reason(package_manager, check_is_installed)[0])
+
+	def cannot_uninstall_reason(self, package_manager):
+		if not self.is_installed(package_manager):
+			return 'not_installed', None
+		unmet_packages = []
+		for app in self.all():
+			if self.id in app.get('requiredapps') and app.is_installed(package_manager):
+				unmet_packages.append(app.name)
+		if unmet_packages:
+			return 'unmet', unmet_packages
+		return None, None
+
+	def can_be_uninstalled(self, package_manager):
+		return self.cannot_uninstall_reason(package_manager)[0] is None
 
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables

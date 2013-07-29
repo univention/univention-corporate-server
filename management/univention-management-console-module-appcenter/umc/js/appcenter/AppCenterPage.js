@@ -666,10 +666,24 @@ define([
 			if (cannot_install_reason == 'hardware_requirements') {
 				return cannot_install_reason_detail;
 			} else if (cannot_install_reason == 'conflict') {
-				txt = _('This application conflicts with the following Applications/Packages. Uninstall them first.');
+				txt = _('%s conflicts with the following Applications/Packages. Uninstall them first.', values.name);
+				txt += '<ul><li>' + cannot_install_reason_detail.join('</li><li>') + '</li></ul>';
+			} else if (cannot_install_reason == 'unmet') {
+				txt = _('%s requires the following Applications. Install them first.', values.name);
 				txt += '<ul><li>' + cannot_install_reason_detail.join('</li><li>') + '</li></ul>';
 			} else if (cannot_install_reason == 'wrong_serverrole') {
-				txt = '<p>' + _('This application cannot be installed on the current server role (%(reason_detail)s). In order to install the application, one of the following roles is necessary: %(server_roles)s', {reason_detail: cannot_install_reason_detail, server_roles: values.serverrole.join(', ')}) + '</p>';
+				txt = '<p>' + _('%(name)s cannot be installed on the current server role (%(reason_detail)s). In order to install the application, one of the following roles is necessary: %(server_roles)s', {name: values.name, reason_detail: cannot_install_reason_detail, server_roles: values.serverrole.join(', ')}) + '</p>';
+			}
+			return txt;
+		},
+
+		_detail_field_custom_cannot_uninstall_reason: function(values) {
+			var cannot_uninstall_reason = values.cannot_uninstall_reason;
+			var cannot_uninstall_reason_detail = values.cannot_uninstall_reason_detail;
+			var txt = '';
+			if (cannot_uninstall_reason == 'unmet') {
+				txt = _('%s is required for the following Applications to work. Uninstall them first.', values.name);
+				txt += '<ul><li>' + cannot_uninstall_reason_detail.join('</li><li>') + '</li></ul>';
 			}
 			return txt;
 		},
@@ -722,6 +736,7 @@ define([
 				'defaultpackagesmaster',
 				'cannot_install_reason',
 				'cannot_update_reason',
+				'cannot_uninstall_reason',
 				'notifyvendor',
 				'allows_using'
 			];
@@ -743,6 +758,7 @@ define([
 				'defaultpackagesmaster': _("Packages for master system"),
 				'cannot_install_reason': _("Installation not possible"),
 				'cannot_update_reason': _("Upgrade not possible"),
+				'cannot_uninstall_reason': _("Uninstallation not possible"),
 				'notifyvendor': _("Email notification"),
 				'allows_using': _("UCS License Key")
 			};
@@ -962,7 +978,6 @@ define([
 					if (func === 'install' && app.umc_module) {
 						// hack it into favorites: the app is not yet known
 						UMCApplication.addFavoriteModule(app.umc_module, app.umc_flavor);
-						UMCApplication._saveFavorites();
 					}
 					var readmeRead;
 					if (func === 'install') {
