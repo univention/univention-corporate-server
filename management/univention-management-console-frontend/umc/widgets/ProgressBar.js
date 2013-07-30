@@ -125,7 +125,6 @@ define([
 				undefined, // resolve()
 				undefined, // cancel()
 				lang.hitch(this, function(result) { // progress()
-					console.log(result);
 					this.setInfo(result.component, result.message, result.percentage, result.errors, result.critical);
 				})
 			);

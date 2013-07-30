@@ -704,6 +704,57 @@ define([
 			return res;
 		},
 
+		forEachAsync: function(/*Array*/ list, /*Function*/ callback, /*Object?*/ scope, /*Integer?*/ chunkSize, /*Integer?*/ timeout) {
+			// summary:
+			// 		Asynchronous forEach function to process large intensive tasks.
+			// description:
+			//		This asynchronous forEach function allows to process large lists with
+			//		computation intensive code without blocking the GUI.
+			//		This is done by splitting up all data elements into chunks which are
+			//		processed one after another by calling setTimeout. This allows other
+			//		events to be executed in between the computationally intensive tasks.
+			// list: Array
+			// 		Array of elements to be processed.
+			// callback: Function
+			// 		Callback function that is called for each element with arguments (element, index).
+			// scope: Object?
+			// 		Optional scope in which the callback function is executed.
+			// chunkSize: Integer?
+			//		Number of elements that are processed sequentially (default=1).
+			// timeout: Integer?
+			//		Milliseconds to wait until the next chunk is processed (default=0).
+			chunkSize = chunkSize || 1;
+			scope = scope || _window.global;
+			timeout = timeout || 0;
+
+			var nChunks = Math.ceil(list.length / chunkSize);
+			var nChunksDone = 0;
+			var deferred = new Deferred();
+			var _hasFinished = function() {
+				++nChunksDone;
+				if (nChunksDone >= nChunks) {
+					deferred.resolve();
+					return true;
+				}
+				return false;
+			};
+
+			var _processChunk = function(istart) {
+				for (var i = istart; i < list.length && i < istart + chunkSize; ++i) {
+					lang.hitch(scope, callback, list[i], i)();
+				}
+				if (!_hasFinished()) {
+					// process next chunk asynchronously by calling setTimeout
+					setTimeout(lang.hitch(scope, _processChunk, istart + chunkSize), timeout);
+				}
+			};
+
+			// start processing
+			setTimeout(lang.hitch(scope, _processChunk, 0), 0);
+
+			return deferred;
+		},
+
 		assert: function(/* boolean */ booleanValue, /* string? */ message){
 			// summary:
 			// 		Throws an exception if the assertion fails.

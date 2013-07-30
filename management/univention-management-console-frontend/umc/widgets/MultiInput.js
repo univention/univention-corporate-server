@@ -81,11 +81,17 @@ define([
 
 		_valuesLoaded: false,
 
+		// deferred for overall process (built + loaded dependencies)
 		_readyDeferred: null,
+
+		// deferred for built process
+		_allWidgetsBuiltDeferred: null,
 
 		_startupDeferred: null,
 
 		_blockChangeEvents: false,
+
+		_hasSubtypeLabel: false,
 
 		_createHandler: function(ifunc) {
 			// This handler will be called by all subwidgets of the MultiInput widget.
@@ -126,10 +132,15 @@ define([
 			this._readyDeferred = new Deferred();
 
 			this._startupDeferred = new Deferred();
+			this._allWidgetsBuiltDeferred = new Deferred();
 
 			// check the property 'subtypes'
 			tools.assert(this.subtypes instanceof Array,
 					'umc/widgets/ContainerWidget: The property subtypes needs to be a string or an array of strings: ' + this.subtypes);
+
+			this._hasSubtypeLabel = array.some(this.subtypes, function(iwidget) {
+				return iwidget.label;
+			});
 
 			// initiate other properties
 			this._rowContainers = [];
@@ -171,7 +182,7 @@ define([
 			this.inherited(arguments);
 
 			// add empty element
-			this._appendElements(1);
+			this._appendRows();
 		},
 
 		_loadValues: function(depends) {
@@ -179,7 +190,7 @@ define([
 			this._lastDepends = depends;
 			array.forEach(this._widgets, function(iwidgets) {
 				array.forEach(iwidgets, function(jwidget) {
-					if ('_loadValues' in jwidget) {
+					if (jwidget && '_loadValues' in jwidget) {
 						jwidget._loadValues(depends);
 					}
 				});
@@ -187,6 +198,7 @@ define([
 		},
 
 		_setAllValues: function(_valList) {
+			var _valList = lang.clone(_valList);
 			this._blockChangeEvents = true;
 			var valList = _valList;
 			if (!(valList instanceof Array)) {
@@ -196,45 +208,46 @@ define([
 			// adjust the number of rows
 			var diff = valList.length - this._nRenderedElements;
 			if (diff > 0) {
-				this._appendElements(diff);
+				this._appendRows(diff);
 			}
 			else if (diff < 0) {
 				this._popElements(-diff);
 			}
 
-			// set all values
-			array.forEach(valList, function(ival, irow) {
-				if (irow >= this._widgets.length) {
-					// break
-					return false;
-				}
-
-				var rowVals = [];
-				if (typeof ival == "string") {
-					// entry is string .. we need to parse it if we have a delimiter
-					if (this.delimiter) {
-						rowVals = ival.split(this.delimiter);
+			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
+				// set all values
+				array.forEach(valList, function(ival, irow) {
+					if (irow >= this._widgets.length) {
+						return;
 					}
-					else {
-						rowVals = [ ival ];
-					}
-				}
-				else if (ival instanceof Array) {
-					rowVals = ival;
-				}
 
-				// set values
-				for (var j = 0; j < this.subtypes.length; ++j) {
-					var val = j >= rowVals.length ? '' : rowVals[j];
-					this._widgets[irow][j].set('value', val);
-
-					// for dynamic combo boxes, we need to save the value as "initial value"
-					if (this._widgets[irow][j].setInitialValue) {
-						this._widgets[irow][j].setInitialValue(val, false);
+					var rowVals = [];
+					if (typeof ival == "string") {
+						// entry is string .. we need to parse it if we have a delimiter
+						if (this.delimiter) {
+							rowVals = ival.split(this.delimiter);
+						}
+						else {
+							rowVals = [ ival ];
+						}
 					}
-				}
-			}, this);
-			this._blockChangeEvents = false;
+					else if (ival instanceof Array) {
+						rowVals = ival;
+					}
+
+					// set values
+					for (var j = 0; j < this.subtypes.length; ++j) {
+						var val = j >= rowVals.length ? '' : rowVals[j];
+						this._widgets[irow][j].set('value', val);
+
+						// for dynamic combo boxes, we need to save the value as "initial value"
+						if (this._widgets[irow][j].setInitialValue) {
+							this._widgets[irow][j].setInitialValue(val, false);
+						}
+					}
+				}, this);
+				this._blockChangeEvents = false;
+			}));
 		},
 
 		_setValueAttr: function(_vals) {
@@ -252,22 +265,29 @@ define([
 		},
 
 		_setDisabledAttr: function ( value ) {
-			var i;
-			for ( i = 0; i < this._rowContainers.length; ++i) {
-				array.forEach( this._rowContainers[ i ].getChildren(), function( widget ) {
-					widget.set( 'disabled', value );
-				} );
-			}
-			this.disabled = value;
+			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
+				var i;
+				for ( i = 0; i < this._rowContainers.length; ++i) {
+					var irow = this._rowContainers[i];
+					array.forEach( irow ? irow.getChildren() : [], function( widget ) {
+						widget.set('disabled', value);
+					} );
+				}
+			}));
+			this._set('disabled', value);
 		},
 
 		_getAllValues: function() {
-			var i, j, val, isSet, vals = [], rowVals = [];
+			var i, j, jwidget, val, isSet, vals = [], rowVals = [];
 			for (i = 0; i < this._widgets.length; ++i) {
 				rowVals = [];
 				isSet = false;
 				for (j = 0; j < this._widgets[i].length; ++j) {
-					val = this._widgets[i][j].get('value');
+					jwidget = this._widgets[i][j];
+					if (!jwidget) {
+						continue;
+					}
+					val = jwidget.get('value');
 					isSet = isSet || ('' !== val);
 					if (!tools.inheritsFrom(this._widgets[i][j], 'umc.widgets.Button')) {
 						rowVals.push(val);
@@ -315,161 +335,211 @@ define([
 				return;
 			}
 
-			// verify whether label information for subtypes are given
-			var hasSubTypeLabels = false;
-			array.forEach(this.subtypes, function(iwidget) {
-				hasSubTypeLabels = hasSubTypeLabels || iwidget.label;
-			});
-
 			// create 'new' button
 			var btn = this.own(new Button({
 				disabled: this.disabled,
 				iconClass: 'umcIconAdd',
-				onClick: lang.hitch(this, '_appendElements', 1),
+				onClick: lang.hitch(this, '_appendRows', 1),
 				'class': 'umcMultiInputAddButton'
 			}))[0];
 
 			// wrap a button with a LabelPane
 			this._newButton = this.own(new LabelPane({
 				content: btn,
-				label: this._nRenderedElements === 1 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
+				label: this._nRenderedElements === 1 && this._hasSubtypeLabel ? '&nbsp;' : '' // only keep the label for the first row
 			}))[0];
 
 			// add button to last row
-			this._rowContainers[this._rowContainers.length - 1].addChild(this._newButton);
+			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
+				this._rowContainers[this._rowContainers.length - 1].addChild(this._newButton);
+			}));
 		},
 
-		_appendElements: function(n) {
-			if (n < 1) {
-				return;
+		_updateReadyDeferred: function() {
+			// check all current elements whether they are ready
+			var nReady = 0;
+			var nNoReadyElements = 0; // num of elements that do not have a ready method
+			var nElements = 0;
+			var nBuiltElements = 0;
+			var i, j;
+			for (i = 0; i < this._widgets.length; ++i) {
+				for (j = 0; j < this._widgets[i].length; ++j, ++nElements) {
+					//console.log(lang.replace('### MultiInput: widget[{0}][{1}]: waiting -> ', [i, j]), this._widgets[i][j].ready());
+					var jwidget = this._widgets[i][j];
+					nBuiltElements += jwidget ? 1 : 0;
+					var jreadyDeferred = jwidget && jwidget.ready ? jwidget.ready() : null;
+					if (!jreadyDeferred) {
+						++nNoReadyElements;
+					}
+					else if (jreadyDeferred.isFulfilled()) {
+						++nReady;
+					}
+				}
 			}
 
-			// initiate a new Deferred object in case there is none already pending
-			if (this._readyDeferred.isFulfilled()) {
+
+			// initiate new Deferred objects if none is pending
+			var overallProcess = (nReady + nBuiltElements) / (2 * nElements - nNoReadyElements);
+			if (overallProcess < 1 && this._readyDeferred.isFulfilled()) {
 				this._readyDeferred = new Deferred();
+			}
+			if (nBuiltElements < nElements && this._allWidgetsBuiltDeferred.isFulfilled()) {
+				this._allWidgetsBuiltDeferred = new Deferred();
+			}
+
+			// update the deferred's progress
+			if (!this._readyDeferred.isFulfilled()) {
+				this._readyDeferred.progress({
+					percentage: 100 * overallProcess
+				});
+			}
+
+			if (overallProcess >= 1 && !this._readyDeferred.isFulfilled()) {
+				// all elements are ready
+				this._readyDeferred.resolve();
+				this.onValuesLoaded();
+			}
+
+			if (nBuiltElements == nElements && !this._allWidgetsBuiltDeferred.isFulfilled()) {
+				// all elements have been built
+				this._allWidgetsBuiltDeferred.resolve();
+			}
+		},
+
+		__appendRow: function(irow) {
+			var order = [], widgetConfs = [];
+			array.forEach(this.subtypes, function(iwidget, i) {
+				// add the widget configuration dict to the list of widgets
+				var iname = '__' + this.name + '-' + irow + '-' + i;
+				var iconf = lang.mixin({}, iwidget, {
+					disabled: this.disabled,
+					threshold: this.threshold, // for UDM-threshold
+					name: iname,
+					value: '',
+					dynamicValues: lang.partial(iwidget.dynamicValues, iname)
+				});
+				if (iwidget.dynamicValuesInfo) {
+					iconf.dynamicValuesInfo = lang.partial(iwidget.dynamicValuesInfo, iname);
+				}
+				widgetConfs.push(iconf);
+
+				// add the name of the widget to the list of widget names
+				order.push(iname);
+			}, this);
+
+
+			// render the widgets
+			var widgets = render.widgets(widgetConfs, this);
+
+			// if we have a button, we need to pass the value and index of the
+			// current element
+			tools.forIn(widgets, function(ikey, iwidget) {
+				var myrow = irow;
+				if (tools.inheritsFrom(iwidget, 'umc.widgets.Button') && typeof iwidget.callback == "function") {
+					var callbackOrg = iwidget.callback;
+					iwidget.callback = lang.hitch(this, function() {
+						callbackOrg(this.get('value')[myrow], myrow);
+					});
+				}
+			}, this);
+
+			// layout widgets
+			var visibleWidgets = array.map(order, function(iname) {
+				return widgets[iname];
+			});
+			var rowContainer = this.own(new ContainerWidget({}))[0];
+			array.forEach(order, function(iname) {
+				// add widget to row container (wrapped by a LabelPane)
+				// only keep the label for the first row
+				var iwidget = widgets[iname];
+				var label = irow !== 0 ? '' : iwidget.label;
+				if (tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
+					label = irow !== 0 ? '' : '&nbsp;';
+				}
+				rowContainer.addChild(new LabelPane({
+					disabled: this.disabled,
+					content: iwidget,
+					label: label
+				}));
+
+				// register to value changes
+				this.own(iwidget.watch('value', lang.hitch(this, function() {
+					if (!this._blockChangeEvents) {
+						this._set('value', this.get('value'));
+					}
+				})));
+			}, this);
+
+			// add a 'remove' button at the end of the row
+			var button = this.own(new Button({
+				disabled: this.disabled,
+				iconClass: 'umcIconDelete',
+				onClick: lang.hitch(this, '_removeElement', irow),
+				'class': 'umcMultiInputRemoveButton'
+			}))[0];
+			rowContainer.addChild(new LabelPane({
+				content: button,
+				label: irow === 0 && this._hasSubtypeLabel ? '&nbsp;' : '' // only keep the label for the first row
+			}));
+
+			// add row
+			this._widgets[irow] = visibleWidgets;
+			this._rowContainers[irow] = rowContainer;
+			this._startupDeferred.then(lang.hitch(rowContainer, 'startup'));
+			this.addChild(rowContainer);
+
+			// call the _loadValues method by hand
+			array.forEach(order, function(iname) {
+				var iwidget = widgets[iname];
+				if ('_loadValues' in iwidget) {
+					iwidget._loadValues(this._lastDepends);
+				}
+			}, this);
+
+			// update the ready deferred know and when the widget itself is ready
+			this._updateReadyDeferred();
+			var allReady = [];
+			tools.forIn(widgets, function(ikey, iwidget) {
+				allReady.push(iwidget.ready ? iwidget.ready() : null);
+			});
+			all(allReady).then(lang.hitch(this, '_updateReadyDeferred'));
+		},
+
+		_appendRows: function(n) {
+			n = n || 1;
+			if (n < 1) {
+				return;
 			}
 
 			// remove the 'new' button
 			this._removeNewButton();
 
 			var nFinal = this._nRenderedElements + n;
+			var newRows = [];
 			for (var irow = this._nRenderedElements; irow < nFinal && irow < this.max; ++irow, ++this._nRenderedElements) {
-				// add all other elements with '__' such that they will be ignored by umc/widgets/Form
-				var order = [], widgetConfs = [];
-				array.forEach(this.subtypes, function(iwidget, i) {
-					// add the widget configuration dict to the list of widgets
-					var iname = '__' + this.name + '-' + irow + '-' + i;
-					var iconf = lang.mixin({}, iwidget, {
-						disabled: this.disabled,
-						threshold: this.threshold, // for UDM-threshold
-						name: iname,
-						value: '',
-						dynamicValues: lang.partial(iwidget.dynamicValues, iname)
-					});
-					if (iwidget.dynamicValuesInfo) {
-						iconf.dynamicValuesInfo = lang.partial(iwidget.dynamicValuesInfo, iname);
-					}
-					widgetConfs.push(iconf);
+				newRows.push(irow);
 
-					// add the name of the widget to the list of widget names
-					order.push(iname);
-				}, this);
-
-
-				// render the widgets
-				var widgets = render.widgets(widgetConfs, this);
-
-				// if we have a button, we need to pass the value and index if the
-				// current element
-				tools.forIn(widgets, function(ikey, iwidget) {
-					var myrow = irow;
-					if (tools.inheritsFrom(iwidget, 'umc.widgets.Button') && typeof iwidget.callback == "function") {
-						var callbackOrg = iwidget.callback;
-						iwidget.callback = lang.hitch(this, function() {
-							callbackOrg(this.get('value')[myrow], myrow);
-						});
-					}
-				}, this);
-
-				// find out whether all items do have a label
-				var hasSubTypeLabels = array.filter(this.subtypes, function(iwidget) {
-					return iwidget.label;
-				}).length > 0;
-
-				// layout widgets
-				var visibleWidgets = array.map(order, function(iname) {
-					return widgets[iname];
-				});
-				var rowContainer = this.own(new ContainerWidget({}))[0];
-				array.forEach(order, function(iname) {
-					// add widget to row container (wrapped by a LabelPane)
-					// only keep the label for the first row
-					var iwidget = widgets[iname];
-					var label = irow !== 0 ? '' : iwidget.label;
-					if (tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
-						label = irow !== 0 ? '' : '&nbsp;';
-					}
-					rowContainer.addChild(new LabelPane({
-						disabled: this.disabled,
-						content: iwidget,
-						label: label
-					}));
-
-					// register to value changes
-					this.own(iwidget.watch('value', lang.hitch(this, function() {
-						if (!this._blockChangeEvents) {
-							this._set('value', this.get('value'));
-						}
-					})));
-				}, this);
-
-				// add a 'remove' button at the end of the row
-				var button = this.own(new Button({
-					disabled: this.disabled,
-					iconClass: 'umcIconDelete',
-					onClick: lang.hitch(this, '_removeElement', irow),
-					'class': 'umcMultiInputRemoveButton'
-				}))[0];
-				rowContainer.addChild(new LabelPane({
-					content: button,
-					label: irow === 0 && hasSubTypeLabels ? '&nbsp;' : '' // only keep the label for the first row
-				}));
-
-				// add row
-				this._widgets.push(visibleWidgets);
-				this._rowContainers.push(rowContainer);
-				this._startupDeferred.then(lang.hitch(rowContainer, 'startup'));
-				this.addChild(rowContainer);
-
-				// call the _loadValues method by hand
-				array.forEach(order, function(iname) {
-					var iwidget = widgets[iname];
-					if ('_loadValues' in iwidget) {
-						iwidget._loadValues(this._lastDepends);
-					}
-				}, this);
-				//this._readyDeferred.progress(_('%(i)s / %(len)s values built', {i: irow, len: nFinal}));
-			}
-
-			// wait for all widgets to be ready
-			var allReady = [];
-			var i, j;
-			for (i = 0; i < this._widgets.length; ++i) {
-				for (j = 0; j < this._widgets[i].length; ++j) {
-					//console.log(lang.replace('### MultiInput: widget[{0}][{1}]: waiting -> ', [i, j]), this._widgets[i][j].ready());
-					allReady.push(this._widgets[i][j].ready ? this._widgets[i][j].ready() : null);
+				// allocate indeces in 2D array _widget this allows _updateReadyDeferred()
+				// to know how many entries there will be at the end
+				this._rowContainers[irow] = null;
+				this._widgets[irow] = [];
+				for (var jsubWidget = 0; jsubWidget < this.subtypes.length; ++jsubWidget) {
+					this._widgets[irow][jsubWidget] = null;
 				}
 			}
-			all(allReady).then(lang.hitch(this, function() {
-				//console.log('### MultiInput: all resolved');
-				this._readyDeferred.resolve();
-				this.onValuesLoaded();
-			}));
 
-			// add the new button
-			if (this._nRenderedElements < this.max) {
-				this._addNewButton();
-			}
+			// force the ready deferred to be updated
+			this._updateReadyDeferred();
+
+			// perform adding rows asynchronously
+			tools.forEachAsync(newRows, lang.hitch(this, '__appendRow')).then(lang.hitch(this, function() {
+				// all elements have been added to the DOM
+				// add the new button
+				if (this._nRenderedElements < this.max) {
+					this._addNewButton();
+				}
+				this._updateReadyDeferred();
+			}));
 		},
 
 		_popElements: function(n) {
@@ -491,6 +561,7 @@ define([
 
 			// update the number of render elements
 			this._nRenderedElements -= n;
+
 
 			// add the new button
 			this._addNewButton();

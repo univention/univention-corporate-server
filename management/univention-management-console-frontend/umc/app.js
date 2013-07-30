@@ -745,14 +745,14 @@ define([
 				});
 
 				// get all modules
-				array.forEach(_modules, lang.hitch(this, function(imod, i) {
+				tools.forEachAsync(_modules, function(imod, i) {
 					this._tryLoadingModule(imod, i).then(lang.hitch(this, function(loadedModule) {
 						modules.push(loadedModule);
 						incDeps(imod.name);
 					}), function(err) {
 						console.log('Error loading module ' + imod.id + ':', err);
 					});
-				}));
+				}, this);
 
 				// resolve the deferred object directly if there are no modules available
 				if (!_modules.length) {

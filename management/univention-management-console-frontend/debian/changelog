@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.43-1) unstable; urgency=low
+
+  * Bug #31376: added umc/tools:forEachAsync(), adapted MultiInput widget to
+    handle sub widget deferreds correctly, adjusted Form to process
+    intermediate progress properly
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 30 Jul 2013 11:43:22 +0200
+
 univention-management-console-frontend (3.0.42-1) unstable; urgency=low
 
   * Bug #32023: make sure that non-LDAP users cannot modify favorite modules

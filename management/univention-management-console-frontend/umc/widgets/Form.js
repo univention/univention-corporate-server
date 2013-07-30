@@ -588,30 +588,56 @@ define([
 			// wait for all widgets to be ready
 			this._allReadyNamed = {};
 			var deferreds = [];
-			var done = 0;
 			var nWidgets = 0;
 			var lastLabel = null;
+			var widgetProgressInPercent = {};
+
+			var _getOverallProgress = function() {
+				var overallPercentage = 0;
+				tools.forIn(widgetProgressInPercent, function(iname, ipercent) {
+					overallPercentage += ipercent;
+				});
+				return overallPercentage / nWidgets;
+			};
+
 			//console.log('### Form: iterate over widgets.ready');
 			tools.forIn(this._widgets, function() { ++nWidgets; });
 			tools.forIn(this._widgets, function(iname, iwidget) {
 				//console.log('###   ' + iname + ' -> ', iwidget.ready ? iwidget.ready() : null);
 				var iwidgetReadyDeferred = iwidget.ready ? iwidget.ready() : null;
+				widgetProgressInPercent[iname] = 0;
 				when(iwidgetReadyDeferred,
 					lang.hitch(this, function() {
-						done += 1;
-						var percentage = done/nWidgets*100;
-						var progress = {percentage: percentage};
-						lastLabel = iwidget.label || lastLabel;
-						if (lastLabel) {
-							progress.message = _('%s loaded', lastLabel);
-						}
+						widgetProgressInPercent[iname] = 100;
+						lastLabel = iwidget.label || lastLabel || iwidget.name;
+						var progress = {
+							percentage: _getOverallProgress(),
+							message: _('%s loaded', lastLabel)
+						};
 						this.progressDeferred._lastProgress = progress; // to be able to get current progress if one missed the beginning
 						this.progressDeferred.progress(progress);
 					}),
 					undefined, // cancelled
-					lang.hitch(this, function(msg) { // progress
+					lang.hitch(this, function(iprogress) { // progress
 						var label = iwidget.label || iwidget.name;
-						var progress = {message: lang.replace('{0}: {1}', [label, msg])};
+						var message = '';
+						if ('percentage' in iprogress) {
+							widgetProgressInPercent[iname] = iprogress.percentage;
+							if (iprogress.percentage < 100) {
+								message = _('%s (%.1f%)', label, iprogress.percentage);
+							}
+							else {
+								// 'loaded' message for 100%
+								message = _('%s loaded', label);
+							}
+						}
+						if (iprogress.message) {
+							message = _('%s: %s', label, iprogress.message);
+						}
+						var progress = {
+							percentage: _getOverallProgress(),
+							message: message
+						};
 						this.progressDeferred.progress(progress);
 					})
 				);
