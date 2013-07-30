@@ -178,15 +178,11 @@ define([
 		},
 
 		getStatusIconClass: function(item) {
-			if (!_favoritesDisabled) {
-				return tools.getIconClass('context-menu', 24);
-			}
+			return tools.getIconClass('context-menu', 24);
 		},
 
 		getStatusIconTooltip: lang.hitch(this, function(item) {
-			if (!_favoritesDisabled) {
-				return _('Open context menu');
-			}
+			return _('Open context menu');
 		}),
 
 		getItemDescription: function(item) {
@@ -1038,8 +1034,8 @@ define([
 
 			this._grid.on('.umcGalleryStatusIcon:click', lang.hitch(this, function(evt) {
 				evt.stopImmediatePropagation();
-				var item = this._grid.row(evt).data;
-				this._openModuleContextMenu(item, evt.pageX, evt.pageY);
+				var row = this._grid.row(evt);
+				this._openModuleContextMenu(row.data, row.element, evt.pageX, evt.pageY);
 			}));
 
 			this._registerGridNonTouchEvents();
@@ -1071,8 +1067,8 @@ define([
 			// event for context menu
 			this._grid.on('.umcGalleryItem:contextmenu', lang.hitch(this, function(evt) {
 				evt.preventDefault();
-				var item = this._grid.row(evt).data;
-				this._openModuleContextMenu(item, evt.pageX, evt.pageY);
+				var row = this._grid.row(evt);
+				this._openModuleContextMenu(row.data, row.element, evt.pageX, evt.pageY);
 			}));
 		},
 
@@ -1098,8 +1094,8 @@ define([
 			this._grid.on('.umcGalleryItem:touchstart', lang.hitch(this, function(evt) {
 				touchStartBegin = new Date();
 				_contextTouchTimeout = setTimeout(lang.hitch(this, function() {
-					var item = this._grid.row(evt).data;
-					this._openModuleContextMenu(item, evt.pageX, evt.pageY);
+					var row = this._grid.row(evt);
+					this._openModuleContextMenu(row.data, row.element, evt.pageX, evt.pageY);
 					_contextTouchTimeout = null;
 				}), 1000);
 			}));
@@ -1123,18 +1119,16 @@ define([
 			return false;
 		},
 
-		_openModuleContextMenu: function(item, x, y) {
-			if (_favoritesDisabled) {
-				return;
-			}
-
+		_openModuleContextMenu: function(module, node, x, y) {
 			this._closeModuleContextMenu();
-			var menu = this._moduleContextMenu = this._createModuleContextMenu(item);
+			var menu = this._moduleContextMenu = this._createModuleContextMenu(module);
+			domClass.add(node, 'umcGalleryItemActive');
 
 			var _close = lang.hitch(this, function() {
 				// close popup and remove internal reference to avoid
 				// collisions with other popups
 				popup.close(menu);
+				domClass.remove(node, 'umcGalleryItemActive');
 				this._moduleContextMenu = null;
 			});
 
@@ -1149,15 +1143,21 @@ define([
 			});
 		},
 
-		_createModuleContextMenu: function(item) {
+		_createModuleContextMenu: function(module) {
 			var menu = new Menu({
 				targetNodes: [ this._grid.id ],
 				selector: '.umcGalleryItem'
 			});
 			menu.addChild(new MenuItem({
-				label: item._isFavorite ? _('Remove module from favorites') : _('Add module to favorites'),
-				onClick : lang.hitch(this, '_toggleFavoriteModule', item)
+				label: _('Open module'),
+				onClick : lang.hitch(this, 'openModule', module)
 			}));
+			if (!_favoritesDisabled) {
+				menu.addChild(new MenuItem({
+					label: module._isFavorite ? _('Remove from favorites') : _('Add to favorites'),
+					onClick : lang.hitch(this, '_toggleFavoriteModule', module)
+				}));
+			}
 			menu.startup();
 			return menu;
 		},

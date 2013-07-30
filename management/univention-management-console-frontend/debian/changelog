@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.47-1) unstable; urgency=low
+
+  * Bug #32023: added 'open module' entry to context menu, make sure the
+    corresponding grid item is highlighted when opening the context menu
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 30 Jul 2013 18:10:07 +0200
+
 univention-management-console-frontend (3.0.46-1) unstable; urgency=low
 
   * Fix some glitches with MultiInputs NewButton (Bug #31376)
