@@ -1285,7 +1285,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Always create a samba printers config file ) and not only if client driver is activated,
+		  Always create a samba printers config file and not only if client driver is activated,
 		  the samba name is set or ACLs are defined (<ulink url="&ucsbug;30432">Bug 30432</ulink>).
 		</simpara></listitem>
 
