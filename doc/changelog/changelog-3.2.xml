@@ -703,6 +703,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			Opening certain LDAP objects took very long. Now a progress bar is shown
+			upon opening any LDAP object and widgets for attributes that may have
+			multiple values do not block anymore while being built (<ulink
+				url="&ucsbug;31376">Bug 31376</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  A broken LDAP authentification in <command>proof_dns_dhcp_records</command> has been
 		  corrected (<ulink url="&ucsbug;30903">Bug 30903</ulink>).
 		</simpara></listitem>
