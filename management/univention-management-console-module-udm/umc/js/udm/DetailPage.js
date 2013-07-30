@@ -725,6 +725,9 @@ define([
 			var loaded = null;
 			if (this.ldapName && !this._multiEdit) {
 				loaded = this._form.load(this.ldapName).then(lang.hitch(this, function(vals) {
+					// start the progress bar
+					this._progressBar.feedFromDeferred(this._form.ready(), _('Loading %s...', this.objectNameSingular));
+
 					// save the original data we received from the server
 					this._receivedObjOrigData = vals;
 
@@ -767,9 +770,8 @@ define([
 				// hide the type info and ldap path in case of a new object
 				this._form.getWidget( '$objecttype$' ).set( 'visible', false);
 				this._form.getWidget( '$location$' ).set( 'visible', false);
+				this._progressBar.feedFromDeferred(this._form.ready(), _('Loading %s...', this.objectNameSingular));
 			}
-			var ready = this._form.ready();
-			this._progressBar.feedFromDeferred(ready, _('Loading %s...', this.objectNameSingular));
 			this.standby(false);
 			this.standby(true, this._progressBar);
 			var ret = new Deferred();

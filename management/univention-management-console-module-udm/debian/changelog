@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.11-1) unstable; urgency=low
+
+  * Bug #31376: adjusted launch of progress bar
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 30 Jul 2013 11:42:22 +0200
+
 univention-management-console-module-udm (4.0.10-1) unstable; urgency=low
 
   * Improve form progress when loading an UDM object (Bug #31376)
