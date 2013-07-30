@@ -49,7 +49,7 @@ same time as the use of Active Directory-compatible domain services.</para>
 </itemizedlist>
 <para>
 An overview of the functional differences between Samba 3 and Samba 4
-can be found in the Univention Wiki <xref linkend="wiki-samba4"/>.
+can be found in the Univention Wiki <biblioref linkend="wiki-samba4"/>.
 </para>
 <para>
 In addition to Samba 4, UCS also integrates an additional component
@@ -135,7 +135,7 @@ controllers, see <xref linkend="basicservices::ntp"/>.
 
 <para>
   Samba 4 supports the operation as a <emphasis>read-only domain controller</emphasis>. The setup is
-  documented in <xref linkend="ext-doc-win"/>.
+  documented in <biblioref linkend="ext-doc-win"/>.
 </para>
 
 <para>
@@ -173,7 +173,7 @@ in the Samba domain. Domain joins are documented in
 <para>
 Mixed environments containing both Samba 3 and Samba 4 are only
 supported for update scenarios and are described in more detail
-in the Univention Wiki <xref linkend="wiki-samba-update"/>.
+in the Univention Wiki <biblioref linkend="wiki-samba-update"/>.
 </para>
 </section>
 

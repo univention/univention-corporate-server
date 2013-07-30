@@ -274,7 +274,7 @@
 		  <envar>dns/debug/level</envar> and <envar>dns/dlz/debug/level</envar> (for the Samba
 		  backend, see <xref linkend="ip-config:Configuration_of_the_data_backend"/>) &ucsUCR;
 		  variables. The possible values are between 0 (no debug tasks) to 11. A complete list of
-		  levels can be found at <xref linkend="bind-loglevel"/>.
+		  levels can be found at <biblioref linkend="bind-loglevel"/>.
 		</para>
 	  </section>
 
@@ -2087,7 +2087,7 @@ closest to the object always applies.
 	</para>
 	<para>
 	  The configuration is primarily performed via &ucsUCR; variables. The definition of this type
-	  of packet filter rules is documented in <xref linkend="developer-reference"/>.
+	  of packet filter rules is documented in <biblioref linkend="developer-reference"/>.
 	</para>
 	<para>
 	  In addition, the configuration scripts in the
@@ -2134,7 +2134,7 @@ closest to the object always applies.
 	<para>
 	  Further documentation on proxy services - such as the cascading of
 	  proxy servers, transparent proxiss and the integration of a virus scan engine - are documented
-	  in the extended network management documentation <xref linkend="ext-doc-net"/>.
+	  in the extended network management documentation <biblioref linkend="ext-doc-net"/>.
 	</para>
 
 	<section id="ip-config:Installation">
@@ -2336,7 +2336,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  <para>
 		It is also possible to scan requested files for viruses. In the
 		default setting, the free virus scanner <emphasis>Clamav</emphasis> is used.
-		The setup is documented in the extended network management documentation <xref linkend="ext-doc-net"/>.
+		The setup is documented in the extended network management documentation <biblioref linkend="ext-doc-net"/>.
 	  </para>
 	  <caution>
 		<para>

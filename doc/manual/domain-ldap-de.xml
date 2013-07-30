@@ -60,7 +60,7 @@
 
 	<para>
 	  Neben UCS, Ubuntu und Mac OS X können auch weitere Unix-Systeme in die Domäne integriert
-	  werden; dies ist in <xref linkend="ext-doc-domain"/> beschrieben.
+	  werden; dies ist in <biblioref linkend="ext-doc-domain"/> beschrieben.
 	</para>
 
 	<section id="linux-domaenenbeitritt">
@@ -515,7 +515,7 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		<title>Linux</title>
 		<para>
 		  Diese Systemrolle wird für die Integration von anderen Linux-Systemen als UCS und Ubuntu
-		  verwendet, z.B. für Debian- oder CentOS-Systeme. Die Integration wird in <xref
+		  verwendet, z.B. für Debian- oder CentOS-Systeme. Die Integration wird in <biblioref
 		  linkend="ext-doc-domain"/> beschrieben.
 		</para>
 	</section>
@@ -934,7 +934,7 @@ slapcat &gt; ldapdaten.txt
 		<para>
 		Besteht die UCS-Domäne aus mehr als einem System müssen durch die Änderung des
 		Root-Zertifikats auch alle anderen Rechner-Zertifikate neu ausgestellt werden! Das dafür
-		nötige Vorgehen ist in <xref linkend="sdb-sslchange"/> dokumentiert.
+		nötige Vorgehen ist in <biblioref linkend="sdb-sslchange"/> dokumentiert.
 		</para>
 	</caution>
 
@@ -978,7 +978,7 @@ slapcat &gt; ldapdaten.txt
 	</caution>
 
 	<para>
-	  Die Erneuerung des Root-Zertifikats und der übrigen Rechnerzertifikate ist in <xref
+	  Die Erneuerung des Root-Zertifikats und der übrigen Rechnerzertifikate ist in <biblioref
 	  linkend="sdb-sslchange"/> dokumentiert.
 	</para>
 

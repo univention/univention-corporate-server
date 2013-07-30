@@ -56,7 +56,7 @@
 	  calendars or invitations to appointments. There are further groupware systems
 	  based on UCS, which also offer integration into the UCS management system, for
 	  example: Kolab, Zarafa or Open-Xchange. More detailed information can be found
-	  on the Univention website <xref linkend="univention-technologypartners"/>.
+	  on the Univention website <biblioref linkend="univention-technologypartners"/>.
 	</para>
 	<para>
 	  Version 4 of the Horde framework is provided for the web-based provision of

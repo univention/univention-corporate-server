@@ -61,7 +61,7 @@
 		the <package>univention-printquota</package> package, can be used to install an
 		expansion for recording incurred printer costs and for limiting the
 		number of pages to be printed. The setting and configuration is documented in the extended
-		documentation <xref linkend="ext-print-doc"/>.
+		documentation <biblioref linkend="ext-print-doc"/>.
 	</para>
 	<para>
 		Print shares from Windows systems can also be integrated in the CUPS
@@ -267,7 +267,7 @@
 							<guimenu>[Print Quota]</guimenu> policy apply.
 						</para>
 						<para>
-							The print quota system needs to be installed for this, see <xref linkend="ext-print-doc"/>.
+							The print quota system needs to be installed for this, see <biblioref linkend="ext-print-doc"/>.
 						</para>
 					</entry>
 				</row>
@@ -467,7 +467,7 @@
 							the <guimenu>[Print Quota]</guimenu> tab apply.
 						</para>
 						<para>
-							The print quota system needs to be installed for this, see <xref linkend="ext-print-doc"/>.
+							The print quota system needs to be installed for this, see <biblioref linkend="ext-print-doc"/>.
 						</para>
 					</entry>
 				</row>
@@ -527,7 +527,7 @@
 
 	<para>
 	  The configuration of the print quota settings is documented in the extended documentation
-	  <xref linkend="ext-print-doc"/>.
+	  <biblioref linkend="ext-print-doc"/>.
 	</para>
 
 	<para>

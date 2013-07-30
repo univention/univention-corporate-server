@@ -274,7 +274,7 @@
                 <tbody>
                     <row>
                         <entry>
-                             Diese Karteikarte wird für den Univention Net Installer verwendet, siehe <xref linkend="ext-doc-inst"/>.
+                             Diese Karteikarte wird für den Univention Net Installer verwendet, siehe <biblioref linkend="ext-doc-inst"/>.
                         </entry>
                     </row>
                 </tbody>
@@ -423,7 +423,7 @@
             </para>
             <para>
                 Auf den Ubuntu-Systemen müssen einige Konfigurationsanpassungen
-                vorgenommen werden, die in der erweiterten Dokumentation beschrieben sind <xref linkend="ext-doc-domain"/>.
+                vorgenommen werden, die in der erweiterten Dokumentation beschrieben sind <biblioref linkend="ext-doc-domain"/>.
             </para>
         </section>
     </section>
@@ -753,7 +753,7 @@
 				<para>
 				  Bridges, Bondings und VLANs werden in der &ucsUMC; angezeigt, können aber nur
 				  durch &ucsUCR;-Variablen konfiguriert werden. Die Einrichtung wird in der erweiterten
-				  Dokumentation beschrieben <xref linkend="ext-doc-computers"/>.
+				  Dokumentation beschrieben <biblioref linkend="ext-doc-computers"/>.
 				</para>
 				</section>
             </section><!-- Netzwerk-Interfaces-->
@@ -864,7 +864,7 @@
 
         <section id="computers:hardware:sysinfo"><title>Erfassung von unterstützter Hardware</title>
             <para>
-                Univention pflegt eine Übersicht von Hardware <xref linkend="hardwarelist"/>, die
+                Univention pflegt eine Übersicht von Hardware <biblioref linkend="hardwarelist"/>, die
                 mit UCS kompatibel ist und bei Kunden im Einsatz ist. Die hierbei
                 verarbeiteten Informationen werden über das UMC-Modul
                 <guimenu>Systeminformationen</guimenu> erfasst.

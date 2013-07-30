@@ -23,7 +23,7 @@
 					Bei der profilbasierten Installation werden System-Einstellungen in Textdateien, den so genannten
 					Installationsprofilen, gespeichert. Weiterführende Informationen zum
 					Format der Profildateien finden sich in der erweiterten
-					Installations-Dokumentation <xref linkend="ext-doc-inst"/>. Installationsprofile
+					Installations-Dokumentation <biblioref linkend="ext-doc-inst"/>. Installationsprofile
 					lassen sich lokal über Disketten oder USB-Speichergeräte einbinden
 					oder im Rahmen einer angepassten Installations-DVD im Vorfeld auf dem
 					Installationsmedium speichern.
@@ -37,7 +37,7 @@
 			Installationen automatisiert über PXE durchgeführt werden. Die Einstellungen
 			werden dabei ebenfalls aus Installationsprofilen bezogen.
 			Die dafür notwendigen Schritte sind im der erweiterten
-			Installations-Dokumentation beschrieben <xref linkend="ext-doc-inst"/>
+			Installations-Dokumentation beschrieben <biblioref linkend="ext-doc-inst"/>
 			</simpara>
 		</listitem>
 	</itemizedlist>
@@ -148,7 +148,7 @@
 					ein Software-RAID oder eine verschlüsselte Festplattenpartition
 					einzurichten. Nach der Partitionierung wird die interaktive Installation
 					fortgesetzt. Dieser Installations-Modus wird in der erweiterten
-					Installations-Dokumentation beschrieben <xref linkend="ext-doc-inst"/>.
+					Installations-Dokumentation beschrieben <biblioref linkend="ext-doc-inst"/>.
 					</simpara>
 				</listitem>
 				<listitem>
@@ -166,7 +166,7 @@
 					Installationsprofil ausgewählt, aus dem das System die Installationsparameter
 					ausliest. Das zu verwendende Installationsprofil wird aus einem Verzeichnis
 					des Installationsmediums gelesen. Die profilbasierte Installation ist
-					in der erweiterten Installations-Dokumentation beschrieben <xref linkend="ext-doc-inst"/>.
+					in der erweiterten Installations-Dokumentation beschrieben <biblioref linkend="ext-doc-inst"/>.
 					</simpara>
 				</listitem>
 				<listitem>
@@ -884,14 +884,14 @@
 	</para>
 	<para>
 		Die Einrichtung einer UCS-Instanz auf Basis von Amazon EC2 ist im
-		Univention Wiki dokumentiert <xref linkend="ec2-quickstart"/>.
+		Univention Wiki dokumentiert <biblioref linkend="ec2-quickstart"/>.
 	</para>
 </section>
 <section id="installation:xenserver">
 <title>Installation in Citrix XenServer</title>
 	<para>
 		Die Einrichtung einer UCS-Instanz in Citrix XenServer ist im
-		Univention Wiki dokumentiert <xref linkend="xenserver-installation"/>.
+		Univention Wiki dokumentiert <biblioref linkend="xenserver-installation"/>.
 	</para>
 </section>
 </chapter>

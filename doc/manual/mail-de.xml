@@ -65,7 +65,7 @@
 	  genutzte Kalender oder Termineinladungen. Es existieren aber auf UCS basierende
 	  Groupwaresysteme, die sich in das UCS-Managementsystem integrieren,
 	  bspw. Kolab, Zarafa oder Open-Xchange. Weiterführende Informationen finden
-	  sich auf der Univention-Webseite <xref linkend="univention-technologiepartner"/>.
+	  sich auf der Univention-Webseite <biblioref linkend="univention-technologiepartner"/>.
 	</para>
 
 	<para>

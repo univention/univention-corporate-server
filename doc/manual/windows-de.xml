@@ -50,7 +50,7 @@ aus Samba 3 verwendet.
 </itemizedlist>
 <para>
 Eine Übersicht der funktionalen Unterschiede zwischen Samba 3 und
-Samba 4 findet sich im Univention Wiki <xref linkend="wiki-samba4"/>.
+Samba 4 findet sich im Univention Wiki <biblioref linkend="wiki-samba4"/>.
 </para>
 <para>
 UCS integriert neben Samba 4 noch eine zusätzliche Komponente zur
@@ -139,7 +139,7 @@ NTP-Pakete aktiviert werden, siehe <xref linkend="basicservices::ntp"/>.
 
 <para>
   Samba 4 unterstützt auf den Betrieb als <emphasis>read-only domain controller</emphasis>. Die
-  Einrichtung ist in <xref linkend="ext-doc-win"/> dokumentiert.
+  Einrichtung ist in <biblioref linkend="ext-doc-win"/> dokumentiert.
 </para>
 
 <para>
@@ -180,7 +180,7 @@ ist in <xref linkend="windows-domaenenbeitritt"/> dokumentiert.
 </para>
 <para>
 Mischumgebungen aus Samba 3- und Samba 4-Domänencontrollern sind nur für Update-Szenarien
-unterstützt und werden im Univention Wiki <xref linkend="wiki-samba-update"/> weitergehend beschrieben.
+unterstützt und werden im Univention Wiki <biblioref linkend="wiki-samba-update"/> weitergehend beschrieben.
 </para>
 </section>
 
@@ -1231,7 +1231,7 @@ net rpc trustdom list
 <section id="univention_ad_takeover_generell"><title>Univention AD Takeover</title>
 <para>
 Detaillierte Informationen zu Univention AD Takeover finden sich im
-Univention Wiki <xref linkend="wiki-ad-takeover"/>.
+Univention Wiki <biblioref linkend="wiki-ad-takeover"/>.
 </para>
 </section>
 

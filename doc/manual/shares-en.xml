@@ -46,7 +46,7 @@ and all others.
 </para>
 <para>
 Access control lists allow even more complex permission models.
-The configuration of ACLs is described in the Univention SDB <xref linkend="sdb-acls"/>.
+The configuration of ACLs is described in the Univention SDB <biblioref linkend="sdb-acls"/>.
 </para>
 <para>
 In the Unix permission model - and thus under UCS - write permission
@@ -942,7 +942,7 @@ to other shares, and intercept or manipulate files. In addition, paths to the
 shares, as well as the references are to be spelt entirely in lower case.
 If changes are made in the references, the concerned clients have to be
 restarted. Further information on this issue can be found in the Samba
-documentation <xref linkend="samba3-howto-chapter-20"/> in the chapter 'Hosting a
+documentation <biblioref linkend="samba3-howto-chapter-20"/> in the chapter 'Hosting a
 Microsoft Distributed File System Tree'.
 	</para>
 </caution>

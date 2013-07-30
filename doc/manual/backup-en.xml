@@ -323,7 +323,7 @@ status messages. Messages can be saved in log files, displayed on the
 console or sent by e-mail, for example.
 		</para>
 		<para>
-<xref linkend="bacula-config-example"/> includes an example
+<biblioref linkend="bacula-config-example"/> includes an example
 configuration which can be used as a template for backups and described
 the resources outline above in more detail.
 		</para>

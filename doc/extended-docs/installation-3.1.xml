@@ -24,7 +24,7 @@
 <section><title>Introduction</title>
 <para>
   In addition to the interactive installation described in the UCS
-  manual <citation>ucs-handbuch</citation>, profile-based installation of UCS is also
+  manual <biblioref linkend="ucs-handbuch"/>, profile-based installation of UCS is also
   possible. In this method, the settings for the UCS installer are
   specified in a profile file. If all the required settings are included
   in the installation profile, it is possible to perform the
@@ -296,7 +296,7 @@ from <literal>domaincontroller_master</literal>, <literal>domaincontroller_backu
 <literal>domaincontroller_slave</literal> <literal>memberserver</literal>, <literal>managed_client</literal>,
 <literal>mobile_client</literal>and <literal>base</literal>. The properties of the
 system roles are described in the domain services chapter of the UCS
-manual <citation>ucs-handbuch</citation>.
+manual <biblioref linkend="ucs-handbuch"/>.
 </entry>
 </row>
 
@@ -312,7 +312,7 @@ locale is specified, the locales are separated by blank spaces.
 <entry>locale_default</entry>
 <entry>
 The standard locale for the computer, e.g. <literal>en_GB.UTF-8:UTF-8</literal>.
-More information on system locales can be found at <citation>locales</citation>.
+More information on system locales can be found at <biblioref linkend="locales"/>.
 </entry>
 </row>
 
@@ -452,7 +452,7 @@ used with four virtual interfaces for each physical one.
 <para>
 General information on the network configuration and the use of the
 name servers can be found in Chapter <emphasis>Network configuration</emphasis>
-of the UCS manual <citation>ucs-handbuch</citation>.
+of the UCS manual <biblioref linkend="ucs-handbuch"/>.
 </para>
 <para>
 The <varname>use_external_nameserver</varname> parameter can be used to
@@ -641,7 +641,7 @@ packages are separated by blank spaces.
 If this parameter is set to <literal>true</literal>,
 a local repository is set up and the contents of the installation DVD
 copied (see Chapter <emphasis>Software deployment</emphasis> of the UCS
-manual <citation>ucs-handbuch</citation>.
+manual <biblioref linkend="ucs-handbuch"/>.
 </entry>
 </row>
 
@@ -912,7 +912,7 @@ installation.
 </para>
 <para>
 Univention Net Installer requires a local repository as a package
-source (see the software deployment chapter of the UCS manual <citation>ucs-handbuch</citation>).
+source (see the software deployment chapter of the UCS manual <biblioref linkend="ucs-handbuch"/>).
 The generated profiles are copied into the
 <filename>/var/lib/univention-repository/profiles</filename> directory on the
 repository server.

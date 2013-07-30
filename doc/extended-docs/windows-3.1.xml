@@ -39,7 +39,7 @@
 				</para></listitem>
 			  </itemizedlist>
 
-			  A comprehensive description can be found in the Microsoft TechNet Library <xref linkend="technet-rodc"/>.
+			  A comprehensive description can be found in the Microsoft TechNet Library <biblioref linkend="technet-rodc"/>.
 			</para>
 
 			<para>

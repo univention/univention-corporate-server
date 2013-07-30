@@ -1073,7 +1073,7 @@ define command{
 
   <para>
 	The plugins, macros and any dependencies can also be bundled in a Debian package. Further
-	information is available in <xref linkend="developer-reference"/>.
+	information is available in <biblioref linkend="developer-reference"/>.
   </para>
 
   <para>

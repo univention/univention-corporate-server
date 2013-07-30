@@ -267,7 +267,7 @@
 			<tbody>
 				<row>
 					<entry>
-						This tab is used for the Univention Net Installer, see <xref linkend="ext-doc-inst"/>.
+						This tab is used for the Univention Net Installer, see <biblioref linkend="ext-doc-inst"/>.
 					</entry>
 				</row>
 			</tbody>
@@ -414,7 +414,7 @@
 		</para>
 		<para>
 			Some configuration adjustments need to be performed on Ubuntu systems;
-			these are documented in the extended documentation <xref
+			these are documented in the extended documentation <biblioref
 			linkend="ext-doc-domain"/>.
 		</para>
 	</section>
@@ -762,7 +762,7 @@
 			<para>
 			  Bridges, bondings and VLANs are displayed in the &ucsUMC;, but the configuration of
 			  such setups can only be performed through &ucsUCR; variables. The setup is explained in
-			  the extended computer documentation <xref linkend="ext-doc-computers"/>.
+			  the extended computer documentation <biblioref linkend="ext-doc-computers"/>.
 			</para>
 			</section>
 		</section>
@@ -875,7 +875,7 @@
 	<section id="computers:hardware:sysinfo">
 		<title>Collection of list of supported hardware</title>
 		<para>
-			Univention maintains a list of the hardware <xref linkend="hardwarelist"/>
+			Univention maintains a list of the hardware <biblioref linkend="hardwarelist"/>
 			which is compatible with UCS and in use by customers. The information processed
 			for this are gathered by the UMC module <guimenu>System information</guimenu>.
 		</para>

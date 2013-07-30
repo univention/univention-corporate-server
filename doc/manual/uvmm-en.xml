@@ -45,7 +45,7 @@
 			The installation is documented in <xref linkend="uvmm::gplpvvirtio"/>.
 		</para>
 		<para>
-			Univention Wiki (<ulink url="http://wiki.univention.de/"/>) includes a step-by-step quickstart guide <xref linkend="uvmm-quickstart"/> and further technical documentation as well as howtos <xref linkend="uvmm-technical-details"/>.
+			Univention Wiki (<ulink url="http://wiki.univention.de/"/>) includes a step-by-step quickstart guide <biblioref linkend="uvmm-quickstart"/> and further technical documentation as well as howtos <biblioref linkend="uvmm-technical-details"/>.
 			(Currently only available in German)
 		</para>
 	</section>
@@ -66,7 +66,7 @@
 					This package must be installed on the management system.
 					In doing so, both an additional service and the &ucsUMC; module are set up.
 					This package should be installed on a domain controller in the UCS domain.
-					The installation on &ucsMember;s requires additional configuration steps, which are documented in <xref linkend="uvmm-technical-details"/>.
+					The installation on &ucsMember;s requires additional configuration steps, which are documented in <biblioref linkend="uvmm-technical-details"/>.
 					If UVMM is installed on a &ucsSlave; or &ucsBackup;, the package <emphasis>univention-virtual-machine-manager-schema</emphasis> needs to be installed on the &ucsMaster; beforehand.
 					</simpara>
 				</listitem>
@@ -229,7 +229,7 @@
 		</para>
 		<para>
 			If a live migration of virtual machines between different virtualization servers is planned, the storage pool must be stored on a system which can be accessed by all virtualization servers (e.g., an NFS share or an iSCSI target).
-			This is described in <xref linkend="uvmm-technical-details"/>.
+			This is described in <biblioref linkend="uvmm-technical-details"/>.
 		</para>
 		<para>
 			Image files are created as sparse files with the specified size, i.e., these files only grow when they are used and then up to the maximally specified size and thus initially require only minimal disk space.
@@ -502,7 +502,7 @@
 		<para>
 			During the migration it must be noted that the images of the mounted hard drives and CD-ROM drive must be accesible by both virtualization servers.
 			This can be achieved, for example, by storing the images in a central storage system.
-			Notes on the setting up of this type of environment can be found under <xref linkend="uvmm-technical-details"/>.
+			Notes on the setting up of this type of environment can be found under <biblioref linkend="uvmm-technical-details"/>.
 		</para>
 		<section id="uvmm:Migration_of_virtual_machines_from_failed_virtualization_servers">
 			<title>Migration of virtual machines from failed virtualization servers</title>

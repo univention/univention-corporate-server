@@ -335,7 +335,7 @@ in Log-Dateien geschrieben, auf der Konsole angezeigt oder per Email
 verschickt werden.
 		</para>
 		<para>
-In <xref linkend="bacula-config-example"/> findet sich eine
+In <biblioref linkend="bacula-config-example"/> findet sich eine
 Beispiel-Konfiguration, die als Vorlage für Backups verwendet werden
 kann und die oben genannten Ressourcen weitergehend beschreibt.
 		</para>

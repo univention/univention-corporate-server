@@ -57,7 +57,7 @@
 
 	<para>
 	  In addition to UCS, Ubuntu and Mac OS X, arbitrary Unix systems can be integrated into the
-	  domain. This is documented in <xref linkend="ext-doc-domain"/>.
+	  domain. This is documented in <biblioref linkend="ext-doc-domain"/>.
 	</para>
 
 	<section id="linux-domaenenbeitritt">
@@ -496,7 +496,7 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		<title>Linux</title>
 		<para>
 		  This system role is used for the integration of other Linux systems than UCS and Ubuntu,
-		  e.g., for Debian or CentOS systems. The integration is documented in <xref
+		  e.g., for Debian or CentOS systems. The integration is documented in <biblioref
 		  linkend="ext-doc-domain"/>.
 		</para>
 	</section>
@@ -893,7 +893,7 @@ slapcat &gt; ldapdata.txt
 		<para>
 	  If the UCS domain contains more than one system, all other host certificates need to be
 	  reissued after changing the root certificate! The procedure required for this is documented in
-	  <xref linkend="sdb-sslchange"/>.
+	  <biblioref linkend="sdb-sslchange"/>.
 		</para>
 	</caution>
 
@@ -938,7 +938,7 @@ slapcat &gt; ldapdata.txt
 
 	<para>
 	  The renewal of the root certificate and the other host certificates is documented in
-	  <xref linkend="sdb-sslchange"/>.
+	  <biblioref linkend="sdb-sslchange"/>.
 	</para>
 
 	<para>

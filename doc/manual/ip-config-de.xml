@@ -267,7 +267,7 @@
 		  <envar>dns/debug/level</envar> und <envar>dns/dlz/debug/level</envar> (für das
 		  Samba-Backend, siehe <xref linkend="ip-config:Konfiguration_des_Daten-Backends_des_Nameservers"/>) konfiguriert
 		  werden. Die möglichen Werte reichen von 0 (keine Debug-Ausgaben) bis 11. Eine komplette
-		  Aufstellung der Detailgrade findet sich unter <xref linkend="bind-loglevel"/>.
+		  Aufstellung der Detailgrade findet sich unter <biblioref linkend="bind-loglevel"/>.
 		</para>
 	  </section>
 
@@ -1737,7 +1737,7 @@
 	</para>
 	<para>
 	  Die Konfiguration erfolgt im Wesentlichen über &ucsUCR;-Variablen. Die Definition von solchen
-	  Paketfilter-Regeln ist in <xref linkend="developer-reference"/> dokumentiert.
+	  Paketfilter-Regeln ist in <biblioref linkend="developer-reference"/> dokumentiert.
 	</para>
 	<para>
 	  Darüber hinaus werden die im Verzeichnis
@@ -1821,7 +1821,7 @@
 
 	  <para>
 		In der erweiterten Netzwerk-Dokumentation sind weitergehende Proxy-Funktionen (Kaskadierung
-		von Proxys, transparente Proxys und die Integration eines Virenscanners in den Proxy) <xref
+		von Proxys, transparente Proxys und die Integration eines Virenscanners in den Proxy) <biblioref
 		linkend="ext-doc-net"/>.
 	  </para>
 	</section>
@@ -1988,7 +1988,7 @@ univention-config-registry set squid/webports="80 443"
 		Angeforderte Dateien können außerdem auf Viren überprüft werden. Dabei kommt
 		in der Standardeinstellung der freie Virenscanner <emphasis>Clamav</emphasis> zum
 		Einsatz. Die Integration weiterer Virenscanner ist möglich. Dies ist in der
-		erweiterten Netzwerk-Dokumentation beschrieben <xref linkend="ext-doc-net"/>.
+		erweiterten Netzwerk-Dokumentation beschrieben <biblioref linkend="ext-doc-net"/>.
 	  </para>
 	  <caution>
 		  <para>

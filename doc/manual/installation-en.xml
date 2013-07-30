@@ -25,7 +25,7 @@
 					With profile-based installation, system settings are stored in text
 					files, the so-called installation profiles. Further information on
 					the format of the installation profile files can be found in the
-					extended installation documentation <xref linkend="ext-doc-inst"/>. Installation profiles can be
+					extended installation documentation <biblioref linkend="ext-doc-inst"/>. Installation profiles can be
 					integrated locally via floppy disks or USB storage media, or they can be
 					stored beforehand on the installation medium in the form of an adjusted
 					installation DVD.
@@ -38,7 +38,7 @@
 			The Univention Net Installer can be used to perform <emphasis>network based
 			installation</emphasis> automatically via PXE. The settings are also taken from
 			installation profiles. This is documented in the extended
-			installation documentation <xref linkend="ext-doc-inst"/>
+			installation documentation <biblioref linkend="ext-doc-inst"/>
 			</simpara>
 		</listitem>
 	</itemizedlist>
@@ -150,7 +150,7 @@
 					available. This mode can, for example, be used to set up a software RAID or an
 					encrypted hard drive partition. After the partitioning, the interactive
 					installation is continued. This is documented in the extended
-					installation documentation <xref linkend="ext-doc-inst"/>
+					installation documentation <biblioref linkend="ext-doc-inst"/>
 					</simpara>
 				</listitem>
 				<listitem>
@@ -169,7 +169,7 @@
 					from which the system reads the installation parameters. The installation
 					profile to be used is taken from a directory on the installation
 					medium. Profile-based installation is described in the extended
-					installation documentation <xref linkend="ext-doc-inst"/>
+					installation documentation <biblioref linkend="ext-doc-inst"/>
 					</simpara>
 				</listitem>
 				<listitem>
@@ -877,7 +877,7 @@
 	</para>
 	<para>
 		The process for setting up a UCS instance based on Amazon EC2 is
-		documented in the Univention Wiki <xref linkend="ec2-quickstart"/>.
+		documented in the Univention Wiki <biblioref linkend="ec2-quickstart"/>.
 	</para>
 </section>
 
@@ -885,7 +885,7 @@
 <title>Installation in Citrix XenServer</title>
 	<para>
 		The process for setting up a UCS instance in Citrix XenServer is
-		documented in the Univention Wiki <xref linkend="xenserver-installation"/>.
+		documented in the Univention Wiki <biblioref linkend="xenserver-installation"/>.
 	</para>
 </section>
 </chapter>
