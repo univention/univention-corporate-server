@@ -102,6 +102,14 @@
 			postgres-8.4: CVE-2013-1900 (<ulink url="&ucsbug;30983">Bug 30983</ulink>).
 		  </simpara></listitem>
 
+		  <listitem><simpara>
+			openjpeg: CVE-2009-5030 CVE-2012-3358 CVE-2012-3535 (<ulink url="&ucsbug;29157">Bug 29157</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			libxslt: CVE-2012-6139 (<ulink url="&ucsbug;30935">Bug 30935</ulink>).
+		  </simpara></listitem>
+
 		</itemizedlist>
 
 	  </simpara></listitem>
