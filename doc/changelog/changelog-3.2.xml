@@ -1350,10 +1350,16 @@
 		  Fixed a regression in group authentication if &ucsUCRV;
 		  <envar>squid/auth/allowed_groups</envar> was not set (<ulink url="&ucsbug;30969">Bug 30969</ulink>).
 		</simpara></listitem>
-
 		<listitem><simpara>
 		  When using NTLM authentication it is now checked if the user account is locked or disabled
 		  (<ulink url="&ucsbug;29492">Bug 29492</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+		  Proxy NEGOTIATE authentication support has been added to <emphasis>univention-squid</emphasis>.
+		  In this mode the authenticator squid_ldap_ntlm_auth is a negotiate wrapper for either Kerberos 
+		  or NTLM over negotiate. The previous negotiate authenticator setting can be restored by
+		  setting the &ucsUCRV; <envar>squid/krb5auth/tool</envar> to
+		  <emphasis>/usr/lib/squid3/squid_kerb_auth</emphasis> (<ulink url="&ucsbug;31972">Bug 31972</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
