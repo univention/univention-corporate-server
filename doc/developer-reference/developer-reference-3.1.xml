@@ -78,12 +78,7 @@
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../stylesheets/bibliography-en.xml"/>
 	-->
 	<bibliography>
-		<biblioentry id="ucs-handbuch">
-			<abbrev>UCS manual</abbrev>
-			<publishername>Univention GmbH</publishername>
-			<pubdate>2013</pubdate>
-			<title><ulink url="http://docs.univention.de/manual-3.1.pdf">Univention Corporate Server - Manual for users and administrators</ulink></title>
-		</biblioentry>
+		<bibliomixed id="ucs-handbuch"/>
 		<biblioentry id="RFC2254">
 			<abbrev>RFC2254</abbrev>
 			<title><ulink url="http://www.ietf.org/rfc/rfc2254.txt">The String Representation of LDAP Search Filters</ulink></title>

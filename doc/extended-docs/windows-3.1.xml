@@ -3,7 +3,6 @@
           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
 
   %entities;
 ]>
@@ -56,7 +55,9 @@ univention-run-join-scripts
         </section>
     </chapter>
 
-&bibliography;
+	<bibliography>
+		<bibliomixed id="technet-rodc"/>
+	</bibliography>
 
     <?dbhtml-include href="../stylesheets/piwiki.html"?>
 </book>
