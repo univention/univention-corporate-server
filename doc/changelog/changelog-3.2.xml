@@ -330,6 +330,10 @@
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
+		  OpenLDAP was updated to Version 2.4.35 (<ulink url="&ucsbug;31697">Bug 31697</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  A segmentation fault in the slapd LDAP server process in cases where non-UTF-8 passwords
 		  were used for LDAP bind against the {K5KEY} scheme has been fixed (<ulink url="&ucsbug;31352">Bug 31352</ulink>).
 		</simpara></listitem>
