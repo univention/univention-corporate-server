@@ -3,6 +3,7 @@ univention-samba (8.0.4-3) unstable; urgency=low
   * Update/review UCR variable descriptions (Bug #30948)
   * samba/netbios/filter was removed, the underlying Samba patch was dropped 
     for UCS 3.0
+  * Removed obsolete univention-samba-ha.dirs	
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 24 Jul 2013 11:25:55 +0200
 

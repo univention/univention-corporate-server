@@ -191,74 +191,62 @@ Type=str
 Categories=service-samba
 
 [samba/winbind/trusted/domains/only]
-Description[de]=Erlaube Samba-Memberservern einer Samba-Domäne, von LDAP/NIS/rsync verteilte UNIX Accounts als uids für Winbindd Benutzer zu verwenden
-Description[en]=Allow Samba member-servers of a samba domain to use UNIX accounts distributet via LDAP/NIS/rsync as the uid's for winbindd users
-Type=str
-Categories=service-samba
-
-[samba/idmap/domains]
-Description[de]=Domänennamen von Windows-Domänen, deren SID zu Posix-ID Abbildung per idmap_ldap über eine authentifizierte LDAP-Suche im UCS Verzeichnisdienst aufgelöst werden soll
-Description[en]=Domain names of Windows domains for which SID to posix ID mappings should be resolved via idmap_ldap by an authenticated LDAP search in the UCS directory service
+Description[de]=Ist diese Variable auf 'yes' gesetzt wird Samba-Memberservern einer Samba-Domäne erlaubt, von Unix-Accounts aus dem LDAP als UIDs für Winbind-Benutzer zu verwenden. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[en]=If this variable is set to 'yes', Samba member servers are allowed to use Unix accounts from the LDAP as UIDs for Winbind users.
 Type=str
 Categories=service-samba
 
 [windows/wins-server]
-Description[de]=WINS-Server an dem Samba sich registriert
-Description[en]=WINS server, on which Samba should register
+Description[de]=Dieser WINS-Server wird von Samba für die Namensauflösung verwendet.
+Description[en]=This WINS server is used by Samba for name resolution.
 Type=str
 Categories=service-samba
 
 [windows/wins-support]
-Description[de]=Aktiviert/Deaktiviert WINS-Funktionalität im Samba-Dienst
-Description[en]=Enables/disables WINS services of Samba
+Description[de]=Ist diese Variable auf 'yes' gesetzt, stellt der nmbd-Prozess einen WINS-Server bereit. Sofern keine WINS-Replikation eingerichtet wird, kann immer nur ein System der Domäne WINS-Server sein.
+Description[en]=If this variable is set to 'yes' the nmbd process provides a WINS server. Unless WINS replication has been setup only one system in the domain can act as a WINS server.
 Type=str
 Categories=service-samba
 
 [samba/adminusers]
-Description[de]=Liste von Benutzern mit administrativen Rechten in Samba
-Description[en]=List of users with administrative rights in samba
+Description[de]=Für die hier angegebenen Benutzer werden alle Zugriffe auf Freigaben mit root-Rechten durchgeführt. Mehrere Benutzernamen müssen durch ein Leerzeichen getrennt werden.
+Description[en]=For the users specified here all accesses to file shares are performed with root privileges. Multiple user names need to be separated using a blank.
 Type=str
 Categories=service-samba
 
 [samba/debug/level]
-Description[de]=Debug Level für Samba Prozesse
-Description[en]=Debug level for samba processes
+Description[de]=Mit dieser Variable kann der Detailgrad der Logausgaben konfiguriert werden. Weitere Informationen zum Format der Variable finden sich unter 'man smb.conf' unter 'log level'.
+Description[en]=With this variable the verbosity level of the log files can be configured. Additional information on the format can be found at 'man smb.conf' under 'log level'.
 Type=str
 Categories=service-samba
 
 [samba/max_log_size]
-Description[de]=Maximalgröße für Samba Logdateien ab der Samba die Datei selbständig nach .old umbenennt.
-Description[en]=Maximal size of samba log files. Samba will periodically rename the file to .old if exceeded.
-Type=str
-Categories=service-samba
-
-[samba/generate_smbpasswd]
-Description[de]=Aktiviere/Deaktiviere die Verwendung der lokalen TDBSAM-Datanbank bei der Samba-Installation
-Description[en]=Enable/Disable usage of the local TDBSAM database on Samba installation
+Description[de]=Eine Maximalgröße in Kilobyte, nach dessen Erreichen Samba die Logdateien nach .old umbenannt. Ist die Variable nicht gesetzt oder auf 0 gesetzt, ist diese Funktion deaktiviert. Es ist nicht empfehlenswert die Funktion zu aktivieren, da die Samba-Logdateien in UCS durch Logrotate rotiert werden.
+Description[en]=The maximum size of Samba log, after which the old file is renamed to .old. If the variable is unset or set to 0, the function is disabled. It's not advisable to enable this function, since the Samba logfiles are rotated through Logrotate.
 Type=str
 Categories=service-samba
 
 [samba/os/level]
-Description[de]=Level des Samba-Servers für die Wahl des Domain-Browsers
-Description[en]=The level Samba advertises itself as for browse elections
+Description[de]=Ein ganzzahliger Wert zwischen 0 und 255, der festlegt, ob der Samba-Server der Master-Browser der Domäne wird. Diese Einstellung sollte im Regelfall nicht angepasst werden.
+Description[en]=An integer value between 0 and 255, which configures whether the Samba server will be the master browser of the domain. This setting should usually not be adapted.
 Type=str
 Categories=service-samba
 
 [samba/winbind/nested/groups]
-Description[de]=Aktiviert/Deaktiviert die Unterstützung für verschachtelte Gruppen
-Description[en]=Enables/Disables support for nested groups
+Description[de]=UCS unterstützt die Verschachtelung von Gruppen (Gruppen in Gruppen). Ist diese Variable auf 'yes' gesetzt, werden diese verschachtelten Gruppen in Winbind aufgelöst.
+Description[en]=UCS supports nested groups (groups as members of groups). If this variable is set to 'yes', Winbind resolves these nested groups.
 Type=str
 Categories=service-samba
 
 [samba/netlogon/sync]
-Description[de]=Steuert das Verhalten der Samba-Netlogon-Skript-Synchronisation
-Description[en]=Adjust synchronisation of samba netlogon scripts
+Description[de]=Mit dieser Variable wird konfiguriert, wie das Netlogon-Verzeichnis des DC Master auf DC Backup/Slave-Systeme synchronisiert wird. Die folgenden Werte sind möglich: 'sync' synchronisiert die Daten vom Master und löscht Skripte, die auf dem Master nicht mehr vorhanden sind. 'download' synchronisiert die Daten vom Master, entfernt aber keine obsoleten Daten. 'none' deaktiviert die Synchronisation. Ist die Variable nicht gesetzt, gilt 'sync'.
+Description[en]=This variable configures the synchronisation of the netlogon share from the DC master to DC backup/slave systems. The following values are possible: 'sync' synchronises the values from the master and removes scripts which are no longer present on the master. 'download' synchronises the files, but doesn't remove obsolete files. 'none' disables the synchronisation. If the variable is unset, 'sync' applies.
 Type=str
 Categories=service-samba
 
 [samba/domain/logons]
-Description[de]=Aktiviert/Deaktiviert die Unterstützung für Windows 9X Netlogons bzw. NT4-Domänen-Dienste (gültige Werte: no/auto/yes)
-Description[en]=Enables/Disables support for windows 9X network logons and NT4 style domain services (valid values: no/auto/yes)
+Description[de]=Wird die Variable auf 'no' gesetzt, stellt ein UCS-Domänencontroller keine Anmeldedienste bereit. Dies kann sinnvoll sein, wenn ein solches System nur als Fileserver eingesetzt wird.
+Description[en]=If the variable is set to 'no', a UCS domain controller provides no authentication services. This can be useful for systems, which should only operate as file servers.
 Type=str
 Categories=service-samba
 
