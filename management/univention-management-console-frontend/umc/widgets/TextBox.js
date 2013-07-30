@@ -32,11 +32,12 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"put-selector/put",
+	"dojo/on",
 	"dojo/when",
 	"dijit/form/ValidationTextBox",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/tools"
-], function(declare, lang, put, when, ValidationTextBox, _FormWidgetMixin, tools) {
+], function(declare, lang, put, on, when, ValidationTextBox, _FormWidgetMixin, tools) {
 	return declare("umc.widgets.TextBox", [ ValidationTextBox, _FormWidgetMixin ], {
 		// the widget's class name as CSS class
 		'class': 'umcTextBox',
@@ -67,6 +68,7 @@ define([
 			this.inherited(arguments);
 			if (this.inlineLabel) {
 				this._inlineLabelNode = put(this.focusNode, '-span.umcInlineLabel', this.inlineLabel);
+				this.own(on(this._inlineLabelNode, 'click', lang.hitch(this, 'focus')));
 				this._updateInlineLabel();
 				this.on('keydown', lang.hitch(this, '_updateInlineLabel', 'keydown'));
 				this.on('focus', lang.hitch(this, '_updateInlineLabel', 'focus'));

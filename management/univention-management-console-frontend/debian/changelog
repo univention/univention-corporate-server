@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.45-1) unstable; urgency=low
+
+  * Bug #31699: fixed focus with inline label in TextBox
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 30 Jul 2013 13:55:22 +0200
+
 univention-management-console-frontend (3.0.44-1) unstable; urgency=low
 
   * Bug #31376: added missing .po entries
