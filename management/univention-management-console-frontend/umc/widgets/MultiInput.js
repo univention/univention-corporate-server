@@ -322,16 +322,14 @@ define([
 			return vals;
 		},
 
-		_removeNewButton: function() {
+		_renderNewButton: function() {
 			if (this._newButton) {
 				this._newButton.destroy();
 				this._newButton = null;
 			}
-		},
 
-		_addNewButton: function() {
 			// add the 'new' button to the last row
-			if (this._nRenderedElements < 1) {
+			if (this._nRenderedElements < 1 || this._nRenderedElements >= this.max) {
 				return;
 			}
 
@@ -511,9 +509,6 @@ define([
 				return;
 			}
 
-			// remove the 'new' button
-			this._removeNewButton();
-
 			var nFinal = this._nRenderedElements + n;
 			var newRows = [];
 			for (var irow = this._nRenderedElements; irow < nFinal && irow < this.max; ++irow, ++this._nRenderedElements) {
@@ -535,9 +530,7 @@ define([
 			tools.forEachAsync(newRows, lang.hitch(this, '__appendRow')).then(lang.hitch(this, function() {
 				// all elements have been added to the DOM
 				// add the new button
-				if (this._nRenderedElements < this.max) {
-					this._addNewButton();
-				}
+				this._renderNewButton();
 				this._updateReadyDeferred();
 			}));
 		},
@@ -546,9 +539,6 @@ define([
 			if (n < 1) {
 				return;
 			}
-
-			// remove the 'new' button
-			this._removeNewButton();
 
 			for (var irow = this._nRenderedElements - 1; irow >= this._nRenderedElements - n; --irow) {
 				// destroy the row container
@@ -564,7 +554,7 @@ define([
 
 
 			// add the new button
-			this._addNewButton();
+			this._renderNewButton();
 		},
 
 		_removeElement: function(idx) {

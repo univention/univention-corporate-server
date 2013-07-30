@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.46-1) unstable; urgency=low
+
+  * Fix some glitches with MultiInputs NewButton (Bug #31376)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 30 Jul 2013 14:38:04 +0200
+
 univention-management-console-frontend (3.0.45-1) unstable; urgency=low
 
   * Bug #31699: fixed focus with inline label in TextBox
