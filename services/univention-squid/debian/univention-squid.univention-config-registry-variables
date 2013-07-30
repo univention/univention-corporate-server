@@ -119,10 +119,17 @@ Type=str
 Categories=service-webproxy
 
 [squid/ntlmauth/tool]
-Description[de]=Programm für die Squid NTLM Authentifizierung
-Description[de]=Squid ntlm authentication tool
+Description[de]=Programm für die Squid NTLM Authentifizierung (default: /usr/lib/squid3/squid_ldap_ntlm_auth)
+Description[en]=Squid ntlm authentication helper (default: /usr/lib/squid3/squid_ldap_ntlm_auth)
 Type=str
 Categories=service-webproxy
+
+[squid/krb5auth/tool]
+Description[de]=Programm für die Squid negotiate Authentifizierung (default: /usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego --gss-spnego-strip-realm)
+Description[en]=Squid negotiate authentication helper (default: /usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego --gss-spnego-strip-realm)
+Type=str
+Categories=service-webproxy
+
 
 [squid/krb5auth]
 Description[de]=Squid Modul zur Kerberos Authentifikation aktivieren
