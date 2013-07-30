@@ -1254,5 +1254,11 @@ command line can be found at the following URLs.
 </itemizedlist>
 
 </chapter>
+
+	<bibliography>
+		<bibliomixed id="ucs-handbuch"/>
+		<bibliomixed id="locales"/>
+	</bibliography>
+
 <?dbhtml-include href="../stylesheets/piwiki.html"?>
 </book>
