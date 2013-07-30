@@ -171,8 +171,10 @@ define([
 			//		Query necessary information from the server for the object detail page
 			//		and initiate the rendering process.
 			this.inherited(arguments);
-			this._progressBar = new ProgressBar();
-			this.own(this._progressBar);
+
+			// create a progressbar
+			this._progressBar = this.own(new ProgressBar())[0];
+			this._progressBar.reset(_('Loading %s...', this.objectNameSingular));
 
 			// remember the objectType of the object we are going to edit
 			this._editedObjType = this.objectType;
@@ -210,7 +212,7 @@ define([
 			}
 
 			// when the commands have been finished, create the detail page
-			this.standby(true);
+			this.standby(true, this._progressBar);
 			(new all(commands)).then(lang.hitch(this, function(results) {
 				var properties = lang.getObject('properties.result', false, results);
 				var layout = lang.getObject('layout.result', false, results);
@@ -772,8 +774,6 @@ define([
 				this._form.getWidget( '$location$' ).set( 'visible', false);
 				this._progressBar.feedFromDeferred(this._form.ready(), _('Loading %s...', this.objectNameSingular));
 			}
-			this.standby(false);
-			this.standby(true, this._progressBar);
 			var ret = new Deferred();
 			when(loaded).then(lang.hitch(this, function() {
 				this._form.ready().then(function() {
