@@ -60,12 +60,14 @@ call_joinscript () {
 	local joinscript
 	joinscript="/usr/lib/univention-install/$1"
 	if [ -x "$joinscript" ] ; then
+		local namejoinscript
+		namejoinscript="$1"
 		shift
 		local role="$(ucr get server/role)"
 		if [ "$role" = "domaincontroller_master" -o "$role" = "domaincontroller_backup" ] ; then
-			echo "Calling joinscript $1 ..."
+			echo "Calling joinscript $namejoinscript ..."
 			"$joinscript" "$@"
-			echo "Joinscript $1 finished with exitcode $?"
+			echo "Joinscript $namejoinscript finished with exitcode $?"
 		fi
 	fi
 }

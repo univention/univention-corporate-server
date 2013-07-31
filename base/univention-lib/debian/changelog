@@ -1,3 +1,9 @@
+univention-lib (3.0.8-1) unstable; urgency=low
+
+  * base.sh: call_joinscript(): modified syntax of function (Bug #29263)
+
+ -- Liam Schwez <lschwez@sansad.knut.univention.de>  Wed, 31 Jul 2013 17:06:09 +0200
+
 univention-lib (3.0.7-1) unstable; urgency=low
 
   * Parameter "command" in UMCConnection.request for flexibility (Bug #31058)
