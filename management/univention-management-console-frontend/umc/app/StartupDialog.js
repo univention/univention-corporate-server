@@ -56,7 +56,7 @@ define([
 
 	// pre-load HTML template documents
 	var _docDeferred = new Deferred();
-	var _docDependencies = array.map(['welcome', 'feedback', 'activation', 'help'], _getDocumentDependency);
+	var _docDependencies = array.map(['welcome', 'feedback', 'activation', 'help', 'finished'], _getDocumentDependency);
 	require(_docDependencies, function(/*...*/) {
 		_docDeferred.resolve(arguments);
 	});

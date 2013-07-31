@@ -1541,6 +1541,7 @@ define([
 				array.forEach(['ssl_validity_host', 'ssl_validity_root'], function(ikey) {
 					data[ikey] = _formatDate(data[ikey]);
 				});
+				data.path = require.toUrl('umc/app');
 				dialog.templateDialog('umc/app', 'about.' + _getLang() + '.html', data, _('About UMC'), _('Close'));
 			} );
 		},
