@@ -3,7 +3,7 @@
 # Univention Dojo Package
 #  rules file for generating the deb package
 #
-# Copyright 2008-2012 Univention GmbH
+# Copyright 2008-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,10 +29,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
 
 %:
 	dh $@
