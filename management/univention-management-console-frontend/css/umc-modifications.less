@@ -251,11 +251,8 @@
   background-image: none; /* DEL */
   background-position: inherit; /* DEL */
   background-color: transparent; /* important: make normal buttons transparent */
-  -moz-border-radius: 0;
-  border-radius: 0; /* DEL */
-  -webkit-box-shadow: none; /* DEL */
-  -moz-box-shadow: none; /* DEL */
-  box-shadow: none; /* DEL */
+  .border-radius(0); /* DEL */
+  .box-shadow(none); /* DEL */
 }
 
 //@@@.umcPageFooter .umcButton {
@@ -319,12 +316,8 @@
 .umc .dijitComboButtonActive .dijitButtonNode,
 .umc .dijitToggleButtonActive .dijitButtonNode {
   background-color: inherit; /* DEL */
-  -webkit-box-shadow: inherit; /* DEL */
-  -moz-box-shadow: inherit; /* DEL */
-  box-shadow: inherit; /* DEL */
-  -webkit-transition-duration: inherit; /* DEL */
-  -moz-transition-duration: inherit; /* DEL */
-  transition-duration: inherit; /* DEL */
+  .box-shadow(inherit); /* DEL */
+  .transition-duration(inherit); /* DEL */
 }
 
 
@@ -502,15 +495,11 @@
   background-position: inherit; /* DEL */
   background-position: inherit; /* DEL */
   background-repeat: inherit; /* DEL */
-  -webkit-box-shadow: inherit; /* DEL */
-  -moz-box-shadow: inherit; /* DEL */
-  box-shadow: inherit; /* DEL */
+  .box-shadow(inherit); /* DEL */
 }
 
 .umc .dijitTabContainerTop-tabs .dijitTabChecked .dijitTabInnerDiv {
-       webkit-box-shadow: inherit; /* DEL */
-       -moz-box-shadow: inherit; /* DEL */
-       box-shadow: inherit; /* DEL */
+  .box-shadow(inherit); /* DEL */
 }
 
 .umc .dijitTabContainerTop-tabs .dijitTabChecked .dijitTabContent {
@@ -547,23 +536,19 @@
 
 .umc .dijitTabContainerTop-tabs .dijitTabInnerDiv,
 .umc .dijitTabContainerTop-tabs .dijitTabContent {
-  -moz-border-radius: inherit; /* DEL */
-  border-radius: inherit; /* DEL */
+  .border-radius(inherit); /* DEL */
 }
 .umc .dijitTabContainerBottom-tabs .dijitTabInnerDiv,
 .umc .dijitTabContainerBottom-tabs .dijitTabContent {
-  -moz-border-radius: inherit; /* DEL */
-  border-radius: inherit; /* DEL */
+  .border-radius(inherit); /* DEL */
 }
 .umc .dijitTabContainerLeft-tabs .dijitTabInnerDiv,
 .umc .dijitTabContainerLeft-tabs .dijitTabContent {
-  -moz-border-radius: inherit; /* DEL */
-  border-radius: inherit; /* DEL */
+  .border-radius(inherit); /* DEL */
 }
 .umc .dijitTabContainerRight-tabs .dijitTabInnerDiv,
 .umc .dijitTabContainerRight-tabs .dijitTabContent {
-  -moz-border-radius: inherit; /* DEL */
-  border-radius: inherit; /* DEL */
+  .border-radius(inherit); /* DEL */
 }
 
 //###.umc .tabStripButton {
@@ -596,8 +581,7 @@
 
 
 .umc .dijitTabContainerTabListNested .dijitTabContent {
-  -moz-border-radius: inherit; /* DEL */
-  border-radius: inherit; /* DEL */
+  .border-radius(inherit); /* DEL */
 }
 
 
@@ -648,8 +632,7 @@
 .umc .dijitDialogPaneContent {
   border-top: inherit; /* DEL */
   padding: 8px;
-  box-sizing:border-box;
-  -moz-box-sizing:border-box;
+  .box-sizing(border-box);
 }
 
 
@@ -681,8 +664,7 @@
   background-repeat: repeat-x;
   background-position: bottom;
   border: 1px solid white;
-  -moz-border-radius: inherit; /* DEL */
-  border-radius: inherit; /* DEL */
+  .border-radius(inherit); /* DEL */
   max-width: 300px;
 }
 
@@ -1895,9 +1877,7 @@ form {
 
 textarea {
 	font: inherit;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+	.box-sizing(border-box);
 }
 
 .dijitLayoutContainer {
@@ -2180,18 +2160,21 @@ p {
 
 	.umcGalleryItem {
 		position: relative;
-		padding: 1.25em;
-		margin: 0 1.666em 0.416em 0;
 		float: left;
 		outline: none;
-		height: 55px;
-		width: 305px;
+		.box-sizing(border-box);
+
+		// definitions in px instead of em due to size of image in px
+		padding: 15px 20px;
+		margin: 0 20px 5px 0;
+		height: 85px;
+		width: 345px;
 
 		.umcGalleryName,
 		.umcGalleryDescription {
 			text-align: left;
 			display: block;
-			padding-left: 60px;
+			padding-left: 72px;
 		}
 
 		.umcGalleryDescription {
@@ -2207,7 +2190,7 @@ p {
 		.umcGalleryStatusIcon {
 			position: absolute;
 			top: 5px;
-			right: 10px;
+			left: 66px;
 			width: 24px;
 			height: 24px;
 		}
@@ -2221,6 +2204,24 @@ p {
 	}
 
 }
+
+/* UMC overview page icons */
+.umcOverviewPane {
+	.umcGalleryItem:hover .umcGalleryStatusIcon {
+		visibility: visible;
+	}
+	.umcGalleryItem	.umcGalleryStatusIcon {
+		visibility: hidden;
+		right: 10px;
+		left: auto;
+	}
+
+	.umcGalleryName,
+	.umcGalleryDescription {
+		//padding-left: 60px !important;
+	}
+}
+
 
 /* TextBox - CSS for inline label */
 .dijitTextBox {
@@ -2258,7 +2259,7 @@ p {
 		background-color: @tuna;
 		text-align: right;
 		color: white;
-		box-sizing: border-box;
+		.box-sizing(border-box);
 		padding-right: 0!important;
 	}
 

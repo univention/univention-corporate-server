@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.49-1) unstable; urgency=low
+
+  * Bug #31699: adjust position of status icon for app center
+  * Bug #31639: clean up more CSS (use available LESS functions)
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 31 Jul 2013 14:18:43 +0200
+
 univention-management-console-frontend (3.0.48-1) unstable; urgency=low
 
   * [WIP] Bug #30811: added (i) graphic to about dialog, added finished page
