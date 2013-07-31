@@ -236,7 +236,7 @@ define([
 		},
 
 		update: function(ndeps, moduleName) {
-			this._progressInfo.update(ndeps, moduleName ? _('Loaded module %s', moduleName) : '&nbsp;');
+			this._progressInfo.update(100 * ndeps / this.maximum, moduleName ? _('Loaded module %s', moduleName) : '&nbsp;');
 		},
 
 		close: function() {
@@ -258,7 +258,7 @@ define([
 
 		idProperty: '$id$',
 
-		constructor: function(modules, categories, favoritesStr) {
+		constructor: function(modules, categories) {
 			this.categories = this._createCategoryList(categories);
 			this.setData(this._createModuleList(modules));
 			this._pruneEmptyCategories();
@@ -712,31 +712,92 @@ define([
 		},
 
 		_loadModules: function(progressDialog) {
-			var modules = [];
-			var categories = [];
 			return tools.umcpCommand('get/modules/list', null, false).then(lang.hitch(this, function(data) {
 				// update progress
 				var _modules = lang.getObject('modules', false, data) || [];
-				progressDialog.set('maximum', _modules.length);
-
-				// get categories
-				categories = data.categories;
+				var modules = [];
 
 				// register error handler
 				var ndeps = 0;
-				var modulesLoaded = new Deferred();
-				var incDeps = function(moduleName) {
-					// helper function
-					++ndeps;
-					progressDialog.update(ndeps, moduleName);
-					if (ndeps >= _modules.length) {
-						modulesLoaded.resolve();
+				var modulesLoadedDeferred = new Deferred();
+				var modulesLoaded = {};
+				var nModules = 0;
+				array.forEach(_modules, function(imod) {
+					if (modulesLoaded[imod.id] === undefined) {
+						// do not count flavors multiple times
+						++nModules;
+						modulesLoaded[imod.id] = {
+							loaded: false,
+							loadedFlavors: 0,
+							nFlavors: 0
+						};
+					}
+					if (imod.flavor) {
+						++modulesLoaded[imod.id].nFlavors;
+					}
+				});
+				progressDialog.set('maximum', nModules);
+
+				var markModuleAsLoaded = function(module) {
+					modulesLoaded[module.id].loaded = true;
+					if (module.flavor) {
+						++modulesLoaded[module.id].loadedFlavors;
 					}
 				};
-				var errHandle = require.on('error', function(err) {
+
+				var getNumOfModulesLoaded = function() {
+					var nLoaded = 0;
+					tools.forIn(modulesLoaded, function(ikey, istate) {
+						if (istate.nFlavors) {
+							// module has flavors... count flavors
+							nLoaded += istate.loadedFlavors / istate.nFlavors;
+						}
+						else if (istate.loaded) {
+							// no flavors
+							++nLoaded
+						}
+					});
+					return nLoaded;
+				};
+
+				var matchModuleByPath = function(path) {
+					var mod = null;
+					tools.forIn(modulesLoaded, function(ikey, iloaded) {
+						var ipath = lang.replace('umc/modules/{0}.js', [ikey]);
+						var idx = path.indexOf(ipath);
+						var pathMatches = idx + ipath.length == path.length;
+						if (pathMatches) {
+							var matchingModules = array.filter(_modules, function(imod) {
+								return imod.id == ikey;
+							});
+							if (matchingModules.length) {
+								mod = matchingModules[0];
+								return false;
+							}
+						}
+					});
+					return mod;
+				};
+
+				var incDeps = function(module) {
+					// helper function
+					if (module) {
+						markModuleAsLoaded(module);
+					}
+					var nModulesLoaded = getNumOfModulesLoaded();
+					progressDialog.update(nModulesLoaded, module ? module.name : '');
+					if (nModulesLoaded >= nModules) {
+						modulesLoadedDeferred.resolve([modules, data.categories]);
+					}
+				};
+
+				require.on('error', function(err) {
 					// count the loaded dependencies
 					if (err.message == 'scriptError') {
-						incDeps();
+						var mod = matchModuleByPath(err.info[0]);
+						if (mod) {
+							incDeps(mod);
+						}
 					}
 				});
 
@@ -744,9 +805,10 @@ define([
 				tools.forEachAsync(_modules, function(imod, i) {
 					this._tryLoadingModule(imod, i).then(lang.hitch(this, function(loadedModule) {
 						modules.push(loadedModule);
-						incDeps(imod.name);
+						incDeps(imod);
 					}), function(err) {
 						console.log('Error loading module ' + imod.id + ':', err);
+						incDeps(imod);
 					});
 				}, this);
 
@@ -755,8 +817,10 @@ define([
 					incDeps();
 				}
 
-				return modulesLoaded;
-			})).then(lang.hitch(this, function() {
+				return modulesLoadedDeferred;
+			})).then(lang.hitch(this, function(args) {
+				var modules = args[0];
+				var categories = args[1];
 				this._moduleStore = this._createModuleStore(modules, categories);
 
 				// make sure that we do not overwrite an explicitely stated value of 'overview'
