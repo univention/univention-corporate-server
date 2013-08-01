@@ -570,7 +570,8 @@ class Application(object):
 		return None, None
 
 	def is_installed(self, package_manager):
-		return all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages'))
+		ucr.load()
+		return all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages')) and component_registered(self.component_id, ucr)
 
 	def can_be_installed(self, package_manager, check_is_installed=True):
 		return not bool(self.cannot_install_reason(package_manager, check_is_installed)[0])

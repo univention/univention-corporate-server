@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (2.0.139-16) unstable; urgency=low
+
+  * Mark apps as installed only if component is registered (Bug #32144)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 01 Aug 2013 14:57:05 +0200
+
 univention-management-console-module-appcenter (2.0.139-15) unstable; urgency=low
 
   * Use independent apt.Cache when getting package sections (Bug #31662)
