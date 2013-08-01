@@ -1142,8 +1142,8 @@
   <para>
 	<itemizedlist>
 	  <listitem><simpara>
-		base.sh file: function call_joinscript() has been modified. The start and end of  every
-		executed joinscript will be displayed on console. Assist for a better tracing (<ulink url="&ucsbug;29263">Bug 29263</ulink>).
+		The function call_joinscript() has been modified. The start and end of  every
+		executed joinscript will be displayed on console (<ulink url="&ucsbug;29263">Bug 29263</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
