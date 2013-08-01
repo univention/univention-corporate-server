@@ -557,7 +557,7 @@ define([
 					var headline = '';
 					var buttons = [];
 
-					if (!result.can_continue) {
+					if (!force || !result.can_continue) {
 						confirmationRequired = true;
 						var mayContinue = !result.serious_problems;
 						var no_host_info = true;

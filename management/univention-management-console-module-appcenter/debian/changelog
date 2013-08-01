@@ -1,4 +1,4 @@
-univention-management-console-module-appcenter (2.0.139-17) unstable; urgency=low
+univention-management-console-module-appcenter (2.0.139-18) unstable; urgency=low
 
   * Mark apps as installed only if component is registered (Bug #32144)
 
