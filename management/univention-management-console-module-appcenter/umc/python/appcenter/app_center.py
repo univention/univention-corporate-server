@@ -560,9 +560,9 @@ class Application(object):
 					conflict_packages.append(package)
 			for app in self.all():
 				if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
-					if any(package_manager.is_installed(package, reopen=False) for package in app.get('defaultpackages')):
+					if app.is_installed(package_manager):
 						if app.name not in conflict_packages:
-							# can conflict multiple times: conflicts with 
+							# can conflict multiple times: conflicts with
 							# APP-1.1 and APP-1.2, both named APP
 							conflict_packages.append(app.name)
 			if conflict_packages:
