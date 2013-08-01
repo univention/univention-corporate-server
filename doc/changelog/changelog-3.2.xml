@@ -606,6 +606,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				When the App Center contains two applications that want to install
+				packages with the same name and one of these apps was installed, both
+				were marked as such (<ulink url="&ucsbug;32144">Bug 32144</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 			Applications now can state that they depend on other Applications (<ulink
 				url="&ucsbug;30077">Bug 30077</ulink>).
 		</simpara></listitem>
