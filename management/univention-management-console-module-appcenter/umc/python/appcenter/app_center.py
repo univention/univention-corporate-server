@@ -560,9 +560,9 @@ class Application(object):
 					conflict_packages.append(package)
 			for app in self.all():
 				if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
-					if app.is_installed(package_manager):
+					if any(package_manager.is_installed(package, reopen=False) for package in app.get('defaultpackages')):
 						if app.name not in conflict_packages:
-							# can conflict multiple times: conflicts with
+							# can conflict multiple times: conflicts with 
 							# APP-1.1 and APP-1.2, both named APP
 							conflict_packages.append(app.name)
 			if conflict_packages:
@@ -570,8 +570,7 @@ class Application(object):
 		return None, None
 
 	def is_installed(self, package_manager):
-		ucr.load()
-		return all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages')) and component_registered(self.component_id, ucr)
+		return all(package_manager.is_installed(package, reopen=False) for package in self.get('defaultpackages'))
 
 	def can_be_installed(self, package_manager, check_is_installed=True):
 		return not bool(self.cannot_install_reason(package_manager, check_is_installed)[0])
