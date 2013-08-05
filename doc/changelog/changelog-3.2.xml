@@ -1291,7 +1291,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  univention-spamassassin} has been modified. Obsolete &ucsUCRV;
+		  univention-spamassassin has been modified. Obsolete &ucsUCRV;
 		  <envar>mail/antispam/globalfolder</envar> has been removed (<ulink url="&ucsbug;31072">Bug 31072</ulink>).
 		</simpara></listitem>
 
