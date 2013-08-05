@@ -282,7 +282,7 @@ secret: $machine_secret
 				krb5conf_commit_needed=1
 			fi
 
-			if [ "$kerberos_kpasswdserver" == "$ldap_master" ] || [ -z "$kerberos_kpasswdserver" ]; then
+			if [ "$kerberos_kpasswdserver" = "$ldap_master" ] || [ -z "$kerberos_kpasswdserver" ]; then
 				## only change the default
 				univention-config-registry set \
 					kerberos/kpasswdserver=127.0.0.1
