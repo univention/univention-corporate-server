@@ -1,3 +1,9 @@
+univention-config-registry (9.0.3-4) unstable; urgency=low
+
+  * Improvements from QA feedback (Bug #29964)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Aug 2013 11:36:53 +0200
+
 univention-config-registry (9.0.3-3) unstable; urgency=low
 
   * Avoid double fclose in libuniventionconfig (Bug #29964)

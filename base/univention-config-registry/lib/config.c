@@ -48,7 +48,7 @@
 #define BASECONFIG_MAX_LINE 1024
 
 
-const char *SCOPES[] = {
+static const char *SCOPES[] = {
 	"forced",
 	"schedule",
 	"ldap",
@@ -56,7 +56,7 @@ const char *SCOPES[] = {
 	"custom",
 	NULL};
 
-const char *BASES[] = {
+static const char *LAYERS[] = {
 			"/etc/univention/base-forced.conf",
 			"/etc/univention/base-schedule.conf",
 			"/etc/univention/base-ldap.conf",
@@ -76,10 +76,10 @@ char *univention_config_get_string(const char *key)
 	if (len < 0)
 		return ret;
 
-	for (i = 0; BASES[i] != NULL; i++) {
-		if ((file = fopen(BASES[i], "r")) == NULL)
+	for (i = 0; LAYERS[i] != NULL; i++) {
+		if ((file = fopen(LAYERS[i], "r")) == NULL)
 		{
-			univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "Error on opening \"%s\"", BASES[i]);
+			univention_debug(UV_DEBUG_CONFIG, UV_DEBUG_ERROR, "Error on opening \"%s\"", LAYERS[i]);
 			continue;
 		}
 
@@ -87,7 +87,21 @@ char *univention_config_get_string(const char *key)
 		{
 			if (!strncmp(line, nvalue, len))
 			{
-				ret = strndup(line + len, strlen(line) - len - 1 ); /* no newline */
+				char *value;
+				size_t vlen;
+
+				value = line + len; // skip key
+				vlen = strlen(value);
+				while (vlen > 0) {
+					switch (value[vlen - 1]) {
+					case '\n':
+					case '\r':
+						value[--vlen] = '\0';
+						continue;
+					}
+					break;
+				}
+				ret = strndup(value, vlen);
 				fclose(file);
 				goto done;
 			}
