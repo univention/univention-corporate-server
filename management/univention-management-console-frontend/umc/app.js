@@ -128,6 +128,9 @@ define([
 					attribute: 'category',
 					descending: false
 				}, {
+					attribute: 'priority',
+					descending: true
+				}, {
 					attribute: 'name',
 					descending: false
 				}]
@@ -706,6 +709,7 @@ define([
 				lang.mixin(_userPreferences, prefs);
 			})).then(function() {
 				// nothing to do
+				_favoritesDisabled = false;
 			}, lang.hitch(this, function() {
 				_favoritesDisabled = true;
 			}));
@@ -1116,7 +1120,7 @@ define([
 			}));
 
 			// enable closing of context menu by clicking somewhere
-			on(this._topContainer.domNode, '*:click', lang.hitch(this, function() {
+			on(baseWin.body(), 'click', lang.hitch(this, function() {
 				this._closeModuleContextMenu();
 			}));
 

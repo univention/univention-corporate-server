@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.51-1) unstable; urgency=low
+
+  * Bug #31699: sort modules by their priority, fixed problems with disabling
+    favorites
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 05 Aug 2013 17:05:08 +0200
+
 univention-management-console-frontend (3.0.50-1) unstable; urgency=low
 
   * Bug #32140: adapted the module loading process to be more robust
