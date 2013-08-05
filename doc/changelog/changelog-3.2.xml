@@ -978,8 +978,8 @@
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
-			The selectable printservers are now limited to servers with univentionServer=Print
-			(<ulink url="&ucsbug;25216">Bug 25216</ulink>).
+			The selectable print servers are now limited to servers with
+			univentionService=Print (<ulink url="&ucsbug;25216">Bug 25216</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
