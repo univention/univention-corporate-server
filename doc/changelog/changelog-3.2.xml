@@ -67,6 +67,14 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
+			xorg-server: CVE-2013-1940 (<ulink url="&ucsbug;29132">Bug 29132</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			xorg-server-video-openchrome: CVE-2013-1994 (<ulink url="&ucsbug;31467">Bug 31467</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
 			libxi: CVE-2013-1984 CVE-2013-1995 CVE-2013-1998 (<ulink url="&ucsbug;31473">Bug 31473</ulink>).
 		  </simpara></listitem>
 
@@ -76,6 +84,10 @@
 
 		  <listitem><simpara>
 			libxcb: CVE-2013-2064 (<ulink url="&ucsbug;31488">Bug 31488</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			perl: CVE-2013-1667(<ulink url="&ucsbug;30724">Bug 30724</ulink>).
 		  </simpara></listitem>
 
 		  <listitem><simpara>
