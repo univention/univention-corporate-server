@@ -283,7 +283,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCRV; C library, used by Univention Directory Listener, now considers all layers of &ucsUCR;
+		  The &ucsUCR; C library, used by Univention Directory Listener, now considers all layers of &ucsUCR;
 		  (<ulink url="&ucsbug;29964">Bug 29964</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
