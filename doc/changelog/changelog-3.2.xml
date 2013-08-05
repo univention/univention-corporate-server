@@ -765,7 +765,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Opening superordinates which were recently created did not opened correctly (<ulink url="&ucsbug;25008">Bug 25008</ulink>).
+			Newly added superordinates are now opened correctly on mouse click (<ulink url="&ucsbug;25008">Bug 25008</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
