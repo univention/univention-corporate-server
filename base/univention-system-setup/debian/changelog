@@ -1,3 +1,10 @@
+univention-system-setup (7.0.23-4) unstable; urgency=low
+
+  * improved logging of script execution (Bug #29714)
+  * improved code readability: os.path.isdir instead of stat.S_ISDIR
+
+ -- Arvid Requate <requate@univention.de>  Mon, 05 Aug 2013 13:10:19 +0200
+
 univention-system-setup (7.0.23-3) unstable; urgency=low
 
   * add traceback to debug message in case an exception is raied during

@@ -45,7 +45,6 @@ import apt
 import psutil
 import csv
 import imp
-import stat
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
@@ -235,11 +234,11 @@ class ProgressParser( object ):
 
 	# fractions of setup scripts
 	FRACTIONS = {
-		'basis/12domainname'	:  5,
-		'basis/14ldap_basis'	: 10,
-		'net/10interfaces'	:  5,
-		'net/11ipv6interfaces'	:  5,
-		'software/10software'	: 50,
+		'10_basis/12domainname'	:  5,
+		'10_basis/14ldap_basis'	: 10,
+		'30_net/10interfaces'	:  5,
+		'30_net/11ipv6interfaces'	:  5,
+		'50_software/10software'	: 50,
 		}
 
 	# current status
@@ -333,7 +332,7 @@ class ProgressParser( object ):
 def sorted_files_in_subdirs( directory ):
 	for entry in sorted(os.listdir(directory)):
 		path = os.path.join(directory, entry)
-		if stat.S_ISDIR(os.stat(path).st_mode):
+		if os.path.isdir(path):
 			for filename in sorted(os.listdir(path)):
 				yield os.path.join(path, filename)
 
@@ -348,7 +347,8 @@ def run_scripts( progressParser, restartServer = False ):
 
 	for scriptpath in sorted_files_in_subdirs( PATH_SETUP_SCRIPTS ):
 			# launch script
-			pipe = subprocess.Popen( scriptpath, stdout = subprocess.PIPE, stderr = f ).stdout
+			MODULE.info('Running script %s\n' % scriptpath)
+			pipe = subprocess.Popen( scriptpath, stdout = subprocess.PIPE, stderr = subprocess.STDOUT ).stdout
 			while True:
 				line = pipe.readline()
 				if not line:
