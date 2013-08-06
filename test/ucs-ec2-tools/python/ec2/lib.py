@@ -462,7 +462,7 @@ class VM_KVM(VM):
 		kvm_name_full = '%s_%s' % (os.getenv('USER'), self.section,)
 
 		cmdline = '%s -y -V "%s" -A "%s" -l "%s" "%s"' % (
-			PATH_UCS_KT_GET
+			PATH_UCS_KT_GET,
 			self.config.get(self.section, 'kvm_ucsversion'),
 			self.config.get(self.section, 'kvm_architecture'),
 			kvm_name_short,
