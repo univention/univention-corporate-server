@@ -734,6 +734,14 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				Univention Directory Manager modules that support superordinates now
+				respect the autosearch setting via UCR when changing the superordinate
+				in the advanced search form (<ulink url="&ucsbug;29498">Bug
+					29498</ulink>).
+
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  A broken LDAP authentification in <command>proof_dns_dhcp_records</command> has been
 		  corrected (<ulink url="&ucsbug;30903">Bug 30903</ulink>).
 		</simpara></listitem>
