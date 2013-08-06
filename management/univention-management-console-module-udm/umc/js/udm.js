@@ -76,9 +76,9 @@ define([
 		//		This class is meant to be used (a) either to interface a particular UDM type
 		//		(users, groups, computers, ...) or (b) to display a navigation interface which
 		//		shows the container hierarchy on the left side and existing LDAP objects of
-		//		any type on the search list. The class' behaviour is controlled by the moduleFlavor
-		//		property (which is set automatically when available modules are queried during
-		//		the initialization).
+		//		any type on the search list. The behaviour of the class is controlled by the
+		//		moduleFlavor property (which is set automatically when available modules are
+		//		queried during the initialization).
 
 		// openObject: Object?
 		//		If given, the module will open upon start the detail page for editing the given
@@ -417,12 +417,12 @@ define([
 						var found = false;
 						this._searchForm._widgets.superordinate.store.fetch( { onItem: lang.hitch( this, function( item ) {
 							if ( this._searchForm._widgets.superordinate.store.getValue( item, 'id' ) == keys[ 0 ] ) {
-								this._searchForm.getWidget('superordinate').set( 'value', keys[ 0 ] );
+								this._setSuperordinateAndFilter(keys[ 0 ]);
 								found = true;
 								return false;
 							}
 						} ) } );
-						if ( found === false ) {
+						if ( !found ) {
 							return 'edit';
 						}
 					} else {
@@ -440,7 +440,7 @@ define([
 			// get configured search values
 			var autoObjProperty = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/default'] ||
 				this._ucr['directory/manager/web/modules/default'];
-			var autoSearch = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/autosearch'] ||
+			this._autoSearch = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/autosearch'] ||
 				this._ucr['directory/manager/web/modules/autosearch'];
 
 			var umcpCmd = lang.hitch(this, 'umcpCommand');
@@ -731,15 +731,24 @@ define([
 
 			// add an additional 'up' button when the user selected a superordinate
 			// for the search scope
-			if (this._searchForm.getWidget('superordinate')) {
-				this.own(this._searchForm.getWidget('superordinate').watch('value', lang.hitch(this, function(attr, oldval, val) {
+			var superordinateWidget = this._searchForm.getWidget('superordinate');
+			if (superordinateWidget) {
+				this.own(superordinateWidget.watch('value', lang.hitch(this, function() {
+					if (tools.isTrue(this._autoSearch)) {
+						// we can relaunch the search after all search form values
+						// have been updated
+						this._searchForm.ready().then(lang.hitch(this, 'filter'));
+					}
+				})));
+				this._grid.on('filterDone', lang.hitch(this, function() {
+					var val = superordinateWidget.get('value');
 					if ('None' == val && this._upButton) {
 						// top view, no superordinate selected -> remove the button
 						this._grid._toolbar.removeChild(this._upButton);
 						this._upButton.destroyRecursive();
 						this._upButton = null;
 					}
-					if (typeof val == "string" && 'None' != val && !this._upButton) {
+					if (typeof val == "string" && 'None' != val && '' !== val && !this._upButton) {
 						var label = _('Show all superordinates');
 						if ('dhcp/dhcp' == this.moduleFlavor) {
 							label = _('Show all DHCP services');
@@ -752,20 +761,17 @@ define([
 							label: label,
 							iconClass: 'umcIconUp',
 							callback: lang.hitch(this, function() {
-								this._searchForm.getWidget('superordinate').set('value', 'None');
+								this._setSuperordinateAndFilter('None');
 							})
 						});
 						this._grid._toolbar.addChild(this._upButton, 0);
 					}
-					// we can relaunch the search after all search form values
-					// have been updated
-					this._searchForm.ready().then(lang.hitch(this, 'filter'));
-				})));
+				}));
 			}
 
 			// check whether we have autosearch activated
-			if ('navigation' != this.moduleFlavor ) {
-				if ( tools.isTrue(autoSearch)) {
+			if ('navigation' != this.moduleFlavor) {
+				if (tools.isTrue(this._autoSearch)) {
 					// connect to the onValuesInitialized event of the form
 					on.once(this._searchForm, 'valuesInitialized', lang.hitch(this, function() {
 						this.filter(this._searchForm.get('value'));
@@ -777,6 +783,16 @@ define([
 
 			this._searchPage.startup();
 			this.addChild(this._searchPage);
+		},
+
+		_setSuperordinateAndFilter: function(superordinate) {
+			var superordinateWidget = this._searchForm.getWidget('superordinate');
+			superordinateWidget.set('value', superordinate);
+			if (tools.isFalse(this._autoSearch)) {
+				// autosearch is false: filtering was not done
+				//   automatically by superordinate.watch('value')
+				this._searchForm.ready().then(lang.hitch(this, 'filter'));
+			}
 		},
 
 		_selectInputText: function() {
