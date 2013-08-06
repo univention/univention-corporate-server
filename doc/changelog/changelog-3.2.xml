@@ -599,6 +599,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			Clarified the German translation of the error message when there is
+			insufficient RAM available while trying to install an application (<ulink
+				url="&ucsbug;32117">Bug 32117</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Made free memory calculation more robust in OpenVZ environments (<ulink url="&ucsbug;30659">Bug 30659</ulink>).
 		</simpara></listitem>
 
