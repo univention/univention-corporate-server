@@ -783,7 +783,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			When a license was imported a success message is displayed (<ulink url="&ucsbug;29713">Bug 29713</ulink>).
+			Displaying a feedback message after importing a license was made more robust (<ulink url="&ucsbug;29713">Bug 29713</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
