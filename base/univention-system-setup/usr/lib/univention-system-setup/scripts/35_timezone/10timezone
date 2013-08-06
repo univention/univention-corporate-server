@@ -55,7 +55,7 @@ echo "$timezone" >/etc/timezone
 ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
 
 test -x /etc/init.d/ntp && /etc/init.d/ntp stop
-test -x /usr/sbin/ntpdate-debian && /usr/sbin/ntpdate-debian
+test -x /usr/sbin/ntpdate-debian && /usr/sbin/ntpdate-debian || true
 test -x /etc/init.d/ntp && /etc/init.d/ntp start
 
 exit 0

@@ -348,13 +348,14 @@ def run_scripts( progressParser, restartServer = False ):
 	for scriptpath in sorted_files_in_subdirs( PATH_SETUP_SCRIPTS ):
 			# launch script
 			MODULE.info('Running script %s\n' % scriptpath)
-			pipe = subprocess.Popen( scriptpath, stdout = subprocess.PIPE, stderr = subprocess.STDOUT ).stdout
+			p = subprocess.Popen( scriptpath, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
 			while True:
-				line = pipe.readline()
+				line = p.stdout.readline()
 				if not line:
 					break
 				progressParser.parse( line )
 				f.write( line )
+			p.wait()
 
 	# enable execution of servers again
 	subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
@@ -377,13 +378,14 @@ def run_joinscript( progressParser, _username, password ):
 	progressParser.fractions[ 'setup-join.sh' ] = 50
 	progressParser.current.max = sum( progressParser.fractions.values() )
 	def runit( command ):
-		pipe = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = f ).stdout
+		p = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
 		while True:
-			line = pipe.readline()
+			line = p.stdout.readline()
 			if not line:
 				break
 			progressParser.parse( line )
 			f.write( line )
+		p.wait()
 
 	cmd = [ PATH_JOIN_SCRIPT ]
 	if _username and password:
@@ -520,6 +522,7 @@ def dhclient(interface, timeout=None):
 	stderr_thread.join(timeout)
 	if stderr:
 		stderr=stderr[0]
+	p.wait()
 	# note: despite '-1' background dhclient never seems to terminate
 	try:
 		dhclientpid = int(open(pidfilename,'r').read().strip('\n\r\t '))

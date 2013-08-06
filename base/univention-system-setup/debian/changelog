@@ -1,3 +1,9 @@
+univention-system-setup (7.0.23-5) unstable; urgency=low
+
+  * improve log capturing (Bug #29714)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Aug 2013 12:24:27 +0200
+
 univention-system-setup (7.0.23-4) unstable; urgency=low
 
   * improved logging of script execution (Bug #29714)
