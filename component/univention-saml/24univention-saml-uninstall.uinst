@@ -1,23 +1,25 @@
-#!/usr/bin/make -f
+#! /bin/sh
 #
-# Copyright (C) 2013 Univention GmbH
+# Univention saml
+#  unjoin script
+#
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
 # All rights reserved.
 #
-# The source code of the software contained in this package
-# as well as the source package itself are made available
+# The source code of this program is made available
 # under the terms of the GNU Affero General Public License version 3
 # (GNU AGPL V3) as published by the Free Software Foundation.
 #
-# Binary versions of this package provided by Univention to you as
+# Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
 # you and Univention and not subject to the GNU AGPL V3.
 #
-# In the case you use the software under the terms of the GNU AGPL V3,
+# In the case you use this program under the terms of the GNU AGPL V3,
 # the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -28,13 +30,26 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	dh_auto_install
-	univention-install-config-registry
+VERSION=1
 
-override_dh_auto_test:
-	dh_auto_test
-	ucslint
-%:
-	dh $@ 
+. /usr/share/univention-lib/base.sh
+. /usr/share/univention-lib/ldap.sh
+. /usr/share/univention-join/joinscripthelper.lib
 
+joinscript_init
+
+eval "$(univention-config-registry shell)"
+
+ucs_removeServiceFromLocalhost "univention-saml" "$@"
+
+if ucs_isServiceUnused "univention-saml" "$@"; then
+	univention-directory-manager container/cn remove "$@" \
+		--dn "cn=saml-serviceprovider,cn=univention,$ldap_base" || die
+
+	stop_udm_cli_server
+fi
+
+
+joinscript_remove_script_from_status_file 76univention-saml.inst
+
+exit 0

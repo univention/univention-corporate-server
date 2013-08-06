@@ -1,4 +1,6 @@
 <?php
+@%@UCRWARNING=# @%@
+
 /* 
  * The configuration of simpleSAMLphp
  * 
@@ -7,19 +9,17 @@
 
 $config = array (
 @!@
-print '''
-        'enable.saml20-idp'             => %(enableIDP)s,
-        'timezone'              => '%(timezone)s',
-        'logging.level'         => SimpleSAML_Logger::%(loglevel)s,
-        'language.default'              => '%(language)s',
-        'theme.use'             => '%(theme)s',
-''' % dict(
-        enableIDP=('true' if configRegistry.is_true('saml/idp/enableIdP') else 'false'),
-        timezone=configRegistry.get('saml/idp/timezone', 'Europe/Berlin'),
-        loglevel=configRegistry.get('saml/idp/log/level', 'NOTICE'),
-        language=configRegistry.get('locale/default', 'en')[:2],
-        theme=configRegistry.get('saml/idp/lookandfeel/theme', 'default'),
-)
+saml20_enabled = 'false'
+if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
+	saml20_enabled = 'true'
+print "	'enable.saml20-idp'	=> %s," % saml20_enabled
+
+print "	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin')
+print "	'logging.level'		=> SimpleSAML_Logger::%s," % configRegistry.get('saml/idp/log/level', 'NOTICE')
+print "	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2]
+print "	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default')
+print"	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator')
+print"	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%s' % configRegistry.get('domainname'))
 @!@
 	/**
 	 * Setup the following parameters to match the directory of your installation.
@@ -106,8 +106,7 @@ print '''
 	 * The email address will be used as the recipient address for error reports, and
 	 * also as the technical contact in generated metadata.
 	 */
-	'technicalcontact_name'     => 'Administrator',
-	'technicalcontact_email'    => 'na@example.org',
+
 
 	/*
 	 * The timezone of the server. This option should be set to the timezone you want
@@ -542,6 +541,7 @@ print '''
 	 */
 	'metadata.sources' => array(
 		array('type' => 'flatfile'),
+		array('type' => 'flatfile', 'directory' => 'metadata.d'),
 	),
 
 

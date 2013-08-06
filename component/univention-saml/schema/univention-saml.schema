@@ -1,0 +1,45 @@
+#
+# OpenLDAP Schema file
+# for univention-saml package
+# 
+
+attributetype ( 1.3.6.1.4.1.10176.4200.1.2
+	NAME 'SAMLServiceProviderIdentifier'
+	DESC 'Unique service provider identifier'
+	EQUALITY caseExactIA5Match
+	SUBSTR caseExactIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4200.1.3
+	NAME 'AssertionConsumerService'
+	DESC 'The URL of the AssertionConsumerService endpoint for this SP'
+	EQUALITY caseExactIA5Match
+	SUBSTR caseExactIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4200.1.4
+	NAME 'NameIDFormat'
+	DESC 'The NameIDFormat this SP should receive'
+	EQUALITY caseExactIA5Match
+	SUBSTR caseExactIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4200.1.5
+	NAME 'simplesamlNameIDAttribute'
+	DESC 'The name of the attribute which should be used as the value of the NameID'
+	EQUALITY caseExactIA5Match
+	SUBSTR caseExactIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4200.1.6
+	NAME 'simplesamlAttributes'
+	DESC 'Whether the SP should receive any attributes from the IdP'
+	EQUALITY caseExactIA5Match
+	SUBSTR caseExactIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.4200.1.1 NAME 'univentionSAMLServiceProvider' SUP top STRUCTURAL
+	DESC 'univention simplesamlphp service provider'
+	MAY ( NameIDFormat $ simplesamlNameIDAttribute $ simplesamlAttributes )
+	MUST ( SAMLServiceProviderIdentifier $ AssertionConsumerService )
+	)

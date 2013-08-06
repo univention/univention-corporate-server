@@ -1,4 +1,5 @@
 <?php
+@%@UCRWARNING=# @%@
 /**
  * SAML 2.0 IdP configuration for simpleSAMLphp.
  *
@@ -14,9 +15,10 @@ $metadata['__DYNAMIC:1__'] = array(
 	'host' => '__DEFAULT__',
 
 	/* X.509 key and certificate. Relative to the cert directory. */
-	'privatekey' => 'server.pem',
-	'certificate' => 'server.crt',
-
+@!@
+print "	'privatekey'	=> '%s'," % configRegistry.get('saml/idp/certificate/privatekey', configRegistry.get('apache2/ssl/key', '/etc/univention/ssl/%s.%s/private.key' % (configRegistry.get('hostname'), configRegistry.get('domainname')) ))
+print "	'certificate'	=> '%s'," % configRegistry.get('saml/idp/certificate/certificate', configRegistry.get('apache2/ssl/certificate', '/etc/univention/ssl/%s.%s/cert.pem' % (configRegistry.get('hostname'), configRegistry.get('domainname')) ))
+@!@
 	/*
 	 * Authentication source to use. Must be one that is configured in
 	 * 'config/authsources.php'.

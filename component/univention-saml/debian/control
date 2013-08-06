@@ -2,21 +2,23 @@ Source: univention-saml
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 7.0.50~)
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint,
+ univention-config-dev
 Standards-Version: 3.8.4
-Homepage: http://simplesamlphp.org/docs/stable/
 
 Package: univention-saml
 Architecture: all
-Depends: ${shlibs:Depends},
- univention-config-dev,
+Depends: univention-config-dev,
  ${misc:Depends},
  apache2,
  php-xml-parser,
  php5-mcrypt,
  php-openid,
  php5-ldap,
- simplesamlphp (>= 1.11.0-1)
+ openssl,
+ simplesamlphp (>= 1.11.0-1),
+ univention-saml-schema (= ${source:Version})
 Description: Integrates simpleSAMLphp Identity Provider into UCS
  This packages provides the basic configuration for the
  simpleSAMLphp Identity Provider which is an authentication and federation application
@@ -36,3 +38,15 @@ Description: Integrates simpleSAMLphp Identity Provider into UCS
  integrated Single Sign-On technology for corporate useage.
  For more information about UCS,
  refer to: http://www.univention.de
+
+Package: univention-saml-schema
+Architecture: all
+Depends: univention-config-registry,
+ ${misc:Depends}
+Description: UCS simpleSAMLphp ldap integration
+ This package integrates the simpleSAMLphp ldap schema into the domain
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

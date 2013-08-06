@@ -1,37 +1,27 @@
-This work was packaged for Debian by:
+Copyright (C) 2013 Univention GmbH
 
-    Univention GmbH <packages@univention.de> on Wed, 10 Jul 2013 08:19:58 -0400
+http://www.univention.de/
 
-It was downloaded from:
+All rights reserved.
 
-    <url://example.com>
+The source code of the software contained in this package
+as well as the source package itself are made available
+under the terms of the GNU Affero General Public License version 3
+(GNU AGPL V3) as published by the Free Software Foundation.
 
-Upstream Author(s):
+Binary versions of this package provided by Univention to you as
+well as other copyrighted, protected or trademarked materials like
+Logos, graphics, fonts, specific documentations and configurations,
+cryptographic keys etc. are subject to a license agreement between
+you and Univention and not subject to the GNU AGPL V3.
 
-    <put author's name and email here>
-    <likewise for another author>
+In the case you use the software under the terms of the GNU AGPL V3,
+the program is provided in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
 
-Copyright:
-
-    <Copyright (C) YYYY Firstname Lastname>
-    <likewise for another author>
-
-License:
-
-    <Put the license of the package here indented by 4 spaces>
-
-The Debian packaging is:
-
-    Copyright (C) 2013 Univention GmbH <packages@univention.de>
-
-# Please chose a license for your packaging work. If the program you package
-# uses a mainstream license, using the same license is the safest choice.
-# Please avoid to pick license terms that are more restrictive than the
-# packaged work, as it may make Debian's contributions unacceptable upstream.
-# If you just want it to be GPL version 3, leave the following lines in.
-
-and is licensed under the GPL version 3,
-see "/usr/share/common-licenses/GPL-3".
-
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.
+You should have received a copy of the GNU Affero General Public
+License with the Debian GNU/Linux or Univention distribution in file
+/usr/share/common-licenses/AGPL-3; if not, see
+<http://www.gnu.org/licenses/>.

@@ -1,4 +1,5 @@
 <?php
+@%@UCRWARNING=# @%@
 
 $config = array(
 
@@ -46,26 +47,27 @@ $config = array(
 #		'enable_tls' => FALSE,
 
 
-		// Univention specific configuration.
 @!@
-print '''
-        'enable_tls'             => %(ldapTLS)s,
-        'search.enable'             => %(ldapsearch)s,
-        'search.base'             => '%(ldapsearchbase)s',
-        'hostname'             => '%(host)s',
-''' % dict(
-       ldapTLS=('true' if configRegistry.is_true('saml/idp/auth/ldap/enable_tls') else 'false'),
-       ldapsearch=('false' if configRegistry.is_false('saml/idp/auth/ldap/search_enable') else 'true'),
-       ldapsearchbase=configRegistry.get('ldap/base', 'NULL'),
-       host=configRegistry.get('ldap/server/name', '127.0.0.1'),
-)
+print "	'enable_tls'		=> %s," % configRegistry.get('saml/idp/ldap/enable_tls', 'true')
+print "	'hostname'		=> '%s'," % configRegistry.get('ldap/server/name', 'localhost')
+print " 'port'			=> %s," % configRegistry.get('ldap/server/port', 389)
+print "	'debug' 		=> %s," % configRegistry.get('saml/idp/ldap/debug', 'FALSE')
+print "	'attributes'		=> array(%s)," % configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\'')
+print "	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null')
+print "	'search.attributes' 	=> array(%s)," % configRegistry.get('saml/idp/ldap/search_attributes', '\'uid\'')
+print "	'search.username'	=> '%s'," % configRegistry.get('ldap/hostdn')
+try:
+	password = open('/etc/machine.secret','r').read().strip()
+	if password:
+		print "	'search.password'	=> '%s'," % password
+except:
+	print "	'search.password'	=> NULL,"
 @!@
 
 
 		// Whether debug output from the LDAP library should be enabled.
 		// Default is FALSE.
-		'debug' => FALSE,
-
+		# 'debug' => FALSE
 		// The timeout for accessing the LDAP server, in seconds.
 		// The default is 0, which means no timeout.
 		'timeout' => 0,
@@ -76,7 +78,7 @@ print '''
 		// Which attributes should be retrieved from the LDAP server.
 		// This can be an array of attribute names, or NULL, in which case
 		// all attributes are fetched.
-		'attributes' => NULL,
+		#'attributes' => NULL,
 
 		// The pattern which should be used to create the users DN given the username.
 		// %username% in this pattern will be replaced with the users username.
@@ -86,7 +88,7 @@ print '''
 #		'dnpattern' => 'uid=%username%,cn=users,dc=intra,dc=local',
 		// As an alternative to specifying a pattern for the users DN, it is possible to
 		// search for the username in a set of attributes. This is enabled by this option.
-#		'search.enable' => FALSE,
+		'search.enable' => TRUE,
 
 		// The DN which will be used as a base for the search.
 		// This can be a single string, in which case only that DN is searched, or an
@@ -96,12 +98,9 @@ print '''
 		//
 		// This is an array with one or more attribute names. Any of the attributes in
 		// the array may match the value the username.
-		'search.attributes' => array('uid', 'mail'),
 
 		// The username & password the simpleSAMLphp should bind to before searching. If
 		// this is left as NULL, no bind will be performed before searching.
-		'search.username' => NULL,
-		'search.password' => NULL,
 
 		// If the directory uses privilege separation,
 		// the authenticated user may not be able to retrieve

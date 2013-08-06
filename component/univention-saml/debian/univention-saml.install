@@ -1,2 +1,1 @@
-conffiles/etc/apache2/sites-available/*	etc/apache2/sites-available/
-conffiles/etc/simplesamlphp/metadata/saml20-idp-hosted.php etc/simplesamlphp/metadata/
+apache2/sites-available/univention-saml-apache etc/apache2/sites-available
