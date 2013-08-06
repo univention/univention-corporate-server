@@ -43,6 +43,8 @@ from select import select
 import boto
 from boto.ec2 import regions, blockdevicemapping
 
+PATH_UCS_KT_GET = '/usr/bin/ucs-kt-get'
+
 def mac2IPv6linklocal(mac):
 	""" converts a mac address into a IPv6 link local address """
 	addr = mac.replace(':','')
@@ -459,7 +461,8 @@ class VM_KVM(VM):
 		kvm_name_short = '%s' % (self.section,)
 		kvm_name_full = '%s_%s' % (os.getenv('USER'), self.section,)
 
-		cmdline = '/home/sschwardt/bin/ucs-kt-get-SSK -y -V "%s" -A "%s" -l "%s" "%s"' % (
+		cmdline = '%s -y -V "%s" -A "%s" -l "%s" "%s"' % (
+			PATH_UCS_KT_GET
 			self.config.get(self.section, 'kvm_ucsversion'),
 			self.config.get(self.section, 'kvm_architecture'),
 			kvm_name_short,
