@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.9-1) unstable; urgency=low
+
+  * Bug #32164: added ucs-kvm-create
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 06 Aug 2013 15:00:05 +0200
+
 ucs-ec2-tools (0.1.8-1) unstable; urgency=low
 
   * Tag instances with Jenkins informations (Bug #31283)

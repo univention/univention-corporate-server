@@ -1,9 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # vim:set shiftwidth=4 tabstop=4:
-"""
-Run ucs-test in cloud.
-"""
 #
 # Copyright 2013 Univention GmbH
 #
@@ -34,48 +31,40 @@ Run ucs-test in cloud.
 
 from optparse import OptionParser
 import os
-import logging
-
+import sys
 import univention.ec2.lib
 from univention.ec2.lib import _print_done, _print_process
 
-def main():
-	"""
-	Create EC2 instances for testing.
-	"""
 
-	usage = '''%prog% [options] -c config_file '''
+def main():
+	# A list of all VMs
+	vms = []
+
+	# Parse options and the config file
+	_print_process('Parse options and config files')
+	usage = '''%s [options] -c config_file ''' % sys.argv[0]
 	parser = OptionParser(usage=usage)
 	parser.add_option("-c", "--conf", action="store",
-			dest="config_file", help="Config file")
+			dest="config_file", help="Config file for %s" % sys.argv[0])
 
-	(options, _args) = parser.parse_args()
+	(options, args) = parser.parse_args()
 
 	if not options.config_file:
-		parser.error('fail: -c config_file is required')
+		_print_done('fail (-c config_file is required)')
+		sys.exit(2)
 	if not os.path.exists(options.config_file):
-		parser.error('fail: "%s" does not exist' % options.config_file)
+		_print_done('fail (%s does not exist)' % options.config_file)
+		sys.exit(2)
 
 	# config parser
-	_print_process('Parse options and config files')
 	config = univention.ec2.lib.Parser()
 	config.set_filename(options.config_file)
 	config.read(options.config_file)
 	_print_done()
 
-	# The paramiko module uses the logging module
-	logging.basicConfig(level=logging.WARNING)
-
-	_print_process('Checking for ~/.boto')
-	if os.path.exists(os.path.expanduser('~/.boto')):
-		_print_done()
-	else:
-		_print_done('fail: See http://code.google.com/p/boto/wiki/BotoConfig or https://hutten.knut.univention.de/mediawiki/index.php/UCS_EC2_Tools#.boto_Datei)')
-
-	vms = []
 	for host in config.hosts():
 		_print_process('Creating VM [%s]' % host)
-		vms.append( univention.ec2.lib.VM_EC2(host, config) )
+		vms.append( univention.ec2.lib.VM_KVM(host, config) )
 		_print_done()
 
 	# start instances
@@ -91,12 +80,14 @@ def main():
 		_print_done()
 
 	# replace profile variables and commands
-	replace_list = [('[%s_IP]' % (vm.section,), vm.get_ip()) for vm in vms]
+	replace_list = []
+	for vm in vms:
+		replace_list.append( ('[%s_IP]' % vm.section, vm.get_ip()) )
 	for vm in vms:
 		if vm.profile:
 			for (host_str, ip) in replace_list:
 				vm.profile = vm.profile.replace(host_str, ip)
-		for i in range(len(vm.commands)):
+		for i in range(0,len(vm.commands)):
 			for (host_str, ip) in replace_list:
 				vm.commands[i] = [cmd.replace(host_str, ip) for cmd in vm.commands[i]]
 
@@ -112,12 +103,16 @@ def main():
 		vm.copy_files()
 		_print_done()
 
+	max_command = 0
+	for vm in vms:
+		max_command = max(max_command, vm.command_count())
+
 	# run commands
-	max_command = max((_.command_count() for _ in vms))
-	for phase in range(max_command):
+	for phase in range(0,max_command):
 		for vm in vms:
-			print 'Running command phase (%d/%d) on VM %s' % (phase + 1, max_command, vm.get_name())
+			print 'Running command phase (%d/%d) on VM %s' % (phase+1, max_command, vm.get_name())
 			vm.run_commands(phase)
 
 if __name__ == '__main__':
 	main()
+
