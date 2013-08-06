@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-management-console-module-appcenter
+fix: 2.0.139-20.161.201308061223
+note:
+version: [1]
+desc: |
+  This update clarifies the German translation of the error message when there
+  is insufficient RAM available while trying to install an application.
+bug: [32117]
