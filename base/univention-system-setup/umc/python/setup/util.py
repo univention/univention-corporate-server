@@ -272,11 +272,11 @@ class ProgressParser( object ):
 
 	# fractions of setup scripts
 	FRACTIONS = {
-		'basis/12domainname'	:  5,
-		'basis/14ldap_basis'	: 10,
-		'net/10interfaces'	:  5,
-		'net/11ipv6interfaces'	:  5,
-		'software/10software'	: 50,
+		'10_basis/12domainname'	:  5,
+		'10_basis/14ldap_basis'	: 10,
+		'30_net/10interfaces'	:  5,
+		'30_net/11ipv6interfaces'	:  5,
+		'50_software/10software'	: 50,
 		}
 
 	# current status
@@ -367,6 +367,13 @@ class ProgressParser( object ):
 
 		return False
 
+def sorted_files_in_subdirs( directory ):
+	for entry in sorted(os.listdir(directory)):
+		path = os.path.join(directory, entry)
+		if os.path.isdir(path):
+			for filename in sorted(os.listdir(path)):
+				yield os.path.join(path, filename)
+
 def run_scripts( progressParser, restartServer = False ):
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
@@ -376,25 +383,17 @@ def run_scripts( progressParser, restartServer = False ):
 	# make sure that UMC servers and apache will not be restartet
 	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
 
-	for root, dirs, files in os.walk(PATH_SETUP_SCRIPTS): 
-		# ignore the root
-		if root == PATH_SETUP_SCRIPTS:
-			continue
-
-		# execute all scripts in subdirectories
-		files.sort()
-		for ifile in files:
-			# get the full script path
-			ipath = os.path.join(root, ifile)
-
+	for scriptpath in sorted_files_in_subdirs( PATH_SETUP_SCRIPTS ):
 			# launch script
-			pipe = subprocess.Popen( ipath, stdout = subprocess.PIPE, stderr = f ).stdout
+			MODULE.info('Running script %s\n' % scriptpath)
+			p = subprocess.Popen( scriptpath, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
 			while True:
-				line = pipe.readline()
+				line = p.stdout.readline()
 				if not line:
 					break
 				progressParser.parse( line )
 				f.write( line )
+			p.wait()
 
 	# enable execution of servers again
 	subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
@@ -417,13 +416,14 @@ def run_joinscript( progressParser, _username, password ):
 	progressParser.fractions[ 'setup-join.sh' ] = 50
 	progressParser.current.max = sum( progressParser.fractions.values() )
 	def runit( command ):
-		pipe = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = f ).stdout
+		p = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = subprocess.STDOUT )
 		while True:
-			line = pipe.readline()
+			line = p.stdout.readline()
 			if not line:
 				break
 			progressParser.parse( line )
 			f.write( line )
+		p.wait()
 
 	cmd = [ PATH_JOIN_SCRIPT ]
 	if _username and password:
@@ -574,6 +574,7 @@ def dhclient(interface, timeout=None):
 	stderr_thread.join(timeout)
 	if stderr:
 		stderr=stderr[0]
+	p.wait()
 	# note: despite '-1' background dhclient never seems to terminate
 	try:
 		dhclientpid = int(open(pidfilename,'r').read().strip('\n\r\t '))

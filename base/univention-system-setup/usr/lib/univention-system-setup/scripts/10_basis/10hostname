@@ -200,9 +200,6 @@ set_baseconfig_variable_mail "cups/quota/admin/mail" "$cups_quota_admin_mail"
 echo `date` : "Configure e-mail alias for root in baseconfig : " $mail_alias_root  >> /var/log/univention/setup.log
 set_baseconfig_variable_mail "mail/alias/root" "$mail_alias_root"
 
-echo `date` : "Configure e-mail globalfolder for spam in baseconfig : " $mail_antispam_globalfolder  >> /var/log/univention/setup.log
-set_baseconfig_variable_mail "mail/antispam/globalfolder" "$mail_antispam_globalfolder"
-
 echo `date` : "Configure the mail cyrus caluser in baseconfig : " $mail_cyrus_caluser  >> /var/log/univention/setup.log
 set_baseconfig_variable_mail "mail/cyrus/caluser" "$mail_cyrus_caluser"
 

@@ -1,3 +1,10 @@
+univention-system-setup (6.0.76-19) unstable; urgency=low
+
+  * define sort order for setup scripts (Bug #32153)
+  * improved logging of script execution
+
+ -- Arvid Requate <requate@univention.de>  Tue, 06 Aug 2013 12:31:13 +0200
+
 univention-system-setup (6.0.76-18) unstable; urgency=low
 
   * Fixed setting of ucrv apache2/startsite during postinst. The variable

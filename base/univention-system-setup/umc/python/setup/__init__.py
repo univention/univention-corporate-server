@@ -184,7 +184,8 @@ class Instance(umcm.Base):
 
 		def _finished( thread, result ):
 			if isinstance( result, BaseException ):
-				MODULE.warn( 'Exception during saving the settings: %s' % str( result ) )
+				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
+				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
 
 		thread = notifier.threads.Simple( 'save',
 			notifier.Callback( _thread, request, self ), _finished )
@@ -243,7 +244,8 @@ class Instance(umcm.Base):
 
 		def _finished( thread, result ):
 			if isinstance( result, BaseException ):
-				MODULE.warn( 'Exception during saving the settings: %s' % str( result ) )
+				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
+				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
 
 		thread = notifier.threads.Simple( 'save',
 			notifier.Callback( _thread, request, self, request.options.get('username'), request.options.get('password')),_finished )
