@@ -60,8 +60,8 @@ msgid ""
 "The application requires %(minimum)d MB of free RAM but only %(current)d MB "
 "are available."
 msgstr ""
-"Die Anwendung erfordert %(minimum)d MB freien Speicher, es sind aber nur "
-"%(current)d MB verfügbar."
+"Die Anwendung erfordert %(minimum)d MB freien Arbeitsspeicher, es sind aber "
+"nur %(current)d MB verfügbar."
 
 #: umc/python/appcenter/sanitizers.py:22
 msgid "There already is a component with this name"
