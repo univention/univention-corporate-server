@@ -1,437 +1,425 @@
 [samba/charset/dos]
-Description[de]=Zeichensatz für die Kommunikation mit DOS SMB Clients
-Description[en]=Charset used to communicate with DOS SMB clients
+Description[de]=Der Zeichensatz für die Kommunikation mit DOS SMB-Clients. Ist die Variable nicht gesetzt, wird CP850 verwendet.
+Description[en]=The charset used to communicate with DOS SMB clients. If the variable is unset, CP850 is used.
 Type=str
 Categories=service-samba
 
 [samba/charset/unix]
-Description[de]=Zeichensatz des Samba-Servers
-Description[en]=Charset of the machine samba runs on
-Type=str
-Categories=service-samba
-
-[samba/use_spnego]
-Description[de]=Versuche Simple and Protected NEGOciation mit Windows 2000 and XP Clients
-Description[en]=Try to use Simple and Protected NEGOciation with Windows 2000 and XP clients
-Type=str
-Categories=service-samba
-
-[samba/domain/master]
-Description[de]=Definiert ob der Server als Domain Master Browser laufen soll. Per Default sollte dies nur auf einem System konfiguriert werden.
-Description[en]=Defines whether the server should run as domain master browser. By default, this should only be configured on one system.
-Type=str
-Categories=service-samba
-
-[samba/enable-msdfs]
-Description[de]=Agiere als DFS-Server und erlaube DFS-fähigen Clients DFS-Trees zu durchsuchen
-Description[en]=Act as a DFS server and allow DFS-aware clients to browse DFS trees
-Type=str
-Categories=service-samba
-
-[samba/encrypt_passwords]
-Description[de]=Versuche verschlüsselte Passwörter mit dem Client auszuhandeln
-Description[en]=Negotiate encrypted passwords with the client
-Type=str
-Categories=service-samba
-
-[samba/large_readwrite]
-Description[de]=Unterstützung für 64k Streaming Lesen/Schreiben-SMB-Variante
-Description[en]=Enable/disable the 64k streaming read and write varient SMB requests
-Type=str
-Categories=service-samba
-
-[samba/max_xmit]
-Description[de]=Maximal aushandelbare Paketgröße
-Description[en]=Maximum packet size that will be negotiated
-Type=str
-Categories=service-samba
-
-[samba/netbios/aliases]
-Description[de]=Zusätzliche NetBIOS-Namen für den Samba-Server
-Description[en]=Additional NetBIOS names under which the Samba server is known
-Type=str
-Categories=service-samba
-
-[samba/oplocks]
-Description[de]=Erteilen von oplocks für Datei-Öffnen-Anfrage
-Description[en]=Issue oplocks to file open requests
-Type=str
-Categories=service-samba
-
-[samba/read_raw]
-Description[de]=Unterstützung für 64 kByte-Datenpakete beim Übertragen von Daten an Clients
-Description[en]=Support 64 kByte packets when transferring data to clients
-Type=str
-Categories=service-samba
-
-[samba/write_raw]
-Description[de]=Unterstützung für 'Raw-SMBs' beim Datentransfer von Clients
-Description[en]=Enable the Server to write raw SMBs when transfering data from clients
-Type=str
-Categories=service-samba
-
-[samba/serverstring]
-Description[de]=Zeichenkette die als Kommentar im Druck-Manager und von 'net view' angezeigt wird
-Description[en]=String that will show up in printer comment box and 'net view'
-Type=str
-Categories=service-samba
-
-[samba/share/groups]
-Description[de]=Aktivieren/Deaktivieren der Gruppenfreigabe
-Description[en]=Enable/Disable the group share
-Type=str
-Categories=service-samba
-
-[samba/share/home]
-Description[de]=Aktivieren/Deaktivieren der Heimatverzeichnissfreigabe
-Description[en]=Enable/Disable the home directory share
-Type=str
-Categories=service-samba
-
-[samba/socket_options]
-Description[de]=Zusätzliche Socket-Optionen die bei Verbindungen mit Samba-Clients verwendet werden
-Description[en]=Extra socket options to be used when talking with the client
-Type=str
-Categories=service-samba
-
-[windows/wins-server]
-Description[de]=WINS-Server an dem Samba sich registriert
-Description[en]=WINS server, on which Samba should register
-Type=str
-Categories=service-samba
-
-[windows/wins-support]
-Description[de]=Aktiviert/Deaktiviert WINS-Funktionalität im Samba-Dienst
-Description[en]=Enables/disables WINS services of Samba
-Type=str
-Categories=service-samba
-
-[samba4/autostart]
-Description[de]=Aktiviere/Deaktiviere den Samba Start beim Booten
-Description[en]=Enable/Disable Samba start on bootup
-Type=str
-Categories=service-samba
-
-[samba4/debug/level]
-Description[de]=Debug Level für Samba 4 Prozesse
-Description[en]=Debug level for samba 4 processes
-Type=str
-Categories=service-samba
-
-[samba/max_log_size]
-Description[de]=Maximalgröße für Samba Logdateien ab der Samba die Datei selbständig nach .old umbenennt.
-Description[en]=Maximal size of samba log files. Samba will periodically rename the file to .old if exceeded.
-Type=str
-Categories=service-samba
-
-[samba/interfaces]
-Description[de]=Falls samba/interfaces/bindonly auf 'yes' gesetzt ist, verwendet Samba nur die hier aufgeführten Interfaces (durch Leerzeichen getrennt).
-Description[en]=If samba/interfaces/bindonly is set to 'yes', Samba only binds to the interfaces listed in this variable (space separated).
-Type=str
-Categories=service-samba
-
-[samba/interfaces/bindonly]
-Description[de]=Weist Samba an, nur die in samba/interfaces aufgeführten Interfaces zu verwenden.
-Description[en]=Limits Samba to listen only on the interfaces listed in samba/interfaces.
-Type=str
-Categories=service-samba
-
-[samba4/function/level]
-Description[de]=Legt vor der Installation des ersten Samba 4 Domaincontrollers den Funktionslevel der Domäne fest.
-Description[en]=Determines the functional level of the Samba 4 domain at the time of installation of the first Samba4 domain controller.
-Type=str
-Categories=service-samba
-
-[samba4/role]
-Description[de]=Legt vor dem Join eines Samba 4 Systems die Rolle des Systems fest (z.B. DC oder MEMBER).
-Description[en]=Determines the role a Samba 4 system will be joined as into the Samba4 domain (e.g. DC or MEMBER).
-Type=str
-Categories=service-samba
-
-[samba4/service/smb]
-Description[de]=Auswahl des SMB-Dienstes für Samba 4 (e.g. smbd oder s4)
-Description[en]=Selects the SMB service for Samba 4 (e.g. smbd oder s4)
-Type=str
-Categories=service-samba
-
-[samba4/service/nmb]
-Description[de]=Auswahl des NetBIOS Dienstes für Samba 4 (e.g. nmbd oder s4)
-Description[en]=Selects the NetBIOS service for Samba 4 (e.g. nmbd or s4)
-Type=str
-Categories=service-samba
-
-[samba4/ntacl/backend]
-Description[de]=Auswahl des Speichermodus für NTACL
-Description[en]=Selects the storage mode for NTACL
+Description[de]=Der Zeichensatz des Samba-Servers. Ist die Variable nicht gesetzt, wird UTF-8 verwendet.
+Description[en]=The charset of the Samba server. If the variable is unset, UTF-8 is used.
 Type=str
 Categories=service-samba
 
 [samba/charset/display]
-Description[de]=Zeichensatz zum Ausgeben von Nachrichten auf stdout und stderr (sollte gleich mit samba/charset/unix sein)
-Description[en]=Charset used to print messages to stdout and stderr (should be the same as the samba/charset/unix)
+Description[de]=Der Zeichensatz für Ausgaben auf stdout/stderr. Ist die Variable nicht gesetzt, erfolgt die Ausgabe in der aktuellen Locale.
+Description[en]=The charset used to print messages to stdout/stderr. If the variable is unset, output is printed in the current locale.
 Type=str
 Categories=service-samba
 
-[samba/deadtime]
-Description[de]=Anzahl Minuten nach denen eine Verbindung als abgelaufen angesehen und geschlossen wird
-Description[en]=Time span of inactivity in minutes before a connection is considered dead and eventually disconnected
+[samba/use_spnego]
+Description[de]=Ist diese Option aktiviert, verwendet der Samba-Server zur Aushandlung der Authentifizierung den SPNEGO-Mechanismus. Ist die Variable nicht gesetzt, wird SPNEGO verwendet.
+Description[en]=If this option is activated, the Samba server uses the SPNEGO mechanism to negotiate authentication. If the variable is unset, SPNEGO is used.
+Type=bool
+Categories=service-samba
+
+[samba/domain/master]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, ist das System der Domain-Master, in dem die NetBIOS-Browse-Listen gesammelt werden. Im Regelfall sollte dies nur auf einem System konfiguriert werden.
+Description[en]=If this variable is set to 'yes', the system acts as the domain master (which gathers the NetBIOS browse lists). By default, this should only be configured on one system.
 Type=str
 Categories=service-samba
 
-[samba/enable-privileges]
-Description[de]=Beachte Privilegien die zu spezifischen SIDs zugeordnet wurden
-Description[en]=Honor privileges assigned to specific SIDs
+[samba/enable-msdfs]
+Description[de]=Ist diese Option aktiviert, unterstützt der Samba-Server das Distributed Filesystem (DFS) und erlaubt DFS-fähigen Clients DFS-Trees zu durchsuchen. Weitere Hinweise zur Einrichtung finden sich im UCS-Handbuch. Ist die Variable nicht gesetzt, ist DFS deaktiviert.
+Description[en]=If this option is activated, Samba supports the Distributed Filesystem (DFS) und allows DFS-capable clients to browse DFS trees. Additional notes on setting up DFS can be found in the UCS manual. If the variable is unset, DFS is deactivated.
 Type=str
 Categories=service-samba
 
-[samba/getwd_cache]
-Description[de]=Aktiviere einen Caching-Algorithmus um die Zeit für getwd() Aufrufe zu minimieren
-Description[en]=Enables a caching algorithm to reduce the time taken for getwd() calls
+[samba/encrypt_passwords]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, werden verschlüsselte Passwörter mit Windows-Clients ausgehandelt. Ist die Variable nicht gesetzt, werden verschlüsselte Passwörter verwendet.
+Description[en]=If this variable is set to 'yes', encrypted passwords are negotiated with Windows clients. If the variable is unset, encrypted passwords are negotiated.
 Type=str
 Categories=service-samba
 
-[samba/guest_account]
-Description[de]=Benutzername, der für den Zugriff auf nicht-authentifizierte Dienste verwendet wird (guest ok)
-Description[en]=Username for unauthenticated services (guest ok)
+[samba/large_readwrite]
+Description[de]=Ist diese Variable auf 'yes' gesetzt oder nicht gesetzt, unterstützt der Samba-Server das CIFS-Feature CAP_W2K_SMBS. Er erhöht für Clients mit entsprechendem Support die Performance.
+Description[en]=If this variable is set to 'yes' or unset, Samba supports the CIFS feature CAP_W2K_SMBS. It increases the performance for clients supporting it.
 Type=str
 Categories=service-samba
 
-[samba/wide_links]
-Description[de]=Konfiguriert, ob symbolische Links verfolgt werden
-Description[en]=Configures, whether symbolic links are followed
+[samba/max_xmit]
+Description[de]=Die maximale Paketgröße in Bytes, die Samba mit Clients aushandelt. Ist die Variable nicht gesetzt, wird 65535 verwendet.
+Description[en]=Maximum packet size in bytes that will be negotiated by Samba with clients. If the variable is unset, 65535 is used.
 Type=str
 Categories=service-samba
 
-[samba/homedirletter]
-Description[de]=Laufwerk für das Heimatverzeichnis des Benutzers
-Description[en]=Drive for the home directory
+[samba/netbios/aliases]
+Description[de]=Mit dieser Variable können zusätzliche Alias-Namen für einen Samba-Server konfiguriert werden, unter denen dieser im NETBIOS-Namensdienst erscheint. Mehrfache Werte müssen durch ein Leerzeichen getrennt werden. 
+Description[en]=This variable allows the configuration of additional alias names for a Samba server in the NetBIOS name service. Multiple values need to be separated with a blank.
 Type=str
 Categories=service-samba
 
-[samba/homedirpath]
-Description[de]=Pfad zum Heimatverzeichnis für Win95/98 oder NT Workstations
-Description[en]=Path to the home directory for Win95/98 or NT workstations
+[samba/oplocks]
+Description[de]=Ist diese Variable auf 'yes' gesetzt oder nicht gesetzt, erlaubt Samba CIFS-Clients besseres Caching durch Opportunistic Locking.
+Description[en]=If this variable is set to 'yes' or unset, Samba allows CIFS clients better caching through Opportunistic Locking.
 Type=str
 Categories=service-samba
 
-[samba/homedirserver]
-Description[de]=Vollständiger Domainname des Servers, der die Heimatverzeichnisse bereitstellt
-Description[en]=Fully qualified domain name of the server providing the home directories
+[samba/read_raw]
+Description[de]=Wird diese Variable auf 'no' gesetzt, wird die Unterstützung des Einlesens von 64 KB großen Raw-Datenpaketen deaktiviert. Ist die Variable nicht gesetzt, sind Raw-Datenpakete möglich.
+Description[en]=If this variable is set to 'no', support for reading 64 KB raw data packets is deactivated. If the variable is unset, raw packets are allowed.
 Type=str
 Categories=service-samba
 
-[samba/invalid_users]
-Description[de]=Liste von Benutzern, die sich nicht am Samba-Service anmelden dürfen
-Description[en]=List of users that are not allowed to login to this samba service 
+[samba/write_raw]
+Description[de]=Wird diese Variable auf 'no' gesetzt, wird die Unterstützung des Sendens von 64 KB großen Raw-Datenpaketen deaktiviert. Ist die Variable nicht gesetzt, sind Raw-Datenpakete möglich.
+Description[en]=If this variable is set to 'no', support for sending 64 KB raw data packets is deactivated. If the variable is unset, raw packets are allowed.
 Type=str
 Categories=service-samba
 
-[samba/kernel_oplocks]
-Description[de]=Verwendung von Kernel Oplocks an- bzw. abschalten
-Description[en]=Turns the use of kernel based oplocks on/off
-Type=str
-Categories=service-samba
-
-[samba/logonscript]
-Description[de]=Pfad zum Netlogon-Script (relativ zum Netlogon-Service)
-Description[en]=Path to netlogon script (relative to the [netlogon] service)
-Type=str
-Categories=service-samba
-
-[samba/map_to_guest]
-Description[de]=Verhalten bei Anmeldung von Benutzern, für die kein gültiger UNIX Benutzer existiert
-Description[en]=What to do with user login requests that don't match a valid UNIX user
-Type=str
-Categories=service-samba
-
-[samba/preserve_case]
-Description[de]=Kontrolliert ob neue Dateinamen mit der Groß-/Kleinschreibung wie vom Client gesendet angelegt oder auf Standard-Groß-/Kleinschreibung geändert werden
-Description[en]=Controls if new filenames are created with the case that the client passes, or if they are forced to be the default case
-Type=str
-Categories=service-samba
-
-[samba/profilepath]
-Description[de]=Verzeichnis in dem die Roaming Profile gespeichert werden
-Description[en]=Specifies the directory where roaming profiles are stored
-Type=str
-Categories=service-samba
-
-[samba/profileserver]
-Description[de]=Samba-Server, auf dem die Roaming-Profile gespeichert werden
-Description[en]=Specifies the samba server where roaming profiles are stored
-Type=str
-Categories=service-samba
-
-[samba/share/groups]
-Description[de]=Aktivieren/Deaktivieren der Gruppenfreigabe
-Description[en]=Enable/Disable the group share
+[samba/serverstring]
+Description[de]=Diese Zeichenkette wird als Kommentar im Druck-Manager und von 'net view' angezeigt. Ist die Variable nicht konfiguriert, wird der Rechnername und 'univention corporate server' verwendet.
+Description[en]=This string is displayed as a comment in the print manager and in 'net view'. If the variable is unset, the hostname and 'univention corporate server' is used.
 Type=str
 Categories=service-samba
 
 [samba/share/home]
-Description[de]=Aktivieren/Deaktivieren der Heimatverzeichnissfreigabe
-Description[en]=Enable/Disable the home directory share
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird das Heimatverzeichnis eines Samba-Benutzers in einer Freigabe mit dem Namen des Benutzers bereitgestellt.
+Description[en]=If this variable is set to 'yes', the home directory of a Samba user is provided on a share with the name of the user.
+Type=str
+Categories=service-samba
+
+[samba/socket_options]
+Description[de]=Mit dieser Variable können zusätzliche Socket-Optionen für Verbindungen mit Samba-Clients konfiguriert werden. Die Variable sollte nur in Ausnahmefällen angepasst werden. Die verfügbaren Optionen können mit 'man smb.conf' unter 'socket options' abgerufen werden.
+Description[en]=With this variable additional socket options can be configured for connections with Samba clients. This variable should be be adapted in special cases. The supportted socket options are documented in 'man smb.conf' under 'socket options'.
+Type=str
+Categories=service-samba
+
+[windows/wins-server]
+Description[de]=Dieser WINS-Server wird von Samba für die Namensauflösung verwendet.
+Description[en]=This WINS server is used by Samba for name resolution.
+Type=str
+Categories=service-samba
+
+[windows/wins-support]
+Description[de]=Ist diese Option aktiviert, stellt der nmbd-Prozess einen WINS-Server bereit. Sofern keine WINS-Replikation eingerichtet wird, kann immer nur ein System der Domäne WINS-Server sein.
+Description[en]=If this option is activated the nmbd process provides a WINS server. Unless WINS replication has been setup only one system in the domain can act as a WINS server.
+Type=str
+Categories=service-samba
+
+[samba4/autostart]
+Description[de]=Die Variable konfiguriert den Startmodus des Samba 4-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Samba 4 service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=str
+Categories=service-samba
+
+[samba/debug/level]
+Description[de]=Mit dieser Variable kann der Detailgrad der Logausgaben konfiguriert werden. Weitere Informationen zum Format der Variable finden sich unter 'man smb.conf' unter 'log level'.
+Description[en]=With this variable the verbosity level of the log files can be configured. Additional information on the format can be found at 'man smb.conf' under 'log level'.
+Type=str
+Categories=service-samba
+
+[samba/max_log_size]
+Description[de]=Eine Maximalgröße in Kilobyte, nach dessen Erreichen Samba die Logdateien nach .old umbenannt. Ist die Variable nicht gesetzt oder auf 0 gesetzt, ist diese Funktion deaktiviert. Es ist nicht empfehlenswert die Funktion zu aktivieren, da die Samba-Logdateien in UCS durch Logrotate rotiert werden.
+Description[en]=The maximum size of Samba log files, after which the old file is renamed to .old. If the variable is unset or set to 0, the function is disabled. It's not advisable to enable this function, since the Samba logfiles in UCS are rotated through Logrotate.
+Type=str
+Categories=service-samba
+
+[samba/interfaces/bindonly]
+Description[de]=Ist die Variable auf 'yes' gesetzt, beantwortet Samba nur Anfragen auf den in der Variable 'samba/interfaces' festgelegten Netzwerkschnittstellen. Ist die Variable nicht gesetzt, beantwortet Samba Anfragen auf allen Interfaces.
+Description[en]=If this variable is set to 'yes', Samba only listens to requests on the network interfaces specified in the variable 'samba/interfaces'. If the variable is unset, Samba listens on all interfaces.
+Type=str
+Categories=service-samba
+
+[samba/interfaces]
+Description[de]=Falls die Variable 'samba/interfaces/bindonly' auf 'yes' gesetzt ist, verwendet Samba nur die hier aufgeführten Interfaces. Mehrfache Einträg müssen durch ein Leerzeichen getrennt werden.
+Description[en]=If the variable 'samba/interfaces/bindonly' is set to 'yes', Samba only binds to the interfaces listed in this variable. Multiple entries need to be separated with a blank.
+Type=str
+Categories=service-samba
+
+[samba4/function/level]
+Description[de]=Der Funktionslevel einer Active Directory-Domäne hat Auswirkungen auf die verfügbaren Domänenfunktionen. Mit dieser Variable kann der Funktionslevel vor der Installation des ersten Samba 4-Domänencontrollers konfiguriert werden. Ist bereits ein Domänencontroller installiert, kann der Befehl 'samba-tool domain level' verwendet werden.
+Description[en]=The function level of an Active Directory domain determines the available domain functions. This variable allows the configuration of the function level prior to the installation of the first Samba 4 domain controller. After that, 'samba-tool domain level' can be used.
+Type=str
+Categories=service-samba
+
+[samba4/ntacl/backend]
+Description[de]=Diese Variable konfiguriert, ob ACLs im Dateisystem ('native') oder in der TDB-Datenbank ('tdb') gespeichert werden. 
+Description[en]=This variable configures whether ACLs are stored in the filesystem ('native') or in the TDB database ('tdb').
+Type=str
+Categories=service-samba
+
+[samba/deadtime]
+Description[de]=Die Zeitspanne an Minuten, nach der eine Verbindung als abgelaufen behandelt und geschlossen wird (sofern keine Dateien geöffnet sind). Ist die Variable nicht gesetzt, erfolgt dies nach 15 Minuten.
+Description[en]=A time span of inactivity in minutes until a connection is considered dead and eventually disconnected (unless no files are opened). If the variable is unset it occurs after 15 minutes.
+Type=str
+Categories=service-samba
+
+[samba/enable-privileges]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, kann einzelnen Benutzern in der Univention Management Console weitergehende Rechte eingeräumt werden, z.B. um Windows-Clients in die Domäne zu joinen.
+Description[en]=If this variable is set to 'yes' users can be assigned additional privileges in the Univention Managament Console, e.g. to join Windows clients in the domain.
+Type=str
+Categories=service-samba
+
+[samba/getwd_cache]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, versucht Samba getwd()-Aufrufe durch einen internen Cache zu minimieren. Ist die Variable nicht gesetzt, wird der Cache verwendet.
+Description[en]=If this variable is set to 'yes', Samba tries to minimise getwd() calls through an internal cache. If the variable is unset, the cache is used.
+Type=str
+Categories=service-samba
+
+[samba/guest_account]
+Description[de]=Für Freigaben kann ein nicht-authentifizierter Nur-Lese-Zugriff konfiguriert werden. Diese Zugriffe werden auf den hier konfigurierten Benutzer abgebildet. Ist die Variable nicht gesetzt, wird 'nobody' verwendet.
+Description[en]=A non-authenticated read-only access can be configured for shares. Such accesses are mapped to the user configured here. If the variable is unset, 'nobody' is used.
+Type=str
+Categories=service-samba
+
+[samba/wide_links]
+Description[de]=Wenn diese Variable nicht gesetzt ist oder auf 'no' gesetzt ist, werden symbolische Links in Freigaben nur verfolgt wenn das Ziel des symbolischen Links innerhalb der exportierten Freigabe liegt. Ist diese Variable auf 'yes' gesetzt, sind auch Verweise außerhalb des exportierten Verzeichnisses möglich.
+Description[en]=If this variable is unset or set to 'no', symbolic links are only followed if the link of the symbolic target resides within the exported directory. If the variable is set to 'yes', symbolic links can be followed outside of exported directories.
+Type=str
+Categories=service-samba
+
+[samba/homedirletter]
+Description[de]=Hier kann das Windows-Laufwerk angegeben werden, unter dem das Heimatverzeichnis eingebunden wird. Anzugeben ist der reine Laufwerkbuchstabe, z.B. 'I' for das Laufwerk 'I:'.
+Description[en]=The Windows drive can be specified here under which the home directory of the user is integrated. Only the disk drive letter needs to be given, e.g. 'I' for the drive 'I:'.
+Type=str
+Categories=service-samba
+
+[samba/homedirpath]
+Description[de]=Der Server, von dem das Heimatverzeichnis des Benutzers eingebunden wird, wird mit der Variable 'samba/homedirserver' konfiguriert. Diese Variable konfiguriert das Verzeichnis auf diesem Server, in dem das Heimatverzeichnis des Benutzers angelegt wird. Mit '%U' wird der aktuelle Benutzername expandiert und verwendet. Werden 'samba/homedirserver' und 'samba/homedirserver' auf 'local' gesetzt, wird kein Heimatverzeichnis eingebunden.
+Description[en]=The server from which the home directory of the user is mounted is configured with the variable 'samba/homedirserver'. This variable configures the directory on that server where the home directory of the user resides. With '%U' the current username is expanded and used. If 'samba/homedirserver' and 'samba/homedirserver' are set to 'local', no home directory is mounted.
+Type=str
+Categories=service-samba
+
+[samba/homedirserver]
+Description[de]=Der Server, von dem das Heimatverzeichnis des Benutzers eingebunden wird. Werden 'samba/homedirserver' und 'samba/homedirserver' auf 'local' gesetzt, wird kein Heimatverzeichnis eingebunden.
+Description[en]=The server from which the home directory of the user is mounted. If 'samba/homedirserver' and 'samba/homedirserver' are set to 'local', no home directory is mounted.
+Type=str
+Categories=service-samba
+
+[samba/invalid_users]
+Description[de]=Hier kann eine Liste von Benutzern oder Gruppen angegeben werden (mehrfache Einträge werden durch Leerzeichen getrennt), die sich nicht an Samba anmelden dürfen. Gruppenamen muss ein @ vorangestellt werden. Diese Option ist nur in Ausnahmefällen sinnvoll, im Regelfall sollten Benutzerkonten besser über die Konteneinstellungen in der Univention Management Console gesperrt werden.
+Description[en]=A list of users/groups (multiple entries are separated with blanks), which cannot login at Samba. Group names must be preceded with a @. This option is only needed in exceptional cases, normally user accounts should rather be disabled in the account settings of the Univention Management Console.
+Type=str
+Categories=service-samba
+
+[samba/kernel_oplocks]
+Description[de]=Ist diese Variable auf 'yes' gesetzt oder nicht gesetzt, wird der Kernel-Support für Oplocks aktiviert.
+Description[en]=If this variable is set to 'yes' or unset, kernel support for oplocks is activated.
+Type=str
+Categories=service-samba
+
+[samba/logonscript]
+Description[de]=Der Dateiname eines Netlogon-Anmeldeskripts, das für alle Benutzer verwendet wird. Der Dateiname is relativ zum Netlogon-Pfad (siehe 'samba/share/netlogon/path').
+Description[en]=The filename of a Netlogon script, which is used for all users. The filename is relative to the Netlogon path (see 'samba/share/netlogon/path').
+Type=str
+Categories=service-samba
+
+[samba/map_to_guest]
+Description[de]=Ist diese Variable auf 'Bad User' gesetzt oder nicht gesetzt, werden Samba-Anmeldungen von Benutzern ohne gültiges Konto auf den Gastbenutzer abgebildet (siehe Variable 'samba/guest_account'). Ist die Variable auf 'Never' gesetzt, wird die Anmeldung verweigert.
+Description[en]=If this variable is set to 'Bad User' or unset, Samba logins from users without a valid account are mapped to the guest user (see variable 'samba/guest_account'). If the variable is set to 'Never', the login is denied.
+Type=str
+Categories=service-samba
+
+[samba/preserve_case]
+Description[de]=Ist diese Variable auf 'no' gesetzt, werden Dateien nicht mit der vom Client gesendeten Groß-/Kleinschreibung angelegt, sondern in Kleinbuchstaben umgewandelt.
+Description[en]=If this variable is set to 'no', files created by clients are created with lower case letters instead of the original filename.
+Type=str
+Categories=service-samba
+
+[samba/profilepath]
+Description[de]=Das Verzeichnis, in dem die servergespeicherten Profile gespeichert werden. Mit '%U' wird der aktuelle Benutzername expandiert und verwendet. Mit '%a' können unterschiedliche Profilpfade für verschiedene Windows-Versionen definiert werden. Werden 'samba/profileserver' und 'samba/profilepath' auf 'local' gesetzt, werden servergespeicherte Profile deaktiviert.
+Description[en]=Specifies the directory where roaming profiles are stored. With '%U' the current username is expanded and used. Variable profile paths for different Windows versions can be defined with '%a'. If 'samba/profileserver' and 'samba/profilepath' are set to 'local', roaming profiles are deactivated.
+Type=str
+Categories=service-samba
+
+[samba/profileserver]
+Description[de]=Der Name des Servers, auf dem Windows-Clients ihre servergespeicherten Profile ablegen. Werden 'samba/profileserver' und 'samba/profilepath' auf 'local' gesetzt, werden servergespeicherte Profile deaktiviert.
+Description[en]=The name of the server where Windows clients store their roaming profiles. If 'samba/profileserver' and 'samba/profilepath' are set to 'local', roaming profiles are deactivated.
+Type=str
+Categories=service-samba
+
+[samba/share/home]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird das Heimatverzeichnis eines Samba-Benutzers in einer Freigabe mit dem Namen des Benutzers bereitgestellt.
+Description[en]=If this variable is set to 'yes', the home directory of a Samba user is provided on a share with the name of the user.
 Type=str
 Categories=service-samba
 
 [samba/share/sysvol]
-Description[de]=Aktivieren/Deaktivieren der sysvol-Freigabe
-Description[en]=Enable/Disable the sysvol share
-Type=str
+Description[de]=Ist diese Option aktiviert, stellt der Samba-Server die SYSVOL-Freigabe bereit, in der u.a. GPO-Daten gespeichert werden. Ist die Variable nicht gesetzt, wird die SYSVOL-Freigabe bereitgestellt.
+Description[en]=If this option is activated, the Samba server provides the SYSVOL share which amonst other things contains the GPO data. If the variable is unset, the SYSVOL share is provided.
+Type=bool
 Categories=service-samba
 
 [samba/share/sysvol/readonly]
-Description[de]=Lesezugriff für sysvol-Freigabe konfigurieren
-Description[en]=Configure read only for sysvol share
+Description[de]=Ist diese Variable auf 'yes' gesetzt, ist das SYSVOL-Share nicht schreibbar. Diese Einstellung sollte im Regelfall nicht gesetzt werden.
+Description[en]=If this variable is set to 'yes' the SYSVOL share is not writable. This setting shouldn't usually be made.
 Type=str
 Categories=service-samba
 
 [samba/short_preserve_case]
-Description[de]=Kontrolliert ob neue Dateien nach 8.3 (DOS) Format in Großbuchstaben erstellt oder auf standard Groß/Kleinschreibung geändert werden
-Description[en]=Controls if new files which conform to 8.3 (DOS) syntax are created upper case, or if they are forced to be the default case
+Description[de]=Ist diese Variable auf 'no' gesetzt, werden Dateien im 8.3-Format nicht mit der vom Client gesendeten Groß-/Kleinschreibung angelegt, sondern in Kleinbuchstaben umgewandelt.
+Description[en]=If this variable is set to 'no', files in 8.3 format created by clients are created with lower case letters instead of the original filename.
 Type=str
 Categories=service-samba
 
 [samba/store_dos_attributes]
-Description[de]=Versuche DOS Attribute aus einem erweiterten Dateisystemattribut zu lesen bevor sie auf UNIX-Rechte abgebildet werden
-Description[en]=Attempt to read DOS attributes from a filesystem extended attribute, before mapping DOS attributes to UNIX permission bits
+Description[de]=Ist diese Variable auf 'yes' gesetzt oder nicht gesetzt, wird versucht DOS-Attribute von Dateien aus einem erweiterten Dateisystemattribut zu lesen bevor sie auf UNIX-Rechte abgebildet werden.
+Description[en]=If this variable is set to 'yes' or unset, Samba attempts to read DOS attributes from a filesystem extended attribute, before mapping DOS attributes to UNIX permission bits.
 Type=str
 Categories=service-samba
 
 [samba/adminusers]
-Description[de]=Liste von Benutzern mit administrativen Rechten in Samba
-Description[en]=List of users with administrative rights in samba
+Description[de]=Für die hier angegebenen Benutzer werden alle Zugriffe auf Freigaben mit root-Rechten durchgeführt. Mehrere Benutzernamen müssen durch ein Leerzeichen getrennt werden.
+Description[en]=For the users specified here all accesses to file shares are performed with root privileges. Multiple user names need to be separated using a blank.
 Type=str
 Categories=service-samba
 
 [samba/cups/encrypt]
-Description[de]=Dieser Parameter steuert ob die Verbindung zu CUPS-Servern verschlüsselt wird oder nicht (gültige Werte: no/yes)
-Description[en]=This parameter controls whether connections to CUPS servers will be encrypted or not (valid values: no/yes)
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird die Verbindung zu CUPS-Servern verschlüsselt. Ist die Variable nicht gesetzt, wird die Verbindung nicht verschlüsselt.
+Description[en]=If this variable is set to 'yes', the connection to CUPS servers is encrypted. If the variable is unset, the connection is not encrypted.
 Type=str
 Categories=service-samba
 
 [samba4/schema/update/allowed]
-Description[de]=Schema-Updates erlauben
-Description[en]=Allow schema updates
-Type=str
+Description[de]=Ist diese Option aktiviert, erlaubt Samba Aktualisierungen der Samba 4-LDAP-Schemata. Dies ist in der Grundeinstellung deaktiviert. Die Option sollte nur kurzzeitig aktiviert werden wenn eine Applikation installiert wird, die Schema-Erweiterungen mitbringt.
+Description[en]=If this option is activated, Samba allows updates for the Samba 4 LDAP schemas. In the default setting such updates are not allowed. This option should only be enabled temporarily when applications are installed which provide schema extensions.
+Type=bool
 Categories=service-samba
 
 [samba4/service/drepl]
-Description[de]=DRS Replikationsdienst aktivieren (default: yes)
-Description[en]=Activate DRS replication service (default: yes)
-Type=str
+Description[de]=Ist diese Option aktiviert, wird der DRS-Replikations-Dienst gestartet. Ist die Variable nicht gesetzt, wird DRS gestartet.
+Description[en]=If this option is activated, the DRS replication service is started. If the variable is unset, DRS is started.
+Type=bool
 Categories=service-samba
 
 [samba4/join/site]
-Description[de]=Wählt den Samba 4 Standort für den Domänenbeitritt
-Description[en]=Selects Samba 4 site for domain join
+Description[de]=Standorte/Sites sind ein Active Directory-Mechanismus, mit dem die Domäne strukturiert werden kann, etwa damit Benutzer sich an einem bestimmten Domänencontroller anmelden. Mit dieser Variable kann vor dem Aufruf des Join-Skripts eines Samba 4-Domänencontrollers ein Standort konfiguriert werden.
+Description[en]=Sites are an Active Directory mechanism to structure the domain, e.g. to ensure that users log on to a specific domain controller. This variable allows the configuration of a site prior to the execution of the join scripts of a Samba 4 domain controller.
 Type=str
 Categories=service-samba
 
 [samba4/provision/secondary]
-Description[de]=Falls vor dem initialen Join von univention-samba4 aktiviert, werden auch sekundäre Samba 4 DCs per Provision installiert statt per Samba domain join. Diese Variable sollte nicht manuell angepasst werden.
-Description[en]=If enabled before the initial join of univention-samba4, secondary Samba 4 DCs will also be initialized with provision instead of performing a regular Samba domain join. This variable should not be modified manually.
-Type=str
+Description[de]=Wird diese Option vor dem Join von univention-samba4 aktiviert, werden auch sekundäre Samba 4 DCs per Provisioning installiert. Diese Variable sollte nicht manuell angepasst werden, sie wird in UCS@school eingesetzt.
+Description[en]=If this option is enabled before the join of univention-samba4, secondary Samba 4 DCs will also be initialized with provisioning. This variable should not be modified manually, it is used by UCS@school.
+Type=bool
 Categories=service-samba
 
 [samba4/disabled]
-Description[de]=Verhindert die Ausführung der Join-Skripte von univention-samba4 (default: false)
-Description[en]=Prevents the execution of the join-scripts of univention samba4 (default: false)
-Type=str
+Description[de]=Ist diese Option aktiviert, wird die Ausführung der Join-Skripte von univention-samba4 verhindert. Ist die Variable nicht gesetzt, können die Join-Skripte ausgeführt werden.
+Description[en]=If this option is activated the execution of the join scripts of univention-samba4 is prevented. If the variable is unset, the join scripts can be executed.
+Type=bool
 Categories=service-samba
 
 [samba4/join/dnsupdate]
-Description[de]=Wenn samba4/join/dnsupdate auf true gesetzt ist, so wird das Tool samba_dnsupdate im Samba DNS Joinskript ausgeführt. Dadurch werden die DNS Einträge im Samba 4 DNS aktualisiert. Dies wird auf selektiv replizierten Samba 4 DCs benötigt.
-Description[en]=If samba4/join/dnsupdate is set to true, the tool samba_dnsupdate will be executed in the Samba DNS join script. Thus, the DNS entries in the Samba 4 DNS are updated. This is required on selective replicated Samba 4 DCs.
-Type=str
+Description[de]=Ist diese Option aktiviert, wird das Tool samba_dnsupdate im Samba 4-DNS-Joinskript ausgeführt. Diese Variable sollte nicht manuell angepasst werden, sie wird in UCS@school eingesetzt.
+Description[en]=If this option is activated, the tool samba_dnsupdate will be executed in the Samba 4 DNS join script. This variable should not be modified manually, it is used by UCS@school.
+Type=bool
 Categories=service-samba
 
 [samba/max/protocol]
-Description[de]=Dieser Parameter definiert das höchte Protokoll, welches dieser Server unterstützt (gültige Werte: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2)
-Description[en]=This parameter defines the highest protocol level that will be supported by the server (valid values: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2)
+Description[de]=Diese Variable konfiguriert definiert das höchste Protokoll, welches dieser Server unterstützt (gültige Werte: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2). Ist die Variable nicht gesetzt, gilt 'NT1'.
+Description[en]=This variable configures the highest protocol level that will be supported by the server (valid values: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2). If the variable is unset, 'NT1' applies.
 Type=str
 Categories=service-samba
 
 [samba/usershare/max_shares]
-Description[de]=Definiert die maximale Anzahl an Usershares
-Description[en]=Defines the maximum amount of usershares
+Description[de]=Die maximale Anzahl an Freigaben, die von normalen Benutzern über 'net'-Aufrufe angelegt werden können. Weitere Informationen finden sich in 'man smb.conf' unter 'USERSHARES'. Ist die Variable nicht gesetzt oder auf 0 gesetzt, können keine Freigaben auf diesem Weg angelegt werden.
+Description[en]=The maximum amount of shares, which can be defined by standard users using 'net' calls. Additional information can be found in 'man smb.conf' under 'USERSHARES'. If the variable is set to 0 or unset, no shares can be defined that way.
 Type=str
 Categories=service-samba
 
 [samba/usershare/allow_guests]
-Description[de]=Definiert ob es möglich ist, Gästen den Zugriff auf Freigaben zu erlauben.
-Description[en]=Defines whether it is possible to allow guests to access shares.
+Description[de]=Sind Benutzerfreigaben über 'samba/usershare/max_shares' aktiviert und ist diese Variable auf 'yes' gesetzt, kann auf die Benutzerfreigaben auch ohne Authentifizierung zugegriffen werden.
+Description[en]=If user shares are activated using 'samba/usershare/max_shares' and if this variable is set to 'yes', the user shares can be accessed without authentication.
 Type=str
 Categories=service-samba
 
 [samba/usershare/owner_only]
-Description[de]=Aktiviert/deaktiviert ob Nutzer nur Ordner freigeben können, deren Besitzer sie sind.
-Description[en]=Enables/disables whether only directories owned by the sharing user can be shared.
+Description[de]=Sind Benutzerfreigaben über 'samba/usershare/max_shares' aktiviert und ist diese Variable auf 'yes' gesetzt, können Benutzer nur Ordner freigeben, deren Besitzer sie sind.
+Description[en]=If user shares are activated using 'samba/usershare/max_shares' and if this variable is set to 'yes', only directories owned by the sharing user can be shared.
 Type=str
 Categories=service-samba
 
 [samba/usershare/path]
-Description[de]=Zeigt auf den Ordner welcher die Definitionen der Usershares beinhaltet. Die Rechte dieses Ordners bestimmen wer Usershares erstellen kann.
-Description[en]=Points to the directory containing the user defined share definitions. The filesystem permissions on this directory control who can create user defined shares.
+Description[de]=Sind Benutzerfreigaben über 'samba/usershare/max_shares' aktiviert, konfiguriert diese Variable den Ordner, welcher die Definitionen der Usershares beinhaltet. Weitere Informationen finden sich in 'man smb.conf' unter 'USERSHARES'.
+Description[en]=If user shares are activated using 'samba/usershare/max_shares', this variable configures the directory containing the user defined share definitions. Additional information can be found in 'man smb.conf' under 'USERSHARES'.
 Type=str
 Categories=service-samba
 
 [samba/usershare/prefix_allow_list]
-Description[de]=Mit Komma getrennte Liste der absoluten Pfadnamen der Ordner in denen es erlaubt ist, Freigaben zu erstellen.
-Description[en]=Comma-separated list of absolute pathnames restricting what directories can be shared. Only directories below the pathnames in this list are permitted.
+Description[de]=Sind Benutzerfreigaben über 'samba/usershare/max_shares' aktiviert, konfiguriert diese Variable welche Verzeichnisse freigegeben werden können. Weitere Informationen finden sich in 'man smb.conf' unter 'USERSHARES'.
+Description[en]=If user shares are activated using 'samba/usershare/max_shares', this variable configures which directories can be shared. Additional information can be found in 'man smb.conf' under 'USERSHARES'.
 Type=str
 Categories=service-samba
 
 [samba/usershare/prefix_deny_list]
-Description[de]=Mit Komma getrennte Liste der absoluten Pfadnamen der Ordner in denen es nicht erlaubt ist, Freigaben zu erstellen.
-Description[en]=Comma-separated list of absolute pathnames restricting what directories can be shared. Only directories below the pathnames in this list are permitted.
+Description[de]=Sind Benutzerfreigaben über 'samba/usershare/max_shares' aktiviert, konfiguriert diese Variable welche Verzeichnisse freigegeben werden können. Weitere Informationen finden sich in 'man smb.conf' unter 'USERSHARES'.
+Description[en]=If user shares are activated using 'samba/usershare/max_shares', this variable configures which directories can be shared. Additional information can be found in 'man smb.conf' under 'USERSHARES'.
 Type=str
 Categories=service-samba
 
 [samba/usershare/template_share]
-Description[de]=Erstellt eine Vorlage für neue Usershares. Beim Erstellen eines neuen Usershares werden alle Werte die dort nicht spezifiziert wurden aus dieser Vorlage benutzt.
-Description[en]=Names a pre-existing share used as a template for creating new usershares. All other share parameters not specified in the user defined share definition are copied from this named share.
+Description[de]=Sind Benutzerfreigaben über 'samba/usershare/max_shares' aktiviert, konfiguriert diese Variable das Vorlagenverzeichnis. Weitere Informationen finden sich in 'man smb.conf' unter 'USERSHARES'.
+Description[en]=If user shares are activated using 'samba/usershare/max_shares', this variable configures the template directory. Additional information can be found in 'man smb.conf' under 'USERSHARES'.
 Type=str
 Categories=service-samba
 
 [samba4/provision/primary]
-Description[de]=Falls vor dem initialen Join von univention-samba4 aktiviert, werden auch sekundäre Samba 4 DCs per Provision installiert statt per Samba domain join. Diese Variable sollte nur in ganz speziellen dokumentierten Fällen gesetzt werden. Im Unterschied zu samba4/provision/secondary wird hier auch Global Catalogue und PDC Rolle gesetzt.
-Description[en]=If enabled before the initial join of univention-samba4, secondary Samba 4 DCs will also be initialized with provision instead of performing a regular Samba domain join. This variable should only be modified in very sepcific documented cases. In contrast to samba4/provision/secondary this als sets the Global Catalogue und PDC roles.
+Description[de]=Ist diese Option aktiviert, werden auch sekundäre Samba 4 DCs per Provisioning installiert. Diese Variable sollte nicht manuell angepasst werden, sie wird in UCS@school eingesetzt.
+Description[en]=If this option is activated, secondary Samba 4 DCs will also be initialized with provisioning. This variable should not be modified manually, it is used by UCS@school.
 Type=str
 Categories=service-samba
 
 [dns/register/srv_records/pdc]
-Description[de]=Aktiviert/deaktiviert ob die PDC Records beim joinen registriert werden.
-Description[en]=Enables/disables whether the PDC records are registered when performing a domain join. 
-Type=str
+Description[de]=Ist diese Option deaktiviert, wird der PDC-Service Record nicht im DNS registriert. Ist die Variable nicht gesetzt, wird der Record angelegt.
+Description[en]=If this option is deactivated the PDC service record is not registered in DNS. If the variable is unset, the record is created.
+Type=bool
 Categories=service-samba
 
 [dns/register/srv_records/gc]
-Description[de]=Aktiviert/deaktiviert ob die GC Records beim joinen registriert werden.
-Description[en]=Enables/disables whether the GC records are registered when performing a domain join. 
-Type=str
+Description[de]=Ist diese Option deaktiviert, wird der Global Catalog (GC)-Service Record nicht im DNS registriert. Ist die Variable nicht gesetzt, wird der Record angelegt.
+Description[en]=If this option is deactivated the Global Catalog (GC) service record is not registered in DNS. If the variable is unset, the record is created.
+Type=bool
 Categories=service-samba
 
 [samba4/dcerpc/endpoint/drsuapi]
-Description[de]=Aktiviert/deaktiviert den DRSUAPI Server als DCERPC Endpoint
-Description[en]=Enables/disables the DRSUAPI server as DCERPC endpoint
-Type=str
+Description[de]=Diese Option aktiviert/deaktiviert den DRSUAPI-Server als DCERPC-Endpoint. Diese Einstellung sollte in der Regel nicht verändert werden, sie wird intern von Univention AD Takeover verwendet.
+Description[en]=This option enables/disables the DRSUAPI server as an DCERPC endpoint. This setting should usally not be modified; it is used internally by Univention AD Takeover.
+Type=bool
 Categories=service-samba
 
 [samba4/dc]
-Description[de]=Gibt einen bestimmten Server vor, gegen den Samba joinen soll.
-Description[en]=Defines a specific server that samba should join against.
+Description[de]=Wenn ein weiterer Samba 4-Domänencontroller der Domäne beitritt wird der Server, gegen den der Domänenbeitritt stattfindet in der Grundeinstellung automatisch ermittelt. Mit dieser Variable kann ein Server vorgegeben werden.
+Description[en]=If another Samba 4 domain controller joins the domain the server to join against is determined automatically in the standard setting. This variable can be used to configure a specific server.
 Type=str
 Categories=service-samba
 
 [samba/share/netlogon/path]
-Description[de]=Über diese Variable kann der Pfad für die Netlogon-Freigabe angepasst werden.
-Description[en]=This variable allows configuration of an alternative directory for the netlogon share.
+Description[de]=Über diese Variable kann der Pfad für die Netlogon-Freigabe angepasst werden. Ist die Variable nicht gesetzt, wird /var/lib/samba/netlogon verwendet.
+Description[en]=This variable allows the configuration of the directory for the Netlogon share. If the variable is unset, /var/lib/samba/netlogon is used.
 Type=str
 Categories=service-samba
 
 [samba/machine_password_timeout]
-Description[de]=Intervall für die von Samba automatisch durchgeführte Rotation des Maschinenpassworts. Einheit: Sekunden (Default: 0, d.h. deaktiviert)
-Description[en]=Intreval for the automatic machine password rotation performed by Samba. Unit: seconds (default: 0, i.e. disabled)
+Description[de]=Intervall in Sekunden für die von Samba automatisch durchgeführte Rotation des Maschinenpassworts. Ist die Variable auf 0 gesetzt, wird die Rotation deaktiviert.
+Description[en]=Interval in seconds for the automatic machine password rotation performed by Samba. If set to 0, the rotation is disabled.
+Type=str
+Categories=service-samba
+
+[samba4/role]
+Description[de]=Diese Variable konfiguriert vor dem Join eines Samba 4-Systems dessen Rolle. Mögliche Werte: DC, RODC und MEMBER.
+Description[en]=This variable configures the role of a Samba 4 system prior to the domain join. Possible values: DC, RODC and MEMBER.
+Type=str
+Categories=service-samba
+
+[samba4/service/smb]
+Description[de]=Diese Variable konfiguriert welche Komponente den SMB-Dienst bereitstellt. Die Voreinstellung 's3fs' sollte beibehalten werden.
+Description[en]=This variable configures which component should provide the SMB service. The default setting 's3fs' should be retained.
+Type=str
+Categories=service-samba
+
+[samba4/service/nmb]
+Description[de]=Ist diese Variable auf 'nmbd' gesetzt, werden NetBIOS-Dienste bereitgestellt (u.a. kann dadurch auf Windows-Clients die Netzwerkumgebung aufgerufen werden). Ist die Variable nicht gesetzt, wird kein NetBIOS angeboten.
+Description[en]=If this variable is set to 'nmbd', NetBIOS services are provided (i.a. Windows clients can use the network environment). If the variable is unset, NetBIOS is not used.
 Type=str
 Categories=service-samba
