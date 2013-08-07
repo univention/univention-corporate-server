@@ -1,3 +1,9 @@
+univention-system-setup (7.0.25-1) unstable; urgency=low
+
+  * Bug #28574: fix windowsdomain syntax
+
+ -- Florian Best <best@univention.de>  Wed, 07 Aug 2013 15:10:07 +0200
+
 univention-system-setup (7.0.24-1) unstable; urgency=low
 
   * Bug #30878: Code cleanup

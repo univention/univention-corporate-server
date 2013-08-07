@@ -659,7 +659,7 @@ is_domainname.RE = re.compile(r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$', re.I)
 
 def is_windowsdomainname(domainname):
 	return is_windowsdomainname.RE.match(domainname) is not None
-is_windowsdomainname.RE = re.compile(r"^[A-Z][A-Z0-9-]*[A-Z0-9]$")
+is_windowsdomainname.RE = re.compile(r"^[A-Z](?:[A-Z0-9-]*[A-Z0-9])?$")
 
 def is_domaincontroller(domaincontroller):
 	return is_domaincontroller.RE.match(domaincontroller) is not None
