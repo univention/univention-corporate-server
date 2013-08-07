@@ -1979,7 +1979,7 @@
 
 	  <listitem><simpara>
 		The following packages have been added to the maintained section of the
-software repository (<ulink url="&ucsbug;31562">Bug 31562</ulink>, <ulink url="&ucsbug;30888">Bug 30888</ulink>, <ulink url="&ucsbug;31075">Bug 31075</ulink>):
+software repository (<ulink url="&ucsbug;31562">Bug 31562</ulink>, <ulink url="&ucsbug;30888">Bug 30888</ulink>, <ulink url="&ucsbug;31075">Bug 31075</ulink>, <ulink url="&ucsbug;32175">Bug 32175</ulink>):
 libdbd-mysql, libjs-jquery, duplicity, librsync,libappconfig-perl, liblist-moreutils-perl,libparams-validate-perl, libdatetime-locale-perl,
 libclass-singleton-perl, libdatetime-timezone-perl,libdatetime-perl, libpg-perl,libemail-address-perl, librose-object-perl,libclass-factory-util-perl,
 libdatetime-format-strptime-perl,libdatetime-format-builder-perl,libdatetime-format-mysql-perl, libyaml-syck-perl,libdatetime-format-pg-perl, libsub-install-perl,
@@ -1992,7 +1992,7 @@ libpackage-deprecationmanager-perl, libclass-mop-perl,libmoose-perl, libgetopt-l
 libwww-mechanize-perl, libapp-nopaste-perl,libb-keywords-perl, libb-utils-perl,libdata-dump-streamer-perl, libdata-dumper-concise-perl,libfile-homedir-perl,
 libfile-next-perl,libpadwalker-perl, libdevel-caller-perl,libdevel-lexalias-perl, liblexical-persistence-perl,libmodule-refresh-perl, libmoosex-attributehelpers-perl,
 libmoosex-object-pluggable-perl, libvariable-magic-perl,libb-hooks-endofscope-perl, libsub-identify-perl,libnamespace-clean-perl, libio-string-perl, libppi-perl,
-libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl, libclass-xsaccessor-perl,libterm-readline-gnu-perl, libapache2-mod-fcgid,postgresql
+libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl, libclass-xsaccessor-perl,libterm-readline-gnu-perl, libapache2-mod-fcgid,postgresql, php5-ldap, php-openid
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2001,7 +2001,7 @@ libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl,
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The package univention-local-users} is no longer maintained
+		The package univention-local-users is no longer maintained
 		(<ulink url="&ucsbug;29835">Bug 29835</ulink>).
 	  </simpara></listitem>
 
