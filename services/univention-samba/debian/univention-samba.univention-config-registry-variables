@@ -17,26 +17,26 @@ Type=str
 Categories=service-samba
 
 [samba/use_spnego]
-Description[de]=Ist diese Option aktiviert, verwendet der Samba-Server zur Aushandlung der Authentifzierung den SPNEGO-Mechanismus. Ist die Variable nicht gesetzt, wird SPNEGO verwendet.
-Description[en]=If this option is activated, the Samba server uses the SPNEGO mechanismus to negotiate authentication. If the variable is unset, SPNEGO is used.
+Description[de]=Ist diese Option aktiviert, verwendet der Samba-Server zur Aushandlung der Authentifizierung den SPNEGO-Mechanismus. Ist die Variable nicht gesetzt, wird SPNEGO verwendet.
+Description[en]=If this option is activated, the Samba server uses the SPNEGO mechanism to negotiate authentication. If the variable is unset, SPNEGO is used.
 Type=bool
 Categories=service-samba
 
 [samba/client_use_spnego]
 Description[de]=Ist diese Option aktiviert, verwendet der Samba-Client zur Aushandlung der Authentifzierung den SPNEGO-Mechanismus. Ist die Variable nicht gesetzt, wird SPNEGO verwendet.
-Description[en]=If this option is activated, the Samba client uses the SPNEGO mechanismus to negotiate authentication. If the variable is unset, SPNEGO is used.
+Description[en]=If this option is activated, the Samba client uses the SPNEGO mechanism to negotiate authentication. If the variable is unset, SPNEGO is used.
 Type=bool
 Categories=service-samba
 
 [samba/deadtime]
-Description[de]=Die Anzahl an Minuten, nach denen eine Verbindung als abgelaufen angesehen und geschlossen wird (sofern keine Dateien geöffnet sind). Ist die Variable nicht gesetzt, erfolgt es nach 15 Minuten.
+Description[de]=Die Zeitspanne an Minuten, nach der eine Verbindung als abgelaufen behandelt und geschlossen wird (sofern keine Dateien geöffnet sind). Ist die Variable nicht gesetzt, erfolgt dies nach 15 Minuten.
 Description[en]=A time span of inactivity in minutes until a connection is considered dead and eventually disconnected (unless no files are opened). If the variable is unset it occurs after 15 minutes.
 Type=str
 Categories=service-samba
 
 [samba/enable-msdfs]
-Description[de]=Ist diese Option aktiviert, unterstützt der Sambaserver das Distributed Filesystem (DFS) und erlaubt DFS-fähigen Clients DFS-Trees zu durchsuchen. Weitere Hinweise zur Einrichtung finden sich im UCS-Handbuch. Ist die Variable nicht gesetzt, ist DFS deaktiviert.
-Description[en]=If this option is activated, Samba supports the Distributed Filesystem (DFS) und allosw DFS-capable clients to browse DFS trees. Additional notes on setting up DFS can be found in the UCS manual. If the variable is unset, DFS is deactivated.
+Description[de]=Ist diese Option aktiviert, unterstützt der Samba-Server das Distributed Filesystem (DFS) und erlaubt DFS-fähigen Clients DFS-Trees zu durchsuchen. Weitere Hinweise zur Einrichtung finden sich im UCS-Handbuch. Ist die Variable nicht gesetzt, ist DFS deaktiviert.
+Description[en]=If this option is activated, Samba supports the Distributed Filesystem (DFS) und allows DFS-capable clients to browse DFS trees. Additional notes on setting up DFS can be found in the UCS manual. If the variable is unset, DFS is deactivated.
 Type=bool
 Categories=service-samba
 
@@ -119,8 +119,8 @@ Type=str
 Categories=service-samba
 
 [samba/oplocks]
-Description[de]=Ist diese Variable auf 'yes' gesetzt oder nicht gesetzt, erlaubt Samba Clients besseres Caching durch Opportunistic Locking.
-Description[en]=If this variable is set to 'yes' or unset, Samba allows clients better caching through Opportunistic Locking.
+Description[de]=Ist diese Variable auf 'yes' gesetzt oder nicht gesetzt, erlaubt Samba CIFS-Clients besseres Caching durch Opportunistic Locking.
+Description[en]=If this variable is set to 'yes' or unset, Samba allows CIFS clients better caching through Opportunistic Locking.
 Type=str
 Categories=service-samba
 
@@ -131,7 +131,7 @@ Type=str
 Categories=service-samba
 
 [samba/short_preserve_case]
-Description[de]=Ist diese Variable auf 'no' gesetzt, werden Dateien im 8.3-Format nicht mit der vom Client gesendeten Groß-/Kleinschreibung angelegt, sondern auf Kleinbuchstaben umgewandelt.
+Description[de]=Ist diese Variable auf 'no' gesetzt, werden Dateien im 8.3-Format nicht mit der vom Client gesendeten Groß-/Kleinschreibung angelegt, sondern in Kleinbuchstaben umgewandelt.
 Description[en]=If this variable is set to 'no', files in 8.3 format created by clients are created with lower case letters instead of the original filename.
 Type=str
 Categories=service-samba
@@ -377,43 +377,44 @@ Type=str
 Categories=service-samba
 
 [samba/homedirletter]
-Description[de]=Laufwerk für das Heimatverzeichnis des Benutzers
-Description[en]=Drive for the home directory
+Description[de]=Hier kann das Windows-Laufwerk angegeben werden, unter dem das Heimatverzeichnis eingebunden wird. Anzugeben ist der reine Laufwerkbuchstabe, z.B. 'I' for das Laufwerk 'I:'.
+Description[en]=The windows drive can be specified here under which the home directory of the user is integrated. Only the disk drive letter needs to be given, e.g. 'I' for the drive 'I:'.
 Type=str
 Categories=service-samba
 
 [samba/homedirpath]
-Description[de]=Pfad zum Heimatverzeichnis für Win95/98 oder NT Workstations
-Description[en]=Path to the home directory for Win95/98 or NT workstations
+Description[de]=Der Server, von dem das Heimatverzeichnis des Benutzers eingebunden wird, wird mit der Variable 'samba/homedirserver' konfiguriert. Diese Variable konfiguriert das Verzeichnis auf diesem Server, in dem das Heimatverzeichnis des Benutzers angelegt wird. Mit '%U' wird der aktuelle Benutzername expandiert und verwendet. Werden 'samba/homedirserver' und 'samba/homedirserver' auf 'local' gesetzt, wird kein Heimatverzeichnis eingebunden.
+Description[en]=The server from which the home directory of the user is mounted is configured with the variable 'samba/homedirserver'. This variable configures the directory on that server where the home directory of the user resides. With '%U' the current username is expanded and used. If 'samba/homedirserver' and 'samba/homedirserver' are set to 'local', no home directory is mounted.
 Type=str
 Categories=service-samba
 
 [samba/homedirserver]
-Description[de]=Vollständiger Domainname des Servers, der die Heimatverzeichnisse bereitstellt
-Description[en]=Fully qualified domain name of the server providing the home directories
+Description[de]=Der Server, von dem das Heimatverzeichnis des Benutzers eingebunden wird. Werden 'samba/homedirserver' und 'samba/homedirserver' auf 'local' gesetzt, wird kein Heimatverzeichnis eingebunden.
+Description[en]=The server from which the home directory of the user is mounted. If 'samba/homedirserver' and 'samba/homedirserver' are set to 'local', no home directory is mounted.
 Type=str
 Categories=service-samba
 
 [samba/logonscript]
-Description[de]=Pfad zum Netlogon-Script (relativ zum Netlogon-Service)
-Description[en]=Path to netlogon script (relative to the [netlogon] service)
-Type=str
-Categories=service-samba
-
-[samba/profilepath]
-Description[de]=Verzeichnis in dem die Roaming Profile gespeichert werden
-Description[en]=Specifies the directory where roaming profiles are stored
-Type=str
-Categories=service-samba
-
-[samba/store_dos_attributes]
-Description[de]=Versuche DOS Attribute aus einem erweiterten Dateisystemattribut zu lesen bevor sie auf UNIX-Rechte abgebildet werden
-Description[en]=Attempt to read DOS attributes from a filesystem extended attribute, before mapping DOS attributes to UNIX permission bits
+Description[de]=Der Dateiname eines Netlogon-Anmeldeskripts, das für alle Benutzer verwendet wird. Der Dateiname is relativ zum Netlogon-Pfad (siehe 'samba/share/netlogon/path').
+Description[en]=The filename of a Netlogon script, which is used for all users. The filename is relative to the Netlogon path (see 'samba/share/netlogon/path').
 Type=str
 Categories=service-samba
 
 [samba/profileserver]
-Description[de]=Samba-Server, auf dem die Roaming-Profile gespeichert werden
-Description[en]=Specifies the samba server where roaming profiles are stored
+Description[de]=Der Name des Servers, auf dem Windows-Clients ihre servergespeicherten Profile ablegen. Werden 'samba/profileserver' und 'samba/profilepath' auf 'local' gesetzt, werden servergespeicherte Profile deaktiviert.
+Description[en]=The name of the server where Windows clients store their roaming profiles. If 'samba/profileserver' and 'samba/profilepath' are set to 'local', roaming profiles are deactivated.
 Type=str
 Categories=service-samba
+
+[samba/profilepath]
+Description[de]=Das Verzeichnis in dem die servergespeicherten Profile gespeichert werden. Mit '%U' wird der aktuelle Benutzername expandiert und verwendet. Mit '%a' können unterschiedliche Profilpfade für verschiedene Windows-Versionen definiert werden. Werden 'samba/profileserver' und 'samba/profilepath' auf 'local' gesetzt, werden servergespeicherte Profile deaktiviert.
+Description[en]=Specifies the directory where roaming profiles are stored. With '%U' the current username is expanded and used. Variable profile paths for different Windows versions can be defined with '%a'. If 'samba/profileserver' and 'samba/profilepath' are set to 'local', roaming profiles are deactivated.
+Type=str
+Categories=service-samba
+
+[samba/store_dos_attributes]
+Description[de]=Ist diese Variable auf 'yes' gesetzt und nicht gesetzt, wird versucht DOS-Attribute von Dateien aus einem erweiterten Dateisystemattribut zu lesen bevor sie auf UNIX-Rechte abgebildet werden.
+Description[en]=If this variable is set to 'yes' or unset, Samba attempts to read DOS attributes from a filesystem extended attribute, before mapping DOS attributes to UNIX permission bits.
+Type=str
+Categories=service-samba
+
