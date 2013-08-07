@@ -1380,7 +1380,7 @@
 		<listitem><simpara>
 		  Added a pop-up message in case of editing print quota without installed package univention-printquota.. A notice will be apperared that a pakage univention-printquota is required.
 		  (<ulink url="&ucsbug;32055">Bug 29001</ulink>).
-		</simpara></listitem
+		</simpara></listitem>
 
 		<listitem><simpara>
 		  When changing a printer, the &ucsUCRV; <filename>/etc/samba/printers.conf</filename> is refreshed instantly and in an 
