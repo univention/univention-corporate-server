@@ -1,3 +1,9 @@
+univention-saml (1.0.1-2) unstable; urgency=low
+
+  * Removed univention-config-dev from binary package dependency (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Aug 2013 10:26:25 +0200
+
 univention-saml (1.0.1-1) unstable; urgency=low
 
   * Initial App Center Release (Bug #31693)

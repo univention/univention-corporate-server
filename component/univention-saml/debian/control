@@ -9,8 +9,7 @@ Standards-Version: 3.8.4
 
 Package: univention-saml
 Architecture: all
-Depends: univention-config-dev,
- ${misc:Depends},
+Depends: ${misc:Depends},
  apache2,
  php-xml-parser,
  php5-mcrypt,
