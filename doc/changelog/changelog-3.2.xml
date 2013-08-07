@@ -1378,8 +1378,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added a pop-up message in case of editing print quota without installed package univention-printquota.. A notice will be apperared that a pakage univention-printquota is required.
-		  (<ulink url="&ucsbug;32055">Bug 29001</ulink>).
+		  Added a pop-up message in case of editing print quota without installed package univention-printquota 
+		  (<ulink url="&ucsbug;29001">Bug 29001</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
