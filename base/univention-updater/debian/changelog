@@ -1,3 +1,9 @@
+univention-updater (9.0.8-1) unstable; urgency=low
+
+  * Bug #24727: rename UMC module
+
+ -- Florian Best <best@univention.de>  Wed, 07 Aug 2013 12:24:48 +0200
+
 univention-updater (9.0.7-1) unstable; urgency=low
 
   * Fix problems with standby when searching app updates (Bug #30548)

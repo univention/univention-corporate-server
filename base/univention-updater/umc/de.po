@@ -15,5 +15,5 @@ msgstr ""
 msgid "Online software update"
 msgstr "Online Software-Update"
 
-msgid "Online update"
-msgstr "Online-Update"
+msgid "Software update"
+msgstr "Software-Aktualisierung"
