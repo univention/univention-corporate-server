@@ -88,7 +88,7 @@ define([
 				{
 					type: TextBox,
 					name: 'name',
-					label: _("Component Name")
+					label: _("Component name")
 				},
 				{
 					type: TextBox,

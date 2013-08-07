@@ -224,7 +224,7 @@ define([
 			[
 				{
 					name: 'name',
-					label: _("Component Name"),
+					label: _("Component name"),
 					editable: false,
 					width: '40%',
 					formatter:

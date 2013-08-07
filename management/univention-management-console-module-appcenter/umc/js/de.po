@@ -185,7 +185,7 @@ msgid "Close"
 msgstr "Schließen"
 
 #: umc/js/appcenter/DetailsPage.js:91 umc/js/appcenter/SettingsPage.js:227
-msgid "Component Name"
+msgid "Component name"
 msgstr "Name der Komponente"
 
 #: umc/js/appcenter/DetailsPage.js:48
