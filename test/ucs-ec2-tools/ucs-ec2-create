@@ -36,8 +36,12 @@ from optparse import OptionParser
 import os
 import logging
 
-import univention.ec2.lib
-from univention.ec2.lib import _print_done, _print_process
+try:
+	import python.ec2.lib as univention_ec2_lib
+	from python.ec2.lib import _print_done, _print_process
+except ImportError:
+	import univention.ec2.lib as univention_ec2_lib
+	from univention.ec2.lib import _print_done, _print_process
 
 def main():
 	"""
@@ -58,7 +62,7 @@ def main():
 
 	# config parser
 	_print_process('Parse options and config files')
-	config = univention.ec2.lib.Parser()
+	config = univention_ec2_lib.Parser()
 	config.set_filename(options.config_file)
 	config.read(options.config_file)
 	_print_done()
@@ -75,7 +79,7 @@ def main():
 	vms = []
 	for host in config.hosts():
 		_print_process('Creating VM [%s]' % host)
-		vms.append( univention.ec2.lib.VM_EC2(host, config) )
+		vms.append( univention_ec2_lib.VM_EC2(host, config) )
 		_print_done()
 
 	# start instances

@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.9-4) unstable; urgency=low
+
+  * Bug #32164: load univention.ec2.lib from local path primarily
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 07 Aug 2013 14:52:36 +0200
+
 ucs-ec2-tools (0.1.9-3) unstable; urgency=low
 
   * Bug #32164: fixed typo in univention.ec2.lib
