@@ -1,3 +1,10 @@
+univention-system-setup (7.0.24-1) unstable; urgency=low
+
+  * Bug #30878: Code cleanup
+  * Bug #30773: Adapt wording
+
+ -- Florian Best <best@univention.de>  Wed, 07 Aug 2013 11:44:55 +0200
+
 univention-system-setup (7.0.23-5) unstable; urgency=low
 
   * improve log capturing (Bug #29714)

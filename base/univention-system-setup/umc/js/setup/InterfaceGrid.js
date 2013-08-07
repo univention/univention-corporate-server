@@ -40,9 +40,10 @@ define([
 	"umc/widgets/Grid",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/modules/setup/InterfaceWizard",
+	"umc/modules/setup/Interfaces",
 	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, Memory, Observable, Dialog, dialog, tools, Grid, _FormWidgetMixin, InterfaceWizard, types, _) {
+], function(declare, lang, array, Memory, Observable, Dialog, dialog, tools, Grid, _FormWidgetMixin, InterfaceWizard, Interfaces, types, _) {
 	return declare("umc.modules.setup.InterfaceGrid", [ Grid, _FormWidgetMixin ], {
 		moduleStore: null,
 
@@ -50,14 +51,11 @@ define([
 		query: {},
 		sortIndex: 1,
 
-		physical_interfaces: [],
-
 		gateway: "",
 		nameserver: [],
-		'interfaces/primary': null,
 
 		constructor: function() {
-			this.moduleStore = new Observable(new Memory({idProperty: 'name'}));
+			this.moduleStore = new Observable(new Interfaces({idProperty: 'name'}));
 
 			lang.mixin(this, {
 				columns: [{
@@ -69,14 +67,14 @@ define([
 					label: _('Type'),
 					width: '15%',
 					formatter: function(value) {
-						return types.interfaceTypes[value] || value;
+						return types.interfaceTypeLabels[value] || value;
 					}
 				}, {
 					name: 'configuration',
 					label: _('Configuration'),
 					formatter: lang.hitch(this, function(val, row, scope) {
 						var iface = this.getRowValues(row);
-						return this.getItem(iface.name).getConfigurationDescription();
+						return this.moduleStore.getInterface(iface.name).getConfigurationDescription();
 					}),
 					width: '67%'
 				}],
@@ -133,8 +131,8 @@ define([
 			var data = [];
 
 			// set new values
-			tools.forIn(values, function(id, value) {
-				data.push(value);
+			tools.forIn(values, function(iname, iface) {
+				data.push(this.moduleStore.createDevice(iface));
 			}, this);
 
 			this.moduleStore.setData(data);
@@ -164,7 +162,7 @@ define([
 			var items = this.get('value');
 			array.forEach(items, function(iface) {
 				if (!iface.isVLAN()) {
-					array.forEach(iface.getSubdevices(), function(name) {
+					array.forEach(iface.getSubdeviceNames(), function(name) {
 						to_disable[name] = true;
 					});
 				}
@@ -180,19 +178,19 @@ define([
 			var create = removedFrom === -1;
 			var deleted = insertedInto === -1;
 			var key;
+			iface = this.moduleStore.createDevice(iface);
 
 			if (!deleted) {
 
 				if (iface.isBond() || iface.isBridge()) {
 					// store original subdevices
-					array.forEach(iface.getSubdevices(), lang.hitch(this, function(ikey) {
-						var iiface = this.moduleStore.get(ikey);
+					array.forEach(iface.getSubdeviceNames(), lang.hitch(this, function(ikey) {
+						var iiface = this.moduleStore.getInterface(ikey);
 						if (iiface === undefined) {
 							// the interface is not configured in the grid but exists as physical interface
 							return;
 						}
-						var filtered = {}; tools.forIn(iiface, function(k, v) { if (array.indexOf(k, "_") !== 0) { filtered[k] = v; } });
-						this._cachedInterfaces[iiface.name] = lang.clone(filtered);
+						this._cachedInterfaces[iiface.name] = this.moduleStore.createDevice(iiface);
 
 						if (this._ready) {
 							iiface.ip4 = [];
@@ -208,14 +206,14 @@ define([
 			} else {
 
 				// restore original values
-				array.forEach(iface.getSubdevices(), lang.hitch(this, function(ikey) {
-					var iiface = this.moduleStore.get(ikey);
+				array.forEach(iface.getSubdeviceNames(), lang.hitch(this, function(ikey) {
+					var iiface = this.moduleStore.getInterface(ikey);
 					if (iiface === undefined) {
 						return; // the interface is not configured in the grid
 					}
 					if (this._cachedInterfaces[iiface.name]) {
 						setTimeout(lang.hitch(this, function() {
-							this.moduleStore.put(types.getDevice(this._cachedInterfaces[iiface.name]));
+							this.moduleStore.put(this._cachedInterfaces[iiface.name]);
 						}), 0);
 					}
 				}));
@@ -225,7 +223,7 @@ define([
 		},
 
 		updateInterface: function(data) {
-			var iface = data.device;
+			var iface = this.moduleStore.createDevice(data.values);
 
 			// set gateway if got from DHCP request
 			if (data.gateway) {
@@ -237,25 +235,16 @@ define([
 				this.set('nameserver', data.nameserver);
 			}
 
-			// set or remove interfaces/primary if device was (de)selected as primary
-			if (iface.primary) {
-				this.set('interfaces/primary', iface.name);
-			} else if (this.get('interfaces/primary') === iface.name) {
-				this.set('interfaces/primary', '');
-			}
-
 			var renamed = false;
 			if (!data.creation) {
 				renamed = iface.name != data.original_name;
 				if (!renamed) {
-					//this.moduleStore.put( iface ); // FIXME: put does not work
-					this.moduleStore.remove(iface.name);
-					this.moduleStore.add( iface );
+					this.moduleStore.put(iface);
 					return;
 				}
 			}
 			try {
-				this.moduleStore.add( iface );
+				this.moduleStore.add(iface);
 			} catch(error) {
 				console.log(error);
 				dialog.alert(_('Device "%s" already exists.', iface.name));
@@ -270,32 +259,26 @@ define([
 
 		_editInterfaces: function(name, devices) {
 			// grid action
-			this._showWizard({device: devices[0], creation: false});
+			this._showWizard(devices[0]);
 		},
 
 		_addInterface: function() {
 			// grid action
-			this._showWizard({device: { interfaceType: 'Ethernet', name: ''}, creation: true});
+			this._showWizard(null);
 		},
 
 		_removeInterfaces: function(ids) {
 			// grid action
-			// remove the interfaces from grid
 			array.forEach(ids, function(iid) {
-				var iface = this.getItem(iid);
-				if (iface && iface.name === this['interfaces/primary']) {
-					this.set('interfaces/primary', '');
-				}
-
 				this.moduleStore.remove(iid);
 			}, this);
 			this._set('value', this.get('value'));
 		},
 
-		_showWizard: function(props) {
-			// show an InterfaceWizard for the given props
+		_showWizard: function(device) {
+			// show an InterfaceWizard for the given device
 			// and insert data into the grid when saving the new values
-			var _dialog = null, wizard = null;
+			var _dialog = null;
 
 			var _cleanup = function() {
 				_dialog.hide().then(lang.hitch(_dialog, 'destroyRecursive'));
@@ -306,27 +289,21 @@ define([
 				data.gateway = values.gateway;
 				data.nameserver = values.nameserver;
 				data.creation = values.creation;
-				data.device = types.getDevice(values);
+				data.values = values;
 				data.original_name = values.original_name;
 				this.updateInterface(data);
 				_cleanup();
 			});
-	
-			var propvals = {
-				original_name: props.device.name,
-				device: types.getDevice(props.device),
-				name: props.device.name,
-				interfaceType: props.device.interfaceType,
-				physical_interfaces: this.physical_interfaces,
-				available_interfaces: this.get('value'),
-				creation: props.creation,
+
+			var wizard = new InterfaceWizard({
+				interfaces: this.moduleStore,
+				device: device,
 				onCancel: _cleanup,
 				onFinished: _finished
-			};
-			wizard = new InterfaceWizard(propvals);
+			});
 
 			_dialog = new Dialog({
-				title: props.creation ? _('Add a network device') : _('Edit a network device'),
+				title: device ? _('Edit a network device') : _('Add a network device'),
 				content: wizard
 			});
 			_dialog.own(wizard);

@@ -40,10 +40,9 @@ define([
 	"umc/widgets/MultiInput",
 	"umc/widgets/Form",
 	"umc/modules/setup/InterfaceGrid",
-	"umc/modules/setup/types",
 	"umc/i18n!umc/modules/setup",
 	"umc/modules/setup/InterfaceWizard"
-], function(declare, lang, array, aspect, tools, Page, StandbyMixin, TextBox, MultiInput, Form, InterfaceGrid, types, _) {
+], function(declare, lang, array, aspect, tools, Page, StandbyMixin, TextBox, MultiInput, Form, InterfaceGrid, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -157,10 +156,11 @@ define([
 				nameserverWidget.set('value', value);
 			}));
 
-			this.own(this._form._widgets.interfaces.watch('interfaces/primary', lang.hitch(this, function(name, old, value) {
+			this.own(this._form._widgets.interfaces.moduleStore.watch('interfaces/primary', lang.hitch(this, function(name, old, value) {
 				// set new primary interface
 				this._form._widgets['interfaces/primary'].set('value', value);
 			})));
+
 		},
 
 		setValues: function(_vals) {
@@ -179,7 +179,7 @@ define([
 
 			// copy values that do not change in their name
 			var vals = {};
-			array.forEach(['gateway', 'ipv6/gateway', 'proxy/http', 'interfaces/primary'], function(ikey) {
+			array.forEach(['interfaces', 'gateway', 'ipv6/gateway', 'proxy/http', 'interfaces/primary'], function(ikey) {
 				vals[ikey] = _vals[ikey];
 			});
 
@@ -201,15 +201,10 @@ define([
 				});
 			});
 
-			vals.interfaces = {};
-			tools.forIn(_vals.interfaces, function(iname, iface) {
-				vals.interfaces[iface.name] = types.getDevice(iface);
-			});
-
 			// set all physical interfaces for the grid here, the info does not exists on grid creation
-			this._form._widgets.interfaces.set('physical_interfaces', this.physical_interfaces);
+			this._form._widgets.interfaces.moduleStore.set('physical_interfaces', this.physical_interfaces);
 
-			this._form._widgets.interfaces.set('interfaces/primary', vals['interfaces/primary']);
+			this._form._widgets.interfaces.moduleStore.set('interfaces/primary', vals['interfaces/primary']);
 
 			// only show forwarder for master, backup, and slave
 			this._currentRole = _vals['server/role'];
@@ -285,7 +280,7 @@ define([
 			return [{
 				variables: ['gateway'],
 				description: _('Gateway (IPv4)'),
-				values: vals['gateway']
+				values: vals.gateway
 			}, {
 				variables: ['ipv6/gateway'],
 				description: _('Gateway (IPv6)'),
@@ -293,7 +288,7 @@ define([
 			}, {
 				variables: [(/nameserver.*/)],
 				description: _('Domain name server'),
-				values: vals['nameserver'].join(', ')
+				values: vals.nameserver.join(', ')
 			}, {
 				variables: [(/dns\/forwarder.*/)],
 				description: _('External name server'),

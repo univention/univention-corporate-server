@@ -80,17 +80,17 @@ define([
 				type: Text,
 				label: '',
 				name: 'text_domaincontroller_master',
-				content: _('<h2>Master domain controller</h2>A system with the master domain controller role (DC master for short) is the primary domain controller of a UCS domain and is always installed as the first system. The domain data (such as users, groups, printers) and the SSL security certificates are saved on the DC master.  Copies of these data are automatically transferred to all servers with the backup domain controller role.')
+				content: _('<h2>Domain controller master</h2>A system with the domain controller master role (DC master for short) is the primary domain controller of a UCS domain and is always installed as the first system. The domain data (such as users, groups, printers) and the SSL security certificates are saved on the DC master.  Copies of these data are automatically transferred to all servers with the DC backup role.')
 			}, {
 				type: Text,
 				label: '',
 				name: 'text_domaincontroller_backup',
-				content: _('<h2>Backup domain controller</h2>All the domain data and SSL security certificates are saved as read-only copies on servers with the backup domain controller role (DC backup for short). The backup domain controller is the fallback system for the DC master. If the latter should fail, a DC backup can take over the role of the DC master permanently.')
+				content: _('<h2>Domain controller backup</h2>All the domain data and SSL security certificates are saved as read-only copies on servers with the domain controller backup role (DC backup for short). The DC backup is the fallback system for the DC master. If the latter should fail, a DC backup can take over the role of the DC master permanently.')
 			}, {
 				type: Text,
 				label: '',
 				name: 'text_domaincontroller_slave',
-				content: _('<h2>Slave domain controller</h2>All the domain data are saved as read-only copies on servers with the slave domain controller role (DC slave for short). In contrast to the backup domain controller, however, not all security certificates are synchronised. As access to the services running on a slave domain controller are performed against the local LDAP server, DC slave systems are ideal for site servers and the distribution of load-intensive services. A DC slave system cannot be promoted to a DC master.')
+				content: _('<h2>Domain controller slave</h2>All the domain data are saved as read-only copies on servers with the domain controller slave role (DC slave for short). In contrast to the DC backup, however, not all security certificates are synchronised. As access to the services running on a DC slave are performed against the local LDAP server, DC slave systems are ideal for site servers and the distribution of load-intensive services. A DC slave system cannot be promoted to a DC master.')
 			}, {
 				type: Text,
 				label: '',
@@ -100,16 +100,16 @@ define([
 				type: Text,
 				label: '',
 				name: 'text_basesystem',
-				content: _('<h2>Base system</h2>A base system is an autonomous system which is not a member of the domain.A base system is thus suitable for services which are operated outside of the trust context of the domain, such as a web server or a firewall.')
+				content: _('<h2>Base system</h2>A base system is an autonomous system which is not a member of the domain. A base system is thus suitable for services which are operated outside of the trust context of the domain, such as a web server or a firewall.')
 			}];
 
 			var layout = [{
 				label: _('Configuration of the UCS system role'),
-				layout: [	'server/role', 
-							'text_domaincontroller_master', 
-							'text_domaincontroller_backup', 
-							'text_domaincontroller_slave', 
-							'text_memberserver', 
+				layout: [	'server/role',
+							'text_domaincontroller_master',
+							'text_domaincontroller_backup',
+							'text_domaincontroller_slave',
+							'text_memberserver',
 							'text_basesystem' ]
 			}];
 
@@ -123,7 +123,7 @@ define([
 			this._oldRole = this._form.getWidget('server/role').get('value');
 
 			this.own(this._form.getWidget('server/role').watch('value', lang.hitch(this, function(name, old, val) {
-				// notify setup.js if value of ComboBox changed 
+				// notify setup.js if value of ComboBox changed
 				// only notify if value really changed (see Bug #27240)
 				if (this._oldRole != val) {
 					this._oldRole = val;
