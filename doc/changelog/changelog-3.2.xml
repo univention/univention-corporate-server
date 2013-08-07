@@ -837,6 +837,10 @@
 		<listitem><simpara>
 		  The system setup script order is now defined properly (<ulink url="&ucsbug;29714">Bug 29714</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  When inserting invalid values (e.g. password) the invalid field is now focused (<ulink url="&ucsbug;31021">Bug 31021</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>
