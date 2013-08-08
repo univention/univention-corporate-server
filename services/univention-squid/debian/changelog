@@ -1,3 +1,10 @@
+univention-squid (7.0.1-1) unstable; urgency=low
+
+  * support type 3 validation in YR (Bug #32183)
+    (office2013 workaround) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Aug 2013 10:59:53 +0200
+
 univention-squid (7.0.0-1) unstable; urgency=low
 
   * added negotiate (krb5, ntlm) mode to squid_ldap_ntlm_auth (Bug #31972)
