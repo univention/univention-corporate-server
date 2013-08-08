@@ -1,3 +1,10 @@
+univention-check-printers (7.0.1-3) unstable; urgency=low
+
+  * Update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 08 Aug 2013 08:30:08 +0200
+
 univention-check-printers (7.0.1-2) unstable; urgency=low
 
   * Add dependencies of 'univention-printserver' and 'bsd-mailx' (Bug #29123)
