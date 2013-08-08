@@ -1,3 +1,9 @@
+univention-installer (9.0.16-1) unstable; urgency=low
+
+  * fixed win domain test (Bug #24888) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Aug 2013 14:42:49 +0200
+
 univention-installer (9.0.15-2) unstable; urgency=low
 
   * 67: Fix join password error message (Bug #23903)

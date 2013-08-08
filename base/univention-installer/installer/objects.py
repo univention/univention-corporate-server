@@ -1821,7 +1821,9 @@ class content:
 		return False
 
 	def syntax_is_windowsdomainname(self, domainname):
-		_re=re.compile("^[a-z][a-z0-9-]*[a-z0-9]$")
+		if domainname.endswith("-") or domainname.startswith("-") or "--" in domainname:
+			return False
+		_re=re.compile("^[a-z0-9-]+$")
 		if _re.match(domainname):
 			return True
 		return False
