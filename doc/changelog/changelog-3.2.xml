@@ -1426,6 +1426,10 @@
 		  setting the &ucsUCRV; <envar>squid/krb5auth/tool</envar> to
 		  <emphasis>/usr/lib/squid3/squid_kerb_auth</emphasis> (<ulink url="&ucsbug;31972">Bug 31972</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+		  A problem in the squid the ntlm authentication helper in interaction with office2013
+		  has been fixed (<ulink url="&ucsbug;32183">Bug 32183</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>
