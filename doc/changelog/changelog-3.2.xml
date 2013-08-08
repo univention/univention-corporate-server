@@ -342,7 +342,7 @@
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
-		  OpenLDAP was updated to Version 2.4.35 (<ulink url="&ucsbug;31697">Bug 31697</ulink>).
+		  OpenLDAP was updated to version 2.4.35 (<ulink url="&ucsbug;31697">Bug 31697</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
