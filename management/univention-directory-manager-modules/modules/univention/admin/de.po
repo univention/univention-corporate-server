@@ -348,7 +348,7 @@ msgstr ""
 "sein."
 
 #: syntax.py:719
-msgid "Spaces not allowed in username!"
+msgid "Spaces are not allowed in the username!"
 msgstr "Der Benutzername darf keine Leerzeichen enthalten!"
 
 #: syntax.py:719 syntax.py:736
