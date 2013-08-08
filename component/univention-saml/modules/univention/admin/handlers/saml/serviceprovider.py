@@ -48,7 +48,7 @@ options = {
 
 property_descriptions = {
 	'Identifier': univention.admin.property(
-			short_description = _(u'Identifier'),
+			short_description = _(u'Service provider identifier'),
 			long_description = _(u'Unique identifier for the service provider definition'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
@@ -58,7 +58,7 @@ property_descriptions = {
 			identifies = True,
 		),
 	'AssertionConsumerService': univention.admin.property(
-			short_description = _(u'AssertionConsumerService'),
+			short_description = _(u'URL of the AssertionConsumerService'),
 			long_description = _(u'The URL of the AssertionConsumerService endpoint for this SP'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
@@ -68,7 +68,7 @@ property_descriptions = {
 			identifies = True,
 		),
 	'NameIDFormat': univention.admin.property(
-			short_description = _(u'NameIDFormat'),
+			short_description = _(u'Format of NameID attribute'),
 			long_description = _(u'The NameIDFormat this SP should receive'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
@@ -78,7 +78,7 @@ property_descriptions = {
 			identifies = True,
 		),
 	'simplesamlNameIDAttribute': univention.admin.property(
-			short_description = _(u'simplesamlNameIDAttribute'),
+			short_description = _(u'Name of attribute that is used as NameID'),
 			long_description = _(u'The name of the attribute which should be used as the value of the NameID'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
@@ -88,8 +88,68 @@ property_descriptions = {
 			identifies = True,
 		),
 	'simplesamlAttributes': univention.admin.property(
-			short_description = _(u'simplesamlAttributes'),
-			long_description = _(u'Whether the SP should receive any attributes from the IdP'),
+			short_description = _(u'Send any ldap attributes to the service provider?'),
+			long_description = _(u'Whether the SP should receive any ldap attributes from the IdP'),
+			syntax = univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = True,
+		),
+	'attributes': univention.admin.property(
+			short_description = _(u'List of ldap attributes to transmit (can be empty)'),
+			long_description = _(u'A list of ldap attributes that are transmitted to the service provider'),
+			syntax = univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = True,
+		),
+	'serviceproviderdescription': univention.admin.property(
+			short_description = _(u'Description of this service provider'),
+			long_description = _(u'A description of this service provider that can be shown to users'),
+			syntax = univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = True,
+		),
+	'serviceProviderOrganizationName': univention.admin.property(
+			short_description = _(u'Name of the organization for this service provider'),
+			long_description = _(u'The name of the organization responsible for the service provider that can be shown to users'),
+			syntax = univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = True,
+		),
+	'privacypolicyURL': univention.admin.property(
+			short_description = _(u'URL to the service provider\'s privacy policy'),
+			long_description = _(u'An absolute URL for the service provider\'s privacy policy'),
+			syntax = univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = True,
+		),
+	'attributesNameFormat': univention.admin.property(
+			short_description = _(u'Value in the format field for attributes'),
+			long_description = _(u'Which value will be set in the format field of attribute statements'),
+			syntax = univention.admin.syntax.string,
+			multivalue = False,
+			options = [],
+			required = False,
+			may_change = True,
+			identifies = True,
+		),
+	'singleLogoutService': univention.admin.property(
+			short_description = _(u'Single logout URL for this service provider'),
+			long_description = _(u'iThe URL of the SingleLogoutService endpoint for this service provider'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
 			options = [],
@@ -100,15 +160,27 @@ property_descriptions = {
 }
 
 layout = [
-	Tab(_(u'General'), _(u'Basic Settings'), layout=[
-		Group(_('Definition'), layout=[
+	Tab(_(u'General'), _(u'Basic Settings'), 
+		layout=[
+		Group(_('Definition of required and often used settings'), layout=[
 			["Identifier", ],
 			["AssertionConsumerService", ],
 			["NameIDFormat", ],
 			["simplesamlNameIDAttribute", ],
-			["simplesamlAttributes", ],
 		]),
-	])
+	]),
+	Tab(_(u'Optional Settings'), _(u'More Settings'),
+		layout=[
+		Group(_('Optional Settings'), layout=[
+			["simplesamlAttributes", ],
+			["attributes", ],
+			["serviceproviderdescription"],
+			["serviceProviderOrganizationName"],
+			["privacypolicyURL"],
+			["attributesNameFormat"],
+			["singleLogoutService"],
+		]),
+	]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -117,6 +189,12 @@ mapping.register('AssertionConsumerService', 'AssertionConsumerService', None, u
 mapping.register('NameIDFormat', 'NameIDFormat', None, univention.admin.mapping.ListToString)
 mapping.register('simplesamlNameIDAttribute', 'simplesamlNameIDAttribute', None, univention.admin.mapping.ListToString)
 mapping.register('simplesamlAttributes', 'simplesamlAttributes', None, univention.admin.mapping.ListToString)
+mapping.register('attributes', 'attributes', None, univention.admin.mapping.ListToString)
+mapping.register('serviceproviderdescription', 'serviceproviderdescription', None, univention.admin.mapping.ListToString)
+mapping.register('serviceProviderOrganizationName', 'serviceProviderOrganizationName', None, univention.admin.mapping.ListToString)
+mapping.register('privacypolicyURL', 'privacypolicyURL', None, univention.admin.mapping.ListToString)
+mapping.register('attributesNameFormat', 'attributesNameFormat', None, univention.admin.mapping.ListToString)
+mapping.register('singleLogoutService', 'singleLogoutService', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module

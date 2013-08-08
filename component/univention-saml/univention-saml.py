@@ -102,6 +102,18 @@ def handler(dn, new, old):
 					f.write("	'simplesaml.nameidattribute'	=> '%s',\n" % new.get('simplesamlNameIDAttribute')[0])
 				if new.get('simplesamlAttributes'):
 					f.write("	'simplesaml.attributes'	=> %s,\n" % new.get('simplesamlAttributes')[0])
+				if new.get('attributes'):
+					f.write("	'attributes'	=> '%s'\n" % new.get('attributes')[0])
+				if new.get('serviceproviderdescription'):
+					f.write("	'description'	=> '%s'\n" % new.get('serviceproviderdescription')[0])
+				if new.get('serviceProviderOrganizationName'):
+					f.write("	'OrganizationName'	=> '%s'\n" % new.get('serviceProviderOrganizationName')[0])
+				if new.get('privacypolicyURL'):
+					f.write("	'privacypolicy'	=> '%s'\n" % new.get('privacypolicyURL')[0])
+				if new.get('attributesNameFormat'):
+					f.write("	'attributes.NameFormat'	=> '%s'\n" % new.get('attributesNameFormat')[0])
+				if new.get('singleLogoutService'):
+					f.write("	'SingleLogoutService'	=> '%s'\n" % new.get('singleLogoutService')[0])
 
 				# make sure that only users that are enabled to use this service provider are allowed
 				f.write("	'authproc' => array(\n")

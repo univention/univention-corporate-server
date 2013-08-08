@@ -1,3 +1,9 @@
+univention-saml (1.0.1-4) unstable; urgency=low
+
+  * Added more configuration options for simplesamlphp (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Aug 2013 16:33:27 +0200
+
 univention-saml (1.0.1-3) unstable; urgency=low
 
   * New feature: Users must be enabled to use SAML service providers
