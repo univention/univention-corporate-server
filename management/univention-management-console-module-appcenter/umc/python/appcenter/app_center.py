@@ -227,7 +227,7 @@ class Application(object):
 			loc = loc.split('_')[0].upper()
 		else:
 			loc = 'EN'
-		for localised_file_ext in [file_ext + '_%s' % loc, file_ext + '_EN', file_ext]:
+		for localised_file_ext in [file_ext + '_%s' % loc, file_ext, file_ext + '_EN']:
 			try:
 				# open the license file
 				filename = os.path.join(CACHE_DIR, '%s.%s' % (self.component_id, localised_file_ext))

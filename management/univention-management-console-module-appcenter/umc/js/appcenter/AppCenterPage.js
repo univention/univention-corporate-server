@@ -801,7 +801,8 @@ define([
 				} else {
 					buttons = [{
 						name: 'yes',
-						label: _('Continue')
+						label: _('Continue'),
+						'default': true
 					}];
 				}
 				var content = '<h1>' + title + '</h1>';

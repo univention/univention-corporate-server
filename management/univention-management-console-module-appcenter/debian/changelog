@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.14-1) unstable; urgency=low
+
+  * Bug #31803: Added default button in README popup, changed localisation
+    order
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 Aug 2013 11:15:46 +0200
+
 univention-management-console-module-appcenter (3.0.13-1) unstable; urgency=low
 
   * Bug #24727: adapt wording
