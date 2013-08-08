@@ -29,25 +29,25 @@ Type=str
 Categories=service-cups
 
 [cups/systemgroup]
-Description[de]=Die hier angegebenen Gruppen haben Administrationszugriff auf die Drucker. Mehrfache Werte müsse durch Kommata getrennt werden.
+Description[de]=Die hier angegebenen Gruppen haben Administrationszugriff auf die Drucker. Mehrfache Werte müssen durch Kommata getrennt werden.
 Description[en]=The groups specified here have printer administration access. Multiple values need to be separated with a comma.
 Type=str
 Categories=service-cups
 
 [cups/printserver]
-Description[de]=Ist diese Variable aktiviert, läuft auf dem System ein Cups-Druckserver. Diese Variable wird von dem Univention Directory-Listener-Modul ausgewertet, das Druck-Clients konfiguriert.
+Description[de]=Ist diese Variable aktiviert, läuft auf dem System ein Cups-Druckserver. Diese Variable wird von dem Univention Directory-Listener-Modul zur Konfiguration von Druck-Clients ausgewertet.
 Description[en]=If this variable is activated, a Cups print server is running on the system. This variable is evaluated by the Univention Directory Listener module, which configures print clients.
 Type=bool
 Categories=service-cups
 
 [cups/debug/level]
-Description[de]=Diese Variable konfiguriert den Detailgrad der Cups-Logmeldungen. Mögliche Werte sind: none, emerg, alert, crit, error, warn, notice, info, debug, debug2
-Description[en]=This variable configures the verbosity level for the Cups print server. Possible values: none, emerg, alert, crit, error, warn, notice, info, debug, debug2
+Description[de]=Diese Variable konfiguriert den Detailgrad der Cups-Logmeldungen. Mögliche Werte sind: none, emerg, alert, crit, error, warn, notice, info, debug, debug2.
+Description[en]=This variable configures the verbosity level for the Cups print server. Possible values: none, emerg, alert, crit, error, warn, notice, info, debug, debug2.
 Type=str
 Categories=service-cups
 
 [cups/restrictedprinters]
-Description[de]=Alle hier eingetragenen Druckerfreigaben erfordern eine Authentifizierung. Ist die Variable 'cups/automaticrestrict' aktiviert werden hier automatisch alle Drucker eingetragen, für die eine Zugriffsbeschränkung in der UMC konfiguriert wurde.
+Description[de]=Alle hier eingetragenen Druckerfreigaben erfordern eine Authentifizierung. Ist die Variable 'cups/automaticrestrict' aktiviert, werden hier automatisch alle Drucker eingetragen, für die eine Zugriffsbeschränkung in der UMC konfiguriert wurde.
 Description[en]=All printer shares listed here require authentication. If the variable 'cups/automaticrestrict' is enabled, all printer shares for which access restrictions have been configured in the UMC are listed.
 Type=str
 Categories=service-cups
