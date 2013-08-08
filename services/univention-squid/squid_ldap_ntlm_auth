@@ -505,15 +505,18 @@ def createNtlmTypeTwo():
 
 	return tt, challenge
 
-# YR TlRMTVNTUAABAAAAB7IIogUABQAsAAAABAAEACgAAAAFASgKAAAAD1RFU1RTUVVJRJ==
-def ntlmTypeOne(data):
+def ntlmType(data):
 
 	if options.debug:
-		debug("NTLM Type 1 Message: ")
+		debug("Checking NTLM Type: ")
 
-	data = data.replace("YR ", "", 1)
+	if data.startswith("YR "):
+		data = data.replace("YR ", "", 1)
+	elif data.startswith("KK "):
+		data = data.replace("KK ", "", 1)
+
 	signature = ""
-	type = ""
+	type = 0
 	flags = ""
 
 	try:
@@ -530,9 +533,9 @@ def ntlmTypeOne(data):
 	except:
 		pass
 
-	if signature.startswith("NTLMSSP") and type == 1:
-		return True
-	return False
+	if signature.startswith("NTLMSSP") and type:
+		return type
+	return 0
 
 # tests
 
@@ -627,15 +630,23 @@ if __name__ == '__main__':
 
 		if data:
 			if data.startswith("YR "): 
-				if ntlmTypeOne(data):
+				ntype = ntlmType(data)
+				if ntype == 1:
 					try:
 						answer, challenge = createNtlmTypeTwo()
 					except Exception, e:
 						answer = "BH failed to createNtlmTypeTwo(): %s" % e
+				# office 2013 workaround
+				elif ntype == 3:
+					try:
+						data = data.replace("YR ", "", 1)
+						answer = verifyNtlmTypeThree(data, challenge)
+					except Exception, e:
+						answer = "BH failed to verifyNtlmTypeThree(): %s" % e
+				# kerberos
 				else:
 					if options.debug:
 						debug("negotiate kerberos authentication" + data)
-					# kerberos
 					try:
 						if kerbPipe:
 							if options.debug:

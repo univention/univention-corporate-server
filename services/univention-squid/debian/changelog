@@ -1,3 +1,10 @@
+univention-squid (6.0.8-5) unstable; urgency=low
+
+  * support type 3 validation in YR (Bug #32183)
+    (office2013 workaround)  
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Aug 2013 10:43:03 +0200
+
 univention-squid (6.0.8-4) unstable; urgency=low
 
   * fixed ucrv description (Bug #31967) 
