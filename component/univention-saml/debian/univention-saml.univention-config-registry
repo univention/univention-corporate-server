@@ -11,6 +11,7 @@ Type: file
 File: etc/simplesamlphp/config.php
 Variables: saml/idp/enableSAML20-IdP
 Variables: saml/idp/timezone
+Variables: saml/idp/log/debug/enabled
 Variables: saml/idp/log/level
 Variables: locale/default
 Variables: saml/idp/lookandfeel/theme

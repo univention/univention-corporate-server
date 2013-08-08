@@ -10,6 +10,12 @@ Description[en]=Timezone in which the identity provider operates. (default: Euro
 Type=str
 Categories=saml
 
+[saml/idp/log/debug/enabled]
+Description[de]=Aktivieren ("TRUE") oder deaktivieren ("FALSE") von Debugausgaben. default: FALSE
+Description[en]=Activation ("TRUE") or deactivation ("FALSE") of debug output. default: FALSE
+Type=str
+Categories=saml
+
 [saml/idp/log/level]
 Description[de]=Loglevel des Identity Providers. (default: NOTICE)
 Description[en]=Identity provider loglevel. (defautl: NOTICE)
@@ -47,14 +53,14 @@ Type=str
 Categories=saml
 
 [saml/idp/ldap/search_attributes]
-Description[de]=Eine Liste von LDAP Attributen, die als Filter für den angegebenen Benutzernamen verwendet werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mail')
-Description[en]=A list of ldap attributes that are filtered for the provided username (i.e. "'uid', 'mail'"). (default: 'uid', 'mail')
+Description[de]=Eine Liste von LDAP Attributen, die als Filter für den angegebenen Benutzernamen verwendet werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress')
+Description[en]=A list of ldap attributes that are filtered for the provided username (i.e. "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress')
 Type=str
 Categories=saml
 
 [saml/idp/ldap/get_attributes]
-Description[de]=Eine Liste von LDAP Attributen, die nach erfolgreicher Authentifizierung eines Benutzers aus dem LDAP gelesen und dem Service Provider übermittelt werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'cn')
-Description[en]=A list of ldap attributes that are read from ldap after succesful user authentication and send to the service provider (i.e.: "'uid', 'mail'"). (default: 'uid', 'cn')
+Description[de]=Eine Liste von LDAP Benutzerattributen, die aus dem LDAP gelesen werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier')
+Description[en]=A list of ldap user attributes that are read from ldap after succesful user authentication (i.e.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier')
 Type=str
 Categories=saml
 

@@ -102,8 +102,15 @@ def handler(dn, new, old):
 					f.write("	'simplesaml.nameidattribute'	=> '%s',\n" % new.get('simplesamlNameIDAttribute')[0])
 				if new.get('simplesamlAttributes'):
 					f.write("	'simplesaml.attributes'	=> %s,\n" % new.get('simplesamlAttributes')[0])
+
+				# make sure that only users that are enabled to use this service provider are allowed
+				f.write("	'authproc' => array(\n")
+				f.write("		60 => array(\n")
+				f.write("		'class' => 'authorize:Authorize',\n")
+				f.write("		'regex' => FALSE,\n")
+				f.write("		'enabledServiceProviderIdentifier' =>  array('%s')\n" % new.get('SAMLServiceProviderIdentifier')[0] )
+				f.write("	)),\n")
 				f.write(");\n")
-				#f.write("?>")
 					
 			add_sp_config(new_filename)
 			listener.unsetuid()

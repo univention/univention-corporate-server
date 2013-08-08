@@ -15,6 +15,7 @@ if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
 print "	'enable.saml20-idp'	=> %s," % saml20_enabled
 
 print "	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin')
+print"	'debug'		=> %s," % configRegistry.get('saml/idp/log/debug/enabled', 'FALSE')
 print "	'logging.level'		=> SimpleSAML_Logger::%s," % configRegistry.get('saml/idp/log/level', 'NOTICE')
 print "	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2]
 print "	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default')
@@ -60,7 +61,7 @@ print"	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technic
 	 * Note: The messages are logged with the DEBUG log level, so you also need to set
 	 * the 'logging.level' option to LOG_DEBUG.
 	 */
-	'debug' => FALSE,
+	//'debug' => FALSE,
 
 
 	'showerrors'            =>	TRUE,

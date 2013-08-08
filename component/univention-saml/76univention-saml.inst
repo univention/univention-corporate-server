@@ -45,5 +45,27 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--set name="saml-serviceprovider" \
 	--set description="SAML Service Provider definitions" || die
 
+udm settings/extended_attribute create "$@" \
+	--ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="serviceprovider" \
+	--set CLIName="serviceprovider" \
+	--set module="users/user" \
+	--set tabName="Account" \
+	--set translationTabName='"de_DE" "Konto"' \
+	--set tabPosition=4 \
+	--set groupName="SAML settings" \
+	--set translationGroupName='"de_DE" "SAML Einstellungen"' \
+	--set shortDescription="Enable for service provider" \
+	--append translationShortDescription='"de_DE" "Zulassen für Service Provider"' \
+	--set longDescription="Enable user to use the specified service providers" \
+	--append translationLongDescription='"de_DE" "Zulassen des Benutzer für die angegebenen Service Provider"' \
+	--set objectClass="univentionSAMLEnabled" \
+	--set ldapMapping="enabledServiceProviderIdentifier" \
+	--set syntax="samlserviceprovider" \
+	--set tabAdvanced=0 \
+	--set mayChange=1 \
+	--set multivalue=1 \
+
 joinscript_save_current_version
 exit 0

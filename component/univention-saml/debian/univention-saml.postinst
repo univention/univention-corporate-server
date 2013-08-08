@@ -47,8 +47,8 @@ configure)
 	fi
 
 	ucr set saml/idp/enableSAML20-IdP?true \
-		saml/idp/ldap/get_attributes?"'uid', 'cn'" \
-		saml/idp/ldap/search_attributes?"'uid', 'mail'" \
+		saml/idp/ldap/get_attributes?"'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'" \
+		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
 		saml/idp/certificate/privatekey?"/etc/simplesamlphp/${fqdn}-idp-certificate.key" \
 		saml/idp/certificate/certificate?"/etc/simplesamlphp/${fqdn}-idp-certificate.crt"
 
