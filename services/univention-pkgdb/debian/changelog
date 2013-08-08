@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.4-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 08 Aug 2013 14:51:59 +0200
+
 univention-pkgdb (7.0.4-1) unstable; urgency=low
 
   * Bug #30967: implement piwik

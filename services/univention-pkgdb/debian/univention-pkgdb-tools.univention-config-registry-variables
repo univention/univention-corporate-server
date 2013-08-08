@@ -1,11 +1,11 @@
 [pkgdb/scan]
-Description[de]=Konfiguriert die Aktualisierung der Software-Monitor-Datenbank (Diese Variable wird automatisch gesetzt)
-Description[en]=Configure update of the software monitor database (This variable is set automatically)
-Type=str
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, werden Installations-Vorgänge auf UCS-Systemen in den Software-Monitor aufgezeichnet.
+Description[en]=If this option is activated or the variable unset, software installations on UCS systems are reported to the software monitor.
+Type=bool
 Categories=system-swmon
 
 [pkgdb/requiressl]
-Description[de]=SSL gesicherte Verbindungen zum PostgreSQL-Server benutzen
-Description[en]=Use SSL secured connections to PostgreSQL server
-Type=str
+Description[de]=Ist die Option aktiviert, werden nur SSL-gesicherte Verbindungen zum PostgreSQL-Datenbankserver des Software-Monitors aufgebaut.
+Description[en]=If this option is activated only SSL-secured connected are opened to the PostgreSQL database server of the software monitor.
+Type=bool
 Categories=system-swmon
