@@ -133,7 +133,7 @@ remove_non_samba4_dc_srv_records() {
 						break
 					fi
 				done
-				if [ -z "$offers_samba4_service" ] || [ "${fields[2]}" -eq 7389 ] ; then
+				if [ -z "$offers_samba4_service" ] || [ "$record" = '_ldap._tcp' -a "${fields[2]}" -eq 7389 ] ; then
 					echo "${fields[3]%%.} port ${fields[2]} is not offering the Service 'Samba 4'"
 					univention-directory-manager dns/srv_record modify "$@" \
 								--superordinate "$zoneDN" \

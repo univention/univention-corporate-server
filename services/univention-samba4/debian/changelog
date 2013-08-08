@@ -1,3 +1,9 @@
+univention-samba4 (3.0.6-16) unstable; urgency=low
+
+  * only remove port 7389 in _ldap._tcp record (Bug #29462)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Aug 2013 17:00:36 +0200
+
 univention-samba4 (3.0.6-15) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
