@@ -1,11 +1,11 @@
 [bacula/psql/database] 
-Description[de]=Datenbankname für die Bacula Postgres-Datenbank (bacula).
-Description[en]=Name of the bacula postgres database (bacula).
+Description[de]=Der Datenbankname für die Bacula PostgreSQL-Datenbank
+Description[en]=The name of the bacula PostgreSQL database
 Type=str
 Categories=backup
 
 [bacula/psql/user]
-Description[de]=Benutzername für die Bacula Postgres-Datenbank (bacula).
-Description[en]=Name of the bacula postgres user (bacula).
+Description[de]=Der Benutzername für den Zugriff auf die Bacula PostgreSQL-Datenbank
+Description[en]=The user to access the Bacula PostgreSQL database
 Type=str
 Categories=backup

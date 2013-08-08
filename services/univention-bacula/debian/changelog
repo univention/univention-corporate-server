@@ -1,3 +1,10 @@
+univention-bacula (5.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 08 Aug 2013 15:02:57 +0200
+
 univention-bacula (4.0.2-1) unstable; urgency=low
 
   * added packetfilter exceptions for bacula (Bug #25392)
