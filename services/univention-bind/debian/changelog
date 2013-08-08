@@ -1,3 +1,9 @@
+univention-bind (8.0.0-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 08 Aug 2013 11:55:20 +0200
+
 univention-bind (8.0.0-1) unstable; urgency=low
 
   * Delete cached zonefile upon zone deletion (Bug #16270)
