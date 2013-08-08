@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-30) unstable; urgency=low
+
+  * Fix duplicate code block (Bug #31887)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 08 Aug 2013 13:57:54 +0200
+
 univention-samba4 (2.0.44-29) unstable; urgency=low
 
   * turn postinst into a bash script (Bug #31887)
