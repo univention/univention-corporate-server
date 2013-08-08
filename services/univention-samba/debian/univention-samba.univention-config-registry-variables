@@ -59,8 +59,8 @@ Type=str
 Categories=service-samba
 
 [samba/guest_account]
-Description[de]=Für Freigaben kann ein nicht-authentifizierter Gastzugriff konfiguriert werden. Zugriffe über diesen Gastzugriff werden auf den hier konfigurierten Benutzer abgebildet. Ist die Variable nicht gesetzt, wird 'nobody' verwendet.
-Description[en]=A non-authenticated guest access can be configured for shares. Such guest access are mapped to the user configured here. If the variable is unset, 'nobody' is used.
+Description[de]=Für Freigaben kann ein nicht-authentifizierter Nur-Lese-Zugriff konfiguriert werden. Diese Zugriffe werden auf den hier konfigurierten Benutzer abgebildet. Ist die Variable nicht gesetzt, wird 'nobody' verwendet.
+Description[en]=A non-authenticated read-only access can be configured for shares. Such accesses are mapped to the user configured here. If the variable is unset, 'nobody' is used.
 Type=str
 Categories=service-samba
 
@@ -102,7 +102,7 @@ Categories=service-samba
 
 [samba/max_xmit]
 Description[de]=Die maximale Paketgröße in Bytes, die Samba mit Clients aushandelt. Ist die Variable nicht gesetzt, wird 65535 verwendet.
-Description[en]=Maximum packet size in bytes that will be negotiated by samba with clients. If the variable is unset, 65535 is used.
+Description[en]=Maximum packet size in bytes that will be negotiated by Samba with clients. If the variable is unset, 65535 is used.
 Type=str
 Categories=service-samba
 
@@ -125,7 +125,7 @@ Type=str
 Categories=service-samba
 
 [samba/preserve_case]
-Description[de]=Ist diese Variable auf 'no' gesetzt, werden Dateien nicht mit der vom Client gesendeten Groß-/Kleinschreibung angelegt, sondern auf Kleinbuchstaben umgewandelt.
+Description[de]=Ist diese Variable auf 'no' gesetzt, werden Dateien nicht mit der vom Client gesendeten Groß-/Kleinschreibung angelegt, sondern in Kleinbuchstaben umgewandelt.
 Description[en]=If this variable is set to 'no', files created by clients are created with lower case letters instead of the original filename.
 Type=str
 Categories=service-samba
@@ -222,7 +222,7 @@ Categories=service-samba
 
 [samba/max_log_size]
 Description[de]=Eine Maximalgröße in Kilobyte, nach dessen Erreichen Samba die Logdateien nach .old umbenannt. Ist die Variable nicht gesetzt oder auf 0 gesetzt, ist diese Funktion deaktiviert. Es ist nicht empfehlenswert die Funktion zu aktivieren, da die Samba-Logdateien in UCS durch Logrotate rotiert werden.
-Description[en]=The maximum size of Samba log, after which the old file is renamed to .old. If the variable is unset or set to 0, the function is disabled. It's not advisable to enable this function, since the Samba logfiles are rotated through Logrotate.
+Description[en]=The maximum size of Samba log files, after which the old file is renamed to .old. If the variable is unset or set to 0, the function is disabled. It's not advisable to enable this function, since the Samba logfiles in UCS are rotated through Logrotate.
 Type=str
 Categories=service-samba
 
@@ -299,7 +299,7 @@ Type=str
 Categories=service-samba
 
 [samba/usershare/max_shares]
-Description[de]=Die maximale Anzahl an Freigaben, die von normalen Benutzern über 'net'-Aufrufe angelegt werden können. Weitere Informationen finden sich in 'man smb.conf' unter 'USERSHARES'. Ist die Variable nicht gesetzt oder auf 0 gesetzt, können keine Freigaben auf diesem Weg angegeben werden.
+Description[de]=Die maximale Anzahl an Freigaben, die von normalen Benutzern über 'net'-Aufrufe angelegt werden können. Weitere Informationen finden sich in 'man smb.conf' unter 'USERSHARES'. Ist die Variable nicht gesetzt oder auf 0 gesetzt, können keine Freigaben auf diesem Weg angelegt werden.
 Description[en]=The maximum amount of shares, which can be defined by standard users using 'net' calls. Additional information can be found in 'man smb.conf' under 'USERSHARES'. If the variable is set to 0 or unset, no shares can be defined that way.
 Type=str
 Categories=service-samba
@@ -341,8 +341,8 @@ Type=str
 Categories=service-samba
 
 [samba/domainmaster]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, ist das System der Domain-Master, in dem die NetBIOS-Browse-Listen gesammelt werden.
-Description[en]=If this variable is set to 'yes', the system acts as the domain master (which gathers the NetBIOS browse lists).
+Description[de]=Ist diese Variable auf 'yes' gesetzt, ist das System der Domain-Master, in dem die NetBIOS-Browse-Listen gesammelt werden. Im Regelfall sollte dies nur auf einem System konfiguriert werden.
+Description[en]=If this variable is set to 'yes', the system acts as the domain master (which gathers the NetBIOS browse lists). By default, this should only be configured on one system.
 Type=str
 Categories=service-samba
 
@@ -371,14 +371,14 @@ Type=str
 Categories=service-samba
 
 [samba/machine_password_timeout]
-Description[de]=Intervall für die von Samba automatisch durchgeführte Rotation des Maschinenpassworts. Einheit: Sekunden (Default: 0, d.h. deaktiviert)
-Description[en]=Intreval for the automatic machine password rotation performed by Samba. Unit: seconds (default: 0, i.e. disabled)
+Description[de]=Intervall in Sekunden für die von Samba automatisch durchgeführte Rotation des Maschinenpassworts. Ist die Variable auf 0 gesetzt, wird die Rotation deaktiviert.
+Description[en]=Interval in seconds for the automatic machine password rotation performed by Samba. If set to 0, the rotation is disabled.
 Type=str
 Categories=service-samba
 
 [samba/homedirletter]
 Description[de]=Hier kann das Windows-Laufwerk angegeben werden, unter dem das Heimatverzeichnis eingebunden wird. Anzugeben ist der reine Laufwerkbuchstabe, z.B. 'I' for das Laufwerk 'I:'.
-Description[en]=The windows drive can be specified here under which the home directory of the user is integrated. Only the disk drive letter needs to be given, e.g. 'I' for the drive 'I:'.
+Description[en]=The Windows drive can be specified here under which the home directory of the user is integrated. Only the disk drive letter needs to be given, e.g. 'I' for the drive 'I:'.
 Type=str
 Categories=service-samba
 
@@ -407,13 +407,13 @@ Type=str
 Categories=service-samba
 
 [samba/profilepath]
-Description[de]=Das Verzeichnis in dem die servergespeicherten Profile gespeichert werden. Mit '%U' wird der aktuelle Benutzername expandiert und verwendet. Mit '%a' können unterschiedliche Profilpfade für verschiedene Windows-Versionen definiert werden. Werden 'samba/profileserver' und 'samba/profilepath' auf 'local' gesetzt, werden servergespeicherte Profile deaktiviert.
+Description[de]=Das Verzeichnis, in dem die servergespeicherten Profile gespeichert werden. Mit '%U' wird der aktuelle Benutzername expandiert und verwendet. Mit '%a' können unterschiedliche Profilpfade für verschiedene Windows-Versionen definiert werden. Werden 'samba/profileserver' und 'samba/profilepath' auf 'local' gesetzt, werden servergespeicherte Profile deaktiviert.
 Description[en]=Specifies the directory where roaming profiles are stored. With '%U' the current username is expanded and used. Variable profile paths for different Windows versions can be defined with '%a'. If 'samba/profileserver' and 'samba/profilepath' are set to 'local', roaming profiles are deactivated.
 Type=str
 Categories=service-samba
 
 [samba/store_dos_attributes]
-Description[de]=Ist diese Variable auf 'yes' gesetzt und nicht gesetzt, wird versucht DOS-Attribute von Dateien aus einem erweiterten Dateisystemattribut zu lesen bevor sie auf UNIX-Rechte abgebildet werden.
+Description[de]=Ist diese Variable auf 'yes' gesetzt oder nicht gesetzt, wird versucht DOS-Attribute von Dateien aus einem erweiterten Dateisystemattribut zu lesen bevor sie auf UNIX-Rechte abgebildet werden.
 Description[en]=If this variable is set to 'yes' or unset, Samba attempts to read DOS attributes from a filesystem extended attribute, before mapping DOS attributes to UNIX permission bits.
 Type=str
 Categories=service-samba
