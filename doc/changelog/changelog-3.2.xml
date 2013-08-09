@@ -250,6 +250,8 @@
 		  with the Xorg version in UCS 3.2 and now blacklisted (<ulink url="&ucsbug;31701">Bug 31701</ulink>). This
 		  update also resolves occasional kernel traces when operating a UCS installation in Amazon
 		  EC2 (<ulink url="&ucsbug;30369">Bug 30369</ulink>). The firmware packages have been updated to current versions as well.
+		  In addition various packages have been updated to ensure compatibility of their DKMS
+		  out-of-tree kernel modules with Linux 3.10: openafs, xtables-addons, virtualbox and ndiswrapper.
 		</simpara></listitem>
 
 		<listitem><simpara>
