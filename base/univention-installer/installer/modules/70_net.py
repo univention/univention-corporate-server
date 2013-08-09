@@ -501,7 +501,7 @@ class object(content):
 		self.add_elem('INP_GATEWAY6', input(val_gateway6, offsetGy, offsetGx+22, LEN_IPv6_ADDR+3))
 
 		offsetGy += 1
-		# True, if system role is domaincontroller or system is an OX system
+		# True, if system role is domaincontroller
 		self.ask_domainnameserver = self.all_results.get('system_role') not in ['domaincontroller_master', 'basesystem']
 		self.debug('ask_domainnameserver=%s  (%s)' % (self.ask_domainnameserver, self.all_results.get('system_role')))
 		if self.ask_domainnameserver:
@@ -512,7 +512,7 @@ class object(content):
 			self.add_elem('INP_NAMESERVER1', input(val_nameserver1, offsetGy, offsetGx+22, LEN_IPv6_ADDR+3))
 			self.add_elem('BTN_MORE_NAMESERVER', button(_('More'), offsetGy, offsetGx+22+LEN_IPv6_ADDR+4))
 
-		# True, if system role is domaincontroller or system is an OX system
+		# True, if system role is domaincontroller
 		self.ask_forwarder = self.all_results.get('system_role') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'basesystem']
 		self.debug('ask_forwarder=%s  (%s)' % (self.ask_forwarder, self.all_results.get('system_role')))
 		if self.ask_forwarder:
