@@ -1,3 +1,9 @@
+univention-samba4 (3.0.7-1) unstable; urgency=low
+
+  * Switch dependencies to Samba 4.1 (Bug #31698)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 09 Aug 2013 14:54:48 +0200
+
 univention-samba4 (3.0.6-16) unstable; urgency=low
 
   * only remove port 7389 in _ldap._tcp record (Bug #29462)
