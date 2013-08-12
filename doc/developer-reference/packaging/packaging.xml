@@ -416,5 +416,16 @@ ucr set \
 		]]></programlisting>
 	</section>
 
+	<section id="pkg:obs"><title>Building packages through the OpenSuSE Build Service</title>
+	<para>
+	  The OpenSuSE Build Service (OBS) is a framework to generate packages for a wide range of
+	  distributions. Additional information can be found at <ulink
+	  url="https://build.opensuse.org/"/>. If OBS is already used to build packages for other distributions, it can also
+	  be used for Univention Corporate Server builds. The build target for UCS 3.1 is called
+	  <emphasis>Univention UCS 3.1</emphasis>. Note that OBS doesn't handle the integration steps
+	  described in later chapters (e.g. the use of Univention Configuration Registry templates).
+	</para>
+	</section>
+
 </chapter>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->
