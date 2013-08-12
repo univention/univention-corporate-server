@@ -57,7 +57,7 @@ PackageList=[
 			[
 				{
 					'Name': _('Active Directory-compatible domaincontroller (Samba 4)'),
-					'Packages': ['univention-samba4', 'univention-samba-local-config', 'samba4'],
+					'Packages': ['univention-samba4', 'univention-samba-local-config', 'samba-ad-dc'],
 					'Edition': [ 'ucs' ],
 					'Active': [ ],
 					'Possible': [ 'domaincontroller_slave'],
@@ -65,7 +65,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Active Directory-compatible domaincontroller (Samba 4)'), # DC Master and DC Backups need the s4 connector for UCS 3,0 MS1 and MS2
-					'Packages': ['univention-s4-connector', 'univention-samba4', 'univention-samba-local-config', 'samba4'],
+					'Packages': ['univention-s4-connector', 'univention-samba4', 'univention-samba-local-config', 'samba-ad-dc'],
 					'Edition': [ 'ucs' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
