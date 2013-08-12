@@ -1587,7 +1587,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Support for the <guimenu>System services</guimenu> module has been added (<ulink url="&ucsbug;10962">Bug 10962</ulink>).
+		  Support for the <guimenu>System services</guimenu> module has been added for Xen (<ulink url="&ucsbug;10962">Bug 10962</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
