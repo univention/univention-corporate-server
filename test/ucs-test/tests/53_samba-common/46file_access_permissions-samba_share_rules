@@ -44,7 +44,7 @@ fi
 
 wait_for_replication_and_postrun
 
-if dpkg -s samba4 2>&1 | grep "install ok installed" > /dev/null; then
+if dpkg -s univention-samba4 2>&1 | grep "install ok installed" > /dev/null; then
 # force_drs_replication
 	wait_for_drs_replication "(sAMAccountName=$username)"
 fi
