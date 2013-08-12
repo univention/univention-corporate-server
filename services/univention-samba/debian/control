@@ -26,10 +26,10 @@ Depends: ${misc:Depends},
  samba-common-bin,
  shell-univention-lib (>= 1.0.6),
  python-univention-lib (>= 1.0.45)
-Conflicts: samba4,
+Conflicts: samba-ad-dc,
  samba-dsdb-modules,
- samba4-common-bin,
- samba4-clients,
+ samba-common-bin (>= 2:4.1.0~),
+ samba-clients (>= 2:4.1.0~),
  winbind4,
 Description: UCS - Samba domain controller
  This package contains the configuration for the Samba
@@ -56,7 +56,7 @@ Description: UCS - Samba domain controller (as slave)
 
 Package: univention-samba-local-config
 Architecture: all
-Depends: ${misc:Depends}, samba (>= 3.0.20) | samba4
+Depends: ${misc:Depends}, samba (>= 3.0.20) | samba-ad-dc
 Breaks: univention-samba4 (<< 1.0.118-2)
 Description: UCS - UCR Extensions for configuration of local shares
  This package contains some scripts and templates to configure
