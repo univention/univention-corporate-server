@@ -27,10 +27,7 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 1.0.6),
  python-univention-lib (>= 1.0.45)
 Conflicts: samba-ad-dc,
- samba-dsdb-modules,
- samba-common-bin (>= 2:4.1.0~),
- samba-clients (>= 2:4.1.0~),
- winbind4,
+ samba-dsdb-modules
 Description: UCS - Samba domain controller
  This package contains the configuration for the Samba
  domain controller. It provides authentication, file and
