@@ -993,10 +993,7 @@ class s4(univention.s4connector.ucs):
 			if lastUSN > 0:
 				# During the init phase we have to search for created and changed objects
 				# but we need to sync the objects only once
-				returnObjects = search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1 )
-				for changedObject in search_s4_changes_by_attribute( 'uSNChanged', lastUSN+1 ):
-					if changedObject not in returnObjects:
-						returnObjects.append(changedObject)
+				returnObjects = self.__search_s4( filter='(|(uSNCreated>=%(lastUSN)s)(uSNChanged>=%(lastUSN)s))' % {'lastUSN': lastUSN+1}, show_deleted=show_deleted)
 			else:
 				# Every object has got a uSNCreated
 				returnObjects = search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1 )
