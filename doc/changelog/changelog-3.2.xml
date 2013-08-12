@@ -467,6 +467,10 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  Adjusted initial module loading to be more robust (<ulink url="&ucsbug;32140">Bug 32140</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Fixed regression in form validation with certain FormWidgets (<ulink url="&ucsbug;30965">Bug 30965</ulink>).
 		</simpara></listitem>
 
