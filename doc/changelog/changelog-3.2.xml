@@ -1402,6 +1402,11 @@
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Heimdal Kerberos has been updated to Version 1.6
+		  (<ulink url="&ucsbug;32195">Bug 32195</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The ownership of <filename>/usr/share/univention-heimdal/check_cracklib.py</filename> has
 		  been fixed (<ulink url="&ucsbug;22926">Bug 22926</ulink>).
 		</simpara></listitem>
