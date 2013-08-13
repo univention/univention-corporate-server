@@ -629,11 +629,11 @@
 		  on other servers in the domain (<ulink url="&ucsbug;31184">Bug 31184</ulink>).
 		</simpara></listitem>
 
-		<listitem><simpara>
+		<!--listitem><simpara>
 				When the App Center contains two applications that want to install
 				packages with the same name and one of these apps was installed, both
 				were marked as such (<ulink url="&ucsbug;32144">Bug 32144</ulink>).
-		</simpara></listitem>
+		</simpara></listitem-->
 
 		<listitem><simpara>
 			Applications now can state that they depend on other Applications (<ulink
