@@ -1519,17 +1519,17 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Create empty postgresql config files during postrm so that postgresql can be reinstalled
+		  Create empty PostgreSQL config files during postrm so that PostgreSQL can be reinstalled
 		  (<ulink url="&ucsbug;27786">Bug 27786</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Restart postgresql server in postinst (<ulink url="&ucsbug;27786">Bug 27786</ulink>).
+		  Restart PostgreSQL server in postinst (<ulink url="&ucsbug;27786">Bug 27786</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The rotation of machine passwords is now performed after amount of days in the &ucsUCRV;
-		  <envar>server/password/change</envar> since the last password change (<ulink url="&ucsbug;31068">Bug 31068</ulink>).
+		  The rotation of machine passwords is performed in intervals of days configurable through the &ucsUCRV; <envar>server/password/change</envar>.
+		  The date is now calculated relative to the date of the last password change instead of being relative to the start of the current year (<ulink url="&ucsbug;31068">Bug 31068</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1542,7 +1542,7 @@
 
 		<listitem><simpara>
 		  By default the mysql server package does not set a password for the mysql root user during
-		  a noninteractive installation. With this update the mysql package sets a password and
+		  a non-interactive installation. With this update the mysql package sets a password and
 		  writes the password to /etc/mysql.secret. This file can be read by root.  If a password is
 		  already set, nothing will be done (<ulink url="&ucsbug;19354">Bug 19354</ulink>).
 		</simpara></listitem>
