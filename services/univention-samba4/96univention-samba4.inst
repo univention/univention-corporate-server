@@ -472,7 +472,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	                   "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn \
 					   | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
 
-	/etc/init.d/samba4 stop
+	/etc/init.d/samba-ad-dc stop
 
 	univention-config-registry set \
 		kerberos/kdc=127.0.0.1 \
@@ -500,7 +500,7 @@ if [ "$samba4_role" = 'DC' ]; then
 		operatingSystem_attribute replace
 
 		## Start samba daemon
-		/etc/init.d/samba4 start
+		/etc/init.d/samba-ad-dc start
 
 	else	## otherwise we will simply join the new DC
 
@@ -584,7 +584,7 @@ if [ "$samba4_role" = 'DC' ]; then
 		fi
 
 		## Start samba daemon
-		/etc/init.d/samba4 start
+		/etc/init.d/samba-ad-dc start
 
 	fi
 
@@ -629,7 +629,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 		exit 1
 	fi
 
-	/etc/init.d/samba4 stop
+	/etc/init.d/samba-ad-dc stop
 
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
@@ -662,7 +662,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 	operatingSystem_attribute add
 
 	## Start samba daemon
-	/etc/init.d/samba4 start
+	/etc/init.d/samba-ad-dc start
 
 	## activate sysvol replication
 	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
@@ -732,7 +732,7 @@ if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 	univention-config-registry unset create/home/share
 fi
 
-/etc/init.d/samba4 restart
+/etc/init.d/samba-ad-dc restart
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 

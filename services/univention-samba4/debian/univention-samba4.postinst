@@ -166,22 +166,15 @@ if [ "$1" = "configure" ]; then
 
 	elif [ -n "$2" ]; then
 
-		# Make the UCS DC Master to the default domain browser
-		if dpkg --compare-versions "$2" lt-nl 2.0.39-1; then
-			if [ "$server_role" = "domaincontroller_master" ]; then
-				univention-config-registry set samba/domain/master?yes
-			fi
-		fi
-
-		if [ -x /etc/init.d/samba4 ]; then
+		if [ -x /etc/init.d/samba-ad-dc ]; then
 			processes=$(pgrep -cfx '/usr/sbin/samba -D')
 			if [ "$processes" = 0 ]; then
-				/etc/init.d/samba4 start
+				/etc/init.d/samba-ad-dc start
 			elif [ "$processes" = 1 ]; then
 				pkill -9 -xf '/usr/sbin/samba -D'
-				/etc/init.d/samba4 start
+				/etc/init.d/samba-ad-dc start
 			else
-				/etc/init.d/samba4 restart
+				/etc/init.d/samba-ad-dc restart
 			fi
 		fi
 
@@ -208,59 +201,11 @@ replace: secret
 secret: $machine_secret
 -
 %EOF
-					/etc/init.d/samba4 restart
+					/etc/init.d/samba-ad-dc restart
 				fi
 			fi
 		fi
 		
-		## The following block of code can be removed after ucs3.0-2
-		if dpkg --compare-versions "$2" lt-nl "1.0.154-1"; then
-			if [ "$samba_debug_level" = 2 ]; then
-				#only set this when value does not differ from the previous default value and the package is upgraded from a version which did not include this paragraph
-				univention-config-registry set samba/debug/level=1
-			fi
-			
-			# Re-create /etc/krb5.keytab
-			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
-			/usr/share/univention-samba4/scripts/create-keytab.sh
-
-			## remove samba(3) system startup links
-			update-rc.d -f samba remove > /dev/null
-
-			## create dns-$hostname account for bind9 SPN
-			/usr/share/univention-samba4/scripts/create_dns-host_spn.py
-		fi
-
-		### The following block of code may be removed after ucs_3.1-0
-		if dpkg --compare-versions "$2" lt-nl "2.0.1-1"; then
-
-			## switch from franky style smbd config to s3fs forked smbd
-			/etc/init.d/samba4 stop
-
-			if [ "$samba4_service_smb" = 'smbd' ]; then
-				## only set this when value does not differ from the previous default value
-				univention-config-registry set samba4/service/smb='s3fs'
-
-			fi
-
-			## run dbcheck on update but backup first.
-			if [ -d /var/lib/samba/private ]; then
-				backup_id=$(date +%Y%m%d-%H%M%S)
-				backup_dir="/var/backups/samba4.$backup_id"
-				if [ -d "$backup_dir" ]; then
-					rm -rf "$backup_dir"
-				fi
-				mkdir "$backup_dir" && \
-				cp -a /var/lib/samba/private "$backup_dir" && \
-				samba-tool dbcheck --cross-ncs --fix --yes
-			fi
-
-			## activate server password chages again
-			univention-config-registry set server/password/change=yes
-
-			/etc/init.d/samba4 start
-		fi
-
 		### The following block of code may be removed after ucs_3.2-0
 		if dpkg --compare-versions "$2" lt-nl "2.0.44-24"; then
 			default_domain_gpo_dir="/var/lib/samba/sysvol/$domainname/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}"
@@ -350,38 +295,6 @@ fi
 
 call_joinscript 96univention-samba4.inst
 ## cannot call joinscript 98univention-samba4-dns.inst here, maybe the s4-connector did not run yet
-
-##### Join-Script fragments that need to be executed automatically also on Master and Backup:
-if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-
-	## The following block of code can be removed after ucs3.0-1
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl "1.0.126-3"; then
-		## Set DNS records again in case Bug #26285 occured in UCS 3.0-0. 
-		## Flow control copied from 96univention-samba4.inst
-
-		if [ "$samba4_role" = 'DC' ]; then
-
-			s4connectorservicedcs="$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p')"
-
-			if [ "$s4connectorservicedcs" = "$hostname" ]; then
-
-				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc --gc --pdc "$@"
-
-			else
-
-				/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --dc "$@"
-
-			fi
-
-		elif [ "$samba4_role" = "RODC" ]; then
-
-			/usr/share/univention-samba4/scripts/setup-dns-in-ucsldap.sh --rodc "$@"
-
-		fi
-
-	fi
-
-fi
 
 # Run a samba-tool ntacl sysvolreset, this is required for the rc6 upgrade
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt-nl 2.0.28; then

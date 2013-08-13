@@ -69,8 +69,8 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
 		test -x /etc/init.d/bind9 && invoke-rc.d bind9 restart
 	fi
 		
-	if [ -x /etc/init.d/samba4 ]; then
-		/etc/init.d/samba4 stop
+	if [ -x /etc/init.d/samba-ad-dc ]; then
+		/etc/init.d/samba-ad-dc stop
 	fi
 fi
 
