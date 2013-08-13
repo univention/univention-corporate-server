@@ -965,6 +965,15 @@ class s4(univention.s4connector.ucs):
 		
 		return encode_s4_resultlist(res)
 		
+	def __remove_duplicates_with_order_preserving(self, searchResult, idFunction):
+		seen = {} 
+		result = [] 
+		for item in searchResult: 
+			marker = idFunction(item) 
+			if marker in seen: continue 
+			seen[marker] = 1 
+			result.append(item) 
+		return result
 
 	def __search_s4_changes(self, show_deleted=False, filter=''):
 		'''
@@ -988,13 +997,15 @@ class s4(univention.s4connector.ucs):
 
 
 		# search fpr objects with uSNCreated and uSNChanged in the known range
-
 		returnObjects = []
 		try:
 			if lastUSN > 0:
 				# During the init phase we have to search for created and changed objects
 				# but we need to sync the objects only once
-				returnObjects = self.__search_s4( filter='(|(uSNCreated>=%(lastUSN)s)(uSNChanged>=%(lastUSN)s))' % {'lastUSN': lastUSN+1}, show_deleted=show_deleted)
+				returnObjects = search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1 )
+				returnObjects += search_s4_changes_by_attribute( 'uSNChanged', lastUSN+1 )
+
+				returnObjects = self.__remove_duplicates_with_order_preserving(returnObjects,lambda x: x[0])
 			else:
 				# Every object has got a uSNCreated
 				returnObjects = search_s4_changes_by_attribute( 'uSNCreated', lastUSN+1 )
