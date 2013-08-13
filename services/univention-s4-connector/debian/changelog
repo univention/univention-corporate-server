@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.2-2) unstable; urgency=low
+
+  * additional modlist logging (Bug #31133)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Aug 2013 15:16:46 +0200
+
 univention-s4-connector (8.0.2-1) unstable; urgency=low
 
   * Search for uSNCreated and uSNChanged in one search to prevent a slow

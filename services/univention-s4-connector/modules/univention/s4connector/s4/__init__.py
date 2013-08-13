@@ -46,15 +46,16 @@ DECODE_IGNORELIST=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 
 PAGE_SIZE=1000
 
 def normalise_userAccountControl (s4connector, key, object):
-        # set userAccountControl to 512 -- accounts synced to samba4 alpha17 had userAccountControl == 544
-        for i in range(0,10):
-                try:
-                        s4connector.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', ['512'])])
-                except ldap.NO_SUCH_OBJECT:
-                        time.sleep(1)
-                        continue
-                return True
-        return False
+	# set userAccountControl to 512 -- accounts synced to samba4 alpha17 had userAccountControl == 544
+	ud.debug(ud.LDAP, ud.ALL, "normalise_userAccountControl: dn: %s" % object['dn'])
+	for i in range(0,10):
+		try:
+			s4connector.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', ['512'])])
+		except ldap.NO_SUCH_OBJECT:
+			time.sleep(1)
+			continue
+		return True
+	return False
 
 def group_members_sync_from_ucs(s4connector, key, object):
 	return s4connector.group_members_sync_from_ucs(key, object)
@@ -1229,12 +1230,12 @@ class s4(univention.s4connector.ucs):
 					for member in ldap_object_s4_group['member']:
 						s4_members.append(compatible_modstring(member))
 				s4_members.append(compatible_modstring(object['dn']))
+				ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: primary Group needs change of membership in S4")
 				self.lo_s4.lo.modify_s(compatible_modstring(s4_group_object['dn']),[(ldap.MOD_REPLACE, 'member', s4_members)])
-				ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: primary Group needed change of membership in S4")
 				
 			# set new primary group
+			ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: changing primary Group in S4")
 			self.lo_s4.lo.modify_s(compatible_modstring(object['dn']),[(ldap.MOD_REPLACE, 'primaryGroupID', rid)])
-			ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: changed primary Group in S4")
 
 			# If the user is not member in UCS of the previous primary group, the user must
 			# be removed from this group in AD: https://forge.univention.org/bugzilla/show_bug.cgi?id=26514
@@ -1250,6 +1251,7 @@ class s4(univention.s4connector.ucs):
 					break
 			if not is_member:
 				# remove S4 member from previous group
+				ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: remove S4 member from previous group")
 				self.lo_s4.lo.modify_s(s4_group[0][0],[(ldap.MOD_DELETE, 'member', [compatible_modstring(object['dn'])])])
 			
 			return True
@@ -1514,6 +1516,7 @@ class s4(univention.s4connector.ucs):
 			for member in s4_members:
 				modlist_members.append(compatible_modstring(member))
 
+			ud.debug(ud.LDAP, ud.ALL, "group_members_sync_from_ucs: modlist: %s" % modlist_members)
 			try:
 				self.lo_s4.lo.modify_s(compatible_modstring(object['dn']),[(ldap.MOD_REPLACE, 'member', modlist_members)])
 			except (ldap.SERVER_DOWN, SystemExit):
@@ -1583,6 +1586,7 @@ class s4(univention.s4connector.ucs):
 				ml.append((ldap.MOD_ADD, 'memberUid', [uid]))
 
 		if ml:
+			ud.debug(ud.LDAP, ud.ALL, "one_group_member_sync_to_ucs: modlist: %s" % ml)
 			try:
 				self.lo.lo.modify_s(ucs_group_object['dn'],compatible_modlist(ml))
 			except ldap.ALREADY_EXISTS:
@@ -1601,6 +1605,7 @@ class s4(univention.s4connector.ucs):
 			ml.append((ldap.MOD_ADD, 'member', [object['dn']]))
 
 		if ml:
+			ud.debug(ud.LDAP, ud.ALL, "one_group_member_sync_from_ucs: modlist: %s" % ml)
 			try:
 				self.lo_s4.lo.modify_s(s4_group_object['dn'],compatible_modlist(ml))
 			except ldap.ALREADY_EXISTS:
@@ -1686,8 +1691,8 @@ class s4(univention.s4connector.ucs):
 					if not mo_key:
 						ud.debug(ud.LDAP, ud.WARN, "group_members_sync_to_ucs: failed to identify object type of s4 member, ignore membership: %s" % member_dn)
 						continue # member is an object which will not be synced
-					if self._ignore_object(mo_key, {'dn':member_dn,'attributes':member_object} ):                                                                                                               
-						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership" % member_dn)                                                               
+					if self._ignore_object(mo_key, {'dn':member_dn,'attributes':member_object} ):
+						ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Object dn %s should be ignored, ignore membership" % member_dn)
 						continue 
 
 					ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':member_object})['dn']
@@ -1841,6 +1846,7 @@ class s4(univention.s4connector.ucs):
 				modlist.append((ldap.MOD_REPLACE, 'accountExpires', [str(unix2s4_time(ucs_admin_object['userexpiry']))]))
 
 		if modlist:
+			ud.debug(ud.LDAP, ud.ALL, "disable_user_from_ucs: modlist: %s" % modlist)
 			self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
 		pass
 
@@ -2225,8 +2231,8 @@ class s4(univention.s4connector.ucs):
 									modlist.append((ldap.MOD_DELETE, attr, None))
 
 				ud.debug(ud.LDAP, ud.INFO, "to add: %s" % object['dn'])
+				ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: addlist: %s" % addlist)
 				try:
-					ud.debug(ud.LDAP, ud.ALL, "sync_from_ucs: addlist: %s" % addlist)
 					self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=ctrls) #FIXME encoding
 				except:
 					ud.debug(ud.LDAP, ud.ERROR, "sync_from_ucs: traceback during add object: %s" % object['dn'])
@@ -2367,6 +2373,7 @@ class s4(univention.s4connector.ucs):
 
 	def delete_in_s4(self, object, property_type ):
 		_d=ud.function('ldap.delete_in_s4')
+		ud.debug(ud.LDAP, ud.ALL,"delete: %s" % object['dn'])
 		try:
 			self.lo_s4.lo.delete_s(compatible_modstring(object['dn']))
 		except ldap.NO_SUCH_OBJECT:
