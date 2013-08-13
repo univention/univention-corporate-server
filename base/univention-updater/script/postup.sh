@@ -141,6 +141,9 @@ ucr set \
 	repository/online/component/3.2-0-errata/description="Errata updates for UCS 3.2-0" \
 	repository/online/component/3.2-0-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
 
+# Reset errata level
+univention-config-registry set version/erratalevel=0 >>"$UPDATER_LOG" 2>&1
+
 echo "done."
 date >>"$UPDATER_LOG"
 
