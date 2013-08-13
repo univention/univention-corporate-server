@@ -1243,7 +1243,7 @@
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
-		  Delete cached dns zonefile upon zone deletion (<ulink url="&ucsbug;16270">Bug 16270</ulink>).
+		  The file containing the cached DNS zone is now also deleted upon zone deletion (<ulink url="&ucsbug;16270">Bug 16270</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
