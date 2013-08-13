@@ -367,7 +367,7 @@ class Application(object):
 			try:
 				urlcontent = urlopen(url)
 			except Exception as e:
-				MODULE.error('Error downloading %s: %s' % url, e)
+				MODULE.error('Error downloading %s: %s' % (url, e))
 			else:
 				with open(dest, 'wb') as f:
 					f.write(urlcontent.read())
