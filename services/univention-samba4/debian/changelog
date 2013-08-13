@@ -1,3 +1,9 @@
+univention-samba4 (3.0.7-4) unstable; urgency=low
+
+  * remove port 7389 from SRV records only in join script (Bug #29462)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Aug 2013 15:45:01 +0200
+
 univention-samba4 (3.0.7-3) unstable; urgency=low
 
   * samba4 init script is now called samba-ad-dc (Bug #31698)
