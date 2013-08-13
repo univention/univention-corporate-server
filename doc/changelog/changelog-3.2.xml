@@ -701,6 +701,10 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  Fixed string formatting of one error message (<ulink url="&ucsbug;32193">Bug 32193</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Speedup updates by committing repository files only once (<ulink url="&ucsbug;31228">Bug 31228</ulink>).
 		</simpara></listitem>
 
