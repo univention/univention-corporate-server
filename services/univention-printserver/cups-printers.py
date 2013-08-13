@@ -375,16 +375,18 @@ def handler(dn, new, old):
 		if need_to_reload_samba:
 			reload_daemon ('samba', 'cups-printers: ')
 
-	listener.setuid(0)
-	try:
-		fp = open('/etc/samba/printers.conf.temp', 'w')
-		for f in os.listdir('/etc/samba/printers.conf.d'):
-			print >>fp, 'include = %s' % os.path.join('/etc/samba/printers.conf.d', f)
-		fp.close()
-		os.rename('/etc/samba/printers.conf.temp', '/etc/samba/printers.conf')
-		
-	finally:
-		listener.unsetuid()
+	if (filter_match(new) or filter_match(old)):
+
+		listener.setuid(0)
+		try:
+			fp = open('/etc/samba/printers.conf.temp', 'w')
+			for f in os.listdir('/etc/samba/printers.conf.d'):
+				print >>fp, 'include = %s' % os.path.join('/etc/samba/printers.conf.d', f)
+			fp.close()
+			os.rename('/etc/samba/printers.conf.temp', '/etc/samba/printers.conf')
+			
+		finally:
+			listener.unsetuid()
 
 
 def reload_daemon(daemon, prefix):
@@ -432,17 +434,5 @@ def postrun():
 		if os.path.exists('/etc/init.d/samba'):
 			initscript = '/etc/init.d/samba'
 			os.spawnv(os.P_WAIT, initscript, ['samba', 'reload'])
-	finally:
-		listener.unsetuid()
-
-def update_conf_file():
-	listener.setuid(0)
-	try:
-		fp = open('/etc/samba/printers.conf.temp', 'w')
-		for f in os.listdir('/etc/samba/printers.conf.d'):
-			print >>fp, 'include = %s' % os.path.join('/etc/samba/printers.conf.d', f)
-		fp.close()
-		os.rename('/etc/samba/shares.printers.conf.temp', '/etc/samba/printers.conf')
-		
 	finally:
 		listener.unsetuid()

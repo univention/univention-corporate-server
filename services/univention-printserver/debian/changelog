@@ -1,21 +1,37 @@
-univention-printserver (7.0.3-3) unstable; urgency=low
+univention-printserver (7.0.3-5) unstable; urgency=low
+
+  * Recover dropped changelog entry (Bug #31764)
+  * Remove duplicate code
+  * Rebuild printers.conf only on modification of a local printer
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Aug 2013 20:13:42 +0200
+
+univention-printserver (7.0.3-4) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 08 Aug 2013 15:39:06 +0200
 
-univention-printserver (7.0.3-2) unstable; urgency=low
+univention-printserver (7.0.3-3) unstable; urgency=low
 
   * Added UCR variable description (Bug #32055) 
 
  -- Erik Damrose <damrose@univention.de>  Wed, 24 Jul 2013 15:52:00 +0200
 
-univention-printserver (7.0.3-1) unstable; urgency=low
+univention-printserver (7.0.3-2) unstable; urgency=low
 
   * When changing a printer, /etc/samba/printers.conf is refreshed instantly
     and in an atomic operation (Bug #31764)
 
  -- Tobias Peters <peters@univention.de>  Mon, 22 Jul 2013 15:46:27 +0200
+
+univention-printserver (7.0.3-1) unstable; urgency=low
+
+  * Added support for denying client access based on ip addresses,
+    configurable via UCRV cups/printmode/hosts/none. This funtionality
+    is needed for UCS@School. (Bug #31902)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 18 Jul 2013 14:07:26 +0200
 
 univention-printserver (7.0.2-1) unstable; urgency=low
 
