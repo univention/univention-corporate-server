@@ -1,3 +1,11 @@
+univention-samba4 (2.0.44-32) unstable; urgency=low
+
+  * the setup-s4.sh script must not attempt a samba3 to samba4 migration
+    in case samba4/provision/secondary or samba4/provision/primary are true
+    (Bug #32184)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Aug 2013 16:31:11 +0200
+
 univention-samba4 (2.0.44-31) unstable; urgency=low
 
   * only remove port 7389 in _ldap._tcp record (Bug #31887)
