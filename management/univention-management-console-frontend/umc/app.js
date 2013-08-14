@@ -1351,7 +1351,7 @@ define([
 			var isUserAdmin = tools.status('username').toLowerCase() == 'administrator';
 			var isUCRVariableEmpty = !Boolean(_ucr['umc/web/startupdialog']);
 			var showStartupDialog = tools.isTrue(_ucr['umc/web/startupdialog']);
-			if (!((isUCRVariableEmpty && _hasFFPULicense() && isUserAdmin) || showStartupDialog)) {
+			if (!((isUCRVariableEmpty && _hasFFPULicense() && isUserAdmin) || (showStartupDialog && isUserAdmin))) {
 				return;
 			}
 
