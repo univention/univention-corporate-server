@@ -237,6 +237,14 @@ secret: $machine_secret
 
 
 		fi
+		### The following block of code may be removed after ucs_3.2-0
+		if dpkg --compare-versions "$2" lt-nl "3.0.8-1"; then
+			if [ -e /etc/init.d/samba4 ]; then
+				rm -f /etc/init.d/samba4
+			fi
+			update-rc.d samba4 remove >/dev/null
+			ln -s /etc/init.d/samba-ad-dc /etc/init.d/samba4
+		fi
 	fi
 
 	ntp_socket_dir='/var/lib/samba/ntp_signd'
