@@ -1620,6 +1620,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  When creating a new storage volume, the available storage size is shown for each storage pool.
 		  A warning is printed when the size for a new storage volume exceeds the available size in the storage pool (<ulink url="&ucsbug;19281">Bug 19281</ulink>).
 		</simpara></listitem>
 
