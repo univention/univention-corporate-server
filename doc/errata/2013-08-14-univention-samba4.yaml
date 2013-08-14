@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-samba4
+fix: 2.0.44-33.498.201308141845
+note:
+version: [1]
+desc: |
+  This errata update fixes a bug in the package univention-samba4:
+  * Joining an UCS@school Samba4 Slave PDC was not possible in case
+    any system in the UCS@school domain was still offing the service
+    "Samba 3".
+bug: [32184]
