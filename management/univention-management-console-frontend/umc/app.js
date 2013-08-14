@@ -684,6 +684,7 @@ define([
 				'umc/web/feedback/mail',
 				'umc/web/feedback/description',
 				'umc/web/favorites/default',
+				'umc/web/startupdialog',
 				'umc/http/session/timeout',
 				'ssl/validity/host',
 				'ssl/validity/root',
@@ -1023,7 +1024,8 @@ define([
 		},
 
 		_insertPiwikMenuItem: function() {
-			if (!_hasFFPULicense() || !tools.status('username').toLowerCase() == 'administrator') {
+			var isUserAdmin = tools.status('username').toLowerCase() == 'administrator';
+			if (!(_hasFFPULicense() && isUserAdmin)) {
 				return;
 			}
 			this._insertSeparatorToSettingsMenu();
@@ -1346,8 +1348,25 @@ define([
 		},
 
 		_checkShowStartupDialog: function() {
-			//var startupDialog = new StartupDialog({});
-			//startupDialog.show();
+			var isUserAdmin = tools.status('username').toLowerCase() == 'administrator';
+			var isUCRVariableEmpty = !Boolean(_ucr['umc/web/startupdialog']);
+			var showStartupDialog = tools.isTrue(_ucr['umc/web/startupdialog']);
+			if (!((isUCRVariableEmpty && _hasFFPULicense() && isUserAdmin) || showStartupDialog)) {
+				return;
+			}
+
+			var startupDialog = new StartupDialog({});
+			startupDialog.on('hide', function() {
+				// dialog is being closed
+				// set the UCR variable to false to prevent any further popup
+				var ucrStore = store('key', 'ucr');
+				ucrStore.put({
+					key: 'umc/web/startupdialog',
+					value: 'false'
+				});
+				startupDialog.destroyRecursive();
+			});
+			startupDialog.show();
 		},
 
 		_updateQuery: function() {

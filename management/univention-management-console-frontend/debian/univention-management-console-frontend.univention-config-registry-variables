@@ -21,3 +21,10 @@ Description[en]=Enables (=true) or disables (=false) sending of anonymous user s
 Description[de]=Aktiviert (=true) oder deaktiviert (=false) das Senden anonymer Benutzerstatistiken nach https://piwik.univention.de. In der Standardeinstellung werden Statistiken nur von System erhoben, die die "Free for personal use"-Edition installiert haben. Diese Daten helfen uns, die Benutzbarkeit von Univention Management Console weiter zu verbessern.
 Type=bool
 Categories=Management
+
+[umc/web/startupdialog]
+Description[en]=Specifies whether (=true or not set) or not (=false) the startup dialog is shown on systems with the Free for Personal Use license.
+Description[de]=Definiert ob der Dialog zur Inbetriebnahme von UCS mit einer Free-for-Personal-Use-Lizenz angezeigt (=true oder nicht gesetzt) oder nicht angezeigt (=false) wird.
+Type=str
+Categories=Management
+
