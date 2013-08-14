@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-33) unstable; urgency=low
+
+  * fix shell syntax (Bug #32184)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Aug 2013 18:43:54 +0200
+
 univention-samba4 (2.0.44-32) unstable; urgency=low
 
   * the setup-s4.sh script must not attempt a samba3 to samba4 migration
