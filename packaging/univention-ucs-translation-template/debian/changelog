@@ -1,0 +1,5 @@
+univention-ucs-translation-template (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #31559)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 14 Aug 2013 13:44:55 +0200

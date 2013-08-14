@@ -1,0 +1,20 @@
+Source: univention-ucs-translation-template
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint,
+ univention-config-dev
+Standards-Version: 3.8.2
+
+Package: univention-ucs-translation-template
+Architecture: all
+Depends: ${misc:Depends},
+ univention-management-console,
+ univention-management-console-dev
+Description: UCS Management Console translation files
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
