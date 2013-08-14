@@ -467,5 +467,130 @@ nmap 192.168.1.110 -sU -p 400-500
 		</section>
 	</section>
 
+	<section id="misc:translation" status="draft">
+	        <title>Univention Management Console translations</title>
+		<remark></remark>
+
+		<para>
+			By default UCS provides english and german as available languages. Univention provides a debian package to enable users to create additional translations for the Univention Management Console. It was developed for UCS 3.2 but can also be used for UCS 3.1.
+			To create a new translation package it is adivsed to have a running UCS server where the package can be setup. This section describes all steps necessary to create a working translation package for UCS.
+			After installing the translation template package, a new translation for a target language has to be created. A current svn checkout of the ucs sourcecode is required. 
+		</para>
+
+		<section id="misc:translation:preparation">
+			<title>Prepare a new translation</title>
+			<para>
+				A few steps are required to setup an UCS server to create a new translation package.
+				<variablelist>
+					<varlistentry>
+						<term>Package univention-ucs-translation-template</term>
+						<listitem>
+							<para>
+								The package univention-ucs-translation-template contains all tools to setup and update new translation package. To test the new package, it must be build as a debian package before it can be installed. The following packages should be installed on an UCS server:
+								<command>apt-get install univention-ucs-translation-template dpkg-dev</command>
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>A current checkout of the UCS subversion repository</term>
+						<listitem>
+							<para>
+								The base translation files are available in the UCS subversion repository. A current checkout can be obtained by entering the following commands:
+								<programlisting language="sh">
+mkdir -p /usr/src/ucs-3.1
+svn co http://forge.univention.org/svn/dev/branches/ucs-3.1/ucs-3.1-1 /usr/src/ucs-3.1
+								</programlisting>
+								If changes are made to the Univention Management Console through a general update or errata, the local subversion checkout has to be updated by executing <command>svn up /usr/src/ucs-3.1</command>
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+		</section>
+		
+		<section id="misc:translation:createpackage">
+			<title>Create a new translation package</title>
+			<para>
+				To create a new translation package for e.g. french in /usr/src, the following command has to be used:
+				<programlisting language="sh">
+cd /usr/src/
+univention-ucs-translation-build-package.py -s /usr/src/ucs-3.1/ -c fr -l fr_FR.UTF-8:UTF-8 -n French
+				</programlisting>
+				This creates a new directory <filename class="directory">univention-ucs-translation-fr/</filename>, which contains a debian source package of the same name, with source- and targetfiles for the translation.
+			</para>
+		</section>
+
+		<section id="misc:translation:translate">
+			<title>Edit translation files</title>
+			<para>
+				Now the real work begins. The translation source files are located below the <filename class="directory">fr/</filename> directory and have to be edited. There are basically two file formats that appear:
+				<variablelist>
+					<varlistentry>
+						<term>.po files</term>
+						<listitem>
+							<para>
+								These files are generated with the <command>gettext</command>. They consist of a header and various entries of the form 
+								<programlisting>
+#: umc/app.js:637
+#, python-format
+msgid "The %s will expire in %d days and should be renewed!"
+msgstr ""
+								</programlisting>
+								To translate an entry, the line containing the <literal>msgstr ""</literal> has to be filled with the proper translation of the <literal>msgid</literal> string directly above. Some lines contain parameters, in this example <literal>%s</literal> and <literal>%d</literal>. These have to be carried over to the translated string to the proper positions. After a file has been completely translated, the line containing <literal>fuzzy</literal> at the beginning of the file can be removed to avoid warnings. If a translation string consists of multiple lines the translated string should also contain as many lines as the original string.
+							</para>
+						</listitem>
+					</varlistentry>
+					
+					<varlistentry>
+						<term>.html files</term>
+						<listitem>
+							<para>
+								Some Univention Management Console dialogs are based on html files. In this case a copy of the english html file is provided with a new name for the target language. The text in these html files simply has to be translated.
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+		</section>
+
+		<section id="misc:translation:updatepackage">
+			<title>Update the translation package</title>
+			<para>
+				To prepare the build of the package, two steps are necessary during the development of the translation.
+				<variablelist>
+					<varlistentry>
+						<term>Update translation source files</term>
+						<listitem>
+							<para>
+								If changes occur in the UCS source packages that need a change of the translation files, the source files should be updated. To update the source files, change the directory to the translation package <filename class="directory">/usr/src/univention-ucs-translation-fr</filename> and update the files by executing <command>univention-ucs-translation-update-source-files.py -s /usr/src/ucs-3.1/ -c fr/</command>
+							</para>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term>Update translation target files</term>
+						<listitem>
+							<para>
+								After being done with the translation, the source files have to be compiled in order to be useable for translating the Univention Management Console. This step can also be done with only a partial translation, to test the changes that were made. To update the target files, change the directory to the translation package <filename class="directory">/usr/src/univention-ucs-translation-fr</filename> and compile the source files by executing <command>univention-ucs-translation-update-target-files.py -s /usr/src/ucs-3.1/ -c fr/</command>
+							</para>
+						</listitem>
+					</varlistentry>
+				</variablelist>
+			</para>
+		</section>
+
+		<section id="misc:translation:buildpackage">
+			<title>Build the translation package</title>
+			<para>
+				Before using the new translation, the debian package has to be build and installed. This can be done with the following commands:
+				<programlisting language="sh">
+cd /usr/src/univention-ucs-translation-fr
+dpkg-buildpackage
+dpkg -i ../univention-ucs-translation-fr*deb
+				</programlisting>
+				After logging out of the UMC the new language should now be selectable in the UMC login window. Strings that are not translated will be shown in their original state, i.e. english.
+			</para>
+		</section>
+	</section>
+
 </chapter>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->
