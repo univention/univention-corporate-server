@@ -1,3 +1,11 @@
+univention-samba4 (3.0.8-1) unstable; urgency=low
+
+  * the setup-s4.sh script must not attempt a samba3 to samba4 migration
+    in case samba4/provision/secondary or samba4/provision/primary are true
+    (Bug #32184)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Aug 2013 16:28:38 +0200
+
 univention-samba4 (3.0.7-4) unstable; urgency=low
 
   * remove port 7389 from SRV records only in join script (Bug #29462)
