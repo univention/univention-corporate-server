@@ -1,3 +1,12 @@
+univention-s4-connector (8.0.4-1) unstable; urgency=low
+
+  * Limit the changes from UCS to S4 for one interval to 50.000 changes.
+    Otherwise it took too much time to generate the list of duplicated
+    DNs. In my performance tests it too nearly one hour to check all
+    600.000 pickle files / 8 GB (Bug #32213)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Aug 2013 20:11:28 +0200
+
 univention-s4-connector (8.0.3-1) unstable; urgency=low
 
   * Use again two searches for the change list but a faster comparsion.

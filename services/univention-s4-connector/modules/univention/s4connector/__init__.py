@@ -924,16 +924,21 @@ class ucs:
 		# check for changes from ucs ldap directory
 
 		change_counter = 0
+		MAX_SYNC_IN_ONE_INTERVAL = 50000
 
 		self.rejected_files = self._list_rejected_filenames_ucs()
 
 		print "--------------------------------------"
-		print "try to sync %s changes from UCS" % (len(os.listdir(self.listener_dir))-1)
+		print "try to sync %s changes from UCS" % (min(len(os.listdir(self.listener_dir))-1,MAX_SYNC_IN_ONE_INTERVAL))
 		print "done:",
 		sys.stdout.flush()
 		done_counter = 0
 		files = os.listdir(self.listener_dir)
 		files.sort()
+
+		# Only synchronize the first MAX_SYNC_IN_ONE_INTERVAL changes otherwise
+		# the change list is too long and it took too much time
+		files = files[:MAX_SYNC_IN_ONE_INTERVAL]
 
 		# Create a dictonary with all DNs
 		self._generate_dn_list_from(files)
