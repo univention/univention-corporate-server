@@ -1,0 +1,20 @@
+Source: univention-support-info
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+ ucslint,
+ python-support,
+ python-all
+Standards-Version: 3.8.2
+
+Package: univention-support-info
+Architecture: all
+Depends: pciutils, module-init-tools, iproute, dmidecode
+Description: UCS - collect support information
+ This package contains a skcript to collect support information
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

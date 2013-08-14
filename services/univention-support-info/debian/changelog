@@ -1,0 +1,6 @@
+univention-support-info (0.1.0) UNRELEASED; urgency=low
+
+  * Initial package (Bug #26684)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Aug 2013 15:04:20 +0200
+
