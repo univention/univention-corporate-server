@@ -1,3 +1,9 @@
+univention-installer (9.0.17-5) unstable; urgency=low
+
+  * Explicitly set 32 bit depth in grub configuration in installer (Bug #30978)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 14 Aug 2013 14:18:54 +0200
+
 univention-installer (9.0.17-4) unstable; urgency=low
 
   * Also drop bochs_video from initial Grub configuration (Bug #30978)
