@@ -2004,7 +2004,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		univention-backup2master now also replaces the &ucsUCRV; <envar>kerberos/adminserver</envar>
+		univention-backup2master now also replaces the &ucsUCRV; <envar>kerberos/kpasswdserver</envar>
 		with the new masters's FQDN (<ulink url="&ucsbug;31077">Bug 31077</ulink>).
 	  </simpara></listitem>
 
