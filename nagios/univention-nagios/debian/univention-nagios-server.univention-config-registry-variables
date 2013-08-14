@@ -7,7 +7,7 @@ Categories=service-nagios
 [nagios/server/refreshrate]
 Description[de]=Die Status-Seiten der Nagios-Weboberfläche aktualisieren sich automatisch in regelmäßigen Abständen. Der Zeitraum zwischen zwei Aktualisierungen kann hier in Sekunden angegeben werden.
 Description[en]=The status pages in the Nagios web interface are automatically refreshed in periodic intervals. The time span in seconds between two refreshes can be specified here.
-Type=str
+Type=int
 Categories=service-nagios
 
 [nagios/server/authenticate]
@@ -66,12 +66,12 @@ Categories=service-nagios
 
 [nagios/server/theme]
 Description[de]=Diese Variable konfiguriert das zu verwendende Theme-Designpaket für die Nagios-Weboberfläche. Ist die Variable nicht gesetzt, wird das Standard-Nagios-Theme verwendet. 
-Description[en]=This variable configures the theme design package to be used for the Nagios web interface. If the variable is unset, the standard Nagios theme is used.
+Description[en]=This variable configures the theme package to be used for the Nagios web interface. If the variable is unset, the standard Nagios theme is used.
 Type=str
 Categories=service-nagios
 
 [nagios/plugin/check_nrpe/timeout]
 Description[de]=Diese Variable bestimmt die Zeitspanne in Sekunden, die der Nagios-Server auf das Beenden von NRPE-Anfragen wartet.
-Description[en]=This variable configures the time span in seconds the Nagios is waiting until NRPE requests time out.
+Description[en]=This variable configures the time span in seconds the Nagios server is waiting until NRPE requests time out.
 Type=int
 Categories=service-nagios
