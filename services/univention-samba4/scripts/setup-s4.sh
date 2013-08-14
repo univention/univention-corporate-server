@@ -200,7 +200,7 @@ if [ -z "$samba4_function_level" ]; then
 fi
 
 
-if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ] || [ is_ucr_true samba4/provision/secondary ] || [ is_ucr_true samba4/provision/primary ]; then
+if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ] || is_ucr_true samba4/provision/secondary || is_ucr_true samba4/provision/primary; then
 
 	if [ -z "$DOMAIN_SID" ]; then
 		# No SID for this windows/domain has been generated

@@ -1,3 +1,9 @@
+univention-samba4 (3.0.9-2) unstable; urgency=low
+
+  * fix shell syntax (Bug #32184)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 14 Aug 2013 18:42:18 +0200
+
 univention-samba4 (3.0.9-1) unstable; urgency=low
 
   * remove rc.d links to the old samba4 init script (Bug #31698)
