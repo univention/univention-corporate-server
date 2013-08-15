@@ -1,3 +1,12 @@
+ucs-test (4.0.86-1) unstable; urgency=low
+
+  * removed apptest versions udm-users test
+  * added apptest tag to certain udm-users tests again
+  * added test to test user removal
+  (Bug #31652)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 15 Aug 2013 16:46:38 +0200
+
 ucs-test (4.0.85-1) unstable; urgency=low
 
   * Wait for the LDAP replication as well while waiting for the S4

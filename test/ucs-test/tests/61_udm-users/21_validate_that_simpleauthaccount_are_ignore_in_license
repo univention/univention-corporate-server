@@ -22,5 +22,5 @@ if __name__ == '__main__':
 		license_after  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
 
 	if license_before != license_after:
-		utils.fail('The license before creating a simple-auth user differs from the license after creating the user\nLicense before: %s\nLicense after: %s' % (license_before, license_after))
+		utils.fail('The license before creating a simple-auth user differs from the license after creating the user')
 	
