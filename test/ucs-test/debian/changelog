@@ -1,3 +1,11 @@
+ucs-test (4.0.85-1) unstable; urgency=low
+
+  * Wait for the LDAP replication as well while waiting for the S4
+    connector. In case of the performance tests with all users in domain
+    users the listener replication is the bottle neck (Bug #31695)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Aug 2013 06:44:01 +0200
+
 ucs-test (4.0.84-1) unstable; urgency=low
 
   * Bug #32099: test delayed mailbox creation

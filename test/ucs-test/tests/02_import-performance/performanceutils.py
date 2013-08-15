@@ -26,6 +26,9 @@ def _start_time():
 def _stop_time(startTime):
 	return time.time() - startTime
 
+def _ldap_replication_complete():
+	return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication') == 0
+
 def wait_for_s4connector():
 	conn = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
 	c = conn.cursor()
@@ -38,6 +41,9 @@ def wait_for_s4connector():
 	lastUSN = -1
 	while static_count < CONNECTOR_WAIT_INTERVAL:
 		time.sleep(CONNECTOR_WAIT_SLEEP)
+
+		if not _ldap_replication_complete():
+			continue
 
 		previous_highestCommittedUSN = highestCommittedUSN
 
