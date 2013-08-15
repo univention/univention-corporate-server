@@ -1333,11 +1333,6 @@ p {
 		color: white;
 		.box-sizing(border-box);
 		padding-right: 0!important;
-
-		.dijitArrowButtonInner {
-			background-color: @blueTuna;
-			background-image: url(form/images/umcHostInfoArrows.png);
-		}
 	}
 
 	#widget_umcMenuHostInfo {
@@ -1346,22 +1341,28 @@ p {
 		padding-left: 0;
 		padding-right: 0;
 		padding-top: 13px;
-	}
 
-	#widget_umcMenuHostInfo_dropdown {
-		width: 220px;
-		margin-top: 3px;
-
-		.dijitComboBoxMenu {
-			.dijitMenuItem {
-				border: 0 none;
-				color: white;
-				background-color: @blueTuna;
-			}
-
-			.dijitMenuItemHover {
-				background-color: @grayDusty;
-			}
+		.dijitArrowButtonInner {
+			background-color: @blueTuna;
+			background-image: url(form/images/umcHostInfoArrows.png);
 		}
 	}
 }
+
+#widget_umcMenuHostInfo_dropdown {
+	width: 220px;
+	margin-top: 3px;
+
+	.dijitComboBoxMenu {
+		.dijitMenuItem {
+			border: 0 none;
+			color: white;
+			background-color: @blueTuna;
+		}
+
+		.dijitMenuItemHover {
+			background-color: @grayDusty;
+		}
+	}
+}
+
