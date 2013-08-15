@@ -571,7 +571,6 @@ def get_components(role=None):
 
 	# generate a unique ID for each component
 	for ipkg in pkglist:
-		ipkg['Packages'].sort()
 		ipkg['id'] = ':'.join(ipkg['Packages'])
 		ipkg[ 'Description' ] = installer_i18n.translate( ipkg[ 'Description' ] )
 		ipkg[ 'Name' ] = installer_i18n.translate( ipkg[ 'Name' ] )

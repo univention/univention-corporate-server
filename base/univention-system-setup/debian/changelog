@@ -1,3 +1,10 @@
+univention-system-setup (7.0.26-1) unstable; urgency=low
+
+  * Maintain the package order given in the packages lists (Bug #31960)
+  * Pass software package changes to package_manager in a single call
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Aug 2013 16:34:37 +0200
+
 univention-system-setup (7.0.25-1) unstable; urgency=low
 
   * Bug #28574: fix windowsdomain syntax
