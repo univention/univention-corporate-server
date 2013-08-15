@@ -1,3 +1,9 @@
+univention-dojo (7.0.3-1) unstable; urgency=low
+
+  * Bug #31639: update to Dojo 1.9.1 and dgrid 0.3.9
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 15 Aug 2013 12:58:30 +0200
+
 univention-dojo (7.0.2-1) unstable; urgency=low
 
   * Bug #31581: adjusted patch for dojox/widget/Standby
