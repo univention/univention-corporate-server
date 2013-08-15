@@ -2,15 +2,18 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-samba4
-fix: 2.0.44-31.488.201308081636
+fix: 2.0.44-33.498.201308141845
 note:
 version: [1]
 desc: |
-  This errata update fixes a bug in the package univention-samba4:
+  This errata update fixes three bugs in the package univention-samba4:
   * In some cases the sysvol ownership was not yet updated correctly
     after the installation or join of univention-samba4.
   * During update of a joined master of backup the standard DNS SRV
     records for Kerberos and LDAP are checked for non-Samba4 systems
 	and for port 7389. Records advertising non-Samba4 systems and
 	port 7389 are removed from the SRC records.
-bug: [31640, 31887]
+  * Joining an UCS@school Samba4 Slave PDC was not possible in case
+    any system in the UCS@school domain was still offing the service
+    "Samba 3".
+bug: [31640, 31887, 32184]
