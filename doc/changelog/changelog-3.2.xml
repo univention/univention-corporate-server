@@ -1985,7 +1985,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The LDAP tests to check replication have ween improved (<ulink url="&ucsbug;27662">Bug 27662</ulink>, <ulink url="&ucsbug;29337">Bug 29337</ulink>, <ulink url="&ucsbug;31721">Bug 31721</ulink>, <ulink url="&ucsbug;31722">Bug 31722</ulink>).
+		The LDAP tests to check replication have been improved (<ulink url="&ucsbug;27662">Bug 27662</ulink>, <ulink url="&ucsbug;29337">Bug 29337</ulink>, <ulink url="&ucsbug;31721">Bug 31721</ulink>, <ulink url="&ucsbug;31722">Bug 31722</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
