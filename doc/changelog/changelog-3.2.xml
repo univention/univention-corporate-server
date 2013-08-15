@@ -859,6 +859,10 @@
 		<listitem><simpara>
 		  When inserting invalid values (e.g. password) the invalid field is now focused (<ulink url="&ucsbug;31021">Bug 31021</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The software setup now maintains the defined package order and triggers a single package manager operation for package installations and removals, repectively, instead of handling each listed package individually (<ulink url="&ucsbug;31960">Bug 31960</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>
