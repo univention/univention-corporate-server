@@ -1,3 +1,9 @@
+univention-management-console-module-lib (3.0.3-1) unstable; urgency=low
+
+  * Bug #9927: fix fuzzy
+
+ -- Florian Best <best@univention.de>  Thu, 15 Aug 2013 17:18:05 +0200
+
 univention-management-console-module-lib (3.0.2-1) unstable; urgency=low
 
   * Bug #9927: revert url rename, adapt some texts
