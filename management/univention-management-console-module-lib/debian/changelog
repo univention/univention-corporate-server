@@ -1,3 +1,9 @@
+univention-management-console-module-lib (3.0.2-1) unstable; urgency=low
+
+  * Bug #9927: revert url rename, adapt some texts
+
+ -- Florian Best <best@univention.de>  Thu, 15 Aug 2013 16:59:00 +0200
+
 univention-management-console-module-lib (3.0.1-1) unstable; urgency=low
 
   * Bug #9927: use a more stable url for pinging

@@ -25,10 +25,9 @@ msgstr "Abbrechen"
 
 #: umc/js/lib/server.js:156
 msgid ""
-"Please confirm to reboot this server. This will take approximately several "
-"minutes."
+"Please confirm to reboot this server. This may take a few minutes."
 msgstr ""
-"Bitte bestätigen Sie den Neustart dieses Servers. Die wird einige Minuten dauern."
+"Bitte bestätigen Sie den Neustart dieses Servers. Dies kann einige Minuten dauern."
 
 #: umc/js/lib/server.js:103
 msgid ""
@@ -47,8 +46,8 @@ msgstr ""
 "neu gestartet werden."
 
 #: umc/js/lib/server.js:183
-msgid "Please wait while the server is rebooting."
-msgstr "Bitte warten Sie während der Server neustartet."
+msgid "The server is being rebooting."
+msgstr "Der Server wird neugestartet."
 
 #: umc/js/lib/server.js:164
 msgid "Reboot"
@@ -65,7 +64,3 @@ msgstr "Neustart"
 #: umc/js/lib/server.js:129
 msgid "Restarting server"
 msgstr "Server-Neustart"
-
-#: umc/js/lib/server.js:203
-msgid "The server is now offline."
-msgstr "Der Server ist nun offline."

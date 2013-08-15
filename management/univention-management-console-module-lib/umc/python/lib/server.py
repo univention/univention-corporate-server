@@ -81,7 +81,7 @@ class Server(object):
 		MODULE.info('enabling server restart:\n%s' % out)
 
 	@simple_response
-	def keep_session_alive(self):
+	def ping(self):
 		return dict(success=True)
 
 	@sanitize(message=MessageSanitizer(default=''))

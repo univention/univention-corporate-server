@@ -152,7 +152,7 @@ define([
 			topic.publish('/umc/actions', 'lib', 'server', 'askReboot');
 
 			var msg = _msg ? '<p>' + _msg + '</p>' : '';
-			msg += '<p>' + _('Please confirm to reboot this server. This will take approximately several minutes.') + '</p>';
+			msg += '<p>' + _('Please confirm to reboot this server. This may take a few minutes.') + '</p>';
 			msg += '<p>' + _('<b>Note:</b> After the restart you will be redirected to the login page.') + '</p>';
 			return dialog.confirm(msg, [{
 				name: 'cancel',
@@ -179,7 +179,7 @@ define([
 				title: _('Rebooting server'),
 				closable: false
 			});
-			progress.update(_('Please wait while the server is rebooting.'));
+			progress.update(_('The server is being rebooted.'));
 			progress.show();
 
 			var offline = false;
@@ -198,9 +198,6 @@ define([
 					}
 					timer = window.setTimeout(start_pinging, milliseconds);
 				}, function() {
-					if (!offline) {
-						progress.update(_('The server is now offline.'));
-					}
 					offline = true;
 					timer = window.setTimeout(start_pinging, milliseconds);
 				});
