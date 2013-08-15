@@ -27,8 +27,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
 	echo "First parameter is the directory where fake translation message will be inserted"
 	exit 1
 fi
-find $1 -type f -iname "*.po" -print0 | xargs -0 sed -ie 's/msgstr ""/msgstr "Lorem Ipsum"/g'
+find "$1" -type f -iname "*.po" -print0 | xargs -r -0 sed -ie 's/msgstr ""/msgstr "Lorem Ipsum"/g'

@@ -264,10 +264,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 	with open(os.path.join(new_package_dir_debian, 'rules'), 'w') as f:
 		f.write("""#!/usr/bin/make -f
 #
-# Univention Common Python and Shell Library
-#  rules file for the debian package
-#
-# Copyright 2002-2012 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #

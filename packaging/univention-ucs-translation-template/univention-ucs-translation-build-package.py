@@ -38,8 +38,8 @@ import univention.dh_umc as dh_umc
 import univention.translationhelper as tlh
 
 if __name__ == '__main__':
-	usage = '''%s [options] -s source_dir -c language_code -l locale -n language_name
-e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch''' % sys.argv[0]
+	usage = '''%prog [options] -s source_dir -c language_code -l locale -n language_name
+e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 	parser = OptionParser(usage=usage)
 	parser.add_option('-s', '--source', action='store', dest='source_dir', help='UCS source dir from which translation files are gathered, e.g. an UCS svn base dir')
 	parser.add_option('-c', '--languagecode', action='store', dest='target_language', help='Target language code (e.g. de)')
@@ -48,26 +48,19 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch''' % sys
 	parser.add_option('-n', '--languagename', action='store', dest='target_name', help='Language name that is shown in the UMC (e.g. Deutsch)')
 
 	(options, args) = parser.parse_args()
+	help_message = 'Use --help to show additional help.'
 
 	if not options.source_dir:
-		print parser.print_help()
-		print 'Error: Missing argument -s'
-		sys.exit(1)
+		parser.error('Missing argument -s. %s' % help_message)
 	
 	if not options.target_language:
-		print parser.print_help()
-		print 'Error: Missing argument -c'
-		sys.exit(1)
+		parser.error('Missing argument -c. %s' % help_message)
 
 	if not options.target_locale:
-		print parser.print_help()
-		print 'Error: Missing argument -l'
-		sys.exit(1)
+		parser.error('Missing argument -l. %s' % help_message)
 
 	if not options.target_name:
-		print parser.print_help()
-		print 'Error: Missing argument -n'
-		sys.exit(1)
+		parser.error('Missing argument -n. %s' % help_message)
 
 	# make options.source_dir absolute
 	options.source_dir = os.path.abspath(options.source_dir)

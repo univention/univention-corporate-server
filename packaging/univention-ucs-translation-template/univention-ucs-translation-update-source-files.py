@@ -43,24 +43,21 @@ except BaseException, e:
 	sys.exit(1)
 
 if __name__ == '__main__':
-	usage = '''%s [options] -s source_dir -c language_code 
-e.g.: -s /path/to/ucs-repository/ -c de''' % sys.argv[0]
+	usage = '''%prog [options] -s source_dir -c language_code 
+e.g.: -s /path/to/ucs-repository/ -c de'''
 	parser = OptionParser(usage=usage)
 	parser.add_option('-s', '--source', action='store', dest='source_dir', help='UCS source dir from which translation files are gathered, e.g. an UCS svn base dir')
 	parser.add_option('-c', '--languagecode', action='store', dest='target_language', help='Target language code (e.g. de)')
 	parser.add_option('-b', '--basefiles', action='store', dest='basefiles', default='.umc-modules', help='xml file basename (default: .umc-modules)')
 
 	(options, args) = parser.parse_args()
+	help_message = 'Use --help to show additional help.'
 
 	if not options.source_dir:
-		print parser.print_help()
-		print 'Error: Missing argument -s'
-		sys.exit(1)
+		parser.error('Missing argument -s. %s' % help_message)
 	
 	if not options.target_language:
-		print parser.print_help()
-		print 'Error: Missing argument -c'
-		sys.exit(1)
+		parser.error('Missing argument -c. %s' % help_message)
 
 	# make options.source_dir absolute
 	options.source_dir = os.path.abspath(options.source_dir)
