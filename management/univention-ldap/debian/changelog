@@ -1,3 +1,10 @@
+univention-ldap (10.0.9-5) unstable; urgency=low
+
+  * backup2master: remove dns service account of old master in samba4
+    (Bug #27893)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Aug 2013 19:07:32 +0200
+
 univention-ldap (10.0.9-4) unstable; urgency=low
 
   * Increase joinscript version to remove port 7389 from SRV record if

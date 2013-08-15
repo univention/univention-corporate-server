@@ -468,6 +468,7 @@ udm_remove_dns_service_account "$old_ldap_master_hostname"
 
 if [ -e "$samdb" ]; then
 	samdb_remove_dc_account "$old_ldap_master_hostname"
+	samba-tool user delete "dns-$old_ldap_master_hostname"
 fi
 ## =========================== </remove Samba objects> ===========================
 
