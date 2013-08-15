@@ -1,3 +1,9 @@
+univention-join (6.0.4-1) unstable; urgency=low
+
+  * Bug #9927: Add missing translation
+
+ -- Florian Best <best@univention.de>  Thu, 15 Aug 2013 16:56:59 +0200
+
 univention-join (6.0.3-1) unstable; urgency=low
 
   * Bug #9927: Don't display reboot dialog if joining failed

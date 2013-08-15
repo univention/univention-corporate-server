@@ -56,6 +56,10 @@ msgstr ""
 "Ein Neustart der UMC-Server-Komponenten ist notwendig nach einem erstmaligen "
 "Domänenbeitritt."
 
+#: umc/js/join.js:398
+msgid "A reboot of the server is recommended after joining the system."
+msgstr "Ein Neustart des Servers ist nach einem Domänebeitritt empfohlen."
+
 #: umc/js/join.js:302
 msgid ""
 "A restart of the UMC server components may be necessary for changes to take "
