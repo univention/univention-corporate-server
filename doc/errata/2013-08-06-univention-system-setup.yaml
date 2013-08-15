@@ -9,5 +9,5 @@ desc: |
   This errata update fixes a bug in the package univention-system-setup:
   * The execution order of the setup script files was not defined
     properly in every case, which could result in a delay of network
-	availability, disrupting other setup tasks.
+    availability, disrupting other setup tasks.
 bug: [32153]
