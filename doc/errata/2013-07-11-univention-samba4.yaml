@@ -11,8 +11,8 @@ desc: |
     after the installation or join of univention-samba4.
   * During update of a joined master of backup the standard DNS SRV
     records for Kerberos and LDAP are checked for non-Samba4 systems
-	and for port 7389. Records advertising non-Samba4 systems and
-	port 7389 are removed from the SRC records.
+    and for port 7389. Records advertising non-Samba4 systems and
+    port 7389 are removed from the SRC records.
   * Joining an UCS@school Samba4 Slave PDC was not possible in case
     any system in the UCS@school domain was still offing the service
     "Samba 3".
