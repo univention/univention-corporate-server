@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.54-1) unstable; urgency=low
+
+  * Bug #31639: removed commented LESS/CSS code
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 15 Aug 2013 12:48:15 +0200
+
 univention-management-console-frontend (3.0.53-1) unstable; urgency=low
 
   * [WIP] Bug #30811: adjusted if statement
