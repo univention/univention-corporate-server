@@ -39,3 +39,8 @@ CVE-2013-1920.patch
 CVE-2013-1952.patch
 CVE-2013-1964.patch
 23394_xen-change-media.diff
+CVE-2013-1432.patch
+CVE-2013-2072.patch
+CVE-2013-2076.patch
+CVE-2013-2077.patch
+CVE-2013-2078.patch
