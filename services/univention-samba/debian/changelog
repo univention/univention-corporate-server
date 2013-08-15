@@ -1,3 +1,9 @@
+univention-samba (8.0.5-3) unstable; urgency=low
+
+  * Don't set windows/wins-server in case broadcast join worked (Bug #30813)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 Aug 2013 19:18:48 +0200
+
 univention-samba (8.0.5-2) unstable; urgency=low
 
   * Depencies updated for Samba 4.1 (Bug #31698)
