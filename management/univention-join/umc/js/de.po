@@ -58,7 +58,7 @@ msgstr ""
 
 #: umc/js/join.js:398
 msgid "A reboot of the server is recommended after joining the system."
-msgstr "Ein Neustart des Servers ist nach einem Domänebeitritt empfohlen."
+msgstr "Ein Neustart des Servers ist nach einem Domänenbeitritt empfohlen."
 
 #: umc/js/join.js:302
 msgid ""
