@@ -154,6 +154,14 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
+		The Grub configuration of the installation DVD no longer loads
+		the Cirrus graphics module. Instead, standard VGA is now
+		used. In addition the colour depth has been set to 32
+		bits. This fixes display problems when installing in Citrix
+		Xen Server (<ulink url="&ucsbug;30978">Bug 30978</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
 		The <guimenu>Software RAID</guimenu> boot entry has been renamed to <guimenu>expert
 		partitioning</guimenu> (<ulink url="&ucsbug;24051">Bug 24051</ulink>).
 	  </simpara></listitem>
