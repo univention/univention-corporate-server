@@ -362,7 +362,6 @@ define([
 			var i, j;
 			for (i = 0; i < this._widgets.length; ++i) {
 				for (j = 0; j < this._widgets[i].length; ++j, ++nElements) {
-					//console.log(lang.replace('### MultiInput: widget[{0}][{1}]: waiting -> ', [i, j]), this._widgets[i][j].ready());
 					var jwidget = this._widgets[i][j];
 					nBuiltElements += jwidget ? 1 : 0;
 					var jreadyDeferred = jwidget && jwidget.ready ? jwidget.ready() : null;
@@ -371,6 +370,10 @@ define([
 					}
 					else if (jreadyDeferred.isFulfilled()) {
 						++nReady;
+					}
+					else {
+						// deferred has not yet been resolved -> re-trigger _updateReadyDeferred() upon resolution
+						jreadyDeferred.then(lang.hitch(this, '_updateReadyDeferred'));
 					}
 				}
 			}

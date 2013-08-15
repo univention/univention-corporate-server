@@ -428,7 +428,6 @@ define([
 
 			if (publisherName in this._dependencyMap) {
 				var values = this.get('value');
-				this._updateAllReady(); // fresh _allReadyNamed
 				var readyInfo = this._allReadyNamed;
 				array.forEach(this._dependencyMap[publisherName], function(ireceiver) {
 					if (ireceiver && ireceiver._loadValues) {
@@ -600,10 +599,8 @@ define([
 				return overallPercentage / nWidgets;
 			};
 
-			//console.log('### Form: iterate over widgets.ready');
 			tools.forIn(this._widgets, function() { ++nWidgets; });
 			tools.forIn(this._widgets, function(iname, iwidget) {
-				//console.log('###   ' + iname + ' -> ', iwidget.ready ? iwidget.ready() : null);
 				var iwidgetReadyDeferred = iwidget.ready ? iwidget.ready() : null;
 				widgetProgressInPercent[iname] = 0;
 				when(iwidgetReadyDeferred,

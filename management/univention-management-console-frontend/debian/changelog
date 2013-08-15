@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.55-1) unstable; urgency=low
+
+  * Bug #31376: adjusted problems with ready mechanism in MultiInput and Form
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 15 Aug 2013 19:12:08 +0200
+
 univention-management-console-frontend (3.0.54-1) unstable; urgency=low
 
   * Bug #31639: removed commented LESS/CSS code
