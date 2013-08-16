@@ -84,6 +84,8 @@ define([
 		// deferred for overall process (built + loaded dependencies)
 		_readyDeferred: null,
 
+		_pendingDeferreds: null,
+
 		// deferred for built process
 		_allWidgetsBuiltDeferred: null,
 
@@ -145,6 +147,7 @@ define([
 			// initiate other properties
 			this._rowContainers = [];
 			this._widgets = [];
+			this._pendingDeferreds = {};
 
 			// we need to rewire the dependencies through this widget to the row widgets
 			this.depends = [];
@@ -371,9 +374,19 @@ define([
 					else if (jreadyDeferred.isFulfilled()) {
 						++nReady;
 					}
-					else {
+					else if (!this._pendingDeferreds[jwidget.name]) {
 						// deferred has not yet been resolved -> re-trigger _updateReadyDeferred() upon resolution
-						jreadyDeferred.then(lang.hitch(this, '_updateReadyDeferred'));
+						// via _pendingDeferreds we are sure that we do not register at the widget's Deferred
+						// object multiple times
+						(lang.hitch(this, function(widgetName) {
+							// encapsulate in closure, otherwise we cannot acces jwidget.name within
+							// the Deffered callback anymore (it changes with the for loop)
+							this._pendingDeferreds[widgetName] = true;
+							jreadyDeferred.then(lang.hitch(this, function() {
+								this._pendingDeferreds[widgetName] = false;
+								this._updateReadyDeferred();
+							}));
+						}))(jwidget.name);
 					}
 				}
 			}
@@ -530,7 +543,7 @@ define([
 			this._updateReadyDeferred();
 
 			// perform adding rows asynchronously
-			tools.forEachAsync(newRows, lang.hitch(this, '__appendRow')).then(lang.hitch(this, function() {
+			tools.forEachAsync(newRows, this.__appendRow, this, 5, 50).then(lang.hitch(this, function() {
 				// all elements have been added to the DOM
 				// add the new button
 				this._renderNewButton();
