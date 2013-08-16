@@ -1,5 +1,5 @@
 [con.*/ad/listener/dir]
-Description[de]=Das Verzeichnis, in dem die von UCS nach Active Directory übertragenen Objekte liegen. 
+Description[de]=Das Verzeichnis, in dem die von UCS nach Active Directory übertragenen Objekte gespeichert werden.
 Description[en]=Directory in which the objects transferred from UCS to Active Directory are stored. 
 Type=str
 Categories=service-adcon
@@ -11,26 +11,26 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/retryrejected]
-Description[de]=Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-status.log nachvollzogen werden. Ist die Variable nicht gesetzt, tritt dies nach 10 Anfragen ein.
-Description[en]=Number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be followed in the /var/log/univention/connector-status.log logfile. If the variable is unset, it occurs after 10 requests.
+Description[de]=Die Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-status.log nachvollzogen werden. Ist die Variable nicht gesetzt, tritt dies nach 10 Anfragen ein.
+Description[en]=The number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be followed in the /var/log/univention/connector-status.log logfile. If the variable is unset, it occurs after 10 requests.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/port]
-Description[de]=TCP-Port über den der LDAP-Dienst des AD-Servers erreichbar ist.
+Description[de]=Der TCP-Port, über den der LDAP-Dienst des Active Directory-Servers erreichbar ist.
 Description[en]=The port of the LDAP service of the Active Directory server.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/host]
-Description[de]=Der Fully Qualified Domain Name des Active Directory Servers.
-Description[en]=The fully qualified domain name of the Active Directory server.
+Description[de]=Der Rechnername des Active Directory-Servers.
+Description[en]=The hostname of the Active Directory server.
 Type=str
 Categories=service-adcon
 
 [con.*/debug/function]
 Description[de]=Ist diese Variable auf '1' gesetzt, werden Funktionsaufrufe als zusätzliche Debug-Information protokolliert. Ist die Variable auf '0' gesetzt oder nicht gesetzt, werden die Aufrufe nicht protokolliert.
-Description[en]=If the variable is set to '1' function calls are logged as additional debug information. If the variable is set to '0' or unset no calls are logged.
+Description[en]=If the variable is set to '1', function calls are logged as additional debug information. If the variable is set to '0' or unset no calls are logged.
 Type=str
 Categories=service-adcon
 
@@ -47,20 +47,20 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/group/primarymail]
-Description[de]=Definiert, ob die primäre Mailadresse an Gruppenobjekten von UCS mit dem Attribut 'mail' in Active Directory synchronisiert werden soll. Da 'mail' ein multivalue ist kann es zu Problemen bei der Synchronisation kommen. Active Directory benötigt ggf. die Exchange-Erweiterung für diese Option. Bei der Installation des Pakets univention-ad-connector-exchange wird der Wert auf 'true' gesetzt.
-Description[en]=Defines whether the primary e-mail address on group objects in UCS should be synchronised with the 'mail' attribute in Active Directory. As 'mail' is a multivalue, this can cause problems during the synchronisation. Active Directory may require the Exchange expansion for this option. During the installation of the univention-ad-connector-exchange package the value is set to 'true'.
+Description[de]=Definiert, ob die primäre Mailadresse an Gruppenobjekten von UCS mit dem Attribut 'mail' in Active Directory synchronisiert werden soll. Da 'mail' mehrfache Werte annehmen kann, kann es zu Problemen bei der Synchronisation kommen. Active Directory benötigt ggf. die Exchange-Erweiterung für diese Option. Bei der Installation des Pakets univention-ad-connector-exchange wird der Wert auf 'true' gesetzt.
+Description[en]=Defines whether the primary e-mail address on group objects in UCS should be synchronised with the 'mail' attribute in Active Directory. As 'mail' is a multi value attribute, this can cause problems during the synchronisation. Active Directory may require the Exchange expansion for this option. During the installation of the univention-ad-connector-exchange package the value is set to 'true'.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/group/language]
-Description[de]=Definiert, welche Abbildung von Standard-Gruppennamen zwischen UCS (Gruppennamen sind dort immer englisch) und Active Directory (Gruppenames sind lokalisiert) genutzt werden soll. Durch Setzen von 'de' kann ein Mapping für ein deutschsprachiges Active Directory aktiviert werden. Ist die Variable nicht gesetzt, erfolgt kein Mapping.
+Description[de]=Die Variable definiert, welche Abbildung von Standard-Gruppennamen zwischen UCS (Gruppennamen sind dort immer englisch) und Active Directory (Gruppenamen sind lokalisiert) genutzt werden soll. Durch Setzen von 'de' kann ein Mapping für ein deutschsprachiges Active Directory aktiviert werden. Ist die Variable nicht gesetzt, erfolgt kein Mapping.
 Description[en]=Defines which form of standard group names should be used between UCS (group names are always English) and Active Directory (group names are localised). A mapping for a Active Directory in German can be set with 'de'. If the variable is unset no mapping is made.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/syncmode]
-Description[de]=Definiert den Sychronisations-Modus zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Änderungen können nur im Active DirectoryP vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden.
-Description[en]=Defines the synchronisation mode between the UCS LDAP and Active Directory. The following values are supported: 'read' (changes can only by made in Active Directory and are synchronised to UCS LDAP), 'write' (changes can only by made in UCS LDAP and are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes can be made in both directory services).
+Description[de]=Diese Variable konfiguriert den Sychronisations-Modus zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Änderungen können nur im Active Directory vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden).
+Description[en]=This variable configures the synchronisation mode between the UCS LDAP and Active Directory. The following values are supported: 'read' (changes can only by made in Active Directory and are synchronised to UCS LDAP), 'write' (changes can only by made in UCS LDAP and are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes can be made in both directory services).
 Type=str
 Categories=service-adcon
 
@@ -78,13 +78,13 @@ Categories=service-adcon
 
 [con.*/ad/ldap/bindpw]
 Description[de]=Die Datei, die das Passwort des Synchronisationsbenutzers (siehe 'con.*/ad/ldap/binddn') enthält. Die Datei sollte genau eine Zeile mit dem Passwort enthalten. Ist die Variable nicht gesetzt, wird /etc/ldap.secret verwendet.
-Description[en]=A file containing the password of the synchronisation user (see 'con.*/ad/ldap/binddn'). The file should contain exactly one line with the password. If the variable is unset /etc/ldap.secret is used.
+Description[en]=A file containing the password of the synchronisation user (see 'con.*/ad/ldap/binddn'). The file should contain exactly one line with the password. If the variable is unset, /etc/ldap.secret is used.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/certificate]
-Description[de]=Dateiname mit vollem Pfad, in der das von Active Directory exportierte Zertifikat abgelegt ist (zur verschlüsselten Übertragung der Passwörter). Das Zertifikat wird im PEM-Format gespeichert.
-Description[en]=File name of a certificate exported by Active Directory with its full path (for encrypted transmission of passwords). The certificate is saved in PEM format.
+Description[de]=Der Dateiname mit vollem Pfad, in der das von Active Directory exportierte Zertifikat abgelegt ist (zur verschlüsselten Übertragung der Passwörter). Das Zertifikat wird im PEM-Format gespeichert.
+Description[en]=The file name of a certificate exported by Active Directory with its full path (for encrypted transmission of passwords). The certificate is saved in PEM format.
 Type=str
 Categories=service-adcon
 
@@ -95,14 +95,14 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/ldaps]
-Description[de]=Ist diese Option aktiviert, wird für die Verbindung zum Active Directory ldaps anstelle von Start TLS verwendet. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
-Description[en]=If this option is activated, ldaps instead of Start TLS is used for the connection to the Active Directory server. If the variable is unset, the option is deactivated.
+Description[de]=Ist diese Option aktiviert, wird für die Verbindung zum Active Directory ldaps anstelle von 'Start TLS' verwendet. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[en]=If this option is activated, ldaps instead of 'Start TLS' is used for the connection to the Active Directory server. If the variable is unset, the option is deactivated.
 Type=bool
 Categories=service-adcon
 
 [con.*/password/service/encoding]
 Description[de]=Der Passwortdienst unter Windows benötigt den Benutzernamen bei der Passwortänderung im iso8859-Format. Mit dieser Variable kann das Encoding gesetzt werden. Abweichungen von der Voreinstellung sollten nur in Sonderfällen nötig sein.
-Description[en]=The password service in Windows requires the user name to be in iso8859 format for changing the password. The encoding can be set with this variable. Deviations from the preset should only be necessary in corner cases.
+Description[en]=The password service in Windows requires the user name to be in iso8859 format for changing the password. The encoding can be set with this variable. Deviations from the standard setting should only be necessary in corner cases.
 Type=str
 Categories=service-adcon
 
@@ -113,32 +113,32 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/organisation]
-Description[de]=Konfiguriert auf welches Attribut im Active Directory das UCS-Attribut 'Organisation' synchronisiert wird. Ist die Variable nicht gesetzt, wird 'o' verwendet.
-Description[en]=Configures the Active Directory attribute to which the UCS attribute 'Organisation' is mapped. If the variable is unset, 'o' is used.
+Description[de]=Diese Variable konfiguriert auf welches Attribut im Active Directory das UCS-Attribut 'Organisation' synchronisiert wird. Ist die Variable nicht gesetzt, wird 'o' verwendet.
+Description[en]=This variable configures the Active Directory attribute to which the UCS attribute 'Organisation' is mapped. If the variable is unset, 'o' is used.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/user/ignorelist]
-Description[de]=Die hier angegebenen Benutzernamen werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden.
-Description[en]=The user names specified here are not synchronised by the connector. Multiple values need to be separated with a comma.
+Description[de]=Die hier angegebenen Benutzernamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch ein Komma getrennt werden.
+Description[en]=The user names specified here are not synchronised by the connector. Multiple values need to be separated by a comma.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/group/ignorelist]
-Description[de]=Die hier angegebenen Gruppenamen werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden.
-Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated with a comma.
+Description[de]=Die hier angegebenen Gruppenamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch ein Komma getrennt werden.
+Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated by a comma.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/container/ignorelist]
-Description[de]=Die hier angegebenen Namen von LDAP-Containern werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden. Der cn= Teil muss nicht angegeben werden. Um etwa 'cn=mail' zu ignorieren muss nur 'mail' angegeben werden.
-Description[en]=The names of LDAP containers specified here are not synchronised by the connector. Multiple values need to be separated with a comma. The cn= part is not needed. E.g. to ignore 'cn=mail' simply specify 'mail'.
+Description[de]=Die hier angegebenen Namen von LDAP-Containern werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch ein Komma getrennt werden. Der cn= Teil muss nicht angegeben werden. Um etwa 'cn=mail' zu ignorieren muss nur 'mail' angegeben werden.
+Description[en]=The names of LDAP containers specified here are not synchronised by the connector. Multiple values need to be separated by a comma. The cn= part is not needed. E.g. to ignore 'cn=mail' simply specify 'mail'.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/ou/ignorelist]
-Description[de]=Die hier angegebenen Namen von LDAP-Organisationseinheiten werden durch den Connector nicht synchronisiert. Mehrfache Werte müssen durch ein Komma getrennt werden. Der ou= Teil muss nicht angegeben werden. Um etwa 'ou=zentrale' zu ignorieren muss nur 'zentrale' angegeben werden.
-Description[en]=The names of LDAP organisational units specified here are not synchronised by the connector. Multiple values need to be separated with a comma. The ou= part is not needed. E.g. to ignore 'ou=headquarter' simply specify 'headquarter'.
+Description[de]=Die hier angegebenen Namen von LDAP-Organisationseinheiten werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch ein Komma getrennt werden. Der ou= Teil muss nicht angegeben werden. Um etwa 'ou=zentrale' zu ignorieren muss nur 'zentrale' angegeben werden.
+Description[en]=The names of LDAP organisational units specified here are not synchronised by the connector. Multiple values need to be separated by a comma. The ou= part is not needed. E.g. to ignore 'ou=headquarter' simply specify 'headquarter'.
 Type=str
 Categories=service-adcon
 
