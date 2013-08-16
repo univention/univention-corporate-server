@@ -408,15 +408,15 @@ define([
 				});
 			}
 
-			if (overallProcess >= 1 && !this._readyDeferred.isFulfilled()) {
-				// all elements are ready
-				this._readyDeferred.resolve();
-				this.onValuesLoaded();
-			}
-
 			if (nBuiltElements == nElements && !this._allWidgetsBuiltDeferred.isFulfilled()) {
 				// all elements have been built
 				this._allWidgetsBuiltDeferred.resolve();
+			}
+
+			if (overallProcess >= 1 && this._allWidgetsBuiltDeferred.isFulfilled() && !this._readyDeferred.isFulfilled()) {
+				// all elements are ready
+				this._readyDeferred.resolve();
+				this.onValuesLoaded();
 			}
 		},
 
