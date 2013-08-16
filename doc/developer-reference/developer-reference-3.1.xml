@@ -54,7 +54,7 @@
 		-->
 		<important>
 		<para>
-			This document is still <emphasis>work in progress</emphasis> and is releases only as a first draft.
+			This document is still <emphasis>work in progress</emphasis> and is released only as a first draft.
 			Feedback is already appreciated.
 		</para>
 		</important>
@@ -70,6 +70,7 @@
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="umc.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="www.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="apps/app.xml"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="translation.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="misc.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="appendix-bug.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="debian/packaging.xml"/>
