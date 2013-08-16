@@ -940,6 +940,9 @@
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
+			After a re-join a complete restart of the system can now be
+			performed directly via a confirmation dialog (<ulink
+			  url="&ucsbug;9927">Bug 9927</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
