@@ -9,6 +9,7 @@ Variables: domainname
 
 Type: file
 File: etc/simplesamlphp/config.php
+Mode: 640
 Variables: saml/idp/enableSAML20-IdP
 Variables: saml/idp/timezone
 Variables: saml/idp/log/debug/enabled
@@ -21,6 +22,7 @@ Variables: domainname
 
 Type: file
 File: etc/simplesamlphp/authsources.php
+Mode: 640
 Variables: saml/idp/ldap/enable_tls
 Variables: ldap/base
 Variables: saml/idp/ldap/debug

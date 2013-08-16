@@ -33,7 +33,7 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.syntax
 
-translation = univention.admin.localization.translation('univention.admin.handlers.saml')
+translation = univention.admin.localization.translation('univention.admin.handlers.saml-serviceprovider')
 _ = translation.translate
 
 module = 'saml/serviceprovider'
@@ -42,6 +42,7 @@ childs = 0
 short_description = _(u'saml service provider')
 long_description = _(u'SAML service provider and their settings')
 operations = ['add', 'edit', 'remove', 'search']
+default_containers=["cn=saml-serviceprovider,cn=univention"]
 
 options = {
 }
@@ -149,7 +150,7 @@ property_descriptions = {
 		),
 	'singleLogoutService': univention.admin.property(
 			short_description = _(u'Single logout URL for this service provider'),
-			long_description = _(u'iThe URL of the SingleLogoutService endpoint for this service provider'),
+			long_description = _(u'The URL of the SingleLogoutService endpoint for this service provider'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
 			options = [],

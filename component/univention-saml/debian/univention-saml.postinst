@@ -42,9 +42,12 @@ configure)
 			days_valid=1825
 		fi
 		openssl req -newkey rsa:2048 -new -x509 -days ${days_valid} -subj "/C=US/ST=Unknown/L=Unknown/O=Unknown/CN=${fqdn}" -nodes -out /etc/simplesamlphp/${fqdn}-idp-certificate.crt -keyout /etc/simplesamlphp/${fqdn}-idp-certificate.key
-		chown root:www-data /etc/simplesamlphp/${fqdn}-idp-certificate.crt /etc/simplesamlphp/${fqdn}-idp-certificate.key
+		chown root:www-data /etc/simplesamlphp/${fqdn}-idp-certificate.crt \
+			/etc/simplesamlphp/${fqdn}-idp-certificate.key 
 		chmod 640 /etc/simplesamlphp/${fqdn}-idp-certificate.crt /etc/simplesamlphp/${fqdn}-idp-certificate.key
 	fi
+
+	chown -R root:www-data /etc/simplesamlphp
 
 	ucr set saml/idp/enableSAML20-IdP?true \
 		saml/idp/ldap/get_attributes?"'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'" \

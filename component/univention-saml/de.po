@@ -1,0 +1,143 @@
+# univention-saml
+# Copyright (C) 2013
+# This file is distributed under the same license as the univention-samba4 package.
+# <packages@univention.de>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0.1-6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-16 12:56+0200\n"
+"PO-Revision-Date: 2012-03-27 14:29+0200\n"
+"Last-Translator: <damrose@univention.de>\n"
+"Language-Team: DE <packages@univention.de>\n"
+"Language: DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:42
+msgid "saml service provider"
+msgstr "saml service provider"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:43
+msgid "SAML service provider and their settings"
+msgstr "SAML Service Provider und deren Einstellungen"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:52
+msgid "Service provider identifier"
+msgstr "Bezeichner des Service Providers"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:53
+msgid "Unique identifier for the service provider definition"
+msgstr "Eindeutiger Bezeichner des Service Providers"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:62
+msgid "URL of the AssertionConsumerService"
+msgstr "URL für den AssertionConsumerService"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:63
+msgid "The URL of the AssertionConsumerService endpoint for this SP"
+msgstr "Die URL des AssertionConsumerService Endpunktes für diesen SP"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:72
+msgid "Format of NameID attribute"
+msgstr "Format des NameID Attributs"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:73
+msgid "The NameIDFormat this SP should receive"
+msgstr "Der Wert des NameIDFormat Feldes, der dem SP übermittelt wird"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:82
+msgid "Name of attribute that is used as NameID"
+msgstr "Name des Attributs, das als NameID verwendet wird"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:83
+msgid ""
+"The name of the attribute which should be used as the value of the NameID"
+msgstr ""
+"Der Name des Attributs, welches als Wert des NameID Attributs verwendet wird"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:92
+msgid "Send any ldap attributes to the service provider?"
+msgstr "Dürfen LDAP Attribute gesendet werden?"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:93
+msgid "Whether the SP should receive any ldap attributes from the IdP"
+msgstr "Dürfen generell LDAP Attribute vom IdP an den SP gesendet werden?"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:102
+msgid "List of ldap attributes to transmit (can be empty)"
+msgstr "Liste der zu übermittelnden LDAP Attribute (Kann leer sein)"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:103
+msgid "A list of ldap attributes that are transmitted to the service provider"
+msgstr ""
+"Eine Liste von LDAP Attributen, die vom Identity Provider an den Service "
+"Provider übermittelt werden"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:112
+msgid "Description of this service provider"
+msgstr "Beschreibung dieses Service Providers"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:113
+msgid "A description of this service provider that can be shown to users"
+msgstr ""
+"Eine Beschreibung des Service Providers, die Benutzern angezeigt werden kann"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:122
+msgid "Name of the organization for this service provider"
+msgstr "Name der Organisation des Service Providers"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:123
+msgid ""
+"The name of the organization responsible for the service provider that can "
+"be shown to users"
+msgstr ""
+"Der Name der Organisation die für den Service Provider veranwtortlich istund "
+"dem Benutzer angezeigt werden kann"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:132
+msgid "URL to the service provider's privacy policy"
+msgstr "URL zur Datenschutzrichtlinie des Service Providers"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:133
+msgid "An absolute URL for the service provider's privacy policy"
+msgstr "Eine absolute URL zur Datenschutzrichtlinie des Service Providers"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:142
+msgid "Value in the format field for attributes"
+msgstr "Der Wert des Formatfeldes für Attribute"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:143
+msgid "Which value will be set in the format field of attribute statements"
+msgstr "Der Wert, der im Formatfeld von Attributbezeichnern gesetzt wird"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:152
+msgid "Single logout URL for this service provider"
+msgstr "Single logout URL des Service Providers"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:153
+msgid "The URL of the SingleLogoutService endpoint for this service provider"
+msgstr "Die URL des SingleLogoutService Endpunktes dieses Service Providers"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:164
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:164
+msgid "Basic Settings"
+msgstr "Grundeinstellungen"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:166
+msgid "Definition of required and often used settings"
+msgstr "Definieren von benötigten und häufig genutzten Einstellungen"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:173
+#: modules/univention/admin/handlers/saml/serviceprovider.py:175
+msgid "Optional Settings"
+msgstr "Erweiterte Einstellungen"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:173
+msgid "More Settings"
+msgstr "Weitere Einstellungen"

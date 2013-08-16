@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--DOCTYPE umc SYSTEM "branches/ucs-3.1/ucs/management/univention-management-console/doc/module.dtd"-->
+<umc version="2.0">
+<module id="udm" icon="udm-saml-serviceprovider" version="1.0">
+	<name/>
+	<description/>
+	<flavor id="saml/serviceprovider" icon="udm-saml-serviceprovider">
+	<name>SAML Identity Provider</name>
+	<description>Single Sign On Identity Provider</description>
+	</flavor>
+	<categories>
+		<category name="domain"/>
+	</categories>
+</module>
+</umc>
