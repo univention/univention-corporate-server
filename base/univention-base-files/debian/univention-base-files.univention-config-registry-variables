@@ -237,8 +237,8 @@ Type=str
 Categories=system-base
 
 [kernel/blacklist]
-Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module aufgeführt werden, die nicht geladen werden sollen. Mehrfache Einträge müssen durch ein Semikolon getrennt werden.
-Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows a selection of modules which should not be loaded. If multiple modules are needed, they must be separated with a semicolon.
+Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module aufgeführt werden, die nicht geladen werden sollen. Mehrere Einträge müssen durch ein Semikolon getrennt werden.
+Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows a selection of modules which should not be loaded. If multiple modules are needed, they must be separated by a semicolon.
 Type=str
 Categories=system-base
 
