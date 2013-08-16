@@ -231,8 +231,8 @@ Type=str
 Categories=Network
 
 [kernel/modules]
-Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrfache Einträge müssen durch ein Semikolon getrennt werden.
-Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows the loading of modules, which couldn't/cannot be automatically detected. If multiple modules are needed, they must be separated with a semicolon.
+Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrere Einträge müssen durch ein Semikolon getrennt werden.
+Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows the loading of modules, which couldn't/cannot be automatically detected. If multiple modules are needed, they must be separated by a semicolon.
 Type=str
 Categories=system-base
 
