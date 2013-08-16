@@ -1,35 +1,35 @@
+[pxe/installer/quiet]
+Description[de]=Ist diese Option aktiviert, wird bei der PXE-Installation der Kernel-Parameter 'quiet' gesetzt. Dadurch werden viele Bootmeldungen verborgen. Ist die Variable nicht gesetzt, wird 'quiet' nicht gesetzt.
+Description[en]=If this option is activated, the kernel parameter 'quiet' is set during PXE installation. This suppresses many boot messages. If the variable is unset, 'quiet' is not set.
+Type=bool
+Categories=system-base
+
 [pxe/installer/initrd]
-Description[de]=Name der initrd Datei für der Installation via PXE
-Description[en]=Name of the initrd file for the pxe installation
+Description[de]=Diese Variable konfiguriert den Namen der bei der PXE-Installation verwendeten Initial Ramdisk. Ist die Variable nicht gesetzt, wird linux.bin verwendet.
+Description[en]=This variable configures the name of the initial ramdisk to be used during PXE installation. If the variable is unset, linux.bin is used.
 Type=str
 Categories=system-base
 
 [pxe/installer/ramdisksize]
-Description[de]=Größe der Ramdisk für der Installation via PXE
-Description[en]=Size of the ramdisk for the pxe installation
-Type=str
-Categories=system-base
-
-[pxe/installer/quiet]
-Description[de]=Gibt an, ob der Kernel Paramter quiet bei der PXE Installation gesetzt wird
-Description[en]=Specifies whether to set the kernel paramater quiet for the pxe installation
-Type=str
+Description[de]=Diese Variable konfiguriert wieviel Arbeitspeicher in Byte für das Laden der Initial Ramdisk reserviert werden soll. Ist die Variable nicht gesetzt, werden 230000 Bytes reserviert.
+Description[en]=This variable configures how much memory in bytes is reserved for loading the initial ramdisk. If the variable is unset, 230000 are used.
+Type=int
 Categories=system-base
 
 [pxe/installer/vga]
-Description[de]=VGA Kernel-Parameter für die Installation via PXE
-Description[en]=VGA kernel paramter for the pxe installation
+Description[de]=Diese Variable konfiguriert den initialen Video-Modus während der PXE-Installation. Eine Übersicht der Modi findet sich unter http://en.wikipedia.org/wiki/VESA_BIOS_Extensions#Linux_video_mode_numbers.
+Description[en]=This variable configures the initial video mode during PXE installation. An overview of the modes can be found at http://en.wikipedia.org/wiki/VESA_BIOS_Extensions#Linux_video_mode_numbers
 Type=str
 Categories=system-base
 
 [pxe/installer/loglevel]
-Description[de]=Kernel Loglevel für die Installation via PXE
-Description[en]=Kernel log level for the pxe installation
+Description[de]=Der Kernel-Loglevel während der PXE-Installation. Nur Meldungen mit einem Loglevel niedriger in der Variable konfiguriert werden ausgegeben. Gültige Werte reichen von 0 (KERN_EMERG) bis 7 (KERN_DEBUG).
+Description[en]=The kernel loglevel during PXE installation. Only messages with a loglevel lower than the one specified here are printed. Valid values range from 0 (KERN_EMERG) to 7 (KERN_DEBUG).
 Type=str
 Categories=system-base
 
 [pxe/installer/ipappend]
-Description[de]=Wert für die PXE IPAPPEND Option
-Description[en]=Value for the pxe ipappend option
+Description[de]=Diese Variable konfiguriert die IPAPPEND-Option. Weitere Informationen finden sich unter http://www.syslinux.org/wiki/index.php/SYSLINUX#IPAPPEND_flag_val_.5BPXELINUX_only.5D
+Description[en]=This variable configures the IPAPPEND option. Additional information can be found at http://www.syslinux.org/wiki/index.php/SYSLINUX#IPAPPEND_flag_val_.5BPXELINUX_only.5D
 Type=str
 Categories=system-base

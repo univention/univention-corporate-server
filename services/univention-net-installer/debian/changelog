@@ -1,3 +1,10 @@
+univention-net-installer (7.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 08 Aug 2013 15:41:02 +0200
+
 univention-net-installer (6.0.3-1) unstable; urgency=low
 
   * increased default pxe ramdisksize (Bug #29604)
