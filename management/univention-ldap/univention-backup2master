@@ -418,7 +418,7 @@ remove_NTDS_objectGUID_alias() {
 	if [ -n "$NTDS_objectGUID" ]; then
 		NTDS_alias_dn=$(univention-ldapsearch -x relativeDomainName="$NTDS_objectGUID._msdcs" | ldapsearch-wrapper | sed -n 's/^dn: //p')
 		if [ -n "$NTDS_alias_dn" ]; then
-			univention-directory-manager dns/alias remove --superordinate "${NTDS_alias_dn%%,*}" --dn "$NTDS_alias_dn"
+			univention-directory-manager dns/alias remove --superordinate "${NTDS_alias_dn#*,}" --dn "$NTDS_alias_dn"
 		fi
 	fi
 }
@@ -464,11 +464,8 @@ udm_remove_dns_service_account(){
 	fi
 }
 
-udm_remove_dns_service_account "$old_ldap_master_hostname"
-
 if [ -e "$samdb" ]; then
 	samdb_remove_dc_account "$old_ldap_master_hostname"
-	samba-tool user delete "dns-$old_ldap_master_hostname"
 fi
 ## =========================== </remove Samba objects> ===========================
 
@@ -531,6 +528,8 @@ if [ -x /usr/bin/samba-tool ]; then
 		samba-tool fsmo seize --role=all --force
 	fi
 fi
+
+udm_remove_dns_service_account "$old_ldap_master_hostname"
 
 # Any bind9 that might be running shall be restarted.
 test -x /etc/init.d/bind9 && /etc/init.d/bind9 force-reload

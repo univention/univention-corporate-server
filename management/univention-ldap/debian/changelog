@@ -1,3 +1,10 @@
+univention-ldap (10.0.9-6) unstable; urgency=low
+
+  * backup2master: Fix removal of NTDS DNS alias (Bug #27893)
+  * backup2master: Fix removal of dns service account
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Aug 2013 18:35:02 +0200
+
 univention-ldap (10.0.9-5) unstable; urgency=low
 
   * backup2master: remove dns service account of old master in samba4
