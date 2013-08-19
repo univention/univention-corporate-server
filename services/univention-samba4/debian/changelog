@@ -1,10 +1,16 @@
+univention-samba4 (3.0.9-4) unstable; urgency=low
+
+  * Depend on transition package (Bug #31698)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Aug 2013 09:57:59 +0200
+
 univention-samba4 (3.0.9-3) unstable; urgency=low
 
   * samba4 init script link is taken care of by the samba4 transition
     package itself, same for the rc.d links, so don't touch it here
     (Bug #31698)
 
- -- Arvid Requate <requate@univention.de>  Thu, 15 Aug 2013 20:15:15 +0200
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Aug 2013 09:57:20 +0200
 
 univention-samba4 (3.0.9-2) unstable; urgency=low
 
