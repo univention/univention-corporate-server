@@ -1,3 +1,13 @@
+ucs-test (4.0.87-1) unstable; urgency=low
+
+  * added test to test group removal
+  * check correctness of group membership in
+    62_udm-groups/11_remove_user_which_is_group_member before decomposing
+    it
+  (Bug #31657)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 19 Aug 2013 09:44:14 +0200
+
 ucs-test (4.0.86-1) unstable; urgency=low
 
   * removed apptest versions udm-users test
