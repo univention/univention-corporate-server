@@ -423,3 +423,15 @@ Description[de]=Eindeutige ID des Rechners
 Description[en]=Unique ID of the host
 Type=str
 Categories=Misc
+
+[repository/online/verify]
+Description[de]=Nur digital signierte Updater-scripte verwenden (Default: yes)
+Description[en]=Only use digitally signed updater scripts (Default: yes)
+Type=bool
+Categories=service-software-management
+
+[repository/mirror/verify]
+Description[de]=Nur digital signierte Updater-scripte herunterladen (Default: yes)
+Description[en]=Only mirror digitally signed updater scripts (Default: yes)
+Type=bool
+Categories=service-software-management

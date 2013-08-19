@@ -1,6 +1,12 @@
+univention-updater (9.0.10-1) unstable; urgency=low
+
+  * Verify script signature (Bug #28045)
+
+ -- Philipp Hahn <hahn@univention.de>  Sat, 03 Aug 2013 16:53:29 +0200
+
 univention-updater (9.0.9-2) unstable; urgency=low
 
-  * Set correct permissions for apt directories during update (Bug #29450) 
+  * Set correct permissions for apt directories during update (Bug #29450)
 
  -- Erik Damrose <damrose@univention.de>  Mon, 19 Aug 2013 13:36:17 +0200
 

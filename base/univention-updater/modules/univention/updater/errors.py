@@ -59,6 +59,11 @@ class ConfigurationError(UpdaterException):
 	def __str__(self):
 		return "Configuration error: %s" % self.args[1]
 
+class VerificationError(ConfigurationError):
+	"""Signal permanent error in script verification."""
+	def __str__(self):
+		return "Verification error: %s" % self.args[1]
+
 class CannotResolveComponentServerError(ConfigurationError):
 	"""Signal permanent error in component configuration."""
 	def __init__(self, component, for_mirror_list):

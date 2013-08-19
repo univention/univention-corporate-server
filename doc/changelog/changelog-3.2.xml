@@ -1175,6 +1175,13 @@
 		  On a local repository server a repository policy no longer sets the source server to
 		  itself (<ulink url="&ucsbug;31426">Bug 31426</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename> are digitally signed from UCS version 3.2-0 onwards.
+		  Both updater and mirror will refuses to download them if they are not signed by any PGP key stored in trust-ring of <program>apt-key</program>.
+		  The verification can be disabled using the &ucsUCRV; <envar>repository/online/verify</envar> and <envar>repository/mirror/verify</envar>
+		  (<ulink url="&ucsbug;28045">Bug 28045</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>

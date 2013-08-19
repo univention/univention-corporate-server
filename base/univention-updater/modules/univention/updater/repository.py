@@ -85,7 +85,7 @@ def copy_package_files( source_dir, dest_dir ):
 				shutil.copy2( src, dest )
 			except shutil.Error, e:
 				print >> sys.stderr, "Copying package '%s' failed." % filename
-		if filename in ['preup.sh', 'postup.sh']:
+		if filename in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
 			src = os.path.join( source_dir, filename )
 			dest = os.path.join( dest_dir, 'all', filename )
 			shutil.copy2( src, dest )

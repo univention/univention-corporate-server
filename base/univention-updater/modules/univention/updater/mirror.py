@@ -68,6 +68,7 @@ class UniventionMirror( UniventionUpdater ):
 		self.repository_prefix = self.configRegistry.get( 'repository/mirror/prefix', '' ).strip('/')
 		self.sources = self.configRegistry.is_true('repository/mirror/sources', False)
 		self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
+		self.script_verify = self.configRegistry.is_true('repository/mirror/verify', True)
 
 	def release_update_available(self, ucs_version=None, errorsto='stderr'):
 		'''Check if an update is available for the ucs_version'''
@@ -116,7 +117,7 @@ class UniventionMirror( UniventionUpdater ):
 		comp = self._iterate_component_repositories(components, start, end, archs, for_mirror_list=True) # returns generator
 
 		all_repos = itertools.chain(repos, errata, comp) # concatenate all generators into a single one
-		for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos):
+		for server, struct, phase, path, script in UniventionUpdater.get_sh_files(all_repos, self.script_verify):
 			self.log.info('Mirroring %s:%r/%s to %s', server, struct, phase, path)
 			assert script is not None, 'No script'
 
@@ -140,7 +141,7 @@ class UniventionMirror( UniventionUpdater ):
 			fd = open(filename, "w")
 			try:
 				fd.write(script)
-				ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored script: %s" % filename)
+				ud.debug(ud.ADMIN, ud.INFO, "Successfully mirrored: %s" % filename)
 			finally:
 				fd.close()
 

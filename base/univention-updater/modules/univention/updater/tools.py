@@ -36,8 +36,8 @@ try:
 except ImportError:
 	import univention.debug2 as ud
 
-from commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
-from errors import *
+from univention.updater.commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
+from univention.updater.errors import *
 
 import errno
 import time
@@ -57,6 +57,7 @@ import new
 import tempfile
 import shutil
 import logging
+import atexit
 
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
@@ -72,6 +73,37 @@ except AttributeError:
 		def emit(self, record):
 			"""This method does nothing."""
 			pass
+
+
+def verify_script(script, signature):
+	"""
+	Verify detached signature of script.
+	> gpg -a -u 2CBDA4B0 --passphrase-file /etc/archive-keys/ucs3.0.txt -o script.sh.gpg -b script.sh
+	> verify_script(open("script.sh", "r").read(), open("script.sh.gpg", "r").read())
+	"""
+	# write signature to temporary file
+	sig_fd, sig_name = tempfile.mkstemp()
+	os.write(sig_fd, signature)
+	os.close(sig_fd)
+
+	# collect trusted keys of apt-key
+	keys = [os.path.join(verify_script.APT, "trusted.gpg")]
+	apt = os.path.join(verify_script.APT, "trusted.gpg.d")
+	keys += [os.path.join(apt, key) for key in os.listdir(apt) if key.endswith('.gpg')]
+
+	# build command line
+	cmd = ["/usr/bin/gpgv2"]
+	for key in keys:
+			cmd += ["--keyring", key]
+	cmd += [sig_name, "-"]
+
+	# verify script
+	proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+			stderr=subprocess.STDOUT, close_fds=True)
+	stdout, _stderr = proc.communicate(script)
+	ret = proc.wait()
+	return stdout if ret != 0 else None
+verify_script.APT = "/etc/apt"
 
 
 class UCS_Version( object ):
@@ -1589,13 +1621,7 @@ class UniventionUpdater:
 		'''
 		# create temporary directory for scripts
 		tempdir = tempfile.mkdtemp()
-		old_exitfunc = getattr(sys, 'exitfunc', None)
-		def do_cleanup(all=True):
-			'''Cleanup temporary files.'''
-			shutil.rmtree(tempdir, ignore_errors=True)
-			if old_exitfunc and all:
-				old_exitfunc()
-		sys.exitfunc = do_cleanup
+		atexit.register(shutil.rmtree, tempdir, ignore_errors=True)
 
 		def call(*cmd):
 			"""Execute script."""
@@ -1614,6 +1640,8 @@ class UniventionUpdater:
 		comp = {'preup': [], 'postup': []}
 		# save scripts to temporary files
 		for server, struct, phase, path, script in scripts:
+			if phase is None:
+				continue
 			assert script is not None
 			uri = server.join(path)
 			fd, name = tempfile.mkstemp(suffix='.sh', prefix=phase, dir=tempdir)
@@ -1672,10 +1700,9 @@ class UniventionUpdater:
 
 		# clean up
 		yield "update", "post"
-		do_cleanup(all=False)
 
 	@staticmethod
-	def get_sh_files(repositories):
+	def get_sh_files(repositories, verify=False):
 		'''Return all preup- and postup-scripts of repositories.
 		repositories: iteratable (server, struct)s
 		Returns: iteratable (server, struct, phase, path, script)
@@ -1686,7 +1713,17 @@ class UniventionUpdater:
 				path = struct.path(name)
 				ud.debug(ud.ADMIN, ud.ALL, "Accessing %s" % path)
 				try:
-					code, size, script = server.access(path, get=True)
+					_code, _size, script = server.access(path, get=True)
+					if verify and struct >= UCS_Version((3, 2, 0)):
+						path_gpg = path + '.gpg'
+						try:
+							_code, _size, signature = server.access(path_gpg, get=True)
+						except DownloadError:
+							raise VerificationError(path_gpg, "Signature download failed")
+						error = verify_script(script, signature)
+						if error is not None:
+							raise VerificationError(path, "Invalid signature: %s" % error)
+						yield server, struct, None, path_gpg, signature
 					yield server, struct, phase, path, script
 				except DownloadError, e:
 					ud.debug(ud.NETWORK, ud.ALL, "%s" % e)

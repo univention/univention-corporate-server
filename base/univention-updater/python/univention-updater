@@ -507,7 +507,7 @@ def main():
 	com = updater._iterate_component_repositories(components, new_version, new_version, ('all',))
 
 	all = itertools.chain(rel, com)
-	scripts = updater.get_sh_files(all)
+	scripts = updater.get_sh_files(all, baseConfig.is_true('repository/online/verify', True))
 	for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
 		if (phase, order) == ('update', 'pre'):
 			log('**** Downloading scripts at %s' % datetime.datetime.now().ctime())

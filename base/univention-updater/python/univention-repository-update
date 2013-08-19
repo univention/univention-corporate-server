@@ -81,7 +81,7 @@ def copy_repository( options, source, version ):
 	urepo.update_indexes( dest_repo )
 
 	print >>options.teefile, 'Scripts ...',
-	for script in ('preup.sh', 'postup.sh'):
+	for script in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
 		if os.path.exists(os.path.join(source, script)):
 			shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
 	print >>options.teefile, 'Done.'

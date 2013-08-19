@@ -29,6 +29,7 @@ class TestUniventionMirror(unittest.TestCase):
             #'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, MINOR, PATCH),
             #'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
             'repository/mirror/architectures': ' '.join(ARCH),
+            'repository/mirror/verify': 'no',
             }
         self.m = M.UniventionMirror()
 
@@ -61,6 +62,7 @@ class TestUniventionMirror(unittest.TestCase):
             'repository/mirror/prefix': 'prefix',
             'repository/mirror/sources': 'yes',
             'repository/mirror/httpmethod': 'POST',
+            'repository/mirror/verify': 'yes',
             })
         self.m.config_repository()
         self.assertFalse(self.m.online_repository)
@@ -69,6 +71,7 @@ class TestUniventionMirror(unittest.TestCase):
         self.assertEqual(self.m.repository_prefix, 'prefix')
         self.assertTrue(self.m.sources)
         self.assertEqual(self.m.http_method, 'POST')
+        self.assertTrue(self.m.script_verify)
 
     # TODO: Copy over test_updater
 
