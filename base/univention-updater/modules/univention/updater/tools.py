@@ -36,8 +36,9 @@ try:
 except ImportError:
 	import univention.debug2 as ud
 
-from univention.updater.commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
-from univention.updater.errors import *
+# TODO: Convert to absolute imports only AFTER the unit test has been adopted
+from commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
+from errors import *
 
 import errno
 import time
