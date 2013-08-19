@@ -1623,7 +1623,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The syntax for the Profile DN in UVMM info LDAP objects has been changed to do an LDAP search and provide a drop-down list of available profiles (<ulink url="&ucsbug;24774">Bug 24774</ulink>).
+		  The syntax for the profile DN in LDAP info objects has been changed to do an LDAP search and provide a drop-down list of available profiles (<ulink url="&ucsbug;24774">Bug 24774</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
