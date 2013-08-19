@@ -1,7 +1,13 @@
+univention-errata-level (2.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS-3.2 (Bug #32236)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 19 Aug 2013 09:51:11 +0200
+
 univention-errata-level (1.0.1-1) unstable; urgency=low
 
   * Update copyright to 2013
-  * Bump version (Bug #30802)
+  * Bump version for UCS-3.1 (Bug #30802)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Mar 2013 20:57:37 +0100
 
