@@ -215,7 +215,7 @@ Type=bool
 Categories=service-mail
 
 [mail/postfix/smtpd/debug]
-Description[de]=Falls true wird er smtpd im Debug-Modus gestartet (default: false)
+Description[de]=Falls auf true gesetzt, wird der smtpd im Debug-Modus gestartet (default: false)
 Description[en]=If set to true the smtpd is started in debug mode (default: false)
 Type=bool
 Categories=service-mail

@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.3-3) unstable; urgency=low
+
+  * fixed small typo in UCR variable description (Bug #29593)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 19 Aug 2013 11:44:42 +0200
+
 univention-mail-postfix (8.0.3-2) unstable; urgency=low
 
   * Also register ldap/server/addition in ucr template (Bug #19753)
