@@ -1,20 +1,6 @@
-[xencommons]
-description[de]=Xen Hypervisor Grunddienste
-description[en]=Xen Hypervisor common services
-icon=virtualization/xen
-programs=xenconsoled
-start_type=xen/xencommons/autostart
-
 [xend]
 description[de]=Xen Hypervisor 
 description[en]=Xen Hypervisor
 icon=virtualization/xen
 programs=/usr/sbin/xend
 start_type=xen/xend/autostart
-
-[xendomains]
-description[de]=Xen Hypervisor laufende Domänen
-description[en]=Xen Hypervisor running domains
-icon=virtualization/xen
-programs=/usr/lib64/xen/bin/qemu-dm
-start_type=xen/xendomains/autostart
