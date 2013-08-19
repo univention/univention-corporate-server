@@ -254,6 +254,7 @@ class object(univention.admin.handlers.simpleLdap):
 			for i in range(0, len(self['nameserver'])):
 				if len(self['nameserver'][i]) > 0 \
 					and ':' not in self['nameserver'][i] \
+					and '.' in self['nameserver'][i] \
 					and not self['nameserver'][i].endswith('.'):
 					self['nameserver'][i] += '.'
 			refresh = univention.admin.mapping.mapUNIX_TimeInterval( self[ 'refresh' ] )

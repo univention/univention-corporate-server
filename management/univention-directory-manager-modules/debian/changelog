@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.15-1) unstable; urgency=low
+
+  * dns/[forward/reverse]_zone: only append dot to nameserver entry if it is a FQDN
+  (Bug #29568)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 19 Aug 2013 15:27:16 +0200
+
 univention-directory-manager-modules (9.0.14-1) unstable; urgency=low
 
   * fixed error message (Bug #19441) 
