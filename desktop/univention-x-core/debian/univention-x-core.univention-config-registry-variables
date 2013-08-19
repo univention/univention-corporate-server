@@ -11,8 +11,8 @@ Type=str
 Categories=system-desktop
 
 [xorg/module/load]
-Description[de]=Beim X-Serverstart zu ladende Xorg-Module. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
-Description[en]=X.org modules to load on Xserver startup. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
+Description[de]=Beim X-Serverstart zu ladende Xorg-Module. Mehrere Module werden mit einem Semikolon getrennt. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[en]=X.org modules to load on Xserver startup. Multiple modules are separated by a semicolon. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
 
@@ -47,7 +47,7 @@ Type=str
 Categories=system-desktop
 
 [xorg/monitor/VertRefresh]
-Description[de]=Der Bereich der vertikalen Bildwiederholfrequenzen in Hertz, die vom Monitor unterstützt werden. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
+Description[de]=Der Bereich der vertikalen Bildwiederholfrequenzen in Hz, die vom Monitor unterstützt werden. Die Variable wird nur verwendet, wenn die Xorg-Autokonfiguration deaktiviert wurde (Variable: 'xorg/autodetect').
 Description[en]=The range of vertical refresh frequencies in Hz supported by the monitor. This variable is only used if the Xorg autodetection has been disabled (variable: 'xorg/autodetect').
 Type=str
 Categories=system-desktop
