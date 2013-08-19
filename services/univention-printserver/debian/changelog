@@ -1,3 +1,9 @@
+univention-printserver (7.0.3-6) unstable; urgency=low
+
+  * fix broken comment (Bug #31764)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 Aug 2013 15:06:00 +0200
+
 univention-printserver (7.0.3-5) unstable; urgency=low
 
   * Recover dropped changelog entry (Bug #31764)

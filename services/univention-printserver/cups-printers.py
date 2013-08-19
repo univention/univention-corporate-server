@@ -1,4 +1,4 @@
-74# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # Univention Print Server
 #  listener module: management of CUPS printers
