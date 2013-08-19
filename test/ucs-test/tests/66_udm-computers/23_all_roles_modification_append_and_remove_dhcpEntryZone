@@ -25,21 +25,12 @@ if __name__ == '__main__':
 				['%s' % udm.create_object('dhcp/service', service = uts.random_name()), '10.20.30.43', '44:44:44:44:44:44']
 			)
 
-			computer = udm.create_object(role, name = computerName, append = {
-				'ip': [zone[1] for zone in dhcpEntryZones[:2]],
-				'mac': [zone[2] for zone in dhcpEntryZones[:2]],
-				'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[:2]]
-			})
-			for service, ip, mac in dhcpEntryZones[:2]:
-				utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {
-					'univentionDhcpFixedAddress': [ip],
-					'dhcpHWAddress': ['ethernet %s' % mac]
-				})
+			computer = udm.create_object(role, name = computerName)
 
 			udm.modify_object(role, dn = computer, append = {
-				'ip': [zone[1] for zone in dhcpEntryZones[2:]],
-				'mac': [zone[2] for zone in dhcpEntryZones[2:]],
-				'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones[2:]]
+				'ip': [zone[1] for zone in dhcpEntryZones],
+				'mac': [zone[2] for zone in dhcpEntryZones],
+				'dhcpEntryZone': [' '.join(zone) for zone in dhcpEntryZones]
 			})
 			for service, ip, mac in dhcpEntryZones:
 				utils.verify_ldap_object('cn=%s,%s' % (computerName, service), {

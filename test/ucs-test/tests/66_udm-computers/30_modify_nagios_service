@@ -42,19 +42,19 @@ if __name__ == '__main__':
 			computerAssociatedDomain = ldap.getAttr(computer, 'associatedDomain')[0]
 
 			# validate that computer has been added to the nagios services
-			for nagiosServices in nagiosServices[:2]:
-				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerProperties['name'], computerAssociatedDomain)]})
+			for nagiosService in nagiosServices[:2]:
+				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerName, computerAssociatedDomain)]})
 
 
 			# modify computer, append two more nagios services
 			udm.modify_object(role, dn = computer, append = {'nagiosServices': [nagiosServices[2:]]})
 			# validate that computer has been added to the new nagios services and also still set at the old ones
 			for nagiosServices in nagiosServices:	
-				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerProperties['name'], computerAssociatedDomain)]})
+				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerName, computerAssociatedDomain)]})
 
 
 			# modify computer again, removing the nagios services which have been set during creation
-			udm.modify_object(role, dn = computer, remove = {'nagiosServices': [nagiosServices[:2]})
+			udm.modify_object(role, dn = computer, remove = {'nagiosServices': [nagiosServices[:2]]})
 			# validate that the computer has been removed from the related nagios services
 			for nagiosServices in nagiosServices[:2]:
 				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': []})
@@ -62,4 +62,4 @@ if __name__ == '__main__':
 
 			# validated that the computers is still set at the not removed nagios services
 			for nagiosServices in nagiosServices[2:]:	
-				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerProperties['name'], computerAssociatedDomain)]})
+				utils.verify_ldap_object(nagiosService, {'univentionNagiosHostname': ['%s.%s' % (computerName, computerAssociatedDomain)]})

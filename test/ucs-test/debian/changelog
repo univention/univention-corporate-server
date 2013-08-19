@@ -1,3 +1,12 @@
+ucs-test (4.0.88-1) unstable; urgency=low
+
+  * added test to test computer removal
+  * added generic test to test computer creation with all attributes set for
+    all roles and removed the non generic tests
+  (Bug #31659)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 19 Aug 2013 15:50:16 +0200
+
 ucs-test (4.0.87-1) unstable; urgency=low
 
   * added test to test group removal
