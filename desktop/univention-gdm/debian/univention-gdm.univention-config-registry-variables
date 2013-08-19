@@ -18,7 +18,7 @@ Categories=system-desktop
 
 [gdm/relaxpermissions]
 Description[de]=In der Grundeinstellung - und wenn die Variable nicht gesetzt ist - lässt GDM für das Heimatverzeichnis nur ein Verzeichnis zu, das nur für den anmeldendne Benutzer schreibbar ist. Wird die Variable auf '1' gesetzt, ist ein gruppenschreibbares Verzeichnis zulässig, mit '2' auch ein für alle Benutzer schreibbares Verzeichnis.
-Description[en]=In the default setting - and if the variable is unset - GDM only permits a directory exclusively writable to the user logging in as the home directory. If the variable is set to '1', a group-writable directory is allowed and it set to '2', also a world-writable directory.
+Description[en]=In the default setting - and if the variable is unset - GDM only permits a directory exclusively writable by the user logging in as the home directory. If the variable is set to '1', a group-writable directory is allowed and it set to '2', also a world-writable directory.
 Type=int
 Categories=system-desktop
 
@@ -29,20 +29,20 @@ Type=str
 Categories=system-desktop
 
 [gdm/menu/system]
-Description[de]=Ist diese Variable auf 'true' gesetzt, werden im GDM Buttons für das Herunterfahren bzw. den Neustart des Rechners angeboten. Ist die Variable nicht gesetzt, werden die Buttons nicht angezeigt.
+Description[de]=Ist diese Variable auf 'true' gesetzt, werden im GDM Schaltflächen für das Herunterfahren bzw. den Neustart des Rechners angeboten. Ist die Variable nicht gesetzt, werden die Schaltflächen nicht angezeigt.
 Description[en]=If the variable is set to 'true', GDM provides buttons for the shutdown and restart of the computer. If the variable is unset, the button are not shown.
 Type=str
 Categories=system-desktop
 
 [gdm/theme]
-Description[de]=Das Design des GDM kann durch Themes angepasst werden. Mit dieser Variable kann der Name eines Themes im Theme-Verzeichnis angegeben werden (siehe die Variable 'gdm/theme/dir'). Ist die Variable nicht gesetzt, wird das Univention-Theme verwendet. 
-Description[en]=The design of GDM can be adapted using themes. With this variable the name of a theme can be specified in the theme directory (see the variable 'gdm/theme/dir'). If the variable is unset the Univention theme is used.
+Description[de]=Das Design des GDM kann durch Designs/Themes angepasst werden. Mit dieser Variable kann der Name eines Designs im Theme-Verzeichnis angegeben werden (siehe die Variable 'gdm/theme/dir'). Ist die Variable nicht gesetzt, wird das Univention-Design verwendet. 
+Description[en]=The theme of GDM can be adapted using themes. With this variable the name of a theme can be specified in the theme directory (see the variable 'gdm/theme/dir'). If the variable is unset the Univention theme is used.
 Type=str
 Categories=system-desktop
 
 [gdm/theme/dir]
 Description[de]=Das Verzeichnis, aus dem die GDM-Designs geladen werden (siehe die Variable 'gdm/theme'). Ist die Variable nicht gesetzt, wird /usr/share/gdm/themes/ verwendet.
-Description[en]=The directory from which the GDM designs are loaded (see the variable 'gdm/theme'). If the variable is unset, /usr/share/gdm/themes/ is used.
+Description[en]=The directory from which the GDM theme are loaded (see the variable 'gdm/theme'). If the variable is unset, /usr/share/gdm/themes/ is used.
 Type=str
 Categories=system-desktop
 
