@@ -1,3 +1,12 @@
+univention-samba4 (2.0.44-34) unstable; urgency=low
+
+  * Wait for the DRS replication during the join. The host object must
+    be synchronized to the S4 connector DC before the Samba 4 service is
+    added to the host otherwise the DRS replication generates a conflict
+    (Bug #32257)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Aug 2013 17:03:10 +0200
+
 univention-samba4 (2.0.44-33) unstable; urgency=low
 
   * fix shell syntax (Bug #32184)

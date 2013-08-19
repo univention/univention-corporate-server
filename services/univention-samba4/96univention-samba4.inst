@@ -412,6 +412,29 @@ sysvol_fixup() {
 	set_default_fACL /var/lib/samba/sysvol
 }
 
+get_s4connector_dc () {
+	univention-ldapsearch "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | sed -n 's/^cn: \(.*\)/\1/p'
+}
+
+wait_until_dc_was_replicated_to_connector_dc () {
+	s4connector_dc="$(get_s4connector_dc)"
+
+	if [ -z "$s4connector_dc" ]; then
+		echo "WARNING: Failed to search for S4 connector DC"
+		return
+	fi
+
+	echo -n "Waiting for DRS replication: "
+	for((i=0;i<300;i++)); do
+		search_result="$(ldbsearch -H "ldap://$s4connector_dc" -U"${hostname}$"%"$(</etc/machine.secret)" "(&(objectClass=computer)(cn=${hostname}))" cn 2>/dev/null| sed -n 's/^cn: \(.*\)/\1/p')"
+		test -n "$search_result" && break
+		echo -n "."
+		sleep 1
+	done
+
+	test -n "$search_result" && echo " done" || echo " failed"
+}
+
 ### --- END helper functions ---
 
 extract_binddn_and_bindpwd_from_args "$@"
@@ -722,6 +745,10 @@ if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 fi
 
 /etc/init.d/samba4 restart
+
+# To prevent a DRS replication conflict: 
+#  https://forge.univention.org/bugzilla/show_bug.cgi?id=32257
+wait_until_dc_was_replicated_to_connector_dc
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 
