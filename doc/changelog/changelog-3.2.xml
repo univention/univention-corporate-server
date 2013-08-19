@@ -754,8 +754,7 @@
 		<listitem><simpara>
 				Univention Directory Manager modules that support superordinates now
 				respect the autosearch setting via UCR when changing the superordinate
-				in the advanced search form (<ulink url="&ucsbug;29498">Bug
-					29498</ulink>).
+				in the advanced search form (<ulink url="&ucsbug;29498">Bug 29498</ulink>).
 
 		</simpara></listitem>
 
@@ -1100,8 +1099,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The VNC module has been removed (<ulink url="&ucsbug;30158">Bug
-				30158</ulink>). As an alternative <emphasis>xrdp</emphasis> can be used
+			The VNC module has been removed (<ulink url="&ucsbug;30158">Bug 30158</ulink>).
+			As an alternative <emphasis>xrdp</emphasis> can be used
 			for remote administration. It is available in the <emphasis>Univention
 				App Center</emphasis>.
 		</simpara></listitem>
@@ -1663,6 +1662,11 @@
 
 		<listitem><simpara>
 		  The storage pool handling has been overhauled and now better supports different storage pools. Especially a bug has been fixed, which could result in deleting the wrong storage volume when multiple storage pools were used (<ulink url="&ucsbug;32098">Bug 32098</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Profiles for UCS-3.0 are no longer created.
+		  Instead profiles for UCS-3.2 are created (<ulink url="&ucsbug;32261">Bug 32261</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
