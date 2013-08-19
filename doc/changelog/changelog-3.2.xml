@@ -1100,7 +1100,10 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The VNC module has been removed (<ulink url="&ucsbug;30158">Bug 30158</ulink>).
+			The VNC module has been removed (<ulink url="&ucsbug;30158">Bug
+				30158</ulink>). As an alternative <emphasis>xrdp</emphasis> can be used
+			for remote administration. It is available in the <emphasis>Univention
+				App Center</emphasis>.
 		</simpara></listitem>
 
 		<listitem><simpara>
