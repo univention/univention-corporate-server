@@ -20,7 +20,7 @@ LDIF can be:
  a hostname whose LDAP will be dumped using slapcat over ssh.
 If LDIF2 is omitted, a local 'slapcat' is used.
 '''
-VERSION = '%prof 1.0'
+VERSION = '%prog 1.0'
 
 
 class LdifError(Exception):
