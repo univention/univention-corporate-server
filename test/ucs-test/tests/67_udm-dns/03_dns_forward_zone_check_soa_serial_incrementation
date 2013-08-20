@@ -35,7 +35,7 @@ if __name__ == '__main__':
 		new_ttl = '12'
 		udm.modify_object('dns/forward_zone', dn = forward_zone, ttl = new_ttl)
 
-		utils.verify_ldap_object(forward_zone, {'sOARecord': ['%s. %s. %s %s %s %s %s' % (
+		utils.verify_ldap_object(forward_zone, {'sOARecord': ['%s %s. %s %s %s %s %s' % (
 											   forward_zone_properties['nameserver'],
 											   forward_zone_properties['contact'].replace('@', '.'),
 											   '2',

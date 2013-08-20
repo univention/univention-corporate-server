@@ -1,3 +1,10 @@
+ucs-test (4.0.90-1) unstable; urgency=low
+
+  * adapted four more udm-dns tests to the new UDM handling of NS records
+  (Bug #31653)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 20 Aug 2013 11:47:53 +0200
+
 ucs-test (4.0.89-1) unstable; urgency=low
 
   * adapted some udm-dns tests to match the new UDM handling of NS records in
