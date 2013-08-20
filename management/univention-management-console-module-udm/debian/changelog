@@ -1,3 +1,9 @@
+univention-management-console-module-udm (3.0.78-5) unstable; urgency=low
+
+  * Bug #31916: fixed erroneous evaluation of policies in udm/object/policies
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Aug 2013 17:54:09 +0200
+
 univention-management-console-module-udm (3.0.78-4) unstable; urgency=low
 
   * Bug #31161: publish saving and cancel actions when editing UDM objects

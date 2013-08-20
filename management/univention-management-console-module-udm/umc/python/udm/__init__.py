@@ -951,42 +951,92 @@ class Instance( Base ):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
 		def _thread( request ):
-			try:
-				object_type = request.options[0].get( 'objectType' )
-				object_dn = request.options[0].get( 'objectDN' )
-				container = request.options[0].get( 'container' )
-			except IndexError:
-				raise UMC_OptionTypeError( 'The given object type is not valid' )
-			obj = None
-			if object_dn:
-				module = UDM_Module( object_type )
-				if module.module is None:
-					raise UMC_OptionTypeError( 'The given object type is not valid' )
-				obj = module.get( object_dn )
-			elif container:
-				module = get_module( None, container )
-				if module.module is None:
-					raise UMC_OptionTypeError( 'The given object type is not valid' )
-				obj = module.get( container )
-			if obj is None:
-				raise UMC_OptionTypeError( 'The object could not be found' )
 
+			object_dn = None
+			container_dn = None
+			obj = None
+
+			def _get_object(_dn, _module):
+				'''Get existing UDM object and corresponding module. Verify user input.'''
+				if _module.module is None:
+					raise UMC_OptionTypeError( 'The given object type is not valid' )
+				_obj = _module.get( _dn )
+				if _obj is None:
+					raise UMC_OptionTypeError( 'The object could not be found' )
+				return _obj, _module
+
+			def _get_object_parts(_options):
+				'''Get object related information and corresponding UDM object/module. Verify user input.'''
+				try:
+					_object_type = _options.get('objectType')
+					_object_dn = _options.get('objectDN')
+					_container_dn = _options.get('container')
+				except IndexError:
+					raise UMC_OptionTypeError( 'The given object type is not valid' )
+
+				if (object_dn, container_dn) == (_object_dn, _container_dn):
+					# nothing has changed w.r.t. last entry -> return last values
+					return (object_dn, container_dn, obj)
+
+				_obj = None
+				_module = None
+				if _object_dn:
+					# editing an exiting UDM object -> use the object itself
+					_obj, _module = _get_object(_object_dn, UDM_Module(_object_type))
+				elif _container_dn:
+					# editing a new (i.e. non existing) object -> use the parent container
+					_obj, _module = _get_object(_container_dn, get_module(None, _container_dn))
+
+				return (_object_dn, _container_dn, _obj)
+
+			def _get_policy_parts(_options):
+				'''Get policy related UDM object and DN. Verify user input.'''
+				_policy_type = _options.get( 'policyType' )
+				_policy_dn = _options.get( 'policyDN' )
+
+				_policy_obj, _policy_module = _get_object(_policy_dn, UDM_Module(_policy_type))
+
+				return (_policy_obj, _policy_dn)
 
 			ret = []
-			for policy_options in request.options:
-				policy_type = policy_options.get( 'policyType' )
-				policy_dn = policy_options.get( 'policyDN' )
+			for ioptions in request.options:
+				object_dn, container_dn, obj = _get_object_parts(ioptions)
+				policy_obj, policy_dn = _get_policy_parts(ioptions)
+				policy_obj.clone(obj)
 
-				policy_module = UDM_Module( policy_type )
-				if policy_module.module is None:
-					raise UMC_OptionTypeError( 'The given policy type is not valid' )
+				# There are 2x2x2 (=8) cases that may occur (c.f., Bug #31916):
+				# (1)
+				#   [edit] editing existing UDM object
+				#   -> the existing UDM object itself is loaded
+				#   [new]  virtually edit non-existing UDM object (when a new object is being created)
+				#   -> the parent container UDM object is loaded
+				# (2)
+				#   [w/pol]   UDM object has assigend policies in LDAP directory
+				#   [w/o_pol] UDM object has no policies assigend in LDAP directory
+				# (3)
+				#   [inherit] user request to (virtually) change the policy to 'inherited'
+				#   [set_pol] user request to (virtually) assign a particular policy
+				faked_policy_reference = None
+				if object_dn and not policy_dn:
+					# case: [edit; w/pol; inherit]
+					# -> current policy is (virtually) overwritten with 'None'
+					faked_policy_reference = [None]
+				elif not object_dn and policy_dn:
+					# cases:
+					# * [new; w/pol; inherit]
+					# * [new; w/pol; set_pol]
+					# -> old + temporary policy are both (virtually) set at the parent container
+					faked_policy_reference = obj.policies + [policy_dn]
+				else:
+					# cases:
+					# * [new; w/o_pol; inherit]
+					# * [new; w/o_pol; set_pol]
+					# * [edit; w/pol; set_pol]
+					# * [edit; w/o_pol; inherit]
+					# * [edit; w/o_pol; set_pol]
+					faked_policy_reference = policy_dn
 
-				policy_obj = policy_module.get()
-				policy_obj.clone( obj )
-				# ensure that the object itself is ignored
-				policy_obj.referring_object_position_dn = None
-				policy_obj.policy_result( faked_policy_reference = policy_dn )
-
+				policy_obj.policy_result( faked_policy_reference )
 				infos = copy.copy( policy_obj.polinfo_more )
 				for key, value in infos.items():
 					if key in policy_obj.polinfo:
