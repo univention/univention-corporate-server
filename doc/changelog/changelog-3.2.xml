@@ -1895,6 +1895,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 		ucs-tests now uses ucslint (<ulink url="&ucsbug;28699">Bug 28699</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Some corner cases are now handled better in ucs-test  (<ulink url="&ucsbug;31795">Bug 31795</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 
