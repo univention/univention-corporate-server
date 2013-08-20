@@ -1872,6 +1872,13 @@
 		  updates and new installations.
 		  (<ulink url="&ucsbug;31640">Bug 31640</ulink>).
 		</simpara></listitem>
+		<listitem><simpara>
+		  In some cases the join of a Samba DC results in a conflicted host
+		  account. To prevent this issue, the univention-samba4 join script
+		  waits until the host account was replicated to the S4 connector host
+		  through the DRS replication.
+		  (<ulink url="&ucsbug;32257">Bug 32257</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 	</para>
   </section>
