@@ -292,8 +292,9 @@
   border-color: inherit; /* DEL */
 }
 
-.umc .dijitTabHover .tabLabel {
-  color: black;
+.umc .dijitTabHover .tabLabel,
+.umc .dijitTabChecked .tabLabel {
+  color: @grayShip;
 }
 
 .umc .dijitTabActive .dijitTabContent {
@@ -403,7 +404,7 @@
 
 .umc .dijitTabContainerTabListNested {
 	.dijitTabHover .tabLabel {
-		color: black;
+		color: @grayShip;
 	}
 
 	.dijitTabCheckedHover .tabLabel {
@@ -920,14 +921,6 @@
 	text-decoration: underline;
 }
 
-.dijitToasterContent {
-	border: 1px solid #73C74A !important;
-	background: white !important;
-	border-top: 0 !important;
-	color: #555 !important;
-	padding: 10px !important;
-}
-
 /* @group umc input sizes */
 .umc {
 	.umcSize-One {
@@ -1006,8 +999,8 @@ textarea {
 }
 
 .umcPageHeader h1 {
-	margin: 15px 0;
-	padding: 0 0 0.833em 0.583em;
+	margin: 0.833em 0;
+	padding: 0 0 0.556em 0.311em;
 	border-bottom: 1px solid @grayDusty;
 	// on the android tablet the border would not be displayed at full width
 	// this background image hack fixes the problem, see:
@@ -1021,32 +1014,35 @@ textarea {
 	padding: 0.833em;
 }
 
-.umcPopup .dijitDialogPaneContent {
-    padding: 15px;
-}
+.umcPopup {
+	.dijitDialogPaneContent {
+		padding: 15px;
+	}
 
-.umcPopup h1 {
-	margin: 15px 0;
-	border-bottom: 1px solid @grayDusty;
-	padding-bottom: 0.833em;
-	// on the android tablet the border would not be displayed at full width
-	// this background image hack fixes the problem, see:
-	//   http://stackoverflow.com/a/13550951
-	background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
-}
+	h1 {
+		margin: 0.833em 0;;
+		border-bottom: 1px solid @grayDusty;
+		padding-bottom: 0.556em;
+		// on the android tablet the border would not be displayed at full width
+		// this background image hack fixes the problem, see:
+		//   http://stackoverflow.com/a/13550951
+		background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
+	}
 
-.umcPopup table {
-	border-spacing: 10px;
-	padding-bottom: 15px;
-}
-.umcPopup p {
-	padding-bottom: 0.416em;
-}
+	table {
+		border-spacing: 10px;
+		padding-bottom: 15px;
+	}
 
-.umcPopup form {
-	margin-top: -5px;
-	margin-right: -5px;
-	margin-bottom: 0px;
+	p {
+		padding-bottom: 0.416em;
+	}
+
+	form {
+		margin-top: -5px;
+		margin-right: -5px;
+		margin-bottom: 0px;
+	}
 }
 
 .dijitTitlePane {
@@ -1060,12 +1056,14 @@ textarea {
 	margin: -10px;
 }
 
-
 /* @group notifications */
 .dijitToasterContent {
-  padding-top: 2px !important;
-  padding-bottom: 5px !important;
-  font-size: 1em !important;
+	background: white !important;
+	border: 1px solid @greenMantis;
+	border-top: 0;
+	color: @grayShip;
+	font-size: 1.333em;
+	padding: 2px 10px 5px 10px !important;
 }
 
 /* @group footer */
