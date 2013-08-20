@@ -161,10 +161,10 @@
 		</para>
 
 		<para>
-		  Eine bereits vorhandene Cyrus BDD-Konfiguration wird während des Update nach
+		  Eine bereits vorhandene Cyrus BDB-Konfiguration wird während des Update nach
 		  <filename>/var/lib/cyrus/db/DB_CONFIG.debian</filename> kopiert. Sollten die neuen
-		  Default-Werte den alten, bereits vorhandenen Konfiguration nicht entsprechen oder sind
-		  verwendete Optionen nicht in den neuen Default-Werten vorhanden, sollten die
+		  Default-Werte nicht der alten, bereits vorhandenen Konfiguration entsprechen oder sind
+		  die verwendeten Optionen nicht in den neuen Default-Werten enthalten, sollten die
 		  entsprechenden &ucsUCR;-Variablen vor dem Update gesetzt werden, z.B.:
 		</para>
 

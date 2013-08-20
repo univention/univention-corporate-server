@@ -159,7 +159,7 @@
 		<para>
 		  Any existing Cyrus BDB configuration will be copied to
 		  <filename>/var/lib/cyrus/db/DB_CONFIG.debian</filename> during the update. If the new
-		  default values do not correspond to the old, existing configuration or if options used are
+		  default values do not correspond to the old, existing configuration or if the used options are
 		  not available in the new default values, the corresponding &ucsUCR; variables should be
 		  set prior to the update. E.g.:
 		</para>

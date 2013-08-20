@@ -1279,24 +1279,26 @@
 	  <itemizedlist>
 		<listitem><simpara>
 		  The &ucsUCRV; <envar>mail/cyrus/imap/duplicatesuppression</envar> (default: yes) has been
-		  added to <command>univention-mail-cyrus</command>. If set to ``yes'', lmtpd will suppress delivery
+		  added to <command>univention-mail-cyrus</command>. If set to <emphasis>yes</emphasis>, lmtpd will suppress delivery
 		  of a message to a mailbox if same message with the same message-id (or resent-message-id)
 		  has already been delivered to the mailbox (<ulink url="&ucsbug;22429">Bug 22429</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A new &ucsUCR; template <ulink url="/var/lib/cyrus/db/DB_CONFIG"/> for the cyrus bdb
+		  A new &ucsUCR; template <filename>/var/lib/cyrus/db/DB_CONFIG</filename> for the cyrus bdb
 		  configuration has been added. This template is registered to UCR variables with the prefix
 		  <emphasis>mail/cyrus/bdb/dbconfig/</emphasis>. All these variables, without the prefix,
 		  and the values ar e written to the DB_CONFIG file. Default settings for the DB_CONFIG file
-		  are <literal>mail/cyrus/bdb/dbconfig/set_lg_regionmax="2097152"</literal> and
-		  <literal>mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</literal> (<ulink url="&ucsbug;28464">Bug 28464</ulink>).
+		  are:
+		  <programlisting>mail/cyrus/bdb/dbconfig/set_lg_regionmax="2097152"
+mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
+		  (<ulink url="&ucsbug;28464">Bug 28464</ulink>)
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The listener module for the management of imap mailboxes has been revised. Only if a
-		  mailHomeServer ist set for the user, the mailbox is created. If the mailHomeServer
-		  attribute is removed from a user, the mailbox will be deleted (<ulink url="&ucsbug;29605">Bug 29605</ulink>).
+		  The listener module for the management of IMAP mailboxes has been revised. Only if the attribute
+		  <emphasis>mailHomeServer</emphasis> is set at a user object, the mailbox is created. If the <emphasis>mailHomeServer</emphasis>
+		  attribute is removed from a user object, the mailbox will be deleted (<ulink url="&ucsbug;29605">Bug 29605</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
