@@ -5,8 +5,8 @@ run_warnquota=
 
 # Add options to rpc.rquotad here
 @!@
-if baseConfig.has_key('nfs/ports') and baseConfig['nfs/ports'] == 'static':
-        print 'RPCRQUOTADOPTS="-p 32769"'
+if configRegistry.get('nfs/ports') == 'static':
+	print 'RPCRQUOTADOPTS="--port 32769"'
 else:
 	print 'RPCRQUOTADOPTS='
 @!@

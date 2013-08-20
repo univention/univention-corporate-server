@@ -1,3 +1,9 @@
+univention-nfs (6.0.1-1) unstable; urgency=low
+
+  * Update init script for NFS server (Bug #32228)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 20 Aug 2013 12:14:10 +0200
+
 univention-nfs (6.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013

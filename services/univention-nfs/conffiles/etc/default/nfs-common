@@ -4,21 +4,20 @@
 # autodetected; this should be sufficient for most people. Valid alternatives
 # for the NEED_ options are "yes" and "no".
 
+# Do you want to start the statd daemon? It is not needed for NFSv4.
+NEED_STATD=
+
 # Options for rpc.statd.
 #   Should rpc.statd listen on a specific port? This is especially useful
 #   when you have a port-based firewall. To use a fixed port, set this
 #   this variable to a statd argument like: "--port 4000 --outgoing-port 4001".
 #   For more information, see rpc.statd(8) or http://wiki.debian.org/?SecuringNFS
 @!@
-if baseConfig.has_key('nfs/ports') and baseConfig['nfs/ports'] == 'static':
-        print 'STATDOPTS="--port 32765 --outgoing-port 32766"'
+if configRegistry.get('nfs/ports') == 'static':
+	print 'STATDOPTS="--port 32765 --outgoing-port 32766"'
 else:
 	print 'STATDOPTS='
 @!@
-
-# Some kernels need a separate lockd daemon; most don't. Set this if you
-# want to force an explicit choice for some reason.
-NEED_LOCKD=
 
 # Do you want to start the idmapd daemon? It is only needed for NFSv4.
 NEED_IDMAPD=

@@ -1,58 +1,61 @@
 #!/bin/sh
-#
-# Univention NFS
-#  init script
-#
-# Copyright 2004-2013 Univention GmbH
-#
-# http://www.univention.de/
-#
-# All rights reserved.
-#
-# The source code of this program is made available
-# under the terms of the GNU Affero General Public License version 3
-# (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License with the Debian GNU/Linux or Univention distribution in file
-# /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
-#
-# nfs-kernel-server
-#		This shell script takes care of starting and stopping
-#               the kernel-mode NFS server.
-#
-# chkconfig: 345 60 20
-# description: NFS is a popular protocol for file sharing across TCP/IP \
-#              networks. This service provides NFS server functionality, \
-#              which is configured via the /etc/exports file.
-#
 @%@UCRWARNING=# @%@
 
-PREFIX=/usr
-[ -x $PREFIX/sbin/rpc.nfsd ] || exit 0
-[ -x $PREFIX/sbin/rpc.mountd ] || exit 0
-[ -x $PREFIX/sbin/exportfs ] || exit 0
+### BEGIN INIT INFO
+# Provides:          nfs-kernel-server
+# Required-Start:    $remote_fs nfs-common $portmap $time
+# Required-Stop:     $remote_fs nfs-common $portmap $time
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Kernel NFS server support
+# Description:       NFS is a popular protocol for file sharing across
+#		     TCP/IP networks. This service provides NFS server
+#                    functionality, which is configured via the
+#                    /etc/exports file.
+### END INIT INFO
 
-RPCNFSDCOUNT=8	# Number of servers to be started up by default
+# What is this?
+DESC="NFS kernel daemon"
+PREFIX=/usr
+
+# Exit if required binaries are missing.
+[ -x $PREFIX/sbin/rpc.nfsd    ] || exit 0
+[ -x $PREFIX/sbin/rpc.mountd  ] || exit 0
+[ -x $PREFIX/sbin/exportfs    ] || exit 0
+
+# Read config
+DEFAULTFILE=/etc/default/nfs-kernel-server
+RPCNFSDCOUNT=8
+RPCNFSDPRIORITY=0
 RPCMOUNTDOPTS=
+NEED_SVCGSSD=no
+RPCSVCGSSDOPTS=
+PROCNFSD_MOUNTPOINT=/proc/fs/nfsd
+if [ -f $DEFAULTFILE ]; then
+    . $DEFAULTFILE
+fi
 
 . /lib/lsb/init-functions
 
-# If we should be started by heartbeat exit here
-eval "$(/usr/sbin/univention-config-registry shell)"
+do_modprobe() {
+    if [ -x /sbin/modprobe -a -f /proc/modules ]
+    then
+	modprobe -q "$1" || true
+    fi
+}
+
+do_mount() {
+    if ! grep -E -qs "$1\$" /proc/filesystems
+    then
+	return 1
+    fi
+    if ! mountpoint -q "$2"
+    then
+	mount -t "$1" "$1" "$2"
+	return
+    fi
+    return 0
+}
 
 # See how we were called.
 case "$1" in
@@ -62,46 +65,145 @@ case "$1" in
 		. /usr/share/univention-config-registry/init-autostart.lib
 		check_autostart nfs-kernel-server nfs/autostart
 	fi
-	cd /	# daemons should have root dir as cwd
-	if egrep -q '^["]{0,1}/' /etc/exports
+	if grep -Eqv '^ *(#.*)?$' /etc/exports
 	then
-		log_action_msg "Exporting directories for NFS kernel daemon"
-		$PREFIX/sbin/exportfs -r
-		echo "done."
+		do_modprobe nfsd
 
-		log_action_msg "Starting NFS kernel daemon: nfsd"
-		start-stop-daemon --start --quiet \
+		# See if our running kernel supports the NFS kernel server
+		if ! grep -E -qs "[[:space:]]nfsd\$" /proc/filesystems; then
+			log_warning_msg "Not starting $DESC: no support in current kernel."
+			exit 0
+		fi
+
+		do_mount nfsd $PROCNFSD_MOUNTPOINT || NEED_SVCGSSD=no
+		log_begin_msg "Exporting directories for $DESC..."
+		$PREFIX/sbin/exportfs -r
+		RET=$?
+		if [ $RET != 0 ]; then
+			log_end_msg $RET
+			exit $RET
+		fi
+		log_end_msg 0
+
+		log_daemon_msg "Starting $DESC"
+		log_progress_msg "nfsd"
+		start-stop-daemon --start --oknodo --quiet \
+		    --nicelevel $RPCNFSDPRIORITY \
 		    --exec $PREFIX/sbin/rpc.nfsd -- $RPCNFSDCOUNT
-		log_action_msg "Starting NFS kernel daemon: mountd"
+		RET=$?
+		if [ $RET != 0 ]; then
+			log_end_msg $RET
+			exit $RET
+		fi
+
+		# make sure 127.0.0.1 is a valid source for requests
+		ClearAddr=
+		if [ -f /proc/net/rpc/auth.unix.ip/channel ]
+		then
+		    fgrep -qs 127.0.0.1 /proc/net/rpc/auth.unix.ip/content || {
+			echo "nfsd 127.0.0.1 2147483647 localhost" >/proc/net/rpc/auth.unix.ip/channel
+			ClearAddr=yes
+		    }
+		fi
+
 		$PREFIX/bin/rpcinfo -u localhost nfs 3 >/dev/null 2>&1 ||
 		    RPCMOUNTDOPTS="$RPCMOUNTDOPTS --no-nfs-version 3"
-		start-stop-daemon --start --quiet \
+
+		[ -z "$ClearAddr" ] || echo "nfsd 127.0.0.1 1" >/proc/net/rpc/auth.unix.ip/channel
+
+		if [ "$NEED_SVCGSSD" = "yes" ]; then
+			do_modprobe rpcsec_gss_krb5
+			log_progress_msg "svcgssd"
+			start-stop-daemon --start --oknodo --quiet \
+			    --exec $PREFIX/sbin/rpc.svcgssd -- $RPCSVCGSSDOPTS
+			RET=$?
+			if [ $RET != 0 ]; then
+				log_end_msg $RET
+				exit $RET
+			fi
+		fi
+
+		log_progress_msg "mountd"
+		start-stop-daemon --start --oknodo --quiet \
 		    --exec $PREFIX/sbin/rpc.mountd -- $RPCMOUNTDOPTS
-		log_action_end_msg 0
+		RET=$?
+		if [ $RET != 0 ]; then
+			log_end_msg $RET
+			exit $RET
+		fi
+
+		log_end_msg 0
 	else
-		log_action_msg "Not starting NFS kernel daemon: No exports."
-		log_action_end_msg 1
+		log_warning_msg "Not starting $DESC: no exports."
 	fi
 	;;
 
   stop)
-	log_action_msg "Stopping NFS kernel daemon: mountd"
+	log_daemon_msg "Stopping $DESC"
+
+	log_progress_msg "mountd"
 	start-stop-daemon --stop --oknodo --quiet \
 	    --name rpc.mountd --user 0
-	log_action_msg "Stopping NFS kernel daemon: nfsd"
+	RET=$?
+	if [ $RET != 0 ]; then
+		log_end_msg $RET
+		exit $RET
+	fi
+
+	if [ "$NEED_SVCGSSD" = "yes" ]; then
+		log_progress_msg "svcgssd"
+		start-stop-daemon --stop --oknodo --quiet \
+		    --name rpc.svcgssd --user 0
+		RET=$?
+		if [ $RET != 0 ]; then
+			log_end_msg $RET
+			exit $RET
+		fi
+	fi
+
+	log_progress_msg "nfsd"
 	start-stop-daemon --stop --oknodo --quiet \
 	    --name nfsd --user 0 --signal 2
-	log_action_end_msg 0
+	RET=$?
+	if [ $RET != 0 ]; then
+		log_end_msg $RET
+		exit $RET
+	fi
 
-	log_action_msg "Unexporting directories for NFS kernel daemon"
+	log_end_msg 0
+
+	log_begin_msg "Unexporting directories for $DESC..."
 	$PREFIX/sbin/exportfs -au
-	log_action_end_msg 0
+	RET=$?
+	if [ $RET != 0 ]; then
+		log_end_msg $RET
+		exit $RET
+	fi
+	log_end_msg 0
+
+	if mountpoint -q $PROCNFSD_MOUNTPOINT
+	then
+	    $PREFIX/sbin/exportfs -f
+	fi
+	;;
+
+  status)
+	if pidof nfsd >/dev/null
+	then
+	    echo "nfsd running"
+	    exit 0
+	else
+	    echo "nfsd not running"
+	    exit 3
+	fi
 	;;
 
   reload | force-reload)
-	log_action_msg "Re-exporting directories for NFS kernel daemon"
+	log_begin_msg "Re-exporting directories for $DESC..."
 	$PREFIX/sbin/exportfs -r
-	log_action_end_msg 0
+	RET=$?
+	log_end_msg $RET
+	exit $RET
 	;;
 
   restart)
@@ -111,7 +213,7 @@ case "$1" in
 	;;
 
   *)
-	echo "Usage: nfs-kernel-server {start|stop|reload|force-reload|restart}"
+	log_success_msg "Usage: nfs-kernel-server {start|stop|status|reload|force-reload|restart}"
 	exit 1
 	;;
 esac

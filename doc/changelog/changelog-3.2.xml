@@ -1517,6 +1517,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<para>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The start script for the NFS server has been synchronized with the upstrean version to support newer Linux kernels and start all services needed for the PXE installer to work (<ulink url="&ucsbug;32228">Bug 32228</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
