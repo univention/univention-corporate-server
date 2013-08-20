@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.143-22) unstable; urgency=low
+
+  * Bug #31916: allow a list of policy DNs for simplePolicy.policy_result()
+    as well as a single policy DN reference.
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Aug 2013 17:43:25 +0200
+
 univention-directory-manager-modules (8.0.143-21) unstable; urgency=low
 
   * Bug #31560: Improve lookup speedup of UserName, GroupName, nfsShare
@@ -26,7 +33,7 @@ univention-directory-manager-modules (8.0.143-18) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.143-17) unstable; urgency=low
 
-  * fixed print_quota policy (Bug #31703)  
+  * fixed print_quota policy (Bug #31703)
 
  -- Felix Botner <botner@univention.de>  Tue, 25 Jun 2013 17:11:50 +0200
 

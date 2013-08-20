@@ -2683,7 +2683,9 @@ class simplePolicy(simpleLdap):
 		is cancelled.
 
 		If faked_policy_reference is given at the top object
-		(referring_object_dn) this policy object temporarily referenced"""
+		(referring_object_dn) this policy object temporarily referenced.
+
+		faked_policy_reference can be a string or a list of strings."""
 
 		if not self.resultmode:
 			return
@@ -2691,7 +2693,9 @@ class simplePolicy(simpleLdap):
 		self.polinfo_more={}
 		if not self.policy_attrs:
 			policies = []
-			if faked_policy_reference:
+			if isinstance(faked_policy_reference, (list, tuple)):
+				policies.extend(faked_policy_reference)
+			elif faked_policy_reference:
 				policies.append( faked_policy_reference )
 
 			# the referring object does not exist yet
