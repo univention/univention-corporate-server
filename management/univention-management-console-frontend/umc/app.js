@@ -62,7 +62,6 @@ define([
 	"dijit/form/DropDownButton",
 	"dijit/layout/BorderContainer",
 	"dijit/layout/TabContainer",
-	"dijit/layout/ContentPane",
 	"dijit/popup",
 	"umc/tools",
 	"umc/dialog",
@@ -71,18 +70,13 @@ define([
 	"umc/widgets/ProgressInfo",
 	"umc/widgets/LiveSearchSidebar",
 	"umc/widgets/GalleryPane",
-	"umc/widgets/TitlePane",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/TextBox",
-	"umc/widgets/ExpandingTitlePane",
-	"umc/widgets/LabelPane",
-	"umc/widgets/TouchScrollContainerWidget",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, popup, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, popup, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -1035,16 +1029,16 @@ define([
 			// update the host information in the header
 			var fqdn = tools.status('fqdn');
 			tools.umcpCommand('get/hosts/list').then(lang.hitch(this, function(data) {
-				if (data.result.length <= 1) {
+				var empty = data.result.length <= 1;
+				this._hostInfo.set('disabled', empty);
+				if (empty) {
 					return;
 				}
 				array.forEach(data.result, function(hostname) {
 					this._hostMenu.addChild(new MenuItem({
 						label: hostname,
+						disabled: hostname === fqdn,
 						onClick: lang.hitch(this, function() {
-							if (hostname === fqdn) {
-								return;
-							}
 							this._switchUMC(hostname);
 						})
 					}));
@@ -1178,7 +1172,7 @@ define([
 			var _contextTouchTimeout = null;
 			var _cancelContextTouch = function() {
 				if (_contextTouchTimeout !== null) {
-					clearTimeout(_contextTouchTimeout);
+					window.clearTimeout(_contextTouchTimeout);
 					_contextTouchTimeout = null;
 					return true;
 				}
@@ -1186,7 +1180,7 @@ define([
 			};
 
 			this._grid.on('.umcGalleryItem:touchstart', lang.hitch(this, function(evt) {
-				touchStartBegin = new Date();
+				var touchStartBegin = new Date();
 				_contextTouchTimeout = setTimeout(lang.hitch(this, function() {
 					var row = this._grid.row(evt);
 					this._openModuleContextMenu(row.data, row.element, evt.pageX, evt.pageY);
@@ -1551,7 +1545,6 @@ define([
 			this._hostInfo = new DropDownButton({
 				id: 'umcMenuHost',
 				label: '',
-				style: 'height: 25px',
 				dropDown: this._hostMenu
 			});
 			this._headerRight.addChild(this._hostInfo);
