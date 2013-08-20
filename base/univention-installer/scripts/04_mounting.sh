@@ -100,5 +100,5 @@ done < $tmp
 
 rm -f $tmp
 
-mkdir -m 0755 -p /instmnt/tmp
+mkdir -m 1777 -p /instmnt/tmp
 mkdir -m 0755 -p /tmp/logging
