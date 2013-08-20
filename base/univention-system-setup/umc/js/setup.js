@@ -389,32 +389,28 @@ define([
 		_getNewIpAddress: function(interfaces, primary_interface) {
 			var newIpAddress = null;
 			var prim = interfaces[primary_interface];
+
 			var currentIP = window.location.host;
+			var primIp4 = prim && prim.ip4[0] && prim.ip4[0][0];
+			var primIp6 = prim && prim.ip6[0] && prim.ip6[0][0];
+
 			tools.forIn(this._orgValues.interfaces, function(ikey, iface) {
 				// 1. check if value is equal to the current IP
 				// 2. check if a new value was set or use IP from new primary interface
-				var oldIp = iface.ip4[0] && iface.ip4[0][0];
+				var oldIp4 = iface.ip4[0] && iface.ip4[0][0];
 				var oldIp6 = iface.ip6[0] && iface.ip6[0][0];
-				var newIp = interfaces[ikey] && interfaces[ikey].ip4[0] && interfaces[ikey].ip4[0][0];
+				var newIp4 = interfaces[ikey] && interfaces[ikey].ip4[0] && interfaces[ikey].ip4[0][0];
 				var newIp6 = interfaces[ikey] && interfaces[ikey].ip6[0] && interfaces[ikey].ip6[0][0];
-				if (oldIp == currentIP) {
-					if (newIp) {
-						newIpAddress = newIp;
-					} else if (prim && prim.ip4[0] && prim.ip4[0][0]) {
-						newIpAddress = prim.ip4[0][0];
-					}
-				} else if (oldIp6 == currentIP) {
-					if (newIp6) {
-						newIpAddress = newIp6;
-					} else if(prim && prim.ip6[0] && prim.ip6[0][0]) {
-						newIpAddress = prim.ip6[0][0];
-					}
+				if (oldIp4 === currentIP) {
+					newIpAddress = newIp4 || primIp4 || newIp6 || primIp6;
+				} else if (oldIp6 === currentIP) {
+					newIpAddress = newIp6 || primIp6 || newIp4 || primIp4;
 				}
 			});
 			if (newIpAddress == currentIP) {
 				newIpAddress = null;
 			}
-			if (newIpAddress && !/[.]/.test(newIpAddress)) {
+			if (newIpAddress && !(/[.]/).test(newIpAddress)) {
 				// ipv6
 				newIpAddress = '[' + newIpAddress + ']';
 			}
@@ -495,7 +491,7 @@ define([
 						var newIp = this._getNewIpAddress(values.interfaces, values['interfaces/primary'] || 'eth0');
 						if (newIp) {
 							var oldIp = window.location.host;
-							if (!/[.]/.test(oldIp)) {
+							if (!(/[.]/).test(oldIp)) {
 								// ipv6
 								oldIp = '\\[' + oldIp + '\\]';
 							}

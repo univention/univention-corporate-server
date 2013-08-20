@@ -503,6 +503,9 @@ class _RemovedDevice(Device):
 	def to_ucr(self):
 		return dict((key, None) for key in ucr.iterkeys() if RE_INTERFACE.match(key))
 
+	def validate_name(self):
+		return True
+
 class Ethernet(Device):
 	"""A physical network interface"""
 	pass

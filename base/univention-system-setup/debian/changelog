@@ -1,3 +1,11 @@
+univention-system-setup (7.0.27-1) unstable; urgency=low
+
+  * Bug #29973: make detection of new IP more reliable
+  * Bug #30816: fix validation of VLAN interface names which are marked for
+  	deletion
+
+ -- Florian Best <best@univention.de>  Tue, 20 Aug 2013 11:31:50 +0200
+
 univention-system-setup (7.0.26-1) unstable; urgency=low
 
   * Maintain the package order given in the packages lists (Bug #31960)
