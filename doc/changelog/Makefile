@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 MAIN := release-notes-3.2-en release-notes-3.2-de
 STYLESHEET := univention_extdocs
+OPTIONS += --stringparam ulink.show 0
 
 COMMON_DIR := ../../../doc-common/docbook
 include $(COMMON_DIR)/Makefile
