@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.16-1) unstable; urgency=low
+
+  * Bug #31916: allow a list of policy DNs for simplePolicy.policy_result()
+    as well as a single policy DN reference.
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Aug 2013 17:47:48 +0200
+
 univention-directory-manager-modules (9.0.15-1) unstable; urgency=low
 
   * dns/[forward/reverse]_zone: only append dot to nameserver entry if it is a FQDN
