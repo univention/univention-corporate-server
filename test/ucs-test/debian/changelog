@@ -1,3 +1,11 @@
+ucs-test (4.0.91-1) unstable; urgency=low
+
+  * fixed
+  66_udm-computer/30_all_roles_modification_append_and_remove_nagios_services
+  (Bug #31659)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 20 Aug 2013 12:27:01 +0200
+
 ucs-test (4.0.90-1) unstable; urgency=low
 
   * adapted four more udm-dns tests to the new UDM handling of NS records
