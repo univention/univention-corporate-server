@@ -10,6 +10,7 @@ from optparse import OptionParser, OptionGroup, SUPPRESS_HELP
 import re
 import sys
 import subprocess
+import select
 
 
 USAGE = 'usage: %prog [option] LDIF1 [[option] LDIF2]'
@@ -26,6 +27,13 @@ VERSION = '%prog 1.0'
 class LdifError(Exception):
 	"""
 	Error in input processing.
+	"""
+	pass
+
+
+class SlapError(Exception):
+	"""
+	Error in slapcat processing.
 	"""
 	pass
 
@@ -62,8 +70,8 @@ class LdifSource(object):
 		'structuralObjectClass',
 		))
 
-	def __init__(self, src):
-		self.src = src
+	def __init__(self):
+		self.src = None
 		self.lno = 0
 		self.exclude = LdifSource.OPERATIONAL
 
@@ -96,16 +104,16 @@ class LdifSource(object):
 	def split(self, line):
 		"""
 		Split attribute and value.
-		>>> LdifSource(None).split('')
-		>>> LdifSource(None).split('a:')
+		>>> LdifSource().split('')
+		>>> LdifSource().split('a:')
 		('a', None)
-		>>> LdifSource(None).split('a: b')
+		>>> LdifSource().split('a: b')
 		('a', 'b')
-		>>> LdifSource(None).split('a:: YWFh')
+		>>> LdifSource().split('a:: YWFh')
 		('a', 'aaa')
-		>>> LdifSource(None).split('a;b:c')
+		>>> LdifSource().split('a;b:c')
 		('a', 'c')
-		>>> LdifSource(None).split('a;b;c::YWFh')
+		>>> LdifSource().split('a;b;c::YWFh')
 		('a', 'aaa')
 		"""
 		if not line:
@@ -137,11 +145,17 @@ class LdifFile(LdifSource):
 	LDIF source from local file.
 	"""
 	def __init__(self, filename):
+		super(LdifFile, self).__init__()
+		self.filename = filename
+
+	def start_reading(self):
+		"""
+		Start reading the LDIF data.
+		"""
 		try:
-			src = open(filename, 'r+')
+			self.src = open(self.filename, 'r+')
 		except IOError, ex:
 			raise LdifError(ex)
-		super(LdifFile, self).__init__(src)
 
 
 class LdifSlapcat(LdifSource):
@@ -149,25 +163,63 @@ class LdifSlapcat(LdifSource):
 	LDIF source from local LDAP.
 	"""
 	def __init__(self):
-		cmd = ('slapcat', '-d0')
+		super(LdifSlapcat, self).__init__()
+		self.command = ('slapcat', '-d0')
+		self.proc = None
+
+	def start_reading(self):
+		"""
+		Start reading the LDIF data.
+		"""
+		self.run_command()
+		self.src = self.proc.stdout
+
+	def run_command(self):
+		"""
+		Run command to dump LDIF.
+		"""
 		try:
-			proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-		except IOError, ex:
-			raise LdifError(ex)
-		super(LdifSlapcat, self).__init__(proc.stdout)
+			self.proc = subprocess.Popen(self.command, stdout=subprocess.PIPE)
+		except OSError, ex:
+			raise SlapError("Error executing", self.command, ex)
 
 
-class LdifSsh(LdifSource):
+class LdifSsh(LdifSlapcat):
 	"""
 	LDIF source from remote LDAP.
 	"""
 	def __init__(self, hostname):
-		cmd = ('ssh', hostname, 'slapcat', '-d0')
-		try:
-			proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-		except IOError, ex:
-			raise LdifError(ex)
-		super(LdifSsh, self).__init__(proc.stdout)
+		super(LdifSsh, self).__init__()
+		self.command = ('ssh', hostname) + self.command
+
+	def start_reading(self):
+		"""
+		Start reading the LDIF data.
+		"""
+		super(LdifSsh, self).start_reading()
+		self.wait_for_data()
+
+	def wait_for_data(self):
+		"""
+		Wait for the remote process to send data.
+		>>> x=LdifSsh(None);x.command=('echo',);x.start_reading();x.wait_for_data()
+		>>> x=LdifSsh(None);x.command=('false',);x.start_reading();x.wait_for_data()
+		Traceback (most recent call last):
+			...
+		LdifError: ('Error executing', ('false',), 1)
+		"""
+		while True:
+			rlist = [self.proc.stdout]
+			wlist = []
+			xlist = []
+			rlist, wlist, xlist = select.select(rlist, wlist, xlist, 1.0)
+			ret = self.proc.poll()
+			if ret == 0:
+				break
+			if ret is None and rlist:
+				break
+			if rlist:
+				raise LdifError("Error executing", self.command, ret)
 
 
 def __test(_option, _opt_str, _value, _parser):
@@ -256,7 +308,17 @@ def compare_ldif(lldif, rldif, options):
 
 def compare_keys(ldata, rdata):
 	"""
-	Compare attributes of two LDAP objects.
+	Compare and return attributes of two LDAP objects.
+	>>> list(compare_keys({}, {}))
+	[]
+	>>> list(compare_keys({'a': [1]}, {}))
+	[(-1, 'a', 1)]
+	>>> list(compare_keys({}, {'a': [1]}))
+	[(1, 'a', 1)]
+	>>> list(compare_keys({'a': [1]}, {'a': [1]}))
+	[(0, 'a', 1)]
+	>>> list(compare_keys({'a': [1]}, {'a': [2]}))
+	[(1, 'a', 2), (-1, 'a', 1)]
 	"""
 	lkeys = sorted(ldata.keys(), reverse=True)
 	rkeys = sorted(rdata.keys(), reverse=True)
@@ -286,10 +348,14 @@ def compare_keys(ldata, rdata):
 
 def compare_values(attr, lvalues, rvalues):
 	"""
-	Compare values of two LDAP attributes.
+	Compare and return values of two multi-valued LDAP attributes.
+	>>> list(compare_values('attr', [], []))
+	[]
+	>>> list(compare_values('attr', [1, 2], [2, 3]))
+	[(1, 'attr', 3), (0, 'attr', 2), (-1, 'attr', 1)]
 	"""
-	lvalues = sorted(lvalues, reverse=True)
-	rvalues = sorted(rvalues, reverse=True)
+	lvalues.sort(reverse=True)
+	rvalues.sort(reverse=True)
 
 	lval = rval = None
 	while True:
@@ -322,28 +388,28 @@ def commandline():
 	group = OptionGroup(parser, "Source", "Source for LDIF")
 	group.add_option("--file", "-f",
 			action="store_const", dest="source", const=LdifFile,
-			help="Next arguments are LDIF files")
+			help="next arguments are LDIF files")
 	group.add_option("--host", "-H",
 			action="store_const", dest="source", const=LdifSsh,
-			help="Next arguments are LDAP hosts")
+			help="next arguments are LDAP hosts")
 	parser.add_option_group(group)
 
 	group = OptionGroup(parser, "Attributes", "Ignore attributes")
 	group.add_option("--operational",
 			action="store_true", dest="operational",
-			help="Compare operational attributes")
+			help="also compare operational attributes")
 	group.add_option("--exclude", "-x",
 			action="append", dest="exclude", type="string",
-			help="Ignore attribute", default=[])
+			help="ignore attribute", default=[])
 	parser.add_option_group(group)
 
 	group = OptionGroup(parser, "Output", "Control output")
 	group.add_option("--objects", "-o",
 			action="store_true", dest="objects",
-			help="Show even unchanged objects")
+			help="show even unchanged objects")
 	group.add_option("--attributes", "-a",
 			action="store_true", dest="attributes",
-			help="Show even unchanged attributes")
+			help="show even unchanged attributes")
 	parser.add_option_group(group)
 
 	parser.add_option('--test-internal',
@@ -386,6 +452,13 @@ def main():
 	if not options.operational:
 		exclude |= LdifSource.OPERATIONAL
 	ldif1.exclude = ldif2.exclude = exclude
+
+	try:
+		for ldif in (ldif1, ldif2):
+			ldif.start_reading()
+	except LdifError, ex:
+		parser.error("Failed to setup source: %s" % ex)
+
 	try:
 		ret = compare_ldif(ldif1, ldif2, options)
 	except OSError, ex:

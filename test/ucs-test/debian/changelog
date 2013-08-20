@@ -1,3 +1,9 @@
+ucs-test (4.0.92-1) unstable; urgency=low
+
+  * ldiff: Handle SSH password prompt (Bug #29337)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 20 Aug 2013 19:25:34 +0200
+
 ucs-test (4.0.91-1) unstable; urgency=low
 
   * fixed
@@ -16,9 +22,7 @@ ucs-test (4.0.90-1) unstable; urgency=low
 ucs-test (4.0.89-1) unstable; urgency=low
 
   * adapted some udm-dns tests to match the new UDM handling of NS records in
-    dns/forward_zone and dns/reverse_zone
-  (Bug #31653)
-
+    dns/forward_zone and dns/reverse_zone (Bug #31653)
 
  -- Lukas Walter <walter@univention.de>  Tue, 20 Aug 2013 10:06:12 +0200
 
@@ -26,8 +30,7 @@ ucs-test (4.0.88-1) unstable; urgency=low
 
   * added test to test computer removal
   * added generic test to test computer creation with all attributes set for
-    all roles and removed the non generic tests
-  (Bug #31659)
+    all roles and removed the non generic tests (Bug #31659)
 
  -- Lukas Walter <walter@univention.de>  Mon, 19 Aug 2013 15:50:16 +0200
 
@@ -36,8 +39,7 @@ ucs-test (4.0.87-1) unstable; urgency=low
   * added test to test group removal
   * check correctness of group membership in
     62_udm-groups/11_remove_user_which_is_group_member before decomposing
-    it
-  (Bug #31657)
+    it (Bug #31657)
 
  -- Lukas Walter <walter@univention.de>  Mon, 19 Aug 2013 09:44:14 +0200
 
@@ -45,8 +47,7 @@ ucs-test (4.0.86-1) unstable; urgency=low
 
   * removed apptest versions udm-users test
   * added apptest tag to certain udm-users tests again
-  * added test to test user removal
-  (Bug #31652)
+  * added test to test user removal (Bug #31652)
 
  -- Lukas Walter <walter@univention.de>  Thu, 15 Aug 2013 16:46:38 +0200
 
@@ -216,7 +217,7 @@ ucs-test (4.0.70-1) unstable; urgency=low
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Jul 2013 06:14:28 +0200
 
 ucs-test (4.0.69-1) unstable; urgency=low
- 
+
   * Merged 36_printer from 51_samba4 and 50_samba to
     53_samba-common/36_printer (Bug #31764)
 
@@ -233,10 +234,10 @@ ucs-test (4.0.68-1) unstable; urgency=low
 
 ucs-test (4.0.67-1) unstable; urgency=low
 
-  * Merged 51_samba4/47file_access_permissions-unixmode and 
+  * Merged 51_samba4/47file_access_permissions-unixmode and
     50_samba/42file_access_permissions into
     53_samba-common/47file_access_permissions-unixmode (Bug #29056)
-  * Merged the test 35smbclient_auth from 50_samba and 51_samba4 
+  * Merged the test 35smbclient_auth from 50_samba and 51_samba4
     into 53_samba-common/35smbclient_auth (Bug #26807)
 
  -- Tobias Peters <peters@univention.de>  Tue, 16 Jul 2013 13:42:12 +0200
