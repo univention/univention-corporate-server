@@ -288,6 +288,10 @@
   background-color: @greenMantis;
 }
 
+.umc .dijitTabHover {
+  background-color: @grayAlto;
+}
+
 .umc .dijitTabHover .dijitTabContent {
   border-color: inherit; /* DEL */
 }
@@ -302,7 +306,7 @@
 }
 
 .umc .dijitTabContent {
-       border: 1px solid @grayAthens;
+  border: 1px solid @grayAthens;
 }
 
 .umc .dijitTabChecked .dijitTabContent {
@@ -391,45 +395,6 @@
   border-bottom: inherit; /* DEL */
   padding: inherit; /* DEL */
   margin-top: inherit; /* DEL */
-}
-
-.umc .dijitTabContainerTabListNested .dijitTabContent.dijitTabActive {
-	color: white;
-	background: @greenMantis url(layout/images/tabNested.png) repeat-x;
-}
-
-.umc .dijitTabContainerTabListNested .dijitTabContent {
-  .border-radius(inherit); /* DEL */
-}
-
-.umc .dijitTabContainerTabListNested {
-	.dijitTabHover .tabLabel {
-		color: @grayShip;
-	}
-
-	.dijitTabCheckedHover .tabLabel {
-		color: white;
-	}
-}
-
-.umc .dijitTabContainerTabListNested .dijitTabHover .dijitTabContent {
-  background-color: inherit; /* DEL */
-  border: inherit; /* DEL */
-  padding: inherit; /* DEL */
-}
-
-.umc .dijitTabContainerTabListNested .dijitTabActive .dijitTabContent {
-  border: inherit; /* DEL */
-  padding: inherit; /* DEL */
-  background: @greenMantis url(layout/images/tabNested.png) repeat-x;
-   color: white;
-}
-
-.umc .dijitTabContainerTabListNested .dijitTabChecked .dijitTabContent {
-  padding: inherit; /* DEL */
-  border: inherit; /* DEL */
-  background-position: inherit; /* DEL */
-  background-color: inherit; /* DEL */
 }
 
 .umc .dijitDialog {
@@ -1142,21 +1107,62 @@ p {
 	background-color: white;
 }
 
-.umc .dijitTabContainerTabListNested .dijitTab .dijitTabHover {
-	border: none;
-}
+.umc .dijitTabContainerTabListNested {
+	.dijitTabContent.dijitTabActive {
+		color: white;
+		background: @greenMantis url(layout/images/tabNested.png) repeat-x;
+	}
 
-.umc .dijitTabContainerTabListNested .dijitTabChecked {
-	background-color: @greenMantis;
-	color: white;
-	border: none;
-}
+	.dijitTabContent {
+	  .border-radius(inherit); /* DEL */
+	}
 
-.umc .dijitTabContainerTabListNested .dijitTab {
-	border-left: none;
-	border-top: none;
-	border-bottom: none;
-	border-right: solid 1px white;
+	.dijitTabHover .tabLabel {
+		color: @grayShip;
+	}
+
+	.dijitTabCheckedHover,
+	.dijitTabChecked {
+		.tabLabel {
+			color: white;
+		}
+	}
+
+	.dijitTabHover .dijitTabContent {
+	  background-color: inherit; /* DEL */
+	  border: inherit; /* DEL */
+	  padding: inherit; /* DEL */
+	}
+
+	.dijitTabActive .dijitTabContent {
+	  border: inherit; /* DEL */
+	  padding: inherit; /* DEL */
+	  background: @greenMantis url(layout/images/tabNested.png) repeat-x;
+	   color: white;
+	}
+
+	.dijitTabChecked .dijitTabContent {
+	  padding: inherit; /* DEL */
+	  border: inherit; /* DEL */
+	  background-position: inherit; /* DEL */
+	  background-color: inherit; /* DEL */
+	}
+
+	.dijitTab .dijitTabHover {
+		border: none;
+	}
+
+	.dijitTabChecked {
+		background-color: @greenMantis;
+		border: none;
+	}
+
+	.dijitTab {
+		border-left: none;
+		border-top: none;
+		border-bottom: none;
+		border-right: solid 1px white;
+	}
 }
 
 .umc .dijitComboBoxMenuPopup .dijitMenuItem {
