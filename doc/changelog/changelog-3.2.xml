@@ -1,6 +1,5 @@
 <section>
   <title>General</title>
-  <para>
 	<itemizedlist>
 	  <listitem><simpara>
 		  The codename for UCS 3.2 is Borgfeld (<ulink url="&ucsbug;31686">Bug 31686</ulink>).
@@ -126,23 +125,19 @@
 
 	  </simpara></listitem>
 	</itemizedlist>
-  </para>
 </section>
 
 <section>
   <title>Upgrade provisions (preup and postup scripts)</title>
-  <para>
 	<itemizedlist>
 	  <listitem><simpara>
 		The LDAP schema is now checked in <filename>preup.sh</filename>if slapd is installed (<ulink url="&ucsbug;25674">Bug 25674</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
-  </para>
 </section>
 
 <section>
   <title>Univention Installer</title>
-  <para>
 	<itemizedlist>
 	  <listitem><simpara>
 		<emphasis>univention-horde4</emphasis> has been removed from the software selection. Horde
@@ -219,18 +214,15 @@
 		During the boot loader installation more device details are displayed. The installation device is automatically ignored (<ulink url="&ucsbug;25046">Bug 25046</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
-  </para>
 
   <section>
 	<title>Profile-based installation</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The determination of the hostname, if <emphasis>scan="hostname"</emphasis> is set, has
 		  been fixed (<ulink url="&ucsbug;29469">Bug 29469</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
 </section>
@@ -241,17 +233,14 @@
 
   <section>
 	<title>Boot loader</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Linux kernel and firmware packages</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The Linux kernel was updated to 3.10-rc7. The nouveau KMS kernel module is incompatible
@@ -279,13 +268,11 @@
 		  the Xorg userland (<ulink url="&ucsbug;19892">Bug 19892</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
 
   <section>
 	<title>Univention Configuration Registry</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The process handling has been improved to prevent issues with processing signals during
@@ -309,37 +296,30 @@
 		  (<ulink url="&ucsbug;29964">Bug 29964</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
 
 	<section>
 	  <title>Changes to templates and modules</title>
-	  <para>
 		<itemizedlist>
 		  <listitem><simpara>
 		  </simpara></listitem>
 		</itemizedlist>
-	  </para>
 	</section>
   </section>
 
   <section>
 	<title>Network interface configuration</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Univention Firewall</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 </section>
 
@@ -349,7 +329,6 @@
 
   <section>
 	<title>OpenLDAP</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  OpenLDAP was updated to version 2.4.35 (<ulink url="&ucsbug;31697">Bug 31697</ulink>).
@@ -401,31 +380,25 @@
 		</simpara></listitem>
 	  </itemizedlist>
 
-	</para>
 
 	<section>
 	  <title>LDAP ACL changes</title>
-	  <para>
 		<itemizedlist>
 		  <listitem><simpara>
 		  </simpara></listitem>
 		</itemizedlist>
-	  </para>
 	</section>
 
 	<section>
 	  <title>LDAP schema changes</title>
-	  <para>
 		<itemizedlist>
 		  <listitem><simpara>
 		  </simpara></listitem>
 		</itemizedlist>
-	  </para>
 	</section>
 
 	<section>
 	  <title>Listener/Notifier domain replication</title>
-	  <para>
 		<itemizedlist>
 		  <listitem><simpara>
 			The password used by the listener to access the LDAP directory is no longer shown in the
@@ -436,13 +409,11 @@
 			The failed LDIF mode of the replication does now handle empty values correctly (<ulink url="&ucsbug;25579">Bug 25579</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
-	  </para>
 	</section>
   </section>
 
   <section>
 	<title>Domain joins of UCS systems</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The &ucsUCRV; <envar>windows/domain</envar> is now set in
@@ -456,7 +427,6 @@
 		  </simpara>
 		</listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
 </section>
@@ -467,7 +437,6 @@
 
   <section>
 	<title>Univention Management Console web interface</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The UMC overview page has been redesigned along with a search for modules
@@ -567,12 +536,10 @@
 		  (<ulink url="&ucsbug;31377">Bug 31377</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Univention Management Console server</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  Unexpected errors that caused UMC server and modules to exit are now logged (<ulink url="&ucsbug;31130">Bug 31130</ulink>).
@@ -589,12 +556,10 @@
 		</simpara></listitem>
 
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Univention App Center</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  Fixed an issue when closing the App Center tab in the Management Console: The backend shut
@@ -726,12 +691,10 @@
 		</simpara></listitem>
 
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Univention Management Console / Univention Directory Manager modules</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The UCS license check now ignores temporary user objects (<ulink url="&ucsbug;31167">Bug 31167</ulink>).
@@ -803,12 +766,10 @@
 			Displaying a feedback message after importing a license was made more robust (<ulink url="&ucsbug;29713">Bug 29713</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Basic settings / Univention System Setup</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The &ucsUCRV; <envar>apache2/startsite</envar> will be set to correct values when
@@ -863,12 +824,10 @@
 		  The software setup now maintains the defined package order and triggers a single package manager operation for package installations and removals, repectively, instead of handling each listed package individually (<ulink url="&ucsbug;31960">Bug 31960</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Users module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  Spaces are no longer allowed in the username (this can be overwritten by setting the
@@ -890,53 +849,43 @@
 		</simpara></listitem>
 
 	  </itemizedlist>
-	</para>
   </section>
 
 
   <section>
 	<title>Extended attributes</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>License module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Mail module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>System services module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Domain join module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 			After a re-join a complete restart of the system can now be
@@ -944,12 +893,10 @@
 			  url="&ucsbug;9927">Bug 9927</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Online update module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 			The module now shows available Application updates from the App Center.
@@ -957,22 +904,18 @@
 				url="&ucsbug;30548">Bug 30548</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Computers module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>DNS module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  A problem has been corrected which led to invalid PTR records when changing the DNS
@@ -987,12 +930,10 @@
 		</simpara></listitem>
 
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Policies</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The removal of user and group quotas in the print quota policy has been fixed (<ulink url="&ucsbug;31703">Bug 31703</ulink>).
@@ -1002,54 +943,44 @@
 		  A typo has been fixed (<ulink url="&ucsbug;21997">Bug 21997</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>DHCP module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Printers module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 			The selectable print servers are now limited to servers with
 			univentionService=Print (<ulink url="&ucsbug;25216">Bug 25216</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Univention Configuration Registry module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>LDAP directory browser</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Other modules module</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  A mapping which broke the representation of TXT records for DNS forward zones has been
@@ -1121,27 +1052,22 @@
 		  added to every entry if missing, not only the first one (<ulink url="&ucsbug;29568">Bug 29568</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Univention Directory Manager command line interface and related tools</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Development of modules for Univention Management Console</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 </section>
 
@@ -1151,7 +1077,6 @@
 
   <section>
 	<title>Repository handling</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The recommendation for setting up a UCR policy has been fixed to mention the correct
@@ -1182,34 +1107,28 @@
 		  (<ulink url="&ucsbug;28045">Bug 28045</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Software deployment command line tools</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Software monitor (univention-pkgdb)</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 </section>
 
 
 <section>
   <title>Univention Library</title>
-  <para>
 	<itemizedlist>
 	  <listitem><simpara>
 		The function call_joinscript() has been modified. The start and end of  every
@@ -1245,7 +1164,6 @@
 		(<ulink url="&ucsbug;31261">Bug 31261</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
-  </para>
 </section>
 
 <section>
@@ -1253,29 +1171,24 @@
 
   <section>
 	<title>DHCP</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>DNS</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The file containing the cached DNS zone is now also deleted upon zone deletion (<ulink url="&ucsbug;16270">Bug 16270</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Cyrus</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The &ucsUCRV; <envar>mail/cyrus/imap/duplicatesuppression</envar> (default: yes) has been
@@ -1311,12 +1224,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  ldap_host (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Postfix</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The new &ucsUCRV; <envar>mail/postfix/smtpd/debug</envar> has been added to configure
@@ -1332,12 +1243,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  <envar>ldpa/server/addition</envar> too (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Spam/virus detection and countermeasures</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  univention-antivir-mail has been modified. Postfix configuration will be reloaded after
@@ -1354,12 +1263,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  univention-antivir-mail (<ulink url="&ucsbug;30900">Bug 30900</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Printing services</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  Changed the SystemGroup parameter. SystemGroups are now separated by a blank character
@@ -1424,12 +1331,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Kerberos</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  Heimdal Kerberos has been updated to Version 1.6
@@ -1445,12 +1350,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The process kpasswdd is now only started only on the UCS master (<ulink url="&ucsbug;20167">Bug #20167</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Proxy services</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  Fixed a regression in group authentication if &ucsUCRV;
@@ -1472,22 +1375,18 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  has been fixed (<ulink url="&ucsbug;32183">Bug 32183</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Apache</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Nagios</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The default value for the &ucsUCRV; <envar>nagios/server/checkexternalcmd</envar> has been
@@ -1499,33 +1398,27 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  revised (<ulink url="&ucsbug;30944">Bug 30944</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>SSL</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>NFS</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The start script for the NFS server has been synchronized with the upstrean version to support newer Linux kernels and start all services needed for the PXE installer to work (<ulink url="&ucsbug;32228">Bug 32228</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>PAM / Local group cache</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The &ucsUCRV; <envar>nssldap/nss_srv</envar> has been added to specify whether or not
@@ -1537,12 +1430,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  <filename>libnss-ldap.secret</filename> if it is a link <ulink url="&ucsbug;30779">Bug 30779</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Other services</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The config option nss_srv (to deny dns srv record lookups) has been add to libnss-ldap
@@ -1578,7 +1469,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  already set, nothing will be done (<ulink url="&ucsbug;19354">Bug 19354</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 </section>
 
@@ -1588,17 +1478,14 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
   <section>
 	<title>libvirt</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Univention Virtual Machine Manager</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The context menu on the devices page of active VMs no longer disappears when the mouse is
@@ -1672,12 +1559,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  Instead profiles for UCS-3.2 are created (<ulink url="&ucsbug;32261">Bug 32261</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Xen</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  A logic bug in the init script for xenstore was fixed (<ulink url="&ucsbug;28309">Bug 28309</ulink>).
@@ -1695,24 +1580,20 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  An obsolete dependency has been removed in the univention-xen meta package (<ulink url="&ucsbug;31373">Bug 31373</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>QEMU/kvm</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  QEMU was upgraded to version 1.1.2+dfsg-6 (<ulink url="&ucsbug;29849">Bug 29849</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 </section>
 
 <section>
   <title>Desktop packages</title>
-  <para>
 	<itemizedlist>
 	  <listitem><simpara>
 		univention-x-core no longer depends on the package univention-gdm but recommends it (<ulink url="&ucsbug;31004">Bug 31004</ulink>).
@@ -1724,7 +1605,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		(<ulink url="&ucsbug;30944">Bug 30944</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
-  </para>
 </section>
 
 <section>
@@ -1732,7 +1612,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
   <section>
 	<title>Samba 3</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The Samba packages have been updated to version 4.1.0 RC2. The file server component is provided
@@ -1779,12 +1658,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  <envar>samba/max/protocol</envar> (<ulink url="&ucsbug;31921">Bug 31921</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Samba 4</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The Samba packages have been updated to version 4.1.0 RC2. The components providing Active Directory compatible
@@ -1885,12 +1762,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32257">Bug 32257</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
   <section>
 	<title>Univention S4 Connector</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The attribute sambaMaxPwdAge can be set to -1 in OpenLDAP. This will now be mapped to 0 in
@@ -1906,18 +1781,15 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  especially in the case of a traceback (<ulink url="&ucsbug;31133">Bug 31133</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
 
   <section>
 	<title>Univention Active Directory Connector</title>
-	<para>
 	  <itemizedlist>
 		<listitem><simpara>
 		</simpara></listitem>
 	  </itemizedlist>
-	</para>
   </section>
 
 </section>
@@ -1925,7 +1797,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 <section>
   <title>UCS test framework</title>
-  <para>
 	<itemizedlist>
 	  <listitem><simpara>
 		A test has been added to check if the ,,Administrator'' user may execute
@@ -2025,12 +1896,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		ucs-tests now uses ucslint (<ulink url="&ucsbug;28699">Bug 28699</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
-  </para>
 </section>
 
 <section>
   <title>Other changes</title>
-  <para>
 	<itemizedlist>
 	  <listitem><simpara>
 		univention-user-quota has been rewritten in Python. It does now support share names with
@@ -2083,15 +1952,12 @@ libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl,
 	  </simpara></listitem>
 
 	</itemizedlist>
-  </para>
 </section>
 
 <section>
   <title>ucslint</title>
-  <para>
 	<itemizedlist>
 	  <listitem><simpara>
 	  </simpara></listitem>
 	</itemizedlist>
-  </para>
 </section>
