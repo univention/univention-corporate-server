@@ -80,10 +80,9 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
-	"umc/widgets/ComboBox",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, popup, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, ComboBox, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, ContentPane, popup, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, TitlePane, ContainerWidget, TextBox, ExpandingTitlePane, LabelPane, TouchScrollContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -759,7 +758,7 @@ define([
 						}
 						else if (istate.loaded) {
 							// no flavors
-							++nLoaded
+							++nLoaded;
 						}
 					});
 					return nLoaded;
@@ -913,18 +912,15 @@ define([
 			// show the menu bar
 			style.set(this._headerRight.domNode, 'display', 'block');
 
-			// setup menus
-			this._setupSettingsMenu();
-			this._setupHelpMenu();
-
-			// update the host information in the header
-			var fqdn = _ucr.hostname + '.' + _ucr.domainname;
-			this._hostInfo.set('dynamicValues', 'get/hosts/list');
-			this._hostInfo.setInitialValue(fqdn);
-
 			// save hostname and domainname as status information
 			tools.status('domainname', _ucr.domainname);
 			tools.status('hostname', _ucr.hostname);
+			tools.status('fqdn', _ucr.hostname + '.' + _ucr.domainname);
+
+			// setup menus
+			this._setupSettingsMenu();
+			this._setupHelpMenu();
+			this._setupHostInfoMenu();
 
 			this._setupOverviewPage();
 
@@ -1033,6 +1029,34 @@ define([
 				label: _('Usage statistics'),
 				onClick : lang.hitch(this, '_showPiwikDialog')
 			}));
+		},
+
+		_setupHostInfoMenu: function() {
+			// update the host information in the header
+			var fqdn = tools.status('fqdn');
+			tools.umcpCommand('get/hosts/list').then(lang.hitch(this, function(data) {
+				if (data.result.length <= 1) {
+					return;
+				}
+				array.forEach(data.result, function(hostname) {
+					this._hostMenu.addChild(new MenuItem({
+						label: hostname,
+						onClick: lang.hitch(this, function() {
+							if (hostname === fqdn) {
+								return;
+							}
+							this._switchUMC(hostname);
+						})
+					}));
+				}, this);
+			}));
+			this._hostInfo.set('label', _('Host: ') + fqdn);
+		},
+
+		_switchUMC: function(hostname) {
+			topic.publish('/umc/actions', 'switch host');
+			var port = window.location.port ? ':' + window.location.port : '';
+			window.location.replace(window.location.protocol + '//' + hostname + port + window.location.pathname + window.location.search);
 		},
 
 		_setupOverviewPage: function() {
@@ -1522,47 +1546,15 @@ define([
 			});
 			header.addChild(this._headerRight);
 
-			// query domainname and hostname and add this information to the header
-			this._hostInfo = new ComboBox( {
-				id: 'umcMenuHostInfo',
-				'class': 'umcHeaderText',
-				value: ''
-			} );
+			// the host info and menu
+			this._hostMenu = new Menu({});
+			this._hostInfo = new DropDownButton({
+				id: 'umcMenuHost',
+				label: '',
+				style: 'height: 25px',
+				dropDown: this._hostMenu
+			});
 			this._headerRight.addChild(this._hostInfo);
-			var hostInfo = this._hostInfo;
-
-			// function to change the label of the hostInfo ComboBox for a specific item
-			var label = function (id, label, set) {
-				hostInfo.store.fetchItemByIdentity({
-					identity: id,
-					onItem: function(item) {
-						hostInfo.store.setValue(item, 'label', label);
-						if (set) {
-							hostInfo.set('value', id);
-						}
-					}
-				});
-			};
-			this._hostInfo.on('focus', function() {
-				var v = hostInfo.get('value');
-				label(v, v);
-			});
-			this._hostInfo.on('blur', function() {
-				var v = hostInfo.get('value');
-				label(v, _('Host: ') + v, true);
-			});
-
-			var first = false; // The first time the value changes is by setting the original hostname
-			this._hostInfo.watch('value', lang.hitch(this, function(name, old, host) {
-				if (host && first) {
-					topic.publish('/umc/actions', 'switch host');
-					var port = window.location.port ? ':' + window.location.port : '';
-					window.location.replace(window.location.protocol + '//' + host + port + window.location.pathname + window.location.search);
-				} else {
-					this._hostInfo.onBlur();
-				}
-				first = host;
-			}));
 
 			if (tools.status('displayUsername')) {
 				// display the username

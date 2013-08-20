@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.59-1) unstable; urgency=low
+
+  * Bug #30744: adapt host menu
+
+ -- Florian Best <best@univention.de>  Tue, 20 Aug 2013 09:50:59 +0200
+
 univention-management-console-frontend (3.0.58-1) unstable; urgency=low
 
   * Bug #31376: make sure that MultiInput.ready() resolves after having built
