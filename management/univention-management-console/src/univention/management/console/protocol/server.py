@@ -4,7 +4,7 @@
 # Univention Management Console
 #  simple UMCP server implementation
 #
-# Copyright 2006-2012 Univention GmbH
+# Copyright 2006-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -46,8 +46,7 @@ import socket
 # external packages
 import notifier
 import notifier.signals as signals
-from OpenSSL import *
-import pyinotify
+from OpenSSL import SSL
 
 # i18n
 from univention.lib.i18n import Translation

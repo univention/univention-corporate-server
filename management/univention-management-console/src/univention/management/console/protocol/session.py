@@ -4,7 +4,7 @@
 # Univention Management Console
 #  session handling
 #
-# Copyright 2006-2012 Univention GmbH
+# Copyright 2006-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -43,8 +43,6 @@ import json
 import notifier
 import notifier.signals as signals
 import notifier.popen as popen
-
-from OpenSSL import *
 
 import univention.admin.uldap as udm_uldap
 import univention.admin.objects as udm_objects
@@ -405,7 +403,8 @@ class Processor( signals.Provider ):
 					domaincontrollers = []
 				res.result = ['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')]
 			else:
-				res.status = SERVER_ERR
+				# unjoined / no LDAP connection
+				res.result = []
 		else:
 			res.status = BAD_REQUEST_INVALID_ARGS
 

@@ -1,3 +1,11 @@
+univention-management-console (6.0.7-1) unstable; urgency=low
+
+  * Bug #30744: adapt hosts/list command to not throw an error if no ldap
+  	connection is present
+  * update copyright
+
+ -- Florian Best <best@univention.de>  Tue, 20 Aug 2013 10:44:19 +0200
+
 univention-management-console (6.0.6-1) unstable; urgency=low
 
   * Bug #32023: make sure an error is thrown if non LDAP user is trying to
