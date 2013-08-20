@@ -1,3 +1,9 @@
+univention-printclient (7.0.0-2) unstable; urgency=low
+
+  * Clarify usage of print/server (Bug #23881)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 20 Aug 2013 07:54:36 +0200
+
 univention-printclient (7.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
