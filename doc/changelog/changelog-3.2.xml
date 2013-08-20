@@ -1884,7 +1884,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		A test case to check if the packages of the requested apps are installed have been added
+		A test has been added to check if an app was successfully installed
 		(<ulink url="&ucsbug;31793">Bug 31793</ulink>).
 	  </simpara></listitem>
 
