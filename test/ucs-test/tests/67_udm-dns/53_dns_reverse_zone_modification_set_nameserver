@@ -23,4 +23,4 @@ if __name__ == '__main__':
 		
 		ns_record = uts.random_string()
 		udm.modify_object('dns/reverse_zone', dn = reverse_zone, nameserver = ns_record)
-		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s.' % ns_record]})
+		utils.verify_ldap_object(reverse_zone, {'nSRecord': ['%s' % ns_record]})
