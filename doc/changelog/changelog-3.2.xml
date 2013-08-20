@@ -670,7 +670,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Keeping session alive after having installed an app until confirmation (<ulink url="&ucsbug;31886">Bug 31886</ulink>).
+		  The session is now kept alive after having installed an app until confirmation (<ulink url="&ucsbug;31886">Bug 31886</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
