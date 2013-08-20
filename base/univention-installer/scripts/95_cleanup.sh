@@ -45,7 +45,7 @@ sync
 chmod -R 700 /instmnt/root
 chmod 1777 /instmnt/tmp
 # Bug 29450:
-find /instmnt/var/cache/apt/archives/partial /var/lib/apt/lists/partial -type d -not -perm 0755 -execdir chmod 0755 {} +
+chmod 0755 /instmnt/var/cache/apt/archives/partial /instmnt/var/lib/apt/lists/partial
 
 #cleanup
 rm -f /instmnt/*.sh

@@ -1,8 +1,8 @@
-univention-installer (9.0.17-6) unstable; urgency=low
+univention-installer (9.0.17-7) unstable; urgency=low
 
   * Cleanup apt-partial directories with 0755 permissions (Bug #29450) 
 
- -- Erik Damrose <damrose@univention.de>  Tue, 20 Aug 2013 13:00:14 +0200
+ -- Erik Damrose <damrose@univention.de>  Tue, 20 Aug 2013 15:12:43 +0200
 
 univention-installer (9.0.17-5) unstable; urgency=low
 
