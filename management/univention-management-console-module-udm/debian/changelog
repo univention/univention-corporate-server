@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.13-1) unstable; urgency=low
+
+  * Bug #31916: fixed erroneous evaluation of policies in udm/object/policies
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 Aug 2013 17:57:19 +0200
+
 univention-management-console-module-udm (4.0.12-1) unstable; urgency=low
 
   * Improved handling of autosearch with superordinates (Bug #29498)
