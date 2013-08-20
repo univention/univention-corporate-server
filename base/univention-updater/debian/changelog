@@ -1,3 +1,10 @@
+univention-updater (9.0.10-3) unstable; urgency=low
+
+  * Set correct permissions for /cdrom/ /floppy/ and /etc/univention/ 
+    while updating (Bug #29450)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 20 Aug 2013 13:03:12 +0200
+
 univention-updater (9.0.10-2) unstable; urgency=low
 
   * Fix regression test (Bug #28045)
