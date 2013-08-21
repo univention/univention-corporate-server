@@ -14,6 +14,7 @@ import signal
 import subprocess
 import select
 import errno
+import time
 
 
 USAGE = 'usage: %prog [option] LDIF1 [[option] LDIF2]'
@@ -227,14 +228,18 @@ class LdifSsh(LdifSlapcat):
 			rlist = [self.proc.stdout]
 			wlist = []
 			xlist = []
-			rlist, wlist, xlist = select.select(rlist, wlist, xlist, 1.0)
-			ret = self.proc.poll()
-			if ret == 0:
+			try:
+				rlist, wlist, xlist = select.select(rlist, wlist, xlist)
 				break
-			if ret is None and rlist:
-				break
-			if rlist:
-				raise LdifError("Error executing", self.command, ret)
+			except select.error, ex:
+				if ex[0] == errno.EINTR:
+					continue
+				else:
+					raise
+		time.sleep(0.5)
+		ret = self.proc.poll()
+		if ret is not None and ret != 0:
+			raise SlapError("Error executing", self.command, ret)
 
 
 def __test(_option, _opt_str, _value, _parser):

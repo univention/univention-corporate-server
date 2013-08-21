@@ -1,8 +1,13 @@
+ucs-test (4.0.94-1) unstable; urgency=low
+
+  * ldiff: Handle ssh exiting early (Bug #29337)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Aug 2013 17:40:54 +0200
+
 ucs-test (4.0.93-1) unstable; urgency=low
 
   * 00_base/16packages_default: stop cron daemon before test and start it
-    again afterwards
-  (Bug #32006)
+    again afterwards (Bug #32006)
 
  -- Lukas Walter <walter@univention.de>  Wed, 21 Aug 2013 16:08:03 +0200
 
