@@ -1,6 +1,7 @@
 ucs-test (4.0.94-2) unstable; urgency=low
 
   * 09: Sign updater scripts (Bug #32260)
+  * 09/35: Test script signing.
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 21 Aug 2013 19:47:00 +0200
 
