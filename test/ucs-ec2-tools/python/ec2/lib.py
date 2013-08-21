@@ -46,10 +46,19 @@ from boto.ec2 import regions, blockdevicemapping
 PATH_UCS_KT_GET = '/usr/bin/ucs-kt-get'
 
 def mac2IPv6linklocal(mac):
-	""" converts a mac address into a IPv6 link local address """
-	addr = mac.replace(':','')
-	addr = '%XFFFE%s'.lower() % ((int(addr[0:6], 16) & 0xFEFFFF) ^ 0x020000, addr[6:])
-	return 'fe80::%s' % ':'.join([addr[i:i+4] for i in range(0, len(addr), 4)])
+	"""
+	Converta mac address into a IPv6 link local address.
+	>>> mac2IPv6linklocal('0:1:2:3:4:5')
+	'fe80::0201:02ff:fe03:0405'
+	>>> mac2IPv6linklocal('52:54:00:eb:7c:79')
+	'fe80::5054:00ff:feeb:7c79'
+	"""
+	octets = [int(_, 16) for _ in mac.split(':')]
+	octets[0] &= ~1  # clear broadcast bit
+	octets[0] ^= 2  # flip universal/local bit
+	octets = octets[0:3] + [0xff, 0xfe] + octets[3:6]
+	groups = ['%02x%02x' % _ for _ in zip(octets[0::2], octets[1::2])]
+	return 'fe80::' + ':'.join(groups)
 
 
 def _split_config(lines):
