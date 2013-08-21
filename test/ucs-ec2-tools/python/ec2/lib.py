@@ -134,33 +134,6 @@ class VM:
 		self.sftp = None
 
 
-	def _wait_instance(self, timeout=300):
-		"""
-		Wait until instance is created.
-		"""
-		start = now = time.time()
-		while now - start < timeout:
-			if self.instance.state == 'running':
-				break
-			if self.instance.state == 'pending':
-				self._log('Pending %d...' % (timeout - now + start))
-			time.sleep(10)
-
-			try:
-				self.instance.update()
-			except boto.exception.EC2ResponseError, ex:
-				for error in ex.errors:
-					self._log('Error code: %r', error.error_code)
-					if error.error_code == 'InvalidInstanceID.NotFound':
-						break
-				else:
-					self._log('Unexcpected error waiting for instance: %s', ex)
-					raise
-			now = time.time()
-		else:
-			self._log('Timeout waiting for instance')
-			raise
-
 	def connect(self):
 		''' Wait until the connection is ready '''
 		self.client = paramiko.SSHClient()
@@ -606,6 +579,32 @@ class VM_EC2(VM):
 		for var in env_vars:
 			self.instance.add_tag(var.lower(), os.getenv(var, ''))
 
+	def _wait_instance(self, timeout=300):
+		"""
+		Wait until instance is created.
+		"""
+		start = now = time.time()
+		while now - start < timeout:
+			if self.instance.state == 'running':
+				break
+			if self.instance.state == 'pending':
+				self._log('Pending %d...' % (timeout - now + start))
+			time.sleep(10)
+
+			try:
+				self.instance.update()
+			except boto.exception.EC2ResponseError, ex:
+				for error in ex.errors:
+					self._log('Error code: %r', error.error_code)
+					if error.error_code == 'InvalidInstanceID.NotFound':
+						break
+				else:
+					self._log('Unexcpected error waiting for instance: %s', ex)
+					raise
+			now = time.time()
+		else:
+			self._log('Timeout waiting for instance')
+			raise
 
 
 def _print_process(msg):
