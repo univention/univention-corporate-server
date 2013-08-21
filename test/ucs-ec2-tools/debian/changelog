@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.9-5) unstable; urgency=low
+
+  * Bug #32165: merge updates from ucs-ec2-create into ucs-kvm-create
+  * added a bunch of improvements for ucs-kvm-create and univention.ec2.lib
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 21 Aug 2013 14:16:25 +0200
+
 ucs-ec2-tools (0.1.9-4) unstable; urgency=low
 
   * Bug #32164: load univention.ec2.lib from local path primarily
