@@ -8,9 +8,12 @@ All differences will be displayed at the console.
 
 from optparse import OptionParser, OptionGroup, SUPPRESS_HELP
 import re
+import os
 import sys
+import signal
 import subprocess
 import select
+import errno
 
 
 USAGE = 'usage: %prog [option] LDIF1 [[option] LDIF2]'
@@ -471,17 +474,32 @@ def main():
 	try:
 		for ldif in (ldif1, ldif2):
 			ldif.start_reading()
-	except LdifError, ex:
+	except (LdifError, SlapError), ex:
 		parser.error("Failed to setup source: %s" % ex)
 
+	run_compare(ldif1, ldif2, options)
+
+
+def run_compare(ldif1, ldif2, options):
+	"""
+	UNIX correct error handling.
+	"""
+	ret = 2
 	try:
 		ret = compare_ldif(ldif1, ldif2, options)
+	except KeyboardInterrupt:
+		signal.signal(signal.SIGINT, signal.SIG_DFL)
+		os.kill(os.getpid(), signal.SIGINT)
+	except IOError, ex:
+		if ex.errno == errno.EPIPE:
+			signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+			os.kill(os.getpid(), signal.SIGPIPE)
+		else:
+			print >> sys.stderr, 'Error: %s' % (ex,)
 	except OSError, ex:
 		print >> sys.stderr, 'Error: %s' % (ex,)
-		ret = 2
 	except LdifError, ex:
 		print >> sys.stderr, 'Invalid LDIF: %s' % (ex,)
-		ret = 2
 	sys.exit(ret)
 
 
