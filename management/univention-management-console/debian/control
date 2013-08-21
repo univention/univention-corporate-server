@@ -71,8 +71,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-pam,
  python-polib,
  python-notifier (>= 0.9.5-1)
-Pre-Depends:
- python-pyinotify
 Provides: ${python:Provides}
 Description: UCS Management Console - Python Modules
  UCS Management Console is a web based program to manage computers.

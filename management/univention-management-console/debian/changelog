@@ -1,3 +1,9 @@
+univention-management-console (6.0.8-2) unstable; urgency=low
+
+  * Bug #31752: Remove pyinotify PreDependency
+
+ -- Florian Best <best@univention.de>  Wed, 21 Aug 2013 10:32:26 +0200
+
 univention-management-console (6.0.8-1) unstable; urgency=low
 
   * Update the ACL evaluation: ensure name is set in the lookup result
