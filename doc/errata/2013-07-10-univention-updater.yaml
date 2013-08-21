@@ -7,9 +7,9 @@ note:
 version: [1]
 desc: |
   This update fixes several issues with local repositories:
-  * the recommendation for setting up a UCR policy has been fixed to mention
+  * The recommendation for setting up a UCR policy has been fixed to mention
     the correct UCR variable 'updater/secure_apt'.
-  * a locally required and mirrored component from a separate repository in
+  * A locally required and mirrored component from a separate repository in
     same cases blocked the update of the local repository. This has been changed
     to now always update the local repository as soon as a new release is
     available. The condition is still check by each host individually.
