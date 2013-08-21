@@ -40,6 +40,7 @@ define([
 	"dojo/topic",
 	"dojo/Deferred",
 	"dojox/image/LightboxNano",
+	"dojox/timing/_base",
 	"umc/app",
 	"umc/dialog",
 	"umc/tools",
@@ -55,7 +56,7 @@ define([
 	"umc/widgets/GalleryPane",
 	"umc/widgets/LiveSearchSidebar",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, when, domConstruct, query, Memory, topic, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, TitlePane, TextBox, CheckBox, ContainerWidget, GalleryPane, LiveSearchSidebar, _) {
+], function(declare, lang, kernel, array, when, domConstruct, query, Memory, topic, Deferred, Lightbox, timing, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, TitlePane, TextBox, CheckBox, ContainerWidget, GalleryPane, LiveSearchSidebar, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -100,8 +101,13 @@ define([
 
 			this._initialCheckDeferred = new Deferred();
 			this._buildRenderingDeferred = new Deferred();
-			this._afterAppOperation = false;
-			this._pingWhileAfterAppOperation();
+
+			var timeout = 1000 * Math.min(tools.status('sessionTimeout') / 2, 30);
+			this._keepAliveAfterAppOperation = new timing.Timer(timeout);
+			this._keepAliveAfterAppOperation.onTick = function() {
+				tools.umcpCommand('appcenter/ping', {}, false);
+			};
+
 			this.standby(true);
 			tools.umcpCommand('appcenter/working').then(lang.hitch(this, function(data) {
 				this.standby(false);
@@ -765,22 +771,9 @@ define([
 			return labels[key];
 		},
 
-		_pingWhileAfterAppOperation: function() {
-			var timeout = 1000 * Math.min(tools.status('sessionTimeout') / 2, 30);
-			setTimeout(lang.hitch(this, function() {
-				if (this._afterAppOperation) {
-					tools.umcpCommand('appcenter/ping', {}, false).then(
-						lang.hitch(this, function() {
-							this._pingWhileAfterAppOperation();
-						}),
-						lang.hitch(this, function() {
-							this._pingWhileAfterAppOperation();
-						})
-					);
-				} else {
-					this._pingWhileAfterAppOperation();
-				}
-			}), timeout);
+		destroy: function() {
+			this._keepAliveAfterAppOperation.stop();
+			this.inherited(arguments);
 		},
 
 		showReadme: function(readme, title, acceptButtonLabel) {
@@ -975,7 +968,7 @@ define([
 				{},
 				lang.hitch(this, function() {
 					this._initialCheckDeferred.resolve();
-					this._afterAppOperation = true;
+					this._keepAliveAfterAppOperation.start();
 					if (func === 'install' && app.umc_module) {
 						// hack it into favorites: the app is not yet known
 						UMCApplication.addFavoriteModule(app.umc_module, app.umc_flavor);
@@ -1019,10 +1012,10 @@ define([
 			this.updateApplications();
 			libServer.askRestart(_('A restart of the UMC server components may be necessary for the software changes to take effect.')).then(
 				lang.hitch(this, function() {
-					this._afterAppOperation = false;
+					this._keepAliveAfterAppOperation.stop();
 				}),
 				lang.hitch(this, function() {
-					this._afterAppOperation = false;
+					this._keepAliveAfterAppOperation.stop();
 				})
 			);
 		}

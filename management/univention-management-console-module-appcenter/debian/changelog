@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.17-1) unstable; urgency=low
+
+  * Stop pinging when closing the module (Bug #31886)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 21 Aug 2013 13:28:12 +0200
+
 univention-management-console-module-appcenter (3.0.16-1) unstable; urgency=low
 
   * Revert Bug #32144
