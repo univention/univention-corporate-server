@@ -1027,9 +1027,10 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The <guimenu>Software monitor</guimenu> module has been reworked. New systems are now listed in the UMC module without requiring to login again. (<ulink url="&ucsbug;30967">Bug 30967</ulink>,
+		  The <guimenu>Software monitor</guimenu> module has been thoroughly revised (<ulink url="&ucsbug;30967">Bug 30967</ulink>,
 		  <ulink url="&ucsbug;29655">Bug 29655</ulink>, <ulink url="&ucsbug;24360">Bug 24360</ulink>,
-		  <ulink url="&ucsbug;24633">Bug 24633</ulink>, <ulink url="&ucsbug;9706">Bug 9706</ulink>, <ulink url="&ucsbug;28787">Bug 28787</ulink>, <ulink url="&ucsbug;28804">Bug 28804</ulink>,
+		  <ulink url="&ucsbug;24633">Bug 24633</ulink>, <ulink url="&ucsbug;9706">Bug 9706</ulink>,
+		  <ulink url="&ucsbug;28787">Bug 28787</ulink>, <ulink url="&ucsbug;28804">Bug 28804</ulink>,
 		  <ulink url="&ucsbug;29610">Bug 29610</ulink>).
 		</simpara></listitem>
 
