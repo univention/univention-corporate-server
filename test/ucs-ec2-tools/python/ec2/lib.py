@@ -39,6 +39,10 @@ import time
 import traceback
 from socket import error as socket_error
 from select import select
+try:
+	from shlex import quote
+except ImportError:
+	from pipes import quote
 
 import boto
 from boto.ec2 import regions, blockdevicemapping
@@ -470,12 +474,13 @@ class VM_KVM(VM):
 		kvm_name_short = '%s' % (self.section,)
 		kvm_name_full = '%s_%s' % (os.getenv('USER'), self.section,)
 
-		cmdline = '%s -y -V "%s" -A "%s" -l "%s" "%s"' % (
-			PATH_UCS_KT_GET,
-			self.config.get(self.section, 'kvm_ucsversion'),
-			self.config.get(self.section, 'kvm_architecture'),
-			kvm_name_short,
-			self.config.get(self.section, 'kvm_template'))
+		cmdline = '%s -y -V %s -A %s -l %s %s' % (
+			quote(PATH_UCS_KT_GET),
+			quote(self.config.get(self.section, 'kvm_ucsversion')),
+			quote(self.config.get(self.section, 'kvm_architecture')),
+			quote(kvm_name_short),
+			quote(self.config.get(self.section, 'kvm_template')),
+			)
 
 		self._log('  %s' % cmdline)
 		rt, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
@@ -487,7 +492,9 @@ class VM_KVM(VM):
 		else:
 			_print_done()
 
-		cmdline = 'sudo /usr/bin/virsh dumpxml "%s"' % (kvm_name_full,)
+		cmdline = 'sudo /usr/bin/virsh dumpxml %s' % (
+				quote(kvm_name_full),
+				)
 		_print_process('Detecting IPv6 address')
 		rt, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
 		if rt:
