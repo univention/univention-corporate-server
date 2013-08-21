@@ -1,3 +1,11 @@
+ucs-test (4.0.93-1) unstable; urgency=low
+
+  * 00_base/16packages_default: stop cron daemon before test and start it
+    again afterwards
+  (Bug #32006)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 21 Aug 2013 16:08:03 +0200
+
 ucs-test (4.0.92-1) unstable; urgency=low
 
   * ldiff: Handle SSH password prompt (Bug #29337)
