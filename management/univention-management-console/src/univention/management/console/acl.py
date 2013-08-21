@@ -142,7 +142,8 @@ class ACLs( object ):
 				for role in ACLs._systemroles:
 					servers = role.lookup( None, self.lo, 'univentionService=%s' % service, base=self.__ldap_base )
 					for server in servers:
-						hosts.append(server.get('name'))
+						if 'name' in server:
+							hosts.append(server['name'])
 			elif host == '*':
 				hosts.append(ucr['hostname'])
 			elif host == ucr['hostname']:

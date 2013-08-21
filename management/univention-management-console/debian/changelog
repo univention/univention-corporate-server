@@ -1,3 +1,10 @@
+univention-management-console (6.0.8-1) unstable; urgency=low
+
+  * Update the ACL evaluation: ensure name is set in the lookup result
+    (Bug #28059)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Aug 2013 10:17:18 +0200
+
 univention-management-console (6.0.7-1) unstable; urgency=low
 
   * Bug #30744: adapt hosts/list command to not throw an error if no ldap
