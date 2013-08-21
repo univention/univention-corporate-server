@@ -43,39 +43,37 @@ except ImportError:
 	import univention.ec2.lib as univention_ec2_lib
 	from univention.ec2.lib import _print_done, _print_process
 
-
 def main():
 	"""
 	Create KVM instances for testing.
 	"""
-	# A list of all VMs
-	vms = []
 
-	# Parse options and the config file
-	_print_process('Parse options and config files')
-	usage = '''%s [options] -c config_file ''' % sys.argv[0]
+	usage = '''%prog [options] -c config_file '''
 	parser = OptionParser(usage=usage)
 	parser.add_option("-c", "--conf", action="store",
-			dest="config_file", help="Config file for %s" % sys.argv[0])
+			dest="config_file", help="Config file")
 
-	(options, args) = parser.parse_args()
+	(options, _args) = parser.parse_args()
 
 	if not options.config_file:
-		_print_done('fail (-c config_file is required)')
-		sys.exit(2)
+		parser.error('fail: -c config_file is required')
 	if not os.path.exists(options.config_file):
-		_print_done('fail (%s does not exist)' % options.config_file)
-		sys.exit(2)
+		parser.error('fail: "%s" does not exist' % options.config_file)
 
 	# config parser
-	config = univention.ec2.lib.Parser()
+	_print_process('Parse options and config files')
+	config = univention_ec2_lib.Parser()
 	config.set_filename(options.config_file)
 	config.read(options.config_file)
 	_print_done()
 
+	# The paramiko module uses the logging module
+	logging.basicConfig(level=logging.WARNING)
+
+	vms = []
 	for host in config.hosts():
 		_print_process('Creating VM [%s]' % host)
-		vms.append( univention.ec2.lib.VM_KVM(host, config) )
+		vms.append( univention_ec2_lib.VM_KVM(host, config) )
 		_print_done()
 
 	# start instances
@@ -91,14 +89,12 @@ def main():
 		_print_done()
 
 	# replace profile variables and commands
-	replace_list = []
-	for vm in vms:
-		replace_list.append( ('[%s_IP]' % vm.section, vm.get_ip()) )
+	replace_list = [('[%s_IP]' % (vm.section,), vm.get_ip()) for vm in vms]
 	for vm in vms:
 		if vm.profile:
 			for (host_str, ip) in replace_list:
 				vm.profile = vm.profile.replace(host_str, ip)
-		for i in range(0,len(vm.commands)):
+		for i in range(len(vm.commands)):
 			for (host_str, ip) in replace_list:
 				vm.commands[i] = [cmd.replace(host_str, ip) for cmd in vm.commands[i]]
 
@@ -114,16 +110,12 @@ def main():
 		vm.copy_files()
 		_print_done()
 
-	max_command = 0
-	for vm in vms:
-		max_command = max(max_command, vm.command_count())
-
 	# run commands
-	for phase in range(0,max_command):
+	max_command = max((_.command_count() for _ in vms))
+	for phase in range(max_command):
 		for vm in vms:
-			print 'Running command phase (%d/%d) on VM %s' % (phase+1, max_command, vm.get_name())
+			print 'Running command phase (%d/%d) on VM %s' % (phase + 1, max_command, vm.get_name())
 			vm.run_commands(phase)
 
 if __name__ == '__main__':
 	main()
-
