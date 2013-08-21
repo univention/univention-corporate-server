@@ -1903,6 +1903,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 		Some corner cases are now handled better in ucs-test  (<ulink url="&ucsbug;31795">Bug 31795</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+	    For it's duration, the test "16packages_default" from section "base" will disable the cron daemon (<ulink url="&ucsbug;32006">Bug 32006</ulink>)
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 
