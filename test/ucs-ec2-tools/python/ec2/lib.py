@@ -646,3 +646,8 @@ class Parser(ConfigParser.ConfigParser):
 					hosts.append(sectname)
 		ifile.close()
 		return hosts
+
+
+if __name__ == '__main__':
+	import doctest
+	print doctest.testmod()
