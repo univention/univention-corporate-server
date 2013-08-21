@@ -1,3 +1,10 @@
+univention-mail-postfix (8.0.4-1) unstable; urgency=low
+
+  * Register ldap/server/addition for ldap.transport and ldap.groups
+    (Bug #19753)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 Aug 2013 17:10:55 +0200
+
 univention-mail-postfix (8.0.3-3) unstable; urgency=low
 
   * fixed small typo in UCR variable description (Bug #29593)

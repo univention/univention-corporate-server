@@ -137,6 +137,7 @@ Multifile: etc/postfix/ldap.groups
 Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
+Variables: ldap/server/addition
 User: postfix
 Group: root
 Mode: 0440
@@ -150,6 +151,7 @@ Multifile: etc/postfix/ldap.transport
 Variables: mail/postfix/virtual/.*
 Variables: ldap/server/name
 Variables: ldap/server/port
+Variables: ldap/server/addition
 User: postfix
 Group: root
 Mode: 0440
