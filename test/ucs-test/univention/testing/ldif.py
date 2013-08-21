@@ -144,6 +144,10 @@ class LdifFile(LdifSource):
 	"""
 	LDIF source from local file.
 	"""
+	@classmethod
+	def create(cls, arg, options):
+		return cls(arg)
+
 	def __init__(self, filename):
 		super(LdifFile, self).__init__()
 		self.filename = filename
@@ -162,6 +166,10 @@ class LdifSlapcat(LdifSource):
 	"""
 	LDIF source from local LDAP.
 	"""
+	@classmethod
+	def create(cls, arg, options):
+		return cls()
+
 	def __init__(self):
 		super(LdifSlapcat, self).__init__()
 		self.command = ('slapcat', '-d0')
@@ -188,9 +196,13 @@ class LdifSsh(LdifSlapcat):
 	"""
 	LDIF source from remote LDAP.
 	"""
-	def __init__(self, hostname):
+	@classmethod
+	def create(cls, hostname, options):
+		return cls(hostname, options.ssh)
+
+	def __init__(self, hostname, ssh='ssh'):
 		super(LdifSsh, self).__init__()
-		self.command = ('ssh', hostname) + self.command
+		self.command = (ssh, hostname) + self.command
 
 	def start_reading(self):
 		"""
@@ -202,11 +214,11 @@ class LdifSsh(LdifSlapcat):
 	def wait_for_data(self):
 		"""
 		Wait for the remote process to send data.
-		>>> x=LdifSsh(None);x.command=('echo',);x.start_reading();x.wait_for_data()
-		>>> x=LdifSsh(None);x.command=('false',);x.start_reading();x.wait_for_data()
+		>>> x=LdifSsh('', 'echo');x.start_reading();x.wait_for_data()
+		>>> x=LdifSsh('', 'false');x.start_reading();x.wait_for_data()
 		Traceback (most recent call last):
 			...
-		LdifError: ('Error executing', ('false',), 1)
+		SlapError: ('Error executing', ('false', '', 'slapcat', '-d0'), 1)
 		"""
 		while True:
 			rlist = [self.proc.stdout]
@@ -392,6 +404,9 @@ def commandline():
 	group.add_option("--host", "-H",
 			action="store_const", dest="source", const=LdifSsh,
 			help="next arguments are LDAP hosts")
+	group.add_option("--ssh", "-s", default="ssh",
+			action="store", dest="ssh", type="string",
+			help="specify the remote shell to use [%default]")
 	parser.add_option_group(group)
 
 	group = OptionGroup(parser, "Attributes", "Ignore attributes")
@@ -432,7 +447,7 @@ def main():
 		if args:
 			try:
 				src = args.pop(0)
-				ldif = options.source(src)
+				ldif = options.source.create(src, options)
 				sources.append(ldif)
 			except LdifError, ex:
 				parser.error(ex)
@@ -444,7 +459,7 @@ def main():
 	try:
 		ldif2 = sources.pop(0)
 	except IndexError:
-		ldif2 = LdifSlapcat()
+		ldif2 = LdifSlapcat.create(None, options)
 	if sources:
 		parser.error("More than two LDIFs given.")
 
