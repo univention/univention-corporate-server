@@ -133,6 +133,9 @@ class VM:
 		self.client = None
 		self.sftp = None
 
+	def _connect_vm(self):
+		"""Connect via ssh to VM."""
+		raise NotImplementedError()
 
 	def connect(self):
 		''' Wait until the connection is ready '''
@@ -143,20 +146,7 @@ class VM:
 		timeout = 300
 		while now - start < timeout:
 			try:
-				if self.virtualisation in ('ec2',):
-					self.client.connect(self.get_ip(),
-										port=22,
-										username='root',
-										key_filename=self.private_key),
-				elif self.virtualisation in ('kvm',):
-					self.client.connect(self.get_ip(),
-										port=22,
-										username='root',
-										password='univention',
-										)
-				else:
-					raise Exception('No virtualisation defined')
-
+				self._connect_vm()
 				break
 			except socket_error:
 				self._log('Pending %d...'  % (timeout - now + start))
@@ -427,6 +417,14 @@ class VM_KVM(VM):
 
 		self.config = config
 
+	def _connect_vm(self):
+		"""Connect to KVM."""
+		self.client.connect(self.get_ip(),
+							port=22,
+							username='root',
+							password='univention',
+							)
+
 	def start(self):
 		''' Start the VM '''
 		self.server = paramiko.SSHClient()
@@ -529,6 +527,14 @@ class VM_EC2(VM):
 			bdm = blockdevicemapping.BlockDeviceMapping()
 			bdm['/dev/sda1'] = dev_sda1
 		return bdm
+
+	def _connect_vm(self):
+		"""Connect to EC2 VM."""
+		self.client.connect(self.get_ip(),
+							port=22,
+							username='root',
+							key_filename=self.private_key,
+							)
 
 	def start(self):
 		''' Start the VM '''
