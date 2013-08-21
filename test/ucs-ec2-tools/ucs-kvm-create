@@ -34,9 +34,14 @@ Run ucs-test in local KVM test environment.
 
 from optparse import OptionParser
 import os
-import sys
-import univention.ec2.lib
-from univention.ec2.lib import _print_done, _print_process
+import logging
+
+try:
+	import python.ec2.lib as univention_ec2_lib
+	from python.ec2.lib import _print_done, _print_process
+except ImportError:
+	import univention.ec2.lib as univention_ec2_lib
+	from univention.ec2.lib import _print_done, _print_process
 
 
 def main():
