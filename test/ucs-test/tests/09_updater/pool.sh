@@ -321,7 +321,10 @@ mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpa
 	bzip2 -9 <"${dir}/Packages" >"${dir}/Packages.bz2"
 	cd "${OLDPWD}"
 
-	mkgpg || return 0
+	case "${_update_secure_apt}" in
+		0|false|no|off) return 0 ;;
+	esac
+	mkgpg
 	cd "${dir}"
 	rm -f Release Release.tmp Release.gpg
 	apt-ftparchive \
@@ -332,8 +335,19 @@ mkpkg () { # Create Package files for ${1}. Optional arguments go to dpkg-scanpa
 		release . >Release.tmp 2>&3
 	mv Release.tmp Release
 
-	chroot "${GPG_DIR}" "${GPG_BIN}" --batch --keyring "${GPGPUB#${GPG_DIR}}" --secret-keyring "${GPGSEC#${GPG_DIR}}" --detach-sign --armor --default-key "${GPGID}" <Release >Release.gpg
+	gpgsign <Release >Release.gpg
 	cd "${OLDPWD}"
+}
+
+gpgsign () { # sign file
+	mkgpg
+	chroot "${GPG_DIR}" "${GPG_BIN}" \
+		--batch \
+		--keyring "${GPGPUB#${GPG_DIR}}" \
+		--secret-keyring "${GPGSEC#${GPG_DIR}}" \
+		--armor \
+		--default-key "${GPGID}" \
+		--detach-sign
 }
 
 mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scansources.
@@ -348,9 +362,6 @@ mksrc () { # Create Sources files for ${1}. Optional arguments go to dpkg-scanso
 }
 
 mkgpg () { # Create GPG-key for secure APT
-	case "${_update_secure_apt}" in
-		0|false|no|off) mkgpg () { false; } ; return 1 ;;
-	esac
 	GPG_BIN=/usr/bin/gpg
 	GPG_DIR="${BASEDIR}/gpg.chroot"
 	mkdir -p "${GPG_DIR}${HOME}/.gnupg"
@@ -393,6 +404,13 @@ mksh () { # Create shell scripts $@ in $1
 		echo "${dir}/${1}.sh ${RANDOM}" "\$@" >>"${BASEDIR}/install.log"
 		EOF
 		chmod 755 "${dir}/${1}.sh"
+		case "${_repository_online_verify}" in
+			0|false|no|off) return 0 ;;
+		esac
+		if mkgpg
+		then
+			gpgsign <"${dir}/${1}.sh" >"${dir}/${1}.sh.gpg"
+		fi
 		shift
 	done
 }
