@@ -129,9 +129,7 @@ class VM:
 			log.close()
 		self.logfile_fd = None
 
-		self.ec2 = None       # EC2 only
 		self.instance = None
-		self.server = None    # KVM only
 		self.client = None
 		self.sftp = None
 
@@ -421,6 +419,7 @@ class VM_KVM(VM):
 
 		VM.__init__(self, section, config, 'kvm')
 
+		self.server = None
 		self.config = config
 
 	def _connect_vm(self):
@@ -522,6 +521,8 @@ class VM_EC2(VM):
 				self.aws_cfg[key] = config.get(section, key)
 
 		VM.__init__(self, section, config, 'ec2')
+
+		self.ec2 = None
 
 	def _get_blockdevicemapping(self):
 		"""
