@@ -49,6 +49,7 @@ from boto.ec2 import regions, blockdevicemapping
 
 PATH_UCS_KT_GET = '/usr/bin/ucs-kt-get'
 
+
 def mac2IPv6linklocal(mac):
 	"""
 	Converta mac address into a IPv6 link local address.
@@ -76,6 +77,7 @@ def _split_config(lines):
 		if line.startswith('#'):
 			continue
 		yield line
+
 
 class VM:
 	"""
@@ -157,7 +159,7 @@ class VM:
 				time.sleep(5)
 				now = time.time()
 			except Exception, ex:
-				self._log('Unknown error "%s"...'  % (str(ex)))
+				self._log('Unknown error "%s"...'  % (ex,))
 				self._log('Pending %d...'  % (timeout - now + start))
 				time.sleep(5)
 				now = time.time()
@@ -400,6 +402,10 @@ class VM:
 
 
 class VM_KVM(VM):
+	"""
+	Local KVM instance.
+	"""
+
 	def __init__(self, section, config):
 		''' Initialize a VM instance in local KVM environment '''
 		params = [ 'kvm_server',
@@ -433,10 +439,9 @@ class VM_KVM(VM):
 		try:
 			self.server.connect(kvm_server,
 								port=22)
-		except socket_error, e:
+		except socket_error, ex:
 			self._log('Failed to connect to %s...'  % (kvm_server,))
-			_print_done('fail (%s)' % (str(e)))
-			time.sleep(2)
+			_print_done('fail (%s)' % (ex,))
 			sys.exit(1)
 
 		transport = self.server.get_transport()
@@ -454,9 +459,9 @@ class VM_KVM(VM):
 			)
 
 		self._log('  %s' % cmdline)
-		rt, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
-		if rt != 0:
-			_print_done('fail (return code %s)' % rt)
+		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
+		if ret != 0:
+			_print_done('fail (return code %s)' % (ret,))
 			print stdout
 			print stderr
 			sys.exit(1)
@@ -488,6 +493,10 @@ class VM_KVM(VM):
 
 
 class VM_EC2(VM):
+	"""
+	Amazon EC2 instance.
+	"""
+
 	def __init__(self, section, config):
 		''' Initialize a VM instance '''
 		self.aws_cfg = {}
@@ -620,6 +629,7 @@ def _print_process(msg):
 	else:
 		print '%-65s' % msg,
 	sys.stdout.flush()
+
 
 def _print_done(msg='done'):
 	'''	Close the status line opend with _print_process '''
