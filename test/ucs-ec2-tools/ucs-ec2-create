@@ -48,7 +48,7 @@ def main():
 	Create EC2 instances for testing.
 	"""
 
-	usage = '''%prog% [options] -c config_file '''
+	usage = '''%prog [options] -c config_file '''
 	parser = OptionParser(usage=usage)
 	parser.add_option("-c", "--conf", action="store",
 			dest="config_file", help="Config file")
