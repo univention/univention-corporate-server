@@ -1,3 +1,9 @@
+univention-postgresql (6.0.1-1) unstable; urgency=low
+
+  * Switch to getLDAPURIs from univention.lib.misc (Bug #19753)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Aug 2013 06:46:37 +0200
+
 univention-postgresql (6.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
