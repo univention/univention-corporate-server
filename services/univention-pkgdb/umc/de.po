@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Manage software installation status of all machines of your domain"
-msgstr "Abrufen von Software-Installationstati innerhalb der UCS-Domäne"
+msgid "Manage installed software versions of UCS systems in the domain"
+msgstr "Verwalten der installierten Software-Versionen von UCS-Systemen in der Domäne"
 
 
 msgid "Software monitor"

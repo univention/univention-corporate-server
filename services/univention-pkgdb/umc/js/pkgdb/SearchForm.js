@@ -90,8 +90,7 @@ define([
 				layout: [ ['key','pattern_text','pattern_list', 'submit'] ],
 				buttons: [{
 					name:		'submit',
-					label:		_("Search"),
-					disabled:	true
+					label:		_("Search")
 				}]
 			});
 
@@ -136,23 +135,6 @@ define([
 		//		that created us (our ancestor).
 		//
 		// ---------------------------------------------------------------------
-
-		// Will be called when the grid data is readily loaded.
-		// Inside, we use this to show that a query is underway.
-		enableSearchButton: function(on) {
-			this._buttons['submit'].set('disabled',!on);
-		},
-
-		// switch dialog elements (ComboBoxes + TextBox) while a query
-		// is underway, simply to inhibit weird things from impatient users
-		enableEntryElements: function(on) {
-
-			for (var w in this._widgets)
-			{
-				var widget = this._widgets[w];
-				widget.set('disabled',!on);
-			}
-		},
 
 		// Reads the corresponding dialog elements and returns the current query
 		// as a dict with key, operand and pattern.
@@ -259,23 +241,6 @@ define([
 			var bv = '_' + element + 's_pending';
 			this.set(bv,on);
 
-	// To make it 100% safe against impatient users... but the downside is that
-	// the dialog elements would flicker on every selection change at the 'key'
-	// ComboBox...
-	//
-	//		var ele = this.getWidget(element);
-	//		if (ele)
-	//		{
-	//			// applies to 'key' ComboBox
-	//			ele.set('disabled',on);
-	//		}
-	//		else
-	//		{
-	//			// applies to these two 'pattern' entry elements
-	//			this.getWidget('pattern_text').set('disabled',on);
-	//			this.getWidget('pattern_list').set('disabled',on);
-	//		}
-
 		},
 
 		_set_selection_to_first_element: function(name) {
@@ -353,7 +318,6 @@ define([
 			if (allow != this._submit_allowed)
 			{
 				this._submit_allowed = allow;
-				this.enableSearchButton(allow);
 			}
 		},
 
@@ -367,8 +331,6 @@ define([
 		// our follow-up of the submit event, called only if submit is allowed.
 		// For the convenience of the caller, we pass the current query.
 		onExecuteQuery: function(query) {
-			this.enableSearchButton(false);
-			this.enableEntryElements(false);
 		},
 
 		// the invoking Page or Module can listen here to know that the query is become

@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.5-1) unstable; urgency=low
+
+  * Bug #30967: adapt UMC module
+
+ -- Florian Best <best@univention.de>  Thu, 22 Aug 2013 12:06:48 +0200
+
 univention-pkgdb (7.0.4-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)

@@ -101,12 +101,12 @@ msgid "UCS Version is lower than"
 msgstr "UCS-Version ist kleiner als"
 
 #: umc/python/pkgdb/__init__.py:188
-msgid "Unknown"
-msgstr "Unbekannt"
+msgid "Not installed"
+msgstr "Nicht installiert"
 
 #: umc/python/pkgdb/__init__.py:200
-msgid "configfiles"
-msgstr "configfiles"
+msgid "config files only"
+msgstr "nur Konfigurationsdateien"
 
 #: umc/python/pkgdb/__init__.py:197
 msgid "half-configured"

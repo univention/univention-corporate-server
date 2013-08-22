@@ -53,8 +53,8 @@ CRITERIA = {
 		'all_properties', 'sysname','sysrole','sysversion', 'sysversion_greater', 'sysversion_lower'
 	],
 	'packages':	[
-		'pkgname',									# head fields
-		'selectedstate','inststate','currentstate',	# state fields
+		'pkgname','currentstate',		# head fields
+		'selectedstate','inststate',	# state fields
 	]
 }
 
@@ -77,6 +77,10 @@ MAPPED_TABLES = {
 	'sysversion_greater': ['sysversion'],
 	'sysversion_lower': ['sysversion'],
 }
+MAPPED_PATTERNS_TO_KEYS = {
+	'incomplete': ['unpacked', 'halfinstalled', 'halfconfigured'],
+	'notinstalled': ['notinstalled', 'uninstalled'],
+}
 
 # Search string proposals:
 #
@@ -93,8 +97,8 @@ PROPOSALS = {
 		'ok', 'reinst_req', 'hold', 'hold_reinst_req'
 	],
 	'currentstate': [
-		'notinstalled', 'unpacked', 'halfconfigured', 'uninstalled',
-		'halfinstalled', 'configfiles', 'installed'
+		'installed', 'notinstalled', 'incomplete', 'configfiles'
+		# 'uninstalled', 'unpacked', 'halfconfigured', 'halfinstalled',
 	],
 }
 
@@ -142,7 +146,7 @@ QUERIES = {
 CODED_VALUES = {
 	'selectedstate':	{ '0': 'unknown', '1':'install', '2':'hold', '3':'deinstall', '4':'purge' },
 	'currentstate':		{ '0': 'notinstalled', '1': 'unpacked', '2': 'halfconfigured', '3': 'uninstalled', '4': 'halfinstalled', '5': 'configfiles', '6': 'installed' },
-	'inststate':		{ '0': 'ok', '1': 'reinst_req', '2': 'hold', '3': 'hold_reinst_req' }
+	'inststate':		{ '0': 'ok', '1': 'reinst_req', '2': 'hold', '3': 'hold_reinst_req' },
 }
 
 # We introduce a 'reverse index' of the CODED_VALUES here.
@@ -176,7 +180,7 @@ LABELS = {
 	'hold':						_("Hold"),
 	'deinstall':				_("Deinstall"),
 	'purge':					_("Purge"),
-	'unknown':					_("Unknown"),
+	'unknown':					_("Not installed"),
 	# ----------------- installation states ------------
 	'ok':						_("OK"),
 	'reinst_req':				_("Reinstall required"),
@@ -188,7 +192,7 @@ LABELS = {
 	'halfconfigured':			_("half-configured"),
 	'uninstalled':				_("uninstalled"),
 	'halfinstalled':			_("half-installed"),
-	'configfiles':				_("configfiles"),
+	'configfiles':				_("config files only"),
 	'installed':				_("installed")
 }
 
@@ -241,8 +245,7 @@ class Instance(Base):
 		function = desc['function']
 
 		kwargs = desc.get('args', {})
-		keys = MAPPED_TABLES.get(key, [key])
-		kwargs['query'] = ' OR '.join(_make_query(key, operator, pattern) for key in keys)
+		kwargs['query'] = _make_query(key, operator, pattern)
 
 		result = function(self.cursor, **kwargs)
 
@@ -296,31 +299,39 @@ def _make_query(key, operator, pattern):
 				regular expression
 	"""
 
-	if not key:
-		return None
+	def __make_query(key, operator, pattern):
+		if not key:
+			return None
 
-	# Translate keyed values. That function returns the input
-	# value unchanged if there's no reason to translate anything.
-	pattern = _coded_value(key, pattern)
+		# Translate keyed values. That function returns the input
+		# value unchanged if there's no reason to translate anything.
+		pattern = _coded_value(key, pattern)
 
-	pattern = pgdb.escape_string(pattern)
-	key = key.replace('"', r'\"')
+		pattern = pgdb.escape_string(pattern)
+		key = key.replace('"', r'\"')
 
-	if '~' in operator:
+		if '~' in operator:
 
-		# 1. dot is not a wildcard here but rather a literal dot
-		pattern = pattern.replace('.','\.')
+			# 1. dot is not a wildcard here but rather a literal dot
+			pattern = pattern.replace('.','\.')
 
-		# 2. a * indicates to not do a substring search
-		if '*' in pattern:
-			pattern = pattern.replace('*','.*')
-			pattern = '^%s$' % (pattern)
+			# 2. a * indicates to not do a substring search
+			if '*' in pattern:
+				pattern = pattern.replace('*','.*')
+				pattern = '^%s$' % (pattern)
 
-		# 3. empty pattern means search for everything
-		if pattern == '':
-			pattern = '.*'
+			# 3. empty pattern means search for everything
+			if pattern == '':
+				pattern = '.*'
 
-	return "\"%s\" %s '%s'" % (key, operator, pattern)
+		return "\"%s\" %s '%s'" % (key, operator, pattern)
+
+	if pattern in MAPPED_PATTERNS_TO_KEYS:
+		patterns = MAPPED_PATTERNS_TO_KEYS[pattern]
+		return ' OR '.join(__make_query(key, operator, pattern) for pattern in patterns)
+	else:
+		keys = MAPPED_TABLES.get(key, [key])
+		return ' OR '.join(__make_query(key, operator, pattern) for key in keys)
 
 def _decoded_value(field, key):
 	"""	accepts a field name and the database value of this field
