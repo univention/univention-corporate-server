@@ -492,8 +492,7 @@ define([
 						var newIp = this._getNewIpAddress(values.interfaces, values['interfaces/primary'] || 'eth0');
 						if (newIp) {
 							var oldIp = window.location.host;
-							oldIp = oldIp.replace('[', '\\[').replace(']', '\\]');
-							target = target.replace(new RegExp(oldIp+"/univention-management-console", "g"), newIp+"/univention-management-console");
+							target = target.replace(oldIp, newIp);
 						}
 
 						// give the restart/services function 10 seconds time to restart the services
