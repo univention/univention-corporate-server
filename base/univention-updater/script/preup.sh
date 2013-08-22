@@ -286,8 +286,8 @@ then
 	ldapsearch -x -D "$ldap_hostdn" -w "$(< /etc/machine.secret)" -b "$ldap_base" -s base &>/dev/null
 	if [ $? -eq 49 ]
 	then
-		echo "ERROR: The LDAP connection to $ldap_server_name with the machine account has"
-		echo "       failed (invalid credentials)!"
+		echo "ERROR: A LDAP connection to the configured LDAP servers with the machine"
+		echo "       account has failed (invalid credentials)!"
 		echo "       This MUST be fixed before the update can continue."
 		echo
 		echo "       This problem can be corrected by setting the content of the file"
