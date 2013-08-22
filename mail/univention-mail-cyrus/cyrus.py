@@ -93,6 +93,11 @@ def cyrus_usermailbox_rename(old, new):
 		try:
 			listener.setuid(0)
 			returncode = subprocess.call(['/usr/sbin/univention-cyrus-mailbox-rename', '--user', old, new])
+			if (returncode != 0):
+				univention.debug.debug(
+					univention.debug.LISTENER,
+					univention.debug.ERROR,
+					'%s: Cyrus Murder mailbox rename failed for %s' % (name, old))
 			if listener.baseConfig.is_true('mail/cyrus/userlogfiles', False):
 				newpath = '/var/lib/cyrus/log/%s' % new
 				oldpath = '/var/lib/cyrus/log/%s' % old
@@ -143,7 +148,7 @@ def move_cyrus_murder_mailbox(old, new):
 	univention.debug.debug(
 		univention.debug.LISTENER,
 		univention.debug.INFO,
-		'cyrus: muder move mailbox %s to %s' % (old, murderBackend))
+		'cyrus: murder move mailbox %s to %s' % (old, murderBackend))
 
 	try:
 		listener.setuid(0)
@@ -152,7 +157,7 @@ def move_cyrus_murder_mailbox(old, new):
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
-				'%s: Cyrus Murder mailbox rename failed for %s' % (name, oldemail))
+				'%s: Cyrus Murder mailbox move failed for %s' % (name, old))
 		create_cyrus_userlogfile(new)
 	finally:
 		listener.unsetuid()
@@ -258,6 +263,11 @@ def handler(dn, new, old, command):
 					else:
 						if oldMailPrimaryAddress and newMailPrimaryAddress:
 							move_cyrus_murder_mailbox(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
+							# did the mailbox name change when moving between servers?
+							if oldMailPrimaryAddress != newMailPrimaryAddress:
+								if listener.baseConfig.is_true('mail/cyrus/mailbox/rename', False):
+									cyrus_usermailbox_rename(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
+								#else tree is already handled above(if not is_cyrus_murder_backend())
 
 				if oldHomeServer.lower() == fqdn:
 					# delete mailbox on old home server
