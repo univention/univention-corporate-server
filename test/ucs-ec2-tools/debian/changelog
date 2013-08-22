@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.9-6) unstable; urgency=low
+
+  * Bug #32165: updated kvm examples
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 22 Aug 2013 12:03:30 +0200
+
 ucs-ec2-tools (0.1.9-5) unstable; urgency=low
 
   * Bug #32165: merge updates from ucs-ec2-create into ucs-kvm-create
