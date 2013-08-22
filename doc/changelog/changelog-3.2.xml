@@ -1221,7 +1221,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The cyrus configuration now uses the LDAP servers configured through the &ucsUCRV;
-		  <envar>ldpa/server/addition</envar> too (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
+		  <envar>ldap/server/addition</envar> too (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1245,7 +1245,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The Postfix configuration now uses the LDAP servers configured through the &ucsUCRV;
-		  <envar>ldpa/server/addition</envar> too (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
+		  <envar>ldap/server/addition</envar> too (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1452,6 +1452,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  Restart PostgreSQL server in postinst (<ulink url="&ucsbug;27786">Bug 27786</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		 The postgresql configuration file <filename>/etc/postgresql/pam_ldap.conf<filename> now uses
+		 the univention python lib to generate the LDAP URI
+		 (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
