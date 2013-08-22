@@ -1,3 +1,10 @@
+univention-system-setup (7.0.29-1) unstable; urgency=low
+
+  * Bug #29973: fix regex for IPv6 identifier name
+  * Bug #30816: fix IPv6 adress URL replacement
+
+ -- Florian Best <best@univention.de>  Thu, 22 Aug 2013 12:40:36 +0200
+
 univention-system-setup (7.0.28-1) unstable; urgency=low
 
   * Revert second half of change of 7.0.26-1 (Bug #31960)

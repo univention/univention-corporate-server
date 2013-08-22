@@ -391,6 +391,7 @@ define([
 			var prim = interfaces[primary_interface];
 
 			var currentIP = window.location.host;
+			currentIP = currentIP.replace('[', '').replace(']', '');
 			var primIp4 = prim && prim.ip4[0] && prim.ip4[0][0];
 			var primIp6 = prim && prim.ip6[0] && prim.ip6[0][0];
 
@@ -491,10 +492,7 @@ define([
 						var newIp = this._getNewIpAddress(values.interfaces, values['interfaces/primary'] || 'eth0');
 						if (newIp) {
 							var oldIp = window.location.host;
-							if (!(/[.]/).test(oldIp)) {
-								// ipv6
-								oldIp = '\\[' + oldIp + '\\]';
-							}
+							oldIp = oldIp.replace('[', '\\[').replace(']', '\\]');
 							target = target.replace(new RegExp(oldIp+"/univention-management-console", "g"), newIp+"/univention-management-console");
 						}
 

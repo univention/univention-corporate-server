@@ -47,7 +47,7 @@ ucr.load()
 _ = Translation('univention-management-console-module-setup').translate
 
 RE_INTERFACE = re.compile(r'^interfaces/(?!(?:primary|restart/auto|handler)$)([^/_]+)(_[0-9]+)?/')
-RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+\z')
+RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+\Z')
 
 PHYSICAL_INTERFACES = [dev['name'] for dev in detect_interfaces()]
 
