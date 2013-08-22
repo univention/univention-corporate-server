@@ -1455,7 +1455,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		 The postgresql configuration file <filename>/etc/postgresql/pam_ldap.conf<filename> now uses
+		 The postgresql configuration file <filename>/etc/postgresql/pam_ldap.conf</filename> now uses
 		 the univention python lib to generate the LDAP URI
 		 (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
