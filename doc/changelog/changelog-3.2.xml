@@ -765,6 +765,10 @@
 		<listitem><simpara>
 			Displaying a feedback message after importing a license was made more robust (<ulink url="&ucsbug;29713">Bug 29713</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			A sometimes erroneous evaluation of policies as shown in the detail view of UDM objects in UMC has been corrected (<ulink url="&ucsbug;31916">Bug 31916</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
