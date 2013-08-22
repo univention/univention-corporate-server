@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.13-2) unstable; urgency=low
+
+  * Bug #31916: fixed version dependency to univention-directory-manager-tools
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 22 Aug 2013 18:09:08 +0200
+
 univention-management-console-module-udm (4.0.13-1) unstable; urgency=low
 
   * Bug #31916: fixed erroneous evaluation of policies in udm/object/policies
