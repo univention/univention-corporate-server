@@ -66,15 +66,17 @@ class SoftwareScript(AptScript):
 		else:
 			self.set_always_install(self.base_package)
 
-		# apt-get remove pkg
-		self.uninstall(*self.packages_remove)
+		for pkg in self.packages_remove:
+			# apt-get remove pkg
+			self.uninstall(pkg)
 
 		# apt-get autoremove
 		self.autoremove()
 		self.finish_task('Autoremove')
 
-		# apt-get install pkg
-		self.install(*self.packages_install)
+		for pkg in self.packages_install:
+			# apt-get install pkg
+			self.install(pkg)
 
 		return True
 

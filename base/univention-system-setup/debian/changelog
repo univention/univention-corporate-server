@@ -1,3 +1,9 @@
+univention-system-setup (7.0.28-1) unstable; urgency=low
+
+  * Revert second half of change of 7.0.26-1 (Bug #31960)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Aug 2013 11:21:16 +0200
+
 univention-system-setup (7.0.27-1) unstable; urgency=low
 
   * Bug #29973: make detection of new IP more reliable
