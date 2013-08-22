@@ -825,7 +825,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The redirection to new UMC URL when changing IP configuration in system setup has been made more robust (<ulink url="&ucsbug;29973">Bug 29973</ulink>).
+			The redirection to the new UMC URL when changing IP configuration in system setup has been made more robust (<ulink url="&ucsbug;29973">Bug 29973</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
