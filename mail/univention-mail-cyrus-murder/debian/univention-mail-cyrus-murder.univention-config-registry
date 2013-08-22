@@ -83,6 +83,7 @@ Type: file
 File: etc/pam.d/mupdate
 Variables: ldap/base
 Variables: ldap/server/name
+Variables: ldap/server/addition
 Variables: ldap/hostdn
 Variables: ldap/server/port
 
