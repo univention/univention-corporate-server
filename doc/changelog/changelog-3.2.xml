@@ -444,6 +444,10 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The version of the JavaScript Dojo Toolkit has been updated to 1.9 (Bug <ulink url="&ucsbug;31639">31639</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Adjusted initial module loading to be more robust (<ulink url="&ucsbug;32140">Bug 32140</ulink>).
 		</simpara></listitem>
 
