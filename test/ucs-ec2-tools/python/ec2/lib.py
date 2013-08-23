@@ -131,7 +131,7 @@ class VM:
 
 		self.instance = None
 		self.client = None
-		self.sftp = None
+		self.client_sftp = None
 
 	def _connect_vm(self):
 		"""Connect via ssh to VM."""
@@ -169,20 +169,20 @@ class VM:
 		if not self.profile:
 			return
 
-		self._open_sftp_connection()
+		self._open_client_sftp_connection()
 
-		remote_profile = self.sftp.file('/var/cache/univention-system-setup/profile', 'w')
+		remote_profile = self.client_sftp.file('/var/cache/univention-system-setup/profile', 'w')
 		print >> remote_profile, self.profile
 		remote_profile.close()
 
-		self._close_sftp_connection()
+		self._close_client_sftp_connection()
 
 	def copy_files(self):
 		''' Copy the given files to the instance '''
 		if not self.files:
 			return
 
-		self._open_sftp_connection()
+		self._open_client_sftp_connection()
 
 		for line in self.files:
 			localfiles, remotedir = line.rsplit(' ', 1)
@@ -193,10 +193,10 @@ class VM:
 				if os.path.exists(localfile):
 					fname = os.path.basename(localfile)
 					remfile = os.path.join(remotedir, fname)
-					self.sftp.put(localfile, remfile)
-					self.sftp.chmod(remfile, os.stat(localfile).st_mode & 0777)
+					self.client_sftp.put(localfile, remfile)
+					self.client_sftp.chmod(remfile, os.stat(localfile).st_mode & 0777)
 
-		self._close_sftp_connection()
+		self._close_client_sftp_connection()
 
 	def _exec_local(self, cmdline):
 		"""
@@ -362,13 +362,13 @@ class VM:
 		return session.exit_status, stdout, stderr
 
 
-	def _open_sftp_connection(self):
-		'''	Open the SFTP connection and save the connection as self.sftp '''
-		self.sftp = self.client.open_sftp()
+	def _open_client_sftp_connection(self):
+		'''	Open the SFTP connection and save the connection as self.client_sftp '''
+		self.client_sftp = self.client.open_sftp()
 
-	def _close_sftp_connection(self):
+	def _close_client_sftp_connection(self):
 		'''	Close the SFTP connection '''
-		self.sftp.close()
+		self.client_sftp.close()
 
 	def _remote_mkdir(self, directory):
 		'''	Helpder function to create the given directory structure through
@@ -381,7 +381,7 @@ class VM:
 				mode = os.stat(directory).st_mode & 0777
 			else:
 				mode = 0777
-			self.sftp.mkdir(directory, mode=mode)
+			self.client_sftp.mkdir(directory, mode=mode)
 		except IOError:
 			self._remote_mkdir(directory.rsplit("/", 1)[0])
 
