@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="pkgdb" icon="pkgdb" priority="7" version="1.0">
 		<name>Software monitor</name>
-		<description>Manage software installation status of all machines of your domain</description>
+		<description>Manage installed software versions of UCS systems in the domain</description>
 		<categories>
 			<category name="system"/>
 		</categories>
