@@ -61,6 +61,7 @@ done
 # @param  script path
 # @param  description (optional)
 info_header () {
+	local _path script name
 	_path="$1"
 	script="${_path##*scripts/}"
 	echo "=== $script ($(date +'%Y-%m-%d %H:%M:%S')) ==="
@@ -153,6 +154,7 @@ service_start () { service start "$@"; }
 service_stop () { service stop "$@"; }
 
 ldap_binddn () {
+	local server_role ldap_base ldap_master ldap_hostdn ldap_username
 	eval "$(univention-config-registry shell server/role ldap/base ldap/master ldap/hostdn)"
 	case "${server_role:?}" in
 	domaincontroller_master|domaincontroller_backup)
@@ -168,8 +170,7 @@ ldap_binddn () {
 }
 
 ldap_bindpwd () {
-	eval "$(univention-config-registry shell server/role ldap/base ldap/master)"
-	case "${server_role:?}" in
+	case "$(ucr get server/role)" in
 	domaincontroller_master|domaincontroller_backup)
 		cat /etc/ldap.secret
 		;;
