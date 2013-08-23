@@ -584,7 +584,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 				</footnote>.
 			</para>
 			<para>
-				The module <package>univention.admin.hook</package> provides the class <classname>simplehook</classname>, which implements all required hook functions.
+				The module <package>univention.admin.hook</package> provides the class <classname>simpleHook</classname>, which implements all required hook functions.
 				By default they don't modify any request but do log all calls.
 				This class should be used as a base class for inheritance.
 			</para>
