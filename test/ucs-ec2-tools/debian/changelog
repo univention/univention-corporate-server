@@ -1,3 +1,10 @@
+ucs-ec2-tools (0.1.9-8) unstable; urgency=low
+
+  * Bug #32165: make sure that only one instance is created via ucs-kt-get
+  * Bug #32165: read actual name of instance from result file of ucs-kt-geta
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 23 Aug 2013 16:05:22 +0200
+
 ucs-ec2-tools (0.1.9-7) unstable; urgency=low
 
   * Bug #32165: updated kvm examples

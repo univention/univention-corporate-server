@@ -37,6 +37,7 @@ import sys
 import glob
 import time
 import traceback
+import json
 from socket import error as socket_error
 from select import select
 try:
@@ -450,23 +451,59 @@ class VM_KVM(VM):
 		kvm_name_short = '%s' % (self.section,)
 		kvm_name_full = '%s_%s' % (os.getenv('USER'), self.section,)
 
-		cmdline = '%s -y -V %s -A %s -l %s %s' % (
+		# create temporary result file for ucs-kt-get
+		cmdline = 'mktemp'
+		self._log('  %s' % cmdline)
+		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
+		if ret != 0:
+			_print_done('fail (step 1 - return code %s)' % (ret,))
+			print stdout
+			print stderr
+			sys.exit(1)
+
+		fn_kvm_results = stdout.strip()
+		self._log('  fn_kvm_results: %s:%s' % (kvm_server, fn_kvm_results,))
+
+		cmdline = '%s -y -V %s -A %s -l %s %s --onlyone -r %s' % (
 			quote(PATH_UCS_KT_GET),
 			quote(self.config.get(self.section, 'kvm_ucsversion')),
 			quote(self.config.get(self.section, 'kvm_architecture')),
 			quote(kvm_name_short),
 			quote(self.config.get(self.section, 'kvm_template')),
+			quote(fn_kvm_results),
 			)
 
 		self._log('  %s' % cmdline)
 		ret, stdout, stderr = self._ssh_exec_get_data(cmdline, self.server)
 		if ret != 0:
-			_print_done('fail (return code %s)' % (ret,))
+			_print_done('fail (step 2 - return code %s)' % (ret,))
 			print stdout
 			print stderr
 			sys.exit(1)
 		else:
 			_print_done()
+
+		_print_process('Determine instance name')
+
+		# get and remove temporary file
+		self._open_server_sftp_connection()
+		kvm_results = self.server_sftp.file(fn_kvm_results).read()
+		self.server_sftp.unlink(fn_kvm_results)
+		self._close_server_sftp_connection()
+
+		try:
+			# convert JSON kvm_results from ucs-kt-get into python structure
+			kvm_results = json.loads(kvm_results)
+			if kvm_results and 'name' in kvm_results[0]:
+				kvm_name_full = kvm_results[0]['name']
+			else:
+				raise ValueError('name is not set in kvm_results or kvm_results is empty')
+		except (IOError, OSError, ValueError, TypeError), ex:
+			self._log('Failed to load result file %s of %s: %s'  % (fn_kvm_results, PATH_UCS_KT_GET, ex,))
+			_print_done('error (unreadable results)')
+			sys.exit(1)
+
+		_print_done('done (VM: %s)' % kvm_name_full)
 
 		cmdline = 'sudo /usr/bin/virsh dumpxml %s' % (
 				quote(kvm_name_full),
