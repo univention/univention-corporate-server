@@ -420,6 +420,7 @@ class VM_KVM(VM):
 		VM.__init__(self, section, config, 'kvm')
 
 		self.server = None
+		self.server_sftp = None
 		self.config = config
 
 	def _connect_vm(self):
@@ -489,6 +490,14 @@ class VM_KVM(VM):
 	def get_ip(self):
 		''' Return the IP address of the started VM '''
 		return self.instance['ipv6']
+
+	def _open_server_sftp_connection(self):
+		'''	Open the SFTP connection and save the connection as self.server_sftp '''
+		self.server_sftp = self.server.open_sftp()
+
+	def _close_server_sftp_connection(self):
+		'''	Close the SFTP connection '''
+		self.server_sftp.close()
 
 
 class VM_EC2(VM):
