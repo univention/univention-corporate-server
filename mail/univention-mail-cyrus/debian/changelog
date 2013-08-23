@@ -1,10 +1,10 @@
-univention-mail-cyrus (6.0.4-4) unstable; urgency=low
+univention-mail-cyrus (6.0.4-5) unstable; urgency=low
 
   * Fix concurrent mailbox rename and change of mail homeserver (Bug #29605) 
   * Fix variable names
   * Removed cyrus-mailboxrename.py
 
- -- Erik Damrose <damrose@univention.de>  Thu, 22 Aug 2013 13:47:27 +0200
+ -- Erik Damrose <damrose@univention.de>  Fri, 23 Aug 2013 09:33:57 +0200
 
 univention-mail-cyrus (6.0.4-3) unstable; urgency=low
 

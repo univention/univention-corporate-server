@@ -97,7 +97,7 @@ def cyrus_usermailbox_rename(old, new):
 				univention.debug.debug(
 					univention.debug.LISTENER,
 					univention.debug.ERROR,
-					'%s: Cyrus Murder mailbox rename failed for %s' % (name, old))
+					'%s: Cyrus mailbox rename failed for %s' % (name, old))
 			if listener.baseConfig.is_true('mail/cyrus/userlogfiles', False):
 				newpath = '/var/lib/cyrus/log/%s' % new
 				oldpath = '/var/lib/cyrus/log/%s' % old
