@@ -20,7 +20,7 @@ PASSWORD=univention
 info "Create user"
 user_create "$USERNAME"
 
-# Create UMC opersion sets
+# Create UMC operation sets
 for((i=1;i<10;i++)); do
 	udm settings/umc_operationset create --position "cn=operations,cn=UMC,cn=univention,$ldap_base" \
 			--set name=join$i \
