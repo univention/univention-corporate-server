@@ -46,7 +46,7 @@ fi
 
 echo "##  wbinfo --ping-dc"
 if ! wbinfo --ping-dc; then
-	fail_fast 1 "No connection to NETLOGON"
+	err "No connection to NETLOGON, continuing anyway, see Bug #31772"
 fi
 
 echo "##  wbinfo -D"
@@ -66,68 +66,76 @@ fi
 
 wait_for_LDAP_replication_of_domain_sambaSid "$username"
 
-echo "##  wbinfo --name-to-sid"
+printf "##  wbinfo --name-to-sid:\t"
 output=$(wbinfo -n "$username")
 if [ $? != 0 ]; then
 	fail_fast 1 "wbinfo --name-to-sid '$username' failed"
 else
 	user_sid=$(echo "$output" | cut -d' '  -f1)
 fi
+echo "$user_sid"
 
-echo "##  wbinfo --sid-to-uid"
+printf "##  wbinfo --sid-to-uid:\t"
 user_uid=$(wbinfo -S "$user_sid")
 if [ $? != 0 ]; then
 	fail_fast 1 "wbinfo --sid-to-uid '$user_sid' failed"
 fi
+echo "$user_uid"
 
-echo "##  wbinfo --uid-to-sid"
+printf "##  wbinfo --uid-to-sid:\t"
 user_sid2=$(wbinfo -U "$user_uid")
 if [ $? != 0 ]; then
 	fail_fast 1 "wbinfo --uid-to-sid '$user_uid' failed"
 fi
+echo "$user_sid2"
 
-echo "##  wbinfo --sid-to-name"
+printf "##  wbinfo --sid-to-name:\t"
 output=$(wbinfo -s "$user_sid2")
 if [ $? != 0 ]; then
 	fail_fast 1 "wbinfo --sid-to-name '$user_sid2' failed"
 else
 	user_name2=$(echo "$output" | cut -d' '  -f1)
 fi
+echo "$user_name2"
 
 if [ "$user_name2" != "$FQUSERNAME" ]; then
 	fail_fast 1 "Unexpected user name obtained from SID lookup: $user_name2, expected: $NAME"
 fi
 
-echo "##  wbinfo --user-domgroups"
+echo "##  checking user groups"
 for group_sid in $(wbinfo --user-domgroups="$user_sid");
 do
-	echo "## wbinfo --user-domgroups returned $group_sid"
-	echo "##  wbinfo --sid-to-gid"
+	printf "##  wbinfo --user-domgroups:\t$group_sid\n"
+	printf "##  wbinfo --sid-to-gid:\t"
 	group_gid=$(wbinfo -Y "$group_sid")
 	if [ "$?" != 0 ]; then
 		fail_fast 1 "wbinfo --sid-to-gid '$group_sid' failed"
 	fi
-	echo "##  wbinfo --gid-to-sid"
+	echo "$group_gid"
+	printf "##  wbinfo --gid-to-sid:\t"
 	output=$(wbinfo -G "$group_gid")
 	if [ "$?" != 0 ]; then
 		fail_fast 1 "wbinfo --gid-to-sid '$group_gid' failed"
 	else
 		group_sid2=$(echo "$output")
 	fi
-	echo "##  wbinfo --sid-to-name"
+	echo "$group_sid2"
+	printf "##  wbinfo --sid-to-name:\t"
 	output=$(wbinfo -s "$group_sid2")
 	if [ "$?" != 0 ]; then
 		fail_fast 1 "wbinfo --sid-to-name '$group_sid2' failed"
 	else
 		group_name2=$(echo "$output" | sed 's/ [0-9]*$//')
 	fi
-	echo "##  wbinfo --name-to-sid"
+	echo "$group_name2"
+	printf "##  wbinfo --name-to-sid:\t"
 	output=$(wbinfo -n "$group_name2")
 	if [ "$?" != 0 ]; then
 		fail_fast 1 "wbinfo --name-to-sid '$group_name2' failed"
 	else
 		group_sid3=$(echo "$output" | cut -d' '  -f1)
 	fi
+	echo "$group_sid3"
 done
 
 echo "##  wbinfo --authenticate"
