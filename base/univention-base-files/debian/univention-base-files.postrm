@@ -49,3 +49,5 @@ abort-upgrade|abort-install)
 	[ -n "$previous" ] && ucr $previous # IFS
 	ucr unset update/ucr/restore
 esac
+
+exit 0
