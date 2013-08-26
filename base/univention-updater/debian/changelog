@@ -1,3 +1,9 @@
+univention-updater (9.0.12-1) unstable; urgency=low
+
+  * Changed wording for app updates (Bug #30548)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Aug 2013 09:54:39 +0200
+
 univention-updater (9.0.11-1) unstable; urgency=low
 
   * preup.sh: the error message about the failed LDAP connection has

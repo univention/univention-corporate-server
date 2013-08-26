@@ -545,14 +545,14 @@ define([
 						var appUpdatesList = '<ul><li>' + appUpdatesInfo.join('</li><li>') + '</li></ul>';
 						this._form.getWidget('app_center_updates_apps').set('content', appUpdatesList);
 						var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'appcenter\')"';
-						this._form.getWidget('app_center_updates_link').set('content', _('Visit the <a %s>App Center Module</a> to install the updates.', link));
+						this._form.getWidget('app_center_updates_link').set('content', _('Please visit the <a %s>App Center Module</a> to install these updates.', link));
 					} else {
 						msg = _('No application updates available');
 					}
 					this._form.getWidget('app_center_updates_text').set('content', msg);
 				}),
 				lang.hitch(this, function(data) {
-					var msg = _('App Center not available');
+					var msg = _('The App Center is not available or currently unreachable');
 					this._form.getWidget('app_center_updates_text').set('content', msg);
 				})
 			);
