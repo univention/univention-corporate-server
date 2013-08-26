@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.7-1) unstable; urgency=low
+
+  * Bug #30967: adapt wording
+
+ -- Florian Best <best@univention.de>  Mon, 26 Aug 2013 10:33:05 +0200
+
 univention-pkgdb (7.0.6-1) unstable; urgency=low
 
   * Bug #30967: adapted UMC module description

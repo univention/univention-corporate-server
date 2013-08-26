@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-pkgdb\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-07-04 10:25+0200\n"
+"POT-Creation-Date: 2013-08-22 23:27+0200\n"
 "PO-Revision-Date: 2011-10-22 15:11+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,122 +12,130 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/pkgdb/__init__.py:168
+#: umc/python/pkgdb/__init__.py:172
 msgid "All properties"
 msgstr "Alle Eigenschaften"
 
-#: umc/python/pkgdb/__init__.py:186
+#: umc/python/pkgdb/__init__.py:195
+msgid "Config files only"
+msgstr "Nur Konfigurationsdateien"
+
+#: umc/python/pkgdb/__init__.py:181
 msgid "Deinstall"
 msgstr "Deinstall"
 
-#: umc/python/pkgdb/__init__.py:180
+#: umc/python/pkgdb/__init__.py:175
 msgid "Domaincontroller Backup"
 msgstr "Domaincontroller Backup"
 
-#: umc/python/pkgdb/__init__.py:179
+#: umc/python/pkgdb/__init__.py:174
 msgid "Domaincontroller Master"
 msgstr "Domaincontroller Master"
 
-#: umc/python/pkgdb/__init__.py:181
+#: umc/python/pkgdb/__init__.py:176
 msgid "Domaincontroller Slave"
 msgstr "Domaincontroller Slave"
 
-#: umc/python/pkgdb/__init__.py:185
+#: umc/python/pkgdb/__init__.py:192
+msgid "Half-configured"
+msgstr "Halb-konfiguriert"
+
+#: umc/python/pkgdb/__init__.py:194
+msgid "Half-installed"
+msgstr "Halb-installiert"
+
+#: umc/python/pkgdb/__init__.py:180
 msgid "Hold"
 msgstr "Hold"
 
-#: umc/python/pkgdb/__init__.py:193
+#: umc/python/pkgdb/__init__.py:188
 msgid "Hold + Reinstall required"
 msgstr "Hold + Reinstall required"
 
-#: umc/python/pkgdb/__init__.py:163
+#: umc/python/pkgdb/__init__.py:167
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: umc/python/pkgdb/__init__.py:184
+#: umc/python/pkgdb/__init__.py:197
+msgid "Incomplete"
+msgstr "Unvollständig"
+
+#: umc/python/pkgdb/__init__.py:179
 msgid "Install"
 msgstr "Install"
 
-#: umc/python/pkgdb/__init__.py:156
+#: umc/python/pkgdb/__init__.py:160
 msgid "Installation state"
 msgstr "Installationsstatus"
 
-#: umc/python/pkgdb/__init__.py:157
+#: umc/python/pkgdb/__init__.py:196
+msgid "Installed"
+msgstr "Installiert"
+
+#: umc/python/pkgdb/__init__.py:161
 msgid "Inventory date"
 msgstr "Erfassungsdatum"
 
-#: umc/python/pkgdb/__init__.py:182
+#: umc/python/pkgdb/__init__.py:177
 msgid "Member Server"
 msgstr "Memberserver"
 
-#: umc/python/pkgdb/__init__.py:190
-msgid "OK"
-msgstr "OK"
-
-#: umc/python/pkgdb/__init__.py:159
-msgid "Package name"
-msgstr "Paketname"
-
-#: umc/python/pkgdb/__init__.py:161
-msgid "Package state"
-msgstr "Paketstatus"
-
-#: umc/python/pkgdb/__init__.py:187
-msgid "Purge"
-msgstr "Purge"
-
-#: umc/python/pkgdb/__init__.py:191
-msgid "Reinstall required"
-msgstr "Neuinstallation erforderlich"
-
-#: umc/python/pkgdb/__init__.py:162
-msgid "Selection state"
-msgstr "Selektionsstatus"
-
-#: umc/python/pkgdb/__init__.py:164
-msgid "System role"
-msgstr "Systemrolle"
-
-#: umc/python/pkgdb/__init__.py:165
-msgid "UCS Version"
-msgstr "UCS-Version"
-
-#: umc/python/pkgdb/__init__.py:166
-msgid "UCS Version is greater than"
-msgstr "UCS-Version ist größer als"
-
-#: umc/python/pkgdb/__init__.py:167
-msgid "UCS Version is lower than"
-msgstr "UCS-Version ist kleiner als"
-
-#: umc/python/pkgdb/__init__.py:188
+#: umc/python/pkgdb/__init__.py:183 umc/python/pkgdb/__init__.py:190
 msgid "Not installed"
 msgstr "Nicht installiert"
 
-#: umc/python/pkgdb/__init__.py:200
-msgid "config files only"
-msgstr "nur Konfigurationsdateien"
+#: umc/python/pkgdb/__init__.py:185
+msgid "OK"
+msgstr "OK"
 
-#: umc/python/pkgdb/__init__.py:197
-msgid "half-configured"
-msgstr "halb-konfiguriert"
+#: umc/python/pkgdb/__init__.py:163
+msgid "Package name"
+msgstr "Paketname"
+
+#: umc/python/pkgdb/__init__.py:165
+msgid "Package state"
+msgstr "Paketstatus"
+
+#: umc/python/pkgdb/__init__.py:182
+msgid "Purge"
+msgstr "Purge"
+
+#: umc/python/pkgdb/__init__.py:186
+msgid "Reinstall required"
+msgstr "Neuinstallation erforderlich"
+
+#: umc/python/pkgdb/__init__.py:166
+msgid "Selection state"
+msgstr "Selektionsstatus"
+
+#: umc/python/pkgdb/__init__.py:168
+msgid "System role"
+msgstr "Systemrolle"
 
 #: umc/python/pkgdb/__init__.py:199
-msgid "half-installed"
-msgstr "halb-installiert"
-
-#: umc/python/pkgdb/__init__.py:201
-msgid "installed"
-msgstr "installiert"
-
-#: umc/python/pkgdb/__init__.py:195
-msgid "not installed"
-msgstr "nicht installiert"
+msgid "Triggers awaited"
+msgstr "Trigger erwartet"
 
 #: umc/python/pkgdb/__init__.py:198
-msgid "uninstalled"
-msgstr "deinstalliert"
+msgid "Triggers pending"
+msgstr "Trigger ausstehend"
 
-#: umc/python/pkgdb/__init__.py:196
-msgid "unpacked"
-msgstr "ausgepackt"
+#: umc/python/pkgdb/__init__.py:169
+msgid "UCS Version"
+msgstr "UCS-Version"
+
+#: umc/python/pkgdb/__init__.py:170
+msgid "UCS Version is greater than"
+msgstr "UCS-Version ist größer als"
+
+#: umc/python/pkgdb/__init__.py:171
+msgid "UCS Version is lower than"
+msgstr "UCS-Version ist kleiner als"
+
+#: umc/python/pkgdb/__init__.py:193
+msgid "Uninstalled"
+msgstr "Deinstalliert"
+
+#: umc/python/pkgdb/__init__.py:191
+msgid "Unpacked"
+msgstr "Ausgepackt"

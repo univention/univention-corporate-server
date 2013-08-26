@@ -78,7 +78,7 @@ MAPPED_TABLES = {
 	'sysversion_lower': ['sysversion'],
 }
 MAPPED_PATTERNS_TO_KEYS = {
-	'incomplete': ['unpacked', 'halfinstalled', 'halfconfigured'],
+	'incomplete': ['unpacked', 'halfinstalled', 'halfconfigured', 'triggers-awaited', 'triggers-pending'],
 	'notinstalled': ['notinstalled', 'uninstalled'],
 }
 
@@ -145,7 +145,7 @@ QUERIES = {
 #
 CODED_VALUES = {
 	'selectedstate':	{ '0': 'unknown', '1':'install', '2':'hold', '3':'deinstall', '4':'purge' },
-	'currentstate':		{ '0': 'notinstalled', '1': 'unpacked', '2': 'halfconfigured', '3': 'uninstalled', '4': 'halfinstalled', '5': 'configfiles', '6': 'installed' },
+	'currentstate':		{ '0': 'notinstalled', '1': 'unpacked', '2': 'halfconfigured', '3': 'uninstalled', '4': 'halfinstalled', '5': 'configfiles', '6': 'installed', '7': 'triggers-awaited', '8': 'triggers-pending' },
 	'inststate':		{ '0': 'ok', '1': 'reinst_req', '2': 'hold', '3': 'hold_reinst_req' },
 }
 
@@ -187,13 +187,16 @@ LABELS = {
 	# 'hold' already defined
 	'hold_reinst_req':			_("Hold + Reinstall required"),
 	# -------------------- package states --------------
-	'notinstalled':				_("not installed"),
-	'unpacked':					_("unpacked"),
-	'halfconfigured':			_("half-configured"),
-	'uninstalled':				_("uninstalled"),
-	'halfinstalled':			_("half-installed"),
-	'configfiles':				_("config files only"),
-	'installed':				_("installed")
+	'notinstalled':				_("Not installed"),
+	'unpacked':					_("Unpacked"),
+	'halfconfigured':			_("Half-configured"),
+	'uninstalled':				_("Uninstalled"),
+	'halfinstalled':			_("Half-installed"),
+	'configfiles':				_("Config files only"),
+	'installed':				_("Installed"),
+	'incomplete':				_("Incomplete"),
+	'triggers-pending':			_("Triggers pending"),
+	'triggers-awaited':			_("Triggers awaited"),
 }
 
 PAGES = ('systems', 'packages')
