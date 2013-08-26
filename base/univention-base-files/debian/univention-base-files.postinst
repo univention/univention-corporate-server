@@ -175,23 +175,19 @@ if [ configure = "$1" ] &&
 	dpkg --compare-versions "$2" lt-nl 3.0.2 &&
 	[ -f /etc/univention/templates/files/etc/network/interfaces.d/00-base ]
 then
-	# save old setting and disable restart
-	unset interfaces_restart_auto
-	eval "$(univention-config-registry shell interfaces/restart/auto)"
-	univention-config-registry set interfaces/restart/auto=false
 	# fix template and force update
 	sed -i.dpkg-bak -re 's/^\s*auto\s+lo\s*$|^\s*iface\s+lo\s+inet\s+loopback\s*$/#Bug 32297# &/' \
 		/etc/univention/templates/files/etc/network/interfaces.d/10-default
 	univention-config-registry update
 	univention-config-registry commit /etc/network/interfaces
-	# restore previous setting
-	if [ -z "${interfaces_restart_auto+x}" ]
-	then
-		univention-config-registry unset interfaces/restart/auto
-	else
-		univention-config-registry set interfaces/restart/auto="$interfaces_restart_auto"
-	fi
 fi
+# <https://forge.univention.org/bugzilla/show_bug.cgi?id=31844>
+case "$1" in
+configure)
+	previous=$(ucr get update/ucr/restore)
+	[ -n "$previous" ] && ucr $previous # IFS
+	ucr unset update/ucr/restore
+esac
 
 update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 

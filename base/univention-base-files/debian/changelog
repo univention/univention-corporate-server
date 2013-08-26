@@ -1,3 +1,9 @@
+univention-base-files (3.0.2-2) unstable; urgency=low
+
+  * Prevent update from restarting network (Bug #31844)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 26 Aug 2013 13:12:01 +0200
+
 univention-base-files (3.0.2-1) unstable; urgency=low
 
   * Comment out 'loopback' interface from moved template (Bug #32297)
