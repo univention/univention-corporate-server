@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-base-files
-fix: 2.0.15-1.___.201308______
+fix: 2.0.15-2.141.201308261342
 note:
 version: [1]
 desc: |
@@ -17,4 +17,6 @@ desc: |
 
   On installing this erratum, the duplicate declaration for the
   loopback interface is commented out from the moved template files.
-bug: [32297]
+
+  During the update the automatic restart of the network is disabled.
+bug: [32297,31844]
