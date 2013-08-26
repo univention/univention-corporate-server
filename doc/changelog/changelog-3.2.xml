@@ -120,13 +120,17 @@
 		  <listitem><simpara>
 			libxslt: CVE-2012-6139 (<ulink url="&ucsbug;30935">Bug 30935</ulink>).
 		  </simpara></listitem>
-
 		</itemizedlist>
-
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		In the update from UCS-3.0 to UCS-3.1 the template for <filename>/etc/network/interfaces</filename> was converted from a single-file template into a multi-file template. To prserve user modifications the original file was moved to the new location. This breaks the network tools, since the generated file now conatins two declarations for the lookback interface. This situation is now detected and the second declaration is commented out (<ulink url="&ucsbug;32297">Bug 32297</ulink>).
+		In the update from UCS-3.0 to UCS-3.1 the template for <filename>/etc/network/interfaces</filename> was converted from a single-file template into a multi-file template. To preserve user modifications the original file was moved to the new location. This breaks the network tools, since the generated file now contains two declarations for the lookback interface. This situation is now detected and the second declaration is commented out (<ulink url="&ucsbug;32297">Bug 32297</ulink>).
+	  </simpara> </listitem>
+
+	  <listitem><simpara>
+		During the update the automatic restart of the network is disabled by setting the &ucsUCRV; <envar>interfaces/restart/auto</envar> to <literal>false</literal> (<ulink url="&ucsbug;31844">Bug 31844</ulink>).
+		In the past this has caused time-outs and re-connect problems.
+		The previous value is restored after the package univention-base-files has been updated successfully.
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
@@ -291,7 +295,7 @@
 
 		<listitem><simpara>
 		  Changes are now first written to a temporary file first and the file moved in a second
-		  step, otherwise the file might be not completley written if UCR tries to read a variable
+		  step, otherwise the file might be not completely written if UCR tries to read a variable
 		  (<ulink url="&ucsbug;31725">Bug 31725</ulink>, <ulink url="&ucsbug;31853">Bug 31853</ulink>).
 		</simpara></listitem>
 
@@ -735,7 +739,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A broken LDAP authentification in <command>proof_dns_dhcp_records</command> has been
+		  A broken LDAP authentication in <command>proof_dns_dhcp_records</command> has been
 		  corrected (<ulink url="&ucsbug;30903">Bug 30903</ulink>).
 		</simpara></listitem>
 
@@ -838,7 +842,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The software setup now maintains the defined package order and triggers a single package manager operation for package installations and removals, repectively, instead of handling each listed package individually (<ulink url="&ucsbug;31960">Bug 31960</ulink>).
+		  The software setup now maintains the defined package order and triggers a single package manager operation for package installations and removals, respectively, instead of handling each listed package individually (<ulink url="&ucsbug;31960">Bug 31960</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -865,7 +869,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A traceback which occured when creating a user with just the person option set has been
+		  A traceback which occurred when creating a user with just the person option set has been
 		  corrected (<ulink url="&ucsbug;24351">Bug 24351</ulink>).
 		</simpara></listitem>
 
@@ -1028,7 +1032,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A typo in the german localization in
+		  A typo in the German localization in
 		  <emphasis>univention-management-console-module-quota</emphasis> has been corrected (<ulink url="&ucsbug;28377">Bug 28377</ulink>).
 		</simpara></listitem>
 
@@ -1172,7 +1176,7 @@
 
 	  <listitem><simpara>
 		The function getLDAPServersCommaList has been added to the python lib. This function returns
-		a comma-seperated string with all configured LDAP servers (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
+		a comma-separated string with all configured LDAP servers (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -1242,7 +1246,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The PAM tool pam_univentionmailcyrus supports a comma-seperated list for the option
+		  The PAM tool pam_univentionmailcyrus supports a comma-separated list for the option
 		  ldap_host (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
@@ -1434,7 +1438,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>NFS</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The start script for the NFS server has been synchronized with the upstrean version to support newer Linux kernels and start all services needed for the PXE installer to work (<ulink url="&ucsbug;32228">Bug 32228</ulink>).
+		  The start script for the NFS server has been synchronized with the upstream version to support newer Linux kernels and start all services needed for the PXE installer to work (<ulink url="&ucsbug;32228">Bug 32228</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1567,7 +1571,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The dialog for editing network interfaces now correctly starts with the currrent values. Multicast MAC addresses are now detected and rejected (<ulink url="&ucsbug;30806">Bug 30806</ulink>).
+		  The dialog for editing network interfaces now correctly starts with the current values. Multicast MAC addresses are now detected and rejected (<ulink url="&ucsbug;30806">Bug 30806</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1707,7 +1711,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Joining into a new <envar>samba4/join/site</envar> without Samba4 on the Master now repects the
+		  Joining into a new <envar>samba4/join/site</envar> without Samba4 on the Master now respects the
 		  chosen <envar>samba4/dc</envar> (<ulink url="&ucsbug;30792">Bug 30792</ulink>).
 		</simpara></listitem>
 
