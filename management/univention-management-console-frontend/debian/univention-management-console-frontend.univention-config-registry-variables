@@ -28,3 +28,8 @@ Description[de]=Definiert ob der Dialog zur Inbetriebnahme von UCS mit einer Fre
 Type=str
 Categories=Management
 
+[umc/web/max_host_entries]
+Description[en]=Specifies a maximum number of hosts which causes to not display the host menu when the limit is reached.
+Description[de]=Definiert eine maximale Anzahl an Hosts, die bewirkt, dass das Host-Menü nicht mehr anzeigt wenn das Limit erreicht ist.
+Type=str
+Categories=Management

@@ -678,6 +678,7 @@ define([
 				'umc/web/feedback/description',
 				'umc/web/favorites/default',
 				'umc/web/startupdialog',
+				'umc/web/max_host_entries',
 				'umc/http/session/timeout',
 				'ssl/validity/host',
 				'ssl/validity/root',
@@ -1030,7 +1031,8 @@ define([
 			var fqdn = tools.status('fqdn');
 			tools.umcpCommand('get/hosts/list').then(lang.hitch(this, function(data) {
 				var empty = data.result.length <= 1;
-				this._hostInfo.set('disabled', empty);
+				empty = empty && data.result.length >= (parseInt(_ucr['umc/web/max_host_entries'], 10) || 100);
+				this._hostInfo.set('disabled', empty && !has('ie')); // prevent IE displaying a disabled button with a shadowed text
 				if (empty) {
 					return;
 				}
@@ -1038,9 +1040,7 @@ define([
 					this._hostMenu.addChild(new MenuItem({
 						label: hostname,
 						disabled: hostname === fqdn,
-						onClick: lang.hitch(this, function() {
-							this._switchUMC(hostname);
-						})
+						onClick: lang.hitch(this, '_switchUMC', hostname)
 					}));
 				}, this);
 			}));
@@ -1048,7 +1048,7 @@ define([
 		},
 
 		_switchUMC: function(hostname) {
-			topic.publish('/umc/actions', 'switch host');
+			topic.publish('/umc/actions', 'host/switch');
 			var port = window.location.port ? ':' + window.location.port : '';
 			window.location.replace(window.location.protocol + '//' + hostname + port + window.location.pathname + window.location.search);
 		},
