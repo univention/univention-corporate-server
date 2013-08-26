@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-updater\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-08-26 09:44+0200\n"
+"POT-Creation-Date: 2013-08-26 10:40+0200\n"
 "PO-Revision-Date: 2012-02-27 16:03+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,11 +61,7 @@ msgstr ""
 
 #: umc/js/updater/UpdatesPage.js:367
 msgid "App Center updates"
-msgstr "App Center Aktualisierungen"
-
-#: umc/js/updater/UpdatesPage.js:541
-msgid "Application updates available"
-msgstr "Aktualisierungen für Applikationen verfügbar"
+msgstr "App Center-Aktualisierungen"
 
 #: umc/js/updater/ProgressPage.js:373
 msgid ""
@@ -222,10 +218,6 @@ msgstr "Protokoll"
 msgid "Logfiles can be found in the directory /var/log/univention/."
 msgstr "Logdateien können im Verzeichnis /var/log/univention/ gefunden werden."
 
-#: umc/js/updater/UpdatesPage.js:550
-msgid "No application updates available"
-msgstr "Keine Aktualisierungen für Applikationen verfügbar"
-
 #: umc/js/updater.js:299
 msgid ""
 "Nonetheless, the update proceeds and the update can be monitored from a new "
@@ -263,8 +255,9 @@ msgstr ""
 #: umc/js/updater/UpdatesPage.js:548
 #, python-format
 msgid "Please visit the <a %s>App Center Module</a> to install these updates."
-msgstr "Bitte öffnen Sie das <a %s>App Center Modul</a>, um diese "
-"Aktualisierungen zu installieren."
+msgstr ""
+"Bitte öffnen Sie das <a %s>App Center Modul</a>, um diese Aktualisierungen "
+"zu installieren."
 
 #: umc/js/updater/UpdatesPage.js:313 umc/js/updater/UpdatesPage.js:651
 msgid "Reboot"
@@ -353,6 +346,14 @@ msgid ""
 msgstr ""
 "Das Update kann eine lange Zeit in Anspruch nehmen und Ihr System träge "
 "reagieren. Es ist möglich, dass Sie sich zeitweise nicht neu anmelden können."
+
+#: umc/js/updater/UpdatesPage.js:541
+msgid "There are App Center updates available."
+msgstr "Es sind App Center-Aktualisierungen verfügbar."
+
+#: umc/js/updater/UpdatesPage.js:550
+msgid "There are no App Center updates available."
+msgstr "Es sind keine App Center-Aktualisierungen verfügbar."
 
 #: umc/js/updater/UpdatesPage.js:575
 msgid "There are no package updates available."
@@ -479,3 +480,9 @@ msgstr "{count} Pakete werden NEU installiert"
 #: umc/js/updater.js:204
 msgid "{count} packages to be updated"
 msgstr "{count} Pakete werden aktualisiert"
+
+#~ msgid "Application updates available"
+#~ msgstr "Aktualisierungen für Applikationen verfügbar"
+
+#~ msgid "No application updates available"
+#~ msgstr "Keine Aktualisierungen für Applikationen verfügbar"

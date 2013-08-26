@@ -538,7 +538,7 @@ define([
 					var apps = data.result;
 					var msg;
 					if (apps.length) {
-						msg = _('Application updates available');
+						msg = _('There are App Center updates available.');
 						var appUpdatesInfo = array.map(apps, function(app) {
 							return _('%(name)s: Version %(old)s can be updated to %(new)s', {name: app.name, old: app.version, 'new': app.candidate_version});
 						});
@@ -547,7 +547,7 @@ define([
 						var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'appcenter\')"';
 						this._form.getWidget('app_center_updates_link').set('content', _('Please visit the <a %s>App Center Module</a> to install these updates.', link));
 					} else {
-						msg = _('No application updates available');
+						msg = _('There are no App Center updates available.');
 					}
 					this._form.getWidget('app_center_updates_text').set('content', msg);
 				}),

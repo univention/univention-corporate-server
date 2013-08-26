@@ -1,4 +1,4 @@
-univention-updater (9.0.12-1) unstable; urgency=low
+univention-updater (9.0.12-2) unstable; urgency=low
 
   * Changed wording for app updates (Bug #30548)
 
