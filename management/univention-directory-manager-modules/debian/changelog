@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.17-1) unstable; urgency=low
+
+  * Cleanup UDM CLI code (Bug #30974)
+  * Improve error message in UDM (Bug #29074)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 26 Aug 2013 14:32:49 +0200
+
 univention-directory-manager-modules (9.0.16-1) unstable; urgency=low
 
   * Bug #31916: allow a list of policy DNs for simplePolicy.policy_result()
@@ -14,7 +21,7 @@ univention-directory-manager-modules (9.0.15-1) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.14-1) unstable; urgency=low
 
-  * fixed error message (Bug #19441) 
+  * fixed error message (Bug #19441)
 
  -- Felix Botner <botner@univention.de>  Thu, 08 Aug 2013 16:34:06 +0200
 
@@ -39,13 +46,9 @@ univention-directory-manager-modules (9.0.11-1) unstable; urgency=low
 univention-directory-manager-modules (9.0.10-1) unstable; urgency=low
 
   * changed description of dns/ptr_record module from "DNS: Pointer" to "DNS:
-    Pointer record"
-  (Bug #24661)
-
+    Pointer record" (Bug #24661)
   * dns/[forward+reverse]_zone: append "." to every nameserver entry if
-    missing, not only the first one
-  (Bug #29568)
-
+    missing, not only the first one (Bug #29568)
 
  -- Lukas Walter <walter@univention.de>  Tue, 09 Jul 2013 09:52:42 +0200
 
@@ -89,7 +92,7 @@ univention-directory-manager-modules (9.0.4-1) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.3-1) unstable; urgency=low
 
-  * Removed duplicate mapping.register call for 
+  * Removed duplicate mapping.register call for
     univentionInventoryNumber (Bug #24102)
   * Updated copyright
 
@@ -97,20 +100,20 @@ univention-directory-manager-modules (9.0.3-1) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.2-1) unstable; urgency=low
 
-  * fixed print_quota policy (Bug #31703) 
+  * fixed print_quota policy (Bug #31703)
 
  -- Felix Botner <botner@univention.de>  Tue, 25 Jun 2013 17:14:11 +0200
 
 univention-directory-manager-modules (9.0.1-1) unstable; urgency=low
 
-  * removed set_uid_umlauts stuff (Bug #28671) 
+  * removed set_uid_umlauts stuff (Bug #28671)
 
  -- Felix Botner <botner@univention.de>  Fri, 07 Jun 2013 13:50:57 +0200
 
 univention-directory-manager-modules (9.0.0-1) unstable; urgency=low
 
   * disable spaces in username (Bug #19441)
-  * version for 3.2 
+  * version for 3.2
 
  -- Felix Botner <botner@univention.de>  Fri, 07 Jun 2013 11:57:57 +0200
 
@@ -247,8 +250,8 @@ univention-directory-manager-modules (8.0.140-1) precise; urgency=low
 
 univention-directory-manager-modules (8.0.139-1) unstable; urgency=low
 
-  * fixed description of sambaInvalidUsers and sambaValidUsers 
-    (Bug #30714 #7849) 
+  * fixed description of sambaInvalidUsers and sambaValidUsers
+    (Bug #30714 #7849)
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Mar 2013 16:21:43 +0100
 
@@ -271,13 +274,13 @@ univention-directory-manager-modules (8.0.137-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.136-3) unstable; urgency=low
 
-  * fixed description of "locked login methods" (Bug #19662) 
+  * fixed description of "locked login methods" (Bug #19662)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 17:04:31 +0100
 
 univention-directory-manager-modules (8.0.136-2) unstable; urgency=low
 
-  * fixed description of "locked login methods" (Bug #19662) 
+  * fixed description of "locked login methods" (Bug #19662)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 16:52:44 +0100
 
@@ -289,7 +292,7 @@ univention-directory-manager-modules (8.0.136-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.135-1) unstable; urgency=low
 
-  * added --superordinate to udm list bash completion (Bug #15245) 
+  * added --superordinate to udm list bash completion (Bug #15245)
 
  -- Felix Botner <botner@univention.de>  Fri, 01 Mar 2013 16:13:14 +0100
 
@@ -303,8 +306,8 @@ univention-directory-manager-modules (8.0.134-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.133-1) unstable; urgency=low
 
-  * changed policies/dhcp_statements.py syntax to 
-    hostOrIP (Bug #19665) 
+  * changed policies/dhcp_statements.py syntax to
+    hostOrIP (Bug #19665)
 
  -- Felix Botner <botner@univention.de>  Tue, 26 Feb 2013 21:24:16 +0100
 
@@ -429,7 +432,7 @@ univention-directory-manager-modules (8.0.87-1) unstable; urgency=low
 univention-directory-manager-modules (8.0.86-1) unstable; urgency=low
 
   * added ucrv directory/manager/user/primarygroup/update to avoid
-    primary group update when creating users (Bug #18247) 
+    primary group update when creating users (Bug #18247)
 
  -- Felix Botner <botner@univention.de>  Tue, 06 Nov 2012 16:50:56 +0100
 
@@ -499,7 +502,7 @@ univention-directory-manager-modules (8.0.77-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.76-1) unstable; urgency=low
 
-  * respect self.sysAccountsFound in license count (Bug #28944)  
+  * respect self.sysAccountsFound in license count (Bug #28944)
 
  -- Felix Botner <botner@univention.de>  Fri, 26 Oct 2012 16:48:12 +0200
 
@@ -701,7 +704,7 @@ univention-directory-manager-modules (8.0.49-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.48-1) unstable; urgency=low
 
-  * Search for objectClass univentionDVSUsers for DVS users	
+  * Search for objectClass univentionDVSUsers for DVS users
     (Bug #28723 and Bug #28186)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Oct 2012 20:44:07 +0200
@@ -760,7 +763,7 @@ univention-directory-manager-modules (8.0.40-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.39-1) unstable; urgency=low
 
-  * update pTRRecords when DNS Forward Zone entries 
+  * update pTRRecords when DNS Forward Zone entries
     of computer objects are modified (Bug #26307)
 
  -- Lukas Walter <walter@univention.de>  Thu, 04 Oct 2012 16:08:10 +0200
@@ -861,7 +864,7 @@ univention-directory-manager-modules (8.0.24-1) unstable; urgency=low
 
 univention-directory-manager-modules (8.0.23-1) unstable; urgency=low
 
-  * added syntax: TimeString; Bug #18436 
+  * added syntax: TimeString; Bug #18436
 
  -- Florian Best <best@univention.de>  Mon, 17 Sep 2012 16:52:23 +0200
 
@@ -1229,7 +1232,7 @@ univention-directory-manager-modules (7.0.264-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.263-1) unstable; urgency=low
 
-  * changed the ldap lookup filters for ... 
+  * changed the ldap lookup filters for ...
      ... ipmanagedclients (to not match managed clients which have no
          posix attribute)
      ... mobileclients (to also match mobileclients which have no
@@ -1242,7 +1245,7 @@ univention-directory-manager-modules (7.0.263-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.262-1) unstable; urgency=low
 
-  * corrected error printing (to provide full error messages for 
+  * corrected error printing (to provide full error messages for
     password policy errors) on cli (Bug #7389)
 
  -- Lukas Walter <walter@univention.de>  Thu, 21 Jun 2012 11:35:19 +0200
@@ -1276,14 +1279,14 @@ univention-directory-manager-modules (7.0.258-2) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.257-1) unstable; urgency=low
 
-  * don't show "No attribute with name <name> in this module" warning when 
+  * don't show "No attribute with name <name> in this module" warning when
     emptying multivalues (Bug #18702)
 
  -- Lukas Walter <walter@univention.de>  Mon, 11 Jun 2012 11:34:49 +0200
 
 univention-directory-manager-modules (7.0.256-1) unstable; urgency=low
 
-  * release ip/mac locks in simpleComputer (Bug #27270) 
+  * release ip/mac locks in simpleComputer (Bug #27270)
 
  -- Felix Botner <botner@univention.de>  Thu, 24 May 2012 14:48:44 +0200
 
@@ -1503,7 +1506,7 @@ univention-directory-manager-modules (7.0.217-1) unstable; urgency=low
 
   * Removed sambaPwdMustChange from users module (Bug #13199)
   * Added /usr/share/univention-directory-manager-
-    tools/remove_sambapwdlastset to remove sambaPwdMustChange from all 
+    tools/remove_sambapwdlastset to remove sambaPwdMustChange from all
     accounts
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 Feb 2012 12:28:18 +0100
@@ -1656,7 +1659,7 @@ univention-directory-manager-modules (7.0.196-2) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.196-1) unstable; urgency=low
 
-  * fixed logrotate template (Bug #18002) 
+  * fixed logrotate template (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Fri, 18 Nov 2011 16:45:34 +0100
 
@@ -1718,7 +1721,7 @@ univention-directory-manager-modules (7.0.187-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.186-1) unstable; urgency=low
 
-  * adapt layout of forard and reverse zones; Bug #24637 
+  * adapt layout of forard and reverse zones; Bug #24637
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 16 Nov 2011 23:00:24 +0100
 
@@ -1798,7 +1801,7 @@ univention-directory-manager-modules (7.0.175-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.174-1) unstable; urgency=low
 
-  * fixed wrong description of user picture (Bug #24370) 
+  * fixed wrong description of user picture (Bug #24370)
 
  -- Alexander Kläser <klaeser@univention.de>  Sun, 06 Nov 2011 23:49:40 +0100
 
@@ -1846,7 +1849,7 @@ univention-directory-manager-modules (7.0.167-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.166-1) unstable; urgency=low
 
-  * moved addEmptyValue handling from settings/extended_attribute 
+  * moved addEmptyValue handling from settings/extended_attribute
     to settings/syntax module (Bug #24245)
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 01 Nov 2011 12:29:08 +0100
@@ -1949,7 +1952,7 @@ univention-directory-manager-modules (7.0.152-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.151-1) unstable; urgency=low
 
-  * dns/host_record.py: call self.open() in __init__ to be compatible 
+  * dns/host_record.py: call self.open() in __init__ to be compatible
     with UCS 2.4 and dnsedit (Bug #24210)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Oct 2011 14:19:13 +0200
@@ -2050,7 +2053,7 @@ univention-directory-manager-modules (7.0.137-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.136-1) unstable; urgency=low
 
-  * fixed wrong missing path to exception in license.py (Bug #23213) 
+  * fixed wrong missing path to exception in license.py (Bug #23213)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 19 Oct 2011 17:50:23 +0200
 
@@ -2160,7 +2163,7 @@ univention-directory-manager-modules (7.0.120-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.119-1) unstable; urgency=low
 
-  * removed "univentionMailUserNamespace" from mail/folder module (Bug #24020) 
+  * removed "univentionMailUserNamespace" from mail/folder module (Bug #24020)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 14:14:55 +0200
 
@@ -2174,7 +2177,7 @@ univention-directory-manager-modules (7.0.118-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.117-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:07:41 +0200
 
@@ -2415,7 +2418,7 @@ univention-directory-manager-modules (7.0.85-1) unstable; urgency=low
      * fixed KeyError when converting LDAP error message to string (Bug #21642)
      * added debug output for LDAP modifications and added logging of complete
        error message for LDAP errors (both for debug level ALL)
-     * added the complete LDAP error message ('desc' and 'info') when raising an 
+     * added the complete LDAP error message ('desc' and 'info') when raising an
        exception
        (Bug #21642)
      * fixed displaying DHCP entries when MAC address ist not given (Bug #21958)
@@ -2677,7 +2680,7 @@ univention-directory-manager-modules (7.0.52-1) unstable; urgency=low
 
 univention-directory-manager-modules (7.0.51-1) unstable; urgency=low
 
-  * dns/host_record: fix identify function to really match host records; 
+  * dns/host_record: fix identify function to really match host records;
     Bug #22439, Bug #7813
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 10 Aug 2011 13:45:48 +0200
@@ -3149,8 +3152,8 @@ univention-directory-manager-modules (6.0.108-3) unstable; urgency=low
 
 univention-directory-manager-modules (6.0.108-2) unstable; urgency=low
 
-  * use template style variables in directory/manager/usercn/attributes 
-    (Bug #20028) 
+  * use template style variables in directory/manager/usercn/attributes
+    (Bug #20028)
 
  -- Felix Botner <botner@univention.de>  Mon, 07 Mar 2011 11:22:50 +0100
 
@@ -3183,7 +3186,7 @@ univention-directory-manager-modules (6.0.107-2) unstable; urgency=low
 univention-directory-manager-modules (6.0.107-1) unstable; urgency=low
 
   * fixed bug in which display policies were automatically generated, when
-    setting the policy back to inherited in a thin client's display tab 
+    setting the policy back to inherited in a thin client's display tab
     (Bug #18374)
 
  -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Mar 2011 15:35:12 +0100
@@ -3225,7 +3228,7 @@ univention-directory-manager-modules (6.0.102-1) unstable; urgency=low
 
 univention-directory-manager-modules (6.0.101-1) unstable; urgency=low
 
-  * fixed wrong value for 'policy_oc' in modules autostart.py and 
+  * fixed wrong value for 'policy_oc' in modules autostart.py and
     share_userquota.py (Bug #20992)
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 02 Mar 2011 15:33:36 +0100
@@ -3271,14 +3274,14 @@ univention-directory-manager-modules (6.0.97-1) unstable; urgency=low
 
 univention-directory-manager-modules (6.0.96-1) unstable; urgency=low
 
-  * allow renaming if the only difference is 
+  * allow renaming if the only difference is
     upper/lower case in username (Bug #21467)
 
  -- Felix Botner <botner@univention.de>  Tue, 15 Feb 2011 11:46:26 +0100
 
 univention-directory-manager-modules (6.0.95-1) unstable; urgency=low
 
-  * replaced univention-admin with univention-directory-manager in 
+  * replaced univention-admin with univention-directory-manager in
     help message (Bug #9476)
 
  -- Felix Botner <botner@univention.de>  Mon, 14 Feb 2011 14:09:36 +0100
@@ -3317,7 +3320,7 @@ univention-directory-manager-modules (6.0.90-1) unstable; urgency=low
 
 univention-directory-manager-modules (6.0.89-1) unstable; urgency=low
 
-  * corrected error handling for an existing IP-address when entering a new 
+  * corrected error handling for an existing IP-address when entering a new
     client (Bug #18966)
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 08 Feb 2011 14:45:04 +0100
@@ -3367,7 +3370,7 @@ univention-directory-manager-modules (6.0.84-1) unstable; urgency=low
 univention-directory-manager-modules (6.0.83-1) unstable; urgency=low
 
   * process templates at the and of admin/modules.init()
-  * check template.extented_attributes and set proper 
+  * check template.extented_attributes and set proper
     module defaults (Bug #21222)
 
  -- Felix Botner <botner@univention.de>  Mon, 17 Jan 2011 16:18:21 +0100
@@ -3395,7 +3398,7 @@ univention-directory-manager-modules (6.0.71-1) unstable; urgency=low
 univention-directory-manager-modules (6.0.70-1) unstable; urgency=low
 
   * added string commands in order to support automatic conversion to lower/
-    upper case of variable values used in templates; added string commands 
+    upper case of variable values used in templates; added string commands
     'lower' and 'upper', e.g.: "<firstname:lower>[1].<lastname:upper>@company.com"
     (Bug #20302)
 
@@ -3717,7 +3720,7 @@ univention-directory-manager-modules (6.0.3-1) unstable; urgency=low
 
 univention-directory-manager-modules (6.0.2-1) unstable; urgency=low
 
-  * fixed translation in computer modules Bug #14120 
+  * fixed translation in computer modules Bug #14120
 
  -- Felix Botner <botner@univention.de>  Thu, 27 May 2010 12:27:50 +0200
 
@@ -3730,7 +3733,7 @@ univention-directory-manager-modules (6.0.1-1) unstable; urgency=low
 
 univention-directory-manager-modules (6.0.0-1) unstable; urgency=low
 
-  * bumped version for UCS 2.4 Bug #17954 
+  * bumped version for UCS 2.4 Bug #17954
 
  -- Felix Botner <botner@univention.de>  Mon, 10 May 2010 13:31:51 +0200
 
@@ -3754,7 +3757,7 @@ univention-directory-manager-modules (5.0.70-1) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.69-2) unstable; urgency=low
 
-  * check invalid dirs fix Bug #17929 
+  * check invalid dirs fix Bug #17929
 
  -- Felix Botner <botner@univention.de>  Thu, 29 Apr 2010 09:41:02 +0200
 
@@ -3871,7 +3874,7 @@ univention-directory-manager-modules (5.0.52-1) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.51-1) unstable; urgency=low
 
-  * updated copyright Bug #17222 
+  * updated copyright Bug #17222
 
  -- Felix Botner <botner@univention.de>  Thu, 07 Jan 2010 14:18:57 +0100
 
@@ -3890,7 +3893,7 @@ univention-directory-manager-modules (5.0.49-2) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.49-1) unstable; urgency=low
 
-  * fixed typo in /admin/handlers/policies/de.po Bug #16595 
+  * fixed typo in /admin/handlers/policies/de.po Bug #16595
 
  -- Felix Botner <botner@univention.de>  Wed, 30 Dec 2009 14:45:13 +0100
 
@@ -4078,7 +4081,7 @@ univention-directory-manager-modules (5.0.32-1) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.31-1) unstable; urgency=low
 
-  * added workaround for bug 14827 
+  * added workaround for bug 14827
 
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 25 Sep 2009 16:05:05 +0200
 
@@ -4091,7 +4094,7 @@ univention-directory-manager-modules (5.0.30-1) unstable; urgency=low
 
 univention-directory-manager-modules (5.0.29-1) unstable; urgency=low
 
-  * jpegPhoto support (Bug: #14471) 
+  * jpegPhoto support (Bug: #14471)
 
  -- Felix Botner <botner@univention.de>  Wed, 23 Sep 2009 13:49:37 +0200
 
@@ -4817,7 +4820,7 @@ univention-directory-manager-modules (3.0.14-20) unstable; urgency=low
 
   * Bug #12397: import additional syntax files
     from */site-packages/univention/admin/syntax.d/*.py
-  
+
  -- Sönke Schwardt <schwardt@univention.de>  Fri, 17 Oct 2008 17:18:24 +0200
 
 univention-directory-manager-modules (3.0.14-19) unstable; urgency=low
@@ -4869,13 +4872,13 @@ univention-directory-manager-modules (3.0.14-12) unstable; urgency=low
 
 univention-directory-manager-modules (3.0.14-11) unstable; urgency=low
 
-  * merged scope feature (-r 706:3980) to ucs (Bug: #11114) 
+  * merged scope feature (-r 706:3980) to ucs (Bug: #11114)
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon,  6 Oct 2008 15:23:33 +0200
 
 univention-directory-manager-modules (3.0.14-10) unstable; urgency=low
 
-  * bugfix and a option "ldap base dn" in proof_uniqueMembers (Bug: #12061) 
+  * bugfix and a option "ldap base dn" in proof_uniqueMembers (Bug: #12061)
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue,  9 Sep 2008 11:39:39 +0200
 
@@ -4929,7 +4932,7 @@ univention-directory-manager-modules (3.0.14-2) unstable; urgency=low
 
 univention-directory-manager-modules (3.0.14-1) unstable; urgency=low
 
-  * fix description of option 'dos filemode' 
+  * fix description of option 'dos filemode'
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 30 Jul 2008 08:23:25 +0200
 
@@ -5049,7 +5052,7 @@ univention-directory-manager-modules (3.0.0-2) stable; urgency=low
 
 univention-directory-manager-modules (3.0.0-1) stable; urgency=low
 
-  * add new user option 'ldap_pwd': just sets uid and password 
+  * add new user option 'ldap_pwd': just sets uid and password
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 18 Jun 2008 16:40:02 +0200
 
@@ -5079,7 +5082,7 @@ univention-directory-manager-modules (2.2.18-1) stable; urgency=low
 
 univention-directory-manager-modules (2.2.17-1) stable; urgency=low
 
-  * fixed policy_oc attribute of policy/clientdevices 
+  * fixed policy_oc attribute of policy/clientdevices
 
  -- Andreas B�sching <buesching@univention.de>  Mon, 26 May 2008 09:35:38 +0200
 
@@ -5312,7 +5315,7 @@ univention-directory-manager-modules (2.1.3-1) unstable; urgency=low
 univention-directory-manager-modules (2.1.2-1) unstable; urgency=low
 
   * replace last appearance of admin/cmd/debug/level with
-    directory/manager/cmd/debug/level 
+    directory/manager/cmd/debug/level
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 22 Aug 2007 15:45:00 +0200
 
@@ -5336,7 +5339,7 @@ univention-directory-manager-modules (2.0.10-2) unstable; urgency=low
 
 univention-directory-manager-modules (2.0.10-1) unstable; urgency=low
 
-  * advanced error handling for univention-dnsedit 
+  * advanced error handling for univention-dnsedit
 
  -- Bastian Neumann <neumann@univention.de>  Tue, 14 Aug 2007 16:07:34 +0200
 
@@ -5452,20 +5455,20 @@ univention-directory-manager-modules (2.0.1-4) unstable; urgency=low
 
 univention-directory-manager-modules (2.0.1-3) unstable; urgency=low
 
-  * additional changes on rename of computers/managedclient  
+  * additional changes on rename of computers/managedclient
 
  -- Tobias Scherer <scherer@univention.de>  Tue, 17 Jul 2007 10:17:46 +0200
 
 univention-directory-manager-modules (2.0.1-2) unstable; urgency=low
 
   * renamed module computers/client to computers/managedclient and client.py
-    to managedclient.py  
+    to managedclient.py
 
  -- Tobias Scherer <scherer@univention.de>  Tue, 17 Jul 2007 09:05:44 +0200
 
 univention-directory-manager-modules (2.0.1-1) unstable; urgency=low
 
-  * fixed typos 
+  * fixed typos
 
  -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 15:26:02 +0200
 
@@ -5477,7 +5480,7 @@ univention-directory-manager-modules (2.0.1-0) unstable; urgency=low
 
 univention-directory-manager-modules (2.0.0-6) unstable; urgency=low
 
-  * advanced error handling for Action modify 
+  * advanced error handling for Action modify
 
  -- Bastian Neumann <neumann@univention.de>  Fri, 13 Jul 2007 11:35:10 +0200
 
@@ -5497,7 +5500,7 @@ univention-directory-manager-modules (2.0.0-5) unstable; urgency=low
 
 univention-directory-manager-modules (2.0.0-3) unstable; urgency=low
 
-  * renamed Client to Managed Client 
+  * renamed Client to Managed Client
 
  -- Tobias Scherer <scherer@univention.de>  Thu, 12 Jul 2007 11:03:00 +0200
 
@@ -5531,7 +5534,7 @@ univention-admin-modules (1.2.3-8) unstable; urgency=low
 
 univention-admin-modules (1.2.3-7) unstable; urgency=low
 
-  * improved filter option for special chars 
+  * improved filter option for special chars
 
  -- Bastian Neumann <neumann@univention.de>  Mon,  2 Jul 2007 16:56:39 +0200
 
@@ -5575,19 +5578,19 @@ univention-admin-modules (1.2.3-1) unstable; urgency=low
 
 univention-admin-modules (1.2.2-1) unstable; urgency=low
 
-  * update translation class; uses locale settings to find translation 
+  * update translation class; uses locale settings to find translation
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jun 2007 11:27:19 +0200
 
 univention-admin-modules (1.2.1-2) unstable; urgency=low
 
-  * package translation files 
+  * package translation files
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jun 2007 08:13:33 +0200
 
 univention-admin-modules (1.2.1-1) unstable; urgency=low
 
-  * no password encoding to ISO-8859-1 anymore 
+  * no password encoding to ISO-8859-1 anymore
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 15 Jun 2007 15:11:57 +0200
 
@@ -5607,7 +5610,7 @@ univention-admin-modules (1.1.0-16) unstable; urgency=low
 
 univention-admin-modules (1.1.0-15) unstable; urgency=low
 
-  * fixed syntax in univention-admin 
+  * fixed syntax in univention-admin
 
  -- Bastian Neumann <neumann@univention.de>  Thu, 14 Jun 2007 10:33:19 +0200
 
@@ -5619,13 +5622,13 @@ univention-admin-modules (1.1.0-14) unstable; urgency=low
 
 univention-admin-modules (1.1.0-13) unstable; urgency=low
 
-  * advanced error handling in univention-admin 
+  * advanced error handling in univention-admin
 
  -- Bastian Neumann <neumann@univention.de>  Thu, 14 Jun 2007 09:16:26 +0200
 
 univention-admin-modules (1.1.0-12) unstable; urgency=low
 
-  * fixed syntax in univention-admin 
+  * fixed syntax in univention-admin
 
  -- Bastian Neumann <neumann@univention.de>  Thu, 14 Jun 2007 08:41:27 +0200
 
@@ -5637,13 +5640,13 @@ univention-admin-modules (1.1.0-11) unstable; urgency=low
 
 univention-admin-modules (1.1.0-10) unstable; urgency=low
 
-  * changed error handling for recursive option in univention-admin 
+  * changed error handling for recursive option in univention-admin
 
  -- Bastian Neumann <neumann@univention.de>  Wed, 13 Jun 2007 16:45:44 +0200
 
 univention-admin-modules (1.1.0-9) unstable; urgency=low
 
-  * advanced error handling for recursive option in univention-admin 
+  * advanced error handling for recursive option in univention-admin
 
  -- Bastian Neumann <neumann@univention.de>  Wed, 13 Jun 2007 16:10:19 +0200
 
@@ -5655,13 +5658,13 @@ univention-admin-modules (1.1.0-8) unstable; urgency=low
 
 univention-admin-modules (1.1.0-7) unstable; urgency=low
 
-  * advanced error handling for wrong use of attributes in dhcp/sharedsubnet 
+  * advanced error handling for wrong use of attributes in dhcp/sharedsubnet
 
  -- Bastian Neumann <neumann@univention.de>  Wed, 13 Jun 2007 09:33:39 +0200
 
 univention-admin-modules (1.1.0-6) unstable; urgency=low
 
-  * advanced encoding and error handling in univention-admin 
+  * advanced encoding and error handling in univention-admin
 
  -- Bastian Neumann <neumann@univention.de>  Tue, 12 Jun 2007 12:18:29 +0200
 
@@ -5673,7 +5676,7 @@ univention-admin-modules (1.1.0-5) unstable; urgency=low
 
 univention-admin-modules (1.1.0-4) unstable; urgency=low
 
-  * changed error handling in univention-admin for uneditable samba attributes 
+  * changed error handling in univention-admin for uneditable samba attributes
 
  -- Bastian Neumann <neumann@univention.de>  Tue, 12 Jun 2007 08:50:52 +0200
 
@@ -5694,22 +5697,22 @@ univention-admin-modules (1.1.0-1) unstable; urgency=low
   * include all py files instead of pyo files
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 15:18:01 +0200
-  
+
 univention-admin-modules (1.0.0-5) unstable; urgency=low
 
-  * default Value for cron package maintenance process 
+  * default Value for cron package maintenance process
 
  -- Bastian Neumann <neumann@univention.de>  Wed, 30 May 2007 09:54:38 +0200
 
 univention-admin-modules (1.0.0-4) unstable; urgency=low
 
-  * primary Mailadress starting with an digit are allowed 
+  * primary Mailadress starting with an digit are allowed
 
  -- Bastian Neumann <neumann@univention.de>  Wed, 30 May 2007 08:21:01 +0200
 
 univention-admin-modules (1.0.0-3) unstable; urgency=low
 
-  * added error handling and help option 
+  * added error handling and help option
 
  -- Bastian Neumann <neumann@univention.de>  Wed, 30 May 2007 08:14:40 +0200
 
@@ -5730,11 +5733,11 @@ univention-admin-modules (0.48.10-1) unstable; urgency=low
   * add description and location attribute to shares/printer
 
  -- Andreas BÃŒsching <buesching@univention.de>  Wed, 20 Dec 2006 09:59:40 +0100
- 
+
 univention-admin-modules (0.48.9-1) unstable; urgency=low
 
   * if a template does not define any options, activate all options as this
-    was default in previous UCS versions 
+    was default in previous UCS versions
   * univention-licence-check: an error is shown if there are more objects
     than allowed by the license
 
@@ -5781,7 +5784,7 @@ univention-admin-modules (0.48.7-1) unstable; urgency=low
 
 univention-admin-modules (0.48.3-1) unstable; urgency=low
 
-  * updated english text and german translation 
+  * updated english text and german translation
 
  -- Andreas BÃŒsching <buesching@univention.de>  Mon, 11 Dec 2006 10:23:38 +0100
 
@@ -5812,7 +5815,7 @@ univention-admin-modules (0.48.1-4) unstable; urgency=low
 
 univention-admin-modules (0.48.1-1) unstable; urgency=low
 
-  * updated copyright information in translation files 
+  * updated copyright information in translation files
 
  -- Andreas BÃŒsching <buesching@univention.de>  Tue,  5 Dec 2006 19:19:29 +0100
 
@@ -5913,7 +5916,7 @@ univention-admin-modules (0.47-59) unstable; urgency=low
 
 univention-admin-modules (0.47-58) unstable; urgency=low
 
-  * add module for scalix mailnodes 
+  * add module for scalix mailnodes
 
  -- Wolf Wiegand <wiegand@univention.de>  Wed, 15 Nov 2006 11:42:10 +0100
 
@@ -6202,7 +6205,7 @@ univention-admin-modules (0.46-81) unstable; urgency=low
   * Prevent Admin DHCP commands if superordinate isn't specified
   * Add superordinate entry to help screen
   * Prevent creation of custom attributes for invalid positions
-	
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  1 Aug 2006 12:37:00 +0200
 
 univention-admin-modules (0.46-80) unstable; urgency=low

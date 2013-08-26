@@ -1,8 +1,7 @@
 #!/usr/bin/python2.6
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
-#  the command line client program
+"""Univention Directory Manager command line client program"""
 #
 # Copyright 2004-2013 Univention GmbH
 #
@@ -31,130 +30,148 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
 import locale
 import socket
 import time
 import os
 import sys
-import string
-import codecs
 from univention.config_registry import ConfigRegistry
 
-socket_dir='/tmp/admincli_%s/' % os.getuid()
-socket_filename='sock'
-socket_path=(socket_dir+socket_filename)
 
-s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-
-cmd=''
-data=''
-output=[]
-logfile=''
-
-pos = 0
-for arg in sys.argv:
-	pos += 1
-	if '--logfile' == arg[:9]:
-		if len(arg) > 10 and arg[9] == "=":
-			logfile = arg[10:]
-		else:
+def get_logfile():
+	"""Extract logfile from command line arguments."""
+	logfile = ''
+	for pos, arg in enumerate(sys.argv):
+		if arg.startswith('--logfile='):
+			logfile = arg[len('--logfile='):]
+		elif arg.startswith('--logfile'):
 			try:
-				logfile=sys.argv[pos]
-			except:
-				print "E: Option --logfile requires an argument"
+				logfile = sys.argv[pos + 1]
+			except IndexError:
+				print >> sys.stderr, "E: Option --logfile requires an argument"
 				sys.exit(1)
-			
-try:
-	s.connect(socket_path)
-except:
-	pid=os.fork()
-	if not pid:
-		null = os.open('/dev/null', os.O_RDWR)
+	return logfile
+
+
+def fork_server(sock, socket_path):
+	"""Fork UDM command line server."""
+	# start new server
+	pid = os.fork()
+	if pid == 0:  # child
+		null = os.open(os.path.devnull, os.O_RDWR)
 		os.dup2(null, sys.stdin.fileno())
 		os.dup2(null, sys.stdout.fileno())
 		os.dup2(null, sys.stderr.fileno())
-		if len(logfile) >0:
-			os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', ['univention-cli-server', logfile])
-		else:
-			os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', ['univention-cli-server'])
-	else:
+		argv = ['univention-cli-server']
+		logfile = get_logfile()
+		if logfile:
+			argv.append(logfile)
+		os.execv(
+				'/usr/share/univention-directory-manager-tools/univention-cli-server',
+				argv
+				)
+	else:  # parent
 		os.waitpid(pid, os.P_NOWAIT)
 
 	ucr = ConfigRegistry()
 	ucr.load()
-	socket_timeout = int(ucr.get('directory/manager/cmd/sockettimeout', '50'))
-	stime=int(time.time())
-	while not os.path.exists('%s' % socket_path):
+	socket_timeout = float(ucr.get('directory/manager/cmd/sockettimeout', 50))
+	stime = time.time() + socket_timeout
+	while not os.path.exists(socket_path):
 		time.sleep(0.1)
-		if int(time.time()) > stime+socket_timeout:
-			print 'E: Can`t find running daemon after %s Seconds. (No socketfile)' % socket_timeout
+		if time.time() > stime:
+			print >> sys.stderr, \
+					'E: Can`t find running daemon after %s seconds. (No socketfile)' % \
+					socket_timeout
 			sys.exit(1)
-	
-	connection_timeout=30 # this took a long time if getfqdn(host) was used in cli-server
-	stime=int(time.time())
-	socking=0
-	while socking == 0:
+
+	# this takes a long time if getfqdn(host) is used in cli-server
+	connection_timeout = 30
+	stime = time.time() + connection_timeout
+	while True:
 		try:
-			s.connect(socket_path)
-			socking=1
-		except:
+			sock.connect(socket_path)
+			break
+		except socket.error:
 			time.sleep(0.1)
-			if int(time.time()) > stime+connection_timeout:
-				print 'E: Can`t connect daemon after %s seconds.' % connection_timeout
+			if time.time() > stime:
+				print >> sys.stderr, \
+						'E: Can`t connect daemon after %s seconds.' % \
+						connection_timeout
 				sys.exit(1)
-			
-			#sys.exit(1)
-
-cmdfile=os.path.basename(sys.argv[0])
-if cmdfile == 'univention-passwd':
-	pwd1='x'
-	pwd2='y'
-	while pwd1 != pwd2:
-		pwd1=raw_input('New password ')
-		pwd2=raw_input('Re-enter new password ')
-		if pwd1 != pwd2:
-			print 'password missmatch'
-	sys.argv.append('--pwd')
-	sys.argv.append(pwd1)
 
 
+def get_password():
+	"""Query for interactive password."""
+	while True:
+		pwd1 = raw_input('New password ')
+		pwd2 = raw_input('Re-enter new password ')
+		if pwd1 == pwd2:
+			return pwd1
+		print >> sys.stderr, 'password missmatch'
 
-s.send(repr(sys.argv)+'\0')
 
-while 1:
-	buf = s.recv(1024)
-	if len(buf) <= 0:
-		print 'E: Daemon died.'
-		sys.exit(1)
-	elif buf[-1] == '\0':
-		buf = buf[0:-1]
-		data += buf
-		break
-	else:
-		data += buf
+def receive_answer(sock):
+	"""Receive complete answer from server."""
+	data = ''
+	while True:
+		buf = sock.recv(1024)
+		if len(buf) == 0:
+			print >> sys.stderr, 'E: Daemon died.'
+			sys.exit(1)
+		elif buf[-1] == '\0':
+			buf = buf[0:-1]
+			data += buf
+			break
+		else:
+			data += buf
+	return data
 
-rc=0
-output = eval(data)
-s.close()
-if cmdfile == 'univention-passwd':
-	for line in output:
-		if line.startswith('passwd error: '):
-			print line
+
+def process_output(output, cmdfile):
+	"""Print output and check for errors."""
+	result = 0
+	if cmdfile == 'univention-passwd':
+		for line in output:
 			if line == 'passwd error: password alreay used':
-				rc=1
+				result = 1
 			elif line.startswith('passwd error: The password is to short'):
-				rc=2
-		else:
+				result = 2
 			print line
-else:
-	if output[-1] == "OPERATION FAILED":
-		rc = 3
-		output = output [:-1]
-	for i in output:
-		if type(i) is unicode:
-			print i.encode(locale.getpreferredencoding(), 'replace')
-		else:
-			print i
+	else:
+		if output[-1] == "OPERATION FAILED":
+			result = 3
+			output = output [:-1]
+		for line in output:
+			if isinstance(line, unicode):
+				line = line.encode(locale.getpreferredencoding(), 'replace')
+			print line
+	return result
 
-sys.exit(rc)
+
+def main():
+	"""Forward request to udm-cli-server."""
+	socket_path = '/tmp/admincli_%d/sock' % os.getuid()
+	sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+	try:
+		# connect to already running server
+		sock.connect(socket_path)
+	except socket.error:
+		fork_server(sock, socket_path)
+
+	cmdfile = os.path.basename(sys.argv[0])
+	if cmdfile == 'univention-passwd':
+		password = get_password()
+		sys.argv += ['--pwd', password]
+
+	sock.send(repr(sys.argv) + '\0')
+	data = receive_answer(sock)
+	sock.close()
+
+	output = eval(data)
+	result = process_output(output, cmdfile)
+	sys.exit(result)
+
+
+if __name__ == '__main__':
+	main()

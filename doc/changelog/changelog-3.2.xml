@@ -1084,6 +1084,10 @@
 	<title>Univention Directory Manager command line interface and related tools</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  The code of the command line programs has been modernized (<ulink url="&ucsbug;30974">Bug 30974</ulink>.
+		</simpara></listitem>
+		<listitem><simpara>
+		  An error message regarding an existing directory has been corrected (<ulink url="&ucsbug;29074">Bug 29074</ulink>.
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
