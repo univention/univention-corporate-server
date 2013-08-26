@@ -582,6 +582,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						If the file is installed manually, it must be placed on a path listed in <literal>sys.path</literal>.
 					</simpara>
 				</footnote>.
+				The file name must end with <filename class="suffix">.py</filename>.
 			</para>
 			<para>
 				The module <package>univention.admin.hook</package> provides the class <classname>simpleHook</classname>, which implements all required hook functions.
