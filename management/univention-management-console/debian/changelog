@@ -1,3 +1,10 @@
+univention-management-console (5.0.62-7) unstable; urgency=low
+
+  * Simplify the UMC ACLs evaluation which improves the UMC login
+    performance (Bug #32253)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Aug 2013 14:27:12 +0200
+
 univention-management-console (5.0.62-6) unstable; urgency=low
 
   * Bug #31130: log tracebacks if module or server crashs
