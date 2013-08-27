@@ -1961,6 +1961,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 	   An improved test case for concurrent authenticated smbclient sessions is now available (<ulink url="&ucsbug;26807">Bug 26807</ulink>)
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+	   Improved test cases for samba share and folder access permissions are now available (<ulink url="&ucsbug;29056">Bug 29056</ulink>)
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 
