@@ -202,6 +202,8 @@ def set_save_commit_load(ucr):
 	ucr.load()
 	changes = Changes(ucr)
 	yield changes
+	ucr.save()
+	ucr.load()
 	if changes.changed():
 		changes.commit()
 

@@ -1,4 +1,4 @@
-univention-management-console-module-appcenter (3.0.19-1) unstable; urgency=low
+univention-management-console-module-appcenter (3.0.19-2) unstable; urgency=low
 
   * Support apps installed from main repository (Bug #32308)
   * Apps may have their own shop url (Bug #32282)
