@@ -592,7 +592,7 @@ class Bond(Device):
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
 
-			self.type = 'manual'
+		self.type = 'manual'
 
 	def validate(self):
 		super(Bond, self).validate()
@@ -699,7 +699,7 @@ class Bridge(Device):
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
 
-			self.type = 'manual'
+		self.type = 'manual'
 
 	def validate(self):
 		super(Bridge, self).validate()

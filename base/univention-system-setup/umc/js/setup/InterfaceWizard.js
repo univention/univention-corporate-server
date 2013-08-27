@@ -115,35 +115,47 @@ define([
 							tools.forIn(visibility, lang.hitch(this, function(widget, visible) {
 								this.getWidget(widget).set('visible', visible);
 							}));
+
+							// require devicename
 							this.getWidget('name_b').set('required', interfaceType == 'Bridge' || interfaceType == 'Bond');
 
-							if (interfaceType === 'VLAN') {
+							if (interfaceType === 'VLAN' && this.creation) {
+								// FIXME: the parent_device does not have a value at this point when opening the wizard
+								var vlanSubDevices = array.filter(this.interfaces.getAllInterfaces(), lang.hitch(this, function(iface) {
+									return iface.isVLAN() && iface.parent_device == this.getWidget('parent_device').get('value');
+								}));
 								var vlan_id = 2; // some machines do not support 1, so we use 2 as default value
-								// count up vlan_id to the next unused id
-								while (array.some(this.interfaces.getAllInterfaces(), lang.hitch(this, function(iface) {
-									return iface.isVLAN() && iface.parent_device == this.getWidget('parent_device').get('value') && iface.vlan_id == vlan_id;
-								}))) {
-									vlan_id++;
-								}
+								vlan_id += vlanSubDevices.length;
 								// important!!! triggers a reset of name
 								this.getWidget('vlan_id').set('value', null);
 								this.getWidget('vlan_id').set('value', vlan_id);
 							}
 
-							// A restriction in UCR enforces that Bridge, VLAN and Bond interfaces can not have multiple IP addresses (Bug #31767)
-							if (interfaceType !== 'Ethernet') {
-								this.getWidget('ip4').set('max', 1);
-							}
+							// a restriction in UCR enforces that Bridge, VLAN and Bond interfaces can not have multiple IP addresses (Bug #31767)
+							// FIXME: the + button hides on Ethernet page when switch to != Ethernet and switch back
+							this.getWidget('ip4').set('max', (interfaceType !== 'Ethernet') ? 1 : undefined);
 
-							var descriptions = {
-								'Ethernet': '',
-								'VLAN': '',
-								'Bridge': '',
-								'Bond': ''
-							};
-							this.getWidget('description').set('content', descriptions[interfaceType] + '<br>');
 							// adapt visibility of DHCP button
 							this._pages.network._form._buttons.dhcpquery.set('visible', interfaceType === 'Ethernet');
+
+							// trigger reset of interface name to make sure that the 'name' widget contains the correct value
+							var name = this.getWidget({
+								'Ethernet': 'name_eth',
+								'Bridge': 'name_b',
+								'Bond': 'name_b',
+								'VLAN': 'vlan_id'
+							}[interfaceType]);
+							var value = name.get('value');
+							name.set('value', null);
+							name.set('value', value);
+
+//							var descriptions = {
+//								'Ethernet': '',
+//								'VLAN': '',
+//								'Bridge': '',
+//								'Bond': ''
+//							};
+//							this.getWidget('description').set('content', descriptions[interfaceType] + '<br>');
 						})
 					}, {
 						name: 'description',
@@ -210,8 +222,11 @@ define([
 						value: 2,
 						constraints: { min: 1, max: 4096 },
 						validator: lang.hitch(this, function(value) {
-							var name = this.getDeviceName();
-							return array.every(this.interfaces.getAllInterfaces(), function(iface) { return iface.name !== name; });
+							if (this.getInterfaceType() === 'VLAN' && this.creation) {
+								var name = this.getDeviceName();
+								return array.every(this.interfaces.getAllInterfaces(), function(iface) { return iface.name !== name; });
+							}
+							return true;
 						}),
 						visible: false,
 						onChange: lang.hitch(this, function(vlan_id) {
@@ -519,8 +534,10 @@ define([
 			var valid = true;
 			array.forEach(pages, lang.hitch(this, function(page) {
 				tools.forIn(this._pages[page]._form._widgets, function(iname, iwidget) {
-					valid = valid && (!iwidget.get('visible') || (!iwidget.isValid || false !== iwidget.isValid()));
-					valid = valid && (!iwidget.get('visible') || (!iwidget.validate || false !== iwidget.validate()));
+					if (iwidget.get('visible')) {
+						valid = valid && (!iwidget.isValid || false !== iwidget.isValid());
+						valid = valid && (!iwidget.validate || false !== iwidget.validate());
+					}
 					return valid;
 				}, this);
 			}));

@@ -45,6 +45,7 @@ import apt
 import psutil
 import csv
 import imp
+import os.path
 
 from univention.lib.i18n import Translation
 from univention.management.console.log import MODULE
@@ -476,6 +477,10 @@ def detect_interfaces():
 		try:
 			# filter out lo, etc. interfaces
 			if open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'type'),'r').read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
+				continue
+			# filter out bridge, vlan, bond devices
+			# TODO: add 'vlan' ?
+			if any(os.path.exists(os.path.join(PATH_SYS_CLASS_NET, path)) for path in ('bridge', 'bonding')):
 				continue
 			# try to read mac address
 			mac = open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'address'),'r').read().strip()
