@@ -267,25 +267,11 @@ define([
 							})
 						});
 					}
-					if (app.allows_using && app.useshop && (app.can_install || app.can_update)) {
+					if (app.allows_using && app.useshop && app.is_installed) {
 						buttons.push({
 							name: 'buy',
 							label: _("Buy"),
-							callback: lang.hitch(this, function() {
-								var shopUrl = 'https://shop.univention.com';
-								var w = window.open(shopUrl, '_blank');
-								tools.umcpCommand('appcenter/buy', {application: app.id}).then(
-									function(data) {
-										var params = data.result;
-										params.locale = kernel.locale.slice( 0, 2 ).toLowerCase();
-										w.location = shopUrl + '?' + ioQuery.objectToQuery(params);
-										w.focus();
-									},
-									function() {
-										w.close();
-									}
-								);
-							})
+							callback: lang.hitch(this, 'openShop', app)
 						});
 					}
 					if (app.allows_using && app.can_install) {
@@ -855,6 +841,22 @@ define([
 				}));
 			}
 			return this._applications;
+		},
+
+		openShop: function(app) {
+			var shopUrl = app.shopurl;
+			var w = window.open(shopUrl, '_blank');
+			tools.umcpCommand('appcenter/buy', {application: app.id}).then(
+				function(data) {
+					var params = data.result;
+					params.locale = kernel.locale.slice( 0, 2 ).toLowerCase();
+					w.location = shopUrl + '?' + ioQuery.objectToQuery(params);
+					w.focus();
+				},
+				function() {
+					w.close();
+				}
+			);
 		},
 
 		updateApplications: function() {

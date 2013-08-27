@@ -154,6 +154,18 @@ define([
 				this.addToDetails(appCenterTranslate('Website'), this._appcenterPage._detail_field_custom_website(app));
 				this.addToDetails(appCenterTranslate('Installed version'), this._appcenterPage._detail_field_custom_version(app));
 				this.addToDetails('', '&nbsp;');
+
+				if (app.useshop && app.is_installed) {
+					var buyButton = _AnchorButton(
+						_('Buy a license for %s', app.name),
+						lang.hitch(this, function() {
+							this._appcenterPage.openShop(app);
+						}),
+						this
+					);
+					this.addToDetails(appCenterTranslate('Buy'), buyButton);
+				}
+
 				if (app.candidate_version) {
 					var candidate_version = app.candidate_version;
 					if (app.allows_using && app.can_update) {

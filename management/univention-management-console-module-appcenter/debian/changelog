@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (3.0.19-1) unstable; urgency=low
+
+  * Support apps installed from main repository (Bug #32308)
+  * Apps may have their own shop url (Bug #32282)
+  * Add the buy button to installed apps module (Bug #32282)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Aug 2013 13:32:38 +0200
+
 univention-management-console-module-appcenter (3.0.18-1) unstable; urgency=low
 
   * Add a button for buying applications (Bug #32282)

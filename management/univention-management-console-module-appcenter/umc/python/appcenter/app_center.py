@@ -158,7 +158,7 @@ class Application(object):
 						self._options[k] = _escape_value(k, v)
 
 		# parse boolean values
-		for ikey in ('notifyvendor', 'useractivationrequired', 'useshop'):
+		for ikey in ('notifyvendor', 'useractivationrequired', 'useshop', 'withoutrepository'):
 			if ikey in self._options:
 				self._options[ikey] = config.getboolean('Application', ikey)
 			else:
@@ -484,7 +484,7 @@ class Application(object):
 
 			used_app = iapps[0] # take newest one
 			for iiapp in iapps:
-				if component_registered(iiapp.component_id, ucr):
+				if iiapp.is_registered(ucr):
 					if iiapp is not used_app:
 						used_app = iiapp
 						used_app.candidate = iapps[0]
@@ -495,6 +495,11 @@ class Application(object):
 			final_applications.append(used_app)
 
 		return final_applications
+
+	def is_registered(self, ucr):
+		if self.get('withoutrepository'):
+			return True
+		return component_registered(self.component_id, ucr)
 
 	def to_dict(self, package_manager):
 		ucr.load()
