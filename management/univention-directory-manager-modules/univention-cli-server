@@ -186,7 +186,7 @@ def doit(sarglist, conn):
 	show_help = False
 	oldlogfile = logfile
 	for arg in arglist:
-		if next_is_logfile == 1:
+		if next_is_logfile:
 			logfile = arg
 			next_is_logfile = False
 			continue
