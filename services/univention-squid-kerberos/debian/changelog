@@ -1,3 +1,11 @@
+univention-squid-kerberos (3.0.1-1) unstable; urgency=low
+
+  * Merge from UCS@School Rev2-1 (Bug #32011):
+    * removed package dependency to univention-samba4 
+    * joinscript_save_current_version also in a samba3 env (Bug #31995)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 27 Aug 2013 17:16:21 +0200
+
 univention-squid-kerberos (3.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)
