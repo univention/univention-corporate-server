@@ -275,6 +275,19 @@
 		  nouveau module is now blacklisted since the kernel module from 3.10 is incompatible with
 		  the Xorg userland (<ulink url="&ucsbug;19892">Bug 19892</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The kernel inotify parameters can now be controlled by &ucsUCRV;s (<ulink url="&ucsbug;32327">Bug 32327</ulink>). The default values have been increased to improve support of large environments. The following &ucsUCRV;s are available:
+		  	<itemizedlist>
+				<listitem><simpara><envar>kernel/fs/inotify/max_user_instances</envar> (default: 512)</simpara></listitem>
+				<listitem><simpara><envar>kernel/fs/inotify/max_user_watches</envar> (default: 32768)</simpara></listitem>
+				<listitem><simpara><envar>kernel/fs/inotify/max_queued_events</envar> (default: 16384)</simpara></listitem>
+			</itemizedlist>
+		 <important><simpara>
+		   If these parameters have been manually defined in a local file below <filename class="directory">/etc/sysctl.d/</filename> the file should be removed and the configured values transfered to the respective &ucsUCRV;s.
+		 </simpara></important> 
+		  
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
