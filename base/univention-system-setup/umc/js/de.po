@@ -362,7 +362,7 @@ msgstr "Dynamisch (DHCP)"
 
 #: umc/js/setup/InterfaceWizard.js:529
 msgid "Each IPv6 device must have an identifier"
-msgstr "Jedes IPv6 Gerät muss einen Bezeichnet haben"
+msgstr "Jedes IPv6 Gerät muss einen Bezeichner haben"
 
 #: umc/js/setup/InterfaceGrid.js:85
 msgid "Edit"
@@ -920,12 +920,15 @@ msgid "don't set"
 msgstr "nicht setzen"
 
 #: umc/js/setup/InterfaceWizard.js:649
-msgid "gateway"
+msgid "Gateway"
 msgstr "Gateway"
 
 #: umc/js/setup/InterfaceWizard.js:654
-msgid "nameserver"
+msgid "Nameserver"
 msgstr "DNS-Server"
+
+msgid "None"
+msgstr "Kein"
 
 #: umc/js/setup/InterfaceWizard.js:324
 msgid "network device"

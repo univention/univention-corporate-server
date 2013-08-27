@@ -503,6 +503,7 @@ define([
 				return (!ip6[2] && (ip6[0] || ip6[1]));
 			}).length) {
 				dialog.alert(_('Each IPv6 device must have an identifier'));
+				return false;
 			}
 
 			var pages = ['network'];
@@ -601,11 +602,9 @@ define([
 				dialog.alert(_('Please choose a network device before querying a DHCP address.'));
 				return;
 			}
-			this.standby(true);
-			tools.umcpCommand('setup/net/dhclient', {
+			this.standbyDuring(tools.umcpCommand('setup/net/dhclient', {
 				'interface': interfaceName
-			}).then(lang.hitch(this, function(data) {
-				this.standby(false);
+			})).then(lang.hitch(this, function(data) {
 
 				var result = data.result;
 				var netmask = result[interfaceName + '_netmask'];
@@ -615,37 +614,28 @@ define([
 					return;
 				}
 
-				var values = {
+				this.setValues({
 					ip4dynamic: false, // set "Dynamic (DHCP)" to false
 					ip4: [[address, netmask]]
-				};
+				});
 
-				if (result.gateway || result.nameserver_1 && result.gateway != this.getWidget('gateway').get('value')) {
-					var gw_string = '';
-					if (result.gateway && result.gateway != this.getWidget('gateway').get('value')) {
-						gw_string = string.substitute('<li>${0}: ${1}</li>', [_('gateway'), result.gateway]);
-					}
-					var ns_string = '';
-					if (result.nameserver_1) {
-						ns_string = string.substitute('<li>${0}: ${1:nameservers}</li>',
-						                              [_('nameserver'), array.filter([result.nameserver_1, result.nameserver_2, result.nameserver_3], function(arg) { return arg;})], null,
-						                              { nameservers: function(value, key) { return value.join(', '); }});
-					}
-					var gw_ns_string = '<ul>' + gw_string  + ns_string + '</ul>';
-					dialog.confirm(_('Should the nameserver and gateway be set: %s', gw_ns_string), [{label: _('set'), name: 'yes'}, {label: _("don't set"), name: 'no'}]).then(lang.hitch(this, function(answer) {
-	
+				if (result.gateway || result.nameserver_1) {
+					var nameservers = array.filter([result.nameserver_1, result.nameserver_2, result.nameserver_3], function(n) { return n;}).join(', ');
+					var description = string.substitute('<ul><li>${0}: ${1}</li><li>${2}: ${3}</li></ul>', [_('Gateway'), result.gateway || _('None'), _('Nameserver'), nameservers]);
+
+					dialog.confirm(_('Should the nameserver and gateway be set: %s', description), [
+						{label: _('set'), name: 'yes', 'default': true},
+						{label: _("don't set"), name: 'no'}
+					]).then(lang.hitch(this, function(answer) {
 						if (answer === 'yes') {
-							values.gateway = result.gateway;
-							values.nameserver = [[result.nameserver_1], [result.nameserver_2], [result.nameserver_3]];
+							this.setValues({
+								gateway: result.gateway || '',
+								nameserver: [[result.nameserver_1], [result.nameserver_2], [result.nameserver_3]]
+							});
 						}
-	
-						this.setValues(values);
 					}));
-				} else {
-					this.setValues(values);
 				}
 			}), lang.hitch(this, function(error) {
-				this.standby(false);
 				dialog.alert(_('DHCP query failed.'));
 			}));
 		}

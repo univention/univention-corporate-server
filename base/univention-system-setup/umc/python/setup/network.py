@@ -401,8 +401,7 @@ class Device(object):
 				self.ip4.append((vals.pop(key), vals.pop('interfaces/%s/netmask' % match.group(), '24')))
 				continue
 
-			if key in vals:
-				self._leftover.append((key, vals.pop(key)))
+		self._leftover += vals.items()
 
 		self.options.sort()
 		self._leftover.sort()
@@ -502,6 +501,9 @@ class _RemovedDevice(Device):
 	"""Internal class representing that a device have to be removed from UCR"""
 	def to_ucr(self):
 		return dict((key, None) for key in ucr.iterkeys() if RE_INTERFACE.match(key))
+
+	def validate(self):
+		return True
 
 	def validate_name(self):
 		return True

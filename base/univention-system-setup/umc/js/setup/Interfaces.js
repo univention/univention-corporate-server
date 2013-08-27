@@ -321,6 +321,11 @@ define([
 		_setPrimaryState: function(device) {
 			// set or remove interfaces/primary if device was (de)selected as primary
 			if (device.primary) {
+				var prim = this.getPrimaryInterface();
+				if (prim && prim.name !== device.name) {
+					prim.primary = false;
+					this.put(prim);
+				}
 				this.set('interfaces/primary', device.name);
 			} else if (this['interfaces/primary'] === device.name) {
 				this.set('interfaces/primary', '');

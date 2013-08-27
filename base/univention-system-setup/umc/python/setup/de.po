@@ -149,7 +149,7 @@ msgstr "Ort"
 
 #: umc/python/setup/network.py:336
 msgid "Missing IPv6 default identifier"
-msgstr "Fehlendet IPv6 default Bezeichner"
+msgstr "Fehlender IPv6 default Bezeichner"
 
 #: umc/python/setup/network.py:604
 msgid "Missing device for bond-slaves"

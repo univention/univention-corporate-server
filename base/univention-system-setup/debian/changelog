@@ -1,3 +1,9 @@
+univention-system-setup (7.0.31-1) unstable; urgency=low
+
+  * Bug #30816: various fixes
+
+ -- Florian Best <best@univention.de>  Mon, 26 Aug 2013 13:48:52 +0200
+
 univention-system-setup (7.0.30-1) unstable; urgency=low
 
   * Bug #29973: code cleanup
