@@ -1,3 +1,10 @@
+univention-directory-manager-modules (8.0.143-23) unstable; urgency=low
+
+  * The license is now loaded and displayed in the UMC license info
+    dialog even if the license is invalid or expired (Bug #31673)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Aug 2013 07:37:35 +0200
+
 univention-directory-manager-modules (8.0.143-22) unstable; urgency=low
 
   * Bug #31916: allow a list of policy DNs for simplePolicy.policy_result()
