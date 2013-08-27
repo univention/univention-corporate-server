@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.18-2) unstable; urgency=low
+
+  * Fixed license traceback (Bug #31673)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Aug 2013 14:12:02 +0200
+
 univention-directory-manager-modules (9.0.18-1) unstable; urgency=low
 
   * The license is now loaded and displayed in the UMC license info
