@@ -1,36 +1,37 @@
 [clamav/freshclam/autostart]
-Description[de]=Automatischer Start des Virenscanner Updaters
-Description[en]=Automatically start of the antivirus update daemon
+Description[de]=Die Variable konfiguriert den Startmodus des Freshclam-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Freshclam service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
 Type=str
-Categories=service-mail,system-services
+Categories=service-webproxy,service-mail,system-services
 
 [dansguardian/autostart]
-Description[de]=Konfiguriert den automatischen Start von dansguardian beim Systemstart
-Description[en]=Configures dansguardian automatic start at boot time
+Description[de]=Die Variable konfiguriert den Startmodus des Dansguardian-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Dansguardian service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=str
 Type=str
 Categories=service-webproxy
 
 [dansguardian/virus/notifyemail]
-Description[de]=Benachrichtigungs-E-Mail-Adresse bei gefundenen Viren
-Description[en]=Notification email address if a virus has been detected
-Type=str
-Categories=service-webproxy
-
-[dansguardian/groups/.*/banned/extensions]
-Description[de]=Von Dansguardian blockierte Dateiendungen
-Description[en]=File extensions blocked by Dansguardian
-Type=str
-Categories=service-webproxy
-
-[dansguardian/bannedipaddresses]
-Description[de]=Rechneradressen, denen der Zugriff auf Squid verboten wird
-Description[en]=IP address, which cannot access Squid
+Description[de]=Wird hier eine gültige E-Mail-Adresse konfiguriert, wird eine E-Mail verschickt, sobald ein Benutzer versucht eine virenverseuchte Datei herunterzuladen.
+Description[en]=If this value is set to a valid e-mail address, a notification is sent via e-mail as soon as a user attempts to download a file infected with a virus. 
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups]
-Description[de]=Gruppen, denen verschiedene Dansguardian Regeln zugewiesen werden sollen. Durch Semikolon getrennt. Gehört ein Benutzer keiner angegebenen Gruppe an wird die erste Gruppe zugewiesen
-Description[en]=Groups which are assigned different dansguardian rules. Seperated by semicolon. If a user belongs to no provided group, he is assigned to the first group
+Description[de]=Gruppen, denen verschiedene Dansguardian-Regeln zugewiesen werden können. Mehrere Einträge werden durch ein Semikolon getrennt. Gehört ein Benutzer keiner angegebenen Gruppe an, wird die erste Gruppe verwendet.
+Description[en]=Groups, for which different Dansguardian rules can be assigned. Multiple entries need to be separated by a semicolon. If a user belongs to no provided group, the first group applies.
+Type=str
+Categories=service-webproxy
+
+[dansguardian/groups/.*/banned/extensions]
+Description[de]=Ist der inhaltbasierte Filter aktiviert (siehe 'squid/contentscan'), werden diese Dateiendungen für die Gruppe blockiert. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Die Gruppe muss in der Variable 'dansguardian/groups' registriert sein. Beispiel: '.exe .com .bat'. Ist die Variable nicht gesetzt, werden verschiedene Dateiendungen ausführbarer Dateien blockiert. Eine Aufstellung findet sich unter /etc/dansguardian/lists/bannedextensionlist.
+Description[en]=If the content filter is enabled (see 'squid/contentscan'), these file extensions are blocked for the group. Multiple entries need to be separated by a blank. The group must be registered in the variable 'dansguardian/groups'. Example: '.exe .com .bat'. If the variable is unset, various file extensions of executable files are blocked. They are listed in /etc/dansguardian/lists/bannedextensionlist.
+Type=str
+Categories=service-webproxy
+
+[dansguardian/bannedipaddresses]
+Description[de]=Ist der inhaltbasierte Filter aktiviert (siehe 'squid/contentscan'), wird der Proxy-Zugriff für die angegebenen IP-Adressen blockiert. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Beispiel: '192.168.0.100 192.168.0.101'. Ist die Variable nicht gesetzt, wird der Zugriff nicht beschränkt.
+Description[en]=If the content filter is enabled (see 'squid/contentscan'), proxy access if blocked for these IP addresses. Multiple entries need to be separated by a blank. Example: '192.168.0.100 192.168.0.101'. If the variable is unset, the access isn't limited.
 Type=str
 Categories=service-webproxy
 
