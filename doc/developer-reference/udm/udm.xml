@@ -596,6 +596,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						<methodsynopsis>
 							<methodname>hook_open</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
 						</methodsynopsis>
 					</term>
 					<listitem>
