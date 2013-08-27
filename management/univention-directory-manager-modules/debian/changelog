@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.20-1) unstable; urgency=low
+
+  * Fixed another license traceback (Bug #31673)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Aug 2013 20:44:37 +0200
+
 univention-directory-manager-modules (9.0.19-1) unstable; urgency=low
 
   * Fix one more boolean comparison  (Bug #30974)
