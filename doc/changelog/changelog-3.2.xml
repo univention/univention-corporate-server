@@ -1842,6 +1842,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Univention Active Directory Connector</title>
 	  <itemizedlist>
 		<listitem><simpara>
+		  Additional hints are shown during the Active Directory Connector setup about possibilities to configure DNS resolution for the required Windows server FQDN (<ulink url="&ucsbug;24903">Bug 24903</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
