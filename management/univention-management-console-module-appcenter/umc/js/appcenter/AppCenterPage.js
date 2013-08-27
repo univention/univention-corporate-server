@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
+	"dojo/io-query",
 	"dojo/when",
 	"dojo/dom-construct",
 	"dojo/query",
@@ -56,7 +57,7 @@ define([
 	"umc/widgets/GalleryPane",
 	"umc/widgets/LiveSearchSidebar",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, when, domConstruct, query, Memory, topic, Deferred, Lightbox, timing, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, TitlePane, TextBox, CheckBox, ContainerWidget, GalleryPane, LiveSearchSidebar, _) {
+], function(declare, lang, kernel, array, ioQuery, when, domConstruct, query, Memory, topic, Deferred, Lightbox, timing, UMCApplication, dialog, tools, libServer, Page, ProgressBar, ConfirmDialog, Text, TitlePane, TextBox, CheckBox, ContainerWidget, GalleryPane, LiveSearchSidebar, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
@@ -263,6 +264,27 @@ define([
 							label: label,
 							callback: lang.hitch(this, function() {
 								this.showLicenseRequest(app, label);
+							})
+						});
+					}
+					if (app.allows_using && app.useshop && (app.can_install || app.can_update)) {
+						buttons.push({
+							name: 'buy',
+							label: _("Buy"),
+							callback: lang.hitch(this, function() {
+								var shopUrl = 'https://shop.univention.com';
+								var w = window.open(shopUrl, '_blank');
+								tools.umcpCommand('appcenter/buy', {application: app.id}).then(
+									function(data) {
+										var params = data.result;
+										params.locale = kernel.locale.slice( 0, 2 ).toLowerCase();
+										w.location = shopUrl + '?' + ioQuery.objectToQuery(params);
+										w.focus();
+									},
+									function() {
+										w.close();
+									}
+								);
 							})
 						});
 					}

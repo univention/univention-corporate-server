@@ -158,7 +158,7 @@ class Application(object):
 						self._options[k] = _escape_value(k, v)
 
 		# parse boolean values
-		for ikey in ('notifyvendor', 'useractivationrequired'):
+		for ikey in ('notifyvendor', 'useractivationrequired', 'useshop'):
 			if ikey in self._options:
 				self._options[ikey] = config.getboolean('Application', ikey)
 			else:

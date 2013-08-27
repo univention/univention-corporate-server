@@ -20,6 +20,7 @@
 		<command name="appcenter/progress" function="progress"/>
 		<command name="appcenter/keep_alive" function="keep_alive"/>
 		<command name="appcenter/ping" function="ping"/>
+		<command name="appcenter/buy" function="buy"/>
 
 		<!-- Query: all args are filter args. -->
 		<command name="appcenter/packages/query" function="packages_query" />

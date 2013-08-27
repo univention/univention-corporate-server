@@ -281,17 +281,19 @@ class Instance(umcm.Base):
 		return True
 
 	@simple_response
-	def app_center_app_license(self, application):
+	def buy(self, application):
 		application = Application.find(application)
-		if not application or not application.get('licensefile'):
-			raise umcm.UMC_CommandError(_('No license file available for application: %s') % (application.id))
-
-		# open the license file and replace line breaks with BR-tags
-		fp = util.urlopen(application.get('licensefile'))
-		txt = ''.join(fp.readlines()).strip()
-		txt = txt.replace('\n\n\n', '\n<br>\n<br>\n<br>\n')
-		txt = txt.replace('\n\n', '\n<br>\n<br>\n')
-		return txt
+		if not application or not application.get('useshop'):
+			return None
+		ret = {}
+		ret['key_id'] = LICENSE.uuid
+		ret['ucs_version'] = self.ucr.get('version/version')
+		ret['app_id'] = application.id
+		ret['app_version'] = application.version
+		# ret['locale'] = locale.getlocale()[0] # done by frontend
+		ret['user_count'] = None # FIXME: get users and computers from license
+		ret['computer_count'] = None
+		return ret
 
 	@simple_response
 	def packages_sections(self):
