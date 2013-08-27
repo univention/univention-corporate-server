@@ -219,7 +219,7 @@ class Instance( Base ):
 
 			if self.guessed_baseDN is None:
 				self.finished( request.id, { 'success' : False, 'message' : _('The LDAP base of the given Active Directory server could not be determined. Maybe the full-qualified hostname is wrong or unresolvable.' ) } )
-				MODULE.process( 'Could not determine baseDN of given ldap server. Maybe FQDN is wrong or unresolvable! FQDN=%s' % request.options[ 'baseDN' ] )
+				MODULE.process( 'Could not determine baseDN of given ldap server. Maybe FQDN is wrong or unresolvable! FQDN=%s' % request.options[ 'LDAP_Host' ] )
 			else:
 				self.finished( request.id, { 'success' : True, 'LDAP_Base' : self.guessed_baseDN } )
 

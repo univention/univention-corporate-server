@@ -57,7 +57,7 @@ define([
 		constructor: function() {
 			this.pages = [ {
 				name: 'fqdn',
-				helpText: _( 'The full qualified hostname of the Active Directory server is required' ),
+				helpText: '<p>' + _('Please enter the fully qualified hostname of the Active Directory server.') + '</p><p>' + _('The hostname must be resolvable by the UCS server. A DNS entry can be configured in the DNS module, or a static host record can be configured through the Univention Configuration Registry module, e.g.') + '</p><p>hosts/static/192.168.0.10=w2k8-ad.example.com</p>',
 				headerText: _( 'UCS Active Directory Connector configuration' ),
 				widgets: [{
 					name: 'LDAP_Host',
