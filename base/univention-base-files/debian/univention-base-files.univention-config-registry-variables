@@ -278,6 +278,24 @@ Description[en]=Skip the question asked before running the bootloader
 Type=bool
 Categories=system-base
 
+[kernel/fs/inotify/max_user_instances]
+Description[de]=Dies spezifiziert die Obergrenze der Anzahl inotify Instanzen, die pro realer Benutzer ID erzeugt werden können (default: 512)
+Description[en]=This specifies an upper limit on the number of inotify instances that can be created per real user ID (default: 512)
+Type=int
+Categories=system-base
+
+[kernel/fs/inotify/max_user_watches]
+Description[de]=Dies spezifiziert die Obergrenze der Anzahl inotify Watches, die pro realer Benutzer ID erzeugt werden können (default: 32768)
+Description[en]=This specifies an upper limit on the number of watches that can be created per real user ID (default: 32768)
+Type=int
+Categories=system-base
+
+[kernel/fs/inotify/max_queued_events]
+Description[de]=Dieser Wert wird bei einem Aufruf von inotify_init verwendet und setzt eine Obergrenze für die Anzahl von vorgehaltenen Events pro inotify Instanz (default: 16384)
+Description[en]=The value is used when an application calls inotify_init to set an upper limit on the number of events that can be queued to the corresponding inotify instance (default: 16384)
+Type=int
+Categories=system-base
+
 [ldap/backup]
 Description[de]=Das UCS Backup-System der Domäne
 Description[en]=The UCS backup system of the domain

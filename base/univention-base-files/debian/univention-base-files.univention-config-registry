@@ -109,6 +109,9 @@ Variables: update/secure_apt
 Type: file
 File: etc/sysctl.d/local.conf
 Variables: interfaces/[^/]*/ipv6/acceptRA
+Variables: kernel/fs/inotify/max_user_instances
+Variables: kernel/fs/inotify/max_user_watches
+Variables: kernel/fs/inotify/max_queued_events
 
 Type: multifile
 Multifile: etc/network/interfaces
