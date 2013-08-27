@@ -1,0 +1,73 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Access a share as a user whitelisted by sambaValidUsers"
+## exposure: safe
+## packages:
+##  - univention-samba | univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/shares.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+. "$TESTLIBPATH/samba.sh" || exit 137
+. /usr/share/univention-lib/ldap.sh || exit 137
+
+listener_replication_sleep_seconds=1
+listener_replication_retry_max=30
+
+echo "## create user"
+SAMBA="true"
+MAIL="false"
+KERBEROS="true"
+PERSON="false"
+POSIX="true"
+
+username="$(user_randomname)"
+password=univention
+sharename="$(random_share)"
+
+trap 'user_remove "$username";share_remove "$sharename";wait_for_replication_and_postrun; rm -rf "/${sharename:?}";' INT TERM EXIT
+if ! user_create "$username"; then
+	fail_fast 1 "Could not create user $username."
+fi
+
+udm-test shares/share create \
+	--position "$SHARE_POSITION" \
+	--set name="$sharename" \
+	--set path="/$sharename" \
+	--set host="$SHARE_HOST" \
+	--set owner="$SHARE_UNIX_OWNER" \
+	--set group="$SHARE_UNIX_GROUP" \
+	--set directorymode="$SHARE_UNIX_DIRECTORYMODE" \
+	--set writeable="$SHARE_NFS_WRITEABLE" \
+	--set sambaWriteable="$SHARE_SAMBA_WRITEABLE" \
+	--set sambaInvalidUsers="@\"Domain Users\"" \
+	--set sambaValidUsers="$username"
+
+if [ "$?" != 0 ]; then
+	fail_fast 1 "could not create share"
+fi
+
+wait_for_replication_and_postrun
+
+if dpkg -s univention-samba4 2>&1 | grep "install ok installed" > /dev/null; then
+# force_drs_replication
+	wait_for_drs_replication "(sAMAccountName=$username)"
+fi
+
+admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
+
+echo "## access share"
+i=0
+while ! output="$(smbclient -U "$username%$password" "//$hostname.$domainname/$sharename" -c "exit" 2>&1)"
+do
+	let i="$i"+1
+	if [ "$i" = "$listener_replication_retry_max" ]; then
+		fail_fast 1 "TIMEOUT: Access to share still failed after $((i * $listener_replication_sleep_seconds)) seconds: $output"
+	fi
+	sleep "$listener_replication_sleep_seconds"
+done
+
+exit "$RETVAL"

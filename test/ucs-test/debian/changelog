@@ -1,3 +1,11 @@
+ucs-test (4.0.97-4) unstable; urgency=low
+
+  * fix race in 47file_access_permissions-unixmode (Bug #29056)
+  * split 46file_access_permissions-samba_share_rules
+  * clarify meaning of SHARE_WRITEABLE -> SHARE_NFS_WRITEABLE
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Aug 2013 16:04:29 +0200
+
 ucs-test (4.0.97-3) unstable; urgency=low
 
   * add missing shell include (Bug #29062)

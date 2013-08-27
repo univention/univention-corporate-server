@@ -3,24 +3,26 @@
 
 SHARE_HOST="$hostname.$domainname"
 SHARE_POSITION="cn=$hostname.$domainname,cn=shares,$ldap_base"
-SHARE_WRITEABLE=1
-SHARE_OWNER=0 #must be number
-SHARE_GROUP=0 #must be numer
-SHARE_DIRECTORYMODE=0755
+SHARE_UNIX_OWNER=0 #must be number
+SHARE_UNIX_GROUP=0 #must be numer
+SHARE_UNIX_DIRECTORYMODE=0755
+SHARE_NFS_WRITEABLE=1
+SHARE_SAMBA_WRITEABLE=1
 
 share_create () {
-	local name=${1?:missing parameter: share name}
-	local path=${2?:missing parameter: share path}
+	local sharename=${1?:missing parameter: share name}
+	local sharepath=${2?:missing parameter: share path}
 	shift 2
 	udm-test shares/share create \
-		--set name="$name" \
-		--set path="$path" \
 		--position "$SHARE_POSITION" \
-		--set writeable="$SHARE_WRITEABLE" \
-		--set owner="$SHARE_OWNER" \
-		--set group="$SHARE_GROUP" \
-		--set directorymode="$SHARE_DIRECTORYMODE" \
+		--set name="$sharename" \
+		--set path="$sharepath" \
 		--set host="$SHARE_HOST" \
+		--set owner="$SHARE_UNIX_OWNER" \
+		--set group="$SHARE_UNIX_GROUP" \
+		--set directorymode="$SHARE_UNIX_DIRECTORYMODE" \
+		--set writeable="$SHARE_NFS_WRITEABLE" \
+		--set sambaWriteable="$SHARE_SAMBA_WRITEABLE" \
 		"$@"
 }
 
