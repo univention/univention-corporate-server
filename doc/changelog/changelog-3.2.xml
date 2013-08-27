@@ -124,7 +124,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		In the update from UCS-3.0 to UCS-3.1 the template for <filename>/etc/network/interfaces</filename> was converted from a single-file template into a multi-file template. To preserve user modifications the original file was moved to the new location. This breaks the network tools, since the generated file now contains two declarations for the lookback interface. This situation is now detected and the second declaration is commented out (<ulink url="&ucsbug;32297">Bug 32297</ulink>).
+		In the update from UCS-3.0 to UCS-3.1 the template for <filename>/etc/network/interfaces</filename> was converted from a single-file template into a multi-file template. To preserve user modifications the original file was moved to the new location. This breaks the network tools, since the generated file now contains two declarations for the loopback interface. This situation is now detected and the second declaration is commented out (<ulink url="&ucsbug;32297">Bug 32297</ulink>).
 	  </simpara> </listitem>
 
 	  <listitem><simpara>
