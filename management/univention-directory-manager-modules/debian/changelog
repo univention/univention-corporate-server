@@ -1,3 +1,9 @@
+univention-directory-manager-modules (8.0.143-25) unstable; urgency=low
+
+  * Fixed another license traceback (Bug #31673)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Aug 2013 20:43:47 +0200
+
 univention-directory-manager-modules (8.0.143-24) unstable; urgency=low
 
   * Fixed license traceback (Bug #31673)

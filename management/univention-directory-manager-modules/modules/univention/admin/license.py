@@ -409,9 +409,9 @@ class License( object ):
 		except:
 			if self.searchResult:
 				if type(default) == type([]):
-					value = self.searchResult[0][1].get( key )
+					value = self.searchResult[0][1].get( key, default )
 				else:
-					value = self.searchResult[0][1].get( key )[0]
+					value = self.searchResult[0][1].get( key, [default] )[0]
 				self.new_license = True
 			else:
 				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
