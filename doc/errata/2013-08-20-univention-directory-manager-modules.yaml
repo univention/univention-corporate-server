@@ -2,10 +2,13 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-directory-manager-modules
-fix: 8.0.143-22.1038.201308201801
+fix: 8.0.143-23.1040.201308270739
 note:
 version: [1]
 desc: |
-  This erratum update extends the UDM API for the evaluation of policy values
-  via inheritance.
-bug: [31916]
+  This update changes the following issues:
+  * It extends the UDM API for the evaluation of policy values via
+    inheritance.
+  * The license is now loaded and displayed in the UMC license info
+    dialog even if the license is invalid or expired.
+bug: [31916,31673]
