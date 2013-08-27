@@ -1,3 +1,10 @@
+ucs-test (4.0.97-2) unstable; urgency=low
+
+  * minor cleanup of 52replication_sysvol (Bug #29062)
+  * adjust filenames of sysvol tests
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Aug 2013 11:49:32 +0200
+
 ucs-test (4.0.97-1) unstable; urgency=low
 
   * don't fail just because --ping-dc is not implemented in samba4 winbind
