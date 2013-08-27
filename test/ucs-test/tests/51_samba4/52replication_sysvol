@@ -12,6 +12,7 @@
 
 . "$TESTLIBPATH/shares.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137
+. /usr/share/univention-lib/ldap.sh || exit 137
 
 check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
 admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"

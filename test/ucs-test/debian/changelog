@@ -1,3 +1,9 @@
+ucs-test (4.0.97-3) unstable; urgency=low
+
+  * add missing shell include (Bug #29062)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Aug 2013 12:14:52 +0200
+
 ucs-test (4.0.97-2) unstable; urgency=low
 
   * minor cleanup of 52replication_sysvol (Bug #29062)
