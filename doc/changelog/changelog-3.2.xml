@@ -572,6 +572,11 @@
 		  (<ulink url="&ucsbug;31752">Bug 31752</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The license is now loaded and displayed in the UMC license info dialog even if the license is invalid or expired
+		  (<ulink url="&ucsbug;31673">Bug 31673</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
