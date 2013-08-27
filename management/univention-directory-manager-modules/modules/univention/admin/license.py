@@ -63,6 +63,7 @@ class License( object ):
 		self.licenseBase = None
 		self.types= []
 		self.version = '1'
+		self.searchResult = None
 		self.sysAccountNames = (
 			'Administrator',
 			'join-backup',
