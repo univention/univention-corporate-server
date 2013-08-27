@@ -160,14 +160,21 @@ class License( object ):
 		}
 		self.__selected = False
 
+	def _load_license_via_c_module(self, module):
+		return univention.license.select( module )
+
+	def _load_license_via_python(self, module, lo):
+		# Try to set the version even if the license load was not successful
+		self.searchResult = lo.search( filter='(&(objectClass=univentionLicense)(univentionLicenseModule=%s))' % module)
+		if self.searchResult:
+			self.version = self.searchResult[0][1].get('univentionLicenseVersion', ['1'])[0]
+
 	def select( self, module, lo=None ):
 		if not self.__selected:
-			self.error = univention.license.select( module )
+			self.error = self._load_license_via_c_module(module)
 			if self.error != 0 and lo:
-				# Try to set the version even if the license load was not successful
-				searchResult = lo.search( filter='(&(objectClass=univentionLicense)(univentionLicenseModule=%s))' % module, attr=['univentionLicenseVersion'])
-				if searchResult:
-					self.version = searchResult[0][1].get('univentionLicenseVersion', ['1'])[0]
+				self._load_license_via_python(module, lo)
+				self.set_values(lo, module)
 				
 			self.__raiseException()
 			self.__selected = True
@@ -251,8 +258,7 @@ class License( object ):
 			return -1
 		return cmp(int(val1), int(val2))
 
-	def init_select( self, lo, module ):
-		self.select( module, lo )
+	def set_values(self, lo, module):
 		self.__readLicense()
 		disable_add = 0
 		self.__countSysAccounts( lo )
@@ -295,7 +301,7 @@ class License( object ):
 				self.licenseSupport = self.__getValue ( 'univentionLicenseSupport', '0' )
 				self.licensePremiumSupport = self.__getValue ( 'univentionLicensePremiumSupport', '0' )
 			disable_add = self.checkObjectCounts(lic, real)
-			self.licenseBase = univention.license.getValue ( 'univentionLicenseBaseDN' )
+			self.licenseBase = self.__getValue ( 'univentionLicenseBaseDN', '' )
 			if disable_add:
 				self._expired = True
 			elif not disable_add and self.licenseBase == 'Free for personal use edition':
@@ -305,6 +311,10 @@ class License( object ):
 		self.checkModules()
 
 		return disable_add
+
+	def init_select( self, lo, module ):
+		self.select( module, lo )
+		return self.set_values(lo, module)
 
 	def checkObjectCounts(self, lic, real):
 		disable_add = 0
@@ -354,9 +364,9 @@ class License( object ):
 
 	def __countSysAccounts( self, lo ):
 		userfilter = [ univention.admin.filter.expression('uid', account) for account in self.sysAccountNames ]
-                filter=univention.admin.filter.conjunction('&', [
-                         univention.admin.filter.conjunction('|', userfilter),
-                         self.filters[self.version][License.USERS] ])
+		filter=univention.admin.filter.conjunction('&', [
+						univention.admin.filter.conjunction('|', userfilter),
+						self.filters[self.version][License.USERS] ])
 		try:
 			searchResult = lo.searchDn(filter=str(filter))
 			self.sysAccountsFound = len(searchResult)
@@ -396,9 +406,16 @@ class License( object ):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
 					'LICENSE: Univention %s allowed %s' % ( name, str( value ) ) )
 		except:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
-					'LICENSE: %s' % errormsg )
-			value = default
+			if self.searchResult:
+				if type(default) == type([]):
+					value = self.searchResult[0][1].get( key )
+				else:
+					value = self.searchResult[0][1].get( key )[0]
+				self.new_license = True
+			else:
+				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
+						'LICENSE: %s' % errormsg )
+				value = default
 
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: %s = %s' % ( name, value ) )
 		return value

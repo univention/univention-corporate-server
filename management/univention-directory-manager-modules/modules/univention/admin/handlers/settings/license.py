@@ -357,13 +357,8 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		# copy the mapping table, we need this for the option handling
-		self.mapping_list = {}
-		for key in self.descriptions.keys():
-			self.mapping_list[key] = mapping.mapName(key)
-
 		global options
-		if self.oldattr.get('univentionLicenseVersion', []) == '2':
+		if self.oldattr.get('univentionLicenseVersion', []) == ['2']:
 			self.options = ['Version 2']
 		else:
 			self.options = ['Version 1']
