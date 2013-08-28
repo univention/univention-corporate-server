@@ -1,3 +1,10 @@
+ucs-test (4.0.97-5) unstable; urgency=low
+
+  * Run 53_samba-common/*_access_permissions_* also on memberservers
+    (Bug #29056)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Aug 2013 18:27:08 +0200
+
 ucs-test (4.0.97-4) unstable; urgency=low
 
   * fix race in 47file_access_permissions-unixmode (Bug #29056)
