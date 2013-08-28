@@ -2182,7 +2182,7 @@ closest to the object always applies.
 		However, this caching function is not necessary for some environments
 		or, in the case of cascaded proxies, it should not be activated for
 		all of them. For these scenarios, the caching function of the Squid
-		can be deactivated with the &ucsUCRV; by setting this to <emphasis>no</emphasis>.
+		can be deactivated with the &ucsUCRV; <envar>squid/cache</envar> by setting this to <emphasis>no</emphasis>.
 		Squid must then be restarted.
 	  </para>
 	</section>
@@ -2208,7 +2208,7 @@ closest to the object always applies.
 		192.168.1.10 and the network mask 255.255.255.0 is available on the
 		computer on which Squid is installed, only computers from the network
 		192.168.1.0/24 can access the proxy server. Additional networks can be
-		specified via the &ucsUCRV;. When doing so, the CIDR
+		specified via the &ucsUCRV; <envar>squid/allowfrom</envar>. When doing so, the CIDR
 		notation must be used; several networks should be separated by blank
 		spaces.
 	  </para>
