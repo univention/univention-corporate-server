@@ -399,6 +399,11 @@
 		  LDAP ACLs with regular expression have been made more efficient and robust
 		  (<ulink url="&ucsbug;29421">Bug 29421</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  univention-ldap-backup now creates a seperate logfile during the backup process in /var/univention-backup
+		  (<ulink url="&ucsbug;31997">Bug 31997</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 
 
