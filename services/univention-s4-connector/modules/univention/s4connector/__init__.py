@@ -779,18 +779,22 @@ class ucs:
 	def get_ucs_ldap_object(self, dn):
 		_d=ud.function('ldap.get_ucs_ldap_object')
 
-		if type(dn) == type(u''):
-			searchdn = dn
-		else:
-			searchdn = unicode(dn)
-		try:			
-			return self.lo.get(searchdn,required=1)
-		except ldap.NO_SUCH_OBJECT:
-			return None
-		except ldap.INVALID_DN_SYNTAX:
-			return None
-		except ldap.INVALID_SYNTAX:
-			return None
+		for i in [0, 1]: # do it twice if the LDAP connection was closed
+			if type(dn) == type(u''):
+				searchdn = dn
+			else:
+				searchdn = unicode(dn)
+			try:			
+				return self.lo.get(searchdn,required=1)
+			except ldap.NO_SUCH_OBJECT:
+				return None
+			except ldap.INVALID_DN_SYNTAX:
+				return None
+			except ldap.INVALID_SYNTAX:
+				return None
+			except (ldap.SERVER_DOWN, SystemExit):
+				self.open_ucs()
+				continue
 
 	def get_ucs_object(self, property_type, dn):
 		_d=ud.function('ldap.get_ucs_object')

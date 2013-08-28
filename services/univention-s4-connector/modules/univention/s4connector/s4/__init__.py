@@ -914,17 +914,21 @@ class s4(univention.s4connector.ucs):
 
 	def get_object(self, dn):
 		_d=ud.function('ldap.get_object')
-		try:
-			dn, s4_object=self.lo_s4.lo.search_ext_s(compatible_modstring(dn),ldap.SCOPE_BASE,'(objectClass=*)')[0]
+		for i in [0, 1]: # do it twice if the LDAP connection was closed
 			try:
-				ud.debug(ud.LDAP, ud.INFO,"get_object: got object: %s" % dn)
+				dn, s4_object=self.lo_s4.lo.search_ext_s(compatible_modstring(dn),ldap.SCOPE_BASE,'(objectClass=*)')[0]
+				try:
+					ud.debug(ud.LDAP, ud.INFO,"get_object: got object: %s" % dn)
+				except: # FIXME: which exception is to be caught?
+					ud.debug(ud.LDAP, ud.INFO,"get_object: got object: <print failed>")
+				return encode_s4_object(s4_object)
+			except (ldap.SERVER_DOWN, SystemExit):
+				if i == 0:
+					self.open_s4()
+					continue
+				raise
 			except: # FIXME: which exception is to be caught?
-				ud.debug(ud.LDAP, ud.INFO,"get_object: got object: <print failed>")
-			return encode_s4_object(s4_object)
-		except (ldap.SERVER_DOWN, SystemExit):
-			raise
-		except: # FIXME: which exception is to be caught?
-			pass
+				pass
 		
 
 	def __get_change_usn(self, object):

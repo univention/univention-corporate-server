@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.7-1) unstable; urgency=low
+
+  * Re-open the LDAP connection once if the connection has been closed
+    (Bug #32274)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Aug 2013 06:51:40 +0200
+
 univention-s4-connector (8.0.6-1) unstable; urgency=low
 
   * Use a separate SID compare function since the objectSid in S4 is
