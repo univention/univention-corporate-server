@@ -1834,6 +1834,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  Logging of add and modify operations against the Samba 4 directory has been improved,
 		  especially in the case of a traceback (<ulink url="&ucsbug;31133">Bug 31133</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The displayName attribute definition has been moved from post_attributes to attributes in the user mapping
+		  definition. This increases the syncronization performance (<ulink url="&ucsbug;32323">Bug 32323</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
