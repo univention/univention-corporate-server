@@ -114,6 +114,11 @@ if ignore_filter:
 							ldap_attribute='givenName',
 							con_attribute='givenName',
 						),
+					'displayName': univention.s4connector.attribute (
+							ucs_attribute='displayName',
+							ldap_attribute='displayName',
+							con_attribute='displayName',
+						),
 					'sn': univention.s4connector.attribute (
 							ucs_attribute='lastname',
 							ldap_attribute='sn',
@@ -258,11 +263,6 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ldap_attribute='pager',
 							con_attribute='pager',
 							con_other_attribute='otherPager',
-						),
-					'displayName': univention.s4connector.attribute (
-							ucs_attribute='displayName',
-							ldap_attribute='displayName',
-							con_attribute='displayName',
 						),
 			},
 

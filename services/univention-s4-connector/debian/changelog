@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.5-1) unstable; urgency=low
+
+  * Sync performance: Move displayName from from post_attributes to
+    attributes (Bug #32323)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Aug 2013 06:25:06 +0200
+
 univention-s4-connector (8.0.4-1) unstable; urgency=low
 
   * Limit the changes from UCS to S4 for one interval to 50.000 changes.
