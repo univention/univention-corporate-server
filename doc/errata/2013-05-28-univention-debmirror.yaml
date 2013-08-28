@@ -7,7 +7,7 @@ note:
 version: [1]
 desc: |
   An update for the Univention Debmirror package was missed for UCS-3.1-1,
-  which includs a fix for bug 30409:
+  which includes a fix for bug 30409:
 
   http://updates.software-univention.de/ is now always configured as the
   initial repository server, because some external DNS servers always return a
