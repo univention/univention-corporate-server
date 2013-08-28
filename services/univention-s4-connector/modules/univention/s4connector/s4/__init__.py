@@ -475,7 +475,7 @@ def encode_sid(value):
 def encode_object_sid(sid_string, encode_in_base64=True):
     binary_encoding = ""
 
-    for i in sid.split("-")[1:]:
+    for i in sid_string.split("-")[1:]:
         j = int(i)
 
         oc1 = (j >> 24)
@@ -631,6 +631,31 @@ def compatible_modstring(string):
 	if hasattr(string,'encode'):
 		string = string.encode('utf8')
 	return string
+
+def __is_sid_string(sid):
+	if sid.startswith('S-'):
+		return True
+	else:
+		return False
+	
+def compare_sid_lists(sid_list1, sid_list2):
+	len_sid_list1 = len(sid_list1)
+	if len_sid_list1 != len(sid_list2):
+		return False
+
+	for i in range(0,len_sid_list1):
+		sid1 = sid_list1[i]
+		if not __is_sid_string(sid1):
+			sid1 = decode_sid(sid1)
+
+		sid2 = sid_list2[i]
+		if not __is_sid_string(sid2):
+			sid2 = decode_sid(sid2)
+
+		if sid1 != sid2:
+			return False
+
+	return True
 
 def explode_unicode_dn(dn, notypes=0):
 	ret = []

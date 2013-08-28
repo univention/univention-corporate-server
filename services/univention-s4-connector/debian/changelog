@@ -1,3 +1,11 @@
+univention-s4-connector (8.0.6-1) unstable; urgency=low
+
+  * Use a separate SID compare function since the objectSid in S4 is
+    encoded thus the default compare function returns always false
+    (Bug #32322)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Aug 2013 06:34:23 +0200
+
 univention-s4-connector (8.0.5-1) unstable; urgency=low
 
   * Sync performance: Move displayName from from post_attributes to

@@ -298,7 +298,7 @@ class configsaver:
 		return self.config.has_key(section) and self.config[section].has_key(option)
 
 class attribute:
-	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function='', mapping=(), reverse_attribute_check=False, sync_mode='sync' ):
+	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function=None, mapping=(), reverse_attribute_check=False, sync_mode='sync' ):
 		self.ucs_attribute=ucs_attribute
 		self.ldap_attribute=ldap_attribute
 		self.con_attribute=con_attribute
@@ -1065,7 +1065,7 @@ class ucs:
 							else:
 								compare[i] = univention.s4connector.s4.compatible_modstring(compare[i])
 
-						if attributes.compare_function != '':
+						if attributes.compare_function:
 							equal = attributes.compare_function(compare[0],compare[1])
 						else:
 							equal = compare[0] == compare[1]
