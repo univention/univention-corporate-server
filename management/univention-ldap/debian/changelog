@@ -1,3 +1,10 @@
+univention-ldap (10.0.9-7) unstable; urgency=low
+
+  * univention-ldap-backup now creates a seperate logfile during the backup
+    process in /var/univention-backup (Bug #31997) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 28 Aug 2013 10:49:12 +0200
+
 univention-ldap (10.0.9-6) unstable; urgency=low
 
   * backup2master: Fix removal of NTDS DNS alias (Bug #27893)

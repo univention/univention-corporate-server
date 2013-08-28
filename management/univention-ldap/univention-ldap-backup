@@ -33,14 +33,16 @@
 eval "$(univention-config-registry shell server/role)"
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	ldapbackupname="/var/univention-backup/ldap-backup_$(date +%Y%m%d).ldif"
+	currentdate=$(date +%Y%m%d)
+	ldapbackupname="/var/univention-backup/ldap-backup_${currentdate}.ldif"
+	ldapbackuplog="/var/univention-backup/ldap-backup_${currentdate}.log"
 
-	touch "$ldapbackupname"
-	chmod 600 "$ldapbackupname"
+	touch "$ldapbackupname" "$ldapbackuplog"
+	chmod 600 "$ldapbackupname" "$ldapbackuplog"
 
-	slapcat >"$ldapbackupname" 2>&1
+	slapcat -l "$ldapbackupname" 2>"$ldapbackuplog"
 	rc=$?
-	gzip -9 "$ldapbackupname" 2>/dev/null
+	gzip -9 "$ldapbackupname" "$ldapbackuplog" 2>/dev/null
 	if [ $rc -ne 0 ]
 	then
 		echo "LDAP could not be dumped!" >&2
