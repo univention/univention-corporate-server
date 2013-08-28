@@ -1839,6 +1839,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The displayName attribute definition has been moved from post_attributes to attributes in the user mapping
 		  definition. This increases the syncronization performance (<ulink url="&ucsbug;32323">Bug 32323</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  A saparate SID compare function has been added which considers the SID coding in Samba 4. This increases the
+		 syncronization performance, since the SID will only be set if it differs (<ulink url="&ucsbug;32322">Bug 32322</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
