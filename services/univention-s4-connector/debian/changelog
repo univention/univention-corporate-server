@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.10-1) unstable; urgency=low
+
+  * Use set() instead of lists for the group synchronisation
+    (Bug #32276)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Aug 2013 07:15:45 +0200
+
 univention-s4-connector (8.0.8-1) unstable; urgency=low
 
   * Use compare function from mapping defintion (Bug #32322)
