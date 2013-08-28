@@ -247,8 +247,6 @@ class ComponentManager(object):
 		return component_registered(component_id, self.ucr)
 
 	def put_app(self, app, super_ucr=None):
-		if app.get('withoutrepository'):
-			return
 		if super_ucr is None:
 			with set_save_commit_load(self.ucr) as super_ucr:
 				return self.put_app(app, super_ucr)
@@ -267,8 +265,6 @@ class ComponentManager(object):
 		self.put(app_data, super_ucr)
 
 	def remove_app(self, app, super_ucr=None):
-		if app.get('withoutrepository'):
-			return
 		if super_ucr is None:
 			with set_save_commit_load(self.ucr) as super_ucr:
 				return self.remove_app(app, super_ucr)

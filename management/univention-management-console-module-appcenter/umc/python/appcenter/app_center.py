@@ -621,11 +621,9 @@ class Application(object):
 			package_manager.add_hundred_percent()
 
 			# remove all existing component versions
-			for iapp in self.versions:
-				component_manager.remove_app(iapp)
+			self.unregister_all_and_register(None, component_manager, package_manager)
 
 			# update package information
-			package_manager.update()
 			self.update_conffiles()
 
 			status = 200
@@ -719,8 +717,7 @@ class Application(object):
 					to_install.extend(master_packages)
 
 			# add the new component
-			component_manager.put_app(app)
-			package_manager.update()
+			previously_registered = app.register(component_manager, package_manager)
 
 			# get package objects
 			to_install = package_manager.get_packages(to_install)
@@ -737,8 +734,7 @@ class Application(object):
 			if remove_component:
 				# remove the newly added component
 				MODULE.info('Remove component: %s' % (app.component_id, ))
-				component_manager.remove_app(app)
-				package_manager.update()
+				app.unregister_all_and_register(previously_registered, component_manager, package_manager)
 			MODULE.process('Finished dry_run for %s on %s' % (app.id, 'localhost'))
 
 		thread = Thread(target=_check_local_host, args=(self, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component))
@@ -751,6 +747,59 @@ class Application(object):
 		result['hosts_info'] = hosts_info
 		result.update(remote_info)
 		return result
+
+	def register(self, component_manager, package_manager):
+		'''Registers the component of the app in UCR and unregisters
+		all other versions in one operation ("atomic"). Does an apt-get
+		update if necessary.
+		Returns the latest previously registered version of this app if
+		there was one.
+		'''
+		return self.unregister_all_and_register(self, component_manager, package_manager)
+
+	def unregister(self, component_manager, super_ucr=None):
+		'''Removes its component from UCR.
+		Returns whether this has been necessary (i.e. False if it was
+		not registered)
+		'''
+		got_unregistered = False
+		if not self.get('withoutrepository') and self.is_registered(component_manager.ucr):
+			component_manager.remove_app(self, super_ucr)
+			got_unregistered = True
+		return got_unregistered
+
+	def unregister_all_and_register(self, to_be_registered, component_manager, package_manager):
+		'''Removes all versions of this app and registers
+		`to_be_registered` if given (may be None). Does an apt-get
+		update if necessary.
+		Returns the latest previously registered version of this app if
+		there was one.
+		'''
+		should_update = False
+		previously_registered = None
+		with set_save_commit_load(component_manager.ucr) as super_ucr:
+			other_versions = self.find(self.id).versions
+			for app in reversed(other_versions):
+				# remove all existing component versions,
+				#   walk in reversed order so that
+				#   previously_registered will be the latest if
+				#   there are multiple already registered
+				if app is not to_be_registered: # dont remove the one we want to register (may be already added)
+					if app.unregister(component_manager, super_ucr):
+						# this app actually was registered!
+						previously_registered = app
+						should_update = True
+				if to_be_registered:
+					if not to_be_registered.is_registered(component_manager.ucr): # does not hold for withoutrepository
+						# add the new repository component for the app
+						component_manager.put_app(to_be_registered, super_ucr)
+						should_update = True
+		if should_update:
+			# component was added or removed. apt-get update
+			package_manager.update()
+		else:
+			package_manager.reopen_cache()
+		return previously_registered
 
 	def uninstall_dry_run(self, package_manager):
 		MODULE.info('Invoke uninstall_dry_run')
@@ -853,6 +902,7 @@ class Application(object):
 		if self.candidate:
 			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install)
 		raised_before_installed = True
+		previously_registered = None
 		try:
 			remote_function = send_as
 			is_install = True
@@ -897,23 +947,7 @@ class Application(object):
 					# already have installed 50%
 					package_manager.progress_state._start_steps = 100 # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
 
-			with set_save_commit_load(ucr) as super_ucr:
-				# remove all existing component versions
-				for iapp in self.versions:
-					# dont remove yourself (if already added)
-					if iapp is not self:
-						component_manager.remove_app(iapp, super_ucr)
-
-				# add the new repository component for the app
-				if add_component:
-					component_manager.put_app(self, super_ucr)
-
-			if add_component:
-				# component was added. apt-get update
-				package_manager.update()
-			else:
-				# component was not added; use new cache anyway (maybe an old version was removed?)
-				package_manager.reopen_cache()
+			previously_registered = self.register(component_manager, package_manager)
 
 			# install + (dist_upgrade if update)
 			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
@@ -934,7 +968,7 @@ class Application(object):
 		except:
 			MODULE.warn(traceback.format_exc())
 			if raised_before_installed:
-				component_manager.remove_app(self)
+				self.unregister_all_and_register(previously_registered, component_manager, package_manager)
 			status = 500
 		self._send_information(send_as, status)
 		return status == 200

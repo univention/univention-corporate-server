@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.20-1) unstable; urgency=low
+
+  * Performance: Smart UCR commits and package updates (Bug #31228)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Aug 2013 12:03:46 +0200
+
 univention-management-console-module-appcenter (3.0.19-2) unstable; urgency=low
 
   * Support apps installed from main repository (Bug #32308)

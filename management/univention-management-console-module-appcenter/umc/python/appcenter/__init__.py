@@ -225,10 +225,11 @@ class Instance(umcm.Base):
 						if not remove_component:
 							# component was not removed automatically after dry_run
 							if application.candidate:
-								self.component_manager.remove_app(application.candidate)
+								# operation on candidate failed. re-register original application
+								application.unregister_all_and_register(application, self.component_manager, self.package_manager)
 							else:
-								self.component_manager.remove_app(application)
-							self.package_manager.update()
+								# operation on self failed. unregister all
+								application.unregister_all_and_register(None, self.component_manager, self.package_manager)
 						result['serious_problems'] = serious_problems
 						can_continue = False
 				elif can_continue and function in ('uninstall',) and not force:
