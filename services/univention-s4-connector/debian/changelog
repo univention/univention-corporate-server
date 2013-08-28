@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.8-1) unstable; urgency=low
+
+  * Use compare function from mapping defintion (Bug #32322)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Aug 2013 07:07:57 +0200
+
 univention-s4-connector (8.0.7-1) unstable; urgency=low
 
   * Re-open the LDAP connection once if the connection has been closed

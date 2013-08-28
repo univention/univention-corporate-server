@@ -2317,6 +2317,9 @@ class s4(univention.s4connector.ucs):
 								if not s4_object.has_key(attr):
 									if value:
 										modlist.append((ldap.MOD_ADD, attr, value))
+								elif self.property[property_type].attributes[attribute].compare_function:
+									if not self.property[property_type].attributes[attribute].compare_function(value,s4_object[attr]):
+										modlist.append((ldap.MOD_REPLACE, attr, value))
 								elif not univention.s4connector.compare_lowercase(value,s4_object[attr]): # FIXME: use defined compare-function from mapping.py
 									modlist.append((ldap.MOD_REPLACE, attr, value))
 				if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
@@ -2330,6 +2333,9 @@ class s4(univention.s4connector.ucs):
 								if not s4_object.has_key(attr):
 									if value:
 										modlist.append((ldap.MOD_ADD, attr, value))
+								elif self.property[property_type].post_attributes[attribute].compare_function:
+									if not self.property[property_type].post_attributes[attribute].compare_function(value,s4_object[attr]):
+										modlist.append((ldap.MOD_REPLACE, attr, value))
 								elif not univention.s4connector.compare_lowercase(value,s4_object[attr]): # FIXME: use defined compare-function from mapping.py
 									modlist.append((ldap.MOD_REPLACE, attr, value))
 
