@@ -804,6 +804,10 @@
 		<listitem><simpara>
 			A sometimes erroneous evaluation of policies as shown in the detail view of UDM objects in UMC has been corrected (<ulink url="&ucsbug;31916">Bug 31916</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			Moving and deleting the LDAP base is now prevented in the LDAP directory in UMC (<ulink url="&ucsbug;24642">Bug 24642</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
