@@ -137,6 +137,9 @@ define([
 
 		_finishedDeferred: null,
 
+		_menuDelete: null,
+		_menuMove: null,
+
 		constructor: function() {
 			this._default_columns = [{
 				name: 'name',
@@ -648,14 +651,14 @@ define([
 						this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
 					})
 				}));
-				menu.addChild(new MenuItem({
+				menu.addChild(this._menuDelete = new MenuItem({
 					label: _( 'Delete' ),
 					iconClass: 'umcIconDelete',
 					onClick: lang.hitch(this, function() {
 						this.removeObjects([this._navContextItem]);
 					})
 				}));
-				menu.addChild(new MenuItem({
+				menu.addChild(this._menuMove = new MenuItem({
 					label: _('Move to...'),
 					onClick: lang.hitch(this, function() {
 						this.moveObjects([this._navContextItem]);
@@ -670,6 +673,12 @@ define([
 				// when we right-click anywhere on the tree, make sure we open the menu
 				menu.bindDomNode(this._tree.domNode);
 				this.own(menu);
+
+				// disables items in the menu if the LDAP base is selected
+				this.own(aspect.before(menu, '_openMyself', lang.hitch(this, function() {
+					var actionsAvailable = (this._navContextItemFocused.objectType !== "container/dc");
+					this._updateMenuAvailability(actionsAvailable);
+				})));
 
 				// remember on which item the context menu has been opened
 				this.own(aspect.after(this._tree, '_onNodeMouseEnter', lang.hitch(this, function(node) {
@@ -783,6 +792,11 @@ define([
 
 			this._searchPage.startup();
 			this.addChild(this._searchPage);
+		},
+
+		_updateMenuAvailability: function(actionsAvailable) {
+			this._menuDelete.set('disabled', !actionsAvailable);
+			this._menuMove.set('disabled', !actionsAvailable);
 		},
 
 		_setSuperordinateAndFilter: function(superordinate) {

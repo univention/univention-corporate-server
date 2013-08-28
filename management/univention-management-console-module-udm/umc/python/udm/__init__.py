@@ -55,7 +55,7 @@ import univention.admin.uexceptions as udm_errors
 
 import univention.directory.reports as udr
 
-from univention.management.console.protocol.definitions import *
+from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, set_credentials, container_modules, info_syntax_choices, search_syntax_choices_by_key
 from .tools import LicenseError, LicenseImport

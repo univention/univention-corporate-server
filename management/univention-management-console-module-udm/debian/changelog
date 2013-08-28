@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.14-1) unstable; urgency=low
+
+  * Bug #24642: prevent the LDAP base from being moved or deleted in the
+  	LDAP directory flavor
+
+ -- Florian Best <best@univention.de>  Wed, 28 Aug 2013 09:35:25 +0200
+
 univention-management-console-module-udm (4.0.13-2) unstable; urgency=low
 
   * Bug #31916: fixed version dependency to univention-directory-manager-tools
