@@ -2238,7 +2238,7 @@ univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/
 		<para>
 		  As standard, the web proxy can be accessed via port 3128. If another
 		  port is required, this can be configured via the
-		  &ucsUCRV;. When the Univention firewall is used, the
+		  &ucsUCRV; <envar>squid/httpport</envar>. If Univention Firewall is used, the
 		  packet filter configuration must also be adjusted.
 		</para>
 		<para>
