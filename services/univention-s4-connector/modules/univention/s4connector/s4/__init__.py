@@ -642,7 +642,7 @@ def __is_int(value):
 	try:
 		int(value)
 		return True
-	except ValueError:
+	except (ValueError, TypeError):
 		return False
 	
 def compare_sid_lists(sid_list1, sid_list2):

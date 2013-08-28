@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.10-3) unstable; urgency=low
+
+  * Consider type errors in helper function__is_int() (Bug #32322)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Aug 2013 07:42:07 +0200
+
 univention-s4-connector (8.0.10-2) unstable; urgency=low
 
   * Depending on the sync direction and SID sync configuration the
