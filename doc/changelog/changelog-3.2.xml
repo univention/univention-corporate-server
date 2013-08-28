@@ -1842,7 +1842,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  A saparate SID compare function has been added which considers the SID coding in Samba 4. This increases the
-		 syncronization performance, since the SID will only be set if it differs (<ulink url="&ucsbug;32322">Bug 32322</ulink>).
+		  syncronization performance, since the SID will only be set if it differs (<ulink url="&ucsbug;32322">Bug 32322</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  If the LDAP connection was closed the connector tries to re-open the LDAP connection automatically
+		  (<ulink url="&ucsbug;32274">Bug 32274</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
