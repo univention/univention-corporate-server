@@ -1,3 +1,11 @@
+univention-s4-connector (8.0.10-2) unstable; urgency=low
+
+  * Depending on the sync direction and SID sync configuration the
+    compare function gets different parameters. Adding the default case
+    that the function gets the RID values (Bug #32322)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Aug 2013 07:34:26 +0200
+
 univention-s4-connector (8.0.10-1) unstable; urgency=low
 
   * Use set() instead of lists for the group synchronisation

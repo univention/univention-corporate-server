@@ -637,8 +637,28 @@ def __is_sid_string(sid):
 		return True
 	else:
 		return False
+
+def __is_int(value):
+	try:
+		int(value)
+		return True
+	except ValueError:
+		return False
 	
 def compare_sid_lists(sid_list1, sid_list2):
+	"""
+		Compare the SID / RID attributes. Depending on the sync direction and
+		SID sync configuration the function gets two SID lists or two RID values.
+	"""
+		
+	# RID comparison
+	if __is_int(sid_list1) or __is_int(sid_list2):
+		if sid_list1 == sid_list2:
+			return True
+		else:
+			return False
+
+	# SID comparison
 	len_sid_list1 = len(sid_list1)
 	if len_sid_list1 != len(sid_list2):
 		return False
