@@ -230,6 +230,12 @@
 		  The determination of the hostname, if <emphasis>scan="hostname"</emphasis> is set, has
 		  been fixed (<ulink url="&ucsbug;29469">Bug 29469</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-net-installer</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -1182,6 +1188,12 @@
 	<title>Software monitor (univention-pkgdb)</title>
 	  <itemizedlist>
 		<listitem><simpara>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-pkgdb</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1235,6 +1247,11 @@
 	  <itemizedlist>
 		<listitem><simpara>
 
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-dhcp</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1245,6 +1262,12 @@
 		<listitem><simpara>
 		  The file containing the cached DNS zone is now also deleted upon zone deletion (<ulink url="&ucsbug;16270">Bug 16270</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-bind</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -1382,6 +1405,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-printserver</emphasis>,
+		  <emphasis>univention-check-printers</emphasis> and
+		  <emphasis>univention-printquota</emphasis> have been revised (<ulink
+		  url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Added a pop-up message in case of editing print quota without installed package univention-printquota 
 		  (<ulink url="&ucsbug;29001">Bug 29001</ulink>).
 		</simpara></listitem>
@@ -1435,6 +1465,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  A problem in the squid the ntlm authentication helper in interaction with office2013
 		  has been fixed (<ulink url="&ucsbug;32183">Bug 32183</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-squid</emphasis> and
+		  <emphasis>univention-dansguardian</emphasis> have been revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
+
 	  </itemizedlist>
   </section>
 
@@ -1442,6 +1479,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Apache</title>
 	  <itemizedlist>
 		<listitem><simpara>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-apache</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1475,6 +1518,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The start script for the NFS server has been synchronized with the upstream version to support newer Linux kernels and start all services needed for the PXE installer to work (<ulink url="&ucsbug;32228">Bug 32228</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-nfs</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
+
 	  </itemizedlist>
   </section>
 
@@ -1714,6 +1764,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-samba</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The configuration of the &ucsUCRV; <envar>windows/domain</envar> has been removed from the
 		  postinst script of univention-samba (<ulink url="&ucsbug;24442">Bug 24442</ulink>).
 		</simpara></listitem>
@@ -1751,6 +1806,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  Samba 4 does now support quota on XFS file systems (<ulink url="&ucsbug;31234">Bug 31234</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-samba4</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1852,6 +1912,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-s4-connector</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Logging of add and modify operations against the Samba 4 directory has been improved,
 		  especially in the case of a traceback (<ulink url="&ucsbug;31133">Bug 31133</ulink>).
 		</simpara></listitem>
@@ -1890,6 +1955,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  Additional hints are shown during the Active Directory Connector setup about possibilities to configure DNS resolution for the required Windows server FQDN (<ulink url="&ucsbug;24903">Bug 24903</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-ad-connector</emphasis> have been
+		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -2025,6 +2096,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 	  <listitem><simpara>
 		The drbd8 userland tools have been updated to version 8.3.11 (<ulink url="&ucsbug;31321">Bug 31321</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The &ucsUCR; variable descriptions in <emphasis>univention-log-collector</emphasis>,
+		<emphasis>univention-postgresql</emphasis>, <emphasis>univention-snmpd</emphasis> and <emphasis>univention-bacula</emphasis>have been
+		revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
