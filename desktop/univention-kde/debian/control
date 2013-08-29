@@ -2,7 +2,7 @@ Source: univention-kde
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0),
+Build-Depends: debhelper,
  univention-config-dev,
  ucslint
 Standards-Version: 3.8.2
@@ -13,12 +13,11 @@ Recommends: kde-l10n-de,
  okular,
  univention-gdm,
  univention-mozilla-firefox,
- univention-flashplugin,
  univention-x-core
 Depends: ${misc:Depends},
  gettext,
  univention-config-registry,
- univention-directory-manager-tools (>> 7.0.147),
+ univention-directory-manager-tools,
  kde-standard (>= 5:66),
  univention-kde-setdirs
 Description: UCS - KDE desktop
