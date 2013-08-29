@@ -14,4 +14,5 @@ modules/univention/admin/handlers/settings/*.py usr/share/pyshared/univention/ad
 modules/univention/admin/handlers/computers/*.py usr/share/pyshared/univention/admin/handlers/computers/
 modules/univention/admin/handlers/kerberos/*.py usr/share/pyshared/univention/admin/handlers/kerberos/
 modules/univention/admin/syntax.d/*.py usr/share/pyshared/univention/admin/syntax.d/
+modules/univention/admin/hooks.d/*.py usr/share/pyshared/univention/admin/hooks.d/
 python-lib/*.py usr/share/pyshared/univention/lib
