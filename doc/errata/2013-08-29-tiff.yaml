@@ -1,0 +1,15 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: tiff
+fix: 3.9.4-5.55.201308291557
+desc: |
+  Multiple security problems, buffer overflows in TIFF tools (CVE-2013-4231),
+  a use-after-free in tiff2pdf (CVE-2013-4232), and an out of memory-write
+  in gif2tiff (CVE-2013-4244), have been discovered in the TIFF tools.
+note: This update fixes these vulnerabilities
+cve:
+ - CVE-2013-4231
+ - CVE-2013-4232
+ - CVE-2013-4244
