@@ -49,7 +49,7 @@ attributetype ( univentionLDAPExtensionAttributeType:13 NAME 'univentionLDAPSche
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
 
-objectclass ( univentionLDAPExtensionSchema NAME 'univentionLDAPExtensionSchema'
+objectclass ( univentionLDAPExtensionObjectClass:1 NAME 'univentionLDAPExtensionSchema'
 	DESC 'UCS LDAP schema extension'
 	STRUCTURAL
 	MUST ( cn )
@@ -83,7 +83,7 @@ attributetype ( univentionLDAPExtensionAttributeType:23 NAME 'univentionLDAPACLA
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
 
-objectclass ( univentionLDAPExtensionACL NAME 'univentionLDAPExtensionACL'
+objectclass ( univentionLDAPExtensionObjectClass:2 NAME 'univentionLDAPExtensionACL'
 	DESC 'UCS LDAP ACL extension'
 	STRUCTURAL
 	MUST ( cn )

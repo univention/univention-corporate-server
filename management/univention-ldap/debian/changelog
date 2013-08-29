@@ -1,3 +1,9 @@
+univention-ldap (10.0.10-3) unstable; urgency=low
+
+  * fix typo in univention-ldap-extension.schema (Bug #32391)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Aug 2013 14:32:49 +0200
+
 univention-ldap (10.0.10-2) unstable; urgency=low
 
   * reorder attributes in univention-ldap-extension.schema (Bug #32391)
