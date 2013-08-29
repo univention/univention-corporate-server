@@ -1,3 +1,10 @@
+univention-squid (7.0.1-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+  * Remove squid/allow/localnet from the variable descriptions, see Bug #32413
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 28 Aug 2013 14:57:07 +0200
+
 univention-squid (7.0.1-1) unstable; urgency=low
 
   * support type 3 validation in YR (Bug #32183)

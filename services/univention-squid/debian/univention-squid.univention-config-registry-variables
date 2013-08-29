@@ -1,157 +1,149 @@
 [squid/httpport]
-Description[de]=Port, über den squid erreichbar ist
-Description[en]=Port that squid listens on
+Description[de]=Ist diese Variable nicht gesetzt, ist der Web-Proxy über den Port 3128 erreichbar. Die Variable erlaubt die Konfiguration eines abweichenden Ports. Bei Verwendung von Univention Firewall muss dann zusätzlich die Paketfilterkonfiguration angepasst werden. Wird Dansguardian eingesetzt, ist ist dieser an Stelle von Squid unter dem konfigurierten Port erreichbar. Squid belegt dann den nächsthöheren Port.
+Description[en]=If this variable is unset, the web proxy can be accessed via port 3128. This variable allows the configuration of a different port. If Univention Firewall is used, the packet filter configuration must also be adjusted. If Dansguardian is used, it is is accessible at the configured port instead of Squid. Squid then occupies the next-highest port.
 Type=str
 Categories=service-webproxy
 
 [squid/debug/level]
-Description[de]=Detailgrad der Logmeldungen (ALL protokolliert alle Funktionsebenen, hinter dem Komma folgt ein Wert zwischen 1 und 9)
-Description[en]=Verbosity of log messages (ALL logs all functionality levels, behind the comma is a value between 1 and 9)
+Description[de]=Detailgrad der Logmeldungen (ALL protokolliert alle Funktionsebenen, hinter dem Komma folgt ein Wert zwischen 1 und 9).
+Description[en]=Verbosity of log messages (ALL logs all functionality levels, behind the comma is a value between 1 and 9).
 Type=str
 Categories=service-webproxy
 
 [squid/append_domain]
-Description[de]=Diese Domain wird an Hostnamen ohne Punkt angehängt, sie muss mit einem Punkt beginnen. Beispiel: .example.com
-Description[en]=This domain is appended to a hostname that was entered without a dot. The domain has to start with a dot, i.e. .example.com
+Description[de]=Diese Domain wird an Hostnamen ohne Punkt angehängt, die Domäne muss mit einem Punkt beginnen. Beispiel: '.example.com'
+Description[en]=This domain is appended to a hostname without a dot. The domain has to start with a dot. Example: '.example.com'
 Type=str
 Categories=service-webproxy
 
 [squid/cache]
-Description[de]=Komplette Deaktvierung des cachings, Squid arbeitet nur als Proxy wenn dies false ist.
-Description[en]=Completely deactivate caching, only work as proxy if this is set to false.
-Type=str
+Description[de]=Squid ist ein Caching proxy, d.h. zuvor schon einmal angefragte Inhalte können aus einem Cache zur Verfügung gestellt werden ohne erneut vom jeweiligen Webserver geladen zu werden. Ist die Option deaktiviert, wird dieser Cache deaktiviert. Dies kann bei kaskadierten Proxys sinnvoll sein.
+Description[en]=Squid is a caching proxy, i.e., previously viewed contents can be provided from a cache without being reloaded from the respective web server. If this option is deactivated, this cache is disabled. This can be useful for cascading proxies.
+Type=bool
 Categories=service-webproxy
 
 [squid/virusscan]
-Description[de]=Virenscanner für squid aktivieren
-Description[en]=Activate virus scanner for squid
-Type=str
+Description[de]=In der Grundeinstellung führt Dansguardian einen Virenscan über ClamAV durch. Mit dieser Option kann der Virenscan deaktiviert werden. Ist die Variable nicht gesetzt, wird eine Prüfung auf Viren durchgeführt.
+Description[en]=In the standard setting Dansguardian scans files for viruses using ClamAV. With this option the virus scan can be activated. If the variable is unset, a virus scan is performed.
+Type=bool
 Categories=service-webproxy
 
 [squid/contentscan]
-Description[de]=Inhaltsscanner für squid aktivieren
-Description[en]=Activate content scanner for squid
-Type=str
+Description[de]=In der Grundeinstellung führt Dansguardian eine inhaltbasierte Prüfung durch (z.B. auf verbotene Dateitypen). Mit dieser Option kann diese Prüfung deaktiviert werden. Ist die Variable nicht gesetzt, wird eine inhaltliche Prüfung durchgeführt.
+Description[en]=In the standard setting Dansguardian performs a content scan (e.g. for banned file types). With this option the content scan can be activated. If the variable is unset, the content scan is enabled.
+Type=bool
 Categories=service-webproxy
 
 [squid/basicauth]
-Description[de]=Basic Authentifizierung am Squid
-Description[en]=Squid basic authentication 
-Type=str
+Description[de]=Ist diese Option aktiviert, wird eine LDAP-Authentifizierung beim Zugriff auf den Proxy durchgeführt.
+Description[en]=If this option is enabled, an LDAP authentication is performed when accessing the proxy.
+Type=bool
 Categories=service-webproxy
 
 [squid/basicauth/children]
-Description[de]=Zahl der Basic Authentifuzierungs Prozesse
-Description[en]=Number of basic authentication processes
+Description[de]=Die maximale Anzahl an Authentifizierungsprozessen für die LDAP-Authenfizierung. Ist die Variable nicht gesetzt, sind maximal 5 Prozesse möglich.
+Description[en]=The maximum amount of authentication processes for LDAP authentication. If the variable is unset, up to five processes are possible.
 Type=str
 Categories=service-webproxy
 
 [squid/auth/allowed_groups]
-Description[de]=Benutzergruppen, die auf squid zugreifen dürfen, durch Semikolon getrennt. Ist diese Variable leer wird keine Gruppenzugehörigkeit überprüft
-Description[en]=User groups that are allowed to access squid, seperated by semicolon. If this Variable is empty no group checks are performed
-Type=str
-Categories=service-webproxy
-
-[squid/allow/localnet]
-Description[de]=Gibt an, ob von den lokalen Netzwerken aus Squid zugegriffen werden darf (Default: no)
-Description[en]=Specifies whether or not access to Squid is allowed from local networks (default: no)
+Description[de]=Mit dieser Variable kann der Proxy-Zugriff auf eine oder mehrere Gruppen beschränkt werden. Bei Angabe mehrerer Gruppen sind diese durch ein Semikolon zu trennen. Ist diese Variable leer oder nicht gesetzt, können alle Benutzer auf den Proxy zugreifen. 
+Description[en]=This variable can be used to limit the proxy access to one or several groups. If several groups are specified, they must be separated by a semicolon. If this variable is empty or unset, all users can access the proxy.
 Type=str
 Categories=service-webproxy
 
 [squid/allowfrom]
-Description[de]=Zusätzliche Netzwerke, von denen auf squid zugegriffen werden darf
-Description[en]=Additional networks squid allows access from
+Description[de]=Standardmäßig darf nur aus lokalen Netzwerken auf den Proxy-Server zugegriffen werden. Ist z.B. an dem Squid-Server ein Netzwerkinterface mit der Adresse 192.168.1.10 und der Netzmaske 255.255.255.0 vorhanden, dürfen nur Rechner aus dem Netzwerk 192.168.1.0/24 auf den Proxy-Server zugreifen. Mit dieser Variable können weitere Netzwerke angegeben werden. Dabei muss die CIDR-Notation verwendet werden, mehrere Netzwerke sind durch Leerzeichen zu trennen. Beispiel: '192.168.2.0/24 192.168.3.0/24'
+Description[en]=As standard, the proxy server can only be accessed from local networks. If, for example, a network interface with the address 192.168.1.10 and the network mask 255.255.255.0 is available on Squid server, only computers from the network 192.168.1.0/24 can access the proxy server. This variable allows the configuration of additional networks. The CIDR notation must be used; several networks should be separated by blank spaces. Example: '192.168.2.0/24 192.168.3.0/24'
 Type=str
 Categories=service-webproxy
 
 [squid/parent/host]
-Description[de]=Adresse eines übergeordneten Proxys für squid
-Description[en]=Address of a parent proxy for squid
+Description[de]=Wenn kaskadierte Proxys verwendet werden, bezeichnet man den übergeordneten Proxy als Parent-Proxy. Diese Variable konfiguriert den Rechnernamen des Parent-Proxys.
+Description[en]=If cascading proxies are used, the superordinate proxy server is referred to as a parent proxy. This variable configures the hostname of the parent proxy.
 Type=str
 Categories=service-webproxy
 
 [squid/parent/port]
-Description[de]=Portnummer eines übergeordneten Proxys für squid
-Description[en]=Port of a parent proxy for squid
+Description[de]=Diese Variable konfiguriert den Port des Parent-Proxys (siehe 'squid/parent/host). Ist die Variable nicht gesetzt, wird 3128 verwendet.
+Description[en]=This variable configures the port of the parent proxy (see 'squid/parent/host). If the variable is unset, 3128 is used.
 Type=str
 Categories=service-webproxy
 
 [squid/parent/options]
-Description[de]=Optionen für Verbindung mit dem übergeordneten Proxy (Default: default)
-Description[en]=Options for the parent proxy connection (default: default)
+Description[de]=Optionen für die Verbindung mit einem übergeordneten Proxy (siehe 'squid/parent/host). Eine Übersicht der möglichen Optionen findet sich unter http://www.squid-cache.org/Versions/v3/3.1/cfgman/cache_peer.html in der Sektion 'PEER SELECTION METHODS'. Ist die Variable nicht gesetzt, gilt 'default'.
+Description[en]=Options for the connection to a parent proxy (see 'squid/parent/host). An overview of the possible options can be found at http://www.squid-cache.org/Versions/v3/3.1/cfgman/cache_peer.html in der Sektion 'PEER SELECTION METHODS'. If the variable is not set, 'default' applies.
 Type=str
 Categories=service-webproxy
 
 [squid/parent/directnetworks]
-Description[de]=Netzwerke, auf die squid nicht über einen übergeordneten Proxy zugreift
-Description[en]=Networks, which squid accesses without using a parent proxy
+Description[de]=Wird ein kaskadierter Proxy verwendet (siehe 'squid/parent/host), werden Proxyanfragen aus dem lokalen Netzwerk des Proxy-Servers direkt beantwortet und nicht zum Parent-Proxy weitergeleitet. Mit dieser Variable können zusätzliche Netze von der Weiterleitung ausgenommen werden. Dabei muss die CIDR-Notation verwendet werden (z.B. 192.168.2.0/24). Mehrere Netze werden mit einem Leerzeichen getrennt.
+Description[en]=If a cascading proxy is used (see 'squid/parent/host), proxy requests from computers in the proxy server's local network are answered directly and not forwarded to the parent proxy. If additional networks should be excluded from forwarding to the parent proxy, these can be specified with this variable. When doing so, the CIDR notation must be used (e.g. 192.168.2.0/24); several networks should be separated by blanks.
 Type=str
 Categories=service-webproxy
 
 [squid/webports]
-Description[de]=Ports, auf die über squid zugegriffen werden darf
-Description[en]=Ports that may be accessed through squid
+Description[de]=Ist die Variable nicht gesetzt, leitet Squid nur Anfragen von Clients weiter, die an die Ports 80 (HTTP), 443 (HTTPS) oder 21 (FTP) gerichtet werden. Mit dieser Variable kann die Liste der erlaubten Ports geändert werden, mehrere Angaben sind dabei durch Leerzeichen zu trennen. Beispiel: '80 443 21 8080'
+Description[en]=If this variable is not set, Squid only forwards client requests intended for the ports 80 (HTTP), 443 (HTTPS) or 21 (FTP). This variable allows the configuration of permitted ports; several entries must be separated by blanks. Example: '80 443 21 8080'
 Type=str
 Categories=service-webproxy
 
 [squid/transparentproxy]
-Description[de]=iptables-Regeln für transparenten Proxy aktivieren
-Description[en]=Activate iptables rules for transparent proxy
-Type=str
+Description[de]=Wird diese Option aktiviert, läuft Squid als transparenter Proxy, d.h. alle Webzugriffe von Clients werden automatisch vom Proxy-Server erfasst. Voraussetzung für eine solche Konfiguration ist das der Proxy-Server als Standard-Gateway von den Clients verwendet wird. Nach Aktivierung der Variable werden automatisch Paketfilterregeln integriert, die alle in 'squid/webports' konfigurierten Ports an den Proxy-Server weiterleiten.
+Description[en]=If this option is enabled, Squid runs a a transparent proxy, i.e.  all web queries sent from a client are automatically rerouted to and answered by the proxy server. The prerequisite for such a configuration is that the proxy server is configured as the standard gateway for the clients. If enabled, packet filter rules are automatically included which redirect all queries for the ports specified in 'squid/webports' to the proxy server. After setting the variable Univention Firewall needs to be restarted.
+Type=bool
 Categories=service-webproxy
 
 [squid/ntlmauth]
-Description[de]=NTML Authentifizierung am Squid
-Description[en]=NTLM squid authentication
-Type=str
+Description[de]=Ist diese Option aktiviert, wird eine NTLM-Authentifizierung beim Zugriff auf den Proxy durchgeführt.
+Description[en]=If this option is enabled, an NTLM authentication is performed when accessing the proxy.
+Type=bool
 Categories=service-webproxy
 
 [squid/ntlmauth/children]
-Description[de]=Zahl der NTLM Authentifuzierungs Prozesse
-Description[en]=Number of ntlm authentication processes
+Description[de]=Die maximale Anzahl an Authentifizierungsprozessen für die NTLM-Authenfizierung. Ist die Variable nicht gesetzt, sind maximal zehn Prozesse möglich.
+Description[en]=The maximum amount of authentication processes for NTLM authentication. If the variable is unset, up to ten processes are possible.
 Type=str
 Categories=service-webproxy
 
 [squid/ntlmauth/keepalive]
-Description[de]=keep_alive Option für die NTLM Authentifizierung
-Description[en]=keep_alive option for the ntlm authentication
-Type=str
+Description[de]=Standardmäßig wird bei NTLM-Authentifizierung für jede HTTP-Anfrage eine NTLM-Authentifizierung durchgeführt. Wird beispielsweise die Webseite http://www.univention.de aufgerufen, werden neben der eigentlichen HTML-Seite auch weitere Unterseiten und Bilder nachgeladen. Die NTLM-Authentifierung kann domänenbezogenen zwischengespeichert werden: Ist diese Option aktiviert, wird für nachgelagerte HTTP-Anfragen derselben Domäne keine weitere NTLM-Authentifizierung durchgeführt. Ist die Variable nicht gesetzt, werden keine Authentifizierungsdaten zwischengespeichert.
+Description[en]=As standard, an NTLM authentication is performed for every HTTP query if NTLM authentication is used. If for example the website http://www.univention.de is opened, the subpages and images are loaded in addition to the actual HTML page. The NTML authentication can be cached per domain: If this option is enabled, no further NTLM authentication is performed for subsequent HMTL queries in the same domain. If the variable is unset, no authentication credentials are cached.
+Type=bool
 Categories=service-webproxy
 
 [squid/ntlmauth/tool]
-Description[de]=Programm für die Squid NTLM Authentifizierung (default: /usr/lib/squid3/squid_ldap_ntlm_auth)
-Description[en]=Squid ntlm authentication helper (default: /usr/lib/squid3/squid_ldap_ntlm_auth)
+Description[de]=Das von Squid für die NTLM-Authentifizierung verwendete Programm. Ist die Variable nicht gesetzt, wird /usr/lib/squid3/squid_ldap_ntlm_auth verwendet. Diese Einstellung sollte in der Regel nicht verändert werden.
+Description[en]=The program used by Squid for NTLM authentication. If the variable is unset, /usr/lib/squid3/squid_ldap_ntlm_auth is used. This setting should usually not be modified.
 Type=str
 Categories=service-webproxy
 
 [squid/krb5auth/tool]
-Description[de]=Programm für die Squid negotiate Authentifizierung (default: /usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego --gss-spnego-strip-realm)
-Description[en]=Squid negotiate authentication helper (default: /usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego --gss-spnego-strip-realm)
+Description[de]=Das von Squid für die Kerberos-Authentifizierung verwendete Programm. Ist die Variable nicht gesetzt, wird '/usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego --gss-spnego-strip-realm' verwendet. Diese Einstellung sollte in der Regel nicht verändert werden.
+Description[en]=The program used by Squid for Kerberos authentication. If the variable is unset, '/usr/lib/squid3/squid_ldap_ntlm_auth --gss-spnego --gss-spnego-strip-realm' is used. This setting should usually not be modified.
 Type=str
 Categories=service-webproxy
 
-
 [squid/krb5auth]
-Description[de]=Squid Modul zur Kerberos Authentifikation aktivieren
-Description[en]=Configure squid helper for kerberos authentication
+Description[de]=Ist diese Option aktiviert, wird eine Kerberos-Authentifizierung beim Zugriff auf den Proxy durchgeführt.
+Description[en]=If this option is enabled, an Kerberos authentication is performed when accessing the proxy.
 Type=str
 Categories=service-webproxy
 
 [squid/krb5auth/children]
-Description[de]=Zahl der squid_kerb_auth Prozesse
-Description[en]=Number of squid_kerb_auth processes
+Description[de]=Die maximale Anzahl an Authentifizierungsprozessen für die Kerberos-Authenfizierung. Ist die Variable nicht gesetzt, sind maximal zehn Prozesse möglich.
+Description[en]=The maximum amount of authentication processes for Kerberos authentication. If the variable is unset, up to ten processes are possible.
 Type=str
 Categories=service-webproxy
 
 [squid/krb5auth/keepalive]
-Description[de]=keep_alive Option für squid_kerb_auth 
-Description[en]=keep_alive option for squid_kerb_auth
+Description[de]=Standardmäßig wird bei Kerberos-Authentifizierung für jede HTTP-Anfrage eine Kerberos-Authentifizierung durchgeführt. Wird beispielsweise die Webseite http://www.univention.de aufgerufen, werden neben der eigentlichen HTML-Seite auch weitere Unterseiten und Bilder nachgeladen. Die NTLM-Authentifierung kann domänenbezogenen zwischengespeichert werden: Ist diese Option aktiviert, wird für nachgelagerte HTTP-Anfragen derselben Domäne keine weitere Authentifizierung durchgeführt. Ist die Variable nicht gesetzt, werden keine Authentifizierungsdaten zwischengespeichert.
+Description[en]=As standard, an NTLM authentication is performed for every HTTP query if Kerberos authentication is used. If for example the website http://www.univention.de is opened, the subpages and images are loaded in addition to the actual HTML page. The Kerberos authentication can be cached per domain: If this option is enabled, no further authentication is performed for subsequent HMTL queries in the same domain. If the variable is unset, no authentication credentials are cached.
 Type=str
 Categories=service-webproxy
 
 [squid/redirect]
-Description[de]=Gibt ein Programm für den URL redirector an (Mögliche Werte: squidguard)
-Description[en]=Specifies the location of the executable for the URL redirector (Valid values: squidguard)
+Description[de]=Wird diese Variable auf 'squidguard' gesetzt wird der URL-Filter SquidGuard integriert. Diese Einstellung ist nur für UCS@school relevant.
+Description[en]=If this variable is set to 'squidguard' the URL filter SquidGuard is integrated. The setting is only relevant for UCS@school.
 Type=str
 Categories=service-webproxy
-
