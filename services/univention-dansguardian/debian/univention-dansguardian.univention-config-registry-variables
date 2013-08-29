@@ -72,37 +72,37 @@ Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/exception/sites]
-Description[de]=Ist der inhaltbasierte Filter (siehe 'squid/contentscan') aktiviert, kann der eine Liste von Domänen konfiguriert werden, die für diese Gruppe nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Die Gruppe muss in der Variable 'dansguardian/groups' registriert sein. Beispiel: 'univention.de univention.org'.
+Description[de]=Ist der inhaltbasierte Filter (siehe 'squid/contentscan') aktiviert, kann eine Liste von Domänen konfiguriert werden, die für diese Gruppe nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Die Gruppe muss in der Variable 'dansguardian/groups' registriert sein. Beispiel: 'univention.de univention.org'.
 Description[en]=If the content filter is enabled (see 'squid/contentscan'), a list of domains can be configured which are not checked for this group. Multiple entries need to be separated by a blank. The group must be registered in the variable 'dansguardian/groups'. Example: 'updates.software-univention.de apt.univention.de'.
 Type=str
 Categories=service-webproxy
 
 [dansguardian/groups/.*/exception/urls]
-Description[de]=Ist der inhaltbasierte Filter (siehe 'squid/contentscan') aktiviert, kann der eine Liste von URLs konfiguriert werden, die für diese Gruppe nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Die Gruppe muss in der Variable 'dansguardian/groups' registriert sein. Beispiel: 'univention.de univention.org'.
+Description[de]=Ist der inhaltbasierte Filter (siehe 'squid/contentscan') aktiviert, kann eine Liste von URLs konfiguriert werden, die für diese Gruppe nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Die Gruppe muss in der Variable 'dansguardian/groups' registriert sein. Beispiel: 'univention.de univention.org'.
 Description[en]=If the content filter is enabled (see 'squid/contentscan'), a list of URLs can be configured which are not checked for this group. Multiple entries need to be separated by a blank. The group must be registered in the variable 'dansguardian/groups'. Example: 'updates.software-univention.de apt.univention.de'.
 Type=str
 Categories=service-webproxy
 
 [dansguardian/virus/exception/extensions]
-Description[de]=Ist der Virenscan (siehe 'squid/virusscan') aktiviert, kann der eine Liste von Dateiendungen konfiguriert werden, die nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Beispiel: '.avi .mp3'.
+Description[de]=Ist der Virenscan (siehe 'squid/virusscan') aktiviert, kann eine Liste von Dateiendungen konfiguriert werden, die nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Beispiel: '.avi .mp3'.
 Description[en]=If the virus scan is enabled (see 'squid/virusscan'), a list of file extensions can be configured which are not checked. Multiple entries need to be separated by a blank. Example: '.avi .mp3'.
 Type=str
 Categories=service-webproxy
 
 [dansguardian/virus/exception/mimetypes]
-Description[de]=Ist der Virenscan (siehe 'squid/virusscan') aktiviert, kann der eine Liste von MIME-Types konfiguriert werden, die nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Beispiel: 'audio/mpeg3 video/mpeg'.
+Description[de]=Ist der Virenscan (siehe 'squid/virusscan') aktiviert, kann eine Liste von MIME-Types konfiguriert werden, die nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Beispiel: 'audio/mpeg3 video/mpeg'.
 Description[en]=If the virus scan is enabled (see 'squid/virusscan'), a list of MIME types can be configured which are not checked. Multiple entries need to be separated by a blank. Example: 'audio/mpeg3 video/mpeg'.
 Type=str
 Categories=service-webproxy
 
 [dansguardian/virus/exception/sites]
-Description[de]=Ist der Virenscan (siehe 'squid/virusscan') aktiviert, kann der eine Liste von Webseiten konfiguriert werden, die nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Beispiel: 'univention.de univention.org'.
+Description[de]=Ist der Virenscan (siehe 'squid/virusscan') aktiviert, kann eine Liste von Webseiten konfiguriert werden, die nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Beispiel: 'univention.de univention.org'.
 Description[en]=If the virus scan is enabled (see 'squid/virusscan'), a list of web sites can be configured which are not checked. Multiple entries need to be separated by a blank. Example: 'univention.de univention.org'.
 Type=str
 Categories=service-webproxy
 
 [dansguardian/virus/exception/urls]
-Description[de]=Ist der Virenscan (siehe 'squid/virusscan') aktiviert, kann der eine Liste von URLS konfiguriert werden, die nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Beispiel: 'updates.software-univention.de apt.univention.de'.
+Description[de]=Ist der Virenscan (siehe 'squid/virusscan') aktiviert, kann eine Liste von URLS konfiguriert werden, die nicht geprüft werden. Mehrere Einträge müssen durch ein Leerzeichen getrennt werden. Beispiel: 'updates.software-univention.de apt.univention.de'.
 Description[en]=If the virus scan is enabled (see 'squid/virusscan'), a list of URLs can be configured which are not checked. Multiple entries need to be separated by a blank. Example: 'updates.software-univention.de apt.univention.de'.
 Type=str
 Categories=service-webproxy
@@ -121,19 +121,19 @@ Categories=service-webproxy
 
 [dansguardian/groups/.*/addresses]
 Description[de]=Erlaubt die Definition einer Filtergruppe anhand einer IP-Adresse (siehe 'dansguardian/auth/ip'), möglich ist die Angabe einzelner Adressen, eines Subnetzes (z.B. 192.168.1.0/255.255.255.0) oder eines IP-Bereichs (z.B. 192.168.1.0-192.168.1.255). Der Gruppenname muss außerdem in der Variable 'dansguardian/groups' registriert sein.
-Description[en]=Allows defining a ip address based filter group (see 'dansguardian/auth/ip'). Possible values are single ip addresses, subnets (i.e. 192.168.1.0/255.255.255.0) or ip ranges (i.e. 192.168.1.0-192.168.1.255). The group name must be registered in the variable 'dansguardian/groups'.
+Description[en]=Allows defining a ip address based filter group (see 'dansguardian/auth/ip'). Possible values are single IP addresses, subnets (i.e. 192.168.1.0/255.255.255.0) or ip ranges (i.e. 192.168.1.0-192.168.1.255). The group name must be registered in the variable 'dansguardian/groups'.
 Type=str
 Categories=service-webproxy
 
 [dansguardian/language]
-Description[de]=Ist hier eine der unter /etc/dansguardian/languages verfügbaren Sprachen gesetzt, werden die Fehler- und Statusmeldungen für Benutzer internationalisiert angezeigt. Ist die Variable nicht gesetzt, wird Deutsch verwendet.
+Description[de]=Ist hier eine der unter /etc/dansguardian/languages verfügbaren Sprachen konfiguriert, werden die Fehler- und Statusmeldungen für Benutzer internationalisiert angezeigt. Ist die Variable nicht gesetzt, wird Deutsch verwendet.
 Description[en]=If one of the languages below /etc/dansguardian/languages is set, error and status messages are displayed internationalised. If the variable is unset, German is used.
 Type=str
 Categories=service-webproxy
 
 [dansguardian/loglevel]
 Description[de]=Diese Variable konfiguriert den Detailgrad der Logmeldungen in /var/log/dansguardian/access.log (0= keine, 1=nur abgewiesene Anfragen, 2=alle Klartext-Anfragen, 3=alle Anfragen (inkl. HTTPS)). Ist die Variable nicht gesetzt, wird '2' verwendet.
-Description[en]=The variable configures the Verbosity of log messages in /var/log/dansguardian/access.log (0=none, 1=only denied requests, 2=all clear text requests, 3=all requests, inkl. HTTPS). If the variable is unset, '2' is used.
+Description[en]=The variable configures the verbosity of log messages in /var/log/dansguardian/access.log (0=none, 1=only denied requests, 2=all clear text requests, 3=all requests, inkl. HTTPS). If the variable is unset, '2' is used.
 Type=str
 Categories=service-webproxy
 
