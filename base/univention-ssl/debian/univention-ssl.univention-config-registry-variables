@@ -1,83 +1,85 @@
 [ssl/common]
-Description[de]=Common name für das Root SSL-Zertifikat
-Description[en]=Common name for the root SSL certificate
+Description[de]=Der Common Name des SSL-Root-Zertifikats, ein eindeutiger Bezeichner für die Domäne.
+Description[en]=The 'common name' for the root SSL certificate, a unique identifier for the domain.
 Type=str
 Categories=system-ssl
 
 [ssl/country]
-Description[de]=In SSL-Zertifikaten verwendeter ISO-Ländercode (zwei Buchstaben)
-Description[en]=Two letter country code to use in SSL certificates
+Description[de]=Der zweistellige ISO-Ländercode der Organisation für die das Zertifikat ausgestellt wurde. Eine vollständige Liste findet sich unter http://en.wikipedia.org/wiki/ISO_3166-1
+Description[en]=The two letter country code of the organisation for which the certificate was issued. A complete list can be found at http://en.wikipedia.org/wiki/ISO_3166-1
 Type=str
 Categories=system-ssl
 
 [ssl/email]
-Description[de]=In SSL-Zertifikaten verwendete Email-Adresse
-Description[en]=E-mail address to use in SSL certificates
+Description[de]=Eine Kontakt-E-Mail-Adresse der Organisation, für das Root-Zertifikat ausgestellt wurde.
+Description[en]=A contact e-mail address for the organisation for which the root certificate was issued.
 Type=str
 Categories=system-ssl
 
 [ssl/state]
-Description[de]=In SSL-Zertifikaten verwendetes Bundesland/Region
-Description[en]=State to use in SSL certificates
+Description[de]=Das Bundesland/Region der Organisation, für die das Root-Zertifikat ausgestellt wurde.
+Description[en]=The state/region of the organisation for in which the root certificate was issued.
 Type=str
 Categories=system-ssl
 
 [ssl/locality]
-Description[de]=In SSL-Zertifikaten verwendeter Ort
-Description[en]=Locality used in SSL certificates
+Description[de]=Das Ort der Organisation, für die das Root-Zertifikat ausgestellt wurde.
+Description[en]=The Ort of the organisation for in which the root certificate was issued.
 Type=str
 Categories=system-ssl
 
 [ssl/organization]
-Description[de]=In SSL-Zertifikaten verwendete Organisation/Firma
-Description[en]=Organization used in SSL certificates
+Description[de]=Der Name der Organisation, für die das Root-Zertifikat ausgestellt wurde.
+Description[en]=The Name of the organisation for in which the root certificate was issued
 Type=str
 Categories=system-ssl
 
 [ssl/organizationalunit]
-Description[de]=In SSL-Zertifikaten verwendete Abteilung der Organisation/Firma
-Description[en]=Organizational unit used in SSL certificates
+Description[de]=Der Name der Abteilung der Organisation, für die das Root-Zertifikat ausgestellt wurde.
+Description[en]=The Name of the organisational unit/department of the organisation for in which the root certificate was issued.
 Type=str
 Categories=system-ssl
 
 [ssl/default/days]
-Description[de]=Standard Lebensdauer für neue SSL-Zertifikate
-Description[en]=Default lifetime of new SSL certificates
+Description[de]=Die Gültigkeitsdauer neu ausgestellter SSL-Zertifikate in Tagen.
+Description[en]=The validity time span in days for newly created SSL certificates.
 Type=int
 Categories=system-ssl
 
 [ssl/default/hashfunction]
-Description[de]=Standard Hashfunktion für neue SSL-Zertifikate
-Description[en]=Default hash function for new SSL certificates
+Description[de]=Diese Hash-Funktion (Message Digest) wird in neu ausgestellten SSL-Zertifikaten verwendet.
+Description[en]=This hash function (message digest) is used in newly created SSL certificates.
 Type=str
 Categories=system-ssl
 
 [ssl/validity/check]
-Description[de]=Aktiviere/Deaktiviere die regelmäßige Gültigkeitsprüfung für Zertifikate
-Description[en]=Enable/Disable regular checks for certificate validity
+Description[de]=Ist diese Option aktiviert, wird durch einen täglichen Cron-Job die Gültigkeit der SSL-Zertifikate geprüft.
+Description[en]=If this option is activated, the validity of the SSL certificates is checked through a daily Cron job.
 Type=bool
 Categories=system-ssl
 
 [ssl/validity/host]
-Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Rechner-Zertifikat (automatisch generiert).
-Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the host certificate (auto generated).
+Description[de]=Diese Variable speichert die Gültigkeitsdauer des Rechner-Zertifikats in Tagen seit dem 1. Januar 1970. Dieser Wert wird automatisch generiert.
+Description[en]=This variable stores the validity length of the host certificate in days since the 1st of January 1970. This value is generated automatically.
 Type=int
 Categories=system-ssl
+ReadOnly=yes
 
 [ssl/validity/root]
-Description[de]=Anzahl der Tage von der Unixzeit (1970-01-01T00:00:00Z ISO 8601) bis zum Ablauf des Root-Zertifikat (automatisch generiert).
-Description[en]=Number of days from the unix epoch (1970-01-01T00:00:00Z ISO 8601) to the expiry of the root certificate (auto generated).
+Description[de]=Diese Variable speichert die Gültigkeitsdauer des Root-Zertifikats in Tagen seit dem 1. Januar 1970. Dieser Wert wird automatisch generiert.
+Description[en]=This variable stores the validity length of the root certificate in days since the 1st of January 1970. This value is generated automatically.
 Type=int
 Categories=system-ssl
+ReadOnly=yes
 
 [ssl/validity/warning]
-Description[de]=Warnmeldungen ausgeben wenn die Gültigkeit des Root-Zertifikats die angegebenen Tage unterschreitet
-Description[en]=Print warnings if the root certificates validity ends within this amount of days
-Type=str
+Description[de]=Beträgt die Restgültigkeit des Root-Zertifikats weniger als die hier konfigurierten Tage, wird in der Univention Management Console eine Warnmeldung angezeigt.
+Description[en]=If the root certificate is valid for less days than configured here, a warning message is shown in the Univention Management Console.
+Type=int
 Categories=system-ssl
 
 [ssl/host/extensions]
-Description[de]=Definiert eine Shell-Scriptd für die Erstellung einer Datei mit Zertifikats-Erweiterungen
-Description[en]=Defines a shell script for the creation of a certificate extensions file
+Description[de]=Diese Variable definiert eine Shell-Script für die Erstellung einer Datei mit Zertifikats-Erweiterungen. Ein Beispiel findet sich unter /usr/share/doc/univention-ssl/extensions-example.sh.
+Description[en]=This variable defines a shell script for the creation of a certificate extensions file. An example can be found at /usr/share/doc/univention-ssl/extensions-example.sh.
 Type=str
 Categories=system-ssl

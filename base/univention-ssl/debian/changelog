@@ -1,3 +1,12 @@
+univention-ssl (8.0.0-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+  * Update copyright years for 2013
+  * Mark ssl/validity/root and ssl/validity/host and read-only variables (they are
+    set through a Cron job)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 29 Aug 2013 15:01:45 +0200
+
 univention-ssl (8.0.0-1) unstable; urgency=low
 
   * replaced makepasswd with create_machine_password (Bug #31281)

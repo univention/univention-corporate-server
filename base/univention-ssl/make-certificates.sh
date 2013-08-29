@@ -3,7 +3,7 @@
 # Univention SSL
 #  gencertificate script
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
