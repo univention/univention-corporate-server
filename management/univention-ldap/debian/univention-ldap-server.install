@@ -4,3 +4,4 @@ univention-ldap-backup usr/sbin/
 10univention-ldap-server.inst usr/lib/univention-install/
 scripts/convert_shadowMax.py usr/share/univention-ldap/
 scripts/convert_univentionMailSharedFolderDeliveryAddress.py usr/share/univention-ldap/
+python/ldap_schema.py usr/lib/univention-directory-listener/system/
