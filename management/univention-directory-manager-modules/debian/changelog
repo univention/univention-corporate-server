@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.22-1) unstable; urgency=low
+
+  * New UDM module settings/ldapschema (Bug #32412)
+  * New UDM module settings/ldapacl (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Aug 2013 16:43:38 +0200
+
 univention-directory-manager-modules (9.0.21-1) unstable; urgency=low
 
   * add directory admin/hooks.d/ during installation (Bug #31661)
