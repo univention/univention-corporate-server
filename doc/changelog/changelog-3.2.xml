@@ -1858,9 +1858,15 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  If the LDAP connection was closed the connector tries to re-open the LDAP connection automatically
 		  (<ulink url="&ucsbug;32274">Bug 32274</ulink>).
 		</simpara></listitem>
+
 		<listitem><simpara>
 		  To improve synchronisation performance the group mapping now uses set objects instead of list objects
 		  (<ulink url="&ucsbug;32276">Bug 32276</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Some internal operations have been optimzed to prevent endless synchronisations in large
+          environments (<ulink url="&ucsbug;32213">Bug 32213</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
