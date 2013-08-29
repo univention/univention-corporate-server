@@ -1,3 +1,9 @@
+univention-grub (7.0.0-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 29 Aug 2013 14:50:03 +0200
+
 univention-grub (7.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013

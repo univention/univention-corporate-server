@@ -1,78 +1,78 @@
 [grub/timeout]
-Description[de]=Wartezeit in Sekunden bevor der Standardkernel gebootet wird
-Description[en]=Timeout in seconds, before automatically booting the default entry
+Description[de]=Beim Systemstart wird eine Auswahl der verfügbaren Kernel angezeigt. Die hier konfigurierte Zeit in Sekunden wird auf eine Benutzereingabe gewartet, bevor der Standardkernel gebootet wird. Ist die Variable auf '0' gesetzt, wird direkt der Standardkernel geladen, wird sie auf '-1' gesetzt erfolgt die Kernelauswahl immer manuell.
+Description[en]=During system boot a selection of available kernel is shown. The time in seconds configured here is waited for user input. Once elapsed the default kernel is booted. If the variable is set to '0' the default kernel is booted directly, if set to '-1' the kernel must be selected manually. 
 Type=str
 Categories=system-base
 
 [grub/gfxmode]
-Description[de]=Die Bildschirmauflösung für das Bootmenu, z.B. 1024x768
-Description[en]=Graphical resolution for the boot menu text, e.g. 1024x768
+Description[de]=Die Bildschirmauflösung für das Bootmenu, z.B. 1024x768x32 (Breite - Höhe - Farbtiefe in Bit).
+Description[en]=Graphical resolution for the boot menu, e.g. 1024x768 (width - height - colour depth in bit).
 Type=str
 Categories=system-base
 
 [grub/xenhopt]
-Description[de]=Diese Optionen werden an den Xen-Hypervisor weitergegeben, , z.B.. dom0_mem=1024M
-Description[en]=These options are passed to the Xen hypervisor, e.g. dom0_mem=1024M
+Description[de]=Diese Optionen werden an den Xen-Hypervisor weitergegeben, z.B. 'dom0_mem=1024M'.
+Description[en]=These options are passed to the Xen hypervisor, e.g. 'dom0_mem=1024M'.
 Type=str
 Categories=system-base
 
 [grub/append]
-Description[de]=Zu übergebende Optionen für den Linux-Kernel
-Description[en]=Options to be passed to the Linux kernel
+Description[de]=Mit dieser Variable können zusätzliche Optionen an Linux-Kernel übergeben werden. Eine Übersicht findet sich unter https://www.kernel.org/doc/Documentation/kernel-parameters.txt
+Description[en]=With this variable additional options can be passed to the Linux kernel. An overview can be found at https://www.kernel.org/doc/Documentation/kernel-parameters.txt
 Type=str
 Categories=system-base
 
 [grub/quiet]
-Description[de]=Kernel-Option, um die meisten Meldungen während des Systemstarts zu unterdrücken
-Description[en]=Kernel option to suppress most messages during startup
+Description[de]=Ist diese Variable auf 'yes' gesetzt werden die meisten Meldungen während des Systemstarts unterdrückt.
+Description[en]=If this variable is set to 'yes', messages during startup are suppressed.
 Type=str
 Categories=system-base
 
 [grub/loglevel]
-Description[de]=Alle Kernelmeldungen mit einem Loglevel kleiner als der hier angegebene werden auf der Konsole ausgegeben (0 fuer Notfallmeldungen bis 7 fuer Debugmeldungen).
-Description[en]=All kernel messages with a loglevel smaller than the loglevel will be printed to the console (ranging from 0 for emergency messages to 7 for debugging).
+Description[de]=Alle Kernelmeldungen mit einem Loglevel kleiner als der hier angegebene Wert werden auf der Konsole ausgegeben (0 für Notfallmeldungen bis 7 für Debugmeldungen).
+Description[en]=All kernel messages with a loglevel smaller than the loglevel specified here will be printed to the console (ranging from 0 for emergency messages to 7 for debugging output).
 Type=str
 Categories=system-base
 
 [grub/bootsplash]
-Description[de]=Definiert, ob ein Bootsplash angezeigt werden soll (splash) oder nicht (leer oder nosplash).
-Description[en]=Defines whether to display a bootplash (splash) or not (empty or nosplash).
+Description[de]=Ist diese Variable auf 'splash' gesetzt, wird eine grafische Startanimation angezeigt. Ist die Variable auf 'nosplash' gesetzt oder nicht gesetzt, wird keine Animation angezeigt.
+Description[en]=If this variable is set to 'splash' a graphical startup animation is shown. If the variable is set to 'nosplash' or unset, no animation is shown.
 Type=str
 Categories=system-base
 
 [grub/backgroundimage]
-Description[de]=Definiert das Hintergrundbild für den Bootmanager grub.
-Description[en]=Defines the background image for the bootmanager grub.
+Description[de]=Diese Variable konfiguriert das Hintergrundbild in den Grub-Dialogen.
+Description[en]=This variable configures the background image for Grub dialogues.
 Type=str
 Categories=system-base
 
 [grub/color/normal]
-Description[de]=Farben für den "normalen" Vorder-und Hintergrund im grub Terminal.
-Description[en]=This variable contains the "normal" foreground and background grub terminal colors.
+Description[de]=Das Farbschema im Grub-Terminal. Eine Übersicht der möglichen Werte findet sich unter http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html.
+Description[en]=The colour scheme in the Grub terminal. An overview of available values can be found at http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html.
 Type=str
 Categories=system-base
 
 [grub/color/highlight]
-Description[de]=Farben für den hervorgehobenen Vorder-und Hintergrund im grub Terminal.
-Description[en]=This variable contains the "highlight" foreground and background grub terminal colors.
+Description[de]=Das Farbschema für hervorgehobene Einträge im Grub-Terminal. Eine Übersicht der möglichen Werte findet sich unter http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html.
+Description[en]=The colour scheme for emphasised entries in the Grub terminal. An overview of available values can be found at http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html.
 Type=str
 Categories=system-base
 
 [grub/menu/color/normal]
-Description[de]=Farben für den "normalen" Vorder-und Hintergrund eines nicht markierten grub Menüeintrag.
-Description[en]=This variable contains the foreground and background colors to be used for non-highlighted grub menu entries.
+Description[de]=Das Farbschema für Grub-Menüeinträge. Eine Übersicht der möglichen Werte findet sich unter http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html.
+Description[en]=The colour scheme in the Grub menu. An overview of available values can be found at http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html.
 Type=str
 Categories=system-base
 
 [grub/menu/color/highlight]
-Description[de]=Farben für den Vorder-und Hintergrund eines markierten grub Menüeintrag.
-Description[en]=This variable contains the foreground and background colors to be used for the highlighted grub menu entry.
+Description[de]=Das Farbschema für ausgewählte Grub-Menüeinträge. Eine Übersicht der möglichen Werte findet sich unter http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html.
+Description[en]=The colour scheme for selected entries in the Grub menu. An overview of available values can be found at http://www.gnu.org/software/grub/manual/html_node/color_005fnormal.html.
 Type=str
 Categories=system-base
 
 [grub/vga]
-Description[de]=Grub VGA-Code
-Description[en]=Grub vga code
+Description[de]=Dieser Video-Modus wird an den gebooteten Linux-Kernel übergeben. Eine Liste der möglichen Werte findet sich unter http://en.wikipedia.org/wiki/VESA_BIOS_Extensions
+Description[en]=This video mode is passed to the booted Linux kernel. A list of available modes can be found at http://en.wikipedia.org/wiki/VESA_BIOS_Extensions
 Type=str
 Categories=system-base
 
@@ -83,13 +83,13 @@ Type=str
 Categories=system-base
 
 [grub/generate-menu-lst]
-Description[de]=Wenn diese Option aktiviert ist, wird zusätzlich eine /boot/grub/menu.lst im Format von Grub 1 generiert
-Description[en]=If this option is activated, an additional /boot/grub/menu.lst is generated in Grub 1 format
-Type=str
+Description[de]=Wenn diese Option aktiviert ist, wird zusätzlich zur Grub 2-Konfiguration eine /boot/grub/menu.lst im Format von Grub 1 generiert.
+Description[en]=If this option is activated, in addition to the Grub 2 configuration a /boot/grub/menu.lst file is generated in Grub 1 format.
+Type=bool
 Categories=system-base
 
 [grub/grub1root]
-Description[de]=Der hier übergebene Wert wird für die root-Partition in der generierten Grub1-Konfiguration verwendet
-Description[en]=This value is used for the root partition in the generated Grub1 configuration
+Description[de]=Der hier übergebene Wert wird für die root-Partition in der generierten Grub1-Konfiguration verwendet. Ist die Variable nicht gesetzt, wird der Wert automatisch ermittelt.
+Description[en]=This value is used for the root partition in the generated Grub1 configuration. If the variable is unset, the value is detected automatically.
 Type=str
 Categories=system-base
