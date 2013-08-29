@@ -2306,9 +2306,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		addition to the actual HTML page. The NTML authentication can be cached per domain: If the
 		&ucsUCRV; <envar>squid/ntlmauth/keepalive</envar> is set to <emphasis>yes</emphasis>, no
 		further NTLM authentication is performed for subsequent HMTL queries in the same
-		domain. This is enabled by default. To avoid the display of multiple authentication
-		dialogues on Windows clients, which haven't joined the UCS domain yet, the feature can be
-		disabled with <emphasis>false</emphasis>.
+		domain.
 	  </para>
 
 	  <para>
