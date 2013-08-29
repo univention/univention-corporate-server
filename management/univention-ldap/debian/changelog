@@ -1,3 +1,11 @@
+univention-ldap (10.0.10-4) unstable; urgency=low
+
+  * Make univentionLDAPExtensionPackage* single valued for version
+    comparisons
+  * create containers ldapschema and ldapacl on master (Bug #32391)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Aug 2013 16:07:28 +0200
+
 univention-ldap (10.0.10-3) unstable; urgency=low
 
   * fix typo in univention-ldap-extension.schema (Bug #32391)

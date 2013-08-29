@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -242,6 +242,16 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 		dhcpService=$(univention-directory-manager dhcp/service list "$@" | sed -ne 's/DN: //p;T;q')
 
 		univention-directory-manager networks/network create "$@" --ignore_exists --position "cn=networks,$ldap_base" --set name=default --set netmask="$NETMASK" --set network="$NETWORK" --set dnsEntryZoneForward="$forwardZone" --set dnsEntryZoneReverse="$reverseZone" --set dhcpEntryZone="$dhcpService" || die
+	fi
+
+	if [ $JS_LAST_EXECUTED_VERSION -lt 4 ]; then
+		univention-directory-manager container/cn create "$@" --ignore_exists \
+			--position "cn=univention,$ldap_base" \
+			--set name=ldapschema || die
+
+		univention-directory-manager container/cn create "$@" --ignore_exists \
+			--position "cn=univention,$ldap_base" \
+			--set name=ldapacl || die
 	fi
 fi
 

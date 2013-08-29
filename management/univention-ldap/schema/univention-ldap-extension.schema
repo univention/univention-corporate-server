@@ -12,12 +12,14 @@ objectIdentifier univentionLDAPExtensionObjectClass univentionLDAPExtension:2
 
 attributetype ( univentionLDAPExtensionAttributeType:1 NAME 'univentionLDAPExtensionPackage'
 	DESC 'Name of the Package that registered the LDAP schema'
+	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( univentionLDAPExtensionAttributeType:2 NAME 'univentionLDAPExtensionPackageVersion'
 	DESC 'Version of the Package that registered the LDAP schema'
+	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
