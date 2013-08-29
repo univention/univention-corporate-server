@@ -1,3 +1,14 @@
+ucs-test (4.0.98-1) unstable; urgency=low
+
+  * fixed some typos
+  * added ucs-test categorie "udm-syntax" for tests concerning udm syntax
+    classes (it already contains some syntax tests which were
+    located in the extented_attribute category in ucs-3.0)
+  * added more udm-extentedattribute tests
+  (Bug #31661)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 22 Aug 2013 14:44:12 +0200
+
 ucs-test (4.0.97-6) unstable; urgency=low
 
   * Fix goal of 46share_access_permissions_sambaValidUsers (Bug #29056)
@@ -689,7 +700,7 @@ ucs-test (4.0.30-1) unstable; urgency=low
 ucs-test (4.0.29-2) unstable; urgency=low
 
   * fixed identation in
-    68_udm-extentedattribute/62_check_multivalue_extented_attribute_required
+    68_udm-extendedattribute/62_check_multivalue_extended_attribute_required
     (Bug #31302)
   * renamed "wait_for_ldap_replication()" and
     "wait_for_ldap_replication_and_postrun()" in utils.py in
@@ -723,7 +734,7 @@ ucs-test (4.0.26-1) unstable; urgency=low
 ucs-test (4.0.25-1) unstable; urgency=low
 
   * skip test
-    68_udm-extentedattribute/62_check_multivalue_extented_attribute_required
+    68_udm-extendedattribute/62_check_multivalue_extended_attribute_required
     (Bug #31302)
   * do not return DN in udm.py.UCSTestUDM().move_object()
   * removed automatic LDAP object validation from user creation interface in
@@ -1189,7 +1200,7 @@ ucs-test (3.0.53-1) unstable; urgency=low
   * skip certain udm user tests which fail because of unfixed bugs for now
     (Bug #24351) (Bug #30932)
   * added dependencys on ucs-test-udm-dhcp, ucs-test-udm-containers,
-    and ucs-test-udm-extentedattribute to ucs-test-modules-all (Bug #27664)
+    and ucs-test-udm-extendedattribute to ucs-test-modules-all (Bug #27664)
   * fixed identation in 65_udm-dhcp/10_create_check_and_remove_subnet (Bug
     #27664)
   * ported more DHCP tests from ucs-3.0 branch (Bug #27664)
@@ -1268,7 +1279,7 @@ ucs-test (3.0.44-1) unstable; urgency=low
 
   * added exception which will be thrown by UCSTestUDM.modify_object if no
     modification was made (Bug #30560)
-  * added tests to confirm that required=1 is enforced for extented attributes
+  * added tests to confirm that required=1 is enforced for extended attributes
     (Bug #21742)
 
  -- Lukas Walter <walter@univention.de>  Tue, 07 May 2013 14:40:36 +0200

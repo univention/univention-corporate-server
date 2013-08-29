@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create settings/extented_attribute with a value for it's default which is not valid for it's syntax value
+## tags: [udm]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+## versions:
+##   3.2-0: skip
+
+
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+import univention.testing.strings as uts
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		try:
+			udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER,
+				name = uts.random_name(),
+				shortDescription = uts.random_string(),
+				CLIName = uts.random_string(),
+				module = 'users/user',
+				objectClass = 'univentionFreeAttributes',
+				ldapMapping = 'univentionFreeAttribute15',
+				syntax = 'integer',
+				default = 'notaninteger'
+			)
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			sys.exit(0)
+
+		utils.fail('Successfully created a settings/extented_attribute object with a value for it\'s default which is not valid for it\'s syntax value')
