@@ -1671,6 +1671,14 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		univention-mozilla-firefox, univention-ooffice2 and univention-x-core have been revised
 		(<ulink url="&ucsbug;30944">Bug 30944</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The installation package for the Flash plugin (<emphasis>univention-flashplugin</emphasis>)
+		was removed. The base desktop in UCS is provided for accessing the web-based management
+		tools of UCS, for which Flash isn't needed. Existing plugins from a previous installation
+		should be removed manually: <filename>/usr/lib/flashplugin-nonfree</filename> (<ulink url="&ucsbug;31852">Bug 31852</ulink>).
+	  </simpara></listitem>
+
 	</itemizedlist>
 </section>
 
