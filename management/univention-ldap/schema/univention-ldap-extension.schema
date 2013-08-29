@@ -1,0 +1,113 @@
+# Univention LDAP Extension OID: 1.3.6.1.4.1.10176.4201
+# <https://hutten.knut.univention.de/mediawiki/index.php/Univention-OIDs>
+#objectIdentifier univention 1.3.6.1.4.1.10176
+#objectIdentifier univentionLDAPExtension univention:4201
+objectIdentifier univentionLDAPExtension 1.3.6.1.4.1.10176.4201
+objectIdentifier univentionLDAPExtensionSchema univentionLDAPExtension:1
+objectIdentifier univentionLDAPExtensionACL univentionLDAPExtension:2
+
+# <http://www.openldap.org/doc/admin24/schema.html>
+
+### Definition for univentionLDAPACL
+
+attributetype ( univentionLDAPExtensionSchema:1 NAME 'univentionLDAPSchemaFilename'
+	DESC 'LDAP schema filename'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionLDAPExtensionSchema:2 NAME 'univentionLDAPSchemaData'
+	DESC 'LDAP schema data'
+	SINGLE-VALUE
+	EQUALITY octetStringMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40{65536} )
+
+attributetype ( univentionLDAPExtensionSchema:3 NAME 'univentionLDAPSchemaActive'
+	DESC 'Flag indicating availability of the LDAP schema'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionLDAPExtensionSchema:4 NAME 'univentionLDAPSchemaPackage'
+	DESC 'Name of the Package that registered the LDAP schema'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionLDAPExtensionSchema:5 NAME 'univentionLDAPSchemaPackageVersion'
+	DESC 'Version of the Package that registered the LDAP schema'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionLDAPExtensionSchema:6 NAME 'univentionAppIdentifier'
+	DESC 'Identifier of the App that relies on the LDAP schema'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionLDAPExtensionSchema NAME 'univentionLDAPExtensionSchema'
+	DESC 'UCS LDAP schema extension'
+	STRUCTURAL
+	MUST ( cn )
+	MAY (	univentionLDAPSchemaFilename
+		$ univentionLDAPSchemaData
+		$ univentionLDAPSchemaActive
+		$ univentionLDAPSchemaPackage
+		$ univentionLDAPSchemaPackageVersion
+		$ univentionAppIdentifier
+		)
+	)
+
+### Analogous definition for univentionLDAPACL
+
+attributetype ( univentionLDAPExtensionACL:1 NAME 'univentionLDAPACLFilename'
+	DESC 'LDAP ACL filename'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionLDAPExtensionACL:2 NAME 'univentionLDAPACLData'
+	DESC 'LDAP ACL data'
+	SINGLE-VALUE
+	EQUALITY octetStringMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40{65536} )
+
+attributetype ( univentionLDAPExtensionACL:3 NAME 'univentionLDAPACLActive'
+	DESC 'Flag indicating availability of the LDAP ACL'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( univentionLDAPExtensionACL:4 NAME 'univentionLDAPACLPackage'
+	DESC 'Name of the Package that registered the LDAP ACL'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionLDAPExtensionACL:5 NAME 'univentionLDAPACLPackageVersion'
+	DESC 'Version of the Package that registered the LDAP ACL'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionLDAPExtensionACL:6 NAME 'univentionAppIdentifier'
+	DESC 'Identifier of the App that relies on the LDAP ACL'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionLDAPExtensionACL NAME 'univentionLDAPExtensionACL'
+	DESC 'UCS LDAP ACL extension'
+	STRUCTURAL
+	MUST ( cn )
+	MAY (	univentionLDAPACLFilename
+		$ univentionLDAPACLData
+		$ univentionLDAPACLActive
+		$ univentionLDAPACLPackage
+		$ univentionLDAPACLPackageVersion
+		$ univentionAppIdentifier
+		)
+	)
