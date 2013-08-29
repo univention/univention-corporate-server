@@ -562,7 +562,13 @@ define([
 
 			// see whether a UMC server, UMC web server, and apache restart is necessary:
 			// -> installation/removal of software components
+			// -> update of SSL certificate
 			var umcRestart = 'components' in values;
+			tools.forIn(values, function(name) {
+				if ((/^ssl\/.*$/).test(name)) {
+					umcRestart = true;
+				}
+			});
 
 			// check whether all page widgets are valid
 			var allValid = true;
