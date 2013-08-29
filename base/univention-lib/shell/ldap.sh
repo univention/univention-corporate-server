@@ -248,20 +248,91 @@ ucs_isServiceUnused () {
 ucs_registerLDAPSchema () {
 	local schemaFile="$1"
 
-	if [ ! -d /var/lib/univention-ldap/local-schema ]; then
-		mkdir -p /var/lib/univention-ldap/local-schema
-		chmod 755 /var/lib/univention-ldap/local-schema
-	fi
-
 	if [ ! -e "$schemaFile" ]; then
 		echo "ucs_registerLDAPSchema: missing schema file" >&2
 		return 2
 	fi
 
-	cp "$schemaFile" /var/lib/univention-ldap/local-schema/
+	if [ -n "$DPKG_MAINTSCRIPT_PACKAGE" ]; then
+		PACKAGE_NAME="$DPKG_MAINTSCRIPT_PACKAGE"
+		PACKAGE_VERSION=$(dpkg-query -f '${Version}' -W "$DPKG_MAINTSCRIPT_PACKAGE")
+	elif [ -n "$JS_PACKAGE" ]; then	## TODO: JS_PACKAGE might not be the Debian package name
+		PACKAGE_NAME="$JS_PACKAGE"
+		PACKAGE_VERSION="$VERSION"	## TODO: This should be the Debian package version, not the joinscript version
+	else
+		echo "ERROR: This function only works in postinst or joinscript context"
+		exit 1
+	fi
 
-	ucr commit /etc/ldap/slapd.conf
+	local filename=$(basename "$schemaFile")
+	local objectname=$(basename "$filename" ".schema")
+	local target_container_name="ldapschema"
+	local target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
+	local ldap_base="$(ucr get ldap/base)"
 
-	test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
+	univention-directory-manager containers/cn create "$@" --ignore_exists \
+		--set name="$target_container_name" \
+		--position "cn=univention,$ldap_base"
+
+	local ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
+											univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion)
+	if [ -z "$ldif" ]; then
+
+		output=$(univention-directory-manager settings/ldapschema create "$@" \
+			--set name="$objectname" \
+			--set filename="$filename" \
+			--set schema=$(<"$schemaFile") \
+			--set active=FALSE \
+			--set package= \
+			--set packageversion= \
+			--position "$target_container_dn")
+
+		if [ $? -eq 0 ]; then
+
+			object_dn=$(echo "$output" | sed -n 's/^Object created: //p')
+
+			if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
+				univention-directory-manager settings/ldapschema modify "$@" \
+					--append appidentifier="$UNIVENTION_APP_IDENTIFIER" \
+					--dn "$object_dn"
+			fi
+
+		else	## check again, might be a race
+
+			ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
+												univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion)
+
+		fi
+	fi
+
+	if [ -n "$ldif" ]; then	## object exists already, modify it
+
+		local object_dn=$(echo "$ldif" | sed -n 's/^dn: //p')
+		local registered_package=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackage: //p')
+		local registered_package_version=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackageVersion: //p')
+
+		if [ "$registered_package" = "$PACKAGE_NAME" ]; then
+			if ! dpkg --compare-versions "$PACKAGE_VERSION" gt "$registered_package_version"; then
+				echo "ucs_registerLDAPSchema: ERROR: registered package version $registered_package_version is newer, skipping registration." >&2
+				exit 2
+			fi
+		else
+			echo "ucs_registerLDAPSchema: WARNING: schema $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
+		fi
+
+		univention-directory-manager settings/ldapschema modify "$@" \
+			--set schema=$(<"$schemaFile") \
+			--set active=FALSE \
+			--set package="$PACKAGE_NAME" \
+			--set packageversion="$PACKAGE_VERSION" \
+			--dn "$object_dn"
+
+		if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
+			univention-directory-manager settings/ldapschema modify "$@" \
+				--append appidentifier="$UNIVENTION_APP_IDENTIFIER" \
+				--dn "$object_dn"
+		fi
+
+	fi
 }
 

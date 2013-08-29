@@ -1,3 +1,9 @@
+univention-lib (3.0.9-1) unstable; urgency=low
+
+  * Modified ucs_registerLDAPSchema for Bug #26785
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Aug 2013 20:00:32 +0200
+
 univention-lib (3.0.8-1) unstable; urgency=low
 
   * base.sh: call_joinscript(): modified syntax of function (Bug #29263)
