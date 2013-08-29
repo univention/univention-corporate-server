@@ -43,7 +43,7 @@ case "$1" in
 			invoke-rc.d slapd restart
 		fi
 		if [ -x /etc/init.d/univention-directory-listener ]; then
-			/etc/init.d/univention-directory-listener restart
+			invoke-rc.d univention-directory-listener restart
 		fi
 		;;
 

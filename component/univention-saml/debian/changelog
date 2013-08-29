@@ -1,3 +1,11 @@
+univention-saml (1.0.1-6) unstable; urgency=low
+
+  * Changed App icon (Bug #31693)
+  * Improved many text-strings and translations 
+  * Changed simplesamlLDAPattributes a multivalue field 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 29 Aug 2013 15:23:06 +0200
+
 univention-saml (1.0.1-5) unstable; urgency=low
 
   * Corrected config file permission (Bug #31693)

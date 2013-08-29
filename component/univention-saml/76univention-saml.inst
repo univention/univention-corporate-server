@@ -56,8 +56,8 @@ udm settings/extended_attribute create "$@" \
 	--set tabPosition=4 \
 	--set groupName="SAML settings" \
 	--set translationGroupName='"de_DE" "SAML Einstellungen"' \
-	--set shortDescription="Enable for service provider" \
-	--append translationShortDescription='"de_DE" "Zulassen für Service Provider"' \
+	--set shortDescription="Enable user for the following service providers" \
+	--append translationShortDescription='"de_DE" "Zulassen des Benutzers für folgende Service Provider"' \
 	--set longDescription="Enable user to use the specified service providers" \
 	--append translationLongDescription='"de_DE" "Zulassen des Benutzer für die angegebenen Service Provider"' \
 	--set objectClass="univentionSAMLEnabled" \

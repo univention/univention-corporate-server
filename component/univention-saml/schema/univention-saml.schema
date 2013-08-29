@@ -39,7 +39,7 @@ attributetype ( 1.3.6.1.4.1.10176.4200.1.6
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 attributetype ( 1.3.6.1.4.1.10176.4200.1.7
-	NAME 'attributes'
+	NAME 'simplesamlLDAPattributes'
 	DESC 'A list of attributes the service provider will receive'
 	EQUALITY caseExactIA5Match
 	SUBSTR caseExactIA5SubstringsMatch
@@ -82,7 +82,7 @@ attributetype ( 1.3.6.1.4.1.10176.4200.1.12
 
 objectclass ( 1.3.6.1.4.1.10176.4200.1.1 NAME 'univentionSAMLServiceProvider' SUP top STRUCTURAL
 	DESC 'univention simplesamlphp service provider'
-	MAY ( NameIDFormat $ simplesamlNameIDAttribute $ simplesamlAttributes $ attributes $ serviceproviderdescription $ serviceProviderOrganizationName $ privacypolicyURL $ attributesNameFormat $ singleLogoutService )
+	MAY ( NameIDFormat $ simplesamlNameIDAttribute $ simplesamlAttributes $ simplesamlLDAPattributes $ serviceproviderdescription $ serviceProviderOrganizationName $ privacypolicyURL $ attributesNameFormat $ singleLogoutService )
 	MUST ( SAMLServiceProviderIdentifier $ AssertionConsumerService )
 	)
 

@@ -37,20 +37,18 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 module = 'saml/serviceprovider'
-#superordinate='settings/cn'
 childs = 0
-short_description = _(u'saml service provider')
-long_description = _(u'SAML service provider and their settings')
+short_description = _(u'SAML service provider')
+long_description = _(u'SAML service provider definition')
 operations = ['add', 'edit', 'remove', 'search']
 default_containers=["cn=saml-serviceprovider,cn=univention"]
 
-options = {
-}
+options = {}
 
 property_descriptions = {
 	'Identifier': univention.admin.property(
 			short_description = _(u'Service provider identifier'),
-			long_description = _(u'Unique identifier for the service provider definition'),
+			long_description = _(u'Unique identifier for the service provider definition. With this string the service provider identifies itself at the identity provider'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
 			options = [],
@@ -59,8 +57,8 @@ property_descriptions = {
 			identifies = True,
 		),
 	'AssertionConsumerService': univention.admin.property(
-			short_description = _(u'URL of the AssertionConsumerService'),
-			long_description = _(u'The URL of the AssertionConsumerService endpoint for this SP'),
+			short_description = _(u'Respond to this service provider URL after login'),
+			long_description = _(u'The URL of the AssertionConsumerService endpoint for this SP. Users will be redirected to the URL upon succesful authentication. Example: https://sp.example.com/login'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
 			options = [],
@@ -70,7 +68,7 @@ property_descriptions = {
 		),
 	'NameIDFormat': univention.admin.property(
 			short_description = _(u'Format of NameID attribute'),
-			long_description = _(u'The NameIDFormat this SP should receive'),
+			long_description = _(u'The NameIDFormat the service provider receives. The service provider documentation should mention expected formats. Example: urn:oasis:names:tc:SAML:2.0:nameid-format:transient'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
 			options = [],
@@ -79,30 +77,32 @@ property_descriptions = {
 			identifies = True,
 		),
 	'simplesamlNameIDAttribute': univention.admin.property(
-			short_description = _(u'Name of attribute that is used as NameID'),
-			long_description = _(u'The name of the attribute which should be used as the value of the NameID'),
+			short_description = _(u'Name of the attribute that is used as NameID'),
+			long_description = _(u'The name of the attribute which should be used as the value of the NameID, e.g. uid'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
 			options = [],
 			required = False,
 			may_change = True,
 			identifies = True,
+			default = "uid"
 		),
 	'simplesamlAttributes': univention.admin.property(
-			short_description = _(u'Send any ldap attributes to the service provider?'),
-			long_description = _(u'Whether the SP should receive any ldap attributes from the IdP'),
-			syntax = univention.admin.syntax.string,
+			short_description = _(u'Allow transmission of ldap attributes to the service provider'),
+			long_description = _(u'Whether the service provider should receive any ldap attributes from the IdP'),
+			syntax = univention.admin.syntax.TrueFalseUp,
 			multivalue = False,
 			options = [],
 			required = False,
 			may_change = True,
-			identifies = True,
+			identifies = False,
+			default = "FALSE"
 		),
-	'attributes': univention.admin.property(
-			short_description = _(u'List of ldap attributes to transmit (can be empty)'),
+	'LDAPattributes': univention.admin.property(
+			short_description = _(u'List of ldap attributes to transmit'),
 			long_description = _(u'A list of ldap attributes that are transmitted to the service provider'),
 			syntax = univention.admin.syntax.string,
-			multivalue = False,
+			multivalue = True,
 			options = [],
 			required = False,
 			may_change = True,
@@ -130,7 +130,7 @@ property_descriptions = {
 		),
 	'privacypolicyURL': univention.admin.property(
 			short_description = _(u'URL to the service provider\'s privacy policy'),
-			long_description = _(u'An absolute URL for the service provider\'s privacy policy'),
+			long_description = _(u'An absolute URL for the service provider\'s privacy policy, which will be shown on the consent page'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
 			options = [],
@@ -139,8 +139,8 @@ property_descriptions = {
 			identifies = True,
 		),
 	'attributesNameFormat': univention.admin.property(
-			short_description = _(u'Value in the format field for attributes'),
-			long_description = _(u'Which value will be set in the format field of attribute statements'),
+			short_description = _(u'Value for attribute format field'),
+			long_description = _(u'Which value will be set in the format field of attribute statements. Default: urn:oasis:names:tc:SAML:2.0:attrname-format:basic'),
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
 			options = [],
@@ -164,22 +164,18 @@ layout = [
 	Tab(_(u'General'), _(u'Basic Settings'), 
 		layout=[
 		Group(_('Definition of required and often used settings'), layout=[
+			["serviceProviderOrganizationName", "serviceproviderdescription", ],
 			["Identifier", ],
-			["AssertionConsumerService", ],
-			["NameIDFormat", ],
-			["simplesamlNameIDAttribute", ],
+			["AssertionConsumerService", "singleLogoutService", ],
+			["NameIDFormat", "simplesamlNameIDAttribute", ],
 		]),
 	]),
-	Tab(_(u'Optional Settings'), _(u'More Settings'),
+	Tab(_(u'Extended Settings'), _(u'Additional configuration options'),
 		layout=[
-		Group(_('Optional Settings'), layout=[
-			["simplesamlAttributes", ],
-			["attributes", ],
-			["serviceproviderdescription"],
-			["serviceProviderOrganizationName"],
+		Group(_('Extended Settings'), layout=[
 			["privacypolicyURL"],
-			["attributesNameFormat"],
-			["singleLogoutService"],
+			["simplesamlAttributes", ],
+			["attributesNameFormat", "LDAPattributes", ],
 		]),
 	]),
 ]
@@ -190,7 +186,7 @@ mapping.register('AssertionConsumerService', 'AssertionConsumerService', None, u
 mapping.register('NameIDFormat', 'NameIDFormat', None, univention.admin.mapping.ListToString)
 mapping.register('simplesamlNameIDAttribute', 'simplesamlNameIDAttribute', None, univention.admin.mapping.ListToString)
 mapping.register('simplesamlAttributes', 'simplesamlAttributes', None, univention.admin.mapping.ListToString)
-mapping.register('attributes', 'attributes', None, univention.admin.mapping.ListToString)
+mapping.register('LDAPattributes', 'simplesamlLDAPattributes')
 mapping.register('serviceproviderdescription', 'serviceproviderdescription', None, univention.admin.mapping.ListToString)
 mapping.register('serviceProviderOrganizationName', 'serviceProviderOrganizationName', None, univention.admin.mapping.ListToString)
 mapping.register('privacypolicyURL', 'privacypolicyURL', None, univention.admin.mapping.ListToString)

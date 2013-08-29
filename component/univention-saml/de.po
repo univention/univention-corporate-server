@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.1-6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-16 12:56+0200\n"
+"POT-Creation-Date: 2013-08-29 14:46+0200\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <damrose@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -16,59 +16,81 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:42
-msgid "saml service provider"
-msgstr "saml service provider"
+#: modules/univention/admin/handlers/saml/serviceprovider.py:41
+msgid "SAML service provider"
+msgstr "SAML service provider"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:43
-msgid "SAML service provider and their settings"
+#: modules/univention/admin/handlers/saml/serviceprovider.py:42
+msgid "SAML service provider definition"
 msgstr "SAML Service Provider und deren Einstellungen"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:52
+#: modules/univention/admin/handlers/saml/serviceprovider.py:50
 msgid "Service provider identifier"
 msgstr "Bezeichner des Service Providers"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:53
-msgid "Unique identifier for the service provider definition"
-msgstr "Eindeutiger Bezeichner des Service Providers"
+#: modules/univention/admin/handlers/saml/serviceprovider.py:51
+msgid ""
+"Unique identifier for the service provider definition. With this string the "
+"service provider identifies itself at the identity provider"
+msgstr ""
+"Eindeutiger Bezeichner dieser Service Provider Definition. Mit dieser "
+"Zeichenkette wird sich der Service Provider gegenüber dem Identity Provider "
+"identifizieren"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:62
-msgid "URL of the AssertionConsumerService"
-msgstr "URL für den AssertionConsumerService"
+#: modules/univention/admin/handlers/saml/serviceprovider.py:60
+msgid "Respond to this service provider URL after login"
+msgstr "Antwort an diese Service Provider URL nach dem Login"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:63
-msgid "The URL of the AssertionConsumerService endpoint for this SP"
-msgstr "Die URL des AssertionConsumerService Endpunktes für diesen SP"
+#: modules/univention/admin/handlers/saml/serviceprovider.py:61
+msgid ""
+"The URL of the AssertionConsumerService endpoint for this SP. Users will be "
+"redirected to the URL upon succesful authentication. Example: https://sp."
+"example.com/login"
+msgstr ""
+"Die URL des AssertionConsumerService Endpunktes dieses Service Providers. "
+"Benutzer werden nach erfolgreicher Authentifizierung an diese URL "
+"weitergeleitet. Beispiel: https://sp.example.com/login"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:72
+#: modules/univention/admin/handlers/saml/serviceprovider.py:70
 msgid "Format of NameID attribute"
 msgstr "Format des NameID Attributs"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:73
-msgid "The NameIDFormat this SP should receive"
-msgstr "Der Wert des NameIDFormat Feldes, der dem SP übermittelt wird"
+#: modules/univention/admin/handlers/saml/serviceprovider.py:71
+msgid ""
+"The NameIDFormat the service provider receives. The service provider "
+"documentation should mention expected formats. Example: urn:oasis:names:tc:"
+"SAML:2.0:nameid-format:transient"
+msgstr ""
+"Der Wert NameIDFormat den der Service Provider erhält. Die Dokumentation des "
+"Service Providers sollte erwartete Formate erwähnen. Beispiel: urn:oasis:"
+"names:tc:SAML:2.0:nameid-format:transient"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:82
-msgid "Name of attribute that is used as NameID"
+#: modules/univention/admin/handlers/saml/serviceprovider.py:80
+msgid "Name of the attribute that is used as NameID"
 msgstr "Name des Attributs, das als NameID verwendet wird"
 
-#: modules/univention/admin/handlers/saml/serviceprovider.py:83
+#: modules/univention/admin/handlers/saml/serviceprovider.py:81
 msgid ""
-"The name of the attribute which should be used as the value of the NameID"
+"The name of the attribute which should be used as the value of the NameID, e."
+"g. uid"
 msgstr ""
-"Der Name des Attributs, welches als Wert des NameID Attributs verwendet wird"
+"Der Name des Attributs, welches als Wert des NameID Attributs verwendet "
+"wird, beispielsweise uid"
+
+#: modules/univention/admin/handlers/saml/serviceprovider.py:91
+msgid "Allow transmission of ldap attributes to the service provider"
+msgstr "Erlaube die Übertragung von LDAP Attributen an den Service Provider"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:92
-msgid "Send any ldap attributes to the service provider?"
-msgstr "Dürfen LDAP Attribute gesendet werden?"
-
-#: modules/univention/admin/handlers/saml/serviceprovider.py:93
-msgid "Whether the SP should receive any ldap attributes from the IdP"
-msgstr "Dürfen generell LDAP Attribute vom IdP an den SP gesendet werden?"
+msgid ""
+"Whether the service provider should receive any ldap attributes from the IdP"
+msgstr ""
+"Die generelle Erlaubnis, LDAP Attribute vom Identity Provider an den Service "
+"Provider zu übertragen"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:102
-msgid "List of ldap attributes to transmit (can be empty)"
-msgstr "Liste der zu übermittelnden LDAP Attribute (Kann leer sein)"
+msgid "List of ldap attributes to transmit"
+msgstr "Liste der zu übermittelnden LDAP Attribute"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:103
 msgid "A list of ldap attributes that are transmitted to the service provider"
@@ -102,16 +124,24 @@ msgid "URL to the service provider's privacy policy"
 msgstr "URL zur Datenschutzrichtlinie des Service Providers"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:133
-msgid "An absolute URL for the service provider's privacy policy"
-msgstr "Eine absolute URL zur Datenschutzrichtlinie des Service Providers"
+msgid ""
+"An absolute URL for the service provider's privacy policy, which will be "
+"shown on the consent page"
+msgstr ""
+"Eine absolute URL zur Datenschutzrichtlinie des Service Providers, die auf "
+"der Bestätigungsseite angezeigt wird"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:142
-msgid "Value in the format field for attributes"
+msgid "Value for attribute format field"
 msgstr "Der Wert des Formatfeldes für Attribute"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:143
-msgid "Which value will be set in the format field of attribute statements"
-msgstr "Der Wert, der im Formatfeld von Attributbezeichnern gesetzt wird"
+msgid ""
+"Which value will be set in the format field of attribute statements. "
+"Default: urn:oasis:names:tc:SAML:2.0:attrname-format:basic"
+msgstr ""
+"Der Wert, der im Formatfeld von Attributbezeichnern gesetzt wird "
+"Standardwert: urn:oasis:names:tc:SAML:2.0:attrname-format:basic"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:152
 msgid "Single logout URL for this service provider"
@@ -135,9 +165,9 @@ msgstr "Definieren von benötigten und häufig genutzten Einstellungen"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:173
 #: modules/univention/admin/handlers/saml/serviceprovider.py:175
-msgid "Optional Settings"
-msgstr "Erweiterte Einstellungen"
+msgid "Extended Settings"
+msgstr "Weitere Einstellungen"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:173
-msgid "More Settings"
-msgstr "Weitere Einstellungen"
+msgid "Additional configuration options"
+msgstr "Zusätzliche Konfigurationsoptionen"

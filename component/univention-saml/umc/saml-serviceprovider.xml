@@ -5,8 +5,8 @@
 	<name/>
 	<description/>
 	<flavor id="saml/serviceprovider" icon="udm-saml-serviceprovider">
-	<name>SAML Identity Provider</name>
-	<description>Single Sign On Identity Provider</description>
+	<name>SAML identity provider</name>
+	<description>Management of service provider configurations for the single sign-on functionality of the SAML identity provider</description>
 	</flavor>
 	<categories>
 		<category name="domain"/>

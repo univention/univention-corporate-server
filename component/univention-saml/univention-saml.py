@@ -102,8 +102,8 @@ def handler(dn, new, old):
 					f.write("	'simplesaml.nameidattribute'	=> '%s',\n" % new.get('simplesamlNameIDAttribute')[0])
 				if new.get('simplesamlAttributes'):
 					f.write("	'simplesaml.attributes'	=> %s,\n" % new.get('simplesamlAttributes')[0])
-				if new.get('attributes'):
-					f.write("	'attributes'	=> '%s'\n" % new.get('attributes')[0])
+				if new.get('simplesamlLDAPattributes'):
+					f.write("	'attributes'	=> '%s'\n" % ','.join(new.get('simplesamlLDAPattributes')))
 				if new.get('serviceproviderdescription'):
 					f.write("	'description'	=> '%s'\n" % new.get('serviceproviderdescription')[0])
 				if new.get('serviceProviderOrganizationName'):
