@@ -1,3 +1,10 @@
+ucs-test (4.0.99-1) unstable; urgency=low
+
+  * S4 connector tests: Added two test cases for the local group
+    synchronisation (Bug #29486)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Aug 2013 16:59:07 +0200
+
 ucs-test (4.0.98-2) unstable; urgency=low
 
   * Skip 52replication_sysvol on a lone Samba4 DC (Bug #29062)

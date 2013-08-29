@@ -1,0 +1,37 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check group type sync"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## tags:
+##  - basic
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. /usr/share/univention-lib/ucr.sh
+. "s4connector.sh" || exit 137
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+is_ucr_true connector/s4/mapping/group/sync/localgroups || exit 137
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+# Check if Print Operator members synced
+UDM_users_user_username="$(random_chars)"
+UDM_GROUP_DN="cn=Printer-Admins,cn=groups,$ldap_base"
+AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
+ad_createuser "$UDM_users_user_username" || fail_test 110
+ad_append_to_attribute "CN=Print Operators,CN=builtin,$(ad_get_base)" "member" "$AD_USER_DN" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+
+ad_verify_multi_value_attribute_contains "CN=Print Operators,CN=builtin,$(ad_get_base)" "member" "$AD_USER_DN"; fail_bool 0 110
+udm_verify_multi_value_udm_attribute_contains "users" \
+	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 1 110
+
+exit "$RETVAL"
+
+
