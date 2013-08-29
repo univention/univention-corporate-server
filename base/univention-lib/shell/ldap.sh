@@ -253,16 +253,20 @@ ucs_registerLDAPSchema () {
 		return 2
 	fi
 
+	local package_name package_version
 	if [ -n "$DPKG_MAINTSCRIPT_PACKAGE" ]; then
-		PACKAGE_NAME="$DPKG_MAINTSCRIPT_PACKAGE"
-		PACKAGE_VERSION=$(dpkg-query -f '${Version}' -W "$DPKG_MAINTSCRIPT_PACKAGE")
-	elif [ -n "$JS_PACKAGE" ]; then	## TODO: JS_PACKAGE might not be the Debian package name
-		PACKAGE_NAME="$JS_PACKAGE"
-		PACKAGE_VERSION="$VERSION"	## TODO: This should be the Debian package version, not the joinscript version
-	else
-		echo "ERROR: This function only works in postinst or joinscript context"
+		package_name="$DPKG_MAINTSCRIPT_PACKAGE"
+	elif [ -n "$JS_SCRIPT_FULLNAME" ]; then
+		package_name=$(dpkg -S "$JS_SCRIPT_FULLNAME" | cut -d: -f1)
+	fi
+
+	if [ -n "$package_name" ]; then
+		echo "ERROR: Unable to determine Debian package name"
+		echo "ERROR: This function only works in joinscript or postinst context"
 		exit 1
 	fi
+
+	package_version=$(dpkg-query -f '${Version}' -W "$package_name")
 
 	local filename=$(basename "$schemaFile")
 	local objectname=$(basename "$filename" ".schema")
@@ -283,8 +287,8 @@ ucs_registerLDAPSchema () {
 			--set filename="$filename" \
 			--set schema=$(<"$schemaFile") \
 			--set active=FALSE \
-			--set package= \
-			--set packageversion= \
+			--set package="$package_name" \
+			--set packageversion="$package_version" \
 			--position "$target_container_dn")
 
 		if [ $? -eq 0 ]; then
@@ -311,8 +315,8 @@ ucs_registerLDAPSchema () {
 		local registered_package=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackage: //p')
 		local registered_package_version=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackageVersion: //p')
 
-		if [ "$registered_package" = "$PACKAGE_NAME" ]; then
-			if ! dpkg --compare-versions "$PACKAGE_VERSION" gt "$registered_package_version"; then
+		if [ "$registered_package" = "$package_name" ]; then
+			if ! dpkg --compare-versions "$package_version" gt "$registered_package_version"; then
 				echo "ucs_registerLDAPSchema: ERROR: registered package version $registered_package_version is newer, skipping registration." >&2
 				exit 2
 			fi
@@ -323,8 +327,8 @@ ucs_registerLDAPSchema () {
 		univention-directory-manager settings/ldapschema modify "$@" \
 			--set schema=$(<"$schemaFile") \
 			--set active=FALSE \
-			--set package="$PACKAGE_NAME" \
-			--set packageversion="$PACKAGE_VERSION" \
+			--set package="$package_name" \
+			--set packageversion="$package_version" \
 			--dn "$object_dn"
 
 		if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
@@ -334,5 +338,17 @@ ucs_registerLDAPSchema () {
 		fi
 
 	fi
+
+	local t t0=$(date +%s)
+	while ! univention-directory-manager settings/ldapschema list "$@" \
+			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
+	do
+			t=$(date +%s)
+			if [ $(($t - $t0)) -gt 300 ]; then
+				echo "ERROR: Master did not mark the LDAP schema extension active within 5 minutes."
+				exit 1
+			fi
+			sleep 3
+	done
 }
 
