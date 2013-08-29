@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: php5
+fix: 5.3.3-7.181.201308291557
+desc: |
+  A security problem whereby SSL certificates with NULL bytes in the
+  subjectAltName are misparsed in the openssl module (CVE-2013-4248),
+  has been discovered in PHP5.
+cve:
+ - CVE-2013-4248
