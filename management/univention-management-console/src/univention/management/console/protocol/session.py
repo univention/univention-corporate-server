@@ -56,7 +56,7 @@ from univention.lib.i18n import Translation, I18N_Error
 from .message import Response, Request, MIMETYPE_JSON, InvalidOptionsError
 from .client import Client, NoSocketError
 from .version import VERSION
-from .definitions import *
+from .definitions import SUCCESS, BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_INVALID_ARGS, status_description, BAD_REQUEST_UNAVAILABLE_LOCALE, BAD_REQUEST_FORBIDDEN, BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED
 
 from ..resources import moduleManager, categoryManager
 from ..auth import AuthHandler
@@ -367,9 +367,26 @@ class Processor( signals.Provider ):
 						translationId = flavor.translationId
 						if not translationId:
 							translationId = id
-						modules.append( { 'id' : id, 'flavor' : flavor.id, 'name' : self.i18n._( flavor.name, translationId ), 'description' : self.i18n._( flavor.description, translationId ), 'icon' : flavor.icon, 'categories' : module.categories, 'priority' : flavor.priority } )
+						modules.append({
+							'id' : id,
+							'flavor' : flavor.id,
+							'name' : self.i18n._( flavor.name, translationId ),
+							'description' : self.i18n._( flavor.description, translationId ),
+							'icon' : flavor.icon,
+							'categories' : module.categories,
+							'priority' : flavor.priority,
+							'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords]))
+						})
 				else:
-						modules.append( { 'id' : id, 'name' : self.i18n._( module.name, id ), 'description' : self.i18n._( module.description, id ), 'icon' : module.icon, 'categories' : module.categories, 'priority' : module.priority } )
+					modules.append({
+						'id' : id,
+						'name' : self.i18n._( module.name, id ),
+						'description' : self.i18n._( module.description, id ),
+						'icon' : module.icon,
+						'categories' : module.categories,
+						'priority' : module.priority,
+						'keywords': list(set(module.keywords + [self.i18n._(keyword, translationId) for keyword in module.keywords]))
+					})
 			res.body[ 'modules' ] = modules
 			_ucr_dict = dict( ucr.items() )
 

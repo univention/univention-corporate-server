@@ -58,7 +58,7 @@ used ::
 	udm/* !objectType
 """
 
-import os, sys, ldap, re
+import os, sys, ldap
 import cPickle
 import itertools
 import operator

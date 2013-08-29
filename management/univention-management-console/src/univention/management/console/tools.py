@@ -32,10 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import locale
-import os
-import subprocess
-import tempfile
-import time
 
 ## JSON
 
