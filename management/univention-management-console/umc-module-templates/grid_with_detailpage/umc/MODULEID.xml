@@ -3,11 +3,12 @@
 	<module id="MODULEID" icon="MODULEID" version="1.0">
 	<name>MODULENAME</name>
 	<description>MODULEDESC</description>
+	<keywords>MODULEKEYWORDS</keywords>
 	<categories>
 		<category name="CATEGORYNAME"/>
 	</categories>
-	<command name="MODULEID/query" function="query"></command>
-	<command name="MODULEID/colors" function="colors"></command>
-	<command name="MODULEID/get" function="get"></command>
+	<command name="MODULEID/query" function="query" />
+	<command name="MODULEID/colors" function="colors" />
+	<command name="MODULEID/get" function="get" />
 	</module>
 </umc>

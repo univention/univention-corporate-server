@@ -1,6 +1,7 @@
 univention-management-console (6.0.9-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to module and flavor definitions
+  * Bug #32048: Adapt dummy module XML files
 
  -- Florian Best <best@univention.de>  Thu, 29 Aug 2013 11:42:51 +0200
 
