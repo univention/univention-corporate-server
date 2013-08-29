@@ -30,7 +30,8 @@ determine_neighbour_s4host() {
 	done
 
 	if [ -z "$s4host_fqdn" ];then
-		fail_fast 77 "Could not find another Samba4 Service in Domain"
+		echo "Skipping test: Could not find another Samba4 Service in Domain"
+		exit 134
 	fi
 
 	echo "$s4host_fqdn"
