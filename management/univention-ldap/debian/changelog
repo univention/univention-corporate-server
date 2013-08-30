@@ -1,3 +1,9 @@
+univention-ldap (10.0.10-10) unstable; urgency=low
+
+  * fix undefined variable in conditional branch (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Aug 2013 15:26:32 +0200
+
 univention-ldap (10.0.10-9) unstable; urgency=low
 
   * validate schema in listener module ldap_schema.py (Bug #31801)

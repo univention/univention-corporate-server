@@ -123,16 +123,17 @@ def handler(dn, new, old):
 			if p.returncode != 0:
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Validation of LDAP schema failed:\n%s.' % (name, output))
 				## Revert changes
-				try:
-					os.unlink(new_filename)
-					os.rename(backup_file, old_filename)
-					os.close(backup_fd)
-				except IOError:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old schema file %s.' % (name, old_filename))
+				os.unlink(new_filename)
+				if backup_file:
+					try:
+							os.rename(backup_file, old_filename)
+							os.close(backup_fd)
+					except IOError:
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old schema file %s.' % (name, old_filename))
 				## And exit
 				return
 
-			if backup_file and os.path.exists(backup_file):
+			if backup_file:
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old schema file %s.' % (name, backup_file))
 				os.unlink(backup_file)
 				os.close(backup_fd)
