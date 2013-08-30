@@ -1945,6 +1945,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  Some internal operations have been optimzed to prevent endless synchronisations in large
           environments (<ulink url="&ucsbug;32213">Bug 32213</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  A cast from string to long has been added while synchronizing time values
+          (<ulink url="&ucsbug;32329">Bug 32329</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
