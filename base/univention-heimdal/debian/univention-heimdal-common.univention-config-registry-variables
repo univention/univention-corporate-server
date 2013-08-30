@@ -1,36 +1,32 @@
 [kerberos/adminserver]
-Description[de]=Kerberos Admin-Server für den Realm
-Description[en]=Kerberos admin server for the realm
+Description[de]=
+Auf dem Domänencontroller Master läuft der Kerberos-Adminserver, auf dem administrative Einstellungen der Domäne vorgenommen werden können. Die meisten Einstellungen werden aus dem LDAP-Verzeichnis bezogen, so dass die wichtigste verbleibende Funktion das Ändern von Passwörtern darstellt. Diese können durch das Tool kpasswd geändert werden und werden dann auch im LDAP verändert. Diese Variable konfiguriert, welches System als Kerberos-Adminserver verwendet werden soll.
+Description[en]=The Kerberos admin server, on which the administrative settings of the domain can be made, runs on the master domain controller. Most of the settings are taken from the LDAP directory, so that the major remaining function is changing passwords. This can be achieved by means of the Tool kpasswd; the passwords are then changed in the LDAP too. This variable confgures which system should be used as the Kerberos admin server.
 Type=str
 Categories=service-heimdal
 
 [kerberos/kpasswdserver]
-Description[de]=Kerberos Passwort-Server für den Realm
-Description[en]=Kerberos password server for the realm
+Description[de]=Diese Variable konfiguriert den Server, der Passwortänderungen über Kerberos entgegennimmt: Wird Samba 4 eingesetzt, kann ein beliebiger Samba 4-Domänencontroller gesetzt werden. Wird nur OpenLDAP eingesetzt, dann der Domänencontroller Master.
+Description[en]=This variable configures the server which accepts Kerberos-based password changes: If Samba 4 is used, any Samba 4 domain controller can be specified. If only OpenLDAP is used the master domain controller should be used.
 Type=str
 Categories=service-heimdal
 
 [kerberos/kdc]
-Description[de]=Liste von KDCs für den Realm
-Description[en]=List of KDC's for the realm
+Description[de]=Hier kann eine Liste von Kerberos KDC-Servern angegeben werden. Die Rechnernamen sollten in FQDN-Form angegeben werden. Mehrfache Werte sind durch ein Leerzeichen zu trennen. Ist die Variable nicht gesetzt, wird der KDC aus DNS-Service-Records ausgelesen.
+Description[en]=A list of Kerberos KDC servers can be specified here. The hostnames should be specified in FQDN form. Multiple values need to be separated with a blank. If the variable is unset, the KDC is queried from DNS service records.
 Type=str
 Categories=service-heimdal
 
 [kerberos/realm]
-Description[de]=Kerberos Realm der Domäne
-Description[en]=Kerberos realm of the domain
+Description[de]=Die gemeinsame Kerberos-Vertrauensbasis einer Domäne wird als Kerberos-Realm bezeichnet. Diese Variable enthält den Namen der Kerberos-Realm. Der Name der Kerberos-Realm wird bei der Installation des Domänencontroller Master festgelegt und kann nachträglich nicht geändert werden.
+Description[en]=The common Kerberos trust context of a domain is called a Kerberos realm. This variable contains the name of the Kerberos realm. The name of the Kerberos realm is set during the installation of the master domain controller and cannot be used subsequently.
 Type=str
 Categories=service-heimdal
+ReadOnly=yes
 
 [kerberos/afscell]
-Description[de]=Der Name der AFS-Zelle, einer administrativen Einheit im AFS-Dateisystem
-Description[en]=The name of the AFS cell, an administrative unit in the AFS filesystem
-Type=str
-Categories=System
-
-[kerberos/v4tickets]
-Description[de]=Konfiguriert, ob Tickets im veralteten Kerberos-Format 4 ausgestellt werden sollen
-Description[en]=Configures, whether tickets should be issued in the deprecated Kerberos format 4
+Description[de]=Der Name der AFS-Zelle, einer administrativen Einheit im verteilten AFS-Dateisystem.
+Description[en]=The name of the AFS cell, an administrative unit in the distributed AFS filesystem.
 Type=str
 Categories=System
 

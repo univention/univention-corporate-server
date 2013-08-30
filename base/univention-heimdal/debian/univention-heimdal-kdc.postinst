@@ -3,7 +3,7 @@
 # Univention Heimdal
 #  postinst script
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -78,13 +78,6 @@ if [ "$1" = "configure" ]; then
 	else					## package update
 
 		/etc/init.d/heimdal-kdc restart
-
-		# Bug #19020, use $hostname.$domainname in kerberos/kdc
-		if dpkg --compare-versions "$2" lt 4.0.3-1; then
-			if [ -n "$kerberos_kdc" -a "$kerberos_kdc" = "$hostname" ]; then
-				univention-config-registry set kerberos/kdc="$hostname.$domainname"
-			fi
-		fi
 	fi
 
 	if test -f /etc/init.d/univention-directory-listener

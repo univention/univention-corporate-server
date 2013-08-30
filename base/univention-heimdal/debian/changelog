@@ -1,3 +1,12 @@
+univention-heimdal (7.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30943)
+    Mark kerberos/realm als read-only
+    Remove kerberos/v4tickets, krb4 no longer support in current Heimdal
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 30 Aug 2013 14:03:34 +0200
+
 univention-heimdal (6.0.13-3) unstable; urgency=low
 
   * straighten univention-heimdal-kdc.postinst (Bug #20167)
