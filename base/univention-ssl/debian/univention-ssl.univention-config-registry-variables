@@ -1,17 +1,17 @@
 [ssl/common]
-Description[de]=Der Common Name des SSL-Root-Zertifikats, ein eindeutiger Bezeichner für die Domäne.
+Description[de]=Der 'Common Name' des SSL-Root-Zertifikats, ein eindeutiger Bezeichner für die Domäne.
 Description[en]=The 'common name' for the root SSL certificate, a unique identifier for the domain.
 Type=str
 Categories=system-ssl
 
 [ssl/country]
-Description[de]=Der zweistellige ISO-Ländercode der Organisation für die das Zertifikat ausgestellt wurde. Eine vollständige Liste findet sich unter http://en.wikipedia.org/wiki/ISO_3166-1
+Description[de]=Der zweistellige ISO-Ländercode der Organisation, für die das Zertifikat ausgestellt wurde. Eine vollständige Liste findet sich unter http://en.wikipedia.org/wiki/ISO_3166-1
 Description[en]=The two letter country code of the organisation for which the certificate was issued. A complete list can be found at http://en.wikipedia.org/wiki/ISO_3166-1
 Type=str
 Categories=system-ssl
 
 [ssl/email]
-Description[de]=Eine Kontakt-E-Mail-Adresse der Organisation, für das Root-Zertifikat ausgestellt wurde.
+Description[de]=Eine Kontakt-E-Mail-Adresse der Organisation, für die das Root-Zertifikat ausgestellt wurde.
 Description[en]=A contact e-mail address for the organisation for which the root certificate was issued.
 Type=str
 Categories=system-ssl
@@ -30,13 +30,13 @@ Categories=system-ssl
 
 [ssl/organization]
 Description[de]=Der Name der Organisation, für die das Root-Zertifikat ausgestellt wurde.
-Description[en]=The Name of the organisation for in which the root certificate was issued
+Description[en]=The Name of the organisation for which the root certificate was issued.
 Type=str
 Categories=system-ssl
 
 [ssl/organizationalunit]
 Description[de]=Der Name der Abteilung der Organisation, für die das Root-Zertifikat ausgestellt wurde.
-Description[en]=The Name of the organisational unit/department of the organisation for in which the root certificate was issued.
+Description[en]=The Name of the organisational unit/department of the organisation for which the root certificate was issued.
 Type=str
 Categories=system-ssl
 
@@ -59,15 +59,15 @@ Type=bool
 Categories=system-ssl
 
 [ssl/validity/host]
-Description[de]=Diese Variable speichert die Gültigkeitsdauer des Rechner-Zertifikats in Tagen seit dem 1. Januar 1970. Dieser Wert wird automatisch generiert.
-Description[en]=This variable stores the validity length of the host certificate in days since the 1st of January 1970. This value is generated automatically.
+Description[de]=Diese Variable speichert die Gültigkeitsdauer des Rechner-Zertifikats in Tagen seit dem 1. Januar 1970. Dieser Wert wird automatisch generiert und sollte nicht geändert werden.
+Description[en]=This variable stores the validity length of the host certificate in days since the 1st of January 1970. This value is generated automatically and should not be modified.
 Type=int
 Categories=system-ssl
 ReadOnly=yes
 
 [ssl/validity/root]
-Description[de]=Diese Variable speichert die Gültigkeitsdauer des Root-Zertifikats in Tagen seit dem 1. Januar 1970. Dieser Wert wird automatisch generiert.
-Description[en]=This variable stores the validity length of the root certificate in days since the 1st of January 1970. This value is generated automatically.
+Description[de]=Diese Variable speichert die Gültigkeitsdauer des Root-Zertifikats in Tagen seit dem 1. Januar 1970. Dieser Wert wird automatisch generiert und sollte nicht geändert werden.
+Description[en]=This variable stores the validity length of the root certificate in days since the 1st of January 1970. This value is generated automatically and should not be modified.
 Type=int
 Categories=system-ssl
 ReadOnly=yes
@@ -79,7 +79,7 @@ Type=int
 Categories=system-ssl
 
 [ssl/host/extensions]
-Description[de]=Diese Variable definiert eine Shell-Script für die Erstellung einer Datei mit Zertifikats-Erweiterungen. Ein Beispiel findet sich unter /usr/share/doc/univention-ssl/extensions-example.sh.
+Description[de]=Diese Variable definiert ein Shell-Script für die Erstellung einer Datei mit Zertifikats-Erweiterungen. Ein Beispiel findet sich unter /usr/share/doc/univention-ssl/extensions-example.sh.
 Description[en]=This variable defines a shell script for the creation of a certificate extensions file. An example can be found at /usr/share/doc/univention-ssl/extensions-example.sh.
 Type=str
 Categories=system-ssl
