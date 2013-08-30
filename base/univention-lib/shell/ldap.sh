@@ -325,7 +325,7 @@ ucs_registerLDAPSchema () {
 		fi
 
 		univention-directory-manager settings/ldapschema modify "$@" \
-			--set schema=$(<"$schemaFile") \
+			--set schema=$(gzip -c "$schemaFile" | base64) \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
