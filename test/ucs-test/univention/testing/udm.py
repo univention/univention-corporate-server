@@ -102,10 +102,12 @@ class UCSTestUDM(object):
 						'computers/ipmanagedclient')
 
 
-	UNIVENTION_CONTAINER = 'cn=univention,%s' % _ucr['ldap/base']
-	UNIVENTION_TEMPORARY_CONTAINER = 'cn=temporary,cn=univention,%s' % _ucr['ldap/base']
-	DEFAULT_USER_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % _ucr['ldap/base'], 'univentionUsersObject')[0]
-	DEFAULT_GROUP_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % _ucr['ldap/base'], 'univentionGroupsObject')[0]
+	LDAP_BASE = _ucr['ldap/base']
+	UNIVENTION_CONTAINER = 'cn=univention,%s' % LDAP_BASE
+	UNIVENTION_TEMPORARY_CONTAINER = 'cn=temporary,cn=univention,%s' % LDAP_BASE
+	DEFAULT_USER_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % LDAP_BASE, 'univentionUsersObject')[0]
+	DEFAULT_GROUP_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % LDAP_BASE, 'univentionGroupsObject')[0]
+	DEFAULT_SHARE_CONTAINER = _lo.getAttr('cn=default containers,cn=univention,%s' % LDAP_BASE, 'univentionSharesObject')[0]
 
 	
 
