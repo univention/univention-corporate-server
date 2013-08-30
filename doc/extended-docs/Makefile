@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
-MAIN := installation-3.1 performance-guide-3.1 computers-3.1 networks-3.1 printers-3.1 
-MAIN += domain-3.1 windows-3.1
+MAIN := installation-3.2 performance-guide-3.2 computers-3.2 networks-3.2 printers-3.2 
+MAIN += domain-3.2 windows-3.2
 STYLESHEET := univention_extdocs
 
 COMMON_DIR := ../../../doc-common/docbook
