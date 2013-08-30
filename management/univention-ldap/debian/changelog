@@ -1,3 +1,11 @@
+univention-ldap (10.0.10-7) unstable; urgency=low
+
+  * Syntax fixes for listener module ldap_schema.py (Bug #31801)
+  * Compressed schema data
+  * Conditional slapd restart
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Aug 2013 09:24:10 +0200
+
 univention-ldap (10.0.10-5) unstable; urgency=low
 
   * New listener module ldap_schema.py (Bug #31801)

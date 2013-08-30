@@ -40,6 +40,7 @@ import univention.admin.uldap as udm_uldap
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 import subprocess
+import zlib
 udm_modules.update()
 
 name = 'ldap_schema'
@@ -48,23 +49,26 @@ filter = '(objectClass=univentionLDAPExtensionSchema)'
 attributes = []
 
 BASEDIR = '/var/lib/univention-ldap/local-schema'
-__todo_list=[]
+
+__do_reload = False
+__todo_list = []
 
 def handler(dn, new, old):
-	"""Handle change in LDAP."""
+	"""Handle LDAP schema extensions on DC Master and DC Backup"""
 
-	if not listener.configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup'):
+	if not listener.configRegistry.get('ldap/server/type') == 'master':
 		return
 
 	if new:
 		if not 'univentionLDAPExtensionPackageVersion' in new:
 			return
 
-		new_schema = new.get('univentionLDAPSchemaData')
+		new_schema_data = new.get('univentionLDAPSchemaData')[0]
 		try:
+			new_schema = zlib.decompress(new_schema_data, 16+zlib.MAX_WBITS)
 			new_hash = hashlib.sha256(new_schema).hexdigest()
 		except TypeError:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error hashing data of object %s.' % (name, new.get('dn')))
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing and hashing data of object %s.' % (name, dn))
 			return
 
 		if not os.path.isdir(BASEDIR):
@@ -74,12 +78,12 @@ def handler(dn, new, old):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: Create directory %s.' % (name, BASEDIR))
 			os.makedirs(BASEDIR, 0755)
 
-		new_filename = os.path.join(BASEDIR, new.get('univentionLDAPSchemaFilename'))
+		new_filename = os.path.join(BASEDIR, new.get('univentionLDAPSchemaFilename')[0])
 		listener.setuid(0)
 		try:
 			backup_file = None
 			if old:
-				old_filename = os.path.join(BASEDIR, old.get('univentionLDAPSchemaFilename'))
+				old_filename = os.path.join(BASEDIR, old.get('univentionLDAPSchemaFilename')[0])
 				if new_filename != old_filename:
 					backup_file = '%s.disabled' % old_filename
 					try:
@@ -113,33 +117,37 @@ def handler(dn, new, old):
 			ucr.load()
 			ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
-			global __todo_list
+			global __todo_list, __do_reload
 			__todo_list.append(new['dn'])
+			__do_reload = True
 
 		finally:
 			listener.unsetuid()
 
 def postrun():
+	"""Restart LDAP server Master and mark new schema extension objects active"""
+
 	if not listener.configRegistry.get('server/role') == 'domaincontroller_master':
 		return
 
+	global __todo_list, __do_reload
+
 	initscript='/etc/init.d/slapd'
 	if os.path.exists(initscript):
-		ud.debug(ud.LISTENER, ud.INFO, '%s: Reloading LDAP server.' % (name,) )
 		listener.setuid(0)
 		try:
+			if __do_reload:
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Reloading LDAP server.' % (name,) )
 				p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
-		finally:
-			listener.unsetuid()
+				p.wait()
+				if p.returncode != 0:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
+					return
 
-		## TODO: wait until the schema is actually loaded.
-
-		try:
 			lo, ldap_position = udm_uldap.getAdminConnection()
-			udm_settings_ldapschema = univention.admin.modules.get('settings/ldapschema')
-			univention.admin.modules.init(lo, ldap_position, udm_settings_ldapschema)
+			udm_settings_ldapschema = udm_modules.get('settings/ldapschema')
+			udm_modules.init(lo, ldap_position, udm_settings_ldapschema)
 
-			global __todo_list
 			failed_list = []
 			for object_dn in __todo_list:
 				try:
@@ -154,5 +162,8 @@ def postrun():
 
 		except udm_errors.ldapError, e:
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, e))
+
+		finally:
+			listener.unsetuid()
 
 

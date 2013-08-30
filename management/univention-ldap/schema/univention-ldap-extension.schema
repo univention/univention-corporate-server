@@ -42,8 +42,7 @@ attributetype ( univentionLDAPExtensionAttributeType:11 NAME 'univentionLDAPSche
 attributetype ( univentionLDAPExtensionAttributeType:12 NAME 'univentionLDAPSchemaData'
 	DESC 'LDAP schema data'
 	SINGLE-VALUE
-	EQUALITY octetStringMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40{65536} )
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
 
 attributetype ( univentionLDAPExtensionAttributeType:13 NAME 'univentionLDAPSchemaActive'
 	DESC 'Flag indicating availability of the LDAP schema'
@@ -76,8 +75,7 @@ attributetype ( univentionLDAPExtensionAttributeType:21 NAME 'univentionLDAPACLF
 attributetype ( univentionLDAPExtensionAttributeType:22 NAME 'univentionLDAPACLData'
 	DESC 'LDAP ACL data'
 	SINGLE-VALUE
-	EQUALITY octetStringMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.40{65536} )
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
 
 attributetype ( univentionLDAPExtensionAttributeType:23 NAME 'univentionLDAPACLActive'
 	DESC 'Flag indicating availability of the LDAP ACL'
