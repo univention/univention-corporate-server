@@ -4,7 +4,7 @@
 	%entities;
 ]>
 <chapter id="chap:join">
-	<title>Join
+	<title>Domain Join
 		<indexterm><primary>domain join</primary></indexterm>
 		<indexterm><primary>join</primary><see>domain join</see></indexterm>
 	</title>
@@ -277,7 +277,7 @@
 						<term><cmdsynopsis><command>joinscript_init</command></cmdsynopsis></term>
 						<listitem>
 							<para>
-								This function parses the status file and skips the script, if a record is found with a version greater or equal to <envar>VERSION</envar>.
+								This function parses the status file and exits the shell script, if a record is found with a version greater or equal to value of the environment variable <envar>VERSION</envar>.
 								The name of the join script is derived from <envar>$0</envar>.
 							</para>
 						</listitem>
@@ -286,7 +286,7 @@
 						<term><cmdsynopsis><command>joinscript_save_current_version</command></cmdsynopsis></term>
 						<listitem>
 							<para>
-								This function appends a new record to the end of the status file using the version number <envar>VERSION</envar>.
+								This function appends a new record to the end of the status file using the version number stored in the environment variable <envar>VERSION</envar>.
 							</para>
 						</listitem>
 					</varlistentry>
@@ -421,7 +421,7 @@ VERSION="3"
 				<title><package>shell-univention-lib</package></title>
 				<para>
 					The package contains the shell library <filename>/usr/share/univention-lib/base.sh</filename>.
-					Since package version <literal>>= 2.0.17-1.125</literal> it provides the following functions:
+					Since package version <literal>&gt;= 2.0.17-1</literal> it provides the following functions:
 				</para>
 				<variablelist>
 					<varlistentry>
@@ -465,6 +465,7 @@ VERSION="3"
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>call_unjoinscript</command>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
 								<arg><replaceable>XXunjoin-script.uinst</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
@@ -479,7 +480,6 @@ VERSION="3"
 					<varlistentry>
 						<term><cmdsynopsis>
 								<command>delete_unjoinscript</command>
-								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
 								<arg><replaceable>XXunjoin-script.uinst</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
@@ -515,7 +515,7 @@ VERSION="3"
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
-								Adds <option>servicename</option> to the list of <literal>univentionService</literal> of the LDAP object representing the local host.
+								Registers the additional service <option>servicename</option> in the LDAP object representing the local host.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 							</para>
 							<para>
@@ -534,7 +534,7 @@ ucs_addServiceToLocalhost "MyService" "$@"
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
-								Removes <option>servicename</option> from the list of <literal>univentionService</literal> of the LDAP object representing the local host, effectively reverting an <command>ucs_addServiceToLocalhost</command> call.
+								Removes the service <option>servicename</option> from the LDAP object representing the local host, effectively reverting an <command>ucs_addServiceToLocalhost</command> call.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 							</para>
 							<para>
@@ -552,7 +552,7 @@ ucs_removeServiceFromLocalhost "MyService" "$@"
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
-								Returns <literal>0</literal> if no LDAP object with a <literal>univentionService</literal> named <option>servicename</option> is found.
+								Returns <literal>0</literal> if no LDAP host object exists where the service <option>servicename</option> is registered with.
 							</para>
 							<para>
 								Example usage in unjoin script:
@@ -604,14 +604,16 @@ fi
 		</para>
 		<para>
 			As of UCS 3.1 <literal>.inst</literal> and <literal>.uinst</literal> are not distinguishable in the <emphasis>UMC Join module</emphasis> by the user.
-			Therefore it is important to use the <literal>-uninstall</literal> suffix to give users a hint.
-			Internally on the other hand join scripts are always executed before unjoin scripts, both ordered lexicographically by their prefix.
+			Therefore it is important to use the <literal>-uninstall</literal> suffix to give users a visual hint.
+			Internally join scripts are always executed before unjoin scripts and then ordered lexicographically by their prefix.
 		</para>
 		<para>
 			To decide if an unjoin script is the last instance and should remove the data from <acronym>LDAP</acronym>, a service can be registered for each host where the package is installed.
-			The package <package>univention-fetchmail</package> for example uses <command>ucs_addServiceFromLocalhost "Fetchmail" "$@"</command> in the join script to register and <command>ucs_removeServiceFromLocalhost "Fetchmail" "$@"</command> in the unjoin script to unregister a service for the host.
+		</para>
+		<para>
+			For example the package <package>univention-fetchmail</package> uses <command>ucs_addServiceFromLocalhost "Fetchmail" "$@"</command> in the join script to register and <command>ucs_removeServiceFromLocalhost "Fetchmail" "$@"</command> in the unjoin script to unregister a service for the host.
 			The data is removed from <acronym>LDAP</acronym> when in the unjoin script <command>ucs_isServiceUnused "Fetchmail" "$@"</command> returns 0.
-			As a side effect it is easy to see which servers are currently providing the fetchmail service.
+			As a side effect adding the service also allows using this information to find and list those servers currently providing the Fetchmail service.
 		</para>
 		<variablelist>
 			<varlistentry>
@@ -646,7 +648,7 @@ fi
 				<term><filename>debian/join-template.postinst</filename></term>
 				<listitem>
 					<para>
-						In case the package is installed again but the unjoin script still exists, because it was never executed, the unjoin script must be removed:
+						In case the package is installed again and the unjoin script still exists, because it was never executed, the unjoin script must be removed:
 					</para>
 					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/join-template.postinst" parse="text"/></programlisting>
 				</listitem>

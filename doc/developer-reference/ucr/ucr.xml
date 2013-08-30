@@ -613,7 +613,7 @@ Categories=<category,...>]]></programlisting>
 						<simpara>
 							A descriptive text for the variable.
 							It should mention the valid and default values.
-							The description can be given in multiple languages, using the two-letter-code following <citation><xref linkend="ISO639"/></citation>.
+							The description can be given in multiple languages, using the two-letter-code following <biblioref linkend="ISO639"/>.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -686,7 +686,7 @@ icon=<file-name>]]></programlisting>
 					<listitem>
 						<simpara>
 							A descriptive text for the category.
-							The description can be given in multiple languages, using the two-letter-code following <citation><xref linkend="ISO639"/></citation>.
+							The description can be given in multiple languages, using the two-letter-code following <biblioref linkend="ISO639"/>.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -739,7 +739,7 @@ programs=<executable>]]></programlisting>
 					<listitem>
 						<simpara>
 							A descriptive text for the service.
-							The description can be given in multiple languages, using the two-letter-code following <citation><xref linkend="ISO639"/></citation>.
+							The description can be given in multiple languages, using the two-letter-code following <biblioref linkend="ISO639"/>.
 						</simpara>
 					</listitem>
 				</varlistentry>

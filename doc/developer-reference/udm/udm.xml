@@ -582,9 +582,10 @@ udm settings/extended_options create "$@" --ignore_exists \
 						If the file is installed manually, it must be placed on a path listed in <literal>sys.path</literal>.
 					</simpara>
 				</footnote>.
+				The file name must end with <filename class="suffix">.py</filename>.
 			</para>
 			<para>
-				The module <package>univention.admin.hook</package> provides the class <classname>simplehook</classname>, which implements all required hook functions.
+				The module <package>univention.admin.hook</package> provides the class <classname>simpleHook</classname>, which implements all required hook functions.
 				By default they don't modify any request but do log all calls.
 				This class should be used as a base class for inheritance.
 			</para>
@@ -595,6 +596,7 @@ udm settings/extended_options create "$@" --ignore_exists \
 						<methodsynopsis>
 							<methodname>hook_open</methodname>
 							<methodparam><parameter>self</parameter></methodparam>
+							<methodparam><parameter>module</parameter></methodparam>
 						</methodsynopsis>
 					</term>
 					<listitem>
@@ -1330,7 +1332,7 @@ udm settings/syntax create "$@" --ignore_exists \
 	</section>
 
 	<section id="udm:acl">
-		<title>LDAP Accress Control Lists
+		<title>LDAP Access Control Lists
 			<indexterm><primary>LDAP</primary><secondary>ACL</secondary></indexterm>
 		</title>
 		<remark>SG: might be too much</remark>

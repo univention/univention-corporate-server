@@ -4,8 +4,8 @@
 
 if [ "$1" = "configure" ]
 then
-	[ -e /usr/lib/univention-install/50join-template-uninstall.uinst ] &&
-		rm /usr/lib/univention-install/50join-template-uninstall.uinst
+	uinst=/usr/lib/univention-install/50join-template-uninstall.uinst
+	[ -e "$uinst" ] && rm "$uinst"
 fi
 
 . /usr/share/univention-lib/base.sh

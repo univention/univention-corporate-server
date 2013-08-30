@@ -3,7 +3,6 @@
           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
 
   %entities;
 ]>
@@ -274,7 +273,7 @@ END_CONFIG
                 To connect a host to multiple VLANs, the physical interface (ethX) must be connected to a trunk link.
                 The physical interface represents the packets as is, that is the interface sees all packets with the tag added.
                 For each VLAN <replaceable>Y</replaceable> on the physical interface <replaceable>ethX</replaceable> a virtual interface <replaceable>ethX.Y</replaceable> must be created.
-                It handles only the packets belonging to that VLAN and should be configures with an IP address matching that VLAN.
+                It handles only the packets belonging to that VLAN and should be configured with an IP address matching that VLAN.
             </para>
 
             <para>
@@ -359,7 +358,7 @@ END_CONFIG
 
             <para>
                 The following example assumes the host is used to run several virtual machines.
-                While the host itself is considered trusted, the virtual machines are considered untrusted, since the host administrator has no control over them and cannot guarentee their proper (network) configuration.
+                While the host itself is considered trusted, the virtual machines are considered untrusted, since the host administrator has no control over them and cannot guarantee their proper (network) configuration.
             </para>
 
             <para>

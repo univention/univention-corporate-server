@@ -64,7 +64,7 @@ modrdn = "1"
 				<listitem>
 					<para>
 						Defines a LDAP filter which is used to match the objects the listener is interested in.
-						This filter is similar to the LDAP search filter as defined in <citation><xref linkend="RFC2254"/></citation>, but more restricted:
+						This filter is similar to the LDAP search filter as defined in <biblioref linkend="RFC2254"/>, but more restricted:
 					</para>
 					<itemizedlist>
 						<listitem><simpara>it is case sensitive</simpara></listitem>

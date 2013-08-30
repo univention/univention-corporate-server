@@ -3,7 +3,6 @@
           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
 
   %entities;
 ]>
@@ -359,149 +358,138 @@ exit
 		</section>
 	</chapter>
 
-    <chapter>
+    <chapter id="ext-dom-unix">
         <title>Integration of Linux/Unix systems into a UCS domain</title>
-<!--         <para> -->
-<!-- 		  Dies ist eine allgemeine Integrationsanleitung für die Eindung Unix/Linux-basierter -->
-<!-- 		  Nicht-UCS-Systeme - im folgenden einfach als Unix-System bezeichnet - in den -->
-<!-- 		  Vertrauenskontext der UCS-Domäne. -->
-<!-- 		</para> -->
+        <para>
+		  These are general instructions for the integration of Unix/Linux-based non-UCS
+		  systems - referred to in the following simply as Unix systems - in the trust context
+		  of the UCS domain.
+		</para>
 
-<!--         <para> -->
-<!-- 		  Die Einbindung von Ubuntu-Clients ist mit exemplarischen Schritt-für-Schritt-Anleitungen -->
-<!-- 		  in <xref linkend="ext-dom-ubuntu"/> dokumentiert. Hier werden einige für Desktops nötige Schritte gesondert -->
-<!-- 		  beschrieben. -->
-<!-- 		</para> -->
+        <para>
+		  The integration of Ubuntu clients is documented with example step-by-step instructions in
+		  <xref linkend="ext-dom-ubuntu"/>.
+		</para>
 
-<!--         <para> -->
-<!-- 		  Die Einbindung von Mac OS X-Clients ist mit exemplarischen Schritt-für-Schritt-Anleitungen -->
-<!-- 		  in <xref linkend="ucs-handbuch"/> dokumentiert. Mac OS-Systeme verwenden eine abweichende Domänenintegration. -->
-<!-- 		</para> -->
+        <para>
+		  The integration of Mac OS X clients is documented with example step-by-step instructions
+		  in the UCS manual. Mac OS systems use a deviating domain integration based
+		  on Samba 4.
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Es müssen nicht alle Integrationsschritte durchgeführt werden. So kann beispielsweise ein -->
-<!-- 		  Unix-System nur in die IP-Verwaltung integriert werden und auf den NTP-Server zugegreifen -->
-<!-- 		  ohne das System in die UCS-Benutzerverwaltung einzubinden (z.B. wenn es sich um einen -->
-<!-- 		  Datenbankserver handelt, auf dem ohnehin keine Benutezranmeldung erfolgen soll). -->
-<!-- 		</para> -->
+		<para>
+		  Not all integration steps need to be performed. In this way, for example, a Unix system
+		  can merely be integrated in the IP management and access the NTP server without integrating
+		  the system in the UCS user management (e.g., if it is a database server on which no user
+		  login is performed anyway).
+		</para>
 
-<!--         <section> -->
-<!-- 		  <title>Verwaltung der Systeme in der &uscUMC;</title> -->
-<!-- 		  <para> -->
-<!-- 			Für die Verwaltung der Unix-Systeme in der UMC wird in der Rechnerverwaltung der UMC ein -->
-<!-- 			Objekt vom Typ <guimenu>Computer: Linux</guimenu> angelegt werden. -->
-<!-- 		  </para> -->
+        <section>
+		  <title>Managing the systems in the &ucsUMC;</title>
+		  <para>
+			A <guimenu>Computer: Linux</guimenu> object can be created in the UMC computer
+			management. This allows the integration of the Unix system in the DNS/DHCP and network
+			administration of the &ucsUMC;
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Dies erlaubt die Einbindung des Unix-Systems in die DNS/DHCP- und Netzwerkverwaltung der -->
-<!-- 			&uscUMC; -->
-<!-- 		  </para> -->
+		  <para>
+			If the Nagios support is enabled under <guimenu>[Options]</guimenu>, remote Nagios checks can
+			also be applied against the system.
+		  </para>
+		</section>
 
-<!-- 		  <para> -->
-<!-- 			Wird unter Options der Nagios-Support aktiviert, können auch Nagios-Prüfungen auf das -->
-<!-- 			System angewendet werden. -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+        <section id="ext-dom-time">
+		  <title>Configuration of the name resolution</title>
+		  <para>
+			The Unix system should use a name server from the UCS domain: All UCS domain controllers
+			(i.e., &ucsMaster;, &ucsBackup; and &ucsSlave;) operate a DNS server. One or more of
+			these UCS system should be entered in the <filename>/etc/resolv.conf</filename>, e.g.:
+		  </para>
+<programlisting>
+domain  example.com
+nameserver  10.200.3.108
+nameserver  10.200.3.99
+</programlisting>
+		</section>
 
-<!--         <section id="ext-dom-time"> -->
-<!-- 		  <title>Konfiguration der Namensauflösung</title> -->
-<!-- 		  <para> -->
-<!-- 			Das Unix-System sollte einen Nameserver aus der UCS-Umgebung verwenden. Alle -->
-<!-- 			UCS-Domänencontroller (also &ucsMaster;, &ucsBackup; und &ucsSlave;) betreiben einen -->
-<!-- 			DNS-Server. Eines oder mehrere dieser UCS-Systeme sollte in die -->
-<!-- 			<filename>/etc/resolv.conf</filename> eingetragen werden, z.B: -->
+        <section>
+		  <title>Configuration of the time server</title>
+		  <para>
+			All UCS domain controllers (i.e., &ucsMaster;, &ucsBackup; and &ucsSlave;) operate a NTP
+			server.
+		  </para>
 
-<!-- <programlisting> -->
-<!-- domain  example.com -->
-<!-- nameserver  10.200.3.108 -->
-<!-- nameserver  10.200.3.99 -->
-<!-- </programlisting> -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+		  <para>
+			The configuration differs depending on the NTP software used, but is set under
+			<filename>/etc/ntp.conf</filename> on most Linux systems, e.g.:
+		  </para>
+<programlisting>
+server master.example.com
+server backup.example.com
+</programlisting>
+		</section>
 
-<!--         <section> -->
-<!-- 		  <title>Konfiguration der Zeitserver</title> -->
-<!-- 		  <para> -->
-<!-- 			Alle UCS-Domänencontroller (also &ucsMaster;, &ucsBackup; und &ucsSlave;) betreiben -->
-<!-- 			einen NTP-Server. -->
-<!-- 		  </para> -->
+		<section>
+		  <title>Access to user and group information of the UCS domain</title>
+		  <para>
+			The <emphasis>Name Service Switch</emphasis> (NSS) is an interface for configuring the
+			data sources for users, groups and computers. NSS is present on all Linux versions and
+			most Unix systems.
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Die Konfiguration unterscheidet sich je nach eingesetzter NTP-Softwar, wird aber auf -->
-<!-- 			vielen Linux-Systemen unter <filename>/etc/ntp.conf</filename> eingestellt, z.B: -->
+		  <para>
+			If the Unix system used provides support for an NSS module for LDAP access - as is the
+			case in most Linux distributions - user and group information can be read out of the
+			UCS LDAP directory.
+		  </para>
 
-<!-- <programlisting> -->
-<!-- server master.example.com -->
-<!-- server backup.example.com -->
-<!-- </programlisting> -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+		  <para>
+			The configuration files of the NSS LDAP module differ depending on the Linux/Unix
+			version.
+		  </para>
 
-<!-- 		<section> -->
-<!-- 		  <title>Zugriff auf Benutzer- und Gruppeninformationen der UCS-Domäne</title> -->
-<!-- 		  <para> -->
-<!-- 			Der <emphasis>Name Service Switch</emphasis> (NSS) ist eine Schnittstelle zur -->
-<!-- 			Konfiguration der Datenquellen für Benutzer, Gruppen und Rechner. NSS ist auf allen -->
-<!-- 			Linux-Varianten und den meisten Unix-Systemen vorhanden. -->
-<!-- 		  </para> -->
+		  <para>
+			As a general rule, the following settings must be set there:
+		  </para>
 
-<!-- 		  <para> -->
-<!-- 			Wenn das eingesetzte Unix-System über Unterstützung für ein NSS-Modul für LDAP-Zugriff -->
-<!-- 			verfügt - in den meisten Linux-Distributionen ist das der Fall - können Benutzer- und -->
-<!-- 			Gruppeninformationen aus dem UCS-LDAP ausgelesen werden. -->
-<!-- 		  </para> -->
+			<itemizedlist>
+			  <listitem><simpara>
+				The DN of the LDAP base of the UCS domain (saved in the &ucsUCRV;
+				<envar>ldap/base</envar> on UCS servers) needs to be configured on the system.
+			  </simpara></listitem>
 
-<!-- 		  <para> -->
-<!-- 			Die Konfigurationsdateien des NSS-LDAP-Moduls unterscheiden sich je nach -->
-<!-- 			Linux/Unix-Variante.  -->
-<!-- 		  </para> -->
+			  <listitem><simpara>
+				The LDAP server, ports and authentication credentials to be used. The fully
+				qualified domain names of one or more UCS domain controllers should be entered
+				here. In the default setting, UCS LDAP servers only allow authenticated LDAP access.
+			  </simpara></listitem>
 
-<!-- 		  <para> -->
-<!-- 			Generell müssen die folgenden Einstellungen vorgenommen werden: -->
+			  <listitem><para>
+				In the standard setting, only TLS-secured access is possible on UCS-LDAP
+				servers. The accessing Unix system must therefore use the root certificate of the
+				UCS-CA. The certificate can be found on the &ucsMaster; in the file
+				<filename>/etc/univention/ssl/udsCA/CAcert.pem</filename> and can be copied into any
+				directory, e.g., <filename>/etc/ucs-ssl/</filename>. The UCS root certificate must
+				then be configured in the LDAP configuration files. If the Unix system uses OpenLDAP
+				as the LDAP implementation, it is usually the file
+				<filename>/etc/openldap/ldap.conf</filename> or
+				<filename>/etc/ldap/ldap.conf</filename>. The line for OpenLDAP is as follows:
+			  </para>
+<programlisting>
+TLS_CACERT /etc/ucs-ssl/CAcert.pem
+</programlisting>
+			  </listitem>
+			</itemizedlist>
 
-<!-- 			<itemizedlist> -->
-<!-- 			  <listitem><simpara> -->
-<!-- 				Die DN der LDAP-Basis der UCS-Domäne (auf UCS-Servern in der &ucsUCRV; -->
-<!-- 				<envar>ldap/base</envar> gespeichert) -->
-
-<!-- 				needs to be configured on the system. -->
-<!-- 			  </simpara></listitem> -->
-
-<!-- 			  <listitem><simpara> -->
-<!-- 				Der/die zu verwendenden LDAP-Server. Hier sollten die fully qualified domain names -->
-<!-- 				eines oder mehrerer UCS Domänencontroller angegeben werden. -->
-<!-- 			  </simpara></listitem> -->
-
-<!-- 			  <listitem><simpara> -->
-<!-- 				Auf UCS-LDAP-Server kann in der Grundeinstellung nur TLS-gesichert zugegriffen -->
-<!-- 				werden. Das zugreifende Unix-System muss daher das Root-Zertifikat der UCS-CA -->
-<!-- 				einbinden. Das Zertifikat befindet sich auf dem &ucsMaster; in der Datei -->
-<!-- 				<filename>/etc/univention/ssl/udsCA/CAcert.pem</filename> und kann in ein beliebiges -->
-<!-- 				Verzeichnis kopiert werden, z.b. <filename>/etc/ucs-ssl/</filename>. Das -->
-<!-- 				UCS-Root-Zertifikat muss nun in der LDAP-Konfigurationsdatei registriert -->
-<!-- 				werden. Verwendet das Unix-System OpenLDAP als LDAP-Implementierung ist das in der -->
-<!-- 				Regel die Datei <filename>/etc/openldap/ldap.conf</filename> oder -->
-<!-- 				<filename>/etc/ldap/ldap.conf</filename>. -->
-<!-- 			  </simpara></listitem> -->
-<!-- 			</itemizedlist> -->
-
-<!-- 			Für OpenLDAP sieht die Zeile folgendermassen aus: -->
-
-<!-- <programlisting> -->
-<!-- TLS_CACERT /etc/ssl/CAcert.pem -->
-<!-- </programlisting> -->
-<!-- 		  </para> -->
-
-<!-- 		  <para> -->
-<!-- 			Wenn der NSS-LDAP-Dienst korrekt eingerichtet wurde, sollten die beiden folgenden -->
-<!-- 			Befehle alle Benutzer und Gruppen ausgeben: -->
-
-<!-- <programlisting> -->
-<!-- getent passwd -->
-<!-- getent group -->
-<!-- </programlisting> -->
-<!-- 		  </para> -->
-<!-- 		</section> -->
+		  <para>
+			If the NSS LDAP service has been set up correctly, the following two commands should
+			output all users and groups:
+		  </para>
+<programlisting language="sh">
+getent passwd
+getent group
+</programlisting>
+		</section>
 
 		<section>
 		  <title>Integrating into Kerberos</title>
@@ -537,18 +525,26 @@ exit
 <programlisting>
 [libdefaults]
     default_realm = KERBEROSREALM
+    default_tkt_enctypes = arcfour-hmac-md5 des-cbc-md5 des3-hmac-sha1 \
+       des-cbc-crc des-cbc-md4 des3-cbc-sha1 aes128-cts-hmac-sha1-96   \
+       aes256-cts-hmac-sha1-96
+    permitted_enctypes = des3-hmac-sha1 des-cbc-crc des-cbc-md4 \
+       des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5               \
+       aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96
+    allow_weak_crypto=true
     kdc_timesync = 1
     ccache_type = 4
     forwardable = true
     proxiable = true
- 
+    kdc_timesync = 1
+
 [realms]
 KERBEROSREAKM = {
    kdc = MASTERIP MASTERFQDN
    admin_server = MASTERIP MASTERFQDN
+   kpasswd_server = MASTERIP MASTERFQDN
 }
 </programlisting>
-
 		  </para>
 
 		  <para>
@@ -560,6 +556,13 @@ KERBEROSREAKM = {
 			Then Kerberos authentication during login should work via PAM  and password
 			changes should be possible via <command>kpasswd</command>.
 		  </para>
+
+		  <para>
+			To allow SSH logins via Kerberos, the options <emphasis>GSSAPIAuthentication</emphasis>
+			and <emphasis>GSSAPIKeyExchange</emphasis> should be set to <emphasis>yes</emphasis> in
+			the configuration file of the SSH daemon (typically <filename>/etc/ssh/sshd_config</filename>).
+		  </para>
+
 		</section>
 
 		<section>
@@ -567,165 +570,260 @@ KERBEROSREAKM = {
 		  <para>
 			UCS uses the <emphasis>Common Unix Printing System</emphasis> (CUPS) to implement print
 			services. The Unix system can use the UCS print servers by installing the CUPS client
-			programs. In addition the CUPS server needs to be configured, typically in the
+			programs. In addition the CUPS server needs to be configured for the clients, typically in the
 			configuration file <filename>/etc/cups/client.conf</filename>, e.g.:
-
+		  </para>
 <programlisting>
 ServerName printserver.example.com
 </programlisting>
-		  </para>
 		</section>
 	</chapter>
 
-    <chapter>
-	  <title>Advanced SSL certificate handling</title>
-
-	  <section>
-		<title>Managing additional certificates with univention-certificate</title>
-        <para>
-		  Every UCS domain has its own SSL certificate authority. The SSL certificates are created
-		  automatically for all UCS systems during the installation (&ucsMaster;) or during the domain join
-		  (all other system roles).
-		</para>
-
-        <para>
-		  The command <command>univention-certificate</command> can be used to manage these
-		  certificates, e.g., if it proves necessary to create a certificate for the integration of
-		  an external system.
-		</para>
-
-        <section>
-            <title>Storage of the certificates</title>
-			<para>
-			  The certificates are stored in the <filename>/etc/univention/ssl</filename> directory
-			  on the &ucsMaster; and synchronised on all &ucsBackup; systems. A subdirectory with
-			  the name of the certificate is kept in the <filename>/etc/univention/ssl/</filename>
-			  directory for every certificate, which contains the following files:
-
-			  <itemizedlist>
-				<listitem> <para>
-				  The <filename>cert.pem</filename> file represents the actual certificate. 
-				</para> </listitem>
-
-				<listitem><para>
-				  <filename>openssl.cnf</filename> contains the OpenSSL configuration at the time
-				  the certificate was created. 
-				</para></listitem>
-
-				<listitem><para>
-				  The <filename>private.key</filename> file contains the private key for the
-				  certificate. 
-				</para></listitem>
-
-				<listitem><para>
-				  <filename>req.pem</filename> documents the original client request with which the
-				  certificate was created.
-				</para></listitem>
-			  </itemizedlist>
-			</para>
-		</section>
-
-        <section>
-            <title>Displaying the certificates</title>
-			<para>
-			  The following command is used to display a list of all the available, valid certificates:
-
-<programlisting language="sh"><![CDATA[
-univention-certificate list
-]]></programlisting>
-			</para>
-
-			<para>
-			  An individual SSL certificate can be displayed with the following command:
-
-<programlisting language="sh"><![CDATA[
-univention-certificate dump -name fullyqualifiedhostname 
-]]></programlisting>
-			</para>
-		</section>
-
-        <section>
-            <title>Checking the validity of a certificate</title>
-			<para>
-			  This command checks whether a certificate is valid or invalid:
-
-<programlisting language="sh"><![CDATA[
-univention-certificate check -name fullyqualifiedhostname
-]]></programlisting>
-			</para>
-
-			<para>
-			  A certificate may be invalid because it has either been revoked or has expired.
-			</para>
-		</section>
-
-        <section>
-            <title>Revoking a certificate</title>
-			<para>
-			  The command
-<programlisting language="sh"><![CDATA[
-univention-certificate revoke -name fullyqualifiedhostname 
-]]></programlisting>
-			  is used to revoke a certificate. It is then no longer valid, but remains stored in the
-			  file system. Certificates which are created and removed automatically during the
-			  management of UMC computer objects do not need to be revoked manually.
-			</para>
-		</section>
-
-        <section>
-            <title>Creating a certificate</title>
-			<para>
-			  The command
-<programlisting language="sh"><![CDATA[
-univention-certificate new -name fullyqualifiedhostname
-]]></programlisting>
-			  can be used to create a new certificate. The fully qualified domain name of the
-			  computer should be given as the name. In the default setting the certificate is valid
-			  for five years. The standard value can be changed by setting the &ucsUCRV;
-			  <envar>ssl/default/days</envar>.
-			</para>
-		</section>
-	  </section>
+<!--     <chapter> -->
+<!-- 	  <title>Advanced SSL certificate handling</title> -->
 
 <!-- 	  <section> -->
-<!-- 		<title>Signieren von Certificate Signing Requests durch die UCS Certificate Authority</title> -->
+<!-- 		<title>Managing additional certificates with univention-certificate</title> -->
 <!--         <para> -->
-<!-- 		  Ein Certificate signing request (CSR) ist eine Anfrage an eine Certificate Authority (CA), -->
-<!-- 		  in der eine digitale Signatur angefordert wird. Ein CSR erfolgt typischerweise in Form -->
-<!-- 		  einer Datei. Dieser Abschnitt beschreibt wie ein CSR von der UCS CA signiert werden kann. -->
+<!-- 		  Every UCS domain has its own SSL certificate authority. The SSL certificates are created -->
+<!-- 		  automatically for all UCS systems during the installation (&ucsMaster;) or during the domain join -->
+<!-- 		  (all other system roles). -->
 <!-- 		</para> -->
 
 <!--         <para> -->
-<!-- 		  CERTIFICATE ist der Dateiname des zu erstellenden Zertifikats. -->
+<!-- 		  The command <command>univention-certificate</command> can be used to manage these -->
+<!-- 		  certificates, e.g., if it proves necessary to create a certificate for the integration of -->
+<!-- 		  an external system. -->
 <!-- 		</para> -->
 
-<!--         <para> -->
-<!-- 		  REQUEST ist die Datei mit dem CSR im PEM-Format (Eine Datei im PEM-Format ist eine -->
-<!-- 		  Textdatei, die einen Base64-codierten Block enthält, der von BEGIN CERTIFICATE und END -->
-<!-- 		  CERTIFICATE umgefasst wird). -->
-<!-- 		</para> -->
+<!--         <section> -->
+<!--             <title>Storage of the certificates</title> -->
+<!-- 			<para> -->
+<!-- 			  The certificates are stored in the directory <filename class="directory">/etc/univention/ssl/</filename> -->
+<!-- 			  on the &ucsMaster; and synchronised on all &ucsBackup; systems. A subdirectory with -->
+<!-- 			  the name of the certificate is kept in the directory <filename class="directory">/etc/univention/ssl/</filename> -->
+<!-- 			  for every certificate, which contains the following files: -->
+<!-- 			</para> -->
 
-<!--         <para> -->
-<!-- 		  Wenn die Anfrage im DER-Format vorliegt, kann sie mit dem folgenden Befehl umgewandelt -->
-<!-- 		  werden: -->
+<!-- 			<variablelist> -->
+<!-- 				<varlistentry> -->
+<!-- 					<term><filename>req.pem</filename></term> -->
+<!-- 					<listitem> -->
+<!-- 						<para> -->
+<!-- 							This file contains the original request with which the certificate was created. -->
+<!-- 						</para> -->
+<!-- 					</listitem> -->
+<!-- 				</varlistentry> -->
+<!-- 				<varlistentry> -->
+<!-- 					<term><filename>openssl.cnf</filename></term> -->
+<!-- 					<listitem> -->
+<!-- 						<simpara> -->
+<!-- 							This file contains the OpenSSL configuration at the time the certificate was created. -->
+<!-- 						</simpara> -->
+<!-- 					</listitem> -->
+<!-- 				</varlistentry> -->
+<!-- 				<varlistentry> -->
+<!-- 					<term><filename>cert.pem</filename></term> -->
+<!-- 					<listitem> -->
+<!-- 						<simpara> -->
+<!-- 							The file represents the actual certificate. -->
+<!-- 						</simpara> -->
+<!-- 					</listitem> -->
+<!-- 				</varlistentry> -->
+<!-- 				<varlistentry> -->
+<!-- 					<term><filename>private.key</filename></term> -->
+<!-- 					<listitem> -->
+<!-- 						<simpara> -->
+<!-- 							The file contains the private key for the certificate. -->
+<!-- 						</simpara> -->
+<!-- 					</listitem> -->
+<!-- 				</varlistentry> -->
+<!-- 			</variablelist> -->
+<!-- 		</section> -->
 
-<!-- <programlisting> -->
-<!-- openssl x509 -inform der -outform pem -in request.der -out req.pem -->
-<!-- </programlisting> -->
-<!-- 		</para> -->
+<!--         <section> -->
+<!--             <title>Displaying the certificates</title> -->
+<!-- 			<para> -->
+<!-- 			  The following command is used to display a list of all the available, valid certificates: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"><![CDATA[ -->
+<!-- univention-certificate list -->
+<!-- ]]></programlisting> -->
 
-<!--         <para> -->
-<!-- 		  Der folgende Befehl signiert dann den CSR: -->
+<!-- 			<para> -->
+<!-- 			  An individual SSL certificate can be displayed with the following command: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"><![CDATA[ -->
+<!-- univention-certificate dump -name fullyqualifiedhostname -->
+<!-- ]]></programlisting> -->
+<!-- 		</section> -->
 
-<!-- <programlisting> -->
-<!-- openssl ca -batch -config /etc/univention/ssl/openssl.cnf    \ -->
-<!-- -in REQUEST -out CERTIFICATE                              \   -->
-<!-- -passin pass:"$(cat /etc/univention/ssl/password)" -->
-<!-- </programlisting> -->
-<!-- 		</para> -->
+<!--         <section> -->
+<!--             <title>Checking the validity of a certificate</title> -->
+<!-- 			<para> -->
+<!-- 			  This command checks whether a certificate is valid or invalid: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"><![CDATA[ -->
+<!-- univention-certificate check -name fullyqualifiedhostname -->
+<!-- ]]></programlisting> -->
+<!-- 			<para> -->
+<!-- 			  A certificate may be invalid because it has either been revoked or has expired. -->
+<!-- 			</para> -->
+<!-- 		</section> -->
+
+<!--         <section> -->
+<!--             <title>Revoking a certificate</title> -->
+<!-- 			<para> -->
+<!-- 			  The following command is used to revoke a certificate: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"><![CDATA[ -->
+<!-- univention-certificate revoke -name fullyqualifiedhostname -->
+<!-- ]]></programlisting> -->
+<!-- 			<para> -->
+<!-- 				It is then no longer valid, but remains stored in the file system. -->
+<!-- 				Certificates of UMC computer objects do not need to be revoked manually. -->
+<!-- 			</para> -->
+<!-- 		</section> -->
+
+<!--         <section> -->
+<!--             <title>Creating a certificate</title> -->
+<!-- 			<para> -->
+<!-- 			  The following command can be used to create a new certificate: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"><![CDATA[ -->
+<!-- univention-certificate new -name fullyqualifiedhostname -->
+<!-- ]]></programlisting> -->
+<!-- 			<para> -->
+<!-- 			  The fully qualified domain name of the -->
+<!-- 			  computer should be given as the name. In the default setting the certificate is valid -->
+<!-- 			  for five years. The standard value can be changed by setting the &ucsUCRV; -->
+<!-- 			  <envar>ssl/default/days</envar>. -->
+<!-- 			</para> -->
+<!-- 		</section> -->
 <!-- 	  </section> -->
-	</chapter>
 
+<!-- 	  <section> -->
+<!-- 		<title>Signing of certificate signing requests by the UCS certificate authority</title> -->
+<!--         <para> -->
+<!-- 		  A certificate signing request (CSR) is a request submitted to a certificate authority (CA) -->
+<!-- 		  to create a digital signature. A CSR typically occurs in the form of a file. This section -->
+<!-- 		  describes how a CSR is signed by the UCS CA. -->
+<!-- 		</para> -->
+
+<!--         <para> -->
+<!-- 		  CERTIFICATE is the file name of the certificate to be created. -->
+<!-- 		</para> -->
+
+<!--         <para> -->
+<!-- 			REQUEST is the file with the CSR in either PEM or DER format. -->
+<!-- 			A file in PEM format is a text file containing a Base64-encoded block enclosed between <literal>BEGIN CERTIFICATE</literal> and <literal>END CERTIFICATE</literal>. -->
+<!-- 			A request in binary DER format must be first converted to the PEM format with the following command: -->
+<!-- 		</para> -->
+<!-- <programlisting language="sh"> -->
+<!-- openssl req \ -->
+<!--   -inform  der -in  request.der \ -->
+<!--   -outform pem -out req.pem -->
+<!-- </programlisting> -->
+
+<!--         <para> -->
+<!-- 		  The following command then processes the CSR and creates the certificate: -->
+<!-- 		</para> -->
+<!-- <programlisting language="sh"> -->
+<!-- openssl ca -batch -config /etc/univention/ssl/openssl.cnf \ -->
+<!--   -in REQUEST -out CERTIFICATE \ -->
+<!--   -passin file:/etc/univention/ssl/password -->
+<!-- </programlisting> -->
+<!-- 	  </section> -->
+
+<!-- 	  <section> -->
+<!-- 		<title>Signing of the UCS certificate authority by another superordinate CA</title> -->
+<!--         <para> -->
+<!-- 		  The certificate authority (CA) integrated in UCS can be certified by another CA. In this -->
+<!-- 		  case, the UCS CA - which is a root CA as standard - is converted a sub CA. -->
+<!-- 		</para> -->
+
+<!--         <para> -->
+<!-- 		  The following steps are necessary for this: -->
+<!-- 		</para> -->
+
+<!-- 		  <itemizedlist> -->
+<!-- 			<listitem><para> -->
+<!-- 			  Firstly, a backup copy of <filename>/etc/univention/ssl</filename> should be created. -->
+<!-- 			</para></listitem> -->
+
+<!-- 			<listitem><para> -->
+<!-- 			  The <emphasis>certificate signing request</emphasis> (CSR) can be found in the -->
+<!-- 			  <filename>/etc/univention/ssl/ucsCA/CAreq.pem</filename> directory on the &ucsMaster; -->
+<!-- 			  This file can be used to request a certificate in PEM format from the superordinate -->
+<!-- 			  CA. (PEM is a standardised format in which the certificate is saved -->
+<!-- 			  Base64-encoded). If the received certificate is not in PEM format, but is sent in DER -->
+<!-- 			  format instead, it must be converted with the following command: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"> -->
+<!-- openssl x509 -inform der        \ -->
+<!--   -outform pem -in filename.der \ -->
+<!--   -out filename.pem -->
+<!-- </programlisting> -->
+<!-- 			</listitem> -->
+
+<!-- 			<listitem><para> -->
+<!-- 			  The new certificate must be stored at several positions in the file system. The -->
+<!-- 			  following steps copy it: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"> -->
+<!-- cd /etc/univention/ssl -->
+<!-- cp NEWCERT.pem ucsCA/CAcert.pem -->
+<!-- cp NEWCERT.pem ucsCA/newcerts/00.pem -->
+<!-- cp NEWCERT.pem /var/www/ucs-root-ca.crt -->
+<!-- c_rehash ucsCA/certs -->
+<!-- </programlisting> -->
+<!-- 			</listitem> -->
+
+<!-- 			<listitem><para> -->
+<!-- 			  The last command transfers the certificate from the -->
+<!-- 			  <filename>/etc/univention/ssl/ucsCA/newcerts/</filename> directory to the -->
+<!-- 			  <filename>/etc/univention/ssl/ucsCA/certs/</filename> directory and creates a link to -->
+<!-- 			  the certificate there. -->
+<!-- 			</para></listitem> -->
+
+<!-- 			<listitem><para> -->
+<!-- 			  The CA certificate of the signing, superordinate CA is copied and saved in the -->
+<!-- 			  <filename>/etc/univention/ssl/mca/</filename> directory: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"> -->
+<!-- mkdir -p /etc/univention/ssl/mca/ -->
+<!-- cp CA.pem /etc/univention/ssl/mca/ -->
+<!-- </programlisting> -->
+<!-- 			</listitem> -->
+
+<!-- 			<listitem><para> -->
+<!-- 			  The certificate chain is now generated: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"> -->
+<!-- cd /etc/univention/ssl -->
+<!-- cat ucsCA/CAcert.pem mca/CA.pem > CAChain.pem -->
+<!-- </programlisting> -->
+<!-- 			</listitem> -->
+
+<!-- 			<listitem><para> -->
+<!-- 			  The web server must be set up in such a way that it sends the chain file to the -->
+<!-- 			  clients together with its certificate. This is done by setting the &ucsUCRV; -->
+<!-- 			  <envar>apache2/ssl/certificatechain</envar> to -->
+<!-- 			  <filename>/etc/univention/ssl/CAChain.pem</filename> and restarting the web server: -->
+<!-- 			</para> -->
+<!-- <programlisting language="sh"> -->
+<!-- ucr set apache2/ssl/certificatechain=/etc/univention/ssl/CAChain.pem -->
+<!-- /etc/init.d/apache2 restart -->
+<!-- </programlisting> -->
+<!-- 			</listitem> -->
+
+<!-- 			<listitem><para> -->
+<!-- 			  The CA certificate of the superordinate CA must be imported on all clients so that the -->
+<!-- 			  clients can verify other certificates accordingly that are overwritten by the UCS-CA. -->
+<!-- 			</para></listitem> -->
+<!-- 		  </itemizedlist> -->
+<!-- 	  </section> -->
+<!-- 	</chapter> -->
 
     <?dbhtml-include href="../stylesheets/piwiki.html"?>
 </book>

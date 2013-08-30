@@ -3,7 +3,6 @@
           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 
   <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
 
   %entities;
 ]>
@@ -34,7 +33,7 @@
 		Print quotas are implemented using the component Pykota. It creates an interface between the
 		print server CUPS and the connected printer. Before the print job is sent to
 		the printer, the system checks whether the user is authorised to print. In addition, every
-		print job is logged, which allows cost evaluations, for example. 
+		print job is logged, which allows cost evaluations.
 	  </para>
 
 	  <para>
@@ -47,8 +46,8 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			Once the <emphasis>soft limit</emphasis> is reached, an e-mail can be sent to the user
-			in question warning the user that the hard limit will soon be reached. This is done by
+			Once the <emphasis>soft limit</emphasis> is reached, an e-mail can be sent 
+			warning the user that the hard limit will soon be reached. This is done by
 			setting the &ucsUCRV; <envar>cups/quota/inform</envar> to <emphasis>yes</emphasis>. This
 			notification is disabled in the standard setting.
 		  </simpara></listitem>
@@ -62,7 +61,7 @@
 	  <para>
 		The print quota status is not saved in the LDAP directory service, but rather in a separate
 		Postgres SQL database set up automatically via the
-		<emphasis>univention-printquotadb</emphasis> package.
+		<emphasis>univention-printquotadb</emphasis> package on the print server.
 	  </para>
 	</section>
 
@@ -163,11 +162,11 @@
 
 		  <para>
 			The UMC module <guimenu>Printer administration</guimenu> allows the configuration of user-specific
-			printer quotas. Quotas can be assigned for users for all printers on which a quota is
+			printer quotas. Quotas can be assigned to users for all printers on which a quota is
 			enabled (see <xref linkend="quota:config:activate"/>) under <guimenu>more -> Edit quota</guimenu>. A list of all users for which
 			quotas are configured is displayed. <guimenu>Add new record</guimenu> can now be used to add an
 			additional entry: A user is selected under <guimenu>User name</guimenu> and a <guimenu>soft limit</guimenu>
-			and <guimenu>hard limit</guimenu> specified. The page counter can be reset to zero under
+			and <guimenu>hard limit</guimenu> has to be specified. The page counter can be reset to zero under
 			<guimenu>more -> Reset user quota</guimenu>.
 		  </para>
 
@@ -206,6 +205,7 @@ user            -Q   1.0    20   100   200     0.00             20
                                                   Real :         0
 </screen>
 	  </para>
+	</section>
 
 	<section>
 	  <title>Resetting the printer quotas</title>
@@ -215,13 +215,24 @@ user            -Q   1.0    20   100   200     0.00             20
 		using the command <command>edpykota reset</command>:
 
 <screen>
-:~# edpykota reset user01
+:~# edpykota --reset user01
 Extracting datas...
 Modification...
 Done.
 </screen>
 	  </para>
-	</section>
+
+	  <para>
+		The following command removes the print quota for a user on all printer shares:
+
+<screen>
+edpykota --delete user01 
+</screen>
+		or on a specific printer:
+<screen>
+edpykota --delete user01 --printer labelprinter
+</screen>
+	  </para>
 
 	</section>
 

@@ -54,7 +54,7 @@
 		</variablelist>
 		<para>
 			These packages must be installed on the development system.
-			If not, missing packages can be installed on the command line using <command>univention-install</command> or through UMC, which is described in the <citation><xref linkend="ucs-handbuch"/></citation>.
+			If not, missing packages can be installed on the command line using <command>univention-install</command> or through UMC, which is described in the <biblioref linkend="ucs-handbuch"/>.
 		</para>
 	</section>
 
@@ -151,7 +151,7 @@ or add --createorig to create one.
 		<para>
 			The control files in the <filename class="directory">debian/</filename> directory control the package creation process.
 			The following sections provide a short description of these files.
-			A more detailed description is available in the <citation><xref linkend="Debian:pkg_basics"/></citation>.
+			A more detailed description is available in the <biblioref linkend="Debian:pkg_basics"/>.
 		</para>
 		<para>
 			Several files will have the <filename class="extension">.ex</filename> suffix, which mark them as examples.
@@ -715,7 +715,7 @@ testdeb (0.1-1) unstable; urgency=low
  -- John Doe <user@example.com>  Mon, 21 Mar 2013 13:46:39 +0100
 			]]></programlisting>
 			<para>
-				The date and time stamp must follow the format described in <citation><xref linkend="RFC2822"/></citation>.
+				The date and time stamp must follow the format described in <biblioref linkend="RFC2822"/>.
 				<command>debchange</command> automatically inserts and updates the current date.
 				Alternatively <command>date -R</command> can be used on the command line to create the correct format.
 			</para>
@@ -728,7 +728,7 @@ testdeb (0.1-1) unstable; urgency=low
 		<section id="deb:rules"><title>debian/rules</title>
 			<para>
 				The file <filename>rules</filename> describes the commands needed to build the package.
-				It must use the <application>Make</application> syntax <citation><xref linkend="make"/></citation>.
+				It must use the <application>Make</application> syntax <biblioref linkend="make"/>.
 				It consists of several rules, which have the following structure:
 			</para>
 			<programlisting language="make"><![CDATA[
@@ -931,10 +931,10 @@ override_dh_auto_configure:
 	<section id="deb:links">
 		<title>Further reading</title>
 		<itemizedlist>
-			<listitem><simpara><citation><xref linkend="Debian:pkg_basics"/></citation></simpara></listitem>
-			<listitem><simpara><citation><xref linkend="Debian:maint-guide"/></citation></simpara></listitem>
-			<listitem><simpara><citation><xref linkend="Debian:policy"/></citation></simpara></listitem>
-			<listitem><simpara><citation><xref linkend="Debian:dev-ref"/></citation></simpara></listitem>
+			<listitem><simpara><biblioref linkend="Debian:pkg_basics"/></simpara></listitem>
+			<listitem><simpara><biblioref linkend="Debian:maint-guide"/></simpara></listitem>
+			<listitem><simpara><biblioref linkend="Debian:policy"/></simpara></listitem>
+			<listitem><simpara><biblioref linkend="Debian:dev-ref"/></simpara></listitem>
 		</itemizedlist>
 	</section>
 

@@ -3,6 +3,7 @@ MAIN_de := scenarios-de
 MAIN_en := scenarios-en
 MAIN := $(MAIN_de) $(MAIN_en)
 STYLESHEET := univention
+scenarios-de%: lang := de
 
 COMMON_DIR := ../../../doc-common/docbook
 include $(COMMON_DIR)/Makefile

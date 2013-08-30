@@ -4,30 +4,30 @@
 	%entities;
 ]>
 <chapter id="chap:app" status="draft">
-	<title>App center
+	<title>App Center
 		<indexterm><primary>App center</primary></indexterm>
 	</title>
 	<remark>PMH: Bug #31226</remark>
 	<important>
 		<para>
-			This chapter is a draft and work in progress!  Feedback is very much
+			This chapter is a draft and work in progress! Feedback is very much
 			appreciated.
 		</para>
 	</important>
 	<para>
 		The Univention App Center provides a platform for software vendors and an
-		easy-to-use entry point for &ucsUCS; to extend their environment with
+		easy-to-use entry point for &ucsUCS; users to extend their environment with
 		business software.
 	</para>
 
 	<section id="app:package">
 		<title>Packaging for the App Center</title>
 		<para>
-			The App Center reuses the package system from Debian (and &ucsUCS;
-			itself). In fact installing an application from withing the App Center is
-			technically (a bit more than) adding a new repository to the system (one
-			that lies on the App Center Server) and <command>apt-get
-				install</command>ing the requested package. This means that 3rd party
+			The App Center is based on the Debian package system.
+			From a technical point of view, the installation of an application via the App Center contains
+			of two rough steps: (1) adding a new repository to the system which
+			resides on the App Center server and (2) <command>apt-get</command> which
+			installs the required package. This means that 3rd party
 			vendors need to package their application as a <literal>.deb</literal>
 			file and send that to Univention.
 		</para>
@@ -51,12 +51,12 @@
 			Debian packages.
 		</para>
 	</section>
-	<section id="app:files">
-		<title>Additional files to be shipped with the application</title>
+	<section id="app:iniFile">
+		<title>Application meta file</title>
 		<para>
 			The App Center needs some meta information about the application to
 			handle the installation and to present information to the user. The
-			application needs a so-called <literal>ini-file</literal> for that.
+			application needs a so-called <literal>.ini</literal> file for that.
 		</para>
 		<para>
 			A minimal example along with some comments on the variables is attached:
@@ -106,6 +106,18 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
+				<term>RequiredApps</term>
+				<listitem>
+					<simpara>
+						Application IDs for apps that need to be installed in order to run
+						this one correctly. These applications will not be installed
+						automatically if not installed yet but the user has to explicitely
+						install them after getting a message which applications are
+						missing. New in UCS 3.2.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
 				<term>ConflictedSystemPackages</term>
 				<listitem>
 					<simpara>
@@ -150,26 +162,62 @@
 					</simpara>
 				</listitem>
 			</varlistentry>
-		</variablelist>
-		<para>
-			There are more files that can be shipped with the Application, each of
-			them optionally:
-		</para>
-		<variablelist>
 			<varlistentry>
 				<term>Screenshot</term>
 				<listitem>
 					<simpara>
-						A screenshot showing the application in action. JPG or (preferably)
-						PNG.
+						Name of a screenshot file illustratin the application in action.
+						Format can be JPG or (preferably)	PNG.
 					</simpara>
 				</listitem>
 			</varlistentry>
+		</variablelist>
+	</section>
+	<section id="app:optionalFiles">
+		<title>Optional application files</title>
+		<para>
+			Along with the <literal>.ini</literal> file, there are more files that
+			can be shipped along with the Application, each of them optionally:
+		</para>
+		<variablelist>
 			<varlistentry>
 				<term>LICENSE_AGREEMENT</term>
 				<listitem>
 					<simpara>
-						A file the user has to accept before the installation starts.
+						A file the user has to accept before the installation starts. As of
+						UCS 3.2 HTML in this file is allowed and it may be localised by
+						using the files <literal>LICENSE_AGREEMENT_EN</literal> resp.
+						<literal>LICENSE_AGREEMENT_DE</literal>.
+					</simpara>
+					<important>
+						<para>
+							As stated above HTML in this file is now allowed (and enforced).
+							It was not in UCS 3.1 but received some simple auto formatting.
+							You may have to convert an existing
+							<literal>LICENSE_AGREEMENT</literal>.
+						</para>
+					</important>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_INSTALL</term>
+				<listitem>
+					<simpara>
+						A file that is presented to the user before installation (but after
+						<literal>LICENSE_AGREEMENT</literal>). HTML is allowed. It may be
+						localised by using the files <literal>README_INSTALL_EN</literal>
+						resp. <literal>README_INSTALL_DE</literal>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_POST_INSTALL</term>
+				<listitem>
+					<simpara>
+						A file that is presented to the user after installation. HTML is
+						allowed. It may be localised by using the files
+						<literal>README_POST_INSTALL_EN</literal> resp.
+						<literal>README_POST_INSTALL_DE</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -179,27 +227,45 @@
 					<simpara>
 						A file that is presented to the user before upgrading, listing
 						changes. Note that a user may only upgrade to the newest version
-						and does it in one step. Only the latest
+						and does so in one step. Only the latest
 						<literal>README_UPDATE</literal> is shown.
+						As of UCS 3.2 it may be localised by using the files
+						<literal>README_UPDATE_EN</literal> resp.
+						<literal>README_UPDATE_DE</literal>.
+					</simpara>
+					<important>
+						<para>
+							As stated above HTML in this file is now allowed (and enforced).
+							It was not in UCS 3.1 but received some simple auto formatting.
+							You may have to convert an existing
+							<literal>README_UPDATE</literal>.
+						</para>
+					</important>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_POST_UPDATE</term>
+				<listitem>
+					<simpara>
+						A file that is presented to the user after upgrading. Note that a
+						user may only upgrade to the newest version and does so in one
+						step. Only the latest <literal>README_POST_UPDATE</literal> is
+						shown. HTML is allowed. It may be localised by using the files
+						<literal>README_POST_UPDATE_EN</literal> resp.
+						<literal>README_POST_UPDATE_DE</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>README_EN</term>
+				<term>README</term>
 				<listitem>
 					<simpara>
 						A README file that the user may see in a dedicated Univention
 						Management Console Module for the installed application. Should
 						contain something like first steps with the installed application
-						and explain what can be done with it and how. HTML is allowed.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>README_DE</term>
-				<listitem>
-					<simpara>
-						Same as <literal>README_EN</literal> but in German.
+						and explain what can be done with it and how. HTML is allowed. It
+						may be localised by using the files <literal>README_EN</literal>
+						resp <literal>README_DE</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>

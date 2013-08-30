@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+
+  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+
+  %entities;
+]>
+<book lang="en" id="windows-3.1">
+    <bookinfo>
+      <title>Univention Corporate Server</title>
+      <subtitle>Extended Windows integration documentation</subtitle>
+
+        <revhistory>
+            <revision>
+                <revnumber>3.1-1</revnumber>
+                <date>3 Jun 2013</date>
+            </revision>
+        </revhistory>
+    </bookinfo>
+
+    <chapter>
+        <title>Advanced Samba documentation</title>
+        <section>
+            <title>Operating Samba 4 as a read-only domain controller</title>
+			<para>
+			  Active Directory offers an operating mode called <emphasis>read-only domain
+			  controller</emphasis> (RODC) with the following properties:
+
+			  <itemizedlist>
+				<listitem><para>
+				  The data are only stored in read-only format; all write changes must be
+				  performed on another domain controller.
+				</para></listitem>
+
+				<listitem><para>
+				  Consequently, replication is only performed in one direction.
+				</para></listitem>
+			  </itemizedlist>
+
+			  A comprehensive description can be found in the Microsoft TechNet Library <biblioref linkend="technet-rodc"/>.
+			</para>
+
+			<para>
+			  A Samba 4 domain controller can be operated in RODC mode (on a &ucsSlave; for
+			  example). Prior to the installation of <emphasis>univention-samba4</emphasis>, the
+			  &ucsUCRV; <envar>samba4/role</envar> must be set to <emphasis>RODC</emphasis>:
+			</para>
+<programlisting language="sh">
+ucr set samba4/role=RODC
+univention-install univention-samba4
+univention-run-join-scripts
+</programlisting>
+
+        </section>
+    </chapter>
+
+	<bibliography>
+		<bibliomixed id="technet-rodc"/>
+	</bibliography>
+
+    <?dbhtml-include href="../stylesheets/piwiki.html"?>
+</book>
