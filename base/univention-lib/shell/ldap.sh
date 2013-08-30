@@ -254,8 +254,10 @@ ucs_registerLDAPSchema () {
 	fi
 
 	local package_name package_version
-	if [ -n "$DPKG_MAINTSCRIPT_PACKAGE" ]; then
-		package_name="$DPKG_MAINTSCRIPT_PACKAGE"
+	calling_script_name=$(basename "$0")
+	calling_script_basename=$(basename "$calling_script_basename" .postinst)
+	if [ "$calling_script_basename" != "$calling_script_name" ]; then
+		package_name="$calling_script_basename"
 	elif [ -n "$JS_SCRIPT_FULLNAME" ]; then
 		package_name=$(dpkg -S "$JS_SCRIPT_FULLNAME" | cut -d: -f1)
 	fi
