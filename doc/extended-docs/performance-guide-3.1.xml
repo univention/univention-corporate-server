@@ -152,7 +152,7 @@
 			checks to prevent a user name being added into a group twice. These checks can
 			be deactivated by setting the &ucsUCR; variables
 			<envar>listener/memberuid/skip</envar> and
-			<envar>listener/uniquemember/skip</envar> to <literal>yes</literal>.
+			<envar>listener/uniquemember/skip</envar> to <literal>no</literal>.
 		</para>
 	</section>
 </chapter>
