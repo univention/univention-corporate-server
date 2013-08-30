@@ -41,6 +41,7 @@ import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 import subprocess
 import zlib
+import tempfile
 udm_modules.update()
 
 name = 'ldap_schema'
@@ -85,7 +86,8 @@ def handler(dn, new, old):
 			if old:
 				old_filename = os.path.join(BASEDIR, old.get('univentionLDAPSchemaFilename')[0])
 				if new_filename != old_filename:
-					backup_file = '%s.disabled' % old_filename
+					backup_fd, backup_filename = tempfile.mkstemp()
+					ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old schema subfile %s to %s.' % (name, old_filename, backup_filename))
 					try:
 						os.rename(old_filename, backup_file)
 					except IOError:
@@ -109,13 +111,31 @@ def handler(dn, new, old):
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing schema file %s.' % (name, new_filename))
 				return
 
-			if backup_file and os.path.exists(backup_file):
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old schema file %s.' % (name, backup_file))
-				os.unlink(backup_file)
-
 			ucr = ConfigRegistry()
 			ucr.load()
 			ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
+
+			output = ''
+			p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+			while not p.poll():
+				output += p.stdout.read(65535)
+			p.wait()
+			if p.returncode != 0:
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Validation of LDAP schema failed:\n%s.' % (name, output))
+				## Revert changes
+				try:
+					os.unlink(new_filename)
+					os.rename(backup_file, old_filename)
+					os.close(backup_fd)
+				except IOError:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old schema file %s.' % (name, old_filename))
+				## And exit
+				return
+
+			if backup_file and os.path.exists(backup_file):
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old schema file %s.' % (name, backup_file))
+				os.unlink(backup_file)
+				os.close(backup_fd)
 
 			global __todo_list, __do_reload
 			__todo_list.append(new['dn'])
@@ -140,6 +160,7 @@ def postrun():
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Reloading LDAP server.' % (name,) )
 				p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
 				p.wait()
+				__do_reload = False
 				if p.returncode != 0:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
 					return
