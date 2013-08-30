@@ -1,12 +1,12 @@
 [grub/timeout]
 Description[de]=Beim Systemstart wird eine Auswahl der verfügbaren Kernel angezeigt. Die hier konfigurierte Zeit in Sekunden wird auf eine Benutzereingabe gewartet, bevor der Standardkernel gebootet wird. Ist die Variable auf '0' gesetzt, wird direkt der Standardkernel geladen, wird sie auf '-1' gesetzt erfolgt die Kernelauswahl immer manuell.
-Description[en]=During system boot a selection of available kernel is shown. The time in seconds configured here is waited for user input. Once elapsed the default kernel is booted. If the variable is set to '0' the default kernel is booted directly, if set to '-1' the kernel must be selected manually. 
+Description[en]=During system boot a selection of available kernels is shown. The time in seconds configured here is waited for user input. Once elapsed the default kernel is booted. If the variable is set to '0' the default kernel is booted directly, if set to '-1' the kernel must be selected manually. 
 Type=str
 Categories=system-base
 
 [grub/gfxmode]
-Description[de]=Die Bildschirmauflösung für das Bootmenu, z.B. 1024x768x32 (Breite - Höhe - Farbtiefe in Bit).
-Description[en]=Graphical resolution for the boot menu, e.g. 1024x768 (width - height - colour depth in bit).
+Description[de]=Die Bildschirmauflösung für das Bootmenu, z.B. 1024x768x32 (Breite x Höhe x Farbtiefe in Bit).
+Description[en]=Graphical resolution for the boot menu, e.g. 1024x768 (width x height x colour depth in bits).
 Type=str
 Categories=system-base
 
@@ -17,20 +17,20 @@ Type=str
 Categories=system-base
 
 [grub/append]
-Description[de]=Mit dieser Variable können zusätzliche Optionen an Linux-Kernel übergeben werden. Eine Übersicht findet sich unter https://www.kernel.org/doc/Documentation/kernel-parameters.txt
+Description[de]=Mit dieser Variable können zusätzliche Optionen an den Linux-Kernel übergeben werden. Eine Übersicht findet sich unter https://www.kernel.org/doc/Documentation/kernel-parameters.txt
 Description[en]=With this variable additional options can be passed to the Linux kernel. An overview can be found at https://www.kernel.org/doc/Documentation/kernel-parameters.txt
 Type=str
 Categories=system-base
 
 [grub/quiet]
 Description[de]=Ist diese Variable auf 'yes' gesetzt werden die meisten Meldungen während des Systemstarts unterdrückt.
-Description[en]=If this variable is set to 'yes', messages during startup are suppressed.
+Description[en]=If this variable is set to 'yes', messages are suppressed during startup .
 Type=str
 Categories=system-base
 
 [grub/loglevel]
-Description[de]=Alle Kernelmeldungen mit einem Loglevel kleiner als der hier angegebene Wert werden auf der Konsole ausgegeben (0 für Notfallmeldungen bis 7 für Debugmeldungen).
-Description[en]=All kernel messages with a loglevel smaller than the loglevel specified here will be printed to the console (ranging from 0 for emergency messages to 7 for debugging output).
+Description[de]=Alle Kernelmeldungen mit einem Loglevel kleiner als der hier angegebene Wert werden auf die Konsole ausgegeben (0 für kritische Meldungen bis 7 für Debugmeldungen).
+Description[en]=All kernel messages with a loglevel smaller than the loglevel specified here will be printed to the console (ranging from 0 for critical messages to 7 for debugging output).
 Type=str
 Categories=system-base
 
@@ -89,7 +89,7 @@ Type=bool
 Categories=system-base
 
 [grub/grub1root]
-Description[de]=Der hier übergebene Wert wird für die root-Partition in der generierten Grub1-Konfiguration verwendet. Ist die Variable nicht gesetzt, wird der Wert automatisch ermittelt.
-Description[en]=This value is used for the root partition in the generated Grub1 configuration. If the variable is unset, the value is detected automatically.
+Description[de]=Der hier übergebene Wert wird für die Root-Partition in der generierten Grub1-Konfiguration verwendet (siehe 'grub/generate-menu-lst'). Ist die Variable nicht gesetzt, wird der Wert automatisch ermittelt.
+Description[en]=This value is used for the root partition in the generated Grub1 configuration (see 'grub/generate-menu-lst'). If the variable is unset, the value is detected automatically.
 Type=str
 Categories=system-base
