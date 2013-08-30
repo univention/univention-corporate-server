@@ -340,7 +340,7 @@ UCS. UCS und auf UCS aufbauende Lösungen bieten unter anderem:
 <listitem><simpara>Linux-Desktop für den Business-Einsatz</simpara></listitem>
 </itemizedlist>
 <para>
-Unter <xref linkend="ucs-dokumentationen"/> und im Univention Wiki
+Unter <biblioref linkend="ucs-dokumentationen"/> und im Univention Wiki
 unter <ulink url="http://wiki.univention.de/"/> sind weitere Dokumentationen
 zu UCS veröffentlicht, die weiterführende Themen behandeln.
 </para>

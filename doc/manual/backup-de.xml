@@ -335,7 +335,7 @@ in Log-Dateien geschrieben, auf der Konsole angezeigt oder per Email
 verschickt werden.
 		</para>
 		<para>
-In <xref linkend="bacula-config-example"/> findet sich eine
+In <biblioref linkend="bacula-config-example"/> findet sich eine
 Beispiel-Konfiguration, die als Vorlage für Backups verwendet werden
 kann und die oben genannten Ressourcen weitergehend beschreibt.
 		</para>
@@ -478,7 +478,7 @@ folgenden Webseiten zu finden:
 		<itemizedlist>
 			<listitem><simpara><ulink url="http://www.bacula.org"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://wiki.bacula.org/doku.php"/></simpara></listitem>
-			<listitem><simpara><ulink url="http://www.bacula.org/manuals/de/install/install.pdf"/></simpara></listitem>
+			<listitem><simpara><ulink url="http://www.bacula.org/5.0.x-manuals/en/main/main.pdf"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://de.wikipedia.org/wiki/Bacula"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://www.bacula.org/de/dev-manual/Kurzanleitung.html"/></simpara></listitem>
 		</itemizedlist>

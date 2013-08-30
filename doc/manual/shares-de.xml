@@ -46,7 +46,7 @@ Besitzer-Gruppe und alle anderen angewendet werden.
 <para>
 Mit Access Control Lists sind noch mächtigere Berechtigungsmodelle
 möglich. Die Konfiguration von ACLs ist in der Univention SDB
-beschrieben <xref linkend="sdb-acls"/>.
+beschrieben <biblioref linkend="sdb-acls"/>.
 </para>
 <para>
 Im Unix-Berechtigungsmodell - und somit unter UCS - reicht das Schreibreicht
@@ -961,7 +961,7 @@ Um einen Verweis mit dem Namen <emphasis>zufb</emphasis> von Server <emphasis>sa
 Freigabe <emphasis>fb</emphasis> des Servers <emphasis>sb</emphasis> anzulegen muss im Ordner <emphasis>fa</emphasis>
 folgender Befehl ausgeführt werden.
 </para>
-<programlisting>
+<programlisting language="sh">
 ln -s msdfs:sb\\fb zufb
 </programlisting>
 <para>
@@ -978,7 +978,7 @@ geschrieben werden.
 Sollten Änderungen an den Verweisen vorgenommen werden, müssen beteiligte Clients
 neu gestartet werden.
 Weitere Informationen dazu befinden sich in der Samba Dokumentation
-<xref linkend="samba3-howto-chapter-20"/> im Kapitel 'Hosting a Microsoft Distributed File System Tree'.
+<biblioref linkend="samba3-howto-chapter-20"/> im Kapitel 'Hosting a Microsoft Distributed File System Tree'.
 </para>
 </caution>
 </section>

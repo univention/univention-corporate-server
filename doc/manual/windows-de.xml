@@ -50,7 +50,7 @@ aus Samba 3 verwendet.
 </itemizedlist>
 <para>
 Eine Übersicht der funktionalen Unterschiede zwischen Samba 3 und
-Samba 4 findet sich im Univention Wiki <xref linkend="wiki-samba4"/>.
+Samba 4 findet sich im Univention Wiki <biblioref linkend="wiki-samba4"/>.
 </para>
 <para>
 UCS integriert neben Samba 4 noch eine zusätzliche Komponente zur
@@ -136,6 +136,12 @@ werden.
 Auf allen Samba-Domänencontrollern sollte die Signierung der
 NTP-Pakete aktiviert werden, siehe <xref linkend="basicservices::ntp"/>.
 </para>
+
+<para>
+  Samba 4 unterstützt auf den Betrieb als <emphasis>read-only domain controller</emphasis>. Die
+  Einrichtung ist in <biblioref linkend="ext-doc-win"/> dokumentiert.
+</para>
+
 <para>
 Samba 4 implementiert Active Directory Verzeichnisdienste, die eine
 Multimasterreplikation erlauben, d.h. die schreibenden Änderungen
@@ -174,7 +180,7 @@ ist in <xref linkend="windows-domaenenbeitritt"/> dokumentiert.
 </para>
 <para>
 Mischumgebungen aus Samba 3- und Samba 4-Domänencontrollern sind nur für Update-Szenarien
-unterstützt und werden im Univention Wiki <xref linkend="wiki-samba-update"/> weitergehend beschrieben.
+unterstützt und werden im Univention Wiki <biblioref linkend="wiki-samba-update"/> weitergehend beschrieben.
 </para>
 </section>
 
@@ -216,16 +222,43 @@ Einschränkungen zu beachten.
 </para>
 </section>
 
-<section id="windows:Univention_S4_Connector"><title>Univention S4 Connector</title>
+<section id="windows:Univention_S4_Connector"><title>Univention S4 Connector / Samba 4-LDAP-Verzeichnis</title>
 <para>
 Unter Samba 4 werden die Samba-Benutzerkonten komplett durch Samba
-verwaltet. Die Synchronisation zwischen den UCS-LDAP und Samba erfolgt
+verwaltet. Samba 4 stellt einen separaten LDAP-Verzeichnisdienst bereit.
+Die Synchronisation zwischen dem UCS-LDAP und dem Samba-LDAP erfolgt
 durch einen internen Systemdienst, den Univention-S4-Connector.
 </para>
 <para>
 Hinweise zum Status der Synchronisation finden sich in der
 Logdatei <filename>/var/log/univention/connector-s4.log</filename>.
 </para>
+
+<para>
+  Der Befehl <command>unvention-s4connector-list-rejected</command> zeigt alle nicht
+  synchronisierbaren Objekt an.
+</para>
+
+<para>
+  Mit dem Befehl <command>univention-s4search</command> kann im Samba-Verzeichnisdienst gesucht
+  werden. <command>univention-s4search</command> ist ein Wrapper um das Kommando
+  <command>ldbsearch</command>. Wird es als Benutzer <emphasis>root</emphasis> aufgerufen, werden
+  automatisch die nötigen Credentials des Maschinenkontos verwendet:
+
+<programlisting>
+root@master:~# univention-s4search sAMAccountName=Administrator
+# record 1
+dn: CN=Administrator,CN=Users,DC=example,DC=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+cn: Administrator
+instanceType: 4
+(..)
+</programlisting>
+</para>
+
 </section>
 
 <section id="windows:NetBIOS-Netzwerkdienst"><title>NetBIOS-Netzwerkdienst</title>
@@ -236,7 +269,7 @@ TCP/IP aufsetzt. Samba bildet NetBIOS-Funktionalität durch den
 Systemdienst <emphasis>nmbd</emphasis> ab.
 </para>
 <para>
-NetBIOS-Rechnernamen können maximal 15 Zeichen
+NetBIOS-Rechnernamen können maximal 13 Zeichen
 umfassen. Der NetBIOS-Name eines UCS-Systems entspricht
 standardmäßig dem Rechnernamen. Mit der &ucsUCRV; <envar>samba/netbios/name</envar>
 kann ein abweichender Name konfiguriert werden und mit der
@@ -275,7 +308,7 @@ einem Samba-Server der Domäne betrieben werden, die Verteilung auf
 mehrere Server erfordert die Einrichtung von WINS-Replikation.
 Informationen zur Inbetriebnahme der WINS-Replikation finden sich in
 der Univention Support Datenbank
-unter <ulink url="http://sdb.univention.de/1107"/>
+unter <ulink url="http://sdb.univention.de/1107"/>.
 </para>
 <para>
 Der WINS-Server kann Windows-Clients in der &ucsUMC; über eine DHCP-NetBIOS-Richtlinie
@@ -614,7 +647,7 @@ in der DNS-Verwaltung der &ucsUMC; angelegt werden (siehe <xref linkend="network
 <para>
 Alternativ kann auch über &ucsUCR; ein statischer Eintrag in <filename>/etc/hosts</filename> aufgenommen werden, z.B. mit
 </para>
-<programlisting>
+<programlisting language="sh">
 ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 </programlisting>
 <para>
@@ -882,7 +915,7 @@ weiterhin in einem LDAP-Unterbaum vorgehalten). Als erste Option erwartet das Sk
 einen LDAP-Filter, die zweite Option kann eine Liste der anzuzeigenden
 LDAP-Attribute sein, z.B.:
 </para>
-<programlisting>
+<programlisting language="sh">
 univention-adsearch cn=administrator cn givenName
 </programlisting>
 </section>
@@ -1169,7 +1202,7 @@ Auf dem Windows-PDC muss nun eine Vertrauensstellung angelegt werden.
 Wird Univention Firewall verwendet, müssen Antworten auf
 NetBIOS-Broadcasts zugelassen werden:
 </para>
-<programlisting>
+<programlisting language="sh">
 echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
     &gt;&gt; /etc/security/packetfilter.d/50_local.sh
 /etc/init.d/univention-firewall restart
@@ -1181,7 +1214,7 @@ Für weitere notwendige Anpassungen sollte aktuell UCS Bug 25254 beachtet werden
 Nun wird die Vertrauensstellung initiiert und Winbind neu gestartet:
 Dies muss auf allen Samba-Anmeldeservern ausgeführt werden.
 </para>
-<programlisting>
+<programlisting language="sh">
 net rpc trustdom establish &lt;Windowsdomain&gt;
 /etc/init.d/winbind restart
 </programlisting>
@@ -1189,7 +1222,7 @@ net rpc trustdom establish &lt;Windowsdomain&gt;
 Mit folgendem Befehl kann geprüft werden, ob die Vertrauensstellung
 korrekt hinzugefügt wurde:
 </para>
-<programlisting>
+<programlisting language="sh">
 net rpc trustdom list
 </programlisting>
 </section>
@@ -1198,7 +1231,7 @@ net rpc trustdom list
 <section id="univention_ad_takeover_generell"><title>Univention AD Takeover</title>
 <para>
 Detaillierte Informationen zu Univention AD Takeover finden sich im
-Univention Wiki <xref linkend="wiki-ad-takeover"/>.
+Univention Wiki <biblioref linkend="wiki-ad-takeover"/>.
 </para>
 </section>
 

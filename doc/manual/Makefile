@@ -1,8 +1,9 @@
 #!/usr/bin/make -f
-MAIN_de := handbuch-3.1-2 handbuch-3.1-1 handbuch-3.1
-MAIN_en := manual-3.1-2 manual-3.1-1 manual-3.1
+MAIN_de := handbuch-3.1-1 handbuch-3.1
+MAIN_en := manual-3.1-1 manual-3.1
 MAIN := $(MAIN_de) $(MAIN_en)
 STYLESHEET := univention
+handbuch%: lang := de
 
 COMMON_DIR := ../../../doc-common/docbook
 include $(COMMON_DIR)/Makefile

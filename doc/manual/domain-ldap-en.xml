@@ -55,6 +55,11 @@
 		following describes the different possibilities to do this:
 	</para>
 
+	<para>
+	  In addition to UCS, Ubuntu and Mac OS X, arbitrary Unix systems can be integrated into the
+	  domain. This is documented in <biblioref linkend="ext-doc-domain"/>.
+	</para>
+
 	<section id="linux-domaenenbeitritt">
 		<title>How UCS systems join domains</title>
 		<para>
@@ -224,7 +229,7 @@
 			<graphic scalefit="1" width="80%" fileref="illustrations/win7-join_2-en.png"/>
 		</figure>
 		<para>
-			Domain names must be limited to 15 characters as they are otherwise truncated
+			Domain names must be limited to 13 characters as they are otherwise truncated
 			at the Windows client and this can lead to log-in errors.
 		</para>
 		<para>
@@ -248,7 +253,7 @@
 			  Windows 8.
 			</para>
 			<para>
-			  When using Windows 7 to a domain based on Samba 3, certain settings must be
+			  When using Windows 8 to a domain based on Samba 3, certain settings must be
 			  made in the Windows registry before joining the domain. A corresponding REG
 			  file can be downloaded from <ulink url="http://sdb.univention.de/1102"/>. The
 			  system must then be restarted. This step is not necessary with Samba 4.
@@ -397,21 +402,15 @@
 		  <para>
 			The domain join can also be performed on the command line using <command>dsconfigad</command>:
 		  </para>
-	    <programlisting>
+	    <programlisting language="sh">
 dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ldap_base&gt;" \
--u &lt;Domain Administrator&gt; -mobile enable
+  -u &lt;Domain Administrator&gt; -mobile enable
 	    </programlisting>
 		  <para>
 	    Additional configuration options are available through <command>dsconfigad -help</command>.
 		  </para>
 		</section>
-
-
 	</section>
-
-
-
-
 </section>
 
 <section id="systemrollen">
@@ -467,7 +466,7 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 	</section>
 
 	<section id="domain-ldap:Member_server">
-		<title>&ucsMember;</title>
+		<title>Member server</title>
 		<para>
 			&ucsMember; are server systems without a local LDAP server. Access to domain
 			data here is performed via other servers in the domain.
@@ -496,7 +495,9 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 	<section id="domain-ldap:Linux">
 		<title>Linux</title>
 		<para>
-		  This system role is used for the integration of other Linux systems than UCS and Ubuntu, e.g., for Debian or CentOS systems.
+		  This system role is used for the integration of other Linux systems than UCS and Ubuntu,
+		  e.g., for Debian or CentOS systems. The integration is documented in <biblioref
+		  linkend="ext-doc-domain"/>.
 		</para>
 	</section>
 
@@ -652,15 +653,15 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 			argument; in the following example, the administrator is searched for using the
 			user ID:
 		</para>
-		<programlisting>
+		<programlisting language="sh">
 univention-ldapsearch uid=Administrator
 		</programlisting>
 		<para>
 			The <command>slapcat</command> command makes it possible to save the current
 			LDAP data in a text file in LDIF format, e.g.:
 		</para>
-		<programlisting>
-slapcat > ldapdata.txt
+		<programlisting language="sh">
+slapcat &gt; ldapdata.txt
 		</programlisting>
 	</section>
 
@@ -892,7 +893,7 @@ slapcat > ldapdata.txt
 		<para>
 	  If the UCS domain contains more than one system, all other host certificates need to be
 	  reissued after changing the root certificate! The procedure required for this is documented in
-	  <xref linkend="sdb-sslchange"/>.
+	  <biblioref linkend="sdb-sslchange"/>.
 		</para>
 	</caution>
 
@@ -937,7 +938,7 @@ slapcat > ldapdata.txt
 
 	<para>
 	  The renewal of the root certificate and the other host certificates is documented in
-	  <xref linkend="sdb-sslchange"/>.
+	  <biblioref linkend="sdb-sslchange"/>.
 	</para>
 
 	<para>
@@ -945,7 +946,7 @@ slapcat > ldapdata.txt
 		certificate and the root certificate daily and records the expiry date in the
 		&ucsUCR; variables <envar>ssl/validity/host</envar> (host certificate) and
 		<envar>ssl/validity/root</envar> (root certificate). The values entered there reflect
-		the number of days since the 1.1.1970.
+		the number of days since the 1/1/1970.
 	</para>
 
 	<para>
@@ -1035,14 +1036,14 @@ slapcat > ldapdata.txt
 		The package list of the old &ucsMaster; should be saved prior to the promotion in order to
 		allow subsequent comparison of the installed packages. The package list can be created with
 		the following command:
-	  <programlisting>
+	  <programlisting language="sh">
 COLUMNS=200 dpkg --list &gt; packagelist.txt
 	  </programlisting>
 	  In addition, the &ucsUCR; inventory needs to be saved so that it is possible to compare the
 	  configuration adjustments on the new &ucsMaster;. This can be achieved with the following
 	  command:
 	</para>
-	  <programlisting>
+	  <programlisting language="sh">
 ucr dump &gt; ucr.txt
 	  </programlisting>
 	<para>

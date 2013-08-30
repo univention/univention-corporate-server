@@ -1149,7 +1149,7 @@
         <para>
             Eine Liste möglicher Attribute kann mit dem Befehl:
         </para>
-            <programlisting>
+            <programlisting language="sh">
 univention-directory-manager users/user
             </programlisting>
         <para>

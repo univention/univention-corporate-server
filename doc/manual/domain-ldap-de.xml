@@ -55,7 +55,12 @@
 	<para>
 		Ein UCS, Ubuntu- oder Windows-System muss nach der Installation der Domäne
 		beitreten. Im Folgenden werden die verschiedenen Möglichkeiten hierzu
-		vorgestellt:
+		vorgestellt.
+	</para>
+
+	<para>
+	  Neben UCS, Ubuntu und Mac OS X können auch weitere Unix-Systeme in die Domäne integriert
+	  werden; dies ist in <biblioref linkend="ext-doc-domain"/> beschrieben.
 	</para>
 
 	<section id="linux-domaenenbeitritt">
@@ -235,7 +240,7 @@
 			Änderungen in Kraft zu setzen.
 		</para>
 		<para>
-			Domänennamen sollten auf 15 Zeichen beschränkt werden, da diese auf Seite
+			Domänennamen sollten auf 13 Zeichen beschränkt werden, da diese auf Seite
 			der Windows-Clients ansonsten verkürzt dargestellt werden, was zu
 			Anmeldefehlern führen kann.
 		</para>
@@ -418,9 +423,9 @@
 			Der Domänenbeitritt kann auch auf der Kommandozeile mit dem Befehl
 			<command>dsconfigad</command> erfolgen:
 		  </para>
-	    <programlisting>
+	    <programlisting language="sh">
 dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ldap_base&gt;" \
--u &lt;Domain Administrator&gt; -mobile enable
+  -u &lt;Domain Administrator&gt; -mobile enable
 	    </programlisting>
 		  <para>
 	    Weitere Optionen werden mit <command>dsconfigad -help</command> angezeigt.
@@ -510,7 +515,8 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		<title>Linux</title>
 		<para>
 		  Diese Systemrolle wird für die Integration von anderen Linux-Systemen als UCS und Ubuntu
-		  verwendet, z.B. für Debian- oder CentOS-Systeme.
+		  verwendet, z.B. für Debian- oder CentOS-Systeme. Die Integration wird in <biblioref
+		  linkend="ext-doc-domain"/> beschrieben.
 		</para>
 	</section>
 
@@ -673,15 +679,15 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 			übergeben werden, im folgenden Beispiel wird der Administrator anhand der
 			User-ID gesucht:
 		</para>
-		<programlisting>
+		<programlisting language="sh">
 univention-ldapsearch uid=Administrator
 		</programlisting>
 		<para>
 			Der Befehl <command>slapcat</command> ermöglicht die Speicherung der
 			aktuellen LDAP-Daten in einer Textdatei im LDIF-Format, z.B.:
 		</para>
-		<programlisting>
-slapcat > ldapdaten.txt
+		<programlisting language="sh">
+slapcat &gt; ldapdaten.txt
 		</programlisting>
 	</section>
 
@@ -928,7 +934,7 @@ slapcat > ldapdaten.txt
 		<para>
 		Besteht die UCS-Domäne aus mehr als einem System müssen durch die Änderung des
 		Root-Zertifikats auch alle anderen Rechner-Zertifikate neu ausgestellt werden! Das dafür
-		nötige Vorgehen ist in <xref linkend="sdb-sslchange"/> dokumentiert.
+		nötige Vorgehen ist in <biblioref linkend="sdb-sslchange"/> dokumentiert.
 		</para>
 	</caution>
 
@@ -972,7 +978,7 @@ slapcat > ldapdaten.txt
 	</caution>
 
 	<para>
-	  Die Erneuerung des Root-Zertifikats und der übrigen Rechnerzertifikate ist in <xref
+	  Die Erneuerung des Root-Zertifikats und der übrigen Rechnerzertifikate ist in <biblioref
 	  linkend="sdb-sslchange"/> dokumentiert.
 	</para>
 
@@ -1073,7 +1079,7 @@ slapcat > ldapdaten.txt
 	  Abgleich der installierten Pakete zu erlauben. Die Paketliste kann mit dem folgenden Befehl
 	  erstellt werden:
 	</para>
-	  <programlisting>
+	  <programlisting language="sh">
 COLUMNS=200 dpkg --list &gt; dateiliste.txt
 	  </programlisting>
 	<para>
@@ -1081,7 +1087,7 @@ COLUMNS=200 dpkg --list &gt; dateiliste.txt
 	  Konfigurationsanpassungen auch auf dem neuen &ucsMaster; abgleichen zu können. Dies kann mit
 	  dem folgenden Befehl erfolgen:
 	</para>
-	  <programlisting>
+	  <programlisting language="sh">
 ucr dump &gt; ucr.txt
 	  </programlisting>
 	<para>

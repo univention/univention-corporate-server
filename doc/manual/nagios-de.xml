@@ -1066,7 +1066,7 @@ define command{
 
   <para>
 	Die Plugins, Makros und eventuellen Abhängigkeiten können auch in ein Debian-Paket paketiert
-	werden. Weitere Hinweise dazu finden sich in <xref linkend="developer-reference"/>.
+	werden. Weitere Hinweise dazu finden sich in <biblioref linkend="developer-reference"/>.
   </para>
 
   <para>

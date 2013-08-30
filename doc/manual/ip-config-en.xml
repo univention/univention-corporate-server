@@ -274,7 +274,7 @@
 		  <envar>dns/debug/level</envar> and <envar>dns/dlz/debug/level</envar> (for the Samba
 		  backend, see <xref linkend="ip-config:Configuration_of_the_data_backend"/>) &ucsUCR;
 		  variables. The possible values are between 0 (no debug tasks) to 11. A complete list of
-		  levels can be found at <xref linkend="bind-loglevel"/>.
+		  levels can be found at <biblioref linkend="bind-loglevel"/>.
 		</para>
 	  </section>
 
@@ -1366,7 +1366,7 @@ closest to the object always applies.
 		<title>Administration of DHCP subnets</title>
 		<para>
 		  DHCP subnets are managed in the <emphasis>DHCP</emphasis> module of
-		  the &ucsUMC;. To create an additional DHCP server entry, a DHCP
+		  the &ucsUMC;. To create an additional DHCP subnet entry, a DHCP
 		  service must be selected as <guimenu>Superordinate</guimenu>.
 		</para>
 		<para>
@@ -2087,7 +2087,7 @@ closest to the object always applies.
 	</para>
 	<para>
 	  The configuration is primarily performed via &ucsUCR; variables. The definition of this type
-	  of packet filter rules is documented in <xref linkend="developer-reference"/>.
+	  of packet filter rules is documented in <biblioref linkend="developer-reference"/>.
 	</para>
 	<para>
 	  In addition, the configuration scripts in the
@@ -2134,7 +2134,7 @@ closest to the object always applies.
 	<para>
 	  Further documentation on proxy services - such as the cascading of
 	  proxy servers, transparent proxiss and the integration of a virus scan engine - are documented
-	  in the extended network management documentation <xref linkend="ext-doc-net"/>.
+	  in the extended network management documentation <biblioref linkend="ext-doc-net"/>.
 	</para>
 
 	<section id="ip-config:Installation">
@@ -2155,7 +2155,7 @@ closest to the object always applies.
 		restarted. This can be performed either via the &ucsUMC; or the
 		command line:
 	  </para>
-		<programlisting>
+		<programlisting language="sh">
 /etc/init.d/squid3 restart
 		</programlisting>
 	  <para>
@@ -2182,7 +2182,7 @@ closest to the object always applies.
 		However, this caching function is not necessary for some environments
 		or, in the case of cascaded proxies, it should not be activated for
 		all of them. For these scenarios, the caching function of the Squid
-		can be deactivated with the &ucsUCRV; by setting this to <emphasis>no</emphasis>.
+		can be deactivated with the &ucsUCRV; <envar>squid/cache</envar> by setting this to <emphasis>no</emphasis>.
 		Squid must then be restarted.
 	  </para>
 	</section>
@@ -2208,14 +2208,14 @@ closest to the object always applies.
 		192.168.1.10 and the network mask 255.255.255.0 is available on the
 		computer on which Squid is installed, only computers from the network
 		192.168.1.0/24 can access the proxy server. Additional networks can be
-		specified via the &ucsUCRV;. When doing so, the CIDR
+		specified via the &ucsUCRV; <envar>squid/allowfrom</envar>. When doing so, the CIDR
 		notation must be used; several networks should be separated by blank
 		spaces.
 	  </para>
 	  <para>
 		Example:
 	  </para>
-		<programlisting>
+		<programlisting language="sh">
 univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/24&quot;
 		</programlisting>
 	  <para>
@@ -2238,7 +2238,7 @@ univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/
 		<para>
 		  As standard, the web proxy can be accessed via port 3128. If another
 		  port is required, this can be configured via the
-		  &ucsUCRV;. When the Univention firewall is used, the
+		  &ucsUCRV; <envar>squid/httpport</envar>. If Univention Firewall is used, the
 		  packet filter configuration must also be adjusted.
 		</para>
 		<para>
@@ -2263,7 +2263,7 @@ univention-config-registry set squid/allowfrom=&quot;192.168.2.0/24 192.168.3.0/
 		<para>
 		  Example:
 		</para>
-		  <programlisting>
+		  <programlisting language="sh">
 univention-config-registry set squid/webports=&quot;80 443&quot;
 		  </programlisting>
 		<para>
@@ -2306,9 +2306,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		addition to the actual HTML page. The NTML authentication can be cached per domain: If the
 		&ucsUCRV; <envar>squid/ntlmauth/keepalive</envar> is set to <emphasis>yes</emphasis>, no
 		further NTLM authentication is performed for subsequent HMTL queries in the same
-		domain. This is enabled by default. To avoid the display of multiple authentication
-		dialogues on Windows clients, which haven't joined the UCS domain yet, the feature can be
-		disabled with <emphasis>false</emphasis>.
+		domain.
 	  </para>
 
 	  <para>
@@ -2336,7 +2334,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  <para>
 		It is also possible to scan requested files for viruses. In the
 		default setting, the free virus scanner <emphasis>Clamav</emphasis> is used.
-		The setup is documented in the extended network management documentation <xref linkend="ext-doc-net"/>.
+		The setup is documented in the extended network management documentation <biblioref linkend="ext-doc-net"/>.
 	  </para>
 	  <caution>
 		<para>
@@ -2391,7 +2389,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		either in the <guimenu>System services</guimenu> module of the &ucsUMC; or on the
 		commandline using the command
 	  </para>
-<programlisting>
+<programlisting language="sh">
 /etc/init.d/dansguardian restart
 </programlisting>
 
@@ -2399,7 +2397,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		For changes to filter rules, it is sufficient to reload the configuration using the
 		following command:
 	  </para>
-<programlisting>
+<programlisting language="sh">
 dansguardian -g
 </programlisting>
 
