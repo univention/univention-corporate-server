@@ -7,6 +7,6 @@ fix: 5.3.3-7.181.201308291557
 desc: |
   A security problem whereby SSL certificates with NULL bytes in the
   subjectAltName are misparsed in the openssl module (CVE-2013-4248),
-  has been discovered in PHP5.
+  has been fixed in PHP5.
 cve:
  - CVE-2013-4248
