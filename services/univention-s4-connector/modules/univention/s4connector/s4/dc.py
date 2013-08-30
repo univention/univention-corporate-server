@@ -53,13 +53,13 @@ def _unixTimeInverval2seconds(unixTime):
 		return 0
 
 	if unixTime[1] == 'seconds':
-		return unixTime[0]
+		return long(unixTime[0])
 	elif unixTime[1] == 'minutes':
-		return unixTime[0] * 60
+		return long(unixTime[0]) * 60
 	elif unixTime[1] == 'hours':
-		return unixTime[0] * 3600 # 60 * 60
+		return long(unixTime[0]) * 3600 # 60 * 60
 	elif unixTime[1] == 'days':
-		return unixTime[0] * 86400 # 60 * 60 * 24
+		return long(unixTime[0]) * 86400 # 60 * 60 * 24
 	else:
 		ud.debug(ud.LDAP, ud.WARN, 'dc _unixTimeInverval2seconds: Not a valid time unit: %s' % unixTime)
 		return 0

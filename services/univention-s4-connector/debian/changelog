@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.11-1) unstable; urgency=low
+
+  * Cast time values from string to long (Bug #32329)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Aug 2013 11:41:19 +0200
+
 univention-s4-connector (8.0.10-3) unstable; urgency=low
 
   * Consider type errors in helper function__is_int() (Bug #32322)
