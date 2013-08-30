@@ -1,3 +1,10 @@
+ucs-test (4.0.101-1) unstable; urgency=low
+
+  * fixed certain udm-extendedattribute hook tests (Bug #31661)
+  * fixed changelog typos
+
+ -- Lukas Walter <walter@univention.de>  Fri, 30 Aug 2013 14:09:39 +0200
+
 ucs-test (4.0.100-1) unstable; urgency=low
 
   * added two "univention-license-check" related tests, which were
@@ -24,8 +31,8 @@ ucs-test (4.0.98-1) unstable; urgency=low
   * fixed some typos
   * added ucs-test categorie "udm-syntax" for tests concerning udm syntax
     classes (it already contains some syntax tests which were
-    located in the extented_attribute category in ucs-3.0)
-  * added more udm-extentedattribute tests
+    located in the extended_attribute category in ucs-3.0)
+  * added more udm-extendedattribute tests
   (Bug #31661)
 
  -- Lukas Walter <walter@univention.de>  Thu, 22 Aug 2013 14:44:12 +0200

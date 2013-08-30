@@ -34,7 +34,7 @@ import univention.testing.utils
 class %s(univention.admin.hook.simpleHook):
 	def hook_ldap_pre_create(self, module):
 		with open('/tmp/%s_executed', 'w') as fp:
-			if not isinstance(module, univention.admin.handlers.users.user.object)
+			if not isinstance(module, univention.admin.handlers.users.user.object):
 				fp.write('LDAP pre create Hook called with wrong object parameter (Type: %%s)' %% type(module))
 
 			univention.testing.utils.wait_for_replication()

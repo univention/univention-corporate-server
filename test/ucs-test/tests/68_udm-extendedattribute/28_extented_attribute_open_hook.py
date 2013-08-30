@@ -30,7 +30,7 @@ class %s(univention.admin.hook.simpleHook):
 	def hook_open(self, module):
 		with open('/tmp/%s_executed', 'a+') as fp:
 			if not isinstance(module, univention.admin.handlers.users.user.object):
-				fp.write('Hook called with wrong object parameter (Type: %%s' %% type(module)))
+				fp.write('Hook called with wrong object parameter (Type: %%s)' %% type(module))
 """ % (hook_name, hook_name))
 					
 

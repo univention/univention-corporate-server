@@ -26,7 +26,7 @@ import univention.admin
 import univention.admin.modules
 import univention.admin.hook
 import univention.admin.handlers.users.user
-import univenton.testing.utils
+import univention.testing.utils
 
 class %s(univention.admin.hook.simpleHook):
 	def hook_ldap_modlist(self, module, ml=[]):
