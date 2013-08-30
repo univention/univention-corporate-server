@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
+import base64
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -54,7 +55,7 @@ property_descriptions={
 	'name': univention.admin.property(
 	        short_description=_('Schema name'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.TextArea,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
@@ -65,7 +66,7 @@ property_descriptions={
 	'filename': univention.admin.property(
 			short_description=_('Schema file name'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.TextArea,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -76,7 +77,7 @@ property_descriptions={
 	'schema': univention.admin.property(
 			short_description=_('Schema data'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.Base64Upload,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -140,11 +141,27 @@ layout = [
 	] ),
 ]
 
+def unmapBase64( value ):
+	try:
+		return base64.encodestring( value[ 0 ] )
+	except Exception, e:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
+	return ""
+
+def mapBase64( value ):
+	if value == '*':
+		# special case for filter pattern '*'
+		return value
+	try:
+		return base64.decodestring( value )
+	except Exception, e:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
+	return ""
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('filename', 'univentionLDAPSchemaFilename', None, univention.admin.mapping.ListToString)
-mapping.register('schema', 'univentionLDAPSchemaData', None, univention.admin.mapping.ListToString)
+mapping.register('schema', 'univentionLDAPSchemaData', mapBase64, unmapBase64)
 mapping.register('package', 'univentionLDAPExtensionPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionLDAPExtensionPackageVersion', None, univention.admin.mapping.ListToString)
 mapping.register('appidentifier', 'univentionAppIdentifier', None, univention.admin.mapping.ListToString)
