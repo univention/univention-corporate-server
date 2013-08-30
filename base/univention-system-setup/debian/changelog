@@ -1,3 +1,10 @@
+univention-system-setup (7.0.34-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+  * Reorder UCR variable descriptions to binary packages (Bug #28396)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 30 Aug 2013 12:59:20 +0200
+
 univention-system-setup (7.0.34-1) unstable; urgency=low
 
   * Bug #29480: display restart dialog when changing SSL certificate
