@@ -39,7 +39,7 @@ _ = translation.translate
 module = 'saml/serviceprovider'
 childs = 0
 short_description = _(u'SAML service provider')
-long_description = _(u'SAML service provider definition')
+long_description = _(u'Management of service provider configurations for the single sign-on functionality of the SAML identity provider.')
 operations = ['add', 'edit', 'remove', 'search']
 default_containers=["cn=saml-serviceprovider,cn=univention"]
 
@@ -164,10 +164,10 @@ layout = [
 	Tab(_(u'General'), _(u'Basic Settings'), 
 		layout=[
 		Group(_('Definition of required and often used settings'), layout=[
-			["serviceProviderOrganizationName", "serviceproviderdescription", ],
 			["Identifier", ],
 			["AssertionConsumerService", "singleLogoutService", ],
 			["NameIDFormat", "simplesamlNameIDAttribute", ],
+			["serviceProviderOrganizationName", "serviceproviderdescription", ],
 		]),
 	]),
 	Tab(_(u'Extended Settings'), _(u'Additional configuration options'),
@@ -175,7 +175,8 @@ layout = [
 		Group(_('Extended Settings'), layout=[
 			["privacypolicyURL"],
 			["simplesamlAttributes", ],
-			["attributesNameFormat", "LDAPattributes", ],
+			["attributesNameFormat", ],
+			["LDAPattributes", ],
 		]),
 	]),
 ]

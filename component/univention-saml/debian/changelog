@@ -1,3 +1,10 @@
+univention-saml (1.0.1-7) unstable; urgency=low
+
+  * Updated udm module description (Bug #31693)
+  * Improved UMC module layout 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 30 Aug 2013 15:23:24 +0200
+
 univention-saml (1.0.1-6) unstable; urgency=low
 
   * Changed App icon (Bug #31693)
