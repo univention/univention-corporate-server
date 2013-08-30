@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN := developer-reference-3.1
+MAIN := developer-reference-3.2
 STYLESHEET := univention
 OPTIONS += --stringparam draft.mode yes
 OPTIONS += --stringparam show.comments 0
