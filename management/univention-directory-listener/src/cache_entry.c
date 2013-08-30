@@ -254,6 +254,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 				rv = 1;
 				goto result;
 			}
+
 			if (memberUidMode) {
 				/* avoid duplicate memberUid entries https://forge.univention.org/bugzilla/show_bug.cgi?id=17998 */
 				duplicateMemberUid = 0;
@@ -267,7 +268,6 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 					}
 				}
 				if (duplicateMemberUid) {
-					/* skip this memberUid entry if listener/memberuid/skip is set to yes */
 					continue;
 				}
 			}
@@ -284,7 +284,6 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 					}
 				}
 				if (duplicateUniqueMember) {
-					/* skip this uniqueMember entry if listener/uniquemember/skip is set to yes */
 					continue;
 				}
 			}
