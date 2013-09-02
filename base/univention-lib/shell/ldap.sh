@@ -245,7 +245,7 @@ ucs_isServiceUnused () {
 # ucs_registerLDAPSchema <schema file>
 # e.g. ucs_registerLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
 #
-ucs_registerLDAPSchema () {
+ucs_registerLDAPSchema () { <schemafile> [options]
 	local schemaFile="$1"
 
 	if [ ! -e "$schemaFile" ]; then
@@ -255,17 +255,23 @@ ucs_registerLDAPSchema () {
 
 	local package_name package_version
 	calling_script_name=$(basename "$0")
-	calling_script_basename=$(basename "$calling_script_basename" .postinst)
+	calling_script_basename=$(basename "$calling_script_name" .postinst)
 	if [ "$calling_script_basename" != "$calling_script_name" ]; then
 		package_name="$calling_script_basename"
 	elif [ -n "$JS_SCRIPT_FULLNAME" ]; then
 		package_name=$(dpkg -S "$JS_SCRIPT_FULLNAME" | cut -d: -f1)
 	fi
 
-	if [ -n "$package_name" ]; then
+	if [ -z "$package_name" ]; then
 		echo "ERROR: Unable to determine Debian package name"
 		echo "ERROR: This function only works in joinscript or postinst context"
-		exit 1
+		return 1
+	fi
+
+	if ! shift 1
+	then
+		echo "ucs_registerLDAPSchema: wrong argument number" >&2
+		return 2
 	fi
 
 	package_version=$(dpkg-query -f '${Version}' -W "$package_name")
@@ -273,10 +279,10 @@ ucs_registerLDAPSchema () {
 	local filename=$(basename "$schemaFile")
 	local objectname=$(basename "$filename" ".schema")
 	local target_container_name="ldapschema"
-	local target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
 	local ldap_base="$(ucr get ldap/base)"
+	local target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
 
-	univention-directory-manager containers/cn create "$@" --ignore_exists \
+	univention-directory-manager container/cn create "$@" --ignore_exists \
 		--set name="$target_container_name" \
 		--position "cn=univention,$ldap_base"
 
@@ -287,7 +293,7 @@ ucs_registerLDAPSchema () {
 		output=$(univention-directory-manager settings/ldapschema create "$@" \
 			--set name="$objectname" \
 			--set filename="$filename" \
-			--set schema=$(<"$schemaFile") \
+			--set schema="$(gzip -c "$schemaFile" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
@@ -308,6 +314,10 @@ ucs_registerLDAPSchema () {
 			ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
 												univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion)
 
+			if [ -z "$ldif" ]; then
+				echo "ucs_registerLDAPSchema: ERROR: Failed to create settings/ldapschema object." >&2
+				return 2
+			fi
 		fi
 	fi
 
@@ -320,14 +330,14 @@ ucs_registerLDAPSchema () {
 		if [ "$registered_package" = "$package_name" ]; then
 			if ! dpkg --compare-versions "$package_version" gt "$registered_package_version"; then
 				echo "ucs_registerLDAPSchema: ERROR: registered package version $registered_package_version is newer, skipping registration." >&2
-				exit 2
+				return 2
 			fi
 		else
 			echo "ucs_registerLDAPSchema: WARNING: schema $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
 		fi
 
 		univention-directory-manager settings/ldapschema modify "$@" \
-			--set schema=$(gzip -c "$schemaFile" | base64) \
+			--set schema="$(gzip -c "$schemaFile" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
@@ -348,7 +358,7 @@ ucs_registerLDAPSchema () {
 			t=$(date +%s)
 			if [ $(($t - $t0)) -gt 300 ]; then
 				echo "ERROR: Master did not mark the LDAP schema extension active within 5 minutes."
-				exit 1
+				return 1
 			fi
 			sleep 3
 	done

@@ -1,3 +1,9 @@
+univention-lib (3.0.9-5) unstable; urgency=low
+
+  * Compressed schema data commit part two.. (Bug #26785)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 11:30:12 +0200
+
 univention-lib (3.0.9-4) unstable; urgency=low
 
   * adjust package name detection in ucs_registerLDAPSchema (Bug #26785)
