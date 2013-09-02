@@ -196,7 +196,7 @@ define([
 			this._page.addChild(this._container);
 
 			this._detailsTable = domConstruct.create('table', {
-				style: {width: '500px'}
+				style: {borderSpacing: '1em 0.1em'}
 			});
 			var detailsPane = new TitlePane({
 				title: _('Details'),
@@ -219,7 +219,7 @@ define([
 			this.addToDetails(_('Installed version'), 'Version');
 			this.addToDetails(_('Candidate version'), 'CandidateVersion');
 			this.addToDetails(_('Screenshot'), 'Screenshot');
-			this.addToDetails(_('Email notification'), 'NotifyVendor');
+			this.addToDetails(_('Notification'), 'NotifyVendor');
 
 			query('.umcScreenshot', this._detailsTable.domNode).forEach(function(imgNode) {
 				new Lightbox({ href: imgNode.src }, imgNode);
@@ -556,15 +556,16 @@ define([
 
 		_detailFieldCustomUsage: function() {
 			var txts = [];
+			var is_installed = this.app.is_installed;
 			var useractivationrequired = this.app.useractivationrequired;
 			var webinterface = this.app.webinterface;
 			var webinterfacename = this.app.webinterfacename || this.app.name;
 			var umcmodulename = this.app.umcmodulename;
 			var umcmoduleflavor = this.app.umcmoduleflavor;
 			var module = UMCApplication.getModule(umcmodulename, umcmoduleflavor);
-			if (useractivationrequired) {
+			if (is_installed && useractivationrequired) {
 				var domain_administration_link = _('Domain administration');
-				if (this.app.is_installed && UMCApplication.getModule('udm', 'users/user')) {
+				if (UMCApplication.getModule('udm', 'users/user')) {
 					domain_administration_link = lang.replace('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\')">{name}</a>', {name : domain_administration_link});
 				}
 				txts.push(_('Users need to be modified in the %s in order to use this service.', domain_administration_link));
@@ -577,7 +578,7 @@ define([
 				});
 				txts.push(_('A module for the administration of the app is available: %s.', module_link));
 			}
-			if (this.app.is_installed && webinterface) {
+			if (is_installed && webinterface) {
 				var webinterface_link = lang.replace('<a href="{webinterface}" target="_blank">{name}</a>', {
 					webinterface: webinterface,
 					name: webinterfacename

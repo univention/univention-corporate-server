@@ -500,10 +500,6 @@ class Application(object):
 			# whitelist is stronger than blacklist: iterate over all_applications
 			filtered_applications = [app for app in cls._all_applications if _included(whitelist, app) or app in filtered_applications]
 
-		# filter those apps that are not available for the current server role
-		server_role = ucr.get('server/role')
-		filtered_applications = [app for app in filtered_applications if not app.get('serverrole') or server_role in app.get('serverrole')]
-
 		# group app entries by their ID
 		app_map = {}
 		for iapp in filtered_applications:

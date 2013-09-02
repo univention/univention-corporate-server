@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-09-02 14:02+0200\n"
+"POT-Creation-Date: 2013-09-02 16:58+0200\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,7 @@ msgstr "--- alle ---"
 msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
-#: umc/js/appcenter/AppDetailsPage.js:578
+#: umc/js/appcenter/AppDetailsPage.js:579
 #, python-format
 msgid "A module for the administration of the app is available: %s."
 msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
@@ -245,7 +245,7 @@ msgstr "Deaktiviert"
 msgid "Do you really want to %(verb)s %(ids)s?"
 msgstr "Möchten Sie %(ids)s wirklich %(verb)s?"
 
-#: umc/js/appcenter/AppDetailsPage.js:566
+#: umc/js/appcenter/AppDetailsPage.js:567
 msgid "Domain administration"
 msgstr "Domänenadministration"
 
@@ -264,10 +264,6 @@ msgstr "Detailinformation über diese Komponente bearbeiten"
 #: umc/js/appcenter/AppDetailsPage.js:447
 msgid "Email address"
 msgstr "E-Mail-Adresse"
-
-#: umc/js/appcenter/AppDetailsPage.js:222
-msgid "Email notification"
-msgstr "E-Mail Benachrichtigung"
 
 #: umc/js/appcenter/SettingsPage.js:155
 msgid "Enable"
@@ -419,6 +415,10 @@ msgstr "Nicht gefunden"
 msgid "Notes on using"
 msgstr "Anmerkungen"
 
+#: umc/js/appcenter/AppDetailsPage.js:222
+msgid "Notification"
+msgstr "Benachrichtigung"
+
 #: umc/js/appcenter/SettingsPage.js:57
 msgid ""
 "On this page, you find all additional components defined for this system. "
@@ -442,7 +442,7 @@ msgstr ""
 msgid "On/Off"
 msgstr "An/Aus"
 
-#: umc/js/appcenter/AppDetailsPage.js:161
+#: umc/js/appcenter/AppDetailsPage.js:153
 msgid "Open"
 msgstr "Öffnen"
 
@@ -617,7 +617,7 @@ msgstr "Neue App vorschlagen"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: umc/js/appcenter/AppDetailsPage.js:585
+#: umc/js/appcenter/AppDetailsPage.js:586
 #, python-format
 msgid "The app provides a web interface: %s."
 msgstr "Die App bietet ein Webinterface: %s."
@@ -710,24 +710,24 @@ msgstr ""
 msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
 
-#: umc/js/appcenter/AppDetailsPage.js:655
+#: umc/js/appcenter/AppDetailsPage.js:656
 msgid "This application will inform the maintainer if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Betreuer über eine (De)Installation in Kenntnis."
 
-#: umc/js/appcenter/AppDetailsPage.js:657
+#: umc/js/appcenter/AppDetailsPage.js:658
 msgid "This application will inform the vendor if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Hersteller über eine (De)Installation in "
 "Kenntnis."
 
-#: umc/js/appcenter/AppDetailsPage.js:661
+#: umc/js/appcenter/AppDetailsPage.js:662
 msgid "This application will not inform the maintainer if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Betreuer nicht über eine (De)Installation in "
 "Kenntnis."
 
-#: umc/js/appcenter/AppDetailsPage.js:663
+#: umc/js/appcenter/AppDetailsPage.js:664
 msgid "This application will not inform the vendor if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Hersteller nicht über eine (De)Installation in "
@@ -772,7 +772,7 @@ msgstr ""
 "geführt werden."
 
 #: umc/js/appcenter/PackagesPage.js:103 umc/js/appcenter/PackagesPage.js:240
-#: umc/js/appcenter/AppDetailsPage.js:148
+#: umc/js/appcenter/AppDetailsPage.js:168
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
@@ -839,7 +839,7 @@ msgstr "'Unmaintained' Repositories benutzen"
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/js/appcenter/AppDetailsPage.js:570
+#: umc/js/appcenter/AppDetailsPage.js:571
 #, python-format
 msgid "Users need to be modified in the %s in order to use this service."
 msgstr "Benutzer müssen in der %s für diesen Dienst freigeschaltet werden."
@@ -992,7 +992,6 @@ msgstr "aktualisieren"
 #~ msgid "Going to {verb} Application '{name}'"
 #~ msgstr "Im Begriff, die Applikation '{name}' zu {verb}"
 
-#, fuzzy
 #~ msgid "Installation Information"
 #~ msgstr "Informationen zur Installation"
 

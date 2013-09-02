@@ -122,9 +122,9 @@ class Instance(umcm.Base):
 		else:
 			return True
 
-	@sanitize(pattern=PatternSanitizer(default='.*'))
 	@simple_response
-	def query(self, pattern):
+	def query(self):
+		server_role = self.ucr.get('server/role')
 		LICENSE.reload()
 		try:
 			applications = Application.all(force_reread=True)
@@ -133,7 +133,7 @@ class Instance(umcm.Base):
 		result = []
 		self.package_manager.reopen_cache()
 		for application in applications:
-			if pattern.search(application.name):
+			if not application.get('serverrole') or server_role in application.get('serverrole'):
 				props = application.to_dict(self.package_manager)
 				result.append(props)
 		return result
