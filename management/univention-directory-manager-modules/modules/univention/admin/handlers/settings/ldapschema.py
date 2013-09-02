@@ -138,6 +138,13 @@ layout = [
 		Group( _( 'Registered by' ), layout = [
 			["appidentifier"],
 		] ),
+		Group( _( 'Package Information' ), layout = [
+			["package"],
+			["packageversion"],
+		] ),
+		Group( _( 'Activated' ), layout = [
+			["active"],
+		] ),
 	] ),
 ]
 

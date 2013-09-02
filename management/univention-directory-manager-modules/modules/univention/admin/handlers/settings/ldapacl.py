@@ -38,6 +38,7 @@ import univention.admin.handlers
 import univention.admin.password
 import univention.admin.allocators
 import univention.admin.localization
+import base64
 
 translation=univention.admin.localization.translation('univention.admin.handlers.settings')
 _=translation.translate
@@ -157,6 +158,17 @@ layout = [
 		Group( _( 'Registered by' ), layout = [
 			["appidentifier"],
 		] ),
+		Group( _( 'Package Information' ), layout = [
+			["package"],
+			["packageversion"],
+		] ),
+		Group( _( 'UCS Version Dependencies' ), layout = [
+			["ucsversionstart"],
+			["ucsversionend"],
+		] ),
+		Group( _( 'Activated' ), layout = [
+			["active"],
+		] ),
 	] ),
 ]
 
@@ -180,7 +192,7 @@ def mapBase64( value ):
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('filename', 'univentionLDAPACLFilename', None, univention.admin.mapping.ListToString)
-mapping.register('acl', 'univentionLDAPSchemaData', mapBase64, unmapBase64)
+mapping.register('acl', 'univentionLDAPACLData', mapBase64, unmapBase64)
 mapping.register('package', 'univentionLDAPExtensionPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionLDAPExtensionPackageVersion', None, univention.admin.mapping.ListToString)
 mapping.register('appidentifier', 'univentionAppIdentifier', None, univention.admin.mapping.ListToString)

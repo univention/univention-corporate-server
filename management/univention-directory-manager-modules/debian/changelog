@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.22-4) unstable; urgency=low
+
+  * fix settings/ldapacl acl encoding (Bug #32411)
+  * descriptions for additional parameters of settings/ldap*
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 18:46:46 +0200
+
 univention-directory-manager-modules (9.0.22-3) unstable; urgency=low
 
   * Add ucsversionstart and ucsversionend to settings/ldapacl
