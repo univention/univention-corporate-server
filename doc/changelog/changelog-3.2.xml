@@ -619,6 +619,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			Applications that require a server role other than the used server role
+			are removed from the App Center Page (<ulink url="&ucsbug;32426">Bug
+				32426</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Added a progress bar while fetching software changes in App Center and speeded up the
 		  process of retrieving this information (<ulink url="&ucsbug;30798">Bug 30798</ulink>).
 		</simpara></listitem>
