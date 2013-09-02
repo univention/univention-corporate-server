@@ -101,7 +101,8 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		try:
 			backup_filename = None
-			backup_info_filename = None
+			backup_ucrinfo_filename = None
+			backup_backlink_filename = None
 			if old:
 				old_filename = os.path.join(SUBFILE_BASEDIR, old.get('univentionLDAPACLFilename')[0])
 				if os.path.exists(old_filename):
@@ -127,18 +128,31 @@ def handler(dn, new, old):
 						backup_filename = None
 						os.close(backup_fd)
 
-				## and the old UCR registration
-				old_info_filename = os.path.join(INFO_BASEDIR, "ldapacl_%s.info" % old.get('univentionLDAPACLFilename')[0] )
-				if os.path.exists(old_info_filename):
-					backup_info_fd, backup_info_filename = tempfile.mkstemp()
-					ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old UCR info file %s to %s.' % (name, old_info_filename, backup_info_filename))
+				## plus the old backlink file
+				old_backlink_filename = "%s.info" % old_filename
+				if os.path.exists(old_backlink_filename):
+					backup_backlink_fd, backup_backlink_filename = tempfile.mkstemp()
+					ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old backlink file %s to %s.' % (name, old_backlink_filename, backup_backlink_filename))
 					try:
-						os.rename(old_info_filename, backup_info_filename)
+						os.rename(old_backlink_filename, backup_backlink_filename)
 					except IOError:
-						ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old UCR info file %s, removing it.' % (name, old_info_filename))
-						os.unlink(old_info_filename)
-						backup_info_filename = None
-						os.close(backup_info_fd)
+						ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old backlink file %s, removing it.' % (name, old_backlink_filename))
+						os.unlink(old_backlink_filename)
+						backup_backlink_filename = None
+						os.close(backup_backlink_fd)
+
+				## and the old UCR registration
+				old_ucrinfo_filename = os.path.join(INFO_BASEDIR, "ldapacl_%s.info" % old.get('univentionLDAPACLFilename')[0] )
+				if os.path.exists(old_ucrinfo_filename):
+					backup_ucrinfo_fd, backup_ucrinfo_filename = tempfile.mkstemp()
+					ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old UCR info file %s to %s.' % (name, old_ucrinfo_filename, backup_ucrinfo_filename))
+					try:
+						os.rename(old_ucrinfo_filename, backup_ucrinfo_filename)
+					except IOError:
+						ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old UCR info file %s, removing it.' % (name, old_ucrinfo_filename))
+						os.unlink(old_ucrinfo_filename)
+						backup_ucrinfo_filename = None
+						os.close(backup_ucrinfo_fd)
 
 
 
@@ -149,6 +163,7 @@ def handler(dn, new, old):
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Create directory %s.' % (name, SUBFILE_BASEDIR))
 				os.makedirs(SUBFILE_BASEDIR, 0755)
 
+			## Create new LDAP ACL file
 			try:
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Writing new LDAP ACL file %s.' % (name, new_filename))
 				with open(new_filename, 'w') as f:
@@ -157,15 +172,27 @@ def handler(dn, new, old):
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing ACL file %s.' % (name, new_filename))
 				return
 
+			## plus backlink file
 			try:
-				new_info_filename = os.path.join(INFO_BASEDIR, "ldapacl_%s.info" % new.get('univentionLDAPACLFilename')[0])
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Writing UCR info file %s.' % (name, new_info_filename))
-				with open(new_info_filename, 'w') as f:
-					f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
+				new_backlink_filename = "%s.info" % new_filename
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Writing backlink file %s.' % (name, new_backlink_filename))
+				with open(new_backlink_filename, 'w') as f:
+					f.write("%s\n" % dn)
 			except IOError:
-				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing UCR info file %s.' % (name, new_info_filename))
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing backlink file %s.' % (name, new_backlink_filename))
 				return
 
+			## and UCR registration
+			try:
+				new_ucrinfo_filename = os.path.join(INFO_BASEDIR, "ldapacl_%s.info" % new.get('univentionLDAPACLFilename')[0])
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Writing UCR info file %s.' % (name, new_ucrinfo_filename))
+				with open(new_ucrinfo_filename, 'w') as f:
+					f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
+			except IOError:
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing UCR info file %s.' % (name, new_ucrinfo_filename))
+				return
+
+			## Commit to slapd.conf
 			ucr = ConfigRegistry()
 			ucr.load()
 			ucr_handlers = configHandlers()
@@ -179,7 +206,8 @@ def handler(dn, new, old):
 				## Revert changes
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new LDAP ACL fragement %s.' % (name, new_filename))
 				os.unlink(new_filename)
-				os.unlink(new_info_filename)
+				os.unlink(new_backlink_filename)
+				os.unlink(new_ucrinfo_filename)
 				if backup_filename:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous LDAP ACL %s.' % (name, old_filename))
 					try:
@@ -187,28 +215,42 @@ def handler(dn, new, old):
 						os.close(backup_fd)
 					except IOError:
 						ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old ACL file %s.' % (name, old_filename))
-				## and the old UCR registration
-				if backup_info_filename:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous UCR info file %s.' % (name, old_info_filename))
+				## plus backlink file
+				if backup_backlink_filename:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous backlink file %s.' % (name, old_backlink_filename))
 					try:
-						os.rename(backup_info_filename, old_info_filename)
-						os.close(backup_info_fd)
+						os.rename(backup_backlink_filename, old_backlink_filename)
+						os.close(backup_backlink_fd)
 					except IOError:
-						ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old UCR info file %s.' % (name, old_info_filename))
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old backlink file %s.' % (name, old_backlink_filename))
+				## and the old UCR registration
+				if backup_ucrinfo_filename:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous UCR info file %s.' % (name, old_ucrinfo_filename))
+					try:
+						os.rename(backup_ucrinfo_filename, old_ucrinfo_filename)
+						os.close(backup_ucrinfo_fd)
+					except IOError:
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old UCR info file %s.' % (name, old_ucrinfo_filename))
 				## Commit and exit
 				ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 				return
 
 			ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL validation successful.' % (name,))
+			## cleanup backup
 			if backup_filename:
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old ACL file %s.' % (name, backup_filename))
 				os.unlink(backup_filename)
 				os.close(backup_fd)
+			## plus backlink file
+			if backup_backlink_filename:
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old backlink file %s.' % (name, backup_backlink_filename))
+				os.unlink(backup_backlink_filename)
+				os.close(backup_backlink_fd)
 			## and the old UCR registration
-			if backup_info_filename:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old UCR info file %s.' % (name, backup_info_filename))
-				os.unlink(backup_info_filename)
-				os.close(backup_info_fd)
+			if backup_ucrinfo_filename:
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old UCR info file %s.' % (name, backup_ucrinfo_filename))
+				os.unlink(backup_ucrinfo_filename)
+				os.close(backup_ucrinfo_fd)
 
 			__todo_list.append(dn)
 			__do_reload = True
@@ -217,15 +259,18 @@ def handler(dn, new, old):
 			listener.unsetuid()
 	elif old:
 		old_filename = os.path.join(SUBFILE_BASEDIR, old.get('univentionLDAPACLFilename')[0])
+		## plus backlink file
+		old_backlink_filename = "%s.info" % old_filename
 		## and the old UCR registration
-		old_info_filename = os.path.join(INFO_BASEDIR, "ldapacl_%s.info" % old.get('univentionLDAPACLFilename')[0] )
+		old_ucrinfo_filename = os.path.join(INFO_BASEDIR, "ldapacl_%s.info" % old.get('univentionLDAPACLFilename')[0] )
 		if os.path.exists(old_filename):
 			listener.setuid(0)
 			try:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing LDAP ACL extension %s.' % (name, new['cn'][0]))
-				if os.path.exists(old_info_filename):
-					os.unlink(old_info_filename)
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing LDAP ACL extension %s.' % (name, new['cn'][0]))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing LDAP ACL extension %s.' % (name, old['cn'][0]))
+				if os.path.exists(old_ucrinfo_filename):
+					os.unlink(old_ucrinfo_filename)
+				if os.path.exists(old_backlink_filename):
+					os.unlink(old_backlink_filename)
 				os.unlink(old_filename)
 
 				ucr = ConfigRegistry()

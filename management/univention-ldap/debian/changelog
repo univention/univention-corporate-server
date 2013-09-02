@@ -1,3 +1,9 @@
+univention-ldap (10.0.10-18) unstable; urgency=low
+
+  * settings_ldapacl.py writes a backlink file now (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 19:23:52 +0200
+
 univention-ldap (10.0.10-17) unstable; urgency=low
 
   * Minor fixes in settings_ldapacl.py (Bug #32411)
