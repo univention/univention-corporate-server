@@ -83,6 +83,20 @@ attributetype ( univentionLDAPExtensionAttributeType:23 NAME 'univentionLDAPACLA
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
 
+attributetype ( univentionLDAPExtensionAttributeType:24 NAME 'univentionUCSVersionStart'
+	DESC 'Lowest valid UCS Version'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionLDAPExtensionAttributeType:24 NAME 'univentionUCSVersionEnd'
+	DESC 'Highest valid UCS Version'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
 objectclass ( univentionLDAPExtensionObjectClass:2 NAME 'univentionLDAPExtensionACL'
 	DESC 'UCS LDAP ACL extension'
 	STRUCTURAL
@@ -93,5 +107,7 @@ objectclass ( univentionLDAPExtensionObjectClass:2 NAME 'univentionLDAPExtension
 		$ univentionLDAPExtensionPackage
 		$ univentionLDAPExtensionPackageVersion
 		$ univentionAppIdentifier
+		$ univentionUCSVersionStart
+		$ univentionUCSVersionEnd
 		)
 	)
