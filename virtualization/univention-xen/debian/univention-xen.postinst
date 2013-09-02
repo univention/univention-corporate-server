@@ -30,8 +30,6 @@
 # <http://www.gnu.org/licenses/>.
 
 univention-config-registry set xen/repository?"file:///var/lib/univention-server-cdrom" \
-	xen/xencommons/autostart?yes \
-	xen/xendomains/autostart?yes \
 	xen/xend/autostart?yes
 
 eval "$(univention-config-registry shell kernel/modules)"
