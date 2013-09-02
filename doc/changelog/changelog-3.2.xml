@@ -425,6 +425,8 @@
 	  <title>LDAP schema changes</title>
 		<itemizedlist>
 		  <listitem><simpara>
+			A new schema extension <emphasis>univention-ldap-extension.schema</emphasis>
+			(<ulink url="&ucsbug;32391">Bug 32391</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -439,6 +441,16 @@
 
 		  <listitem><simpara>
 			The failed LDIF mode of the replication does now handle empty values correctly (<ulink url="&ucsbug;25579">Bug 25579</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+		    A Listener module for the replication of LDAP schema extensions has been implemented
+		    (<ulink url="&ucsbug;31801">Bug 31801</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+		    A Listener module for the replication of LDAP ACL extensions has been implemented
+		    (<ulink url="&ucsbug;32393">Bug 32393</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -824,6 +836,16 @@
 
 		<listitem><simpara>
 			Moving and deleting the LDAP base is now prevented in the LDAP directory in UMC (<ulink url="&ucsbug;24642">Bug 24642</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			A new UDM module <emphasis>settings/ldapschema</emphasis> has been implemented for registration and replication of LDAP schema extensions
+			(<ulink url="&ucsbug;32412">Bug 32412</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			A new UDM module <emphasis>settings/ldapacl</emphasis> has been implemented for registration and replication of LDAP ACL extensions
+			(<ulink url="&ucsbug;32411">Bug 32411</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1241,6 +1263,16 @@
 	  <listitem><simpara>
 		PackageManager now checks installation status correctly
 		(<ulink url="&ucsbug;31261">Bug 31261</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Two new functions <emphasis>ucs_registerLDAPSchema</emphasis> and <emphasis>ucs_unregisterLDAPSchema</emphasis> have been implemented
+		(<ulink url="&ucsbug;26785">Bug 26785</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Two new functions <emphasis>ucs_registerLDAPACL</emphasis> and <emphasis>ucs_unregisterLDAPACL</emphasis> have been implemented
+		(<ulink url="&ucsbug;32392">Bug 32392</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
