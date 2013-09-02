@@ -240,12 +240,13 @@ ucs_isServiceUnused () {
 }
 
 #
-# ucs_registerLDAPSchema copies the LDAP schema to a persistent place /var/lib/univention-ldap/local-schema/
-# and it will not be removed if the package is uninstalled.
-# ucs_registerLDAPSchema <schema file>
+# ucs_registerLDAPSchema writes an LDAP schema extension to UDM.
+# A listener module then writes it to a persistent place /var/lib/univention-ldap/local-schema/.
+#
+# ucs_registerLDAPSchema <schema file> [options]
 # e.g. ucs_registerLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
 #
-ucs_registerLDAPSchema () { <schemafile> [options]
+ucs_registerLDAPSchema () {
 	local schemaFile="$1"
 
 	if [ ! -e "$schemaFile" ]; then
@@ -270,7 +271,7 @@ ucs_registerLDAPSchema () { <schemafile> [options]
 
 	if ! shift 1
 	then
-		echo "ucs_registerLDAPSchema: wrong argument number" >&2
+		echo "ucs_registerLDAPSchema: wrong number of arguments" >&2
 		return 2
 	fi
 
@@ -356,11 +357,63 @@ ucs_registerLDAPSchema () { <schemafile> [options]
 			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
 	do
 			t=$(date +%s)
-			if [ $(($t - $t0)) -gt 300 ]; then
-				echo "ERROR: Master did not mark the LDAP schema extension active within 5 minutes."
+			if [ $(($t - $t0)) -gt 180 ]; then
+				echo "ERROR: Master did not mark the LDAP schema extension active within 3 minutes."
 				return 1
 			fi
 			sleep 3
 	done
 }
 
+# ucs_unregisterLDAPSchema removes an LDAP schema extension from UDM.
+# A listener module then tries to remove it.
+#
+# ucs_unregisterLDAPSchema <schema file> [options]
+# e.g. ucs_unregisterLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
+#
+ucs_unregisterLDAPSchema () {
+	local schemaFile="$1"
+
+	if [ ! -e "$schemaFile" ]; then
+		echo "ucs_unregisterLDAPSchema: missing schema file" >&2
+		return 2
+	fi
+
+	if ! shift 1
+	then
+		echo "ucs_unregisterLDAPSchema: wrong number of arguments" >&2
+		return 2
+	fi
+
+	local objectname=$(basename "$schemaFile" ".schema")
+
+	local schema_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
+		univentionAppIdentifier)
+
+	if [ -z "$schema_ldif" ]; then
+		echo "ERROR: Schema object not found in LDAP."
+		return 1
+	fi
+
+	app_filter=""
+	for appidentifier in $(echo "$schema_ldif" | sed -n 's/^univentionAppIdentifier: //p'); do
+		app_filter="$app_filter(cn=$appidentifier)"
+	done
+
+	if [ -n "$app_filter"]; then
+		local app_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionApp)$app_filter)" cn)
+		if [ -n "$app_ldif" ]; then
+			echo -n "INFO: The schema $objectname is still registered by the following apps:"
+			for appidentifier in $(echo "$app_ldif" | sed -n 's/^cn: //p'); do
+				echo -n " $appidentifier"
+			done
+			echo .
+			return 2
+		fi
+	fi
+
+	object_dn=$(echo "$schema_ldif" | sed -n 's/^dn: //p')
+
+	univention-directory-manager settings/ldapschema delete "$@" \
+		--dn="$object_dn"
+}
