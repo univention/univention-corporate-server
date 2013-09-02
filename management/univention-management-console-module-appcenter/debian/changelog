@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.22-1) unstable; urgency=low
+
+  * Filter apps which do not meet ServerRole (Bug #32426)
+  * Fixed requirements for update path (Bug #32163)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 02 Sep 2013 16:45:20 +0200
+
 univention-management-console-module-appcenter (3.0.21-1) unstable; urgency=low
 
   * Overhaul app detail representation (Bug #32163)

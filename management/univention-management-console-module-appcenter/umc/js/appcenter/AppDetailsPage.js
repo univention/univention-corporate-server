@@ -143,14 +143,6 @@ define([
 				});
 			}
 			if (this.app.is_installed) {
-				buttons.push({
-					name: 'uninstall',
-					label: _('Uninstall'),
-					align: 'right',
-					callback: lang.hitch(this, 'uninstallApp')
-				});
-			}
-			if (this.app.is_installed) {
 				var umcmodulename = this.app.umcmodulename;
 				var umcmoduleflavor = this.app.umcmoduleflavor;
 				var module = UMCApplication.getModule(umcmodulename, umcmoduleflavor);
@@ -170,6 +162,14 @@ define([
 					});
 				}
 			}
+			if (this.app.is_installed) {
+				buttons.push({
+					name: 'uninstall',
+					label: _('Uninstall'),
+					align: 'right',
+					callback: lang.hitch(this, 'uninstallApp')
+				});
+			}
 			if (!this.app.is_installed) {
 				buttons.push({
 					name: 'install',
@@ -178,7 +178,7 @@ define([
 					callback: lang.hitch(this, 'installApp')
 				});
 			}
-			if (this.app.candidate_version) {
+			if (this.app.is_installed && this.app.candidate_version) {
 				buttons.push({
 					name: 'update',
 					label: _('Upgrade'),
@@ -218,7 +218,6 @@ define([
 			this.addToDetails(_('Website'), 'Website');
 			this.addToDetails(_('Installed version'), 'Version');
 			this.addToDetails(_('Candidate version'), 'CandidateVersion');
-			this.addToDetails(_('Section'), 'Categories');
 			this.addToDetails(_('Screenshot'), 'Screenshot');
 			this.addToDetails(_('Email notification'), 'NotifyVendor');
 
@@ -646,12 +645,6 @@ define([
 			var contact = this.app.contact;
 			if (contact) {
 				return '<a href="mailto:' + contact + '">' + contact + '</a>';
-			}
-		},
-
-		_detailFieldCustomCategories: function() {
-			if (this.app.categories) {
-				return this.app.categories.join(', ');
 			}
 		},
 

@@ -500,6 +500,10 @@ class Application(object):
 			# whitelist is stronger than blacklist: iterate over all_applications
 			filtered_applications = [app for app in cls._all_applications if _included(whitelist, app) or app in filtered_applications]
 
+		# filter those apps that are not available for the current server role
+		server_role = ucr.get('server/role')
+		filtered_applications = [app for app in filtered_applications if not app.get('serverrole') or server_role in app.get('serverrole')]
+
 		# group app entries by their ID
 		app_map = {}
 		for iapp in filtered_applications:
@@ -628,10 +632,18 @@ class Application(object):
 		return True
 
 	@SoftRequirement('install', 'update')
-	def shall_have_enough_ram(self):
+	def shall_have_enough_ram(self, function):
 		current_ram = get_current_ram_available()
-		if self.get('minphysicalram') and current_ram < self.get('minphysicalram'):
-			return {'minimum' : self.get('minphysicalram'), 'current' : current_ram}
+		required_ram = self.get('minphysicalram')
+		if function == 'update':
+			# is already installed, just a minor version update
+			#   RAM "used" by this installed app should count
+			#   as free. best approach: substract it
+			installed_app = self.find(self.id)
+			old_required_ram = installed_app.get('minphysicalram')
+			required_ram = required_ram - old_required_ram
+		if current_ram < required_ram:
+			return {'minimum' : required_ram, 'current' : current_ram}
 		return True
 
 	def check_invokation(self, function, package_manager):
@@ -640,8 +652,18 @@ class Application(object):
 			for func_name in self._requirements.get((function, hard_requirements), []):
 				possible_variables = {
 					'package_manager' : package_manager,
+					'function' : function,
 				}
-				method = getattr(self, func_name)
+				if function == 'update':
+					app = self.candidate
+					if app is None:
+						# update is not possible,
+						#   special handling
+						ret['must_have_candidate'] = False
+						continue
+				else:
+					app = self
+				method = getattr(app, func_name)
 				arguments = inspect.getargspec(method).args[1:] # remove self
 				kwargs = dict((key, value) for key, value in possible_variables.iteritems() if key in arguments)
 				reason = method(**kwargs)

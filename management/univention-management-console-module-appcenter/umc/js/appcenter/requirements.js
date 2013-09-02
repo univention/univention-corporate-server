@@ -104,6 +104,11 @@ define([
 				opts.appDetailsPage.showLicenseRequest(opts.action);
 			}
 		}),
+		must_have_candidate: new Requirement({
+			reasonDescription: function(details) {
+				return _('%s cannot be updated. The application is either not installed or no newer version is available.', details.name);
+			}
+		}),
 		must_not_be_installed: new Requirement({
 			reasonDescription: function(details) {
 				return _('%s is already installed.', details.name);
