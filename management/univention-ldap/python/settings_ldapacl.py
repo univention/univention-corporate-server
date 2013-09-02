@@ -128,7 +128,7 @@ def handler(dn, new, old):
 						os.close(backup_fd)
 
 				## and the old UCR registration
-				old_info_filename = os.path.join(INFO_BASEDIR, "%s_ldapacl.info" % old.get('univentionLDAPACLFilename')[0] )
+				old_info_filename = os.path.join(INFO_BASEDIR, "ldapacl_%s.info" % old.get('univentionLDAPACLFilename')[0] )
 				if os.path.exists(old_info_filename):
 					backup_info_fd, backup_info_filename = tempfile.mkstemp()
 					ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old UCR info file %s to %s.' % (name, old_info_filename, backup_info_filename))
@@ -158,7 +158,7 @@ def handler(dn, new, old):
 				return
 
 			try:
-				new_info_filename = os.path.join(INFO_BASEDIR, "%s_ldapacl.info" % new.get('univentionLDAPACLFilename')[0])
+				new_info_filename = os.path.join(INFO_BASEDIR, "ldapacl_%s.info" % new.get('univentionLDAPACLFilename')[0])
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Writing UCR info file %s.' % (name, new_info_filename))
 				with open(new_info_filename, 'w') as f:
 					f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
@@ -218,13 +218,15 @@ def handler(dn, new, old):
 	elif old:
 		old_filename = os.path.join(SUBFILE_BASEDIR, old.get('univentionLDAPACLFilename')[0])
 		## and the old UCR registration
-		old_info_filename = os.path.join(INFO_BASEDIR, "%s_ldapacl.info" % old.get('univentionLDAPACLFilename')[0] )
+		old_info_filename = os.path.join(INFO_BASEDIR, "ldapacl_%s.info" % old.get('univentionLDAPACLFilename')[0] )
 		if os.path.exists(old_filename):
 			listener.setuid(0)
 			try:
-				os.unlink(old_filename)
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing LDAP ACL extension %s.' % (name, new['cn'][0]))
 				if os.path.exists(old_info_filename):
 					os.unlink(old_info_filename)
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing LDAP ACL extension %s.' % (name, new['cn'][0]))
+				os.unlink(old_filename)
 
 				ucr = ConfigRegistry()
 				ucr.load()
