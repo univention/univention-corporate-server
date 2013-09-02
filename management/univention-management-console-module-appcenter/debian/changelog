@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.21-1) unstable; urgency=low
+
+  * Overhaul app detail representation (Bug #32163)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 02 Sep 2013 10:48:23 +0200
+
 univention-management-console-module-appcenter (3.0.20-1) unstable; urgency=low
 
   * Performance: Smart UCR commits and package updates (Bug #31228)
@@ -110,13 +116,13 @@ univention-management-console-module-appcenter (3.0.4-1) unstable; urgency=low
 
   * Bug #31185: Removed HTML evaluation of localised values from ini file
   * Some tweaks to installed apps because of new GalleryPane in App Center
+  * Performance: Speedup updates by committing files only once (Bug #31228)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Jul 2013 16:41:20 +0200
 
 univention-management-console-module-appcenter (3.0.3-1) unstable; urgency=low
 
   * Use independent apt.Cache when getting package sections (Bug #31662)
-  * Performance: Speedup updates by committing files only once (Bug #31228)
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 05 Jul 2013 13:03:39 +0200
 

@@ -34,10 +34,9 @@ define([
 	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/ComboBox",
-	"umc/widgets/CheckBox",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, tools, Form, ComboBox, CheckBox, TextBox, _) {
+], function(declare, lang, tools, Form, ComboBox, TextBox, _) {
 	return declare("umc.modules.appcenter.SearchForm", [ Form ], {
 
 		postMixInProperties: function() {

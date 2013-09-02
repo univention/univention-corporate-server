@@ -63,7 +63,7 @@ class Instance(umcm.Base):
 		#   otherwise one would have to ask app center server (which is undesired)
  		Application._get_category_translations(fake=True)
 
-	@simple_response(with_flavor='application')
+	@simple_response
 	def get(self, application):
 		# re-populate internal cache; be always as current as app center
 		# be sure to not hit app center (in case it is unavailable)

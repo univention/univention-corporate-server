@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-apps\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-08-27 14:50+0200\n"
+"POT-Creation-Date: 2013-08-30 12:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,36 +12,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: apps/js/apps.js:175
-#, python-format
-msgid "Buy a license for %s"
-msgstr "Lizenz für %s kaufen"
-
-#: apps/js/apps.js:82
+#: apps/js/apps.js:57
 msgid "Close"
 msgstr "Schließen"
-
-#: apps/js/apps.js:125
-msgid "Description"
-msgstr "Beschreibung"
-
-#: apps/js/apps.js:111
-msgid "Details"
-msgstr "Details"
-
-#: apps/js/apps.js:186
-#, python-format
-msgid "Uninstall %s"
-msgstr "%s deinstallieren"
-
-#~ msgid "Do you really want to upgrade to %s?"
-#~ msgstr "Wollen Sie wirklich auf %s aktualisieren?"
-
-#~ msgid "No"
-#~ msgstr "Nein"
-
-#~ msgid "Upgrade %s"
-#~ msgstr "%s aktualisieren"
-
-#~ msgid "Yes"
-#~ msgstr "Ja"

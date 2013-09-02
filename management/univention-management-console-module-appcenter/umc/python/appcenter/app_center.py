@@ -39,6 +39,7 @@ from gzip import GzipFile
 from StringIO import StringIO
 import ConfigParser
 import copy
+import inspect
 import locale
 import os.path
 import re
@@ -123,7 +124,43 @@ class License(object):
 
 LICENSE = License()
 
+class InvokationRequirement(object):
+	def __init__(self, *actions):
+		self.name = ''
+		self.actions = actions
+		self.hard = None
+		self.func = None
+
+	def __call__(self, func):
+		self.func = func
+		self.name = func.__name__
+		return self
+
+class HardRequirement(InvokationRequirement):
+	def __init__(self, *actions):
+		super(HardRequirement, self).__init__(*actions)
+		self.hard = True
+
+class SoftRequirement(InvokationRequirement):
+	def __init__(self, *actions):
+		super(SoftRequirement, self).__init__(*actions)
+		self.hard = False
+
+class ApplicationMetaClass(type):
+	def __new__(cls, name, bases, attrs):
+		requirements = {}
+		for key, value in attrs.items():
+			if isinstance(value, InvokationRequirement):
+				attrs[key] = value.func
+				for action in value.actions:
+					requirements.setdefault((action, value.hard), [])
+					requirements[(action, value.hard)].append(value.name)
+		new_cls = super(ApplicationMetaClass, cls).__new__(cls, name, bases, attrs)
+		new_cls._requirements = requirements
+		return new_cls
+
 class Application(object):
+	__metaclass__ = ApplicationMetaClass
 	_reg_comma = re.compile('\s*,\s*')
 	_reg_component_id = re.compile(r'.*/(?P<id>[^/]+)\.ini')
 	_all_applications = None
@@ -505,21 +542,11 @@ class Application(object):
 		ucr.load()
 		res = copy.copy(self._options)
 		res['component_id'] = self.component_id
-		res['cannot_install_reason'], res['cannot_install_reason_detail'] = self.cannot_install_reason(package_manager)
-		cannot_install_reason = res['cannot_install_reason']
 
-		res['can_install'] = cannot_install_reason is None
-		res['is_installed'] = cannot_install_reason == 'installed'
-		res['cannot_uninstall_reason'], res['cannot_uninstall_reason_detail'] = self.cannot_uninstall_reason(package_manager)
-		res['can_uninstall'] = res['cannot_uninstall_reason'] is None
-		res['cannot_update_reason'], res['cannot_update_reason_detail'] = self.cannot_update_reason(package_manager)
-		res['can_update'] = res['cannot_update_reason'] is None # faster than self.can_be_updated()
-		res['allows_using'] = LICENSE.allows_using(self.get('notifyvendor'))
+		res['is_installed'] = self.is_installed(package_manager)
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
 		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
 		res['host_master'] = ucr.get('ldap/master')
-		res['server'] = self.get_server()
-		res['server_version'] = ucr.get('version/version')
 		res['umc_module'] = 'apps'
 		res['umc_flavor'] = self.id
 		if self.candidate:
@@ -535,75 +562,96 @@ class Application(object):
 	def __repr__(self):
 		return '<Application id="%s" name="%s (%s)" component="%s">' % (self.id, self.name, self.version, self.component_id)
 
-	def cannot_update_reason(self, package_manager):
-		if self.candidate:
-			# check if installed. can have candidate without being installed
-			#   e.g. only master packages installed
-			if self.is_installed(package_manager):
-				return self.candidate.cannot_install_reason(package_manager, check_is_installed=False, check_memory=False)
-			else:
-				return 'not_installed', None
-		else:
-			return 'no_candidate', None
+	@HardRequirement('install', 'update')
+	def must_have_valid_license(self):
+		return LICENSE.allows_using(self.get('notifyvendor'))
 
-	def can_be_updated(self, package_manager):
-		return self.cannot_update_reason(package_manager)[0] is None
+	@HardRequirement('install')
+	def must_not_be_installed(self, package_manager):
+		return not self.is_installed(package_manager)
 
-	# TODO: check_memory is a temporary hack to disable checking memory during update
-	#   (because this very app is probably running and memory-consuming)
-	# See Bug #31354. Should be converted into a warning in UCS 3.2 during update and install
-	def cannot_install_reason(self, package_manager, check_is_installed=True, check_memory=True):
+	@HardRequirement('install', 'update')
+	def must_be_joined_if_master_packages(self):
 		is_joined = os.path.exists('/var/univention-join/joined')
+		return bool(is_joined or self.get('defaultpackagesmaster'))
+
+	@HardRequirement('install', 'update', 'uninstall')
+	def must_not_have_concurrent_operation(self, package_manager):
+		return package_manager.progress_state._finished
+
+	@HardRequirement('install', 'update')
+	def must_have_correct_server_role(self):
 		server_role = ucr.get('server/role')
-		if check_is_installed and self.is_installed(package_manager):
-			return 'installed', None
-		elif self.get('defaultpackagesmaster') and not is_joined:
-			return 'not_joined', None
-		elif self.get('serverrole') and server_role not in self.get('serverrole'):
-			return 'wrong_serverrole', server_role
-		elif check_memory and self.get('minphysicalram') and get_current_ram_available() < self.get('minphysicalram'):
-			return 'hardware_requirements', _('The application requires %(minimum)d MB of free RAM but only %(current)d MB are available.') % {'minimum' : self.get('minphysicalram'), 'current' : get_current_ram_available()}
-		else:
-			conflict_packages = []
-			unmet_packages = []
-			for package in self.get('conflictedsystempackages'):
-				if package_manager.is_installed(package):
-					conflict_packages.append(package)
-			for app in self.all():
-				if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
-					if any(package_manager.is_installed(package) for package in app.get('defaultpackages')):
-						if app.name not in conflict_packages:
-							# can conflict multiple times: conflicts with
-							# APP-1.1 and APP-1.2, both named APP
-							conflict_packages.append(app.name)
-				if app.id in self.get('requiredapps'):
-					if not app.is_installed(package_manager):
-						unmet_packages.append(app.name)
-			if conflict_packages:
-				return 'conflict', conflict_packages
-			if unmet_packages:
-				return 'unmet', unmet_packages
-		return None, None
+		if self.get('serverrole') and server_role not in self.get('serverrole'):
+			return {
+				'current_role' : server_role,
+				'allowed_roles' : ', '.join(self.get('serverrole')),
+			}
+		return True
+
+	@HardRequirement('install', 'update')
+	def must_have_no_conflicts(self, package_manager):
+		conflict_packages = []
+		for package in self.get('conflictedsystempackages'):
+			if package_manager.is_installed(package):
+				conflict_packages.append(package)
+		for app in self.all():
+			if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
+				if any(package_manager.is_installed(package) for package in app.get('defaultpackages')):
+					if app.name not in conflict_packages:
+						# can conflict multiple times: conflicts with
+						# APP-1.1 and APP-1.2, both named APP
+						conflict_packages.append(app.name)
+		if conflict_packages:
+			return conflict_packages
+		return True
+
+	@HardRequirement('install', 'update')
+	def must_have_no_unmet_dependencies(self, package_manager):
+		unmet_packages = []
+		for app in self.all():
+			if app.id in self.get('requiredapps'):
+				if not app.is_installed(package_manager):
+					unmet_packages.append({'id' : app.id, 'name' : app.name})
+		if unmet_packages:
+			return unmet_packages
+		return True
+
+	@HardRequirement('uninstall')
+	def must_not_be_depended_on(self, package_manager):
+		depending_apps = []
+		for app in self.all():
+			if self.id in app.get('requiredapps') and app.is_installed(package_manager):
+				depending_apps.append({'id' : app.id, 'name' : app.name})
+		if depending_apps:
+			return depending_apps
+		return True
+
+	@SoftRequirement('install', 'update')
+	def shall_have_enough_ram(self):
+		current_ram = get_current_ram_available()
+		if self.get('minphysicalram') and current_ram < self.get('minphysicalram'):
+			return {'minimum' : self.get('minphysicalram'), 'current' : current_ram}
+		return True
+
+	def check_invokation(self, function, package_manager):
+		def _check(hard_requirements):
+			ret = {}
+			for func_name in self._requirements.get((function, hard_requirements), []):
+				possible_variables = {
+					'package_manager' : package_manager,
+				}
+				method = getattr(self, func_name)
+				arguments = inspect.getargspec(method).args[1:] # remove self
+				kwargs = dict((key, value) for key, value in possible_variables.iteritems() if key in arguments)
+				reason = method(**kwargs)
+				if reason is not True:
+					ret[func_name] = reason
+			return ret
+		return _check(True), _check(False)
 
 	def is_installed(self, package_manager):
 		return all(package_manager.is_installed(package) for package in self.get('defaultpackages'))
-
-	def can_be_installed(self, package_manager, check_is_installed=True):
-		return not bool(self.cannot_install_reason(package_manager, check_is_installed)[0])
-
-	def cannot_uninstall_reason(self, package_manager):
-		if not self.is_installed(package_manager):
-			return 'not_installed', None
-		unmet_packages = []
-		for app in self.all():
-			if self.id in app.get('requiredapps') and app.is_installed(package_manager):
-				unmet_packages.append(app.name)
-		if unmet_packages:
-			return 'unmet', unmet_packages
-		return None, None
-
-	def can_be_uninstalled(self, package_manager):
-		return self.cannot_uninstall_reason(package_manager)[0] is None
 
 	def uninstall(self, package_manager, component_manager):
 		# reload ucr variables

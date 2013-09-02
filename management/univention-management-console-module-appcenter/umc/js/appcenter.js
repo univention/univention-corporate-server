@@ -40,11 +40,13 @@ define([
 	"umc/widgets/Module",
 	"umc/widgets/TabContainer",
 	"umc/modules/appcenter/AppCenterPage",
+	"umc/modules/appcenter/AppDetailsPage",
+	"umc/modules/appcenter/AppDetailsDialog",
 	"umc/modules/appcenter/PackagesPage",
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter" // not needed atm
-], function(declare, lang, array, aspect, when, Deferred, UMCApplication, store, Module, TabContainer, AppCenterPage, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, aspect, when, Deferred, UMCApplication, store, Module, TabContainer, AppCenterPage, AppDetailsPage, AppDetailsDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	// TODO: ugly workaround for making the app center module unique
 	//   (no two modules open at the same time). See Bug #31662.
@@ -74,7 +76,6 @@ define([
 	return declare("umc.modules.appcenter", [ Module ], {
 
 		idProperty: 'package',
-		_udm_accessible: false,
 
 		buildRendering: function() {
 
@@ -87,11 +88,11 @@ define([
 			// to extract the moduleInstalled('udm')
 			// functionality from App to tools or
 			// a dedicated module
+			var udmAccessible = false;
 			try {
 				require('umc/modules/udm');
-				this._udm_accessible = true;
+				udmAccessible = true;
 			} catch(e) {
-				this._udm_accessible = false;
 			}
 
 			this._componentsStore = store('name', 'appcenter/components');
@@ -100,10 +101,24 @@ define([
 			this._tabContainer = new TabContainer({nested: true}); // simulate a TabbedModule. Weird IE-Bug prevents standby in TabbedModule
 			this.addChild(this._tabContainer);
 
-			this._app_center = new AppCenterPage({
+			this._appCenterPage = new AppCenterPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
-				_udm_accessible: this._udm_accessible, standby: lang.hitch(this, 'standby')
+				standby: lang.hitch(this, 'standby'),
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			this._appDetailsDialog = new AppDetailsDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			this._appDetailsPage = new AppDetailsPage({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				updateApplications: lang.hitch(this._appCenterPage, 'updateApplications'),
+				detailsDialog: this._appDetailsDialog,
+				udmAccessible: udmAccessible,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this._packages = new PackagesPage({
 				moduleID: this.moduleID,
@@ -121,10 +136,16 @@ define([
 				moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')
 			});
 
-			this._tabContainer.addChild(this._app_center);
+			this._tabContainer.addChild(this._appCenterPage);
+			this._tabContainer.addChild(this._appDetailsDialog);
+			this._tabContainer.addChild(this._appDetailsPage);
 			this._tabContainer.addChild(this._packages);
 			this._tabContainer.addChild(this._components);
 			this._tabContainer.addChild(this._details);
+
+			// share appCenterInformation among AppCenter and DetailPage
+			//   needs to be specified in AppDetailsPage for apps.js
+			this._appCenterPage.appCenterInformation = this._appDetailsPage.appCenterInformation;
 
 			// install default component
 			this._components.on('installcomponent', lang.hitch(this, function(ids) {
@@ -154,6 +175,30 @@ define([
 				}
 			}));
 
+			// switched from app center to app details and back
+			this._appCenterPage.on('showApp', lang.hitch(this, function(app) {
+				this._appDetailsPage.set('app', app);
+				this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
+					this.exchangeChild(this._appCenterPage, this._appDetailsPage);
+				}));
+			}));
+			this._appDetailsPage.on('back', lang.hitch(this, function() {
+				this.exchangeChild(this._appDetailsPage, this._appCenterPage);
+			}));
+			this._appDetailsDialog.on('showUp', lang.hitch(this, function() {
+				this.exchangeChild(this._appDetailsPage, this._appDetailsDialog);
+			}));
+			this._appDetailsDialog.on('back', lang.hitch(this, function(continued) {
+				var loadPage = true;
+				if (!continued) {
+					loadPage = this._appDetailsPage.reloadPage();
+					this.standbyDuring(loadPage);
+				}
+				when(loadPage).then(lang.hitch(this, function() {
+					this.exchangeChild(this._appDetailsDialog, this._appDetailsPage);
+				}));
+			}));
+
 			// switches from 'add' or 'edit' (components grid) to the detail form
 			this._components.on('showdetail', lang.hitch(this, function(id) {
 				this.exchangeChild(this._components, this._details);
@@ -176,10 +221,11 @@ define([
 		},
 
 		startup: function() {
-
 			this.inherited(arguments);
 
 			this._tabContainer.hideChild(this._details);
+			this._tabContainer.hideChild(this._appDetailsPage);
+			this._tabContainer.hideChild(this._appDetailsDialog);
 
 		},
 

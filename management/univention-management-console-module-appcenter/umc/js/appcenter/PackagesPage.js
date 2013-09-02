@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define console*/
 
 define([
 	"dojo/_base/declare",
@@ -275,7 +275,7 @@ define([
 					confirmDialog.show();
 
 				}),
-				lang.hitch(this, function(data) {
+				lang.hitch(this, function() {
 					this._grid.standby(false);
 				})
 			);
