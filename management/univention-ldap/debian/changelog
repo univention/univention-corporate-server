@@ -1,3 +1,9 @@
+univention-ldap (10.0.10-15) unstable; urgency=low
+
+  * Add UCS Version check to ldap_acl.py (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 17:17:35 +0200
+
 univention-ldap (10.0.10-14) unstable; urgency=low
 
   * New listener module ldap_acl.py (Bug #32411)

@@ -64,10 +64,21 @@ def handler(dn, new, old):
 	if not listener.configRegistry.get('ldap/server/type') == 'master':
 		return
 
+	## Check UCS version requirements first and skip new if they are not met.
+	if new:
+		univentionUCSVersionStart = new.get('univentionUCSVersionStart')[0]
+		univentionUCSVersionEnd = new.get('univentionUCSVersionEnd')[0]
+		current_UCR_version = "%s-%s" % ( listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel') )
+		if univentionUCSVersionStart and current_UCR_version < univentionUCSVersionStart:
+			ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s requires at least UCR version %s.' % (name, new['cn'][0], univentionUCSVersionStart))
+			new=None
+		elif univentionUCSVersionEnd and current_UCR_version > univentionUCSVersionEnd:
+			ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s specifies compatibility only up to UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
+			new=None
+
 	if new:
 		if not 'univentionLDAPExtensionPackage' in new:
 			return
-		package_name = new['univentionLDAPExtensionPackage'][0]
 
 		if not 'univentionLDAPExtensionPackageVersion' in new:
 			return
@@ -75,7 +86,7 @@ def handler(dn, new, old):
 		if old:	## check for trivial change
 			diff_keys = [ key for key in new.keys() if new[key] != old[key]  and key not in ('entryCSN', 'modifyTimestamp')]
 			if diff_keys == ['univentionLDAPACLActive']:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s activated.' % (name, new['cn'][0]))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s: activation status changed.' % (name, new['cn'][0]))
 				return
 		
 		new_acl_data = new.get('univentionLDAPACLData')[0]
