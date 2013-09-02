@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.22-3) unstable; urgency=low
+
+  * Add ucsversionstart and ucsversionend to settings/ldapacl
+  * Use compressed ACL data in settings/ldapacl (Bug #32411)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 17:23:13 +0200
+
 univention-directory-manager-modules (9.0.22-2) unstable; urgency=low
 
   * Use compressed schema data in settings/ldapschema (Bug #32412)

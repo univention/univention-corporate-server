@@ -76,7 +76,7 @@ property_descriptions={
 	'acl': univention.admin.property(
 			short_description=_('ACL data'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.Base64Upload,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -123,6 +123,26 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'ucsversionstart': univention.admin.property(
+			short_description=_('Minimal UCS version'),
+			long_description='',
+			syntax=univention.admin.syntax.TextArea,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'ucsversionend': univention.admin.property(
+			short_description=_('Maximal UCS version'),
+			long_description='',
+			syntax=univention.admin.syntax.TextArea,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	}
 
 layout = [
@@ -140,15 +160,33 @@ layout = [
 	] ),
 ]
 
+def unmapBase64( value ):
+	try:
+		return base64.encodestring( value[ 0 ] )
+	except Exception, e:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
+	return ""
+
+def mapBase64( value ):
+	if value == '*':
+		# special case for filter pattern '*'
+		return value
+	try:
+		return base64.decodestring( value )
+	except Exception, e:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
+	return ""
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('filename', 'univentionLDAPACLFilename', None, univention.admin.mapping.ListToString)
-mapping.register('acl', 'univentionLDAPACLData', None, univention.admin.mapping.ListToString)
+mapping.register('acl', 'univentionLDAPSchemaData', mapBase64, unmapBase64)
 mapping.register('package', 'univentionLDAPExtensionPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionLDAPExtensionPackageVersion', None, univention.admin.mapping.ListToString)
 mapping.register('appidentifier', 'univentionAppIdentifier', None, univention.admin.mapping.ListToString)
 mapping.register('active', 'univentionLDAPACLActive', None, univention.admin.mapping.ListToString)
+mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
+mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
