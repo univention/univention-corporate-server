@@ -66,17 +66,22 @@ def handler(dn, new, old):
 		if not 'univentionLDAPExtensionPackageVersion' in new:
 			return
 
+		if old:	## check for trivial change
+			diff_keys = [ key for key in new.keys() if new[key] != old[key]  and key not in ('entryCSN', 'modifyTimestamp')]
+			if diff_keys == ['univentionLDAPSchemaActive']:
+				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP schema extension %s activated.' % (name, new['cn']))
+				return
+		
 		new_schema_data = new.get('univentionLDAPSchemaData')[0]
 		try:
 			new_schema = zlib.decompress(new_schema_data, 16+zlib.MAX_WBITS)
-			new_hash = hashlib.sha256(new_schema).hexdigest()
 		except TypeError:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing and hashing data of object %s.' % (name, dn))
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
 			return
 
+		new_filename = os.path.join(BASEDIR, new.get('univentionLDAPSchemaFilename')[0])
 		listener.setuid(0)
 		try:
-			new_filename = os.path.join(BASEDIR, new.get('univentionLDAPSchemaFilename')[0])
 			backup_filename = None
 			if old:
 				old_filename = os.path.join(BASEDIR, old.get('univentionLDAPSchemaFilename')[0])
@@ -88,6 +93,7 @@ def handler(dn, new, old):
 						except IOError:
 							file_hash = None
 						
+						new_hash = hashlib.sha256(new_schema).hexdigest()
 						if new_hash == file_hash:
 							ud.debug(ud.LISTENER, ud.INFO, '%s: Schema file %s unchanged.' % (name, old_filename))
 							return
@@ -142,6 +148,7 @@ def handler(dn, new, old):
 				ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 				return
 
+			ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP schema validation successful.' % (name,))
 			if backup_filename:
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old schema file %s.' % (name, backup_filename))
 				os.unlink(backup_filename)
@@ -153,53 +160,56 @@ def handler(dn, new, old):
 		finally:
 			listener.unsetuid()
 	elif old:
-		listener.setuid(0)
-		try:
-			old_filename = os.path.join(BASEDIR, old.get('univentionLDAPSchemaFilename')[0])
-			backup_fd, backup_filename = tempfile.mkstemp()
-			ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old schema subfile %s to %s.' % (name, old_filename, backup_filename))
+		old_filename = os.path.join(BASEDIR, old.get('univentionLDAPSchemaFilename')[0])
+		if os.path.exists(old_filename):
+			listener.setuid(0)
 			try:
-				os.rename(old_filename, backup_filename)
-			except IOError:
-				ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old schema file %s, leaving it untouched.' % (name, old_filename))
-				os.close(backup_fd)
-				return
-
-			ucr = ConfigRegistry()
-			ucr.load()
-			ucr_handlers = configHandlers()
-			ucr_handlers.load()
-			ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
-
-			p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-			stdout, stderr = p.communicate()
-			if p.returncode != 0:
-				ud.debug(ud.LISTENER, ud.WARN, '%s: LDAP schema validation fails without %s:\n%s.' % (name, old_filename, stdout))
-				ud.debug(ud.LISTENER, ud.WARN, '%s: Restoring %s.' % (name, old_filename))
-				## Revert changes
+				backup_fd, backup_filename = tempfile.mkstemp()
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old schema subfile %s to %s.' % (name, old_filename, backup_filename))
 				try:
-					with open(backup_filename, 'r') as original:
-						file_data = original.read()
-					with open(old_filename, 'w') as target_file:
-						target_file.write("### %s: Leftover of removed settings/ldapschema\n" % (datetime.datetime.now(), ) + file_data)
-					os.unlink(backup_filename)
-					os.close(backup_fd)
+					os.rename(old_filename, backup_filename)
 				except IOError:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting removal of %s.' % (name, old_filename))
-				## Commit and exit
+					ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old schema file %s, leaving it untouched.' % (name, old_filename))
+					os.close(backup_fd)
+					return
+
+				ucr = ConfigRegistry()
+				ucr.load()
+				ucr_handlers = configHandlers()
+				ucr_handlers.load()
 				ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
-				return
 
-			ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old schema file %s.' % (name, backup_filename))
-			os.unlink(backup_filename)
-			os.close(backup_fd)
+				p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+				stdout, stderr = p.communicate()
+				if p.returncode != 0:
+					ud.debug(ud.LISTENER, ud.WARN, '%s: LDAP schema validation fails without %s:\n%s.' % (name, old_filename, stdout))
+					ud.debug(ud.LISTENER, ud.WARN, '%s: Restoring %s.' % (name, old_filename))
+					## Revert changes
+					try:
+						with open(backup_filename, 'r') as original:
+							file_data = original.read()
+						with open(old_filename, 'w') as target_file:
+							target_file.write("### %s: Leftover of removed settings/ldapschema\n" % (datetime.datetime.now(), ) + file_data)
+						os.unlink(backup_filename)
+						os.close(backup_fd)
+					except IOError:
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting removal of %s.' % (name, old_filename))
+					## Commit and exit
+					ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
+					return
 
-			__do_reload = True
-			if dn in __todo_list:
-				__todo_list = filter(lambda element: element != dn, __todo_list)
+				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP schema validation successful, removing backup of old schema file %s.' % (name, backup_filename))
+				os.unlink(backup_filename)
+				os.close(backup_fd)
 
-		finally:
-			listener.unsetuid()
+				__do_reload = True
+				if dn in __todo_list:
+					__todo_list = [ x for x in __todo_list if x != dn ]
+					if not __todo_list:
+						__do_reload = False
+
+			finally:
+				listener.unsetuid()
 
 def postrun():
 	"""Restart LDAP server Master and mark new schema extension objects active"""

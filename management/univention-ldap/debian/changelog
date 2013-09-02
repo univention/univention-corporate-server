@@ -1,3 +1,9 @@
+univention-ldap (10.0.10-12) unstable; urgency=low
+
+  * further improvements from initial tests (Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 02 Sep 2013 14:47:58 +0200
+
 univention-ldap (10.0.10-11) unstable; urgency=low
 
   * feedback from initial tests (Bug #31801)
