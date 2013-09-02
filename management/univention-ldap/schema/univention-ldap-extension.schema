@@ -90,7 +90,7 @@ attributetype ( univentionLDAPExtensionAttributeType:24 NAME 'univentionUCSVersi
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
-attributetype ( univentionLDAPExtensionAttributeType:24 NAME 'univentionUCSVersionEnd'
+attributetype ( univentionLDAPExtensionAttributeType:25 NAME 'univentionUCSVersionEnd'
 	DESC 'Highest valid UCS Version'
 	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
