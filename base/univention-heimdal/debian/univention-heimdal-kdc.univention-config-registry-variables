@@ -1,6 +1,6 @@
 [kerberos/password/quality/check]
-Description[de]=Die Passwortstärkenüberprüfung über cracklib2 kann über den Wert 'yes' aktiviert werden.
-Description[en]=Check of password strength by cracklib2 can be activated by setting this value to 'yes'.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, erfolgt eine weitergehende Prüfung der Passwortstärke.
+Description[en]=If this variable is set to 'yes', additional checks for the password strength are made.
 Type=str
 Categories=service-heimdal
 
@@ -52,32 +52,14 @@ Description[en]=The minimum amount of upper case characters in the new password 
 Type=str
 Categories=service-heimdal
 
-[kerberos/enable/kerberos4]
-Description[de]=Aktiviert das veraltete Kerberos-Format 4
-Description[en]=Activates the deprecated Kerberos format 4
-Type=str
-Categories=service-heimdal
-
-[kerberos/enable/524]
-Description[de]=Aktiviert den Dienst zur Umwandlung von Kerberos 5 Berechtigungen in das Kerberos 4-Format
-Description[en]=Activates the Kerberos Version 5 to Version 4 credentials conversion service
-Type=str
-Categories=service-heimdal
-
-[kerberos/enable/kaserver]
-Description[de]=Kaserver ist die vom AFS-Dateisystem verwendete Kerberos 4 Protokollvariante.
-Description[en]=Kaserver is the Kerberos 4 protocol variant used in the AFS file system.
-Type=str
-Categories=service-heimdal
-
 [kerberos/adminusers]
-Description[de]=Liste der Kerberos Adminbenutzer, die in kadmind.acl eingetragen werden
-Description[en]=List of kerberos adminusers which will be added to kadmind.acl
+Description[de]=Mit dieser Variable kann eine Liste von Kerberos-User-Principals konfiguriert werden, die über Kerberos das Passwort von anderen Benutzern ändern dürfen. Mehrere Benutzer werden durch Kommas getrennt. Beispiel: 'admin1@EXAMPLE.REALM, admin2@EXAMPLE.REALM'.
+Description[en]=With this variable a list of Kerberos user principals can be configured which are allowed to modify the password of othe users. Multiple users must be separated by a comma. Example: 'admin1@EXAMPLE.REALM, admin2@EXAMPLE.REALM'.
 Type=str
 Categories=service-heimdal
 
 [kerberos/autostart]
-Description[de]=Automatischer Start des Kerberos-Dienstes beim Systemstart
-Description[en]=Automatically start the Kerberos daemon on system startup
-Type=bool
+Description[de]=Die Variable konfiguriert den Startmodus des Kerberos-KDC-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Kerberos KDC service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=str
 Categories=service-heimdal
