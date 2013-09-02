@@ -69,7 +69,7 @@ def handler(dn, new, old):
 		if old:	## check for trivial change
 			diff_keys = [ key for key in new.keys() if new[key] != old[key]  and key not in ('entryCSN', 'modifyTimestamp')]
 			if diff_keys == ['univentionLDAPSchemaActive']:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP schema extension %s activated.' % (name, new['cn']))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP schema extension %s activated.' % (name, new['cn'][0]))
 				return
 		
 		new_schema_data = new.get('univentionLDAPSchemaData')[0]
