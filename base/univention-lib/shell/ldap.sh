@@ -417,3 +417,182 @@ ucs_unregisterLDAPSchema () {
 	univention-directory-manager settings/ldapschema delete "$@" \
 		--dn="$object_dn"
 }
+
+#
+# ucs_registerLDAPACL writes an LDAP ACL extension to UDM.
+# A listener module then writes it to a persistent place.
+#
+# ucs_registerLDAPACL <ACL file> [options]
+# e.g. ucs_registerLDAPACL /var/tmp/univention-testapp.acl
+#
+ucs_registerLDAPACL () {
+	local ACLFile="$1"
+
+	if [ ! -e "$ACLFile" ]; then
+		echo "ucs_registerLDAPACL: missing ACL file" >&2
+		return 2
+	fi
+
+	local package_name package_version
+	calling_script_name=$(basename "$0")
+	calling_script_basename=$(basename "$calling_script_name" .postinst)
+	if [ "$calling_script_basename" != "$calling_script_name" ]; then
+		package_name="$calling_script_basename"
+	elif [ -n "$JS_SCRIPT_FULLNAME" ]; then
+		package_name=$(dpkg -S "$JS_SCRIPT_FULLNAME" | cut -d: -f1)
+	fi
+
+	if [ -z "$package_name" ]; then
+		echo "ERROR: Unable to determine Debian package name"
+		echo "ERROR: This function only works in joinscript or postinst context"
+		return 1
+	fi
+
+	if ! shift 1
+	then
+		echo "ucs_registerLDAPACL: wrong number of arguments" >&2
+		return 2
+	fi
+
+	package_version=$(dpkg-query -f '${Version}' -W "$package_name")
+
+	local filename=$(basename "$ACLFile")
+	local objectname=$(basename "$filename" ".acl")
+	local target_container_name="ldapacl"
+	local ldap_base="$(ucr get ldap/base)"
+	local target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
+
+	univention-directory-manager container/cn create "$@" --ignore_exists \
+		--set name="$target_container_name" \
+		--position "cn=univention,$ldap_base"
+
+	local ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
+											univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion)
+	if [ -z "$ldif" ]; then
+
+		output=$(univention-directory-manager settings/ldapacl create "$@" \
+			--set name="$objectname" \
+			--set filename="$filename" \
+			--set ACL="$(gzip -c "$ACLfile" | base64 -w0)" \
+			--set active=FALSE \
+			--set package="$package_name" \
+			--set packageversion="$package_version" \
+			--position "$target_container_dn")
+
+		if [ $? -eq 0 ]; then
+
+			object_dn=$(echo "$output" | sed -n 's/^Object created: //p')
+
+			if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
+				univention-directory-manager settings/ldapacl modify "$@" \
+					--append appidentifier="$UNIVENTION_APP_IDENTIFIER" \
+					--dn "$object_dn"
+			fi
+
+		else	## check again, might be a race
+
+			ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
+												univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion)
+
+			if [ -z "$ldif" ]; then
+				echo "ucs_registerLDAPACL: ERROR: Failed to create settings/ldapacl object." >&2
+				return 2
+			fi
+		fi
+	fi
+
+	if [ -n "$ldif" ]; then	## object exists already, modify it
+
+		local object_dn=$(echo "$ldif" | sed -n 's/^dn: //p')
+		local registered_package=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackage: //p')
+		local registered_package_version=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackageVersion: //p')
+
+		if [ "$registered_package" = "$package_name" ]; then
+			if ! dpkg --compare-versions "$package_version" gt "$registered_package_version"; then
+				echo "ucs_registerLDAPACL: ERROR: registered package version $registered_package_version is newer, skipping registration." >&2
+				return 2
+			fi
+		else
+			echo "ucs_registerLDAPACL: WARNING: ACL $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
+		fi
+
+		univention-directory-manager settings/ldapacl modify "$@" \
+			--set ACL="$(gzip -c "$ACLFile" | base64 -w0)" \
+			--set active=FALSE \
+			--set package="$package_name" \
+			--set packageversion="$package_version" \
+			--dn "$object_dn"
+
+		if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
+			univention-directory-manager settings/ldapacl modify "$@" \
+				--append appidentifier="$UNIVENTION_APP_IDENTIFIER" \
+				--dn "$object_dn"
+		fi
+
+	fi
+
+	local t t0=$(date +%s)
+	while ! univention-directory-manager settings/ldapacl list "$@" \
+			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
+	do
+			t=$(date +%s)
+			if [ $(($t - $t0)) -gt 180 ]; then
+				echo "ERROR: Master did not mark the LDAP ACL extension active within 3 minutes."
+				return 1
+			fi
+			sleep 3
+	done
+}
+
+# ucs_unregisterLDAPACL removes an LDAP ACL extension from UDM.
+# A listener module then tries to remove it.
+#
+# ucs_unregisterLDAPACL <ACL file> [options]
+# e.g. ucs_unregisterLDAPACL /var/tmp/univention-example.acl
+#
+ucs_unregisterLDAPACL () {
+	local ACLFile="$1"
+
+	if [ ! -e "$ACLFile" ]; then
+		echo "ucs_unregisterLDAPACL: missing ACL file" >&2
+		return 2
+	fi
+
+	if ! shift 1
+	then
+		echo "ucs_unregisterLDAPACL: wrong number of arguments" >&2
+		return 2
+	fi
+
+	local objectname=$(basename "$ACLFile" ".acl")
+
+	local ACL_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
+		univentionAppIdentifier)
+
+	if [ -z "$ACL_ldif" ]; then
+		echo "ERROR: ACL object not found in LDAP."
+		return 1
+	fi
+
+	app_filter=""
+	for appidentifier in $(echo "$ACL_ldif" | sed -n 's/^univentionAppIdentifier: //p'); do
+		app_filter="$app_filter(cn=$appidentifier)"
+	done
+
+	if [ -n "$app_filter"]; then
+		local app_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionApp)$app_filter)" cn)
+		if [ -n "$app_ldif" ]; then
+			echo -n "INFO: The ACL $objectname is still registered by the following apps:"
+			for appidentifier in $(echo "$app_ldif" | sed -n 's/^cn: //p'); do
+				echo -n " $appidentifier"
+			done
+			echo .
+			return 2
+		fi
+	fi
+
+	object_dn=$(echo "$ACL_ldif" | sed -n 's/^dn: //p')
+
+	univention-directory-manager settings/ldapacl delete "$@" \
+		--dn="$object_dn"
+}
