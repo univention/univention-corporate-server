@@ -12,8 +12,8 @@ Type=str
 Categories=service-heimdal
 
 [kerberos/kdc]
-Description[de]=Hier kann eine Liste von Kerberos KDC-Servern angegeben werden. Die Rechnernamen sollten in FQDN-Form angegeben werden. Mehrfache Werte sind durch ein Leerzeichen zu trennen. Ist die Variable nicht gesetzt, wird der KDC aus DNS-Service-Records ausgelesen.
-Description[en]=A list of Kerberos KDC servers can be specified here. The hostnames should be specified in FQDN form. Multiple values need to be separated with a blank. If the variable is unset, the KDC is queried from DNS service records.
+Description[de]=Hier kann eine Liste von Kerberos KDC-Servern angegeben werden. Die Rechnernamen sollten in FQDN-Form angegeben werden. Mehrfache Werte sind durch ein Leerzeichen zu trennen. Ist die Variable nicht gesetzt, wird der KDC aus DNS-Service-Records ausgelesen (siehe 'kerberos/defaults/dns_lookup_kdc').
+Description[en]=A list of Kerberos KDC servers can be specified here. The hostnames should be specified in FQDN form. Multiple values need to be separated with a blank. If the variable is unset, the KDC is queried from DNS service records (see 'kerberos/defaults/dns_lookup_kdc').
 Type=str
 Categories=service-heimdal
 
@@ -28,76 +28,76 @@ ReadOnly=yes
 Description[de]=Der Name der AFS-Zelle, einer administrativen Einheit im verteilten AFS-Dateisystem.
 Description[en]=The name of the AFS cell, an administrative unit in the distributed AFS filesystem.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/kadmin/default/keys]
-Description[de]=Vom Kadmin-Dienst unterstütze Schlüsseltypen
-Description[en]=Keytypes supported by kadmin
+Description[de]=Diese Variable konfiguriert die bei der Schlüsselerstellung verwendeten Salt-Methoden. Ist die Variable nicht gesetzt, werden die Heimdal-internen Defaultwerte verwendet. Diese Variable sollte im Regelfall nicht gesetzt werden.
+Description[en]=This variable configures the Salt methods used during key generation. If the variable is unset, the Heimdal-internal default values are used. This variable should usually not be set.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/defaults/enctypes/tgs]
-Description[de]=Die Verschlüsselungsvariante im Session-Key für Service Tickets.
-Description[en]=The encryption types for the session key of service tickets.
+Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Service-Tickets. Ist die Variable nicht gesetzt, wird 'arcfour-hmac-md5 des-cbc-md5 des3-hmac-sha1 des-cbc-crc des-cbc-md4 des3-cbc-sha1 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' verwendet.
+Description[en]=This variable configures the available encryption methods for service tickets. if the variable is unset, 'arcfour-hmac-md5 des-cbc-md5 des3-hmac-sha1 des-cbc-crc des-cbc-md4 des3-cbc-sha1 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/defaults/enctypes/tkt]
-Description[de]=Die Verschlüsselungsvariante im Session-Key für das Ticket Granting Ticket.
-Description[en]=The encryption types for the session key of the ticket granting ticket.
+Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Ticket-Granting-Tickets. Ist die Variable nicht gesetzt, wird 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' verwendet.
+Description[en]=This variable configures the available encryption methods for ticket granting tickets. if the variable is unset, 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/defaults/enctypes/permitted]
-Description[de]=Die von Services verwendbaren Verschlüsselungsvarianten.
-Description[en]=The encryption types permitted for services.
+Description[de]=Die unterstützten Verschlüsselungsverfahren: Bei der Aushandlung eines Session-Keys werden die vom Client unterstützten Verschlüsselungsfahren mit den hier konfigurierten Verfahren abgeglichen. Ist die Variable nicht gesetzt, wird 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' verwendet.
+Description[en]=The supported encryption methods. During negotiation of a session the methods supported by the client are matched with the methods configured in this variable. If the variable is unset, 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/allow/weak/crypto]
-Description[de]=Mit der Einstellung "no", "false" oder "0" wird die Erzeugung von single-DES Keys unterbunden.
-Description[en]=Setting this key to "no", "false" oder "0" disables the generation of single-DES keys.
-Type=str
-Categories=System
+Description[de]=Zur Herstellung der Kompatibilität mit Active Directory werden Single-DES-Keys (des-cbc-md5) in der Grundeinstellung unterstützt. Wird diese Option deaktiviert, wird die Erzeugung von solchen Keys unterbunden. Ist die Variable nicht gesetzt, werden Single-DES-Keys unterstützt.
+Description[en]=To ensure compatibility with Active Directory single DES keys (des-cbc-md5) are supported as standard. If this option is deactivated, the creation of such keys is disabled. If the variable is unset, single DES keys are supported.
+Type=bool
+Categories=service-heimdal
 
 [kerberos/domain_realms]
-Description[de]=domain_realms für Kerberos (mit Komma getrennt) Beispiel: "domain1 = realm1,domain2 = realm2"
-Description[en]=domain_realms for Kerberos (comma separated) example: "domain1 = realm1,domain2 = realm2"
+Description[de]=Mit dieser Variable können Abbildungen von DNS-Domänennamen auf Namen von Kerberos-Realms vorgenommen werden. Dies ist z.B. nötig, wenn eine weitere DNS-Forward-Zone in der DNS-Verwaltung angelegt wurde und diese der Kerberos-Realm der Domäne zugeordnet werden soll. Mehrere Einträge müssen durch ein Komma getrennt werden. Beispiel: 'additionaldomain1.example=EXAMPLEREALM,additionaldomain2.example=EXAMPLEREALM'.
+Description[en]=With this variable DNS domain names can be mapped to names of Kerberos realms. This can be necessary, e.g. an additional DNS forward zone has been created in the DNS management and this DNS domain should be mapped to the Kerberos realm of the domain. Multiple entries must be separated through a comma. Example: 'additionaldomain1.example=EXAMPLEREALM,additionaldomain2.example=EXAMPLEREALM'.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/defaults/dns_lookup_realm]
-Description[de]=Wenn diese Variable auf true gesetzt ist, werden die DNS TXT Einträge zum festellen des Kerberos-Realms eines Hosts genutzt
-Description[en]=Indicate whether DNS TXT records should be used to determine the Kerberos realm of a host. 
+Description[de]=Die Abbildung zusätzliche DNS-Domänennamen zu Kerberos-Realms erfolgt in der Regel über die Variable 'kerberos/domain_realms'. Wird diese Variable auf 'true' gesetzt, wird die Kerberos-Realm auch aus einem TXT-Record im DNS ausgelesen werden. Das Format wird unter http://web.mit.edu/Kerberos/krb5-1.6/krb5-1.6.3/doc/krb5-admin.html#Mapping-Hostnames-onto-Kerberos-Realms beschrieben. Ist die Variable nicht gesetzt, wird auf die Auflösung per DNS verzichtet.
+Description[en]=Additional DNS domainnames can be mapped on Kerberos realms using the variable 'kerberos/domain_realms'. If this variable is set to 'true', the Kerberos realm is read from a TXT record in DNS. The format is described at http://web.mit.edu/Kerberos/krb5-1.6/krb5-1.6.3/doc/krb5-admin.html#Mapping-Hostnames-onto-Kerberos-Realms. If the variable is unset, no DNS lookups are made.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/defaults/dns_lookup_kdc]
-Description[de]=Wenn diese Variable auf true gesetzt ist, werden die DNS SRV Einträge zum finden des KDCs genutzt.
-Description[en]=Indicate whether DNS SRV records should be used to locate the KDCs and other servers for a realm.
+Description[de]=Ist diese Variable auf 'true' gesetzt oder nicht gesetzt, wird der oder die KDC-Server für das System aus DNS-Service-Records gelesen. Dies kann durch Setzen der Variable auf 'false' deaktiviert werden, in diesem Fall muss der/die KDCs über die Variable 'kerberos/kdc' konfiguriert werden.
+Description[en]=If this variable is set to 'true' or unset, the KDC(s) used by the system are read from DNS service records. This can be disabled by setting the variable to 'false', is this case the KDC(s) must be set through the variable 'kerberos/kdc'.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/defaults/forwardable]
-Description[de]=Wenn diese Variable auf true gesetzt ist, ist das Initialisierungsticket forwardbar
-Description[en]=If this flag is set, initial tickets by default will be forwardable.
+Description[de]=Ist diese Variable auf 'true' gesetzt ist, kann ein ausgestelltes Kerberos-Ticket auch für die Anmeldung an weiteren Systemen der Domäne verwendet werden. Wird sie auf 'false' gesetzt, ist das Ticket an eine IP-Adresse gebunden. Ist die Variable nicht gesetzt, ist die Option aktiviert.
+Description[en]=If this variable is set to 'true', an issued Kerberos ticket can be used for logging into additional systems of the domain. If set to 'false', the ticket is bound to an IP address. If the variable is unset, the option is deactivated.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/defaults/proxiable]
-Description[de]=Wenn diese Variable auf true gesetzt ist, ist das Initialisierungsticket "proxiable".
-Description[en]=If this flag is set, initial tickets by default will be proxiable. 
+Description[de]=Ist diese Variable auf 'true' gesetzt oder nicht gesetzt, ist das Ticket Granting Ticket nicht auf eine IP-Adresse beschränkt.
+Description[en]=If this variable is set to 'true' or not set, the ticket granting ticket is not limited to an IP address.
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/defaults/kdc_timesync]
-Description[de]=Wenn diese Variable auf 1 gesetzt ist, berechnet der Client die Differenz zwischen seiner Zeit und der des Servers
-Description[en]=If this is set to 1 (for true), then client machines will compute the difference between their time and the time returned by the KDC.
+Description[de]=Wenn diese Variable auf '1' gesetzt ist, kann ein Kerberos-Client Unterschiede zwischnen den lokalen Rechneruhr und der Uhr des KDCs ausgleichen. Um die Option zu verwenden, muss der Typ des Credential-Caches angepasst werden (Option 'ccache_type').
+Description[en]=If this is set to '1', Kerberos clients can balance differences between the time of the local clock and the clock of the KDC. To use this option, the type of the credentials cache need to be adapted (option 'ccache_type').
 Type=str
-Categories=System
+Categories=service-heimdal
 
 [kerberos/defaults/debug]
-Description[de]=Aktiviert den debug modus
-Description[en]=Activates the debug mode
+Description[de]=Wird diese Variable auf 'true' gesetzt, werden zusätzliche Debugausgaben protokolliert.
+Description[en]=If this variable is set to 'true' additional debug statements are logged.
 Type=str
-Categories=System
+Categories=service-heimdal

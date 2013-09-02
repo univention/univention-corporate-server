@@ -1,4 +1,4 @@
-[service-heimdal]
-name[de]=Dienst: Kerberos
-name[en]=Service: Kerberos
-icon=service-heimdal.gif
+[service-kerberos]
+name[de]=Kerberos
+name[en]=Kerberos
+icon=service-kerberos.gif
