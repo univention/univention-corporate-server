@@ -66,8 +66,8 @@ def handler(dn, new, old):
 
 	## Check UCS version requirements first and skip new if they are not met.
 	if new:
-		univentionUCSVersionStart = new.get('univentionUCSVersionStart')[0]
-		univentionUCSVersionEnd = new.get('univentionUCSVersionEnd')[0]
+		univentionUCSVersionStart = new.get('univentionUCSVersionStart', [None])[0]
+		univentionUCSVersionEnd = new.get('univentionUCSVersionEnd', [None])[0]
 		current_UCR_version = "%s-%s" % ( listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel') )
 		if univentionUCSVersionStart and current_UCR_version < univentionUCSVersionStart:
 			ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s requires at least UCR version %s.' % (name, new['cn'][0], univentionUCSVersionStart))
@@ -84,7 +84,7 @@ def handler(dn, new, old):
 			return
 
 		if old:	## check for trivial change
-			diff_keys = [ key for key in new.keys() if new[key] != old[key]  and key not in ('entryCSN', 'modifyTimestamp')]
+			diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp')]
 			if diff_keys == ['univentionLDAPACLActive']:
 				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s: activation status changed.' % (name, new['cn'][0]))
 				return
@@ -96,7 +96,8 @@ def handler(dn, new, old):
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
 			return
 
-		new_filename = os.path.join(SUBFILE_BASEDIR, new.get('univentionLDAPACLFilename')[0])
+		new_basename = new.get('univentionLDAPACLFilename')[0]
+		new_filename = os.path.join(SUBFILE_BASEDIR, new_basename)
 		listener.setuid(0)
 		try:
 			backup_filename = None
@@ -160,7 +161,7 @@ def handler(dn, new, old):
 				new_info_filename = os.path.join(INFO_BASEDIR, "%s_ldapacl.info" % new.get('univentionLDAPACLFilename')[0])
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Writing UCR info file %s.' % (name, new_info_filename))
 				with open(new_info_filename, 'w') as f:
-					f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_filename)
+					f.write("Type: multifile\nMultifile: etc/ldap/slapd.conf\n\nType: subfile\nMultifile: etc/ldap/slapd.conf\nSubfile: etc/ldap/slapd.conf.d/%s\n" % new_basename)
 			except IOError:
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing UCR info file %s.' % (name, new_info_filename))
 				return

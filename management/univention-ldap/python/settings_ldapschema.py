@@ -67,7 +67,7 @@ def handler(dn, new, old):
 			return
 
 		if old:	## check for trivial change
-			diff_keys = [ key for key in new.keys() if new[key] != old[key]  and key not in ('entryCSN', 'modifyTimestamp')]
+			diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp')]
 			if diff_keys == ['univentionLDAPSchemaActive']:
 				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s: activation status changed.' % (name, new['cn'][0]))
 				return
