@@ -1,24 +1,18 @@
-[xen/repository]
-Description[de]=Repository zur Installation von Xen-Gastinstanzen
-Description[en]=Repository for the installation of Xen guests
-Type=str
-Categories=service-xen
-
 [xen/bridge/interface]
-Description[de]=Interface für das Bridging, 'none' zum deaktivieren [eth0]
-Description[en]=Interface for bridging, 'none' for disabling [eth0]
+Description[de]=Diese Variable konfiguriert das Netzwerkinterface, das von Xen für die standardmäßig eingerichtete Bridge verwendet wird. Mit 'none' wird die Einrichtung einer Bridge verhindert.
+Description[en]=This variable configures the network interface which Xen uses as standard for the bridge setup by default. 'none' prevents the setup of a bridge.
 Type=str
 Categories=service-xen
 
 [xen/vnc/listen]
-Description[de]=IP-Adresse für den VNC-Server [127.0.0.1]
-Description[en]=IP-address for the VNC server [127.0.0.1]
+Description[de]=Mit dieser Variable kann die IP-Adresse konfiguriert werden, unter der der VNC-Server auf Verbindungen wartet. Ist die Variable nicht gesetzt, gilt 127.0.0.1.
+Description[en]=This variable allows to configure the IP under which the VNC server is listening for connections. If the variable is unset, 127.0.0.1 applies.
 Type=str
 Categories=service-xen
 
 [xen/vnc/password]
-Description[de]=Password für den VNC-Server []
-Description[en]=Password for the VNC server []
+Description[de]=Hier kann ein Passwort für VNC-Verbindungen konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Passwort benötigt.
+Description[en]=A password for VNC connections can be configured here. If the variable is unset, no password is needed.
 Type=str
 Categories=service-xen
 
@@ -28,28 +22,28 @@ Description[en]=Space separated list of regular expressions of allowed host name
 Type=str
 Categories=service-xen
 
-[xen/relocation/port]
-Description[de]=Port des unverschlüsselten Xen-Dienst für die (Live-)Migration [8002]
-Description[en]=Port of the unencrypted Xen service for (live-)migration [8002]
-Type=int
-Categories=service-xen
-
-[xen/relocation/port_ssl]
-Description[de]=Port des Xen-Dienst für die (Live-)Migration [8003]
-Description[en]=Port of the encrypted Xen service for (live-)migration [8003]
-Type=int
-Categories=service-xen
-
 [xen/server/relocation]
-Description[de]=Aktiviert/Deaktiviert den unverschlüsselten Xen-Dienst für die (Live-)Migration [no]
-Description[en]=Enable/Disable the unencrypted Xen service for (live-)migration [no]
+Description[de]=Ist diese Option aktiviert, startet Xen den Relocation-Server, einen Dienst zur Migration virtueller Maschinen zwischen Virtualisierungsservern. Ist die Variable nicht gesetzt, wird der Dienst nicht gestartet.
+Description[en]=If this option is activated, Xen starts the relocation server, a service for migration virtual machines between virtualization hosts. If the variable is unset, the service isn't started.
 Type=bool
 Categories=service-xen
 
 [xen/server/relocation_ssl]
-Description[de]=Aktiviert/Deaktiviert den verschlüsselten Xen-Dienst für die (Live-)Migration [no]
-Description[en]=Enable/Disable the encrypted Xen service for (live-)migration [no]
+Description[de]=Ist diese Option aktiviert, startet Xen den SSL-gesicherten Relocation-Server, einen Dienst zur Migration virtueller Maschinen zwischen Virtualisierungsservern. Ist die Variable nicht gesetzt, wird der Dienst nicht gestartet.
+Description[en]=If this option is activated, Xen starts the SSL-secured relocation server, a service for migration virtual machines between virtualization hosts. If the variable is unset, the service isn't started.
 Type=bool
+Categories=service-xen
+
+[xen/relocation/port]
+Description[de]=Wenn der Relocation Server gestartet wird (siehe 'xen/server/relocation'), kann mit dieser Variable der Port konfiguriert werden. Ist die Variable nicht gesetzt, wird 8002 verwendet. Wird Univention Firewall eingesetzt, müssen ggf. Paketfilterregeln angepasst werden.
+Description[en]=If the relocation server is started (see 'xen/server/relocation'), this variable allows to configure the port. If the variable is unset, 8002 is used. If Univention Firewall is used, it might be necessary to adapt packet filter rules.
+Type=int
+Categories=service-xen
+
+[xen/relocation/port_ssl]
+Description[de]=Wenn der SSL-gesicherte Relocation Server gestartet wird (siehe 'xen/server/relocation'), kann mit dieser Variable der Port konfiguriert werden. Ist die Variable nicht gesetzt, wird 8003 verwendet. Wird Univention Firewall eingesetzt, müssen ggf. Paketfilterregeln angepasst werden.
+Description[en]=If the SSL-secured relocation server is started (see 'xen/server/relocation'), this variable allows to configure the port. If the variable is unset, 8003 is used. If Univention Firewall is used, it might be necessary to adapt packet filter rules.
+Type=int
 Categories=service-xen
 
 [xen/server/http_server]
@@ -59,14 +53,14 @@ Type=bool
 Categories=service-xen
 
 [xen/server/unix_server]
-Description[de]=Aktiviert/Deaktiviert den Zugriff zum Xen-Dienst via Unix Socket [no]
-Description[en]=Enable/Disable access to xend via unix socket [no]
+Description[de]=Ist diese Option aktiviert, nimmt Xen Befehle einen Unix Domain Socket entgegen. Dies wird für Libvirt und verschiedene Kommandozeilen-Tools benötigt. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[en]=If this option is enabled, Xen accepts commands through a Unix domain socket. This is required by Libvirt and various commandline tools. If the variable is unset, the option is disabled.
 Type=bool
 Categories=service-xen
 
 [xen/server/api]
-Description[de]=Konfiguration der Zugrifskontrolle auf die Xen-Dienste [(unix)]
-Description[en]=Configuration of access control to Xen services [(unix)]
+Description[de]=Diese Variable konfiguriert den Zugriff auf den Xen-API-Server. Die Konfigurationsoptionen sind als Kommentare im UCR-Template beschrieben (/etc/univention/templates/files/etc/xen/xend-config.sxp unter 'xen-api-server). Ist die Variable nicht gesetzt, gilt (unix), d.h über einen lokale UDP-Socket.
+Description[en]=This variable configures the access to the Xen API server. The configuration options are described as comments in the UCR template (/etc/univention/templates/files/etc/xen/xend-config.sxp under 'xen-api-server). If the variable is unset (unix) applies, i.e. through a local UDP socket.
 Type=str
 Categories=service-xen
 
@@ -82,20 +76,8 @@ Description[en]=Enable/Disable the Xen XMLRPC service via TCP/IP socket [no]
 Type=bool
 Categories=service-xen
 
-[xen/xencommons/autostart]
-Description[de]=Definiert, ob der xencommons Dienst automatisch beim Systemstart gestartet werden soll
-Description[en]=Defines if the xencommons service should be started automatically at system startup
-Type=bool
-Categories=service-xen
-
 [xen/xend/autostart]
-Description[de]=Definiert, ob der xend Dienst automatisch beim Systemstart gestartet werden soll
-Description[en]=Defines if the xend service should be started automatically at system startup
-Type=bool
-Categories=service-xen
-
-[xen/xendomains/autostart]
-Description[de]=Definiert, ob der xendomains Dienst automatisch beim Systemstart gestartet werden soll
-Description[en]=Defines if the xendomains service should be started automatically at system startup
+Description[de]=Die Variable konfiguriert den Startmodus des Xen-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Xen service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
 Type=bool
 Categories=service-xen

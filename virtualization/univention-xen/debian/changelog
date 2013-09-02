@@ -1,3 +1,11 @@
+univention-xen (5.0.1-5) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30949)
+  * Remove UCR variable descriptions for xen/repository, only used for obsolete 
+    xen-tools configuration.
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 02 Sep 2013 13:52:46 +0200
+
 univention-xen (5.0.1-4) unstable; urgency=low
 
   * Only xend is available in the systems service module (Bug #10962) 
