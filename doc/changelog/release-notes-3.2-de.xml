@@ -195,6 +195,29 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  gesetzt ist.
 		</para>
 	  </section>
+
+
+	  <section>
+		<title>Entfernte/nicht mehr unterstützte Komponenten</title>
+		<para>
+		  Einige Komponenten sind entfernt worden und werden mit UCS 3.2 nicht mehr ausgeliefert
+
+		  <itemizedlist>
+			<listitem><para> 
+			  Das UMC-Modul <guimenu>VNC</guimenu> wurde entfernt. Für einen grafischen Remote-Login
+			  auf UCS-Server kann alternativ Xrdp aus dem Univention App Center installiert werden.
+			</para></listitem>
+
+			<listitem><para> 
+			  Das Paket <emphasis>univention-local-users</emphasis> (nur Bestandteil von
+			  unmaintained) wurde entfernt.
+			</para></listitem>
+
+		  </itemizedlist>
+
+		</para>
+	  </section>
+
 	</chapter>
 
     <chapter>
