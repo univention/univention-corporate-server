@@ -32,6 +32,7 @@
 
 import univention.debug
 import types
+import base64
 
 def DaysToSeconds(days):
 	return str(int(days)*24*60*60)
@@ -104,6 +105,23 @@ def mapUNIX_TimeInterval( value ):
 	elif unit == 'minutes':
 		value *= 60
 	return unicode( value )
+
+def unmapBase64( value ):
+	try:
+		return base64.encodestring( value[ 0 ] )
+	except Exception, e:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
+	return ""
+
+def mapBase64( value ):
+	if value == '*':
+		# special case for filter pattern '*'
+		return value
+	try:
+		return base64.decodestring( value )
+	except Exception, e:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
+	return ""
 
 class mapping:
 	def __init__(self):

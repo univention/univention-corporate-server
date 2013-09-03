@@ -38,7 +38,6 @@ import univention.admin.handlers
 import univention.admin.password
 import univention.admin.allocators
 import univention.admin.localization
-import base64
 
 translation=univention.admin.localization.translation('univention.admin.handlers.settings')
 _=translation.translate
@@ -77,7 +76,7 @@ property_descriptions={
 	'acl': univention.admin.property(
 			short_description=_('ACL data'),
 			long_description='',
-			syntax=univention.admin.syntax.Base64Upload,
+			syntax=univention.admin.syntax.GzipBase64Upload,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -172,27 +171,10 @@ layout = [
 	] ),
 ]
 
-def unmapBase64( value ):
-	try:
-		return base64.encodestring( value[ 0 ] )
-	except Exception, e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
-	return ""
-
-def mapBase64( value ):
-	if value == '*':
-		# special case for filter pattern '*'
-		return value
-	try:
-		return base64.decodestring( value )
-	except Exception, e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
-	return ""
-
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('filename', 'univentionLDAPACLFilename', None, univention.admin.mapping.ListToString)
-mapping.register('acl', 'univentionLDAPACLData', mapBase64, unmapBase64)
+mapping.register('acl', 'univentionLDAPACLData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('package', 'univentionLDAPExtensionPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionLDAPExtensionPackageVersion', None, univention.admin.mapping.ListToString)
 mapping.register('appidentifier', 'univentionAppIdentifier', None, univention.admin.mapping.ListToString)

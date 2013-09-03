@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.22-5) unstable; urgency=low
+
+  * validate settings/ldap* data with new syntax GzipBase64Upload
+  * cleanup: move un/mapBase64 into mapping.py (Bug #32411)
+  * cleanup: use mapping.un/mapBase64 instead of local code clones
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Sep 2013 11:41:45 +0200
+
 univention-directory-manager-modules (9.0.22-4) unstable; urgency=low
 
   * fix settings/ldapacl acl encoding (Bug #32411)

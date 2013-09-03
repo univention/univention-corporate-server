@@ -38,6 +38,7 @@ import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.localization
 import base64
+import zlib
 import copy
 import sys, os
 import shlex
@@ -354,6 +355,20 @@ class Upload( ISyntax ):
 	@classmethod
 	def parse( self, value ):
 		return value
+
+class GzipBase64Upload( Upload ):
+	@classmethod
+	def parse( self, value ):
+		try:
+			gziped_data = base64.decodestring( value )
+			try:
+				data = zlib.decompress(gziped_data, 16+zlib.MAX_WBITS)
+			except:
+				raise univention.admin.uexceptions.valueError( _( 'Value must be Gzip compressed and Base64 encoded: %s' ) % str( value ) )
+		except:
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( value ) )
+		else:
+			return value
 
 class Base64Upload( Upload ):
 	@classmethod

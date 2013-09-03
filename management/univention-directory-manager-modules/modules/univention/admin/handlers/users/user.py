@@ -1255,25 +1255,8 @@ def unmapKeyAndValue(old):
 		lst.append( entry.split('=', 1) )
 	return lst
 
-def unmapBase64( value ):
-	try:
-		return base64.encodestring( value[ 0 ] )
-	except Exception, e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
-	return ""
-
-def mapBase64( value ):
-	if value == '*':
-		# special case for filter pattern '*'
-		return value
-	try:
-		return base64.decodestring( value )
-	except Exception, e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in users.user.mapBase64(): %s' % e)
-	return ""
-
-mapping.register('userCertificate', 'userCertificate;binary', mapBase64, unmapBase64 )
-mapping.register('jpegPhoto', 'jpegPhoto', mapBase64, unmapBase64)
+mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
 
 class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
