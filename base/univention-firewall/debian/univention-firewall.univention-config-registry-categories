@@ -1,5 +1,5 @@
 [service-security]
-name[de]=Dienst: Sicherheit (Firewall)
-name[en]=Service: security (firewall)
+name[de]=Univention Firewall
+name[en]=Univention Firewall
 icon=service-security.gif
 

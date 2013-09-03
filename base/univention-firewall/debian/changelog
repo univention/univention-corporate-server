@@ -1,3 +1,12 @@
+univention-firewall (6.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30943)	
+  * Remove old transition code in postinst
+  * Mark security/packetfilter/package/.* are ReadOnly	
+	
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 03 Sep 2013 14:35:57 +0200
+
 univention-firewall (5.0.5-2) unstable; urgency=low
 
   * debian: Don't build the UMC module (Bug #24121)

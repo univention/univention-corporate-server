@@ -3,7 +3,7 @@
 # Univention Firewall
 #  postinst script for the debian package
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,17 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 #DEBHELPER#
-
-# init.d script has been renamed with UCS 3.0-0
-if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.3; then
-	# remove rc.d-symlinks to old univention-iptables
-	update-rc.d -f univention-iptables remove
-	# rename old init.d script
-	if [ ! -e /etc/init.d/univention-iptables.disabled ] ; then
-		mv /etc/init.d/univention-iptables /etc/init.d/univention-iptables.disabled
-		chmod a-x /etc/init.d/univention-iptables.disabled
-	fi
-fi
 
 # during installation set default policy to REJECT, during update to ACCEPT
 if [ "$1" = "configure" -a -n "$2" ] ; then
