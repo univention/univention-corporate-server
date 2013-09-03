@@ -50,7 +50,8 @@
                             <para>
                                 Mit diesem Namen meldet sich der Benutzer am System an. Der Name muss
                                 mit einem Buchstaben beginnen und darf anschließend Buchstaben von a bis
-                                z, die Ziffern 0 bis 9, Punkte, Bindestriche oder Unterstriche enthalten.
+                                z, die Ziffern 0 bis 9, Punkte, Bindestriche oder Unterstriche
+								enthalten. Benutzernamen dürfen keine Leerzeichen enthalten.
                             </para>
                             <para>
                                 Um die Kompatibilität mit Nicht-UCS-Systemen zu gewährleisten, wird

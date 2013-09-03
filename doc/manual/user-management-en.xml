@@ -51,6 +51,7 @@
                                 This is the name, by which the user logs into the system. The name has to
                                 begin with a letter which has to be followed by: letters a-z in lower case,
                                 numerals 0-9, dots, hyphens, or underlines.
+								<!-- Benutzernamen dürfen keine Leerzeichen enthalten. -->
                             </para>
                             <para>
                                 In order to ensure compatibility to non-UCS systems the creation of users
