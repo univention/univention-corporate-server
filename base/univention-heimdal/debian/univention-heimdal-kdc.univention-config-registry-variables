@@ -4,54 +4,6 @@ Description[en]=If this variable is set to 'yes', additional checks for the pass
 Type=str
 Categories=service-heimdal
 
-[kerberos/password/quality/ascii_lowercase]
-Description[de]=Die Zeichen, die als Kleinbuchstaben behandelt werden.
-Description[en]=The characters, which are treated as lower case characters.
-Type=str
-Categories=service-heimdal
-
-[kerberos/password/quality/ascii_uppercase]
-Description[de]=Die Zeichen, die als Großbuchstaben behandelt werden.
-Description[en]=The characters, which are treated as upper case characters.
-Type=str
-Categories=service-heimdal
-
-[kerberos/password/quality/diff_ok]
-Description[de]=Die Mindestanzahl von Zeichen, die gegenüber dem vorherigen Passwort geändert sein müssen.
-Description[en]=The minimum amount of characters changed in comparison to the previous password.
-Type=str
-Categories=service-heimdal
-
-[kerberos/password/quality/dig_credit]
-Description[de]=Die Mindestanzahl an Ziffern im neuen Passwort (anzugeben als negative Zahl!).
-Description[en]=The minimum amount of digits in the new password (specified as a negative number!).
-Type=str
-Categories=service-heimdal
-
-[kerberos/password/quality/low_credit]
-Description[de]=Die Mindestanzahl an Kleinbuchstaben im neuen Passwort (anzugeben als negative Zahl!).
-Description[en]=The minimum amount of lower case characters in the new password (specified as a negative number!).
-Type=str
-Categories=service-heimdal
-
-[kerberos/password/quality/min_length]
-Description[de]=Die Mindestpasswortlänge +1
-Description[en]=The minimum passwort length +1 
-Type=str
-Categories=service-heimdal
-
-[kerberos/password/quality/oth_credit]
-Description[de]=Die Mindestanzahl an sonstigen Zeichen (keine Klein-/Großbuchstaben und Ziffern) im neuen Passwort (anzugeben als negative Zahl!).
-Description[en]=The minimum amount of other characters (neither lower/upper case characters, nor digits) in the new password (specified as a negative number!).
-Type=str
-Categories=service-heimdal
-
-[kerberos/password/quality/up_credit]
-Description[de]=Die Mindestanzahl an Großbuchstaben im neuen Passwort (anzugeben als negative Zahl!).
-Description[en]=The minimum amount of upper case characters in the new password (specified as a negative number!).
-Type=str
-Categories=service-heimdal
-
 [kerberos/adminusers]
 Description[de]=Mit dieser Variable kann eine Liste von Kerberos-User-Principals konfiguriert werden, die über Kerberos das Passwort von anderen Benutzern ändern dürfen. Mehrere Benutzer werden durch Kommas getrennt. Beispiel: 'admin1@EXAMPLE.REALM, admin2@EXAMPLE.REALM'.
 Description[en]=With this variable a list of Kerberos user principals can be configured which are allowed to modify the password of othe users. Multiple users must be separated by a comma. Example: 'admin1@EXAMPLE.REALM, admin2@EXAMPLE.REALM'.
