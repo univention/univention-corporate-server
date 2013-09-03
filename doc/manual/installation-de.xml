@@ -284,7 +284,7 @@
 		<emphasis>Domain Controller Master</emphasis> sein. Die Installation weiterer UCS-Systeme benötigt während
 		der Installation einen laufenden Domaincontroller Master. Die einzige Ausnahme
 		bildet die Systemrolle <guimenu>Basissystem</guimenu>, dieses kann ohne erreichbaren
-		Domaincontroller Master installiert werden.
+		&ucsMaster; installiert werden.
 	</para>
 	<para>
 		Die Eigenschaften der Systemrollen sind in <xref linkend="systemrollen"/>
@@ -308,8 +308,9 @@
 	</para>
 	<para>
 		Nachdem der Domänenname gesetzt wurde, werden die Felder <guimenu>LDAP-Basis</guimenu> und
-		<guimenu>Windows-Domäne</guimenu> mit abgeleiteten Werten belegt. Wenn die LDAP-Basis geändert
-		werden soll, müssen die Konventionen für die Benennung von DNs beachtet werden.
+		<guimenu>Windows-Domäne</guimenu> mit abgeleiteten Werten vorausgefüllt
+		(Die Eingabefelder werden nur bei der Installation des &ucsMaster; angezeigt).
+		Wenn die LDAP-Basis geändert werden soll, müssen die Konventionen für die Benennung von DNs beachtet werden.
 		Die Basis-DN muss mit <emphasis>cn=</emphasis>, <emphasis>dc=</emphasis>, <emphasis>c=</emphasis>, <emphasis>l=</emphasis> oder <emphasis>o=</emphasis> beginnen.
 		Basis-DNs, die diese Konventionen verletzen, werden abgewiesen. Der Name der
 		Windows-Domäne darf maximal 13 Zeichen lang sein und nur aus Buchstaben, Zahlen

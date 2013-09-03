@@ -316,7 +316,9 @@
 	</para>
 	<para>
 		Once the domain name is set, the fields <guimenu>LDAP base</guimenu> and <guimenu>Windows domain</guimenu> will
-		be assigned by derived values. If the LDAP basis is to be changed, the name
+		be pre-filled with derived values. 
+<!-- (Die Eingabefelder werden nur bei der Installation des &ucsMaster; angezeigt). -->
+        If the LDAP basis is to be changed, the name
 		conventions for DNs have to be observed. The basis DN has to begin with <emphasis>cn=</emphasis>,
 		<emphasis>dc=</emphasis>, <emphasis>c=</emphasis>, <emphasis>l=</emphasis>, or <emphasis>o=</emphasis>. Basis DNs violating these conventions will be
 		rejected.
