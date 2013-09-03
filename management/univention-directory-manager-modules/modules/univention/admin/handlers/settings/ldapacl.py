@@ -54,7 +54,7 @@ property_descriptions={
 	'name': univention.admin.property(
 	        short_description=_('ACL name'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.TextArea,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
@@ -65,7 +65,7 @@ property_descriptions={
 	'filename': univention.admin.property(
 			short_description=_('ACL file name'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.BaseFilename,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -87,6 +87,7 @@ property_descriptions={
 			short_description=_('Active'),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
+			default = 'FALSE',
 			multivalue=0,
 			options=[],
 			required=0,

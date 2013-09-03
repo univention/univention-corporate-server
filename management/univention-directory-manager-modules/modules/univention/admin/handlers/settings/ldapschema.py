@@ -65,7 +65,7 @@ property_descriptions={
 	'filename': univention.admin.property(
 			short_description=_('Schema file name'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.BaseFilename,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -87,6 +87,7 @@ property_descriptions={
 			short_description=_('Active'),
 			long_description='',
 			syntax=univention.admin.syntax.TrueFalseUp,
+			default = 'FALSE',
 			multivalue=0,
 			options=[],
 			required=0,

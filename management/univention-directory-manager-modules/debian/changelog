@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.22-7) unstable; urgency=low
+
+  * validate settings/ldap* filename with new syntax BaseFilename
+  * provide default for active flag in settings/ldap*
+    (Bug #32411 and Bug #32412)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Sep 2013 19:40:16 +0200
+
 univention-directory-manager-modules (9.0.22-5) unstable; urgency=low
 
   * validate settings/ldap* data with new syntax GzipBase64Upload

@@ -356,6 +356,14 @@ class Upload( ISyntax ):
 	def parse( self, value ):
 		return value
 
+class BaseFilename( string ):
+	@classmethod
+	def parse( self, value ):
+		if '/' in value:
+			raise univention.admin.uexceptions.valueError( _( 'Filename must not contain slashes: %s' ) % str( value ) )
+		else:
+			return value
+
 class GzipBase64Upload( Upload ):
 	@classmethod
 	def parse( self, value ):
