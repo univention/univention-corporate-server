@@ -529,14 +529,16 @@
 	<section id="installation:Konfiguration_von_IPv4-Adressen">
 	<title>Konfiguration von IPv4-Adressen</title>
 		<para>
-			Wenn die Option <guimenu>DHCP</guimenu> nicht aktiviert wurde, muss eine IPv4-Adresse
-			eingegeben werden, die an die Netzwerkkarte gebunden werden soll. Zusätzlich
-			zur <guimenu>IP-Adresse</guimenu> muss die <guimenu>Netzmaske</guimenu> angegeben
-			werden. Mit <guimenu>F5-DHCP-Anfrage</guimenu> kann eine Adresse von einem
-			DHCP-Server abgefragt werden. Sofern die Option <guimenu>DHCP</guimenu> nicht aktiviert
-			wird, werden die aus der DHCP-Anfrage erhaltenen Werte dann statisch konfiguriert.
-			Wenn die DHCP-Anfrage fehlschlägt, wird eine zufällige Adresse aus dem 169.254.x.x Netz
-			verwendet.
+		  Ist die Option <guimenu>DHCP</guimenu> aktiviert, wird versucht die IP-Adresse - und je
+		  nach Konfiguration auch Nameserver und/oder Standard-Gateway - über das Dynamic Host
+		  Configuration Protocol (DHCP) zu beziehen und automatisch zu konfigurieren.
+		  Wenn die DHCP-Anfrage fehlschlägt, wird eine zufällige Adresse aus dem 169.254.x.x Netz
+		  verwendet.
+		</para>
+		<para>
+		  Wenn die Option <guimenu>DHCP</guimenu> nicht aktiviert wurde, muss eine IPv4-Adresse
+		  eingegeben werden, die an die Netzwerkkarte gebunden werden soll. Zusätzlich zur
+		  <guimenu>IP-Adresse</guimenu> muss die <guimenu>Netzmaske</guimenu> angegeben werden. 
 		</para>
 	</section>
 	<section id="installation:Konfiguration_von_IPv6-Adressen">
