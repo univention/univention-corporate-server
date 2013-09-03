@@ -520,6 +520,10 @@
 			boards), kernel modules to be loaded can be added via &ucsUCRV;
 			<envar>kernel/modules</envar>. If more than one kernel module is to be loaded,
 			these must be separated by a semicolon.
+				<!-- Mit der &ucsUCRV; <envar>kernel/blacklist</envar> kann eine Liste von einem oder -->
+				<!-- mehreren Kernel-Modulen konfiguriert werden, für die das automatische Laden -->
+				<!-- verhindert wird. Mehrere Einträge müssen ebenfalls durch ein Semikolon getrennt -->
+				<!-- werden. -->
 		</para>
 		<para>
 			Unlike other operating systems, the Linux kernel (with very few exceptions)

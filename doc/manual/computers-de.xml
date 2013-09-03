@@ -509,6 +509,10 @@
                 durch die &ucsUCRV; <envar>kernel/modules</envar>
                 hinzugefügt werden. Soll mehr als ein Kernel-Modul geladen werden, so
                 müssen diese durch ein Semikolon voneinander getrennt werden.
+				Mit der &ucsUCRV; <envar>kernel/blacklist</envar> kann eine Liste von einem oder
+				mehreren Kernel-Modulen konfiguriert werden, für die das automatische Laden
+				verhindert wird. Mehrere Einträge müssen ebenfalls durch ein Semikolon getrennt
+				werden.
             </para>
             <para>
                 Im Gegensatz zu anderen Betriebssystemen liefert der Linux-Kernel (von wenigen
