@@ -37,7 +37,7 @@ define([
 	"dojo/dom-construct",
 	"dojo/query",
 	"dojo/store/Memory",
-	"dojo/topic",
+	"dojo/store/Observable",
 	"dojo/Deferred",
 	"dojox/image/LightboxNano",
 	"umc/app",
@@ -51,52 +51,56 @@ define([
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/widgets/LiveSearchSidebar",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, when, domConstruct, query, Memory, topic, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ConfirmDialog, Text, CheckBox, AppCenterGallery, LiveSearchSidebar, _) {
+], function(declare, lang, kernel, array, when, domConstruct, query, Memory, Observable, Deferred, Lightbox, UMCApplication, dialog, tools, libServer, Page, ConfirmDialog, Text, CheckBox, AppCenterGallery, LiveSearchSidebar, _) {
 
 	return declare("umc.modules.appcenter.AppCenterPage", [ Page ], {
 
-		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		// class name of the widget as CSS class
 		'class': 'umcAppCenter',
 
-		postMixInProperties: function() {
-			this.inherited(arguments);
+		liveSearch: true,
+		addMissingAppButton: true,
+		standbyDuringUpdateApplications: true,
+		appQuery: null,
 
-			lang.mixin(this, {
-				title: _("App management"),
-				headerText: _("Manage Applications for UCS"),
-				helpText: _("This page lets you install and remove applications that enhance your UCS installation.")
-			});
-		},
+		title: _("App management"),
+		headerText: _("Manage Applications for UCS"),
+		helpText: _("This page lets you install and remove applications that enhance your UCS installation."),
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			var locale = kernel.locale.slice( 0, 2 ).toLowerCase();
-			var href = 'https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/';
-			if (locale == 'de') {
-				href = 'https://www.univention.de/produkte/ucs/app-katalog/vote-for-app/';
+			if (this.addMissingAppButton) {
+				var locale = kernel.locale.slice( 0, 2 ).toLowerCase();
+				var href = 'https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/';
+				if (locale == 'de') {
+					href = 'https://www.univention.de/produkte/ucs/app-katalog/vote-for-app/';
+					var footerRight = this._footer.getChildren()[1];
+					var voteForAppAnchor = domConstruct.create('a', {
+						href: href,
+						target: '_blank',
+						style: {color: '#414142'},
+						title: _('Let us know, if you you miss any application in Univention App Center!'),
+						innerHTML: _('Suggest new app')
+					});
+					domConstruct.place(voteForAppAnchor, footerRight.domNode);
+				}
 			}
-			var footerRight = this._footer.getChildren()[1];
-			var voteForAppAnchor = domConstruct.create('a', {
-				href: href,
-				target: '_blank',
-				style: {color: '#414142'},
-				title: _('Let us know, if you you miss any application in Univention App Center!'),
-				innerHTML: _('Suggest new app')
-			});
-			domConstruct.place(voteForAppAnchor, footerRight.domNode);
 
-			this._searchSidebar = new LiveSearchSidebar({
-				region: 'left'
-			});
-			this.addChild(this._searchSidebar);
+			if (this.liveSearch) {
+				this._searchSidebar = new LiveSearchSidebar({
+					region: 'left'
+				});
+				this.addChild(this._searchSidebar);
+				this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));
+			}
 
-			this._grid = new AppCenterGallery();
+			this._grid = new AppCenterGallery({});
 			this.addChild(this._grid);
 
-			tools.getUserPreferences().then(lang.hitch(this, function(prefs) {
-				if (tools.isTrue(prefs.appcenterSeen)) {
+			when(this.getAppCenterSeen(), lang.hitch(this, function(appcenterSeen) {
+				if (tools.isTrue(appcenterSeen)) {
 					// load apps
 					this.updateApplications();
 				} else {
@@ -134,13 +138,23 @@ define([
 			}));
 
 			// register event handlers
-			this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));
-
 			this.own(this._grid.on('.dgrid-row:click', lang.hitch(this, function(evt) {
 				var app = this._grid.row(evt).data;
 				this.showDetails(app);
-				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
 			})));
+		},
+
+		getAppCenterSeen: function() {
+			var deferred = new Deferred();
+			tools.getUserPreferences().then(
+				function(data) {
+					deferred.resolve(data.appcenterSeen);
+				},
+				function() {
+					deferred.reject();
+				}
+			);
+			return deferred;
 		},
 
 		// inspired by PackagesPage._show_details
@@ -166,23 +180,29 @@ define([
 		updateApplications: function() {
 			// query all applications
 			this._applications = null;
-			var updating = when(this.getApplications(), lang.hitch(this, function(applications) {
-				this._grid.set('store', new Memory({data: applications}));
+			var updating = when(this.getApplications()).then(lang.hitch(this, function(applications) {
+				this._grid.set('store', new Observable(new Memory({
+					data: applications
+				})));
 
-				var categories = [];
-				array.forEach(applications, function(application) {
-					array.forEach(application.categories, function(category) {
-						if (array.indexOf(categories, category) < 0) {
-							categories.push(category);
-						}
+				if (this.liveSearch) {
+					var categories = [];
+					array.forEach(applications, function(application) {
+						array.forEach(application.categories, function(category) {
+							if (array.indexOf(categories, category) < 0) {
+								categories.push(category);
+							}
+						});
 					});
-				});
-				categories.sort();
-				categories.unshift(_('All'));
-				this._searchSidebar.set('categories', categories);
-				this._searchSidebar.set('allCategory', categories[0]);
+					categories.sort();
+					categories.unshift(_('All'));
+					this._searchSidebar.set('categories', categories);
+					this._searchSidebar.set('allCategory', categories[0]);
+				}
 			}));
-			this.standbyDuring(updating);
+			if (this.standbyDuringUpdateApplications) {
+				this.standbyDuring(updating);
+			}
 			return updating;
 		},
 
@@ -205,7 +225,12 @@ define([
 			}
 
 			// set query options and refresh grid
+			this.set('appQuery', query);
+		},
+
+		_setAppQueryAttr: function(query) {
 			this._grid.set('query', query);
+			this._set('appQuery', query);
 		},
 
 		onShowApp: function(app) {

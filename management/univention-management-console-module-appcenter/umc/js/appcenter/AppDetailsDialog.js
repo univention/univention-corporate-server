@@ -55,7 +55,9 @@ define([
 				this.removeChild(this._container);
 				this._container.destroyRecursive();
 			}
-			this._container = new ContainerWidget({});
+			this._container = new ContainerWidget({
+				scrollable: true
+			});
 			this.addChild(this._container);
 		},
 

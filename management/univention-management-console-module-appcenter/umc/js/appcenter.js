@@ -35,6 +35,7 @@ define([
 	"dojo/aspect",
 	"dojo/when",
 	"dojo/Deferred",
+	"dojo/topic",
 	"umc/app",
 	"umc/store",
 	"umc/widgets/Module",
@@ -46,7 +47,7 @@ define([
 	"umc/modules/appcenter/SettingsPage",
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter" // not needed atm
-], function(declare, lang, array, aspect, when, Deferred, UMCApplication, store, Module, TabContainer, AppCenterPage, AppDetailsPage, AppDetailsDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, aspect, when, Deferred, topic, UMCApplication, store, Module, TabContainer, AppCenterPage, AppDetailsPage, AppDetailsDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	// TODO: ugly workaround for making the app center module unique
 	//   (no two modules open at the same time). See Bug #31662.
@@ -177,6 +178,7 @@ define([
 
 			// switched from app center to app details and back
 			this._appCenterPage.on('showApp', lang.hitch(this, function(app) {
+				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
 				this._appDetailsPage.set('app', app);
 				this.standbyDuring(this._appDetailsPage.appLoadingDeferred).then(lang.hitch(this, function() {
 					this.exchangeChild(this._appCenterPage, this._appDetailsPage);

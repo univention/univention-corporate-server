@@ -112,7 +112,7 @@ define([
 			this._keepAliveAfterAppOperation.onTick = function() {
 				tools.umcpCommand('appcenter/ping', {}, false);
 			};
-			this._progressBar = new ProgressBar();
+			this._progressBar = new ProgressBar({});
 			this.own(this._progressBar);
 			this._grid = new AppCenterGallery({});
 			this.own(this._grid);
