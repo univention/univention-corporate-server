@@ -657,8 +657,7 @@
 		a <guimenu>join account</guimenu>. As standard this is the <emphasis>Administrator</emphasis> user,
 		which was created during installation of the domain controller master. The
 		corresponding password of the user account must be given under
-		<guimenu>Password</guimenu>. The password must be entered identically in both
-		fields.
+		<guimenu>Password</guimenu>.
 	</para>
 	<para>
 		Further information on joining a domain can be found in <xref linkend="linux-domaenenbeitritt"/>.

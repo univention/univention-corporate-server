@@ -665,8 +665,6 @@
 		Systeme der UCS-Domäne hinzuzufügen. In der Standardeinstellung ist dies der Benutzer Administrator,
 		der bei der Installation des Domaincontroller Master angelegt wurde. Unter
 		<guimenu>Passwort</guimenu> muss das entsprechende Passwort des Benutzerkontos angegeben werden.
-		Das Passwort muss in beiden Feldern in identischer Schreibweise eingetragen
-		werden.
 	</para>
 	<para>
 		Weitere Informationen zum Domänenbeitritt finden sich in <xref linkend="linux-domaenenbeitritt"/>.
