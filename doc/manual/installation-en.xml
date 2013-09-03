@@ -142,7 +142,7 @@
 				</listitem>
 				<listitem>
 					<simpara>
-					<guimenu>Univention Installer Software RAID (expert mode)</guimenu> also
+					<guimenu>Univention Installer expert partitioning (e.g. for crypto or software raid setups)</guimenu> also
 					starts a interactive installation like the previous mode. In this version the
 					partitioning, however, is not performed with the support of the installer, but
 					effected manually. To do this a number of programs including
