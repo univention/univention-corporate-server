@@ -247,16 +247,28 @@ ucs_isServiceUnused () {
 # e.g. ucs_registerLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
 #
 ucs_registerLDAPSchema () {
-	local schemaFile="$1"
+	local FUNCNAME
+	FUNCNAME=ucs_registerLDAPSchema
 
-	if [ ! -e "$schemaFile" ]; then
-		echo "ucs_registerLDAPSchema: missing schema file" >&2
+	## Parse arguments
+	local schemaFile
+	schemaFile="$1"
+
+	if ! shift 1
+	then
+		echo "ERROR: $FUNCNAME: wrong number of arguments" >&2
 		return 2
 	fi
 
-	local package_name package_version
-	calling_script_name=$(basename "$0")
-	calling_script_basename=$(basename "$calling_script_name" .postinst)
+	## Validate arguments
+	if [ ! -e "$schemaFile" ]; then
+		echo "ERROR: $FUNCNAME: missing schema file" >&2
+		return 2
+	fi
+
+	local package_name package_version calling_script_name calling_script_basename
+	calling_script_name=$(basename -- "$0")
+	calling_script_basename=$(basename -- "$calling_script_name" .postinst)
 	if [ "$calling_script_basename" != "$calling_script_name" ]; then
 		package_name="$calling_script_basename"
 	elif [ -n "$JS_SCRIPT_FULLNAME" ]; then
@@ -264,30 +276,26 @@ ucs_registerLDAPSchema () {
 	fi
 
 	if [ -z "$package_name" ]; then
-		echo "ERROR: Unable to determine Debian package name"
+		echo "ERROR: $FUNCNAME: Unable to determine Debian package name"
 		echo "ERROR: This function only works in joinscript or postinst context"
 		return 1
 	fi
 
-	if ! shift 1
-	then
-		echo "ucs_registerLDAPSchema: wrong number of arguments" >&2
-		return 2
-	fi
-
 	package_version=$(dpkg-query -f '${Version}' -W "$package_name")
 
-	local filename=$(basename "$schemaFile")
-	local objectname=$(basename "$filename" ".schema")
-	local target_container_name="ldapschema"
-	local ldap_base="$(ucr get ldap/base)"
-	local target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
+	local filename objectname target_container_name ldap_base target_container_dn
+	filename=$(basename -- "$schemaFile")
+	objectname=$(basename -- "$filename" ".schema")
+	ldap_base="$(ucr get ldap/base)"
+	target_container_name="ldapschema"
+	target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
 
 	univention-directory-manager container/cn create "$@" --ignore_exists \
 		--set name="$target_container_name" \
 		--position "cn=univention,$ldap_base"
 
-	local ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
+	local ldif
+	ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
 											univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion)
 	if [ -z "$ldif" ]; then
 
@@ -316,7 +324,7 @@ ucs_registerLDAPSchema () {
 												univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion)
 
 			if [ -z "$ldif" ]; then
-				echo "ucs_registerLDAPSchema: ERROR: Failed to create settings/ldapschema object." >&2
+				echo "ERROR: $FUNCNAME: Failed to create settings/ldapschema object." >&2
 				return 2
 			fi
 		fi
@@ -324,18 +332,21 @@ ucs_registerLDAPSchema () {
 
 	if [ -n "$ldif" ]; then	## object exists already, modify it
 
-		local object_dn=$(echo "$ldif" | sed -n 's/^dn: //p')
-		local registered_package=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackage: //p')
-		local registered_package_version=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackageVersion: //p')
+		local registered_package registered_package_version
+		registered_package=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackage: //p')
+		registered_package_version=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackageVersion: //p')
 
 		if [ "$registered_package" = "$package_name" ]; then
 			if ! dpkg --compare-versions "$package_version" gt "$registered_package_version"; then
-				echo "ucs_registerLDAPSchema: ERROR: registered package version $registered_package_version is newer, skipping registration." >&2
+				echo "ERROR: $FUNCNAME: registered package version $registered_package_version is newer, skipping registration." >&2
 				return 2
 			fi
 		else
-			echo "ucs_registerLDAPSchema: WARNING: schema $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
+			echo "WARNING: $FUNCNAME: schema $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
 		fi
+
+		local object_dn
+		object_dn=$(echo "$ldif" | sed -n 's/^dn: //p')
 
 		univention-directory-manager settings/ldapschema modify "$@" \
 			--set schema="$(gzip -c "$schemaFile" | base64 -w0)" \
@@ -352,13 +363,14 @@ ucs_registerLDAPSchema () {
 
 	fi
 
-	local t t0=$(date +%s)
+	local t t0
+	t0=$(date +%s)
 	while ! univention-directory-manager settings/ldapschema list "$@" \
 			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
 	do
 			t=$(date +%s)
 			if [ $(($t - $t0)) -gt 180 ]; then
-				echo "ERROR: Master did not mark the LDAP schema extension active within 3 minutes."
+				echo "ERROR: $FUNCNAME: Master did not mark the LDAP schema extension active within 3 minutes."
 				return 1
 			fi
 			sleep 3
@@ -372,38 +384,48 @@ ucs_registerLDAPSchema () {
 # e.g. ucs_unregisterLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
 #
 ucs_unregisterLDAPSchema () {
-	local schemaFile="$1"
+	local FUNCNAME
+	FUNCNAME=ucs_unregisterLDAPSchema
 
-	if [ ! -e "$schemaFile" ]; then
-		echo "ucs_unregisterLDAPSchema: missing schema file" >&2
-		return 2
-	fi
+	## Parse arguments
+	local schemaFile
+	schemaFile="$1"
 
 	if ! shift 1
 	then
-		echo "ucs_unregisterLDAPSchema: wrong number of arguments" >&2
+		echo "ERROR: $FUNCNAME: wrong number of arguments" >&2
 		return 2
 	fi
 
-	local objectname=$(basename "$schemaFile" ".schema")
+	## Validate arguments
+	if [ ! -e "$schemaFile" ]; then
+		echo "ERROR: $FUNCNAME: missing schema file" >&2
+		return 2
+	fi
 
-	local schema_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
+	local objectname
+	objectname=$(basename "$schemaFile" ".schema")
+
+	local schema_ldif
+	schema_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
 		univentionAppIdentifier)
 
 	if [ -z "$schema_ldif" ]; then
-		echo "ERROR: Schema object not found in LDAP."
+		echo "ERROR: $FUNCNAME: Schema object not found in LDAP."
 		return 1
 	fi
 
 	app_filter=""
+	local appidentifier
 	for appidentifier in $(echo "$schema_ldif" | sed -n 's/^univentionAppIdentifier: //p'); do
 		app_filter="$app_filter(cn=$appidentifier)"
 	done
 
 	if [ -n "$app_filter"]; then
-		local app_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionApp)$app_filter)" cn)
+		local app_ldif
+		app_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionApp)$app_filter)" cn)
 		if [ -n "$app_ldif" ]; then
-			echo -n "INFO: The schema $objectname is still registered by the following apps:"
+			echo -n "INFO: $FUNCNAME: The schema $objectname is still registered by the following apps:"
 			for appidentifier in $(echo "$app_ldif" | sed -n 's/^cn: //p'); do
 				echo -n " $appidentifier"
 			done
@@ -426,16 +448,88 @@ ucs_unregisterLDAPSchema () {
 # e.g. ucs_registerLDAPACL /var/tmp/univention-testapp.acl
 #
 ucs_registerLDAPACL () {
-	local ACLFile="$1"
+	local FUNCNAME
+	FUNCNAME=ucs_registerLDAPACL
+	## Parse options
+	local ucsversionstart ucsversionend
 
-	if [ ! -e "$ACLFile" ]; then
-		echo "ucs_registerLDAPACL: missing ACL file" >&2
+	display_help() {
+		printf "usage: $FUNCNAME [<options>] <ACL file>\n"
+		printf "options:\n"
+		printf "\t--ucsversionstart <ucsversionstart>\n"
+		printf "\t--ucsversionend <ucsversionend>\n"
+		printf "internal options:\n"
+		printf "\t--binddn <binddn>\n"
+		printf "\t--bindpwd <bindpwd>\n"
+		printf "\t--bindpwdfile <bindpwdfile>\n"
+	}
+
+	local passthroughoptions
+	while [ $# -gt 0 ]
+	do
+		case "$1" in
+			"--binddn"|"--bindpwd"|"--bindpwdfile")
+				eval "local ${1#--}=\"\$2\""
+				passthroughoptions="$passthroughoptions ${1#--}"
+				shift 2 || { echo missing argument to $1; return 2; }
+				;;
+			"--ucsversionstart"|"--ucsversionend")
+				eval "${1#--}=\"\$2\""
+				shift 2 || { echo missing argument to $1; return 2; }
+				;;
+			--)
+				shift
+				break
+				;;
+			"--help"|"-h"|"-?")
+				display_help
+				return 0
+				;;
+			-*)
+				display_help
+				return 1
+				;;
+			*)
+				break
+				;;
+		esac
+	done
+
+	## Validate options
+	if [ -n "$(echo "$ucsversionstart" | sed 's/[-.0-9]*//')" ]; then
+		echo "ERROR: $FUNCNAME: Option --ucsversionstart invalid: may only contain digit, dot and dash characters"
+		return 1
+	fi
+	if [ -n "$(echo "$ucsversionend" | sed 's/[-.0-9]*//')" ]; then
+		echo "ERROR: $FUNCNAME: Option --ucsversionend invalid: may only contain digit, dot and dash characters"
+		return 1
+	fi
+
+	## Parse arguments
+	local ACLFile
+	ACLFile="$1"
+	if ! shift 1
+	then
+		echo "ERROR: $FUNCNAME: wrong number of arguments" >&2
 		return 2
 	fi
 
-	local package_name package_version
-	calling_script_name=$(basename "$0")
-	calling_script_basename=$(basename "$calling_script_name" .postinst)
+	## Validate arguments
+	if [ ! -e "$ACLFile" ]; then
+		echo "ERROR: $FUNCNAME: missing ACL file" >&2
+		return 2
+	fi
+
+	## Restore passthrough options
+	local key
+	for key in $passthroughoptions; do
+		val=$(eval echo \$$key)
+		set -- "$@" "--$key" "$val"
+	done
+
+	local package_name package_version calling_script_name calling_script_basename
+	calling_script_name=$(basename -- "$0")
+	calling_script_basename=$(basename -- "$calling_script_name" .postinst)
 	if [ "$calling_script_basename" != "$calling_script_name" ]; then
 		package_name="$calling_script_basename"
 	elif [ -n "$JS_SCRIPT_FULLNAME" ]; then
@@ -443,37 +537,35 @@ ucs_registerLDAPACL () {
 	fi
 
 	if [ -z "$package_name" ]; then
-		echo "ERROR: Unable to determine Debian package name"
+		echo "ERROR: $FUNCNAME: Unable to determine Debian package name"
 		echo "ERROR: This function only works in joinscript or postinst context"
 		return 1
 	fi
 
-	if ! shift 1
-	then
-		echo "ucs_registerLDAPACL: wrong number of arguments" >&2
-		return 2
-	fi
-
 	package_version=$(dpkg-query -f '${Version}' -W "$package_name")
 
-	local filename=$(basename "$ACLFile")
-	local objectname=$(basename "$filename" ".acl")
-	local target_container_name="ldapacl"
-	local ldap_base="$(ucr get ldap/base)"
-	local target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
+	local filename objectname target_container_name ldap_base target_container_dn
+	filename=$(basename -- "$ACLFile")
+	objectname=$(basename -- "$filename" ".acl")
+	ldap_base="$(ucr get ldap/base)"
+	target_container_name="ldapacl"
+	target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
 
 	univention-directory-manager container/cn create "$@" --ignore_exists \
 		--set name="$target_container_name" \
 		--position "cn=univention,$ldap_base"
 
-	local ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
+	local ldif
+	ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
 											univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion)
 	if [ -z "$ldif" ]; then
 
 		output=$(univention-directory-manager settings/ldapacl create "$@" \
+			${ucsversionstart:+--set ucsversionstart="$ucsversionstart"} \
+			${ucsversionend:+--set ucsversionend="$ucsversionend"} \
 			--set name="$objectname" \
 			--set filename="$filename" \
-			--set ACL="$(gzip -c "$ACLfile" | base64 -w0)" \
+			--set acl="$(gzip -c "$ACLFile" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
@@ -495,7 +587,7 @@ ucs_registerLDAPACL () {
 												univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion)
 
 			if [ -z "$ldif" ]; then
-				echo "ucs_registerLDAPACL: ERROR: Failed to create settings/ldapacl object." >&2
+				echo "ERROR: $FUNCNAME: Failed to create settings/ldapacl object." >&2
 				return 2
 			fi
 		fi
@@ -503,21 +595,26 @@ ucs_registerLDAPACL () {
 
 	if [ -n "$ldif" ]; then	## object exists already, modify it
 
-		local object_dn=$(echo "$ldif" | sed -n 's/^dn: //p')
-		local registered_package=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackage: //p')
-		local registered_package_version=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackageVersion: //p')
+		local registered_package registered_package_version
+		registered_package=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackage: //p')
+		registered_package_version=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackageVersion: //p')
 
 		if [ "$registered_package" = "$package_name" ]; then
 			if ! dpkg --compare-versions "$package_version" gt "$registered_package_version"; then
-				echo "ucs_registerLDAPACL: ERROR: registered package version $registered_package_version is newer, skipping registration." >&2
+				echo "ERROR: $FUNCNAME: registered package version $registered_package_version is newer, skipping registration." >&2
 				return 2
 			fi
 		else
-			echo "ucs_registerLDAPACL: WARNING: ACL $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
+			echo "WARNING: $FUNCNAME: ACL $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
 		fi
 
+		local object_dn
+		object_dn=$(echo "$ldif" | sed -n 's/^dn: //p')
+
 		univention-directory-manager settings/ldapacl modify "$@" \
-			--set ACL="$(gzip -c "$ACLFile" | base64 -w0)" \
+			${ucsversionstart:+--set ucsversionstart=$ucsversionstart} \
+			${ucsversionend:+--set ucsversionend=$ucsversionend} \
+			--set acl="$(gzip -c "$ACLFile" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
@@ -531,13 +628,14 @@ ucs_registerLDAPACL () {
 
 	fi
 
-	local t t0=$(date +%s)
+	local t t0
+	t0=$(date +%s)
 	while ! univention-directory-manager settings/ldapacl list "$@" \
 			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
 	do
 			t=$(date +%s)
 			if [ $(($t - $t0)) -gt 180 ]; then
-				echo "ERROR: Master did not mark the LDAP ACL extension active within 3 minutes."
+				echo "ERROR: $FUNCNAME: Master did not mark the LDAP ACL extension active within 3 minutes."
 				return 1
 			fi
 			sleep 3
@@ -551,38 +649,47 @@ ucs_registerLDAPACL () {
 # e.g. ucs_unregisterLDAPACL /var/tmp/univention-example.acl
 #
 ucs_unregisterLDAPACL () {
-	local ACLFile="$1"
+	local FUNCNAME
+	FUNCNAME=ucs_unregisterLDAPACL
 
-	if [ ! -e "$ACLFile" ]; then
-		echo "ucs_unregisterLDAPACL: missing ACL file" >&2
-		return 2
-	fi
-
+	## Parse arguments
+	local ACLFile
+	ACLFile="$1"
 	if ! shift 1
 	then
-		echo "ucs_unregisterLDAPACL: wrong number of arguments" >&2
+		echo "ERROR: $FUNCNAME: wrong number of arguments" >&2
 		return 2
 	fi
 
-	local objectname=$(basename "$ACLFile" ".acl")
+	## Validate arguments
+	if [ ! -e "$ACLFile" ]; then
+		echo "ERROR: $FUNCNAME: missing ACL file" >&2
+		return 2
+	fi
 
-	local ACL_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
+	local objectname
+	objectname=$(basename -- "$ACLFile" ".acl")
+
+	local ACL_ldif
+	ACL_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
 		univentionAppIdentifier)
 
 	if [ -z "$ACL_ldif" ]; then
-		echo "ERROR: ACL object not found in LDAP."
+		echo "ERROR: $FUNCNAME: ACL object not found in LDAP."
 		return 1
 	fi
 
 	app_filter=""
+	local appidentifier
 	for appidentifier in $(echo "$ACL_ldif" | sed -n 's/^univentionAppIdentifier: //p'); do
 		app_filter="$app_filter(cn=$appidentifier)"
 	done
 
 	if [ -n "$app_filter"]; then
-		local app_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionApp)$app_filter)" cn)
+		local app_ldif
+		app_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionApp)$app_filter)" cn)
 		if [ -n "$app_ldif" ]; then
-			echo -n "INFO: The ACL $objectname is still registered by the following apps:"
+			echo -n "INFO: $FUNCNAME: The ACL $objectname is still registered by the following apps:"
 			for appidentifier in $(echo "$app_ldif" | sed -n 's/^cn: //p'); do
 				echo -n " $appidentifier"
 			done

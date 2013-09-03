@@ -1,3 +1,11 @@
+univention-lib (3.0.9-9) unstable; urgency=low
+
+  * parse --ucsversion* in messages in ucs_registerLDAPACL (Bug #32392)
+  * improve messages in ucs_registerLDAP*
+  * avoid bashisms in ucs_registerLDAP*
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Sep 2013 16:19:03 +0200
+
 univention-lib (3.0.9-8) unstable; urgency=low
 
   * add ucs_registerLDAPACL and ucs_unregisterLDAPACL (Bug #32392)
