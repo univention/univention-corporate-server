@@ -729,11 +729,6 @@
 			</listitem>
 			<listitem>
 				<simpara>
-				<emphasis>Webmailer (Horde 4)</emphasis> - Web-based email access using Horde 4
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
 				<emphasis>DHCP server</emphasis> - Service for the dynamic IP management for IPv4 networks.
 				</simpara>
 			</listitem>
