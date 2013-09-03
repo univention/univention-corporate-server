@@ -1,3 +1,9 @@
+univention-lib (3.0.9-10) unstable; urgency=low
+
+  * Add ldapsearch-wrapper to ucs_registerLDAP* (Bug #32392)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Sep 2013 20:36:23 +0200
+
 univention-lib (3.0.9-9) unstable; urgency=low
 
   * parse --ucsversion* in messages in ucs_registerLDAPACL (Bug #32392)
