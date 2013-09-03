@@ -1401,6 +1401,7 @@ udm settings/syntax create "$@" --ignore_exists \
 					</simpara>
 				</listitem>
 			</varlistentry>
+		</variablelist>
 		<tip>
 			<para>
 			  Since many of these are determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function, it is recommended to use the shell library function to create these objects.
@@ -1493,6 +1494,7 @@ udm settings/syntax create "$@" --ignore_exists \
 					</simpara>
 				</listitem>
 			</varlistentry>
+		</variablelist>
 		<tip>
 			<para>
 			  Since many of these are determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function, it is recommended to use the shell library function to create these objects.

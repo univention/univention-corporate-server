@@ -152,7 +152,7 @@ override_dh_auto_test:
 	</section>
 
 	<section id="misc:lib">
-		<title>Functions Libraries
+		<title>Function Libraries
 			<indexterm><primary>Packaging</primary><secondary>library functions</secondary></indexterm>
 		</title>
 		<para>
@@ -178,7 +178,7 @@ override_dh_auto_test:
 					<term><filename>/usr/share/univention-lib/ldap.sh</filename></term>
 					<listitem>
 						<para>
-							This file contains some helpers to query data from LDAP, register and unregister service entries and LDAP schema.
+							This file contains some helpers to query data from LDAP, register and unregister service entries, LDAP schema and LDAP ACL extensions.
 						</para>
 					</listitem>
 				</varlistentry>

@@ -299,6 +299,61 @@
 		<para>
 			TBD. Minimal example app. Examples. Important: ucs_registerSchema, #DEBHELPER#.
 		</para>
+	  <section id="app:ucs_registerLDAPSchema">
+		  <title>Registration of LDAP Schema Extensions</title>
+		  <para>
+				The easiest way to register <acronym>LDAP</acronym> schema extensions is to call the <literal>ucs_registerLDAPSchema</literal> shell function
+				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
+				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
+				<literal>settings/ldapschema</literal> object (see <xref linkend="settings:ldapschema"/>). After creation of the object the function waits
+				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>LDAP</acronym> schema extension and reports success or failure.
+				Failure conditions may occurr in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active. The
+				&ucsMaster; only activates a new <acronym>LDAP</acronym> schema extension if the collision check succeeded.
+		  </para>
+		  <para>
+				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
+				The shell function will then register the specified app identifier with the <acronym>LDAP</acronym> schema extension object to indicate that
+				the <acronym>LDAP</acronym> schema extension object is required as long as this app is installed anywhere in the UCS domain.
+		  </para>
+			<example id="app:ucs_registerLDAPSchema_example">
+			  <programlisting language="sh">
+UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
+ucs_registerLDAPSchema /path/to/app.schema
+		  	</programlisting>
+			</example>
+	  </section>
+	  <section id="app:ucs_registerLDAPACL">
+		  <title>Registration of LDAP ACL Extensions</title>
+		  <para>
+				The easiest way to register <acronym>LDAP</acronym> ACL extensions is to call the <literal>ucs_registerLDAPACL</literal> shell function
+				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
+				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
+				<literal>settings/ldapacl</literal> object (see <xref linkend="settings:ldapacl"/>). After creation of the object the function waits
+				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>LDAP</acronym> ACL extension and reports success or failure.
+				Failure conditions may occurr in case the new UCR template of the <acronym>LDAP</acronym> ACL extension invalidates the <acronym>LDAP</acronym>
+				server configuration. The &ucsMaster; only activates a new <acronym>LDAP</acronym> ACL extension if the basic validity check succeeded.
+		  </para>
+		  <para>
+				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
+				The shell function will then register the specified app identifier with the <acronym>LDAP</acronym> ACL extension object to indicate that
+				the <acronym>LDAP</acronym> ACL extension object is required as long as this app is installed anywhere in the UCS domain.
+		  </para>
+		  <para>
+				<literal>ucs_registerLDAPACL</literal> supports two additional options to specify a valid range of UCS versions, where the ACL should be
+				activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
+				performed whenever the <acronym>LDAP</acronym> ACL extension object is modified. By calling this function from a joinscript, it will
+				automatically update the Debian package number stored in the object, triggering a re-evaluation of the specified UCS version range.
+				Note that the ACL is activated up to and including the UCS version specified by <literal>--ucsversionend</literal>.
+		  </para>
+			<example id="app:ucs_registerLDAPACL_example">
+			  <programlisting language="sh">
+UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
+ucs_registerLDAPACL --ucsversionstart 3.2-0 /path/to/app.acl
+		  	</programlisting>
+			</example>
+	  </section>
 	</section>
 
 	<section id="app:checklist">
