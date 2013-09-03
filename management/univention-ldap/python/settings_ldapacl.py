@@ -43,6 +43,7 @@ import subprocess
 import zlib
 import tempfile
 import datetime
+import apt
 udm_modules.update()
 
 name = 'ldap_acl'
@@ -77,10 +78,8 @@ def handler(dn, new, old):
 			new=None
 
 	if new:
-		if not 'univentionLDAPExtensionPackage' in new:
-			return
-
-		if not 'univentionLDAPExtensionPackageVersion' in new:
+		new_version = new.get('univentionLDAPExtensionPackageVersion', [None])[0]
+		if not new_version:
 			return
 
 		if old:	## check for trivial change
@@ -88,6 +87,13 @@ def handler(dn, new, old):
 			if diff_keys == ['univentionLDAPACLActive']:
 				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s: activation status changed.' % (name, new['cn'][0]))
 				return
+
+			old_version = old.get('univentionLDAPExtensionPackageVersion', [None])[0]
+			if old_version:
+				
+				if not  apt.apt_pkg.version_compare(new_version, old_version) > 0:
+					ud.debug(ud.LISTENER, ud.WARN, '%s: New version is not higher than version of old object (%s), skipping update.' % (name, old_version))
+					return
 		
 		new_acl_data = new.get('univentionLDAPACLData')[0]
 		try:
