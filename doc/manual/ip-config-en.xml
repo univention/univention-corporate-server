@@ -2102,7 +2102,7 @@ closest to the object always applies.
 	</para>
 	<para>
 	  Univention Firewall can be deactivated by setting the
-	  &ucsUCRV; to <emphasis>true</emphasis>
+	  &ucsUCRV; <envar>security/packetfilter/disabled</envar> to <emphasis>true</emphasis>
 	</para>
   </section>
 
