@@ -1,3 +1,10 @@
+univention-pam (6.0.13-5) unstable; urgency=low
+
+  * Move motd startup for welcome message from /etc/pam.d/common-session to
+  /etc/pam.d/sshd   (Bug #32432)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 04 Sep 2013 10:16:29 +0200
+
 univention-pam (6.0.13-4) unstable; urgency=low
 
   * fixed wrong default in last commit (Bug #30779) 
