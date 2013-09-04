@@ -1,5 +1,33 @@
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 # pylint: disable-msg=C0301,C0103,C0324,C0111,R0201,R0912,R0914,R0915
+#
+# Copyright (C) 2008-2013 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
 
 try:
 	import univention.ucslint.base as uub
@@ -10,13 +38,13 @@ import os
 import sys
 
 # Check 4
-# 1) Nach UCR-Templates suchen und prüfen, ob die Templates in einem info-File auftauchen
-# 2) In den UCR-Templates nach UCR-Variablen suchen (Code-Blöcke) und prüfen, ob diese in den info-Files registriert sind
+# 1) Nach UCR-Templates suchen und prÃ¼fen, ob die Templates in einem info-File auftauchen
+# 2) In den UCR-Templates nach UCR-Variablen suchen (Code-BlÃ¶cke) und prÃ¼fen, ob diese in den info-Files registriert sind
 # 3) In den UCR-Templates nach einem UCR-Header suchen
 # 3.1) check, ob @%@BCWARNING=# @%@ verwendet wird
 # 3.2) check, ob @%@UCRWARNING=# @%@ verwendet wird
-# 4) Prüfen, ob der Pfad zum UCR-Template im File steht und stimmt
-# 5) check, ob für jedes Subfile auch ein Multifile-Eintrag vorhanden ist
+# 4) PrÃ¼fen, ob der Pfad zum UCR-Template im File steht und stimmt
+# 5) check, ob fÃ¼r jedes Subfile auch ein Multifile-Eintrag vorhanden ist
 # 6) check, ob jede Variable/jedes VarPattern im SubFile auch am Multifile-Eintrag steht
 # 7) check, ob univention-install-config-registry in debian/rules vorhanden ist, sofern debian/*.univention-config-registry existiert
 # 8) check, ob univention-install-config-registry-info in debian/rules vorhanden ist, sofern debian/*.univention-config-registry-variables existiert
@@ -24,7 +52,6 @@ import sys
 #
 # TODO / FIXME
 # - 0004-29: Different (conflicting) packages might provide the same Multifile with different definitions (e.g. univention-samba/etc/smb.conf)
-#
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
