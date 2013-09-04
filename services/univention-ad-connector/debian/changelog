@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.1-1) unstable; urgency=low
+
+  * Added join and unjoin scripts for the AD Connector (Bug #32455)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Sep 2013 16:17:46 +0200
+
 univention-ad-connector (8.0.0-3) unstable; urgency=low
 
   * Added additional hints in the ad-connector setup wizard (Bug #24903) 

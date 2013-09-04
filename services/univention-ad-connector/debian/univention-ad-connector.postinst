@@ -62,7 +62,13 @@ fi
 /etc/init.d/univention-ad-connector crestart || true
 /etc/init.d/univention-directory-listener crestart || true
 
-call_joinscript /usr/lib/univention-install/42univention-ad-connector.inst
+
+if [ "$1" = "configure" ]; then
+	uinst=/usr/lib/univention-install/19univention-ad-connector.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
+
+call_joinscript 81univention-ad-connector.inst
 
 #DEBHELPER#
 
