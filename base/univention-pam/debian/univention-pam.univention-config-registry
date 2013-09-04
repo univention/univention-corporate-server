@@ -304,6 +304,8 @@ File: etc/pam.d/sshd
 Variables: auth/sshd/accessfile
 Variables: auth/sshd/restrict
 Variables: pamaccess/maxent
+Variables: system/setup/showloginmessage
+Variables: sshd/motd
 
 Type: file
 File: etc/security/access-sshd.conf
