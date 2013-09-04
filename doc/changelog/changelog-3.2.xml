@@ -2010,6 +2010,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32455">Bug 32455</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  An unjoin script has been added to the <emphasis>univention-nagios-ad-connector</emphasis> package. The unjoin
+		  script removes the server entry from the AD connector nagios service object
+		  (<ulink url="&ucsbug;32455">Bug 32455</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
