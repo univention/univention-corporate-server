@@ -46,10 +46,11 @@ import datetime
 import apt
 udm_modules.update()
 
-name = 'ldap_schema'
+name = 'settings_ldapschema'
 description = 'Configure LDAP schema extensions'
 filter = '(objectClass=univentionLDAPExtensionSchema)'
 attributes = []
+UDM_MODULE = 'settings/ldapschema'
 
 BASEDIR = '/var/lib/univention-ldap/local-schema'
 
@@ -71,7 +72,7 @@ def handler(dn, new, old):
 		if old:	## check for trivial change
 			diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp')]
 			if diff_keys == ['univentionLDAPSchemaActive']:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s: activation status changed.' % (name, new['cn'][0]))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP schema extension %s: activation status changed.' % (name, new['cn'][0]))
 				return
 
 				rc = apt.apt_pkg.version_compare(new_version, old_version)
@@ -244,15 +245,15 @@ def postrun():
 			if __todo_list:
 				try:
 					lo, ldap_position = udm_uldap.getAdminConnection()
-					udm_settings_ldapacl = udm_modules.get('settings/ldapacl')
-					udm_modules.init(lo, ldap_position, udm_settings_ldapacl)
+					udm_module = udm_modules.get(UDM_MODULE)
+					udm_modules.init(lo, ldap_position, udm_module)
 
 					for object_dn in __todo_list:
 						try:
-							acl_object = udm_settings_ldapacl.object(None, lo, ldap_position, object_dn)
-							acl_object.open()
-							acl_object['active']=True
-							acl_object.modify()
+							udm_object = udm_module.object(None, lo, ldap_position, object_dn)
+							udm_object.open()
+							udm_object['active']=True
+							udm_object.modify()
 						except udm_errors.ldapError, e:
 							ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, object_dn, e))
 					__todo_list = []

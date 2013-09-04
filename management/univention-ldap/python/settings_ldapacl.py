@@ -46,7 +46,7 @@ import datetime
 import apt
 udm_modules.update()
 
-name = 'ldap_acl'
+name = 'settings_ldapacl'
 description = 'Configure LDAP ACL extensions'
 filter = '(objectClass=univentionLDAPExtensionACL)'
 attributes = []
@@ -54,6 +54,7 @@ attributes = []
 UCR_TEMPLATE_DIR = '/etc/univention/templates'
 SUBFILE_BASEDIR = '%s/files/etc/ldap/slapd.conf.d' % UCR_TEMPLATE_DIR
 INFO_BASEDIR = '%s/info' % UCR_TEMPLATE_DIR
+UDM_MODULE = 'settings/ldapacl'
 
 __do_reload = False
 __todo_list = []
@@ -318,15 +319,15 @@ def postrun():
 			if __todo_list:
 				try:
 					lo, ldap_position = udm_uldap.getAdminConnection()
-					udm_settings_ldapacl = udm_modules.get('settings/ldapacl')
-					udm_modules.init(lo, ldap_position, udm_settings_ldapacl)
+					udm_module = udm_modules.get(UDM_MODULE)
+					udm_modules.init(lo, ldap_position, udm_module)
 
 					for object_dn in __todo_list:
 						try:
-							acl_object = udm_settings_ldapacl.object(None, lo, ldap_position, object_dn)
-							acl_object.open()
-							acl_object['active']=True
-							acl_object.modify()
+							udm_object = udm_module.object(None, lo, ldap_position, object_dn)
+							udm_object.open()
+							udm_object['active']=True
+							udm_object.modify()
 						except udm_errors.ldapError, e:
 							ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, object_dn, e))
 					__todo_list = []
