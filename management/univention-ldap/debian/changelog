@@ -1,3 +1,13 @@
+univention-ldap (10.0.10-21) unstable; urgency=low
+
+  * Let settings_ldapacl write ACL data and restart slapd also
+    on domaincontroller_slave(Bug #32411)
+  * Fix Debian version comparison
+  * Don't keep a backlog of failed udm operations in settings/ldap*
+  * Make univentionUCSVersionEnd exclusive 
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Sep 2013 13:55:34 +0200
+
 univention-ldap (10.0.10-20) unstable; urgency=low
 
   * Add package version check to settings_ldap* (Bug #32411, Bug #31801)

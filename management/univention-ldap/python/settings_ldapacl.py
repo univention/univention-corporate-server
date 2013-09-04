@@ -59,10 +59,9 @@ __do_reload = False
 __todo_list = []
 
 def handler(dn, new, old):
-	"""Handle LDAP ACL extensions on DC Master and DC Backup"""
-	global __todo_list, __do_reload
+	"""Handle LDAP ACL extensions on Master, Backup and Slave"""
 
-	if not listener.configRegistry.get('ldap/server/type') == 'master':
+	if not listener.configRegistry.get('ldap/server/type'):
 		return
 
 	## Check UCS version requirements first and skip new if they are not met.
@@ -73,7 +72,7 @@ def handler(dn, new, old):
 		if univentionUCSVersionStart and current_UCR_version < univentionUCSVersionStart:
 			ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s requires at least UCR version %s.' % (name, new['cn'][0], univentionUCSVersionStart))
 			new=None
-		elif univentionUCSVersionEnd and current_UCR_version > univentionUCSVersionEnd:
+		elif univentionUCSVersionEnd and current_UCR_version >= univentionUCSVersionEnd:
 			ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s specifies compatibility only up to UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
 			new=None
 
@@ -88,11 +87,12 @@ def handler(dn, new, old):
 				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s: activation status changed.' % (name, new['cn'][0]))
 				return
 
-			old_version = old.get('univentionLDAPExtensionPackageVersion', [None])[0]
-			if old_version:
-				
-				if not  apt.apt_pkg.version_compare(new_version, old_version) > 0:
-					ud.debug(ud.LISTENER, ud.WARN, '%s: New version is not higher than version of old object (%s), skipping update.' % (name, old_version))
+				rc = apt.apt_pkg.version_compare(new_version, old_version)
+				if rc != 1:
+					if not rc in (1, 0, -1):
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Package version comparison to old version failed (%s), skipping update.' % (name, old_version))
+					else:
+						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is not higher than version of old object (%s), skipping update.' % (name, old_version))
 					return
 		
 		new_acl_data = new.get('univentionLDAPACLData')[0]
@@ -298,8 +298,9 @@ def postrun():
 	"""Restart LDAP server Master and mark new ACL extension objects active"""
 	global __todo_list, __do_reload
 
+	## Only set active flag on Master
 	if not listener.configRegistry.get('server/role') == 'domaincontroller_master':
-		return
+		__todo_list = []
 
 	initscript='/etc/init.d/slapd'
 	if os.path.exists(initscript):
@@ -314,26 +315,25 @@ def postrun():
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
 					return
 
-			lo, ldap_position = udm_uldap.getAdminConnection()
-			udm_settings_ldapacl = udm_modules.get('settings/ldapacl')
-			udm_modules.init(lo, ldap_position, udm_settings_ldapacl)
-
-			failed_list = []
-			for object_dn in __todo_list:
+			if __todo_list:
 				try:
-					acl_object = udm_settings_ldapacl.object(None, lo, ldap_position, object_dn)
-					acl_object.open()
-					acl_object['active']=True
-					acl_object.modify()
-				except udm_errors.ldapError, e:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s, keeping on todo list.' % (name, object_dn, e))
-					failed_list.append(object_dn)
-			__todo_list = failed_list
+					lo, ldap_position = udm_uldap.getAdminConnection()
+					udm_settings_ldapacl = udm_modules.get('settings/ldapacl')
+					udm_modules.init(lo, ldap_position, udm_settings_ldapacl)
 
-		except udm_errors.ldapError, e:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, e))
+					for object_dn in __todo_list:
+						try:
+							acl_object = udm_settings_ldapacl.object(None, lo, ldap_position, object_dn)
+							acl_object.open()
+							acl_object['active']=True
+							acl_object.modify()
+						except udm_errors.ldapError, e:
+							ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, object_dn, e))
+					__todo_list = []
+
+				except udm_errors.ldapError, e:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, e))
 
 		finally:
 			listener.unsetuid()
-
 

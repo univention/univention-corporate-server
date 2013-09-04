@@ -74,11 +74,12 @@ def handler(dn, new, old):
 				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP ACL extension %s: activation status changed.' % (name, new['cn'][0]))
 				return
 
-			old_version = old.get('univentionLDAPExtensionPackageVersion', [None])[0]
-			if old_version:
-				
-				if not  apt.apt_pkg.version_compare(new_version, old_version) > 0:
-					ud.debug(ud.LISTENER, ud.WARN, '%s: New version is not higher than version of old object (%s), skipping update.' % (name, old_version))
+				rc = apt.apt_pkg.version_compare(new_version, old_version)
+				if rc != 1:
+					if not rc in (1, 0, -1):
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Package version comparison to old version failed (%s), skipping update.' % (name, old_version))
+					else:
+						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is not higher than version of old object (%s), skipping update.' % (name, old_version))
 					return
 		
 		new_schema_data = new.get('univentionLDAPSchemaData')[0]
@@ -240,26 +241,25 @@ def postrun():
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
 					return
 
-			lo, ldap_position = udm_uldap.getAdminConnection()
-			udm_settings_ldapschema = udm_modules.get('settings/ldapschema')
-			udm_modules.init(lo, ldap_position, udm_settings_ldapschema)
-
-			failed_list = []
-			for object_dn in __todo_list:
+			if __todo_list:
 				try:
-					schema_object = udm_settings_ldapschema.object(None, lo, ldap_position, object_dn)
-					schema_object.open()
-					schema_object['active']=True
-					schema_object.modify()
-				except udm_errors.ldapError, e:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s, keeping on todo list.' % (name, object_dn, e))
-					failed_list.append(object_dn)
-			__todo_list = failed_list
+					lo, ldap_position = udm_uldap.getAdminConnection()
+					udm_settings_ldapacl = udm_modules.get('settings/ldapacl')
+					udm_modules.init(lo, ldap_position, udm_settings_ldapacl)
 
-		except udm_errors.ldapError, e:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, e))
+					for object_dn in __todo_list:
+						try:
+							acl_object = udm_settings_ldapacl.object(None, lo, ldap_position, object_dn)
+							acl_object.open()
+							acl_object['active']=True
+							acl_object.modify()
+						except udm_errors.ldapError, e:
+							ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, object_dn, e))
+					__todo_list = []
+
+				except udm_errors.ldapError, e:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, e))
 
 		finally:
 			listener.unsetuid()
-
 
