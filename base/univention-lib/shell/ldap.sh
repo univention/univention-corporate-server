@@ -389,18 +389,23 @@ ucs_registerLDAPSchema () {
 
 	fi
 
+	timeout=180	#seconds
+	echo -n "Waiting up to $timeout seconds for activation of the LDAP schema extension: "
 	local t t0
 	t0=$(date +%s)
 	while ! univention-directory-manager settings/ldapschema list "$@" \
 			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
 	do
 			t=$(date +%s)
-			if [ $(($t - $t0)) -gt 180 ]; then
+			if [ $(($t - $t0)) -gt "$timeout" ]; then
+				echo
 				echo "ERROR: $SH_FUNCNAME: Master did not mark the LDAP schema extension active within 3 minutes."
 				return 1
 			fi
+			echo -n "."
 			sleep 3
 	done
+	echo "."
 }
 
 # ucs_unregisterLDAPSchema removes an LDAP schema extension from UDM.
@@ -682,18 +687,23 @@ ucs_registerLDAPACL () {
 
 	fi
 
+	timeout=180	#seconds
+	echo -n "Waiting up to $timeout seconds for activation of the LDAP ACL extension: "
 	local t t0
 	t0=$(date +%s)
 	while ! univention-directory-manager settings/ldapacl list "$@" \
 			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
 	do
 			t=$(date +%s)
-			if [ $(($t - $t0)) -gt 180 ]; then
+			if [ $(($t - $t0)) -gt "$timeout" ]; then
+				echo
 				echo "ERROR: $SH_FUNCNAME: Master did not mark the LDAP ACL extension active within 3 minutes."
 				return 1
 			fi
+			echo -n "."
 			sleep 3
 	done
+	echo "."
 }
 
 # ucs_unregisterLDAPACL removes an LDAP ACL extension from UDM.
