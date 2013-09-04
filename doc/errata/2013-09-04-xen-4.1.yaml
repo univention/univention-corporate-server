@@ -1,0 +1,16 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: xen-4.1
+fix: 4.1.3-10~2.37.201309041132
+desc: |
+  Several vulnerabilities have been discovered in the virtualisation
+  solution Xen, which can lead to denial of service or potential
+  privilege escalation.
+cve:
+ - CVE-2013-1432
+ - CVE-2013-2072
+ - CVE-2013-2075
+ - CVE-2013-2077
+ - CVE-2013-2078
