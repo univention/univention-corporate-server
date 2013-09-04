@@ -405,7 +405,7 @@ ucs_registerLDAPSchema () {
 			echo -n "."
 			sleep 3
 	done
-	echo "."
+	echo "OK"
 }
 
 # ucs_unregisterLDAPSchema removes an LDAP schema extension from UDM.
@@ -703,7 +703,7 @@ ucs_registerLDAPACL () {
 			echo -n "."
 			sleep 3
 	done
-	echo "."
+	echo "OK"
 }
 
 # ucs_unregisterLDAPACL removes an LDAP ACL extension from UDM.
