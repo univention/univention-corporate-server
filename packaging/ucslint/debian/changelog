@@ -1,3 +1,9 @@
+ucslint (3.0.5-1) unstable; urgency=low
+
+  * Bug #26183: moved univention specific tests to extra package
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 04 Sep 2013 12:56:47 +0200
+
 ucslint (3.0.4-3) unstable; urgency=low
 
   * debian/control: Fix description (Bug #22484)
