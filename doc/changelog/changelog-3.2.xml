@@ -2194,7 +2194,10 @@ libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl,
 <section>
   <title>ucslint</title>
 	<itemizedlist>
-	  <listitem><simpara>
+	  <listitem><simpara> 
+		Several ucslint tests that are only used for Univention internal
+		development have been separated into the package <package>ucslint-univention</package> 
+		(<ulink url="&ucsbug;26183">Bug 26183</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
