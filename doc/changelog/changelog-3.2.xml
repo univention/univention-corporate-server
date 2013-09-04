@@ -1988,6 +1988,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  A cast from string to long has been added while synchronizing time values
           (<ulink url="&ucsbug;32329">Bug 32329</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  An unjoin script has been added to the <emphasis>univention-s4-connector</emphasis> package. The unjoin
+		  script removes the S4 Connector service from the server object and removes the default S4 Connector UCR
+		  variables (<ulink url="&ucsbug;32451">Bug 32451</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
@@ -2006,7 +2012,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  A join and an unjoin script have been added to the <emphasis>univention-ad-connector</emphasis> package. The join
-		  scripts adds the AD Connector service to the server object and the unjoin script removes the service 
+		  script adds the AD Connector service to the server object and the unjoin script removes the service 
 		  (<ulink url="&ucsbug;32455">Bug 32455</ulink>).
 		</simpara></listitem>
 
