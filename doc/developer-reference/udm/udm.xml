@@ -1376,7 +1376,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>package</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the Debian package which creates the object<footnote xml:id="ucs_registerLDAPSchema_footnote">Determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function.</footnote>.
+						Name of the Debian package which creates the object<footnote xml:id="ucs_registerLDAPSchema_footnote"><para>Determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function.</para></footnote>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1455,7 +1455,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>package</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the Debian package which creates the object<footnote xml:id="ucs_registerLDAPACL_footnote">Determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function.</footnote>.
+						Name of the Debian package which creates the object<footnote xml:id="ucs_registerLDAPACL_footnote"><para>Determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function.</para></footnote>.
 					</simpara>
 				</listitem>
 			</varlistentry>
