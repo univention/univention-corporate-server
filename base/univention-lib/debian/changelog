@@ -1,3 +1,10 @@
+univention-lib (3.0.9-11) unstable; urgency=low
+
+  * Add ldapsearch-wrapper to ucs_registerLDAP* (Bug #32392)
+  * Add support for tests/ucs_registerLDAP/packagename and packageversion
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Sep 2013 16:06:15 +0200
+
 univention-lib (3.0.9-10) unstable; urgency=low
 
   * Add ldapsearch-wrapper to ucs_registerLDAP* (Bug #32392)
