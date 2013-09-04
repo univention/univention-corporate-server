@@ -1,12 +1,12 @@
 [kerberos/password/quality/check]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, erfolgt eine weitergehende Prüfung der Passwortstärke.
-Description[en]=If this variable is set to 'yes', additional checks for the password strength are made.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, erfolgt eine weitergehende Prüfung der Passwortstärke. Weitere Informationen finden sich im UCS-Handbuch.
+Description[en]=If this variable is set to 'yes', additional checks for the password strength are made. Additional information can be found in the UCS manual.
 Type=str
 Categories=service-heimdal
 
 [kerberos/adminusers]
-Description[de]=Mit dieser Variable kann eine Liste von Kerberos-User-Principals konfiguriert werden, die über Kerberos das Passwort von anderen Benutzern ändern dürfen. Mehrere Benutzer werden durch Kommas getrennt. Beispiel: 'admin1@EXAMPLE.REALM, admin2@EXAMPLE.REALM'.
-Description[en]=With this variable a list of Kerberos user principals can be configured which are allowed to modify the password of othe users. Multiple users must be separated by a comma. Example: 'admin1@EXAMPLE.REALM, admin2@EXAMPLE.REALM'.
+Description[de]=Mit dieser Variable kann eine Liste von Kerberos-User-Principals konfiguriert werden, die über Kerberos das Passwort von anderen Benutzern ändern dürfen. Mehrere Benutzer werden durch Kommas getrennt. Beispiel: 'admin1@EXAMPLE.REALM,admin2@EXAMPLE.REALM'.
+Description[en]=With this variable a list of Kerberos user principals can be configured which are allowed to modify the password of other users. Multiple users must be separated by a comma. Example: 'admin1@EXAMPLE.REALM,admin2@EXAMPLE.REALM'.
 Type=str
 Categories=service-heimdal
 
