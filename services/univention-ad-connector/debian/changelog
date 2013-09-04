@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.1-2) unstable; urgency=low
+
+  * Added copyright header to join and unjoin script (Bug #32455)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Sep 2013 16:28:15 +0200
+
 univention-ad-connector (8.0.1-1) unstable; urgency=low
 
   * Added join and unjoin scripts for the AD Connector (Bug #32455)
