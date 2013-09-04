@@ -19,6 +19,5 @@ Categories=system-base
 [system/setup/boot/pages/blacklist]
 Description[de]=Diese Variable konfiguriert eine Negativeliste für die im Appliance-Konfigurations-Modus dargestellten Dialoge. Dialoge, die hier aufgeführt werden, werden nicht angezeigt. Mehrere Einträge müssen mit einem Leerzeichen getrennt werden. Mögliche Werte: 'HelpPage', 'SystemRolePage', 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage' und 'SoftwarePage'. Wenn die Variable nicht gesetzt ist, werden alle Software Komponenten gezeigt.
 Description[en]=This variable configures a blacklist for the dialogues present in appliance configuration mode. Dialogues listed here are not shown. Multiple entries need to be separated with a blank. Possible values: 'HelpPage', 'SystemRolePage', 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage' and 'SoftwarePage'. If the variable is unset, all software packages are shown.
-ot/pages/whitelist.
 Type=str
 Categories=system-base
