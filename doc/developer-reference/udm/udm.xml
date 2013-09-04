@@ -1349,6 +1349,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		</para>
 		<para>
 			The module <literal>settings/ldapschema</literal> requires several parameters.
+			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPSchema"/>).
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
@@ -1404,7 +1405,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		</variablelist>
 		<tip>
 			<para>
-			  Since many of these are determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function, it is recommended to use the shell library function to create these objects.
+				Since many of these are determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPSchema"/>).
 			</para>
 		</tip>
 	</section>
@@ -1427,7 +1428,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		</para>
 		<para>
 			The module <literal>settings/ldapacl</literal> requires several parameters.
-			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function, it is recommended to use the shell library function to create these objects.
+			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPACL"/>).
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
@@ -1497,7 +1498,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		</variablelist>
 		<tip>
 			<para>
-			  Since many of these are determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function, it is recommended to use the shell library function to create these objects.
+			  Since many of these are determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPACL"/>).
 			</para>
 		</tip>
 	</section>
