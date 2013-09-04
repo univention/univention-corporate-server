@@ -1,3 +1,10 @@
+univention-base-files (2.0.15-4) unstable; urgency=low
+
+  * Move motd startup for welcome message from /etc/pam.d/common-session to
+    /etc/pam.d/sshd   (Bug #32432)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 04 Sep 2013 10:15:06 +0200
+
 univention-base-files (2.0.15-3) unstable; urgency=low
 
   * Kernel inotify parameters are now configureable by UCR variables (Bug #32327)
