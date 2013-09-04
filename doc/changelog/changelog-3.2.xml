@@ -2004,6 +2004,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  A join and an unjoin script have been added to the <emphasis>univention-ad-connector</emphasis> package. The join
+		  scripts adds the AD Connector service to the server object and the unjoin script removes the service 
+		  (<ulink url="&ucsbug;32455">Bug 32455</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
