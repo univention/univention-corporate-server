@@ -356,6 +356,20 @@ class Upload( ISyntax ):
 	def parse( self, value ):
 		return value
 
+class DebianPackageVersion( string ):
+	invalid_chars_regex = re.compile('[^-+:.0-9a-zA-Z~]')
+
+	@classmethod
+	def parse( self, value ):
+		m = self.invalid_chars_regex.search(value)
+		if m != None:
+			raise univention.admin.uexceptions.valueError( _( 'Invalid character in debian package version: %s' ) % m.group() )
+		p=value.find(':')
+		if p != -1 and not value[:p].isdigit():
+			raise univention.admin.uexceptions.valueError( _( 'Non-integer epoch in debian package version: %s' ) % str( value[:p] ) )
+		
+		return value
+
 class BaseFilename( string ):
 	@classmethod
 	def parse( self, value ):

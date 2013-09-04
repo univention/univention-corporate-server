@@ -1,3 +1,13 @@
+univention-directory-manager-modules (9.0.22-8) unstable; urgency=low
+
+  * new syntax DebianPackageVersion
+  * validate packageversion in settings/ldap*
+  * require increasing changes of packageversion if a non-trivial
+    modification is performed and the package name does not change.
+    (Bug #32411 and Bug #32412)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Sep 2013 15:33:33 +0200
+
 univention-directory-manager-modules (9.0.22-7) unstable; urgency=low
 
   * validate settings/ldap* filename with new syntax BaseFilename

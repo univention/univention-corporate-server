@@ -38,6 +38,7 @@ import univention.admin.handlers
 import univention.admin.password
 import univention.admin.allocators
 import univention.admin.localization
+import apt
 
 translation=univention.admin.localization.translation('univention.admin.handlers.settings')
 _=translation.translate
@@ -117,7 +118,7 @@ property_descriptions={
 	'packageversion': univention.admin.property(
 			short_description=_('Software package version'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.DebianPackageVersion,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -210,6 +211,18 @@ class object(univention.admin.handlers.simpleLdap):
 		return [
 			('objectClass', ocs),
 		]
+
+	def _ldap_pre_modify(self):
+		diff_keys = [ key for key in self.info.keys() if self.info.get(key) != self.oldinfo.get(key) ]
+		if diff_keys == ['active']: ## check for trivial change
+			return
+		if not self.hasChanged('packagename'):
+			old_version = self.oldinfo.get('packageversion','0')
+			if not  apt.apt_pkg.version_compare(self['packageversion'], old_version) == 1:
+				class valueToLow(univention.admin.uexceptions.base):
+					    message=_('packageversion: The value needs to increase')
+				raise valueToLow
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
