@@ -1376,21 +1376,21 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>package</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the Debian package which creates the object. Determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function.
+						Name of the Debian package which creates the object<footnote xml:id="ucs_registerLDAPSchema_footnote">Determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function.</footnote>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. Determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function.
+						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well<footnoteref linkend='ucs_registerLDAPSchema_footnote'/>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain. Determined automatically by the <emphasis>ucs_registerLDAPSchema</emphasis> shell library function.
+						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain<footnoteref linkend='ucs_registerLDAPSchema_footnote'/>.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1455,21 +1455,21 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>package</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the Debian package which creates the object. Determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function.
+						Name of the Debian package which creates the object<footnote xml:id="ucs_registerLDAPACL_footnote">Determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function.</footnote>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. Determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function.
+						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well<footnoteref linkend='ucs_registerLDAPACL_footnote'/>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain. Determined automatically by the <emphasis>ucs_registerLDAPACL</emphasis> shell library function.
+						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain<footnoteref linkend='ucs_registerLDAPACL_footnote'/>.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1477,21 +1477,21 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionstart</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Minimal required UCS version. Only systems with a version higher than or equal to this activate the UCR template for the ACL.
+						Minimal required UCS version. The UCR template for the ACL is only activated by systems with a version higher than or equal to this.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. Only systems with a version lower than or equal to this activate the UCR template for the ACL.
+						Maximal required UCS version. The UCR template for the ACL is only activated by systems with a version lower than this.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>active</literal> (internal)</term>
 				<listitem>
 					<simpara>
-						A boolean flag used internally by the &ucsMaster; to signal availability of the ACL extension (default: <literal>FALSE</literal>).
+						A boolean flag used internally by the &ucsMaster; to signal availability of the ACL extension on the &ucsMaster; (default: <literal>FALSE</literal>).
 					</simpara>
 				</listitem>
 			</varlistentry>

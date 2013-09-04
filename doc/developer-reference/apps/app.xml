@@ -315,6 +315,10 @@
 				The shell function will then register the specified app identifier with the <acronym>LDAP</acronym> schema extension object to indicate that
 				the <acronym>LDAP</acronym> schema extension object is required as long as this app is installed anywhere in the UCS domain.
 		  </para>
+		  <para>
+				To prevent accidental and unnecessary changes the function <literal>ucs_registerLDAPSchema</literal> (as well as the corresponding UDM module)
+				only execute modifications of an existing object if the Debian package version is increased as well.
+		  </para>
 			<example id="app:ucs_registerLDAPSchema_example">
 			  <programlisting language="sh">
 UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
@@ -344,7 +348,11 @@ ucs_registerLDAPSchema /path/to/app.schema
 				activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
 				performed whenever the <acronym>LDAP</acronym> ACL extension object is modified. By calling this function from a joinscript, it will
 				automatically update the Debian package number stored in the object, triggering a re-evaluation of the specified UCS version range.
-				Note that the ACL is activated up to and including the UCS version specified by <literal>--ucsversionend</literal>.
+				Note that the ACL is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
+		  </para>
+		  <para>
+				To prevent accidental and unnecessary changes the function <literal>ucs_registerLDAPACL</literal> (as well as the corresponding UDM module)
+				only execute modifications of an existing object if the Debian package version is increased as well.
 		  </para>
 			<example id="app:ucs_registerLDAPACL_example">
 			  <programlisting language="sh">
