@@ -332,7 +332,7 @@ class FilteredDirWalkGenerator(object):
 		- ignore_files: list of files that will be ignored (e.g. ['.gitignore', 'config.sub'])
 		- ignore_debian_subdirs: boolean that defines if .../debian/* directories are ignored or not
 		- reHashBang: if defined, only files are returned whose first bytes match specified regular expression
-        - readSize: number of bytes that will be read for e.g. reHashBang
+		- readSize: number of bytes that will be read for e.g. reHashBang
 
 		example:
 		>>> for fn in FilteredDirWalkGenerator(path, suffixes=['.py']):
