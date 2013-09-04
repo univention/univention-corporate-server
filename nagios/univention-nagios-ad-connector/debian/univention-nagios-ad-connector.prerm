@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Nagios Plugin
-#  rules file for the debian package
+#  prerm file
 #
 # Copyright 2011-2012 Univention GmbH
 #
@@ -32,12 +32,8 @@
 
 #DEBHELPER#
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/69univention-nagios-ad-connector.uinst
-	[ -e "$uinst" ] && rm "$uinst"
+if [ "$1" = "remove" ]; then
+	cp /usr/lib/univention-uninstall/69univention-nagios-ad-connector.uinst /usr/lib/univention-install/
 fi
-
-. /usr/share/univention-lib/base.sh
-call_joinscript 31univention-nagios-ad-connector.inst
 
 exit 0

@@ -10,7 +10,8 @@ Package: univention-nagios-ad-connector
 Architecture: any
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
- univention-nagios-client
+ univention-nagios-client,
+ shell-univention-lib (>> 3.0)
 Description: nagios plugin for UCS AD connector
  This package installs a nagios plugin to monitor the state
  of UCS Active Directory (AD) connectors.

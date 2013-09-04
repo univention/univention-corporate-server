@@ -58,8 +58,11 @@ else
 			--set notificationOptionUnreachable=1 \
 			--set notificationOptionCritical=1 \
 			--set checkArgs='' \
-			--set useNRPE=0 \
-			--set assignedHosts="$ldap_hostdn" || die
+			--set useNRPE=0 || die
+
+		univention-directory-manager nagios/service modify "$@" --ignore_exists \
+			--dn "cn=UNIVENTION_ADCONNECTOR,cn=nagios,$ldap_base" \
+			--append assignedHosts="$ldap_hostdn" || die
 	fi
 fi
 
