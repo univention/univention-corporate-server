@@ -1,5 +1,0 @@
-@!@
-if not configRegistry.is_true('system/setup/showloginmessage', False): # The welcome message in appliance mode has precedence
-   if configRegistry.is_true('sshd/motd', True):
-      print 'session optional pam_motd.so motd=/etc/welcome.msg'
-@!@

@@ -267,9 +267,3 @@ Variables: logrotate/.*
 Type: file
 File: etc/cron.d/univention-config-registry-backup
 Variables: ucr/backup/enabled
-
-Type: subfile
-Multifile: etc/pam.d/common-session
-Subfile: etc/pam.d/common-session.d/20welcome-message-ssh
-Variables: system/setup/showloginmessage
-Variables: sshd/motd
