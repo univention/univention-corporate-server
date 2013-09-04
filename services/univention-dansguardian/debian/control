@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
  univention-config-dev,
- ucslint
+ ucslint-univention
 
 Package: univention-dansguardian
 Architecture: all

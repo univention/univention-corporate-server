@@ -2,7 +2,7 @@ Source: xserver-xorg-transition
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: ucslint,
+Build-Depends: ucslint-univention,
  debhelper
 Standards-Version: 3.8.2
 

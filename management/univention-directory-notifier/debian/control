@@ -7,7 +7,7 @@ Build-Depends: debhelper (>> 7),
  libunivention-debug-dev,
  libunivention-config-dev,
  univention-config-dev,
- ucslint
+ ucslint-univention
 
 Package: univention-directory-notifier
 Architecture: any

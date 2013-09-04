@@ -9,7 +9,7 @@ Build-Depends: debhelper,
  python-support,
  univention-config-dev,
  univention-management-console-dev,
- ucslint
+ ucslint-univention
 
 Package: univention-firewall
 Architecture: all

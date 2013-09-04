@@ -2,7 +2,7 @@ Source: univention-nagios-virtualization
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, build-essential, ucslint
+Build-Depends: debhelper, univention-config-dev, build-essential, ucslint-univention
 Standards-Version: 3.8.2
 
 Package: univention-nagios-libvirtd

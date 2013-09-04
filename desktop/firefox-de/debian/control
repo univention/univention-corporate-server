@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
-Build-Depends: debhelper, bzip2, unzip, ucslint
+Build-Depends: debhelper, bzip2, unzip, ucslint-univention
 
 Package: firefox-de
 Architecture: i386 amd64
