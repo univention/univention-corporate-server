@@ -655,7 +655,36 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				Moved the dialog showing all app details to a dedicated page and use
+				this also for the <emphasis>Installed Apps</emphasis> module (<ulink
+					url="&ucsbug;31891">Bug 31891</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+				The <emphasis>Open</emphasis> button now opens a dedicated
+				administration module within <emphasis>UMC</emphasis> or the web
+				interface (<ulink url="&ucsbug;30759">Bug 30759</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+				Tests whether the user may continue are run after the button is
+				clicked. They are all run at once and for some failed tests solutions
+				are offered (<ulink url="&ucsbug;31737">Bug 31737</ulink>, <ulink
+					url="&ucsbug;30289">Bug 30289</ulink>, <ulink url="&ucsbug;32163">Bug
+					32163</ulink>) .
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Added system components to the App Center (<ulink url="&ucsbug;32308">Bug 32308</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Made free memory calculation more robust in OpenVZ environments (<ulink url="&ucsbug;30659">Bug 30659</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+				Made component registration in <emphasis>univention-add-app</emphasis>
+				more robust (<ulink url="&ucsbug;32398">Bug 32398</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -737,7 +766,9 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Supporting new HTML READMEs INSTALL, POST_UPDATE, POST_INSTALL (<ulink url="&ucsbug;31803">Bug 31803</ulink>).
+			Supporting new HTML READMEs INSTALL, POST_UPDATE, POST_INSTALL,
+			UNINSTALL, POST_UNINSTALL (<ulink url="&ucsbug;31803">Bug 31803</ulink>,
+			<ulink url="&ucsbug;32502">Bug 32502</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
