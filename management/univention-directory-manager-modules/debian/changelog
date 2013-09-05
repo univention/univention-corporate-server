@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.22-11) unstable; urgency=low
+
+  * Add ucsversion range options also to settings/udm_*
+    (Bug #32408 Bug #32409 Bug #32403 Bug #32406)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Sep 2013 22:18:06 +0200
+
 univention-directory-manager-modules (9.0.22-10) unstable; urgency=low
 
   * New listener module udm_extension (Bug #32408)

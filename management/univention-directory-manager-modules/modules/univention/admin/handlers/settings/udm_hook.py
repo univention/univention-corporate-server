@@ -125,6 +125,26 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'ucsversionstart': univention.admin.property(
+			short_description=_('Minimal UCS version'),
+			long_description='',
+			syntax=univention.admin.syntax.TextArea,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'ucsversionend': univention.admin.property(
+			short_description=_('Maximal UCS version'),
+			long_description='',
+			syntax=univention.admin.syntax.TextArea,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	}
 
 layout = [
@@ -138,6 +158,10 @@ layout = [
 			["package"],
 			["packageversion"],
 			["appidentifier"],
+		] ),
+		Group( _( 'UCS Version Dependencies' ), layout = [
+			["ucsversionstart"],
+			["ucsversionend"],
 		] ),
 		Group( _( 'Activated' ), layout = [
 			["active"],
@@ -153,6 +177,8 @@ mapping.register('active', 'univentionUDMHookActive', None, univention.admin.map
 mapping.register('appidentifier', 'univentionAppIdentifier', None, univention.admin.mapping.ListToString)
 mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
+mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
+mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module

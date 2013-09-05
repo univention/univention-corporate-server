@@ -166,6 +166,16 @@ def handler(dn, new, old):
 	"""Handle UDM extension modules"""
 
 	if new:
+		univentionUCSVersionStart = new.get('univentionUCSVersionStart', [None])[0]
+		univentionUCSVersionEnd = new.get('univentionUCSVersionEnd', [None])[0]
+		current_UCR_version = "%s-%s" % ( listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel') )
+		if univentionUCSVersionStart and current_UCR_version < univentionUCSVersionStart:
+			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCR version %s.' % (name, new['cn'][0], univentionUCSVersionStart))
+			new=None
+		elif univentionUCSVersionEnd and current_UCR_version >= univentionUCSVersionEnd:
+			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
+			new=None
+
 		new_version = new.get('univentionOwnedByPackageVersion', [None])[0]
 		if not new_version:
 			return
