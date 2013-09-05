@@ -240,10 +240,12 @@ class Application(object):
 
 		self._fetch_file('readme', 'README', localize)
 		self._fetch_file('licenseagreement', 'LICENSE_AGREEMENT', localize)
-		self._fetch_file('readmeupdate', 'README_UPDATE', localize)
-		self._fetch_file('readmepostupdate', 'README_POST_UPDATE', localize)
 		self._fetch_file('readmeinstall', 'README_INSTALL', localize)
 		self._fetch_file('readmepostinstall', 'README_POST_INSTALL', localize)
+		self._fetch_file('readmeupdate', 'README_UPDATE', localize)
+		self._fetch_file('readmepostupdate', 'README_POST_UPDATE', localize)
+		self._fetch_file('readmeuninstall', 'README_UNINSTALL', localize)
+		self._fetch_file('readmepostuninstall', 'README_POST_UNINSTALL', localize)
 
 		# candidate is for upgrading an already installed app
 		# is set by all()
@@ -538,6 +540,11 @@ class Application(object):
 			return True
 		return component_registered(self.component_id, ucr)
 
+	def allowed_on_local_server(self):
+		server_role = ucr.get('server/role')
+		allowed_roles = self.get('serverrole')
+		return not allowed_roles or server_role in allowed_roles
+
 	def to_dict(self, package_manager):
 		ucr.load()
 		res = copy.copy(self._options)
@@ -554,7 +561,6 @@ class Application(object):
 			# res['candidate'] = self.candidate.to_dict(package_manager)
 			res['candidate_version'] = self.candidate.version
 			res['candidate_component_id'] = self.candidate.component_id
-			res['candidate_server_role'] = self.candidate.get('serverrole')
 			res['candidate_readmeupdate'] = self.candidate.get('readmeupdate')
 			res['candidate_readmepostupdate'] = self.candidate.get('readmepostupdate')
 		return res
@@ -582,7 +588,7 @@ class Application(object):
 	@HardRequirement('install', 'update')
 	def must_have_correct_server_role(self):
 		server_role = ucr.get('server/role')
-		if self.get('serverrole') and server_role not in self.get('serverrole'):
+		if not self.allowed_on_local_server():
 			return {
 				'current_role' : server_role,
 				'allowed_roles' : ', '.join(self.get('serverrole')),
@@ -590,20 +596,30 @@ class Application(object):
 		return True
 
 	@HardRequirement('install', 'update')
-	def must_have_no_conflicts(self, package_manager):
+	def must_have_no_conflicts_packages(self, package_manager):
 		conflict_packages = []
-		for package in self.get('conflictedsystempackages'):
-			if package_manager.is_installed(package):
-				conflict_packages.append(package)
-		for app in self.all():
-			if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
-				if any(package_manager.is_installed(package) for package in app.get('defaultpackages')):
-					if app.name not in conflict_packages:
-						# can conflict multiple times: conflicts with
-						# APP-1.1 and APP-1.2, both named APP
-						conflict_packages.append(app.name)
+		for pkgname in self.get('conflictedsystempackages'):
+			if package_manager.is_installed(pkgname):
+				conflict_packages.append(pkgname)
 		if conflict_packages:
 			return conflict_packages
+		return True
+
+	@HardRequirement('install', 'update')
+	def must_have_no_conflicts_apps(self, package_manager):
+		conflictedapps = []
+		for app in self.all():
+			if not app.allowed_on_local_server():
+				# cannot be installed, continue
+				continue
+			if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
+				if any(package_manager.is_installed(package) for package in app.get('defaultpackages')):
+					if app.name not in conflictedapps:
+						# can conflict multiple times: conflicts with
+						# APP-1.1 and APP-1.2, both named APP
+						conflictedapps.append({'id' : app.id, 'name' : app.name})
+		if conflictedapps:
+			return conflictedapps
 		return True
 
 	@HardRequirement('install', 'update')

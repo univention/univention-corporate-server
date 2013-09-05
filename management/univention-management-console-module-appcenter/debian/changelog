@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.26-1) unstable; urgency=low
+
+  * Support new READMEs UNINSTALL and POST_UNINSTALL (Bug #32502)
+  * Fix displaying conflict errors (Bug #32163)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Sep 2013 15:51:21 +0200
+
 univention-management-console-module-appcenter (3.0.25-1) unstable; urgency=low
 
   * Fix standby during license request (Bug #32163)

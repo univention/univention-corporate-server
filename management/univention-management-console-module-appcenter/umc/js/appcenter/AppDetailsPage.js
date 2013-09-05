@@ -263,7 +263,12 @@ define([
 		},
 
 		uninstallApp: function() {
-			this.callInstaller('uninstall').then(lang.hitch(this, 'markupErrors'));
+			// before installing, user must read uninstall readme
+			this.showReadme(this.app.readmeuninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
+				this.callInstaller('uninstall').then(lang.hitch(this, function() {
+					this.showReadme(this.app.readmepostuninstall, _('Uninstall Information')).then(lang.hitch(this, 'markupErrors'));
+				}));
+			}));
 		},
 
 		installApp: function() {

@@ -152,6 +152,35 @@ define([
 				});
 			}
 		}),
+		must_have_no_conflicts_packages: new Requirement({
+			reasonDescription: function(details) {
+				var txt = _('%s conflicts with the following packages.', details.name);
+				txt += '<ul><li>' + details.detail.join('</li><li>') + '</li></ul>';
+				return txt;
+			},
+			solutionDescription: function() {
+				return _('Uninstall them first.');
+			}
+		}),
+		must_have_no_conflicts_apps: new Requirement({
+			reasonDescription: function(details) {
+				var txt = _('%s conflicts with the following applications.', details.name);
+				txt += '<ul><li>' + array.map(details.detail, function(app) { return app.name; }).join('</li><li>') + '</li></ul>';
+				return txt;
+			},
+			solutionDescription: function() {
+				return _('Uninstall them first.');
+			},
+			solutionLabel: function(details) {
+				return _('Open %s', details.detail[0].name);
+			},
+			solution: function(opts, app, details) {
+				opts.appDetailsPage.set('app', details[0]);
+				opts.appDetailsPage.appLoadingDeferred.then(function() {
+					opts.appDetailsDialog.onBack(false);
+				});
+			}
+		}),
 		must_not_be_depended_on: new Requirement({
 			reasonDescription: function(details) {
 				var txt = _('%s is required for the following applications to work.', details.name);
