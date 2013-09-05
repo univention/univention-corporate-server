@@ -324,7 +324,7 @@ Variables: <variable1>
 Type: file
 File: <filename>
 Variables: <variable1>
-Owner: <owner>
+User: <owner>
 Group: <group>
 Mode: <file-mode>
 Preinst: <module>
@@ -361,7 +361,7 @@ Postinst: <module>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><literal>Owner</literal> (optional)</term>
+						<term><literal>User</literal> (optional)</term>
 						<term><literal>Group</literal> (optional)</term>
 						<term><literal>Mode</literal> (optional)</term>
 						<listitem>
@@ -414,7 +414,7 @@ def postinst(config_registry, changes):
 				<programlisting><![CDATA[
 Type: multifile
 Multifile: <target-filename>
-Owner: <owner>
+User: <owner>
 Group: <group>
 Mode: <file-mode>
 Preinst: <module>
@@ -463,7 +463,7 @@ Variables: <variable1>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><literal>Owner</literal> (optional)</term>
+						<term><literal>User</literal> (optional)</term>
 						<term><literal>Group</literal> (optional)</term>
 						<term><literal>Mode</literal> (optional)</term>
 						<term><literal>Preinst</literal> (optional)</term>

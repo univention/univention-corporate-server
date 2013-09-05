@@ -77,7 +77,7 @@ cd univention-ssh/
 							<step>
 								<para>Enable unmaintained and source repository once</para>
 								<programlisting><![CDATA[
-ucr set repository/online/univention=yes \
+ucr set repository/online/unmaintained=yes \
         repository/online/sources=yes
 apt-get update
 									]]></programlisting>
