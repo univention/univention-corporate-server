@@ -1,0 +1,57 @@
+# Univention Object Metadata OID: 1.3.6.1.4.1.10176.4201
+# <https://hutten.knut.univention.de/mediawiki/index.php/Univention-OIDs>
+#objectIdentifier univention 1.3.6.1.4.1.10176
+#objectIdentifier univentionObjectMetadata univention:4201
+objectIdentifier univentionObjectMetadata 1.3.6.1.4.1.10176.4201
+objectIdentifier univentionObjectMetadataAttributeType univentionObjectMetadata:1
+objectIdentifier univentionObjectMetadataObjectClass univentionObjectMetadata:2
+
+# <http://www.openldap.org/doc/admin24/schema.html>
+
+### Definition for univentionObjectMetadata
+
+attributetype ( univentionObjectMetadataAttributeType:1 NAME 'univentionOwnedByPackage'
+	DESC 'Name of the Package that registered the object'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionObjectMetadataAttributeType:2 NAME 'univentionOwnedByPackageVersion'
+	DESC 'Version of the Package that registered the object'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionObjectMetadataAttributeType:3 NAME 'univentionUCSVersionStart'
+	DESC 'Validity starts with UCS Version'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionObjectMetadataAttributeType:4 NAME 'univentionUCSVersionEnd'
+	DESC 'Validity ends with UCS Version'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionObjectMetadataAttributeType:5 NAME 'univentionAppIdentifier'
+	DESC 'Identifier of the App that relies on the object'
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionObjectMetadataObjectClass:1 NAME 'univentionObjectMetadata'
+	DESC 'UCS extension object'
+	SUP 'top' STRUCTURAL
+	MUST ( cn )
+	MAY ( univentionOwnedByPackage
+		$ univentionOwnedByPackageVersion
+		$ univentionUCSVersionStart
+		$ univentionUCSVersionEnd
+		$ univentionAppIdentifier
+		)
+	)

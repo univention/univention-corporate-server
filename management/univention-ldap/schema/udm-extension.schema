@@ -1,0 +1,99 @@
+# Univention UDM Extension OID: 1.3.6.1.4.1.10176.4203
+# <https://hutten.knut.univention.de/mediawiki/index.php/Univention-OIDs>
+#objectIdentifier univention 1.3.6.1.4.1.10176
+#objectIdentifier univentionUDMExtension univention:4203
+objectIdentifier univentionUDMExtension 1.3.6.1.4.1.10176.4203
+objectIdentifier univentionUDMExtensionAttributeType univentionUDMExtension:1
+objectIdentifier univentionUDMExtensionObjectClass univentionUDMExtension:2
+
+# <http://www.openldap.org/doc/admin24/schema.html>
+
+### Definition for univentionUDMModule
+
+attributetype ( univentionUDMExtensionAttributeType:11 NAME 'univentionUDMModuleFilename'
+	DESC 'UDM module filename'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionUDMExtensionAttributeType:12 NAME 'univentionUDMModuleData'
+	DESC 'UDM module data'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionUDMExtensionAttributeType:13 NAME 'univentionUDMModuleActive'
+	DESC 'Flag indicating availability of the UDM module'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+objectclass ( univentionUDMExtensionObjectClass:1 NAME 'univentionUDMModule'
+	DESC 'UCS UDM module'
+	SUP 'univentionObjectMetadata' STRUCTURAL
+	MUST ( cn )
+	MAY (	univentionUDMModuleFilename
+		$ univentionUDMModuleData
+		$ univentionUDMModuleActive
+		)
+	)
+
+### Analogous definition for univentionUDMHook
+
+attributetype ( univentionUDMExtensionAttributeType:21 NAME 'univentionUDMHookFilename'
+	DESC 'UDM hook filename'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionUDMExtensionAttributeType:22 NAME 'univentionUDMHookData'
+	DESC 'UDM hook data'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionUDMExtensionAttributeType:23 NAME 'univentionUDMHookActive'
+	DESC 'Flag indicating availability of the UDM hook'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+objectclass ( univentionUDMExtensionObjectClass:2 NAME 'univentionUDMHook'
+	DESC 'UCS UDM hook'
+	SUP 'univentionObjectMetadata' STRUCTURAL
+	MUST ( cn )
+	MAY (	univentionUDMHookFilename
+		$ univentionUDMHookData
+		$ univentionUDMHookActive
+		)
+	)
+
+### Analogous definition for univentionUDMSyntax
+
+attributetype ( univentionUDMExtensionAttributeType:31 NAME 'univentionUDMSyntaxFilename'
+	DESC 'UDM syntax filename'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionUDMExtensionAttributeType:32 NAME 'univentionUDMSyntaxData'
+	DESC 'UDM syntax data'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionUDMExtensionAttributeType:33 NAME 'univentionUDMSyntaxActive'
+	DESC 'Flag indicating availability of the UDM syntax'
+	SINGLE-VALUE
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+objectclass ( univentionUDMExtensionObjectClass:3 NAME 'univentionUDMSyntax'
+	DESC 'UCS UDM syntax'
+	SUP 'univentionObjectMetadata' STRUCTURAL
+	MUST ( cn )
+	MAY (	univentionUDMSyntaxFilename
+		$ univentionUDMSyntaxData
+		$ univentionUDMSyntaxActive
+		)
+	)

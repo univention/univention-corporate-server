@@ -50,31 +50,40 @@ name = 'settings_ldapschema'
 description = 'Configure LDAP schema extensions'
 filter = '(objectClass=univentionLDAPExtensionSchema)'
 attributes = []
-UDM_MODULE = 'settings/ldapschema'
 
+UDM_MODULE = 'settings/ldapschema'
 BASEDIR = '/var/lib/univention-ldap/local-schema'
 
 __do_reload = False
 __todo_list = []
 
 def handler(dn, new, old):
-	"""Handle LDAP schema extensions on DC Master and DC Backup"""
+	"""Handle LDAP schema extensions on Master and Backup"""
 	global __todo_list, __do_reload
 
 	if not listener.configRegistry.get('ldap/server/type') == 'master':
 		return
 
 	if new:
-		new_version = new.get('univentionLDAPExtensionPackageVersion', [None])[0]
+		new_version = new.get('univentionOwnedByPackageVersion', [None])[0]
 		if not new_version:
 			return
 
-		if old:	## check for trivial change
+		new_pkgname = new.get('univentionOwnedByPackage', [None])[0]
+		if not new_pkgname:
+			return
+
+		if old:	## check for trivial changes
 			diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp')]
 			if diff_keys == ['univentionLDAPSchemaActive']:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP schema extension %s: activation status changed.' % (name, new['cn'][0]))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0]))
+				return
+			elif diff_keys == ['univentionAppIdentifier']:
+				ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: App identifier changed.' % (name, new['cn'][0]))
 				return
 
+			if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
+				old_version = old.get('univentionOwnedByPackageVersion', [None])[0]
 				rc = apt.apt_pkg.version_compare(new_version, old_version)
 				if rc != 1:
 					if not rc in (1, 0, -1):
@@ -83,9 +92,8 @@ def handler(dn, new, old):
 						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is not higher than version of old object (%s), skipping update.' % (name, old_version))
 					return
 		
-		new_schema_data = new.get('univentionLDAPSchemaData')[0]
 		try:
-			new_schema = zlib.decompress(new_schema_data, 16+zlib.MAX_WBITS)
+			new_object_data = zlib.decompress(new.get('univentionLDAPSchemaData')[0], 16+zlib.MAX_WBITS)
 		except TypeError:
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
 			return
@@ -104,17 +112,17 @@ def handler(dn, new, old):
 						except IOError:
 							file_hash = None
 						
-						new_hash = hashlib.sha256(new_schema).hexdigest()
+						new_hash = hashlib.sha256(new_object_data).hexdigest()
 						if new_hash == file_hash:
-							ud.debug(ud.LISTENER, ud.INFO, '%s: Schema file %s unchanged.' % (name, old_filename))
+							ud.debug(ud.LISTENER, ud.INFO, '%s: file %s unchanged.' % (name, old_filename))
 							return
 
 					backup_fd, backup_filename = tempfile.mkstemp()
-					ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old schema subfile %s to %s.' % (name, old_filename, backup_filename))
+					ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
 					try:
 						os.rename(old_filename, backup_filename)
 					except IOError:
-						ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old schema file %s, removing it.' % (name, old_filename))
+						ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, removing it.' % (name, old_filename))
 						os.unlink(old_filename)	## no choice
 						backup_filename = None
 						os.close(backup_fd)
@@ -127,12 +135,13 @@ def handler(dn, new, old):
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Create directory %s.' % (name, BASEDIR))
 				os.makedirs(BASEDIR, 0755)
 
+			## Create new extension file
 			try:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Writing new LDAP schema file %s.' % (name, new_filename))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Writing new extension file %s.' % (name, new_filename))
 				with open(new_filename, 'w') as f:
-					f.write(new_schema)
+					f.write(new_object_data)
 			except IOError:
-				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing schema file %s.' % (name, new_filename))
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing file %s.' % (name, new_filename))
 				return
 
 			ucr = ConfigRegistry()
@@ -141,27 +150,29 @@ def handler(dn, new, old):
 			ucr_handlers.load()
 			ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
+			## validate
 			p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 			stdout, stderr = p.communicate()
 			if p.returncode != 0:
-				ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP schema validation failed:\n%s.' % (name, stdout))
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed:\n%s.' % (name, stdout))
 				## Revert changes
-				ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new LDAP schema fragement %s.' % (name, new_filename))
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Removing new file %s.' % (name, new_filename))
 				os.unlink(new_filename)
 				if backup_filename:
-					ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous LDAP schema %s.' % (name, old_filename))
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Restoring previous file %s.' % (name, old_filename))
 					try:
 						os.rename(backup_filename, old_filename)
 						os.close(backup_fd)
 					except IOError:
-						ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old schema file %s.' % (name, old_filename))
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Error reverting to old file %s.' % (name, old_filename))
 				## Commit and exit
 				ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 				return
+			ud.debug(ud.LISTENER, ud.INFO, '%s: validation successful.' % (name,))
 
-			ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP schema validation successful.' % (name,))
+			## cleanup backup
 			if backup_filename:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old schema file %s.' % (name, backup_filename))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Removing backup of old file %s.' % (name, backup_filename))
 				os.unlink(backup_filename)
 				os.close(backup_fd)
 
@@ -176,11 +187,11 @@ def handler(dn, new, old):
 			listener.setuid(0)
 			try:
 				backup_fd, backup_filename = tempfile.mkstemp()
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old schema subfile %s to %s.' % (name, old_filename, backup_filename))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Moving old file %s to %s.' % (name, old_filename, backup_filename))
 				try:
 					os.rename(old_filename, backup_filename)
 				except IOError:
-					ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old schema file %s, leaving it untouched.' % (name, old_filename))
+					ud.debug(ud.LISTENER, ud.WARN, '%s: Error renaming old file %s, leaving it untouched.' % (name, old_filename))
 					os.close(backup_fd)
 					return
 
@@ -193,7 +204,7 @@ def handler(dn, new, old):
 				p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 				stdout, stderr = p.communicate()
 				if p.returncode != 0:
-					ud.debug(ud.LISTENER, ud.WARN, '%s: LDAP schema validation fails without %s:\n%s.' % (name, old_filename, stdout))
+					ud.debug(ud.LISTENER, ud.WARN, '%s: validation fails without %s:\n%s.' % (name, old_filename, stdout))
 					ud.debug(ud.LISTENER, ud.WARN, '%s: Restoring %s.' % (name, old_filename))
 					## Revert changes
 					try:
@@ -209,7 +220,7 @@ def handler(dn, new, old):
 					ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 					return
 
-				ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP schema validation successful, removing backup of old schema file %s.' % (name, backup_filename))
+				ud.debug(ud.LISTENER, ud.INFO, '%s: validation successful, removing backup of old file %s.' % (name, backup_filename))
 				os.unlink(backup_filename)
 				os.close(backup_fd)
 
@@ -223,9 +234,10 @@ def handler(dn, new, old):
 				listener.unsetuid()
 
 def postrun():
-	"""Restart LDAP server Master and mark new schema extension objects active"""
+	"""Restart LDAP server Master and mark new extension objects active"""
 	global __todo_list, __do_reload
 
+	## Only restart slapd on Master
 	if not listener.configRegistry.get('server/role') == 'domaincontroller_master':
 		return
 

@@ -1,42 +1,20 @@
-# Univention LDAP Extension OID: 1.3.6.1.4.1.10176.4201
+# Univention LDAP Extension OID: 1.3.6.1.4.1.10176.4202
 # <https://hutten.knut.univention.de/mediawiki/index.php/Univention-OIDs>
 #objectIdentifier univention 1.3.6.1.4.1.10176
-#objectIdentifier univentionLDAPExtension univention:4201
-objectIdentifier univentionLDAPExtension 1.3.6.1.4.1.10176.4201
+#objectIdentifier univentionLDAPExtension univention:4202
+objectIdentifier univentionLDAPExtension 1.3.6.1.4.1.10176.4202
 objectIdentifier univentionLDAPExtensionAttributeType univentionLDAPExtension:1
 objectIdentifier univentionLDAPExtensionObjectClass univentionLDAPExtension:2
 
 # <http://www.openldap.org/doc/admin24/schema.html>
-
-### Common Attributetypes
-
-attributetype ( univentionLDAPExtensionAttributeType:1 NAME 'univentionLDAPExtensionPackage'
-	DESC 'Name of the Package that registered the LDAP schema'
-	SINGLE-VALUE
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-
-attributetype ( univentionLDAPExtensionAttributeType:2 NAME 'univentionLDAPExtensionPackageVersion'
-	DESC 'Version of the Package that registered the LDAP schema'
-	SINGLE-VALUE
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-
-attributetype ( univentionLDAPExtensionAttributeType:3 NAME 'univentionAppIdentifier'
-	DESC 'Identifier of the App that relies on the LDAP Extension'
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 ### Definition for univentionLDAPExtensionSchema
 
 attributetype ( univentionLDAPExtensionAttributeType:11 NAME 'univentionLDAPSchemaFilename'
 	DESC 'LDAP schema filename'
 	SINGLE-VALUE
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( univentionLDAPExtensionAttributeType:12 NAME 'univentionLDAPSchemaData'
@@ -52,14 +30,11 @@ attributetype ( univentionLDAPExtensionAttributeType:13 NAME 'univentionLDAPSche
 
 objectclass ( univentionLDAPExtensionObjectClass:1 NAME 'univentionLDAPExtensionSchema'
 	DESC 'UCS LDAP schema extension'
-	STRUCTURAL
+	SUP 'univentionObjectMetadata' STRUCTURAL
 	MUST ( cn )
 	MAY (	univentionLDAPSchemaFilename
 		$ univentionLDAPSchemaData
 		$ univentionLDAPSchemaActive
-		$ univentionLDAPExtensionPackage
-		$ univentionLDAPExtensionPackageVersion
-		$ univentionAppIdentifier
 		)
 	)
 
@@ -68,8 +43,8 @@ objectclass ( univentionLDAPExtensionObjectClass:1 NAME 'univentionLDAPExtension
 attributetype ( univentionLDAPExtensionAttributeType:21 NAME 'univentionLDAPACLFilename'
 	DESC 'LDAP ACL filename'
 	SINGLE-VALUE
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( univentionLDAPExtensionAttributeType:22 NAME 'univentionLDAPACLData'
@@ -83,31 +58,12 @@ attributetype ( univentionLDAPExtensionAttributeType:23 NAME 'univentionLDAPACLA
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
 
-attributetype ( univentionLDAPExtensionAttributeType:24 NAME 'univentionUCSVersionStart'
-	DESC 'Lowest valid UCS Version'
-	SINGLE-VALUE
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-
-attributetype ( univentionLDAPExtensionAttributeType:25 NAME 'univentionUCSVersionEnd'
-	DESC 'Highest valid UCS Version'
-	SINGLE-VALUE
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-
 objectclass ( univentionLDAPExtensionObjectClass:2 NAME 'univentionLDAPExtensionACL'
 	DESC 'UCS LDAP ACL extension'
-	STRUCTURAL
+	SUP 'univentionObjectMetadata' STRUCTURAL
 	MUST ( cn )
 	MAY (	univentionLDAPACLFilename
 		$ univentionLDAPACLData
 		$ univentionLDAPACLActive
-		$ univentionLDAPExtensionPackage
-		$ univentionLDAPExtensionPackageVersion
-		$ univentionAppIdentifier
-		$ univentionUCSVersionStart
-		$ univentionUCSVersionEnd
 		)
 	)

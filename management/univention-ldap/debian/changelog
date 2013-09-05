@@ -1,3 +1,14 @@
+univention-ldap (10.0.10-23) unstable; urgency=low
+
+  * New objectClass univentionUDMModule (Bug #32410)
+  * New objectClass univentionUDMHook
+  * New objectClass univentionUDMSyntax
+  * Move common attributes to new objectClass univentionObjectMetadata
+  * Make filename LDAP attributes caseExact.*Match
+  * Generalize wording in settings/ldap* (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Sep 2013 18:39:23 +0200
+
 univention-ldap (10.0.10-22) unstable; urgency=low
 
   * Fix cut+paste error (Bug #31801)
