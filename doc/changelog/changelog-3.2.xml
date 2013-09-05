@@ -1825,6 +1825,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The &ucsUCRV; <envar>samba/max_protocol</envar> has been renamed to &ucsUCRV;
 		  <envar>samba/max/protocol</envar> (<ulink url="&ucsbug;31921">Bug 31921</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  An unjoin script has been added to the <emphasis>univention-samba</emphasis> package. The unjoin
+		  script removes the Samba 3 service from the server object and removes the default Samba UCR
+		  variables (<ulink url="&ucsbug;32445">Bug 32445</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
