@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.12-2) unstable; urgency=low
+
+  * Restart listener in postrm (Bug #32451)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Sep 2013 06:56:42 +0200
+
 univention-s4-connector (8.0.12-1) unstable; urgency=low
 
   * Added S4 connector unjoin script (Bug #32451)

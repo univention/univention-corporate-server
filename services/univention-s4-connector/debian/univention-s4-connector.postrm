@@ -35,6 +35,8 @@
 if [ "$1" = "remove" ]; then
 	. /usr/share/univention-lib/all.sh
 	call_unjoinscript 03univention-s4-connector.uinst
+
+	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
 fi
 
 exit 0
