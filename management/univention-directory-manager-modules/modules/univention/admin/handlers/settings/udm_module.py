@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Manager Modules
-#  direcory manager module for LDAP schema extensions
+#  direcory manager module for UDM modules
 #
 # Copyright 2013-2014 Univention GmbH
 #
@@ -43,17 +43,17 @@ import apt
 translation=univention.admin.localization.translation('univention.admin.handlers.settings')
 _=translation.translate
 
-OC = "univentionLDAPExtensionSchema"
+OC = "univentionUDMModule"
 
-module='settings/ldapschema'
+module='settings/udm_module'
 childs=0
 operations=['add','edit','remove','search','move']
-short_description=_('Settings: LDAP Schema Extension')
+short_description=_('Settings: UDM Module')
 long_description=''
 options={}
 property_descriptions={
 	'name': univention.admin.property(
-	        short_description=_('Schema name'),
+	        short_description=_('UDM module name'),
 			long_description='',
 			syntax=univention.admin.syntax.TextArea,
 			multivalue=0,
@@ -64,9 +64,9 @@ property_descriptions={
 			identifies=1
 			),
 	'filename': univention.admin.property(
-			short_description=_('Schema file name'),
+			short_description=_('UDM module file name'),
 			long_description='',
-			syntax=univention.admin.syntax.BaseFilename,
+			syntax=univention.admin.syntax.TextArea,	## relative path, may contain directories
 			multivalue=0,
 			options=[],
 			required=1,
@@ -75,7 +75,7 @@ property_descriptions={
 			identifies=0
 			),
 	'data': univention.admin.property(
-			short_description=_('Schema data'),
+			short_description=_('UDM module data'),
 			long_description='',
 			syntax=univention.admin.syntax.GzipBase64Upload,
 			multivalue=0,
@@ -147,9 +147,9 @@ layout = [
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('filename', 'univentionLDAPSchemaFilename', None, univention.admin.mapping.ListToString)
-mapping.register('data', 'univentionLDAPSchemaData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('active', 'univentionLDAPSchemaActive', None, univention.admin.mapping.ListToString)
+mapping.register('filename', 'univentionUDMModuleFilename', None, univention.admin.mapping.ListToString)
+mapping.register('data', 'univentionUDMModuleData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('active', 'univentionUDMModuleActive', None, univention.admin.mapping.ListToString)
 mapping.register('appidentifier', 'univentionAppIdentifier', None, univention.admin.mapping.ListToString)
 mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)

@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Directory Manager Modules
-#  postinst script
+#  postrm script
 #
 # Copyright 2004-2013 Univention GmbH
 #
@@ -30,26 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-eval "$(univention-config-registry shell)"
-
-#DEBHELPER#
-
-if [ "$1" = configure -a -z "$2" ]; then
-	# only set this for new installations
-	univention-config-registry set directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress \
-		password/hashing/method?SHA-512
-fi
-
-if [ "$1" = "configure" ]; then
-	univention-config-registry set directory/manager/web/modules/groups/group/caching/uniqueMember/timeout?300 \
-		password/hashing/method?MD5 # for update keep old behaviour
-
-	univention-config-registry set password/samba/lmhash?false \
-							directory/manager/user_group/uniqueness=true
-
-	## load the listener module
-	/etc/init.d/univention-directory-listener crestart
-fi
-
+case "$1" in
+	"remove")
+		## unload the listener module
+		/etc/init.d/univention-directory-listener crestart
+		;;
+	"purge")
+		;;
+	*)
+		;;
+esac
 
 exit 0

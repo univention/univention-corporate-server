@@ -1,3 +1,13 @@
+univention-directory-manager-modules (9.0.22-10) unstable; urgency=low
+
+  * New listener module udm_extension (Bug #32408)
+  * New UDM module settings/udm_module	(Bug #32409)
+  * New UDM module settings/udm_hook	(Bug #32403)
+  * New UDM module settings/udm_syntax	(Bug #32406)
+  * Streamline UDM modules settings/ldap* (Bug #32411 and Bug #32412)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Sep 2013 19:07:22 +0200
+
 univention-directory-manager-modules (9.0.22-9) unstable; urgency=low
 
   * allow modification of appidentifier w/o packageversion increase

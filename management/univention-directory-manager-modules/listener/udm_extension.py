@@ -1,0 +1,280 @@
+# -*- coding: utf-8 -*-
+#
+# Univention Directory Manager
+"""listener script for UDM extension modules."""
+#
+# Copyright 2013-2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+__package__ = ''	# workaround for PEP 366
+import listener
+from univention.config_registry import configHandlers, ConfigRegistry
+import univention.debug as ud
+import hashlib
+import os
+import univention.admin.uldap as udm_uldap
+import univention.admin.modules as udm_modules
+import univention.admin.uexceptions as udm_errors
+import subprocess
+import zlib
+import tempfile
+import datetime
+import apt
+udm_modules.update()
+
+name = 'udm_extension'
+description = 'Handle UDM module, hook an syntax extensions'
+filter = '(|(objectClass=univentionUDMModule)(objectClass=univentionUDMHook)(objectClass=univentionUDMSyntax))'
+attributes = []
+
+PYSHARED_DIR = '/usr/share/pyshared/'
+PYMODULES_DIR = '/usr/lib/pymodules/'
+
+def install_python_file(data, relative_filename):
+	"""Install and link a public python module file"""
+	if not relative_filename:
+		ud.debug(ud.LISTENER, ud.ERROR, '%s: No python file to install.' % (name, relative_filename))
+		return False
+
+	filename = os.path.join(PYSHARED_DIR, relative_filename)
+	relative_basedir = os.path.dirname(relative_filename)
+	try:
+		with open(filename, 'r') as f:
+			file_hash = hashlib.sha256(f.read()).hexdigest()
+	except IOError:
+		file_hash = None
+
+	data_written = False
+	if file_hash and file_hash == hashlib.sha256(data).hexdigest():
+		ud.debug(ud.LISTENER, ud.INFO, '%s: data %s unchanged.' % (name, filename))
+	else:
+		## prepare file target
+		pyshared_target_dir = os.path.join(PYSHARED_DIR, relative_basedir)
+		if not os.path.exists(pyshared_target_dir):
+			try:
+				os.makedirs(pyshared_target_dir)
+			except OSError, e:
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Directory creation of %s failed: %s.' % (name, pymodules_target_dir, e))
+
+		try:
+			with open(filename, 'w') as f:
+				f.write(data)
+			data_written = True
+			ud.debug(ud.LISTENER, ud.INFO, '%s: %s installed.' % (name, relative_filename))
+		except Exception, e:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Writing new data to %s failed: %s.' % (name, filename, e))
+			return False
+
+	links_created = 0
+	for entry in os.listdir(PYMODULES_DIR):
+		pyversion_path = os.path.join(PYMODULES_DIR, entry)
+		if entry.startswith('python') and os.path.isdir(pyversion_path):
+			pymodules_target_dir = os.path.join(pyversion_path, relative_basedir)
+			linkname = os.path.join(pyversion_path, relative_filename)
+			
+			## prepare link target
+			if os.path.lexists(linkname):
+				if os.path.exists(linkname) and os.path.realpath(linkname) == filename:
+						continue
+				else:
+					os.unlink(linkname)
+			else:
+				if not os.path.exists(pymodules_target_dir):
+					try:
+						os.makedirs(pymodules_target_dir)
+					except OSError, e:
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Directory creation of %s failed: %s.' % (name, pymodules_target_dir, e))
+
+			try:
+				os.symlink(filename, linkname)
+				links_created += 1
+			except OSError, e:
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Symlink creation of %s failed: %s.' % (name, linkname, e))
+	if links_created:
+		ud.debug(ud.LISTENER, ud.INFO, '%s: symlinks to %s created.' % (name, relative_filename))
+
+	if data_written or links_created:
+		return True
+	else:
+		return False
+
+
+def remove_python_file(relative_filename):
+	"""Unlink and remove a public python module file"""
+	if not relative_filename:
+		ud.debug(ud.LISTENER, ud.ERROR, '%s: No python file to remove.' % (name, relative_filename))
+		return False
+
+	filename = os.path.join(PYSHARED_DIR, relative_filename)
+	relative_basedir = os.path.dirname(relative_filename)
+
+	links_removed = 0
+	for entry in os.listdir(PYMODULES_DIR):
+		pyversion_path = os.path.join(PYMODULES_DIR, entry)
+		if os.path.isdir(pyversion_path):
+			pymodules_target_dir = os.path.join(pyversion_path, relative_basedir)
+			linkname = os.path.join(pyversion_path, relative_filename)
+			if os.path.lexists(linkname):
+				try:
+					os.unlink(linkname)
+					links_removed += 1
+				except OSError, e:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of symlink %s failed: %s.' % (name, linkname, e))
+	if links_removed:
+		ud.debug(ud.LISTENER, ud.INFO, '%s: links to %s removed.' % (name, relative_filename))
+	
+	file_removed = False
+	if os.path.isfile(filename):
+		try:
+			os.unlink(filename)
+			file_removed = True
+			ud.debug(ud.LISTENER, ud.INFO, '%s: %s removed.' % (name, relative_filename))
+		except OSError, e:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of %s failed: %s.' % (name, filename, e))
+
+	if file_removed or links_removed:
+		return True
+	else:
+		return False
+
+
+def handler(dn, new, old):
+	"""Handle UDM extension modules"""
+
+	if new:
+		new_version = new.get('univentionOwnedByPackageVersion', [None])[0]
+		if not new_version:
+			return
+
+		new_pkgname = new.get('univentionOwnedByPackage', [None])[0]
+		if not new_pkgname:
+			return
+
+		if old:	## check for trivial changes
+			diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp')]
+			if diff_keys == ['univentionUDMModuleActive']:
+				ud.debug(ud.LISTENER, ud.INFO, '%s: %s: activation status changed.' % (name, new['cn'][0]))
+				return
+			elif diff_keys == ['univentionAppIdentifier']:
+				ud.debug(ud.LISTENER, ud.INFO, '%s: %s: App identifier changed.' % (name, new['cn'][0]))
+				return
+
+			if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
+				old_version = old.get('univentionOwnedByPackageVersion', [None])[0]
+				rc = apt.apt_pkg.version_compare(new_version, old_version)
+				if rc != 1:
+					if not rc in (1, 0, -1):
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Package version comparison to old version failed (%s), skipping update.' % (name, old_version))
+					else:
+						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is not higher than version of old object (%s), skipping update.' % (name, old_version))
+					return
+		
+		ocs = new.get('objectClass', [])
+		if 'univentionUDMModule' in ocs:
+			udm_module_name = 'settings/udm_module'
+			target_subdir = 'univention/admin/handlers'
+		elif 'univentionUDMHook' in ocs:
+			udm_module_name = 'settings/udm_hook'
+			target_subdir = 'univention/admin/hooks.d'
+		elif 'univentionUDMSyntax' in ocs:
+			udm_module_name = 'settings/udm_syntax'
+			target_subdir = 'univention/admin/syntax.d'
+		else:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
+
+
+		## ok, basic checks passed, handle the data
+		try:
+			new_object_data = zlib.decompress(new.get('univentionUDMModuleData')[0], 16+zlib.MAX_WBITS)
+		except TypeError:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
+			return
+
+		new_relative_filename = os.path.join(target_subdir, new.get('univentionUDMModuleFilename')[0])
+		listener.setuid(0)
+		try:
+			if not install_python_file(new_object_data, new_relative_filename):
+				return
+		finally:
+			listener.unsetuid()
+
+	elif old:
+		ocs = old.get('objectClass', [])
+		if 'univentionUDMModule' in ocs:
+			udm_module_name = 'settings/udm_module'
+			target_subdir = 'univention/admin/handlers'
+		elif 'univentionUDMHook' in ocs:
+			udm_module_name = 'settings/udm_hook'
+			target_subdir = 'univention/admin/hooks.d'
+		elif 'univentionUDMSyntax' in ocs:
+			udm_module_name = 'settings/udm_syntax'
+			target_subdir = 'univention/admin/syntax.d'
+		else:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
+
+
+		## ok, basic checks passed, handle the change
+		old_relative_filename = os.path.join(target_subdir, old.get('univentionUDMModuleFilename')[0])
+		listener.setuid(0)
+		try:
+			if not remove_python_file(old_relative_filename):
+				return
+		finally:
+			listener.unsetuid()
+
+
+	### Kill running univention-cli-server and mark new extension object active
+
+	listener.setuid(0)
+	try:
+		ud.debug(ud.LISTENER, ud.INFO, '%s: Terminating running univention-cli-server processes.' % (name,) )
+		p = subprocess.Popen(['pkill', '-f', 'univention-cli-server'], close_fds=True)
+		p.wait()
+		if p.returncode != 0:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Termination of univention-cli-server processes failed: %s.' % (name, p.returncode))
+
+		try:
+			lo, ldap_position = udm_uldap.getAdminConnection()
+			udm_module = udm_modules.get(udm_module_name)
+			udm_modules.init(lo, ldap_position, udm_module)
+
+			try:
+				udm_object = udm_module.object(None, lo, ldap_position, dn)
+				udm_object.open()
+				udm_object['active']=True
+				udm_object.modify()
+			except udm_errors.ldapError, e:
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, dn, e))
+			except udm_errors.noObject, e:
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, dn, e))
+
+		except udm_errors.ldapError, e:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, e))
+
+	finally:
+		listener.unsetuid()
+
