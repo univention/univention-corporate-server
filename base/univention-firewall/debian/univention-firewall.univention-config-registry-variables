@@ -1,13 +1,13 @@
 [security/packetfilter/package/.*]
-Description[de]=Variablen nach dem Schema 'security/packages/*' sind Paketfilter-Regeln, die von UCS-Paketen mitgeliefert werden (siehe 'security/packetfilter/use_packages'). Sie sollten nicht angepasst werden.
-Description[en]=Variables following the scheme 'security/packages/*' are packet filter rules shipped by UCS packages (see 'security/packetfilter/use_packages'). Sie sollten nicht abgepasst werden.
+Description[de]=Variablen nach dem Schema 'security/packetfilter/package/*' sind Paketfilter-Regeln, die von UCS-Paketen mitgeliefert werden (siehe 'security/packetfilter/use_packages'). Sie sollten nicht angepasst werden.
+Description[en]=Variables following the scheme 'security/packetfilter/package/*' are packet filter rules shipped by UCS packages (see 'security/packetfilter/use_packages'). They should not be modified.
 Type=str
 Categories=service-security
 ReadOnly=yes
 
 [security/packetfilter/tcp/.*]
-Description[de]=Variablen nach dem Schema 'security/packetfilter/udp/*' erlauben die Konfiguration von Paketfilter-Regeln für TCP-Ports. Eine ausführliche Beschreibung findet sich in der Univention developer reference (http://docs.univention.de).
-Description[en]=Variables following the scheme 'security/packetfilter/udp/*' allow the configuration of packet filter rules for TCP ports. A verbose description can be found in the Univention developer reference (http://docs.univention.de).
+Description[de]=Variablen nach dem Schema 'security/packetfilter/tcp/*' erlauben die Konfiguration von Paketfilter-Regeln für TCP-Ports. Eine ausführliche Beschreibung findet sich in der Univention developer reference (http://docs.univention.de).
+Description[en]=Variables following the scheme 'security/packetfilter/tcp/*' allow the configuration of packet filter rules for TCP ports. A verbose description can be found in the Univention developer reference (http://docs.univention.de).
 Type=str
 Categories=service-security
 
@@ -24,7 +24,7 @@ Type=bool
 Categories=service-security
 
 [security/packetfilter/use_packages]
-Description[de]=In der Grundeinstellung werden eingehende Pakete für alle Ports blockiert/abgelehnt (siehe 'security/packetfilter/defaultpolicy'). Jedes UCS-Paket bringt Regeln mit, die die von dem Paket benötigten Ports wieder freigeben (siehe 'security/packetfilter/package/*'). Ist diese Option deaktiviert, werden die paketspezifischen Filterregel nicht verwendet. Ist die Variable nicht gesetzt, werden sie verwendet.
+Description[de]=In der Grundeinstellung werden eingehende Pakete für alle Ports blockiert/abgelehnt (siehe 'security/packetfilter/defaultpolicy'). Jedes UCS-Paket bringt dann Regeln mit, die die von dem Paket benötigten Ports wieder freigeben (siehe 'security/packetfilter/package/*'). Ist diese Option deaktiviert, werden die paketspezifischen Filterregel nicht verwendet. Ist die Variable nicht gesetzt, werden sie verwendet.
 Description[en]=In the default setting, all incoming ports are blocked (see 'security/packetfilter/defaultpolicy'). Every UCS package provides rules, which free up the ports required by the package again (see 'security/packetfilter/package/*'). If this option is disabled, the package-related filter rules are not used. If the variable is unset, the rules are used.
 Type=bool
 Categories=service-security
@@ -34,4 +34,3 @@ Description[de]=Diese Variable konfiguriert das Standardverhalten von Univention
 Description[en]=This variable configures the standard behaviour of Univention Firewall for incoming packets. Possible values: 'ACCEPT', 'REJECT' and 'DROP' (rejecting without notifying the sender).
 Type=str
 Categories=service-security
-
