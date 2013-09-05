@@ -317,7 +317,7 @@ ucs_registerLDAPSchema () {
 		output=$(univention-directory-manager settings/ldapschema create "$@" \
 			--set name="$objectname" \
 			--set filename="$filename" \
-			--set schema="$(gzip -c "$schemaFile" | base64 -w0)" \
+			--set data="$(gzip -c "$schemaFile" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
@@ -364,7 +364,7 @@ ucs_registerLDAPSchema () {
 		object_dn=$(echo "$ldif" | sed -n 's/^dn: //p')
 
 		output=$(univention-directory-manager settings/ldapschema modify "$@" \
-			--set schema="$(gzip -c "$schemaFile" | base64 -w0)" \
+			--set data="$(gzip -c "$schemaFile" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
@@ -444,7 +444,7 @@ ucs_unregisterLDAPSchema () {
 	fi
 
 	local objectname
-	objectname=$(basename "$schemaFile" ".schema")
+	objectname=$(basename -- "$schemaFile" ".schema")
 
 	local schema_ldif
 	schema_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
@@ -612,7 +612,7 @@ ucs_registerLDAPACL () {
 			${ucsversionend:+--set ucsversionend="$ucsversionend"} \
 			--set name="$objectname" \
 			--set filename="$filename" \
-			--set acl="$(gzip -c "$ACLFile" | base64 -w0)" \
+			--set data="$(gzip -c "$ACLFile" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
@@ -662,7 +662,7 @@ ucs_registerLDAPACL () {
 		output=$(univention-directory-manager settings/ldapacl modify "$@" \
 			${ucsversionstart:+--set ucsversionstart=$ucsversionstart} \
 			${ucsversionend:+--set ucsversionend=$ucsversionend} \
-			--set acl="$(gzip -c "$ACLFile" | base64 -w0)" \
+			--set data="$(gzip -c "$ACLFile" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \

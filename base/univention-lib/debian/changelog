@@ -1,3 +1,9 @@
+univention-lib (3.0.9-13) unstable; urgency=low
+
+  * Adjust ucs_registerLDAP* to modified UDM module (Bug #32392)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Sep 2013 19:18:46 +0200
+
 univention-lib (3.0.9-12) unstable; urgency=low
 
   * Add some feedback information about the 3 minute timeout (Bug #32392)
