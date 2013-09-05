@@ -40,7 +40,7 @@ if [ "$1" = "remove" ]; then
 	test -e "$handler_file" && rm -f "$handler_file"
 	
 	db=/etc/univention/connector/s4internal.sqlite
-	test -e "$db" && mv "$db" "$db_backup_$(date +%Y%m%d%H%M%S)"
+	test -e "$db" && mv "$db" "${db}_backup_$(date +%Y%m%d%H%M%S)"
 
 	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
 fi

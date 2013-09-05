@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.12-4) unstable; urgency=low
+
+  * Fixed backup of db file in postrm (Bug #32451)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Sep 2013 08:54:09 +0200
+
 univention-s4-connector (8.0.12-3) unstable; urgency=low
 
   * Remove old listener handler and backup the old sqlite db while
