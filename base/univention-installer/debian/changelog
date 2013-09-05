@@ -1,3 +1,10 @@
+univention-installer (9.0.18-1) unstable; urgency=low
+
+  * package_list: don't add samba packages which are already part of
+    the dependency list (Bug #32309)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Sep 2013 07:11:23 +0200
+
 univention-installer (9.0.17-8) unstable; urgency=low
 
   * Enable UCRV update/secure_apt for testing.univention.de (Bug #32279) 
