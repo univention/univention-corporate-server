@@ -1,3 +1,12 @@
+univention-lib (3.0.9-14) unstable; urgency=low
+
+  * Add ucs_registerUDM* and ucs_unregisterUDM*
+    (Bug #32401, Bug #32404, Bug #32407)
+  * Rewrite ucs_registerLDAP* to use a common base function
+    (Bug #26785 and Bug #32392)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Sep 2013 22:04:04 +0200
+
 univention-lib (3.0.9-13) unstable; urgency=low
 
   * Adjust ucs_registerLDAP* to modified UDM module (Bug #32392)

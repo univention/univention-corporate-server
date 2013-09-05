@@ -240,269 +240,56 @@ ucs_isServiceUnused () {
 }
 
 #
-# ucs_registerLDAPSchema writes an LDAP schema extension to UDM.
-# A listener module then writes it to a persistent place /var/lib/univention-ldap/local-schema/.
-#
-# ucs_registerLDAPSchema <schema file> [options]
-# e.g. ucs_registerLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
-#
-ucs_registerLDAPSchema () {
-	local SH_FUNCNAME
-	SH_FUNCNAME=ucs_registerLDAPSchema
-
-	display_help() {
-		printf "usage: $SH_FUNCNAME [<options>] <schema file>\n"
-		printf "internal options:\n"
-		printf "\t--binddn <binddn>\n"
-		printf "\t--bindpwd <bindpwd>\n"
-		printf "\t--bindpwdfile <bindpwdfile>\n"
-	}
-
-	## Parse arguments
-	local schemaFile
-	schemaFile="$1"
-
-	if ! shift 1
-	then
-		echo "ERROR: $SH_FUNCNAME: wrong number of arguments" >&2
-		display_help
-		return 2
-	fi
-
-	## Validate arguments
-	if [ ! -e "$schemaFile" ]; then
-		echo "ERROR: $SH_FUNCNAME: given schema file does not exist" >&2
-		return 2
-	fi
-
-	local package_name package_version calling_script_name calling_script_basename
-	calling_script_name=$(basename -- "$0")
-	calling_script_basename=$(basename -- "$calling_script_name" .postinst)
-	if [ "$calling_script_basename" != "$calling_script_name" ]; then
-		package_name="$calling_script_basename"
-	elif [ -n "$JS_SCRIPT_FULLNAME" ]; then
-		package_name=$(dpkg -S "$JS_SCRIPT_FULLNAME" | cut -d: -f1)
-	fi
-
-	if [ -n "$package_name" ]; then
-		package_version=$(dpkg-query -f '${Version}' -W "$package_name")
-	else
-		eval "$(ucr shell '^tests/ucs_registerLDAP/.*')"
-		if [ -n "$tests_ucs_registerLDAP_packagename" ] && [ -n "$tests_ucs_registerLDAP_packageversion" ]; then
-			package_name="$tests_ucs_registerLDAP_packagename"
-			package_version="$tests_ucs_registerLDAP_packageversion"
-		else
-			echo "ERROR: $SH_FUNCNAME: Unable to determine Debian package name"
-			echo "ERROR: This function only works in joinscript or postinst context"
-			return 1
-		fi
-	fi
-
-	local filename objectname target_container_name ldap_base target_container_dn
-	filename=$(basename -- "$schemaFile")
-	objectname=$(basename -- "$filename" ".schema")
-	ldap_base="$(ucr get ldap/base)"
-	target_container_name="ldapschema"
-	target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
-
-	univention-directory-manager container/cn create "$@" --ignore_exists \
-		--set name="$target_container_name" \
-		--position "cn=univention,$ldap_base"
-
-	local ldif
-	ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
-			univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion | ldapsearch-wrapper)
-	if [ -z "$ldif" ]; then
-
-		output=$(univention-directory-manager settings/ldapschema create "$@" \
-			--set name="$objectname" \
-			--set filename="$filename" \
-			--set data="$(gzip -c "$schemaFile" | base64 -w0)" \
-			--set active=FALSE \
-			--set package="$package_name" \
-			--set packageversion="$package_version" \
-			--position "$target_container_dn" 2>&1)
-		echo "$output"
-
-		if [ $? -eq 0 ]; then
-			object_dn=$(echo "$output" | sed -n 's/^Object created: //p')
-
-			if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
-				univention-directory-manager settings/ldapschema modify "$@" \
-					--append appidentifier="$UNIVENTION_APP_IDENTIFIER" \
-					--dn "$object_dn"
-			fi
-
-		else	## check again, might be a race
-
-			ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
-					univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion | ldapsearch-wrapper)
-
-			if [ -z "$ldif" ]; then
-				echo "ERROR: $SH_FUNCNAME: Failed to create settings/ldapschema object." >&2
-				return 2
-			fi
-		fi
-	fi
-
-	if [ -n "$ldif" ]; then	## object exists already, modify it
-
-		local registered_package registered_package_version
-		registered_package=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackage: //p')
-		registered_package_version=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackageVersion: //p')
-
-		if [ "$registered_package" = "$package_name" ]; then
-			if ! dpkg --compare-versions "$package_version" gt "$registered_package_version"; then
-				echo "ERROR: $SH_FUNCNAME: registered package version $registered_package_version is newer, skipping registration." >&2
-				return 2
-			fi
-		else
-			echo "WARNING: $SH_FUNCNAME: schema $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
-		fi
-
-		local object_dn
-		object_dn=$(echo "$ldif" | sed -n 's/^dn: //p')
-
-		output=$(univention-directory-manager settings/ldapschema modify "$@" \
-			--set data="$(gzip -c "$schemaFile" | base64 -w0)" \
-			--set active=FALSE \
-			--set package="$package_name" \
-			--set packageversion="$package_version" \
-			--dn "$object_dn" 2>&1)
-		echo "$output"
-
-		if [ $? -ne 0 ]; then
-			echo "ERROR: $SH_FUNCNAME: Modification of settings/ldapschema object failed." >&2
-			return 2
-		else
-			if echo "$output" | grep -q "^No modification: $object_dn$"; then
-				return 0
-			fi
-		fi
-			
-
-		if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
-			univention-directory-manager settings/ldapschema modify "$@" \
-				--append appidentifier="$UNIVENTION_APP_IDENTIFIER" \
-				--dn "$object_dn"
-		fi
-
-	fi
-
-	timeout=180	#seconds
-	echo -n "Waiting up to $timeout seconds for activation of the LDAP schema extension: "
-	local t t0
-	t0=$(date +%s)
-	while ! univention-directory-manager settings/ldapschema list "$@" \
-			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
-	do
-			t=$(date +%s)
-			if [ $(($t - $t0)) -gt "$timeout" ]; then
-				echo
-				echo "ERROR: $SH_FUNCNAME: Master did not mark the LDAP schema extension active within 3 minutes."
-				return 1
-			fi
-			echo -n "."
-			sleep 3
-	done
-	echo "OK"
-}
-
-# ucs_unregisterLDAPSchema removes an LDAP schema extension from UDM.
-# A listener module then tries to remove it.
-#
-# ucs_unregisterLDAPSchema <schema file> [options]
-# e.g. ucs_unregisterLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
-#
-ucs_unregisterLDAPSchema () {
-	local SH_FUNCNAME
-	SH_FUNCNAME=ucs_unregisterLDAPSchema
-
-	display_help() {
-		printf "usage: $SH_FUNCNAME [<options>] <schema file>\n"
-		printf "internal options:\n"
-		printf "\t--binddn <binddn>\n"
-		printf "\t--bindpwd <bindpwd>\n"
-		printf "\t--bindpwdfile <bindpwdfile>\n"
-	}
-
-	## Parse arguments
-	local schemaFile
-	schemaFile="$1"
-
-	if ! shift 1
-	then
-		echo "ERROR: $SH_FUNCNAME: wrong number of arguments" >&2
-		display_help
-		return 2
-	fi
-
-	## Validate arguments
-	if [ ! -e "$schemaFile" ]; then
-		echo "ERROR: $SH_FUNCNAME: given schema file does not exist" >&2
-		return 2
-	fi
-
-	local objectname
-	objectname=$(basename -- "$schemaFile" ".schema")
-
-	local schema_ldif
-	schema_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionSchema)(cn=$objectname))" \
-			univentionAppIdentifier | ldapsearch-wrapper)
-
-	if [ -z "$schema_ldif" ]; then
-		echo "ERROR: $SH_FUNCNAME: Schema object not found in LDAP."
-		return 1
-	fi
-
-	app_filter=""
-	local appidentifier
-	for appidentifier in $(echo "$schema_ldif" | sed -n 's/^univentionAppIdentifier: //p'); do
-		app_filter="$app_filter(cn=$appidentifier)"
-	done
-
-	if [ -n "$app_filter"]; then
-		local app_ldif
-		app_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionApp)$app_filter)" cn | ldapsearch-wrapper)
-		if [ -n "$app_ldif" ]; then
-			echo -n "INFO: $SH_FUNCNAME: The schema $objectname is still registered by the following apps:"
-			for appidentifier in $(echo "$app_ldif" | sed -n 's/^cn: //p'); do
-				echo -n " $appidentifier"
-			done
-			echo .
-			return 2
-		fi
-	fi
-
-	object_dn=$(echo "$schema_ldif" | sed -n 's/^dn: //p')
-
-	univention-directory-manager settings/ldapschema delete "$@" \
-		--dn="$object_dn"
-}
-
-#
-# ucs_registerLDAPACL writes an LDAP ACL extension to UDM.
+# ucs_registerExtensionObject writes an extension object to UDM.
 # A listener module then writes it to a persistent place.
 #
-# ucs_registerLDAPACL <ACL file> [options]
-# e.g. ucs_registerLDAPACL /var/tmp/univention-testapp.acl
+# ucs_registerExtensionObject <filename> [options]
 #
-ucs_registerLDAPACL () {
-	local SH_FUNCNAME
-	SH_FUNCNAME=ucs_registerLDAPACL
+ucs_registerExtensionObject () {
+	if [ -z "$SH_FUNCNAME" ]; then
+		local SH_FUNCNAME
+		SH_FUNCNAME=ucs_registerExtensionObject
+	fi
+	if [ -z "$ucs_registerExtensionObject_objecttype" ]; then
+		echo "ERROR: shell variable ucs_registerExtensionObject_objecttype not set in $SH_FUNCNAME"
+		return 2
+	fi
+	if [ -z "$ucs_registerExtensionObject_container_name" ]; then
+		echo "ERROR: shell variable ucs_registerExtensionObject_container_name not set in $SH_FUNCNAME"
+		return 2
+	fi
+
+	## Parse arguments
+	local filename
+	filename="$1"
+	if ! shift 1
+	then
+		echo "ERROR: $SH_FUNCNAME: wrong number of arguments" >&2
+		display_help
+		return 2
+	fi
+
+	## Validate arguments
+	if [ ! -e "$filename" ]; then
+		echo "ERROR: $SH_FUNCNAME: given file does not exist" >&2
+		return 2
+	fi
+
 	## Parse options
 	local ucsversionstart ucsversionend
 
-	display_help() {
-		printf "usage: $SH_FUNCNAME [<options>] <ACL file>\n"
-		printf "options:\n"
-		printf "\t--ucsversionstart <ucsversionstart>\n"
-		printf "\t--ucsversionend <ucsversionend>\n"
-		printf "internal options:\n"
-		printf "\t--binddn <binddn>\n"
-		printf "\t--bindpwd <bindpwd>\n"
-		printf "\t--bindpwdfile <bindpwdfile>\n"
-	}
+	if ! type -t display_help | grep -q "function$"; then
+		display_help() {
+			printf "usage: $SH_FUNCNAME <filename> [<options>]\n"
+			printf "options:\n"
+			printf "\t--ucsversionstart <ucsversionstart>\n"
+			printf "\t--ucsversionend <ucsversionend>\n"
+			printf "internal options:\n"
+			printf "\t--binddn <binddn>\n"
+			printf "\t--bindpwd <bindpwd>\n"
+			printf "\t--bindpwdfile <bindpwdfile>\n"
+		}
+	fi
 
 	local passthroughoptions
 	while [ $# -gt 0 ]
@@ -545,22 +332,6 @@ ucs_registerLDAPACL () {
 		return 1
 	fi
 
-	## Parse arguments
-	local ACLFile
-	ACLFile="$1"
-	if ! shift 1
-	then
-		echo "ERROR: $SH_FUNCNAME: wrong number of arguments" >&2
-		display_help
-		return 2
-	fi
-
-	## Validate arguments
-	if [ ! -e "$ACLFile" ]; then
-		echo "ERROR: $SH_FUNCNAME: given ACL file does not exist" >&2
-		return 2
-	fi
-
 	## Restore passthrough options
 	local key
 	for key in $passthroughoptions; do
@@ -591,28 +362,36 @@ ucs_registerLDAPACL () {
 		fi
 	fi
 
-	local filename objectname target_container_name ldap_base target_container_dn
-	filename=$(basename -- "$ACLFile")
-	objectname=$(basename -- "$filename" ".acl")
+	local target_filename objectname ldap_base target_container_dn
+	if [ -n "$ucs_registerExtensionObject_target_filename" ]; then
+		target_filename="$ucs_registerExtensionObject_target_filename"
+	else
+		target_filename=$(basename -- "$filename")
+	fi
+	objectname="${target_filename%$ucs_registerExtensionObject_suffix}"
 	ldap_base="$(ucr get ldap/base)"
-	target_container_name="ldapacl"
-	target_container_dn="cn=$target_container_name,cn=univention,$ldap_base"
+	target_container_dn="cn=$ucs_registerExtensionObject_container_name,cn=univention,$ldap_base"
 
 	univention-directory-manager container/cn create "$@" --ignore_exists \
-		--set name="$target_container_name" \
+		--set name="$ucs_registerExtensionObject_container_name" \
 		--position "cn=univention,$ldap_base"
 
-	local ldif
-	ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
-			univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion | ldapsearch-wrapper)
-	if [ -z "$ldif" ]; then
+	local udm_output
+	udm_output=$(univention-directory-manager "$ucs_registerExtensionObject_objecttype" list "$@" \
+		--filter "name=$objectname")
 
-		output=$(univention-directory-manager settings/ldapacl create "$@" \
+	local object_dn
+	object_dn=$(echo "$udm_output" | sed -n 's/^DN: //p')
+
+
+	if [ -z "$object_dn" ]; then
+
+		output=$(univention-directory-manager "$ucs_registerExtensionObject_objecttype" create "$@" \
 			${ucsversionstart:+--set ucsversionstart="$ucsversionstart"} \
 			${ucsversionend:+--set ucsversionend="$ucsversionend"} \
 			--set name="$objectname" \
-			--set filename="$filename" \
-			--set data="$(gzip -c "$ACLFile" | base64 -w0)" \
+			--set filename="$target_filename" \
+			--set data="$(gzip -c "$filename" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
@@ -624,28 +403,29 @@ ucs_registerLDAPACL () {
 			object_dn=$(echo "$output" | sed -n 's/^Object created: //p')
 
 			if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
-				univention-directory-manager settings/ldapacl modify "$@" \
+				univention-directory-manager "$ucs_registerExtensionObject_objecttype" modify "$@" \
 					--append appidentifier="$UNIVENTION_APP_IDENTIFIER" \
 					--dn "$object_dn"
 			fi
 
 		else	## check again, might be a race
 
-			ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
-					univentionLDAPExtensionPackage univentionLDAPExtensionPackageVersion | ldapsearch-wrapper)
+			udm_output=$(univention-directory-manager "$ucs_registerExtensionObject_objecttype" list "$@" \
+				--filter "name=$objectname")
+			object_dn=$(echo "$udm_output" | sed -n 's/^DN: //p')
 
-			if [ -z "$ldif" ]; then
-				echo "ERROR: $SH_FUNCNAME: Failed to create settings/ldapacl object." >&2
+			if [ -z "$object_dn" ]; then
+				echo "ERROR: $SH_FUNCNAME: Failed to create "$ucs_registerExtensionObject_objecttype" object." >&2
 				return 2
 			fi
 		fi
 	fi
 
-	if [ -n "$ldif" ]; then	## object exists already, modify it
+	if [ -z "$object_dn" ]; then	## object exists already, modify it
 
 		local registered_package registered_package_version
-		registered_package=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackage: //p')
-		registered_package_version=$(echo "$ldif" | sed -n 's/^univentionLDAPExtensionPackageVersion: //p')
+		registered_package=$(echo "$udm_output" | sed -n 's/ *package: //p')
+		registered_package_version=$(echo "$udm_output" | sed -n 's/ *packageversion: //p')
 
 		if [ "$registered_package" = "$package_name" ]; then
 			if ! dpkg --compare-versions "$package_version" gt "$registered_package_version"; then
@@ -653,16 +433,14 @@ ucs_registerLDAPACL () {
 				return 2
 			fi
 		else
-			echo "WARNING: $SH_FUNCNAME: ACL $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
+			echo "WARNING: $SH_FUNCNAME: object $objectname was registered by package $registered_package version $registered_package_version, changing ownership." >&2
 		fi
 
-		local object_dn
-		object_dn=$(echo "$ldif" | sed -n 's/^dn: //p')
-
-		output=$(univention-directory-manager settings/ldapacl modify "$@" \
+		output=$(univention-directory-manager "$ucs_registerExtensionObject_objecttype" modify "$@" \
 			${ucsversionstart:+--set ucsversionstart=$ucsversionstart} \
 			${ucsversionend:+--set ucsversionend=$ucsversionend} \
-			--set data="$(gzip -c "$ACLFile" | base64 -w0)" \
+			--set filename="$target_filename" \
+			--set data="$(gzip -c "$filename" | base64 -w0)" \
 			--set active=FALSE \
 			--set package="$package_name" \
 			--set packageversion="$package_version" \
@@ -670,7 +448,7 @@ ucs_registerLDAPACL () {
 		echo "$output"
 
 		if [ $? -ne 0 ]; then
-			echo "ERROR: $SH_FUNCNAME: Modification of settings/ldapacl object failed." >&2
+			echo "ERROR: $SH_FUNCNAME: Modification of "$ucs_registerExtensionObject_objecttype" object failed." >&2
 			return 2
 		else
 			if echo "$output" | grep -q "^No modification: $object_dn$"; then
@@ -680,7 +458,7 @@ ucs_registerLDAPACL () {
 			
 
 		if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
-			univention-directory-manager settings/ldapacl modify "$@" \
+			univention-directory-manager "$ucs_registerExtensionObject_objecttype" modify "$@" \
 				--append appidentifier="$UNIVENTION_APP_IDENTIFIER" \
 				--dn "$object_dn"
 		fi
@@ -688,16 +466,16 @@ ucs_registerLDAPACL () {
 	fi
 
 	timeout=180	#seconds
-	echo -n "Waiting up to $timeout seconds for activation of the LDAP ACL extension: "
+	echo -n "Waiting up to $timeout seconds for activation of the extension object: "
 	local t t0
 	t0=$(date +%s)
-	while ! univention-directory-manager settings/ldapacl list "$@" \
+	while ! univention-directory-manager "$ucs_registerExtensionObject_objecttype" list "$@" \
 			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
 	do
 			t=$(date +%s)
 			if [ $(($t - $t0)) -gt "$timeout" ]; then
 				echo
-				echo "ERROR: $SH_FUNCNAME: Master did not mark the LDAP ACL extension active within 3 minutes."
+				echo "ERROR: $SH_FUNCNAME: Master did not mark the extension object active within 3 minutes."
 				return 1
 			fi
 			echo -n "."
@@ -706,18 +484,23 @@ ucs_registerLDAPACL () {
 	echo "OK"
 }
 
-# ucs_unregisterLDAPACL removes an LDAP ACL extension from UDM.
+# ucs_unregisterExtensionObject removes an extension object from UDM.
 # A listener module then tries to remove it.
 #
-# ucs_unregisterLDAPACL <ACL file> [options]
-# e.g. ucs_unregisterLDAPACL /var/tmp/univention-example.acl
+# ucs_unregisterExtensionObject <objectname> [options]
 #
-ucs_unregisterLDAPACL () {
-	local SH_FUNCNAME
-	SH_FUNCNAME=ucs_unregisterLDAPACL
+ucs_unregisterExtensionObject () {
+	if [ -z "$SH_FUNCNAME" ]; then
+		local SH_FUNCNAME
+		SH_FUNCNAME=ucs_unregisterExtensionObject
+	fi
+	if [ -z "$ucs_unregisterExtensionObject_objecttype" ]; then
+		echo "ERROR: shell variable ucs_unregisterExtensionObject_objecttype not set in $SH_FUNCNAME"
+		return 2
+	fi
 
 	display_help() {
-		printf "usage: $SH_FUNCNAME [<options>] <ACL file>\n"
+		printf "usage: $SH_FUNCNAME <objectname> [<options>]\n"
 		printf "internal options:\n"
 		printf "\t--binddn <binddn>\n"
 		printf "\t--bindpwd <bindpwd>\n"
@@ -725,8 +508,8 @@ ucs_unregisterLDAPACL () {
 	}
 
 	## Parse arguments
-	local ACLFile
-	ACLFile="$1"
+	local objectname
+	objectname="$1"
 	if ! shift 1
 	then
 		echo "ERROR: $SH_FUNCNAME: wrong number of arguments" >&2
@@ -734,35 +517,30 @@ ucs_unregisterLDAPACL () {
 		return 2
 	fi
 
-	## Validate arguments
-	if [ ! -e "$ACLFile" ]; then
-		echo "ERROR: $SH_FUNCNAME: given ACL file does not exist" >&2
-		return 2
-	fi
+	local udm_output
+	udm_output=$(univention-directory-manager "$ucs_unregisterExtensionObject_objecttype" list "$@" \
+			--filter "name=$objectname")
+	
+	local object_dn
+	object_dn=$(echo "$udm_output" | sed -n 's/^DN: //p')
 
-	local objectname
-	objectname=$(basename -- "$ACLFile" ".acl")
 
-	local ACL_ldif
-	ACL_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionLDAPExtensionACL)(cn=$objectname))" \
-			univentionAppIdentifier | ldapsearch-wrapper)
-
-	if [ -z "$ACL_ldif" ]; then
-		echo "ERROR: $SH_FUNCNAME: ACL object not found in LDAP."
+	if [ -z "$object_dn" ]; then
+		echo "ERROR: $SH_FUNCNAME: object not found in UDM"
 		return 1
 	fi
 
 	app_filter=""
 	local appidentifier
-	for appidentifier in $(echo "$ACL_ldif" | sed -n 's/^univentionAppIdentifier: //p'); do
+	for appidentifier in $(echo "$udm_output" | sed -n 's/ *appidentifier: //p'); do
 		app_filter="$app_filter(cn=$appidentifier)"
 	done
 
-	if [ -n "$app_filter"]; then
+	if [ -n "$app_filter" ]; then
 		local app_ldif
 		app_ldif=$(univention-ldapsearch -xLLL "(&(objectClass=univentionApp)$app_filter)" cn | ldapsearch-wrapper)
 		if [ -n "$app_ldif" ]; then
-			echo -n "INFO: $SH_FUNCNAME: The ACL $objectname is still registered by the following apps:"
+			echo -n "INFO: $SH_FUNCNAME: The object $objectname is still registered by the following apps:"
 			for appidentifier in $(echo "$app_ldif" | sed -n 's/^cn: //p'); do
 				echo -n " $appidentifier"
 			done
@@ -771,8 +549,251 @@ ucs_unregisterLDAPACL () {
 		fi
 	fi
 
-	object_dn=$(echo "$ACL_ldif" | sed -n 's/^dn: //p')
-
-	univention-directory-manager settings/ldapacl delete "$@" \
+	univention-directory-manager "$ucs_unregisterExtensionObject_objecttype" delete "$@" \
 		--dn="$object_dn"
+}
+
+# ucs_registerLDAPSchema writes an LDAP schema extension to UDM.
+# A listener module then writes it to a persistent place /var/lib/univention-ldap/local-schema/.
+#
+# e.g. ucs_registerLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
+#
+ucs_registerLDAPSchema () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_registerLDAPSchema
+
+	display_help() {
+		printf "usage: $SH_FUNCNAME <schema file> [<options>]\n"
+		printf "internal options:\n"
+		printf "\t--binddn <binddn>\n"
+		printf "\t--bindpwd <bindpwd>\n"
+		printf "\t--bindpwdfile <bindpwdfile>\n"
+	}
+
+	local ucs_registerExtensionObject_suffix
+	local ucs_registerExtensionObject_objecttype
+	local ucs_registerExtensionObject_container_name
+	ucs_registerExtensionObject_suffix=".schema"
+	ucs_registerExtensionObject_objecttype="settings/ldapschema"
+	ucs_registerExtensionObject_container_name="ldapschema"
+
+	ucs_registerExtensionObject "$@"
+}
+
+# ucs_registerLDAPACL writes an LDAP ACL extension to UDM.
+# A listener module then writes it to a persistent place.
+#
+# e.g. ucs_registerLDAPACL /var/tmp/univention-testapp.acl
+#
+ucs_registerLDAPACL () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_registerLDAPACL
+
+	display_help() {
+		printf "usage: $SH_FUNCNAME <ACL file> [<options>]\n"
+		printf "options:\n"
+		printf "\t--ucsversionstart <ucsversionstart>\n"
+		printf "\t--ucsversionend <ucsversionend>\n"
+		printf "internal options:\n"
+		printf "\t--binddn <binddn>\n"
+		printf "\t--bindpwd <bindpwd>\n"
+		printf "\t--bindpwdfile <bindpwdfile>\n"
+	}
+
+	local ucs_registerExtensionObject_suffix
+	local ucs_registerExtensionObject_objecttype
+	local ucs_registerExtensionObject_container_name
+	ucs_registerExtensionObject_suffix=".acl"
+	ucs_registerExtensionObject_objecttype="settings/ldapacl"
+	ucs_registerExtensionObject_container_name="ldapacl"
+
+	ucs_registerExtensionObject "$@"
+}
+
+# ucs_registerUDMModule writes an UDM extension module to UDM.
+# A listener module then writes it to a persistent place.
+#
+# e.g. ucs_registerUDMModule /var/tmp/univention-testmodule.py
+#
+ucs_registerUDMModule () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_registerUDMModule
+
+	display_help() {
+		printf "usage: $SH_FUNCNAME <UDM module file> [<options>]\n"
+		printf "options:\n"
+		printf "\t--ucsversionstart <ucsversionstart>\n"
+		printf "\t--ucsversionend <ucsversionend>\n"
+		printf "internal options:\n"
+		printf "\t--binddn <binddn>\n"
+		printf "\t--bindpwd <bindpwd>\n"
+		printf "\t--bindpwdfile <bindpwdfile>\n"
+	}
+
+	local ucs_registerExtensionObject_suffix
+	local ucs_registerExtensionObject_objecttype
+	local ucs_registerExtensionObject_container_name
+	ucs_registerExtensionObject_suffix=".py"
+	ucs_registerExtensionObject_objecttype="settings/udm_module"
+	ucs_registerExtensionObject_container_name="udm_module"
+
+	## Pre-process arguments
+	local filename
+	filename="$1"
+	if [ ! -e "$filename" ]; then
+		echo "ERROR: $SH_FUNCNAME: given file does not exist" >&2
+		return 2
+	fi
+
+	## Determine UDM module name
+	local module_name
+	module_name=$(python -c "import imp; print imp.load_source('dummy', '$filename').module")
+	if [ -z "$module_name" ]; then
+		echo "ERROR: python variable 'module' undefined in given file"
+	fi
+
+	local ucs_registerExtensionObject_target_filename
+	ucs_registerExtensionObject_target_filename="$module_name.py"
+
+	ucs_registerExtensionObject "$@"
+}
+
+# ucs_registerUDMHook writes an UDM extension Hook to UDM.
+# A listener module then writes it to a persistent place.
+#
+# e.g. ucs_registerUDMHook /var/tmp/univention-testhook.py
+#
+ucs_registerUDMHook () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_registerUDMHook
+
+	display_help() {
+		printf "usage: $SH_FUNCNAME <UDM Hook file> [<options>]\n"
+		printf "options:\n"
+		printf "\t--ucsversionstart <ucsversionstart>\n"
+		printf "\t--ucsversionend <ucsversionend>\n"
+		printf "internal options:\n"
+		printf "\t--binddn <binddn>\n"
+		printf "\t--bindpwd <bindpwd>\n"
+		printf "\t--bindpwdfile <bindpwdfile>\n"
+	}
+
+	local ucs_registerExtensionObject_suffix
+	local ucs_registerExtensionObject_objecttype
+	local ucs_registerExtensionObject_container_name
+	ucs_registerExtensionObject_suffix=".py"
+	ucs_registerExtensionObject_objecttype="settings/udm_hook"
+	ucs_registerExtensionObject_container_name="udm_hook"
+
+	ucs_registerExtensionObject "$@"
+}
+
+# ucs_registerUDMSyntax writes an UDM extension Syntax to UDM.
+# A listener module then writes it to a persistent place.
+#
+# e.g. ucs_registerUDMSyntax /var/tmp/univention-testsyntax.py
+#
+ucs_registerUDMSyntax () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_registerUDMSyntax
+
+	display_help() {
+		printf "usage: $SH_FUNCNAME <UDM Syntax file> [<options>]\n"
+		printf "options:\n"
+		printf "\t--ucsversionstart <ucsversionstart>\n"
+		printf "\t--ucsversionend <ucsversionend>\n"
+		printf "internal options:\n"
+		printf "\t--binddn <binddn>\n"
+		printf "\t--bindpwd <bindpwd>\n"
+		printf "\t--bindpwdfile <bindpwdfile>\n"
+	}
+
+	local ucs_registerExtensionObject_suffix
+	local ucs_registerExtensionObject_objecttype
+	local ucs_registerExtensionObject_container_name
+	ucs_registerExtensionObject_suffix=".py"
+	ucs_registerExtensionObject_objecttype="settings/udm_syntax"
+	ucs_registerExtensionObject_container_name="udm_syntax"
+
+	ucs_registerExtensionObject "$@"
+}
+
+# ucs_unregisterLDAPSchema removes an LDAP schema extension from UDM.
+# A listener module then tries to remove it.
+#
+# ucs_unregisterLDAPSchema <schema file> [options]
+# e.g. ucs_unregisterLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
+#
+ucs_unregisterLDAPSchema () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_unregisterLDAPSchema
+
+	local ucs_unregisterExtensionObject_objecttype
+	ucs_unregisterExtensionObject_objecttype="settings/ldapschema"
+
+	ucs_unregisterExtensionObject "$@"
+}
+
+# ucs_unregisterLDAPACL removes an LDAP ACL extension from UDM.
+# A listener module then tries to remove it.
+#
+# ucs_unregisterLDAPACL <filename> [options]
+# e.g. ucs_unregisterLDAPACL /var/tmp/univention-example.acl
+#
+ucs_unregisterLDAPACL () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_unregisterLDAPACL
+
+	local ucs_unregisterExtensionObject_objecttype
+	ucs_unregisterExtensionObject_objecttype="settings/ldapacl"
+
+	ucs_unregisterExtensionObject "$@"
+}
+
+# ucs_unregisterUDMModule removes an UDM extension module from UDM.
+# A listener module then tries to remove it.
+#
+# ucs_unregisterUDMModule <filename> [options]
+# e.g. ucs_unregisterUDMModule /var/tmp/univention-testmodule.py
+#
+ucs_unregisterUDMModule () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_unregisterUDMModule
+
+	local ucs_unregisterExtensionObject_objecttype
+	ucs_unregisterExtensionObject_objecttype="settings/udm_module"
+
+	ucs_unregisterExtensionObject "$@"
+}
+
+# ucs_unregisterUDMHook removes an UDM extension Hook from UDM.
+# A listener module then writes it to a persistent place.
+#
+# ucs_unregisterUDMHook <filename> [options]
+# e.g. ucs_unregisterUDMHook /var/tmp/univention-testhook.py
+#
+ucs_unregisterUDMHook () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_unregisterUDMHook
+
+	local ucs_unregisterExtensionObject_objecttype
+	ucs_unregisterExtensionObject_objecttype="settings/udm_hook"
+
+	ucs_unregisterExtensionObject "$@"
+}
+
+# ucs_unregisterUDMSyntax removes an UDM extension Syntax from UDM.
+# A listener module then writes it to a persistent place.
+#
+# ucs_unregisterUDMUDMSyntax <filename> [options]
+# e.g. ucs_unregisterUDMSyntax /var/tmp/univention-testsyntax.py
+#
+ucs_unregisterUDMSyntax () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_unregisterUDMSyntax
+
+	local ucs_unregisterExtensionObject_objecttype
+	ucs_unregisterExtensionObject_objecttype="settings/udm_syntax"
+
+	ucs_unregisterExtensionObject "$@"
 }
