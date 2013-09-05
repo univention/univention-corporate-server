@@ -52,6 +52,10 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
 
 	eval "$(univention-config-registry shell)"
 
+	if [ -x /etc/init.d/samba-ad-dc ]; then
+		/etc/init.d/samba-ad-dc stop
+	fi
+
 	if [ -n "$slapd_port" ]; then
 		is_port_set "$slapd_port" 389 || univention-config-registry set slapd/port="$slapd_port,389"
 	fi
@@ -68,10 +72,12 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
 		ucr set dns/backend=ldap
 		test -x /etc/init.d/bind9 && invoke-rc.d bind9 restart
 	fi
+
+	ucr unset kerberos/autostart
+	test -x /etc/init.d/heimdal-kdc && invoke-rc.d heimdal-kdc start
 		
-	if [ -x /etc/init.d/samba-ad-dc ]; then
-		/etc/init.d/samba-ad-dc stop
-	fi
+	cp /usr/lib/univention-uninstall/04univention-samba4.uinst /usr/lib/univention-install/
+
 fi
 
 exit 0

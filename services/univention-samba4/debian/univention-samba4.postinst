@@ -274,6 +274,11 @@ secret: $machine_secret
 	fi
 fi
 
+if [ "$1" = "configure" ]; then
+	uinst=/usr/lib/univention-install/04univention-samba4.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
+
 call_joinscript 96univention-samba4.inst
 ## cannot call joinscript 98univention-samba4-dns.inst here, maybe the s4-connector did not run yet
 
