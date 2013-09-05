@@ -44,49 +44,16 @@ ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 
 ucr unset samba/autostart \
 			samba/user \
-			samba/user/pwdfile \
-			samba/script/adduser \
-			samba/script/deleteuser \
-			samba/script/addgroup \
-			samba/script/deletegroup \
-			samba/script/addusertogroup \
-			samba/script/deleteuserfromgroup \
-			samba/script/addmachine \
-			samba/script/setprimarygroup \
-			samba/script/postusermodify \
-			samba/winbind/nested/groups \
-			samba/encrypt_passwords \
-			samba/use_spnego \
-			samba/client_use_spnego \
-			samba/oplocks \
-			samba/kernel_oplocks \
-			samba/large_readwrite \
-			samba/deadtime \
-			samba/read_raw \
-			samba/write_raw \
-			samba/max_xmit \
-			samba/max_open_files \
-			samba/getwd_cache \
-			samba/store_dos_attributes \
-			samba/preserve_case \
-			samba/short_preserve_case \
-			samba/time_server \
-			samba/guest_account \
-			samba/map_to_guest \
-			samba/netlogon/sync \
-			samba/domain/logons \
-			samba/password/checkscript \
-			samba/debug/level \
-			samba/os/level \
-			samba/profileserver \
-			samba/profilepath \
-			samba/homedirserver \
-			samba/homedirpath \
-			samba/homedirletter \
-			samba/share/home \
-			samba/share/groups \
-			samba/adminusers
+			samba/user/pwdfile
 
+var_lib_samba_is_s4 ()
+{
+	test -e /var/lib/samba/private/sam.ldb
+}
+
+if ! var_lib_samba_is_s4; then
+	mv /var/lib/samba "/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
+fi
 
 joinscript_remove_script_from_status_file univention-samba
 

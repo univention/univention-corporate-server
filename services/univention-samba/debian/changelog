@@ -1,3 +1,10 @@
+univention-samba (8.0.6-3) unstable; urgency=low
+
+  * Move /var/lib/samba to /var/lib/samba_backup (Bug #32445)
+  * Unset the UCR variables in prerm
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Sep 2013 15:01:37 +0200
+
 univention-samba (8.0.6-2) unstable; urgency=low
 
   * Fixed typo in unjoin script (Bug #32445)
