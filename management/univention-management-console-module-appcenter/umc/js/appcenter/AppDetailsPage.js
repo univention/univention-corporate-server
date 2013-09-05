@@ -449,22 +449,17 @@ define([
 					],
 					autoValidate: true
 				}).then(lang.hitch(this, function(values) {
-					this.standby(true);
-					tools.umcpCommand('appcenter/request_new_license', values).then(
-						lang.hitch(this, function(data) {
-							// cannot require in the beginning as
-							// udm might be not installed
-							this.standby(false);
-							require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
-								if (data.result) {
-									var dlg = new LicenseDialog();
-									dlg.show();
-								}
-							});
-						}),
-						lang.hitch(this, function() {
-							this.standby(false);
-						}));
+					var requestingNewLicense = tools.umcpCommand('appcenter/request_new_license', values).then(lang.hitch(this, function(data) {
+						// cannot require in the beginning as
+						// udm might be not installed
+						require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
+							if (data.result) {
+								var dlg = new LicenseDialog();
+								dlg.show();
+							}
+						});
+					}));
+					this.standbyDuring(requestingNewLicense);
 				}));
 			} else {
 				// UDM is not present. Either because this is

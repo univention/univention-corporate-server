@@ -1051,7 +1051,7 @@ class Application(object):
 				  'action': action,
 				  'status': status,
 				  'role': ucr.get('server/role'),
-				  }
+			}
 			request_data = urllib.urlencode(values)
 			request = urllib2.Request(url, request_data)
 			urlopen(request)
