@@ -947,9 +947,13 @@
 		<listitem><simpara>
 			The redirection to the new UMC URL when changing IP configuration in system setup has been made more robust (<ulink url="&ucsbug;29973">Bug 29973</ulink>).
 		</simpara></listitem>
-		
+
 		<listitem><simpara>
 			When changing the SSL certificate a dialog is displayed to restart the server components (<ulink url="&ucsbug;29480">Bug 29480</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			A profile parsing function was fixed to not strip all double quotes from supplied values, which now allows to use quotes in passwords (<ulink url="&ucsbug;32463">Bug 32463</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
