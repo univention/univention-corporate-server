@@ -885,6 +885,21 @@
 			A new UDM module <emphasis>settings/ldapacl</emphasis> has been implemented for registration and replication of LDAP ACL extensions
 			(<ulink url="&ucsbug;32411">Bug 32411</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			A new UDM module <emphasis>settings/udm_hook</emphasis> has been implemented for registration and replication of UDM hook extensions.
+			(<ulink url="&ucsbug;32402">Bug 32402</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			A new UDM module <emphasis>settings/udm_syntax</emphasis> has been implemented for registration and replication of UDM syntax extensions.
+			(<ulink url="&ucsbug;32405">Bug 32405</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			A new UDM module <emphasis>settings/udm_module</emphasis> has been implemented for registration and replication of UDM module extensions.
+			(<ulink url="&ucsbug;32408">Bug 32408</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
