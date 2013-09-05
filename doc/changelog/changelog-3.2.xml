@@ -458,6 +458,21 @@
 		    A Listener module for the replication of LDAP ACL extensions has been implemented
 		    (<ulink url="&ucsbug;32393">Bug 32393</ulink>).
 		  </simpara></listitem>
+
+		  <listitem><simpara>
+		    A Listener module for the replication of UDM syntax extensions has been implemented
+			(<ulink url="&ucsbug;32402">Bug 32402</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+		    A Listener module for the replication of UDM hook extensions has been implemented
+			(<ulink url="&ucsbug;32405">Bug 32405</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+		    A Listener module for the replication of UDM module extensions has been implemented
+			(<ulink url="&ucsbug;32408">Bug 32408</ulink>).
+		  </simpara></listitem>
 		</itemizedlist>
 	</section>
   </section>
@@ -894,17 +909,17 @@
 
 		<listitem><simpara>
 			A new UDM module <emphasis>settings/udm_hook</emphasis> has been implemented for registration and replication of UDM hook extensions.
-			(<ulink url="&ucsbug;32402">Bug 32402</ulink>).
+			(<ulink url="&ucsbug;32403">Bug 32403</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 			A new UDM module <emphasis>settings/udm_syntax</emphasis> has been implemented for registration and replication of UDM syntax extensions.
-			(<ulink url="&ucsbug;32405">Bug 32405</ulink>).
+			(<ulink url="&ucsbug;32406">Bug 32406</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 			A new UDM module <emphasis>settings/udm_module</emphasis> has been implemented for registration and replication of UDM module extensions.
-			(<ulink url="&ucsbug;32408">Bug 32408</ulink>).
+			(<ulink url="&ucsbug;32409">Bug 32409</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
