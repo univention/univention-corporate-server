@@ -627,6 +627,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			Tests run before installing an application can now prevent continuation
+			or just emit a warning that it is not recommended to continue. Notable
+			test that has become a warning: Check whether enough memory is available
+			(<ulink url="&ucsbug;31856">Bug 31856</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Prevent concurrent package operations in the same session (<ulink url="&ucsbug;31382">Bug 31382</ulink>).
 		</simpara></listitem>
 
