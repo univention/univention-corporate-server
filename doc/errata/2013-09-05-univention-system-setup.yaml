@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+scope: ucs_3.1-0-errata3.1-1
+src: univention-system-setup
+fix: 6.0.76-20.506.201309051608
+note:
+version: [1]
+desc: |
+  A profile parsing function was fixed to not strip all double quotes from
+  supplied values, which now allows to use quotes in passwords.
+bug: [32463]
