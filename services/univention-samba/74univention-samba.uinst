@@ -88,7 +88,7 @@ ucr unset samba/autostart \
 			samba/adminusers
 
 
-joinscript_remove_script_from_status_file join-template
+joinscript_remove_script_from_status_file univention-samba
 
 exit 0
 

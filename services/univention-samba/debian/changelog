@@ -1,3 +1,9 @@
+univention-samba (8.0.6-2) unstable; urgency=low
+
+  * Fixed typo in unjoin script (Bug #32445)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Sep 2013 07:40:35 +0200
+
 univention-samba (8.0.6-1) unstable; urgency=low
 
   * Add unjoin script (Bug #32445)
