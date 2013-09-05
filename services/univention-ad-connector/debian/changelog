@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.1-4) unstable; urgency=low
+
+  * Restart listener in postrm (Bug #32455)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Sep 2013 06:57:08 +0200
+
 univention-ad-connector (8.0.1-3) unstable; urgency=low
 
   * Make join and unjoin scripts executable (Bug #32455)
