@@ -53,6 +53,7 @@ var_lib_samba_is_s4 ()
 
 if ! var_lib_samba_is_s4; then
 	mv /var/lib/samba "/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
+	mkdir -p /var/lib/samba/private
 fi
 
 joinscript_remove_script_from_status_file univention-samba
