@@ -1,3 +1,9 @@
+univention-system-setup (7.0.35-1) unstable; urgency=low
+
+  * Fix parsing profile (Bug #32463)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Sep 2013 15:54:04 +0200
+
 univention-system-setup (7.0.34-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)
