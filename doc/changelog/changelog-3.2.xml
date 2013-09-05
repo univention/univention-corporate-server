@@ -425,8 +425,14 @@
 	  <title>LDAP schema changes</title>
 		<itemizedlist>
 		  <listitem><simpara>
-			A new schema extension <emphasis>univention-ldap-extension.schema</emphasis>
+			There is new schema extension <emphasis>univention-object-metadata.schema</emphasis>.
+			There is new schema extension <emphasis>univention-ldap-extension.schema</emphasis>.
 			(<ulink url="&ucsbug;32391">Bug 32391</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			There is new schema extension <emphasis>udm_extension.schema</emphasis>.
+			(<ulink url="&ucsbug;32410">Bug 32410</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
