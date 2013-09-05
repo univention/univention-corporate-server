@@ -103,7 +103,6 @@ if [ "$1" = "configure" ]; then
 		repository/online/server?"${REPOSITORY}" \
 		repository/online/port?80 \
 		repository/online/unmaintained?no \
-		repository/online/hotfixes?no \
 		repository/mirror?"$mirror_default" \
 		repository/mirror/threads?10 \
 		repository/mirror/recreate_packages?yes \

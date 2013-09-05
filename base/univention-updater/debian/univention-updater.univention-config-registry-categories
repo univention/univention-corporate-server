@@ -1,4 +1,4 @@
 [service-software-management]
-name[de]=Dienst: Softwarepflege
-name[en]=Service: Software Management
+name[de]=Softwarepflege
+name[en]=Software management
 icon=service-software-management.gif

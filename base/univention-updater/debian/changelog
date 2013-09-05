@@ -1,3 +1,24 @@
+univention-updater (9.0.13-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+    Remove UCR variable descriptions for update/security/prefix and update/security/server
+      (already removed code-wise in 4.0.18-1). 
+    Remove UCR variable description for update/security/proxy and repository/online/hotfixes, 
+    which are also a remnant of the security update mechanism prior to UCS 3.0.
+    Remove UCR variable descriptions for update/umc/nextversion and repository/online/maintained,
+    no longer used in current code. 
+    Remove UCR variable descriptions for repository/online/component/.*/parts, replaced by
+    repository/online/component/.*/unmaintained in current code
+    Remove UCR variable	descriptions for update/doc/releasenotes/url and 
+    update/doc/releasenotes/description, not used anywhere
+  * No longer set repository/online/hotfixes in postinst, no longer relevant for new installations
+    and the fallback is "no" anyway.
+  * Mark repository/online/component/.*/erratalevel and update/available as ReadOnly, should 
+    only be updated by the respective update script/cron jobs.
+  * Mark uuid/license and uuid/system as ReadOnly, these are generated externally	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 03 Sep 2013 15:22:36 +0200
+
 univention-updater (9.0.13-1) unstable; urgency=low
 
   * univention-add-app: Made adding components more robust (Bug #32398)
