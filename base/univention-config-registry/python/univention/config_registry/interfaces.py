@@ -56,7 +56,7 @@ RE_IFACE = re.compile(r'''^
 
 
 def forgiving(translation=None):
-	"""Docorator to translate exceptions into return values."""
+	"""Decorator to translate exceptions into return values."""
 	if translation is None:
 		translation = {}
 
@@ -127,7 +127,7 @@ class _Iface(dict):
 	@property
 	@forgiving_addr
 	def network(self):
-		"""Geturn network address."""
+		"""Return network address."""
 		return IPv4Address('%(network)s' % self)
 
 	@property
