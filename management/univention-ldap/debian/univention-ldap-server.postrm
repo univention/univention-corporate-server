@@ -30,24 +30,33 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ "$1" = "purge" ]; then
-	# Subdirectories belonging directly to package univention-ldap-server
-	rm -rf /var/lib/univention-ldap/fake
-	rm -rf /var/lib/univention-ldap/replog
-	rm -rf /var/lib/univention-ldap/ldap
 
-	# Subdirectories belonging to package univention-directory-notifier
-	# /var/lib/univention-ldap/notify
-	# /var/lib/univention-ldap/replog-slurpd
-	# /var/lib/univention-ldap/save
+case "$1" in
+	"remove")
+		## unload the listener modules
+		/etc/init.d/univention-directory-listener crestart
+		;;
+	"purge")
+		# Subdirectories belonging directly to package univention-ldap-server
+		rm -rf /var/lib/univention-ldap/fake
+		rm -rf /var/lib/univention-ldap/replog
+		rm -rf /var/lib/univention-ldap/ldap
 
-	# Subdirectories belonging to no package
-	rm -rf /var/lib/univention-ldap/schema
+		# Subdirectories belonging to package univention-directory-notifier
+		# /var/lib/univention-ldap/notify
+		# /var/lib/univention-ldap/replog-slurpd
+		# /var/lib/univention-ldap/save
 
-	# Subdirectories belonging to no package and to be left untouched:
-	# /var/lib/univention-ldap/schema.conf
-	# /var/lib/univention-ldap/listener
-fi
+		# Subdirectories belonging to no package
+		rm -rf /var/lib/univention-ldap/schema
+
+		# Subdirectories belonging to no package and to be left untouched:
+		# /var/lib/univention-ldap/schema.conf
+		# /var/lib/univention-ldap/listener
+		;;
+	*)
+		;;
+esac
 
 #DEBHELPER#
 

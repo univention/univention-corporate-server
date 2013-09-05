@@ -240,29 +240,27 @@ if [ "$1" = "configure" -a "$server_role" = "domaincontroller_master" ] && dpkg 
    		--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base"
 fi
 
-if [ "$1" = "configure" -a -n "$2" ];
-	then
-	if test -x /etc/init.d/slapd
-		then
-        # always start on master, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
-		if [ "$server_role" = "domaincontroller_master" ]
-			then
-			restart_slapd
-		else
-			#/etc/init.d/slapd crestart
-			if [ -n "$slapd_was_running" ]; then
+if [ "$1" = "configure" ]; then
+	if [ -n "$2" ]; then	## package update
+		if test -x /etc/init.d/slapd; then
+			# always start on master, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
+			if [ "$server_role" = "domaincontroller_master" ]; then
 				restart_slapd
+			else
+				#/etc/init.d/slapd crestart
+				if [ -n "$slapd_was_running" ]; then
+					restart_slapd
+				fi
 			fi
 		fi
-	fi
-else
-	if [ "$1" = "configure" ]
-		then
-		if test -x /etc/init.d/slapd
-			then
+	else					## fresh installation
+		if test -x /etc/init.d/slapd; then
 			/etc/init.d/slapd start
 		fi
 	fi
+
+	## load the listener module
+	/etc/init.d/univention-directory-listener crestart
 fi
 
 
