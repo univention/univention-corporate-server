@@ -1,3 +1,9 @@
+univention-ldap (10.0.10-24) unstable; urgency=low
+
+  * rename subdir "python" to "listener" (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 05 Sep 2013 18:42:22 +0200
+
 univention-ldap (10.0.10-23) unstable; urgency=low
 
   * New objectClass univentionUDMModule (Bug #32410)
