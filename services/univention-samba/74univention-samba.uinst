@@ -1,0 +1,94 @@
+#! /bin/sh
+#
+# Univention Samba
+#  unjoin script
+#
+# Copyright 2013 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+VERSION=1
+
+. /usr/share/univention-join/joinscripthelper.lib
+joinscript_init
+
+SERVICE="Samba 3"
+
+eval "$(ucr shell)"
+
+. /usr/share/univention-lib/ldap.sh
+ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
+
+ucr unset samba/autostart \
+			samba/user \
+			samba/user/pwdfile \
+			samba/script/adduser \
+			samba/script/deleteuser \
+			samba/script/addgroup \
+			samba/script/deletegroup \
+			samba/script/addusertogroup \
+			samba/script/deleteuserfromgroup \
+			samba/script/addmachine \
+			samba/script/setprimarygroup \
+			samba/script/postusermodify \
+			samba/winbind/nested/groups \
+			samba/encrypt_passwords \
+			samba/use_spnego \
+			samba/client_use_spnego \
+			samba/oplocks \
+			samba/kernel_oplocks \
+			samba/large_readwrite \
+			samba/deadtime \
+			samba/read_raw \
+			samba/write_raw \
+			samba/max_xmit \
+			samba/max_open_files \
+			samba/getwd_cache \
+			samba/store_dos_attributes \
+			samba/preserve_case \
+			samba/short_preserve_case \
+			samba/time_server \
+			samba/guest_account \
+			samba/map_to_guest \
+			samba/netlogon/sync \
+			samba/domain/logons \
+			samba/password/checkscript \
+			samba/debug/level \
+			samba/os/level \
+			samba/profileserver \
+			samba/profilepath \
+			samba/homedirserver \
+			samba/homedirpath \
+			samba/homedirletter \
+			samba/share/home \
+			samba/share/groups \
+			samba/adminusers
+
+
+joinscript_remove_script_from_status_file join-template
+
+exit 0
+

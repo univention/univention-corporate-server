@@ -147,6 +147,11 @@ univention-config-registry set samba/script/adduser?true \
 				samba/domain/logons?auto \
 				samba/password/checkscript?"/usr/share/univention-samba/password_check %u"
 
+if [ "$1" = "configure" ]; then
+	uinst=/usr/lib/univention-install/74univention-samba.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
+
 call_joinscript 26univention-samba.inst
 
 if [ "$1" = "configure" ]; then

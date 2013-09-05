@@ -1,3 +1,9 @@
+univention-samba (8.0.6-1) unstable; urgency=low
+
+  * Add unjoin script (Bug #32445)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Sep 2013 07:16:42 +0200
+
 univention-samba (8.0.5-3) unstable; urgency=low
 
   * Don't set windows/wins-server in case broadcast join worked (Bug #30813)
