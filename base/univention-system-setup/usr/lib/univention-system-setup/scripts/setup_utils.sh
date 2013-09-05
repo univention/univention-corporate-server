@@ -136,8 +136,7 @@ get_profile_var ()
 		return
 	fi
 
-	value=`egrep "^$1=" $profile_file |sed -e 's|#.*||' | sed -e "s|^$1=||" | sed -e 's|"||g;s| $||g'`
-	echo "$value"
+	sed -rne "s/^$1=//;T;s/#.*//;s/([\"'])(.*)\1 *$/\2/;p;q" "$profile_file"
 }
 
 service_stop ()

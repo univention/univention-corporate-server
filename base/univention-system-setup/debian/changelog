@@ -1,3 +1,9 @@
+univention-system-setup (6.0.76-20) unstable; urgency=low
+
+  * Fix parsing profile (Bug #32463)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Sep 2013 15:54:04 +0200
+
 univention-system-setup (6.0.76-19) unstable; urgency=low
 
   * define sort order for setup scripts (Bug #32153)
