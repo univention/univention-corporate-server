@@ -181,7 +181,6 @@ Variables: domainname
 Variables: interfaces/[^/]*/.*
 Variables: interfaces/primary
 
-
 Type: file
 File: etc/issue.net
 Variables: version/version
@@ -197,7 +196,6 @@ Variables: hostname
 Variables: domainname
 Variables: interfaces/[^/]*/.*
 Variables: interfaces/primary
-
 
 Type: file
 File: etc/bash.bashrc
