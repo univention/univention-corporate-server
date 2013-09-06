@@ -382,7 +382,7 @@ dpkg-buildpackage: full upload; Debian-native package (full source is included)
 			The following example commands create a repository for UCS version 3.1 with the component name <replaceable>testcomp</replaceable>:
 		</para>
 		<programlisting><![CDATA[
-WWW_BASE=/var/www/repository/3.1/maintained/component"
+WWW_BASE="/var/www/repository/3.2/maintained/component"
 TESTCOMP="testcomp/all"
 install -m755 -d "$WWW_BASE/$TESTCOMP"
 install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
@@ -390,7 +390,7 @@ install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
   rm -f "$TESTCOMP/Packages"* &&
   apt-ftparchive packages "$TESTCOMP" > "Packages" &&
   gzip -9 < "Packages" > "$TESTCOMP/Packages.gz" &&
-  mv "Packages" > "$TESTCOMP/Packages" )
+  mv "Packages" "$TESTCOMP/Packages" )
 		]]></programlisting>
 		<para>
 			This repository can be included on any UCS system by appending the following line to <filename>/etc/apt/sources.list</filename>, assuming the <acronym>FQDN</acronym> of the host providing the repository is named <replaceable>repository.server</replaceable>:
