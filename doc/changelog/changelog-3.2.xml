@@ -2018,6 +2018,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  through the DRS replication.
 		  (<ulink url="&ucsbug;32257">Bug 32257</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  An unjoin script has been added to the <emphasis>univention-samba4</emphasis> package. The unjoin
+		  script removes the Samba 4 service from the server object and removes the default Samba UCR
+		  variables (<ulink url="&ucsbug;32446">Bug 32446</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
