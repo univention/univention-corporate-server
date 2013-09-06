@@ -1,4 +1,4 @@
-univention-home-mounter (5.0.1-1) unstable; urgency=low
+univention-home-mounter (5.0.1-2) unstable; urgency=low
 
   * convert to python
   * remove obsolete thin client functionality
