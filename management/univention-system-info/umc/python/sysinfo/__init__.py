@@ -35,20 +35,22 @@ import os
 import re
 import subprocess
 
-import univention.info_tools as uit
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
+from univention.management.console.protocol.definitions import MODULE_ERR, SUCCESS
+from univention.management.console.modules.decorators import simple_response, sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer
 
-from urllib import quote, urlencode
+from urllib import urlencode
 from urlparse import urlunparse
 
-# locale module that overrides functions in urllib2
+# local module that overrides functions in urllib2
 import upload
 import urllib2
 
-import univention.config_registry as ucr
+import univention.config_registry
+ucr = univention.config_registry.ConfigRegistry()
 
 _ = umc.Translation('univention-management-console-module-sysinfo').translate
 
@@ -130,12 +132,11 @@ class Instance(umcm.Base):
 		self.finished(request.id, result)
 
 	def get_mail_info(self, request):
-		ucr_reg = ucr.ConfigRegistry()
-		ucr_reg.load()
+		ucr.load()
 		ADDRESS_KEY = 'umc/sysinfo/mail/address'
 		SUBJECT_KEY = 'umc/sysinfo/mail/subject'
-		ADDRESS_VALUE = ucr_reg.get(ADDRESS_KEY, 'feedback@univention.de')
-		SUBJECT_VALUE = ucr_reg.get(SUBJECT_KEY, 'Univention System Info')
+		ADDRESS_VALUE = ucr.get(ADDRESS_KEY, 'feedback@univention.de')
+		SUBJECT_VALUE = ucr.get(SUBJECT_KEY, 'Univention System Info')
 
 		url = urlunparse(('mailto', '', ADDRESS_VALUE, '',
 		                  urlencode({'subject': SUBJECT_VALUE, }), ''))
@@ -147,9 +148,8 @@ class Instance(umcm.Base):
 	def upload_archive(self, request):
 		UPLOAD_KEY = 'umc/sysinfo/upload/url'
 		FALLBACK_UPLOAD_URL = 'https://forge.univention.de/cgi-bin/system-info-upload.py'
-		ucr_reg = ucr.ConfigRegistry()
-		ucr_reg.load()
-		url = ucr_reg.get(UPLOAD_KEY, FALLBACK_UPLOAD_URL)
+		ucr.load()
+		url = ucr.get(UPLOAD_KEY, FALLBACK_UPLOAD_URL)
 
 		SYSINFO_PATH = '/var/www/univention-management-console/system-info/'
 		fd = open(os.path.join(SYSINFO_PATH, request.options['archive']), 'r')
@@ -168,3 +168,23 @@ class Instance(umcm.Base):
 			request.status = SUCCESS
 
 		self.finished(request.id, None)
+
+	@sanitize(traceback=StringSanitizer(), remark=StringSanitizer(), email=StringSanitizer())
+	@simple_response
+	def upload_traceback(self, traceback, remark, email):
+		ucr.load()
+		ucs_version = '{0}-{1} errata{2} ({3})'.format( ucr.get( 'version/version', '' ), ucr.get( 'version/patchlevel', '' ), ucr.get( 'version/erratalevel', '0' ), ucr.get( 'version/releasename', '' ) )
+		# anonymised id of localhost
+		uuid_system = ucr.get('uuid/system', '')
+		url = ucr.get('umc/web/traceback/url', 'https://forge.univention.de/cgi-bin/system-info-traceback.py')
+		MODULE.process('Sending %s to %s' % (traceback, url))
+		request_data = {
+			'traceback' : traceback,
+			'remark' : remark,
+			'email' : email,
+			'ucs_version' : ucs_version,
+			'uuid_system' : uuid_system,
+		}
+		request = urllib2.Request(url, request_data)
+		urllib2.urlopen(request)
+

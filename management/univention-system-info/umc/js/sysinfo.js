@@ -42,7 +42,8 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/TextArea",
 	"umc/widgets/CheckBox",
-	"umc/i18n!umc/modules/sysinfo"
+	"umc/i18n!umc/modules/sysinfo",
+	"umc/modules/sysinfo/lib" // FIXME: needs to live here to be loaded
 ], function(declare, lang, array, topic, tools, Module, Wizard, StandbyMixin, ComboBox, TextBox, Text, TextArea, CheckBox, _) {
 
 	var SysinfoWizard = declare("umc.modules.sysinfo.Wizard", [ Wizard, StandbyMixin ], {
