@@ -3,19 +3,13 @@ Description[de]=Der Proxyserver, der für HTTP-Verbindungen genutzt werden soll,
 Description[en]=The proxy server for HTTP connections, e.g.http://192.168.1.100:3128. If the proxy requires authentication, the username and the password
 can be provided in the format http://username:password@192.168.1.100:3128.
 Type=str
-Categories=system-base
+Categories=system-network
 
 [proxy/no_proxy]
 Description[de]=Kommaseparierte Liste von Domänennamen, für die der Proxy nicht verwendet werden soll. Eine Ausnahme für eine Domäne wie univention.de wirkt sich auch auf eine Unterdomäne wie apt.univention.de aus.
 Description[en]=Comma-separated list of domain names for which the proxy should not be consulted. An exception for a domain like univention.de also applies to a subdomain like apt.univention.de.
 Type=str
-Categories=system-base
-
-[locale/default]
-Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable definiert die Standard-Locale des Systems.
-Description[en]=Localisation properties such as time/date formats and the preferred translation are specified in locales. The installed locales can be selected using the UMC module 'System settings'. This variable selects the default locale for the system.
-Type=str
-Categories=system-base
+Categories=system-network
 
 [umask]
 Description[de]=Die Umask legt fest, mit welchen Berechtigungen Dateien standardmässig angelegt werden (sofern keine abweichenden Rechte gesetzt wurden). Die Berechtigungen werden als oktale Bitmaske übergeben (das Format der Bitmaske ist identisch zu dem vom chown (das mit 'man chown' auf einer Shell abgerufen werden). Änderungen an der Umask sollten sorgfältig geprüft werden, eine zu laxe Umask kann zu Sicherheitsproblemen führen.
@@ -60,9 +54,9 @@ Type=bool
 Categories=service-ssh
 
 [sshd/challengeresponse]
-Description[de]=Konfiguriert die Authentifizierung mittels Challenge Response Authentication (yes/no)
-Description[en]=Configures the use of challenge response for authentication (yes/no)
-Type=bool
+Description[de]=Ist diese Variable auf 'yes' gesetzt, erlaubt der SSH-Server eine Authentifizierung über Challenge-Response-Authentifizierung, mit 'no' wird es deaktiviert.
+Description[en]=If variable is set to 'yes', the SSH server allows an authentication using challenge response authentication, 'no' disables this.
+Type=str
 Categories=service-ssh
 
 [sshd/banner]
@@ -72,8 +66,14 @@ Type=str
 Categories=service-ssh
 
 [sshd/passwordauthentication]
-Description[de]=Konfiguriert, ob eine Anmeldung über Passwörter möglich ist (yes/no)
-Description[en]=Configures whether a password-based login is possible (yes/no)
+Description[de]=Ist diese Variable auf 'yes' gesetzt, erlaubt der SSH-Server eine passwortbasierte Authentifizierung, mit 'no' wird es deaktiviert.
+Description[en]=If variable is set to 'yes', the SSH server allows an password-based authentication, 'no' disables this.
+Type=str
+Categories=service-ssh
+
+[sshd/motd]
+Description[de]=Mit dieser Variable kann konfiguriert werden, ob  beim SSH-Login ein Hinweis auf das UCS-Managementsystem angezeigt wird. Ist die Variable nicht gesetzt, wird der Hinweis angezeigt.
+Description[en]=This variable configures, whether a hint towards the UCS management system is displayed during SSH login. If the variable is not set, the hint is shown.
 Type=bool
 Categories=service-ssh
 
@@ -84,131 +84,118 @@ Type=str
 Categories=system-network
 ReadOnly=yes
 
-[domain/domainname]
-Description[de]=Lokale-Domäne
-Description[en]=Lokal domain
-Type=str
-Categories=system-network
-
 [domain/search]
-Description[de]=Automatisch zu durchsuchende DNS-Domänen
-Description[en]=Automatically searched DNS domains
+Description[de]=In der Grundeinstellung enthält die /etc/resolv.conf nur den lokalen Domänennamen. Mit dieser Variable kann in zusätzlichen Domänen gesucht werden.
+Description[en]=In the default setting /etc/resolv.conf only contains the local domainname. With this variable additional domains can be searched.
 Type=str
 Categories=system-network
 
 [windows/domain]
-Description[de]=Der NetBIOS-Domänenname (verwendet in Samba 3, in Samba 4 wird überwiegend der DNS/Kerberos-Domänenname verwendet)
-Description[en]=The NetBIOS domain name (used in Samba 3, Samba 4 predominantly uses the DNS/Kerberos domainname)
+Description[de]=Der NetBIOS-Domänenname (verwendet in Samba 3, in Samba 4 wird überwiegend der DNS/Kerberos-Domänenname verwendet).
+Description[en]=The NetBIOS domain name (used in Samba 3, Samba 4 predominantly uses the DNS/Kerberos domainname).
 Type=str
 Categories=system-network
 ReadOnly=yes
 
 [gateway]
-Description[de]=Die IPv4-Adresse des Standard-Gateways
-Description[en]=The IPv4 address of the standard gateway
+Description[de]=Die IPv4-Adresse des Standard-Gateways.
+Description[en]=The IPv4 address of the standard gateway.
 Type=str
 Categories=system-network
 
 [ipv6/gateway]
-Description[de]=Die IPv6-Adresse des Standard-Gateways
-Description[en]=The IPv6 address of the standard gateway
-Type=str
+Description[de]=Die IPv6-Adresse des Standard-Gateways. Für IPv6 ist die Angabe eines Gateways bei statischer Konfiguration erforderlich; bei dynamischer Konfiguration ist diese optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten. 
+Description[en]=The IPv6 address of the standard gateway. For IPv6, a gateway must be entered in the static configuration; for the dynamic configuration, it is optional, but recommended. A gateway configured here has preference over router advertisements, which might otherwise be able to change the route. 
 Categories=system-network
 
 [hostname]
-Description[de]=Der Name des Rechners
+Description[de]=Der Name des Rechners. 
 Description[en]=The name of the system / host name
 Type=str
 Categories=system-network
 ReadOnly=yes
 
 [interfaces/.*/address]
-Description[de]=IPv4-Adresse der Netzwerkschnittstelle
-Description[en]=IPv4 address of the network interface
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/address konfiguriert die IPv4-Adresse der Netzwerkschnittstelle. Für eine dynamische Vergabe über DHCP siehe 'interfaces/.*/type', bei Verwendung von DHCP wird keine Adresse angegeben.
+Description[en]=A variable in the form interfaces/INTERFACE/address configures the IPv4 address of the network interface. For a dynamic assignment using DHCP, see 'interfaces/.*/type'. If DHCP is used, no address is specified.
 Type=str
 Categories=system-network
 
 [interfaces/.*/broadcast]
-Description[de]=IPv4-Broadcast-Adresse der Netzwekschnittstelle
-Description[en]=IPv4 broadcast address of the network interface
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/address konfiguriert die Broadcast-Adresse der Netzwerkschnittstelle. Die Broadcast-Adresse ist optional.
+Description[en]=A variable in the form interfaces/INTERFACE/address configures the broadcast address of the network interface. The broadcast address is optional.
 Type=str
 Categories=system-network
 
 [interfaces/.*/mac]
-Description[de]=MAC-Adresse der Netzwekschnittstelle
-Description[en]=MAC address of the network interface
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/mac rekonfiguriert die MAC-Adresse der Netzwerkschnittstelle (sofern Treiber/Hardware dies unterstützen).
+Description[en]=A variable in the form interfaces/INTERFACE/address reconfigures the MAC address of the network interface (unless permitted by driver/hardware).
 Type=str
 Categories=system-network
 
 [interfaces/.*/netmask]
-Description[de]=IPv4-Netzmaske der Netzwerkschnittstelle
-Description[en]=IPv4 netmask of the network interface
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/netmask konfiguriert die Netzmaske der Netzwerkschnittstelle.
+Description[en]=A variable in the form interfaces/INTERFACE/netmasl configures the netmask the network interface.
 Type=str
 Categories=system-network
 
 [interfaces/.*/network]
-Description[de]=IPv4-Netzwerk der Netzwerkschnittstelle
-Description[en]=IPv4 network of the network interface
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/network konfiguriert die Netzwer-Adresse der Netzwerkschnittstelle. Die Adresse ist optional.
+Description[en]=A variable in the form interfaces/INTERFACE/network configures the network address of the network interface. The address is optional.
 Type=str
 Categories=system-network
 
 [interfaces/.*/order]
-Description[de]=Kontrolliert die Reihenfolge der Einträge für Netzwerkschnittstellen
-Description[en]=Controlls the order of entries for network interfaces
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/network konfiguriert die Reihenfolge der Einträge für Netzwerkschnittstellen. Pro Netzwerkschnittstelle kann eine Zahl konfiguriert werden, anhand derer die Schnittstellen dann sortiert werden.
+Description[en]=A variable in the form interfaces/INTERFACE/network configures the order of the network interfaces. A number can be configured per network interface. Based on that the interfaces are sorted.
 Type=int
 Categories=system-network
 
 [interfaces/.*/start]
-Description[de]=Konfiguriert das automatische Starten der Netzwerkschnittstelle ('yes'/'no')
-Description[en]=Configures the automatic start of network interfaces ('yes'/'no')
-Type=bool
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/network konfiguriert das automatische Starten der Netzwerkschnittstelle. Wird sie auf 'no' gesetzt, erfolgt kein automatischer Start. Ist sie auf 'yes' gesetzt oder nicht gesetzt, wird es automatisch gestartet.
+Description[en]=A variable in the form interfaces/INTERFACE/network configures the automatic start of the network interface. If set to 'no', no automatic start occurs. If set to 'yes' or if the variable is unset, it is started automatically.
+Type=str
 Categories=system-network
 
 [interfaces/.*/type]
-Description[de]=Zwei Arten der IP-Zuweisung sind möglich: 'static' legt die Netzkonfiguration anhand weiterer Variablen fest (z.B. interfaces/eth0/address). 'dhcp' konfiguriert eine dynamische Zuweisung über DHCP.
-Description[en]=Two types of IP assignment are possible: 'static' configures the interface according to the values configured in additional variables (e.g. interfaces/eth0/address). 'dhcp' configures dynamic assignment over DHCP.
+Description[de]=Zwei Arten der IP-Zuweisung sind möglich: 'static' legt die Netzkonfiguration anhand weiterer Variablen fest (z.B. 'interfaces/eth0/address'). 'dhcp' konfiguriert eine dynamische Zuweisung über DHCP.
+Description[en]=Two types of IP assignment are possible: 'static' configures the interface according to the values configured in additional variables (e.g. 'interfaces/eth0/address'). 'dhcp' configures dynamic assignment over DHCP.
 Type=str
 Categories=system-network
 
-[interfaces/.*/hosts]
-Description[de]=Rechnername und Domänenname für diese IP-Adresse
-Description[en]=Host name and domain name for this ip address
-Type=str
-Categories=Network
-
 [interfaces/.*/route/.*]
-Description[de]=Zusätzliche Routen für die einzelnen Netzwerkschnittstellen
-Description[en]=Additional routing entries for network interface
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/route/ROUTE erlaubt die Konfiguration zusätzlicher Routen pro Netwerkschnittstelle.
+Description[en]=A variable in the form interfaces/INTERFACE/route/ROUTE allows the configuration of additional routes per network interface.
 Type=str
 Categories=system-network
 
 [interfaces/.*/options/.*]
-Description[de]=Zusätzliche Einstellungen für die einzelnen Interfaces
-Description[en]=Additional options for each network interface
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/route/ROUTE erlaubt die Konfiguration zusätzlicher Optionen pro Netwerkschnittstelle (siehe die Manpage 'man 5 interfaces').
+Description[en]=A variable in the form interfaces/INTERFACE/route/ROUTE allows the configuration of additional options per network interface (see the manpage 'man 5 interfaces').
 Type=str
 Categories=system-network
 
 [interfaces/.*/ipv6/.*/address]
-Description[de]=IPv6-Adresse der Netzswerkchnittstelle
-Description[en]=IPv6 address of the network interface
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/ipv6/IDENTIFIER/address konfiguriert die statische IPv6-Adresse der Netzwerkschnittstelle. Für eine dynamische Vergabe über SLAAC siehe 'interfaces/eth0/ipv6/acceptRA', bei Verwendung von SLAAC wird keine Adresse angegeben.
+Description[en]=A variable in the form interfaces/INTERFACE/ipv6/IDENTIFIER/address configures the static IPv6 address of the network interface. For a dynamic assignment using SLAAC, see 'interfaces/eth0/ipv6/acceptRA'. If SLAAC is used, no address is specified.
 Type=str
 Categories=system-network
 
 [interfaces/.*/ipv6/.*/prefix]
-Description[de]=IPv6-Präfix der Netzschnittstelle (CIDR-Notation)
-Description[en]=IPv6 prefix of the network interface (CIDR notation)
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/ipv6/IDENTIFIER/prefix konfiguriert den IPv6-Präfix der Netzschnittstelle (CIDR-Notation). Für eine dynamische Vergabe über SLAAC siehe 'interfaces/eth0/ipv6/acceptRA', bei Verwendung von SLAAC wird kein Präfix angegeben.
+Description[en]=A variable in the form interfaces/INTERFACE/ipv6/IDENTIFIER/prefix configures the IPv6 prefix of the network interface (CIDR notation). For a dynamic assignment using SLAAC, see 'interfaces/eth0/ipv6/acceptRA'. If SLAAC is used, no prefix is specified.
 Type=int
 Categories=system-network
 
 [interfaces/.*/ipv6/acceptRA]
-Description[de]=Diese Einstellung konfiguriert, ob zur Konfiguration der Netzwerkschnittstellen Neighbour Discovery Protocol (NDP) Router Advertisements (RA) akzeptiert werden.
-Description[en]=This setting configures, whether router advertisements (RA) of the neighbour discovery protocol (NDP) are accepted to to configure this interface.
+Description[de]=Ist diese Option aktiviert, kommt für die Netzwerkschnittstelle Stateless Address Autoconfiguration (SLAAC) zum Einsatz. Dabei wird die IP-Adresse von den Routern des lokalen Netzsegmentes zugewiesen.
+Description[en]=If this option is activated, Stateless Address Autoconfiguration (SLAAC) is used for the network interface. In this, the IP address is assigned from the routers of the local network segment. 
 Type=bool
 Categories=system-network
 
 [interfaces/restart/auto]
-Description[de]=Diese Einstellung legt fest, ob beim Setzen von Netzwerk-UCR-Variablen (interfaces/*) automatisch die betroffene Netzwerkschnittstelle neu gestartet wird.
-Description[en]=This variables configures, whether network interfaces are automatically restarted if the network-related UCR variables (interfaces/*) are modified.
+Description[de]=Diese Option legt fest, ob beim Setzen von Netzwerk-UCR-Variablen (interfaces/*) automatisch die betroffene Netzwerkschnittstelle neu gestartet wird. Ist die Variable nicht gesetzt, erfolgt ein Neustart.
+Description[en]=This option configures, whether network interfaces are automatically restarted if the network-related UCR variables (interfaces/*) are modified. If the variable is unset, a restart occurs.
 Type=bool
 Categories=system-network
 
@@ -225,316 +212,233 @@ Type=str
 Categories=system-network
 
 [hosts/static/.*]
-Description[de]=Zusätzliche /etc/hosts Einträge
-Description[en]=Additional entries for /etc/hosts
+Description[de]=Mit Variablen nach dem Schema hosts/static/IPADDRESSE=RECHNERNAME können Einträge zur /etc/hosts hinzugefügt werden. Beispiel: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'
+Description[en]=With variables following the scheme hosts/static/IPADDRESS=HOSTNAME entries can be added to /etc/hosts. Example: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'
 Type=str
-Categories=Network
+Categories=system-base
 
 [kernel/modules]
 Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrere Einträge müssen durch ein Semikolon getrennt werden.
 Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows the loading of modules, which couldn't/cannot be automatically detected. If multiple modules are needed, they must be separated by a semicolon.
 Type=str
-Categories=system-base
+Categories=system-kernel
 
 [kernel/blacklist]
 Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module aufgeführt werden, die nicht geladen werden sollen. Mehrere Einträge müssen durch ein Semikolon getrennt werden.
 Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows a selection of modules which should not be loaded. If multiple modules are needed, they must be separated by a semicolon.
 Type=str
-Categories=system-base
-
-[kernel/clobber_modules]
-Description[de]=Verschiebe Modulverzeichnis wenn gleiche Kernelversion installiert wird
-Description[en]=Move modules directory if the same kernel version gets installed
-Type=str
-Categories=system-base
-
-[kernel/do_bootfloppy]
-Description[de]=Unterbinde Fragen bzgl. Erstellung einer Bootdiskette
-Description[en]=Prevent questions about creating a boot floppy
-Type=bool
-Categories=system-base
-
-[kernel/do_initrd]
-Description[de]=Unterbinde Warnmeldungen wenn ein Initrd Kernel installiert wird
-Description[en]=Prevent warning message when installing an initrd kernel
-Type=bool
-Categories=system-base
+Categories=system-kernel
 
 [kernel/postinst_hook]
-Description[de]=Script das vor dem starten des Bootloaders ausgeführt wird
-Description[en]=Script to be executed before running the bootloader
+Description[de]=Diese Variable erlaubt die Konfiguration eines zusätzlichen Konfigurations-Skripts, siehe 'postinst_hook' unter http://manpages.debian.net/cgi-bin/man.cgi?query=kernel-img.conf.
+Description[en]=This variables allows to configure an additional configuration script, see 'postinst_hook' under http://manpages.debian.net/cgi-bin/man.cgi?query=kernel-img.conf.
 Type=str
-Categories=system-base
-
-[kernel/ramdisk]
-Description[de]=Programm das die initiale RAM-Disk erzeugt
-Description[en]=Executable that creates an initial RAM disk
-Type=str
-Categories=system-base
-
-[kernel/silent_loader]
-Description[de]=Überspringe die Frage ob der Bootloader gestartet werden soll
-Description[en]=Skip the question asked before running the bootloader
-Type=bool
-Categories=system-base
+Categories=system-kernel
 
 [kernel/fs/inotify/max_user_instances]
-Description[de]=Dies spezifiziert die Obergrenze der Anzahl inotify Instanzen, die pro realer Benutzer ID erzeugt werden können (default: 512)
-Description[en]=This specifies an upper limit on the number of inotify instances that can be created per real user ID (default: 512)
+Description[de]=Die Obergrenze an Dateien, die vom Inotify pro Benutzer-ID überwacht werden können.
+Description[en]=Th upper limit of files which can be watched by Inotify per user ID.
 Type=int
-Categories=system-base
+Categories=system-kernel
 
 [kernel/fs/inotify/max_user_watches]
-Description[de]=Dies spezifiziert die Obergrenze der Anzahl inotify Watches, die pro realer Benutzer ID erzeugt werden können (default: 32768)
-Description[en]=This specifies an upper limit on the number of watches that can be created per real user ID (default: 32768)
+Description[de]=Dies spezifiziert die Obergrenze an Dateien, die von Inotify überwacht werden können.
+Description[en]=The upper limit of files which can be watched by Inotify.
 Type=int
-Categories=system-base
+Categories=system-kernel
 
 [kernel/fs/inotify/max_queued_events]
-Description[de]=Dieser Wert wird bei einem Aufruf von inotify_init verwendet und setzt eine Obergrenze für die Anzahl von vorgehaltenen Events pro inotify Instanz (default: 16384)
-Description[en]=The value is used when an application calls inotify_init to set an upper limit on the number of events that can be queued to the corresponding inotify instance (default: 16384)
+Description[de]=Die Obergrenze für die Anzahl von vorgehaltenen Events pro Inotify-Instanz.
+Description[en]=The uppper limit of queued events per Inotify instance.
 Type=int
-Categories=system-base
+Categories=system-kernel
 
 [ldap/backup]
-Description[de]=Das UCS Backup-System der Domäne
-Description[en]=The UCS backup system of the domain
+Description[de]=Der/die Domänencontroller Backup-Systeme der Domäne. Mehrfache Einträge müssen mit einem Leerzeichen getrennt werden.
+Description[en]=The backup domain controller system(s) in the domain. Multiple entries need to be separated with a blank
 Type=str
 Categories=service-ldap
 
 [ldap/master]
-Description[de]=Das UCS Master-System der Domäne
-Description[en]=The UCS master system of the domain
+Description[de]=Das Domänencontroller Master System der Domäne.
+Description[en]=The UCS master system of the domain.
 Type=str
 Categories=service-ldap
 
 [ldap/server/name]
-Description[de]=Vollständiger Rechnername (FQDN) des LDAP-Servers
-Description[en]=Fully qualified domain name of LDAP server
+Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit dieser Variable festgelegt. Weitere Server können über 'ldap/server/addition' angegeben werden. 
+Description[en]=Several LDAP servers can be operated in a UCS domain. The primary one used is specified with this variable, further servers can be specified via 'ldap/server/addition'. 
 Type=str
 Categories=service-ldap
 
 [ldap/server/addition]
-Description[de]=Sekundäre LDAP-Server, falls primärer nicht erreichbar
-Description[en]=Secondary LDAP servers, used if primary server is not reachable
-Type=str
-Categories=service-ldap
-
-[ldap/binaryattributes]
-Description[de]=Von Zeichensatz-Kodierungen ausgenommene Attribute
-Description[en]=Attributes which don't get encoded/decoded
+Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit 'ldap/server/name' festgelegt, weitere Server können über diese Variable angegeben werden. 
+Description[en]= Several LDAP servers can be operated in a UCS domain. The primary one used is specified with 'ldap/server/name'. Further servers can be specified via this variable.
 Type=str
 Categories=service-ldap
 
 [ldap/server/ip]
-Description[de]=IP-Adresse des lokalen LDAP-Servers
-Description[en]=IP address of the local LDAP server
+Description[de]=Die IP-Adresse des lokalen LDAP-Servers (siehe 'ldap/server/name').
+Description[en]=The IP address of the local LDAP server (see 'ldap/server/name').
 Type=str
 Categories=service-ldap
 
 [ldap/base]
-Description[de]=Basis DN des LDAP-Verzeichnis
-Description[en]=Base DN of the LDAP directory
+Description[de]=Die LDAP-Basis DN des LDAP-Verzeichnis. Diese Einstellung kann nach der Installation des Domänencontroller Master nicht mehr verändert werden.
+Description[en]=Base DN of the LDAP directory. This setting cannot be changed after the installation of the master domain controller.
 Type=str
 Categories=service-ldap
 ReadOnly=yes
 
 [ldap/hostdn]
-Description[de]=DN dieses Rechners
-Description[en]=DN of this machine
+Description[de]=Die LDAP-DN des Rechnerkontos des Systems.
+Description[en]=The LDAP DN of the host account of the system.
 Type=str
 Categories=service-ldap
 ReadOnly=yes
 
 [ldap/policy/cron]
-Description[de]=Cronjob-Intervall für das regelmäßige Ausführen der Univention Directory Policy-Skripte
-Description[en]=Cron job interval for regular execution of Univention Directory Policy scripts
+Description[de]=Das Intervall für die regelmäßige Ausführung der Univention Directory Policy-Skripte. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'
+Description[en]=The interval for the regular execution of Univention Directory Policy scripts. The configuration is done in Cron syntax, see 'man 5 crontab'.
 Type=str
 Categories=service-ldap
 
-[lilo/append]
-Description[de]=Zusätzliche Kernel-Optionen für den Lilo-Bootloader
-Description[en]=Additional kernel options passed to the Lilo boot loader
-Type=str
-Categories=deprecated
-
-[lilo/append/.*acpi]
-Description[de]=Hinzufügen von ACPI Option für Lilo
-Description[en]=Add ACPI options for lilo
-Type=str
-Categories=deprecated
-
-[lilo/boot]
-Description[de]=Wo lilo installiert werden soll
-Description[en]=Where to install lilo
-Type=str
-Categories=deprecated
-
-[lilo/compact]
-Description[de]=Beschleunigung des Bootvorgangs mt Lilo
-Description[en]=Increase speed for boot process with lilo
-Type=str
-Categories=deprecated
-
-[lilo/default]
-Description[de]=Standardkernel für den Lilo-Bootloader
-Description[en]=Default kernel for the Lilo boot loader
-Type=str
-Categories=deprecated
-
-[lilo/root]
-Description[de]=Wurzelverzeichnis für Lilo-Bootloader
-Description[en]=Root device of Lilo boot loader
-Type=str
-Categories=deprecated
-
-[lilo/vga]
-Description[de]=Graphikmodus in Lilo
-Description[en]=Graphics mode for lilo
-Type=str
-Categories=deprecated
-
 [locale]
-Description[de]=Installierte Lokalisierungen (Sprache der Oberfläche, Zeichensätze, etc.)
-Description[en]=Installed localisation data (Interface language, character sets, etc.)
+Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable gespeichert die installierten Locales.
+Description[en]=Localisation properties such as time/date formats and the preferred translation are specified in locales. The installed locales can be selected using the UMC module 'System settings'. This variable contains the installed locales.
+Type=str
+Categories=system-locale
+
+[locale/default]
+Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable definiert die Standard-Locale des Systems.
+Description[en]=Localisation properties such as time/date formats and the preferred translation are specified in locales. The installed locales can be selected using the UMC module 'System settings'. This variable selects the default locale for the system.
 Type=str
 Categories=system-locale
 
 [locale/keymap]
-Description[de]=Tastaturbelegung
-Description[en]=Keyboard layout
+Description[de]=Die verwendete Tastaturbelegung. Sie kann über das UMC-Modul 'Systemeinstellungen' geändert werden.
+Description[en]=The keyboard layout in use. It can modified using the UMC module 'System settings'.
 Type=str
-Categories=System
+Categories=system-locale
 
 [logrotate/rotate]
-Description[de]=Logdateien werden nach diesem Kriterium rotiert, z.B. "daily", "weekly" (default), "monthly", "size 100M" etc.
-Description[en]=Log files are rotated according to this criterion, e.g. "daily", "weekly" (default), "monthly", "size 100M" etc.
-Type=int
+Description[de]=Logdateien werden nach diesem Kriterium rotiert, z.B. "daily", "weekly" or "monthly", "size 100M". Siehe 'man logrotate.conf' für weitere Formate.
+Description[en]=Log files are rotated according to this criterion, e.g. "daily", "weekly" (default), "monthly", "size 100M". See 'man logrotate.conf' for additional formats.
+Type=str
 Categories=system-base
 
 [logrotate/rotate/count]
-Description[de]=Rotations-Intervall für System-Logdateien
-Description[en]=Rotation interval for system log files
+Description[de]=Das Rotations-Intervall für System-Logdateien. Steht 'logrotate/rotate' etwa auf 'weekly' und ist hier '12' eingetragen wird nach zwölf Wochen rotiert.
+Description[en]=The rotation interval for system log files. If e.g. 'logrotate/rotate' is set to 'weekly' and if '12' is configured here, rotation occurs after 12 weeks.
 Type=int
 Categories=system-base
 
 [logrotate/notifempty]
-Description[de]=Leere Logdateien nicht rotieren
-Description[en]=Do not rotate the log if it is empty
-Type=str
+Description[de]=Wenn diese Option aktiviert ist, werden leere Logdateien nicht rotiert.
+Description[en]=If this option is activated, empty logfiles are not rotated.
+Type=bool
 Categories=system-base
 
 [logrotate/compress]
-Description[de]=Definiert, ob die Logdateien in /var/log/univention bei der Rotation komprimiert werden sollen.
-Description[en]=Defines whether to compress log files in /var/log/univention on rotation.
-Type=str
+Description[de]=Definiert, ob die Logdateien bei der Rotation komprimiert werden sollen.
+Description[en]=Defines whether to compress log files during rotation.
+Type=bool
 Categories=system-base
 
 [logrotate/missingok]
-Description[de]=Wenn die Log-Datei fehlt, gehe zur nächsten ohne Ausgabe einer Fehlermeldung
-Description[en]=If the log file is missing, go on to the next one without issuing an error message
-Type=str
+Description[de]=Ist diese Option aktiviert, wird beim Fehlen einer Logdatei die Verarbeitung ohne Ausgabe einer Fehlermeldung fortgesetzt.
+Description[en]=If this option is activated, proceed without printint an error message if a logfile is missing.
+Type=bool
 Categories=system-base
 
 [logrotate/create]
-Description[de]=Modus, Besitzer und Gruppe neuer Logdateien nach der Rotation
-Description[en]=Mode, owner and group of new log files after rotation
+Description[de]=Konfiguriert Modus, Besitzer und Gruppe einer Logdatei nach der Rotation, z.B. '640 root adm'.
+Description[en]=Configures mode, owner and group of a log file after rotation, e.g. '640 root adm'.
 Type=str
 Categories=system-base
 
 [nameserver1]
-Description[de]=1. DNS-Server
-Description[en]=1. DNS server
+Description[de]=Der erste zu verwendende DNS-Server.
+Description[en]=The first DNS server to be used.
 Type=str
 Categories=system-network
 
 [nameserver2]
-Description[de]=2. DNS-Server
-Description[en]=2. DNS server
+Description[de]=Der zweite zu verwendende DNS-Server.
+Description[en]=The secondDNS server to be used.
 Type=str
 Categories=system-network
 
 [nameserver3]
-Description[de]=3. DNS-Server
-Description[en]=3. DNS server
+Description[de]=Der dritte zu verwendende DNS-Server.
+Description[en]=The third DNS server to be used.
 Type=str
 Categories=system-network
 
 [nameserver/option/timeout]
-Description[de]=Nach wievielen Sekunden der nächste DNS-Server gefragt wird
-Description[en]=After how may seconds the next DNS servers is used
+Description[de]=Diese Variable konfiguriert die maximale Wartezeit für eine DNS-Anfrage. Nach Erreichen wird der nächste DNS-Server abgefragt.
+Description[en]=This variable configures the maximum waiting time for DNS request. Once elapse the next DNS server is queried.
 Type=int
 Categories=system-network
 
-[proxy/password]
-Description[de]=Passwort für die Authentifizierung am HTTP-Proxy-Server
-Description[en]=Password for the proxy authentication
-Type=str
-Categories=service-proxy
-
-[proxy/username]
-Description[de]=Benutzername für die Authentifizierung am HTTP-Proxy-Server
-Description[en]=Username for the proxy authentication
-Type=str
-Categories=service-proxy
-
 [server/role]
-Description[de]=Systemrolle
-Description[en]=System role
+Description[de]=Die Systemrolle des Systems.
+Description[en]=The system role of the system.
 Type=str
 Categories=system-base
+ReadOnly=yes
 
 [ntp/autostart]
-Description[de]=Automatischer Start des NTP-Zeitdienstes beim Systemstart
-Description[en]=Automatically start the Network Time Protocol daemon on system startup
-Type=bool
+Description[de]=Die Variable konfiguriert den Startmodus des NTP-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the NTP service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=str
 Categories=service-base
 
 [ntp/signed]
-Description[de]=NTP Signierung aktivieren
-Description[en]=Activate Signed NTP
+Description[de]=Windows-Clients, die in eine Samba 4-Domäne gejoint wurden, akzeptieren nur signierte NTP-Zeitanfragen. Wird diese Option aktiviert, werden die NTP-Pakete durch Samba 4 signiert. 
+Description[en]=Windows clients joined in a Samba 4 domain only accept signed NTP time requests. If this option is activated, the NTP replies are signed by Samba 4. 
 Type=bool
 Categories=system-base
 
 [ntp/tinker/panic]
-Description[de]=Maximale Zeitdifferenz zum NTP Server in Sekunden die synchronisiert wird (für beliebige Zeitdifferenz auf "0" setzen)
-Description[en]=Maximum time difference to the NTP server in seconds which is synchronized (set to "0" for any time difference)
+Description[de]=Die maximale Zeitdifferenz zum NTP Server in Sekunden die synchronisiert wird (für beliebige Zeitdifferenz auf '0' setzen).
+Description[en]=The maximum time difference to the NTP server in seconds which is synchronised (set to '0' for any time difference).
 Type=int
 Categories=system-base
 
 [timeserver]
-Description[de]=Der erste NTP-Server
-Description[en]=The first NTP server
+Description[de]=In einer Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
+Description[en]=Usually the master domain controller functions as the time server of a domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
 
 [timeserver2]
-Description[de]=Der zweite NTP-Server
-Description[en]=The second NTP server
+Description[de]=In einer Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
+Description[en]=Usually the master domain controller functions as the time server of a domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
 
 [timeserver3]
-Description[de]=Der dritte NTP-Server
-Description[en]=The third NTP server
+Description[de]=In einer Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
+Description[en]=Usually the master domain controller functions as the time server of a domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
 
 [ucr/output/brief]
-Description[de]=UCR aktiviert für das Kommando "search" standardmäßig die Option --brief (yes, no)
-Description[en]=UCR activates the option --brief of the search-command by default (yes, no)
+Description[de]=Ist diese Option aktiviert, wird bei der Suche nach UCR-Variablen auf der Kommandozeile mit dem Kommando 'search' die Variablenbeschreibung nicht mit ausgegeben. Ist die Variable nicht gesetzt, wird die Variablenbeschreibung angezeigt.
+Description[en]=if this option is activated, the variable description is not displayed when searching for UCR variables on the commandline using the 'search' command. If the variable is unset, the variable descriptions are shown.
 Type=bool
 Categories=system-base
 
 [ucr/replog/enabled]
-Description[de]=UCR aktiviert für die Kommandos "set" und "unset" ein Replikations-Logfile (yes, no)
-Description[en]=UCR activates a replication logfile for UCR commands "set" and "unset" (yes, no)
+Description[de]=Ist diese Option aktiviert, werden alle Änderungen an UCR-Variablen in der Transaktions-Logdatei /var/log/univention/config-registry.replog prokolliert. Ist die Option nicht gesetzt, erfolgt keine Protokollierung.
+Description[en]=If this option is activated all changes to UCR variables are logged to the transaction logfile /var/log/univention/config-registry.replog. If the option is unset, no changes are logged.
 Type=bool
 Categories=system-base
 
 [ucr/backup/enabled]
-Description[de]=Aktivert ein nächtliches Backup der UCR-Daten (yes, no)
-Description[en]=Create nightly backup of UCR data (yes, no)
+Description[de]=Ist diese Option aktiviert, wird durch einen Cronjob täglich eine Sicherung der UCR-Daten unter /var/univention-backup/ucr-backup_*.tgz durchgeführt. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
+Description[en]=If this option is activated, a daily Cron job performs a backup of all UCR data under /var/univention-backup/ucr-backup_*.tgz. If the variable is unset, no backup occurs.
 Type=bool
 Categories=system-base
 
@@ -736,8 +640,3 @@ Description[en]=Complexity of the internally used machine passwords, as pwgen op
 Type=str
 Categories=service-base
 
-[sshd/motd]
-Description[de]=Mit dieser Variable kann konfiguriert werden, ob  beim SSH-Login ein Hinweis auf das UCS-Managementsystem angezeigt wird. Ist die Variable nicht gesetzt, wird der Hinweis angezeigt.
-Description[en]=This variable configures, whether a hint towards the UCS management system is displayed during SSH login. If the variable is not set, the hint is shown.
-Type=bool
-Categories=service-ssh

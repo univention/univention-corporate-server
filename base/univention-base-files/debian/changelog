@@ -1,3 +1,21 @@
+univention-base-files (3.0.3-3) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+      Remove UCR variable description for domain/domainname for now, see #32506
+      Remove UCR variable description for interfaces/.*/hosts, unused
+      Remove UCR variable description for kernel/clobber_modules, kernel/do_bootfloppy,
+        kernel/do_initrd, kernel/ramdisk and kernel/silent_loader; no longer used, 
+        see Bug 32509
+      Revamp category settings
+      Remove UCR variable descriptions for lilo/*, removed in UCS 3.0	
+      Remove UCR variable description for ldap/binaryattributes, causes more 
+        confusion than being useful.
+      Remove UCR variable descriptions for proxy/password and proxy/username,
+        see Bug #18397
+      Mark server/role as ReadOnly	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 06 Sep 2013 11:02:54 +0200
+
 univention-base-files (3.0.3-2) unstable; urgency=low
 
   * Move motd startup for welcome message from /etc/pam.d/common-session to

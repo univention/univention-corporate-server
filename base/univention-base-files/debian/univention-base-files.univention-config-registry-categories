@@ -4,8 +4,8 @@ name[en]=System: Base Settings
 icon=system-base.gif
 
 [system-network]
-name[de]=System: Netzwerkeinstellungen
-name[en]=System: Network Configuration
+name[de]=Netzwerkeinstellungen
+name[en]=Network configuration
 icon=system-network.gif
 
 [system-repository]
@@ -14,8 +14,13 @@ name[en]=System: Repository
 icon=system-repository.gif
 
 [system-locale]
-name[de]=System: Spracheinstellungen
-name[en]=System: Locale Settings
+name[de]=Spracheinstellungen
+name[en]=Locale settings
+icon=system-locale.gif
+
+[system-kernel]
+name[de]=Kerneleinstellungen
+name[en]=Kernel settings
 icon=system-locale.gif
 
 [system-password]
@@ -29,8 +34,8 @@ name[en]=System: Available Services
 icon=system-services.gif
 
 [service-ssh]
-name[de]=Dienst: SSH
-name[en]=Service: SSH
+name[de]=SSH
+name[en]=SSH
 icon=service-ssh.gif
 
 [service-ldap]
