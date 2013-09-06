@@ -1,9 +1,9 @@
-#!/bin/bash -e
+#!/usr/bin/python
 #
 # Univention Home Mounter
 #  mount the homedir
 #
-# Copyright 2004-2012 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,167 +30,146 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ldap.filter
+import os
+import pwd
+import socket
+import stat
+import subprocess
+import sys
+import syslog
+import time
 
-if [ -n "$1" ]; then
-	username="$1"
-	USER="$1"
-else
-	username="$USER"
-fi
+import univention.uldap
 
-# Get the passwd line for current user.
-# If a user has a numerical username, getent would treat the name
-# as the uid and deliver consequently a wrong or an empty result.
+MOUNTS_FILE = '/var/lib/univention-home-mounter/mounts'
+MOUNTS_FILE_LOCK = '/var/lib/univention-home-mounter/mounts.lock'
 
-numeric=""
-numeric=`echo "$username" | egrep ^[0-9]+$` || true
-first_numeric=`echo "$username" | egrep ^[0-9].*$` || true
+NEW_HOME_DIR_MODE = stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH
 
-eval "$(univention-config-registry shell ldap/hostdn)"
+def mounted_directories():
+	'''return the mount points of all current mounts'''
+	for line in open('/proc/mounts', 'rb').readlines():
+		fields = line.split(' ')
+		yield fields[1]
 
-if [ -z "$numeric" ] && [ -z "$first_numeric" ]; then
-	pw_entry=`getent passwd "$username"`
+def mount_source(mount_point):
+	'''return the device for the first mount on <mount_point>'''
+	for line in open('/proc/mounts', 'rb').readlines():
+		fields = line.split(' ')
+		if fields[1] == mount_point:
+			return fields[0]
+	return None
 
-	for i in 1 2 3 4 5 6; do
-		pw_fields[$i]=`echo $pw_entry | awk -F ':' '{ print $'$i' }'`
-	done
+def readlink_f(path):
+	'''resolve the symlinks in <path> (like "readlink -f")'''
+	newpath = os.path.realpath(path)
+	if not os.path.isdir(os.path.dirname(newpath)):
+		return None
+	if path.endswith('/') and os.path.exists(newpath):
+		if not os.path.isdir(newpath):
+			return None
+	if os.path.islink(newpath) and not os.path.exists(newpath):
+		return None
+	return newpath
 
-	HOME=${pw_fields[6]}
-	UID_NUMBER=${pw_fields[3]}
-	GID_NUMBER=${pw_fields[4]}
-else
-	ldap_result=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -LLL uid="$username" homeDirectory uidNumber gidNumber`
-	if [ $? = 0 ]; then
-		HOME=`echo "$ldap_result" | grep ^homeDirectory | sed -e 's|homeDirectory: ||'`
-		UID_NUMBER=`echo "$ldap_result" | grep ^uidNumber | sed -e 's|uidNumber: ||'`
-		GID_NUMBER=`echo "$ldap_result" | grep ^gidNumber | sed -e 's|gidNumber: ||'`
-	else
-		pw_entry=`grep ^"$username" /etc/passwd`
+def hostname_short():
+	'''return first part of hostname (like "hostname -s")'''
+	return socket.gethostname().split('.', 1)[0]
 
-		for i in 1 2 3 4 5 6; do
-			pw_fields[$i]=`echo $pw_entry | awk -F ':' '{ print $'$i' }'`
-		done
+def hostname_fqdn():
+	'''return full hostname (like "hostname -f")'''
+	return socket.getfqdn()
 
-		HOME=${pw_fields[6]}
-		UID_NUMBER=${pw_fields[3]}
-		GID_NUMBER=${pw_fields[4]}
-	fi
+def get_homeattr(username):
+	'''return automountInformation of <username>, if any'''
+	connection = univention.uldap.getMachineConnection(ldap_master=False)
+	search_filter = ldap.filter.filter_format(
+		"(&(objectClass=posixAccount)(objectClass=automount)(uid=%s))",
+		(username, )
+	)
+	for _, attributes in connection.search(filter=search_filter, attr=['automountInformation'], sizelimit=1):
+		for info in attributes.get('automountInformation', []):
+			return info
+	return None
 
-fi
+def get_username():
+	'''return the username to use (first argument if exists else USER environment variable)'''
+	if len(sys.argv) >= 2 and sys.argv[1]:
+		return sys.argv[1]
+	else:
+		return os.environ['USER']
 
-test -z "$USER" && exit 1
-test -z "$HOME" && exit 1
+def get_userinfo():
+	'''return passwd information of the user to be used'''
+	try:
+		return pwd.getpwnam(get_username())
+	except KeyError:
+		return None
 
-mounted_directories() {
-	cut -d ' ' -f 2 < /proc/mounts
-}
-mount_source() {
-	awk -F ' ' "\$2 == \"$1\" { print \$1 }" < /proc/mounts
-}
+def userinfo_is_usable(user):
+	'''test for empty/unusable passwd information'''
+	return user is not None and user.pw_name and user.pw_dir
 
-REALHOME=`readlink -f "$HOME"` || true
-if [ "$UID_NUMBER" -lt 1000 ] || \
-		([ -n "$REALHOME" ] && mounted_directories | grep -q "^$REALHOME"); then
-	exit 0
-fi
+def is_system(user):
+	'''check UID to see if <user> is a domain user or local/system user'''
+	return user.pw_uid < 1000
 
-if [ ! -x /usr/bin/univention_policy_result ] && [ ! -x /usr/bin/univention-policy-result ]; then
-	logger "missing /usr/bin/univention_policy_result"
-	exit 0
-fi
+def create_home(directory, owner):
+	'''create home <directory> for <owner> if not exists'''
+	if not os.access(directory, os.F_OK):
+		syslog.syslog("Creating home directory %r" % (directory, ))
+		os.makedirs(directory)
+		os.chown(directory, owner.pw_uid, owner.pw_gid)
+		os.chmod(directory, NEW_HOME_DIR_MODE)
 
-# XXX: This will mount /home from the file server. Afterwards, /home/foo
-# will be created if it doesn't exist yet. However, I think we should only
-# mount /home/foo rather than /home. The only problem is, that if /home/foo
-# doesn't exist yet, this will fail. We could probably login via krsh before
-# to make sure it exists and mount it then. Running krsh here isn't pretty
-# though.
-homeattr=`ldapsearch -x -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -z 1 "(&(objectClass=posixAccount)(objectClass=automount)(uid=$USER))" automountInformation -LLL | /usr/bin/ldapsearch-wrapper | sed -n 's/automountInformation: \(.*\)/\1/p'`
-if [ -z "$homeattr" ]; then
-	eval "$(univention-config-registry shell server/role)"
+def parse_automount(information):
+	'''parse automountInformation string into its three parts'''
+	if ' ' in information:
+		flags, unc = information.split(' ', 1)
+		if ':' in unc:
+			host, path = unc.split(':', 1)
+			return (flags, host, path, )
+	return (None, None, None, )
 
-	if [ -z "$server_role" ]; then
-		# Thin Client
-		# Homedir already mounted?
-		if `mounted_directories | grep -q "/ramdisk/home"` ; then
-			source=`mount_source /ramdisk/home`
-			logger "Home directory already mounted: $source"
-			exit 0
-		fi
-		# Otherwise look for servers
-		eval "$(univention-config-registry shell ldap/mydn)"
-		for server in `univention_policy_result -D "$ldap_hostdn" -y /etc/machine.secret -s "$ldap_mydn" | grep "univentionFileServer" | sed -e 's|.*univentionFileServer=||' | sed -e 's|"||g'`; do
-			if [ -n "$server" ]; then
-				# mount in heartbeat-situations needs to be done from /ha/home, but normally /home fits
-				if mount -t nfs $server:/home /ramdisk/home || mount -t nfs $server:/ha/home /ramdisk/home
-					then
-					dotlockfile -l /var/lib/univention-home-mounter/mounts.lock
-					echo "/ramdisk/home "`date +%s` >> /var/lib/univention-home-mounter/mounts
-					dotlockfile -u /var/lib/univention-home-mounter/mounts.lock
-					logger "Mounted home directory: $server:/home"
-					exit 0
-				else
-					logger "Failed to mount home directory: $server:/home"
-				fi
-			fi
-		done
-		logger "Failed to mount home directory"
-		exit 1
-	else
+def mount_nfs_home(host, path, mount_point):
+	'''mount NFS home share <path> from <host> on <mount_point>'''
+	if subprocess.call(('mount', '-t', 'nfs', '%s:%s' % (host, path, ), mount_point, )) == 0:
+		subprocess.check_call(('dotlockfile', '-l', MOUNTS_FILE_LOCK, ))
+		with open(MOUNTS_FILE, 'ab') as mounts:
+			mounts.write('%s %d\n' % (mount_point, time.time(), ))
+		subprocess.check_call(('dotlockfile', '-u', MOUNTS_FILE_LOCK, ))
+		return True
+	return False
+
+def main():
+	'''main method'''
+	syslog.openlog('univention-mount-homedir')
+	user = get_userinfo()
+	if not userinfo_is_usable(user):
+		sys.exit(1)
+	realhome = readlink_f(user.pw_dir)
+	if is_system(user) or (realhome and realhome in mounted_directories()):
+		sys.exit(0)
+	if not realhome:
+		realhome = user.pw_dir
+	homeattr = get_homeattr(user.pw_name)
+	if not homeattr:
 		# create home dir, if started from rshd
-		if [ -z "$REALHOME" ]; then
-			REALHOME="$HOME"
-		fi
+		create_home(realhome, user)
+		sys.exit(0)
+	else:
+		(_, host, path, ) = parse_automount(homeattr)
+		if not host or not path:
+			syslog.syslog("Bad information in LDAP. Not mounting home directory.")
+			sys.exit(1)
+		if host in (hostname_fqdn(), hostname_short(), ) and readlink_f(path) == realhome:
+			syslog.syslog("Home directory is local.")
+			sys.exit(0)
+		create_home(realhome, user)
+		if not mount_nfs_home(host, path, realhome):
+			syslog.syslog("Failed to mount home directory: %r" % (realhome, ))
+			sys.exit(1)
 
-		if ! [ -e "$REALHOME" ]; then
-		        logger "Need to create homdir $REALHOME"
-			mkdir -p "$REALHOME"
-			# Use the username as owner instead of the uid.
-			# In case a numerical username identical with the
-			# given uid exists, chown would set the numerical username
-			# as owner.
-			chown "$username":$GID_NUMBER "$REALHOME"
-			chmod go-rw "$REALHOME"
-		fi
-		exit 0
-	fi
-	
-	exit 0
-fi
-
-if [ -z "$REALHOME" ]; then
-	REALHOME="$HOME"
-fi
-
-host=`echo "$homeattr" | sed 's/.* \([^ ]*\):\([^ ]*\)/\1/'`
-path=`echo "$homeattr" | sed 's/.* \([^ ]*\):\([^ ]*\)/\2/'`
-if [ -z "$host" ] || [ -z "$path" ]; then
-	logger "Bad information in LDAP. Not mounting home directory."
-	exit 1
-fi
-
-if ( [ "$host" = "`hostname -f`" ] || [ "$host" = "`hostname -s`" ] ) && \
-		[ "`readlink -f \"$path\"`" = "$REALHOME" ]; then
-	logger "Home directory is local."
-	exit 0
-fi
-
-if ! [ -e "$REALHOME" ]; then
-        logger "Create homdir $REALHOME"
-	mkdir -p "$REALHOME"
-	# Use the username as owner instead of the uid.
-	# In case a numerical username identical with the
-	# given uid exists, chown would set the numerical username
-	# as owner.
-	chown "$username":$GID_NUMBER "$REALHOME"
-	chmod go-rw "$REALHOME"
-fi
-
-if mount -t nfs "$host:$path" "$REALHOME"; then
-	dotlockfile -l /var/lib/univention-home-mounter/mounts.lock
-	echo "$REALHOME "`date +%s` >> /var/lib/univention-home-mounter/mounts
-	dotlockfile -u /var/lib/univention-home-mounter/mounts.lock
-else
-	logger "Failed to mount home directory: $HOME"
-	exit 1
-fi
+if __name__ == "__main__":
+	main()

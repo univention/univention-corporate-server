@@ -1706,6 +1706,18 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  writes the password to /etc/mysql.secret. This file can be read by root.  If a password is
 		  already set, nothing will be done (<ulink url="&ucsbug;19354">Bug 19354</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The logging of univention-mount-homedir now uses
+		  <emphasis>univention-mount-homedir</emphasis> instead of <emphasis>logger</emphasis>
+		  at the start of every message and the log messages were improved
+		  (<ulink url="&ucsbug;31256">Bug 31256</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The performance of univention-mount-homedir was improved to reduce server load during
+		  concurrent logins (<ulink url="&ucsbug;31256">Bug 31256</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 </section>
