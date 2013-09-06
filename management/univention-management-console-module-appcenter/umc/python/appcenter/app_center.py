@@ -456,7 +456,7 @@ class Application(object):
 	@classmethod
 	def all_installed(cls, package_manager, force_reread=False, only_local=False, localize=True):
 		applications = cls.all(force_reread=force_reread, only_local=only_local, localize=localize)
-		return [app for app in applications if app.is_installed(package_manager)]
+		return [app for app in applications if app.is_installed(package_manager) and app.allowed_on_local_server()]
 
 	@classmethod
 	def all(cls, force_reread=False, only_local=False, localize=True):

@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.27-1) unstable; urgency=low
+
+  * Fixed problem with Installed Apps and wrong ServerRole (Bug #32426)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 06 Sep 2013 12:06:21 +0200
+
 univention-management-console-module-appcenter (3.0.26-1) unstable; urgency=low
 
   * Support new READMEs UNINSTALL and POST_UNINSTALL (Bug #32502)
