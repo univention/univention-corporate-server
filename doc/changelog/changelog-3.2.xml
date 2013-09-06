@@ -1462,6 +1462,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  Unused Univention Configuration Registry variables have been removed from
 		  univention-antivir-mail (<ulink url="&ucsbug;30900">Bug 30900</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The licensing information of univention-antivir-mail has been updated
+		  (<ulink url="&ucsbug;31332">Bug 31332</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
