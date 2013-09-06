@@ -66,6 +66,8 @@ define([
 		dialog = _dialog;
 	});
 
+	var systemInfoLib = undefined;
+
 	// define umc/tools
 	var tools = {};
 	lang.mixin(tools, {
@@ -612,6 +614,7 @@ define([
 						title: _('Send feedback mail')
 					});
 
+
 					var content = '<pre>' + message + '</pre><br>' + feedbackLink;
 					var hideLink = _('Hide server error message');
 					var showLink = _('Show server error message');
@@ -631,7 +634,29 @@ define([
 					}));
 					container.addChild(titlePane);
 
-					dialog.alert( container );
+					if (systemInfoLib === undefined) {
+						try {
+							systemInfoLib = require('umc/modules/sysinfo/lib');
+						} catch(e) {
+							systemInfoLib = null;
+						}
+					}
+					if (systemInfoLib) {
+						var options = [{
+							name: 'close',
+							label: _('Close')
+						}, {
+							name: 'send',
+							'default': true,
+							label: _('Send to vendor'),
+							callback: lang.hitch(this, function() {
+								systemInfoLib.traceback(message, feedbackLink);
+							})
+						}];
+						dialog.confirm( container, options, statusMessage );
+					} else {
+						dialog.alert( container );
+					}
 				} else {
 					// all other cases
 					topic.publish('/umc/actions', 'error', status);
@@ -1288,7 +1313,4 @@ define([
 
 	return tools;
 });
-
-
-
 

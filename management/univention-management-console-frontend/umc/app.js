@@ -705,9 +705,9 @@ define([
 			})).then(function() {
 				// nothing to do
 				_favoritesDisabled = false;
-			}, lang.hitch(this, function() {
+			}, function() {
 				_favoritesDisabled = true;
-			}));
+			});
 		},
 
 		_loadModules: function(progressDialog) {
@@ -716,7 +716,6 @@ define([
 				var _modules = lang.getObject('modules', false, data) || [];
 				var modules = [];
 
-				// register error handler
 				var ndeps = 0;
 				var modulesLoadedDeferred = new Deferred();
 				var modulesLoaded = {};
@@ -790,6 +789,7 @@ define([
 					}
 				};
 
+				// register error handler
 				require.on('error', function(err) {
 					// count the loaded dependencies
 					if (err.message == 'scriptError') {
@@ -850,8 +850,8 @@ define([
 			return deferred;
 		},
 
-		_createModuleStore: function(modules, categories, favoritesStr) {
-			return new Observable(new _ModuleStore(modules, categories, favoritesStr));
+		_createModuleStore: function(modules, categories) {
+			return new Observable(new _ModuleStore(modules, categories));
 		},
 
 		getModules: function(/*String?*/ category) {
@@ -1022,7 +1022,7 @@ define([
 			this._insertSeparatorToSettingsMenu();
 			this._helpMenu.addChild(new MenuItem({
 				label: _('Usage statistics'),
-				onClick : lang.hitch(this, '_showPiwikDialog')
+				onClick: lang.hitch(this, '_showPiwikDialog')
 			}));
 		},
 

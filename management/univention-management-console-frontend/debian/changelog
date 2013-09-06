@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.64-1) unstable; urgency=low
+
+  * Provide a more user-friendly way of sending errors (Bug #31056)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 06 Sep 2013 13:07:03 +0200
+
 univention-management-console-frontend (3.0.63-1) unstable; urgency=low
 
   * Bug #30744: fix typo

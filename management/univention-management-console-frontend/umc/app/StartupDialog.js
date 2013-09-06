@@ -77,7 +77,7 @@ define([
 
 		_stackContainer: null,
 
-	   _pages: null,
+		_pages: null,
 
 		_gotoPage: function(idx) {
 			this._stackContainer.selectChild(this._pages[idx]);
