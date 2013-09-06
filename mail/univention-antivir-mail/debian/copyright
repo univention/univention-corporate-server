@@ -25,3 +25,13 @@ You should have received a copy of the GNU Affero General Public
 License with the Debian GNU/Linux or Univention distribution in file
 /usr/share/common-licenses/AGPL-3; if not, see
 <http://www.gnu.org/licenses/>.
+
+
+=====================================================
+
+This package contains the following files
+- daily.cvd
+- main.cvd
+which are part of the ClamAV project and are licensed under the
+GNU General Public License version 2.
+See <http://www.clamav.net/lang/en/> for details.

@@ -1,3 +1,9 @@
+univention-antivir-mail (5.0.0-2) unstable; urgency=low
+
+  * update license (Bug #31332)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 30 Aug 2013 15:38:49 +0200
+
 univention-antivir-mail (5.0.0-1) unstable; urgency=low
 
   * removed scalix stuff (Bug #30900)
