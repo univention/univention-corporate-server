@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test appending and removing IP addresses for all computer roles
-## tags: [udm-computers]
+## tags: [udm-computers,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Append ptr_records during dns/ptr_record creation
-## tags: [udm,apptest]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

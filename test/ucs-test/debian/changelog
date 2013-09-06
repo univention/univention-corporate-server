@@ -1,3 +1,9 @@
+ucs-test (4.0.103-1) unstable; urgency=low
+
+  * Re-check the apptest tag (Bug #31785)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Sep 2013 09:43:15 +0200
+
 ucs-test (4.0.102-1) unstable; urgency=low
 
   * Skip 52replication_sysvol on a lone Samba4 DC (Bug #29062)

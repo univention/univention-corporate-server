@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test indirect group memberships of users
-## tags: [udm]
+## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

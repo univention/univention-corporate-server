@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: univention-license-check
 ## roles: [domaincontroller_master]
+## tags: [apptest]
 ## exposure: careful
 ## packages:
 ##   - univention-config

@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Remove nameserver during dns/forward_zone modification
-## tags: [udm,apptest]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## packages:

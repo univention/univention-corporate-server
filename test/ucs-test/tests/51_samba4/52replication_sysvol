@@ -9,6 +9,7 @@
 ## - domaincontroller_slave
 ## tags:
 ##  - basic
+##  - apptest
 
 . "$TESTLIBPATH/shares.sh" || exit 137
 . "$TESTLIBPATH/random.sh" || exit 137

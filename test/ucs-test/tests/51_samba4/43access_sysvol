@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: "Accessing sysvol with smbclient"
 ## exposure: safe
+## tags: [apptest]
 ## packages:
 ##  - univention-samba4
 ## roles:

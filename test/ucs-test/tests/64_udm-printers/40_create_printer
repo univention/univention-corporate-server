@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create shares/printer and set sambaName during modification
-## tags: [udm,apptest]
+## tags: [udm]
 ## roles:
 ##   - domaincontroller_master
 ##   - domaincontroller_slave

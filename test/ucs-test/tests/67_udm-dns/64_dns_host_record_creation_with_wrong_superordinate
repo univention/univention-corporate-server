@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create dns/host record with wrong object type as superordinate
-## tags: [udm,apptest]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## bugs: [15660]
 ## exposure: careful
