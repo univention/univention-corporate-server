@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.13-1) unstable; urgency=low
+
+  * Set connector/s4/autostart to yes in the join script if another S4
+    connector host was not found (Bug #32309)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Sep 2013 07:34:33 +0200
+
 univention-s4-connector (8.0.12-4) unstable; urgency=low
 
   * Fixed backup of db file in postrm (Bug #32451)

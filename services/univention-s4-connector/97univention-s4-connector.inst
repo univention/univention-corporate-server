@@ -217,7 +217,7 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 
 	ucs_addServiceToLocalhost "${NAME}" "$@"
 
-	univention-config-registry set connector/s4/autostart?yes
+	univention-config-registry set connector/s4/autostart=yes
 
 	old_sleep="$connector_s4_poll_sleep"
 	old_retry="$connector_s4_retryrejected"
