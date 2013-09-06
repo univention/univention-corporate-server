@@ -841,7 +841,11 @@
 				Univention Directory Manager modules that support superordinates now
 				respect the autosearch setting via UCR when changing the superordinate
 				in the advanced search form (<ulink url="&ucsbug;29498">Bug 29498</ulink>).
+		</simpara></listitem>
 
+		<listitem><simpara>
+				Added a button to easily send traceback information of unexpected
+				errors to Univention (<ulink url="&ucsbug;31056">Bug 31056</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
