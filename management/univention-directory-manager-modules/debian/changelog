@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.22-12) unstable; urgency=low
+
+  * Ship listener with python-univention-directory-manager (Bug #32408)
+  * Update translation file for new UDM modules and other strings
+    (Bug #32411, Bug #32412, Bug #32403, Bug #32406, Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 06 Sep 2013 16:31:26 +0200
+
 univention-directory-manager-modules (9.0.22-11) unstable; urgency=low
 
   * Add ucsversion range options also to settings/udm_*

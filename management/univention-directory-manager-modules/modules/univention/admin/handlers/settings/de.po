@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-07 06:38+0100\n"
+"POT-Creation-Date: 2013-09-06 16:04+0200\n"
 "PO-Revision-Date: 2011-12-01 09:47+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -54,19 +54,23 @@ msgstr "Name"
 
 #: cn.py:65 default.py:144 default.py:145 directory.py:179 directory.py:180
 #: extended_attribute.py:373 extended_attribute.py:374 extended_options.py:152
-#: extended_options.py:153 license.py:292 lock.py:78 lock.py:79 packages.py:79
+#: extended_options.py:153 ldapacl.py:151 ldapacl.py:152 ldapschema.py:131
+#: ldapschema.py:132 license.py:292 lock.py:78 lock.py:79 packages.py:79
 #: packages.py:80 printermodel.py:82 printermodel.py:83 printeruri.py:80
 #: printeruri.py:81 prohibited_username.py:79 prohibited_username.py:80
 #: sambaconfig.py:183 sambaconfig.py:184 sambadomain.py:230 sambadomain.py:231
-#: service.py:65 service.py:66 syntax.py:160 syntax.py:161
-#: umc_operationset.py:104 umc_operationset.py:105 usertemplate.py:352
-#: usertemplate.py:353 xconfig_choices.py:169 xconfig_choices.py:170
+#: service.py:65 service.py:66 syntax.py:160 syntax.py:161 udm_hook.py:151
+#: udm_hook.py:152 udm_module.py:151 udm_module.py:152 udm_syntax.py:151
+#: udm_syntax.py:152 umc_operationset.py:104 umc_operationset.py:105
+#: usertemplate.py:352 usertemplate.py:353 xconfig_choices.py:169
+#: xconfig_choices.py:170
 msgid "General"
 msgstr "Allgemein"
 
 #: cn.py:65 default.py:144 directory.py:179 extended_attribute.py:373
-#: extended_options.py:152 sambaconfig.py:183 sambadomain.py:230 service.py:65
-#: syntax.py:160 usertemplate.py:352
+#: extended_options.py:152 ldapacl.py:151 ldapschema.py:131 sambaconfig.py:183
+#: sambadomain.py:230 service.py:65 syntax.py:160 udm_hook.py:151
+#: udm_module.py:151 udm_syntax.py:151 usertemplate.py:352
 msgid "Basic values"
 msgstr "Grundeinstellungen"
 
@@ -433,6 +437,85 @@ msgstr "Liste der Module, auf die diese Option angewandt wird."
 #: extended_options.py:141
 msgid "Mapping to LDAP objectClasses"
 msgstr "Abbildung auf LDAP-Objektklassen"
+
+#: ldapacl.py:51
+msgid "Settings: LDAP ACL Extension"
+msgstr "Einstellungen: LDAP ACL Erweiterung"
+
+#: ldapacl.py:56
+msgid "ACL name"
+msgstr "Name der ACL"
+
+#: ldapacl.py:67
+msgid "ACL file name"
+msgstr "Dateiname der ACL"
+
+#: ldapacl.py:78
+msgid "ACL data"
+msgstr "ACL-Daten"
+
+#: ldapacl.py:88 ldapschema.py:88 udm_hook.py:88 udm_module.py:88
+#: udm_syntax.py:88
+msgid "Active"
+msgstr "Aktiv"
+
+#: ldapacl.py:99 ldapschema.py:99 udm_hook.py:99 udm_module.py:99
+#: udm_syntax.py:99
+msgid "App identifier"
+msgstr "App-Kennung"
+
+#: ldapacl.py:109 ldapschema.py:109 udm_hook.py:109 udm_module.py:109
+#: udm_syntax.py:109
+msgid "Software package"
+msgstr "Softwarepaket"
+
+#: ldapacl.py:119 ldapschema.py:119 udm_hook.py:119 udm_module.py:119
+#: udm_syntax.py:119
+msgid "Software package version"
+msgstr "Version des Softwarepakets"
+
+#: ldapacl.py:129 udm_hook.py:129 udm_module.py:129 udm_syntax.py:129
+msgid "Minimal UCS version"
+msgstr "Minimale UCS-Version"
+
+#: ldapacl.py:139 udm_hook.py:139 udm_module.py:139 udm_syntax.py:139
+msgid "Maximal UCS version"
+msgstr "Maximale UCS-Version"
+
+#: ldapacl.py:157 ldapschema.py:137 udm_hook.py:157 udm_module.py:157
+#: udm_syntax.py:157
+msgid "Metadata"
+msgstr "Metadaten"
+
+#: ldapacl.py:162 udm_hook.py:162 udm_module.py:162 udm_syntax.py:162
+msgid "UCS Version Dependencies"
+msgstr "UCS-Versionsabhängigkeiten"
+
+#: ldapacl.py:166 ldapschema.py:142 udm_hook.py:166 udm_module.py:166
+#: udm_syntax.py:166
+msgid "Activated"
+msgstr "Aktiviert"
+
+#: ldapacl.py:219 ldapschema.py:193 udm_hook.py:219 udm_module.py:219
+#: udm_syntax.py:219
+msgid "packageversion: The value needs to increase"
+msgstr "packageversion: Der Wert muss erhöht werden."
+
+#: ldapschema.py:51
+msgid "Settings: LDAP Schema Extension"
+msgstr "Einstellungen: LDAP-Schemaerweiterung"
+
+#: ldapschema.py:56
+msgid "Schema name"
+msgstr "Name des LDAP-Schemas"
+
+#: ldapschema.py:67
+msgid "Schema file name"
+msgstr "Dateiname des LDAP-Schemas"
+
+#: ldapschema.py:78
+msgid "Schema data"
+msgstr "Schema-Daten"
 
 #: license.py:50
 msgid "Settings: License"
@@ -914,6 +997,54 @@ msgstr "Speicherung"
 msgid "An LDAP attribute is required of which the information will be stored."
 msgstr ""
 "Ein LDAP-Attribut wird benötigt dessen Information gespeichert werden soll."
+
+#: udm_hook.py:51
+msgid "Settings: UDM Hook"
+msgstr "Einstellungen: UDM Hook"
+
+#: udm_hook.py:56
+msgid "UDM hook name"
+msgstr "Name des UDM Hooks"
+
+#: udm_hook.py:67
+msgid "UDM hook file name"
+msgstr "Dateiname des UDM Hooks"
+
+#: udm_hook.py:78
+msgid "UDM hook data"
+msgstr "UDM Hook-Daten"
+
+#: udm_module.py:51
+msgid "Settings: UDM Module"
+msgstr "Einstellungen: UDM Modul"
+
+#: udm_module.py:56
+msgid "UDM module name"
+msgstr "Name des UDM Moduls"
+
+#: udm_module.py:67
+msgid "UDM module file name"
+msgstr "Dateiname des UDM Moduls"
+
+#: udm_module.py:78
+msgid "UDM module data"
+msgstr "UDM Moduldaten"
+
+#: udm_syntax.py:51
+msgid "Settings: UDM Syntax"
+msgstr "Einstellungen: UDM Syntax"
+
+#: udm_syntax.py:56
+msgid "UDM syntax name"
+msgstr "Name der UDM Syntax"
+
+#: udm_syntax.py:67
+msgid "UDM syntax file name"
+msgstr "Dateiname der UDM Syntax"
+
+#: udm_syntax.py:78
+msgid "UDM syntax data"
+msgstr "UDM Syntaxdaten"
 
 #: umc_operationset.py:50
 msgid "Settings: UMC operation set"

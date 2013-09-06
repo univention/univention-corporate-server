@@ -386,7 +386,7 @@ class GzipBase64Upload( Upload ):
 			try:
 				data = zlib.decompress(gziped_data, 16+zlib.MAX_WBITS)
 			except:
-				raise univention.admin.uexceptions.valueError( _( 'Value must be Gzip compressed and Base64 encoded: %s' ) % str( value ) )
+				raise univention.admin.uexceptions.valueError( _( 'Value must be gzip compressed and Base64 encoded: %s' ) % str( value ) )
 		except:
 			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( value ) )
 		else:
