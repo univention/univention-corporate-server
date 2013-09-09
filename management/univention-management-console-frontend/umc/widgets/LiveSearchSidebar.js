@@ -173,13 +173,14 @@ define([
 
 			// build together the search function
 			var regex  = new RegExp(searchPattern, 'i');
-			query = {
+			var query = {
 				test: function(value, obj) {
 					var string = lang.replace(
-						'{name} {description} {categories}', {
+						'{name} {description} {categories} {keywords}', {
 							name: obj.name,
 							description: obj.description,
-							categories: obj.categories.join(' ')
+							categories: obj.categories.join(' '),
+							keywords: (obj.keywords || []).join(' ')
 						});
 					return regex.test(string);
 				}
