@@ -1930,6 +1930,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  script removes the Samba 3 service from the server object and removes the default Samba UCR
 		  variables (<ulink url="&ucsbug;32445">Bug 32445</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  New Samba 3 installations now uses <emphasis>SMB2</emphasis> as the maximum supported SMB
+		  protocol. On updated systems <emphasis>NT1</emphasis> is still used.
+		  (<ulink url="&ucsbug;32394">Bug 32394</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -2044,6 +2051,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  An unjoin script has been added to the <emphasis>univention-samba4</emphasis> package. The unjoin
 		  script removes the Samba 4 service from the server object and removes the default Samba UCR
 		  variables (<ulink url="&ucsbug;32446">Bug 32446</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  New Samba 4 installations now uses <emphasis>SMB2</emphasis> as the maximum supported SMB
+		  protocol. On updated systems <emphasis>NT1</emphasis> is still used.
+		  (<ulink url="&ucsbug;32394">Bug 32394</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
