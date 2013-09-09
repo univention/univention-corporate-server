@@ -2206,6 +2206,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  script removes the S4 Connector service from the server object and removes the default S4 Connector UCR
 		  variables (<ulink url="&ucsbug;32451">Bug 32451</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The synchronization of Samba4 password change timestamps now correctly considers the local timezone
+		  variables (<ulink url="&ucsbug;32227">Bug 32227</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
