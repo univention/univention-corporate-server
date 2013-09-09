@@ -12,7 +12,13 @@ univention-base-files (3.0.3-3) unstable; urgency=low
         confusion than being useful.
       Remove UCR variable descriptions for proxy/password and proxy/username,
         see Bug #18397
-      Mark server/role as ReadOnly	
+      Mark server/role as ReadOnly
+      Remove UCR variable description for version/security-patchlevel, no longer
+        used since UCS 3.0
+      Mark version/version, version/patchlevel, version/releasename and version/erratalevel 
+	as ReadOnly, they are set automatically during the updates
+      Remove UCR variable descriptions for installer/device/.*/fs, installer/device/.*/mp,
+	and installer/device/.*/name; only used during installation, see #32527
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 06 Sep 2013 11:02:54 +0200
 

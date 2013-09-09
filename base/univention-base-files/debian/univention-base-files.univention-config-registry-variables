@@ -20,7 +20,7 @@ Categories=system-base
 [sshd/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des SSH-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
 Description[en]=This variable configures the start mode of the SSH service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
-Type=bool
+Type=str
 Categories=service-ssh
 
 [sshd/port]
@@ -443,200 +443,180 @@ Type=bool
 Categories=system-base
 
 [ucr/encoding/strict]
-Description[de]=Akzeptiert nur gültige UTF-8 Eingaben [yes]
-Description[en]=Only accept valid UTF-8 encoded input [yes]
+Description[de]=Ist diese Option aktiviert, werden beim Setzen UTF-8 codierte  Werten und Schlüsseln akzeptiert.
+Description[en]=If this option is activated, only UTF-8 encoded values and keys are accepted.
 Type=bool
 Categories=system-base
 
 [version/patchlevel]
-Description[de]=Patchlevel der UCS Version
-Description[en]=Patchlevel of the UCS version
+Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während des Updates automatisch gesetzt und enthält den Stand des Patchlevel Releases.
+Description[en]=Four types of UCR updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during the update and contains the version of the installed patch level release.
 Type=int
 Categories=system-base
-
-[version/security-patchlevel]
-Description[de]=Security-Patchlevel der UCS Version
-Description[en]=Security patchlevel of the UCS version
-Type=int
-Categories=system-base
+ReadOnly=yes
 
 [version/erratalevel]
-Description[de]=Errata-Patchlevel der UCS Version
-Description[en]=Errata patchlevel of the UCS version
+Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während des Updates automatisch gesetzt und enthält den Stand der installierten Errata-Updates.
+Description[en]=Four types of UCR updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during the update and contains the version of the installed errata updates.
 Type=int
 Categories=system-base
+ReadOnly=yes
 
 [version/version]
-Description[de]=Hauptversion der installierten UCS-Version
-Description[en]=Major version of UCS
+Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während des Updates automatisch gesetzt und enthält die Version aus Major und Minor-Update.
+Description[en]=Four types of UCR updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during the update and contains the version of major and minor update.
 Type=str
 Categories=system-base
+ReadOnly=yes
 
 [version/releasename]
-Description[de]=Codename des UCS-Release
-Description[en]=Codename for UCS releases
+Description[de]=Diese Variable enthält den Codenamen des UCS-Releases.
+Description[en]=This variable contains the codename of the UCS release.
+Type=str
+Categories=system-base
+ReadOnly=yes
+
+[cron/*/time]
+Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Diese Variable setzt die Ausführungszeit in Cron-Syntax, siehe 'man 5 crontab'
+Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable specifies the execution time in Cron syntax, see 'man 5 crontab'.
 Type=str
 Categories=system-base
 
-[cron/example/time]
-Description[de]=Uhrzeit im Cron-Format zu der der Befehl ausgeführt wird
-Description[en]=Time in cron format when the specified command will be executed
+[cron/*/time]
+Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Diese Variable legt den auszuführenden Befehl fest.
+Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable specifies the command to be run.
 Type=str
-Categories=Misc
+Categories=system-base
 
-[cron/example/command]
-Description[de]=Befehl für den Cron-Job "example", der via Cron ausgeführt wird
-Description[en]=Command for the cronjob "example" that will be executed via cron
+[cron/*/user]
+Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Ist die Variable nicht gesetzt, wird der Crob-Job als Benutzer root ausgeführt. Mit dieser Variable kann ein abweichender Benutzer angegeben werden.
+Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. As standard, the Cron job is run as the root user. This variable can be used to specify a different user.
 Type=str
-Categories=Misc
+Categories=system-base
 
-[cron/example/description]
-Description[de]=Beschreibung für den Cron-Job "example"
-Description[en]=Description for the cronjob "example"
+[cron/*/mailto]
+Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Wird hier eine Email-Adresse hinterlegt, wird die Ausgabe des Cron-Jobs per Email dorthin gesendet.
+Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. If an e-mail address is specified here, the output of the Cron job is sent there per e-mail.
 Type=str
-Categories=Misc
+Categories=system-base
 
-[cron/example/user]
-Description[de]=Benutzer, der den Cron-Job ausgeführen soll, Standard "root".
-Description[en]=User who shall executed the cronjob, default "root"
+[cron/*/description]
+Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Mit dieser Variable kann eine Beschreibung hinterlegt werden. 
+Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable can be used to provide a description. 
 Type=str
-Categories=Misc
-
-[cron/example/mailto]
-Description[de]=E-Mail-Adresse, an die Ausgaben des Cron-Jobs geschickt werden. Standard ist der Benutzer, unter dem der Cron-Job ausgeführt wurde. Wird der Wert "NONE" eingetragen, so wird keine E-Mail verschickt.
-Description[en]=E-mail address where the output of the cronjob will be sent to. Default is the user who executed the cronjob. If the value "NONE" is set, no email will be sent out.
-Type=str
-Categories=Misc
+Categories=system-base
 
 [cron/path]
-Description[de]=PATH-Variable, die für alle univention-ucr-cron-Jobs gilt
-Description[en]=PATH variable set for all univention-ucr-cron jobs
+Description[de]=Mit dieser Variable kann die PATH-Umgebungsvariable für die in UCR definierten Cron-Job (siehe 'cron/JOBNAME/*') gesetzt werden. Ist die Variable nicht gesetzt, gilt '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin'
+Description[en]=This variable allows the configuration of the PATH environment variable for Cron jobs defined in UCR (see 'cron/JOBNAME/*'). If the variable is unset, '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin' applies.
 Type=str
-Categories=Misc
+Categories=system-base
 
 [password/quality/credit/digits]
-Description[de]=Dies ist die minimale Anzahl von Zahlen, die in dem neuen Passwort vorkommen muss.
-Description[en]=This is the minimum number of digits that must be met for a new password.
+Description[de]=Ist die Option 'Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Diese Variable konfiguriert die minimale Anzahl von Zahlen, die in dem neuen Passwort vorkommen muss.
+Description[en]=If the option 'Password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. This variable configures the minimum number of digits in the new password.
 Type=int
 Categories=system-password
 
 [password/quality/credit/upper]
-Description[de]=Dies ist die minimale Anzahl von Grossbuchstaben, die in dem neuen Passwort vorkommen muss.
-Description[en]=This is the minimum number of upper case letters that must be met for a new password.
+Description[de]=Ist die Option 'Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Diese Variable konfiguriert die minimale Anzahl von Grossbuchstaben, die in dem neuen Passwort vorkommen muss.
+Description[en]=If the option 'Password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. This variable configures the minimum number of upper case letters that must be met for a new password.
 Type=int
 Categories=system-password
 
 [password/quality/credit/lower]
-Description[de]=Dies ist die minimale Anzahl von Kleinbuchstaben, die in dem neuen Passwort vorkommen muss.
-Description[en]=This is the minimum number of lower case letters that must be met for a new password.
+Description[de]=Ist die Option 'Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Diese Variable konfiguriert die minimale Anzahl von Kleinbuchstaben, die in dem neuen Passwort vorkommen muss.
+Description[en]=If the option 'Password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. This variable configures the minimum number of lower case letters that must be met for a new password.
 Type=int
 Categories=system-password
 
 [password/quality/credit/other]
-Description[de]=Dies ist die minimale Anzahl von anderen Zeichen, die in dem neuen Passwort vorkommen muss.
-Description[en]=This is the minimum number of other characters that must be met for a new password.
+Description[de]=Ist die Option 'Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Diese Variable konfiguriert die Mindestanzahl von Zeichen in dem neuen Passwort, die keine Buchstaben oder Ziffern sind.
+Description[en]=If the option 'Password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. This variable configures the minimum number of characters in the new password which are neither letters nor digits.
 Type=int
 Categories=system-password
 
 [password/quality/forbidden/chars]
-Description[de]=Wenn eines der hier angegeben Zeichen Teil des Passworts ist, so wird das Passwort abgelehnt.
-Description[en]=If one of the given character part of the new password, then the password will be rejected.
+Description[de]=Ist die Option 'Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Wenn eines der hier angegeben Zeichen Teil des Passworts ist, so wird das Passwort abgelehnt.
+Description[en]=If the option 'Password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. If one of the characters specified here is part of the new password, the password will be rejected.
 Type=str
 Categories=system-password
 
 [password/quality/required/chars]
-Description[de]=Eines der hier angegeben Zeichen muss Teil des Passworts sein, ansonsten wird das Passwort abgelehnt.
-Description[en]=One of the given characters must be part of the new password, otherwise the password will be rejected.
+Description[de]=Ist die Option 'Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Die hier angegebenen Zeichen/Ziffern müssen im neuen Passwort enthalten sein.
+Description[en]=If the option 'Password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. The characters/digits need to be present in the new password.
 Type=str
 Categories=system-password
 
 [syslog/mail/mirrorto/syslog]
-Description[de]=Definiert, ob Log-Meldungen aus dem Bereich mail in der Log-Datei /var/log/syslog gespeichert werden.
-Description[en]=Specifies whether log messages from the facility mail should be saved in /var/log/syslog.
+Description[de]=Ist diese Option aktiviert, werden Logdaten des Mail-Dienstes nicht nur in den Logdateien /var/log/mail*, sondern auch in /var/log/syslog gespeichert.
+Description[en]=If this option is activated, logfiles of the mail service or not only logged in /var/log/mail*, but additionally in /var/log/syslog as well.
 Type=bool
 Categories=system-base
 
 [xorg/keyboard/options/XkbLayout]
-Description[de]=XKB Tastaturlayout, normalerweise der Ländercode
-Description[en]=XKB keyboard layout name, usually the country or language code
+Description[de]=Das verwendete Tastaturlayout. Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst. Beispiel: 'de' für ein deutsches Layout.
+Description[en]=The keyboard layout to be used. An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst. Example: 'de' for a German layout.
 Type=str
-Categories=system-desktop
-
-[xorg/keyboard/options/XkbVariant]
-Description[de]=XKB Tastaturvarianten
-Description[en]=XKB keyboard variant components
-Type=str
-Categories=system-desktop
-
-[xorg/keyboard/options/XkbModel]
-Description[de]=XKB Tastaturmodell
-Description[en]=XKB keyboard model name
-Type=str
-Categories=system-desktop
-
-[xorg/keyboard/options/XkbOptions]
-Description[de]=Xorg Tastaturoptionen
-Description[en]=Xorg keyboard options
-Type=str
-Categories=system-desktop
-
-[update/secure_apt]
-Description[de]=Erlaubt nur die Installation von signierten Paketen.
-Description[en]=Only allow the installation of signed packages.
-Type=bool
 Categories=system-base
 
-[cron/autostart]
-Description[de]=Automatischer Start des CRON-Dienstes beim Systemstart
-Description[en]=Automatically start the CRON daemon on system startup
+[xorg/keyboard/options/XkbVariant]
+Description[de]=Von einigen Tastaturlayouts (siehe 'xorg/keyboard/options/XkbLayout') existieren verschiedene Varianten (z.B. "tote Tasten" bei deutschem Layout). Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst.
+Description[en]=Some keyboard layouts (see 'xorg/keyboard/options/XkbLayout') use different variants (e.g. "dead keys" in the German layout). An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst.
+Type=str
+Categories=system-base
+
+[xorg/keyboard/options/XkbModel]
+Description[de]=Das verwendete Tastaturmodell, z.B. 'pc105'. Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst.
+Description[en]=The keyboard model in use, e.g. 'pc105'. An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst.
+Type=str
+Categories=system-base
+
+[xorg/keyboard/options/XkbOptions]
+Description[de]=Hier können weitere Tastatur-Optionen konfiguriert werden. Eine Übersicht der möglichen Werte findet sich unter /usr/share/X11/xkb/rules/base.lst.
+Description[en]=Additonal keyboard options can be configured here. An overview of possible values can be found at /usr/share/X11/xkb/rules/base.lst.
+Type=str
+Categories=system-base
+
+[update/secure_apt]
+Description[de]=Der Zugriff auf das Univention Online-Repository wird durch Verwendung von Secure Apt über Signaturen kryptografisch gesichert. Ist diese Option aktiviert, sind Updates und Softwareinstallationen nur möglich wenn alle eingebundenen Repositorys gültige Signaturen bereitstellen.
+Description[en]=Access to the Univention online repository is cryptographically secured via the use of Secure Apt employing signatures. If this option is activated, updates and installations are only possible if all enabled repositories provide valid signatures.
 Type=bool
+Categories=service-software-management
+
+[cron/autostart]
+Description[de]=Die Variable konfiguriert den Startmodus des Cron-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Cron service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=str
 Categories=service-base
 
 [inetd/autostart]
-Description[de]=Automatischer Start des Interner "super-server"-Dienstes beim Systemstart
-Description[en]=Automatically start the internet "super-server" daemon on system startup
-Type=bool
+Description[de]=Die Variable konfiguriert den Startmodus des Inetd-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Inetd service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=str
 Categories=service-base
 
 [nscd/autostart]
-Description[de]=Automatischer Start des Caching-Dienstes für Namen beim Systemstart
-Description[en]=Automatically start the Name Service Caching daemon on system startup
-Type=bool
+Description[de]=Die Variable konfiguriert den Startmodus des Nameserver Cache-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Nameserver Cache service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=str
 Categories=service-base
 
 [portmap/autostart]
-Description[de]=Automatischer Start des RPC-Registrierungsdienstes beim Systemstart
-Description[en]=Automatically start the RPC registry daemon on system startup
-Type=bool
-Categories=service-base
-
-[installer/device/.*/fs]
-Description[de]=Partitionierungsinformation von der Installation: Dateisystem
-Description[en]=Partition information from installation: file system
-Type=str
-Categories=service-base
-
-[installer/device/.*/mp]
-Description[de]=Partitionierungsinformation von der Installation: Einhängepunkt
-Description[en]=Partition information from installation: mount point
-Type=str
-Categories=service-base
-
-[installer/device/.*/name]
-Description[de]=Partitionierungsinformation von der Installation: Gerätename
-Description[en]=Partition information from installation: device name
+Description[de]=Die Variable konfiguriert den Startmodus des RPC-Registrierungsdienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the RPC registry daemon. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
 Type=str
 Categories=service-base
 
 [machine/password/length]
-Description[de]=Länge der intern genutzten Maschinen-Passwörter (default: 20)
-Description[en]=Length of the internally used machine passwords (default: 20)
+Description[de]=Das Passwort des Rechnerkontos wird in der Regel automatisch erstellt und rotiert. Es wird in der Datei /etc/machine.secret gespeichert. Diese Variable konfiguriert die Länge des generierten Passworts. Ist die Variable nicht gesetzt, ist das Passwort 20 Zeichen lang.
+Description[en]=The password for the computer account is usually automatically created and rotated. It is stored in the file /etc/machine.secret. This variable configures the length of the generated password. If the variable is unset, the password consists of 20 characters.
 Type=int
 Categories=service-base
 
 [machine/password/complexity]
-Description[de]=Komplexität der intern genutzten Maschinen-Passwörter, als pwgen Option (default: scn)
-Description[en]=Complexity of the internally used machine passwords, as pwgen option (default: scn)
+Description[de]=Die Maschinenpasswörter werden mit dem pwgen-Tool erzeugt. Diese Variable konfiguriert die Parameter, die bei der Generierung übergeben werden (siehe 'man pwgen'). Ist die Variable nicht gesetzt gilt 'scn'.
+Description[en]=The machine passwords are generated with the tool pwgen. This variable configures the parameters used during generation (see 'man pwgen'). If the variable is unset, 'scn' applies.
 Type=str
 Categories=service-base
 
