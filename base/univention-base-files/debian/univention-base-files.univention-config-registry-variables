@@ -1,18 +1,17 @@
 [proxy/http]
-Description[de]=Der Proxyserver, der für HTTP-Verbindungen genutzt werden soll, z.B. http://192.168.1.100:3128. Wenn der Proxy eine Authenzifizierung erfordert, kann Benutzername und Passwort im Format http://benutzername:passwort@192.168.1.100:3128 angegeben werden.
-Description[en]=The proxy server for HTTP connections, e.g.http://192.168.1.100:3128. If the proxy requires authentication, the username and the password
-can be provided in the format http://username:password@192.168.1.100:3128.
+Description[de]=Der zu verwendende HTTP-Proxyserver, z.B. http://192.168.1.100:3128. Wenn der Proxy eine Authenzifizierung erfordert, kann ein Benutzername und ein Passwort im Format http://benutzername:passwort@192.168.1.100:3128 angegeben werden.
+Description[en]=The HTTP proxy server, e.g.http://192.168.1.100:3128. If the proxy requires authentication, the username and the password can be provided in the format http://username:password@192.168.1.100:3128.
 Type=str
 Categories=system-network
 
 [proxy/no_proxy]
-Description[de]=Kommaseparierte Liste von Domänennamen, für die der Proxy nicht verwendet werden soll. Eine Ausnahme für eine Domäne wie univention.de wirkt sich auch auf eine Unterdomäne wie apt.univention.de aus.
-Description[en]=Comma-separated list of domain names for which the proxy should not be consulted. An exception for a domain like univention.de also applies to a subdomain like apt.univention.de.
+Description[de]=Eine kommaseparierte Liste von Domänennamen, für die der Proxy nicht verwendet werden soll. Eine Ausnahme für eine Domäne wie univention.de wirkt sich auch auf eine Unterdomäne wie apt.univention.de aus.
+Description[en]=A comma-separated list of domain names for which the proxy should not be consulted. An exception for a domain like univention.de also applies to a subdomain like apt.univention.de.
 Type=str
 Categories=system-network
 
 [umask]
-Description[de]=Die Umask legt fest, mit welchen Berechtigungen Dateien standardmässig angelegt werden (sofern keine abweichenden Rechte gesetzt wurden). Die Berechtigungen werden als oktale Bitmaske übergeben (das Format der Bitmaske ist identisch zu dem vom chown (das mit 'man chown' auf einer Shell abgerufen werden). Änderungen an der Umask sollten sorgfältig geprüft werden, eine zu laxe Umask kann zu Sicherheitsproblemen führen.
+Description[de]=Die Umask legt fest, mit welchen Berechtigungen Dateien standardmässig angelegt werden (sofern keine abweichenden Rechte gesetzt wurden). Die Berechtigungen werden als oktale Bitmaske übergeben (das Format der Bitmaske ist identisch zu dem vom chown (das mit 'man chown' auf einer Shell abgerufen werden)). Änderungen an der Umask sollten sorgfältig geprüft werden, eine zu laxe Umask kann zu Sicherheitsproblemen führen.
 Description[en]=The umask configures the file permissions, with which files are created by default (unless other permissions are given). The permissions are configured as an octal bitmask (the format is identical to the chown command documented in 'man chown'). Changes to the umask should be tested carefully, since a too permissive umask may lead to security problems.
 Type=int
 Categories=system-base
@@ -24,21 +23,21 @@ Type=str
 Categories=service-ssh
 
 [sshd/port]
-Description[de]=Konfiguriert den Port, auf dem der SSH-Dienst auf eingehende Verbindungen wartet. Ist der SSH-Server öffentlich erreichbar, können so simple Brute-Force-Angriffe auf Passwörter reduziert werden.
-Description[en]=Configures the port on which the SSH daemon is listening for incoming connections. This may prevent simple brute force attacks on passwords ff the SSH server is publicly accessible.
+Description[de]=Die Variable konfiguriert den Port, auf dem der SSH-Dienst auf eingehende Verbindungen wartet.
+Description[en]=This variable configures the port on which the SSH daemon is listening for incoming connections.
 Type=int
 Categories=service-ssh
 
 [sshd/permitroot]
 Description[de]=Konfiguriert, ob der Benutzer 'root' sich per SSH anmelden kann: Der Wert 'yes' erlaubt die Anmeldung ohne Einschränkung, 'without-password' erlaubt nur die Public-Key-Authentizierung ohne Passwörter und 'no' unterbindet die root-Anmeldung komplett.
 Description[en]=Configures, whether the user root can login via SSH: The value 'yes' permits the login without limitations, 'without-password' only allows public key authentication without passwords and 'no' denies the root login altogether.
-Type=bool
+Type=str
 Categories=service-ssh
 
 [sshd/xforwarding]
-Description[de]=Die Einstellung ('yes'/'no') legt fest, ob eine auf dem entfernten Rechner gestartete X11-Verbindung weitergeleitet wird. Diese Einstellung muss aktiviert sein, um Benutzern einen grafischen SSH-Login auf dem Server zu ermöglichen.
+Description[de]=Diese Einstellung ('yes'/'no') legt fest, ob eine auf dem entfernten Rechner gestartete X11-Verbindung weitergeleitet wird. Diese Einstellung muss aktiviert sein, um Benutzern einen grafischen SSH-Login auf dem Server zu ermöglichen.
 Description[en]=This setting ('yes'/'no') configures, whether a X11 connection on the remote host is forwarded. This setting needs to be activated to allow users a graphical login to the server.
-Type=bool
+Type=str
 Categories=service-ssh
 
 [sshd/xdisplayoffset]
@@ -48,9 +47,9 @@ Type=int
 Categories=service-ssh
 
 [sshd/xuselocalhost]
-Description[de]=Diese Variable legt fest, ob im Rahmen der X11-Weiterleitung die DISPLAY-Umgebungsvariable auf 'localhost' gesetzt wird. Dies verhindert, das der SSH-Client auf das X11-Display des weiterleitenden Servers zugreifen kann.
-Description[en]=This variable configures, whether the DISPLAY variable is mapped to 'localhost' during X11 forwarding. This prevents the access of the SSH client to the X11 display of the forwarding server.
-Type=bool
+Description[de]=Diese Variable legt fest ('yes'/'no'), ob im Rahmen der X11-Weiterleitung die DISPLAY-Umgebungsvariable auf 'localhost' gesetzt wird. Dies verhindert, das der SSH-Client auf das X11-Display des weiterleitenden Servers zugreifen kann.
+Description[en]=This variable configures ('yes'/'no'), whether the DISPLAY variable is mapped to 'localhost' during X11 forwarding. This prevents the access of the SSH client to the X11 display of the forwarding server.
+Type=str
 Categories=service-ssh
 
 [sshd/challengeresponse]
@@ -94,7 +93,7 @@ Categories=system-network
 Description[de]=Der NetBIOS-Domänenname (verwendet in Samba 3, in Samba 4 wird überwiegend der DNS/Kerberos-Domänenname verwendet).
 Description[en]=The NetBIOS domain name (used in Samba 3, Samba 4 predominantly uses the DNS/Kerberos domainname).
 Type=str
-Categories=system-network
+Categories=service-samba
 ReadOnly=yes
 
 [gateway]
@@ -109,8 +108,8 @@ Description[en]=The IPv6 address of the standard gateway. For IPv6, a gateway mu
 Categories=system-network
 
 [hostname]
-Description[de]=Der Name des Rechners. 
-Description[en]=The name of the system / host name
+Description[de]=Der Name des Rechners. Der Rechnername kann nach dem Domänenbeitritt nicht mehr geändert werden.
+Description[en]=The name of the system / host name. The hostname cannot be changed after the domain join.
 Type=str
 Categories=system-network
 ReadOnly=yes
@@ -122,8 +121,8 @@ Type=str
 Categories=system-network
 
 [interfaces/.*/broadcast]
-Description[de]=Eine Variable in der Form interfaces/INTERFACE/address konfiguriert die Broadcast-Adresse der Netzwerkschnittstelle. Die Broadcast-Adresse ist optional.
-Description[en]=A variable in the form interfaces/INTERFACE/address configures the broadcast address of the network interface. The broadcast address is optional.
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/broadcast konfiguriert die Broadcast-Adresse der Netzwerkschnittstelle. Die Broadcast-Adresse ist optional.
+Description[en]=A variable in the form interfaces/INTERFACE/broadcast configures the broadcast address of the network interface. The broadcast address is optional.
 Type=str
 Categories=system-network
 
@@ -140,14 +139,14 @@ Type=str
 Categories=system-network
 
 [interfaces/.*/network]
-Description[de]=Eine Variable in der Form interfaces/INTERFACE/network konfiguriert die Netzwer-Adresse der Netzwerkschnittstelle. Die Adresse ist optional.
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/network konfiguriert die Netzwerk-Adresse der Netzwerkschnittstelle. Die Adresse ist optional.
 Description[en]=A variable in the form interfaces/INTERFACE/network configures the network address of the network interface. The address is optional.
 Type=str
 Categories=system-network
 
 [interfaces/.*/order]
-Description[de]=Eine Variable in der Form interfaces/INTERFACE/network konfiguriert die Reihenfolge der Einträge für Netzwerkschnittstellen. Pro Netzwerkschnittstelle kann eine Zahl konfiguriert werden, anhand derer die Schnittstellen dann sortiert werden.
-Description[en]=A variable in the form interfaces/INTERFACE/network configures the order of the network interfaces. A number can be configured per network interface. Based on that the interfaces are sorted.
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/network konfiguriert die Reihenfolge der Einträge für Netzwerkschnittstellen. Pro Netzwerkschnittstelle kann eine Zahl konfiguriert werden, anhand derer die Schnittstellen dann aufsteigend sortiert werden.
+Description[en]=A variable in the form interfaces/INTERFACE/network configures the order of the network interfaces. A number can be configured per network interface. Based on that the interfaces are sorted in ascending order.
 Type=int
 Categories=system-network
 
@@ -207,18 +206,18 @@ Categories=system-network
 
 [interfaces/primary]
 Description[de]=Existieren mehrere Netzwerkschnittstellen auf einem System, kann mit dieser Variable die primäre angegeben werden. Ist hier kein Wert gesetzt, wird 'eth0' verwendet.
-Description[en]=If multiple network interfaces exist on a system, this variable allows configuring the primary interface. If no value is set, 'eth0' is assumed.
+Description[en]=If multiple network interfaces exist on a system, this variable allows configuring the primary network interface. If no value is set, 'eth0' is assumed.
 Type=str
 Categories=system-network
 
 [hosts/static/.*]
-Description[de]=Mit Variablen nach dem Schema hosts/static/IPADDRESSE=RECHNERNAME können Einträge zur /etc/hosts hinzugefügt werden. Beispiel: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'
+Description[de]=Mit Variablen nach dem Schema hosts/static/IPADRESSE=RECHNERNAME können Einträge zur /etc/hosts hinzugefügt werden. Beispiel: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'
 Description[en]=With variables following the scheme hosts/static/IPADDRESS=HOSTNAME entries can be added to /etc/hosts. Example: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'
 Type=str
 Categories=system-base
 
 [kernel/modules]
-Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrere Einträge müssen durch ein Semikolon getrennt werden.
+Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. Mit dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrere Einträge müssen durch ein Semikolon getrennt werden.
 Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows the loading of modules, which couldn't/cannot be automatically detected. If multiple modules are needed, they must be separated by a semicolon.
 Type=str
 Categories=system-kernel
@@ -236,14 +235,14 @@ Type=str
 Categories=system-kernel
 
 [kernel/fs/inotify/max_user_instances]
-Description[de]=Die Obergrenze an Dateien, die vom Inotify pro Benutzer-ID überwacht werden können.
-Description[en]=Th upper limit of files which can be watched by Inotify per user ID.
+Description[de]=Die Obergrenze an Dateien, die durch den Inotify-Dienst pro Benutzer-ID überwacht werden können.
+Description[en]=Th upper limit of files which can be watched by the Inotify service per user ID.
 Type=int
 Categories=system-kernel
 
 [kernel/fs/inotify/max_user_watches]
-Description[de]=Dies spezifiziert die Obergrenze an Dateien, die von Inotify überwacht werden können.
-Description[en]=The upper limit of files which can be watched by Inotify.
+Description[de]=Dies spezifiziert die Obergrenze an Dateien, die durch den Inotify-Dienst überwacht werden können.
+Description[en]=The upper limit of files which can be watched by the Inotify service.
 Type=int
 Categories=system-kernel
 
@@ -255,7 +254,7 @@ Categories=system-kernel
 
 [ldap/backup]
 Description[de]=Der/die Domänencontroller Backup-Systeme der Domäne. Mehrfache Einträge müssen mit einem Leerzeichen getrennt werden.
-Description[en]=The backup domain controller system(s) in the domain. Multiple entries need to be separated with a blank
+Description[en]=The backup domain controller system(s) in the domain. Multiple entries need to be separated with a blank.
 Type=str
 Categories=service-ldap
 
@@ -278,14 +277,14 @@ Type=str
 Categories=service-ldap
 
 [ldap/server/ip]
-Description[de]=Die IP-Adresse des lokalen LDAP-Servers (siehe 'ldap/server/name').
-Description[en]=The IP address of the local LDAP server (see 'ldap/server/name').
+Description[de]=Die IP-Adresse des lokalen primären LDAP-Servers (siehe 'ldap/server/name').
+Description[en]=The IP address of the local primary LDAP server (see 'ldap/server/name').
 Type=str
 Categories=service-ldap
 
 [ldap/base]
-Description[de]=Die LDAP-Basis DN des LDAP-Verzeichnis. Diese Einstellung kann nach der Installation des Domänencontroller Master nicht mehr verändert werden.
-Description[en]=Base DN of the LDAP directory. This setting cannot be changed after the installation of the master domain controller.
+Description[de]=Die Basis DN des LDAP-Verzeichnis. Diese Einstellung kann nach der Installation des Domänencontroller Master nicht mehr verändert werden.
+Description[en]=The base DN of the LDAP directory. This setting cannot be changed after the installation of the master domain controller.
 Type=str
 Categories=service-ldap
 ReadOnly=yes
@@ -304,13 +303,13 @@ Type=str
 Categories=service-ldap
 
 [locale]
-Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable gespeichert die installierten Locales.
+Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable speichert die installierten Locales.
 Description[en]=Localisation properties such as time/date formats and the preferred translation are specified in locales. The installed locales can be selected using the UMC module 'System settings'. This variable contains the installed locales.
 Type=str
 Categories=system-locale
 
 [locale/default]
-Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable definiert die Standard-Locale des Systems.
+Description[de]=Lokalisierungseigenschaften von Software wie verwendete Datumsformate und die gewünschte Übersetzung werden in Locales festgelegt. Über das UMC-Modul Systemeinstellungen können die installierten Locales ausgewählt werden. Diese Variable konfiguriert die Standard-Locale des Systems.
 Description[en]=Localisation properties such as time/date formats and the preferred translation are specified in locales. The installed locales can be selected using the UMC module 'System settings'. This variable selects the default locale for the system.
 Type=str
 Categories=system-locale
@@ -322,8 +321,8 @@ Type=str
 Categories=system-locale
 
 [logrotate/rotate]
-Description[de]=Logdateien werden nach diesem Kriterium rotiert, z.B. "daily", "weekly" or "monthly", "size 100M". Siehe 'man logrotate.conf' für weitere Formate.
-Description[en]=Log files are rotated according to this criterion, e.g. "daily", "weekly" (default), "monthly", "size 100M". See 'man logrotate.conf' for additional formats.
+Description[de]=Logdateien werden nach diesem Kriterium rotiert, z.B. "daily", "weekly", "monthly", oder eine Größenbegrenzung wie "size 100M". Siehe 'man logrotate.conf' für weitere Formate.
+Description[en]=Log files are rotated according to this criterion, e.g. "daily", "weekly", "monthly" or up to a size limit like "size 100M". See 'man logrotate.conf' for additional formats.
 Type=str
 Categories=system-base
 
@@ -340,8 +339,8 @@ Type=bool
 Categories=system-base
 
 [logrotate/compress]
-Description[de]=Definiert, ob die Logdateien bei der Rotation komprimiert werden sollen.
-Description[en]=Defines whether to compress log files during rotation.
+Description[de]=Ist diese Option aktiviert, werden Logdateien bei der Rotation komprimiert.
+Description[en]=If this option is activated, log files are compressed during rotation.
 Type=bool
 Categories=system-base
 
@@ -365,7 +364,7 @@ Categories=system-network
 
 [nameserver2]
 Description[de]=Der zweite zu verwendende DNS-Server.
-Description[en]=The secondDNS server to be used.
+Description[en]=The second DNS server to be used.
 Type=str
 Categories=system-network
 
@@ -376,14 +375,14 @@ Type=str
 Categories=system-network
 
 [nameserver/option/timeout]
-Description[de]=Diese Variable konfiguriert die maximale Wartezeit für eine DNS-Anfrage. Nach Erreichen wird der nächste DNS-Server abgefragt.
-Description[en]=This variable configures the maximum waiting time for DNS request. Once elapse the next DNS server is queried.
+Description[de]=Diese Variable konfiguriert die maximale Wartezeit für eine DNS-Anfrage. Nach Ablauf der Zeit wird der nächste DNS-Server abgefragt.
+Description[en]=This variable configures the maximum waiting time for DNS request. Once elapsed the next DNS server is queried.
 Type=int
 Categories=system-network
 
 [server/role]
-Description[de]=Die Systemrolle des Systems.
-Description[en]=The system role of the system.
+Description[de]=Die Systemrolle des Systems. Diese Einstellung kann nach dem Domänenbeitritt nicht mehr geändert werden.
+Description[en]=The system role of the system. This setting cannot be changed after domain join.
 Type=str
 Categories=system-base
 ReadOnly=yes
@@ -395,8 +394,8 @@ Type=str
 Categories=service-base
 
 [ntp/signed]
-Description[de]=Windows-Clients, die in eine Samba 4-Domäne gejoint wurden, akzeptieren nur signierte NTP-Zeitanfragen. Wird diese Option aktiviert, werden die NTP-Pakete durch Samba 4 signiert. 
-Description[en]=Windows clients joined in a Samba 4 domain only accept signed NTP time requests. If this option is activated, the NTP replies are signed by Samba 4. 
+Description[de]=Windows-Clients, die in eine Samba 4-Domäne gejoint wurden, akzeptieren nur signierte NTP-Zeitanfragen. Wird diese Option aktiviert, werden die NTP-Pakete durch Samba 4 signiert. Ist die Variable nicht gesetzt, erfolgt keine Signierung.
+Description[en]=Windows clients joined in a Samba 4 domain only accept signed NTP time requests. If this option is activated, the NTP replies are signed by Samba 4. If the variable is unset, no signing is done.
 Type=bool
 Categories=system-base
 
@@ -407,64 +406,64 @@ Type=int
 Categories=system-base
 
 [timeserver]
-Description[de]=In einer Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
-Description[en]=Usually the master domain controller functions as the time server of a domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
+Description[de]=In einer UCS-Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
+Description[en]=Usually the master domain controller functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
 
 [timeserver2]
-Description[de]=In einer Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
-Description[en]=Usually the master domain controller functions as the time server of a domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
+Description[de]=In einer UCS-Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
+Description[en]=Usually the master domain controller functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
 
 [timeserver3]
-Description[de]=In einer Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
-Description[en]=Usually the master domain controller functions as the time server of a domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
+Description[de]=In einer UCS-Domäne dient standardmäßig der Domänencontroller Master als Zeitserver. Über die 'timeserver', 'timeserver2' und 'timeserver3' können externe NTP-Server als Zeitquelle eingebunden werden.
+Description[en]=Usually the master domain controller functions as the time server of a UCS domain. With the variables 'timeserver', 'timeserver2' and 'timeserver3' external NTP servers can be included as time sources.
 Type=str
 Categories=system-network
 
 [ucr/output/brief]
-Description[de]=Ist diese Option aktiviert, wird bei der Suche nach UCR-Variablen auf der Kommandozeile mit dem Kommando 'search' die Variablenbeschreibung nicht mit ausgegeben. Ist die Variable nicht gesetzt, wird die Variablenbeschreibung angezeigt.
-Description[en]=if this option is activated, the variable description is not displayed when searching for UCR variables on the commandline using the 'search' command. If the variable is unset, the variable descriptions are shown.
+Description[de]=Ist diese Option aktiviert, wird bei der Suche nach Univention Configuration Registry-Variablen auf der Kommandozeile mit dem Kommando 'search' die Variablenbeschreibung nicht mit ausgegeben. Ist die Variable nicht gesetzt, wird die Variablenbeschreibung angezeigt.
+Description[en]=If this option is activated, the variable description is not displayed when searching for Univention Configuration Registry variables on the command line using the 'search' command. If the variable is unset, the variable descriptions are shown.
 Type=bool
 Categories=system-base
 
 [ucr/replog/enabled]
-Description[de]=Ist diese Option aktiviert, werden alle Änderungen an UCR-Variablen in der Transaktions-Logdatei /var/log/univention/config-registry.replog prokolliert. Ist die Option nicht gesetzt, erfolgt keine Protokollierung.
-Description[en]=If this option is activated all changes to UCR variables are logged to the transaction logfile /var/log/univention/config-registry.replog. If the option is unset, no changes are logged.
+Description[de]=Ist diese Option aktiviert, werden alle Änderungen an Univention Configuration Registry-Variablen in der Transaktions-Logdatei /var/log/univention/config-registry.replog prokolliert. Ist die Option nicht gesetzt, erfolgt keine Protokollierung.
+Description[en]=If this option is activated all changes to Univention Configuration Registry variables are logged to the transaction logfile /var/log/univention/config-registry.replog. If the option is unset, no changes are logged.
 Type=bool
 Categories=system-base
 
 [ucr/backup/enabled]
-Description[de]=Ist diese Option aktiviert, wird durch einen Cronjob täglich eine Sicherung der UCR-Daten unter /var/univention-backup/ucr-backup_*.tgz durchgeführt. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
-Description[en]=If this option is activated, a daily Cron job performs a backup of all UCR data under /var/univention-backup/ucr-backup_*.tgz. If the variable is unset, no backup occurs.
+Description[de]=Ist diese Option aktiviert, wird durch einen Cronjob täglich eine Sicherung der Univention Configuration Registry-Daten nach /var/univention-backup/ucr-backup_*.tgz durchgeführt. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
+Description[en]=If this option is activated, a daily Cron job performs a backup of all Univention Configuration Registry data tor /var/univention-backup/ucr-backup_*.tgz. If the variable is unset, no backup occurs.
 Type=bool
 Categories=system-base
 
 [ucr/encoding/strict]
-Description[de]=Ist diese Option aktiviert, werden beim Setzen UTF-8 codierte  Werten und Schlüsseln akzeptiert.
-Description[en]=If this option is activated, only UTF-8 encoded values and keys are accepted.
+Description[de]=Ist diese Option aktiviert, werden in Univention Configuration Registry nur UTF-8 codierte Werte und Variablennamen akzeptiert.
+Description[en]=If this option is activated, only UTF-8 encoded values and variable names are accepted in Univention Configuration Registry.
 Type=bool
 Categories=system-base
 
 [version/patchlevel]
-Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während des Updates automatisch gesetzt und enthält den Stand des Patchlevel Releases.
-Description[en]=Four types of UCR updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during the update and contains the version of the installed patch level release.
+Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während Updates automatisch gesetzt und enthält den Stand des Patchlevel Releases.
+Description[en]=Four types of Univention Configuration Registry updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during updates and contains the version of the installed patch level release.
 Type=int
 Categories=system-base
 ReadOnly=yes
 
 [version/erratalevel]
-Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während des Updates automatisch gesetzt und enthält den Stand der installierten Errata-Updates.
-Description[en]=Four types of UCR updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during the update and contains the version of the installed errata updates.
+Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während Updates automatisch gesetzt und enthält den Stand der installierten Errata-Updates.
+Description[en]=Four types of UCS updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during updates and contains the version of the installed errata updates.
 Type=int
 Categories=system-base
 ReadOnly=yes
 
 [version/version]
-Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während des Updates automatisch gesetzt und enthält die Version aus Major und Minor-Update.
-Description[en]=Four types of UCR updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during the update and contains the version of major and minor update.
+Description[de]=Vier Arten von UCS-Updates werden unterschieden: Major Releases (erscheinen ca. alle vier Jahre, können auch größere Veränderungen mit sich bringen), Minor Release (erscheinen ca. alle 6-8 Monate, Fehlerkorrekturen und neue Funktionen), Patchlevel Releases (erscheinen ca. alle 2-3 Monate, enthalten gegenüber einem Minor Release weniger Änderungen und der Fokus liegt auf Bugfixes) und Errata-Updates (zeitnahe Fehlerkorrekturen für Sicherheitslücken oder kritische Programmfehler). Diese Variable wird während Updates automatisch gesetzt und enthält die Version aus Major und Minor-Update.
+Description[en]=Four types of UCS updates are differentiated: Major releases (released approximately every four years, may introduce bigger changes), minor releases (released approximately every 6-8 months, error corrections and new functions), patch level releases (released every 2-3 months, less changes compared to a minor release, focus on bugfixes) and errata updates (timely bugfixes for security problems and critical bugs). This variable is set automatically during updates and contains the version of major and minor update.
 Type=str
 Categories=system-base
 ReadOnly=yes
@@ -550,7 +549,7 @@ Categories=system-password
 
 [syslog/mail/mirrorto/syslog]
 Description[de]=Ist diese Option aktiviert, werden Logdaten des Mail-Dienstes nicht nur in den Logdateien /var/log/mail*, sondern auch in /var/log/syslog gespeichert.
-Description[en]=If this option is activated, logfiles of the mail service or not only logged in /var/log/mail*, but additionally in /var/log/syslog as well.
+Description[en]=If this option is activated, log files of the mail service or not only logged in /var/log/mail*, but additionally in /var/log/syslog as well.
 Type=bool
 Categories=system-base
 
@@ -619,4 +618,3 @@ Description[de]=Die Maschinenpasswörter werden mit dem pwgen-Tool erzeugt. Dies
 Description[en]=The machine passwords are generated with the tool pwgen. This variable configures the parameters used during generation (see 'man pwgen'). If the variable is unset, 'scn' applies.
 Type=str
 Categories=service-base
-
