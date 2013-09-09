@@ -235,12 +235,12 @@ class ProgressParser( object ):
 
 	# fractions of setup scripts
 	FRACTIONS = {
-		'10_basis/12domainname'	:  5,
-		'10_basis/14ldap_basis'	: 10,
-		'30_net/10interfaces'	:  5,
-		'30_net/11ipv6interfaces'	:  5,
-		'50_software/10software'	: 50,
-		}
+		'10_basis/12domainname' : 5,
+		'10_basis/14ldap_basis' : 10,
+		'30_net/10interfaces' : 5,
+		'30_net/11ipv6interfaces' : 5,
+		'50_software/10software' : 50,
+	}
 
 	# current status
 	def __init__( self ):
@@ -249,9 +249,18 @@ class ProgressParser( object ):
 		self.reset()
 
 	def reset( self ):
+		ucr.load()
 		self.current.reset()
 		self.old.reset()
 		self.fractions = copy.copy( ProgressParser.FRACTIONS )
+		system_role = ucr.get('server/role')
+		joined = os.path.exists('/var/univention-join/joined')
+		wizard_mode = system_role == 'domaincontroller_master' and not joined
+		if not wizard_mode:
+			# when not wizard_mode, the software page is not rendered
+			#   do not use more than 50% of the progress bar for something
+			#   that cannot happen
+			self.fractions.pop('50_software/10software', None)
 		self.calculateFractions()
 
 	def calculateFractions( self ):

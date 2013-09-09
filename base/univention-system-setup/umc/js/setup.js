@@ -66,7 +66,7 @@ define([
 
 		// pages: String[]
 		//		List of all setup-pages that are visible.
-		pages: [ 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage', 'SoftwarePage' ],
+		pages: [ 'LanguagePage', 'BasisPage', 'NetworkPage', 'CertificatePage' ],
 
 		// 100% opacity during rendering the module
 		//standbyOpacity: 1,
@@ -134,19 +134,23 @@ define([
 			// set wizard mode only on unjoined DC Master
 			this.wizard_mode = ( system_role == 'domaincontroller_master') && (! values.joined);
 
-			// we are in locale mode if the user is __systemsetup__
+			// we are in local mode if the user is __systemsetup__
 			this.local_mode = tools.status('username') == '__systemsetup__';
 
 			// save current values
 			this._orgValues = lang.clone(values);
 
-			// add the SystemRolePage and HelpPage to the list of pages for the wizard mode
+			// add the SoftwarePage, SystemRolePage and HelpPage to the list of pages for the wizard mode
 			if (this.wizard_mode) {
 				// add the SystemRolePage to the list of pages for the wizard mode if the packages have been downloaded
 				if (tools.isTrue(ucr['system/setup/boot/select/role'])) {
 					allPages.unshift('SystemRolePage');
 				}
 				allPages.unshift('HelpPage');
+
+				// SoftwarePage is only available in appliance mode. Otherwise software components should be managed by
+				// the App Center
+				allPages.push('SoftwarePage');
 
 				// alter pages by a whitelist and/or blacklist. the pages will be removed without any replacement.
 				// empty lists are treated as if they were not defined at all (show all pages). list names should
