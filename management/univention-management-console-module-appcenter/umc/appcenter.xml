@@ -3,6 +3,7 @@
 	<module id="appcenter" icon="appcenter-module" priority="15" version="1.0">
 		<name>App Center</name>
 		<description>Manage (install/uninstall) software packages on your machine</description>
+		<keywords>app center,install,packages,software,updates,components</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>

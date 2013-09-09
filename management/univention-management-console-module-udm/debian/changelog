@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.15-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:28:54 +0200
+
 univention-management-console-module-udm (4.0.14-1) unstable; urgency=low
 
   * Bug #24642: prevent the LDAP base from being moved or deleted in the

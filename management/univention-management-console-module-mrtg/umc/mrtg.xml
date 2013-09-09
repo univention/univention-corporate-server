@@ -3,6 +3,7 @@
 	<module id="mrtg" icon="mrtg" priority="16" version="1.0">
 		<name>Statistics</name>
 		<description>Show system usage statistics</description>
+		<keywords>system,usage,statistics</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>

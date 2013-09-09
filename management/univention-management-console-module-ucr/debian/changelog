@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (3.0.1-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:28:38 +0200
+
 univention-management-console-module-ucr (3.0.0-1) unstable; urgency=low
 
   * Bug #31523: use getattr instead of eval

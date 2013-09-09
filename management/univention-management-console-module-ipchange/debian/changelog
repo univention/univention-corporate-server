@@ -1,3 +1,9 @@
+univention-management-console-module-ipchange (2.0.5-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:27:52 +0200
+
 univention-management-console-module-ipchange (2.0.4-1) unstable; urgency=low
 
   * actualiase forward zones first

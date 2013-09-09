@@ -320,8 +320,8 @@ define([
 		},
 
 		getSystemInfo: function() {
-			var generalValues =  this.getPage('general')._form.gatherFormValues();
-			var supportValues =  this.getPage('support')._form.gatherFormValues();
+			var generalValues =  this.getPage('general')._form.get('value');
+			var supportValues =  this.getPage('support')._form.get('value');
 			var requestValues = {
 				'manufacturer': generalValues.manufacturer,
 				'model': generalValues.model,

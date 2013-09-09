@@ -231,7 +231,7 @@ define([
 								errorMessage += '</ul>';
 								dialog.alert(errorMessage);
 							}
-							data = this._searchWidget.gatherFormValues();
+							data = this._searchWidget.get('value');
 							this._grid.filter(data);
 						}), lang.hitch(this, function() {
 							this.standby(false);
@@ -239,6 +239,7 @@ define([
 					);
 				})
 			}, {
+				'default': true,
 				label: _('Cancel')
 			}]);
 		}

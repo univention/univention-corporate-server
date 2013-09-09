@@ -3,12 +3,11 @@
 	<module id="top" icon="top" priority="12" version="1.0">
 		<name>Process overview</name>
 		<description>Process overview and control</description>
+		<keywords>process</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>
-		<command name="top/query" function="query">
-			<return syntax="Dictionary"/>
-		</command>
+		<command name="top/query" function="query" />
 		<command name="top/kill" function="kill" />
 	</module>
 </umc>

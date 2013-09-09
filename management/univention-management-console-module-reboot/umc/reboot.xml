@@ -3,11 +3,10 @@
 	<module id="reboot" icon="reboot" priority="9" version="1.0">
 		<name>Reboot</name>
 		<description>System reboot or halt</description>
+		<keywords>reboot,shutdown,halt</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>
-		<command name="reboot/reboot" function="reboot">
-			<return syntax="Boolean"/>
-		</command>
+		<command name="reboot/reboot" function="reboot" />
 	</module>
 </umc>

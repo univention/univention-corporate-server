@@ -1,3 +1,9 @@
+univention-management-console-module-top (2.0.6-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:25:16 +0200
+
 univention-management-console-module-top (2.0.5-1) unstable; urgency=low
 
   * fix column sortIndex; Bug #30715

@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (3.0.2-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:30:10 +0200
+
 univention-management-console-module-reboot (3.0.1-1) unstable; urgency=low
 
   * Update internal package structure

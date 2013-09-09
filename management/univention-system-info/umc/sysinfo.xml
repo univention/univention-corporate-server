@@ -3,6 +3,7 @@
 	<module id="sysinfo" icon="sysinfo-module" priority="2" version="1.0">
 		<name>System information</name>
 		<description>Collecting system information</description>
+		<keywords>system,information</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>

@@ -76,7 +76,7 @@ define([
 				name: 'submit',
 				label: _('Execute'),
 				callback: lang.hitch(this, function() {
-					var vals = this._form.gatherFormValues();
+					var vals = this._form.get('value');
 					this.shutdown(vals);
 				})
 			}];
