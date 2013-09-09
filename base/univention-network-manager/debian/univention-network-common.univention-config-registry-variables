@@ -18,7 +18,7 @@ Categories=system-base
 
 [dhclient/options/ddns]
 Description[de]=Ist diese Option aktiviert, wird Dynamic DNS im Rahmen der DHCP-IP-Vergabe angefordert. Ist die Variable nicht gesetzt, wird kein DDNS verwendet.
-Description[en]=If this option is activated, Dynamic DNS is requested during DHCP IP assignment. If the variable is unset, not DDNS is used.
+Description[en]=If this option is activated, Dynamic DNS is requested during DHCP IP assignment. If the variable is unset, DDNS is not used.
 Type=bool
 Categories=system-base
 
