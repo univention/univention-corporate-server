@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.8-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:23:16 +0200
+
 univention-pkgdb (7.0.7-1) unstable; urgency=low
 
   * Bug #30967: adapt wording
