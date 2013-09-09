@@ -30,7 +30,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-import sys
 import os.path
 
 from univention.management.console.modules.setup.setup_script import AptScript, main, _
@@ -69,6 +68,7 @@ class SoftwareScript(AptScript):
 		for pkg in self.packages_remove:
 			# apt-get remove pkg
 			self.uninstall(pkg)
+			self.finish_task(pkg)
 
 		# apt-get autoremove
 		self.autoremove()
@@ -77,6 +77,7 @@ class SoftwareScript(AptScript):
 		for pkg in self.packages_install:
 			# apt-get install pkg
 			self.install(pkg)
+			self.finish_task(pkg)
 
 		return True
 

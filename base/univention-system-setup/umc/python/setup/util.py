@@ -306,7 +306,7 @@ class ProgressParser( object ):
 		match = ProgressParser.STEP.match( line )
 		if match is not None:
 			try:
-				self.current.step = int( match.groups()[ 0 ] )
+				self.current.step = float( match.groups()[ 0 ] )
 				if self.current.step > self.current.steps:
 					self.current.step = self.current.steps
 				return True
