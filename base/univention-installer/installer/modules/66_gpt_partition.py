@@ -1355,7 +1355,7 @@ class object(content):
 									self.run_cmd(['/sbin/vgremove', pv['vg']])
 								else:
 									self.run_cmd(['/sbin/vgreduce', pv['vg'], device])
-								self.run_cmd(['/sbin/pvremove', '-ff', device])
+								self.run_cmd(['/sbin/wrapper-yes-pvremove', '-ff', device])
 
 						self.run_cmd(['/sbin/parted', '--script', str(disk), 'p', 'rm', str(num)])
 
@@ -2955,7 +2955,7 @@ class object(content):
 						# removing LVM PV signature from partition
 						cmd = ['/sbin/pvremove', device]
 						if force:
-							cmd = ['/sbin/pvremove', '-ff', device]
+							cmd = ['/sbin/wrapper-yes-pvremove', '-ff', device]
 						self.container['history'].append(cmd)
 
 			return False
@@ -3123,7 +3123,7 @@ class object(content):
 
 			device = self.parent.get_device(disk, part)
 			# remove LVMPV signature before creating a new one
-			self.container['history'].append(['/sbin/pvremove', '-ff', device])
+			self.container['history'].append(['/sbin/wrapper-yes-pvremove', '-ff', device])
 #			self.container['history'].append('/sbin/pvscan')
 			self.container['history'].append(['/sbin/pvcreate', device])
 			if not self.container['lvm']['vg'][ ucsvgname ]['created']:
