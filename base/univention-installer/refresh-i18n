@@ -32,14 +32,7 @@
 
 po=de
 
-if  [ ! -e ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup ]; then
-	echo "Please checkout univention-system-setup, the installer combines i18n strings"
-	echo "from both the installer and univention-system-setup"
-	exit
-fi
-
-
-xgettext -L Python -o $po.py.pot installer/*py installer/modules/*.py ../univention-system-setup/usr/share/univention-system-setup/univention-system-setup*
+xgettext -L Python -o $po.py.pot installer/*py installer/modules/*.py
 xgettext -L Shell -o $po.sh.pot scripts/*.sh
 
 for fn in $po.py.pot $po.sh.pot ; do
@@ -56,7 +49,7 @@ msgcat $po.py.pot.out $po.sh.pot.out > $po.pot
 echo "Merging old gettext data with newly introduced strings"
 msgmerge ./installer/locale/$po/LC_MESSAGES/installer.po  $po.pot > $po.pox
 
-echo "Now you need to fix up all 'fuzzy' entries in your editor"
+echo "Now you need to fix up all 'fuzzy' entries in your editor (press enter to open editor)"
 read answ
 
 if [ -n "$EDITOR" ]; then
