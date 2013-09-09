@@ -976,6 +976,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			The progress during (un)installation of software components was broken
+			(<ulink url="&ucsbug;32148">Bug 32148</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Disabled Firefox update popups during appliance setup (<ulink url="&ucsbug;30980">Bug 30980</ulink>).
 		</simpara></listitem>
 
