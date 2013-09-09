@@ -1,3 +1,10 @@
+univention-samba4 (3.0.12-1) unstable; urgency=low
+
+  * Set samba/max/protocol to SMB2 for new installations and to NT1 for
+    updates (Bug #32394)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Sep 2013 07:48:25 +0200
+
 univention-samba4 (3.0.11-2) unstable; urgency=low
 
   * More unjoin updates (Bug #32446)

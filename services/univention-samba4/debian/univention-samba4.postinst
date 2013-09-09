@@ -62,6 +62,12 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.148-
 	mkdir -p /etc/univention/skel/windows-profiles/default.V2
 fi
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0; then
+	## set default for Bug #32394, may be removed after ucs3.2-0
+	ucr set samba/max/protocol?NT1
+fi
+
+
 
 ## samba3 defaults copied from univention-samba
 univention-config-registry set \
@@ -82,7 +88,8 @@ univention-config-registry set \
 	samba/preserve_case?yes \
 	samba/short_preserve_case?yes \
 	samba/guest_account?nobody \
-	samba/map_to_guest?"Bad User"
+	samba/map_to_guest?"Bad User" \
+	samba/max/protocol?SMB2
 
 ## more samba3 defaults copied from univention-samba
 if [ "$server_role" != "memberserver" ]
