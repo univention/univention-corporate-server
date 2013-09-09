@@ -202,8 +202,10 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 	  <!-- 		  auf UCS-Server kann alternativ Xrdp aus dem Univention App Center installiert werden. -->
 	  <!-- 		</para></listitem> -->
 
-	  <!-- 		<listitem><para>  -->
-	  <!-- 		</para></listitem> -->
+                       <!-- <listitem><para>  -->
+                       <!--   Das Paket <emphasis>univention-local-users</emphasis> (nur Bestandteil von -->
+                       <!--   unmaintained) wurde entfernt. -->
+                       <!-- </para></listitem> -->
 
 	  <!-- 	  </itemizedlist> -->
 

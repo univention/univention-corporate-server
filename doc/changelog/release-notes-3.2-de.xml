@@ -200,7 +200,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 	  <section>
 		<title>Entfernte/nicht mehr unterstützte Komponenten</title>
 		<para>
-		  Einige Komponenten sind entfernt worden und werden mit UCS 3.2 nicht mehr ausgeliefert
+		  Einige Komponenten sind entfernt worden und werden mit UCS 3.2 nicht mehr ausgeliefert:
 
 		  <itemizedlist>
 			<listitem><para> 

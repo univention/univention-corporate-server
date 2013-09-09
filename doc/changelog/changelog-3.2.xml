@@ -253,6 +253,12 @@
 	<title>Boot loader</title>
 	  <itemizedlist>
 		<listitem><simpara>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-grub</emphasis> and <emphasis>univention-bootsplash</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -297,6 +303,12 @@
 		   If these parameters have been manually defined in a local file below <filename class="directory">/etc/sysctl.d/</filename> the file should be removed and the configured values transfered to the respective &ucsUCRV;s.
 		 </simpara></important> 
 		  
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-initrd</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+
+
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -341,6 +353,12 @@
 	<title>Network interface configuration</title>
 	  <itemizedlist>
 		<listitem><simpara>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-network-manager</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -349,6 +367,12 @@
 	<title>Univention Firewall</title>
 	  <itemizedlist>
 		<listitem><simpara>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-firewall</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -941,6 +965,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-system-setup</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Added error handling in case the download of required packages for
 		  <emphasis>univention-system-setup-boot</emphasis> failed. This could prevent a role switch
 		  when configuring the system in appliance setup (<ulink url="&ucsbug;30896">Bug 30896</ulink>).
@@ -1282,6 +1311,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-updater</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename> are digitally signed from UCS version 3.2-0 onwards.
 		  Both updater and mirror will refuses to download them if they are not signed by any PGP key stored in trust-ring of <program>apt-key</program>.
 		  The verification can be disabled using the &ucsUCRV; <envar>repository/online/verify</envar> and <envar>repository/mirror/verify</envar>
@@ -1294,6 +1328,12 @@
 	<title>Software deployment command line tools</title>
 	  <itemizedlist>
 		<listitem><simpara>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-maintenance</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1354,6 +1394,11 @@
 	  <listitem><simpara>
 		Two new functions <emphasis>ucs_registerLDAPSchema</emphasis> and <emphasis>ucs_unregisterLDAPSchema</emphasis> have been implemented
 		(<ulink url="&ucsbug;26785">Bug 26785</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The &ucsUCR; variable descriptions in <emphasis>univention-lib</emphasis> have been
+		revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -1508,6 +1553,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-printclient</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Descriptions for the Univention Configuration Registry variables used in
 		  univention-check-printers have been added (<ulink url="&ucsbug;22544">Bug 22544</ulink>).
 		</simpara></listitem>
@@ -1564,6 +1614,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The ownership of <filename>/usr/share/univention-heimdal/check_cracklib.py</filename> has
 		  been fixed (<ulink url="&ucsbug;22926">Bug 22926</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-heimdal</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1637,6 +1692,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>SSL</title>
 	  <itemizedlist>
 		<listitem><simpara>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-ssl</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+
+
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1663,6 +1725,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The &ucsUCRV; <envar>nssldap/nss_srv</envar> has been added to specify whether or not
 		  libnss-ldap is allowed to perform dns srv record lookups (default: true, <ulink url="&ucsbug;30779">Bug 30779</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-pam</emphasis> have been
+		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2282,6 +2349,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 		univention-user-quota has been rewritten in Python. It does now support share names with
 		whitespaces (<ulink url="&ucsbug;30636">Bug 30636</ulink>, <ulink url="&ucsbug;31957">Bug 31957</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The &ucsUCR; variable descriptions in <emphasis>univention-base-files</emphasis>,
+		<emphasis>univention-server</emphasis>, <emphasis>univention-skel</emphasis>,
+		<emphasis>univention-passwd-store</emphasis> and <emphasis>univention-quota</emphasis> have been
+		revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
