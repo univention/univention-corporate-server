@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.14-1) unstable; urgency=low
+
+  * Active Directory times (at least pwdLastSet) is given in local time.
+    (Bug #32227)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 09 Sep 2013 18:15:45 +0200
+
 univention-s4-connector (8.0.13-1) unstable; urgency=low
 
   * Set connector/s4/autostart to yes in the join script if another S4

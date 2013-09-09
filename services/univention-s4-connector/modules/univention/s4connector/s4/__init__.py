@@ -167,7 +167,7 @@ def s42unix_time(l):
 
 def samba2s4_time(l):
 	d=116444736000000000L #difference between 1601 and 1970
-	return long(time.mktime(time.gmtime(l+3600)))*10000000+d
+	return long(time.mktime(time.localtime(l)))*10000000+d
 
 def s42samba_time(l):
 	if l == 0:
