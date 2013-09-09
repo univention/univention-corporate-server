@@ -1,3 +1,9 @@
+univention-management-console (6.0.10-1) unstable; urgency=low
+
+  * Bug #32048: fix typo
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 14:54:09 +0200
+
 univention-management-console (6.0.9-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to module and flavor definitions

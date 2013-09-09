@@ -385,7 +385,7 @@ class Processor( signals.Provider ):
 						'icon' : module.icon,
 						'categories' : module.categories,
 						'priority' : module.priority,
-						'keywords': list(set(module.keywords + [self.i18n._(keyword, translationId) for keyword in module.keywords]))
+						'keywords': list(set(module.keywords + [self.i18n._(keyword, id) for keyword in module.keywords]))
 					})
 			res.body[ 'modules' ] = modules
 			_ucr_dict = dict( ucr.items() )

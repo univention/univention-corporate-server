@@ -302,7 +302,7 @@ class XML_Definition( ET.ElementTree ):
 			yield command.get( 'name' )
 
 	def get_module( self ):
-		return Module( self.id, self.name, self.description, self.icon, self.categories, self.flavors, priority = self.priority )
+		return Module( self.id, self.name, self.description, self.icon, self.categories, self.flavors, priority = self.priority, keywords=self.keywords )
 
 	def get_flavor( self, name ):
 		'''Retrieves details of a flavor'''
