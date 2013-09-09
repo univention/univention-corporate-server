@@ -39,7 +39,7 @@ from univention.lib.i18n import Translation
 from univention.config_registry import ConfigRegistry
 from univention.management.console.log import MODULE
 
-from .util import detect_interfaces
+from univention.management.console.modules.setup.util import detect_interfaces
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -48,6 +48,7 @@ _ = Translation('univention-management-console-module-setup').translate
 
 RE_INTERFACE = re.compile(r'^interfaces/(?!(?:primary|restart/auto|handler)$)([^/_]+)(_[0-9]+)?/')
 RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+\Z')
+VALID_NAME_RE = re.compile(r'^[^/ \t\n\r\f]{1,16}\Z')
 
 PHYSICAL_INTERFACES = [dev['name'] for dev in detect_interfaces()]
 
@@ -181,7 +182,7 @@ class Interfaces(dict):
 		devices = dict((device, device.subdevices) for device in self.values())
 
 		i = 1
-		while True:
+		while devices:
 			leave = set(device for device, subdevs in devices.iteritems() if not subdevs)
 			if not leave:
 				if devices:
@@ -212,7 +213,7 @@ class Device(object):
 				if device.options:
 					if any(opt.startswith('bridge_ports') for opt in device.options):
 						cls = Bridge
-					elif any(opt.startswith('bond-primary') for opt in device.options):
+					elif any(opt.startswith('bond-slaves') for opt in device.options):
 						cls = Bond
 		return object.__new__(cls)
 
@@ -258,7 +259,7 @@ class Device(object):
 		# type of network for this interface e.g. static, manual, dhcp
 		self.type = None
 
-		# 
+		# topological ordering for interface dependency
 		self.order = None
 
 		# additional options for this interface
@@ -291,8 +292,43 @@ class Device(object):
 		self.validate_ip6()
 
 	def validate_name(self):
-		if not re.match('^[a-zA-Z]+[0-9]+$', self.name):
-			raise DeviceError(_('Invalid device name: %r') % (self.name))
+		"""
+		Valid interface name: max 15 characters, no slash, no space, not . or ..
+		See linux/net/core/dev.c:933#dev_valid_name()
+		>>> Device('eth0', []).validate_name()
+		>>> Device('0a1b2c3d4e5f_-:', []).validate_name()
+		>>> Device('', []).validate_name()
+		Traceback (most recent call last):
+			...
+		DeviceError: Invalid device name: ''
+		>>> Device('.', []).validate_name()
+		Traceback (most recent call last):
+			...
+		DeviceError: Invalid device name: '.'
+		>>> Device('..', []).validate_name()
+		Traceback (most recent call last):
+			...
+		DeviceError: Invalid device name: '..'
+		>>> Device(' ', []).validate_name()
+		Traceback (most recent call last):
+			...
+		DeviceError: Invalid device name: ' '
+		>>> Device('abcdefghijklmnop', []).validate_name()
+		Traceback (most recent call last):
+			...
+		DeviceError: Invalid device name: 'abcdefghijklmnop'
+		"""
+		if not self.name:
+			pass
+		elif len(self.name) >= 16: # IFNAMSIZ
+			pass
+		elif self.name in ('.', '..'):
+			pass
+		elif any((_ == '/' or _.isspace() for _ in self.name)):
+			pass
+		else:
+			return
+		raise DeviceError(_('Invalid device name: %r') % (self.name,))
 
 	def validate_ip4(self):
 		# validate IPv4
@@ -550,8 +586,9 @@ class VLAN(Device):
 			raise DeviceError('Nested VLAN-devices are currently unsupported.', self.name)
 
 	def validate_name(self):
-		if not re.match('^[a-zA-Z]+[0-9]+\.[0-9]+$', self.name):
-			raise DeviceError(_('Invalid device name: %r') % (self.name))
+		super(VLAN, self).validate_name()
+		if not '.' in self.name:
+			raise DeviceError(_('Invalid device name: %r') % (self.name,))
 		if not (1 <= self.vlan_id <= 4096):
 			raise DeviceError(_('Invalid VLAN ID. Must be between 1 and 4096.'), self.name)
 
@@ -603,8 +640,7 @@ class Bond(Device):
 
 		# at least one interface must exists in a bonding
 		# FIXME: must bond_slaves contain at least 2 interfaces?
-		# FIXME: must bond_primary be set?
-		if not self.bond_slaves: # or not self.bond_primary:
+		if not self.bond_slaves:
 			raise DeviceError(_('Missing device for bond-slaves'), self.name)
 
 		for name in set(self.bond_slaves + self.bond_primary):
@@ -671,13 +707,18 @@ class Bond(Device):
 		self.options = options
 
 	def to_ucr(self):
-		vals = super(Bond, self).to_ucr()
-		i = len(self.options)
-		vals['interfaces/%s/options/%d' % (self.name, i)] = 'bond-primary %s' % (' '.join(self.bond_primary))
-		vals['interfaces/%s/options/%d' % (self.name, i+1)] = 'bond-slaves %s' % (' '.join(self.bond_slaves))
-		vals['interfaces/%s/options/%d' % (self.name, i+2)] = 'bond-mode %s' % (self.bond_mode)
+		options = [
+				'bond-slaves %s' % (' '.join(self.bond_slaves),),
+				'bond-mode %s' % (self.bond_mode,),
+				]
+		if self.bond_primary:
+			options.append('bond-primary %s' % (' '.join(self.bond_primary),))
 		if self.miimon is not None:
-			vals['interfaces/%s/options/%d' % (self.name, i+3)] = 'miimon %s' % (self.miimon)
+			options.append('miimon %s' % (self.miimon,))
+
+		vals = super(Bond, self).to_ucr()
+		for i, option in enumerate(options, start=len(self.options)):
+			vals['interfaces/%s/options/%d' % (self.name, i)] = option
 		return vals
 
 class Bridge(Device):
@@ -743,8 +784,17 @@ class Bridge(Device):
 		self.options = options
 
 	def to_ucr(self):
-		vals = super(Bridge, self).to_ucr()
-		i = len(self.options)
-		vals['interfaces/%s/options/%d' % (self.name, i)] = 'bridge_ports %s' % (' '.join(self.bridge_ports) or 'none')
-		vals['interfaces/%s/options/%d' % (self.name, i+1)] = 'bridge_fd %d' % (self.bridge_fd)
+		options = [
+				'bridge_ports %s' % (' '.join(self.bridge_ports) or 'none',),
+				'bridge_fd %d' % (self.bridge_fd,),
+				]
+
+		vals = super(Bond, self).to_ucr()
+		for i, option in enumerate(options, start=len(self.options)):
+			vals['interfaces/%s/options/%d' % (self.name, i)] = option
 		return vals
+
+
+if __name__ == '__main__':
+	import doctest
+	print doctest.testmod()

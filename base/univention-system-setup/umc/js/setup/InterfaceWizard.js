@@ -156,6 +156,13 @@ define([
 //								'Bond': ''
 //							};
 //							this.getWidget('description').set('content', descriptions[interfaceType] + '<br>');
+//
+							var name_b = this.getWidget('name_b');
+							if (interfaceType === 'Bridge') {
+								name_b.set('label', _('Name of new bridge interface'));
+							} else if (interfaceType === 'Bond') {
+								name_b.set('label', _('Name of new bonding interface'));
+							}
 						})
 					}, {
 						name: 'description',
@@ -171,7 +178,7 @@ define([
 						visible: false
 					}, {
 						name: 'name_b',
-						label: _('Name of new device'),
+						label: _('Name of new interface'),
 						value: device.name,
 						size: 'Half',
 						type: TextBox,
@@ -203,7 +210,7 @@ define([
 						})
 					}, {
 						name: 'parent_device',
-						label: _('Parent device'),
+						label: _('Parent interface'),
 						type: ComboBox,
 						visible: false,
 						dynamicValues: lang.hitch(this, function() {
@@ -216,7 +223,7 @@ define([
 						})
 					}, {
 						name: 'vlan_id',
-						label: _('Virtual device ID'),
+						label: _('VLAN ID'),
 						type: NumberSpinner,
 						size: 'Half',
 						value: 2,
@@ -368,7 +375,7 @@ define([
 					}, {
 						type: MultiInput,
 						name: 'bridge_options',
-						label: _('UCR options'),
+						label: _('Additional interface options'),
 						description: _('Additional options for this network device'),
 						value: device.options,
 						subtypes: [{ type: TextBox }],

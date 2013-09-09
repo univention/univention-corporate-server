@@ -187,13 +187,13 @@ def pre_save(newValues, oldValues):
 
 
 def write_profile(values):
-	cache_file=open(PATH_PROFILE,"w+")
-	for ikey, ival in values.iteritems():
-		newVal = ival
-		if ival is None:
-			newVal = ''
-		cache_file.write('%s="%s"\n\n' % (ikey, newVal))
-	cache_file.close()
+	old_umask = os.umask(0177)
+	try:
+		with open(PATH_PROFILE, "w+") as cache_file:
+			for ikey, ival in values.iteritems():
+				cache_file.write('%s="%s"\n' % (ikey, ival or ''))
+	finally:
+		os.umask(old_umask)
 
 class ProgressState( object ):
 	def __init__( self ):

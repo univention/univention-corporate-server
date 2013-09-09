@@ -616,8 +616,16 @@ msgid "Name"
 msgstr "Name"
 
 #: umc/js/setup/InterfaceWizard.js:154
-msgid "Name of new device"
+msgid "Name of new interface"
 msgstr "Name des neuen Netzwerkgerätes"
+
+#: umc/js/setup/InterfaceWizard.js:154
+msgid "Name of new bridge interface"
+msgstr "Name des neuen Bridge-Netzwerkgerätes"
+
+#: umc/js/setup/InterfaceWizard.js:154
+msgid "Name of new bonding interface"
+msgstr "Name des neuen Bonding-Netzwerkgerätes"
 
 #: umc/js/setup/InterfaceWizard.js:239
 msgid "Netmask"
@@ -672,7 +680,7 @@ msgid "Organization settings"
 msgstr "Einstellungen über die Organisation"
 
 #: umc/js/setup/InterfaceWizard.js:186
-msgid "Parent device"
+msgid "Parent interface"
 msgstr "Übergeordnetes Netzwerkgerät"
 
 #: umc/js/setup.js:659
@@ -869,8 +877,8 @@ msgid "Type"
 msgstr "Typ"
 
 #: umc/js/setup/InterfaceWizard.js:363 umc/js/setup/InterfaceWizard.js:437
-msgid "UCR options"
-msgstr "UCR Optionen"
+msgid "Additional interface options"
+msgstr "Weitere Geräteoptionen"
 
 #: umc/js/setup/HelpPage.js:61
 msgid "UCS initial configuration"
@@ -897,8 +905,8 @@ msgid "Virtual LAN"
 msgstr "Virtuelles LAN"
 
 #: umc/js/setup/InterfaceWizard.js:199
-msgid "Virtual device ID"
-msgstr "Virtuelle Geräte ID"
+msgid "VLAN ID"
+msgstr "VLAN ID"
 
 #: umc/js/setup/BasisPage.js:88 umc/js/setup/BasisPage.js:225
 msgid "Windows domain"

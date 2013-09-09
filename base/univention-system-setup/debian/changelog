@@ -1,3 +1,12 @@
+univention-system-setup (7.0.38-1) unstable; urgency=low
+
+  * Bug #29658: don't overwrite UCR values in appliance mode when loading
+  	values
+  * Bug #30816: fix bond detection, adapt wording, fix file permissions for
+  	profile file, fix interface name validation
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 15:46:08 +0200
+
 univention-system-setup (7.0.37-1) unstable; urgency=low
 
   * Fix progress when installing/removing software (Bug #32148)
