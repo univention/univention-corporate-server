@@ -53,6 +53,7 @@ import inspect
 import subprocess
 import pprint
 import struct
+import textwrap
 
 def B2KiB(value):
 	return value / 1024.0
@@ -134,6 +135,7 @@ BLOCKED_FSTYPES_ON_LVM = [FSTYPE_SWAP]
 DISKLABEL_GPT = 'gpt'
 DISKLABEL_MSDOS = 'msdos'
 DISKLABEL_UNKNOWN = 'unknown'
+UNKNOWN_ERROR = 'unknown_error'
 PARTITION_GPT_CONFLICT= 'partition_gpt_conflict'
 
 def pretty_format(val):
@@ -837,9 +839,10 @@ class object(content):
 		self.container['debug'] = ''
 		self.container['module_disabled'] = False
 		self.container['profile'] = {}
-		disks, problemdisks = self.read_devices()
+		disks, problemdisks, problemmessages = self.read_devices()
 		self.container['disk'] = disks
 		self.container['problemdisk'] = problemdisks
+		self.container['problemmessages'] = problemmessages
 		self.container['history'] = []
 		self.container['temp'] = {}
 		self.container['selected'] = 1
@@ -1001,9 +1004,10 @@ class object(content):
 			if diskchanged:
 				# rereading partition tables
 				self.debug('read_profile: rereading partition tables after altering some of them')
-				disks, problemdisks = self.read_devices()
+				disks, problemdisks, problemmessages = self.read_devices()
 				self.container['disk'] = disks
 				self.container['problemdisk'] = problemdisks
+				self.container['problemmessages'] = problemmessages
 
 		if 'auto_part' in self.all_results.keys():
 			self.debug('read_profile: auto_part key found: %s' % self.all_results['auto_part'])
@@ -1729,11 +1733,12 @@ class object(content):
 		self.debug('devices=%s' % devices)
 
 		diskList={}
-		diskProblemList={}
+		diskProblemList={}       # device ==> set()
+		diskProblemMessages={}   # device ==> str
 		devices_remove={}
 
-		_re_warning = re.compile('^Warning: Unable to open .*')
-		_re_error = re.compile('^Error: .* unrecognised disk label')
+		_re_error_unknown_label = re.compile('^Error: .* unrecognised disk label')
+		_re_warning_or_error = re.compile('^(?:Warning|Error): (.*)$')
 		_re_disklabel = re.compile('^Partition Table: (.*)$', re.I | re.M)  # case insensitive & ^ matches on \n
 
 		for dev in devices:
@@ -1781,21 +1786,23 @@ class object(content):
 
 			first_line=p.readline().strip()
 			self.debug('first line: [%s]' % first_line)
-			if _re_warning.match(first_line):
-				self.debug('Firstline starts with warning')
-				self.debug('Remove device: %s' % dev)
-				devices_remove[dev] = 1
-				continue
-			elif _re_error.match(first_line):
+			if _re_error_unknown_label.match(first_line):
 				self.debug('Firstline starts with error')
 				self.debug('Device %s contains unknown disk label' % dev)
 				self.debug('Removing device %s' % dev)
 				diskProblemList[dev] = diskProblemList.get(dev, set()) | set([DISKLABEL_UNKNOWN]) # add new problem to list
 				devices_remove[dev] = 1
 				continue
+			elif _re_warning_or_error.match(first_line):
+				self.debug('Firstline starts with warning or error')
+				self.debug('Removing device: %s' % dev)
+				diskProblemList[dev] = diskProblemList.get(dev, set()) | set([UNKNOWN_ERROR]) # add new problem to list
+				diskProblemMessages[dev] = first_line
+				devices_remove[dev] = 1
+				continue
 			elif not first_line == 'BYT;':
 				self.debug('First line of parted output does not start with "BYT;"!')
-				self.debug('Remove device: %s' % dev)
+				self.debug('Removing device: %s' % dev)
 				devices_remove[dev] = 1
 				continue
 
@@ -1833,7 +1840,7 @@ class object(content):
 						continue
 
 				if not _re_int.match(line):
-					if _re_error.match(line):
+					if _re_warning_or_error.match(line):
 						self.debug('Line starts with Error: [%s]' % line)
 						self.debug('Removing device %s' % dev)
 						devices_remove[dev] = 1
@@ -1936,7 +1943,7 @@ class object(content):
 		self.debug('devices=%s' % devices)
 		self.debug('diskList=%s' % diskList)
 		self.debug('diskProblemList=%s' % diskProblemList)
-		return diskList, diskProblemList
+		return diskList, diskProblemList, diskProblemMessages
 
 
 	def generate_freespace(self, start, end, touched=0, parttype=PARTTYPE_FREE):
@@ -2331,6 +2338,7 @@ class object(content):
 
 		def install_fresh_gpt_interactive(self, result, device=None):
 			self.parent.install_fresh_gpt(device)
+			self.container['problemdisk'][device].discard(UNKNOWN_ERROR)
 			self.container['problemdisk'][device].discard(DISKLABEL_UNKNOWN)
 			self.container['problemdisk'][device].discard(DISKLABEL_MSDOS)
 			self.parent.debug('performing restart of module')
@@ -2364,10 +2372,29 @@ class object(content):
 			for dev in self.container['problemdisk']:
 				self.parent.debug('Checking problems for device %s ==> %s' % (dev, self.container['problemdisk'][dev]))
 
+				if UNKNOWN_ERROR in self.container['problemdisk'][dev]:  # search for specific problem in set() of errors
+					self.parent.debug('requesting user input: unknown error ==> write new GPT?')
+					msglist=[ _('An error occurred while reading device %s:') % dev,
+							  '',
+							  '',
+							  _('Install now an empty GPT to device %s ?') % dev,
+							  '',
+							  _('WARNING: By choosing "Write GPT" existing data'),
+							  _('on device %s will be lost.') % dev,
+							  ]
+					# insert message from parted
+					msglist[2:2] = textwrap.wrap(self.container['problemmessages'][dev], 68, drop_whitespace=True)
+					self.sub = yes_no_win(self, self.pos_y+9, self.pos_x+2, self.width-4, self.height-25, msglist, default='no',
+										  btn_name_yes=_('Write GPT'), btn_name_no=_('Ignore Device'),
+										  callback_yes=self.install_fresh_gpt_interactive, device=dev)
+					self.draw()
+					self.container['problemdisk'][dev].discard(UNKNOWN_ERROR)
+					break
+
 				if DISKLABEL_UNKNOWN in self.container['problemdisk'][dev]:  # search for specific problem in set() of errors
 					self.parent.debug('requesting user input: unknown disklabel ==> write new GPT?')
 					msglist=[ _('No valid partition table found on device %s.') % dev,
-							  _('Install empty GPT to device %s ?') % dev,
+							  _('Install now an empty GPT to device %s ?') % dev,
 							  '',
 							  _('WARNING: By choosing "Write GPT" existing data'),
 							  _('on device %s will be lost.') % dev,
