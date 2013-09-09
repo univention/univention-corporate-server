@@ -6,7 +6,7 @@ Categories=service-software-management
 
 [repository/online/prefix]
 Description[de]=Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Mit dieser Variable kann so ein Pfad konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
-Description[en]=Some repositories use several update subdirectories. This variable allows to configure such a path. If the variable is unset, no prefix is used.
+Description[en]=Some repositories use several update subdirectories. This variable allows to configure such a prefix path. If the variable is unset, no prefix is used.
 Type=str
 Categories=service-software-management
 
@@ -18,7 +18,7 @@ Categories=service-software-management
 
 [update/warning]
 Description[de]=Ist diese Variable auf 'yes' gesetzt, wird bei automatischen Aktualisierungen eine Warnmeldung auf der Konsole ausgegeben (etwa wenn ein Reboot ansteht). Ist die Variable nicht gesetzt, wird keine Warnung ausgegeben.
-Description[en]=If this variable is set to 'yes', a warning message is printed to the console during automatic updats (e.g. if a reboot is pending). If the variable is unset, no warning is printed.
+Description[en]=If this variable is set to 'yes', a warning message is printed to the console during automatic updates (e.g. if a reboot is pending). If the variable is unset, no warning is printed.
 Type=str
 Categories=service-software-management
 
@@ -42,18 +42,18 @@ Categories=service-software-management
 
 [update/custom/preup]
 Description[de]=Der Dateiname eines Programms/Skripts, welches vor jedem Release-Update ausgeführt wird. Ist die Variable nicht gesetzt, wird kein zusätzliches Programm aufgerufen.
-Description[en]=The filename if a program/script which is executed prior to every release update. If the variable is unset, not additional program is executed.
+Description[en]=The filename of a program/script which is executed prior to every release update. If the variable is unset, no additional program is executed.
 Type=str
 Categories=service-software-management
 
 [update/custom/postup]
 Description[de]=Der Dateiname eines Programms/Skripts, welches nach jedem Release-Update ausgeführt wird. Ist die Variable nicht gesetzt, wird kein zusätzliches Programm aufgerufen.
-Description[en]=The filename if a program/script which is executed after every release update. If the variable is unset, not additional program is executed.
+Description[en]=The filename of a program/script which is executed after every release update. If the variable is unset, no additional program is executed.
 Type=str
 Categories=service-software-management
 
 [online/repository/clean]
-Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist diese Option aktiviert, wird unter /var/lib/univention-repository/var/clean.sh ein Shell-Skript generiert, mit gespiegelte Repository-Inhalte, die nicht mehr benötigt werden entfernt werden können. Ist die Variable nicht gesetzt, wird das Skript nicht erzeugt.
+Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist diese Option aktiviert, wird unter /var/lib/univention-repository/var/clean.sh ein Shell-Skript generiert, mit dem gespiegelte und nicht mehr benötigte Repository-Inhalte entfernt werden können. Ist die Variable nicht gesetzt, wird das Skript nicht erzeugt.
 Description[en]=If a local repository is used (see 'local/repository') and if this option is activated, a shell script with the filename /var/lib/univention-repository/var/clean.sh is generating. Executing this shell script removes mirrored repository content, which is no longer used. If the variable is unset, the script is not generated.
 Type=bool
 Categories=service-software-management
@@ -72,13 +72,13 @@ Categories=service-software-management
 
 [repository/online/sources]
 Description[de]=Die apt-Installationsquellen werden basierend auf den Einstellungen repository/online/* generiert. Ist diese Option und die Option 'repository/online/unmaintained' aktiviert, wird neben den Programmpakete auch der Quellcode über apt bereitgestellt (apt-get source QUELLPAKETNAME). Ist die Variable nicht gesetzt, werden keine Quellpakete bereitgestellt.
-Description[en]=The apt installation source are generated based on the repository/online/* settings. If this option and the option 'repository/online/unmaintained' is activated, the source code is provided through apt in addition to the program packages (apt-get source SOURCEPACKAGENAME). If the variable is unset, no source code is provided.
+Description[en]=The apt installation sources are generated based on the repository/online/* settings. If this option and the option 'repository/online/unmaintained' is activated, the source code is provided through apt in addition to the program packages (apt-get source SOURCEPACKAGENAME). If the variable is unset, no source code is provided.
 Type=bool
 Categories=service-software-management
 
 [repository/online/unmaintained]
 Description[de]=Das Univention-Repository und andere Repository-Komponenten unterscheiden zwischen zwei Bestandteilen: Der von der Maintenance abgedeckte Standard-Paketumfang von UCS befindet sich im maintained-Bereich. Unter unmaintained finden sich die weiteren Pakete, z.B. andere Mailserver als Postfix. Diese Pakete sind nicht durch Sicherheits-Updates oder anderweitige Maintenance abgedeckt. Ist diese Option aktiviert, werden die Pakete aus unmaintained bereitgestellt.
-Description[en]=The Univention repository and repository components differentiate between two component parts: The UCS standard package scope covered by maintenance can be found in the maintained area. Additional packages, e.g., other mail servers than Postfix can be found under unmaintained. These packages are not covered by security updates or ulterior maintenance. If this option is activated, the packages from unmaintained are provided.
+Description[en]=The Univention repository and repository components differentiate between two component parts: The UCS standard package scope covered by the maintenance can be found in the maintained area. Additional packages, e.g., other mail servers than Postfix can be found under unmaintained. These packages are not covered by security updates or ulterior maintenance. If this option is activated, the packages from unmaintained are provided.
 Type=bool
 Categories=service-software-management
 
@@ -102,8 +102,8 @@ Type=bool
 Categories=service-software-management
 
 [repository/online/component/.*/description]
-Description[de]=Die Beschreibung einer Repository-Komponente
-Description[en]=The description of a repository component
+Description[de]=Die Beschreibung einer Repository-Komponente.
+Description[en]=The description of a repository component.
 Type=str
 Categories=service-software-management
 
@@ -145,25 +145,25 @@ Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/username]
-Description[de]=Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann der Benutzername konfiguriert werden. (Siehe auch 'repository/online/component/.*/password').
-Description[en]=Some repository components require authentication for accessing the repository. The username can be configured with this variable. (See also 'repository/online/component/.*/password').
+Description[de]=Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann der Benutzername konfiguriert werden. Siehe auch 'repository/online/component/.*/password'.
+Description[en]=Some repository components require authentication for accessing the repository. The username can be configured with this variable. See also 'repository/online/component/.*/password'.
 Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/password]
-Description[de]=Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann das Passwort konfiguriert werden. (Siehe auch 'repository/online/component/.*/username').
-Description[en]=Some repository components require authentication for accessing the repository. The password can be configured with this variable. (See also 'repository/online/component/.*/username').
+Description[de]=Einige Repository-Komponenten verlangen eine Authentifizierung für den Zugriff auf das Repository. Mit dieser Variable kann das Passwort konfiguriert werden. Siehe auch 'repository/online/component/.*/username'.
+Description[en]=Some repository components require authentication for accessing the repository. The password can be configured with this variable. See also 'repository/online/component/.*/username'.
 Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/localmirror]
-Description[de]=Ist diese Option aktiviert, wird die Komponente auch in ein eventuell bestehendes lokales Repository gespiegelt.
-Description[en]=If this option is activated, the component is mirrored to a potential local repository.
+Description[de]=Ist diese Option aktiviert, wird die Komponente auch in ein lokales Repository gespiegelt (wenn eines existiert).
+Description[en]=If this option is activated, the component is mirrored to a  local repository (if one exists).
 Type=bool
 Categories=service-software-management
 
 [repository/online/component/.*/clean]
-Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist die Option 'online/repository/clean' aktiviert, wird unter /var/lib/univention-repository/var/clean.sh ein Shell-Skript generiert, mit gespiegelte Repository-Inhalte, die nicht mehr benötigt werden entfernt werden können. Ist diese Option aktiviert, werden nicht mehr benötigte Bestandteile der Komponent dort integriert.
+Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist die Option 'online/repository/clean' aktiviert, wird unter /var/lib/univention-repository/var/clean.sh ein Shell-Skript generiert, mit gespiegelte Repository-Inhalte, die nicht mehr benötigt werden entfernt werden können. Ist diese Option aktiviert, werden nicht mehr benötigte Bestandteile der Komponente dort integriert.
 Description[en]=If a local repository is used (see 'local/repository') and if the option 'online/repository/clean' is activated, a shell script with the filename /var/lib/univention-repository/var/clean.sh is generating. Executing this shell script removes mirrored repository content, which is no longer used. If this option is activated, packages from the component which are no longer needed are integrated in the script.
 Type=bool
 Categories=service-software-management
@@ -199,7 +199,7 @@ Type=bool
 Categories=service-software-management
 
 [repository/mirror/architectures]
-Description[de]=In der Grundeinstellung enthält ein lokales Repository nur die Architektur des Repository-Server. Wird diese Variable auf 'i386 amd64' gesetzt, werden beide Architekturen gespiegelt.
+Description[de]=In der Grundeinstellung enthält ein lokales Repository nur die Architektur des Repository-Servers. Wird diese Variable auf 'i386 amd64' gesetzt, werden beide Architekturen gespiegelt.
 Description[en]=In the default setting the local repository only contains the architecture of the repository server. If this variable is set to 'i386 amd64', both architectures are mirrored.
 Type=str
 Categories=service-software-management
@@ -223,21 +223,20 @@ Type=int
 Categories=service-software-management
 
 [repository/mirror/version/start]
-Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), konfiguriert diese Variable die niedrigste UCS-Version, die auf dem vom Mirror bezogen wird.
+Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), konfiguriert diese Variable die niedrigste UCS-Version, die von dem Mirror bezogen wird.
 Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror'), this variable configures the lowest UCS version which is retrieved from the mirror.
 Type=str
 Categories=service-software-management
 
 [repository/mirror/version/end]
-Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), konfiguriert diese Variable die höchste UCS-Version, die auf dem vom Mirror bezogen wird.
+Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), konfiguriert diese Variable die höchste UCS-Version, die von dem Mirror bezogen wird.
 Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror'), this variable configures the highest UCS version which is retrieved from the mirror.
 Type=str
 Categories=service-software-management
 
 [repository/mirror/httpmethod]
 Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit bei der Spiegelung des Repositorys die Verfügbarkeit von Updates getestet wird. Ist die Variable nicht gesetzt, erfolgt es über 'HEAD'. Falls der Server dies nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenverbrauch).
-Description[en]=This variable configures the HTTP method used during repository mirroring to test for new updates. If the variable is unset, 'HEAD' is used. If the server doesn't support 
-'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
+Description[en]=This variable configures the HTTP method used during repository mirroring to test for new updates. If the variable is unset, 'HEAD' is used. If the server doesn't support 'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
 Type=str
 Categories=service-software-management
 
@@ -249,7 +248,7 @@ Categories=service-software-management
 
 [update/check/cron/entry]
 Description[de]=Definiert das Intervall, in dem automatisch nach verfügbaren Updates für dieses System gesucht wird. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'. Ist die Variable nicht gesetzt, erfolgt die Prüfung alle fünf Minuten.
-Description[en]=Defines the interval for checking whether updates are availanle for this system. The configuration is done in Cron syntax, see 'man 5 crontab'. If the variable is unset, the check occurs every five minutes.
+Description[en]=Defines the interval for checking whether updates are available for this system. The configuration is done in Cron syntax, see 'man 5 crontab'. If the variable is unset, the check occurs every five minutes.
 Type=str
 Categories=service-software-management
 
@@ -280,7 +279,7 @@ ReadOnly=yes
 
 [update/warning/releasenotes]
 Description[de]=Führt man auf auf der Kommandozeile ein Relese-Updates durch, wird ein Verweis auf die Release Notes angezeigt und eine Minute gewartet, bevor mit dem Update fortgefahren wird. Ist diese Variable auf 'no' gesetzt, beginnt das Update sofort.
-Description[en]=If a release update is initiated on the command line, a reference to the release notes is shown and a minute is being warted before the update starts. If the variable is set ti 'no', the update starts rightaway.
+Description[en]=If a release update is initiated on the command line, a reference to the release notes is shown. After a minute, the update starts. If the variable is set to 'no', the update starts rightaway.
 Type=str
 Categories=service-software-management
 
@@ -303,8 +302,8 @@ Type=str
 Categories=service-software-management
 
 [update/commands/install]
-Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein Paket ohne Benutzerrückfragen zu installieren.
-Description[en]=This command is used internally by the UCS package management tools to install a package without user interactions.
+Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein Paket ohne Benutzerinteraktion zu installieren.
+Description[en]=This command is used internally by the UCS package management tools to install a package without user interaction.
 Type=str
 Categories=service-software-management
 
