@@ -138,6 +138,7 @@ define([
 				buttons.push({
 					name: 'shop',
 					label: _('Shop'),
+					iconClass: tools.getIconClass('appcenter-shop', 16),
 					align: 'right',
 					callback: lang.hitch(this, 'openShop')
 				});

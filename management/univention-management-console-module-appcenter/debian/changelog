@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.28-1) unstable; urgency=low
+
+  * Add icon for shop button (Bug #32282)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 09 Sep 2013 11:53:46 +0200
+
 univention-management-console-module-appcenter (3.0.27-1) unstable; urgency=low
 
   * Fixed problem with Installed Apps and wrong ServerRole (Bug #32426)

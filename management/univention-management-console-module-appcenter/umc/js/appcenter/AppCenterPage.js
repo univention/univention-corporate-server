@@ -76,16 +76,16 @@ define([
 				var href = 'https://www.univention.de/en/products/ucs/app-catalogue/vote-for-app/';
 				if (locale == 'de') {
 					href = 'https://www.univention.de/produkte/ucs/app-katalog/vote-for-app/';
-					var footerRight = this._footer.getChildren()[1];
-					var voteForAppAnchor = domConstruct.create('a', {
-						href: href,
-						target: '_blank',
-						style: {color: '#414142'},
-						title: _('Let us know, if you you miss any application in Univention App Center!'),
-						innerHTML: _('Suggest new app')
-					});
-					domConstruct.place(voteForAppAnchor, footerRight.domNode);
 				}
+				var footerRight = this._footer.getChildren()[1];
+				var voteForAppAnchor = domConstruct.create('a', {
+					href: href,
+					target: '_blank',
+					style: {color: '#414142'},
+					title: _('Let us know, if you you miss any application in Univention App Center!'),
+					innerHTML: _('Suggest new app')
+				});
+				domConstruct.place(voteForAppAnchor, footerRight.domNode);
 			}
 
 			if (this.liveSearch) {
