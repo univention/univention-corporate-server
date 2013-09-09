@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import notifier
-from fnmatch import fnmatch
 
 import univention.management.console as umc
 from univention.management.console.log import MODULE

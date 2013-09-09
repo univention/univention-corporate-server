@@ -1,3 +1,9 @@
+univention-quota (8.0.2-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:40:53 +0200
+
 univention-quota (8.0.1-1) unstable; urgency=low
 
   * fixed typo in "univention-user-quota" which caused a traceback (Bug

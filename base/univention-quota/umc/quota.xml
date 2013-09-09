@@ -3,29 +3,16 @@
 	<module id="quota" icon="quota-module" priority="10" version="1.0">
 		<name>Filesystem quotas</name>
 		<description>Set, unset and modify filesystem quota</description>
+		<keywords>filesystem,quota,partition</keywords>
 		<categories>
 			<category name="system"/>
 		</categories>
-		<command name="quota/partitions/query" function="partitions_query">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="quota/partitions/info" function="partitions_info">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="quota/partitions/activate" function="partitions_activate">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="quota/partitions/deactivate" function="partitions_deactivate">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="quota/users/query" function="users_query">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="quota/users/set" function="users_set">
-			<return syntax="Dictionary"/>
-		</command>
-		<command name="quota/users/remove" function="users_remove">
-			<return syntax="Dictionary"/>
-		</command>
+		<command name="quota/partitions/query" function="partitions_query" />
+		<command name="quota/partitions/info" function="partitions_info" />
+		<command name="quota/partitions/activate" function="partitions_activate" />
+		<command name="quota/partitions/deactivate" function="partitions_deactivate" />
+		<command name="quota/users/query" function="users_query" />
+		<command name="quota/users/set" function="users_set" />
+		<command name="quota/users/remove" function="users_remove" />
 	</module>
 </umc>

@@ -1,3 +1,9 @@
+univention-system-setup (7.0.36-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:44:06 +0200
+
 univention-system-setup (7.0.35-2) unstable; urgency=low
 
   * Fix parsing profile (Bug #32463)

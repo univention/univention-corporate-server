@@ -3,6 +3,7 @@
 	<module id="firewall" icon="firewall" version="1.0">
 		<name>Firewall</name>
 		<description>Managing firewall configuration</description>
+		<keywords></keywords>
 		<categories>
 			<category name="system"/>
 		</categories>
