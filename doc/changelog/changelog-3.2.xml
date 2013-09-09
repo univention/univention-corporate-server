@@ -225,6 +225,10 @@
 	  <listitem><simpara>
 		The installer now makes sure that LVM signatures are removed by pvremove before pvcreate is called (<ulink url="&ucsbug;31925">Bug 31925</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The installer now shows occurring errors and warning during initial device scan and offers to format the problematic devices with an empty GPT (<ulink url="&ucsbug;31899">Bug 31899</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 
   <section>
