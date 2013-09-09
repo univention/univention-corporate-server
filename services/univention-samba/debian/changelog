@@ -1,3 +1,10 @@
+univention-samba (8.0.7-1) unstable; urgency=low
+
+  * Set samba/max/protocol to SMB2 for new installations and to NT1 for
+    updates (Bug #32394)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 09 Sep 2013 07:44:48 +0200
+
 univention-samba (8.0.6-4) unstable; urgency=low
 
   * Re-create /var/lib/samba (Bug #32445)

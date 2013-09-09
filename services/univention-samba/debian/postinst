@@ -77,6 +77,11 @@ if [ "$1" = "configure" ]; then
 			fi
 		fi
 
+		## set default for Bug #32394, may be removed after ucs3.2-0
+		if dpkg --compare-versions "$2" lt-nl '8.0.0'; then
+			ucr set samba/max/protocol?NT1
+		fi
+
 	fi
 fi
 
@@ -145,7 +150,8 @@ univention-config-registry set samba/script/adduser?true \
 				samba/map_to_guest?"Bad User" \
 				samba/netlogon/sync?sync \
 				samba/domain/logons?auto \
-				samba/password/checkscript?"/usr/share/univention-samba/password_check %u"
+				samba/password/checkscript?"/usr/share/univention-samba/password_check %u" \
+				samba/max/protocol?SMB2
 
 if [ "$1" = "configure" ]; then
 	uinst=/usr/lib/univention-install/74univention-samba.uinst
