@@ -323,10 +323,20 @@
 			  <programlisting language="sh">
 UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPSchema /path/to/app.schema
+ucs_registerLDAPSchema /path/to/app.schema "$@"
+		  	</programlisting>
+			</example>
+		  <para>
+				There is a corresponding <literal>ucs_unregisterLDAPSchema</literal> function, which can be used to unregister a <literal>settings/ldapschema</literal> object. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
+		  </para>
+			<example id="app:ucs_unregisterLDAPACL_example">
+			  <programlisting language="sh">
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterLDAPACL appacl "$@"
 		  	</programlisting>
 			</example>
 	  </section>
+
 	  <section id="app:ucs_registerLDAPACL">
 		  <title>Registration of LDAP ACL Extensions</title>
 		  <para>
@@ -358,7 +368,148 @@ ucs_registerLDAPSchema /path/to/app.schema
 			  <programlisting language="sh">
 UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPACL --ucsversionstart 3.2-0 /path/to/app.acl
+ucs_registerLDAPACL /path/to/appacl.acl "$@" --ucsversionstart 3.2-0
+		  	</programlisting>
+			</example>
+		  <para>
+				There is a corresponding <literal>ucs_unregisterLDAPACL</literal> function, which can be used to unregister a <literal>settings/ldapacl</literal> object. This only works if no App is registered any longer for the object. It should not be called unless it has been verified that no object in <acronym>LDAP</acronym> still needs access control by this ACL extension. For this reason it schould generally not be called in unjoin scripts.
+		  </para>
+			<example id="app:ucs_unregisterLDAPACL_example">
+			  <programlisting language="sh">
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterLDAPACL appacl "$@"
+		  	</programlisting>
+			</example>
+	  </section>
+	</section>
+
+	  <section id="app:ucs_registerUDMModule">
+		  <title>Registration of UDM Extension Modules</title>
+		  <para>
+				The easiest way to register <acronym>UDM</acronym> extension modules is to call the <literal>ucs_registerUDMModule</literal> shell function
+				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
+				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
+				<literal>settings/udm_module</literal> object (see <xref linkend="settings:udm_module"/>). After creation of the object the function waits
+				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>UDM</acronym> module and reports success or failure.
+		  </para>
+		  <para>
+				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
+				The shell function will then register the specified app identifier with the <acronym>UDM</acronym> extension module object to indicate that
+				the <acronym>UDM</acronym> module object is required as long as this app is installed anywhere in the UCS domain.
+		  </para>
+		  <para>
+				<literal>ucs_registerUDMModule</literal> supports two additional options to specify a valid range of UCS versions, where the UDM module should be
+				activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
+				performed whenever the <acronym>UDM</acronym> module object is modified. By calling this function from a joinscript, it will
+				automatically update the Debian package number stored in the object, triggering a re-evaluation of the specified UCS version range.
+				Note that the UDM module is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
+		  </para>
+		  <para>
+				To prevent accidental and unnecessary changes the function <literal>ucs_registerUDMModule</literal> (as well as the corresponding UDM module)
+				only execute modifications of an existing object if the Debian package version is increased as well.
+		  </para>
+			<example id="app:ucs_registerUDMModule_example">
+			  <programlisting language="sh">
+UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
+ucs_registerUDMModule /path/to/appmodule.py "$@" --ucsversionstart 3.2-0
+		  	</programlisting>
+			</example>
+		  <para>
+				There is a corresponding <literal>ucs_unregisterUDMModule</literal> function, which can be used to unregister a <literal>settings/udm_module</literal> object. This only works if no App is registered any longer for the object.
+		  </para>
+			<example id="app:ucs_unregisterUDMModule_example">
+			  <programlisting language="sh">
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterUDMModule newapp/someobject "$@"
+		  	</programlisting>
+			</example>
+	  </section>
+	</section>
+
+	  <section id="app:ucs_registerUDMSyntax">
+		  <title>Registration of UDM Syntax Extensions</title>
+		  <para>
+				The easiest way to register <acronym>UDM</acronym> syntax extensions is to call the <literal>ucs_registerUDMSyntax</literal> shell function
+				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
+				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
+				<literal>settings/udm_syntax</literal> object (see <xref linkend="settings:udm_syntax"/>). After creation of the object the function waits
+				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>UDM</acronym> syntax and reports success or failure.
+		  </para>
+		  <para>
+				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
+				The shell function will then register the specified app identifier with the <acronym>UDM</acronym> syntax extension object to indicate that
+				the <acronym>UDM</acronym> syntax object is required as long as this app is installed anywhere in the UCS domain.
+		  </para>
+		  <para>
+				<literal>ucs_registerUDMSyntax</literal> supports two additional options to specify a valid range of UCS versions, where the UDM syntax should be
+				activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
+				performed whenever the <acronym>UDM</acronym> syntax object is modified. By calling this function from a joinscript, it will
+				automatically update the Debian package number stored in the object, triggering a re-evaluation of the specified UCS version range.
+				Note that the UDM syntax is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
+		  </para>
+		  <para>
+				To prevent accidental and unnecessary changes the function <literal>ucs_registerUDMSyntax</literal> (as well as the corresponding UDM module)
+				only execute modifications of an existing object if the Debian package version is increased as well.
+		  </para>
+			<example id="app:ucs_registerUDMSyntax_example">
+			  <programlisting language="sh">
+UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
+ucs_registerUDMSyntax /path/to/appsyntax.py "$@" --ucsversionstart 3.2-0
+		  	</programlisting>
+			</example>
+		  <para>
+				There is a corresponding <literal>ucs_unregisterUDMSyntax</literal> function, which can be used to unregister a <literal>settings/udm_syntax</literal> object. This only works if no App is registered any longer for the object.
+		  </para>
+			<example id="app:ucs_unregisterUDMSyntax_example">
+			  <programlisting language="sh">
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterUDMSyntax appsyntax "$@"
+		  	</programlisting>
+			</example>
+	  </section>
+	</section>
+
+	  <section id="app:ucs_registerUDMHook">
+		  <title>Registration of UDM Hooks</title>
+		  <para>
+				The easiest way to register <acronym>UDM</acronym> hooks is to call the <literal>ucs_registerUDMHook</literal> shell function
+				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
+				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
+				<literal>settings/udm_hook</literal> object (see <xref linkend="settings:udm_hook"/>). After creation of the object the function waits
+				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>UDM</acronym> hook and reports success or failure.
+		  </para>
+		  <para>
+				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
+				The shell function will then register the specified app identifier with the <acronym>UDM</acronym> hook object to indicate that
+				the <acronym>UDM</acronym> hook object is required as long as this app is installed anywhere in the UCS domain.
+		  </para>
+		  <para>
+				<literal>ucs_registerUDMHook</literal> supports two additional options to specify a valid range of UCS versions, where the UDM hook should be
+				activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
+				performed whenever the <acronym>UDM</acronym> hook object is modified. By calling this function from a joinscript, it will
+				automatically update the Debian package number stored in the object, triggering a re-evaluation of the specified UCS version range.
+				Note that the UDM hook is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
+		  </para>
+		  <para>
+				To prevent accidental and unnecessary changes the function <literal>ucs_registerUDMHook</literal> (as well as the corresponding UDM module)
+				only execute modifications of an existing object if the Debian package version is increased as well.
+		  </para>
+			<example id="app:ucs_registerUDMHook_example">
+			  <programlisting language="sh">
+UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
+ucs_registerUDMHook /path/to/apphook.py "$@" --ucsversionstart 3.2-0
+		  	</programlisting>
+			</example>
+		  <para>
+				There is a corresponding <literal>ucs_unregisterUDMHook</literal> function, which can be used to unregister a <literal>settings/udm_hook</literal> object. This only works if no App is registered any longer for the object.
+		  </para>
+			<example id="app:ucs_unregisterUDMHook_example">
+			  <programlisting language="sh">
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterUDMHook apphook "$@"
 		  	</programlisting>
 			</example>
 	  </section>
