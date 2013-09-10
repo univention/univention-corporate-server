@@ -1,3 +1,13 @@
+ucs-test (4.0.106-1) unstable; urgency=low
+
+  * added functions to start/stop the s4 connector to
+    univention.testing.utils.py
+  * stop s4 connector for the duration of
+    66_udm-computers/02_all_roles_creation_with_all_attributes
+  (Bug #31659)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 10 Sep 2013 12:36:29 +0200
+
 ucs-test (4.0.105-1) unstable; urgency=low
 
   * 50_samba/41password_change: removed apptest flag (Bug #31794)

@@ -48,6 +48,7 @@ RE_SECTION = re.compile(r'^[0-9]{2}_(.+)$')
 RE_PREFIX = re.compile(r'^[0-9]{2}(.+)')
 RE_SUFFIX = re.compile(r'\.lib$|\.sh$|\.py[co]?$|\.bak$|~$')
 LOG_BASE = '/var/log/univention/test_%d.log'
+S4CONNECTOR_INIT_SCRIPT = '/etc/init.d/univention-s4-connector'
 
 
 
@@ -135,8 +136,14 @@ def s4connector_present():
 	for dn, attr in get_ldap_connection().search(filter = '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord']):
 		if 'aRecord' in attr:
 			return True
+	return False
 
 
+def stop_s4connector():
+	subprocess.Popen([S4CONNECTOR_INIT_SCRIPT, 'stop']).wait()
+
+def start_s4connector():
+	subprocess.Popen([S4CONNECTOR_INIT_SCRIPT, 'start']).wait()
 
 def wait_for_replication():
 	print 'Waiting for replication:'

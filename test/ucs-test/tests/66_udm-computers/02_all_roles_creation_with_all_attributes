@@ -13,12 +13,18 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 import univention.config_registry as configRegistry
+import atexit
 
 
 if __name__ == '__main__':
 	ldap = utils.get_ldap_connection()
 	ucr = configRegistry.ConfigRegistry()
 	ucr.load()
+
+	if utils.s4connector_present():
+		atexit.register(utils.start_s4connector)
+		utils.stop_s4connector()
+
 
 	
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
