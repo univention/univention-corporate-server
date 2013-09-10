@@ -225,8 +225,8 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'conflictingAppsSystemPackages': univention.admin.property(
-			short_description=_('Conflicting Apps (System Packages)'),
+	'conflictingSystemPackages': univention.admin.property(
+			short_description=_('Conflicting System Packages'),
 			long_description='',
 			syntax=univention.admin.syntax.TextArea,
 			multivalue=1,
@@ -322,7 +322,7 @@ layout = [
 			["webInterface"],
 			["webInterfaceName"],
 			["conflictingApps"],
-			["conflictingAppsSystemPackages"],
+			["conflictingSystemPackages"],
 			["defaultPackages"],
 			["defaultPackagesMaster"],
 			["umcModuleName"],
@@ -337,8 +337,8 @@ mapping=univention.admin.mapping.mapping()
 mapping.register('id', 'univentionAppID', None, univention.admin.mapping.ListToString)
 mapping.register('name', 'univentionAppName', None, univention.admin.mapping.ListToString)
 mapping.register('version', 'univentionAppVersion', None, univention.admin.mapping.ListToString)
-mapping.register('shortDescription', 'univentionAppDescription', None, univention.admin.mapping.ListToString)
-mapping.register('longDescription', 'univentionAppLongDescription', None, univention.admin.mapping.ListToString)
+mapping.register('shortDescription', 'univentionAppDescription')
+mapping.register('longDescription', 'univentionAppLongDescription')
 mapping.register('vendor', 'univentionAppVendor', None, univention.admin.mapping.ListToString)
 mapping.register('contact', 'univentionAppContact', None, univention.admin.mapping.ListToString)
 mapping.register('maintainer', 'univentionAppMaintainer', None, univention.admin.mapping.ListToString)
@@ -347,17 +347,17 @@ mapping.register('websiteVendor', 'univentionAppWebsiteVendor', None, univention
 mapping.register('websiteMaintainer', 'univentionAppWebsiteMaintainer', None, univention.admin.mapping.ListToString)
 mapping.register('screenshot', 'univentionAppScreenshot', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('icon', 'univentionAppIcon', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('category', 'univentionAppCategory', None, univention.admin.mapping.ListToString)
-mapping.register('webInterface', 'univentionAppWebInterface', None, univention.admin.mapping.ListToString)
+mapping.register('category', 'univentionAppCategory')
+mapping.register('webInterface', 'univentionAppWebInterface')
 mapping.register('webInterfaceName', 'univentionAppWebInterfaceName', None, univention.admin.mapping.ListToString)
-mapping.register('conflictingApps', 'univentionAppConflictingApps', None, univention.admin.mapping.ListToString)
-mapping.register('conflictingAppsSystemPackages', 'univentionAppConflictingAppsSystemPackages', None, univention.admin.mapping.ListToString)
-mapping.register('defaultPackages', 'univentionAppDefaultPackages', None, univention.admin.mapping.ListToString)
-mapping.register('defaultPackagesMaster', 'univentionAppDefaultPackagesMaster', None, univention.admin.mapping.ListToString)
+mapping.register('conflictingApps', 'univentionAppConflictingApps')
+mapping.register('conflictingSystemPackages', 'univentionConflictingSystemPackages')
+mapping.register('defaultPackages', 'univentionAppDefaultPackages')
+mapping.register('defaultPackagesMaster', 'univentionAppDefaultPackagesMaster')
 mapping.register('umcModuleName', 'univentionAppUMCModuleName', None, univention.admin.mapping.ListToString)
 mapping.register('umcModuleFlavor', 'univentionAppUMCModuleFlavor', None, univention.admin.mapping.ListToString)
-mapping.register('serverRole', 'univentionAppServerRole', None, univention.admin.mapping.ListToString)
-mapping.register('server', 'univentionAppInstalledOnServer', None, univention.admin.mapping.ListToString)
+mapping.register('serverRole', 'univentionAppServerRole')
+mapping.register('server', 'univentionAppInstalledOnServer')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
