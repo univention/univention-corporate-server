@@ -66,7 +66,7 @@ property_descriptions={
 	'filename': univention.admin.property(
 			short_description=_('UDM hook file name'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,	## relative path, may contain directories
+			syntax=univention.admin.syntax.BaseFilename,
 			multivalue=0,
 			options=[],
 			required=1,
