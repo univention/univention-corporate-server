@@ -43,20 +43,7 @@ user_create "$USERNAME" &&
 	undo user_remove "$USERNAME" ||
 	fail_fast 1 "Failed to create user $USERNAME"
 
-echo "Waiting for replication..."
-i=0
-while sleep 1s
-do
-	if [ $i -lt 120 ]; then
-		if getent passwd "$USERNAME"; then
-			break
-		fi
-	else
-		echo "Waiting for replication longer than two minutes. Replication is probably broken."
-		break
-	fi
-	i=`expr $i + 1`
-done
+wait_for_replication
 
 if grep "New User: $USERNAME" "$tempFile"
 then
