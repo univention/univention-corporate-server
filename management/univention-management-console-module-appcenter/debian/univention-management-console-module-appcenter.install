@@ -1,0 +1,2 @@
+udm/handlers/appcenter/*.py usr/share/pyshared/univention/admin/handlers/appcenter
+schema/*.schema usr/share/pyshared/univention/admin/handlers/appcenter

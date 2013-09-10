@@ -33,7 +33,13 @@
 %:
 	dh $@
 
-override_dh_auto_build:
+PO_FILES := $(shell find udm -name '*.po')
+MO_FILES := $(PO_FILES:%.po=%.mo)
+
+%.mo:	%.po
+	msgfmt --check -o $@ $<
+
+override_dh_auto_build: $(MO_FILES)
 	dh-umc-module-build
 	dh_auto_build
 
@@ -41,3 +47,12 @@ override_dh_auto_install:
 	univention-install-config-registry
 	dh-umc-module-install
 	dh_auto_install
+
+	@set -e;\
+	for i in $(MO_FILES); do\
+		lang=`basename "$$i" .mo`;\
+		domain=`dirname "$$i" | sed 's,^udm/,univention/admin/,;s,/,-,g'`;\
+		o=debian/univention-management-console-module-appcenter/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		install -d "`dirname "$$o"`";\
+		install -m 644 "$$i" "$$o";\
+	done

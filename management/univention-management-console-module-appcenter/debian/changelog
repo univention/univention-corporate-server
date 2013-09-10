@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (3.0.30-1) unstable; urgency=low
+
+  * Install new univention-app.schema via ucs_registerLDAPSchema (Bug #32414)
+  * Install new UDMModule appcenter/app via ucs_registerUDMModule
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Sep 2013 13:09:30 +0200
+
 univention-management-console-module-appcenter (3.0.29-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition

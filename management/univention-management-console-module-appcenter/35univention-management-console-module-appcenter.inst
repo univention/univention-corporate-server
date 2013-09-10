@@ -40,6 +40,9 @@ joinscript_init
 
 umc_init
 
+ucs_registerLDAPSchema /usr/share/pyshared/univention/admin/handlers/appcenter/univention-app.schema "$@"
+ucs_registerUDMModule /usr/share/pyshared/univention/admin/handlers/appcenter/app.py "$@"
+
 eval "$(ucr shell ldap/base)"
 
 if [ $JS_LAST_EXECUTED_VERSION -eq 1 ]; then

@@ -1,0 +1,196 @@
+# Univention App Metadata OID: 1.3.6.1.4.1.10176.4204
+# <https://hutten.knut.univention.de/mediawiki/index.php/Univention-OIDs>
+#objectIdentifier univention 1.3.6.1.4.1.10176
+#objectIdentifier univentionApp univention:4204
+objectIdentifier univentionApp 1.3.6.1.4.1.10176.4204
+objectIdentifier univentionAppAttributeType univentionApp:1
+objectIdentifier univentionAppObjectClass univentionApp:2
+
+# <http://www.openldap.org/doc/admin24/schema.html>
+
+### Definition for univentionApp
+
+attributetype ( univentionAppAttributeType:1 NAME 'univentionAppID'
+	DESC 'App ID'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:2 NAME 'univentionAppName'
+	DESC 'App Name'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:3 NAME 'univentionAppVersion'
+	DESC 'App Version'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:4 NAME 'univentionAppDescription'
+	DESC 'Short description about the App'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:5 NAME 'univentionAppLongDescription'
+	DESC 'Long description about the App'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:6 NAME 'univentionAppScreenshot'
+	DESC 'App screenshot'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionAppAttributeType:7 NAME 'univentionAppIcon'
+	DESC 'App icon'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionAppAttributeType:8 NAME 'univentionAppCategory'
+	DESC 'App category'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:9 NAME 'univentionAppVendor'
+	DESC 'App vendor'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:10 NAME 'univentionAppContact'
+	DESC 'App contact'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:11 NAME 'univentionAppMaintainer'
+	DESC 'App maintainer'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:12 NAME 'univentionAppWebsite'
+	DESC 'App website'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:13 NAME 'univentionAppWebsiteVendor'
+	DESC 'App website vendor'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:14 NAME 'univentionAppWebsiteMaintainer'
+	DESC 'App website maintainer'
+	SINGLE-VALUE
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:15 NAME 'univentionAppWebInterface'
+	DESC 'App web interface'
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:16 NAME 'univentionAppWebInterfaceName'
+	DESC 'App web interface name'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:17 NAME 'univentionAppConflictingApps'
+	DESC 'Conflicting Apps'
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:18 NAME 'univentionAppConflictingAppsSystemPackages'
+	DESC 'Conflicting Apps (system packages)'
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:19 NAME 'univentionAppDefaultPackages'
+	DESC 'Default packages of the App'
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:20 NAME 'univentionAppDefaultPackagesMaster'
+	DESC 'Default packages of the App for the master'
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:21 NAME 'univentionAppUMCModuleName'
+	DESC 'The Apps UMC module name'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:22 NAME 'univentionAppUMCModuleFlavor'
+	DESC 'Flavor of the Apps UMC module'
+	SINGLE-VALUE
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:23 NAME 'univentionAppServerRole'
+	DESC 'Valid server roles for the App'
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( univentionAppAttributeType:24 NAME 'univentionAppInstalledOnServer'
+	DESC 'FQDNs of servers the App is installed on'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( univentionAppObjectClass:1 NAME 'univentionApp'
+	DESC 'UCS App Metadata'
+	SUP top
+	MUST ( univentionAppID )
+	MAY (	
+			  univentionAppName
+			$ univentionAppVersion
+			$ univentionAppDescription
+			$ univentionAppLongDescription
+			$ univentionAppScreenshot
+			$ univentionAppIcon
+			$ univentionAppCategory
+			$ univentionAppVendor
+			$ univentionAppContact
+			$ univentionAppMaintainer
+			$ univentionAppWebsite
+			$ univentionAppWebsiteVendor
+			$ univentionAppWebsiteMaintainer
+			$ univentionAppWebInterface
+			$ univentionAppWebInterfaceName
+			$ univentionAppConflictingApps
+			$ univentionAppConflictingAppsSystemPackages
+			$ univentionAppDefaultPackages
+			$ univentionAppDefaultPackagesMaster
+			$ univentionAppUMCModuleName
+			$ univentionAppUMCModuleFlavor
+			$ univentionAppServerRole
+			$ univentionAppInstalledOnServer
+		)
+	)
