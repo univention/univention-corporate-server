@@ -108,7 +108,7 @@ def mapUNIX_TimeInterval( value ):
 
 def unmapBase64( value ):
 	try:
-		return base64.encodestring( value[ 0 ] ).rstrip('\n')
+		return base64.b64encode( value[ 0 ] )
 	except Exception, e:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
 	return ""
@@ -118,7 +118,7 @@ def mapBase64( value ):
 		# special case for filter pattern '*'
 		return value
 	try:
-		return base64.decodestring( value )
+		return base64.b64decode( value )
 	except Exception, e:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
 	return ""
