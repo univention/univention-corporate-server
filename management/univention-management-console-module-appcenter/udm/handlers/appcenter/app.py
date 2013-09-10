@@ -218,6 +218,7 @@ property_descriptions={
 	'conflictingApps': univention.admin.property(
 			short_description=_('Conflicting Apps'),
 			long_description='',
+			syntax=univention.admin.syntax.TextArea,
 			multivalue=0,
 			options=[],
 			required=0,

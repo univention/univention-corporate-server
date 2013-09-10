@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (3.0.30-2) unstable; urgency=low
+
+  * Fix missing UDM syntax for conflictingApps (Bug #32414)
+  * Fix missing shell lib include in joinscript
+  * Improve error handling in joinscript
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Sep 2013 13:57:05 +0200
+
 univention-management-console-module-appcenter (3.0.30-1) unstable; urgency=low
 
   * Install new univention-app.schema via ucs_registerLDAPSchema (Bug #32414)
