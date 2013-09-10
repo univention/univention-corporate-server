@@ -323,16 +323,16 @@
 			  <programlisting language="sh">
 UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPSchema /path/to/app.schema "$@"
+ucs_registerLDAPSchema /path/to/appschemaextension.schema "$@"
 		  	</programlisting>
 			</example>
 		  <para>
 				There is a corresponding <literal>ucs_unregisterLDAPSchema</literal> function, which can be used to unregister a <literal>settings/ldapschema</literal> object. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
 		  </para>
-			<example id="app:ucs_unregisterLDAPACL_example">
+			<example id="app:ucs_unregisterLDAPSchema_example">
 			  <programlisting language="sh">
 . /usr/share/univention-lib/ldap.sh
-ucs_unregisterLDAPACL appacl "$@"
+ucs_unregisterLDAPACL appschemaextension "$@"
 		  	</programlisting>
 			</example>
 	  </section>
@@ -381,7 +381,6 @@ ucs_unregisterLDAPACL appacl "$@"
 		  	</programlisting>
 			</example>
 	  </section>
-	</section>
 
 	  <section id="app:ucs_registerUDMModule">
 		  <title>Registration of UDM Extension Modules</title>
@@ -425,7 +424,6 @@ ucs_unregisterUDMModule newapp/someobject "$@"
 		  	</programlisting>
 			</example>
 	  </section>
-	</section>
 
 	  <section id="app:ucs_registerUDMSyntax">
 		  <title>Registration of UDM Syntax Extensions</title>
@@ -469,7 +467,6 @@ ucs_unregisterUDMSyntax appsyntax "$@"
 		  	</programlisting>
 			</example>
 	  </section>
-	</section>
 
 	  <section id="app:ucs_registerUDMHook">
 		  <title>Registration of UDM Hooks</title>
