@@ -34,13 +34,15 @@ define([
 	"dojo/_base/array",
 	"dojo/Deferred",
 	"dojo/promise/all",
+	"dojo/query",
+	"dojo/dom-construct",
 	"dijit/form/Button",
 	"umc/tools",
 	"umc/render",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_FormWidgetMixin",
 	"umc/widgets/LabelPane"
-], function(declare, lang, array, Deferred, all, Button, tools, render, ContainerWidget, _FormWidgetMixin, LabelPane) {
+], function(declare, lang, array, Deferred, all, query, domConstruct, Button, tools, render, ContainerWidget, _FormWidgetMixin, LabelPane) {
 	return declare("umc.widgets.MultiInput", [ ContainerWidget, _FormWidgetMixin ], {
 		// summary:
 		//		Widget for a small list of simple and complex entries. An entry can be one or
@@ -201,9 +203,8 @@ define([
 		},
 
 		_setAllValues: function(_valList) {
-			var _valList = lang.clone(_valList);
 			this._blockChangeEvents = true;
-			var valList = _valList;
+			var valList = lang.clone(_valList);
 			if (!(valList instanceof Array)) {
 				valList = [];
 			}
@@ -337,22 +338,29 @@ define([
 			}
 
 			// create 'new' button
-			var btn = this.own(new Button({
+			var btn = new Button({
 				disabled: this.disabled,
 				iconClass: 'umcIconAdd',
 				onClick: lang.hitch(this, '_appendRows', 1),
 				'class': 'umcMultiInputAddButton'
-			}))[0];
+			});
+			this.own(btn);
 
 			// wrap a button with a LabelPane
-			this._newButton = this.own(new LabelPane({
+			this._newButton = new LabelPane({
 				content: btn,
+				disabled: this.disabled,
 				label: this._nRenderedElements === 1 && this._hasSubtypeLabel ? '&nbsp;' : '' // only keep the label for the first row
-			}))[0];
+			});
 
 			// add button to last row
 			this._allWidgetsBuiltDeferred.then(lang.hitch(this, function() {
 				this._rowContainers[this._rowContainers.length - 1].addChild(this._newButton);
+				var noWrapper = this._nRenderedElements === 1 && !this._hasSubtypeLabel;
+				if (noWrapper) {
+					// hack the empty umcLabelPaneLabeNodeTop out of the dom tree. It consumes space although it is empty
+					query('.umcLabelPaneLabeNodeTop', this._newButton.domNode).forEach(domConstruct.destroy);
+				}
 			}));
 		},
 
@@ -422,6 +430,11 @@ define([
 
 		__appendRow: function(irow) {
 			var order = [], widgetConfs = [];
+
+			// if the subwidgets have no label on their own,
+			//   remove the LabelPane wrapper to horizontally align with other
+			//   non-MultiInput widgets. See Bug #25389
+			var noWrapper = irow === 0 && !this._hasSubtypeLabel;
 			array.forEach(this.subtypes, function(iwidget, i) {
 				// add the widget configuration dict to the list of widgets
 				var iname = '__' + this.name + '-' + irow + '-' + i;
@@ -461,7 +474,7 @@ define([
 			var visibleWidgets = array.map(order, function(iname) {
 				return widgets[iname];
 			});
-			var rowContainer = this.own(new ContainerWidget({}))[0];
+			var rowContainer = new ContainerWidget({});
 			array.forEach(order, function(iname) {
 				// add widget to row container (wrapped by a LabelPane)
 				// only keep the label for the first row
@@ -470,11 +483,15 @@ define([
 				if (tools.inheritsFrom(iwidget, 'umc.widgets.Button')) {
 					label = irow !== 0 ? '' : '&nbsp;';
 				}
-				rowContainer.addChild(new LabelPane({
-					disabled: this.disabled,
-					content: iwidget,
-					label: label
-				}));
+				if (noWrapper) {
+					rowContainer.addChild(iwidget);
+				} else {
+					rowContainer.addChild(new LabelPane({
+						disabled: this.disabled,
+						content: iwidget,
+						label: label
+					}));
+				}
 
 				// register to value changes
 				this.own(iwidget.watch('value', lang.hitch(this, function() {
@@ -485,16 +502,22 @@ define([
 			}, this);
 
 			// add a 'remove' button at the end of the row
-			var button = this.own(new Button({
+			var button = new Button({
 				disabled: this.disabled,
 				iconClass: 'umcIconDelete',
 				onClick: lang.hitch(this, '_removeElement', irow),
 				'class': 'umcMultiInputRemoveButton'
-			}))[0];
-			rowContainer.addChild(new LabelPane({
+			});
+			var labelPane = new LabelPane({
+				disabled: this.disabled,
 				content: button,
 				label: irow === 0 && this._hasSubtypeLabel ? '&nbsp;' : '' // only keep the label for the first row
-			}));
+			});
+			rowContainer.addChild(labelPane);
+			if (noWrapper) {
+				// hack the empty umcLabelPaneLabeNodeTop out of the dom tree. It consumes space although it is empty
+				query('.umcLabelPaneLabeNodeTop', labelPane.domNode).forEach(domConstruct.destroy);
+			}
 
 			// add row
 			this._widgets[irow] = visibleWidgets;

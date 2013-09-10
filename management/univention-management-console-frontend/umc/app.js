@@ -194,7 +194,7 @@ define([
 					// for a given pattern, ignore 'pseudo' entries in _favorites_ category
 					|| (searchQuery.test(null, obj) && obj.category != '_favorites_');
 				var matchesCategory = obj.category == category.id;
-				if (category.id == '_all_') {
+				if (allCategories) {
 					matchesCategory = true;
 				}
 				//else if (category.id == '_favorites_') {
