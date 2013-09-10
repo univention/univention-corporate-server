@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.30-3) unstable; urgency=low
+
+  * Fix required/multivalue settings (Bug #32414)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Sep 2013 16:07:34 +0200
+
 univention-management-console-module-appcenter (3.0.30-2) unstable; urgency=low
 
   * Fix missing UDM syntax for conflictingApps (Bug #32414)
