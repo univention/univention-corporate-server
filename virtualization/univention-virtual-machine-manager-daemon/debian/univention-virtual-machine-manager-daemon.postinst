@@ -51,6 +51,7 @@ univention-config-registry set "uvmm/pool/default/path?/var/lib/libvirt/images" 
 
 case "$1" in
 	configure)
+
 	create_logfile /var/log/univention/virtual-machine-manager-daemon.log "root:adm" 640
 	create_logfile /var/log/univention/virtual-machine-manager-daemon-errors.log "root:adm" 640
 
@@ -107,10 +108,13 @@ case "$1" in
 	;;
 esac
 
+uinst=/usr/lib/univention-install/56univention-virtual-machine-manager-daemon.uinst
+[ -e "$uinst" ] && rm "$uinst"
+
 . /usr/share/univention-lib/base.sh
 call_joinscript 44univention-virtual-machine-manager-daemon.inst || true
 
 #DEBHELPER#
 
 exit 0
-# vim:set ft=sh ts=4 sw=4 et:
+# vim:set ft=sh ts=4 sw=4 noet:

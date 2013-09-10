@@ -35,12 +35,31 @@ set -e
 
 case "$1" in
     purge)
+	univention-config-registry unset uvmm/pool/default/path \
+		uvmm/umc/vnc \
+		uvmm/umc/show/pause \
+		uvmm/umc/autosearch \
+		uvmm/check/interval \
+		uvmm/check/timeout \
+		uvmm/debug \
+		uvmm/debug/command \
+		uvmm/debug/ldap \
+		uvmm/debug/node \
+		uvmm/debug/unix \
+		auth/uvmmd/accessfile
     rm -f /etc/pki/libvirt/clientcert.pem
     rm -f /etc/pki/libvirt/private/clientkey.pem
     rm -f /etc/pki/CA/cacert.pem
     rm -f /var/run/uvmmd.pid
     rm -f /var/run/uvmm.socket
-    invoke-rc.d univention-directory-listener restart
+	rm -f /var/log/univention/virtual-machine-manager-daemon.log*
+	rm -f /var/log/univention/virtual-machine-manager-daemon-errors.log*
+	rm -f /var/lib/univention-directory-listener/handlers/uvmmd-nodes
+	rm -rf /var/cache/univention-virtual-machine-manager-daemon
+	rm -f /etc/runit/univention/univention-virtual-machine-manager-daemon
+	rm -rf /etc/runit/univention-virtual-machine-manager-daemon
+	invoke-rc.d univention-directory-listener crestart
+	find /etc/univention/templates -name univention-virtual-machine-manager-node-xen.\* -delete
     ;;
 
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
@@ -54,5 +73,12 @@ esac
 
 #DEBHELPER#
 
+case "$1" in
+	remove)
+	. /usr/share/univention-lib/all.sh
+	call_unjoinscript 56univention-virtual-machine-manager-daemon.uinst
+	;;
+esac
+
 exit 0
-# vim:set ft=sh ts=4 sw=4 et:
+# vim:set ft=sh ts=4 sw=4 noet:

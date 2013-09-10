@@ -1899,6 +1899,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  Profiles for UCS-3.0 are no longer created.
 		  Instead profiles for UCS-3.2 are created (<ulink url="&ucsbug;32261">Bug 32261</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			An unjoin script has been added to package <package>univention-virtual-machine-manager-daemon</package>.
+			The unjoin script removes the UVMM service from the server object and removes the default &ucsUCRV;s (<ulink url="&ucsbug;32449">Bug 32449</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
