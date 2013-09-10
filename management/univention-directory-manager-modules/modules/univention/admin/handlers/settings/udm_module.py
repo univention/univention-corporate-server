@@ -99,7 +99,7 @@ property_descriptions={
 			short_description=_('App identifier'),
 			long_description='',
 			syntax=univention.admin.syntax.TextArea,
-			multivalue=0,
+			multivalue=1,
 			options=[],
 			required=0,
 			may_change=1,
@@ -174,7 +174,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('filename', 'univentionUDMModuleFilename', None, univention.admin.mapping.ListToString)
 mapping.register('data', 'univentionUDMModuleData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('active', 'univentionUDMModuleActive', None, univention.admin.mapping.ListToString)
-mapping.register('appidentifier', 'univentionAppIdentifier', None, univention.admin.mapping.ListToString)
+mapping.register('appidentifier', 'univentionAppIdentifier')
 mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
 mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)

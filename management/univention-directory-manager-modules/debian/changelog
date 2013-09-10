@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.22-17) unstable; urgency=low
+
+  * Make appidentifier multivalue in UDM too
+    (Bug #32403, Bug #32406, Bug #32409, Bug #32411, Bug #32412)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Sep 2013 17:38:53 +0200
+
 univention-directory-manager-modules (9.0.22-16) unstable; urgency=low
 
   * Use the propper standard base64 functions which do not produce
