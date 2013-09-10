@@ -400,12 +400,12 @@ ucs_registerExtensionObject () {
 
 		if [ $? -eq 0 ]; then
 
-			object_dn=$(echo "$output" | sed -n 's/^Object created: //p')
+			new_object_dn=$(echo "$output" | sed -n 's/^Object created: //p')
 
 			if [ -n "$UNIVENTION_APP_IDENTIFIER" ]; then
 				univention-directory-manager "$ucs_registerExtensionObject_objecttype" modify "$@" \
 					--append appidentifier="$UNIVENTION_APP_IDENTIFIER" \
-					--dn "$object_dn"
+					--dn "$new_object_dn"
 			fi
 
 		else	## check again, might be a race
@@ -421,14 +421,14 @@ ucs_registerExtensionObject () {
 		fi
 	fi
 
-	if [ -z "$object_dn" ]; then	## object exists already, modify it
+	if [ -n "$object_dn" ]; then	## object exists already, modify it
 
 		local registered_package registered_package_version
 		registered_package=$(echo "$udm_output" | sed -n 's/ *package: //p')
 		registered_package_version=$(echo "$udm_output" | sed -n 's/ *packageversion: //p')
 
 		if [ "$registered_package" = "$package_name" ]; then
-			if ! dpkg --compare-versions "$package_version" gt "$registered_package_version"; then
+			if dpkg --compare-versions "$package_version" lt "$registered_package_version"; then
 				echo "ERROR: $SH_FUNCNAME: registered package version $registered_package_version is newer, skipping registration." >&2
 				return 2
 			fi
