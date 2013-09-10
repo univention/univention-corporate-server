@@ -360,38 +360,26 @@ class object(content):
 		return disklist_usbstorage
 
 	def check_space_for_autopart(self):
+		"""
+		Returns error message (str) if not enough space is found for auto partitioning.
+		Returns None if enough space is present.
+		"""
 		self.debug('checking free space for autopart...')
-		disklist = {}
-		disksizeall = 0.0
-		for diskname in self.container['disk'].keys():
-			disksize = 0.0
-			for part in self.container['disk'][diskname]['partitions'].values():
-				disksize += part['size']
-			disklist[diskname] = disksize
-			disksizeall += disksize
-		self.debug('disklist=%s' % disklist)
-		if disksizeall < PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN:
-			result = _('Not enough space for autopartitioning: sum of disk sizes=%(disksizeall)d MiB  required=%(required)d MiB') % { 'disksizeall': B2MiB(disksizeall),
-																															  'required': B2MiB(PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN) }
-			self.debug( result)
-			return result
+		first_disk_size = 0
+		first_disk_name = 'UNKNOWN'
+		if self.container['disk'].keys():
+			first_disk_name = sorted(self.container['disk'].keys())[0]
+			for part in self.container['disk'][first_disk_name]['partitions'].values():
+				first_disk_size += part['size']
+		self.debug('first_disk_name=%r' % first_disk_name)
+		self.debug('first_disk_size=%0.2f KiB' % (first_disk_size / 1024.0))
 
-		added_boot = False
-		added_swap = False
-		disklist_sorted = disklist.keys()
-		disklist_sorted.sort()
-		for diskname in disklist_sorted:
-			disksize = disklist[diskname]
-			if disksize > PARTSIZE_BOOT and not added_boot:
-				disksize -= PARTSIZE_BOOT
-				added_boot = True
-			if disksize > PARTSIZE_SWAP_MIN and not added_swap:
-				disksize -= PARTSIZE_SWAP_MIN
-				added_swap = True
-		if not added_swap or not added_boot:
-			result = _('cannot autopart disk: /boot or swap does not fit on harddisk (required=%s)') % max(PARTSIZE_BOOT, PARTSIZE_SWAP_MIN)
-			self.debug( result )
-			self.debug('cannot autopart disk: bootsize=%s swapsize=%s disklist=%s' % (PARTSIZE_BOOT, PARTSIZE_SWAP_MIN, disklist))
+		if first_disk_size < (PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN):
+			result = _('Not enough space for autopartitioning: sum of disk sizes=%(first_disk_size)d MiB  required=%(required)d MiB') % {
+				'first_disk_size': B2MiB(first_disk_size),
+				'required': B2MiB(PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN),
+				}
+			self.debug( result)
 			return result
 
 		# everything ok - enough space for auto_part
@@ -498,7 +486,7 @@ class object(content):
 			return False
 
 		if 'auto_part' in self.all_results.keys():
-			if self.all_results['auto_part'] in [ 'full_disk', 'full_disk_usb' ]:
+			if self.all_results['auto_part'] in ['yes']:  # as of UCS 3.2-0 "yes" is the new standard;  in prior version 'full_disk' and 'full_disk_usb' have been valid
 				result = self.check_space_for_autopart()
 				if result:
 					self.message = result
@@ -847,7 +835,7 @@ class object(content):
 		self.container['temp'] = {}
 		self.container['selected'] = 1
 		self.container['autopartition'] = None
-		self.container['autopart_usbstorage'] = None
+		self.container['autopart_prunelvm'] = None
 		self.container['warned_missing_efi_or_biosgrub'] = False
 		self.container['lvm'] = {}
 		self.container['lvm']['enabled'] = None
@@ -860,7 +848,7 @@ class object(content):
 		self.container['use_efi'] = self.detect_EFI_system()
 
 	def profile_autopart(self, disklist_blacklist = [], part_delete = 'all' ):
-		self.debug('PROFILE BASED AUTOPARTITIONING: full_disk')
+		self.debug('PROFILE BASED AUTOPARTITIONING:')
 
 		# add all physical partitions for deletion
 		self.all_results['part_delete'] = part_delete
@@ -1009,16 +997,16 @@ class object(content):
 				self.container['problemdisk'] = problemdisks
 				self.container['problemmessages'] = problemmessages
 
-		if 'auto_part' in self.all_results.keys():
-			self.debug('read_profile: auto_part key found: %s' % self.all_results['auto_part'])
-			if self.all_results['auto_part'] in [ 'full_disk' ]:
-				auto_part = True
-				self.profile_autopart( disklist_blacklist = disklist_usbstorage, part_delete = 'all' )
-			elif self.all_results['auto_part'] in [ 'full_disk_usb' ]:
-				auto_part = True
-				self.profile_autopart( disklist_blacklist = [], part_delete = 'all_usb' )
+		if self.all_results.get('auto_part') in ['yes']: # as of UCS 3.2-0 "yes" is the new standard;  in prior version 'full_disk' and 'full_disk_usb' have been valid
+			self.debug('read_profile: auto_part key found: %r' % self.all_results.get('auto_part'))
+			disklist = sorted(self.container['disk'].keys())
+			if disklist:
+				first_disk = disklist[0]
+				other_disks = disklist[1:]
+				self.debug('read_profile: performing auto partitioning on disk %r  (blacklist=%r)' % (first_disk, other_disks))
+				self.profile_autopart( disklist_blacklist = other_disks, part_delete = 'all' )
 		else:
-			self.debug('read_profile: no auto_part key found')
+			self.debug('read_profile: no auto_part key found or not activated (%r)' % (self.all_results.get('auto_part'),))
 
 		for key in self.all_results.keys():
 			self.debug('read_profile: key=%s' % key)
@@ -2102,35 +2090,36 @@ class object(content):
 			self.parent.debug('AUTOPART: freespacemax=%s' % freespacemax)
 			return (freespacelist, freespacemax, freespacesum)
 
-		def auto_partitioning_question_usbstorage_callback(self, result):
-			self.container['autopart_usbstorage'] = True
-			self.parent.debug('INCLUDE USB STORAGE DEVICES WITHIN AUTOPART')
+		def auto_partitioning_question_prunelvm_callback(self, result):
+			self.container['autopart'] = True
+			self.container['autopart_prunelvm'] = True
+			self.parent.debug('Purge LVM devices during autopart')
 			self.auto_partitioning(result)
 
 		def auto_partitioning(self, result):
 			# create disk list with usb storage devices
 			disk_blacklist = self.parent.get_usb_storage_device_list()
-			if len(disk_blacklist) > 0 and self.container['autopart_usbstorage'] == None:
-				self.parent.debug('requesting user input: use usb storage devices?')
-				msglist=[ _('Include USB storage devices while auto partitioning?'),
+
+			if self.container['lvm']['vg'] and self.container.get('autopart_prunelvm') is None:
+				self.parent.debug('requesting user input: prune all disks for auto partitioning due to found LVM devices?')
+				msglist=[ _('At least one LVM volume group has been found. To use the'),
+						  _('auto partitioning, all attached disks have to be erased!'),
+						  '',
+						  _('Continue with auto partitioning?'),
 						  '',
 						  _('WARNING: Choosing "yes" prepares for deletion of all'),
-						  _('partitions on all disks! This includes USB harddisks'),
-						  _('and USB sticks. In any case *ALL* LVM LV and LVM VG'),
-						  _('will be deleted!'),
+						  _('partitions on all disks! If auto-partition result is'),
+						  _('unsuitable, press F5 afterwards to restart partitioning.')
 						  ]
-				self.container['autopart_usbstorage'] = False
-				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-14, msglist, default='no',
-									  callback_yes=self.auto_partitioning_question_usbstorage_callback, callback_no=self.auto_partitioning)
+				self.container['autopart_prunelvm'] = False
+				self.container['autopartition'] = False
+				self.sub = yes_no_win(self, self.pos_y+8, self.pos_x+2, self.width-4, self.height-20, msglist, default='no',
+									  callback_yes=self.auto_partitioning_question_prunelvm_callback)
 				self.draw()
 				return
 
 			self.container['autopartition'] = True
 			self.parent.debug('INTERACTIVE AUTO PARTITIONING')
-
-			# if usb storage devices shall be included in autopart then delete blacklist
-			if self.container['autopart_usbstorage']:
-				disk_blacklist = []
 
 			# remove all LVM LVs
 			for vgname,vg in self.container['lvm']['vg'].items():
@@ -2177,6 +2166,8 @@ class object(content):
 			for disk in disk_blacklist:
 				if disk in disklist:
 					disklist.remove(disk)
+			# WARNING: auto partitioning uses only first disk since UCS 3.2
+			disklist = disklist[0:1]
 			self.parent.debug('final disklist = %s' % disklist)
 
 			# get system memory
@@ -2476,7 +2467,7 @@ class object(content):
 						  '',
 						  _('WARNING: Choosing "yes" prepares for deletion of all'),
 						  _('partitions on all disks! If auto-partition result is'),
-						  _('unsuitable press F5 to restart partitioning.')
+						  _('unsuitable, press F5 afterwards to restart partitioning.')
 						  ]
 				self.container['autopartition'] = False
 				self.sub = yes_no_win(self, self.pos_y+9, self.pos_x+2, self.width-4, self.height-25, msglist, default='yes', callback_yes=self.auto_partitioning)

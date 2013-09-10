@@ -1,6 +1,12 @@
+univention-installer (9.0.21-1) unstable; urgency=low
+
+  * Bug #31705: use only first harddisk for auto partitioning
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 10 Sep 2013 16:12:07 +0200
+
 univention-installer (9.0.20-1) unstable; urgency=low
 
-  * Bug 31899: offer to format device if error or warning occurs on
+  * Bug #31899: offer to format device if error or warning occurs on
     reading partition table
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 09 Sep 2013 17:33:30 +0200
