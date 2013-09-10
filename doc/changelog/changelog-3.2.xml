@@ -229,6 +229,10 @@
 	  <listitem><simpara>
 		The installer now shows occurring errors and warning during initial device scan and offers to format the problematic devices with an empty GPT (<ulink url="&ucsbug;31899">Bug 31899</ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The automatic partitioning has been adapted. It still requires the erasure of all harddisk but as of UCS 3.2-0 the new auto partitioning layout will only use the first available harddisk. If installation profiles are used, the keyword <emphasis>auto_part</emphasis> only accepts the value <emphasis>yes</emphasis> from now on (<ulink url="&ucsbug;31705">Bug 31705</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 
   <section>
