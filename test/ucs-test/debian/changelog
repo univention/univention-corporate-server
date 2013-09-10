@@ -1,3 +1,9 @@
+ucs-test (4.0.107-1) unstable; urgency=low
+
+  * Skip more tests in apptest scenario (Bug #31785)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Sep 2013 11:31:54 +0200
+
 ucs-test (4.0.106-1) unstable; urgency=low
 
   * added functions to start/stop the s4 connector to
