@@ -68,9 +68,10 @@ def install_python_file(data, relative_filename):
 	except IOError:
 		file_hash = None
 
-	data_written = False
+	data_ok = False
 	if file_hash and file_hash == hashlib.sha256(data).hexdigest():
 		ud.debug(ud.LISTENER, ud.INFO, '%s: data %s unchanged.' % (name, filename))
+		data_ok = True
 	else:
 		## prepare file target
 		pyshared_target_dir = os.path.join(PYSHARED_DIR, relative_basedir)
@@ -83,22 +84,33 @@ def install_python_file(data, relative_filename):
 		try:
 			with open(filename, 'w') as f:
 				f.write(data)
-			data_written = True
+			data_ok = True
 			ud.debug(ud.LISTENER, ud.INFO, '%s: %s installed.' % (name, relative_filename))
 		except Exception, e:
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Writing new data to %s failed: %s.' % (name, filename, e))
 			return False
 
 	links_created = 0
-	for entry in os.listdir(PYMODULES_DIR):
-		pyversion_path = os.path.join(PYMODULES_DIR, entry)
-		if entry.startswith('python') and os.path.isdir(pyversion_path):
+	default_link_present = False
+
+	p = subprocess.Popen(['/usr/bin/pyversions', '-d'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	(stdout, stderr) = p.communicate()
+	default_python_version = stdout.strip()
+
+	p = subprocess.Popen(['/usr/bin/pyversions', '-i'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	(stdout, stderr) = p.communicate()
+	pyversion_path_list = [ os.path.join(PYMODULES_DIR, version) for version in stdout.strip().split(' ') ]
+
+	for pyversion_path in pyversion_path_list:
+		if os.path.isdir(pyversion_path):
 			pymodules_target_dir = os.path.join(pyversion_path, relative_basedir)
 			linkname = os.path.join(pyversion_path, relative_filename)
 			
 			## prepare link target
 			if os.path.lexists(linkname):
 				if os.path.exists(linkname) and os.path.realpath(linkname) == filename:
+						if version == default_python_version:
+							default_link_present = True
 						continue
 				else:
 					os.unlink(linkname)
@@ -112,12 +124,14 @@ def install_python_file(data, relative_filename):
 			try:
 				os.symlink(filename, linkname)
 				links_created += 1
+				if version == default_python_version:
+					default_link_present = True
 			except OSError, e:
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: Symlink creation of %s failed: %s.' % (name, linkname, e))
 	if links_created:
 		ud.debug(ud.LISTENER, ud.INFO, '%s: symlinks to %s created.' % (name, relative_filename))
 
-	if data_written or links_created:
+	if data_ok and default_link_present:
 		return True
 	else:
 		return False
@@ -147,16 +161,18 @@ def remove_python_file(relative_filename):
 	if links_removed:
 		ud.debug(ud.LISTENER, ud.INFO, '%s: links to %s removed.' % (name, relative_filename))
 	
-	file_removed = False
 	if os.path.isfile(filename):
-		try:
-			os.unlink(filename)
-			file_removed = True
-			ud.debug(ud.LISTENER, ud.INFO, '%s: %s removed.' % (name, relative_filename))
-		except OSError, e:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of %s failed: %s.' % (name, filename, e))
+		## Only remove the file if it was not shipped as part of a debian package.
+		p = subprocess.Popen(['dpkg', '-S', filename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		p.wait()
+		if p.returncode != 0:
+			try:
+				os.unlink(filename)
+				ud.debug(ud.LISTENER, ud.INFO, '%s: %s removed.' % (name, relative_filename))
+			except OSError, e:
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of %s failed: %s.' % (name, filename, e))
 
-	if file_removed or links_removed:
+	if links_removed:
 		return True
 	else:
 		return False
@@ -176,6 +192,7 @@ def handler(dn, new, old):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
 			new=None
 
+	if new:
 		new_version = new.get('univentionOwnedByPackageVersion', [None])[0]
 		if not new_version:
 			return
@@ -251,11 +268,9 @@ def handler(dn, new, old):
 		old_relative_filename = os.path.join(target_subdir, old.get('univentionUDMModuleFilename')[0])
 		listener.setuid(0)
 		try:
-			if not remove_python_file(old_relative_filename):
-				return
+			remove_python_file(old_relative_filename)
 		finally:
 			listener.unsetuid()
-
 
 	### Kill running univention-cli-server and mark new extension object active
 
@@ -267,23 +282,24 @@ def handler(dn, new, old):
 		if p.returncode != 0:
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Termination of univention-cli-server processes failed: %s.' % (name, p.returncode))
 
-		try:
-			lo, ldap_position = udm_uldap.getAdminConnection()
-			udm_module = udm_modules.get(udm_module_name)
-			udm_modules.init(lo, ldap_position, udm_module)
-
+		if new:
 			try:
-				udm_object = udm_module.object(None, lo, ldap_position, dn)
-				udm_object.open()
-				udm_object['active']=True
-				udm_object.modify()
-			except udm_errors.ldapError, e:
-				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, dn, e))
-			except udm_errors.noObject, e:
-				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, dn, e))
+				lo, ldap_position = udm_uldap.getAdminConnection()
+				udm_module = udm_modules.get(udm_module_name)
+				udm_modules.init(lo, ldap_position, udm_module)
 
-		except udm_errors.ldapError, e:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, e))
+				try:
+					udm_object = udm_module.object(None, lo, ldap_position, dn)
+					udm_object.open()
+					udm_object['active']=True
+					udm_object.modify()
+				except udm_errors.ldapError, e:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, dn, e))
+				except udm_errors.noObject, e:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, dn, e))
+
+			except udm_errors.ldapError, e:
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, e))
 
 	finally:
 		listener.unsetuid()
