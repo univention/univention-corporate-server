@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.22-15) unstable; urgency=low
+
+  * Remove extra newline in the output of Base64 syntax (for Bug #32414)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Sep 2013 16:10:29 +0200
+
 univention-directory-manager-modules (9.0.22-14) unstable; urgency=low
 
   * Fix ucsversion range check in udm_extension listener (Bug #32408)
