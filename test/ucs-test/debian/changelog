@@ -1,3 +1,9 @@
+ucs-test (4.0.105-1) unstable; urgency=low
+
+  * 50_samba/41password_change: removed apptest flag (Bug #31794)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Sep 2013 06:47:34 +0200
+
 ucs-test (4.0.104-1) unstable; urgency=low
 
   * 10_ldap/41listener: use function wait_for_replication (Bug #32537)
