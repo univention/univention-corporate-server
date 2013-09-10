@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/bin/sh
+# -*- coding: utf-8 -*-
 #
-# UCS Virtual Machine Manager Node
-#  join script
+# UCS Virtual Machine Manager Node Common
+#  prerm script
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,25 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+#DEBHELPER#
 
-. /usr/share/univention-join/joinscripthelper.lib
-joinscript_init
-
-eval "$(univention-config-registry shell)"
-SERVICE="XEN Host"
-
-univention-directory-manager container/cn      create "$@" --ignore_exists \
-	--set name=services \
-	--position             "cn=univention,$ldap_base" || die
-univention-directory-manager  settings/service create "$@" --ignore_exists \
-	--set name="$SERVICE" \
-	--position "cn=services,cn=univention,$ldap_base" || die
-univention-directory-manager "computers/$server_role" modify "$@" \
-	--dn "$ldap_hostdn" \
-	--append service="$SERVICE" || die
-
-joinscript_save_current_version
+case "$1" in
+remove)
+	cp /usr/lib/univention-uninstall/56univention-virtual-machine-manager-node-xen.uinst /usr/lib/univention-install/
+	;;
+esac
 
 exit 0
 # vim:set ft=sh ts=4 sw=4 noet:

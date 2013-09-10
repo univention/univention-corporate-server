@@ -1,9 +1,9 @@
 #!/bin/bash
 #
 # UCS Virtual Machine Manager Node
-#  join script
+#  un-join script
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,26 +29,17 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+set -e
 
-VERSION=1
+VERSION="1"
 
 . /usr/share/univention-join/joinscripthelper.lib
-joinscript_init
+. /usr/share/univention-lib/ldap.sh
+die () { local ret=$?;echo "$*" >&2;exit $ret; }
 
-eval "$(univention-config-registry shell)"
 SERVICE="XEN Host"
+ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die "Service $SERVICE not registered"
 
-univention-directory-manager container/cn      create "$@" --ignore_exists \
-	--set name=services \
-	--position             "cn=univention,$ldap_base" || die
-univention-directory-manager  settings/service create "$@" --ignore_exists \
-	--set name="$SERVICE" \
-	--position "cn=services,cn=univention,$ldap_base" || die
-univention-directory-manager "computers/$server_role" modify "$@" \
-	--dn "$ldap_hostdn" \
-	--append service="$SERVICE" || die
-
-joinscript_save_current_version
+joinscript_remove_script_from_status_file "$(basename "$0" .uinst | sed -re 's/^[0-9]+//')"
 
 exit 0
-# vim:set ft=sh ts=4 sw=4 noet:

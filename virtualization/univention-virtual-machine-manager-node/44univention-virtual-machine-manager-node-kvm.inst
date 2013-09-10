@@ -36,17 +36,17 @@ VERSION=1
 joinscript_init
 
 eval "$(univention-config-registry shell)"
-NAME="KVM Host"
+SERVICE="KVM Host"
 
 univention-directory-manager container/cn      create "$@" --ignore_exists \
 	--set name=services \
 	--position             "cn=univention,$ldap_base" || die
 univention-directory-manager  settings/service create "$@" --ignore_exists \
-	--set name="$NAME" \
+	--set name="$SERVICE" \
 	--position "cn=services,cn=univention,$ldap_base" || die
 univention-directory-manager "computers/$server_role" modify "$@" \
 	--dn "$ldap_hostdn" \
-	--append service="$NAME" || die
+	--append service="$SERVICE" || die
 
 joinscript_save_current_version
 

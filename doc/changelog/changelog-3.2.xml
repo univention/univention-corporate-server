@@ -1920,6 +1920,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  An obsolete dependency has been removed in the univention-xen meta package (<ulink url="&ucsbug;31373">Bug 31373</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			An unjoin script has been added to package <package>univention-virtual-machine-manager-node-xen</package>.
+			The unjoin script removes the Xen service from the server object and removes the default &ucsUCRV;s (<ulink url="&ucsbug;32450">Bug 32450</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
@@ -1928,6 +1933,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <itemizedlist>
 		<listitem><simpara>
 		  QEMU was upgraded to version 1.1.2+dfsg-6 (<ulink url="&ucsbug;29849">Bug 29849</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			An unjoin script has been added to package <package>univention-virtual-machine-manager-node-kvm</package>.
+			The unjoin script removes the KVM service from the server object and removes the default &ucsUCRV;s (<ulink url="&ucsbug;32448">Bug 32448</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>

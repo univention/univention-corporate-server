@@ -72,4 +72,7 @@ case "$1" in
 	;;
 esac
 
+uinst=/usr/lib/univention-install/56univention-virtual-machine-manager-node-kvm.uinst
+[ -e "$uinst" ] && rm "$uinst"
+
 exit 0

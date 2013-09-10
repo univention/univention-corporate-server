@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Node
 #  postrm script
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2010-2013 Univention GmbH
 #
 # <http://www.univention.de/>
 #
@@ -47,6 +47,27 @@ dpkg-maintscript-helper rm_conffile /etc/init.d/univention-virtual-machine-manag
 case "$1" in
 purge|remove)
 	rm -f /etc/init.d/univention-virtual-machine-manager-node-common
+	;;
+esac
+
+case "$1" in
+remove)
+	. /usr/share/univention-lib/all.sh
+	call_unjoinscript 57univention-virtual-machine-manager-node-common.uinst
+	;;
+purge)
+	ucr unset \
+		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all \
+		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all/en \
+		uvmm/backup/directory \
+		uvmm/managers 
+	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+	rm -f /etc/init.d/univention-virtual-machine-manager-node-common
+	rm -f /etc/runit/univention/univention-libvirt
+	rm -rf /etc/runit/univention-libvirt
+	rm -f /var/lib/univention-directory-listener/handlers/libvirtd-acl
+	find /etc/univention/templates -name univention-virtual-machine-manager-node-common.\* -delete
+	invoke-rc.d univention-directory-listener crestart
 	;;
 esac
 

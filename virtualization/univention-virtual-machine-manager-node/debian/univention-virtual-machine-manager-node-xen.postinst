@@ -55,4 +55,7 @@ ucr set security/packetfilter/package/univention-virtual-machine-manager-node-xe
 
 #DEBHELPER#
 
+uinst=/usr/lib/univention-install/56univention-virtual-machine-manager-node-xen.uinst
+[ -e "$uinst" ] && rm "$uinst"
+
 exit 0

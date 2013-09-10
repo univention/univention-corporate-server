@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Node Common
 #  postinst script
 #
-# Copyright 2010-2012 Univention GmbH
+# Copyright 2010-2013 Univention GmbH
 #
 # <http://www.univention.de/>
 #
@@ -91,5 +91,8 @@ abort-upgrade|abort-remove|abort-deconfigure)
 	exit 1
 	;;
 esac
+
+uinst=/usr/lib/univention-install/57univention-virtual-machine-manager-node-common.uinst
+[ -e "$uinst" ] && rm "$uinst"
 
 exit 0
