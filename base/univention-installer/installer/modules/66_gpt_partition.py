@@ -628,8 +628,6 @@ class object(content):
 		root_device=0
 		root_fs=0
 		boot_fs=None
-		root_fs_type=None
-		boot_fs_type=None
 		partflag_cnt = {}
 		mpoint_temp = set()
 		for disk in self.container['disk'].keys():
@@ -646,13 +644,11 @@ class object(content):
 					mpoint_temp.add(mpoint)
 
 					if mpoint == '/':
-						root_fs_type = self.container['disk'][disk]['partitions'][part]['fstype']
 						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ALLOWED_ROOT_FSTYPES:
 							root_fs = self.container['disk'][disk]['partitions'][part]['fstype']
 						root_device = 1
 
 					if mpoint == '/boot':
-						boot_fs_type = self.container['disk'][disk]['partitions'][part]['fstype']
 						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ALLOWED_BOOT_FSTYPES:
 							boot_fs = self.container['disk'][disk]['partitions'][part]['fstype']
 
@@ -971,7 +967,6 @@ class object(content):
 		self.container['profile']['lvmlv'] = {}
 		self.container['profile']['lvmlv']['create'] = {}
 		self.container['profile']['lvmlv']['delete'] = {}
-		auto_part = False
 
 		# disable module if partition table type in profile does not match 'GPT'
 		if self.all_results.get('partitiontable_type','').lower() not in ('gpt',):
@@ -1426,7 +1421,6 @@ class object(content):
 					num_list=self.parent.container['profile']['create'][disk].keys()
 					num_list.sort()
 					for num in num_list:
-						type = self.parent.container['profile']['create'][disk][num]['type']
 						fstype = self.parent.container['profile']['create'][disk][num]['fstype']
 						format = self.parent.container['profile']['create'][disk][num]['format']
 
@@ -1727,7 +1721,6 @@ class object(content):
 
 		_re_error_unknown_label = re.compile('^Error: .* unrecognised disk label')
 		_re_warning_or_error = re.compile('^(?:Warning|Error): (.*)$')
-		_re_disklabel = re.compile('^Partition Table: (.*)$', re.I | re.M)  # case insensitive & ^ matches on \n
 
 		for dev in devices:
 			dev=dev.strip()
@@ -2135,7 +2128,7 @@ class object(content):
 					self.container['history'].append(['/sbin/vgremove', vgname])
 					self.container['lvm']['vg'][ vgname ]['created'] = 0
 
-			# remove all logical partitions, next all extended partitions and finally all primary partitions
+			# remove all partitions on all disks
 			for diskname, disk in self.container['disk'].items():
 				# do not use blacklisted devices
 				if diskname in disk_blacklist:
@@ -2146,7 +2139,7 @@ class object(content):
 							self.parent.debug('deleting part: %s on %s (%s)' % (partname, diskname, self.parent.get_device(diskname, partname)))
 							self.part_delete_generic( 'part', diskname, partname, force=True )
 
-			# remove internal data avout LVM VGs and LVM PGs
+			# remove internal data about LVM VGs and LVM PGs
 			for vgname,vg in self.container['lvm']['vg'].items():
 				self.parent.debug('removing LVM VG: %s' % vgname)
 				del self.container['lvm']['vg'][vgname]
