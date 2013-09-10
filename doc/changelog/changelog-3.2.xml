@@ -545,6 +545,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			Fixed a design issue when trying to horizontally align a certain widget
+			class (<ulink url="&ucsbug;25389">Bug 25389</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The version of the JavaScript Dojo Toolkit has been updated to 1.9 (<ulink url="&ucsbug;31639">Bug 31639</ulink>).
 		</simpara></listitem>
 
