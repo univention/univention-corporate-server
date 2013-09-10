@@ -2374,6 +2374,15 @@ class SambaPrivileges( select ):
 		( 'SeDiskOperatorPrivilege', _( 'Manage disk shares' ) ),
 	]
 
+class UCSServerRole( select ):
+	empty_value = True
+	choices = [
+		( 'domaincontroller_master', _( 'Domainctonroller Master' ) ),
+		( 'domaincontroller_backup', _( 'Domainctonroller Backup' ) ),
+		( 'domaincontroller_slave', _( 'Domainctonroller Slave' ) ),
+		( 'memberserver', _( 'Memberserver' ) ),
+	]
+
 class ServiceMail( UDM_Objects ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
 	udm_filter = 'service=SMTP'

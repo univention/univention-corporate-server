@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.22-13) unstable; urgency=low
+
+  * New syntax UCSServerRole (for Bug #32414)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 10 Sep 2013 13:06:14 +0200
+
 univention-directory-manager-modules (9.0.22-12) unstable; urgency=low
 
   * Ship listener with python-univention-directory-manager (Bug #32408)
