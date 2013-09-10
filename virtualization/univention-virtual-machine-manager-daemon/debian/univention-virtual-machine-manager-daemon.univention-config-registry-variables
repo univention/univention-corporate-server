@@ -1,101 +1,35 @@
-[uvmm/umc/vnc]
-Description[de]=Soll ein Java-Plugin ("internal"), oder ein vnc://-Link ("external") für den VNC-Zugriff über UMC auf laufende virtuelle Instanzen verwendet werden.
-Description[en]=Whether a Java plugin ("internal") or a vnc://-Link ("external") should be used for VNC access via UMC to running virtual instances.
-Type=str
-Categories=uvmm
-
-[uvmm/umc/vnc/host]
-Description[de]=Kontrolliert den Aufbau des VNC-Links. Mögliche Werte sind 'IPv4', 'IPv4 <regex>', 'IPv6', 'IPv6 <regex>', 'NAME', 'NAME <old>=<new>[ <old>=<new>...]', '<leer>' oder '<ansonsten>', wobei '<regex>' ein Python-Regular-Expression sein kann; bei 'NAME' oder einem leeren Wert wird der Name des Hosts verwendet, in dem Optional alle <old> durch <new> ersetzt werden; jeder andere Wert überschreibt ansonsten den individuellen Hostnamen durch den festen Wert.
-Description[en]=Controlls the format of the VNC link. Allowed values are 'IPv4', 'IPv4 <regex>', 'IPv6', 'IPv6 <regex>', 'NAME', 'NAME <old>=<new>[ <old>=<new>...], '<empty>', or '<other>', where '<regex>' can be a Python regular expression; 'NAME' or an empty value is translated to the name of the host, where optionally all <old> are replaced by <new>; any other value overwrites the individual host name with the static value.
-Type=str
-Categories=uvmm
-
 [uvmm/pool/default/path]
-Description[de]=Pfad des standard-Speicherbereichs für Image-Dateien.
-Description[en]=Path of the 'default' storage pool for image files.
+Description[de]=Der Pfad des Standard-Speicherbereichs für Image-Dateien. Ist die Variable nicht gesetzt, wird /var/lib/libvirt/images verwendet.
+Description[en]=The path of the 'default' storage pool for image files. If the variable is unset, /var/lib/libvirt/images is used.
 Type=str
 Categories=uvmm
 
 [auth/uvmmd/accessfile]
-Description[de]=Pfad zur PAM-Konfigurationsdatei mit der Zugriffsbeschränkung für UVMMd.
-Description[en]=Path to the PAM configuration file with access control for UVMMd.
+Description[de]=Der Pfad zur PAM-Konfigurationsdatei mit der Zugriffsbeschränkung für UVMMd.
+Description[en]=The path to the PAM configuration file with access control rules for UVMMd.
 Type=str
 Categories=uvmm
 
-[uvmm/umc/show/migrate]
-Description[de]=Erlaubt das Migrieren von Instanzen im UMC-Modul.
-Description[en]=Allow migration of instances in UMC module.
-Type=bool
-Categories=uvmm
-
-[uvmm/umc/show/pause]
-Description[de]=Erlaubt das Pausieren von Instanzen im UMC-Modul.
-Description[en]=Allow pause of instances in UMC module.
-Type=bool
-Categories=uvmm
-
-[uvmm/umc/show/suspend]
-Description[de]=Erlaubt das Suspendieren von Instanzen im UMC-Modul.
-Description[en]=Allow suspend of instances in UMC module.
-Type=bool
-Categories=uvmm
-
-[uvmm/umc/show/snapshot]
-Description[de]=Zeigt Sicherungszustände im UMC-Modul an.
-Description[en]=Show snapshots in UMC module.
-Type=bool
-Categories=uvmm
-
-[uvmm/umc/show/treeview]
-Description[de]=Begrenzt die Anzahl der Ebenen in der Baumansicht: 1=Gruppe, 2=Server, 3=VMs.
-Description[en]=Limits the number of levels in the tree view: 1=group, 2=server, 3=VMs.
-Type=int
-Categories=uvmm
-
-[uvmm/umc/show/vnc]
-Description[de]=Zeigt VNC-Link im UMC-Modul an.
-Description[en]=Show VNC-Link in UMC module.
-Type=bool
-Categories=uvmm
-
-[uvmm/volume/permissions/mode]
-Description[en]=Defines the file mode permissions as an octal number for new hard drive images that are created in a storage pool
-Description[de]=Definiert die Berechtigungen als Oktalzahl, die für neu erzeugte Festplatten-Images verwendet werden
-Type=int
-Categories=uvmm
-
-[uvmm/volume/permissions/owner]
-Description[en]=Defines the numeric owner ID for new hard drive images that are created in a storage pool
-Description[de]=Definiert den numerische Besitzer-ID, der für neu erzeugte Festplatten-Images verwendet wird
-Type=int
-Categories=uvmm
-
-[uvmm/volume/permissions/group]
-Description[en]=Defines the numeric group ID for new hard drive images that are created in a storage pool
-Description[de]=Definiert die numerische Gruppen-ID, die für neu erzeugte Festplatten-Images verwendet wird
-Type=int
-Categories=uvmm
-
 [uvmm/xen/images/tap2]
-Description[de]=Xen Images als blktap2 Devices anlegen. Ab UCS 2.4-2 ist dies unterstützt und standardmäßig aktiviert.
-Description[en]=Create Xen images as blktap2 devices. It is supported and enabled by default since UCS 2.4-2.
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, werden Images bei Verwendung von Xen im Blktap2-Format angelegt. Ist die Option deaktiviert, werden Raw-Images verwendet.
+Description[en]=If this option is activated or the variable unset, images are created in Blktap2 format if Xen is used. If the option is disabled, raw images are used.
 Type=bool
 Categories=uvmm
 
 [uvmm/check/interval]
-Description[de]=Intervall in Minuten für die Überprüfung des UVMM-Dienstes. 0 deaktiviert die Prüfung.
-Description[en]=Interval in minutes for the check of the UVMM daemon. 0 disables the check.
+Description[de]=Diese Variable konfguriert einen Intervall in Minuten, in dem geprüft wird, ob der UVMM-Dienst noch läuft. Setzt man die Variable auf '0' oder ist die Variable nicht gesetzt, erfolgt keine Verfügbarkeitsprüfung.
+Description[en]=This variable configures an interval in minutes for checking whether the UVMM service is running. If the variable is set to '0' or the variable is unset, no availability check is made.
 Type=int
 Categories=uvmm
 
 [uvmm/check/timeout]
-Description[de]=Timeout in Sekunden in dem der UVMM-Dienst auf die Überprüfung antworten muss (Default: 5)
-Description[en]=Timeout in seconds in which the UVMM daemon must reply on the check (Default: 5)
+Description[de]=Ist diese Verfügbarkeitsprüfung des UVMM-Dienstes aktiviert (siehe 'uvmm/check/interval'), konfiguriert diese Variable die Zeit in Sekunden, in der der UVMM-Dienst auf eine Anfrage antworten muss.
+Description[en]=If the availability check in UVMM is enabled (see 'uvmm/check/interval'), this variable configures the time in seconds in which the UVMM service must reply a request.
 Type=int
 Categories=uvmm
 
 [uvmm/debug.*]
-Description[de]=Log level for UVMM-Dienst: DEBUG, INFO, WARNING, ERROR, CRITICAL
-Description[en]=Log level for UVMM daemon: DEBUG, INFO, WARNING, ERROR, CRITICAL
+Description[de]=Der Detailgrad der Debugausgaben des UVMM-Dienstes. Mögliche Werte: DEBUG, INFO, WARNING, ERROR, CRITICAL
+Description[en]=The verbosity level of the UVMM daemon debug statement. Possible value: DEBUG, INFO, WARNING, ERROR, CRITICAL
 Type=str
 Categories=uvmm

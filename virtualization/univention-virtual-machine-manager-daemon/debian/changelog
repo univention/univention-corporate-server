@@ -1,3 +1,16 @@
+univention-virtual-machine-manager-daemon (3.0.6-11) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30949)
+  * Remove UCR variable descriptions for uvmm/umc/vnc and uvmm/umc/vnc/host,
+      they are currently not working, see Bug #24890
+  * Remove UCR variable descriptions for uvmm/umc/show/migrate, uvmm/umc/show/pause,
+      uvmm/umc/show/suspend, uvmm/umc/show/snapshot, uvmm/umc/show/treeview,
+      uvmm/umc/show/vnc, uvmm/volume/permissions/mode, uvmm/volume/permissions/owner,
+      and uvmm/volume/permissions/group. Apparently these were not ported 
+      during the update to UCS 3 and the new UMC.
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 10 Sep 2013 16:39:40 +0200
+
 univention-virtual-machine-manager-daemon (3.0.6-10) unstable; urgency=low
 
   * Add UVMM unjoin script (Bug #32449)
