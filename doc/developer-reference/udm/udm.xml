@@ -1416,9 +1416,9 @@ udm settings/syntax create "$@" --ignore_exists \
 			For some purposes, e.g. for app installation, it is convenient to be able to register a new <acronym>LDAP</acronym> ACL extension
 			from any system in the UCS domain. For this purpose, the UCR template for an ACL extension can be stored as a special type of UDM object.
 			The module responsible for this type of objects is called <literal>settings/ldapacl</literal>. As these objects are replicated throughout the
-			UCS domain, the &ucsMaster; and &ucsBackup; systems listen for modifications on these objects and integrate them into the local
+			UCS domain, the &ucsMaster;, &ucsBackup; and &ucsSlave; systems listen for modifications on these objects and integrate them into the local
 			<acronym>LDAP</acronym> ACL UCR template directory. This simplifies the task of keeping the <acronym>LDAP</acronym> ACLs on the &ucsBackup; systems
-			up to date with those on the &ucsMaster;. As these ACLs are not written to  &ucsSlave; systems, they are targeted to control write access to <acronym>LDAP</acronym> objects.
+			up to date with those on the &ucsMaster;.
 		</para>
 		<para>
 			The commands to create the <acronym>LDAP</acronym> ACL extension objects in UDM may be put into any join script (<xref linkend="chap:join"/>).
