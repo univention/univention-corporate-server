@@ -549,6 +549,7 @@ ucs_removeServiceFromLocalhost "MyService" "$@"
 						<term><cmdsynopsis>
 								<command>ucs_isServiceUnused</command>
 								<arg choice="plain"><replaceable>servicename</replaceable></arg>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
