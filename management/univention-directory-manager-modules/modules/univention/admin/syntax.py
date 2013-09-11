@@ -406,7 +406,7 @@ class jpegPhoto( Upload ):
 	@classmethod
 	def tostring(self, text):
 		if text and text[0]:
-			encoded=base64.encodestring(text[0])
+			encoded=base64.encodestring(text)
 			return encoded
 		else:
 			return ''

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.24-1) unstable; urgency=low
+
+  * fixed jpegPhoto syntax (Bug #30342)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 11 Sep 2013 16:32:50 +0200
+
 univention-directory-manager-modules (9.0.23-1) unstable; urgency=low
 
   * fixed traceback which occured when renaming computer objects with set
