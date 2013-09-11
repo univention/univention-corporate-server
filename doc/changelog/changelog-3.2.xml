@@ -960,18 +960,23 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A new UDM module <emphasis>settings/udm_hook</emphasis> has been implemented for registration and replication of UDM hook extensions.
+			A new UDM module <emphasis>settings/udm_hook</emphasis> has been implemented for registration and replication of UDM hook extensions
 			(<ulink url="&ucsbug;32403">Bug 32403</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A new UDM module <emphasis>settings/udm_syntax</emphasis> has been implemented for registration and replication of UDM syntax extensions.
+			A new UDM module <emphasis>settings/udm_syntax</emphasis> has been implemented for registration and replication of UDM syntax extensions
 			(<ulink url="&ucsbug;32406">Bug 32406</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A new UDM module <emphasis>settings/udm_module</emphasis> has been implemented for registration and replication of UDM module extensions.
+			A new UDM module <emphasis>settings/udm_module</emphasis> has been implemented for registration and replication of UDM module extensions
 			(<ulink url="&ucsbug;32409">Bug 32409</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			A problem in the reloading process of UDM modules has been fixed, which could cause Python to neglect runtime changes of the main syntax and hook python modules. This is mainly an issue which could occurr during development of new UCS releases.
+			(<ulink url="&ucsbug;32565">Bug 32565</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
