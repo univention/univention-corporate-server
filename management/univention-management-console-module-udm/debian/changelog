@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.16-1) unstable; urgency=low
+
+  * Bug #32381: revise the representation of the DHCP and DNS module
+
+ -- Florian Best <best@univention.de>  Wed, 11 Sep 2013 08:45:09 +0200
+
 univention-management-console-module-udm (4.0.15-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition

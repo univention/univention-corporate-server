@@ -154,7 +154,9 @@ define([
 						name: 'superordinate',
 						label: _('Superordinate'),
 						description: _('The corresponding superordinate for the LDAP object.', this.objectNameSingular),
-						staticValues: superordinates,
+						staticValues: array.map(superordinates, function(superordinate) {
+							return superordinate.title ? {id: superordinate.id, label: superordinate.title + ': ' + superordinate.label } : superordinate;
+						}),
 						value: this.selectedSuperordinate
 					}, {
 						type: 'ComboBox',

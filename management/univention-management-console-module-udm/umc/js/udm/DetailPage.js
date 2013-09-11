@@ -1132,6 +1132,9 @@ define([
 				}
 			}, this);
 
+			// validate all widgets to mark invalid/required fields
+			this._form.validate();
+
 			// check whether all required properties are set
 			var errMessage = '' + _('The following properties need to be specified or are invalid:') + '<ul>';
 			var allValuesGiven = true;

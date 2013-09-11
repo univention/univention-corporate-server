@@ -728,7 +728,14 @@ class UDM_Module( object ):
 						so = None
 					objects = module.search( superordinate = so )
 					for obj in objects:
-						superordinates.append( { 'id' : obj.dn, 'label' : '%s: %s' % ( module.title, obj[ module.identifies ] ) } )
+						superordinates.append({
+							'id' : obj.dn,
+							'label' : obj[ module.identifies ],
+							'objectType': module.name,
+							'operations': module.operations,
+							'title' : module.title,
+							'icon' : 'udm-%s' % module.name.replace( '/', '-' ),
+						})
 
 		return superordinates
 

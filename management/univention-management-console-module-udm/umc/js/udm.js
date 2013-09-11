@@ -58,6 +58,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/Tree",
 	"umc/modules/udm/TreeModel",
+	"umc/modules/udm/TreeModelSuperordinate",
 	"umc/modules/udm/CreateReportDialog",
 	"umc/modules/udm/NewObjectDialog",
 	"umc/modules/udm/DetailPage",
@@ -65,7 +66,7 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, CreateReportDialog, NewObjectDialog, DetailPage, _) {
+], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
@@ -137,6 +138,7 @@ define([
 
 		_finishedDeferred: null,
 
+		_menuEdit: null,
 		_menuDelete: null,
 		_menuMove: null,
 
@@ -272,7 +274,7 @@ define([
 		renderSearchPage: function(containers, superordinates) {
 			// summary:
 			//		Render all GUI elements for the search formular, the grid, and the side-bar
-			//		for the UDM navigation.
+			//		for the LDAP-directory and objects with superordinates.
 
 			// setup search page
 			this._searchPage = new Page({
@@ -467,6 +469,7 @@ define([
 					label: _('Superordinate'),
 					value: superordinates[0].id || superordinates[0],
 					staticValues: superordinates,
+					visible: false,
 					umcpCommand: umcpCmd
 				});
 				layout[0].push('superordinate');
@@ -543,7 +546,12 @@ define([
 				depends: [ 'objectProperty', 'objectType' ]
 			}]);
 			layout[0].push('objectType');
-			layout[1].push('objectProperty', 'objectPropertyValue');
+			if (superordinates && superordinates.length) {
+				layout[0].push('objectProperty');
+				layout[1].push('objectPropertyValue');
+			} else {
+				layout[1].push('objectProperty', 'objectPropertyValue');
+			}
 
 			// add also the buttons (specified by the search form itself) to the layout
 			var buttons = [{
@@ -582,26 +590,31 @@ define([
 			titlePane.addChild(this._searchForm);
 
 			// generate the navigation pane for the navigation module
-			if ('navigation' == this.moduleFlavor) {
-				this._navUpButton = this.own( new Button( {
-					label: _( 'Parent container' ),
-					iconClass: 'umcIconUp',
-					callback: lang.hitch(this, function() {
-						var path = this._tree.get( 'path' );
-						var ldapDN = path[ path.length - 2 ].id;
-						this._tree.set( 'path', this._ldapDN2TreePath( ldapDN ) );
-						this._searchForm.getWidget('superordinate').set('value', 'None');
-						// we can relaunch the search after all search form values
-						// have been updated
-						on.once(this._searchForm.getWidget('objectPropertyValue'), 'valuesLoaded', lang.hitch(this, function() {
-							this.filter();
-						}));
-					})
-				}))[0];
+			if ('navigation' == this.moduleFlavor || (superordinates && superordinates.length)) {
+				if ('navigation' == this.moduleFlavor) {
+					this._navUpButton = this.own( new Button( {
+						label: _( 'Parent container' ),
+						iconClass: 'umcIconUp',
+						callback: lang.hitch(this, function() {
+							var path = this._tree.get( 'path' );
+							var ldapDN = path[ path.length - 2 ].id;
+							this._tree.set( 'path', this._ldapDN2TreePath( ldapDN ) );
+							this._searchForm.getWidget('superordinate').set('value', 'None');
+							// we can relaunch the search after all search form values
+							// have been updated
+							on.once(this._searchForm.getWidget('objectPropertyValue'), 'valuesLoaded', lang.hitch(this, function() {
+								this.filter();
+							}));
+						})
+					}))[0];
+				}
 
-				var model = new TreeModel({
-					umcpCommand: umcpCmd
+				var ModelClass = ('navigation' == this.moduleFlavor) ? TreeModel : TreeModelSuperordinate;
+				var model = new ModelClass({
+					umcpCommand: umcpCmd,
+					ldap_base: tools.ldapDn2Path([], this._ucr['ldap/base'])
 				});
+
 				this._tree = new Tree({
 					//style: 'width: auto; height: auto;',
 					model: model,
@@ -628,12 +641,19 @@ define([
 						// tree has been reloaded to its last position
 						this._reloadingPath = '';
 					}
-					if ( this._tree.get('path').length > 1 ) {
-						this._grid._toolbar.addChild( this._navUpButton, 0 );
-					} else {
-						this._grid._toolbar.removeChild( this._navUpButton );
+					if ('navigation' == this.moduleFlavor) {
+						if ( this._tree.get('path').length > 1 ) {
+							this._grid._toolbar.addChild( this._navUpButton, 0 );
+						} else {
+							this._grid._toolbar.removeChild( this._navUpButton );
+						}
+						this._navUpButton.set( 'visible', this._tree.get('path').length > 1 );
 					}
-					this._navUpButton.set( 'visible', this._tree.get('path').length > 1 );
+
+					if (this.moduleFlavor !== 'navigation' && newVal.length) {
+						this._setSuperordinateAndFilter(newVal[newVal.length-1].id);
+					}
+
 				})));
 				var treePane = new ContentPane({
 					content: this._tree,
@@ -644,7 +664,7 @@ define([
 
 				// add a context menu to edit/delete items
 				var menu = new Menu({});
-				menu.addChild(new MenuItem({
+				menu.addChild(this._menuEdit = new MenuItem({
 					label: _( 'Edit' ),
 					iconClass: 'umcIconEdit',
 					onClick: lang.hitch(this, function() {
@@ -676,8 +696,7 @@ define([
 
 				// disables items in the menu if the LDAP base is selected
 				this.own(aspect.before(menu, '_openMyself', lang.hitch(this, function() {
-					var actionsAvailable = (this._navContextItemFocused.objectType !== "container/dc");
-					this._updateMenuAvailability(actionsAvailable);
+					this._updateMenuAvailability();
 				})));
 
 				// remember on which item the context menu has been opened
@@ -742,12 +761,14 @@ define([
 			// for the search scope
 			var superordinateWidget = this._searchForm.getWidget('superordinate');
 			if (superordinateWidget) {
-				this.own(superordinateWidget.watch('value', lang.hitch(this, function() {
+				this.own(superordinateWidget.watch('value', lang.hitch(this, function(attr, oldval, val) {
 					if (tools.isTrue(this._autoSearch)) {
 						// we can relaunch the search after all search form values
 						// have been updated
 						this._searchForm.ready().then(lang.hitch(this, 'filter'));
 					}
+					val = (val === 'None') ? ['None'] : ['None', val];
+					this._tree.set('path', val);
 				})));
 				this._grid.on('filterDone', lang.hitch(this, function() {
 					var val = superordinateWidget.get('value');
@@ -794,9 +815,11 @@ define([
 			this.addChild(this._searchPage);
 		},
 
-		_updateMenuAvailability: function(actionsAvailable) {
-			this._menuDelete.set('disabled', !actionsAvailable);
-			this._menuMove.set('disabled', !actionsAvailable);
+		_updateMenuAvailability: function() {
+			var operations = this._navContextItemFocused.operations;
+			this._menuEdit.set('disabled', operations.indexOf('edit') === -1);
+			this._menuDelete.set('disabled', operations.indexOf('remove') === -1);
+			this._menuMove.set('disabled', operations.indexOf('move') === -1);
 		},
 
 		_setSuperordinateAndFilter: function(superordinate) {
@@ -835,9 +858,6 @@ define([
 				var toggleButton = this._searchForm._buttons.toggleSearch;
 				if (!this._isAdvancedSearch) {
 					widgets.objectType.set('visible', widgets.objectType.getAllItems().length > 2);
-					if ('superordinate' in widgets) {
-						widgets.superordinate.set('visible', true);
-					}
 					if ('container' in widgets) {
 						widgets.container.set('visible', true);
 					}
@@ -846,9 +866,6 @@ define([
 					toggleButton.set('label', _('(Simplified options)'));
 				} else {
 					widgets.objectType.set('visible', false);
-					if ('superordinate' in widgets) {
-						widgets.superordinate.set('visible', false);
-					}
 					if ('container' in widgets) {
 						widgets.container.set('visible', false);
 					}

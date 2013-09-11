@@ -855,7 +855,7 @@ class Instance( Base ):
 
 		if not request.options.get( 'container' ):
 			ldap_base = ucr.get( 'ldap/base' )
-			self.finished( request.id, [ { 'id' : ldap_base, 'label' : ldap_dn2path( ldap_base ), 'icon' : 'udm-container-dc', 'objectType' : 'container/dc' } ] )
+			self.finished( request.id, [ { 'id' : ldap_base, 'label' : ldap_dn2path( ldap_base ), 'icon' : 'udm-container-dc', 'objectType' : 'container/dc', 'operations': ['edit'] } ] )
 			return
 
 		def _thread( container ):
@@ -879,7 +879,14 @@ class Instance( Base ):
 					so_obj = None
 				try:
 					for item in module.search( container, scope = 'one', superordinate = so_obj ):
-						result.append( { 'id' : item.dn, 'label' : item[ module.identifies ], 'icon' : 'udm-%s-%s' % ( base, typ ), 'path': ldap_dn2path( item.dn ), 'objectType': '%s/%s' % (base, typ) } )
+						result.append({
+							'id' : item.dn,
+							'label' : item[ module.identifies ],
+							'icon' : 'udm-%s-%s' % ( base, typ ),
+							'path': ldap_dn2path( item.dn ),
+							'objectType': '%s/%s' % (base, typ),
+							'operations': module.operations,
+						})
 				except UDM_Error, e:
 					success = False
 					result = None
