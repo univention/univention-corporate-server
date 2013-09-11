@@ -1,35 +1,36 @@
 [umc/web/feedback/mail]
-Description[de]=E-Mail-Adresse, an die Feedback gesendet wird
-Description[en]=E-mail address where feedback is sent to
+Description[de]=Tritt in der Univention Management Console ein Fehler auf, der zu einem Traceback führt, wird ein Dialog angezeigt. Diese E-Mail-Adresse wird dort als Kontaktadresse angezeigt.
+Description[en]=If an errors leading to a traceback occurs in the Univention Management Console, a dialogue is shown. This email address is shown as a contact address.
 Type=str
-Categories=Management
+Categories=management-umc
 
 [umc/web/feedback/description]
-Description[de]=Betreff, der bei Feedback verwendet wird
-Description[en]=Subject used for feedback
+Description[de]=Tritt in der Univention Management Console ein Fehler auf, der zu einem Traceback führt, wird ein Dialog angezeigt. Dieser Betreff wird bei der Feedback-Mail verwendet.
+Description[en]=If an errors leading to a traceback occurs in the Univention Management Console, a dialogue is shown. This subject is used in the feedback mail.
 Type=str
-Categories=Management
+Categories=management-umc
 
 [umc/web/favorites/default]
-Description[en]=Specifies the default UMC modules for the category "favorites" as a comma separated list in the form "<moduleID>[:<moduleFlavor]", e.g.: udm:users/user,setup,updater
-Description[de]=Definiert die standard UMC-Module für die Kategorie "Favoriten" als Komma separierte Liste in der Form "<moduleID>[:<moduleFlavor]", z.B.: udm:users/user,setup,updater
+Description[de]=Die hier konfigurierten UMC-Module werden in der Grundeinstellung als "Favoriten"-Module in der Univention Management Console angezeigt. Mehrere Einträge müssen durch ein Komma getrennt werden.
+Description[en]=The UMC modules configured here are shown as "Favorites" modules in the default setting of the Univention Management Console. Multiple entries need to be separated with a blank.
 Type=str
-Categories=Management
+Categories=management-umc
 
 [umc/web/piwik]
-Description[en]=Enables (=true) or disables (=false) sending of anonymous user statistics to https://piwik.univention.de. By default user statistics are only send from systems with a "free for personal use" edition installed. This information help us to improve usability aspects of Univention Management Console.
-Description[de]=Aktiviert (=true) oder deaktiviert (=false) das Senden anonymer Benutzerstatistiken nach https://piwik.univention.de. In der Standardeinstellung werden Statistiken nur von System erhoben, die die "Free for personal use"-Edition installiert haben. Diese Daten helfen uns, die Benutzbarkeit von Univention Management Console weiter zu verbessern.
+Description[de]=Ist diese Option aktiviert, werden bei Verwendung der Free for personal use-Version von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) anonyme Nutzungsstatistiken zur Verwendung der UMC erzeugt. Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die Entwicklung besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
+Description[en]=If this option is activated, anonymous usage statistics on the use of the UMC are collected when using the free for personal use version of UCS (which is generally used for evaluating UCS). The modules opened are logged in an instance of the web traffic analysis tool Piwik. This makes it possible for Univention to tailor the development better to customer needs and carry out usability improvements.
 Type=bool
-Categories=Management
+Categories=management-umc
 
 [umc/web/startupdialog]
-Description[en]=Specifies whether (=true or not set) or not (=false) the startup dialog is shown on systems with the Free for Personal Use license.
-Description[de]=Definiert ob der Dialog zur Inbetriebnahme von UCS mit einer Free-for-Personal-Use-Lizenz angezeigt (=true oder nicht gesetzt) oder nicht angezeigt (=false) wird.
-Type=str
-Categories=Management
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird bei der ersten Anmeldung als Administrator ein Dialog zur Inbetriebnahme von UCS angezeigt.
+Description[en]=If this option is activated or the variable is unset, a startup dialogue is shown with the first login as the Administrator.
+Type=bool
+Categories=management-umc
 
 [umc/web/max_host_entries]
-Description[en]=Specifies a maximum number of hosts which causes to not display the host menu when the limit is reached.
-Description[de]=Definiert eine maximale Anzahl an Hosts, die bewirkt, dass das Host-Menü nicht mehr anzeigt wenn das Limit erreicht ist.
-Type=str
-Categories=Management
+Description[de]=In der Titelzeile der UMC wird eine Auswahlliste angezeigt, mit der auf eine andere Univention Management Console gewechselt werden kann. Diese Variable konfiguriert die maximale Anzahl an Instanzen, die als Drop-Down-Menü angeboten wird.
+Description[en]=In the title pane of the UMC as selection list is shown. It can be used to navigate to a different Univention Management Console. This variable configures the maximum amount of instances which are presented as a drop down menu.
+Type=int
+Categories=management-umc
+

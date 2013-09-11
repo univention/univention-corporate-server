@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.66-1.1) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 11 Sep 2013 13:29:04 +0200
+
 univention-management-console-frontend (3.0.66-1) unstable; urgency=low
 
   * Remove empty LabelPanes in MultiInput (for aligning) (Bug #25389)
