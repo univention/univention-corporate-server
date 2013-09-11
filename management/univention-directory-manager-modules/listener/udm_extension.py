@@ -44,7 +44,6 @@ import zlib
 import tempfile
 import datetime
 import apt
-udm_modules.update()
 
 name = 'udm_extension'
 description = 'Handle UDM module, hook an syntax extensions'
@@ -285,6 +284,7 @@ def handler(dn, new, old):
 		if new:
 			try:
 				lo, ldap_position = udm_uldap.getAdminConnection()
+				udm_modules.update()
 				udm_module = udm_modules.get(udm_module_name)
 				udm_modules.init(lo, ldap_position, udm_module)
 
