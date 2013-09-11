@@ -2506,3 +2506,14 @@ libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl,
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
+
+<section>
+  <title>Horde App</title>
+	<itemizedlist>
+	  <listitem><simpara> 
+		The package <package>ucs-test-horde</package> has been added. The test package creates users
+		and tests the horde login
+		(<ulink url="&ucsbug;32230">Bug 32230</ulink>).
+	  </simpara></listitem>
+	</itemizedlist>
+</section>
