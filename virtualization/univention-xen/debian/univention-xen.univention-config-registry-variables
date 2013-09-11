@@ -16,16 +16,16 @@ Description[en]=A password for VNC connections can be configured here. If the va
 Type=str
 Categories=service-xen
 
-[xen/relocation/hosts_allow]
-Description[de]=Leerzeichen separierte Liste von regulären Ausdrücken der erlaubten Hostnamen
-Description[en]=Space separated list of regular expressions of allowed host names
-Type=str
-Categories=service-xen
-
 [xen/server/relocation]
 Description[de]=Ist diese Option aktiviert, startet Xen den Relocation-Server, einen Dienst zur Migration virtueller Maschinen zwischen Virtualisierungsservern. Ist die Variable nicht gesetzt, wird der Dienst nicht gestartet.
 Description[en]=If this option is activated, Xen starts the relocation server, a service for migration virtual machines between virtualization hosts. If the variable is unset, the service isn't started.
 Type=bool
+Categories=service-xen
+
+[xen/relocation/hosts_allow]
+Description[de]=Ist der Relocation-Server gestartet (siehe 'xen/server/relocation'), kann mit dieser Variable der Zugriff auf einige Rechner beschränkt werden. Mehrfache Einträge müssen durch ein Leerzeichen getrennt werden. Ist die Variable nicht gesetzt, ist der Zugriff von allen Rechnern möglich.
+Description[en]=If the relocation server is started (see 'xen/server/relocation'), the access can be restricted to some hosts with this variable. Multiple entries must be separated with a blank. If the variable is unset, the access is allowed from all hosts.
+Type=str
 Categories=service-xen
 
 [xen/server/relocation_ssl]
@@ -35,25 +35,25 @@ Type=bool
 Categories=service-xen
 
 [xen/relocation/port]
-Description[de]=Wenn der Relocation Server gestartet wird (siehe 'xen/server/relocation'), kann mit dieser Variable der Port konfiguriert werden. Ist die Variable nicht gesetzt, wird 8002 verwendet. Wird Univention Firewall eingesetzt, müssen ggf. Paketfilterregeln angepasst werden.
+Description[de]=Wenn der Relocation-Server gestartet wird (siehe 'xen/server/relocation'), kann mit dieser Variable der Port konfiguriert werden. Ist die Variable nicht gesetzt, wird 8002 verwendet. Wird Univention Firewall eingesetzt, müssen ggf. Paketfilterregeln angepasst werden.
 Description[en]=If the relocation server is started (see 'xen/server/relocation'), this variable allows to configure the port. If the variable is unset, 8002 is used. If Univention Firewall is used, it might be necessary to adapt packet filter rules.
 Type=int
 Categories=service-xen
 
 [xen/relocation/port_ssl]
-Description[de]=Wenn der SSL-gesicherte Relocation Server gestartet wird (siehe 'xen/server/relocation'), kann mit dieser Variable der Port konfiguriert werden. Ist die Variable nicht gesetzt, wird 8003 verwendet. Wird Univention Firewall eingesetzt, müssen ggf. Paketfilterregeln angepasst werden.
+Description[de]=Wenn der SSL-gesicherte Relocation-Server gestartet wird (siehe 'xen/server/relocation'), kann mit dieser Variable der Port konfiguriert werden. Ist die Variable nicht gesetzt, wird 8003 verwendet. Wird Univention Firewall eingesetzt, müssen ggf. Paketfilterregeln angepasst werden.
 Description[en]=If the SSL-secured relocation server is started (see 'xen/server/relocation'), this variable allows to configure the port. If the variable is unset, 8003 is used. If Univention Firewall is used, it might be necessary to adapt packet filter rules.
 Type=int
 Categories=service-xen
 
 [xen/server/http_server]
-Description[de]=Aktiviert/Deaktiviert den Zugriff zum Xen-Dienst via HTTP [no]
-Description[en]=Enable/Disable access to xend via http [no]
+Description[de]=Ist diese Option aktiviert, wird der Xen-HTTP-Server gestartet. Ist die Variable nicht gesetzt, wird der Server nicht gestartet.
+Description[en]=If this option is activated, the Xen HTTP server is started. If the variable is unset, the server isn't started.
 Type=bool
 Categories=service-xen
 
 [xen/server/unix_server]
-Description[de]=Ist diese Option aktiviert, nimmt Xen Befehle einen Unix Domain Socket entgegen. Dies wird für Libvirt und verschiedene Kommandozeilen-Tools benötigt. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[de]=Ist diese Option aktiviert, nimmt Xen Kommdos über einen Unix Domain Socket entgegen. Dies wird für Libvirt und verschiedene Kommandozeilen-Tools benötigt. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
 Description[en]=If this option is enabled, Xen accepts commands through a Unix domain socket. This is required by Libvirt and various commandline tools. If the variable is unset, the option is disabled.
 Type=bool
 Categories=service-xen
@@ -79,5 +79,5 @@ Categories=service-xen
 [xen/xend/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des Xen-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
 Description[en]=This variable configures the start mode of the Xen service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
-Type=bool
+Type=str
 Categories=service-xen
