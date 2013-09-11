@@ -1,29 +1,29 @@
 [listener/debug/level]
-Description[de]=Debug level des Univention Directory Listener (0-4)
-Description[en]=Debug level of Univention Directory Listener (0-4)
+Description[de]=Der Detailgrad der Logausgaben in /var/log/univention/listener.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
+Description[en]=The verbosity of log messages in /var/log/univention/listener.log. Possible values: 0-4 (0: only error messages to 4: all debug statements).
 Type=int
-Categories=service-ldap
+Categories=service-ln
 
 [listener/network/protocol]
-Description[de]=Protokoll für die Verbindung zum Notifier (gültige Werte: "all", "ipv4", "ipv6")
-Description[en]=Notifier connection protocol (valid values: "all", "ipv4", "ipv6")
+Description[de]=Das verwendete Protokoll für die Verbindung zum Univention Directory Notifier. "ipv4" verwendet nur IPv4, "ipv6" nur IPv6 und "all" probiert beides.
+Description[en]=The protocol used for the connection to the Univention Directory Notifier. "ipv4" uses only IPv4, "ipv6" uses only IPv6 and "all" tries both.
 Type=str
-Categories=service-ldap
+Categories=service-ln
 
 [listener/autostart]
-Description[de]=Automatischer Start des Listener-Dienstes beim Systemstart
-Description[en]=Automatically start the Listener daemon on system startup
-Type=bool
-Categories=service-ldap
+Description[de]=Die Variable konfiguriert den Startmodus des Univention Directory Listener-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Univention Directory Listener service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=str
+Categories=service-ln
 
 [listener/memberuid/skip]
-Description[de]=Deaktiviert die Duplikatserkennung für Benutzer in Gruppen anhand deren UID [yes]
-Description[en]=Deactivate the duplicate user in group check using their UID [yes]
-Type=bool
-Categories=service-ldap
+Description[de]=Ist diese Variable auf 'yes' gesetzt, führt der Univention Directory Listener zusätzliche Sicherheitsprüfungen durch, um zu verhindern, das ein Benutzer einer Gruppe zweimal hinzugefügt wird. Diese Prüfungen können deaktiviert werden, indem die Variablen 'listener/memberuid/skip' und 'listener/uniquemember/skip' auf 'no' gesetzt werden.
+Description[en]=If this variable is set to 'yes', the Univention Directory Listener performs safety checks to prevent a user name being added into a group twice. These checks can be deactivated by setting the variables 'listener/memberuid/skip' and 'listener/uniquemember/skip' to 'no'. 
+Type=str
+Categories=service-ln
 
 [listener/uniquemember/skip]
-Description[de]=Deaktiviert die Duplikatserkennung für Benutzer in Gruppen anhand deren DN [yes]
-Description[en]=Deactivate the duplicate user in group check using their DN [yes]
-Type=bool
-Categories=service-ldap
+Description[de]=Ist diese Variable auf 'yes' gesetzt, führt der Univention Directory Listener zusätzliche Sicherheitsprüfungen durch, um zu verhindern, das ein Benutzer einer Gruppe zweimal hinzugefügt wird. Diese Prüfungen können deaktiviert werden, indem die Variablen 'listener/memberuid/skip' und 'listener/uniquemember/skip' auf 'no' gesetzt werden.
+Description[en]=If this variable is set to 'yes', the Univention Directory Listener performs safety checks to prevent a user name being added into a group twice. These checks can be deactivated by setting the variables 'listener/memberuid/skip' and 'listener/uniquemember/skip' to 'no'. 
+Type=str
+Categories=service-ln

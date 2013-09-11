@@ -1,3 +1,12 @@
+univention-directory-listener (8.0.0-2) unstable; urgency=low
+
+  * Update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30946)
+    Remove univention-directory-listener.univention-config-registry-categories,
+      already covered in univention-base-files
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 11 Sep 2013 12:04:26 +0200
+
 univention-directory-listener (8.0.0-1) unstable; urgency=low
 
   * Bump version for UCS-3.2.
