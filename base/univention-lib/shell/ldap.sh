@@ -463,18 +463,19 @@ ucs_registerExtensionObject () {
 				--dn "$object_dn"
 		fi
 
+	elif [ -n "$new_object_dn" ]; then
+		object_dn="$new_object_dn"	## set the variable for the following code
 	fi
 
 	timeout=180	#seconds
 	echo -n "Waiting up to $timeout seconds for activation of the extension object: "
 	local t t0
 	t0=$(date +%s)
-	while ! univention-directory-manager "$ucs_registerExtensionObject_objecttype" list "$@" \
-			--filter "(&(name=$objectname)(active=TRUE))" | grep -q '^DN: '
+	while ! univention-ldapsearch -b "$object_dn" -s base "(&(cn=$objectname)(univentionUDMModuleActive=TRUE))" | grep -q '^dn: '
 	do
 			t=$(date +%s)
 			if [ $(($t - $t0)) -gt "$timeout" ]; then
-				echo
+				echo "ERROR"
 				echo "ERROR: $SH_FUNCNAME: Master did not mark the extension object active within 3 minutes."
 				return 1
 			fi
@@ -553,6 +554,40 @@ ucs_unregisterExtensionObject () {
 		--dn="$object_dn"
 }
 
+ucs_waitUntilFileExists () {
+	local SH_FUNCNAME
+	SH_FUNCNAME=ucs_waitUntilFileExists
+
+	local filename
+	filename="$1"
+	if [ -z "$filename" ]; then
+		echo "ERROR: $SH_FUNCNAME: Filename argument missing"
+		return 2
+	fi
+
+	local timeout
+	timeout="$2"
+	if [ -z "$timeout" ]; then
+		echo "WARNING: $SH_FUNCNAME: No timeout given, using default."
+		timeout=180	#seconds
+	fi
+
+	echo -n "Waiting up to $timeout seconds for file $filename: "
+	local t t0
+	t0=$(date +%s)
+	while ! [ -e "$filename" ]; do
+			t=$(date +%s)
+			if [ $(($t - $t0)) -gt "$timeout" ]; then
+				echo "ERROR"
+				echo "ERROR: $SH_FUNCNAME: Timout waiting for $filename."
+				return 1
+			fi
+			echo -n "."
+			sleep 3
+	done
+	echo "OK"
+}
+
 # ucs_registerLDAPSchema writes an LDAP schema extension to UDM.
 # A listener module then writes it to a persistent place /var/lib/univention-ldap/local-schema/.
 #
@@ -616,7 +651,7 @@ ucs_registerLDAPACL () {
 # e.g. ucs_registerUDMModule /var/tmp/univention-testmodule.py
 #
 ucs_registerUDMModule () {
-	local SH_FUNCNAME
+	local SH_FUNCNAME rc
 	SH_FUNCNAME=ucs_registerUDMModule
 
 	display_help() {
@@ -656,6 +691,16 @@ ucs_registerUDMModule () {
 	ucs_registerExtensionObject_target_filename="$module_name.py"
 
 	ucs_registerExtensionObject "$@"
+	rc=$?
+	if [ "$rc" != 0 ]; then
+		return "$rc"
+	fi
+
+	server_role=$(ucr get server/role)
+	if [ "$server_role" != "${server_role#domaincontroller_}" ]; then
+		target_filename="/usr/lib/pymodules/$(pyversions -d)/univention/admin/handlers/$module_name.py"
+		ucs_waitUntilFileExists "$target_filename" 60
+	fi
 }
 
 # ucs_registerUDMHook writes an UDM extension Hook to UDM.
@@ -664,7 +709,7 @@ ucs_registerUDMModule () {
 # e.g. ucs_registerUDMHook /var/tmp/univention-testhook.py
 #
 ucs_registerUDMHook () {
-	local SH_FUNCNAME
+	local SH_FUNCNAME rc
 	SH_FUNCNAME=ucs_registerUDMHook
 
 	display_help() {
@@ -686,6 +731,15 @@ ucs_registerUDMHook () {
 	ucs_registerExtensionObject_container_name="udm_hook"
 
 	ucs_registerExtensionObject "$@"
+	rc=$?
+	if [ "$rc" != 0 ]; then
+		return "$rc"
+	fi
+
+	if [ "$server_role" != "${server_role#domaincontroller_}" ]; then
+		target_filename="/usr/lib/pymodules/$(pyversions -d)/univention/admin/handlers/hooks.d/$(basename -- "$1")"
+		ucs_waitUntilFileExists "$target_filename" 60
+	fi
 }
 
 # ucs_registerUDMSyntax writes an UDM extension Syntax to UDM.
@@ -694,7 +748,7 @@ ucs_registerUDMHook () {
 # e.g. ucs_registerUDMSyntax /var/tmp/univention-testsyntax.py
 #
 ucs_registerUDMSyntax () {
-	local SH_FUNCNAME
+	local SH_FUNCNAME rc
 	SH_FUNCNAME=ucs_registerUDMSyntax
 
 	display_help() {
@@ -716,6 +770,15 @@ ucs_registerUDMSyntax () {
 	ucs_registerExtensionObject_container_name="udm_syntax"
 
 	ucs_registerExtensionObject "$@"
+	rc=$?
+	if [ "$rc" != 0 ]; then
+		return "$rc"
+	fi
+
+	if [ "$server_role" != "${server_role#domaincontroller_}" ]; then
+		target_filename="/usr/lib/pymodules/$(pyversions -d)/univention/admin/handlers/syntax.d/$(basename -- "$1")"
+		ucs_waitUntilFileExists "$target_filename" 60
+	fi
 }
 
 # ucs_unregisterLDAPSchema removes an LDAP schema extension from UDM.
