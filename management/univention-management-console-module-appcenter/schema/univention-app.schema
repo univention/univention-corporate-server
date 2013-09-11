@@ -185,7 +185,7 @@ objectclass ( univentionAppObjectClass:1 NAME 'univentionApp'
 			$ univentionAppWebInterface
 			$ univentionAppWebInterfaceName
 			$ univentionAppConflictingApps
-			$ univentionAppConflictingAppsSystemPackages
+			$ univentionAppConflictingSystemPackages
 			$ univentionAppDefaultPackages
 			$ univentionAppDefaultPackagesMaster
 			$ univentionAppUMCModuleName
