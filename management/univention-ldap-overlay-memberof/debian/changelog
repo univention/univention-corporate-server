@@ -1,3 +1,12 @@
+univention-ldap-overlay-memberof (6.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30946)
+      Remove UCR variable description for ldap/overlay/memberof/refint, see
+      #32549	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 11 Sep 2013 11:37:29 +0200
+
 univention-ldap-overlay-memberof (5.0.0-1) unstable; urgency=low
 
   * replace uniqueMember in univention-update-memberof
