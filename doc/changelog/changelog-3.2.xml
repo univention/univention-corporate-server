@@ -2072,6 +2072,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32394">Bug 32394</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The support for the <emphasis>ldap filter</emphasis> parameter has been removed from the source package
+		  (<ulink url="&ucsbug;32223">Bug 32223</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
