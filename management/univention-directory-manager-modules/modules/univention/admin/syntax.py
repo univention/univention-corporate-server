@@ -1733,14 +1733,14 @@ class MAC_AddressList( select ):
 		return text
 
 class DNS_ForwardZone( UDM_Objects ):
-	description=_('DNS forward zone')
+ 	description=_('DNS forward zone')
 	udm_modules = ( 'dns/forward_zone', )
 	empty_value = True
 	size = 'TwoThirds'
 	use_objects = False
 
 class DNS_ReverseZone( UDM_Objects ):
-	description=_('DNS reverse zone')
+ 	description=_('DNS reverse zone')
 	udm_modules = ( 'dns/reverse_zone', )
 	label = '%(subnet)s'
 	empty_value = True
@@ -1748,12 +1748,12 @@ class DNS_ReverseZone( UDM_Objects ):
 	use_objects = False
 
 class dnsEntry( complex ):
-	description=_('DNS Entry')
+ 	description=_('DNS Entry')
 	subsyntaxes = ( ( _( 'DNS forward zone' ), DNS_ForwardZone ), ( _( 'IP address' ), IP_AddressList ) )
 	min_elements = 1
 
 class dnsEntryReverse( complex ):
-	description=_('DNS Entry Reverse')
+ 	description=_('DNS Entry Reverse')
 	subsyntaxes = ( ( _( 'DNS reverse zone' ), DNS_ReverseZone ), ( _( 'IP address' ), IP_AddressList ) )
 	min_elements = 1
 
@@ -2542,7 +2542,7 @@ class LDAP_Search( select ):
 
 		appendEmptyValue: Same as addEmptyValue but added at the end.
 		Used to automatically choose an existing entry in frontend
-		"""
+	    """
 		self.syntax = syntax_name
 		if filter is not None:
 			# programmatically

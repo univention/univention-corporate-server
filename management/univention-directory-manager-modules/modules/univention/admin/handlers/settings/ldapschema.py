@@ -148,7 +148,7 @@ layout = [
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('filename', 'univentionLDAPSchemaFilename', None, univention.admin.mapping.ListToString)
-mapping.register('data', 'univentionLDAPSchemaData', None, univention.admin.mapping.ListToString)
+mapping.register('data', 'univentionLDAPSchemaData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
 mapping.register('active', 'univentionLDAPSchemaActive', None, univention.admin.mapping.ListToString)
 mapping.register('appidentifier', 'univentionAppIdentifier')
 mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
