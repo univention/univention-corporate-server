@@ -973,6 +973,11 @@
 			A new UDM module <emphasis>settings/udm_module</emphasis> has been implemented for registration and replication of UDM module extensions.
 			(<ulink url="&ucsbug;32409">Bug 32409</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			The representation of the DHCP and DNS module have been revised
+			(<ulink url="&ucsbug;32381">Bug 32381</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
