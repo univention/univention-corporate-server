@@ -172,7 +172,7 @@ layout = [
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('filename', 'univentionLDAPACLFilename', None, univention.admin.mapping.ListToString)
-mapping.register('data', 'univentionLDAPACLData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('data', 'univentionLDAPACLData', None, univention.admin.mapping.ListToString)
 mapping.register('active', 'univentionLDAPACLActive', None, univention.admin.mapping.ListToString)
 mapping.register('appidentifier', 'univentionAppIdentifier')
 mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)

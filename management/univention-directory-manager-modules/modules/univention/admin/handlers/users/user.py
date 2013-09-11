@@ -1255,8 +1255,8 @@ def unmapKeyAndValue(old):
 		lst.append( entry.split('=', 1) )
 	return lst
 
-mapping.register('userCertificate', 'userCertificate;binary', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
-mapping.register('jpegPhoto', 'jpegPhoto', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('userCertificate', 'userCertificate;binary', None, univention.admin.mapping.ListToString)
+mapping.register('jpegPhoto', 'jpegPhoto', None, univention.admin.mapping.ListToString)
 mapping.register('umcProperty', 'univentionUMCProperty', mapKeyAndValue, unmapKeyAndValue)
 
 class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):

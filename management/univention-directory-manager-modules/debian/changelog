@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.25-2) unstable; urgency=low
+
+  * Fix "inconsistent use of tabs and spaces in indentation" (Bug #32565)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 11 Sep 2013 19:43:56 +0200
+
 univention-directory-manager-modules (9.0.25-1) unstable; urgency=low
 
   * First attempt to fix Bug #32565

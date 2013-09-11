@@ -172,7 +172,7 @@ layout = [
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('filename', 'univentionUDMSyntaxFilename', None, univention.admin.mapping.ListToString)
-mapping.register('data', 'univentionUDMSyntaxData', univention.admin.mapping.mapBase64, univention.admin.mapping.unmapBase64)
+mapping.register('data', 'univentionUDMSyntaxData', None, univention.admin.mapping.ListToString)
 mapping.register('active', 'univentionUDMSyntaxActive', None, univention.admin.mapping.ListToString)
 mapping.register('appidentifier', 'univentionAppIdentifier')
 mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.mapping.ListToString)
