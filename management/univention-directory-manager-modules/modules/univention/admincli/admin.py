@@ -858,7 +858,7 @@ def _doit(arglist):
 				for i in module.property_descriptions:
 					property=module.property_descriptions.get(i)
 					if property.required:
-						if not object.has_key(i) or not object[i]:
+						if not object.has_key(i) or (not object[i] or (type(object[i]) == list and object[i]==[''])):
 							out.append(i)
 				return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.noObject, e:

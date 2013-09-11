@@ -177,7 +177,7 @@ class base(object):
 				if not in_options:
 					continue
 
-			if p.required and not self[name]:
+			if p.required and (not self[name] or (type(self[name]) == list and self[name]==[''])):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "property %s is required but not set." % name)
 				return 0
 		return 1
@@ -1374,7 +1374,7 @@ class simpleComputer( simpleLdap ):
 			for result in results:
 				object = univention.admin.objects.get( univention.admin.modules.get( 'dns/ptr_record' ), self.co, self.lo, position = self.position, dn = result )
 				object.open( )
-				object[ 'ptr_record' ] = object[ 'ptr_record' ].replace( old_name, new_name )
+				object['ptr_record'] = [ptr_record.replace(old_name, new_name) for ptr_record in object.get('ptr_record', [])]
 				object.modify( )
 		for entry in self[ 'dnsEntryZoneAlias' ]:
 			# entry may be the empty string
