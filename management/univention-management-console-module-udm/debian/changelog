@@ -1,6 +1,7 @@
 univention-management-console-module-udm (4.0.16-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)
+    Move categories file to univention-mangement-console
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 11 Sep 2013 09:20:09 +0200
 
