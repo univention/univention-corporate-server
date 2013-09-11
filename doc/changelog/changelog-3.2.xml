@@ -10,6 +10,10 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
+		All previous errata updates for UCS 3.1 have been integrated (<ulink url="&ucsbug;31007">Bug 31007</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
 		The Debian point update 6.0.8 was incorporated. Among other changes it also fixes several security issues:  <ulink url="&ucsbug;31094">Bug 31094</ulink>).
 
 		<itemizedlist>
@@ -1846,6 +1850,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in
+		  <emphasis>univention-virtual-machine-manager-node</emphasis> and
+		  <emphasis>univention-virtual-machine-manager-daemon</emphasis> have been
+		  revised (<ulink url="&ucsbug;30949">Bug 30949</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  A typo in the German translation has been fixed (<ulink url="&ucsbug;22377">Bug 22377</ulink>).
 		</simpara></listitem>
 
@@ -1924,6 +1935,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <itemizedlist>
 		<listitem><simpara>
 		  A logic bug in the init script for xenstore was fixed (<ulink url="&ucsbug;28309">Bug 28309</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-xen</emphasis> have been
+		  revised (<ulink url="&ucsbug;30949">Bug 30949</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
