@@ -44,7 +44,6 @@ import zlib
 import tempfile
 import datetime
 import apt
-udm_modules.update()
 
 name = 'settings_ldapschema'
 description = 'Configure LDAP schema extensions'
@@ -257,6 +256,7 @@ def postrun():
 			if __todo_list:
 				try:
 					lo, ldap_position = udm_uldap.getAdminConnection()
+					udm_modules.update()
 					udm_module = udm_modules.get(UDM_MODULE)
 					udm_modules.init(lo, ldap_position, udm_module)
 
