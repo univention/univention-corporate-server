@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (4.0.1-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 11 Sep 2013 10:04:19 +0200
+
 univention-admingrp-user-passwordreset (4.0.1-1) unstable; urgency=low
 
   * Replaced hardcoded ldap base with ucr variable value (Bug #25408)
