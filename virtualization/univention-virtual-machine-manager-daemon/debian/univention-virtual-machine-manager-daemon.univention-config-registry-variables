@@ -1,12 +1,12 @@
 [uvmm/pool/default/path]
-Description[de]=Der Pfad des Standard-Speicherbereichs für Image-Dateien. Ist die Variable nicht gesetzt, wird /var/lib/libvirt/images verwendet.
-Description[en]=The path of the 'default' storage pool for image files. If the variable is unset, /var/lib/libvirt/images is used.
+Description[de]=Der Pfad des Standard-Speicherbereichs für die Image-Dateien. Ist die Variable nicht gesetzt, wird /var/lib/libvirt/images verwendet.
+Description[en]=The path of the storage pool 'default' for the image files. If the variable is unset, /var/lib/libvirt/images is used.
 Type=str
 Categories=uvmm
 
 [auth/uvmmd/accessfile]
-Description[de]=Der Pfad zur PAM-Konfigurationsdatei mit der Zugriffsbeschränkung für UVMMd.
-Description[en]=The path to the PAM configuration file with access control rules for UVMMd.
+Description[de]=Der Pfad zur PAM-Konfigurationsdatei mit der Zugriffsbeschränkungen für den UVMM-Dienst konfiguriert werden können.
+Description[en]=The path to the PAM configuration file with which access control restrictions can be configured for the UVMM service.
 Type=str
 Categories=uvmm
 

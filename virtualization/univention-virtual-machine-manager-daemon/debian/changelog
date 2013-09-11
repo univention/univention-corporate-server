@@ -8,6 +8,8 @@ univention-virtual-machine-manager-daemon (3.0.6-11) unstable; urgency=low
       uvmm/umc/show/vnc, uvmm/volume/permissions/mode, uvmm/volume/permissions/owner,
       and uvmm/volume/permissions/group. Apparently these were not ported 
       during the update to UCS 3 and the new UMC.
+  * Fix typo in template for /etc/pam.d/uvmmd, test for auth/uvmmd/restrict, not
+       auth/uvmmd/restict
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 10 Sep 2013 16:39:40 +0200
 

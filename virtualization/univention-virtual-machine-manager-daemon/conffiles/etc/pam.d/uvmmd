@@ -3,7 +3,7 @@
 @include common-auth
 @!@
 scope = "uvmmd"
-accessfileFlag = "auth/%s/restict" % (scope,)
+accessfileFlag = "auth/%s/restrict" % (scope,)
 if baseConfig.get(accessfileFlag, False):
 	accessfileDefault = "/etc/security/access-%s.conf" % (scope,)
 	accessfileKey = "auth/%s/accessfile" % (scope,)
