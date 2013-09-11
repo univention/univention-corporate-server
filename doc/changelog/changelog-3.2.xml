@@ -988,6 +988,11 @@
 			The enforcement of required multivalue attributes now also works when using the UDM CLI.
 			(<ulink url="&ucsbug;31302">Bug 31302</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			An mistake in the <emphasis>jpegPhoto</emphasis> UDM syntax has been corrected which lead to invalid data getting stored in the LDAP with some jpeg Photos.
+			(<ulink url="&ucsbug;30342">Bug 30342</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
