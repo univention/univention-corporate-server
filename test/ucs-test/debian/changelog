@@ -1,3 +1,11 @@
+ucs-test (4.0.108-1) unstable; urgency=low
+
+  * enabled
+    68_udm-extendedattribute/62_check_multivalue_extented_attribute_required
+    for versions 3.2-0 and following (Bug #31302)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 11 Sep 2013 14:42:19 +0200
+
 ucs-test (4.0.107-1) unstable; urgency=low
 
   * Skip more tests in apptest scenario (Bug #31785)
