@@ -978,6 +978,16 @@
 			The representation of the DHCP and DNS module have been revised
 			(<ulink url="&ucsbug;32381">Bug 32381</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			A traceback which occured when renaming computer objects with set DNS reverse zone has been fixed.
+			(<ulink url="&ucsbug;31435">Bug 31435</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			The enforcement of required multivalue attributes now also works when using the UDM CLI.
+			(<ulink url="&ucsbug;31302">Bug 31302</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
