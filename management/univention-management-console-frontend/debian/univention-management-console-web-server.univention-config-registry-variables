@@ -1,29 +1,29 @@
 [umc/http/autostart]
-Description[de]=Automatischer Start des UMC-Webserver-Dienstes beim Systemstart
-Description[en]=Automatically start the UMC web server daemon on system startup
-Type=bool
-Categories=Management
+Description[de]=Die Variable konfiguriert den Startmodus des UMC-Webservers. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the UMC web server. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Type=str
+Categories=management-umc
 
 [umc/http/port]
-Description[de]=Port des UMC-HTTP-Servers [8090]
-Description[en]=Port of UMC HTTP server [8090]
+Description[de]=Auf diesem Port wartet der UMC-Webserver auf Anfragen. Ist die Variable nicht gesetzt, gilt '8090'.
+Description[en]=The UMC web server is listening on this port. If the variable is unset, '8090' applies.
 Type=int
-Categories=Management
+Categories=management-umc
 
 [umc/http/interface]
-Description[de]=Netzwerk-Interface, auf das der UMC-HTTP-Server reagieren soll (Vorgabe: 127.0.0.1)
-Description[en]=Network interface to be used by UMC HTTP server when listening (default: 127.0.0.1)
+Description[de]=Auf diesem Netzwerk-Interface wartet der UMC-Webserver auf Anfragen. Ist die Variable nicht gesetzt, gilt '127.0.0.1'.
+Description[en]=The UMC web server is listening on this network interface. If the variable is unset, '127.0.0.1' applies.
 Type=str
-Categories=Management
+Categories=management-umc
 
 [umc/http/session/timeout]
-Description[de]=Zeitraum in Sekunden, nachdem der Web-Sitzung veraltet [5 Minuten]
-Description[en]=Time period in seconds, after which the web session times out [5 minutes]
+Description[de]=Nach diesem Zeitraum in Sekunden wird die Browser-Sitzung automatisch geschlossen und eine Neuanmeldung ist notwendig. Ist die Variable nicht gesetzt, gilt 300, also fünf Minuten.
+Description[en]=After this time period in seconds the browser session is automatically closed an a renewed login is required. If the variable is unset, 300 applies (i.e. five minutes).
 Type=int
-Categories=Management
+Categories=management-umc
 
 [umc/server/upload/min_free_space]
-Description[de]=Legt die minimale Größe (in KB) an freiem Festplattenspeicher fest, die notwendig ist um Dateien hochladen zu können
-Description[en]=Sets the minimum size of free disk space (in kb) which must be available to upload files
+Description[de]=Legt die minimale Größe (in KB) an freiem Festplattenspeicher fest, die notwendig ist um Dateien hochladen zu können. Ist die Variable nicht gesetzt, gilt 51200.
+Description[en]=Sets the minimum size of free disk space (in kb) which must be available to upload files. If the variable is unset, 51200 applies.
 Type=int
-Categories=Management
+Categories=management-umc
