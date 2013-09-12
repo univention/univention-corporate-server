@@ -553,6 +553,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  A single sign on feature has been implemented for &ucsUMC;. The head line of UMC now provides a drop down for selecting other UCS systems. 
+		  The UMC of the selected UCS system will be opened in a new browser window (<ulink url="&ucsbug;24422">Bug 24422</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 			Fixed a design issue when trying to horizontally align a certain widget
 			class (<ulink url="&ucsbug;25389">Bug 25389</ulink>).
 		</simpara></listitem>
