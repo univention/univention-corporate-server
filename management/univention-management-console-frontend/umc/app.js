@@ -679,6 +679,9 @@ define([
 				'umc/web/favorites/default',
 				'umc/web/startupdialog',
 				'umc/web/max_host_entries',
+				'umc/web/sso/enabled',
+				'umc/web/sso/allow/http',
+				'umc/web/sso/newwindow',
 				'umc/http/session/timeout',
 				'ssl/validity/host',
 				'ssl/validity/root',
@@ -695,6 +698,9 @@ define([
 				lang.mixin(_ucr, res);
 				this._loadPiwik();
 				this._saveVersionStatus();
+				tools.status('umcWebSsoEnabled', _ucr['umc/web/sso/enabled']);
+				tools.status('umcWebSsoAllowHttp', _ucr['umc/web/sso/allow/http']);
+				tools.status('umcWebSsoNewwindow', _ucr['umc/web/sso/newwindow']);
 			}));
 		},
 
@@ -1049,8 +1055,7 @@ define([
 
 		_switchUMC: function(hostname) {
 			topic.publish('/umc/actions', 'host/switch');
-			var port = window.location.port ? ':' + window.location.port : '';
-			window.location.replace(window.location.protocol + '//' + hostname + port + window.location.pathname + window.location.search);
+			tools.openRemoteSession(hostname);
 		},
 
 		_setupOverviewPage: function() {

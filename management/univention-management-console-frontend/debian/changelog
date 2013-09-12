@@ -1,4 +1,10 @@
-univention-management-console-frontend (3.0.66-1.1) unstable; urgency=low
+univention-management-console-frontend (3.0.67-1) unstable; urgency=low
+
+  * Bug #24422: added single sign on feature in title bar of UMC
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 14 Aug 2013 14:16:44 +0200
+
+univention-management-console-frontend (3.0.66-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)
 
