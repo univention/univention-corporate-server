@@ -1,3 +1,10 @@
+univention-samba4 (3.0.13-1) unstable; urgency=low
+
+  * Bump join script version for 96univention-samba4 to 6 and append the
+    local DC to the group enterprise domain controllers (Bug #31572)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Sep 2013 09:24:24 +0200
+
 univention-samba4 (3.0.12-1) unstable; urgency=low
 
   * Set samba/max/protocol to SMB2 for new installations and to NT1 for

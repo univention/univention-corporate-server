@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=5
+VERSION=6
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -611,7 +611,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	fi
 
-	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
+	if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
 		## add server to Enterprise Domain Controllers group if it exists
 		if univention-ldapsearch -x sambaSID='S-1-5-9' cn | grep -q '^cn:'; then
 			# While Bug #28756 is not fixed, do not die
