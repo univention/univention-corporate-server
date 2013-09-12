@@ -1,72 +1,50 @@
 [ldap/server/type]
-Description[de]=Typ des LDAP-Servers
-Description[en]=Type of LDAP server
+Description[de]=Für UCS-LDAP-Server gibt es zwei Betriebsmodi, die mit dieser Variable konfiguriert werden: Der Server vom Typ 'master' nimmt schreibende Änderungen entgegen, 'slave' enthält eine Nur-Lese-Kopie. Diese Variable wird intern konfiguriert und sollte nicht angepasst werden.
+Description[en]=Two operational modes exist for UCS LDAP servers; these are configured by this variable: The server of the type 'master' accepts write changes and 'slave' only contains a readonly copy. This variable is configured internally and should not be modified.
 Type=str
 Categories=service-ldap
-
-[ldap/replog]
-Description[de]=Aktiviere/Deaktiviere das Schreiben der Replikations-Logdatei
-Description[en]=Enable/Disable writing of replication log file
-Type=bool
-Categories=service-ldap
+ReadOnly=yes
 
 [ldap/translogfile]
-Description[de]=Pfad zur LDAP-Transaktions-Logdatei
-Description[en]=Path to LDAP transaction log file
+Description[de]=Diese Variable enthält der Pfad zur LDAP-Transaktions-Logdatei. Diese Variable sollte nicht geändert werden.
+Description[en]=This variable contains the path to the LDAP transaction logfile. This variable should not be modified.
 Type=str
 Categories=service-ldap
+ReadOnly=yes
 
 [slapd/port]
-Description[de]=Ports des LDAP-Servers slapd, beispielsweise 389,7389
-Description[en]=Ports of LDAP server slapd, e.g. 389,7389
+Description[de]=Diese Variable konfiguriert die Ports, unter denen der LDAP-Server auf unverschlüsselte LDAP-Anfragen antwortet. Mehrere Ports müssen mit einem Komma getrennt werden. Ist die Variable nicht gesetzt, gilt 7389.
+Description[en]=This variable configures the ports used by the LDAP server for unencrypted LDAP requests. Multiple ports need to be separated with a comma. If the variable is unset, 7389 applies.
 Type=str
 Categories=service-ldap
 
 [slapd/port/ldaps]
-Description[de]=Ports des LDAP-Servers slapd für ldaps, beispielsweise 636,7636
-Description[en]=Ports of LDAP server slapd for ldaps, e.g. 636,7636
+Description[de]=Diese Variable konfiguriert die Ports, unter denen der LDAP-Server auf SSL-gesicherte LDAP-Anfragen antwortet. Mehrere Ports müssen mit einem Komma getrennt werden. Ist die Variable nicht gesetzt, gilt 7636.
+Description[en]=This variable configures the ports used by the LDAP server for SSL-secured LDAP requests. Multiple ports need to be separated with a comma. If the variable is unset, 7636 applies.
 Type=str
 Categories=service-ldap
 
-[ldap/page-results]
-Description[de]=Aktiviere/Deaktiviere das Aufteilen der Ergebnisse einer Suchoperation
-Description[en]=Enable/Disable pagination of data returned by search operations
-Type=bool
-Categories=service-ldap
-
 [ldap/sizelimit]
-Description[de]=Maximale Anzahl von Einträgen, die von einer Suchoperation zurückgegeben werden
-Description[en]=Maximum amount of entries returned by a search operation
+Description[de]=Die maximale Anzahl von Einträgen, die von einer LDAp-Suchoperation zurückgegeben werden.
+Description[en]=The maximum amount of entries returned by an LDAP search operation.
 Type=int
 Categories=service-ldap
 
 [ldap/threads]
-Description[de]=Anzahl der verwendeten Server-Threads
-Description[en]=Threads used by the LDAP server
+Description[de]=Die Anzahl der verwendeten Server-Threads im LDAP-Server.
+Description[en]=The amount of threads used by the LDAP server.
 Type=int
 Categories=service-ldap
 
 [ldap/maxopenfiles]
-Description[de]=Maximale Anzahl der gleichzeitig offenen Dateideskriptoren des slapd
-Description[en]=Maximum amount of simultaneously open file handles for slapd
+Description[de]=Die maximale Anzahl an Dateien, die der LDAP-Server öffnen kann. Wenn der Wert angepasst wird, müssen ggf. auch Unix-Prozesslimits angepasst werden.
+Description[en]=The maximum of files the LDAP server can open. If the value is adapted, Unix process limits might need to be expanded as well.
 Type=int
 Categories=service-ldap
 
-[ldap/schema/export]
-Description[de]=Exportiere die LDAP-Schemata beim LDAP-Start in das Webverzeichnis
-Description[en]=Export LDAP schemas to webroot at startup
-Type=str
-Categories=service-ldap
-
 [ldap/database/type]
-Description[de]=LDAP-Datenbank-Typ (bdb oder hdb)
-Description[en]=LDAP database type (bdb or hdb)
-Type=str
-Categories=service-ldap
-
-[ldap/database/bdb/*]
-Description[de]=Optionen des BDB LDAP-Backends
-Description[en]=Options for the bdb LDAP backend
+Description[de]=Diese Variable konfiguriert das Datenbank-Backend des LDAP-Servers ('bdb' oder 'hdb').
+Description[en]=This variable configures the database backend of the LDAP server ('bdb' or 'hdb').
 Type=str
 Categories=service-ldap
 
@@ -75,12 +53,6 @@ Description[de]=Häufigkeit in der die Daten aus der Transaction Log in die Date
 Description[en]=Frequency for checkpointing the database transaction log upon updating of the database
 Type=str
 Categories=service-ldap
-
-#[ldap/database/bdb/set_flags]
-#Description[de]=
-#Description[en]=
-#Type=str
-#Categories=service-ldap
 
 [ldap/database/bdb/set_cachesize]
 Description[de]=Anzahl der Einträge die vom BDB-Backend zwischengespeichert werden

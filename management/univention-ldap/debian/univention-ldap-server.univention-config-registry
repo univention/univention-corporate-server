@@ -43,9 +43,6 @@ Subfile: etc/ldap/slapd.conf.d/25univention-ldap-server_local-schema
 Type: subfile
 Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/30univention-ldap-server_head
-Variables: ldap/server/type
-Variables: ldap/master
-Variables: ldap/timeout
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf

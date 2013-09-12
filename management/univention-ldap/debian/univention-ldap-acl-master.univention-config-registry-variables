@@ -1,18 +1,17 @@
 [ldap/acl/user/password/change]
-Description[de]=Erlaube Benutzern ihr Passwort im Univention Directory Manager zu ändern
-Description[en]=Allow users to modify their password in Univention Directory Manager
+Description[de]=Standardmäßig können Benutzer ihr Passwort nicht über die Univention Management Console ändern. Wird diese Variable auf 'yes' gesetzt, werden LDAP-ACLs aktiviert, die benutzerinitiierte Passwortwechsel erlauben.
+Description[en]=As standard, users cannot change their password via the Univention Management Console. If this variable is set to 'yes', LDAP ACLs are activated to allow user-initiated password changes.
 Type=str
-Categories=LDAP
+Categories=service-ldap
 
 [ldap/acl/nestedgroups]
-Description[de]=Unterstützung von geschachtelten Gruppen in der ACL-Auswertung
-Description[en]=Support of nested groups in the ACL interpretation
-Type=str
-Categories=LDAP
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, werden Gruppen in Gruppen bei der Auswertung der LDAP-ACLs ausgewertet.
+Description[en]=If this option is activated or the variable unset, nested groups are evaluated during the processing of the LDAP ACLs.
+Type=bool
+Categories=service-ldap
 
 [ldap/debug/level]
-Description[de]=Debuglevel des LDAP-Servers
-Description[en]=Debuglevel of the LDAP server
+Description[de]=Diese Variable konfiguriert den Detailgrad der Logmeldungen des LDAP-Servers. Eine Beschreibung der möglichen Optionen findet sich in 'man slapd.conf' unter 'loglevel'.
+Description[en]=This variable configues the verbosity of the log messages of the LDAP server. A description of the possible options can be found in 'man slapd.conf' under 'loglevel'.
 Type=str
-Categories=LDAP
-
+Categories=service-ldap
