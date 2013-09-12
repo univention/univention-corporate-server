@@ -44,6 +44,10 @@ univention-config-registry set "umc/server/languages/en_US?English" \
 	"umc/server/languages/de_CH?Deutsch (Schweiz)" \
 	"umc/web/feedback/mail?feedback@univention.de" \
 	"umc/web/feedback/description?[UMC-Feedback] Traceback" \
-	"umc/web/favorites/default?udm:users/user,udm:groups/group,udm:computers/computer,appcenter,updater"
+	"umc/web/favorites/default?udm:users/user,udm:groups/group,udm:computers/computer,appcenter,updater" \
+	"umc/web/sso/enabled=yes" \
+	"umc/web/sso/allow/http=yes" \
+	"umc/web/sso/newwindow=yes" \
+	"umc/web/sso/timeout=15"
 
 exit 0
