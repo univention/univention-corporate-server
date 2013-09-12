@@ -531,6 +531,10 @@
 			Several issues regarding handling long DNs and DNs containing non-alphanumeric characters in <command>univention-run-join-scripts</command> have been fixed (<ulink url="&ucsbug;32005">Bug 32005</ulink>).
 		  </simpara>
 		</listitem>
+		<listitem><simpara>
+			<command>univention-server-join</command> now adds /usr/sbin and /sbin to the shell PATH 
+			environment variable before importing the univention shell libs (<ulink url="&ucsbug;31281">Bug 31281</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
