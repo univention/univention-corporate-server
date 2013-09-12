@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.25-3) unstable; urgency=low
+
+  * Add support for returning syntax exception from modify
+  * raise syntax exception from modify in settings/ldap* and settings/udm*
+    (Bug #32403, Bug #32406, Bug #32409, Bug #32411, Bug #32412)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Sep 2013 15:54:55 +0200
+
 univention-directory-manager-modules (9.0.25-2) unstable; urgency=low
 
   * Fix "inconsistent use of tabs and spaces in indentation" (Bug #32565)

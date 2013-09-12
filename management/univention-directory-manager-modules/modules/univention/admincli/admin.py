@@ -989,6 +989,9 @@ def _doit(arglist):
 					except univention.admin.uexceptions.circularGroupDependency, e:
 						out.append('E: circular group dependency detected: %s' % e)
 						return out + ["OPERATION FAILED"]
+					except univention.admin.uexceptions.valueInvalidSyntax, e:
+						out.append('E: Invalid Syntax: %s' % e)
+						return out + ["OPERATION FAILED"]
 
 			if extraOC or extraAttributes:
 				if extraOC:
