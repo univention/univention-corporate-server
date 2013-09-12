@@ -1,3 +1,10 @@
+univention-lib (3.0.11-1) unstable; urgency=low
+
+  * added python/urllib2_ssl.py for secure HTTPS connections with
+    verified certificate chain (Bug #24422)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Aug 2013 14:31:21 +0200
+
 univention-lib (3.0.10-1) unstable; urgency=low
 
   * except ImportError in __init__.py (Bug #31281)

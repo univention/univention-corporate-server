@@ -25,3 +25,8 @@ You should have received a copy of the GNU Affero General Public
 License with the Debian GNU/Linux or Univention distribution in file
 /usr/share/common-licenses/AGPL-3; if not, see
 <http://www.gnu.org/licenses/>.
+
+
+Parts of the content of modules/urllib2_ssl.py have been copied from
+Python 3.3.2 and are kept under the following license:
+http://docs.python.org/3/license.html

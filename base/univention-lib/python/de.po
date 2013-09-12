@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2012-10-10 10:30+0200\n"
+"POT-Creation-Date: 2013-08-01 15:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,35 +12,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: python/package_manager.py:541
+#: python/package_manager.py:681
 msgid "Autoremove failed"
 msgstr "Deinstallation unbenutzter Pakete fehlgeschlagen"
 
-#: python/package_manager.py:535
+#: python/package_manager.py:675
 #, python-format
 msgid "Deleting unneeded %s"
 msgstr "Deinstalliere unbenutztes Paket %s"
 
-#: python/package_manager.py:482
-msgid "Untrusted origin"
-msgstr "Nicht vertrauenswürdige Quelle"
-
-#: python/package_manager.py:509
+#: python/package_manager.py:650
 msgid "Failed to install"
 msgstr "Installation fehlgeschlagen"
 
-#: python/package_manager.py:227 python/package_manager.py:359
+#: python/package_manager.py:285 python/package_manager.py:436
 msgid "Failed to lock"
 msgstr "Sperren des Systems fehlgeschlagen"
 
-#: python/package_manager.py:515
+#: python/package_manager.py:655
 msgid "Failed to uninstall"
 msgstr "Deinstallation fehlgeschlagen"
 
-#: python/package_manager.py:356 python/package_manager.py:496
+#: python/package_manager.py:433 python/package_manager.py:638
+#, python-format
 msgid "Fetch failed (%s)"
 msgstr "Herunterladen fehlgeschlagen (%s)"
 
-#: python/package_manager.py:382
+#: python/package_manager.py:462
 msgid "No such package"
 msgstr "Paket existiert nicht"
+
+#: python/package_manager.py:566
+msgid "Untrusted origin"
+msgstr "Nicht vertrauenswürdige Quelle"
