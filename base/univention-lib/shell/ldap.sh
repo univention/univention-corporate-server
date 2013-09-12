@@ -250,12 +250,16 @@ ucs_registerExtensionObject () {
 		local SH_FUNCNAME
 		SH_FUNCNAME=ucs_registerExtensionObject
 	fi
+	if [ -z "$ucs_registerExtensionObject_container_name" ]; then
+		echo "ERROR: shell variable ucs_registerExtensionObject_container_name not set in $SH_FUNCNAME"
+		return 2
+	fi
 	if [ -z "$ucs_registerExtensionObject_objecttype" ]; then
 		echo "ERROR: shell variable ucs_registerExtensionObject_objecttype not set in $SH_FUNCNAME"
 		return 2
 	fi
-	if [ -z "$ucs_registerExtensionObject_container_name" ]; then
-		echo "ERROR: shell variable ucs_registerExtensionObject_container_name not set in $SH_FUNCNAME"
+	if [ -z "$ucs_registerExtensionObject_flag_attribute" ]; then
+		echo "ERROR: shell variable ucs_registerExtensionObject_flag_attribute not set in $SH_FUNCNAME"
 		return 2
 	fi
 
@@ -471,7 +475,7 @@ ucs_registerExtensionObject () {
 	echo -n "Waiting up to $timeout seconds for activation of the extension object: "
 	local t t0
 	t0=$(date +%s)
-	while ! univention-ldapsearch -b "$object_dn" -s base "(&(cn=$objectname)(univentionUDMModuleActive=TRUE))" | grep -q '^dn: '
+	while ! univention-ldapsearch -b "$object_dn" -s base "(&(cn=$objectname)($ucs_registerExtensionObject_flag_attribute=TRUE))" | grep -q '^dn: '
 	do
 			t=$(date +%s)
 			if [ $(($t - $t0)) -gt "$timeout" ]; then
@@ -609,8 +613,9 @@ ucs_registerLDAPSchema () {
 	local ucs_registerExtensionObject_objecttype
 	local ucs_registerExtensionObject_container_name
 	ucs_registerExtensionObject_suffix=".schema"
-	ucs_registerExtensionObject_objecttype="settings/ldapschema"
 	ucs_registerExtensionObject_container_name="ldapschema"
+	ucs_registerExtensionObject_objecttype="settings/ldapschema"
+	ucs_registerExtensionObject_flag_attribute="univentionLDAPSchemaActive"
 
 	ucs_registerExtensionObject "$@"
 }
@@ -639,8 +644,9 @@ ucs_registerLDAPACL () {
 	local ucs_registerExtensionObject_objecttype
 	local ucs_registerExtensionObject_container_name
 	ucs_registerExtensionObject_suffix=".acl"
-	ucs_registerExtensionObject_objecttype="settings/ldapacl"
 	ucs_registerExtensionObject_container_name="ldapacl"
+	ucs_registerExtensionObject_objecttype="settings/ldapacl"
+	ucs_registerExtensionObject_flag_attribute="univentionLDAPACLActive"
 
 	ucs_registerExtensionObject "$@"
 }
@@ -669,8 +675,9 @@ ucs_registerUDMModule () {
 	local ucs_registerExtensionObject_objecttype
 	local ucs_registerExtensionObject_container_name
 	ucs_registerExtensionObject_suffix=".py"
-	ucs_registerExtensionObject_objecttype="settings/udm_module"
 	ucs_registerExtensionObject_container_name="udm_module"
+	ucs_registerExtensionObject_objecttype="settings/udm_module"
+	ucs_registerExtensionObject_flag_attribute="univentionUDMModuleActive"
 
 	## Pre-process arguments
 	local filename
@@ -727,8 +734,9 @@ ucs_registerUDMHook () {
 	local ucs_registerExtensionObject_objecttype
 	local ucs_registerExtensionObject_container_name
 	ucs_registerExtensionObject_suffix=".py"
-	ucs_registerExtensionObject_objecttype="settings/udm_hook"
 	ucs_registerExtensionObject_container_name="udm_hook"
+	ucs_registerExtensionObject_objecttype="settings/udm_hook"
+	ucs_registerExtensionObject_flag_attribute="univentionUDMHookActive"
 
 	ucs_registerExtensionObject "$@"
 	rc=$?
@@ -766,8 +774,9 @@ ucs_registerUDMSyntax () {
 	local ucs_registerExtensionObject_objecttype
 	local ucs_registerExtensionObject_container_name
 	ucs_registerExtensionObject_suffix=".py"
-	ucs_registerExtensionObject_objecttype="settings/udm_syntax"
 	ucs_registerExtensionObject_container_name="udm_syntax"
+	ucs_registerExtensionObject_objecttype="settings/udm_syntax"
+	ucs_registerExtensionObject_flag_attribute="univentionUDMSyntaxActive"
 
 	ucs_registerExtensionObject "$@"
 	rc=$?

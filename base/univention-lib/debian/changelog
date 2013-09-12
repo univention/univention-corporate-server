@@ -1,3 +1,10 @@
+univention-lib (3.0.12-1) unstable; urgency=low
+
+  * Check the right activation attribute in ucs_register*
+    (Bug #26785, Bug #32392, Bug #32401, Bug #32404)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Sep 2013 16:15:08 +0200
+
 univention-lib (3.0.11-1) unstable; urgency=low
 
   * added python/urllib2_ssl.py for secure HTTPS connections with
