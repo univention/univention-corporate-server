@@ -482,17 +482,17 @@ def detect_interfaces():
 
 	dirnames = [dirname for dirname in os.listdir(PATH_SYS_CLASS_NET) if os.path.isdir(os.path.join(PATH_SYS_CLASS_NET, dirname))]
 	for dirname in dirnames:
+		# filter out lo, etc. interfaces
+		if open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'type'),'r').read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
+			continue
+		# filter out bridge, bond devices
+		if any(os.path.exists(os.path.join(PATH_SYS_CLASS_NET, dirname, path)) for path in ('bridge', 'bonding')):
+			continue
+		# filter out vlan devices
+		if '.' in dirname:
+			continue
 		mac = None
 		try:
-			# filter out lo, etc. interfaces
-			if open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'type'),'r').read().strip() not in ('1', '2', '3', '4', '5', '6', '7', '8', '15', '19'):
-				continue
-			# filter out bridge, bond devices
-			if any(os.path.exists(os.path.join(PATH_SYS_CLASS_NET, path)) for path in ('bridge', 'bonding')):
-				continue
-			# filter out vlan devices
-			if '.' in dirname:
-				continue
 			# try to read mac address
 			mac = open(os.path.join(PATH_SYS_CLASS_NET, dirname, 'address'),'r').read().strip()
 		except (OSError, IOError):

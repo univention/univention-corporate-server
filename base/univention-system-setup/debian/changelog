@@ -1,3 +1,9 @@
+univention-system-setup (7.0.40-1) unstable; urgency=low
+
+  * Bug #30816: fix detection of non physical interfaces
+
+ -- Florian Best <best@univention.de>  Thu, 12 Sep 2013 08:28:02 +0200
+
 univention-system-setup (7.0.39-1) unstable; urgency=low
 
   * Remove software page. Only shown in appliance mode (Bug #32471)
