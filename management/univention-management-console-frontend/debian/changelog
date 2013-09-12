@@ -1,6 +1,8 @@
 univention-management-console-frontend (3.0.67-1) unstable; urgency=low
 
   * Bug #24422: added single sign on feature in title bar of UMC
+  * Bug #24422: web server: create a loginToken with limited lifetime for
+                every successful login attempt
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 14 Aug 2013 14:16:44 +0200
 
