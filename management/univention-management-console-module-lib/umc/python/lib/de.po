@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-lib\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-07-21 05:19+0200\n"
-"PO-Revision-Date: \n"
+"POT-Creation-Date: 2013-08-14 14:05+0200\n"
+"PO-Revision-Date: 2013-08-14 14:09+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -12,18 +12,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/lib/server.py:92
+#: umc/python/lib/server.py:100
 msgid "System could not reboot"
 msgstr "System konnte nicht neustarten"
 
-#: umc/python/lib/server.py:104
+#: umc/python/lib/server.py:112
 msgid "System could not shutdown"
 msgstr "System konnte nicht herunterfahren"
 
-#: umc/python/lib/server.py:87
+#: umc/python/lib/server.py:95
 msgid "The system will now be restarted"
 msgstr "Das System wird nun neu gestartet"
 
-#: umc/python/lib/server.py:99
+#: umc/python/lib/server.py:107
 msgid "The system will now be shut down"
 msgstr "Das System wird nun heruntergefahren"
+
+#: umc/python/lib/server.py:180
+#, python-format
+msgid "certificate error when connecting to %r: %s"
+msgstr "Zertifikatsfehler während des Verbindungsaufbaus mit %r: %s"
+
+#: umc/python/lib/server.py:192
+#, python-format
+msgid "failed to get login token for host %r"
+msgstr "Login-Token für Rechner %r konnte nicht bezogen werden."
+
+#: umc/python/lib/server.py:144
+msgid "given hostname seems to contain invalid characters"
+msgstr "Der angegebene Rechnername enthält ungültige Zeichen."
+
+#: umc/python/lib/server.py:149
+msgid "no credentials available"
+msgstr "Benutzeranmeldedaten sind nicht verfügbar"
+
+#: umc/python/lib/server.py:137
+msgid "option \"host\" has not been specified"
+msgstr "Die Option \"host\" wurde nicht angegeben."
+
+#: umc/python/lib/server.py:177 umc/python/lib/server.py:183
+#, python-format
+msgid "unable to connect to %r: %s"
+msgstr "Verbindung zu %r fehlgeschlagen: %s"

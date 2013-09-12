@@ -1,3 +1,9 @@
+univention-management-console-module-lib (3.0.5-1) unstable; urgency=low
+
+  * Bug #24422: added UMCP command to create a remote UMC session for single sign on
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 01 Aug 2013 16:54:52 +0200
+
 univention-management-console-module-lib (3.0.4-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition
