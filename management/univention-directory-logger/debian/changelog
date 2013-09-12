@@ -1,3 +1,11 @@
+univention-directory-logger (5.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Add UCR variable descriptions (Bug #30946)
+  * Convert changelog to UTF-8
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 12 Sep 2013 15:06:10 +0200
+
 univention-directory-logger (4.0.3-3) unstable; urgency=low
 
   * workaround for PEP 366 (Bug #23984)
@@ -53,7 +61,7 @@ univention-directory-logger (2.0.0-0) unstable; urgency=low
 
   * bump version for UCS 2.3
 
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Wed, 10 Jun 2009 08:20:32 +0200
 
 univention-directory-logger (1.0.0-1) unstable; urgency=low
 
@@ -133,7 +141,7 @@ univention-directory-logger (0.3-4) unstable; urgency=low
 
 univention-directory-logger (0.3-3) unstable; urgency=low
 
-  * Paketierung: Anpassung der Depends-Versionsnummer f�r openldap2.2
+  * Paketierung: Anpassung der Depends-Versionsnummer für openldap2.2
 
  -- Arvid Requate <requate@univention.de>  Tue, 18 Dec 2007 14:46:07 +0100
 

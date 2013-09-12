@@ -54,12 +54,9 @@ filter='(objectClass=*)' # log all objects by default
 attributes=[]
 
 logname='/var/log/univention/directory-logger.log'
-registrySection='ldap/logging'
-excludeKeyPattern=re.compile('%s/exclude\d+' % registrySection)
-dellogKey='%s/dellogdir' % registrySection
+excludeKeyPattern=re.compile('ldap/logging/exclude\d+')
 cachename='/var/lib/univention-directory-logger/cache'
 notifier_id='/var/lib/univention-directory-listener/notifier_id'
-#notifier_id='/var/lib/univention-directory-listener/notifier_id'
 
 headerfmt='''START\nOld Hash: %s\nDN: %s\nID: %s\nModifier: %s\nTimestamp: %s\nAction: %s\n'''
 newtag='\nNew values:\n'
@@ -115,7 +112,7 @@ def filterOutUnchangedAttributes(old_copy, new_copy):
 			new_copy[key].remove(value)
 
 def process_dellog( dn ):
-	dellog = listener.baseConfig[dellogKey]
+	dellog = listener.baseConfig['ldap/logging/dellogdir']
 	lockfilename = dellog + '.lock'
 	lock = open(lockfilename, "w")
 	fcntl.flock( lock, fcntl.LOCK_EX )
@@ -176,7 +173,7 @@ def handler(dn, new, old):
 	new_copy = copy.deepcopy(new)
 	old_copy = copy.deepcopy(old)
 
-	if listener.baseConfig[registrySection] != 'yes':
+	if listener.baseConfig['ldap/logging'] != 'yes':
 		return
 
 	# check for exclusion
