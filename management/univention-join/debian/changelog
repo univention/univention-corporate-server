@@ -1,3 +1,10 @@
+univention-join (6.0.6-1) unstable; urgency=low
+
+  * set PATH in univention-server-join before importing
+    shell libs (Bug #31281)
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Sep 2013 10:43:38 +0200
+
 univention-join (6.0.5-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition
