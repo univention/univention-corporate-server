@@ -127,13 +127,21 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 				else:
 					filtered_location_list.append(location)
 			if target_location:
-				print "Removing location '%s' from dns/srv_record %s via UDM" % (target_location, srv_record_name)
-				obj["location"] = filtered_location_list
-				try:
-					obj.modify()
-				except univention.admin.uexceptions.ldapError, e:
-					print >>sys.stderr, "Removal of location '%s' from dns/srv_record %s via UDM failed." % (target_location, srv_record_name)
-					sys.exit(1)
+				if filtered_location_list:
+					print "Removing location '%s' from dns/srv_record %s via UDM" % (target_location, srv_record_name)
+					obj["location"] = filtered_location_list
+					try:
+						obj.modify()
+					except univention.admin.uexceptions.ldapError, e:
+						print >>sys.stderr, "Removal of location '%s' from dns/srv_record %s via UDM failed: %s" % (target_location, srv_record_name, e)
+						sys.exit(1)
+				else:
+					print "Removing dns/srv_record %s via UDM" % (target_location, srv_record_name)
+					try:
+						obj.delete()
+					except univention.admin.uexceptions.ldapError, e:
+						print >>sys.stderr, "Removal of dns/srv_record %s via UDM failed: %s" % (srv_record_name, e)
+						sys.exit(1)
 
 	## We would need to check the IP address before removing gc._msdcs. Probably that's a bad idea anyway..
 	# module = univention.admin.modules.get("dns/host_record")

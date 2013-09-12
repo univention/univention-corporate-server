@@ -1,3 +1,10 @@
+univention-samba4 (3.0.14-1) unstable; urgency=low
+
+  * Delete DNS SRC records in purge_s4computer if the record would
+    point nowhere after removal of the DC (Bug #30763)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Sep 2013 16:52:13 +0200
+
 univention-samba4 (3.0.13-1) unstable; urgency=low
 
   * Bump join script version for 96univention-samba4 to 6 and append the
