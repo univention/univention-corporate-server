@@ -284,7 +284,7 @@ def handler(dn, new, old):
 				return
 
 			if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
-				old_version = old.get('univentionOwnedByPackageVersion', [None])[0]
+				old_version = old.get('univentionOwnedByPackageVersion', ['0'])[0]
 				rc = apt.apt_pkg.version_compare(new_version, old_version)
 				if rc != 1:
 					if not rc in (1, 0, -1):
