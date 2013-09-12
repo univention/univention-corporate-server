@@ -689,7 +689,7 @@ ucs_registerUDMModule () {
 
 	## Determine UDM module name
 	local module_name
-	module_name=$(python -c "import imp; print imp.load_source('dummy', '$filename').module")
+	module_name=$(python -Bc "import imp; print imp.load_source('dummy', '$filename').module")
 	if [ -z "$module_name" ]; then
 		echo "ERROR: python variable 'module' undefined in given file"
 	fi
