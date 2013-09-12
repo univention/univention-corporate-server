@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.27-1) unstable; urgency=low
+
+  * simplified code changes from last version (Bug #30981)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 12 Sep 2013 17:13:29 +0200
+
 univention-directory-manager-modules (9.0.26-1) unstable; urgency=low
 
   * use the same hash algorithm to store passwords in history as for

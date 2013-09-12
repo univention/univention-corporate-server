@@ -39,20 +39,10 @@ configRegistry.load()
 
 def crypt(password, add_salt = True):
 	"""return crypt hash"""
+	password_hash = None
 	hashing_method = configRegistry.get('password/hashing/method', 'sha-512').upper()
-	if not add_salt:
-		import hashlib
-		hash_algorithm = hashlib.new({"MD5": "md5",
-									 "SHA256": "sha256",
-									 "SHA-256": "sha256",
-									 "SHA512": "sha512",
-									 "SHA-512": "sha512"
-									}.get(hashing_method, "sha512"))
-		hash_algorithm.update(password)
-		return hash_algorithm.hexdigest()
 
-
-
+	if add_salt:
 		valid = ['.', '/', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
 			'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
 			'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -74,8 +64,22 @@ def crypt(password, add_salt = True):
 					 'SHA-256': '5',
 					 'SHA512': '6',
 					 'SHA-512': '6',
-					 }.get(hasing_method, 6)
-		return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
+					 }.get(hashing_method, 6)
+		password_hash = crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
+
+	else:
+		import hashlib
+		hash_algorithm = hashlib.new({"MD5": "md5",
+									 "SHA256": "sha256",
+									 "SHA-256": "sha256",
+									 "SHA512": "sha512",
+									 "SHA-512": "sha512"
+									}.get(hashing_method, "sha512"))
+		hash_algorithm.update(password)
+		password_hash = hash_algorithm.hexdigest()
+
+
+	return password_hash
 
 
 
