@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (3.0.30-7) unstable; urgency=low
+
+  * Create container cn=apps,cn=univention in joinscript
+  * Register LDAP ACL allowing creation of appcenter/app objects
+    by DCs and memberservers (Bug #32414)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Sep 2013 13:44:48 +0200
+
 univention-management-console-module-appcenter (3.0.30-6) unstable; urgency=low
 
   * Fix typo in univention-app.schema (Bug #32414)

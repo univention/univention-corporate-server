@@ -51,7 +51,12 @@ fi
 umc_operation_create "appcenter-all" "Manage Software packages" "" "appcenter/*" "lib/server/*"
 umc_policy_append "default-umc-all" "appcenter-all"
 
-ucs_registerLDAPSchema /usr/share/pyshared/univention/admin/handlers/appcenter/univention-app.schema "$@" || die
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--set name="apps" \
+	--position "cn=univention,$ldap_base"
+
+ucs_registerLDAPSchema /usr/share/univention-management-console-module-appcenter/univention-app.schema "$@" || die
+ucs_registerLDAPACL /usr/share/univention-management-console-module-appcenter/66univention-appcenter_app.acl "$@" || die
 ucs_registerUDMModule /usr/share/pyshared/univention/admin/handlers/appcenter/app.py "$@" || die
 
 joinscript_save_current_version
