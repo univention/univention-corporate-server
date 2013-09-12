@@ -1,17 +1,17 @@
 [directory/reports/logo]
-Description[de]=Pfad zu einer Bilddatei, die in PDF-Report als Logo eingebundn wird
-Description[en]=Path to a picture file, which is included in PDF reports as a logo
-Type=int
-Categories=management-udm
+Description[de]=Das Logo, dass in der Kopfzeile jeder Seite eines PDF-Reports angezeigt wird kannersetzt werden. Hierzu muss die Variable den Namen einer Bilddatei enthalten. Dabei können gängigen Bildformate wie JPEG, PNG oder GIF verwendet werden. Das Bild wird automatisch auf eine feste Breite von 5.0 cm angepasst.
+Description[en]=It is possible to replace the logo that appears in the header of each page of a PDF report. To do so, the value of the variable must be set to the name of an image file. The usual image formats such as JPEG, PNG and GIF can be used. The image is automatically adapted to a fixed width of 5.0 cm. 
+Type=str
+Categories=management-umc
 
 [directory/reports/templates/csv/.*]
-Description[de]=Beschreibung einer Vorlage für einen CSV-Report.
-Description[en]=Desciption of a template for a CSV report
+Description[de]=Mit einer Variable der Form directory/reports/templates/csv/.* kann ein neuer CSV-Report definiert werden. Weiterführende Hinweise finden sich in der 'Extended domain services documentation' unter http://docs.univention.de
+Description[en]=With a variable in the form directory/reports/templates/csv/.* a new CSV report can be defined. Additional information can be found in the 'Extended domain services documentation' at http://docs.univention.de
 Type=str
-Categories=management-udm
+Categories=management-umc
 
 [directory/reports/templates/pdf/.*]
-Description[de]=Beschreibung einer Vorlage für einen PDF-Report
-Description[en]=Desciption of a template for a PDF report
+Description[de]=Mit einer Variable der Form directory/reports/templates/pdf/.* kann ein neuer PDF-Report definiert werden. Weiterführende Hinweise finden sich in der 'Extended domain services documentation' unter http://docs.univention.de
+Description[en]=With a variable in the form directory/reports/templates/pdf/.* a new PDF report can be defined. Additional information can be found in the 'Extended domain services documentation' at http://docs.univention.de
 Type=str
-Categories=management-udm
+Categories=management-umc

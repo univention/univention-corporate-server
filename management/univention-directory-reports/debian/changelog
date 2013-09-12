@@ -1,3 +1,10 @@
+univention-directory-reports (6.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 12 Sep 2013 13:26:20 +0200
+
 univention-directory-reports (5.0.0-1) unstable; urgency=low
 
   * UCS-3.1 version bump.
