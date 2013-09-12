@@ -43,6 +43,7 @@ import sys
 import tempfile
 import time
 import threading
+import traceback
 import uuid
 import datetime
 
@@ -63,6 +64,21 @@ except TypeError, ValueError:
 	CORE.process( 'Failed to read session timeout from UCR variable umc/http/session/timeout. Using default of 300 seconds' )
 	_session_timeout = 300
 _thread_http = None
+
+
+def logExceptions(f):
+	def new_f(*args, **kwargs):
+		try:
+			return f(*args, **kwargs)
+		except (cherrypy.HTTPError, cherrypy.HTTPRedirect):
+			# ignore common cherrypy exceptions
+			raise
+		except Exception, ex:
+			CORE.error('Traceback in %s(%r, %r):\n%s' % (f.__name__, args, kwargs, traceback.format_exc()))
+			raise
+	new_f.__name__ = f.__name__
+	return new_f
+
 
 class SessionClient(object):
 	def __init__( self, timeout = 300, ip = None, cookie = False ):
@@ -180,6 +196,7 @@ class UMCP_Dispatcher( object ):
 	_queue_send = Queue.Queue()
 
 	@classmethod
+	@logExceptions
 	def check_queue(cls):
 		while True:
 			try:
@@ -350,6 +367,7 @@ class CPgeneric(object):
 		"""get the IP address of client by last entry in X-FORWARDED-FOR header"""
 		return cherrypy.request.headers.get('X-FORWARDED-FOR', cherrypy.request.remote.ip).rsplit(', ', 1).pop()
 
+	@logExceptions
 	def get_session_id(self):
 		"""get the current session ID, either set via headers or cookie."""
 		# check for a valid session key
@@ -365,6 +383,7 @@ class CPgeneric(object):
 		self._log(99, 'sessionid="%s"' % (sessionid))
 		return sessionid
 
+	@logExceptions
 	def load_json(self, body):
 		try:
 			json = simplejson.loads(body)
@@ -376,6 +395,7 @@ class CPgeneric(object):
 		return json
 
 	@cherrypy.expose
+	@logExceptions
 	def default( self, *path, **kwargs ):
 		self._log('info', 'got new request')
 
@@ -400,6 +420,7 @@ class CPgeneric(object):
 
 		return self.get_response(sessionid, path, args)
 
+	@logExceptions
 	def get_response(self, sessionid, path, args):
 		# create new UMCP request
 		req = self.get_request( '/'.join(path), args )
@@ -601,6 +622,7 @@ class CPRoot(object):
 		"""
 		raise cherrypy.HTTPError(httplib.NOT_FOUND)
 
+@logExceptions
 def run_cherrypy():
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
 	# 'server.environment': 'production',
