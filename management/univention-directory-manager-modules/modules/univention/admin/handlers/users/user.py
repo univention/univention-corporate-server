@@ -2037,13 +2037,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			#read policy
 			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
 			if self['overridePWHistory'] != '1':
+				new_password_hash = univention.admin.password.crypt(self['password'], add_salt = False)
 				#TODO: if checkbox "override pwhistory" is not set
-				if self.__passwordInHistory(self['password'], pwhistory):
+				if pwhistory.find(new_password_hash) != -1:
 					raise univention.admin.uexceptions.pwalreadyused
-					return []
 				if pwhistoryPolicy and pwhistoryPolicy.has_key('length') and pwhistoryPolicy['length']:
 					pwhlen = int(pwhistoryPolicy['length'])
-					newPWHistory = self.__getPWHistory(self['password'], pwhistory, pwhlen)
+					newPWHistory = self.__getPWHistory(new_password_hash, pwhistory, pwhlen)
 					ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
 			if pwhistoryPolicy != None and pwhistoryPolicy['pwLength'] != None and pwhistoryPolicy['pwLength'] != 0 and self['overridePWLength'] != '1':
 					if len(self['password']) < int(pwhistoryPolicy['pwLength']):
@@ -2519,20 +2519,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				self.move_subelements(tmpdn, olddn, subelements, ignore_license)
 				raise
 
-	def __passwordInHistory(self, newpassword, pwhistory):
-		# first calc hash for the new pw
-		s = hashlib.sha1( newpassword.encode( 'utf-8' ) )
-		newpwhash = string.upper(s.hexdigest())
-		if not string.find(pwhistory, newpwhash) < 0:
-			# password has already been used.
-			return 1
-		return 0
-
-	def __getPWHistory(self, newpassword, pwhistory, pwhlen):
-		# first calc hash for the new pw
-		s = hashlib.sha1( newpassword.encode( 'utf-8' ) )
-		newpwhash = string.upper(s.hexdigest())
-
+	def __getPWHistory(self, newpwhash, pwhistory, pwhlen):
 		# split the history
 		if len(string.strip(pwhistory)):
 			pwlist = string.split(pwhistory, ' ')

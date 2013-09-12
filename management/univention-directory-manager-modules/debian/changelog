@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.26-1) unstable; urgency=low
+
+  * use the same hash algorithm to store passwords in history as for
+    encrypting the current password (Bug #30981)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 12 Sep 2013 16:58:40 +0200
+
 univention-directory-manager-modules (9.0.25-3) unstable; urgency=low
 
   * Add support for returning syntax exception from modify
