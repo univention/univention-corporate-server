@@ -1007,6 +1007,12 @@
 			An mistake in the <emphasis>jpegPhoto</emphasis> UDM syntax has been corrected which lead to invalid data getting stored in the LDAP with some jpeg Photos.
 			(<ulink url="&ucsbug;30342">Bug 30342</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			Passwords will be stored in the password history using the hashing algorithm defined in &ucsUCRV; <envar>password/hashing/method</envar> (which is already used as hashing method to create the salted hash of the current password) instead of allways using <emphasis>SHA-1</emphasis>
+			(<ulink url="&ucsbug;30981">Bug 30981</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
