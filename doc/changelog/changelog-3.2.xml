@@ -2219,6 +2219,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32394">Bug 32394</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  During the update to UCS 3.2 the local Samba 4 DC is added to the group Enterprise Domain
+		  Controllers
+		  (<ulink url="&ucsbug;31572">Bug 31572</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
