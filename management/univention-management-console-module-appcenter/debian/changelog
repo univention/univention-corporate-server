@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.30-8) unstable; urgency=low
+
+  * Fix python syntax in 66univention-appcenter_app.acl (Bug #32414)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Sep 2013 15:56:30 +0200
+
 univention-management-console-module-appcenter (3.0.30-7) unstable; urgency=low
 
   * Create container cn=apps,cn=univention in joinscript
