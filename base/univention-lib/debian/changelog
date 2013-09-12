@@ -1,3 +1,9 @@
+univention-lib (3.0.10-1) unstable; urgency=low
+
+  * except ImportError in __init__.py (Bug #31281)
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Sep 2013 10:39:56 +0200
+
 univention-lib (3.0.9-16) unstable; urgency=low
 
   * Make ucs_registerUDM* wait on DCs up to 60 seconds for the python link
