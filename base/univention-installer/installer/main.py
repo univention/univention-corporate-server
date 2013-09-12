@@ -693,6 +693,7 @@ try:
 				elif res == 1:
 					while 1:
 						debug('waiting 2')
+						curses.doupdate()
 						c = stdscr.getch()
 						if c == 276: # F12 -> next
 							installer.obj[installer.current].interactive=True

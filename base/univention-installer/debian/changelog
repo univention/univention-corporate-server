@@ -1,3 +1,9 @@
+univention-installer (9.0.22-1) unstable; urgency=low
+
+  * fixed profile base installation (Bug #31051) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 12 Sep 2013 14:30:30 +0200
+
 univention-installer (9.0.21-1) unstable; urgency=low
 
   * Bug #31705: use only first harddisk for auto partitioning
