@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: collecting system information
 #
-# Copyright 2011-2012 Univention GmbH
+# Copyright 2011-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -133,10 +133,8 @@ class Instance(umcm.Base):
 
 	def get_mail_info(self, request):
 		ucr.load()
-		ADDRESS_KEY = 'umc/sysinfo/mail/address'
-		SUBJECT_KEY = 'umc/sysinfo/mail/subject'
-		ADDRESS_VALUE = ucr.get(ADDRESS_KEY, 'feedback@univention.de')
-		SUBJECT_VALUE = ucr.get(SUBJECT_KEY, 'Univention System Info')
+		ADDRESS_VALUE = ucr.get('umc/sysinfo/mail/address', 'feedback@univention.de')
+		SUBJECT_VALUE = ucr.get('umc/sysinfo/mail/subject', 'Univention System Info')
 
 		url = urlunparse(('mailto', '', ADDRESS_VALUE, '',
 		                  urlencode({'subject': SUBJECT_VALUE, }), ''))
@@ -146,10 +144,8 @@ class Instance(umcm.Base):
 		self.finished(request.id, result)
 
 	def upload_archive(self, request):
-		UPLOAD_KEY = 'umc/sysinfo/upload/url'
-		FALLBACK_UPLOAD_URL = 'https://forge.univention.de/cgi-bin/system-info-upload.py'
 		ucr.load()
-		url = ucr.get(UPLOAD_KEY, FALLBACK_UPLOAD_URL)
+		url = ucr.get('umc/sysinfo/upload/url', 'https://forge.univention.de/cgi-bin/system-info-upload.py')
 
 		SYSINFO_PATH = '/var/www/univention-management-console/system-info/'
 		fd = open(os.path.join(SYSINFO_PATH, request.options['archive']), 'r')
