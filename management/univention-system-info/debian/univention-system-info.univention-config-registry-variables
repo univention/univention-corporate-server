@@ -1,0 +1,17 @@
+[umc/sysinfo/mail/address]
+Description[de]=Univention System Info stellt wichtige Systemdaten zusammen, die dann an eine Support-Email-Adresse geschickt werden können. Diese Variable konfiguriert die Adresse, an die die Daten geschickt werden. Ist die Variable nicht gesetzt, gilt feedback@univention.de.
+Description[en]=Univention System Info gathers system information data, which can then be sent to a support email address. This variable configures the email address the data is sent to. If the variable is unset, feedback@univention.de applies.
+Type=str
+Categories=system-base
+
+[umc/sysinfo/mail/subject]
+Description[de]=Univention System Info stellt wichtige Systemdaten zusammen, die dann an eine Support-Email-Adresse geschickt werden können. Diese Variable konfiguriert das Betreff der E-Mail an den Support. Ist die Variable nicht gesetzt, gilt 'Univention System Info'.
+Description[en]=Univention System Info gathers system information data, which can then be sent to a support email address. This variable configures the subject of the mail. If the variable is unset, 'Univention System Info' applies.
+Type=str
+Categories=system-base
+
+[umc/sysinfo/upload/url]
+Description[de]=Univention System Info stellt wichtige Systemdaten zusammen, die dann an eine HTTP-URL hochgeladen werden können. Diese Variable konfiguriert diese URL.
+Description[en]=Univention System Info gathers information system data, which can then be uploaded to a HTTP URL. This variable configures this URL.
+Type=str
+Categories=system-base
