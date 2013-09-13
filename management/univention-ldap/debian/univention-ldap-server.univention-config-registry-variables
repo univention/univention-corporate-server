@@ -1,6 +1,6 @@
 [ldap/server/type]
 Description[de]=Für UCS-LDAP-Server gibt es zwei Betriebsmodi, die mit dieser Variable konfiguriert werden: Der Server vom Typ 'master' nimmt schreibende Änderungen entgegen, 'slave' enthält eine Nur-Lese-Kopie. Diese Variable wird intern konfiguriert und sollte nicht angepasst werden.
-Description[en]=Two operational modes exist for UCS LDAP servers; these are configured by this variable: The server of the type 'master' accepts write changes and 'slave' only contains a readonly copy. This variable is configured internally and should not be modified.
+Description[en]=Two operational modes exist for UCS LDAP servers; these are configured by this variable: The server of the type 'master' accepts write changes and 'slave' only contains a read-only copy. This variable is configured internally and should not be modified.
 Type=str
 Categories=service-ldap
 ReadOnly=yes
@@ -32,7 +32,7 @@ Categories=service-ldap
 
 [ldap/threads]
 Description[de]=Die Anzahl der verwendeten Server-Threads im LDAP-Server.
-Description[en]=The amount of threads used by the LDAP server.
+Description[en]=The amount of server threads used by the LDAP server.
 Type=int
 Categories=service-ldap
 
@@ -43,13 +43,13 @@ Type=int
 Categories=service-ldap
 
 [ldap/database/type]
-Description[de]=Diese Variable konfiguriert das Datenbank-Backend des LDAP-Servers ('bdb' oder 'hdb').
-Description[en]=This variable configures the database backend of the LDAP server ('bdb' or 'hdb').
+Description[de]=Diese Variable konfiguriert das Datenbank-Backend des LDAP-Servers ('bdb' oder 'hdb'). Diese Variable sollte nur in Ausnahmefällen angepasst werden.
+Description[en]=This variable configures the database backend of the LDAP server ('bdb' or 'hdb'). This variable should only be modified in exceptional cases.
 Type=str
 Categories=service-ldap
 
 [ldap/database/bdb/checkpoint]
-Description[de]=Diese Variable konfiguriert die Häufigkeit in der die Daten aus der Transaction Log in die Datenbank geschrieben werden. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter http://www.openldap.org/faq/data/cache/1072.html beschrieben.
+Description[de]=Diese Variable konfiguriert die Häufigkeit mit der die Daten aus dem 'Transaction Log' in die Datenbank geschrieben werden. Änderungen sind nur in Ausnahmefällen nötig und sollten sorgfältig getestet werden. Die Syntax ist unter http://www.openldap.org/faq/data/cache/1072.html beschrieben.
 Description[en]=This variable configures the frequency for checkpointing the database transaction log upon updating of the database. Changes are only needed in exceptional cases and should be tested carefully. The syntax is documented at http://www.openldap.org/faq/data/cache/1072.html.
 Type=str
 Categories=service-ldap
@@ -79,31 +79,31 @@ Type=str
 Categories=service-ldap
 
 [ldap/index/approx]
-Description[de]=Die Liste der LDAP-Attribute, die bei der Suche nach ähnlichen Werte indiziert werden. Mehrere Attribute werden durch Kommata getrennt.
-Description[en]=A list of LDAP attributes which are indexed during the search for approximate values. Multiple attributes must be separated by commas.
+Description[de]=Die Liste der LDAP-Attribute, die für die Suche nach ähnlichen Werte indiziert werden. Mehrere Attribute werden durch Kommata getrennt.
+Description[en]=A list of LDAP attributes which are indexed for the search for approximate values. Multiple attributes must be separated by commas.
 Type=str
 Categories=service-ldap
 
 [ldap/index/eq]
-Description[de]=Die Liste der LDAP-Attribute, die bei der Suche nach einem exakten Wert indiziert werden. Mehrere Attribute werden durch Kommata getrennt.
-Description[en]=A list of LDAP attributes which are indexed during the search for an exact value. Multiple attributes must be separated by commas.
+Description[de]=Die Liste der LDAP-Attribute, die für die Suche nach einem exakten Wert indiziert werden. Mehrere Attribute werden durch Kommata getrennt.
+Description[en]=A list of LDAP attributes which are indexed for the search for an exact value. Multiple attributes must be separated by commas.
 Type=str
 Categories=service-ldap
 
 [ldap/index/pres]
-Description[de]=Die Liste der LDAP-Attribute, die bei der Suche nach dem Vorhandensein eines Wert indiziert werden. Mehrere Attribute werden durch Kommata getrennt.
-Description[en]=A list of LDAP attributes which are indexed during the search for the presence of value. Multiple attributes must be separated by commas.
+Description[de]=Die Liste der LDAP-Attribute, die für die Suche nach dem Vorhandensein eines Wert indiziert werden. Mehrere Attribute werden durch Kommata getrennt.
+Description[en]=A list of LDAP attributes which are indexed for the search for the presence of value. Multiple attributes must be separated by commas.
 Type=str
 Categories=service-ldap
 
 [ldap/index/sub]
-Description[de]=Die Liste der LDAP-Attribute, die bei der Suche nach Teilausdrücken indiziert werden. Mehrere Werte werden durch Kommata getrennt.
-Description[en]=A list of LDAP attributes which are indexed during the search for substring matches. Multiple values must be separated by commas.
+Description[de]=Die Liste der LDAP-Attribute, die für die  Suche nach Teilausdrücken indiziert werden. Mehrere Werte werden durch Kommata getrennt.
+Description[en]=A list of LDAP attributes which are indexed for the search for substring matches. Multiple values must be separated by commas.
 Type=str
 Categories=service-ldap
 
 [ldap/index/autorebuild]
-Description[de]=Ist diese Option aktiviert werden LDAP-Indizes bei UCS-Updates automatisch ergänzt und aktualisiert.
+Description[de]=Ist diese Option aktiviert, werden LDAP-Indizes bei UCS-Updates automatisch ergänzt und aktualisiert.
 Description[en]=If this option is activated, LDAP indices are automatically amended and updated during UCS updates.
 Type=bool
 Categories=service-ldap
