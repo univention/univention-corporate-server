@@ -1,5 +1,5 @@
 [ldap/acl/user/password/change]
-Description[de]=Standardmäßig können Benutzer ihr Passwort nicht über die Univention Management Console ändern. Wird diese Variable auf 'yes' gesetzt, werden LDAP-ACLs aktiviert, die benutzerinitiierte Passwortwechsel erlauben.
+Description[de]=In der Grundeinstellung können Benutzer ihr Passwort nicht über die Univention Management Console ändern. Wird diese Variable auf 'yes' gesetzt, werden LDAP-ACLs aktiviert, die benutzerinitiierte Passwortwechsel erlauben.
 Description[en]=As standard, users cannot change their password via the Univention Management Console. If this variable is set to 'yes', LDAP ACLs are activated to allow user-initiated password changes.
 Type=str
 Categories=service-ldap
