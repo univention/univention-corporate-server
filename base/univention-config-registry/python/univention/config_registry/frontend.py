@@ -166,13 +166,13 @@ def handler_set(args, opts=dict(), quiet=False):
 					else:
 						print 'Create %s' % key
 					k = ucr.get(key, None, getscope=True)
-					if k and k[0] > current_scope:
+					if k and k[0] > ucr.scope:
 						print >> sys.stderr, \
 							'W: %s is overridden by scope "%s"' % \
 							(key, SCOPE[k[0]])
 				ucr[key] = value
 				changed[key] = (old, value)
-				replog('set', current_scope, ucr, key, old, value)
+				replog('set', ucr.scope, ucr, key, old, value)
 			else:
 				if not quiet:
 					if old is not None:
@@ -213,8 +213,8 @@ def handler_unset(args, opts=dict()):
 				del ucr[arg]
 				changed[arg] = (oldvalue, '')
 				k = ucr.get(arg, None, getscope=True)
-				replog('unset', current_scope, ucr, arg, oldvalue)
-				if k and k[0] > current_scope:
+				replog('unset', ucr.scope, ucr, arg, oldvalue)
+				if k and k[0] > ucr.scope:
 					print >> sys.stderr, \
 							'W: %s is still set in scope "%s"' % \
 							(arg, SCOPE[k[0]])

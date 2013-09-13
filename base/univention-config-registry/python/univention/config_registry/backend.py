@@ -77,9 +77,9 @@ class ConfigRegistry(dict):
 		dict.__init__(self)
 		self.file = os.getenv('UNIVENTION_BASECONF') or filename or None
 		if self.file:
-			self._write_registry = ConfigRegistry.CUSTOM
+			self.scope = ConfigRegistry.CUSTOM
 		else:
-			self._write_registry = write_registry
+			self.scope = write_registry
 		self._registry = {}
 		for reg in range(ConfigRegistry.MAX):
 			if self.file and reg != ConfigRegistry.CUSTOM:
@@ -110,17 +110,17 @@ class ConfigRegistry(dict):
 
 	def save(self):
 		"""Save registry to file."""
-		registry = self._registry[self._write_registry]
+		registry = self._registry[self.scope]
 		registry.save()
 
 	def lock(self):
 		"""Lock registry file."""
-		registry = self._registry[self._write_registry]
+		registry = self._registry[self.scope]
 		registry.lock()
 
 	def unlock(self):
 		"""Un-lock registry file."""
-		registry = self._registry[self._write_registry]
+		registry = self._registry[self.scope]
 		registry.unlock()
 
 	def __enter__(self):
@@ -140,7 +140,7 @@ class ConfigRegistry(dict):
 
 	def __delitem__(self, key):
 		"""Delete registry key."""
-		registry = self._registry[self._write_registry]
+		registry = self._registry[self.scope]
 		del registry[key]
 
 	def __getitem__(self, key):
@@ -149,7 +149,7 @@ class ConfigRegistry(dict):
 
 	def __setitem__(self, key, value):
 		"""Set registry value."""
-		registry = self._registry[self._write_registry]
+		registry = self._registry[self.scope]
 		registry[key] = value
 
 	def __contains__(self, key):
@@ -197,7 +197,7 @@ class ConfigRegistry(dict):
 	def has_key(self, key, write_registry_only=False):
 		"""Check if registry key is set (DEPRECATED)."""
 		if write_registry_only:
-			registry = self._registry[self._write_registry]
+			registry = self._registry[self.scope]
 			return key in registry
 		else:
 			return key in self
