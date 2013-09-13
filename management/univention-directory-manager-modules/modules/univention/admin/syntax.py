@@ -418,8 +418,7 @@ class jpegPhoto( Upload ):
 	@classmethod
 	def parse(self, text):
 		try:
-			value=base64.b64decode(text)
-			assert imghdr.what(None, value) == 'jpeg'
+			assert imghdr.what(None, base64.b64decode(text)) == 'jpeg'
 			return text
 		except:
 			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg'))
