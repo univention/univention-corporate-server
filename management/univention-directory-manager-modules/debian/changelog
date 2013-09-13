@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.30-5) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 13 Sep 2013 14:47:15 +0200
+
 univention-directory-manager-modules (9.0.30-4) unstable; urgency=low
 
   * Fix returning failure in case pymodules link is already ok
