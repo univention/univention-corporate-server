@@ -18,7 +18,7 @@ Categories=management-umc
 
 [umc/http/session/timeout]
 Description[de]=Nach diesem Zeitraum in Sekunden wird die Browser-Sitzung automatisch geschlossen und eine Neuanmeldung ist notwendig. Ist die Variable nicht gesetzt, gilt 300, also fünf Minuten.
-Description[en]=After this time period in seconds the browser session is automatically closed an a renewed login is required. If the variable is unset, 300 applies (i.e. five minutes).
+Description[en]=After this time period in seconds the browser session is automatically closed and a renewed login is required. If the variable is unset, 300 applies (i.e. five minutes).
 Type=int
 Categories=management-umc
 

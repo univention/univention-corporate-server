@@ -1,12 +1,12 @@
 [umc/web/feedback/mail]
-Description[de]=Tritt in der Univention Management Console ein Fehler auf, der zu einem Traceback führt, wird ein Dialog angezeigt. Diese E-Mail-Adresse wird dort als Kontaktadresse angezeigt.
-Description[en]=If an errors leading to a traceback occurs in the Univention Management Console, a dialogue is shown. This email address is shown as a contact address.
+Description[de]=Tritt in der Univention Management Console ein Fehler auf, der zu einem Traceback führt, kann der Fehler gemeldet werden. Diese E-Mail-Adresse wird in dem Dialog als Kontaktadresse angezeigt.
+Description[en]=If an errors leading to a traceback occurs in the Univention Management Console, the bug can be reported. This email address is shown as a contact address in the dialogue.
 Type=str
 Categories=management-umc
 
 [umc/web/feedback/description]
-Description[de]=Tritt in der Univention Management Console ein Fehler auf, der zu einem Traceback führt, wird ein Dialog angezeigt. Dieser Betreff wird bei der Feedback-Mail verwendet.
-Description[en]=If an errors leading to a traceback occurs in the Univention Management Console, a dialogue is shown. This subject is used in the feedback mail.
+Description[de]=Tritt in der Univention Management Console ein Fehler auf, der zu einem Traceback führt, kann der Fehler gemeldet werden. Dieser Betreff wird bei der Feedback-Mail verwendet.
+Description[en]=If an errors leading to a traceback occurs in the Univention Management Console, the bug can be reported. This subject is used in the feedback mail.
 Type=str
 Categories=management-umc
 
@@ -17,7 +17,7 @@ Type=str
 Categories=management-umc
 
 [umc/web/piwik]
-Description[de]=Ist diese Option aktiviert, werden bei Verwendung der Free for personal use-Version von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) anonyme Nutzungsstatistiken zur Verwendung der UMC erzeugt. Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die Entwicklung besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
+Description[de]=Ist diese Option aktiviert, werden bei Verwendung der 'Free for personal use'-Version von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) anonyme Nutzungsstatistiken zur Verwendung der UMC erzeugt. Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert. Dies ermöglicht es Univention die Entwicklung besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
 Description[en]=If this option is activated, anonymous usage statistics on the use of the UMC are collected when using the free for personal use version of UCS (which is generally used for evaluating UCS). The modules opened are logged in an instance of the web traffic analysis tool Piwik. This makes it possible for Univention to tailor the development better to customer needs and carry out usability improvements.
 Type=bool
 Categories=management-umc
@@ -29,31 +29,31 @@ Type=bool
 Categories=management-umc
 
 [umc/web/max_host_entries]
-Description[de]=In der Titelzeile der UMC wird eine Auswahlliste angezeigt, mit der auf eine andere Univention Management Console gewechselt werden kann. Diese Variable konfiguriert die maximale Anzahl an Instanzen, die als Drop-Down-Menü angeboten wird.
-Description[en]=In the title pane of the UMC as selection list is shown. It can be used to navigate to a different Univention Management Console. This variable configures the maximum amount of instances which are presented as a drop down menu.
+Description[de]=In der Titelzeile der UMC wird eine Auswahlliste angezeigt, mit der auf eine andere Univention Management Console in der Domäne gewechselt werden kann. Diese Variable konfiguriert die maximale Anzahl an Instanzen, die als Drop-Down-Menü angeboten wird.
+Description[en]=In the title panel of the UMC as selection list is shown. It can be used to navigate to a different Univention Management Console in the domain. This variable configures the maximum amount of instances which are presented as a drop down menu.
 Type=int
 Categories=management-umc
 
 [umc/web/sso/enabled]
-Description[en]=If set to "yes", single sign-on is enabled in UMC (default: yes)
-Description[de]=Definiert, ob die Single Sign-On-Funktion in der UMC aktiviert ist (Standard: yes)
+Description[de]=Ist diese Option aktiviert, wird die Single Sign-On-Funktion in der UMC aktiviert ist. Eine Anmeldung an weiteren Univention Management Console-Instanzen ist dann ohne erneute Passwordeingabe möglich.
+Description[en]=If this option is activated, single sign-on is enabled in UMC. A login to further Univention Management Console instances is then possible with renewed password input.
 Type=bool
 Categories=management-umc
 
 [umc/web/sso/allow/http]
-Description[en]=If set to "yes", single sign-on is allowed even if a non-encrypted HTTP connection is used (default: yes)
-Description[de]=Definiert, ob die Single-Sign-On-Funktion auch bei unverschlüsselten HTTP-Verbindungen zur Verfügung steht (Standard: yes)
+Description[de]=Ist diese Option und 'umc/web/sso/enabled' aktiviert, steht die Single-Sign-On-Funktion auch bei unverschlüsselten HTTP-Verbindungen zur Verfügung.
+Description[en]=If this option and 'umc/web/sso/enabled' are activated, single sign-on is allowed even if a non-encrypted HTTP connection is used.
 Type=bool
 Categories=management-umc
 
 [umc/web/sso/newwindow]
-Description[en]=If set to "yes" a new window will be opened on single sign-on, otherwise the current window will be replaced (default: yes)
-Description[de]=Der Wert "yes" aktiviert das Öffnen eines neuen Fensters durch die Signle-Sign-On-Funktion. Anderenfalls wird das aktuelle Browserfenster ersetzt. (Standard: yes)
+Description[de]=Ist diese Option und 'umc/web/sso/enabled' aktiviert, wird bei Navigation über die Signle-Sign-On-Funktion ein neues Fenster geöffnet. Anderenfalls wird das aktuelle Browserfenster ersetzt.
+Description[en]=If this option and 'umc/web/sso/enabled' are activated, a new window will be opened on single sign-on, otherwise the current window will be replaced.
 Type=bool
 Categories=management-umc
 
 [umc/web/sso/timeout]
-Description[en]=Number of seconds a login token for single sign on will be valid (default: 15)
-Description[de]=Anzahl der Sekunden, bis ein Login-Token für das Single-Sign-On ungültig wird (Standard: 15)
+Description[en]=Number of seconds a login token for single sign on (see 'umc/web/sso/enabled) will be valid.
+Description[de]=Anzahl der Sekunden, bis ein Login-Token für das Single-Sign-On (siehe 'umc/web/sso/enabled) ungültig wird.
 Type=int
 Categories=management-umc
