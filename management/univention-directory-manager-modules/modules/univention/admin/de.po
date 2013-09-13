@@ -1001,9 +1001,8 @@ msgid "Domainctonroller Slave"
 msgstr ""
 
 #: syntax.py:2396
-#, fuzzy
 msgid "Memberserver"
-msgstr "Mail-Server"
+msgstr "Memberserver"
 
 #: syntax.py:2416
 msgid "synchronous"

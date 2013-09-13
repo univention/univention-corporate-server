@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.33-1) unstable; urgency=low
+
+  * fixed .po file (Bug #30342)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 13 Sep 2013 16:09:40 +0200
+
 univention-directory-manager-modules (9.0.32-1) unstable; urgency=low
 
   * updated .po file (Bug #30342)
