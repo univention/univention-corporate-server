@@ -275,6 +275,20 @@ class TestConfigRegistry(unittest.TestCase):
 		for value in ('NO', 'No', 'no ', ' no', ''):
 			self.assertFalse(ucr.is_false(value=value))
 
+	def test_update(self):
+		"""Test update()."""
+		ucr = ConfigRegistry()
+		ucr['foo'] = 'foo'
+		ucr['bar'] = 'bar'
+		ucr.update({
+			'foo': None,
+			'bar': 'baz',
+			'baz': 'bar',
+			})
+		self.assertEqual(ucr.get('foo'), None)
+		self.assertEqual(ucr.get('bar'),'baz')
+		self.assertEqual(ucr.get('baz'),'bar')
+
 	def test_locking(self):
 		"""Test inter-process-locking."""
 		delay = 1.0
@@ -323,4 +337,3 @@ class TestConfigRegistry(unittest.TestCase):
 
 if __name__ == '__main__':
 	unittest.main()
-

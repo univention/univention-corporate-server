@@ -124,7 +124,7 @@ def handler_set(args, opts=dict(), quiet=False):
 	"""
 	ucr = _ucr_from_opts(opts)
 	with ucr:
-		changed = {}
+		changes = {}
 		for arg in args:
 			sep_set = arg.find('=')  # set
 			sep_def = arg.find('?')  # set if not already set
@@ -149,14 +149,14 @@ def handler_set(args, opts=dict(), quiet=False):
 						print 'Setting %s' % key
 					else:
 						print 'Create %s' % key
-				ucr[key] = value
-				changed[key] = (old, value)
+				changes[key] = value
 			else:
 				if not quiet:
 					if old is not None:
 						print 'Not updating %s' % key
 					else:
 						print 'Not setting %s' % key
+		changed = ucr.update(changes)
 
 	_run_changed(ucr, changed,
 			None if quiet else 'W: %s is overridden by scope "%s"')
@@ -168,19 +168,26 @@ def handler_unset(args, opts=dict()):
 	"""
 	ucr = _ucr_from_opts(opts)
 	with ucr:
-		changed = {}
+		changes = {}
 		for arg in args:
 			if ucr.has_key(arg, write_registry_only=True):
-				oldvalue = ucr[arg]
 				print 'Unsetting %s' % arg
-				del ucr[arg]
-				changed[arg] = (oldvalue, '')
-				k = ucr.get(arg, None, getscope=True)
+				changes[arg] = None
 			else:
 				msg = "W: The config registry variable '%s' does not exist"
 				print >> sys.stderr, msg % (arg,)
+		changed = ucr.update(changes)
 
 	_run_changed(ucr, changed, 'W: %s is still set in scope "%s"')
+
+
+def ucr_update(ucr, changes):
+	"""
+	Set or unset the given config registry variables.
+	"""
+	with ucr:
+		changed = ucr.update(changes)
+	_run_changed(ucr, changed)
 
 
 def _run_changed(ucr, changed, msg=None):

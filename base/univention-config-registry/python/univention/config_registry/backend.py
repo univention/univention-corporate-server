@@ -261,6 +261,26 @@ class ConfigRegistry(dict):
 				return default
 		return value in ('no', 'false', '0', 'disable', 'disabled', 'off')
 
+	def update(self, changes):
+		"""
+		Set or unset the given config registry variables.
+		:changes: dictionary of ucr-variable-name: value-or-None.
+		"""
+		registry = self._registry[self.scope]
+		changed = {}
+		for key, value in changes.iteritems():
+			old_value = registry.get(key, None)
+			if value is None:
+				try:
+					del registry[key]
+				except KeyError:
+					continue
+			else:
+				registry[key] = value
+			new_value = registry.get(key, value)
+			changed[key] = (old_value, new_value)
+		return changed
+
 
 class _ConfigRegistry(dict):
 	"""
