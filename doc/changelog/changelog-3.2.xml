@@ -750,7 +750,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added system components to the App Center (<ulink url="&ucsbug;32308">Bug 32308</ulink>).
+		  Added system components to the App Center (<ulink url="&ucsbug;32308">Bug 32308</ulink>,
+		  <ulink url="&ucsbug;32309">Bug 32309</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
