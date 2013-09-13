@@ -1,3 +1,9 @@
+univention-ldap (10.0.10-29) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 13 Sep 2013 14:14:29 +0200
+
 univention-ldap (10.0.10-28) unstable; urgency=low
 
   * Fix default for old packageversion (Bug #32411, Bug #31801)
