@@ -126,22 +126,22 @@ def handler_set(args, opts=dict(), quiet=False):
 	handlers.load()
 
 	current_scope = ConfigRegistry.NORMAL
-	reg = None
+	ucr = None
 	if opts.get('ldap-policy', False):
 		current_scope = ConfigRegistry.LDAP
-		reg = ConfigRegistry(write_registry=current_scope)
+		ucr = ConfigRegistry(write_registry=current_scope)
 	elif opts.get('force', False):
 		current_scope = ConfigRegistry.FORCED
-		reg = ConfigRegistry(write_registry=current_scope)
+		ucr = ConfigRegistry(write_registry=current_scope)
 	elif opts.get('schedule', False):
 		current_scope = ConfigRegistry.SCHEDULE
-		reg = ConfigRegistry(write_registry=current_scope)
+		ucr = ConfigRegistry(write_registry=current_scope)
 	else:
-		reg = ConfigRegistry()
+		ucr = ConfigRegistry()
 
-	reg.lock()
+	ucr.lock()
 	try:
-		reg.load()
+		ucr.load()
 
 		changed = {}
 		for arg in args:
@@ -161,21 +161,21 @@ def handler_set(args, opts=dict(), quiet=False):
 					sep = min(sep_set, sep_def)
 			key = arg[0:sep]
 			value = arg[sep + 1:]
-			old = reg.get(key)
+			old = ucr.get(key)
 			if (old is None or sep == sep_set) and validate_key(key):
 				if not quiet:
-					if reg.has_key(key, write_registry_only=True):
+					if ucr.has_key(key, write_registry_only=True):
 						print 'Setting %s' % key
 					else:
 						print 'Create %s' % key
-					k = reg.get(key, None, getscope=True)
+					k = ucr.get(key, None, getscope=True)
 					if k and k[0] > current_scope:
 						print >> sys.stderr, \
 							'W: %s is overridden by scope "%s"' % \
 							(key, SCOPE[k[0]])
-				reg[key] = value
+				ucr[key] = value
 				changed[key] = (old, value)
-				replog('set', current_scope, reg, key, old, value)
+				replog('set', current_scope, ucr, key, old, value)
 			else:
 				if not quiet:
 					if old is not None:
@@ -183,11 +183,11 @@ def handler_set(args, opts=dict(), quiet=False):
 					else:
 						print 'Not setting %s' % key
 
-		reg.save()
+		ucr.save()
 	finally:
-		reg.unlock()
+		ucr.unlock()
 
-	handlers(changed.keys(), (reg, changed))
+	handlers(changed.keys(), (ucr, changed))
 
 
 def handler_unset(args, opts=dict()):
@@ -195,34 +195,34 @@ def handler_unset(args, opts=dict()):
 	Unset config registry variables in args.
 	"""
 	current_scope = ConfigRegistry.NORMAL
-	reg = None
+	ucr = None
 	if opts.get('ldap-policy', False):
 		current_scope = ConfigRegistry.LDAP
-		reg = ConfigRegistry(write_registry=current_scope)
+		ucr = ConfigRegistry(write_registry=current_scope)
 	elif opts.get('force', False):
 		current_scope = ConfigRegistry.FORCED
-		reg = ConfigRegistry(write_registry=current_scope)
+		ucr = ConfigRegistry(write_registry=current_scope)
 	elif opts.get('schedule', False):
 		current_scope = ConfigRegistry.SCHEDULE
-		reg = ConfigRegistry(write_registry=current_scope)
+		ucr = ConfigRegistry(write_registry=current_scope)
 	else:
-		reg = ConfigRegistry()
-	reg.lock()
+		ucr = ConfigRegistry()
+	ucr.lock()
 	try:
-		reg.load()
+		ucr.load()
 
 		handlers = ConfigHandlers()
 		handlers.load()
 
 		changed = {}
 		for arg in args:
-			if reg.has_key(arg, write_registry_only=True):
-				oldvalue = reg[arg]
+			if ucr.has_key(arg, write_registry_only=True):
+				oldvalue = ucr[arg]
 				print 'Unsetting %s' % arg
-				del reg[arg]
+				del ucr[arg]
 				changed[arg] = (oldvalue, '')
-				k = reg.get(arg, None, getscope=True)
-				replog('unset', current_scope, reg, arg, oldvalue)
+				k = ucr.get(arg, None, getscope=True)
+				replog('unset', current_scope, ucr, arg, oldvalue)
 				if k and k[0] > current_scope:
 					print >> sys.stderr, \
 							'W: %s is still set in scope "%s"' % \
@@ -230,10 +230,10 @@ def handler_unset(args, opts=dict()):
 			else:
 				msg = "W: The config registry variable '%s' does not exist"
 				print >> sys.stderr, msg % (arg,)
-		reg.save()
+		ucr.save()
 	finally:
-		reg.unlock()
-	handlers(changed.keys(), (reg, changed))
+		ucr.unlock()
+	handlers(changed.keys(), (ucr, changed))
 
 
 def handler_dump(args, opts=dict()):
@@ -427,8 +427,8 @@ def print_variable_info_string(key, value, variable_info, scope=None,
 
 def handler_info(args, opts=dict()):
 	"""Print variable info."""
-	reg = ConfigRegistry()
-	reg.load()
+	ucr = ConfigRegistry()
+	ucr.load()
 	# Import located here, because on module level, a circular import would be
 	# created
 	import univention.config_registry_info as cri  # pylint: disable-msg=W0403
@@ -437,7 +437,7 @@ def handler_info(args, opts=dict()):
 
 	for arg in args:
 		try:
-			print_variable_info_string(arg, reg.get(arg, None),
+			print_variable_info_string(arg, ucr.get(arg, None),
 					info.get_variable(arg),
 					details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES)
 		except UnknownKeyException, ex:
