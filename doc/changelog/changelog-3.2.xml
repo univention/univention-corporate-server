@@ -717,6 +717,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				Moved dialog for requesting a new license with key ID to the global
+				license dialog of the <emphasis>Univention Directory Manager</emphasis>
+				(<ulink url="&ucsbug;32389">Bug 32389</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Prevent concurrent package operations in the same session (<ulink url="&ucsbug;31382">Bug 31382</ulink>).
 		</simpara></listitem>
 
@@ -894,6 +900,12 @@
 		  <guimenu>GECOS</guimenu> in the users module, <guimenu>FQDN</guimenu> in the computers
 		  module and <guimenu>Next IP</guimenu> in the network module have been removed from the
 		  advanced search as they are not searchable in the UMC (<ulink url="&ucsbug;28803">Bug 28803</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+				Moved dialog for requesting a new license with key ID from
+				<emphasis>Univention App Center</emphasis> to the global license dialog
+				(<ulink url="&ucsbug;32389">Bug 32389</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
