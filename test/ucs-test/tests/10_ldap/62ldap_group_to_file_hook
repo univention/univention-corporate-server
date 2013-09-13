@@ -27,7 +27,7 @@ if [ ! -e "$f" ]; then
 	fail_test 110 "$f was not created"
 fi
 
-rm -f "$f"
+rm -f "$f" /var/lib/ldap-group-to-file-hooks.d/62ldap_group_to_file_hook
 
 exit "$RETVAL"
 
