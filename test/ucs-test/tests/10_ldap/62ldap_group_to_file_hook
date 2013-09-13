@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Checking ldap group to file hooks
+## tags:
+##  - basic
+## roles-not: [basesystem]
+## packages:
+##  - univention-ldap-server
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/group.sh" || exit 137
+. "$TESTLIBPATH/maildomain.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+. "$TESTLIBPATH/undo.sh" || exit 137
+
+f="$(mktemp)"
+rm -f "$f"
+
+echo -e '#!/bin/sh\necho "TEST" >'$f'' >>/var/lib/ldap-group-to-file-hooks.d/62ldap_group_to_file_hook
+
+chmod +x /var/lib/ldap-group-to-file-hooks.d/62ldap_group_to_file_hook
+
+/usr/lib/univention-pam/ldap-group-to-file.py
+
+if [ ! -e "$f" ]; then
+	fail_test 110 "$f was not created"
+fi
+
+rm -f "$f"
+
+exit "$RETVAL"
+

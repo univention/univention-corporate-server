@@ -1,3 +1,10 @@
+ucs-test (4.0.110-1) unstable; urgency=low
+
+  * 10_ldap/62ldap_group_to_file_hook: added test case for
+    ldap_group_to_file hooks (Bug #32581)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Sep 2013 16:30:35 +0200
+
 ucs-test (4.0.109-1) unstable; urgency=low
 
   * Added two test cases for the gid protection (Bug #29710)
