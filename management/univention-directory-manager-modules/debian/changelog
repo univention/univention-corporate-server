@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.29-1) unstable; urgency=low
+
+  * Fix umlaut handling in certificates (Bug #30722)
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 12 Sep 2013 17:14:54 +0200
+
 univention-directory-manager-modules (9.0.28-2) unstable; urgency=low
 
   * Fix default for old packageversion

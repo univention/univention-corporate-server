@@ -1102,91 +1102,43 @@ def shift(string, offset):
 
 def load_certificate(user_certificate):
 	"""Import a certificate in DER format"""
-	certificate = base64.decodestring( user_certificate )
+	if not user_certificate:
+		return {}
+	try:
+		certificate = base64.decodestring( user_certificate )
+	except base64.binascii.Error, ex:
+		return {}
+	try:
+		x509 = X509.load_cert_string(certificate, X509.FORMAT_DER)
 
-	tempf=tempfile.mktemp()
-	fh=open(tempf,'w')
-	fh.write( certificate )
-	fh.close()
-
-	x509 = X509.load_cert( tempf, format = X509.FORMAT_DER )
-	os.unlink( tempf )
-	if not x509:
+		values = {
+				'certificateDateNotBefore': x509.get_not_before().get_datetime().date().isoformat(),
+				'certificateDateNotAfter': x509.get_not_after().get_datetime().date().isoformat(),
+				'certificateVersion': str(x509.get_version()),
+				'certificateSerial': str(x509.get_serial_number()),
+				}
+		flags = X509.m2.XN_FLAG_SEP_MULTILINE & ~X509.m2.ASN1_STRFLGS_ESC_MSB | X509.m2.ASN1_STRFLGS_UTF8_CONVERT
+		for entity, prefix in (
+			(x509.get_issuer(), "certificateIssuer"),
+			(x509.get_subject(), "certificateSubject"),
+			):
+			for key, attr in load_certificate.ATTR.items():
+				value = getattr(entity, key)
+				values[prefix + attr] = value
+	except (X509.X509Error, AttributeError), ex:
 		return {}
 
-	not_after=x509.get_not_after()
-	not_before=x509.get_not_before()
-
-	if not not_after or not not_before:
-		return {}
-
-	def convert_certdate (certdate):
-		datestring=str(certdate)
-		dl=string.split(datestring)
-		month=[None, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
-		try:
-			dl[0]=month.index(dl[0])
-		except:
-			return ''
-		return "%s-%02d-%02d" % ( dl[ 3 ], int( dl[ 0 ] ), int( dl[ 1 ] ) )
-
-	issuer=str(x509.get_issuer())
-	if not issuer:
-		return {}
-
-	subject=str(x509.get_subject())
-	if not subject:
-		return {}
-
-	version=x509.get_version()
-	if not version:
-		return {}
-
-	serial=x509.get_serial_number()
-	if not serial:
-		return {}
-
-
-	value={}
-
-	value['certificateDateNotBefore']=convert_certdate(not_before)
-	value['certificateDateNotAfter']=convert_certdate(not_after)
-	value['certificateVersion']=str(version)
-	value['certificateSerial']=str(serial)
-
-	for i in issuer.split('/'):
-		if re.match('^C=', i):
-			value['certificateIssuerCountry']=string.split(i, '=')[1]
-		elif re.match('^ST=', i):
-			value['certificateIssuerState']=string.split(i, '=')[1]
-		elif re.match('^L=', i):
-			value['certificateIssuerLocation']=string.split(i, '=')[1]
-		elif re.match('^O=', i):
-			value['certificateIssuerOrganisation']=string.split(i, '=')[1]
-		elif re.match('^OU=', i):
-			value['certificateIssuerOrganisationalUnit']=string.split(i, '=')[1]
-		elif re.match('^CN=', i):
-			value['certificateIssuerCommonName']=string.split(i, '=')[1]
-		elif re.match('^emailAddress=', i):
-			value['certificateIssuerMail']=string.split(i, '=')[1]
-	for i in subject.split('/'):
-		if re.match('^C=', i):
-			value['certificateSubjectCountry']=string.split(i, '=')[1]
-		elif re.match('^ST=', i):
-			value['certificateSubjectState']=string.split(i, '=')[1]
-		elif re.match('^L=', i):
-			value['certificateSubjectLocation']=string.split(i, '=')[1]
-		elif re.match('^O=', i):
-			value['certificateSubjectOrganisation']=string.split(i, '=')[1]
-		elif re.match('^OU=', i):
-			value['certificateSubjectOrganisationalUnit']=string.split(i, '=')[1]
-		elif re.match('^CN=', i):
-			value['certificateSubjectCommonName']=string.split(i, '=')[1]
-		elif re.match('^emailAddress=', i):
-			value['certificateSubjectMail']=string.split(i, '=')[1]
-
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'value=%s' % value)
-	return value
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'value=%s' % values)
+	return values
+load_certificate.ATTR = {
+			"C": "Country",
+			"ST": "State",
+			"L": "Location",
+			"O": "Organisation",
+			"OU": "OrganisationalUnit",
+			"CN": "CommonName",
+			"emailAddress": "Mail",
+			}
 
 def mapHomePostalAddress(old):
 	new=[]
@@ -1557,7 +1509,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		self.old_options= copy.deepcopy( self.options )
 
 
-	def __certificate_clean(self):
+	def reload_certificate(self):
+		"""Reload user certificate."""
 		self.info['certificateSubjectCountry']=''
 		self.info['certificateSubjectState']=''
 		self.info['certificateSubjectLocation']=''
@@ -1576,19 +1529,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		self.info['certificateDateNotAfter']=''
 		self.info['certificateVersion']=''
 		self.info['certificateSerial']=''
-		self.info['userCertificate']=''
-
-	def reload_certificate(self):
-
-		if self.info.get( 'userCertificate' ):
-			values=load_certificate(self.info['userCertificate'])
-			if not values:
-				self.__certificate_clean()
-			else:
-				for i in values.keys():
-					self.info[i]=values[i]
+		certificate = self.info.get('userCertificate')
+		values = load_certificate(certificate)
+		if values:
+			for key, value in values.items():
+				self.info[key] = value
 		else:
-			self.__certificate_clean()
+			self.info['userCertificate'] = ''
 
 	def hasChanged(self, key):
 		if key == 'disabled':
