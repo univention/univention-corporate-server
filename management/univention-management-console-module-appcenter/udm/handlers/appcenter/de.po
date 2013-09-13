@@ -81,7 +81,7 @@ msgstr "Website"
 
 #: app.py:147
 msgid "Website Vendor"
-msgstr "Webseitenbetreiber"
+msgstr "Webseite Hersteller"
 
 #: app.py:157
 msgid "Website Maintainer"

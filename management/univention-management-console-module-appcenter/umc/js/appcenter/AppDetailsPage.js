@@ -64,7 +64,7 @@ define([
 		noFooter: true,
 		getAppCommand: 'appcenter/get',
 
-		backLabel: _('Back'),
+		backLabel: _('Back to overview'),
 		detailsDialog: null,
 
 		appCenterInformation:
@@ -430,42 +430,11 @@ define([
 		showLicenseRequest: function(action) {
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'request-license');
 			if (this.udmAccessible) {
-				dialog.confirmForm({
-					title: _('Request updated license key with identification'),
-					widgets: [
-						{
-							type: Text,
-							name: 'help_text',
-							content: '<h2>' + _('Provision of an updated UCS license key') + '</h2><div style="width: 535px"><p>' + _('Please provide a valid email address such that an updated license can be sent to you. This may take a few minutes. You can then upload the updated license key directly in the following license dialog.') + '</p></div>'
-						},
-						{
-							type: TitlePane,
-							name: 'more_information',
-							title: _('More information'),
-							open: false,
-							content: this.appCenterInformation
-						},
-						{
-							type: TextBox,
-							name: 'email',
-							required: true,
-							regExp: '.+@.+',
-							label: _("Email address")
-						}
-					],
-					autoValidate: true
-				}).then(lang.hitch(this, function(values) {
-					var requestingNewLicense = tools.umcpCommand('appcenter/request_new_license', values).then(lang.hitch(this, function(data) {
-						// cannot require in the beginning as
-						// udm might be not installed
-						require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
-							if (data.result) {
-								var dlg = new LicenseDialog();
-								dlg.show();
-							}
-						});
-					}));
-					this.standbyDuring(requestingNewLicense);
+				require(['umc/modules/udm/LicenseDialog'], lang.hitch(this, function(LicenseDialog) {
+					var dlg = new LicenseDialog();
+					dlg.requestNewLicense(this.appCenterInformation).then(function() {
+						dlg.show();
+					});
 				}));
 			} else {
 				// UDM is not present. Either because this is

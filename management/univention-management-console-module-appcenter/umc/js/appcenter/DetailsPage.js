@@ -51,7 +51,7 @@ define([
 					{
 						name: 'cancel',
 						'default': false,
-						label: _("back to overview"),
+						label: _("Back to overview"),
 						onClick: lang.hitch(this, function() {
 							try
 							{

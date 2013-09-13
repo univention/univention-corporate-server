@@ -19,7 +19,6 @@ attributetype ( univentionAppAttributeType:1 NAME 'univentionAppID'
 
 attributetype ( univentionAppAttributeType:2 NAME 'univentionAppName'
 	DESC 'App Name'
-	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
@@ -46,7 +45,8 @@ attributetype ( univentionAppAttributeType:5 NAME 'univentionAppLongDescription'
 attributetype ( univentionAppAttributeType:6 NAME 'univentionAppScreenshot'
 	DESC 'App screenshot'
 	SINGLE-VALUE
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( univentionAppAttributeType:7 NAME 'univentionAppIcon'
 	DESC 'App icon'
@@ -82,27 +82,25 @@ attributetype ( univentionAppAttributeType:11 NAME 'univentionAppMaintainer'
 
 attributetype ( univentionAppAttributeType:12 NAME 'univentionAppWebsite'
 	DESC 'App website'
-	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( univentionAppAttributeType:13 NAME 'univentionAppWebsiteVendor'
 	DESC 'App website vendor'
-	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( univentionAppAttributeType:14 NAME 'univentionAppWebsiteMaintainer'
 	DESC 'App website maintainer'
-	SINGLE-VALUE
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( univentionAppAttributeType:15 NAME 'univentionAppWebInterface'
 	DESC 'App web interface'
+	SINGLE-VALUE
 	EQUALITY caseExactMatch
 	SUBSTR caseExactSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )

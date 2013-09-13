@@ -35,9 +35,7 @@
 import locale
 import time
 import sys
-import urllib
 import urllib2
-import re
 
 # related third party
 import notifier
@@ -48,7 +46,7 @@ import apt # for independent apt.Cache
 from univention.lib.package_manager import PackageManager, LockError
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response
-from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, EmailSanitizer, BooleanSanitizer
+from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
 from univention.updater import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 import univention.config_registry
@@ -96,31 +94,6 @@ class Instance(umcm.Base):
 	@simple_response
 	def version(self):
 		return Application.get_appcenter_version()
-
-	@sanitize(email=EmailSanitizer(required=True))
-	@simple_response
-	def request_new_license(self, email):
-		license = LICENSE.dump_data()
-		if license is None:
-			raise umcm.UMC_CommandError(_('Cannot parse License from LDAP'))
-		data = {}
-		data['email'] = email
-		data['licence'] = license
-		data = urllib.urlencode(data)
-		url = 'https://license.univention.de/keyid/conversion/submit'
-		request = urllib2.Request(url, data=data, headers={'User-agent' : 'UMC/AppCenter'})
-		try:
-			util.urlopen(request)
-		except Exception as e:
-			try:
-				# try to parse an html error
-				body = e.read()
-				detail = re.search('<span id="details">(?P<details>.*?)</span>',  body).group(1)
-			except:
-				detail = str(e)
-			raise umcm.UMC_CommandError(_('An error occurred while sending the request: %s') % detail)
-		else:
-			return True
 
 	@simple_response
 	def query(self):

@@ -36,6 +36,7 @@ import shutil
 import time
 from distutils.version import LooseVersion
 from gzip import GzipFile
+import base64
 from StringIO import StringIO
 import ConfigParser
 import copy
@@ -57,7 +58,6 @@ from httplib import HTTPException
 from socket import error as SocketError
 
 # related third party
-import ldif
 from simplejson import loads
 
 # univention
@@ -66,6 +66,11 @@ from univention.config_registry import ConfigRegistry, handler_commit
 import univention.uldap as uldap
 import univention.management.console as umc
 from univention.lib.umc_connection import UMCConnection
+import univention.admin.config
+import univention.admin.uldap as admin_uldap
+import univention.admin.handlers.appcenter.app as appcenter_udm_module
+import univention.admin.handlers.container.cn as container_udm_module
+from univention.admin.uexceptions import objectExists
 
 # local application
 from util import urlopen, get_current_ram_available, component_registered, get_master, get_all_backups, set_save_commit_load
@@ -98,23 +103,6 @@ class License(object):
 			# no licensing available
 			MODULE.warn('Failed to load license information: %s' % e)
 
-	def dump_data(self):
-		# we could return infos we have in this object itself.
-		# but dont be too clever here. just dump
-		# everything we have in LDAP.
-		try:
-			_lo = uldap.getMachineConnection()
-			data = _lo.search('objectClass=univentionLicense')
-			del _lo
-			# just one license (should be always the case)
-			# return the dictionary without the dn
-			data = ldif.CreateLDIF(data[0][0], data[0][1])
-			return data
-		except Exception as e:
-			# no udm, no ldap, malformed return value, whatever
-			MODULE.error('getting License from LDAP failed: %s' % e)
-			return None
-
 	def email_known(self):
 		# at least somewhere at univention
 		return self.uuid is not None
@@ -123,6 +111,121 @@ class License(object):
 		return self.email_known() or not email_required
 
 LICENSE = License()
+
+class DoesNotExist(Exception):
+	pass
+
+class ApplicationLDAPObject(object):
+	def __init__(self, ldap_id, lo, co):
+		self._localhost = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+		self._udm_obj = None
+		self._ldap_id = ldap_id
+		self._lo = lo
+		self._co = co
+		self.reload()
+
+	def reload(self):
+		result = appcenter_udm_module.lookup(self._co, self._lo, 'id=%s' % self._ldap_id)
+		if result:
+			self._udm_obj = result[0]
+			self._udm_obj.open()
+		else:
+			raise DoesNotExist()
+
+	@classmethod
+	def create(cls, app, lo, co, pos):
+		# check for all containers below cn=univention if they exist
+		#   if not, create!
+		containers = uldap.explodeDn(app.ldap_container, 1)
+		containers = containers[0:containers.index('apps')]
+		base = 'cn=apps,cn=univention,%s' % ucr.get('ldap/base')
+		pos.setDn(base)
+		for container in reversed(containers):
+			if not container_udm_module.lookup(co, lo, 'cn=%s' % container, base=base):
+				container_obj = container_udm_module.object(co, lo, pos, 'cn=%s' % container)
+				container_obj.open()
+				container_obj.info['name'] = container
+				MODULE.info('Container %s for new univentionApp needed. Creating...' % container)
+				container_obj.create()
+			base = 'cn=%s,%s' % (container, base)
+			pos.setDn(base)
+		base64icon = ''
+		try:
+			with open(os.path.join(FRONTEND_ICONS_DIR, '50x50', '%s.png' % app.get('icon'))) as f:
+				base64icon = base64.encodestring(f.read())
+		except IOError:
+			pass
+		attrs = {
+			'id' : app.ldap_id,
+			'name' : app.get_locale_list('name'),
+			'version' : app.version,
+			'shortDescription' : app.get_locale_list('description'),
+			'longDescription' : app.get_locale_list('longdescription'),
+			'contact' : app.get('contact'),
+			'maintainer' : app.get('maintainer'),
+			'website' : app.get_locale_list('website'),
+			'websiteVendor' : app.get_locale_list('websitevendor'),
+			'websiteMaintainer' : app.get_locale_list('websitemaintainer'),
+			'screenshot' : app.get('screenshot'),
+			'icon' : base64icon,
+			'category' : app.get('unlocalised_categories'),
+			'webInterface' : app.get('webinterface'),
+			'webInterfaceName' : app.get('webinterfacename'),
+			'conflictingApps' : app.get('conflictedapps'),
+			'conflictingSystemPackages' : app.get('conflictedsystempackages'),
+			'defaultPackages' : app.get('defaultpackages'),
+			'defaultPackagesMaster' : app.get('defaultpackagesmaster'),
+			'umcModuleName' : app.get('umcmodulename'),
+			'umcModuleFlavor' : app.get('umcmoduleflavor'),
+			'serverRole' : app.get('serverrole'),
+		}
+		obj = appcenter_udm_module.object(co, lo, pos)
+		try:
+			obj.open()
+			for property_name, value in attrs.items():
+				property_obj = appcenter_udm_module.property_descriptions[property_name]
+				if isinstance(value, (tuple, list)) and property_obj.multivalue:
+					if not value and not property_obj.required:
+						continue
+					obj[property_name] = [property_obj.syntax.parse( ival ) for ival in value]
+				else:
+					# None and empty string represents removing of the attribute (handlers/__init__.py def diff)
+					if ( value is None or value == '' ) and not property_obj.required:
+						continue
+					obj[property_name] = property_obj.syntax.parse(value)
+			obj.create()
+			MODULE.info('univentionApp %s created' % obj.dn)
+		except objectExists:
+			MODULE.info('univentionApp %s found' % obj.dn)
+		return cls(app.ldap_id, lo, co)
+
+	def add_localhost(self):
+		self.reload()
+		self._udm_obj.info.setdefault('server', [])
+		if self._localhost not in self._udm_obj.info['server']:
+			self._udm_obj.info['server'].append(self._localhost)
+			MODULE.info('Adding %s to %s' % (self._localhost, self._udm_obj.dn))
+			self._udm_obj.modify()
+		else:
+			MODULE.info('%s already in list' % self._localhost)
+
+	def remove_localhost(self):
+		self.reload()
+		try:
+			self._udm_obj.info.setdefault('server', [])
+			self._udm_obj.info['server'].remove(self._localhost)
+		except ValueError:
+			MODULE.info('%s not in list' % self._localhost)
+		else:
+			MODULE.info('Removing %s from %s' % (self._localhost, self._udm_obj.dn))
+			self._udm_obj.modify()
+
+	def anywhere_installed(self):
+		self.reload()
+		return bool(self._udm_obj.info.get('server', []))
+
+	def remove_from_directory(self):
+		self._udm_obj.remove()
 
 class InvokationRequirement(object):
 	def __init__(self, *actions):
@@ -216,6 +319,8 @@ class Application(object):
 			else:
 				self._options[ikey] = []
 
+		# copy original categories before translating
+		self._options['unlocalised_categories'] = self._options['categories'][:]
 		if localize:
 			# localize the category names
 			category_translations = self._get_category_translations()
@@ -230,6 +335,8 @@ class Application(object):
 		self.id = self._options['id'] = self._options['id'].lower()
 		self.name = self._options['name']
 		self.version = self._options['version']
+		self.ldap_container = 'cn=%s,cn=apps,cn=univention,%s' % (self.id, ucr.get('ldap/base'))
+		self.ldap_id = '%s-%s' % (self.id, self.version)
 
 		# get the name of the component
 		m = self._reg_component_id.match(url)
@@ -259,6 +366,20 @@ class Application(object):
 		if v is None:
 			return ''
 		return v
+
+	def get_locale_list(self, key):
+		ret = []
+		for section in self.raw_config.sections():
+			locale = section
+			if locale == 'Application':
+				locale = 'en'
+			try:
+				v = self.raw_config.get(section, key)
+				if v:
+					ret.append('[%s] %s' % (locale, v))
+			except ConfigParser.NoOptionError:
+				pass
+		return ret
 
 	def _fetch_file(self, key, file_ext, localize=True):
 		loc = locale.getlocale()[0]
@@ -703,7 +824,7 @@ class Application(object):
 			package_manager.add_hundred_percent()
 
 			# remove all existing component versions
-			self.unregister_all_and_register(None, component_manager, package_manager)
+			self.unregister_all_and_register(None, component_manager, package_manager, tell_ldap=True)
 
 			# update package information
 			self.update_conffiles()
@@ -799,7 +920,7 @@ class Application(object):
 					to_install.extend(master_packages)
 
 			# add the new component
-			previously_registered = app.register(component_manager, package_manager)
+			previously_registered = app.register(component_manager, package_manager, tell_ldap=False)
 
 			# get package objects
 			to_install = package_manager.get_packages(to_install)
@@ -816,7 +937,7 @@ class Application(object):
 			if remove_component:
 				# remove the newly added component
 				MODULE.info('Remove component: %s' % (app.component_id, ))
-				app.unregister_all_and_register(previously_registered, component_manager, package_manager)
+				app.unregister_all_and_register(previously_registered, component_manager, package_manager, tell_ldap=False)
 			MODULE.process('Finished dry_run for %s on %s' % (app.id, 'localhost'))
 
 		thread = Thread(target=_check_local_host, args=(self, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component))
@@ -830,17 +951,30 @@ class Application(object):
 		result.update(remote_info)
 		return result
 
-	def register(self, component_manager, package_manager):
+	def register(self, component_manager, package_manager, tell_ldap=False):
 		'''Registers the component of the app in UCR and unregisters
 		all other versions in one operation ("atomic"). Does an apt-get
 		update if necessary.
+		Can add localhost to app record in LDAP and create the
+		whole record if necessary.
 		Returns the latest previously registered version of this app if
 		there was one.
 		'''
-		return self.unregister_all_and_register(self, component_manager, package_manager)
+		return self.unregister_all_and_register(self, component_manager, package_manager, tell_ldap=tell_ldap)
 
-	def unregister(self, component_manager, super_ucr=None):
+	def get_ldap_object(self, or_create=False):
+		lo, pos = admin_uldap.getMachineConnection()
+		co = univention.admin.config.config()
+		try:
+			return ApplicationLDAPObject(self.ldap_id, lo, co)
+		except DoesNotExist:
+			if or_create:
+				return ApplicationLDAPObject.create(self, lo, co, pos)
+			return None
+
+	def unregister(self, component_manager, super_ucr=None, tell_ldap=False):
 		'''Removes its component from UCR.
+		Can remove localhost from LDAP and delete record if empty afterwards.
 		Returns whether this has been necessary (i.e. False if it was
 		not registered)
 		'''
@@ -848,12 +982,20 @@ class Application(object):
 		if not self.get('withoutrepository') and self.is_registered(component_manager.ucr):
 			component_manager.remove_app(self, super_ucr)
 			got_unregistered = True
+		if tell_ldap:
+			ldap_object = self.get_ldap_object()
+			if ldap_object:
+				ldap_object.remove_localhost()
+				if not ldap_object.anywhere_installed():
+					ldap_object.remove_from_directory()
 		return got_unregistered
 
-	def unregister_all_and_register(self, to_be_registered, component_manager, package_manager):
+	def unregister_all_and_register(self, to_be_registered, component_manager, package_manager, tell_ldap=False):
 		'''Removes all versions of this app and registers
 		`to_be_registered` if given (may be None). Does an apt-get
 		update if necessary.
+		Can add to_be_registered to app record in LDAP and create the
+		whole record if necessary.
 		Returns the latest previously registered version of this app if
 		there was one.
 		'''
@@ -867,7 +1009,7 @@ class Application(object):
 				#   previously_registered will be the latest if
 				#   there are multiple already registered
 				if app is not to_be_registered: # dont remove the one we want to register (may be already added)
-					if app.unregister(component_manager, super_ucr):
+					if app.unregister(component_manager, super_ucr, tell_ldap=tell_ldap):
 						# this app actually was registered!
 						previously_registered = app
 						should_update = True
@@ -876,6 +1018,9 @@ class Application(object):
 						# add the new repository component for the app
 						component_manager.put_app(to_be_registered, super_ucr)
 						should_update = True
+					if tell_ldap:
+						ldap_obj = self.get_ldap_object(or_create=True)
+						ldap_obj.add_localhost()
 		if should_update:
 			# component was added or removed. apt-get update
 			package_manager.update()
@@ -1029,7 +1174,7 @@ class Application(object):
 					# already have installed 50%
 					package_manager.progress_state._start_steps = 100 # TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
 
-			previously_registered = self.register(component_manager, package_manager)
+			previously_registered = self.register(component_manager, package_manager, tell_ldap=not only_master_packages)
 
 			# install + (dist_upgrade if update)
 			package_manager.log('\n== INSTALLING %s AT %s ==\n' % (self.name, datetime.now()))
@@ -1050,7 +1195,7 @@ class Application(object):
 		except:
 			MODULE.warn(traceback.format_exc())
 			if raised_before_installed:
-				self.unregister_all_and_register(previously_registered, component_manager, package_manager)
+				self.unregister_all_and_register(previously_registered, component_manager, package_manager, tell_ldap=not only_master_packages)
 			status = 500
 		self._send_information(send_as, status)
 		return status == 200
