@@ -31,18 +31,22 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/Deferred",
 	"dijit/Dialog",
 	"umc/tools",
 	"umc/dialog",
 	"umc/render",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/StandbyMixin",
+	"umc/widgets/Text",
+	"umc/widgets/TitlePane",
+	"umc/widgets/TextBox",
 	"umc/widgets/Button",
 	"dojo/text!umc/modules/udm/license.html",
 	"dojo/text!umc/modules/udm/license_v2.html",
 	"dojo/text!umc/modules/udm/license_gpl.html",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, Dialog, tools, dialog, render, ContainerWidget, StandbyMixin, Button, licenseHtml, license_v2Html, license_gplHtml, _) {
+], function(declare, lang, Deferred, Dialog, tools, dialog, render, ContainerWidget, StandbyMixin, Text, TitlePane, TextBox, Button, licenseHtml, license_v2Html, license_gplHtml, _) {
 
 	return declare('umc.modules.udm.LicenseDialog', [ Dialog, StandbyMixin ], {
 		// summary:
@@ -113,20 +117,16 @@ define([
 				name : 'btnLicenseText',
 				label : _( 'Upload' ),
 				callback: lang.hitch( this, function() {
-					this.standby( true );
-					tools.umcpCommand( 'udm/license/import', {
+					var importing = tools.umcpCommand( 'udm/license/import', {
 						'license': this._widgets.licenseText.get( 'value' )
 					} ).then( lang.hitch( this, function( response ) {
-						this.standby( false );
 						if ( ! response.result  instanceof Array || false === response.result[ 0 ].success ) {
 							dialog.alert( _( 'The import of the license has failed: ' ) + response.result[ 0 ].message );
 						} else {
 							dialog.alert( _( 'The license has been imported successfully' ) );
 						}
-					} ),
-					lang.hitch( this, function( response ) {
-						this.standby( false );
 					} ) );
+					this.standbyDuring(importing);
 				} )
 			} ];
 
@@ -152,7 +152,63 @@ define([
 			// this.set( 'content', this._container );
 			this.set( 'title', _( 'UCS license' ) );
 
-			this.updateLicense();
+			this.updateLicense().then(lang.hitch(this, function() {
+				if (! this.licenseInfo.keyID) {
+					_buttonContainer.addChild(new Button({
+						label: _('Request updated license key with identification'),
+						name: 'request',
+						callback: lang.hitch(this, function() {
+							this.requestNewLicense();
+						})
+					}));
+				}
+			}));
+		},
+
+		requestNewLicense: function(moreInformation) {
+			var deferred = new Deferred();
+			var widgets = [];
+			widgets.push({
+				type: Text,
+				name: 'help_text',
+				content: '<h2>' + _('Provision of an updated UCS license key') + '</h2><div style="width: 535px"><p>' + _('Please provide a valid email address such that an updated license can be sent to you. This may take a few minutes. You can then upload the updated license key directly in the following license dialog.') + '</p></div>'
+			});
+			if (moreInformation) {
+				widgets.push({
+					type: TitlePane,
+					name: 'more_information',
+					title: _('More information'),
+					open: false,
+					content: moreInformation
+				});
+			}
+			widgets.push({
+				type: TextBox,
+				name: 'email',
+				required: true,
+				regExp: '.+@.+',
+				label: _("Email address")
+			});
+			dialog.confirmForm({
+				title: _('Request updated license key with identification'),
+				widgets: widgets,
+				autoValidate: true
+			}).then(lang.hitch(this, function(values) {
+				var requestingNewLicense = tools.umcpCommand('udm/request_new_license', values).then(
+					function(data) {
+						if (data.result) {
+							deferred.resolve();
+						} else {
+							deferred.reject();
+						}
+					},
+					function() {
+						deferred.reject();
+					}
+				);
+				this.standbyDuring(requestingNewLicense);
+			}));
+			return deferred;
 		},
 
 		_limitInfo: function( limit ) {
@@ -164,15 +220,14 @@ define([
 		},
 
 		updateLicense: function() {
-			this.standby( true );
-			tools.umcpCommand( 'udm/license/info' ).then( lang.hitch( this, function( response ) {
+			var updating = tools.umcpCommand( 'udm/license/info' ).then( lang.hitch( this, function( response ) {
 				this.licenseInfo = response.result;
 				this.showLicense();
-				this.standby( false );
 			} ), lang.hitch( this, function() {
-				this.standby( false );
 				dialog.alert( _( 'Updating the license information has failed' ) );
 			} ) );
+			this.standbyDuring(updating);
+			return updating;
 		},
 
 		showLicense: function() {
@@ -256,9 +311,9 @@ define([
 						labelPremiumSupport : _( 'Servers with premium support' ),
 						premiumsupport: this.licenseInfo.premiumSupport,
 						labelKeyID : _( 'Key ID' ),
-						keyID: _( this.licenseInfo.keyID ),
+						keyID: this.licenseInfo.keyID,
 						labelEndDate : _( 'Expiry date' ),
-						endDate: _( this.licenseInfo.endDate ),
+						endDate: this.licenseInfo.endDate,
 						labelProduct : _( 'Valid product types' ),
 						product: product
 					};

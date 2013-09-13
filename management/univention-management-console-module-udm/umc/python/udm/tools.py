@@ -31,14 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import urllib2
 import ldap
 import ldap.modlist
 import ldif
 import binascii
 
+import univention.admin.uldap
 from univention.lib.i18n import Translation
 
 from univention.management.console.config import ucr
+from univention.management.console.log import MODULE
 
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
@@ -97,3 +100,35 @@ class LicenseImport( ldif.LDIFParser ):
 			ldap_con.delete_s( self.dn )
 			ldap_con.add_s( self.dn, self.addlist )
 		ldap_con.unbind_s()
+
+# TODO: this should probably go into univention-lib
+# and hide urllib/urllib2 completely
+# i.e. it should be unnecessary to import them directly
+# in a module
+def install_opener(ucr):
+	proxy_http = ucr.get('proxy/http')
+	if proxy_http:
+		proxy = urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http})
+		opener = urllib2.build_opener(proxy)
+		urllib2.install_opener(opener)
+
+def urlopen(request):
+	# use this in __init__
+	# to have the proxy handler installed globally
+	return urllib2.urlopen(request)
+
+def dump_license():
+	try:
+		_lo, _pos = univention.admin.uldap.getMachineConnection(ldap_master=False)
+		data = _lo.search('objectClass=univentionLicense')
+		del _lo
+		del _pos
+		# just one license (should be always the case)
+		# return the dictionary without the dn
+		data = ldif.CreateLDIF(data[0][0], data[0][1])
+		return data
+	except Exception as e:
+		# no udm, no ldap, malformed return value, whatever
+		MODULE.error('getting License from LDAP failed: %s' % e)
+		return None
+

@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
+import re
 import grp
 import os
 import shutil
@@ -39,13 +40,15 @@ import notifier
 import notifier.threads
 import pwd
 import tempfile
+import urllib
+import urllib2
 import traceback
 
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
-from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing
+from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.modules.decorators import simple_response, sanitize
-from univention.management.console.modules.sanitizers import LDAPSearchSanitizer
+from univention.management.console.modules.sanitizers import LDAPSearchSanitizer, EmailSanitizer
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.session import TEMPUPLOADDIR
 
@@ -58,7 +61,7 @@ import univention.directory.reports as udr
 from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_dn2path, get_module, read_syntax_choices, list_objects, LDAP_Connection, set_credentials, container_modules, info_syntax_choices, search_syntax_choices_by_key
-from .tools import LicenseError, LicenseImport
+from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
 class Instance( Base ):
@@ -67,6 +70,7 @@ class Instance( Base ):
 		self.settings = None
 		self.reports = None
 		self.modules_with_childs = []
+		install_opener(ucr)
 
 	def init( self ):
 		'''Initialize the module. Invoked when ACLs, commands and
@@ -1078,3 +1082,29 @@ class Instance( Base ):
 		thread = notifier.threads.Simple( 'ObjectOptions', notifier.Callback( _thread, object_type, object_dn ),
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
+
+	@sanitize(email=EmailSanitizer(required=True))
+	@simple_response
+	def request_new_license(self, email):
+		license = dump_license()
+		if license is None:
+			raise UMC_CommandError(_('Cannot parse License from LDAP'))
+		data = {}
+		data['email'] = email
+		data['licence'] = license
+		data = urllib.urlencode(data)
+		url = 'https://license.univention.de/keyid/conversion/submit'
+		request = urllib2.Request(url, data=data, headers={'User-agent' : 'UMC/AppCenter'})
+		try:
+			urlopen(request)
+		except Exception as e:
+			try:
+				# try to parse an html error
+				body = e.read()
+				detail = re.search('<span id="details">(?P<details>.*?)</span>',  body).group(1)
+			except:
+				detail = str(e)
+			raise UMC_CommandError(_('An error occurred while sending the request: %s') % detail)
+		else:
+			return True
+
