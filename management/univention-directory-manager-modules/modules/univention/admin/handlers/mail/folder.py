@@ -48,7 +48,7 @@ usewizard=1
 
 
 childs=0
-short_description=_('Mail: IMAP folder')
+short_description=_('Mail folder (IMAP)')
 long_description=''
 
 module_search_filter=univention.admin.filter.conjunction('&', [

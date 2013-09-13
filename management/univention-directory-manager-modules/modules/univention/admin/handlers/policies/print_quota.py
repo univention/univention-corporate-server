@@ -45,10 +45,10 @@ _=translation.translate
 class sharePrintQuotaFixedAttributes(univention.admin.syntax.select):
 	name='sharePrintQuotaFixedAttributes'
 	choices=[
-				('univentionPrintQuotaGroups',_('Allowed Groups')),
-				('univentionPrintQuotaUsers',_('Allowed Users')),
-				('univentionPrintQuotaGroupsPerUsers',_('Allowed Groups per User'))
-			]
+		('univentionPrintQuotaGroups', _('Print quota for groups')),
+		('univentionPrintQuotaUsers', _('Print quota for users')),
+		('univentionPrintQuotaGroupsPerUsers', _('Print quota for groups per user'))
+	]
 
 module='policies/print_quota'
 operations=['add','edit','remove','search']

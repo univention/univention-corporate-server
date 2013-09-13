@@ -76,7 +76,7 @@ property_descriptions={
 		),
 	'length': univention.admin.property(
 			short_description=_('History length'),
-			long_description='',
+			long_description=_('This number indicates after how many changes the user may reuse the old password again'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
 			options=[],
@@ -86,7 +86,7 @@ property_descriptions={
 		),
 	'expiryInterval': univention.admin.property(
 			short_description=_('Password expiry interval'),
-			long_description='',
+			long_description=_('Number of days after which the password has to be changed'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
 			options=[],
@@ -96,7 +96,7 @@ property_descriptions={
 		),
 	'pwLength': univention.admin.property(
 			short_description=_('Password length'),
-			long_description='',
+			long_description=_('Minimal amount of characters'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
 			options=[],

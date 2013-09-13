@@ -44,7 +44,7 @@ operations=['add','edit','remove','search','move']
 usewizard=1
 
 childs=0
-short_description=_('Mail: Mail domain')
+short_description=_('Mail domain')
 long_description=''
 
 module_search_filter=univention.admin.filter.conjunction('&', [

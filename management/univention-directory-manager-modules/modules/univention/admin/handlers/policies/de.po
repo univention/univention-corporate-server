@@ -29,10 +29,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-19 11:08+0200\n"
+"POT-Creation-Date: 2013-09-13 17:36+0200\n"
 "PO-Revision-Date: 2011-10-29 22:19+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
@@ -135,7 +136,7 @@ msgstr "Univention Directory Manager Konfiguration"
 #: dhcp_dns.py:145 dhcp_dnsupdate.py:214 dhcp_leasetime.py:157
 #: dhcp_netbios.py:156 dhcp_routing.py:133 dhcp_scope.py:179
 #: dhcp_statements.py:190 ldapserver.py:134 mailquota.py:134
-#: maintenance.py:219 masterpackages.py:146 memberpackages.py:146
+#: maintenance.py:221 masterpackages.py:146 memberpackages.py:146
 #: nfsmounts.py:134 print_quota.py:159 printserver.py:134 pwhistory.py:169
 #: registry.py:135 release.py:144 repositoryserver.py:135
 #: repositorysync.py:177 share_userquota.py:168 slavepackages.py:146
@@ -632,12 +633,12 @@ msgid "Policy: Maintenance"
 msgstr "Richtlinie: Paketpflege"
 
 #: maintenance.py:77
-msgid "System startup"
-msgstr "Systemstart"
+msgid "Perform maintenance after system startup"
+msgstr "Paketpflege durchführen nach Hochfahren des Systems"
 
 #: maintenance.py:87
-msgid "System shutdown"
-msgstr "System herunterfahren"
+msgid "Perform maintenance before system shutdown"
+msgstr "Paketpflege durchführen vor Herunterfahren des Systems"
 
 #: maintenance.py:97
 msgid "Reboot after maintenance"
@@ -741,17 +742,17 @@ msgstr "Suchen"
 msgid "Find Policy Object(s)"
 msgstr "Richtlinien-Objekt(e) suchen"
 
-#: print_quota.py:48
-msgid "Allowed Groups"
-msgstr "Berechtigte Gruppen"
+#: print_quota.py:48 print_quota.py:80
+msgid "Print quota for groups"
+msgstr "Druck-Quota für Gruppen"
 
-#: print_quota.py:49
-msgid "Allowed Users"
-msgstr "Berechtigte Benutzer"
+#: print_quota.py:49 print_quota.py:100
+msgid "Print quota for users"
+msgstr "Druck-Quota für Benutzer"
 
-#: print_quota.py:50
-msgid "Allowed Groups per User"
-msgstr "Berechtigte Gruppen pro Benutzer"
+#: print_quota.py:50 print_quota.py:90
+msgid "Print quota for groups per user"
+msgstr "Druck-Quota für Gruppen pro Benutzer"
 
 #: print_quota.py:61
 msgid "Policy: Print quota"
@@ -765,25 +766,13 @@ msgstr "Druck-Quota"
 msgid "Print Quota for users/groups per printer"
 msgstr "Druck-Quota pro Benutzer/Gruppe für einen Drucker"
 
-#: print_quota.py:80
-msgid "Print quota for groups"
-msgstr "Druck-Quota für Gruppen"
-
 #: print_quota.py:81
 msgid "Soft- and Hardlimit for each allowed group"
 msgstr "Soft- und Hard-Limit für jede berechtigte Gruppe"
 
-#: print_quota.py:90
-msgid "Print quota for groups per user"
-msgstr "Druck-Quota für Gruppen pro Benutzer"
-
 #: print_quota.py:91
 msgid "Soft- and Hardlimit for each member of allowed group"
 msgstr "Soft- und Hard-Limit für jedes Mitglied der berechtigten Gruppe"
-
-#: print_quota.py:100
-msgid "Print quota for users"
-msgstr "Druck-Quota für Benutzer"
 
 #: print_quota.py:101
 msgid "Soft- and Hardlimit for each allowed user"
@@ -825,6 +814,22 @@ msgstr "Richtlinie: Passwort"
 #: pwhistory.py:61 pwhistory.py:160
 msgid "Passwords"
 msgstr "Passwort-Richtlinie"
+
+#: pwhistory.py:79
+msgid ""
+"This number indicates after how many changes the user may reuse the old "
+"password again"
+msgstr ""
+"Diese Zahl gibt an, nach wie vielen Passwortwechseln der Benutzer ein altes "
+"Passwort wiederverwenden darf"
+
+#: pwhistory.py:89
+msgid "Number of days after which the password has to be changed"
+msgstr "Anzahl an Tagen, nach der das Passwort geändert werden muss"
+
+#: pwhistory.py:99
+msgid "Minimal amount of characters"
+msgstr "Mindestanzahl an Zeichen"
 
 #: pwhistory.py:108
 msgid "Password quality check"
@@ -985,6 +990,21 @@ msgstr "Definiert eine Liste von erlaubten UMC Operationen"
 #: umc.py:77
 msgid "List of allowed UMC operation sets"
 msgstr "Liste der erlaubten UMC Operationen"
+
+#~ msgid "Allowed Groups"
+#~ msgstr "Berechtigte Gruppen"
+
+#~ msgid "Allowed Users"
+#~ msgstr "Berechtigte Benutzer"
+
+#~ msgid "Allowed Groups per User"
+#~ msgstr "Berechtigte Gruppen pro Benutzer"
+
+#~ msgid "Soft limit (pages)"
+#~ msgstr "Soft-Limit (Seiten)"
+
+#~ msgid "Hard limit (pages)"
+#~ msgstr "Hard-Limit (Seiten)"
 
 #~ msgid "Client devices"
 #~ msgstr "Client-Peripherie"

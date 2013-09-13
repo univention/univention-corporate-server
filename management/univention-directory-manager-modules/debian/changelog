@@ -1,3 +1,12 @@
+univention-directory-manager-modules (9.0.34-1) unstable; urgency=low
+
+  * Fix wording in mail objects (Bug #24028)
+  * Fix wording in password policy (Bug #23698)
+  * Fix wording in maintenance policy (Bug #23697)
+  * Fix wording in printer quota policy (Bug #23695)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Sep 2013 17:43:27 +0200
+
 univention-directory-manager-modules (9.0.33-1) unstable; urgency=low
 
   * fixed .po file (Bug #30342)

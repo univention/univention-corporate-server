@@ -44,7 +44,7 @@ operations=['add','edit','remove','search','move']
 usewizard=1
 
 childs=0
-short_description=_('Mail: Mailing lists')
+short_description=_('Mailing list')
 long_description=''
 
 module_search_filter=univention.admin.filter.expression('objectClass', 'univentionMailList'),

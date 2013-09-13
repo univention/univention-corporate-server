@@ -74,7 +74,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'startup': univention.admin.property(
-			short_description=_('System startup'),
+			short_description=_('Perform maintenance after system startup'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -84,7 +84,7 @@ property_descriptions={
 			identifies=0
 		),
 	'shutdown': univention.admin.property(
-			short_description=_('System shutdown'),
+			short_description=_('Perform maintenance before system shutdown'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -209,8 +209,10 @@ layout = [
 	Tab(_('General'),_('Maintenance settings'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
-			[ 'startup', 'shutdown' ],
-			[ 'cron','reboot' ],
+			'startup',
+			'shutdown',
+			'cron',
+			'reboot',
 			[ 'month', 'weekday' ],
 			[ 'day', 'hour' ],
 			'minute'

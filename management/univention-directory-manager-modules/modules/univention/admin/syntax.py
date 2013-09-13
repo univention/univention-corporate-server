@@ -2390,9 +2390,9 @@ class SambaPrivileges( select ):
 class UCSServerRole( select ):
 	empty_value = True
 	choices = [
-		( 'domaincontroller_master', _( 'Domainctonroller Master' ) ),
-		( 'domaincontroller_backup', _( 'Domainctonroller Backup' ) ),
-		( 'domaincontroller_slave', _( 'Domainctonroller Slave' ) ),
+		( 'domaincontroller_master', _( 'Domaincontroller Master' ) ),
+		( 'domaincontroller_backup', _( 'Domaincontroller Backup' ) ),
+		( 'domaincontroller_slave', _( 'Domaincontroller Slave' ) ),
 		( 'memberserver', _( 'Memberserver' ) ),
 	]
 
@@ -2708,13 +2708,13 @@ class PrinterNames( UDM_Objects ):
 		return 'spoolHost=%s' % '|'.join( options[ Printers.depends ] )
 
 class PrintQuotaGroup( complex ):
-	subsyntaxes = ( ( _( 'Soft limit' ), integer ), ( _( 'Hard limit' ), integer ), ( _( 'Group' ), GroupName ) )
+	subsyntaxes = ( ( _( 'Soft limit (pages)' ), integer ), ( _( 'Hard limit (pages)' ), integer ), ( _( 'Group' ), GroupName ) )
 
 class PrintQuotaGroupPerUser( complex ):
-	subsyntaxes = ( ( _( 'Soft limit' ), integer ), ( _( 'Hard limit' ), integer ), ( _( 'Group' ), GroupName ) )
+	subsyntaxes = ( ( _( 'Soft limit (pages)' ), integer ), ( _( 'Hard limit (pages)' ), integer ), ( _( 'Group' ), GroupName ) )
 
 class PrintQuotaUser( complex ):
-	subsyntaxes = ( ( _( 'Soft limit' ), integer ), ( _( 'Hard limit' ), integer ), ( _( 'User' ), UserName ) )
+	subsyntaxes = ( ( _( 'Soft limit (pages)' ), integer ), ( _( 'Hard limit (pages)' ), integer ), ( _( 'User' ), UserName ) )
 
 class printerName(simple):
 	min_length=1
