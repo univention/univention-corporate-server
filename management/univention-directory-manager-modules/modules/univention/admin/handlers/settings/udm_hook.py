@@ -3,7 +3,7 @@
 # Univention Directory Manager Hooks
 #  direcory manager module for UDM hooks
 #
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2013-2013 Univention GmbH
 #
 # http://www.univention.de/
 #

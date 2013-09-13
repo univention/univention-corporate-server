@@ -1,23 +1,23 @@
 [directory/manager/cmd/debug/level]
-Description[de]=Debug level des Univention Directory Manager Kommandozeilenprogramm (0-4)
-Description[en]=Debug level of Univention Directory Notifiers command line tool (0-4)
+Description[de]=Der Detailgrad der Logausgaben in /var/log/univention/directory-manager-cmd.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
+Description[en]=The verbosity of log messages in /var/log/univention/directory-manager-cmd.log. Possible values: 0-4 (0: only error messages to 4: all debug statements).
 Type=int
 Categories=service-ldap
 
 [directory/manager/cmd/timeout]
-Description[de]=Zeitspanne in Sekunden, nach der sich der Univention Directory Manager Server bei Nichtbenutzung automatisch beendet [5 Minuten]
-Description[en]=Time span after which an idle Univention Directory Manager server automatically terminates [5 minutes]
+Description[de]=Die Zeitspanne in Sekunden, nach der sich der Univention Directory Manager-Server bei Nichtbenutzung automatisch beendet. Ist die Variable nicht gesetzt, gelten 300 Sekunden.
+Description[en]=Time span after which an idle Univention Directory Manager server automatically terminates. If the variable is unset, 300 seconds apply.
 Type=int
 Categories=service-ldap
 
 [directory/manager/cmd/sockettimeout]
-Description[de]=Zeitspanne in Sekunden, die der CLI-Client auf ein Socketfile des CLI-Servers wartet.
-Description[en]=Time span in seconds the CLI client waits for a socket file of the CLI server.
+Description[de]=Die Zeitspanne in Sekunden, die der Univention Directory Manager-Kommandozeilen-Client auf ein Socketfile des UDM-Servers wartet. Ist die Variable nicht gesetzt, gelten 50 Sekunden.
+Description[en]=The time span in seconds the Univention Directory Manager command line client waits for a socket file of the UDM server. If the variable is unset, 50 seconds apply.
 Type=int
 Categories=service-ldap
 
 [ldap/replication/preferredpassword]
-Description[de]=Wenn diese Variable auf "true" oder "yes" gesetzt ist, so ändert das Programm /usr/share/univention-directory-manager-tools/univention-passwd das Passwort im LDAP Verzeichnis des Masters und es ändert das Passwort im lokalen LDAP Verzeichnis ohne auf die LDAP Replikation zu warten. Dies ist nützlich für Samba 3 Slave PDC Umgebungen (default: false).
-Description[en]=If this variable is set to "true" or "yes" the tool /usr/share/univention-directory-manager-tools/univention-passwd will change the password in the LDAP master directory and it will also change the password in the local LDAP directory without waiting for the LDAP replication. This is useful for Samba 3 Slave PDC setups (default: false).
-Type=bool
+Description[de]=Ist diese Variable auf "true" oder "yes" gesetzt, so ändert das Programm /usr/share/univention-directory-manager-tools/univention-passwd das Passwort im LDAP-Verzeichnis des Masters und im lokalen LDAP-Server ohne auf die LDAP-Replikation zu warten. Dies ist nur für Samba 3-Installationen relevant, bei denen ein DC Slave als PDC betrieben wird. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[en]=If this variable is set to "true" or "yes" the tool /usr/share/univention-directory-manager-tools/univention-passwd will change the password in the LDAP directory on the master DC and on the local LDAP server without waiting for the LDAP replication. This is only relevant for Samba 3 installations using a slave DC as PDC. If the variable is unset, the option is deactivated.
+Type=str
 Categories=service-ldap

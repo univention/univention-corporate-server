@@ -1,3 +1,20 @@
+univention-directory-manager-modules (9.0.30-3) unstable; urgency=low
+
+  * Update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30946)
+      Remove UCR variable description for 
+        directory/manager/web/modules/users/user/properties/homePostalAddress/syntax
+        Only relevant for very few, old installations
+      Remove UCR variable description for directory/manager/usercn/attributes,
+        currently broken in UCS, see #32582
+      Remove UCR variable description for 
+        directory/manager/web/modules/.*/.*/properties/.*/.*, currently
+	broken, see #23765
+      Remove UCR variable descriptions for
+	directory/manager/web/modules/.*/.*/layout/.*, they are removed in #26673
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 13 Sep 2013 10:55:04 +0200
+
 univention-directory-manager-modules (9.0.30-2) unstable; urgency=low
 
   * Allow modifications with the versionnumber unchanged
