@@ -1673,6 +1673,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;31764">Bug 31764</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  Unjoin scripts have been added to the <emphasis>univention-printserver</emphasis> and
+		  <emphasis>univention-printquoata</emphasis> packages. The unjoin scripts remove the service
+		  entry from the server object and remove the default UCR
+		  variables (<ulink url="&ucsbug;32452">Bug 32452</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
