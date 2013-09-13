@@ -2,7 +2,7 @@
 #
 # Univention Xen VirtIO rules file
 #
-# Copyright 2011-2012 Univention GmbH
+# Copyright 2011-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,6 +31,9 @@
 
 %:
 	dh $@
+
+override_dh_auto_test:
+	ucslint
 
 get-orig-source:
 	$(MAKE) $@

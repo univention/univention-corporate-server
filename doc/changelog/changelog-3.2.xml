@@ -2025,6 +2025,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The VirtIO drivers were updated to version 0.1-65 (<ulink url="&ucsbug;27717">Bug 27717</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 			An unjoin script has been added to package <package>univention-virtual-machine-manager-node-kvm</package>.
 			The unjoin script removes the KVM service from the server object and removes the default &ucsUCRV;s (<ulink url="&ucsbug;32448">Bug 32448</ulink>).
 		</simpara></listitem>

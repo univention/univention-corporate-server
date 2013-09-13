@@ -3,7 +3,7 @@
 # Univention virtio
 #  postinst script for the debian package
 #
-# Copyright 2011-2012 Univention GmbH
+# Copyright 2011-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,18 +32,16 @@
 
 #DEBHELPER#
 
-iso="KVM Windows drivers (virtio 0.1-30).iso"
-
 pool="$(ucr get uvmm/pool/default/path)"
-if [ -z "$pool" ]; then
-	pool="/var/lib/libvirt/images"
-fi
-if [ ! -d "$pool" ]; then
-	mkdir -p "$pool"
-fi
+[ -n "$pool" ] || pool="/var/lib/libvirt/images"
+[ -d "$pool" ] || mkdir -p "$pool"
 
-if [ ! -L "$pool/$iso" -a ! -e "$pool/$iso" ]; then
-	cp /usr/share/univention-kvm-virtio/*.iso "$pool/$iso"
-fi
+for iso in /usr/share/univention-kvm-virtio/*.iso
+do
+	[ -s "$iso" ] || continue
+	[ -e "$pool/${iso##*/}" ] && continue
+	[ -L "$pool/${iso##*/}" ] && continue
+	install -m 644 -t "$pool" "$iso"
+done
 
 exit 0
