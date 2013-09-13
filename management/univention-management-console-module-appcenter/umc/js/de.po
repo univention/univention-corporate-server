@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-09-11 14:24+0200\n"
+"POT-Creation-Date: 2013-09-13 12:33+0200\n"
 "PO-Revision-Date: 2011-11-02 09:36+0100\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,12 +77,12 @@ msgstr "--- alle ---"
 msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
-#: umc/js/appcenter/AppDetailsPage.js:580
+#: umc/js/appcenter/AppDetailsPage.js:549
 #, python-format
 msgid "A module for the administration of the app is available: %s."
 msgstr "Ein Modul zur Administration dieser App steht zur Verfügung: %s."
 
-#: umc/js/appcenter/PackagesPage.js:470 umc/js/appcenter/AppDetailsPage.js:548
+#: umc/js/appcenter/PackagesPage.js:470 umc/js/appcenter/AppDetailsPage.js:517
 msgid ""
 "A restart of the UMC server components may be necessary for the software "
 "changes to take effect."
@@ -110,7 +110,7 @@ msgstr "Neue Komponentendefinition hinzufügen"
 msgid "Advanced settings"
 msgstr "Weitere Einstellungen"
 
-#: umc/js/appcenter/AppDetailsPage.js:485
+#: umc/js/appcenter/AppDetailsPage.js:454
 #, python-format
 msgid "After that you can \"%(action)s\" \"%(app)s\" here on this system."
 msgstr "Danach können Sie \"%(app)s\" hier auf diesem System \"%(action)s\"."
@@ -124,7 +124,7 @@ msgstr "Alle"
 msgid "An unknown error with code %d occured."
 msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
-#: umc/js/appcenter/AppDetailsPage.js:503 umc/js/appcenter/requirements.js:81
+#: umc/js/appcenter/AppDetailsPage.js:472 umc/js/appcenter/requirements.js:81
 msgid "Another package operation is in progress."
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt."
 
@@ -256,7 +256,7 @@ msgstr "Deaktiviert"
 msgid "Do you really want to %(verb)s %(ids)s?"
 msgstr "Möchten Sie %(ids)s wirklich %(verb)s?"
 
-#: umc/js/appcenter/AppDetailsPage.js:568
+#: umc/js/appcenter/AppDetailsPage.js:537
 msgid "Domain administration"
 msgstr "Domänenadministration"
 
@@ -271,10 +271,6 @@ msgstr "Komponenten-Details [{component}] bearbeiten"
 #: umc/js/appcenter/SettingsPage.js:201
 msgid "Edit the detail information about this component"
 msgstr "Detailinformation über diese Komponente bearbeiten"
-
-#: umc/js/appcenter/AppDetailsPage.js:453
-msgid "Email address"
-msgstr "E-Mail-Adresse"
 
 #: umc/js/appcenter/SettingsPage.js:155
 msgid "Enable"
@@ -300,7 +296,7 @@ msgstr ""
 "Für die Installation dieser Applikation ist ein aktueller UCS-"
 "Lizenzschlüssel mit sogenannter Schlüsselidentifikation (Key-ID) notwendig."
 
-#: umc/js/appcenter/AppDetailsPage.js:530
+#: umc/js/appcenter/AppDetailsPage.js:499
 #, python-format
 msgid ""
 "Further information can be found in the following log file on each of the "
@@ -313,7 +309,7 @@ msgstr ""
 msgid "General repository settings"
 msgstr "Allgemeine Repository-Einstellungen"
 
-#: umc/js/appcenter/AppDetailsPage.js:528
+#: umc/js/appcenter/AppDetailsPage.js:497
 #, python-format
 msgid ""
 "If everything else went correct and this is just a temporary network "
@@ -370,7 +366,7 @@ msgstr "Installierte Version"
 msgid "Installing"
 msgstr "Installiere"
 
-#: umc/js/appcenter/AppDetailsPage.js:526
+#: umc/js/appcenter/AppDetailsPage.js:495
 #, python-format
 msgid "Installing the extension of the LDAP schema on %s seems to have failed."
 msgstr ""
@@ -401,10 +397,6 @@ msgstr "Betreuer"
 #: umc/js/appcenter/AppCenterPage.js:68
 msgid "Manage Applications for UCS"
 msgstr "Applikationen für UCS verwalten"
-
-#: umc/js/appcenter/AppDetailsPage.js:444
-msgid "More information"
-msgstr "Weiterführende Informationen"
 
 #: umc/js/appcenter/AppDetailsPage.js:75
 msgid "Name of the installed application"
@@ -512,24 +504,9 @@ msgstr "Bitte korrigieren Sie die betreffenden Eingabefelder."
 msgid "Please enter the details for the new component."
 msgstr "Bitte geben Sie die Details für die neue Komponente ein."
 
-#: umc/js/appcenter/AppDetailsPage.js:439
-msgid ""
-"Please provide a valid email address such that an updated license can be "
-"sent to you. This may take a few minutes. You can then upload the updated "
-"license key directly in the following license dialog."
-msgstr ""
-"Bitte geben Sie eine gültige E-Mail-Adresse an, an die eine aktualisierte "
-"Lizenz geschickt werden kann. Das kann ein paar Minuten dauern. Anschließend "
-"können Sie den aktualisierten Lizenzschlüssel direkt im folgenden "
-"Lizenzdialog hochladen."
-
 #: umc/js/appcenter/PackagesPage.js:316
 msgid "Priority"
 msgstr "Priorität"
-
-#: umc/js/appcenter/AppDetailsPage.js:439
-msgid "Provision of an updated UCS license key"
-msgstr "Bereitstellung eines aktualisierten UCS-Lizenzschlüssels"
 
 #: umc/js/appcenter/SettingsPage.js:139
 msgid "Refresh"
@@ -567,10 +544,6 @@ msgstr "Repository-Einstellungen"
 #: umc/js/appcenter/requirements.js:101
 msgid "Request a new license"
 msgstr "Neue Lizenz anfordern"
-
-#: umc/js/appcenter/AppDetailsPage.js:434
-msgid "Request updated license key with identification"
-msgstr "Aktualisierten Lizenzschlüssel mit Identifikation anfordern"
 
 #: umc/js/appcenter/SettingsPage.js:87
 msgid "Reset"
@@ -629,7 +602,7 @@ msgstr "Neue App vorschlagen"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: umc/js/appcenter/AppDetailsPage.js:587
+#: umc/js/appcenter/AppDetailsPage.js:556
 #, python-format
 msgid "The app provides a web interface: %s."
 msgstr "Die App bietet ein Webinterface: %s."
@@ -722,24 +695,24 @@ msgstr ""
 msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
 
-#: umc/js/appcenter/AppDetailsPage.js:657
+#: umc/js/appcenter/AppDetailsPage.js:626
 msgid "This application will inform the maintainer if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Betreuer über eine (De)Installation in Kenntnis."
 
-#: umc/js/appcenter/AppDetailsPage.js:659
+#: umc/js/appcenter/AppDetailsPage.js:628
 msgid "This application will inform the vendor if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Hersteller über eine (De)Installation in "
 "Kenntnis."
 
-#: umc/js/appcenter/AppDetailsPage.js:663
+#: umc/js/appcenter/AppDetailsPage.js:632
 msgid "This application will not inform the maintainer if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Betreuer nicht über eine (De)Installation in "
 "Kenntnis."
 
-#: umc/js/appcenter/AppDetailsPage.js:665
+#: umc/js/appcenter/AppDetailsPage.js:634
 msgid "This application will not inform the vendor if you (un)install it."
 msgstr ""
 "Diese Applikation setzt den Hersteller nicht über eine (De)Installation in "
@@ -762,7 +735,7 @@ msgstr ""
 "Diese Seite dient dazu, Ihrer UCS-Installation weitere Applikationen "
 "hinzuzufügen oder diese zu entfernen."
 
-#: umc/js/appcenter/AppDetailsPage.js:479
+#: umc/js/appcenter/AppDetailsPage.js:448
 #, python-format
 msgid ""
 "To do this please log in as %s and repeat the steps taken until this dialog. "
@@ -771,17 +744,16 @@ msgstr ""
 "Melden Sie sich dazu bitte als %s an und wiederholen Sie alle Schritte bis "
 "zu diesem Dialog. Sie werden durch die Installation geführt werden."
 
-#: umc/js/appcenter/AppDetailsPage.js:484
+#: umc/js/appcenter/AppDetailsPage.js:453
 #, python-format
 msgid ""
-"To do this please log in on %(host)s. Open the App Center there and click on "
-"\"%(app)s\" and \"%(action)s\". The process will not start, instead you will "
-"be guided through the steps of installing a license."
+"To do this please log in on %(host)s as an administrator. Click on the gear-"
+"wheel symbol in the top right line of the screen and choose \"License\". "
+"There you can request the new license."
 msgstr ""
-"Melden Sie sich dazu bitte auf %(host)s an. Öffnen Sie dort das App Center "
-"und klicken Sie auf \"%(app)s\" und \"%(action)s\". Der Vorgang wird nicht "
-"starten, sondern Sie werden durch die Installation einer neuen Lizenz "
-"geführt werden."
+"Melden Sie sich dazu bitte als ein Administrator auf %(host)s an. Klicken "
+"Sie in der oberen rechten Bildschirmzeile auf das Zahnrad-Symbol und wählen "
+"Sie den Punkt \"Lizenz\". Dort können Sie eine neue Lizenz anfordern."
 
 #: umc/js/appcenter/PackagesPage.js:103 umc/js/appcenter/PackagesPage.js:240
 #: umc/js/appcenter/AppDetailsPage.js:169
@@ -858,7 +830,7 @@ msgstr "'Unmaintained' Repositories benutzen"
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/js/appcenter/AppDetailsPage.js:572
+#: umc/js/appcenter/AppDetailsPage.js:541
 #, python-format
 msgid "Users need to be modified in the %s in order to use this service."
 msgstr "Benutzer müssen in der %s für diesen Dienst freigeschaltet werden."
@@ -905,8 +877,8 @@ msgstr "Ja"
 msgid "You cannot continue"
 msgstr "Fortfahren nicht möglich"
 
-#: umc/js/appcenter/AppDetailsPage.js:478
-#: umc/js/appcenter/AppDetailsPage.js:483 umc/js/appcenter/requirements.js:98
+#: umc/js/appcenter/AppDetailsPage.js:447
+#: umc/js/appcenter/AppDetailsPage.js:452 umc/js/appcenter/requirements.js:98
 msgid ""
 "You need to request and install a new license in order to use the Univention "
 "App Center."
@@ -1000,6 +972,9 @@ msgstr "aktualisieren"
 #~ msgid "Details for Application '%(name)s'"
 #~ msgstr "Details zur Applikation '%(name)s'"
 
+#~ msgid "Email address"
+#~ msgstr "E-Mail-Adresse"
+
 #~ msgid "Going to {verb} Application '{name}'"
 #~ msgstr "Im Begriff, die Applikation '{name}' zu {verb}"
 
@@ -1009,11 +984,30 @@ msgstr "aktualisieren"
 #~ msgid "Installation not possible"
 #~ msgstr "Installation nicht möglich"
 
+#~ msgid "More information"
+#~ msgstr "Weiterführende Informationen"
+
 #~ msgid "Name"
 #~ msgstr "Name"
 
 #~ msgid "Packages for master system"
 #~ msgstr "Pakete für den Master"
+
+#~ msgid ""
+#~ "Please provide a valid email address such that an updated license can be "
+#~ "sent to you. This may take a few minutes. You can then upload the updated "
+#~ "license key directly in the following license dialog."
+#~ msgstr ""
+#~ "Bitte geben Sie eine gültige E-Mail-Adresse an, an die eine aktualisierte "
+#~ "Lizenz geschickt werden kann. Das kann ein paar Minuten dauern. "
+#~ "Anschließend können Sie den aktualisierten Lizenzschlüssel direkt im "
+#~ "folgenden Lizenzdialog hochladen."
+
+#~ msgid "Provision of an updated UCS license key"
+#~ msgstr "Bereitstellung eines aktualisierten UCS-Lizenzschlüssels"
+
+#~ msgid "Request updated license key with identification"
+#~ msgstr "Aktualisierten Lizenzschlüssel mit Identifikation anfordern"
 
 #~ msgid ""
 #~ "Right after this form, you will see another dialog where you can upload "
@@ -1050,6 +1044,16 @@ msgstr "aktualisieren"
 #~ "E-Mail-Adresse an. Anschließend wird Ihnen in ein paar Minuten eine "
 #~ "aktualisierte Lizenz an die angegebene E-Mail-Adresse gesendet, die Sie "
 #~ "direkt im Lizenzdialog einspielen und aktualisieren können."
+
+#~ msgid ""
+#~ "To do this please log in on %(host)s. Open the App Center there and click "
+#~ "on \"%(app)s\" and \"%(action)s\". The process will not start, instead "
+#~ "you will be guided through the steps of installing a license."
+#~ msgstr ""
+#~ "Melden Sie sich dazu bitte auf %(host)s an. Öffnen Sie dort das App "
+#~ "Center und klicken Sie auf \"%(app)s\" und \"%(action)s\". Der Vorgang "
+#~ "wird nicht starten, sondern Sie werden durch die Installation einer neuen "
+#~ "Lizenz geführt werden."
 
 #~ msgid "UCS License Key"
 #~ msgstr "UCS-Lizenzschlüssel"

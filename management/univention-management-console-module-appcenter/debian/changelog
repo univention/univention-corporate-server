@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.32-1) unstable; urgency=low
+
+  * Adjust text for license request without UDM present (Bug #30629)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Sep 2013 12:16:37 +0200
+
 univention-management-console-module-appcenter (3.0.31-1) unstable; urgency=low
 
   * Register apps in LDAP (Bug #32416)

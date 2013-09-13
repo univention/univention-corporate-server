@@ -450,7 +450,7 @@ define([
 					var host_link = '<a target="_blank" href="https://' + this.app.host_master + '/univention-management-console">' + this.app.host_master + '</a>';
 					msg =
 						'<p>' + _('You need to request and install a new license in order to use the Univention App Center.') + '</p>' +
-						'<p>' + _('To do this please log in on %(host)s. Open the App Center there and click on "%(app)s" and "%(action)s". The process will not start, instead you will be guided through the steps of installing a license.', {host: host_link, action: action, app: this.app.name}) + '<p>' +
+						'<p>' + _('To do this please log in on %(host)s as an administrator. Click on the gear-wheel symbol in the top right line of the screen and choose "License". There you can request the new license.', {host: host_link}) + '<p>' +
 						'<p>' + _('After that you can "%(action)s" "%(app)s" here on this system.', {action: action, app: this.app.name}) + '</p>';
 				}
 				dialog.alert(msg);

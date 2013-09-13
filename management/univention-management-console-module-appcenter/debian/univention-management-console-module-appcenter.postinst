@@ -34,7 +34,7 @@
 
 univention-config-registry set repository/app_center/server?appcenter.test.software-univention.de
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" le "3.0.30-6.186.201309111536"; then
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" le "3.0.31-1.189.201309131145"; then
 	python -c "$(cat <<-EOF
 from univention.lib.package_manager import PackageManager
 from univention.updater import UniventionUpdater
