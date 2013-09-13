@@ -1890,6 +1890,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  Added a test in the postinst script of libnss-ldap to prevent the override of
 		  <filename>libnss-ldap.secret</filename> if it is a link <ulink url="&ucsbug;30779">Bug 30779</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The tool <emphasis>ldap-group-to-file.py</emphasis> does now support postrun hooks located in
+		  <filename>/var/lib/ldap-group-to-file-hooks.d</filename>. Thus scripts can be executed after
+		  changing the group memberships
+		  <ulink url="&ucsbug;32581">Bug 32581</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
