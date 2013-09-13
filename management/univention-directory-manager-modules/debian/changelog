@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.30-2) unstable; urgency=low
+
+  * Allow modifications with the versionnumber unchanged
+    (Bug #32403, Bug #32406, Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 13 Sep 2013 10:52:47 +0200
+
 univention-directory-manager-modules (9.0.30-1) unstable; urgency=low
 
   * Vastly improved file cleanup in udm_extension.py

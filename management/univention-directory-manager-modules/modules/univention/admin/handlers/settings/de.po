@@ -498,8 +498,8 @@ msgstr "Aktiviert"
 
 #: ldapacl.py:219 ldapschema.py:193 udm_hook.py:219 udm_module.py:219
 #: udm_syntax.py:219
-msgid "packageversion: The value needs to increase"
-msgstr "packageversion: Der Wert muss erhöht werden."
+msgid "packageversion: Version must not be lower than the current one."
+msgstr "packageversion: Der Wert darf nicht geringer sein als der aktuelle."
 
 #: ldapschema.py:51
 msgid "Settings: LDAP Schema Extension"
