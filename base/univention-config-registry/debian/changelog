@@ -1,6 +1,7 @@
 univention-config-registry (9.0.4-1) unstable; urgency=low
 
   * Handle empty values as unset values (Bug #28670)
+  * Add unit test (Bug #32544)
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 04 Sep 2013 14:16:43 +0200
 
