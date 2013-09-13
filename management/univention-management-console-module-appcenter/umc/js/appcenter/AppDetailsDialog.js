@@ -65,7 +65,6 @@ define([
 			var opts = {
 				appDetailsDialog: this,
 				appDetailsPage: appDetailsPage,
-				action: this.actionLabel
 			};
 			var foundRequirements = [];
 			tools.forIn(stressedRequirements, lang.hitch(this, function(name, details) {
@@ -91,9 +90,10 @@ define([
 							name: 'solution' + i,
 							label: foundRequirement.buttonLabel(this.app, details),
 							defaultButton: true,
-							callback: function() {
-								foundRequirement.solution(opts, this.app, details);
-							}
+							callback: lang.hitch(this, function() {
+								opts.action = this.actionLabel;
+								foundRequirement.solution(opts, details);
+							})
 						}];
 						container.addChild(new Form({
 							buttons: buttons

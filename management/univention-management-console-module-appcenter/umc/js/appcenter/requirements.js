@@ -145,7 +145,7 @@ define([
 			solutionLabel: function(details) {
 				return _('Open %s', details.detail[0].name);
 			},
-			solution: function(opts, app, details) {
+			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);
 				opts.appDetailsPage.appLoadingDeferred.then(function() {
 					opts.appDetailsDialog.onBack(false);
@@ -174,7 +174,7 @@ define([
 			solutionLabel: function(details) {
 				return _('Open %s', details.detail[0].name);
 			},
-			solution: function(opts, app, details) {
+			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);
 				opts.appDetailsPage.appLoadingDeferred.then(function() {
 					opts.appDetailsDialog.onBack(false);
@@ -193,7 +193,7 @@ define([
 			solutionLabel: function(details) {
 				return _('Open %s', details.detail[0].name);
 			},
-			solution: function(opts, app, details) {
+			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);
 				opts.appDetailsPage.appLoadingDeferred.then(function() {
 					opts.appDetailsDialog.onBack(false);
