@@ -39,6 +39,7 @@ import string
 import sys
 import os
 import tempfile
+import subprocess
 
 
 def _get_members(lo, g, recursion_list, check_member = False):
@@ -124,6 +125,18 @@ if __name__ == '__main__':
 	shutil.move(fdname, options.file)
 	if options.verbose:
 		print 'The file %s was created.' % options.file
+
+	if os.path.exists('/var/lib/ldap-group-to-file-hooks.d'):
+		if options.verbose:
+			stdout_pipe = sys.stdout
+			stderr_pipe = sys.stderr
+		else:
+			stdout_pipe = subprocess.PIPE
+			stderr_pipe = subprocess.PIPE
+		p = subprocess.Popen(['/bin/run-parts', '--verbose', '/var/lib/ldap-group-to-file-hooks.d'], stdout=stdout_pipe, stderr=stderr_pipe, shell=False)
+		returncode = p.wait()
+	elif options.verbose:
+		print '/var/lib/ldap-group-to-file-hooks.d does not exist'
 
 	sys.exit(0)
 

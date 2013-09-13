@@ -1,8 +1,15 @@
+univention-pam (7.0.1-1) unstable; urgency=low
+
+  * Added support for a hook directory which will be executed after the
+    ldap-group-to-file.py wrote the group members (Bug #32581)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Sep 2013 08:58:53 +0200
+
 univention-pam (7.0.0-2) unstable; urgency=low
 
   * Move motd startup for welcome message from /etc/pam.d/common-session to
    /etc/pam.d/sshd   (Bug #32432)
-	
+
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 04 Sep 2013 10:21:16 +0200
 
 univention-pam (7.0.0-1) unstable; urgency=low
