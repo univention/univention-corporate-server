@@ -224,6 +224,8 @@ class Interfaces(object):
 
 		self._all_interfaces = {}
 		for key, value in ucr.items():
+			if not value:
+				continue
 			match = RE_IFACE.match(key)
 			if not match:
 				continue
