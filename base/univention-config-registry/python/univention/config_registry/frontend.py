@@ -81,24 +81,24 @@ class UnknownKeyException(Exception):
 		return 'W: Unknown key: "%s"' % self.args
 
 
-def replog(method, scope, ucr, var, old_value, value=None):
+def replog(ucr, var, old_value, value=None):
 	"""
 	This function writes a new entry to replication logfile if
 	this feature has been enabled.
 	"""
 	if ucr.is_true('ucr/replog/enabled', False):
-		if method == 'set':
+		if value is not None:
+			method = 'set'
 			varvalue = "%s=%s" % (var, escape_value(value))
 		else:
+			method = 'unset'
 			varvalue = "'%s'" % var
 
-		scope_arg = ''
-		if scope == ConfigRegistry.LDAP:
-			scope_arg = '--ldap-policy '
-		elif scope == ConfigRegistry.FORCED:
-			scope_arg = '--force '
-		elif scope == ConfigRegistry.SCHEDULE:
-			scope_arg = '--schedule '
+		scope_arg = {
+				ConfigRegistry.LDAP: '--ldap-policy ',
+				ConfigRegistry.FORCED: '--force ',
+				ConfigRegistry.SCHEDULE: '--schedule ',
+				}.get(ucr.scope, '')
 
 		if old_value is None:
 			old_value = "[Previously undefined]"
@@ -172,7 +172,7 @@ def handler_set(args, opts=dict(), quiet=False):
 							(key, SCOPE[k[0]])
 				ucr[key] = value
 				changed[key] = (old, value)
-				replog('set', ucr.scope, ucr, key, old, value)
+				replog(ucr, key, old, value)
 			else:
 				if not quiet:
 					if old is not None:
@@ -213,7 +213,7 @@ def handler_unset(args, opts=dict()):
 				del ucr[arg]
 				changed[arg] = (oldvalue, '')
 				k = ucr.get(arg, None, getscope=True)
-				replog('unset', ucr.scope, ucr, arg, oldvalue)
+				replog(ucr, arg, oldvalue)
 				if k and k[0] > ucr.scope:
 					print >> sys.stderr, \
 							'W: %s is still set in scope "%s"' % \
