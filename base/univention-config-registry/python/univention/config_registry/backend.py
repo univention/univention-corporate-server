@@ -359,7 +359,7 @@ class _ConfigRegistry(dict):
 				mode = file_stat.st_mode
 				user = file_stat.st_uid
 				group = file_stat.st_gid
-			except OSError:
+			except:
 				mode = 00644
 				user = 0
 				group = 0

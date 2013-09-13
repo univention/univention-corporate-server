@@ -350,6 +350,10 @@
 		  The &ucsUCR; C library, used by Univention Directory Listener, now considers all layers of &ucsUCR;
 		  (<ulink url="&ucsbug;29964">Bug 29964</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  A new function was added to the Python API set and unset &ucsUCRV;s atomically through a disctionary (<ulink url="&ucsbug;32544">Bug 32544</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
 
 	<section>
@@ -662,6 +666,10 @@
 		<listitem><simpara>
 		  A dropdown menu for switching to UMC of other UCS systems in the domain has been added
 		  (<ulink url="&ucsbug;30744">Bug 30744</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Umlauts in certificates are now imported and shown correctly (<ulink url="&ucsbug;30722">Bug 30722</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
