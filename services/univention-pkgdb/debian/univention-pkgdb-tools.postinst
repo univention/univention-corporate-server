@@ -38,6 +38,12 @@ univention-config-registry set 'pkgdb/requiressl?true'
 
 #DEBHELPER#
 
+if [ "$1" = "configure" ]
+then
+	uinst=/usr/lib/univention-install/02univention-pkgdb-tools-uninstall.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
+
 call_joinscript 98univention-pkgdb-tools.inst || true
 
 exit 0

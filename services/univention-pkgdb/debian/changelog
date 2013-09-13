@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.9-1) unstable; urgency=low
+
+  * Add unjoin scripts (Bug #32492)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 13 Sep 2013 16:01:07 +0200
+
 univention-pkgdb (7.0.8-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition
