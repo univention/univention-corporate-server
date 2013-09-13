@@ -1,6 +1,6 @@
 [listener/debug/level]
-Description[de]=Der Detailgrad der Logausgaben in /var/log/univention/listener.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
-Description[en]=The verbosity of log messages in /var/log/univention/listener.log. Possible values: 0-4 (0: only error messages to 4: all debug statements).
+Description[de]=Diese Variable konfiguriert den Detailgrad der Logausgaben in /var/log/univention/listener.log. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben).
+Description[en]=This variable configures the verbosity of the log messages in /var/log/univention/listener.log. Possible values: 0-4 (0: only error messages to 4: all debug statements).
 Type=int
 Categories=service-ln
 
