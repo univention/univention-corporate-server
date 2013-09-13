@@ -123,6 +123,21 @@ class ConfigRegistry(dict):
 		registry = self._registry[self._write_registry]
 		registry.unlock()
 
+	def __enter__(self):
+		"""
+		Lock Config Registry for read-modify-write cycle.
+		> with ConfigRegistry() as ucr:
+		>   ucr['key'] = 'value'
+		"""
+		self.lock()
+		self.load()
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		if exc_type is None:
+			self.save()
+		self.unlock()
+
 	def __delitem__(self, key):
 		"""Delete registry key."""
 		registry = self._registry[self._write_registry]

@@ -139,10 +139,7 @@ def handler_set(args, opts=dict(), quiet=False):
 	else:
 		ucr = ConfigRegistry()
 
-	ucr.lock()
-	try:
-		ucr.load()
-
+	with ucr:
 		changed = {}
 		for arg in args:
 			sep_set = arg.find('=')  # set
@@ -183,10 +180,6 @@ def handler_set(args, opts=dict(), quiet=False):
 					else:
 						print 'Not setting %s' % key
 
-		ucr.save()
-	finally:
-		ucr.unlock()
-
 	handlers(changed.keys(), (ucr, changed))
 
 
@@ -207,10 +200,8 @@ def handler_unset(args, opts=dict()):
 		ucr = ConfigRegistry(write_registry=current_scope)
 	else:
 		ucr = ConfigRegistry()
-	ucr.lock()
-	try:
-		ucr.load()
 
+	with ucr:
 		handlers = ConfigHandlers()
 		handlers.load()
 
@@ -230,9 +221,6 @@ def handler_unset(args, opts=dict()):
 			else:
 				msg = "W: The config registry variable '%s' does not exist"
 				print >> sys.stderr, msg % (arg,)
-		ucr.save()
-	finally:
-		ucr.unlock()
 	handlers(changed.keys(), (ucr, changed))
 
 
