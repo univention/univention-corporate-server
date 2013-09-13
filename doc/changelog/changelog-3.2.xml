@@ -1003,7 +1003,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Various text changes have been made, translations have been adapted and added (<ulink url="&ucsbug;24727">Bug 24727</ulink>, <ulink url="&ucsbug;29552">Bug 29552</ulink>, <ulink url="&ucsbug;23691">Bug 23691</ulink>).
+			Various text changes have been made, translations have been adapted and
+			added. Descriptions were added or made clearer (<ulink
+				url="&ucsbug;24727">Bug 24727</ulink>, <ulink url="&ucsbug;29552">Bug
+				29552</ulink>, <ulink url="&ucsbug;23691">Bug 23691</ulink>, <ulink
+				url="&ucsbug;24028">Bug 24028</ulink>, <ulink url="&ucsbug;23698">Bug
+				23698</ulink>, <ulink url="&ucsbug;23697">Bug 23697</ulink>, <ulink
+				url="&ucsbug;23695">Bug 23695</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
