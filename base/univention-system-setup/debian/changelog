@@ -1,3 +1,15 @@
+univention-system-setup (7.0.41-1) unstable; urgency=low
+
+  * Bug #30816: rename device to interface
+  * Bug #30816: display the primary network interface selection as ComboBox
+  * Bug #30816: create missing bond/bridge sub interfaces automatically in the
+  	grid
+  * Bug #30816: prepare the consistency of interfaces before writing the
+  	profile
+  * Bug #30816: fix some little typos
+
+ -- Florian Best <best@univention.de>  Fri, 13 Sep 2013 12:45:25 +0200
+
 univention-system-setup (7.0.40-1) unstable; urgency=low
 
   * Bug #30816: fix detection of non physical interfaces

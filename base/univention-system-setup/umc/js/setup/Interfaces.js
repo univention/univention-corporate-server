@@ -203,7 +203,6 @@ define([
 
 	return declare("umc.modules.setup.Interfaces", [Stateful, Memory], {
 		physical_interfaces: null, /* String[] */
-		'interfaces/primary': null, /*String*/
 		interfaceTypeSorting: ['Ethernet', 'VLAN', 'Bridge', 'Bond'],
 		getAllTypes: function() {
 			return array.map(this.interfaceTypeSorting, function(id) {
@@ -232,12 +231,6 @@ define([
 		},
 		getInterface: function(devicename) {
 			return this.query({name: devicename})[0];
-		},
-		getPrimaryInterfaceName: function() {
-			return this['interfaces/primary'];
-		},
-		getPrimaryInterface: function() {
-			return this.getInterface(this['interfaces/primary']);
 		},
 		getAllInterfaces: function() {
 			return this.query();
@@ -301,35 +294,13 @@ define([
 				return !device.isBridge();
 			}).concat(this.getSubdevices(devicename));
 		}),
-		remove: function(devicename) {
-			var item = this.getInterface(devicename);
-			if (item && item.primary) {
-				this.set('interfaces/primary', '');
-			}
-			this.inherited(arguments);
-		},
 		add: function(device) {
 			device = this.createDevice(device);
-			this._setPrimaryState(device);
 			this.inherited(arguments, [device]);
 		},
 		put: function(device) {
 			var device = this.createDevice(device);
-			this._setPrimaryState(device);
 			this.inherited(arguments, [device]);
-		},
-		_setPrimaryState: function(device) {
-			// set or remove interfaces/primary if device was (de)selected as primary
-			if (device.primary) {
-				var prim = this.getPrimaryInterface();
-				if (prim && prim.name !== device.name) {
-					prim.primary = false;
-					this.put(prim);
-				}
-				this.set('interfaces/primary', device.name);
-			} else if (this['interfaces/primary'] === device.name) {
-				this.set('interfaces/primary', '');
-			}
 		},
 		setData: function(data) {
 			this.inherited(arguments, [array.map(data, lang.hitch(this, function(iface) { return this.createDevice(iface); }))]);

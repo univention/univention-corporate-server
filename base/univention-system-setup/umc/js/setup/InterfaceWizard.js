@@ -82,8 +82,8 @@ define([
 			lang.mixin(this, {
 				pages: [{
 					name: 'interfaceType',
-					headerText: _('Choose device type'),
-					helpText: _('Several network types can be chosen. <i>Ethernet</i> is a standard physical device. ') + _('<i>VLAN</i> devices can be used to separate network traffic logically while using only one or more physical network interfaces. ') + _('<i>Bridge</i> devices allows a physical network interface to be shared to connect one or more network segments. ') + _('<i>Bond</i> devices allows two or more physical network interfaces to be coupled.'),
+					headerText: _('Choose interface type'),
+					helpText: _('Several network types can be chosen. <i>Ethernet</i> is a standard physical interface. ') + _('<i>VLAN</i> interfaces can be used to separate network traffic logically while using only one or more physical network interfaces. ') + _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments. ') + _('<i>Bond</i> interfaces allows two or more physical network interfaces to be coupled.'),
 					widgets: [{
 						// required to rename
 						name: 'original_name',
@@ -93,7 +93,7 @@ define([
 					}, {
 						name: 'interfaceType',
 						type: ComboBox,
-						label: _('Device type'),
+						label: _('Interface type'),
 						value: device.interfaceType,
 						disabled: !this.creation,
 						sortDynamicValues: false,
@@ -196,7 +196,7 @@ define([
 						})
 					}, {
 						name: 'name_eth',
-						label: _('Device'),
+						label: _('Interface'),
 						value: device.name,
 						type: ComboBox,
 						dynamicValues: lang.hitch(this, function() {
@@ -244,14 +244,9 @@ define([
 					}]
 				}, {
 					name: 'network',
-					headerText: _('Network device configuration'),
+					headerText: _('Network interface configuration'),
 					helpText: _('Configuration of IPv4 and IPv6 adresses'),
 					widgets: [{
-						name: 'primary',
-						label: _('Configure as primary network device'),
-						type: CheckBox,
-						value: !this.creation && device.name === this.interfaces.getPrimaryInterfaceName()
-					}, {
 						type: MultiInput,
 						name: 'ip4',
 						label: '',
@@ -344,20 +339,17 @@ define([
 						callback: lang.hitch(this, '_dhcpQuery')
 					}],
 					layout: [{
-						label: _('network device'),
-						layout: ['name', 'primary']
-					}, {
-						label: _('IPv4 network devices'),
+						label: _('IPv4 network interface configuration'),
 						layout: [ 'ip4dynamic', 'dhcpquery', 'ip4' ]
 					}, {
-						label: _('IPv6 network devices'),
+						label: _('IPv6 network interface configuration'),
 						layout: ['ip6dynamic', 'ip6']
 					}]
 				}, {
 					// A network bridge (software side switch)
 					name: 'Bridge',
 					headerText: _('Bridge configuration'),
-					helpText: _('<i>Bridge</i> devices allows a physical network interface to be shared to connect one or more network segments. '),
+					helpText: _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments. '),
 					widgets: [{
 						name: 'bridge_ports',
 						label: _('Bridge ports'),
@@ -376,7 +368,7 @@ define([
 						type: MultiInput,
 						name: 'bridge_options',
 						label: _('Additional interface options'),
-						description: _('Additional options for this network device'),
+						description: _('Additional options for this network interface'),
 						value: device.options,
 						subtypes: [{ type: TextBox }],
 						onChange: lang.hitch(this, function(value) {
@@ -386,13 +378,13 @@ define([
 						})
 					}],
 					layout: [{
-						label: _('Bridge device configuration'),
+						label: _('Bridge interface configuration'),
 						layout: ['bridge_ports', 'bridge_fd', 'bridge_options']
 					}]
 				}, {
 					name: 'Bond',
 					headerText: _('Bond configuration'),
-					helpText: _('<i>Bond</i> devices allows two or more physical network interfaces to be coupled.'),
+					helpText: _('<i>Bond</i> interfaces allows two or more physical network interfaces to be coupled.'),
 					widgets: [{
 						name: 'bond_slaves',
 						label: _('Bond slaves'),
@@ -450,7 +442,7 @@ define([
 						type: MultiInput,
 						name: 'bond_options',
 						label: _('UCR options'),
-						description: _('Additional options for this network device'),
+						description: _('Additional options for this network interface'),
 						value: device.options,
 						subtypes: [{ type: TextBox }],
 						onChange: lang.hitch(this, function(value) {
@@ -460,7 +452,7 @@ define([
 						})
 					}],
 					layout: [{
-						label: _('Bond device configuration'),
+						label: _('Bond interface configuration'),
 						layout: [['bond_slaves', 'bond_primary']]
 					}, {
 						label: _('Advanced configuration'),
@@ -524,7 +516,7 @@ define([
 			if (array.filter(values.ip6, function(ip6) {
 				return (!ip6[2] && (ip6[0] || ip6[1]));
 			}).length) {
-				dialog.alert(_('Each IPv6 device must have an identifier'));
+				dialog.alert(_('Each IPv6 interface must have an identifier'));
 				return false;
 			}
 
@@ -623,7 +615,7 @@ define([
 			var interfaceName = this.getDeviceName();
 			// make sure we have an interface selected
 			if (!interfaceName) {
-				dialog.alert(_('Please choose a network device before querying a DHCP address.'));
+				dialog.alert(_('Please choose a network interface before querying a DHCP address.'));
 				return;
 			}
 			this.standbyDuring(tools.umcpCommand('setup/net/dhclient', {

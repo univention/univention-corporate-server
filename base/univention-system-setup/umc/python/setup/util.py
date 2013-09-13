@@ -156,7 +156,8 @@ def pre_save(newValues, oldValues):
 	if 'interfaces' in newValues:
 		interfaces = Interfaces()
 		interfaces.from_dict(newValues.pop('interfaces'))
-		newValues.update(dict((key, value or '') for key, value in interfaces.get_ucr_diff().iteritems()))
+		interfaces.check_consistency()
+		newValues.update(dict((key, value or '') for key, value in interfaces.to_ucr().iteritems()))
 
 	# add lists with all packages that should be removed/installed on the system
 	if 'components' in newValues:

@@ -280,11 +280,18 @@ class Device(object):
 		return set([self.interfaces[name] for name in self.subdevice_names if name in self.interfaces])
 
 	def prepare_consistency(self):
+		self._remove_old_fallback_variables()
+
 		self.order = None
 		self.start = True
 
 		if self.ip4dynamic:
 			self.type = 'dhcp'
+	
+	def _remove_old_fallback_variables(self):
+		# removes deprecated UCR variables from UCS <= 3.1-1... can be removed in future
+		self._leftover = [leftover for leftover in self._leftover
+				if not leftover.startswith('interfaces/%s/fallback/' % (self.name))]
 
 	def validate(self):
 		self.validate_name()
@@ -295,25 +302,25 @@ class Device(object):
 		"""
 		Valid interface name: max 15 characters, no slash, no space, not . or ..
 		See linux/net/core/dev.c:933#dev_valid_name()
-		>>> Device('eth0', []).validate_name()
-		>>> Device('0a1b2c3d4e5f_-:', []).validate_name()
-		>>> Device('', []).validate_name()
+		>>> Device('eth0', {}).validate_name()
+		>>> Device('0a1b2c3d4e5f_-:', {}).validate_name()
+		>>> Device('', {}).validate_name()
 		Traceback (most recent call last):
 			...
 		DeviceError: Invalid device name: ''
-		>>> Device('.', []).validate_name()
+		>>> Device('.', {}).validate_name()
 		Traceback (most recent call last):
 			...
 		DeviceError: Invalid device name: '.'
-		>>> Device('..', []).validate_name()
+		>>> Device('..', {}).validate_name()
 		Traceback (most recent call last):
 			...
 		DeviceError: Invalid device name: '..'
-		>>> Device(' ', []).validate_name()
+		>>> Device(' ', {}).validate_name()
 		Traceback (most recent call last):
 			...
 		DeviceError: Invalid device name: ' '
-		>>> Device('abcdefghijklmnop', []).validate_name()
+		>>> Device('abcdefghijklmnop', {}).validate_name()
 		Traceback (most recent call last):
 			...
 		DeviceError: Invalid device name: 'abcdefghijklmnop'
@@ -625,6 +632,8 @@ class Bond(Device):
 		# TODO: arp_interval arp_ip_target downdelay lacp_rate max_bonds primary updelay use_carrier xmit_hash_policy 
 
 	def prepare_consistency(self):
+		super(Bond, self).prepare_consistency()
+
 		for idevice in self.subdevices:
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
@@ -736,6 +745,8 @@ class Bridge(Device):
 		return set(self.bridge_ports)
 
 	def prepare_consistency(self):
+		super(Bridge, self).prepare_consistency()
+
 		for idevice in self.subdevices:
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
@@ -789,7 +800,7 @@ class Bridge(Device):
 				'bridge_fd %d' % (self.bridge_fd,),
 				]
 
-		vals = super(Bond, self).to_ucr()
+		vals = super(Bridge, self).to_ucr()
 		for i, option in enumerate(options, start=len(self.options)):
 			vals['interfaces/%s/options/%d' % (self.name, i)] = option
 		return vals

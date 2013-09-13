@@ -36,13 +36,14 @@ define([
 	"umc/tools",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
+	"umc/widgets/ComboBox",
 	"umc/widgets/TextBox",
 	"umc/widgets/MultiInput",
 	"umc/widgets/Form",
 	"umc/modules/setup/InterfaceGrid",
 	"umc/i18n!umc/modules/setup",
 	"umc/modules/setup/InterfaceWizard"
-], function(declare, lang, array, aspect, tools, Page, StandbyMixin, TextBox, MultiInput, Form, InterfaceGrid, _) {
+], function(declare, lang, array, aspect, tools, Page, StandbyMixin, ComboBox, TextBox, MultiInput, Form, InterfaceGrid, _) {
 	return declare("umc.modules.setup.NetworkPage", [ Page, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
@@ -82,9 +83,13 @@ define([
 				name: 'interfaces',
 				label: ''
 			}, {
-				type: TextBox,
+				type: ComboBox,
+				depends: 'interfaces',
+				dynamicValues: function(values) {
+					return array.map(values.interfaces, function(iface) { return {id: iface.name, label: iface.name}; });
+				},
 				name: 'interfaces/primary',
-				label: _('primary network device')
+				label: _('Primary network interface')
 			}, {
 				type: TextBox,
 				name: 'gateway',
@@ -112,11 +117,11 @@ define([
 			}];
 
 			var layout = [{
-				label: _('IP network devices'),
+				label: _('IP network interfaces'),
 				layout: ['interfaces']
 			}, {
 				label: _('Global network settings'),
-				layout: [ ['gateway', 'ipv6/gateway'], 'nameserver', 'dns/forwarder', 'proxy/http']
+				layout: [ 'interfaces/primary', ['gateway', 'ipv6/gateway'], 'nameserver', 'dns/forwarder', 'proxy/http']
 			}];
 
 			this._form = new Form({
@@ -155,12 +160,6 @@ define([
 				// set nameserver from dhcp request
 				nameserverWidget.set('value', value);
 			}));
-
-			this.own(this._form._widgets.interfaces.moduleStore.watch('interfaces/primary', lang.hitch(this, function(name, old, value) {
-				// set new primary interface
-				this._form._widgets['interfaces/primary'].set('value', value);
-			})));
-
 		},
 
 		setValues: function(_vals) {
@@ -203,8 +202,6 @@ define([
 
 			// set all physical interfaces for the grid here, the info does not exists on grid creation
 			this._form._widgets.interfaces.moduleStore.set('physical_interfaces', this.physical_interfaces);
-
-			this._form._widgets.interfaces.moduleStore.set('interfaces/primary', vals['interfaces/primary']);
 
 			// only show forwarder for master, backup, and slave
 			this._currentRole = _vals['server/role'];
@@ -299,11 +296,11 @@ define([
 				values: vals['proxy/http']
 			}, {
 				variables: ['interfaces'],
-				description: _('Network devices'),
+				description: _('Network interfaces'),
 				values: network_summary
 			}, {
 				variables: ['interfaces/primary'],
-				description: _('Primary network device'),
+				description: _('Primary network interface'),
 				values: vals['interfaces/primary']
 			}];
 		},

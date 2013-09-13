@@ -60,7 +60,7 @@ define([
 			lang.mixin(this, {
 				columns: [{
 					name: 'name',
-					label: _('Network device'),
+					label: _('Network interface'),
 					width: '18%'
 				}, {
 					name: 'interfaceType',
@@ -88,7 +88,7 @@ define([
 					callback: lang.hitch(this, '_editInterfaces')
 				}, {
 					name: 'add',
-					label: _('Add device'),
+					label: _('Add interface'),
 					iconClass: 'umcIconAdd',
 					isMultiAction: false,
 					isStandardAction: false,
@@ -188,6 +188,7 @@ define([
 						var iiface = this.moduleStore.getInterface(ikey);
 						if (iiface === undefined) {
 							// the interface is not configured in the grid but exists as physical interface
+							this.moduleStore.put(this.moduleStore.createDevice({name: ikey, interfaceType: 'Ethernet'}));
 							return;
 						}
 						this._cachedInterfaces[iiface.name] = this.moduleStore.createDevice(iiface);
@@ -247,7 +248,7 @@ define([
 				this.moduleStore.add(iface);
 			} catch(error) {
 				console.log(error);
-				dialog.alert(_('Device "%s" already exists.', iface.name));
+				dialog.alert(_('Interface "%s" already exists.', iface.name));
 				return;
 			}
 
@@ -303,7 +304,7 @@ define([
 			});
 
 			_dialog = new Dialog({
-				title: device ? _('Edit a network device') : _('Add a network device'),
+				title: device ? _('Edit a network interface') : _('Add a network interface'),
 				content: wizard
 			});
 			_dialog.own(wizard);

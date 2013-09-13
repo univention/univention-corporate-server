@@ -85,7 +85,7 @@ msgstr ""
 
 #: umc/js/setup/InterfaceWizard.js:84 umc/js/setup/InterfaceWizard.js:380
 msgid ""
-"<i>Bond</i> devices allows two or more physical network interfaces to be "
+"<i>Bond</i> interfaces allows two or more physical network interfaces to be "
 "coupled."
 msgstr ""
 "<i>Bond</i> Geräte erlaubt einen Verbund von einem oder mehreren "
@@ -93,7 +93,7 @@ msgstr ""
 
 #: umc/js/setup/InterfaceWizard.js:84 umc/js/setup/InterfaceWizard.js:345
 msgid ""
-"<i>Bridge</i> devices allows a physical network interface to be shared to "
+"<i>Bridge</i> interfaces allows a physical network interface to be shared to "
 "connect one or more network segments. "
 msgstr ""
 "<i>Bridge</i> Geräte erlaubt physikalischen Netzwerkgeräten gemeinsam "
@@ -110,7 +110,7 @@ msgstr ""
 
 #: umc/js/setup/InterfaceWizard.js:84
 msgid ""
-"<i>VLAN</i> devices can be used to separate network traffic logically while "
+"<i>VLAN</i> interfaces can be used to separate network traffic logically while "
 "using only one or more physical network interfaces. "
 msgstr ""
 "<i>VLAN</i> Geräte können benutzt werden, um Netzwerkverkehr logisch mit nur "
@@ -125,15 +125,15 @@ msgid "Account data"
 msgstr "Kontodaten"
 
 #: umc/js/setup/InterfaceGrid.js:329
-msgid "Add a network device"
+msgid "Add a network interface"
 msgstr "Ein Netzwerkgerät hinzufügen"
 
 #: umc/js/setup/InterfaceGrid.js:93
-msgid "Add device"
+msgid "Add interface"
 msgstr "Netzwerkgerät hinzufügen"
 
 #: umc/js/setup/InterfaceWizard.js:364 umc/js/setup/InterfaceWizard.js:438
-msgid "Additional options for this network device"
+msgid "Additional options for this network interface"
 msgstr "Weitere Optionen für dieses Netzwerkgerät"
 
 #: umc/js/setup/InterfaceWizard.js:451
@@ -177,7 +177,7 @@ msgid "Bond configuration"
 msgstr "Bond konfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:448
-msgid "Bond device configuration"
+msgid "Bond interface configuration"
 msgstr "Bond Gerätekonfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:396
@@ -201,7 +201,7 @@ msgid "Bridge configuration"
 msgstr "Bridge konfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:374
-msgid "Bridge device configuration"
+msgid "Bridge interface configuration"
 msgstr "Bridge Gerätekonfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:348 umc/js/setup/types.js:281
@@ -256,7 +256,7 @@ msgstr ""
 "System im Produktiveinsatz befinden."
 
 #: umc/js/setup/InterfaceWizard.js:83
-msgid "Choose device type"
+msgid "Choose interface type"
 msgstr "Wähle Netzwerkgerätetyp aus"
 
 #: umc/js/setup.js:269 umc/js/setup.js:273
@@ -284,7 +284,7 @@ msgid "Configuration of the UCS system role"
 msgstr "Konfiguration der UCS-Systemrolle"
 
 #: umc/js/setup/InterfaceWizard.js:221
-msgid "Configure as primary network device"
+msgid "Configure as primary network interface"
 msgstr "Als primäres Netzwerkgerät konfigurieren"
 
 #: umc/js/setup.js:406 umc/js/setup/BasisPage.js:267
@@ -324,16 +324,16 @@ msgid "Delete"
 msgstr "Löschen"
 
 #: umc/js/setup/InterfaceWizard.js:172
-msgid "Device"
+msgid "Interface"
 msgstr "Gerät"
 
 #: umc/js/setup/InterfaceGrid.js:261
 #, python-format
-msgid "Device \"%s\" already exists."
+msgid "Interface \"%s\" already exists."
 msgstr "Netzwerkgerät \"%s\" existiert bereits."
 
 #: umc/js/setup/InterfaceWizard.js:94
-msgid "Device type"
+msgid "Interface type"
 msgstr "Netzwerkgerätetyp"
 
 #: umc/js/setup/SystemRolePage.js:74
@@ -361,7 +361,7 @@ msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
 #: umc/js/setup/InterfaceWizard.js:529
-msgid "Each IPv6 device must have an identifier"
+msgid "Each IPv6 interface must have an identifier"
 msgstr "Jedes IPv6 Gerät muss einen Bezeichner haben"
 
 #: umc/js/setup/InterfaceGrid.js:85
@@ -369,7 +369,7 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: umc/js/setup/InterfaceGrid.js:329
-msgid "Edit a network device"
+msgid "Edit a network interface"
 msgstr "Bearbeite ein Netzwerkgerät"
 
 #: umc/js/setup/CertificatePage.js:108
@@ -458,7 +458,7 @@ msgid "Hostname and windows domain may not be equal."
 msgstr "Hostname und Windows-Domäne dürfen nicht gleich sein."
 
 #: umc/js/setup/NetworkPage.js:116
-msgid "IP network devices"
+msgid "IP network interfaces"
 msgstr "IP Netzwerkgeräte"
 
 #: umc/js/setup/InterfaceWizard.js:232
@@ -466,16 +466,16 @@ msgid "IPv4 address"
 msgstr "IPv4-Adresse"
 
 #: umc/js/setup/InterfaceWizard.js:327
-msgid "IPv4 network devices"
-msgstr "IPv4-Netzwerkgeräte"
+msgid "IPv4 network interface configuration"
+msgstr "IPv4-Netzwerkgerätkonfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:261
 msgid "IPv6 address"
 msgstr "IPv6-Adresse"
 
 #: umc/js/setup/InterfaceWizard.js:330
-msgid "IPv6 network devices"
-msgstr "IPv6-Netzwerkgeräte"
+msgid "IPv6 network interface configuration"
+msgstr "IPv6-Netzwerkgerätkonfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:268
 msgid "IPv6 prefix"
@@ -636,15 +636,15 @@ msgid "Network"
 msgstr "Netzwerk"
 
 #: umc/js/setup/InterfaceGrid.js:65
-msgid "Network device"
+msgid "Network interface"
 msgstr "Netzwerkgerät"
 
 #: umc/js/setup/InterfaceWizard.js:217
-msgid "Network device configuration"
+msgid "Network interface configuration"
 msgstr "Netzwerkgerätkonfiguration"
 
 #: umc/js/setup/NetworkPage.js:307
-msgid "Network devices"
+msgid "Network interfaces"
 msgstr "Netzwerkgeräte"
 
 #: umc/js/setup/NetworkPage.js:72
@@ -688,7 +688,7 @@ msgid "Password"
 msgstr "Passwort"
 
 #: umc/js/setup/InterfaceWizard.js:624
-msgid "Please choose a network device before querying a DHCP address."
+msgid "Please choose a network interface before querying a DHCP address."
 msgstr ""
 "Bitte wählen Sie ein Netzwerkgerät bevor Sie eine DHCP-Adresse anfragen."
 
@@ -704,8 +704,9 @@ msgstr ""
 "Bitte bestätigen Sie, dass diese Änderungen auf das System übertragen "
 "werden. Dies kann einige Zeit in Anspruch nehmen."
 
+#: umc/js/setup/NetworkPage.js:88
 #: umc/js/setup/NetworkPage.js:311
-msgid "Primary network device"
+msgid "Primary network interface"
 msgstr "Primäres Netzwerkgerät"
 
 #: umc/js/setup.js:824
@@ -735,7 +736,7 @@ msgstr "SSL-Root-Zertifikat"
 #: umc/js/setup/InterfaceWizard.js:84
 msgid ""
 "Several network types can be chosen. <i>Ethernet</i> is a standard physical "
-"device. "
+"interface. "
 msgstr ""
 "Mehrere Netzwerktypen können ausgewählt werden. <i>Ethernet</i> ist ein "
 "standard physikalisches Gerät. "
@@ -939,12 +940,8 @@ msgid "None"
 msgstr "Kein"
 
 #: umc/js/setup/InterfaceWizard.js:324
-msgid "network device"
+msgid "network interface"
 msgstr "Netzwerkgerät"
-
-#: umc/js/setup/NetworkPage.js:88
-msgid "primary network device"
-msgstr "primäres Netzwerkgerät"
 
 #: umc/js/setup/InterfaceWizard.js:658
 msgid "set"
