@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Univention Print Quota
-#  postinst script for the debian package
+#  postrm script for the debian package
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,44 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/all.sh
-
-chmod 0600 /etc/univention/templates/files/etc/pykota/pykotadmin.conf
 #DEBHELPER#
 
-chown -R pykota.pykota /etc/pykota
-chmod -R g+rw /etc/pykota
+if [ "$1" = "remove" ]; then
 
-# should be enabled for cups 1.2
-# chmod o+r /etc/pykota/pykotadmin.conf /etc/pykota/pykota.conf
+	. /usr/share/univention-lib/all.sh
+	call_unjoinscript 20univention-printquota.uinst
 
-# if all users have access to /usr/share/pykota/cupspykota thenn 
-# pykota will run as user lp
-dpkg-statoverride --update --add root root 700 /usr/share/pykota/cupspykota >/dev/null || true
+	univention-config-registry unset pykota/policy/debug
 
-adduser lp pykota
-/etc/init.d/cups restart
-
-univention-config-registry set pykota/policy/debug?1
-
-if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-directory-listener; then
-	/etc/init.d/univention-directory-listener crestart
-	fi
+	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
 fi
-
-dest="/etc/pykota.secret"
-if [ ! -f "$dest" ] ; then
-    cp /etc/machine.secret "$dest"
-    chown pykota:root "$dest"
-    chmod 600  "$dest"
-fi
-
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/20univention-printquota.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-call_joinscript 80univention-printquota.inst
 
 exit 0
+

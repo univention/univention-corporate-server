@@ -1,3 +1,9 @@
+univention-printquota (6.0.2-1) unstable; urgency=low
+
+  * Added unjoin script (Bug #32452)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Sep 2013 07:41:35 +0200
+
 univention-printquota (6.0.1-3) unstable; urgency=low
 
   * Update copyright years for 2013
