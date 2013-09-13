@@ -996,6 +996,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The package <emphasis>univention-admingrp-user-passwordreset</emphasis> does now support the
+		  protection of groups through the &ucsUCRV; <envar>ldap/acl/user/passwordreset/protected/gid</envar>.
+		  By default the group <emphasis>Domain Admins</emphasis> is protected
+		  (<ulink url="&ucsbug;29710">Bug 29710</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 			Various text changes have been made, translations have been adapted and added (<ulink url="&ucsbug;24727">Bug 24727</ulink>, <ulink url="&ucsbug;29552">Bug 29552</ulink>, <ulink url="&ucsbug;23691">Bug 23691</ulink>).
 		</simpara></listitem>
 
