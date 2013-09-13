@@ -1,3 +1,12 @@
+univention-management-console-module-appcenter (3.0.30-9) unstable; urgency=low
+
+  * Add __init__.py file to provide a valid appcenter/app module
+    right from the start. Debian packaging tools automatically
+    create the link to appcenter/app.py, causing modules.update()
+    to fail. (Bug #32414)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 13 Sep 2013 11:27:08 +0200
+
 univention-management-console-module-appcenter (3.0.30-8) unstable; urgency=low
 
   * Fix python syntax in 66univention-appcenter_app.acl (Bug #32414)
