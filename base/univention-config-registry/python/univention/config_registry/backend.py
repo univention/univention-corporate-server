@@ -324,7 +324,7 @@ class _ConfigRegistry(dict):
 				mode = file_stat.st_mode
 				user = file_stat.st_uid
 				group = file_stat.st_gid
-			except:
+			except OSError:
 				mode = 00644
 				user = 0
 				group = 0
@@ -351,8 +351,6 @@ class _ConfigRegistry(dict):
 				reg_file.write('# univention_ base.conf\n\n')
 				reg_file.write(self.__str__())
 				reg_file.close()
-				pass
-				
 		except EnvironmentError, ex:
 			# suppress certain errors
 			if ex.errno != errno.EACCES:
