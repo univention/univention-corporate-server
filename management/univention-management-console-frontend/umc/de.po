@@ -26,6 +26,15 @@ msgstr "%(label)s (Wiederholung)"
 msgid "%d entries of %d selected"
 msgstr "%d Einträge von %d ausgewählt"
 
+msgid "1 entry: "
+msgstr "1 Eintrag: "
+
+msgid "%s entries: "
+msgstr "%s Einträge: "
+
+msgid "No entries selected. Please select some to enable actions!"
+msgstr "Keine Einträge ausgewählt. Bitte auswählen um Aktionen verfügbar zu machen!"
+
 #: umc/widgets/Form.js:624
 msgid "%s (%.1f%)"
 msgstr ""

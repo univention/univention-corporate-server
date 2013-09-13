@@ -44,6 +44,7 @@ define([
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
 	"dijit/layout/BorderContainer",
+	"dijit/layout/StackContainer",
 	"dojo/data/ObjectStore",
 	"dojox/grid/EnhancedGrid",
 	"dojox/grid/cells",
@@ -58,7 +59,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, win, query, construct, attr, geometry,
-		style, topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
+		style, topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer, StackContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -126,6 +127,12 @@ define([
 		//		will be displayed in the grid footer.
 		footerFormatter: null,
 
+
+		// headerFormatter: Function?
+		//		TODO
+		//
+		headerFormatter: null,
+
 		// sortIndex: Number
 		//		Controls which column is used for default sorting (values < 0 indicated
 		//		sorting in descending order)
@@ -137,13 +144,19 @@ define([
 		// turn an labels for action columns by default
 		actionLabel: true,
 
+		// FIXME: used anywhere?
 		// turn off gutters by default
 		gutters: false,
 
 		// defaultAction: Function/String a default action that is executed
-		//		when clicking on a row (not on the checkbox or action
+		//		when clicking on FIXME a row (not on the checkbox or action
 		//		buttons)
 		defaultAction: 'edit',
+
+		// defaultActionColumn:
+		//
+		//
+		defaultActionColumn: '',
 
 		disabled: false,
 
@@ -248,29 +261,6 @@ define([
 			return geometry.getMarginBox(this._tmpCell).w;
 		},
 
-		_getFooterCellWidths: function() {
-			// query the widths of all columns
-			var outerWidths = [];
-			var innerWidths = [];
-			query('th', this._grid.viewsHeaderNode).forEach(function(i) {
-				outerWidths.push(geometry.getMarginBox(i).w);
-				innerWidths.push(geometry.getContentBox(i).w);
-			});
-
-			// merge all data columns
-			var footerWidths = [ innerWidths[0] + 2 ];
-			var i;
-			for (i = 1; i < outerWidths.length; ++i) {
-				if (i < this.columns.length + 1) {
-					footerWidths[0] += outerWidths[i];
-				}
-				else {
-					footerWidths.push(innerWidths[i]);
-				}
-			}
-			return footerWidths;
-		},
-
 		_setColumnsAttr: function ( columns ) {
 			tools.assert(columns instanceof Array, 'The property columns needs to be defined for umc/widgets/Grid as an array.');
 			this.columns = columns;
@@ -280,51 +270,10 @@ define([
 				return;
 			}
 
-			//
-			// context menu
-			//
-
-			// remove all children from context menu
-			array.forEach(this._contextMenu.getChildren(), function(ichild) {
-				this._contextMenu.removeChild(ichild);
-				ichild.destroyRecursive();
-			}, this);
-			delete this._contextMenu.focusedChild;
-
-			// populate context menu
-			array.forEach(this.actions, function(iaction) {
-				// make sure we get all context actions
-				if (false === iaction.isContextAction) {
-					return;
-				}
-
-				// get icon and label (these properties may be functions)
-				var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
-				var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
-
-				// create a new menu item
-				var item = new MenuItem({
-					label: ilabel,
-					iconClass: iiconClass,
-					onClick: lang.hitch(this, function() {
-						var canExecute = typeof iaction.canExecute == "function" ? iaction.canExecute(this._contextItem) : true;
-						if (canExecute && iaction.callback) {
-							this._publishAction('menu-' + iaction.name);
-							iaction.callback([this._contextItemID], [this._contextItem]);
-						}
-					}),
-					_action: iaction
-				});
-				this._contextMenu.addChild(item);
-			}, this);
-
-			//
-			// grid columns
-			//
+			this._setContextActions();
 
 			// create the layout for the grid columns
-			var gridColumns = [];
-			array.forEach(columns, function(icol) {
+			var gridColumns = array.map(columns, function(icol, colNum) {
 				tools.assert(icol.name !== undefined && icol.label !== undefined, 'The definition of grid columns requires the properties \'name\' and \'label\'.');
 
 				// set common properties
@@ -337,6 +286,61 @@ define([
 					name: icol.label
 				});
 				delete col.label;
+
+				// default action
+				if ((!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name == this.defaultActionColumn)) {
+					col.formatter = lang.hitch(this, function(value, rowIndex) {
+						value = icol.formatter ? icol.formatter(value, rowIndex) : value;
+						if (this._grid.rowSelectCell.disabled(rowIndex) || this.disabled) {
+							return value;
+						}
+
+						var item = this._grid.getItem(rowIndex);
+						var identity = item[this.moduleStore.idProperty];
+
+						var defaultAction = typeof this.defaultAction == "function" ?
+							this.defaultAction( [ identity ], [ item ] ) : this.defaultAction;
+
+						if (defaultAction) {
+							var action;
+							array.forEach(this.actions, function(iaction) {
+								if (iaction.name == defaultAction) {
+									action = iaction;
+									return false;
+								}
+							}, this);
+							if (action && action.callback) {
+								// caching
+								var btn_name = '_univention_cache_btn_' + String(value);
+								if (this.cacheRowWidgets) {
+									if (item[btn_name] !== undefined) {
+										return item[btn_name];
+									}
+								}
+
+								var btn = new Button({
+									label: value,
+									onClick: lang.hitch(this, function() {
+										var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
+										if (isExecutable && !this.getDisabledItem(identity)) {
+											this._publishAction('default-' + action.name);
+											action.callback( [ identity ], [ item ] );
+										}
+									})
+								});
+								this.own(btn);
+
+								// caching
+								if (this.cacheRowWidgets) {
+									item[btn_name] = btn;
+								}
+
+								return btn;
+							}
+						}
+						return value;
+					});
+				}
 
 				// check whether the width shall be computed automatically
 				if ('adjust' == col.width) {
@@ -354,168 +358,128 @@ define([
 					col.formatter = this._iconFormatter(icol.name, icol.iconField);
 				}
 
-				// push column config into array
-				gridColumns.push(col);
-
-				// adapt the query object to show all elements
+				return col;
 			}, this);
-
-			// add additional columns for standard actions
-			array.forEach(this.actions, function(iaction) {
-				// get all standard context actions
-				if (!(iaction.isStandardAction && (false !== iaction.isContextAction))) {
-					return;
-				}
-				var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
-				gridColumns.push({
-					field: iaction.field || this.moduleStore.idProperty,
-					name: this.actionLabel ? ilabel : ' ',
-					width: ! this.actionLabel && iaction.iconClass ? '28px':  this._getHeaderWidth( ilabel ) + 'px',
-					description: iaction.description,
-					editable: false,
-					formatter: lang.hitch(this, function(key, rowIndex) {
-						// do not show buttons in case the row is disabled
-						if (this._grid.rowSelectCell.disabled(rowIndex)) {
-							return '';
-						}
-
-						// get icon and label (these properties may be functions)
-						var item = this._grid.getItem(rowIndex);
-						var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
-						var ilabel = typeof iaction.label == "function" ? iaction.label(item) : iaction.label;
-
-						var btn_name = '_univention_cache_btn_' + (iiconClass || ilabel);
-						if (item[btn_name] !== undefined) {
-							return item[btn_name];
-						}
-
-						// by default only create a button with icon
-						var props = { iconClass: iiconClass };
-						if (!props.iconClass) {
-							// no icon is set, set a label instead
-							props = { label: ilabel };
-						}
-
-						// add callback handler
-						if (iaction.callback) {
-							props.onClick = lang.hitch(this, function() {
-								this._publishAction(iaction.name);
-								iaction.callback([key], [item]);
-							});
-						}
-
-						var btn;
-
-						// call canExecute to make sure the action can be executed
-						if (iaction.canExecute && !iaction.canExecute(item)) {
-							// the action cannot be executed... return an empty string
-							btn = '';
-							if (this.cacheRowWidgets) {
-								item[btn_name] = btn;
-							}
-						} else {
-							// return final button
-							btn = new Button( props );
-							if ( iaction.description ) {
-								var idescription = typeof  iaction.description  == "function" ? iaction.description( item ) : iaction.description;
-								var tooltip = new (iaction.tooltipClass || Tooltip)( {
-									label: idescription,
-									connectId: [ btn.domNode ]
-								});
-								if ( iaction.onShowDescription ) {
-									tooltip = lang.mixin( tooltip, { onShow: function( target ) { iaction.onShowDescription( target, item ); } } );
-								}
-								if ( iaction.onHideDescription ) {
-									tooltip = lang.mixin( tooltip, { onHide: function() { iaction.onHideDescription( item ); } } );
-								}
-								btn.own(tooltip);
-							}
-							this.own(btn);
-							if (this.cacheRowWidgets) {
-								item[btn_name] = btn;
-							}
-						}
-						return btn;
-					})
-				});
-			}, this);
-
-			// add additional column for all other actions
-			var tmpActions = array.filter(this.actions, function(iaction) {
-				return !iaction.isStandardAction && (false !== iaction.isContextAction);
-			});
-			if (tmpActions.length) {
-				gridColumns.push({
-					field: this.moduleStore.idProperty,
-					name: ' ',
-					editable: false,
-					formatter: lang.hitch(this, function(key, rowIndex) {
-						// do not show buttons in case the row is disabled
-						if (this._grid.rowSelectCell.disabled(rowIndex)) {
-							return '';
-						}
-
-						// get corresponding item
-						var item = this._grid.getItem(rowIndex);
-
-						// cache dropdown. otherwise the formatter
-						// will generate a new one for every visible
-						// entry every time the grid is scrolled
-						if (item._univention_cache_dropDown !== undefined) {
-							return item._univention_cache_dropDown;
-						}
-
-						var button = new _DropDownButton({
-							label: _('more'),
-							dropDown: this._contextMenu
-						});
-						this.own(aspect.before(button, 'openDropDown', lang.hitch(this, '_updateContextItem', {rowIndex: rowIndex})));
-						this.own(button);
-						if (this.cacheRowWidgets) {
-							item._univention_cache_dropDown = button;
-						}
-
-						return button;
-					})
-				});
-			}
 
 			// set new grid structure
 			this._grid.setStructure( gridColumns );
-
 		},
 
 		_setActionsAttr: function(actions, /*Boolean?*/ doSetColumns) {
 			tools.assert(actions instanceof Array, 'The property actions needs to be defined for umc/widgets/Grid as an array.');
 			this.actions = actions;
 
+			this._setNonContextActions();
+
+			// clear the footer and redraw the columns
+//			this._clearFooter();
+			if (doSetColumns !== false) {
+				this._setColumnsAttr(this.columns);
+			}
+		},
+
+		_setContextActions: function() {
+			// remove all children from context action toolbar
+			array.forEach(this._contextActionsToolbar.getChildren(), function(ichild) {
+				this._contextActionsToolbar.removeChild(ichild);
+				ichild.destroyRecursive();
+			}, this);
+
+			// remove all children from context menu
+			array.forEach(this._contextMenu.getChildren(), function(ichild) {
+				this._contextMenu.removeChild(ichild);
+				ichild.destroyRecursive();
+			}, this);
+			delete this._contextMenu.focusedChild;
+			
+			// add information about how many objects are selected
+			this._contextActionsToolbar.addChild(this._headerText = new Text({
+				content: '',
+				style: 'display: inline-block; font-weight: bold;'
+			}));
+//			this._contextMenu.addChild(new MenuItem({label: this._headerText}));
+
+			this._nonStandardActionsMenu = new Menu({});
+
+			var contextActions = array.filter(this.actions, function(iaction) { return (false !== iaction.isContextAction); });
+			array.forEach(contextActions, function(iaction) {
+				// get icon and label (these properties may be functions)
+				var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
+				var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
+
+				var props = { iconClass: iiconClass, label: ilabel, _action: iaction };
+
+				// add callback handler
+				if (iaction.callback) {
+					// FIXME: would be wrong for context menu
+					var prefix = iaction.isMultiAction ? 'multi-' : 'menu-';
+					prefix = iaction.isStandardAction ? '' : prefix;
+
+					props.onClick = lang.hitch(this, function() {
+						this._publishAction(prefix + iaction.name);
+						iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
+					});
+				}
+
+				if (iaction.isStandardAction) {
+					var btn = new Button(props);
+					if (iaction.description) {
+						try {
+						var item = undefined;
+						var idescription = typeof iaction.description == "function" ? iaction.description(item) : iaction.description;
+						var tooltip = new (iaction.tooltipClass || Tooltip)( {
+							label: idescription,
+							connectId: [ btn.domNode ]
+						});
+						if (iaction.onShowDescription) {
+							tooltip = lang.mixin(tooltip, { onShow: function(target) { iaction.onShowDescription(target, item); }});
+						}
+						if (iaction.onHideDescription) {
+							tooltip = lang.mixin(tooltip, { onHide: function() { iaction.onHideDescription(item); }});
+						}
+						btn.own(tooltip);
+						} catch (error) {}
+					}
+					this._contextActionsToolbar.addChild(btn);
+					this.own(btn);
+				} else {
+					this._nonStandardActionsMenu.addChild(new MenuItem(props));
+				}
+
+				this._contextMenu.addChild(new MenuItem(props));
+			}, this);
+
+			if (this._nonStandardActionsMenu.getChildren().length) {
+				this._contextActionsToolbar.addChild(new _DropDownButton({
+					label: _('more'),
+					dropDown: this._nonStandardActionsMenu
+				}));
+			}
+
+		},
+
+		_setNonContextActions: function() {
 			//
 			// toolbar for non-context actions
 			//
 
-			var myActions = [];
-			array.forEach(actions, lang.hitch(this, function(iaction) {
+			var nonContextActions = array.filter(this.actions, function(iaction) { return (false === iaction.isContextAction); });
+
+			var buttonsCfg = array.map(nonContextActions, function(iaction) {
 				var jaction = iaction;
 				if (iaction.callback) {
 					jaction = lang.mixin({}, iaction); // shallow copy
 
 					// call custom callback with selected values
 					jaction.callback = lang.hitch(this, function() {
+						this._publishAction('menu-' + iaction.name);
 						iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 					});
 				}
-				myActions.push(jaction);
-			}));
+				return jaction;
+			}, this);
 
 			// render buttons
-			var buttonsCfg = [];
-			array.forEach(myActions, function(iaction) {
-				// make sure we get all standard actions
-				if (false === iaction.isContextAction) {
-					buttonsCfg.push(iaction);
-				}
-
-			}, this);
 			var buttons = render.buttons(buttonsCfg);
 
 			// clear old buttons
@@ -531,12 +495,6 @@ define([
 					this._publishAction(ibutton.name);
 				}));
 			}, this);
-
-			// clear the footer and redraw the columns
-			this._clearFooter();
-			if (doSetColumns !== false) {
-				this._setColumnsAttr(this.columns);
-			}
 		},
 
 		setColumnsAndActions: function(columns, actions) {
@@ -570,41 +528,59 @@ define([
 					menus: {
 						rowMenu: this._contextMenu
 					}
-				},
+				}/*,
 				canSort: lang.hitch(this, function(col) {
 					// disable sorting for the action columns
 					return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
-				})
+				})*/
 			});
 			this._grid.on('rowClick', lang.hitch(this, '_onRowClick'));
 
-			// add the toolbar to the bottom of the widget which contains all multi-actions
+			// add a toolbar above the grid
+			var container = new ContainerWidget({
+				region: 'top',
+				'class': 'umcGridToolBar',
+				style: 'padding-bottom: 5px'
+			});
+			this.addChild(container);
+
+			// add the left container which contains context actions
+			this._headerContainer = new StackContainer({
+				region: 'top',
+				style: 'float: left; padding-left: 5px;'
+			});
+			container.addChild(this._headerContainer);
+
+			this._contextActionsToolbar = new ContainerWidget({});
+			this._headerContainer.addChild(this._contextActionsToolbar);
+			this._headerContainer.selectChild(this._contextActionsToolbar);
+
+			// add the right toolbar which contains all non-context actions
 			this._toolbar = new ContainerWidget({
-				region: 'bottom',
+				region: 'top',
+				style: 'float: right',
 				'class': 'umcGridToolBar'
 			});
-			this.addChild(this._toolbar);
+			container.addChild(this._toolbar);
 
-			// add a footer for the grid which contains all non-context actions
+			// add a footer for the grid
 			this._footer = new ContainerWidget({
 				region: 'bottom',
 				'class': 'umcGridFooter'
 			});
-			this.addChild(this._footer);
+			this._createFooter();
 
 			// update columns and actions
 			this.setColumnsAndActions( this.columns, this.actions );
-			if (typeof(this.sortIndex) == "number") {
+			if (typeof this.sortIndex == "number") {
 				this._grid.setSortIndex(Math.abs(this.sortIndex), this.sortIndex > 0);
 			}
 			this.addChild(this._grid);
+			this.addChild(this._footer);
 
 			//
 			// register event handler
 			//
-
-			// connect to layout() and adjust widths of the footer cells
-			this.own(aspect.after(this._grid, '_resize', lang.hitch(this, '_updateFooter')));
 
 			// in case of any changes in the module store, refresh the grid
 			// FIXME: should not be needed anymore with Dojo 1.8
@@ -614,88 +590,169 @@ define([
 				})));
 			}
 
-			// standby animation when loading data
-			this.own(aspect.after(this._grid, "_onFetchComplete", lang.hitch(this, function() {
-				if (this._ignoreNextFetch) {
-					this._ignoreNextFetch = false;
-					return;
-				}
-				this.standby(false);
-				this._grid.selection.clear();
-				this._updateFooterContent();
-				this._updateFooterCells();
-				this._updateDisabledItems();
-				this.onFilterDone(true);
-				this._grid.resize();
-			})));
-			this.own(aspect.after(this._grid, "_onFetchError", lang.hitch(this, function() {
-				if (this._ignoreNextFetch) {
-					this._ignoreNextFetch = false;
-					return;
-				}
-				this.standby(false);
-				this._grid.selection.clear();
-				this._updateFooterContent();
-				this._updateFooterCells();
-				this._updateDisabledItems();
-				this.onFilterDone(false);
-				this._grid.resize();
-			})));
+			this.own(aspect.after(this._grid, "_onFetchComplete", lang.hitch(this, '_onFetched', true)));
+			this.own(aspect.after(this._grid, "_onFetchError", lang.hitch(this, '_onFetched', false)));
 
-			// when a cell gets modified, save the changes directly back to the server
-			// FIXME: not supported anymore
-			//this._grid.on('applyCellEdit', lang.hitch(this._dataStore, 'save'));
-
-			// disable edit menu in case there is more than one item selected
-			this._grid.on('selectionChanged', lang.hitch(this, '_updateFooterContent'));
-			this._grid.on('selectionChanged', lang.hitch(this, '_updateFooterCells'));
-
-			/*// disable edit menu in case there is more than one item selected
-			this.own(this.on(this._grid, 'onSelectionChanged', function() {
-				var nItems = this._grid.selection.getSelectedCount();
-				this._selectMenuItems.edit.set('disabled', nItems > 1);
-			});*/
-
-			// save internally for which row the cell context menu was opened and when
-			// -> handle context menus when clicked in the last column
-			// -> call custom handler when clicked on any other cell
+			this._grid.on('selectionChanged', lang.hitch(this, '_selectionChanged'));
 			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
 
 			// make sure that we update the disabled items after sorting etc.
 			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, '_updateDisabledItems')));
 		},
 
-		_onRowClick: function( ev ) {
-			// default action should not be executed when clicked on selector or action cells
-			if ( ev.cellIndex === 0 || ev.cellIndex > this.columns.length ) {
+		_onFetched: function(success) {
+			// standby animation when loading data
+			if (this._ignoreNextFetch) {
+				this._ignoreNextFetch = false;
+				return;
+			}
+			this.standby(false);
+			this._grid.selection.clear();
+			this._updateFooterContent();
+			this._updateDisabledItems();
+			this.onFilterDone(success);
+			this._grid.resize();
+		},
+
+		_selectionChanged: function() {
+			this._updateContextActions();
+
+			this._updateFooterContent();
+			this._updateHeaderContent();
+
+			this.__behaviorOldGrid();
+		},
+
+		_updateHeaderContent: function() {
+			var nItems = this._grid.selection.getSelectedCount();
+
+			var showNum = (nItems !== 0 || this.multiActionsAlwaysActive === true);
+
+			var msg;
+			if (typeof this.headerFormatter == "function") {
+				msg = this.headerFormatter(showNum ? nItems : undefined);
+			}
+
+			if (showNum) {
+				msg = msg || (nItems === 1) ? _('1 entry: ') : _('%s entries: ', nItems);
+				this._headerText.set('content', msg);
+				this._headerContainer.selectChild(this._contextActionsToolbar);
+			} else {
+				if (!this._headText) {
+					msg = msg || _('No entries selected. Please select some to enable actions!');
+					this._headText = new Text({content: msg});
+					this._headerContainer.addChild(this._headText);
+				}
+				this._headerContainer.selectChild(this._headText);
+			}
+
+			array.forEach(this._contextActionsToolbar.getChildren(), function(item) {
+				var visible = this.multiActionsAlwaysActive === true;
+				if (item !== this._headerText) {
+					item.set('visible', visible || nItems !== 0);
+				}
+			}, this);
+		},
+
+		_updateContextActions: function() {
+			// disable actions which are no multiactions when more than 1 row is selected
+			var nItems = this._grid.selection.getSelectedCount();
+
+			var actions = this._contextActionsToolbar.getChildren().concat(this._contextMenu.getChildren()).concat(this._nonStandardActionsMenu.getChildren());
+
+			array.forEach(actions, function(item) {
+				if ((item instanceof Button || item instanceof MenuItem) && item._action) {
+					var enabled = true;
+					if (nItems === 0) {
+						enabled = this.multiActionsAlwaysActive === true && item._action.isMultiAction;
+					} else if (nItems > 1) {
+						enabled = item._action.isMultiAction;
+					}
+					// TODO: getSelectedButNotDisabledItems
+					enabled = enabled && array.every(this.getSelectedItems(), function(iitem) { return item._action.canExecute ? item._action.canExecute(iitem) : true; });
+					item.set('disabled', !enabled);
+				}
+			}, this);
+			
+		},
+
+		_updateContextItem: function(evt) {
+			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
+			if (rowDisabled) {
+				return;
+			}
+			if (!this._grid.selection.isSelected(evt.rowIndex)) {
+				this._grid.selection.select(evt.rowIndex);
+			}
+
+			return;
+			// TODO :remove this? We don't need it anymore but is it part of the API?
+			// save the ID of the current element
+			var item = this._grid.getItem(evt.rowIndex);
+			this._contextItem = item;
+			this._contextItemID = this._dataStore.getValue(item, this.moduleStore.idProperty);
+
+		},
+
+		__behaviorOldGrid: function() {
+			// reconstructs the old behavior...
+
+			var nItems = this._grid.selection.getSelectedCount();
+			var item = nItems === 1 ? this.getSelectedItems()[0] : undefined;
+			var actions = this._contextActionsToolbar.getChildren().concat(this._contextMenu.getChildren()).concat(this._nonStandardActionsMenu.getChildren());
+			array.forEach(actions, function(ichild) {
+				var iaction = ichild._iaction;
+				if (iaction) {
+					var iconClass = (typeof iaction.iconClass == "function") ? iaction.iconClass(item) : iaction.iconClass;
+					var label = (typeof iaction.label == "function") ? iaction.label(item) : iaction.label;
+					ichild.set('iconClass', iconClass);
+					ichild.set('label', label);
+
+					if (ichild instanceof Button && iaction.description) {
+						try {
+							// try
+							var idescription = typeof iaction.description == "function" ? iaction.description(item) : iaction.description;
+							// catch: pass;
+							// else:
+							var tooltip = new (iaction.tooltipClass || Tooltip)( {
+								label: idescription,
+								connectId: [ ichild.domNode ]
+							});
+							if (iaction.onShowDescription) {
+								tooltip = lang.mixin(tooltip, { onShow: function(target) { iaction.onShowDescription(target, item); }});
+							}
+							if (iaction.onHideDescription) {
+								tooltip = lang.mixin(tooltip, { onHide: function() { iaction.onHideDescription(item); }});
+							}
+							ichild.own(tooltip);
+						} catch (error) {}
+					}
+
+				}
+			}, this);
+		},
+
+		_onRowClick: function( evt ) {
+			if (evt.cellIndex === 0) {
+				// the checkbox cell was pressed, this does already the wanted behavior
 				return true;
 			}
-			var item = this._grid.getItem( ev.rowIndex );
-			var identity = item[ this.moduleStore.idProperty ];
-
-			var defaultAction = typeof this.defaultAction == "function" ?
-					this.defaultAction( [ identity ], [ item ] ) : this.defaultAction;
-
-			if ( defaultAction && ! this.disabled ) {
-				array.forEach( this.actions, function( action ) {
-					if ( action.name == defaultAction ) {
-						var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
-						if ( action.callback && isExecutable && !this.getDisabledItem(identity)) {
-							this._publishAction('default-' + action.name);
-							action.callback( [ identity ], [ item ] );
-						}
-						return false;
-					}
-				}, this);
+			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
+			if (!rowDisabled) {
+				this._grid.selection.toggleSelect(evt.rowIndex);
+			} else {
+				// not required, but deselects disabled rows
+				this._grid.selection.deselect(evt.rowIndex);
 			}
 		},
 
-		_disableAllItems: function( disable ) {
+		_disableAllItems: function(disable) {
 			var items = this.getAllItems();
+			disable = undefined === disable ? true : disable;
 			array.forEach( items, lang.hitch( this, function( iitem ) {
 				var idx = this.getItemIndex( iitem[ this.moduleStore.idProperty ] );
 				if (idx >= 0) {
-					this._grid.rowSelectCell.setDisabled( idx, undefined === disable ? true : disable );
+					this._grid.rowSelectCell.setDisabled(idx, disable);
 				}
 			} ) );
 			this._grid.render();
@@ -709,34 +766,28 @@ define([
 			// re-disable explicitly disabled items
 			this._updateDisabledItems();
 
-			// disable actions in footer
-			array.forEach( this._footerCells, lang.hitch( this, function( cell ) {
-				var widget = cell.getChildren()[ 0 ];
-				if ( widget instanceof Button || widget instanceof _DropDownButton ) {
-					widget.set( 'disabled', value );
-				}
-			} ) );
-			// disable actions in toolbar
-			array.forEach( this._toolbar.getChildren(), lang.hitch( this, function( widget ) {
-				if ( widget instanceof Button ) {
+			// disable all actions
+			array.forEach( this._toolbar.getChildren().concat(this._contextActionsToolbar), lang.hitch( this, function( widget ) {
+				if ( widget instanceof Button || widget instanceof _DropDownButton) {
 					widget.set( 'disabled', value );
 				}
 			} ) );
 		},
 
-		_updateFooterCells: function() {
-			// deactivate multi actions if no item is selected
-			if ( ! this._footerCells.length || this.multiActionsAlwaysActive === true ) {
-				return;
-			}
+		_createFooter: function() {
+			// add a legend that states how many objects are currently selected
+			this._footerLegend = new Text({
+				content: _('No object selected'),
+				style: 'padding-left: 5px'
+			});
+			this._footer.addChild(this._footerLegend);
 
-			array.forEach( this._footerCells, lang.hitch( this, function( cell ) {
-				var nSelected = this._grid.selection.getSelectedCount();
-				var widget = cell.getChildren()[ 0 ];
-				if ( widget instanceof Button || widget instanceof _DropDownButton ) {
-					widget.set( 'disabled', nSelected === 0 );
-				}
-			} ) );
+			this._footer.startup();
+
+			// redo the layout since we added elements
+			this.layout();
+
+			return true;
 		},
 
 		_updateFooterContent: function() {
@@ -756,186 +807,6 @@ define([
 				}
 			}
 			this._footerLegend.set('content', msg);
-		},
-
-		_updateContextItem: function(evt) {
-			// save the ID of the current element
-			var item = this._grid.getItem(evt.rowIndex);
-			this._contextItem = item;
-			this._contextItemID = this._dataStore.getValue(item, this.moduleStore.idProperty);
-
-			// in case the row is disabled, or in case the action cannot be executed,
-			// disable the context menu items
-			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
-			array.forEach(this._contextMenu.getChildren(), function(iMenuItem) {
-				var iaction = iMenuItem._action;
-				var idisabled = rowDisabled || (iaction.canExecute && !iaction.canExecute(item));
-				var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass(item) : iaction.iconClass;
-				var ilabel = typeof iaction.label == "function" ? iaction.label(item) : iaction.label;
-				iMenuItem.set('disabled', idisabled);
-				iMenuItem.set('label', ilabel);
-				iMenuItem.set('iconClass', iiconClass);
-			}, this);
-		},
-
-		_clearFooter: function() {
-			// make sure that the footer exists
-			if (!this._footerCells) {
-				return;
-			}
-
-			// remove all footer cells
-			array.forEach(this._footerCells, function(icell) {
-				this._footer.removeChild(icell);
-				icell.destroyRecursive();
-			}, this);
-			delete this._footerCells;
-		},
-
-		_createFooter: function() {
-			// make sure that the footer has not already been created
-			if (this._footerCells) {
-				return;
-			}
-
-			// make sure we have sensible values for the cell widths (i.e., > 0)
-			// this method may be called when the grid has not been rendered yet
-			var footerCellWidths = this._getFooterCellWidths();
-			var width = 0;
-			array.forEach(footerCellWidths, function(i) {
-				width += i;
-			});
-			if (!width) {
-				return false;
-			}
-
-			// add one div per footer element
-			this._footerCells = [];
-			array.forEach(footerCellWidths, function(iwidth, i) {
-				// use display:inline-block; we need a hack for IE7 here, see:
-				//   http://robertnyman.com/2010/02/24/css-display-inline-block-why-it-rocks-and-why-it-sucks/
-				var padding = '0 5px';
-				if (i == footerCellWidths.length - 1) {
-					// do not use padding-right on the last column
-					padding = '0 0 0 5px';
-				}
-				var cell = new ContainerWidget({
-					style: 'display:inline-block; padding: ' + padding + '; vertical-align:top; zoom:1; *display:inline; height:auto;' // width:' + iwidth + 'px;'
-				});
-				this._footerCells.push(cell);
-			}, this);
-
-			// add a legend that states how many objects are currently selected
-			this._footerLegend = new Text({
-				content: _('No object selected')
-			});
-			this._footerCells[0].addChild(this._footerLegend);
-
-			var i = 1;
-			array.forEach(this.actions, function(iaction) {
-				// get all standard context actions
-				if (!(iaction.isStandardAction && (false !== iaction.isContextAction))) {
-					return;
-				}
-
-				// only add action if it is a multi action
-				if (iaction.isMultiAction) {
-					// get icon and label (these properties may be functions)
-					var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
-					var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
-
-					// by default only create a button with icon
-					var props = { iconClass: iiconClass };
-					if (!props.iconClass) {
-						// no icon is set, set a label instead
-						props = { label: ilabel };
-					}
-
-					// add callback handler
-					if (iaction.callback) {
-						props.onClick = lang.hitch(this, function() {
-							this._publishAction('multi-' + iaction.name);
-							iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
-						});
-					}
-
-					// return final button
-					if (! this._footerCells[i]) {
-						console.log("WARNING: no footer cell: " + i);
-					}
-					else {
-						this._footerCells[i].addChild(new Button(props));
-					}
-				}
-
-				// increment counter
-				++i;
-			}, this);
-
-			// add remaining actions to a combo button
-			var tmpActions = array.filter(this.actions, function(iaction) {
-				return !iaction.isStandardAction && (false !== iaction.isContextAction) && iaction.isMultiAction;
-			});
-			if (tmpActions.length) {
-				var moreActionsMenu = new Menu({});
-				array.forEach(tmpActions, function(iaction) {
-					// get icon and label (these properties may be functions)
-					var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
-					var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
-
-					// create menu entry
-					moreActionsMenu.addChild(new MenuItem({
-						label: ilabel,
-						iconClass: iiconClass,
-						onClick: lang.hitch(this, function() {
-							if (iaction.callback) {
-								this._publishAction('multi-' + iaction.name);
-								iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
-							}
-						})
-					}));
-				}, this);
-
-				if (!this._footerCells[i]) {
-					console.log("WARNING: no footer cell: " + i);
-				}
-				else {
-					this._footerCells[i].addChild(new _DropDownButton({
-						label: _('more'),
-						dropDown: moreActionsMenu
-					}));
-				}
-			}
-
-			array.forEach(this._footerCells, function(icell) {
-				this._footer.addChild(icell);
-			}, this);
-			this._footer.startup();
-
-			// redo the layout since we added elements
-			this.layout();
-
-			return true;
-		},
-
-		_updateFooter: function() {
-			// try to create the footer if it does not already exist
-			if (!this._footerCells) {
-				var success = this._createFooter();
-				if (!success) {
-					return;
-				}
-			}
-
-			// adjust the margin of the first cell in order to align correctly
-			var margin = geometry.position(query('th', this._grid.viewsHeaderNode)[0]).x;
-			margin -= geometry.position(this._grid.domNode).x;
-			style.set(this._footerCells[0].domNode, 'margin-left', margin + 'px');
-
-			// update footer cell widths
-			array.forEach(this._getFooterCellWidths(), function(iwidth, i) {
-				geometry.setContentSize(this._footerCells[i].containerNode, { w: iwidth });
-			}, this);
 		},
 
 		uninitialize: function() {
@@ -1109,6 +980,7 @@ define([
 			}
 		},
 
+		// TODO: this is only used in uvmm, remove this, replace by normal handling
 		canExecuteOnSelection: function( /* String|Object */action, /* Object[] */items ) {
 			// summary:
 			//		returns a subset of the given items that are available for the action according to the canExecute function
