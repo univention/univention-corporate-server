@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.30-4) unstable; urgency=low
+
+  * Fix returning failure in case pymodules link is already ok
+    (Bug #32403, Bug #32406, Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 13 Sep 2013 13:45:43 +0200
+
 univention-directory-manager-modules (9.0.30-3) unstable; urgency=low
 
   * Update copyright years for 2013

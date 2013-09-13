@@ -315,17 +315,19 @@ def create_pymodules_links(target_subdir, target_filename):
 			filename = os.path.join(PYSHARED_DIR, relative_filename)
 			if os.path.lexists(linkname):
 				if os.path.exists(linkname) and os.path.realpath(linkname) == filename:
-					return
+					if pyversion == default_python_version:
+						is_default_link_present = True
 				else:
 					os.unlink(linkname)
 
-			try:
-				os.symlink(filename, linkname)
-				links_created += 1
-				if pyversion == default_python_version:
-					is_default_link_present = True
-			except OSError, e:
-				ud.debug(ud.LISTENER, ud.ERROR, '%s: Symlink creation of %s failed: %s.' % (name, linkname, e))
+			if not os.path.lexists(linkname):
+				try:
+					os.symlink(filename, linkname)
+					links_created += 1
+					if pyversion == default_python_version:
+						is_default_link_present = True
+				except OSError, e:
+					ud.debug(ud.LISTENER, ud.ERROR, '%s: Symlink creation of %s failed: %s.' % (name, linkname, e))
 	if links_created:
 		ud.debug(ud.LISTENER, ud.INFO, '%s: symlinks to %s created.' % (name, relative_filename))
 
