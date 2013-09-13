@@ -122,9 +122,6 @@ def handler_set(args, opts=dict(), quiet=False):
 	Set config registry variables in args.
 	Args is an array of strings 'key=value' or 'key?value'.
 	"""
-	handlers = ConfigHandlers()
-	handlers.load()
-
 	ucr = _ucr_from_opts(opts)
 	with ucr:
 		changed = {}
@@ -152,14 +149,8 @@ def handler_set(args, opts=dict(), quiet=False):
 						print 'Setting %s' % key
 					else:
 						print 'Create %s' % key
-					k = ucr.get(key, None, getscope=True)
-					if k and k[0] > ucr.scope:
-						print >> sys.stderr, \
-							'W: %s is overridden by scope "%s"' % \
-							(key, SCOPE[k[0]])
 				ucr[key] = value
 				changed[key] = (old, value)
-				replog(ucr, key, old, value)
 			else:
 				if not quiet:
 					if old is not None:
@@ -167,7 +158,8 @@ def handler_set(args, opts=dict(), quiet=False):
 					else:
 						print 'Not setting %s' % key
 
-	handlers(changed.keys(), (ucr, changed))
+	_run_changed(ucr, changed,
+			None if quiet else 'W: %s is overridden by scope "%s"')
 
 
 def handler_unset(args, opts=dict()):
@@ -176,9 +168,6 @@ def handler_unset(args, opts=dict()):
 	"""
 	ucr = _ucr_from_opts(opts)
 	with ucr:
-		handlers = ConfigHandlers()
-		handlers.load()
-
 		changed = {}
 		for arg in args:
 			if ucr.has_key(arg, write_registry_only=True):
@@ -187,14 +176,23 @@ def handler_unset(args, opts=dict()):
 				del ucr[arg]
 				changed[arg] = (oldvalue, '')
 				k = ucr.get(arg, None, getscope=True)
-				replog(ucr, arg, oldvalue)
-				if k and k[0] > ucr.scope:
-					print >> sys.stderr, \
-							'W: %s is still set in scope "%s"' % \
-							(arg, SCOPE[k[0]])
 			else:
 				msg = "W: The config registry variable '%s' does not exist"
 				print >> sys.stderr, msg % (arg,)
+
+	_run_changed(ucr, changed, 'W: %s is still set in scope "%s"')
+
+
+def _run_changed(ucr, changed, msg=None):
+	for key, (old_value, new_value) in changed.iteritems():
+		replog(ucr, key, old_value, new_value)
+		if msg:
+			scope, _value = ucr.get(key, (0, None), getscope=True)
+			if scope > ucr.scope:
+				print >> sys.stderr, msg % (key, SCOPE[scope])
+
+	handlers = ConfigHandlers()
+	handlers.load()
 	handlers(changed.keys(), (ucr, changed))
 
 
