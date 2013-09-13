@@ -430,6 +430,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-ldap</emphasis>, <emphasis>univention-directory-logger</emphasis>
+		  and <emphasis>univention-ldap-overlay-memberof</emphasis> have been revised (<ulink
+		  url="&ucsbug;30946">Bug 30946</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The LDAP attribute <emphasis>univentionShareHost</emphasis> now supports the substring search (<ulink url="&ucsbug;31208">Bug 31208</ulink>).
 		</simpara></listitem>
 
@@ -461,6 +467,12 @@
 	  <title>LDAP ACL changes</title>
 		<itemizedlist>
 		  <listitem><simpara>
+
+		  <listitem><simpara>
+			The &ucsUCR; variable descriptions in <emphasis>univention-admingrp-user-passwordreset</emphasis>
+			have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
+		  </simpara></listitem>
+
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -478,6 +490,12 @@
 			There is new schema extension <emphasis>udm_extension.schema</emphasis>.
 			(<ulink url="&ucsbug;32410">Bug 32410</ulink>).
 		  </simpara></listitem>
+
+		  <listitem><simpara>
+			The &ucsUCR; variable descriptions in <emphasis>univention-legacy-kolab-schema</emphasis>
+			have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
+		  </simpara></listitem>
+
 		</itemizedlist>
 	</section>
 
@@ -491,6 +509,12 @@
 
 		  <listitem><simpara>
 			The failed LDIF mode of the replication does now handle empty values correctly (<ulink url="&ucsbug;25579">Bug 25579</ulink>).
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			The &ucsUCR; variable descriptions in <emphasis>univention-directory-listener</emphasis>
+			and <emphasis>univention-directory-listener</emphasis> have been revised (<ulink
+			url="&ucsbug;30946">Bug 30946</ulink>).
 		  </simpara></listitem>
 
 		  <listitem><simpara>
@@ -554,6 +578,12 @@
 		<listitem><simpara>
 		  The UMC overview page has been redesigned along with a search for modules
 		  (Bugs <ulink url="&ucsbug;31699">31699</ulink>, <ulink url="&ucsbug;32022">32022</ulink>, <ulink url="&ucsbug;32023">32023</ulink>, <ulink url="&ucsbug;32048">32048</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-management-console-frontend</emphasis>
+		  and <emphasis>univention-management-console</emphasis> have been revised (<ulink
+		  url="&ucsbug;30946">Bug 30946</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -900,6 +930,12 @@
 		  <guimenu>GECOS</guimenu> in the users module, <guimenu>FQDN</guimenu> in the computers
 		  module and <guimenu>Next IP</guimenu> in the network module have been removed from the
 		  advanced search as they are not searchable in the UMC (<ulink url="&ucsbug;28803">Bug 28803</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in
+		  <emphasis>univention-directory-manager-modules</emphasis> and <emphasis>univention-management-console-module-udm</emphasis>
+		  have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1296,6 +1332,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The &ucsUCR; variable descriptions in <emphasis>univention-directory-reports</emphasis>
+		  have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The English and German texts of the <emphasis>System information</emphasis> module have
 		  been adapted (<ulink url="&ucsbug;30797">Bug 30797</ulink>).
 		</simpara></listitem>
@@ -1303,6 +1344,8 @@
 		<listitem><simpara>
 		  Support of ext4 partitions has been added to the filesystem quota module (<ulink url="&ucsbug;24357">Bug 24357</ulink>).
 		</simpara></listitem>
+
+
 
 		<listitem><simpara>
 		  A typo in the German localization in
@@ -2496,6 +2539,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 		univention-user-quota has been rewritten in Python. It does now support share names with
 		whitespaces (<ulink url="&ucsbug;30636">Bug 30636</ulink>, <ulink url="&ucsbug;31957">Bug 31957</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The &ucsUCR; variable descriptions in <emphasis>univention-system-info</emphasis>
+		have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
