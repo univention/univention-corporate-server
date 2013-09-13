@@ -83,7 +83,7 @@ define([
 		}
 	});
 
-	return declare("umc.widgets.Grid", [ BorderContainer, StandbyMixin ], {
+	return declare("umc.widgets.Grid", [BorderContainer, StandbyMixin], {
 		// summary:
 		//		Encapsulates a complex grid with store, UMCP commands and action buttons;
 		//		offers easy access to select items etc.
@@ -261,7 +261,7 @@ define([
 			return geometry.getMarginBox(this._tmpCell).w;
 		},
 
-		_setColumnsAttr: function ( columns ) {
+		_setColumnsAttr: function (columns) {
 			tools.assert(columns instanceof Array, 'The property columns needs to be defined for umc/widgets/Grid as an array.');
 			this.columns = columns;
 
@@ -299,7 +299,7 @@ define([
 						var identity = item[this.moduleStore.idProperty];
 
 						var defaultAction = typeof this.defaultAction == "function" ?
-							this.defaultAction( [ identity ], [ item ] ) : this.defaultAction;
+							this.defaultAction([identity], [item]) : this.defaultAction;
 
 						if (defaultAction) {
 							var action;
@@ -324,7 +324,7 @@ define([
 										var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
 										if (isExecutable && !this.getDisabledItem(identity)) {
 											this._publishAction('default-' + action.name);
-											action.callback( [ identity ], [ item ] );
+											action.callback([identity], [item]);
 										}
 									})
 								});
@@ -362,7 +362,7 @@ define([
 			}, this);
 
 			// set new grid structure
-			this._grid.setStructure( gridColumns );
+			this._grid.setStructure(gridColumns);
 		},
 
 		_setActionsAttr: function(actions, /*Boolean?*/ doSetColumns) {
@@ -427,9 +427,9 @@ define([
 						try {
 						var item = undefined;
 						var idescription = typeof iaction.description == "function" ? iaction.description(item) : iaction.description;
-						var tooltip = new (iaction.tooltipClass || Tooltip)( {
+						var tooltip = new (iaction.tooltipClass || Tooltip)({
 							label: idescription,
-							connectId: [ btn.domNode ]
+							connectId: [btn.domNode]
 						});
 						if (iaction.onShowDescription) {
 							tooltip = lang.mixin(tooltip, { onShow: function(target) { iaction.onShowDescription(target, item); }});
@@ -571,7 +571,7 @@ define([
 			this._createFooter();
 
 			// update columns and actions
-			this.setColumnsAndActions( this.columns, this.actions );
+			this.setColumnsAndActions(this.columns, this.actions);
 			if (typeof this.sortIndex == "number") {
 				this._grid.setSortIndex(Math.abs(this.sortIndex), this.sortIndex > 0);
 			}
@@ -714,9 +714,9 @@ define([
 							var idescription = typeof iaction.description == "function" ? iaction.description(item) : iaction.description;
 							// catch: pass;
 							// else:
-							var tooltip = new (iaction.tooltipClass || Tooltip)( {
+							var tooltip = new (iaction.tooltipClass || Tooltip)({
 								label: idescription,
-								connectId: [ ichild.domNode ]
+								connectId: [ichild.domNode]
 							});
 							if (iaction.onShowDescription) {
 								tooltip = lang.mixin(tooltip, { onShow: function(target) { iaction.onShowDescription(target, item); }});
@@ -732,7 +732,7 @@ define([
 			}, this);
 		},
 
-		_onRowClick: function( evt ) {
+		_onRowClick: function(evt) {
 			if (evt.cellIndex === 0) {
 				// the checkbox cell was pressed, this does already the wanted behavior
 				return true;
@@ -749,29 +749,29 @@ define([
 		_disableAllItems: function(disable) {
 			var items = this.getAllItems();
 			disable = undefined === disable ? true : disable;
-			array.forEach( items, lang.hitch( this, function( iitem ) {
-				var idx = this.getItemIndex( iitem[ this.moduleStore.idProperty ] );
+			array.forEach(items, lang.hitch(this, function(iitem) {
+				var idx = this.getItemIndex(iitem[this.moduleStore.idProperty]);
 				if (idx >= 0) {
 					this._grid.rowSelectCell.setDisabled(idx, disable);
 				}
-			} ) );
+			}));
 			this._grid.render();
 		},
 
-		_setDisabledAttr: function( value ) {
+		_setDisabledAttr: function(value) {
 			this.disabled = value;
 
 			// disable items
-			this._disableAllItems( value );
+			this._disableAllItems(value);
 			// re-disable explicitly disabled items
 			this._updateDisabledItems();
 
 			// disable all actions
-			array.forEach( this._toolbar.getChildren().concat(this._contextActionsToolbar), lang.hitch( this, function( widget ) {
-				if ( widget instanceof Button || widget instanceof _DropDownButton) {
-					widget.set( 'disabled', value );
+			array.forEach(this._toolbar.getChildren().concat(this._contextActionsToolbar), lang.hitch(this, function(widget) {
+				if (widget instanceof Button || widget instanceof _DropDownButton) {
+					widget.set('disabled', value);
 				}
-			} ) );
+			}));
 		},
 
 		_createFooter: function() {
@@ -981,24 +981,24 @@ define([
 		},
 
 		// TODO: this is only used in uvmm, remove this, replace by normal handling
-		canExecuteOnSelection: function( /* String|Object */action, /* Object[] */items ) {
+		canExecuteOnSelection: function(/* String|Object */action, /* Object[] */items) {
 			// summary:
 			//		returns a subset of the given items that are available for the action according to the canExecute function
 			var actionObj = null;
 			var executableItems = [];
 
-			if ( typeof  action  == "string" ) {
+			if (typeof action == "string") {
 				var tmpActions = array.filter(this.actions, function(iaction) {
 					return iaction.isMultiAction && iaction.name == action;
-				} );
-				if ( ! tmpActions.length ) {
+				});
+				if (!tmpActions.length) {
 					throw 'unknown action ' + action;
 				}
-				actionObj = tmpActions[ 0 ];
+				actionObj = tmpActions[0];
 			}
-			executableItems = array.filter( items, function( iitem ) {
-				return typeof  actionObj.canExecute  == "function" ? actionObj.canExecute( iitem ) : true;
-			} );
+			executableItems = array.filter(items, function(iitem) {
+				return typeof actionObj.canExecute == "function" ? actionObj.canExecute(iitem) : true;
+			});
 
 			return executableItems;
 		},

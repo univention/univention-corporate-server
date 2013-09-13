@@ -28,7 +28,7 @@ Description[en]=If this option is activated or the variable is unset, a startup 
 Type=bool
 Categories=management-umc
 
-[umc/web/max_host_entries]
+[umc/web/host_referrallimit]
 Description[de]=In der Titelzeile der UMC wird eine Auswahlliste angezeigt, mit der auf eine andere Univention Management Console in der Domäne gewechselt werden kann. Diese Variable konfiguriert die maximale Anzahl an Instanzen, die als Drop-Down-Menü angeboten wird.
 Description[en]=In the title panel of the UMC as selection list is shown. It can be used to navigate to a different Univention Management Console in the domain. This variable configures the maximum amount of instances which are presented as a drop down menu.
 Type=int

@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.70-1) unstable; urgency=low
+
+  * Bug #30744: rename UCR variable umc/web/max_host_entries to umc/web/host_referrallimit
+
+ -- Florian Best <best@univention.de>  Fri, 13 Sep 2013 14:52:57 +0200
+
 univention-management-console-frontend (3.0.69-1) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)

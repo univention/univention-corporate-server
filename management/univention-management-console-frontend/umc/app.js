@@ -678,7 +678,7 @@ define([
 				'umc/web/feedback/description',
 				'umc/web/favorites/default',
 				'umc/web/startupdialog',
-				'umc/web/max_host_entries',
+				'umc/web/host_referrallimit',
 				'umc/web/sso/enabled',
 				'umc/web/sso/allow/http',
 				'umc/web/sso/newwindow',
@@ -1037,7 +1037,7 @@ define([
 			var fqdn = tools.status('fqdn');
 			tools.umcpCommand('get/hosts/list').then(lang.hitch(this, function(data) {
 				var empty = data.result.length <= 1;
-				empty = empty || data.result.length >= (parseInt(_ucr['umc/web/max_host_entries'], 10) || 100);
+				empty = empty || data.result.length >= (parseInt(_ucr['umc/web/host_referrallimit'], 10) || 100);
 				this._hostInfo.set('disabled', empty && !has('ie')); // prevent IE displaying a disabled button with a shadowed text
 				if (empty) {
 					return;
