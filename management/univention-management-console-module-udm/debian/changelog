@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.17-2) unstable; urgency=low
+
+  * Wording for request license form (Bug #32389)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Sep 2013 14:04:09 +0200
+
 univention-management-console-module-udm (4.0.17-1) unstable; urgency=low
 
   * Add button for requesting KeyID license in dialog (Bug #32389)

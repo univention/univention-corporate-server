@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-09-12 20:08+0200\n"
+"POT-Creation-Date: 2013-09-13 14:02+0200\n"
 "PO-Revision-Date: 2012-01-03 08:01+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgstr "%(nSelected)d %(objPlural)s von %(nTotal)d sind ausgewählt"
 msgid "%(nSelected)d %(objSingular)s of %(nTotal)d selected"
 msgstr "%(nSelected)d %(objSingular)s von %(nTotal)d ist ausgewählt"
 
-#: umc/js/udm/LicenseDialog.js:218
+#: umc/js/udm/LicenseDialog.js:219
 #, python-format
 msgid "%s (used: %s)"
 msgstr "%s (genutzt: %s)"
@@ -55,7 +55,7 @@ msgstr "(Vereinfachte Optionen)"
 msgid "(multi-edit)"
 msgstr "(Mehrfachbearbeitung)"
 
-#: umc/js/udm/LicenseDialog.js:243
+#: umc/js/udm/LicenseDialog.js:244
 msgid "<b>License type:</b> GPL"
 msgstr "<b>Lizenztyp:</b> GPL"
 
@@ -66,7 +66,7 @@ msgstr ""
 "<p>Erzeuge den %s Report für %d Objekte.</p><p>Die Aktion kann einen Moment "
 "dauern</p>"
 
-#: umc/js/udm/LicenseDialog.js:258
+#: umc/js/udm/LicenseDialog.js:259
 msgid ""
 "<p>The \"free for personal use\" edition of Univention Corporate Server is a "
 "special software license which allows users free use of the Univention "
@@ -188,7 +188,7 @@ msgstr "Passwort ändern"
 msgid "Click to edit the inherited properties of the policy"
 msgstr "Mausklick, um die ererbten Eigenschaften der Richtlinie zu bearbeiten"
 
-#: umc/js/udm/LicenseDialog.js:274
+#: umc/js/udm/LicenseDialog.js:275
 msgid "Clients"
 msgstr "Clients"
 
@@ -205,7 +205,7 @@ msgstr "Kontakt"
 msgid "Container"
 msgstr "Container"
 
-#: umc/js/udm/LicenseDialog.js:303
+#: umc/js/udm/LicenseDialog.js:304
 msgid "Corporate Clients"
 msgstr "Corporate Clients"
 
@@ -230,8 +230,8 @@ msgstr "Report erstellen"
 msgid "Creating the report ..."
 msgstr "Erstelle den Report ..."
 
-#: umc/js/udm/LicenseDialog.js:242 umc/js/udm/LicenseDialog.js:269
-#: umc/js/udm/LicenseDialog.js:294
+#: umc/js/udm/LicenseDialog.js:243 umc/js/udm/LicenseDialog.js:270
+#: umc/js/udm/LicenseDialog.js:295
 msgid "Current license"
 msgstr "Aktuelle Lizenz"
 
@@ -259,11 +259,11 @@ msgstr "DNS-Objekt"
 msgid "DNS objects"
 msgstr "DNS-Objekte"
 
-#: umc/js/udm/LicenseDialog.js:307
+#: umc/js/udm/LicenseDialog.js:308
 msgid "DVS Clients"
 msgstr "DVS Clients"
 
-#: umc/js/udm/LicenseDialog.js:305
+#: umc/js/udm/LicenseDialog.js:306
 msgid "DVS Users"
 msgstr "DVS Benutzer"
 
@@ -292,7 +292,7 @@ msgstr "Zugehörige Objekte löschen."
 msgid "Deleting the selected %s."
 msgstr "Die ausgewählten %s löschen"
 
-#: umc/js/udm/LicenseDialog.js:276
+#: umc/js/udm/LicenseDialog.js:277
 msgid "Desktops"
 msgstr "Desktops"
 
@@ -321,7 +321,7 @@ msgstr "Mitarbeiter"
 msgid "Error"
 msgstr "Fehler"
 
-#: umc/js/udm/LicenseDialog.js:278 umc/js/udm/LicenseDialog.js:315
+#: umc/js/udm/LicenseDialog.js:279 umc/js/udm/LicenseDialog.js:316
 msgid "Expiry date"
 msgstr "Ablaufdatum"
 
@@ -357,7 +357,7 @@ msgstr "Ererbt"
 msgid "KDE Profiles"
 msgstr "KDE-Profile"
 
-#: umc/js/udm/LicenseDialog.js:313
+#: umc/js/udm/LicenseDialog.js:314
 msgid "Key ID"
 msgstr "Key ID"
 
@@ -365,7 +365,7 @@ msgstr "Key ID"
 msgid "LDAP"
 msgstr "LDAP"
 
-#: umc/js/udm/LicenseDialog.js:270 umc/js/udm/LicenseDialog.js:295
+#: umc/js/udm/LicenseDialog.js:271 umc/js/udm/LicenseDialog.js:296
 msgid "LDAP base"
 msgstr "LDAP-Basis"
 
@@ -427,7 +427,7 @@ msgstr "MX Records"
 msgid "Mail"
 msgstr "Mail"
 
-#: umc/js/udm/LicenseDialog.js:301
+#: umc/js/udm/LicenseDialog.js:302
 msgid "Managed Clients"
 msgstr "Managed Clients"
 
@@ -622,6 +622,10 @@ msgstr "Report für %s"
 msgid "Report has been created"
 msgstr "Report wurde erstellt"
 
+#: umc/js/udm/LicenseDialog.js:195
+msgid "Request"
+msgstr "Anfordern"
+
 #: umc/js/udm/LicenseDialog.js:158 umc/js/udm/LicenseDialog.js:193
 msgid "Request updated license key with identification"
 msgstr "Aktualisierten Lizenzschlüssel mit Identifikation anfordern"
@@ -658,15 +662,15 @@ msgstr ""
 msgid "Select policy configuration"
 msgstr "Richtlinien-Konfiguration"
 
-#: umc/js/udm/LicenseDialog.js:299
+#: umc/js/udm/LicenseDialog.js:300
 msgid "Servers"
 msgstr "Server"
 
-#: umc/js/udm/LicenseDialog.js:311
+#: umc/js/udm/LicenseDialog.js:312
 msgid "Servers with premium support"
 msgstr "Server mit Premiumsupport"
 
-#: umc/js/udm/LicenseDialog.js:309
+#: umc/js/udm/LicenseDialog.js:310
 msgid "Servers with standard support"
 msgstr "Server mit Standardsupport"
 
@@ -803,7 +807,7 @@ msgstr "UDM Allgemein"
 msgid "UDM Web"
 msgstr "UDM Web"
 
-#: umc/js/udm/LicenseDialog.js:227
+#: umc/js/udm/LicenseDialog.js:228
 msgid "Updating the license information has failed"
 msgstr "Die Aktualisierung der Lizenzinformationen ist fehlgeschlagen"
 
@@ -823,11 +827,11 @@ msgstr "Benutzerkonto"
 msgid "User Contact"
 msgstr "Benutzer-Kontakt"
 
-#: umc/js/udm/LicenseDialog.js:272 umc/js/udm/LicenseDialog.js:297
+#: umc/js/udm/LicenseDialog.js:273 umc/js/udm/LicenseDialog.js:298
 msgid "User accounts"
 msgstr "Benutzerkonten"
 
-#: umc/js/udm/LicenseDialog.js:280 umc/js/udm/LicenseDialog.js:317
+#: umc/js/udm/LicenseDialog.js:281 umc/js/udm/LicenseDialog.js:318
 msgid "Valid product types"
 msgstr "Gültige Produkttypen"
 
@@ -844,7 +848,7 @@ msgstr ""
 "alle referenzierende Objekte aus und kann ggf. das System global "
 "beeinflussen."
 
-#: umc/js/udm/LicenseDialog.js:244
+#: umc/js/udm/LicenseDialog.js:245
 msgid ""
 "You are using a GPL license which is not eligible for maintenance or support "
 "claims."
@@ -936,7 +940,7 @@ msgstr "Freigabe"
 msgid "shares"
 msgstr "Freigaben"
 
-#: umc/js/udm/LicenseDialog.js:216
+#: umc/js/udm/LicenseDialog.js:217
 msgid "unlimited"
 msgstr "unbegrenzt"
 

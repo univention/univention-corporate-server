@@ -192,6 +192,7 @@ define([
 			dialog.confirmForm({
 				title: _('Request updated license key with identification'),
 				widgets: widgets,
+				submit: _('Request'),
 				autoValidate: true
 			}).then(lang.hitch(this, function(values) {
 				var requestingNewLicense = tools.umcpCommand('udm/request_new_license', values).then(
