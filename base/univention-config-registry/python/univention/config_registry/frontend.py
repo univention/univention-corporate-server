@@ -125,20 +125,7 @@ def handler_set(args, opts=dict(), quiet=False):
 	handlers = ConfigHandlers()
 	handlers.load()
 
-	current_scope = ConfigRegistry.NORMAL
-	ucr = None
-	if opts.get('ldap-policy', False):
-		current_scope = ConfigRegistry.LDAP
-		ucr = ConfigRegistry(write_registry=current_scope)
-	elif opts.get('force', False):
-		current_scope = ConfigRegistry.FORCED
-		ucr = ConfigRegistry(write_registry=current_scope)
-	elif opts.get('schedule', False):
-		current_scope = ConfigRegistry.SCHEDULE
-		ucr = ConfigRegistry(write_registry=current_scope)
-	else:
-		ucr = ConfigRegistry()
-
+	ucr = _ucr_from_opts(opts)
 	with ucr:
 		changed = {}
 		for arg in args:
@@ -187,20 +174,7 @@ def handler_unset(args, opts=dict()):
 	"""
 	Unset config registry variables in args.
 	"""
-	current_scope = ConfigRegistry.NORMAL
-	ucr = None
-	if opts.get('ldap-policy', False):
-		current_scope = ConfigRegistry.LDAP
-		ucr = ConfigRegistry(write_registry=current_scope)
-	elif opts.get('force', False):
-		current_scope = ConfigRegistry.FORCED
-		ucr = ConfigRegistry(write_registry=current_scope)
-	elif opts.get('schedule', False):
-		current_scope = ConfigRegistry.SCHEDULE
-		ucr = ConfigRegistry(write_registry=current_scope)
-	else:
-		ucr = ConfigRegistry()
-
+	ucr = _ucr_from_opts(opts)
 	with ucr:
 		handlers = ConfigHandlers()
 		handlers.load()
@@ -222,6 +196,19 @@ def handler_unset(args, opts=dict()):
 				msg = "W: The config registry variable '%s' does not exist"
 				print >> sys.stderr, msg % (arg,)
 	handlers(changed.keys(), (ucr, changed))
+
+
+def _ucr_from_opts(opts):
+	if opts.get('ldap-policy', False):
+		scope = ConfigRegistry.LDAP
+	elif opts.get('force', False):
+		scope = ConfigRegistry.FORCED
+	elif opts.get('schedule', False):
+		scope = ConfigRegistry.SCHEDULE
+	else:
+		scope = ConfigRegistry.NORMAL
+	ucr = ConfigRegistry(write_registry=scope)
+	return ucr
 
 
 def handler_dump(args, opts=dict()):
