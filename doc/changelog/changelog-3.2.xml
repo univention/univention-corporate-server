@@ -1485,12 +1485,16 @@
 	<title>Software monitor (univention-pkgdb)</title>
 	  <itemizedlist>
 		<listitem><simpara>
-
-		<listitem><simpara>
 		  The &ucsUCR; variable descriptions in <emphasis>univention-pkgdb</emphasis> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  Unjoin scripts have been added to the <emphasis>univention-pkgdb</emphasis>,
+		  <emphasis>univention-management-console-module-pkgdb</emphasis>, and
+		  <emphasis>univention-pkgdb-tools</emphasis> packages. The unjoin scripts remove the service
+		  entry from the server object and the DNS service entry and undo the UMC module registration
+		  (<ulink url="&ucsbug;32492">Bug 32492</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
