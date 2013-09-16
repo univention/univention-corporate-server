@@ -232,6 +232,8 @@ typedef struct {
 #define PAGE_LIST_SIZE (max(NET_RX_RING_SIZE, NET_TX_RING_SIZE) * 4)
 #define MULTICAST_LIST_MAX_SIZE 32
 
+#define NDIS_STATUS_RESOURCES_MAX_LENGTH 64
+
 struct xennet_info
 {
   BOOLEAN inactive;

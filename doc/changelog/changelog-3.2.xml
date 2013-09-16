@@ -2126,6 +2126,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 			An unjoin script has been added to package <package>univention-virtual-machine-manager-node-xen</package>.
 			The unjoin script removes the Xen service from the server object and removes the default &ucsUCRV;s (<ulink url="&ucsbug;32450">Bug 32450</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The GPLPV drivers were updated to version 0.11.0-372 (<ulink url="&ucsbug;29456">Bug 29456</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 

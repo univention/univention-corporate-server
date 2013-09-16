@@ -163,9 +163,8 @@ get_packet_from_freelist(struct xennet_info *xi)
     return NULL;
 
   NdisAllocatePacket(&status, &packet, xi->rx_packet_pool);
-  if (status != NDIS_STATUS_SUCCESS)
-  {
-    KdPrint((__DRIVER_NAME "     cannot allocate packet\n"));
+  if (status != NDIS_STATUS_SUCCESS) {
+    KdPrint((__DRIVER_NAME "     cannot allocate packet status = %08x, rx_outstanding = %d\n", status, xi->rx_outstanding));
     return NULL;
   }
   NDIS_SET_PACKET_HEADER_SIZE(packet, XN_HDR_SIZE);
@@ -199,6 +198,7 @@ XenNet_MakePacket(struct xennet_info *xi, packet_info_t *pi)
   ULONG out_remaining;
   ULONG tcp_length;
   ULONG header_extra;
+  ULONG packet_length = 0;
   shared_buffer_t *header_buf;
 
   //FUNCTION_ENTER();
@@ -229,7 +229,7 @@ XenNet_MakePacket(struct xennet_info *xi, packet_info_t *pi)
     ref_pb(xi, pi->first_pb); /* so that the buffer doesn't get freed at the end of MakePackets*/
     //FUNCTION_EXIT();
     /* windows gets lazy about ack packets and holds on to them forever under high load situations. we don't like this */
-    if (pi->ip_proto == 6 && pi->tcp_length == 0)
+    if (pi->ip_proto == 6 && pi->total_length <= NDIS_STATUS_RESOURCES_MAX_LENGTH)
       NDIS_SET_PACKET_STATUS(packet, NDIS_STATUS_RESOURCES);
     else
       NDIS_SET_PACKET_STATUS(packet, NDIS_STATUS_SUCCESS);
@@ -269,6 +269,7 @@ XenNet_MakePacket(struct xennet_info *xi, packet_info_t *pi)
     return NULL;
   }
   NdisChainBufferAtBack(packet, out_buffer);
+  packet_length += pi->header_length;
   *(shared_buffer_t **)&packet->MiniportReservedEx[0] = header_buf;
   header_buf->next = pi->curr_pb;
 
@@ -315,6 +316,7 @@ XenNet_MakePacket(struct xennet_info *xi, packet_info_t *pi)
     NdisCopyBuffer(&status, &out_buffer, xi->rx_buffer_pool, pi->curr_buffer, pi->curr_mdl_offset, out_length);
     ASSERT(status == STATUS_SUCCESS); //TODO: properly handle error
     NdisChainBufferAtBack(packet, out_buffer);
+    packet_length += out_length;
     ref_pb(xi, pi->curr_pb);
     pi->curr_mdl_offset = (USHORT)(pi->curr_mdl_offset + out_length);
     if (pi->curr_mdl_offset == in_buffer_length)
@@ -325,15 +327,14 @@ XenNet_MakePacket(struct xennet_info *xi, packet_info_t *pi)
     }
     out_remaining -= out_length;
   }
-  if (pi->split_required)
-  {
+  if (pi->split_required) {
     XenNet_SumIpHeader(header_va, pi->ip4_header_length);
   }
   if (header_extra > 0)
     pi->header_length -= header_extra;
   ASSERT(*(shared_buffer_t **)&packet->MiniportReservedEx[0]);
   /* windows gets lazy about ack packets and holds on to them forever under high load situations. we don't like this */
-  if (pi->ip_proto == 6 && pi->tcp_length == 0)
+  if (pi->ip_proto == 6 && packet_length <= NDIS_STATUS_RESOURCES_MAX_LENGTH)
     NDIS_SET_PACKET_STATUS(packet, NDIS_STATUS_RESOURCES);
   else
     NDIS_SET_PACKET_STATUS(packet, NDIS_STATUS_SUCCESS);
@@ -712,18 +713,16 @@ XenNet_ReturnPacket(
   }
 
   put_packet_on_freelist(xi, Packet);
-  InterlockedDecrement(&xi->rx_outstanding);
-  
-  if (!xi->rx_outstanding && xi->rx_shutting_down)
-    KeSetEvent(&xi->packet_returned_event, IO_NO_INCREMENT, FALSE);
-
-#if 0 /* don't do this as it's called an awful lot */
-  KeAcquireSpinLockAtDpcLevel(&xi->rx_lock);
-
-  XenNet_FillRing(xi);
-
-  KeReleaseSpinLockFromDpcLevel(&xi->rx_lock);
-#endif
+  if (!InterlockedDecrement(&xi->rx_outstanding)) {
+    if (xi->rx_shutting_down) {
+      KeSetEvent(&xi->packet_returned_event, IO_NO_INCREMENT, FALSE);
+    } else {
+      /* check performance of this - only happens on ring empty */
+      KeAcquireSpinLockAtDpcLevel(&xi->rx_lock);
+      XenNet_FillRing(xi);
+      KeReleaseSpinLockFromDpcLevel(&xi->rx_lock);
+    }
+  }
   //FUNCTION_EXIT();
 }
   
@@ -993,7 +992,7 @@ XenNet_RxBufferCheck(struct xennet_info *xi)
     packets[packet_count++] = packet;
     InterlockedIncrement(&xi->rx_outstanding);
     entry = RemoveHeadList(&rx_packet_list);
-    /* if we indicate a packet with NDIS_STATUS_RESOURCES  then any following packet can't be NDIS_STATUS_SUCCESS */
+    /* if we indicate a packet with NDIS_STATUS_RESOURCES then any following packet can't be NDIS_STATUS_SUCCESS */
     if (packet_count == MAXIMUM_PACKETS_PER_INDICATE || entry == &rx_packet_list
         || (NDIS_GET_PACKET_STATUS(CONTAINING_RECORD(entry, NDIS_PACKET, MiniportReservedEx[sizeof(PVOID)])) == NDIS_STATUS_SUCCESS
             && status == NDIS_STATUS_RESOURCES))
