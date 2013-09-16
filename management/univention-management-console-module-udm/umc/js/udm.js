@@ -39,6 +39,7 @@ define([
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/json",
+	"dojo/dom-style",
 	"dijit/layout/ContentPane",
 	"dijit/Menu",
 	"dijit/MenuItem",
@@ -66,7 +67,7 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
+], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
@@ -624,6 +625,10 @@ define([
 						return tools.getIconClass(item.icon || 'udm-container-cn');
 					}
 				});
+				if ('navigation' !== this.moduleFlavor) {
+					// don't indent superordinates
+					domStyle.set(this._tree.indentDetector, 'width', '1px');
+				}
 				// at the first onLoad event, select the LDAP base (i.e., root) as current node
 				on.once(this._tree, 'load', lang.hitch(this, function() {
 					// if the tree has been loaded successfully, model.root

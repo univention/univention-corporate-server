@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.20-1) unstable; urgency=low
+
+  * Bug #32381: fix indentation of superordinates in Tree view
+
+ -- Florian Best <best@univention.de>  Mon, 16 Sep 2013 17:25:04 +0200
+
 univention-management-console-module-udm (4.0.19-1) unstable; urgency=low
 
   * Show empty label in policy widgets if no value is set (Bug #31017)
