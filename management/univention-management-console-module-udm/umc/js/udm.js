@@ -58,6 +58,7 @@ define([
 	"umc/widgets/SearchForm",
 	"umc/widgets/Button",
 	"umc/widgets/Tree",
+	"umc/widgets/ProgressBar",
 	"umc/modules/udm/TreeModel",
 	"umc/modules/udm/TreeModelSuperordinate",
 	"umc/modules/udm/CreateReportDialog",
@@ -67,7 +68,7 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
+], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domstyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
@@ -222,6 +223,8 @@ define([
 				this.createDetailPage(this.newObject.objectType, undefined, this.newObject, true, this.newObject.note);
 				return; // do not render the search page
 			}
+			this._progressBar = new ProgressBar({});
+			this.own(this._progressBar);
 
 			this.standby(true);
 			if ('navigation' == this.moduleFlavor) {
@@ -1007,30 +1010,30 @@ define([
 				}, this);
 
 				// send UMCP command to move the objects
-				this.standby(true);
-				this.umcpCommand('udm/move', params).then(lang.hitch(this, function(data) {
-					this.standby(false);
+				this._progressBar.reset();
+				var moveOperation = this.umcpProgressCommand(this._progressBar, 'udm/move', params).then(
+					lang.hitch(this, function(result) {
 
-					// check whether everything went allright
-					var allSuccess = true;
-					var msg = '<p>' + _('Failed to move the following objects:') + '</p><ul>';
-					array.forEach(data.result, function(iresult) {
-						allSuccess = allSuccess && iresult.success;
-						if (!iresult.success) {
-							msg += '<li>' + iresult.$dn$ + ': ' + iresult.details + '</li>';
+						// check whether everything went allright
+						var allSuccess = true;
+						var msg = '<p>' + _('Failed to move the following objects:') + '</p><ul>';
+						array.forEach(result, function(iresult) {
+							allSuccess = allSuccess && iresult.success;
+							if (!iresult.success) {
+								msg += '<li>' + iresult.$dn$ + ': ' + iresult.details + '</li>';
+							}
+						}, this);
+						msg += '</ul>';
+						if (!allSuccess) {
+							dialog.alert(msg);
 						}
-					}, this);
-					msg += '</ul>';
-					if (!allSuccess) {
-						dialog.alert(msg);
-					}
 
-					// clear the selected objects
-					this.moduleStore.onChange();
-					this.resetPathAndReloadTreeAndFilter(ids);
-				}), lang.hitch(this, function() {
-					this.standby(false);
-				}));
+						// clear the selected objects
+						this.moduleStore.onChange();
+						this.resetPathAndReloadTreeAndFilter(ids);
+					})
+				);
+				this.standbyDuring(moveOperation, this._progressBar);
 
 				// cleanup
 				_cleanup();

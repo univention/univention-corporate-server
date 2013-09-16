@@ -47,8 +47,9 @@ import traceback
 from univention.lib.i18n import Translation
 from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
-from univention.management.console.modules.decorators import simple_response, sanitize
+from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
 from univention.management.console.modules.sanitizers import LDAPSearchSanitizer, EmailSanitizer
+from univention.management.console.modules.enable import EnableProgress
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.session import TEMPUPLOADDIR
 
@@ -64,7 +65,7 @@ from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_d
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
-class Instance( Base ):
+class Instance( Base, EnableProgress ):
 	def __init__( self ):
 		Base.__init__( self )
 		self.settings = None
@@ -259,47 +260,22 @@ class Instance( Base ):
 		importer.write( self._user_dn, self._password )
 		self.finished( request.id, [ { 'success' : True } ] )
 
-	def move( self, request ):
-		"""Moves LDAP objects.
-
-		requests.options = [ { 'options' : {}, 'object' : <LDAP DN> }, ... ]
-
-		return: [ { '$dn$' : <LDAP DN>, 'success' : (True|False), 'details' : <message> }, ... ]
-		"""
-
-		def _thread( request ):
-			result = []
-			for obj in request.options:
-				if not isinstance( obj, dict ):
-					raise UMC_OptionTypeError( _( 'Invalid object LDAP DN' ) )
-
-				options = obj.get( 'options', {} )
-				ldap_dn = obj.get( 'object', None )
-
-				if not 'container' in options:
-					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : _( 'The destination is missing' ) } )
-					continue
-
-				module = get_module( None, ldap_dn )
-				if not module:
-					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : _( 'Could not identify the given LDAP object' ) } )
-					continue
-
-				if not 'move' in module.operations:
-					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : _( 'This object can not be moved' ) } )
-					continue
-
+	@multi_response(progress=[_('Moving %d objects'), _('%($dn$)s moved')])
+	def move(self, iterator, object, options):
+		for object, options in iterator:
+			module = get_module( None, object )
+			if 'container' not in options:
+				yield { '$dn$' : object, 'success' : False, 'details' : _( 'The destination is missing' ) }
+			elif not module:
+				yield { '$dn$' : object, 'success' : False, 'details' : _( 'Could not identify the given LDAP object' ) }
+			elif 'move' not in module.operations:
+				yield { '$dn$' : object, 'success' : False, 'details' : _( 'This object can not be moved' ) }
+			else:
 				try:
-					module.move( ldap_dn, options[ 'container' ] )
-					result.append( { '$dn$' : ldap_dn, 'success' : True } )
-				except UDM_Error, e:
-					result.append( { '$dn$' : ldap_dn, 'success' : False, 'details' : str( e ) } )
-
-			return result
-
-		thread = notifier.threads.Simple( 'Get', notifier.Callback( _thread, request ),
-										  notifier.Callback( self._thread_finished, request ) )
-		thread.run()
+					module.move( object, options[ 'container' ] )
+					yield { '$dn$' : object, 'success' : True }
+				except UDM_Error as e:
+					yield { '$dn$' : object, 'success' : False, 'details' : str( e ) }
 
 	def add( self, request ):
 		"""Creates LDAP objects.

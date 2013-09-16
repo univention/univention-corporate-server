@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.21-1) unstable; urgency=low
+
+  * Progress bar during move of objects (Bug #25465)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Sep 2013 22:19:16 +0200
+
 univention-management-console-module-udm (4.0.20-1) unstable; urgency=low
 
   * Bug #32381: fix indentation of superordinates in Tree view
