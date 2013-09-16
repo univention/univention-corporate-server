@@ -2,7 +2,7 @@
 #
 # Univention Xen gplpv rules file
 #
-# Copyright 2011-2012 Univention GmbH
+# Copyright 2011-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,18 +29,36 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_build:
-	dh_auto_build
-	mkdir -p cdroot/debug
-	cp msi-packages/*.msi cdroot
-	cp msi-packages/debug/*.msi cdroot/debug
-	genisoimage  -J -R -o Xen\ Windows\ drivers\ \(gplpv\ 369\).iso cdroot
+VERSION := $(shell dpkg-parsechangelog | sed -rne 's/^Version: (0\.)?([0-9.]+)\.[0-9]+-[0-9.]+$$/0.\2/p')
+BUILD_NUMBER := $(shell dpkg-parsechangelog | sed -rne 's/^Version: [0-9.]+\.([0-9]+)-[0-9.]+$$/\1/p')
+GPLPV_VERSION := ${VERSION}.${BUILD_NUMBER}
 
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -rf win-pvdrivers/.hg
-	rm -rf win-pvdrivers/.hgtags
-	rm -rf cdroot
-
-%:
+binary binary-arch binary-indep build build-arch build-indep clean install install-arch install-indep:
 	dh $@
+
+override_dh_auto_build:
+	genisoimage -J -R -o "Xen Windows drivers (gplpv ${BUILD_NUMBER}).iso" msi-packages
+
+get-orig-source: win-pvdrivers win-pvdrivers/build_number.bat win-pvdrivers/sign_config.bat
+.PHONY: win-pvdrivers
+win-pvdrivers:
+	@echo "Cloning tag ${GPLPV_VERSION}..."
+	quilt pop -a || test $$? = 2
+	$(RM) -r "$@"
+	hg clone -r "${GPLPV_VERSION}" http://xenbits.xensource.com/ext/win-pvdrivers "$@"
+	$(RM) -r "$@"/.hg*
+	mv "$@"/ShutdownMon/* "$@"/shutdownmon/
+	rmdir "$@"/ShutdownMon
+	quilt push -a
+win-pvdrivers/build_number.bat:
+	@echo "Setting build numer ${BUILD_NUMBER}..."
+	echo -n 'SET BUILD_NUMBER=${BUILD_NUMBER}\r\n' > "$@"
+win-pvdrivers/sign_config.bat:
+	@echo "Configuring certificates for signing..."
+	: > "$@"
+	echo -n 'SET CERT_FILENAME=univention.p12\r\n' >> "$@"
+	echo -n 'SET CERT_PASSWORD=GEHEIM\r\n' >> "$@"
+	echo -n 'SET CERT_CROSS_CERT_FILENAME=crosscert.pem\r\n' >> "$@"
+	echo -n 'SET CERT_PUBLIC_FILENAME=univention.der\r\n' >> "$@"
+	@echo "Edit the passowrd in $@"
+	exit 1

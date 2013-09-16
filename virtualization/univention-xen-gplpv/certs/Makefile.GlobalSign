@@ -1,0 +1,52 @@
+#!/usr/bin/make -f
+
+CERT_FILENAME := Univention_CodeSigning.p12
+CERT_PUBLIC_FILENAME := Univention_CodeSigning_Certificate.der
+all:: Univention_CodeSigning_Certificate.der
+# subject= 
+#     countryName               = DE
+#     stateOrProvinceName       = Bremen
+#     localityName              = Bremen
+#     organizationName          = Univention GmbH
+#     commonName                = Univention GmbH
+#     emailAddress              = info@univention.de
+# issuer= 
+#     countryName               = BE
+#     organizationName          = GlobalSign nv-sa
+#     commonName                = GlobalSign CodeSigning CA - G2
+all:: GlobalSignCodeSigningCA-G2.pem
+# subject= 
+#     countryName               = BE
+#     organizationName          = GlobalSign nv-sa
+#     commonName                = GlobalSign CodeSigning CA - G2
+# issuer= 
+#     countryName               = BE
+#     organizationName          = GlobalSign nv-sa
+#     organizationalUnitName    = Root CA
+#     commonName                = GlobalSign Root CA
+all:: GlobalSignRootCA.pem
+# subject= 
+#     countryName               = BE
+#     organizationName          = GlobalSign nv-sa
+#     organizationalUnitName    = Root CA
+#     commonName                = GlobalSign Root CA
+# issuer= 
+#     countryName               = BE
+#     organizationName          = GlobalSign nv-sa
+#     organizationalUnitName    = Root CA
+#     commonName                = GlobalSign Root CA
+CERT_CROSS_CERT_FILENAME := GlobalSign_Root_CA.pem
+all:: GlobalSign_Root_CA.pem
+# subject= 
+#     countryName               = BE
+#     organizationName          = GlobalSign nv-sa
+#     organizationalUnitName    = Root CA
+#     commonName                = GlobalSign Root CA
+# issuer= 
+#     countryName               = US
+#     stateOrProvinceName       = Washington
+#     localityName              = Redmond
+#     organizationName          = Microsoft Corporation
+#     commonName                = Microsoft Code Verification Root
+Univention_CodeSigning.p12 Univention_CodeSigning_Certificate.pem GlobalSignCodeSigningCA-G2.pem GlobalSignRootCA.pem:
+	scp galant:/home/groups/77_entwicklung/89_ssl-zertifikate/codesigning/"$@" "$@"
