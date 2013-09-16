@@ -1,3 +1,9 @@
+univention-samba4 (3.0.16-1) unstable; urgency=low
+
+  * Cleanup /var/lib/samba after creating the keytab backup (Bug #32595)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Sep 2013 17:29:06 +0200
+
 univention-samba4 (3.0.15-1) unstable; urgency=low
 
   * Cleanup /var/lib/samba/ directory if the system is re-joined or it

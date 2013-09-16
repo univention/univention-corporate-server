@@ -472,8 +472,6 @@ if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then
 	fi
 
 	stop_conflicting_services
-
-	cleanup_var_lib_samba
 fi
 
 # during installation samba4/autostart was set to no to prevent a half configured samba server.
@@ -595,6 +593,7 @@ if [ "$samba4_role" = 'DC' ]; then
 					## backup old keytab if samba4 generated it
 					backup_samba4_keytab
 					samba_join_options=( --keep-existing )
+					cleanup_var_lib_samba
 				fi
 
 				samba_domain_join "${samba_join_options[@]}"
@@ -683,6 +682,8 @@ elif [ "$samba4_role" = "RODC" ]; then
 			## backup old keytab if samba4 generated it
 			backup_samba4_keytab
 			samba_join_options=( --keep-existing )
+
+			cleanup_var_lib_samba
 		fi
 
 		samba_domain_join "${samba_join_options[@]}"
@@ -726,6 +727,7 @@ elif [ "$samba4_role" = "MEMBER" ]; then
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 		samba_domain_join --keep-existing
+		cleanup_var_lib_samba
 	fi
 
 	univention-config-registry set samba/share/netlogon?no \
