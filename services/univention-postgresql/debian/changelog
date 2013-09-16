@@ -1,3 +1,9 @@
+univention-postgresql (6.0.1-2) unstable; urgency=low
+
+  * Name default service postgresql without version (Bug #16848)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Sep 2013 09:56:28 +0200
+
 univention-postgresql (6.0.1-1) unstable; urgency=low
 
   * Switch to getLDAPURIs from univention.lib.misc (Bug #19753)

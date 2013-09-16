@@ -12,7 +12,7 @@ icon=service/postgres
 programs=/usr/lib/postgresql/8.3/bin/postgres
 start_type=postgres8/autostart
 
-[postgresql-8.4]
+[postgresql]
 Description[de]=PostgreSQL-8.4-Server
 Description[en]=PostgreSQL 8.4 Server
 icon=service/postgres
