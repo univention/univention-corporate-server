@@ -635,6 +635,9 @@ define([
 				this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
 					// register for changes of the selected item (= path)
 					// only take them into account in case the tree is not reloading
+					if (this.moduleFlavor !== 'navigation' && newVal.length) {
+						this._setSuperordinateAndFilter(newVal[newVal.length-1].id);
+					}
 					if (!this._reloadingPath) {
 						this.filter();
 					} else if (this._reloadingPath == this._path2str(this._tree.get('path'))) {
@@ -648,10 +651,6 @@ define([
 							this._grid._toolbar.removeChild( this._navUpButton );
 						}
 						this._navUpButton.set( 'visible', this._tree.get('path').length > 1 );
-					}
-
-					if (this.moduleFlavor !== 'navigation' && newVal.length) {
-						this._setSuperordinateAndFilter(newVal[newVal.length-1].id);
 					}
 
 				})));

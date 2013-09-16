@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.18-1) unstable; urgency=low
+
+  * Bug #32381: fix order of filtering for superordinates when tree path
+  	changes
+
+ -- Florian Best <best@univention.de>  Mon, 16 Sep 2013 13:10:26 +0200
+
 univention-management-console-module-udm (4.0.17-2) unstable; urgency=low
 
   * Wording for request license form (Bug #32389)
