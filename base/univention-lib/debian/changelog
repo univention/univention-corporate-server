@@ -1,3 +1,10 @@
+univention-lib (3.0.12-7) unstable; urgency=low
+
+  * Restore original ucs_registerLDAPSchema again, it's used by
+    univention-fetchmail-schema (Bug #26785)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Sep 2013 17:38:28 +0200
+
 univention-lib (3.0.12-6) unstable; urgency=low
 
   * Fix PYTHONPATH in ucs_*registerLDAPExtension

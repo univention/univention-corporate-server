@@ -288,3 +288,29 @@ ucs_unregisterLDAPExtension () {
 		python -c 'import ldap_extension; ldap_extension.ucs_unregisterLDAPExtension()' "$@"
 }
 
+
+# ucs_registerLDAPSchema copies the LDAP schema to a persistent place /var/lib/univention-ldap/local-schema/
+# and it will not be removed if the package is uninstalled.
+# ucs_registerLDAPSchema <schema file>
+# e.g. ucs_registerLDAPSchema /usr/share/univention-fetchmail-schema/univention-fetchmail.schema
+#
+ucs_registerLDAPSchema () {
+	local schemaFile="$1"
+
+	if [ ! -d /var/lib/univention-ldap/local-schema ]; then
+		mkdir -p /var/lib/univention-ldap/local-schema
+		chmod 755 /var/lib/univention-ldap/local-schema
+	fi
+
+	if [ ! -e "$schemaFile" ]; then
+		echo "ucs_registerLDAPSchema: missing schema file" >&2
+		return 2
+	fi
+
+	cp "$schemaFile" /var/lib/univention-ldap/local-schema/
+
+	ucr commit /etc/ldap/slapd.conf
+
+	test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
+}
+
