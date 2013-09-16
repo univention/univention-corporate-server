@@ -3,7 +3,7 @@
 # Univention Directory Manager
 """listener script for UDM extension modules."""
 #
-# Copyright 2013-2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,7 +39,7 @@ import univention.admin.uldap as udm_uldap
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 import subprocess
-import zlib
+import bz2
 import tempfile
 import datetime
 import apt
@@ -107,7 +107,7 @@ def handler(dn, new, old):
 
 		if old:	## check for trivial changes
 			diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp')]
-			if diff_keys == ['%sActive' % objectclass]:
+			if diff_keys == ['%sActive' % objectclass] and new.get('%sActive' % objectclass) == 'TRUE':
 				ud.debug(ud.LISTENER, ud.INFO, '%s: %s: activation status changed.' % (name, new['cn'][0]))
 				return
 			elif diff_keys == ['univentionAppIdentifier']:
@@ -117,16 +117,16 @@ def handler(dn, new, old):
 			if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
 				old_version = old.get('univentionOwnedByPackageVersion', ['0'])[0]
 				rc = apt.apt_pkg.version_compare(new_version, old_version)
-				if rc != 1:
-					if not rc in (1, 0, -1):
-						ud.debug(ud.LISTENER, ud.ERROR, '%s: Package version comparison to old version failed (%s), skipping update.' % (name, old_version))
+				if rc not in (1, 0):
+					if rc == -1:
+						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
 					else:
-						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is not higher than version of old object (%s), skipping update.' % (name, old_version))
+						ud.debug(ud.LISTENER, ud.ERROR, '%s: Package version comparison to old version failed (%s), skipping update.' % (name, old_version))
 					return
 
 		## ok, basic checks passed, handle the data
 		try:
-			new_object_data = zlib.decompress(new.get('%sData' % objectclass)[0], 16+zlib.MAX_WBITS)
+			new_object_data = bz2.decompress(new.get('%sData' % objectclass)[0])
 		except TypeError:
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing data of object %s.' % (name, dn))
 			return

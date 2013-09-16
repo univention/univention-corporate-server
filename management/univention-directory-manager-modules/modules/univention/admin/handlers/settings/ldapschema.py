@@ -3,7 +3,7 @@
 # Univention Directory Manager Modules
 #  direcory manager module for LDAP schema extensions
 #
-# Copyright 2013-2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -77,7 +77,7 @@ property_descriptions={
 	'data': univention.admin.property(
 			short_description=_('Schema data'),
 			long_description='',
-			syntax=univention.admin.syntax.GzipBase64Upload,
+			syntax=univention.admin.syntax.Bzip2Base64Upload,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -188,8 +188,8 @@ class object(univention.admin.handlers.simpleLdap):
 			return
 		if not self.hasChanged('packagename'):
 			old_version = self.oldinfo.get('packageversion','0')
-			if not  apt.apt_pkg.version_compare(self['packageversion'], old_version) == 1:
-				raise univention.admin.uexceptions.valueInvalidSyntax, _('packageversion: The value needs to increase')
+			if not  apt.apt_pkg.version_compare(self['packageversion'], old_version) not in (0, 1):
+				raise univention.admin.uexceptions.valueInvalidSyntax, _('packageversion: Version must not be lower than the current one.')
 
 	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):

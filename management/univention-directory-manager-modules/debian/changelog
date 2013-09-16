@@ -1,3 +1,16 @@
+univention-directory-manager-modules (9.0.36-1) unstable; urgency=low
+
+  * Fix handling of re-registering the same udm_extension
+    (Bug #32403, Bug #32406, Bug #32409)
+  * Use bz2 instead of zlib interface
+    (Bug #32403, Bug #32406, Bug #32409, Bug #32411, Bug #32412)
+  * New syntax Bzip2Base64Upload
+  * Fix exception handling in GzipBase64Upload
+  * Allow modifications with the versionnumber unchanged
+    (Bug #32411, Bug #32412)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Sep 2013 14:52:53 +0200
+
 univention-directory-manager-modules (9.0.35-1) unstable; urgency=low
 
   * Adjust forcing password change to new samba version (Bug #17890)

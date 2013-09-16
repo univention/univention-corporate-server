@@ -3,7 +3,7 @@
 # Univention Directory Manager Syntax Extensions
 #  direcory manager module for UDM syntax extensions
 #
-# Copyright 2013-2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -77,7 +77,7 @@ property_descriptions={
 	'data': univention.admin.property(
 			short_description=_('UDM syntax data'),
 			long_description='',
-			syntax=univention.admin.syntax.GzipBase64Upload,
+			syntax=univention.admin.syntax.Bzip2Base64Upload,
 			multivalue=0,
 			options=[],
 			required=1,
