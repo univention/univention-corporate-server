@@ -1362,7 +1362,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>data</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The actual schema data in gzipped and base64 encoded format.
+						The actual schema data in bzip2 and base64 encoded format.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1441,7 +1441,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>data</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The actual ACL UCR template data in gzipped and base64 encoded format.
+						The actual ACL UCR template data in bzip2 and base64 encoded format.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1532,7 +1532,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>data</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The actual UDM module data in gzipped and base64 encoded format.
+						The actual UDM module data in bzip2 and base64 encoded format.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1623,7 +1623,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>data</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The actual UDM syntax data in gzipped and base64 encoded format.
+						The actual UDM syntax data in bzip2 and base64 encoded format.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1714,7 +1714,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>data</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The actual UDM hook data in gzipped and base64 encoded format.
+						The actual UDM hook data in bzip2 and base64 encoded format.
 					</simpara>
 				</listitem>
 			</varlistentry>
