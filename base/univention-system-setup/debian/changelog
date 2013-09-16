@@ -1,3 +1,9 @@
+univention-system-setup (7.0.42-2) unstable; urgency=low
+
+  * Fix parsing profile (Bug #32463)
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 16 Sep 2013 12:40:19 +0200
+
 univention-system-setup (7.0.42-1) unstable; urgency=low
 
   * Bug #30816: remove interface fallback UCR variables

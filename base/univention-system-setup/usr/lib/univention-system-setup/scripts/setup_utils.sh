@@ -136,7 +136,7 @@ get_profile_var ()
 		return
 	fi
 
-	sed -rne "s|^$1=||;T;s|#.*||;s|([\"'])(.*)\1 *\$|\2|;p;q" "$profile_file"
+	sed -rne "/^ *#/d;s|^$1=||;T;s|([\"'])(.*)\1 *\$|\2|;p;q" "$profile_file"
 }
 
 service_stop ()
