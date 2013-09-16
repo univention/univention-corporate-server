@@ -1094,6 +1094,10 @@
 			(<ulink url="&ucsbug;30981">Bug 30981</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			Fix marking of invalid widgets when saving (<ulink url="&ucsbug;25500">Bug 25500</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
