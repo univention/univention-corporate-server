@@ -1,3 +1,9 @@
+univention-management-console (6.0.12-1) unstable; urgency=low
+
+  * Bug #31805: added script dh-umc-po2json
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Sep 2013 00:42:12 +0200
+
 univention-management-console (6.0.11-1) unstable; urgency=low
 
   * Adding a progress support in decorator (Bug #25465)
