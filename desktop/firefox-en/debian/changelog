@@ -1,3 +1,9 @@
+firefox-en (1:17.0.8esr-4) unstable; urgency=low
+
+  * Remove dependency on icedtea-plugin (related to Bug #29168)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 16 Sep 2013 09:44:45 +0200
+
 firefox-en (1:17.0.8esr-3) unstable; urgency=low
 
   * Update to Firefox 17.0.8esr (Bug #32173)
