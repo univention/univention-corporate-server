@@ -34,26 +34,5 @@
 
 univention-config-registry set repository/app_center/server?appcenter.test.software-univention.de
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" le "3.0.31-1.189.201309131145"; then
-	python -c "$(cat <<-EOF
-from univention.lib.package_manager import PackageManager
-from univention.updater import UniventionUpdater
-from univention.config_registry import ConfigRegistry
-from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
-from univention.management.console.modules.appcenter.app_center import Application
-
-ucr = ConfigRegistry()
-ucr.load()
-uu = UniventionUpdater(False)
-component_manager = ComponentManager(ucr, uu)
-package_manager = PackageManager(lock=False)
-
-install_opener(ucr)
-
-for app in Application.all_installed(package_manager): app.register(component_manager, package_manager, tell_ldap=True)
-EOF
-)"
-fi
-
 exit 0
 
