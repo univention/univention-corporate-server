@@ -1,3 +1,13 @@
+univention-net-installer (7.0.1-1) unstable; urgency=low
+
+  * Add a simple network daemon which removes the reinstall flag, for
+    example by running the following command:
+     echo "$hostname" | netcat "$univention_net_installer_host"  49173
+    The daemon will be installed with the package
+     univention-net-installer-daemon (Bug #1156)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 16 Sep 2013 15:28:14 +0200
+
 univention-net-installer (7.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013

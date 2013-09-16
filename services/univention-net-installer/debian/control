@@ -14,8 +14,20 @@ Depends: ${misc:Depends},
  univention-tftp,
  univention-config-registry
 Description: UCS - automatic profile-based installation services
- This package contain the packages for the profile-based installation
+ This package contains the packages for the profile-based installation
  of UCS systems.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-net-installer-daemon
+Architecture: all
+Depends: python-univention
+Description: UCS - automatic profile server installation
+ This package contains a net installer daemon which removes the reinstallation
+ flag in the ldap directory.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
