@@ -53,6 +53,7 @@ flexibility.
 """
 
 import inspect
+from threading import Thread
 
 from univention.lib.i18n import Translation
 _ = Translation( 'univention.management.console' ).translate
@@ -285,7 +286,7 @@ def simple_response(function=None, with_flavor=None):
 	copy_function_meta_data(function, _response)
 	return _response
 
-def multi_response(function=None, with_flavor=None, single_values=False):
+def multi_response(function=None, with_flavor=None, single_values=False, progress=False):
 	''' This decorator acts similar to :func:`simple_response` but
 	can handle a list of dicts instead of a single dict.
 
@@ -326,15 +327,15 @@ def multi_response(function=None, with_flavor=None, single_values=False):
 	   pass
 	'''
 	if function is None:
-		return lambda f: multi_response(f, with_flavor, single_values)
-	response_func = _eval_simple_decorated_function(function, with_flavor, single_values)
+		return lambda f: multi_response(f, with_flavor, single_values, progress)
+	response_func = _eval_simple_decorated_function(function, with_flavor, single_values, progress)
 	def _response(self, request):
 		result = response_func(self, request)
 		self.finished(request.id, result)
 	copy_function_meta_data(function, _response)
 	return _response
 
-def _eval_simple_decorated_function(function, with_flavor, single_values=False):
+def _eval_simple_decorated_function(function, with_flavor, single_values=False, progress=False):
 	# name of flavor argument. default: 'flavor' (if given, of course)
 	if with_flavor is True:
 		with_flavor = 'flavor'
@@ -377,14 +378,34 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False):
 
 		
 		# checked for required arguments, set default... now run!
-		result = []
-
 		iterator = RequestOptionsIterator(request.options, arguments, single_values)
 		nones = [None] * len(arguments)
-		for res in function(self, iterator, *nones):
-			result.append(res)
-
-		return result
+		if progress:
+			number = len(request.options)
+			if progress is True:
+				progress_title = _('Please wait for operation to finish')
+			else:
+				if isinstance(progress, (list, tuple)):
+					progress_title, progress_msg = progress
+				else:
+					progress_title, progress_msg = progress, None
+				if '%d' in progress_title:
+					progress_title = progress_title % number
+			progress_obj = self.new_progress(progress_title, number)
+			def _thread(self, progress_obj, iterator, nones):
+				for res in function(self, iterator, *nones):
+					if progress_msg:
+						res_msg = progress_msg % res
+					progress_obj.progress(res, res_msg)
+				progress_obj.finish()
+			thread = Thread(target=_thread, args=[self, progress_obj, iterator, nones])
+			thread.start()
+			return progress_obj.initialised()
+		else:
+			result = []
+			for res in function(self, iterator, *nones):
+				result.append(res)
+			return result
 	return _response
 
 class RequestOptionsIterator(object):

@@ -1,3 +1,9 @@
+univention-management-console (6.0.11-1) unstable; urgency=low
+
+  * Adding a progress support in decorator (Bug #25465)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Sep 2013 22:18:12 +0200
+
 univention-management-console (6.0.10-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)
