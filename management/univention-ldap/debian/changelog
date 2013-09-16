@@ -1,3 +1,12 @@
+univention-ldap (10.0.10-30) unstable; urgency=low
+
+  * merge settings_ldap* listeners to ldap_extension
+    to avoid repeated slapd restart + waiting for activation
+  * use new python library module univention.lib.ldap_extension
+    (Bug #32411, Bug #31801)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Sep 2013 14:53:55 +0200
+
 univention-ldap (10.0.10-29) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)
