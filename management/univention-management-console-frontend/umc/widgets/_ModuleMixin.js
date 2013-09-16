@@ -78,6 +78,10 @@ define([
 
 		umcpCommand: function( /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor, /*Object?*/ longPollingOptions ) {
 			return tools.umcpCommand( commandStr, dataObj, handleErrors, flavor || this.moduleFlavor, longPollingOptions );
+		},
+
+		umcpProgressCommand: function( /*Object*/ progressBar, /*String*/ commandStr, /*Object?*/ dataObj, /*Boolean?*/ handleErrors, /*String?*/ flavor, /*Object?*/ longPollingOptions ) {
+			return tools.umcpProgressCommand( progressBar, commandStr, dataObj, handleErrors, flavor || this.moduleFlavor, longPollingOptions );
 		}
 	});
 });

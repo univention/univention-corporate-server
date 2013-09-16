@@ -66,8 +66,6 @@ define([
 		dialog = _dialog;
 	});
 
-	var systemInfoLib = undefined;
-
 	// define umc/tools
 	var tools = {};
 	lang.mixin(tools, {
@@ -435,6 +433,66 @@ define([
 			}
 		},
 
+		umcpProgressCommand: function(
+			/*Object*/ progressBar,
+			/*String*/ commandStr,
+			/*Object?*/ dataObj,
+			/*Boolean?*/ handleErrors,
+			/*String?*/ flavor,
+			/*Object?*/ longPollingOptions ) {
+
+			// summary:
+			//		Sends an initial request and expects a "../progress" function
+			// returns:
+			//		A deferred object.
+			var deferred = new Deferred();
+			this.umcpCommand(commandStr, dataObj, handleErrors, flavor, longPollingOptions).then(
+				lang.hitch(this, function(data) {
+					var progressID = data.result.id;
+					var title = data.result.title;
+					progressBar.setInfo(title);
+					var allData = [];
+					var splitIdx = commandStr.lastIndexOf('/');
+					var progressCmd = commandStr.slice(0, splitIdx) + '/progress';
+					this.umcpProgressSubCommand(progressCmd, progressID).then(
+						function() {
+							deferred.resolve(allData);
+						}, function() {
+							deferred.reject();
+						}, function(result) {
+							allData.concat(result.intermediate);
+							progressBar.setInfo(result.title, result.message, result.percentage);
+							deferred.progress(result);
+						}
+					);
+				}),
+				function() {
+					deferred.reject(arguments);
+				}
+			);
+			return deferred;
+		},
+
+		umcpProgressSubCommand: function(progressCmd, progressID, deferred) {
+			if (deferred === undefined) {
+				deferred = new Deferred();
+			}
+			this.umcpCommand(progressCmd, {'progress_id' : progressID}).then(
+				lang.hitch(this, function(data) {
+					deferred.progress(data.result);
+					if (data.result.finished) {
+						deferred.resolve();
+					} else {
+						setTimeout(lang.hitch(this, 'umcpProgressSubCommand', progressCmd, progressID, deferred), 200);
+					}
+				}),
+				function() {
+					deferred.reject();
+				}
+			);
+			return deferred;
+		},
+
 		// _statusMessages:
 		//		A dictionary that translates a status to an error message
 
@@ -634,13 +692,10 @@ define([
 					}));
 					container.addChild(titlePane);
 
-					if (systemInfoLib === undefined) {
-						try {
-							systemInfoLib = require('umc/modules/sysinfo/lib');
-						} catch(e) {
-							systemInfoLib = null;
-						}
-					}
+					var systemInfoLib = null;
+					try {
+						systemInfoLib = require('umc/modules/sysinfo/lib');
+					} catch(e) { }
 					if (systemInfoLib) {
 						var options = [{
 							name: 'close',

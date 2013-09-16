@@ -42,9 +42,6 @@ define([
 	return declare("umc.widgets.ProgressBar", ContainerWidget, {
 		// summary:
 		//		This class provides a widget providing detailed progress information
-
-		i18nClass: 'umc.modules.setup',
-
 		style: 'width: 400px',
 
 		_component: null,
