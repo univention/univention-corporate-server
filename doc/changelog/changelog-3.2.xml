@@ -768,6 +768,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				Applications now register themselves automatically in the LDAP
+				directory (<ulink url="&ucsbug;32416">Bug 32416</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Added a progress bar while fetching software changes in App Center and speeded up the
 		  process of retrieving this information (<ulink url="&ucsbug;30798">Bug 30798</ulink>).
 		</simpara></listitem>
@@ -954,6 +959,13 @@
 			upon opening any LDAP object and widgets for attributes that may have
 			multiple values do not block anymore while being built (<ulink
 				url="&ucsbug;31376">Bug 31376</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+				Forcing a user to change the password upon next login has been changed
+				internally when using <emphasis>Samba</emphasis>. It has been adapted
+				to newer versions of samba and do not require <emphasis>PAM</emphasis>
+				anymore (<ulink url="&ucsbug;17890">Bug 17890</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
