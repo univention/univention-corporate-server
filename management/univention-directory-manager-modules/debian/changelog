@@ -1,3 +1,12 @@
+univention-directory-manager-modules (9.0.36-2) unstable; urgency=low
+
+  * The udm_extension listener only needs to mark new objects as active
+    on the DC master.
+  * Don't pkill univention-cli-server in the listener
+    (Bug #32403, Bug #32406, Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Sep 2013 15:29:19 +0200
+
 univention-directory-manager-modules (9.0.36-1) unstable; urgency=low
 
   * Fix handling of re-registering the same udm_extension

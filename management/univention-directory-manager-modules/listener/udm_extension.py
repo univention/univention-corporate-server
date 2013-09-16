@@ -153,13 +153,11 @@ def handler(dn, new, old):
 
 	listener.setuid(0)
 	try:
-		ud.debug(ud.LISTENER, ud.INFO, '%s: Terminating running univention-cli-server processes.' % (name,) )
-		p = subprocess.Popen(['pkill', '-f', 'univention-cli-server'], close_fds=True)
-		p.wait()
-		if p.returncode != 0:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Termination of univention-cli-server processes failed: %s.' % (name, p.returncode))
-
 		if new:
+			if not listener.configRegistry.get('server/role') == 'domaincontroller_master':
+				## Only set active flag on Master
+				return
+
 			try:
 				lo, ldap_position = udm_uldap.getAdminConnection()
 				udm_modules.update()
