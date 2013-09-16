@@ -747,6 +747,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				Added a <emphasis>Shop</emphasis> button for those applications
+				supporting it (<ulink url="&ucsbug;32282">Bug 32282</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 				Moved dialog for requesting a new license with key ID to the global
 				license dialog of the <emphasis>Univention Directory Manager</emphasis>
 				(<ulink url="&ucsbug;32389">Bug 32389</ulink>).
