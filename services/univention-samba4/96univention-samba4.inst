@@ -442,6 +442,19 @@ wait_until_dc_was_replicated_to_connector_dc () {
 	test -n "$search_result" && echo " done" || echo " failed"
 }
 
+var_lib_samba_is_s4 ()
+{
+	test -e /var/lib/samba/private/sam.ldb
+}
+
+cleanup_var_lib_samba ()
+{
+	if var_lib_samba_is_s4; then
+		mv /var/lib/samba "/var/lib/samba_backup_$(date +%Y%m%d%H%M%S)"
+		mkdir -p /var/lib/samba/private
+	fi
+}
+
 ### --- END helper functions ---
 
 extract_binddn_and_bindpwd_from_args "$@"
@@ -460,6 +473,7 @@ if [ "$JS_LAST_EXECUTED_VERSION" = 0 ]; then
 
 	stop_conflicting_services
 
+	cleanup_var_lib_samba
 fi
 
 # during installation samba4/autostart was set to no to prevent a half configured samba server.

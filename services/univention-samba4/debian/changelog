@@ -1,3 +1,10 @@
+univention-samba4 (3.0.15-1) unstable; urgency=low
+
+  * Cleanup /var/lib/samba/ directory if the system is re-joined or it
+    is the first join (Bug #32595)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 16 Sep 2013 09:01:07 +0200
+
 univention-samba4 (3.0.14-1) unstable; urgency=low
 
   * Delete DNS SRC records in purge_s4computer if the record would
