@@ -973,6 +973,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				Added a progress bar while moving objects. This will prevent a timeout
+				when moving a lot of them at once (<ulink url="&ucsbug;25465">Bug
+					25465</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 				Forcing a user to change the password upon next login has been changed
 				internally when using <emphasis>Samba</emphasis>. It has been adapted
 				to newer versions of samba and do not require <emphasis>PAM</emphasis>
