@@ -102,12 +102,14 @@ define([
 				required: this.required,
 				disabled: this.disabled,
 				name: this.name + '_1',
+				isValid: lang.hitch(this, 'isValid'),
 				validator: lang.hitch(this, '_checkValidity', 1)
 			}))[0];
 			this._secondWidget = this.own(new PasswordBox({
 				required: this.required,
 				disabled: this.disabled,
 				name: this.name + '_2',
+				isValid: lang.hitch(this, 'isValid'),
 				validator: lang.hitch(this, '_checkValidity', 2),
 				invalidMessage: _('The passwords do not match, please retype again.')
 			}))[0];
@@ -134,8 +136,11 @@ define([
 			this.inherited(arguments);
 
 			// hook validate for the second box with the onChange event of the first one
-			this.own(this._firstWidget.watch('value', lang.hitch(this, function(name, oldVal, newVal) {
+			this.own(this._firstWidget.watch('value', lang.hitch(this, function() {
 				this._secondWidget.validate(false);
+			})));
+			this.own(this._secondWidget.watch('value', lang.hitch(this, function() {
+				this._firstWidget.validate(false);
 			})));
 		},
 
@@ -147,6 +152,10 @@ define([
 			// make sure we can access the widgets
 			if (!this._firstWidget || !this._secondWidget) {
 				return true;
+			}
+
+			if (!this.isValid()) {
+				return false;
 			}
 
 			// always return true if the user is writing in the first box
@@ -169,6 +178,18 @@ define([
 				return false;
 			}
 			return true;
+		},
+
+		validate: function() {
+			this._firstWidget.validate();
+			this._secondWidget.validate();
+			return this.inherited(arguments);
+		},
+
+		setValid: function(isValid, message) {
+			this._firstWidget.setValid(isValid, message);
+			this._secondWidget.setValid(isValid, message);
+			return this.inherited(arguments);
 		},
 
 		isValid: function() {

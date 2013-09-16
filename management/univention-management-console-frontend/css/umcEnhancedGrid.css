@@ -1,3 +1,10 @@
+.umc .umcGridDefaultAction {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.umc .umcGridDefaultAction * {
+	display: inline;
+}
 
 .dojoxGrid {
 	position: relative;
@@ -34,8 +41,6 @@
 	position: absolute;
 	overflow: hidden;
 	cursor: default;
-}
-.dojoxGridHeader {
 	background-color: #E8E1CF;
 }
 .dojoxGridHeader table {
@@ -117,13 +122,6 @@
 .dojoxGridRow {
 	position: relative;
 	width: 9000em;
-}
-.dojoxGridRowOdd {
-	background-color: #f1f1f2;
-	
-}
-.dojoxGridRowSelected {
-	background-color: #D9E8F9;
 }
 .dojoxGridRowTable {
 	table-layout: fixed;
@@ -258,11 +256,11 @@
 	cursor: col-resize;
 	z-index:10000;
 }
-.dojoxGridColNoResize, 
+.dojoxGridColNoResize,
 .dojoxGridColNoResize .dojoDndItemOver {
 	cursor: not-allowed !important;
 }
-.dojoxGridColResize, 
+.dojoxGridColResize,
 .dojoxGridColResize .dojoDndItemOver,
 .dojoxGridColumnResizing,
 .dojoxGridColumnResizing .dojoDndItemOver,
@@ -393,13 +391,17 @@
 }
 .umc .dojoxGridRow {
 	border:none;
+	border-bottom: thin solid #ddd;
 	background-color:#fff;
+}
+.umc .dojoxGridRowOdd {
+	
+}
+.umc .dojoxGridRowSelected {
+	background-color: #efefef;
 }
 .dj_ie .umc .dojoxGridMasterView .dojoxGridRowTable {
 	border-collapse:separate;
-}
-.umc .dojoxGridRowOdd .dojoxGridRowTable tr {
-	background-color:#efefef;
 }
 .umc .dojoxGridCell {
 	padding:0px;
@@ -1284,9 +1286,10 @@ html > body .dojoxGridSorted .dojoxGridCellSortFocus .dojoxGridSortBtnNested {
 .umc .dojoxGridHeader:first-child .dojoxGridRowTable {
 	border-left-width: 0;
 }
-.umc .dojoxGridMasterHeader {
+.umc .umcGrid .dojoxGridMasterHeader {
 	vertical-align: middle;
 	background: #e0eed5;
+	border-bottom: thin solid #ddd;
 }
 .umc .dojoxGridCell {
 	padding: 0.25em 0.4em;

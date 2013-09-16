@@ -201,10 +201,8 @@ define([
 
 			// show the confirmation dialog
 			this._alertDialog.set('message', message);
-			if (title) {
-				// update title
-				this._alertDialog.set('title', title);
-			}
+			// update title
+			this._alertDialog.set('title', title || _('Notification'));
 			//this._alertDialog.startup();
 			this._alertDialog.show();
 		},

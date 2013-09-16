@@ -33,11 +33,9 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/_base/window",
-	"dojo/query",
 	"dojo/dom-construct",
 	"dojo/dom-attr",
 	"dojo/dom-geometry",
-	"dojo/dom-style",
 	"dojo/topic",
 	"dojo/aspect",
 	"dijit/Menu",
@@ -58,8 +56,8 @@ define([
 	"umc/i18n!umc/app",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
-], function(declare, lang, array, win, query, construct, attr, geometry,
-		style, topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer, StackContainer,
+], function(declare, lang, array, win, construct, attr, geometry,
+		topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer, StackContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -144,7 +142,6 @@ define([
 		// turn an labels for action columns by default
 		actionLabel: true,
 
-		// FIXME: used anywhere?
 		// turn off gutters by default
 		gutters: false,
 
@@ -166,20 +163,11 @@ define([
 		//		option to true forces multi actions to be always enabled.
 		multiActionsAlwaysActive: false,
 
-		// cacheRowWidgets: Boolean (default: true)
-		//      If this option is enabled, the grid take advantage of caching.
-		//      e.g. cache Buttons or DropDown menu
-		cacheRowWidgets: true,
-
-		_contextItem: null,
-		_contextItemID: null,
 		_contextMenu: null,
 
 		// temporary div elements to estimate width of text for columns
 		_tmpCell: null,
 		_tmpCellHeader: null,
-
-		_footerCells: null,
 
 		// ContainerWidget that holds all buttons
 		_toolbar: null,
@@ -291,54 +279,20 @@ define([
 				if ((!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name == this.defaultActionColumn)) {
 					col.formatter = lang.hitch(this, function(value, rowIndex) {
 						value = icol.formatter ? icol.formatter(value, rowIndex) : value;
-						if (this._grid.rowSelectCell.disabled(rowIndex) || this.disabled) {
-							return value;
+						if (value.domNode) {
+							var container = new ContainerWidget({
+								'class': 'umcGridDefaultAction',
+								'style': 'display: inline!important;'
+							});
+							container.addChild(value);
+							return container;
+						} else {
+							return new Text({
+								content: value,
+								'class': 'umcGridDefaultAction',
+								'style': 'display: inline!important;'
+							});
 						}
-
-						var item = this._grid.getItem(rowIndex);
-						var identity = item[this.moduleStore.idProperty];
-
-						var defaultAction = typeof this.defaultAction == "function" ?
-							this.defaultAction([identity], [item]) : this.defaultAction;
-
-						if (defaultAction) {
-							var action;
-							array.forEach(this.actions, function(iaction) {
-								if (iaction.name == defaultAction) {
-									action = iaction;
-									return false;
-								}
-							}, this);
-							if (action && action.callback) {
-								// caching
-								var btn_name = '_univention_cache_btn_' + String(value);
-								if (this.cacheRowWidgets) {
-									if (item[btn_name] !== undefined) {
-										return item[btn_name];
-									}
-								}
-
-								var btn = new Button({
-									label: value,
-									onClick: lang.hitch(this, function() {
-										var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
-										if (isExecutable && !this.getDisabledItem(identity)) {
-											this._publishAction('default-' + action.name);
-											action.callback([identity], [item]);
-										}
-									})
-								});
-								this.own(btn);
-
-								// caching
-								if (this.cacheRowWidgets) {
-									item[btn_name] = btn;
-								}
-
-								return btn;
-							}
-						}
-						return value;
 					});
 				}
 
@@ -372,7 +326,6 @@ define([
 			this._setNonContextActions();
 
 			// clear the footer and redraw the columns
-//			this._clearFooter();
 			if (doSetColumns !== false) {
 				this._setColumnsAttr(this.columns);
 			}
@@ -652,6 +605,20 @@ define([
 					item.set('visible', visible || nItems !== 0);
 				}
 			}, this);
+
+			this._checkNoActions();
+		},
+
+		_checkNoActions: function() {
+			if (!this.actions.length) {
+				if (!this._emptyContainer) {
+					this.own(this._emptyContainer = new ContainerWidget({}));
+					this._headerContainer.addChild(this._emptyContainer);
+				}
+				this._headerContainer.selectChild(this._emptyContainer);
+				return true;
+			}
+			return false;
 		},
 
 		_updateContextActions: function() {
@@ -684,14 +651,6 @@ define([
 			if (!this._grid.selection.isSelected(evt.rowIndex)) {
 				this._grid.selection.select(evt.rowIndex);
 			}
-
-			return;
-			// TODO :remove this? We don't need it anymore but is it part of the API?
-			// save the ID of the current element
-			var item = this._grid.getItem(evt.rowIndex);
-			this._contextItem = item;
-			this._contextItemID = this._dataStore.getValue(item, this.moduleStore.idProperty);
-
 		},
 
 		__behaviorOldGrid: function() {
@@ -737,12 +696,43 @@ define([
 				// the checkbox cell was pressed, this does already the wanted behavior
 				return true;
 			}
+
 			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
 			if (!rowDisabled) {
 				this._grid.selection.toggleSelect(evt.rowIndex);
 			} else {
 				// not required, but deselects disabled rows
 				this._grid.selection.deselect(evt.rowIndex);
+			}
+
+			// default action
+			if (!rowDisabled && ((!this.defaultActionColumn && evt.cellIndex === 1) || (this.defaultActionColumn && evt.cell.field == this.defaultActionColumn))) {
+				if (evt.toElement == evt.cellNode) {
+					// not clicked on text
+					return;
+				}
+				var item = this._grid.getItem(evt.rowIndex);
+				var identity = item[this.moduleStore.idProperty];
+
+				var defaultAction = typeof this.defaultAction == "function" ?
+					this.defaultAction([identity], [item]) : this.defaultAction;
+
+				if (defaultAction) {
+					var action;
+					array.forEach(this.actions, function(iaction) {
+						if (iaction.name == defaultAction) {
+							action = iaction;
+							return false;
+						}
+					}, this);
+					if (action && action.callback) {
+						var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
+						if (isExecutable && !this.getDisabledItem(identity)) {
+							this._publishAction('default-' + action.name);
+							action.callback([identity], [item]);
+						}
+					}
+				}
 			}
 		},
 
