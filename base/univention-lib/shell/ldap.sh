@@ -272,7 +272,7 @@ ucs_registerLDAPExtension () {
 		fi
 	fi
 
-	PYTHONPATH="/usr/share/pymodules/$(pyversions -d)/univention/lib" \
+	PYTHONPATH="/usr/lib/pymodules/$(pyversions -d)/univention/lib" \
 		python -c 'import ldap_extension; ldap_extension.ucs_registerLDAPExtension()' \
 			--packagename "$package_name" --packageversion "$package_version" "$@"
 }
@@ -284,7 +284,7 @@ ucs_registerLDAPExtension () {
 # e.g. ucs_unregisterLDAPExtension --acl <acl object name> --schema <schema object name>
 #
 ucs_unregisterLDAPExtension () {
-	PYTHONPATH="/usr/share/pymodules/$(pyversions -d)/univention/lib" \
+	PYTHONPATH="/usr/lib/pymodules/$(pyversions -d)/univention/lib" \
 		python -c 'import ldap_extension; ldap_extension.ucs_unregisterLDAPExtension()' "$@"
 }
 
