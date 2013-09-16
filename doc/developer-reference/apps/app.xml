@@ -297,219 +297,157 @@
 	<section id="app:bestpractices">
 		<title>Best practices</title>
 		<para>
-			TBD. Minimal example app. Examples. Important: ucs_registerSchema, #DEBHELPER#.
+			TBD. Minimal example app. Examples. Important: #DEBHELPER#.
 		</para>
-	  <section id="app:ucs_registerLDAPSchema">
-		  <title>Registration of LDAP Schema Extensions</title>
+	  <section id="app:ucs_registerLDAPExtension">
+		  <title>Registration of LDAP and UDM Extensions</title>
 		  <para>
-				The easiest way to register <acronym>LDAP</acronym> schema extensions is to call the <literal>ucs_registerLDAPSchema</literal> shell function
-				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
-				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
-				<literal>settings/ldapschema</literal> object (see <xref linkend="settings:ldapschema"/>). After creation of the object the function waits
-				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>LDAP</acronym> schema extension and reports success or failure.
-				Failure conditions may occurr in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active. The
-				&ucsMaster; only activates a new <acronym>LDAP</acronym> schema extension if the collision check succeeded.
+				The easiest way to register <acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules
+				is to call the <literal>ucs_registerLDAPExtension</literal> shell function provided by the Univention shell function library
+				(see <xref linkend="misc:lib"/>). This shell function offers five main options: <literal>--schema</literal>,  <literal>--acl</literal>,
+				<literal>--udm_syntax</literal>, <literal>--udm_hook</literal>, <literal>--udm_module</literal>, which can be combined. Each of these
+				options expects a filename as option argument. During one call of the function, it will always process the given extensions in the order
+				schema, ACL, UDM syntax, UDM hook and finally UDM module.
+				Called from a joinscript, it automatically determines some required parameters, like the app identifier plus Debian package name and version,
+				required for the creation of the corresponding object. After creation of the object the function waits
+				up to 3 minutes for the &ucsMaster; to signal availability of the new extension and reports success or failure.
+				For UDM extensions it additionally checks that the corresponding file has been made available in the local filesystem.
+				Failure conditions may occurr e.g. in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active.
+				The &ucsMaster; only activates a new <acronym>LDAP</acronym> schema or ACL extension if the configuration check succeeded.
 		  </para>
 		  <para>
 				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
-				The shell function will then register the specified app identifier with the <acronym>LDAP</acronym> schema extension object to indicate that
-				the <acronym>LDAP</acronym> schema extension object is required as long as this app is installed anywhere in the UCS domain.
+				The shell function will then register the specified app identifier with the extension object to indicate that
+				the extension object is required as long as this app is installed anywhere in the UCS domain.
 		  </para>
 		  <para>
-				To prevent accidental and unnecessary changes the function <literal>ucs_registerLDAPSchema</literal> (as well as the corresponding UDM module)
-				only execute modifications of an existing object if the Debian package version is increased as well.
-		  </para>
-			<example id="app:ucs_registerLDAPSchema_example">
-			  <programlisting language="sh">
-UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
-. /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPSchema /path/to/appschemaextension.schema "$@"
-		  	</programlisting>
-			</example>
-		  <para>
-				There is a corresponding <literal>ucs_unregisterLDAPSchema</literal> function, which can be used to unregister a <literal>settings/ldapschema</literal> object. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
-		  </para>
-			<example id="app:ucs_unregisterLDAPSchema_example">
-			  <programlisting language="sh">
-. /usr/share/univention-lib/ldap.sh
-ucs_unregisterLDAPACL appschemaextension "$@"
-		  	</programlisting>
-			</example>
-	  </section>
-
-	  <section id="app:ucs_registerLDAPACL">
-		  <title>Registration of LDAP ACL Extensions</title>
-		  <para>
-				The easiest way to register <acronym>LDAP</acronym> ACL extensions is to call the <literal>ucs_registerLDAPACL</literal> shell function
-				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
-				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
-				<literal>settings/ldapacl</literal> object (see <xref linkend="settings:ldapacl"/>). After creation of the object the function waits
-				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>LDAP</acronym> ACL extension and reports success or failure.
-				Failure conditions may occurr in case the new UCR template of the <acronym>LDAP</acronym> ACL extension invalidates the <acronym>LDAP</acronym>
-				server configuration. The &ucsMaster; only activates a new <acronym>LDAP</acronym> ACL extension if the basic validity check succeeded.
+				To prevent accidental downgrades the function <literal>ucs_registerLDAPExtension</literal> (as well as the corresponding UDM module)
+				only execute modifications of an existing object if the Debian package version is not older than the previous one.
 		  </para>
 		  <para>
-				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
-				The shell function will then register the specified app identifier with the <acronym>LDAP</acronym> ACL extension object to indicate that
-				the <acronym>LDAP</acronym> ACL extension object is required as long as this app is installed anywhere in the UCS domain.
-		  </para>
-		  <para>
-				<literal>ucs_registerLDAPACL</literal> supports two additional options to specify a valid range of UCS versions, where the ACL should be
+				<literal>ucs_registerLDAPExtension</literal> supports two additional options to specify a valid range of UCS versions, where an extension should be
 				activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
-				performed whenever the <acronym>LDAP</acronym> ACL extension object is modified. By calling this function from a joinscript, it will
+				performed whenever the extension object is modified. By calling this function from a joinscript, it will
 				automatically update the Debian package number stored in the object, triggering a re-evaluation of the specified UCS version range.
-				Note that the ACL is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
+				The extension is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
+				This validity range is not applied to <acronym>LDAP</acronym> schema extensions, since they mast not be undefined as long as there are objects
+				in the <acronym>LDAP</acronym> directory which make use of it.
 		  </para>
+			<para>
+				There is a corresponding <literal>ucs_unregisterLDAPExtension</literal> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
+			</para>
 		  <para>
-				To prevent accidental and unnecessary changes the function <literal>ucs_registerLDAPACL</literal> (as well as the corresponding UDM module)
-				only execute modifications of an existing object if the Debian package version is increased as well.
+				Below some examples are given for the five extension types.
 		  </para>
-			<example id="app:ucs_registerLDAPACL_example">
-			  <programlisting language="sh">
-UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
-. /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPACL /path/to/appacl.acl "$@" --ucsversionstart 3.2-0
-		  	</programlisting>
-			</example>
-		  <para>
-				There is a corresponding <literal>ucs_unregisterLDAPACL</literal> function, which can be used to unregister a <literal>settings/ldapacl</literal> object. This only works if no App is registered any longer for the object. It should not be called unless it has been verified that no object in <acronym>LDAP</acronym> still needs access control by this ACL extension. For this reason it schould generally not be called in unjoin scripts.
-		  </para>
-			<example id="app:ucs_unregisterLDAPACL_example">
-			  <programlisting language="sh">
-. /usr/share/univention-lib/ldap.sh
-ucs_unregisterLDAPACL appacl "$@"
-		  	</programlisting>
-			</example>
-	  </section>
+	  	<section id="app:ucs_registerLDAPExtensionSchema">
+				<para>
+					<acronym>LDAP</acronym> schema extension can be deployed in a UCS domain by creation of a <literal>settings/ldapschema</literal> object.
+					The easiest way to create such an object, is by using the <literal>--schema</literal> option of the <literal>ucs_registerLDAPExtension</literal>
+					shell function.
+				</para>
 
-	  <section id="app:ucs_registerUDMModule">
-		  <title>Registration of UDM Extension Modules</title>
-		  <para>
-				The easiest way to register <acronym>UDM</acronym> extension modules is to call the <literal>ucs_registerUDMModule</literal> shell function
-				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
-				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
-				<literal>settings/udm_module</literal> object (see <xref linkend="settings:udm_module"/>). After creation of the object the function waits
-				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>UDM</acronym> module and reports success or failure.
-		  </para>
-		  <para>
-				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
-				The shell function will then register the specified app identifier with the <acronym>UDM</acronym> extension module object to indicate that
-				the <acronym>UDM</acronym> module object is required as long as this app is installed anywhere in the UCS domain.
-		  </para>
-		  <para>
-				<literal>ucs_registerUDMModule</literal> supports two additional options to specify a valid range of UCS versions, where the UDM module should be
-				activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
-				performed whenever the <acronym>UDM</acronym> module object is modified. By calling this function from a joinscript, it will
-				automatically update the Debian package number stored in the object, triggering a re-evaluation of the specified UCS version range.
-				Note that the UDM module is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
-		  </para>
-		  <para>
-				To prevent accidental and unnecessary changes the function <literal>ucs_registerUDMModule</literal> (as well as the corresponding UDM module)
-				only execute modifications of an existing object if the Debian package version is increased as well.
-		  </para>
-			<example id="app:ucs_registerUDMModule_example">
-			  <programlisting language="sh">
+				<title>Registration of LDAP Schema Extensions</title>
+				<example id="app:ucs_registerLDAPExtensionSchema_example">
+					<programlisting language="sh">
 UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
-ucs_registerUDMModule /path/to/appmodule.py "$@" --ucsversionstart 3.2-0
-		  	</programlisting>
-			</example>
-		  <para>
-				There is a corresponding <literal>ucs_unregisterUDMModule</literal> function, which can be used to unregister a <literal>settings/udm_module</literal> object. This only works if no App is registered any longer for the object.
-		  </para>
-			<example id="app:ucs_unregisterUDMModule_example">
-			  <programlisting language="sh">
+ucs_registerLDAPExtension "$@" --schema /path/to/appschemaextension.schema
+					</programlisting>
+				</example>
+				<para>
+					There is a corresponding <literal>ucs_unregisterLDAPExtension</literal> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called for <acronym>LDAP</acronym> schema extensions unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
+				</para>
+				<example id="app:ucs_unregisterLDAPExtensionSchema_example">
+					<programlisting language="sh">
 . /usr/share/univention-lib/ldap.sh
-ucs_unregisterUDMModule newapp/someobject "$@"
-		  	</programlisting>
-			</example>
-	  </section>
+ucs_unregisterLDAPExtension "$@" --schema appschemaextension
+					</programlisting>
+				</example>
+	  	</section>
 
-	  <section id="app:ucs_registerUDMSyntax">
-		  <title>Registration of UDM Syntax Extensions</title>
-		  <para>
-				The easiest way to register <acronym>UDM</acronym> syntax extensions is to call the <literal>ucs_registerUDMSyntax</literal> shell function
-				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
-				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
-				<literal>settings/udm_syntax</literal> object (see <xref linkend="settings:udm_syntax"/>). After creation of the object the function waits
-				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>UDM</acronym> syntax and reports success or failure.
-		  </para>
-		  <para>
-				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
-				The shell function will then register the specified app identifier with the <acronym>UDM</acronym> syntax extension object to indicate that
-				the <acronym>UDM</acronym> syntax object is required as long as this app is installed anywhere in the UCS domain.
-		  </para>
-		  <para>
-				<literal>ucs_registerUDMSyntax</literal> supports two additional options to specify a valid range of UCS versions, where the UDM syntax should be
-				activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
-				performed whenever the <acronym>UDM</acronym> syntax object is modified. By calling this function from a joinscript, it will
-				automatically update the Debian package number stored in the object, triggering a re-evaluation of the specified UCS version range.
-				Note that the UDM syntax is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
-		  </para>
-		  <para>
-				To prevent accidental and unnecessary changes the function <literal>ucs_registerUDMSyntax</literal> (as well as the corresponding UDM module)
-				only execute modifications of an existing object if the Debian package version is increased as well.
-		  </para>
-			<example id="app:ucs_registerUDMSyntax_example">
-			  <programlisting language="sh">
+			<section id="app:ucs_registerLDAPExtensionACL">
+				<title>Registration of LDAP ACL Extensions</title>
+				<para>
+					Note: Since <acronym>LDAP</acronym> schema and <acronym>LDAP</acronym> ACL changes trigger a restart of the <acronym>LDAP</acronym> master server, it is recommended to combine both in a single call of <literal>ucs_unregisterLDAPExtension</literal> with options <literal>--schema</literal> and <literal>--acl</literal>. Since the function waits for activation of the extension objects, this also reduces the time spent on waiting for the activation.
+				</para>
+				<example id="app:ucs_registerLDAPExtensionACL_example">
+					<programlisting language="sh">
 UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
-ucs_registerUDMSyntax /path/to/appsyntax.py "$@" --ucsversionstart 3.2-0
-		  	</programlisting>
-			</example>
-		  <para>
-				There is a corresponding <literal>ucs_unregisterUDMSyntax</literal> function, which can be used to unregister a <literal>settings/udm_syntax</literal> object. This only works if no App is registered any longer for the object.
-		  </para>
-			<example id="app:ucs_unregisterUDMSyntax_example">
-			  <programlisting language="sh">
+ucs_registerLDAPExtension "$@" --acl /path/to/appacl.acl --ucsversionstart 3.2-0
+					</programlisting>
+				</example>
+				<para>
+					There is a corresponding <literal>ucs_unregisterLDAPExtension</literal> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It schould not be called for <acronym>LDAP</acronym> ACL extensions unless it has been verified that no object in <acronym>LDAP</acronym> still uses the corresponding attributes. For this reason it schould generally not be called in unjoin scripts.
+				</para>
+				<example id="app:ucs_unregisterLDAPExtensionACL_example">
+					<programlisting language="sh">
 . /usr/share/univention-lib/ldap.sh
-ucs_unregisterUDMSyntax appsyntax "$@"
-		  	</programlisting>
-			</example>
-	  </section>
+ucs_unregisterLDAPExtension "$@" --acl appacl
+					</programlisting>
+				</example>
+			</section>
 
-	  <section id="app:ucs_registerUDMHook">
-		  <title>Registration of UDM Hooks</title>
-		  <para>
-				The easiest way to register <acronym>UDM</acronym> hooks is to call the <literal>ucs_registerUDMHook</literal> shell function
-				provided by the Univention shell function library (see <xref linkend="misc:lib"/>). Called from a joinscript, it automatically determines
-				some required parameters, like the app identifier plus Debian package name and version, required for the creation of an
-				<literal>settings/udm_hook</literal> object (see <xref linkend="settings:udm_hook"/>). After creation of the object the function waits
-				up to 3 minutes for the &ucsMaster; to signal availability of the <acronym>UDM</acronym> hook and reports success or failure.
-		  </para>
-		  <para>
-				Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set to the versioned app identifier.
-				The shell function will then register the specified app identifier with the <acronym>UDM</acronym> hook object to indicate that
-				the <acronym>UDM</acronym> hook object is required as long as this app is installed anywhere in the UCS domain.
-		  </para>
-		  <para>
-				<literal>ucs_registerUDMHook</literal> supports two additional options to specify a valid range of UCS versions, where the UDM hook should be
-				activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
-				performed whenever the <acronym>UDM</acronym> hook object is modified. By calling this function from a joinscript, it will
-				automatically update the Debian package number stored in the object, triggering a re-evaluation of the specified UCS version range.
-				Note that the UDM hook is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
-		  </para>
-		  <para>
-				To prevent accidental and unnecessary changes the function <literal>ucs_registerUDMHook</literal> (as well as the corresponding UDM module)
-				only execute modifications of an existing object if the Debian package version is increased as well.
-		  </para>
-			<example id="app:ucs_registerUDMHook_example">
-			  <programlisting language="sh">
+			<section id="app:ucs_registerUDMModule">
+				<title>Registration of UDM Extension Modules</title>
+				<example id="app:ucs_registerUDMModule_example">
+					<programlisting language="sh">
 UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
-ucs_registerUDMHook /path/to/apphook.py "$@" --ucsversionstart 3.2-0
-		  	</programlisting>
-			</example>
-		  <para>
-				There is a corresponding <literal>ucs_unregisterUDMHook</literal> function, which can be used to unregister a <literal>settings/udm_hook</literal> object. This only works if no App is registered any longer for the object.
-		  </para>
-			<example id="app:ucs_unregisterUDMHook_example">
-			  <programlisting language="sh">
+ucs_registerLDAPExtension "$@" --udm_module /path/to/appmodule.py --ucsversionstart 3.2-0
+					</programlisting>
+				</example>
+				<para>
+					There is a corresponding <literal>ucs_unregisterLDAPExtension</literal> function, which can be used to unregister a <literal>settings/udm_module</literal> object. This only works if no App is registered any longer for the object.
+				</para>
+				<example id="app:ucs_unregisterUDMModule_example">
+					<programlisting language="sh">
 . /usr/share/univention-lib/ldap.sh
-ucs_unregisterUDMHook apphook "$@"
-		  	</programlisting>
-			</example>
-	  </section>
+ucs_unregisterLDAPExtension "$@" --udm_module newapp/someobject
+					</programlisting>
+				</example>
+			</section>
+
+			<section id="app:ucs_registerUDMSyntax">
+				<title>Registration of UDM Syntax Extensions</title>
+				<example id="app:ucs_registerUDMSyntax_example">
+					<programlisting language="sh">
+UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
+ucs_registerLDAPExtension "$@" --udm_syntax /path/to/appsyntax.py --ucsversionstart 3.2-0
+					</programlisting>
+				</example>
+				<para>
+					There is a corresponding <literal>ucs_unregisterLDAPExtension</literal> function, which can be used to unregister a <literal>settings/udm_syntax</literal> object. This only works if no App is registered any longer for the object.
+				</para>
+				<example id="app:ucs_unregisterUDMSyntax_example">
+					<programlisting language="sh">
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterLDAPExtension "$@" --udm_syntax appsyntax
+					</programlisting>
+				</example>
+			</section>
+
+			<section id="app:ucs_registerUDMHook">
+				<title>Registration of UDM Hooks</title>
+				<example id="app:ucs_registerUDMHook_example">
+					<programlisting language="sh">
+UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
+ucs_registerLDAPExtension "$@" --udm_hook /path/to/apphook.py --ucsversionstart 3.2-0
+					</programlisting>
+				</example>
+				<para>
+					There is a corresponding <literal>ucs_unregisterLDAPExtension</literal> function, which can be used to unregister a <literal>settings/udm_hook</literal> object. This only works if no App is registered any longer for the object.
+				</para>
+				<example id="app:ucs_unregisterUDMHook_example">
+					<programlisting language="sh">
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterLDAPExtension "$@" --udm_hook apphook
+					</programlisting>
+				</example>
+			</section>
+		</section>
 	</section>
 
 	<section id="app:checklist">
