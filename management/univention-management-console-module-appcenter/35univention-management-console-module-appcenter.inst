@@ -55,9 +55,10 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--set name="apps" \
 	--position "cn=univention,$ldap_base"
 
-ucs_registerLDAPSchema /usr/share/univention-management-console-module-appcenter/univention-app.schema "$@" || die
-ucs_registerLDAPACL /usr/share/univention-management-console-module-appcenter/66univention-appcenter_app.acl "$@" || die
-ucs_registerUDMModule /usr/share/pyshared/univention/admin/handlers/appcenter/app.py "$@" || die
+ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/univention-management-console-module-appcenter/univention-app.schema \
+	--acl /usr/share/univention-management-console-module-appcenter/66univention-appcenter_app.acl \
+	--udm_module /usr/share/pyshared/univention/admin/handlers/appcenter/app.py || die
 
 python -c "$(cat <<-EOF
 from univention.lib.package_manager import PackageManager
