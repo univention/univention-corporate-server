@@ -1,3 +1,10 @@
+univention-grub (7.0.0-3) unstable; urgency=low
+
+  * Set video mode to 1024x768@32 for new installations (Bug #30978)
+  * Remove old transition code from postinst
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 16 Sep 2013 13:04:31 +0200
+
 univention-grub (7.0.0-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)

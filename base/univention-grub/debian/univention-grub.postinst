@@ -34,35 +34,13 @@
 
 eval "$(univention-config-registry shell)"
 
-# Update to UCS 3.0: save menu.lst
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.8; then
-	if [ -e /boot/grub/menu.lst ]; then
-		cp /boot/grub/menu.lst /boot/grub/menu.lst.ucs3.0-0
-	fi
-fi
-# end Update to UCS 3.0
-
-# Remove now obsolete UCR variables previously used for lilo
-# memtest86 is now always displayed
-univention-config-registry unset \
-	lilo/append \
-	lilo/append/acpi \
-	lilo/append/pci/acpi \
-	lilo/boot \
-	lilo/compact \
-	lilo/default \
-	lilo/root \
-	lilo/vga \
-	grub/memtest86 \
-	>/dev/null
-
 # Bug #24858: xen-4.1 needs 800x600
 univention-config-registry set grub/timeout?5 \
 	kernel/postinst_hook?"/usr/sbin/update-grub" \
 	grub/quiet?"yes"  \
 	grub/loglevel?"0" \
 	grub/vga?"788"\
-	grub/gfxmode?"800x600@16" \
+	grub/gfxmode?"1024x768@32" \
 	grub/backgroundimage?"/boot/grub/uniboot.png" \
 	grub/color/normal?"dark-gray/black" \
 	grub/color/highlight?"dark-gray/black" \
