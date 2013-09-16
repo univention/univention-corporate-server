@@ -2220,8 +2220,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The Samba packages have been updated to version 4.1.0 RC3. The components providing Active Directory compatible
 		  domain services are now provided by the package <emphasis>samba-ad-dc</emphasis>. The file server component is provided
-		  by the package <emphasis>samba</emphasis> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>, 
-		  <ulink url="&ucsbug;32595">Bug 32595</ulink>).
+		  by the package <emphasis>samba</emphasis> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2338,6 +2337,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  During the update to UCS 3.2 the local Samba 4 DC is added to the group Enterprise Domain
 		  Controllers
 		  (<ulink url="&ucsbug;31572">Bug 31572</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The Samba 4 directory <filename>/var/lib/samba</filename> is now cleaned up during the
+		  rejoin of the system
+		  (<ulink url="&ucsbug;32595">Bug 32595</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
