@@ -2248,8 +2248,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					ml.append(('shadowMax',self.oldattr.get('shadowMax', [''])[0], shadowMax))
 
 			if 'samba' in self.options:
-				# set sambaPwdLastSet to 1, see UCS Bug #8292 and Samba Bug #4313
-				sambaPwdLastSetValue='1'
+				## OLD: set sambaPwdLastSet to 1, see UCS Bug #8292 and Samba Bug #4313
+				# set sambaPwdLastSet to 0, see UCS Bug #17890
+				sambaPwdLastSetValue='0'
 
 			if 'kerberos' in self.options:
 				expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time()))))

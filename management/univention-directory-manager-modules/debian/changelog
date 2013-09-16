@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.35-1) unstable; urgency=low
+
+  * Adjust forcing password change to new samba version (Bug #17890)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Sep 2013 13:44:16 +0200
+
 univention-directory-manager-modules (9.0.34-1) unstable; urgency=low
 
   * Fix wording in mail objects (Bug #24028)
