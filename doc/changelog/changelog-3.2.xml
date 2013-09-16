@@ -957,6 +957,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				Widgets in the policy tab of an object now show an empty value if the
+				attribute is not set (previously they showed the first all the
+				available choices) (<ulink url="&ucsbug;31017">Bug 31017</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 				Univention Directory Manager modules that support superordinates now
 				respect the autosearch setting via UCR when changing the superordinate
 				in the advanced search form (<ulink url="&ucsbug;29498">Bug 29498</ulink>).
@@ -1922,6 +1928,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  Create empty PostgreSQL config files during postrm so that PostgreSQL can be reinstalled
 		  (<ulink url="&ucsbug;27786">Bug 27786</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+				Fixed PostgreSQL service not controllable by the <guimenu>System
+					services</guimenu> module (<ulink url="&ucsbug;16848">Bug
+					16848</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
