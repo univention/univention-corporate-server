@@ -253,6 +253,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  Upon installation completion the hostname can be sent to a server (port 49173)
+		  by setting <emphasis>installation_feedback_host</emphasis> to the IP address or
+		  DNS name of that host (<ulink url="&ucsbug;1156">Bug 1156</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The package <emphasis>univention-net-installer-daemon</emphasis> has been added.
 		  It contains a daemon listening on port 49173 that accepts hostnames and removes the
 		  re-installation flag of the computers with hostname (<ulink url="&ucsbug;1156">Bug 1156</ulink>).

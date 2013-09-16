@@ -1,3 +1,9 @@
+univention-installer (9.0.23-1) unstable; urgency=low
+
+  * add installation_feedback_host (Bug #1156)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 16 Sep 2013 15:23:51 +0200
+
 univention-installer (9.0.22-1) unstable; urgency=low
 
   * fixed profile base installation (Bug #31051) 
