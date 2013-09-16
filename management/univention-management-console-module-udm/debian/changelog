@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.19-1) unstable; urgency=low
+
+  * Show empty label in policy widgets if no value is set (Bug #31017)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 16 Sep 2013 13:27:46 +0200
+
 univention-management-console-module-udm (4.0.18-1) unstable; urgency=low
 
   * Bug #32381: fix order of filtering for superordinates when tree path

@@ -563,6 +563,19 @@ define([
 								}
 								jprop.disabled = true; // policies cannot be edited
 								jprop.$orgLabel$ = jprop.label; // we need the original label
+
+								// add an empty label to ComboBox so that _firstValueInList
+								//   is an empty string. This will empty the choice of
+								//   this widget in case there is no value set (instead of the first)
+								//   see Bug #31017
+								if (jprop.type.indexOf('ComboBox') >= 0) {
+									if (jprop.staticValues) {
+										jprop.staticValues = lang.clone(jprop.staticValues);
+										jprop.staticValues.unshift({id: '', label: ''});
+									} else {
+										jprop.staticValues = [{id: '', label: ''}];
+									}
+								}
 								newProperties.push(jprop);
 							}
 						}, this);
