@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.34-2) unstable; urgency=low
+
+  * update dependency version for ucs_registerLDAPExtension (Bug #32414)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 16 Sep 2013 15:35:29 +0200
+
 univention-management-console-module-appcenter (3.0.34-1) unstable; urgency=low
 
   * Use new ucs_registerLDAPExtension in appcenter joinscript (Bug #32414)
