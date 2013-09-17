@@ -80,13 +80,13 @@
 					<row>
 						<entry>Users</entry>
 						<entry>
-							This tab can be used for accepting users as members of the group.
+							This input field can be used for adding users as members to the group.
 						</entry>
 					</row>
 					<row>
 						<entry>Groups</entry>
 						<entry>
-							On this tab, other groups can be added as members of the current group
+							On this input field, other groups can be added as members of the current group
 							(groups in groups).
 						</entry>
 					</row>
