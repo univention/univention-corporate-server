@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.23-1) unstable; urgency=low
+
+  * Fix tree update in non navigation (Bug #25465)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Sep 2013 19:04:26 +0200
+
 univention-management-console-module-udm (4.0.22-1) unstable; urgency=low
 
   * Bug #32381: fix typo

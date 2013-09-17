@@ -1052,7 +1052,7 @@ define([
 		},
 
 		resetPathAndReloadTreeAndFilter: function(modifiedDNs) {
-			if (modifiedDNs.length) {
+			if (this._tree && modifiedDNs.length) {
 				var notTouched = true;
 				var path = array.filter(this._tree.get('path'), function(part) {
 					if (modifiedDNs.indexOf(part.id) > -1) {

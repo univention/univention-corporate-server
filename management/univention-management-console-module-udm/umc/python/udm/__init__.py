@@ -49,7 +49,7 @@ from univention.management.console.config import ucr
 from univention.management.console.modules import Base, UMC_OptionTypeError, UMC_OptionMissing, UMC_CommandError
 from univention.management.console.modules.decorators import simple_response, sanitize, multi_response
 from univention.management.console.modules.sanitizers import LDAPSearchSanitizer, EmailSanitizer
-from univention.management.console.modules.enable import EnableProgress
+from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.session import TEMPUPLOADDIR
 
@@ -65,7 +65,7 @@ from .udm_ldap import UDM_Error, UDM_Module, UDM_Settings, check_license, ldap_d
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
-class Instance( Base, EnableProgress ):
+class Instance( Base, ProgressMixin ):
 	def __init__( self ):
 		Base.__init__( self )
 		self.settings = None
@@ -260,7 +260,7 @@ class Instance( Base, EnableProgress ):
 		importer.write( self._user_dn, self._password )
 		self.finished( request.id, [ { 'success' : True } ] )
 
-	@multi_response(progress=[_('Moving %d objects'), _('%($dn$)s moved')])
+	@multi_response(progress=[_('Moving %d object(s)'), _('%($dn$)s moved')])
 	def move(self, iterator, object, options):
 		for object, options in iterator:
 			module = get_module( None, object )

@@ -66,8 +66,8 @@ msgstr "Es wurde mehr als ein Objekt gefunden"
 
 #: umc/python/udm/__init__.py:263
 #, python-format
-msgid "Moving %d objects"
-msgstr "Verschiebe %d Objekte"
+msgid "Moving %d object(s)"
+msgstr "Verschiebe %d Objekt(e)"
 
 #: umc/python/udm/__init__.py:99
 msgid "No flavor or valid UDM module name specified"
