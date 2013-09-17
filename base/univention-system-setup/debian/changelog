@@ -1,3 +1,9 @@
+univention-system-setup (6.0.76-22) unstable; urgency=low
+
+  * Fix parsing profile (Bug #32463)
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 17 Sep 2013 14:25:14 +0200
+
 univention-system-setup (6.0.76-21) unstable; urgency=low
 
   * Fix parsing profile (Bug #32463)
