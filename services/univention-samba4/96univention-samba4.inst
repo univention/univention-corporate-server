@@ -682,7 +682,6 @@ elif [ "$samba4_role" = "RODC" ]; then
 			## backup old keytab if samba4 generated it
 			backup_samba4_keytab
 			samba_join_options=( --keep-existing )
-
 			cleanup_var_lib_samba
 		fi
 
@@ -726,8 +725,8 @@ elif [ "$samba4_role" = "RODC" ]; then
 elif [ "$samba4_role" = "MEMBER" ]; then
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
-		samba_domain_join --keep-existing
 		cleanup_var_lib_samba
+		samba_domain_join --keep-existing
 	fi
 
 	univention-config-registry set samba/share/netlogon?no \

@@ -1,3 +1,9 @@
+univention-samba4 (3.0.16-2) unstable; urgency=low
+
+  * Cosmetic fix in unused code branch (Bug #32595)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 17 Sep 2013 14:46:10 +0200
+
 univention-samba4 (3.0.16-1) unstable; urgency=low
 
   * Cleanup /var/lib/samba after creating the keytab backup (Bug #32595)
