@@ -3,7 +3,7 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		  The codename for UCS 3.2 is Borgfeld (<ulink url="&ucsbug;31686">Bug 31686</ulink>).
-	  </simpara> </listitem>
+	  </simpara></listitem>
 
 	  <listitem><simpara>
 		The welcome message is now shown through <filename>/etc/issue</filename> (<ulink url="&ucsbug;31094">Bug 31094</ulink>).
@@ -13,9 +13,10 @@
 		All previous errata updates for UCS 3.1 have been integrated (<ulink url="&ucsbug;31007">Bug 31007</ulink>).
 	  </simpara></listitem>
 
-	  <listitem><simpara>
+	  <listitem>
+		<para>
 		The Debian point update 6.0.8 was incorporated. Among other changes it also fixes several security issues:  <ulink url="&ucsbug;31094">Bug 31094</ulink>).
-
+		</para>
 		<itemizedlist>
 		  <listitem><simpara>
 			libxv: CVE-2013-1989 CVE-2013-2066 (<ulink url="&ucsbug;31446">Bug 31446</ulink>).
@@ -125,7 +126,7 @@
 			libxslt: CVE-2012-6139 (<ulink url="&ucsbug;30935">Bug 30935</ulink>).
 		  </simpara></listitem>
 		</itemizedlist>
-	  </simpara></listitem>
+	  </listitem>
 
 	  <listitem><simpara>
 		In the update from UCS-3.0 to UCS-3.1 the template for <filename>/etc/network/interfaces</filename> was converted from a single-file template into a multi-file template. To preserve user modifications the original file was moved to the new location. This breaks the network tools, since the generated file now contains two declarations for the loopback interface. This situation is now detected and the second declaration is commented out (<ulink url="&ucsbug;32297">Bug 32297</ulink>).
@@ -152,8 +153,8 @@
   <title>Univention Installer</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		<emphasis>univention-horde4</emphasis> has been removed from the software selection. Horde
-		is available in the Univention AppCenter (<ulink url="&ucsbug;31812">Bug 31812</ulink>).
+		<package>univention-horde4</package> has been removed from the software selection. Horde
+		is available in the <application>Univention App Center</application> (<ulink url="&ucsbug;31812">Bug 31812</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -227,7 +228,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The installer now makes sure that LVM signatures are removed by pvremove before pvcreate is called (<ulink url="&ucsbug;31925">Bug 31925</ulink>).
+		The installer now makes sure that LVM signatures are removed by <command>pvremove</command> before <command>pvcreate</command> is called (<ulink url="&ucsbug;31925">Bug 31925</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -248,7 +249,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-net-installer</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-net-installer</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
@@ -259,7 +260,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package <emphasis>univention-net-installer-daemon</emphasis> has been added.
+		  The package <package>univention-net-installer-daemon</package> has been added.
 		  It contains a daemon listening on port 49173 that accepts hostnames and removes the
 		  re-installation flag of the computers with hostname (<ulink url="&ucsbug;1156">Bug 1156</ulink>).
 		</simpara></listitem>
@@ -276,12 +277,8 @@
 	<title>Boot loader</title>
 	  <itemizedlist>
 		<listitem><simpara>
-
-		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-grub</emphasis> and <emphasis>univention-bootsplash</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-grub</package> and <package>univention-bootsplash</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
-		</simpara></listitem>
-
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -315,24 +312,25 @@
 		  the Xorg userland (<ulink url="&ucsbug;19892">Bug 19892</ulink>).
 		</simpara></listitem>
 
-		<listitem><simpara>
+		<listitem>
+		  <para>
 		  The kernel inotify parameters can now be controlled by &ucsUCRV;s (<ulink url="&ucsbug;32327">Bug 32327</ulink>). The default values have been increased to improve support of large environments. The following &ucsUCRV;s are available:
-		  	<itemizedlist>
+		  </para>
+		  <itemizedlist>
 				<listitem><simpara><envar>kernel/fs/inotify/max_user_instances</envar> (default: 512)</simpara></listitem>
 				<listitem><simpara><envar>kernel/fs/inotify/max_user_watches</envar> (default: 32768)</simpara></listitem>
 				<listitem><simpara><envar>kernel/fs/inotify/max_queued_events</envar> (default: 16384)</simpara></listitem>
-			</itemizedlist>
-		 <important><simpara>
+		  </itemizedlist>
+		  <important><simpara>
 		   If these parameters have been manually defined in a local file below <filename class="directory">/etc/sysctl.d/</filename> the file should be removed and the configured values transfered to the respective &ucsUCRV;s.
-		 </simpara></important> 
-		  
+		  </simpara></important> 
+		</listitem>
+
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-initrd</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-initrd</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
 
-
-		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
@@ -346,7 +344,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The Univention Config Registry layers were processed in the wrong order when using the
+		  The &ucsUCR; layers were processed in the wrong order when using the
 		  'search' subcommand. Now all commands consistently return the value from the layer with
 		  the highest priority, which are 'force', 'schedule', 'ldap' and 'normal' (<ulink url="&ucsbug;29632">Bug 29632</ulink>).
 		</simpara></listitem>
@@ -363,7 +361,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A new function was added to the Python API set and unset &ucsUCRV;s atomically through a disctionary (<ulink url="&ucsbug;32544">Bug 32544</ulink>).
+		  A new function was added to the Python API set and unset &ucsUCRV;s atomically through a dictionary (<ulink url="&ucsbug;32544">Bug 32544</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 
@@ -380,12 +378,8 @@
 	<title>Network interface configuration</title>
 	  <itemizedlist>
 		<listitem><simpara>
-
-		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-network-manager</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-network-manager</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
-		</simpara></listitem>
-
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -394,12 +388,8 @@
 	<title>Univention Firewall</title>
 	  <itemizedlist>
 		<listitem><simpara>
-
-		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-firewall</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-firewall</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
-		</simpara></listitem>
-
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -417,12 +407,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A segmentation fault in the slapd LDAP server process in cases where non-UTF-8 passwords
-		  were used for LDAP bind against the {K5KEY} scheme has been fixed (<ulink url="&ucsbug;31352">Bug 31352</ulink>).
+		  A segmentation fault in the <command>slapd</command> LDAP server process in cases where non-UTF-8 passwords
+		  were used for LDAP bind against the <literal>{K5KEY}</literal> scheme has been fixed (<ulink url="&ucsbug;31352">Bug 31352</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  When slapd can not be started by its Init script, <command>slapschema</command> is called
+		  When <command>slapd</command> can not be started by its Init script, <command>slapschema</command> is called
 		  to determine the cause and the output is displayed (<ulink url="&ucsbug;23055">Bug 23055</ulink>).
 		</simpara></listitem>
 
@@ -441,24 +431,24 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-ldap</emphasis>, <emphasis>univention-directory-logger</emphasis>
-		  and <emphasis>univention-ldap-overlay-memberof</emphasis> have been revised (<ulink
+		  The &ucsUCRV; descriptions in <package>univention-ldap</package>, <package>univention-directory-logger</package>
+		  and <package>univention-ldap-overlay-memberof</package> have been revised (<ulink
 		  url="&ucsbug;30946">Bug 30946</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The LDAP attribute <emphasis>univentionShareHost</emphasis> now supports the substring search (<ulink url="&ucsbug;31208">Bug 31208</ulink>).
+		  The LDAP attribute <varname>univentionShareHost</varname> now supports the substring search (<ulink url="&ucsbug;31208">Bug 31208</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The slapd init script now supports <emphasis>graceful-restart</emphasis>
+		  The <command>slapd</command> init script now supports <emphasis>graceful-restart</emphasis>
 		  and <emphasis>graceful-stop</emphasis>, both asking the slapd kindly to
 		  stop and then waiting for 120 seconds before forcefully killing the process
 		  (<ulink url="&ucsbug;31998">Bug 31998</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  univention-backup2master now cleans up Samba 4 related objects
+		  <command>univention-backup2master</command> now cleans up Samba 4 related objects
 		  (<ulink url="&ucsbug;27893">Bug 27893</ulink>).
 		</simpara></listitem>
 
@@ -468,7 +458,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  univention-ldap-backup now creates a seperate logfile during the backup process in /var/univention-backup
+		  <command>univention-ldap-backup</command> now creates a separate logfile during the backup process in <filename class="directory">/var/univention-backup/</filename>
 		  (<ulink url="&ucsbug;31997">Bug 31997</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
@@ -478,12 +468,8 @@
 	  <title>LDAP ACL changes</title>
 		<itemizedlist>
 		  <listitem><simpara>
-
-		  <listitem><simpara>
-			The &ucsUCR; variable descriptions in <emphasis>univention-admingrp-user-passwordreset</emphasis>
+			The &ucsUCRV; descriptions in <package>univention-admingrp-user-passwordreset</package>
 			have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
-		  </simpara></listitem>
-
 		  </simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -492,18 +478,18 @@
 	  <title>LDAP schema changes</title>
 		<itemizedlist>
 		  <listitem><simpara>
-			There is new schema extension <emphasis>univention-object-metadata.schema</emphasis>.
-			There is new schema extension <emphasis>univention-ldap-extension.schema</emphasis>.
+			There are new schema extensions <filename>univention-object-metadata.schema</filename> and
+			<filename>univention-ldap-extension.schema</filename>.
 			(<ulink url="&ucsbug;32391">Bug 32391</ulink>).
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			There is new schema extension <emphasis>udm_extension.schema</emphasis>.
+			There is a new schema extension <filename>udm_extension.schema</filename>.
 			(<ulink url="&ucsbug;32410">Bug 32410</ulink>).
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			The &ucsUCR; variable descriptions in <emphasis>univention-legacy-kolab-schema</emphasis>
+			The &ucsUCRV; descriptions in <filename>univention-legacy-kolab-schema</filename>
 			have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
 		  </simpara></listitem>
 
@@ -519,12 +505,12 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			The failed LDIF mode of the replication does now handle empty values correctly (<ulink url="&ucsbug;25579">Bug 25579</ulink>).
+			The failed LDIF mode of the replication did now handle empty values correctly (<ulink url="&ucsbug;25579">Bug 25579</ulink>).
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			The &ucsUCR; variable descriptions in <emphasis>univention-directory-listener</emphasis>
-			and <emphasis>univention-directory-listener</emphasis> have been revised (<ulink
+			The &ucsUCRV; descriptions in <package>univention-directory-listener</package>
+			and <package>univention-directory-listener</package> have been revised (<ulink
 			url="&ucsbug;30946">Bug 30946</ulink>).
 		  </simpara></listitem>
 
@@ -571,7 +557,7 @@
 		  </simpara>
 		</listitem>
 		<listitem><simpara>
-			<command>univention-server-join</command> now adds /usr/sbin and /sbin to the shell PATH 
+			<command>univention-server-join</command> now adds <filename class="directory">/usr/sbin/</filename> and <filename class="directory">/sbin/</filename> to the shell PATH
 			environment variable before importing the univention shell libs (<ulink url="&ucsbug;31281">Bug 31281</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
@@ -592,8 +578,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-management-console-frontend</emphasis>
-		  and <emphasis>univention-management-console</emphasis> have been revised (<ulink
+		  The &ucsUCRV; descriptions in <package>univention-management-console-frontend</package>
+		  and <package>univention-management-console</package> have been revised (<ulink
 		  url="&ucsbug;30946">Bug 30946</ulink>).
 		</simpara></listitem>
 
@@ -660,7 +646,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The <emphasis>univention-demo-configuration</emphasis> package has been updated in order
+		  The package <package>univention-demo-configuration</package> has been updated in order
 		  to allow two new UMCP commands. The former package version led to an error message when
 		  opening the Univention App center or the UMC online update module. This issue has been fixed (<ulink url="&ucsbug;31567">Bug 31567</ulink>).
 		</simpara></listitem>
@@ -774,8 +760,7 @@
 
 		<listitem><simpara>
 			Applications that require a server role other than the used server role
-			are removed from the App Center Page (<ulink url="&ucsbug;32426">Bug
-				32426</ulink>).
+			are removed from the App Center Page (<ulink url="&ucsbug;32426">Bug 32426</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -795,14 +780,14 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-				Moved the dialog showing all app details to a dedicated page and use
+				Moved the dialog showing all App details to a dedicated page and use
 				this also for the <emphasis>Installed Apps</emphasis> module (<ulink
 					url="&ucsbug;31891">Bug 31891</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 				The <emphasis>Open</emphasis> button now opens a dedicated
-				administration module within <emphasis>UMC</emphasis> or the web
+				administration module within <acronym>UMC</acronym> or the web
 				interface (<ulink url="&ucsbug;30759">Bug 30759</ulink>).
 		</simpara></listitem>
 
@@ -810,8 +795,7 @@
 				Tests whether the user may continue are run after the button is
 				clicked. They are all run at once and for some failed tests solutions
 				are offered (<ulink url="&ucsbug;31737">Bug 31737</ulink>, <ulink
-					url="&ucsbug;30289">Bug 30289</ulink>, <ulink url="&ucsbug;32163">Bug
-					32163</ulink>) .
+					url="&ucsbug;30289">Bug 30289</ulink>, <ulink url="&ucsbug;32163">Bug 32163</ulink>) .
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -824,18 +808,18 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-				Made component registration in <emphasis>univention-add-app</emphasis>
+				Made component registration in <command>univention-add-app</command>
 				more robust (<ulink url="&ucsbug;32398">Bug 32398</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Added switch to install the latest version of the application in
-		  <emphasis>univention-add-app</emphasis> (<ulink url="&ucsbug;31157">Bug 31157</ulink>).
+		  <command>univention-add-app</command> (<ulink url="&ucsbug;31157">Bug 31157</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Fixed app installation with --all and --master when pointing to an outdated app version in
-		  <emphasis>univention-add-app</emphasis> (<ulink url="&ucsbug;31279">Bug 31279</ulink>).
+		  Fixed App installation with --all and --master when pointing to an outdated App version in
+		  <command>univention-add-app</command> (<ulink url="&ucsbug;31279">Bug 31279</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -855,7 +839,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  If an application is installed, the system does not dist-upgrade anymore. If the app is
+		  If an application is installed, the system does not dist-upgrade anymore. If the App is
 		  upgraded, the system still does a dist-upgrade but shows a warning that the dist-upgrade
 		  may include errata updates (<ulink url="&ucsbug;31129">Bug 31129</ulink>, <ulink url="&ucsbug;31278">Bug 31278</ulink>).
 		</simpara></listitem>
@@ -870,7 +854,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A typo in the command line tool <emphasis>univention-management-console-client</emphasis>
+		  A typo in the command line tool <command>univention-management-console-client</command>
 		  has been corrected (<ulink url="&ucsbug;30605">Bug 30605</ulink>).
 		</simpara></listitem>
 
@@ -894,12 +878,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Fixed a segfault that happened while upgrading an app under certain circumstances. Now the
+		  Fixed a segmentation fault that happened while upgrading an App under certain circumstances. Now the
 		  package manager always uses the latest package cache (<ulink url="&ucsbug;31282">Bug 31282</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Checking hardware requirements when upgrading an app has been disabled (<ulink url="&ucsbug;31354">Bug 31354</ulink>).
+		  Checking hardware requirements when upgrading an App has been disabled (<ulink url="&ucsbug;31354">Bug 31354</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -913,7 +897,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The session is now kept alive after having installed an app until confirmation (<ulink url="&ucsbug;31886">Bug 31886</ulink>).
+		  The session is now kept alive after having installed an App until confirmation (<ulink url="&ucsbug;31886">Bug 31886</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -934,7 +918,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package for the App Center UMC module now shipps a new LDAP schema extension <emphasis>univention-app.schema</emphasis> using the new mechanism implemented via <ulink url="&ucsbug;32412">Bug 32412</ulink>). Building on this new LDAP schema the package installs a new UDM module <emphasis>appcenter/app</emphasis> for the registration of App metadata (<ulink url="&ucsbug;32414">Bug 32414</ulink>).
+		  The package for the App Center UMC module now ships a new LDAP schema extension <filename>univention-app.schema</filename> using the new mechanism implemented via <ulink url="&ucsbug;32412">Bug 32412</ulink>). Building on this new LDAP schema the package installs a new UDM module <emphasis>appcenter/app</emphasis> for the registration of App metadata (<ulink url="&ucsbug;32414">Bug 32414</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -954,14 +938,14 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in
-		  <emphasis>univention-directory-manager-modules</emphasis> and <emphasis>univention-management-console-module-udm</emphasis>
+		  The &ucsUCRV; descriptions in
+		  <package>univention-directory-manager-modules</package> and <package>univention-management-console-module-udm</package>
 		  have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 				Moved dialog for requesting a new license with key ID from
-				<emphasis>Univention App Center</emphasis> to the global license dialog
+				<application>Univention App Center</application> to the global license dialog
 				(<ulink url="&ucsbug;32389">Bug 32389</ulink>).
 		</simpara></listitem>
 
@@ -974,8 +958,7 @@
 
 		<listitem><simpara>
 				Added a progress bar while moving objects. This will prevent a timeout
-				when moving a lot of them at once (<ulink url="&ucsbug;25465">Bug
-					25465</ulink>).
+				when moving a lot of them at once (<ulink url="&ucsbug;25465">Bug 25465</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1010,8 +993,8 @@
 		<listitem><simpara>
 		  The following syntax classes received lookup optimizations which result in faster object
 		  opening especially in larger environments: UserDN, UserID, GroupDN, GroupID,
-		  UCS_Server,DNS_ForwardZone, DNS_ReverseZone,
-		  WritableShare,DomainController,GroupName,UserName,nfsShare (<ulink url="&ucsbug;30991">Bug 30991</ulink>,
+		  UCS_Server, DNS_ForwardZone, DNS_ReverseZone,
+		  WritableShare, DomainController, GroupName, UserName, nfsShare (<ulink url="&ucsbug;30991">Bug 30991</ulink>,
 		  <ulink url="&ucsbug;31560">Bug 31560</ulink>).
 		</simpara></listitem>
 
@@ -1031,12 +1014,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package <emphasis>univention-admingrp-user-passwordreset</emphasis> has been updated
+		  The package <package>univention-admingrp-user-passwordreset</package> has been updated
 		  to work with UCS 3.2 (<ulink url="&ucsbug;25408">Bug 25408</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package <emphasis>univention-admingrp-user-passwordreset</emphasis> does now support the
+		  The package <package>univention-admingrp-user-passwordreset</package> does now support the
 		  protection of groups through the &ucsUCRV; <envar>ldap/acl/user/passwordreset/protected/gid</envar>.
 		  By default the group <emphasis>Domain Admins</emphasis> is protected
 		  (<ulink url="&ucsbug;29710">Bug 29710</ulink>).
@@ -1045,10 +1028,8 @@
 		<listitem><simpara>
 			Various text changes have been made, translations have been adapted and
 			added. Descriptions were added or made clearer (<ulink
-				url="&ucsbug;24727">Bug 24727</ulink>, <ulink url="&ucsbug;29552">Bug
-				29552</ulink>, <ulink url="&ucsbug;23691">Bug 23691</ulink>, <ulink
-				url="&ucsbug;24028">Bug 24028</ulink>, <ulink url="&ucsbug;23698">Bug
-				23698</ulink>, <ulink url="&ucsbug;23697">Bug 23697</ulink>, <ulink
+				url="&ucsbug;24727">Bug 24727</ulink>, <ulink url="&ucsbug;29552">Bug 29552</ulink>, <ulink url="&ucsbug;23691">Bug 23691</ulink>, <ulink
+				url="&ucsbug;24028">Bug 24028</ulink>, <ulink url="&ucsbug;23698">Bug 23698</ulink>, <ulink url="&ucsbug;23697">Bug 23697</ulink>, <ulink
 				url="&ucsbug;23695">Bug 23695</ulink>).
 		</simpara></listitem>
 
@@ -1094,7 +1075,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A problem in the reloading process of UDM modules has been fixed, which could cause Python to neglect runtime changes of the main syntax and hook python modules. This is mainly an issue which could occurr during development of new UCS releases.
+			A problem in the reloading process of UDM modules has been fixed, which could cause Python to neglect runtime changes of the main syntax and hook python modules. This is mainly an issue which could occur during development of new UCS releases.
 			(<ulink url="&ucsbug;32565">Bug 32565</ulink>).
 		</simpara></listitem>
 
@@ -1119,7 +1100,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Passwords will be stored in the password history using the hashing algorithm defined in &ucsUCRV; <envar>password/hashing/method</envar> (which is already used as hashing method to create the salted hash of the current password) instead of allways using <emphasis>SHA-1</emphasis>
+			Passwords will be stored in the password history using the hashing algorithm defined in &ucsUCRV; <envar>password/hashing/method</envar> (which is already used as hashing method to create the salted hash of the current password) instead of always using <emphasis>SHA-1</emphasis>
 			(<ulink url="&ucsbug;30981">Bug 30981</ulink>).
 		</simpara></listitem>
 
@@ -1139,13 +1120,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-system-setup</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-system-setup</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Added error handling in case the download of required packages for
-		  <emphasis>univention-system-setup-boot</emphasis> failed. This could prevent a role switch
+		  <package>univention-system-setup-boot</package> failed. This could prevent a role switch
 		  when configuring the system in appliance setup (<ulink url="&ucsbug;30896">Bug 30896</ulink>).
 		</simpara></listitem>
 
@@ -1156,8 +1137,8 @@
 
 		<listitem><simpara>
 			The software page has been removed from basic settings. Software
-			components should be managed in the <emphasis>Univention App
-				Center</emphasis>. The page is still available in the appliance setup
+			components should be managed in the <application>Univention App
+				Center</application>. The page is still available in the appliance setup
 			(<ulink url="&ucsbug;32471">Bug 32471</ulink>).
 		</simpara></listitem>
 
@@ -1384,12 +1365,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The term ,,UDM Web'' in the extended attributes module has been replaced by ,,UMC''
+		  The term <wordasword>UDM Web</wordasword> in the extended attributes module has been replaced by <wordasword>UMC</wordasword>
 		  (<ulink url="&ucsbug;27948">Bug 27948</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-directory-reports</emphasis>
+		  The &ucsUCRV; descriptions in <package>univention-directory-reports</package>
 		  have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
 		</simpara></listitem>
 
@@ -1402,11 +1383,9 @@
 		  Support of ext4 partitions has been added to the filesystem quota module (<ulink url="&ucsbug;24357">Bug 24357</ulink>).
 		</simpara></listitem>
 
-
-
 		<listitem><simpara>
 		  A typo in the German localization in
-		  <emphasis>univention-management-console-module-quota</emphasis> has been corrected (<ulink url="&ucsbug;28377">Bug 28377</ulink>).
+		  <package>univention-management-console-module-quota</package> has been corrected (<ulink url="&ucsbug;28377">Bug 28377</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1416,7 +1395,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The use of eval() has been replaced with getattr() in several UMC modules
+		  The use of <function>eval()</function> has been replaced with <function>getattr()</function> in several UMC modules
 		  (<ulink url="&ucsbug;31523">Bug 31523</ulink>).
 		</simpara></listitem>
 
@@ -1430,9 +1409,9 @@
 
 		<listitem><simpara>
 			The VNC module has been removed (<ulink url="&ucsbug;30158">Bug 30158</ulink>).
-			As an alternative <emphasis>xrdp</emphasis> can be used
-			for remote administration. It is available in the <emphasis>Univention
-				App Center</emphasis>.
+			As an alternative <application>xrdp</application> can be used
+			for remote administration. It is available in the <application>Univention
+				App Center</application>.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1459,6 +1438,7 @@
 		<listitem><simpara>
 		  The code of the command line programs has been modernized (<ulink url="&ucsbug;30974">Bug 30974</ulink>.
 		</simpara></listitem>
+
 		<listitem><simpara>
 		  An error message regarding an existing directory has been corrected (<ulink url="&ucsbug;29074">Bug 29074</ulink>.
 		</simpara></listitem>
@@ -1504,13 +1484,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-updater</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-updater</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename> are digitally signed from UCS version 3.2-0 onwards.
-		  Both updater and mirror will refuses to download them if they are not signed by any PGP key stored in trust-ring of <program>apt-key</program>.
+		  Both updater and mirror will refuses to download them if they are not signed by any PGP key stored in trust-ring of <command>apt-key</command>.
 		  The verification can be disabled using the &ucsUCRV; <envar>repository/online/verify</envar> and <envar>repository/mirror/verify</envar>
 		  (<ulink url="&ucsbug;28045">Bug 28045</ulink>).
 		</simpara></listitem>
@@ -1521,12 +1501,8 @@
 	<title>Software deployment command line tools</title>
 	  <itemizedlist>
 		<listitem><simpara>
-
-		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-maintenance</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-maintenance</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
-		</simpara></listitem>
-
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1535,14 +1511,14 @@
 	<title>Software monitor (univention-pkgdb)</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-pkgdb</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-pkgdb</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Unjoin scripts have been added to the <emphasis>univention-pkgdb</emphasis>,
-		  <emphasis>univention-management-console-module-pkgdb</emphasis>, and
-		  <emphasis>univention-pkgdb-tools</emphasis> packages. The unjoin scripts remove the service
+		  Unjoin scripts have been added to the packages <package>univention-pkgdb</package>,
+		  <package>univention-management-console-module-pkgdb</package>, and
+		  <package>univention-pkgdb-tools</package>. The unjoin scripts remove the service
 		  entry from the server object and the DNS service entry and undo the UMC module registration
 		  (<ulink url="&ucsbug;32492">Bug 32492</ulink>).
 		</simpara></listitem>
@@ -1555,30 +1531,30 @@
   <title>Univention Library</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		The function call_joinscript() has been modified. The start and end of  every
+		The function <function>call_joinscript()</function> has been modified. The start and end of every
 		executed joinscript will be displayed on console (<ulink url="&ucsbug;29263">Bug 29263</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		The generation of internally used passwords (e.g. machine passwords) has been
-		unified. Several packages now using a special function from shell-univention-lib
-		respectively python-univention-lib to create such password. The length and complexity can be
+		unified. Several packages now using a special function from <package>shell-univention-lib</package>
+		respectively <package>python-univention-lib</package> to create such password. The length and complexity can be
 		configured via the &ucsUCRV; <envar>machine/password/length</envar> and
-		<envar>maachine/password/complexity</envar> (<ulink url="&ucsbug;31281">Bug 31281</ulink>).
+		<envar>machine/password/complexity</envar> (<ulink url="&ucsbug;31281">Bug 31281</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The function getLDAPURIs has been added to the python lib. This function returns a string
+		The function <function>getLDAPURIs</function> has been added to the python lib. This function returns a string
 		with all configured LDAP URIs (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The function getLDAPServersCommaList has been added to the python lib. This function returns
+		The function <function>getLDAPServersCommaList</function> has been added to the python lib. This function returns
 		a comma-separated string with all configured LDAP servers (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Added UMCConnection to the python lib, moved from the <emphasis>Univention App Center</emphasis>
+		Added UMCConnection to the python lib, moved from the <application>Univention App Center</application>
 		(<ulink url="&ucsbug;31058">Bug 31058</ulink>,
 		<ulink url="&ucsbug;31908">Bug 31908</ulink>).
 	  </simpara></listitem>
@@ -1589,17 +1565,17 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Two new functions <emphasis>ucs_registerLDAPSchema</emphasis> and <emphasis>ucs_unregisterLDAPSchema</emphasis> have been implemented
+		Two new functions <function>ucs_registerLDAPSchema</function> and <function>ucs_unregisterLDAPSchema</function> have been implemented
 		(<ulink url="&ucsbug;26785">Bug 26785</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The &ucsUCR; variable descriptions in <emphasis>univention-lib</emphasis> have been
+		The &ucsUCRV; descriptions in <package>univention-lib</package> have been
 		revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Two new functions <emphasis>ucs_registerLDAPACL</emphasis> and <emphasis>ucs_unregisterLDAPACL</emphasis> have been implemented
+		Two new functions <function>ucs_registerLDAPACL</function> and <function>ucs_unregisterLDAPACL</function> have been implemented
 		(<ulink url="&ucsbug;32392">Bug 32392</ulink>).
 	  </simpara></listitem>
 	</itemizedlist>
@@ -1612,12 +1588,8 @@
 	<title>DHCP</title>
 	  <itemizedlist>
 		<listitem><simpara>
-
-		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-dhcp</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-dhcp</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
-		</simpara></listitem>
-
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1630,7 +1602,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-bind</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-bind</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
@@ -1650,8 +1622,8 @@
 		<listitem><simpara>
 		  A new &ucsUCR; template <filename>/var/lib/cyrus/db/DB_CONFIG</filename> for the cyrus bdb
 		  configuration has been added. This template is registered to UCR variables with the prefix
-		  <emphasis>mail/cyrus/bdb/dbconfig/</emphasis>. All these variables, without the prefix,
-		  and the values ar e written to the DB_CONFIG file. Default settings for the DB_CONFIG file
+		  <envar>mail/cyrus/bdb/dbconfig/</envar>. All these variables, without the prefix,
+		  and the values are written to the DB_CONFIG file. Default settings for the DB_CONFIG file
 		  are:
 		  <programlisting>mail/cyrus/bdb/dbconfig/set_lg_regionmax="2097152"
 mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
@@ -1665,7 +1637,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The cyrus configuration now uses the LDAP servers configured through the &ucsUCRV;
+		  The Cyrus configuration now uses the LDAP servers configured through the &ucsUCRV;
 		  <envar>ldap/server/addition</envar> too (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 
@@ -1699,22 +1671,22 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Spam/virus detection and countermeasures</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  univention-antivir-mail has been modified. Postfix configuration will be reloaded after
+		  <package>univention-antivir-mail </package> has been modified. Postfix configuration will be reloaded after
 		  installation (<ulink url="&ucsbug;17967">Bug 17967</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  univention-spamassassin has been modified. Obsolete &ucsUCRV;
+		  <package>univention-spamassassin</package> has been modified. Obsolete &ucsUCRV;
 		  <envar>mail/antispam/globalfolder</envar> has been removed (<ulink url="&ucsbug;31072">Bug 31072</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Unused Univention Configuration Registry variables have been removed from
-		  univention-antivir-mail (<ulink url="&ucsbug;30900">Bug 30900</ulink>).
+		  Unused &ucsUCRV;s have been removed from
+		  <package>univention-antivir-mail</package> (<ulink url="&ucsbug;30900">Bug 30900</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The licensing information of univention-antivir-mail has been updated
+		  The licensing information of <package>univention-antivir-mail</package> has been updated
 		  (<ulink url="&ucsbug;31332">Bug 31332</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
@@ -1724,33 +1696,33 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Printing services</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  Changed the SystemGroup parameter. SystemGroups are now separated by a blank character
-		  and not by a comma in cupsd.conf. Ucr variable must remain a comma separated-list
+		  Changed the <emphasis>SystemGroup</emphasis> parameter. SystemGroups are now separated by a blank character
+		  and not by a comma in <filename>cupsd.conf</filename>. The &ucsUCRV; must remain a comma separated list
 		  though (<ulink url="&ucsbug;28884">Bug 28884</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Always create a samba printers config file and not only if client driver is activated,
+		  Always create a samba printers configuration file and not only if client driver is activated,
 		  the samba name is set or ACLs are defined (<ulink url="&ucsbug;30432">Bug 30432</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added in univention-printserver ErrorPolicy to the cups template. ErrorPolicy can be set
+		  Added <emphasis>ErrorPolicy</emphasis> in <package>univention-printserver</package> to the CUPS template. ErrorPolicy can be set
 		  over the &ucsUCRV; <envar>cups/errorpolicy</envar>. The change will be applied to all
 		  printers (<ulink url="&ucsbug;28877">Bug 28877</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Modified univention-ldapsearch in join scripts to request LDAP on DC-Master not on local
+		  Modified <package>univention-ldapsearch</package> in join scripts to request LDAP on DC-Master not on local
 		  DC. Credentials of the join user will be used for authentication.(<ulink url="&ucsbug;19101">Bug 19101</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Modified univention-lpadmin. Lpadmin output (info, errors, warnings) enabled.(<ulink url="&ucsbug;17660">Bug 17660</ulink>).
+			Modified <package>univention-lpadmin</package>. <command>lpadmin</command> output (info, errors, warnings) enabled.(<ulink url="&ucsbug;17660">Bug 17660</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-printclient</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-printclient</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
 
@@ -1775,15 +1747,15 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Added support for denying client access based on ip addresses, configurable via &ucsUCRV;
+		  Added support for denying client access based on IP addresses, configurable via &ucsUCRV;
 		  <envar>cups/printmode/hosts/none</envar>. This functionality is needed for UCS@School.
 		  (<ulink url="&ucsbug;32055">Bug 32055</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-printserver</emphasis>,
-		  <emphasis>univention-check-printers</emphasis> and
-		  <emphasis>univention-printquota</emphasis> have been revised (<ulink
+		  The &ucsUCRV; descriptions in <package>univention-printserver</package>,
+		  <package>univention-check-printers</package> and
+		  <package>univention-printquota</package> have been revised (<ulink
 		  url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
@@ -1798,10 +1770,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Unjoin scripts have been added to the <emphasis>univention-printserver</emphasis> and
-		  <emphasis>univention-printquoata</emphasis> packages. The unjoin scripts remove the service
-		  entry from the server object and remove the default UCR
-		  variables (<ulink url="&ucsbug;32452">Bug 32452</ulink>).
+		  Unjoin scripts have been added to the packages <package>univention-printserver</package> and
+		  <package>univention-printquoata</package>. The unjoin scripts remove the service
+		  entry from the server object and remove the default &ucsUCRV;s (<ulink url="&ucsbug;32452">Bug 32452</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -1821,12 +1792,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-heimdal</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-heimdal</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The process kpasswdd is now only started only on the UCS master (<ulink url="&ucsbug;20167">Bug #20167</ulink>).
+		  The process <command>kpasswdd</command> is now only started on the UCS master (<ulink url="&ucsbug;20167">Bug #20167</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1838,27 +1809,29 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  Fixed a regression in group authentication if &ucsUCRV;
 		  <envar>squid/auth/allowed_groups</envar> was not set (<ulink url="&ucsbug;30969">Bug 30969</ulink>).
 		</simpara></listitem>
+
 		<listitem><simpara>
 		  When using NTLM authentication it is now checked if the user account is locked or disabled
 		  (<ulink url="&ucsbug;29492">Bug 29492</ulink>).
 		</simpara></listitem>
+
 		<listitem><simpara>
-		  Proxy NEGOTIATE authentication support has been added to <emphasis>univention-squid</emphasis>.
+		  Proxy NEGOTIATE authentication support has been added to <package>univention-squid</package>.
 		  In this mode the authenticator squid_ldap_ntlm_auth is a negotiate wrapper for either Kerberos 
 		  or NTLM over negotiate. The previous negotiate authenticator setting can be restored by
 		  setting the &ucsUCRV; <envar>squid/krb5auth/tool</envar> to
-		  <emphasis>/usr/lib/squid3/squid_kerb_auth</emphasis> (<ulink url="&ucsbug;31972">Bug 31972</ulink>).
+		  <package>/usr/lib/squid3/squid_kerb_auth</package> (<ulink url="&ucsbug;31972">Bug 31972</ulink>).
 		</simpara></listitem>
+
 		<listitem><simpara>
 		  A problem in the squid the ntlm authentication helper in interaction with office2013
 		  has been fixed (<ulink url="&ucsbug;32183">Bug 32183</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-squid</emphasis> and
-		  <emphasis>univention-dansguardian</emphasis> have been revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		  The &ucsUCRV; descriptions in <package>univention-squid</package> and
+		  <package>univention-dansguardian</package> have been revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
-
 
 	  </itemizedlist>
   </section>
@@ -1867,12 +1840,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Apache</title>
 	  <itemizedlist>
 		<listitem><simpara>
-
-		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-apache</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-apache</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
-		</simpara></listitem>
-
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1886,7 +1855,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-nagios</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-nagios</package> have been
 		  revised (<ulink url="&ucsbug;30944">Bug 30944</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
@@ -1896,13 +1865,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>SSL</title>
 	  <itemizedlist>
 		<listitem><simpara>
-
-		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-ssl</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-ssl</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
-		</simpara></listitem>
-
-
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
@@ -1915,10 +1879,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-nfs</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-nfs</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
-
 
 	  </itemizedlist>
   </section>
@@ -1928,11 +1891,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The &ucsUCRV; <envar>nssldap/nss_srv</envar> has been added to specify whether or not
-		  libnss-ldap is allowed to perform dns srv record lookups (default: true, <ulink url="&ucsbug;30779">Bug 30779</ulink>).
+		  <package>libnss-ldap</package> is allowed to perform DNS SRV record lookups (default: true, <ulink url="&ucsbug;30779">Bug 30779</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-pam</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-pam</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 		</simpara></listitem>
 
@@ -1942,7 +1905,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The tool <emphasis>ldap-group-to-file.py</emphasis> does now support postrun hooks located in
+		  The tool <command>ldap-group-to-file.py</command> does now support postrun hooks located in
 		  <filename>/var/lib/ldap-group-to-file-hooks.d</filename>. Thus scripts can be executed after
 		  changing the group memberships
 		  <ulink url="&ucsbug;32581">Bug 32581</ulink>).
@@ -1954,19 +1917,18 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Other services</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The config option nss_srv (to deny dns srv record lookups) has been add to libnss-ldap
+		  The config option nss_srv (to deny DNS SRV record lookups) has been add to <package>libnss-ldap</package>
 		  (<ulink url="&ucsbug;30779">Bug 30779</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Create empty PostgreSQL config files during postrm so that PostgreSQL can be reinstalled
+		  Create empty PostgreSQL configuration files during postrm so that PostgreSQL can be reinstalled
 		  (<ulink url="&ucsbug;27786">Bug 27786</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 				Fixed PostgreSQL service not controllable by the <guimenu>System
-					services</guimenu> module (<ulink url="&ucsbug;16848">Bug
-					16848</ulink>).
+					services</guimenu> module (<ulink url="&ucsbug;16848">Bug 16848</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1974,7 +1936,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		 The postgresql configuration file <filename>/etc/postgresql/pam_ldap.conf</filename> now uses
+		 The PostgreSQL configuration file <filename>/etc/postgresql/pam_ldap.conf</filename> now uses
 		 the univention python lib to generate the LDAP URI
 		 (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
@@ -1995,19 +1957,19 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  By default the mysql server package does not set a password for the mysql root user during
 		  a non-interactive installation. With this update the mysql package sets a password and
-		  writes the password to /etc/mysql.secret. This file can be read by root.  If a password is
+		  writes the password to <filename>/etc/mysql.secret</filename>. This file can be read by root.  If a password is
 		  already set, nothing will be done (<ulink url="&ucsbug;19354">Bug 19354</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The logging of univention-mount-homedir now uses
+		  The logging of <command>univention-mount-homedir</command> now uses
 		  <emphasis>univention-mount-homedir</emphasis> instead of <emphasis>logger</emphasis>
 		  at the start of every message and the log messages were improved
 		  (<ulink url="&ucsbug;31256">Bug 31256</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The performance of univention-mount-homedir was improved to reduce server load during
+		  The performance of <command>univention-mount-homedir</command> was improved to reduce server load during
 		  concurrent logins (<ulink url="&ucsbug;31256">Bug 31256</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
@@ -2035,9 +1997,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in
-		  <emphasis>univention-virtual-machine-manager-node</emphasis> and
-		  <emphasis>univention-virtual-machine-manager-daemon</emphasis> have been
+		  The &ucsUCRV; descriptions in
+		  <package>univention-virtual-machine-manager-node</package> and
+		  <package>univention-virtual-machine-manager-daemon</package> have been
 		  revised (<ulink url="&ucsbug;30949">Bug 30949</ulink>).
 		</simpara></listitem>
 
@@ -2055,7 +2017,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The internal code of UVMM was cleaned up (<ulink url="&ucsbug;30897">Bug 30897</ulink>).
+		  The internal code of UVMM was cleaned up (<ulink url="&ucsbug;30897">Bug 30897</ulink>, <ulink url="&ucsbug;32091">Bug 32091</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2096,10 +2058,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Some code issues in UVMM have been fixed (<ulink url="&ucsbug;32091">Bug 32091</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
 		  The storage pool handling has been overhauled and now better supports different storage pools. Especially a bug has been fixed, which could result in deleting the wrong storage volume when multiple storage pools were used (<ulink url="&ucsbug;32098">Bug 32098</ulink>).
 		</simpara></listitem>
 
@@ -2119,11 +2077,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Xen</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  A logic bug in the init script for xenstore was fixed (<ulink url="&ucsbug;28309">Bug 28309</ulink>).
+		  A logic bug in the init script for <command>xenstore</command> was fixed (<ulink url="&ucsbug;28309">Bug 28309</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-xen</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-xen</package> have been
 		  revised (<ulink url="&ucsbug;30949">Bug 30949</ulink>).
 		</simpara></listitem>
 
@@ -2173,17 +2131,17 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
   <title>Desktop packages</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		univention-x-core no longer depends on the package univention-gdm but recommends it (<ulink url="&ucsbug;31004">Bug 31004</ulink>).
+		<package>univention-x-core</package> no longer depends on the package <package>univention-gdm</package> but recommends it (<ulink url="&ucsbug;31004">Bug 31004</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The &ucsUCR; variable descriptions for univention-gdm, univention-kde,
-		univention-mozilla-firefox, univention-ooffice2 and univention-x-core have been revised
+		The &ucsUCRV; descriptions for <package>univention-gdm</package>, <package>univention-kde</package>,
+		<package>univention-mozilla-firefox</package>, <package>univention-ooffice2</package> and <package>univention-x-core</package> have been revised
 		(<ulink url="&ucsbug;30944">Bug 30944</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The installation package for the Flash plugin (<emphasis>univention-flashplugin</emphasis>)
+		The installation package for the Flash plugin (<package>univention-flashplugin</package>)
 		was removed. The base desktop in UCS is provided for accessing the web-based management
 		tools of UCS, for which Flash isn't needed. Existing plugins from a previous installation
 		should be removed manually: <filename>/usr/lib/flashplugin-nonfree</filename> (<ulink url="&ucsbug;31852">Bug 31852</ulink>).
@@ -2200,7 +2158,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The Samba packages have been updated to version 4.1.0 RC2. The file server component is provided
-		  by the package <emphasis>samba</emphasis> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
+		  by the package <package>samba</package> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2224,7 +2182,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-samba</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-samba</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
@@ -2239,7 +2197,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  To minimize the time where <ulink url="/etc/samba/shares.conf"/> includes non-existing
+		  To minimize the time where <filename>/etc/samba/shares.conf</filename> includes non-existing
 		  files, it is now updated directly after a share was added/removed or renamed (<ulink url="&ucsbug;29399">Bug 29399</ulink>).
 		</simpara></listitem>
 
@@ -2249,7 +2207,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An unjoin script has been added to the <emphasis>univention-samba</emphasis> package. The unjoin
+		  An unjoin script has been added to the package <package>univention-samba</package>. The unjoin
 		  script removes the Samba 3 service from the server object and removes the default Samba UCR
 		  variables (<ulink url="&ucsbug;32445">Bug 32445</ulink>).
 		</simpara></listitem>
@@ -2273,8 +2231,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <itemizedlist>
 		<listitem><simpara>
 		  The Samba packages have been updated to version 4.1.0 RC3. The components providing Active Directory compatible
-		  domain services are now provided by the package <emphasis>samba-ad-dc</emphasis>. The file server component is provided
-		  by the package <emphasis>samba</emphasis> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
+		  domain services are now provided by the package <package>samba-ad-dc</package>. The file server component is provided
+		  by the package <package>samba</package> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2287,7 +2245,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-samba4</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-samba4</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
@@ -2297,17 +2255,17 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The sysvol-sync.py script did not preserve timestamps, now it does (<ulink url="&ucsbug;30823">Bug 30823</ulink>).
+		  The script <command>sysvol-sync.py</command> did not preserve timestamps, now it does (<ulink url="&ucsbug;30823">Bug 30823</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The sysvol-cleanup.py script moved the PolicyDefinitions away. Now it considers only GPO
+		  The script <filename>sysvol-cleanup.py</filename> moved the PolicyDefinitions away. Now it considers only GPO
 		  paths (<ulink url="&ucsbug;31186">Bug 31186</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The unused UCR variables &ucsUCRV; <envar>samba/client_use_spnego</envar> and &ucsUCRV;
-		  <envar>samba/time_server</envar> has been removed (<ulink url="&ucsbug;26389">Bug 26389</ulink>).
+		  The unused &ucsUCRV;s <envar>samba/client_use_spnego</envar> and &ucsUCRV;
+		  <envar>samba/time_server</envar> have been removed (<ulink url="&ucsbug;26389">Bug 26389</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2316,12 +2274,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Samba4 DCs are now added to the group Enterprise Domain Controllers by default during
+		  Samba4 DCs are now added to the group <emphasis>Enterprise Domain Controllers</emphasis> by default during
 		  initial join (<ulink url="&ucsbug;31437">Bug 31437</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The listener module samba4-idmap now also works in case smb.conf includes files readable
+		  The listener module samba4-idmap now also works in case <filename>smb.conf</filename> includes files readable
 		  only for root (<ulink url="&ucsbug;31538">Bug 31538</ulink>).
 		</simpara></listitem>
 
@@ -2350,7 +2308,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The config file <filename>/etc/krb5.conf</filename> will get commited from the updated UCR
+		  The config file <filename>/etc/krb5.conf</filename> will get comitted from the updated UCR
 		  template on update (<ulink url="&ucsbug;31306">Bug 31306</ulink>).
 		</simpara></listitem>
 
@@ -2363,20 +2321,21 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  In some cases the sysvol ownership was not yet updated correctly
-		  after the installation or join of univention-samba4. This is now detected and fixed during
+		  after the installation or join of <package>univention-samba4</package>. This is now detected and fixed during
 		  updates and new installations.
 		  (<ulink url="&ucsbug;31640">Bug 31640</ulink>).
 		</simpara></listitem>
+
 		<listitem><simpara>
 		  In some cases the join of a Samba DC results in a conflicted host
-		  account. To prevent this issue, the univention-samba4 join script
+		  account. To prevent this issue, the <package>univention-samba4</package> join script
 		  waits until the host account was replicated to the S4 connector host
 		  through the DRS replication.
 		  (<ulink url="&ucsbug;32257">Bug 32257</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An unjoin script has been added to the <emphasis>univention-samba4</emphasis> package. The unjoin
+		  An unjoin script has been added to the package <package>univention-samba4</package>. The unjoin
 		  script removes the Samba 4 service from the server object and removes the default Samba UCR
 		  variables (<ulink url="&ucsbug;32446">Bug 32446</ulink>).
 		</simpara></listitem>
@@ -2415,7 +2374,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-s4-connector</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-s4-connector</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
@@ -2425,13 +2384,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The displayName attribute definition has been moved from post_attributes to attributes in the user mapping
-		  definition. This increases the syncronization performance (<ulink url="&ucsbug;32323">Bug 32323</ulink>).
+		  The <varname>displayName</varname> attribute definition has been moved from post_attributes to attributes in the user mapping
+		  definition. This increases the synchronization performance (<ulink url="&ucsbug;32323">Bug 32323</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A saparate SID compare function has been added which considers the SID coding in Samba 4. This increases the
-		  syncronization performance, since the SID will only be set if it differs (<ulink url="&ucsbug;32322">Bug 32322</ulink>).
+		  A separate SID compare function has been added which considers the SID coding in Samba 4. This increases the
+		  synchronization performance, since the SID will only be set if it differs (<ulink url="&ucsbug;32322">Bug 32322</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2445,7 +2404,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Some internal operations have been optimzed to prevent endless synchronisations in large
+		  Some internal operations have been optimized to prevent endless synchronisations in large
           environments (<ulink url="&ucsbug;32213">Bug 32213</ulink>).
 		</simpara></listitem>
 
@@ -2455,7 +2414,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An unjoin script has been added to the <emphasis>univention-s4-connector</emphasis> package. The unjoin
+		  An unjoin script has been added to the package <package>univention-s4-connector</package>. The unjoin
 		  script removes the S4 Connector service from the server object and removes the default S4 Connector UCR
 		  variables (<ulink url="&ucsbug;32451">Bug 32451</ulink>).
 		</simpara></listitem>
@@ -2476,18 +2435,18 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The &ucsUCR; variable descriptions in <emphasis>univention-ad-connector</emphasis> have been
+		  The &ucsUCRV; descriptions in <package>univention-ad-connector</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A join and an unjoin script have been added to the <emphasis>univention-ad-connector</emphasis> package. The join
+		  A join and an unjoin script have been added to the package <package>univention-ad-connector</package>. The join
 		  script adds the AD Connector service to the server object and the unjoin script removes the service 
 		  (<ulink url="&ucsbug;32455">Bug 32455</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  An unjoin script has been added to the <emphasis>univention-nagios-ad-connector</emphasis> package. The unjoin
+		  An unjoin script has been added to the package <package>univention-nagios-ad-connector</package>. The unjoin
 		  script removes the server entry from the AD connector nagios service object
 		  (<ulink url="&ucsbug;32455">Bug 32455</ulink>).
 		</simpara></listitem>
@@ -2508,7 +2467,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		A test case for univention-dnsedit has been added (<ulink url="&ucsbug;31104">Bug 31104</ulink>).
+		A test case for <command>univention-dnsedit</command> has been added (<ulink url="&ucsbug;31104">Bug 31104</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2516,7 +2475,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The function user_create from the internal test framework now checks whether the mail domain
+		The function <function>user_create</function> from the internal test framework now checks whether the mail domain
 		exists or not. If the mail domain for the local domain does not exist the user is created
 		without a mail address (<ulink url="&ucsbug;31296">Bug 31296</ulink>).
 	  </simpara></listitem>
@@ -2527,10 +2486,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The UCR variables &ucsUCRV; <envar>tests/domainadmin/account</envar>, &ucsUCRV;
-		<envar>tests/domainadmin/pwd</envar> and &ucsUCRV; <envar>tests/domainadmin/pwdfile</envar>
-		have been added. They can be used to configure which domain administrator credentials UCS
-		test should use when running tests (<ulink url="&ucsbug;31250">Bug 31250</ulink>).
+		The &ucsUCRV;s <envar>tests/domainadmin/account</envar>,
+		<envar>tests/domainadmin/pwd</envar> and <envar>tests/domainadmin/pwdfile</envar>
+		have been added. They can be used to configure which domain administrator credentials
+		<package>ucs-test</package> should use when running tests (<ulink url="&ucsbug;31250">Bug 31250</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2538,12 +2497,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The different return codes of ucs-test have been merged (<ulink url="&ucsbug;31734">Bug 31734</ulink>).
+		The different return codes of <package>ucs-test</package> have been merged (<ulink url="&ucsbug;31734">Bug 31734</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		New functions have been added to get a better support of non DC Master systems, for example
-		udm-test or wait_for_replication. The existing test cases have been adapted
+		<command>udm-test</command> or <command>wait_for_replication</command>. The existing test cases have been adapted
 		(<ulink url="&ucsbug;31687">Bug 31687</ulink>, <ulink url="&ucsbug;31678">Bug 31678</ulink>, <ulink url="&ucsbug;31679">Bug 31679</ulink>, <ulink url="&ucsbug;31680">Bug 31680</ulink>, <ulink url="&ucsbug;32025">Bug 32025</ulink>).
 	  </simpara></listitem>
 
@@ -2581,9 +2540,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The tools import_ldif_with_listener, import_ldif_without_listener and an
+		The tools <command>import_ldif_with_listener</command>, <command>import_ldif_without_listener</command> and an
 		example customer LDIF with 5000 users and other objects have been added to
-		ucs-test-tools (<ulink url="&ucsbug;29418">Bug 29418</ulink>).
+		<package>ucs-test-tools</package> (<ulink url="&ucsbug;29418">Bug 29418</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2596,11 +2555,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		ucs-tests now uses ucslint (<ulink url="&ucsbug;28699">Bug 28699</ulink>).
+		<package>ucs-tests</package> now uses <command>ucslint</command> (<ulink url="&ucsbug;28699">Bug 28699</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Some corner cases are now handled better in ucs-test  (<ulink url="&ucsbug;31795">Bug 31795</ulink>).
+		  Some corner cases are now handled better in <package>ucs-test</package> (<ulink url="&ucsbug;31795">Bug 31795</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2627,38 +2586,38 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
   <title>Other changes</title>
 	<itemizedlist>
 	  <listitem><simpara>
-		univention-user-quota has been rewritten in Python. It does now support share names with
+		<command>univention-user-quota</command> has been rewritten in Python. It does now support share names with
 		whitespaces (<ulink url="&ucsbug;30636">Bug 30636</ulink>, <ulink url="&ucsbug;31957">Bug 31957</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The &ucsUCR; variable descriptions in <emphasis>univention-system-info</emphasis>
+		The &ucsUCRV; descriptions in <package>univention-system-info</package>
 		have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The &ucsUCR; variable descriptions in <emphasis>univention-base-files</emphasis>,
-		<emphasis>univention-server</emphasis>, <emphasis>univention-skel</emphasis>,
-		<emphasis>univention-passwd-store</emphasis> and <emphasis>univention-quota</emphasis> have been
+		The &ucsUCRV; descriptions in <package>univention-base-files</package>,
+		<package>univention-server</package>, <package>univention-skel</package>,
+		<package>univention-passwd-store</package> and <package>univention-quota</package> have been
 		revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The drbd8 userland tools have been updated to version 8.3.11 (<ulink url="&ucsbug;31321">Bug 31321</ulink>).
+		The <package>drbd8</package> userland tools have been updated to version 8.3.11 (<ulink url="&ucsbug;31321">Bug 31321</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The &ucsUCR; variable descriptions in <emphasis>univention-log-collector</emphasis>,
-		<emphasis>univention-postgresql</emphasis>, <emphasis>univention-snmpd</emphasis> and <emphasis>univention-bacula</emphasis>have been
+		The &ucsUCRV; descriptions in <package>univention-log-collector</package>,
+		<package>univention-postgresql</package>, <package>univention-snmpd</package> and <package>univention-bacula</package> have been
 		revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Shell escaping in univention-home-mounter has been fixed (<ulink url="&ucsbug;19441">Bug 19441</ulink>).
+		Shell escaping in <command>univention-home-mounter</command> has been fixed (<ulink url="&ucsbug;19441">Bug 19441</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		univention-backup2master now also replaces the &ucsUCRV; <envar>kerberos/kpasswdserver</envar>
+		<command>univention-backup2master</command> now also replaces the &ucsUCRV; <envar>kerberos/kpasswdserver</envar>
 		with the new masters's FQDN (<ulink url="&ucsbug;31077">Bug 31077</ulink>).
 	  </simpara></listitem>
 
@@ -2685,12 +2644,12 @@ libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl,
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		When uninstall the  package univention-debmirror the apache2 site
-		/etc/apache2/sites-enabled/univention-repository will be disabled (<ulink url="&ucsbug;29262">Bug 29262</ulink>).
+		When uninstall the package <package>univention-debmirror</package> the apache2 site
+		<filename>/etc/apache2/sites-enabled/univention-repository</filename> will be disabled (<ulink url="&ucsbug;29262">Bug 29262</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The package univention-local-users is no longer maintained
+		The package <package>univention-local-users</package> is no longer maintained
 		(<ulink url="&ucsbug;29835">Bug 29835</ulink>).
 	  </simpara></listitem>
 
@@ -2701,7 +2660,7 @@ libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl,
   <title>ucslint</title>
 	<itemizedlist>
 	  <listitem><simpara> 
-		Several ucslint tests that are only used for Univention internal
+		Several <package>ucslint</package> tests that are only used for Univention internal
 		development have been separated into the package <package>ucslint-univention</package> 
 		(<ulink url="&ucsbug;26183">Bug 26183</ulink>).
 	  </simpara></listitem>
@@ -2718,3 +2677,4 @@ libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl,
 	  </simpara></listitem>
 	</itemizedlist>
 </section>
+<!-- vim: set ts=4 sw=2 noet: -->
