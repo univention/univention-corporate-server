@@ -200,10 +200,12 @@
 	<section id="windows-domaenenbeitritt">
 		<title>Windows-Domänenbeitritt</title>
 		<para>
-			Der Domänenbeitritt von Windows-Systemen zu einer durch Samba
+			Der Domänenbeitritt von Microsoft Windows-Systemen zu einer durch Samba
 			bereitgestellten UCS-Domäne wird nachfolgend für Windows 7/8 und Windows XP
 			Professional beschrieben. Bei anderen Windows-Versionen funktioniert der
-			Beitritt ähnlich.
+			Beitritt ähnlich. Neben den Client-Versionen können auch Windows Server-Systeme der
+			Domäne beitreten. Windows-Server treten der Domäne als Memberserver bei, ein Beitritt
+			eines Windows-Systems als Domänencontroller wird nicht unterstützt.
 		</para>
 		<para>
 			Nur domänenfähige Windows-Versionen können der UCS-Domäne beitreten,
@@ -757,8 +759,8 @@ slapcat &gt; ldapdaten.txt
 				erforderlich.
 			</para>
 			<para>
-				Das Zurücksetzen der Passwörter kann über den &ucsUDM; erfolgen. In der
-				Standardeinstellung bietet &ucsUDM; nur dem Benutzer
+				Das Zurücksetzen der Passwörter kann über die &ucsUMC; erfolgen. In der
+				Standardeinstellung bietet die &ucsUMC; nur dem Benutzer
 				<emphasis>Administrator</emphasis> den Benutzer-Assistenten an, über den neue
 				Passwörter gesetzt werden können. Während der Installation wird automatisch
 				eine neue Richtlinie <package>default-user-password-admins</package> erstellt,

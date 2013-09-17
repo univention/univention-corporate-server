@@ -196,6 +196,9 @@
 			The procedure for joining a Windows system to a UCS domain made available via
 			Samba is now described for Windows 7/8 and Windows XP Professional. The process
 			is similar for other Windows versions.
+			<!-- Neben den Client-Versionen können auch Windows Server-Systeme der -->
+			<!-- Domäne beitreten. Windows-Server treten der Domäne als Memberserver bei, ein Beitritt -->
+			<!-- eines Windows-Systems als Domänencontroller wird nicht unterstützt. -->
 		</para>
 		<para>
 			Only domain-compatible Windows versions can join the UCS domain, i.e., it is
@@ -725,7 +728,7 @@ slapcat &gt; ldapdata.txt
 				server must be restarted after making changes.
 			</para>
 			<para>
-				Passwords can be reset via &ucsUDM;. In the default setting, &ucsUDM; only
+				Passwords can be reset via the &ucsUMC;. In the default setting, the &ucsUMC; only
 				offers the user wizard to the <emphasis>Administrator</emphasis> user, which
 				allows the setting of new passwords. During the installation a new
 				<emphasis>default-user-password-admins</emphasis> policy is created
