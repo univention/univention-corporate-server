@@ -17,6 +17,11 @@
 f="$(mktemp)"
 rm -f "$f"
 
+if [ ! -d /var/lib/ldap-group-to-file-hooks.d ]; then
+	mkdir -p /var/lib/ldap-group-to-file-hooks.d
+	remove_hook_dir_on_cleanup=TRUE
+fi
+
 echo -e '#!/bin/sh\necho "TEST" >'$f'' >>/var/lib/ldap-group-to-file-hooks.d/62ldap_group_to_file_hook
 
 chmod +x /var/lib/ldap-group-to-file-hooks.d/62ldap_group_to_file_hook
@@ -28,6 +33,10 @@ if [ ! -e "$f" ]; then
 fi
 
 rm -f "$f" /var/lib/ldap-group-to-file-hooks.d/62ldap_group_to_file_hook
+
+if [ -n "$remove_hook_dir_on_cleanup" ]; then
+	rmdir /var/lib/ldap-group-to-file-hooks.d
+fi
 
 exit "$RETVAL"
 

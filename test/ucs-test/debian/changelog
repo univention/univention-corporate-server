@@ -1,3 +1,10 @@
+ucs-test (4.0.112-2) unstable; urgency=low
+
+  * 10_ldap/62ldap_group_to_file_hook: create /var/lib/ldap-group-to-
+    file-hooks.d if it does not exist (Bug #32581)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Sep 2013 09:09:57 +0200
+
 ucs-test (4.0.112-1) unstable; urgency=low
 
   * Use performance times from real life tests (Bug #31695)
