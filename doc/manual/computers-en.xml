@@ -519,11 +519,9 @@
 			hardware is employed which cannot be recognised automatically, e.g., ISA
 			boards), kernel modules to be loaded can be added via &ucsUCRV;
 			<envar>kernel/modules</envar>. If more than one kernel module is to be loaded,
-			these must be separated by a semicolon.
-				<!-- Mit der &ucsUCRV; <envar>kernel/blacklist</envar> kann eine Liste von einem oder -->
-				<!-- mehreren Kernel-Modulen konfiguriert werden, für die das automatische Laden -->
-				<!-- verhindert wird. Mehrere Einträge müssen ebenfalls durch ein Semikolon getrennt -->
-				<!-- werden. -->
+			these must be separated by a semicolon. The &ucsUCRV; <envar>kernel/blacklist</envar>
+			can be used to configure a list of one or more kernel modules for which automatic
+			loading should be prevented. Multiple entries must also be separated by a semicolon.
 		</para>
 		<para>
 			Unlike other operating systems, the Linux kernel (with very few exceptions)
