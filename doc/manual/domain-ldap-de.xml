@@ -766,7 +766,8 @@ slapcat &gt; ldapdaten.txt
 				eine neue Richtlinie <package>default-user-password-admins</package> erstellt,
 				die mit den Mitgliedern der Gruppe <emphasis>User Password Admins</emphasis>
 				bzw. mit einem entsprechenden Container im LDAP-Verzeichnis verknüpft werden
-				kann.
+				kann. Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden sich in Kapitel
+				<xref linkend="delegated-administrationl"/>.
 			</para>
 			<para>
 				Die Richtlinie ermöglicht dabei die Suche nach Benutzern sowie die

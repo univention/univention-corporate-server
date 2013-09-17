@@ -735,6 +735,7 @@ slapcat &gt; ldapdata.txt
 				automatically, which can be linked to the members of the <emphasis>User
 				Password Admins</emphasis> group and/or a corresponding container in the LDAP
 				directory.
+				<!-- Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden sich in Kapitel <xref linkend="delegated-administrationl"/>. -->
 			</para>
 			<para>
 				The policy makes it possible to search for users and create an overview of all
