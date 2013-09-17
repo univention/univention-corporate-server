@@ -1,3 +1,9 @@
+univention-apache (6.0.1-2) unstable; urgency=low
+
+  * Bug #31805: added descriptions to link entries
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Sep 2013 02:27:26 +0200
+
 univention-apache (6.0.1-1) unstable; urgency=low
 
   * Bug #32022: revised UCS start site, replaced
