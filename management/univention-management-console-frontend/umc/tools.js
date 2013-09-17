@@ -460,9 +460,15 @@ define([
 						}, function() {
 							deferred.reject();
 						}, function(result) {
-							allData.concat(result.intermediate);
+							allData = allData.concat(result.intermediate);
+							if (result.percentage === 'Infinity') { // FIXME: JSON cannot handle Infinity
+								result.percentage = Infinity;
+							}
 							progressBar.setInfo(result.title, result.message, result.percentage);
 							deferred.progress(result);
+							if ('result' in result) {
+								deferred.resolve(result.result);
+							}
 						}
 					);
 				}),

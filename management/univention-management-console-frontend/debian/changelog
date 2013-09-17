@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.74-1) unstable; urgency=low
+
+  * Fix return values in progress support (Bug #25465)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 17 Sep 2013 19:05:11 +0200
+
 univention-management-console-frontend (3.0.73-2) unstable; urgency=low
 
   * Bug #31805: fixed ucslint problem 
