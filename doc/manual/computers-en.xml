@@ -1921,7 +1921,7 @@ nscd -i hosts
 			of passwords can be disturbed; etc.
 		</para>
 		<para>
-			Usually the Domain Controller Master functions as the time server of a
+			Usually the &ucsMaster; functions as the time server of a
 			domain. With the &ucsUCR; variables <envar>timeserver</envar>,
 			<envar>timeserver2</envar> and <envar>timeserver3</envar> external NTP servers
 			can be included as time sources.
