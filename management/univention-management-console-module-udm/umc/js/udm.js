@@ -68,7 +68,7 @@ define([
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domstyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
+], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
