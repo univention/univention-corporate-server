@@ -623,16 +623,49 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 
 	<section id="domain-ldap:Audit_proof_logging_of_LDAP_changes">
 		<title>Audit proof logging of LDAP changes</title>
-		<para>
-			The <command>univention-directory-logger</command> package allows logging of
-			all changes in the LDAP directory service. In addition, an integrated hash sum
-			ensures that no changes can be deleted from the log file.
-			This is logged in the <filename>/var/log/univention/directory-logger.log</filename> file.
-		</para>
+<!-- 		<para> -->
+<!-- 		  Das Paket <command>univention-directory-logger</command> ermöglicht die Protokollierung -->
+<!-- 		  von Änderungen im LDAP-Verzeichnisdienst. Da jeder Datensatz den Hash-Wert des -->
+<!-- 		  vorhergehenden Datensatzes enthält, können Manipulationen an der Logdatei - etwa entfernte -->
+<!-- 		  Einträge - aufgedeckt werden. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Einzelne Teilbereiche des Verzeichnisdienstes können von der Protokollierung ausgenommen -->
+<!-- 		  werden. Diese Zweige können durch die &ucsUCR;-Variablen -->
+<!-- 		  <envar>ldap/logging/exclude1</envar>, <envar>ldap/logging/exclude2</envar> -->
+<!-- 		  etc. konfiguriert werden. Standardmässig ist der Container exkludiert, in dem die -->
+<!-- 		  temporären Objekte gespeichert werden (cn=temporary,cn=univention). -->
+<!-- 		  Die Protokollierung der LDAP-Änderungen erfolgt durch ein Univention Directory -->
+<!-- 		  Listener-Modul, nach &ucsUCR;-Änderungen muss der Univention Directory Listener-Dienst neu -->
+<!-- 		  gestartet werden. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Die Protokollierung erfolgt in die Datei -->
+<!-- 		  <filename>/var/log/univention/directory-logger.log</filename> im folgenden Format: -->
+
+<!-- 		<programlisting language="sh"> -->
+<!-- START -->
+<!-- Old Hash: Hashsumme des vorhergehenden Datensatzes -->
+<!-- DN: DN des LDAP-Objekts -->
+<!-- ID: Listener/Notifer-Transaktions-ID -->
+<!-- Modifier: DN des ändernden Kontos -->
+<!-- Timestamp: Zeitstempel im Format dd.mm.yyyy hh:mm:ss -->
+<!-- Action: add, modify oder delete -->
+
+<!-- Old Values: -->
+<!--  Liste der alten Attribute, ist leer wenn ein Objekt hinzugefügt wird -->
+<!-- New Values: -->
+<!--  Liste der neuen Attribute, ist leer wenn ein Objekt gelöscht wird -->
+<!-- END -->
+<!-- 		</programlisting> -->
+
+<!-- 		Für jeden protokollierten Datensatz wird eine Hashsumme berechnet und zusätzlich in die -->
+<!-- 		Sektion <emphasis>daemon.info</emphasis> des Syslog-Dienstes protokolliert. -->
+<!-- 		</para> -->
 	</section>
 
-	<!-- Information on the set-up and configuration of the Univention Directory Logger -->
-	<!-- can be found in the Univention Wiki under WIKIREF-23404. -->
 
 	<section id="domain-ldap:Timeout_for_inactive_LDAP_connections">
 		<title>Timeout for inactive LDAP connections</title>
