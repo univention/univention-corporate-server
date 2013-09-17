@@ -880,6 +880,7 @@
                         Änderung nicht als neues Kennwort verwendet werden. Mit einer
                         Passwort-Historie von z.B. fünf müssten fünf neue Passwörter verwendet
                         werden, bis ein Kennwort erneut verwendet werden kann.
+						Wenn keine Speicherung der Passwort-Historie erfolgen soll, muss der Wert auf 0 gesetzt werden.
                     </para>
                     <para>
                         Die Passwörter werden nicht rückwirkend gespeichert. Wenn beispielsweise
@@ -900,6 +901,7 @@
                     Richtlinie gesetzt ist und das Auswahlkästchen <guimenu>Passwort-Länge
                     ignorieren</guimenu> nicht markiert ist, also auch, wenn die
                     Passwort-Richtlinie <emphasis>default-settings</emphasis> gelöscht wurde.
+					Wenn keine Prüfung der Passwortlänge erfolgen soll, muss der Wert auf 0 gesetzt werden.
 					</simpara>
                 </listitem>
                 <listitem>
