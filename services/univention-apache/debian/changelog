@@ -1,3 +1,10 @@
+univention-apache (6.0.1-1) unstable; urgency=low
+
+  * Bug #32022: revised UCS start site, replaced
+  * Bug #31805: replace links via template files with UCR variables
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Sep 2013 02:18:34 +0200
+
 univention-apache (6.0.0-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)

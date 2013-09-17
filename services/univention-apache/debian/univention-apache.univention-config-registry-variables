@@ -105,3 +105,25 @@ Description[de]=Diese Variable konfiguriert den Detailgrad der Apache-Logmeldung
 Description[en]=This variable configures the verbosity level for the Apache web server: emerg alert crit error warn notice info debug
 Type=str
 Categories=service-apache
+
+[ucs/web/overview/entries/.*/link]
+Description[en]=Defines the link URL of the corresponding entry of the UCS start site. Full format: ucs/web/overview/entries/{admin,service}/<entryID>/link.
+Description[de]=Gibt die Link-URL des entsprechenden Eintrags der UCS-Startseite an. Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/link.
+
+[ucs/web/overview/entries/.*/label.*]
+Description[en]=Defines the label of the corresponding entry of the UCS start site (optionally localized). Full format: ucs/web/overview/entries/{admin,service}/<entryID>/label[/<locale>].
+Description[de]=Gibt die Bezeichnung des entsprechenden Eintrags der UCS-Startseite an (optional auch lokalisiert). Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/lable[/<locale>].
+
+[ucs/web/overview/entries/.*/description.*]
+Description[en]=Defines the description of the corresponding entry of the UCS start site (optionally localized). Full format: ucs/web/overview/entries/{admin,service}/<entryID>/description[/<locale>].
+Description[de]=Gibt die Beschreibung des entsprechenden Eintrags der UCS-Startseite an (optional auch lokalisiert). Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/description[/<locale>].
+
+[ucs/web/overview/entries/.*/icon]
+Description[en]=Defines the URL for the icon of the corresponding entry of the UCS start site (can also be a data URL). Full format: ucs/web/overview/entries/{admin,service}/<entryID>/icon.
+Description[de]=Gibt die URL des Icons für den entsprechenden Eintrag der UCS-Startseite an. Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/icon.
+
+[ucs/web/overview/entries/.*/priority]
+Description[en]=Defines the (lexicographical) sort priority for the corresponding entry of the UCS start site. Full format: ucs/web/overview/entries/{admin,service}/<entryID>/priority.
+Description[de]=Gibt die (lexikografische) Sortierungsreihenfolge des entsprechenden Eintrags der UCS-Startseite an. Vollständiges Format: ucs/web/overview/entries/{admin,service}/<entryID>/priority.
+
+

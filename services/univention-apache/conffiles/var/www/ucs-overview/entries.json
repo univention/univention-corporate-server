@@ -1,0 +1,101 @@
+@!@
+import re
+import json
+regEntries = re.compile(r'^ucs/web/overview/entries/(?P<category>[^/]+)/(?P<id>[^/]+)/(?P<key>[^/]+)(/(?P<lang>\w+))?$')
+
+class LocalizedString:
+	def __init__(self):
+		self._data = dict(C='')
+
+	def set(self, value, lang=None):
+		lang = lang or 'C'
+		self._data[lang] = value
+
+	def toDict(self):
+		if len(self._data.keys()) == 1 and 'C' in self._data:
+			return self._data['C']
+		return self._data
+
+	def __str__(self):
+		return str(self.toDict())
+
+class Entry:
+	def __init__(self):
+		self._data = dict(icon='', priority='', link=LocalizedString(), label=LocalizedString(), description=LocalizedString())
+
+	def set(self, key, value, lang=None):
+		lang = lang or 'C'
+		if not key in self._data:
+			return
+		if isinstance(self._data[key], LocalizedString):
+			self._data[key].set(value, lang)
+		else:
+			self._data[key] = value
+
+	def toDict(self):
+		returnDict = dict()
+		for ikey, ival in self._data.iteritems():
+			if isinstance(self._data[ikey], LocalizedString):
+				returnDict[ikey] = ival.toDict()
+			else:
+				returnDict[ikey] = ival
+		return returnDict
+
+	def __str__(self):
+		return str(self.toDict())
+
+def getEntries(category):
+	entries = dict()
+	for iucr, ival in configRegistry.items():
+		m = regEntries.match(iucr)
+		if not m:
+			# no match
+			continue
+
+		cat = m.group('category')
+		if not cat == category:
+			continue
+
+		id = m.group('id')
+		if not id in entries:
+			entries[id] = Entry()
+
+		key = m.group('key')
+		lang = m.group('lang')
+		entries[id].set(key, ival, lang)
+
+	# sort entries by priority and label
+	entries = [ ival.toDict() for ival in entries.itervalues() ]
+	entries.sort(key = lambda x: x.get('label'))
+	entries.sort(key = lambda x: x.get('priority', float('inf')))
+	return entries
+
+def getLocales():
+	locale = configRegistry.get('locale', '')
+	locales = []
+	for l in locale.split(' '):
+		if '.' in l:
+			l = l.split('.')[0]
+		configured_locale = configRegistry.get('umc/server/languages/%s' % l)
+		if configured_locale:
+			locales.append(dict(
+				id=l.replace('_', '-'),
+				label=configured_locale)
+			)
+
+	# sort entries alphabetically
+	locales.sort(key = lambda x: x.get('label'))
+	return locales
+
+data = dict(
+	service=getEntries('service'),
+	admin=getEntries('admin'),
+	ucr=dict(
+		domainname=configRegistry['domainname'],
+		hostname=configRegistry['hostname'],
+	),
+	locales=getLocales(),
+)
+
+print json.dumps(data, indent=2)
+@!@

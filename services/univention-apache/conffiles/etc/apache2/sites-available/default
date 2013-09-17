@@ -36,14 +36,12 @@ else:
 	Order allow,deny
 	allow from all
 	@!@
-if baseConfig.has_key('apache2/startsite'):
-	print 'RedirectMatch ^/$ /%s' % baseConfig['apache2/startsite']
+print 'RedirectMatch ^/$ /%s' % baseConfig.get('apache2/startsite', 'ucs-overview')
 @!@
 </Directory>
 
 <Directory /var/www/ucs-overview/>
 	RewriteEngine On
-	RewriteCond %{HTTP:Accept-Language} (^de) [NC]
-	 RewriteRule ^$ /ucs-overview/de.html [L,R]
-	RewriteRule ^$ /ucs-overview/en.html [L,R]
+	RewriteRule ^/ucs-overview/de.html$ /ucs-overview?lang=de [L,R]
+	RewriteRule ^/ucs-overview/en.html$ /ucs-overview?lang=en [L,R]
 </Directory>
