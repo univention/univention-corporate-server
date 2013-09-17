@@ -78,7 +78,7 @@
 			synchronised and an LDAP copy is initiated if necessary. The <emphasis>join
 			scripts</emphasis> are also run at the end of the join process. These register
 			further objects, etc., in the directory service using the software packages
-			installed on the system.
+			installed on the system (see <xref linkend="domain-ldap:joinscripts"/>).
 		</para>
 		<para>
 			The joining of the domain is registered on the client side in the
@@ -161,7 +161,30 @@
 			</para>
 		</section>
 
-		<section id="domain-ldap:Subsequent_running_of_join_scripts">
+		<section id="domain-ldap:joinscripts">
+		  <title>Join scripts</title>
+
+		  <!-- <para> -->
+		  <!-- 	Join-Skripte werden während des Domänenbeitritts aufgerufen. Sie sind Bestandteil der -->
+		  <!-- 	einzelnen Softwarepakete und registrieren den Dienst in der Domäne. Beispiele für -->
+		  <!-- 	solche Änderungen sind die Registrierung eines Druckservers in der Domäne oder  die -->
+		  <!-- 	Anpassung von DNS-Einträgen. -->
+		  <!-- </para> -->
+
+		  <!-- <para> -->
+		  <!-- 	Join-Skripte werden im Verzeichnis /usr/lib/univention-install gespeichert. Jedes -->
+		  <!-- 	Join-Skript verfügt über eine Version. Ein Beispiel: Ein Paket ist bereits installiert -->
+		  <!-- 	und das Join-Skript schon aufgerufen. In der neuen Version des Pakets sind nun -->
+		  <!-- 	zusätzliche Änderungen nötig und die Versionsnummer des Join-Skripts wird erhöht. -->
+		  <!-- </para> -->
+
+		  <!-- <para> -->
+		  <!-- 	Mit dem Befehl <command>univention-check-join-status</command> kann geprüft werden, ob -->
+		  <!-- 	Join-Skripte aufgerufen werden müssen (entweder weil sie noch nie oder in einer älteren -->
+		  <!-- 	Version aufgerufen wurde). -->
+		  <!-- </para> -->
+
+		  <section id="domain-ldap:joinscripts:execlater">
 			<title>Subsequent running of join scripts</title>
 			<para>
 			  If there are join scripts on a system which have not yet been run or which can only be
@@ -187,6 +210,7 @@
 				password. This can be performed on the &ucsMaster; and &ucsBackup; via the
 				<emphasis>--ask-pass</emphasis> option.
 			</para>
+		  </section>
 		</section>
 	</section>
 
@@ -869,26 +893,158 @@ slapcat &gt; ldapdata.txt
 </section>
 
 <section id="domain:listenernotifier">
-	<title>Domain replication using the listener/notifier system</title>
+  <title>Listener/notifier domain replication</title>
+
+  <section id="domain:listenernotifier:intro">
+	<title>Ablauf der Listener/Notifier-Replikation</title>
+
 	<para>
-		Replication of the directory data within a UCS domain occurs via the Univention
-		Directory Listener/Notifier mechanism: On the &ucsMaster; the notifier service
-		monitors changes in the LDAP directory and makes the selected changes available
-		transaction-based to the listener services on the other domain systems with a
-		copy of the LDAP. Alongside replication of the LDAP contents, the dissemination
-		of the domain-wide file changes also includes transfer of the changes to LDAP
-		contents in configuration files of non-LDAP-compatible services (e.g., NFS).
+	  Replication of the directory data within a UCS domain occurs via the Univention
+	  Directory Listener/Notifier mechanism: 
+
+	  <itemizedlist>
+		<listitem> <simpara>
+		  foo
+		  <!-- Der Univention Directory Listener-Dienst läuft auf jedem UCS-System. -->
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  On the &ucsMaster; the <emphasis>Univention Directory Notifier</emphasis> service monitors
+		  changes in the LDAP directory and makes the selected changes available to the Univention
+		  Directory Listener services on the other UCS systems.
+		</simpara></listitem>
+	  </itemizedlist>
+
 	</para>
+
 	<figure>
-		<title>Listener/Notifier mechanism</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/administration-overview_en.png"/>
+	  <title>Listener/Notifier mechanism</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/administration-overview_en.png"/>
 	</figure>
+
 	<para>
-		If, for example, a new NFS share is created in the domain management of the
-		&ucsUMC;, a Python script - a so-called Univention Directory listener module -
-		is used to integrate another line in the <filename>/etc/exports</filename>
-		file. The file is also adapted if the share is removed or modified.
+	  Alongside replication of the LDAP contents, the dissemination
+	  of the domain-wide file changes also includes transfer of the changes to LDAP
+	  contents in configuration files of non-LDAP-compatible services.
+	  If, for example, a new NFS share is created in the domain management of the
+	  &ucsUMC;, a Python script - a so-called Univention Directory listener module (see below) -
+	  is used to integrate another line in the <filename>/etc/exports</filename>
+	  file. The file is also adapted if the share is removed or modified.
 	</para>
+
+	<!-- <para> -->
+	<!--   Die aktiven Univention Directory Listener-Instanzen der Domäne verbinden sich zum Univention -->
+	<!--   Directory Notifier-Dienst. Wird auf dem &ucsMaster; eine LDAP-Änderung durchgeführt (alle -->
+	<!--   anderen LDAP-Server der Domäne sind nur lesend), wird diese durch den Univention Directory -->
+	<!--   Notifier registriert und an die Listener-Instanzen gemeldet. -->
+	<!-- </para> -->
+
+	<!--   <para> -->
+	<!-- 	Jede Univention Directory Listener-Instanz verwendet eine Reihe von Univention Directory -->
+	<!-- 	Listener-Modulen. Diese Module werden von den installierten Applikationen mitgeliefert,das -->
+	<!-- 	Druckserver-Paket bringt z.B Listener-Module mit, die die Cups-Konfiguration erzeugen. -->
+	<!--   </para> -->
+
+	<!--   <para> -->
+	<!-- 	Die LDAP-Replikation erfolgt ebenfalls durch ein Listener-Modul. Ist der LDAP-Server, zu dem -->
+	<!-- 	repliziert werden soll nicht erreichbar, werden die LDAP-Änderungen in die Datei -->
+	<!-- 	<filename>/var/lib/univention-directory-replication/failed.ldif</filename> -->
+	<!-- 	zwischengespeichert. Der Inhalt der Datei wird beim Start des LDAP-Servers automatisch in -->
+	<!-- 	das LDAP übertragen. -->
+	<!--   </para> -->
+
+	<!--   <para> -->
+	<!-- 	Der Listener/Notifier-Mechanismus arbeitet transaktionsbasiert. Für jede Änderung im -->
+	<!-- 	LDAP-Verzeichnis des &ucsMaster; wird eine Transaktions-ID erhöht. Ein Univention Directory -->
+	<!-- 	Listener, der mehrere Transaktionen verpasst hat - weil zum Beispiel der Rechner -->
+	<!-- 	ausgeschaltet war - fragt bei erneuter Verfügbarkeit der Verbindung automatisch alle -->
+	<!-- 	fehlenden Transaktionen ab, bis seine lokale Transaktions-ID der des &ucsMaster; entspricht. -->
+	<!--   </para> -->
+  </section>
+
+<!-- 	<section id="domain:listenernotifier:erroranalysis"> -->
+<!-- 	  <title>Analyse von Listener/Notifier-Problemen</title> -->
+	  
+<!-- 	  <section id="domain:listenernotifier:erroranalysis:debug"> -->
+<!-- 		<title>Logdateien/Debug-Level der Replikation</title> -->
+
+<!-- 		<para> -->
+<!-- 		  Alle Statusmeldungen des Univention Directory Listener und der aufgerufenen -->
+<!-- 		  Listener-Module werden in die Datei <filename>/var/log/univention/listener.log</filename> -->
+<!-- 		  protokolliert. Der Detailgrad der Logmeldungen kann über die &ucsUCRV; -->
+<!-- 		  <envar>listener/debug/level </envar> konfiguriert werden. Mögliche Werte reichen von 0 -->
+<!-- 		  (nur Fehlermeldungen) bis 4 (alle Statusmeldungen). Nachdem der Debug-Level geändert -->
+<!-- 		  wurde, muss der Univention Directory Listener neu gestartet werden. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Statusmeldungen des Univention Directory Notifier-Dienstes werden in die Datei -->
+<!-- 		  <filename>/var/log/univention/listener.log</filename>. Der Debuglevel kann mit der -->
+<!-- 		  Variable <envar>notifier/debug/level</envar> konfiguriert werden (ebenfalls von 0-4). -->
+<!-- 		</para> -->
+<!-- 	  </section> -->
+
+<!-- 	  <section id="domain:listenernotifier:erroranalysis:replication"> -->
+<!-- 		<title>Erkennung von Replikationsproblemen</title> -->
+
+<!-- 		<para> -->
+<!-- 		  Im Regelbetrieb der Domänenreplikation (keine hohe Last auf den Systemen, keine Störungen -->
+<!-- 		  im Netzwerk) ist die Verzögerung zwischen der Änderung in der &ucsUMC; bis zur -->
+<!-- 		  Replikatione etwa auf einem &ucsSlave; kaum merkbar. Eine möglicherweise unvollständige -->
+<!-- 		  Replikation kann durch einen Vergleich der Transaktions-IDs von Listener- und -->
+<!-- 		  Notifier-Dienst identifiziert werden. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Auf dem &ucsMaster; werden die vom Notifier-Dienst registrierten Transaktionen in -->
+<!-- 		  aufsteigender Reihenfolge in die Datei -->
+<!-- 		  <filename>/var/lib/univention-ldap/notify/transaction</filename> geschrieben. Ein -->
+<!-- 		  Beispiel: -->
+
+<!-- 		  <programlisting language="sh"> -->
+<!-- root@dcmaster:~# tail -1 /var/lib/univention-ldap/notify/transaction -->
+<!-- 836 cn=dcslave3,cn=dc,cn=computers,dc=firma,dc=de m -->
+<!-- 		  </programlisting> -->
+
+<!-- 		  Auf dem Listener-System wird die zuletzt vom Listener empfangene Transaktion in der Datei -->
+<!-- 		  <filename>/var/lib/univention-directory-listener/notifier_id</filename> gespeichert: -->
+
+<!-- 		  <programlisting language="sh"> -->
+<!-- root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id -->
+<!-- 836 -->
+<!-- 		  </programlisting> -->
+
+<!-- 		  Diese Prüfung kann auch automatisiert durch den Nagios-Dienst UNIVENTION_REPLICATION -->
+<!-- 		  durchgeführt werden (siehe <xref linkend="nagios:preconfiguredchecks"/>). -->
+<!-- 		</para> -->
+<!-- 	  </section> -->
+
+
+<!-- 	  <section id="domain:listenernotifier:erroranalysis:reinit"> -->
+<!-- 		<title>Neuinitialiisierung von Listener-Modulen</title> -->
+
+<!-- 		<para> -->
+<!-- 		  Falls es zu Problemen bei der Abarbeitung eines Listener-Moduls gekommen ist, besteht die -->
+<!-- 		  Möglichkeit, das Listener-Modul neu zu initialisieren. Dabei werden alle LDAP-Objekte mit -->
+<!-- 		  denen das Listener-Modul arbeitet erneut übergeben. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Dem Befehl zum erneuten Initialisieren muss der Name des Listener-Moduls übergeben -->
+<!-- 		  werden. Die installierten Listener-Module sind im Verzeichnis -->
+<!-- 		  <filename>/var/lib/univention-directory-listener/handlers/system</filename> zu finden. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Mit dem folgenden Befehl kann beispielsweise das Druckermodul neu initialisiert werden: -->
+
+<!-- 		  <programlisting language="sh"> -->
+<!-- univention-directory-listener-ctrl resync cups-printers -->
+<!-- 		  </programlisting> -->
+<!-- 		</para> -->
+<!-- 	  </section> -->
+<!-- 	</section> -->
+
 </section>
 
 <section id="domain:ssl">

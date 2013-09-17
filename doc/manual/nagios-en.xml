@@ -159,7 +159,7 @@
 	automatically.
 	</para>
 
-	<section id="nagios:Preconfigured_Nagios_checks">
+	<section id="nagios:preconfiguredchecks">
 		<title>Preconfigured Nagios checks</title>
 		<para>
 		During the installation, basic Nagios tests are set up

@@ -160,7 +160,7 @@
 	das Überwachungs-Plugin <emphasis>univention-nagios-ad-connector</emphasis> mit.
 	</para>
 
-	<section id="nagios:Vorkonfigurierte_Nagios-Pruefungen">
+	<section id="nagios:preconfiguredchecks">
 		<title>Vorkonfigurierte Nagios-Prüfungen</title>
 		<para>
 		Während der Installation werden automatisch grundlegende
