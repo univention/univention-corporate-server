@@ -644,7 +644,7 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		</section>
 	</section>
 
-	<section id="domain-ldap:Revisionssichere_LDAP-Protokollierung">
+	<section id="domain-ldap:directorylogger">
 		<title>Revisionssichere LDAP-Protokollierung</title>
 		<para>
 		  Das Paket <command>univention-directory-logger</command> ermöglicht die Protokollierung

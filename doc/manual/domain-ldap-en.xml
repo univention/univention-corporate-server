@@ -621,8 +621,8 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		</section>
 	</section>
 
-	<section id="domain-ldap:Audit_proof_logging_of_LDAP_changes">
-		<title>Audit proof logging of LDAP changes</title>
+	<section id="domain-ldap:directorylogger">
+		<title>Audit-proof logging of LDAP changes</title>
 <!-- 		<para> -->
 <!-- 		  Das Paket <command>univention-directory-logger</command> ermöglicht die Protokollierung -->
 <!-- 		  von Änderungen im LDAP-Verzeichnisdienst. Da jeder Datensatz den Hash-Wert des -->
