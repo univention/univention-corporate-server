@@ -52,6 +52,7 @@ UMC module development. You are not bound to use them if you need more
 flexibility.
 """
 
+import sys
 import inspect
 from threading import Thread
 
@@ -178,7 +179,7 @@ def _sanitize(function, sanitizer):
 	copy_function_meta_data(function, _response)
 	return _response
 
-def simple_response(function=None, with_flavor=None):
+def simple_response(function=None, with_flavor=None, with_progress=False):
 	'''If your function is as simple as: "Just return some variables"
 	this decorator is for you.
 
@@ -257,7 +258,10 @@ def simple_response(function=None, with_flavor=None):
 
 	'''
 	if function is None:
-		return lambda f: simple_response(f, with_flavor)
+		return lambda f: simple_response(f, with_flavor, with_progress)
+
+	if with_progress is True:
+		with_progress = 'progress'
 
 	# fake a generator function that yields whatever the original
 	# function returned
@@ -280,8 +284,26 @@ def simple_response(function=None, with_flavor=None):
 
 		# fake a multi_request
 		request.options = [request.options]
-		result = _multi_response(self, request)
-		self.finished(request.id, result[0])
+
+		if with_progress:
+			if not isinstance(request.options[0], dict):
+				raise UMC_OptionTypeError(_('Not a "dict"'))
+			progress_obj = self.new_progress()
+			request.options[0][with_progress] = progress_obj
+
+			def _thread(self, progress_obj, _multi_response, request):
+				try:
+					result = _multi_response(self, request)
+				except Exception:
+					progress_obj.exception(sys.exc_info())
+				else:
+					progress_obj.finish_with_result(result[0])
+			thread = Thread(target=_thread, args=[self, progress_obj, _multi_response, request])
+			thread.start()
+			self.finished(request.id, progress_obj.initialised())
+		else:
+			result = _multi_response(self, request)
+			self.finished(request.id, result[0])
 
 	copy_function_meta_data(function, _response)
 	return _response
@@ -383,7 +405,7 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
 		if progress:
 			number = len(request.options)
 			if progress is True:
-				progress_title = _('Please wait for operation to finish')
+				progress_title = None
 			else:
 				if isinstance(progress, (list, tuple)):
 					progress_title, progress_msg = progress
@@ -393,11 +415,15 @@ def _eval_simple_decorated_function(function, with_flavor, single_values=False, 
 					progress_title = progress_title % number
 			progress_obj = self.new_progress(progress_title, number)
 			def _thread(self, progress_obj, iterator, nones):
-				for res in function(self, iterator, *nones):
-					if progress_msg:
-						res_msg = progress_msg % res
-					progress_obj.progress(res, res_msg)
-				progress_obj.finish()
+				try:
+					for res in function(self, iterator, *nones):
+						if progress_msg:
+							res_msg = progress_msg % res
+						progress_obj.progress(res, res_msg)
+				except Exception:
+					progress_obj.exception(sys.exc_info())
+				else:
+					progress_obj.finish()
 			thread = Thread(target=_thread, args=[self, progress_obj, iterator, nones])
 			thread.start()
 			return progress_obj.initialised()
