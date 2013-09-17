@@ -99,14 +99,14 @@ ucr set \
 	ucs/web/overview/entries/admin/root-certificate/label?"Root certificate" \
 	ucs/web/overview/entries/admin/root-certificate/label/de?"Wurzelzertifikat" \
 	ucs/web/overview/entries/admin/root-certificate/description?"Certificate of the Certification Authority for UCS-Domain $hostname.$domainname" \
-	ucs/web/overview/entries/admin/root-certificate/description/de?"Zertifikat der Zertifizierungsstelle der UCS-Domäne $hostname.$domainname" \
+	ucs/web/overview/entries/admin/root-certificate/description/de?"Zertifikat der Zertifizierungsstelle für die UCS-Domäne $hostname.$domainname" \
 	ucs/web/overview/entries/admin/root-certificate/link?"../ucs-root-ca.crt" \
 	ucs/web/overview/entries/admin/root-certificate/priority?"90" \
 	ucs/web/overview/entries/admin/invalid-certificate-list/icon?"/icon/50x50/invalid-certificate-list.png" \
 	ucs/web/overview/entries/admin/invalid-certificate-list/label?"Certificate revocation list" \
 	ucs/web/overview/entries/admin/invalid-certificate-list/label/de?"Zertifikat-Sperrliste" \
 	ucs/web/overview/entries/admin/invalid-certificate-list/description?"List of withdrawn certificates" \
-	ucs/web/overview/entries/admin/invalid-certificate-list/description/de?"Liste der widerrufenen Zertifikat" \
+	ucs/web/overview/entries/admin/invalid-certificate-list/description/de?"Liste der widerrufenen Zertifikate" \
 	ucs/web/overview/entries/admin/invalid-certificate-list/link?"../ucsCA.crl" \
 	ucs/web/overview/entries/admin/invalid-certificate-list/priority?"91" \
 

@@ -1,3 +1,10 @@
+univention-apache (6.0.2-1) unstable; urgency=low
+
+  * Bug #31700: focus admin tab when no service entries available
+  * Bug #31805: fixed typos for link entries
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Sep 2013 12:41:55 +0200
+
 univention-apache (6.0.1-2) unstable; urgency=low
 
   * Bug #31805: added descriptions to link entries
@@ -6,7 +13,7 @@ univention-apache (6.0.1-2) unstable; urgency=low
 
 univention-apache (6.0.1-1) unstable; urgency=low
 
-  * Bug #32022: revised UCS start site, replaced
+  * Bug #31700: revised UCS start site, replaced
   * Bug #31805: replace links via template files with UCR variables
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Sep 2013 02:18:34 +0200

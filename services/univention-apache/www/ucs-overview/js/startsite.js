@@ -133,10 +133,22 @@ define([
 			}));
 		},
 
+		_focusAdminTab: function() {
+			if (!this._entries.service.length) {
+				var tabLink = query('a[data-i18n=admin]')[0];
+				tabLink.click();
+			}
+		},
+
+		_updateNoServiceHint: function() {
+			domStyle.set('no-service', 'display', this._entries.service.length ? 'none' : 'block');
+		},
+
 		_updateLinkEntries: function(category) {
 			this._placeLinkEntriesInDom('admin');
 			this._placeLinkEntriesInDom('service');
-			domStyle.set('no-service', 'display', this._entries.service.length ? 'none' : 'block');
+			this._focusAdminTab();
+			this._updateNoServiceHint();
 		},
 
 		_matchLocale: function(locale, /* Function? */ mapper) {
