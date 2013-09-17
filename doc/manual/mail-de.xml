@@ -956,7 +956,8 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  UCS integriert mehrere Applikationen des Horde-Frameworks für den Webzugriff
 	  auf E-Mails und zur webbasierten Verwaltung von serverseitigen
-	  E-Mail-Filterregeln auf Basis von SIEVE.
+	  E-Mail-Filterregeln auf Basis von SIEVE. Horde kann über das Univention App Center installiert
+	  werden (siehe <xref linkend="software:appcenter"/>).
 	</para>
 
 	<section id="mail:Anmeldung_und_Übersicht">
