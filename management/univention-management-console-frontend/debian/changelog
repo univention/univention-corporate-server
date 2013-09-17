@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.73-1) unstable; urgency=low
+
+  * Bug #31805: added UCR variables for link on the UCS start site
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 17 Sep 2013 02:37:06 +0200
+
 univention-management-console-frontend (3.0.72-1) unstable; urgency=low
 
   * Adding a UMCP command with progress support (Bug #25465)

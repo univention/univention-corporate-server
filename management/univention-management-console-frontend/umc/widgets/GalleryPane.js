@@ -51,7 +51,7 @@ define([
 
 		baseClass: 'umcGalleryPane',
 
-		bounceDuration: 150,
+		bounceDuration: 50,
 
 		query: {},
 

@@ -37,6 +37,7 @@
 umc_frontend_new_hash
 
 # provide new settings for localisation of umc frontend
+eval "$(ucr shell)"
 univention-config-registry set "umc/server/languages/en_US?English" \
 	"umc/server/languages/de_DE?Deutsch" \
 	"umc/server/languages/en_GB?English (United Kingdom)" \
@@ -48,6 +49,12 @@ univention-config-registry set "umc/server/languages/en_US?English" \
 	"umc/web/sso/enabled=yes" \
 	"umc/web/sso/allow/http=yes" \
 	"umc/web/sso/newwindow=yes" \
-	"umc/web/sso/timeout=15"
+	"umc/web/sso/timeout=15" \
+	"ucs/web/overview/entries/admin/umc/icon?/univention-management-console/js/dijit/themes/umc/icons/50x50/univention-management-console.png" \
+	"ucs/web/overview/entries/admin/umc/label?Univention Management Console" \
+	"ucs/web/overview/entries/admin/umc/description?Domain management for the UCS-Domain $hostname.$domainname and system administration of $hostname" \
+	"ucs/web/overview/entries/admin/umc/description/de?Verzeichnisdienstverwaltung der UCS-Domäne $hostname.$domainname und Systemverwaltung von $hostname" \
+	"ucs/web/overview/entries/admin/umc/link?/univention-management-console" \
+	"ucs/web/overview/entries/admin/umc/priority?10" \
 
 exit 0
