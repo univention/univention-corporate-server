@@ -4,7 +4,7 @@
 	margin: 0;
 }
 
-body .container {
+.container {
 	width: 100%;
 	max-width: 1313px;
 	padding: 0 10px 0 25px;
@@ -421,7 +421,6 @@ ul.nav.nav-tabs li.active a {
 
 	#header-right .dropdown-menu {
 		font-size: 12px;
-		top: 22px;
 	}
 
 	#header-right .dropdown button .arrow {
