@@ -315,13 +315,13 @@
 		name has to begin with a letter and must not be longer than 13 characters.
 	</para>
 	<para>
-		Once the domain name is set, the fields <guimenu>LDAP base</guimenu> and <guimenu>Windows domain</guimenu> will
-		be pre-filled with derived values. 
-<!-- (Die Eingabefelder werden nur bei der Installation des &ucsMaster; angezeigt). -->
-        If the LDAP basis is to be changed, the name
-		conventions for DNs have to be observed. The basis DN has to begin with <emphasis>cn=</emphasis>,
-		<emphasis>dc=</emphasis>, <emphasis>c=</emphasis>, <emphasis>l=</emphasis>, or <emphasis>o=</emphasis>. Basis DNs violating these conventions will be
-		rejected.
+	  Once the domain name is set, the fields <guimenu>LDAP base</guimenu> and <guimenu>Windows
+	  domain</guimenu> will be pre-filled with derived values (the entry fields are only displayed
+	  during installation of the &ucsMaster;). If the LDAP basis is to be changed, the name
+	  conventions for DNs have to be observed. The basis DN has to begin with
+	  <emphasis>cn=</emphasis>,<emphasis>dc=</emphasis>, <emphasis>c=</emphasis>,
+	  <emphasis>l=</emphasis>, or <emphasis>o=</emphasis>. Basis DNs violating these conventions
+	  will be rejected.
 	</para>
 	<para>
 		The name of the Windows domain may have a maximum length of 13
@@ -526,14 +526,13 @@
 	<section id="installation:Configuration_of_IPv4_addresses">
 	  <title>Configuration of IPv4 addresses</title>
 
-	  <!-- <para> -->
-	  <!-- 	Ist die Option <guimenu>DHCP</guimenu> aktiviert, wird versucht die IP-Adresse - und je -->
-	  <!-- 	nach Konfiguration auch Nameserver und/oder Standard-Gateway - über das Dynamic Host -->
-	  <!-- 	Configuration Protocol (DHCP) zu beziehen und automatisch zu konfigurieren. -->
-	  <!-- 	Wenn die DHCP-Anfrage fehlschlägt, wird eine zufällige Adresse aus dem 169.254.x.x Netz -->
-	  <!-- 	verwendet. -->
-	  <!-- </para> -->
-			
+	  <para>
+		If the <guimenu>DHCP</guimenu> option is enabled, an attempt is made to retrieve the IP
+		address and configure it automatically via the Dynamic Host Configuration Protocol (DHCP)
+		(and also the name server and/or standard gateway depending on the DHCP configuration). If
+		the DHCP request fails, a random address from the 169.254.x.x network is used.
+	  </para>
+
 	  <para>
 		If the <guimenu>DHCP</guimenu> option was not chosen, the IP address to be bound to the
 		network card must be entered. In addition to the <guimenu>IP address</guimenu> the

@@ -309,7 +309,7 @@
 	<para>
 		Nachdem der Domänenname gesetzt wurde, werden die Felder <guimenu>LDAP-Basis</guimenu> und
 		<guimenu>Windows-Domäne</guimenu> mit abgeleiteten Werten vorausgefüllt
-		(Die Eingabefelder werden nur bei der Installation des &ucsMaster; angezeigt).
+		(die Eingabefelder werden nur bei der Installation des &ucsMaster; angezeigt).
 		Wenn die LDAP-Basis geändert werden soll, müssen die Konventionen für die Benennung von DNs beachtet werden.
 		Die Basis-DN muss mit <emphasis>cn=</emphasis>, <emphasis>dc=</emphasis>, <emphasis>c=</emphasis>, <emphasis>l=</emphasis> oder <emphasis>o=</emphasis> beginnen.
 		Basis-DNs, die diese Konventionen verletzen, werden abgewiesen. Der Name der
