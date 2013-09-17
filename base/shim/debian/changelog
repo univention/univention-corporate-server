@@ -1,0 +1,5 @@
+shim (0.2-1) unstable; urgency=low
+
+  * Bug #28191: initial import
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 11 Sep 2013 15:49:32 +0200
