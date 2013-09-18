@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.75-2) unstable; urgency=low
+
+  * Bug #24422: added additional exception handlers
+  * Bug #24422: remove also password from query string during SSO
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 18 Sep 2013 17:45:32 +0200
+
 univention-management-console-frontend (3.0.75-1) unstable; urgency=low
 
   * Bug #24422: remove username from query string during SSO

@@ -543,7 +543,7 @@ class CPSingleSignOn(CPgeneric):
 		query_args = {}
 		query_args.update(kwargs)
 		# remove some arguments from query string
-		for remove_arg in ('loginToken', 'username'):
+		for remove_arg in ('loginToken', 'username', 'password'):
 			if remove_arg in query_args:
 				query_args.pop(remove_arg)
 		if query_args:
@@ -554,6 +554,7 @@ class CPSingleSignOn(CPgeneric):
 
 
 class CPGet(CPgeneric):
+	@logExceptions
 	def get_request(self, path, args):
 		if not path:
 			self._log('error', 'get_request: path is empty')
@@ -563,11 +564,13 @@ class CPGet(CPgeneric):
 
 
 class CPSet(CPgeneric):
+	@logExceptions
 	def get_request(self, path, args):
 		return umcp.Request( 'SET', options = args.get( 'options', {} ) )
 
 
 class CPUpload( CPgeneric ):
+	@logExceptions
 	def get_request(self, path, args ):
 		self._log( 'info', 'Handle upload command' )
 		global _upload_manager
@@ -614,6 +617,7 @@ class CPUpload( CPgeneric ):
 		return req
 
 	@cherrypy.expose
+	@logExceptions
 	def default( self, *path, **kwargs ):
 		self._log('info', 'got new request')
 
@@ -634,6 +638,7 @@ class CPUpload( CPgeneric ):
 		return response
 
 class CPCommand(CPgeneric):
+	@logExceptions
 	def get_request(self, path, args):
 		if not path:
 			self._log('error', 'get_request: path is empty')
@@ -648,6 +653,7 @@ class CPCommand(CPgeneric):
 
 class CPAuth(CPgeneric):
 	@cherrypy.expose
+	@logExceptions
 	def default(self, **kw):
 		remote = cherrypy.request.remote
 		CORE.info('CPRoot/auth: got new auth request (%s:%s <=> %s)' % (self.get_ip_address(), remote.port, remote.name))
@@ -693,7 +699,7 @@ class CPAuth(CPgeneric):
 			# add new one time session
 			UMCP_Dispatcher.logintokens.add_session(response.body.get('sessionid'), json[ 'options' ].get('username',''))
 
-			self.set_session_id(response.body.get('sessionid'))
+			self.set_cookie_session_id(response.body.get('sessionid'))
 
 			return ""
 
@@ -702,6 +708,7 @@ class CPAuth(CPgeneric):
 
 class CPRoot(object):
 	@cherrypy.expose
+	@logExceptions
 	def index(self, **kw):
 		"""
 		http://localhost:<ucr:umc/http/port>/
