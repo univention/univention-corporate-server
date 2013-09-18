@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.75-1) unstable; urgency=low
+
+  * Bug #24422: remove username from query string during SSO
+  * Bug #24422: invalidate login token after first use
+  * Bug #24422: refactoring / cleanup
+
+ --
+
 univention-management-console-frontend (3.0.74-1) unstable; urgency=low
 
   * Fix return values in progress support (Bug #25465)
