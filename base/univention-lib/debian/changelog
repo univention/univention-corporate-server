@@ -1,3 +1,9 @@
+univention-lib (3.0.13-2) unstable; urgency=low
+
+  * remove trailing newline in base.sh:create_machine_password (Bug #31281)
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Sep 2013 09:18:24 +0200
+
 univention-lib (3.0.13-1) unstable; urgency=low
 
   * added dependency to pwgen in python-univention-lib (Bug #31281)
