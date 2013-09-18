@@ -49,6 +49,13 @@ ucr unset samba4/ldap/base \
 			samba/share/sysvol \
 			samba4/sysvol/sync/cron
 
+if [ "$kerberos_kdc" = "127.0.0.1" ]; then
+	ucr unset kerberos/kdc
+fi
+
+if [ "$kerberos_kpasswdserver" = "127.0.0.1" ]; then
+	ucr unset kerberos/kpasswdserver
+fi
 
 # Move the old Samba 4 private directory
 var_lib_samba_is_s4 ()

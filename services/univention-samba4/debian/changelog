@@ -1,3 +1,11 @@
+univention-samba4 (3.0.17-1) unstable; urgency=low
+
+  * Unset samba/max/protocol in postrm and unset kerberos/kdc,
+    kerberos/kpasswdserver in 04univention-samba4.uinst if they were
+    unchanged (Bug #32446)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Sep 2013 07:34:37 +0200
+
 univention-samba4 (3.0.16-2) unstable; urgency=low
 
   * Cosmetic fix in unused code branch (Bug #32595)
