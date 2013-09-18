@@ -81,6 +81,13 @@
 				pressed for calling a help dialog.
 				</simpara>
 			</listitem>
+
+			<listitem> 
+			  <simpara>
+				<!-- Umlaute werden in Eingabefeldern nicht akzeptiert. -->
+			  </simpara>
+			</listitem>
+
 			<listitem>
 				<simpara>
 				The next module is called via the <keycap>F12</keycap> function key, while

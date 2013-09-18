@@ -77,6 +77,13 @@
 				Um nähere Informationen zum aktuellen Modul zu erhalten, kann über die Funktionstaste <keycap>F1</keycap> ein Hilfe-Dialog aufgerufen werden.
 				</simpara>
 			</listitem>
+
+			<listitem> 
+			  <simpara>
+				Umlaute werden in Eingabefeldern nicht akzeptiert.
+			  </simpara>
+			</listitem>
+
 			<listitem>
 				<simpara>
 				Das nächste Modul wird über die Funktionstaste <keycap>F12</keycap> aufgerufen,
