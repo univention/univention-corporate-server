@@ -533,6 +533,9 @@ class CPSingleSignOn(CPgeneric):
 		else:
 			self._log('error', 'Unknown SSO token: %r' % kwargs)
 
+		# invalidate login token after first use
+		UMCP_Dispatcher.logintokens.remove_session(login_token.sessionid)
+
 		# Redirect in any case to UMC start page
 		targeturl = '/univention-management-console/'
 
