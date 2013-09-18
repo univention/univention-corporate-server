@@ -1094,7 +1094,7 @@
 		  module of the
 		  &ucsUMC;. To create an additional record, a forward lookup zone must
 		  be entered as the <guimenu>Superordinate</guimenu>
-		  and the <guimenu>Pointer</guimenu> object type selected.
+		  and the <guimenu>Pointer record</guimenu> object type selected.
 		</para>
 		<para>
 		  General information on the operation of the domain management modules

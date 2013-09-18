@@ -906,7 +906,7 @@
 		  Pointer-Records werden im Modul <emphasis>DNS</emphasis> der
 		  &ucsUMC; verwaltet. Um einen weiteren Record anzulegen, muss als
 		  <guimenu>Übergeordnetes Objekt</guimenu> eine Forward Lookup Zone
-		  und der Objekttyp <guimenu>Pointer</guimenu> ausgewählt werden.
+		  und der Objekttyp <guimenu>Pointer Record</guimenu> ausgewählt werden.
 		</para>
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
