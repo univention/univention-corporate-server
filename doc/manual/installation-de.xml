@@ -531,11 +531,11 @@
 		  Ist die Option <guimenu>DHCP</guimenu> aktiviert, wird versucht die IP-Adresse - und je
 		  nach Konfiguration auch Nameserver und/oder Standard-Gateway - über das Dynamic Host
 		  Configuration Protocol (DHCP) zu beziehen und automatisch zu konfigurieren.
-		  Wenn die DHCP-Anfrage fehlschlägt, wird eine zufällige Adresse aus dem 169.254.x.x Netz
+		  Wenn die DHCP-Anfrage fehlschlägt, wird eine zufällige Adresse aus dem Link-Local Netzwerk 169.254.0.0/16
 		  verwendet.
 		</para>
 		<para>
-		  Wenn die Option <guimenu>DHCP</guimenu> nicht aktiviert wurde, muss eine IPv4-Adresse
+		  Wenn die Option <guimenu>DHCP</guimenu> nicht aktiviert wird, muss eine IPv4-Adresse
 		  eingegeben werden, die an die Netzwerkkarte gebunden werden soll. Zusätzlich zur
 		  <guimenu>IP-Adresse</guimenu> muss die <guimenu>Netzmaske</guimenu> angegeben werden. 
 		</para>

@@ -528,13 +528,13 @@
 		If the <guimenu>DHCP</guimenu> option is enabled, an attempt is made to retrieve the IP
 		address and configure it automatically via the Dynamic Host Configuration Protocol (DHCP)
 		(and also the name server and/or standard gateway depending on the DHCP configuration). If
-		the DHCP request fails, a random address from the 169.254.x.x network is used.
+		the DHCP request fails, a random address from the link-local network 169.254.0.0/16 is used.
 	  </para>
 
 	  <para>
-		If the <guimenu>DHCP</guimenu> option was not chosen, the IP address to be bound to the
+		If the <guimenu>DHCP</guimenu> option is not chosen, the IP address to be bound to the
 		network card must be entered. In addition to the <guimenu>IP address</guimenu> the
-		<guimenu>net mask</guimenu> must also be entered. 
+		<guimenu>netmask</guimenu> must also be entered.
 	  </para>
 
 	</section>
