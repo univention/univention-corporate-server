@@ -82,6 +82,51 @@ Zusätzlich werden Meta-Information zu den Backups über den
 		</figure>
 	</section>
 
+	<section id="backup:data">
+	  <title>Umfang der Datensicherung auf einem UCS-System</title>
+	  <para>
+		Wenn ausreichend Sicherungskapazität zur Verfügung steht, ist es empfehlenswert ein System
+		vollständig zu sichern. Allerdings müssen  nicht alle Daten auf einem UCS-System gesichert
+		werden. Die mit UCS mitgelieferten Programmpakete beispielsweise stehen nach einer
+		Neuinstallation ohnehin wieder zur Verfügung.
+	  </para>
+
+	  <para>
+		Die folgenden Informationen geben nur einen Überblick über ein typisches System. Je nach
+		installierter Software können sich Abweichungen ergeben. Dies muss im Einzelfall geprüft
+		werden und sollte mit einem testweisen Restore getestet werden.
+	  </para>
+
+	  <para>
+		Die Verzeichnisse <filename>/dev/</filename>, <filename>/proc/</filename> und <filename>/sys/</filename> enthalten nur
+		Dateien, die vom Kernel automatisch generiert werden, sie brauchen nicht gesichert werden.
+	  </para>
+
+	  <para>
+		Die Verzeichnisse <filename>/home</filename> und <filename>/root</filename> enthalten
+		Benutzerdaten, sie sollten in der Regel immer gesichert werden.
+	  </para>
+
+	  <para>
+		In <filename>/etc/</filename> wird die Konfiguration des UCS-Systems gespeichert. In der
+		Regel sollte es gesichert werden.
+	  </para>
+
+	  <para>
+		Das Verzeichnis <filename>/var</filename> enthält Laufzeitdaten wie etwa die Mails eines
+		Mailservers. Es sollte in der Regel mit gesichert werden.
+	  </para>
+
+	  <para>
+		Die Verzeichnisse <filename>/bin/</filename>, <filename>/boot</filename>,
+		<filename>/lib/</filename>, <filename>/usr/</filename> und <filename>/sbin</filename>
+		enthalten im Normalfall nur Programme/Daten, die durch die UCS-Installation mitgeliefert
+		werden.
+	  </para>
+
+	</section>
+	
+
 	<section id="backup:Installation"><title>Installation</title>
 		<para>
 In dieser Dokumentation wird davon ausgegangen, dass sich der
