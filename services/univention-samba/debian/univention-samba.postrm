@@ -78,6 +78,7 @@ if [ "$1" = "remove" ]; then
 			samba/write_raw \
 			samba/max_xmit \
 			samba/max_open_files \
+			samba/max/protocol \
 			samba/getwd_cache \
 			samba/store_dos_attributes \
 			samba/preserve_case \
@@ -87,7 +88,8 @@ if [ "$1" = "remove" ]; then
 			samba/map_to_guest \
 			samba/netlogon/sync \
 			samba/domain/logons \
-			samba/password/checkscript
+			samba/password/checkscript \
+			windows/wins-support
 
 	test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener crestart
 fi

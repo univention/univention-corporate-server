@@ -1,3 +1,10 @@
+univention-samba (8.0.8-1) unstable; urgency=low
+
+  * Unset samba/max/protocol and windows/wins-support in postrm and
+    samba/domain/security in 74univention-samba.uinst (Bug #32445)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Sep 2013 07:26:41 +0200
+
 univention-samba (8.0.7-1) unstable; urgency=low
 
   * Set samba/max/protocol to SMB2 for new installations and to NT1 for

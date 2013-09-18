@@ -44,7 +44,8 @@ ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 
 ucr unset samba/autostart \
 			samba/user \
-			samba/user/pwdfile
+			samba/user/pwdfile \
+			samba/domain/security
 
 var_lib_samba_is_s4 ()
 {
