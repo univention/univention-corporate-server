@@ -42,6 +42,5 @@ print 'RedirectMatch ^/$ /%s' % baseConfig.get('apache2/startsite', 'ucs-overvie
 
 <Directory /var/www/ucs-overview/>
 	RewriteEngine On
-	RewriteRule ^/ucs-overview/de.html$ /ucs-overview?lang=de [L,R]
-	RewriteRule ^/ucs-overview/en.html$ /ucs-overview?lang=en [L,R]
+	RewriteRule ^(de|en).html$ /ucs-overview?lang=$1 [L,R]
 </Directory>

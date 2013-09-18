@@ -1,3 +1,9 @@
+univention-apache (6.0.4-1) unstable; urgency=low
+
+  * Bug #31700: adjusted apache redirect rule for old overview files
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 18 Sep 2013 11:17:50 +0200
+
 univention-apache (6.0.3-1) unstable; urgency=low
 
   * Bug #31700: fixed favicon and margins for mobile devices
