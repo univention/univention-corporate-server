@@ -41,6 +41,13 @@ eval "$(ucr shell)"
 . /usr/share/univention-lib/ldap.sh
 ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 
+test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
+
+if [ "$connector_s4_listener_dir" = "/var/lib/univention-connector/s4" ]; then
+	find /var/lib/univention-connector/s4 /var/lib/univention-connector/s4/tmp/ \
+				-type f -exec rm -f '{}' \;
+fi
+
 ucr unset connector/s4/autostart \
 	connector/s4/ldap/host \
 	connector/s4/ldap/base \
@@ -56,7 +63,7 @@ ucr unset connector/s4/autostart \
 	connector/s4/ldap/port \
 	connector/debug/function \
 	connector/debug/level \
-	connector/ad/mapping/group/language \
+	connector/s4/mapping/group/language \
 	connector/s4/mapping/syncmode \
 	connector/s4/mapping/sid \
 	connector/s4/mapping/gpo \

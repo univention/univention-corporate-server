@@ -1,3 +1,12 @@
+univention-s4-connector (8.0.15-1) unstable; urgency=low
+
+  * Unset connector/s4/mapping/group/language in unjoin script
+    (Bug #32451)
+  * Remove tmp files in /var/lib/univention-connector/s4 but only if the
+    connector/s4/listener/dir variable is unchanged (Bug #32451)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 18 Sep 2013 12:41:30 +0200
+
 univention-s4-connector (8.0.14-1) unstable; urgency=low
 
   * Active Directory times (at least pwdLastSet) is given in local time.
