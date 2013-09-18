@@ -542,8 +542,10 @@ class CPSingleSignOn(CPgeneric):
 		# copy query string
 		query_args = {}
 		query_args.update(kwargs)
-		if 'loginToken' in query_args:
-			query_args.pop('loginToken')
+		# remove some arguments from query string
+		for remove_arg in ('loginToken', 'username'):
+			if remove_arg in query_args:
+				query_args.pop(remove_arg)
 		if query_args:
 			targeturl += '?%s' % urllib.urlencode(query_args)
 
