@@ -418,6 +418,16 @@ define([
 						return _('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
 					}
 				}),
+				headerFormatter: lang.hitch(this, function(nItems) {
+					if (nItems === undefined) {
+						var msg = _('No %s selected.', this.objectNamePlural);
+						if (['navigation', 'dhcp/dhcp', 'dns/dns'].indexOf(this.moduleFlavor) === -1) {
+							 msg += ' ' + _('Please select some to enable actions!');
+						}
+						return msg;
+					}
+					return nItems === 1 ? _('1 %s: ', this.objectNameSingular) : _('%(nSelected)d %(objPlural)s: ', {nSelected: nItems, objPlural: this.objectNamePlural});
+				}),
 				defaultAction: lang.hitch( this, function( keys, items ) {
 					if ( 'navigation' == this.moduleFlavor && ( this._searchForm._widgets.objectType.get( 'value' ) == '$containers$' || items[ 0 ].$childs$ === true ) ) {
 						this._tree.set( 'path', this._ldapDN2TreePath( keys[ 0 ] ) );
@@ -616,7 +626,7 @@ define([
 				var ModelClass = ('navigation' == this.moduleFlavor) ? TreeModel : TreeModelSuperordinate;
 				var model = new ModelClass({
 					umcpCommand: umcpCmd,
-					ldap_base: tools.ldapDn2Path([], this._ucr['ldap/base'])
+					rootName: _('All %s', this.objectNamePlural)
 				});
 
 				this._tree = new Tree({

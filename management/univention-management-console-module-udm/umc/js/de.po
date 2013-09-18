@@ -951,3 +951,23 @@ msgstr "Benutzer"
 #: umc/js/udm.js:218
 msgid "users"
 msgstr "Benutzer"
+
+#: umc/js/udm.js:625
+msgid "All %s"
+msgstr "Alle %s"
+
+#: umc/js/udm.js:423
+msgid "No %s selected."
+msgstr "Kein %s ausgewählt."
+
+#: umc/js/udm.js:425
+msgid "1 %s: "
+msgstr "1 %s: "
+
+#: umc/js/udm.js:425
+msgid "%(nSelected)d %(objPlural)s: "
+msgstr "%(nSelected)d %(objPlural)s: "
+
+#: umc/js/udm.js:425
+msgid "Please select some to enable actions!"
+msgstr "Bitte auswählen um Aktionen verfügbar zu machen!"
