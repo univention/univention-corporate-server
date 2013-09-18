@@ -823,10 +823,10 @@ slapcat &gt; ldapdaten.txt
 				<emphasis>Administrator</emphasis> den Benutzer-Assistenten an, über den neue
 				Passwörter gesetzt werden können. Während der Installation wird automatisch
 				eine neue Richtlinie <package>default-user-password-admins</package> erstellt,
-				die mit den Mitgliedern der Gruppe <emphasis>User Password Admins</emphasis>
-				bzw. mit einem entsprechenden Container im LDAP-Verzeichnis verknüpft werden
-				kann. Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden sich in Kapitel
-				<xref linkend="delegated-administrationl"/>.
+				die den Mitgliedern der Gruppe <emphasis>User Password Admins</emphasis>
+				zugewiesen ist bzw. mit einem entsprechenden Container im LDAP-Verzeichnis 
+				verknüpft werden kann. Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden
+				sich in Kapitel <xref linkend="delegated-administrationl"/>.
 			</para>
 			<para>
 				Die Richtlinie ermöglicht dabei die Suche nach Benutzern sowie die
