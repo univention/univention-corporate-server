@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-18 18:12+0200\n"
+"POT-Creation-Date: 2013-09-18 18:18+0200\n"
 "PO-Revision-Date: 2012-07-11 17:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
@@ -273,9 +273,9 @@ msgid "Value must be gzip compressed and Base64 encoded: %s"
 msgstr "Der Wert muss gzip-komprimiert und Base64-encoded sein: %s"
 
 #: syntax.py:408
-#, fuzzy, python-format
+#, python-format
 msgid "Value must be bz2 compressed and Base64 encoded: %s"
-msgstr "Der Wert muss gzip-komprimiert und Base64-encoded sein: %s"
+msgstr "Der Wert muss bz2-komprimiert und Base64-codiert sein: %s"
 
 #: syntax.py:437
 msgid "Value must be Base64 encoded jpeg"

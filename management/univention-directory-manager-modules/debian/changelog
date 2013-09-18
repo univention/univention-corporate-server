@@ -1,4 +1,4 @@
-univention-directory-manager-modules (9.0.37-1) unstable; urgency=low
+univention-directory-manager-modules (9.0.37-2) unstable; urgency=low
 
   * Fix translations (Bug #23695)
 
