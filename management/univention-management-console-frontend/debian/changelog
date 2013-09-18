@@ -4,7 +4,7 @@ univention-management-console-frontend (3.0.75-1) unstable; urgency=low
   * Bug #24422: invalidate login token after first use
   * Bug #24422: refactoring / cleanup
 
- --
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 18 Sep 2013 16:43:18 +0200
 
 univention-management-console-frontend (3.0.74-1) unstable; urgency=low
 
