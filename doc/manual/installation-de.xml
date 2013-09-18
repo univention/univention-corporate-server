@@ -314,8 +314,7 @@
 		Die Basis-DN muss mit <emphasis>cn=</emphasis>, <emphasis>dc=</emphasis>, <emphasis>c=</emphasis>, <emphasis>l=</emphasis> oder <emphasis>o=</emphasis> beginnen.
 		Basis-DNs, die diese Konventionen verletzen, werden abgewiesen. Der Name der
 		Windows-Domäne darf maximal 13 Zeichen lang sein und nur aus Buchstaben, Zahlen
-		und Bindestrichen bestehen. Das Eingabefeld <guimenu>LDAP-Basis</guimenu> erscheint nur bei der
-		Systemrolle &ucsMaster;.
+		und Bindestrichen bestehen.
 	</para>
 	<para>
 		Unter <guimenu>Root-Passwort</guimenu> wird das Passwort für den Benutzer <emphasis>root</emphasis> eingetragen.
