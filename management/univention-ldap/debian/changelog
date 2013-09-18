@@ -1,3 +1,10 @@
+univention-ldap (10.0.10-32) unstable; urgency=low
+
+  * The ldap_extension listener should not perform udm modify
+    operations on server/role != dc_master (Bug #32411).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 18 Sep 2013 13:51:14 +0200
+
 univention-ldap (10.0.10-31) unstable; urgency=low
 
   * univention-ldap-server now depends on python-univention-lib

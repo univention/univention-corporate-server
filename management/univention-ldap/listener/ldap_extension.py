@@ -66,12 +66,12 @@ def postrun():
 	global schema_handler, acl_handler
 
 	if not listener.configRegistry.get('server/role') == 'domaincontroller_master':
-		if acl_handler._todo_list:
-			## Only set active flag on Master
-			acl_handler._todo_list = []
-		else:
-			## Only restart slapd on Master
+		if not acl_handler._todo_list:
+			## In case of schema changes only restart slapd on Master
 			return
+		## Only set active flags on Master
+		schema_handler._todo_list = []
+		acl_handler._todo_list = []
 
 	initscript='/etc/init.d/slapd'
 	if os.path.exists(initscript):
