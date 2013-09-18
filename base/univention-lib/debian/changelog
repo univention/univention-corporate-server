@@ -1,3 +1,9 @@
+univention-lib (3.0.13-1) unstable; urgency=low
+
+  * added dependency to pwgen in python-univention-lib (Bug #31281)
+
+ -- Felix Botner <botner@univention.de>  Wed, 18 Sep 2013 08:58:29 +0200
+
 univention-lib (3.0.12-7) unstable; urgency=low
 
   * Restore original ucs_registerLDAPSchema again, it's used by
