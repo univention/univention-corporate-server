@@ -93,7 +93,7 @@ def verify_script(script, signature):
 	keys += [os.path.join(apt, key) for key in os.listdir(apt) if key.endswith('.gpg')]
 
 	# build command line
-	cmd = ["/usr/bin/gpgv2"]
+	cmd = ["/usr/bin/gpgv"]
 	for key in keys:
 			cmd += ["--keyring", key]
 	cmd += [sig_name, "-"]
