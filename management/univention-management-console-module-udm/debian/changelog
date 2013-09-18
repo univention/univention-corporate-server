@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.24-1) unstable; urgency=low
+
+  * Bug #32381: fix error
+
+ -- Florian Best <best@univention.de>  Wed, 18 Sep 2013 15:21:25 +0200
+
 univention-management-console-module-udm (4.0.23-1) unstable; urgency=low
 
   * Fix tree update in non navigation (Bug #25465)

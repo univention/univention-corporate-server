@@ -647,7 +647,7 @@ define([
 						this._setSuperordinateAndFilter(newVal[newVal.length-1].id);
 					}
 					if (!this._reloadingPath) {
-						this.filter();
+						this._searchForm.ready().then(lang.hitch(this, 'filter'));
 					} else if (this._reloadingPath == this._path2str(this._tree.get('path'))) {
 						// tree has been reloaded to its last position
 						this._reloadingPath = '';
