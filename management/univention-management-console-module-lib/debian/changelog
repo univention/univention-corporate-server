@@ -1,3 +1,9 @@
+univention-management-console-module-lib (3.0.6-2) unstable; urgency=low
+
+  * Bug #24422: create human readable error messages
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 18 Sep 2013 17:11:18 +0200
+
 univention-management-console-module-lib (3.0.6-1) unstable; urgency=low
 
   * Bug #24422: create human readable error messages

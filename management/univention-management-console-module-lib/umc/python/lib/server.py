@@ -59,9 +59,7 @@ def convertExceptionToString(ex):
 	Exceptions like urllib2.URLError may contain a string or another exception as arguments.
 	Try to create a user readable string of it.
 	"""
-	if not ex.args:
-		return ''
-	if isinstance(ex.args[0], socket.error):
+	if hasattr(ex, 'args') and ex.args and isinstance(ex.args[0], socket.error):
 		return '%s (errno: %s)' % (ex.args[0][1], ex.args[0][0])
 	return str(ex)
 
@@ -187,8 +185,8 @@ class Server(object):
 			response = opener.open(urllib2.Request(url, body, {'Content-Type': 'application/json', 'User-Agent': 'UMC 2'}))
 			MODULE.process('Got response ...')
 		except (urllib2.HTTPError, urllib2.URLError), ex:
-			MODULE.error('sso_getsession: unable to connect to %r: %s' % (host, convertExceptionToString(ex),))
-			self.finished( request.id, result, success=False, message=_('unable to connect to %r: %s') % (host, ex), status=503)
+			MODULE.error('sso_getsession: unable to connect to %r: %r' % (host, ex))
+			self.finished( request.id, result, success=False, message=_('unable to connect to %r: %s') % (host, convertExceptionToString(ex),), status=503)
 			return
 		except univention.lib.urllib2_ssl.CertificateError, ex:
 			MODULE.error('sso_getsession: certificate error when connecting to %r: %s' % (host, ex))
