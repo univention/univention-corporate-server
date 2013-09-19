@@ -1,3 +1,9 @@
+univention-firewall (6.0.1-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 19 Sep 2013 10:12:13 +0200
+
 univention-firewall (6.0.1-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition
