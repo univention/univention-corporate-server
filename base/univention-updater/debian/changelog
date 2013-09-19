@@ -1,3 +1,9 @@
+univention-updater (9.0.15-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 19 Sep 2013 10:28:19 +0200
+
 univention-updater (9.0.15-1) unstable; urgency=low
 
   * Verify script signature using gpgv instead of gpgv2 (Bug #28045)
