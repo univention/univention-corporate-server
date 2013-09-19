@@ -5,8 +5,8 @@ Type=str
 Categories=system-ssl
 
 [ssl/country]
-Description[de]=Der zweistellige ISO-Ländercode der Organisation, für die das Zertifikat ausgestellt wurde. Eine vollständige Liste findet sich unter http://en.wikipedia.org/wiki/ISO_3166-1
-Description[en]=The two letter country code of the organisation for which the certificate was issued. A complete list can be found at http://en.wikipedia.org/wiki/ISO_3166-1
+Description[de]=Der zweistellige ISO-Ländercode der Organisation, für die das Zertifikat ausgestellt wurde. Eine vollständige Liste findet sich unter <http://en.wikipedia.org/wiki/ISO_3166-1>.
+Description[en]=The two letter country code of the organisation for which the certificate was issued. A complete list can be found at <http://en.wikipedia.org/wiki/ISO_3166-1>.
 Type=str
 Categories=system-ssl
 
@@ -47,14 +47,14 @@ Type=int
 Categories=system-ssl
 
 [ssl/default/hashfunction]
-Description[de]=Diese Hash-Funktion (Message Digest) wird in neu ausgestellten SSL-Zertifikaten verwendet.
-Description[en]=This hash function (message digest) is used in newly created SSL certificates.
+Description[de]=Diese Hash-Funktion (Message Digest) wird in neu ausgestellten SSL-Zertifikaten verwendet: 'md5', 'sha1', ...
+Description[en]=This hash function (message digest) is used in newly created SSL certificates: 'md5', 'sha1', ...
 Type=str
 Categories=system-ssl
 
 [ssl/validity/check]
 Description[de]=Ist diese Option aktiviert, wird durch einen täglichen Cron-Job die Gültigkeit der SSL-Zertifikate geprüft.
-Description[en]=If this option is activated, the validity of the SSL certificates is checked through a daily Cron job.
+Description[en]=If this option is activated, the validity of the SSL certificates is checked through a daily cron job.
 Type=bool
 Categories=system-ssl
 

@@ -15,4 +15,3 @@ Description[de]=Die im UCS-Managementsystem definierten Quota-Einstellungen werd
 Description[en]=The quota settings defined in the UCS management system are evaluated and enabled during login to UCS systems by the tool univention-user-quota run in the PAM stack. If this variable is set to 'no', this evaluation is deactivated.
 Type=str
 Categories=system-base
-

@@ -1,19 +1,19 @@
 [proxy/http]
-Description[de]=Der zu verwendende HTTP-Proxyserver, z.B. http://192.168.1.100:3128. Wenn der Proxy eine Authenzifizierung erfordert, kann ein Benutzername und ein Passwort im Format http://benutzername:passwort@192.168.1.100:3128 angegeben werden.
-Description[en]=The HTTP proxy server, e.g.http://192.168.1.100:3128. If the proxy requires authentication, the username and the password can be provided in the format http://username:password@192.168.1.100:3128.
+Description[de]=Der zu verwendende HTTP-Proxyserver, z.B. <http://192.168.1.100:3128>. Wenn der Proxy eine Authenzifizierung erfordert, kann ein Benutzername und ein Passwort im Format <http://benutzername:passwort@192.168.1.100:3128> angegeben werden.
+Description[en]=The HTTP proxy server, e.g. <http://192.168.1.100:3128>. If the proxy requires authentication, the username and the password can be provided in the format <http://username:password@192.168.1.100:3128>.
 Type=str
 Categories=system-network
 
 [proxy/no_proxy]
-Description[de]=Eine kommaseparierte Liste von Domänennamen, für die der Proxy nicht verwendet werden soll. Eine Ausnahme für eine Domäne wie univention.de wirkt sich auch auf eine Unterdomäne wie apt.univention.de aus.
+Description[de]=Eine Komma-separierte Liste von Domänennamen, für die der Proxy nicht verwendet werden soll. Eine Ausnahme für eine Domäne wie univention.de wirkt sich auch auf eine Unterdomäne wie apt.univention.de aus.
 Description[en]=A comma-separated list of domain names for which the proxy should not be consulted. An exception for a domain like univention.de also applies to a subdomain like apt.univention.de.
 Type=str
 Categories=system-network
 
 [umask]
-Description[de]=Die Umask legt fest, mit welchen Berechtigungen Dateien standardmässig angelegt werden (sofern keine abweichenden Rechte gesetzt wurden). Die Berechtigungen werden als oktale Bitmaske übergeben (das Format der Bitmaske ist identisch zu dem vom chown (das mit 'man chown' auf einer Shell abgerufen werden)). Änderungen an der Umask sollten sorgfältig geprüft werden, eine zu laxe Umask kann zu Sicherheitsproblemen führen.
-Description[en]=The umask configures the file permissions, with which files are created by default (unless other permissions are given). The permissions are configured as an octal bitmask (the format is identical to the chown command documented in 'man chown'). Changes to the umask should be tested carefully, since a too permissive umask may lead to security problems.
-Type=int
+Description[de]=Die umask legt fest, mit welchen Berechtigungen Dateien standardmässig angelegt werden (sofern keine abweichenden Rechte gesetzt wurden). Die Berechtigungen werden als oktale Bitmaske oder im symbolischen Formt übergeben (das Format der Bitmaske ist identisch zu dem vom chmod, siehe 'man chmod'). Änderungen an der umask sollten sorgfältig geprüft werden, eine zu laxe umask kann zu Sicherheitsproblemen führen.
+Description[en]=The umask configures the file permissions, with which files are created by default (unless other permissions are given). The permissions are configured as an octal bitmask or using the symbolic format (the format is identical to the chmod command documented in 'man chmod'). Changes to the umask should be tested carefully, since a too permissive umask may lead to security problems.
+Type=str
 Categories=system-base
 
 [sshd/autostart]
@@ -71,14 +71,14 @@ Type=str
 Categories=service-ssh
 
 [sshd/motd]
-Description[de]=Mit dieser Variable kann konfiguriert werden, ob  beim SSH-Login ein Hinweis auf das UCS-Managementsystem angezeigt wird. Ist die Variable nicht gesetzt, wird der Hinweis angezeigt.
+Description[de]=Mit dieser Variable kann konfiguriert werden, ob beim SSH-Login ein Hinweis auf das UCS-Managementsystem angezeigt wird. Ist die Variable nicht gesetzt, wird der Hinweis angezeigt.
 Description[en]=This variable configures, whether a hint towards the UCS management system is displayed during SSH login. If the variable is not set, the hint is shown.
 Type=bool
 Categories=service-ssh
 
 [domainname]
 Description[de]=Der Name der DNS-Domäne des Systems. Dieser Domänenname muss nicht mit dem externen DNS-Domänenname (etwa der Webpräsenz) übereinstimmen.
-Description[en]=The name of the system's DNS domain. This domain name does not need to match the externally used DNS domain name (e.g. of the web site)
+Description[en]=The name of the system's DNS domain. This domain name does not need to match the externally used DNS domain name (e.g. of the web site).
 Type=str
 Categories=system-network
 ReadOnly=yes
@@ -103,8 +103,8 @@ Type=str
 Categories=system-network
 
 [ipv6/gateway]
-Description[de]=Die IPv6-Adresse des Standard-Gateways. Für IPv6 ist die Angabe eines Gateways bei statischer Konfiguration erforderlich; bei dynamischer Konfiguration ist diese optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten. 
-Description[en]=The IPv6 address of the standard gateway. For IPv6, a gateway must be entered in the static configuration; for the dynamic configuration, it is optional, but recommended. A gateway configured here has preference over router advertisements, which might otherwise be able to change the route. 
+Description[de]=Die IPv6-Adresse des Standard-Gateways. Für IPv6 ist die Angabe eines Gateways bei statischer Konfiguration erforderlich; bei dynamischer Konfiguration ist diese optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten.
+Description[en]=The IPv6 address of the standard gateway. For IPv6, a gateway must be entered in the static configuration; for the dynamic configuration, it is optional, but recommended. A gateway configured here has preference over router advertisements, which might otherwise be able to change the route.
 Categories=system-network
 
 [hostname]
@@ -134,7 +134,7 @@ Categories=system-network
 
 [interfaces/.*/netmask]
 Description[de]=Eine Variable in der Form interfaces/INTERFACE/netmask konfiguriert die Netzmaske der Netzwerkschnittstelle.
-Description[en]=A variable in the form interfaces/INTERFACE/netmasl configures the netmask the network interface.
+Description[en]=A variable in the form interfaces/INTERFACE/netmask configures the netmask of the network interface.
 Type=str
 Categories=system-network
 
@@ -157,20 +157,20 @@ Type=str
 Categories=system-network
 
 [interfaces/.*/type]
-Description[de]=Zwei Arten der IP-Zuweisung sind möglich: 'static' legt die Netzkonfiguration anhand weiterer Variablen fest (z.B. 'interfaces/eth0/address'). 'dhcp' konfiguriert eine dynamische Zuweisung über DHCP.
-Description[en]=Two types of IP assignment are possible: 'static' configures the interface according to the values configured in additional variables (e.g. 'interfaces/eth0/address'). 'dhcp' configures dynamic assignment over DHCP.
+Description[de]=Legt die Art der IP-Zuweisung fest: 'static' legt die Netzkonfiguration anhand weiterer Variablen fest (z.B. 'interfaces/eth0/address'). 'dhcp' konfiguriert eine dynamische Zuweisung über DHCP. 'manual' erfordert eine manuelle Konfiguration.
+Description[en]=Defines the type of IP assignment: 'static' configures the interface according to the values configured in additional variables (e.g. 'interfaces/eth0/address'). 'dhcp' configures dynamic assignment over DHCP. 'manual' required manual configuration.
 Type=str
 Categories=system-network
 
 [interfaces/.*/route/.*]
-Description[de]=Eine Variable in der Form interfaces/INTERFACE/route/ROUTE erlaubt die Konfiguration zusätzlicher Routen pro Netwerkschnittstelle.
-Description[en]=A variable in the form interfaces/INTERFACE/route/ROUTE allows the configuration of additional routes per network interface.
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/route/INDEX erlaubt die Konfiguration zusätzlicher Routen pro Netwerkschnittstelle. Der Wert muß das Format 'host a.b.c.d' oder 'net a.b.0.0 netmask 255.255.0.0' haben (see 'man 8 route').
+Description[en]=A variable in the form interfaces/INTERFACE/route/INDEX allows the configuration of additional routes per network interface. The value must be formatted like 'host a.b.c.d' or 'net a.b.0.0 netmask 255.255.0.0' (see 'man 8 route').
 Type=str
 Categories=system-network
 
 [interfaces/.*/options/.*]
-Description[de]=Eine Variable in der Form interfaces/INTERFACE/route/ROUTE erlaubt die Konfiguration zusätzlicher Optionen pro Netwerkschnittstelle (siehe die Manpage 'man 5 interfaces').
-Description[en]=A variable in the form interfaces/INTERFACE/route/ROUTE allows the configuration of additional options per network interface (see the manpage 'man 5 interfaces').
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/options/INDEX erlaubt die Konfiguration zusätzlicher Optionen pro Netwerkschnittstelle (siehe 'man 5 interfaces').
+Description[en]=A variable in the form interfaces/INTERFACE/options/INDEX allows the configuration of additional options per network interface (see 'man 5 interfaces').
 Type=str
 Categories=system-network
 
@@ -181,8 +181,8 @@ Type=str
 Categories=system-network
 
 [interfaces/.*/ipv6/.*/prefix]
-Description[de]=Eine Variable in der Form interfaces/INTERFACE/ipv6/IDENTIFIER/prefix konfiguriert den IPv6-Präfix der Netzschnittstelle (CIDR-Notation). Für eine dynamische Vergabe über SLAAC siehe 'interfaces/eth0/ipv6/acceptRA', bei Verwendung von SLAAC wird kein Präfix angegeben.
-Description[en]=A variable in the form interfaces/INTERFACE/ipv6/IDENTIFIER/prefix configures the IPv6 prefix of the network interface (CIDR notation). For a dynamic assignment using SLAAC, see 'interfaces/eth0/ipv6/acceptRA'. If SLAAC is used, no prefix is specified.
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/ipv6/IDENTIFIER/prefix konfiguriert die IPv6-Präfixlänge der Netzschnittstelle (CIDR-Notation). Für eine dynamische Vergabe über SLAAC siehe 'interfaces/eth0/ipv6/acceptRA', bei Verwendung von SLAAC wird kein Präfix angegeben.
+Description[en]=A variable in the form interfaces/INTERFACE/ipv6/IDENTIFIER/prefix configures the IPv6 prefix length of the network interface (CIDR notation). For a dynamic assignment using SLAAC, see 'interfaces/eth0/ipv6/acceptRA'. If SLAAC is used, no prefix is specified.
 Type=int
 Categories=system-network
 
@@ -199,8 +199,8 @@ Type=bool
 Categories=system-network
 
 [interfaces/handler]
-Description[de]=Konfiguriert das Programm zur Verwaltung der Netzwerkverbindungen: 'ifplugd' oder 'networkmanager'
-Description[en]=Defines the program to manage network connections: 'ifplugd' or 'networkmanager'
+Description[de]=Konfiguriert das Programm zur Verwaltung der Netzwerkverbindungen: 'ifplugd' oder 'networkmanager'.
+Description[en]=Defines the program to manage network connections: 'ifplugd' or 'networkmanager'.
 Type=str
 Categories=system-network
 
@@ -211,20 +211,20 @@ Type=str
 Categories=system-network
 
 [hosts/static/.*]
-Description[de]=Mit Variablen nach dem Schema hosts/static/IPADRESSE=RECHNERNAME können Einträge zur /etc/hosts hinzugefügt werden. Beispiel: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'
-Description[en]=With variables following the scheme hosts/static/IPADDRESS=HOSTNAME entries can be added to /etc/hosts. Example: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'
+Description[de]=Mit Variablen nach dem Schema hosts/static/IPADRESSE=RECHNERNAME können Einträge zur /etc/hosts hinzugefügt werden. Beispiel: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'.
+Description[en]=With variables following the scheme hosts/static/IPADDRESS=HOSTNAME entries can be added to /etc/hosts. Example: 'hosts/static/192.168.0.100=w2k8-32.ad.example.com'.
 Type=str
 Categories=system-base
 
 [kernel/modules]
-Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. Mit dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrere Einträge müssen durch ein Semikolon getrennt werden.
-Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows the loading of modules, which couldn't/cannot be automatically detected. If multiple modules are needed, they must be separated by a semicolon.
+Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. Mit dieser Variable können Module geladen werden, die nicht automatisch erkannt wurden oder erkannt werden können. Mehrere Einträge müssen durch Semikolon getrennt werden.
+Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows the loading of modules, which couldn't/cannot be automatically detected. If multiple modules are needed, they must be separated by semicolon.
 Type=str
 Categories=system-kernel
 
 [kernel/blacklist]
-Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module aufgeführt werden, die nicht geladen werden sollen. Mehrere Einträge müssen durch ein Semikolon getrennt werden.
-Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows a selection of modules which should not be loaded. If multiple modules are needed, they must be separated by a semicolon.
+Description[de]=Die zu verwendenden Treiber (Kernel-Module) werden automatisch erkannt und geladen. In dieser Variable können Module aufgeführt werden, die nicht geladen werden sollen. Mehrere Einträge müssen durch Semikolon getrennt werden.
+Description[en]=The required drivers (kernel modules) are automatically detected and loaded. This variable allows a selection of modules which should not be loaded. If multiple modules are needed, they must be separated by semicolon.
 Type=str
 Categories=system-kernel
 
@@ -235,44 +235,44 @@ Type=str
 Categories=system-kernel
 
 [kernel/fs/inotify/max_user_instances]
-Description[de]=Die Obergrenze an Dateien, die durch den Inotify-Dienst pro Benutzer-ID überwacht werden können.
-Description[en]=Th upper limit of files which can be watched by the Inotify service per user ID.
+Description[de]=Die Obergrenze an Inotify-Diensten pro Benutzer-ID.
+Description[en]=The upper limit of Inotify services per user ID.
 Type=int
 Categories=system-kernel
 
 [kernel/fs/inotify/max_user_watches]
-Description[de]=Dies spezifiziert die Obergrenze an Dateien, die durch den Inotify-Dienst überwacht werden können.
-Description[en]=The upper limit of files which can be watched by the Inotify service.
+Description[de]=Die Obergrenze an Dateien pro Benutzer-ID, die durch den Inotify-Dienst überwacht werden können.
+Description[en]=The upper limit of files per user which can be watched by the Inotify service.
 Type=int
 Categories=system-kernel
 
 [kernel/fs/inotify/max_queued_events]
 Description[de]=Die Obergrenze für die Anzahl von vorgehaltenen Events pro Inotify-Instanz.
-Description[en]=The uppper limit of queued events per Inotify instance.
+Description[en]=The upper limit of queued events per Inotify instance.
 Type=int
 Categories=system-kernel
 
 [ldap/backup]
-Description[de]=Der/die Domänencontroller Backup-Systeme der Domäne. Mehrfache Einträge müssen mit einem Leerzeichen getrennt werden.
-Description[en]=The backup domain controller system(s) in the domain. Multiple entries need to be separated with a blank.
+Description[de]=Der/die Domänencontroller Backup-Systeme der Domäne. Mehrfache Einträge müssen mit Leerzeichen getrennt werden.
+Description[en]=The backup domain controller system(s) in the domain. Multiple entries need to be separated by blanks.
 Type=str
 Categories=service-ldap
 
 [ldap/master]
 Description[de]=Das Domänencontroller Master System der Domäne.
-Description[en]=The UCS master system of the domain.
+Description[en]=The master domain controller of the domain.
 Type=str
 Categories=service-ldap
 
 [ldap/server/name]
-Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit dieser Variable festgelegt. Weitere Server können über 'ldap/server/addition' angegeben werden. 
-Description[en]=Several LDAP servers can be operated in a UCS domain. The primary one used is specified with this variable, further servers can be specified via 'ldap/server/addition'. 
+Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit dieser Variable festgelegt. Weitere Server können über 'ldap/server/addition' angegeben werden.
+Description[en]=Several LDAP servers can be operated in a UCS domain. The primary one is specified with this variable. Further servers can be specified via 'ldap/server/addition'.
 Type=str
 Categories=service-ldap
 
 [ldap/server/addition]
-Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit 'ldap/server/name' festgelegt, weitere Server können über diese Variable angegeben werden. 
-Description[en]= Several LDAP servers can be operated in a UCS domain. The primary one used is specified with 'ldap/server/name'. Further servers can be specified via this variable.
+Description[de]=In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete wird mit 'ldap/server/name' festgelegt, weitere Server können über diese Variable angegeben werden.
+Description[en]=Several LDAP servers can be operated in a UCS domain. The primary one is specified with 'ldap/server/name'. Further servers can be specified via this variable.
 Type=str
 Categories=service-ldap
 
@@ -346,7 +346,7 @@ Categories=system-base
 
 [logrotate/missingok]
 Description[de]=Ist diese Option aktiviert, wird beim Fehlen einer Logdatei die Verarbeitung ohne Ausgabe einer Fehlermeldung fortgesetzt.
-Description[en]=If this option is activated, proceed without printint an error message if a logfile is missing.
+Description[en]=If this option is activated, proceed without printing an error message if a logfile is missing.
 Type=bool
 Categories=system-base
 
@@ -375,8 +375,8 @@ Type=str
 Categories=system-network
 
 [nameserver/option/timeout]
-Description[de]=Diese Variable konfiguriert die maximale Wartezeit für eine DNS-Anfrage. Nach Ablauf der Zeit wird der nächste DNS-Server abgefragt.
-Description[en]=This variable configures the maximum waiting time for DNS request. Once elapsed the next DNS server is queried.
+Description[de]=Diese Variable konfiguriert die maximale Wartezeit in Sekunden für eine DNS-Anfrage. Nach Ablauf der Zeit wird der nächste DNS-Server abgefragt.
+Description[en]=This variable configures the maximum waiting time in seconds for a DNS request. Once elapsed the next DNS server is queried.
 Type=int
 Categories=system-network
 
@@ -437,7 +437,7 @@ Categories=system-base
 
 [ucr/backup/enabled]
 Description[de]=Ist diese Option aktiviert, wird durch einen Cronjob täglich eine Sicherung der Univention Configuration Registry-Daten nach /var/univention-backup/ucr-backup_*.tgz durchgeführt. Ist die Variable nicht gesetzt, erfolgt keine Sicherung.
-Description[en]=If this option is activated, a daily Cron job performs a backup of all Univention Configuration Registry data tor /var/univention-backup/ucr-backup_*.tgz. If the variable is unset, no backup occurs.
+Description[en]=If this option is activated, a daily cron job performs a backup of all Univention Configuration Registry data tor /var/univention-backup/ucr-backup_*.tgz. If the variable is unset, no backup is performed.
 Type=bool
 Categories=system-base
 
@@ -477,7 +477,7 @@ ReadOnly=yes
 
 [cron/*/time]
 Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Diese Variable setzt die Ausführungszeit in Cron-Syntax, siehe 'man 5 crontab'
-Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable specifies the execution time in Cron syntax, see 'man 5 crontab'.
+Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each Cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable specifies the execution time in Cron syntax, see 'man 5 crontab'.
 Type=str
 Categories=system-base
 
@@ -495,19 +495,19 @@ Categories=system-base
 
 [cron/*/mailto]
 Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Wird hier eine Email-Adresse hinterlegt, wird die Ausgabe des Cron-Jobs per Email dorthin gesendet.
-Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. If an e-mail address is specified here, the output of the Cron job is sent there per e-mail.
+Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. If an e-mail address is specified here, the output of the cron job is sent there per e-mail.
 Type=str
 Categories=system-base
 
 [cron/*/description]
 Description[de]=Cron-Jobs können in Univention Configuration Registry definiert werden. Jeder Cron-Job setzt sich dabei aus mehreren Variablen zusammen. Es müssen min. die Variablen 'cron/JOBNAME/command' und 'cron/JOBNAME/time' gesetzt werden. Mit dieser Variable kann eine Beschreibung hinterlegt werden. 
-Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable can be used to provide a description. 
+Description[en]=Cron jobs can be defined in Univention Configuration Registry. Each cron job is composed of various variables. At least the variables 'cron/JOBNAME/command' and 'cron/JOBNAME/time' must be set. This variable can be used to provide a description.
 Type=str
 Categories=system-base
 
 [cron/path]
-Description[de]=Mit dieser Variable kann die PATH-Umgebungsvariable für die in UCR definierten Cron-Job (siehe 'cron/JOBNAME/*') gesetzt werden. Ist die Variable nicht gesetzt, gilt '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin'
-Description[en]=This variable allows the configuration of the PATH environment variable for Cron jobs defined in UCR (see 'cron/JOBNAME/*'). If the variable is unset, '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin' applies.
+Description[de]=Mit dieser Variable kann die PATH-Umgebungsvariable für die in UCR definierten Cron-Job (siehe 'cron/JOBNAME/*') gesetzt werden. Ist die Variable nicht gesetzt, gilt '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin'.
+Description[en]=This variable allows the configuration of the PATH environment variable for cron jobs defined in UCR (see 'cron/JOBNAME/*'). If the variable is unset, '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/opt/scalix/bin' applies.
 Type=str
 Categories=system-base
 
@@ -542,8 +542,8 @@ Type=str
 Categories=system-password
 
 [password/quality/required/chars]
-Description[de]=Ist die Option 'Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Die hier angegebenen Zeichen/Ziffern müssen im neuen Passwort enthalten sein.
-Description[en]=If the option 'Password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. The characters/digits need to be present in the new password.
+Description[de]=Ist die Option 'Passwort-Qualitätsprüfung' für einen Benutzer aktiviert, werden für Passwortänderungen in Samba, Univention Management Console und Kerberos zusätzliche Prüfungen vorgenommen, die auch eine Wörterbuchprüfung beinhalten. Alle hier angegebenen Zeichen/Ziffern müssen im neuen Passwort enthalten sein.
+Description[en]=If the option 'Password quality check' is activated for a user, additional checks - including dictionary checks - are performed for password changes in Samba, Univention Management Console and Kerberos. All given characters/digits need to be present in the new password.
 Type=str
 Categories=system-password
 
@@ -578,14 +578,14 @@ Type=str
 Categories=system-base
 
 [update/secure_apt]
-Description[de]=Der Zugriff auf das Univention Online-Repository wird durch Verwendung von Secure Apt über Signaturen kryptografisch gesichert. Ist diese Option aktiviert, sind Updates und Softwareinstallationen nur möglich wenn alle eingebundenen Repositorys gültige Signaturen bereitstellen.
+Description[de]=Der Zugriff auf das Univention Online-Repository wird durch Verwendung von Secure Apt über Signaturen kryptographisch gesichert. Ist diese Option aktiviert, sind Updates und Softwareinstallationen nur möglich wenn alle eingebundenen Repositorys gültige Signaturen bereitstellen.
 Description[en]=Access to the Univention online repository is cryptographically secured via the use of Secure Apt employing signatures. If this option is activated, updates and installations are only possible if all enabled repositories provide valid signatures.
 Type=bool
 Categories=service-software-management
 
 [cron/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des Cron-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
-Description[en]=This variable configures the start mode of the Cron service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Description[en]=This variable configures the start mode of the Cron service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, it can be enabled manually at a later point.
 Type=str
 Categories=service-base
 

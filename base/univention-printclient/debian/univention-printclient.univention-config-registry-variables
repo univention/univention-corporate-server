@@ -1,5 +1,5 @@
 [cups/server]
-Description[de]=Mit dem hier angegebenen CUPS-Druckserver werden Druckaufträge auf diesen System verarbeitet. Dieser Wert wird von der Richtlinie 'Druckserver' überschrieben und sollte daher in der Univention Management Console gesetzt werden.
-Description[en]=Print jobs on this system are processed with the CUPS print server specified here. The value is overwritten by the 'Print server' policy and should thus be configured through the Univention Management Console.
+Description[de]=An den hier angegebenen CUPS-Druckserver werden Druckaufträge von diesen System weitergereicht. Dieser Wert wird von der Richtlinie 'Druckserver' überschrieben und sollte daher in der Univention Management Console gesetzt werden.
+Description[en]=Print jobs from this system are forwarded to the CUPS print server specified here. The value is overwritten by the 'Print server' policy and should thus be configured through the Univention Management Console.
 Type=str
 Categories=service-cups

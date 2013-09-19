@@ -23,8 +23,8 @@ Type=bool
 Categories=system-base
 
 [dhclient/options/ddns/zone]
-Description[de]=Ist DDNS aktiviert (siehe 'dhclient/options/ddns'), kann mit dieser Variable die DNS-Forward-Zone konfiguriert werden, für die DDNS angefragt werden soll.
-Description[en]=If DDNS has been activated (see 'dhclient/options/ddns'), this variable allows to configure the DNS forward zone for which DDNS should be requested.
+Description[de]=Ist DDNS aktiviert (siehe 'dhclient/options/ddns'), kann mit dieser Variable die DNS-Forward-Zone konfiguriert werden, die für DDNS verwendet werden soll.
+Description[en]=If DDNS has been activated (see 'dhclient/options/ddns'), this variable allows to configure the DNS forward zone to use with DDNS.
 Type=str
 Categories=system-base
 
@@ -36,6 +36,6 @@ Categories=system-base
 
 [nameserver/external]
 Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird der/die per DHCP bezogene DNS-Server als 'dns/forwarderX' verwendet.
-Description[en]=If this option is activated or the variable unset, the nameserver(s) assigned via DHCP is used as 'dns/forwarderX'.
+Description[en]=If this option is activated or the variable unset, the nameserver(s) retrieved via DHCP is/are used as 'dns/forwarderX'.
 Type=bool
 Categories=system-base

@@ -59,7 +59,7 @@ Type=int
 Categories=system-base
 
 [nscd/.*/negative_time_to_live]
-Description[de]=Auch NSS-Fragen ohne Ergebnis werden im Cache vorgehalten (der gesuchte Eintrag wird dann als nicht existierend vermerkt). Diese Variable legt fest, wieviele Sekunden vergangen sein müssen, bis nach einem nicht gefundenen Eintrag erneut gesucht wird.
+Description[de]=Auch NSS-Fragen ohne Ergebnis werden im Cache vorgehalten (der gesuchte Eintrag wird dann als nicht existierend vermerkt). Diese Variable legt fest, wie viele Sekunden vergangen sein müssen, bis nach einem nicht gefundenen Eintrag erneut gesucht wird.
 Description[en]=NSS requests without a search result are caches as well (the entry, which was searched is marked as non-existant). This variable configures how many seconds need to have passed until the entry can be searched again.
 Type=int
 Categories=system-base
@@ -83,13 +83,13 @@ Type=int
 Categories=system-base
 
 [nscd/.*/persistent]
-Description[de]=Konfiguriert, ob die Cache-Daten bei einem NSCD-Neustart erhalten bleiben sollen. Dies ist nötig, wenn nscd/restart aktiviert wurde. Mögliche Werte: (yes/no)
-Description[en]=Configures, whether the NSCD cache data of the should be retained across NSCD restarts. This is needed, if nscd/restart is activated. Possible values: (yes/no)
+Description[de]=Konfiguriert, ob die Cache-Daten bei einem NSCD-Neustart erhalten bleiben sollen. Dies ist nötig, wenn nscd/restart aktiviert wurde. Mögliche Werte: (yes/no).
+Description[en]=Configures, whether the NSCD cache data of the should be retained across NSCD restarts. This is needed, if nscd/restart is activated. Possible values: (yes/no).
 Type=bool
 Categories=system-base
 
 [nscd/restart]
-Description[de]=Wenn diese Variable aktiviert ist (mögliche Werte: yes/no) startet sich der NSCD in festen Intervallen neu (konfigurierbar mit der Variable nscd/restart/interval. Diese Option kann eingesetzt werden, wenn Speicherlecks auftreten.
+Description[de]=Wenn diese Variable aktiviert ist (mögliche Werte: yes/no) startet sich der NSCD in festen Intervallen neu (konfigurierbar mit der Variable nscd/restart/interval. Diese Option kann zur Umgehung von Speicherlecks verwendet werden.
 Description[en]=If this variable is activated (possible values: yes/no) NSCD is restarted in fixed intervals (configurable through the variable nscd/restart/interval). This option can be used to address memory leaks.
 Type=bool
 Categories=system-base
@@ -107,14 +107,14 @@ Type=int
 Categories=system-base
 
 [nscd/group/invalidate_cache_on_changes]
-Description[de]=Ist diese Option aktiviert, wird bei jeder Änderung an einer Gruppe im UCS-Managementsystem durch ein Univention Directory Listener-Modul der NSCD-Gruppencache invalidiert
+Description[de]=Ist diese Option aktiviert, wird bei jeder Änderung an einer Gruppe im UCS-Managementsystem durch ein Univention Directory Listener-Modul der NSCD-Gruppencache invalidiert.
 Description[en]=If this option is enabled, the NSCD group cache is invalidated through a Univention Directory Listener module every time a group is modified in the UCS management system.
 Type=bool
 Categories=system-base
 
 [auth/methods]
 Description[de]=Diese Variable legt fest, welche Authentifizierungsmethoden neben pam_unix in der PAM-Konfiguration verwendet werden. Die Liste muss durch Leerzeichen getrennt werden. Mögliche Werte sind 'ldap' (pam_ldap) , 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so) und 'cache' (pam_passwdcache.so aus dem Paket univention-passwd-cache).
-Description[en]=This variable configures which authentication methods should be used in the PAM configuration besides pam_unix. The list must be space-separated. Possible values are 'ldap' (pam_ldap) , 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so) and 'cache' (pam_passwdcache.so from the package univention-passwd-cache).
+Description[en]=This variable configures which authentication methods should be used in the PAM configuration besides pam_unix. The list must be space-separated. Possible values are 'ldap' (pam_ldap), 'krb5' (pam_krb5.so), 'winbind' (pam_winbind.so) and 'cache' (pam_passwdcache.so from the package univention-passwd-cache).
 Type=bool
 Categories=system-base
 
@@ -137,7 +137,7 @@ Type=bool
 Categories=system-base
 
 [nssldap/nss_initgroups_ignoreusers/users]
-Description[de]=Ist die LDAP-Gruppenauflösung für einzelne Benutzer deaktiviert (konfiguriert über die Variable nssldap/nss_initgroups_ignoreusers), wird mit dieser Variable eine komma-separierte Liste von Benutzernamen angegeben, deren Gruppenmitgliedschaften nicht über LDAP aufgelöst werden. Ist die Variable nicht gesetzt, gilt die Einstellung für den Benutzer 'root'.
+Description[de]=Ist die LDAP-Gruppenauflösung für einzelne Benutzer deaktiviert (konfiguriert über die Variable nssldap/nss_initgroups_ignoreusers), wird mit dieser Variable eine Komma-separierte Liste von Benutzernamen angegeben, deren Gruppenmitgliedschaften nicht über LDAP aufgelöst werden. Ist die Variable nicht gesetzt, gilt die Einstellung für den Benutzer 'root'.
 Description[en]=If the LDAP group resolution has been disabled for some users (configurable through the variable nssldap/nss_initgroups_ignoreusers), this variable specifies a comma-separated list of user names, for which group memberships should not be resolved from the LDAP directory. If the variable isn't set, it applies to the user 'root'.
 Type=str
 Categories=system-base
@@ -161,43 +161,43 @@ Type=bool
 Categories=system-base
 
 [pamaccess/maxent]
-Description[de]=Konfiguriert die maximale Hauptspeichergröße, die in pam_access für die Prüfung der Gruppenzugehörigkeit herangezogen wird. Der Wert muss als hexidezimale Zahl in Bytes angegeben werden.
-Description[en]=Specifies the maximum memory available for pam_access when checking group membership. The value needs to be specified in bytes as a hexadecimal number.
+Description[de]=Konfiguriert die maximale Hauptspeichergröße, die in pam_access für die Prüfung der Gruppenzugehörigkeit herangezogen wird. Der Standardgröße beträgt 0x40001 Byte.
+Description[en]=Specifies the maximum memory available for pam_access when checking group membership. The default value is 0x40001 byte.
 Type=int
 Categories=system-base
 
 [security/limits/user/.*/hard/.*]
-Description[de]=Erlaubt die Konfiguration von Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Benutzername, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Hard-Limit definiert die Obergrenze, die ein Benutzer einem Prozess zuweisen kann.
+Description[de]=Erlaubt die Konfiguration von Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Benutzername, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Hard-Limit definiert die Obergrenze, die ein Benutzer maximal einem Prozess zuweisen kann.
 Description[en]=Allow the configuration of system limits for users (e.g. the maximum number of open files). The first placeholder ist a user name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The hard limit defines the upper limit a user can assign to a process.
 Type=str
 Categories=system-base
 
 [security/limits/user/.*/soft/.*]
-Description[de]=Erlaubt die Konfiguration von Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Benutzername, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Soft-Limit definiert den Standardwert, der für den Benutzer gilt.
-Description[en]=Allow the configuration of system limits for users (e.g. the maximum number of open files). The first placeholder ist a user name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The soft limit defines the default setting for the user.
+Description[de]=Erlaubt die Konfiguration von Systemlimits für Benutzer (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Benutzername, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Soft-Limit definiert den Standardwert, der für die Prozesse des Benutzer gilt.
+Description[en]=Allow the configuration of system limits for users (e.g. the maximum number of open files). The first placeholder ist a user name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The soft limit defines the default setting for the processes of the user.
 Type=int
 Categories=system-base
 
 [security/limits/group/.*/hard/.*]
-Description[de]=Erlaubt die Konfiguration von Systemlimits für Gruppen (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Gruppenname, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Hard-Limit definiert die Obergrenze, die ein Gruppenmitglied einem Prozess zuweisen kann.
+Description[de]=Erlaubt die Konfiguration von Systemlimits für Gruppen (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Gruppenname, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Hard-Limit definiert die Obergrenze, die ein Gruppenmitglied maximal einem Prozess zuweisen kann.
 Description[en]=Allow the configuration of system limits for groups (e.g. the maximum number of open files). The first placeholder ist a group name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The hard limit defines the upper limit a group member can assign to a process.
 Type=int
 Categories=system-base
 
 [security/limits/group/.*/soft/.*]
-Description[de]=Erlaubt die Konfiguration von Systemlimits für Gruppen (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Gruppenname, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Soft-Limit definiert den Standardwert, der für die Gruppenmitglieder gilt.
-Description[en]=Allow the configuration of system limits for groups (e.g. the maximum number of open files). The first placeholder ist a group name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The soft limit defines the default setting for group members.
+Description[de]=Erlaubt die Konfiguration von Systemlimits für Gruppen (z.B. die maximale Anzahl offener Dateien). Der erste Platzhalter ist ein Gruppenname, der zweite der Name des Systemlimits. Eine Übersicht der konfigurierbaren Limits kann mit 'man limits.conf' abgerufen werden. Das Soft-Limit definiert den Standardwert, der für die Prozesse der Gruppenmitglieder gilt.
+Description[en]=Allow the configuration of system limits for groups (e.g. the maximum number of open files). The first placeholder ist a group name, the second the name of a system limit. An overview of configurable limits can be retrieved with 'man limits.conf'. The soft limit defines the default setting for processes of the group members.
 Type=int
 Categories=system-base
 
 [auth/faillog]
-Description[de]=Aktiviert das automatische Sperren von Benutzern falls die Anmeldung zu häufig fehlschlägt. Ist die Variable nicht gesetzt, ist die Funktion deaktiviert.
-Description[en]=Activates automatic user lockouts if too many login attempts failed. If the variable isn't set, the function is deactivated.
+Description[de]=Aktiviert das automatische Sperren von Benutzerkonten falls die Anmeldung zu häufig fehlschlägt. Ist die Variable nicht gesetzt, ist die Funktion deaktiviert.
+Description[en]=Activates automatic user account locking if too many login attempts fail. If the variable isn't set, the function is deactivated.
 Type=bool
 Categories=system-base
 
 [auth/faillog/limit]
-Description[de]=Wenn automatische Anmeldesperren über die Variable auth/faillog aktiviert wurde, kann mit dieser Variable konfiguriert werden, ab wievielen fehlerhaften Passworteingaben die Sperre in Kraft tritt. Ist die Variable nicht gesetzt, beträgt der Wert 5.
+Description[de]=Wenn automatische Anmeldesperren über die Variable auth/faillog aktiviert wurde, kann mit dieser Variable konfiguriert werden, ab wie vielen fehlerhaften Passworteingaben die Sperre in Kraft tritt. Ist die Variable nicht gesetzt, beträgt der Wert 5.
 Description[en]=If automatic user lockouts have been activated via the variable auth/faillog, this variable configures the number of failed password inputs, after which the lockout is activated. If the variable isn't set, the value 5 applies.
 Type=int
 Categories=system-base
@@ -209,8 +209,8 @@ Type=bool
 Categories=system-base
 
 [auth/faillog/unlock_time]
-Description[de]=Wird in dieser Variable ein Wert in Sekunden eingetragen, wird ein Benutzer nach Ablauf der angegebenen Zeit automatisch entsperrt. Ist die Variable nicht gesetzt oder auf 0 gesetzt, erfolgt keine automatische Entsperrung und der Benutzer muss vom Administrator in der Univention Management Console entsperrt werden.
-Description[en]=If this variable is set to a time in seconds, the user is automatically unlocked after the time interval has passed. If the variable isn't set or set to 0 no automatic unlocking occurs and the user needs to be unlocked by an administrator in the Univention Management Console.
+Description[de]=Wird in dieser Variable ein Wert in Sekunden eingetragen, wird das Benutzerkonto nach Ablauf der angegebenen Zeit automatisch entsperrt. Ist die Variable nicht gesetzt oder auf 0 gesetzt, erfolgt keine automatische Entsperrung und das Benutzerkonto muss vom Administrator in der Univention Management Console entsperrt werden.
+Description[en]=If this variable is set to a time in seconds, the user account is automatically unlocked after the time interval has passed. If the variable isn't set or set to 0 no automatic unlocking occurs and the user account needs to be unlocked by an administrator in the Univention Management Console.
 Type=int
 Categories=system-base
 
@@ -252,13 +252,13 @@ Categories=system-base
 
 [nss/group/cachefile/invalidate_on_changes]
 Description[de]=Wenn diese Variable aktiviert ist und die Gruppen-Cachedatei (Variable: nss/group/cachefile) verwendet wird, wird bei jeder Gruppenänderung im UCS-Managementsystem die Cachedatei automatisch neu geschrieben. Ist die Variable nicht gesetzt, ist die Option aktiviert.
-Description[en]=If this variable is activated and the group cache file has been enabled (variable: nss/group/cachefile), the cache file is automatically regenerated whenever a group is edited in the UCS management system. If this variable isn't set, the option is enabled. 
+Description[en]=If this variable is activated and the group cache file has been enabled (variable: nss/group/cachefile), the cache file is automatically regenerated whenever a group is edited in the UCS management system. If this variable isn't set, the option is enabled.
 Type=bool
 Categories=system-base
 
 [nss/group/cachefile/invalidate_interval]
-Description[de]=Wird die Gruppen-Cachedatei verwendet (Variable: nss/group/cachefile), werden die Gruppeninformationen in dem hier konfigurierten Intervall in die Cachedatei exportiert. Die Angabe erfolgt im Cron-Format.
-Description[en]=If the group cache file is used (variable: nss/group/cachefile), the group data is exported to the cache file in the interval specified here. The interval is specified in Cron format.
+Description[de]=Wird die Gruppen-Cachedatei verwendet (Variable: nss/group/cachefile), werden die Gruppeninformationen in dem hier konfigurierten Intervall in die Cachedatei exportiert. Die Angabe erfolgt im Cron-Format, siehe "man 5 crontab".
+Description[en]=If the group cache file is used (variable: nss/group/cachefile), the group data is exported to the cache file in the interval specified here. The interval is specified in Cron format, see "man 5 crontab".
 Type=str
 Categories=system-base
 
@@ -270,7 +270,7 @@ Categories=system-base
 
 [homedir/create]
 Description[de]=Definiert, ob für Benutzer beim Login ein Heimatverzeichnis erstellt werden soll. Ist die Variable nicht gesetzt, wird ein Heimatverzeichnis erstellt.
-Description[en]=Defines whether a users home directory should be created (if necessary) during logon. If the variable isn't set, a home directory is created.
+Description[en]=Defines whether a users home directory should be created (if necessary) during login. If the variable isn't set, a home directory is created.
 Type=bool
 Categories=system-base
 
@@ -282,6 +282,6 @@ Categories=system-base
 
 [homedir/mount/required]
 Description[de]=Definiert, ob das Einbinden von Heimatverzeichnissen von Benutzern Voraussetzung für ein erfolgreichen Login ist.
-Description[en]=Defines whether a successful mount of the users home directory is required for the logon.
+Description[en]=Defines whether a successful mount of the users home directory is required for the login.
 Type=bool
 Categories=system-base

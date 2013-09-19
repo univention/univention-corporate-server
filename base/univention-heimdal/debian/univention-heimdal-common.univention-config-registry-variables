@@ -1,6 +1,6 @@
 [kerberos/adminserver]
 Description[de]=Auf dem Domänencontroller Master läuft der Kerberos-Adminserver, auf dem administrative Einstellungen der Domäne vorgenommen werden können. Diese Variable konfiguriert, welches System als Kerberos-Adminserver verwendet werden soll.
-Description[en]=The Kerberos admin server, on which the administrative settings of the domain can be changed, runs on the master domain controller. This variable confgures which system should be used as the Kerberos admin server.
+Description[en]=The Kerberos admin server, on which the administrative settings of the domain can be changed, runs on the master domain controller. This variable configures which system should be used as the Kerberos admin server.
 Type=str
 Categories=service-heimdal
 
@@ -11,8 +11,8 @@ Type=str
 Categories=service-heimdal
 
 [kerberos/kdc]
-Description[de]=Hier kann eine Liste von Kerberos KDC-Servern konfiguriert werden. Die Rechnernamen sollten in FQDN-Form angegeben werden. Mehrfache Werte sind durch ein Leerzeichen zu trennen. Ist die Variable nicht gesetzt, wird der KDC aus DNS-Service-Records ausgelesen (siehe 'kerberos/defaults/dns_lookup_kdc').
-Description[en]=A list of Kerberos KDC servers can be configured here. The hostnames should be specified in FQDN form. Multiple values need to be separated with a blank. If the variable is unset, the KDC is queried from DNS service records (see 'kerberos/defaults/dns_lookup_kdc').
+Description[de]=Hier kann eine Liste von Kerberos KDC-Servern konfiguriert werden. Die Rechnernamen sollten in FQDN-Form angegeben werden. Mehrfache Werte sind durch Leerzeichen zu trennen. Ist die Variable nicht gesetzt, wird der KDC aus DNS-Service-Records ausgelesen (siehe 'kerberos/defaults/dns_lookup_kdc').
+Description[en]=A list of Kerberos KDC servers can be configured here. The hostnames should be specified in FQDN form. Multiple values need to be separated by a blank. If the variable is unset, the KDC is queried from DNS service records (see 'kerberos/defaults/dns_lookup_kdc').
 Type=str
 Categories=service-heimdal
 
@@ -31,19 +31,19 @@ Categories=service-heimdal
 
 [kerberos/kadmin/default/keys]
 Description[de]=Diese Variable konfiguriert die bei der Schlüsselerstellung verwendeten Salt-Methoden. Ist die Variable nicht gesetzt, werden die Heimdal-internen Defaultwerte verwendet. Diese Variable sollte im Regelfall nicht gesetzt werden.
-Description[en]=This variable configures the Salt methods used during key generation. If the variable is unset, the Heimdal-internal default values are used. This variable should usually not be set.
+Description[en]=This variable configures the salt methods used during key generation. If the variable is unset, the Heimdal-internal default values are used. This variable should usually not be set.
 Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/enctypes/tgs]
 Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Service-Tickets. Ist die Variable nicht gesetzt, wird 'arcfour-hmac-md5 des-cbc-md5 des3-hmac-sha1 des-cbc-crc des-cbc-md4 des3-cbc-sha1 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' verwendet.
-Description[en]=This variable configures the available encryption methods for service tickets. if the variable is unset, 'arcfour-hmac-md5 des-cbc-md5 des3-hmac-sha1 des-cbc-crc des-cbc-md4 des3-cbc-sha1 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
+Description[en]=This variable configures the available encryption methods for service tickets. If the variable is unset, 'arcfour-hmac-md5 des-cbc-md5 des3-hmac-sha1 des-cbc-crc des-cbc-md4 des3-cbc-sha1 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
 Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/enctypes/tkt]
 Description[de]=Diese Variable konfiguriert die verfügbaren Verschlüsselungsverfahren für Ticket-Granting-Tickets. Ist die Variable nicht gesetzt, wird 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' verwendet.
-Description[en]=This variable configures the available encryption methods for ticket granting tickets. if the variable is unset, 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
+Description[en]=This variable configures the available encryption methods for ticket granting tickets. If the variable is unset, 'des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5 des3-cbc-sha1 arcfour-hmac-md5 aes128-cts-hmac-sha1-96 aes256-cts-hmac-sha1-96' is used.
 Type=str
 Categories=service-heimdal
 
@@ -60,20 +60,20 @@ Type=bool
 Categories=service-heimdal
 
 [kerberos/domain_realms]
-Description[de]=Mit dieser Variable können Abbildungen von DNS-Domänennamen auf Namen von Kerberos-Realms vorgenommen werden. Dies ist z.B. nötig, wenn eine weitere DNS-Forward-Zone in der DNS-Verwaltung angelegt wurde und diese der Kerberos-Realm der Domäne zugeordnet werden soll. Mehrere Einträge müssen durch ein Komma getrennt werden. Beispiel: 'additionaldomain1.example=EXAMPLEREALM,additionaldomain2.example=EXAMPLEREALM'.
-Description[en]=With this variable DNS domain names can be mapped to names of Kerberos realms. This can be necessary, if e.g. an additional DNS forward zone has been created in the DNS management and this DNS domain should be mapped to the Kerberos realm of the domain. Multiple entries must be separated through a comma. Example: 'additionaldomain1.example=EXAMPLEREALM,additionaldomain2.example=EXAMPLEREALM'.
+Description[de]=Mit dieser Variable können Abbildungen von DNS-Domänennamen auf Namen von Kerberos-Realms vorgenommen werden. Dies ist z.B. nötig, wenn eine weitere DNS-Forward-Zone in der DNS-Verwaltung angelegt wurde und diese der Kerberos-Realm der Domäne zugeordnet werden soll. Mehrere Einträge müssen durch Komma getrennt werden. Beispiel: 'additionaldomain1.example=EXAMPLEREALM,additionaldomain2.example=EXAMPLEREALM'.
+Description[en]=With this variable DNS domain names can be mapped to names of Kerberos realms. This can be necessary, if e.g. an additional DNS forward zone has been created in the DNS management and this DNS domain should be mapped to the Kerberos realm of the domain. Multiple entries must be separated by a comma. Example: 'additionaldomain1.example=EXAMPLEREALM,additionaldomain2.example=EXAMPLEREALM'.
 Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/dns_lookup_realm]
-Description[de]=Die Abbildung zusätzliche DNS-Domänennamen zu Kerberos-Realms erfolgt in der Regel über die Variable 'kerberos/domain_realms'. Wird diese Variable auf 'true' gesetzt, wird die Kerberos-Realm aus einem TXT-Record im DNS ausgelesen werden. Das Format wird unter http://web.mit.edu/Kerberos/krb5-1.6/krb5-1.6.3/doc/krb5-admin.html#Mapping-Hostnames-onto-Kerberos-Realms beschrieben. Ist die Variable nicht gesetzt, wird auf die Auflösung per DNS verzichtet.
-Description[en]=Additional DNS domainnames can be mapped on Kerberos realms using the variable 'kerberos/domain_realms'. If this variable is set to 'true', the Kerberos realm is read from a TXT record in DNS. The format is described at http://web.mit.edu/Kerberos/krb5-1.6/krb5-1.6.3/doc/krb5-admin.html#Mapping-Hostnames-onto-Kerberos-Realms. If the variable is unset, no DNS lookups are made.
+Description[de]=Die Abbildung zusätzliche DNS-Domänennamen zu Kerberos-Realms erfolgt in der Regel über die Variable 'kerberos/domain_realms'. Wird diese Variable auf 'true' gesetzt, wird die Kerberos-Realm aus einem TXT-Record im DNS ausgelesen werden. Das Format wird unter <http://web.mit.edu/Kerberos/krb5-1.6/krb5-1.6.3/doc/krb5-admin.html#Mapping-Hostnames-onto-Kerberos-Realms> beschrieben. Ist die Variable nicht gesetzt, wird auf die Auflösung per DNS verzichtet.
+Description[en]=Additional DNS domainnames can be mapped on Kerberos realms using the variable 'kerberos/domain_realms'. If this variable is set to 'true', the Kerberos realm is read from a TXT record in DNS. The format is described at <http://web.mit.edu/Kerberos/krb5-1.6/krb5-1.6.3/doc/krb5-admin.html#Mapping-Hostnames-onto-Kerberos-Realms>. If the variable is unset, no DNS lookups are made.
 Type=str
 Categories=service-heimdal
 
 [kerberos/defaults/dns_lookup_kdc]
-Description[de]=Ist diese Variable auf 'true' gesetzt oder nicht gesetzt, wird der/die KDC-Server für das System aus DNS-Service-Records gelesen. Dies kann durch Setzen der Variable auf 'false' deaktiviert werden, in diesem Fall muss der/die KDCs über die Variable 'kerberos/kdc' konfiguriert werden.
-Description[en]=If this variable is set to 'true' or unset, the KDC(s) used by the system are read from DNS service records. This can be disabled by setting the variable to 'false', is this case the KDC(s) must be set through the variable 'kerberos/kdc'.
+Description[de]=Ist diese Variable auf 'true' gesetzt oder nicht gesetzt, wird der/die KDC-Server für das System aus DNS-Service-Records gelesen. Dies kann durch Setzen der Variable auf 'false' deaktiviert werden, in welchem Fall der/die KDCs über die Variable 'kerberos/kdc' konfiguriert werden muss.
+Description[en]=If this variable is set to 'true' or unset, the KDC(s) used by the system are read from DNS service records. This can be disabled by setting the variable to 'false', is which case the KDC(s) must be set through the variable 'kerberos/kdc'.
 Type=str
 Categories=service-heimdal
 

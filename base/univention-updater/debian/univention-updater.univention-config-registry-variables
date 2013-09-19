@@ -23,8 +23,8 @@ Type=str
 Categories=service-software-management
 
 [update/warning/coloured]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, wird die Update-Warnmeldung (siehe 'update/warning') farbig ausgegeben. Ist die Variable nicht gesetzt, erfolgt die Ausgabe schwarz/weiß.
-Description[en]=If this Variable is set to 'yes', the update warning '(see 'update/warning') is printed coloured. If the variable is unset, the message is written in black/white.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird die Update-Warnmeldung (siehe 'update/warning') farbig ausgegeben. Ist die Variable nicht gesetzt, erfolgt die Ausgabe einfarbig.
+Description[en]=If this Variable is set to 'yes', the update warning '(see 'update/warning') is printed coloured. If the variable is unset, the message is written in monochrome.
 Type=str
 Categories=service-software-management
 
@@ -54,7 +54,7 @@ Categories=service-software-management
 
 [online/repository/clean]
 Description[de]=Wird ein lokales Repository verwendet (siehe 'local/repository') und ist diese Option aktiviert, wird unter /var/lib/univention-repository/var/clean.sh ein Shell-Skript generiert, mit dem gespiegelte und nicht mehr benötigte Repository-Inhalte entfernt werden können. Ist die Variable nicht gesetzt, wird das Skript nicht erzeugt.
-Description[en]=If a local repository is used (see 'local/repository') and if this option is activated, a shell script with the filename /var/lib/univention-repository/var/clean.sh is generating. Executing this shell script removes mirrored repository content, which is no longer used. If the variable is unset, the script is not generated.
+Description[en]=If a local repository is used (see 'local/repository') and if this option is activated, a shell script with the filename /var/lib/univention-repository/var/clean.sh is generated. Executing this shell script removes mirrored repository content, which is no longer used. If the variable is unset, the script is not generated.
 Type=bool
 Categories=service-software-management
 
@@ -83,9 +83,8 @@ Type=bool
 Categories=service-software-management
 
 [repository/online/httpmethod]
-Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit der der Updater die Verfügbarkeit von Updates testet. Ist die Variable nicht gesetzt, erfolgt es über 'HEAD'. Falls der Server dies nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenverbrauch).
-Description[en]=This variable configures the HTTP method the Updater uses to test for new updates. If the variable is unset, 'HEAD' is used. If the server doesn't support 
-'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
+Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit der der Updater die Verfügbarkeit von Updates testet. Ist die Variable nicht gesetzt, erfolgt es über 'HEAD'. Falls der Server dies nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenbedarf).
+Description[en]=This variable configures the HTTP method the Updater uses to test for new updates. If the variable is unset, 'HEAD' is used. If the server doesn't support 'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
 Type=str
 Categories=service-software-management
 
@@ -115,14 +114,14 @@ Categories=service-software-management
 ReadOnly=yes
 
 [repository/online/component/.*/unmaintained]
-Description[de]=Auch für Repository-Komponenten wird zwischen 'maintained' und 'unmaintained' unterschieden (siehe 'repository/online/unmaintained'). Komponenten, die über das Univention App Center integriert werden, verwenden in der Regel nur 'maintained'. Ist diese Option aktiviert, werden Pakete der Komponente aus 'unmaintained' bereitgestellt. Ist die Variable nicht gesetzt, wird 'unmaintained' nicht verwendet.
-Description[en]=Repository components also differentiate between 'maintained' and 'unmaintained' (see 'repository/online/unmaintained'). Components which are included through the Univention App Center usually only use 'maintained'. If this option is activated, packages of the component from 'unmaintained' are included. If the variable is unset, 'unmaintained' is not used.
+Description[de]=Auch für Repository-Komponenten wird zwischen 'maintained' und 'unmaintained' unterschieden (siehe 'repository/online/unmaintained'). Komponenten, die über das Univention App Center integriert werden, verwenden in der Regel nur 'maintained'. Ist diese Option aktiviert, werden Pakete der Komponente aus 'unmaintained' bereitgestellt. Ist die Variable nicht gesetzt, wird die globale Einstellung verwendet.
+Description[en]=Repository components also differentiate between 'maintained' and 'unmaintained' (see 'repository/online/unmaintained'). Components which are included through the Univention App Center usually only use 'maintained'. If this option is activated, packages of the component from 'unmaintained' are included. If the variable is unset, the global setting is used.
 Type=bool
 Categories=service-software-management
 
 [repository/online/component/.*/version]
-Description[de]= Komponenten können versioniert werden. Dies stellt sicher, dass nur zu einer UCS-Version kompatible Komponenten installiert werden. Ist die Variable leer oder nicht gesetzt, werden automatisch alle Versionen derselben Major-Version eingebunden. Ist z.B. aktuell UCS 3.2 installiert, so werden die Repositories für die Komponente in den Versionen 3.0, 3.1 und 3.2 eingebunden, sofern diese existieren. Steht die Variable auf 'current', werden ebenfalls alle Versionen der selben Major-Version eingebunden. Zusätzlich wird aber ein Release-Update des UCS-Systems solange verhindert, bis auch die so markierte Komponente für die neue Version verfügbar ist; Patchlevel- oder Errata-Updates sind davon nicht betroffen.
-Description[en]=Components can be versioned. This ensures that only components are installed that are compatible with a UCS version. If the variable is empty or unset,  all versions of the same major number will be used. If for example UCS 3.2 is installed, all repositories of the component with version numbers 3.0, 3.1 and 3.2 will be used if available. If the variable is set ti 'current' will include all versions of the same major version. Additionally it will block all minor and major upgrades of the installed UCS system until the respective component is also available for the new release. Patch level and errata updates are not affected.
+Description[de]=Komponenten können versioniert werden. Dies stellt sicher, dass nur zu einer UCS-Version kompatible Komponenten installiert werden. Ist die Variable leer oder nicht gesetzt, werden automatisch alle Versionen derselben Major-Version eingebunden. Ist z.B. aktuell UCS 3.2 installiert, so werden die Repositories für die Komponente in den Versionen 3.0, 3.1 und 3.2 eingebunden, sofern diese existieren. Steht die Variable auf 'current', werden ebenfalls alle Versionen der selben Major-Version eingebunden. Zusätzlich wird aber ein Release-Update des UCS-Systems solange verhindert, bis auch die so markierte Komponente für die neue Version verfügbar ist; Patchlevel- oder Errata-Updates sind davon nicht betroffen.
+Description[en]=Components can be versioned. This ensures that only components are installed that are compatible with a UCS version. If the variable is empty or unset, all versions of the same major number will be used. If for example UCS 3.2 is installed, all repositories of the component with version numbers 3.0, 3.1 and 3.2 will be used if available. If the variable is set to 'current' all versions of the same major version will be included. Additionally it will block all minor and major upgrades of the installed UCS system until the respective component is also available for the new release. Patch level and errata updates are not affected.
 Type=str
 Categories=service-software-management
 
@@ -187,7 +186,7 @@ Type=int
 Categories=service-software-management
 
 [repository/mirror/prefix]
-Description[de]=Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), kann hier so ein Pfad für den de Server konfiguriert werden, von dem die Pakete geladen werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
+Description[de]=Einige Repositorys verwenden verschiedene Update-Unterverzeichnisse. Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), kann hier so ein Pfad für den Server konfiguriert werden, von dem die Pakete geladen werden. Ist die Variable nicht gesetzt, wird kein Präfix verwendet.
 Description[en]=Some repositories use several update subdirectories. If the mirroring of the repository has been activated (see 'repository/mirror'), such a path can be configured for the server from which the packages are retrieved. If the variable is unset, no prefix is used.
 Type=str
 Categories=service-software-management
@@ -211,8 +210,8 @@ Type=str
 Categories=service-software-management
 
 [repository/mirror/recreate_packages]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, wird die Paketliste des lokalen Repositorys bei jeder Aktualierung des Repositorys neu generiert. Ist sie auf 'no' gesetzt, wird sie kopiert.
-Description[en]=If this variable is set to 'yes', the packages list of the local repository is regenerated with every update of the repository. If set to 'no', it is copied.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird die Paketliste des lokalen Repositorys bei jeder Aktualisierung des Repositorys neu generiert. Ist sie auf 'no' gesetzt, wird sie unverändert vom Quellserver kopiert.
+Description[en]=If this variable is set to 'yes', the packages list of the local repository is regenerated with every update of the repository. If set to 'no', it is copied unmodified from the source server.
 Type=str
 Categories=service-software-management
 
@@ -224,25 +223,26 @@ Categories=service-software-management
 
 [repository/mirror/version/start]
 Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), konfiguriert diese Variable die niedrigste UCS-Version, die von dem Mirror bezogen wird.
-Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror'), this variable configures the lowest UCS version which is retrieved from the mirror.
+Description[en]=If the mirroring of the repository is active (see 'repository/mirror'), this variable configures the lowest UCS version which is retrieved from the mirror.
 Type=str
 Categories=service-software-management
 
 [repository/mirror/version/end]
-Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), konfiguriert diese Variable die höchste UCS-Version, die von dem Mirror bezogen wird.
-Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror'), this variable configures the highest UCS version which is retrieved from the mirror.
+Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), wird diese Variable jedesmal auf die zuletzt vom Mirror bezogene UCS-Version gesetzt.
+Description[en]=If the mirroring of the repository is active (see 'repository/mirror'), this variable is set each time to the UCS version which was last retrieved from the mirror.
 Type=str
 Categories=service-software-management
+ReadOnly=yes
 
 [repository/mirror/httpmethod]
-Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit bei der Spiegelung des Repositorys die Verfügbarkeit von Updates getestet wird. Ist die Variable nicht gesetzt, erfolgt es über 'HEAD'. Falls der Server dies nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenverbrauch).
+Description[de]=Diese Variable konfiguriert die HTTP-Methode, mit bei der Spiegelung des Repositorys die Verfügbarkeit von Updates getestet wird. Ist die Variable nicht gesetzt, erfolgt es über 'HEAD'. Falls der Server dies nicht unterstützt, kann es auf 'GET' geändert (das erhöht den Bandbreitenbedarf).
 Description[en]=This variable configures the HTTP method used during repository mirroring to test for new updates. If the variable is unset, 'HEAD' is used. If the server doesn't support 'HEAD', it can be configured to 'GET' (which increases the bandwidth use).
 Type=str
 Categories=service-software-management
 
 [update/check/cron/enabled]
 Description[de]=Ist diese Option aktiviert, wird über einen Cron-Job regelmässig geprüft, ob neue UCS-Updates verfügbar sind. Sind neue Updates verfügbar, wird z.B. in der UMC ein Hinweis angezeigt. Das Prüfintervall wird über die Variable 'update/check/cron/entry' konfiguriert. Ist die Variable nicht gesetzt, wird nicht auf Updates geprüft.
-Description[en]=If this option is activated, continuous checks for new UCS updates are enabled through a Cron job. If new updates are available, a note is shown in the UMC. The check interval can be configured using the variable 'update/check/cron/entry'. If the variable is unset, no update checks are made.
+Description[en]=If this option is activated, continuous checks for new UCS updates are enabled through a cron job. If new updates are available, a note is shown in the UMC. The check interval can be configured using the variable 'update/check/cron/entry'. If the variable is unset, no update checks are made.
 Type=bool
 Categories=service-software-management
 
@@ -259,14 +259,14 @@ Type=bool
 Categories=service-software-management
 
 [update/check/cron/debug]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, werden Debugausgaben bei der regelmässigen Update-Prüfung (siehe 'update/check/cron/enabled') vermieden.
-Description[en]=If this variable is set to 'yes', debug output during the regular update check (see 'update/check/cron/enabled') is suppressed.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, werden Debugausgaben bei der regelmässigen Update-Prüfung (siehe 'update/check/cron/enabled') ausgegeben.
+Description[en]=If this variable is set to 'yes', debug output during the regular update check (see 'update/check/cron/enabled') is generated.
 Type=bool
 Categories=service-software-management
 
 [update/check/boot/debug]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, werden Debugausgaben bei der Update-Prüfung zum Systemstart (siehe 'update/check/boot/enabled') vermieden.
-Description[en]=If this variable is set to 'yes', debug output during the update check during startup (see 'update/check/boot/enabled') is suppressed.
+Description[de]=Ist diese Variable auf 'yes' gesetzt, werden Debugausgaben bei der Update-Prüfung zum Systemstart (siehe 'update/check/boot/enabled') ausgegeben.
+Description[en]=If this variable is set to 'yes', debug output during the update check during startup (see 'update/check/boot/enabled') is generated.
 Type=str
 Categories=service-software-management
 
@@ -279,7 +279,7 @@ ReadOnly=yes
 
 [update/warning/releasenotes]
 Description[de]=Führt man auf auf der Kommandozeile ein Relese-Updates durch, wird ein Verweis auf die Release Notes angezeigt und eine Minute gewartet, bevor mit dem Update fortgefahren wird. Ist diese Variable auf 'no' gesetzt, beginnt das Update sofort.
-Description[en]=If a release update is initiated on the command line, a reference to the release notes is shown. After a minute, the update starts. If the variable is set to 'no', the update starts rightaway.
+Description[en]=If a release update is initiated on the command line, a reference to the release notes is shown. After a minute, the update starts. If the variable is set to 'no', the update starts immediately.
 Type=str
 Categories=service-software-management
 
@@ -296,7 +296,7 @@ Type=str
 Categories=service-software-management
 
 [update/commands/distupgrade/simulate]
-Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein simultiertes Update der installierten Pakete durchzuführen.
+Description[de]=Dieses Kommando wird von den UCS-Paketmanagement-Tools verwendet um ein simuliertes Update der installierten Pakete durchzuführen.
 Description[en]=This command is used internally by the UCS package management tools to perform a simulated update of all installed packages.
 Type=str
 Categories=service-software-management
@@ -380,4 +380,3 @@ Description[de]=Ist diese Option aktiviert, wird im UMC-Modul 'Online-Update' ei
 Description[en]=If this option is activated, a simplified update procedure is used in the UMC module 'Online Updates'. If the variable is unset, the simplified procedure isn't used.
 Type=bool
 Categories=service-software-management
-

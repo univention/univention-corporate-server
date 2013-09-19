@@ -7,6 +7,6 @@ Categories=service-misc
 [listener/shares/rename/fstypes]
 Description[de]=Das automatische Verschieben von Dateifreigaben - konfigurierbar über die Variable listener/shares/rename - ist nur für die hier definierten Dateisysteme erlaubt.
 Mehrfache Einträge müssen durch einen Doppelpunkt getrennt werden. Ist die Variable nicht gesetzt, gilt 'ext2/ext3:ext2:ext3:ext4:xfs:btrfs'.
-Description[en]=The automatic move of file shares - configurable through the variable listener/shares/rename - is only allowed for the filesystems defined here. Multiple entries need to be separated with a colon. If the variable isn't set 'ext2/ext3:ext2:ext3:ext4:xfs:btrfs' applies.
+Description[en]=The automatic move of file shares - configurable through the variable listener/shares/rename - is only allowed for the filesystems defined here. Multiple entries need to be separated by a colon. If the variable isn't set 'ext2/ext3:ext2:ext3:ext4:xfs:btrfs' applies.
 Type=str
 Categories=service-misc
