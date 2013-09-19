@@ -1196,8 +1196,9 @@ univention-directory-listener-ctrl resync cups-printers
 		Distribution Centre</emphasis> (KDC). Ein Client authentifiziert sich bei
 		diesem KDC und erhält ein Authentizierungs-Token, das sogenannte Ticket, das
 		zur Authentizierung innerhalb einer Kerberos-Umgebung (der sogenannten Kerberos
-		Realm) verwendet werden kann. Der Name der Kerberos Realm kann über die
-		&ucsUCRV; <envar>kerberos/realm</envar> konfiguriert werden.
+		Realm) verwendet werden kann. Der Name der Kerberos Realm wird im Rahmen der Installation
+		des &ucsMaster; konfiguriert und in der	&ucsUCRV; <envar>kerberos/realm</envar>
+		gespeichert. Der Name der Kerberos-Realm kann nachträglich nicht angepasst werden.
 	</para>
 	<para>
 		Tickets sind standardmäßig acht Stunden gültig; für eine Kerberos-Domäne
