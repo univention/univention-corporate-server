@@ -585,7 +585,7 @@
 
 		<listitem><simpara>
 		  A single sign on feature has been implemented for &ucsUMC;. The head line of UMC now provides a drop down for selecting other UCS systems. 
-		  The UMC of the selected UCS system will be opened in a new browser window (<ulink url="&ucsbug;24422">Bug 24422</ulink>).
+		  The UMC of the selected UCS system will be opened in a new browser window (Bugs <ulink url="&ucsbug;24422">24422</ulink>, <ulink url="&ucsbug;30744">30744</ulink></ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -688,11 +688,6 @@
 		<listitem><simpara>
 		  Support for the following locales has been added to UMC: German (Austria), German (Switzerland), English (United Kingdom)
 		  (<ulink url="&ucsbug;31377">Bug 31377</ulink>).
-		</simpara></listitem>
-
-		<listitem><simpara>
-		  A dropdown menu for switching to UMC of other UCS systems in the domain has been added
-		  (<ulink url="&ucsbug;30744">Bug 30744</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
