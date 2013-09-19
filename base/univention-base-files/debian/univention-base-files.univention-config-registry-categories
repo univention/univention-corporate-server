@@ -21,7 +21,7 @@ icon=system-locale.gif
 [system-kernel]
 name[de]=Kerneleinstellungen
 name[en]=Kernel settings
-icon=system-locale.gif
+icon=system-kernel.gif
 
 [system-password]
 name[de]=Passworteinstellungen
@@ -41,7 +41,7 @@ icon=service-ssh.gif
 [service-ln]
 name[de]=Listener/Notifier-Replikation
 name[en]=Listner/notifier replication
-icon=service-ssh.gif
+icon=service-ln.gif
 
 [service-ldap]
 name[de]=LDAP-Konfiguration
