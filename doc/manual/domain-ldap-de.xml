@@ -826,7 +826,7 @@ slapcat &gt; ldapdaten.txt
 				die den Mitgliedern der Gruppe <emphasis>User Password Admins</emphasis>
 				zugewiesen ist bzw. mit einem entsprechenden Container im LDAP-Verzeichnis 
 				verknüpft werden kann. Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden
-				sich in Kapitel <xref linkend="delegated-administrationl"/>.
+				sich in Kapitel <xref linkend="delegated-administration"/>.
 			</para>
 			<para>
 				Die Richtlinie ermöglicht dabei die Suche nach Benutzern sowie die
