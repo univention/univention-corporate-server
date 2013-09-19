@@ -1,3 +1,9 @@
+univention-system-setup (7.0.42-3) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 19 Sep 2013 10:22:41 +0200
+
 univention-system-setup (7.0.42-2) unstable; urgency=low
 
   * Fix parsing profile (Bug #32463)
