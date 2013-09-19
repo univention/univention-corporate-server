@@ -145,24 +145,27 @@ ul.nav.nav-tabs li.active a {
 }
 
 #content li .wrapper {
+	height: 100px;
+	display: block;
+	height: 100px;
+	width: 100%;
+	padding: 15px;
+
+	border-radius: 10px 10px 10px 10px;
+	moz-border-radius: 10px 10px 10px 10px;
+	webkit-border-radius: 10px 10px 10px 10px;
+
 	background: rgb(239,239,239); /* Old browsers */
 	background: -moz-radial-gradient(circle, rgba(255,255,255,1), rgba(239,239,239,1));
 	background: -webkit-radial-gradient(circle, rgba(255,255,255,1), rgba(239,239,239,1));
 	background: -o-radial-gradient(circle, rgba(255,255,255,1), rgba(239,239,239,1));
 	background: -ms-radial-gradient(circle, rgba(255,255,255,1), rgba(239,239,239,1));
 	background: radial-gradient(circle, rgba(255,255,255,1), rgba(239,239,239,1));
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efefef', endColorstr='#ffffff',GradientType=1 );
+	/*ignore the filter as IE9 will otherwise not display box transitions and round borders*/
+	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efefef', endColorstr='#ffffff',GradientType=1 );*/
 
-	height: 100px;
-	border-radius: 10px;
-	/*margin-bottom: 22px;*/
 	transition: box-shadow 0.5s;
 	-webkit-transition: box-shadow 0.5s; /* Safari */
-
-	display: block;
-	height: 100px;
-	width: 100%;
-	padding: 15px;
 }
 
 #content li .wrapper:hover {
@@ -231,6 +234,10 @@ ul.nav.nav-tabs li.active a {
 	color: #d50633;
 }
 
+#content li#no-service a:hover {
+	text-decoration: underline;
+}
+
 /*end*/
 
 /*group footer*/
@@ -265,6 +272,10 @@ ul.nav.nav-tabs li.active a {
 	background: url("../img/elements/red_arrow.png") no-repeat scroll 0 5px transparent;
 	padding-left: 15px;
 	display: block;
+}
+
+#footer a:hover {
+	text-decoration: underline;
 }
 /*end*/
 

@@ -36,10 +36,12 @@ define([
 	"dojo/dom-construct",
 	"dojo/dom-attr",
 	"dojo/dom-style",
+	"dojo/dom-class",
+	"dojo/on",
 	"dojo/json",
 	"dojo/text!entries.json",
 	"/ucs-overview/js/i18n!js"
-], function(lang, kernel, array, query, domConstruct, domAttr, domStyle, json, entriesStr, _) {
+], function(lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, entriesStr, _) {
 	var entries = json.parse(entriesStr);
 	var ucr = entries.ucr;
 
@@ -69,7 +71,7 @@ define([
 			services: _('Installed web services'),
 			admin: _('Administration'),
 			noServiceTitle: _('There are currently no user web services installed.'),
-			noServiceDescription: _('Additional services may be installed in the category Administration via Univention Management Console.')
+			noServiceDescription: _('Additional services may be installed in the category <a href="#admin">Administration</a> via Univention Management Console.')
 		},
 
 		_localizeString: function(str) {
@@ -133,11 +135,29 @@ define([
 			}));
 		},
 
+		_focusTab: function(category) {
+			// bootstrap specific command tab()...
+			$(lang.replace('#site-header .nav-tabs a[href=#{0}]', [category])).tab('show');
+		},
+
 		_focusAdminTab: function() {
 			if (!this._entries.service.length) {
-				var tabLink = query('a[data-i18n=admin]')[0];
-				tabLink.click();
+				this._focusTab('admin');
 			}
+		},
+
+		_updateActiveTab: function() {
+			var hash = window.location.hash;
+			if (!hash || hash == '#') {
+				return;
+			}
+			var activeNode = query(lang.replace('#site-header .nav-tabs a[href={0}]', [hash]));
+			var nodeExists = activeNode.length > 0;
+			if (!nodeExists) {
+				return;
+			}
+			var category = hash.replace('#', '');
+			this._focusTab(category);
 		},
 
 		_updateNoServiceHint: function() {
@@ -201,10 +221,16 @@ define([
 			}));
 		},
 
+		_registerHashChangeEvent: function() {
+			on(window, 'hashchange', lang.hitch(this, '_updateActiveTab'));
+		},
+
 		start: function() {
 			this._updateLinkEntries();
 			this._updateLocales();
 			this._updateTranslations();
+			this._registerHashChangeEvent();
+			this._updateActiveTab();
 		}
 	};
 });

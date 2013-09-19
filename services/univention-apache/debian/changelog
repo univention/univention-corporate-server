@@ -1,3 +1,11 @@
+univention-apache (6.0.6-1) unstable; urgency=low
+
+  * Bug #31700: fixed problems with Android tablets, fixed problems with
+    rounded borders on IE9, direct links to #admin or #service are now
+    possible
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 19 Sep 2013 16:13:29 +0200
+
 univention-apache (6.0.5-1) unstable; urgency=low
 
   * Bug #31700: removed link from univention logo, make whole buttons
