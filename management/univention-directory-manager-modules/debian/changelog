@@ -167,7 +167,7 @@ univention-directory-manager-modules (9.0.23-1) unstable; urgency=low
 
   * fixed traceback which occured when renaming computer objects with set
     reverse zones (Bug #31435)
-  * fixed enforcement required=1 for multivalue attributes (Bug #31435)
+  * fixed enforcement required=1 for multivalue attributes (Bug #31302)
 
  -- Lukas Walter <walter@univention.de>  Wed, 11 Sep 2013 14:29:41 +0200
 
