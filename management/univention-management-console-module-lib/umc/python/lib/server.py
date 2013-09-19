@@ -134,7 +134,6 @@ class Server(object):
 			pass
 		return subprocess.call(('/sbin/shutdown', action, 'now', message))
 
-	@sanitize(message=MessageSanitizer(default=''))
 	def sso_getsession( self, request ):
 		""" Create new UMC session on remote host and return session information
 		    umc-command -s master.example.com -U Administrator -P univention lib/singlesignon/getsession -o host=slave.example.com
