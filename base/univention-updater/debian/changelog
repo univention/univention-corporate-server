@@ -1,3 +1,9 @@
+univention-updater (9.0.16-1) unstable; urgency=low
+
+  * Bug #32634: try to automagically determine the GRUB boot device
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 19 Sep 2013 17:32:12 +0200
+
 univention-updater (9.0.15-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)

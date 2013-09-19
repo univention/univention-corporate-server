@@ -127,6 +127,10 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
+# For UCS 3.2-0 a reinstallation of GRUB2 is required - otherwise the system is unbootable (Bug #32634)
+eval "$(ucr shell update/grub/boot)"
+grub-install "$update_grub_boot"
+
 # For UCS 3.2-0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
 
