@@ -792,10 +792,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-				Tests whether the user may continue are run after the button is
-				clicked. They are all run at once and for some failed tests solutions
-				are offered (<ulink url="&ucsbug;31737">Bug 31737</ulink>, <ulink
-					url="&ucsbug;30289">Bug 30289</ulink>, <ulink url="&ucsbug;32163">Bug 32163</ulink>) .
+				Tests whether the user may continue are run after the "Install" (or
+				"Upgrade" or "Uninstall") button is clicked. They are all run at once
+				and for some failed tests solutions are offered (<ulink
+					url="&ucsbug;31737">Bug 31737</ulink>, <ulink url="&ucsbug;30289">Bug
+					30289</ulink>, <ulink url="&ucsbug;32163">Bug 32163</ulink>) .
 		</simpara></listitem>
 
 		<listitem><simpara>
