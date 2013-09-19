@@ -435,7 +435,7 @@ class CPgeneric(object):
 			cherrypy.response.cookie['UMCSessionId']['version'] = 1
 			cherrypy.response.cookie['UMCSessionId']['path'] = '/'
 		if username:
-			cherrypy.response.cookie['UMCUsername'] = login_token.username
+			cherrypy.response.cookie['UMCUsername'] = username
 			cherrypy.response.cookie['UMCUsername']['expires'] = expirationStr
 			cherrypy.response.cookie['UMCUsername']['version'] = 1
 			cherrypy.response.cookie['UMCUsername']['path'] = '/'
