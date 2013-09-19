@@ -1,3 +1,9 @@
+univention-printclient (7.0.0-3) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 19 Sep 2013 10:27:42 +0200
+
 univention-printclient (7.0.0-2) unstable; urgency=low
 
   * Clarify usage of print/server (Bug #23881)
