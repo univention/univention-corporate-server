@@ -1,3 +1,9 @@
+ucs-test (4.0.113-1) unstable; urgency=low
+
+  * udm.py: code improvements (Bug #30560)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 19 Sep 2013 12:31:52 +0200
+
 ucs-test (4.0.112-2) unstable; urgency=low
 
   * 10_ldap/62ldap_group_to_file_hook: create /var/lib/ldap-group-to-

@@ -116,12 +116,13 @@ class UCSTestUDM(object):
 		self._cleanupLocks = {}
 
 
-	def _build_udm_cmdline(self, modulename, action, kwargs):
+	@staticmethod
+	def _build_udm_cmdline(modulename, action, kwargs):
 		"""
 		Pass modulename, action (create, modify, delete) and a bunch of keyword arguments
 		to _build_udm_cmdline to build a command for UDM CLI.
-		>>> _build_udm_cmdline('users/user', 'create', username='foobar', password='univention', lastname='bar')
-		>>> ['/usr/sbin/udm-test', 'users/user', 'create', …]
+		>>> UCSTestUDM._build_udm_cmdline('users/user', 'create', {'username': 'foobar'})
+		['/usr/sbin/udm-test', 'users/user', 'create', '--set', 'username=foobar']
 		"""
 		cmd = [ '/usr/sbin/udm-test', modulename, action ]
 		args = copy.deepcopy(kwargs)
@@ -211,11 +212,12 @@ class UCSTestUDM(object):
 		"""
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
-		if not kwargs.get('dn'):
+		dn = kwargs.get('dn')
+		if not dn:
 			raise UCSTestUDM_MissingDn()
+		if dn not in self._cleanup.get(modulename, set()):
+			raise UCSTestUDM_CannotModifyExistingObject(dn)
 
-
-		dn = None
 		cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
 		print 'Modifying %s object with %r' % (modulename, kwargs)
 		child = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
@@ -227,7 +229,7 @@ class UCSTestUDM(object):
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
 				dn = line.split('Object modified: ', 1)[-1]
-				assert(dn in self._cleanup.get(modulename, []))
+				assert dn in self._cleanup.get(modulename, [])
 				break
 			elif line.startswith('No modification: '):
 				raise UCSTestUDM_NoModification({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
@@ -241,8 +243,11 @@ class UCSTestUDM(object):
 	def move_object(self, modulename, wait_for_replication = True, **kwargs):
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
-		if not kwargs.get('dn'):
+		dn = kwargs.get('dn')
+		if not dn:
 			raise UCSTestUDM_MissingDn()
+		if dn not in self._cleanup.get(modulename, set()):
+			raise UCSTestUDM_CannotModifyExistingObject(dn)
 
 		cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
 		print 'Moving %s object %r' % (modulename, kwargs)
@@ -254,6 +259,10 @@ class UCSTestUDM(object):
 
 		for line in stdout.splitlines(): # :pylint: disable-msg=E1103
 			if line.startswith('Object modified: '):
+				self._cleanup.get(modulename, []).remove(dn)
+
+				new_dn = ldap.dn.dn2str(ldap.dn.str2dn(dn)[0:1] + ldap.dn.str2dn(kwargs.get('position', '')))
+				self._cleanup.setdefault(modulename, []).append(new_dn)
 				break
 		else:
 			raise UCSTestUDM_ModifyUDMUnknownDN({'module': modulename, 'kwargs': kwargs, 'stdout': stdout, 'stderr': stderr})
@@ -265,8 +274,11 @@ class UCSTestUDM(object):
 	def remove_object(self, modulename, wait_for_replication = True, **kwargs):
 		if not modulename:
 			raise UCSTestUDM_MissingModulename()
-		if not kwargs.get('dn'):
+		dn = kwargs.get('dn')
+		if not dn:
 			raise UCSTestUDM_MissingDn()
+		if dn not in self._cleanup.get(modulename, set()):
+			raise UCSTestUDM_CannotModifyExistingObject(dn)
 
 		cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
 		print 'Removing %s object %r' % (modulename, kwargs)
@@ -276,8 +288,8 @@ class UCSTestUDM(object):
 		if child.returncode:
 			raise UCSTestUDM_RemoveUDMObjectFailed({'module': modulename, 'kwargs': kwargs, 'returncode': child.returncode, 'stdout': stdout, 'stderr': stderr})
 		
-		if kwargs['dn'] in self._cleanup.get(modulename, []):
-			self._cleanup[modulename].remove(kwargs['dn'])
+		if dn in self._cleanup.get(modulename, []):
+			self._cleanup[modulename].remove(dn)
 
 		if wait_for_replication:
 			utils.wait_for_replication()
@@ -393,29 +405,34 @@ class UCSTestUDM(object):
 	def __enter__(self):
 		return self
 	def __exit__(self, exc_type, exc_value, traceback):
+		if exc_type:
+			print 'Cleanup after exception: %s %s' % (exc_type, exc_value)
 		self.cleanup()
 
 
 if __name__ == '__main__':
+	import doctest
+	print doctest.testmod()
+
 	ucr = univention.testing.ucr.UCSTestConfigRegistry()
 	ucr.load()
 
 	with UCSTestUDM() as udm:
 		# create user
-		username, dnUser = udm.create_user()
+		dnUser, _username = udm.create_user()
 
 		# stop CLI daemon
 		udm.stop_cli_server()
 
 		# create group
-		groupname, dnGroup = udm.create_group()
+		_dnGroup, _groupname = udm.create_group()
 
 		# modify user from above
 		udm.modify_object('users/user', dn=dnUser, description='Foo Bar')
 
 		# test with malformed arguments
 		try:
-			username, dnUser = udm.create_user(username='')
+			_dnUser, _username = udm.create_user(username='')
 		except UCSTestUDM_CreateUDMObjectFailed, ex:
 			print 'Caught anticipated exception UCSTestUDM_CreateUDMObjectFailed - SUCCESS'
 
