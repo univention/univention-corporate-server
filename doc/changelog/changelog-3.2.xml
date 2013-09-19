@@ -1829,6 +1829,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  <package>univention-dansguardian</package> have been revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The package <package>univention-squid-kerberos</package> does not depend on <package>univention-samba4</package> anymore. In addition, the joinscript 98univention-squid-samba4.inst now corectly saves its status when not in a samba4 environment (<ulink url="&ucsbug;32011">Bug 32011</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
