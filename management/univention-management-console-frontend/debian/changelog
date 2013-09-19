@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.76-1) unstable; urgency=low
+
+  * Bug #24422: fixed cookie handling
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 19 Sep 2013 17:02:58 +0200
+
 univention-management-console-frontend (3.0.75-2) unstable; urgency=low
 
   * Bug #24422: added additional exception handlers

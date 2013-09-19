@@ -422,17 +422,23 @@ class CPgeneric(object):
 		self._log(99, 'sessionid="%s"' % (sessionid))
 		return sessionid
 
-	def set_cookie_session_id(self, sessionid):
+	def set_cookies(self, sessionid=None, username=None):
 		# set the cookie once during successful authentication
 		# force expiration of cookie in 5 years from now on...
 		# IE does not support max-age
 		expiration = datetime.datetime.now()
 		expiration = expiration.replace(year=expiration.year + 5)
 		expirationStr = expiration.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
-		cherrypy.response.cookie['UMCSessionId'] = sessionid
-		cherrypy.response.cookie['UMCSessionId']['expires'] = expirationStr
-		cherrypy.response.cookie['UMCSessionId']['version'] = 1
-		cherrypy.response.cookie['UMCSessionId']['path'] = '/'
+		if sessionid:
+			cherrypy.response.cookie['UMCSessionId'] = sessionid
+			cherrypy.response.cookie['UMCSessionId']['expires'] = expirationStr
+			cherrypy.response.cookie['UMCSessionId']['version'] = 1
+			cherrypy.response.cookie['UMCSessionId']['path'] = '/'
+		if username:
+			cherrypy.response.cookie['UMCUsername'] = login_token.username
+			cherrypy.response.cookie['UMCUsername']['expires'] = expirationStr
+			cherrypy.response.cookie['UMCUsername']['version'] = 1
+			cherrypy.response.cookie['UMCUsername']['path'] = '/'
 
 	@logExceptions
 	def load_json(self, body):
@@ -525,11 +531,7 @@ class CPSingleSignOn(CPgeneric):
 			# update IP address of sesssion ==> address changes during single sign on
 			UMCP_Dispatcher.sessions[login_token.sessionid].ip = self.get_ip_address()
 
-			self.set_cookie_session_id(login_token.sessionid)
-			cherrypy.response.cookie['UMCUsername'] = login_token.username
-			cherrypy.response.cookie['UMCUsername']['expires'] = expirationStr
-			cherrypy.response.cookie['UMCUsername']['version'] = 1
-			cherrypy.response.cookie['UMCUsername']['path'] = '/'
+			self.set_cookies(sessionid=login_token.sessionid, username=login_token.username)
 		else:
 			self._log('error', 'Unknown SSO token: %r' % kwargs)
 
@@ -699,7 +701,7 @@ class CPAuth(CPgeneric):
 			# add new one time session
 			UMCP_Dispatcher.logintokens.add_session(response.body.get('sessionid'), json[ 'options' ].get('username',''))
 
-			self.set_cookie_session_id(response.body.get('sessionid'))
+			self.set_cookies(sessionid=response.body.get('sessionid'))
 
 			return ""
 
