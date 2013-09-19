@@ -28,15 +28,10 @@ a:hover {
 }
 
 #site-title {
-	max-width: 400px;
+	margin-top: 30px;
 	margin-bottom: 15px;
-	padding-top: 10px;
-}
-
-#site-title a {
-	display: block;
+	height: 38px;
 	background: url(../img/elements/logo.png) no-repeat;
-	margin-bottom: 5px;
 }
 
 #header-claim {
@@ -242,7 +237,11 @@ ul.nav.nav-tabs li.active a {
 #footer {
 	background: url("../img/backgrounds/footer_bg.png") no-repeat center top #D4D5D6;
 	margin: 0 auto;
-	height: auto;
+	height: 140px;
+}
+
+#wrap {
+	margin-bottom: -140px;
 }
 
 #footer div.container {
@@ -259,12 +258,6 @@ ul.nav.nav-tabs li.active a {
 
 #footer li {
 	list-style: none;
-}
-
-#footer li:first-child {
-	font-weight: bold;
-	margin-bottom: 5px;
-	color: #000000;
 }
 
 #footer a {
@@ -396,11 +389,9 @@ ul.nav.nav-tabs li.active a {
 		padding: 0 10px 0 0;
 	}
 
-	#site-title a {
-		background: url("../img/elements/logo_mobile.png") no-repeat scroll 0 0 transparent;
-	}
-
 	#site-title {
+		background: url("../img/elements/logo_mobile.png") no-repeat scroll 0 0 transparent;
+		height: 27px;
 		padding-top: 5px;
 		margin-bottom: 5px;
 	}

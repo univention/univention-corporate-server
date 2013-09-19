@@ -104,13 +104,13 @@ define([
 			}));
 			var node = domConstruct.toDom(lang.replace(
 				'<li class="item col-md-6">\n'
-				+ '	<span class="wrapper">\n'
-				+ '		<a href="{link}">\n'
+				+ '	<a href="{link}">\n'
+				+ '		<span class="wrapper">\n'
 				+ '			<span class="icon" style="background-image:url({icon})"></span>\n'
 				+ '			<span class="title">{label}</span>\n'
 				+ '			<span class="text">{description}</span>\n'
-				+ '		</a>\n'
-				+ '	</span>\n'
+				+ '		</span>\n'
+				+ '	</a>\n'
 				+ '</li>\n',
 				localizedProps
 			));
