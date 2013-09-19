@@ -60,7 +60,7 @@ def convertExceptionToString(ex):
 	Try to create a user readable string of it.
 	"""
 	if hasattr(ex, 'args') and ex.args and isinstance(ex.args[0], socket.error):
-		return '%s (errno: %s)' % (ex.args[0][1], ex.args[0][0])
+		return str(ex.args[0][1])
 	return str(ex)
 
 class MessageSanitizer(StringSanitizer):
