@@ -180,8 +180,10 @@
 			  The <emphasis>primay e-mail address</emphasis> is used for authentication on
 			  Postfix and Cyrus. Primary e-mail addresses must always be
 			  unique. Only one primary e-mail address can be configured for every user.
-			  It also defines the user's IMAP mailbox. The domain part of the
-			  e-mail address must be registered in the &ucsUMC; (see
+			  It also defines the user's IMAP mailbox. 
+<!-- Wenn dem Benutzer ein Mail Home Server zugeordnet ist (siehe <xref linkend="mail::homeserver"/>), wird das IMAP-Postfach automatisch durch -->
+<!-- ein Univention Directory Listener-Modul erstellt. -->
+			  The domain part of the e-mail address must be registered in the &ucsUMC; (see
 			  <xref linkend="mail::management::domains"/>).
 			</para>
 		  </listitem>
