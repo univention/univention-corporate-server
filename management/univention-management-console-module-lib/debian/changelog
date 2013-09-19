@@ -1,3 +1,14 @@
+univention-management-console-module-lib (3.0.7-1) unstable; urgency=low
+
+  * Bug #24422: 
+    - create/add default UMC policy commands
+    - added dependency to shell-univention-lib
+    - updated error message in single sign on
+    - removed useless sanitizer call
+    - use status code 500 instead of 503 (undefined in UMC)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 19 Sep 2013 15:01:57 +0200
+
 univention-management-console-module-lib (3.0.6-2) unstable; urgency=low
 
   * Bug #24422: create human readable error messages
