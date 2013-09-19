@@ -38,6 +38,11 @@ name[de]=SSH
 name[en]=SSH
 icon=service-ssh.gif
 
+[service-ln]
+name[de]=Listener/Notifier-Replikation
+name[en]=Listner/notifier replication
+icon=service-ssh.gif
+
 [service-ldap]
 name[de]=LDAP-Konfiguration
 name[en]=LDAP configuration
