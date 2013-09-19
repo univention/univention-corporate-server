@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.10-1) unstable; urgency=low
+
+  * Bug #30967: adapted icon
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 19 Sep 2013 18:52:03 +0200
+
 univention-pkgdb (7.0.9-1) unstable; urgency=low
 
   * Add unjoin scripts (Bug #32492)
