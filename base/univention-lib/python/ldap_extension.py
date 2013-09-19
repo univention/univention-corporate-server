@@ -288,11 +288,11 @@ class UniventionLDAPExtension(object):
 						udm_object['active']=True
 						udm_object.modify()
 					except udm_errors.ldapError, e:
-						ud.debug(ud.LISTENER, ud.ERROR, '%s: Error modifying %s: %s.' % (name, object_dn, e))
+						ud.debug(ud.LISTENER, ud.ERROR, 'Error modifying %s: %s.' % (object_dn, e))
 				self._todo_list = []
 
 		except udm_errors.ldapError, e:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error accessing UDM: %s' % (name, e))
+			ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e))
 
 
 class UniventionLDAPExtensionWithListenerHandler(UniventionLDAPExtension):
@@ -973,7 +973,6 @@ def ucs_unregisterLDAPExtension():
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	objects = []
 	if opts.udm_module:
 		for udm_module in opts.udm_module:
 			univentionUDMModule = UniventionUDMModule(ucr)
