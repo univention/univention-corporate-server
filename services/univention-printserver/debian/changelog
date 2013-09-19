@@ -1,3 +1,9 @@
+univention-printserver (7.0.7-1) unstable; urgency=low
+
+  * Remove listener handler status file in postrm (Bug #32452)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Sep 2013 07:43:47 +0200
+
 univention-printserver (7.0.6-1) unstable; urgency=low
 
   * Remove old unjoin script in postinst (Bug #32452)
