@@ -244,7 +244,7 @@ class XML_Definition( ET.ElementTree ):
 
 	@property
 	def keywords( self ):
-		return KEYWORD_PATTERN.split(self.findtext( 'module/keywords', ''))
+		return KEYWORD_PATTERN.split(self.findtext( 'module/keywords', '')) + [self.name]
 
 	@property
 	def id( self ):
@@ -284,7 +284,7 @@ class XML_Definition( ET.ElementTree ):
 			flavor.translationId = self.translationId
 			flavor.name = elem.findtext( 'name' )
 			flavor.description = elem.findtext( 'description' )
-			flavor.keywords = re.split(KEYWORD_PATTERN, elem.findtext('keywords', ''))
+			flavor.keywords = re.split(KEYWORD_PATTERN, elem.findtext('keywords', '')) + [flavor.name]
 			try:
 				flavor.priority = float(elem.get('priority', -1))
 			except ValueError:

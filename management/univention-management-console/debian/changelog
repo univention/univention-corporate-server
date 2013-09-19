@@ -1,3 +1,9 @@
+univention-management-console (6.0.14-1) unstable; urgency=low
+
+  * Bug #32048: Add module/flavor name to keywords and localise them
+
+ -- Florian Best <best@univention.de>  Thu, 19 Sep 2013 11:23:30 +0200
+
 univention-management-console (6.0.13-1) unstable; urgency=low
 
   * Handling exceptions during progress (Bug #25465)
