@@ -1208,15 +1208,15 @@ echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
 /etc/init.d/univention-firewall restart
 </programlisting>
 <para>
-Für weitere notwendige Anpassungen sollte aktuell UCS Bug 25254 beachtet werden.
-</para>
-<para>
 Nun wird die Vertrauensstellung initiiert und Winbind neu gestartet:
 Dies muss auf allen Samba-Anmeldeservern ausgeführt werden.
 </para>
 <programlisting language="sh">
 net rpc trustdom establish &lt;Windowsdomain&gt;
+net setauthuser -UAdministrator
 /etc/init.d/winbind restart
+ucr set auth/methods="krb5 ldap unix winbind"
+/etc/init.d/nscd restart
 </programlisting>
 <para>
 Mit folgendem Befehl kann geprüft werden, ob die Vertrauensstellung

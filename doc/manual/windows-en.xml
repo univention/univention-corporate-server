@@ -1174,15 +1174,15 @@ echo "iptables -I INPUT 1 -p udp --sport 137 -j ACCEPT" \
 /etc/init.d/univention-firewall restart
 </programlisting>
 <para>
-The instructions available on UCS Bug 25254 should currently be considered.
-</para>
-<para>
 The trust relationship is now initiated and Winbind restarted.
 This command must be run on all Samba login servers:
 </para>
 <programlisting language="sh">
 net rpc trustdom establish &lt;Windows domain&gt;
+net setauthuser -UAdministrator
 /etc/init.d/winbind restart
+ucr set auth/methods="krb5 ldap unix winbind"
+/etc/init.d/nscd restart
 </programlisting>
 <para>
 The following command can be used to check that the trust relationship
