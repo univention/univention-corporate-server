@@ -1,3 +1,12 @@
+univention-ad-connector (8.0.3-1) unstable; urgency=low
+
+  * Remove old cache files in unjoin script (Bug #32455)
+  * First restart the listener and than remove the listener handler status
+    file because the file is written when the listener is stopped
+    (Bug #32455)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Sep 2013 07:58:41 +0200
+
 univention-ad-connector (8.0.2-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition

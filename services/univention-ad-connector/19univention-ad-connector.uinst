@@ -42,6 +42,13 @@ eval "$(ucr shell)"
 . /usr/share/univention-lib/ldap.sh
 ucs_removeServiceFromLocalhost "$SERVICE" "$@" || die
 
+test -x /etc/init.d/univention-directory-listener && invoke-rc.d univention-directory-listener restart
+
+if [ "$connector_ad_listener_dir" = "/var/lib/univention-connector/ad" ]; then
+	find /var/lib/univention-connector/ad /var/lib/univention-connector/ad/tmp/ \
+				-type f -exec rm -f '{}' \;
+fi
+
 joinscript_remove_script_from_status_file univention-ad-connector
 
 exit 0
