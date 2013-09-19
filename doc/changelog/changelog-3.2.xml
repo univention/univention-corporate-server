@@ -2628,7 +2628,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 	  <listitem><simpara>
 		The following packages have been added to the maintained section of the
-software repository (<ulink url="&ucsbug;31562">Bug 31562</ulink>, <ulink url="&ucsbug;30888">Bug 30888</ulink>, <ulink url="&ucsbug;31075">Bug 31075</ulink>, <ulink url="&ucsbug;32175">Bug 32175</ulink>), <ulink url="&ucsbug;32011">Bug 32011</ulink>):
+software repository (<ulink url="&ucsbug;31562">Bug 31562</ulink>, <ulink url="&ucsbug;30888">Bug 30888</ulink>, <ulink url="&ucsbug;31075">Bug 31075</ulink>, <ulink url="&ucsbug;32175">Bug 32175</ulink>), <ulink url="&ucsbug;32011">Bug 32011</ulink>, <ulink url="&ucsbug;32196">Bug 32196</ulink>,):
 univention-squid-kerberos, libdbd-mysql, libjs-jquery, duplicity, librsync,libappconfig-perl, liblist-moreutils-perl,libparams-validate-perl, libdatetime-locale-perl,
 libclass-singleton-perl, libdatetime-timezone-perl,libdatetime-perl, libpg-perl,libemail-address-perl, librose-object-perl,libclass-factory-util-perl,
 libdatetime-format-strptime-perl,libdatetime-format-builder-perl,libdatetime-format-mysql-perl, libyaml-syck-perl,libdatetime-format-pg-perl, libsub-install-perl,
@@ -2641,7 +2641,8 @@ libpackage-deprecationmanager-perl, libclass-mop-perl,libmoose-perl, libgetopt-l
 libwww-mechanize-perl, libapp-nopaste-perl,libb-keywords-perl, libb-utils-perl,libdata-dump-streamer-perl, libdata-dumper-concise-perl,libfile-homedir-perl,
 libfile-next-perl,libpadwalker-perl, libdevel-caller-perl,libdevel-lexalias-perl, liblexical-persistence-perl,libmodule-refresh-perl, libmoosex-attributehelpers-perl,
 libmoosex-object-pluggable-perl, libvariable-magic-perl,libb-hooks-endofscope-perl, libsub-identify-perl,libnamespace-clean-perl, libio-string-perl, libppi-perl,
-libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl, libclass-xsaccessor-perl,libterm-readline-gnu-perl, libapache2-mod-fcgid,postgresql, php5-ldap, php-openid
+libsys-sigaction-perl,libdevel-repl-perl, libtest-deep-perl,libclass-c3-xs-perl, libclass-xsaccessor-perl,libterm-readline-gnu-perl, libapache2-mod-fcgid,postgresql,
+php5-ldap, php-openid, lshw, p7zip-full, python-avahi, python-ldaptor, python-pyparsing, python-serial, python-sqlalchemy-ext
 	  </simpara></listitem>
 
 	  <listitem><simpara>
