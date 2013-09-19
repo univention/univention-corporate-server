@@ -185,7 +185,7 @@ class Server(object):
 			MODULE.process('Got response ...')
 		except (urllib2.HTTPError, urllib2.URLError), ex:
 			MODULE.error('sso_getsession: unable to connect to %r: %r' % (host, ex))
-			self.finished( request.id, result, success=False, message=_('unable to connect to %r: %s') % (host, convertExceptionToString(ex),), status=503)
+			self.finished( request.id, result, success=False, message=_('unable to connect to %r: %s') % (host, convertExceptionToString(ex),), status=500)
 			return
 		except univention.lib.urllib2_ssl.CertificateError, ex:
 			MODULE.error('sso_getsession: certificate error when connecting to %r: %s' % (host, ex))
@@ -193,7 +193,7 @@ class Server(object):
 			return
 		except Exception, ex:
 			MODULE.error('sso_getsession: unknown exception while connecting to %r: %s\n%s' % (host, ex, traceback.format_exc()))
-			self.finished( request.id, result, success=False, message=_('unable to connect to %r: %s') % (host, ex), status=503)
+			self.finished( request.id, result, success=False, message=_('unable to connect to %r: %s') % (host, ex), status=500)
 			return
 
 		login_token = None
