@@ -1,3 +1,11 @@
+ucs-test (4.0.114-1) unstable; urgency=low
+
+  * fixed 66_udm-computers/ 31_all_roles_creation_set_network and
+    16_all_roles_modification_set_network
+  (Bug #31659)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 19 Sep 2013 16:00:23 +0200
+
 ucs-test (4.0.113-1) unstable; urgency=low
 
   * udm.py: code improvements (Bug #30560)

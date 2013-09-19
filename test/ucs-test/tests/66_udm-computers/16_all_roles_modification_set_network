@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: Test setting network during creation for all computer roles
+## desc: Test setting network during modification for all computer roles
 ## tags: [udm-computers]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -31,42 +31,35 @@ if __name__ == '__main__':
 		}
 
 		with udm_test.UCSTestUDM() as udm:
-			# FIXME: workaround for remaining locks
-			udm.addCleanupLock('aRecord', '10.20.30.2')
-			udm.addCleanupLock('aRecord', '10.20.40.2')
-			udm.addCleanupLock('mac', '01:23:45:67:89:ab')
-
-
-
-
-			forwardZone1Name = '%s.%s' % (uts.random_name(), uts.random_name())
-
-
-			forwardZone1 = udm.create_object('dns/forward_zone', zone = forwardZone1Name, nameserver = uts.random_string())
-			reverseZone1 = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string())
-			dhcpService1 = udm.create_object('dhcp/service', service = uts.random_name())
-			network1Properties = {
+			forwardZoneName = '%s.%s' % (uts.random_name(), uts.random_name())
+			forwardZone = udm.create_object('dns/forward_zone', zone = forwardZoneName, nameserver = uts.random_string())
+			reverseZone = udm.create_object('dns/reverse_zone', subnet = '10.20.30', nameserver = uts.random_string())
+			dhcpService = udm.create_object('dhcp/service', service = uts.random_name())
+			networkProperties = {
 				'name': uts.random_name(),
 				'network': '10.20.30.0',
 				'netmask': '24',
-				'dnsEntryZoneForward': forwardZone1,
-				'dnsEntryZoneReverse': reverseZone1,
-				'dhcpEntryZone': dhcpService1,
+				'dnsEntryZoneForward': forwardZone,
+				'dnsEntryZoneReverse': reverseZone,
+				'dhcpEntryZone': dhcpService,
 				'ipRange': '10.20.30.2 10.20.30.254'
 			}
-			network1 = udm.create_object('networks/network', **network1Properties)
-
+			network = udm.create_object('networks/network', **networkProperties)
 
 
 			computer = udm.create_object(role, **computerProperties)
-			udm.modify_object(role, dn = computer, network = network1)
-			utils.verify_ldap_object(computer, {
-				'univentionNetworkLink': [network1],
-				'aRecord': ['10.20.30.2']
-			})
+			udm.modify_object(role, dn = computer, network = network)
+			aRecord = utils.get_ldap_connection().getAttr(computer, 'aRecord')[0]
 
-			utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone1), {'aRecord': ['10.20.30.2']})
-			utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone1, {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZone1Name)]})
-			utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService1), {'univentionDhcpFixedAddress': ['10.20.30.2']})
+			#FIXME: workaround for possibly remaining locks
+			udm.addCleanupLock('aRecord', aRecord)
+			udm.addCleanupLock('mac', '01:23:45:67:89:ab')
+
+			utils.verify_ldap_object(computer, {'univentionNetworkLink': [network]})
+			if not aRecord in ['10.20.30.%s' % str(oktett) for oktett in range(2, 255)]:
+				utils.fail('IP adress of computer not in range of it\'s network')
+			utils.verify_ldap_object('relativeDomainName=%s,%s' % (computerProperties['name'], forwardZone), {'aRecord': [aRecord]})
+			utils.verify_ldap_object('relativeDomainName=2,%s' % reverseZone, {'pTRRecord': ['%s.%s.' % (computerProperties['name'], forwardZoneName)]})
+			utils.verify_ldap_object('cn=%s,%s' % (computerProperties['name'], dhcpService), {'univentionDhcpFixedAddress': [aRecord]})
 
 
