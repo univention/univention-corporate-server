@@ -60,13 +60,21 @@ umc_init () {
 	udm container/cn create $BIND_ARGS --ignore_exists --position cn=policies,$ldap_base --set name=UMC --set policyPath=1 || exit $?
 	udm container/cn create $BIND_ARGS --ignore_exists --position cn=UMC,cn=univention,$ldap_base --set name=operations || exit $?
 
-	# default policies
+	# default admin policy
 	udm policies/umc create $BIND_ARGS --ignore_exists --set name=default-umc-all \
 		--position cn=UMC,cn=policies,$ldap_base || exit $?
 
 	# link default admin policy to the domain admins
 	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=Domain Admins,cn=groups,$ldap_base" \
 		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || exit $?
+
+	# default user policy
+	udm policies/umc create $BIND_ARGS --ignore_exists --set name=default-umc-users \
+		--position cn=UMC,cn=policies,$ldap_base || exit $?
+
+	# link default admin policy to the domain admins
+	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=Domain Users,cn=groups,$ldap_base" \
+		--policy-reference="cn=default-umc-users,cn=UMC,cn=policies,$ldap_base" || exit $?
 }
 
 _umc_remove_old () {

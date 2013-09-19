@@ -1,3 +1,9 @@
+univention-lib (3.0.14-1) unstable; urgency=low
+
+  * Bug #24422: create UMC policy default-umc-users
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 19 Sep 2013 14:48:13 +0200
+
 univention-lib (3.0.13-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)	
