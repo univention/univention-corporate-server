@@ -2580,6 +2580,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	   (<ulink url="&ucsbug;31695">Bug 31695</ulink>).
 	  </simpara></listitem>
 
+	  <listitem><simpara>
+	  	A python wrapper for the UDM CLI has been added (<ulink url="&ucsbug;30560">Bug 30560</ulink>).
+	  </simpara></listitem>
+
+
 	</itemizedlist>
 </section>
 
