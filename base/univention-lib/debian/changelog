@@ -1,3 +1,11 @@
+univention-lib (3.0.16-1) unstable; urgency=low
+
+  * Run ucr_handlers.update() otherwise the old UCR cache is used. It
+    would be better to use handler_register, see Bug #32644
+    (Bug #32643)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Sep 2013 08:40:32 +0200
+
 univention-lib (3.0.15-1) unstable; urgency=low
 
   * python/ldap_extension.py: fixed python syntax errors (Bug #32401)

@@ -395,6 +395,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				ucr.load()
 				ucr_handlers = configHandlers()
 				ucr_handlers.load()
+				ucr_handlers.update()
 				ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 				## validate
@@ -446,6 +447,7 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					ucr.load()
 					ucr_handlers = configHandlers()
 					ucr_handlers.load()
+					ucr_handlers.update()
 					ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 					p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
@@ -631,6 +633,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				ucr.load()
 				ucr_handlers = configHandlers()
 				ucr_handlers.load()
+				ucr_handlers.update()
 				ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 				## validate
@@ -712,6 +715,7 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 					ucr.load()
 					ucr_handlers = configHandlers()
 					ucr_handlers.load()
+					ucr_handlers.update()
 					ucr_handlers.commit(ucr, ['/etc/ldap/slapd.conf'])
 
 					self._do_reload = True
