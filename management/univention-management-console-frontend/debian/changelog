@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.79-1) unstable; urgency=low
+
+  * Bug #30744: Internet Explorer fixes
+
+ -- Florian Best <best@univention.de>  Fri, 20 Sep 2013 11:55:01 +0200
+
 univention-management-console-frontend (3.0.78-1) unstable; urgency=low
 
   * Bug #24422: fixed login token invalidation
