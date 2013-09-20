@@ -361,7 +361,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  A new function was added to the Python API set and unset &ucsUCRV;s atomically through a dictionary (<ulink url="&ucsbug;32544">Bug 32544</ulink>).
+		  A new function was added to the Python API to set and unset &ucsUCRV;s atomically through a dictionary (<ulink url="&ucsbug;32544">Bug 32544</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
 

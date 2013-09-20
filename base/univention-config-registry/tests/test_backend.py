@@ -234,11 +234,10 @@ class TestConfigRegistry(unittest.TestCase):
 			self.assertTrue(ucr.is_true(value=value))
 
 	def test_is_true_invalid_direct(self):
-		"""Test valid is_true(value)."""
+		"""Test invalid is_true(value)."""
 		ucr = ConfigRegistry()
 		for value in ('YES', 'Yes', 'yes ', ' yes', ''):
 			self.assertFalse(ucr.is_true(value=value))
-
 
 	def test_is_false_unset(self):
 		"""Test unset is_false()."""

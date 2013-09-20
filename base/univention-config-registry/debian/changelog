@@ -1,3 +1,9 @@
+univention-config-registry (9.0.4-3) unstable; urgency=low
+
+  * Fix a comment (Bug #32544)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2013 17:58:02 +0200
+
 univention-config-registry (9.0.4-2) unstable; urgency=low
 
   * Undo r43985 (Bug #32544)
