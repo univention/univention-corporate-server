@@ -1,3 +1,9 @@
+univention-directory-listener (8.0.0-3) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 20 Sep 2013 11:55:48 +0200
+
 univention-directory-listener (8.0.0-2) unstable; urgency=low
 
   * Update copyright years for 2013
