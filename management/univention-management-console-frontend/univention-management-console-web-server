@@ -532,11 +532,12 @@ class CPSingleSignOn(CPgeneric):
 			UMCP_Dispatcher.sessions[login_token.sessionid].ip = self.get_ip_address()
 
 			self.set_cookies(sessionid=login_token.sessionid, username=login_token.username)
+
+			# invalidate login token after first use
+			UMCP_Dispatcher.logintokens.remove_session(login_token.sessionid)
 		else:
 			self._log('error', 'Unknown SSO token: %r' % kwargs)
 
-		# invalidate login token after first use
-		UMCP_Dispatcher.logintokens.remove_session(login_token.sessionid)
 
 		# Redirect in any case to UMC start page
 		targeturl = '/univention-management-console/'
