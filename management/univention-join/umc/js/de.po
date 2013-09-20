@@ -40,9 +40,9 @@ msgstr ""
 
 #: umc/js/join.js:273
 #, python-format
-msgid "A DC master should be joined by the <a %s>Basic settings</a> module."
+msgid "A DC master should be joined by the <a %s>%s module</a>."
 msgstr ""
-"Ein DC master sollte über das Modul <a %s>Basis-Einstellungen</a> der Domäne "
+"Ein DC master sollte über das <a %s>%s-Modul</a> der Domäne "
 "beitreten."
 
 #: umc/js/join.js:269

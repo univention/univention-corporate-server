@@ -271,7 +271,9 @@ define([
 				}
 				else if (!joined) {
 					if (this._serverRole == 'domaincontroller_master') {
-						dialog.alert(_('A DC master should be joined by the <a %s>Basic settings</a> module.', 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"'));
+						var setupLink = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"';
+						var setupName = (require('umc/app').getModule('setup') || { name: 'Basic Settings'}).name;
+						dialog.alert(_('A DC master should be joined by the <a %s>%s module</a>.', 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"'));
 						return;
 					}
 					this._switchView('join_form');

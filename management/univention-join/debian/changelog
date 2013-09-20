@@ -1,3 +1,9 @@
+univention-join (6.0.7-1) unstable; urgency=low
+
+  * Bug #24727: don't hardcode "setup" module name
+
+ -- Florian Best <best@univention.de>  Fri, 20 Sep 2013 08:45:27 +0200
+
 univention-join (6.0.6-1) unstable; urgency=low
 
   * set PATH in univention-server-join before importing
