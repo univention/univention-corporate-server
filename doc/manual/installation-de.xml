@@ -532,8 +532,7 @@
 	<title>Netzwerkkonfiguration</title>
 		<graphic scalefit="1" width="80%" fileref="illustrations/network_de.png"/>
 	</figure>
-	<section id="installation:Konfiguration_von_IPv4-Adressen">
-	<title>Konfiguration von IPv4-Adressen</title>
+
 		<para>
 		  Ist die Option <guimenu>DHCP</guimenu> aktiviert, wird versucht die IP-Adresse - und je
 		  nach Konfiguration auch Nameserver und/oder Standard-Gateway - über das Dynamic Host
@@ -546,9 +545,7 @@
 		  eingegeben werden, die an die Netzwerkkarte gebunden werden soll. Zusätzlich zur
 		  <guimenu>IP-Adresse</guimenu> muss die <guimenu>Netzmaske</guimenu> angegeben werden. 
 		</para>
-	</section>
-	<section id="installation:Konfiguration_von_IPv6-Adressen">
-	<title>Konfiguration von IPv6-Adressen</title>
+
 		<para>
 			Die IPv6-Adresse kann auf zwei Arten konfiguriert werden:
 		</para>
@@ -648,7 +645,6 @@
 			kann, sollte die IP-Adresse des Proxy-Servers eingetragen werden.
 		</para>
 	</section>
-</section>
 
 <section id="installer_join"><title>Join-Optionen</title>
 	<para>

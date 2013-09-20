@@ -528,8 +528,6 @@
 	<title>Network interface configuration</title>
 		<graphic scalefit="1" width="80%" fileref="illustrations/network_en.png"/>
 	</figure>
-	<section id="installation:Configuration_of_IPv4_addresses">
-	  <title>Configuration of IPv4 addresses</title>
 
 	  <para>
 		If the <guimenu>DHCP</guimenu> option is enabled, an attempt is made to retrieve the IP
@@ -544,9 +542,6 @@
 		<guimenu>netmask</guimenu> must also be entered.
 	  </para>
 
-	</section>
-
-	<section id="installation:Configuration_of_IPv6_addresses"><title>Configuration of IPv6 addresses</title>
 		<para>
 			The IPv6 address can be configured in two ways:
 		</para>
@@ -642,7 +637,7 @@
 			address of the proxy server should be entered.
 		</para>
 	</section>
-</section>
+
 
 <section id="installer_join">
 <title>Join options</title>
