@@ -725,6 +725,12 @@
 	<title>Univention App Center</title>
 	  <itemizedlist>
 		<listitem><simpara>
+			Basic UCS components (such as Samba, KDE, nagios, print server etc.) have been integrated
+			into the App Center and can now be installed from there
+			(Bugs <ulink url="&ucsbug;32301">32301</ulink>, <ulink url="&ucsbug;32302">32302</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  Fixed an issue when closing the App Center tab in the Management Console: The backend shut
 		  down the module when no further requests regarding the progress of an installation was
 		  sent. When this happened during installation the package database could become temporarily
