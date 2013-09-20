@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.35-1) unstable; urgency=low
+
+  * Bug #24727: adapt german wording
+
+ -- Florian Best <best@univention.de>  Fri, 20 Sep 2013 08:50:11 +0200
+
 univention-management-console-module-appcenter (3.0.34-2) unstable; urgency=low
 
   * update dependency version for ucs_registerLDAPExtension (Bug #32414)

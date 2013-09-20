@@ -531,11 +531,11 @@ msgstr "Repository-Komponenten"
 
 #: umc/js/appcenter/DetailsPage.js:106 umc/js/appcenter/SettingsPage.js:73
 msgid "Repository prefix"
-msgstr "Repository Prefix"
+msgstr "Repository-Präfix"
 
 #: umc/js/appcenter/DetailsPage.js:101 umc/js/appcenter/SettingsPage.js:69
 msgid "Repository server"
-msgstr "Repository Server"
+msgstr "Repository-Server"
 
 #: umc/js/appcenter/SettingsPage.js:56
 msgid "Repository settings"
