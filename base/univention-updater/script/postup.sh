@@ -129,7 +129,12 @@ fi
 
 # For UCS 3.2-0 a reinstallation of GRUB2 is required - otherwise the system is unbootable (Bug #32634)
 eval "$(ucr shell update/grub/boot)"
-grub-install "$update_grub_boot"
+if [ -n "$update_grub_boot" ] ; then
+	echo "Installing new grub version into device \"$update_grub_boot\" ..." >> "$UPDATER_LOG"
+	grub-install "$update_grub_boot" && \
+       ucr unset update/grub/boot || \
+       echo -e "Warning: Installation of GRUB on device \"$update_grub_boot\" failed!\nPlease run 'grub-install <DEVICE>' manually, to update GRUB on your boot device." | tee -a "$UPDATER_LOG" >&2
+fi
 
 # For UCS 3.2-0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1
