@@ -1,16 +1,14 @@
-<<<<<<< HEAD
+univention-management-console-frontend (3.0.78-1) unstable; urgency=low
+
+  * Bug #24422: fixed login token invalidation
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 20 Sep 2013 09:19:01 +0200
+
 univention-management-console-frontend (3.0.77-1) unstable; urgency=low
 
   * Bug #24727: display referred module names generic
 
  -- Florian Best <best@univention.de>  Fri, 20 Sep 2013 08:36:00 +0200
-=======
-univention-management-console-frontend (3.0.76-3) unstable; urgency=low
-
-  * Bug #24422: fixed login token invalidation
-
- -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 20 Sep 2013 09:19:01 +0200
->>>>>>> Bug #24422: fixed login token invalidation
 
 univention-management-console-frontend (3.0.76-2) unstable; urgency=low
 
