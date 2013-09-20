@@ -1574,6 +1574,10 @@
 		Two new functions <function>ucs_registerLDAPACL</function> and <function>ucs_unregisterLDAPACL</function> have been implemented
 		(<ulink url="&ucsbug;32392">Bug 32392</ulink>, <ulink url="&ucsbug;32643">Bug 32643 </ulink>).
 	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Two functions comments were fixed (<ulink url="&ucsbug;28714">Bug 28714</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 
