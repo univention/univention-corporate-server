@@ -52,6 +52,7 @@ VALID_NAME_RE = re.compile(r'^[^/ \t\n\r\f]{1,16}\Z')
 
 PHYSICAL_INTERFACES = [dev['name'] for dev in detect_interfaces()]
 
+
 class DeviceError(ValueError):
 	def __init__(self, msg, device=None):
 		if device is not None:
@@ -59,17 +60,22 @@ class DeviceError(ValueError):
 		self.device = device
 		ValueError.__init__(self, msg)
 
+
 class IP4Set(set):
 	def add(self, ip):
 		set.add(self, ipaddr.IPv4Address(ip))
+
 	def __contains__(self, ip):
 		return set.__contains__(self, ipaddr.IPv4Address(ip))
+
 
 class IP6Set(set):
 	def add(self, ip):
 		set.add(self, ipaddr.IPv6Address(ip))
+
 	def __contains__(self, ip):
 		return set.__contains__(self, ipaddr.IPv6Address(ip))
+
 
 class Interfaces(dict):
 	"""All network interfaces"""
@@ -197,6 +203,7 @@ class Interfaces(dict):
 
 			devices = dict((device, (subdevs - leave)) for device, subdevs in devices.iteritems() if device not in leave)
 
+
 class Device(object):
 	"""Abstract base class for network interfaces"""
 
@@ -287,12 +294,11 @@ class Device(object):
 
 		if self.ip4dynamic:
 			self.type = 'dhcp'
-	
+
 	def _remove_old_fallback_variables(self):
 		# removes deprecated UCR variables from UCS <= 3.1-1... can be removed in future
-		for leftover in self._leftover:
-			if leftover[0].startswith('interfaces/%s/fallback/' % (self.name,)):
-				leftover[1] = None
+		self._leftover = [(leftover[0], None) if leftover[0].startswith('interfaces/%s/fallback/' % (self.name,))
+				else leftover for leftover in self._leftover]
 
 	def validate(self):
 		self.validate_name()
@@ -328,7 +334,7 @@ class Device(object):
 		"""
 		if not self.name:
 			pass
-		elif len(self.name) >= 16: # IFNAMSIZ
+		elif len(self.name) >= 16:  # IFNAMSIZ
 			pass
 		elif self.name in ('.', '..'):
 			pass
@@ -535,11 +541,12 @@ class Device(object):
 
 		interface = DeviceType(device['name'], interfaces)
 		interface.parse_ucr()
-		interface.__dict__.update(dict((k, device[k]) for k in set(interface.dict.keys())-set(['start', 'type', 'order']) if k in device))
+		interface.__dict__.update(dict((k, device[k]) for k in set(interface.dict.keys()) - set(['start', 'type', 'order']) if k in device))
 		if interface.ip4dynamic:
 			interface.type = 'dhcp'
 
 		return interface
+
 
 class _RemovedDevice(Device):
 	"""Internal class representing that a device have to be removed from UCR"""
@@ -552,9 +559,11 @@ class _RemovedDevice(Device):
 	def validate_name(self):
 		return True
 
+
 class Ethernet(Device):
 	"""A physical network interface"""
 	pass
+
 
 class VLAN(Device):
 	"""A virtual network interface (VLAN)"""
@@ -609,6 +618,7 @@ class VLAN(Device):
 		))
 		return d
 
+
 class Bond(Device):
 	"""A network bonding interface"""
 
@@ -621,7 +631,7 @@ class Bond(Device):
 		'balance-tlb': 5,
 		'balance-alb': 6
 	}
-	modes_r = dict((v,k) for k,v in modes.iteritems())
+	modes_r = dict((v, k) for k, v in modes.iteritems())
 
 	def clear(self):
 		super(Bond, self).clear()
@@ -630,7 +640,7 @@ class Bond(Device):
 		self.bond_slaves = []
 		self.bond_mode = 0
 
-		# TODO: arp_interval arp_ip_target downdelay lacp_rate max_bonds primary updelay use_carrier xmit_hash_policy 
+		# TODO: arp_interval arp_ip_target downdelay lacp_rate max_bonds primary updelay use_carrier xmit_hash_policy
 
 	def prepare_consistency(self):
 		super(Bond, self).prepare_consistency()
@@ -706,7 +716,7 @@ class Bond(Device):
 					try:
 						self.bond_mode = self.modes[value.strip()]
 					except KeyError:
-						pass # invalid mode
+						pass  # invalid mode
 			elif name == 'miimon':
 				try:
 					self.miimon = int(value)
@@ -730,6 +740,7 @@ class Bond(Device):
 		for i, option in enumerate(options, start=len(self.options)):
 			vals['interfaces/%s/options/%d' % (self.name, i)] = option
 		return vals
+
 
 class Bridge(Device):
 	"""A network bridge interface"""

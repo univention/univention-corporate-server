@@ -1,3 +1,9 @@
+univention-system-setup (7.0.43-1) unstable; urgency=low
+
+  * Bug #30816: fix typo, style pep8 conform
+
+ -- Florian Best <best@univention.de>  Fri, 20 Sep 2013 13:53:44 +0200
+
 univention-system-setup (7.0.42-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)
