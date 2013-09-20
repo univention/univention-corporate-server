@@ -309,4 +309,30 @@
 		</para>
 	</section>
 
+
+	<!-- <section id="groups::memberof"> -->
+	<!--   <title>Overlay-Modul zur Anzeige der Gruppeninformationen an Benutzerobjekten</title> -->
+	<!--   <para> -->
+	<!-- 	Im UCS-Verzeichnisdienst werden Gruppenmitgliedschaften nur an den Gruppenobjekten und nicht -->
+	<!-- 	am jeweiligen Benutzerobjekt gespeichert. Einige Applikationen erwarten jedoch die -->
+	<!-- 	Gruppenmitgliedschaften an den Benutzerobjekten (z.B. im Attribut -->
+	<!-- 	<emphasis>memberOf</emphasis>). Durch ein optionales Overlay-Modul im LDAP-Server können -->
+	<!-- 	diese Attribute automatisch anhand der Gruppeninformationen angezeigt werden. Die -->
+	<!-- 	zusätzlichen Attribute werden nicht in das LDAP geschrieben, sondern bei einer Anfrage durch -->
+	<!-- 	das Overlay-Modul ermittelt und angezeigt. -->
+	<!--   </para> -->
+
+	<!--   <para> -->
+	<!-- 	Dazu muss auf allen LDAP-Servern das Paket -->
+	<!-- 	<emphasis>univention-ldap-overlay-memberof</emphasis> installiert werden. -->
+	<!--   </para> -->
+
+	<!--   <para> -->
+	<!-- 	In der Grundeinstellung wird das Benutzerattribut <emphasis>memberOf</emphasis> -->
+	<!-- 	dargestellt. Mit der &ucsUCRV; <envar>ldap/overlay/memberof/memberof</envar> kann auch ein -->
+	<!-- 	anderes Attribut konfiguriert werden. -->
+	<!--   </para> -->
+	<!-- </section> -->
+
+
 </chapter>
