@@ -1567,18 +1567,13 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Two new functions <function>ucs_registerLDAPSchema</function> and <function>ucs_unregisterLDAPSchema</function> have been implemented
-		(<ulink url="&ucsbug;26785">Bug 26785</ulink>).
-	  </simpara></listitem>
-
-	  <listitem><simpara>
 		The &ucsUCRV; descriptions in <package>univention-lib</package> have been
 		revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Two new functions <function>ucs_registerLDAPACL</function> and <function>ucs_unregisterLDAPACL</function> have been implemented
-		(<ulink url="&ucsbug;32392">Bug 32392</ulink>, <ulink url="&ucsbug;32643">Bug 32643 </ulink>).
+		Two new functions <function>ucs_registerLDAPExtensios</function> and <function>ucs_unregisterLDAPExtensios</function> have been implemented
+		(<ulink url="&ucsbug;32392">Bug 32392</ulink>, <ulink url="&ucsbug;26785">Bug 26785</ulink>, <ulink url="&ucsbug;32643">Bug 32643</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
