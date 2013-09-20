@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.79-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 20 Sep 2013 12:10:16 +0200
+
 univention-management-console-frontend (3.0.79-1) unstable; urgency=low
 
   * Bug #30744: Internet Explorer fixes
