@@ -370,38 +370,58 @@ Samba-Domänencontrollern zur Verfügung stehen und sollte überall
 denselben Inhalt haben.
 </para>
 
-<section id="windows:netlogon:Samba_3"><title>Samba 3</title>
-<para>
-Unter Samba 3 ist standardmäßig das
-Verzeichnis <filename>/var/lib/samba/netlogon</filename> als
-Samba-Freigabe <emphasis>NETLOGON</emphasis> eingerichtet.
-</para>
-<para>
-In der Grundeinstellung werden alle Anpassungen im
-Verzeichnis <filename>/var/lib/samba/netlogon</filename> auf dem &ucsMaster;
-vorgenommen und stündlich mit dem <emphasis>rsync</emphasis>-Tool auf alle
-Domänencontroller mit installiertem Samba synchronisiert.
-</para>
-<para>
-Um ein globales Anmeldeskript für alle Benutzer zu definieren, steht die
-&ucsUCRV; <envar>samba/logonscript</envar> zur Verfügung. Ist diese Variable auf einem
-Samba-Server gesetzt, wird allen Benutzern, die sich an diesem
-Samba-Server anmelden, standardmäßig das dort angegebene Anmeldeskript
-zugeordnet. Das Anmeldeskript kann auch benutzerspezifisch zugewiesen
-werden, siehe <xref linkend="users::management"/>.
-</para>
+<section id="windows:netlogon:Samba_3">
+  <title>Samba 3</title>
+  <para>
+	Unter Samba 3 ist standardmäßig das Verzeichnis <filename>/var/lib/samba/netlogon</filename> als
+	Samba-Freigabe <emphasis>NETLOGON</emphasis> eingerichtet.
+  </para>
+
+  <para>
+	In der Grundeinstellung werden alle Anpassungen im Verzeichnis
+	<filename>/var/lib/samba/netlogon</filename> auf dem &ucsMaster; vorgenommen und stündlich mit
+	dem <emphasis>rsync</emphasis>-Tool auf alle Domänencontroller mit installiertem Samba
+	synchronisiert. Der Synchronisations-Modus kann durch die &ucsUCRV;
+	<envar>samba/netlogon/sync</envar> konfiguriert werden:
+
+	<itemizedlist>
+	  <listitem><simpara>
+		Mit <emphasis>sync</emphasis> werden die Netlogon-Skripte vom &ucsMaster; auf den
+		Samba-Server repliziert und auf dem Master nicht mehr vorhandene Dateien lokal gelöscht. Das
+		ist die Standardeinstellung.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Mit <emphasis>download</emphasis> werden die Daten ebenfalls vom &ucsMaster; kopiert,
+		entfernte Dateien jedoch nicht gelöscht.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		<emphasis>none</emphasis> deaktiviert die Synchronisation.
+	  </simpara></listitem>
+	</itemizedlist>
+  </para>
+
+  <para>
+	Um ein globales Anmeldeskript für alle Benutzer zu definieren, steht die &ucsUCRV;
+	<envar>samba/logonscript</envar> zur Verfügung. Ist diese Variable auf einem Samba-Server
+	gesetzt, wird allen Benutzern, die sich an diesem Samba-Server anmelden, standardmäßig das dort
+	angegebene Anmeldeskript zugeordnet. Das Anmeldeskript kann auch benutzerspezifisch zugewiesen
+	werden, siehe <xref linkend="users::management"/>.
+  </para>
 </section>
 
-<section id="windows:netlogon:Samba_4"><title>Samba 4</title>
-<para>
-Unter Samba 4 werden die Anmeldeskripte
-unter <filename>/var/lib/samba/sysvol/&lt;Domänenname&gt;/scripts/</filename> abgelegt
-und werden ebenfalls unter dem Freigabennamen <emphasis>NETLOGON</emphasis>
-bereitgestellt.
-</para>
-<para>
-Die NETLOGON-Freigabe wird im Rahmen der SYSVOL-Replikation repliziert.
-</para>
+<section id="windows:netlogon:Samba_4">
+  <title>Samba 4</title>
+  <para>
+	Unter Samba 4 werden die Anmeldeskripte unter
+	<filename>/var/lib/samba/sysvol/&lt;Domänenname&gt;/scripts/</filename> abgelegt und werden
+	ebenfalls unter dem Freigabennamen <emphasis>NETLOGON</emphasis> bereitgestellt.
+  </para>
+
+  <para>
+	Die NETLOGON-Freigabe wird im Rahmen der SYSVOL-Replikation repliziert.
+  </para>
 </section>
 </section>
 

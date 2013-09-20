@@ -357,6 +357,27 @@ In the default setting, all adjustments are made in
 the <filename>/var/lib/samba/netlogon</filename> directory on the &ucsMaster;
 and synchronised hourly on all domain controllers with Samba installed
 via the <emphasis>rsync</emphasis> tool.
+
+<!-- Der Synchronisations-Modus kann durch die &ucsUCRV; -->
+<!-- 	<envar>samba/netlogon/sync</envar> konfiguriert werden: -->
+
+<!-- 	<itemizedlist> -->
+<!-- 	  <listitem><simpara> -->
+<!-- 		Mit <emphasis>sync</emphasis> werden die Netlogon-Skripte vom &ucsMaster; auf den -->
+<!-- 		Samba-Server repliziert und auf dem Master nicht mehr vorhandene Dateien lokal gelöscht. Das -->
+<!-- 		ist die Standardeinstellung. -->
+<!-- 	  </simpara></listitem> -->
+
+<!-- 	  <listitem><simpara> -->
+<!-- 		Mit <emphasis>download</emphasis> werden die Daten ebenfalls vom &ucsMaster; kopiert, -->
+<!-- 		entfernte Dateien jedoch nicht gelöscht. -->
+<!-- 	  </simpara></listitem> -->
+
+<!-- 	  <listitem><simpara> -->
+<!-- 		<emphasis>none</emphasis> deaktiviert die Synchronisation. -->
+<!-- 	  </simpara></listitem> -->
+<!-- 	</itemizedlist> -->
+
 </para>
 <para>
 The &ucsUCRV; <envar>samba/logonscript</envar> is available for defining a global logon
