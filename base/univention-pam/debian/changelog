@@ -1,3 +1,9 @@
+univention-pam (7.0.2-1) unstable; urgency=low
+
+  * Remove duplicate description for nscd/autostart (Bug #30943)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2013 10:05:01 +0200
+
 univention-pam (7.0.1-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)

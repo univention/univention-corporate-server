@@ -94,12 +94,6 @@ Description[en]=If this variable is activated (possible values: yes/no) NSCD is 
 Type=bool
 Categories=system-base
 
-[nscd/autostart]
-Description[de]=Die Variable konfiguriert den Startmodus des NSCD-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
-Description[en]=This variable configures the start mode of the NSCD service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
-Type=bool
-Categories=system-base
-
 [nscd/restart/interval]
 Description[de]=Wenn der automatische NSCD-Neustart mit der Variable nscd/restart aktiviert wurde, kann hier das Intervall in Sekunden festgelegt werden. Wird kein Wert konfiguriert, erfolgt der Neustart stündlich.
 Description[en]=If the automatic NSCD restart has been activated through the variable nscd/restart, the restart interval in seconds can be configured here. If no value is set, the restart occurs hourly.
