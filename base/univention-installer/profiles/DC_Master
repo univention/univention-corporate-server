@@ -6,7 +6,7 @@ to_check="hostname domainname"
 #modules=''
 
 # [Partition]
-## use with care, uses all storage attached
+## use with care, all attached storage devices will be erased
 #auto_part="yes"
 partitiontable_type="GPT"
 

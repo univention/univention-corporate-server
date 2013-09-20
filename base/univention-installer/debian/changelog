@@ -1,3 +1,9 @@
+univention-installer (9.0.24-1) unstable; urgency=low
+
+  * Bug #31705: updated comment in default installation profiles
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 20 Sep 2013 10:58:45 +0200
+
 univention-installer (9.0.23-1) unstable; urgency=low
 
   * add installation_feedback_host (Bug #1156)
