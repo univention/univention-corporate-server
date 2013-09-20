@@ -650,7 +650,7 @@
                         Neben den physischen Interfaces können auch zusätzliche virtuelle Interfaces in der Form
                         <envar>interfaces/ethX_Y/Eigenschaft</envar> definiert werden.
                     </para>
-                </section><!-- Konfiguration von IPv4-Adressen -->
+                </section>
 
                 <section id="computers:Konfiguration_von_IPv6-Adressen"><title>Konfiguration von IPv6-Adressen</title>
                     <para>
@@ -662,7 +662,9 @@
                         konfiguriert werden. Im Gegensatz zu DHCP wird bei SLAAC keine Zuweisung von
                         weitergehenden Daten wie dem zu verwendenden DNS-Server durchgeführt. Hierfür
                         gibt es mit DHCPv6 ein Zusatzprotokoll, das bei der dynamischen Zuweisung aber
-                        nicht zum Einsatz kommt.
+                        nicht zum Einsatz kommt. Der <guimenu>Bezeichner</guimenu> ist ein
+						eindeutiger Name für die IPv6-Netzwerkschnittstelle,
+						z.B. <emphasis>Interface-Mailserver</emphasis>.
                     </para>
                     <para>
                         (UCR-Variablen: <envar>interfaces/ethX/ipv6/address</envar>,
@@ -683,7 +685,7 @@
                     <para>
                         (UCR-Variablen: <envar>gateway</envar>, <envar>ipv6/gateway</envar>)
                     </para>
-                </section><!-- Konfiguration von IPv6-Adressen -->
+                </section>
 
                 <section id="computers:Konfiguration_der_Nameserver"><title>Konfiguration der Nameserver</title>
 					<para>
@@ -726,7 +728,7 @@
                         (UCR-Variablen: <envar>nameserver1</envar> bis <envar>nameserver3</envar>,
                         <envar>dns/forwarder1</envar> bis <envar>dns/forwarder3</envar>,
                     </para>
-                </section><!-- Konfiguration der Nameserver-->
+                </section>
 
                 <section id="computers:Konfiguration_von_Bridges_Bonding_VLANs"><title>Konfiguration von Bridges/Bonding/VLANs</title>
 				<para>

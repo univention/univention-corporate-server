@@ -674,6 +674,9 @@
 					assignment of additional data such as the DNS server to be used. There is an
 					additional protocol for this (DHCPv6), which, however, is not employed in the
 					dynamic assignment.
+					<!-- Der <guimenu>Bezeichner</guimenu> ist ein -->
+					<!-- eindeutiger Name für die IPv6-Netzwerkschnittstelle, -->
+					<!-- z.B. <emphasis>Interface-Mailserver</emphasis>. -->
 				</para>
 				<para>
 					(UCR variables: <envar>interfaces/ethX/ipv6/address</envar>,
