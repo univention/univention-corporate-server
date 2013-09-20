@@ -248,7 +248,7 @@ define([
 		},
 
 		openShop: function() {
-			var shopUrl = this.app.shopurl;
+			var shopUrl = this.app.shopurl || 'https://shop.univention.com';
 			var w = window.open(shopUrl, '_blank');
 			tools.umcpCommand('appcenter/buy', {application: this.app.id}).then(
 				function(data) {
