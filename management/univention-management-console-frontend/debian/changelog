@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.77-1) unstable; urgency=low
+
+  * Bug #24727: display referred module names generic
+
+ -- Florian Best <best@univention.de>  Fri, 20 Sep 2013 08:36:00 +0200
+
 univention-management-console-frontend (3.0.76-2) unstable; urgency=low
 
   * Bug #24422: fixed cookie handling

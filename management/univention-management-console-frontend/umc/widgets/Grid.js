@@ -125,7 +125,6 @@ define([
 		//		will be displayed in the grid footer.
 		footerFormatter: null,
 
-
 		// headerFormatter: Function?
 		//		TODO
 		//
@@ -146,8 +145,7 @@ define([
 		gutters: false,
 
 		// defaultAction: Function/String a default action that is executed
-		//		when clicking on FIXME a row (not on the checkbox or action
-		//		buttons)
+		//		when clicking on the column defined in defaultActionColumn (if set) or in the first column.
 		defaultAction: 'edit',
 
 		// defaultActionColumn:
@@ -175,6 +173,7 @@ define([
 		_footer: null,
 
 		_footerLegend: null,
+		_headerText: null,
 
 		// internal list of all disabled items... when data has been loaded, we need to
 		// disable these items again
@@ -258,8 +257,6 @@ define([
 				return;
 			}
 
-			this._setContextActions();
-
 			// create the layout for the grid columns
 			var gridColumns = array.map(columns, function(icol, colNum) {
 				tools.assert(icol.name !== undefined && icol.label !== undefined, 'The definition of grid columns requires the properties \'name\' and \'label\'.');
@@ -276,7 +273,10 @@ define([
 				delete col.label;
 
 				// default action
-				if ((!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name == this.defaultActionColumn)) {
+				var defaultActionExists = this.defaultAction && array.indexOf(array.map(this.actions, function(iact) { return iact.name; }, this.defaultAction)) !== -1;
+				var isDefaultActionColumn = (!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name == this.defaultActionColumn);
+
+				if (defaultActionExists && isDefaultActionColumn) {
 					col.formatter = lang.hitch(this, function(value, rowIndex) {
 						value = icol.formatter ? icol.formatter(value, rowIndex) : value;
 						if (value.domNode) {
@@ -324,8 +324,9 @@ define([
 			this.actions = actions;
 
 			this._setNonContextActions();
+			this._setContextActions();
 
-			// clear the footer and redraw the columns
+			// redraw the columns
 			if (doSetColumns !== false) {
 				this._setColumnsAttr(this.columns);
 			}
@@ -350,7 +351,10 @@ define([
 				content: '',
 				style: 'display: inline-block; font-weight: bold;'
 			}));
-//			this._contextMenu.addChild(new MenuItem({label: this._headerText}));
+			this._contextMenu.addChild(this._contextMenuHeader = new MenuItem({label: ''}));
+			this.own(this._headerText.watch('content', lang.hitch(this, function(name, old, content) {
+				this._contextMenuHeader.set('label', content);
+			})));
 
 			this._nonStandardActionsMenu = new Menu({});
 
@@ -587,7 +591,7 @@ define([
 			}
 
 			if (showNum) {
-				msg = msg || (nItems === 1) ? _('1 entry: ') : _('%s entries: ', nItems);
+				msg = msg || ((nItems === 1) ? _('1 entry: ') : _('%s entries: ', nItems));
 				this._headerText.set('content', msg);
 				this._headerContainer.selectChild(this._contextActionsToolbar);
 			} else {
@@ -602,7 +606,7 @@ define([
 			array.forEach(this._contextActionsToolbar.getChildren(), function(item) {
 				var visible = this.multiActionsAlwaysActive === true;
 				if (item !== this._headerText) {
-					item.set('visible', visible || nItems !== 0);
+					item.set('visible', visible || (nItems !== 0));
 				}
 			}, this);
 

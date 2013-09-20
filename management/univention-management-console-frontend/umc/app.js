@@ -1300,9 +1300,9 @@ define([
 		},
 
 		_checkUpdateAvailable: function() {
-			if ( this.getModule('updater') && tools.isTrue(_ucr['update/available']) ) {
+			if (this.getModule('updater') && tools.isTrue(_ucr['update/available'])) {
 				var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'updater\')"';
-				this._overviewPage.addNote( _( 'An update for UCS is available. Please visit <a %s>Online Update Module</a> to install the updates.', link ) );
+				this._overviewPage.addNote(_( 'An update for UCS is available. Please visit <a %s>%s Module</a> to install the updates.', link, this.getModule('updater').name));
 			}
 		},
 
@@ -1333,12 +1333,13 @@ define([
 		_checkRebootRequired: function() {
 			if ( this.getModule('reboot') && tools.isTrue(_ucr['update/reboot/required']) ) {
 				var link_reboot = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'reboot\')"';
-				this._overviewPage.addNote( _( 'This system has been updated recently. Please visit the <a %s>Reboot Module</a> and reboot this system to finish the update.', link_reboot ) );
+				this._overviewPage.addNote(_('This system has been updated recently. Please visit the <a %s>%s Module</a> and reboot this system to finish the update.', link_reboot,  this.getModule('reboot').name));
 			}
 		},
 
 		_checkJoinStatus: function() {
 			if (this.getModule('join')) {
+				var joinModuleName = this.getModule('join').name;
 				all([
 					tools.umcpCommand('join/joined', null, false),
 					tools.umcpCommand('join/scripts/query', null, false)
@@ -1350,9 +1351,9 @@ define([
 						});
 						var joinModuleLink = '<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'join\')"';
 						if (!systemJoined) {
-							this._overviewPage.addNote(_('The system has not been joined into a domain so far. Please visit <a %s>Domain Join Module</a> to join the system.', joinModuleLink));
+							this._overviewPage.addNote(_('The system has not been joined into a domain so far. Please visit <a %s>%s Module</a> to join the system.', joinModuleLink, joinModuleName));
 						} else if (!allScriptsConfigured) {
-							this._overviewPage.addNote(_('Not all installed components have been registered. Please visit <a %s>Domain Join Module</a> to register the remaining components.', joinModuleLink));
+							this._overviewPage.addNote(_('Not all installed components have been registered. Please visit <a %s>%s Module</a> to register the remaining components.', joinModuleLink, joinModuleName));
 						}
 					}), function() {
 						console.log('WARNING: An error occurred while verifying the join state. Ignoring error.');
