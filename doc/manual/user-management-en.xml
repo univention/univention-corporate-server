@@ -150,7 +150,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>jpeg photo</entry>
+                        <entry>Picture of the user (JPEG format)</entry>
                         <entry>
                             This mask can be used to save a picture of the user in LDAP in JPEG format. In
                             the default settings the file size is limited to 512 kilobytes.
@@ -427,7 +427,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Samba User Login Times</entry>
+                        <entry>Permitted times for Windows logins</entry>
                         <entry>
                             <para>
                                 This input field contains time periods for which this user can log on
@@ -474,7 +474,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Group ID</entry>
+                        <entry>Group ID of the primary group</entry>
                         <entry>
                             The group ID of the user's primary group is shown here. The primary
                             group can be changed in the <guimenu>General</guimenu> tab.
@@ -511,7 +511,7 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>E-Mail address(es)</entry>
+                        <entry>E-mail address(es)</entry>
                         <entry>
                             <para>
                                 Additional e-mail addresses can be saved here. These are not evaluated
@@ -612,7 +612,7 @@
 		</para>
 
         <table>
-            <title>'Windows Advanced' tab (advanced settings)</title>
+            <title>'Windows terminal server' tab (advanced settings)</title>
             <tgroup cols="2">
                 <colspec colnum="1" colname="col1" colwidth="1*"/>
                 <colspec colnum="2" colname="col2" colwidth="2*"/>

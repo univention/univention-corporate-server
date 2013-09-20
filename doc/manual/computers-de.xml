@@ -2292,7 +2292,7 @@ univention-repository-update -h
 
             <section id="computers:Aktualisierung_eines_einzelnen_Systems_in_der_UMC"><title>Aktualisierung eines einzelnen Systems in der &ucsUMC;</title>
                 <para>
-                    Mit dem <guimenu>Online-Update</guimenu>-Modul der &ucsUMC; können Versions- und
+                    Mit dem <guimenu>Software-Aktualisierung</guimenu>-Modul der &ucsUMC; können Versions- und
                     Errata-Updates installiert werden.
                 </para>
                 <para>
@@ -2760,8 +2760,8 @@ apt-cache search fax
                 </figure>
                 <para>
                     Der Rechnername des Download-Servers ist im Eingabefeld
-                    <guimenu>Repository Server</guimenu> anzugeben und, sofern notwendig,
-                    unter <guimenu>Repository Prefix</guimenu> ein eventueller zusätzlicher
+                    <guimenu>Repository-Server</guimenu> anzugeben und, sofern notwendig,
+                    unter <guimenu>Repository-Präfix</guimenu> ein eventueller zusätzlicher
                     Dateipfad.
                 </para>
                 <para>

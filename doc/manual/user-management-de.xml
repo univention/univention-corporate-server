@@ -114,7 +114,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Titel</entry>
+                        <entry>Anrede</entry>
                         <entry>
                             Die Anrede des Benutzers kann hier eingegeben werden.
                         </entry>
@@ -433,7 +433,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Samba-Anmeldezeitraum</entry>
+                        <entry>Erlaubte Zeiten für Windows-Anmeldungen</entry>
                         <entry>
                             <para>
                                 In diesem Eingabefeld werden Zeitspannen festgelegt, zu denen sich dieser Benutzer
@@ -483,7 +483,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Gruppen-ID</entry>
+                        <entry>Gruppen-ID der primären Gruppe</entry>
                         <entry>
                             Hier wird die Gruppen-ID der primären Gruppe des Benutzers
                             angezeigt. Die primäre Gruppe kann im Reiter <guimenu>Allgemein</guimenu>
@@ -522,7 +522,7 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>E-Mail-Adresse</entry>
+                        <entry>E-Mail-Adresse(n)</entry>
                         <entry>
                             Hier können weitere E-Mail-Adressen hinterlegt werden. Diese werden
                             nicht vom Mailserver ausgewertet. Die Werte werden im LDAP-Attribut
@@ -531,7 +531,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Telefonnummer</entry>
+                        <entry>Telefonnummer(n)</entry>
                         <entry>
                             Dieses Feld beinhaltet die geschäftlichen Telefonnummern des Benutzers.
                         </entry>
@@ -684,7 +684,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Standardmäßig der Client Hauptdrucker</entry>
+                        <entry>Standard-Drucker des zugreifenden Clients als Standard-Drucker verwenden</entry>
                         <entry>
                             Wird dieses Auswahlkästchen aktiviert, so wird der Client Standard-Drucker zum
                             Standard-Drucker für diese Terminalserver-Sitzung deklariert.
@@ -738,7 +738,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Windows Terminalserver Profilpfad</entry>
+                        <entry>Windows-Terminalserver Profilpfad</entry>
                         <entry>
                             Der Pfad zum Windows-Profil, das in der Terminalserver-Sitzung verwendet
                             werden soll, ist hier anzugeben. Wird hier kein Wert angegeben, so wird der

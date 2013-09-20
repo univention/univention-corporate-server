@@ -182,7 +182,7 @@ share, see <xref linkend="shares::permissions"/>.
 
 
 <table>
-<title>'NFS General' tab</title>
+<title>'NFS' tab</title>
 <tgroup cols="2">
 <colspec colnum="1" colname="col1" colwidth="1*"/>
 <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -261,7 +261,7 @@ be restricted to the mail server of the domain.
 
 
 <table>
-<title>'Samba General' tab</title>
+<title>'Samba' tab</title>
 <tgroup cols="2">
 <colspec colnum="1" colname="col1" colwidth="1*"/>
 <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -731,7 +731,7 @@ or not).
 
 
 <table>
-<title>'Samba performance' tab (advanced settings)</title>
+<title>'Samba options' tab (advanced settings)</title>
 <tgroup cols="2">
 <colspec colnum="1" colname="col1" colwidth="1*"/>
 <colspec colnum="2" colname="col2" colwidth="2*"/>

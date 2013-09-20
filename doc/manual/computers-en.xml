@@ -2333,7 +2333,7 @@ univention-repository-update -h
 		<section id="computers:Updating_individual_systems_via_the_UMC">
 			<title>Updating individual systems via the &ucsUMC;</title>
 			<para>
-				The <guimenu>Online Update</guimenu> module allows the installation of release
+				The <guimenu>Software update</guimenu> module allows the installation of release
 				updates and errata updates.
 			</para>
 			<para>
@@ -2800,7 +2800,7 @@ apt-cache search fax
 			</para>
 			<para>
 				A further component can be set up with <guimenu>Add</guimenu>. The
-				<guimenu>Component Name</guimenu> identifies the component on the repository
+				<guimenu>Component name</guimenu> identifies the component on the repository
 				server. A free text can be entered under <guimenu>Description</guimenu>, for
 				example, for describing the functions of the component in more detail.
 			</para>

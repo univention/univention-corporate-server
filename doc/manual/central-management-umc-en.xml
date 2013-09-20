@@ -559,7 +559,7 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Default short description</entry>
+					<entry>Default long description</entry>
 					<entry>
 						This long description is shown as a tool tip in the input fields in
 						&ucsUMC;.
@@ -822,7 +822,7 @@
 					</entry>
 				</row>
 				<row>
-					<entry>May change</entry>
+					<entry>Editable after creation</entry>
 					<entry>
 						This option establishes whether the object saved in the extended
 						attribute can only be modified when saving the object, or whether it

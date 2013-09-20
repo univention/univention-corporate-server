@@ -186,7 +186,7 @@ siehe <xref linkend="shares::permissions"/>.
 
 
 <table>
-<title>Reiter 'NFS Allgemein'</title>
+<title>Reiter 'NFS'</title>
 <tgroup cols="2">
 <colspec colnum="1" colname="col1" colwidth="1*"/>
 <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -263,7 +263,7 @@ Zugriff auf eine Freigabe mit Maildaten auf den Mailserver der Domäne einschrä
 
 
 <table>
-<title>Reiter 'Samba Allgemein'</title>
+<title>Reiter 'Samba'</title>
 <tgroup cols="2">
 <colspec colnum="1" colname="col1" colwidth="1*"/>
 <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -760,7 +760,7 @@ Rechte unter Windows gesetzt wurden oder nicht).
 
 
 <table>
-<title>Reiter 'Samba-Performance' (erweiterte Einstellungen)</title>
+<title>Reiter 'Samba-Optionen' (erweiterte Einstellungen)</title>
 <tgroup cols="2">
 <colspec colnum="1" colname="col1" colwidth="1*"/>
 <colspec colnum="2" colname="col2" colwidth="2*"/>
