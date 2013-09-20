@@ -1,3 +1,9 @@
+univention-directory-logger (5.0.0-2) unstable; urgency=low
+
+  * Update UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 20 Sep 2013 11:58:02 +0200
+
 univention-directory-logger (5.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
