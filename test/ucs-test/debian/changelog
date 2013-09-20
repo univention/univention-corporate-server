@@ -1,3 +1,11 @@
+ucs-test (4.0.115-1) unstable; urgency=low
+
+  * Added univention.testing.debian_package to create simple test
+    packages from python test scripts. Needed for various ldap_extension
+    tests (Bug #32552)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Sep 2013 13:40:15 +0200
+
 ucs-test (4.0.114-1) unstable; urgency=low
 
   * fixed 66_udm-computers/ 31_all_roles_creation_set_network and

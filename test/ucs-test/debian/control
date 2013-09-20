@@ -27,6 +27,8 @@ Depends: univention-config,
  python,
  python-yaml,
  ucs-test-modules-all | ucs-test-module,
+ dpkg-dev,
+ debhelper,
  ${python:Depends},
  ${misc:Depends}
 Description: UCS test environment
