@@ -1,3 +1,9 @@
+univention-base-files (3.0.3-5) unstable; urgency=low
+
+  * Fix missing type fir UCRV (Bug #30943)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Sep 2013 14:01:01 +0200
+
 univention-base-files (3.0.3-4) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)
@@ -13,7 +19,7 @@ univention-base-files (3.0.3-3) unstable; urgency=low
         kernel/do_initrd, kernel/ramdisk and kernel/silent_loader; no longer used, 
         see Bug 32509
       Revamp category settings
-      Remove UCR variable descriptions for lilo/*, removed in UCS 3.0	
+      Remove UCR variable descriptions for lilo/*, removed in UCS 3.0
       Remove UCR variable description for ldap/binaryattributes, causes more 
         confusion than being useful.
       Remove UCR variable descriptions for proxy/password and proxy/username,
@@ -21,7 +27,7 @@ univention-base-files (3.0.3-3) unstable; urgency=low
       Mark server/role as ReadOnly
       Remove UCR variable description for version/security-patchlevel, no longer
         used since UCS 3.0
-      Mark version/version, version/patchlevel, version/releasename and version/erratalevel 
+      Mark version/version, version/patchlevel, version/releasename and version/erratalevel
 	as ReadOnly, they are set automatically during the updates
       Remove UCR variable descriptions for installer/device/.*/fs, installer/device/.*/mp,
 	and installer/device/.*/name; only used during installation, see #32527
