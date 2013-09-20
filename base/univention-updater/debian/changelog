@@ -1,3 +1,9 @@
+univention-updater (9.0.17-1) unstable; urgency=low
+
+  * Bug #30548: App Center updates: Link directly to apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 20 Sep 2013 10:04:10 +0200
+
 univention-updater (9.0.16-1) unstable; urgency=low
 
   * Bug #32634: try to automagically determine the GRUB boot device

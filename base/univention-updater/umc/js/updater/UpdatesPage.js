@@ -35,6 +35,7 @@ define([
 	"dojo/promise/all",
 	"dojo/dom-class",
 	"dojo/topic",
+	"dojox/string/sprintf",
 	"umc/dialog",
 	"umc/tools",
 	"umc/store",
@@ -42,7 +43,7 @@ define([
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, all, domClass, topic, dialog, tools, store, TitlePane, Page, Form, _) {
+], function(declare, lang, array, all, domClass, topic, sprintf, dialog, tools, store, TitlePane, Page, Form, _) {
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
 		_last_reboot:	false,
@@ -266,11 +267,6 @@ define([
 					name:			'app_center_updates_apps',
 					style:			'width:500px;margin-top:.5em;',
 					content:		''
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'app_center_updates_link'
 				}
 			];
 
@@ -368,7 +364,7 @@ define([
 					layout:
 					[
 						['app_center_updates_text'],
-						['app_center_updates_apps', 'app_center_updates_link']
+						['app_center_updates_apps']
 					]
 				}
 			];
@@ -540,12 +536,11 @@ define([
 					if (apps.length) {
 						msg = _('There are App Center updates available.');
 						var appUpdatesInfo = array.map(apps, function(app) {
-							return _('%(name)s: Version %(old)s can be updated to %(new)s', {name: app.name, old: app.version, 'new': app.candidate_version});
+							var link = sprintf('<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'apps\', \'%(id)s\')">%(name)s</a>', app);
+							return _('%(name)s: Version %(old)s can be updated to %(new)s', {name: link, old: app.version, 'new': app.candidate_version});
 						});
 						var appUpdatesList = '<ul><li>' + appUpdatesInfo.join('</li><li>') + '</li></ul>';
 						this._form.getWidget('app_center_updates_apps').set('content', appUpdatesList);
-						var link = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'appcenter\')"';
-						this._form.getWidget('app_center_updates_link').set('content', _('Please visit the <a %s>App Center Module</a> to install these updates.', link));
 					} else {
 						msg = _('There are no App Center updates available.');
 					}
