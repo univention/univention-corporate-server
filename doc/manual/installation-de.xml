@@ -508,143 +508,141 @@
   soll.
 </para>
 </section>
+
 <section id="installation:Netzwerkkonfiguration">
-<title>Netzwerkkonfiguration</title>
-	<para>
-		Im oberen Bereich der Netzwerkkonfiguration werden alle im System verfügbaren
-		Netzwerkkarten in einem eigenen Reiter dargestellt (es werden nur
-		Netzwerkinterfaces im Schema <emphasis>ethX</emphasis> dargestellt). Mit <keycap>F2</keycap>
-		und <keycap>F3</keycap> kann zwischen den Netzwerkkarten gewechselt werden.
-	</para>
-	<para>
-		Sollte keine Netzwerkkarte erkannt werden, wird vom Installer eine
-		virtuelle Netzwerkkarte angelegt, mit der die Installation fortgesetzt werden
-		kann.
-	</para>
-	<para>
-		Netzwerkschnittstellen können für IPv4 und/oder IPv6 konfiguriert
-		werden. IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier
-		Blöcken in Dezimalschrebweise dargestellt (z.B. 192.168.0.10), während
-		IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal dargestellt
-		werden (z.B. 2001:0DB8:FE29:DE27:0000:0000:0000:0001).
-	</para>
-	<figure id="installation-networksettings">
+  <title>Netzwerkkonfiguration</title>
+  <para>
+	Im oberen Bereich der Netzwerkkonfiguration werden alle im System verfügbaren Netzwerkkarten in
+	einem eigenen Reiter dargestellt (es werden nur Netzwerkinterfaces im Schema
+	<emphasis>ethX</emphasis> dargestellt). Mit <keycap>F2</keycap> und <keycap>F3</keycap> kann
+	zwischen den Netzwerkkarten gewechselt werden.
+  </para>
+  
+  <para>
+	Sollte keine Netzwerkkarte erkannt werden, wird vom Installer eine virtuelle Netzwerkkarte
+	angelegt, mit der die Installation fortgesetzt werden kann.
+  </para>
+
+  <para>
+	Netzwerkschnittstellen können für IPv4 und/oder IPv6 konfiguriert werden. IPv4-Adressen haben 32
+	Bit Länge und werden in der Regel in vier Blöcken in Dezimalschrebweise dargestellt
+	(z.B. 192.168.0.10), während IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal
+	dargestellt werden (z.B. 2001:0DB8:FE29:DE27:0000:0000:0000:0001).
+  </para>
+
+  <figure id="installation-networksettings">
 	<title>Netzwerkkonfiguration</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/network_de.png"/>
-	</figure>
+	<graphic scalefit="1" width="80%" fileref="illustrations/network_de.png"/>
+  </figure>
 
-		<para>
-		  Ist die Option <guimenu>DHCP</guimenu> aktiviert, wird versucht die IP-Adresse - und je
-		  nach Konfiguration auch Nameserver und/oder Standard-Gateway - über das Dynamic Host
-		  Configuration Protocol (DHCP) zu beziehen und automatisch zu konfigurieren.
-		  Wenn die DHCP-Anfrage fehlschlägt, wird eine zufällige Adresse aus dem Link-Local Netzwerk 169.254.0.0/16
-		  verwendet.
-		</para>
-		<para>
-		  Wenn die Option <guimenu>DHCP</guimenu> nicht aktiviert wird, muss eine IPv4-Adresse
-		  eingegeben werden, die an die Netzwerkkarte gebunden werden soll. Zusätzlich zur
-		  <guimenu>IP-Adresse</guimenu> muss die <guimenu>Netzmaske</guimenu> angegeben werden. 
-		</para>
+  <para>
+	Ist die Option <guimenu>DHCP</guimenu> aktiviert, wird versucht die IP-Adresse - und je nach
+	Konfiguration auch Nameserver und/oder Standard-Gateway - über das Dynamic Host Configuration
+	Protocol (DHCP) zu beziehen und automatisch zu konfigurieren. Wenn die DHCP-Anfrage fehlschlägt,
+	wird eine zufällige Adresse aus dem Link-Local Netzwerk 169.254.0.0/16 verwendet.
+  </para>
 
-		<para>
-			Die IPv6-Adresse kann auf zwei Arten konfiguriert werden:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-				Bei der <guimenu>dynamischen</guimenu> Konfiguration kommt Stateless Address
-				Autoconfiguration (SLAAC) zum Einsatz. Dabei wird die IP-Adresse automatisch
-				aus den von den IPv6-Routern verschickten Router Advertisements generiert.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				Alternativ kann die Adresse auch durch Angabe
-				von <guimenu>IPv6-Adresse</guimenu> und <guimenu>IPv6-Prefix</guimenu> statisch
-				konfiguriert werden. Im Gegensatz zu DHCP wird bei SLAAC keine Zuweisung von
-				weitergehenden Daten wie dem zu verwendenden DNS-Server durchgeführt. Hierfür
-				gibt es mit DHCPv6 ein Zusatzprotokoll, das bei der dynamischen Zuweisung aber
-				nicht zum Einsatz kommt.
-				</simpara>
-			</listitem>
-		</itemizedlist>
-		<para>
-			Unter <guimenu>Globale Netzwerk-Einstellungen</guimenu> können weitere
-			netzwerkbezogene Einstellungen vorgenommen werden.
-		</para>
-		<para>
-			Unter <guimenu>IPv4-Gateway</guimenu> und <guimenu>IPv6-Gateway</guimenu> können die für
-			die IP-Adresse im Subnetz eingesetzten Standard-Gateways für IPv4
-			und IPv6 eingegeben werden. Für IPv6 ist die Angabe eines Gateways bei
-			statischer Konfiguration erforderlich; bei dynamischer Konfiguration ist diese
-			optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway hat
-			Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten.
-		</para>
-		<para>
-			Zwei Typen von DNS-Servern werden unterschieden:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<simpara>
-				Ein <guimenu>externer DNS-Server</guimenu> wird für die Auflösung von
-				Rechnernamen und Adressen außerhalb der UCS-Domäne verwendet,
-				z.B. <emphasis>univention.de</emphasis>. Dies ist typischerweise ein Nameserver, der vom
-				Internet Provider betrieben wird.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				Ein <guimenu>Domänen-DNS-Server</guimenu> ist ein lokaler Nameserver der
-				UCS-Domäne. Dort werden ausschließlich Rechnernamen und IP-Adressen der
-				UCS-Domäne verwaltet. Wird eine Adresse im lokalen Datenbestand nicht
-				aufgefunden, wird automatisch ein externer DNS-Server angefragt. Die DNS-Daten
-				werden im LDAP-Verzeichnisdienst gespeichert, d.h. alle Domänen-DNS-Server
-				liefern identische Daten aus.
-				</simpara>
-			</listitem>
-		</itemizedlist>
-		<para>
-			Bei der Installation eines &ucsMaster; wird nur ein <guimenu>externer
-			DNS-Server</guimenu> abgefragt, da im Rahmen der Installation immer ein
-			Domänen-DNS-Server eingerichtet wird. Dieser kann dann von den anderen
-			Systemen der Domäne verwendet wird. Über die Schaltfläche <mousebutton>Mehr</mousebutton>
-			können weitere Nameserver aufgenommen werden.
-		</para>
-		<para>
-			Auch auf den Systemrollen &ucsBackup; und &ucsSlave; wird jeweils ein
-			lokaler DNS-Server eingerichtet. Hier kann durch Angabe
-			von <guimenu>Domänen-DNS-Server</guimenu> konfiguriert werden, welcher Server
-			primär für die Namensauflösung verwendet wird. Während der Installation muss
-			hier der Domänen-DNS-Server eines bereits installierten Systems angegeben
-			werden, z.B. den des &ucsMaster;.
-		</para>
-		<para>
-			Auf &ucsMember;n und Basissystemen kann nur ein Domänen-DNS-Server angegeben
-			werden.
-		</para>
-		<para>
-			Sollte außer einer virtuellen Netzwerkkarte keine Netzwerkkarte existieren,
-			so sollte kein Nameserver angegeben werden, um längere Wartezeiten während der
-			Installation zu vermeiden. Wenn der Nameserver
-			während der Installation nicht erreicht werden kann, sollte dieser nicht im
-			Univention Installer angegeben, sondern erst nach erfolgter Installation
-			konfiguriert werden. Dies vermeidet längere Timeouts während der Installation.
-		</para>
-		<para>
-			Während der Installation einiger Pakete müssen aufgrund rechtlicher
-			Einschränkungen Dateien von externen Web-Servern heruntergeladen werden, z.B.
-			das Adobe Flashplugin. Wenn das
-			UCS-System keinen unmittelbaren Zugang zum Internet besitzt, kann unter
-			<guimenu>HTTP-Proxy</guimenu> die URL eines erreichbaren Proxy-Servers angegeben werden, über den
-			die Download-Vorgänge abgewickelt werden. Das Format der URL lautet
-			<uri>http://&lt;IP-Adresse-Proxy-Server&gt;:&lt;Port&gt;</uri>.
-		</para>
-		<para>
-			Da die Auflösung von Hostnamen während der Installation in Abhängigkeit von
-			den installierten Komponenten nicht zu jedem Zeitpunkt sichergestellt werden
-			kann, sollte die IP-Adresse des Proxy-Servers eingetragen werden.
-		</para>
-	</section>
+  <para>
+	Wenn die Option <guimenu>DHCP</guimenu> nicht aktiviert wird, muss eine IPv4-Adresse eingegeben
+	werden, die an die Netzwerkkarte gebunden werden soll. Zusätzlich zur
+	<guimenu>IP-Adresse</guimenu> muss die <guimenu>Netzmaske</guimenu> angegeben werden. 
+  </para>
+
+  <para>
+	Die IPv6-Adresse kann auf zwei Arten konfiguriert werden:
+  </para>
+
+  <itemizedlist>
+	<listitem> <simpara>
+	  Bei der <guimenu>dynamischen</guimenu> Konfiguration kommt Stateless Address Autoconfiguration
+	  (SLAAC) zum Einsatz. Dabei wird die IP-Adresse automatisch aus den von den IPv6-Routern
+	  verschickten Router Advertisements generiert.
+	</simpara></listitem>
+	
+	<listitem> <simpara>
+	  Alternativ kann die Adresse auch durch Angabe von <guimenu>IPv6-Adresse</guimenu> und
+	  <guimenu>IPv6-Prefix</guimenu> statisch konfiguriert werden. Im Gegensatz zu DHCP wird bei
+	  SLAAC keine Zuweisung von weitergehenden Daten wie dem zu verwendenden DNS-Server
+	  durchgeführt. Hierfür gibt es mit DHCPv6 ein Zusatzprotokoll, das bei der dynamischen
+	  Zuweisung aber nicht zum Einsatz kommt.
+	</simpara> </listitem>
+  </itemizedlist>
+
+  <para>
+	Unter <guimenu>Globale Netzwerk-Einstellungen</guimenu> können weitere netzwerkbezogene
+	Einstellungen vorgenommen werden.
+  </para>
+
+  <para>
+	Unter <guimenu>IPv4-Gateway</guimenu> und <guimenu>IPv6-Gateway</guimenu> können die für die
+	IP-Adresse im Subnetz eingesetzten Standard-Gateways für IPv4 und IPv6 eingegeben werden. Für
+	IPv6 ist die Angabe eines Gateways bei statischer Konfiguration erforderlich; bei dynamischer
+	Konfiguration ist diese optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway
+	hat Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten.
+  </para>
+
+  <para>
+	Zwei Typen von DNS-Servern werden unterschieden:
+  </para>
+
+  <itemizedlist>
+	<listitem> <simpara>
+	  Ein <guimenu>externer DNS-Server</guimenu> wird für die Auflösung von Rechnernamen und
+	  Adressen außerhalb der UCS-Domäne verwendet, z.B. <emphasis>univention.de</emphasis>. Dies ist
+	  typischerweise ein Nameserver, der vom Internet Provider betrieben wird.
+	</simpara> </listitem>
+
+	<listitem> <simpara>
+	  Ein <guimenu>Domänen-DNS-Server</guimenu> ist ein lokaler Nameserver der UCS-Domäne. Dort
+	  werden ausschließlich Rechnernamen und IP-Adressen der UCS-Domäne verwaltet. Wird eine Adresse
+	  im lokalen Datenbestand nicht aufgefunden, wird automatisch ein externer DNS-Server
+	  angefragt. Die DNS-Daten werden im LDAP-Verzeichnisdienst gespeichert, d.h. alle
+	  Domänen-DNS-Server liefern identische Daten aus.
+	</simpara> </listitem>
+  </itemizedlist>
+
+  <para>
+	Bei der Installation eines &ucsMaster; wird nur ein <guimenu>externer DNS-Server</guimenu>
+	abgefragt, da im Rahmen der Installation immer ein Domänen-DNS-Server eingerichtet wird. Dieser
+	kann dann von den anderen Systemen der Domäne verwendet wird. Über die Schaltfläche
+	<mousebutton>Mehr</mousebutton> können weitere Nameserver aufgenommen werden.
+  </para>
+
+  <para>
+	Auch auf den Systemrollen &ucsBackup; und &ucsSlave; wird jeweils ein lokaler DNS-Server
+	eingerichtet. Hier kann durch Angabe von <guimenu>Domänen-DNS-Server</guimenu> konfiguriert
+	werden, welcher Server primär für die Namensauflösung verwendet wird. Während der Installation
+	muss hier der Domänen-DNS-Server eines bereits installierten Systems angegeben werden, z.B. den
+	des &ucsMaster;.
+  </para>
+
+  <para>
+	Auf &ucsMember;n und Basissystemen kann nur ein Domänen-DNS-Server angegeben werden.
+  </para>
+
+  <para>
+	Sollte außer einer virtuellen Netzwerkkarte keine Netzwerkkarte existieren, so sollte kein
+	Nameserver angegeben werden, um längere Wartezeiten während der Installation zu vermeiden. Wenn
+	der Nameserver während der Installation nicht erreicht werden kann, sollte dieser nicht im
+	Univention Installer angegeben, sondern erst nach erfolgter Installation konfiguriert
+	werden. Dies vermeidet längere Timeouts während der Installation.
+  </para>
+
+  <para>
+	Während der Installation einiger Pakete müssen aufgrund rechtlicher Einschränkungen Dateien von
+	externen Web-Servern heruntergeladen werden, z.B. das Adobe Flashplugin. Wenn das UCS-System
+	keinen unmittelbaren Zugang zum Internet besitzt, kann unter <guimenu>HTTP-Proxy</guimenu> die
+	URL eines erreichbaren Proxy-Servers angegeben werden, über den die Download-Vorgänge
+	abgewickelt werden. Das Format der URL lautet
+	<uri>http://&lt;IP-Adresse-Proxy-Server&gt;:&lt;Port&gt;</uri>.
+  </para>
+
+  <para>
+	Da die Auflösung von Hostnamen während der Installation in Abhängigkeit von den installierten
+	Komponenten nicht zu jedem Zeitpunkt sichergestellt werden kann, sollte die IP-Adresse des
+	Proxy-Servers eingetragen werden.
+  </para>
+</section>
 
 <section id="installer_join"><title>Join-Optionen</title>
 	<para>
