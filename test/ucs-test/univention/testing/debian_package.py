@@ -110,25 +110,17 @@ class DebianPackage():
 		self.create_debian_file_from_buffer('install', string.join(install, '\n'))
 
 		os.chdir(self._package_path)
-		p = subprocess.Popen(['dpkg-buildpackage', '-rfakeroot', '-b', '-us', '-uc'], shell=False)
-		p.wait()
-
-		if p.returncode != 0:
-		   raise BuildRuntimeError
+		if subprocess.call(['dpkg-buildpackage', '-rfakeroot', '-b', '-us', '-uc']):
+			raise BuildRuntimeError
 
 	def install(self):
 		deb_package = self.get_binary_name()
 
-		p = subprocess.Popen(['dpkg', '-i', deb_package], shell=False)
-		p.wait()
-
-		if p.returncode != 0:
+		if subprocess.call(['dpkg', '-i', deb_package]):
 			raise InstallRuntimeError
 
 	def uninstall(self):
-		p = subprocess.Popen(['dpkg', '-r', self._package_name], shell=False)
-		p.wait()
-		if p.returncode != 0:
+		if subprocess.call(['dpkg', '-r', self._package_name]):
 			raise UninstallRuntimeError
 
 	def remove(self):
@@ -192,7 +184,7 @@ if __name__ == '__main__':
 	deb.create_usr_share_file_from_buffer('test', share_file)
 	deb.create_join_script_from_buffer('66testdeb.inst', '...')
 	deb.build()
-	subprocess.Popen(['dpkg', '--contents', deb.get_binary_name()], shell=False).wait()
+	subprocess.call(['dpkg', '--contents', deb.get_binary_name()])
 	deb.install()
 	deb.uninstall()
 	deb.remove()
