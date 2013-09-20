@@ -152,7 +152,7 @@ class ApplicationLDAPObject(object):
 		base64icon = ''
 		try:
 			with open(os.path.join(FRONTEND_ICONS_DIR, '50x50', '%s.png' % app.get('icon'))) as f:
-				base64icon = base64.encodestring(f.read())
+				base64icon = base64.b64encode(f.read())
 		except IOError:
 			pass
 		attrs = {
@@ -336,7 +336,7 @@ class Application(object):
 		self.name = self._options['name']
 		self.version = self._options['version']
 		self.ldap_container = 'cn=%s,cn=apps,cn=univention,%s' % (self.id, ucr.get('ldap/base'))
-		self.ldap_id = '%s-%s' % (self.id, self.version)
+		self.ldap_id = '%s_%s' % (self.id, self.version)
 
 		# get the name of the component
 		m = self._reg_component_id.match(url)
@@ -964,7 +964,7 @@ class Application(object):
 
 	def get_ldap_object(self, or_create=False):
 		lo, pos = admin_uldap.getMachineConnection()
-		co = univention.admin.config.config()
+		co = None #univention.admin.config.config(ucr.get('ldap/server/name'))
 		try:
 			return ApplicationLDAPObject(self.ldap_id, lo, co)
 		except DoesNotExist:

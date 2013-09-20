@@ -46,19 +46,52 @@ define([
 	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page ], {
 		app: null,
 		_container: null,
+		_page: null,
+		_continueDeferred: null,
+		noFooter: true,
 
 		title: _('App management'),
 
-		reset: function(title) {
-			this.set('headerText', title);
-			if (this._container) {
-				this.removeChild(this._container);
-				this._container.destroyRecursive();
+		reset: function(mayContinue, title, actionLabel) {
+			if (this._continueDeferred) {
+				this._continueDeferred.reject();
 			}
+			this._continueDeferred = new Deferred();
+			this.set('headerText', title);
+			this.actionLabel = actionLabel;
+			var buttons = [{
+				name: 'cancel',
+				'default': true,
+				label: _('Cancel'),
+				callback: lang.hitch(this, function() {
+					if (mayContinue) {
+						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'user-cancel');
+					}
+					this._continueDeferred.reject();
+				})
+			}];
+			if (mayContinue) {
+				buttons.push({
+					name: 'submit',
+					label: this.actionLabel,
+					callback: lang.hitch(this, function() {
+						this._continueDeferred.resolve();
+					})
+				});
+			}
+			this._continueDeferred.then(lang.hitch(this, 'onBack', true), lang.hitch(this, 'onBack', false));
+			if (this._page) {
+				this.removeChild(this._page);
+				this._page.destroyRecursive();
+			}
+			this._page = new Page({
+				footerButtons: buttons
+			});
+			this.addChild(this._page);
 			this._container = new ContainerWidget({
 				scrollable: true
 			});
-			this.addChild(this._container);
+			this._page.addChild(this._container);
 		},
 
 		showRequirements: function(label, stressedRequirements, appDetailsPage) {
@@ -113,39 +146,9 @@ define([
 			this.showRequirements(_('Continuation is not recommended'), softRequirements, appDetailsPage);
 		},
 
-		showUp: function(mayContinue, actionLabel) {
-			this.actionLabel = actionLabel;
-			var deferred = new Deferred();
-			var buttons = [{
-				name: 'cancel',
-				'default': true,
-				label: _('Cancel'),
-				callback: lang.hitch(this, function() {
-					if (mayContinue) {
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'user-cancel');
-					}
-					deferred.reject();
-				})
-			}];
-			if (mayContinue) {
-				buttons.push({
-					name: 'submit',
-					label: this.actionLabel,
-					callback: function() {
-						deferred.resolve();
-					}
-				});
-			}
-			this.set('buttons', buttons);
+		showUp: function() {
 			this.onShowUp();
-			deferred.then(lang.hitch(this, 'onBack', true), lang.hitch(this, 'onBack', false));
-			return deferred;
-		},
-
-		_setButtonsAttr: function(buttons) {
-			this._container.addChild(new Form({
-				buttons: buttons
-			}));
+			return this._continueDeferred;
 		},
 
 		showErrataHint: function() {
@@ -216,6 +219,12 @@ define([
 		},
 
 		onBack: function(continued) {
+			// make sure that the user does not want to continue
+			//   (could be called by a requirement.solution(), not by the buttons)
+			// if this is called by "Continue" button, it is resolved() anyway
+			if (this._continueDeferred) {
+				this._continueDeferred.reject();
+			}
 		}
 
 	});

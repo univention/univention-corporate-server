@@ -372,13 +372,11 @@ define([
 			this._progressBar._progressBar.set('value', Infinity);
 			var invokation = tools.umcpCommand(command, commandArguments).then(lang.hitch(this, function(data) {
 				var result = data.result;
-				var confirmationRequired = false;
 				var headline = '';
 				var actionLabel = tools.capitalize(verb);
 				var mayContinue = true;
 
 				if (!result.can_continue) {
-					confirmationRequired = true;
 					mayContinue = !result.serious_problems;
 					if (mayContinue) {
 						headline = _("Do you really want to %(verb)s %(ids)s?",
@@ -387,10 +385,13 @@ define([
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'cannot-continue');
 						headline = _('You cannot continue');
 					}
-					this.detailsDialog.reset(headline);
+					this.detailsDialog.reset(mayContinue, headline, actionLabel);
 					this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);
 					this.detailsDialog.showSoftRequirements(result.invokation_warning_details, this);
 					if (result.software_changes_computed) {
+						if (result.unreachable.length) {
+							this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
+						}
 						var noHostInfo = tools.isEqual({}, result.hosts_info);
 						if (func == 'update') {
 							this.detailsDialog.showErrataHint();
@@ -399,15 +400,9 @@ define([
 						tools.forIn(result.hosts_info, lang.hitch(this, function(host, host_info) {
 							this.detailsDialog.showPackageChanges(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host);
 						}));
-						if (result.unreachable.length) {
-							this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
-						}
 					}
-				}
-
-				if (confirmationRequired) {
 					nonInteractive.reject();
-					this.detailsDialog.showUp(mayContinue, actionLabel).then(
+					this.detailsDialog.showUp().then(
 						lang.hitch(this, function() {
 							this.callInstaller(func, true, deferred);
 						}),

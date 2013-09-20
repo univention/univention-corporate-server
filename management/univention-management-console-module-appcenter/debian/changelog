@@ -1,3 +1,11 @@
+univention-management-console-module-appcenter (3.0.36-1) unstable; urgency=low
+
+  * Bug #32416: Use new univentionAppID format, encode bas64 without newlines
+  * Bug #32163: Show confirmation buttons in the footer, move host_unreachable
+    warning to the top
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 20 Sep 2013 11:53:15 +0200
+
 univention-management-console-module-appcenter (3.0.35-1) unstable; urgency=low
 
   * Bug #24727: adapt german wording
