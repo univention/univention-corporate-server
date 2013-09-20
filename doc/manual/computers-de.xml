@@ -2893,125 +2893,101 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
  repository/online/component/ucsschool/server=updates.software-univention.de \
  repository/online/component/ucsschool=yes
                 </programlisting>
-            </section><!-- Integration von Repository-Komponenten über Univention Configuration Registry -->
-        </section><!-- Integration weiterer Komponenten in ein Repository -->
+            </section>
+        </section>
 
-        <section id="computers::softwaremonitor"><title>Zentrale Überwachung von Softwareinstallationsständen mit dem Software-Monitor</title>
-            <para>
-                Der Software-Monitor ist eine Datenbank, in der Informationen über die
-                auf UCS-Systemen installierten Softwarepakete aufgezeichnet werden. Durch
-                diese Datenbank kann sich ein Administrator einen Überblick
-                verschaffen, welche Release- und Paketversionen auf den Systemen der
-                Domäne installiert sind und diese Informationen bei der schrittweisen
-                Aktualisierung einer UCS-Domäne nutzen und Installations-Probleme erkennen.
-            </para>
-            <para>
-                Der Software-Monitor kann durch Auswahl der Komponente
-                <emphasis>Paketstatus-Überwachung</emphasis> im Univention Installer eingerichtet
-                werden. Alternativ kann das Paket <package>univention-pkgdb</package>
-                installiert werden.
-            </para>
-            <para>
-                UCS-Systeme aktualisieren ihre Einträge bei der Installation,
-                Entfernung und Aktualisierung von Software selbsttätig. Das System,
-                auf dem der Software-Monitor betrieben wird, wird dabei durch den
-                DNS-Service-Record <command>_pkgdb._tcp</command> lokalisiert.
-            </para>
-            <para>
-                Die webbasierte Abfrageschnittstelle des Software-Monitors integriert
-                sich in die &ucsUMC; und kann über das Modul
-                <guimenu>Software-Monitor</guimenu> erreicht werden. Folgende Funktionen
-                stehen zur Verfügung:
-            </para>
-                <itemizedlist>
-					<listitem>
-						<simpara>
-						<emphasis>Systeme</emphasis> erlaubt die Suche nach UCS-Systemen, die vom
-                        Software-Montor erfasst werden. Es kann nach Systemnamen,
-                        UCS-Versionen und Systemrollen gesucht werden.
-						</simpara>
-                    </listitem>
-					<listitem>
-						<para>
-						<emphasis>Pakete</emphasis> ermöglicht die Suche in den von der
-                        Paketstatusdatenbank erfassten Installationsdaten. Nachfolgend
-                        findet sich eine Übersicht der vorhandenen Suchmöglichkeiten zu den
-                        Installations-Zuständen von Paketen:
-						</para>
-                        <itemizedlist>
-							<listitem>
-								<simpara>
-								Der <emphasis>Paketauswahlstatus</emphasis> beeinflusst das Verhalten bei der Aktualisierung eines Pakets.
-                                Durch <emphasis>Install</emphasis> wird ein Paket zur Installation ausgewählt. Ist ein
-                                Paket auf <emphasis>Hold</emphasis> konfiguriert, so wird es von weiterer Aktualisierung
-                                ausgenommen. Es existieren zwei Möglichkeiten ein Paket zu deinstallieren:
-                                Ein mit <emphasis>DeInstall</emphasis> entferntes Paket hält lokal erzeugte
-                                Konfigurations-Daten weiterhin vor, während ein mit <emphasis>Purge</emphasis> entferntes
-                                Paket komplett gelöscht wird.
-								</simpara>
-                            </listitem>
-							<listitem>
-								<simpara>
-								Der <emphasis>Installationszustand</emphasis> beschreibt den Status eines installierten
-                                Pakets im Hinblick auf kommende Aktualisierungen.
-                                Der Normalfall ist <emphasis>Ok</emphasis>, was dazu führt, dass ein Paket bei
-                                Vorhandensein einer aktuelleren Version aktualisiert würde. Ist ein Paket auf
-                                <emphasis>Hold</emphasis> konfiguriert, so wird es von der Aktualisierung ausgenommen.
-								</simpara>
-                            </listitem>
-							<listitem>
-								<simpara>
-								Der <emphasis>aktuelle Paketstatus</emphasis> beschreibt den Zustand eines eingerichteten
-                                Pakets. Der Normalfall ist <emphasis>Installed</emphasis> für installierte und
-                                <emphasis>ConfigFiles</emphasis> für entfernte Pakete, alle übrigen Zustände entstehen,
-                                wenn die Installation des Pakets in verschiedenen Phasen abgebrochen wurde.
-								</simpara>
-                            </listitem>
-                        </itemizedlist>
-                    </listitem>
-					<listitem>
-						<para>
-						<emphasis>Probleme</emphasis> ermöglicht die automatisierte Erkennung von
-                        Installationsprobleme:
-						</para>
-                        <itemizedlist>
-							<listitem>
-								<simpara>
-								Der Installationsstand von Systemen kann abgefragt
-                                werden und mit einem Ziel-Release verglichen werden. Veraltete
-                                Installationen können so auch in grossen Umgebungen
-                                effizient erkannt werden.
-								</simpara>
-                            </listitem>
-							<listitem>
-								<simpara>
-								Unvollständig installierte Software-Pakete können erkannt werden.
-								</simpara>
-                            </listitem>
-                        </itemizedlist>
-                    </listitem>
-                </itemizedlist>
-                <figure id="software-monitor"><title>Suche nach Paketen im Software-Monitor</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_de1.png"/>
-                </figure>
-            <para>
-                Wenn verhindert werden soll, dass UCS-Systeme Installations-Vorgänge
-                im Software-Monitor aufzeichnen (etwa weil keine Netzwerkverbindung
-                zur Datenbank besteht), kann dies durch Setzen der
-                &ucsUCRV; <envar>pkgdb/scan</envar> auf <emphasis>no</emphasis> abgeschaltet werden. Wenn die
-                Aufzeichnungen danach wieder aktiviert werden, muss das Kommando
-                <command>univention-pkgdb-scan</command> ausgeführt werden, damit die in der
-                Zwischenzeit installierten Paketversionen in die Datenbank übernommen
-                werden.
-            </para>
+        <section id="computers::softwaremonitor">
+		  <title>Zentrale Überwachung von Softwareinstallationsständen mit dem Software-Monitor</title>
+		  <para>
+			Der Software-Monitor ist eine Datenbank, in der Informationen über die auf UCS-Systemen
+			installierten Softwarepakete aufgezeichnet werden. Durch diese Datenbank kann sich ein
+			Administrator einen Überblick verschaffen, welche Release- und Paketversionen auf den
+			Systemen der Domäne installiert sind und diese Informationen bei der schrittweisen
+			Aktualisierung einer UCS-Domäne nutzen und Installations-Probleme erkennen.
+		  </para>
 
-            <para>
-			  Mit dem folgenden Befehl kann der Programmbestand eines Systems wieder aus der Datenbank entfernt werden:
+		  <para>
+			Der Software-Monitor kann durch Auswahl der Komponente
+			<emphasis>Paketstatus-Überwachung</emphasis> im Univention Installer eingerichtet
+			werden. Alternativ kann das Paket <package>univention-pkgdb</package> installiert
+			werden.
+		  </para>
+
+		  <para>
+			UCS-Systeme aktualisieren ihre Einträge bei der Installation, Entfernung und
+			Aktualisierung von Software selbsttätig. Das System, auf dem der Software-Monitor
+			betrieben wird, wird dabei durch den DNS-Service-Record <command>_pkgdb._tcp</command>
+			lokalisiert.
+		  </para>
+
+		  <para>
+			Die webbasierte Abfrageschnittstelle des Software-Monitors integriert sich in die
+			&ucsUMC; und kann über das Modul <guimenu>Software-Monitor</guimenu> erreicht
+			werden. Folgende Funktionen stehen zur Verfügung:
+
+		  </para>
+		  <itemizedlist>
+			<listitem><simpara>
+			  <emphasis>Systeme</emphasis> erlaubt die Suche nach den installierten Versionsständen
+			  von UCS-Systemen. Es kann nach Systemnamen, UCS-Versionen und Systemrollen gesucht werden.
+			</simpara></listitem>
+
+			<listitem> <para>
+			  <emphasis>Pakete</emphasis> ermöglicht die Suche in den von der Paketstatusdatenbank
+			  erfassten Installationsdaten. Neben der Suche nach <emphasis>Paketnamen</emphasis>
+			  gibt es auch die folgenden Suchmöglichkeiten zu den Installationszuständen von Paketen:
 			</para>
+
+			<itemizedlist>
+			  <listitem> <simpara>
+				Der <emphasis>Selektionsstatus</emphasis> beeinflusst das Verhalten bei der
+				Aktualisierung eines Pakets. Durch <emphasis>Install</emphasis> wird ein Paket zur
+				Installation ausgewählt. Ist ein Paket auf <emphasis>Hold</emphasis> konfiguriert,
+				so wird es von weiterer Aktualisierung ausgenommen. Es existieren zwei Möglichkeiten
+				ein Paket zu deinstallieren: Ein mit <emphasis>DeInstall</emphasis> entferntes Paket
+				hält lokal erzeugte Konfigurations-Daten weiterhin vor, während ein mit
+				<emphasis>Purge</emphasis> entferntesPaket komplett gelöscht wird.
+			  </simpara></listitem>
+
+			  <listitem><simpara>
+				Der <emphasis>Installationsstatus</emphasis> beschreibt den Status eines
+				installierten Pakets im Hinblick auf kommende Aktualisierungen. Der Normalfall ist
+				<emphasis>Ok</emphasis>, was dazu führt, dass ein Paket bei Vorhandensein einer
+				aktuelleren Version aktualisiert würde. Ist ein Paket auf <emphasis>Hold</emphasis>
+				konfiguriert, so wird es von der Aktualisierung ausgenommen.
+			  </simpara> </listitem>
+
+			  <listitem><simpara>
+				Der <emphasis>Paketstatus</emphasis> beschreibt den Zustand eines eingerichteten
+				Pakets. Der Normalfall ist <emphasis>Installed</emphasis> für installierte und
+				<emphasis>ConfigFiles</emphasis> für entfernte Pakete, alle übrigen Zustände
+				entstehen, wenn die Installation des Pakets in verschiedenen Phasen abgebrochen wurde.
+			  </simpara></listitem>
+
+			</itemizedlist>
+			</listitem>
+
+		  </itemizedlist>
+		  <figure id="software-monitor"><title>Suche nach Paketen im Software-Monitor</title>
+		  <graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_de.png"/>
+		  </figure>
+
+		  <para>
+			Wenn verhindert werden soll, dass UCS-Systeme Installations-Vorgänge im Software-Monitor
+			aufzeichnen (etwa weil keine Netzwerkverbindung zur Datenbank besteht), kann dies durch
+			Setzen der &ucsUCRV; <envar>pkgdb/scan</envar> auf <emphasis>no</emphasis> abgeschaltet
+			werden. Wenn die Aufzeichnungen danach wieder aktiviert werden, muss das Kommando
+			<command>univention-pkgdb-scan</command> ausgeführt werden, damit die in der
+			Zwischenzeit installierten Paketversionen in die Datenbank übernommen werden.
+		  </para>
+
+		  <para>
+			Mit dem folgenden Befehl kann der Programmbestand eines Systems wieder aus der Datenbank entfernt werden:
+		  </para>
                 <programlisting language="sh">
 univention-pkgdb-scan --remove-system RECHNERNAME
 				</programlisting>
-        </section><!-- Zentrale Überwachung von Softwareinstallationsständen mit dem Software-Monitor -->
-    </section><!-- Softwarevderteilung -->
+			  </section>
+	  </section>
 
 </chapter>

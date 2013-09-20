@@ -2975,16 +2975,15 @@ ucr set repository/online/component/ucsschool/description="UCS@School packages" 
 		<itemizedlist>
 			<listitem>
 				<simpara>
-				<emphasis>Systems</emphasis> allows to search for UCS systems, which
-				are tracked by the software monitor. It is possible to search for system names,
-				UCS versions and system roles.
+				<emphasis>Systems</emphasis> allows to search for the version numbers of installed
+				systems. It is possible to search for system names, UCS versions and system roles.
 				</simpara>
 			</listitem>
 			<listitem>
 				<para>
 				<emphasis>Packages</emphasis> allows to search in the installation data
-				tracked by the package status database. The following gives an overview of the
-				search possibilities available for the installation status of packages:
+				tracked by the package status database. Besides searching for a <emphasis>Package name</emphasis>
+				there are various search possibilities available for the installation status of packages:
 				</para>
 			<itemizedlist>
 				<listitem>
@@ -3019,30 +3018,10 @@ ucr set repository/online/component/ucsschool/description="UCS@School packages" 
 				</listitem>
 			</itemizedlist>
 			</listitem>
-			<listitem>
-				<para>
-				<emphasis>Problems</emphasis> allows automatic identification of
-				installation problems:
-				</para>
-			<itemizedlist>
-				<listitem>
-						<simpara>
-					The system installation status can be compared with a given target
-					release. This allows the efficient discovery of out-of-date installations in
-					large environments.
-						</simpara>
-				</listitem>
-				<listitem>
-						<simpara>
-					Incompletely installed software packages can be identified.
-						</simpara>
-				</listitem>
-			</itemizedlist>
-			</listitem>
 		</itemizedlist>
 		<figure id="software-monitor">
 			<title>Searching for packages in the software monitor</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_en1.png"/>
+			<graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_en.png"/>
 		</figure>
 		<para>
 			If you do not wish UCS systems to store installation processes in the software
