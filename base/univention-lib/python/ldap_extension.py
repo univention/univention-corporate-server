@@ -107,6 +107,8 @@ class UniventionLDAPExtension(object):
 		target_filename_parts = os.path.splitext(self.target_filename)
 		if target_filename_parts[1] == self.filesuffix:
 			self.objectname = target_filename_parts[0]
+		else:
+			self.objectname = self.target_filename
 
 		try:
 			with open(self.filename, 'r') as f:

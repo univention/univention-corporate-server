@@ -1,3 +1,9 @@
+univention-lib (3.0.18-1) unstable; urgency=low
+
+  * python/ldap_extension.py: set objectname in any case (Bug #32663)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Sep 2013 16:14:18 +0200
+
 univention-lib (3.0.17-1) unstable; urgency=low
 
   * Fix ldap/server/addition{al,} in function comment (Bug #28714)
