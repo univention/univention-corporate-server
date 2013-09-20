@@ -86,7 +86,7 @@ class DebianPackage():
 
 	def create_unjoin_script_from_buffer(self, unjoinscript_name, unjoinscript_buffer):
 		self.__unjoin_file = os.path.join(self._package_path, unjoinscript_name)
-		self.__create_file_from_buffer(self.unjoin_file, unjoinscript_buffer)
+		self.__create_file_from_buffer(self.__unjoin_file, unjoinscript_buffer)
 		os.chmod(self.__unjoin_file, 0755)
 
 	def create_usr_share_file_from_buffer(self, share_filename, schema_buffer):
