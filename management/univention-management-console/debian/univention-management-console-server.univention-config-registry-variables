@@ -5,8 +5,8 @@ Type=str
 Categories=management-umc
 
 [umc/server/debug/level]
-Description[de]=Diese Variable konfiguriert den Detailgrad der Logmeldungen in /var/log/univention/management-console-server.log. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert)
-Description[en]=This variable configures the verbosity of log messages in /var/log/univention/management-console-server.log. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well)
+Description[de]=Diese Variable konfiguriert den Detailgrad der Logmeldungen in /var/log/univention/management-console-server.log. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
+Description[en]=This variable configures the verbosity of log messages in /var/log/univention/management-console-server.log. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).
 Type=int
 Categories=management-umc
 
@@ -17,14 +17,14 @@ Type=int
 Categories=management-umc
 
 [umc/module/debug/level]
-Description[de]=Der Detailgrad der Logmeldungen in /var/log/univention/management-console-module-*. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert)
-Description[en]=The verbosity of log messages in /var/log/univention/management-console-module-*. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well)
+Description[de]=Der Detailgrad der Logmeldungen in /var/log/univention/management-console-module-*. Mögliche Werte: 0-4/99 (0: nur Fehlermeldungen bis 4: alle Debugausgaben, mit 99 werden auch sensible Daten wie Klartext-Passwörter protokolliert).
+Description[en]=The verbosity of log messages in /var/log/univention/management-console-module-*. Possible values: 0-4/99 (0: only error messages to 4: all debug statements, with = 99 sensitive data like cleartext passwords is logged as well).
 Type=int
 Categories=management-umc
 
 [umc/module/timeout]
-Description[de]=Die Univention Management Console öffnet verschiedene Prozesse für die einzelnen Module (z.B. für die Benutzerverwaltung). Wird ein Modul für den hier konfigurierten Zeitraum in Sekunden nicht benutzt, wird der Prozess beendet und bei einem erneuten Zugriff auf das Modul automatisch wieder geöffnet.
-Description[en]=The Univention Management Console opens various processes for its modules (e.g. for user management). If a module wasn't used for the time period configured here, the process is terminated and automatically reopened if the module is opened again.
+Description[de]=Die Univention Management Console öffnet verschiedene Prozesse für die einzelnen Module (z.B. für die Benutzerverwaltung). Wird ein Modul für den hier konfigurierten Zeitraum in Sekunden nicht benutzt, wird der Prozess beendet und bei einem erneuten Zugriff auf das Modul automatisch wieder gestartet.
+Description[en]=The Univention Management Console opens various processes for its modules (e.g. for user management). If a module isn't used for the time period configured here, the process is terminated and automatically restarted if the module is opened again.
 Type=int
 Categories=management-umc
 

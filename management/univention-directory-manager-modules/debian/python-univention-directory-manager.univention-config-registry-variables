@@ -17,32 +17,32 @@ Type=bool
 Categories=management-udm
 
 [password/hashing/method]
-Description[de]=Legt den Hash-Algorithmus fest mit dem Passwörter im LDAP-Verzeichnis gespeichert werden. Mögliche Werte sind: "MD5": Weniger sicher als die SHA-Methoden, nicht empfohlen; "SHA-256": sicherer als MD5; "SHA-512": sicherer als MD5, empfohlen. (Standard bei Nicht- oder Falschangabe ist "SHA-512", Großschreibung wird ignoriert)
-Description[en]=Selects the hash algorithm to use for saving passwords in the LDAP directory. Possible values are: "MD5": Less secure than the SHA methods, not recommended; "SHA-256": more secure than MD5; "SHA-512": more secure than MD5, recommended. (default if not or incorrectly set: "SHA-512", capitalisation is ignored)
+Description[de]=Legt den Hash-Algorithmus fest mit dem Passwörter im LDAP-Verzeichnis gespeichert werden. Mögliche Werte sind: "MD5": Weniger sicher als die SHA-Methoden, nicht empfohlen; "SHA-256": sicherer als MD5; "SHA-512": sicherer als MD5, empfohlen. (Standard bei Nicht- oder Falschangabe ist "SHA-512", Großschreibung wird ignoriert).
+Description[en]=Selects the hash algorithm to use for saving passwords in the LDAP directory. Possible values are: "MD5": Less secure than the SHA methods, not recommended; "SHA-256": more secure than MD5; "SHA-512": more secure than MD5, recommended. (default if not or incorrectly set: "SHA-512", capitalisation is ignored).
 Type=str
 Categories=system-password
 
 [password/samba/lmhash]
-Description[de]=Ist diese Option aktiviert, werden NT-LANMAN-Hashes an Benutzerobjekten gespeichert. Diese Hashes sind veraltet und kryptografisch unsicher! Die Option ist nur in Ausnahmefällen relevant. Ist die Option nicht gesetzt, werden keine NTLM-Hashes generiert.
-Description[en]=If this option is activated, NT LANMAN hashes are stored at the user objects. Such hashes are obsolete and cryptographically insecure! This option is only relevant in exceptional cases. If the option is unset, no NTLM hashes are created.
+Description[de]=Ist diese Option aktiviert, werden NT-LANMAN-Hashes an Benutzerobjekten gespeichert. Diese Hashes sind veraltet und kryptographisch unsicher! Die Option ist nur in Ausnahmefällen relevant. Ist die Option nicht gesetzt, werden keine NTLM-Hashes generiert.
+Description[en]=If this option is activated, NT LANMAN hashes are stored at user objects. Such hashes are obsolete and cryptographically insecure! This option is only relevant in exceptional cases. If the option is unset, no NTLM hashes are created.
 Type=bool
 Categories=system-password
 
 [directory/manager/child/cn/ou]
 Description[de]=Definiert ob es gestattet ist einen OU als untergeordnetes Objekt eines Containers zu erstellen.
-Description[en]=Defines whether it is allowed to create an organizational unit as child object of a container.
-Type=str
+Description[en]=Defines whether it is allowed to create an organizational unit as a child object of a container.
+Type=bool
 Categories=management-udm
 
 [directory/manager/web/modules/autosearch]
-Description[de]=In der Grundeinstellung wird in den Domänenmanagement-Modulen der Univention Management Console eine automatische Suche nach allen Objekten durchgeführt. Dieses Verhalten kann durch Deaktivieren dieser Option abgeschaltet werden. Alternativ kann die automatische Suche auch pro Modul deaktiviert werden (siehe 'directory/manager/web/modules/.*/.*/search/autosearch').
-Description[en]=By default all objects are automatically searched for in the domain management modules of the Univention Management Console. This behaviour can be completely disabled by disabling this option. Alternatively, the autosearch can be configured on a per module basis (see 'directory/manager/web/modules/.*/.*/search/autosearch').
+Description[de]=In der Grundeinstellung wird in den Domänenmanagement-Modulen der Univention Management Console eine automatische Suche nach allen Objekten durchgeführt. Dieses Verhalten kann durch diese Option abgeschaltet werden. Alternativ kann die automatische Suche auch pro Modul deaktiviert werden (siehe 'directory/manager/web/modules/.*/.*/search/autosearch').
+Description[en]=By default an automatic search for all objects is performed by the domain management modules of the Univention Management Console. This behaviour can be completely disabled through this option. Alternatively, the autosearch can be configured on a per module basis (see 'directory/manager/web/modules/.*/.*/search/autosearch').
 Type=bool
 Categories=management-umc
 
 [directory/manager/web/modules/.*/.*/search/autosearch]
-Description[de]=Die automatische Suche in den den Domänenmanagement-Modulen der Univention Management Console (siehe 'directory/manager/web/modules/autosearch') kann auch pro Modul deaktiviert werden, z.B. 'directory/manager/web/modules/users/user/search/autosearch=false'.
-Description[en]=The automatic search in the domain management modules of the Univention Management Console (see 'directory/manager/web/modules/autosearch') can also be disabled per module, e.g. 'directory/manager/web/modules/users/user/search/autosearch=false'.
+Description[de]=Die automatische Suche der UMC Domänenmanagement-Module (siehe 'directory/manager/web/modules/autosearch') kann auch pro Modul deaktiviert werden, z.B. 'directory/manager/web/modules/users/user/search/autosearch=false'.
+Description[en]=The automatic search of the UMC domain management modules (see 'directory/manager/web/modules/autosearch') can also be disabled per module, e.g. 'directory/manager/web/modules/users/user/search/autosearch=false'.
 Type=bool
 Categories=management-umc
 
@@ -53,14 +53,14 @@ Type=str
 Categories=management-umc
 
 [directory/manager/web/modules/users/user/add/default]
-Description[de]=Diese Variable konfiguriert die DN der Benutzervorlage, die beim Anlegen eines Benutzers vorausgewählt sein soll.
-Description[en]=This variable configues the DN of a user template which is preselected when creating a user.
+Description[de]=Diese Variable konfiguriert die DN der Benutzervorlage, die beim Anlegen eines Benutzers vorausgewählt wird.
+Description[en]=This variable configures the DN of a user template which is preselected when creating a user.
 Type=str
 Categories=management-umc
 
 [directory/manager/user_group/uniqueness]
-Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, muss ein Benutzername und ein Gruppenname eindeutig sein. Das bedeutet wenn es einen Benutzer 'test' gibt, dann darf es nicht auch noch eine Gruppe 'test' geben.
-Description[en]=If this option is activated or the variable unset, a user name and a group name must be unique. That means if there is a user 'test', then a group with the name 'test' is not allowed.
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, müssen Benutzernamen und Gruppennamen unterschiedlich sein. Das bedeutet wenn es einen Benutzer 'test' gibt, dann darf es nicht auch noch eine Gruppe 'test' geben.
+Description[en]=If this option is activated or the variable unset, user names and group names must be disjunct. That means if there is a user 'test', then a group with the name 'test' is not allowed.
 Type=bool
 Categories=management-udm
 

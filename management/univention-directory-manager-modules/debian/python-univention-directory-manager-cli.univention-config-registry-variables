@@ -6,7 +6,7 @@ Categories=management-udm
 
 [directory/manager/cmd/timeout]
 Description[de]=Die Zeitspanne in Sekunden, nach der sich der Univention Directory Manager-Server bei Nichtbenutzung automatisch beendet. Ist die Variable nicht gesetzt, gelten 300 Sekunden.
-Description[en]=Time span after which an idle Univention Directory Manager server automatically terminates. If the variable is unset, 300 seconds apply.
+Description[en]=Time span in seconds after which an idle Univention Directory Manager server automatically terminates. If the variable is unset, 300 seconds apply.
 Type=int
 Categories=management-udm
 

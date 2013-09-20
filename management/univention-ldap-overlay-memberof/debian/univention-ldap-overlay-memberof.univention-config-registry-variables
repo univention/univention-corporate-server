@@ -1,12 +1,12 @@
 [ldap/overlay/memberof]
 Description[de]=Im UCS-Verzeichnisdienst werden Gruppenmitgliedschaften in der Voreinstellung nur an den Gruppenobjekten gespeichert. Wird diese Option aktiviert, werden die Gruppenmitgliedschaften über das 'memberOf'-Attribut zusätzlich an den Benutzerobjekten gespeichert. Dies erfolgt durch ein Overlay-Modul des LDAP-Servers. Ist die Variable nicht gesetzt, wird das Overlay-Modul nicht verwendet.
-Description[en]=In the UCS directory service group memberships are only stored in the groups objects in the default setting. If this option is enabled, the group memberships are also stored in the 'memberOf' attribute of user objects. This is done using an overlay module in the LDAP server. If the variable is unset, the overlay module is not enabled.
+Description[en]=In the UCS directory service group memberships are only stored in the group objects by default. If this option is enabled, the group memberships are also stored in the 'memberOf' attribute of user objects. This is done by using an overlay module of the LDAP server. If the variable is unset, the overlay module is not enabled.
 Type=bool
 Categories=service-ldap
 
 [ldap/overlay/memberof/objectclass]
-Description[de]=Ist das memberOf-Overlay aktiviert (siehe 'ldap/overlay/memberof'), konfiguriert diese Variable die Objektklasse der Gruppen, bei deren Modifikation eine Aktualisierung der Benutzerattribute durchgeführt wird. Ist die Variable nicht gesetzt, gilt 'posixGroup'.
-Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the object class of the groups, which are triggering an update of the user attributes if modified. If the variable is unset, 'posixGroup' applies.
+Description[de]=Ist das memberOf-Overlay aktiviert (siehe 'ldap/overlay/memberof'), konfiguriert diese Variable die Objektklasse von Gruppen, bei deren Modifikation eine Aktualisierung der Benutzerattribute durchgeführt wird. Ist die Variable nicht gesetzt, gilt 'posixGroup'.
+Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the object class of groups, which trigger an update of the user attributes if modified. If the variable is unset, 'posixGroup' applies.
 Type=str
 Categories=service-ldap
 
@@ -17,8 +17,8 @@ Type=str
 Categories=service-ldap
 
 [ldap/overlay/memberof/memberof]
-Description[de]=Ist das memberOf-Overlay aktiviert (siehe 'ldap/overlay/memberof'), konfiguriert diese Variable den Namen des Attributs, das am Benutzer gesetzt wird. Ist die Variable nicht gesetzt, gilt 'memberOf'.
-Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the name of the attribute set for the users. If the variable is unset, 'memberOf' applies.
+Description[de]=Ist das memberOf-Overlay aktiviert (siehe 'ldap/overlay/memberof'), konfiguriert diese Variable den Namen des Attributs, das am Benutzerobjekt verwendet wird. Ist die Variable nicht gesetzt, gilt 'memberOf'.
+Description[en]=If the memberOf overlay is activated (see 'ldap/overlay/memberof'), this variable configures the name of the attribute used in the user object. If the variable is unset, 'memberOf' applies.
 Type=str
 Categories=service-ldap
 

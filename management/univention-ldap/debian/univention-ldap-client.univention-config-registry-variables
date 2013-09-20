@@ -9,4 +9,3 @@ Description[de]=Der Port, unter dem der primäre LDAP-Server (siehe 'ldap/server
 Description[en]=The port of the primary LDAP server (see 'ldap/server/name').
 Type=int
 Categories=service-ldap
-

@@ -17,13 +17,13 @@ Type=str
 Categories=service-ln
 
 [listener/memberuid/skip]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, führt der Univention Directory Listener zusätzliche Sicherheitsprüfungen durch, um zu verhindern, das ein Benutzer einer Gruppe zweimal hinzugefügt wird. Diese Prüfungen können deaktiviert werden, indem die Variablen 'listener/memberuid/skip' und 'listener/uniquemember/skip' auf 'no' gesetzt werden.
-Description[en]=If this variable is set to 'yes', the Univention Directory Listener performs safety checks to prevent a user name being added into a group twice. These checks can be deactivated by setting the variables 'listener/memberuid/skip' and 'listener/uniquemember/skip' to 'no'. 
+Description[de]=Ist diese Variable auf 'yes' gesetzt, führt der Univention Directory Listener zusätzliche Konsistenzprüfungen durch, um zu verhindern, das ein Benutzer einer Gruppe mehrfach hinzugefügt wird. Diese Prüfungen können deaktiviert werden, indem die Variablen 'listener/memberuid/skip' und 'listener/uniquemember/skip' auf 'no' gesetzt werden.
+Description[en]=If this variable is set to 'yes', the Univention Directory Listener performs consistency checks to prevent a user name being added into a group multiple times. These checks can be deactivated by setting the variables 'listener/memberuid/skip' and 'listener/uniquemember/skip' to 'no'.
 Type=str
 Categories=service-ln
 
 [listener/uniquemember/skip]
-Description[de]=Ist diese Variable auf 'yes' gesetzt, führt der Univention Directory Listener zusätzliche Sicherheitsprüfungen durch, um zu verhindern, das ein Benutzer einer Gruppe zweimal hinzugefügt wird. Diese Prüfungen können deaktiviert werden, indem die Variablen 'listener/memberuid/skip' und 'listener/uniquemember/skip' auf 'no' gesetzt werden.
-Description[en]=If this variable is set to 'yes', the Univention Directory Listener performs safety checks to prevent a user name being added into a group twice. These checks can be deactivated by setting the variables 'listener/memberuid/skip' and 'listener/uniquemember/skip' to 'no'. 
+Description[de]=Ist diese Variable auf 'yes' gesetzt, führt der Univention Directory Listener zusätzliche Konsistenzprüfungen durch, um zu verhindern, das ein Benutzer einer Gruppe mehrfach hinzugefügt wird. Diese Prüfungen können deaktiviert werden, indem die Variablen 'listener/memberuid/skip' und 'listener/uniquemember/skip' auf 'no' gesetzt werden.
+Description[en]=If this variable is set to 'yes', the Univention Directory Listener performs consistency checks to prevent a user name being added into a group multiple times. These checks can be deactivated by setting the variables 'listener/memberuid/skip' and 'listener/uniquemember/skip' to 'no'.
 Type=str
 Categories=service-ln
