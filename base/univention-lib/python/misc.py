@@ -20,7 +20,7 @@ def createMachinePassword():
 def getLDAPURIs(configRegistryInstance = None):
 	"""
 	Returns a string with all configured LDAP servers,
-	 ldap/server/name and ldap/server/additional
+	ldap/server/name and ldap/server/addition.
 	Optional a UCR instance ca be given as parameter, for example
 	if the function is used in a UCR template
 	"""
@@ -49,7 +49,7 @@ def getLDAPURIs(configRegistryInstance = None):
 def getLDAPServersCommaList(configRegistryInstance = None):
 	"""
 	Returns a comma-separated string with all configured LDAP servers,
-	 ldap/server/name and ldap/server/additional
+	ldap/server/name and ldap/server/addition.
 	Optional a UCR instance ca be given as parameter, for example
 	if the function is used in a UCR template
 	"""
@@ -72,5 +72,3 @@ def getLDAPServersCommaList(configRegistryInstance = None):
 		ldap_servers = ','.join(ldaphosts)
 
 	return ldap_servers
-
-
