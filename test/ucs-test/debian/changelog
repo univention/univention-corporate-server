@@ -1,3 +1,10 @@
+ucs-test (4.0.116-1) unstable; urgency=low
+
+  * Added test cases for ldap schema registration and schema replication
+    (Bug #32412, Bug #32551)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Sep 2013 20:42:06 +0200
+
 ucs-test (4.0.115-1) unstable; urgency=low
 
   * Added univention.testing.debian_package to create simple test
