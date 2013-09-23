@@ -94,7 +94,7 @@ Zusätzlich werden Meta-Information zu den Backups über den
 	  <para>
 		Die folgenden Informationen geben nur einen Überblick über ein typisches System. Je nach
 		installierter Software können sich Abweichungen ergeben. Dies muss im Einzelfall geprüft
-		werden und sollte mit einem testweisen Restore getestet werden.
+		werden und sollte mit einem testweisen Restore getestet werden!
 	  </para>
 
 	  <para>
@@ -103,18 +103,11 @@ Zusätzlich werden Meta-Information zu den Backups über den
 	  </para>
 
 	  <para>
-		Die Verzeichnisse <filename>/home</filename> und <filename>/root</filename> enthalten
-		Benutzerdaten, sie sollten in der Regel immer gesichert werden.
-	  </para>
-
-	  <para>
-		In <filename>/etc/</filename> wird die Konfiguration des UCS-Systems gespeichert. In der
-		Regel sollte es gesichert werden.
-	  </para>
-
-	  <para>
-		Das Verzeichnis <filename>/var</filename> enthält Laufzeitdaten wie etwa die Mails eines
-		Mailservers. Es sollte in der Regel mit gesichert werden.
+		Diese Daten sollten in der Regel immer gesichert werden: Die Verzeichnisse
+		<filename>/home</filename> und <filename>/root</filename> enthalten Benutzerdaten, in
+		<filename>/etc/</filename> wird die Konfiguration des UCS-Systems gespeichert und das
+		Verzeichnis <filename>/var</filename> enthält Laufzeitdaten wie etwa die Mails eines
+		Mailservers.
 	  </para>
 
 	  <para>
