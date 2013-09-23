@@ -16,6 +16,10 @@
 	<para>
 		The password for the computer account is generated automatically during the
 		domain join and saved in the <filename>/etc/machine.secret</filename> file.
+<!-- Das Passwort wird in festen Intervallen automatisch -->
+<!-- 		  neu generiert (in der Grundeinstellung 21 Tage, konfigurierbar über die -->
+<!-- 		  &ucsUCRV; <envar>server/password/interval</envar>). Die Passwortrotation kann über die -->
+<!-- 		  Variable <envar>server/password/change</envar> auch deaktiviert werden. -->
 	</para>
 	<para>
 		There is an different computer object type for every system role. Further

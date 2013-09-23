@@ -12,11 +12,15 @@
             <xref linkend="domaenenbeitritt"/>), das Rechnerkonto kann jedoch auch
             vor dem Domänenbeitritt angelegt werden.
         </para>
+
         <para>
-            Das Passwort für das Rechnerkonto wird beim Domänenbeitritt
-            automatisch erzeugt und in der Datei <filename>/etc/machine.secret</filename>
-            gespeichert.
+		  Das Passwort für das Rechnerkonto wird beim Domänenbeitritt automatisch erzeugt und in der
+		  Datei <filename>/etc/machine.secret</filename> gespeichert. Das Passwort wird in festen Intervallen automatisch
+		  neu generiert (in der Grundeinstellung 21 Tage, konfigurierbar über die
+		  &ucsUCRV; <envar>server/password/interval</envar>). Die Passwortrotation kann über die
+		  Variable <envar>server/password/change</envar> auch deaktiviert werden.
         </para>
+
         <para>
             Für jede Systemrolle existiert ein eigenständiger Rechnerobjekttyp.
             Weitergehende Hinweise zu den einzelnen Systemrollen finden sich in
