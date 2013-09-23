@@ -114,8 +114,7 @@ for attribute_entry in schema[1].ldap_entry().get('attributeTypes'):
 		success = True
 
 package2.uninstall()
-package.remove()
-package.remove()
+package2.remove()
 
 if not success:
 	fail('The attribue was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id_update})

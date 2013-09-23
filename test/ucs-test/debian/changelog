@@ -1,3 +1,9 @@
+ucs-test (4.0.120-2) unstable; urgency=low
+
+  * 10_ldap/74schema_update: Minor update (Bug #31801)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Sep 2013 09:57:21 +0200
+
 ucs-test (4.0.120-1) unstable; urgency=low
 
   * 10_ldap/74schema_update: added a test case for the schema update
