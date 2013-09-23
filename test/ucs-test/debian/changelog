@@ -1,3 +1,10 @@
+ucs-test (4.0.117-2) unstable; urgency=low
+
+  * 10_ldap/70schema_registration_basis: make test case working on
+    member server and DC slave (Bug #32551)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Sep 2013 06:46:49 +0200
+
 ucs-test (4.0.117-1) unstable; urgency=low
 
   * Added missing file from last commit: 10_ldap/ldap_extension_utils.py

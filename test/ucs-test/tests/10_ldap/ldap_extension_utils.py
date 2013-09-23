@@ -49,7 +49,8 @@ def call_join_script(join_script_name):
 
 	join_script = '/usr/lib/univention-install/%s' % join_script_name
 
-	return subprocess.call([join_script, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], shell=True)
+	return subprocess.call('%s --binddn "%s" --bindpwdfile "%s"' % (join_script, ucr.get('tests/domainadmin/account'), ucr.get('tests/domainadmin/pwdfile')), shell=True)
+
 
 def fetch_schema_from_ldap_master():
 	ucr = ConfigRegistry()

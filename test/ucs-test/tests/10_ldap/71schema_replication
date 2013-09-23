@@ -35,7 +35,7 @@ VERSION=1
 joinscript_init
 UNIVENTION_APP_IDENTIFIER="%(package_name)s-1.0"
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPExtension "$@" --schema /usr/share/%(package_name)s/%(schema_name)s
+ucs_registerLDAPExtension "$@" --schema /usr/share/%(package_name)s/%(schema_name)s || die
 joinscript_save_current_version
 exit 0
 ''' % {'package_name': package_name, 'schema_name': schema_name}
