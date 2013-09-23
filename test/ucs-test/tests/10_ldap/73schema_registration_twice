@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python2.6
-## desc: Test basic schema registration
+## desc: Test if a schema is still activated even if it was added twice
 ## tags:
 ##  - ldapextensions
 ##  - apptest
@@ -11,7 +11,7 @@
 
 from univention.testing.debian_package import DebianPackage
 from univention.testing.strings import random_name, random_int
-from univention.testing.utils import fail
+from univention.testing.utils import fail, verify_ldap_object
 from univention.config_registry import ConfigRegistry
 from ldap_extension_utils import *
 from time import sleep
@@ -31,7 +31,6 @@ joinscript_init
 UNIVENTION_APP_IDENTIFIER="%(package_name)s-1.0"
 . /usr/share/univention-lib/ldap.sh
 ucs_registerLDAPExtension "$@" --schema /usr/share/%(package_name)s/%(schema_name)s || die
-joinscript_save_current_version
 exit 0
 ''' % {'package_name': package_name, 'schema_name': schema_name}
 
@@ -55,6 +54,11 @@ call_join_script(join_script_name)
 
 # The ldap server needs a few seconds
 sleep(5)
+
+# register the second time
+call_join_script(join_script_name)
+expected_dn = 'cn=%s,cn=ldapschema,cn=univention,%s' % (schema_name, ucr.get('ldap/base'))
+verify_ldap_object(expected_dn, {'univentionLDAPSchemaActive': ['TRUE']})
 
 schema = fetch_schema_from_ldap_master()
 attribute_identifier = "( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s" % {'attribute_id': attribute_id}
