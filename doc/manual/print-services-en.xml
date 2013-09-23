@@ -571,6 +571,14 @@
 		specified by the &ucsUCRV; <envar>cups/cups-pdf/anonymous</envar> (standard setting:
 		<filename>/var/spool/cups-pdf</filename>).
 	</para>
+
+  <!-- <para> -->
+  <!-- 	In der Grundeinstellung werden die generierten PDF-Dokumente unbegrenzt aufbewahrt. Wird die -->
+  <!-- 	&ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> auf <emphasis>true</emphasis> gesetzt -->
+  <!-- 	werden alte PDF-Druckaufträge über einen Cron-Job gelöscht. Die Aufbewahrungszeit in Tagen kann -->
+  <!-- 	mit der &ucsUCRV; <envar>cups/cups-pdf/cleanup/keep</envar> konfiguriert werden. -->
+  <!-- </para> -->
+
 </section>
 
 <section id="print-services:Mounting_of_print_shares_in_Windows_clients">

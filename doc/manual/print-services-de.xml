@@ -551,42 +551,47 @@
 		werden.
 	</para>
 </section>
+
 <section id="pdf-printer">
-<title>Generierung von PDF-Dokumenten aus Druckaufträgen</title>
-	<para>
-		Durch die Installation des Pakets <package>univention-printserver-pdf</package> wird
-		ein Druckserver um den speziellen Druckertyp <guimenu>cups-pdf</guimenu>
-		erweitert, der eingehende Druckaufträge in das PDF-Format umwandelt
-		und für den jeweiligen Benutzer lesbar in ein Verzeichnis auf dem
-		Druckserver ausgibt. Nach der Installation des Pakets
-		sollte <command>univention-run-join-scripts</command> aufgerufen werden.
-	</para>
-	<para>
-		Beim Anlegen eines PDF-Druckers in der &ucsUMC; (siehe
-		<xref linkend="print::shares"/>) muss als
-		Protokoll <guimenu>cups-pdf:/</guimenu> ausgewählt werden, das Ziel-Feld
-		bleibt leer.
-	</para>
+  <title>Generierung von PDF-Dokumenten aus Druckaufträgen</title>
+  <para>
+	Durch die Installation des Pakets <package>univention-printserver-pdf</package> wird ein
+	Druckserver um den speziellen Druckertyp <guimenu>cups-pdf</guimenu> erweitert, der eingehende
+	Druckaufträge in das PDF-Format umwandelt und für den jeweiligen Benutzer lesbar in ein
+	Verzeichnis auf dem Druckserver ausgibt. Nach der Installation des Pakets sollte
+	<command>univention-run-join-scripts</command> aufgerufen werden.
+  </para>
+  
+  <para>
+	Beim Anlegen eines PDF-Druckers in der &ucsUMC; (siehe <xref linkend="print::shares"/>) muss als
+	Protokoll <guimenu>cups-pdf:/</guimenu> ausgewählt werden, das Ziel-Feld bleibt leer.
+  </para>
 
-	<para>
-		Als <guimenu>Drucker-Hersteller</guimenu> muss
-		<emphasis>PDF</emphasis> und als
-		<guimenu>Drucker-Modell</guimenu> <emphasis>Generic CUPS-PDF
-		Printer</emphasis> ausgewählt werden.
-	</para>
+  <para>
+	Als <guimenu>Drucker-Hersteller</guimenu> muss <emphasis>PDF</emphasis> und als
+	<guimenu>Drucker-Modell</guimenu> <emphasis>Generic CUPS-PDF Printer</emphasis> ausgewählt
+	werden.
+  </para>
 
-	<para>
-		Das Zielverzeichnis für die generierten PDF-Dokumente wird über
-		die &ucsUCRV; <envar>cups/cups-pdf/directory</envar> festgelegt. Standardmäßig wird
-		es auf <filename>/var/spool/cups-pdf/%U</filename> gesetzt,
-		so dass <emphasis>cups-pdf</emphasis> für jeden Benutzer ein eigenes Verzeichnis
-		verwendet.
-	</para>
-	<para>
-		Anonym eingegangene Druckaufträge werden in das durch
-		die &ucsUCRV; <envar>cups/cups-pdf/anonymous</envar> vorgegebene Verzeichnis
-		ausgegeben (Standardeinstellung: <filename>/var/spool/cups-pdf</filename>).
-	</para>
+  <para>
+	Das Zielverzeichnis für die generierten PDF-Dokumente wird über die &ucsUCRV;
+	<envar>cups/cups-pdf/directory</envar> festgelegt. Standardmäßig wird es auf
+	<filename>/var/spool/cups-pdf/%U</filename> gesetzt, so dass <emphasis>cups-pdf</emphasis> für
+	jeden Benutzer ein eigenes Verzeichnis verwendet.
+  </para>
+  
+  <para>
+	Anonym eingegangene Druckaufträge werden in das durch die &ucsUCRV;
+	<envar>cups/cups-pdf/anonymous</envar> vorgegebene Verzeichnis ausgegeben (Standardeinstellung:
+	<filename>/var/spool/cups-pdf</filename>).
+  </para>
+
+  <para>
+	In der Grundeinstellung werden die generierten PDF-Dokumente unbegrenzt aufbewahrt. Wird die
+	&ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> auf <emphasis>true</emphasis> gesetzt
+	werden alte PDF-Druckaufträge über einen Cron-Job gelöscht. Die Aufbewahrungszeit in Tagen kann
+	mit der &ucsUCRV; <envar>cups/cups-pdf/cleanup/keep</envar> konfiguriert werden.
+  </para>
 </section>
 
 <section id="print-services:Einbinden_von_Druckerfreigaben_auf_Windows-Clients">
