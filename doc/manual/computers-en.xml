@@ -2252,12 +2252,23 @@ nscd -i hosts
 				for example, a main repository is maintained at the company headquarters and
 				then synchronised to local repositories at the individual locations.
 			</para>
-			<!-- This is described in Univention Wiki under WIKIREF-24826. -->
+
 			<para>
 				To set up a repository, the <command>univention-repository-create</command>
 				command must be run as the <emphasis>root</emphasis> user. The initial package
 				inventory is imported from an installation DVD. The parameter
 				<emphasis>--iso</emphasis> allows importing from an ISO image.
+<!-- UCS ist als 32 und 64 Bit-DVD -->
+<!-- 				verfügbar. Das Repository wird von <command>univention-repository-create</command> -->
+<!-- 				mit der Architektur des angegebenen Installationsmediums erzeugt. Wird eine Umgebung -->
+<!-- 				betrieben, in der sowohl 32-, als auch 64 Bit-Pakete bereitgestellt werden sollen, -->
+<!-- 				sind die folgenden Befehle auf dem Repository-Server nötig: -->
+
+<!-- 				<programlisting language="sh"> -->
+<!-- ucr set repository/online/architectures="i386 amd64" -->
+<!-- univention-repository-update net -->
+<!-- 				</programlisting> -->
+
 			</para>
 			<para>
 				Access to the Univention online repository is cryptographically secured via the
