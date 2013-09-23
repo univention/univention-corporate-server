@@ -1162,7 +1162,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The SSL fields are now updated automatically during appliance setup (<ulink url="&ucsbug;29658">Bug 29658</ulink>).
+		  The SSL fields are now updated automatically during appliance setup, depending on default locale chosen (<ulink url="&ucsbug;29658">Bug 29658</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
