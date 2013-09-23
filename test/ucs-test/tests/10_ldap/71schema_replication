@@ -82,7 +82,7 @@ package.install()
 call_join_script(join_script_name)
 
 # The ldap server needs a few seconds
-sleep(3)
+sleep(5)
 
 properties = {
 	'name': random_name(),

@@ -1,3 +1,10 @@
+ucs-test (4.0.118-1) unstable; urgency=low
+
+  * Added test cases for settings/ldapschema settings/ldapacl
+    (Bug #32412, Bug #32411)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Sep 2013 08:30:08 +0200
+
 ucs-test (4.0.117-2) unstable; urgency=low
 
   * 10_ldap/70schema_registration_basis: make test case working on
@@ -371,7 +378,7 @@ ucs-test (4.0.76-1) unstable; urgency=low
     evaluated as dictionary and it's key-value pairs appended to the CLI cmd
     line like "--set $key=$value" (neccessary if some module properties have
     names which are already used as special keyword arguments, e.g "options"
-    in unviention.admin.handlers.settings.extended_attribute) (Bug #30560)
+    in univention.admin.handlers.settings.extended_attribute) (Bug #30560)
 
   * added certain udm-extendedattribute tests (Bug #31661)
 

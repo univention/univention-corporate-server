@@ -1,0 +1,29 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create a valid ldap acl object
+## tags: [udm-ldapextensions,apptest]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-directory-manager-tools
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import bz2
+import base64
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		acl_name = uts.random_name()
+		filename = '90%s' % uts.random_name()
+		data = '# access to  *'
+		acl = udm.create_object('settings/ldapacl', name = acl_name, filename = filename, data = base64.encodestring(bz2.compress(data)))
+		utils.verify_ldap_object(acl, {'cn': [acl_name]})
+
+		udm.remove_object('settings/ldapacl', dn = acl)
+		try:
+			utils.verify_ldap_object(acl, {'cn': [acl_name]})
+		except utils.LDAPObjectNotFound:
+			pass
+		else:
+			fail('settings/ldapacl object was found although it had been removed')
