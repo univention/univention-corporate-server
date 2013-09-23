@@ -92,7 +92,8 @@ class DebianPackage():
 
 	def create_usr_share_file_from_buffer(self, share_filename, schema_buffer):
 		path = os.path.join(self._package_path, 'usr/share/%s' % self._package_name)
-		os.makedirs(path)
+		if not os.path.exists(path):
+			os.makedirs(path)
 		share_file = os.path.join(path, share_filename)
 		self.__create_file_from_buffer(share_file, schema_buffer)
 
