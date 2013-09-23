@@ -1,3 +1,10 @@
+ucs-test (4.0.119-1) unstable; urgency=low
+
+  * 10_ldap/72schema_re-registration_object_class: test the re-registration
+    of a known object class which should be fail (Bug #31801)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Sep 2013 09:18:34 +0200
+
 ucs-test (4.0.118-1) unstable; urgency=low
 
   * Added test cases for settings/ldapschema settings/ldapacl
