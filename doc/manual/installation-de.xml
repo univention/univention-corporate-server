@@ -502,11 +502,14 @@
 	schreiben</mousebutton> (Funktionstaste <keycap>F6</keycap>) wird die neue Partitionstabelle auf die
   Festplatte geschrieben und die Partitionen ggf. formatiert.
 </para>
+
 <para>
-  Ist mehr als eine Festplatte vorhanden, wird ein Dialog angezeigt, in dem
-  ausgewählt werden kann, in welches Gerät der Bootloader installiert werden
-  soll.
+  Ist mehr als eine Festplatte vorhanden, wird ein Dialog angezeigt, in dem ausgewählt werden kann,
+  in welches Gerät der Bootloader installiert werden soll. USB-Sticks werden dabei ausgeblendet. Um
+  die Auswahl zu erleichtern wird der Hersteller der Speichermedien angezeigt (bei Verwendung des
+  virtio-Treibers unter KVM wird '0x1af4: Unknown' angezeigt).
 </para>
+
 </section>
 
 <section id="installation:Netzwerkkonfiguration">

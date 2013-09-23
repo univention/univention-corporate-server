@@ -502,6 +502,9 @@
   If there is more than one hard drive available, a dialogue is shown in
   which it is possible to select in which partition the bootloader
   should be installed.
+<!-- USB-Sticks werden dabei ausgeblendet. Um -->
+<!--   die Auswahl zu erleichtern wird der Hersteller der Speichermedien angezeigt (bei Verwendung des -->
+<!--   virtio-Treibers unter KVM wird '0x1af4: Unknown' angezeigt). -->
 </para>
 </section>
 
