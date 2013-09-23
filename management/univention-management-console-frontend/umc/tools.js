@@ -38,7 +38,6 @@ define([
 	"dojo/json",
 	"dojo/topic",
 	"dojo/cookie",
-	"dojo/sniff",
 	"dijit/Dialog",
 	"dijit/TitlePane",
 	"dojox/timing/_base",
@@ -48,7 +47,7 @@ define([
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Text",
 	"umc/i18n!umc/app"
-], function(lang, array, _window, xhr, basexhr, Deferred, json, topic, cookie, has, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, _) {
+], function(lang, array, _window, xhr, basexhr, Deferred, json, topic, cookie, Dialog, TitlePane, timing, styles, entities, ContainerWidget, ConfirmDialog, Text, _) {
 
 	// in order to break circular dependencies (umc.tools needs a Widget and
 	// the Widget needs umc/tools), we define umc/dialog as an empty object and
@@ -661,7 +660,7 @@ define([
 				else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
 
 					topic.publish('/umc/actions', 'error', 'traceback');
-					var feedbackLink = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\n{5} {6}", [
+					var feedbackBody = lang.replace("{0}\n\n1) {1}\n2) {2}\n3) {3}\n\n----------\n\n{4}\n\n----------\n\n{5} {6}", [
 						_('Please take a second to provide the following information:'),
 						_('steps to reproduce the failure'),
 						_('expected result'),
@@ -671,15 +670,15 @@ define([
 						tools.status('version')
 					]);
 
-					feedbackLink = lang.replace('<a href="mailto:{email}?body={body}&amp;subject={subject}">{title}</a>', {
+					var feedbackMailto = lang.replace('mailto:{email}?body={body}&subject={subject}', {
 						email: encodeURIComponent(this.status('feedbackAddress')),
-						body: encodeURIComponent(feedbackLink),
-						subject: encodeURIComponent(this.status('feedbackSubject')),
-						title: _('Send feedback mail')
+						body: encodeURIComponent(feedbackBody),
+						subject: encodeURIComponent(this.status('feedbackSubject'))
 					});
+					var feedbackLabel = _('Send as email');
+					var feedbackLink = '<a href="' + feedbackMailto + '">' + feedbackLabel + '</a>';
 
-
-					var content = '<pre>' + message + '</pre><br>' + feedbackLink;
+					var content = '<pre>' + message + '</pre>';
 					var hideLink = _('Hide server error message');
 					var showLink = _('Show server error message');
 
@@ -698,26 +697,33 @@ define([
 					}));
 					container.addChild(titlePane);
 
+					var options = [{
+						name: 'close',
+						label: _('Close')
+					}, {
+						name: 'as_email',
+						label: feedbackLabel,
+						callback: function() {
+							window.location.href = feedbackMailto;
+						}
+					}];
 					var systemInfoLib = null;
 					try {
 						systemInfoLib = require('umc/modules/sysinfo/lib');
 					} catch(e) { }
 					if (systemInfoLib) {
-						var options = [{
-							name: 'close',
-							label: _('Close')
-						}, {
+						options.push({
 							name: 'send',
 							'default': true,
-							label: _('Send to vendor'),
+							label: _('Inform vendor'),
 							callback: lang.hitch(this, function() {
 								systemInfoLib.traceback(message, feedbackLink);
 							})
-						}];
-						dialog.confirm( container, options, statusMessage );
+						});
 					} else {
-						dialog.alert( container );
+						options[1]['default'] = true; // fallback: as_email is default
 					}
+					dialog.confirm( container, options, statusMessage );
 				} else {
 					// all other cases
 					topic.publish('/umc/actions', 'error', status);

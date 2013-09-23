@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.80-1) unstable; urgency=low
+
+  * Bug #31056: Rearranged buttons when showing tracebacks; changed text
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 23 Sep 2013 11:50:57 +0200
+
 univention-management-console-frontend (3.0.79-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)
