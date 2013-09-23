@@ -33,11 +33,18 @@ from univention.config_registry import ConfigRegistry
 import subprocess
 import ldap
 import ldap.schema
+import univention.uldap
 
 def get_package_name():
 	return random_name()
 
 def get_schema_name():
+	return random_name()
+
+def get_acl_name():
+	return '62%s' % random_name()
+
+def get_container_name():
 	return random_name()
 
 def get_schema_attribute_id():
@@ -74,4 +81,14 @@ def fetch_schema_from_local_ldap():
 	ldap_uri = 'ldap://%(hostname)s:%(domainname)s' % ucr
 
 	return ldap.schema.subentry.urlfetch(ldap_uri)
+
+def get_ldap_master_connection(user_dn):
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	return univention.uldap.access( host=ucr.get('ldap/master'), port=int(ucr.get('ldap/master/port', '7389')), base=ucr.get('ldap/base'), binddn=user_dn, bindpw='univention')
+
+def set_container_description(user_dn, container):
+	lo = get_ldap_master_connection(user_dn)
+	lo.modify(container, [ ('description', '', random_name()) ] )
 

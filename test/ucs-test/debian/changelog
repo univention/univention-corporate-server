@@ -1,3 +1,9 @@
+ucs-test (4.0.121-2) unstable; urgency=low
+
+  * 10_ldap/*: added various ldap acl register test cases (Bug #32392)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Sep 2013 15:04:51 +0200
+
 ucs-test (4.0.121-1) unstable; urgency=low
 
   * 10_ldap/*: more schema tests (Bug #26785)
