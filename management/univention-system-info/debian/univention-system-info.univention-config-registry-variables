@@ -15,3 +15,9 @@ Description[de]=Univention System Info stellt wichtige Systemdaten zusammen, die
 Description[en]=Univention System Info gathers information system data, which can then be uploaded to a HTTP URL. This variable configures this URL.
 Type=str
 Categories=system-base
+
+[umc/sysinfo/traceback/url]
+Description[de]=Univention System Info kann bei Einverständnis des Nutzers einzelne Fehler der Management Console an den Hersteller senden. Diese Variable konfiguriert die entsprechende URL.
+Description[en]=Univention System Info can send single error reports of the Management Console to the vendor, approval of the user provided. This variable configures the corresponding URL.
+Type=str
+Categories=system-base

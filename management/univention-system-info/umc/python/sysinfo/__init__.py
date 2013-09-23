@@ -172,7 +172,7 @@ class Instance(umcm.Base):
 		ucs_version = '{0}-{1} errata{2} ({3})'.format( ucr.get( 'version/version', '' ), ucr.get( 'version/patchlevel', '' ), ucr.get( 'version/erratalevel', '0' ), ucr.get( 'version/releasename', '' ) )
 		# anonymised id of localhost
 		uuid_system = ucr.get('uuid/system', '')
-		url = ucr.get('umc/web/traceback/url', 'https://forge.univention.de/cgi-bin/system-info-traceback.py')
+		url = ucr.get('umc/sysinfo/traceback/url', 'https://forge.univention.de/cgi-bin/system-info-traceback.py')
 		MODULE.process('Sending %s to %s' % (traceback, url))
 		request_data = {
 			'traceback' : traceback,
