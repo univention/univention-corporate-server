@@ -749,79 +749,129 @@ des UCS AD Connectors übernommen, siehe
 </para>
 </section>
 
-<section id="ad-connector:ad-zertifikat"><title>Import des SSL-Zertifikats des Active Directory</title>
-<para>
-Auf dem Active Directory-System muss nun ein SSL-Zertifikat erzeugt
-und das Root-Zertifikat exportiert werden, damit eine verschlüsselte Kommunikation
-stattfinden kann. Erzeugt wird das Zertifikat mit dem
-Zertifikatsdienst des Active Directory. Die nötigen Schritte
-sind abhängig von der eingesetzten Windows-Version und werden hier
-beispielhaft für zwei Varianten dargestellt.
-</para>
-<para>
-Die verschlüsselte Verbindung zwischen UCS-System und Active Directory
-kann auch deaktiviert werden, indem die
-&ucsUCRV; <envar>connector/ad/ldap/ssl</envar> auf <emphasis>no</emphasis> gesetzt wird. Diese
-Einstellung betrifft nicht die Kommunikation mit dem
-Passwort-Dienst (siehe <xref linkend="ad-connector:password-dienst"/>);
-diese ist immer verschlüsselt.
-</para>
+<section id="ad-connector:ad-zertifikat">
+  <title>Import des SSL-Zertifikats des Active Directory</title>
 
-<section id="windows:Export_unter_Windows_2003"><title>Export unter Windows 2003</title>
-<para>
-Falls der Zertifikatsdienst nicht installiert ist, so kann dieser
-nachinstalliert werden: <guimenu>Start &ar;
-Einstellungen &ar; Systemsteuerung &ar; Software &ar; Windows
-Komponenten, Zertifikatsdienst auswählen &ar; Weiter
-Stammzertifizierungsstelle des Unternehmens wählen &ar; Weiter, Domänen
-Namen angeben &ar; Weiter &ar; Weiter</guimenu>. Anschließend sollte der Server neu
-gestartet werden.
-</para>
-<para>
-Dieses Zertifikat muss exportiert und auf das UCS System kopiert werden:
-<guimenu>Zertifizierungsstelle &ar; AD-Domäne &ar;
-Eigenschaften &ar; Zertifikat anzeigen &ar; Details &ar; In Datei kopieren &ar;
-DER-codiert-binaer X.509</guimenu>.
-</para>
-</section>
+  <para>
+	Auf dem Active Directory-System muss nun ein SSL-Zertifikat erzeugt
+	und das Root-Zertifikat exportiert werden, damit eine verschlüsselte Kommunikation
+	stattfinden kann. Erzeugt wird das Zertifikat mit dem
+	Zertifikatsdienst des Active Directory. Die nötigen Schritte
+	sind abhängig von der eingesetzten Windows-Version und werden hier
+	beispielhaft für zwei Varianten dargestellt.
+  </para>
 
-<section id="windows:Export_unter_Windows_2008"><title>Export unter Windows 2008</title>
-<para>
-Falls der Zertifikatsdienst nicht installiert ist, so muss dieser
-nachinstalliert werden:
-</para>
-<para>
-<figure><title>Export des Root-Zertifikats unter Windows 2008</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_23-de.png"/>
- </figure>
-</para>
-<para>
-<guimenu>Start &ar; Systemsteuerung &ar; Programme und Funktionen &ar; Windows-Funktionen
-aktivieren oder deaktivieren &ar; Rollen &ar; Rollen hinzufügen &ar; Weiter
-&ar; Haken bei Active Directory-Zertifikatsdienste aktivieren &ar; Weiter
-&ar; Weiter &ar; Zertifizierungsstelle aktivieren &ar; Unternehmen auswählen
-&ar; Stammzertifierungsstelle auswählen &ar; Neuen privaten Schlüssel
-erstellen &ar; Weiter &ar; Die vorgeschlagenen Kryptoeinstellungen mit
-Weiter akzeptieren &ar; Den vorgeschlagenen Namen der
-Zertifizierungsstelle akzeptieren &ar; Eine beliebige Gültigkeitsdauer
-auswählen &ar; Weiter &ar; Standardpfad für die Zertifikatsdatenbank
-akzeptieren</guimenu> . Im abschließenden Dialog erscheint eine Warnmeldung,
-dass Name und Domäneneinstellung nach Installation der
-Zertifizierungsstelle nicht mehr geändert werden können. Dies muss
-mit <guimenu>Installieren</guimenu> bestätigt werden.
-</para>
-<para>
-Anschließend muss der AD-Server neu gestartet werden.
-</para>
-<para>
-Dieses Zertifikat muss nun exportiert und auf das UCS System kopiert
-werden: <guimenu>Start &ar; Programme &ar; Verwaltung &ar;
-Zertifizierungsstelle &ar; Rechtsklick auf den Namen des erzeugten
-Zertifikats &ar; Eigenschaften &ar; Zertifikat anzeigen &ar; Details - In
-Datei kopieren &ar; DER-codiert-binär X.509 (.CER) &ar; Auswahl eines
-beliebigen Dateinamens und Speicherpfad &ar; Fertigstellen</guimenu>
-</para>
-</section>
+  <para>
+	Die verschlüsselte Verbindung zwischen UCS-System und Active Directory
+	kann auch deaktiviert werden, indem die
+	&ucsUCRV; <envar>connector/ad/ldap/ssl</envar> auf <emphasis>no</emphasis> gesetzt wird. Diese
+	Einstellung betrifft nicht die Kommunikation mit dem
+	Passwort-Dienst (siehe <xref linkend="ad-connector:password-dienst"/>);
+	diese ist immer verschlüsselt.
+  </para>
+
+  <section id="windows:Export_unter_Windows_2003">
+	<title>Export unter Windows 2003</title>
+
+	<para>
+	  Falls der Zertifikatsdienst nicht installiert ist, so kann dieser
+	  nachinstalliert werden: <guimenu>Start &ar;
+	  Einstellungen &ar; Systemsteuerung &ar; Software &ar; Windows
+	  Komponenten, Zertifikatsdienst auswählen &ar; Weiter
+	  Stammzertifizierungsstelle des Unternehmens wählen &ar; Weiter, Domänen
+	  Namen angeben &ar; Weiter &ar; Weiter</guimenu>. Anschließend sollte der Server neu
+	  gestartet werden.
+	</para>
+
+	<para>
+	  Dieses Zertifikat muss exportiert und auf das UCS System kopiert werden:
+	  <guimenu>Zertifizierungsstelle &ar; AD-Domäne &ar;
+	  Eigenschaften &ar; Zertifikat anzeigen &ar; Details &ar; In Datei kopieren &ar;
+	  DER-codiert-binaer X.509</guimenu>.
+	</para>
+  </section>
+
+  <section id="windows:Export_unter_Windows_2008">
+	<title>Export unter Windows 2008</title>
+
+	<para>
+	  Falls der Zertifikatsdienst nicht installiert ist, so muss dieser
+	  nachinstalliert werden:
+	</para>
+
+	<para>
+	  <figure><title>Export des Root-Zertifikats unter Windows 2008</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_23-de.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  <guimenu>Start &ar; Systemsteuerung &ar; Programme und Funktionen &ar; Windows-Funktionen
+	  aktivieren oder deaktivieren &ar; Rollen &ar; Rollen hinzufügen &ar; Weiter
+	  &ar; Haken bei Active Directory-Zertifikatsdienste aktivieren &ar; Weiter
+	  &ar; Weiter &ar; Zertifizierungsstelle aktivieren &ar; Unternehmen auswählen
+	  &ar; Stammzertifierungsstelle auswählen &ar; Neuen privaten Schlüssel
+	  erstellen &ar; Weiter &ar; Die vorgeschlagenen Kryptoeinstellungen mit
+	  Weiter akzeptieren &ar; Den vorgeschlagenen Namen der
+	  Zertifizierungsstelle akzeptieren &ar; Eine beliebige Gültigkeitsdauer
+	  auswählen &ar; Weiter &ar; Standardpfad für die Zertifikatsdatenbank
+	  akzeptieren</guimenu> . Im abschließenden Dialog erscheint eine Warnmeldung,
+	  dass Name und Domäneneinstellung nach Installation der
+	  Zertifizierungsstelle nicht mehr geändert werden können. Dies muss
+	  mit <guimenu>Installieren</guimenu> bestätigt werden.
+	</para>
+
+	<para>
+	  Anschließend muss der AD-Server neu gestartet werden.
+	</para>
+
+	<para>
+	  Dieses Zertifikat muss nun exportiert und auf das UCS System kopiert
+	  werden: <guimenu>Start &ar; Programme &ar; Verwaltung &ar;
+	  Zertifizierungsstelle &ar; Rechtsklick auf den Namen des erzeugten
+	  Zertifikats &ar; Eigenschaften &ar; Zertifikat anzeigen &ar; Details - In
+	  Datei kopieren &ar; DER-codiert-binär X.509 (.CER) &ar; Auswahl eines
+	  beliebigen Dateinamens und Speicherpfad &ar; Fertigstellen</guimenu>
+	</para>
+  </section>
+
+  <section id="windows:adconn:win2013">
+	<title>Export unter Windows Server 2012</title>
+
+	<para>
+	  Falls der Zertifikatsdienst nicht installiert ist, so muss dieser
+	  nachinstalliert werden:
+	</para>
+
+	<para>
+	  Der Server-Manager muss geöffnet werden. Dort im Menü <guimenu>Verwalten &ar; Rollen und Features
+	  hinzufügen</guimenu> die Rolle <guimenu>Active Directory-Zertifikatsdienste</guimenu>
+	  auswählen. Bei der Auswahl der Rollendienste reicht es aus, nur die
+	  <guimenu>Zertifizierungsstelle</guimenu> auszuwählen. Anschließend wird im Server-Manager in
+	  der oberen Leiste ein gelbes Warndreieick angezeigt. Hier muss die Option <guimenu>Active
+	  Directory-Zertifikatsdienste auf dem Zielserver konfigurieren</guimenu> ausgewählt werden. Als
+	  zu konfigurierender Rollendienst wird <guimenu>Zertifizierungsstelle</guimenu> ausgewählt. Der
+	  Installationstyp ist <guimenu>Unternehmenszertifizierungsstelle &ar;
+	  Stammzertifizierungsstelle</guimenu>. Nun muss auf <guimenu>Neuen privaten Schlüssel
+	  erstellen</guimenu> geklickt und die vorgeschlagenen Kryptoeinstellungen und der
+	  vorgeschlagene Name der Zertifizierungsstelle bestätigt werden. Die Gültigkeitsdauer kann
+	  beliebig gewählt werden. Als Datenbankort können die Standardpfade verwendet werden.
+	</para>
+
+	<para>
+	  Anschließend muss der AD-Server neu gestartet werden.
+	</para>
+
+	<para>
+	  Dieses Zertifikat muss nun exportiert und auf das UCS-System kopiert
+	  werden: <guimenu>Server-Manager  &ar; AD-Zertifikatsdienste</guimenu>. Dann ein Rechts-Klick
+	  auf den Server und Auswahl von <guimenu>Zertifizierungsstelle</guimenu>. Dort ein Rechtsklick
+	  auf den Namen des erzeugten Zertifikats und <guimenu>Öffnen &ar; In Datei kopieren &ar;
+	  DER-codiert-binär X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad
+	  &ar; Fertig stellen</guimenu>.
+	</para>
+  </section>
+
 
 <section id="windows:Kopieren_des_AD-Zertifikats_auf_das_UCS-System"><title>Kopieren des AD-Zertifikats auf das UCS-System</title>
 <para>

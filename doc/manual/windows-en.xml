@@ -707,77 +707,125 @@ UCS AD connector, see <xref linkend="ad-connector:neustart"/>.
 </para>
 </section>
 
-<section id="ad-connector:ad-zertifikat"><title>Importing the SSL certificate of the Active Directory</title>
-<para>
-An SSL certificate must be created on the Active Directory system and
-the root certificate exported to allow encrypted communication. The
-certificate is created by the Active Directory's certificate service.
-The necessary steps depend on the Windows versions used. Two versions
-are shown below as examples.
-</para>
-<para>
-The encrypted communication between the UCS system and Active Directory
-can also be deactivated by setting the &ucsUCRV; <envar>connector/ad/ldap/ssl</envar>
-to <emphasis>no</emphasis>. This setting does not concern the communication with the
-password service (see <xref linkend="ad-connector:password-dienst"/>);
-this is always encrypted.
-</para>
+<section id="ad-connector:ad-zertifikat">
+  <title>Importing the SSL certificate of the Active Directory</title>
+  <para>
+	An SSL certificate must be created on the Active Directory system and
+	the root certificate exported to allow encrypted communication. The
+	certificate is created by the Active Directory's certificate service.
+	The necessary steps depend on the Windows versions used. Two versions
+	are shown below as examples.
+  </para>
 
-<section id="windows:Exporting_the_certificate_on_Windows_2003"><title>Exporting the certificate on Windows 2003</title>
-<para>
-The certificate service can be installed subsequently if
-necessary: <guimenu>Start &ar; Properties &ar;
-  System settings &ar; Software &ar; Windows components,
-  choose Certificate Services &ar; Next
-  select Enterprise root CA &ar; Next,
-  Enter domain name &ar; Next &ar; Next</guimenu>.
-</para>
-<para>
-The AD server should be rebooted after the installation.
-</para>
-<para>
-This certificate must now be exported and copied onto the UCS system:
-<guimenu>Root CA &ar; AD domain &ar;
-Properties &ar; Show certificate &ar; Details &ar; Copy to file
-  &ar; DER binary encoded X.509</guimenu>.
-</para>
-</section>
+  <para>
+	The encrypted communication between the UCS system and Active Directory
+	can also be deactivated by setting the &ucsUCRV; <envar>connector/ad/ldap/ssl</envar>
+	to <emphasis>no</emphasis>. This setting does not concern the communication with the
+	password service (see <xref linkend="ad-connector:password-dienst"/>);
+	this is always encrypted.
+  </para>
 
-<section id="windows:Exporting_the_certificate_on_Windows_2008"><title>Exporting the certificate on Windows 2008</title>
-<para>
-If the certificate service is not installed, this must be installed
-before proceeding.
-</para>
-<para>
-<figure><title>Exporting the root certificate on Windows 2008</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_23-en.png"/>
- </figure>
-</para>
-<para>
-<guimenu>Start &ar; Server Manager &ar; Add or Remove Programs &ar; Add Roles &ar; Next &ar;
-Active Directory Certificate Services &ar; Next &ar; Next &ar; activate Certification
-Authority &ar; select Enterprise &ar; select Root CA &ar;
-Create new private key &ar; Next &ar; Accept the proposed crypto setting &ar; Next &ar;
-Accept the proposed name for the CA &ar; Select an arbitrary validate date &ar;
-Next &ar; Accept default path for the certificate database</guimenu>.
-</para>
-<para>
-The following dialogue contains a warning that the name and domain
-setting cannot be changed again once the certificate authority is
-installed. This must be confirmed with <guimenu>Install</guimenu>.
-</para>
-<para>
-The AD server must then be restarted.
-</para>
-<para>
-This certificate must now be exported and copied onto the UCS system:
-<guimenu>Start &ar; Administrative Tools &ar; Certification &ar;
-Authority &ar; Right click on the name of the generated certificate
-&ar; Properties &ar; View Certificate &ar; Details &ar;
-Copy to File... &ar; Next &ar; DER encoded binary X.509 (.CER) &ar; Next
-Select an arbitrary file name and save path &ar; Next &ar; Finish</guimenu>
-</para>
-</section>
+  <section id="windows:Exporting_the_certificate_on_Windows_2003">
+	<title>Exporting the certificate on Windows 2003</title>
+	<para>
+	  The certificate service can be installed subsequently if
+	  necessary: <guimenu>Start &ar; Properties &ar;
+	  System settings &ar; Software &ar; Windows components,
+	  choose Certificate Services &ar; Next
+	  select Enterprise root CA &ar; Next,
+	  Enter domain name &ar; Next &ar; Next</guimenu>.
+	</para>
+	
+	<para>
+	  The AD server should be rebooted after the installation.
+	</para>
+	
+	<para>
+	  This certificate must now be exported and copied onto the UCS system:
+	  <guimenu>Root CA &ar; AD domain &ar;
+	  Properties &ar; Show certificate &ar; Details &ar; Copy to file
+	  &ar; DER binary encoded X.509</guimenu>.
+	</para>
+  </section>
+  
+  <section id="windows:Exporting_the_certificate_on_Windows_2008">
+	<title>Exporting the certificate on Windows 2008</title>
+	<para>
+	  If the certificate service is not installed, it must be installed
+	  before proceeding.
+	</para>
+
+	<para>
+	  <figure><title>Exporting the root certificate on Windows 2008</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_23-en.png"/>
+	  </figure>
+	</para>
+
+	<para>
+	  <guimenu>Start &ar; Server Manager &ar; Add or Remove Programs &ar; Add Roles &ar; Next &ar;
+	  Active Directory Certificate Services &ar; Next &ar; Next &ar; activate Certification
+	  Authority &ar; select Enterprise &ar; select Root CA &ar;
+	  Create new private key &ar; Next &ar; Accept the proposed crypto setting &ar; Next &ar;
+	  Accept the proposed name for the CA &ar; Select an arbitrary validate date &ar;
+	  Next &ar; Accept default path for the certificate database</guimenu>.
+	</para>
+
+	<para>
+	  The following dialogue contains a warning that the name and domain
+	  setting cannot be changed again once the certificate authority is
+	  installed. This must be confirmed with <guimenu>Install</guimenu>.
+	</para>
+
+	<para>
+	  The AD server must then be restarted.
+	</para>
+
+	<para>
+	  This certificate must now be exported and copied onto the UCS system:
+	  <guimenu>Start &ar; Administrative Tools &ar; Certification &ar;
+	  Authority &ar; Right click on the name of the generated certificate
+	  &ar; Properties &ar; View Certificate &ar; Details &ar;
+	  Copy to File... &ar; Next &ar; DER encoded binary X.509 (.CER) &ar; Next
+	  Select an arbitrary file name and save path &ar; Next &ar; Finish</guimenu>
+	</para>
+  </section>
+
+  <section id="windows:adconn:win2013">
+	<title>Exporting the certificate on Windows 2012</title>
+
+	<para>
+	  If the certificate service is not installed, it must be installed
+	  before proceeding.
+	</para>
+
+	<!-- <para> -->
+	<!--   Der Server-Manager muss geöffnet werden. Dort im Menü <guimenu>Manage &ar; Add Roles and Features</guimenu> -->
+	<!--   die Rolle <guimenu>Active Directory Certificate Services</guimenu> -->
+	<!--   auswählen. Bei der Auswahl der Rollendienste reicht es aus, nur die -->
+	<!--   <guimenu>Certification Authority</guimenu> auszuwählen. Anschließend wird im Server-Manager in -->
+	<!--   der oberen Leiste ein gelbes Warndreieick angezeigt. Hier muss die Option <guimenu>Configure Active -->
+	<!--   Directory Certificate Services on the server</guimenu> ausgewählt werden. Als -->
+	<!--   zu konfigurierender Rollendienst wird <guimenu>Certification Authority</guimenu> ausgewählt. Der -->
+	<!--   Installationstyp ist <guimenu>Enterprise CA &ar; Root CA</guimenu> -->
+	<!--   Nun muss auf <guimenu>Create a new private key</guimenu> geklickt und die vorgeschlagenen Kryptoeinstellungen und der -->
+	<!--   vorgeschlagene Name der Zertifizierungsstelle bestätigt werden. Die Gültigkeitsdauer kann -->
+	<!--   beliebig gewählt werden. Als Datenbankort können die Standardpfade verwendet werden. -->
+	<!-- </para> -->
+
+	<para>
+	  The AD server must then be restarted.
+	</para>
+
+	<!-- <para> -->
+	<!--   Dieses Zertifikat muss nun exportiert und auf das UCS-System kopiert -->
+	<!--   werden: <guimenu>Server Manager  &ar; Active Directory Certificate Services</guimenu>. Dann ein Rechts-Klick -->
+	<!--   auf den Server und Auswahl von <guimenu>Certification Authority</guimenu>. Dort ein Rechtsklick -->
+	<!--   auf den Namen des erzeugten Zertifikats und <guimenu>Open &ar; Copy to File &ar; -->
+	<!--   DER encoded binary X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad -->
+	<!--   &ar; Fertig stellen</guimenu>. -->
+	<!-- </para> -->
+  </section>
+
 
 <section id="windows:Copying_the_Active_Directory_certificate_to_the_UCS_system"><title>Copying the Active Directory certificate to the UCS system</title>
 <para>
