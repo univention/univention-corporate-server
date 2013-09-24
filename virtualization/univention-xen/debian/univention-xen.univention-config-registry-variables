@@ -1,36 +1,36 @@
 [xen/bridge/interface]
-Description[de]=Diese Variable konfiguriert das Netzwerkinterface, das von Xen für die standardmäßig eingerichtete Bridge verwendet wird. Mit 'none' wird die Einrichtung einer Bridge verhindert.
-Description[en]=This variable configures the network interface which Xen uses as standard for the bridge setup by default. 'none' prevents the setup of a bridge.
+Description[de]=Diese Variable konfiguriert das Netzwerkinterface, das von Xen für die standardmäßig eingerichtete Bridge verwendet wird. Mit 'none' wird die Einrichtung einer Bridge verhindert. Ansonsten wird das Netzwerk-Interface verwendet, über das das Standard-Gateway erreichbar ist.
+Description[en]=This variable configures the network interface which Xen uses as standard for the bridge setup by default. 'none' prevents the setup of a bridge. Otherwise the network interface is used, over which the standard gateway is reached.
 Type=str
 Categories=service-xen
 
 [xen/vnc/listen]
-Description[de]=Mit dieser Variable kann die IP-Adresse konfiguriert werden, unter der der VNC-Server auf Verbindungen wartet. Ist die Variable nicht gesetzt, gilt 127.0.0.1.
-Description[en]=This variable allows to configure the IP under which the VNC server is listening for connections. If the variable is unset, 127.0.0.1 applies.
+Description[de]=Diese Variable konfiguriert die IP-Adresse, unter der der VNC-Server erreichbar ist. Ist die Variable nicht gesetzt, gilt '127.0.0.1'. Mit '0.0.0.0' werden alle IP-Adressen verwendet.
+Description[en]=This variable configures the IP address at which the VNC server is listening for connections. If the variable is unset, '127.0.0.1' applies. With '0.0.0.0' all IP addresses are used.
 Type=str
 Categories=service-xen
 
 [xen/vnc/password]
-Description[de]=Hier kann ein Passwort für VNC-Verbindungen konfiguriert werden. Ist die Variable nicht gesetzt, wird kein Passwort benötigt.
-Description[en]=A password for VNC connections can be configured here. If the variable is unset, no password is needed.
+Description[de]=Hier kann ein globales Passwort für VNC-Verbindungen konfiguriert werden. Ist die Variable nicht gesetzt, erfolgt die Konfiguration individuell pro virtueller Maschine.
+Description[en]=A global password for VNC connections can be configured here. If the variable is unset, the password is configured individually on a per virtual machine basis.
 Type=str
 Categories=service-xen
 
 [xen/server/relocation]
 Description[de]=Ist diese Option aktiviert, startet Xen den Relocation-Server, einen Dienst zur Migration virtueller Maschinen zwischen Virtualisierungsservern. Ist die Variable nicht gesetzt, wird der Dienst nicht gestartet.
-Description[en]=If this option is activated, Xen starts the relocation server, a service for migration virtual machines between virtualization hosts. If the variable is unset, the service isn't started.
+Description[en]=If this option is activated, Xen starts the relocation server, a service for migrating virtual machines between virtualization hosts. If the variable is unset, the service isn't started.
 Type=bool
 Categories=service-xen
 
 [xen/relocation/hosts_allow]
-Description[de]=Ist der Relocation-Server gestartet (siehe 'xen/server/relocation'), kann mit dieser Variable der Zugriff auf einige Rechner beschränkt werden. Mehrfache Einträge müssen durch ein Leerzeichen getrennt werden. Ist die Variable nicht gesetzt, ist der Zugriff von allen Rechnern möglich.
-Description[en]=If the relocation server is started (see 'xen/server/relocation'), the access can be restricted to some hosts with this variable. Multiple entries must be separated with a blank. If the variable is unset, the access is allowed from all hosts.
+Description[de]=Ist der Relocation-Server gestartet (siehe 'xen/server/relocation'), kann mit dieser Variable der Zugriff auf einige Rechner beschränkt werden. Mehrfache Einträge müssen durch Leerzeichen getrennt werden. Ist die Variable nicht gesetzt, ist der Zugriff von allen Rechnern möglich.
+Description[en]=If the relocation server is started (see 'xen/server/relocation'), the access can be restricted to some hosts with this variable. Multiple entries must be separated by blanks. If the variable is unset, the access is allowed from all hosts.
 Type=str
 Categories=service-xen
 
 [xen/server/relocation_ssl]
 Description[de]=Ist diese Option aktiviert, startet Xen den SSL-gesicherten Relocation-Server, einen Dienst zur Migration virtueller Maschinen zwischen Virtualisierungsservern. Ist die Variable nicht gesetzt, wird der Dienst nicht gestartet.
-Description[en]=If this option is activated, Xen starts the SSL-secured relocation server, a service for migration virtual machines between virtualization hosts. If the variable is unset, the service isn't started.
+Description[en]=If this option is activated, Xen starts the SSL-secured relocation server, a service for migrating virtual machines between virtualization hosts. If the variable is unset, the service isn't started.
 Type=bool
 Categories=service-xen
 
@@ -53,14 +53,14 @@ Type=bool
 Categories=service-xen
 
 [xen/server/unix_server]
-Description[de]=Ist diese Option aktiviert, nimmt Xen Kommdos über einen Unix Domain Socket entgegen. Dies wird für Libvirt und verschiedene Kommandozeilen-Tools benötigt. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
-Description[en]=If this option is enabled, Xen accepts commands through a Unix domain socket. This is required by Libvirt and various commandline tools. If the variable is unset, the option is disabled.
+Description[de]=Ist diese Option aktiviert, nimmt Xen Kommandos über einen Unix Domain Socket entgegen. Dies wird für Libvirt und verschiedene Kommandozeilen-Tools benötigt. Ist die Variable nicht gesetzt, ist der Socket deaktiviert.
+Description[en]=If this option is enabled, Xen accepts commands through a Unix domain socket. This is required by Libvirt and various command line tools. If the variable is unset, the socket is disabled.
 Type=bool
 Categories=service-xen
 
 [xen/server/api]
-Description[de]=Diese Variable konfiguriert den Zugriff auf den Xen-API-Server. Die Konfigurationsoptionen sind als Kommentare im UCR-Template beschrieben (/etc/univention/templates/files/etc/xen/xend-config.sxp unter 'xen-api-server). Ist die Variable nicht gesetzt, gilt (unix), d.h über einen lokale UDP-Socket.
-Description[en]=This variable configures the access to the Xen API server. The configuration options are described as comments in the UCR template (/etc/univention/templates/files/etc/xen/xend-config.sxp under 'xen-api-server). If the variable is unset (unix) applies, i.e. through a local UDP socket.
+Description[de]=Diese Variable konfiguriert den Zugriff auf den Xen-API-Server. Die Konfigurationsoptionen sind als Kommentare im UCR-Template beschrieben (/etc/univention/templates/files/etc/xen/xend-config.sxp unter 'xen-api-server'). Ist die Variable nicht gesetzt, gilt '(unix)', d.h über einen lokale Unix-Socket.
+Description[en]=This variable configures the access to the Xen API server. The configuration options are described as comments in the UCR template (/etc/univention/templates/files/etc/xen/xend-config.sxp under 'xen-api-server'). If the variable is unset '(unix)' applies, i.e. through a local Unix socket.
 Type=str
 Categories=service-xen
 
@@ -78,6 +78,6 @@ Categories=service-xen
 
 [xen/xend/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des Xen-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
-Description[en]=This variable configures the start mode of the Xen service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Description[en]=This variable configures the start mode of the Xen service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=str
 Categories=service-xen
