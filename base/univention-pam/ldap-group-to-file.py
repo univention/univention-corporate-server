@@ -90,7 +90,7 @@ def _run_hooks(options):
 		cmd = ['/bin/run-parts', '--verbose', HOOK_DIR]
 		with open(os.path.devnull, 'w+') as null:
 			if options.verbose:
-				p = subprocess.Popen(cmd, stdin=False, shell=False)
+				p = subprocess.Popen(cmd, stdin=null, shell=False)
 			else:
 				p = subprocess.Popen(cmd, stdin=null, stdout=null, stderr=null, shell=False)
 		_stdout, _stderr = p.communicate()

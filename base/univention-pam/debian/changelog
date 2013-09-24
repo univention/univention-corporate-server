@@ -1,3 +1,10 @@
+univention-pam (7.0.3-2) unstable; urgency=low
+
+  * Fixed typo in ldap-group-to-file.py, use null for stdin instead of
+    False (Bug #32581)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Sep 2013 17:06:32 +0200
+
 univention-pam (7.0.3-1) unstable; urgency=low
 
   * Split hook handling in a separate function and use /dev/null instead
