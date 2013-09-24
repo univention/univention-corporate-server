@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create a valid appcenter/app object
+## tags: [udm-ldapextensions,apptest]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-management-console-module-appcenter
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		id = uts.random_name()
+		name = uts.random_name()
+		version = uts.random_name()
+		app = udm.create_object('appcenter/app', id = id, name = name, version = version)
+		utils.verify_ldap_object(app, {
+							'univentionAppName': [name],
+							'univentionAppID': [id],
+							'univentionAppVersion': [version],
+						})
+
+		udm.remove_object('appcenter/app', dn = app)
+		try:
+			utils.verify_ldap_object(app, {
+								'univentionAppName': [name]
+							})
+		except utils.LDAPObjectNotFound:
+			pass
+		else:
+			fail('appcenter/app object was found although it had been removed')

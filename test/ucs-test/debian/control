@@ -393,6 +393,15 @@ Description: Test scripts to test the import performance
  This package includes the test-cases for importing two large
  schools one with 30.000 users and one with 65.000 users.
 
+Package: ucs-test-appcenter
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts to test the app center
+ This package includes test-cases for the app center.
+
 Package: ucs-test-modules-all
 Architecture: all
 Depends:
@@ -425,6 +434,7 @@ Depends:
  ucs-test-udm-settings,
  ucs-test-ucr,
  ucs-test-adconnector,
+ ucs-test-appcenter,
 # ucs-test-ucsschool,
 # ucs-test-login
 Description: UCS test environment meta package

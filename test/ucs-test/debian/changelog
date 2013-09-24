@@ -1,3 +1,10 @@
+ucs-test (4.0.122-1) unstable; urgency=low
+
+  * Added test cases for UDM module appcenter/app (Bug #32414)
+  * Move app center tests to package ucs-test-appcenter
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Sep 2013 09:08:15 +0200
+
 ucs-test (4.0.121-2) unstable; urgency=low
 
   * 10_ldap/*: added various ldap acl register test cases (Bug #32392)
