@@ -110,5 +110,12 @@ ucr set \
 	ucs/web/overview/entries/admin/invalid-certificate-list/link?"../ucsCA.crl" \
 	ucs/web/overview/entries/admin/invalid-certificate-list/priority?"91" \
 
+# configure available languages
+ucr set "ucs/server/languages/en_US?English" \
+	"ucs/server/languages/de_DE?Deutsch" \
+	"ucs/server/languages/en_GB?English (United Kingdom)" \
+	"ucs/server/languages/de_AT?Deutsch (Österreich)" \
+	"ucs/server/languages/de_CH?Deutsch (Schweiz)" 
+
 exit 0
 

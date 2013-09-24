@@ -1,3 +1,12 @@
+univention-apache (6.0.7-1) unstable; urgency=low
+
+  * New file /var/www/ucs-overview/languages.json, which contains
+    available server languages. This information is also available in
+    entries.json, from which it will be removed in a future change 
+    (Bug #32677)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 24 Sep 2013 14:19:06 +0200
+
 univention-apache (6.0.6-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
