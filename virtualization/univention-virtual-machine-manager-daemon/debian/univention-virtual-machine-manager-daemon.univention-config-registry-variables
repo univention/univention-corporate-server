@@ -1,6 +1,6 @@
 [uvmm/pool/default/path]
-Description[de]=Der Pfad des Standard-Speicherbereichs für die Image-Dateien. Ist die Variable nicht gesetzt, wird /var/lib/libvirt/images verwendet.
-Description[en]=The path of the storage pool 'default' for the image files. If the variable is unset, /var/lib/libvirt/images is used.
+Description[de]=Der Pfad des Standard-Speicherbereichs für die Image-Dateien. Ist die Variable nicht gesetzt, wird '/var/lib/libvirt/images/' verwendet.
+Description[en]=The path of the storage pool 'default' for the image files. If the variable is unset, '/var/lib/libvirt/images/' is used.
 Type=str
 Categories=uvmm
 
@@ -11,8 +11,8 @@ Type=str
 Categories=uvmm
 
 [uvmm/xen/images/tap2]
-Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, werden Images bei Verwendung von Xen im Blktap2-Format angelegt. Ist die Option deaktiviert, werden Raw-Images verwendet.
-Description[en]=If this option is activated or the variable unset, images are created in Blktap2 format if Xen is used. If the option is disabled, raw images are used.
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, werden Image-Dateien bei Verwendung von Xen über Blktap2 angesprochen. Ist die Option deaktiviert, wird das Loopback-Device verwendet.
+Description[en]=If this option is activated or the variable unset, image files are accessed using Blktap2 if Xen is used. If the option is disabled, the loop-back device is used.
 Type=bool
 Categories=uvmm
 
@@ -24,12 +24,12 @@ Categories=uvmm
 
 [uvmm/check/timeout]
 Description[de]=Ist diese Verfügbarkeitsprüfung des UVMM-Dienstes aktiviert (siehe 'uvmm/check/interval'), konfiguriert diese Variable die Zeit in Sekunden, in der der UVMM-Dienst auf eine Anfrage antworten muss.
-Description[en]=If the availability check in UVMM is enabled (see 'uvmm/check/interval'), this variable configures the time in seconds in which the UVMM service must reply a request.
+Description[en]=If the availability check for UVMM is enabled (see 'uvmm/check/interval'), this variable configures the time in seconds in which the UVMM service must reply to a request.
 Type=int
 Categories=uvmm
 
 [uvmm/debug.*]
-Description[de]=Der Detailgrad der Debugausgaben des UVMM-Dienstes. Mögliche Werte: DEBUG, INFO, WARNING, ERROR, CRITICAL
-Description[en]=The verbosity level of the UVMM daemon debug statement. Possible value: DEBUG, INFO, WARNING, ERROR, CRITICAL
+Description[de]=Der Detailgrad der Debugausgaben des UVMM-Dienstes. Mögliche Werte: DEBUG, INFO, WARNING, ERROR, CRITICAL.
+Description[en]=The verbosity level of the UVMM daemon debug statement. Possible value: DEBUG, INFO, WARNING, ERROR, CRITICAL.
 Type=str
 Categories=uvmm
