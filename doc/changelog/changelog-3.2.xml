@@ -1912,9 +1912,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The tool <command>ldap-group-to-file.py</command> does now support postrun hooks located in
-		  <filename>/var/lib/ldap-group-to-file-hooks.d</filename>. Thus scripts can be executed after
-		  changing the group memberships
-		  <ulink url="&ucsbug;32581">Bug 32581</ulink>).
+		  <filename class="directory">/var/lib/ldap-group-to-file-hooks.d/</filename>. Thus scripts can be executed after
+		  changing the group memberships <ulink url="&ucsbug;32581">Bug 32581</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
