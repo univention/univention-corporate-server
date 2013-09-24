@@ -3,7 +3,7 @@
 # Univention Samba4WINS schema
 #  postinst file
 #
-# Copyright 2008-2012 Univention GmbH
+# Copyright 2008-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,4 +41,3 @@ call_joinscript 89univention-samba4wins-schema.inst
 test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
 
 exit 0
-

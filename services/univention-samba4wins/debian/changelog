@@ -1,3 +1,10 @@
+univention-samba4wins (5.0.0-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+  * Update copyright year
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:01:53 +0200
+
 univention-samba4wins (5.0.0-1) unstable; urgency=low
 
   * abort join script on failing udm call (Bug #27753
