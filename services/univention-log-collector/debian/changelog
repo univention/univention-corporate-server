@@ -1,3 +1,9 @@
+univention-log-collector (7.0.0-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:38:31 +0200
+
 univention-log-collector (7.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
