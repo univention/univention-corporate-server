@@ -1,3 +1,9 @@
+univention-samba (8.0.8-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:12:36 +0200
+
 univention-samba (8.0.8-1) unstable; urgency=low
 
   * Unset samba/max/protocol and windows/wins-support in postrm and
