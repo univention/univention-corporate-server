@@ -678,9 +678,15 @@
 					assignment of additional data such as the DNS server to be used. There is an
 					additional protocol for this (DHCPv6), which, however, is not employed in the
 					dynamic assignment.
-					<!-- Der <guimenu>Bezeichner</guimenu> ist ein -->
-					<!-- eindeutiger Name für die IPv6-Netzwerkschnittstelle, -->
-					<!-- z.B. <emphasis>Interface-Mailserver</emphasis>. -->
+					<!-- Der <guimenu>Bezeichner</guimenu> ist ein OBS -->
+					<!-- eindeutiger Name für die IPv6-Netzwerkschnittstelle, OBS --> 
+					<!-- z.B. <emphasis>Interface-Mailserver</emphasis>. OBS --> 
+					<!-- Eine Netzwerkkarte kann -->
+					<!-- verschiedene IPv6-Adressen bedienen. Der <guimenu>Bezeichner</guimenu> -->
+					<!-- ist ein eindeutiger Name für einzelne Adressen. Die Haupt-Adresse verwendet -->
+					<!-- immer den Bezeichner <emphasis>default</emphasis>, für alle anderen Adressen können -->
+					<!-- funktionale Bezeichner vergeben werden z.B. <emphasis>Interface-Mailserver</emphasis>.  -->
+
 				</para>
 				<para>
 					(UCR variables: <envar>interfaces/ethX/ipv6/address</envar>,

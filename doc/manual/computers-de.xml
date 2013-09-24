@@ -591,7 +591,7 @@
                 Dieses Verhalten kann durch Setzen der
                 &ucsUCRV; <envar>grub/generate-menu-lst</envar> auf <emphasis>no</emphasis> deaktiviert werden.
             </para>
-        </section><!-- GRUB Boot-Manager -->
+        </section>
 
         <section id="hardware::networkconfiguration"><title>Netz-Konfiguration</title>
             <section id="computers:Netzwerk-Interfaces"><title>Netzwerk-Interfaces</title>
@@ -656,20 +656,24 @@
                     </para>
                 </section>
 
-                <section id="computers:Konfiguration_von_IPv6-Adressen"><title>Konfiguration von IPv6-Adressen</title>
-                    <para>
-                        Die IPv6-Adresse kann auf zwei Arten konfiguriert werden: Bei
-                        der <guimenu>Automatischen Konfiguration (SLAAC)</guimenu> kommt Stateless Address
-                        Autoconfiguration (SLAAC) zum Einsatz. Dabei wird die IP-Adresse von den Routern des
-                        lokalen Netzsegmentes zugewiesen. Alternativ kann die Adresse auch durch
-                        Angabe von <guimenu>IPv6-Adresse</guimenu> und <guimenu>IPv6-Präfix</guimenu> statisch
-                        konfiguriert werden. Im Gegensatz zu DHCP wird bei SLAAC keine Zuweisung von
-                        weitergehenden Daten wie dem zu verwendenden DNS-Server durchgeführt. Hierfür
-                        gibt es mit DHCPv6 ein Zusatzprotokoll, das bei der dynamischen Zuweisung aber
-                        nicht zum Einsatz kommt. Der <guimenu>Bezeichner</guimenu> ist ein
-						eindeutiger Name für die IPv6-Netzwerkschnittstelle,
-						z.B. <emphasis>Interface-Mailserver</emphasis>.
-                    </para>
+                <section id="computers:Konfiguration_von_IPv6-Adressen">
+				  <title>Konfiguration von IPv6-Adressen</title>
+				  <para>
+					Die IPv6-Adresse kann auf zwei Arten konfiguriert werden: Bei der
+					<guimenu>Automatischen Konfiguration (SLAAC)</guimenu> kommt Stateless Address
+					Autoconfiguration (SLAAC) zum Einsatz. Dabei wird die IP-Adresse von den Routern
+					des lokalen Netzsegmentes zugewiesen. Alternativ kann die Adresse auch durch
+					Angabe von <guimenu>IPv6-Adresse</guimenu> und <guimenu>IPv6-Präfix</guimenu>
+					statisch konfiguriert werden. Im Gegensatz zu DHCP wird bei SLAAC keine
+					Zuweisung von weitergehenden Daten wie dem zu verwendenden DNS-Server
+					durchgeführt. Hierfür gibt es mit DHCPv6 ein Zusatzprotokoll, das bei der
+					dynamischen Zuweisung aber nicht zum Einsatz kommt. Eine Netzwerkkarte kann
+					verschiedene IPv6-Adressen bedienen. Der <guimenu>Bezeichner</guimenu>
+					ist ein eindeutiger Name für einzelne Adressen. Die Haupt-Adresse verwendet
+					immer den Bezeichner <emphasis>default</emphasis>, für alle anderen Adressen können
+					funktionale Bezeichner vergeben werden z.B. <emphasis>Interface-Mailserver</emphasis>. 
+				  </para>
+
                     <para>
                         (UCR-Variablen: <envar>interfaces/ethX/ipv6/address</envar>,
                         <envar>interfaces/ethX/ipv6/prefix</envar>,
@@ -801,8 +805,8 @@
                     Unterdomänen werden dabei berücksichtigt; eine Ausnahme für <uri>univention.de</uri>
                     wirkt sich also auch auf <uri>apt.univention.de</uri> aus.
                 </para>
-            </section><!-- Konfiguration des Proxyzugriffs -->
-        </section><!-- Netz-Konfiguration -->
+            </section>
+        </section>
 
         <section id="computers:Konfiguration_der_Bildschirmeinstellungen"><title>Konfiguration der Bildschirmeinstellungen</title>
             <para>
