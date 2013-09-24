@@ -1,3 +1,9 @@
+univention-printserver (7.0.7-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:11:05 +0200
+
 univention-printserver (7.0.7-1) unstable; urgency=low
 
   * Remove listener handler status file in postrm (Bug #32452)

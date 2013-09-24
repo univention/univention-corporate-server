@@ -17,26 +17,26 @@ Type=bool
 Categories=service-cups
 
 [cups/location/admin]
-Description[de]=Mit dieser Variable wird festgelegt, von wo auf das Cups-interne Administrations-Webinterface auf Port 631 zugegriffen werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrfache Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Zugriff aus dem lokalen Netz des Cups-Servers erlaubt.
-Description[en]=This variable configures from where the Cups-internal administration web interface on port 631 can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated with a comma. If 'networks' is set, the access is granted from the local network of the Cups server.
+Description[de]=Mit dieser Variable wird festgelegt, von wo auf das Cups-interne Administrations-Webinterface auf Port 631 zugegriffen werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrere Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Zugriff aus dem lokalen Netz des Cups-Servers erlaubt.
+Description[en]=This variable configures from where the Cups-internal administration web interface on port 631 can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated by commas. If 'networks' is set, access is granted from the local network of the Cups server.
 Type=str
 Categories=service-cups
 
 [cups/location/base]
-Description[de]=Mit dieser Variable wird festgelegt, von wo über den Cups-Server gedruckt werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrfache Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Druck aus dem lokalen Netz des Cups-Servers erlaubt.
-Description[en]=This variable configures from where the Cups print server can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated with a comma. If 'networks' is set, printing is allowed from the local network of the Cups server.
+Description[de]=Mit dieser Variable wird festgelegt, von wo über den Cups-Server gedruckt werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrere Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Druck aus dem lokalen Netz des Cups-Servers erlaubt.
+Description[en]=This variable configures from where the Cups print server can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated by commas. If 'networks' is set, printing is allowed from the local network of the Cups server.
 Type=str
 Categories=service-cups
 
 [cups/systemgroup]
-Description[de]=Die hier angegebenen Gruppen haben Administrationszugriff auf die Drucker. Mehrfache Werte müssen durch Kommata getrennt werden.
-Description[en]=The groups specified here have printer administration access. Multiple values need to be separated with a comma.
+Description[de]=Die hier angegebenen Gruppen haben Administrationszugriff auf die Drucker. Mehrere Werte müssen durch Komma getrennt werden.
+Description[en]=The groups specified here have printer administration access. Multiple values need to be separated by commas.
 Type=str
 Categories=service-cups
 
 [cups/printserver]
-Description[de]=Ist diese Variable aktiviert, läuft auf dem System ein Cups-Druckserver. Diese Variable wird von dem Univention Directory-Listener-Modul zur Konfiguration von Druck-Clients ausgewertet.
-Description[en]=If this variable is activated, a Cups print server is running on the system. This variable is evaluated by the Univention Directory Listener module, which configures print clients.
+Description[de]=Ist diese Option aktiviert, läuft auf dem System ein Cups-Druckserver. Diese Variable wird von dem Univention Directory-Listener-Modul zur Konfiguration von Druck-Clients ausgewertet.
+Description[en]=If this option is activated, a Cups print server is running on the system. This variable is evaluated by the Univention Directory Listener module, which configures print clients.
 Type=bool
 Categories=service-cups
 
@@ -53,8 +53,8 @@ Type=str
 Categories=service-cups
 
 [cups/automaticrestrict]
-Description[de]=Ist diese Variable deaktiviert, werden alle Druckerfreigaben für die in der UMC Zugriffsberechtigungen konfiguriert sind, automatisch in die Variable 'cups/restrictedprinters' eingetragen. Ist die Variable nicht gesetzt, erfolgt eine automatische Aktualisierung.
-Description[en]=If this variable is deactivated, all printer shares for which UMC access restrictions have been configured are automatically added to the variable 'cups/restrictedprinters'. If the variable is unset, the variable is automatically updated.
+Description[de]=Ist diese Option deaktiviert, werden alle Druckerfreigaben für die in der UMC Zugriffsberechtigungen konfiguriert sind, automatisch in die Variable 'cups/restrictedprinters' eingetragen. Ist die Variable nicht gesetzt, erfolgt eine automatische Aktualisierung.
+Description[en]=If this option is deactivated, all printer shares for which UMC access restrictions have been configured are automatically added to the variable 'cups/restrictedprinters'. If the variable is unset, the variable is automatically updated.
 Type=bool
 Categories=service-cups
 
@@ -65,19 +65,19 @@ Type=str
 Categories=service-cups
 
 [cups/include/local]
-Description[de]=Ist diese Variable aktiviert, wird am Ende der Konfigurationsdatei /etc/cups/cupsd.conf die zusätzliche Konfigurationsdatei /etc/cups/cupsd.local.conf eingebunden, in die beliebige weitere Optionen eingetragen werden können. Ist die Variable nicht gesetzt, wird die Datei nicht eingebunden.
-Description[en]=If this variable is activated, the additional configuration file /etc/cups/cupsd.local.conf is included at the end of the configuration file /etc/cups/cupsd.conf. This allows the configuration of arbitrary options. If the variable is unset, the file is not included.
+Description[de]=Ist diese Option aktiviert, wird am Ende der Konfigurationsdatei /etc/cups/cupsd.conf die zusätzliche Konfigurationsdatei /etc/cups/cupsd.local.conf eingebunden, in die beliebige weitere Optionen eingetragen werden können. Ist die Variable nicht gesetzt, wird die Datei nicht eingebunden.
+Description[en]=If this option is activated, the additional configuration file /etc/cups/cupsd.local.conf is included at the end of the configuration file /etc/cups/cupsd.conf. This allows the configuration of arbitrary options. If the variable is unset, the file is not included.
 Type=bool
 Categories=service-cups
 
 [cups/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des Cups-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
 Description[en]=This variable configures the start mode of the Cups service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
-Type=bool
+Type=str
 Categories=service-cups
 
 [cups/printmode/hosts/none]
 Description[de]=Eine durch Leerzeichen separierte Liste von IP Adressen, denen das Drucken verboten ist.
-Description[en]=A blank character separated list of ip addresses which are forbidden to print.
+Description[en]=A blank separated list of IP addresses which are forbidden to print.
 Type=str
 Categories=service-cups
