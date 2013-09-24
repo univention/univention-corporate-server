@@ -601,9 +601,14 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 <section id="domain:ldap">
 	<title>LDAP-Verzeichnisdienst</title>
 	<para>
-		Univention Corporate Server speichert domänenweit vorgehaltene Daten in
-		einem LDAP-Verzeichnisdienst auf Basis von OpenLDAP. Dieses Kapitel beschreibt
-		die weitergehende Konfiguration und Anpassung von OpenLDAP.
+	  Univention Corporate Server speichert domänenweit vorgehaltene Daten in einem
+	  LDAP-Verzeichnisdienst auf Basis von OpenLDAP. Dieses Kapitel beschreibt die weitergehende
+	  Konfiguration und Anpassung von OpenLDAP.
+	</para>
+
+	<para>
+	  In einer UCS-Domäne werden oft mehrere LDAP-Server betrieben. Die Konfiguration des/der
+	  verwendeten Server(s) wird in <xref linkend="computers:configureldapserver"/> beschrieben.
 	</para>
 
 	<section id="domain:ldap:schemata">
@@ -928,6 +933,21 @@ slapcat &gt; ldapdaten.txt
 			3.x-Domänencontroller ohne Samba 4 verwenden.
 		</para>
 	</section>
+
+	<section id="domain-ldap:nightlybackup">
+	  <title>Tägliche Sicherung der LDAP-Daten</title>
+	  <para>
+		Auf dem &ucsMaster; und allen &ucsBackup;-Systemen wird der Inhalt des LDAP-Verzeichnisses
+		durch einen Cron-Job täglich gesichert.
+	  </para>
+
+	  <para>
+		Die LDAP-Daten werden im LDIF-Format im Verzeichnis <filename>/var/univention-backup/</filename> im
+		Namensschema <filename>ldap-backup_DATUM.ldif.gz</filename> gespeichert. Sie sind nur für
+		den Benutzer <emphasis>root</emphasis> lesbar.
+	  </para>
+	</section>
+
 </section>
 
 <section id="domain:listenernotifier">
