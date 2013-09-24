@@ -1,3 +1,11 @@
+univention-nfs (6.0.1-2) unstable; urgency=low
+
+  * Remove legacy UCR template for /etc/init.d/nfs-kernel-server. This file is
+    no longer used, instead we patch the autostart support into the standard
+    init script from Debian (Bug #30948 comment 7)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 09:56:10 +0200
+
 univention-nfs (6.0.1-1) unstable; urgency=low
 
   * Update init script for NFS server (Bug #32228)

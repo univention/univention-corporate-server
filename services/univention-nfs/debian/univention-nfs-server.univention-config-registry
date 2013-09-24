@@ -14,7 +14,3 @@ Variables: nfs/ports
 Type: file
 File: etc/modprobe.d/nfs-kernel-lockd.conf
 Variables: nfs/ports
-
-Type: file
-File: etc/init.d/nfs-kernel-server
-Variables: nfs/autostart
