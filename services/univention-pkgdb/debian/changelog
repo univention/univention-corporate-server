@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.10-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:13:35 +0200
+
 univention-pkgdb (7.0.10-1) unstable; urgency=low
 
   * Bug #30967: adapted icon

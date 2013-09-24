@@ -1,5 +1,5 @@
 [pkgdb/scan]
-Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, werden Installations-Vorgänge auf UCS-Systemen in den Software-Monitor aufgezeichnet.
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, werden SoftwareinstallationsVorgänge auf UCS-Systemen über den Software-Monitor aufgezeichnet.
 Description[en]=If this option is activated or the variable unset, software installations on UCS systems are reported to the software monitor.
 Type=bool
 Categories=system-swmon
