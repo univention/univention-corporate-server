@@ -357,7 +357,7 @@ def handler(dn, new, old):
 					if new['univentionPrinterACLtype'][0] == 'deny':
 						print >>fp, 'invalid users = %s' %perm
 
-				if new['univentionPrinterUseClientDriver'][0] == '1':
+				if new.get('univentionPrinterUseClientDriver', [''])[0] == '1':
 					print >>fp, 'use client driver = yes'
 
 				uid = 0
