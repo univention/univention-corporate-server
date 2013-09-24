@@ -1505,25 +1505,36 @@ auth/sshd/group/DC Slave Hosts: yes
 auth/sshd/group/Domain Admins: yes
 auth/sshd/restrict: yes
                     </programlisting>
-            </section><!-- Anmeldebeschränkungen für ausgewählte Benutzer -->
-        </section><!-- Authentifizierung / PAM -->
+            </section>
+        </section>
 
-        <section id="computers:Konfiguration_des_verwendeten_LDAP-Servers"><title>Konfiguration des verwendeten LDAP-Servers</title>
-            <para>
-                In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der
-                primär verwendete wird mit der &ucsUCRV; <envar>ldap/server/name</envar> festgelegt,
-                weitere Server können über die &ucsUCRV; <envar>ldap/server/addition</envar> angegeben
-                werden.
-            </para>
-            <para>
-                Alternativ können die LDAP-Server auch über die Richtlinie
-                <guimenu>LDAP-Server</guimenu> in der Rechnerverwaltung der &ucsUMC;
-                festgelegt werden. Die Reihenfolge der Server bestimmt die Reihenfolge der Anfragen des
-                Rechners an die Server, falls ein LDAP-Server nicht erreichbar sein sollte.
-            </para>
-        </section><!-- Konfiguration des verwendeten LDAP-Server -->
+        <section id="computers:configureldapserver">
+		  <title>Konfiguration des verwendeten LDAP-Servers</title>
+		  <para>
+			In einer UCS-Domäne können mehrere LDAP-Server betrieben werden. Der primär verwendete
+			wird mit der &ucsUCRV; <envar>ldap/server/name</envar> festgelegt, weitere Server können
+			über die &ucsUCRV; <envar>ldap/server/addition</envar> angegeben werden.
+		  </para>
 
-        <section id="computers:Konfiguration_des_verwendeten_Druckservers"><title>Konfiguration des verwendeten Druckservers</title>
+		  <para>
+			Alternativ können die LDAP-Server auch über die Richtlinie
+			<guimenu>LDAP-Server</guimenu> in der Rechnerverwaltung der &ucsUMC; festgelegt
+			werden. Die Reihenfolge der Server bestimmt die Reihenfolge der Anfragen des Rechners an
+			die Server, falls ein LDAP-Server nicht erreichbar sein sollte.
+		  </para>
+
+		  <para>
+			In der Grundeinstellung ist nach Installation/Domänenbeitritt nur
+			<envar>ldap/server/name</envar> gesetzt. Ist mehr als ein LDAP-Server vorhanden, ist es
+			empfehlenswert zur Verbesserung der Ausfallsicherung min. zwei LDAP-Server über die
+			<guimenu>LDAP-Server</guimenu>-Richtlinie zuzuweisen. Bei einer auf mehrere Standorte
+			verteilten Umgebung sollte darauf geachtet werden möglichst LDAP-Server aus dem lokalen
+			Netz vorzugeben.
+		  </para>
+
+        </section>
+
+        <section id="computers:configureprintserver"><title>Konfiguration des verwendeten Druckservers</title>
             <para>
                 Der zu verwendende Druckserver kann mit der &ucsUCRV; <envar>cups/server</envar>
                 festgelegt werden.

@@ -1511,7 +1511,7 @@ auth/sshd/restrict: yes
 		</section>
 	</section>
 
-	<section id="computers:Configuration_of_the_LDAP_server_in_use">
+	<section id="computers:configureldapserver">
 		<title>Configuration of the LDAP server in use</title>
 		<para>
 			Several LDAP servers can be operated in a UCS domain. The primary one used is
@@ -1524,9 +1524,19 @@ auth/sshd/restrict: yes
 			of the servers determines the order of the computer's requests to the server if
 			a LDAP server cannot be reached.
 		</para>
+
+		  <!-- <para> -->
+		  <!-- 	In der Grundeinstellung ist nach Installation/Domänenbeitritt nur -->
+		  <!-- 	<envar>ldap/server/name</envar> gesetzt. Ist mehr als ein LDAP-Server vorhanden, ist es -->
+		  <!-- 	empfehlenswert zur Verbesserung der Ausfallsicherung min. zwei LDAP-Server über die -->
+		  <!-- 	<guimenu>LDAP-Server</guimenu>-Richtlinie zuzuweisen. Bei einer auf mehrere Standorte -->
+		  <!-- 	verteilten Umgebung sollte darauf geachtet werden möglichst LDAP-Server aus dem lokalen -->
+		  <!-- 	Netz vorzugeben. -->
+		  <!-- </para> -->
+
 	</section>
 
-	<section id="computers:Configuration_of_the_print_server_in_use">
+	<section id="computers:configureprintserver">
 		<title>Configuration of the print server in use</title>
 		<para>
 			The print server to be used can be specified with the &ucsUCRV;
