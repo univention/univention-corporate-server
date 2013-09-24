@@ -2,11 +2,13 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-s4-connector
-fix: 7.0.32-5.398.201309241118
+fix: 7.0.32-6.400.201309241231
 note:
 version: [1]
 desc: |
   This errata update fixes the following issues in the package univention-s4-connector:
   * A server password change script has been added. The S4 connector will be restarted
     in case it uses the machine account.
-bug: [32529]
+  * The S4 connector now considers the scenario that an object was moved to a position
+    which is not replicated to this server. This is for example the case in UCS@school.
+bug: [32529,32542]
