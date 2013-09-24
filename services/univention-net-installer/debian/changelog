@@ -1,3 +1,9 @@
+univention-net-installer (7.0.1-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:22:14 +0200
+
 univention-net-installer (7.0.1-1) unstable; urgency=low
 
   * Add a simple network daemon which removes the reinstall flag, for
