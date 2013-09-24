@@ -1,25 +1,25 @@
 [con.*/ad/listener/dir]
 Description[de]=Das Verzeichnis, in dem die von UCS nach Active Directory übertragenen Objekte gespeichert werden.
-Description[en]=Directory in which the objects transferred from UCS to Active Directory are stored. 
+Description[en]=Directory in which the objects transferred from UCS to Active Directory are stored.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/poll/sleep]
 Description[de]=Die Zeit in Sekunden, die nach einem Lauf ohne Änderungen gewartet wird, bis eine erneute Anfrage gestellt wird. Dabei wird auf UCS-Seite im Laufzeitverzeichnis des Univention Directory Listener-Modul gesucht (siehe 'con*/ad/listener/dir') und auf Active Directory-Seite eine LDAP-Anfrage gestellt.
 Description[en]=The time in seconds which is waited after a run without changes until the next request is made. On the UCS side new files are searched in the runtime directory of the Univention Directory listener module (see 'con*/ad/listener/dir'); a LDAP request is made on the Active Directory side.
-Type=str
+Type=int
 Categories=service-adcon
 
 [con.*/ad/retryrejected]
 Description[de]=Die Anzahl der Anfragen ohne neue Änderungen, nach der versucht wird, zurückgehaltene Änderungen nachträglich einzuspielen. Dieses Verhalten kann in der Datei /var/log/univention/connector-status.log nachvollzogen werden. Ist die Variable nicht gesetzt, tritt dies nach 10 Anfragen ein.
-Description[en]=The number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be followed in the /var/log/univention/connector-status.log logfile. If the variable is unset, it occurs after 10 requests.
-Type=str
+Description[en]=The number of requests without new changes after which an attempt is made to import retained changes subsequently. This procedure can be monitored in the /var/log/univention/connector-status.log logfile. If the variable is unset, it occurs after 10 requests.
+Type=int
 Categories=service-adcon
 
 [con.*/ad/ldap/port]
 Description[de]=Der TCP-Port, über den der LDAP-Dienst des Active Directory-Servers erreichbar ist.
 Description[en]=The port of the LDAP service of the Active Directory server.
-Type=str
+Type=int
 Categories=service-adcon
 
 [con.*/ad/ldap/host]
@@ -37,11 +37,11 @@ Categories=service-adcon
 [con.*/debug/level]
 Description[de]=Debug-Level für die Debug-Ausgaben in /var/log/univention/connector.log (0-4). Voreingestellt ist 2, so dass der aktuelle Synchronisationsstand in den Logdateien geprüft werden kann.
 Description[en]=Specifies the amount of debug information to be written to /var/log/univention/connector.log (0-4). Preset as 2, so that the status of the synchronisation is visible in the log files.
-Type=str
+Type=int
 Categories=service-adcon
 
 [con.*/ad/mapping/user/primarymail]
-Description[de]=Definiert, ob die primäre Mailadresse an Benutzerobjekten in UCS mit dem Attribut 'mail' in Active Directory synchronisiert werden soll. Da 'mail' ein multivalue-Wert ist kann es zu Problemen bei der Synchronisation kommen.  Bei der Installation des Pakets univention-ad-connector-exchange wird der Wert auf 'true' gesetzt.
+Description[de]=Definiert, ob die primäre Mailadresse an Benutzerobjekten in UCS mit dem Attribut 'mail' in Active Directory synchronisiert werden soll. Da 'mail' ein multivalue-Wert ist kann es zu Problemen bei der Synchronisation kommen. Bei der Installation des Pakets univention-ad-connector-exchange wird der Wert auf 'true' gesetzt.
 Description[en]=Defines whether the primary e-mail address of user objects in UCS should be synchronised with the 'mail' attribute in Active Directory. As 'mail' is a multivalue, this can cause problems during the synchronisation. During the installation of the univention-ad-connector-exchange package the value is set to 'true'.
 Type=str
 Categories=service-adcon
@@ -54,7 +54,7 @@ Categories=service-adcon
 
 [con.*/ad/mapping/group/language]
 Description[de]=Die Variable definiert, welche Abbildung von Standard-Gruppennamen zwischen UCS (Gruppennamen sind dort immer englisch) und Active Directory (Gruppenamen sind lokalisiert) genutzt werden soll. Durch Setzen von 'de' kann ein Mapping für ein deutschsprachiges Active Directory aktiviert werden. Ist die Variable nicht gesetzt, erfolgt kein Mapping.
-Description[en]=Defines which form of standard group names should be used between UCS (group names are always English) and Active Directory (group names are localised). A mapping for a Active Directory in German can be set with 'de'. If the variable is unset no mapping is made.
+Description[en]=Defines which mapping of standard group names should be used between UCS (group names are always English) and Active Directory (group names are localised). A mapping for a Active Directory in German can be set with 'de'. If the variable is unset no mapping is made.
 Type=str
 Categories=service-adcon
 
@@ -71,20 +71,20 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/binddn]
-Description[de]=Mit diesem Benutzer nimmt der AD Connector Änderungen im Active Directory vor. Anzugeben ist eine LDAP-DN. Ist die Variable nicht gesetzt, wird der interne Benutzer cn=admin verwendet.
-Description[en]= The Univention AD connector uses this user to perform changes in the Active Directory. A LDAP DN needs to be given. If the variable is unset, the internal user cn=admin is used.
+Description[de]=Mit diesem Benutzer nimmt der AD Connector Änderungen im Active Directory vor. Anzugeben ist eine LDAP-DN. Ist die Variable nicht gesetzt, wird der interne Benutzer 'cn=admin' verwendet.
+Description[en]=The Univention AD connector uses this user to perform changes in the Active Directory. A LDAP DN needs to be given. If the variable is unset, the internal user 'cn=admin' is used.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/bindpw]
-Description[de]=Die Datei, die das Passwort des Synchronisationsbenutzers (siehe 'con.*/ad/ldap/binddn') enthält. Die Datei sollte genau eine Zeile mit dem Passwort enthalten. Ist die Variable nicht gesetzt, wird /etc/ldap.secret verwendet.
-Description[en]=A file containing the password of the synchronisation user (see 'con.*/ad/ldap/binddn'). The file should contain exactly one line with the password. If the variable is unset, /etc/ldap.secret is used.
+Description[de]=Die Datei, die das Passwort des Synchronisationsbenutzers (siehe 'con.*/ad/ldap/binddn') enthält. Die Datei sollte genau eine Zeile mit dem Passwort enthalten. Ist die Variable nicht gesetzt, wird '/etc/ldap.secret' verwendet.
+Description[en]=A file containing the password of the synchronisation user (see 'con.*/ad/ldap/binddn'). The file should contain exactly one line with the password. If the variable is unset, '/etc/ldap.secret' is used.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/ldap/certificate]
-Description[de]=Der Dateiname mit vollem Pfad, in der das von Active Directory exportierte Zertifikat abgelegt ist (zur verschlüsselten Übertragung der Passwörter). Das Zertifikat wird im PEM-Format gespeichert.
-Description[en]=The file name of a certificate exported by Active Directory with its full path (for encrypted transmission of passwords). The certificate is saved in PEM format.
+Description[de]=Der Dateiname mit vollem Pfad, in der das von Active Directory exportierte Zertifikat abgelegt ist (zur verschlüsselten Übertragung der Passwörter). Das Zertifikat muß PEM-codiert sein.
+Description[en]=The file name of a certificate exported by Active Directory with its full path (for encrypted transmission of passwords). The certificate needs to be PEM-encoded.
 Type=str
 Categories=service-adcon
 
@@ -107,8 +107,8 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/kerberosdomain]
-Description[de]=Ist diese Variable gesetzt, wird beim Anlegen eines Benutzers im Active Directory der Kerberos Principal auf den Wert '<uid>@PRINCIPALNAME' gesetzt.
-Description[en]=If this variable is set, the Kerberos principal of a user created in Active Directory is set to '<uid>@PRINCIPALNAME'.
+Description[de]=Über diese Variable kann ein abweichender Name für die Kerberos-Domäne angegeben werden. Ist sie gesetzt, wird beim Anlegen eines Benutzers im Active Directory der Kerberos Principal auf den Wert '<uid>@KERBEROSDOMAIN' gesetzt.
+Description[en]=This variable can be used to configure a different Kerberos domain. If it is set, the Kerberos principal of a user created in Active Directory is set to '<uid>@KERBEROSDOMAIN'.
 Type=str
 Categories=service-adcon
 
@@ -119,38 +119,38 @@ Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/user/ignorelist]
-Description[de]=Die hier angegebenen Benutzernamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch ein Komma getrennt werden.
-Description[en]=The user names specified here are not synchronised by the connector. Multiple values need to be separated by a comma.
+Description[de]=Die hier angegebenen Benutzernamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
+Description[en]=The user names specified here are not synchronised by the connector. Multiple values need to be separated by commas.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/group/ignorelist]
-Description[de]=Die hier angegebenen Gruppenamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch ein Komma getrennt werden.
-Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated by a comma.
+Description[de]=Die hier angegebenen Gruppennamen werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden.
+Description[en]=The group names specified here are not synchronised by the connector. Multiple values need to be separated by commas.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/container/ignorelist]
-Description[de]=Die hier angegebenen Namen von LDAP-Containern werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch ein Komma getrennt werden. Der cn= Teil muss nicht angegeben werden. Um etwa 'cn=mail' zu ignorieren muss nur 'mail' angegeben werden.
-Description[en]=The names of LDAP containers specified here are not synchronised by the connector. Multiple values need to be separated by a comma. The cn= part is not needed. E.g. to ignore 'cn=mail' simply specify 'mail'.
+Description[de]=Die hier angegebenen Namen von LDAP-Containern werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Der cn= Teil muss nicht angegeben werden. Um etwa 'cn=mail' zu ignorieren muss nur 'mail' angegeben werden.
+Description[en]=The names of LDAP containers specified here are not synchronised by the connector. Multiple values need to be separated by commas. The cn= part is not needed. E.g. to ignore 'cn=mail' simply specify 'mail'.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/mapping/ou/ignorelist]
-Description[de]=Die hier angegebenen Namen von LDAP-Organisationseinheiten werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch ein Komma getrennt werden. Der ou= Teil muss nicht angegeben werden. Um etwa 'ou=zentrale' zu ignorieren muss nur 'zentrale' angegeben werden.
-Description[en]=The names of LDAP organisational units specified here are not synchronised by the connector. Multiple values need to be separated by a comma. The ou= part is not needed. E.g. to ignore 'ou=headquarter' simply specify 'headquarter'.
+Description[de]=Die hier angegebenen Namen von LDAP-Organisationseinheiten werden durch den Connector nicht synchronisiert. Mehrere Werte müssen durch Komma getrennt werden. Der ou= Teil muss nicht angegeben werden. Um etwa 'ou=zentrale' zu ignorieren muss nur 'zentrale' angegeben werden.
+Description[en]=The names of LDAP organisational units specified here are not synchronised by the connector. Multiple values need to be separated by commas. The ou= part is not needed. E.g. to ignore 'ou=headquarter' simply specify 'headquarter'.
 Type=str
 Categories=service-adcon
 
 [con.*/ad/password/timestamp/check]
-Description[de]=Ist diese Option deaktiviert, werden die Passwort-Hashes eines Benutzers immer synchronisiert (also z.B. auch wenn sich nur die Beschreibung geändert hat). Ist diese Option aktiviert, wird anhand des pwdLastSet-Attributs geprüft, ob das zu synchronisierende Passwort neuer ist. Es ist zu beachten, dass das Zurücksetzen der  Passwörter dann nicht mehr eindeutig erkennt werden kann. Siehe auch die Variablen 'con.*/ad/password/timestamp/syncreset/ucs' und 'con.*/ad/password/timestamp/syncreset/ad'. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[de]=Ist diese Option deaktiviert, werden die Passwort-Hashes eines Benutzers immer synchronisiert (also z.B. auch wenn sich nur die Beschreibung geändert hat). Ist diese Option aktiviert, wird anhand des pwdLastSet-Attributs geprüft, ob das zu synchronisierende Passwort neuer ist. Es ist zu beachten, dass das Zurücksetzen der Passwörter dann nicht mehr eindeutig erkennt werden kann. Siehe auch die Variablen 'con.*/ad/password/timestamp/syncreset/ucs' und 'con.*/ad/password/timestamp/syncreset/ad'. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
 Description[en]=If this option is deactivated the password hashes of a user are always synchronised (i.e. even if e.g. only the description has been changed). If the option is activated it is checked based on the pwdLastSet attribute whether the password hash to be synchronised is newer. It needs to be considered that password resets can no longer be reliably detected if the option is activated. See also the variables 'con.*/ad/password/timestamp/syncreset/ucs' and 'con.*/ad/password/timestamp/syncreset/ad'. If the variable is unset the option is deactivated.
 Type=bool
 Categories=service-adcon
 
 [con.*/ad/password/timestamp/syncreset/ucs]
-Description[de]=Ist diese Option deaktiviert, wird das Password bei einem Zurücksetzen des Passworts in UCS nicht in das Active Directory übertragen. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
-Description[en]=If this option is deactivated, the password is not synced to Active Directory if the password has been reset in UCS. If the variable is not set, the option is deactivated.
+Description[de]=Ist diese Option deaktiviert, wird das Password beim Zurücksetzen des Passworts in UCS nicht in das Active Directory übertragen. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[en]=If this option is deactivated, the password is not synced to Active Directory if the password is reset in UCS. If the variable is not set, the option is deactivated.
 Type=bool
 Categories=service-adcon
 
@@ -169,18 +169,17 @@ Categories=service-adcon
 [con.*/ldap/port]
 Description[de]=Der Port des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Wert aus 'ldap/master/port' verwendet. Der Wert sollte nur angepasst werden, wenn 'con*/ad/mapping/syncmode' auf 'write' gesetzt ist.
 Description[en]=The port of the UCS LDAP server used by the connector. If the variable is not set, the value from 'ldap/master/port' will be used. This value should only by changed if 'con*/ad/mapping/syncmode' is set to 'write'.
-Type=str
+Type=int
 Categories=service-adcon
 
 [con.*/ldap/binddn]
-Description[de]=Mit diesem Benutzer nimmt der AD Connector Änderungen im UCS-LDAP vor. Anzugeben ist eine LDAP-DN. Ist die Variable nicht gesetzt, wird der interne Benutzer cn=admin verwendet.
-Description[en]= The Univention AD connector uses this user to perform changes in the UCS LDAP directory. A LDAP DN needs to be given. If the variable is unset, the internal user cn=admin is used.
+Description[de]=Mit diesem Benutzer nimmt der AD Connector Änderungen im UCS-LDAP vor. Anzugeben ist eine LDAP-DN. Ist die Variable nicht gesetzt, wird der interne Benutzer 'cn=admin' verwendet.
+Description[en]=The Univention AD connector uses this user to perform changes in the UCS LDAP directory. A LDAP DN needs to be given. If the variable is unset, the internal user 'cn=admin' is used.
 Type=str
 Categories=service-adcon
 
 [con.*/ldap/bindpw]
-Description[de]=Die Datei, die das Passwort des Synchronisationsbenutzers (siehe 'con*/ldap/binddn') enthält. Die Datei sollte genau eine Zeile mit dem Passwort enthalten. Ist die Variable nicht gesetzt, wird /etc/ldap.secret verwendet.
-Description[en]=A file containing the password of the synchronisation user (see 'con*/ldap/binddn'). The file should contain exactly one line with the password. If the variable is unset /etc/ldap.secret is used.
+Description[de]=Die Datei, die das Passwort des Synchronisationsbenutzers (siehe 'con*/ldap/binddn') enthält. Die Datei sollte genau eine Zeile mit dem Passwort enthalten. Ist die Variable nicht gesetzt, wird '/etc/ldap.secret' verwendet.
+Description[en]=A file containing the password of the synchronisation user (see 'con*/ldap/binddn'). The file should contain exactly one line with the password. If the variable is unset '/etc/ldap.secret' is used.
 Type=str
 Categories=service-adcon
-

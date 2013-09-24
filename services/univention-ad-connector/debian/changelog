@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.3-3) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:47:59 +0200
+
 univention-ad-connector (8.0.3-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
