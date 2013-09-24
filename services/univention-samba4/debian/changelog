@@ -1,3 +1,9 @@
+univention-samba4 (3.0.17-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:32:15 +0200
+
 univention-samba4 (3.0.17-1) unstable; urgency=low
 
   * Unset samba/max/protocol in postrm and unset kerberos/kdc,
