@@ -1,3 +1,9 @@
+univention-base-files (3.0.3-6) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30943)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 08:57:43 +0200
+
 univention-base-files (3.0.3-5) unstable; urgency=low
 
   * Fix missing type fir UCRV (Bug #30943)
