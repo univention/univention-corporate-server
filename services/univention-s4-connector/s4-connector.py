@@ -56,6 +56,23 @@ if listener.configRegistry.has_key('connector/listener/additionalbasenames') and
 		else:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "s4-connector: additional config basename %s given, but %s/s4/listener/dir not set; ignore basename." % (configbasename, configbasename))
 
+def _save_old_object(directory, dn, old):
+	filename=os.path.join(directory, 'tmp','old_dn')
+
+	f=open(filename, 'w+')
+	os.chmod(filename, 0600)
+	p=cPickle.Pickler(f)
+	old_dn=p.dump((dn,old))
+	p.clear_memo()
+	f.close()
+ 
+def _load_old_object(directory):
+	f=open(os.path.join(directory, 'tmp','old_dn'),'r')
+	p=cPickle.Unpickler(f)
+	(old_dn,old_object)=p.load()
+	f.close()
+
+	return (old_dn,old_object)
 			       
 
 def handler(dn, new, old, command):
@@ -69,22 +86,21 @@ def handler(dn, new, old, command):
 			if not os.path.exists(os.path.join(directory, 'tmp')):
 				os.makedirs(os.path.join(directory, 'tmp'))
 
-			old_dn=None
-			if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
-				f=open(os.path.join(directory, 'tmp','old_dn'),'r')
-				p=cPickle.Unpickler(f)
-				old_dn=p.load()
-				f.close()
-			if command == 'r':
-				filename=os.path.join(directory, 'tmp','old_dn')
+			old_dn = None
+			old_object = {}
 
-				f=open(filename, 'w+')
-				os.chmod(filename, 0600)
-				p=cPickle.Pickler(f)
-				old_dn=p.dump(dn)
-				p.clear_memo()
-				f.close()
+			if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
+				(old_dn,old_object) = _load_old_object(directory)
+			if command == 'r':
+				_save_old_object(directory, dn, old)
 			else:
+				# Normally we see two steps for the modrdn operation. But in case of the selective replication we
+				# might only see the first step.
+				#  https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
+				if old_dn and new.get('entryUUID') != old_object.get('entryUUID'):
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
+					old_dn = None
+						
 				ob=(dn, new, old, old_dn)
 
 				filename=os.path.join(directory,"%f"%time.time())
