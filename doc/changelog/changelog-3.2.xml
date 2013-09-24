@@ -1849,6 +1849,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The &ucsUCRV; descriptions in <package>univention-apache</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The package <package>univention-apache</package> now offers the file <filename>/var/www/ucs-overview/languages.json</filename>, which contains available server languages and can be controlled by &ucsUCRV;s <envar>ucs/server/languages/*</envar> (<ulink url="&ucsbug;32677">Bug 32677</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
