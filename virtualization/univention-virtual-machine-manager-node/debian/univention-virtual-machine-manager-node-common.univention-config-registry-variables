@@ -1,18 +1,18 @@
 [uvmm/managers]
-Description[de]=Diese Variable enthält die Rechnernamen, die die virtuellen Instanzen dieses Servers verwalten dürfen. Diese Liste wird in der Regel automatisch durch ein Univention Directory Listener Modul gesetzt.
-Description[en]=This variable contains the host names allowed to manage the virtual instances of this server. This list is usually maintained through a Univention Directory Listener module.
+Description[de]=Diese Variable enthält eine Leerzeichen getrennte Liste von Rechnernamen, die die virtuellen Maschinen dieses Servers verwalten dürfen. Diese Liste wird in der Regel automatisch durch ein Univention Directory Listener-Modul gesetzt.
+Description[en]=This variable contains a space-separated list of host names allowed to manage the virtual machines of this server. This list is usually maintained through a Univention Directory Listener module.
 Type=str
 Categories=uvmm
 
 [uvmm/backup/directory]
-Description[de]=In diesem Verzeichnis werden Sicherungen der Konfiguration der virtuellen Instanzen abgelegt. Ist die Variable nicht gesetzt, wird /var/backups/univention-virtual-machine-manager-daemon verwendet.
-Description[en]=Backups of the configuration of virtual instances are made in this directory. If the variable is unset, /var/backups/univention-virtual-machine-manager-daemon is used.
+Description[de]=In diesem Verzeichnis werden Sicherungen der Konfiguration der virtuellen Maschinen abgelegt. Ist die Variable nicht gesetzt, wird '/var/backups/univention-virtual-machine-manager-daemon/' verwendet.
+Description[en]=Backups of the configuration of virtual machines are made in this directory. If the variable is unset, '/var/backups/univention-virtual-machine-manager-daemon/' is used.
 Type=str
 Categories=uvmm
 
 [libvirt/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des Libvirt-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
-Description[en]=This variable configures the start mode of the Libvirt service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Description[en]=This variable configures the start mode of the Libvirt service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=str
 Categories=uvmm,system-services
 
@@ -29,8 +29,8 @@ Type=str
 Categories=uvmm
 
 [uvmm/libvirt/action/shutdown]
-Description[de]=Ist diese Variable auf 'suspend' gesetzt, werden virtuelle Maschinen beim Herunterfahren des Servers 'suspendet'. Steht sie auf 'shutdown', werden die virtuellen Maschinen heruntergefahren. Ist die Variable auf 'ignore' gesetzt, erfolgt kein Neustart (bei Verwendung von Xen erfolgt der Neustart durch ein eigenes Init-Skript).
-Description[en]=If this variable is set to 'suspend', virtual machines are suspended during shutdown of the server. If configured to 'shutdown', the virtual machines are shut down. If the variable is set to 'ignore' no restart occurs (if Xen is used, the restart occurs through a separate init script).
+Description[de]=Ist diese Variable auf 'suspend' gesetzt, werden virtuelle Maschinen beim Herunterfahren des Servers 'suspendet'. Steht sie auf 'shutdown', werden die virtuellen Maschinen heruntergefahren. Ist die Variable auf 'ignore' gesetzt, erfolgt kein sauberes Herunterfahren (bei Verwendung von Xen erfolgt das Herunterfahren durch ein eigenes Init-Skript).
+Description[en]=If this variable is set to 'suspend', virtual machines are suspended during shutdown of the server. If set to 'shutdown', the virtual machines are shut down. If the variable is set to 'ignore' no clean shutdown occurs (if Xen is used, the shutdown occurs through a separate init script).
 Type=str
 Categories=uvmm
 
