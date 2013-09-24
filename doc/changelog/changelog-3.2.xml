@@ -2429,6 +2429,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The synchronization of Samba4 password change timestamps now correctly considers the local timezone
 		  variables (<ulink url="&ucsbug;32227">Bug 32227</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  A server password change script has been added. The S4 connector will be restarted in
+		  case it uses the machine account
+		  (<ulink url="&ucsbug;32529">Bug 32529</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
