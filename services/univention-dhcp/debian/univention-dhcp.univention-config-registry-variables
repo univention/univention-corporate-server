@@ -1,18 +1,18 @@
 [dhcpd/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des DHCP-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
 Description[en]=This variable configures the start mode of the DHCP service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
-Type=bool
+Type=str
 Categories=service-dhcp,system-services
 
 [dhcpd/options/.*]
-Description[de]=Es besteht die Möglichkeit an DHCP-Service- und DHCP-Subnetz-Objekten DHCP-Optionen zu registrieren. Diese Optionen müssen zusätzlich in UCR registriert werden. Das Format dafür ist dhcp/options/OPTIONSNAME/OPTIONSCODE=WERT.
-Description[en]=DHCP options can be registered on DHCP service and DHCP subnet objects. In addition, these options need to be registered in UCR. The format is dhcp/options/OPTIONNAME/OPTIONCODE=VALUE.
+Description[de]=Es besteht die Möglichkeit an DHCP-Service- und DHCP-Subnetz-Objekten DHCP-Optionen zu registrieren. Neue Optionen müssen zunächst in UCR definiert werden. Das Format dafür ist dhcp/options/OPTIONSNAME/OPTIONSCODE=WERT.
+Description[en]=DHCP options can be registered on DHCP service and DHCP subnet objects. New options need to be registered in UCR first. The format is dhcp/options/OPTIONNAME/OPTIONCODE=VALUE.
 Type=str
 Categories=service-dhcp
 
 [dhcpd/ldap/base]
-Description[de]=Diese Variable konfiguriert den LDAP-Container (anzugeben als LDAP-DN), der als Suchbasis für LDAP-Anfragen des DHCP-Servers verwendet wird. So kann konfiguriert werden, dass der DHCP-Server nur Suchanfragen aus einem bestimmten LDAP-Untercontainer bedient. Ist die Variable nicht gesetzt, wird der Container cn=dhcp unterhalb der LDAP-Basis verwendet.
-Description[en]=This variable configures the LDAP container (to be specified as a LDAP DN), which is to be used as the search base for LDAP requests of the DHCP server. This way the DHCP server can be configured to only serve search requests from a given LDAP sub container. If the variable is unset, the container cn=dhcp below the LDAP base is used.
+Description[de]=Diese Variable konfiguriert den LDAP-Container (anzugeben als LDAP-DN), der als Suchbasis für LDAP-Anfragen des DHCP-Servers verwendet wird. So kann konfiguriert werden, dass der DHCP-Server nur Suchanfragen in einem bestimmten LDAP-Untercontainer durchführt. Ist die Variable nicht gesetzt, wird der Container cn=dhcp unterhalb der LDAP-Basis verwendet.
+Description[en]=This variable configures the LDAP container (to be specified as a LDAP DN), which is to be used as the search base for LDAP queries of the DHCP server. This way the DHCP server can be configured to only perform search requests in a given LDAP sub container. If the variable is unset, the container cn=dhcp below the LDAP base is used.
 Type=str
 Categories=service-dhcp
 
@@ -23,14 +23,13 @@ Type=bool
 Categories=service-dhcp
 
 [dhcpd/restart/listener]
-Description[de]=Ist diese Variable aktiviert, wird der Univention Directory Listener neu gestartet, wenn ein DHCP-Subnetz, DHCP-Service oder eine DHCP-Richtlinie in der Univention Management Console editiert wurden. Ist die Variable nicht gesetzt, erfolgt kein automatischer Neustart.
-Description[en]=If this variable is activated, the Univention Directory Listener is automatically restarted whenever a DHCP subnet, DHCP service or DHCP policy is edited in the Univention Management Console. Ist die Variable nicht gesetzt, erfolgt kein automatischer Neustart.
+Description[de]=Ist diese Variable aktiviert, wird der DHCP-Dienst neu gestartet, wenn ein DHCP-Subnetz, DHCP-Service oder eine DHCP-Richtlinie in der Univention Management Console editiert wurden. Ist die Variable nicht gesetzt, erfolgt kein automatischer Neustart.
+Description[en]=If this variable is activated, the DHCP service is automatically restarted whenever a DHCP subnet, DHCP service or DHCP policy is edited in the Univention Management Console. If the variable is unset, the DHCP service will not be restarted automatically.
 Type=bool
 Categories=service-dhcp
 
 [dhcpd/ddns.*]
-Description[de]=Mit diesen Variablen kann Dynamic DNS konfiguriert werden. Die DNS-Updates können dabei nicht gegen den UCS-Nameserver erfolgen, sondern nur gegen ein externes System. Zur Dokumentation siehe https://forge.univention.org/bugzilla/show_bug.cgi?id=9521.
-Description[en]=With these variables Dynamic DNS can be configured. The DNS updates do not occur against the UCS nameserver, but instead against an external system. For the documentation, see https://forge.univention.org/bugzilla/show_bug.cgi?id=9521.
+Description[de]=Mit diesen Variablen kann Dynamic DNS konfiguriert werden. Die DNS-Updates können dabei nicht gegen den UCS-Nameserver erfolgen, sondern nur gegen ein externes System. Zur Dokumentation siehe <https://forge.univention.org/bugzilla/show_bug.cgi?id=9521>.
+Description[en]=With these variables Dynamic DNS can be configured. The DNS updates can not occur against the UCS nameserver, but instead against an external system. For the documentation, see <https://forge.univention.org/bugzilla/show_bug.cgi?id=9521>.
 Type=str
 Categories=service-dhcp
-
