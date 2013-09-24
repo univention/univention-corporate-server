@@ -1,3 +1,9 @@
+univention-directory-notifier (8.0.0-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30946)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 09:07:25 +0200
+
 univention-directory-notifier (8.0.0-1) unstable; urgency=low
 
   * Bump version for UCS 3.2, update copyright years for 2013
