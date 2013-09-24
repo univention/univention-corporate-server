@@ -1,3 +1,10 @@
+univention-pam (7.0.3-1) unstable; urgency=low
+
+  * Split hook handling in a separate function and use /dev/null instead
+    of pipes (Bug #32581)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Sep 2013 13:23:54 +0200
+
 univention-pam (7.0.2-1) unstable; urgency=low
 
   * Remove duplicate description for nscd/autostart (Bug #30943)

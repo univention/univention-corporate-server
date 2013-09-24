@@ -84,6 +84,20 @@ def _get_members(lo, g, recursion_list, check_member = False):
 				result.append(member[1].get('cn')[0]+'$')
 	return result
 
+def _run_hooks(options):
+	HOOK_DIR = '/var/lib/ldap-group-to-file-hooks.d'
+	if os.path.exists(HOOK_DIR):
+		cmd = ['/bin/run-parts', '--verbose', HOOK_DIR]
+		with open(os.path.devnull, 'w+') as null:
+			if options.verbose:
+				p = subprocess.Popen(cmd, stdin=False, shell=False)
+			else:
+				p = subprocess.Popen(cmd, stdin=null, stdout=null, stderr=null, shell=False)
+		_stdout, _stderr = p.communicate()
+	elif options.verbose:
+		print '%s does not exist' % HOOK_DIR
+
+
 if __name__ == '__main__':
 	parser = optparse.OptionParser( )
 	parser.add_option("--file", dest="file", default='/var/lib/extrausers/group', action="store", help="write result to the given file, default is /var/lib/extrausers/group")
@@ -126,17 +140,7 @@ if __name__ == '__main__':
 	if options.verbose:
 		print 'The file %s was created.' % options.file
 
-	if os.path.exists('/var/lib/ldap-group-to-file-hooks.d'):
-		if options.verbose:
-			stdout_pipe = sys.stdout
-			stderr_pipe = sys.stderr
-		else:
-			stdout_pipe = subprocess.PIPE
-			stderr_pipe = subprocess.PIPE
-		p = subprocess.Popen(['/bin/run-parts', '--verbose', '/var/lib/ldap-group-to-file-hooks.d'], stdout=stdout_pipe, stderr=stderr_pipe, shell=False)
-		returncode = p.wait()
-	elif options.verbose:
-		print '/var/lib/ldap-group-to-file-hooks.d does not exist'
+	_run_hooks(options)
 
 	sys.exit(0)
 
