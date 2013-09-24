@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.17-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:21:05 +0200
+
 univention-s4-connector (8.0.17-1) unstable; urgency=low
 
   * Added a server password change script for the S4 connector. The S4
