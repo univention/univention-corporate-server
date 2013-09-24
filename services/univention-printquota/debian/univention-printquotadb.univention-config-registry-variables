@@ -3,4 +3,3 @@ Description[de]=Die Zugriffsmethode auf die Quota-Datenbank: 'local' erlaubt nur
 Description[en]=The access method for the quota database: 'local' only allows access from localhost. 'remote' allows the access from the local network.
 Type=str
 Categories=service-cups
-
