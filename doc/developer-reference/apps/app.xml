@@ -200,6 +200,9 @@
 						<listitem><simpara>
 								app_version (current version of the Application)
 						</simpara></listitem>
+						<listitem><simpara>
+								locale (locale used in the frontend, e.g. de)
+						</simpara></listitem>
 					</itemizedlist>
 				</listitem>
 			</varlistentry>
