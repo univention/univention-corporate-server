@@ -111,9 +111,7 @@
 					<simpara>
 						Application IDs for apps that need to be installed in order to run
 						this one correctly. These applications will not be installed
-						automatically if not installed yet but the user has to explicitely
-						install them after getting a message which applications are
-						missing. New in UCS 3.2.
+						automatically. New in UCS 3.2.
 					</simpara>
 				</listitem>
 			</varlistentry>
