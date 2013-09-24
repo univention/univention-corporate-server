@@ -171,6 +171,40 @@
 					</simpara>
 				</listitem>
 			</varlistentry>
+			<varlistentry>
+				<term>UseShop</term>
+				<listitem>
+					<simpara>
+						Boolean value whether a link shall be displayed leading directly to
+						some kind of shop. If <literal>ShopURL</literal> is not given
+						<literal>https://shop.univention.com</literal> is used by default.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>ShopURL</term>
+				<listitem>
+					<simpara>
+						Only makes sense in combination with
+						<literal>UseShop=True</literal>. The following parameters are sent
+						to this URL via GET:
+					</simpara>
+					<itemizedlist>
+						<listitem><simpara>
+								key_id (Key ID of the License)
+						</simpara></listitem>
+						<listitem><simpara>
+								ucs_version (major and minor version of UCS, e.g. 3.2)
+						</simpara></listitem>
+						<listitem><simpara>
+								app_id (internal ID of the Application)
+						</simpara></listitem>
+						<listitem><simpara>
+								app_version (current version of the Application)
+						</simpara></listitem>
+					</itemizedlist>
+				</listitem>
+			</varlistentry>
 		</variablelist>
 	</section>
 	<section id="app:optionalFiles">
@@ -266,6 +300,28 @@
 						and explain what can be done with it and how. HTML is allowed. It
 						may be localised by using the files <literal>README_EN</literal>
 						resp <literal>README_DE</literal>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_UNINSTALL</term>
+				<listitem>
+					<simpara>
+						A file that is presented to the user before uninstallation. HTML is
+						allowed. It may be localised by using the files
+						<literal>README_UNINSTALL_EN</literal> resp.
+						<literal>README_UNINSTALL_DE</literal>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>README_POST_UNINSTALL</term>
+				<listitem>
+					<simpara>
+						A file that is presented to the user after uninstallation. HTML is
+						allowed. It may be localised by using the files
+						<literal>README_POST_UNINSTALL_EN</literal> resp.
+						<literal>README_POST_UNINSTALL_DE</literal>.
 					</simpara>
 				</listitem>
 			</varlistentry>
