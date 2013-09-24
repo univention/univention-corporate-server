@@ -149,7 +149,7 @@ Type=bool
 Categories=service-adcon
 
 [con.*/ad/password/timestamp/syncreset/ucs]
-Description[de]=Ist diese Option dektiviert, wird das Password bei einem Zurücksetzen des Passworts in UCS nicht in das Active Directory übertragen. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[de]=Ist diese Option deaktiviert, wird das Password bei einem Zurücksetzen des Passworts in UCS nicht in das Active Directory übertragen. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
 Description[en]=If this option is deactivated, the password is not synced to Active Directory if the password has been reset in UCS. If the variable is not set, the option is deactivated.
 Type=bool
 Categories=service-adcon
