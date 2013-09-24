@@ -1,3 +1,10 @@
+univention-printserver (6.0.21-4) unstable; urgency=low
+
+  * fixed univentionPrinterUseClientDriver handling in
+    cups listener (Bug #32669)
+
+ -- Felix Botner <botner@univention.de>  Tue, 24 Sep 2013 16:47:26 +0200
+
 univention-printserver (6.0.21-3) unstable; urgency=low
 
   * Added UCR variable description for cups/printmode/hosts/none (Bug #32055)
