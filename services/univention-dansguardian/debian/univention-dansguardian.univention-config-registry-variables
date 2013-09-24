@@ -1,12 +1,12 @@
 [clamav/freshclam/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des Freshclam-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
-Description[en]=This variable configures the start mode of the Freshclam service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Description[en]=This variable configures the start mode of the Freshclam service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=str
 Categories=service-webproxy,service-mail,system-services
 
 [dansguardian/autostart]
 Description[de]=Die Variable konfiguriert den Startmodus des Dansguardian-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
-Description[en]=This variable configures the start mode of the Dansguardian service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
+Description[en]=This variable configures the start mode of the Dansguardian service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=str
 Categories=service-webproxy
 
