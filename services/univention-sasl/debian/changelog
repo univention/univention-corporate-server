@@ -1,3 +1,10 @@
+univention-sasl (2.0.0-1) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+  * Bump version for UCS 3.2, update copyright years for 2013
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:30:32 +0200
+
 univention-sasl (1.0.0-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
