@@ -1,3 +1,9 @@
+univention-apache (6.0.6-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30948)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 24 Sep 2013 11:23:47 +0200
+
 univention-apache (6.0.6-1) unstable; urgency=low
 
   * Bug #31700: fixed problems with Android tablets, fixed problems with
