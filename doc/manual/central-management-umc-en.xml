@@ -263,14 +263,14 @@
 	</section>
 
 	<section id="central-management-umc:Favorites">
-		<title>Favorites</title>
-		<para>
-		  Commonly used UMC modules are shown in a submenu <guimenu>Favorites</guimenu>. If you move
-		  the mouse right over the icon of a module already marked as a favorite, a translucent red
-		  cross appears. If you click this, the module is removed from your favorites. To add a
-		  module to the favorites, the yellow star above the modules should be activated in the
-		  same way.
-		</para>
+	  <title>Favorites</title>
+	  <para>
+		<!-- Häufig benutzte UMC-Module werden in einem eigenen Untermenü <guimenu>Favoriten</guimenu> -->
+		<!-- dargestellt. Über einen Klick mit der rechten Maustaste auf ein UMC-Modul wird ein -->
+		<!-- Kontextmenü angezeigt. Mit <guimenu>Add to favorites</guimenu>, bzw. <guimenu>Remove -->
+		<!-- from favorites</guimenu> kann ein UMC-Modul als Favorit markiert oder wieder entfernt -->
+		<!-- werden. -->
+	  </para>
 	</section>
 
 	<section id="central-management-umc:feedback">

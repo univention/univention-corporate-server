@@ -272,16 +272,16 @@
 	</section>
 
 	<section id="central-management-umc:Favoriten">
-		<title>Favoriten</title>
-		<para>
-		  Häufig benutzte UMC-Module werden in einem eigenen Untermenü <guimenu>Favoriten</guimenu>
-		  dargestellt. Bewegt man die Maus rechts oben über das Icon eines Moduls, das bereits als
-		  Favorit markiert ist, wird ein halbtransparentes rotes Kreuz eingeblendet. Klickt man es
-		  an, wird das Modul aus den Favoriten entfernt. Um ein Modul zu den Favoriten hinzuzufügen,
-		  kann auf dieselbe Weise der gelbe Stern über den Modulen aktiviert werden.
-		</para>
+	  <title>Favoriten</title>
+	  <para>
+		Häufig benutzte UMC-Module werden in einem eigenen Untermenü <guimenu>Favoriten</guimenu>
+		dargestellt. Über einen Klick mit der rechten Maustaste auf ein UMC-Modul wird ein
+		Kontextmenü angezeigt. Mit <guimenu>Zu Favoriten hinzufügen</guimenu>, bzw. <guimenu>Aus
+		Favoriten entfernen</guimenu> kann ein UMC-Modul als Favorit markiert oder wieder entfernt
+		werden.
+	  </para>
 	</section>
-
+	
 	<section id="central-management-umc:feedback">
 		<title>Feedback zur UMC und zu UCS</title>
 	<para>
