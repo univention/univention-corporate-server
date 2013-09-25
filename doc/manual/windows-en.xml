@@ -1211,7 +1211,6 @@ Trust settings can only be set up on domain controllers.
 </para>
 <para>
 A trust relationship must be created on the Windows PDC.
-<!-- WIKIREF-24031 -->
 </para>
 <para>
 The trust relationship between the Windows domain and the Samba
@@ -1231,7 +1230,6 @@ to Windows users and groups
 </para>
 <para>
 A trust relationship must be created on the Windows PDC.
-<!-- WIKIREF-24031 -->
 </para>
 <para>
 If Univention Firewall is used, replies to NetBIOS broadcasts need to

@@ -648,7 +648,6 @@
 	<para>
 	  Alternatively or in addition, other virus scanners can also be integrated
 	  in Amavis.
-	  <!-- This is described in Univention Wiki under WIKIREF-24008. -->
 	</para>
 	<para>
 	  Postfix and Amavis need to be restarted following changes to the

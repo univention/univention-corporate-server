@@ -800,9 +800,6 @@ slapcat &gt; ldapdata.txt
 			directory requests.
 		</para>
 
-		<!-- More detailed information on the structure and adaptation of the access -->
-		<!-- regulations can be found in the Univention Wiki under WIKIREF-22403. -->
-
 		<section id="domain-ldap:Delegation_of_the_privilege_to_reset_user_passwords">
 			<title>Delegation of the privilege to reset user passwords</title>
 			<para>

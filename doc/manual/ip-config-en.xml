@@ -2133,8 +2133,8 @@ closest to the object always applies.
 
 	<para>
 	  Further documentation on proxy services - such as the cascading of
-	  proxy servers, transparent proxiss and the integration of a virus scan engine - are documented
-	  in the extended network management documentation <biblioref linkend="ext-doc-net"/>.
+	  proxy servers, transparent proxies and the integration of a virus scan engine - are documented
+	  in <xref linkend="ext-doc-net"/>.
 	</para>
 
 	<section id="ip-config:Installation">

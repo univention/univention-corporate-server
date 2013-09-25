@@ -1783,10 +1783,7 @@
 	</para>
 	<para>
 	  Einige weiterführende Funktionen der Proxy-Dienste - wie etwa die Kaskadierung von
-	  Proxy-Servern oder die Einrichtung von Authentifizierung bei der
-	  Proxy-Anmeldung sind über &ucsUCR; konfigurierbar, werden aber in
-	  dieser Dokumentation nicht weitergehend beschrieben.
-	  <!-- WIKIREF-23615 -->
+	  Proxy-Servern - werden in <xref linkend="ext-doc-net"/> beschrieben.
 	</para>
 	<section id="ip-config:Installation">
 	  <title>Installation</title>

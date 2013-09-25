@@ -829,9 +829,6 @@ slapcat &gt; ldapdaten.txt
 			ist.
 		</para>
 
-		<!-- Weiterführende Hinweise zum Aufbau und zur Anpassung der Zugriffsregeln finden -->
-		<!-- sich im Univention Wiki unter WIKIREF-22403. -->
-
 		<section id="domain-ldap:Delegation_des_Zuruecksetzens_von_Benutzerpasswoertern">
 			<title>Delegation des Zurücksetzens von Benutzerpasswörtern</title>
 			<para>

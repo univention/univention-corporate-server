@@ -1242,8 +1242,6 @@ zu beachten.
 <para>
 Auf dem Windows-PDC muss eine Vertrauensstellung angelegt werden.
 </para>
-<!-- Die dafür nötigen Schritte unterscheiden sich je nach -->
-<!-- Windows-Version und sind im WIKIREF-24031 dokumentiert. -->
 <para>
 Die Vertrauensstellung der Windows-Domäne zur Samba-Domäne
 kann durch Löschung der Vertrauensstellung auf dem Windows-PDC und des Domain
@@ -1266,8 +1264,6 @@ Windows-Benutzer- und Gruppennamen UNIX-IDs zu.
 <para>
 Auf dem Windows-PDC muss nun eine Vertrauensstellung angelegt werden.
 </para>
-<!-- Die dafür nötigen Schritte unterscheiden sich je nach -->
-<!-- Windows-Version und sind im WIKIREF-24031 dokumentiert. -->
 <para>
 Wird Univention Firewall verwendet, müssen Antworten auf
 NetBIOS-Broadcasts zugelassen werden:
