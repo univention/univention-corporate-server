@@ -849,35 +849,36 @@
                 <graphic scalefit="1" width="80%" fileref="illustrations/users_policy_password_en.png"/>
             </figure>
             <itemizedlist>
-                <listitem>
-                    <para>
-                        The <emphasis>history length</emphasis> saves the last password
-                        hashes. These passwords can then not be used by the user as a new
-                        password when setting a new password. With a password history length of
-                        five, for example, five new passwords must be set before a password
-                        can be reused.
-						<!-- Wenn keine Speicherung der Passwort-Historie erfolgen soll, muss der Wert auf 0 gesetzt werden. -->
-                    </para>
-                    <para>
-                        The passwords are not stored retroactively. Example: If ten passwords
-                        were stored, and the value is reduced to three, the oldest seven
-                        passwords will be deleted during the next password change. If then the
-                        value is increased again, the number of stored passwords initially
-                        remains at three, and is only increased by each password change.
-                    </para>
-                </listitem>
-                <listitem>
-					<simpara>
-                    The <emphasis>password length</emphasis> is the minimum length in characters
-                    that a user password must comply with. If no value is entered here,
-                    the minimum size is eight characters. The default value of eight
-                    characters for password length is fixed, so it always applies if no
-                    policy is set and the <guimenu>Override password check</guimenu>
-                    checkbox is not ticked. This means it even applies if the
-                    <emphasis>default-settings</emphasis> password policy has been deleted.
-					<!-- Wenn keine Prüfung der Passwortlänge erfolgen soll, muss der Wert auf 0 gesetzt werden. -->
-					</simpara>
-                </listitem>
+			  <listitem> 
+				<para>
+				  The <emphasis>history length</emphasis> saves the last password hashes. These
+				  passwords can then not be used by the user as a new password when setting a new
+				  password. With a password history length of five, for example, five new passwords
+				  must be set before a password can be reused. If no password history check should be
+				  performed, the value must be set to 0.
+				</para>
+
+				<para>
+				  The passwords are not stored retroactively. Example: If ten passwords were stored,
+				  and the value is reduced to three, the oldest seven passwords will be deleted
+				  during the next password change. If then the value is increased again, the number
+				  of stored passwords initially remains at three, and is only increased by each
+				  password change.
+				</para>
+			  </listitem>
+
+			  <listitem>
+				<simpara>
+				  The <emphasis>password length</emphasis> is the minimum length in characters that
+				  a user password must comply with. If no value is entered here, the minimum size is
+				  eight characters. The default value of eight characters for password length is
+				  fixed, so it always applies if no policy is set and the <guimenu>Override password
+				  check</guimenu> checkbox is not ticked. This means it even applies if the
+				  <emphasis>default-settings</emphasis> password policy has been deleted. If no
+				  password length check should be performed, the value must be set to 0.
+				</simpara>
+			  </listitem>
+
                 <listitem>
 					<simpara>
                     A <emphasis>password expiry interval</emphasis> demands regular password
