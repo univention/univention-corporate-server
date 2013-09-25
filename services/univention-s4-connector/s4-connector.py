@@ -74,6 +74,40 @@ def _load_old_object(directory):
 
 	return (old_dn,old_object)
 			       
+def _dump_object_to_file(filename, ob):
+	f=open(filename, 'w+')
+	os.chmod(filename, 0600)
+	p=cPickle.Pickler(f)
+	p.dump(ob)
+	p.clear_memo()
+	f.close()
+
+def _dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn):
+
+	ob=(dn, new, old, old_dn)
+
+	filename=os.path.join(directory,"%f"%time.time())
+
+	_dump_object_to_file(filename, ob)
+
+	tmp_array = []
+	f=open(filename, 'r')
+	tmp_array = cPickle.load(f)
+	f.close()
+
+	tmp_array_len = len(tmp_array)
+	if tmp_array_len != 4:
+		ud.debug(ud.LDAP, ud.WARN, 'replacing broken cPickle in %s (len=%s) with plain pickle' % (filename, tmp_array_len))
+		_dump_object_to_file(filename, ob)
+
+		tmp_array = []
+		f=open(filename, 'r')
+		tmp_array = cPickle.load(f)
+		f.close()
+
+		tmp_array_len = len(tmp_array)
+		if tmp_array_len != 4:
+			ud.debug(ud.LDAP, ud.ERROR, 'pickle in %s (len=%s) seems to be broken' % (filename, tmp_array_len))
 
 def handler(dn, new, old, command):
 
@@ -99,46 +133,14 @@ def handler(dn, new, old, command):
 				#  https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
 				if old_dn and new.get('entryUUID') != old_object.get('entryUUID'):
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
+					_dump_changes_to_file_and_check_file(directory, old_dn, {}, old, None)
 					old_dn = None
 						
-				ob=(dn, new, old, old_dn)
-
-				filename=os.path.join(directory,"%f"%time.time())
-	
 				if s4_init_mode:
 					if new and 'univentionGroup' in new.get('objectClass', []):
 						group_objects.append(ob)
 
-				f=open(filename, 'w+')
-				os.chmod(filename, 0600)
-				p=cPickle.Pickler(f)
-				p.dump(ob)
-				p.clear_memo()
-				f.close()
-
-				tmp_array = []
-				f=open(filename, 'r')
-				tmp_array = cPickle.load(f)
-				f.close()
-
-				tmp_array_len = len(tmp_array)
-				if tmp_array_len != 4:
-					ud.debug(ud.LDAP, ud.WARN, 'replacing broken cPickle in %s (len=%s) with plain pickle' % (filename, tmp_array_len))
-					f=open(filename, 'w')
-					os.chmod(filename, 0600)
-					p=pickle.Pickler(f)
-					p.dump(ob)
-					p.clear_memo()
-					f.close()
-
-					tmp_array = []
-					f=open(filename, 'r')
-					tmp_array = cPickle.load(f)
-					f.close()
-
-					tmp_array_len = len(tmp_array)
-					if tmp_array_len != 4:
-						ud.debug(ud.LDAP, ud.ERROR, 'pickle in %s (len=%s) seems to be broken' % (filename, tmp_array_len))
+				_dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn)
 
 				if os.path.exists(os.path.join(directory, 'tmp','old_dn')):
 					os.unlink(os.path.join(directory, 'tmp','old_dn'))
