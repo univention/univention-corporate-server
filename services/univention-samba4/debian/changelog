@@ -1,3 +1,9 @@
+univention-samba4 (3.0.18-1) unstable; urgency=low
+
+  * Restart Samba 4 after changing the server password (Bug #32468)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Sep 2013 06:25:31 +0200
+
 univention-samba4 (3.0.17-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
