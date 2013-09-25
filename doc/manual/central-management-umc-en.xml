@@ -799,8 +799,10 @@
 						</para>
 						<para>
 							The syntax <emphasis>string</emphasis> is the default.
-							<!-- Custom syntax definitions which can also be used at -->
-							<!-- this point are described in the Univention Wiki under WIKIREF-24236. -->
+						  <!-- 	Eine -->
+						  <!-- Übersicht über die weiteren verfügbaren Syntax-Definitionen und eine -->
+						  <!-- Anleitung zur Integration eigener Syntaxen finden sich in <xref -->
+						  <!-- linkend="developer-reference"/>. -->
 						</para>
 					</entry>
 				</row>

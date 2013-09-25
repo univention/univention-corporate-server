@@ -834,9 +834,10 @@
 							speichert keinen Wert oder die Zeichenkette <emphasis>1</emphasis>.
 						</para>
 						<para>
-							Standardmäßig wird die Syntax <emphasis>string</emphasis> verwendet.
-							<!-- Erweiterte Syntaxdefinitionen, die an dieser Stelle auch verwendet werden können, -->
-							<!-- werden im Univention Wiki unter WIKIREF-24236 beschrieben. -->
+						  Standardmäßig wird die Syntax <emphasis>string</emphasis> verwendet. Eine
+						  Übersicht über die weiteren verfügbaren Syntax-Definitionen und eine
+						  Anleitung zur Integration eigener Syntaxen sind in <xref
+						  linkend="developer-reference"/> zu finden.
 						</para>
 					</entry>
 				</row>

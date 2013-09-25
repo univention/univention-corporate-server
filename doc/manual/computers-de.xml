@@ -2624,8 +2624,8 @@ apt-cache search fax
                     LDAP registriert.
                     <!-- Dies ist im Univention Wiki unter WIKIREF-24368 dokumentiert. -->
                 </para>
-            </section><!-- Richtlinienbasierte Installation/Deinstallation von einzelnen Paketen über Paketlisten -->
-        </section><!-- Installation weiterer Software -->
+            </section>
+        </section>
 
         <section id="computers::softwaremanagement::maintenancepolicy"><title>Festlegung eines Aktualisierungs-Zeitpunkts mit der Paketpflege-Richtlinie</title>
             <para>
