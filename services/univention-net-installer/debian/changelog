@@ -1,3 +1,9 @@
+univention-net-installer (7.0.2-1) unstable; urgency=low
+
+  * add multithreading to univention-net-installer-daemon (Bug #1156)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 25 Sep 2013 18:17:14 +0200
+
 univention-net-installer (7.0.1-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)

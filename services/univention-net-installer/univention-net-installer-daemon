@@ -33,9 +33,11 @@
 
 from optparse import OptionParser
 import ldap.filter
+import multiprocessing
 import os
 import signal
 import socket
+import threading
 import univention.debug as ud
 import univention.uldap
 
@@ -81,6 +83,45 @@ def getLDAPConnection():
 		lo = univention.uldap.getMachineConnection()
 	return lo
 
+def processor(options, data_queue):
+	ud.init('/var/log/univention/net-installer-daemon.log', 1, 0)
+	ud.set_level(ud.LDAP, options.debug_level)
+	lo = getLDAPConnection()
+	def process(data):
+		search_filter = ldap.filter.filter_format('(&(objectClass=univentionHost)(cn=%s)(univentionServerReinstall=1))', (data, ))
+		result = lo.search(filter=search_filter)
+		if not result:
+			ud.debug(ud.LDAP, ud.ERROR, 'The computer object %r was not found. Please remove the reinstall flag manually.' % (data, ))
+		else:
+			for (dn, _, ) in result:
+				lo.modify(dn, [('univentionServerReinstall', '1', '0')])
+				ud.debug(ud.LDAP, ud.PROCESS, 'The computer object %r (%r) was sucessfully modified. ' % (data, dn, ))
+	while True:
+		data = data_queue.get()
+		process(data)
+
+def listener(options, data_queue):
+	local_host_address = socket.gethostbyname(socket.gethostname())
+	size = 1024 # max hostname length
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	s.bind((local_host_address, options.port, ))
+	s.listen(1)
+	while True:
+		(client, _, ) = s.accept()
+		def reader():
+			client.settimeout(10)
+			try:
+				data = client.recv(size)
+			except:
+				return
+			finally:
+				client.close()
+			if data:
+				data = data.strip()
+				data_queue.put(data)
+		threading.Thread(target=reader).start()
+
 def main():
 	parser = OptionParser(usage='usage: %prog [options] command')
 	parser.add_option('-p', '--port',
@@ -95,37 +136,14 @@ def main():
 	parser.add_option('-d', '--debug',
 			action='store', dest='debug_level', default="1", type='int',
 			help='Debug level (0 to 4)')
-
 	(options, _, ) = parser.parse_args()
-
-	ud.init('/var/log/univention/net-installer-daemon.log', 1, 0)
-	ud.set_level(ud.LDAP, options.debug_level)
-
 	if options.daemonize:
 		createDaemon(options)
-
-	local_host_address = socket.gethostbyname(socket.gethostname())
-
-	size = 1024 # max hostname length
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-	s.bind((local_host_address, options.port, ))
-	s.listen(1)
-	lo = getLDAPConnection()
-	while True:
-		(client, _, ) = s.accept()
-		data = client.recv(size)
-		if data:
-			data = data.strip()
-			search_filter = ldap.filter.filter_format('(&(objectClass=univentionHost)(cn=%s)(univentionServerReinstall=1))', (data, ))
-			result = lo.search(filter=search_filter)
-			if not result:
-				ud.debug(ud.LDAP, ud.ERROR, 'The computer object %r was not found. Please remove the reinstall flag manually.' % (data, ))
-			else:
-				for (dn, _, ) in result:
-					lo.modify(dn, [('univentionServerReinstall', '1', '0')])
-					ud.debug(ud.LDAP, ud.PROCESS, 'The computer object %r (%r) was sucessfully modified. ' % (data, dn, ))
-		client.close()
+	data_queue = multiprocessing.Queue()
+	subthread = threading.Thread(target=processor, args=(options, data_queue, ))
+	subthread.daemon = True
+	subthread.start()
+	listener(options, data_queue)
 
 if __name__ == '__main__':
 	main()
