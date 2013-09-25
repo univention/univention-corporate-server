@@ -2443,6 +2443,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  case it uses the machine account
 		  (<ulink url="&ucsbug;32529">Bug 32529</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The S4 connector now considers the scenario that an object was moved to a position
+		  which is not replicated to this server. This is for example the case in UCS@school.
+		  <ulink url="&ucsbug;32542">Bug 32542</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
