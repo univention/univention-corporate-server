@@ -787,7 +787,7 @@ slapcat &gt; ldapdaten.txt
 		</programlisting>
 	</section>
 
-	<section id="domain-ldap:Zugriffskontrolle_auf_das_LDAP-Verzeichnis">
+	<section id="domain-ldap:acls">
 		<title>Zugriffskontrolle auf das LDAP-Verzeichnis</title>
 		<para>
 			Der Zugriff auf die Informationen im LDAP-Verzeichnis wird serverseitig

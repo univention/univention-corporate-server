@@ -1091,7 +1091,7 @@
 		  Admins</emphasis> sowie einige intern genutzte Konten Vollzugriff auf das UCS-LDAP. Wird
 		  ein Domänen-Modul über eine Richtlinie freigegeben, muss für den Benutzer/Gruppe zusätzlich der
 		  Zugriff in den LDAP-ACLs freigegeben werden. Weitere Hinweis zu LDAP-ACLs finden sich in
-		  Kapitel <xref linkend="domain-ldap:Zugriffskontrolle_auf_das_LDAP-Verzeichnis"/>. Die
+		  Kapitel <xref linkend="domain-ldap:acls"/>. Die
 		  Namen der Domänen-Module beginnen mit <emphasis>UDM</emphasis>.
 		</simpara>
 	  </listitem>

@@ -761,7 +761,7 @@ slapcat &gt; ldapdata.txt
 		</programlisting>
 	</section>
 
-	<section id="domain-ldap:Access_control_for_the_LDAP_directory">
+	<section id="domain-ldap:acls">
 		<title>Access control for the LDAP directory</title>
 		<para>
 			Access to the information contained in the LDAP directory is controlled by
