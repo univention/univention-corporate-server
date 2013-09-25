@@ -1208,16 +1208,14 @@ univention-directory-listener-ctrl resync cups-printers
 <section id="domain:kerberos">
 	<title>Kerberos</title>
 	<para>
-		Kerberos is an authentication framework the purpose of which is to permit
-		secure identification in the potentially insecure connections of decentralised
-		networks. In Kerberos, all clients use a foundation of mutual trust, the
-		<emphasis>Key Distribution Centre</emphasis> (KDC). A client authenticates at
-		this KDC and receives an authentication token, the so-called ticket which can
-		be used for authentication within the Kerberos environment (the so-called
-		Kerberos Realm). 
-		<!-- Der Name der Kerberos Realm wird im Rahmen der Installation -->
-		<!-- des &ucsMaster; konfiguriert und in der	&ucsUCRV; <envar>kerberos/realm</envar> -->
-		<!-- gespeichert. Der Name der Kerberos-Realm kann nachträglich nicht angepasst werden. -->
+	  Kerberos is an authentication framework the purpose of which is to permit secure
+	  identification in the potentially insecure connections of decentralised networks. In Kerberos,
+	  all clients use a foundation of mutual trust, the <emphasis>Key Distribution Centre</emphasis>
+	  (KDC). A client authenticates at this KDC and receives an authentication token, the so-called
+	  ticket which can be used for authentication within the Kerberos environment (the so-called
+	  Kerberos realm). The name of the Kerberos realm is configured as part of the installation of
+	  the &ucsMaster; and stored in the &ucsUCRV; <envar>kerberos/realm</envar>. It is not possible
+	  to change the name of the Kerberos realm at a later point in time.
 	</para>
 	<para>
 		Tickets have a standard validity period of 8 hours; this is why it is vital for

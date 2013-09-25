@@ -84,7 +84,7 @@
 
 			<listitem> 
 			  <simpara>
-				<!-- Umlaute werden in Eingabefeldern nicht akzeptiert. -->
+				Umlauts are not accepted in input fields.
 			  </simpara>
 			</listitem>
 
