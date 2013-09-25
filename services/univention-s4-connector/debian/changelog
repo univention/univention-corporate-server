@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.20-1) unstable; urgency=low
+
+  * Make server_password_change.d/univention-s4-connector executable
+    (Bug #32529)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Sep 2013 16:05:50 +0200
+
 univention-s4-connector (8.0.19-1) unstable; urgency=low
 
   * If an object was moved to a non visable area (selective replication)
