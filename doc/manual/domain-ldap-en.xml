@@ -215,63 +215,66 @@
 	</section>
 
 	<section id="windows-domaenenbeitritt">
-		<title>How to join domains with Windows clients</title>
-		<para>
-			The procedure for joining a Windows system to a UCS domain made available via
-			Samba is now described for Windows 7/8 and Windows XP Professional. The process
-			is similar for other Windows versions.
-			<!-- Neben den Client-Versionen können auch Windows Server-Systeme der -->
-			<!-- Domäne beitreten. Windows-Server treten der Domäne als Memberserver bei, ein Beitritt -->
-			<!-- eines Windows-Systems als Domänencontroller wird nicht unterstützt. -->
-		</para>
-		<para>
-			Only domain-compatible Windows versions can join the UCS domain, i.e., it is
-			not possible for the Home versions of Windows to join a domain.
-		</para>
-		<para>
-			Two different versions of Samba can be used in UCS: Samba 3 implements a
-			Windows domain based on NT domain technology, while Samba 4 implements an
-			Active Directory directory. Further information can be found in <xref
-			linkend="windows:general"/>.
-		</para>
-		<para>
-			A host account is created for the Windows client automatically when it joins
-			the domain (see <xref linkend="computers::hostaccounts"/>).
-			Information concerning MAC and IP addresses, the network, DHCP or DNS can be
-			configured in &ucsUMC; prior to or after joining the domain.
-		</para>
-		<para>
-			Domain joining is usually performed with the local Administrator account on the
-			Windows system.
-		</para>
-		<para>
-			Joining the domain takes some time and the process must not be cancelled
-			prematurely. After successful joining a small window appears with the message
-			<guimenu>Welcome to the domain &lt;domain name&gt;</guimenu>. This should be
-			confirmed with <mousebutton>OK</mousebutton>. The computer must then be
-			restarted for the changes to take effect.
-		</para>
-		<figure>
-			<title>Domain join of a Windows 7 system</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/win7-join_2-en.png"/>
-		</figure>
-		<para>
-			Domain names must be limited to 13 characters as they are otherwise truncated
-			at the Windows client and this can lead to log-in errors.
-		</para>
-		<para>
-			For a domain join against a domain controller based on Samba 3, it must be
-			ensured that the NetBIOS name of the domain can be resolved. It may prove
-			necessary to configure a WINS server for this (see <xref
-			linkend="windows:wins"/>).
-		</para>
-		<para>
-			For a domain join against a domain controller based on Samba 4, the DNS
-			configuration of the client must be set up in such a way that DNS entries from
-			the DNS zone of the UCS domain can also be resolved. In addition, the time on
-			the client system must also be synchronised with the time on the domain
-			controller.
-		</para>
+	  <title>How to join domains with Windows clients</title>
+	  <para>
+		The procedure for joining a Windows system to a UCS domain made available via Samba is now
+		described for Windows 7/8 and Windows XP Professional. The process is similar for other
+		Windows versions. In addition to the client versions, Windows server systems can also join
+		the domain. Windows servers join the domain as member servers; joining a Windows systems as
+		a domain controller is not supported.
+	  </para>
+
+	  <para>
+		Only domain-compatible Windows versions can join the UCS domain, i.e., it is not possible for the Home versions of Windows to join a domain.
+	  </para>
+
+	  <para>
+		Two different versions of Samba can be used in UCS: Samba 3 implements a Windows domain
+		based on NT domain technology, while Samba 4 implements an Active Directory
+		directory. Further information can be found in <xref linkend="windows:general"/>.
+	  </para>
+
+	  <para>
+		A host account is created for the Windows client automatically when it joins the domain (see
+		<xref linkend="computers::hostaccounts"/>). Information concerning MAC and IP addresses, the
+		network, DHCP or DNS can be configured in &ucsUMC; prior to or after joining the domain.
+	  </para>
+
+	  <para>
+		Domain joining is usually performed with the local Administrator account on the Windows
+		system.
+	  </para>
+
+	  <para>
+		Joining the domain takes some time and the process must not be cancelled prematurely. After
+		successful joining a small window appears with the message <guimenu>Welcome to the domain
+		&lt;domain name&gt;</guimenu>. This should be confirmed with
+		<mousebutton>OK</mousebutton>. The computer must then be restarted for the changes to take
+		effect.
+	  </para>
+
+	  <figure>
+		<title>Domain join of a Windows 7 system</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/win7-join_2-en.png"/>
+	  </figure>
+
+	  <para>
+		Domain names must be limited to 13 characters as they are otherwise truncated at the Windows
+		client and this can lead to log-in errors.
+	  </para>
+
+	  <para>
+		For a domain join against a domain controller based on Samba 3, it must be ensured that the
+		NetBIOS name of the domain can be resolved. It may prove necessary to configure a WINS
+		server for this (see <xref linkend="windows:wins"/>).
+	  </para>
+
+	  <para>
+		For a domain join against a domain controller based on Samba 4, the DNS configuration of the
+		client must be set up in such a way that DNS entries from the DNS zone of the UCS domain can
+		also be resolved. In addition, the time on the client system must also be synchronised with
+		the time on the domain controller.
+	  </para>
 
 		<section id="domain-ldap:Windows_8">
 			<title>Windows 8</title>
@@ -680,47 +683,47 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 
 	<section id="domain-ldap:directorylogger">
 		<title>Audit-proof logging of LDAP changes</title>
-<!-- 		<para> -->
-<!-- 		  Das Paket <command>univention-directory-logger</command> ermöglicht die Protokollierung -->
-<!-- 		  von Änderungen im LDAP-Verzeichnisdienst. Da jeder Datensatz den Hash-Wert des -->
-<!-- 		  vorhergehenden Datensatzes enthält, können Manipulationen an der Logdatei - etwa entfernte -->
-<!-- 		  Einträge - aufgedeckt werden. -->
-<!-- 		</para> -->
 
-<!-- 		<para> -->
-<!-- 		  Einzelne Teilbereiche des Verzeichnisdienstes können von der Protokollierung ausgenommen -->
-<!-- 		  werden. Diese Zweige können durch die &ucsUCR;-Variablen -->
-<!-- 		  <envar>ldap/logging/exclude1</envar>, <envar>ldap/logging/exclude2</envar> -->
-<!-- 		  etc. konfiguriert werden. Standardmässig ist der Container exkludiert, in dem die -->
-<!-- 		  temporären Objekte gespeichert werden (cn=temporary,cn=univention). -->
-<!-- 		  Die Protokollierung der LDAP-Änderungen erfolgt durch ein Univention Directory -->
-<!-- 		  Listener-Modul, nach &ucsUCR;-Änderungen muss der Univention Directory Listener-Dienst neu -->
-<!-- 		  gestartet werden. -->
-<!-- 		</para> -->
+		<para>
+		  The <command>univention-directory-logger</command> package allows the logging of all
+		  changes in the LDAP directory service. As each data record contains the hash value of the
+		  previous data record, manipulations of the log file - such as deleted entries - can be
+		  uncovered.
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Die Protokollierung erfolgt in die Datei -->
-<!-- 		  <filename>/var/log/univention/directory-logger.log</filename> im folgenden Format: -->
+		  
+		<para>
+		  Individual areas of the directory service can be excluded from the logging. These branches
+		  can be configured using the &ucsUCR; variables <envar>ldap/logging/exclude1</envar>,
+		  <envar>ldap/logging/exclude2</envar>, etc.  As standard, the container is excluded in
+		  which the temporary objects are stored (cn=temporary,cn=univention). The LDAP changes are
+		  logged by a Univention directory listener module. The Univention directory listener
+		  service must be restarted if changes are made to the &ucsUCR; variables.
+		</para>
 
-<!-- 		<programlisting language="sh"> -->
-<!-- START -->
-<!-- Old Hash: Hashsumme des vorhergehenden Datensatzes -->
-<!-- DN: DN des LDAP-Objekts -->
-<!-- ID: Listener/Notifer-Transaktions-ID -->
-<!-- Modifier: DN des ändernden Kontos -->
-<!-- Timestamp: Zeitstempel im Format dd.mm.yyyy hh:mm:ss -->
-<!-- Action: add, modify oder delete -->
+		<para>
+		  The logging is made in the <filename>/var/log/univention/directory-logger.log</filename>
+		  file in the following format:
 
-<!-- Old Values: -->
-<!--  Liste der alten Attribute, ist leer wenn ein Objekt hinzugefügt wird -->
-<!-- New Values: -->
-<!--  Liste der neuen Attribute, ist leer wenn ein Objekt gelöscht wird -->
-<!-- END -->
-<!-- 		</programlisting> -->
+		<programlisting language="sh">
+START
+Old Hash: Hash sum of the previous data record
+DN: DN of the LDAP object
+ID: Listener/notifier transaction ID
+Modifier: DN of the modifying account
+Timestamp: Time stamp in format dd.mm.yyyy hh:mm:ss
+Action: add, modify or delete
 
-<!-- 		Für jeden protokollierten Datensatz wird eine Hashsumme berechnet und zusätzlich in die -->
-<!-- 		Sektion <emphasis>daemon.info</emphasis> des Syslog-Dienstes protokolliert. -->
-<!-- 		</para> -->
+Old Values:
+ List of old attributes, empty when an object is added
+New Values:
+ List of new attributes, empty when an object is deleted
+END
+		</programlisting>
+
+		A hash sum is calculated for each logged data record and also logged in the
+		<emphasis>daemon.info</emphasis> section of the Syslog service.
+		</para>
 	</section>
 
 
@@ -817,16 +820,18 @@ slapcat &gt; ldapdata.txt
 				<envar>ldap/acl/user/passwordreset/accesslist/groups/dn</envar>. The LDAP
 				server must be restarted after making changes.
 			</para>
+
 			<para>
-				Passwords can be reset via the &ucsUMC;. In the default setting, the &ucsUMC; only
-				offers the user wizard to the <emphasis>Administrator</emphasis> user, which
-				allows the setting of new passwords. During the installation a new
-				<emphasis>default-user-password-admins</emphasis> policy is created
-				automatically, which is linked to the members of the <emphasis>User
-				Password Admins</emphasis> group and can be assigned to a corresponding 
-				container in the LDAP directory.
-				<!-- Weitere Hinweise zur Konfiguration von UMC-Richtlinien finden sich in Kapitel <xref linkend="delegated-administrationl"/>. -->
+			  Passwords can be reset via the &ucsUMC;. In the default setting, the &ucsUMC; only
+			  offers the user wizard to the <emphasis>Administrator</emphasis> user, which
+			  allows the setting of new passwords. During the installation a new
+			  <emphasis>default-user-password-admins</emphasis> policy is created
+			  automatically, which is linked to the members of the <emphasis>User
+			  Password Admins</emphasis> group and can be assigned to a corresponding 
+			  container in the LDAP directory. Further information on the configuration of UMC
+			  policies can be found in Section <xref linkend="delegated-administration"/>.
 			</para>
+
 			<para>
 				The policy makes it possible to search for users and create an overview of all
 				the attributes of a user object. If an attempt is made to modify further
@@ -952,8 +957,7 @@ slapcat &gt; ldapdata.txt
 
 	  <itemizedlist>
 		<listitem> <simpara>
-		  foo
-		  <!-- Der Univention Directory Listener-Dienst läuft auf jedem UCS-System. -->
+		  The Univention directory listener service runs on all UCS systems.
 		</simpara></listitem>
 
 		<listitem><simpara>
