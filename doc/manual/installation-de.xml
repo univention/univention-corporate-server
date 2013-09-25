@@ -41,6 +41,19 @@
 			</simpara>
 		</listitem>
 	</itemizedlist>
+
+	<para>
+	  Installations-DVDs sind für die Rechnerarchitekturen <emphasis>amd64</emphasis> (64 Bit) und
+	  <emphasis>i386</emphasis> (32 Bit) verfügbar. Nahezu alle Serversysteme, die in den letzten
+	  Jahren verkauft wurden sind 64 Bit-Systeme. Die Verwendung der 64 Bit-Version wird empfohlen.
+	</para>
+
+	<para>
+	  Für amd64 steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den
+	  Unified Extensible Firmware Interface-Standard (UEFI) bereit. Einige Systeme unterstützen nur
+	  einen Boot über UEFI, auf solchen Systemen muss diese UEFI-DVD verwendet werden.
+	</para>
+
 	<para>
 		Neben einer Installation auf Hardware oder in einer Virtualisierungslösung kann UCS auch über ein AMI-Image
 		in der Amazon EC2-Cloud installiert werden. Hinweise dazu finden sich
