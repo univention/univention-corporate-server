@@ -2372,6 +2372,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32595">Bug 32595</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The Samba 4 daemon will now be restarted during the server password roatation
+		  (<ulink url="&ucsbug;32468">Bug 32468</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
