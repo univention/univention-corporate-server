@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-35) unstable; urgency=low
+
+  * Restart Samba 4 after changing the server password (Bug #32468)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Sep 2013 06:14:37 +0200
+
 univention-samba4 (2.0.44-34) unstable; urgency=low
 
   * Wait for the DRS replication during the join. The host object must
