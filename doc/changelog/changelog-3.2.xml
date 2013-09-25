@@ -1183,7 +1183,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The software setup now maintains the defined package order and triggers a single package manager operation for package installations and removals, respectively, instead of handling each listed package individually (<ulink url="&ucsbug;31960">Bug 31960</ulink>).
+		  The software setup now maintains the defined package order (<ulink url="&ucsbug;31960">Bug 31960</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
