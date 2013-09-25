@@ -368,7 +368,7 @@
 				</row>
 			</thead>
 			<tbody>
-				<row><!-- FIXME -->
+				<row>
 					<entry namest="col1" nameend="col2">
 						This tab allows to disable LDAP object classes for host objects.
 						The entry fields for attributes of disables object classes are no longer shown.
@@ -678,9 +678,6 @@
 					assignment of additional data such as the DNS server to be used. There is an
 					additional protocol for this (DHCPv6), which, however, is not employed in the
 					dynamic assignment.
-					<!-- Der <guimenu>Bezeichner</guimenu> ist ein OBS -->
-					<!-- eindeutiger Name für die IPv6-Netzwerkschnittstelle, OBS --> 
-					<!-- z.B. <emphasis>Interface-Mailserver</emphasis>. OBS --> 
 					<!-- Eine Netzwerkkarte kann -->
 					<!-- verschiedene IPv6-Adressen bedienen. Der <guimenu>Bezeichner</guimenu> -->
 					<!-- ist ein eindeutiger Name für einzelne Adressen. Die Haupt-Adresse verwendet -->

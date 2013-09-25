@@ -272,13 +272,13 @@
 		<para>
 		  The level of detail of the Bind debug output can be configured via the
 		  <envar>dns/debug/level</envar> and <envar>dns/dlz/debug/level</envar> (for the Samba
-		  backend, see <xref linkend="ip-config:Configuration_of_the_data_backend"/>) &ucsUCR;
+		  backend, see <xref linkend="ip-config:dns:backend"/>) &ucsUCR;
 		  variables. The possible values are between 0 (no debug tasks) to 11. A complete list of
 		  levels can be found at <biblioref linkend="bind-loglevel"/>.
 		</para>
 	  </section>
 
-	  <section id="ip-config:Configuration_of_the_data_backend">
+	  <section id="ip-config:dns:backend">
 		<title>Configuration of the data backend</title>
 		<para>
 		  In a typical Bind installation on a non-UCS system, the configuration
@@ -294,6 +294,12 @@
 			  <para>
 				The <emphasis>LDAP backend</emphasis> accesses the data in the LDAP
 				directory. This is the standard backend.
+				<!-- Der DNS-Dienst ist in diesem Fall -->
+				<!--   zweigeteilt: Der <emphasis>Bind-Proxy</emphasis> ist der primäre Nameserver und -->
+				<!--   bedient den DNS-Standard-Port 53. Ein zweiter Server im Hintergrund arbeitet auf -->
+				<!--   Port 7777. Werden Daten der internen DNS-Zonen im LDAP bearbeitet, wird die -->
+				<!--   Zonendatei auf dem zweiten Server basierend auf den LDAP-Informationen -->
+				<!--   aktualisiert und durch einen Zonentransfer an den Bind-Proxy übertragen.  -->
 			  </para>
 			</listitem>
 			<listitem>

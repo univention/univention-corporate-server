@@ -359,7 +359,7 @@
 		<section id="domain-ldap:win2012">
 		  <title>Windows Server 2012</title>
 		  <para>
-			Tritt der Client einer Domäne auf Basis von Samba 3 bei, müssen vor dem Domänenbeitritt
+			Tritt der Server einer Domäne auf Basis von Samba 3 bei, müssen vor dem Domänenbeitritt
 			einige Einstellungen in der Windows-Registry vorgenommen werden. Eine entsprechende
 			REG-Datei kann unter <ulink url="http://sdb.univention.de/1102"/> heruntergeladen
 			werden. Anschließend muss das System neu gestartet werden. Dieser Schritt ist unter
