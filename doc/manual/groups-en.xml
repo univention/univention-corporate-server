@@ -309,30 +309,28 @@
 		</para>
 	</section>
 
+	<section id="groups::memberof">
+	  <title>Overlay module for displaying the group information on user objects</title>
+	  <para>
+		In the UCS directory service, group membership properties are only saved in the group
+		objects and not in the respective user objects. However, some applications expect group
+		membership properties at the user objects (e.g., in the attribute
+		<emphasis>memberOf</emphasis>). An optional overlay module in the LDAP server makes it
+		possible to present these attributes automatically based on the group information. The
+		additional attributes are not written to the LDAP, but displayed on the fly by the
+		overlay module if a user object is queried.
+	  </para>
 
-	<!-- <section id="groups::memberof"> -->
-	<!--   <title>Overlay-Modul zur Anzeige der Gruppeninformationen an Benutzerobjekten</title> -->
-	<!--   <para> -->
-	<!-- 	Im UCS-Verzeichnisdienst werden Gruppenmitgliedschaften nur an den Gruppenobjekten und nicht -->
-	<!-- 	am jeweiligen Benutzerobjekt gespeichert. Einige Applikationen erwarten jedoch die -->
-	<!-- 	Gruppenmitgliedschaften an den Benutzerobjekten (z.B. im Attribut -->
-	<!-- 	<emphasis>memberOf</emphasis>). Durch ein optionales Overlay-Modul im LDAP-Server können -->
-	<!-- 	diese Attribute automatisch anhand der Gruppeninformationen angezeigt werden. Die -->
-	<!-- 	zusätzlichen Attribute werden nicht in das LDAP geschrieben, sondern bei einer Anfrage durch -->
-	<!-- 	das Overlay-Modul ermittelt und angezeigt. -->
-	<!--   </para> -->
+	  <para>
+		To this end, the <emphasis>univention-ldap-overlay-memberof</emphasis> package must be
+		installed on all LDAP servers.
+	  </para>
 
-	<!--   <para> -->
-	<!-- 	Dazu muss auf allen LDAP-Servern das Paket -->
-	<!-- 	<emphasis>univention-ldap-overlay-memberof</emphasis> installiert werden. -->
-	<!--   </para> -->
-
-	<!--   <para> -->
-	<!-- 	In der Grundeinstellung wird das Benutzerattribut <emphasis>memberOf</emphasis> -->
-	<!-- 	dargestellt. Mit der &ucsUCRV; <envar>ldap/overlay/memberof/memberof</envar> kann auch ein -->
-	<!-- 	anderes Attribut konfiguriert werden. -->
-	<!--   </para> -->
-	<!-- </section> -->
-
+	  <para>
+		In the default setting, the user attribute <emphasis>memberOf</emphasis> is shown. The
+		&ucsUCRV; <envar>ldap/overlay/memberof/memberof</envar> can be used to configure
+		a different attribute.
+	  </para>
+	</section>
 
 </chapter>
