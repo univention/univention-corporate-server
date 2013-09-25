@@ -334,6 +334,33 @@
 			</para>
 		</section>
 
+		<section id="domain-ldap:win2012">
+		  <title>Windows Server 2012</title>
+
+		  <para>
+			When using Windows 8 to a domain based on Samba 3, certain settings must be made in the
+			Windows registry before joining the domain. A corresponding REG file can be downloaded
+			from <ulink url="http://sdb.univention.de/1102"/>. The system must then be restarted. This step is not necessary with Samba 4.
+		  </para>
+
+		  <para>
+			The control panel can be reached by moving the cursor to the bottom right-hand corner of
+			the screen. The <emphasis>Control Panel</emphasis> can then be searched for under
+			<guimenu>Search &ar; Apps</guimenu>. <guimenu>Change settings &ar; Network ID</guimenu>
+			must be clicked on under <guimenu>System and Security &ar; System</guimenu>.
+		  </para>
+
+		  <para>
+			The <guimenu>Domain</guimenu> option field must be ticked and the name of the Samba
+			domain entered in the input field for the domain join. After clicking on the
+			<mousebutton>OK</mousebutton> button, the <emphasis>Administrator</emphasis> must be
+			entered in the input field <guimenu>Name</guimenu> and the password from
+			<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> transferred to the
+			<guimenu>Password</guimenu> input field. The process for joining the domain can then be
+			started by clicking on <mousebutton>OK</mousebutton>.
+		  </para>
+		</section>
+
 		<section id="domain-ldap:Windows_XP_Professional">
 			<title>Windows XP Professional</title>
 			<para>

@@ -354,6 +354,36 @@
 			</para>
 		</section>
 
+		<section id="domain-ldap:win2012">
+		  <title>Windows Server 2012</title>
+		  <para>
+			Tritt der Client einer Domäne auf Basis von Samba 3 bei, müssen vor dem Domänenbeitritt
+			einige Einstellungen in der Windows-Registry vorgenommen werden. Eine entsprechende
+			REG-Datei kann unter <ulink url="http://sdb.univention.de/1102"/> heruntergeladen
+			werden. Anschließend muss das System neu gestartet werden. Dieser Schritt ist unter
+			Samba 4 nicht nötig.
+		  </para>
+
+		  <para>
+			Die Systemsteuerung kann erreicht werden, indem der Mauszeiger in die rechte untere
+			Bildschirmecke bewegt wird. Anschließend kann unter <guimenu>Suchen &ar; Apps</guimenu>
+			nach der <emphasis>Systemsteuerung</emphasis> gesucht werden. Unter <guimenu>System und
+			Sicherheit &ar; System</guimenu> muss auf <guimenu>Einstellungen ändern &ar; Netzwerk
+			ID</guimenu> geklickt werden.
+		  </para>
+
+		  <para>
+			Für den Domänenbeitritt muss das Optionsfeld <guimenu>Domäne</guimenu> markiert und der
+			Name der Samba-Domäne in das Eingabefeld eingetragen werden. Nach einem Klick auf die
+			Schaltfläche <mousebutton>OK</mousebutton> muss in das Eingabefeld
+			<guimenu>Name</guimenu> der Name <emphasis>Administrator</emphasis> und in das
+			Eingabefeld <guimenu>Kennwort</guimenu> das Passwort von
+			<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> eingetragen
+			werden. Abschließend kann der Domänenbeitritt mit einem Klick auf
+			<mousebutton>OK</mousebutton> gestartet werden.
+		  </para>
+		</section>
+
 		<section id="domain-ldap:Windows_XP_Professional">
 			<title>Windows XP Professional</title>
 			<para>
