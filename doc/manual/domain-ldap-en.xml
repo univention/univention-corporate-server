@@ -162,51 +162,56 @@
 		</section>
 
 		<section id="domain-ldap:joinscripts">
-		  <title>Join scripts</title>
+		  <title>Join scripts / Unjoin scripts</title>
 
 		  <para>
-			Join scripts are run during the domain join. They are components of the individual
-			software packages and register the service in the domain. The registration of a print
-			server in the domain or the adaptation of DNS entries are examples of such changes.
+			<emphasis>Join scripts</emphasis> are run during the domain join. Examples for changes made by join scripts
+			are the registration of a print server in the domain or the adaptation of DNS
+			entries. Join scripts are components of the individual software packages.
+			<!-- Analog dazu gibt es <emphasis>Unjoin-Skripte</emphasis>, die nach der -->
+			<!-- Deinstallation einer Softwarekomponente diese Änderungen wieder rückgängig machen. -->
 		  </para>
 			
 		  <para>
 			Join scripts are stored in the <filename>/usr/lib/univention-install</filename>
-			directory. Each join script has a version. An example: A package has already been
-			installed and the join script already run. The new version of the package now requires
-			additional changes and the version number of the join script is increased.
+			directory and unjoin scripts in <filename>/usr/lib/univention-uninstall</filename>. Each
+			join/unjoin script has a version. An example: A package has already been installed and
+			the join script already run. The new version of the package now requires additional
+			changes and the version number of the join script is increased.
 		  </para>
 
 		  <para>
 			The <command>univention-check-join-status</command> command can be used to check whether
-			join scripts need to be run (either because they have yet to be run or an older version
+			join/unjoin scripts need to be run (either because they have yet to be run or an older version
 			was run).
 		  </para>
 
 		  <section id="domain-ldap:joinscripts:execlater">
 			<title>Subsequent running of join scripts</title>
 			<para>
-			  If there are join scripts on a system which have not yet been run or which can only be
+			  If there are join/unjoin scripts on a system which have not yet been run or which can only be
 			  run for an older version, a warning message is shown on the &ucsUMC; start page.
 			</para>
+
 			<para>
 			  Join scripts that have not been run can be executed via the
 			  <guimenu>Domain join</guimenu> module in the &ucsUMC; by clicking on the menu entry
 			  <guimenu>Execute all pending join scripts</guimenu>.
 			</para>
+
 			<para>
 				The <command>univention-run-join-scripts</command> command is used to run all
-				of the join scripts installed on a system. The scripts check automatically
-				whether they have already been initiated.
+				of the join/unjoin scripts installed on a system. The scripts check automatically
+				whether they have already been executed.
 			</para>
 			<para>
-				The name of the join script and the output of the script are also recorded in
+				The name of the join/unjoin script and the output of the script are also recorded in
 				<filename>/var/log/univention/join.log</filename>.
 			</para>
 			<para>
 				If <command>univention-run-join-scripts</command> is run on another system role
-				as a &ucsMaster; or &ucsBackup;, the user will be asked to input a username and
-				password. This can be performed on the &ucsMaster; and &ucsBackup; via the
+				than the &ucsMaster;, the user will be asked to input a username and
+				password. This can be performed on the &ucsMaster; via the
 				<emphasis>--ask-pass</emphasis> option.
 			</para>
 		  </section>

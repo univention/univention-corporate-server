@@ -83,7 +83,7 @@
 			angestoßen. Außerdem werden am Ende des Join-Vorgangs
 			<emphasis>Join-Skripte</emphasis> ausgeführt. Diese registrieren anhand der auf
 			dem System installierten Software-Pakete z.B. weitere Objekte im
-			Verzeichnisdiens (siehe <xref linkend="domain-ldap:joinscripts"/>).
+			Verzeichnisdienst (siehe <xref linkend="domain-ldap:joinscripts"/>).
 		</para>
 		<para>
 		  Der Domänenbeitritt wird auf Client-Seite in der Logdatei
@@ -167,57 +167,59 @@
 		</section>
 
 		<section id="domain-ldap:joinscripts">
-		  <title>Join-Skripte</title>
+		  <title>Join-Skripte / Unjoin-Skripte</title>
 
 		  <para>
-			Join-Skripte werden während des Domänenbeitritts aufgerufen. Sie sind Bestandteil der
-			einzelnen Softwarepakete und registrieren den Dienst in der Domäne. Beispiele für
-			solche Änderungen sind die Registrierung eines Druckservers in der Domäne oder  die
-			Anpassung von DNS-Einträgen.
+			<emphasis>Join-Skripte</emphasis> werden während des Domänenbeitritts aufgerufen. Beispiele für von
+			Join-Skripten vorgenommene Änderungen sind die Registrierung eines Druckservers in der
+			Domäne oder die Anpassung von DNS-Einträgen. Die Skripte sind Bestandteil der einzelnen
+			Softwarepakete. Analog dazu gibt es <emphasis>Unjoin-Skripte</emphasis>, die nach der
+			Deinstallation einer Softwarekomponente diese Änderungen wieder rückgängig machen.
 		  </para>
 
 		  <para>
-			Join-Skripte werden im Verzeichnis <filename>/usr/lib/univention-install</filename> gespeichert. Jedes
-			Join-Skript verfügt über eine Version. Ein Beispiel: Ein Paket ist bereits installiert
+			Join-Skripte werden im Verzeichnis <filename>/usr/lib/univention-install</filename>
+			und Unjoin-Skripte in <filename>/usr/lib/univention-uninstall</filename> gespeichert.
+			Jedes Join/Unjoin-Skript verfügt über eine Version. Ein Beispiel: Ein Paket ist bereits installiert
 			und das Join-Skript schon aufgerufen. In der neuen Version des Pakets sind nun
 			zusätzliche Änderungen nötig und die Versionsnummer des Join-Skripts wird erhöht.
 		  </para>
 
 		  <para>
 			Mit dem Befehl <command>univention-check-join-status</command> kann geprüft werden, ob
-			Join-Skripte aufgerufen werden müssen (entweder weil sie noch nie oder in einer älteren
+			Join- oder Unjoin-Skripte aufgerufen werden müssen (entweder weil sie noch nie oder in einer älteren
 			Version aufgerufen wurde).
 		  </para>
 		  
 		  <section id="domain-ldap:joinscripts:execlater">
-			<title>Nachträgliches Ausführen von Join-Skripten</title>
+			<title>Nachträgliches Ausführen von Join-/Unjoin-Skripten</title>
 			<para>
-			  Gibt es auf einem System Join-Skripte, die noch nicht ausgeführt wurden oder die nur
+			  Gibt es auf einem System Join- oder Unjoin-Skripte, die noch nicht ausgeführt wurden oder die nur
 			  für eine ältere Version augeführt wurden, wird in der Startseite der &ucsUMC; eine
 			  Warnmeldung ausgegeben.
 			</para>
 
 			<para>
-			  Nicht ausgeführte Join-Skript können über das Modul
+			  Nicht ausgeführte Join-Skripte können über das Modul
 			  <guimenu>Domänenbeitritt</guimenu> der &ucsUMC; aufgerufen werden, in dem der
 			  Menüpunkt <guimenu>Alle Skripte ausführen</guimenu> aufgerufen wird.
 			</para>
 
 			<para>
 			  Mit dem Befehl <command>univention-run-join-scripts</command> lassen sich alle auf
-			  einem System installierten Join-Skripte ausführen. Ob sie bereits gestartet wurden,
+			  einem System installierten Join-/Unjoin-Skripte ausführen. Ob sie bereits gestartet wurden,
 			  prüfen die Skripte selbständig.
 			</para>
 
 			<para>
-			  Der Name des Join-Skriptes und die Ausgabe des Skriptes werden auch in
+			  Der Name des Join/Unjoin-Skripts und die Skriptausgabe werden auch in
 			  <filename>/var/log/univention/join.log</filename> festgehalten.
 			</para>
 
 			<para>
 			  Wird <command>univention-run-join-scripts</command> auf einer anderen Systemrolle als
-			  &ucsMaster; oder &ucsBackup; ausgeführt, so wird der Benutzer nach einem Benutzernamen
-			  und einem Passwort gefragt. Auf &ucsMaster; und &ucsBackup; kann dies durch die Option
+			  &ucsMaster; ausgeführt, so wird der Benutzer nach einem Benutzernamen
+			  und einem Passwort gefragt. Auf dem &ucsMaster; kann dies durch die Option
 			  <emphasis>--ask-pass</emphasis> erreicht werden.
 			</para>
 		  </section>
