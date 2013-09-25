@@ -347,45 +347,45 @@ The NETLOGON share must be available on all Samba domain controllers
 and always contain the same contents.
 </para>
 
-<section id="windows:netlogon:Samba_3"><title>Samba 3</title>
-<para>
-Under Samba 3, the directory <filename>/var/lib/samba/netlogon</filename> is set
-up as the Samba share <emphasis>NETLOGON</emphasis>.
-</para>
-<para>
-In the default setting, all adjustments are made in
-the <filename>/var/lib/samba/netlogon</filename> directory on the &ucsMaster;
-and synchronised hourly on all domain controllers with Samba installed
-via the <emphasis>rsync</emphasis> tool.
+<section id="windows:netlogon:Samba_3">
+  <title>Samba 3</title>
+  <para>
+	Under Samba 3, the directory <filename>/var/lib/samba/netlogon</filename> is set up as the Samba
+	share <emphasis>NETLOGON</emphasis>.
+  </para>
 
-<!-- Der Synchronisations-Modus kann durch die &ucsUCRV; -->
-<!-- 	<envar>samba/netlogon/sync</envar> konfiguriert werden: -->
+  <para>
+	In the default setting, all adjustments are made in the
+	<filename>/var/lib/samba/netlogon</filename> directory on the &ucsMaster; and synchronised
+	hourly on all domain controllers with Samba installed via the <emphasis>rsync</emphasis>
+	tool. The synchronisation mode can be configured using the &ucsUCRV;
+	<envar>samba/netlogon/sync</envar>:
 
-<!-- 	<itemizedlist> -->
-<!-- 	  <listitem><simpara> -->
-<!-- 		Mit <emphasis>sync</emphasis> werden die Netlogon-Skripte vom &ucsMaster; auf den -->
-<!-- 		Samba-Server repliziert und auf dem Master nicht mehr vorhandene Dateien lokal gelöscht. Das -->
-<!-- 		ist die Standardeinstellung. -->
-<!-- 	  </simpara></listitem> -->
+	<itemizedlist>
+	  <listitem><simpara>
+		<emphasis>sync</emphasis> is used to replicate the Netlogon scripts from the &ucsMaster; to
+		the Samba server and delete local files which are no longer available on the master. This is
+		the standard setting.
+	  </simpara></listitem>
 
-<!-- 	  <listitem><simpara> -->
-<!-- 		Mit <emphasis>download</emphasis> werden die Daten ebenfalls vom &ucsMaster; kopiert, -->
-<!-- 		entfernte Dateien jedoch nicht gelöscht. -->
-<!-- 	  </simpara></listitem> -->
+	  <listitem><simpara>
+		<emphasis>download</emphasis> is also used to copy the data from the master but it does not
+		delete removed files.
+	  </simpara></listitem>
 
-<!-- 	  <listitem><simpara> -->
-<!-- 		<emphasis>none</emphasis> deaktiviert die Synchronisation. -->
-<!-- 	  </simpara></listitem> -->
-<!-- 	</itemizedlist> -->
+	  <listitem><simpara>
+		<emphasis>none</emphasis> disables the synchronisation.
+	  </simpara></listitem>
+	</itemizedlist>
+  </para>
 
-</para>
-<para>
-The &ucsUCRV; <envar>samba/logonscript</envar> is available for defining a global logon
-script for all users. If this variable is set on a Samba server, then
-all users logging into this Samba server have the specified logon
-script assigned. The logon script can also be assigned
-user-specifically, see <xref linkend="users::management"/>.
-</para>
+  <para>
+	The &ucsUCRV; <envar>samba/logonscript</envar> is available for defining a global logon
+	script for all users. If this variable is set on a Samba server, then
+	all users logging into this Samba server have the specified logon
+	script assigned. The logon script can also be assigned
+	user-specifically, see <xref linkend="users::management"/>.
+  </para>
 </section>
 
 <section id="windows:netlogon:Samba_4"><title>Samba 4</title>
