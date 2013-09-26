@@ -1,3 +1,9 @@
+univention-join (6.0.8-1) unstable; urgency=low
+
+  * Bug #24727: use app.linkToModule for links to other UMC modules
+
+ -- Florian Best <best@univention.de>  Thu, 26 Sep 2013 09:18:19 +0200
+
 univention-join (6.0.7-1) unstable; urgency=low
 
   * Bug #24727: don't hardcode "setup" module name

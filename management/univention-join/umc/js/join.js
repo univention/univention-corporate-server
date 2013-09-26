@@ -37,6 +37,7 @@ define([
 	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
+	"umc/app",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/ConfirmDialog",
 	"umc/widgets/Module",
@@ -50,7 +51,7 @@ define([
 	"umc/modules/join/Grid",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/join"
-], function(declare, lang, topic, all, BorderContainer, entities, dialog, tools, ContainerWidget, ConfirmDialog,
+], function(declare, lang, topic, all, BorderContainer, entities, dialog, tools, app, ContainerWidget, ConfirmDialog,
 			Module, Page, Text, ExpandingTitlePane, TextBox, PasswordBox, ProgressBar, JoinForm, JoinGrid, Lib_Server, _) {
 
 	var JoinPage = declare("umc.modules.join.JoinPage", [Page], {
@@ -271,9 +272,7 @@ define([
 				}
 				else if (!joined) {
 					if (this._serverRole == 'domaincontroller_master') {
-						var setupLink = 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"';
-						var setupName = (require('umc/app').getModule('setup') || { name: 'Basic Settings'}).name;
-						dialog.alert(_('A DC master should be joined by the <a %s>%s module</a>.', 'href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'setup\')"'));
+						dialog.alert(_('A DC master should be joined by the %s.', app.linkToModule('setup')));
 						return;
 					}
 					this._switchView('join_form');
