@@ -1,9 +1,10 @@
-univention-net-installer (7.0.2-2) unstable; urgency=low
+univention-net-installer (7.0.2-3) unstable; urgency=low
 
   * add multithreading to univention-net-installer-daemon (Bug #1156)
   * rename postinst, dirs to per-package names (Bug #1156)
+  * add firewall rules for univention-net-installer-daemon (Bug #1156)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 26 Sep 2013 12:31:30 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 26 Sep 2013 12:47:38 +0200
 
 univention-net-installer (7.0.1-2) unstable; urgency=low
 
