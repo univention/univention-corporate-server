@@ -38,5 +38,9 @@ fi
 
 if [ -n "$installation_feedback_host" ]
 then
-	echo "$hostname" | nc "$installation_feedback_host" 49173
+	if [ -z "$installation_feedback_port" ]
+	then
+		installation_feedback_port=49173
+	fi
+	echo "$hostname" | nc "$installation_feedback_host" "$installation_feedback_port"
 fi

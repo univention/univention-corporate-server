@@ -1,3 +1,9 @@
+univention-installer (9.0.25-1) unstable; urgency=low
+
+  * add installation_feedback_port (Bug #1156)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 26 Sep 2013 13:19:22 +0200
+
 univention-installer (9.0.24-1) unstable; urgency=low
 
   * Bug #31705: updated comment in default installation profiles
