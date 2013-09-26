@@ -991,11 +991,11 @@ slapcat &gt; ldapdata.txt
 	<!-- <para> -->
 	<!--   Durch &ucsUDL;-Module können Änderungen an der Domäne auch an Dienste übermittelt werden, -->
 	<!--   die selbst nicht LDAP-fähig sind. Ein Beispiel ist der Druckserver CUPS: Die -->
-	<!--   Druckerdefinitionen werden nicht aus dem LDAP ausgelesen, sondern aus Konfigurationsdateien -->
-	<!--   unterhalb von <filename>/etc/samba/printers.conf.d</filename>. Wird nun in der -->
+	<!--   Druckerdefinitionen werden nicht aus dem LDAP ausgelesen, sondern aus der Datei -->
+	<!--   <filename> /etc/cups/printers.conf</filename>. Wird nun in der -->
 	<!--   Druckerverwaltung der &ucsUMC; ein Drucker angelegt, wird dieser im LDAP registriert. Diese -->
 	<!--   Änderung wird dann vom &ucsUDL;-Modul <emphasis>cups-printers</emphasis> erkannt und -->
-	<!--   basierend auf den Daten im LDAP ein Eintrag unterhalb von -->
+	<!--   basierend auf den Daten im LDAP ein Eintrag in -->
 	<!--   <filename>/etc/samba/printers.conf.d</filename> hinzugefügt, modifiziert oder gelöscht. -->
 	<!-- </para> -->
 
