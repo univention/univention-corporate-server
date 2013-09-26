@@ -1,3 +1,9 @@
+ucs-test (4.0.123-1) unstable; urgency=low
+
+  * Bug #32401...#32409: added various UDM extensions test cases
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 26 Sep 2013 12:17:04 +0200
+
 ucs-test (4.0.122-2) unstable; urgency=low
 
   * 20_appcenter/4*: adjust descriptions (Bug #32414)
