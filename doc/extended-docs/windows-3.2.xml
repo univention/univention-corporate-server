@@ -55,6 +55,64 @@ univention-run-join-scripts
         </section>
     </chapter>
 
+<!--     <chapter> -->
+<!-- 	  <title>Advanced Active Directory connector documentation</title> -->
+<!-- 	  <section> -->
+<!-- 		<title>Synchronisation mehrerer AD-Domänen mit einem UCS-Verzeichnisdienst</title> -->
+<!-- 		<para> -->
+<!-- 		  Es besteht die Möglichkeit mehrere getrennte Active Directory-Domänen -->
+<!-- 		  in eine gemeinsame UCS-Domäne zu synchronisieren. Damit können -->
+<!-- 		  beispielsweise mehrere Domänen eines Forests synchronisiert werden. -->
+<!-- 		  Pro AD-Domäne kann eine OU (Organisational Unit) im LDAP definiert -->
+<!-- 		  werden, unter der die Objekte der jeweiligen Domäne synchronisiert -->
+<!-- 		  werden. Die Konfiguration weiterer Connector-Instanzen wird nicht über das -->
+<!-- 		  UMC-Modul abgedeckt. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Für die mehrfache Replikation werden mehrere Connector-Instanzen -->
+<!-- 		  paralell gestartet. Jede Connector-Instanz wird dabei mit einer -->
+<!-- 		  eigenständigen Konfigurationsbasis betrieben. Um eine neue Instanz zu erzeugen, muss das Skript -->
+<!-- 		  <command>prepare-new-instance</command> aufgerufen werden, z.B.: -->
+
+<!-- <programlisting language="sh"> -->
+<!-- /usr/share/univention-ad-connector/scripts/prepare-new-instance -a create -c connector2 -->
+<!-- </programlisting> -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Dieses Skript erzeugt dann ein weiteres Init-Skript für die zweite -->
+<!-- 		  Connector-Instanz (<filename>/etc/init.d/univention-ad-connector2</filename>), -->
+<!-- 		  ein Konfigurationsverzeichnis <filenmame>/etc/univention/connector2</filenmame> mit -->
+<!-- 		  einer Kopie der Mapping-Einstellungen der Connector-Hauptinstanz (diese kann ggf. angepasst werden) und eine -->
+<!-- 		  Reihe interner Laufzeitverzeichnisse. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Die zusätzlichen Connector-Instanzen werden in der -->
+<!-- 		  &ucsUCRV; <envar>connector/listener/additionalbasenames</envar> registriert. -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Erfolgt eine Synchronisation von UCS in Richtung Active -->
+<!-- 		  Directory, so muss nach dem Anlegen einer weiteren Connector-Instanz -->
+<!-- 		  die Replikation des Listener-Moduls neu angestossen werden. Hierzu -->
+<!-- 		  muss der folgende Befehl aufgerufen werden: -->
+
+<!-- <programlisting language="sh"> -->
+<!-- univention-directory-listener-ctrl resync ad-connector -->
+<!-- </programlisting> -->
+<!-- 		</para> -->
+
+<!-- 		<para> -->
+<!-- 		  Die zum AD Connector gehörigen Kommandozeilenwerkzeuge wie -->
+<!-- 		  z.B. <command>univention-adsearch</command> unterstützen mit dem Parameter -->
+<!-- 		  <emphasis>-c</emphasis> die Angabe einer Connector-Instanz. -->
+<!-- 		</para> -->
+<!-- 	  </section> -->
+<!-- 	</chapter> -->
+
+
 	<bibliography>
 		<bibliomixed id="technet-rodc"/>
 	</bibliography>
