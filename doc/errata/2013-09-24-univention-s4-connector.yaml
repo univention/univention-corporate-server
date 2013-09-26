@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-s4-connector
-fix: 7.0.32-7.402.201309250810
+fix: 7.0.32-8.405.201309260619
 note:
 version: [1]
 desc: |
@@ -11,4 +11,7 @@ desc: |
     in case it uses the machine account.
   * The S4 connector now considers the scenario that an object was moved to a position
     which is not replicated to this server. This is for example the case in UCS@school.
-bug: [32529,32542]
+  * The S4 connector no longer synchronizes the password for Slave PDC DCs from
+    Samba 4 to OpenLDAP. This prevents a synchronization loop in some selective
+    replication scenarios.
+bug: [32529,32542,32690]
