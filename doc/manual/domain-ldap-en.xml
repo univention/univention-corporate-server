@@ -1227,13 +1227,24 @@ univention-directory-listener-ctrl resync cups-printers
 		a Kerberos domain to have the system time synchronised for all the systems
 		belonging to the Kerberos Realm.
 	</para>
-	<para>
-		Univention Corporate Server uses the Heimdal Kerberos implementation. Several
-		domain controllers can be operated as a KDC within one domain; by default, each
-		domain controller works as a KDC. The KDC used by a system can be reconfigured
-		via the &ucsUCRV; <envar>kerberos/kdc</envar>. As standard, the KDC is
-		selected via a DNS service record.
-	</para>
+
+	<!-- <para> -->
+	<!--   In &ucsUCS; wird die Kerberos-Implementierung Heimdal verwendet. Auf UCS-Domänencontroller-Systemen ohne Samba -->
+	<!--   4 wird ein eigenständiger Heimdal-Dienst gestartet, während auf Samba 4-DCs -->
+	<!--   Kerberos durch eine in Samba integrierte Heimdal-Version bereitgestellt wird. Verwendet man -->
+	<!--   eine Umgebung aus UCS-Domänencontrollern ohne Samba 4 und Samba 4-Domänencontrollern basieren -->
+	<!--   beide Kerberos-Umgebungen auf identischen Daten (diese werden zwischen Samba 4 und OpenLDAP -->
+	<!--   durch den Univention S4 Connector synchronisiert (siehe <xref linkend="windows:s4connector"/>)). -->
+	<!-- </para> -->
+
+	<!-- <para> -->
+	<!--   Standardmäßig wird der KDC über einen DNS-Servicerecord ausgewählt. Der von einem System -->
+	<!--   verwendete KDC kann durch die &ucsUCRV; <envar>kerberos/kdc</envar> umkonfiguriert werden. -->
+	<!--   Wird Samba 4 auf einem System der Domäne installiert, wird der Servicerecord umkonfiguriert, -->
+	<!--   so dass nur noch die KDCs auf Samba 4-Basis angeboten werden. In einer gemischten Umgebung ist -->
+	<!--   es empfehlenswert nur noch die Samba 4-KDCs zu verwenden. -->
+	<!-- </para> -->
+
 	<para>
 		The Kerberos admin server, on which the administrative settings of the domain
 		can be made, runs on the &ucsMaster;. Most of the settings in Univention
