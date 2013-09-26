@@ -66,6 +66,7 @@ if __name__ == '__main__':
 									   tabPosition='2')
 
 		wait_for_replication_and_postrun()
+		udm.stop_cli_server()
 
 		verify_ldap_object(extension_dn, {
 				'cn': [extension_name],
@@ -100,6 +101,7 @@ if __name__ == '__main__':
 				})
 
 	wait_for_replication_and_postrun()
+	udm.stop_cli_server()
 
 	with udm_test.UCSTestUDM() as udm:
 		# test if user/user module is still ok after removing UDM module extension

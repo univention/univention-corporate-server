@@ -6,6 +6,7 @@ ucs-test (4.0.123-3) unstable; urgency=low
     - removed useless die() call
     - do not fail test if object does not exist
     - improved UDM test module
+    - restart UDM cli server after new module/syntax/hook has been installed
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 26 Sep 2013 12:45:40 +0200
 
