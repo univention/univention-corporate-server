@@ -47,18 +47,6 @@ MOUNTS_FILE_LOCK = '/var/lib/univention-home-mounter/mounts.lock'
 
 NEW_HOME_DIR_MODE = stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH
 
-def readlink_f(path):
-	'''resolve the symlinks in <path> (like "readlink -f")'''
-	newpath = os.path.realpath(path)
-	if not os.path.isdir(os.path.dirname(newpath)):
-		return None
-	if path.endswith('/') and os.path.exists(newpath):
-		if not os.path.isdir(newpath):
-			return None
-	if os.path.islink(newpath) and not os.path.exists(newpath):
-		return None
-	return newpath
-
 def hostname_short():
 	'''return first part of hostname (like "hostname -s")'''
 	return socket.gethostname().split('.', 1)[0]
@@ -148,7 +136,7 @@ def main():
 		if not host or not path:
 			syslog.syslog("Bad information in LDAP. Not mounting home directory.")
 			sys.exit(1)
-		if host in (hostname_fqdn(), hostname_short(), ) and readlink_f(path) == readlink_f(user.pw_dir):
+		if host in (hostname_fqdn(), hostname_short(), ) and os.path.realpath(path) == os.path.realpath(user.pw_dir):
 			syslog.syslog("Home directory is local.")
 			sys.exit(0)
 		create_home(user)
