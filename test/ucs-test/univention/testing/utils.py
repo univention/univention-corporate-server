@@ -146,6 +146,7 @@ def start_s4connector():
 	subprocess.Popen([S4CONNECTOR_INIT_SCRIPT, 'start']).wait()
 
 def wait_for_replication():
+	sys.stdout.flush()
 	print 'Waiting for replication:'
 	for i in range(0,300):
 		rc = subprocess.call('/usr/lib/nagios/plugins/check_univention_replication')
@@ -165,10 +166,9 @@ def wait_for_replication_and_postrun ():
 
 
 def package_installed(package):
+	sys.stdout.flush()
 	with open('/dev/null', 'w') as null:
-		dpkg = subprocess.Popen(['dpkg-query', '-W', package], stderr=null)
-		return dpkg.wait() == 0
-
+		return (subprocess.call(['dpkg-query', '-W', package], stderr=null) == 0)
 
 
 def fail(log_message = None, returncode = 1):

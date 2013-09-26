@@ -33,6 +33,7 @@ import subprocess
 import string
 import tempfile
 import os
+import sys
 
 class BuildRuntimeError(RuntimeError): pass
 class InstallRuntimeError(RuntimeError): pass
@@ -112,16 +113,19 @@ class DebianPackage():
 		self.create_debian_file_from_buffer('install', string.join(install, '\n'))
 
 		os.chdir(self._package_path)
+		sys.stdout.flush()
 		if subprocess.call(['dpkg-buildpackage', '-rfakeroot', '-b', '-us', '-uc']):
 			raise BuildRuntimeError
 
 	def install(self):
 		deb_package = self.get_binary_name()
 
+		sys.stdout.flush()
 		if subprocess.call(['dpkg', '-i', deb_package]):
 			raise InstallRuntimeError
 
 	def uninstall(self, purge=False):
+		sys.stdout.flush()
 		if subprocess.call(['dpkg', '-r', self._package_name]):
 			raise UninstallRuntimeError
 		if purge:
