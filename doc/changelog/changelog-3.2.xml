@@ -1140,7 +1140,7 @@
 		<listitem><simpara>
 			The software page has been removed from basic settings. Software
 			components should be managed in the <application>Univention App
-				Center</application>. The page is still available in the appliance setup
+			Center</application>. The software page is still available in the appliance setup
 			(<ulink url="&ucsbug;32471">Bug 32471</ulink>).
 		</simpara></listitem>
 
