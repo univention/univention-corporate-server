@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.38-1) unstable; urgency=low
+
+  * Bug #24727: adapt label of multivalue fields
+
+ -- Florian Best <best@univention.de>  Thu, 26 Sep 2013 08:34:23 +0200
+
 univention-directory-manager-modules (9.0.37-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)

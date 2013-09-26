@@ -240,16 +240,16 @@ msgid "Private postal address"
 msgstr "Private Adresse"
 
 #: user.py:427
-msgid "Private telephone number"
-msgstr "Telefonnummer Festnetz"
+msgid "Private telephone number(s)"
+msgstr "Telefonnummer(n) Festnetz"
 
 #: user.py:437
-msgid "Mobile phone number"
-msgstr "Telefonnummer Mobil"
+msgid "Mobile phone number(s)"
+msgstr "Telefonnummer(n) Mobil"
 
 #: user.py:447
-msgid "Pager telephone number"
-msgstr "Rufnummer Pager"
+msgid "Pager telephone number(s)"
+msgstr "Rufnummer(n) Pager"
 
 #: user.py:457
 msgid "Birthday"

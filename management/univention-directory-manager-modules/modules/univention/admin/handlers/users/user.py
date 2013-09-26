@@ -421,7 +421,7 @@ property_descriptions={
 			identifies=0
 		),
 	'homeTelephoneNumber': univention.admin.property(
-			short_description=_('Private telephone number'),
+			short_description=_('Private telephone number(s)'),
 			long_description='',
 			syntax=univention.admin.syntax.phone,
 			multivalue=1,
@@ -431,7 +431,7 @@ property_descriptions={
 			identifies=0
 		),
 	'mobileTelephoneNumber': univention.admin.property(
-			short_description=_('Mobile phone number'),
+			short_description=_('Mobile phone number(s)'),
 			long_description='',
 			syntax=univention.admin.syntax.phone,
 			multivalue=1,
@@ -441,7 +441,7 @@ property_descriptions={
 			identifies=0
 		),
 	'pagerTelephoneNumber': univention.admin.property(
-			short_description=_('Pager telephone number'),
+			short_description=_('Pager telephone number(s)'),
 			long_description='',
 			syntax=univention.admin.syntax.phone,
 			multivalue=1,
