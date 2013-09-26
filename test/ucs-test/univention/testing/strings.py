@@ -70,3 +70,10 @@ def random_groupname(length=10):
 
 def random_int(bottom_end = 0, top_end = 9):
 	return str(random.randint(bottom_end, top_end))
+
+def random_version(elements=3):
+	version = []
+	for i in xrange(elements):
+		version.append(random_int(0, 9))
+	return '.'.join(version)
+
