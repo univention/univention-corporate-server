@@ -1,6 +1,9 @@
 ucs-test (4.0.123-3) unstable; urgency=low
 
-  * Bug #32401...#32409: fixed test metadata
+  * Bug #32401...#32409:
+    - fixed test metadata
+    - added missing import
+    - removed useless die() call
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 26 Sep 2013 12:45:40 +0200
 

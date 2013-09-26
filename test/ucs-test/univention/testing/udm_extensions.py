@@ -27,7 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.testing.strings import random_name
+from univention.testing.strings import random_name, random_version
 from univention.testing.utils import get_ldap_connection, fail
 from univention.config_registry import ConfigRegistry
 import subprocess
@@ -234,7 +234,7 @@ set -e
 #DEBHELPER#
 %(app_id)s
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_start)s %(version_end)s || die
+ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_start)s %(version_end)s
 exit 0
 ''' % {'filename': filename, 'extension_type': extension_type, 'app_id': app_id,
 	   'version_start': version_start, 'version_end': version_end}
@@ -252,7 +252,7 @@ def get_postrm_script_buffer(extension_type, extension_name, package_name):
 set -e
 #DEBHELPER#
 . /usr/share/univention-lib/ldap.sh
-ucs_unregisterLDAPExtension "$@" --udm_%(extension_type)s %(extension_name)s || die
+ucs_unregisterLDAPExtension "$@" --udm_%(extension_type)s %(extension_name)s
 exit 0
 ''' % {'package_name': package_name, 'extension_name': extension_name, 'extension_type': extension_type}
 
@@ -283,7 +283,7 @@ set -e
 joinscript_init
 %(app_id)s
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_start)s %(version_end)s || die
+ucs_registerLDAPExtension "$@" --udm_%(extension_type)s %(filename)s %(version_start)s %(version_end)s
 joinscript_save_current_version
 exit 0
 ''' % {'filename': filename, 'joinscript_version': joinscript_version, 'extension_type': extension_type, 'app_id': app_id,
@@ -303,7 +303,7 @@ set -e
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 . /usr/share/univention-lib/ldap.sh
-ucs_unregisterLDAPExtension "$@" --udm_%(extension_type)s %(extension_name)s || die
+ucs_unregisterLDAPExtension "$@" --udm_%(extension_type)s %(extension_name)s
 joinscript_remove_script_from_status_file %(package_name)s
 exit 0
 ''' % {'package_name': package_name, 'extension_name': extension_name, 'extension_type': extension_type}
