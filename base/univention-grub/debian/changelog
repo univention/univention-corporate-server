@@ -1,3 +1,9 @@
+univention-grub (7.0.1-1) unstable; urgency=low
+
+  * Bug #32634: updated univention-grub-generate-menu-lst for GRUB 2.00
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 23 Sep 2013 10:52:06 +0200
+
 univention-grub (7.0.0-4) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)
