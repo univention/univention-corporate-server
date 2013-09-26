@@ -803,14 +803,21 @@ UCS AD connector, see <xref linkend="ad-connector:neustart"/>.
 	<para>
 	  This certificate must now be exported and copied onto the UCS system:
 	  <guimenu>Start &ar; Administrative Tools &ar; Certification &ar;
-	  Authority &ar; Right click on the name of the generated certificate
-	  &ar; Properties &ar; View Certificate &ar; Details &ar;
-	  Copy to File... &ar; Next &ar; DER encoded binary X.509 (.CER) &ar; Next
-	  Select an arbitrary file name and save path &ar; Next &ar; Finish</guimenu>
+	  Authority</guimenu>.
+	  <!-- Dort wird eine -->
+	  <!-- Rechnerliste angezeigt und unter jedem System die Elemente <guimenu>Gesperrte -->
+	  <!-- Zertifikate</guimenu>, <guimenu>Ausgestellte Zertifikate</guimenu>, <guimenu>Ausstehende -->
+	  <!-- Anforderungen</guimenu>, <guimenu>Fehlgeschlagene Anforderungen</guimenu> und -->
+	  <!-- <guimenu>Zertifikatsvorlagen</guimenu> angezeigt. Hier muss ein Rechtsklick auf den -->
+	  <!-- Rechnernamen erfolgen - nicht auf eines der Elemente darunter - und -->
+	  <!-- <guimenu>Eigenschaften</guimenu> ausgewählt werden. Das Root-Zertifikat heisst in der Regel -->
+	  <!-- <emphasis>Zertifikat Nr. 0</emphasis>. Dann <guimenu>Zertifikat anzeigen &ar; Details  &ar; In Datei kopieren &ar; -->
+	  <!-- DER-codiert-binär X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad -->
+	  <!-- &ar; Fertig stellen</guimenu>. -->
 	</para>
   </section>
 
-  <section id="windows:adconn:win2013">
+  <section id="windows:adconn:win2012">
 	<title>Exporting the certificate on Windows 2012</title>
 
 	<para>
@@ -832,6 +839,7 @@ UCS AD connector, see <xref linkend="ad-connector:neustart"/>.
 	<!--   beliebig gewählt werden. Als Datenbankort können die Standardpfade verwendet werden. -->
 	<!-- </para> -->
 
+
 	<para>
 	  The AD server must then be restarted.
 	</para>
@@ -844,6 +852,27 @@ UCS AD connector, see <xref linkend="ad-connector:neustart"/>.
 	<!--   DER encoded binary X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad -->
 	<!--   &ar; Fertig stellen</guimenu>. -->
 	<!-- </para> -->
+
+	<!-- merge in: -->
+	<!-- Dort wird eine -->
+	<!-- Rechnerliste angezeigt und unter jedem System die Elemente <guimenu>Gesperrte -->
+	<!-- Zertifikate</guimenu>, <guimenu>Ausgestellte Zertifikate</guimenu>, <guimenu>Ausstehende -->
+	<!-- Anforderungen</guimenu>, <guimenu>Fehlgeschlagene Anforderungen</guimenu> und -->
+	<!-- <guimenu>Zertifikatsvorlagen</guimenu> angezeigt. Hier muss ein Rechtsklick auf den -->
+	<!-- Rechnernamen erfolgen - nicht auf eines der Elemente darunter - und -->
+	<!-- <guimenu>Eigenschaften</guimenu> ausgewählt werden. Das Root-Zertifikat heisst in der Regel -->
+	<!-- <emphasis>Zertifikat Nr. 0</emphasis>. Dann <guimenu>Zertifikat anzeigen &ar; Details  &ar; In Datei kopieren &ar; -->
+	<!-- DER-codiert-binär X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad -->
+	<!-- &ar; Fertig stellen</guimenu>. -->
+
+<!-- Revoked Certificates -->
+<!-- Issued Certificates -->
+<!-- Pending Requests -->
+<!-- Failed Requests -->
+<!-- Certificate Templates -->
+
+
+
   </section>
 
 

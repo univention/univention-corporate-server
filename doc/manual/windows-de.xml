@@ -848,15 +848,21 @@ des UCS AD Connectors übernommen, siehe
 
 	<para>
 	  Dieses Zertifikat muss nun exportiert und auf das UCS System kopiert
-	  werden: <guimenu>Start &ar; Programme &ar; Verwaltung &ar;
-	  Zertifizierungsstelle &ar; Rechtsklick auf den Namen des erzeugten
-	  Zertifikats &ar; Eigenschaften &ar; Zertifikat anzeigen &ar; Details - In
-	  Datei kopieren &ar; DER-codiert-binär X.509 (.CER) &ar; Auswahl eines
-	  beliebigen Dateinamens und Speicherpfad &ar; Fertigstellen</guimenu>
+	  werden: <guimenu>Start &ar; Programme &ar; Verwaltung &ar; Zertifizierungsstelle</guimenu>.
+	  Dort wird eine
+	  Rechnerliste angezeigt und unter jedem System die Elemente <guimenu>Gesperrte
+	  Zertifikate</guimenu>, <guimenu>Ausgestellte Zertifikate</guimenu>, <guimenu>Ausstehende
+	  Anforderungen</guimenu>, <guimenu>Fehlgeschlagene Anforderungen</guimenu> und
+	  <guimenu>Zertifikatsvorlagen</guimenu> angezeigt. Hier muss ein Rechtsklick auf den
+	  Rechnernamen erfolgen - nicht auf eines der Elemente darunter - und
+	  <guimenu>Eigenschaften</guimenu> ausgewählt werden. Das Root-Zertifikat heisst in der Regel
+	  <emphasis>Zertifikat Nr. 0</emphasis>. Dann <guimenu>Zertifikat anzeigen &ar; Details  &ar; In Datei kopieren &ar;
+	  DER-codiert-binär X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad
+	  &ar; Fertig stellen</guimenu>.
 	</para>
   </section>
 
-  <section id="windows:adconn:win2013">
+  <section id="windows:adconn:win2012">
 	<title>Export unter Windows Server 2012</title>
 
 	<para>
@@ -885,12 +891,19 @@ des UCS AD Connectors übernommen, siehe
 
 	<para>
 	  Dieses Zertifikat muss nun exportiert und auf das UCS-System kopiert
-	  werden: <guimenu>Server-Manager  &ar; AD-Zertifikatsdienste</guimenu>. Dann ein Rechts-Klick
-	  auf den Server und Auswahl von <guimenu>Zertifizierungsstelle</guimenu>. Dort ein Rechtsklick
-	  auf den Namen des erzeugten Zertifikats und <guimenu>Öffnen &ar; In Datei kopieren &ar;
+	  werden: <guimenu>Server-Manager &ar; AD-Zertifikatsdienste</guimenu>. Dann ein Rechts-Klick
+	  auf den Server und Auswahl von <guimenu>Zertifizierungsstelle</guimenu>. Dort wird eine
+	  Rechnerliste angezeigt und unter jedem System die Elemente <guimenu>Gesperrte
+	  Zertifikate</guimenu>, <guimenu>Ausgestellte Zertifikate</guimenu>, <guimenu>Ausstehende
+	  Anforderungen</guimenu>, <guimenu>Fehlgeschlagene Anforderungen</guimenu> und
+	  <guimenu>Zertifikatsvorlagen</guimenu> angezeigt. Hier muss ein Rechtsklick auf den
+	  Rechnernamen erfolgen - nicht auf eines der Elemente darunter - und
+	  <guimenu>Eigenschaften</guimenu> ausgewählt werden. Das Root-Zertifikat heisst in der Regel
+	  <emphasis>Zertifikat Nr. 0</emphasis>. Dann <guimenu>Zertifikat anzeigen &ar; Details  &ar; In Datei kopieren &ar;
 	  DER-codiert-binär X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad
 	  &ar; Fertig stellen</guimenu>.
 	</para>
+
   </section>
 
 
