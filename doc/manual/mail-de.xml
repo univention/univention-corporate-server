@@ -951,6 +951,26 @@ postmap /etc/postfix/smtp_auth
 	</section>
   </section>
 
+  <section id="mail:clients">
+	<title>Konfiguration von Mail-Clients für den Mailserver</title>
+
+	<para>
+	  Um einen Mail-Client mit dem UCS-Mailserver zu verwenden wird die Verwendung von IMAP
+	  empfohlen. Durch STARTTLS wird bei Verwendung von SMTP (für den Mailversand) und IMAP (für den
+	  Mailabruf/-synchronisation) nach einer initialen Aushandlungsphase auf eine TLS-gesicherte
+	  Verbindung umgeschaltet. Der folgende Screenshot zeigt exemplarisch die Einrichtung von
+	  Mozilla Thunderbird.
+	</para>
+
+	<para>
+	  <figure id="mail:clients:thunderbird">
+		<title>Einrichtung von Mozilla Thunderbird</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/thunderbird_de.png"/>
+	  </figure>
+	</para>
+  </section>
+
+
   <section id="mail::horde">
 	<title>Webmail und Verwaltung von E-Mail-Filtern mit Horde</title>
 
