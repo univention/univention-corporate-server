@@ -47,20 +47,6 @@ MOUNTS_FILE_LOCK = '/var/lib/univention-home-mounter/mounts.lock'
 
 NEW_HOME_DIR_MODE = stat.S_IRWXU | stat.S_IXGRP | stat.S_IXOTH
 
-def mounted_directories():
-	'''return the mount points of all current mounts'''
-	for line in open('/proc/mounts', 'rb').readlines():
-		fields = line.split(' ')
-		yield fields[1]
-
-def mount_source(mount_point):
-	'''return the device for the first mount on <mount_point>'''
-	for line in open('/proc/mounts', 'rb').readlines():
-		fields = line.split(' ')
-		if fields[1] == mount_point:
-			return fields[0]
-	return None
-
 def readlink_f(path):
 	'''resolve the symlinks in <path> (like "readlink -f")'''
 	newpath = os.path.realpath(path)
@@ -95,9 +81,9 @@ def get_homeattr(username):
 
 def get_username():
 	'''return the username to use (first argument if exists else USER environment variable)'''
-	if len(sys.argv) >= 2 and sys.argv[1]:
+	try:
 		return sys.argv[1]
-	else:
+	except IndexError:
 		return os.environ['USER']
 
 def get_userinfo():
@@ -115,13 +101,13 @@ def is_system(user):
 	'''check UID to see if <user> is a domain user or local/system user'''
 	return user.pw_uid < 1000
 
-def create_home(directory, owner):
-	'''create home <directory> for <owner> if not exists'''
-	if not os.path.exists(directory):
-		syslog.syslog("Creating home directory %r" % (directory, ))
-		os.makedirs(directory)
-		os.chown(directory, owner.pw_uid, owner.pw_gid)
-		os.chmod(directory, NEW_HOME_DIR_MODE)
+def create_home(owner):
+	'''create home directory for <owner> if not exists'''
+	if not os.path.exists(owner.pw_dir):
+		syslog.syslog("Creating home directory %r" % (owner.pw_dir, ))
+		os.makedirs(owner.pw_dir)
+		os.chown(owner.pw_dir, owner.pw_uid, owner.pw_gid)
+		os.chmod(owner.pw_dir, NEW_HOME_DIR_MODE)
 
 def parse_automount(information):
 	'''parse automountInformation string into (flags, host, path)'''
@@ -151,27 +137,23 @@ def main():
 	user = get_userinfo()
 	if not userinfo_is_usable(user):
 		sys.exit(1)
-	realhome = readlink_f(user.pw_dir)
-	if is_system(user) or (realhome and realhome in mounted_directories()):
+	if is_system(user) or os.path.ismount(user.pw_dir):
 		sys.exit(0)
-	if not realhome:
-		realhome = user.pw_dir
 	homeattr = get_homeattr(user.pw_name)
 	if not homeattr:
-		# create home dir, if started from rshd
-		create_home(realhome, user)
+		create_home(user)
 		sys.exit(0)
 	else:
 		(_, host, path, ) = parse_automount(homeattr)
 		if not host or not path:
 			syslog.syslog("Bad information in LDAP. Not mounting home directory.")
 			sys.exit(1)
-		if host in (hostname_fqdn(), hostname_short(), ) and readlink_f(path) == realhome:
+		if host in (hostname_fqdn(), hostname_short(), ) and readlink_f(path) == readlink_f(user.pw_dir):
 			syslog.syslog("Home directory is local.")
 			sys.exit(0)
-		create_home(realhome, user)
-		if not mount_nfs_home(host, path, realhome):
-			syslog.syslog("Failed to mount home directory: %r" % (realhome, ))
+		create_home(user)
+		if not mount_nfs_home(host, path, user.pw_dir):
+			syslog.syslog("Failed to mount home directory: %r" % (user.pw_dir, ))
 			sys.exit(1)
 
 if __name__ == "__main__":
