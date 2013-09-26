@@ -117,19 +117,22 @@ def is_system(user):
 
 def create_home(directory, owner):
 	'''create home <directory> for <owner> if not exists'''
-	if not os.access(directory, os.F_OK):
+	if not os.path.exists(directory):
 		syslog.syslog("Creating home directory %r" % (directory, ))
 		os.makedirs(directory)
 		os.chown(directory, owner.pw_uid, owner.pw_gid)
 		os.chmod(directory, NEW_HOME_DIR_MODE)
 
 def parse_automount(information):
-	'''parse automountInformation string into its three parts'''
-	if ' ' in information:
-		flags, unc = information.split(' ', 1)
-		if ':' in unc:
-			host, path = unc.split(':', 1)
-			return (flags, host, path, )
+	'''parse automountInformation string into (flags, host, path)'''
+	if information.startswith('-'):
+		flags, unc = information.split(None, 1)
+	else:
+		flags = ""
+		unc = information
+	if ':' in unc:
+		host, path = unc.split(':', 1)
+		return (flags, host, path, )
 	return (None, None, None, )
 
 def mount_nfs_home(host, path, mount_point):
