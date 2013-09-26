@@ -567,19 +567,19 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>Telefonnummer Mobil</entry>
+                        <entry>Telefonnummer(n) Mobil</entry>
                         <entry>
                             Hier werden die privaten Mobilfunknummern des Benutzers eingetragen.
                         </entry>
                     </row>
                     <row>
-                        <entry>Telefonnummer Festnetz</entry>
+                        <entry>Telefonnummer(n) Festnetz</entry>
                         <entry>
                             Die privaten Festnetznummern können hier angegeben werden.
                         </entry>
                     </row>
                     <row>
-                        <entry>Rufnummer Pager</entry>
+                        <entry>Rufnummer(n) Pager</entry>
                         <entry>
                             Pager-Rufnummern werden in diesem Feld angegeben.
                         </entry>
