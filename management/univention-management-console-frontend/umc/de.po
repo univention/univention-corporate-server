@@ -115,10 +115,10 @@ msgstr ""
 #: umc/app.js:1312
 #, python-format
 msgid ""
-"An update for UCS is available. Please visit <a %s>%s Module</a> to install "
+"An update for UCS is available. Please visit %s to install "
 "the updates."
 msgstr ""
-"Ein Update für UCS ist verfügbar. Es kann über das <a %s>%s-Modul</a> im "
+"Ein Update für UCS ist verfügbar. Es kann über das %s im "
 "System eingespielt werden."
 
 #: umc/app.js:1333
@@ -353,11 +353,11 @@ msgstr "Keine laufende Dateiübertragung"
 #: umc/app.js:1363
 #, python-format
 msgid ""
-"Not all installed components have been registered. Please visit <a %s>%s "
-"Module</a> to register the remaining components."
+"Not all installed components have been registered. Please visit %s "
+"to register the remaining components."
 msgstr ""
 "Nicht alle installierten Komponenten sind in der Domäne registriert. Dies "
-"kann über das <a %s>%s-Modul</a> durchgeführt werden."
+"kann über das %s durchgeführt werden."
 
 #: umc/widgets/Page.js:273
 msgid "Note"
@@ -527,11 +527,11 @@ msgstr "Das System erlaubt das Ändern des Passwortes nicht"
 #: umc/app.js:1361
 #, python-format
 msgid ""
-"The system has not been joined into a domain so far. Please visit <a %s>%s "
-"Module</a> to join the system."
+"The system has not been joined into a domain so far. Please visit %s "
+"to join the system."
 msgstr ""
-"Dieses System ist noch keiner Domäne beigetreten. Dies kann über das <a %s>"
-"%s-Modul</a> durchgeführt werden."
+"Dieses System ist noch keiner Domäne beigetreten. Dies kann über das %s "
+"durchgeführt werden."
 
 #: umc/i18n.js:99
 #, python-format
@@ -557,11 +557,11 @@ msgstr ""
 #: umc/app.js:1343
 #, python-format
 msgid ""
-"This system has been updated recently. Please visit the <a %s>%s Module</a> "
+"This system has been updated recently. Please visit the %s "
 "and reboot this system to finish the update."
 msgstr ""
 "Dieses System wurde kürzlich aktualisiert. Ein Neustart des Systems über das "
-"<a %s>%s-Modul</a> ist erforderlich, um das Update abzuschließen."
+"%s ist erforderlich, um das Update abzuschließen."
 
 #: umc/app.js:938
 msgid "Tooltips"
