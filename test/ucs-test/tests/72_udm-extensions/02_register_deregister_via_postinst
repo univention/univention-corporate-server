@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Register and deregister UDM extension via postinst
 ## tags: [udm-extensions,apptest]
-## roles: [domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver]
+## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
 ##   - univention-config
