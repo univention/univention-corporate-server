@@ -121,9 +121,12 @@ class DebianPackage():
 		if subprocess.call(['dpkg', '-i', deb_package]):
 			raise InstallRuntimeError
 
-	def uninstall(self):
+	def uninstall(self, purge=False):
 		if subprocess.call(['dpkg', '-r', self._package_name]):
 			raise UninstallRuntimeError
+		if purge:
+			if subprocess.call(['dpkg', '--purge', self._package_name]):
+				raise UninstallRuntimeError
 
 	def remove(self):
 		shutil.rmtree(self._package_tempdir)
