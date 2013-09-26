@@ -2455,6 +2455,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  <ulink url="&ucsbug;32542">Bug 32542</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The S4 connector no longer synchronizes the password for Slave PDC DCs from Samba 4 to
+		  OpenLDAP. This prevents a synchronization loop in some selective replication scenarios.
+		  <ulink url="&ucsbug;32690">Bug 32690</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
