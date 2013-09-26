@@ -311,6 +311,16 @@ Description: Test scripts for udm settings.
  This package includes some scripts for testing the functionality of the
  settings modules of the UDM.
 
+Package: ucs-test-udm-extensions
+Architecture: all
+Recommends: ucs-test-framework
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Provides: ucs-test-module
+Description: Test scripts for udm extensions.
+ This package includes some scripts for testing the functionality of the
+ UDM extension modules for UDM modules, syntaxes and hooks.
+
 Package: ucs-test-updater
 Architecture: all
 Recommends: ucs-test-framework
