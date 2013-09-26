@@ -115,7 +115,7 @@ package2.uninstall()
 package2.remove()
 
 if not success:
-	fail('The attribue was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id_update})
+	fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id_update})
 	sys.exit(100)
 
 # vim: set ft=python :
