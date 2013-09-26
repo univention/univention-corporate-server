@@ -39,6 +39,7 @@ define([
 	"dojo/on",
 	"dojo/aspect",
 	"dojo/has",
+	"dojo/string",
 	"dojo/Evented",
 	"dojo/Deferred",
 	"dojo/when",
@@ -76,7 +77,7 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, popup, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, popup, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -1675,6 +1676,18 @@ define([
 				label: _('Cancel'),
 				'default': true
 			}]);
+		},
+
+		linkToModule: function(/*String*/ moduleId, /*String?*/ moduleFlavor, /*String?*/ linkName) {
+			var module = this.getModule(moduleId);
+
+			var link = '<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(${moduleLink})">${linkName}</a>.';
+			var moduleLink = moduleFlavor ? "'${0}', '${1}'" : "'${0}'";
+			moduleLink = string.substitute(moduleLink, [moduleId, moduleFlavor]);
+
+			var moduleName = module ? module.name : moduleId;
+			linkName = string.substitute(linkName || _('${moduleName} module'), { moduleName: moduleName });
+			return string.substitute(link, {moduleLink: moduleLink, linkName: linkName});
 		},
 
 		onGuiDone: function() {
