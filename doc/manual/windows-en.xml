@@ -248,6 +248,26 @@ instanceType: 4
 
 </section>
 
+
+<!-- <section id="windows:sysvolshare"> -->
+<!--   <title>Synchronisation der SYSVOL-Freigabe</title> -->
+<!--   <para> -->
+<!-- 	Die SYSVOL-Freigabe ist eine Freigabe, die in Active Directory / Samba 4 Gruppenrichtlinien -->
+<!-- 	und Anmeldeskripte bereitstellt. Sie wird zwischen allen Domänencontrollern synchronisiert und -->
+<!-- 	im Verzeichnis <filename>/var/lib/samba/sysvol</filename> gespeichert. -->
+<!--   </para> -->
+
+<!--   <para> -->
+<!-- 	In Microsoft Active Directory wird die SYSVOL-Freigabe durch den File Replication Service -->
+<!-- 	(eingeführt mit Windows 2000), bzw. durch das Distributed File System (ab Windows 2008 R2) -->
+<!-- 	synchronisiert. Diese Replikationsmethoden sind in Samba 4 noch nicht vollständig -->
+<!-- 	implementiert. Die Synchronisation zwischen den Samba 4-Domänencontrollern erfolgt in UCS -->
+<!-- 	durch einen Cron-Job (standardmäßig alle fünf Minuten, konfigurierbar durch die &ucsUCRV; -->
+<!-- 	<envar>samba4/sysvol/sync/cron</envar>. -->
+<!--   </para> -->
+<!-- </section> -->
+
+
 <section id="windows:NetBIOS_name_service"><title>NetBIOS name service</title>
 <para>
 Windows systems use NetBIOS, a TCP/IP-based network protocol for
