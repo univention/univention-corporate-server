@@ -1263,12 +1263,13 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 
 	<para>
-	  In &ucsUCS; wird die Kerberos-Implementierung Heimdal verwendet. Auf UCS-Domänencontroller-Systemen ohne Samba
-	  4 wird ein eigenständiger Heimdal-Dienst gestartet, während auf Samba 4-DCs
-	  Kerberos durch eine in Samba integrierte Heimdal-Version bereitgestellt wird. Verwendet man
-	  eine Umgebung aus UCS-Domänencontrollern ohne Samba 4 und Samba 4-Domänencontrollern basieren
-	  beide Kerberos-Umgebungen auf identischen Daten (diese werden zwischen Samba 4 und OpenLDAP
-	  durch den Univention S4 Connector synchronisiert (siehe <xref linkend="windows:s4connector"/>)).
+	  In &ucsUCS; wird die Kerberos-Implementierung Heimdal verwendet. Auf
+	  UCS-Domänencontroller-Systemen ohne Samba 4 wird ein eigenständiger Heimdal-Dienst gestartet,
+	  während auf Samba 4-DCs Kerberos durch eine in Samba integrierte Heimdal-Version
+	  bereitgestellt wird. Verwendet man eine gemischte Umgebung aus UCS-Domänencontrollern mit
+	  Samba 4 und UCS-Domänencontrollern ohne Samba 4, so basieren beide Kerberos-Umgebungen auf
+	  identischen Daten (diese werden zwischen Samba 4 und OpenLDAP durch den Univention S4
+	  Connector synchronisiert (siehe <xref linkend="windows:s4connector"/>)).
 	</para>
 
 	<para>
