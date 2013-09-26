@@ -132,22 +132,23 @@ def get_module_buffer(name=None):
 		name = 'ucstest/%s' % (random_name(), )
 	assert('/' in name)
 	return '''# this UDM module has been created by ucs-test
-from univention.admin.layout import Tab
-import univention.admin.uldap
-import univention.admin.syntax
+from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
+import univention.admin.allocators
 import univention.admin.localization
-
-translation=univention.admin.localization.translation('univention.admin.handlers.container')
+import univention.debug as ud
+translation=univention.admin.localization.translation('univention.admin.handlers.ucstest')
 _=translation.translate
-
 module='%(module_udmname)s'
-operations=['add','edit','remove','search','move','subtree_move']
-childs=1
-short_description=_('Univention UCSTest Module')
+operations=['add','edit','remove','search']
+usewizard=1
+childs=0
+short_description=_('A UCS-TEST TEST MODULE')
 long_description=''
-options={}
+module_search_filter=univention.admin.filter.conjunction('&', [
+	univention.admin.filter.expression('objectClass', 'automountMap'),
+])
 property_descriptions={
 	'name': univention.admin.property(
 			short_description=_('Name'),
@@ -155,15 +156,18 @@ property_descriptions={
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			include_in_default_search=1,
-			options=[],
 			required=1,
 			may_change=0,
-			identifies=1,
+			identifies=1
 		),
 }
-layout = [Tab( _('General'),_('Basic values'),[ "name" ] )]
+layout = [
+	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
+		Group( _( 'General' ), layout = [[ "name" ]] ),
+	] )
+]
 mapping=univention.admin.mapping.mapping()
-mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'ou', None, univention.admin.mapping.ListToString)
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
@@ -171,18 +175,18 @@ class object(univention.admin.handlers.simpleLdap):
 		global property_descriptions
 		self.mapping=mapping
 		self.descriptions=property_descriptions
+		self.alloc=[]
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
+		self.open()
 	def _ldap_pre_create(self):
-		self.dn='%%s=%%s,%%s' %% (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
-
+		self.dn='ou=%s,%s' % (self.info['name'], self.position.getDn())
 	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'organizationalRole'])]
+		return [('objectClass', ['top', 'automountMap'])]
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'organizationalRole'),
-		univention.admin.filter.expression('cn', 'univention')
+		univention.admin.filter.expression('ou', '*'),
+		univention.admin.filter.expression('objectClass', 'automountMap')
 		])
 	if filter_s:
 		filter_p=univention.admin.filter.parse(filter_s)
@@ -192,9 +196,8 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
 		res.append( object( co, lo, None, dn, attributes = attrs ) )
 	return res
-
 def identify(dn, attr, canonical=0):
-	return 'organizationalRole' in attr.get('objectClass', []) and attr.get('cn', []) == ['univention']
+	return 'automountMap' in attr.get('objectClass', [])
 ''' %  {'module_udmname': name}
 
 
