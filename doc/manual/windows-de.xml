@@ -222,7 +222,7 @@ Einschränkungen zu beachten.
 </para>
 </section>
 
-<section id="windows:Univention_S4_Connector"><title>Univention S4 Connector / Samba 4-LDAP-Verzeichnis</title>
+<section id="windows:s4connector"><title>Univention S4 Connector / Samba 4-LDAP-Verzeichnis</title>
 <para>
 Unter Samba 4 werden die Samba-Benutzerkonten komplett durch Samba
 verwaltet. Samba 4 stellt einen separaten LDAP-Verzeichnisdienst bereit.

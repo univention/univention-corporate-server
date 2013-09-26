@@ -208,7 +208,7 @@ in <xref linkend="windows:File_services"/> must be taken into consideration.
 </para>
 </section>
 
-<section id="windows:Univention_S4_connector"><title>Univention S4 connector / Samba 4 LDAP directory</title>
+<section id="windows:s4connector"><title>Univention S4 connector / Samba 4 LDAP directory</title>
 <para>
   In Samba 4, the Samba user accounts are managed completely bySamba. Samba 4 provides a separate
   LDAP directory service. The synchronisation between the UCS LDAP and the Samba LDAP occurs via an
