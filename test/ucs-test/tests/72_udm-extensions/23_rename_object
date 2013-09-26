@@ -69,8 +69,8 @@ if __name__ == '__main__':
 			if not os.path.exists(target_fn):
 				fail('ERROR: expected file does not exist (%s)' % (target_fn))
 
-			remove_extension_by_name(extension_type, extension_name)
-			remove_extension_by_name(extension_type, extension_name2)
+			remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
+			remove_extension_by_name(extension_type, extension_name2, fail_on_error=False)
 
 			wait_for_replication()
 
