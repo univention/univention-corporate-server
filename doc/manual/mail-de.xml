@@ -69,7 +69,7 @@
 	</para>
 
 	<para>
-	  Für den webbasierten Zugriff auf E-Mails steht das Horde-Framework in Version 4 zur
+	  Für den webbasierten Zugriff auf E-Mails steht das Horde-Framework in Version 5 zur
 	  Verfügung (siehe <xref linkend="mail::horde"/>)
 	</para>
 
@@ -114,10 +114,10 @@
 	</para>
 
 	<para>
-	  Das Webmail-Interface steht im Univention Installer als
-	  <emphasis>Webmailer (Horde4)</emphasis> zur Verfügung und kann mit dem Paket
-	  <package>univention-horde4</package> nachinstalliert werden.
+	  Das Webmail-Interface Horde kann über das Univention App Center installiert werden (siehe
+	  <xref linkend="software:appcenter"/>).
 	</para>
+
   </section>
 
 
@@ -965,13 +965,13 @@ postmap /etc/postfix/smtp_auth
 	  <title>Anmeldung und Übersicht</title>
 	  <para>
 		Die Horde-Anmeldemaske ist auf der Systemstartseite unter
-		<guimenu>Horde4 Webclient</guimenu> verlinkt und kann auch direkt unter
-		<uri>http://SERVERNAME/horde4/login.php</uri> erreicht werden.
+		<guimenu>Horde Webclient</guimenu> verlinkt und kann auch direkt unter
+		<uri>http://SERVERNAME/horde/login.php</uri> erreicht werden.
 	  </para>
 
 	  <para>
 		<figure id="horde-login">
-		  <title>Anmeldung an Horde 4</title>
+		  <title>Anmeldung an Horde</title>
 		  <graphic scalefit="1" width="35%" fileref="illustrations/login_de.png"/>
 		</figure>
 	  </para>
@@ -983,17 +983,18 @@ postmap /etc/postfix/smtp_auth
 		kann unter <guimenu>Modus</guimenu> ausgewählt werden. Für
 		Standard-Workstations wird die Verwendung des dynamischen Interfaces
 		empfohlen. Die weitere Dokumentation orientiert sich an dieser Variante.
+		Die Auswahl der <guimenu>Sprache</guimenu> hat bei vielen Browsern keine Auswirkung, da die
+		bevorzugte Spracheinstellung des Browsers Vorrang hat.
 	  </para>
 
 	  <para>
-		In der linken Bildschirmhälfte finden sich drei Menüpunkte (<guimenu>Webmail</guimenu>,
-		<guimenu>Filter</guimenu> und <guimenu>Adressbuch</guimenu>), mit denen
-		zwischen den einzelnen Modulen gewechselt werden kann.
+		In der oberen Bildleiste finden sich mehrere Menüpunkte (z.B. <guimenu>Webmail</guimenu>
+		oder <guimenu>Adressbuch</guimenu>), mit denen zwischen den einzelnen Modulen gewechselt
+		werden kann.
 	  </para>
 
 	  <para>
-		Unter <guimenu>Einstellungen</guimenu> kann Horde vom Benutzer personalisiert
-		werden.
+		Durch Klick auf das Zahnrad-Symbol kann Horde vom Benutzer personalisiert werden.
 	  </para>
 	</section>
 
@@ -1017,10 +1018,9 @@ postmap /etc/postfix/smtp_auth
 
 	  <para>
 		Horde unterscheidet zwei Arten von Löschungen: Eine mit
-		<guimenu>Löschen</guimenu> entfernte E-Mail ist noch nicht final auf dem
-		IMAP-Server entfernt, sondern wird nur zum Löschen vorgemerkt. Sie kann mit
-		<guimenu>Wiederherstellen</guimenu> wieder verfügbar gemacht werden, solange
-		sie nicht mit <guimenu>Endgültig löschen</guimenu> vom IMAP-Server entfernt wird.
+		<guimenu>Löschen</guimenu> entfernte E-Mail wird zuerst in den Ordner
+		<emphasis>Papierkorb</emphasis> verschoben. Sie kann von dort wieder in andere Ordner
+		verschoben werden, solange der Papierkorb nicht mit <guimenu>Leeren</guimenu> geleert wird.
 	  </para>
 	</section>
 
@@ -1079,7 +1079,7 @@ postmap /etc/postfix/smtp_auth
 	  </para>
 
 	  <para>
-		Die Regeln lassen sich unter <guimenu>Filterregeln</guimenu> bearbeiten
+		Die Regeln lassen sich unter <guimenu>Webmail &ar; Filter</guimenu> bearbeiten
 		und ergänzen. Die Filter werden in der durchnummerierten Reihenfolge auf
 		eingehende E-Mails angewandt. Ihre Position lässt sich sowohl über die Pfeile
 		rechts als auch durch direkte Eingabe einer Nummer in der Spalte
@@ -1095,7 +1095,7 @@ postmap /etc/postfix/smtp_auth
 	  </para>
 
 	  <para>
-		Mit einer <guimenu>Abwesenheitsnotiz</guimenu> lässt sich ein Zeitraum
+		Unter <guimenu>Abwesenheit</guimenu> lässt sich ein Zeitraum
 		festlegen, in dem auf eingehende E-Mails automatisch vom Mailserver mit einer
 		Antwort-E-Mail reagiert wird. Text und Betreff der E-Mail ist frei wählbar.
 	  </para>

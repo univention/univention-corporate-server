@@ -59,7 +59,7 @@
 	  on the Univention website <biblioref linkend="univention-technologypartners"/>.
 	</para>
 	<para>
-	  Version 4 of the Horde framework is provided for the web-based provision of
+	  Version 5 of the Horde framework is provided for the web-based provision of
 	  e-mails (see <xref linkend="mail::horde"/>)
 	</para>
 	<para>
@@ -111,10 +111,10 @@
 	</para>
 
 	<para>
-	  The webmail interface is provided in the Univention installer
-	  as <emphasis>Webmailer (Horde4)</emphasis> and can be subsequently installed with
-	  the <package>univention-horde4</package> package.
+	  The webmail interface Horde can be installed via the Univention App Center (see <xref
+	  linkend="software:appcenter"/>).
 	</para>
+
   </section>
 
   <section id="mail::management::general">
@@ -881,12 +881,12 @@ postmap /etc/postfix/smtp_auth
 	  <title>Login and overview</title>
 	  <para>
 		The Horde login mask is linked on the system start page under
-		<guimenu>Horde4 web client</guimenu> and can be opened directly at
-		<uri>http://SERVERNAME/horde4/login.php</uri>.
+		<guimenu>Horde web client</guimenu> and can be opened directly at
+		<uri>http://SERVERNAME/horde/login.php</uri>.
 	  </para>
 	  <para>
 		<figure id="horde-login">
-		  <title>Login on Horde 4</title>
+		  <title>Login on Horde</title>
 		  <graphic scalefit="1" width="35%" fileref="illustrations/login_en.png"/>
 		  </figure>
 	  </para>
@@ -896,14 +896,19 @@ postmap /etc/postfix/smtp_auth
 		preferred version can be selected under <guimenu>Mode</guimenu>. We recommend the
 		use of the dynamic interface for standard workstations. The remaining
 		documentation refers to this version.
+		<!-- Die Auswahl der <guimenu>Sprache</guimenu> hat bei vielen Browsern keine Auswirkung, da die -->
+		<!-- bevorzugte Spracheinstellung des Browsers Vorrang hat. -->
+		<!-- MENU: Language -->
 	  </para>
 	  <para>
-		The left half of the screen contains three menu points
-		(<guimenu>Mail</guimenu>, <guimenu>Filters</guimenu> and <guimenu>Address
-		Book</guimenu>), with which you can switch between the individual modules.
+		<!-- In der oberen Bildleiste finden sich mehrere Menüpunkte (z.B. <guimenu>Webmail</guimenu> -->
+		<!-- oder <guimenu>Adressbuch</guimenu>), mit denen zwischen den einzelnen Modulen gewechselt -->
+		<!-- werden kann. -->
+		<!-- MENU: Mail -->
+		<!-- MENU: Address Book -->
 	  </para>
 	  <para>
-		The user can personalise Horde under <guimenu>Preferences</guimenu>.
+		<!-- Durch Klick auf das Zahnrad-Symbol kann Horde vom Benutzer personalisiert werden. -->
 	  </para>
 	</section>
 
@@ -922,11 +927,11 @@ postmap /etc/postfix/smtp_auth
 		  </figure>
 	  </para>
 	  <para>
-		Horde differentiates between two types of deletion: an e-mail deleted
-		with <guimenu>Delete</guimenu> is not definitively removed from the server, but
-		only marked as to be deleted. It can be restored with <guimenu>Undelete</guimenu>
-		and made available again as long as it is not removed from the IMAP server
-		with <guimenu>Purge Deleted</guimenu>.
+		Horde unterscheidet zwei Arten von Löschungen: Eine mit
+		<guimenu>Löschen</guimenu> entfernte E-Mail wird zuerst in den Ordner
+		<emphasis>Papierkorb</emphasis> verschoben. Sie kann von dort wieder in andere Ordner
+		verschoben werden, solange der Papierkorb nicht mit <guimenu>Leeren</guimenu> geleert wird.
+		MENU: Delete, Trash, Empty
 	  </para>
 	</section>
 
@@ -973,7 +978,7 @@ postmap /etc/postfix/smtp_auth
 	  </figure>
 	  <para>
 		Filters can be edited and expanded
-		under <guimenu>Filter Rules</guimenu>. The filters are applied to incoming e-mails
+		under <guimenu>Mail &ar; Filters</guimenu>. The filters are applied to incoming e-mails
 		in the consecutively numbered order. Their position can be altered either
 		using the arrows to the right or by entering a number in
 		the <command>Move</command> column directly. Individual filter rules can be
