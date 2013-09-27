@@ -37,17 +37,12 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-
 ## look for S4 Connector hosts to add the servicePrincipalName to the directory object
-s4connectorservicehosts="$(univention-directory-manager computers/computer list "$@" --filter "(univentionService=S4 Connector)" | sed -ne 's|^DN: cn=\([^,]*\).*|\1|p')"
-
-## Hmm, seems like we are not in a UCS 3 Samba 4 domain
-if [ -z "$s4connectorservicehosts" ]; then
+if ! univention-ldapsearch -LLL "(univentionService=S4 Connector)" dn | grep -q ^dn:; then
+	## Hmm, seems like we are not in a UCS 3 Samba 4 domain
 	echo "INFO: No S4 Connector Service found in UDM"
 	echo "INFO: Cannot register a servicePrincipalName"
-
 	joinscript_save_current_version
-
 	exit 0
 fi
 
