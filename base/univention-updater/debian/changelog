@@ -1,14 +1,14 @@
+univention-updater (9.0.19-1) unstable; urgency=low
+
+  * Add hint to disable script verification (Bug #28045)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 Sep 2013 13:33:45 +0200
+
 univention-updater (9.0.18-2) unstable; urgency=low
 
   * Remove univention-flashplugin in postup script (Bug #31852)
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 27 Sep 2013 12:26:21 +0200
-
-univention-updater (9.0.18-1) unstable; urgency=low
-
-  * Add hint to disable script verification (Bug #28045)
-
- -- Philipp Hahn <hahn@univention.de>  Fri, 27 Sep 2013 13:33:45 +0200
 
 univention-updater (9.0.18-1) unstable; urgency=low
 
