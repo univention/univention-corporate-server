@@ -71,13 +71,8 @@ if [ "$update31_hold_fetchmail" = "true" ]; then
 	univention-config-registry unset update31/hold/fetchmail >>"$UPDATER_LOG" 2>&1
 fi
 
-## for p in univention-xen; do
-## 	check_and_install $p
-## done
-## 
-## for p in libxenstore3.0; do
-## 	check_and_reinstall $p
-## done
+# Remove Flash plugin installer, Bug #31852
+univention-remove -y --purge univention-flashplugin >>"$UPDATER_LOG" 2>&1
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	install univention-basesystem
