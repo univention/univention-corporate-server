@@ -627,12 +627,12 @@
 							larger than 1 and the first attribute is shown in the left column, the
 							second will be displayed in the next line.
 						</para>
-						<para>
-							If the <emphasis>Overwrite existing tab</emphasis> option is activated, the
-							numbers will be used to overwrite an existing input field. The
-							numbering of the input fields starts in the top left of the tab with
-							<emphasis>1</emphasis>.
-						</para>
+						<!-- <para> -->
+						<!-- 	If the <emphasis>Overwrite existing tab</emphasis> option is activated, the -->
+						<!-- 	numbers will be used to overwrite an existing input field. The -->
+						<!-- 	numbering of the input fields starts in the top left of the tab with -->
+						<!-- 	<emphasis>1</emphasis>. -->
+						<!-- </para> -->
 					</entry>
 				</row>
 				<row>
@@ -674,11 +674,16 @@
 				<row>
 					<entry>Overwrite existing widget</entry>
 					<entry>
-						In some cases it is practical to overwrite predefined input fields
-						with extended attributes. If this option is activated, the input field
-						located at the specified number will be overwritten with this extended
-						attribute. It must be noted that this option can cause problems with
-						compulsory fields.
+					<!-- In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten -->
+					<!-- Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs -->
+					<!-- konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut -->
+					<!-- überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des -->
+					<!-- Verzeichnisses -->
+					<!-- <filename>/usr/share/pyshared/univention/admin/handlers</filename> ermittelt -->
+					<!-- werden. Es handelt sich dabei um den Namen, der in den Deklarationen von -->
+					<!-- univention.admin.property-Objekten vor dem Doppelpunkt steht, -->
+					<!-- z.B. <emphasis>roomNumber</emphasis> für die Raumnummer eines Benutzers. -->
+					<!-- Es ist zu beachten, daß diese Option bei Pflichtfeldern zu Problemen führen kann. -->
 					</entry>
 				</row>
 				<row>
@@ -696,6 +701,8 @@
 						the extended attributes are positioned on it. This option can be used
 						to hide existing input fields on a predefined tab. It must be noted
 						that this option can cause problems with compulsory fields.
+						<!-- Verwendet die zu überschreibende Karteikarte -->
+						<!-- Übersetzungen muss die überschreibende Karteikarte ebenfalls identische Übersetzungen mitbringen. -->
 					</entry>
 				</row>
 				<row>

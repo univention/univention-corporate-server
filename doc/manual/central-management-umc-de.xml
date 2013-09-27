@@ -659,12 +659,12 @@
 							Attribut wird in der linken Spalte dargestellt, so wird das zweite
 							Attribut in der nächsten Zeile dargestellt.
 						</para>
-						<para>
-							Ist die Option <emphasis>Existierendes Eingabefeld überschreiben</emphasis>
-							aktiviert, wird die Positionsnummern verwendet, um ein bestehendes
-							Eingabefeld zu überschreiben. Die Zählung der Eingabefelder beginnt
-							auf der Karteikarte oben links mit <emphasis>1</emphasis>.
-						</para>
+						<!-- <para> -->
+						<!-- 	Ist die Option <emphasis>Existierende Karteikarte überschreiben</emphasis> -->
+						<!-- 	aktiviert, wird die Positionsnummern verwendet, um ein bestehendes -->
+						<!-- 	Eingabefeld zu überschreiben. Die Zählung der Eingabefelder beginnt -->
+						<!-- 	auf der Karteikarte oben links mit <emphasis>1</emphasis>. -->
+						<!-- </para> -->
 					</entry>
 				</row>
 				<row>
@@ -706,14 +706,19 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Existierendes Eingabefeld überschreiben</entry>
-					<entry>
-						In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit
-						erweiterten Attributen zu überschreiben. Wird diese Option aktiviert,
-						wird das an der angegebenen Positionsnummer befindliche Eingabefeld
-						mit diesem erweiterten Attribut überschrieben. Es ist zu beachten, daß
-						diese Option bei Pflichtfeldern zu Problemen führen kann.
-					</entry>
+				  <entry>Existierendes Eingabefeld überschreiben</entry>
+				  <entry>
+					In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten
+					Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs
+					konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut
+					überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des
+					Verzeichnisses
+					<filename>/usr/share/pyshared/univention/admin/handlers</filename> ermittelt
+					werden. Es handelt sich dabei um den Namen, der in den Deklarationen von
+					univention.admin.property-Objekten vor dem Doppelpunkt steht,
+					z.B. <emphasis>roomNumber</emphasis> für die Raumnummer eines Benutzers.
+					Es ist zu beachten, daß diese Option bei Pflichtfeldern zu Problemen führen kann.
+				  </entry>
 				</row>
 				<row>
 					<entry>Beide Spalten umfassen</entry>
@@ -725,15 +730,15 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Existierende Karteikarte überschreiben</entry>
-					<entry>
-						Ist diese Option aktiviert, wird die betreffende Karteikarte
-						überschrieben, bevor die erweiterten Attribute darauf platziert
-						werden. Mit Hilfe dieser Option können die vorhandenen Eingabefelder
-						auf einer vorgegebenen Karteikarte ausgeblendet werden. Es ist zu
-						beachten, daß diese Option bei Pflichtfeldern zu Problemen führen
-						kann.
-					</entry>
+				  <entry>Existierende Karteikarte überschreiben</entry>
+				  <entry>
+					Ist diese Option aktiviert, wird die betreffende Karteikarte überschrieben,
+					bevor die erweiterten Attribute darauf platziert werden. Mit Hilfe dieser Option
+					können die vorhandenen Eingabefelder auf einer vorgegebenen Karteikarte
+					ausgeblendet werden. Es ist zu beachten, daß diese Option bei Pflichtfeldern zu
+					Problemen führen kann. Verwendet die zu überschreibende Karteikarte
+					Übersetzungen muss die überschreibende Karteikarte ebenfalls identische Übersetzungen mitbringen.
+				  </entry>
 				</row>
 				<row>
 					<entry>Karteikarte mit erweiterten Einstellungen</entry>
