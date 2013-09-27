@@ -632,7 +632,7 @@ If an object cannot be synchronised, it is "rejected". During
 start-up of the UCS AD connector, an attempt is made to write
 this object again. In addition, a further attempt is made to input the
 object again after several runs. The interval can be configured in the
-UMC configuration module, see <xref linkend="ad-connector:grundkonfiguration"/>.
+UMC configuration module, see <xref linkend="ad-connector:basicsetup"/>.
 The presetting specifies ten cycles before the object is resynchronised.
 A restart of the UCS AD connector also triggers a resynchronisation of
 all previously rejected changes.
@@ -659,101 +659,107 @@ All Active Directory and UCS servers in a connector environment must
 use the same time zone.
 </para>
 
-<section id="ad-connector:grundkonfiguration"><title>Basic configuration of the connector</title>
-<para>
-The connector is configured using the wizard
-<guimenu>UCS Active Directory Connector</guimenu> of the &ucsUMC;.
-</para>
-<para>
-Internet Explorer 6 - which is preinstalled on Windows 2003 systems -
-is not supported by &ucsUMC;. The browser must be updated before
-continuing.
-</para>
-<para>
-The connector's settings status is displayed under
-<guimenu>Configuration</guimenu>. The setup can be begun by clicking on
-<guimenu>Configure UCS Active Directory Connector</guimenu>.
-</para>
-<para>
-The fully qualified host name of the Active Directory server must be
-given in the <guimenu>Active Directory Server</guimenu>
-field. If the hostname of the AD system is not resolvable for the UCS
-system, it is necessary to create a DNS host record for the AD system
-in the DNS management module of the &ucsUMC; (see <xref linkend="networks::dns::hostrecord"/>).
-</para>
-<para>
-Alternatively, a static entry can also be adopted in <filename>/etc/hosts</filename> via &ucsUCR;, e.g.
-</para>
+<section id="ad-connector:basicsetup">
+  <title>Basic configuration of the connector</title>
+  <para>
+	The connector is configured using the wizard <guimenu>UCS Active Directory Connector</guimenu>
+	of the &ucsUMC;.
+  </para>
+
+  <para>
+	Internet Explorer 6 - which is preinstalled on Windows 2003 systems - is not supported by
+	&ucsUMC;. The browser must be updated before continuing.
+  </para>
+
+  <para>
+	The connector's settings status is displayed under <guimenu>Configuration</guimenu>. The setup
+	can be begun by clicking on <guimenu>Configure UCS Active Directory Connector</guimenu>.
+  </para>
+
+  <para>
+	The fully qualified host name of the Active Directory server must be given in the
+	<guimenu>Active Directory Server</guimenu> field. If the hostname of the AD system is not
+	resolvable for the UCS system, it is necessary to create a DNS host record for the AD system in
+	the DNS management module of the &ucsUMC; (see <xref linkend="networks::dns::hostrecord"/>).
+  </para>
+
+  <para>
+	Alternatively, a static entry can also be adopted in <filename>/etc/hosts</filename> via
+	&ucsUCR;, e.g.
+
 <programlisting language="sh">
 ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 </programlisting>
-<para>
-<figure><title>Configuring the AD connector in UMC</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-en.png"/>
- </figure>
-</para>
-<para>
-If the <guimenu>Automatic determination of the LDAP
-  configuration</guimenu> option is activated, settings such as the base DN of
-the Active Directory directory or the Kerberos domain of the AD system
-are queried automatically and do not need to be manually configured.
-</para>
-<para>
-The LDAP DN of the user used for access to the Active Directory is
-configured in the <guimenu>LDAP DN of synchronisation user</guimenu> field. (The setting is saved in the
-&ucsUCRV; <envar>connector/ad/ldap/binddn</envar>). When using the function for
-the automatic transfer of the base DN of the Active Directory, the
-Administrator account is entered by default for the base DN.
-<!-- Further information on the operation of the AD connector with a different user -->
-<!-- can be found in the Univention Wiki. WIKIREF-22814 -->
-</para>
-<para>
-The password used for access is entered in the <guimenu>Password
-of the synchronisation user</guimenu> field and saved in a text file.
-</para>
-<para>
-Now <guimenu>Next</guimenu> needs to be clicked.
-The presettings in the following dialogue are suitable for most
-environments and do not generally need to be changed.
-</para>
-<para>
-Some group names are saved differently in Active Directory depending
-on the installation language of the server. The localisation used can
-be selected under <guimenu>System language of Active Directory server</guimenu>
-Further information can be found in <xref linkend="ad-connector:gruppen"/>.
-</para>
-<para>
-The AD connector can be operated in different modes, which can be
-selected in <guimenu>Synchronisation mode</guimenu>
-Alongside bidirectional synchronisation, unidirectional replication
-towards the AD or UCS directory service is also
-possible.
-</para>
-<para>
-Now <guimenu>Next</guimenu> needs to be clicked.
-</para>
-<para>
-In <guimenu>Poll Interval (seconds)</guimenu> you can specify how
-long the system should wait after a run showing no changes before
-sending a new request.
-</para>
-<para>
-<guimenu>Retry interval for rejected objects</guimenu> specifies
-after how many synchronisation intervals retained changes are imported
-subsequently.
-</para>
-<para>
-The <guimenu>Debug level of Active Directory connector</guimenu>
-configures how much debugging information is written to the
-<filename>/var/log/univention/connector.log</filename> file. <guimenu>Add debug output for
-  functions</guimenu> can be used to specify additionally whether further debug
-output is added for function calls.
-</para>
-<para>
-Clicking on <guimenu>Finish</guimenu> adopts the configuration in
-&ucsUCR;. Changes are only adopted following a restart of the
-UCS AD connector, see <xref linkend="ad-connector:neustart"/>.
-</para>
+
+  </para>
+
+  <para>
+	<figure><title>Configuring the AD connector in UMC</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/adconnector_2-en.png"/>
+	</figure>
+  </para>
+
+  <para>
+	If the <guimenu>Automatic determination of the LDAP configuration</guimenu> option is activated,
+	settings such as the base DN of the Active Directory directory or the Kerberos domain of the AD
+	system are queried automatically and do not need to be manually configured.
+  </para>
+
+  <para>
+	The LDAP DN of the user used for access to the Active Directory is configured in the
+	<guimenu>LDAP DN of synchronisation user</guimenu> field. (The setting is saved in the &ucsUCRV;
+	<envar>connector/ad/ldap/binddn</envar>). When using the function for the automatic transfer of
+	the base DN of the Active Directory, the Administrator account is entered by default for the base DN.
+  </para>
+
+  <para>
+	The password used for access is entered in the <guimenu>Password of the synchronisation
+	user</guimenu> field and saved in a text file.
+  </para>
+
+  <para>
+	Now <guimenu>Next</guimenu> needs to be clicked. The presettings in the following dialogue are
+	suitable for most environments and do not generally need to be changed.
+  </para>
+
+  <para>
+	Some group names are saved differently in Active Directory depending on the installation
+	language of the server. The localisation used can be selected under <guimenu>System language of
+	Active Directory server</guimenu> Further information can be found in <xref
+	linkend="ad-connector:gruppen"/>.
+  </para>
+
+  <para>
+	The AD connector can be operated in different modes, which can be selected in
+	<guimenu>Synchronisation mode</guimenu> Alongside bidirectional synchronisation, unidirectional
+	replication towards the AD or UCS directory service is also possible.
+  </para>
+
+  <para>
+	Now <guimenu>Next</guimenu> needs to be clicked.
+  </para>
+
+  <para>
+	In <guimenu>Poll Interval (seconds)</guimenu> you can specify how long the system should wait
+	after a run showing no changes before sending a new request.
+  </para>
+
+  <para>
+	<guimenu>Retry interval for rejected objects</guimenu> specifies after how many synchronisation
+	intervals retained changes are imported subsequently.
+  </para>
+
+  <para>
+	The <guimenu>Debug level of Active Directory connector</guimenu> configures how much debugging
+	information is written to the <filename>/var/log/univention/connector.log</filename>
+	file. <guimenu>Add debug output for functions</guimenu> can be used to specify additionally
+	whether further debug output is added for function calls.
+  </para>
+
+  <para>
+	Clicking on <guimenu>Finish</guimenu> adopts the configuration in &ucsUCR;. Changes are only
+	adopted following a restart of the UCS AD connector, see <xref linkend="ad-connector:neustart"/>.
+  </para>
 </section>
 
 <section id="ad-connector:ad-zertifikat">
