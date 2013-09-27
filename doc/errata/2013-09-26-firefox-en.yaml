@@ -1,0 +1,27 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-errata3.1-1
+src: firefox-en
+fix: 1:17.0.9esr  
+desc: |
+ Firefox has been updated to the new Firefox Extended Support Release based
+ on Firefox 17.
+ This update consists of two updates for firefox-en and firefox-de.
+ Several vulnerabilities have been fixed with the update to Firefox ESR 17.0.9
+ * Memory corruption in the browser engine may lead to the execution of arbitrary code (CVE-2013-1718)
+ * Use-after-free in stylesheet handling (CVE-2013-1722)
+ * Memory corruption in Javascript handling (CVE-2013-1725, CVE-2013-1730)
+ * Buffer overflows in the layout engine (CVE-2013-1732)
+ * Memory corruption in the layout engine (CVE-2013-1735, CVE-2013-1736)
+ * Incorrect parsing of DOM trees (CVE-2013-1737)
+note: This update contains the new release ESR 17.0.9, which fixes these vulnerabilities.
+cve:
+ - CVE-2013-1718
+ - CVE-2013-1722
+ - CVE-2013-1725
+ - CVE-2013-1730
+ - CVE-2013-1732
+ - CVE-2013-1735
+ - CVE-2013-1736
+ - CVE-2013-1737
