@@ -1846,6 +1846,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The package <package>univention-squid-kerberos</package> does not depend on <package>univention-samba4</package> anymore. In addition, the joinscript 98univention-squid-samba4.inst now corectly saves its status when not in a samba4 environment (<ulink url="&ucsbug;32011">Bug 32011</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The join script of the package <package>univention-squid-kerberos</package> failed
+		  on samba3 dc slaves in a samba3/samba4 mixed environment. This bug has been
+		  fixed (<ulink url="&ucsbug;32186">Bug 32186</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
