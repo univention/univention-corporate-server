@@ -1,3 +1,11 @@
+firefox-en (1:17.0.9esr-4) unstable; urgency=low
+
+  * Update to Firefox 17.0.9esr (Bug #32624)
+  * add icedtea6-plugin to Depends (Bug #32624)
+  * add icedtea-6-plugin to Depends (Bug #32624)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 26 Sep 2013 18:02:57 +0200
+
 firefox-en (1:17.0.8esr-4) unstable; urgency=low
 
   * Remove dependency on icedtea-plugin (related to Bug #29168)
