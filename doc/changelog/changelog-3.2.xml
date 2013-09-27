@@ -2613,7 +2613,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-	   An improved test case for concurrent authenticated smbclient sessions is now available (<ulink url="&ucsbug;26807">Bug 26807</ulink>)
+		An improved test case for concurrent authenticated smbclient sessions is now available (<ulink url="&ucsbug;26807">Bug 26807</ulink>, <ulink url="&ucsbug;32715">Bug 32715</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2626,9 +2626,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-	  	A python wrapper for the UDM CLI has been added (<ulink url="&ucsbug;30560">Bug 30560</ulink>).
+		A python wrapper for the UDM CLI has been added (<ulink url="&ucsbug;30560">Bug 30560</ulink>).
 	  </simpara></listitem>
 
+	  <listitem><simpara>
+		Python child processes are started with unbuffered output by default (<ulink url="&ucsbug;31819">Bug 31819</ulink>).
+	  </simpara></listitem>
 
 	</itemizedlist>
 </section>
