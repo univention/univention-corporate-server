@@ -179,7 +179,7 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 		self.open()
 	def _ldap_pre_create(self):
-		self.dn='ou=%s,%s' % (self.info['name'], self.position.getDn())
+		self.dn='ou=%%s,%%s' %% (self.info['name'], self.position.getDn())
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'automountMap'])]
 
