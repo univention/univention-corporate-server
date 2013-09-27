@@ -177,22 +177,51 @@ in the Univention Wiki <biblioref linkend="wiki-samba-update"/>.
 </para>
 </section>
 
-<section id="windows:File_services"><title>File services</title>
-<para>
-The file services integrated in UCS support the provision of shares
-using the CIFS protocol (see <xref linkend="shares::general"/>). Insofar
-as the underlying file system supports Access Control Lists (ACLs)
-(can be used with ext3, ext4 and XFS), the ACLs can also be used by
-Windows clients. Samba 4 requires a file system with XATTR support.
-</para>
-<para>
-Samba 4 domain controllers can also provide file services. As a general rule, it is recommended to
-separate domain controllers and file/print services in Samba environments - the same as the
-recommendations for Active Directory - that means using domain controllers for logins/authentication and member
-services for file/print services. This ensures that a high system load on a file server does not
-result in disruptions to the authentication service. For smaller environments in which it is not possible to
-run two servers, file and print services can also be run on a domain controller.
-</para>
+<section id="windows:fileservices">
+  <title>File services</title>
+  <para>
+	The file services integrated in UCS support the provision of shares using the CIFS protocol (see
+	<xref linkend="shares::general"/>). Insofar as the underlying file system supports Access
+	Control Lists (ACLs) (can be used with ext3, ext4 and XFS), the ACLs can also be used by Windows
+	clients. Samba 4 requires a file system with XATTR support.
+  </para>
+
+  <para>
+	Samba 4 domain controllers can also provide file services. As a general rule, it is recommended
+	to separate domain controllers and file/print services in Samba environments - the same as the
+	recommendations for Active Directory - that means using domain controllers for
+	logins/authentication and member services for file/print services. This ensures that a high
+	system load on a file server does not result in disruptions to the authentication service. For
+	smaller environments in which it is not possible to run two servers, file and print services can
+	also be run on a domain controller.
+  </para>
+
+  <!-- <para> -->
+  <!-- 	In Versionen vor UCS 3.2 verwendete Samba zur Bereitstellung von Dateidiensten das -->
+  <!-- 	CIFS-Protokoll. Bei Neuinstallationen ab UCS 3.2 wird standardmäßig der Nachfolger SMB2 -->
+  <!-- 	aktiviert. Verwendet man einen Client, der SMB2 unterstützt (ab Windows Vista, also auch Windows -->
+  <!-- 	7/8), verbessert sich die Performance und die Skalierbarkeit. -->
+
+  <!-- 	Das Protokoll kann über die &ucsUCR;-Variable <envar>samba/max/protocol</envar> konfiguriert -->
+  <!-- 	werden. Sie muss auf allen Samba-Servern gesetzt und anschließend der/die Samba-Server neu -->
+  <!-- 	gestartet werden. -->
+
+  <!-- 	<itemizedlist> -->
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		<emphasis>NT1</emphasis> konfiguriert CIFS (unterstützt von allen Windows-Versionen) -->
+  <!-- 	  </simpara></listitem> -->
+
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		<emphasis>SMB2</emphasis> konfiguriert SMB2 (unterstützt ab Windows Vista/Windows 7) -->
+  <!-- 	  </simpara></listitem> -->
+
+  <!-- 	  <listitem><simpara> -->
+  <!-- 		<emphasis>SMB3</emphasis> konfiguriert SMB3 (unterstützt ab Windows 8) -->
+  <!-- 	  </simpara></listitem> -->
+  <!-- 	</itemizedlist> -->
+  <!-- </para> -->
+
+
 </section>
 
 <section id="windows:Print_services"><title>Print services</title>
@@ -204,7 +233,7 @@ shares and the integration of the printer drivers is described in
 </para>
 <para>
 Samba 4 domain controllers can also provide print services. In this case, the restrictions described
-in <xref linkend="windows:File_services"/> must be taken into consideration.
+in <xref linkend="windows:fileservices"/> must be taken into consideration.
 </para>
 </section>
 

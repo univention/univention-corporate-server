@@ -184,27 +184,51 @@ unterstützt und werden im Univention Wiki <biblioref linkend="wiki-samba-update
 </para>
 </section>
 
-<section id="windows:Dateidienste__File-Server"><title>Dateidienste / File-Server</title>
-<para>
-Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung
-von Freigaben auf Basis von CIFS (siehe
-<xref linkend="shares::general"/>).
-Sofern das unterliegende Dateisystem Access Control Lists (ACLs)
-unterstützt (verwendbar bei ext3, ext4 und XFS) sind ACLs
-auch von Windows-Clients verwendbar.
-Samba 4 setzt zwingend ein Dateisystem mit XATTR-Unterstützung voraus.
-</para>
-<para>
-Dateidienste können auch mit Samba 4-Domänencontrollern bereitgestellt
-werden. Generell wird in Samba 4-Umgebungen - analog zu den
-Empfehlungen für Active Directory - empfohlen Domänencontroller- und
-Datei/Druckdienste zu trennen, d.h. Domänencontroller für die
-Anmeldung und Memberserver für Datei-/Druckdienste zu verwenden. Dies
-stellt sicher, dass hohe Last auf einem Fileserver nicht zu Störungen
-im Anmeldedienst führen. Für kleine Umgebungen, in denen keine
-Möglichkeit für den Betrieb zweier Server gegeben ist, können Datei-
-und Druckdienste auch mit auf einem Domänencontroller betrieben werden.
-</para>
+<section id="windows:fileservices">
+  <title>Dateidienste / File-Server</title>
+  <para>
+	Die in UCS integrierten Dateidienste unterstützen eine Bereitstellung von Freigaben auf Basis
+	von CIFS/SMB (siehe <xref linkend="shares::general"/>). Sofern das unterliegende Dateisystem Access
+	Control Lists (ACLs) unterstützt (verwendbar bei ext3, ext4 und XFS) sind ACLs auch von
+	Windows-Clients verwendbar. Samba 4 setzt zwingend ein Dateisystem mit XATTR-Unterstützung
+	voraus.
+  </para>
+
+  <para>
+	Dateidienste können auch mit Samba 4-Domänencontrollern bereitgestellt werden. Generell wird in
+	Samba 4-Umgebungen - analog zu den Empfehlungen für Active Directory - empfohlen
+	Domänencontroller- und Datei/Druckdienste zu trennen, d.h. Domänencontroller für die Anmeldung
+	und Memberserver für Datei-/Druckdienste zu verwenden. Dies stellt sicher, dass hohe Last auf
+	einem Fileserver nicht zu Störungen im Anmeldedienst führen. Für kleine Umgebungen, in denen
+	keine Möglichkeit für den Betrieb zweier Server gegeben ist, können Datei- und Druckdienste auch
+	mit auf einem Domänencontroller betrieben werden.
+  </para>
+
+  <para>
+	In Versionen vor UCS 3.2 verwendete Samba zur Bereitstellung von Dateidiensten das
+	CIFS-Protokoll. Bei Neuinstallationen ab UCS 3.2 wird standardmäßig der Nachfolger SMB2
+	aktiviert. Verwendet man einen Client, der SMB2 unterstützt (ab Windows Vista, also auch Windows
+	7/8), verbessert sich die Performance und die Skalierbarkeit.
+
+	Das Protokoll kann über die &ucsUCR;-Variable <envar>samba/max/protocol</envar> konfiguriert
+	werden. Sie muss auf allen Samba-Servern gesetzt und anschließend der/die Samba-Server neu
+	gestartet werden.
+
+	<itemizedlist>
+	  <listitem><simpara>
+		<emphasis>NT1</emphasis> konfiguriert CIFS (unterstützt von allen Windows-Versionen)
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		<emphasis>SMB2</emphasis> konfiguriert SMB2 (unterstützt ab Windows Vista/Windows 7)
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		<emphasis>SMB3</emphasis> konfiguriert SMB3 (unterstützt ab Windows 8)
+	  </simpara></listitem>
+	</itemizedlist>
+  </para>
+
 </section>
 
 <section id="windows:Druckdienste__Print-Server"><title>Druckdienste / Print-Server</title>
@@ -217,7 +241,7 @@ Druckerfreigaben und die Integration der Druckertreiber ist in
 <para>
 Druckdienste können auch mit Samba 4-Domänencontrollern bereitgestellt
 werden. Hierbei sind die in <xref
-linkend="windows:Dateidienste__File-Server"/> beschriebenen
+linkend="windows:fileservices"/> beschriebenen
 Einschränkungen zu beachten.
 </para>
 </section>
