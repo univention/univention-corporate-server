@@ -1,3 +1,12 @@
+ucs-test (4.0.123-4) unstable; urgency=low
+
+  * Bug #32401...#32409:
+    - updated dependencies
+    - added new tests scripts
+    - fixed traceback in udm_extensions.py
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 27 Sep 2013 12:24:48 +0200
+
 ucs-test (4.0.123-3) unstable; urgency=low
 
   * Bug #32401...#32409:

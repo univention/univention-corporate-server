@@ -431,6 +431,7 @@ Depends:
  ucs-test-udm-containers,
  ucs-test-updater,
  ucs-test-udm-extendedattribute,
+ ucs-test-udm-extensions,
 # ucs-test-udm-customattribute,
  ucs-test-udm-dhcp,
 # ucs-test-dhcp,
