@@ -41,9 +41,9 @@ import sys
 import time
 import getopt
 import subprocess
-import traceback
 import datetime
 import itertools
+from textwrap import dedent, wrap
 
 try:
 	import univention.debug as ud
@@ -52,7 +52,7 @@ except ImportError:
 
 import univention.config_registry as ucr
 
-from univention.updater import UniventionUpdater, UCS_Version, PreconditionError, ConfigurationError, RequiredComponentError
+from univention.updater import UniventionUpdater, UCS_Version, PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
 from univention.updater.tools import LocalUpdater
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
 import univention.updater.tools
@@ -571,6 +571,16 @@ if __name__ == '__main__':
 		try:
 			try:
 				main()
+			except VerificationError, ex:
+				msg = '\n'.join([
+					"Update aborted due to verification error:",
+					"%s" % (ex,),
+				] + wrap(dedent("""\
+						This can and should only be disabled temporarily
+						using the UCR variable 'repository/online/verify'.
+						"""
+				)))
+				raise UpdateError(msg, errorsource='SETTINGS')
 			except ConfigurationError, e:
 				msg = 'Update aborted due to configuration error: %s' % e
 				raise UpdateError(msg, errorsource='SETTINGS')

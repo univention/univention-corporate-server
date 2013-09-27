@@ -40,10 +40,11 @@ import shutil
 import subprocess
 import sys
 import time
+from textwrap import dedent, wrap
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
-from univention.updater import UniventionMirror, UCS_Version, UpdaterException
+from univention.updater import UniventionMirror, UCS_Version, UpdaterException, VerificationError
 import univention.updater.tools
 
 configRegistry = ucr.ConfigRegistry()
@@ -278,6 +279,14 @@ if __name__ == '__main__':
 
 			try:
 				update_net( options )
+			except VerificationError, ex:
+				print >> options.teefile, "Error: %s" % (ex,)
+				print >> options.teefile, '\n'.join(wrap(dedent("""\
+						This can and should only be disabled temporarily using the UCR variable
+						'repository/mirror/verify'.
+						"""
+				)))
+				sys.exit(1)
 			except UpdaterException, e:
 				print >>options.teefile, "Error: %s" % e
 				sys.exit(1)

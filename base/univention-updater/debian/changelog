@@ -6,6 +6,12 @@ univention-updater (9.0.18-2) unstable; urgency=low
 
 univention-updater (9.0.18-1) unstable; urgency=low
 
+  * Add hint to disable script verification (Bug #28045)
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 Sep 2013 13:33:45 +0200
+
+univention-updater (9.0.18-1) unstable; urgency=low
+
   * Bug #32634: try to automagically determine the GRUB boot device
 
  -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 20 Sep 2013 15:46:26 +0200
