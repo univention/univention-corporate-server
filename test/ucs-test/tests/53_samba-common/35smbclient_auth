@@ -6,15 +6,12 @@
 ##  - domaincontroller_slave
 ## packages:
 ##  - univention-samba | univention-samba4
-##  - python-pexpect
-## exposure: safe
+## exposure: careful
 ## tags:
 ##  - basic
 ##  - apptest
 
 import os
-import pexpect
-import string
 import sys
 import atexit
 import univention.config_registry
@@ -25,106 +22,105 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 try:
-	from univention.testing.ucs_samba import wait_for_drs_replication, force_drs_replication
-	python_samba4=True
-except:
-	python_samba4=False
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
-
-def initValues():
-	
-	try:
-		totalRounds=int(os.getenv('smbauth_totalRounds'))
-	except Exception, e:
-		totalRounds=3
-	try:
-		amountPerRound=int(os.getenv('smbauth_amountPerRound'))
-	except Exception, e:
-		amountPerRound=8
-	try:
-		roundTime=int(os.getenv('smbauth_roundTime'))
-	except Exception, e:
-		roundTime=5
-	try:
-		delay=int(os.getenv('smbauth_delay'))
-	except Exception, e:
-		delay=5
+	from univention.testing.ucs_samba import wait_for_drs_replication
+except ImportError:
+	def wait_for_drs_replication(_a, _b):
+		pass
 
 
-	parameter=(totalRounds,amountPerRound,roundTime,delay)
-	return parameter
+class Test(object):
 
-def cleanup(homedir_mount):
-	if homedir_mount == "None":
-                univention.config_registry.handler_unset(['homedir/mount'])
-	else:
-                univention.config_registry.handler_set(['homedir/mount=%s' % homedir_mount])
+	def __init__(self):
+		self.username = uts.random_username()
+		self.password = uts.random_string()
 
-def smbclient(username,password,number,innerDelay):
-	for i in range(number):
-		subprocess.Popen(["/usr/bin/smbclient", "-U%s%%%s" % (username,password), "//localhost/netlogon"], stdin=subprocess.PIPE)
-		time.sleep(innerDelay[i])
+		self.totalRounds = Test._get_int_env('smbauth_totalRounds', 3)
+		self.amountPerRound = Test._get_int_env('smbauth_amountPerRound', 8)
+		self.roundTime = Test._get_int_env('smbauth_roundTime', 6)
+		print "Configured for %d times %d processes in %ds." % (
+				self.totalRounds, self.amountPerRound, self.roundTime
+		)
 
-def calculateInnerDelay(roundTime,amountPerRound):
-	delayArray=[]
-	sum1=0
-	sum2=0
+		self.innerDelay = Test._calculateInnerDelay(self.roundTime, self.amountPerRound)
 
-	#create a random number for every authentification at startup
-	for i in range(amountPerRound):
-		randomNumber=random.randrange(1,1000,1)
-		delayArray.append(randomNumber)
-		sum1=sum1+randomNumber
+	def main(self):
+		Test.disable_home_mount()
 
-	#adjust numbers so that the sum of them equals $startTime,
-	#hence authentifications start in this time interval 
-	for i in range(amountPerRound):
-		delayArray[i]=float(delayArray[i])/sum1*roundTime
-		sum2=sum2+delayArray[i]
-	return delayArray
+		with udm_test.UCSTestUDM() as udm:
+			_user = udm.create_user(username=self.username, password=self.password)
 
-def checkResult(expectedResult):
-	for i in range(20):
+			print "Waiting for DRS replication..."
+			wait_for_drs_replication("(sAMAccountName=%s)" % (self.username,), attrs="objectSid")
 
-		output = pexpect.run('/bin/bash -c "smbstatus 2>&1 | grep -c netlogon"')
-		try:
-			output_int=int(output)
-		except Exception, e:
-			print "Result was not an integer!"
-			sys.exit(1)
-		if output_int == expectedResult:
-			return output_int
-		time.sleep(1)
-		
-	return output_int
+			self.start_processes()
+			self.check_processes()
 
+	def start_processes(self):
+		print "Starting parallel authentication..."
+		for index in xrange(self.totalRounds):
+			print "Round %d..." % (index,)
+			self.smbclient()
 
-if __name__ == "__main__":
-	with udm_test.UCSTestUDM() as udm:
-		username = uts.random_username()
-		password = uts.random_string()
-		user = udm.create_user(username=username, password=password)
+	def smbclient(self):
+		print "Forking %d processes..." % (len(self.innerDelay),)
+		cmd = ("/usr/bin/smbclient", "-U%s%%%s" % (self.username, self.password), "//localhost/netlogon")
+		with open(os.path.devnull, 'wb') as null:
+			for delay in self.innerDelay:
+				_proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=null, stderr=null)
+				time.sleep(delay)
 
-		if python_samba4:
-			# DRS replication
-			# force_drs_replication()
-			wait_for_drs_replication("(sAMAccountName=%s)" % (username, ), attrs="objectSid")
-
-		homedir_mount = "%s" % (ucr["homedir/mount"])
-		univention.config_registry.handler_set(['homedir/mount=false'])
-		atexit.register(cleanup, homedir_mount)
-
-		(totalRounds,amountPerRound,roundTime,delay)=initValues()
-		innerDelay=calculateInnerDelay(roundTime,amountPerRound)
-
-		for index in range(totalRounds):
-			smbclient(username,password,amountPerRound,innerDelay)
-		expectedResult=amountPerRound*totalRounds
-		result=checkResult(expectedResult)
-		print "%s of %s have been successfull." % (result,expectedResult)
+	def check_processes(self):
+		expectedResult = self.amountPerRound * self.totalRounds
+		result = Test.checkResult(expectedResult)
+		print "%s of %s have been successfull." % (result, expectedResult)
 		if result == expectedResult:
 			sys.exit(0)
 		else:
 			utils.fail()
 
+	@staticmethod
+	def checkResult(expectedResult, max_wait=30):
+		for i in xrange(max_wait):
+			proc = subprocess.Popen(('smbstatus',), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			count = len([line for line in proc.stdout if line.startswith('netlogon')])
+			if count == expectedResult:
+				return count
+			print "%d: %d < %d" % (i, count, expectedResult)
+			time.sleep(1)
+		return count
+
+	@staticmethod
+	def _get_int_env(key, default):
+		try:
+			return int(os.getenv(key))
+		except (TypeError, ValueError):
+			return default
+
+	@staticmethod
+	def _calculateInnerDelay(roundTime, amountPerRound):
+		"""
+		Return array of <amountPerRound> floats which sum-up to <roundTime>.
+		"""
+		delayArray = [random.randrange(1, 1000, 1) for _ in xrange(amountPerRound)]
+		total = sum(delayArray)
+		delayArray = [float(_) / total * roundTime for _ in delayArray]
+		return delayArray
+
+	@staticmethod
+	def disable_home_mount():
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+		homedir_mount = ucr.get("homedir/mount")
+		univention.config_registry.handler_set(['homedir/mount=false'])
+		atexit.register(Test._cleanup, homedir_mount)
+
+	@staticmethod
+	def _cleanup(homedir_mount):
+		if not homedir_mount:
+			univention.config_registry.handler_unset(['homedir/mount'])
+		else:
+			univention.config_registry.handler_set(['homedir/mount=%s' % (homedir_mount,)])
+
+
+if __name__ == "__main__":
+	Test().main()

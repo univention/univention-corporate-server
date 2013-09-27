@@ -1,6 +1,7 @@
 ucs-test (4.0.124-1) unstable; urgency=low
 
   * Use unbuffered output (Bug #31819)
+  * 51_samba4/35smbclient_auth: Fix test (Bug #32715)
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 27 Sep 2013 19:39:19 +0200
 
