@@ -745,7 +745,10 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  konfiguriert, der für den Zugriff auf das Active Directory verwendet wird. Die Einstellung
 	  wird in der &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> gespeichert. Bei Verwendung der
 	  Funktion für die automatische Ermittlung der Basis-DN des Active Directory wird das
-	  Administrator-Konto für die Basis-DN als Vorgabe eingetragen.
+	  Administrator-Konto für die Basis-DN als Vorgabe eingetragen. Der Replikationsbenutzer muss im
+	  Active Directory Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Synchronisiert
+	  der Connector nur lesend von Active Directory zu UCS, kann auch ein Standardbenutzerkonto
+	  angegeben werden.
 	</para>
 
 	<para>

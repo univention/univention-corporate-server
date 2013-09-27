@@ -710,6 +710,11 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	<guimenu>LDAP DN of synchronisation user</guimenu> field. (The setting is saved in the &ucsUCRV;
 	<envar>connector/ad/ldap/binddn</envar>). When using the function for the automatic transfer of
 	the base DN of the Active Directory, the Administrator account is entered by default for the base DN.
+	<!-- Der Replikationsbenutzer muss im -->
+	<!-- Active Directory Mitglied der Gruppe <emphasis>Domänen-Admins</emphasis> sein. Synchronisiert -->
+	<!-- der Connector nur lesend von Active Directory zu UCS, kann auch ein Standardbenutzerkonto -->
+	<!-- angegeben werden. -->
+	<!-- MEN: Domänen-Admins -> Domain Admins -->
   </para>
 
   <para>
