@@ -19,7 +19,6 @@ def test_extension(extension_type, dn, password):
 	package_version = get_package_version()
 	extension_name = get_extension_name(extension_type)
 	extension_filename = get_extension_filename(extension_type, extension_name)
-	package_version = get_package_version()
 	joinscript_buffer = get_join_script_buffer(extension_type, '/usr/share/%s/%s' % (package_name, extension_filename))
 	extension_buffer = get_extension_buffer(extension_type, extension_name)
 
