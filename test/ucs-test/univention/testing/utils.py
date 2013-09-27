@@ -140,15 +140,17 @@ def s4connector_present():
 
 
 def stop_s4connector():
-	subprocess.Popen([S4CONNECTOR_INIT_SCRIPT, 'stop']).wait()
+	subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'stop'))
+
 
 def start_s4connector():
-	subprocess.Popen([S4CONNECTOR_INIT_SCRIPT, 'start']).wait()
+	subprocess.call((S4CONNECTOR_INIT_SCRIPT, 'start'))
+
 
 def wait_for_replication():
 	sys.stdout.flush()
 	print 'Waiting for replication:'
-	for i in range(0,300):
+	for _ in xrange(300):
 		rc = subprocess.call('/usr/lib/nagios/plugins/check_univention_replication')
 		if rc == 0:
 			print 'Done: replication complete.'
@@ -181,6 +183,7 @@ def fail(log_message = None, returncode = 1):
 def setup_environment():
 	"""Setup runtime environemnt."""
 	os.environ['TESTLIBPATH'] = '/usr/share/ucs-test/lib'
+	os.environ['PYTHONUNBUFFERED'] = '1'
 
 
 def setup_debug(level):
