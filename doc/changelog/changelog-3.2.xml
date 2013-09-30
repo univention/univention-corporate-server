@@ -2657,7 +2657,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The <package>drbd8</package> userland tools have been updated to version 8.3.11 (<ulink url="&ucsbug;31321">Bug 31321</ulink>).
+		The <package>drbd8</package> userland tools have been updated to version 8.4.3 
+		(<ulink url="&ucsbug;31321">Bug 31321</ulink>, <ulink url="&ucsbug;32019">Bug 32019</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
