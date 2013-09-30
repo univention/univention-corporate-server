@@ -205,13 +205,13 @@
 			</para>
 		</section>
 
-		<section id="central-management-umc:Creating_objects">
+		<section id="central-management-umc:create">
 			<title>Creating objects</title>
 			<para>
-				The lowest line of the screen includes an action line for creating a
-				new object. The menu entries have the same names as the module name,
-				e.g., <guimenu>Add user</guimenu>. If a user template is defined, it can
-				be selected (see <xref linkend="users:templates"/>).
+			  <!-- In der Zeile über der Tabelle mit den Objekten findet sich eine Aktionsleiste, über -->
+			  <!-- die ein neues Objekt angelegt werden kann. -->
+			  The menu entries have the same names as the module name,
+			  e.g., <guimenu>Add user</guimenu>.
 			</para>
 		</section>
 

@@ -212,14 +212,12 @@
 			</para>
 		</section>
 
-		<section id="central-management-umc:Anlegen_von_Objekten">
+		<section id="central-management-umc:create">
 			<title>Anlegen von Objekten</title>
 			<para>
-				In der unteren Bildschirmzeile findet sich eine Aktionsleiste, über
+				In der Zeile über der Tabelle mit den Objekten findet sich eine Aktionsleiste, über
 				die ein neues Objekt angelegt werden kann. Die Menüpunkte sind dem
 				Modulnamen entsprechend benannt, also z.B. <guimenu>Benutzer hinzufügen</guimenu>.
-				Ist eine Benutzervorlage definiert, wird sie hier
-				angezeigt (siehe <xref linkend="users:templates"/>).
 			</para>
 		</section>
 
