@@ -24,7 +24,7 @@ import univention.testing.utils as utils
 try:
 	from univention.testing.ucs_samba import wait_for_drs_replication
 except ImportError:
-	def wait_for_drs_replication(_a, _b):
+	def wait_for_drs_replication(ldap_filter, attrs=None):
 		pass
 
 
