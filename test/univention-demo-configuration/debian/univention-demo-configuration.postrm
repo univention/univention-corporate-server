@@ -3,7 +3,7 @@
 # restricted configuration for demo.univention.de
 #  postrm script
 #
-# Copyright 2012 Univention GmbH
+# Copyright 2012-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,6 +31,16 @@
 # <http://www.gnu.org/licenses/>.
 
 #DEBHELPER#
+
+# umc overview
+univention-config-registry unset \
+        ucs/web/overview/entries/service/demo-configuration/description/de \
+        ucs/web/overview/entries/service/demo-configuration/description \
+        ucs/web/overview/entries/service/demo-configuration/icon \
+        ucs/web/overview/entries/service/demo-configuration/label \
+        ucs/web/overview/entries/service/demo-configuration/label/de \
+        ucs/web/overview/entries/service/demo-configuration/link \
+        ucs/web/overview/entries/service/demo-configuration/priority?
 
 case "$1" in
 	remove|purge|disappear|failed-upgrade|abort-install)

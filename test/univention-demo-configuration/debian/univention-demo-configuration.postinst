@@ -3,7 +3,7 @@
 # restricted configuration for demo.univention.de
 #  postinst script
 #
-# Copyright 2012 Univention GmbH
+# Copyright 2012-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,7 +38,7 @@
 univention-config-registry set \
 	ucs/web/overview/entries/service/demo-configuration/description/de?'Die Univention-Support-Datenbank' \
 	ucs/web/overview/entries/service/demo-configuration/description?'The Univention support database' \
-	ucs/web/overview/entries/service/demo-configuration/icon?'icon/50x50/univention-logo.png' \
+	ucs/web/overview/entries/service/demo-configuration/icon?'/icon/50x50/univention-logo.png' \
 	ucs/web/overview/entries/service/demo-configuration/label?'Univention SDB' \
 	ucs/web/overview/entries/service/demo-configuration/label/de?'Univention SDB' \
 	ucs/web/overview/entries/service/demo-configuration/link?'http://sdb.univention.de' \
