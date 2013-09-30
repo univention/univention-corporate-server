@@ -204,23 +204,75 @@ ucs_removeServiceFromHost () { # <servicename> <udm-module-name> <dn> [options]
 }
 
 #
+# parse join credentials and save them in
+# binddn bindpwd (bindpwdfile)
+# ucs_parseCredentials "$@"
+#  $binddn 
+#
+ucs_parseCredentials () {
+
+	while [ $# -ge 1 ]
+	do
+		case "$1" in
+		--binddn)
+			binddn="$2"
+			shift 2 || die "Missing argument to --binddn"
+			;;
+		--bindpwd)
+			bindpwd="$2"
+			shift 2 || die "Missing argument to --bindpwd"
+			;;
+		--bindpwdfile)
+			bindpwdfile="$2"
+			shift 2 || die "Missing argument to --bindpwdfile"
+			[ -f "$bindpwdfile" ] || die "Missing bindpwdfile $bindpwdfile"
+			;;
+		*)
+			shift
+			;;
+		esac
+	done
+}
+
+#
 # ucs_isServiceUnused cechks whether a service entry is used.
 # ucs_isServiceUnused <servicename> [<udm-credentials>]
 # e.g.  if ucs_isServiceUnused "DNS" "$@"; then uninstall DNS; fi
 #
 ucs_isServiceUnused () {
 	local servicename="$1"
+	local master="$(ucr get ldap/master)"
+	local port="$(ucr get ldap/master/port)"
 
 	if ! shift 1
 	then
 		echo "ucs_lastHostWithService: wrong argument number" >&2
 		return 2
 	fi
-	
+
+	if [ -z "$port" ]
+	then
+		port=7389
+	fi
+
+	ucs_parseCredentials "$@"
+
+	# search always on the master
+	set -- -H "ldap://$master:$port"
+
+	# set credentials
+	if [ -n "$binddn" ] && [ -n "$bindpwd" ]
+	then
+		set -- "$@" -D "$binddn" -w "$bindpwd"
+	elif [ -n "$binddn" ] && [ -n "$bindpwdfile" ]
+	then
+		set -- "$@" -D "$binddn" -y "$bindpwdfile"
+	fi
+
 	# create a tempfile to get the real return code of the ldapsearch command,
 	# otherwise we get only the code of the sed command
 	local tempfile=$(mktemp)
-	univention-ldapsearch univentionService="${servicename}" cn >"$tempfile"
+	univention-ldapsearch univentionService="${servicename}" "$@" cn >"$tempfile"
 	if [ $? != 0 ]; then
 		rm -f "$tempfile"
 		echo "ucs_isServiceUnused: search failed" >&2

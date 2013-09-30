@@ -1,3 +1,10 @@
+univention-lib (3.0.19-1) unstable; urgency=low
+
+  * parse --binddn and --bindpwd in ucs_isServiceUnused 
+    and always use ldap/master for ldapsearch (Bug #32578)
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 17:19:14 +0200
+
 univention-lib (3.0.18-1) unstable; urgency=low
 
   * python/ldap_extension.py: set objectname in any case (Bug #32663)
