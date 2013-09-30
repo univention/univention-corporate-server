@@ -580,6 +580,12 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The packages <package>univention-nagios-server</package>, <package>univention-doc</package> and
+		  <package>univention-system-setup</package> have been adapted to the new UMC overview page
+		  (<ulink url="&ucsbug;32611">Bug 32611</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  The &ucsUCRV; descriptions in <package>univention-management-console-frontend</package>
 		  and <package>univention-management-console</package> have been revised (<ulink
 		  url="&ucsbug;30946">Bug 30946</ulink>).
