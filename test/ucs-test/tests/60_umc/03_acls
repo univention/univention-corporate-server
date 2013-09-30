@@ -52,7 +52,7 @@ assign_acl ()
 }
 test_acl ()
 {
-	umc-command -U $USERNAME -P univention join/scripts/query
+	umc-command -s $hostname.$domainname -U $USERNAME -P univention join/scripts/query
 }
 
 modify_acl ()
