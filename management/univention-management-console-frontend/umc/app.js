@@ -1677,17 +1677,17 @@ define([
 			}]);
 		},
 
-		linkToModule: function(/*String*/ moduleId, /*String?*/ moduleFlavor, /*String?*/ linkName, default_) {
+		linkToModule: function(/*String*/ moduleId, /*String?*/ moduleFlavor, /*String?*/ linkName, fallback) {
 			var module = this.getModule(moduleId, moduleFlavor);
 			if (!module) {
-				return default_ !== undefined ? default_ : null;
+				return fallback !== undefined ? fallback : null;
 			}
 
 			var link = '<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(${moduleLink})">${linkName}</a>';
 			var moduleLink = moduleFlavor ? "'${0}', '${1}'" : "'${0}'";
 			moduleLink = string.substitute(moduleLink, [moduleId, moduleFlavor]);
 
-			linkName = string.substitute(linkName || _('module "${moduleName}"'), { moduleName: module.name });
+			linkName = string.substitute(linkName || _('"${moduleName}" module'), { moduleName: module.name });
 			return string.substitute(link, {moduleLink: moduleLink, linkName: linkName});
 		},
 

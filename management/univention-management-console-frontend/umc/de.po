@@ -730,7 +730,7 @@ msgstr "Benutzer: %(username)s"
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 
-msgid "module \"${moduleName}\""
+msgid "\"${moduleName}\" module"
 msgstr "Modul \"${moduleName}\""
 
 #~ msgid ""
