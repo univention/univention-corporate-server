@@ -57,6 +57,16 @@ univention-config-registry set \
 	ucs/web/overview/entries/service/nagios/link?'/nagios/' \
 	ucs/web/overview/entries/service/nagios/priority?'50'
 
+if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '7.0.0-0'; then
+	mkdir -p /etc/univention/templates/removed/	
+	files="en.html.d/50nagios-en.html de.html.d/50nagios-de.html"
+	for file in $files; do
+		if [ -e "/etc/univention/templates/files/var/www/ucs-overview/$file" ]; then
+			mv "/etc/univention/templates/files/var/www/ucs-overview/$file" /etc/univention/templates/removed/
+		fi
+	done
+fi
+
 if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '5.0.0-0'
 then # update from previous version
 	# migrate UCRV auth/*/services
