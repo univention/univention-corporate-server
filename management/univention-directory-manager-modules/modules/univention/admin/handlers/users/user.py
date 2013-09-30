@@ -950,7 +950,7 @@ layout = [
 			[ 'roomNumber', 'departmentNumber' ],
 			[ 'street', 'postcode', 'city' ],
 			] ),
-		Group( _( 'Privat' ), layout = [
+		Group( _( 'Private' ), layout = [
 			'homeTelephoneNumber',
 			'mobileTelephoneNumber',
 			'pagerTelephoneNumber',

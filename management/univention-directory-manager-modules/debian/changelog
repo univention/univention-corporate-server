@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.39-1) unstable; urgency=low
+
+  * Bug #24727: fix typo in english translation
+
+ -- Florian Best <best@univention.de>  Mon, 30 Sep 2013 08:55:00 +0200
+
 univention-directory-manager-modules (9.0.38-1) unstable; urgency=low
 
   * Bug #24727: adapt label of multivalue fields

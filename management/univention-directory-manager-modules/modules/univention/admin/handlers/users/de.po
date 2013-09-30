@@ -560,7 +560,7 @@ msgid "Business"
 msgstr "Geschäftlich"
 
 #: user.py:956
-msgid "Privat"
+msgid "Private"
 msgstr "Privat"
 
 #: user.py:963
