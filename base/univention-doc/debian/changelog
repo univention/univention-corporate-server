@@ -1,3 +1,9 @@
+univention-doc (1.0.0-1) unstable; urgency=low
+
+  * updated ucs overview (Bug #32611)
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 13:55:51 +0200
+
 univention-doc (0.0.3-2) unstable; urgency=low
 
   * removed hardcoded link to index.html (Bug #23197)
