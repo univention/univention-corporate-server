@@ -34,12 +34,12 @@
 
 # umc overview
 univention-config-registry unset \
-	ucs/web/overview/entries/service/demo-configuration/description/de \
-	ucs/web/overview/entries/service/demo-configuration/description \
-	ucs/web/overview/entries/service/demo-configuration/icon \
-	ucs/web/overview/entries/service/demo-configuration/label \
-	ucs/web/overview/entries/service/demo-configuration/label/de \
-	ucs/web/overview/entries/service/demo-configuration/link \
-	ucs/web/overview/entries/service/demo-configuration/priority
+	ucs/web/overview/entries/service/nagios/description/de \
+	ucs/web/overview/entries/service/nagios/description \
+	ucs/web/overview/entries/service/nagios/icon \
+	ucs/web/overview/entries/service/nagios/label \
+	ucs/web/overview/entries/service/nagios/label/de \
+	ucs/web/overview/entries/service/nagios/link \
+	ucs/web/overview/entries/service/nagios/priority
 
 exit 0
