@@ -43,7 +43,7 @@
 <section id="central:user-interface">
 	<title>Operating instructions for &ucsUMC;</title>
 
-	<section id="central-management-umc:Login">
+	<section id="central-management-umc:login">
 		<title>Login</title>
 		<para>
 		&ucsUMC; uses numerous Javascript and CSS functions to display the
@@ -112,6 +112,13 @@
 			interval can be adjusted in seconds with the &ucsUCRV;
 			<envar>umc/http/session/timeout</envar>.
 		</para>
+
+		<!-- <para> -->
+		<!--   Jeder angemeldete Benutzer kann ohne erneute Anmeldung weitere UMC-Instanzen der -->
+		<!--   Domäne verwenden: Wird in der schwarzen oberen Bildleiste unter <guimenu>Host:</guimenu> -->
+		<!--   ein Rechner ausgewählt, öffnet sich ein neues Fenster mit der &ucsUMC; des Systems. -->
+		<!-- </para> -->
+
 	</section>
 
 	<section id="central:license">

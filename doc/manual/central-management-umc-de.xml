@@ -45,7 +45,7 @@
 <section id="central:user-interface">
 	<title>Bedienung der &ucsUMC;</title>
 
-	<section id="central-management-umc:Anmeldung">
+	<section id="central-management-umc:login">
 		<title>Anmeldung</title>
 		<para>
 			&ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche
@@ -115,6 +115,13 @@
 			geschlossen und eine Neuanmeldung ist notwendig. Dieses Intervall kann
 			mit der &ucsUCRV; <envar>umc/http/session/timeout</envar> in Sekunden angepasst werden.
 		</para>
+
+		<para>
+		  Jeder angemeldete Benutzer kann ohne erneute Anmeldung weitere UMC-Instanzen der
+		  Domäne verwenden: Wird in der schwarzen oberen Bildleiste unter <guimenu>Host:</guimenu>
+		  ein Rechner ausgewählt, öffnet sich ein neues Fenster mit der &ucsUMC; des Systems.
+		</para>
+
 	</section>
 
 	<section id="central:license">
