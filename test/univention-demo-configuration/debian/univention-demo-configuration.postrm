@@ -40,7 +40,7 @@ univention-config-registry unset \
         ucs/web/overview/entries/service/demo-configuration/label \
         ucs/web/overview/entries/service/demo-configuration/label/de \
         ucs/web/overview/entries/service/demo-configuration/link \
-        ucs/web/overview/entries/service/demo-configuration/priority?
+        ucs/web/overview/entries/service/demo-configuration/priority
 
 case "$1" in
 	remove|purge|disappear|failed-upgrade|abort-install)

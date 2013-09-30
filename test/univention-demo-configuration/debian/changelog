@@ -1,3 +1,9 @@
+univention-demo-configuration (2.0.0-3) unstable; urgency=low
+
+  * new ucs overview (Bug #32611) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 14:46:35 +0200
+
 univention-demo-configuration (2.0.0-2) unstable; urgency=low
 
   * new ucs overview (Bug #32611) 
