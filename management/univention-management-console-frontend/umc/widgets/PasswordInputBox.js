@@ -102,14 +102,14 @@ define([
 				required: this.required,
 				disabled: this.disabled,
 				name: this.name + '_1',
-				isValid: lang.hitch(this, 'isValid'),
+				isValid: lang.hitch(this, '_checkValidity', 1),
 				validator: lang.hitch(this, '_checkValidity', 1)
 			}))[0];
 			this._secondWidget = this.own(new PasswordBox({
 				required: this.required,
 				disabled: this.disabled,
 				name: this.name + '_2',
-				isValid: lang.hitch(this, 'isValid'),
+				isValid: lang.hitch(this, '_checkValidity', 2),
 				validator: lang.hitch(this, '_checkValidity', 2),
 				invalidMessage: _('The passwords do not match, please retype again.')
 			}))[0];
@@ -154,7 +154,10 @@ define([
 				return true;
 			}
 
-			if (!this.isValid()) {
+			var pw1 = this._firstWidget.get('value');
+			var pw2 = this._secondWidget.get('value');
+
+			if (this.required === true && !pw1) {
 				return false;
 			}
 
@@ -165,8 +168,6 @@ define([
 			}
 
 			// compare passwords
-			var pw1 = this._firstWidget.get('value');
-			var pw2 = this._secondWidget.get('value');
 			if (!this._secondWidget.focused && pw1 != pw2) {
 				// user stopped typing (i.e., no focus) and passwords do not match
 				return false;
@@ -187,8 +188,8 @@ define([
 		},
 
 		setValid: function(isValid, message) {
-			this._firstWidget.setValid(isValid, message);
-			this._secondWidget.setValid(isValid, message);
+			this._firstWidget.setValid(this._firstWidget.isValid(), message);
+			this._secondWidget.setValid(this._secondWidget.isValid(), message);
 			return this.inherited(arguments);
 		},
 

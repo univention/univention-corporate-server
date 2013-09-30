@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.85-1) unstable; urgency=low
+
+  * Bug #25500: fix validating of PasswordInputBox
+
+ -- Florian Best <best@univention.de>  Mon, 30 Sep 2013 15:58:15 +0200
+
 univention-management-console-frontend (3.0.84-1) unstable; urgency=low
 
   * Bug #26418: Move non context actions of umc.widgets.Grid to the left,
