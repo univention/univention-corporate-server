@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.29-1) unstable; urgency=low
+
+  * Bug #32749: show how many objects will be included in the report
+
+ -- Florian Best <best@univention.de>  Mon, 30 Sep 2013 17:00:50 +0200
+
 univention-management-console-module-udm (4.0.28-1) unstable; urgency=low
 
   * Bug #32381: fix reloading of superordinates

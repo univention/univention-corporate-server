@@ -38,8 +38,9 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
+	"umc/widgets/ComboBox",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, Dialog, StandbyMixin, Form, ContainerWidget, Text, Button, _) {
+], function(declare, lang, array, Dialog, StandbyMixin, Form, ContainerWidget, Text, Button, ComboBox, _) {
 	return declare("umc.modules.udm.CreateReportDialog", [ Dialog, StandbyMixin ], {
 		// summary:
 		//		Dialog class for creating Univention Directory Reports.
@@ -79,7 +80,7 @@ define([
 
 			// mixin the dialog title
 			lang.mixin(this, {
-				title: _( 'Report for %d %s', this.objects.length, this.objects.length === 1 ? this.objectNameSingular : this.objectNamePlural )
+				title: _( 'Report for %s', this.objectNameSingular)
 			} );
 		},
 
@@ -89,15 +90,15 @@ define([
 			var reports = array.map( this.reports, function( item ) {
 				return { id : item, label: item }; } );
 
-			var widgets = [ {
-				type: 'ComboBox',
+			var widgets = [{
+				type: ComboBox,
 				name: 'report',
-				label: _( 'Report' ),
-				description: _( 'The report template that should be used for the report.' ),
-				value: this.reports[ 0 ],
+				label: _('Report for %d %s', this.objects.length, this.objects.length === 1 ? this.objectNameSingular : this.objectNamePlural),
+				description: _('The report template that should be used for the report.'),
+				value: this.reports[0],
 				staticValues: reports
-			} ];
-			var layout = [ 'report' ];
+			}];
+			var layout = ['report'];
 
 			// buttons
 			var buttons = [ {
