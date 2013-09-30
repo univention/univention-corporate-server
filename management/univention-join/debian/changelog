@@ -1,3 +1,9 @@
+univention-join (6.0.9-1) unstable; urgency=low
+
+  * Bug #24727: use app.linkToModule for links to other UMC modules
+
+ -- Florian Best <best@univention.de>  Mon, 30 Sep 2013 09:59:02 +0200
+
 univention-join (6.0.8-1) unstable; urgency=low
 
   * Bug #24727: use app.linkToModule for links to other UMC modules

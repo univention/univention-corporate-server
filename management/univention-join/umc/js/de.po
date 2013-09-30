@@ -289,3 +289,7 @@ msgstr "erfolgreich"
 #: umc/js/join.js:331
 msgid "username"
 msgstr "Benutzername"
+
+#: umc/js/join.js:275
+msgid "Basic settings module"
+msgstr "Basis-Einstellungen Modul"
