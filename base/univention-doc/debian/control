@@ -7,7 +7,7 @@ Build-Depends: debhelper, univention-config-dev, ucslint-univention
 
 Package: univention-doc
 Architecture: all
-Depends: python2.6, python-sphinx
+Depends: python2.6, python-sphinx, ${misc:Depends}
 Description: tool to build source documentation
  This package contains scripts and configurations for HTML and PDF documentations build from our sources.
  .
