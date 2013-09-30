@@ -729,22 +729,6 @@ define([
 			this._searchForm.ready().then(lang.hitch(this, '_updateSearch'));
 			this._grid.on('filterDone', lang.hitch(this, '_updateSearch'));
 
-			// reload the superordinates in case an object has been added, it might be a new superordinate
-			if (superordinates && superordinates.length) {
-				this.own(this.moduleStore.on('Change', lang.hitch(this, function() {
-					var widget = this._searchForm.getWidget('superordinate');
-					if (widget) {
-						this.umcpCommand('udm/superordinates').then(lang.hitch(this, function(data) {
-							var currentVals = array.map(widget.get('staticValues'), function(i) { return i.id; });
-							var newVals = array.map(data.result, function(i) { return i.id; });
-							if (!tools.isEqual(currentVals, newVals)) {
-								widget.set('staticValues', data.result);
-							}
-						}));
-					}
-				})));
-			}
-
 			// focus and select text when the objectPropertyValue has been loaded
 			// at the beginning
 			var propertyValueHandle = this._searchForm._widgets.objectPropertyValue.watch('value', lang.hitch(this, function() {
@@ -790,8 +774,15 @@ define([
 		},
 
 		_reloadSuperordinates: function() {
-			if (this._searchForm._widgets.superordinate) {
-				this._searchForm._widgets.superordinate.reloadDynamicValues();
+			var widget = this._searchForm.getWidget('superordinate');
+			if (widget) {
+				this.umcpCommand('udm/superordinates').then(lang.hitch(this, function(data) {
+					var currentVals = array.map(widget.get('staticValues'), function(i) { return i.id; });
+					var newVals = array.map(data.result, function(i) { return i.id; });
+					if (!tools.isEqual(currentVals, newVals)) {
+						widget.set('staticValues', data.result);
+					}
+				}));
 			}
 		},
 

@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.28-1) unstable; urgency=low
+
+  * Bug #32381: fix reloading of superordinates
+
+ -- Florian Best <best@univention.de>  Mon, 30 Sep 2013 16:44:51 +0200
+
 univention-management-console-module-udm (4.0.27-1) unstable; urgency=low
 
   * Bug #32749: implement "create report" function as grid action
