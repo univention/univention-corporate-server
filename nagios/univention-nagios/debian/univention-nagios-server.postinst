@@ -47,6 +47,16 @@ univention-config-registry set \
 	'nagios/server/autostart?yes' \
 	'nagios/plugin/check_nrpe/timeout?10'
 
+# umc overview
+univention-config-registry set \
+	ucs/web/overview/entries/service/nagios/description/de?'Netzwerk-, Host- und Serviceüberwachung' \
+	ucs/web/overview/entries/service/nagios/description?'Network, host and service monitoring system' \
+	ucs/web/overview/entries/service/nagios/icon?'/icon/50x50/nagios.png' \
+	ucs/web/overview/entries/service/nagios/label?'Univention Nagios' \
+	ucs/web/overview/entries/service/nagios/label/de?'Univention Nagios' \
+	ucs/web/overview/entries/service/nagios/link?'/nagios/' \
+	ucs/web/overview/entries/service/nagios/priority?'50'
+
 if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '5.0.0-0'
 then # update from previous version
 	# migrate UCRV auth/*/services
