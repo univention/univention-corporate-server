@@ -6,8 +6,6 @@
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
-## versions:
-##   3.2-0: skip
 
 
 import univention.testing.udm as udm_test
@@ -30,7 +28,7 @@ if __name__ == '__main__':
 
 
 		# check valid values
-		for value in ('1', '0'):
+		for value in ('1', '0', ''):
 			udm.create_user(**{cli_name: value})
 
 		# check invalid values

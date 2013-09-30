@@ -1,3 +1,14 @@
+ucs-test (4.0.126-1) unstable; urgency=low
+
+  * do not skip tests 69_udm-syntax/00_integer and 69_udm-syntax/03_boolean in
+    ucs-3.2-0
+  * removed duplicate test value "1.9" from 69_udm-syntax/00_integer
+  * added valid check for empty values to udm-syntax tests
+  (Bug #31661)
+
+
+ -- Lukas Walter <walter@univention.de>  Mon, 30 Sep 2013 10:53:20 +0200
+
 ucs-test (4.0.125-3) unstable; urgency=low
 
   * 60_umc/03_acls: use fqdn as umc-command server (Bug #32747)

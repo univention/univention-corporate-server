@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 
 		# check valid values
-		for value in ('true', 'false'):
+		for value in ('true', 'false', ''):
 			udm.create_user(**{cli_name: value})
 
 		# check invalid values
