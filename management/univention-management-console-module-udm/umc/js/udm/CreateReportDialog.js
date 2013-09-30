@@ -79,7 +79,7 @@ define([
 
 			// mixin the dialog title
 			lang.mixin(this, {
-				title: _( 'Report for %s', this.objectNameSingular )
+				title: _( 'Report for %d %s', this.objects.length, this.objects.length === 1 ? this.objectNameSingular : this.objectNamePlural )
 			} );
 		},
 

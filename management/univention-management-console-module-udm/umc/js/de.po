@@ -615,8 +615,8 @@ msgstr "Erstellen des Reports ist fehlgeschlagen"
 
 #: umc/js/udm/CreateReportDialog.js:82
 #, python-format
-msgid "Report for %s"
-msgstr "Report für %s"
+msgid "Report for %d %s"
+msgstr "Report für %d %s"
 
 #: umc/js/udm/CreateReportDialog.js:147
 msgid "Report has been created"

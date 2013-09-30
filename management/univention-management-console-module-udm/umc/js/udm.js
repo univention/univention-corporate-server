@@ -369,10 +369,7 @@ define([
 				isStandardAction: true,
 				isMultiAction: true,
 				iconClass: 'umcIconDelete',
-				callback: lang.hitch(this, function(ids) {
-					var objects = array.map(ids, lang.hitch(this, function(id) {
-						return this._grid.getItem(id);
-					}));
+				callback: lang.hitch(this, function(ids, objects) {
 					this.removeObjects(objects);
 				})
 			}, {
@@ -380,13 +377,21 @@ define([
 				label: _('Move to...'),
 				description: _( 'Move objects to a different LDAP position.' ),
 				isMultiAction: true,
-				callback: lang.hitch(this, function(ids) {
-					var objects = array.map(ids, lang.hitch(this, function(id) {
-						return this._grid.getItem(id);
-					}));
+				callback: lang.hitch(this, function(ids, objects) {
 					this.moveObjects(objects);
 				})
 			}];
+
+			if ('navigation' !== this.moduleFlavor && this._reports.length) {
+				actions.splice(0, 0, {
+					name: 'report',
+					isStandardAction: true,
+					isMultiAction: true,
+					label: _('Create report'),
+					iconClass: 'umcIconReport',
+					callback: lang.hitch(this, '_createReport')
+				});
+			}
 
 			// the navigation needs a slightly modified store that uses the UMCP query
 			// function 'udm/nav/object/query'
@@ -421,18 +426,6 @@ define([
 					if ( 'navigation' == this.moduleFlavor && ( this._searchForm._widgets.objectType.get( 'value' ) == '$containers$' || items[ 0 ].$childs$ === true ) ) {
 						this._tree.set( 'path', this._ldapDN2TreePath( keys[ 0 ] ) );
 						this.filter( this._searchForm.get('value') );
-					} else if ( undefined !== this._searchForm._widgets.superordinate ) {
-						var found = false;
-						this._searchForm._widgets.superordinate.store.fetch( { onItem: lang.hitch( this, function( item ) {
-							if ( this._searchForm._widgets.superordinate.store.getValue( item, 'id' ) == keys[ 0 ] ) {
-								this._setSuperordinateAndFilter(keys[ 0 ]);
-								found = true;
-								return false;
-							}
-						} ) } );
-						if ( !found ) {
-							return 'edit';
-						}
 					} else {
 						return 'edit';
 					}
@@ -790,8 +783,6 @@ define([
 						this.filter(this._searchForm.get('value'));
 					}));
 				}
-				// create report button
-				this._grid.on('filterDone', lang.hitch(this, '_checkReportButton'));
 			}
 
 			this._searchPage.startup();
@@ -870,41 +861,19 @@ define([
 			}
 		},
 
-		_createReport: function () {
+		_createReport: function (ids) {
 			// open the dialog
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'grid', 'report');
-			var objects = array.map( this._grid.getAllItems(), function( item ) {
-				return item.$dn$;
-			} );
 			var _dialog = new CreateReportDialog( {
 				umcpCommand: lang.hitch( this, 'umcpCommand' ),
 				moduleFlavor: this.moduleFlavor,
-				objects: objects,
+				objects: ids,
 				reports: this._reports,
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular
 			} );
 			this.own(_dialog);
 			_dialog.show();
-		},
-
-		_checkReportButton: function() {
-			var items = this._grid.getAllItems();
-
-			if ( items.length && this._reports.length) {
-				if ( null === this._reportButton ) {
-					this._reportButton = this.own( new Button( {
-						label: _( 'Create report' ),
-						iconClass: 'umcIconReport',
-						callback: lang.hitch( this, '_createReport' )
-					} ) )[0];
-					this._grid._toolbar.addChild( this._reportButton );
-				}
-			} else if ( null !== this._reportButton ) {
-				this._grid._toolbar.removeChild( this._reportButton );
-				this._reportButton.destroyRecursive();
-				this._reportButton = null;
-			}
 		},
 
 		moveObjects: function(ids) {
