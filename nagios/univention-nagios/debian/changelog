@@ -1,3 +1,9 @@
+univention-nagios (7.0.1-3) unstable; urgency=low
+
+  * ucs overview page (Bug #32611) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 14:44:54 +0200
+
 univention-nagios (7.0.1-2) unstable; urgency=low
 
   * remove old overview templates (Bug #32611) 
