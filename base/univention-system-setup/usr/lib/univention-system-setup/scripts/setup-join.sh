@@ -223,8 +223,9 @@ rm -f /var/lib/univention-ldap/root.secret
 
 # Rewrite apache2 default sites, workaround for
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=27597
-ucr commit /var/www/ucs-overview/de.html \
-	/var/www/ucs-overview/en.html
+ucr commit \
+	/var/www/ucs-overview/entries.json \
+	/var/www/ucs-overview/languages.json
 
 # Reset the apache2 startsite
 startsite="$(ucr get apache2/startsite)"

@@ -1,3 +1,9 @@
+univention-system-setup (7.0.44-1) unstable; urgency=low
+
+  * removed ucs-overview/de.html stuff (Bug #32611)
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 13:43:58 +0200
+
 univention-system-setup (7.0.43-1) unstable; urgency=low
 
   * Bug #30816: fix typo, style pep8 conform
