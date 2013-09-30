@@ -121,8 +121,7 @@ define([
 		// define grid columns
 		_default_columns: null,
 
-		// button to navigate back to the list of superordinates
-		_upButton: null,
+		// button to navigate back to the parent container
 		_navUpButton: null,
 
 		// button to generate reports
@@ -418,16 +417,6 @@ define([
 						return _('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
 					}
 				}),
-				headerFormatter: lang.hitch(this, function(nItems) {
-					if (nItems === undefined) {
-						var msg = _('No %s selected.', this.objectNamePlural);
-						if (['navigation', 'dhcp/dhcp', 'dns/dns'].indexOf(this.moduleFlavor) === -1) {
-							 msg += ' ' + _('Please select some to enable actions!');
-						}
-						return msg;
-					}
-					return nItems === 1 ? _('1 %s: ', this.objectNameSingular) : _('%(nSelected)d %(objPlural)s: ', {nSelected: nItems, objPlural: this.objectNamePlural});
-				}),
 				defaultAction: lang.hitch( this, function( keys, items ) {
 					if ( 'navigation' == this.moduleFlavor && ( this._searchForm._widgets.objectType.get( 'value' ) == '$containers$' || items[ 0 ].$childs$ === true ) ) {
 						this._tree.set( 'path', this._ldapDN2TreePath( keys[ 0 ] ) );
@@ -606,14 +595,13 @@ define([
 			// generate the navigation pane for the navigation module
 			if ('navigation' == this.moduleFlavor || (superordinates && superordinates.length)) {
 				if ('navigation' == this.moduleFlavor) {
-					this._navUpButton = this.own( new Button( {
+					this._navUpButton = this.own(new Button({
 						label: _( 'Parent container' ),
 						iconClass: 'umcIconUp',
 						callback: lang.hitch(this, function() {
 							var path = this._tree.get( 'path' );
 							var ldapDN = path[ path.length - 2 ].id;
 							this._tree.set( 'path', this._ldapDN2TreePath( ldapDN ) );
-							this._searchForm.getWidget('superordinate').set('value', 'None');
 							// we can relaunch the search after all search form values
 							// have been updated
 							on.once(this._searchForm.getWidget('objectPropertyValue'), 'valuesLoaded', lang.hitch(this, function() {
@@ -729,6 +717,13 @@ define([
 					this.resetPathAndReloadTreeAndFilter([dn]);
 				}));
 
+				// keep superordinate widget in sync with the tree for DHCP / DNS
+				this.own(aspect.after(this._tree, 'reload', lang.hitch(this, function() {
+					if (this.moduleFlavor !== 'navigation') {
+						this._reloadSuperordinates();
+					}
+				})));
+
 				titlePane.addChild(treePane);
 			}
 
@@ -774,8 +769,6 @@ define([
 				})));
 			}
 
-			// add an additional 'up' button when the user selected a superordinate
-			// for the search scope
 			var superordinateWidget = this._searchForm.getWidget('superordinate');
 			if (superordinateWidget) {
 				this.own(superordinateWidget.watch('value', lang.hitch(this, function(attr, oldval, val) {
@@ -787,33 +780,6 @@ define([
 					val = (val === 'None') ? ['None'] : ['None', val];
 					this._tree.set('path', val);
 				})));
-				this._grid.on('filterDone', lang.hitch(this, function() {
-					var val = superordinateWidget.get('value');
-					if ('None' == val && this._upButton) {
-						// top view, no superordinate selected -> remove the button
-						this._grid._toolbar.removeChild(this._upButton);
-						this._upButton.destroyRecursive();
-						this._upButton = null;
-					}
-					if (typeof val == "string" && 'None' != val && '' !== val && !this._upButton) {
-						var label = _('Show all superordinates');
-						if ('dhcp/dhcp' == this.moduleFlavor) {
-							label = _('Show all DHCP services');
-						} else if ('dns/dns' == this.moduleFlavor) {
-							label = _('Show all DNS zones');
-						}
-
-						// a superordinate has been selected and we do not have a 'up' button so far -> add the button
-						this._upButton = new Button({
-							label: label,
-							iconClass: 'umcIconUp',
-							callback: lang.hitch(this, function() {
-								this._setSuperordinateAndFilter('None');
-							})
-						});
-						this._grid._toolbar.addChild(this._upButton, 0);
-					}
-				}));
 			}
 
 			// check whether we have autosearch activated
@@ -830,6 +796,12 @@ define([
 
 			this._searchPage.startup();
 			this.addChild(this._searchPage);
+		},
+
+		_reloadSuperordinates: function() {
+			if (this._searchForm._widgets.superordinate) {
+				this._searchForm._widgets.superordinate.reloadDynamicValues();
+			}
 		},
 
 		_updateMenuAvailability: function() {

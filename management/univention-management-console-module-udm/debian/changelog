@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.26-1) unstable; urgency=low
+
+  * Bug #32381: remove "Show all Superordinates" button
+  * Bug #32381: fix error when superordinate was added via CLI
+
+ -- Florian Best <best@univention.de>  Mon, 30 Sep 2013 11:16:59 +0200
+
 univention-management-console-module-udm (4.0.25-1) unstable; urgency=low
 
   * Bug #32381: adapt descriptions
