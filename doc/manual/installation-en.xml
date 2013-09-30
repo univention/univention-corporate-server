@@ -422,12 +422,12 @@
 <para>
   At the first opening of this menu, the installer offers automatic
   partitioning of the system. On confirmation, the installer displays a
-  partitioning proposal in which all the existing hard drives are newly
-  partitioned and formatted using the Logical Volume Manager (LVM).
+  partitioning proposal in which the first hard drive is repartitioned
+  and formatted using the Logical Volume Manager (LVM).
 </para>
 <caution>
 	<para>
-  All the data stored on these hard drives will be lost during this process!
+<!-- Auch wenn nur die erste Festplatte in das LVM eingebunden wird, gehen bei bei diesem Schritt die Daten aller vorhandenen Festplatten verloren! -->
   Should the proposed partitioning be undesirable, it can be rejected by
   pressing the <keycap>F5</keycap> function key. The disk space of external storage media, such
   as USB sticks and USB hard drives, is also included in the automatic

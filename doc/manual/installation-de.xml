@@ -414,13 +414,12 @@
   Nach dem ersten Wechsel auf diese Einstellungsmaske bietet der Installer die
   automatische Partitionierung des Systems an. Nach der Zustimmung zur
   automatischen Partitionierung zeigt der Installer einen
-  Partitionierungsvorschlag an, bei dem alle vorhandenen Festplatten unter
-  Verwendung des Logical Volume Managers (LVM) neu partitioniert und formatiert
-  werden.
+  Partitionierungsvorschlag an, der die erste Festplatte im System unter
+  Verwendung des Logical Volume Managers (LVM) neu partitioniert und formatiert wird.
 </para>
 <caution>
 	<para>
-  Alle Daten auf diesen Festplatten gehen dabei verloren!
+	  Auch wenn nur die erste Festplatte in das LVM eingebunden wird, gehen bei bei diesem Schritt die Daten aller vorhandenen Festplatten verloren!
   Sollte der Partitionierungsvorschlag unpassend sein, kann er durch die
   Funktionstaste <keycap>F5</keycap> verworfen werden. Es wird auch der Speicherplatz von externen
   Speichermedien wie z.B. USB-Sticks und USB-Festplatten in die automatische
