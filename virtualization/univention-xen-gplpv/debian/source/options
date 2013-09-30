@@ -1,0 +1,10 @@
+tar-ignore = .pc
+tar-ignore = win-pvdrivers/.hg*
+tar-ignore = win-pvdrivers/univention.der
+tar-ignore = win-pvdrivers/univention.p12
+tar-ignore = win-pvdrivers/crosscert.pem
+tar-ignore = win-pvdrivers/sign_config.bat
+tar-ignore = certs/*.pem
+tar-ignore = certs/*.der
+tar-ignore = certs/*.p12
+tar-ignore = certs/*.zip

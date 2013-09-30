@@ -46,9 +46,8 @@ win-pvdrivers:
 	quilt pop -a || test $$? = 2
 	$(RM) -r "$@"
 	hg clone -r "${GPLPV_VERSION}" http://xenbits.xensource.com/ext/win-pvdrivers "$@"
-	$(RM) -r "$@"/.hg*
-	mv "$@"/ShutdownMon/* "$@"/shutdownmon/
-	rmdir "$@"/ShutdownMon
+	cd "$@" && hg rename ShutdownMon/Properties/AssemblyInfo.cs shutdownmon/Properties/AssemblyInfo.cs
+	cd "$@" && hg commit -m 'Fix file name case' -u packages@univention.de
 	quilt push -a
 win-pvdrivers/build_number.bat:
 	@echo "Setting build numer ${BUILD_NUMBER}..."
