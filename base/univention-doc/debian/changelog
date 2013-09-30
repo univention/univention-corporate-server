@@ -1,3 +1,9 @@
+univention-doc (1.0.0-6) unstable; urgency=low
+
+  * ucs overview page (Bug #32611) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 14:50:08 +0200
+
 univention-doc (1.0.0-5) unstable; urgency=low
 
   * added 50x50 icon (Bug #32611) 
