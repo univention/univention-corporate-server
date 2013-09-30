@@ -1310,7 +1310,7 @@ define([
 		_checkUpdateAvailable: function() {
 			if (this.getModule('updater') && tools.isTrue(_ucr['update/available'])) {
 				var link = this.linkToModule('updater');
-				this._overviewPage.addNote(_( 'An update for UCS is available. Please visit %s to install the updates.', link));
+				this._overviewPage.addNote(_( 'An update for UCS is available. Please visit the %s to install the updates.', link));
 			}
 		},
 
@@ -1358,9 +1358,9 @@ define([
 						});
 						var joinModuleLink = this.linkToModule('join');
 						if (!systemJoined) {
-							this._overviewPage.addNote(_('The system has not been joined into a domain so far. Please visit %s to join the system.', joinModuleLink));
+							this._overviewPage.addNote(_('The system has not been joined into a domain so far. Please visit the %s to join the system.', joinModuleLink));
 						} else if (!allScriptsConfigured) {
-							this._overviewPage.addNote(_('Not all installed components have been registered. Please visit %s to register the remaining components.', joinModuleLink));
+							this._overviewPage.addNote(_('Not all installed components have been registered. Please visit the %s to register the remaining components.', joinModuleLink));
 						}
 					}), function() {
 						console.log('WARNING: An error occurred while verifying the join state. Ignoring error.');
@@ -1677,10 +1677,10 @@ define([
 			}]);
 		},
 
-		linkToModule: function(/*String*/ moduleId, /*String?*/ moduleFlavor, /*String?*/ linkName, fallback) {
+		linkToModule: function(/*String*/ moduleId, /*String?*/ moduleFlavor, /*String?*/ linkName) {
 			var module = this.getModule(moduleId, moduleFlavor);
 			if (!module) {
-				return fallback !== undefined ? fallback : null;
+				return null;
 			}
 
 			var link = '<a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(${moduleLink})">${linkName}</a>';

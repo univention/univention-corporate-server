@@ -173,7 +173,6 @@ define([
 		_footer: null,
 
 		_footerLegend: null,
-		_headerText: null,
 
 		// internal list of all disabled items... when data has been loaded, we need to
 		// disable these items again
@@ -323,8 +322,21 @@ define([
 			tools.assert(actions instanceof Array, 'The property actions needs to be defined for umc/widgets/Grid as an array.');
 			this.actions = actions;
 
+			// clear old actions
+			array.forEach([this._header, this._contextMenu], function(iobj) {
+				array.forEach(iobj.getChildren(), function(ichild) {
+					iobj.removeChild(ichild);
+					ichild.destroyRecursive();
+				}, this);
+			}, this);
+			delete this._contextMenu.focusedChild;
+
 			this._setNonContextActions();
 			this._setContextActions();
+
+//			if (this.actions.length) {
+			this._header.addChild(this._toolbar);
+			this._header.addChild(this._contextActionsToolbar);
 
 			// redraw the columns
 			if (doSetColumns !== false) {
@@ -332,34 +344,15 @@ define([
 			}
 		},
 
+		_getContextActions: function() {
+			return array.filter(this.actions, function(iaction) { return (false !== iaction.isContextAction); });
+		},
+
 		_setContextActions: function() {
-			// remove all children from context action toolbar
-			array.forEach(this._contextActionsToolbar.getChildren(), function(ichild) {
-				this._contextActionsToolbar.removeChild(ichild);
-				ichild.destroyRecursive();
-			}, this);
-
-			// remove all children from context menu
-			array.forEach(this._contextMenu.getChildren(), function(ichild) {
-				this._contextMenu.removeChild(ichild);
-				ichild.destroyRecursive();
-			}, this);
-			delete this._contextMenu.focusedChild;
-			
-			// add information about how many objects are selected
-			this._contextActionsToolbar.addChild(this._headerText = new Text({
-				content: '',
-				style: 'display: inline-block; font-weight: bold;'
-			}));
-			this._contextMenu.addChild(this._contextMenuHeader = new MenuItem({label: ''}));
-			this.own(this._headerText.watch('content', lang.hitch(this, function(name, old, content) {
-				this._contextMenuHeader.set('label', content);
-			})));
-
+			this._contextActionsToolbar = new ContainerWidget({});
 			this._nonStandardActionsMenu = new Menu({});
 
-			var contextActions = array.filter(this.actions, function(iaction) { return (false !== iaction.isContextAction); });
-			array.forEach(contextActions, function(iaction) {
+			array.forEach(this._getContextActions(), function(iaction) {
 				// get icon and label (these properties may be functions)
 				var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
 				var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
@@ -415,14 +408,23 @@ define([
 
 		},
 
+		_getNonContextActions: function() {
+			return array.filter(this.actions, function(iaction) { return (false === iaction.isContextAction); });
+		},
+
 		_setNonContextActions: function() {
 			//
 			// toolbar for non-context actions
 			//
 
-			var nonContextActions = array.filter(this.actions, function(iaction) { return (false === iaction.isContextAction); });
+			// add the right toolbar which contains all non-context actions
+			this._toolbar = new ContainerWidget({
+				region: 'top',
+				style: 'float: left',
+				'class': 'umcGridToolBar'
+			});
 
-			var buttonsCfg = array.map(nonContextActions, function(iaction) {
+			var buttonsCfg = array.map(this._getNonContextActions(), function(iaction) {
 				var jaction = iaction;
 				if (iaction.callback) {
 					jaction = lang.mixin({}, iaction); // shallow copy
@@ -438,12 +440,6 @@ define([
 
 			// render buttons
 			var buttons = render.buttons(buttonsCfg);
-
-			// clear old buttons
-			array.forEach(this._toolbar.getChildren(), function(ibutton) {
-				this._toolbar.removeChild(ibutton);
-				ibutton.destroyRecursive();
-			}, this);
 
 			// add buttons to toolbar
 			array.forEach(buttons.$order$, function(ibutton) {
@@ -465,6 +461,14 @@ define([
 			// create right-click context menu
 			this._contextMenu = new Menu({});
 			this.own(this._contextMenu);
+
+			// add a header for the grid
+			this._header = new ContainerWidget({
+				region: 'top',
+				'class': 'umcGridToolBar',
+				style: 'padding-bottom: 5px; padding-left: 5px;'
+			});
+			this.addChild(this._header);
 
 			// create the grid
 			this._grid = new _Grid({
@@ -491,34 +495,6 @@ define([
 					return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
 				})*/
 			});
-			this._grid.on('rowClick', lang.hitch(this, '_onRowClick'));
-
-			// add a toolbar above the grid
-			var container = new ContainerWidget({
-				region: 'top',
-				'class': 'umcGridToolBar',
-				style: 'padding-bottom: 5px'
-			});
-			this.addChild(container);
-
-			// add the left container which contains context actions
-			this._headerContainer = new StackContainer({
-				region: 'top',
-				style: 'float: left; padding-left: 5px;'
-			});
-			container.addChild(this._headerContainer);
-
-			this._contextActionsToolbar = new ContainerWidget({});
-			this._headerContainer.addChild(this._contextActionsToolbar);
-			this._headerContainer.selectChild(this._contextActionsToolbar);
-
-			// add the right toolbar which contains all non-context actions
-			this._toolbar = new ContainerWidget({
-				region: 'top',
-				style: 'float: right',
-				'class': 'umcGridToolBar'
-			});
-			container.addChild(this._toolbar);
 
 			// add a footer for the grid
 			this._footer = new ContainerWidget({
@@ -532,6 +508,7 @@ define([
 			if (typeof this.sortIndex == "number") {
 				this._grid.setSortIndex(Math.abs(this.sortIndex), this.sortIndex > 0);
 			}
+
 			this.addChild(this._grid);
 			this.addChild(this._footer);
 
@@ -553,8 +530,12 @@ define([
 			this._grid.on('selectionChanged', lang.hitch(this, '_selectionChanged'));
 			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
 
+			this._grid.on('rowClick', lang.hitch(this, '_onRowClick'));
+
 			// make sure that we update the disabled items after sorting etc.
 			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, '_updateDisabledItems')));
+
+//			this.own(aspect.before(this._contextMenu, '_openMyself', lang.hitch(this, '__behaviorOldGrid')));
 		},
 
 		_onFetched: function(success) {
@@ -575,54 +556,8 @@ define([
 			this._updateContextActions();
 
 			this._updateFooterContent();
-			this._updateHeaderContent();
 
 			this.__behaviorOldGrid();
-		},
-
-		_updateHeaderContent: function() {
-			var nItems = this._grid.selection.getSelectedCount();
-
-			var showNum = (nItems !== 0 || this.multiActionsAlwaysActive === true);
-
-			var msg;
-			if (typeof this.headerFormatter == "function") {
-				msg = this.headerFormatter(showNum ? nItems : undefined);
-			}
-
-			if (showNum) {
-				msg = msg || ((nItems === 1) ? _('1 entry: ') : _('%s entries: ', nItems));
-				this._headerText.set('content', msg);
-				this._headerContainer.selectChild(this._contextActionsToolbar);
-			} else {
-				if (!this._headText) {
-					msg = msg || _('No entries selected. Please select some to enable actions!');
-					this._headText = new Text({content: msg});
-					this._headerContainer.addChild(this._headText);
-				}
-				this._headerContainer.selectChild(this._headText);
-			}
-
-			array.forEach(this._contextActionsToolbar.getChildren(), function(item) {
-				var visible = this.multiActionsAlwaysActive === true;
-				if (item !== this._headerText) {
-					item.set('visible', visible || (nItems !== 0));
-				}
-			}, this);
-
-			this._checkNoActions();
-		},
-
-		_checkNoActions: function() {
-			if (!this.actions.length) {
-				if (!this._emptyContainer) {
-					this.own(this._emptyContainer = new ContainerWidget({}));
-					this._headerContainer.addChild(this._emptyContainer);
-				}
-				this._headerContainer.selectChild(this._emptyContainer);
-				return true;
-			}
-			return false;
 		},
 
 		_updateContextActions: function() {
