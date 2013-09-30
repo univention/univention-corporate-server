@@ -40,7 +40,7 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-if ucs_isServiceUnused 'Software Monitor'
+if ucs_isServiceUnused 'Software Monitor' "$@"
 then
 	umc_base="cn=UMC,cn=univention,$ldap_base"
 	op_dn="cn=pkgdb-all,cn=operations,$umc_base"

@@ -1,3 +1,9 @@
+univention-pkgdb (7.0.11-1) unstable; urgency=low
+
+  * Added credentials to ucs_isServiceUnused in unjoin script (Bug #32578)
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 17:26:21 +0200
+
 univention-pkgdb (7.0.10-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
