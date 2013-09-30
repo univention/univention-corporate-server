@@ -1,3 +1,9 @@
+univention-demo-configuration (2.0.0-1) unstable; urgency=low
+
+  * new ucs overview (Bug #32611)
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 14:32:08 +0200
+
 univention-demo-configuration (1.0.6-1) unstable; urgency=low
 
   * Update module .xml-files in order to allow two new UMCP commands
