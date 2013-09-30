@@ -81,7 +81,7 @@ get_credentials () {
 	esac
 }
 
-if ucs_isServiceUnused "$SERVICE"
+if ucs_isServiceUnused "$SERVICE" "$@"
 then
 	eval "$(univention-config-registry shell)"
 

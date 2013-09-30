@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (3.0.7-1) unstable; urgency=low
+
+  * Added credentials to ucs_isServiceUnused in unjoin script (Bug #32578) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 17:24:45 +0200
+
 univention-virtual-machine-manager-daemon (3.0.6-12) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30949)

@@ -40,7 +40,7 @@ die () { local ret=$?;echo "$*" >&2;exit $ret; }
 eval "$(univention-config-registry shell)"
 
 SERVICE="Virtual Machine Manager"
-if ucs_isServiceUnused "$SERVICE"
+if ucs_isServiceUnused "$SERVICE" "$@"
 then
 	umc_base="cn=UMC,cn=univention,$ldap_base"
 	op_dn="cn=uvmm-all,cn=operations,$umc_base"
