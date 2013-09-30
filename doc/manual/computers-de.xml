@@ -1712,7 +1712,7 @@ auth/sshd/restrict: yes
 30 * * * * root /usr/sbin/jitter 600 /usr/share/univention-samba/slave-sync
 */5 * * * * www-data /usr/bin/php -q /usr/share/horde/reminders.php
                     </programlisting>
-            </section><!-- Definition eigener Cron-Jobs in /etc/cron.d -->
+            </section>
 
             <section id="computers:Definition_eigener_Cron-Jobs_in_Univention_Configuration_Registry"><title>Definition eigener Cron-Jobs in Univention Configuration Registry</title>
                 <para>
@@ -1756,8 +1756,8 @@ auth/sshd/restrict: yes
 							</simpara>
 						</listitem>
                     </itemizedlist>
-            </section><!-- Definition eigener Cron-Jobs in Univention Configuration Registry -->
-        </section><!-- Ausführen von wiederkehrenden Aktionen mit Cron -->
+            </section>
+        </section>
 
         <section id="computers:nscd"><title>Name Server Cache Daemon</title>
             <para>
@@ -2673,14 +2673,14 @@ apt-cache search fax
                         </thead>
                         <tbody>
                             <row>
-                                <entry>Systemstart</entry>
+                                <entry>Paketpflege durchführen nach Hochfahren des Systems</entry>
                                 <entry>
                                     Falls diese Option aktiviert ist, werden die Aktualisierungsschritte
                                     während des Startvorgangs des Rechners durchgeführt.
                                 </entry>
                             </row>
                             <row>
-                                <entry>System herunterfahren</entry>
+                                <entry>Paketpflege durchführen vor Herunterfahren des Systems</entry>
                                 <entry>
                                     Falls diese Option aktiviert ist, werden die Aktualisierungsschritte
                                     beim Herunterfahren des Rechners durchgeführt.

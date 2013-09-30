@@ -2729,14 +2729,14 @@ apt-cache search fax
 				</thead>
 				<tbody>
 					<row>
-						<entry>System startup</entry>
+						<entry>Perform maintenance after system startup</entry>
 						<entry>
 							If this option is activated, the update steps are performed when the computer
 							is started up.
 						</entry>
 					</row>
 					<row>
-						<entry>System shutdown</entry>
+						<entry>Perform maintenance before system shutdown</entry>
 						<entry>
 							If this option is activated, the update steps are performed when the computer
 							is shut down.
