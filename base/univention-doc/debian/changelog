@@ -1,3 +1,9 @@
+univention-doc (1.0.0-3) unstable; urgency=low
+
+  * added 50x50 icon (Bug #32611) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 30 Sep 2013 14:08:12 +0200
+
 univention-doc (1.0.0-2) unstable; urgency=low
 
   * updated copyright (Bug #32611) 
