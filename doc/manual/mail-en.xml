@@ -143,7 +143,7 @@
 	  </para>
 	  <para>
 		Mail domains are managed in the <emphasis>Mail</emphasis> module of the &ucsUMC;
-		with the <guimenu>mail domain</guimenu> object type.
+		with the <guimenu>Mail domain</guimenu> object type.
 	  </para>
 	  <para>
 		General information on the operation of the domain management modules
@@ -330,7 +330,7 @@
 	  </para>
 	  <para>
 		Shared IMAP folders are managed in the <emphasis>Mail</emphasis> module of
-		the &ucsUMC; with the <guimenu>IMAP Folder</guimenu> object type.
+		the &ucsUMC; with the <guimenu>Mail folder (IMAP)</guimenu> object type.
 	  </para>
 	  <para>
 		General information on the operation of the domain management modules

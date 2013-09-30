@@ -149,7 +149,7 @@
 
 	  <para>
 		Mail-Domänen werden im Modul <emphasis>Mail</emphasis> der &ucsUMC;
-		mit dem Objekttyp <guimenu>Mail: Mail-Domäne</guimenu> verwaltet.
+		mit dem Objekttyp <guimenu>Mail-Domäne</guimenu> verwaltet.
 	  </para>
 
 	  <para>
@@ -256,7 +256,7 @@
 
 	  <para>
 		Mail-Domänen werden im Modul <emphasis>Mail</emphasis> der &ucsUMC;
-		mit dem Objekttyp <guimenu>Mail:Mailingliste</guimenu> verwaltet.
+		mit dem Objekttyp <guimenu>Mailingliste</guimenu> verwaltet.
 	  </para>
 
 	  <para>
@@ -368,7 +368,7 @@
 
 	  <para>
 		Globale IMAP-Ordner werden im Modul <emphasis>Mail</emphasis> der &ucsUMC;
-		mit dem Objekttyp <guimenu>Mail: IMAP Ordner</guimenu> verwaltet.
+		mit dem Objekttyp <guimenu>Mail-Ordner (IMAP)</guimenu> verwaltet.
 	  </para>
 
 	  <para>
