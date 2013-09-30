@@ -645,12 +645,10 @@
   </para>
 
   <para>
-	Während der Installation einiger Pakete müssen aufgrund rechtlicher Einschränkungen Dateien von
-	externen Web-Servern heruntergeladen werden, z.B. das Adobe Flashplugin. Wenn das UCS-System
-	keinen unmittelbaren Zugang zum Internet besitzt, kann unter <guimenu>HTTP-Proxy</guimenu> die
-	URL eines erreichbaren Proxy-Servers angegeben werden, über den die Download-Vorgänge
-	abgewickelt werden. Das Format der URL lautet
-	<uri>http://&lt;IP-Adresse-Proxy-Server&gt;:&lt;Port&gt;</uri>.
+	Wenn das UCS-System keinen unmittelbaren Zugang zum Internet besitzt, kann unter <guimenu>HTTP-Proxy</guimenu> die
+	URL eines Proxy-Servers angegeben werden. Über diesen Proxy erfolgen die Downloads
+	von weiteren Updates vom Univention-Repository-Server (siehe <xref linkend="installation:overview"/>).
+	Das Format der URL lautet <uri>http://&lt;IP-Adresse-Proxy-Server&gt;:&lt;Port&gt;</uri>.
   </para>
 
   <para>
@@ -798,7 +796,7 @@
 	</para>
 </section>
 
-<section id="installation:Installationsueberblick">
+<section id="installation:overview">
 <title>Installationsüberblick</title>
 	<para>
 		In diesem Dialog werden die wichtigsten vorgenommenen Einstellungen angezeigt.
@@ -834,15 +832,6 @@
 		zuerst die UCS-Kernkomponenten und danach gegebenenfalls die zusätzlichen
 		Komponenten und Pakete.
 	</para>
-	<note>
-		<para>
-		Wenn bestimmte Komponenten installiert werden, wird außerdem versucht, Dateien
-		aus dem Internet herunterzuladen, z.B. das Flashplugin. Wenn das Herunterladen fehlschlägt, können die Dateien später
-		nachinstalliert werden. Die Installation wird dadurch nicht beeinträchtigt,
-		allerdings können wiederholte Versuche, die Dateien während der Installation
-		herunterzuladen, einige Zeit in Anspruch nehmen.
-		</para>
-	</note>
 	<para>
 		Vorausgesetzt die Option <guimenu>Starte den Join Vorgang am Ende der
 		Installation</guimenu> wurde nicht deaktiviert, versuchen alle Rechner außer Basissysteme und

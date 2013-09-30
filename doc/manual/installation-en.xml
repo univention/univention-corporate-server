@@ -640,12 +640,10 @@
 			timeouts during the installation.
 		</para>
 		<para>
-			During the installation of some of the packages, files such as the
-			Adobe Flash plugin, have to be downloaded from external web servers due to legal restrictions. Should
-			the UCS system have no direct access to the internet, the URL of an accessible
-			proxy server can be entered in the <guimenu>HTTP Proxy</guimenu> field, which can be used for
-			handling the download procedures. The format of the URL is
-			<uri>http://&lt;IP address of the proxy server&gt;:&lt;Port&gt;</uri>.
+		  Should the UCS system have no direct access to the internet, the URL of a proxy server can
+		  be entered in the <guimenu>HTTP Proxy</guimenu> field.
+		  <!-- Über diesen Proxy erfolgen die Downloads von weiteren Updates vom Univention-Repository-Server (siehe <xref linkend="installation:overview"/>). -->
+		  The format of the URL is <uri>http://&lt;IP address of the proxy server&gt;:&lt;Port&gt;</uri>.
 		</para>
 		<para>
 			Since, depending on the installed components, the resolution of host names
@@ -797,7 +795,7 @@
 	</para>
 </section>
 
-<section id="installation:Installation_overview">
+<section id="installation:overview">
 <title>Installation overview</title>
 	<para>
 		This dialogue shows the major settings that were made. If all the settings are
@@ -830,15 +828,6 @@
 		The system will mount the partitions to the directory tree, and install first the basic system and
 		afterwards, if necessary, additional components and packages.
 	</para>
-	<note>
-		<para>
-		During the installation of certain components, attempts will be made to
-		download files from the internet, e.g. the Flash plugin. Should the download
-		fail, these files can be installed at a later date. The overall installation
-		is not impaired by this fact.However, repeated attempts to download files
-		during installation can increase the overall installation time.
-		</para>
-	</note>
 	<para>
 		With the prerequisite that the <guimenu>Start join at the end of installation</guimenu>
 		option has not been deactivated, all computers apart from
