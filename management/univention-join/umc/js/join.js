@@ -272,7 +272,7 @@ define([
 				}
 				else if (!joined) {
 					if (this._serverRole == 'domaincontroller_master') {
-						dialog.alert(_('A DC master should be joined by the %s.', app.linkToModule('setup', undefined, undefined, _('Basic settings module'))));
+						dialog.alert(_('A DC master should be joined by the %s.', app.linkToModule('setup') || _('Basic settings module')));
 						return;
 					}
 					this._switchView('join_form');
