@@ -272,6 +272,24 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		  app in the Univention App Center.
 		</para>
 	  </section>
+
+	  <!-- <section> -->
+	  <!-- 	<title>Aktualisierung der unterstützen Protokolle für Samba-Dateidienste</title> -->
+	  <!-- 	<para> -->
+	  <!-- 	  In Versionen vor UCS 3.2 verwendete Samba zur Bereitstellung von Dateidiensten das -->
+	  <!-- 	  CIFS-Protokoll. Bei Neuinstallationen ab UCS 3.2 wird standardmäßig der Nachfolger SMB2 -->
+	  <!-- 	  aktiviert. Verwendet man einen Client, der SMB2 unterstützt (ab Windows Vista, also auch -->
+	  <!-- 	  Windows 7/8), verbessert sich die Performance und die Skalierbarkeit. -->
+	  <!-- 	</para> -->
+
+	  <!-- 	<para> -->
+	  <!-- 	  Bei Updates von früheren UCS-Releases verwendet Samba weiterhin CIFS. Um die Verwendung -->
+	  <!-- 	  von SMB2 nachträglich zu aktivieren muss auf allen Samba-Servern die &ucsUCR;-Variable -->
+	  <!-- 	  <envar>samba/max/protocol</envar> auf <emphasis>SMB2</emphasis> gesetzt werden und der/die -->
+	  <!-- 	  Samba-Server neu gestartet werden. -->
+	  <!-- 	</para> -->
+	  <!-- </section> -->
+
 	</chapter>
 
     <chapter>
