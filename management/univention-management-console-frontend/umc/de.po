@@ -730,8 +730,8 @@ msgstr "Benutzer: %(username)s"
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
 
-msgid "${moduleName} module"
-msgstr "${moduleName}-Modul"
+msgid "module \"${moduleName}\""
+msgstr "Modul \"${moduleName}\""
 
 #~ msgid ""
 #~ "<p>The \"free for personal use\" edition of Univention Corporate Server "
