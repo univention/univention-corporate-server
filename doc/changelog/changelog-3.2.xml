@@ -2668,6 +2668,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		(<ulink url="&ucsbug;32780">Bug 32780</ulink>).
 	  </simpara></listitem>
 
+	  <listitem><simpara>
+	    The test case 10_ldap/44replication_binary has been modified in order to fulfill the requirements of the new UDM syntax for JPEG photos
+		(<ulink url="&ucsbug;32664">Bug 32664</ulink>).:wq
+	  </simpara></listitem>
+
 	</itemizedlist>
 </section>
 
