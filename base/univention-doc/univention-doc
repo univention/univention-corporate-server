@@ -49,8 +49,6 @@ import shutil
 import subprocess
 import sys
 
-import univention.config_registry as ucr
-
 DOC_SOURCE_DIR = '/usr/share/univention-doc/src'
 DOC_OUTPUT_DIR = '/var/www/univention-doc'
 SPHINX_BUILD = '/usr/bin/sphinx-build'
@@ -111,6 +109,3 @@ if __name__ == '__main__':
 			else:
 				if not options.quiet:
 					print 'The documentation %s has been build successfully' % doc
-
-
-	ucr.handler_commit( [ '/var/www/univention-doc/index.html' ] )
