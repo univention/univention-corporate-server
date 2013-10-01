@@ -701,6 +701,10 @@
 		<listitem><simpara>
 		  Umlauts in certificates are now imported and shown correctly (<ulink url="&ucsbug;30722">Bug 30722</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  Some CSS adaptions have been made (<ulink url="&ucsbug;32318">Bug 32318</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
