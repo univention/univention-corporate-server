@@ -1,3 +1,10 @@
+ucs-test (4.0.129-2) unstable; urgency=low
+
+  * 10_ldap/67univention-admingrp-user-passwordreset-protected-domain-
+    admin: wait a little bit longer for the slapd restart (Bug #29710)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Oct 2013 15:01:53 +0200
+
 ucs-test (4.0.129-1) unstable; urgency=low
 
   * lib/computer.sh: use windows as default computer role instead of
