@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.38-1) unstable; urgency=low
+
+  * Bug #32609: Automatically set UCR variables for ucs-overview
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Oct 2013 13:57:30 +0200
+
 univention-management-console-module-appcenter (3.0.37-1) unstable; urgency=low
 
   * Bug #32282: Add default ShopURL

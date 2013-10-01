@@ -66,7 +66,6 @@ from univention.config_registry import ConfigRegistry, handler_commit
 import univention.uldap as uldap
 import univention.management.console as umc
 from univention.lib.umc_connection import UMCConnection
-import univention.admin.config
 import univention.admin.uldap as admin_uldap
 import univention.admin.handlers.appcenter.app as appcenter_udm_module
 import univention.admin.handlers.container.cn as container_udm_module
@@ -278,9 +277,17 @@ class Application(object):
 		self.raw_config = config
 		url = urljoin('%s/' % self.get_metainf_url(), os.path.basename(ini_file))
 
+		self._options['ucsoverviewcategory'] = 'service'
 		def _escape_value(key, value):
 			if key in ['longdescription']:
 				return value
+			if key == 'ucsoverviewcategory':
+				if value == 'False':
+					return ''
+				elif value == 'admin':
+					return 'admin'
+				else:
+					return 'service'
 			return cgi.escape(value)
 
 		# copy values from config file
@@ -366,6 +373,17 @@ class Application(object):
 		if v is None:
 			return ''
 		return v
+
+	def get_localised(self, key, locale='en'):
+		if locale != 'en':
+			try:
+				return self.raw_config.get(locale, key)
+			except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+				pass
+		try:
+			return self.raw_config.get('Application', key)
+		except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+			return ''
 
 	def get_locale_list(self, key):
 		ret = []
@@ -972,6 +990,24 @@ class Application(object):
 				return ApplicationLDAPObject.create(self, lo, co, pos)
 			return None
 
+	def set_ucs_overview_ucr_variables(self, super_ucr, unset=False):
+		ucsoverviewcategory = self.get('ucsoverviewcategory')
+		webinterface = self.get('webinterface')
+		if ucsoverviewcategory and webinterface:
+			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (ucsoverviewcategory, self.id)
+			variables = {
+				'icon' : '/univention-management-console/js/dijit/themes/umc/icons/50x50/%s.png' % self.get('icon'),
+				'label' : self.get_localised('name'),
+				'label/de' : self.get_localised('name', 'de'),
+				'description' : self.get_localised('description'),
+				'description/de' : self.get_localised('description', 'de'),
+				'link' : webinterface,
+			}
+			for key, value in variables.iteritems():
+				if unset:
+					value = ''
+				super_ucr.set_registry_var(registry_key % key, value)
+
 	def unregister(self, component_manager, super_ucr=None, tell_ldap=False):
 		'''Removes its component from UCR.
 		Can remove localhost from LDAP and delete record if empty afterwards.
@@ -1009,11 +1045,13 @@ class Application(object):
 				#   previously_registered will be the latest if
 				#   there are multiple already registered
 				if app is not to_be_registered: # dont remove the one we want to register (may be already added)
+					app.set_ucs_overview_ucr_variables(super_ucr, unset=True)
 					if app.unregister(component_manager, super_ucr, tell_ldap=tell_ldap):
 						# this app actually was registered!
 						previously_registered = app
 						should_update = True
 				if to_be_registered:
+					to_be_registered.set_ucs_overview_ucr_variables(super_ucr)
 					if not to_be_registered.is_registered(component_manager.ucr): # does not hold for withoutrepository
 						# add the new repository component for the app
 						component_manager.put_app(to_be_registered, super_ucr)
