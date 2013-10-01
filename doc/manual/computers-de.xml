@@ -619,7 +619,7 @@
                     werden (z.B. 2222:0DFE:FE29:DE27:0000:0000:0000:0000).
                 </para>
 
-                <section id="computers:Konfiguration_von_IPv4-Adressen"><title>Konfiguration von IPv4-Adressen</title>
+                <section id="computers:ipv4"><title>Konfiguration von IPv4-Adressen</title>
                     <para>
                         Wenn die Option <guimenu>Dynamisch (DHCP)</guimenu> nicht gewählt wurde, muss die IP-Adresse
                         eingegeben werden, die an die Netzwerkkarte gebunden werden soll. Zusätzlich
@@ -656,7 +656,7 @@
                     </para>
                 </section>
 
-                <section id="computers:Konfiguration_von_IPv6-Adressen">
+                <section id="computers:ipv6">
 				  <title>Konfiguration von IPv6-Adressen</title>
 				  <para>
 					Die IPv6-Adresse kann auf zwei Arten konfiguriert werden: Bei der
@@ -738,39 +738,212 @@
                     </para>
                 </section>
 
-                <section id="computers:Konfiguration_von_Bridges_Bonding_VLANs"><title>Konfiguration von Bridges/Bonding/VLANs</title>
-				<para>
-				  UCS unterstützt komplexe Netzwerk-Konfigurationen mit Bridges, Bonding und VLAN-Netzen:
-				</para>
-				<itemizedlist>
-				  <listitem>
-					<simpara>
+                <section id="computers:networkcomplex">
+				  <title>Konfiguration von Bridges/Bonding/VLANs</title>
+				  <para>
+					UCS unterstützt komplexe Netzwerk-Konfigurationen mit Bridges, Bonding und VLAN-Netzen:
+				  </para>
+
+				  <itemizedlist>
+					<listitem><simpara>
 					  Bridges werden oft von Virtualisierungslösungen verwendet, um virtualisierte
 					  Netzwerkkarten einer virtuellen Maschine mit der physischen Netzwerkkarte des
 					  Virtualisierungsservers zu verbinden.
-					</simpara>
-				  </listitem>
-				  <listitem>
-					<simpara>
+					</simpara></listitem>
+
+					<listitem><simpara>
 					  Bonding erhöht die Ausfallsicherheit, in dem mehrere physikalische
 					  Netzwerkkarten für den Zugriff auf ein Netzwerk gebündelt werden.
-					</simpara>
-				  </listitem>
-				  <listitem>
-					<simpara>
+					</simpara></listitem>
+
+					<listitem><simpara>
 					  VLANs können verwendet werden um den Netzwerkverkehr in einem physikalischen
 					  Netzwerk logisch auf ein oder mehrere virtuelle Unternetze aufzuteilen.
-					</simpara>
-				  </listitem>
-				</itemizedlist>
+					</simpara></listitem>
+				  </itemizedlist>
 
-				<para>
-				  Bridges, Bondings und VLANs werden in der &ucsUMC; angezeigt, können aber nur
-				  durch &ucsUCR;-Variablen konfiguriert werden. Die Einrichtung wird in der erweiterten
-				  Dokumentation beschrieben <biblioref linkend="ext-doc-computers"/>.
-				</para>
+				  <section id="computers:networkcomplex:bridge">
+					<title>Bridging</title>
+					
+					<para>
+					  Der häufigste Anwendungsfall für <emphasis>Bridging</emphasis> ist die gemeinsame Nutzung einer
+					  Hardware-Netzwerkkarte durch virtuelle Maschinen. Anstatt eine Netzwerkkarte
+					  für jede virtuelle Maschine und den Virtualisierungsserver zu verwenden,
+					  werden alle System durch einen gemeinsamen Uplink angebunden. Eine Bridge kann
+					  mit einem virtuellen Router/Switch verglichen werden, der die einzelnen
+					  Verbindungen zuordnet. Die verwendete Hardware-Netzwerkkarte wird als
+					  <emphasis>Bridge Port</emphasis> bezeichnet.
+					</para>
+
+					<para>
+					  Um eine Bridge zu konfigurieren muss unter <guimenu>Netzwerkgerät
+					  hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
+					  <emphasis>Bridge</emphasis> ausgewählt werden. Der <guimenu>Name des neuen
+					  Bridge-Netzwerkgerätes</guimenu> kann beliebig gewählt werden. Anschließend
+					  muss auf <guimenu>Weiter</guimenu> geklickt werden.
+					</para>
+
+					<para>
+					  Unter <guimenu>Bridge ports</guimenu> kann die Hardware-Netzwerkkarte
+					  ausgewählt werden, die den Uplink darstellt. Im typischen Anwendungsfall der
+					  Anbindung virtueller Maschinen über eine Netzwerkkarte kann keine
+					  Routingschleife auftreten. Wird die Bridge zur Verbindung zweier
+					  Netzwerkkarten verwendet, wird das Spanning Tree Protocol (STP) zur Vermeidung
+					  von Netzwerkschleifen eingesetzt. Die Einstellung  <guimenu>Forwarding
+					  delay</guimenu> konfiguriert die Wartezeit in Sekunden, während der bei Aufbau
+					  einer Verbindung durch STP Informationen über die Netzwerktopologie gesammelt
+					  werden. Wird die Bridge zur Anbindung virtueller Maschinen über eine
+					  Hardware-Netzwerkkarte verwendet, kann STP auch deaktiviert werden, in dem der
+					  Wert auf 0 gesetzt wird. Über das Eingabefeld <guimenu>Weitere
+					  Geräteoptionen</guimenu> können beliebige weitere Bridge-Parameter
+					  konfiguriert werden. Dies ist nur in Ausnahmefällen nötig, eine Übersicht der
+					  möglichen Einstellungen findet sich in der Manpage
+					  <command>bridge-utils-interfaces</command>.
+					</para>
+					  
+					<para>
+					  Nach einem Klick auf <guimenu>Weiter</guimenu> kann der Bridge eine IP-Adresse zugewiesen werden. Diese kann
+					  dann als primäres Netzwerkinterface auf dem Virtualisierungshost verwendet
+					  werden. Die Einstellungsmöglichkeiten sind dieselben wie in  <xref
+					  linkend="computers:ipv4"/> und <xref linkend="computers:ipv6"/> beschrieben.
+					</para>
+				  </section>
+
+				  <section id="computers:networkcomplex:bonding">
+					<title>Bonding</title>
+					
+					<para>
+					  Mit <emphasis>Bonding</emphasis> können zwei (oder mehr)
+					  Hardware-Netzwerkkarten zur Erhöhung des Durchsatzes oder zur Verbesserung der
+					  Redundanz in Failoverszenarien gebündelt werden.
+					</para>
+
+					<para>
+					  Um ein Bonding zu konfigurieren muss unter <guimenu>Netzwerkgerät
+					  hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
+					  <emphasis>Bonding</emphasis> ausgewählt werden. Der <guimenu>Name des neuen
+					  Bridge-Netzwerkgerätes</guimenu> kann beliebig gewählt werden. Anschließend
+					  muss auf <guimenu>Weiter</guimenu> geklickt werden.
+					</para>
+
+					<para>
+					  Unter <guimenu>Bond slaves</guimenu> werden die Netzwerkkarten ausgewählt, die
+					  Teil des Bonding-Interfaces sind. Eine der Netzwerkschnittstellen wird als
+					  <guimenu>Bond primary</guimenu> konfiguriert. Diese Einstellung ist für einige
+					  Failover-Szenarien relevant (s.u.). 
+					</para>
+
+					<para>
+					  Der <guimenu>Modus</guimenu> konfiguriert die Verteilung der Netzwerkkarten
+					  innerhalb des Bondings:
+
+					  <itemizedlist>
+						<listitem><simpara>
+						  <emphasis>balance-rr (0)</emphasis> verteilt die Pakete der Reihe nach
+						  gleichmässig auf die verfügbaren Netzwerkschnittstellen innerhalb des
+						  Bondings. Dies erhöht den Durchsatz und verbessert die Ausfallsicherheit.
+						  Zur Verwendung dieser Variante müssen die verwendeten Netzwerk-Switches
+						  <emphasis>Link Aggregation</emphasis> unterstützen.
+						</simpara></listitem>
+
+						<listitem><simpara>
+						  Bei Verwendung von <emphasis>active-backup (1)</emphasis> ist nur jeweils
+						  eine Netzwerkkarte des Bonding-Interfaces aktiv (in der Grundeinstellung
+						  die Netzwerkschnittstelle aus <guimenu>Bond primary</guimenu>. Fällt die
+						  primäre Netzwerkkarte aus, wird dies durch den Linux-Kernel erkannt und
+						  auf eine der weiteren Karten des Bondings umgeschaltet. Diese Variante
+						  erhöht die Ausfallsicherheit. Sie kann mit jedem Netzwerk-Switch verwendet werden.
+						</simpara></listitem>
+					  </itemizedlist>
+
+					  Darüberhinaus existieren noch weitere Bonding-Methoden. Diese sind in der
+					  Regel nur für Sonderfälle relevant und sind unter <xref linkend="bonding"/>
+					  beschrieben.
+					</para>
+
+					<para>
+					  Zur Erkennung ausgefallener Karten wird das Media Management Interface (MII)
+					  der Netzwerkkarten verwendet. Die Einstellung <guimenu>MII link monitoring
+					  frequency</guimenu> legt das Prüfintervall in Millisekunden fest.
+					</para>
+
+					<para>
+					  Unter <guimenu>Weitere Bonding-Optionen</guimenu> können beliebige weitere
+					  Bridge-Parameter konfiguriert werden. Dies ist nur in Ausnahmefällen nötig,
+					  eine Übersicht der möglichen Einstellungen findet sich unter <xref
+					  linkend="bonding"/>.
+					</para>
+
+					<para>
+					  Nach einem Klick auf <guimenu>Weiter</guimenu> muss dem Bonding-Interface eine
+					  IP-Adresse zugewiesen werden. Sollte eine der bestehenden Netzwerkkarten, die
+					  Bestandteil des Bonding-Interfaces sind schon eine IP-Adresse zugewiesen
+					  haben, so wird diese entfernt. Die Einstellungsmöglichkeiten sind dieselben wie in  <xref
+					  linkend="computers:ipv4"/> und <xref linkend="computers:ipv6"/> beschrieben.
+					</para>
+				  </section>
+
+				  <section id="computers:networkcomplex:vlan">
+					<title>VLANs</title>
+					<para>
+					  VLANs können verwendet werden um den Netzwerkverkehr in einem physikalischen
+					  Netzwerk logisch auf ein oder mehrere virtuelle Unternetze aufzuteilen. Jedes
+					  dieser virtuellen Netze ist eine eigenständige Broadcast-Domäne. So kann etwa
+					  in einem Firmennetzwerk zwischen einem Netz für die Mitarbeiter und einem
+					  Gastnetz für Besucher mit Smartphones unterschieden werden. Die Zuordnung der
+					  einzelnen Endgeräte zu den VLANs erfolgt durch Konfiguration auf den
+					  verwendeten Switches. Die Netzwerk-Switches müssen 802.1q VLANs unterstützen.
+					</para>
+
+					<para>
+					  Zwei Verbindungstypen zwischen zwei Netzwerkkarten werden unterschieden:
+
+					  <itemizedlist>
+						<listitem><simpara>
+						  Es werden nur Pakete innerhalb eines VLANs transportiert. In diesem
+						  Fall erfolgt keine Zuordnung der einzelnen Pakete (dies wird auch als
+						  "untagged" bezeichnet).
+						</simpara></listitem> 
+
+						<listitem><simpara>
+						  Eine Verbindung transportiert Pakete aus mehreren VLANs. Dies wird auch
+						  als "trunk line" bezeichnet. In diesem Fall ist jedes Paket über eine
+						  VLAN-ID einem VLAN zugeordnet. Wird ein Paket aus einer "trunk line" an
+						  eine Verbindung zu einem spezifischen VLAN weitergeleitet, werden die
+						  VLAN-IDs durch die Netzwerk-Switches hinzugefügt oder entfernt.
+						</simpara></listitem>
+
+						Einige Switches erlauben es auch Pakete mit und ohne VLAN-Tag über eine
+						gemeinsame Verbindung zu schicken, darauf wird hier aber nicht weiter
+						eingegangen.
+					</para>
+
+					<para>
+					  Mit der Konfiguration eines VLANs in der &ucsUMC; kann für einen Rechner
+					  konfiguriert werden, an welchen VLANs er teilnehmen möchte. Ein Beispiel wäre
+					  ein interner Firmen-Webserver, der sowohl für die Mitarbeiter, als auch für
+					  die Benutzer des Gast-Netzes verfügbar sein soll.
+					</para>
+
+					<para>
+					  Um ein VLAN zu konfigurieren muss unter <guimenu>Netzwerkgerät
+					  hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
+					  <emphasis>Virtuelles LAN</emphasis> ausgewählt werden. Die
+					  Netzwerkschnittstelle, für die das VLAN konfiguriert wird, wird mit
+					  <guimenu>Überordnetes Netzwerkgerät</guimenu> angegeben. Die <guimenu>VLAN
+					  ID</guimenu> ist der eindeutige Bezeichner für das VLAN. Gültige Werte sind 1
+					  bis 4095. Anschließend muss auf <guimenu>Weiter</guimenu> geklickt werden.
+					</para>
+
+					<para>
+					  Nach einem Klick auf <guimenu>Weiter</guimenu> muss dem Bonding-Interface eine
+					  IP-Adresse zugewiesen werden. Die Einstellungsmöglichkeiten sind dieselben wie in  <xref
+					  linkend="computers:ipv4"/> und <xref linkend="computers:ipv6"/> beschrieben.
+					  Es sollte eine IP-Adresse aus dem zuordneten VLAN verwendet werden.
+					</para>
+
 				</section>
-            </section><!-- Netzwerk-Interfaces-->
+            </section>
 
            <section id="computers:Konfiguration_des_Proxyzugriffs"><title>Konfiguration des Proxyzugriffs</title>
                 <para>

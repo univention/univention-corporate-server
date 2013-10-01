@@ -630,7 +630,7 @@
 				2222:0DFE:FE29:DE27:0000:0000:0000:0000).
 			</para>
 
-			<section id="computers:Configuration_of_IPv4_addresses">
+			<section id="computers:ipv4">
 				<title>Configuration of IPv4 addresses</title>
 				<para>
 					If the <guimenu>Dynamic (DHCP)</guimenu> option was not chosen, the
@@ -666,7 +666,7 @@
 				</para>
 			</section>
 
-			<section id="computers:Configuration_of_IPv6_addresses">
+			<section id="computers:ipv6">
 				<title>Configuration of IPv6 addresses</title>
 				<para>
 					The IPv6 address can be configured in two ways: Stateless address
@@ -744,38 +744,33 @@
 				</para>
 			</section>
 
-			<section id="computers:Configuration_of_bridges_bonding_VLANs"><title>Configuration of bridges/bonding/VLANs</title>
-			<para>
-			  UCS supports advanced network configurations using bridging, bonding and virtual
-			  networks (VLAN):
-			</para>
+			<section id="computers:networkcomplex">
+			  <title>Configuration of bridges/bonding/VLANs</title>
 
-			<itemizedlist>
-			  <listitem>
-                <simpara>
+			  <para>
+				UCS supports advanced network configurations using bridging, bonding and virtual
+				networks (VLAN):
+			  </para>
+
+			  <itemizedlist>
+				<listitem><simpara>
 				  Bridging is often used with virtualization to connect multiple virtual machines
 				  running on a host through one shared physical network interface.
-				</simpara>
-			  </listitem>
-			  <listitem>
-				<simpara>
+				</simpara></listitem>
+
+				<listitem><simpara>
 				  Bondings allows failover redundancy for hosts with multiple physical network
 				  interfaces to the same network.
-				</simpara>
-			  </listitem>
-			  <listitem>
-				<simpara>
+				</simpara></listitem>
+
+				<listitem><simpara>
 				  VLANs can be used to separate network traffic logically while using only one (or
 				  more) physical network interface.
-				</simpara>
-			  </listitem>
-			</itemizedlist>
+				</simpara></listitem>
+			  </itemizedlist>
 
-			<para>
-			  Bridges, bondings and VLANs are displayed in the &ucsUMC;, but the configuration of
-			  such setups can only be performed through &ucsUCR; variables. The setup is explained in
-			  the extended computer documentation <biblioref linkend="ext-doc-computers"/>.
-			</para>
+
+
 			</section>
 		</section>
 
