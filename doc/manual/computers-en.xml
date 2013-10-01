@@ -2537,23 +2537,20 @@ univention-repository-update -h
 			an installed system:
 		</para>
 
-		<section id="computers:Role-based_software_selection_in_the_Univention_Management_Console">
-			<title>Role-based software selection in the Univention Management Console</title>
-			<para>
-				A module is provided under <guimenu>Basic settings &ar; Software</guimenu> in the
-				&ucsUMC; with which the role-based software selection also offered in the
-				Univention Installer can be subsequently adjusted. Software components can be
-				installed or removed by activating/deactivating the selection box in front of
-				the components and then clicking on save.
-			</para>
-			<figure id="software-setup">
-				<title>Software selection</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations/software_basicsettings_en.png"/>
-			</figure>
-			<para>
-				A list of the available software selection can be found in <xref
-				linkend="installation::softwareselection"/>.
-			</para>
+		<section id="computers:softwareselection">
+		  <title>Installation/uninstallation of UCS components in the Univention App Center</title>
+		  <!-- <para> -->
+		  <!-- 	Alle Softwarekomponenten, die im Univention Installer angeboten werden können auch -->
+		  <!-- 	über das Univention App Center nachträglich installiert und entfernt werden. Dazu -->
+		  <!-- 	muss die Paket-Kategorie <guimenu>UCS-Komponenten</guimenu> ausgewählt -->
+		  <!-- 	werden. Weitere Hinweise zum Univention App Center finden sich in <xref linkend="software:appcenter"/>. -->
+		  <!-- </para> -->
+
+		  <figure id="appcenter-ucscomponents">
+			<title>Selection of UCS components in the App Center</title>
+			<graphic scalefit="1" width="80%" fileref="illustrations/appcenter-ucs-en.png"/>
+		  </figure>
+
 		</section>
 
 		<section id="computers:Installation_removal_of_individual_packages_in_the_Univention_Management_Console">

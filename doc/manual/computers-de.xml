@@ -1394,9 +1394,9 @@ if configRegistry.get('version/version') and \
                     Nach der Änderung von <emphasis>.info</emphasis>-Dateien muss der Befehl
                     <command>ucr update</command> aufgerufen werden.
                 </para>
-            </section><!-- Integration von Inline-Python-Code in Templates -->
-        </section><!-- Anpassung von UCR-Templates -->
-    </section><!-- Verwaltung der lokalen Systemkonfiguration mit Univention -->
+            </section>
+        </section>
+    </section>
 
     <section id="computers:Basis-Systemdienste"><title>Basis-Systemdienste</title>
         <para>
@@ -1916,8 +1916,8 @@ nscd -i hosts
                 &ucsUCRV; <envar>ntp/signed</envar> auf <emphasis>yes</emphasis> gesetzt, werden die NTP-Pakete
                 durch Samba 4 signiert. Diese Einstellung sollte auf Samba 4-Domänencontrollern gesetzt werden.
             </para>
-        </section><!-- Konfiguration der Zeitzone / Zeitsynchronisation -->
-    </section><!-- Basis-Systemdienste -->
+        </section>
+    </section>
 
     <section id="computers::softwaremanagement"><title>Softwareverteilung</title>
         <section id="computers:Einfuehrung"><title>Einführung</title>
@@ -2459,7 +2459,7 @@ univention-repository-update -h
 
         <section id="computers::softwaremanagement::installsoftware"><title>Installation weiterer Software</title>
             <para>
-                Die Erstauswahl der Software-Komponenten eines UCS-Systems
+                Die Erstauswahl der Softwarekomponenten eines UCS-Systems
                 erfolgt im Rahmen der Installation. Die Auswahl der
                 Softwarekomponenten erfolgt dabei funktionsbezogen, indem etwa die
                 Komponente <emphasis>Proxy-Server</emphasis> ausgewählt wird, die dann über ein
@@ -2488,23 +2488,21 @@ univention-repository-update -h
                 zuinstallieren, stehen mehrere Möglichkeiten zur Verfügung:
             </para>
 
-            <section id="computers:Funktionsbezogene_Softwareauswahl_in_der_Univention_Management_Console"><title>Funktionsbezogene Softwareauswahl in der Univention Management Console</title>
-                <para>
-                    In der &ucsUMC; steht unter <guimenu>Basis-Einstellungen &ar;
-                    Software</guimenu> ein Modul zur Verfügung, mit der die auch im Univention
-                    Installer angebotene funktionsbezogene Softwareauswahl nachträglich
-                    angepasst werden kann. Durch Aktivierung/Deaktivierung des
-                    Auswahlkästchens vor den Komponenten und abschließendem Klick auf
-                    Speichern können Softwarekomponenten installiert und entfernt werden.
-                </para>
-                    <figure id="software-setup"><title>Funktionsbezogene Softwareauswahl</title>
-                        <graphic scalefit="1" width="80%" fileref="illustrations/software_basicsettings_de.png"/>
-                    </figure>
-                <para>
-                    Eine Aufstellung der verfügbaren Softwareauswahl findet sich in
-                    <xref linkend="installation::softwareselection"/>.
-                </para>
-            </section><!-- Funktionsbezogene Softwareauswahl in der Univention Management Console -->
+            <section id="computers:softwareselection">
+			  <title>Installation/Deinstallation von UCS-Komponenten im Univention App Center</title>
+			  <para>
+				Alle Softwarekomponenten, die im Univention Installer angeboten werden können auch
+				über das Univention App Center nachträglich installiert und entfernt werden. Dazu
+				muss die Paket-Kategorie <guimenu>UCS-Komponenten</guimenu> ausgewählt
+				werden. Weitere Hinweise zum Univention App Center finden sich in <xref linkend="software:appcenter"/>.
+			  </para>
+
+			  <figure id="appcenter-ucscomponents">
+				<title>Auswahl von UCS-Komponenten im App Center</title>
+				<graphic scalefit="1" width="80%" fileref="illustrations/appcenter-ucs-de.png"/>
+			  </figure>
+
+            </section>
 
             <section id="computers:Installation_Deinstallation_von_einzelnen_Paketen_in_der_Univention_Management_Console"><title>Installation/Deinstallation von einzelnen Paketen in der Univention Management Console</title>
                 <para>
