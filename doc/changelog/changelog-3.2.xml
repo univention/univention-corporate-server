@@ -1118,6 +1118,10 @@
 			Fix marking of invalid widgets when saving (<ulink url="&ucsbug;25500">Bug 25500</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			The create report action now applies to the selection instead of the whole search result (<ulink url="&ucsbug;32749">Bug 32749</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
