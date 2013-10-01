@@ -1,6 +1,6 @@
 ucs-test (4.0.127-1) unstable; urgency=low
 
-  * Fix traceback in samba lib (Bug #32747)
+  * Fix traceback in samba lib (Bug #32715)
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 01 Oct 2013 10:03:00 +0200
 
