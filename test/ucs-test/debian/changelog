@@ -1,3 +1,10 @@
+ucs-test (4.0.128-1) unstable; urgency=low
+
+  * 51_samba4/53create_spn_account: split user remove from user add and
+    wait for the replication (Bug #32778)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Oct 2013 14:11:05 +0200
+
 ucs-test (4.0.127-1) unstable; urgency=low
 
   * Fix traceback in samba lib (Bug #32715)
