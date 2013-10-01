@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention documentation
-#  postinst script for UMC documentation
+#  postrm script for UMC documentation
 #
 # Copyright 2012-2013 Univention GmbH
 #
@@ -33,15 +33,13 @@
 #DEBHELPER#
 
 # umc overview
-univention-config-registry set \
-	ucs/web/overview/entries/admin/umc-doc/description/de?'Entwickler-Dokumentation zur Architektur, den Protokollen und der API der Univention Management Console' \
-	ucs/web/overview/entries/admin/umc-doc/description?'Development documentation of the architecture, protocols and the API for the Univention Management Console' \
-	ucs/web/overview/entries/admin/umc-doc/icon?'/icon/50x50/univention_dev_logo.png' \
-	ucs/web/overview/entries/admin/umc-doc/label?'Univention Management Console development documentation' \
-	ucs/web/overview/entries/admin/umc-doc/label/de?'Univention Management Console Entwickler-Dokumentation' \
-	ucs/web/overview/entries/admin/umc-doc/link?'/documentation/umc' \
-	ucs/web/overview/entries/admin/umc-doc/priority?'91'
-
-univention-doc install umc
+univention-config-registry unset \
+	ucs/web/overview/entries/admin/umc-doc/description/de \
+	ucs/web/overview/entries/admin/umc-doc/description \
+	ucs/web/overview/entries/admin/umc-doc/icon \
+	ucs/web/overview/entries/admin/umc-doc/label \
+	ucs/web/overview/entries/admin/umc-doc/label/de \
+	ucs/web/overview/entries/admin/umc-doc/link \
+	ucs/web/overview/entries/admin/umc-doc/priority
 
 exit 0
