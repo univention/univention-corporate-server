@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.42-1) unstable; urgency=low
+
+  * fixed identation in user.py (Bug #30981)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Oct 2013 13:39:41 +0200
+
 univention-directory-manager-modules (9.0.41-1) unstable; urgency=low
 
   * use base64.b64encode() instead of base64.encodestring() in jpegPhoto

@@ -2470,20 +2470,15 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		for line in pwhistory.split(" "):
 			linesplit = line.split("$") # $method_id$salt$password_hash
 			try:
-				 password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
+				password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
 			except IndexError: # old style password history entry, no method id/salt in there
 				hash_algorithm = hashlib.new("sha1")
 				hash_algorithm.update(password.encode("utf-8"))
 				password_hash = hash_algorithm.hexdigest().upper()
-
 			if password_hash == line:
 				return True
 		return False
 					
-					
-					
-
-		
 
 
 	def __getPWHistory(self, newpwhash, pwhistory, pwhlen):
