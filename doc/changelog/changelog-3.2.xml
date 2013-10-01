@@ -1456,6 +1456,10 @@
 		<listitem><simpara>
 		  An error message regarding an existing directory has been corrected (<ulink url="&ucsbug;29074">Bug 29074</ulink>.
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  An error in <command>univention-dnsedit</command> which occurred when trying to remove the only location from a SRV record has been corrected. When removing the only location, the whole SRV record will be removed now (<ulink url="&ucsbug;28794">Bug 28794</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
