@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.43-1) unstable; urgency=low
+
+  * fixed error when removing last location from srv_record via
+    univention-dnsedit (Bug #28794)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Oct 2013 15:03:01 +0200
+
 univention-directory-manager-modules (9.0.42-1) unstable; urgency=low
 
   * fixed identation in user.py (Bug #30981)

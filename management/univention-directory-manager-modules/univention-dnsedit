@@ -209,16 +209,17 @@ def remove_srv_record(service, protocol, priority, weight, port, host):
 	if records:
 		record = records[0]
 	else:
-		record = srv_record.object(co, lo, position, superordinate=zone)
-		record['name'] = name
+		print >> sys.stderr, "No record found"
+		return
 
-	loc = record['location']
-	if location in loc:
-		loc.remove(location)
-		record['location'] = loc
-
-	if records:
-		record.modify()
+	if location in record['location']:
+		record['location'].remove(location)
+		if record['location']:
+			record.modify()
+		else:
+			record.remove()
+	else:
+		print >> sys.stderr, "Does not exist"
 
 
 def add_txt_record(name, text):
@@ -385,11 +386,13 @@ def main():
 	except univention.admin.uexceptions.objectExists, ex:
 		if not options.ignore_exists:
 			print >> sys.stderr, 'E: Object "%s" exists' % (ex,)
+			raise
 			sys.exit(1)
 	except (ValueError, TypeError,
 			univention.admin.uexceptions.valueInvalidSyntax,
 			univention.admin.uexceptions.valueRequired), ex:
 		print >> sys.stderr, 'E: failed %s' % (ex,)
+		raise
 		sys.exit(1)
 
 
