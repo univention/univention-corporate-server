@@ -1,3 +1,9 @@
+univention-system-setup (7.0.46-1) unstable; urgency=low
+
+  * Bug #29919: fix fuzzy
+
+ -- Florian Best <best@univention.de>  Tue, 01 Oct 2013 15:50:22 +0200
+
 univention-system-setup (7.0.45-1) unstable; urgency=low
 
   * Bug #30816: fix label
