@@ -98,8 +98,8 @@ ucr set \
 	ucs/web/overview/entries/admin/root-certificate/icon?"/icon/50x50/root-certificate.png" \
 	ucs/web/overview/entries/admin/root-certificate/label?"Root certificate" \
 	ucs/web/overview/entries/admin/root-certificate/label/de?"Wurzelzertifikat" \
-	ucs/web/overview/entries/admin/root-certificate/description?"Certificate of the Certification Authority for UCS-Domain $hostname.$domainname" \
-	ucs/web/overview/entries/admin/root-certificate/description/de?"Zertifikat der Zertifizierungsstelle für die UCS-Domäne $hostname.$domainname" \
+	ucs/web/overview/entries/admin/root-certificate/description?"Certificate of the Certification Authority for UCS domain $domainname" \
+	ucs/web/overview/entries/admin/root-certificate/description/de?"Zertifikat der Zertifizierungsstelle für die UCS-Domäne $domainname" \
 	ucs/web/overview/entries/admin/root-certificate/link?"../ucs-root-ca.crt" \
 	ucs/web/overview/entries/admin/root-certificate/priority?"90" \
 	ucs/web/overview/entries/admin/invalid-certificate-list/icon?"/icon/50x50/invalid-certificate-list.png" \

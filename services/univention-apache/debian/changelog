@@ -1,3 +1,9 @@
+univention-apache (6.0.7-2) unstable; urgency=low
+
+  * Bug #32609: Fix ucs overview description
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Oct 2013 14:01:24 +0200
+
 univention-apache (6.0.7-1) unstable; urgency=low
 
   * New file /var/www/ucs-overview/languages.json, which contains
