@@ -52,8 +52,8 @@ univention-config-registry set "umc/server/languages/en_US?English" \
 	"umc/web/sso/timeout=15" \
 	"ucs/web/overview/entries/admin/umc/icon?/univention-management-console/js/dijit/themes/umc/icons/50x50/univention-management-console.png" \
 	"ucs/web/overview/entries/admin/umc/label?Univention Management Console" \
-	"ucs/web/overview/entries/admin/umc/description?Domain management for the UCS-Domain $hostname.$domainname and system administration of $hostname" \
-	"ucs/web/overview/entries/admin/umc/description/de?Verzeichnisdienstverwaltung der UCS-Domäne $hostname.$domainname und Systemverwaltung von $hostname" \
+	"ucs/web/overview/entries/admin/umc/description?Domain management for the UCS domain $domainname and system administration of $hostname" \
+	"ucs/web/overview/entries/admin/umc/description/de?Verzeichnisdienstverwaltung der UCS-Domäne $domainname und Systemverwaltung von $hostname" \
 	"ucs/web/overview/entries/admin/umc/link?/univention-management-console" \
 	"ucs/web/overview/entries/admin/umc/priority?10" \
 

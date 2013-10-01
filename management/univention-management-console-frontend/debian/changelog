@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.85-2) unstable; urgency=low
+
+  * Bug #32609: Fix ucs overview description
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Oct 2013 14:00:36 +0200
+
 univention-management-console-frontend (3.0.85-1) unstable; urgency=low
 
   * Bug #25500: fix validating of PasswordInputBox
