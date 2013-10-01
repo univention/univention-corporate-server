@@ -528,6 +528,10 @@ define([
 							return true;
 						}
 					});
+					if (newVal == 'None') {
+						// "Default properties" is not very catchy
+						label = '&nbsp;';
+					}
 
 					// update the label of objectPropertyValue
 					widget = this._searchForm.getWidget('objectPropertyValue');

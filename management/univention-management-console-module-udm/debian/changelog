@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.30-1) unstable; urgency=low
+
+  * Bug #32753: Do not show "Default properties" as search widget label
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 01 Oct 2013 14:21:03 +0200
+
 univention-management-console-module-udm (4.0.29-1) unstable; urgency=low
 
   * Bug #32749: show how many objects will be included in the report
