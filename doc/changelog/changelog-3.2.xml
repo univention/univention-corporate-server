@@ -713,7 +713,7 @@
 
 		<listitem><simpara>
 		  The UMC ACL evaluation has been simplified which improves the UMC login performance
-		  (<ulink url="&ucsbug;28059">Bug 28059</ulink>).
+		  (<ulink url="&ucsbug;28059">Bug 28059</ulink>, <ulink url="&ucsbug;32747">Bug 32747</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
