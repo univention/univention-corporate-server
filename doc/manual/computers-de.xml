@@ -912,10 +912,11 @@
 						  eine Verbindung zu einem spezifischen VLAN weitergeleitet, werden die
 						  VLAN-IDs durch die Netzwerk-Switches hinzugefügt oder entfernt.
 						</simpara></listitem>
+					  </itemizedlist>
 
-						Einige Switches erlauben es auch Pakete mit und ohne VLAN-Tag über eine
-						gemeinsame Verbindung zu schicken, darauf wird hier aber nicht weiter
-						eingegangen.
+					  Einige Switches erlauben es auch Pakete mit und ohne VLAN-Tag über eine
+					  gemeinsame Verbindung zu schicken, darauf wird hier aber nicht weiter
+					  eingegangen.
 					</para>
 
 					<para>
@@ -941,7 +942,7 @@
 					  linkend="computers:ipv4"/> und <xref linkend="computers:ipv6"/> beschrieben.
 					  Es sollte eine IP-Adresse aus dem zuordneten VLAN verwendet werden.
 					</para>
-
+				  </section>
 				</section>
             </section>
 
