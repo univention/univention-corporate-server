@@ -1110,8 +1110,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Passwords will be stored in the password history using the hashing algorithm defined in &ucsUCRV; <envar>password/hashing/method</envar> (which is already used as hashing method to create the salted hash of the current password) instead of always using <emphasis>SHA-1</emphasis>, and the used salt as well as the ID of the hashing algorithm will be also be stored.
-			(<ulink url="&ucsbug;30981">Bug 30981</ulink>).
+			Passwords are now stored in the password history as salted password hashes 
+			plus the salt and the ID of the hashing algorithm (<ulink url="&ucsbug;30981">Bug 30981</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
