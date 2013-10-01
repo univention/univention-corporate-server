@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.86-1) unstable; urgency=low
+
+  * Bug #32318: CSS adaptions
+  * Bug #26418: grid adaptions
+
+ -- Florian Best <best@univention.de>  Tue, 01 Oct 2013 15:10:28 +0200
+
 univention-management-console-frontend (3.0.85-2) unstable; urgency=low
 
   * Bug #32609: Fix ucs overview description

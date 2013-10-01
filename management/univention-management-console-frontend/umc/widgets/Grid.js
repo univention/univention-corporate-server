@@ -36,6 +36,7 @@ define([
 	"dojo/dom-construct",
 	"dojo/dom-attr",
 	"dojo/dom-geometry",
+	"dojo/dom-style",
 	"dojo/topic",
 	"dojo/aspect",
 	"dijit/Menu",
@@ -56,7 +57,7 @@ define([
 	"umc/i18n!umc/app",
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
-], function(declare, lang, array, win, construct, attr, geometry,
+], function(declare, lang, array, win, construct, attr, geometry, style,
 		topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer, StackContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
@@ -170,6 +171,7 @@ define([
 		// ContainerWidget that holds all buttons
 		_toolbar: null,
 
+		_header: null,
 		_footer: null,
 
 		_footerLegend: null,
@@ -231,20 +233,91 @@ define([
 			this._disabledIDs = {};
 		},
 
-		_getHeaderWidth: function(text) {
-			// if we do not have a temporary cell yet, create it
-			if (!this._tmpCell && !this._tmpCellHeader) {
-				this._tmpCellHeader = construct.create('div', { 'class': 'dojoxGridHeader dijitOffScreen' });
-				this._tmpCell = construct.create('div', { 'class': 'dojoxGridCell' });
-				construct.place(this._tmpCell, this._tmpCellHeader);
-				construct.place(this._tmpCellHeader, win.body());
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			// create right-click context menu
+			this._contextMenu = new Menu({});
+			this.own(this._contextMenu);
+
+			// add a header for the grid
+			this._header = new ContainerWidget({
+				region: 'top',
+				'class': 'umcGridToolBar',
+				style: 'padding-bottom: 5px; padding-left: 5px;'
+			});
+			this.addChild(this._header);
+
+			// create the grid
+			this._grid = new _Grid({
+				store: this._dataStore,
+				region: 'center',
+				query: this.query,
+				queryOptions: { ignoreCase: true },
+				'class': 'umcGrid',
+				rowsPerPage: 30,
+				plugins : {
+					indirectSelection: {
+						headerSelector: true,
+						name: 'Selection',
+						width: '25px',
+						styles: 'text-align: center;'
+					},
+					menus: {
+						rowMenu: this._contextMenu
+					}
+				}/*,
+				canSort: lang.hitch(this, function(col) {
+					// disable sorting for the action columns
+					return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
+				})*/
+			});
+
+			// add a footer for the grid
+			this._footer = new ContainerWidget({
+				region: 'bottom',
+				'class': 'umcGridFooter'
+			});
+			this._createFooter();
+
+			// update columns and actions
+			this.setColumnsAndActions(this.columns, this.actions);
+			if (typeof this.sortIndex == "number") {
+				this._grid.setSortIndex(Math.abs(this.sortIndex), this.sortIndex > 0);
 			}
 
-			// set the text
-			attr.set(this._tmpCell, 'innerHTML', text);
+			this.addChild(this._grid);
+			this.addChild(this._footer);
 
-			// get the width of the cell
-			return geometry.getMarginBox(this._tmpCell).w;
+			//
+			// register event handler
+			//
+
+			// in case of any changes in the module store, refresh the grid
+			// FIXME: should not be needed anymore with Dojo 1.8
+			if (this.moduleStore.on && this.moduleStore.onChange) {
+				this.own(this.moduleStore.on('Change', lang.hitch(this, function() {
+					this.filter(this.query);
+				})));
+			}
+
+			this.own(aspect.after(this._grid, "_onFetchComplete", lang.hitch(this, '_onFetched', true)));
+			this.own(aspect.after(this._grid, "_onFetchError", lang.hitch(this, '_onFetched', false)));
+
+			this._grid.on('selectionChanged', lang.hitch(this, '_selectionChanged'));
+			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
+
+			this._grid.on('rowClick', lang.hitch(this, '_onRowClick'));
+
+			// make sure that we update the disabled items after sorting etc.
+			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, '_updateDisabledItems')));
+
+//			this.own(aspect.before(this._contextMenu, '_openMyself', lang.hitch(this, '__behaviorOldGrid')));
+		},
+
+		setColumnsAndActions: function(columns, actions) {
+			this._setActionsAttr(actions, false);
+			this._setColumnsAttr(columns);
 		},
 
 		_setColumnsAttr: function (columns) {
@@ -318,6 +391,22 @@ define([
 			this._grid.setStructure(gridColumns);
 		},
 
+		_getHeaderWidth: function(text) {
+			// if we do not have a temporary cell yet, create it
+			if (!this._tmpCell && !this._tmpCellHeader) {
+				this._tmpCellHeader = construct.create('div', { 'class': 'dojoxGridHeader dijitOffScreen' });
+				this._tmpCell = construct.create('div', { 'class': 'dojoxGridCell' });
+				construct.place(this._tmpCell, this._tmpCellHeader);
+				construct.place(this._tmpCellHeader, win.body());
+			}
+
+			// set the text
+			attr.set(this._tmpCell, 'innerHTML', text);
+
+			// get the width of the cell
+			return geometry.getMarginBox(this._tmpCell).w;
+		},
+
 		_setActionsAttr: function(actions, /*Boolean?*/ doSetColumns) {
 			tools.assert(actions instanceof Array, 'The property actions needs to be defined for umc/widgets/Grid as an array.');
 			this.actions = actions;
@@ -331,12 +420,15 @@ define([
 			}, this);
 			delete this._contextMenu.focusedChild;
 
-			this._setNonContextActions();
+			this._setGlobalActions();
 			this._setContextActions();
 
-//			if (this.actions.length) {
+			style.set(this._header.domNode, 'display', (this.actions.length) ? 'block': 'none');
 			this._header.addChild(this._toolbar);
 			this._header.addChild(this._contextActionsToolbar);
+
+//			// underline and align the 'more' menu
+//			style.set(this._contextActionsMenu.domNode.childNodes[1], {'text-decoration': 'underline', padding: '2px'})
 
 			// redraw the columns
 			if (doSetColumns !== false) {
@@ -350,29 +442,29 @@ define([
 
 		_setContextActions: function() {
 			this._contextActionsToolbar = new ContainerWidget({});
-			this._nonStandardActionsMenu = new Menu({});
+			this._contextActionsMenu = new Menu({});
 
 			array.forEach(this._getContextActions(), function(iaction) {
+				var getCallback = lang.hitch(this, function(prefix) {
+					if (!iaction.callback) {
+						return {};
+					}
+					return {
+						onClick: lang.hitch(this, function() {
+							this._publishAction(prefix + iaction.name);
+							iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
+						})
+					};
+				});
 				// get icon and label (these properties may be functions)
 				var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
 				var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
 
 				var props = { iconClass: iiconClass, label: ilabel, _action: iaction };
 
-				// add callback handler
-				if (iaction.callback) {
-					// FIXME: would be wrong for context menu
-					var prefix = iaction.isMultiAction ? 'multi-' : 'menu-';
-					prefix = iaction.isStandardAction ? '' : prefix;
-
-					props.onClick = lang.hitch(this, function() {
-						this._publishAction(prefix + iaction.name);
-						iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
-					});
-				}
-
 				if (iaction.isStandardAction) {
-					var btn = new Button(props);
+					// add action to the context toolbar
+					var btn = new Button(lang.mixin(props, getCallback('')));
 					if (iaction.description) {
 						try {
 						var item = undefined;
@@ -393,45 +485,47 @@ define([
 					this._contextActionsToolbar.addChild(btn);
 					this.own(btn);
 				} else {
-					this._nonStandardActionsMenu.addChild(new MenuItem(props));
+					// add action to the more menu
+					this._contextActionsMenu.addChild(new MenuItem(lang.mixin(props, getCallback('multi-'))));
 				}
 
-				this._contextMenu.addChild(new MenuItem(props));
+				// add action to the context menu
+				this._contextMenu.addChild(new MenuItem(lang.mixin(props, getCallback('menu-'))));
 			}, this);
 
-			if (this._nonStandardActionsMenu.getChildren().length) {
+			// add more menu to toolbar
+			if (this._contextActionsMenu.getChildren().length) {
 				this._contextActionsToolbar.addChild(new _DropDownButton({
 					label: _('more'),
-					dropDown: this._nonStandardActionsMenu
+					dropDown: this._contextActionsMenu
 				}));
 			}
-
 		},
 
-		_getNonContextActions: function() {
+		_getGlobalActions: function() {
 			return array.filter(this.actions, function(iaction) { return (false === iaction.isContextAction); });
 		},
 
-		_setNonContextActions: function() {
+		_setGlobalActions: function() {
 			//
-			// toolbar for non-context actions
+			// toolbar for global actions
 			//
 
-			// add the right toolbar which contains all non-context actions
+			// add a toolbar which contains all non-context actions
 			this._toolbar = new ContainerWidget({
 				region: 'top',
 				style: 'float: left',
 				'class': 'umcGridToolBar'
 			});
 
-			var buttonsCfg = array.map(this._getNonContextActions(), function(iaction) {
+			var buttonsCfg = array.map(this._getGlobalActions(), function(iaction) {
 				var jaction = iaction;
 				if (iaction.callback) {
 					jaction = lang.mixin({}, iaction); // shallow copy
 
 					// call custom callback with selected values
 					jaction.callback = lang.hitch(this, function() {
-						this._publishAction('menu-' + iaction.name);
+						this._publishAction(iaction.name);
 						iaction.callback(this.getSelectedIDs(), this.getSelectedItems());
 					});
 				}
@@ -448,94 +542,6 @@ define([
 					this._publishAction(ibutton.name);
 				}));
 			}, this);
-		},
-
-		setColumnsAndActions: function(columns, actions) {
-			this._setActionsAttr(actions, false);
-			this._setColumnsAttr(columns);
-		},
-
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			// create right-click context menu
-			this._contextMenu = new Menu({});
-			this.own(this._contextMenu);
-
-			// add a header for the grid
-			this._header = new ContainerWidget({
-				region: 'top',
-				'class': 'umcGridToolBar',
-				style: 'padding-bottom: 5px; padding-left: 5px;'
-			});
-			this.addChild(this._header);
-
-			// create the grid
-			this._grid = new _Grid({
-				//id: 'ucrVariables',
-				store: this._dataStore,
-				region: 'center',
-				query: this.query,
-				queryOptions: { ignoreCase: true },
-				'class': 'umcGrid',
-				rowsPerPage: 30,
-				plugins : {
-					indirectSelection: {
-						headerSelector: true,
-						name: 'Selection',
-						width: '25px',
-						styles: 'text-align: center;'
-					},
-					menus: {
-						rowMenu: this._contextMenu
-					}
-				}/*,
-				canSort: lang.hitch(this, function(col) {
-					// disable sorting for the action columns
-					return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
-				})*/
-			});
-
-			// add a footer for the grid
-			this._footer = new ContainerWidget({
-				region: 'bottom',
-				'class': 'umcGridFooter'
-			});
-			this._createFooter();
-
-			// update columns and actions
-			this.setColumnsAndActions(this.columns, this.actions);
-			if (typeof this.sortIndex == "number") {
-				this._grid.setSortIndex(Math.abs(this.sortIndex), this.sortIndex > 0);
-			}
-
-			this.addChild(this._grid);
-			this.addChild(this._footer);
-
-			//
-			// register event handler
-			//
-
-			// in case of any changes in the module store, refresh the grid
-			// FIXME: should not be needed anymore with Dojo 1.8
-			if (this.moduleStore.on && this.moduleStore.onChange) {
-				this.own(this.moduleStore.on('Change', lang.hitch(this, function() {
-					this.filter(this.query);
-				})));
-			}
-
-			this.own(aspect.after(this._grid, "_onFetchComplete", lang.hitch(this, '_onFetched', true)));
-			this.own(aspect.after(this._grid, "_onFetchError", lang.hitch(this, '_onFetched', false)));
-
-			this._grid.on('selectionChanged', lang.hitch(this, '_selectionChanged'));
-			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
-
-			this._grid.on('rowClick', lang.hitch(this, '_onRowClick'));
-
-			// make sure that we update the disabled items after sorting etc.
-			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, '_updateDisabledItems')));
-
-//			this.own(aspect.before(this._contextMenu, '_openMyself', lang.hitch(this, '__behaviorOldGrid')));
 		},
 
 		_onFetched: function(success) {
@@ -560,29 +566,39 @@ define([
 			this.__behaviorOldGrid();
 		},
 
+		_getContextActionItems: function() {
+			return this._contextActionsToolbar.getChildren().concat(this._contextMenu.getChildren()).concat(this._contextActionsMenu.getChildren());
+		},
+
 		_updateContextActions: function() {
-			// disable actions which are no multiactions when more than 1 row is selected
 			var nItems = this._grid.selection.getSelectedCount();
 
-			var actions = this._contextActionsToolbar.getChildren().concat(this._contextMenu.getChildren()).concat(this._nonStandardActionsMenu.getChildren());
-
-			array.forEach(actions, function(item) {
+			array.forEach(this._getContextActionItems(), function(item) {
 				if ((item instanceof Button || item instanceof MenuItem) && item._action) {
 					var enabled = true;
 					if (nItems === 0) {
+						// if no row is selected:
+						// disable all multiactions (except they are always active)
 						enabled = this.multiActionsAlwaysActive === true && item._action.isMultiAction;
 					} else if (nItems > 1) {
+						// when more than 1 row is selected:
+						// disable actions which are no multiactions
 						enabled = item._action.isMultiAction;
 					}
+					// disable multiaction if one of the selected items can not be executed
 					// TODO: getSelectedButNotDisabledItems
 					enabled = enabled && array.every(this.getSelectedItems(), function(iitem) { return item._action.canExecute ? item._action.canExecute(iitem) : true; });
 					item.set('disabled', !enabled);
 				}
 			}, this);
-			
+
+			// don't show context actions if they are not available
+			var visibility = nItems === 0 ? 'hidden' : 'visible';
+			style.set(this._contextActionsToolbar.domNode, 'visibility', visibility);
 		},
 
 		_updateContextItem: function(evt) {
+			// when opening the context menu...
 			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
 			if (rowDisabled) {
 				return;
@@ -597,8 +613,7 @@ define([
 
 			var nItems = this._grid.selection.getSelectedCount();
 			var item = nItems === 1 ? this.getSelectedItems()[0] : undefined;
-			var actions = this._contextActionsToolbar.getChildren().concat(this._contextMenu.getChildren()).concat(this._nonStandardActionsMenu.getChildren());
-			array.forEach(actions, function(ichild) {
+			array.forEach(this._getContextActionItems(), function(ichild) {
 				var iaction = ichild._iaction;
 				if (iaction) {
 					var iconClass = (typeof iaction.iconClass == "function") ? iaction.iconClass(item) : iaction.iconClass;
@@ -625,7 +640,6 @@ define([
 							ichild.own(tooltip);
 						} catch (error) {}
 					}
-
 				}
 			}, this);
 		},
