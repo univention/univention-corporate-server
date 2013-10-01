@@ -1592,6 +1592,12 @@
 	  <listitem><simpara>
 		Two functions comments were fixed (<ulink url="&ucsbug;28714">Bug 28714</ulink>).
 	  </simpara></listitem>
+
+		<listitem><simpara>
+			The function <function>ucs_isServiceUnused</function> now always searches on the 
+			DC master system and can authenticate to the LDAP with the join credentials
+			(<ulink url="&ucsbug;32578">Bug 32578</ulink>).
+		</simpara></listitem>
 	</itemizedlist>
 </section>
 
