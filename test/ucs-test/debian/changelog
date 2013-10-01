@@ -1,3 +1,10 @@
+ucs-test (4.0.130-1) unstable; urgency=low
+
+  * modified 10_ldap/44replication_binary to match the requirements of the new
+    jpegPhoto syntax (Bug #32664)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Oct 2013 16:34:28 +0200
+
 ucs-test (4.0.129-2) unstable; urgency=low
 
   * 10_ldap/67univention-admingrp-user-passwordreset-protected-domain-

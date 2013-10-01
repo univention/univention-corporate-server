@@ -16,6 +16,7 @@
 ##  - univention-directory-manager-tools
 ##  - ldap-utils
 ##  - openssl
+##  - imagemagick
 ## exposure: careful
 
 # 3.0-1: UDM is broken and double-bas64-encodes binary data
@@ -102,15 +103,9 @@ validate () {
 for ((; loop>0; loop--))
 do
 	zeros=$((RANDOM % 2048))
-	#width=$((200 + RANDOM % 100)) height=$((200 + RANDOM % 100))
-	###  - imagemagick
-	#convert -size "${width}x${height}" xc: +noise Random jpeg:"$tmpdir/jpegPhoto.bin"
-	#info "loop=${loop} width=${width} height=${height} zeros=${zeros} size=$(stat -c "%s" "$tmpdir/jpegPhoto.bin")"
-	(
-		dd if=/dev/urandom bs=1k count=$((10 + RANDOM % 20))
-		dd if=/dev/zero bs=1 count="${zeros}"
-	) >"$tmpdir/jpegPhoto.bin" 2>/dev/null
-	info "loop=${loop} zeros=${zeros} size=$(stat -c "%s" "$tmpdir/jpegPhoto.bin")"
+	width=$((200 + RANDOM % 100)) height=$((200 + RANDOM % 100))
+	convert -size "${width}x${height}" xc: +noise Random jpeg:"$tmpdir/jpegPhoto.bin"
+	info "loop=${loop} width=${width} height=${height} zeros=${zeros} size=$(stat -c "%s" "$tmpdir/jpegPhoto.bin")"
 
 	for userdn in "${users[@]}"
 	do
