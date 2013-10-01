@@ -1,3 +1,10 @@
+ucs-test (4.0.129-1) unstable; urgency=low
+
+  * lib/computer.sh: use windows as default computer role instead of
+    managedclient (Bug #32780)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Oct 2013 14:52:16 +0200
+
 ucs-test (4.0.128-1) unstable; urgency=low
 
   * 51_samba4/53create_spn_account: split user remove from user add and
