@@ -390,52 +390,73 @@
 				Für die verschiedenen Windows-Versionen stehen separate MSI-Installationspakete bereit, die mit einem Doppelklick gestartet werden können.
 				Die Installations-Variante <guimenu>typical</guimenu> ist für die meisten Einsatzszenarien geeignet.
 				Windows-Systeme müssen vor der Installation auf das aktuelle Servicepack aktualisiert werden.
-				Der GPLPV-Treiber für Windows XP funktioniert beispielsweise nur mit Service Pack 3.
 			</para>
 			<table>
 				<title>Windows Virtualisierungstreiber</title>
 				<tgroup cols="2">
-					<colspec colnum="1" colname="col1" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1*"/>
 					<colspec colnum="2" colname="col2" colwidth="1*"/>
 					<thead>
 						<row>
-							<entry>Name des Treiberpakets</entry>
 							<entry>Windows-Version</entry>
+							<entry>Name des Treiberpakets</entry>
 						</row>
 					</thead>
+					<!-- http://wiki.univention.de/index.php?title=Installing-signed-GPLPV-drivers -->
 					<tbody>
-					  <row>
-						<entry>gplpv_2000_signed_0.11.0.372.msi</entry>
-						<entry>Windows 2000</entry>
-					  </row>
-					  <row>
-						<entry>gplpv_2003x32_signed_0.11.0.372.msi</entry>
-						<entry>Windows 2003 (32 Bit)</entry>
-					  </row>
-					  <row>
-						<entry>gplpv_2003x64_signed_0.11.0.372.msi</entry>
-						<entry>Windows 2003 (64 Bit)</entry>
-					  </row>
-					  <row>
-						<entry>gplpv_Vista2008x32_signed_0.11.0.372.msi</entry>
-						<entry>Windows Vista (32 Bit)</entry>
-					  </row>
-					  <row>
-						<entry>gplpv_Vista2008x32_signed_0.11.0.372.msi</entry>
-						<entry>Windows 2008 (32 Bit)</entry>
-					  </row>
-					  <row>
-						<entry>gplpv_Vista2008x64_signed_0.11.0.372.msi</entry>
-						<entry>Windows Vista (64 Bit)</entry>
-					  </row>
-					  <row>
-						<entry>gplpv_Vista2008x64_signed_0.11.0.372.msi</entry>
-						<entry>Windows 2008 (64 Bit)</entry>
-					  </row>
-					  <row>
-						<entry>gplpv_XP_signed_0.11.0.372.msi</entry>
-						<entry>Windows XP (32 Bit)</entry>
-					  </row>
+						<row>
+							<entry>Windows Server 2012 (64 Bit)</entry>
+							<entry morerows="5">gplpv_Vista2008x64_0.11.0.372.msi</entry>
+						</row>
+						<row>
+							<entry>Windows Server 2008 R2 (64 Bit)</entry>
+						</row>
+						<row>
+							<entry>Windows Server 2008 (64 Bit)</entry>
+						</row>
+						<row>
+							<entry>Windows 8 (64 Bit)</entry>
+						</row>
+						<row>
+							<entry>Windows 7 (64 Bit)</entry>
+						</row>
+						<row>
+							<entry>Windows Vista (64 Bit)</entry>
+						</row>
+
+						<row>
+							<entry>Windows Server 2008 (32 Bit)</entry>
+							<entry morerows="3">gplpv_Vista2008x32_0.11.0.372.msi</entry>
+						</row>
+						<row>
+							<entry>Windows 8 (32 Bit)</entry>
+						</row>
+						<row>
+							<entry>Windows 7 (32 Bit)</entry>
+						</row>
+						<row>
+							<entry>Windows Vista (32 Bit)</entry>
+						</row>
+
+						<row>
+							<entry>Windows Server 2003 (64 Bit)</entry>
+							<entry>gplpv_2003x64_0.11.0.372.msi</entry>
+						</row>
+
+						<row>
+							<entry>Windows Server 2003 (32 Bit)</entry>
+							<entry>gplpv_2003x32_0.11.0.372.msi</entry>
+						</row>
+
+						<row>
+							<entry>Windows Server 2000</entry>
+							<entry>gplpv_2000_signed_0.11.0.372.msi</entry>
+						</row>
+
+						<row>
+							<entry>Windows XP SP3 (32 Bit)</entry>
+							<entry>gplpv_XP_0.11.0.372.msi</entry>
+						</row>
 					</tbody>
 				</tgroup>
 			</table>
