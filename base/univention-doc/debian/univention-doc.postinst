@@ -32,21 +32,20 @@
 
 # umc overview
 univention-config-registry set \
-	ucs/web/overview/entries/service/univention-doc/description/de?'Entwickler-Dokumentation zu APIs, Archtekturen, Protokoll, ...' \
-	ucs/web/overview/entries/service/univention-doc/description?'Development documentation for APIs, architectures, protocols, ..' \
-	ucs/web/overview/entries/service/univention-doc/icon?'/icon/50x50/univention_dev_logo.png' \
-	ucs/web/overview/entries/service/univention-doc/label?'Univention development documentation' \
-	ucs/web/overview/entries/service/univention-doc/label/de?'Univention Entwickler-Dokumentation' \
-	ucs/web/overview/entries/service/univention-doc/link?'/univention-doc/' \
-	ucs/web/overview/entries/service/univention-doc/priority?'90'
+	ucs/web/overview/entries/admin/univention-doc/description/de?'Entwickler-Dokumentation zu Dokumentationen' \
+	ucs/web/overview/entries/admin/univention-doc/description?'Development documentation for documentations' \
+	ucs/web/overview/entries/admin/univention-doc/icon?'/icon/50x50/univention_dev_logo.png' \
+	ucs/web/overview/entries/admin/univention-doc/label?'Univention development documentation' \
+	ucs/web/overview/entries/admin/univention-doc/label/de?'Univention Entwickler-Dokumentation' \
+	ucs/web/overview/entries/admin/univention-doc/link?'/documentation/univention-doc/' \
+	ucs/web/overview/entries/admin/univention-doc/priority?'90'
 
 if  [ "$1" = 'configure' -a -n "$2" ] && dpkg --compare-versions "$2" lt '1.0.0-1'; then
 	mkdir -p /etc/univention/templates/removed/
-	files="en.html.d/50nagios-en.html de.html.d/50nagios-de.html"
-	files="en.html.d/90univention-doc-en.html de.html.d/90univention-doc-de.html"
+	files="ucs-overview/en.html.d/90univention-doc-en.html ucs-overview/de.html.d/90univention-doc-de.html univention-doc/index.html"
 	for file in $files; do
-		if [ -e "/etc/univention/templates/files/var/www/ucs-overview/$file" ]; then
-			mv "/etc/univention/templates/files/var/www/ucs-overview/$file" /etc/univention/templates/removed/
+		if [ -e "/etc/univention/templates/files/var/www/$file" ]; then
+			mv "/etc/univention/templates/files/var/www/$file" /etc/univention/templates/removed/
 		fi
 	done
 fi
