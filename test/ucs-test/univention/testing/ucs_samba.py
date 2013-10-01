@@ -1,5 +1,3 @@
-import os
-import sys
 import univention.config_registry
 import subprocess
 from samba.auth import system_session
@@ -9,6 +7,7 @@ import ldb
 import time
 import socket
 import re
+
 
 def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1):
 	if not lp:
@@ -20,30 +19,29 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 		attrs = [attrs]
 
 	samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
-	controls=["domain_scope:0"]
+	controls = ["domain_scope:0"]
 
 	print "Waiting for DRS replication, filter: '%s'" % (ldap_filter, ),
 	t = t0 = time.time()
 	while t < t0 + timeout:
 		try:
 			res = samdb.search(base=samdb.domain_dn(), scope=scope, expression=ldap_filter, attrs=attrs, controls=controls)
-		except ldb.LdbError, (num, msg):
+			if res:
+				print "\nDRS replication took %d seconds" % (t-t0, )
+				return res
+		except ldb.LdbError, (_num, msg):
 			print "Error during samdb.search: %s" % (msg, )
-
-		if res:
-			break
 
 		print '.',
 		time.sleep(delta_t)
 		t = time.time()
 
-	print "\nDRS replication took %d seconds" % (t-t0, )
-	return res
 
 def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
 	if not source_dc:
-		p = subprocess.Popen(["/usr/bin/univention-ldapsearch", "-xLLL", "(univentionService=S4 Connector)", "uid"], stdout=subprocess.PIPE)
-		stdout, stderr = p.communicate()
+		cmd = ("/usr/bin/univention-ldapsearch", "-xLLL", "(univentionService=S4 Connector)", "uid")
+		p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+		stdout, _stderr = p.communicate()
 		if stdout:
 			matches = re.compile('^uid: (.*)\$$', re.M).findall(stdout)
 			if len(matches) == 1:
@@ -59,12 +57,12 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
 		lp = LoadParm()
 		lp.load('/etc/samba/smb.conf')
 		samdb = SamDB("tdb://%s" % lp.private_path("sam.ldb"), session_info=system_session(lp), lp=lp)
-		partition_dn=str(samdb.domain_dn())
+		partition_dn = str(samdb.domain_dn())
 		print "USING partition_dn:", partition_dn
 
 	if direction == "in":
-		p = subprocess.Popen(["/usr/bin/samba-tool", "drs", "replicate", destination_dc, source_dc, partition_dn])	
+		cmd = ("/usr/bin/samba-tool", "drs", "replicate", destination_dc, source_dc, partition_dn)
 	else:
-		p = subprocess.Popen(["/usr/bin/samba-tool", "drs", "replicate", source_dc, destination_dc, partition_dn])	
-	return p.wait()
+		cmd = ("/usr/bin/samba-tool", "drs", "replicate", source_dc, destination_dc, partition_dn)
+	return subprocess.call(cmd)
 
