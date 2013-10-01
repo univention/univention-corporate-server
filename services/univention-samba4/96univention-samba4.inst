@@ -240,7 +240,7 @@ run_samba_provision() {
 	if [ "$rc" != 0 ]; then
 		exit "$rc"
 	fi
-	univention-config-registry set windows/wins-support=yes
+	univention-config-registry set windows/wins-support=yes windows/wins-server?"localhost"
 }
 
 samba_domain_join() {

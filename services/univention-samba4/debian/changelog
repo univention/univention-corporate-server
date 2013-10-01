@@ -1,3 +1,10 @@
+univention-samba4 (3.0.19-1) unstable; urgency=low
+
+  * Set windows/wins-server to localhost if the server is the PDC
+    (Bug #32745)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Oct 2013 16:26:07 +0200
+
 univention-samba4 (3.0.18-1) unstable; urgency=low
 
   * Restart Samba 4 after changing the server password (Bug #32468)
