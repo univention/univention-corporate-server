@@ -377,7 +377,7 @@
 				This provides a significant performance and reliability gain over the emulated standard devices.
 			</para>
 			<para>
-				Univention provides the GPLPV drivers signed with a Software Publishers Certificate obtained from the GlobalSign CA.
+				Univention provides the GPLPV drivers signed with a Software Publishers Certificate obtained from the VeriSign CA.
 			</para>
 			<para>
 				There are different MSI installer packages for the various Windows releases, which can be started with a simple double click.
@@ -397,38 +397,38 @@
 						</row>
 					</thead>
 					<tbody>
-						<row>
-							<entry>gplpv_2000_signed_0.11.0.308.msi</entry>
-							<entry>Windows 2000</entry>
-						</row>
-						<row>
-							<entry>gplpv_2003x32_0.11.0.308.msi</entry>
-							<entry>Windows 2003 (32 Bit)</entry>
-						</row>
-						<row>
-							<entry>gplpv_2003x64_0.11.0.308.msi</entry>
-							<entry>Windows 2003 (64 Bit)</entry>
-						</row>
-						<row>
-							<entry>gplpv_Vista2008x32_0.11.0.308.msi</entry>
-							<entry>Windows Vista (32 Bit)</entry>
-						</row>
-						<row>
-							<entry>gplpv_Vista2008x32_0.11.0.308.msi</entry>
-							<entry>Windows 2008 (32 Bit)</entry>
-						</row>
-						<row>
-							<entry>gplpv_Vista2008x64_0.11.0.308.msi</entry>
-							<entry>Windows Vista (64 Bit)</entry>
-						</row>
-						<row>
-							<entry>gplpv_Vista2008x64_0.11.0.308.msi</entry>
-							<entry>Windows 2008 (64 Bit)</entry>
-						</row>
-						<row>
-							<entry>gplpv_XP_0.11.0.308.msi</entry>
-							<entry>Windows XP (32 Bit)</entry>
-						</row>
+					  <row>
+						<entry>gplpv_2000_signed_0.11.0.372.msi</entry>
+						<entry>Windows 2000</entry>
+					  </row>
+					  <row>
+						<entry>gplpv_2003x32_signed_0.11.0.372.msi</entry>
+						<entry>Windows 2003 (32 Bit)</entry>
+					  </row>
+					  <row>
+						<entry>gplpv_2003x64_signed_0.11.0.372.msi</entry>
+						<entry>Windows 2003 (64 Bit)</entry>
+					  </row>
+					  <row>
+						<entry>gplpv_Vista2008x32_signed_0.11.0.372.msi</entry>
+						<entry>Windows Vista (32 Bit)</entry>
+					  </row>
+					  <row>
+						<entry>gplpv_Vista2008x32_signed_0.11.0.372.msi</entry>
+						<entry>Windows 2008 (32 Bit)</entry>
+					  </row>
+					  <row>
+						<entry>gplpv_Vista2008x64_signed_0.11.0.372.msi</entry>
+						<entry>Windows Vista (64 Bit)</entry>
+					  </row>
+					  <row>
+						<entry>gplpv_Vista2008x64_signed_0.11.0.372.msi</entry>
+						<entry>Windows 2008 (64 Bit)</entry>
+					  </row>
+					  <row>
+						<entry>gplpv_XP_signed_0.11.0.372.msi</entry>
+						<entry>Windows XP (32 Bit)</entry>
+					  </row>
 					</tbody>
 				</tgroup>
 			</table>
