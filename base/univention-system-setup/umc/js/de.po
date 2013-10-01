@@ -114,7 +114,10 @@ msgid ""
 "using only one or more physical network interfaces. "
 msgstr ""
 "<i>VLAN</i> Geräte können benutzt werden, um Netzwerkverkehr logisch mit nur "
-"einem oder mehr physikalischen Netzwerkgeräten zu trennen."
+"einem oder mehreren physikalischen Netzwerkgeräten zu trennen."
+
+msgid "Further information can be found in the <a href=\"http://docs.univention.de/computers-%s.html\" target=\"_blank\">UCS documentation</a>"
+msgstr "Weitere Informationen können in der <a href=\"http://docs.univention.de/computers-%s.html\" target=\"_blank\">UCS Dokumentation</a> gefunden werden."
 
 #: umc/js/setup/BasisPage.js:101
 msgid "Access settings"
@@ -734,12 +737,11 @@ msgid "SSL root certificate"
 msgstr "SSL-Root-Zertifikat"
 
 #: umc/js/setup/InterfaceWizard.js:84
-msgid ""
-"Several network types can be chosen. <i>Ethernet</i> is a standard physical "
-"interface. "
-msgstr ""
-"Mehrere Netzwerktypen können ausgewählt werden. <i>Ethernet</i> ist ein "
-"standard physikalisches Gerät. "
+msgid "Several network types can be chosen."
+msgstr "Mehrere Netzwerktypen können ausgewählt werden."
+
+msgid "<i>Ethernet</i> is a standard physical interface. "
+msgstr "<i>Ethernet</i> ist ein standard physikalisches Gerät. "
 
 #: umc/js/setup.js:272
 msgid "Should the UMC module be closed? All unsaved modification will be lost."
@@ -877,9 +879,13 @@ msgstr "Zeitzonen- und Tastatureinstellungen"
 msgid "Type"
 msgstr "Typ"
 
-#: umc/js/setup/InterfaceWizard.js:363 umc/js/setup/InterfaceWizard.js:437
-msgid "Additional interface options"
-msgstr "Weitere Geräteoptionen"
+#: umc/js/setup/InterfaceWizard.js:363
+msgid "Additional bridge options"
+msgstr "Weitere Bridge-Optionen"
+
+#: umc/js/setup/InterfaceWizard.js:437
+msgid "Additional bonding options"
+msgstr "Weitere Bonding-Optionen"
 
 #: umc/js/setup/HelpPage.js:61
 msgid "UCS initial configuration"

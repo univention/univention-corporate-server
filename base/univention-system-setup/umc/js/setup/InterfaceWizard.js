@@ -83,7 +83,12 @@ define([
 				pages: [{
 					name: 'interfaceType',
 					headerText: _('Choose interface type'),
-					helpText: _('Several network types can be chosen. <i>Ethernet</i> is a standard physical interface. ') + _('<i>VLAN</i> interfaces can be used to separate network traffic logically while using only one or more physical network interfaces. ') + _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments. ') + _('<i>Bond</i> interfaces allows two or more physical network interfaces to be coupled.'),
+					helpText: _('Several network types can be chosen.') +
+						'<ul><li>' + _(' <i>Ethernet</i> is a standard physical interface. ') +
+						'</li><li>' +  _('<i>VLAN</i> interfaces can be used to separate network traffic logically while using only one or more physical network interfaces. ') +
+						'</li><li>' + _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments. ') +
+						'</li><li>' + _('<i>Bond</i> interfaces allows two or more physical network interfaces to be coupled.') + '</li></ul>' +
+						_('Further information can be found in the <a href="http://docs.univention.de/computers-%s.html" target="_blank">UCS documentation</a>', props.ucsversion),
 					widgets: [{
 						// required to rename
 						name: 'original_name',
@@ -367,7 +372,7 @@ define([
 					}, {
 						type: MultiInput,
 						name: 'bridge_options',
-						label: _('Additional interface options'),
+						label: _('Additional bridge options'),
 						description: _('Additional options for this network interface'),
 						value: device.options,
 						subtypes: [{ type: TextBox }],
@@ -441,7 +446,7 @@ define([
 					}, {
 						type: MultiInput,
 						name: 'bond_options',
-						label: _('UCR options'),
+						label: _('Additional bonding options'),
 						description: _('Additional options for this network interface'),
 						value: device.options,
 						subtypes: [{ type: TextBox }],

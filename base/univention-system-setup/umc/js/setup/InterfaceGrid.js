@@ -120,6 +120,11 @@ define([
 					})
 				}]
 			});
+
+			tools.ucr(['version/version']).then(lang.hitch(this, function(data) {
+				this.ucsversion = data['version/version'];
+			}));
+
 		},
 
 		_getValueAttr: function() {
@@ -298,6 +303,7 @@ define([
 
 			var wizard = new InterfaceWizard({
 				interfaces: this.moduleStore,
+				ucsversion: this.ucsversion,
 				device: device,
 				onCancel: _cleanup,
 				onFinished: _finished

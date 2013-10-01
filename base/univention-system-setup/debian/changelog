@@ -1,3 +1,10 @@
+univention-system-setup (7.0.45-1) unstable; urgency=low
+
+  * Bug #30816: fix label
+  * Bug #29119: add link to UCS documenation
+
+ -- Florian Best <best@univention.de>  Tue, 01 Oct 2013 15:43:45 +0200
+
 univention-system-setup (7.0.44-1) unstable; urgency=low
 
   * removed ucs-overview/de.html stuff (Bug #32611)
