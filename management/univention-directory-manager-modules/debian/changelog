@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.41-1) unstable; urgency=low
+
+  * use base64.b64encode() instead of base64.encodestring() in jpegPhoto
+    syntax (Bug #30342)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Oct 2013 12:18:40 +0200
+
 univention-directory-manager-modules (9.0.40-1) unstable; urgency=low
 
   * store salted password hashes in pwhistory (Bug #30981)

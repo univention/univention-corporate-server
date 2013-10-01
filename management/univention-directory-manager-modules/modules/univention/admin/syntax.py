@@ -422,8 +422,7 @@ class jpegPhoto( Upload ):
 	@classmethod
 	def tostring(self, text):
 		if text:
-			encoded=base64.encodestring(text)
-			return encoded
+			return base64.b64encode(text)
 
 		else:
 			return ''
