@@ -1,7 +1,13 @@
+univention-directory-manager-modules (9.0.43-2) unstable; urgency=low
+
+  * version bump for changelog correcton (Bug #32592)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Oct 2013 15:39:59 +0200
+
 univention-directory-manager-modules (9.0.43-1) unstable; urgency=low
 
   * fixed error when removing last location from srv_record via
-    univention-dnsedit (Bug #28794)
+    univention-dnsedit (Bug #32592)
 
  -- Lukas Walter <walter@univention.de>  Tue, 01 Oct 2013 15:03:01 +0200
 
