@@ -1984,13 +1984,12 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			#read policy
 			pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
 			if self['overridePWHistory'] != '1':
-				new_password_hash = univention.admin.password.crypt(self['password'], add_salt = False)
 				#TODO: if checkbox "override pwhistory" is not set
-				if pwhistory.find(new_password_hash) != -1:
+				if self.__pwAlreadyUsed(self['password'], pwhistory):
 					raise univention.admin.uexceptions.pwalreadyused
 				if pwhistoryPolicy and pwhistoryPolicy.has_key('length') and pwhistoryPolicy['length']:
 					pwhlen = int(pwhistoryPolicy['length'])
-					newPWHistory = self.__getPWHistory(new_password_hash, pwhistory, pwhlen)
+					newPWHistory = self.__getPWHistory(univention.admin.password.crypt(self['password']), pwhistory, pwhlen)
 					ml.append(('pwhistory', self.oldattr.get('pwhistory', [''])[0], newPWHistory))
 			if pwhistoryPolicy != None and pwhistoryPolicy['pwLength'] != None and pwhistoryPolicy['pwLength'] != 0 and self['overridePWLength'] != '1':
 					if len(self['password']) < int(pwhistoryPolicy['pwLength']):
@@ -2466,6 +2465,26 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				super(object, self)._move(olddn, modify_childs, ignore_license)
 				self.move_subelements(tmpdn, olddn, subelements, ignore_license)
 				raise
+
+	def __pwAlreadyUsed(self, password, pwhistory):
+		for line in pwhistory.split(" "):
+			linesplit = line.split("$") # $method_id$salt$password_hash
+			try:
+				 password_hash = univention.admin.password.crypt(password, linesplit[1], linesplit[2])
+			except IndexError: # old style password history entry, no method id/salt in there
+				hash_algorithm = hashlib.new("sha1")
+				hash_algorithm.update(password.encode("utf-8"))
+				password_hash = hash_algorithm.hexdigest().upper()
+
+			if password_hash == line:
+				return True
+		return False
+					
+					
+					
+
+		
+
 
 	def __getPWHistory(self, newpwhash, pwhistory, pwhlen):
 		# split the history

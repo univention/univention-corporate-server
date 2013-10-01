@@ -37,19 +37,18 @@ import univention.config_registry
 configRegistry=univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-def crypt(password, add_salt = True):
+def crypt(password, method_id = None, salt = None):
 	"""return crypt hash"""
-	password_hash = None
 	hashing_method = configRegistry.get('password/hashing/method', 'sha-512').upper()
 
-	if add_salt:
+	if salt is None:
+		salt = ''
 		valid = ['.', '/', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
 			'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
 			'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
 			'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
 			'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
 			'6', '7', '8', '9' ]
-		salt = ''
 		urandom = open("/dev/urandom", "r")
 		for i in xrange(0, 16): # up to 16 bytes of salt are evaluated by crypt(3), overhead is ignored
 			o = ord(urandom.read(1))
@@ -58,28 +57,16 @@ def crypt(password, add_salt = True):
 			salt = salt + valid[(o % len(valid))]
 		urandom.close()
 
-		import crypt # UCRV
+	if method_id is None:
 		method_id = {'MD5': '1',
 					 'SHA256': '5',
 					 'SHA-256': '5',
 					 'SHA512': '6',
 					 'SHA-512': '6',
-					 }.get(hashing_method, 6)
-		password_hash = crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
+					 }.get(hashing_method, '6')
 
-	else:
-		import hashlib
-		hash_algorithm = hashlib.new({"MD5": "md5",
-									 "SHA256": "sha256",
-									 "SHA-256": "sha256",
-									 "SHA512": "sha512",
-									 "SHA-512": "sha512"
-									}.get(hashing_method, "sha512"))
-		hash_algorithm.update(password)
-		password_hash = hash_algorithm.hexdigest()
-
-
-	return password_hash
+	import crypt
+	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
 
 
 

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.40-1) unstable; urgency=low
+
+  * store salted password hashes in pwhistory (Bug #30981)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 01 Oct 2013 11:58:00 +0200
+
 univention-directory-manager-modules (9.0.39-1) unstable; urgency=low
 
   * Bug #24727: fix typo in english translation
