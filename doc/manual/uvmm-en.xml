@@ -361,7 +361,7 @@
 		<itemizedlist>
 			<listitem>
 				<simpara>
-				On Xen virtualization servers an ISO image named <emphasis>Xen Windows drivers (gplpv 308)</emphasis> is provided, which contains the GPLPV virtualization driver for Microsoft Windows.
+				On Xen virtualization servers an ISO image named <emphasis>Xen Windows drivers (gplpv 372)</emphasis> is provided, which contains the GPLPV virtualization driver for Microsoft Windows.
 				</simpara>
 			</listitem>
 			<listitem>
