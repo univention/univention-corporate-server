@@ -2592,6 +2592,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
+		The samba test case for creating spn accounts has been improved
+		(<ulink url="&ucsbug;32778">Bug 32778</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
 		Under certain circumstances samba 3.6.8 reports a timeout for the unix password sync during
 		password changes. Since the password change is successful nonetheless, two test cases have
 		been adjusted to tolerate this flaw (<ulink url="&ucsbug;31794">Bug 31794</ulink>).
