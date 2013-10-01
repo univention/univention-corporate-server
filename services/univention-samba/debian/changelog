@@ -1,3 +1,10 @@
+univention-samba (8.0.9-1) unstable; urgency=low
+
+  * Set windows/wins-server to localhost if the server is the PDC
+    (Bug #32745)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Oct 2013 16:26:12 +0200
+
 univention-samba (8.0.8-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
