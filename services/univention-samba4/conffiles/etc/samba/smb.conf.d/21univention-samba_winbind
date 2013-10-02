@@ -2,3 +2,6 @@
 	winbind separator = +
 	template shell = /bin/bash
 	template homedir = /home/%D-%U
+	
+	idmap config * : backend = tdb
+	idmap config * : range = 300000-400000

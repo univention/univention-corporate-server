@@ -1,3 +1,9 @@
+univention-samba4 (3.0.20-1) unstable; urgency=low
+
+  * Added default 'idmap config *' options (Bug #32376)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Oct 2013 08:23:08 +0200
+
 univention-samba4 (3.0.19-1) unstable; urgency=low
 
   * Set windows/wins-server to localhost if the server is the PDC
