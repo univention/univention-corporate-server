@@ -625,21 +625,19 @@
 						<para>
 							If several extended attributes are to be managed on one tab, the order
 							of the individual attributes on the tab can be influenced here. They
-							are added to the end of the tab in question in ascending order of
+							are added to the end of the tab or the group in question in ascending order of
 							their numbers.
 						</para>
 						<para>
+							<!-- Fortlaufend vergebene Positionsnummern führen dazu, dass die Attribute jeweils abwechselnd links und rechts zweispaltig angeordnet werden. -->
+							<!-- Ansonsten beginnt die Plazierung in der linken Spalte. -->
+							<!-- Weisen erweiterte Attribute die gleiche Positionsnummer auf, ist deren Reihenfolge zufällig. -->
+
 							If extended attributes have the same number, they are listed in a
 							random order. If the difference between two consecutive numbers is
 							larger than 1 and the first attribute is shown in the left column, the
 							second will be displayed in the next line.
 						</para>
-						<!-- <para> -->
-						<!-- 	If the <emphasis>Overwrite existing tab</emphasis> option is activated, the -->
-						<!-- 	numbers will be used to overwrite an existing input field. The -->
-						<!-- 	numbering of the input fields starts in the top left of the tab with -->
-						<!-- 	<emphasis>1</emphasis>. -->
-						<!-- </para> -->
 					</entry>
 				</row>
 				<row>
@@ -715,7 +713,7 @@
 				<row>
 					<entry>Advanced tab</entry>
 					<entry>
-						Settings possibilities which are not often used can be placed in the
+						Settings possibilities which are rarely used can be placed in the
 						extended settings tab.
 					</entry>
 				</row>

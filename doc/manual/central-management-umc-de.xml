@@ -653,23 +653,15 @@
 						<para>
 							Sollen mehrere erweiterte Attribute auf einer Karteikarte verwaltet
 							werden, kann anhand dieser Positionsnummer die Reihenfolge der
-							einzelnen Attribute beeinflusst werden. Sie werden in aufsteigender
-							Reihenfolge ihrer Positionsnummern an das Ende der betreffenden
-							Karteikarte angehängt.
+							Attribute beeinflusst werden. Sie werden in aufsteigender
+							Reihenfolge bestimmt durch diese Positionsnummer jeweils am das Ende der betreffenden
+							Gruppe und Karteikarte angehängt.
 						</para>
 						<para>
-							Weisen erweiterte Attribute die gleiche Positionsnummer auf, werden
-							diese in zufälliger Reihenfolge einsortiert. Ist die Differenz zweier
-							aufeinanderfolgender Positionsnummern größer als 1 und das erste
-							Attribut wird in der linken Spalte dargestellt, so wird das zweite
-							Attribut in der nächsten Zeile dargestellt.
+							Fortlaufend vergebene Positionsnummern führen dazu, dass die Attribute jeweils abwechselnd links und rechts zweispaltig angeordnet werden.
+							Ansonsten beginnt die Plazierung in der linken Spalte.
+							Weisen erweiterte Attribute die gleiche Positionsnummer auf, ist deren Reihenfolge zufällig.
 						</para>
-						<!-- <para> -->
-						<!-- 	Ist die Option <emphasis>Existierende Karteikarte überschreiben</emphasis> -->
-						<!-- 	aktiviert, wird die Positionsnummern verwendet, um ein bestehendes -->
-						<!-- 	Eingabefeld zu überschreiben. Die Zählung der Eingabefelder beginnt -->
-						<!-- 	auf der Karteikarte oben links mit <emphasis>1</emphasis>. -->
-						<!-- </para> -->
 					</entry>
 				</row>
 				<row>
@@ -684,7 +676,7 @@
 					<entry>Gruppenname</entry>
 					<entry>
 						<para>
-							Gruppen ermöglichen die Strukturierung eines Reiters. Eine Gruppe wird
+							Gruppen ermöglichen die Strukturierung einer Karteikarte. Eine Gruppe wird
 							durch einen grauen Querbalken abgetrennt und kann ein- und ausgeklappt
 							werden.
 						</para>
@@ -697,9 +689,9 @@
 				<row>
 					<entry>Positionsnummer der Gruppe</entry>
 					<entry>
-						Sollen mehrere Gruppen auf einem Reiter verwaltet werden, kann anhand
+						Sollen mehrere Gruppen auf einer Karteikarte verwaltet werden, kann anhand
 						dieser Positionsnummer die Darstellungsreihenfolge beeinflusst werden. Sie
-						werden in aufsteigender Reihenfolge ihrer Positionsnummern dargestellt
+						werden in aufsteigender Reihenfolge ihrer Positionsnummern dargestellt.
 					</entry>
 				</row>
 				<row>
@@ -718,7 +710,7 @@
 					konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut
 					überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des
 					Verzeichnisses
-					<filename>/usr/share/pyshared/univention/admin/handlers</filename> ermittelt
+					<filename class="directory">/usr/share/pyshared/univention/admin/handlers/</filename> ermittelt
 					werden. Es handelt sich dabei um den Namen, der in den Deklarationen von
 					univention.admin.property-Objekten vor dem Doppelpunkt steht,
 					z.B. <emphasis>roomNumber</emphasis> für die Raumnummer eines Benutzers.
@@ -730,7 +722,7 @@
 					<entry>
 						Alle Eingabefelder werden standardmäßig in zwei Spalten
 						gruppiert. Diese Option kann für überlange Eingabefelder verwendet
-						werden, die sich über die komplette Breite des Reiters erstrecken
+						werden, die sich über die komplette Breite beider Spalten erstrecken
 						sollen.
 					</entry>
 				</row>
@@ -738,8 +730,8 @@
 				  <entry>Existierende Karteikarte überschreiben</entry>
 				  <entry>
 					Ist diese Option aktiviert, wird die betreffende Karteikarte überschrieben,
-					bevor die erweiterten Attribute darauf platziert werden. Mit Hilfe dieser Option
-					können die vorhandenen Eingabefelder auf einer vorgegebenen Karteikarte
+					bevor erweiterte Attribute darauf platziert werden. Mit Hilfe dieser Option
+					können alle vorhandenen Eingabefelder auf einer vorgegebenen Karteikarte
 					ausgeblendet werden. Es ist zu beachten, daß diese Option bei Pflichtfeldern zu
 					Problemen führen kann. Verwendet die zu überschreibende Karteikarte
 					Übersetzungen muss die überschreibende Karteikarte ebenfalls identische Übersetzungen mitbringen.
@@ -748,7 +740,7 @@
 				<row>
 					<entry>Karteikarte mit erweiterten Einstellungen</entry>
 					<entry>
-						Einstellungsmöglichkeiten, die nicht häufig verwendet werden, können
+						Einstellungsmöglichkeiten, die selten verwendet werden, können
 						auf Karteikarten in den erweiterten Einstellungen platziert werden.
 					</entry>
 				</row>
@@ -783,14 +775,14 @@
 						Der angegebene Attributname ist bei der Verwendung der
 						Kommandozeilenschnittstelle zu verwenden. Beim Anlegen des erweiterten
 						Attributs wird hier automatisch <emphasis>Name</emphasis> von der Karteikarte
-						<emphasis>Allgemein</emphasis> übernommen und kann nachträglich modifziert werden.
+						<emphasis>Allgemein</emphasis> übernommen und kann nachträglich modifiziert werden.
 					</entry>
 				</row>
 				<row>
 					<entry>Hook</entry>
 					<entry>
 						Die Funktionen der hier angegebenen Hook-Klasse werden während des
-						Anlegens, Modifizierens und Löschens von Objekten mit einem erweitertem
+						Anlegens, Modifizierens und Löschens von Objekten mit dem erweitertem
 						Attribut aufgerufen. Weiterführende Dokumentation findet sich unter
 						<ulink url="http://sdb.univention.de/1080"/>.
 					</entry>
@@ -839,9 +831,10 @@
 							(<emphasis>integer</emphasis>) gibt es drei Möglichkeiten einen binären Zustand auszudrücken:
 							Die Syntax <emphasis>TrueFalse</emphasis> wird auf LDAP-Ebene durch die
 							Zeichenketten <emphasis>true</emphasis> und <emphasis>false</emphasis> abgebildet, die Syntax
-							<emphasis>TrueFalseUpper</emphasis> referenziert die OpenLDAP-Bool-Werte
-							<emphasis>TRUE</emphasis> und <emphasis>FALSE</emphasis> und die Syntax <emphasis>boolean</emphasis>
-							speichert keinen Wert oder die Zeichenkette <emphasis>1</emphasis>.
+							<emphasis>TrueFalseUpper</emphasis> verwendet dagegen die Werte
+							<emphasis>TRUE</emphasis> und <emphasis>FALSE</emphasis>.
+							Die Syntax <emphasis>boolean</emphasis> dagegen
+							speichert keinen Wert bzw. die Zeichenkette <emphasis>1</emphasis>.
 						</para>
 						<para>
 						  Standardmäßig wird die Syntax <emphasis>string</emphasis> verwendet. Eine
@@ -854,7 +847,7 @@
 				<row>
 					<entry>Vorgabewert</entry>
 					<entry>
-						Ist hier ein Vorgabewert definiert, werden anzulegende Objekte mit
+						Ist hier ein Vorgabewert definiert, werden Objekte beim Anlegen mit
 						diesem Wert initialisiert. Der Wert kann während des Anlegens noch
 						manuell bearbeitet werden. Bereits bestehende Objekte werden nicht
 						verändert.
@@ -864,8 +857,8 @@
 					<entry>Mehrfachwert</entry>
 					<entry>
 						Diese Option legt fest, ob ein einzelner Wert oder mehrere Werte in
-						der Eingabemaske eingetragen werden können. In der Schema-Definition
-						des LDAP-Attributes ist festgelegt, ob nur eine oder mehrere Instanzen
+						der Eingabemaske eingetragen werden können. Die Einstellung muß zur Schema-Definition passen, in der für
+						das verwendete LDAP-Attributes festgelegt ist, ob nur eine oder mehrere Instanzen
 						des Attributs an einem LDAP-Objekt verwendet werden dürfen.
 					</entry>
 				</row>
