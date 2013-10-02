@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.32-9) unstable; urgency=low
+
+  * Fixed python traceback which was introduced with r44418 (Bug #32542)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Oct 2013 07:06:25 +0200
+
 univention-s4-connector (7.0.32-8) unstable; urgency=low
 
   * Stop synchronizing the password from S4 to UCS for Slave PDCs
