@@ -139,6 +139,16 @@
 			the <guimenu>License text</guimenu> input field and activated
 			with <guimenu>Upload</guimenu>.
 		</para>
+
+		<para>
+		  Installation of most of the applications in the Univention App Center requires a
+		  personalised license key. UCS license keys granted for UCS versions older than 3.1 can
+		  be converted by clicking <guimenu>Request updated license key with idenfication</guimenu>.
+		  The current license key is sent to Univention and the updated key
+		  returned to a specified e-mail address within a few minutes. The new key can be imported
+		  directly. The conversion does not affect the scope of the license.
+		</para>
+
 		<para>
 		  If the number of licensed user or computer objects is exceeded, it is not possible to create
 		  any additional objects in the &ucsUMC; or edit any existing ones unless an extended

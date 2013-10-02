@@ -2128,15 +2128,6 @@ nscd -i hosts
 	</figure>
 
 	<para>
-	  Installation of most of the applications in the Univention App Center requires a personalised
-	  license key. UCS license keys granted for UCS
-	  versions older than 3.1 need to be converted. If an affected application is installed, a
-	  window opens where you can start the conversion process: the current license key is sent to Univention
-	  and the updated key returned to a specified e-mail address within a few minutes. The new key
-	  can be imported directly. The conversion does not affect the scope of the license.
-	</para>
-
-	<para>
 	  Some applications may not be compatible with other software packages from UCS. For instance,
 	  most groupware packages require the UCS mailstack to be uninstalled. Every application checks
 	  whether incompatible versions are installed and then prompts which

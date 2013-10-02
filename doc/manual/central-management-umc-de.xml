@@ -143,6 +143,18 @@
 			<guimenu>Lizenztext</guimenu> kopiert und mit <guimenu>Hochladen</guimenu>
 			aktiviert werden.
 		</para>
+
+		<para>
+		  Die Installation der meisten Anwendungen aus dem Univention App Center erfordert einen individuell
+		  ausgestellten Lizenschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Lizenzschlüssel,
+		  die für UCS-Versionen vor 3.1 ausgestellt wurden können durch Klick auf die die
+		  Schaltfläche <guimenu>Aktualisierten Lizenzschlüssel mit Identifikation
+		  anfordern</guimenu> aktualisiert werden. Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
+		  und der aktualisierte Schlüssel nach einigen Minuten an eine angegebene E-Mail-Adresse
+		  versendet. Der neue Schlüssel kann dann direkt eingespielt werden. Der Lizenzumfang bleibt
+		  durch die Konvertierung unverändert.
+		</para>
+
 		<para>
 		  Ist die Anzahl der lizensierten Benutzer- oder Rechner-Objekte überschritten, können keine
 		  weiteren Objekte in der &ucsUMC; angelegt oder bestehende editiert werden, solange keine

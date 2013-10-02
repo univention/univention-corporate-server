@@ -2264,17 +2264,6 @@ nscd -i hosts
 		</figure>
 
 		<para>
-		  Die Installation der meisten Anwendungen aus dem Univention App Center erfordert einen individuell
-		  ausgestellten Lizenschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Lizenzschlüssel,
-		  die für UCS-Versionen vor 3.1 ausgestellt wurden, müssen umgewandelt werden. Wird eine
-		  betroffene Applikation installiert, öffnet sich ein Dialog, mit dem die Umwandlung
-		  eingeleitet werden kann: Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
-		  und der aktualisierte Schlüssel nach einigen Minuten an eine angegebene E-Mail-Adresse
-		  versendet. Der neue Schlüssel kann dann direkt eingespielt werden. Der Lizenzumfang bleibt
-		  durch die Konvertierung unverändert.
-		</para>
-
-		<para>
 		  Einige Applikationen sind möglicherweise inkompatibel mit anderen Softwarepaketen aus
 		  UCS. So setzen beispielsweise die meisten Groupwarepakete voraus, dass der UCS-Mailstack
 		  deinstalliert ist. Jede Applikation prüft, ob inkompatible Versionen installiert sind und
