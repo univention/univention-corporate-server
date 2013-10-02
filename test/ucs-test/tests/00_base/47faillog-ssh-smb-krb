@@ -12,6 +12,7 @@
 ## versions:
 ##  1.0-0: skip
 ##  2.4-0: fixed
+##  3.2-0: skip
 
 . "$TESTLIBPATH/ucr.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137

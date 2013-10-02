@@ -1,3 +1,9 @@
+ucs-test (4.0.133-1) unstable; urgency=low
+
+  * skip 00_base/47faillog-ssh-smb-krb for ucs-3.2-0 (Bug #19016)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 02 Oct 2013 16:38:15 +0200
+
 ucs-test (4.0.132-1) unstable; urgency=low
 
   * 50_samba/4*password*: Use -S ldap/master for net rpc password change
