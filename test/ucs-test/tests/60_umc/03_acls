@@ -9,12 +9,13 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/user.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
 
 eval "$(ucr shell)"
 
 RETVAL=100
 
-USERNAME=$(user_randomname)
+USERNAME=$(random_chars 8 "${_lowerletters}${_ciphers}")
 PASSWORD=univention
 
 info "Create user"

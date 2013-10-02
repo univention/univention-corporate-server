@@ -1,3 +1,9 @@
+ucs-test (4.0.131-1) unstable; urgency=low
+
+  * Don't use umlauts for ACL tests (Bug #32747)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Oct 2013 07:23:34 +0200
+
 ucs-test (4.0.130-1) unstable; urgency=low
 
   * modified 10_ldap/44replication_binary to match the requirements of the new
