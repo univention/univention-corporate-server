@@ -2224,14 +2224,14 @@ nscd -i hosts
                 dem die aktualisierten Pakete, Hinweise zu Fehlerkorrekturen und neuen
                 Funktionen aufgeführt sind.
             </para>
-        </section><!-- Unterscheidung der Update-Varianten / Aufbau der UCS-Versionen -->
+        </section>
 
         <section id="software:appcenter"><title>Univention App Center</title>
 		<para>
 		  Das Univention App Center erlaubt die einfache Einbindung von Softwarekomponenten in eine
 		  UCS-Installation. Die Applikationen werden sowohl von Drittanbietern wie auch von
-		  Univention selbst (z.B. UCS@school) bereitgestellt. Der Kauf von Lizenzen, Maintenance oder
-		  Support für die Applikation verläuft über den jeweiligen Hersteller und
+		  Univention selbst (z.B. UCS@school) bereitgestellt. Die Maintenance und der 
+		  Support für die Applikationen erfolgt durch den jeweiligen Hersteller und
 		  nicht über das Univention App Center.
 		</para>
 
@@ -2252,9 +2252,14 @@ nscd -i hosts
 		  Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein
 		  Screenshot). Im Feld <guimenu>E-Mail Benachrichtigung</guimenu> wird angezeigt, ob der
 		  Hersteller der Softwarekomponente bei der Installation/Deinstallation benachrichtigt wird.
+		  Einige Applikationen können direkt über Univention lizensiert werden. Für diese
+		  Applikationen wird in der unteren Bildleiste der Button <guimenu>Shop</guimenu> neben
+		  einem stilisierten Einkaufskorb angezeigt. Für alle anderen Applikationen muss der
+		  Hersteller der Applikation über die unter <emphasis>Kontakt</emphasis> angezeigt
+		  E-Mail-Adresse kontaktiert werden.
 		</para>
 
-		<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>
+		<figure id="appcenter-details"><title>etails einer Applikation im App Center</title>
 		<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_details_de.png"/>
 		</figure>
 
@@ -2287,11 +2292,15 @@ nscd -i hosts
 
 		<para>
 		  Nach der Installation einer Applikation werden nach einem Klick auf das Icon einer Applikation
-		  zwei neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation
-		  und ein Klick auf <guimenu>Öffnen</guimenu> zeigt ein Übersichtsmodul an, in dem
-		  weitergehende Informationen wie ein Link zu Dokumentation und die installierte Version
-		  angezeigt werden. Hier kann die Applikation auch deinstalliert werden oder - falls eine
-		  aktuellere Version vorliegt - ein Update gestartet werden. Eine Übersicht über die
+		  ein oder zwei neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation.
+		  <guimenu>Öffnen</guimenu> verweist auf eine Webseite mit der die installierte Applikation
+		  weitergehend konfiguriert oder verwendet werden kann. Installiert man beispielsweise die
+		  Horde-Applikation, führt dieser Link auf den Login-Dialog. Bei Applikationen ohne
+		  Webinterface wird die Option nicht angezeigt.
+		</para>
+
+		<para>
+		  Eine Übersicht über die
 		  vorhandenen Applikationen kann in der UMC-Startseite unter <guimenu>Installierte
 		  Applikationen</guimenu> abgerufen werden.
 		</para>

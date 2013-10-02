@@ -2092,8 +2092,10 @@ nscd -i hosts
 	<para>
 	  The Univention App Center allows simple integration of software components in a UCS
 	  installation. The applications are provided both by third parties and by Univention itself
-	  (e.g., ucs@School). Licenses, maintenance and support for the applications are purchased from
-	  the respective manufacturer and not via the Univention App Center.
+	  (e.g., ucs@School). 
+	  <!-- Die Maintenance und der  -->
+	  <!-- Support für die Applikationen erfolgt durch den jeweiligen Hersteller und -->
+	  <!-- nicht über das Univention App Center. -->
 	</para>
 
 	<figure id="appcenter-overview"><title>Overview of applications available in the App Center</title>
@@ -2113,6 +2115,12 @@ nscd -i hosts
 	  description, manufacturer, contact information and a screenshot). The <guimenu>Email notification</guimenu>
 	  field shows whether the manufacturer of the software component is
 	  notified when it is installed/uninstalled.
+		  <!-- Einige Applikationen können direkt über Univention lizensiert werden. Für diese -->
+		  <!-- Applikationen wird in der unteren Bildleiste der Button <guimenu>Shop</guimenu> neben -->
+		  <!-- einem stilisierten Einkaufskorb angezeigt. Für alle anderen Applikationen muss der -->
+		  <!-- Hersteller der Applikation über die unter <emphasis>Kontakt</emphasis> angezeigt -->
+		  <!-- E-Mail-Adresse kontaktiert werden. -->
+
 	</para>
 
 	<figure id="appcenter-details"><title>Details for an application in the App Center</title>
@@ -2144,13 +2152,17 @@ nscd -i hosts
 	</para>
 
 	<para>
-	  Following installation of an application, two new options are shown when clicking on the icon
-	  of an application: <guimenu>Uninstall</guimenu> removes an application and clicking on
-	  <guimenu>Open</guimenu> displays an overview module containing detailed information and a
-	  link to the documentation as well as the installed version. Here one can also uninstall the
-	  application or - if a more up-to-date version is available - perform an update. An
-	  overview of the existing applications can be opened under <guimenu>Installed applications</guimenu>
-	  on the UMC start page.
+	  Following installation of an application, ore or two new options are shown when clicking on the icon
+	  of an application: <guimenu>Uninstall</guimenu> removes an application. 
+		  <!-- <guimenu>Öffnen</guimenu> verweist auf eine Webseite mit der die installierte Applikation -->
+		  <!-- weitergehend konfiguriert oder verwendet werden kann. Installiert man beispielsweise die -->
+		  <!-- Horde-Applikation, führt dieser Link auf den Login-Dialog. Bei Applikationen ohne -->
+		  <!-- Webinterface wird die Option nicht angezeigt. -->
+	</para>
+
+	<para> 
+	  An overview of the existing applications can be opened under <guimenu>Installed
+	  applications</guimenu> on the UMC start page.
 	</para>
 
 	<para>
