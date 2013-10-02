@@ -373,7 +373,7 @@
 			</listitem>
 			<listitem>
 				<simpara>
-				Auf KVM-Virtualisierungsservern wird ein ISO-Image und ein Disketten-Abbild mit dem Namen <emphasis>KVM Windows drivers (virtio 1.1.16)</emphasis> bereitgestellt, dass die virtIO-Virtualisierungstreiber für Microsoft Windows enthält.
+				Auf KVM-Virtualisierungsservern wird ein ISO-Image mit dem Namen <emphasis>KVM Windows drivers (virtio 1.1.65)</emphasis> bereitgestellt, dass die virtIO-Virtualisierungstreiber für Microsoft Windows enthält.
 				</simpara>
 			</listitem>
 		</itemizedlist>
@@ -464,44 +464,53 @@
 				Nach Abschluß der Installation und einem Neustart finden sich im Windows-Gerätemanager die Geräte <emphasis>Xen Net Device Driver</emphasis> und <emphasis>Xen Block Device Driver</emphasis>.
 			</para>
 		</section>
-		<section id="uvmm:Installation_der_virtIO-Treiber_fuer_KVM-Instanzen">
-			<title>Installation der virtIO-Treiber für KVM-Instanzen</title>
-			<para>
-				Bei Windows-Systemen, die unter KVM installiert werden muss <emphasis>vor</emphasis> Beginn der Windows-Installation Paravirtualisierung aktiviert werden.
-			</para>
-			<para>
-				Die virtIO-Schnittstelle erlaubt einer virtuellen Maschine den effizienten Zugriff auf Netzwerk- und Speicher-Ressourcen des KVM-Hypervisors.
-				Die folgenden Schritte beschreiben die Einrichtung der virtIO-Treiber unter Windows 7:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<simpara>
-					Ein Diskettenlaufwerk muss eingerichtet und das Image <emphasis>virtio 1.1.16.vfd</emphasis> zugewiesen werden.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					Für die Festplatten-Laufwerke muss im <guimenu>Geräte</guimenu>-Dialog des &ucsUVMM; die Option <guimenu>Paravirtualisiertes Laufwerk</guimenu> aktiviert werden.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					Die initialen Schritte der Windows-Installation sind unverändert.
-					Im Partitionierungs-Dialog erscheint die Warnung, dass nicht auf Massenspeicher zugegriffen werden kann;
-					dies stellt keinen Fehler dar.
-					Im selben Menü können die virtIO-Treiber mit <guimenu>Load drivers</guimenu> eingerichtet werden.
-					Unter Windows 7 (und ebenso Windows 2003/2008) muss <emphasis>Red Hat virtIO SCSI Controller</emphasis> und <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> ausgewählt werden.
-					Nach der Treiber-Installation ist die Festplatte im Windows-Installationsdialog sichtbar und die Installation kann fortgesetzt werden.
-					</simpara>
-				</listitem>
-				<listitem>
-					<simpara>
-					Nach Abschluß der Installation werden die Geräte <emphasis>Red Hat virtIO SCSI Disk Device</emphasis> und <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> im Windows-Gerätemanager angezeigt.
-					</simpara>
-				</listitem>
-			</itemizedlist>
+		<section id="uvmm:virtio">
+		  <title>Installation der virtIO-Treiber für KVM-Instanzen</title>
+		  <para>
+			Bei Windows-Systemen, die unter KVM installiert werden muss <emphasis>vor</emphasis>
+			Beginn der Windows-Installation Paravirtualisierung aktiviert werden.
+		  </para>
+		  <para>
+			Die virtIO-Schnittstelle erlaubt einer virtuellen Maschine den effizienten Zugriff auf
+			Netzwerk- und Speicher-Ressourcen des KVM-Hypervisors. Die folgenden Schritte
+			beschreiben die Einrichtung der virtIO-Treiber unter Windows 7.
+		  </para>
+
+		  <itemizedlist>
+			<listitem><simpara>
+			  Ein CDROM/DVD-Laufwerk muss eingerichtet und das Image <emphasis>KVM Windows drivers
+			  (virtio 1.1.65)</emphasis> zugewiesen werden.
+			</simpara></listitem>
+
+			<listitem><simpara>
+			  Für die Festplatten-Laufwerke muss im <guimenu>Geräte</guimenu>-Dialog des &ucsUVMM;
+			  die Option <guimenu>Paravirtualisiertes Laufwerk</guimenu> aktiviert werden.
+			</simpara></listitem>
+
+			<listitem><simpara>
+			  Für die Netzwerkkarten muss der <guimenu>Treiber</guimenu> auf
+			  <emphasis>Paravirtualisiert (virtio)</emphasis> konfiguriert werden.
+			</simpara></listitem>
+
+			<listitem><simpara>
+			  Die initialen Schritte der Windows-Installation sind unverändert. Im
+			  Partitionierungs-Dialog erscheint die Warnung, dass nicht auf Massenspeicher
+			  zugegriffen werden kann; dies stellt keinen Fehler dar. Im selben Menü können die
+			  virtIO-Treiber mit <guimenu>Treiber laden</guimenu> eingerichtet werden. Unter Windows
+			  7 (und ebenso Windows 2003/2008) muss <emphasis>Red Hat virtIO SCSI
+			  Controller</emphasis> und <emphasis>Red Hat virtIO Ethernet Adapter</emphasis>
+			  ausgewählt werden. Nach der Treiber-Installation ist die Festplatte im
+			  Windows-Installationsdialog sichtbar und die Installation kann fortgesetzt werden.
+			</simpara></listitem>
+
+			<listitem><simpara>
+			  Nach Abschluß der Installation werden die Geräte <emphasis>Red Hat virtIO SCSI Disk
+			  Device</emphasis> und <emphasis>Red Hat virtIO Ethernet Adapter</emphasis> im
+			  Windows-Gerätemanager angezeigt.
+			</simpara></listitem>
+		  </itemizedlist>
 		</section>
-	</section>
+	  </section>
 	<section id="uvmm::snapshots">
 		<title>Sicherungspunkte</title>
 		<para>

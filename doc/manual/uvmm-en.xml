@@ -366,7 +366,7 @@
 			</listitem>
 			<listitem>
 				<simpara>
-				On KVM virtualization servers an ISO and a floppy image named <emphasis>KVM Windows drivers (virtio 1.1.16)</emphasis> are provided, which contains the virtIO virtualization driver for Microsoft Windows.
+				On KVM virtualization servers an ISO named <emphasis>KVM Windows drivers (virtio 1.1.65)</emphasis> are provided, which contains the virtIO virtualization driver for Microsoft Windows.
 				</simpara>
 			</listitem>
 		</itemizedlist>
@@ -458,7 +458,7 @@
 			</para>
 		</section>
 
-		<section id="uvmm:Installation_of_the_virtIO_drivers_for_KVM_instances">
+		<section id="uvmm:virtio">
 			<title>Installation of the virtIO drivers for KVM instances</title>
 			<para>
 				In Windows systems installed under KVM, paravirtualization must be activated <emphasis>before</emphasis> beginning the Windows installation.
@@ -470,7 +470,7 @@
 			<itemizedlist>
 				<listitem>
 					<simpara>
-					A floppy drive needs to be setup in the drive settings with the image <emphasis>virtio 1.1.16.vfd</emphasis> assigned.
+					A CD/DVDy drive needs to be setup in the drive settings with the image <emphasis>KVM Windows drivers (virtio 1.1.65)</emphasis> assigned.
 					</simpara>
 				</listitem>
 				<listitem>
@@ -478,6 +478,12 @@
 					The hard disk drive has to be edited in the <guimenu>Devices</guimenu> menu in UVMM and the checkbox <guimenu>Paravirtual drive</guimenu> must be ticked.
 					</simpara>
 				</listitem>
+
+				<!-- <listitem><simpara> -->
+				<!--   Für die Netzwerkkarten muss der <guimenu>Treiber</guimenu> auf -->
+				<!--   <emphasis>Paravirtualisiert (virtio)</emphasis> konfiguriert werden. -->
+				<!-- </simpara></listitem> -->
+
 				<listitem>
 					<simpara>
 					The initial steps during the installation of the Windows system take place as usual.
