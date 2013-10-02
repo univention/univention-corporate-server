@@ -38,7 +38,12 @@ def write_machine_secret_to_secrets_tdb(machine_password, windows_domain):
 	previous_machine_password_key = 'SECRETS/MACHINE_PASSWORD.PREV/%s' % windows_domain
 	machine_last_change_key = 'SECRETS/MACHINE_LAST_CHANGE_TIME/%s' % windows_domain
 
-	secrets_tdb = tdb.open('/var/lib/samba/secrets.tdb')
+	if os.path.exists('/var/lib/samba/private/secrets.tdb'):
+		secrets_tdb_filename = '/var/lib/samba/private/secrets.tdb'
+	else:
+		secrets_tdb_filename = '/var/lib/samba/secrets.tdb'
+
+	secrets_tdb = tdb.open(secrets_tdb_filename)
 	secrets_tdb.transaction_start()
 	try:
 		previous_machine_password = secrets_tdb.get(machine_password_key)
