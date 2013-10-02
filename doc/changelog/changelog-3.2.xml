@@ -2689,6 +2689,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		(<ulink url="&ucsbug;32664">Bug 32664</ulink>).:wq
 	  </simpara></listitem>
 
+	  <listitem><simpara>
+	    The test case 00_base/47faillog_ssh-smb-krb has been disabled for UCS 3.2-0
+		(<ulink url="&ucsbug;19016">Bug 19016</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 
