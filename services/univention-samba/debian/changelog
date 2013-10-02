@@ -1,3 +1,10 @@
+univention-samba (8.0.10-1) unstable; urgency=low
+
+  * Update wins server handling and ensure the wins server is started on
+    a PDC which is the ldap/master by default (Bug #32745)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Oct 2013 07:41:01 +0200
+
 univention-samba (8.0.9-1) unstable; urgency=low
 
   * Set windows/wins-server to localhost if the server is the PDC
