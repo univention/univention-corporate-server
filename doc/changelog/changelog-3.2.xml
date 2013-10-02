@@ -2239,7 +2239,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The &ucsUCRV; <envar>windows/wins-server</envar> and &ucsUCRV;
-		  <envar>windows/wins-support</envar> are now set in the Samba joinscript (<ulink url="&ucsbug;31814">Bug 31814</ulink>).
+		  <envar>windows/wins-support</envar> are now set in the Samba joinscript
+		  (<ulink url="&ucsbug;31814">Bug 31814</ulink>, <ulink url="&ucsbug;32745">Bug 32745</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2290,7 +2291,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  &ucsUCRV; <envar>windows/wins-server</envar> and &ucsUCRV;
-		  <envar>windows/wins-support</envar> are now initialized during join (<ulink url="&ucsbug;30813">Bug 30813</ulink>).
+		  <envar>windows/wins-support</envar> are now initialized during join
+		  (<ulink url="&ucsbug;30813">Bug 30813</ulink>, <ulink url="&ucsbug;32745">Bug 32745</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
