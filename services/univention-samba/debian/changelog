@@ -1,3 +1,11 @@
+univention-samba (8.0.11-1) unstable; urgency=low
+
+  * With the new samba version the secrets.tdb path has been moved to
+    /var/lib/samba/private/. This is now considered in the password
+    change hook (Bug #32789)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Oct 2013 11:33:21 +0200
+
 univention-samba (8.0.10-1) unstable; urgency=low
 
   * Update wins server handling and ensure the wins server is started on
