@@ -1,3 +1,10 @@
+ucs-test (4.0.134-2) unstable; urgency=low
+
+  * 10_ldap/44replication_binary: Don't create kerberos users. Only
+    kerberos users are synchronized to S4 and get a new SID (Bug #32795)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Oct 2013 20:28:41 +0200
+
 ucs-test (4.0.134-1) unstable; urgency=low
 
   * 22_nagios/01removedconfig: use wait_for_replication instead of sleep 2

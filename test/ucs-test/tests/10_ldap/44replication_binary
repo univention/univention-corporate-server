@@ -60,7 +60,7 @@ users=()
 for ((u=0; u<ucount; u++))
 do
 	username="$(user_randomname)"
-	KERBEROS=true MAIL=true PERSON=true POSIX=true SAMBA=true PKI=true \
+	MAIL=true PERSON=true POSIX=true SAMBA=true PKI=true \
 		user_create "$username" \
 			--set description="$unique" \
 			--set displayName='Muster, Max' \
