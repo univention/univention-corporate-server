@@ -2409,6 +2409,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32468">Bug 32468</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  A configuration for the default idmap config <emphasis>*</emphasis> has been added to the
+		  samba 4 configuration. The new default can be overwritten via
+		  <filename>/etc/samba/local.conf</filename>
+		  (<ulink url="&ucsbug;32376">Bug 32376</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
