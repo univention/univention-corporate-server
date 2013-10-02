@@ -405,7 +405,8 @@
 	<title>OpenLDAP</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  OpenLDAP was updated to version 2.4.35 (<ulink url="&ucsbug;31697">Bug 31697</ulink>).
+		  OpenLDAP was updated to version 2.4.35
+		  (<ulink url="&ucsbug;31697">Bug 31697</ulink>, <ulink url="&ucsbug;32438">Bug 32438</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1808,6 +1809,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  listener module (<ulink url="&ucsbug;32669">Bug 32669</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  CUPS has been re-built against the updated heimdal library
+		  (<ulink url="&ucsbug;32438">Bug 32438</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -1832,6 +1838,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The process <command>kpasswdd</command> is now only started on the UCS master (<ulink url="&ucsbug;20167">Bug #20167</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The package <package>pam-krb5-migrate</package> has been updated to 0.0.10-1
+		  (<ulink url="&ucsbug;32438">Bug 32438</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
