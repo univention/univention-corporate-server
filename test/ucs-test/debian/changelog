@@ -1,3 +1,10 @@
+ucs-test (4.0.134-1) unstable; urgency=low
+
+  * 22_nagios/01removedconfig: use wait_for_replication instead of sleep 2
+    (Bug #32797)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 02 Oct 2013 20:17:35 +0200
+
 ucs-test (4.0.133-1) unstable; urgency=low
 
   * skip 00_base/47faillog-ssh-smb-krb for ucs-3.2-0 (Bug #19016)

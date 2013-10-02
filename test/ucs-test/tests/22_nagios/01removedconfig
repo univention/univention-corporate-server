@@ -54,8 +54,7 @@ udm nagios/service modify \
 	--binddn="$tests_domainadmin_account" \
 	--bindpwd="$tests_domainadmin_pwd"
 
-# wait am moment for the UD-Listener to commit the changes
-sleep 2
+wait_for_replication
 
 # check, whether the script was able to create the Nagios-Config
 info  "Remove the Host, checking the existence of the corresponding config"
@@ -71,8 +70,7 @@ udm "computers/$server_role" remove \
 	--binddn="$tests_domainadmin_account" \
 	--bindpwd="$tests_domainadmin_pwd"
 
-# wait a moment agian
-sleep 2
+wait_for_replication
 
 # check, wether Bug #8620 is still there
 if [ -f /etc/nagios3/conf.univention.d/services/$NAGIOSSERVICE,$HOSTNAME.$domainname.cfg ]
