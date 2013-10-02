@@ -746,18 +746,18 @@
 
 				  <itemizedlist>
 					<listitem><simpara>
-					  Bridges werden oft von Virtualisierungslösungen verwendet, um virtualisierte
+					  <emphasis>Bridges</emphasis> werden oft von Virtualisierungslösungen verwendet, um virtualisierte
 					  Netzwerkkarten einer virtuellen Maschine mit der physischen Netzwerkkarte des
 					  Virtualisierungsservers zu verbinden.
 					</simpara></listitem>
 
 					<listitem><simpara>
-					  Bonding erhöht die Ausfallsicherheit, in dem mehrere physikalische
+					  <emphasis>Bonding</emphasis> erhöht die Ausfallsicherheit, in dem mehrere physikalische
 					  Netzwerkkarten für den Zugriff auf ein Netzwerk gebündelt werden.
 					</simpara></listitem>
 
 					<listitem><simpara>
-					  VLANs können verwendet werden um den Netzwerkverkehr in einem physikalischen
+					  <emphasis>VLANs</emphasis> können verwendet werden um den Netzwerkverkehr in einem physikalischen
 					  Netzwerk logisch auf ein oder mehrere virtuelle Unternetze aufzuteilen.
 					</simpara></listitem>
 				  </itemizedlist>
@@ -767,12 +767,11 @@
 					
 					<para>
 					  Der häufigste Anwendungsfall für <emphasis>Bridging</emphasis> ist die gemeinsame Nutzung einer
-					  physischen Netzwerkkarte durch ein oder mehrerer virtueller Maschinen. Anstatt eine Netzwerkkarte
+					  physischen Netzwerkkarte durch eine oder mehrere virtuelle Maschinen. Anstatt eine Netzwerkkarte
 					  für jede virtuelle Maschine und den Virtualisierungsserver selbst zu verwenden,
 					  werden alle System durch einen gemeinsamen Uplink angebunden. Eine Bridge kann
-					  mit einem in Software realisierten Switch verglichen werden, über die einzelne Hosts miteinander verbunden werden.
-					  Die verwendete Hardware-Netzwerkkarte wird als
-					  <emphasis>Bridge Port</emphasis> bezeichnet.
+					  mit einem in Software realisierten Switch verglichen werden, über den einzelne Hosts miteinander verbunden werden.
+					  Die verwendete Hardware-Netzwerkkarte wird als <emphasis>Bridge Port</emphasis> bezeichnet.
 					</para>
 
 					<para>
@@ -795,8 +794,9 @@
 					  einer Verbindung durch STP Informationen über die Netzwerktopologie gesammelt
 					  werden. Wird die Bridge zur Anbindung virtueller Maschinen über eine
 					  physische Netzwerkkarte verwendet, sollte STP dann deaktiviert werden, in dem der
-					  Wert auf 0 gesetzt wird.
-					  Ansonsten kann dies zu Problemen bei der Verwendung von <acronym>DHCP</acronym> führen, da die während der Wartezeit versendeten Pakete nicht weitergeleitet werden.
+					  Wert auf 0 gesetzt wird. Ansonsten kann es zu Problemen bei der Verwendung von
+					  <acronym>DHCP</acronym> führen, da die während der Wartezeit versendeten
+					  Pakete nicht weitergeleitet werden.
 					</para>
 
 					<para>
@@ -854,7 +854,7 @@
 						<listitem><simpara>
 						  Bei Verwendung von <emphasis>active-backup (1)</emphasis> ist nur jeweils
 						  eine Netzwerkkarte des Bonding-Interfaces aktiv (in der Grundeinstellung
-						  die Netzwerkschnittstelle aus <guimenu>Bond primary</guimenu>. Fällt die
+						  die Netzwerkschnittstelle aus <guimenu>Bond primary</guimenu>). Fällt die
 						  primäre Netzwerkkarte aus, wird dies durch den Linux-Kernel erkannt und
 						  auf eine der weiteren Karten des Bondings umgeschaltet. Diese Variante
 						  erhöht die Ausfallsicherheit. Sie kann mit jedem Netzwerk-Switch verwendet werden.
@@ -936,7 +936,7 @@
 					  Mit der Konfiguration eines VLANs in der &ucsUMC; kann für einen Rechner
 					  konfiguriert werden, an welchen VLANs er teilnehmen möchte. Ein Beispiel wäre
 					  ein interner Firmen-Webserver, der sowohl für die Mitarbeiter, als auch für
-					  die Benutzer des Gast-Netzes verfügbar sein soll.
+					  die Benutzer des Gastnetzes verfügbar sein soll.
 					</para>
 
 					<para>
