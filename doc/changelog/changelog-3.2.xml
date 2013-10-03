@@ -2656,7 +2656,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The LDAP tests to check replication have been improved (<ulink url="&ucsbug;27662">Bug 27662</ulink>, <ulink url="&ucsbug;29337">Bug 29337</ulink>, <ulink url="&ucsbug;31721">Bug 31721</ulink>, <ulink url="&ucsbug;31722">Bug 31722</ulink>, <ulink url="&ucsbug;32537">Bug 32537</ulink>).
+		The LDAP tests to check replication have been improved (<ulink url="&ucsbug;27662">Bug 27662</ulink>, <ulink url="&ucsbug;29337">Bug 29337</ulink>, <ulink url="&ucsbug;31721">Bug 31721</ulink>, <ulink url="&ucsbug;31722">Bug 31722</ulink>, <ulink url="&ucsbug;32537">Bug 32537</ulink>, <ulink url="&ucsbug;32795">Bug 32795</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
