@@ -2601,7 +2601,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 		New functions have been added to get a better support of non DC Master systems, for example
 		<command>udm-test</command> or <command>wait_for_replication</command>. The existing test cases have been adapted
-		(<ulink url="&ucsbug;31687">Bug 31687</ulink>, <ulink url="&ucsbug;31678">Bug 31678</ulink>, <ulink url="&ucsbug;31679">Bug 31679</ulink>, <ulink url="&ucsbug;31680">Bug 31680</ulink>, <ulink url="&ucsbug;32025">Bug 32025</ulink>).
+		(<ulink url="&ucsbug;31687">Bug 31687</ulink>, <ulink url="&ucsbug;31678">Bug 31678</ulink>,
+		 <ulink url="&ucsbug;31679">Bug 31679</ulink>, <ulink url="&ucsbug;31680">Bug 31680</ulink>,
+		 <ulink url="&ucsbug;32025">Bug 32025</ulink>, <ulink url="&ucsbug;32797">Bug 32797</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
