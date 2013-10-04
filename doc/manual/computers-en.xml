@@ -13,14 +13,15 @@
 		joins the UCS domain (see <xref linkend="domaenenbeitritt"/>); however,
 		the computer account can also be added prior to the domain join.
 	</para>
+
 	<para>
-		The password for the computer account is generated automatically during the
-		domain join and saved in the <filename>/etc/machine.secret</filename> file.
-<!-- Das Passwort wird in festen Intervallen automatisch -->
-<!-- 		  neu generiert (in der Grundeinstellung 21 Tage, konfigurierbar über die -->
-<!-- 		  &ucsUCRV; <envar>server/password/interval</envar>). Die Passwortrotation kann über die -->
-<!-- 		  Variable <envar>server/password/change</envar> auch deaktiviert werden. -->
+	  The password for the computer account is generated automatically during the domain join and
+	  saved in the <filename>/etc/machine.secret</filename> file. The password is regenerated
+	  automatically at fixed intervals (default setting: 21 days; can be configured using the
+	  &ucsUCRV; <envar>server/password/interval</envar>). Password rotation can also be disabled
+	  using the variable <envar>server/password/change</envar>.
 	</para>
+
 	<para>
 		There is an different computer object type for every system role. Further
 		information on the individual system roles can be found in <xref
@@ -669,21 +670,19 @@
 			<section id="computers:ipv6">
 				<title>Configuration of IPv6 addresses</title>
 				<para>
-					The IPv6 address can be configured in two ways: Stateless address
-					autoconfiguration (SLAAC) is employed in the <guimenu>Autoconfiguration
-					(SLAAS)</guimenu> configuration. In this, the IP address is assigned from the
-					routers of the local network segment. Alternatively, the address can also be
-					configured statically by entering the <guimenu>IPv6 address</guimenu> and
-					<guimenu>IPv6 prefix</guimenu>. In contrast to DHCP, in SLAAC there is no
-					assignment of additional data such as the DNS server to be used. There is an
-					additional protocol for this (DHCPv6), which, however, is not employed in the
-					dynamic assignment.
-					<!-- Eine Netzwerkkarte kann -->
-					<!-- verschiedene IPv6-Adressen bedienen. Der <guimenu>Bezeichner</guimenu> -->
-					<!-- ist ein eindeutiger Name für einzelne Adressen. Die Haupt-Adresse verwendet -->
-					<!-- immer den Bezeichner <emphasis>default</emphasis>, für alle anderen Adressen können -->
-					<!-- funktionale Bezeichner vergeben werden z.B. <emphasis>Interface-Mailserver</emphasis>.  -->
-
+				  The IPv6 address can be configured in two ways: Stateless address
+				  autoconfiguration (SLAAC) is employed in the <guimenu>Autoconfiguration
+				  (SLAAS)</guimenu> configuration. In this, the IP address is assigned from the
+				  routers of the local network segment. Alternatively, the address can also be
+				  configured statically by entering the <guimenu>IPv6 address</guimenu> and
+				  <guimenu>IPv6 prefix</guimenu>. In contrast to DHCP, in SLAAC there is no
+				  assignment of additional data such as the DNS server to be used. There is an
+				  additional protocol for this (DHCPv6), which, however, is not employed in the
+				  dynamic assignment. One network card can be used for different IPv6 addresses. The
+				  <guimenu>Identifier</guimenu> is a unique name for individual addresses. The main
+				  address always uses the identifier <emphasis>default</emphasis>; functional
+				  identifiers such as <emphasis>Interface mail server</emphasis> can be assigned for
+				  all other addresses. 
 				</para>
 				<para>
 					(UCR variables: <envar>interfaces/ethX/ipv6/address</envar>,
@@ -1704,26 +1703,28 @@ auth/sshd/restrict: yes
 
 	<section id="computers:configureldapserver">
 		<title>Configuration of the LDAP server in use</title>
+
 		<para>
-			Several LDAP servers can be operated in a UCS domain. The primary one used is
-			specified with the &ucsUCRV; <envar>ldap/server/name</envar>, further servers
-			can be specified via the &ucsUCRV; <envar>ldap/server/addition</envar>.
-		</para>
-		<para>
-			Alternatively, the LDAP servers can also be specified via a <guimenu>LDAP
-			server</guimenu> policy in the computer management of the &ucsUMC;. The order
-			of the servers determines the order of the computer's requests to the server if
-			a LDAP server cannot be reached.
+		  Several LDAP servers can be operated in a UCS domain. The primary one used is
+		  specified with the &ucsUCRV; <envar>ldap/server/name</envar>, further servers
+		  can be specified via the &ucsUCRV; <envar>ldap/server/addition</envar>.
+
 		</para>
 
-		  <!-- <para> -->
-		  <!-- 	In der Grundeinstellung ist nach Installation/Domänenbeitritt nur -->
-		  <!-- 	<envar>ldap/server/name</envar> gesetzt. Ist mehr als ein LDAP-Server vorhanden, ist es -->
-		  <!-- 	empfehlenswert zur Verbesserung der Ausfallsicherung min. zwei LDAP-Server über die -->
-		  <!-- 	<guimenu>LDAP-Server</guimenu>-Richtlinie zuzuweisen. Bei einer auf mehrere Standorte -->
-		  <!-- 	verteilten Umgebung sollte darauf geachtet werden möglichst LDAP-Server aus dem lokalen -->
-		  <!-- 	Netz vorzugeben. -->
-		  <!-- </para> -->
+		<para>
+		  Alternatively, the LDAP servers can also be specified via a <guimenu>LDAP
+		  server</guimenu> policy in the computer management of the &ucsUMC;. The order
+		  of the servers determines the order of the computer's requests to the server if
+		  a LDAP server cannot be reached.
+		</para>
+
+		<para>
+		  In the default setting, only <envar>ldap/server/name</envar> is set following the
+		  installation or the domain join. If there is more than one LDAP server available, it is advisable to
+		  assign at least two LDAP servers using the <guimenu>LDAP server</guimenu> policy in order
+		  to improve redundancy. In cases of an environment distributed over several
+		  locations, preference should be given to LDAP servers from the local network.
+		</para>
 
 	</section>
 
@@ -2458,22 +2459,22 @@ nscd -i hosts
 			</para>
 
 			<para>
-				To set up a repository, the <command>univention-repository-create</command>
-				command must be run as the <emphasis>root</emphasis> user. The initial package
-				inventory is imported from an installation DVD. The parameter
-				<emphasis>--iso</emphasis> allows importing from an ISO image.
-<!-- UCS ist als 32 und 64 Bit-DVD -->
-<!-- 				verfügbar. Das Repository wird von <command>univention-repository-create</command> -->
-<!-- 				mit der Architektur des angegebenen Installationsmediums erzeugt. Wird eine Umgebung -->
-<!-- 				betrieben, in der sowohl 32-, als auch 64 Bit-Pakete bereitgestellt werden sollen, -->
-<!-- 				sind die folgenden Befehle auf dem Repository-Server nötig: -->
+			  To set up a repository, the <command>univention-repository-create</command> command
+			  must be run as the <emphasis>root</emphasis> user. The initial package inventory is
+			  imported from an installation DVD. The parameter <emphasis>--iso</emphasis> allows
+			  importing from an ISO image. UCS is available as a 32-bit and a 64-bit DVD. The
+			  repository is created by <command>univention-repository-create</command> with the
+			  architecture of the specified installation medium. If an environment is operated in
+			  which both 32-bit and 64-bit packages are needed, the following commands must be
+			  executed on the repository server:
 
-<!-- 				<programlisting language="sh"> -->
-<!-- ucr set repository/online/architectures="i386 amd64" -->
-<!-- univention-repository-update net -->
-<!-- 				</programlisting> -->
+			  <programlisting language="sh">
+ucr set repository/online/architectures="i386 amd64"
+univention-repository-update net
+			  </programlisting>
 
 			</para>
+
 			<para>
 				Access to the Univention online repository is cryptographically secured via the
 				use of Secure Apt employing signatures. This feature is not currently available
