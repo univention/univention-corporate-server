@@ -43,17 +43,17 @@
 		</listitem>
 	</itemizedlist>
 
-	<!-- <para> -->
-	<!--   Installations-DVDs sind für die Rechnerarchitekturen <emphasis>amd64</emphasis> (64 Bit) und -->
-	<!--   <emphasis>i386</emphasis> (32 Bit) verfügbar. Nahezu alle Serversysteme, die in den letzten -->
-	<!--   Jahren verkauft wurden sind 64 Bit-Systeme. Die Verwendung der 64 Bit-Version wird empfohlen. -->
-	<!-- </para> -->
+	<para>
+	  There are installation DVDs available for the computer architectures
+	  <emphasis>amd64</emphasis> (64-bit) and <emphasis>i386</emphasis> (32-bit). Almost all server
+	  systems sold in recent years are 64-bit systems. The use of the 64-bit version is recommended.
+	</para>
 
-	<!-- <para> -->
-	<!--   Für amd64 steht neben der Standard-Installations-DVD auch ein Medium mit Unterstützung für den -->
-	<!--   Unified Extensible Firmware Interface-Standard (UEFI) bereit. Einige Systeme unterstützen nur -->
-	<!--   einen Boot über UEFI, auf solchen Systemen muss diese UEFI-DVD verwendet werden. -->
-	<!-- </para> -->
+	<para>
+	  In addition to the standard installation DVD there is also a medium with support for the
+	  Unified Extensible Firmware Interface standard (UEFI) available for amd64. Some systems only
+	  support booting via UEFI; this UEFI DVD must be used on these systems.
+	</para>
 
 	<para>
 	Aside from installation on hardware or in a virtualization solution, UCS can also be installed in the
@@ -425,14 +425,15 @@
   partitioning proposal in which the first hard drive is repartitioned
   and formatted using the Logical Volume Manager (LVM).
 </para>
+
 <caution>
-	<para>
-<!-- Auch wenn nur die erste Festplatte in das LVM eingebunden wird, gehen bei bei diesem Schritt die Daten aller vorhandenen Festplatten verloren! -->
-  Should the proposed partitioning be undesirable, it can be rejected by
-  pressing the <keycap>F5</keycap> function key. The disk space of external storage media, such
-  as USB sticks and USB hard drives, is also included in the automatic
-  partitioning procedure, so these media should be disconnected if necessary.
-	</para>
+  <para>
+	Even though only the first hard drive is integrated in the LVM, the data on all the present hard
+	drives is lost in this step! Should the proposed partitioning be undesirable, it can be rejected
+	by pressing the <keycap>F5</keycap> function key. The disk space of external storage media, such
+	as USB sticks and USB hard drives, is also included in the automatic partitioning procedure, so
+	these media should be disconnected if necessary.
+  </para>
 </caution>
 
 <para>
@@ -511,13 +512,12 @@
   previous settings. Only if the <mousebutton>F6-Write partitions</mousebutton> button (<keycap>F6</keycap> function key) is
   used, will the new partition table be written to the hard drive.
 </para>
+
 <para>
-  If there is more than one hard drive available, a dialogue is shown in
-  which it is possible to select in which partition the bootloader
-  should be installed.
-<!-- USB-Sticks werden dabei ausgeblendet. Um -->
-<!--   die Auswahl zu erleichtern wird der Hersteller der Speichermedien angezeigt (bei Verwendung des -->
-<!--   virtio-Treibers unter KVM wird '0x1af4: Unknown' angezeigt). -->
+  If there is more than one hard drive available, a dialogue is shown in which it is possible to
+  select in which partition the bootloader should be installed. USB sticks are not shown. In order
+  to facilitate the selection of the bootloader, the manufacturer of the storage devices is shown
+  ('0x1af4: Unknown' is shown when using the virtio driver in KVM).
 </para>
 </section>
 
@@ -641,9 +641,10 @@
 		</para>
 		<para>
 		  Should the UCS system have no direct access to the internet, the URL of a proxy server can
-		  be entered in the <guimenu>HTTP Proxy</guimenu> field.
-		  <!-- Über diesen Proxy erfolgen die Downloads von weiteren Updates vom Univention-Repository-Server (siehe <xref linkend="installation:overview"/>). -->
-		  The format of the URL is <uri>http://&lt;IP address of the proxy server&gt;:&lt;Port&gt;</uri>.
+		  be entered in the <guimenu>HTTP Proxy</guimenu> field. This proxy is used to download
+		  additional updates from the Univention repository server (see <xref
+		  linkend="installation:overview"/>). The format of the URL is <uri>http://&lt;IP address of
+		  the proxy server&gt;:&lt;Port&gt;</uri>.
 		</para>
 		<para>
 			Since, depending on the installed components, the resolution of host names
