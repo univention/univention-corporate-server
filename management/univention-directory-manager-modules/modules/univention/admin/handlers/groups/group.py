@@ -114,7 +114,7 @@ property_descriptions={
 			options=['samba']
 		),
 	'sambaGroupType': univention.admin.property(
-			short_description=_('Samba group type'),
+			short_description=_('NT group type'),
 			long_description='',
 			syntax=univention.admin.syntax.sambaGroupType,
 			multivalue=0,
@@ -132,6 +132,17 @@ property_descriptions={
 			options = [ 'samba' ],
 			required = False,
 			dontsearch = False,
+			may_change = True,
+			identifies = False,
+	),
+	'adGroupType': univention.admin.property(
+			short_description = _('AD group type'),
+			long_description = _('Active Directory group type'),
+			syntax = univention.admin.syntax.adGroupType,
+			multivalue = False,
+			options = [ 'samba' ],
+			required = False,
+			dontsearch = True,
 			may_change = True,
 			identifies = False,
 	),
@@ -254,6 +265,7 @@ layout = [
 	Tab( _( 'Windows' ), _( 'Windows account settings' ), advanced = True, layout = [
 		'sambaRID',
 		'sambaGroupType',
+		'adGroupType',
 		'sambaPrivileges'
 		] )
 ]
@@ -264,6 +276,7 @@ mapping.register('gidNumber', 'gidNumber', None, univention.admin.mapping.ListTo
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('sambaGroupType', 'sambaGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('mailAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
+mapping.register('adGroupType', 'univentionGroupType', None, univention.admin.mapping.ListToString)
 mapping.register('sambaPrivileges', 'univentionSambaPrivilegeList')
 
 def _case_insensitive_in_list(dn, list):

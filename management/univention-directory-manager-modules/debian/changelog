@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.44-1) unstable; urgency=low
+
+  * Added Active Directory group type (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Oct 2013 16:30:14 +0200
+
 univention-directory-manager-modules (9.0.43-2) unstable; urgency=low
 
   * version bump for changelog correcton (Bug #32592)

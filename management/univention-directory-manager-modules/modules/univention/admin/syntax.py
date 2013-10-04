@@ -2369,9 +2369,22 @@ class UNIX_AccessRight( simple ):
 
 class sambaGroupType(select):
 	choices=[
+		('', ''),
 		('2', _('Domain Group')),
 		('3', _('Local Group')),
 		('5', _('Well-Known Group'))
+	]
+
+class adGroupType(select):
+	choices=[
+		('', ''),
+		('-2147483644', _('Local (Type: Security)')),
+		('-2147483646', _('Global (Type: Security)')),
+		('-2147483640', _('Universal (Type: Security)')),
+		('-2147483643', _('Domain local (Type: Security)')),
+		('4', _('Local (Type: Distribution)')),
+		('2', _('Global (Type: Distribution)')),
+		('8', _('Universal (Type: Distribution)')),
 	]
 
 class SambaLogonHours( MultiSelect ):
