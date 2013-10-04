@@ -1,3 +1,9 @@
+univention-doc (1.0.1-1) unstable; urgency=low
+
+  * Bug #32611: adjusted logo
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Oct 2013 18:28:19 +0200
+
 univention-doc (1.0.0-8) unstable; urgency=low
 
   * ucs overview page (Bug #32611) 
