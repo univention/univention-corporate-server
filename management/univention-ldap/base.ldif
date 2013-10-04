@@ -765,78 +765,6 @@ cn: backup
 sn: backup
 userPassword: {crypt}@@%%@@backup.pw@@%%@@
 
-dn: cn=Administrators,cn=groups,@%@ldap/base@%@
-objectClass: top
-objectClass: posixGroup
-objectClass: univentionGroup
-objectClass: sambaGroupMapping
-objectClass: univentionObject
-univentionObjectType: groups/group
-cn: Administrators
-sambaSID: S-1-5-32-544
-sambaGroupType: 5
-gidNumber: 5010
-
-dn: cn=Users,cn=groups,@%@ldap/base@%@
-objectClass: top
-objectClass: posixGroup
-objectClass: univentionGroup
-objectClass: sambaGroupMapping
-objectClass: univentionObject
-univentionObjectType: groups/group
-cn: Users
-sambaSID: S-1-5-32-545
-sambaGroupType: 5
-gidNumber: 5011
-
-dn: cn=Guests,cn=groups,@%@ldap/base@%@
-objectClass: top
-objectClass: posixGroup
-objectClass: univentionGroup
-objectClass: sambaGroupMapping
-objectClass: univentionObject
-univentionObjectType: groups/group
-cn: Guests
-sambaSID: S-1-5-32-546
-sambaGroupType: 5
-gidNumber: 5012
-
-dn: cn=Power Users,cn=groups,@%@ldap/base@%@
-objectClass: top
-objectClass: posixGroup
-objectClass: univentionGroup
-objectClass: sambaGroupMapping
-objectClass: univentionObject
-univentionObjectType: groups/group
-cn: Power Users
-sambaSID: S-1-5-32-547
-sambaGroupType: 5
-gidNumber: 5013
-
-dn: cn=Account Operators,cn=groups,@%@ldap/base@%@
-objectClass: top
-objectClass: posixGroup
-objectClass: univentionGroup
-objectClass: sambaGroupMapping
-objectClass: univentionObject
-univentionObjectType: groups/group
-cn: Account Operators
-sambaSID: S-1-5-32-548
-sambaGroupType: 5
-gidNumber: 5003
-
-dn: cn=System Operators,cn=groups,@%@ldap/base@%@
-objectClass: top
-objectClass: posixGroup
-objectClass: univentionGroup
-objectClass: sambaGroupMapping
-objectClass: univentionObject
-univentionObjectType: groups/group
-cn: System Operators
-sambaSID: S-1-5-32-549
-sambaGroupType: 5
-gidNumber: 5015
-
 dn: cn=Printer-Admins,cn=groups,@%@ldap/base@%@
 objectClass: top
 objectClass: posixGroup
@@ -848,42 +776,6 @@ cn: Printer-Admins
 sambaSID: S-1-5-32-550
 sambaGroupType: 5
 gidNumber: 5016
-
-dn: cn=Backup Operators,cn=groups,@%@ldap/base@%@
-objectClass: top
-objectClass: posixGroup
-objectClass: univentionGroup
-objectClass: sambaGroupMapping
-objectClass: univentionObject
-univentionObjectType: groups/group
-cn: Backup Operators
-sambaSID: S-1-5-32-551
-sambaGroupType: 5
-gidNumber: 5017
-
-dn: cn=Replicators,cn=groups,@%@ldap/base@%@
-objectClass: top
-objectClass: posixGroup
-objectClass: univentionGroup
-objectClass: sambaGroupMapping
-objectClass: univentionObject
-univentionObjectType: groups/group
-cn: Replicators
-sambaSID: S-1-5-32-552
-sambaGroupType: 5
-gidNumber: 5018
-
-dn: cn=Enterprise Admins,cn=groups,@%@ldap/base@%@
-objectClass: top
-objectClass: posixGroup
-objectClass: univentionGroup
-objectClass: sambaGroupMapping
-objectClass: univentionObject
-univentionObjectType: groups/group
-cn: Enterprise Admins
-sambaSID: @@%%@@sid@@%%@@-519
-sambaGroupType: 2
-gidNumber: 5019
 
 dn: cn=Authenticated Users,cn=groups,@%@ldap/base@%@
 objectClass: top
