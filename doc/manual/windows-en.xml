@@ -843,17 +843,14 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	<para>
 	  This certificate must now be exported and copied onto the UCS system:
 	  <guimenu>Start &ar; Administrative Tools &ar; Certification &ar;
-	  Authority</guimenu>.
-	  <!-- Dort wird eine -->
-	  <!-- Rechnerliste angezeigt und unter jedem System die Elemente <guimenu>Gesperrte -->
-	  <!-- Zertifikate</guimenu>, <guimenu>Ausgestellte Zertifikate</guimenu>, <guimenu>Ausstehende -->
-	  <!-- Anforderungen</guimenu>, <guimenu>Fehlgeschlagene Anforderungen</guimenu> und -->
-	  <!-- <guimenu>Zertifikatsvorlagen</guimenu> angezeigt. Hier muss ein Rechtsklick auf den -->
-	  <!-- Rechnernamen erfolgen - nicht auf eines der Elemente darunter - und -->
-	  <!-- <guimenu>Eigenschaften</guimenu> ausgewählt werden. Das Root-Zertifikat heisst in der Regel -->
-	  <!-- <emphasis>Zertifikat Nr. 0</emphasis>. Dann <guimenu>Zertifikat anzeigen &ar; Details  &ar; In Datei kopieren &ar; -->
-	  <!-- DER-codiert-binär X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad -->
-	  <!-- &ar; Fertig stellen</guimenu>. -->
+	  Authority</guimenu>. A computer list is shown there and the elements <guimenu>Revoked Certificates</guimenu>,
+	  <guimenu>Issued Certificates</guimenu>, <guimenu>Pending Requests</guimenu>,
+	  <guimenu>Failed Requests</guimenu> and <guimenu>Certificate Templates</guimenu>
+	  displayed under every system. Here, one must right click on the computer name - not on
+	  one of the elements - and then select <guimenu>Properties</guimenu>. The root
+	  certificate is usually called <emphasis>Certificate Nr. 0</emphasis>. Then select
+	  <guimenu>Open &ar; Copy to File &ar; DER encoded binary X.509 (.CER) &ar; Select an arbitrary
+	  filename &ar; Finish</guimenu>.
 	</para>
   </section>
 
@@ -865,53 +862,40 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  before proceeding.
 	</para>
 
-	<!-- <para> -->
-	<!--   Der Server-Manager muss geöffnet werden. Dort im Menü <guimenu>Manage &ar; Add Roles and Features</guimenu> -->
-	<!--   die Rolle <guimenu>Active Directory Certificate Services</guimenu> -->
-	<!--   auswählen. Bei der Auswahl der Rollendienste reicht es aus, nur die -->
-	<!--   <guimenu>Certification Authority</guimenu> auszuwählen. Anschließend wird im Server-Manager in -->
-	<!--   der oberen Leiste ein gelbes Warndreieick angezeigt. Hier muss die Option <guimenu>Configure Active -->
-	<!--   Directory Certificate Services on the server</guimenu> ausgewählt werden. Als -->
-	<!--   zu konfigurierender Rollendienst wird <guimenu>Certification Authority</guimenu> ausgewählt. Der -->
-	<!--   Installationstyp ist <guimenu>Enterprise CA &ar; Root CA</guimenu> -->
-	<!--   Nun muss auf <guimenu>Create a new private key</guimenu> geklickt und die vorgeschlagenen Kryptoeinstellungen und der -->
-	<!--   vorgeschlagene Name der Zertifizierungsstelle bestätigt werden. Die Gültigkeitsdauer kann -->
-	<!--   beliebig gewählt werden. Als Datenbankort können die Standardpfade verwendet werden. -->
-	<!-- </para> -->
-
+	<para>
+	  The server manager must be opened. There, select the <guimenu>Active Directory Certificate Services</guimenu>
+	  role in the <guimenu>Manage &ar; Add Roles and Features</guimenu> menu. When selecting the role services, it is sufficient simply to select
+	  <guimenu>Certification Authority</guimenu>. A yellow warning triangle is then shown in the top
+	  bar in the server manager. Here, the <guimenu>Configure Active Directory Certificate Services on the server</guimenu>
+	  option must be selected. <guimenu>Certification Authority</guimenu> is selected as the role service to be
+	  configured. The type of installation is <guimenu>Enterprise CA &ar; Root CA</guimenu>
+	  Now, click on <guimenu>Create a new private key</guimenu> and confirm the suggested encryption settings and the suggested name of
+	  the certification authority. Any period of validity can be set. The standard paths can be
+	  used for the database location.
+	</para>
 
 	<para>
 	  The AD server must then be restarted.
 	</para>
 
-	<!-- <para> -->
-	<!--   Dieses Zertifikat muss nun exportiert und auf das UCS-System kopiert -->
-	<!--   werden: <guimenu>Server Manager  &ar; Active Directory Certificate Services</guimenu>. Dann ein Rechts-Klick -->
-	<!--   auf den Server und Auswahl von <guimenu>Certification Authority</guimenu>. Dort ein Rechtsklick -->
-	<!--   auf den Namen des erzeugten Zertifikats und <guimenu>Open &ar; Copy to File &ar; -->
-	<!--   DER encoded binary X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad -->
-	<!--   &ar; Fertig stellen</guimenu>. -->
-	<!-- </para> -->
+	<para>
+	  This certificate must now be exported and copied onto the UCS system: <guimenu>Server Manager  &ar; Active Directory Certificate Services</guimenu>
+	  Then right click on the server and select
+	  <guimenu>Certification Authority</guimenu>. There, right click on the name of the generated
+	  certificate and <guimenu>Open &ar; Copy to File &ar; DER encoded binary X.509 (.CER) &ar;
+	  Select an arbitrary filename &ar; Finish</guimenu>.
+	</para>
 
-	<!-- merge in: -->
-	<!-- Dort wird eine -->
-	<!-- Rechnerliste angezeigt und unter jedem System die Elemente <guimenu>Gesperrte -->
-	<!-- Zertifikate</guimenu>, <guimenu>Ausgestellte Zertifikate</guimenu>, <guimenu>Ausstehende -->
-	<!-- Anforderungen</guimenu>, <guimenu>Fehlgeschlagene Anforderungen</guimenu> und -->
-	<!-- <guimenu>Zertifikatsvorlagen</guimenu> angezeigt. Hier muss ein Rechtsklick auf den -->
-	<!-- Rechnernamen erfolgen - nicht auf eines der Elemente darunter - und -->
-	<!-- <guimenu>Eigenschaften</guimenu> ausgewählt werden. Das Root-Zertifikat heisst in der Regel -->
-	<!-- <emphasis>Zertifikat Nr. 0</emphasis>. Dann <guimenu>Zertifikat anzeigen &ar; Details  &ar; In Datei kopieren &ar; -->
-	<!-- DER-codiert-binär X.509 (.CER) &ar; Auswahl eines beliebigen Dateinamens und Speicherpfad -->
-	<!-- &ar; Fertig stellen</guimenu>. -->
-
-<!-- Revoked Certificates -->
-<!-- Issued Certificates -->
-<!-- Pending Requests -->
-<!-- Failed Requests -->
-<!-- Certificate Templates -->
-
-
+	<para>
+	  A computer list is shown there and the elements <guimenu>Revoked Certificates</guimenu>,
+	  <guimenu>Issued Certificates</guimenu>, <guimenu>Pending Requests</guimenu>,
+	  <guimenu>Failed Requests</guimenu> and <guimenu>Certificate Templates</guimenu>
+	  displayed under every system. Here, one must right click on the computer name - not on
+	  one of the elements - and then select <guimenu>Properties</guimenu>. The root
+	  certificate is usually called <emphasis>Certificate Nr. 0</emphasis>. Then select
+	  <guimenu>Open &ar; Copy to File &ar; DER encoded binary X.509 (.CER) &ar; Select an arbitrary
+	  filename &ar; Finish</guimenu>.
+	</para>
 
   </section>
 
