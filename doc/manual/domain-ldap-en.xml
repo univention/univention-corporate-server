@@ -614,16 +614,15 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 <section id="domain:ldap">
 	<title>LDAP directory</title>
 	<para>
-		Univention Corporate Server saves domain-wide data in a LDAP directory service
-		based on OpenLDAP. This chapter describes the advanced configuration and
-		coordination of OpenLDAP.
+	  Univention Corporate Server saves domain-wide data in a LDAP directory service
+	  based on OpenLDAP. This chapter describes the advanced configuration and
+	  coordination of OpenLDAP.
 	</para>
 
-	<!-- <para> -->
-	<!--   In einer UCS-Domäne werden oft mehrere LDAP-Server betrieben. Die Konfiguration des/der -->
-	<!--   verwendeten Server(s) wird in <xref linkend="computers:configureldapserver"/> beschrieben. -->
-	<!-- </para> -->
-
+	<para>
+	  Often several LDAP servers are operated in a UCS domain. The configuration of the server(s)
+	  used is described in <xref linkend="computers:configureldapserver"/>.
+	</para>
 
 	<section id="domain:ldap:schemata">
 		<title>LDAP schemas</title>
@@ -930,19 +929,19 @@ slapcat &gt; ldapdata.txt
 		</para>
 	</section>
 
-	<!-- <section id="domain-ldap:nightlybackup"> -->
-	<!--   <title>Tägliche Sicherung der LDAP-Daten</title> -->
-	<!--   <para> -->
-	<!-- 	Auf dem &ucsMaster; und allen &ucsBackup;-Systemen wird der Inhalt des LDAP-Verzeichnisses -->
-	<!-- 	durch einen Cron-Job täglich gesichert. -->
-	<!--   </para> -->
+	<section id="domain-ldap:nightlybackup">
+	  <title>Daily backup of LDAP data</title>
+	  <para>
+		The content of the LDAP directory is backed up daily on the &ucsMaster; and all &ucsBackup;
+		systems via a Cron job.
+	  </para>
 
-	<!--   <para> -->
-	<!-- 	Die LDAP-Daten werden im LDIF-Format im Verzeichnis <filename>/var/univention-backup/</filename> im -->
-	<!-- 	Namensschema <filename>ldap-backup_DATUM.ldif.gz</filename> gespeichert. Sie sind nur für -->
-	<!-- 	den Benutzer <emphasis>root</emphasis> lesbar. -->
-	<!--   </para> -->
-	<!-- </section> -->
+	  <para>
+		The LDAP data are stored in the <filename>/var/univention-backup/</filename> directory in
+		the naming scheme <filename>ldap-backup_DATE.ldif.gz</filename> in LDIF format. They can
+		only be read by the <emphasis>root</emphasis> user.
+	  </para>
+	</section>
 
 </section>
 
