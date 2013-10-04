@@ -1,3 +1,10 @@
+univention-ldap (10.0.11-1) unstable; urgency=low
+
+  * Added attribute univentionGroupType which will be synced with the S4
+    attribute groupType (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Oct 2013 11:35:26 +0200
+
 univention-ldap (10.0.10-33) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30946)
