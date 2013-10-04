@@ -282,11 +282,10 @@
 	<section id="central-management-umc:Favorites">
 	  <title>Favorites</title>
 	  <para>
-		<!-- Häufig benutzte UMC-Module werden in einem eigenen Untermenü <guimenu>Favoriten</guimenu> -->
-		<!-- dargestellt. Über einen Klick mit der rechten Maustaste auf ein UMC-Modul wird ein -->
-		<!-- Kontextmenü angezeigt. Mit <guimenu>Add to favorites</guimenu>, bzw. <guimenu>Remove -->
-		<!-- from favorites</guimenu> kann ein UMC-Modul als Favorit markiert oder wieder entfernt -->
-		<!-- werden. -->
+		Commonly used UMC modules are shown in a submenu <guimenu>Favorites</guimenu>. Clicking on a
+		UMC module with the right mouse button opens a context menu. <guimenu>Add to favorites</guimenu>
+		and <guimenu>Remove from favorites</guimenu> can be used to mark a UMC module as a favourite
+		or remove it again.
 	  </para>
 	</section>
 
@@ -819,12 +818,11 @@
 							<emphasis>boolean</emphasis> does not save any value or the string
 							<emphasis>1</emphasis>.
 						</para>
+
 						<para>
-							The syntax <emphasis>string</emphasis> is the default.
-						  <!-- 	Eine -->
-						  <!-- Übersicht über die weiteren verfügbaren Syntax-Definitionen und eine -->
-						  <!-- Anleitung zur Integration eigener Syntaxen finden sich in <xref -->
-						  <!-- linkend="developer-reference"/>. -->
+						  The syntax <emphasis>string</emphasis> is the default. An overview of the
+						  additionally available syntax definitions and instructions on integrating
+						  your own syntaxes can be found in <xref linkend="developer-reference"/>.
 						</para>
 					</entry>
 				</row>
