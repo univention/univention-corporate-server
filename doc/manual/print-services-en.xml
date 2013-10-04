@@ -572,12 +572,12 @@
 		<filename>/var/spool/cups-pdf</filename>).
 	</para>
 
-  <!-- <para> -->
-  <!-- 	In der Grundeinstellung werden die generierten PDF-Dokumente unbegrenzt aufbewahrt. Wird die -->
-  <!-- 	&ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> auf <emphasis>true</emphasis> gesetzt -->
-  <!-- 	werden alte PDF-Druckaufträge über einen Cron-Job gelöscht. Die Aufbewahrungszeit in Tagen kann -->
-  <!-- 	mit der &ucsUCRV; <envar>cups/cups-pdf/cleanup/keep</envar> konfiguriert werden. -->
-  <!-- </para> -->
+	<para>
+	  In the default setting, generated PDF documents are kept without any restrictions. If the
+	  &ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> is set to <emphasis>true</emphasis>,
+	  old PDF print jobs are deleted via a Cron job. The storage time in days can be configured
+	  using the &ucsUCRV; <envar>cups/cups-pdf/cleanup/keep</envar>.
+	</para>
 
 </section>
 
