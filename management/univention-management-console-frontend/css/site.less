@@ -1,37 +1,40 @@
+@import "variables";
 
 .umc .umcHeader {
-	//padding-top: 5px;
-	height: 34px;
+	height: 45px;
 	overflow: hidden;
-	background: url(bg_images/top.png) repeat-x top;
+	background: #d7d7d7 url(bg_images/header.jpg) center top no-repeat;
+	border-bottom: solid 1px @silverSand;
+	padding: 10px 26px 0 26px;
 
 	/* special rule for the Univention logo */
 	.univentionLogo {
 		background: url(univention_logo.png) no-repeat;
 		width: 145px;
 		height: 18px;
-		position: absolute;
-		left: 10px;
-		top: 8px;
+		position: relative;
+		left: 8px;
+		top: 9px;
+	}
+
+	.umcHeaderSeparator {
+		height: 24px;
+		margin: 5px 10px;
+		border-right: 1px solid #58585a;
+		display: inline-block;
+		float: left;
 	}
 
 	/* style for user and host information */
 	.umcHeaderText {
 		display: block;
 		float: left;
-		color: #fff;
 		background: none;
 		box-shadow: none;
 		font-size: 15px;
-		border-right: 1px solid #58585a !important;
-		padding: 9px;
+		padding: 9px 0 5px 0;
 		margin: 0;
-		height: 15px;
-	}
-
-	/* adjust the space between buttons, separator, and info text */
-	#umcMenuUsername {
-		margin-right: 6px;
+		height: 24px;
 	}
 
 	/* special style for buttons */
@@ -69,25 +72,27 @@
 		box-shadow: none;
 	}
 
+	span[widgetid=umcMenuHost].dijitDropDownButton {
+		// for vertical alignment with the other header elements
+		padding-top: 9px;
+		// force the separating lines to have the same distance
+		margin-right: -7px;
+	}
+
 	#umcMenuHost {
 		outline: none;
 	}
 
 	#umcMenuHost .dijitButtonText {
 		display: inline-block;
-		color: #ffffff;
 		background: none;
 		box-shadow: none;
 		font-size: 15px;
-		height: 15px;
+		//height: 15px;
 	}
 
 	#umcMenuHost .dijitArrowButtonInner {
 		display: inline-block;
-		border-right: 1px solid #58585a !important;
-		padding: 11px 6px 8px 0;
-		margin: -5px 0 -5px 0;
-		height: 15px;
 		background-image: url(form/images/umcHostInfoArrows.png);
 	}
 
@@ -95,23 +100,12 @@
 		width: 0;
 	}
 }
-.has-mozilla {
-	// Firefox displays the host menu text 1px dispositioned
-	.umc .umcHeader {
-		.umcHeaderText {
-			padding: 7px 9px 12px;
-		}
-		#umcMenuHost .dijitButtonText {
-			height: inherit;
-		}
-	}
-}
 
 /* make sure that the header menu are positioned correctly */
 div[dijitpopupparent=umcMenuHost],
 div[dijitpopupparent=umcMenuSettings],
 div[dijitpopupparent=umcMenuHelp] {
-	top: 35px !important;
+	top: 45px !important;
 }
 
 /**

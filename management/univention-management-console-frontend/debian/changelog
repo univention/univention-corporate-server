@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.87-1) unstable; urgency=low
+
+  * Bug #32610: updated UMC header to UCS 3.2 design
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Oct 2013 14:31:51 +0200
+
 univention-management-console-frontend (3.0.86-1) unstable; urgency=low
 
   * Bug #32318: CSS adaptions

@@ -1081,7 +1081,7 @@ define([
 			this._overviewPage = new Page({
 				title: _('umcOverviewTabTitle'),
 				//headerText: _('umcOverviewHeader'),
-				iconClass: tools.getIconClass('univention'),
+				//iconClass: tools.getIconClass('univention'),
 				//helpText: _('umcOverviewHelpText'),
 				style: 'margin-top:15px;'
 			});
@@ -1541,10 +1541,8 @@ define([
 			// we need containers aligned to the left and the right
 			var headerLeft = new Text({
 				style: 'float: left',
-				content: lang.replace('<a href="{url}" target="_blank" title="{title}"><div class="univentionLogo"></div></a>', {
-					url: _('umcLogoUrl'),
-					title: _('umcLogoTitle')
-				})
+				'class': 'univentionLogo',
+				content: ''
 			});
 			header.addChild(headerLeft);
 
@@ -1563,6 +1561,10 @@ define([
 			});
 			this._headerRight.addChild(this._hostInfo);
 
+			this._headerRight.addChild(new Text({
+				'class': 'umcHeaderSeparator'
+			}));
+
 			if (tools.status('displayUsername')) {
 				// display the username
 				this._headerRight.addChild(new Text({
@@ -1571,6 +1573,10 @@ define([
 					content: _('umcUserInfo', {
 						username: tools.status('username')
 					})
+				}));
+
+				this._headerRight.addChild(new Text({
+					'class': 'umcHeaderSeparator'
 				}));
 			}
 
