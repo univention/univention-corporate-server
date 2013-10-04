@@ -278,23 +278,22 @@ instanceType: 4
 </section>
 
 
-<!-- <section id="windows:sysvolshare"> -->
-<!--   <title>Synchronisation der SYSVOL-Freigabe</title> -->
-<!--   <para> -->
-<!-- 	Die SYSVOL-Freigabe ist eine Freigabe, die in Active Directory / Samba 4 Gruppenrichtlinien -->
-<!-- 	und Anmeldeskripte bereitstellt. Sie wird zwischen allen Domänencontrollern synchronisiert und -->
-<!-- 	im Verzeichnis <filename>/var/lib/samba/sysvol</filename> gespeichert. -->
-<!--   </para> -->
+<section id="windows:sysvolshare">
+  <title>Synchronisation of the SYSVOL share</title>
+  <para>
+	The SYSVOL share is a share which provides group policies and logon scripts in Active Directory
+	/ Samba 4. It is synchronised among all domain controllers and stored in the
+	<filename>/var/lib/samba/sysvol</filename> directory.
+  </para>
 
-<!--   <para> -->
-<!-- 	In Microsoft Active Directory wird die SYSVOL-Freigabe durch den File Replication Service -->
-<!-- 	(eingeführt mit Windows 2000), bzw. durch das Distributed File System (ab Windows 2008 R2) -->
-<!-- 	synchronisiert. Diese Replikationsmethoden sind in Samba 4 noch nicht vollständig -->
-<!-- 	implementiert. Die Synchronisation zwischen den Samba 4-Domänencontrollern erfolgt in UCS -->
-<!-- 	durch einen Cron-Job (standardmäßig alle fünf Minuten, konfigurierbar durch die &ucsUCRV; -->
-<!-- 	<envar>samba4/sysvol/sync/cron</envar>. -->
-<!--   </para> -->
-<!-- </section> -->
+  <para>
+	In Microsoft Active Directory, the SYSVOL share is synchronised by the File Replication Service
+	(introduced with Windows 2000) or the Distributed File System (as of Windows 2008 R2). These
+	replication methods are not yet fully implemented in Samba 4. The synchronisation between
+	the Samba 4 domain controllers is performed in UCS via a Cron job (every five minutes as
+	standard - can be configured using the &ucsUCRV; <envar>samba4/sysvol/sync/cron</envar>).
+  </para>
+</section>
 
 
 <section id="windows:NetBIOS_name_service"><title>NetBIOS name service</title>
