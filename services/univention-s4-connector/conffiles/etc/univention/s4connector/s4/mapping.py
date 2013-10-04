@@ -38,6 +38,7 @@ import univention.s4connector.s4.dns
 import univention.s4connector.s4.dc
 import univention.s4connector.s4.computer
 
+@!@
 global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base@%@',
 			'cn=shares,@%@ldap/base@%@','cn=printers,@%@ldap/base@%@',
 			'cn=networks,@%@ldap/base@%@', 'cn=kerberos,@%@ldap/base@%@',
@@ -65,13 +66,16 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'CN=BCKUPKEY_c490e871-a375-4b76-bd24-711e9e49fe5e Secret,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=BCKUPKEY_PREFERRED Secret,CN=System,@%@connector/s4/ldap/base@%@',
 			'ou=Grp Policy Users,@%@connector/s4/ldap/base@%@',
-			'cn=Builtin,@%@connector/s4/ldap/base@%@',
 			'cn=ForeignSecurityPrincipals,@%@connector/s4/ldap/base@%@',
 			'cn=Program Data,@%@connector/s4/ldap/base@%@',
 			'cn=Configuration,@%@connector/s4/ldap/base@%@',
 			'cn=opsi,@%@ldap/base@%@',
 			'cn=Microsoft Exchange System Objects,@%@connector/s4/ldap/base@%@']
 
+if configRegistry.is_false('connector/s4/mapping/group/synclocal', False):
+	global_ignore_subtree.append('cn=Builtin,@%@connector/s4/ldap/base@%@')
+print 'global_ignore_subtree=%s' % global_ignore_subtree
+@!@
 
 s4_mapping = {
 	'user': univention.s4connector.property (
@@ -279,10 +283,12 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 
 @!@
 ignore_filter = ''
+if configRegistry.is_false('connector/s4/mapping/group/synclocal', False):
+	ignore_filter += '(sambaGroupType=5)(groupType=5)'
 for group in configRegistry.get('connector/s4/mapping/group/ignorelist', '').split(','):
 	if group:
 		ignore_filter += '(cn=%s)' % (group)
-print "			ignore_filter='(|(sambaGroupType=5)(groupType=5)%s)'," % ignore_filter
+print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -324,6 +330,14 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							ldap_attribute='description',
 							con_attribute='description',
 						),
+@!@
+if configRegistry.is_true('connector/s4/mapping/group/synclocal', True):
+	print "					'groupType': univention.s4connector.attribute ("
+	print "							ucs_attribute='groupType',"
+	print "							ldap_attribute='univentionGroupType',"
+	print "							con_attribute='groupType',"
+	print "					),"
+@!@
 					'mailAddress': univention.s4connector.attribute (
 							ucs_attribute='mailAddress',
 							ldap_attribute='mailPrimaryAddress',

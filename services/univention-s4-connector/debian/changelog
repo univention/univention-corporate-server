@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.23-1) unstable; urgency=low
+
+  * Synchronize local groups (Bug #29486)
+  * Don't create local groups in join scripts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Oct 2013 17:14:13 +0200
+
 univention-s4-connector (8.0.22-1) unstable; urgency=low
 
   * Fixed python traceback which was introduced with r44419 (Bug #32542)
