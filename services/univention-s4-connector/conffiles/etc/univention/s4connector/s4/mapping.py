@@ -333,7 +333,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 @!@
 if configRegistry.is_true('connector/s4/mapping/group/synclocal', True):
 	print "					'groupType': univention.s4connector.attribute ("
-	print "							ucs_attribute='groupType',"
+	print "							ucs_attribute='adGroupType',"
 	print "							ldap_attribute='univentionGroupType',"
 	print "							con_attribute='groupType',"
 	print "					),"
