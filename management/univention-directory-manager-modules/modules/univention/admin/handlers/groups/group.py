@@ -141,6 +141,7 @@ property_descriptions={
 			syntax = univention.admin.syntax.adGroupType,
 			multivalue = False,
 			options = [ 'samba' ],
+			default=('-2147483646',[]),
 			required = False,
 			dontsearch = True,
 			may_change = True,
@@ -520,6 +521,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_modify(self):
 		self.check_for_group_recursion()
+		self.check_ad_group_type_change()
 
 	def _ldap_addlist(self):
 
@@ -920,14 +922,68 @@ class object(univention.admin.handlers.simpleLdap):
 
 			self._check_group_childs_for_recursion(grp_module, grpdn2childgrpdns, childgrp.lower(), new_parents)
 
+	def __is_universal(adGroupType):
+		return int(adGroupType) & 0x8
+
+	def __is_global(adGroupType):
+		return int(adGroupType) & 0x2
+
+	def __is_domain_local(adGroupType):
+		return int(adGroupType) & 0x4
+
+	def __is_local(adGroupType):
+		return int(adGroupType) & 0x1
+
+	def check_ad_group_type_change(self):
+		if not self.hasChanged('adGroupType'):
+			return
+	
+		old_groupType = self.oldinfo.get('adGroupType', [])[0]
+		new_groupType = self.info.get('adGroupType', [])[0]
+
+		if not old_groupType or not new_groupType:
+			return
+
+		if is_domain_local(old_groupType):
+			raise univention.admin.uexceptions.adGroupTypeChange(_('The AD group type can not be changed from type local to any other type.'))
+
+		# See for details:
+		#  http://technet.microsoft.com/en-us/library/cc755692%28v=ws.10%29.aspx
+
+		# Global to universal:
+		#  This conversion is allowed only if the group that you want to change is not a member of
+		#  another global scope group.
+		# Domain local to universal:
+		#  This conversion is allowed only if the group that you want to change does not have
+		#  another domain local group as a member.
+		# Universal to global:
+		#  This conversion is allowed only if the group that you want to change does not have
+		#  another universal group as a member.
+		# Universal to domain local:
+		#  There are no restrictions for this operation.
+
+		if __is_global(old_groupType) and __is_univeral(new_groupType):
+			raise univention.admin.uexceptions.adGroupTypeChange(_('The AD group type can not be changed from global to universal.'))
+		elif __is_domain_local(old_groupType) and __is_univeral(new_groupType):
+			raise univention.admin.uexceptions.adGroupTypeChange(_("The AD group type can not be changed from domain local to universal."))
+		elif __is_universal(old_groupType) and __is_global(new_groupType):
+			raise univention.admin.uexceptions.adGroupTypeChange(_("The AD group type can not be changed from universal to global."))
+		elif __is_universal(old_groupType) and __is_domain_global(new_groupType):
+			raise univention.admin.uexceptions.adGroupTypeChange(_("The AD group type can not be changed from universal to domain local."))
+
 	def __generate_group_sid(self, gidNum):
 		# TODO: cleanup function
 		groupSid = None
 
+		new_groupType = self.info.get('adGroupType', [])[0]
+
 		if self['sambaRID']:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-			domainsid=searchResult[0][1]['sambaSID'][0]
-			sid = domainsid+'-'+self['sambaRID']
+			if _is_domain_local(new_groupType):
+				sid = 'S-1-5-32-' + self['sambaRID']
+			else:
+				domainsid=searchResult[0][1]['sambaSID'][0]
+				sid = domainsid+'-'+self['sambaRID']
 			groupSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
 			self.alloc.append(('sid', groupSid))
 		else:
@@ -937,9 +993,10 @@ class object(univention.admin.handlers.simpleLdap):
 				# new sambaSID back from Samba 4.
 				groupSid='S-1-4-%s' % num
 			else:
+				localSid = _is_domain_local(new_groupType)
 				while not groupSid or groupSid == 'None':
 					try:
-						groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num)
+						groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num, localSid=localSid)
 					except univention.admin.uexceptions.noLock, e:
 						num = str(int(num)+1)
 				self.alloc.append(('sid', groupSid))

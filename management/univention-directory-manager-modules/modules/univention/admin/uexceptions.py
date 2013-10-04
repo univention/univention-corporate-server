@@ -101,6 +101,10 @@ class groupNameAlreadyUsed(base):
 	else:
 		message=_('The groupname is already in use')
 
+class adGroupTypeChange(base):
+	message=_("The AD group type can not be changed from local.")
+
+
 class prohibitedUsername(base):
 	message=_('Prohibited username.')
 

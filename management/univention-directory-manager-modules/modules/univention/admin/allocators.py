@@ -75,14 +75,17 @@ def requestUserSid(lo, position, uid_s):
 	return request(lo, position, 'sid', sid)
 
 
-def requestGroupSid(lo, position, gid_s):
+def requestGroupSid(lo, position, gid_s, localSid = False):
 	gid=int(gid_s)
 	algorithmical_rid_base=1000
 	rid=str(gid*2+algorithmical_rid_base+1)
 
-	searchResult=lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-	domainsid=searchResult[0][1]['sambaSID'][0]
-	sid=domainsid+'-'+rid
+	if localSid:
+		sid = 'S-1-5-32-' + rid
+	else:
+		searchResult=lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
+		domainsid=searchResult[0][1]['sambaSID'][0]
+		sid=domainsid+'-'+rid
 	
 	return request(lo, position, 'sid', sid)
 
