@@ -80,4 +80,10 @@ if len(status['errors']) > 0:
 	print 'output: %s' % status
 	sys.exit(1)
 
+result = connection.request('lib/server/restart')
+if not result['success']:
+	print 'ERROR: Failed to restart UMC'
+	print 'output: %s' % result
+	sys.exit(1)
+
 sys.exit(0)
