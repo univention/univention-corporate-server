@@ -49,7 +49,9 @@ if not options.username or not options.password:
 	parser.error('Please specify username (-u) and password (-p)!')
 
 if not options.ou:
-	parser.error('Please specify a school OU (-o)!')
+	if ucr['server/role'] == 'domaincontroller_slave' or options.setup == 'singlemaster':
+		parser.error('Please specify a school OU (-o)!')
+	options.ou = ''
 
 connection = UMCConnection(options.host)
 connection.auth(options.username, options.password)
