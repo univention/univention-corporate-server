@@ -677,6 +677,7 @@ objectClass: univentionGroup
 objectClass: sambaGroupMapping
 objectClass: univentionObject
 univentionObjectType: groups/group
+univentionGroupType: -2147483646
 cn: Domain Admins
 sambaSID: @@%%@@sid@@%%@@-512
 sambaGroupType: 2
@@ -689,6 +690,7 @@ objectClass: univentionGroup
 objectClass: sambaGroupMapping
 objectClass: univentionObject
 univentionObjectType: groups/group
+univentionGroupType: -2147483646
 cn: Domain Users
 sambaSID: @@%%@@sid@@%%@@-513
 sambaGroupType: 2
@@ -701,6 +703,7 @@ objectClass: univentionGroup
 objectClass: sambaGroupMapping
 objectClass: univentionObject
 univentionObjectType: groups/group
+univentionGroupType: -2147483646
 cn: Domain Guests
 sambaSID: @@%%@@sid@@%%@@-514
 sambaGroupType: 2
@@ -726,6 +729,7 @@ objectClass: univentionGroup
 objectClass: sambaGroupMapping
 objectClass: univentionObject
 univentionObjectType: groups/group
+univentionGroupType: -2147483646
 cn: DC Backup Hosts
 sambaSID: @@%%@@sid@@%%@@-11012
 sambaGroupType: 2
@@ -738,6 +742,7 @@ objectClass: univentionGroup
 objectClass: sambaGroupMapping
 objectClass: univentionObject
 univentionObjectType: groups/group
+univentionGroupType: -2147483646
 cn: DC Slave Hosts
 sambaSID: @@%%@@sid@@%%@@-11013
 sambaGroupType: 2
@@ -751,6 +756,7 @@ objectClass: univentionGroup
 objectClass: sambaGroupMapping
 objectClass: univentionObject
 univentionObjectType: groups/group
+univentionGroupType: -2147483646
 cn: Computers
 sambaSID: @@%%@@sid@@%%@@-11015
 sambaGroupType: 2
@@ -772,6 +778,7 @@ objectClass: univentionGroup
 objectClass: sambaGroupMapping
 objectClass: univentionObject
 univentionObjectType: groups/group
+univentionGroupType: -2147483643
 cn: Printer-Admins
 sambaSID: S-1-5-32-550
 sambaGroupType: 5

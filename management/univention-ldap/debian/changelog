@@ -1,3 +1,9 @@
+univention-ldap (10.0.13-1) unstable; urgency=low
+
+  * Set univentionGroupType for default groups (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Oct 2013 19:57:40 +0200
+
 univention-ldap (10.0.12-1) unstable; urgency=low
 
   * Remove default s3 / s4 groups from base.ldif (Bug #32461)
