@@ -950,14 +950,16 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.hasChanged('adGroupType'):
 			return
 	
-		old_groupType = self.oldinfo.get('adGroupType', [])[0]
-		new_groupType = self.info.get('adGroupType', [])[0]
+		old_groupType = self.oldinfo.get('adGroupType', 0)
+		new_groupType = self.info.get('adGroupType', 0)
 
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'groups/group: old_groupType: %s' % old_groupType)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'groups/group: new_groupType: %s' % new_groupType)
 		if not old_groupType or not new_groupType:
 			return
 
-		if is_domain_local(old_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChange(_('The AD group type can not be changed from type local to any other type.'))
+		if self.__is_groupType_domain_local(old_groupType):
+			raise univention.admin.uexceptions.adGroupTypeChangeDomainLocalToAny
 
 		# See for details:
 		#  http://technet.microsoft.com/en-us/library/cc755692%28v=ws.10%29.aspx
@@ -975,20 +977,21 @@ class object(univention.admin.handlers.simpleLdap):
 		#  There are no restrictions for this operation.
 
 		if self.__is_groupType_global(old_groupType) and self.__is_univeral(new_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChange(_('The AD group type can not be changed from global to universal.'))
+			raise univention.admin.uexceptions.adGroupTypeChangeGlobalToUniversal
 		elif self.__is_groupType_domain_local(old_groupType) and self.__is_univeral(new_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChange(_("The AD group type can not be changed from domain local to universal."))
+			raise univention.admin.uexceptions.adGroupTypeChangeDomainLocalToUniversal
 		elif self.__is_groupType_universal(old_groupType) and self.__is_groupType_global(new_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChange(_("The AD group type can not be changed from universal to global."))
+			raise univention.admin.uexceptions.adGroupTypeChangeUniversalToGlobal
 		elif self.__is_groupType_universal(old_groupType) and self.__is_domain_global(new_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChange(_("The AD group type can not be changed from universal to domain local."))
+			raise univention.admin.uexceptions.adGroupTypeChangeUniversalToDomainGlobal
 
 	def __generate_group_sid(self, gidNum):
 		# TODO: cleanup function
 		groupSid = None
 
-		new_groupType = self.info.get('adGroupType', [])[0]
+		new_groupType = self.info.get('adGroupType', 0)
 
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'groups/group: new_groupType: %s' % new_groupType)
 		if self['sambaRID']:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
 			if self.__is_groupType_domain_local(new_groupType):
