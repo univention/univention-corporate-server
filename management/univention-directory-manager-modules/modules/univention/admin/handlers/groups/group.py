@@ -922,16 +922,16 @@ class object(univention.admin.handlers.simpleLdap):
 
 			self._check_group_childs_for_recursion(grp_module, grpdn2childgrpdns, childgrp.lower(), new_parents)
 
-	def __is_universal(adGroupType):
+	def __is_groupType_universal(adGroupType):
 		return int(adGroupType) & 0x8
 
-	def __is_global(adGroupType):
+	def __is_groupType_global(adGroupType):
 		return int(adGroupType) & 0x2
 
-	def __is_domain_local(adGroupType):
+	def __is_groupType_domain_local(adGroupType):
 		return int(adGroupType) & 0x4
 
-	def __is_local(adGroupType):
+	def __is_groupType_local(adGroupType):
 		return int(adGroupType) & 0x1
 
 	def check_ad_group_type_change(self):
@@ -962,13 +962,13 @@ class object(univention.admin.handlers.simpleLdap):
 		# Universal to domain local:
 		#  There are no restrictions for this operation.
 
-		if __is_global(old_groupType) and __is_univeral(new_groupType):
+		if __is_groupType_global(old_groupType) and __is_univeral(new_groupType):
 			raise univention.admin.uexceptions.adGroupTypeChange(_('The AD group type can not be changed from global to universal.'))
-		elif __is_domain_local(old_groupType) and __is_univeral(new_groupType):
+		elif __is_groupType_domain_local(old_groupType) and __is_univeral(new_groupType):
 			raise univention.admin.uexceptions.adGroupTypeChange(_("The AD group type can not be changed from domain local to universal."))
-		elif __is_universal(old_groupType) and __is_global(new_groupType):
+		elif __is_groupType_universal(old_groupType) and __is_groupType_global(new_groupType):
 			raise univention.admin.uexceptions.adGroupTypeChange(_("The AD group type can not be changed from universal to global."))
-		elif __is_universal(old_groupType) and __is_domain_global(new_groupType):
+		elif __is_groupType_universal(old_groupType) and __is_domain_global(new_groupType):
 			raise univention.admin.uexceptions.adGroupTypeChange(_("The AD group type can not be changed from universal to domain local."))
 
 	def __generate_group_sid(self, gidNum):
@@ -979,7 +979,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self['sambaRID']:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-			if _is_domain_local(new_groupType):
+			if __is_groupType_domain_local(new_groupType):
 				sid = 'S-1-5-32-' + self['sambaRID']
 			else:
 				domainsid=searchResult[0][1]['sambaSID'][0]
@@ -993,7 +993,7 @@ class object(univention.admin.handlers.simpleLdap):
 				# new sambaSID back from Samba 4.
 				groupSid='S-1-4-%s' % num
 			else:
-				localSid = _is_domain_local(new_groupType)
+				localSid = __is_groupType_domain_local(new_groupType)
 				while not groupSid or groupSid == 'None':
 					try:
 						groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num, localSid=localSid)

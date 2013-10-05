@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.44-3) unstable; urgency=low
+
+  * More updates to the group type handling (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 05 Oct 2013 09:48:21 +0200
+
 univention-directory-manager-modules (9.0.44-2) unstable; urgency=low
 
   * More updates to the group type handling (Bug #32767)
