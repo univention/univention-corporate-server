@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.25-1) unstable; urgency=low
+
+  * Create container Builtin during join otherwise all domain local
+    groups are rejected first (Bug #29486)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 05 Oct 2013 22:18:15 +0200
+
 univention-s4-connector (8.0.24-1) unstable; urgency=low
 
   * Use adGroupType as udm attribute (Bug #29486)

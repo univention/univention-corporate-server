@@ -75,6 +75,9 @@ udm settings/extended_attribute create "$@" --ignore_exists \
 # Be sure theses containers exists
 if [ $JS_LAST_EXECUTED_VERSION -le 0 ]; then
 udm container/cn create "$@" --ignore_exists \
+			--set name=Builtin || die
+
+udm container/cn create "$@" --ignore_exists \
 			--set name=System || die
 
 udm container/cn create "$@" --ignore_exists \
