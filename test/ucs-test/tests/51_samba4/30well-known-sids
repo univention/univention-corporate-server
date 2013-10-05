@@ -1,0 +1,94 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Test well-known SIDs"
+## exposure: safe
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## versions:
+##  3.1-1: skip
+##  3.2-0: fixed
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+# List of well known sids:
+#  http://support.microsoft.com/kb/243330/en-us
+
+domainSid="$(univention-s4search -s base objectSid | sed -ne 's|^objectSid: ||p')"
+
+test -z "$domainSid" && fail_test 110 "domainSid not found"
+
+test_group_sid_openldap()
+{
+	group="$1"
+	expected_sid="$2"
+	sid_ldap=$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$group))" sambaSID | sed -ne 's|^sambaSID: ||p')
+	if [ "$sid_ldap" != "$expected_sid" ]; then
+		echo "Expeted sid for $group in OpenLDAP: $expected_sid; found in LDAP: $sid_ldap"
+		fail_test 110
+	fi
+}
+test_group_sid_s4()
+{
+	group="$1"
+	expected_sid="$2"
+	sid_ad=$(univention-s4search "(&(objectClass=group)(cn=$group))" objectSid | sed -ne 's|^objectSid: ||p')
+	if [ "$sid_ad" != "$expected_sid" ]; then
+		echo "Expeted sid for $group in S4: $expected_sid; found in S4: $sid_ad"
+		fail_test 110
+	fi
+}
+
+test_group_sid()
+{
+	test_group_sid_s4 "$@"
+	test_group_sid_openldap "$@"
+	
+}
+test_user_sid()
+{
+	user="$1"
+	expected_sid="$2"
+	sid_ad=$(univention-s4search "(&(objectClass=user)(cn=$user))" objectSid | sed -ne 's|^objectSid: ||p')
+	sid_ldap=$(univention-ldapsearch "(uid=$user)" sambaSID | sed -ne 's|^sambaSID: ||p')
+	if [ "$sid_ad" != "$expected_sid" ]; then
+		echo "Expeted sid for $user: $expected_sid; found in S4: $sid_ad"
+		fail_test 110
+	fi
+	if [ "$sid_ldap" != "$expected_sid" ]; then
+		echo "Expeted sid for $user: $expected_sid; found in LDAP: $sid_ldap"
+		fail_test 110
+	fi
+	
+}
+
+test_user_sid "Administrator" "$domainSid-500"
+test_user_sid "KRBTGT" "$domainSid-502"
+test_user_sid "Guest" "$domainSid-501"
+
+test_group_sid "Domain Admins" "$domainSid-512"
+test_group_sid "Domain Users" "$domainSid-513"
+test_group_sid "Domain Guests" "$domainSid-514"
+test_group_sid "Domain Computers" "$domainSid-515"
+test_group_sid "Domain Controllers" "$domainSid-516"
+test_group_sid "Cert Publishers" "$domainSid-517"
+test_group_sid "Schema Admins" "$domainSid-518"
+test_group_sid "Enterprise Admins" "$domainSid-519"
+test_group_sid "Group Policy Creator Owners" "$domainSid-520"
+test_group_sid "RAS and IAS Servers" "$domainSid-553"
+test_group_sid "Administrators" S-1-5-32-544
+test_group_sid "Users" S-1-5-32-545
+test_group_sid "Guests" S-1-5-32-546
+# test_group_sid "Power Users" S-1-5-32-547
+test_group_sid "Account Operators" S-1-5-32-548
+test_group_sid "Server Operators" S-1-5-32-549
+test_group_sid "Backup Operators" S-1-5-32-551
+test_group_sid "Replicator" S-1-5-32-552
+
+test_group_sid_s4 "Print Operators" S-1-5-32-550
+test_group_sid_openldap "Printer-Admins" S-1-5-32-550
+
+exit $RETVAL
+

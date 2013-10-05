@@ -1,3 +1,10 @@
+ucs-test (4.0.134-3) unstable; urgency=low
+
+  * 51_samba4/30well-known-sids: added a test case to check the well-
+    known SIDs (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 05 Oct 2013 21:47:55 +0200
+
 ucs-test (4.0.134-2) unstable; urgency=low
 
   * 10_ldap/44replication_binary: Don't create kerberos users. Only
