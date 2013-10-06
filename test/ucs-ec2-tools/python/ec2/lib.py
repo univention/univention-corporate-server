@@ -144,7 +144,7 @@ class VM:
 		self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 		start = now = time.time()
 		# TODO: make the timeout configurable
-		timeout = 300
+		timeout = 600
 		while now - start < timeout:
 			try:
 				self._connect_vm()
@@ -641,7 +641,7 @@ class VM_EC2(VM):
 		for var in env_vars:
 			self.instance.add_tag(var.lower(), os.getenv(var, ''))
 
-	def _wait_instance(self, timeout=300):
+	def _wait_instance(self, timeout=600):
 		"""
 		Wait until instance is created.
 		"""

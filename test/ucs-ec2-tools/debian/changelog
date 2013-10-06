@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.10-1) unstable; urgency=low
+
+  * Increase default timeout from 300 to 600 seconds (Bug #32809)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 06 Oct 2013 15:07:22 +0200
+
 ucs-ec2-tools (0.1.9-8) unstable; urgency=low
 
   * Bug #32165: make sure that only one instance is created via ucs-kt-get
