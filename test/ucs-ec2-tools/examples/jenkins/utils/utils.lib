@@ -1,0 +1,94 @@
+#!/bin/bash
+
+basic_setup ()
+{
+	echo -e "#!/bin/sh\nroute del default ; route add default gw 10.210.216.13" >>/etc/network/if-up.d/z_route
+	chmod +x /etc/network/if-up.d/z_route
+	/etc/network/if-up.d/z_route
+	sleep 10 # just wait a few seconds to give the amazone cloud some time
+	ucr set updater/identify="UCS (EC2 Test)"
+}
+
+upgrade_to_latest_errata ()
+{
+	univention-upgrade --noninteractive --ignoreterm --ignoressh
+	# Workaround for Bug #31561
+	sleep 10
+	univention-upgrade --noninteractive --ignoreterm --ignoressh
+}
+
+upgrade_to_3.2 ()
+{
+	ucr set repository/online/server=testing.univention.de
+	univention-upgrade --noninteractive --ignoreterm --ignoressh
+	# Workaround for Bug #31561
+	sleep 10
+	univention-upgrade --noninteractive --ignoreterm --ignoressh
+}
+
+run_setup_join ()
+{
+	/usr/lib/univention-system-setup/scripts/setup-join.sh
+	ucr set apache2/startsite='ucs-overview/' # Bug #31682
+	for srv in univention-management-console-server univention-management-console-web-server apache2; do invoke-rc.d $srv restart; done
+}
+
+run_setup_join_on_non_master ()
+{
+	ucr set nameserver1=$(cat /var/cache/univention-system-setup/profile | sed -ne 's|^nameserver=||p')
+	echo -n "univention" >/tmp/univention
+	/usr/lib/univention-system-setup/scripts/setup-join.sh --dcaccount Administrator --password_file /tmp/univention
+	ucr set apache2/startsite='ucs-overview/' # Bug #31682
+	for srv in univention-management-console-server univention-management-console-web-server apache2; do invoke-rc.d $srv restart; done
+}
+
+wait_for_reboot ()
+{
+	for((i=0;i<100;i++)); do pidof apache2 && break; sleep 1; done
+}
+
+switch_to_test_app_center ()
+{
+	ucr set repository/app_center/server=appcenter.test.software-univention.de
+}
+
+install_apps ()
+{
+	for app in $@; do univention-add-app -a --latest $app; done
+}
+
+install_ucs_test ()
+{
+	ucr set repository/online/unmaintained=yes
+	univention-install --yes ucs-test
+	ucr set repository/online/unmaintained=no
+}
+
+install_apps_test_packages ()
+{
+	ucr set repository/online/unmaintained=yes
+	for app in $@; do univention-install --yes ucs-test-$app || true; done
+	ucr set repository/online/unmaintained=no
+}
+
+run_apptests ()
+{
+	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -r apptest
+}
+
+run_tests ()
+{
+	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log"
+}
+
+run_join_scripts ()
+{
+	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
+		univention-run-join-scripts
+	else
+ 		echo -n "univention" >/tmp/univention
+		univention-run-join-scripts -dcaccount Administrator -dcpwd /tmp/univention
+	fi
+}
+
+# vim:set filetype=sh ts=4:
