@@ -613,6 +613,15 @@ class Instance( Base, ProgressMixin ):
 		module = self._get_module_by_request( request )
 		self.finished( request.id, module.superordinates )
 
+	@simple_response(with_flavor=True)
+	def simple_form(self, flavor):
+		"""Returns a list all flavor's submodules with specified express_layout"""
+		module = self._get_module('all', flavor)
+		modules = module.child_modules
+		if not modules:
+			modules = [module.module]
+		return [module.module for module in modules if getattr(module, 'express_layout', [])]
+
 	def templates( self, request ):
 		"""Returns the list of template objects for the given object
 		type.
@@ -686,6 +695,14 @@ class Instance( Base, ProgressMixin ):
 
 			# return the final list of object types
 			self.finished( request.id, map( lambda module: { 'id' : udm_modules.name(module), 'label' : getattr( module, 'short_description', udm_modules.name(module) ) }, allowed_modules ) )
+
+	@multi_response(with_flavor=True)
+	def express_layout(self, iterator, objectType, flavor):
+		"""Returns an express layout for a simple form"""
+		for objectType, flavor in iterator:
+			module = self._get_module(objectType, flavor)
+			module.load(force_reload=True)
+			yield module.get_express_layout()
 
 	def layout( self, request ):
 		"""Returns the layout information for the given object type.

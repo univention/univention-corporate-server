@@ -193,7 +193,8 @@ define([
 			// prepare parallel queries
 			var commands = {
 				properties: this.umcpCommandBundle('udm/properties', params),
-				layout: this.umcpCommandBundle('udm/layout', params)
+				layout: this.umcpCommandBundle('udm/layout', params),
+				express: this.umcpCommandBundle('udm/express_layout', params)
 			};
 			if (!this._multiEdit) {
 				// query policies for normal edit
@@ -216,10 +217,11 @@ define([
 			(new all(commands)).then(lang.hitch(this, function(results) {
 				var properties = lang.getObject('properties.result', false, results);
 				var layout = lang.getObject('layout.result', false, results);
+				var expressLayout = lang.getObject('express.result', false, results);
 				var policies = lang.getObject('policies.result', false, results);
 				this.ldapBase = results.ucr[ 'ldap/base' ];
 				var template = lang.getObject('template.result', false, results) || null;
-				this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
+				this.renderDetailPage(properties, layout, policies, template, expressLayout).then(lang.hitch(this, function() {
 					this.standby(false);
 				}), lang.hitch(this, function() {
 					this.standby(false);

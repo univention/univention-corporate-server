@@ -64,11 +64,12 @@ define([
 	"umc/modules/udm/CreateReportDialog",
 	"umc/modules/udm/NewObjectDialog",
 	"umc/modules/udm/DetailPage",
+	"umc/modules/udm/QuickDetailPage",
 	"umc/i18n!umc/modules/udm",
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
+], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, QuickDetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
@@ -1261,7 +1262,7 @@ define([
 			this.own(_dialog);
 		},
 
-		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String*/ note) {
+		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
 			// summary:
 			//		Creates and views the detail page for editing LDAP objects.
 
@@ -1273,7 +1274,12 @@ define([
 				}, newObjOptions);
 			}
 
-			this._detailPage = new DetailPage({
+			if (newObjOptions.simplified) {
+				DetailPageClass = QuickDetailPage;
+			} else {
+				DetailPageClass = DetailPage;
+			}
+			this._detailPage = new DetailPageClass({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				moduleStore: this.moduleStore,
 				moduleFlavor: this.moduleFlavor,

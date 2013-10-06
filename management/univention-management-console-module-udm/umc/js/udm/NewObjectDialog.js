@@ -101,13 +101,15 @@ define([
 					} ),
 					containers: this.umcpCommand('udm/containers'),
 					superordinates: this.umcpCommand('udm/superordinates'),
-					templates: this.umcpCommand('udm/templates')
+					templates: this.umcpCommand('udm/templates'),
+					simple_form: this.umcpCommand('udm/simple_form')
 				}).then(lang.hitch(this, function(results) {
 					var types = lang.getObject('types.result', false, results) || [];
 					var containers = lang.getObject('containers.result', false, results) || [];
 					var superordinates = lang.getObject('superordinates.result', false, results) || [];
 					var templates = lang.getObject('templates.result', false, results) || [];
-					this._renderForm(types, containers, superordinates, templates);
+					var simple_form = lang.getObject('simple_form.result', false, results) || [];
+					this._renderForm(types, containers, superordinates, templates, simple_form);
 				}));
 			}
 			else {
@@ -120,12 +122,13 @@ define([
 			}
 		},
 
-		_renderForm: function(types, containers, superordinates, templates) {
+		_renderForm: function(types, containers, superordinates, templates, simpleForms) {
 			// default values and sort items
 			types = types || [];
 			containers = containers || [];
 			superordinates = superordinates || [];
 			templates = templates || [];
+			simpleForms = simpleForms || [];
 			array.forEach([types, containers, templates], function(iarray) {
 				iarray.sort(tools.cmpObjects('label'));
 			});
@@ -169,8 +172,7 @@ define([
 						depends: 'superordinate'
 					});
 					layout.push('superordinate', 'objectType');
-				}
-				else {
+				} else {
 					// no superordinates
 					// object types
 					if (types.length) {
@@ -199,8 +201,16 @@ define([
 						layout.push('objectTemplate');
 					}
 				}
-			}
-			else {
+				widgets.push({
+					type: 'CheckBox',
+					name: 'simplified',
+					label: _('Simplified form'),
+					value: false,
+					visible: false,
+					description: _('Add this %s with a simplified form.', this.objectNameSingular)
+				});
+				layout.push('simplified');
+			} else {
 				// for the navigation, we show all elements and let them query their content automatically
 				widgets = [{
 					type: 'HiddenInput',
@@ -267,6 +277,33 @@ define([
 			}
 			container.addChild(this._form);
 			this.set('content', container);
+
+			// simple form checkbox
+			var simplifiedWidget = this._form.getWidget('simplified');
+			if (simplifiedWidget) {
+				var lastSimplifiedValue = true;
+				var objectTypeWidget = this._form.getWidget('objectType');
+				var objectTypes = types.length ? types : [this.moduleFlavor];
+				var updateSimpleWidget = function(objectType) {
+					var hasSimpleForm = simpleForms.indexOf(objectType) !== -1;
+					if (hasSimpleForm) {
+						simplifiedWidget.set('value', lastSimplifiedValue);
+					} else if (simplifiedWidget.get('visible')) {
+						lastSimplifiedValue = simplifiedWidget.get('value');
+						simplifiedWidget.set('value', false);
+					}
+					simplifiedWidget.set('visible', hasSimpleForm);
+				};
+				var currentType = this.moduleFlavor;
+				if (objectTypeWidget) {
+					this.own(objectTypeWidget.watch('value', lang.hitch(this, function(name, oldValue, newValue) {
+						updateSimpleWidget(newValue);
+					})));
+					currentType = objectTypeWidget.get('value');
+				}
+				updateSimpleWidget(currentType);
+			}
+
 			this.show();
 
 		},

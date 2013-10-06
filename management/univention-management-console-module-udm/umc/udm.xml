@@ -83,8 +83,10 @@
 		<command name="udm/properties" function="properties" />
 		<command name="udm/options" function="options" />
 		<command name="udm/layout" function="layout" />
+		<command name="udm/express_layout" function="express_layout" />
 		<command name="udm/values" function="values" />
 		<command name="udm/templates" function="templates" />
+		<command name="udm/simple_form" function="simple_form" />
 		<command name="udm/policies" function="policies" />
 		<command name="udm/put" function="put" />
 		<command name="udm/add" function="add" />

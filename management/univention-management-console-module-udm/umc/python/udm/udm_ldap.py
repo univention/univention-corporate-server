@@ -546,6 +546,11 @@ class UDM_Module( object ):
 	def is_policy_module( self ):
 		return self.name.startswith('policies/') and self.name != 'policies/policy'
 
+	def get_express_layout( self ):
+		"""Layout information for quickly adding objects"""
+		express_layout = getattr( self.module, 'express_layout', [] )
+		return express_layout
+
 	def get_layout( self, ldap_dn = None ):
 		"""Layout information"""
 		layout = getattr( self.module, 'layout', [] )
