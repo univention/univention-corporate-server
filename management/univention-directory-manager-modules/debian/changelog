@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.45-1) unstable; urgency=low
+
+  * Bug #23214: Add express layout for users/user
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 06 Oct 2013 23:40:53 +0200
+
 univention-directory-manager-modules (9.0.44-6) unstable; urgency=low
 
   * Fixed typo from last commit (Bug #32767)
@@ -36,7 +42,7 @@ univention-directory-manager-modules (9.0.44-1) unstable; urgency=low
 
 univention-directory-manager-modules (9.0.43-2) unstable; urgency=low
 
-  * version bump for changelog correcton (Bug #32592)
+  * version bump for changelog correction (Bug #32592)
 
  -- Lukas Walter <walter@univention.de>  Tue, 01 Oct 2013 15:39:59 +0200
 
