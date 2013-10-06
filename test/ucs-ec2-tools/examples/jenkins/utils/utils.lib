@@ -59,7 +59,7 @@ install_apps ()
 
 install_ucs_test ()
 {
-	ucr set repository/online/unmaintained=yes
+	ucr set repository/online/unmaintained=yes repository/online/component/ucs3.1-1-ucs-test=true repository/online/component/ucs3.1-1-ucs-test/unmaintained=true
 	univention-install --yes ucs-test
 	ucr set repository/online/unmaintained=no
 }
