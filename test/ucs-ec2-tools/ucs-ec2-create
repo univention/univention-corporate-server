@@ -144,7 +144,7 @@ class VM:
 
 		start = now = time.time()
 		# TODO: make the timeout configurable
-		timeout = 300
+		timeout = 600
 		while now - start < timeout:
 			if self.instance.state == 'running':
 				break
@@ -173,7 +173,7 @@ class VM:
 		self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 		start = now = time.time()
 		# TODO: make the timeout configurable
-		timeout=300
+		timeout=600
 		while now - start < timeout:
 			try:
 				self.client.connect(self.get_ip(),
