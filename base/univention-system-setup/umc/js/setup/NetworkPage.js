@@ -142,6 +142,8 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
+			this._form._widgets.interfaces.set('wizard_mode', this.wizard_mode);
+
 			// The grid contains changes if a DHCP request was made
 			this._form._widgets.interfaces.watch('gateway', lang.hitch(this, function(name, old, value) {
 				// set gateway from dhcp request

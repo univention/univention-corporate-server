@@ -49,6 +49,8 @@ define([
 
 	return declare("umc.modules.setup.InterfaceWizard", [ Wizard ], {
 
+		ucsversion: null,
+		wizard_mode: null,
 		interfaces: null,
 		device: null,
 		creation: null,
@@ -72,23 +74,23 @@ define([
 			}
 		},
 
-		constructor: function(props) {
-			this.interfaces = props.interfaces;
-			this.device = props.device;
-			this.creation = !props.device;
+		postMixInProperties: function() {
+			this.inherited(arguments);
 
-			var device = props.device || {};
+			this.creation = !this.device;
+
+			var device = this.device || {};
 
 			lang.mixin(this, {
 				pages: [{
 					name: 'interfaceType',
 					headerText: _('Choose interface type'),
 					helpText: _('Several network types can be chosen.') +
-						'<ul><li>' + _(' <i>Ethernet</i> is a standard physical interface. ') +
+						'<ul><li>' + _('<i>Ethernet</i> is a standard physical interface. ') +
 						'</li><li>' +  _('<i>VLAN</i> interfaces can be used to separate network traffic logically while using only one or more physical network interfaces. ') +
 						'</li><li>' + _('<i>Bridge</i> interfaces allows a physical network interface to be shared to connect one or more network segments. ') +
 						'</li><li>' + _('<i>Bond</i> interfaces allows two or more physical network interfaces to be coupled.') + '</li></ul>' +
-						_('Further information can be found in the <a href="http://docs.univention.de/computers-%s.html" target="_blank">UCS documentation</a>', props.ucsversion),
+						_('Further information can be found in the <a href="http://docs.univention.de/computers-%s.html" target="_blank">UCS documentation</a>', this.ucsversion),
 					widgets: [{
 						// required to rename
 						name: 'original_name',
@@ -103,6 +105,9 @@ define([
 						disabled: !this.creation,
 						sortDynamicValues: false,
 						dynamicValues: lang.hitch(this, function() {
+							if (this.wizard_mode) {
+								return [{id: 'Ethernet', label: 'Ethernet'}];
+							}
 							var typenames = this.interfaces.getPossibleTypes(this.getDeviceName());
 							if (this.device) {
 								typenames.push({id: this.device.interfaceType, label: this.device.interfaceType});
@@ -466,7 +471,14 @@ define([
 				}]
 			});
 
-			return this.inherited(arguments);
+			if (this.wizard_mode) {
+				// remove help text about VLAN, Bond, etc. in wizard mode
+				array.forEach(this.pages, function(page) {
+					if (page.name == 'interfaceType') {
+						page.helpText = '';
+					}
+				});
+			}
 		},
 
 		buildRendering: function() {

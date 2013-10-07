@@ -1,3 +1,10 @@
+univention-system-setup (7.0.47-1) unstable; urgency=low
+
+  * Bug #30816: Remove possibility to create Bond, Bridge, VLAN interfaces
+  	in appliance mode
+
+ -- Florian Best <best@univention.de>  Mon, 07 Oct 2013 10:54:08 +0200
+
 univention-system-setup (7.0.46-1) unstable; urgency=low
 
   * Bug #29919: fix fuzzy

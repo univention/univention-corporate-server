@@ -12,8 +12,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: umc/js/setup/InterfaceGrid.js:277
+msgid "There are no more physical interfaces to create."
+msgstr "Es gibt keine weiteren physikalischen Netzwerkgeräte zum hinzufügen".
+
 #: umc/js/setup/InterfaceWizard.js:87
-msgid " <i>Ethernet</i> is a standard physical interface. "
+msgid "<i>Ethernet</i> is a standard physical interface. "
 msgstr "<i>Ethernet</i> ist ein standard physikalisches Gerät. "
 
 #: umc/js/setup/SystemRolePage.js:103
