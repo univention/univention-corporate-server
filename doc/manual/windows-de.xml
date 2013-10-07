@@ -603,68 +603,72 @@ Diese Funktionalität steht nur unter Samba 3 zur Verfügung.
 </section>
 </section>
 
-<section id="ad-connector:general"><title>UCS Active Directory Connector</title>
-<section id="ad-connector:einfuehrung"><title>Einführung</title>
-<para>
-Der UCS Active Directory Connector (kurz AD Connector)
-ermöglicht eine Synchronisation von Verzeichnisdienstobjekten zwischen
-einem Windows 2003/2008/2012 Server mit Active Directory (AD) und dem
-OpenLDAP-Verzeichnis aus &ucsUCS;.
-</para>
-<para>
-In der Standardeinstellung werden Container, Organisationseinheiten,
-Benutzer und Gruppen synchronisiert. Die Benutzer nehmen eine
-Sonderstellung ein, da das Passwort in Active Directory nicht über das
-LDAP-Protokoll abgefragt werden kann. Hierfür wird ein zusätzlicher
-Dienst auf dem Windows-Server installiert, der diese
-Passwortsynchronisation ermöglicht (siehe
-<xref linkend="ad-connector:password-dienst"/>).
-</para>
-<para>
-Hinweise zu den in der Grundeinstellung konfigurierten Attributen und
-zu beachtende Besonderheiten finden sich in
-<xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
-</para>
-<para>
-Die Rechnerkonten werden nicht synchronisiert, da Windows-Rechner nur in
-eine Domäne eingebunden sein können.
-</para>
-<para>
-Durch die in beiden Domänen gleichen Benutzereinstellungen, können Benutzer transparent auf
-Dienste beider Umgebungen zugreifen. Nachdem eine Domänenanmeldung an
-einer UCS-Domäne durchgeführt wurde, ist anschließend eine Verbindung
-zu einer Dateifreigabe oder einem Exchange-Server mit Active Directory
-ohne erneute Passwortabfrage möglich. Auf den Ressourcen der anderen
-Domäne finden Benutzer und Administratoren gleichnamige Benutzer und
-Gruppen vor und können so mit den gewohnten Rechtestrukturen arbeiten.
-</para>
-<para>
-Nach dem erstmaligen Start des Connectors wird die Initialisierung
-vorgenommen. Dabei werden alle Einträge aus dem UCS gelesen und
-entsprechend dem eingestellten Mapping in AD-Objekte umgewandelt und
-auf AD-Seite hinzugefügt, bzw., falls bereits vorhanden,
-modifiziert. Anschließend werden alle Objekte aus dem AD gelesen und
-in UCS-Objekte umgewandelt und entsprechend auf UCS-Seite hinzugefügt
-bzw. modifiziert. Solange noch Änderungen vorliegen, werden die
-Verzeichnisdienst-Server weiter abgefragt.
-Der AD-Connector kann auch in einem unidirektionalen Modus betrieben werden.
-</para>
-<para>
-Nach dem initialen Sync werden weitere Änderungen in einem festen Intervall
-abfragt. Dieser Wert ist auf fünf Sekunden eingestellt und kann über das
-&ucsUMC;-Konfigurationsmodul angepasst werden.
-</para>
-<para>
-Sollte ein Objekt nicht synchronisiert werden können, so wird dieses
-Objekt zunächst zurückgestellt ("rejected"). Nach einer konfigurierbaren
-Anzahl von Durchläufen - das Intervall kann im UMC-Konfigurationsmodul
-konfiguriert werden, siehe <xref linkend="ad-connector:basicsetup"/>
- - wird erneut versucht diese Änderungen wieder
-einzuspielen. Der Standardwert beträgt zehn Durchläufe. Außerdem wird bei
-einem Neustart des UCS AD Connectors ebenfalls versucht, die zuvor
-zurückgewiesenen Änderungen erneut zu synchronisieren.
-</para>
-</section>
+<section id="ad-connector:general">
+  <title>UCS Active Directory Connector</title>
+  
+  <section id="ad-connector:einfuehrung">
+	<title>Einführung</title>
+
+	<para>
+	  Der UCS Active Directory Connector (kurz AD Connector) ermöglicht eine Synchronisation von
+	  Verzeichnisdienstobjekten zwischen einem Windows 2003/2008/2012 Server mit Active Directory
+	  (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS;.
+	</para>
+
+	<para>
+	  In der Standardeinstellung werden Container, Organisationseinheiten, Benutzer und Gruppen
+	  synchronisiert. Die Benutzer nehmen eine Sonderstellung ein, da das Passwort in Active
+	  Directory nicht über das LDAP-Protokoll abgefragt werden kann. Hierfür wird ein zusätzlicher
+	  Dienst auf dem Windows-Server installiert, der diese Passwortsynchronisation ermöglicht (siehe
+	  <xref linkend="ad-connector:password-dienst"/>).
+	</para>
+
+	<para>
+	  Hinweise zu den in der Grundeinstellung konfigurierten Attributen und zu beachtende
+	  Besonderheiten finden sich in <xref
+	  linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
+	</para>
+
+	<para>
+	  Die Rechnerkonten werden nicht synchronisiert, da Windows-Rechner nur in eine Domäne
+	  eingebunden sein können.
+	</para>
+
+	<para>
+	  Durch die in beiden Domänen gleichen Benutzereinstellungen, können Benutzer transparent auf
+	  Dienste beider Umgebungen zugreifen. Nachdem eine Domänenanmeldung an einer UCS-Domäne
+	  durchgeführt wurde, ist anschließend eine Verbindung zu einer Dateifreigabe oder einem
+	  Exchange-Server mit Active Directory ohne erneute Passwortabfrage möglich. Auf den Ressourcen
+	  der anderen Domäne finden Benutzer und Administratoren gleichnamige Benutzer und Gruppen vor
+	  und können so mit den gewohnten Rechtestrukturen arbeiten.
+	</para>
+
+	<para>
+	  Nach dem erstmaligen Start des Connectors wird die Initialisierung vorgenommen. Dabei werden
+	  alle Einträge aus dem UCS gelesen und entsprechend dem eingestellten Mapping in AD-Objekte
+	  umgewandelt und auf AD-Seite hinzugefügt, bzw., falls bereits vorhanden,
+	  modifiziert. Anschließend werden alle Objekte aus dem AD gelesen und in UCS-Objekte
+	  umgewandelt und entsprechend auf UCS-Seite hinzugefügt bzw. modifiziert. Solange noch
+	  Änderungen vorliegen, werden die Verzeichnisdienst-Server weiter abgefragt. Der AD-Connector
+	  kann auch in einem unidirektionalen Modus betrieben werden.
+	</para>
+
+	<para>
+	  Nach dem initialen Sync werden weitere Änderungen in einem festen Intervall abfragt. Dieser
+	  Wert ist auf fünf Sekunden eingestellt und kann über das &ucsUMC;-Konfigurationsmodul
+	  angepasst werden.
+	</para>
+
+	<para>
+	  Sollte ein Objekt nicht synchronisiert werden können, so wird dieses Objekt zunächst
+	  zurückgestellt ("rejected"). Nach einer konfigurierbaren Anzahl von Durchläufen - das
+	  Intervall kann im UMC-Konfigurationsmodul konfiguriert werden, siehe <xref
+	  linkend="ad-connector:basicsetup"/>  - wird erneut versucht diese Änderungen wieder
+	  einzuspielen. Der Standardwert beträgt zehn Durchläufe. Außerdem wird bei einem Neustart des
+	  UCS AD Connectors ebenfalls versucht, die zuvor zurückgewiesenen Änderungen erneut zu
+	  synchronisieren.
+	</para>
+  </section>
 
 <section id="ad-connector:einrichtung">
   <title>Einrichtung des UCS AD Connectors</title>
