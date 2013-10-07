@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.88-1) unstable; urgency=low
+
+  * Bug #26418: fix cross browser behavior for grid default action
+
+ -- Florian Best <best@univention.de>  Mon, 07 Oct 2013 13:42:13 +0200
+
 univention-management-console-frontend (3.0.87-1) unstable; urgency=low
 
   * Bug #32610: updated UMC header to UCS 3.2 design

@@ -1,5 +1,8 @@
-.umc .umcGridDefaultAction {
+/*.umc .dojoxGridRowOver .umcGridDefaultAction {*/
+.umc .umcGridDefaultAction:hover {
 	text-decoration: underline;
+}
+.umc .umcGridDefaultAction {
 	cursor: pointer;
 }
 .umc .umcGridDefaultAction * {

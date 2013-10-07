@@ -126,11 +126,6 @@ define([
 		//		will be displayed in the grid footer.
 		footerFormatter: null,
 
-		// headerFormatter: Function?
-		//		TODO
-		//
-		headerFormatter: null,
-
 		// sortIndex: Number
 		//		Controls which column is used for default sorting (values < 0 indicated
 		//		sorting in descending order)
@@ -345,7 +340,7 @@ define([
 				delete col.label;
 
 				// default action
-				var defaultActionExists = this.defaultAction && array.indexOf(array.map(this.actions, function(iact) { return iact.name; }, this.defaultAction)) !== -1;
+				var defaultActionExists = this.defaultAction && (typeof this.defaultAction == "function" || array.indexOf(array.map(this.actions, function(iact) { return iact.name; }), this.defaultAction) !== -1);
 				var isDefaultActionColumn = (!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name == this.defaultActionColumn);
 
 				if (defaultActionExists && isDefaultActionColumn) {
@@ -464,7 +459,7 @@ define([
 
 				if (iaction.isStandardAction) {
 					// add action to the context toolbar
-					var btn = new Button(lang.mixin(props, getCallback('')));
+					var btn = new Button(lang.mixin(props, getCallback(''), {iconClass: props.iconClass || 'umcIconNoIcon'}));
 					if (iaction.description) {
 						try {
 						var item = undefined;
@@ -496,6 +491,8 @@ define([
 			// add more menu to toolbar
 			if (this._contextActionsMenu.getChildren().length) {
 				this._contextActionsToolbar.addChild(new _DropDownButton({
+					'class': 'umcGridMoreMenu',
+					iconClass: 'umcIconNoIcon',
 					label: _('more'),
 					dropDown: this._contextActionsMenu
 				}));
@@ -660,7 +657,7 @@ define([
 
 			// default action
 			if (!rowDisabled && ((!this.defaultActionColumn && evt.cellIndex === 1) || (this.defaultActionColumn && evt.cell.field == this.defaultActionColumn))) {
-				if (evt.toElement == evt.cellNode) {
+				if (evt.target == evt.cellNode) {
 					// not clicked on text
 					return;
 				}
@@ -923,7 +920,6 @@ define([
 			}
 		},
 
-		// TODO: this is only used in uvmm, remove this, replace by normal handling
 		canExecuteOnSelection: function(/* String|Object */action, /* Object[] */items) {
 			// summary:
 			//		returns a subset of the given items that are available for the action according to the canExecute function
