@@ -32,14 +32,16 @@
 
 #DEBHELPER#
 
-# umc overview
-univention-config-registry unset \
-        ucs/web/overview/entries/admin/univention-doc/description/de \
-        ucs/web/overview/entries/admin/univention-doc/description \
-        ucs/web/overview/entries/admin/univention-doc/icon \
-        ucs/web/overview/entries/admin/univention-doc/label \
-        ucs/web/overview/entries/admin/univention-doc/label/de \
-        ucs/web/overview/entries/admin/univention-doc/link \
-        ucs/web/overview/entries/admin/univention-doc/priority
+if [ "$1" = "remove" ]; then
+	# umc overview
+	univention-config-registry unset \
+	        ucs/web/overview/entries/admin/univention-doc/description/de \
+	        ucs/web/overview/entries/admin/univention-doc/description \
+	        ucs/web/overview/entries/admin/univention-doc/icon \
+	        ucs/web/overview/entries/admin/univention-doc/label \
+	        ucs/web/overview/entries/admin/univention-doc/label/de \
+	        ucs/web/overview/entries/admin/univention-doc/link \
+	        ucs/web/overview/entries/admin/univention-doc/priority
+fi
 
 exit 0
