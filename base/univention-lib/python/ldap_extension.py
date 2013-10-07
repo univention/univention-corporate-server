@@ -123,7 +123,7 @@ class UniventionLDAPExtension(object):
 			"--set", "packageversion=%s" % (options.packageversion,),
 			]
 
-		if self.udm_module_name == "settings/ldapacl":
+		if self.udm_module_name != "settings/ldapschema":
 			if options.ucsversionstart:
 				common_udm_options.extend(["--set", "ucsversionstart=%s" % (options.ucsversionstart,),])
 			if options.ucsversionend:
