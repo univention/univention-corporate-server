@@ -138,7 +138,7 @@ def handler(dn, new, old, command):
 						
 				if s4_init_mode:
 					if new and 'univentionGroup' in new.get('objectClass', []):
-						group_objects.append((dn, new, old, old_dn)
+						group_objects.append((dn, new, old, old_dn))
 
 				_dump_changes_to_file_and_check_file(directory, dn, new, old, old_dn)
 
