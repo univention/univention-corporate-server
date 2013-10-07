@@ -36,25 +36,21 @@ from univention.lib import Translation
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
+from univention.management.console.modules.decorators import simple_response
+from univention.management.console.modules import UMC_CommandError
 
 import notifier.popen
 
 import fnmatch
 import psutil
-import os, stat, shutil
-
-import subprocess, time, grp
-
-import string, ldap
+import os.path
+import subprocess
+import time
 
 _ = Translation('univention-management-console-module-top').translate
 
 FN_BINDPW = '/etc/univention/connector/ad/bindpw'
-DIR_WEB_AD = '/var/www/univention-ad-connector'
 DO_NOT_CHANGE_PWD = '********************'
-
-class ConnectorError( Exception ):
-	pass
 
 class Instance( Base ):
 	OPTION_MAPPING = ( ( 'LDAP_Host', 'connector/ad/ldap/host', '' ),
@@ -128,19 +124,6 @@ class Instance( Base ):
 		self.required_options( request, *map( lambda x: x[ 0 ], Instance.OPTION_MAPPING ) )
 		self.guessed_baseDN = None
 
-		try:
-			fn = '%s/.htaccess' % DIR_WEB_AD
-			fd = open( fn, 'w' )
-			fd.write( 'require user %s\n' % self._username )
-			fd.close()
-			os.chmod( fn, 0644 )
-			os.chown( fn, 0, 0 )
-		except Exception, e:
-			message = _( 'An error occured while saving .htaccess (filename=%(fn)s ; exception=%(exception)s)') % { 'fn': fn, 'exception': e.__class__.__name__ }
-			MODULE.process( 'An error occured while saving .htaccess (filename=%(fn)s ; exception=%(exception)s)' % { 'fn': fn, 'exception': e.__class__.__name__ } )
-			self.finished( request.id, { 'success' : False, 'message' : message } )
-			return
-
 		for umckey, ucrkey, default in Instance.OPTION_MAPPING:
 			val = request.options[ umckey ]
 			if val:
@@ -171,27 +154,27 @@ class Instance( Base ):
 				self.finished( request.id, { 'success' : False, 'message' : _( 'Saving bind password failed (filename=%(fn)s ; exception=%(exception)s)' ) % { 'fn' : fn, 'exception' : str(e.__class__ ) } } )
 				return
 
-		if os.path.exists( '/etc/univention/ssl/%s' % request.options.get( 'LDAP_Host' ) ):
-			try:
-				self._copy_certificate( request )
-				self.finished( request.id,  { 'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved and a new certificate for the Active Directory server has been created.') } )
-			except ConnectorError, e:
-				self.finished( request.id,  { 'success' : False, 'message' :  str( e ) } )
+		ssldir = '/etc/univention/ssl/%s' % request.options.get('LDAP_Host')
+		if not os.path.exists(ssldir):
+			self._create_certificate(request)
 			return
 
-		def _return(  pid, status, buffer, request ):
-			try:
-				self._copy_certificate( request, error_if_missing = True )
-				self.finished( request.id, { 'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved.') } )
-			except ConnectorError, e:
-				self.finished( request.id, { 'success' : False, 'message' : str( e ) } )
+		self.finished(request.id, { 'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved.')})
 
-		cmd = '/usr/sbin/univention-certificate new -name "%s"' % request.options.get( 'LDAP_Host' )
-		MODULE.info( 'Creating new SSL certificate: %s' % cmd )
-		proc = notifier.popen.Shell( cmd, stdout = True )
-		cb = notifier.Callback( _return, request )
-		proc.signal_connect( 'finished', cb )
-		proc.start()
+		def _create_certificate(self, request):
+			ssldir = '/etc/univention/ssl/%s' % request.options.get('LDAP_Host')
+			def _return(pid, status, buffer, request):
+				if not os.path.exists(ssldir):
+					MODULE.error( 'Creation of certificate failed (%s)' % ssldir )
+					self.finished(request.id,  {'success' : False, 'message': _('Creation of certificate failed (%s)') % ssldir})
+				self.finished(request.id,  {'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved and a new certificate for the Active Directory server has been created.')})
+
+			cmd = '/usr/sbin/univention-certificate new -name "%s"' % request.options.get( 'LDAP_Host' )
+			MODULE.info( 'Creating new SSL certificate: %s' % cmd )
+			proc = notifier.popen.Shell( cmd, stdout = True )
+			cb = notifier.Callback( _return, request )
+			proc.signal_connect( 'finished', cb )
+			proc.start()
 
 	def guess( self, request ):
 		"""Tries to guess some values like the base DN of the AD server
@@ -233,27 +216,24 @@ class Instance( Base ):
 		proc.signal_connect( 'finished', cb )
 		proc.start()
 
-	def _copy_certificate( self, request, error_if_missing = False ):
-		ssldir = '/etc/univention/ssl/%s' % request.options.get( 'LDAP_Host' )
-		try:
-			gid_wwwdata = grp.getgrnam('www-data')[2]
-		except:
-			gid_wwwdata = 0
-		if os.path.exists( ssldir ):
-			for fn in ( 'private.key', 'cert.pem' ):
-				dst = '%s/%s' % (DIR_WEB_AD, fn)
-				try:
-					shutil.copy2( '%s/%s' % ( ssldir, fn ), dst )
-					os.chmod( dst, 0440 )
-					os.chown( dst, 0, gid_wwwdata )
-				except Exception, e:
-					MODULE.process( 'Copying of %s/%s to %s/%s failed (exception=%s)' % ( ssldir, fn, DIR_WEB_AD, fn, str( e.__class__ ) ) )
-					raise ConnectorError(  _( 'Copying of %s/%s to %s/%s failed (exception=%s)') % ( ssldir, fn, DIR_WEB_AD, fn, e.__class__.__name__ ) )
-		else:
-			if error_if_missing:
-				MODULE.error( 'Creation of certificate failed (%s)' % ssldir )
-				raise ConnectorError( _('Creation of certificate failed (%s)') % ssldir )
+	@simple_response
+	def private_key(self):
+		return self._serve_file('private.key')
 
+	@simple_response
+	def cert_pem(self):
+		return self._serve_file('cert.pem')
+
+	def _serve_file(self, filename):
+		ucr.load()
+		host = ucr.get('connector/ad/ldap/host')
+		filename = '/etc/univention/ssl/%s/%s' % (host, filename)
+		if not host:
+			raise UMC_CommandError('Not configured yet')
+		if not os.path.exists(filename):
+			raise UMC_CommandError('File does not exists')
+		with open(filename) as fd:
+			return fd.read()
 
 	def upload_certificate( self, request ):
 		def _return( pid, status, bufstdout, bufstderr, request, fn ):

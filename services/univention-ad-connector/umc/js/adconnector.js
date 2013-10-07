@@ -57,7 +57,9 @@ define([
 		constructor: function() {
 			this.pages = [ {
 				name: 'fqdn',
-				helpText: '<p>' + _('Please enter the fully qualified hostname of the Active Directory server.') + '</p><p>' + _('The hostname must be resolvable by the UCS server. A DNS entry can be configured in the DNS module, or a static host record can be configured through the Univention Configuration Registry module, e.g.') + '</p><p>hosts/static/192.168.0.10=w2k8-ad.example.com</p>',
+				helpText: '<p>' + _('Please enter the fully qualified hostname of the Active Directory server.') + '</p><p>'
+					+ _('The hostname must be resolvable by the UCS server. A DNS entry can be configured in the DNS module, or a static host record can be configured through the Univention Configuration Registry module, e.g.')
+					+ '</p><p>hosts/static/192.168.0.10=w2k8-ad.example.com</p>',
 				headerText: _( 'UCS Active Directory Connector configuration' ),
 				widgets: [{
 					name: 'LDAP_Host',
@@ -282,91 +284,119 @@ define([
         	});
         	this.addChild(this._page);
 
-			var widgets = [
-				{
-					name: 'configured',
-					type: Text
-				}, {
-					name: 'running',
-					type: Text
-				}, {
-					name: 'certificateUpload',
-					type: InfoUploader,
-					showClearButton: false,
-					command: 'adconnector/upload/certificate',
-					onUploaded: lang.hitch( this, function( result ) {
-						if ( typeof  result  == "string" ) {
-							return;
-						}
-						if ( result.success ) {
-							dialog.notify( _( 'The certificate was imported successfully' ) );
-							this.showHideElements();
-						} else {
-							dialog.alert( _( 'Failed to import the certificate' ) + ': ' + result.message );
-						}
-					} )
-				}, {
-					name: 'download',
-					type: Text,
-					content: lang.replace( '<a href="/univention-ad-connector/" target="_blank">{0}</a>', [ _( 'Download the password service for Windows and the UCS certificate' ) ] )
-				}
-			];
-			var buttons = [
-				{
-					name: 'start',
-					label: _( 'Start UCS Active Directory Connector' ),
-					callback: lang.hitch( this, function() {
-						tools.umcpCommand( 'adconnector/service', { action : 'start' } ).then( lang.hitch( this, function( response ) {
-							this.showHideElements();
-						} ) );
-					} )
-				}, {
-					name: 'stop',
-					label: _( 'Stop UCS Active Directory Connector' ),
-					callback: lang.hitch( this, function() {
-						tools.umcpCommand( 'adconnector/service', { action : 'stop' } ).then( lang.hitch( this, function( response ) {
-							this.showHideElements();
-						} ) );
-					} )
-				}, {
-					name: 'configure',
-					label: _( 'Configure UCS Active Directory Connector' ),
-					callback: lang.hitch( this, function() {
-						var dlg = new ADConnectorWizardDialog( {
-							title: _( 'UCS Active Directory Connector Wizard' )
-						} );
-						dlg.show();
-						dlg.on('saved', lang.hitch( this, function() {
-							dlg.destroyRecursive();
-							this.showHideElements();
-						} ) );
-					} )
-				}
-			];
+			var widgets = [ {
+				name: 'configured',
+				type: Text
+			}, {
+				name: 'running',
+				type: Text
+			}, {
+				name: 'certificateUpload',
+				type: InfoUploader,
+				showClearButton: false,
+				command: 'adconnector/upload/certificate',
+				onUploaded: lang.hitch( this, function( result ) {
+					if ( typeof  result  == "string" ) {
+						return;
+					}
+					if ( result.success ) {
+						dialog.notify( _( 'The certificate was imported successfully' ) );
+						this.showHideElements();
+					} else {
+						dialog.alert( _( 'Failed to import the certificate' ) + ': ' + result.message );
+					}
+				} )
+			}, {
+				name: 'download',
+				type: Text,
+				content: ''
+			} ];
+
+			var buttons = [ {
+				name: 'start',
+				label: _( 'Start UCS Active Directory Connector' ),
+				callback: lang.hitch( this, function() {
+					tools.umcpCommand( 'adconnector/service', { action : 'start' } ).then( lang.hitch( this, function( response ) {
+						this.showHideElements();
+					} ) );
+				} )
+			}, {
+				name: 'stop',
+				label: _( 'Stop UCS Active Directory Connector' ),
+				callback: lang.hitch( this, function() {
+					tools.umcpCommand( 'adconnector/service', { action : 'stop' } ).then( lang.hitch( this, function( response ) {
+						this.showHideElements();
+					} ) );
+				} )
+			}, {
+				name: 'configure',
+				label: _( 'Configure UCS Active Directory Connector' ),
+				callback: lang.hitch( this, function() {
+					var dlg = new ADConnectorWizardDialog( {
+						title: _( 'UCS Active Directory Connector Wizard' )
+					} );
+					dlg.show();
+					dlg.on('saved', lang.hitch( this, function() {
+						dlg.destroyRecursive();
+						this.showHideElements();
+					} ) );
+				} )
+			} ];
 
 			this._widgets = render.widgets( widgets );
 			this._buttons = render.buttons( buttons );
 
-			var _container = render.layout( [ {
-				label: _( 'Configuration' ),
-				layout: [ 'configured',  'configure' ]
+			var _container = render.layout([{
+				label: _('Configuration'),
+				layout: ['configured',  'configure']
 			}, {
-				label: _( 'UCS Active Directory Connector service' ),
-				layout: [ 'running', 'start', 'stop' ]
+				label: _( 'UCS Active Directory Connector service'),
+				layout: ['running', 'start', 'stop']
 			}, {
-				label: _( 'Active Directory Server configuration' ),
-				layout: [ 'certificateUpload', 'download' ]
-			}  ], this._widgets, this._buttons );
+				label: _('Active Directory Server configuration'),
+				layout: ['certificateUpload']
+			}, {
+				label: _('Download the password service for Windows and the UCS certificate'),
+				layout: ['download']
+			}], this._widgets, this._buttons);
 
 			_container.set( 'style', 'overflow: auto' );
 			this._page.addChild( _container );
 
 			this.showHideElements();
 			this.standby( false );
-    	},
+		},
+
+		_update_download_text: function(result) {
+			var downloadText = _('The MSI files are the installation files for the password service and can be started by double clicking on it.') + '<br>'
+			+ _('The package is installed in the <strong>C:\\Windows\\UCS-AD-Connector</strong> directory automatically. Additionally, the password service is integrated into the Windows environment as a system service, which means the service can be started automatically or manually.')
+			+ '<ul><li><a target="_blank" href="/univention-ad-connector/ucs-ad-connector.msi">ucs-ad-connector.msi</a><br>'
+			+ _('Installation file for the password service for <strong>%s</strong> Windows.<br />It can be started by double clicking on it.', '32bit')
+			+ '</li><li><a target="_blank" href="/univention-ad-connector/ucs-ad-connector-64bit.msi">ucs-ad-connector-64bit.msi</a><br>'
+			+ _('Installation file for the password service for <strong>%s</strong> Windows.<br />It can be started by double clicking on it.', '64bit')
+			+ '</li><li><a target="_blank" href="/univention-ad-connector/vcredist_x86.exe">vcredist_x86.exe</a><br>'
+			+ _('Microsoft Visual C++ 2010 Redistributable Package (x86) - <strong>Must</strong> be installed on a <strong>64bit</strong> Windows.')
+			+ '</li>';
+
+			if (result.configured) {
+				downloadText += '<li><a target="_blank" href="/umcp/adconnector/cert.pem" type="application/octet-stream">cert.pem</a><br>'
+				+ _('The <strong>cert.pem</strong> file contains the SSL certificates created in UCS for secure communication.')
+				+ _('It must also be copied into the installation directory of the password service.')
+				+ _('<br />Please verify that the file has been downloaded as <strong>cert.pem</strong>, Internet Explorer appends a .txt under some circumstances.')
+				+ '</li><li><a target="_blank" href="/umcp/adconnector/private.key" type="application/octet-stream">private.key</a><br>'
+				+ _('The <strong>private.key</strong> file contains the private key to the SSL certificates.')
+				+ _('It must also be copied into the installation directory of the password service.')
+				+ '</li>';
+			}
+			downloadText += '</ul>';
+			this._widgets.download.set('content', downloadText);
+		},
+
 
 		showHideElements: function() {
 			tools.umcpCommand( 'adconnector/state' ).then( lang.hitch( this, function( response ) {
+				this._update_download_text(response.result);
+
 				if ( response.result.configured ) {
 					this._widgets.configured.set( 'content', _( 'The configuration process has been finished and all required settings for UCS Active Directory Connector are set.' ) );
 				} else {

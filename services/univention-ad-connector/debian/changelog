@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.4-1) unstable; urgency=low
+
+  * Bug #32698: integrate download site into UMC module
+
+ -- Florian Best <best@univention.de>  Mon, 07 Oct 2013 18:32:46 +0200
+
 univention-ad-connector (8.0.3-3) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
