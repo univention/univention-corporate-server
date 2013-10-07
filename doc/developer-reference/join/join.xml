@@ -570,20 +570,15 @@ fi
 						<term><cmdsynopsis>
 								<command>ucs_registerLDAPExtension</command>
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
-								<group>
-									<arg>--schema</arg>
-									<arg>--acl<arg choice="opt"><synopfragmentref linkend="ucsversionrestriction">ucsversionrestriction</synopfragmentref></arg></arg>
-									<arg>--udm_syntax</arg>
-									<arg>--udm_hook</arg>
-									<arg>--udm_module</arg>
-								</group>
-								<arg choice="plain"><replaceable>filename</replaceable></arg>
+								<arg choice="opt">--schema <replaceable>filename</replaceable></arg>
+								<arg choice="opt">--acl <replaceable>filename</replaceable></arg>
+								<arg choice="opt">--udm_syntax <replaceable>filename</replaceable></arg>
+								<arg choice="opt">--udm_hook <replaceable>filename</replaceable></arg>
+								<arg choice="opt">--udm_module <replaceable>filename</replaceable></arg>
 								<arg choice="opt">--packagename<replaceable>packagename</replaceable></arg>
 								<arg choice="opt">--packageversion<replaceable>packageversion</replaceable></arg>
-								<synopfragment id="ucsversionrestriction">
-									<arg>--ucsversionstart</arg>
-									<arg>--ucsversionend</arg>
-								</synopfragment>
+								<arg choice="opt">--ucsversionstart<replaceable>ucsversion</replaceable></arg>
+								<arg choice="opt">--ucsversionend<replaceable>ucsversion</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
@@ -636,14 +631,11 @@ ucs_registerLDAPExtension "$@" --schema \
 						<term><cmdsynopsis>
 								<command>ucs_unregisterLDAPExtension</command>
 								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
-								<group>
-									<arg>--schema</arg>
-									<arg>--acl</arg>
-									<arg>--udm_syntax</arg>
-									<arg>--udm_hook</arg>
-									<arg>--udm_module</arg>
-								</group>
-								<arg choice="plain"><replaceable>objectname</replaceable></arg>
+								<arg choice="opt">--schema <replaceable>objectname</replaceable></arg>
+								<arg choice="opt">--acl <replaceable>objectname</replaceable></arg>
+								<arg choice="opt">--udm_syntax <replaceable>objectname</replaceable></arg>
+								<arg choice="opt">--udm_hook <replaceable>objectname</replaceable></arg>
+								<arg choice="opt">--udm_module <replaceable>objectname</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
