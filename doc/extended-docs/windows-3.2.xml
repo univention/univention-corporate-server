@@ -55,62 +55,58 @@ univention-run-join-scripts
         </section>
     </chapter>
 
-<!--     <chapter> -->
-<!-- 	  <title>Advanced Active Directory connector documentation</title> -->
-<!-- 	  <section> -->
-<!-- 		<title>Synchronisation mehrerer AD-Domänen mit einem UCS-Verzeichnisdienst</title> -->
-<!-- 		<para> -->
-<!-- 		  Es besteht die Möglichkeit mehrere getrennte Active Directory-Domänen -->
-<!-- 		  in eine gemeinsame UCS-Domäne zu synchronisieren. Damit können -->
-<!-- 		  beispielsweise mehrere Domänen eines Forests synchronisiert werden. -->
-<!-- 		  Pro AD-Domäne kann eine OU (Organisational Unit) im LDAP definiert -->
-<!-- 		  werden, unter der die Objekte der jeweiligen Domäne synchronisiert -->
-<!-- 		  werden. Die Konfiguration weiterer Connector-Instanzen wird nicht über das -->
-<!-- 		  UMC-Modul abgedeckt. -->
-<!-- 		</para> -->
+    <chapter>
+	  <title>Advanced Active Directory connector documentation</title>
+	  <section>
+		<title>Synchronisation of several Active Directory domains with one UCS directory service</title>
+		<para>
+		  It is possible to synchronise several separate Active Directory domains with one UCS
+		  directory service (e.g. to synchronise with an AD forest). One OU
+		  (organisational unit) can be defined in LDAP for each AD domain, under which the objects
+		  of the respective domains are synchronised. The configuration of further connector
+		  instances is not covered by the UMC module.
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Für die mehrfache Replikation werden mehrere Connector-Instanzen -->
-<!-- 		  paralell gestartet. Jede Connector-Instanz wird dabei mit einer -->
-<!-- 		  eigenständigen Konfigurationsbasis betrieben. Um eine neue Instanz zu erzeugen, muss das Skript -->
-<!-- 		  <command>prepare-new-instance</command> aufgerufen werden, z.B.: -->
+		<para>
+		  Several connector instances are started parallel to each other. Each connector instance is
+		  operated with a self-contained configuration base. The
+		  <command>prepare-new-instance</command> script is used to create a new instance, e.g.:
 
-<!-- <programlisting language="sh"> -->
-<!-- /usr/share/univention-ad-connector/scripts/prepare-new-instance -a create -c connector2 -->
-<!-- </programlisting> -->
-<!-- 		</para> -->
+<programlisting language="sh">
+/usr/share/univention-ad-connector/scripts/prepare-new-instance -a create -c connector2
+</programlisting>
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Dieses Skript erzeugt dann ein weiteres Init-Skript für die zweite -->
-<!-- 		  Connector-Instanz (<filename>/etc/init.d/univention-ad-connector2</filename>), -->
-<!-- 		  ein Konfigurationsverzeichnis <filenmame>/etc/univention/connector2</filenmame> mit -->
-<!-- 		  einer Kopie der Mapping-Einstellungen der Connector-Hauptinstanz (diese kann ggf. angepasst werden) und eine -->
-<!-- 		  Reihe interner Laufzeitverzeichnisse. -->
-<!-- 		</para> -->
+		<para>
+		  This script creates an additional init script for the second connector instance
+		  (<filename>/etc/init.d/univention-ad-connector2</filename>), a configuration directory
+		  <filename>/etc/univention/connector2</filename> with a copy of the mapping settings of
+		  the main connector instance (this can be adapted if necessary) and an array of internal
+		  runtime directories.
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Die zusätzlichen Connector-Instanzen werden in der -->
-<!-- 		  &ucsUCRV; <envar>connector/listener/additionalbasenames</envar> registriert. -->
-<!-- 		</para> -->
+		<para>
+		  The additional connector instances are registered in the &ucsUCRV;
+		  <envar>connector/listener/additionalbasenames</envar>.
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Erfolgt eine Synchronisation von UCS in Richtung Active -->
-<!-- 		  Directory, so muss nach dem Anlegen einer weiteren Connector-Instanz -->
-<!-- 		  die Replikation des Listener-Moduls neu angestossen werden. Hierzu -->
-<!-- 		  muss der folgende Befehl aufgerufen werden: -->
+		<para>
+		  If a UCS synchronisation is performed towards Active Directory, the replication of the
+		  listener module must be restarted after a further connector instance is created. To this
+		  end, the following command must be run:
 
-<!-- <programlisting language="sh"> -->
-<!-- univention-directory-listener-ctrl resync ad-connector -->
-<!-- </programlisting> -->
-<!-- 		</para> -->
+<programlisting language="sh">
+univention-directory-listener-ctrl resync ad-connector
+</programlisting>
+		</para>
 
-<!-- 		<para> -->
-<!-- 		  Die zum AD Connector gehörigen Kommandozeilenwerkzeuge wie -->
-<!-- 		  z.B. <command>univention-adsearch</command> unterstützen mit dem Parameter -->
-<!-- 		  <emphasis>-c</emphasis> die Angabe einer Connector-Instanz. -->
-<!-- 		</para> -->
-<!-- 	  </section> -->
-<!-- 	</chapter> -->
+		<para>
+		  The command line tools which belong to the AD Connector such as
+		  <command>univention-adsearch</command> support selecting the connector instance with the
+		  parameter <emphasis>-c</emphasis>.
+		</para>
+	  </section>
+	</chapter>
 
 
 	<bibliography>
