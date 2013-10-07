@@ -588,6 +588,8 @@ fi
 								<literal>--udm_syntax</literal>, <literal>--udm_hook</literal>, <literal>--udm_module</literal>, which can be combined. Each of these
 								options expects a filename as option argument. During one call of the function, it will always process the given extensions in the order
 								schema, ACL, UDM syntax, UDM hook and finally UDM module.
+							</para>
+							<para>
 								Called from a joinscript, it automatically determines some required parameters, like the app identifier plus Debian package name and version,
 								required for the creation of the corresponding object. After creation of the object the function waits
 								up to 3 minutes for the &ucsMaster; to signal availability of the new extension and reports success or failure.
@@ -595,6 +597,11 @@ fi
 								Failure conditions may occurr e.g. in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active.
 								The &ucsMaster; only activates a new <acronym>LDAP</acronym> schema or ACL extension if the configuration check succeeded.
 							</para>
+							<note>
+								<para>
+									The corresponding UDM modules are documented in <xref linkend="chap:ldap"/> and <xref linkend="chap:udm"/>.
+								</para>
+							</note>
 							<para>
 								Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set
 								to the versioned app identifier (and exported to the environment of subprocesses).
