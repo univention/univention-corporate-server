@@ -2257,6 +2257,14 @@ nscd -i hosts
 			thus refers to the first patch level update for the second minor update for the
 			major release UCS 3.x.
 		</para>
+
+		<!-- <para> -->
+		<!--   Vor jedem Release-Update wird nach <emphasis>Preup-Skript</emphasis> -->
+		<!--   aufgerufen. Dieses prüft z.B. ob Probleme bestehen, die zum kontrollierten Abbruch des -->
+		<!--   Updates führen. Als Abschluss eines Updates wird das -->
+		<!--   <emphasis>Postup-Skript</emphasis> aufgerufen. -->
+		<!-- </para> -->
+
 		<para>
 			Errata updates always refer to certain minor releases, e.g., for UCS
 			3.0. Errata updates can generally be installed for all patch level versions of

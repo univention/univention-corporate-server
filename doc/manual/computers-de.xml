@@ -2214,6 +2214,14 @@ nscd -i hosts
                 Version UCS 3.2-1 wird also das erste Patchlevel-Update für das zweite Minor
                 Update für das Major-Release UCS 3 bezeichnet.
             </para>
+
+			<para>
+			  Vor jedem Release-Update wird ein <emphasis>Preup-Skript</emphasis>
+			  aufgerufen. Dieses prüft z.B. ob Probleme bestehen, die zum kontrollierten Abbruch des
+			  Updates führen. Als Abschluss eines Updates wird das
+			  <emphasis>Postup-Skript</emphasis> aufgerufen.
+			</para>
+
             <para>
                 Errata-Updates beziehen sich immer auf bestimmte Minor-Releases, also
                 beispielsweise für UCS 3.0. Errata-Updates können in der Regel für alle
