@@ -103,6 +103,8 @@
 				<simpara>
 				When logging on with another user account, the domain modules
 				approved for the user are shown.
+				<!-- Weitere Informationen zur Freigabe von -->
+				<!-- Modulen findet sich in <xref linkend="delegated-administration"/>. -->
 				</simpara>
 			</listitem>
 		</itemizedlist>

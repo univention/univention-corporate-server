@@ -89,26 +89,20 @@
 			werden müssen:
 		</para>
 		<itemizedlist>
-			<listitem>
-				<simpara>
-				Bei Anmeldung mit dem lokalen <emphasis>root</emphasis>-Konto des Systems
-				(siehe <xref linkend="computers:rootaccount"/>) werden nur die
-				System-Module der &ucsUMC; angezeigt.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				Bei der Anmeldung mit dem <emphasis>Administrator</emphasis>-Konto auf
-				&ucsMaster; oder &ucsBackup; werden alle Domänen-Module angezeigt.
-				</simpara>
-			</listitem>
-			<listitem>
-				<simpara>
-				Bei der Anmeldung mit einem anderen Benutzerkonto werden die für
-				diesen Benutzer freigeschalteten Domänen-Module angezeigt.
-				<!-- Weitere Informationen zur Freigabe von Modulen findet sich in Kapitel . -->
-				</simpara>
-			</listitem>
+		  <listitem><simpara>
+			Bei Anmeldung mit dem lokalen <emphasis>root</emphasis>-Konto des Systems (siehe <xref
+			linkend="computers:rootaccount"/>) werden nur die System-Module der &ucsUMC; angezeigt.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Bei der Anmeldung mit dem <emphasis>Administrator</emphasis>-Konto auf &ucsMaster; oder &ucsBackup; werden alle Domänen-Module angezeigt.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Bei der Anmeldung mit einem anderen Benutzerkonto werden die für diesen Benutzer
+			freigeschalteten Domänen-Module angezeigt. Weitere Informationen zur Freigabe von
+			Modulen findet sich in <xref linkend="delegated-administration"/>.
+		  </simpara></listitem>
 		</itemizedlist>
 		<para>
 			Nach zehn Minuten Inaktivität wird die Browser-Sitzung automatisch
