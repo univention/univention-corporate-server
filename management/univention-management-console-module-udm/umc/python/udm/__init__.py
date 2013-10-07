@@ -617,10 +617,10 @@ class Instance( Base, ProgressMixin ):
 	def simple_form(self, flavor):
 		"""Returns a list all flavor's submodules with specified express_layout"""
 		module = self._get_module('all', flavor)
-		modules = module.child_modules
+		modules = [self._get_module(module['id'], flavor) for module in module.child_modules]
 		if not modules:
-			modules = [module.module]
-		return [module.module for module in modules if getattr(module, 'express_layout', [])]
+			modules = [module]
+		return [module.name for module in modules if module.get_express_layout()]
 
 	def templates( self, request ):
 		"""Returns the list of template objects for the given object
