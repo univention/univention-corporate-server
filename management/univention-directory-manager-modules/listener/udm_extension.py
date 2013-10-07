@@ -72,11 +72,11 @@ def handler(dn, new, old):
 
 		univentionUCSVersionStart = new.get('univentionUCSVersionStart', [None])[0]
 		univentionUCSVersionEnd = new.get('univentionUCSVersionEnd', [None])[0]
-		current_UCR_version = "%s-%s" % ( listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel') )
-		if univentionUCSVersionStart and UCS_Version(current_UCR_version) < UCS_Version(univentionUCSVersionStart):
+		current_UCS_version = "%s-%s" % ( listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel') )
+		if univentionUCSVersionStart and UCS_Version(current_UCS_version) < UCS_Version(univentionUCSVersionStart):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCR version %s.' % (name, new['cn'][0], univentionUCSVersionStart))
 			new=None
-		elif univentionUCSVersionEnd and UCS_Version(current_UCR_version) >= UCS_Version(univentionUCSVersionEnd):
+		elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) >= UCS_Version(univentionUCSVersionEnd):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
 			new=None
 	elif old:

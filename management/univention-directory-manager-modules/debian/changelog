@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.47-3) unstable; urgency=low
+
+  * Fix typo (Bug #32402, Bug #32405, Bug #32408)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Oct 2013 20:02:58 +0200
+
 univention-directory-manager-modules (9.0.47-2) unstable; urgency=low
 
   * Fix UCS_Version and packageversion comparison
