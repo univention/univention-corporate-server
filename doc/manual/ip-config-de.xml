@@ -1941,21 +1941,38 @@ univention-config-registry set squid/webports="80 443"
 	  </caution>
 
 	  <para>
-		Die Authentifizierung und die damit erst mögliche Überprüfung der Gruppenzugehörigkeiten
-		muss zuerst aktiviert werden. Dafür werden verschiedene Mechanismen angeboten: Sie kann
-		entweder direkt gegen den LDAP-Server erfolgen oder eine NTLM-Authentifizierung durchgeführt
-		werden. Letztere bietet den Vorteil, dass beim Zugriff von Windows-Rechnern keine erneute
-		Eingabe des Passworts notwendig ist.
+		Proxy-Authentifizierung und die damit erst mögliche Überprüfung der Gruppenzugehörigkeiten
+		muss zuerst aktiviert werden. Dafür werden drei verschiedene Mechanismen angeboten: 
+
+		<itemizedlist>
+		  <listitem><simpara>
+			Die Authentifizierung erfolgt direkt gegen den LDAP-Server. Dazu muss die
+			&ucsUCRV; <envar>squid/basicauth</envar> auf <emphasis>yes</emphasis> gesetzt werden und
+			Squid neu gestartet werden.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Die Authentifizierung wird über die NTLM-Schnittstelle durchgeführt. Benutzer, die an
+			einem Windows-Client angemeldet sind, müssen dann beim Zugriff auf den Proxy keine
+			weitere Authentifizierung durchführen. Um NTLM-Authentifizierung zu aktivieren muss die 
+			&ucsUCRV; <envar>squid/ntlmauth</envar> auf <emphasis>yes</emphasis> gesetzt werden und
+			Squid neu gestartet werden.
+		  </simpara></listitem>
+
+		  <listitem><simpara>
+			Die Authentifizierung erfolgt über Kerberos. Benutzer, die an einem Windows-Client
+			angemeldet sind, der Mitglied einer Samba 4-Domäne ist authentifzieren sich am Proxy mit
+			dem Ticket, das sie im Rahmen der Domänenanmeldung erhalten haben. Um
+			Kerberos-Authentifizierung zu aktivieren muss das Paket
+			<emphasis>univention-squid-kerberos</emphasis> auf jedem Proxyserver installiert
+			werden. Anschließend muss die &ucsUCRV; <envar>squid/krb5auth</envar> auf
+			<emphasis>yes</emphasis> gesetzt werden und Squid neu gestartet werden.
+		  </simpara></listitem>
+		</itemizedlist>
 	  </para>
 
 	  <para>
-		Um die Authentisierung über LDAP zu aktivieren, muss die &ucsUCRV;
-		<envar>squid/basicauth</envar> und für NTLM die &ucsUCRV; <envar>squid/ntlmauth</envar> auf
-		den Wert <emphasis>yes</emphasis> gesetzt werden.
-	  </para>
-
-	  <para>
-		Standardmäßig wird für jede HTTP-Anfrage eine NTLM-Authentifizierung durchgeführt. Wird beispielsweise die
+		Bei Verwendung von NTLM-Authentifizierung wird standardmäßig für jede HTTP-Anfrage eine NTLM-Authentifizierung durchgeführt. Wird beispielsweise die
 		Webseite <uri>http://www.univention.de</uri> aufgerufen, werden neben der eigentlichen
 		HTML-Seite auch weitere Unterseiten und Bilder nachgeladen. Die NTLM-Authentifierung kann
 		domänenbezogenen zwischengespeichert werden: Wird die &ucsUCRV;
