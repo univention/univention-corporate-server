@@ -40,7 +40,7 @@ univention-config-registry set \
 	ucs/web/overview/entries/admin/umc-doc/label?'Univention Management Console documentation' \
 	ucs/web/overview/entries/admin/umc-doc/label/de?'Univention Management Console Dokumentation' \
 	ucs/web/overview/entries/admin/umc-doc/link?'/documentation/umc' \
-	ucs/web/overview/entries/admin/umc-doc/priority?'91'
+	ucs/web/overview/entries/admin/umc-doc/priority?'81'
 
 univention-doc install umc
 
