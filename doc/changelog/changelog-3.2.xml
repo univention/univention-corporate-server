@@ -2759,7 +2759,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		the software repository (<ulink url="&ucsbug;31562">Bug 31562</ulink>, 
 		<ulink url="&ucsbug;30888">Bug 30888</ulink>, <ulink url="&ucsbug;31075">Bug 31075</ulink>,
 		<ulink url="&ucsbug;32175">Bug 32175</ulink>, <ulink url="&ucsbug;32011">Bug 32011</ulink>, 
-		<ulink url="&ucsbug;32196">Bug 32196</ulink>, <ulink url="&ucsbug;32670">Bug 32670</ulink>):
+		<ulink url="&ucsbug;32196">Bug 32196</ulink>, <ulink url="&ucsbug;32670">Bug 32670</ulink>,
+		<ulink url="&ucsbug;32693">Bug 32693</ulink>, <ulink url="&ucsbug;32508">Bug 32508</ulink>):
 		univention-squid-kerberos, libdbd-mysql, libjs-jquery, duplicity,
 		librsync,libappconfig-perl, liblist-moreutils-perl,libparams-validate-perl,
 		libdatetime-locale-perl, libclass-singleton-perl,
@@ -2804,7 +2805,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		python-webhelpers, python-routes, python-pygments, python-pyrad,
 		python-netaddr, python-repoze.who, python-configobj, python-roman,
 		python-webtest, python-markupsafe, python-setuptools, libjs-scriptaculous,
-		libjs-prototype
+		libjs-prototype, php5-pgsql, php5-tidy, php5-xsl, apache2
 	  </simpara></listitem>
 
 	  <listitem><simpara>
