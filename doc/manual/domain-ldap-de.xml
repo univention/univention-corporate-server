@@ -876,18 +876,19 @@ slapcat &gt; ldapdaten.txt
 					der LDAP-Server neu gestartet und ist kurzzeitig nicht erreichbar.
 				</para>
 			</caution>
+
 			<para>
-				Um das Zurücksetzen von Passwörtern für bestimmte Benutzer
-				(z.B. Domänen-Administratoren) zu verhindern, können die UIDs der zu
-				schützenden Benutzer in der &ucsUCRV;
-				<envar>ldap/acl/user/passwordreset/protected/uid</envar> kommasepariert
-				angegeben werden. Nach einer Änderung der Variable ist es erforderlich, den
-				LDAP-Verzeichnisdienst über den Befehl <command>/etc/init.d/slapd
-				restart</command> neu zu starten, damit die geänderten LDAP-ACLs wirksam
-				werden. In der Standardeinstellung wird der Benutzer
-				<emphasis>Administrator</emphasis> vor Passwortänderungen durch die Gruppe
-				<emphasis>User Password Admins</emphasis> geschützt.
+			  Das Zurücksetzen der Passwörter durch die Passwort-Gruppe kann für sensible Benutzer oder Gruppen
+			  (z.B. Domänen-Administratoren) verhindert werden. Mit den &ucsUCR;-Variablen 
+			  <envar>ldap/acl/user/passwordreset/protected/uid</envar> und
+			  <envar>ldap/acl/user/passwordreset/protected/gid</envar> können Benutzer und Gruppen
+			  konfiguriert werden. Mehrere Werte müssen durch Kommas getrennt werden. Nach
+			  Änderungen an den Variable ist es erforderlich, den LDAP-Server über den Befehl
+			  <command>/etc/init.d/slapd restart</command> neu zu starten. In der
+			  Standardeinstellung werden die Mitglieder der Gruppe <emphasis>Domain
+			  Admins</emphasis> vor Passwortänderungen geschützt.
 			</para>
+
 			<para>
 				Sollte für die Änderung des Passworts der Zugriff auf zusätzliche
 				LDAP-Attribute notwendig sein, können die Attributnamen in der &ucsUCRV;

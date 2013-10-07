@@ -848,16 +848,17 @@ slapcat &gt; ldapdata.txt
 				</para>
 			</caution>
 			<para>
-				To prevent the resetting of the passwords for certain users (e.g., domain
-				administrators), the UIDs of the users to be protected can be entered,
-				separated by commas, in the &ucsUCRV;
-				<envar>ldap/acl/user/passwordreset/protected/uid</envar>. Once a variable has
-				been changed, it is necessary to restart the LDAP directoy service using the
-				<command>/etc/init.d/slapd restart</command> command for the changed LDAP ACLs
-				to take effect. In the default setting, the <emphasis>Administrator</emphasis>
-				user is protected against having his password changed by the <emphasis>User
-				Password Admins</emphasis> group.
+			  <!-- Das Zurücksetzen der Passwörter kann für sensible Benutzer oder Gruppen -->
+			  <!-- (z.B. Domänen-Administratoren) verhindert werden. Mit den &ucsUCR;-Variablen  -->
+			  <!-- <envar>ldap/acl/user/passwordreset/protected/uid</envar> und -->
+			  <!-- <envar>ldap/acl/user/passwordreset/protected/gid</envar> können Benutzer und Gruppen -->
+			  <!-- konfiguriert werden. Mehrere Werte müssen durch Kommas getrennt werden. -->
+			  After changes to the variables, it is necessary to restart the LDAP server using the
+			  <command>/etc/init.d/slapd restart</command> command. In the default setting, the
+			  members of the <emphasis>Domain Admins</emphasis> group are protected against having
+			  theirs password changed.
 			</para>
+
 			<para>
 				If access to additional LDAP attributes should be necessary for changing the
 				password, the attribute names can be expanded in &ucsUCRV;
