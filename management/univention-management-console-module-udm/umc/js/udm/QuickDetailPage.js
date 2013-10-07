@@ -171,6 +171,29 @@ define([
 				deferred = this.inherited(originalArguments);
 			}
 			return deferred;
+		},
+
+		getButtonDefinitions: function() {
+			var definitions = this.inherited(arguments);
+			//var continueCreatingLabel = _('Create, add next');
+			//definitions.push({
+			//	name: 'continue_creating',
+			//	label: continueCreatingLabel,
+			//	callback: function() {
+			//		console.log('creating');
+			//	},
+			//	style: 'float: right'
+			//});
+			var continueEditingLabel = _('Create, open');
+			definitions.push({
+				name: 'continue_editing',
+				label: continueEditingLabel,
+				callback: lang.hitch(this, function() {
+					this.validateChanges(null, true);
+				}),
+				style: 'float: right'
+			});
+			return definitions;
 		}
 	});
 

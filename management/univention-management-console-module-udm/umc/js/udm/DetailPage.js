@@ -632,35 +632,8 @@ define([
 			}))[0];
 			borderLayout.addChild(this._tabs);
 
-			var closeLabel = _('Back to search');
-			if ('navigation' == this.moduleFlavor) {
-				closeLabel = _('Back to LDAP directory tree');
-			}
-			if (this.isClosable) {
-				closeLabel = _('Cancel');
-			}
-
-			var createLabel = '';
-			if (this.newObjectOptions) {
-				createLabel = _( 'Create %s', this.objectNameSingular );
-			} else {
-				createLabel = _( 'Save changes' );
-			}
-
 			// buttons
-			var buttons = render.buttons([{
-				name: 'submit',
-				label: createLabel,
-				style: 'float: right'
-			}, {
-				name: 'close',
-				label: closeLabel,
-				callback: lang.hitch(this, function() {
-					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
-					this.onCloseTab();
-				}),
-				style: 'float: left'
-			}], this);
+			var buttons = render.buttons(this.getButtonDefinitions(), this);
 			var footer = new ContainerWidget({
 				'class': 'umcPageFooter',
 				region: 'bottom'
@@ -796,6 +769,36 @@ define([
 				});
 			}));
 			return ret;
+		},
+
+		getButtonDefinitions: function() {
+			var createLabel = '';
+			if (this.newObjectOptions) {
+				createLabel = _( 'Create %s', this.objectNameSingular );
+			} else {
+				createLabel = _( 'Save changes' );
+			}
+			var closeLabel = _('Back to search');
+			if ('navigation' == this.moduleFlavor) {
+				closeLabel = _('Back to LDAP directory tree');
+			}
+			if (this.isClosable) {
+				closeLabel = _('Cancel');
+			}
+
+			return [{
+				name: 'submit',
+				label: createLabel,
+				style: 'float: right'
+			}, {
+				name: 'close',
+				label: closeLabel,
+				callback: lang.hitch(this, function() {
+					topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'edit', 'cancel');
+					this.onCloseTab();
+				}),
+				style: 'float: left'
+			}];
 		},
 
 		getValues: function() {
@@ -1121,12 +1124,14 @@ define([
 			return nChanges > 0;
 		},
 
-		validateChanges: function(e) {
+		validateChanges: function(e, reopen) {
 			// summary:
 			//		Validate the user input through the server and save changes upon success.
 
 			// prevent standard form submission
-			e.preventDefault();
+			if (e) {
+				e.preventDefault();
+			}
 
 			// get all values that have been altered
 			var vals = this.getAlteredValues();
@@ -1208,7 +1213,7 @@ define([
 			this.umcpCommand('udm/validate', params).then(lang.hitch(this, function(data) {
 				// if all elements are valid, save element
 				if (this._parseValidation(data.result)) {
-					this.saveChanges(vals);
+					this.saveChanges(vals, reopen);
 				} else {
 					this.standby(false);
 				}
@@ -1282,7 +1287,7 @@ define([
 			}
 		},
 
-		saveChanges: function(vals) {
+		saveChanges: function(vals, reopen) {
 			// summary:
 			//		Save the user changes for the edited object.
 
@@ -1331,7 +1336,7 @@ define([
 				} else if (success) {
 					// everything ok, close page
 					this.onCloseTab();
-					this.onSave(result.$dn$, this.objectType);
+					this.onSave(result.$dn$, this.objectType, reopen);
 				} else {
 					// print error message to user
 					dialog.alert(msg);
