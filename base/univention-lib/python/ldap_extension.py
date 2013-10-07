@@ -9,6 +9,7 @@ from univention.config_registry import configHandlers, ConfigRegistry
 from univention.admin import uldap as udm_uldap
 from univention.admin import modules as udm_modules
 from univention.admin import uexceptions as udm_errors
+from univention.updater import UCS_Version
 import subprocess
 import bz2
 import base64
@@ -189,7 +190,7 @@ class UniventionLDAPExtension(object):
 
 			if registered_package == options.packagename:
 				rc = apt.apt_pkg.version_compare(options.packageversion, registered_package_version)
-				if rc not in (0, 1):
+				if not rc > -1:
 					print >>sys.stderr, "ERROR: Registered package version %s is newer, refusing registration." % (registered_package_version,)
 					sys.exit(1)
 			else:
@@ -294,7 +295,7 @@ class UniventionLDAPExtension(object):
 				self._todo_list = []
 
 		except udm_errors.ldapError, e:
-			ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e))
+			ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e,))
 
 
 class UniventionLDAPExtensionWithListenerHandler(UniventionLDAPExtension):
@@ -346,11 +347,8 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
 					old_version = old.get('univentionOwnedByPackageVersion', ['0'])[0]
 					rc = apt.apt_pkg.version_compare(new_version, old_version)
-					if rc not in (1, 0):
-						if rc == -1:
-							ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
-						else:
-							ud.debug(ud.LISTENER, ud.ERROR, '%s: Package version comparison to old version failed (%s), skipping update.' % (name, old_version))
+					if not rc > -1:
+						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
 						return
 			
 			try:
@@ -505,10 +503,10 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 			univentionUCSVersionStart = new.get('univentionUCSVersionStart', [None])[0]
 			univentionUCSVersionEnd = new.get('univentionUCSVersionEnd', [None])[0]
 			current_UCR_version = "%s-%s" % ( listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel') )
-			if univentionUCSVersionStart and current_UCR_version < univentionUCSVersionStart:
+			if univentionUCSVersionStart and UCS_Version(current_UCR_version) < UCS_Version(univentionUCSVersionStart):
 				ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCR version %s.' % (name, new['cn'][0], univentionUCSVersionStart))
 				new=None
-			elif univentionUCSVersionEnd and current_UCR_version >= univentionUCSVersionEnd:
+			elif univentionUCSVersionEnd and UCS_Version(current_UCR_version) >= UCS_Version(univentionUCSVersionEnd):
 				ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
 				new=None
 
@@ -533,11 +531,8 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
 					old_version = old.get('univentionOwnedByPackageVersion', ['0'])[0]
 					rc = apt.apt_pkg.version_compare(new_version, old_version)
-					if rc not in (1, 0):
-						if rc == -1:
-							ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
-						else:
-							ud.debug(ud.LISTENER, ud.ERROR, '%s: Package version comparison to old version failed (%s), skipping update.' % (name, old_version))
+					if not rc > -1:
+						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
 						return
 			
 			try:

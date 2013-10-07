@@ -1,3 +1,11 @@
+univention-lib (3.0.20-2) unstable; urgency=low
+
+  * Fix packageversion comparison
+    (Bug #26785, Bug #32392, Bug #32401, Bug #32404, Bug #32407)
+  * Fix UCS_Version comparison (Bug #32393)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Oct 2013 17:14:08 +0200
+
 univention-lib (3.0.20-1) unstable; urgency=low
 
   * Consider --ucsversion* options also in udm_{hook,syntax,module}
