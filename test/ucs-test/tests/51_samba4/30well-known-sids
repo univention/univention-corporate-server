@@ -26,7 +26,7 @@ test_group_sid_openldap()
 	expected_sid="$2"
 	sid_ldap=$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$group))" sambaSID | sed -ne 's|^sambaSID: ||p')
 	if [ "$sid_ldap" != "$expected_sid" ]; then
-		echo "Expeted sid for $group in OpenLDAP: $expected_sid; found in LDAP: $sid_ldap"
+		echo "Expeted sid for $group: $expected_sid; found in LDAP: $sid_ldap"
 		fail_test 110
 	fi
 }
@@ -36,7 +36,7 @@ test_group_sid_s4()
 	expected_sid="$2"
 	sid_ad=$(univention-s4search "(&(objectClass=group)(cn=$group))" objectSid | sed -ne 's|^objectSid: ||p')
 	if [ "$sid_ad" != "$expected_sid" ]; then
-		echo "Expeted sid for $group in S4: $expected_sid; found in S4: $sid_ad"
+		echo "Expeted sid for $group: $expected_sid; found in S4: $sid_ad"
 		fail_test 110
 	fi
 }

@@ -166,6 +166,9 @@ def wait_for_replication_and_postrun ():
 	print "Waiting for postrun"
 	time.sleep(17)
 
+def wait_for_connector_replication():
+	print 'Waiting for connector replication'
+	time.sleep(17)
 
 def package_installed(package):
 	sys.stdout.flush()

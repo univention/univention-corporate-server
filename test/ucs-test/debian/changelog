@@ -1,3 +1,10 @@
+ucs-test (4.0.134-4) unstable; urgency=low
+
+  * 62_udm-groups/21_group_grouptype: Added a test case to check the
+    groupType attribute (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Oct 2013 10:37:33 +0200
+
 ucs-test (4.0.134-3) unstable; urgency=low
 
   * 51_samba4/30well-known-sids: added a test case to check the well-
