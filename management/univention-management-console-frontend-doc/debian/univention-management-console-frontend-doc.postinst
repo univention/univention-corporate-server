@@ -40,6 +40,6 @@ univention-config-registry set \
 	ucs/web/overview/entries/admin/umc-frontend-doc/label?'Univention Management Console Frontend documentation' \
 	ucs/web/overview/entries/admin/umc-frontend-doc/label/de?'Univention Management Console Frontend Dokumentation' \
 	ucs/web/overview/entries/admin/umc-frontend-doc/link?'/documentation/univention-management-console-doc/' \
-	ucs/web/overview/entries/admin/umc-frontend-doc/priority?'92'
+	ucs/web/overview/entries/admin/umc-frontend-doc/priority?'82'
 
 exit 0
