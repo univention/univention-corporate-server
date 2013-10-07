@@ -413,13 +413,13 @@ class UDM_Module( object ):
 			raise UDM_Error( get_exception_msg(e) )
 
 	@LDAP_Connection
-	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '', simple = False, simple_attrs = None, ldap_connection = None, ldap_position = None ):
+	def search( self, container = None, attribute = None, value = None, superordinate = None, scope = 'sub', filter = '', simple = False, simple_attrs = None, ldap_connection = None, ldap_position = None, hidden=True ):
 		"""Searches for LDAP objects based on a search pattern"""
 		if container == 'all':
 			container = ldap_position.getBase()
 		elif container is None:
 			container = ''
-		filter_s = _object_property_filter( self, attribute, value )
+		filter_s = _object_property_filter( self, attribute, value, hidden )
 		if attribute in [None, 'None'] and filter:
 			filter_s = str( filter )
 
@@ -1002,15 +1002,25 @@ def split_module_attr( value ):
 		return value.split( ': ', 1 )
 	return ( None, value )
 
-def _object_property_filter( module, object_property, object_property_value ):
+def _object_property_filter( module, object_property, object_property_value, show_hidden=True ):
 	if object_property in [None, 'None'] and module is not None:
 		default_search_attrs = module.default_search_attrs
 		if default_search_attrs and object_property_value not in [None, '*']:
-			return '(|%s)' % ''.join( '(%s=%s)' % ( attr, object_property_value ) for attr in default_search_attrs )
+			ret = '(|%s)' % ''.join( '(%s=%s)' % ( attr, object_property_value ) for attr in default_search_attrs )
 		else:
-			return ''
+			ret = ''
 	else:
-		return '%s=%s' % (object_property, object_property_value)
+		ret = '%s=%s' % (object_property, object_property_value)
+	hidden_flag_attribute = 'objectFlag'
+	has_hidden_flag = module.get_property(hidden_flag_attribute) is not None
+	if has_hidden_flag and not show_hidden:
+		if ret:
+			if not ret.startswith('('):
+				ret = '(%s)' % ret
+			ret = '(&(!(%s=hidden))%s)' % (hidden_flag_attribute, ret)
+		else:
+			ret = '!(%s=hidden)' % hidden_flag_attribute
+	return ret
 
 def _create_ldap_filter( syn, options, module=None ):
 	if syn.depends and not syn.depends in options:

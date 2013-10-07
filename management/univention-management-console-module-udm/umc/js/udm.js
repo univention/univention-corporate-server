@@ -447,7 +447,7 @@ define([
 
 			var umcpCmd = lang.hitch(this, 'umcpCommand');
 			var widgets = [];
-			var layout = [ [], [] ]; // layout with two rows
+			var layout = [ [], [], [] ]; // layout with three rows
 
 			// check whether we need to display containers or superordinates
 			var objTypeDependencies = [];
@@ -469,7 +469,7 @@ define([
 					visible: false,
 					umcpCommand: umcpCmd
 				});
-				layout[0].push('superordinate');
+				layout[1].push('superordinate');
 				objTypeDependencies.push('superordinate');
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
 			} else if (containers && containers.length) {
@@ -484,13 +484,19 @@ define([
 					staticValues: containers,
 					umcpCommand: umcpCmd
 				});
-				layout[0].push('container');
+				layout[1].push('container');
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
 			}
 			objProperties.push({ id: 'None', label: _( 'Default properties' ) });
 
 			// add remaining elements of the search form
 			widgets = widgets.concat([{
+				type: 'CheckBox',
+				name: 'hidden',
+				visible: false,
+				label: _('Include hidden objects'),
+				value: this.moduleFlavor == 'navigation'
+			}, {
 				type: 'ComboBox',
 				name: 'objectType',
 				description: _( 'The type of the LDAP object.' ),
@@ -546,12 +552,13 @@ define([
 				umcpCommand: umcpCmd,
 				depends: [ 'objectProperty', 'objectType' ]
 			}]);
-			layout[0].push('objectType');
+			layout[0].push('hidden');
+			layout[1].push('objectType');
 			if (superordinates && superordinates.length) {
-				layout[0].push('objectProperty');
-				layout[1].push('objectPropertyValue');
+				layout[1].push('objectProperty');
+				layout[2].push('objectPropertyValue');
 			} else {
-				layout[1].push('objectProperty', 'objectPropertyValue');
+				layout[2].push('objectProperty', 'objectPropertyValue');
 			}
 
 			// add also the buttons (specified by the search form itself) to the layout
@@ -561,10 +568,10 @@ define([
 			}];
 			if ('navigation' == this.moduleFlavor) {
 				// put the buttons in the first row for the navigation
-				layout[0].push('submit');
+				layout[1].push('submit');
 			} else {
 				// append the buttons to the last row otherwise
-				layout[1].push('submit');
+				layout[2].push('submit');
 
 				// add an additional button to toggle between advanced and simplified search
 				buttons.push({
@@ -577,7 +584,7 @@ define([
 						this._updateSearch();
 					})
 				});
-				layout[1].push('toggleSearch');
+				layout[2].push('toggleSearch');
 			}
 
 			// generate the search widget
@@ -845,6 +852,7 @@ define([
 						widgets.container.set('visible', true);
 					}
 					widgets.objectProperty.set('visible', true);
+					widgets.hidden.set('visible', true);
 					//widgets.objectPropertyValue.set('visible', true);
 					toggleButton.set('label', _('(Simplified options)'));
 				} else {
@@ -853,6 +861,7 @@ define([
 						widgets.container.set('visible', false);
 					}
 					widgets.objectProperty.set('visible', false);
+					widgets.hidden.set('visible', false);
 					toggleButton.set('label', _('(Advanced options)'));
 				}
 				this.layout();

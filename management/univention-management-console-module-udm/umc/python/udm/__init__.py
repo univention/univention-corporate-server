@@ -450,7 +450,7 @@ class Instance( Base, ProgressMixin ):
 				else:
 					raise UMC_OptionTypeError( _( 'Could not find an UDM module for the superordinate object %s' ) % superordinate )
 
-			result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate, scope = request.options.get( 'scope', 'sub' ) )
+			result = module.search( request.options.get( 'container' ), request.options[ 'objectProperty' ], request.options[ 'objectPropertyValue' ], superordinate, scope = request.options.get( 'scope', 'sub' ), hidden=request.options.get('hidden') )
 
 			entries = []
 			object_type = request.options.get( 'objectType', request.flavor )
