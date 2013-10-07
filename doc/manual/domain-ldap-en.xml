@@ -168,8 +168,8 @@
 			<emphasis>Join scripts</emphasis> are run during the domain join. Examples for changes made by join scripts
 			are the registration of a print server in the domain or the adaptation of DNS
 			entries. Join scripts are components of the individual software packages.
-			<!-- Analog dazu gibt es <emphasis>Unjoin-Skripte</emphasis>, die nach der -->
-			<!-- Deinstallation einer Softwarekomponente diese Änderungen wieder rückgängig machen. -->
+			In the same way, there are also <emphasis>unjoin scripts</emphasis>, which can reset
+			these changes following uninstallation of software components.
 		  </para>
 			
 		  <para>
@@ -987,21 +987,20 @@ slapcat &gt; ldapdata.txt
 	  includes, for example, listener modules which generate the Cups configuration.
 	</para>
 
-	<!-- <para> -->
-	<!--   Durch &ucsUDL;-Module können Änderungen an der Domäne auch an Dienste übermittelt werden, -->
-	<!--   die selbst nicht LDAP-fähig sind. Ein Beispiel ist der Druckserver CUPS: Die -->
-	<!--   Druckerdefinitionen werden nicht aus dem LDAP ausgelesen, sondern aus der Datei -->
-	<!--   <filename> /etc/cups/printers.conf</filename>. Wird nun in der -->
-	<!--   Druckerverwaltung der &ucsUMC; ein Drucker angelegt, wird dieser im LDAP registriert. Diese -->
-	<!--   Änderung wird dann vom &ucsUDL;-Modul <emphasis>cups-printers</emphasis> erkannt und -->
-	<!--   basierend auf den Daten im LDAP ein Eintrag in -->
-	<!--   <filename>/etc/samba/printers.conf.d</filename> hinzugefügt, modifiziert oder gelöscht. -->
-	<!-- </para> -->
+	<para>
+	  &ucsUDL; modules can be used to communicate domain changes to services which are not
+	  LDAP-compatible. The print server CUPS is an example of this: The printer definitions are not
+	  read from the LDAP, but instead from the <filename>/etc/cups/printers.conf</filename>
+	  file. Now, if a printer is saved in the printer management of the &ucsUMC;, it is stored
+	  in the LDAP directory. This change is detected by the &ucsUDL; module
+	  <emphasis>cups-printers</emphasis> and an entry added to, modified or deleted in
+	  <filename>/etc/cups/printers.conf</filename> based on the data in the LDAP.
+	</para>
 
-	<!-- <para> -->
-	<!--   Weitergehende Informationen zum Aufbau von &ucsUDL;-Modulen und zur Entwicklung eigener -->
-	<!--   Module finden sich in <xref linkend="developer-reference"/>. -->
-	<!-- </para> -->
+	<para>
+	  Additional information on the setup of &ucsUDL; modules and developing your own modules can be
+	  found in <xref linkend="developer-reference"/>.
+	</para>
 
 	<para>
 	  LDAP replication is also performed by a listener module. If the LDAP server to be replicated to
@@ -1222,36 +1221,34 @@ univention-directory-listener-ctrl resync cups-printers
 	  to change the name of the Kerberos realm at a later point in time.
 	</para>
 	<para>
-		Tickets have a standard validity period of 8 hours; this is why it is vital for
-		a Kerberos domain to have the system time synchronised for all the systems
-		belonging to the Kerberos Realm.
+	  Tickets have a standard validity period of 8 hours; this is why it is vital for a Kerberos
+	  domain to have the system time synchronised for all the systems belonging to the Kerberos
+	  realm.
 	</para>
 
-	<!-- <para> -->
-	<!--   In &ucsUCS; wird die Kerberos-Implementierung Heimdal verwendet. Auf UCS-Domänencontroller-Systemen ohne Samba -->
-	<!--   4 wird ein eigenständiger Heimdal-Dienst gestartet, während auf Samba 4-DCs -->
-	<!--   Kerberos durch eine in Samba integrierte Heimdal-Version bereitgestellt wird. Verwendet man -->
-	<!--   eine Umgebung aus UCS-Domänencontrollern ohne Samba 4 und Samba 4-Domänencontrollern basieren -->
-	<!--   beide Kerberos-Umgebungen auf identischen Daten (diese werden zwischen Samba 4 und OpenLDAP -->
-	<!--   durch den Univention S4 Connector synchronisiert (siehe <xref linkend="windows:s4connector"/>)). -->
-	<!-- </para> -->
-
-	<!-- <para> -->
-	<!--   Standardmäßig wird der KDC über einen DNS-Servicerecord ausgewählt. Der von einem System -->
-	<!--   verwendete KDC kann durch die &ucsUCRV; <envar>kerberos/kdc</envar> umkonfiguriert werden. -->
-	<!--   Wird Samba 4 auf einem System der Domäne installiert, wird der Servicerecord umkonfiguriert, -->
-	<!--   so dass nur noch die KDCs auf Samba 4-Basis angeboten werden. In einer gemischten Umgebung ist -->
-	<!--   es empfehlenswert nur noch die Samba 4-KDCs zu verwenden. -->
-	<!-- </para> -->
+	<para>
+	  &ucsUCS; uses the Heimdal Kerberos implementation. An independent Heimdal service is started
+	  on UCS domain controller systems without Samba 4, while Kerberos is provided by a Heimdal
+	  version integrated in Samba on Samba 4 DCs. In a environment composed of UCS domain
+	  controllers without Samba 4 and Samba 4 domain controllers both Kerberos environments are
+	  based on identical data (these are synchronised between Samba 4 and OpenLDAP via the
+	  Univention S4 connector (see <xref linkend="windows:s4connector"/>)).
+	</para>
 
 	<para>
-		The Kerberos admin server, on which the administrative settings of the domain
-		can be made, runs on the &ucsMaster;. Most of the settings in Univention
-		Corporate Server are taken from the LDAP directory, so that the major remaining
-		function is changing passwords. This can be achieved by means of the Tool
-		<command>kpasswd</command>; the passwords are then changed in the LDAP too. The
-		Kerberos admin server can be configured on a system via the &ucsUCRV;
-		<envar>kerberos/adminserver</envar>.
+	  As standard, the KDC is selected via a DNS service record. The KDC used by a system can be
+	  reconfigured using the &ucsUCRV; <envar>kerberos/kdc</envar>. If Samba 4 is installed on a
+	  system in the domain, the service record is reconfigured so that only the Samba 4-based KDCs
+	  are offered. In a mixed environment it is recommended only to use the Samba 4 KDCs.
+	</para>
+
+	<para>
+	  The Kerberos admin server, on which the administrative settings of the domain can be made,
+	  runs on the &ucsMaster;. Most of the settings in Univention Corporate Server are taken from
+	  the LDAP directory, so that the major remaining function is changing passwords. This can be
+	  achieved by means of the Tool <command>kpasswd</command>; the passwords are then changed in
+	  the LDAP too. The Kerberos admin server can be configured on a system via the &ucsUCRV;
+	  <envar>kerberos/adminserver</envar>.
 	</para>
 </section>
 

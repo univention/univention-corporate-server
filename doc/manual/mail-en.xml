@@ -869,24 +869,23 @@ postmap /etc/postfix/smtp_auth
 	</section>
   </section>
 
-  <!-- <section id="mail:clients"> -->
-  <!-- 	<title>Konfiguration von Mail-Clients für den Mailserver</title> -->
+  <section id="mail:clients">
+  	<title>Configuration of mail clients for the mail server</title>
+	
+	<para>
+	  The use of IMAP is recommended for using a mail client with the UCS mail server. STARTTLS is
+	  used to switch to a TLS-secured connection after an initial negotiation phase when using SMTP
+	  (for sending mail) and IMAP (for receiving/synchronising mail). The following screenshot shows
+	  the setup of Mozilla Thunderbird as an example.
+	</para>
 
-	<!-- <para> -->
-	<!--   Um einen Mail-Client mit dem UCS-Mailserver zu verwenden wird die Verwendung von IMAP -->
-	<!--   empfohlen. Durch STARTTLS wird bei Verwendung von SMTP (für den Mailversand) und IMAP (für den -->
-	<!--   Mailabruf/-synchronisation) nach einer initialen Aushandlungsphase auf eine TLS-gesicherte -->
-	<!--   Verbindung umgeschaltet. Der folgende Screenshot zeigt exemplarisch die Einrichtung von -->
-	<!--   Mozilla Thunderbird. -->
-	<!-- </para> -->
-
-  <!-- 	<para> -->
-  <!-- 	  <figure id="mail:clients:thunderbird"> -->
-  <!-- 		<title>Einrichtung von Mozilla Thunderbird</title> -->
-  <!-- 		<graphic scalefit="1" width="80%" fileref="illustrations/thunderbird_de.png"/> -->
-  <!-- 	  </figure> -->
-  <!-- 	</para> -->
-  <!-- </section> -->
+  	<para>
+  	  <figure id="mail:clients:thunderbird">
+  		<title>Setup of Mozilla Thunderbird</title>
+  		<graphic scalefit="1" width="80%" fileref="illustrations/thunderbird_en.png"/>
+  	  </figure>
+  	</para>
+  </section>
 
   <section id="mail::horde">
 	<title>Webmail and administration of e-mail filters with Horde</title>
@@ -910,24 +909,20 @@ postmap /etc/postfix/smtp_auth
 		  </figure>
 	  </para>
 	  <para>
-		Either the UCS user name or the primary e-mail address can be used as the user
-		name. The webmail interface can be used in a number of display modes. The
-		preferred version can be selected under <guimenu>Mode</guimenu>. We recommend the
-		use of the dynamic interface for standard workstations. The remaining
-		documentation refers to this version.
-		<!-- Die Auswahl der <guimenu>Sprache</guimenu> hat bei vielen Browsern keine Auswirkung, da die -->
-		<!-- bevorzugte Spracheinstellung des Browsers Vorrang hat. -->
-		<!-- MENU: Language -->
+		Either the UCS user name or the primary e-mail address can be used as the user name. The
+		webmail interface can be used in a number of display modes. The preferred version can be
+		selected under <guimenu>Mode</guimenu>. We recommend the use of the dynamic interface for
+		standard workstations. The remaining documentation refers to this version. Selecting the
+		<guimenu>Language</guimenu> has no effect in many web browsers, as the browser's preferred
+		language settings take precedence.
 	  </para>
 	  <para>
-		<!-- In der oberen Bildleiste finden sich mehrere Menüpunkte (z.B. <guimenu>Webmail</guimenu> -->
-		<!-- oder <guimenu>Adressbuch</guimenu>), mit denen zwischen den einzelnen Modulen gewechselt -->
-		<!-- werden kann. -->
-		<!-- MENU: Mail -->
-		<!-- MENU: Address Book -->
+		In the top toolbar there are a number or menu points (e.g., <guimenu>Mail</guimenu> and
+		<guimenu>Address Book</guimenu>), which can be used to switch between the individual
+		modules.
 	  </para>
 	  <para>
-		<!-- Durch Klick auf das Zahnrad-Symbol kann Horde vom Benutzer personalisiert werden. -->
+		The user can personalise Horde by clicking the cog symbol.
 	  </para>
 	</section>
 
@@ -946,11 +941,10 @@ postmap /etc/postfix/smtp_auth
 		  </figure>
 	  </para>
 	  <para>
-		Horde unterscheidet zwei Arten von Löschungen: Eine mit
-		<guimenu>Löschen</guimenu> entfernte E-Mail wird zuerst in den Ordner
-		<emphasis>Papierkorb</emphasis> verschoben. Sie kann von dort wieder in andere Ordner
-		verschoben werden, solange der Papierkorb nicht mit <guimenu>Leeren</guimenu> geleert wird.
-		MENU: Delete, Trash, Empty
+		Horde differentiates between two types of deletion: An e-mail deleted with
+		<guimenu>Delete</guimenu> is initially moved to the <emphasis>Trash</emphasis> folder. From
+		there, it can be moved into any other folder as long as the trash can has not been emptied
+		with <guimenu>Empty</guimenu>.
 	  </para>
 	</section>
 

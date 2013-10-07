@@ -106,18 +106,18 @@
 				</simpara>
 			</listitem>
 		</itemizedlist>
+
 		<para>
-			Following ten minutes of inactivity, the browser session is
-			automatically closed and it is necessary to login again. This
-			interval can be adjusted in seconds with the &ucsUCRV;
-			<envar>umc/http/session/timeout</envar>.
+		  Following ten minutes of inactivity, the browser session is automatically closed and it is
+		  necessary to login again. This interval can be adjusted in seconds with the &ucsUCRV;
+		  <envar>umc/http/session/timeout</envar>.
 		</para>
 
-		<!-- <para> -->
-		<!--   Jeder angemeldete Benutzer kann ohne erneute Anmeldung weitere UMC-Instanzen der -->
-		<!--   Domäne verwenden: Wird in der schwarzen oberen Bildleiste unter <guimenu>Host:</guimenu> -->
-		<!--   ein Rechner ausgewählt, öffnet sich ein neues Fenster mit der &ucsUMC; des Systems. -->
-		<!-- </para> -->
+		<para>
+		  Users who are already logged in can use additional UMC instances in the domain without having
+		  to log in again: If a host is selected in the top, black toolbar under
+		  <guimenu>Host:</guimenu>, a new window opens with the system's &ucsUMC;.
+		</para>
 
 	</section>
 
@@ -218,9 +218,8 @@
 		<section id="central-management-umc:create">
 			<title>Creating objects</title>
 			<para>
-			  <!-- In der Zeile über der Tabelle mit den Objekten findet sich eine Aktionsleiste, über -->
-			  <!-- die ein neues Objekt angelegt werden kann. -->
-			  The menu entries have the same names as the module name,
+			  The line above the table with the objects includes an actions toolbar which can be
+			  used to create a new object. The menu entries have the same names as the module name,
 			  e.g., <guimenu>Add user</guimenu>.
 			</para>
 		</section>
@@ -686,19 +685,17 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Overwrite existing widget</entry>
-					<entry>
-					<!-- In einigen Fällen ist es sinnvoll, vorgegebene Eingabefelder mit erweiterten -->
-					<!-- Attributen zu überschreiben. Wird hier der interne UDM-Name eines Attributs -->
-					<!-- konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut -->
-					<!-- überschrieben. Der UDM-Attributname kann nur durch eine Suche unterhalb des -->
-					<!-- Verzeichnisses -->
-					<!-- <filename>/usr/share/pyshared/univention/admin/handlers</filename> ermittelt -->
-					<!-- werden. Es handelt sich dabei um den Namen, der in den Deklarationen von -->
-					<!-- univention.admin.property-Objekten vor dem Doppelpunkt steht, -->
-					<!-- z.B. <emphasis>roomNumber</emphasis> für die Raumnummer eines Benutzers. -->
-					<!-- Es ist zu beachten, daß diese Option bei Pflichtfeldern zu Problemen führen kann. -->
-					</entry>
+				  <entry>Overwrite existing widget</entry>
+				  <entry>
+					In some cases it is useful to overwrite predefined input fields with extended
+					attributes. If the internal UDM name of an attribute is configured here, its
+					input field is overwritten by this extended attribute. The UDM attribute name
+					can only be determined by searching within the
+					<filename>/usr/share/pyshared/univention/admin/handlers</filename> directory. It
+					is the name which comes before the colon in the declarations of
+					univention.admin.property objects, e.g., <emphasis>roomNumber</emphasis> for a
+					user's room number.
+				  </entry>
 				</row>
 				<row>
 					<entry>Span both columns</entry>
@@ -711,12 +708,11 @@
 				<row>
 					<entry>Overwrite existing tab</entry>
 					<entry>
-						If this option is activated, the tab in question is overwritten before
-						the extended attributes are positioned on it. This option can be used
-						to hide existing input fields on a predefined tab. It must be noted
-						that this option can cause problems with compulsory fields.
-						<!-- Verwendet die zu überschreibende Karteikarte -->
-						<!-- Übersetzungen muss die überschreibende Karteikarte ebenfalls identische Übersetzungen mitbringen. -->
+					  If this option is activated, the tab in question is overwritten before the
+					  extended attributes are positioned on it. This option can be used to hide
+					  existing input fields on a predefined tab. It must be noted that this option
+					  can cause problems with compulsory fields. If the tab to be overwritten uses
+					  translations, the overwriting tab must also include identical translations.
 					</entry>
 				</row>
 				<row>

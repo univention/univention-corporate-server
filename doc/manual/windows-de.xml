@@ -209,7 +209,9 @@ unterstützt und werden im Univention Wiki <biblioref linkend="wiki-samba-update
 	CIFS-Protokoll. Bei Neuinstallationen ab UCS 3.2 wird standardmäßig der Nachfolger SMB2
 	aktiviert. Verwendet man einen Client, der SMB2 unterstützt (ab Windows Vista, also auch Windows
 	7/8), verbessert sich die Performance und die Skalierbarkeit.
+  </para>
 
+  <para>
 	Das Protokoll kann über die &ucsUCR;-Variable <envar>samba/max/protocol</envar> konfiguriert
 	werden. Sie muss auf allen Samba-Servern gesetzt und anschließend der/die Samba-Server neu
 	gestartet werden.
