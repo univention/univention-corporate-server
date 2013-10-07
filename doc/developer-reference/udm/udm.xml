@@ -1376,21 +1376,21 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>package</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the Debian package which creates the object<footnote xml:id="ucs_registerLDAPExtension_footnote"><para>Determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function.</para></footnote>.
+						Name of the Debian package which creates the object.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1403,11 +1403,6 @@ udm settings/syntax create "$@" --ignore_exists \
 				</listitem>
 			</varlistentry>
 		</variablelist>
-		<tip>
-			<para>
-				Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
-			</para>
-		</tip>
 	</section>
 
 	<section id="settings:ldapacl">
@@ -1455,21 +1450,21 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>package</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the Debian package which creates the object<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						Name of the Debian package which creates the object.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1496,11 +1491,6 @@ udm settings/syntax create "$@" --ignore_exists \
 				</listitem>
 			</varlistentry>
 		</variablelist>
-		<tip>
-			<para>
-			  Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
-			</para>
-		</tip>
 	</section>
 
 	<section id="settings:udm_module">
@@ -1539,28 +1529,28 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>filename</literal> (required)</term>
 				<listitem>
 					<simpara>
-						The file name the UDM module data should be written to by the listening servers. The file name may contain path elements and should conform to the name of the UDM module.
+						The file name the UDM module data should be written to by the listening servers. The file name may contain path elements and should conform to the name of the UDM module (e.g. <literal>newapp/someobject.py</literal>).
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>package</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the Debian package which creates the object<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						Name of the Debian package which creates the object.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1587,11 +1577,6 @@ udm settings/syntax create "$@" --ignore_exists \
 				</listitem>
 			</varlistentry>
 		</variablelist>
-		<tip>
-			<para>
-			  Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
-			</para>
-		</tip>
 	</section>
 
 	<section id="settings:udm_syntax">
@@ -1637,21 +1622,21 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>package</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the Debian package which creates the object<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						Name of the Debian package which creates the object.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1678,11 +1663,6 @@ udm settings/syntax create "$@" --ignore_exists \
 				</listitem>
 			</varlistentry>
 		</variablelist>
-		<tip>
-			<para>
-			  Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
-			</para>
-		</tip>
 	</section>
 
 	<section id="settings:udm_hook">
@@ -1728,21 +1708,21 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>package</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the Debian package which creates the object<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						Name of the Debian package which creates the object.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>packageversion</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain<footnoteref linkend='ucs_registerLDAPExtension_footnote'/>.
+						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
 						Defaults to <literal>string</literal>.
 					</simpara>
 				</listitem>
@@ -1769,11 +1749,6 @@ udm settings/syntax create "$@" --ignore_exists \
 				</listitem>
 			</varlistentry>
 		</variablelist>
-		<tip>
-			<para>
-			  Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
-			</para>
-		</tip>
 	</section>
 
 	<section id="udm:acl">

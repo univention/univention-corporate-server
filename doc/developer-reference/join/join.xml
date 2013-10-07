@@ -566,6 +566,98 @@ fi
 							</programlisting>
 						</listitem>
 					</varlistentry>
+					<varlistentry>
+						<term><cmdsynopsis>
+								<command>ucs_registerLDAPExtension</command>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
+								<group>
+									<arg>--schema</arg>
+									<arg>--acl<arg choice="opt"><synopfragmentref linkend="ucsversionrestriction">ucsversionrestriction</synopfragmentref></arg></arg>
+									<arg>--udm_syntax</arg>
+									<arg>--udm_hook</arg>
+									<arg>--udm_module</arg>
+								</group>
+								<arg choice="plain"><replaceable>filename</replaceable></arg>
+								<arg choice="opt">--packagename<replaceable>packagename</replaceable></arg>
+								<arg choice="opt">--packageversion<replaceable>packageversion</replaceable></arg>
+								<synopfragment id="ucsversionrestriction">
+									<arg>--ucsversionstart</arg>
+									<arg>--ucsversionend</arg>
+								</synopfragment>
+						</cmdsynopsis></term>
+						<listitem>
+							<para>
+								The easiest way to register <acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules
+								is to call the <literal>ucs_registerLDAPExtension</literal> shell function provided by the Univention shell function library
+								(see <xref linkend="misc:lib"/>). This shell function offers five main options: <literal>--schema</literal>,  <literal>--acl</literal>,
+								<literal>--udm_syntax</literal>, <literal>--udm_hook</literal>, <literal>--udm_module</literal>, which can be combined. Each of these
+								options expects a filename as option argument. During one call of the function, it will always process the given extensions in the order
+								schema, ACL, UDM syntax, UDM hook and finally UDM module.
+								Called from a joinscript, it automatically determines some required parameters, like the app identifier plus Debian package name and version,
+								required for the creation of the corresponding object. After creation of the object the function waits
+								up to 3 minutes for the &ucsMaster; to signal availability of the new extension and reports success or failure.
+								For UDM extensions it additionally checks that the corresponding file has been made available in the local filesystem.
+								Failure conditions may occurr e.g. in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active.
+								The &ucsMaster; only activates a new <acronym>LDAP</acronym> schema or ACL extension if the configuration check succeeded.
+							</para>
+							<para>
+								Before calling the shell function the shell variable <literal>UNIVENTION_APP_IDENTIFIER</literal> should be set
+								to the versioned app identifier (and exported to the environment of subprocesses).
+								The shell function will then register the specified app identifier with the extension object to indicate that
+								the extension object is required as long as this app is installed anywhere in the UCS domain.
+							</para>
+							<para>
+								The options <literal>--packagename</literal> and <literal>--packageversion</literal> should usually not be used, as these parameters
+								are determined automatically.
+								To prevent accidental downgrades the function <literal>ucs_registerLDAPExtension</literal> (as well as the corresponding UDM module)
+								only execute modifications of an existing object if the Debian package version is not older than the previous one.
+							</para>
+							<para>
+								<literal>ucs_registerLDAPExtension</literal> supports two additional options to specify a valid range of UCS versions, where an extension should be
+								activated. The options are <literal>--ucsversionstart</literal> and <literal>--ucsversionend</literal>. The version check is only
+								performed whenever the extension object is modified. By calling this function from a joinscript, it will
+								automatically update the Debian package version number stored in the object, triggering a re-evaluation of the specified UCS version range.
+								The extension is activated up to and excluding the UCS version specified by <literal>--ucsversionend</literal>.
+								This validity range is not applied to <acronym>LDAP</acronym> schema extensions, since they must not be undefined as long as there are objects
+								in the <acronym>LDAP</acronym> directory which make use of it.
+							</para>
+							<para>
+								Example usage in join script:
+							</para>
+							<programlisting language="sh">
+export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
+. /usr/share/univention-lib/ldap.sh
+ucs_registerLDAPExtension "$@" --schema \
+	/path/to/appschemaextension.schema
+							</programlisting>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><cmdsynopsis>
+								<command>ucs_unregisterLDAPExtension</command>
+								<arg choice="opt">--binddn <replaceable>bind-dn</replaceable> --bindpwd <replaceable>bind-password</replaceable></arg>
+								<group>
+									<arg>--schema</arg>
+									<arg>--acl</arg>
+									<arg>--udm_syntax</arg>
+									<arg>--udm_hook</arg>
+									<arg>--udm_module</arg>
+								</group>
+								<arg choice="plain"><replaceable>objectname</replaceable></arg>
+						</cmdsynopsis></term>
+						<listitem>
+							<para>
+								There is a corresponding <literal>ucs_unregisterLDAPExtension</literal> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
+							</para>
+							<para>
+								Example usage in unjoin script:
+							</para>
+							<programlisting language="sh">
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterLDAPExtension "$@" --schema appschemaextension
+							</programlisting>
+						</listitem>
+					</varlistentry>
 				</variablelist>
 			</section>
 
