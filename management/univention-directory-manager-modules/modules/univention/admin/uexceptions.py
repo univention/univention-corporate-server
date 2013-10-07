@@ -101,7 +101,7 @@ class groupNameAlreadyUsed(base):
 	else:
 		message=_('The groupname is already in use')
 
-class adGroupTypeChangeDomainLocalToAny(base):
+class adGroupTypeChangeLocalToAny(base):
 	message = _('The AD group type can not be changed from type local to any other type.')
 class adGroupTypeChangeGlobalToUniversal(base):
 	message = _('The AD group type can not be changed from global to universal.')

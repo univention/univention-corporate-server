@@ -953,12 +953,13 @@ class object(univention.admin.handlers.simpleLdap):
 		old_groupType = self.oldinfo.get('adGroupType', 0)
 		new_groupType = self.info.get('adGroupType', 0)
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'groups/group: old_groupType: %s' % old_groupType)
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'groups/group: new_groupType: %s' % new_groupType)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: old_groupType: %s' % old_groupType)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: new_groupType: %s' % new_groupType)
+
 		if not old_groupType or not new_groupType:
 			return
 
-		if self.__is_groupType_domain_local(old_groupType):
+		if self.__is_groupType_local(old_groupType):
 			raise univention.admin.uexceptions.adGroupTypeChangeDomainLocalToAny
 
 		# See for details:
@@ -986,15 +987,14 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.adGroupTypeChangeUniversalToDomainGlobal
 
 	def __generate_group_sid(self, gidNum):
-		# TODO: cleanup function
 		groupSid = None
 
 		new_groupType = self.info.get('adGroupType', 0)
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'groups/group: new_groupType: %s' % new_groupType)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: new_groupType: %s' % new_groupType)
 		if self['sambaRID']:
 			searchResult = self.lo.search(filter='objectClass=sambaDomain', attr=['sambaSID'])
-			if self.__is_groupType_domain_local(new_groupType):
+			if self.__is_groupType_local(new_groupType):
 				sid = 'S-1-5-32-' + self['sambaRID']
 			else:
 				domainsid=searchResult[0][1]['sambaSID'][0]
@@ -1003,15 +1003,15 @@ class object(univention.admin.handlers.simpleLdap):
 			self.alloc.append(('sid', groupSid))
 		else:
 			num = self.gidNum
-			if s4connector_present:
+			if s4connector_present and not self.__is_groupType_local(new_groupType):
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
 				# new sambaSID back from Samba 4.
 				groupSid='S-1-4-%s' % num
 			else:
-				localSid = self.__is_groupType_domain_local(new_groupType)
+				generateDomainLocalSid = self.__is_groupType_local(new_groupType)
 				while not groupSid or groupSid == 'None':
 					try:
-						groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num, localSid=localSid)
+						groupSid = univention.admin.allocators.requestGroupSid(self.lo, self.position, num, generateDomainLocalSid=generateDomainLocalSid)
 					except univention.admin.uexceptions.noLock, e:
 						num = str(int(num)+1)
 				self.alloc.append(('sid', groupSid))

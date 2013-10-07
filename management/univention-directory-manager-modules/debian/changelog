@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.46-1) unstable; urgency=low
+
+  * More updates to the group type handling (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Oct 2013 10:38:51 +0200
+
 univention-directory-manager-modules (9.0.45-1) unstable; urgency=low
 
   * Bug #23214: Add express layout for users/user

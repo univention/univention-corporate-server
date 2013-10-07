@@ -2378,10 +2378,10 @@ class sambaGroupType(select):
 class adGroupType(select):
 	choices=[
 		('', ''),
-		('-2147483644', _('Local (Type: Security)')),
+		('-2147483643', _('Local (Type: Security)')),
 		('-2147483646', _('Global (Type: Security)')),
 		('-2147483640', _('Universal (Type: Security)')),
-		('-2147483643', _('Domain local (Type: Security)')),
+		('-2147483644', _('Domain local (Type: Security)')),
 		('4', _('Local (Type: Distribution)')),
 		('2', _('Global (Type: Distribution)')),
 		('8', _('Universal (Type: Distribution)')),
