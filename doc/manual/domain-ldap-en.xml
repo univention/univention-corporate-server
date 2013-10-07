@@ -1253,6 +1253,26 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 </section>
 
+
+<!-- <section id="domain:saml"> -->
+<!-- 	<title>Einbindung eines SAML Identity Providers</title> -->
+<!-- 	<para> -->
+<!-- 	  SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch von -->
+<!-- 	  Authentifizierungsinformationen, der u.a. Single-Sign-On über Domänengrenzen hinweg erlaubt. -->
+<!-- 	  UCS stellt einen SAML Identity Provider bereit: Der externe Dienst (z.B. Salesforce) wird dabei über -->
+<!-- 	  ein kryptografisches Zertifikat fest registriert und vertraut dann dem Identity Provider. Der -->
+<!-- 	  Benutzer authentifiziert sich dann nur noch in UCS und kann den eingebundenen Dienst ohne -->
+<!-- 	  erneute Authentifizierung nutzen. -->
+<!-- 	</para> -->
+
+<!-- 	<para> -->
+<!-- 	  Der SAML Identity Provider kann über das Univention App Center installiert werden (siehe -->
+<!-- 	  <xref linkend="software:appcenter"/>). Die Registrierung von Diensten und die Freigabe von -->
+<!-- 	  Diensten für einzelne Benutzer wird unter <xref linkend="wiki-saml"/> beschrieben. -->
+<!-- 	</para> -->
+<!-- </section> -->
+
+
 <section id="domain:backup2master">
 	<title>Converting a DC backup to the new DC master</title>
 	<para>
