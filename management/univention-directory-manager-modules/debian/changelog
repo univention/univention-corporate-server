@@ -1,3 +1,12 @@
+univention-directory-manager-modules (9.0.47-2) unstable; urgency=low
+
+  * Fix UCS_Version and packageversion comparison
+    (Bug #32411, Bug #32412)
+  * Fix UCS_Version comparison
+    (Bug #32403)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Oct 2013 17:25:53 +0200
+
 univention-directory-manager-modules (9.0.47-1) unstable; urgency=low
 
   * Fix UCS_Version and packageversion comparison

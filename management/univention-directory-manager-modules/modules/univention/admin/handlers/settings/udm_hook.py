@@ -128,7 +128,7 @@ property_descriptions={
 	'ucsversionstart': univention.admin.property(
 			short_description=_('Minimal UCS version'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.UCSVersion,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -138,7 +138,7 @@ property_descriptions={
 	'ucsversionend': univention.admin.property(
 			short_description=_('Maximal UCS version'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.UCSVersion,
 			multivalue=0,
 			options=[],
 			required=0,
