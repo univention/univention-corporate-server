@@ -38,6 +38,7 @@ import os
 import univention.admin.uldap as udm_uldap
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
+from univention.updater import UCS_Version
 import subprocess
 import bz2
 import tempfile
@@ -72,10 +73,10 @@ def handler(dn, new, old):
 		univentionUCSVersionStart = new.get('univentionUCSVersionStart', [None])[0]
 		univentionUCSVersionEnd = new.get('univentionUCSVersionEnd', [None])[0]
 		current_UCR_version = "%s-%s" % ( listener.configRegistry.get('version/version'), listener.configRegistry.get('version/patchlevel') )
-		if univentionUCSVersionStart and current_UCR_version < univentionUCSVersionStart:
+		if univentionUCSVersionStart and UCS_Version(current_UCR_version) < UCS_Version(univentionUCSVersionStart):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCR version %s.' % (name, new['cn'][0], univentionUCSVersionStart))
 			new=None
-		elif univentionUCSVersionEnd and current_UCR_version >= univentionUCSVersionEnd:
+		elif univentionUCSVersionEnd and UCS_Version(current_UCR_version) >= UCS_Version(univentionUCSVersionEnd):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
 			new=None
 	elif old:
@@ -117,11 +118,8 @@ def handler(dn, new, old):
 			if new_pkgname == old.get('univentionOwnedByPackage', [None])[0]:
 				old_version = old.get('univentionOwnedByPackageVersion', ['0'])[0]
 				rc = apt.apt_pkg.version_compare(new_version, old_version)
-				if rc not in (1, 0):
-					if rc == -1:
-						ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
-					else:
-						ud.debug(ud.LISTENER, ud.ERROR, '%s: Package version comparison to old version failed (%s), skipping update.' % (name, old_version))
+				if not rc > -1:
+					ud.debug(ud.LISTENER, ud.WARN, '%s: New version is lower than version of old object (%s), skipping update.' % (name, old_version))
 					return
 
 		## ok, basic checks passed, handle the data
@@ -251,13 +249,13 @@ def remove_pyshared_file(target_subdir, target_filename):
 		if p.returncode == 0:
 			## ok, we should not remove this file
 			## but at least check if the __init__.py file should be cleaned up. cleanup_python_moduledir would not do it since $filename is sill there.
-			targetpath = os.path.dirname(filename)
+			target_path = os.path.dirname(filename)
 			skipfiles = (os.path.basename(filename), '__init__.py')
-			for entry in os.listdir(targetpath):
+			for entry in os.listdir(target_path):
 				if entry not in skipfiles:
 					return
 
-			python_init_filename = os.path.join(targetpath, '__init__.py')
+			python_init_filename = os.path.join(target_path, '__init__.py')
 			if os.path.exists(python_init_filename):
 				if  os.path.getsize(python_init_filename) != 0:
 					return
@@ -401,36 +399,39 @@ def create_python_moduledir(python_basedir, target_subdir, module_directory):
 
 	if module_directory.startswith('/'):
 		raise moduleCreationFailed, 'Module directory must not be absolute: %s' % (module_directory, )
+	target_dir = os.path.join(python_basedir, target_subdir)
+	target_path = os.path.join(python_basedir, target_dir)
+	if not os.path.realpath(target_path).startswith(target_dir):
+		raise moduleCreationFailed, 'Target directory %s not below: %s' % (module_directory, target_dir)
 
 	## trivial checks passed, go for it
 	parent_dir = os.path.dirname(module_directory)
 	if parent_dir and not os.path.exists(os.path.join(python_basedir, target_subdir, parent_dir)):
 		create_python_moduledir(python_basedir, target_subdir, parent_dir)
+	
+	if not os.path.isdir(target_path):
+		try:
+			os.mkdir(target_path)
+		except OSError as e:
+			raise moduleCreationFailed, 'Directory creation of %s failed: %s.' % (target_path, e)
+
+	if python_basedir == PYSHARED_DIR:
+		python_init_filename = os.path.join(target_path,'__init__.py')
+		if not os.path.exists(python_init_filename):
+			open(python_init_filename, 'a').close()
 	else:
-		targetpath = os.path.join(python_basedir, target_subdir, module_directory)
-		if not os.path.isdir(targetpath):
-			try:
-				os.mkdir(targetpath)
-			except OSError as e:
-				raise moduleCreationFailed, 'Directory creation of %s failed: %s.' % (targetpath, e)
+		linkname = os.path.join(target_path, '__init__.py')
+		filename = os.path.join(PYSHARED_DIR, target_subdir, module_directory, '__init__.py')
+		if os.path.lexists(linkname):
+			if os.path.exists(linkname) and os.path.realpath(linkname) == filename:
+				return
+			else:
+				os.unlink(linkname)
 
-		if python_basedir == PYSHARED_DIR:
-			python_init_filename = os.path.join(targetpath,'__init__.py')
-			if not os.path.exists(python_init_filename):
-				open(python_init_filename, 'a').close()
-		else:
-			linkname = os.path.join(targetpath, '__init__.py')
-			filename = os.path.join(PYSHARED_DIR, target_subdir, module_directory, '__init__.py')
-			if os.path.lexists(linkname):
-				if os.path.exists(linkname) and os.path.realpath(linkname) == filename:
-					return
-				else:
-					os.unlink(linkname)
-
-			try:
-				os.symlink(filename, linkname)
-			except OSError, e:
-				raise moduleCreationFailed, 'Symlink creation of %s failed: %s.' % (linkname, e)
+		try:
+			os.symlink(filename, linkname)
+		except OSError, e:
+			raise moduleCreationFailed, 'Symlink creation of %s failed: %s.' % (linkname, e)
 
 
 def cleanup_python_moduledir(python_basedir, target_subdir, module_directory):
@@ -441,17 +442,20 @@ def cleanup_python_moduledir(python_basedir, target_subdir, module_directory):
 
 	if module_directory.startswith('/'):
 		raise moduleRemovalFailed, 'Module directory must not be absolute: %s' % (module_directory, )
+	target_dir = os.path.join(python_basedir, target_subdir)
+	target_path = os.path.join(python_basedir, target_dir)
+	if not os.path.realpath(target_path).startswith(target_dir):
+		raise moduleCreationFailed, 'Target directory %s not below: %s' % (module_directory, target_dir)
 
-	targetpath = os.path.join(python_basedir, target_subdir, module_directory)
-	if not os.path.isdir(targetpath):
+	if not os.path.isdir(target_path):
 		return
 
 	## trivial checks passed, go for it
-	for entry in os.listdir(targetpath):
+	for entry in os.listdir(target_path):
 		if os.path.splitext(entry)[0] != '__init__':
 			return
 
-	python_init_filename = os.path.join(targetpath, '__init__.py')
+	python_init_filename = os.path.join(target_path, '__init__.py')
 	if os.path.exists(python_init_filename):
 		if  os.path.getsize(python_init_filename) != 0:
 			return
@@ -478,9 +482,9 @@ def cleanup_python_moduledir(python_basedir, target_subdir, module_directory):
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Removal of %s failed: %s.' % (name, python_init_filename, e))
 
 	try:
-		os.rmdir(targetpath)
+		os.rmdir(target_path)
 	except OSError as e:
-		raise moduleRemovalFailed, 'Removal of directory %s failed: %s.' % (targetpath, e)
+		raise moduleRemovalFailed, 'Removal of directory %s failed: %s.' % (target_path, e)
 
 	parent_dir = os.path.dirname(module_directory)
 	if parent_dir:

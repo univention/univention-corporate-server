@@ -37,6 +37,7 @@ import univention.debug
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.localization
+from univention.updater import UCS_Version
 import base64
 import zlib
 import bz2
@@ -358,6 +359,16 @@ class TextArea( string ):
 class Upload( ISyntax ):
 	@classmethod
 	def parse( self, value ):
+		return value
+
+class UCSVersion( string ):
+	@classmethod
+	def parse( self, value ):
+		try:
+			ver = UCS_Version(value)
+		except ValueError:
+			raise univention.admin.uexceptions.valueError( _( 'Invalid UCS version: %s' ) % (value, ))
+		
 		return value
 
 class DebianPackageVersion( string ):

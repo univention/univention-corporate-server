@@ -212,9 +212,9 @@ class object(univention.admin.handlers.simpleLdap):
 		diff_keys = [ key for key in self.info.keys() if self.info.get(key) != self.oldinfo.get(key) and key not in ('active', 'appidentifier') ]
 		if not diff_keys: ## check for trivial change
 			return
-		if not self.hasChanged('packagename'):
+		if not self.hasChanged('package'):
 			old_version = self.oldinfo.get('packageversion','0')
-			if not  apt.apt_pkg.version_compare(self['packageversion'], old_version) in (0, 1):
+			if not  apt.apt_pkg.version_compare(self['packageversion'], old_version) > -1:
 				raise univention.admin.uexceptions.valueInvalidSyntax, _('packageversion: Version must not be lower than the current one.')
 
 	

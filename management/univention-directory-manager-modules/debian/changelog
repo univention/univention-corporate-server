@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.47-1) unstable; urgency=low
+
+  * Fix UCS_Version and packageversion comparison
+    (Bug #32403, Bug #32406, Bug #32409)
+  * Fix bug in python module path creation (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 07 Oct 2013 17:18:50 +0200
+
 univention-directory-manager-modules (9.0.46-1) unstable; urgency=low
 
   * More updates to the group type handling (Bug #32767)
