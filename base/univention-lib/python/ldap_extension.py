@@ -9,7 +9,7 @@ from univention.config_registry import configHandlers, ConfigRegistry
 from univention.admin import uldap as udm_uldap
 from univention.admin import modules as udm_modules
 from univention.admin import uexceptions as udm_errors
-from univention.updater import UCS_Version
+from univention.lib.ucs import UCS_Version
 import subprocess
 import bz2
 import base64
@@ -520,8 +520,8 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				return
 
 			if old:	## check for trivial changes
-				diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp')]
-				if diff_keys == ['univentionLDAPACLActive'] and new.get('univentionLDAPACLActive') == 'TRUE':
+				diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
+				if diff_keys == ['univentionLDAPACLActive'] and new.get('univentionLDAPACLActive')[0] == 'TRUE':
 					ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0]))
 					return
 				elif diff_keys == ['univentionAppIdentifier']:
