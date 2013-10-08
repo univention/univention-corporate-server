@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.90-3) unstable; urgency=low
+
+  * fixed languages.json template (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 08 Oct 2013 17:06:50 +0200
+
 univention-management-console-frontend (3.0.90-2) unstable; urgency=low
 
   * do not set defaults for deprecated UCRV umc/server/languages/.* in
