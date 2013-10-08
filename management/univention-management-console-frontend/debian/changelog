@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.89-1) unstable; urgency=low
+
+  * Bug #26418: don't treat disabled items as selected
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2013 14:35:48 +0200
+
 univention-management-console-frontend (3.0.88-1) unstable; urgency=low
 
   * Bug #26418: fix cross browser behavior for grid default action

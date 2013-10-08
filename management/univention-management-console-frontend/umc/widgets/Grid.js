@@ -94,7 +94,9 @@ define([
 		//		              a particular item; the function receives a dict of all item
 		//		              properties as parameter
 		//		'iconClass': specifies a different tooltip class than umc/widgets/Tooltip
-		//		TODO: explain isContextAction, isStandardAction, isMultiAction
+		//		'isContextAction': specifies that the action requires a selection
+		//		'isStandardAction': specifies whether the action is displayed as own button or in the "more" menu
+		//		'isMultiAction': specifies whether this action can be executed for multiple items
 		//		TODO: explain also the 'adjust' value for columns
 		//		TODO: iconClass, label -> may be of type string or function
 		//		      they are called either per item (with a dict as parameter) or
@@ -421,6 +423,7 @@ define([
 			style.set(this._header.domNode, 'display', (this.actions.length) ? 'block': 'none');
 			this._header.addChild(this._toolbar);
 			this._header.addChild(this._contextActionsToolbar);
+			style.set(this._contextActionsToolbar.domNode, 'visibility', 'hidden');
 
 //			// underline and align the 'more' menu
 //			style.set(this._contextActionsMenu.domNode.childNodes[1], {'text-decoration': 'underline', padding: '2px'})
@@ -459,7 +462,7 @@ define([
 
 				if (iaction.isStandardAction) {
 					// add action to the context toolbar
-					var btn = new Button(lang.mixin(props, getCallback(''), {iconClass: props.iconClass || 'umcIconNoIcon'}));
+					var btn = new Button(lang.mixin(props, getCallback(''), { iconClass: props.iconClass || 'umcIconNoIcon' }));
 					if (iaction.description) {
 						try {
 						var item = undefined;
@@ -583,7 +586,6 @@ define([
 						enabled = item._action.isMultiAction;
 					}
 					// disable multiaction if one of the selected items can not be executed
-					// TODO: getSelectedButNotDisabledItems
 					enabled = enabled && array.every(this.getSelectedItems(), function(iitem) { return item._action.canExecute ? item._action.canExecute(iitem) : true; });
 					item.set('disabled', !enabled);
 				}
@@ -782,9 +784,13 @@ define([
 		getSelectedItems: function() {
 			// summary:
 			//		Return the currently selected items.
+			//		Filters disabled items.
 			// returns:
 			//		An array of dictionaries with all available properties of the selected items.
-			return this._grid.selection.getSelected();
+			return array.filter(this._grid.selection.getSelected(), lang.hitch(this, function(item) {
+				var rowDisabled = this._grid.rowSelectCell.disabled(this._grid.getItemIndex(item));
+				return !rowDisabled;
+			}));
 		},
 
 		getSelectedIDs: function() {
@@ -792,7 +798,7 @@ define([
 			//		Return the currently selected items.
 			// returns:
 			//		An array of id strings (as specified by moduleStore.idProperty).
-			var items = this._grid.selection.getSelected();
+			var items = this.getSelectedItems();
 			var vars = [];
 			for (var iitem = 0; iitem < items.length; ++iitem) {
 				vars.push(this._dataStore.getValue(items[iitem], this.moduleStore.idProperty));
