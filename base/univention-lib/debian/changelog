@@ -1,3 +1,9 @@
+univention-lib (3.0.20-4) unstable; urgency=low
+
+  * Adjustment for Bug #32676
+
+ -- Arvid Requate <requate@univention.de>  Tue, 08 Oct 2013 11:11:34 +0200
+
 univention-lib (3.0.20-3) unstable; urgency=low
 
   * Fix typo (Bug #32393)
