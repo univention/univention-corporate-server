@@ -3,7 +3,7 @@ release: "3.1"
 version: [1]
 scope: ucs_3.1-0-errata3.1-1
 src: mysql-5.1
-fix: 5.1.72-1.32.201309241344
+fix: 5.1.72-1.33.201310071441
 desc: |
  Multiple security issues have been fixed in MySQL 5.1.72. 
  Since Oracle does not disclose sufficient information to
