@@ -33,8 +33,8 @@ msgid "Add quota setting for a user on partition"
 msgstr "Hinzufügen von Quota-Einstellungen für einen Benutzer"
 
 #: umc/js/_quota/PartitionPage.js:102
-msgid "Add user"
-msgstr "Benutzer hinzufügen"
+msgid "Add"
+msgstr "Hinzufügen"
 
 #: umc/js/_quota/DetailPage.js:63
 msgid "Back to partition"

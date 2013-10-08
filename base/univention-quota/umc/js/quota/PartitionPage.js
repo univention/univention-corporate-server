@@ -102,7 +102,7 @@ define([
 
 			var actions = [{
 				name: 'add',
-				label: _('Add user'),
+				label: _('Add'),
 				iconClass: 'umcIconAdd',
 				isContextAction: false,
 				isStandardAction: true,
