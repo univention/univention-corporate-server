@@ -1,3 +1,10 @@
+univention-management-console-module-services (3.0.1-1) unstable; urgency=low
+
+  * Bug #26418: adapt grid actions
+  * version bump (UCS 3.2)
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2013 11:19:18 +0200
+
 univention-management-console-module-services (2.0.5-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition

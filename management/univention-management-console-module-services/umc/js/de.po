@@ -77,8 +77,8 @@ msgid "Please confirm to stop the following services: "
 msgstr "Bitte bestätigen Sie, die folgenden Dienste zu stoppen: "
 
 #: umc/js/services.js:64
-msgid "Restart services"
-msgstr "Dienste neustarten"
+msgid "Restart"
+msgstr "Neustarten"
 
 #: umc/js/services.js:69
 msgid "Restarting the following services failed: "
@@ -97,8 +97,8 @@ msgid "Start never"
 msgstr "Niemals starten"
 
 #: umc/js/services.js:38
-msgid "Start services"
-msgstr "Dienste starten"
+msgid "Start"
+msgstr "Starten"
 
 #: umc/js/services.js:127
 msgid "Start type"
@@ -113,8 +113,8 @@ msgid "Status"
 msgstr "Status"
 
 #: umc/js/services.js:51
-msgid "Stop services"
-msgstr "Dienste stoppen"
+msgid "Stop"
+msgstr "Stoppen"
 
 #: umc/js/services.js:56
 msgid "Stopping the following services failed: "

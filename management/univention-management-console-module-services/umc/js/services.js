@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -66,7 +66,7 @@ define([
 
 			var actions = [{
 				name: 'start',
-				label: _('Start services'),
+				label: _('Start'),
 				callback: lang.hitch(this, function(data) {
 					if (data.length) {
 						var command = 'services/start';
@@ -75,11 +75,11 @@ define([
 						this._changeState(data, command, confirmMessage, errorMessage);
 					}
 				}),
-				isStandardAction: false,
+				isStandardAction: true,
 				isMultiAction: true
 			}, {
 				name: 'stop',
-				label: _('Stop services'),
+				label: _('Stop'),
 				callback: lang.hitch(this, function(data) {
 					if (data.length) {
 						var command = 'services/stop';
@@ -88,11 +88,11 @@ define([
 						this._changeState(data, command, confirmMessage, errorMessage);
 					}
 				}),
-				isStandardAction: false,
+				isStandardAction: true,
 				isMultiAction: true
 			}, {
 				name: 'restart',
-				label: _('Restart services'),
+				label: _('Restart'),
 				callback: lang.hitch(this, function(data) {
 					if (data.length) {
 						var command = 'services/restart';
@@ -101,7 +101,7 @@ define([
 						this._changeState(data, command, confirmMessage, errorMessage);
 					}
 				}),
-				isStandardAction: false,
+				isStandardAction: true,
 				isMultiAction: true
 			}, {
 				name: 'startAutomatically',
@@ -185,7 +185,7 @@ define([
 				columns: columns,
 				moduleStore: this.moduleStore,
 				query: {
-					pattern: '*'
+					pattern: ''
 				}
 			});
 			titlePane.addChild(this._grid);
@@ -193,7 +193,7 @@ define([
 			var widgets = [{
 				type: TextBox,
 				name: 'pattern',
-				value: '*',
+				value: '',
 				label: _('Keyword')
 			}];
 
