@@ -14,7 +14,7 @@ msgstr ""
 
 #: umc/js/setup/InterfaceGrid.js:277
 msgid "There are no more physical interfaces to create."
-msgstr "Es gibt keine weiteren physikalischen Netzwerkgeräte zum hinzufügen".
+msgstr "Es gibt keine weiteren physikalischen Netzwerkgeräte zum hinzufügen."
 
 #: umc/js/setup/InterfaceWizard.js:87
 msgid "<i>Ethernet</i> is a standard physical interface. "
@@ -95,7 +95,7 @@ msgid ""
 "<i>Bond</i> interfaces allows two or more physical network interfaces to be "
 "coupled."
 msgstr ""
-"<i>Bond</i> Geräte erlaubt einen Verbund von einem oder mehreren "
+"<i>Bond</i> Netzwerkschnittstellen erlaubt einen Verbund von einem oder mehreren "
 "physikalischen Netzwerkgeräten."
 
 #: umc/js/setup/InterfaceWizard.js:89 umc/js/setup/InterfaceWizard.js:357
@@ -103,7 +103,7 @@ msgid ""
 "<i>Bridge</i> interfaces allows a physical network interface to be shared to "
 "connect one or more network segments. "
 msgstr ""
-"<i>Bridge</i> Geräte erlaubt physikalischen Netzwerkgeräten gemeinsam "
+"<i>Bridge</i> Netzwerkschnittstellen erlaubt physikalischen Netzwerkgeräten gemeinsam "
 "benutzt zu werden um ein oder mehrere Netzwerksegemente miteinander zu "
 "verbinden."
 
@@ -120,7 +120,7 @@ msgid ""
 "<i>VLAN</i> interfaces can be used to separate network traffic logically "
 "while using only one or more physical network interfaces. "
 msgstr ""
-"<i>VLAN</i> Geräte können benutzt werden, um Netzwerkverkehr logisch mit nur "
+"<i>VLAN</i> Netzwerkschnittstellen können benutzt werden, um Netzwerkverkehr logisch mit nur "
 "einem oder mehreren physikalischen Netzwerkgeräten zu trennen."
 
 #: umc/js/setup/BasisPage.js:101
@@ -193,31 +193,31 @@ msgstr "Bond konfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:460
 msgid "Bond interface configuration"
-msgstr "Bond Gerätekonfiguration"
+msgstr "Bond Netzwerkkonfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:408
 msgid "Bond primary"
-msgstr ""
+msgstr "Primäre Bond-Netzwerkschnittstellen"
 
 #: umc/js/setup/InterfaceWizard.js:395 umc/js/setup/Interfaces.js:168
 msgid "Bond slaves"
-msgstr ""
+msgstr "Bond Kindnetzwerkschnittstellen"
 
 #: umc/js/setup/types.js:50
 msgid "Bonding"
-msgstr ""
+msgstr "Kanalbündelung (Bonding)"
 
 #: umc/js/setup/types.js:51
 msgid "Bridge"
-msgstr ""
+msgstr "Netzwerk-Bridge"
 
 #: umc/js/setup/InterfaceWizard.js:356
 msgid "Bridge configuration"
-msgstr "Bridge konfiguration"
+msgstr "Bridge-Konfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:386
 msgid "Bridge interface configuration"
-msgstr "Bridge Gerätekonfiguration"
+msgstr "Bridge Netzwerkkonfiguration"
 
 #: umc/js/setup/InterfaceWizard.js:360 umc/js/setup/Interfaces.js:190
 msgid "Bridge ports"
@@ -376,7 +376,7 @@ msgstr "E-Mailadresse"
 
 #: umc/js/setup/types.js:48
 msgid "Ethernet"
-msgstr ""
+msgstr "Ethernet"
 
 #: umc/js/setup/NetworkPage.js:291
 msgid "External name server"
@@ -409,7 +409,7 @@ msgstr ""
 
 #: umc/js/setup/InterfaceWizard.js:368
 msgid "Forwarding delay"
-msgstr ""
+msgstr "Forwarding-Verzögerung"
 
 #: umc/js/setup/BasisPage.js:217
 msgid "Fully qualified domain name"
@@ -625,7 +625,7 @@ msgstr "Standorteinstellungen"
 
 #: umc/js/setup/InterfaceWizard.js:442
 msgid "MII link monitoring frequency"
-msgstr ""
+msgstr "MII-Trägerüberwachungsfrequenz"
 
 #: umc/js/setup/SystemRolePage.js:76
 msgid "Member server"

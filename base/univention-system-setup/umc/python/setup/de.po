@@ -42,7 +42,7 @@ msgstr "Abteilung"
 
 #: umc/python/setup/network.py:712
 #, python-format
-msgid "Cannot use Bridge %r as bridge-port"
+msgid "Cannot use bridge %r as bridge-port"
 msgstr "Kann Bridge %r nicht als bridge-port verwenden"
 
 #: umc/python/setup/network.py:618
@@ -114,8 +114,8 @@ msgid "Invalid IPv6 netmask: %r"
 msgstr "Ungültige IPv6 Netzmaske: %r"
 
 #: umc/python/setup/network.py:552
-msgid "Invalid VLAN ID. Must be between 1 and 4096."
-msgstr "Ungültige VLAN ID. Muss zwischen 1 und 4069 sein."
+msgid "Invalid VLAN ID. Must be between 1 and 4095."
+msgstr "Ungültige VLAN ID. Muss zwischen 1 und 4065 sein."
 
 #: umc/python/setup/network.py:633
 #, python-format

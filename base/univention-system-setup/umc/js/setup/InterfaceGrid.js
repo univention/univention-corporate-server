@@ -89,9 +89,8 @@ define([
 					callback: lang.hitch(this, '_editInterfaces')
 				}, {
 					name: 'add',
-					label: _('Add interface'),
+					label: _('Add'),
 					iconClass: 'umcIconAdd',
-					isMultiAction: false,
 					isContextAction: false,
 					callback: lang.hitch(this, '_addInterface')
 				}, {

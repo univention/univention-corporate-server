@@ -88,11 +88,12 @@ class Interfaces(dict):
 				return device
 
 	@primary.setter
-	def primary(self, primary):
-		current = self.primary
-		if current:
-			current.primary = False
-		self[primary].primary = True
+	def primary(self, primary=None):
+		"""Removes the primary flag from all devices and sets it to the new device if exists"""
+		for device in self.values():
+			device.primary = False
+		if primary in self:
+			self[primary].primary = True
 
 	def __init__(self, *args, **kwargs):
 		"""Loads all network devices from UCR variables"""
@@ -122,12 +123,13 @@ class Interfaces(dict):
 			device = Device.from_dict(values, self)
 			self[device.name] = device
 
+#	def finalize(self):
+#		self.check_consistency()
+#		return self.to_ucr()
+
 	def to_ucr(self):
 		"""Returns a UCR representation of all interfaces"""
 		ucr.load()
-
-		# TODO: create a new method e.g. finalize
-		# self.check_consistency()
 
 		ucrv = {'interfaces/primary': None}
 		for device in self.values():
@@ -222,6 +224,8 @@ class Device(object):
 						cls = Bridge
 					elif any(opt.startswith('bond-slaves') for opt in device.options):
 						cls = Bond
+					elif any(opt.startswith('vlan-raw-device') for opt in device.options):
+						cls = VLAN
 		return object.__new__(cls)
 
 	@property
@@ -291,9 +295,12 @@ class Device(object):
 
 		self.order = None
 		self.start = True
+		self.type = 'manual'
 
 		if self.ip4dynamic:
 			self.type = 'dhcp'
+		elif self.ipv4 or self.ipv6:
+			self.type = 'static'
 
 	def _remove_old_fallback_variables(self):
 		# removes deprecated UCR variables from UCS <= 3.1-1... can be removed in future
@@ -403,6 +410,9 @@ class Device(object):
 		self.ip4dynamic = False
 		self.ip6dynamic = False
 
+	def get_options(self):
+		return self.options
+
 	def parse_ucr(self):
 		name = self.name
 		self.clear()
@@ -414,9 +424,7 @@ class Device(object):
 
 		self.start = ucr.is_true(value=vals.pop('interfaces/%s/start' % (name), None))
 
-		type_ = vals.pop('interfaces/%s/type' % (name), None)
-		if type_ is not None:
-			self.type = type_
+		self.type = vals.pop('interfaces/%s/type' % (name), None)
 
 		order = vals.pop('interfaces/%s/order' % (name), "")
 		if order.isdigit():
@@ -428,11 +436,8 @@ class Device(object):
 		address, netmask = vals.pop('interfaces/%s/address' % (name), ''), vals.pop('interfaces/%s/netmask' % (name), '24')
 		if address:
 			self.ip4.append((address, netmask))
-			# a link local address indicates that this interface is DHCP
-			if address.startswith('169.254.'):
-				self.type = 'dhcp'
 
-		self.ip4dynamic = 'dhcp' == self.type
+		self.ip4dynamic = self.type in ('dhcp', 'dynamic')
 		self.ip6dynamic = ucr.is_true(value=vals.pop('interfaces/%s/ipv6/acceptRA' % (name), None))
 
 		for key in vals.copy():
@@ -474,10 +479,10 @@ class Device(object):
 		if self.start is not None:
 			vals['interfaces/%s/start' % (name)] = str(bool(self.start)).lower()
 
-		if isinstance(self.type, str):
-			if self.type not in ('static', 'manual', 'dhcp', 'appliance-mode-temporary'):
-				MODULE.warn('Unknown interfaces/%s/type: %r' % (self.name, self.type))
+		if self.type in ('static', 'manual', 'dhcp', 'dynamic', 'appliance-mode-temporary'):
 			vals['interfaces/%s/type' % (name)] = self.type
+		else:
+			MODULE.warn('Unknown interfaces/%s/type: %r' % (self.name, self.type))
 
 		if isinstance(self.order, int):
 			vals['interfaces/%s/order' % (name)] = str(self.order)
@@ -506,7 +511,9 @@ class Device(object):
 
 		vals['interfaces/%s/ipv6/acceptRA' % (name)] = str(bool(self.ip6dynamic)).lower()
 
-		for i, option in enumerate(self.options):
+		options = self.get_options()
+		options.sort()
+		for i, option in enumerate(options):
 			vals['interfaces/%s/options/%d' % (name, i)] = option
 
 		return vals
@@ -606,8 +613,8 @@ class VLAN(Device):
 		super(VLAN, self).validate_name()
 		if not '.' in self.name:
 			raise DeviceError(_('Invalid device name: %r') % (self.name,))
-		if not (1 <= self.vlan_id <= 4096):
-			raise DeviceError(_('Invalid VLAN ID. Must be between 1 and 4096.'), self.name)
+		if not (1 <= self.vlan_id <= 4095):
+			raise DeviceError(_('Invalid VLAN ID. Must be between 1 and 4095.'), self.name)
 
 	@property
 	def dict(self):
@@ -617,6 +624,28 @@ class VLAN(Device):
 			parent_device=self.parent_device
 		))
 		return d
+
+	def parse_ucr(self):
+		super(VLAN, self).parse_ucr()
+		options = []
+		for option in self.options:
+			try:
+				name, value = option.split(None, 1)
+			except ValueError:
+				name, value = option, ''
+
+			if name == 'vlan-raw-device':
+				pass
+			else:
+				options.append(option)
+		self.options = options
+
+	def get_options(self):
+		options = super(VLAN, self).get_options()
+		options += [
+			'vlan-raw-device %s' % (self.parent_device,),
+		]
+		return options
 
 
 class Bond(Device):
@@ -648,8 +677,6 @@ class Bond(Device):
 		for idevice in self.subdevices:
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
-
-		self.type = 'manual'
 
 	def validate(self):
 		super(Bond, self).validate()
@@ -726,20 +753,18 @@ class Bond(Device):
 				options.append(option)
 		self.options = options
 
-	def to_ucr(self):
-		options = [
+	def get_options(self):
+		options = super(Bond, self).get_options()
+		options += [
 				'bond-slaves %s' % (' '.join(self.bond_slaves),),
 				'bond-mode %s' % (self.bond_mode,),
 				]
-		if self.bond_primary:
+		if self.bond_mode == 1 and self.bond_primary:
 			options.append('bond-primary %s' % (' '.join(self.bond_primary),))
 		if self.miimon is not None:
 			options.append('miimon %s' % (self.miimon,))
 
-		vals = super(Bond, self).to_ucr()
-		for i, option in enumerate(options, start=len(self.options)):
-			vals['interfaces/%s/options/%d' % (self.name, i)] = option
-		return vals
+		return options
 
 
 class Bridge(Device):
@@ -763,8 +788,6 @@ class Bridge(Device):
 			# make sure that used interfaces does not have any IPv4 or IPv6 address
 			idevice.disable_ips()
 
-		self.type = 'manual'
-
 	def validate(self):
 		super(Bridge, self).validate()
 
@@ -777,7 +800,7 @@ class Bridge(Device):
 
 			# interface can't be a Bridge
 			if isinstance(self.interfaces[name], Bridge):
-				raise DeviceError(_('Cannot use Bridge %r as bridge-port') % (name), self.name)
+				raise DeviceError(_('Cannot use bridge %r as bridge-port') % (name), self.name)
 
 		self.check_unique_interface_usage()
 
@@ -806,16 +829,14 @@ class Bridge(Device):
 				options.append(option)
 		self.options = options
 
-	def to_ucr(self):
-		options = [
+	def get_options(self):
+		options = super(Bridge, self).get_options()
+		options += [
 				'bridge_ports %s' % (' '.join(self.bridge_ports) or 'none',),
 				'bridge_fd %d' % (self.bridge_fd,),
 				]
 
-		vals = super(Bridge, self).to_ucr()
-		for i, option in enumerate(options, start=len(self.options)):
-			vals['interfaces/%s/options/%d' % (self.name, i)] = option
-		return vals
+		return options
 
 
 if __name__ == '__main__':

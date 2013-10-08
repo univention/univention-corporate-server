@@ -1,3 +1,9 @@
+univention-system-setup (7.0.48-1) unstable; urgency=low
+
+  * Bug #30816: Add vlan-raw-device to detect vlan devices
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2013 09:54:30 +0200
+
 univention-system-setup (7.0.47-1) unstable; urgency=low
 
   * Bug #30816: Remove possibility to create Bond, Bridge, VLAN interfaces
