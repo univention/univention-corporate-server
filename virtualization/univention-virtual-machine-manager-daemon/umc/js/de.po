@@ -305,6 +305,7 @@ msgid "Coordinated Universal Time"
 msgstr "Koordinierte Weltzeit (UTC)"
 
 #: umc/js/uvmm.js:700 umc/js/uvmm/SnapshotGrid.js:168
+#: umc/js/uvmm.js:893
 msgid "Create"
 msgstr "Erstellen"
 
@@ -328,10 +329,6 @@ msgstr "Erstellen einer virtuellen Maschine: (Profil: %s)"
 #: umc/js/uvmm/SnapshotGrid.js:77 umc/js/uvmm/SnapshotGrid.js:187
 msgid "Create new snapshot"
 msgstr "Neuen Sicherungspunkt erstellen"
-
-#: umc/js/uvmm.js:893
-msgid "Create virtual machine"
-msgstr "Erstellen einer virtuellen Maschine"
 
 #: umc/js/uvmm/SnapshotGrid.js:121
 msgid ""

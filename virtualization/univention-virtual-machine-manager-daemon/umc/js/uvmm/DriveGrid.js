@@ -93,10 +93,20 @@ define([
 						return !this.domainActive && undefined !== this.domain.domainURI;
 					} )
 				}, {
+					name: 'delete',
+					label: _('Delete'),
+					isMultiAction: false,
+					isStandardAction: true,
+					iconClass: 'umcIconDelete',
+					callback: lang.hitch(this, '_removeDrive'),
+					canExecute: lang.hitch(this, function(item) {
+						return !this.domainActive;
+					})
+				}, {
 					name: 'change_medium',
 					label: _('Change medium'),
 					isMultiAction: false,
-					isStandardAction: false,
+					isStandardAction: true,
 					callback: lang.hitch(this, '_changeMedium'),
 					canExecute: lang.hitch(this, function(item) {
 						if (item.device !== 'cdrom' && item.device !== 'floppy') {
@@ -119,19 +129,8 @@ define([
 						return false;
 					})
 				}, {
-					name: 'delete',
-					label: _('Delete'),
-					isMultiAction: false,
-					isStandardAction: true,
-					iconClass: 'umcIconDelete',
-					callback: lang.hitch(this, '_removeDrive'),
-					canExecute: lang.hitch(this, function(item) {
-						return !this.domainActive;
-					})
-				}, {
 					name: 'add',
 					label: _('Add drive'),
-					isMultiAction: false,
 					isContextAction: false,
 					iconClass: 'umcIconAdd',
 					callback: lang.hitch(this, '_addDrive')

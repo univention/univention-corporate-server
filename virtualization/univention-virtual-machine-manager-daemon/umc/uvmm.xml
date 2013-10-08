@@ -3,6 +3,7 @@
 	<module id="uvmm" icon="uvmm" priority="11" version="1.0">
 		<name>Virtual machines (UVMM)</name>
 		<description>Manages virtual machines</description>
+		<keywords></keywords>
 		<categories>
 			<category name="system"/>
 		</categories>

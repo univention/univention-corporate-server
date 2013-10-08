@@ -901,7 +901,7 @@ define([
 				}
 			}, {
 				name: 'add',
-				label: _( 'Create virtual machine' ),
+				label: _( 'Create' ),
 				iconClass: 'umcIconAdd',
 				isMultiAction: false,
 				isContextAction: false,
