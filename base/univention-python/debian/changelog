@@ -1,3 +1,9 @@
+univention-python (7.0.3-1) unstable; urgency=low
+
+  * switch to ReconnectLDAPObject (Bug #32617)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 08 Oct 2013 17:45:51 +0200
+
 univention-python (7.0.2-1) unstable; urgency=low
 
   * Removed deprecated multivalue checks for some attributes (Bug #18929)

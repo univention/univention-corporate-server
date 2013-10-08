@@ -1127,6 +1127,9 @@
 			The create report action now applies to the selection instead of the whole search result (<ulink url="&ucsbug;32749">Bug 32749</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			UDM modules now try to automatically reestablish the connection to the LDAP server if possible (<ulink url="&ucsbug;32617">Bug 32617</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 

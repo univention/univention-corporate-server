@@ -188,7 +188,7 @@ class access:
 			self.protocol = 'ldap'
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
-		self.lo=ldap.initialize(self.uri)
+		self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, trace_stack_limit=None)
 
 		if ca_certfile:
 			self.lo.set_option( ldap.OPT_X_TLS_CACERTFILE, ca_certfile )
@@ -584,7 +584,7 @@ class access:
  		if isLDAPUrl(ldap_url):
 			conn_str = LDAPUrl(ldap_url).initializeUrl()
 
-			lo_ref=ldap.initialize(conn_str)
+			lo_ref = ldap.ldapobject.ReconnectLDAPObject(conn_str, trace_stack_limit=None)
 
 			if self.ca_certfile:
 				lo_ref.set_option( ldap.OPT_X_TLS_CACERTFILE, self.ca_certfile )

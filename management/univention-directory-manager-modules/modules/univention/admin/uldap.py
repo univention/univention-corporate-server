@@ -55,7 +55,7 @@ def getBaseDN(host='localhost', port=None, uri=None):
 		if not port:
 			port = int(configRegistry.get('ldap/server/port', 7389))
 		uri = "ldap://%s:%s" % (host, port)
-	l=ldap.initialize(uri)
+	l = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
 	result=l.search_s('',ldap.SCOPE_BASE,'objectClass=*',['NamingContexts'])
 	return result[0][1]['namingContexts'][0]
 

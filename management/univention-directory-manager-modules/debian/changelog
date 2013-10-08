@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.51-1) unstable; urgency=low
+
+  * switch to ReconnectLDAPObject (Bug #32617)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 08 Oct 2013 17:46:54 +0200
+
 univention-directory-manager-modules (9.0.50-2) unstable; urgency=low
 
   * Add superordinate to ldapschema and ldapacl modules (Bug #32665)
