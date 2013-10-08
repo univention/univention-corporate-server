@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python2.6
-## desc: Test basic ACL registration
+## desc: Test registration of invalid ACL
 ## tags:
 ##  - ldapextensions
 ##  - apptest

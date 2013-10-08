@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python2.6
-## desc: Test basic ACL registration
+## desc: Test basic ACL unregistration
 ## tags:
 ##  - ldapextensions
 ##  - apptest
@@ -53,7 +53,7 @@ unjoinscript_buffer = '''#!/bin/sh
 VERSION=1
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/ldap.sh
-ucs_unregisterLDAPExtension "$@" --acl /usr/share/%(package_name)s/%(acl_name)s || die
+ucs_unregisterLDAPExtension "$@" --acl %(acl_name)s || die
 exit 0
 ''' % {'package_name': package_name, 'acl_name': acl_name}
 
@@ -79,7 +79,8 @@ set_container_description(user_dn, container)
 
 call_unjoin_script(unjoin_script_name)
 
-sleep(5)
+# The postrun needs a few seconds
+sleep(20)
 
 try:
 	set_container_description(user_dn, container)
