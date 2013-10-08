@@ -1,3 +1,9 @@
+univention-printserver (7.0.8-1) unstable; urgency=low
+
+  * Bug #26418: adapt grid actions
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2013 11:56:18 +0200
+
 univention-printserver (7.0.7-4) unstable; urgency=low
 
   * fixed univentionPrinterUseClientDriver handling in

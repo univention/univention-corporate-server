@@ -44,14 +44,14 @@ define([
 ], function(declare, lang, when, dialog, store, tools, Page, Grid, Text, ExpandingTitlePane, QuotaDialog, _) {
 
 	return declare("umc.modules.printers.QuotaPage", [ Page ], {
-		
+
 		postMixInProperties: function() {
-			
+
 			lang.mixin(this,{
 				helpText:		_("Current quota records for printer"),
 				headerText:		_("Printer quota")
 			});
-			
+
 			this.inherited(arguments);
 		},
 
@@ -63,14 +63,14 @@ define([
 				title:				_("Printer quota")
 			});
 			this.addChild(pane);
-			
+
 			this._head = new Text({
 				region:			'top',
 				content:		'',
 				style:			'padding-bottom:1em;font-size:115%;'
 			});
 			pane.addChild(this._head);
-			
+
 			var columns = [
 				{
 					name:		'user',
@@ -93,12 +93,13 @@ define([
 					label:		_("Lifetime page counter")
 				}
 			];
-			
+
 			var actions = [
 				{
 					name:				'clear',
 					label:				_("Reset user quota"),
 					isMultiAction:		true,
+					isStandardAction: true,
 					callback: lang.hitch(this, function(ids,values) {
 						this._reset_quota_entries(values);
 					})
@@ -106,6 +107,7 @@ define([
 				{
 					name:				'edit',
 					label:				_("Edit"),
+					isStandardAction: true,
 					callback: lang.hitch(this, function(ids,values) {
 						// always use the first value since multiselect doesn't make sense.
 						this._edit_quota_entry(values[0]);
@@ -136,7 +138,7 @@ define([
 					})
 				}
 			];
-			
+
 			this._grid = new Grid({
 				region:			'center',
 				columns:		columns,
@@ -144,44 +146,44 @@ define([
 				moduleStore:	store('user','printers/quota')
 			});
 			pane.addChild(this._grid);
-			
+
 		},
-		
+
 		startup: function() {
-			
+
 			this.inherited(arguments);
-			
+
 		},
-		
+
 		// Calling page passes args here. Arg is here the printer ID.
 		setArgs: function(args) {
-			
+
 			this._printer_id = args;
 			this._refresh_view();
 		},
-		
+
 		onHide: function() {
-			
+
 			this.inherited(arguments);		// do I need this?
-			
+
 			// on next show(), the previous content
 			// should not be visible anymore.
 			this._head.set('content','');		// clear header text
 			this._grid.filter();				// clear grid data
 		},
-		
+
 		onShow: function() {
-			
+
 			this.inherited(arguments);		// do I need this?
 
 		},
-		
+
 		// called when the page is shown, but can equally be called
 		// on a manual or automatic refresh.
 		_refresh_view: function() {
-			
+
 			this._head.set('content',lang.replace(_("Quota entries for printer <b>{printer}</b>"),{printer:this._printer_id}));
-			
+
 			// read current quota list
 			this._grid.filter({printer:this._printer_id});
 
@@ -200,9 +202,9 @@ define([
 	//			}));
 
 			}
-			
+
 		},
-		
+
 		// called from different places: the function that sets
 		// a quota entry. When called with soft=0 and hard=0 this
 		// would effectively forbid the user from printing...
@@ -253,7 +255,7 @@ define([
 					return this._userList;
 			}
 		},
-		
+
 		// prepares everything to add a new quota entry.
 		_add_quota_entry: function() {
 			this._dialog.show();
@@ -267,7 +269,7 @@ define([
 				});
 			}));
 		},
-		
+
 		// prepares the edit dialog and shows it.
 		// values is here a tuple of fields; this is always a single action.
 		_edit_quota_entry: function(values) {
@@ -286,17 +288,17 @@ define([
 				console.error('edit_quota_entry(): ' + ex.message);
 			}
 		},
-		
+
 		// resets the 'used' counter on a list of users.
 		// values is the array of field tuples of those users.
 		_reset_quota_entries: function(values) {
-			
+
 			// if nothing is selected... why does the grid call the callback?
 			if (values.length === 0)
 			{
 				return;
 			}
-			
+
 			// ** NOTE ** we transfer the user names as an array since
 			//			we can't know if some of them contain spaces or
 			//			any other separator chars.
@@ -336,9 +338,9 @@ define([
 		// Will be called only directly before a 'add quota entry' dialog
 		// will be shown.
 		_cleaned_userlist: function(src) {
-			
+
 			var result = [];
-			
+
 			var usr = {};	// not an array: i want to to check for containedness!
 			var items = this._grid.getAllItems();
 			for (var i in items)
@@ -346,11 +348,11 @@ define([
 				var u = items[i]['user'];
 				usr[u] = u;
 			}
-			
+
 			for (var s in src)
 			{
 				var sitem = src[s];
-				
+
 				// take this source item only if it is not contained
 				// in the 'usr' dict.
 				if (typeof(usr[sitem]) == 'undefined')
@@ -358,10 +360,10 @@ define([
 					result.push(sitem);
 				}
 			}
-			
+
 			return result;
 		},
-		
+
 		// main module listens here to return to the detail page
 		closeQuota: function(args) {
 		}

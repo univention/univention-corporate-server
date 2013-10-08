@@ -44,26 +44,25 @@ define([
 	return declare("umc.modules.printers.OverviewPage", [ Page ], {
 
 		_last_filter:			{ key: 'printer', pattern: '' },
-		
+
 		postMixInProperties: function() {
-			
 			lang.mixin(this,{
 				helpText:		_("This module lets you manage the printers defined on your machine"),
 				headerText:		_("Printer administration")
 			});
-			
+
 			this.inherited(arguments);
 		},
 
 		buildRendering: function() {
 
 			this.inherited(arguments);
-			
+
 			var pane = new ExpandingTitlePane({
 				title:				_("Printer administration")
 			});
 			this.addChild(pane);
-			
+
 			this._form = new SearchForm({
 				region:					'top',
 				widgets: [{
@@ -93,7 +92,7 @@ define([
 			});
 			this._enable_search_button(false);
 			pane.addChild(this._form);
-			
+
 			var columns = [{
 				name:		'server',
 				label:		_("Server")
@@ -131,17 +130,19 @@ define([
 				name:		'description',
 				label:		_("Description")
 			}];
-			
+
 			var actions = [{
 				name:		'open',
 				label:		_("View details"),
-				callback:	lang.hitch(this,function(id,values) {
+				isStandardAction: true,
+				callback:	lang.hitch(this,function(id, values) {
 					// 2.4 uses the printer ID as key property, so we do that as well.
 					this.openDetail(id[0]);
 				})
 			}, {
 				name:		'activate',
 				label:		_("Activate"),
+				isStandardAction: true,
 				callback:	lang.hitch(this, function(ids) {
 					// no multi action for now, but who knows...
 					for (var p in ids)
@@ -159,6 +160,7 @@ define([
 			}, {
 				name:		'deactivate',
 				label:		_("Deactivate"),
+				isStandardAction: true,
 				callback:	lang.hitch(this, function(ids) {
 					// no multi action for now, but who knows...
 					for (var p in ids)
@@ -205,23 +207,21 @@ define([
 				})
 			});
 			pane.addChild(this._grid);
-			
-			
 		},
-		
+
 		_enable_search_button: function(on) {
 			this._form._buttons.submit.setDisabled(! on);
 		},
-		
+
 		// refreshes the grid. can be called manually (pressing the refresh button)
 		// or automatically (as response to the managePrinter() result)
 		_refresh_view: function() {
 			this._grid.filter(this._last_filter);
 		},
-		
+
 		// will be called with the result of 'managePrinter'
 		_manage_callback: function(success,message) {
-			
+
 			if (success)
 			{
 				this._refresh_view();
@@ -231,27 +231,27 @@ define([
 				dialog.alert(message);
 			}
 		},
-		
+
 		// when we come back from any kind of detail view that
 		// could have invoked some actions... refresh our view.
 		onShow: function() {
 			this._refresh_view();
 		},
-		
+
 		// DetailPage gives results back here.
 		setArgs: function(args) {
 		},
-		
+
 		// main module listens here, to carry out direct printer
 		// management functions.
 		managePrinter: function(printer,func,callback) {
 		},
-		
+
 		// main module listens here, to switch to the detail view.
 		// args can propagate the id of the printer to show
 		openDetail: function(args) {
 		},
-		
+
 		// main module listens here to open the quota page.
 		editQuota: function(args) {
 		}
