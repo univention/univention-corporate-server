@@ -274,7 +274,7 @@ define([
 							widget.$isRendered$ = true;
 						} else if (button) {
 							if (nWidgetsWithLabel) {
-								// if buttons are displayed along with widgets, we need to add a '&nbps;'
+								// if buttons are displayed along with widgets, we need to add a '&nbsp;'
 								// as label in order to display them on the same height
 								label = new LabelPane({
 									label: '&nbsp;',

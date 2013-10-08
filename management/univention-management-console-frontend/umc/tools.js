@@ -210,12 +210,16 @@ define([
 			}
 			if (!this._reloadDialog.open) {
 				// check if UMC needs a browser reload and prompt the user to reload
-				return basexhr("HEAD", {url: require.toUrl("umc/")}).then(undefined, lang.hitch(this, function(e) {
+				return this.urlExists('umc/').then(undefined, lang.hitch(this, function(e) {
 					if (e.response.status === 404) {
 						this._reloadDialog.show();
 					}
 				}));
 			}
+		},
+
+		urlExists: function(moduleURL) {
+			return basexhr("HEAD", {url: require.toUrl(moduleURL)});
 		},
 
 		// handler class for long polling scenario

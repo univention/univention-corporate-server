@@ -37,11 +37,12 @@ define([
 	"dojo/when",
 	"dojo/json",
 	"dijit/layout/StackContainer",
+	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/Page",
 	"umc/widgets/StandbyMixin",
 	"umc/i18n!umc/app"
-], function(declare, lang, array, event, domClass, when, json, StackContainer, Form, Page, StandbyMixin, _) {
+], function(declare, lang, array, event, domClass, when, json, StackContainer, tools, Form, Page, StandbyMixin, _) {
 	return declare("umc.widgets.Wizard", [ StackContainer, StandbyMixin ], {
 		// summary:
 		//		This wizard class allows to specify a list of pages which will be
@@ -58,6 +59,14 @@ define([
 		//		* buttons: see `umc.widgets.Form`
 		pages: null,
 
+		// autoValidate: Boolean
+		//		Whether the form of each page is checked before next()/finish()
+		autoValidate: false,
+
+		// autoFocus: Boolean
+		//		Whether the first widget of the form should be focused upon show()
+		autoFocus: false,
+
 		_pages: null,
 
 		buildRendering: function() {
@@ -67,26 +76,7 @@ define([
 			this._pages = {};
 			array.forEach(this.pages, function(ipage) {
 				// setup the footer buttons
-				var footerButtons = [{
-					name: 'previous',
-					label: _('Back'),
-					align: 'right',
-					callback: lang.hitch(this, '_previous', ipage.name)
-				}, {
-					name: 'next',
-					defaultButton: true,
-					label: _('Next'),
-					callback: lang.hitch(this, '_next', ipage.name)
-				}, {
-					name: 'finish',
-					defaultButton: true,
-					label: _('Finish'),
-					callback: lang.hitch(this, '_finish', ipage.name)
-				}, {
-					name: 'cancel',
-					label: _('Cancel'),
-					callback: lang.hitch(this, 'onCancel')
-				}];
+				var footerButtons = this.getFooterButtons(ipage.name);
 
 				// render the page
 				var pageConf = lang.clone(ipage);
@@ -123,8 +113,36 @@ define([
 				
 				// add page and remember it internally
 				this.addChild(page);
+				if (this.autoFocus) {
+					page.on('show', lang.hitch(this, function() {
+						this.focusFirstWidget(ipage.name);
+					}));
+				}
 				this._pages[ipage.name] = page;
 			}, this);
+		},
+
+		getFooterButtons: function(pageName) {
+			return [{
+				name: 'previous',
+				label: _('Back'),
+				align: 'right',
+				callback: lang.hitch(this, '_previous', pageName)
+			}, {
+				name: 'next',
+				defaultButton: true,
+				label: _('Next'),
+				callback: lang.hitch(this, '_next', pageName)
+			}, {
+				name: 'finish',
+				defaultButton: true,
+				label: _('Finish'),
+				callback: lang.hitch(this, '_finish', pageName)
+			}, {
+				name: 'cancel',
+				label: _('Cancel'),
+				callback: lang.hitch(this, 'onCancel')
+			}];
 		},
 
 		startup: function() {
@@ -134,10 +152,10 @@ define([
 
 		_getPageIndex: function(/*String*/ pageName) {
 			var idx = -1;
-			array.forEach(this.pages, function(ipage, i) {
+			array.some(this.pages, function(ipage, i) {
 				if (ipage.name == pageName) {
 					idx = i;
-					return false; // FIXME
+					return true;
 				}
 			});
 			return idx;
@@ -172,10 +190,18 @@ define([
 
 		_updateButtons: function(/*String*/ pageName) {
 			var buttons = this._pages[pageName]._footerButtons;
-			domClass.toggle(buttons.cancel.domNode, 'dijitHidden', !this.canCancel(pageName));
-			domClass.toggle(buttons.next.domNode, 'dijitHidden', !this.hasNext(pageName));
-			domClass.toggle(buttons.finish.domNode, 'dijitHidden', this.hasNext(pageName));
-			domClass.toggle(buttons.previous.domNode, 'dijitHidden', !this.hasPrevious(pageName));
+			if (buttons.cancel) {
+				domClass.toggle(buttons.cancel.domNode, 'dijitHidden', !this.canCancel(pageName));
+			}
+			if (buttons.next) {
+				domClass.toggle(buttons.next.domNode, 'dijitHidden', !this.hasNext(pageName));
+			}
+			if (buttons.finish) {
+				domClass.toggle(buttons.finish.domNode, 'dijitHidden', this.hasNext(pageName));
+			}
+			if (buttons.previous) {
+				domClass.toggle(buttons.previous.domNode, 'dijitHidden', !this.hasPrevious(pageName));
+			}
 		},
 
 		hasNext: function(/*String*/ pageName) {
@@ -195,8 +221,22 @@ define([
 					throw new Error('ERROR: received invalid page name [' + json.stringify(nextPage) + '] for Wizard.next(' + json.stringify(currentPage) + ')');
 				}
 				this._updateButtons(nextPage);
-				this.selectChild(this._pages[nextPage]);
+				var page = this._pages[nextPage];
+				this.selectChild(page);
 			}));
+		},
+
+		focusFirstWidget: function(pageName) {
+			var page = this._pages[pageName];
+			if (page && page._form) {
+				tools.forIn(page._form._widgets, function(iname, iwidget) {
+					if (iwidget.focus && iwidget.get('visible') && !iwidget.get('disabled')) {
+						iwidget.focus();
+						return false; // stop
+					}
+					return true;
+				});
+			}
 		},
 
 		next: function(/*String*/ pageName) {
@@ -209,6 +249,14 @@ define([
 			//		by the `pages` property.
 			if ((null === pageName || undefined === pageName) && this.pages.length) {
 				return this.pages[0].name;
+			}
+			if (this.autoValidate) {
+				var form = this._pages[pageName]._form;
+				if (form) {
+					if (!form.validate()) {
+						return pageName;
+					}
+				}
 			}
 			var i = this._getPageIndex(pageName);
 			if (i < 0) {
@@ -252,7 +300,7 @@ define([
 		_finish: function(/*String*/ pageName) {
 			// gather all values
 			var values = this.getValues();
-			if (this.canFinish(values)) {
+			if (this.canFinish(values, pageName)) {
 				this.onFinished(values);
 			}
 		},
@@ -281,9 +329,15 @@ define([
 			//		The parameter `values` contains the values collected from all pages.
 		},
 
-		canFinish: function(/*Object*/ values) {
+		canFinish: function(/*Object*/ values, /*String*/ pageName) {
 			// summary:
 			//		Specifies whether the onFinished event can be called
+			if (this.autoValidate) {
+				var form = this._pages[pageName]._form;
+				if (form) {
+					return form.validate();
+				}
+			}
 			return true;
 		},
 
