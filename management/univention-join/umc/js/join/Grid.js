@@ -71,7 +71,7 @@ define([
 				description: _('Forces execution of selected join scripts'),
 				isContextAction: true,
 				isMultiAction: true,
-				isStandardAction: false,
+				isStandardAction: true,
 				callback: lang.hitch(this, function(ids) {
 					return this.onRunScripts(ids, true);
 				})
@@ -80,8 +80,6 @@ define([
 				label: _('Execute all pending join scripts'),
 				description: _('Executes join scripts which are not properly configured.'),
 				isContextAction: false,
-				isMultiAction: true,
-				isStandardAction: false,
 				callback: lang.hitch(this, function() {
 					var ids = this.getPendingIds();
 					if (ids.length === 0) {
@@ -95,14 +93,12 @@ define([
 				label: _('Rejoin'),
 				description: _('Rejoins the system'),
 				isContextAction: false,
-				isStandardAction: false,
 				callback: lang.hitch(this, 'onRejoin')
 			}, {
 				name: 'logfile',
 				label: _('View join log'),
 				description: _('Shows the join log'),
 				isContextAction: false,
-				isStandardAction: false,
 				callback: lang.hitch(this, 'onShowLogfile')
 			}];
 
