@@ -196,7 +196,7 @@
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UCR template for the ACL is only activated by systems with a version lower than this.
+						Maximal required UCS version. The UCR template for the ACL is only activated by systems with a version lower or equal than this.
 					</simpara>
 				</listitem>
 			</varlistentry>
