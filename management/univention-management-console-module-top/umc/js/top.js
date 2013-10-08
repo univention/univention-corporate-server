@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Univention GmbH
+ * Copyright 2011-2013 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -62,7 +62,7 @@ define([
 				msg = _('Please confirm sending %s to the selected process!', signal);
 			}
 			else {
-				msg = _('Please confirm sending %(sig)s to the %(pids)s selected processes!', {sig: signal, pid: pids.length});
+				msg = _('Please confirm sending %(sig)s to the %(pids)s selected processes!', {sig: signal, pids: pids.length});
 			}
 			dialog.confirm(msg, [{
 				label: _('OK'),
@@ -95,13 +95,13 @@ define([
 				name: 'terminate',
 				label: _('Terminate'),
 				callback: lang.hitch(this, 'killProcesses', 'SIGTERM'),
-				isStandardAction: false,
+				isStandardAction: true,
 				isMultiAction: true
 			}, {
 				name: 'kill',
 				label: _('Force termination'),
 				callback: lang.hitch(this, 'killProcesses', 'SIGKILL'),
-				isStandardAction: false,
+				isStandardAction: true,
 				isMultiAction: true
 			}];
 
@@ -141,7 +141,7 @@ define([
 				sortIndex: -3,
 				query: {
 					category: 'all',
-					pattern: '*'
+					pattern: ''
 				}
 			});
 			titlePane.addChild(this._grid);
@@ -160,7 +160,7 @@ define([
 			}, {
 				type: TextBox,
 				name: 'pattern',
-				value: '*',
+				value: '',
 				label: _('Keyword')
 			}];
 
