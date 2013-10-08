@@ -76,8 +76,8 @@ def handler(dn, new, old):
 		if univentionUCSVersionStart and UCS_Version(current_UCS_version) < UCS_Version(univentionUCSVersionStart):
 			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s requires at least UCR version %s.' % (name, new['cn'][0], univentionUCSVersionStart))
 			new=None
-		elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) >= UCS_Version(univentionUCSVersionEnd):
-			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
+		elif univentionUCSVersionEnd and UCS_Version(current_UCS_version) > UCS_Version(univentionUCSVersionEnd):
+			ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s specifies compatibility only up to and including UCR version %s.' % (name, new['cn'][0], univentionUCSVersionEnd))
 			new=None
 	elif old:
 		ocs = old.get('objectClass', [])
