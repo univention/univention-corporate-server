@@ -1,0 +1,1198 @@
+<chapter id="computers::softwaremanagement">
+  <title>Softwareverteilung</title>
+  <section id="computers:Einfuehrung">
+	<title>Einführung</title>
+	<para>
+	  Die in UCS integrierte Softwareverteilung bietet umfangreiche
+	  Möglichkeiten für den Rollout und die Aktualisierung von UCS-Installationen.
+	  Sicherheits- und Versionsupdates können dabei über ein Online-Update installiert
+	  werden.
+	</para>
+
+	<para>
+	  Für größere Installationen besteht die Möglichkeit, einen lokalen
+	  Repository-Server einzurichten, von dem dann alle weiteren Aktualisierungen
+	  durchgeführt werden. Dieser Repository-Server bezieht seine Pakete entweder
+	  vom Univention-Online-Repository oder in Umgebungen ohne
+	  Internetzugriff auch durch Offline-Updates in Form von ISO-Images
+	  (siehe <xref linkend="software::configrepo"/>).
+	</para>
+
+	<para>
+	  UCS-Systeme können über die &ucsUMC;, über ein Kommandozeilen-Tool
+	  und richtliniengesteuert aktualisiert werden. Dies wird in
+	  <xref linkend="software::ucs-updates"/> beschrieben. Die UCS-Softwareverteilung
+	  unterstützt nicht die Aktualisierung von Microsoft
+	  Windows-Systemen. Hierfür ist eine zusätzliche
+	  Windows-Softwareverteilung nötig.
+	</para>
+
+	<para>
+	  Die Erstinstallation von UCS-Systemen ist nicht Bestandteil dieses Kapitels
+	  und wird stattdessen in <xref linkend="installation:chapter"/> beschrieben.
+	</para>
+
+	<para>
+	  Der Funktionsumfang einer UCS-Installation kann durch die Einbindung weiterer
+	  Repository-Komponenten erweitert werden, siehe <xref linkend="computers::softwaremanagement::repoadd"/>.
+	  Solche Komponenten werden sowohl von Univention (z.B. für das auf UCS
+	  aufbauende UCS DVS), wie auch von Drittanbietern bereitgestellt.
+	</para>
+
+	<para>
+	  Die UCS-Softwareverteilung basiert auf den unterliegenden
+	  Debian-Paketmanagement-Tools, wird aber durch UCS-spezifische Werkzeuge
+	  ergänzt. Die verschiedenen Werkzeuge zur Installation von Software werden in
+	  <xref linkend="computers::softwaremanagement::installsoftware"/> vorgestellt.
+	</para>
+
+	<para>
+	  Die Installation von Versions- und Sicherheitsupdates kann über Richtlinien
+	  automatisiert werden, siehe <xref linkend="computers::softwaremanagement::maintenancepolicy"/>
+	</para>
+
+	<para>
+	  Mit dem Software-Monitor steht ein Werkzeug zur Verfügung, mit dem
+	  alle Paketinstallationsstände zentral in einer Datenbank erfasst
+	  werden, siehe <xref linkend="computers::softwaremonitor"/>.
+	</para>
+
+  </section>
+
+  <section id="computers:Unterscheidung_der_Update-Varianten_Aufbau_der_UCS-Versionen">
+	<title>Unterscheidung der Update-Varianten / Aufbau der UCS-Versionen</title>
+	<para>
+	  Vier Arten von UCS-Updates werden unterschieden:
+	</para>
+
+	<itemizedlist>
+	  <listitem><simpara>
+		<emphasis>Major Releases</emphasis> erscheinen ca. alle vier Jahre. Major
+		Releases können sich von vorhergehenden Major Releases signifikant hinsichtlich
+		ihres Leistungsumfangs, ihrer Funktionsweise und der darin enthaltenen
+		Software unterscheiden.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Während der Maintenance-Dauer eines Major Releases erscheinen <emphasis>Minor Releases</emphasis>
+		in einem Rhythmus von ca. 6-8 Monaten. Diese Updates beinhalten die Behebung
+		neu bekannt gewordener Fehler, sowie die Ergänzung des
+		Produkts um zusätzliche Funktionen. Dabei erhalten Minor Releases so weit wie
+		möglich die Kompatibilität zu vorhergehenden Versionen hinsichtlich
+		Funktionsweise, Schnittstellen und Bedienung. Sollte eine Änderung des
+		Verhaltens sinnvoll oder unvermeidbar sein, so wird bei der Veröffentlichung
+		der neuen Version in den Release Notes darauf hingewiesen.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		<emphasis>Patchlevel Releases</emphasis> beinhalten gegenüber einem Minor Release
+		weniger Änderungen. Der Fokus liegt hier ausschließlich auf der Korrektur von
+		Fehlern. Die Kompatibilität zur vorherigen Version hinsichtlich
+		Funktionsweise, Schnittstellen und Bedienung wird eingehalten, sofern eine
+		Änderung nicht aufgrund eines kritischen Fehlers und mit zumutbarem Aufwand
+		unumgänglich ist. Sollte eine Änderung indes unvermeidbar sein, so wird bei der
+		Veröffentlichung der neuen Version in Release Notes darauf hingewiesen.
+		Neue Patchlevelversionen werden ca. alle zwei Monate veröffentlicht.
+	  </simpara> </listitem>
+
+	  <listitem><simpara>
+		Neben der geplanten, langfristigen Pflege und Weiterentwicklung von UCS
+		durch Major- , Minor- und Patchlevelversionen, veröffentlicht Univention nach
+		Bedarf <emphasis>Errata-Updates</emphasis>. Errata-Updates enthalten
+		Korrekturen für Sicherheitslücken oder kritische Programmfehler,
+		die zeitnah noch vor dem nächsten Patchlevel-Update behoben werden müssen.
+		Eine Aufstellung der Errata-Updates findet sich unter
+		<ulink url="http://errata.univention.de"/>. Errata-Updates können auch für
+		Komponenten bereitgestellt werden.
+	  </simpara></listitem>
+	</itemizedlist>
+
+	<para>
+	  Jede ausgelieferte UCS-Version besitzt eine eindeutige Versionsbezeichnung;
+	  sie besteht aus einer Zahl (der Majorversion), einem Punkt, einer zweiten Zahl (der Minorversion)
+	  einem Bindestrich und einer dritten Zahl (der Patchlevelversion). Mit der
+	  Version UCS 3.2-1 wird also das erste Patchlevel-Update für das zweite Minor
+	  Update für das Major-Release UCS 3 bezeichnet.
+	</para>
+
+	<para>
+	  Vor jedem Release-Update wird ein <emphasis>Preup-Skript</emphasis>
+	  aufgerufen. Dieses prüft z.B. ob Probleme bestehen, die zum kontrollierten Abbruch des
+	  Updates führen. Als Abschluss eines Updates wird das
+	  <emphasis>Postup-Skript</emphasis> aufgerufen.
+	</para>
+
+	<para>
+	  Errata-Updates beziehen sich immer auf bestimmte Minor-Releases, also
+	  beispielsweise für UCS 3.0. Errata-Updates können in der Regel für alle
+	  Patchlevelversionen eines Minor Releases installiert werden.
+	</para>
+
+	<para>
+	  Wenn neue Release- oder Errata-Updates verfügbar sind, wird bei der Anmeldung
+	  an der &ucsUMC; ein entsprechender Hinweis ausgegeben.
+	</para>
+
+	<para>
+	  Die Verfügbarkeit neuer Updates wird außerdem per E-Mail angekündigt,
+	  entsprechende Newsletter - getrennt nach Release- und Errata-Updates - können
+	  auf der Univention-Webseite abonniert werden.
+	</para>
+
+	<para>
+	  Unter <ulink url="http://errata.univention.de/"/> wird zusätzlich eine
+	  Übersicht aller Errata-Updates bereitgestellt.
+	</para>
+
+	<para>
+	  Zu jedem Release-Update wird ein Release-Notes-Dokument veröffentlicht, in
+	  dem die aktualisierten Pakete, Hinweise zu Fehlerkorrekturen und neuen
+	  Funktionen aufgeführt sind.
+	</para>
+  </section>
+
+  <section id="software:appcenter">
+	<title>Univention App Center</title>
+	<para>
+	  Das Univention App Center erlaubt die einfache Einbindung von Softwarekomponenten in eine
+	  UCS-Installation. Die Applikationen werden sowohl von Drittanbietern wie auch von
+	  Univention selbst (z.B. UCS@school) bereitgestellt. Die Maintenance und der 
+	  Support für die Applikationen erfolgt durch den jeweiligen Hersteller und
+	  nicht über das Univention App Center.
+	</para>
+	
+	<figure id="appcenter-overview"><title>Überblick der verfügbaren Applikationen im App Center</title>
+	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_overview_de.png"/>
+	</figure>
+
+	<para>
+	  Das Univention App Center kann über das UMC-Modul <emphasis>App Center</emphasis>
+	  aufgerufen werden. Unter <guimenu>Applikationen</guimenu> werden die verfügbaren
+	  Softwarekomponenten aufgeführt. Mit <guimenu>Suchbegriff</guimenu> kann die Liste der
+	  angezeigten Applikationen eingeschränkt werden, außerdem können die Applikationen anhand
+	  der <guimenu>Kategorien</guimenu> geordnet werden.
+	</para>
+	
+	<para>
+	  Klickt man auf eine der angezeigten Applikationen, werden weitergehende Details zu der
+	  Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein
+	  Screenshot). Im Feld <guimenu>E-Mail Benachrichtigung</guimenu> wird angezeigt, ob der
+	  Hersteller der Softwarekomponente bei der Installation/Deinstallation benachrichtigt wird.
+	  Einige Applikationen können direkt über Univention lizensiert werden. Für diese
+	  Applikationen wird in der unteren Bildleiste der Button <guimenu>Shop</guimenu> neben
+	  einem stilisierten Einkaufskorb angezeigt. Für alle anderen Applikationen muss der
+	  Hersteller der Applikation über die unter <emphasis>Kontakt</emphasis> angezeigt
+	  E-Mail-Adresse kontaktiert werden.
+	</para>
+
+	<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>
+	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_details_de.png"/>
+	</figure>
+
+	<para>
+	  Einige Applikationen sind möglicherweise inkompatibel mit anderen Softwarepaketen aus
+	  UCS. So setzen beispielsweise die meisten Groupwarepakete voraus, dass der UCS-Mailstack
+	  deinstalliert ist. Jede Applikation prüft, ob inkompatible Versionen installiert sind und
+	  gibt einen Hinweis, welche <guimenu>Konflikte</guimenu> bestehen und wie sie beseitigt werden können. Die
+	  Installation dieser Pakete wird dann zurückgehalten, bis die Konflikte beseitigt sind.
+	</para>
+
+	<para>
+	  Viele Komponenten integrieren Pakete, die auf dem &ucsMaster; installiert werden müssen (in der
+	  Regel LDAP-Schema-Erweiterungen oder Erweiterungen für das UCS-Managementsystem). Diese
+	  Pakete werden automatisch auf dem &ucsMaster; installiert. Ist dieser nicht erreichbar,
+	  wird die Installation abgebrochen. Außerdem werden die Pakete auf allen erreichbaren
+	  &ucsBackup;-Systemen eingerichtet.
+	</para>
+	
+	<para>
+	  Nach der Installation einer Applikation werden nach einem Klick auf das Icon einer Applikation
+	  eine oder mehrere neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation.
+	  <guimenu>Öffnen</guimenu> verweist auf eine Webseite mit der die installierte Applikation
+	  weitergehend konfiguriert oder verwendet werden kann. Installiert man beispielsweise die
+	  Horde-Applikation, führt dieser Link auf den Login-Dialog. Bei Applikationen ohne
+	  Webinterface wird die Option nicht angezeigt.
+	</para>
+
+	<para>
+	  Aktualisierungen für Applikationen erfolgen unabhängig von den Release-Zyklen für
+	  &ucsUCS;. Ist eine neue Version einer Applikation verfügbar, wird der Menüpunkt
+	  <guimenu>Aktualisieren</guimenu> angezeigt, der die Installation der neuen Version
+	  startet. Wenn Aktualisierungen verfügbar sind, wird außerdem bei der Anmeldung an der
+	  &ucsUMC; ein entsprechender Hinweis ausgegeben.
+	</para>
+
+	<para>
+	  Eine Übersicht über die
+	  vorhandenen Applikationen kann in der UMC-Startseite unter <guimenu>Installierte
+	  Applikationen</guimenu> abgerufen werden.
+	</para>
+
+	<para>
+	  Installationen und das Entfernen von Paketen werden in der Logdatei
+	  <filename>/var/log/univention/management-console-module-appcenter.log</filename>
+	  protokolliert.
+	</para>
+  </section>
+
+  <section id="software::configrepo">
+	<title>Konfiguration des Repository-Servers für Updates und Paketinstallationen</title>
+	<para>
+	  Paketinstallationen und Updates können entweder vom Univention-Update-Server
+	  oder von einem lokal gepflegten Repository durchgeführt werden. Ein lokales
+	  Repository ist sinnvoll, wenn viele UCS-Systeme zu aktualisieren sind, da
+	  Updates in diesem Fall nur einmalig heruntergeladen werden müssen. Da
+	  Repositorys auch offline aktualisiert werden können, ermöglicht ein lokales
+	  Repository auch die Aktualisierung von UCS-Umgebungen ohne Internetanbindung.
+	</para>
+
+	<para>
+	  Anhand der registrierten Einstellungen werden apt-Paketquellen für Release- und
+	  Errata-Updates und Addon-Komponenten im Verzeichnis
+	  <filename>/etc/apt/sources.list.d</filename> automatisch generiert.
+	  Sollten auf einem System weitere Repositorys benötigt werden, können diese in
+	  die Datei <filename>/etc/apt/sources.list</filename> eingetragen werden.
+	</para>
+
+	<para>
+	  Bei einer Neuinstallation wird in der Grundeinstellung das
+	  Univention-Repository <uri>updates.software-univention.de</uri> verwendet.
+	</para>
+
+	<para>
+	  Das Univention-Repository und andere Repository-Komponenten unterscheiden
+	  zwischen zwei Bestandteilen:
+	</para>
+
+	<itemizedlist>
+	  <listitem><simpara>
+		Der von der Maintenance abgedeckte Standard-Paketumfang von UCS
+		befindet sich im <emphasis>maintained</emphasis>-Bereich. Standardmäßig ist nur der
+		Zugriff auf diese Pakete aktiviert. Sicherheits-Updates werden zeitnah
+		nur für Pakete aus <emphasis>maintained</emphasis> bereitgestellt.
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		Unter <emphasis>unmaintained</emphasis> finden sich die weiteren Pakete,
+		z.B. andere Mailserver als Postfix. Diese Pakete sind nicht durch
+		Sicherheits-Updates oder anderweitige Maintenance
+		abgedeckt. <emphasis>unmaintained</emphasis> ist standardmäßig nicht eingebunden
+	  </simpara></listitem>
+	</itemizedlist>
+
+	<para>
+	  Ein lokales Repository kann - gerade bei Einbindung des
+	  unmaintained-Zweiges - viel Plattenplatz in Anspruch nehmen.
+	</para>
+	
+	<section id="computers:Konfiguration_ueber_die_Univention_Management_Console">
+	  <title>Konfiguration über die Univention Management Console</title>
+	  <para>
+		Im <guimenu>App Center</guimenu>-Modul der &ucsUMC; können die
+		Repository-Einstellungen angepasst werden. Im Reiter
+		<guimenu>Repository-Einstellungen</guimenu> kann der <guimenu>Repository-Server</guimenu>
+		festgelegt werden und die Verwendung der Maintained- und
+		Unmaintained-Sektionen festgelegt werden.
+	  </para>
+	</section>
+
+	<section id="computers:Konfiguration_ueber_Univention_Configuration_Registry">
+	  <title>Konfiguration über Univention Configuration Registry</title>
+	  <para>
+		Der zu verwendende Repository-Server wird in die
+		&ucsUCRV; <envar>repository/online/server</envar> eingetragen und ist bei einer
+		Neuinstallation auf <uri>updates.software-univention.de</uri> voreingestellt.
+	  </para>
+
+	  <para>
+		Das unmaintained-Repository kann durch Setzen der
+		&ucsUCRV; <envar>repository/online/unmaintained</envar> auf <emphasis>yes</emphasis> integriert
+		werden.
+	  </para>
+	</section>
+
+	<section id="computers:Richtlinienbasierte_Konfiguration_des_Repository-Servers">
+	  <title>Richtlinienbasierte Konfiguration des Repository-Servers</title>
+	  <para>
+		Der zu verwendende Repository-Server kann auch über die Richtlinie
+		<guimenu>Repository-Server</guimenu> in der Rechnerverwaltung der &ucsUMC;
+		festgelegt werden. In dem Auswahlfeld werden UCS-Server-Systeme
+		angezeigt, für die ein DNS-Eintrag hinterlegt ist.
+	  </para>
+
+	  <para>
+		Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+	  </para>
+	</section>
+
+	<section id="software::createrepo">
+	  <title>Einrichtung und Aktualisierung eines lokalen Repositorys</title>
+	  <para>
+		Paketinstallationen und Updates können entweder vom Univention-Update-Server oder von
+		einem lokal gepflegten Repository durchgeführt werden. Ein lokales Repository ist
+		sinnvoll wenn viele UCS-Systeme zu aktualisieren sind, da Updates in diesem Fall nur
+		einmalig heruntergeladen werden müssen. Da Repositorys auch offline aktualisiert
+		werden können, ermöglicht ein lokales Repository auch die Aktualisierung von
+		UCS-Umgebungen ohne Internetanbindung.
+	  </para>
+
+	  <para>
+		Es besteht auch die Möglichkeit lokale Repositorys zu synchronisieren, so dass
+		beispielsweise in der Firmenzentrale ein Haupt-Repository gepflegt wird, das dann in
+		lokale Repositorys der einzelnen Standorte synchronisiert wird. Um ein Repository
+		einzurichten, muss der Befehl <command>univention-repository-create</command> als
+		Benutzer <emphasis>root</emphasis> aufgerufen werden. Der initiale Paketbestand wird
+		von einer Installations-DVD eingelesen, mit dem Parameter <emphasis>--iso</emphasis>
+		kann hier auch ein ISO-Image übergeben werden. UCS ist als 32 und 64 Bit-DVD
+		verfügbar. Das Repository wird von <command>univention-repository-create</command>
+		mit der Architektur des angegebenen Installationsmediums erzeugt. Wird eine Umgebung
+		betrieben, in der sowohl 32-, als auch 64 Bit-Pakete bereitgestellt werden sollen,
+		sind die folgenden Befehle auf dem Repository-Server nötig:
+
+		<programlisting language="sh">
+ucr set repository/online/architectures="i386 amd64"
+univention-repository-update net
+		</programlisting>
+	  </para>
+			  
+	  <para>
+		Der Zugriff auf das Univention Online-Repository wird durch Verwendung von Secure Apt
+		über Signaturen kryptografisch gesichert. Für lokale Repositorys besteht diese
+		Möglichkeit aktuell noch nicht, so dass beim Erstellen eines Repositorys ein Hinweis
+		ausgegeben wird, wie Secure Apt mit der &ucsUCRV; <envar>update/secure_apt</envar>
+		deaktiviert werden kann. Diese Einstellung muss auf allen UCS-Systemen gesetzt werden,
+		die auf das Repository zugreifen.
+	  </para>
+
+	  <para>
+		Mit dem Tool <command>univention-repository-update</command> werden die Pakete im
+		Repository aktualisiert. Es unterstützt zwei Modi:
+				
+	  </para>
+	  <itemizedlist>
+		<listitem> <simpara>
+		  <command>univention-repository-update cdrom</command> Dabei wird das Repository über
+		  eine Update-DVD oder ein ISO-Image aktualisiert.
+		</simpara> </listitem>
+
+		<listitem><simpara>
+		  <command>univention-repository-update net</command> Bei dieser Variante wird das
+		  Repository mit einem angebenen anderen Repository-Server synchronisiert. Dieser ist
+		  in der &ucsUCRV; <envar>repository/mirror/server</envar> definiert (typischerweise
+		  <uri>updates.software-univention.de</uri>).
+		</simpara></listitem>
+	  </itemizedlist>
+
+	  <para>
+		Eine Übersicht über die möglichen Optionen kann mit folgendem Befehl aufgerufen werden:
+	  </para>
+
+	  <programlisting language="sh">
+univention-repository-update -h
+	  </programlisting>
+
+	  <para>
+		Das Repository wird im Verzeichnis <filename>/var/lib/univention-repository/mirror</filename> vorgehalten.
+	  </para>
+
+	  <para>
+		Durch die &ucsUCRV; <envar>local/repository</envar> kann das lokale Repository
+		aktiviert/deaktiviert werden.
+	  </para>
+	</section>
+  </section>
+  
+  <section id="software::ucs-updates">
+	<title>Aktualisierung von UCS-Systemen</title>
+	<para>
+	  UCS-Systeme können auf zwei Wegen aktualisiert werden; entweder pro einzelnem System
+	  (über die &ucsUMC; oder auf der Kommandozeile) oder für größere Gruppen von
+	  UCS-Systemen automatisiert über eine Rechner-Richtlinie der &ucsUMC;.
+	</para>
+	
+	<section id="computers:Update-Strategie_in_Umgebungen_mit_mehr_als_einem_UCS-System">
+	  <title>Update-Strategie in Umgebungen mit mehr als einem UCS-System</title>
+	  <para>
+		In Umgebungen mit mehr als einem UCS-System muss die
+		Update-Reihenfolge der UCS-Systeme beachtet werden:
+	  </para>
+
+	  <para>
+		Auf dem &ucsMaster; wird die authoritative Version des
+		LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server
+		der UCS-Domäne repliziert wird. Da bei Release-Updates Veränderungen
+		an den LDAP-Schemata auftreten können (siehe <xref linkend="domain:ldap:schemata"/>) muss der &ucsMaster;
+		bei einem Release-Update immer als erstes System aktualisiert werden.
+	  </para>
+
+	  <para>
+		Generell ist es empfehlenswert alle UCS-Systeme möglichst in einem
+		Wartungsfenster zu aktualisieren. Wo dies nicht möglich ist, sollten
+		die nicht-aktualisierten UCS-Systeme gegenüber dem &ucsMaster; nur
+		eine Release-Version älter sein.
+	  </para>
+
+	  <para>
+		Es ist zu beachten, daß durch als kritisch markierte Komponenten
+		ggf. ein Upgrade auf das nächste Minor- oder Major-Release verhindert
+		werden kann. Weiterführende Hinweise finden sich im
+		<xref linkend="computers::softwaremanagement::repoadd"/>
+	  </para>
+	</section>
+
+	<section id="computers:Aktualisierung_eines_einzelnen_Systems_in_der_UMC">
+	  <title>Aktualisierung eines einzelnen Systems in der &ucsUMC;</title>
+	  <para>
+		Mit dem <guimenu>Software-Aktualisierung</guimenu>-Modul der &ucsUMC; können Versions- und
+		Errata-Updates installiert werden.
+	  </para>
+
+	  <para>
+		In <xref linkend="software-umcupdate"/> ist die Übersichtsseite des
+		Moduls dargestellt. Im oberen Teil des Dialogs wird unter
+		<guimenu>Release-Aktualisierungen</guimenu> der aktuelle Installationsstand
+		angezeigt.
+	  </para>
+
+	  <figure id="software-umcupdate"><title>Aktualisierung eines UCS-Systems über UMC</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/software_onlineupdate_de.png"/>
+	  </figure>
+
+	  <para>
+		Sollte eine neuere UCS-Version vorhanden sein, wird eine Auswahlliste
+		präsentiert. Durch einen Klick auf <guimenu>Release-Aktualisierungen installieren</guimenu>
+		werden nach Bestätigung alle Updates bis zur jeweiligen Version eingespielt. Zuvor wird ein Hinweis auf mögliche
+		Einschränkungen der Serverdienste während des Updates angezeigt. Eventuelle
+		Zwischenversionen werden automatisch mitinstalliert.
+	  </para>
+
+	  <para>
+		Durch einen Klick auf <guimenu>Errata-Aktualisierungen
+		installieren</guimenu> werden alle für das aktuelle Release und die
+		eingebundenen Komponenten verfügbaren Errata-Updates eingerichtet.
+	  </para>
+
+	  <para>
+		Mit <guimenu>Paket-Aktualisierungen prüfen</guimenu> wird eine Aktualisierung der momentan
+		eingetragenen Paketquellen aktiviert. Dies kann etwa verwendet werden, wenn
+		für eine Komponente eine aktualisierte Version bereitgestellt wurde.
+	  </para>
+
+	  <para>
+		Die während der Aktualisierung erzeugten Meldungen werden in die
+		Datei <filename>/var/log/univention/updater.log</filename> geschrieben.
+	  </para>
+	</section>
+
+	<section id="computers:Aktualisierung_eines_einzelnen_Systems_auf_der_Kommandozeile">
+	  <title>Aktualisierung eines einzelnen Systems auf der Kommandozeile</title>
+	  <para>
+		Die folgenden Schritte müssen mit <emphasis>root</emphasis>-Rechten durchgeführt werden.
+	  </para>
+
+	  <para>
+		Ein einzelnes UCS-System kann auf der Kommandozeile mit dem Befehl
+		<command>univention-upgrade</command> aktualisiert werden. Es wird geprüft, ob neue
+		Updates vorliegen, die dann nach Bestätigung einer Nachfrage installiert
+		werden. Außerdem werden Paket-Aktualisierungen durchgeführt (z.B. im Rahmen
+		eines Errata-Updates).
+	  </para>
+
+	  <para>
+		In der Grundeinstellung werden die zu aktualisierenden Pakete über das
+		Netz aus einem Repository geladen. Wird ein lokales Repository
+		eingesetzt (siehe <xref linkend="software::createrepo"/>), können
+		Release-Updates alternativ auch über Update-DVD-Images installiert werden, die
+		entweder als ISO-Datei oder von einem Laufwerk eingelesen werden.
+	  </para>
+
+	  <para>
+		Dazu muss <command>univention-upgrade</command> mit den Parametern
+		<command>--iso=ISOIMAGEDATEI</command> oder
+		<command>--cdrom=LAUFWERK</command> aufgerufen werden.
+	  </para>
+
+	  <para>
+		Von einer Remote-Aktualisierung über SSH wird abgeraten, da dies zum
+		Abbruch des Update-Vorgangs führen kann. Sollte dennoch eine Aktualisierung
+		über eine Netzverbindung durchgeführt werden, ist
+		sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung
+		trotzdem weiterläuft. Hierfür können beispielsweise die Tools
+		<command>screen</command> oder <command>at</command> eingesetzt werden, die auf
+		allen Systemrollen installiert sind.
+	  </para>
+
+	  <para>
+		Die während der Aktualisierung erzeugten Meldungen werden in die
+		Datei <filename>/var/log/univention/updater.log</filename> geschrieben.
+	  </para>
+	</section>
+
+	<section id="computers::softwaremanagement::releasepolicy">
+	  <title>Aktualisierung von Systemen über eine Rechner-Richtlinie</title>
+	  <para>
+		Mit einer <guimenu>Release-Richtlinie</guimenu> in der
+		Rechner-/Domänenverwaltung der &ucsUMC; lässt sich ein Update für
+		mehrere Rechner konfigurieren.
+	  </para>
+
+	  <para>
+		Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+	  </para>
+
+	  <figure id="software-policyupdate"><title>Aktualisierung eines UCS-Systems über eine Release-Richtlinie</title>
+	  <graphic scalefit="1" width="50%" fileref="illustrations/software_policy_de.png"/>
+	  </figure>
+
+	  <para>
+		Nur wenn das Auswahlfeld <guimenu>Aktiviere die Richtlinie</guimenu>
+		aktiviert ist, wird eine Release-Aktualisierung durchgeführt.
+	  </para>
+
+	  <para>
+		Das Eingabefeld <guimenu>Release-Version</guimenu> enthält die
+		Versionsnummer, bis zu der das System aktualisiert werden soll,
+		z.B. <emphasis>3.2-1</emphasis>. Wird keine Angabe gemacht, aktualisiert sich das
+		System bis zur höchsten verfügbaren Versionsnummer.
+	  </para>
+
+	  <para>
+		Der Zeitpunkt, zu dem die Aktualisierung durchgeführt wird, wird über
+		eine <guimenu>Paketpflege</guimenu>-Richtlinie konfiguriert (siehe
+		<xref linkend="computers::softwaremanagement::maintenancepolicy"/>).
+	  </para>
+
+	  <para>
+		Die während der Aktualisierung erzeugten Meldungen werden in die
+		Datei <filename>/var/log/univention/updater.log</filename> geschrieben.
+	  </para>
+	</section>
+
+	<section id="computers:Nachbereitung_von_Release-Updates">
+	  <title>Nachbereitung von Release-Updates</title>
+	  <para>
+		Nach erfolgreicher Durchführung eines Release-Updates sollte geprüft
+		werden, ob neue oder aktualisierte Join-Skripte ausgeführt werden
+		müssen. Zur Überprüfung und zum Starten der Join-Skripte kann
+		entweder das UMC-Modul <emphasis>Domänenbeitritt</emphasis> verwendet werden
+		oder das Kommandozeilenprogramm
+		<command>univention-run-join-scripts</command> (siehe
+		<xref linkend="linux-domaenenbeitritt"/>).
+	  </para>
+	</section>
+
+	<section id="computers:troubleshooting">
+	  <title>Fehlersuche bei Updateproblemen</title>
+	  <para>
+		Die während der Aktualisierung erzeugten Meldungen werden in die Datei
+		<filename>/var/log/univention/updater.log</filename> geschrieben, die zur weiteren
+		Fehleranalyse herangezogen werden kann.
+	  </para>
+
+	  <para>
+		Der Stand der &ucsUCR;-Variablen vor der Release-Aktualisierung wird in dem Verzeichnis
+		<filename>/var/univention-backup/update-to-ZIELRELEASEVERSION</filename>
+		gesichert. Damit kann geprüft werden, ob und welche Variablen im Rahmen des Updates
+		verändert wurden.
+	  </para>
+	</section>
+  </section>
+
+  <section id="computers::softwaremanagement::installsoftware">
+	<title>Installation weiterer Software</title>
+	<para>
+	  Die Erstauswahl der Softwarekomponenten eines UCS-Systems
+	  erfolgt im Rahmen der Installation. Die Auswahl der
+	  Softwarekomponenten erfolgt dabei funktionsbezogen, indem etwa die
+	  Komponente <emphasis>Proxy-Server</emphasis> ausgewählt wird, die dann über ein
+	  Meta-Paket die eigentlichen Software-Pakete nachzieht. Der
+	  Administrator muss dazu die eigentlichen Paketnamen nicht kennen.
+	  Für weitergehende Aufgaben können aber auch einzelne Pakete gezielt
+	  installiert und entfernt werden.
+	</para>
+
+	<para>
+	  Bei der Installation eines Pakets werden unter Umständen Pakete
+	  mitinstalliert, die für die Funktion des angegebenen Pakets
+	  erforderlich sind, die sogenannten Paketabhängigkeiten.
+	</para>
+
+	<para>
+	  Alle Softwarekomponenten werden aus einem Repository geladen (siehe
+	  <xref linkend="software::configrepo"/>).
+	</para>
+
+	<para>
+	  Fremdsoftware, die nicht im Debian-Paketformat vorliegt, sollte in
+	  die Verzeichnisse <filename>/opt</filename> oder <filename>/usr/local</filename> installiert
+	  werden. UCS-Pakete nutzen diese Verzeichnisse nicht, so dass eine
+	  saubere Trennung von UCS- und Fremdsoftware gewährleistet ist.
+	</para>
+
+	<para>
+	  Um auf einem bereits installierten System nachträglich weitere Pakete
+	  zuinstallieren, stehen mehrere Möglichkeiten zur Verfügung:
+	</para>
+	
+	<section id="computers:softwareselection">
+	  <title>Installation/Deinstallation von UCS-Komponenten im Univention App Center</title>
+	  <para>
+		Alle Softwarekomponenten, die im Univention Installer angeboten werden können auch
+		über das Univention App Center nachträglich installiert und entfernt werden. Dazu
+		muss die Paket-Kategorie <guimenu>UCS-Komponenten</guimenu> ausgewählt
+		werden. Weitere Hinweise zum Univention App Center finden sich in <xref linkend="software:appcenter"/>.
+	  </para>
+
+	  <figure id="appcenter-ucscomponents">
+		<title>Auswahl von UCS-Komponenten im App Center</title>
+		<graphic scalefit="1" width="80%" fileref="illustrations/appcenter-ucs-de.png"/>
+	  </figure>
+
+	</section>
+
+	<section
+		id="computers:Installation_Deinstallation_von_einzelnen_Paketen_in_der_Univention_Management_Console">
+	  <title>Installation/Deinstallation von einzelnen Paketen in der Univention Management Console</title>
+	  <para>
+		Mit dem &ucsUMC;-Modul <guimenu>App Center</guimenu> (Reiter: <guimenu>Erweiterte
+		Software-Verwaltung</guimenu>) können einzelne Softwarepakete installiert und
+		deinstalliert werden.
+	  </para>
+
+	  <figure id="software-umcinstall"><title>Installation des Pakets univention-squid in der Univention Management Console</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/software_install_de1.png"/>
+	  </figure>
+
+	  <para>
+		Auf der Startseite wird eine Suchmaske angezeigt in der die Paketkategorie und
+		ein Suchfilter (Name oder Beschreibung) zur Auswahl
+		stehen. Die Ergebnisliste besteht aus einer Tabelle mit den folgenden Spalten:
+	  </para>
+
+	  <itemizedlist>
+		<listitem><simpara>Paketname</simpara></listitem>
+		<listitem><simpara>Paketbeschreibung</simpara></listitem>
+		<listitem><simpara>Paketstatus</simpara></listitem>
+	  </itemizedlist>
+
+	  <para>
+		Durch einen Klick auf eine Zeile in der Ergebnisliste wird eine detaillierte
+		Informationsseite zu dem Softwarepaket angezeigt, u.a. eine
+		ausführliche Beschreibung und die Versionsnummer.
+	  </para>
+
+	  <para>
+		Zusätzlich werden ein oder mehrere Buttons angezeigt:
+		<guimenu>Installieren</guimenu> wird angezeigt, falls das Softwarepaket noch nicht
+		installiert ist, <guimenu>Deinstallieren</guimenu>, falls das Paket installiert
+		ist und <guimenu>Aktualisieren</guimenu> falls das Softwarepaket bereits
+		installiert, aber nicht aktuell ist. Durch <guimenu>Schließen</guimenu> kann zu
+		der vorherigen Suchabfrage zurückgekehrt werden.
+	  </para>
+	</section>
+
+	<section id="computers:Installation_Deinstallation_von_einzelnen_Paketen_auf_der_Kommandozeile">
+	  <title>Installation/Deinstallation von einzelnen Paketen auf der Kommandozeile</title>
+	  <para>
+		Die folgenden Schritte müssen mit <emphasis>root</emphasis>-Rechten durchgeführt werden.
+	  </para>
+
+	  <para>
+		Die Installation einzelner Pakete erfolgt mit dem Kommando
+	  </para>
+
+	  <programlisting language="sh">
+univention-install PAKETNAME
+	  </programlisting>
+
+	  <para>
+		Pakete können mit dem folgenden Befehl entfernt werden:
+	  </para>
+
+	  <programlisting language="sh">
+univention-remove PAKETNAME
+	  </programlisting>
+
+	  <para>
+		Wenn der Name eines Pakets nicht bekannt ist, kann mit dem Kommando
+		<command>apt-cache search</command> nach Paketen gesucht werden. Als Aufrufparameter
+		können Teile des Namens oder Wörter, die in der Beschreibung eines Paketes
+		vorkommen angegeben werden, z.B.
+	  </para>
+
+	  <programlisting language="sh">
+apt-cache search fax
+	  </programlisting>
+	</section>
+
+	<section id="computers::softwaremanagement::packagelists"><title>Richtlinienbasierte Installation/Deinstallation von einzelnen Paketen über Paketlisten</title>
+	<para>
+	  Mit Paketlisten kann richtlinienbasiert Software installiert und
+	  entfernt werden. Dadurch lassen sich auf große Stückzahlen an
+	  Rechnersystemen zentral mit neuer Software bestücken.
+	</para>
+
+	<para>
+	  Jede Systemrolle verfügt über eine eigenen Paket-Richtlinien-Typ.
+	</para>
+
+	<para>
+	  Paketrichtlinien werden im Modul <emphasis>Richtlinien</emphasis> der &ucsUMC;
+	  mit dem Objekttyp <guimenu>Richtlinie: Pakete + Systemrolle</guimenu>
+	  verwaltet.
+	</para>
+
+	<table>
+	  <title>Karteikarte '[Pakete ...]'</title>
+	  <tgroup cols="2">
+		<colspec colnum="1" colname="col1" colwidth="1*"/>
+		<colspec colnum="2" colname="col2" colwidth="2*"/>
+		<thead>
+		  <row>
+			<entry>Attribut</entry>
+			<entry>Beschreibung</entry>
+		  </row>
+		</thead>
+		<tbody>
+		  <row>
+			<entry>Name</entry>
+			<entry>
+			  Ein eindeutiger Name für diese Paketliste, z.B. <emphasis>Standort-Server</emphasis>.
+			</entry>
+		  </row>
+		  <row>
+			<entry>[...] Pakete Installationsliste</entry>
+			<entry>
+			  Eine Liste zu installierender Pakete.
+			</entry>
+		  </row>
+		  <row>
+			<entry>[...] Pakete Deinstallationsliste</entry>
+			<entry>
+			  Eine Liste zu entfernender Pakete.
+			</entry>
+		  </row>
+		</tbody>
+	  </tgroup>
+	</table>
+	<para>
+	  Die in einer Paketliste definierten Softwarepakete werden zu dem in
+	  der <guimenu>Paketpflege</guimenu>-Richtlinie definierten Zeitpunkt (zur
+	  Konfiguration siehe <xref linkend="computers::softwaremanagement::maintenancepolicy"/>) installiert, bzw. deinstalliert.
+	</para>
+	<para>
+	  Die in den Pakete-Richtlinien zuordbaren Softwarepakete werden ebenfalls im
+	  LDAP registriert.
+	  <!-- Dies ist im Univention Wiki unter WIKIREF-24368 dokumentiert. -->
+	</para>
+	</section>
+  </section>
+
+  <section id="computers::softwaremanagement::maintenancepolicy">
+	<title>Festlegung eines Aktualisierungs-Zeitpunkts mit der Paketpflege-Richtlinie</title>
+	<para>
+	  Mit einer <guimenu>Paketpflege</guimenu>-Richtlinie in der
+	  Rechner-/Domänenverwaltung der &ucsUMC; kann ein Zeitpunkt
+	  vorgegeben werden, an dem die folgenden Schritte durchgeführt werden:
+	</para>
+	<itemizedlist>
+	  <listitem>
+		<simpara>
+		  Prüfung auf verfügbare und zu installierende Release-Updates
+		  (siehe <xref linkend="computers::softwaremanagement::releasepolicy"/>)
+		  und ggf. Installation
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Installation/Deinstallation von Paketlisten (siehe
+		  <xref linkend="computers::softwaremanagement::packagelists"/>)
+		</simpara>
+	  </listitem>
+	  <listitem>
+		<simpara>
+		  Installation verfügbarer Errata-Updates
+		</simpara>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+	  Alternativ können die Aktualisierungen auch beim Systemstart oder
+	  beim Herunterfahren des Systems erfolgen.
+	</para>
+
+	<para>
+	  Allgemeine Hinweise zur Richtlinienverwaltung finden sich in <xref linkend="central:policies"/>.
+	</para>
+
+	<table>
+	  <title>Karteikarte '[Paketpflege]'</title>
+	  <tgroup cols="2">
+		<colspec colnum="1" colname="col1" colwidth="1*"/>
+		<colspec colnum="2" colname="col2" colwidth="2*"/>
+		<thead>
+		  <row>
+			<entry>Attribut</entry>
+			<entry>Beschreibung</entry>
+		  </row>
+		</thead>
+		<tbody>
+		  <row>
+			<entry>Paketpflege durchführen nach Hochfahren des Systems</entry>
+			<entry>
+			  Falls diese Option aktiviert ist, werden die Aktualisierungsschritte
+			  während des Startvorgangs des Rechners durchgeführt.
+			</entry>
+		  </row>
+		  <row>
+			<entry>Paketpflege durchführen vor Herunterfahren des Systems</entry>
+			<entry>
+			  Falls diese Option aktiviert ist, werden die Aktualisierungsschritte
+			  beim Herunterfahren des Rechners durchgeführt.
+			</entry>
+		  </row>
+		  <row>
+			<entry>Cron Einstellung benutzen</entry>
+			<entry>
+			  Wird dieses Feld aktiviert, kann über die Felder <emphasis>Monat</emphasis>,
+			  <emphasis>Wochentag</emphasis>, <emphasis>Tag</emphasis>, <emphasis>Stunde</emphasis> und <emphasis>Minute</emphasis> ein
+			  genauer Zeitpunkt angegeben werden, an dem die Aktualisierungsschritte
+			  durchgeführt werden sollen.
+			</entry>
+		  </row>
+		  <row>
+			<entry>Nach Paketpflege neu starten</entry>
+			<entry>
+			  Diese Option ermöglicht es, nach Release-Aktualisierungen
+			  optional einen automatischen Neustart des Systems durchzuführen, entweder
+			  direkt oder nach dem angegebenen Zeitintervall in Stunden.
+			</entry>
+		  </row>
+		</tbody>
+	  </tgroup>
+	</table>
+  </section>
+
+  <section id="computers::softwaremanagement::repoadd">
+	<title>Integration von Komponenten, die nicht über das Univention App Center bereitgestellt werden</title>
+	<para>
+	  Ein Repository enthält in der Grundeinstellung nur die Pakete des
+	  Standard-UCS-Umfangs. Weitere Komponenten können eingebunden werden,
+	  sowohl von Univention - etwa die Komponente &ucsUAS; - oder von Drittanbietern
+	  wie Groupware-Herstellern.
+	  Zusätzliche Komponenten werden in der Regel über das Univention App Center integriert
+	  (siehe <xref linkend="software:appcenter"/>). Die
+	  folgenden Schritte sind nur notwendig für Komponenten,
+	  die nicht über das Univention App Center bereitgestellt werden.
+	</para>
+
+	<para>
+	  Weitere Komponenten können über die &ucsUMC; oder in der &ucsUCR;
+	  registriert werden.
+	</para>
+
+	<para>
+	  Komponenten können versioniert werden. Dies stellt sicher, dass nur zu einer
+	  UCS-Version kompatible Komponenten installiert werden. Bei der Installation über das
+	  Univention App Center wird die Versionskompatibilität automatisch sichergestellt.
+	</para>
+
+	<variablelist>
+	  <varlistentry>
+		<term>leer bzw. nicht gesetzt</term>
+		<listitem>
+		  <simpara>
+			Es werden automatisch
+			alle Versionen derselben Major-Version eingebunden. Ist z.B. aktuell UCS
+			2.3 installiert, so werden die Repositories für die Komponente in den Versionen
+			2.0, 2.1, 2.2 und 2.3 eingebunden, sofern diese existieren.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+	  <varlistentry>
+		<term><literal>current</literal></term>
+		<listitem>
+		  <simpara>
+			Durch das Schlüsselwort <emphasis>current</emphasis> werden
+			ebenfalls alle Versionen der selben Major-Version eingebunden. Zusätzlich
+			wird aber ein Minor- oder Major-Upgrade des installierten UCS-Systems
+			solange verhindert, bis auch die so markierte Komponente für die neue
+			Version verfügbar ist; Patchlevel- oder Errata-Updates sind davon nicht
+			betroffen. Ist z.B. aktuell UCS-2.3 installiert, UCS-2.4 oder UCS-3.0
+			aber bereits verfügbar, so erfolgt dennoch solange kein Upgrade auf die
+			neue Version, bis auch die Komponente für die Version 2.4 bzw. 3.0
+			verfügbar ist.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+	  <varlistentry>
+		<term><emphasis>major.minor</emphasis></term>
+		<listitem>
+		  <simpara>
+			Durch die Angabe einer expliziten Version wird die
+			Komponente nur in dieser Version eingebunden. UCS-Release-Updates werden
+			dadurch nicht blockiert. Mehrere Versionen können durch Komma getrennt
+			angegeben werden, z.B. <emphasis>2.0,2.3</emphasis>.
+		  </simpara>
+		</listitem>
+	  </varlistentry>
+	</variablelist>
+
+	<section
+		id="computers:Integration_von_Repository-Komponenten_ueber_die_Univention_Management_Console">
+	  <title>Integration von Repository-Komponenten über die Univention Management Console</title>
+	  <para>
+		Im <guimenu>App Center</guimenu>-Modul der &ucsUMC; findet sich im Reiter
+		<guimenu>Repository-Einstellungen</guimenu> eine Aufstellung der eingebundenen
+		Repository-Komponenten. Applikationen, die über das Univention App Center eingebunden
+		wurden, werden hier weiterhin aufgeführt, sollten aber über den Reiter
+		<guimenu>App-Verwaltung</guimenu> verwaltet werden.
+	  </para>
+
+	  <para>
+		Mit <guimenu>Neu</guimenu> kann eine weitere Komponente eingerichtet
+		werden. Der <guimenu>Name der Komponente</guimenu> identifiziert die
+		Komponente auf dem Repository-Server. Unter
+		<guimenu>Beschreibung</guimenu> kann ein frei wählbarer Text angegeben
+		werden, der z.B. detaillierter auf die Funktion der Komponente
+		eingeht.
+	  </para>
+
+	  <figure id="software-repocomponent"><title>Konfiguration einer Repository-Komponente in UMC</title>
+	  <graphic scalefit="1" width="80%" fileref="illustrations/software_repository_de2.png"/>
+	  </figure>
+
+	  <para>
+		Der Rechnername des Download-Servers ist im Eingabefeld
+		<guimenu>Repository-Server</guimenu> anzugeben und, sofern notwendig,
+		unter <guimenu>Repository-Präfix</guimenu> ein eventueller zusätzlicher
+		Dateipfad.
+	  </para>
+
+	  <para>
+		Für Repository-Server, die eine Authentifizierung erfordern, können
+		<guimenu>Benutzername</guimenu> und <guimenu>Passwort</guimenu> konfiguriert
+		werden.
+	  </para>
+
+	  <para>
+		Eine Software-Komponente ist erst verfügbar, wenn sie mit
+		<guimenu>Diese Komponenten aktivieren</guimenu> aktiviert wurde.
+	  </para>
+
+	  <para>
+		Auch für Komponenten wird zwischen <emphasis>maintained</emphasis> und
+		<emphasis>unmaintained</emphasis>-Komponenten unterschieden, siehe
+		<xref linkend="software::configrepo"/>.
+	  </para>
+	</section>
+
+	<section id="computers::softwaremanagement::repoadducr">
+	  <title>Integration von Repository-Komponenten über Univention Configuration Registry</title>
+	  <para>
+		Mit den folgenden &ucsUCR;-Variablen kann eine Repository-Komponente
+		registriert werden. Hier können auch einige weitergehende Funktionen
+		aktiviert werden, die über das UMC-Modul nicht konfiguriert werden
+		können. <emphasis>NAME</emphasis> steht für den Namen der Komponente.
+	  </para>
+
+	  <variablelist>
+		<varlistentry>
+		  <term><command>repository/online/component/NAME/server</command></term>
+		  <listitem>
+			<simpara>
+			  Der Repository-Server auf
+			  dem die Komponente zur Verfügung gestellt wird. Wird diese Variable nicht
+			  gesetzt, dann wird der Server aus der &ucsUCRV; <envar>repository/online/server</envar> verwendet.
+			</simpara>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term><command>repository/online/component/NAME</command></term>
+		  <listitem>
+			<simpara>
+			  Diese Variable muss auf
+			  <emphasis>enabled</emphasis> gesetzt werden, wenn die Komponente eingebunden werden
+			  soll.
+			</simpara>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term><command>repository/online/component/NAME/localmirror</command></term>
+		  <listitem>
+			<simpara>
+			  Mit dieser Variable kann
+			  konfiguriert werden, ob die Komponente lokal gespiegelt wird. In Verbindung
+			  mit der &ucsUCRV; <envar>repository/online/component/NAME/server</envar> kann so
+			  konfiguriert werden, dass eine Komponente zwar gespiegelt, aber nicht
+			  aktiviert wird oder dass sie zwar aktiviert, aber nicht gespiegelt wird.
+			</simpara>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term><command>repository/online/component/NAME/description</command></term>
+		  <listitem>
+			<simpara>
+			  Ein beschreibender Name für das Repository.
+			</simpara>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term><command>repository/online/component/NAME/prefix</command></term>
+		  <listitem>
+			<simpara>
+			  Definiert die URL-Präfix, die
+			  auf dem Repository-Server verwendet wird. In der Regel muss diese Variable
+			  nicht gesetzt werden.
+			</simpara>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term><command>repository/online/component/NAME/username</command></term>
+		  <listitem>
+			<simpara>
+			  Wenn der Repository-Server
+			  eine Authentifizierung erfordert, kann in dieser Variable der Benutzername
+			  eingetragen werden.
+			</simpara>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term><command>repository/online/component/NAME/password</command></term>
+		  <listitem>
+			<simpara>
+			  Wenn der Repository-Server
+			  eine Authentifizierung erfordert, kann in dieser Variable das der Passwort
+			  eingetragen werden.
+			</simpara>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term><command>repository/online/component/NAME/version</command></term>
+		  <listitem>
+			<simpara>
+			  Über diese Variable kann die
+			  einzubindende Version angegeben werden, siehe
+			  <xref linkend="computers::softwaremanagement::repoadd"/>.
+			</simpara>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term><command>repository/online/component/NAME/defaultpackages</command></term>
+		  <listitem>
+			<simpara>
+			  Über diese Variable
+			  kann eine leerzeichenseparierte Liste an Paketnamen angegeben
+			  werden. Im UMC-Modul <emphasis>App Center</emphasis> wird die
+			  Installation der Komponente angeboten, wenn mindestens eines der Pakete
+			  nicht installiert ist. Die Angabe der Paketliste vereinfacht dadurch die
+			  Nachinstallation von Komponenten.
+			</simpara>
+		  </listitem>
+		</varlistentry>
+	  </variablelist>
+	  <para>
+		Um beispielsweise die UCS@school-Komponente einzubinden müssen
+		folgende Variablen gesetzt werden:
+	  </para>
+	  <programlisting language="sh">
+ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
+ repository/online/component/ucsschool/server=updates.software-univention.de \
+ repository/online/component/ucsschool=yes
+	  </programlisting>
+	</section>
+  </section>
+
+  <section id="computers::softwaremonitor">
+	<title>Zentrale Überwachung von Softwareinstallationsständen mit dem Software-Monitor</title>
+	<para>
+	  Der Software-Monitor ist eine Datenbank, in der Informationen über die auf UCS-Systemen
+	  installierten Softwarepakete aufgezeichnet werden. Durch diese Datenbank kann sich ein
+	  Administrator einen Überblick verschaffen, welche Release- und Paketversionen auf den
+	  Systemen der Domäne installiert sind und diese Informationen bei der schrittweisen
+	  Aktualisierung einer UCS-Domäne nutzen und Installations-Probleme erkennen.
+	</para>
+
+	<para>
+	  Der Software-Monitor kann durch Auswahl der Komponente
+	  <emphasis>Paketstatus-Überwachung</emphasis> im Univention Installer eingerichtet
+	  werden. Alternativ kann das Paket <package>univention-pkgdb</package> installiert
+	  werden.
+	</para>
+	
+	<para>
+	  UCS-Systeme aktualisieren ihre Einträge bei der Installation, Entfernung und
+	  Aktualisierung von Software selbsttätig. Das System, auf dem der Software-Monitor
+	  betrieben wird, wird dabei durch den DNS-Service-Record <command>_pkgdb._tcp</command>
+	  lokalisiert.
+	</para>
+	
+	<para>
+	  Die webbasierte Abfrageschnittstelle des Software-Monitors integriert sich in die
+	  &ucsUMC; und kann über das Modul <guimenu>Software-Monitor</guimenu> erreicht
+	  werden. Folgende Funktionen stehen zur Verfügung:
+	  
+	</para>
+	<itemizedlist>
+	  <listitem><simpara>
+		<emphasis>Systeme</emphasis> erlaubt die Suche nach den installierten Versionsständen
+		von UCS-Systemen. Es kann nach Systemnamen, UCS-Versionen und Systemrollen gesucht werden.
+	  </simpara></listitem>
+	  
+	  <listitem> <para>
+		<emphasis>Pakete</emphasis> ermöglicht die Suche in den von der Paketstatusdatenbank
+		erfassten Installationsdaten. Neben der Suche nach <emphasis>Paketnamen</emphasis>
+		gibt es auch die folgenden Suchmöglichkeiten zu den Installationszuständen von Paketen:
+	  </para>
+	  
+	  <itemizedlist>
+		<listitem> <simpara>
+		  Der <emphasis>Selektionsstatus</emphasis> beeinflusst das Verhalten bei der
+		  Aktualisierung eines Pakets. Durch <emphasis>Install</emphasis> wird ein Paket zur
+		  Installation ausgewählt. Ist ein Paket auf <emphasis>Hold</emphasis> konfiguriert,
+		  so wird es von weiterer Aktualisierung ausgenommen. Es existieren zwei Möglichkeiten
+		  ein Paket zu deinstallieren: Ein mit <emphasis>DeInstall</emphasis> entferntes Paket
+		  hält lokal erzeugte Konfigurations-Daten weiterhin vor, während ein mit
+		  <emphasis>Purge</emphasis> entferntesPaket komplett gelöscht wird.
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  Der <emphasis>Installationsstatus</emphasis> beschreibt den Status eines
+		  installierten Pakets im Hinblick auf kommende Aktualisierungen. Der Normalfall ist
+		  <emphasis>Ok</emphasis>, was dazu führt, dass ein Paket bei Vorhandensein einer
+		  aktuelleren Version aktualisiert würde. Ist ein Paket auf <emphasis>Hold</emphasis>
+		  konfiguriert, so wird es von der Aktualisierung ausgenommen.
+		</simpara> </listitem>
+
+		<listitem><simpara>
+		  Der <emphasis>Paketstatus</emphasis> beschreibt den Zustand eines eingerichteten
+		  Pakets. Der Normalfall ist <emphasis>Installed</emphasis> für installierte und
+		  <emphasis>ConfigFiles</emphasis> für entfernte Pakete, alle übrigen Zustände
+		  entstehen, wenn die Installation des Pakets in verschiedenen Phasen abgebrochen wurde.
+		</simpara></listitem>
+		
+	  </itemizedlist>
+	  </listitem>
+	  
+	</itemizedlist>
+	<figure id="software-monitor"><title>Suche nach Paketen im Software-Monitor</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_de.png"/>
+	</figure>
+	
+	<para>
+	  Wenn verhindert werden soll, dass UCS-Systeme Installations-Vorgänge im Software-Monitor
+	  aufzeichnen (etwa weil keine Netzwerkverbindung zur Datenbank besteht), kann dies durch
+	  Setzen der &ucsUCRV; <envar>pkgdb/scan</envar> auf <emphasis>no</emphasis> abgeschaltet
+	  werden. Wenn die Aufzeichnungen danach wieder aktiviert werden, muss das Kommando
+	  <command>univention-pkgdb-scan</command> ausgeführt werden, damit die in der
+	  Zwischenzeit installierten Paketversionen in die Datenbank übernommen werden.
+	</para>
+
+	<para>
+	  Mit dem folgenden Befehl kann der Programmbestand eines Systems wieder aus der Datenbank entfernt werden:
+	</para>
+	<programlisting language="sh">
+univention-pkgdb-scan --remove-system RECHNERNAME
+	</programlisting>
+  </section>
+</chapter>

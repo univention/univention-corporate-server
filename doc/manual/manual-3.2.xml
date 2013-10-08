@@ -7,6 +7,7 @@
   <!ENTITY installation SYSTEM "installation-en.xml">
   <!ENTITY domain-ldap SYSTEM "domain-ldap-en.xml">
   <!ENTITY central-management-umc SYSTEM "central-management-umc-en.xml">
+  <!ENTITY software SYSTEM "software-en.xml">
   <!ENTITY user-management SYSTEM "user-management-en.xml">
   <!ENTITY groups SYSTEM "groups-en.xml">
   <!ENTITY computers SYSTEM "computers-en.xml">
@@ -63,6 +64,7 @@ feedback@univention.de
   &installation;
   &domain-ldap;
   &central-management-umc;
+  &software;
   &user-management;
   &groups;
   &computers;
