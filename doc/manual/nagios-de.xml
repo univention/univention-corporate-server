@@ -969,12 +969,13 @@
 	</section>
 </section>
 
-<section id="nagios:Abfrage_des_Systemstatus_ueber_das_Nagios-Webinterface">
-	<title>Abfrage des Systemstatus über das Nagios-Webinterface</title>
-	<para>
-	Die Nagios-Oberfläche kann unter der URL <uri>https://&lt;ip-oder-fqdn&gt;/nagios/</uri>
-	erreicht werden.
-	</para>
+<section id="nagios:webinterface">
+  <title>Abfrage des Systemstatus über das Nagios-Webinterface</title>
+  <para>
+	Die Nagios-Oberfläche ist auf der Übersichtswebseite (siehe <xref
+	linkend="central-management-umc:login"/>) unter <guimenu>Horde Webclient</guimenu> verlinkt und
+	kann auch direkt unter <uri>https://SERVERNAME-OR-IP/nagios/</uri> erreicht werden.
+  </para>
 
 	<figure id="nagios-tact-overview">
 		<title>Nagios-Statusübersicht</title>

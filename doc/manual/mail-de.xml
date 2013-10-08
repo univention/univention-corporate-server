@@ -984,7 +984,7 @@ postmap /etc/postfix/smtp_auth
 	<section id="mail:Anmeldung_und_Übersicht">
 	  <title>Anmeldung und Übersicht</title>
 	  <para>
-		Die Horde-Anmeldemaske ist auf der Systemstartseite unter
+		Die Horde-Anmeldemaske ist auf der Übersichtswebseite (siehe <xref linkend="central-management-umc:login"/>) unter
 		<guimenu>Horde Webclient</guimenu> verlinkt und kann auch direkt unter
 		<uri>http://SERVERNAME/horde/login.php</uri> erreicht werden.
 	  </para>

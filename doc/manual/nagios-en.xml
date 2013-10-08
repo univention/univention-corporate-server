@@ -982,22 +982,25 @@
 	</section>
 </section>
 
-<section id="nagios:Querying_the_system_status_via_the_Nagios_web_interface">
-	<title>Querying the system status via the Nagios web interface</title>
-	<para>
-	The Nagios interface can be accessed at <uri>https://&lt;ip-oder-fqdn&gt;/nagios/</uri>.
-	</para>
+<section id="nagios:webinterface">
+  <title>Querying the system status via the Nagios web interface</title>
 
-	<figure id="nagios-tact-overview">
-		<title>Nagios status overview</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/overview_EN.png"/>
-	</figure>
+  <para>
+	The Nagios interface is linked on the system overview page (see <xref
+	linkend="central-management-umc:login"/>) under <guimenu>Nagios</guimenu> and can
+	be opened directly at <uri>http://SERVERNAME-OR-IP/nagios/</uri>.
+  </para>
 
-	<para>
+  <figure id="nagios-tact-overview">
+	<title>Nagios status overview</title>
+	<graphic scalefit="1" width="80%" fileref="illustrations/overview_EN.png"/>
+  </figure>
+
+  <para>
 	Access is only granted for users in the <emphasis>Domain Admins</emphasis>
 	group (e.g., the Administrator) in the default setting. There is also
 	the possibility of expanding the circle of those authorised to log in.
-	</para>
+  </para>
 	<!--
 	<comment>
 	This is documented in Univention Wiki under WIKIREF-23919.

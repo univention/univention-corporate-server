@@ -64,6 +64,17 @@
 			&ucsUMC; is available in German and English; the language to be used
 			can be selected during login.
 		</para>
+
+		<!-- <para> -->
+		<!--   Auf jedem UCS-System kann die Übersichtsseite über die URL <uri>https://servername/</uri> -->
+		<!--   aufgerufen werden, alternativ ist der Zugriff auch über die IP-Adresse des Servers -->
+		<!--   möglich. Hier sind alle Web-Dienste verlinkt, die auf dem System angeboten werden. Im -->
+		<!--   Reiter <guimenu>Administration</guimenu> kann dann die &ucsUMC; über den Link -->
+		<!--   <guimenu>Univention Management Console</guimenu> aufgerufen werden. Sind auf dem System -->
+		<!--   Dienste installiert, die einen eigenen Webdienst mitbringen (z.B. die Nagios-Oberfläche) -->
+		<!--   sind diese im Reiter <guimenu>Installierte Web-Dienste</guimenu> verlinkt. -->
+		<!-- </para> -->
+
 		<para>
 			The web interface of the &ucsUMC; can be opened via the
 			URL <uri>https://servername/umc/</uri>. Alternatively, access is also

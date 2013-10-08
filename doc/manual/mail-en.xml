@@ -898,9 +898,9 @@ postmap /etc/postfix/smtp_auth
 	<section id="mail:Login_and_overview">
 	  <title>Login and overview</title>
 	  <para>
-		The Horde login mask is linked on the system start page under
-		<guimenu>Horde web client</guimenu> and can be opened directly at
-		<uri>http://SERVERNAME/horde/login.php</uri>.
+		The Horde login mask is linked on the system overview page (see <xref
+		linkend="central-management-umc:login"/>) under <guimenu>Horde web client</guimenu> and can
+		be opened directly at <uri>http://SERVERNAME/horde/login.php</uri>.
 	  </para>
 	  <para>
 		<figure id="horde-login">
