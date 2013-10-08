@@ -36,7 +36,8 @@ from univention.lib import Translation
 from univention.management.console.modules import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import simple_response
+from univention.management.console.modules.decorators import simple_response, file_upload, sanitize
+from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.modules import UMC_CommandError
 
 import notifier.popen
@@ -46,11 +47,13 @@ import psutil
 import os.path
 import subprocess
 import time
+import pipes
 
 _ = Translation('univention-management-console-module-top').translate
 
 FN_BINDPW = '/etc/univention/connector/ad/bindpw'
 DO_NOT_CHANGE_PWD = '********************'
+
 
 class Instance( Base ):
 	OPTION_MAPPING = ( ( 'LDAP_Host', 'connector/ad/ldap/host', '' ),
@@ -105,6 +108,7 @@ class Instance( Base ):
 
 		self.finished( request.id, result )
 
+	@sanitize(LDAP_Host=StringSanitizer(required=True))
 	def save( self, request ):
 		"""Saves the UCS Active Directory Connector configuration
 
@@ -169,13 +173,14 @@ class Instance( Base ):
 					self.finished(request.id,  {'success' : False, 'message': _('Creation of certificate failed (%s)') % ssldir})
 				self.finished(request.id,  {'success' : True, 'message' :  _('UCS Active Directory Connector settings have been saved and a new certificate for the Active Directory server has been created.')})
 
-			cmd = '/usr/sbin/univention-certificate new -name "%s"' % request.options.get( 'LDAP_Host' )
+			cmd = '/usr/sbin/univention-certificate new -name %s' % pipes.quote(request.options['LDAP_Host'])
 			MODULE.info( 'Creating new SSL certificate: %s' % cmd )
 			proc = notifier.popen.Shell( cmd, stdout = True )
 			cb = notifier.Callback( _return, request )
 			proc.signal_connect( 'finished', cb )
 			proc.start()
 
+	@sanitize(LDAP_Host=StringSanitizer(required=True))
 	def guess( self, request ):
 		"""Tries to guess some values like the base DN of the AD server
 
@@ -183,7 +188,6 @@ class Instance( Base ):
 
 		return: { 'LDAP_Base' : <LDAP base>, 'success' : (True|False) }
 		"""
-		self.required_options( request, 'LDAP_Host' )
 
 		def _return( pid, status, buffer, request ):
 			# dn:
@@ -209,7 +213,7 @@ class Instance( Base ):
 			MODULE.info( 'Guessed the LDAP base: %s' % self.guessed_baseDN )
 
 
-		cmd = '/usr/bin/ldapsearch -x -s base -b "" namingContexts -LLL -h "%s"' % request.options[ 'LDAP_Host' ]
+		cmd = '/usr/bin/ldapsearch -x -s base -b "" namingContexts -LLL -h %s' % pipes.quote(request.options['LDAP_Host'])
 		MODULE.info( 'Determine LDAP base for AD server of specified system FQDN: %s' % cmd )
 		proc = notifier.popen.Shell( cmd, stdout = True )
 		cb = notifier.Callback( _return, request )
@@ -235,6 +239,7 @@ class Instance( Base ):
 		with open(filename) as fd:
 			return fd.read()
 
+	@file_upload
 	def upload_certificate( self, request ):
 		def _return( pid, status, bufstdout, bufstderr, request, fn ):
 			success = True
@@ -252,7 +257,7 @@ class Instance( Base ):
 		upload = request.options[ 0 ][ 'tmpfile' ]
 		now = time.strftime( '%Y%m%d_%H%M%S', time.localtime() )
 		fn = '/etc/univention/connector/ad/ad_cert_%s.pem' % now
-		cmd = '/usr/bin/openssl x509 -inform der -outform pem -in %s -out %s 2>&1' % ( upload, fn )
+		cmd = '/usr/bin/openssl x509 -inform der -outform pem -in %s -out %s 2>&1' % ( pipes.quote(upload), fn )
 
 		MODULE.info( 'Converting certificate into correct format: %s' % cmd )
 		proc = notifier.popen.Shell( cmd, stdout = True, stderr = True )

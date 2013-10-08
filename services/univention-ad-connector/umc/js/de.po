@@ -87,7 +87,7 @@ msgstr "Deutsch"
 msgid ""
 "Installation file for the password service for <strong>%s</strong> Windows."
 "<br />It can be started by double clicking on it."
-msgstr ""
+msgstr "Installationsdatei für den Passwordservice für <strong>%s</strong> Windows.<br />Es kann per Doppelklick gestartet werden."
 
 #: umc/js/adconnector.js:384 umc/js/adconnector.js:388
 msgid ""
@@ -125,7 +125,7 @@ msgstr ""
 msgid ""
 "Microsoft Visual C++ 2010 Redistributable Package (x86) - <strong>Must</"
 "strong> be installed on a <strong>64bit</strong> Windows."
-msgstr ""
+msgstr "Microsoft Visul C++ 2010 Redistributable Package (x86) - <strong>Muss</strong> auf einem <strong>64bit</strong> Windows installiert sein."
 
 #: umc/js/adconnector.js:96
 msgid "Password of the synchronisation user"
@@ -241,7 +241,7 @@ msgid ""
 "strong> directory automatically. Additionally, the password service is "
 "integrated into the Windows environment as a system service, which means the "
 "service can be started automatically or manually."
-msgstr ""
+msgstr "Das Paket ist automatisch im <strong>C:\\Windows\\UCS-AD-Connector</strong> Verzeichnis installiert. Zusätzlich ist der Passwort-Service als System-Dienst in die Windows-Umgebung integriert. Dadurch kann der Dienst automatisch oder manuell gestartet werden."
 
 #: umc/js/adconnector.js:214
 msgid "The password for the synchronisation account is required!"

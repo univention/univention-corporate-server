@@ -1,3 +1,10 @@
+univention-ad-connector (8.0.5-1) unstable; urgency=low
+
+  * Bug #32698: fix translations
+  * Bug #31990: fix shell injections
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2013 15:07:23 +0200
+
 univention-ad-connector (8.0.4-1) unstable; urgency=low
 
   * Bug #32698: integrate download site into UMC module
