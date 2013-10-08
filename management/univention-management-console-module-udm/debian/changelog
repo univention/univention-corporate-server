@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.37-1) unstable; urgency=low
+
+  * Bug #23214: Fix JS dependencies; broken revert in 4.0.36-1
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Oct 2013 23:11:39 +0200
+
 univention-management-console-module-udm (4.0.36-1) unstable; urgency=low
 
   * Bug #23214: Use frontend wizards to simplify creation of certain objects

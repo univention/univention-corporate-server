@@ -64,12 +64,11 @@ define([
 	"umc/modules/udm/CreateReportDialog",
 	"umc/modules/udm/NewObjectDialog",
 	"umc/modules/udm/DetailPage",
-	"umc/modules/udm/QuickDetailPage",
 	"umc/i18n!umc/modules/udm",
 	"umc/modules/udm/MultiObjectSelect",
 	"umc/modules/udm/ComboBox",
 	"umc/modules/udm/CertificateUploader"
-], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, QuickDetailPage, _) {
+], function(declare, lang, array, has, Deferred, all, on, topic, aspect, json, domStyle, ContentPane, Menu, MenuItem, _TextBoxMixin, Dialog, tools, dialog, store, ContainerWidget, Text, Module, Page, Grid, ExpandingTitlePane, Form, SearchForm, Button, Tree, ProgressBar, TreeModel, TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, _) {
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
@@ -1330,13 +1329,13 @@ define([
 				return;
 			}
 
-			this.resetTitle();
 			this.selectChild(this._searchPage);
 			if (this._detailPage) {
 				this.removeChild(this._detailPage);
 				this._detailPage.destroyRecursive();
 				this._detailPage = null;
 			}
+			this.resetTitle();
 		},
 
 		focusModule: function() {
