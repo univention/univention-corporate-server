@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.48-1) unstable; urgency=low
+
+  * improved description of layout position related attributes in
+    settings/extented_attribute.py handler (Bug #28629)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 08 Oct 2013 12:58:57 +0200
+
 univention-directory-manager-modules (9.0.47-5) unstable; urgency=low
 
   * Adjustment for Bug #32676

@@ -185,8 +185,8 @@ property_descriptions={
 			identifies=0
 		),
 	'tabPosition': univention.admin.property(
-			short_description=_('Position number on tab'),
-			long_description='',
+			short_description=_('Layout position of the exteneded attribute'),
+			long_description=_('Position of the extended attribute in the superordinate layout element (tab, or group if existent)'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
 			options=[],
@@ -205,8 +205,8 @@ property_descriptions={
 			identifies = False
 		),
 	'groupPosition': univention.admin.property(
-			short_description = _( 'Position number of group' ),
-			long_description = '',
+			short_description = _( 'Layout position of the extended attribute\'s group' ),
+			long_description = _('Position of the extended attribute\'s group (if existent) on the tab'),
 			syntax = univention.admin.syntax.integer,
 			multivalue = False,
 			options = [],

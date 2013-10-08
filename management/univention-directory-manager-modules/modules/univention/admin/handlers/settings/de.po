@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 16:04+0200\n"
+"POT-Creation-Date: 2013-10-08 12:44+0200\n"
 "PO-Revision-Date: 2011-12-01 09:47+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -259,16 +259,30 @@ msgid "Tab name"
 msgstr "Name der Karteikarte"
 
 #: extended_attribute.py:188
-msgid "Position number on tab"
-msgstr "Positionsnummer auf der Karteikarte"
+msgid "Layout position of the exteneded attribute"
+msgstr "Layoutposition des erweiterten Attributs"
+
+#: extended_attribute.py:189
+msgid ""
+"Position of the extended attribute in the superordinate layout element (tab, "
+"or group if existent)"
+msgstr ""
+"Position des erweiterten Attributs in dem übergeordneten Layoutelement "
+"(Karteikarte, oder Gruppe wenn vorhanden)"
 
 #: extended_attribute.py:198
 msgid "Group name"
 msgstr "Gruppenname"
 
 #: extended_attribute.py:208
-msgid "Position number of group"
-msgstr "Positionsnummer der Gruppe"
+msgid "Layout position of the extended attribute's group"
+msgstr "Layoutposition der Gruppe des erweiterten Attributs"
+
+#: extended_attribute.py:209
+msgid "Position of the extended attribute's group (if existent) on the tab"
+msgstr ""
+"Position der Gruppe (wenn vorhanden) des erweiterten Attributs auf der "
+"Karteikarte"
 
 #: extended_attribute.py:218
 msgid "Tab with advanced settings"
@@ -496,8 +510,8 @@ msgstr "UCS-Versionsabhängigkeiten"
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: ldapacl.py:219 ldapschema.py:193 udm_hook.py:219 udm_module.py:219
-#: udm_syntax.py:219
+#: ldapacl.py:218 ldapschema.py:192 udm_hook.py:218 udm_module.py:218
+#: udm_syntax.py:218
 msgid "packageversion: Version must not be lower than the current one."
 msgstr "packageversion: Der Wert darf nicht geringer sein als der aktuelle."
 
@@ -1293,3 +1307,9 @@ msgstr "Bildschirm Grösse (mm)"
 #: xconfig_choices.py:169
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
+
+#~ msgid "Position number on tab"
+#~ msgstr "Positionsnummer auf der Karteikarte"
+
+#~ msgid "Position number of group"
+#~ msgstr "Positionsnummer der Gruppe"
