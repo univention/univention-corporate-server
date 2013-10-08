@@ -38,7 +38,7 @@ import os
 import univention.admin.uldap as udm_uldap
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
-from univention.updater import UCS_Version
+from univention.lib.ucs import UCS_Version
 import subprocess
 import bz2
 import tempfile
@@ -107,8 +107,8 @@ def handler(dn, new, old):
 			return
 
 		if old:	## check for trivial changes
-			diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp')]
-			if diff_keys == ['%sActive' % objectclass] and new.get('%sActive' % objectclass) == 'TRUE':
+			diff_keys = [ key for key in new.keys() if new.get(key) != old.get(key)  and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
+			if diff_keys == ['%sActive' % objectclass] and new.get('%sActive' % objectclass)[0] == 'TRUE':
 				ud.debug(ud.LISTENER, ud.INFO, '%s: %s: activation status changed.' % (name, new['cn'][0]))
 				return
 			elif diff_keys == ['univentionAppIdentifier']:
