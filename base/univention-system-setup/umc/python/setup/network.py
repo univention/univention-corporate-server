@@ -299,7 +299,7 @@ class Device(object):
 
 		if self.ip4dynamic:
 			self.type = 'dhcp'
-		elif self.ipv4 or self.ipv6:
+		elif self.ip4 or self.ip6:
 			self.type = 'static'
 
 	def _remove_old_fallback_variables(self):

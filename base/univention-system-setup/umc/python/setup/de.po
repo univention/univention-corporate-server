@@ -115,7 +115,7 @@ msgstr "Ungültige IPv6 Netzmaske: %r"
 
 #: umc/python/setup/network.py:552
 msgid "Invalid VLAN ID. Must be between 1 and 4095."
-msgstr "Ungültige VLAN ID. Muss zwischen 1 und 4065 sein."
+msgstr "Ungültige VLAN ID. Muss zwischen 1 und 4095 sein."
 
 #: umc/python/setup/network.py:633
 #, python-format
