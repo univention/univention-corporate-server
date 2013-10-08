@@ -400,15 +400,15 @@ def create_python_moduledir(python_basedir, target_subdir, module_directory):
 	if module_directory.startswith('/'):
 		raise moduleCreationFailed, 'Module directory must not be absolute: %s' % (module_directory, )
 	target_dir = os.path.join(python_basedir, target_subdir)
-	target_path = os.path.join(python_basedir, target_dir)
+	target_path = os.path.join(target_dir, module_directory)
 	if not os.path.realpath(target_path).startswith(target_dir):
-		raise moduleCreationFailed, 'Target directory %s not below: %s' % (module_directory, target_dir)
+		raise moduleCreationFailed, 'Target directory %s not below %s' % (module_directory, target_dir)
 
 	## trivial checks passed, go for it
 	parent_dir = os.path.dirname(module_directory)
 	if parent_dir and not os.path.exists(os.path.join(python_basedir, target_subdir, parent_dir)):
 		create_python_moduledir(python_basedir, target_subdir, parent_dir)
-	
+
 	if not os.path.isdir(target_path):
 		try:
 			os.mkdir(target_path)
@@ -443,9 +443,9 @@ def cleanup_python_moduledir(python_basedir, target_subdir, module_directory):
 	if module_directory.startswith('/'):
 		raise moduleRemovalFailed, 'Module directory must not be absolute: %s' % (module_directory, )
 	target_dir = os.path.join(python_basedir, target_subdir)
-	target_path = os.path.join(python_basedir, target_dir)
+	target_path = os.path.join(target_dir, module_directory)
 	if not os.path.realpath(target_path).startswith(target_dir):
-		raise moduleCreationFailed, 'Target directory %s not below: %s' % (module_directory, target_dir)
+		raise moduleCreationFailed, 'Target directory %s not below %s' % (module_directory, target_dir)
 
 	if not os.path.isdir(target_path):
 		return
