@@ -895,15 +895,6 @@ for key, value in mungeddial.properties.items():
 
 default_property_descriptions=copy.deepcopy(property_descriptions) # for later reset of descriptions
 
-express_layout = [
-	Group( _( 'User account' ), layout = [
-		[ 'title', 'firstname', 'lastname'],
-		[ 'username', 'primaryGroup' ],
-		'password',
-		'pwdChangeNextLogin',
-		'mailPrimaryAddress',
-		] ),
-	]
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
 		Group( _( 'User account' ), layout = [

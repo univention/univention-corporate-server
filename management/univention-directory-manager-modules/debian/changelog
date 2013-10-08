@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.49-1) unstable; urgency=low
+
+  * Bug #23214: Revert express layout for users/user; will be done in frontend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Oct 2013 13:46:24 +0200
+
 univention-directory-manager-modules (9.0.48-1) unstable; urgency=low
 
   * improved description of layout position related attributes in
