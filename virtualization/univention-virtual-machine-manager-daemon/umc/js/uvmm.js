@@ -475,7 +475,7 @@ define([
 							type: CheckBox,
 							name: disk.source,
 							label: lang.replace( _( '{volumeFilename} (Pool: {pool})' ), disk ),
-							value: disk.deletable,
+							value: disk.deletable
 						} );
 					} else {
 						failed_disks.push( disk.source );
@@ -487,7 +487,7 @@ define([
 								volumeFilename: entities.encode(disk.volumeFilename),
 								pool: entities.encode(disk.pool)
 							} ) + '</p>',
-							label: '',
+							label: ''
 						} );
 					}
 				} ) );
