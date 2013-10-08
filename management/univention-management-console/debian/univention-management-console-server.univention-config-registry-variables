@@ -28,12 +28,6 @@ Description[en]=The Univention Management Console opens various processes for it
 Type=int
 Categories=management-umc
 
-[umc/server/languages/.*]
-Description[de]=Variablen der Form umc/server/languages/.* definieren die Verfügbarkeit einer UMC Sprachversion und legen deren Name fest. Diese Variablen müssen in der Regel nicht angepasst werden.
-Description[en]=Variablen in the format umc/server/languages/.* define the availability of a UMC language version and the associated name. Such variables usually do not need to be changed.
-Type=str
-Categories=management-umc
-
 [umc/module/.*/.*/disabled]
 Description[de]=Ist eine Option der Form 'umc/module/.*/.*/disabled' aktiviert, wird ein Modul in der UMC nicht mehr angezeigt, z.B. 'umc/module/users/user/disabled=true'.
 Description[en]=If an option in the format 'umc/module/.*/.*/disabled' is activated, the module isn't shown in the UMC, e.g. 'umc/module/users/user/disabled=true'.

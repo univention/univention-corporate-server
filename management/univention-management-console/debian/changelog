@@ -1,3 +1,9 @@
+univention-management-console (6.0.15-4) unstable; urgency=low
+
+  * removed description of UCRV umc/server/languages/.* (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 08 Oct 2013 14:23:27 +0200
+
 univention-management-console (6.0.15-3) unstable; urgency=low
 
   * ucs overview page (Bug #32611) 

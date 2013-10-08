@@ -70,31 +70,13 @@ def getEntries(category):
 	entries.sort(key = lambda x: x.get('priority', float('inf')))
 	return entries
 
-def getLocales():
-	locale = configRegistry.get('locale', '')
-	locales = []
-	for l in locale.split(' '):
-		if '.' in l:
-			l = l.split('.')[0]
-		configured_locale = configRegistry.get('umc/server/languages/%s' % l)
-		if configured_locale:
-			locales.append(dict(
-				id=l.replace('_', '-'),
-				label=configured_locale)
-			)
-
-	# sort entries alphabetically
-	locales.sort(key = lambda x: x.get('label'))
-	return locales
-
 data = dict(
 	service=getEntries('service'),
 	admin=getEntries('admin'),
 	ucr=dict(
 		domainname=configRegistry['domainname'],
 		hostname=configRegistry['hostname'],
-	),
-	locales=getLocales(),
+	)
 )
 
 print json.dumps(data, indent=2)

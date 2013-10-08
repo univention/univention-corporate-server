@@ -38,12 +38,7 @@ umc_frontend_new_hash
 
 # provide new settings for localisation of umc frontend
 eval "$(ucr shell)"
-univention-config-registry set "umc/server/languages/en_US?English" \
-	"umc/server/languages/de_DE?Deutsch" \
-	"umc/server/languages/en_GB?English (United Kingdom)" \
-	"umc/server/languages/de_AT?Deutsch (Österreich)" \
-	"umc/server/languages/de_CH?Deutsch (Schweiz)" \
-	"umc/web/feedback/mail?feedback@univention.de" \
+univention-config-registry set "umc/web/feedback/mail?feedback@univention.de" \
 	"umc/web/feedback/description?[UMC-Feedback] Traceback" \
 	"umc/web/favorites/default?udm:users/user,udm:groups/group,udm:computers/computer,appcenter,updater" \
 	"umc/web/sso/enabled=yes" \

@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.90-2) unstable; urgency=low
+
+  * do not set defaults for deprecated UCRV umc/server/languages/.* in
+    postinst anymore (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 08 Oct 2013 16:42:24 +0200
+
 univention-management-console-frontend (3.0.90-1) unstable; urgency=low
 
   * Bug #23214: Extending wizard for better UDM wizards

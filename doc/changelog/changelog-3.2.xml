@@ -1903,6 +1903,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The package <package>univention-apache</package> now offers the file <filename>/var/www/ucs-overview/languages.json</filename>, which contains available server languages and can be controlled by &ucsUCRV;s <envar>ucs/server/languages/*</envar> (<ulink url="&ucsbug;32677">Bug 32677</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  As &ucsUCRV; <envar>umc/server/languages/.*</envar> has been renamed to &ucsUCRV; <envar>ucs/server/languages/.*</envar>, possible user defined variables will be adopted during package update. In addtion, locales will be read from <filename>/var/www/ucs-overview/languages.json</filename> in the future instead of <filename>/var/www/ucs-overview/entries.json</filename> (<ulink url="&ucsbug;32678">Bug 32678</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 

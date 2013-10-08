@@ -40,13 +40,14 @@ define([
 	"dojo/on",
 	"dojo/json",
 	"dojo/text!entries.json",
+	"dojo/text!languages.json",
 	"/ucs-overview/js/i18n!js"
-], function(lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, entriesStr, _) {
+], function(lang, kernel, array, query, domConstruct, domAttr, domStyle, domClass, on, json, entriesStr, languagesStr, _) {
 	var entries = json.parse(entriesStr);
 	var ucr = entries.ucr;
 
 	// make sure that en-US exists
-	var availableLocales = entries.locales;
+	var availableLocales = json.parse(languagesStr);
 	var existsEnUsLocale = array.some(availableLocales, function(ilocale) {
 		return ilocale.id == 'en-US';
 	});

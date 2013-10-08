@@ -1,3 +1,13 @@
+univention-apache (6.0.7-3) unstable; urgency=low
+
+  * removed locale field from entries.json UCR template
+  * adapted startsite.js to read available locales from languages.json
+  * adopt old umc/server/languages/.* UCRVs to ucs/server/languages/.* 
+    during postinst when updating from a version <= 6.0.7-2
+  (Bug #32678)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 08 Oct 2013 14:27:15 +0200
+
 univention-apache (6.0.7-2) unstable; urgency=low
 
   * Bug #32609: Fix ucs overview description

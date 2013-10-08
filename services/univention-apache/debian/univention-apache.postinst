@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #
 # Univention Apache
 #  postinst file for the univention-apache debian package
@@ -110,12 +110,30 @@ ucr set \
 	ucs/web/overview/entries/admin/invalid-certificate-list/link?"../ucsCA.crl" \
 	ucs/web/overview/entries/admin/invalid-certificate-list/priority?"91" \
 
-# configure available languages
-ucr set "ucs/server/languages/en_US?English" \
-	"ucs/server/languages/de_DE?Deutsch" \
-	"ucs/server/languages/en_GB?English (United Kingdom)" \
-	"ucs/server/languages/de_AT?Deutsch (Österreich)" \
-	"ucs/server/languages/de_CH?Deutsch (Schweiz)" 
+
+# configuare language settings
+if dpkg --compare-versions "$2" le-nl 6.0.7-2
+echo "we are in"
+then
+	ORIGINAL_IFS=$IFS
+	IFS="_"
+	for key in "${!umc_server_languages_@}"
+	do
+		declare -a key_split=($key)
+		ucr set ucs/server/languages/${key_split[3]}="${!key}"
+	done	
+	IFS=$ORIGINAL_IFS
+
+	unset "${!umc_server_languages_@}"
+
+else
+	ucr set "ucs/server/languages/en_US?English" \
+		"ucs/server/languages/de_DE?Deutsch" \
+		"ucs/server/languages/en_GB?English (United Kingdom)" \
+		"ucs/server/languages/de_AT?Deutsch (Österreich)" \
+		"ucs/server/languages/de_CH?Deutsch (Schweiz)" 
+
+fi
 
 exit 0
 
