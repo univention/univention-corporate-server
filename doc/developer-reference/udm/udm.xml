@@ -1403,7 +1403,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UDM module is only activated by systems with a version lower than or equal to this.
+						Maximal required UCS version. The UDM module is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 3.2-x release range a value like 3.2.99 may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1489,7 +1489,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UDM syntax is only activated by systems with a version lower than or equal to this.
+						Maximal required UCS version. The UDM syntax is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 3.2-x release range a value like 3.2.99 may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1575,7 +1575,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UDM hook is only activated by systems with a version lower than or equal to this.
+						Maximal required UCS version. The UDM hook is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 3.2-x release range a value like 3.2.99 may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>
