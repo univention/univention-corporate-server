@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.39-1) unstable; urgency=low
+
+  * Bug #26418: adapt grid actions
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2013 13:06:07 +0200
+
 univention-management-console-module-appcenter (3.0.38-1) unstable; urgency=low
 
   * Bug #32609: Automatically set UCR variables for ucs-overview

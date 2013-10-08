@@ -281,8 +281,11 @@ msgid "Enable this component"
 msgstr "Diese Komponente aktivieren"
 
 #: umc/js/appcenter/SettingsPage.js:150
-msgid "Enable/disable this component"
+msgid "Enable this component"
 msgstr "Diese Komponente aktivieren"
+
+msgid "Disable this component"
+msgstr "Diese Komponente deaktivieren"
 
 #: umc/js/appcenter/PackagesPage.js:54 umc/js/appcenter/PackagesPage.js:56
 msgid "Extended software management"
@@ -440,10 +443,6 @@ msgstr ""
 "Dieses Modul zeigt die auf dem System verfügbaren Softwarepakete an und "
 "ermöglicht es, diese zu installieren, zu deinstallieren oder zu "
 "aktualisieren."
-
-#: umc/js/appcenter/SettingsPage.js:153
-msgid "On/Off"
-msgstr "An/Aus"
 
 #: umc/js/appcenter/AppDetailsPage.js:154
 msgid "Open"

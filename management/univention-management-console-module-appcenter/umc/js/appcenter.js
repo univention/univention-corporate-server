@@ -123,17 +123,21 @@ define([
 			this._packages = new PackagesPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
-				moduleStore: this._packagesStore, standby: lang.hitch(this, 'standby')
+				moduleStore: this._packagesStore,
+				standby: lang.hitch(this, 'standby')
 			});
 			this._components = new SettingsPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
-				moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')
+				moduleStore: this._componentsStore,
+				standby: lang.hitch(this, 'standby'),
+				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
 			this._details = new DetailsPage({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
-				moduleStore: this._componentsStore, standby: lang.hitch(this, 'standby')
+				moduleStore: this._componentsStore,
+				standby: lang.hitch(this, 'standby')
 			});
 
 			this._tabContainer.addChild(this._appCenterPage);

@@ -77,19 +77,17 @@ define([
 					name: 'view',
 					label: _("Show details"),
 					isContextAction: true,
-					isStandardAction: false,
+					isStandardAction: true,
 					isMultiAction: false,
 					callback: lang.hitch(this, function(ids) {
 						this._show_details(ids);
 					})
 				},
-				// isStandardAction=true for the installer actions (install/uninstall/upgrade)
-				// doesn't make sense as long as these actions aren't displayed as icons
 				{
 					name: 'install',
 					label: _("Install"),
 					isContextAction: true,
-					isStandardAction: false,
+					isStandardAction: true,
 					isMultiAction: true,
 					canExecute: lang.hitch(this, function(values) {
 						return this._can_install(values);
@@ -102,7 +100,7 @@ define([
 					name: 'uninstall',
 					label: _("Uninstall"),
 					isContextAction: true,
-					isStandardAction: false,
+					isStandardAction: true,
 					isMultiAction: true,
 					canExecute: lang.hitch(this, function(values) {
 						return this._can_uninstall(values);
@@ -115,7 +113,7 @@ define([
 					name: 'upgrade',
 					label: _("Upgrade"),
 					isContextAction: true,
-					isStandardAction: false,
+					isStandardAction: true,
 					isMultiAction: true,
 					canExecute: lang.hitch(this, function(values) {
 						return this._can_upgrade(values);

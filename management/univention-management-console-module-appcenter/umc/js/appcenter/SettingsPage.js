@@ -46,6 +46,7 @@ define([
 
 		moduleStore: null,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
+		standbyDuring: null,
 		_query: { table: 'components' },
 
 		postMixInProperties: function() {
@@ -146,37 +147,27 @@ define([
 					})
 				},
 				{
-					name: 'onoff',
-					description: _("Enable/disable this component"),
-					label: lang.hitch(this, function(values) {
-						if (values === undefined) {
-							return _("On/Off");
-						} else {
-							return (values.enabled ? _("Disable") : _("Enable"));
-						}
-					}),
-					// iconClass: lang.hitch(this, function(values) {
-					// 	if (value === undefined) {
-					// 		return "";
-					// 	}
-					// 	return (values['enabled'] ? 'dijitIconFolderClosed' : 'dijitIconFolderOpen');
-					// }),
+					name: 'enable',
+					description: _("Enable this component"),
+					label: _("Enable"),
+					// iconClass: 'dijitIconFolderOpen',
 					isStandardAction: false,
 					isMultiAction: false,
 					isContextAction: true,
 					callback: lang.hitch(this, function(ids) {
-						// Multi action does not make sense here since the real action depends
-						// row-wise from the value of the 'enabled' property.
-						var id = ids[0];
-						try {
-							var rowIndex = this._grid._grid.getItemIndex({name: id});
-							if (rowIndex != -1) {
-								var values = this._grid.getRowValues(rowIndex);
-								this._enable_component(id, ! values.enabled);
-							}
-						} catch(error) {
-							console.error("On/Off id = '" + id + "' ERROR: " + error.message);
-						}
+						this._enable_component(ids, true);
+					})
+				},
+				{
+					name: 'disable',
+					description: _("Disable this component"),
+					label: _("Disable"),
+					//iconClass: 'dijitIconFolderClosed',
+					isStandardAction: false,
+					isMultiAction: false,
+					isContextAction: true,
+					callback: lang.hitch(this, function(ids) {
+						this._enable_component(ids, false);
 					})
 				},
 				{
@@ -302,46 +293,25 @@ define([
 			}
 		},
 
-		// action callback for the 'enable' and 'disable' actions. Can now handle
-		// arrays (well-prepared for isMultiAction). This is the only point where
-		// the grid itself has to save something.
+		// action callback for the 'enable' and 'disable' actions.
 		_enable_component: function(ids, enabled) {
-			var args = [];
-			if (! (ids instanceof Array)) {
-				ids = [ids];
-			}
-			array.forEach(ids, function(id) {
-				args.push({
+			var args = array.map(ids, function(id) {
+				return {
 					object: {
 						name: id,
 						enabled: enabled
 					},
 					options: null
-				});
+				};
 			});
-			// the grid calls multiActions even if nothing is selected?
-			if (args.length) {
-				this.standby(true);
-				tools.umcpCommand('appcenter/components/put', args).then(
-					lang.hitch(this, function() {
-						this.standby(false);
-						this.refresh(); // refresh own grid
-					}),
-					lang.hitch(this, function() {
-						this.standby(false);
-					})
-				);
-			}
+			this.standbyDuring(tools.umcpCommand('appcenter/components/put', args)).then(lang.hitch(this, function() {
+				this.refresh(); // refresh own grid
+			}));
 		},
 
 		// removes a component
 		_delete_components: function(ids) {
 
-			// multiAction callback is fired even if nothing
-			// is selected?
-			if (! ids.length) {
-				return;
-			}
 			var msg = lang.replace(_("Are you sure you want to delete the following components: [{ids}]"), {ids: ids});
 			dialog.confirm(msg,
 			[
