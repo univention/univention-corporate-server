@@ -369,23 +369,23 @@ define([
 
 		_update_download_text: function(result) {
 			var downloadText = _('The MSI files are the installation files for the password service and can be started by double clicking on it.') + '<br>'
-			+ _('The package is installed in the <strong>C:\\Windows\\UCS-AD-Connector</strong> directory automatically. Additionally, the password service is integrated into the Windows environment as a system service, which means the service can be started automatically or manually.')
+			+ _('The package is installed in the <b>C:\\Windows\\UCS-AD-Connector</b> directory automatically. Additionally, the password service is integrated into the Windows environment as a system service, which means the service can be started automatically or manually.')
 			+ '<ul><li><a target="_blank" href="/univention-ad-connector/ucs-ad-connector.msi">ucs-ad-connector.msi</a><br>'
-			+ _('Installation file for the password service for <strong>%s</strong> Windows.<br />It can be started by double clicking on it.', '32bit')
+			+ _('Installation file for the password service for <b>%s</b> Windows.<br />It can be started by double clicking on it.', '32bit')
 			+ '</li><li><a target="_blank" href="/univention-ad-connector/ucs-ad-connector-64bit.msi">ucs-ad-connector-64bit.msi</a><br>'
-			+ _('Installation file for the password service for <strong>%s</strong> Windows.<br />It can be started by double clicking on it.', '64bit')
+			+ _('Installation file for the password service for <b>%s</b> Windows.<br />It can be started by double clicking on it.', '64bit')
 			+ '</li><li><a target="_blank" href="/univention-ad-connector/vcredist_x86.exe">vcredist_x86.exe</a><br>'
-			+ _('Microsoft Visual C++ 2010 Redistributable Package (x86) - <strong>Must</strong> be installed on a <strong>64bit</strong> Windows.')
+			+ _('Microsoft Visual C++ 2010 Redistributable Package (x86) - <b>Must</b> be installed on a <b>64bit</b> Windows.')
 			+ '</li>';
 
 			if (result.configured) {
 				downloadText += '<li><a target="_blank" href="/umcp/adconnector/cert.pem" type="application/octet-stream">cert.pem</a><br>'
-				+ _('The <strong>cert.pem</strong> file contains the SSL certificates created in UCS for secure communication.')
-				+ _('It must also be copied into the installation directory of the password service.')
-				+ _('<br />Please verify that the file has been downloaded as <strong>cert.pem</strong>, Internet Explorer appends a .txt under some circumstances.')
+				+ _('The <b>cert.pem</b> file contains the SSL certificates created in UCS for secure communication.') + ' '
+				+ _('It must be copied into the installation directory of the password service.')
+				+ _('<br />Please verify that the file has been downloaded as <b>cert.pem</b>, Internet Explorer appends a .txt under some circumstances.')
 				+ '</li><li><a target="_blank" href="/umcp/adconnector/private.key" type="application/octet-stream">private.key</a><br>'
-				+ _('The <strong>private.key</strong> file contains the private key to the SSL certificates.')
-				+ _('It must also be copied into the installation directory of the password service.')
+				+ _('The <b>private.key</b> file contains the private key to the SSL certificates.') + ' '
+				+ _('It must be copied into the installation directory of the password service.')
 				+ '</li>';
 			}
 			downloadText += '</ul>';

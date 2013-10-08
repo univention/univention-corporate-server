@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.6-1) unstable; urgency=low
+
+  * Bug #32698: fix translations
+
+ -- Florian Best <best@univention.de>  Tue, 08 Oct 2013 16:26:58 +0200
+
 univention-ad-connector (8.0.5-1) unstable; urgency=low
 
   * Bug #32698: fix translations

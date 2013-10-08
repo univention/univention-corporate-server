@@ -22,10 +22,10 @@ msgstr ""
 
 #: umc/js/adconnector.js:385
 msgid ""
-"<br />Please verify that the file has been downloaded as <strong>cert.pem</"
-"strong>, Internet Explorer appends a .txt under some circumstances."
+"<br />Please verify that the file has been downloaded as <b>cert.pem</"
+"b>, Internet Explorer appends a .txt under some circumstances."
 msgstr ""
-"<br />Bitte überprüfen, dass die Datei als <strong>cert.pem</strong> "
+"<br />Bitte überprüfen, dass die Datei als <b>cert.pem</b> "
 "runtergeladen wurde, Internet Explorer hängt unter bestimmten Umständen ein ."
 "txt an."
 
@@ -85,16 +85,16 @@ msgstr "Deutsch"
 #: umc/js/adconnector.js:374 umc/js/adconnector.js:376
 #, python-format
 msgid ""
-"Installation file for the password service for <strong>%s</strong> Windows."
+"Installation file for the password service for <b>%s</b> Windows."
 "<br />It can be started by double clicking on it."
-msgstr "Installationsdatei für den Passwordservice für <strong>%s</strong> Windows.<br />Es kann per Doppelklick gestartet werden."
+msgstr "Installationsdatei für den Passwort-Dienst für <b>%s</b> Windows.<br />Diese kann per Doppelklick gestartet werden."
 
 #: umc/js/adconnector.js:384 umc/js/adconnector.js:388
 msgid ""
-"It must also be copied into the installation directory of the password "
+"It must be copied into the installation directory of the password "
 "service."
 msgstr ""
-"Es muss auch in das Installationsverzeichnis des Passwortservice kopiert "
+"Es muss in das Installationsverzeichnis des Passwort-Dienstes kopiert "
 "werden."
 
 #: umc/js/adconnector.js:100
@@ -123,9 +123,9 @@ msgstr ""
 
 #: umc/js/adconnector.js:378
 msgid ""
-"Microsoft Visual C++ 2010 Redistributable Package (x86) - <strong>Must</"
-"strong> be installed on a <strong>64bit</strong> Windows."
-msgstr "Microsoft Visul C++ 2010 Redistributable Package (x86) - <strong>Muss</strong> auf einem <strong>64bit</strong> Windows installiert sein."
+"Microsoft Visual C++ 2010 Redistributable Package (x86) - <b>Must</"
+"b> be installed on a <b>64bit</b> Windows."
+msgstr "Microsoft Visual C++ 2010 Redistributable Package (x86) - <b>Muss</b> auf einem <b>64bit</b> Windows installiert sein."
 
 #: umc/js/adconnector.js:96
 msgid "Password of the synchronisation user"
@@ -163,18 +163,18 @@ msgstr "Systemsprache des Active Directory Servers"
 
 #: umc/js/adconnector.js:383
 msgid ""
-"The <strong>cert.pem</strong> file contains the SSL certificates created in "
+"The <b>cert.pem</b> file contains the SSL certificates created in "
 "UCS for secure communication."
 msgstr ""
-"Die <strong>cert.pem</strong> Datei enthält die in UCS erstellten SSL "
+"Die <b>cert.pem</b> Datei enthält die in UCS erstellten SSL "
 "Zertifikate für sichere Kommunikation."
 
 #: umc/js/adconnector.js:387
 msgid ""
-"The <strong>private.key</strong> file contains the private key to the SSL "
+"The <b>private.key</b> file contains the private key to the SSL "
 "certificates."
 msgstr ""
-"Die <strong>private.key</strong> Datei beinhaltet den privaten Schlüssel des "
+"Die <b>private.key</b> Datei beinhaltet den privaten Schlüssel des "
 "SSL Zertifikats."
 
 #: umc/js/adconnector.js:408
@@ -190,7 +190,7 @@ msgid ""
 "The MSI files are the installation files for the password service and can be "
 "started by double clicking on it."
 msgstr ""
-"Die MSI Dateien sind die Installationsdateien für den Passwort-Service und "
+"Die MSI Dateien sind die Installationsdateien für den Passwort-Dienst und "
 "können per Doppelklick gestartet werden."
 
 #: umc/js/adconnector.js:303
@@ -237,11 +237,11 @@ msgstr "Der Rechnername des Active Directory Servers wird benötigt"
 
 #: umc/js/adconnector.js:372
 msgid ""
-"The package is installed in the <strong>C:\\Windows\\UCS-AD-Connector</"
-"strong> directory automatically. Additionally, the password service is "
+"The package is installed in the <b>C:\\Windows\\UCS-AD-Connector</"
+"b> directory automatically. Additionally, the password service is "
 "integrated into the Windows environment as a system service, which means the "
 "service can be started automatically or manually."
-msgstr "Das Paket ist automatisch im <strong>C:\\Windows\\UCS-AD-Connector</strong> Verzeichnis installiert. Zusätzlich ist der Passwort-Service als System-Dienst in die Windows-Umgebung integriert. Dadurch kann der Dienst automatisch oder manuell gestartet werden."
+msgstr "Das Paket ist automatisch im <b>C:\\Windows\\UCS-AD-Connector</b> Verzeichnis installiert. Zusätzlich ist der Passwort-Dienst als System-Dienst in die Windows-Umgebung integriert. Dadurch kann der Dienst automatisch oder manuell gestartet werden."
 
 #: umc/js/adconnector.js:214
 msgid "The password for the synchronisation account is required!"
