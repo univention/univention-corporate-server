@@ -46,6 +46,7 @@ _=translation.translate
 OC = "univentionLDAPExtensionSchema"
 
 module='settings/ldapschema'
+superordinate='settings/cn'
 childs=0
 operations=['add','edit','remove','search','move']
 short_description=_('Settings: LDAP Schema Extension')

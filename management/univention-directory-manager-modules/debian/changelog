@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.50-2) unstable; urgency=low
+
+  * Add superordinate to ldapschema and ldapacl modules (Bug #32665)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 08 Oct 2013 16:24:58 +0200
+
 univention-directory-manager-modules (9.0.50-1) unstable; urgency=low
 
   * Fix detection of Active flag in ldap_extension listener                    

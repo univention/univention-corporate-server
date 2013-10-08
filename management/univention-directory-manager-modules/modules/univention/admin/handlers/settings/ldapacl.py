@@ -46,6 +46,7 @@ _=translation.translate
 OC = "univentionLDAPExtensionACL"
 
 module='settings/ldapacl'
+superordinate='settings/cn'
 childs=0
 operations=['add','edit','remove','search','move']
 short_description=_('Settings: LDAP ACL Extension')
