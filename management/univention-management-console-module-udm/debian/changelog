@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.36-1) unstable; urgency=low
+
+  * Bug #23214: Use frontend wizards to simplify creation of certain objects
+  * Bug #23214: Revert alternative implementation (3.0.31-1)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Oct 2013 15:40:05 +0200
+
 univention-management-console-module-udm (4.0.35-1) unstable; urgency=low
 
   * Bug #26418: adapt grid actions

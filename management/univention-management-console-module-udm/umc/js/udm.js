@@ -312,7 +312,7 @@ define([
 			var actions = [{
 				name: 'add',
 				label: _('Add'),
-				description: _( 'Add a new %s.', this.objectNameSingular ),
+				description: _( 'Add a new %s', this.objectNameSingular ),
 				iconClass: 'umcIconAdd',
 				isContextAction: false,
 				isStandardAction: true,
@@ -1248,6 +1248,11 @@ define([
 			//		Open a user dialog for creating a new LDAP object.
 
 			// when we are in navigation mode, make sure the user has selected a container
+			if (this._newObjectDialogPage) {
+				this.removeChild(this._newObjectDialogPage);
+				this._newObjectDialogPage.destroyRecursive();
+				this._newObjectDialogPage = null;
+			}
 			var selectedContainer = { id: '', label: '', path: '' };
 			if ('navigation' == this.moduleFlavor) {
 				var items = this._tree.get('selectedItems');
@@ -1261,21 +1266,25 @@ define([
 
 			// open the dialog
 			var superordinate = this._searchForm.getWidget('superordinate');
-			var _dialog = new NewObjectDialog({
+			this._newObjectDialogPage = new NewObjectDialog({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				moduleFlavor: this.moduleFlavor,
 				selectedContainer: selectedContainer,
 				selectedSuperordinate: superordinate && superordinate.get('value'),
 				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
-				onDone: lang.hitch(this, function(options) {
-					// when the options are specified, create a new detail page
-					options.objectType = options.objectType || this.moduleFlavor; // default objectType is the module flavor
-					this.createDetailPage(options.objectType, undefined, options);
-				}),
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular
 			});
-			this.own(_dialog);
+			this._newObjectDialogPage.on('Cancel', lang.hitch(this, function(values) {
+				this.selectChild(this._searchPage);
+			}));
+			this._newObjectDialogPage.on('Done', lang.hitch(this, function(values) {
+				// when the values are specified, create a new detail page
+				values.objectType = values.objectType || this.moduleFlavor; // default objectType is the module flavor
+				this.createDetailPage(values.objectType, undefined, values);
+			}));
+			this.addChild(this._newObjectDialogPage);
+			this.selectChild(this._newObjectDialogPage);
 		},
 
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
@@ -1290,12 +1299,7 @@ define([
 				}, newObjOptions);
 			}
 
-			if (newObjOptions && newObjOptions.simplified) {
-				DetailPageClass = QuickDetailPage;
-			} else {
-				DetailPageClass = DetailPage;
-			}
-			this._detailPage = new DetailPageClass({
+			this._detailPage = new DetailPage({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				moduleStore: this.moduleStore,
 				moduleFlavor: this.moduleFlavor,

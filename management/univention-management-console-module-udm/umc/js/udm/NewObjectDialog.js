@@ -34,15 +34,15 @@ define([
 	"dojo/_base/array",
 	"dojo/has",
 	"dojo/promise/all",
-	"dijit/Dialog",
 	"umc/tools",
+	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, has, all, Dialog, tools, Text, Form, ContainerWidget, _) {
+], function(declare, lang, array, has, all, tools, Page, Text, Form, ContainerWidget, _) {
 
-	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
+	return declare("umc.modules.udm.NewObjectDialog", [ Page ], {
 		// summary:
 		//		Dialog class for creating a new LDAP object.
 
@@ -83,10 +83,25 @@ define([
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			// mixin the dialog title
+			// buttons
+			var buttons = [{
+				name: 'continue',
+				label: _('Continue'),
+				defaultButton: true,
+				callback: lang.hitch(this, function() {
+					this.onDone(this._form.get('value'));
+				}),
+				style: 'float:right;'
+			}, {
+				name: 'cancel',
+				label: _('Cancel'),
+				callback: lang.hitch(this, function() {
+					this.onCancel();
+				})
+			}];
+
 			lang.mixin(this, {
-				//style: 'max-width: 450px'
-				title: _( 'New %s', this.objectNameSingular )
+				footerButtons: buttons
 			});
 		},
 
@@ -101,18 +116,15 @@ define([
 					} ),
 					containers: this.umcpCommand('udm/containers'),
 					superordinates: this.umcpCommand('udm/superordinates'),
-					templates: this.umcpCommand('udm/templates'),
-					simple_form: this.umcpCommand('udm/simple_form')
+					templates: this.umcpCommand('udm/templates')
 				}).then(lang.hitch(this, function(results) {
 					var types = lang.getObject('types.result', false, results) || [];
 					var containers = lang.getObject('containers.result', false, results) || [];
 					var superordinates = lang.getObject('superordinates.result', false, results) || [];
 					var templates = lang.getObject('templates.result', false, results) || [];
-					var simple_form = lang.getObject('simple_form.result', false, results) || [];
-					this._renderForm(types, containers, superordinates, templates, simple_form);
+					this._renderForm(types, containers, superordinates, templates);
 				}));
-			}
-			else {
+			} else {
 				// for the UDM navigation, only query object types
 				this.umcpCommand('udm/types', {
 					container: this.selectedContainer.id
@@ -122,13 +134,12 @@ define([
 			}
 		},
 
-		_renderForm: function(types, containers, superordinates, templates, simpleForms) {
+		_renderForm: function(types, containers, superordinates, templates) {
 			// default values and sort items
 			types = types || [];
 			containers = containers || [];
 			superordinates = superordinates || [];
 			templates = templates || [];
-			simpleForms = simpleForms || [];
 			array.forEach([types, containers, templates], function(iarray) {
 				iarray.sort(tools.cmpObjects('label'));
 			});
@@ -146,6 +157,7 @@ define([
 					name: 'container',
 					label: _('Container'),
 					description: _('The container in which the LDAP object shall be created.'),
+					visible: containers.length > 1,
 					staticValues: containers
 				});
 				layout.push('container');
@@ -160,6 +172,7 @@ define([
 						staticValues: array.map(superordinates, function(superordinate) {
 							return superordinate.title ? {id: superordinate.id, label: superordinate.title + ': ' + superordinate.label } : superordinate;
 						}),
+						visible: superordinates.length > 1,
 						value: this.selectedSuperordinate
 					}, {
 						type: 'ComboBox',
@@ -182,6 +195,7 @@ define([
 							value: this.defaultObjectType,
 							label: _('%s type', tools.capitalize(this.objectNameSingular)),
 							description: _('The exact %s type.', this.objectNameSingular),
+							visible: types.length > 1,
 							staticValues: types
 						});
 						layout.push('objectType');
@@ -196,20 +210,12 @@ define([
 							value: this.defaultObjectType,  // see Bug #13073, for users/user, there exists only one object type
 							label: _('%s template', tools.capitalize(this.objectNameSingular)),
 							description: _('A template defines rules for default object properties.'),
+							visible: templates.length > 1,
 							staticValues: templates
 						});
 						layout.push('objectTemplate');
 					}
 				}
-				widgets.push({
-					type: 'CheckBox',
-					name: 'simplified',
-					label: _('Simplified form'),
-					value: false,
-					visible: false,
-					description: _('Add this %s with a simplified form.', this.objectNameSingular)
-				});
-				layout.push('simplified');
 			} else {
 				// for the navigation, we show all elements and let them query their content automatically
 				widgets = [{
@@ -217,10 +223,15 @@ define([
 					name: 'container',
 					value: this.selectedContainer.id
 				}, {
+					type: 'Text',
+					name: 'container_help',
+					content: _('<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>', this.selectedContainer.path || this.selectedContainer.label)
+				}, {
 					type: 'ComboBox',
 					name: 'objectType',
 					label: _('%s type', tools.capitalize(this.objectNameSingular)),
 					description: _('The exact object type of the new LDAP object.'),
+					visible: types.length > 1,
 					staticValues: types
 				}, {
 					type: 'ComboBox',
@@ -232,84 +243,42 @@ define([
 					dynamicValues: 'udm/templates',
 					staticValues: [ { id: 'None', label: _('None') } ]
 				}];
-				layout = [ 'container', 'objectType', 'objectTemplate' ];
+				layout = [ 'container', 'container_help', 'objectType', 'objectTemplate' ];
 			}
-
-			// buttons
-			var buttons = [{
-				name: 'add',
-				label: _('Add'),
-				defaultButton: true,
-				callback: lang.hitch(this, function() {
-					this.onDone(this._form.get('value'));
-					this.destroyRecursive();
-				}),
-				style: 'float:right;'
-			}, {
-				name: 'close',
-				label: _('Close'),
-				callback: lang.hitch(this, function() {
-					this.destroyRecursive();
-				})
-			}];
 
 			// now create a Form
 			this._form = new Form({
 				widgets: widgets,
-				layout: layout,
-				buttons: buttons
+				layout: layout
 			});
 			this._form.on('submit', lang.hitch(this, function() {
 				this.onDone(this._form.get('value'));
-				this.destroyRecursive();
 			}));
-			if (!has('touch')) {
-				// only focus the element in normal browsers
-				this.on('show', lang.hitch(this, function() {
-					this._form.getWidget(widgets[0].name).focus();
-				}));
-			}
-			var container = new ContainerWidget({});
-			if ('navigation' == this.moduleFlavor) {
-				container.addChild(new Text({
-					content: _('<p>The LDAP object will be created in the container:</p><p><i>%s</i></p>', this.selectedContainer.path)
-				}));
-			}
-			container.addChild(this._form);
-			this.set('content', container);
-
-			// simple form checkbox
-			var simplifiedWidget = this._form.getWidget('simplified');
-			if (simplifiedWidget) {
-				var lastSimplifiedValue = true;
-				var objectTypeWidget = this._form.getWidget('objectType');
-				var objectTypes = types.length ? types : [this.moduleFlavor];
-				var updateSimpleWidget = function(objectType) {
-					var hasSimpleForm = simpleForms.indexOf(objectType) !== -1;
-					if (hasSimpleForm) {
-						simplifiedWidget.set('value', lastSimplifiedValue);
-					} else if (simplifiedWidget.get('visible')) {
-						lastSimplifiedValue = simplifiedWidget.get('value');
-						simplifiedWidget.set('value', false);
+			this.addChild(this._form);
+			this._form.ready().then(lang.hitch(this, function() {
+				var formNecessary = false;
+				tools.forIn(this._form._widgets, function(iname, iwidget) {
+					if (iwidget.getAllItems) { // ComboBox, but not HiddenInput
+						var items = iwidget.getAllItems();
+						if (items.length > 1) {
+							formNecessary = true;
+						}
 					}
-					simplifiedWidget.set('visible', hasSimpleForm);
-				};
-				var currentType = this.moduleFlavor;
-				if (objectTypeWidget) {
-					this.own(objectTypeWidget.watch('value', lang.hitch(this, function(name, oldValue, newValue) {
-						updateSimpleWidget(newValue);
-					})));
-					currentType = objectTypeWidget.get('value');
+				});
+				if (!formNecessary) {
+					this._form.submit();
+				} else {
+
+					// show headerText only if the form will be displayed
+					this.set('headerText', _('Add a new %s', this.objectNameSingular));
 				}
-				updateSimpleWidget(currentType);
-			}
-
-			this.show();
-
+			}));
 		},
 
-		onDone: function(options) {
-			// event stub
+		onDone: function() {
+		},
+
+		onCancel: function() {
 		}
 	});
 });

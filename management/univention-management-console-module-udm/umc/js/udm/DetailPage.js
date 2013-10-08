@@ -43,7 +43,7 @@ define([
 	"dojo/json",
 	"dijit/TitlePane",
 	"dijit/layout/BorderContainer",
-	"dijit/layout/ContentPane",
+	"dijit/layout/StackContainer",
 	"umc/render",
 	"umc/tools",
 	"umc/dialog",
@@ -63,8 +63,8 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
-	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
+], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, StackContainer, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
+	return declare("umc.modules.udm.DetailPage", [ StackContainer, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
 		//		in order to edit LDAP objects.
@@ -193,8 +193,7 @@ define([
 			// prepare parallel queries
 			var commands = {
 				properties: this.umcpCommandBundle('udm/properties', params),
-				layout: this.umcpCommandBundle('udm/layout', params),
-				express: this.umcpCommandBundle('udm/express_layout', params)
+				layout: this.umcpCommandBundle('udm/layout', params)
 			};
 			if (!this._multiEdit) {
 				// query policies for normal edit
@@ -217,11 +216,10 @@ define([
 			(new all(commands)).then(lang.hitch(this, function(results) {
 				var properties = lang.getObject('properties.result', false, results);
 				var layout = lang.getObject('layout.result', false, results);
-				var expressLayout = lang.getObject('express.result', false, results);
 				var policies = lang.getObject('policies.result', false, results);
 				this.ldapBase = results.ucr[ 'ldap/base' ];
 				var template = lang.getObject('template.result', false, results) || null;
-				this.renderDetailPage(properties, layout, policies, template, expressLayout).then(lang.hitch(this, function() {
+				this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
 					this.standby(false);
 				}), lang.hitch(this, function() {
 					this.standby(false);
@@ -654,7 +652,43 @@ define([
 				style: 'margin:0'
 			}))[0];
 			this._policyDeferred.then(lang.hitch(this, function() {
-				this.set('content', this._form);
+				var wizardModuleURL = 'umc/modules/udm/wizards/' + this.objectType;
+				var wizardCheck;
+				if (!this.newObjectOptions) {
+					wizardCheck = new Deferred();
+					wizardCheck.reject();
+				} else {
+					wizardCheck = tools.urlExists(wizardModuleURL);
+				}
+				when(wizardCheck).then(
+					lang.hitch(this, function() {
+						require([wizardModuleURL], lang.hitch(this, function(WizardClass) {
+							this._wizard = WizardClass({
+								detailForm: this._form,
+								detailButtons: this.getButtonDefinitions()
+							});
+							this._wizard.on('Cancel', lang.hitch(this, function() {
+								topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'create-wizard', 'cancel');
+								this.onCloseTab();
+							}));
+							this._wizard.on('Advanced', lang.hitch(this, function() {
+								topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'create-wizard', 'advance');
+								this.selectChild(this._form);
+								this._tabs.getChildren()[0].addNote(_('%s was not yet created!', this.objectNameSingular));
+							}));
+							this._wizard.on('Finished', lang.hitch(this, function() {
+								this.validateChanges(null);
+							}));
+							this.addChild(this._wizard);
+							this.addChild(this._form);
+							this.selectChild(this._wizard);
+						}));
+					}),
+					lang.hitch(this, function() {
+						this.addChild(this._form);
+						this.selectChild(this._form);
+					})
+				);
 			}));
 
 			// set options
