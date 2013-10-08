@@ -2282,7 +2282,7 @@ nscd -i hosts
 		  E-Mail-Adresse kontaktiert werden.
 		</para>
 
-		<figure id="appcenter-details"><title>etails einer Applikation im App Center</title>
+		<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>
 		<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_details_de.png"/>
 		</figure>
 
@@ -2304,11 +2304,19 @@ nscd -i hosts
 
 		<para>
 		  Nach der Installation einer Applikation werden nach einem Klick auf das Icon einer Applikation
-		  ein oder zwei neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation.
+		  eine oder mehrere neue Optionen angezeigt: <guimenu>Deinstallieren</guimenu> entfernt eine Applikation.
 		  <guimenu>Öffnen</guimenu> verweist auf eine Webseite mit der die installierte Applikation
 		  weitergehend konfiguriert oder verwendet werden kann. Installiert man beispielsweise die
 		  Horde-Applikation, führt dieser Link auf den Login-Dialog. Bei Applikationen ohne
 		  Webinterface wird die Option nicht angezeigt.
+		</para>
+
+		<para>
+		  Aktualisierungen für Applikationen erfolgen unabhängig von den Release-Zyklen für
+		  &ucsUCS;. Ist eine neue Version einer Applikation verfügbar, wird der Menüpunkt
+		  <guimenu>Aktualisieren</guimenu> angezeigt, der die Installation der neuen Version
+		  startet. Wenn Aktualisierungen verfügbar sind, wird außerdem bei der Anmeldung an der
+		  &ucsUMC; ein entsprechender Hinweis ausgegeben.
 		</para>
 
 		<para>

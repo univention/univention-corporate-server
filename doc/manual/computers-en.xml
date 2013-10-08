@@ -2348,13 +2348,23 @@ nscd -i hosts
 	</para>
 
 	<para>
-	  Following installation of an application, ore or two new options are shown when clicking on the icon
+	  Following installation of an application, ore or several new options are shown when clicking on the icon
 	  of an application: <guimenu>Uninstall</guimenu> removes an application. 
 		  <!-- <guimenu>Öffnen</guimenu> verweist auf eine Webseite mit der die installierte Applikation -->
 		  <!-- weitergehend konfiguriert oder verwendet werden kann. Installiert man beispielsweise die -->
 		  <!-- Horde-Applikation, führt dieser Link auf den Login-Dialog. Bei Applikationen ohne -->
 		  <!-- Webinterface wird die Option nicht angezeigt. -->
 	</para>
+
+	<!-- <para> -->
+	<!--   Aktualisierungen für Applikationen erfolgen unabhängig von den Release-Zyklen für -->
+	<!--   &ucsUCS;. Ist eine neue Version einer Applikation verfügbar, wird der Menüpunkt -->
+	<!--   <guimenu>Aktualisieren</guimenu> angezeigt, die die Installation der neuen Version -->
+	<!--   startet. -->
+<!-- Wenn Aktualisierungen verfügbar sind, wird außerdem bei der Anmeldung an der -->
+<!-- &ucsUMC; ein entsprechender Hinweis ausgegeben. -->
+	<!-- </para> -->
+	<!-- MENU: Upgrade -->
 
 	<para> 
 	  An overview of the existing applications can be opened under <guimenu>Installed
