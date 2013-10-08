@@ -311,7 +311,7 @@ define([
 			// define actions
 			var actions = [{
 				name: 'add',
-				label: _( 'Add %s', this.objectNameSingular ),
+				label: _('Add'),
 				description: _( 'Add a new %s.', this.objectNameSingular ),
 				iconClass: 'umcIconAdd',
 				isContextAction: false,
@@ -384,7 +384,7 @@ define([
 			}];
 
 			if ('navigation' !== this.moduleFlavor && this._reports.length) {
-				actions.splice(0, 0, {
+				actions.push({
 					name: 'report',
 					isStandardAction: true,
 					isMultiAction: true,

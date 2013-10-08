@@ -130,13 +130,9 @@ msgid "Account"
 msgstr "Konto"
 
 #: umc/js/udm/NewObjectDialog.js:241
+#: umc/js/udm.js:314
 msgid "Add"
 msgstr "Hinzufügen"
-
-#: umc/js/udm.js:314
-#, python-format
-msgid "Add %s"
-msgstr "%s hinzufügen"
 
 #: umc/js/udm/QuickDetailPage.js:143
 msgid "Add (simplified)"
