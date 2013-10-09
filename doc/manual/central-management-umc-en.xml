@@ -644,20 +644,17 @@
 					<entry>Position number on tab</entry>
 					<entry>
 						<para>
-							If several extended attributes are to be managed on one tab, the order
-							of the individual attributes on the tab can be influenced here. They
-							are added to the end of the tab or the group in question in ascending order of
-							their numbers.
+						  If several extended attributes are to be managed on one tab, the order
+						  of the individual attributes on the tab can be influenced here. They
+						  are added to the end of the tab or the group in question in ascending order of
+						  their numbers.
 						</para>
-						<para>
-							<!-- Fortlaufend vergebene Positionsnummern führen dazu, dass die Attribute jeweils abwechselnd links und rechts zweispaltig angeordnet werden. -->
-							<!-- Ansonsten beginnt die Plazierung in der linken Spalte. -->
-							<!-- Weisen erweiterte Attribute die gleiche Positionsnummer auf, ist deren Reihenfolge zufällig. -->
 
-							If extended attributes have the same number, they are listed in a
-							random order. If the difference between two consecutive numbers is
-							larger than 1 and the first attribute is shown in the left column, the
-							second will be displayed in the next line.
+						<para>
+						  Assigning consecutive position numbers results in the attributes being
+						  ordered on the left and right alternately in two columns. Otherwise, the
+						  positioning starts in the left column. If additional attributes have the
+						  same position number, their order is random.
 						</para>
 					</entry>
 				</row>

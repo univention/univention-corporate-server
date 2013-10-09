@@ -829,8 +829,8 @@
 					<para>
 					  Um ein Bonding zu konfigurieren muss unter <guimenu>Netzwerkgerät
 					  hinzufügen</guimenu> als <guimenu>Netzwerkgerätetyp</guimenu>
-					  <emphasis>Bonding</emphasis> ausgewählt werden. Der <guimenu>Name des neuen
-					  Bridge-Netzwerkgerätes</guimenu> kann beliebig gewählt werden. Anschließend
+					  <emphasis>Kanalbündelung (Bonding)</emphasis> ausgewählt werden. Der <guimenu>Name des neuen
+					  Bonding-Netzwerkgerätes</guimenu> kann beliebig gewählt werden. Anschließend
 					  muss auf <guimenu>Weiter</guimenu> geklickt werden.
 					</para>
 
@@ -1872,7 +1872,7 @@ auth/sshd/restrict: yes
                     abgelegt werden und als ausführbar markiert sind, werden automatisch
                     stündlich, täglich, wöchentlich oder monatlich ausgeführt.
                 </para>
-            </section><!-- Stündliches/tägliches/wöchentliches/monatliches Ausführen von Skripten -->
+            </section>
 
             <section id="cron:local"><title>Definition eigener Cron-Jobs in /etc/cron.d</title>
                 <para>
