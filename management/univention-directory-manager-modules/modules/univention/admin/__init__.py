@@ -193,7 +193,7 @@ class property:
 	def default(self, object):
 		if not object.set_defaults:
 			if self.multivalue:
-				return ['']
+				return []
 			else:
 				return ''
 

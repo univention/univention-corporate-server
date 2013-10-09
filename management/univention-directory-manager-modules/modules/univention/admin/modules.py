@@ -280,7 +280,7 @@ def init(lo, position, module, template_object=None, force_reload=False):
 		for key in template_object.keys():
 			if not (key=="name" or key=="description"): # these keys are part of the template itself
 				if key == '_options':
-					if not template_object[key] == ['']:
+					if template_object[key] != [''] and template_object[key] != []:
 						for option in module.options.keys():
 							module.options[option].default = option in template_object[key]
 					else:

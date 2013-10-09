@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.52-1) unstable; urgency=low
+
+  * Bug #29680: Default value for Multi-Value fields is empty list, not a list
+    with an empty string
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 09 Oct 2013 16:56:17 +0200
+
 univention-directory-manager-modules (9.0.51-1) unstable; urgency=low
 
   * switch to ReconnectLDAPObject (Bug #32617)

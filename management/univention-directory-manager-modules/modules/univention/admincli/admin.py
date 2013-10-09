@@ -279,7 +279,7 @@ def object_input(module, object, input, append=None, remove=None):
 						object[key]=[]
 					if val in object[key]:
 						out.append('WARNING: cannot append %s to %s, value exists'%(val,key))
-					elif object[key] == ['']:
+					elif object[key] == [''] or object[key] == []:
 						object[key]=[val]
 					else:
 						object[key].append(val)
@@ -839,7 +839,7 @@ def _doit(arglist):
 				else:
 					exists=1
 			except univention.admin.uexceptions.noLock, e:
-				exists_dn = '(nolock) %s' % str(e)
+				exists_msg = '(nolock) %s' % str(e)
 				if not ignore_exists:
 					out.append('E: Object exists: %s' % exists_msg)
 					return out + ["OPERATION FAILED"]

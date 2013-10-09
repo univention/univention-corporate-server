@@ -234,7 +234,7 @@ def doit(arglist):
 			return out
 
 		if not userobject.dn in groupobject['users']:
-			if groupobject['users'] == ['']:
+			if groupobject['users'] == [''] or groupobject['users'] == []:
 				groupobject['users'] = [userobject.dn]
 			else:
 				groupobject['users'].append(userobject.dn)

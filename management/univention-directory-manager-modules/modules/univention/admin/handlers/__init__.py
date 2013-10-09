@@ -150,8 +150,8 @@ class base(object):
 		string (scalar) or a list'''
 
 		if type(key) == types.StringType or type(key) == types.UnicodeType:
-			if (not self.oldinfo.get(key, '') or self.oldinfo[key] == ['']) \
-				and (not self.info.get(key, '') or self.info[key] == ['']):
+			if (not self.oldinfo.get(key, '') or self.oldinfo[key] == [''] or self.oldinfo[key] == []) \
+				and (not self.info.get(key, '') or self.info[key] == [''] or self.info[key] == []):
 				return False
 			else:
 				return not univention.admin.mapping.mapCmp(self.mapping, key, self.oldinfo.get(key, ''), self.info.get(key, ''))
