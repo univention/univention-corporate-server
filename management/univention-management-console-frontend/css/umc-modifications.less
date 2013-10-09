@@ -135,6 +135,10 @@
   outline: auto 5px -webkit-focus-ring-color;
 }
 
+.umc .dijitDropDownButton .dijitArrowButtonInner {
+  background-image: url(form/images/umcHostInfoArrows.png);
+}
+
 .umc .dijitComboBox .dijitArrowButtonInner {
   background-position: -33px 53%;
   width: 21px;
@@ -190,16 +194,49 @@
   .box-shadow(none); /* DEL */
 }
 
-.umcSubmitButton {
-  color: white;
+
+.umc .dijitToggleButton,
+.umc .dijitButton,
+.umc .dijitDropDownButton,
+.umc .dijitComboButton {
+  //color: white;
   font-size: 1.15em;
   padding: 0.1em 0.3em 0.15em 0.3em;
-  background-image: url(form/images/button.png);
+  background-image: url(form/images/buttonDefault.png);
   background-repeat: repeat-x;
   // resize the button image to fit the font-size
   background-size: cover;
   margin: 0.1em 0.4em 0 0.4em;
+  border: 1px solid #d6d6d6;
 }
+
+.umc .umcSubmitButton {
+  color: white;
+  background-image: url(form/images/button.png);
+  border: 1px solid #86b968;
+}
+
+/* make sure that first and last buttons in a container do not have left/right margins */
+.umc .dijitButton:first-child {
+  margin-left: 0;
+}
+
+.umc .dijitButton:last-child {
+  margin-right: 0;
+}
+
+/* Buttons should have margins within LabelPanes, though */
+.umc .umcLabelPane {
+	.dijitButton:first-child,
+	.dijitButton:last-child {
+		margin-left: 0.4em;
+		margin-right: 0.4em;
+	}
+}
+
+//.umcButton span.dijitButtonText {
+//	text-decoration: underline;
+//}
 
 .dijitToggleButton,
 .dijitButton,
@@ -821,6 +858,14 @@
 	overflow-x: hidden;
 }
 
+.umc .umcGridHeader {
+	padding-bottom: 5px;
+
+	.umcGridToolBar {
+		padding-right: 0.8em;
+	}
+}
+
 /* special styling for server error messages in the dialog box */
 .umcServerErrorMessage {
 	color: @gray;
@@ -865,11 +910,6 @@
 	}
 }
 
-/* underline the more menu */
-.umc .umcGridMoreMenu .dijitButtonText {
-	text-decoration: underline;
-}
-
 /* switch off left padding for action buttons in the grid footer */
 .umc .umcGridFooter .dijitButton .dijitButtonNode {
 	padding-left: 0;
@@ -891,10 +931,6 @@
 	margin-bottom: 1.25em;
 }
 
-
-.umcButton span.dijitButtonText {
-	text-decoration: underline;
-}
 
 /* @group umc input sizes */
 .umc {
@@ -946,8 +982,8 @@ a {
 	color: @greenMantis;
 }
 
-form {
-	margin-bottom: 15px;
+.umc form {
+	margin-bottom: 10px;
 }
 
 textarea {
@@ -1069,8 +1105,8 @@ p {
 
 
 /* set opacity to 50% for icons of disabled buttons */
-.umc .dijitButtonDisabled .dijitIcon {
-	.opacity(0.5);
+.umc .dijitButtonDisabled {
+	.opacity(0.6);
 }
 
 .umcButtonRow {
@@ -1182,8 +1218,12 @@ p {
 /* LiveSearchSidebar */
 .umcLiveSearchSidebar {
 	.umcButton {
+		font-size: 100%;
+		background: none;
+		border: none;
 		display: block;
-		margin-top: 0.4em;
+		margin: 0.4em 0 0 0;
+		padding: 0;
 
 		.dijitButtonContents {
 			outline: none;
@@ -1212,7 +1252,7 @@ p {
 	.dijitButtonHover .dijitButtonNode,
 	.dijitButtonActive .dijitButtonNode {
 		background-color: @grayAthens;
-		border-radius: 5px;
+		.border-radius(5px);
 	}
 }
 
@@ -1291,7 +1331,7 @@ p {
 	.umcGalleryItemActive,
 	.umcGalleryItem:hover {
 		background-color: @grayAthens;
-		border-radius: 5px;
+		.border-radius(5px);
 		cursor: pointer;
 	}
 

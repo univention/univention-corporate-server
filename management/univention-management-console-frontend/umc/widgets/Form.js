@@ -152,7 +152,7 @@ define([
 				this.buttons.push({
 					label: 'submit',
 					name: 'submit',
-					style: 'height: 0; overflow: hidden; margin: 0; padding: 0;' // using display=none will prevent button from being called
+					style: 'border: 0; height: 0; overflow: hidden; margin: 0; padding: 0;' // using display=none will prevent button from being called
 				});
 			}
 

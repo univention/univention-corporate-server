@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.94-1) unstable; urgency=low
+
+  * Bug #32218: adjusted button look
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 09 Oct 2013 17:40:25 +0200
+
 univention-management-console-frontend (3.0.93-1) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)

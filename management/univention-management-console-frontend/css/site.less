@@ -1,21 +1,26 @@
 @import "variables";
 
+/* special rule for the Univention logo */
+.umc #univentionLogoWrapper {
+	position: absolute;
+	background: #d7d7d7 url(bg_images/header.jpg) center top no-repeat;
+	height: 56px;
+	width: 100%;
+
+	#univentionLogo {
+		position: relative;
+		background: url(univention_logo.png) no-repeat 30px 19px;
+		width: 960px;
+		height: 56px;
+		margin: 0 auto;
+	}
+}
+
 .umc .umcHeader {
 	height: 45px;
 	overflow: hidden;
-	background: #d7d7d7 url(bg_images/header.jpg) center top no-repeat;
 	border-bottom: solid 1px @silverSand;
 	padding: 10px 26px 0 26px;
-
-	/* special rule for the Univention logo */
-	.univentionLogo {
-		background: url(univention_logo.png) no-repeat;
-		width: 145px;
-		height: 18px;
-		position: relative;
-		left: 8px;
-		top: 9px;
-	}
 
 	.umcHeaderSeparator {
 		height: 24px;
@@ -37,6 +42,14 @@
 		height: 24px;
 	}
 
+	.dijitDropDownButton {
+		#umcMenuHelp, #umcMenuSettings {
+			.dijitArrowButtonInner {
+				display: none;
+			}
+		}
+	}
+
 	/* special style for buttons */
 	.dijitDropDownButton,
 	.dijitButton {
@@ -45,12 +58,10 @@
 		float: left;
 		height: 24px;
 		padding: 5px 0 5px 0;
+		border: none;
+		background: none;
 
 		.dijitButtonText {
-			display: none;
-		}
-
-		.dijitArrowButtonInner {
 			display: none;
 		}
 
@@ -91,11 +102,6 @@
 		//height: 15px;
 	}
 
-	#umcMenuHost .dijitArrowButtonInner {
-		display: inline-block;
-		background-image: url(form/images/umcHostInfoArrows.png);
-	}
-
 	.dijitDisabled #umcMenuHost .dijitArrowButtonInner {
 		width: 0;
 	}
@@ -116,7 +122,6 @@ div[dijitpopupparent=umcMenuHelp] {
 	height: 100%;
 	width: 960px;
 	margin: 0 auto;
-	background: #fff;
 
 	.SingleChild-child {
 		border: none !important;

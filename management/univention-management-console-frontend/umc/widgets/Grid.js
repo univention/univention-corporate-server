@@ -240,8 +240,7 @@ define([
 			// add a header for the grid
 			this._header = new ContainerWidget({
 				region: 'top',
-				'class': 'umcGridToolBar',
-				style: 'padding-bottom: 5px; padding-left: 5px;'
+				'class': 'umcGridHeader'
 			});
 			this.addChild(this._header);
 
@@ -421,12 +420,11 @@ define([
 			this._setContextActions();
 
 			style.set(this._header.domNode, 'display', (this.actions.length) ? 'block': 'none');
-			this._header.addChild(this._toolbar);
+			if (this._toolbar.getChildren().length) {
+				this._header.addChild(this._toolbar);
+			}
 			this._header.addChild(this._contextActionsToolbar);
 			style.set(this._contextActionsToolbar.domNode, 'visibility', 'hidden');
-
-//			// underline and align the 'more' menu
-//			style.set(this._contextActionsMenu.domNode.childNodes[1], {'text-decoration': 'underline', padding: '2px'})
 
 			// redraw the columns
 			if (doSetColumns !== false) {
@@ -719,8 +717,7 @@ define([
 		_createFooter: function() {
 			// add a legend that states how many objects are currently selected
 			this._footerLegend = new Text({
-				content: _('No object selected'),
-				style: 'padding-left: 5px'
+				content: _('No object selected')
 			});
 			this._footer.addChild(this._footerLegend);
 
