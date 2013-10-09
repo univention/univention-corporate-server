@@ -821,10 +821,6 @@ define([
 			}
 
 			return [{
-				name: 'submit',
-				label: createLabel,
-				style: 'float: right'
-			}, {
 				name: 'close',
 				label: closeLabel,
 				callback: lang.hitch(this, function() {
@@ -832,6 +828,10 @@ define([
 					this.onCloseTab();
 				}),
 				style: 'float: left'
+			}, {
+				name: 'submit',
+				label: createLabel,
+				style: 'float: right'
 			}];
 		},
 
