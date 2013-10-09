@@ -598,8 +598,8 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			Fixed a design issue when trying to horizontally align a certain widget
-			class (<ulink url="&ucsbug;25389">Bug 25389</ulink>).
+		  Fixed a design issue when trying to horizontally align a certain widget
+		  class (<ulink url="&ucsbug;25389">Bug 25389</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1909,6 +1909,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  As &ucsUCRV; <envar>umc/server/languages/.*</envar> has been renamed to &ucsUCRV; <envar>ucs/server/languages/.*</envar>, possible user defined variables will be adopted during package update. In addtion, locales will be read from <filename>/var/www/ucs-overview/languages.json</filename> in the future instead of <filename>/var/www/ucs-overview/entries.json</filename> (<ulink url="&ucsbug;32678">Bug 32678</ulink>).
+		</simpara></listitem>
+	
+		<listitem><simpara>
+		  On systems which are no domain controller master, the UCS overview page will contain a link to the domain controller master. On systems which neither are domain controller master nor domain controller backups, certificate related links will not be shown anymore (<ulink url="&ucsbug;32647">Bug 32647</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>

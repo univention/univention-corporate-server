@@ -1,3 +1,13 @@
+univention-apache (6.0.9-1) unstable; urgency=low
+
+  * added UCS domaincontroller master link to UCS overview on non DC master
+    systems
+  * adapted UCS overview to only show certificate related entries on non DC
+    master/backup systems
+  (Bug #32647)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 09 Oct 2013 17:06:56 +0200
+
 univention-apache (6.0.8-1) unstable; urgency=low
 
   * Bug #32784: don't underline active links on ucs-overview
