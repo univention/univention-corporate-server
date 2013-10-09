@@ -990,6 +990,13 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+				The internal default of multi value attributes has been changed to a
+				more reasonable one. This addresses several issues in the frontend,
+				including a bogus empty user remaining in a group when removing users
+				was intended (<ulink url="&ucsbug;29680">Bug 29680</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 				Univention Directory Manager modules that support superordinates now
 				respect the autosearch setting via UCR when changing the superordinate
 				in the advanced search form (<ulink url="&ucsbug;29498">Bug 29498</ulink>).
