@@ -38,35 +38,32 @@ import notifier
 import notifier.threads
 import re
 import csv
-import univention.info_tools as uit
 from univention.lib.i18n import Translation
 import univention.management.console.modules as umcm
 import univention.config_registry
 import util
 import os
 import copy
-import locale
-import univention.config_registry
 import subprocess
 
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
 from univention.management.console.modules.sanitizers import PatternSanitizer
 from univention.management.console.modules.decorators import sanitize, simple_response
 
 from univention.management.console.modules.setup.network import Interfaces, DeviceError
 
-ucr=univention.config_registry.ConfigRegistry()
+ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
 _ = Translation('univention-management-console-module-setup').translate
 
 PATH_SYS_CLASS_NET = '/sys/class/net'
 
-RE_IPV4 = re.compile(r'^interfaces/(([^/_]+)(_[0-9])?)/(address|netmask)$')
+RE_IPV4 = re.compile(r'^interfaces/(([^/]+?)(_[0-9])?)/(address|netmask)$')
 RE_IPV6_DEFAULT = re.compile(r'^interfaces/([^/]+)/ipv6/default/(prefix|address)$')
 RE_SPACE = re.compile(r'\s+')
 RE_SSL = re.compile(r'^ssl/.*')
+
 
 class Instance(umcm.Base):
 	def __init__(self):
@@ -80,7 +77,7 @@ class Instance(umcm.Base):
 
 	def init( self ):
 		util.installer_i18n.set_language( str( self.locale ) )
-		os.environ[ 'LC_ALL' ] =  str( self.locale )
+		os.environ[ 'LC_ALL' ] = str( self.locale )
 
 	def destroy(self):
 		if self._cleanup_required:
@@ -135,8 +132,7 @@ class Instance(umcm.Base):
 		'''Reconfigures the system according to the values specified in the dict given as
 		option named "values".'''
 
-		# get old and new values
-		orgValues = util.load_values()
+		# get new values
 		values = request.options.get('values', {})
 
 		def _thread(request, obj):
@@ -147,8 +143,7 @@ class Instance(umcm.Base):
 				self._progressParser.reset()
 
 				# write the profile file and run setup scripts
-				orgValues = util.load_values()
-				util.pre_save(values, orgValues)
+				util.pre_save(values)
 
 				MODULE.info('saving profile values')
 				util.write_profile(values)
@@ -176,7 +171,6 @@ class Instance(umcm.Base):
 				return True
 			finally:
 				obj._finishedLock.release()
-
 
 		def _finished( thread, result ):
 			if isinstance( result, BaseException ):
@@ -211,7 +205,7 @@ class Instance(umcm.Base):
 				self._progressParser.reset()
 
 				# write the profile file and run setup scripts
-				util.pre_save(values, orgValues)
+				util.pre_save(values)
 
 				# on unjoined DC master the nameserver must be set to the external nameserver
 				if newrole == 'domaincontroller_master' and not orgValues.get('joined'):
@@ -244,7 +238,7 @@ class Instance(umcm.Base):
 				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
 
 		thread = notifier.threads.Simple( 'save',
-			notifier.Callback( _thread, request, self, request.options.get('username'), request.options.get('password')),_finished )
+			notifier.Callback(_thread, request, self, request.options.get('username'), request.options.get('password')), _finished)
 		thread.run()
 
 		self.finished(request.id, True)
@@ -312,7 +306,7 @@ class Instance(umcm.Base):
 		orgValues = util.load_values()
 
 		# determine new system role
-		newrole = values.get('server/role', orgValues.get('server/role',''))
+		newrole = values.get('server/role', orgValues.get('server/role', ''))
 
 		# mix original and new values
 		allValues = copy.copy(values)

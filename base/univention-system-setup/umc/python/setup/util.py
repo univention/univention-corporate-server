@@ -145,7 +145,7 @@ def _xkeymap(keymap):
 	return xkeymap
 
 
-def pre_save(newValues, oldValues):
+def pre_save(newValues):
 	'''Modify the final dict before saving it to the profile file.'''
 
 	# use new system role (or as fallback the current system role)

@@ -1,3 +1,10 @@
+univention-system-setup (7.0.49-1) unstable; urgency=low
+
+  * Bug #30816: fix removal of interfaces, remove unused code
+  * Bug #29199: fix link to documentation
+
+ -- Florian Best <best@univention.de>  Wed, 09 Oct 2013 08:39:16 +0200
+
 univention-system-setup (7.0.48-1) unstable; urgency=low
 
   * Bug #30816: Add vlan-raw-device to detect vlan devices

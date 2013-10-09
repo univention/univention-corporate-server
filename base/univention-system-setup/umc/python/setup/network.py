@@ -46,9 +46,9 @@ ucr.load()
 
 _ = Translation('univention-management-console-module-setup').translate
 
-RE_INTERFACE = re.compile(r'^interfaces/(?!(?:primary|restart/auto|handler)$)([^/_]+)(_[0-9]+)?/')
+RE_INTERFACE = re.compile(r'^interfaces/(?!(?:primary|restart/auto|handler)$)([^/]+?)(_[0-9]+)?/')
 RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+\Z')
-VALID_NAME_RE = re.compile(r'^[^/ \t\n\r\f]{1,16}\Z')
+#VALID_NAME_RE = re.compile(r'^(?![.]{1,2})[^/ \t\n\r\f]{1,15}\Z')
 
 PHYSICAL_INTERFACES = [dev['name'] for dev in detect_interfaces()]
 
@@ -80,21 +80,6 @@ class IP6Set(set):
 class Interfaces(dict):
 	"""All network interfaces"""
 
-	@property
-	def primary(self):
-		"""Returns the primary network interface if exists else None"""
-		for device in self.values():
-			if device.primary:
-				return device
-
-	@primary.setter
-	def primary(self, primary=None):
-		"""Removes the primary flag from all devices and sets it to the new device if exists"""
-		for device in self.values():
-			device.primary = False
-		if primary in self:
-			self[primary].primary = True
-
 	def __init__(self, *args, **kwargs):
 		"""Loads all network devices from UCR variables"""
 		super(Interfaces, self).__init__(*args, **kwargs)
@@ -102,7 +87,7 @@ class Interfaces(dict):
 		ucr.load()
 
 		# get all available interfaces
-		interfaces = set(RE_INTERFACE.match(key).group(1) for key in ucr if RE_INTERFACE.match(key))
+		interfaces = set(_.group(1) for _ in (RE_INTERFACE.match(key) for key in ucr) if _)
 		for name in interfaces:
 			device = Device(name, self)
 			device.parse_ucr()
@@ -113,7 +98,7 @@ class Interfaces(dict):
 		ucr.load()
 
 		# remove old devices
-		to_remove = set(self.keys()).difference(set(interfaces.keys()))
+		to_remove = set(self.keys()) - set(interfaces.keys())
 		for name in to_remove:
 			device = _RemovedDevice(name, self)
 			self[device.name] = device
@@ -131,15 +116,11 @@ class Interfaces(dict):
 		"""Returns a UCR representation of all interfaces"""
 		ucr.load()
 
-		ucrv = {'interfaces/primary': None}
+		ucrv = {}
 		for device in self.values():
 			ucrv.update(device.to_ucr())
 
 		return ucrv
-
-	def get_ucr_diff(self):
-		ucrv = self.to_ucr()
-		return dict((key, ucrv[key]) for key in ucrv.keys() if ucr.get(key, None) != ucrv[key])
 
 	def to_dict(self):
 		"""Returns a dict structure of all interfaces"""
@@ -213,19 +194,18 @@ class Device(object):
 		# make it abstract ;)
 		if cls is Device:
 			# detect type of interface
+			device = Ethernet(name, interfaces)
+			device.parse_ucr()
+			cls = Ethernet
 			if '.' in name:
 				cls = VLAN
-			else:
-				device = Ethernet(name, interfaces)
-				device.parse_ucr()
-				cls = Ethernet
-				if device.options:
-					if any(opt.startswith('bridge_ports') for opt in device.options):
-						cls = Bridge
-					elif any(opt.startswith('bond-slaves') for opt in device.options):
-						cls = Bond
-					elif any(opt.startswith('vlan-raw-device') for opt in device.options):
-						cls = VLAN
+			elif device.options:
+				if any(opt.startswith('bridge_ports') for opt in device.options):
+					cls = Bridge
+				elif any(opt.startswith('bond-slaves') for opt in device.options):
+					cls = Bond
+				elif any(opt.startswith('vlan-raw-device') for opt in device.options):
+					cls = VLAN
 		return object.__new__(cls)
 
 	@property
@@ -260,9 +240,6 @@ class Device(object):
 		# flags whether this interface gets its IP addresses via DHCP or SLAAC
 		self.ip4dynamic = False
 		self.ip6dynamic = False
-
-		# flag indicating that this interface is the primary network interface of the system
-		self.primary = False
 
 		# flag indicating that this interface should automatically start at system startup
 		self.start = None
@@ -420,8 +397,6 @@ class Device(object):
 		pattern = re.compile(r'^interfaces/%s(?:_[0-9]+)?/' % re.escape(name))
 		vals = dict((key, ucr[key]) for key in ucr if pattern.match(key))
 
-		self.primary = ucr.get('interfaces/primary') == name
-
 		self.start = ucr.is_true(value=vals.pop('interfaces/%s/start' % (name), None))
 
 		self.type = vals.pop('interfaces/%s/type' % (name), None)
@@ -472,9 +447,6 @@ class Device(object):
 
 		for key, val in self._leftover:
 			vals[key] = val
-
-		if self.primary:
-			vals['interfaces/primary'] = name
 
 		if self.start is not None:
 			vals['interfaces/%s/start' % (name)] = str(bool(self.start)).lower()
@@ -558,7 +530,12 @@ class Device(object):
 class _RemovedDevice(Device):
 	"""Internal class representing that a device have to be removed from UCR"""
 	def to_ucr(self):
-		return dict((key, None) for key in ucr.iterkeys() if RE_INTERFACE.match(key))
+		to_remove = {}
+		for key in ucr:
+			match = RE_INTERFACE.match(key)
+			if match and self.name == match.group(1):
+				to_remove[key] = None
+		return to_remove
 
 	def validate(self):
 		return True
@@ -823,7 +800,6 @@ class Bridge(Device):
 				try:
 					self.bridge_fd = int(value)
 				except ValueError:
-					# invalid value
 					pass
 			else:
 				options.append(option)

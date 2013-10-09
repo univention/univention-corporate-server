@@ -423,10 +423,10 @@ msgstr "Vollständiger Rechnername (z.B. master.example.com)"
 #, python-format
 msgid ""
 "Further information can be found in the <a href=\"http://docs.univention.de/"
-"computers-%s.html\" target=\"_blank\">UCS documentation</a>"
+"manual-%s.html#computers:networkcomplex\" target=\"_blank\">UCS documentation</a>"
 msgstr ""
 "Weitere Informationen können in der <a href=\"http://docs.univention.de/"
-"computers-%s.html\" target=\"_blank\">UCS Dokumentation</a> gefunden werden."
+"handbuch-%s.html#computers:networkcomplex\" target=\"_blank\">UCS Dokumentation</a> gefunden werden."
 
 #: umc/js/setup/InterfaceWizard.js:645
 msgid "Gateway"
