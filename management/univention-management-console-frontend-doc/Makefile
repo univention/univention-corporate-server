@@ -3,7 +3,7 @@
 # Univention Management Console Frontend Package
 #  Makefile for building/installing the package
 #
-# Copyright 2011-2012 Univention GmbH
+# Copyright 2011-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -52,9 +52,8 @@ api-viewer:
 univention-dojo: /usr/share/univention-dojo
 	cp -r /usr/share/univention-dojo $@
 	cp -r /usr/share/univention-management-console-frontend-src/umc $@
-	cd $@ && patch -p0 < ../Selection.patch
 	# workarounds for referenced external modules
-	for imodule in umc/modules/udm/LicenseDialog.js https://www.piwik.univention.de/piwik.js.js; do \
+	for imodule in umc/modules/udm/LicenseDialog.js umc/modules/undefined.js https://www.piwik.univention.de/piwik.js.js; do \
 		mkdir -p univention-dojo/$${imodule%/*}; \
 		echo 'define([],function(){});' > univention-dojo/$${imodule}; \
 	done
@@ -68,7 +67,7 @@ data: js-doc-parse univention-dojo
 	install -m755 -d 'data/1.8'
 	cd $< && \
 		git apply < ../$<.patch && \
-			./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dojox ../univention-dojo/dgrid
+		./parse.sh ../univention-dojo/umc ../univention-dojo/dojo ../univention-dojo/dijit ../univention-dojo/dgrid # ../univention-dojo/dojox FIXME: dojox produces errors because "build" directory does not exists
 
 univention-dojo-api-viewer: api-viewer
 	cp -r $< $@

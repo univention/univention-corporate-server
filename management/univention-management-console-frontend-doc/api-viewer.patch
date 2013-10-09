@@ -50,7 +50,7 @@ index 26ae0bf..7c3729f 100644
  # Bug database: if $bugdb is specified as a non-empty string, add an "error in the documentation?" link to the
  # bottom of each tab that will navigate to specified link appended with the tab's URL
 -$bugdb = "https://docs.google.com/spreadsheet/viewform?hl=en_US&formkey=dFlDcHEyaHMwbEd4MFBObkNrX0E1MFE6MQ&entry_0=";
-+$bugdb = "https://forge.univention.de/bugzilla/";
++$bugdb = "https://forge.univention.org/bugzilla/enter_bug.cgi?product=UCS&short_desc=Bug+in+UMC+documentation&component=UMC&comment=";
  
  # Path and URL to reference doc: if set, use the specified directory to check if corresponding reference doc exists,
  # and then use the url to generate a link to that reference doc.

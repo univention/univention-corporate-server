@@ -1,3 +1,10 @@
+univention-management-console-frontend-doc (7.0.0-1) unstable; urgency=low
+
+  * Bug #32782: fix build process
+  * version bump (UCS 3.2)
+
+ -- Florian Best <best@univention.de>  Wed, 09 Oct 2013 14:58:18 +0200
+
 univention-management-console-frontend-doc (6.0.12-2) unstable; urgency=low
 
   * ucs overview page (Bug #32611) 
