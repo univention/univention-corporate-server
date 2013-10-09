@@ -607,9 +607,10 @@ define([
 			this.setupGui();
 
 			// if only one module exists open it
-			var modules = this._moduleStore.query();
-			if (modules.length === 1 && !getQuery('module')) {
-				this.openModule(modules[0].id, modules[0].flavor);
+			var launchableModules = this._getLaunchableModules();
+			if (launchableModules.length === 1) {
+				var module = launchableModules[0];
+				this.openModule(module.id, module.flavor);
 			}
 		},
 
@@ -830,9 +831,12 @@ define([
 				this._moduleStore = this._createModuleStore(modules, categories);
 
 				// make sure that we do not overwrite an explicitely stated value of 'overview'
+				var launchableModules = this._getLaunchableModules();
 				if (getQuery('overview') === undefined) {
-					// disable overview if only one module exists
-					tools.status('overview', modules.length !== 1 && tools.status('overview'));
+					// disable overview if only one or no module exists
+					tools.status('overview', launchableModules.length > 1 && tools.status('overview'));
+				} else if (launchableModules.length === 0) {
+					tools.status('overview', false);
 				}
 			}));
 		},
@@ -869,6 +873,12 @@ define([
 			// categoryID:
 			//		Optional category name.a
 			return this._moduleStore.getModules(category);
+		},
+
+		_getLaunchableModules: function() {
+			return this._moduleStore.query(function(item) {
+				return item.BaseClass && item.category !== '_favorites_';
+			});
 		},
 
 		getModule: function(/*String?*/ id, /*String?*/ flavor, /*String?*/ category) {
@@ -925,6 +935,11 @@ define([
 			this._setupHostInfoMenu();
 
 			this._setupOverviewPage();
+			if (tools.status('overview')) {
+				// the checks require an overview site
+				this._runChecks();
+			}
+			this._checkNoModuleAvailable();
 
 			// add the TabContainer to the main BorderContainer
 			this._topContainer.addChild(this._tabContainer);
@@ -1089,7 +1104,6 @@ define([
 
 			this._setupOverviewSearchSidebar();
 			this._setupOverviewPane();
-			this._runChecks();
 		},
 
 		_setupOverviewSearchSidebar: function() {
@@ -1272,7 +1286,6 @@ define([
 			this._checkForUserRoot();
 			this._checkRebootRequired();
 			this._checkJoinStatus();
-			this._checkNoModuleAvailable();
 			this._checkShowStartupDialog();
 		},
 
@@ -1370,9 +1383,7 @@ define([
 		},
 
 		_checkNoModuleAvailable: function() {
-			var launchableModules = this._moduleStore.query(function(item) {
-				return item.BaseClass;
-			});
+			var launchableModules = this._getLaunchableModules();
 			if (!launchableModules.length) {
 				dialog.alert(_('There is no module available for the authenticated user %s.', tools.status('username')));
 			}

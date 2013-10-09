@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.92-1) unstable; urgency=low
+
+  * Bug #32607: fix overview and possiblity to open a module for users
+    which only have one or no module
+
+ -- Florian Best <best@univention.de>  Wed, 09 Oct 2013 10:34:13 +0200
+
 univention-management-console-frontend (3.0.91-1) unstable; urgency=low
 
   * removed languages.json template (Bug #32678)
