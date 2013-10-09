@@ -157,8 +157,7 @@
 	  Das Univention App Center erlaubt die einfache Einbindung von Softwarekomponenten in eine
 	  UCS-Installation. Die Applikationen werden sowohl von Drittanbietern wie auch von
 	  Univention selbst (z.B. UCS@school) bereitgestellt. Die Maintenance und der 
-	  Support für die Applikationen erfolgt durch den jeweiligen Hersteller und
-	  nicht über das Univention App Center.
+	  Support für die Applikationen erfolgt durch den jeweiligen Hersteller.
 	</para>
 	
 	<figure id="appcenter-overview"><title>Überblick der verfügbaren Applikationen im App Center</title>

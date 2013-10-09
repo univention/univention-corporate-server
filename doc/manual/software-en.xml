@@ -156,10 +156,8 @@
 	<para>
 	  The Univention App Center allows simple integration of software components in a UCS
 	  installation. The applications are provided both by third parties and by Univention itself
-	  (e.g., ucs@School). 
-	  <!-- Die Maintenance und der  -->
-	  <!-- Support für die Applikationen erfolgt durch den jeweiligen Hersteller und -->
-	  <!-- nicht über das Univention App Center. -->
+	  (e.g., ucs@School). The maintenance and support for the applications are provided by the
+	  respective manufacturer.
 	</para>
 
 	<figure id="appcenter-overview"><title>Overview of applications available in the App Center</title>
@@ -178,13 +176,11 @@
 	  If you click on one of the displayed applications, further details on it are shown (e.g.,
 	  description, manufacturer, contact information and a screenshot). The <guimenu>Email notification</guimenu>
 	  field shows whether the manufacturer of the software component is
-	  notified when it is installed/uninstalled.
-		  <!-- Einige Applikationen können direkt über Univention lizensiert werden. Für diese -->
-		  <!-- Applikationen wird in der unteren Bildleiste der Button <guimenu>Shop</guimenu> neben -->
-		  <!-- einem stilisierten Einkaufskorb angezeigt. Für alle anderen Applikationen muss der -->
-		  <!-- Hersteller der Applikation über die unter <emphasis>Kontakt</emphasis> angezeigt -->
-		  <!-- E-Mail-Adresse kontaktiert werden. -->
-
+	  notified when it is installed/uninstalled. Some applications can also be licensed directly
+	  from Univention. The <guimenu>Shop</guimenu> button is shown alongside a stylised shopping
+	  basket for these applications in the bottom toolbar. For all other applications, the
+	  manufacturer of the application must be contacted using the e-mail address shown under
+	  <emphasis>Contact</emphasis>.
 	</para>
 
 	<figure id="appcenter-details"><title>Details for an application in the App Center</title>
@@ -208,11 +204,11 @@
 
 	<para>
 	  Following installation of an application, ore or several new options are shown when clicking on the icon
-	  of an application: <guimenu>Uninstall</guimenu> removes an application. 
-		  <!-- <guimenu>Öffnen</guimenu> verweist auf eine Webseite mit der die installierte Applikation -->
-		  <!-- weitergehend konfiguriert oder verwendet werden kann. Installiert man beispielsweise die -->
-		  <!-- Horde-Applikation, führt dieser Link auf den Login-Dialog. Bei Applikationen ohne -->
-		  <!-- Webinterface wird die Option nicht angezeigt. -->
+	  of an application: <guimenu>Uninstall</guimenu> removes an application.
+	  <guimenu>Open</guimenu> refers you to a website with which you can further configure or use
+	  the installed application. For example, if you install the Horde application, this link takes
+	  you to the login window. This option is not displayed for applications which do not have a web
+	  interface.
 	</para>
 
 	<!-- <para> -->
@@ -643,12 +639,12 @@ univention-repository-update -h
 	<section id="computers:softwareselection">
 	  <title>Installation/uninstallation of UCS components in the Univention App Center</title>
 
-		  <!-- <para> -->
-		  <!-- 	Alle Softwarekomponenten, die im Univention Installer angeboten werden können auch -->
-		  <!-- 	über das Univention App Center nachträglich installiert und entfernt werden. Dazu -->
-		  <!-- 	muss die Paket-Kategorie <guimenu>UCS-Komponenten</guimenu> ausgewählt -->
-		  <!-- 	werden. Weitere Hinweise zum Univention App Center finden sich in <xref linkend="software:appcenter"/>. -->
-		  <!-- </para> -->
+	  <para>
+		All software components offered in the Univention Installer can also be installed and
+		removed at a later point in time via the Univention App Center. This is done by selecting
+		the <guimenu>UCS components</guimenu> package category. Further information on the
+		Univention App Center can be found in <xref linkend="software:appcenter"/>.
+	  </para>
 
 	  <figure id="appcenter-ucscomponents">
 		<title>Selection of UCS components in the App Center</title>
