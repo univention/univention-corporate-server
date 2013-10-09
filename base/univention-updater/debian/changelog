@@ -1,3 +1,9 @@
+univention-updater (9.0.20-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 09 Oct 2013 12:53:20 +0200
+
 univention-updater (9.0.19-1) unstable; urgency=low
 
   * Add hint to disable script verification (Bug #28045)

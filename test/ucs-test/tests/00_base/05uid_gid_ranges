@@ -10,7 +10,7 @@
 ## exposure: safe
 set -o errexit -o nounset -o pipefail
 
-# "/etc/passwd": fields are seperated with ":"
+# "/etc/passwd": fields are separated by ":"
 while IFS=":" read login_name password uid gid user_name directory shell
 do
 	if [ '(' "$uid" -ge 1000 -a "$uid" -le 55000 ')' -o '(' "$uid" -ge 65536 -a "$uid" -le 1000000 ')' ]
@@ -25,7 +25,7 @@ do
 	fi
 done < "/etc/passwd"
 
-# "/etc/group": fields are seperated with ":"
+# "/etc/group": fields are separated by ":"
 while IFS=":" read group_name password gid user_list
 do
 	if [ '(' "$gid" -ge 1000 -a "$gid" -le 55000 ')' -o '(' "$gid" -ge 65536 -a "$gid" -le 1000000 ')' ]

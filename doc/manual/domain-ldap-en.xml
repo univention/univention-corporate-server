@@ -985,7 +985,7 @@ slapcat &gt; ldapdata.txt
 	<para>
 	  Each &ucsUDL; instance uses a range of &ucsUDL;
 	  modules. These modules are shipped by the installed applications; the print server package
-	  includes, for example, listener modules which generate the Cups configuration.
+	  includes, for example, listener modules which generate the CUPS configuration.
 	</para>
 
 	<para>

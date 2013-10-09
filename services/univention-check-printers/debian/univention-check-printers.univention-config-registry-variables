@@ -11,7 +11,7 @@ Type=str
 Categories=service-cups
 
 [cups/checkprinters/cron]
-Description[de]=Das Skript univention-check-printers prüft, ob Drucker von Cups angehalten wurden und neu gestartet werden müssen. Diese Variable konfiguriert das Intervall, in dem diese Prüfung durchgeführt wird. Die Konfiguration erfolgt im Cron-Format, das unter 'man 5 crontab' dokumentiert ist.
-Description[en]=The script univention-check-printers checks whether printers have been stopped by Cups and require a restart. This variable configures the interval during which this check occurs. The configuration is done in Cron format (documented under 'man 5 crontab').
+Description[de]=Das Skript univention-check-printers prüft, ob Drucker von CUPS angehalten wurden und neu gestartet werden müssen. Diese Variable konfiguriert das Intervall, in dem diese Prüfung durchgeführt wird. Die Konfiguration erfolgt im Cron-Format, das unter 'man 5 crontab' dokumentiert ist.
+Description[en]=The script univention-check-printers checks whether printers have been stopped by CUPS and require a restart. This variable configures the interval during which this check occurs. The configuration is done in Cron format (documented under 'man 5 crontab').
 Type=str
 Categories=service-cups

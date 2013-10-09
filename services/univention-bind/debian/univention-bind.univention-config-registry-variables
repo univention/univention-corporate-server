@@ -48,7 +48,7 @@ Categories=Network
 
 [dns/allow/query/cache]
 Description[de]=Diese Variable konfiguriert, welche Systeme Anfragen an den Cache des DNS-Servers stellen dürfen. 'any' erlaubt den Abruf von allen Systemen. 'none' verbietet den Abruf für alle Systeme. Alternativ kann eine Liste von IP-Adressen oder Netzen definiert werden, denen Abfragen erlaubt werden. Zusätzlich kann eine ACL in /etc/bind/local.conf definiert und hier referenziert werden. Mehrfache Werte müssen durch ein Semikolon getrennt werden. Diese Option greift nur bei Verwendung des LDAP-Backends (siehe 'dns/backend').
-Description[en]=This variable configures which systems may query the cache of the DNS server. 'any' allows the transfer for everyone. 'none' denies the zone transfer altogether. Alternatively a list of allowed IP addresses or networks can be defined. In addition an ACL can be defined in /etc/bind/local.conf and referenced in the variable. In addition an ACL can be defined in /etc/bind/local.conf and referenced in the variable. Multiple entries need to be separated with a semicolon. This option only applies when using the LDAP-Backend (see 'dns/backend').
+Description[en]=This variable configures which systems may query the cache of the DNS server. 'any' allows the transfer for everyone. 'none' denies the zone transfer altogether. Alternatively a list of allowed IP addresses or networks can be defined. In addition an ACL can be defined in /etc/bind/local.conf and referenced in the variable. In addition an ACL can be defined in /etc/bind/local.conf and referenced in the variable. Multiple entries need to be separated by a semicolon. This option only applies when using the LDAP-Backend (see 'dns/backend').
 Type=str
 Categories=Network
 

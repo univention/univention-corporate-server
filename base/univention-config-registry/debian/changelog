@@ -1,3 +1,9 @@
+univention-config-registry (9.0.5-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 09 Oct 2013 12:58:52 +0200
+
 univention-config-registry (9.0.4-3) unstable; urgency=low
 
   * Fix a comment (Bug #32544)

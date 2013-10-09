@@ -1,6 +1,6 @@
 [cups/admin]
-Description[de]=An die hier angegebene E-Mail-Adresse werden Fehler- und Statusmeldungen des Cups-Dienstes geschickt.
-Description[en]=Error and status messages of the Cups service are sent to the email address specified here.
+Description[de]=An die hier angegebene E-Mail-Adresse werden Fehler- und Statusmeldungen des CUPS-Dienstes geschickt.
+Description[en]=Error and status messages of the CUPS service are sent to the email address specified here.
 Type=str
 Categories=service-cups
 
@@ -11,20 +11,20 @@ Type=str
 Categories=service-cups
 
 [cups/filedevice]
-Description[de]=Ist diese Option aktiviert, erlaubt Cups den Raw-Druck in eine Datei über das 'file'-Protokoll. Ist die Variable nicht gesetzt, wird kein 'file'-Druck angeboten.
-Description[en]=If this option is activated Cups supports raw printing using the 'file' protocol. If the variable is unset no 'file' printing is offered.
+Description[de]=Ist diese Option aktiviert, erlaubt CUPS den Raw-Druck in eine Datei über das 'file'-Protokoll. Ist die Variable nicht gesetzt, wird kein 'file'-Druck angeboten.
+Description[en]=If this option is activated CUPS supports raw printing using the 'file' protocol. If the variable is unset no 'file' printing is offered.
 Type=bool
 Categories=service-cups
 
 [cups/location/admin]
-Description[de]=Mit dieser Variable wird festgelegt, von wo auf das Cups-interne Administrations-Webinterface auf Port 631 zugegriffen werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrere Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Zugriff aus dem lokalen Netz des Cups-Servers erlaubt.
-Description[en]=This variable configures from where the Cups-internal administration web interface on port 631 can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated by commas. If 'networks' is set, access is granted from the local network of the Cups server.
+Description[de]=Mit dieser Variable wird festgelegt, von wo auf das CUPS-interne Administrations-Webinterface auf Port 631 zugegriffen werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrere Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Zugriff aus dem lokalen Netz des CUPS-Servers erlaubt.
+Description[en]=This variable configures from where the CUPS-internal administration web interface on port 631 can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated by commas. If 'networks' is set, access is granted from the local network of the CUPS server.
 Type=str
 Categories=service-cups
 
 [cups/location/base]
-Description[de]=Mit dieser Variable wird festgelegt, von wo über den Cups-Server gedruckt werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrere Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Druck aus dem lokalen Netz des Cups-Servers erlaubt.
-Description[en]=This variable configures from where the Cups print server can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated by commas. If 'networks' is set, printing is allowed from the local network of the Cups server.
+Description[de]=Mit dieser Variable wird festgelegt, von wo über den CUPS-Server gedruckt werden kann. Hier kann entweder eine Liste von Rechnernamen in FQDN-Form, eine Liste von Netzen (z.B. '192.168.1.*') oder der Sonderwert 'networks' angegeben werden. Mehrere Werte werden durch Leerzeichen getrennt. Bei 'networks' wird der Druck aus dem lokalen Netz des CUPS-Servers erlaubt.
+Description[en]=This variable configures from where the CUPS print server can be accessed. It can be specified as a list of hostnames in FQDN format, a list of networks (e.g. '192.168.1.*') or as the special value 'networks'. Multiple values need to be separated by commas. If 'networks' is set, printing is allowed from the local network of the CUPS server.
 Type=str
 Categories=service-cups
 
@@ -35,14 +35,14 @@ Type=str
 Categories=service-cups
 
 [cups/printserver]
-Description[de]=Ist diese Option aktiviert, läuft auf dem System ein Cups-Druckserver. Diese Variable wird von dem Univention Directory-Listener-Modul zur Konfiguration von Druck-Clients ausgewertet.
-Description[en]=If this option is activated, a Cups print server is running on the system. This variable is evaluated by the Univention Directory Listener module, which configures print clients.
+Description[de]=Ist diese Option aktiviert, läuft auf dem System ein CUPS-Druckserver. Diese Variable wird von dem Univention Directory-Listener-Modul zur Konfiguration von Druck-Clients ausgewertet.
+Description[en]=If this option is activated, a CUPS print server is running on the system. This variable is evaluated by the Univention Directory Listener module, which configures print clients.
 Type=bool
 Categories=service-cups
 
 [cups/debug/level]
-Description[de]=Diese Variable konfiguriert den Detailgrad der Cups-Logmeldungen. Mögliche Werte sind: none, emerg, alert, crit, error, warn, notice, info, debug, debug2.
-Description[en]=This variable configures the verbosity level for the Cups print server. Possible values: none, emerg, alert, crit, error, warn, notice, info, debug, debug2.
+Description[de]=Diese Variable konfiguriert den Detailgrad der CUPS-Logmeldungen. Mögliche Werte sind: none, emerg, alert, crit, error, warn, notice, info, debug, debug2.
+Description[en]=This variable configures the verbosity level for the CUPS print server. Possible values: none, emerg, alert, crit, error, warn, notice, info, debug, debug2.
 Type=str
 Categories=service-cups
 
@@ -71,8 +71,8 @@ Type=bool
 Categories=service-cups
 
 [cups/autostart]
-Description[de]=Die Variable konfiguriert den Startmodus des Cups-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
-Description[en]=This variable configures the start mode of the Cups service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
+Description[de]=Die Variable konfiguriert den Startmodus des CUPS-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the CUPS service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=str
 Categories=service-cups
 

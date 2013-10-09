@@ -42,7 +42,7 @@ def main():
 	parser.add_option("-r", "--region", action="store",
 			dest="region", default='eu-west-1', help="EC region")
 	parser.add_option("-a", "--ami", action="store",
-			dest="amis", help="Comma-seperated ist of AMIs to terminate")
+			dest="amis", help="Comma-separated ist of AMIs to terminate")
 	parser.add_option("-f", "--force", action="store_true",
 			dest="force", default=False, help="Don't ask")
 

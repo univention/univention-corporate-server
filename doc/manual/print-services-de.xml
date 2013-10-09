@@ -83,7 +83,7 @@
 <section id="print-services:configuration">
 <title>Einstellung lokaler Konfigurationseigenschaften eines Druckservers</title>
 <para>
-  Die Konfiguration von Cups als Druckserver erfolgt über Einstellungen aus dem
+  Die Konfiguration von CUPS als Druckserver erfolgt über Einstellungen aus dem
   LDAP-Verzeichnisdienst und &ucsUCR;. Wird die &ucsUCRV; <envar>cups/include/local</envar> auf
   <emphasis>true</emphasis> gesetzt, wird zusätzlich die Datei
   <filename>/etc/cups/cupsd.local.conf</filename> eingebunden, in der beliebige weitere Optionen

@@ -84,7 +84,7 @@ tree.Media.prototype = {
         var i, value,
             path = env.mediaPath.concat([this]);
 
-        // Extract the media-query conditions separated with `,` (OR).
+        // Extract the media-query conditions separated by `,` (OR).
         for (i = 0; i < path.length; i++) {
             value = path[i].features instanceof tree.Value ?
                         path[i].features.value : path[i].features;

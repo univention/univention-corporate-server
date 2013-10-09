@@ -755,7 +755,7 @@
 			<listitem>
 				<simpara>
 				<emphasis>Print server (CUPS)</emphasis> - Print server based on the software
-				Cups. PPD drivers for most printer models are supplied.
+				CUPS. PPD drivers for most printer models are supplied.
 				</simpara>
 			</listitem>
 			<listitem>

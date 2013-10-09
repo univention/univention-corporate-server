@@ -1,3 +1,9 @@
+ucs-test (4.0.135-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 09 Oct 2013 13:07:04 +0200
+
 ucs-test (4.0.134-4.1) unstable; urgency=low
 
   * Fix ldapschema and ldapacl tests (Bug #26785, Bug #32392)

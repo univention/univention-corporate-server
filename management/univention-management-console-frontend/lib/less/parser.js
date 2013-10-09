@@ -868,7 +868,7 @@ less.Parser = function Parser(env) {
                     restore();
                 },
                 args: function (isCall) {
-                    var expressions = [], argsSemiColon = [], isSemiColonSeperated, argsComma = [], expressionContainsNamed, name, nameLoop, value, arg,
+                    var expressions = [], argsSemiColon = [], isSemiColonSeparated, argsComma = [], expressionContainsNamed, name, nameLoop, value, arg,
                         returner = {args:null, variadic: false};
                     while (true) {
                         if (isCall) {
@@ -877,10 +877,10 @@ less.Parser = function Parser(env) {
                             $(this.comment);
                             if (input.charAt(i) === '.' && $(/^\.{3}/)) {
                                 returner.variadic = true;
-                                if ($(";") && !isSemiColonSeperated) {
-                                    isSemiColonSeperated = true;
+                                if ($(";") && !isSemiColonSeparated) {
+                                    isSemiColonSeparated = true;
                                 }
-                                (isSemiColonSeperated ? argsSemiColon : argsComma)
+                                (isSemiColonSeparated ? argsSemiColon : argsComma)
                                     .push({ variadic: true });
                                 break;
                             }
@@ -911,7 +911,7 @@ less.Parser = function Parser(env) {
                         if (val && val instanceof tree.Variable) {
                             if ($(':')) {
                                 if (expressions.length > 0) {
-                                    if (isSemiColonSeperated) {
+                                    if (isSemiColonSeparated) {
                                         error("Cannot mix ; and , as delimiter types");
                                     }
                                     expressionContainsNamed = true;
@@ -920,10 +920,10 @@ less.Parser = function Parser(env) {
                                 nameLoop = (name = val.name);
                             } else if (!isCall && $(/^\.{3}/)) {
                                 returner.variadic = true;
-                                if ($(";") && !isSemiColonSeperated) {
-                                    isSemiColonSeperated = true;
+                                if ($(";") && !isSemiColonSeparated) {
+                                    isSemiColonSeparated = true;
                                 }
-                                (isSemiColonSeperated ? argsSemiColon : argsComma)
+                                (isSemiColonSeparated ? argsSemiColon : argsComma)
                                     .push({ name: arg.name, variadic: true });
                                 break;
                             } else if (!isCall) {
@@ -942,13 +942,13 @@ less.Parser = function Parser(env) {
                             continue;
                         }
 
-                        if ($(';') || isSemiColonSeperated) {
+                        if ($(';') || isSemiColonSeparated) {
 
                             if (expressionContainsNamed) {
                                 error("Cannot mix ; and , as delimiter types");
                             }
 
-                            isSemiColonSeperated = true;
+                            isSemiColonSeparated = true;
 
                             if (expressions.length > 1) {
                                 value = new (tree.Value)(expressions);
@@ -961,7 +961,7 @@ less.Parser = function Parser(env) {
                         }
                     }
 
-                    returner.args = isSemiColonSeperated ? argsSemiColon : argsComma;
+                    returner.args = isSemiColonSeparated ? argsSemiColon : argsComma;
                     return returner;
                 },
                 //

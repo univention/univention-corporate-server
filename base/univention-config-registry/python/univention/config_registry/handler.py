@@ -133,7 +133,7 @@ def run_script(script, arg, changes):
 	Execute script with command line arguments using a shell and pass changes
 	on STDIN.
 	For each changed variable a line with the 'name of the variable', the 'old
-	value', and the 'new value' are passed seperated by '@%@'.
+	value', and the 'new value' are passed separated by '@%@'.
 	"""
 	diff = []
 	for key, value in changes.items():

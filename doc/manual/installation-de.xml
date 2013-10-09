@@ -752,8 +752,8 @@
 		</listitem>
 		<listitem>
 			<simpara>
-			<emphasis>Druckserver (Cups)</emphasis> - Druckserver auf Basis der Software
-			Cups. PPD-Treiber für die meisten Druckermodelle werden mitgeliefert.
+			<emphasis>Druckserver (CUPS)</emphasis> - Druckserver auf Basis der Software
+			CUPS. PPD-Treiber für die meisten Druckermodelle werden mitgeliefert.
 			</simpara>
 		</listitem>
 		<listitem>

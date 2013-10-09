@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.11-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 09 Oct 2013 13:05:07 +0200
+
 ucs-ec2-tools (0.1.10-1) unstable; urgency=low
 
   * Increase default timeout from 300 to 600 seconds (Bug #32809)

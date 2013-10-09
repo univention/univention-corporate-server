@@ -1479,7 +1479,7 @@ class UniventionUpdater:
 		 'current'=required component; must exist for requested version.
 		 ''=optional component; used when exists for requested version.
 		 'major.minor'=use exactly this version.
-		Can be a space/comma seperated combination of above.
+		Can be a space/comma separated combination of above.
 		'''
 		str = self.configRegistry.get('repository/online/component/%s/version' % component, '')
 		versions = set()

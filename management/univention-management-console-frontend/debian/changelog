@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.93-1) unstable; urgency=low
+
+  * fixed common spelling mistakes (Bug #32662)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 09 Oct 2013 13:03:34 +0200
+
 univention-management-console-frontend (3.0.92-1) unstable; urgency=low
 
   * Bug #32607: fix overview and possiblity to open a module for users

@@ -18,31 +18,31 @@ Categories=service-nagios
 
 [nagios/server/user/systeminfo]
 Description[de]=Der Zugriff auf die System- und Prozessinformationen in der Nagios-Weboberfläche (unter 'Configuration') ist auf die hier angegebenen Benutzer beschränkt. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
-Description[en]=The access to the system and process information in the Nagios web interface (under 'Configuration') is restricted to the users specified here. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Description[en]=The access to the system and process information in the Nagios web interface (under 'Configuration') is restricted to the users specified here. Multiple usernames need to be separated by a comma. Access to all users can be granted with '*'.
 Type=str
 Categories=service-nagios
 
 [nagios/server/user/configinfo]
 Description[de]=Die Nagios-Weboberfläche erlaubt unter 'Configuation -> View Config' die Anzeige der Nagios-Konfiguration. Nur die in dieser Variable festgelegten Benutzer dürfen auf die Konfiguration zugreifen. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
-Description[en]=The Nagios web interface allows the display of the Nagios configuration under 'Configuation -> View Config'. Only the users specified with this variable may access the configuration. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Description[en]=The Nagios web interface allows the display of the Nagios configuration under 'Configuation -> View Config'. Only the users specified with this variable may access the configuration. Multiple usernames need to be separated by a comma. Access to all users can be granted with '*'.
 Type=str
 Categories=service-nagios
 
 [nagios/server/user/systemcmd]
 Description[de]=Das Veranlassen von Systemkommandos (z.B. das Herunterfahren oder Neustarten des Nagios-Servers) über die Nagios-Weboberfläche ist auf die hier angegebenen Benutzer beschränkt. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
-Description[en]=The execution of system commands (e.g. the shutdown or restart of the Nagios server) over the Nagios web interface is limited to the users specified here. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Description[en]=The execution of system commands (e.g. the shutdown or restart of the Nagios server) over the Nagios web interface is limited to the users specified here. Multiple usernames need to be separated by a comma. Access to all users can be granted with '*'.
 Type=str
 Categories=service-nagios
 
 [nagios/server/user/allinfo]
 Description[de]=Die hier angegebenen Benutzer dürfen den Nagios-Status aller Rechner und Dienste in der Nagios-Weboberfläche abfragen. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
-Description[en]=The users specified here may access the Nagios status of all hosts and services in the Nagios web interface. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Description[en]=The users specified here may access the Nagios status of all hosts and services in the Nagios web interface. Multiple usernames need to be separated by a comma. Access to all users can be granted with '*'.
 Type=str
 Categories=service-nagios
 
 [nagios/server/user/allcmd]
 Description[de]=Die hier angegebenene Benutzer können dienstbezogenen Kommandos (z.B. das Aussetzen/Reaktivieren einer Dienstüberwachung) für alle Rechner/Dienste über die Nagios-Weboberfläche ausführen. Mehrfache Benutzernamen müssen durch ein Komma getrennt werden. Die Angabe von '*' erlaubt den Zugriff für alle Benutzer.
-Description[en]=The users specified here can execute service commands in the Nagios web interface (e.g. activation/deactivation of a service scan) for all hosts/services. Multiple usernames need to be separated with a comma. Access to all users can be granted with '*'.
+Description[en]=The users specified here can execute service commands in the Nagios web interface (e.g. activation/deactivation of a service scan) for all hosts/services. Multiple usernames need to be separated by a comma. Access to all users can be granted with '*'.
 Type=str
 Categories=service-nagios
 

@@ -1838,7 +1838,7 @@ class object(content):
 					label = cols[5]								# partition label
 					flag = []
 					if cols[6]:
-						flag = re.split(',[ \t]+', cols[6])     # flags are separated with comma
+						flag = re.split(',[ \t]+', cols[6])     # flags are separated by comma
 
 					# check if disk uses a MBR and an existing partition blocks disk space required by GPT
 					# GPT uses at least 34 sectors

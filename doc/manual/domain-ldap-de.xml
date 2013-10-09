@@ -1018,7 +1018,7 @@ slapcat &gt; ldapdaten.txt
 	  <para>
 		Jede &ucsUDL;-Instanz verwendet eine Reihe von &ucsUDL;-Modulen.
 		Diese Module werden von den installierten Applikationen mitgeliefert, das
-		Druckserver-Paket bringt z.B Listener-Module mit, die die Cups-Konfiguration erzeugen.
+		Druckserver-Paket bringt z.B Listener-Module mit, die die CUPS-Konfiguration erzeugen.
 	  </para>
 
 	  <para>

@@ -66,7 +66,7 @@ def binary_packages():
 def parseRfc822(f):
 	r"""
 	Parses string 'f' as a RFC822 conforming file and returns list of sections, each a dict mapping keys to lists of values.
-	Splits file into multiple sections seperated by blank line.
+	Splits file into multiple sections separated by blank line.
 
 	Node: For real Debian files, use the 'debian.deb822' module from the 'python-debian' package.
 

@@ -300,8 +300,8 @@ tree.Ruleset.prototype = {
         }
 
         // The paths are [[Selector]]
-        // The first list is a list of comma seperated selectors
-        // The inner list is a list of inheritance seperated selectors
+        // The first list is a list of comma separated selectors
+        // The inner list is a list of inheritance separated selectors
         // e.g.
         // .a, .b {
         //   .c {
