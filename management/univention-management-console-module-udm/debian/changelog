@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.38-1) unstable; urgency=low
+
+  * Bug #32749: remove "create report" from standard actions
+
+ -- Florian Best <best@univention.de>  Wed, 09 Oct 2013 09:21:15 +0200
+
 univention-management-console-module-udm (4.0.37-1) unstable; urgency=low
 
   * Bug #23214: Fix JS dependencies; broken revert in 4.0.36-1

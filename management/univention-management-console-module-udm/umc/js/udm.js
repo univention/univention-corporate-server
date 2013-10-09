@@ -385,7 +385,7 @@ define([
 			if ('navigation' !== this.moduleFlavor && this._reports.length) {
 				actions.push({
 					name: 'report',
-					isStandardAction: true,
+					isStandardAction: false,
 					isMultiAction: true,
 					label: _('Create report'),
 					iconClass: 'umcIconReport',
