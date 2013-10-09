@@ -1,3 +1,9 @@
+univention-apache (6.0.8-1) unstable; urgency=low
+
+  * Bug #32784: don't underline active links on ucs-overview
+
+ -- Florian Best <best@univention.de>  Wed, 09 Oct 2013 09:03:48 +0200
+
 univention-apache (6.0.7-3) unstable; urgency=low
 
   * removed locale field from entries.json UCR template

@@ -10,7 +10,7 @@
 	padding: 0 10px 0 25px;
 }
 
-a:hover {
+a:hover, a:active, a:focus {
 	color: #575756;
 	text-decoration: none;
 }
