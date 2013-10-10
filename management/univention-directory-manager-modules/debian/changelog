@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.53-2) unstable; urgency=low
+
+  * fix base64 mapping of multivalued properties (Bug #32409)
+  * repair broken icon data handling code in udm_extension listener
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Oct 2013 21:57:18 +0200
+
 univention-directory-manager-modules (9.0.53-1) unstable; urgency=low
 
   * Add support for icons, umc module definition and translation files         

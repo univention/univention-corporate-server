@@ -580,13 +580,7 @@ def remove_umcregistration(dn, attrs):
 		ud.debug(ud.LISTENER, ud.INFO, '%s: Warning: %s does not exist.' % (name, filename))
 
 def install_umcicons(dn, attrs):
-	for compressed_data in attrs.get('univentionUMCIcon', []):
-		try:
-			object_data = bz2.decompress(compressed_data)
-		except TypeError:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing univentionUMCIcon of object %s.' % (name, dn))
-			return
-
+	for object_data in attrs.get('univentionUMCIcon', []):
 		module_name = attrs.get('cn')[0]
 		(mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)
 		targetdir = os.path.join(UMC_ICON_BASEDIR, subdir)
@@ -601,13 +595,7 @@ def install_umcicons(dn, attrs):
 			f.write(object_data)
 
 def remove_umcicons(dn, attrs):
-	for compressed_data in attrs.get('univentionUMCIcon', []):
-		try:
-			object_data = bz2.decompress(compressed_data)
-		except TypeError:
-			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing univentionUMCIcon of object %s.' % (name, dn))
-			return
-
+	for object_data in attrs.get('univentionUMCIcon', []):
 		module_name = attrs.get('cn')[0]
 		(mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)
 		targetdir = os.path.join(UMC_ICON_BASEDIR, subdir)

@@ -108,10 +108,16 @@ def mapUNIX_TimeInterval( value ):
 
 def unmapBase64( value ):
 	'''mapBase64 converts binary data (as found in LDAP) to Base64 encoded UDM propertry values'''
-	try:
-		return base64.b64encode( value[ 0 ] )
-	except Exception, e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
+	if len(value) > 1:
+		try:
+			return map(base64.b64encode, value)
+		except Exception, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
+	else:
+		try:
+			return base64.b64encode( value[ 0 ] )
+		except Exception, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
 	return ""
 
 def mapBase64( value ):
@@ -119,10 +125,16 @@ def mapBase64( value ):
 	if value == '*':
 		# special case for filter pattern '*'
 		return value
-	try:
-		return base64.b64decode( value )
-	except Exception, e:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
+	if type(value) == types.ListType:
+		try:
+			return map(base64.b64decode, value)
+		except Exception, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
+	else:
+		try:
+			return base64.b64decode( value )
+		except Exception, e:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
 	return ""
 
 class mapping:
