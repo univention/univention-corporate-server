@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.94-2) unstable; urgency=low
+
+  * Bug #32218: version bump
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 10 Oct 2013 09:35:48 +0200
+
 univention-management-console-frontend (3.0.94-1) unstable; urgency=low
 
   * Bug #32218: adjusted button look
