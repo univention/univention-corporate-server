@@ -1,3 +1,10 @@
+univention-lib (3.0.20-6) unstable; urgency=low
+
+  * Add support for icons, umc module definition and translation files
+    to ucs_registerLDAPExtension --udm_module (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Oct 2013 21:40:57 +0200
+
 univention-lib (3.0.20-5) unstable; urgency=low
 
   * Fix detection of Active flag in ldap_extension listener

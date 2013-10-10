@@ -20,6 +20,7 @@ import apt
 from abc import ABCMeta, abstractproperty, abstractmethod
 import imp
 import listener
+from univention.lib.umc_module import MIME_DESCRIPTION
 
 class UniventionLDAPExtension(object):
 	__metaclass__ = ABCMeta
@@ -119,6 +120,13 @@ class UniventionLDAPExtension(object):
 			sys.exit(1)
 
 		new_data = base64.b64encode(compressed_data)
+
+		active_change_udm_options = [
+			"--set", "filename=%s" % self.target_filename,
+			"--set", "data=%s" % new_data,
+			"--set", "active=FALSE",
+			]
+
 		common_udm_options = [
 			"--set", "package=%s" % (options.packagename,),
 			"--set", "packageversion=%s" % (options.packageversion,),
@@ -130,11 +138,23 @@ class UniventionLDAPExtension(object):
 			if options.ucsversionend:
 				common_udm_options.extend(["--set", "ucsversionend=%s" % (options.ucsversionend,),])
 
-		active_change_udm_options = [
-			"--set", "filename=%s" % self.target_filename,
-			"--set", "data=%s" % new_data,
-			"--set", "active=FALSE",
-			]
+		if self.udm_module_name == "settings/udm_module":
+			for messagecatalog in options.messagecatalog:
+				filename_parts = os.path.splitext(os.path.basename(messagecatalog))
+				language = filename_parts[0]
+				with open(messagecatalog, 'r') as f:
+					common_udm_options.extend(["--set", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),),])
+			if options.umcregistration:
+				try:
+					with open(options.umcregistration, 'r') as f:
+						compressed_data = bz2.compress(f.read())
+				except Exception as e:
+					print >>sys.stderr, "Compression of file %s failed: %s" % (options.umcregistration, e)
+					sys.exit(1)
+				common_udm_options.extend(["--set", "umcregistration=%s" % (base64.b64encode(compressed_data),),])
+			for icon in options.icon:
+				with open(icon, 'r') as f:
+					common_udm_options.extend(["--set", "icon=%s" % (base64.b64encode(f.read()),),])
 
 		rc, self.object_dn, stdout = self.udm_find_object_dn()
 		if not self.object_dn:
@@ -791,11 +811,24 @@ def option_validate_ucs_version(option, opt, value):
 		raise OptionValueError("%s: may only contain digit, dot and dash characters: %s" % (opt, value))
 	return value
 
+def option_validate_gnu_message_catalogfile(option, opt, value):
+	if not os.path.exists(value):
+		raise OptionValueError("%s: file does not exist: %s" % (opt, value))
+	filename_parts = os.path.splitext(value)
+	language = filename_parts[0]
+	if not language in os.listdir('/usr/share/locale'):
+		raise OptionValueError("%s: file basename is not a registered language: %s" % (opt, value))
+	if not MIME_DESCRIPTION.file(value).startswith('GNU message catalog'):
+		raise OptionValueError("%s: file is not a GNU message catalog: %s" % (opt, value))
+	
+	return value
+
 class UCSOption (Option):
     TYPES = Option.TYPES + ("existing_filename", "ucs_version", )
     TYPE_CHECKER = copy(Option.TYPE_CHECKER)
     TYPE_CHECKER["existing_filename"] = option_validate_existing_filename
     TYPE_CHECKER["ucs_version"] = option_validate_ucs_version
+    TYPE_CHECKER["gnu_message_catalogfile"] = option_validate_gnu_message_catalogfile
 
 
 def option_callback_udm_passthrough_options(option, opt_str, value, parser, *args):
@@ -805,6 +838,20 @@ def option_callback_udm_passthrough_options(option, opt_str, value, parser, *arg
 	udm_passthrough_options.append(opt_str)
 	udm_passthrough_options.append(value)
 	setattr(parser.values, option.dest, value)
+
+def check_udm_module_options(option, opt_str, value, parser):
+	if value.startswith('--'):
+		raise OptionValueError("%s requires an argument" % (opt_str,))
+	if not parser.values.udm_module:
+		raise OptionValueError("%s can only be used after --udm_module" % (opt_str,))
+
+def option_callback_set_udm_module_options(option, opt_str, value, parser):
+	check_udm_module_options(option, opt_str, value, parser)
+	setattr(parser.values, option.dest, value)
+
+def option_callback_append_udm_module_options(option, opt_str, value, parser):
+	check_udm_module_options(option, opt_str, value, parser)
+	parser.values.ensure_value(option.dest, []).append(value)
 
 def ucs_registerLDAPExtension():
 	functionname = inspect.stack()[0][3]
@@ -841,6 +888,22 @@ def ucs_registerLDAPExtension():
 	parser.add_option("--ucsversionend", dest="ucsversionend",
 			action="store", type="ucs_version",
 			help="End activation with UCS version", metavar="<UCS Version>")
+
+	udm_module_options = OptionGroup(parser, "UDM module specific options")
+	udm_module_options.add_option("--messagecatalog", dest="messagecatalog",
+			type="existing_filename", default=[],
+			action="callback", callback=option_callback_append_udm_module_options,
+			help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option("--umcregistration", dest="umcregistration",
+			type="existing_filename",
+			action="callback", callback=option_callback_set_udm_module_options,
+			help="UMC registration xml file", metavar="<XML file>")
+	udm_module_options.add_option("--icon", dest="icon",
+			type="existing_filename", default=[],
+			action="callback", callback=option_callback_append_udm_module_options,
+			help="UDM module icon", metavar="<Icon file>")
+	parser.add_option_group(udm_module_options)
+
 
 	# parser.add_option("-v", "--verbose", action="count")
 	
