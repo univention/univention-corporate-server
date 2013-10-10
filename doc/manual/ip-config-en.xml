@@ -2293,36 +2293,34 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		</para>
 	  </caution>
 
-	  <!-- <para> -->
-	  <!-- 	Proxy-Authentifizierung und die damit erst mögliche Überprüfung der Gruppenzugehörigkeiten -->
-	  <!-- 	muss zuerst aktiviert werden. Dafür werden drei verschiedene Mechanismen angeboten:  -->
+	  <para>
+		The proxy authentication (and as a result the possible verification of the group
+		memberships) must firstly be enabled. There are three possible mechanisms for this: 
 
-	  <!-- 	<itemizedlist> -->
-	  <!-- 	  <listitem><simpara> -->
-	  <!-- 		Die Authentifizierung erfolgt direkt gegen den LDAP-Server. Dazu muss die -->
-	  <!-- 		&ucsUCRV; <envar>squid/basicauth</envar> auf <emphasis>yes</emphasis> gesetzt werden und -->
-	  <!-- 		Squid neu gestartet werden. -->
-	  <!-- 	  </simpara></listitem> -->
+	  	<itemizedlist>
+	  	  <listitem><simpara>
+			Direct authentication against the LDAP server. This is done by setting the &ucsUCRV;
+			<envar>squid/basicauth</envar> to <emphasis>yes</emphasis> and restarting Squid.
+	  	  </simpara></listitem>
 
-	  <!-- 	  <listitem><simpara> -->
-	  <!-- 		Die Authentifizierung wird über die NTLM-Schnittstelle durchgeführt. Benutzer, die an -->
-	  <!-- 		einem Windows-Client angemeldet sind, müssen dann beim Zugriff auf den Proxy keine -->
-	  <!-- 		weitere Authentifizierung durchführen. Um NTLM-Authentifizierung zu aktivieren muss die  -->
-	  <!-- 		&ucsUCRV; <envar>squid/ntlmauth</envar> auf <emphasis>yes</emphasis> gesetzt werden und -->
-	  <!-- 		Squid neu gestartet werden. -->
-	  <!-- 	  </simpara></listitem> -->
+	  	  <listitem><simpara>
+			Authentication is performed via the NTLM interface. Users logged in on a Windows client
+			then do not need to authenticate themselves again when accessing the proxy. NTLM
+			authentication is enabled by setting the &ucsUCRV; <envar>squid/ntlmauth</envar> to
+			<emphasis>yes</emphasis> and restarting Squid.
+	  	  </simpara></listitem>
 
-	  <!-- 	  <listitem><simpara> -->
-	  <!-- 		Die Authentifizierung erfolgt über Kerberos. Benutzer, die an einem Windows-Client -->
-	  <!-- 		angemeldet sind, der Mitglied einer Samba 4-Domäne ist authentifzieren sich am Proxy mit -->
-	  <!-- 		dem Ticket, das sie im Rahmen der Domänenanmeldung erhalten haben. Um -->
-	  <!-- 		Kerberos-Authentifizierung zu aktivieren muss das Paket -->
-	  <!-- 		<emphasis>univention-squid-kerberos</emphasis> auf jedem Proxyserver installiert -->
-	  <!-- 		werden. Anschließend muss die &ucsUCRV; <envar>squid/krb5auth</envar> auf -->
-	  <!-- 		<emphasis>yes</emphasis> gesetzt werden und Squid neu gestartet werden. -->
-	  <!-- 	  </simpara></listitem> -->
-	  <!-- 	</itemizedlist> -->
-	  <!-- </para> -->
+	  	  <listitem><simpara>
+			Authentication is performed via Kerberos. Users logged in on a Windows client which is a
+			member of a Samba 4 domain authenticate themselves on the proxy with the ticket that
+			they received when they logged in to the domain. The
+			<emphasis>univention-squid-kerberos</emphasis> package must be installed on every proxy
+			server for it to be possible to enable Kerberos authentication. Then the &ucsUCRV;
+			<envar>squid/krb5auth</envar> must be set to <emphasis>yes</emphasis> and Squid
+			restarted.
+	  	  </simpara></listitem>
+	  	</itemizedlist>
+	  </para>
 
 	  <para>
 		If NTLM is used an NTLM authentication is performed for every HTTP query as standard. If for example the
