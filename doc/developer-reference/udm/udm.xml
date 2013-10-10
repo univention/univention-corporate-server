@@ -45,7 +45,7 @@
 				<listitem>
 					<programlisting language="sh"><![CDATA[
 eval "$(ucr shell)"
-udm container/ou create --position "$ldap_base" name="xxx"
+udm container/ou create --position "$ldap_base" --set name="xxx"
 					]]></programlisting>
 					<para>
 						Multiple <option>--set</option>s may be used to set the values of a multivalued property.
