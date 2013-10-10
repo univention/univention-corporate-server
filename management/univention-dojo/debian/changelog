@@ -1,3 +1,9 @@
+univention-dojo (7.0.5-1) unstable; urgency=low
+
+  * Bug #32264: rename patch
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2013 12:48:52 +0200
+
 univention-dojo (7.0.4-1) unstable; urgency=low
 
   * Bug #32264: implement patch

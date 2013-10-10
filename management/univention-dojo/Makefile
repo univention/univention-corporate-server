@@ -60,7 +60,7 @@ dojo: dojo-*.tar.gz
 	patch -p1 < ../fix_dojo_iframe_textarea.patch && \
 	patch -p1 < ../fix_Dialog_autofocus.patch && \
 	patch -p1 < ../fix_dojox_widget_Standby_scrollbar_offset.patch && \
-	patch -p1 < ../32264.patch
+	patch -p1 < ../fix_preventDefault_for_events_on_touch_bug_32264.patch
 
 # all other JS packages
 libs/%: %-*.tar.gz
