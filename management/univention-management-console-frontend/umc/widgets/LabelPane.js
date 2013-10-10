@@ -172,6 +172,12 @@ define([
 			}
 		},
 
+		_setBetweenNonCheckBoxesAttr: function(betweenNonCheckBoxes) {
+			if (betweenNonCheckBoxes && tools.inheritsFrom(this.content, 'dijit.form.CheckBox')) {
+				domClass.add(this.domNode, 'umcLabelPaneCheckBoxBetweenNonCheckBoxes');
+			}
+		},
+
 		_setContentAttr: function(content) {
 			this.content = content;
 

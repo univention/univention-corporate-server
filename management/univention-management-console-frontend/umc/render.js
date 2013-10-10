@@ -228,6 +228,12 @@ define([
 					elList = el;
 				}
 
+				var betweenNonCheckBoxes = array.some(elList, function(el) {
+					var widget = widgets[el];
+					if (widget) {
+						return !tools.inheritsFrom(widget, 'umc.widgets.CheckBox');
+					}
+				});
 				// for single String / Array
 				if (elList) {
 					// see how many buttons and how many widgets there are in this row
@@ -263,6 +269,7 @@ define([
 							// add the widget or button surrounded with a LabelPane
 							label = new LabelPane({
 								label: widget.label,
+								betweenNonCheckBoxes: betweenNonCheckBoxes,
 								content: widget,
 								disabled: widget.disabled,
 								style: (widget.align ? 'float: ' + widget.align +';' : '' ) + (widget.style || '')

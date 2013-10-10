@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.99-1) unstable; urgency=low
+
+  * Bug #32750: CSS improvement for checkboxes in "mixed" layouts
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Oct 2013 14:33:11 +0200
+
 univention-management-console-frontend (3.0.98-1) unstable; urgency=low
 
   * Bug #26418: don't deselect grid row when default action is executed
