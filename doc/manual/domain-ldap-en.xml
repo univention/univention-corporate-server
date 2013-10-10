@@ -848,11 +848,11 @@ slapcat &gt; ldapdata.txt
 				</para>
 			</caution>
 			<para>
-			  <!-- Das Zurücksetzen der Passwörter kann für sensible Benutzer oder Gruppen -->
-			  <!-- (z.B. Domänen-Administratoren) verhindert werden. Mit den &ucsUCR;-Variablen  -->
-			  <!-- <envar>ldap/acl/user/passwordreset/protected/uid</envar> und -->
-			  <!-- <envar>ldap/acl/user/passwordreset/protected/gid</envar> können Benutzer und Gruppen -->
-			  <!-- konfiguriert werden. Mehrere Werte müssen durch Kommas getrennt werden. -->
+			  Password resets via the password group can be prevented for sensitive users or groups
+			  (e.g., domain admins). The &ucsUCR; variables
+			  <envar>ldap/acl/user/passwordreset/protected/uid</envar> and
+			  <envar>ldap/acl/user/passwordreset/protected/gid</envar> can be used to configure
+			  users and groups. Multiple values must be separated by commas.
 			  After changes to the variables, it is necessary to restart the LDAP server using the
 			  <command>/etc/init.d/slapd restart</command> command. In the default setting, the
 			  members of the <emphasis>Domain Admins</emphasis> group are protected against having
@@ -1253,24 +1253,23 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 </section>
 
+<section id="domain:saml">
+	<title>Integrating a SAML identify provider</title>
+	<para>
+	  SAML (Security Assertion Markup Language) is an XML-based standard for exchanging
+	  authentication information, which allows single sign-on across domain boundaries among other
+	  things. UCS provides a SAML identity provider: The external service (e.g., Salesforce) is then
+	  securely registered via a cryptographic certificate and trusted by the identity provider. The
+	  user then only needs to authenticate himself in UCS and can use the mounted service without
+	  renewed authentication.
+	</para>
 
-<!-- <section id="domain:saml"> -->
-<!-- 	<title>Einbindung eines SAML Identity Providers</title> -->
-<!-- 	<para> -->
-<!-- 	  SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch von -->
-<!-- 	  Authentifizierungsinformationen, der u.a. Single-Sign-On über Domänengrenzen hinweg erlaubt. -->
-<!-- 	  UCS stellt einen SAML Identity Provider bereit: Der externe Dienst (z.B. Salesforce) wird dabei über -->
-<!-- 	  ein kryptografisches Zertifikat fest registriert und vertraut dann dem Identity Provider. Der -->
-<!-- 	  Benutzer authentifiziert sich dann nur noch in UCS und kann den eingebundenen Dienst ohne -->
-<!-- 	  erneute Authentifizierung nutzen. -->
-<!-- 	</para> -->
-
-<!-- 	<para> -->
-<!-- 	  Der SAML Identity Provider kann über das Univention App Center installiert werden (siehe -->
-<!-- 	  <xref linkend="software:appcenter"/>). Die Registrierung von Diensten und die Freigabe von -->
-<!-- 	  Diensten für einzelne Benutzer wird unter <xref linkend="wiki-saml"/> beschrieben. -->
-<!-- 	</para> -->
-<!-- </section> -->
+	<para>
+	  The SAML identify provider can be installed via the Univention App Center (see <xref
+	  linkend="software:appcenter"/>). The registration of services and the sharing of services for
+	  individual users is described under <xref linkend="wiki-saml"/>.
+	</para>
+</section>
 
 
 <section id="domain:backup2master">
