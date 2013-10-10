@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console*/
+/*global define require*/
 
 define([
 	"dojo/_base/declare",
@@ -43,7 +43,6 @@ define([
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
 	"dijit/layout/BorderContainer",
-	"dijit/layout/StackContainer",
 	"dojo/data/ObjectStore",
 	"dojox/grid/EnhancedGrid",
 	"dojox/grid/cells",
@@ -58,7 +57,7 @@ define([
 	"dojox/grid/enhanced/plugins/IndirectSelection",
 	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, win, construct, attr, geometry, style,
-		topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer, StackContainer,
+		topic, aspect, Menu, MenuItem, DropDownButton, BorderContainer,
 		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, tools, render, _) {
 
@@ -648,38 +647,39 @@ define([
 			}
 
 			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
-			if (!rowDisabled) {
-				this._grid.selection.toggleSelect(evt.rowIndex);
-			} else {
-				// not required, but deselects disabled rows
+			if (rowDisabled) {
+				// deselect disabled rows
 				this._grid.selection.deselect(evt.rowIndex);
-			}
+			} else {
+				this._grid.selection.toggleSelect(evt.rowIndex);
 
-			// default action
-			if (!rowDisabled && ((!this.defaultActionColumn && evt.cellIndex === 1) || (this.defaultActionColumn && evt.cell.field == this.defaultActionColumn))) {
-				if (evt.target == evt.cellNode) {
-					// not clicked on text
-					return;
-				}
-				var item = this._grid.getItem(evt.rowIndex);
-				var identity = item[this.moduleStore.idProperty];
+				// execute default action or toggle selection
+				if (((!this.defaultActionColumn && evt.cellIndex === 1) || (this.defaultActionColumn && evt.cell.field == this.defaultActionColumn))) {
+					if (evt.target == evt.cellNode) {
+						// not clicked on text, revert toggle
+						this._grid.selection.toggleSelect(evt.rowIndex);
+						return;
+					}
+					var item = this._grid.getItem(evt.rowIndex);
+					var identity = item[this.moduleStore.idProperty];
 
-				var defaultAction = typeof this.defaultAction == "function" ?
-					this.defaultAction([identity], [item]) : this.defaultAction;
+					var defaultAction = typeof this.defaultAction == "function" ?
+						this.defaultAction([identity], [item]) : this.defaultAction;
 
-				if (defaultAction) {
-					var action;
-					array.forEach(this.actions, function(iaction) {
-						if (iaction.name == defaultAction) {
-							action = iaction;
-							return false;
-						}
-					}, this);
-					if (action && action.callback) {
-						var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
-						if (isExecutable && !this.getDisabledItem(identity)) {
-							this._publishAction('default-' + action.name);
-							action.callback([identity], [item]);
+					if (defaultAction) {
+						var action;
+						array.forEach(this.actions, function(iaction) {
+							if (iaction.name == defaultAction) {
+								action = iaction;
+								return false;
+							}
+						}, this);
+						if (action && action.callback) {
+							var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
+							if (isExecutable && !this.getDisabledItem(identity)) {
+								this._publishAction('default-' + action.name);
+								action.callback([identity], [item]);
+							}
 						}
 					}
 				}

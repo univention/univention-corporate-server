@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.98-1) unstable; urgency=low
+
+  * Bug #26418: don't deselect grid row when default action is executed
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2013 14:26:35 +0200
+
 univention-management-console-frontend (3.0.97-1) unstable; urgency=low
 
   * Bug #32168: Close context menu of UMC overview on click only when the UMC
