@@ -32,10 +32,12 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dijit/registry",
+	"dijit/focus",
 	"umc/tools",
 	"umc/widgets/Wizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, tools, Wizard, _) {
+], function(declare, lang, array, registry, focusUtil, tools, Wizard, _) {
 
 	return declare("umc.modules.udm.wizards.CreateWizard", [ Wizard ], {
 		autoValidate: true,
@@ -138,6 +140,19 @@ define([
 				callback: lang.hitch(this, 'onAdvanced')
 			});
 			return buttons;
+		},
+
+		onFinished: function() {
+			var focusNode = focusUtil.curNode;
+			if (focusNode) {
+				var focusWidget = registry.byId(focusNode.id);
+				if (focusWidget) {
+					// force watch handler to fire _before_ on('Finished').
+					//   otherwise the value from the wizard is not set to the underlying
+					//   UDM form while validating
+					focusWidget.set('value', focusWidget.get('value'));
+				}
+			}
 		},
 
 		onAdvanced: function() {

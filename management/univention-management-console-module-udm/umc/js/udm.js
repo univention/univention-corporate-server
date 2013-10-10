@@ -446,7 +446,7 @@ define([
 
 			var umcpCmd = lang.hitch(this, 'umcpCommand');
 			var widgets = [];
-			var layout = [ [], [], [] ]; // layout with three rows
+			var layout = [ [], [] ]; // layout with three rows
 
 			// check whether we need to display containers or superordinates
 			var objTypeDependencies = [];
@@ -468,7 +468,7 @@ define([
 					visible: false,
 					umcpCommand: umcpCmd
 				});
-				layout[1].push('superordinate');
+				layout[0].push('superordinate');
 				objTypeDependencies.push('superordinate');
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
 			} else if (containers && containers.length) {
@@ -483,7 +483,7 @@ define([
 					staticValues: containers,
 					umcpCommand: umcpCmd
 				});
-				layout[1].push('container');
+				layout[0].push('container');
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
 			}
 			objProperties.push({ id: 'None', label: _( 'Default properties' ) });
@@ -552,12 +552,12 @@ define([
 				depends: [ 'objectProperty', 'objectType' ]
 			}]);
 			layout[0].push('hidden');
-			layout[1].push('objectType');
+			layout[0].push('objectType');
 			if (superordinates && superordinates.length) {
-				layout[1].push('objectProperty');
-				layout[2].push('objectPropertyValue');
+				layout[0].push('objectProperty');
+				layout[1].push('objectPropertyValue');
 			} else {
-				layout[2].push('objectProperty', 'objectPropertyValue');
+				layout[1].push('objectProperty', 'objectPropertyValue');
 			}
 
 			// add also the buttons (specified by the search form itself) to the layout
@@ -567,10 +567,10 @@ define([
 			}];
 			if ('navigation' == this.moduleFlavor) {
 				// put the buttons in the first row for the navigation
-				layout[1].push('submit');
+				layout[0].push('submit');
 			} else {
 				// append the buttons to the last row otherwise
-				layout[2].push('submit');
+				layout[1].push('submit');
 
 				// add an additional button to toggle between advanced and simplified search
 				buttons.push({
@@ -583,7 +583,7 @@ define([
 						this._updateSearch();
 					})
 				});
-				layout[2].push('toggleSearch');
+				layout[1].push('toggleSearch');
 			}
 
 			// generate the search widget

@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.41-1) unstable; urgency=low
+
+  * Bug #32750: Back to two-row layout, frontend now supports checkbox in same
+    row as non-checkboxes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Oct 2013 14:36:53 +0200
+
 univention-management-console-module-udm (4.0.40-1) unstable; urgency=low
 
   * Bug #32218: adjust translation to avoid breaking the search form layout
