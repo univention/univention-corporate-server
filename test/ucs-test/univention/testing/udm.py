@@ -127,7 +127,7 @@ class UCSTestUDM(object):
 		cmd = [ '/usr/sbin/udm-test', modulename, action ]
 		args = copy.deepcopy(kwargs)
 
-		for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate'):
+		for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy-reference', 'policy-dereference'):
 			if arg in args:
 				cmd.extend(['--%s' % arg, args[arg]])
 				del args[arg]
@@ -157,11 +157,12 @@ class UCSTestUDM(object):
 
 		# set all other remaining properties
 		for key, value in args.items():
-			if type(value) in (list, tuple):
+			if isinstance(value, (list, tuple)):
 				for item in value:
 					cmd.extend( [ '--append', '%s=%s' % (key, item) ] )
 			elif value:
 				cmd.extend( [ '--set', '%s=%s' % (key, value) ] )
+
 		return cmd
 
 
@@ -303,7 +304,7 @@ class UCSTestUDM(object):
 		position: 'cn=users,$ldap_base'
 		password: 'univention'
 		firstname: 'Foo Bar'
-		lastname: <same as 'username'>
+		lastname: <random string>
 		username: <random string>
 
 		If username is missing, a random user name will be used.
@@ -343,8 +344,7 @@ class UCSTestUDM(object):
 		"""
 		attr = copy.deepcopy(attributes)
 		for prop, value in defaults:
-			if not prop in attr:
-				attr[prop] = value
+			attr.setdefault(prop, value)
 		return attr
 
 

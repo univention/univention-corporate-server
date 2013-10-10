@@ -1,3 +1,11 @@
+ucs-test (4.0.136-1) unstable; urgency=low
+
+  * Bug #32271: convert UMC policy result test case to python
+  * Bug #32271: add possiblity to (de)reference policies within the python UDM
+  	test framework
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2013 11:29:47 +0200
+
 ucs-test (4.0.135-1) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)

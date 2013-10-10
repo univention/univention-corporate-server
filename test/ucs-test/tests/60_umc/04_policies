@@ -1,4 +1,4 @@
-#!/usr/share/ucs-test/runner bash
+#!/usr/share/ucs-test/runner python
 ## desc: Test UMC policy result
 ## roles:
 ##  - domaincontroller_master
@@ -6,174 +6,209 @@
 ##  - univention-management-console-module-udm
 ## exposure: safe
 
-. "$TESTLIBPATH/base.sh" || exit 137
-. "$TESTLIBPATH/computer.sh" || exit 137
-. "$TESTLIBPATH/user.sh" || exit 137
+from univention.testing.udm import UCSTestUDM
+from univention.testing.utils import fail
 
-eval "$(ucr shell)"
-
-RETVAL=100
-
-# create user and set UMC permissions
-USERNAME=$(user_randomname)
-PASSWORD=univention
-user_create "$USERNAME"
-
-udm settings/umc_operationset create --position "cn=operations,cn=UMC,cn=univention,$ldap_base" \
-	--set name=test-umc-opset \
-	--set description="policy result test op set" \
-	--append operation="udm/object/policies" \
-	--set flavor=navigation
-
-udm policies/umc create --position "cn=UMC,cn=policies,$ldap_base" \
-	--set name=test-umc-policy \
-	--set allow="cn=test-umc-opset,cn=operations,cn=UMC,cn=univention,$ldap_base"
-
-udm users/user modify --dn "uid=$USERNAME,cn=users,$ldap_base" \
-		--policy-reference "cn=test-umc-policy,cn=UMC,cn=policies,$ldap_base"
-
-# create test computer object
-COMPUTER=$(computer_randomname)
-computer_create "$COMPUTER"
-
-# create empty policies
-for i in root container computer clear; do
-	udm policies/registry create --ignore_exists --position "cn=policies,$ldap_base" \
-		--set name=test-$i-ucr-policy
-done
-
-# assign values to policies
-udm policies/registry modify --dn "cn=test-root-ucr-policy,cn=policies,$ldap_base" \
-	--set registry="foo 1"
-udm policies/registry modify --dn "cn=test-computer-ucr-policy,cn=policies,$ldap_base" \
-	--append registry="baz 3" --append registry="bar 4"
-udm policies/registry modify --dn "cn=test-container-ucr-policy,cn=policies,$ldap_base" \
-	--set registry="bar 2"
-
-cleanup()
-{
-	# remove computer related things
-	udm container/dc modify --dn "$ldap_base" \
-		--policy-dereference "cn=test-root-ucr-policy,cn=policies,$ldap_base"
-	udm container/cn modify --dn "cn=computers,$ldap_base" \
-		--policy-dereference "cn=test-container-ucr-policy,cn=policies,$ldap_base"
-	for i in root container computer clear; do
-		udm policies/registry remove --dn "cn=test-$i-ucr-policy,cn=policies,$ldap_base"
-	done
-	computer_remove $COMPUTER
-
-	# remove user related things
-	user_remove "$USERNAME"
-	udm policies/umc remove --dn "cn=test-umc-policy,cn=UMC,cn=policies,$ldap_base"
-	udm settings/umc_operationset remove --dn "cn=test-umc-opset,cn=operations,cn=UMC,cn=univention,$ldap_base"
-
-	# restore UCR policies
-	if [ -n "$UCR_ROOT_POLICY_ORIGINAL" ]; then
-		udm container/dc modify --dn "$ldap_base" \
-			--policy-reference "$UCR_ROOT_POLICY_ORIGINAL"
-	fi
-	if [ -n "$UCR_CONTAINER_POLICY_ORIGINAL" ]; then
-		udm container/cn modify --dn "cn=computers,$ldap_base" \
-			--policy-reference "$UCR_CONTAINER_POLICY_ORIGINAL"
-	fi
-}
-
-get_policy_result ()
-{
-CODE=$(cat <<<"
-import sys, json
 from univention.lib.umc_connection import UMCConnection
+from univention.testing.strings import random_name
 
-_, hostname, username, password, objectDN, policyDN, container = sys.argv
+ldap_base = UCSTestUDM.LDAP_BASE
+HOSTNAME = 'localhost'
+USERNAME = None
+PASSWORD = 'univention'
 
-data = [{
-	'objectType': 'computers/managedclient',
-	'policyDN': policyDN or None,
-	'policyType': 'policies/registry',
-	'objectDN': objectDN or None,
-	'container': container or None
-}]
+UMCC = None
 
-umcc = UMCConnection(hostname)
-umcc.auth(username, password)
 
-result = umcc.request('udm/object/policies', data, 'navigation')[0]['registry']
-values = ['='.join(r['value']) for r in result]
+def get_policy_result_new(container=None, policyDN=None):
+	return get_policy_result(None, policyDN, container)
 
-print json.dumps(values)
-")
 
-	python -c "$CODE" "$hostname" "$USERNAME" "$PASSWORD" "$@" || fail_test 110 # TODO: better returncode
-}
+def get_policy_result_edit(objectDN=None, policyDN=None):
+	return get_policy_result(objectDN, policyDN, None)
 
-get_policy_result_new () {
-	get_policy_result '' "$2" "$1"
-}
-get_policy_result_edit () {
-	get_policy_result "$1" "$2" ''
-}
 
-value_equals_or_fail () {
-	python -c "import sys, json; sys.stderr.write('%s == %s\n' % (sys.argv[1], sys.argv[2])); sys.exit(0 if set(json.loads(sys.argv[1])) == set(json.loads(sys.argv[2])) else 1)" "$@" || fail_test 110
-}
+def logged_in(func):
+	def _decorated(*args, **kwargs):
+		global UMCC
+		if UMCC is None:
+			UMCC = UMCConnection(HOSTNAME)
+			UMCC.auth(USERNAME, PASSWORD)
+		return func(*args, **kwargs)
+	return _decorated
 
-# (1)
-#   [edit] editing an existing UDM object
-#   -> the existing UDM object itself is loaded
-#   [new]  virtually edit non-existing (=new) UDM object
-#   -> the parent container UDM object is loaded
-# (2)
-#   [w/pol]   UDM object has assigned policies in LDAP directory
-#   [w/o_pol] UDM object has no policies assigned in LDAP directory
-# (3)
-#   [inherit] user request to (virtually) change the policy to 'inherited'
-#   [set_pol] user request to (virtually) assign a particular policy
 
-CONTAINER_DN="cn=computers,$ldap_base"
-COMPUTER_DN="$(computer_dn $COMPUTER)"
-POLICY_DN="cn=test-computer-ucr-policy,cn=policies,$ldap_base"
+@logged_in
+def get_policy_result(objectDN, policyDN, container):
+	"""Gets the policy result from UMC
 
-# store original policies
-UCR_ROOT_POLICY_ORIGINAL="$(udm container/dc list | sed -ne 's|^ *univentionPolicyReference: ||p' | while read dn; do univention-ldapsearch -b "$dn" objectClass=univentionPolicyRegistry -LLL dn | ldapsearch-wrapper | sed -ne 's|^dn: ||p'; done)"
-UCR_CONTAINER_POLICY_ORIGINAL="$(univention-ldapsearch -b "cn=computers,$ldap_base" -s base -LLL univentionPolicyReference | ldapsearch-wrapper | sed -ne 's|^univentionPolicyReference: *||p' | while read dn; do univention-ldapsearch -b "$dn" objectClass=univentionPolicyRegistry -LLL dn | ldapsearch-wrapper | sed -ne 's|^dn: ||p'; done)"
+	"""
+	data = [{
+		'objectType': 'computers/domaincontroller_slave',
+		'policyDN': policyDN,
+		'policyType': 'policies/registry',
+		'objectDN': objectDN,
+		'container': container
+	}]
 
-if [ -n "$UCR_ROOT_POLICY_ORIGINAL" ]; then
-	udm container/dc modify --dn "$ldap_base" \
-		--policy-dereference "$UCR_ROOT_POLICY_ORIGINAL"
-fi
-if [ -n "$UCR_CONTAINER_POLICY_ORIGINAL" ]; then
-	udm container/cn modify --dn "cn=computers,$ldap_base" \
-		--policy-dereference "$UCR_CONTAINER_POLICY_ORIGINAL"
-fi
+	result = UMCC.request('udm/object/policies', data, 'navigation')
+	return ['='.join(r['value']) for r in result[0]['registry']]
 
-# assign policy to LDAP base and computers container
-udm container/dc modify --dn "$ldap_base" \
-	--policy-reference "cn=test-root-ucr-policy,cn=policies,$ldap_base"
-udm container/cn modify --dn "cn=computers,$ldap_base" \
-	--policy-reference "cn=test-clear-ucr-policy,cn=policies,$ldap_base"
 
-# creation tests
-value_equals_or_fail '["foo=1"]' "$(get_policy_result_new "$CONTAINER_DN" '')" # new inherit w/o_pol
-value_equals_or_fail '["foo=1", "baz=3", "bar=4"]' "$(get_policy_result_new "$CONTAINER_DN" "$POLICY_DN")" # new set_pol w/o_pol
+def main():
+	with UCSTestUDM() as udm:
+		# create an UMC operation set to allow the udm/object/policies command
+		operation_set_dn = udm.create_object('settings/umc_operationset',
+			position="cn=operations,cn=UMC,cn=univention,%s" % ldap_base,
+			name='test-umc-opset',
+			description="policy result test op set",
+			operation=["udm/object/policies"],
+			flavor='navigation'
+		)
 
-# assign policy to container
-udm container/cn modify --dn "cn=computers,$ldap_base" \
-	--policy-reference "cn=test-container-ucr-policy,cn=policies,$ldap_base"
+		# create a new UMC policy
+		# containing the UMC operating set
+		umc_policy_dn = udm.create_object('policies/umc',
+			position="cn=UMC,cn=policies,%s" % ldap_base,
+			name='test-umc-policy',
+			allow=operation_set_dn
+		)
 
-value_equals_or_fail '["foo=1", "bar=2"]' "$(get_policy_result_new "$CONTAINER_DN" '')" # new inherit w/pol
-value_equals_or_fail '["foo=1", "bar=4", "baz=3"]' "$(get_policy_result_new "$CONTAINER_DN" "$POLICY_DN")" # new set_pol w/pol
+		# create user to authenticate with at UMC
+		# appending the created UMC policy
+		global USERNAME
+		userdn, USERNAME = udm.create_user(**{
+			'policy-reference': umc_policy_dn
+		})
 
-# modify tests
-value_equals_or_fail '["foo=1", "bar=2"]' "$(get_policy_result_edit "$COMPUTER_DN" '')" # edit inherit w/o_pol
-value_equals_or_fail '["foo=1", "bar=4", "baz=3"]' "$(get_policy_result_edit "$COMPUTER_DN" "$POLICY_DN")" # edit set_pol w/o_pol
+		# create empty policies
+		policies = {
+			'root': dict(registry='foo 1'),
+			'container': dict(registry='baz 2'),
+			'computer': dict(append=dict(registry=['baz 3', 'bar 4'])),
+			'various': dict(append=dict(registry=['foo 0', 'bar 5'])),
+		}
+		for name, kwargs in policies.items():
+			policies[name] = udm.create_object('policies/registry',
+				position="cn=policies,%s" % ldap_base,
+				name='test-%s-ucr-policy' % name,
+				**kwargs
+			)
 
-# assign policy to computer
-udm container/cn modify --dn "$(computer_dn $COMPUTER)" \
-	--policy-reference "cn=test-computer-ucr-policy,cn=policies,$ldap_base"
+		# create container hierarchy
+		root_dn = udm.create_object('container/cn',
+			name='root',
+			position=ldap_base
+		)
+		container_dn = udm.create_object('container/cn',
+			name='computers2',
+			position=root_dn
+		)
 
-value_equals_or_fail '["foo=1", "bar=2"]' "$(get_policy_result_edit "$COMPUTER_DN" '')" # edit inherit w/pol
-value_equals_or_fail '["foo=1", "bar=4", "baz=3"]' "$(get_policy_result_edit "$COMPUTER_DN" "$POLICY_DN")" # edit set_pol w/pol
+		# create computer object
+		computer_dn = udm.create_object('computers/domaincontroller_slave',
+			name=random_name(),
+			position=container_dn
+		)
 
-cleanup
+		root_policy_dn = policies['root']
+		computer_policy_dn = policies['computer']
+		container_policy_dn = policies['container']
+		various_policy_dn = policies['various']
 
-exit $RETVAL
+		# (1)
+		#   [edit] editing an existing UDM object
+		#   -> the existing UDM object itself is loaded
+		#   [new]  virtually edit non-existing (=new) UDM object
+		#   -> the parent container UDM object is loaded
+		# (2)
+		#   [w/pol]   UDM object has assigned policies in LDAP directory
+		#   [w/o_pol] UDM object has no policies assigned in LDAP directory
+		# (3)
+		#   [inherit] user request to (virtually) change the policy to 'inherited'
+		#   [set_pol] user request to (virtually) assign a particular policy
+
+		#
+		# creation tests
+		#
+
+		# assign policy to root container
+		udm.modify_object('container/cn', **{
+			'dn': root_dn,
+			'policy-reference': root_policy_dn
+		})
+
+		_assert(
+			["foo=1"],
+			get_policy_result_new(container_dn),
+			'new inherit w/o_pol'
+		)
+		_assert(
+			["foo=1", "baz=3", "bar=4"],
+			get_policy_result_new(container_dn, computer_policy_dn),
+			'new set_pol w/o_pol'
+		)
+
+		# assign policy to computer container
+		udm.modify_object('container/cn', **{
+			'dn': container_dn,
+			'policy-reference': container_policy_dn
+		})
+
+		_assert(
+			["foo=1", "baz=2"],
+			get_policy_result_new(container_dn),
+			'new inherit w/pol'
+		)
+		_assert(
+			["foo=1", "bar=4", "baz=3"],
+			get_policy_result_new(container_dn, computer_policy_dn),
+			'new set_pol w/pol'
+		)
+
+		#
+		# modification tests
+		#
+		_assert(
+			["foo=1", "baz=2"],
+			get_policy_result_edit(computer_dn),
+			'edit inherit w/o_pol'
+		)
+		_assert(
+			["foo=1", "bar=4", "baz=3"],
+			get_policy_result_edit(computer_dn, computer_policy_dn),
+			'edit set_pol w/o_pol'
+		)
+
+		# assign policy to computer
+		udm.modify_object('computers/domaincontroller_slave', **{
+			'dn': computer_dn,
+			'policy-reference': computer_policy_dn
+		})
+
+		_assert(
+			["foo=1", "baz=2"],
+			get_policy_result_edit(computer_dn),
+			'edit inherit w/pol'
+		)
+		_assert(  # test with the same policy the object has assigned
+			["foo=1", "bar=4", "baz=3"],
+			get_policy_result_edit(computer_dn, computer_policy_dn),
+			'edit set_pol w/pol'
+		)
+		_assert(
+			["foo=0", "bar=5", "baz=2"],
+			get_policy_result_edit(computer_dn, various_policy_dn),
+			'edit set_pol w/pol (2)'
+		)
+
+
+def _assert(first, second, name):
+	if set(first) != set(second):
+		fail('ERROR: %s: %r != %r' % (name, set(first), set(second)))
+	else:
+		print 'OK: %s' % name
+
+
+if __name__ == '__main__':
+	main()
