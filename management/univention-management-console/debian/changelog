@@ -1,3 +1,9 @@
+univention-management-console (6.0.16-1) unstable; urgency=low
+
+  * Bug #32299: reload categories, modules and UCR variable on auth request
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2013 15:44:57 +0200
+
 univention-management-console (6.0.15-4) unstable; urgency=low
 
   * removed description of UCRV umc/server/languages/.* (Bug #32678)

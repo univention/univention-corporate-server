@@ -210,7 +210,7 @@ class MagicBucket( object ):
 			res.status = BAD_REQUEST_UNAUTH
 			self._response( res, state )
 		elif msg.command == 'AUTH':
-			ucr.load()
+			Server.reload()
 			state.authResponse = Response( msg )
 			try:
 				state.authenticate( msg.body[ 'username' ], msg.body[ 'password' ], msg.body.get( 'new_password' ) )
@@ -496,7 +496,8 @@ class Server( signals.Provider ):
 		if self.__magic:
 			self.__bucket.exit()
 
-	def reload( self ):
+	@staticmethod
+	def reload():
 		"""Reloads resources like module and category definitions"""
 		CORE.info( 'Reloading resources: modules, categories' )
 		moduleManager.load()
