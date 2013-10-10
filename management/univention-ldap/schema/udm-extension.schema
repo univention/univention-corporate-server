@@ -28,6 +28,20 @@ attributetype ( univentionUDMExtensionAttributeType:13 NAME 'univentionUDMModule
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
 
+attributetype ( univentionUDMExtensionAttributeType:14 NAME 'univentionUMCIcon'
+	DESC 'UMC icon'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionUDMExtensionAttributeType:15 NAME 'univentionUMCRegistrationData'
+	DESC 'UMC registration data'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
+attributetype ( univentionUDMExtensionAttributeType:16 NAME 'univentionMessageCatalog'
+	DESC 'GNU message catalog for message translations'
+	SINGLE-VALUE
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.5 )
+
 objectclass ( univentionUDMExtensionObjectClass:1 NAME 'univentionUDMModule'
 	DESC 'UCS UDM module'
 	SUP 'univentionObjectMetadata' STRUCTURAL
@@ -35,10 +49,13 @@ objectclass ( univentionUDMExtensionObjectClass:1 NAME 'univentionUDMModule'
 	MAY (	univentionUDMModuleFilename
 		$ univentionUDMModuleData
 		$ univentionUDMModuleActive
+		$ univentionUMCIcon
+		$ univentionUMCRegistrationData
+		$ univentionMessageCatalog
 		)
 	)
 
-### Analogous definition for univentionUDMHook
+### Definition for univentionUDMHook
 
 attributetype ( univentionUDMExtensionAttributeType:21 NAME 'univentionUDMHookFilename'
 	DESC 'UDM hook filename'
