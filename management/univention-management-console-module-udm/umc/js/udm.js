@@ -131,7 +131,7 @@ define([
 		_reports: null,
 
 		// internal flag whether the advanced search is shown or not
-		_isAdvancedSearch: true,
+		_isAdvancedSearch: false,
 
 		// LDAP object type name in singular and plural
 		objectNameSingular: '',
@@ -542,6 +542,7 @@ define([
 					// update the label of objectPropertyValue
 					widget = this._searchForm.getWidget('objectPropertyValue');
 					widget.set('label', label);
+					this._updateSearch();
 				})
 			}, {
 				type: 'MixedInput',
@@ -578,7 +579,7 @@ define([
 					label: '',  // label will be set in toggleSearch
 					callback: lang.hitch(this, function() {
 						this._isAdvancedSearch = !this._isAdvancedSearch;
-						var search = this._isAdvancedSearch ? 'toggle-search-simple' : 'toggle-search-advanced';
+						var search = this._isAdvancedSearch ? 'toggle-search-advanced' : 'toggle-search-simple';
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, search);
 						this._updateSearch();
 					})
@@ -845,7 +846,7 @@ define([
 			if ('navigation' != this.moduleFlavor) {
 				var widgets = this._searchForm._widgets;
 				var toggleButton = this._searchForm._buttons.toggleSearch;
-				if (!this._isAdvancedSearch) {
+				if (this._isAdvancedSearch) {
 					widgets.objectType.set('visible', widgets.objectType.getAllItems().length > 2);
 					if ('container' in widgets) {
 						widgets.container.set('visible', true);
@@ -863,6 +864,12 @@ define([
 					widgets.hidden.set('visible', false);
 					toggleButton.set('label', _('(Advanced options)'));
 				}
+				// during simple search without search label (default properties)
+				//   we are wasting space at the top. fixing it:
+				var marginTop = widgets.objectPropertyValue.label != '&nbsp;' || this._isAdvancedSearch ? 0 : '-1em';
+				domStyle.set(this._searchForm.domNode, {
+					marginTop: marginTop
+				});
 				this.layout();
 			}
 
