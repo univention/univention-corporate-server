@@ -50,12 +50,6 @@
 	border-width: inherit; /* DEL */
 }
 
-.dijitTooltipContainer.dijitTooltipContents {
-	border: 1px solid white;
-	background: @grayShip;
-	color: white;
-}
-
 /* 'body' wurde upstream auch  */
 .dijitAlignTop,
 .dijitAlignBottom,
@@ -466,6 +460,13 @@
 	max-width: 650px;
 }
 
+/* tooltip styling */
+
+.umc .dijitTooltipContainer.dijitTooltipContents {
+	border: 1px solid white;
+	background: @grayShip;
+	color: white;
+}
 .umc .dijitTooltipContainer {
   background-color: @grayShip;
   background-image: url(images/tooltipGradient.png);
@@ -819,8 +820,15 @@
 .umc .umcMultiInput {
 	margin-right: 10px;
 
-	.dijitButton .dijitButtonText {
-		padding: 0;
+	.dijitButton {
+		.dijitButtonText {
+			padding: 0;
+		}
+
+		.dijitButtonNode {
+			padding-left: 0;
+			padding-right: 0;
+		}
 	}
 }
 
@@ -868,6 +876,10 @@
 		font-size: 100%;
 		padding: 0.0em 0.15em 0.05em 0.15em;
 		margin-right: 0.5em;
+	}
+
+	.dijitButtonText {
+		padding: 0 0.2em;
 	}
 }
 
