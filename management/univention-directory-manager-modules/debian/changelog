@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.53-1) unstable; urgency=low
+
+  * Add support for icons, umc module definition and translation files         
+    to ucs_registerLDAPExtension --udm_module (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Oct 2013 21:40:49 +0200
+
 univention-directory-manager-modules (9.0.52-1) unstable; urgency=low
 
   * Bug #29680: Default value for Multi-Value fields is empty list, not a list

@@ -37,7 +37,7 @@ import univention.debug
 import univention.admin.modules
 import univention.admin.uexceptions
 import univention.admin.localization
-from univention.updater import UCS_Version
+from univention.lib.ucs import UCS_Version
 import base64
 import zlib
 import bz2
@@ -355,12 +355,6 @@ class FiveThirdsString( string ):
 class TextArea( string ):
 	pass
 
-# upload classes
-class Upload( ISyntax ):
-	@classmethod
-	def parse( self, value ):
-		return value
-
 class UCSVersion( string ):
 	@classmethod
 	def parse( self, value ):
@@ -393,48 +387,53 @@ class BaseFilename( string ):
 		else:
 			return value
 
-class GzipBase64Upload( Upload ):
+# upload classes
+class Upload( ISyntax ):
 	@classmethod
 	def parse( self, value ):
+		return value
+
+class GzipBase64Upload( Upload ):
+	@classmethod
+	def parse( self, text ):
 		try:
-			gziped_data = base64.decodestring( value )
+			gziped_data = base64.decodestring( text )
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( value ) )
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
 		try:
 			data = zlib.decompress(gziped_data, 16+zlib.MAX_WBITS)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Value must be gzip compressed and Base64 encoded: %s' ) % str( value ) )
-		return value
+			raise univention.admin.uexceptions.valueError( _( 'Value must be gzip compressed and Base64 encoded: %s' ) % str( text ) )
+		return text
 
 class Bzip2Base64Upload( Upload ):
 	@classmethod
-	def parse( self, value ):
+	def parse( self, text ):
 		try:
-			compressed_data = base64.decodestring( value )
+			compressed_data = base64.decodestring( text )
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( value ) )
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
 		try:
 			data = bz2.decompress(compressed_data)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Value must be bz2 compressed and Base64 encoded: %s' ) % str( value ) )
-		return value
+			raise univention.admin.uexceptions.valueError( _( 'Value must be bz2 compressed and Base64 encoded: %s' ) % str( text ) )
+		return text
 
 class Base64Upload( Upload ):
 	@classmethod
-	def parse( self, value ):
+	def parse( self, text ):
 		try:
-			base64.decodestring( value )
+			base64.decodestring( text )
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( value ) )
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
 		else:
-			return value
+			return text
 
 class jpegPhoto( Upload ):
 	@classmethod
-	def tostring(self, text):
-		if text:
-			return base64.b64encode(text)
-
+	def tostring(self, value):
+		if value:
+			return base64.b64encode(value)
 		else:
 			return ''
 
@@ -445,6 +444,55 @@ class jpegPhoto( Upload ):
 			return text
 		except:
 			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg'))
+
+from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
+class Base64UMCIcon( Upload ):
+	@classmethod
+	def parse( self, text ):
+		try:
+			data = base64.decodestring( text )
+		except:
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
+		image_mime_type_of_buffer(data) ## exact return value irrelevant, only exceptions matter at this point
+		return text
+
+class Bzip2Base64XMLUpload( Upload ):
+	@classmethod
+	def parse( self, text ):
+		try:
+			compressed_data = base64.decodestring( text )
+		except:
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
+		try:
+			data = bz2.decompress(compressed_data)
+		except:
+			raise univention.admin.uexceptions.valueError( _( 'Value must be bz2 compressed and Base64 encoded: %s' ) % str( text ) )
+		if get_mime_type(data) != 'application/xml':
+			raise univention.admin.uexceptions.valueError( _( 'Not Base64 encoded XML data: %s' ) % str( text ) )
+		return text
+
+class GNUMessageCatalog( Upload ):
+	@classmethod
+	def parse( self, text ):
+		try:
+			data = base64.decodestring( text )
+		except:
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
+		if not get_mime_description(data).startswith('GNU message catalog'):
+			raise univention.admin.uexceptions.valueError( _( 'Not Base64 encoded GNU message catalog (.mo) data: %s' ) % str( text ) )
+		return text
+
+class Localesubdirname( ISyntax ):
+	@classmethod
+	def parse( self, text ):
+		if not text in os.listdir('/usr/share/locale'):
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid locale subdir name: %s' ) % str( text ) )
+		return text
+
+class Localesubdirname_and_GNUMessageCatalog( complex ):
+	delimiter = ': '
+	subsyntaxes = [ ( _( 'Locale subdir name' ), Localesubdirname ), ( _( 'GNU message catalog' ), GNUMessageCatalog ) ]
+	all_required = True
 
 
 class integer(simple):

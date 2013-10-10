@@ -39,6 +39,7 @@ import univention.admin.uldap as udm_uldap
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 from univention.lib.ucs import UCS_Version
+from univention.lib.umc_module import UMC_ICON_BASEDIR, imagecategory_of_buffer, default_filename_suffix_for_mime_type
 import subprocess
 import bz2
 import tempfile
@@ -52,6 +53,8 @@ attributes = []
 
 PYSHARED_DIR = '/usr/share/pyshared/'
 PYMODULES_DIR = '/usr/lib/pymodules/'
+LOCALE_BASEDIR = "/usr/share/locale"	## mo files go to /usr/share/locale/<language-tag>/LC_MESSAGES/
+MODULE_DEFINTION_BASEDIR = "/usr/share/univention-management-console/modules"	## UMC registration xml files go here
 
 class moduleCreationFailed(Exception):
 	default_message='Module creation failed.'
@@ -134,6 +137,10 @@ def handler(dn, new, old):
 		try:
 			if not install_python_file(target_subdir, new_relative_filename, new_object_data):
 				return
+			if objectclass == 'univentionUDMModule':
+				install_messagecatalog(dn, new)
+				install_umcregistration(dn, new)
+				install_umcicons(dn, new)
 		finally:
 			listener.unsetuid()
 
@@ -144,6 +151,10 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		try:
 			remove_python_file(target_subdir, old_relative_filename)
+			if objectclass == 'univentionUDMModule':
+				remove_umcicons(dn, old)
+				remove_umcregistration(dn, old)
+				remove_messagecatalog(dn, old)
 		finally:
 			listener.unsetuid()
 
@@ -490,4 +501,122 @@ def cleanup_python_moduledir(python_basedir, target_subdir, module_directory):
 	if parent_dir:
 		cleanup_python_moduledir(python_basedir, target_subdir, parent_dir)
 
+def install_messagecatalog(dn, attrs):
+	translationfile_ldap_attribute = "univentionMessageCatalog"
+	translationfile_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (translationfile_ldap_attribute,)
 
+	values = {}
+	for ldap_attribute in attrs.keys():
+		if ldap_attribute.startswith(translationfile_ldap_attribute_and_tag_prefix):
+			language_tag = ldap_attribute.split(translationfile_ldap_attribute_and_tag_prefix, 1)[1]
+			values[language_tag] = attrs.get(ldap_attribute)[0]
+	if not values:
+		return
+
+	module_name = attrs.get('cn')[0]
+	for language_tag, mo_data_binary in values.items():
+		targetdir = os.path.join(LOCALE_BASEDIR, language_tag, 'LC_MESSAGES')
+		filename = os.path.join(targetdir, "univention-admin-handlers-%s.mo" % (module_name.replace('/', '-'),) )
+		if not os.path.exists(targetdir):
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
+			continue
+		with open(filename, 'w') as f:
+			f.write(mo_data_binary)
+
+def remove_messagecatalog(dn, attrs):
+	translationfile_ldap_attribute = "univentionMessageCatalog"
+	translationfile_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (translationfile_ldap_attribute,)
+
+	language_tags = []
+	for ldap_attribute in attrs.keys():
+		if ldap_attribute.startswith(translationfile_ldap_attribute_and_tag_prefix):
+			language_tag = ldap_attribute.split(translationfile_ldap_attribute_and_tag_prefix, 1)[1]
+			language_tags.append(language_tag)
+	if not language_tags:
+		return
+
+	module_name = attrs.get('cn')[0]
+	for language_tag in language_tags:
+		targetdir = os.path.join(LOCALE_BASEDIR, language_tag, 'LC_MESSAGES')
+		filename = os.path.join(targetdir, "univention-admin-handlers-%s.mo" % (module_name.replace('/', '-'),) )
+		if not os.path.exists(targetdir):
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
+			continue
+		ud.debug(ud.LISTENER, ud.INFO, '%s: Removing %s.' % (name, filename))
+		if os.path.exists(filename):
+			os.unlink(filename)
+		else:
+			ud.debug(ud.LISTENER, ud.INFO, '%s: Warning: %s does not exist.' % (name, filename))
+
+def install_umcregistration(dn, attrs):
+	compressed_data = attrs.get('univentionUMCRegistrationData', [None])[0]
+	if not compressed_data:
+		return
+
+	try:
+		object_data = bz2.decompress(compressed_data)
+	except TypeError:
+		ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing univentionUMCRegistrationData of object %s.' % (name, dn))
+		return
+
+	module_name = attrs.get('cn')[0]
+	filename = os.path.join(MODULE_DEFINTION_BASEDIR, "udm-%s.xml" % (module_name.replace('/', '-'),))
+	if not os.path.exists(MODULE_DEFINTION_BASEDIR):
+		ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
+		return
+	with open(filename, 'w') as f:
+		f.write(object_data)
+
+def remove_umcregistration(dn, attrs):
+	if not attrs.get('univentionUMCRegistrationData'):
+		return
+
+	module_name = attrs.get('cn')[0]
+	filename = os.path.join(MODULE_DEFINTION_BASEDIR, "udm-%s.xml" % (module_name.replace('/', '-'),))
+	ud.debug(ud.LISTENER, ud.INFO, '%s: Removing %s.' % (name, filename))
+	if os.path.exists(filename):
+		os.unlink(filename)
+	else:
+		ud.debug(ud.LISTENER, ud.INFO, '%s: Warning: %s does not exist.' % (name, filename))
+
+def install_umcicons(dn, attrs):
+	for compressed_data in attrs.get('univentionUMCIcon', []):
+		try:
+			object_data = bz2.decompress(compressed_data)
+		except TypeError:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing univentionUMCIcon of object %s.' % (name, dn))
+			return
+
+		module_name = attrs.get('cn')[0]
+		(mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)
+		targetdir = os.path.join(UMC_ICON_BASEDIR, subdir)
+
+		filename_suffix = default_filename_suffix_for_mime_type(mime_type, compression_mime_type)
+		filename = os.path.join(targetdir, "udm-%s%s" % (module_name.replace('/', '-'), filename_suffix))
+
+		if not os.path.exists(targetdir):
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
+			continue
+		with open(filename, 'w') as f:
+			f.write(object_data)
+
+def remove_umcicons(dn, attrs):
+	for compressed_data in attrs.get('univentionUMCIcon', []):
+		try:
+			object_data = bz2.decompress(compressed_data)
+		except TypeError:
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error uncompressing univentionUMCIcon of object %s.' % (name, dn))
+			return
+
+		module_name = attrs.get('cn')[0]
+		(mime_type, compression_mime_type, subdir) = imagecategory_of_buffer(object_data)
+		targetdir = os.path.join(UMC_ICON_BASEDIR, subdir)
+
+		filename_suffix = default_filename_suffix_for_mime_type(mime_type, compression_mime_type)
+		filename = os.path.join(targetdir, "udm-%s%s" % (module_name.replace('/', '-'), filename_suffix))
+
+		ud.debug(ud.LISTENER, ud.INFO, '%s: Removing %s.' % (name, filename))
+		if os.path.exists(filename):
+			os.unlink(filename)
+		else:
+			ud.debug(ud.LISTENER, ud.INFO, '%s: Warning: %s does not exist.' % (name, filename))

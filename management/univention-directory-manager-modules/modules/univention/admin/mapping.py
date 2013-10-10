@@ -107,6 +107,7 @@ def mapUNIX_TimeInterval( value ):
 	return unicode( value )
 
 def unmapBase64( value ):
+	'''mapBase64 converts binary data (as found in LDAP) to Base64 encoded UDM propertry values'''
 	try:
 		return base64.b64encode( value[ 0 ] )
 	except Exception, e:
@@ -114,6 +115,7 @@ def unmapBase64( value ):
 	return ""
 
 def mapBase64( value ):
+	'''mapBase64 converts Base64 encoded UDM propertry values to binary data (for storage in LDAP)'''
 	if value == '*':
 		# special case for filter pattern '*'
 		return value
