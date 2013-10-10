@@ -54,7 +54,7 @@ msgstr "(Erweiterte Optionen)"
 
 #: umc/js/udm.js:857
 msgid "(Simplified options)"
-msgstr "(Vereinfachte Optionen)"
+msgstr "(Vereinfachte Opt.)"
 
 #: umc/js/udm/DetailPage.js:405
 msgid "(multi-edit)"
