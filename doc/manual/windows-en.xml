@@ -577,69 +577,74 @@ This feature is only available in Samba 3.
 </section>
 </section>
 
-<section id="ad-connector:general"><title>UCS Active Directory Connector</title>
-<section id="ad-connector:einfuehrung"><title>Introduction</title>
-<para>
-The UCS Active Directory Connector (AD Connector for short)
-makes it possible to synchronise directory service objects between a
-Windows 2003/2008/2012 server under Active Directory (AD) and a
-&ucsUCS;.
-<!-- Der Connector kann auch mehrere AD-Domänen mit -->
-<!-- einer UCS-Domäne synchronisieren; dies ist in <xref linkend="ext-doc-win"/>) dokumentiert. -->
+<section id="ad-connector:general">
+  <title>UCS Active Directory Connector</title>
+  <section id="ad-connector:einfuehrung">
+	<title>Introduction</title>
+	<para>
+	  The UCS Active Directory Connector (AD Connector for short) makes it possible to synchronise
+	  directory service objects between a Windows 2003/2008/2012 server under Active Directory (AD)
+	  and a &ucsUCS;. The connector can also synchronise several AD domains with one UCS domain;
+	  this is documented in <xref linkend="ext-doc-win"/>).
+	</para>
 
-</para>
-<para>
-In the default setting, containers, organisational units, users, and
-groups are synchronised. Users have an exceptional position since the
-password cannot be queried via the LDAP protocol in Active
-Directory. A special service is installed on the Windows server for
-this purpose, which enables password synchronisation (see
-<xref linkend="ad-connector:password-dienst"/>).
-</para>
-<para>
-Information on the attributes configured in the basic setting and
-particularities to take into account can be found in the
-<xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
-</para>
-<para>
-Computer accounts are not synchronised since Windows clients can only
-be a member in one domain.
-</para>
-<para>
-Users can make access to services of both environments in a
-transparent way; this is due to the possibility of having the same
-user settings in both domains. After logging into a UCS domain, a
-subsequent connection to a file share or to an Exchange server with
-Active Directory is possible without a renewed password request. Users
-and administrators will find users and groups of the same name on the
-resources of the other domain, and can thus work with their familiar
-permission structures.
-</para>
-<para>
-The initialisation is performed after the first start of the
-connector. All the entries are read out of the UCS, converted in AD
-objects according to the mapping set and added (or modified if already
-present) on the UCS side. All objects are then read out of the AD and
-converted into UCS objects before being added/modified
-accordingly. The directory service servers are then queried further
-as long as no changes have been made. The AD connector can also be
-operated in a unidirectional mode.
-</para>
-<para>
-Following the initial sync, additional changes are requested at a set interval.
-This interval is initially set to five seconds and can be adapted via
-the &ucsUMC; configuration module.
-</para>
-<para>
-If an object cannot be synchronised, it is "rejected". During
-start-up of the UCS AD connector, an attempt is made to write
-this object again. In addition, a further attempt is made to input the
-object again after several runs. The interval can be configured in the
-UMC configuration module, see <xref linkend="ad-connector:basicsetup"/>.
-The presetting specifies ten cycles before the object is resynchronised.
-A restart of the UCS AD connector also triggers a resynchronisation of
-all previously rejected changes.
-</para>
+	<para>
+	  In the default setting, containers, organisational units, users, and groups are
+	  synchronised. Users have an exceptional position since the password cannot be queried via the
+	  LDAP protocol in Active Directory. A special service is installed on the Windows server for
+	  this purpose, which enables password synchronisation (see <xref
+	  linkend="ad-connector:password-dienst"/>).
+	</para>
+
+	<para>
+	  Information on the attributes configured in the basic setting and
+	  particularities to take into account can be found in the
+	  <xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
+	</para>
+
+	<para>
+	  Computer accounts are not synchronised since Windows clients can only
+	  be a member in one domain.
+	</para>
+
+	<para>
+	  Users can make access to services of both environments in a
+	  transparent way; this is due to the possibility of having the same
+	  user settings in both domains. After logging into a UCS domain, a
+	  subsequent connection to a file share or to an Exchange server with
+	  Active Directory is possible without a renewed password request. Users
+	  and administrators will find users and groups of the same name on the
+	  resources of the other domain, and can thus work with their familiar
+	  permission structures.
+	</para>
+
+	<para>
+	  The initialisation is performed after the first start of the
+	  connector. All the entries are read out of the UCS, converted in AD
+	  objects according to the mapping set and added (or modified if already
+	  present) on the UCS side. All objects are then read out of the AD and
+	  converted into UCS objects before being added/modified
+	  accordingly. The directory service servers are then queried further
+	  as long as no changes have been made. The AD connector can also be
+	  operated in a unidirectional mode.
+	</para>
+
+	<para>
+	  Following the initial sync, additional changes are requested at a set interval.
+	  This interval is initially set to five seconds and can be adapted via
+	  the &ucsUMC; configuration module.
+	</para>
+
+	<para>
+	  If an object cannot be synchronised, it is "rejected". During
+	  start-up of the UCS AD connector, an attempt is made to write
+	  this object again. In addition, a further attempt is made to input the
+	  object again after several runs. The interval can be configured in the
+	  UMC configuration module, see <xref linkend="ad-connector:basicsetup"/>.
+	  The presetting specifies ten cycles before the object is resynchronised.
+	  A restart of the UCS AD connector also triggers a resynchronisation of
+	  all previously rejected changes.
+	</para>
 </section>
 
 <section id="ad-connector:einrichtung"><title>Setup of the UCS AD connector</title>

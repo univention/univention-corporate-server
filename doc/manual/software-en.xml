@@ -115,12 +115,11 @@
 	  major release UCS 3.x.
 	</para>
 
-	<!-- <para> -->
-	<!--   Vor jedem Release-Update wird nach <emphasis>Preup-Skript</emphasis> -->
-	<!--   aufgerufen. Dieses prüft z.B. ob Probleme bestehen, die zum kontrollierten Abbruch des -->
-	<!--   Updates führen. Als Abschluss eines Updates wird das -->
-	<!--   <emphasis>Postup-Skript</emphasis> aufgerufen. -->
-	<!-- </para> -->
+	<para>
+	  A <emphasis>preup script</emphasis> is run before every release update. This checks for
+	  example whether there are any problems which could lead to the controlled cancelling of the
+	  update. The <emphasis>postup script</emphasis> is run at the end of the update.
+	</para>
 	
 	<para>
 	  Errata updates always refer to certain minor releases, e.g., for UCS

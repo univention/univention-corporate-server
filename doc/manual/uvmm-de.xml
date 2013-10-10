@@ -488,7 +488,7 @@
 			</simpara></listitem>
 
 			<listitem><simpara>
-			  Für die Netzwerkkarten muss der <guimenu>Treiber</guimenu> auf
+			  Für die Netzwerkkarte(n) muss der <guimenu>Treiber</guimenu> auf
 			  <emphasis>Paravirtualisiert (virtio)</emphasis> konfiguriert werden.
 			</simpara></listitem>
 

@@ -16,10 +16,9 @@
 
 	<para>
 	  The password for the computer account is generated automatically during the domain join and
-	  saved in the <filename>/etc/machine.secret</filename> file. 
-	  <!-- Das Passwort umfasst in der -->
-	  <!-- Grundeinstellung 20 Zeichen (konfigurierbar über die &ucsUCRV; <envar>machine/password/length</envar>). -->
-	  The password is regenerated
+	  saved in the <filename>/etc/machine.secret</filename> file.  In the default setting, the
+	  password consists of 20 characters (can be configured via the &ucsUCRV;
+	  <envar>machine/password/length</envar>). The password is regenerated
 	  automatically at fixed intervals (default setting: 21 days; can be configured using the
 	  &ucsUCRV; <envar>server/password/interval</envar>). Password rotation can also be disabled
 	  using the variable <envar>server/password/change</envar>.

@@ -479,10 +479,10 @@
 					</simpara>
 				</listitem>
 
-				<!-- <listitem><simpara> -->
-				<!--   Für die Netzwerkkarten muss der <guimenu>Treiber</guimenu> auf -->
-				<!--   <emphasis>Paravirtualisiert (virtio)</emphasis> konfiguriert werden. -->
-				<!-- </simpara></listitem> -->
+				<listitem><simpara>
+				  The <guimenu>Driver</guimenu> must be configured to <emphasis>Paravirtual device
+				  (virtio)</emphasis> for the network card(s).
+				</simpara></listitem>
 
 				<listitem>
 					<simpara>
