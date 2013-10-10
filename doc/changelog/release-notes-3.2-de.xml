@@ -185,7 +185,7 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 
 		<para>
-		  Ist die &ucsUCRV; <envar>mail/cyrus/mailbox/delete</envar> auf dem Mailserver aktiviert
+		  Ist die &ucsUCR;-Variable <envar>mail/cyrus/mailbox/delete</envar> auf dem Mailserver aktiviert
 		  wurde und wird das Attribut vom Benutzerobjekt entfernt, wird das dadurch das Postfach
 		  gelöscht.
 		</para>
@@ -295,6 +295,42 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 	  </section>
 
+	  <section>
+		<title>Betrieb eines lokalen Repository-Servers / Preup / Postup-Skripte</title>
+		<para>
+		  Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen
+		  werden (z.B. zur Nachbereitung des Updates, etwa die Deinstallation obsoleter Pakete).
+		  Ab UCS 3.2 werden diese Skripte über DEB-Pakete ausgeliefert (in früheren Versionen wurden
+		  sie als Dateien ausgeliefert, wurden dadurch aber nicht durch Secure Apt abgedeckt).
+		</para>
+
+		<para>
+		  Wird ein Repository-Server mit UCS 3.1-x betrieben, sollte dieser auf UCS 3.2 aktualisiert
+		  werden, bevor weitere Systeme auf UCS 3.2-1 aktualisiert werden können.
+		</para>
+
+		<para>
+		  Wenn ein Update des Repository-Servers nicht möglich ist, können die Dateien auch manuell
+		  synchronisiert werden:
+
+<programlisting language="sh">
+LOCAL_DIR=/var/lib//univention-repository/mirror
+SERVER=http://updates.software-univention.de
+for release in 3.2-0 3.2-1; do
+  for f in preup postup; do
+    FILE=3.2/maintained/$release/all/${f}.sh.gpg
+    wget $SERVER/$FILE -O $LOCAL_DIR/$FILE
+  done
+done
+</programlisting>
+		</para>
+
+		<para>
+		  Alternativ kann die Prüfung der Signaturen auch deaktiviert werden. Dazu muss die
+		  &ucsUCR;-Variable <envar>repository/online/verify</envar> auf <emphasis>false</emphasis>
+		  gesetzt werden.
+		</para>
+	  </section>
 	</chapter>
 
 
