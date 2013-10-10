@@ -3,7 +3,7 @@
 # Univention Dojo Package
 #  Makefile for building/installing the package
 #
-# Copyright 2008-2012 Univention GmbH
+# Copyright 2008-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -60,6 +60,7 @@ dojo: dojo-*.tar.gz
 	patch -p1 < ../fix_dojo_iframe_textarea.patch && \
 	patch -p1 < ../fix_Dialog_autofocus.patch && \
 	patch -p1 < ../fix_dojox_widget_Standby_scrollbar_offset.patch
+	patch -p1 < ../32264.patch
 
 # all other JS packages
 libs/%: %-*.tar.gz

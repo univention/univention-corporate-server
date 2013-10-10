@@ -1,3 +1,9 @@
+univention-dojo (7.0.4-1) unstable; urgency=low
+
+  * Bug #32264: implement patch
+
+ -- Florian Best <best@univention.de>  Thu, 10 Oct 2013 12:43:23 +0200
+
 univention-dojo (7.0.3-1) unstable; urgency=low
 
   * Bug #31639: update to Dojo 1.9.1 and dgrid 0.3.9
