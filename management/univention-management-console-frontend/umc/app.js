@@ -1168,7 +1168,9 @@ define([
 
 			// enable closing of context menu by clicking somewhere
 			on(baseWin.body(), 'click', lang.hitch(this, function() {
-				this._closeModuleContextMenu();
+				if (this._tabContainer.selectedChildWidget == this._overviewPage) {
+					this._closeModuleContextMenu();
+				}
 			}));
 
 			this._grid.on('scroll', lang.hitch(this, '_closeModuleContextMenu'));
@@ -1207,7 +1209,6 @@ define([
 			};
 
 			this._grid.on('.umcGalleryItem:touchstart', lang.hitch(this, function(evt) {
-				var touchStartBegin = new Date();
 				_contextTouchTimeout = setTimeout(lang.hitch(this, function() {
 					var row = this._grid.row(evt);
 					this._openModuleContextMenu(row.data, row.element, evt.pageX, evt.pageY);
