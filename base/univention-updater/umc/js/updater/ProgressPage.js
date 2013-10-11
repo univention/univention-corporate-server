@@ -48,11 +48,12 @@ define([
 	"umc/modules/updater/Page",
 	"umc/modules/updater/_LogViewer",
 	"umc/widgets/Button",
+	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/widgets/ExpandingTitlePane",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, domClass, dialog, tools, Page, _LogViewer, Button, Text, ExpandingTitlePane, libServer, _) {
+], function(declare, lang, domClass, dialog, tools, Page, _LogViewer, Button, ContainerWidget, Text, ExpandingTitlePane, libServer, _) {
 	return declare("umc.modules.updater.ProgressPage", Page, {
 
 		// Polling interval for eventually running Updater jobs. If this is
@@ -100,8 +101,7 @@ define([
 
 			// returns to the calling page
 			this._close = new Button({
-				label:		_("back"),
-				region:		'bottom',
+				label:		_("Back"),
 				onClick:	lang.hitch(this, function() {
 					// local function to close the log view
 					var _closeLogView = lang.hitch(this, function() {
@@ -125,7 +125,11 @@ define([
 
 				})
 			});
-			this._pane.addChild(this._close);
+			var container = new ContainerWidget({
+				region:	'bottom'
+			});
+			container.addChild(this._close);
+			this._pane.addChild(container);
 			this._allow_close(false);
 		},
 

@@ -466,7 +466,7 @@ msgstr ""
 "verlorengegangen. Sie müssen sich noch einmal neu anmelden."
 
 #: umc/js/updater/ProgressPage.js:103
-msgid "back"
+msgid "Back"
 msgstr "Zurück"
 
 #: umc/js/updater.js:185

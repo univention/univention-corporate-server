@@ -1,3 +1,9 @@
+univention-updater (9.0.21-1) unstable; urgency=low
+
+  * Bug #32218: fixed styling of back button on progress page
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Oct 2013 11:28:50 +0200
+
 univention-updater (9.0.20-1) unstable; urgency=low
 
   * fixed common spelling mistakes (Bug #32662)
