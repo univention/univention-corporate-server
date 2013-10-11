@@ -289,12 +289,12 @@
 	<title>Linux kernel and firmware packages</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The Linux kernel was updated to 3.10-rc7. The nouveau KMS kernel module is incompatible
-		  with the Xorg version in UCS 3.2 and now blacklisted (<ulink url="&ucsbug;31701">Bug 31701</ulink>). This
+		  The Linux kernel was updated to 3.10.15. The nouveau KMS kernel module is incompatible
+		  with the Xorg version in UCS 3.2 and now blacklisted (<ulink url="&ucsbug;31701">Bug 31701</ulink>, <ulink url="&ucsbug;32203">Bug 32203</ulink>). This
 		  update also resolves occasional kernel traces when operating a UCS installation in Amazon
 		  EC2 (<ulink url="&ucsbug;30369">Bug 30369</ulink>). The firmware packages have been updated to current versions as well.
 		  In addition various packages have been updated to ensure compatibility of their DKMS
-		  out-of-tree kernel modules with Linux 3.10: openafs, xtables-addons, virtualbox and ndiswrapper.
+		  out-of-tree kernel modules with Linux 3.10: openafs, xtables-addons, open-vm-tools, iscsitarget, virtualbox and ndiswrapper.
 		</simpara></listitem>
 
 		<listitem><simpara>
