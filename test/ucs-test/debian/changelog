@@ -1,3 +1,12 @@
+ucs-test (4.0.137-1) unstable; urgency=low
+
+  * 00_base/07kpasswd_output: The test user is created as member of
+    Administrators. The group Administrators is either in cn=groups or
+    cn=builtin. Nevertheless the test user need not to be a member of
+    Adminstrators so I removed the membership (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Oct 2013 21:04:26 +0200
+
 ucs-test (4.0.136-1) unstable; urgency=low
 
   * Bug #32271: convert UMC policy result test case to python

@@ -52,7 +52,6 @@ def create_user(username, password):
 				"--set", "username=%s" % username,
 				"--set", "firstname=%s" % username,
 				"--set", "lastname=%s" % username,
-				"--set", "groups=cn=Administrators,cn=groups,%(ldap/base)s" % ucr,
 				"--set", "primaryGroup=cn=Domain Admins,cn=groups,%(ldap/base)s" % ucr,
 				"--position", "cn=users,%(ldap/base)s" % ucr,])
 	return udm.wait() == 0
