@@ -1097,7 +1097,7 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A problem in the reloading process of UDM modules has been fixed, which could cause Python to neglect runtime changes of the main syntax and hook python modules. This is mainly an issue which could occur during development of new UCS releases.
+			A problem in the reloading process of UDM modules has been fixed, which could cause Python to neglect runtime changes of the main syntax and hook Python modules. This is mainly an issue which could occur during development of new UCS releases.
 			(<ulink url="&ucsbug;32565">Bug 32565</ulink>).
 		</simpara></listitem>
 
@@ -1578,17 +1578,11 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The function <function>getLDAPURIs</function> has been added to the python lib. This function returns a string
-		with all configured LDAP URIs (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
+		The functions <function>getLDAPURIs</function> and <function>getLDAPServersCommaList</function> have been added to the Python lib, which return all configured LDAP servers (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The function <function>getLDAPServersCommaList</function> has been added to the python lib. This function returns
-		a comma-separated string with all configured LDAP servers (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
-	  </simpara></listitem>
-
-	  <listitem><simpara>
-		Added UMCConnection to the python lib, moved from the <application>Univention App Center</application>
+		Added UMCConnection to the Python lib, moved from the <application>Univention App Center</application>
 		(<ulink url="&ucsbug;31058">Bug 31058</ulink>,
 		<ulink url="&ucsbug;31908">Bug 31908</ulink>).
 	  </simpara></listitem>
@@ -1890,7 +1884,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package <package>univention-squid-kerberos</package> does not depend on <package>univention-samba4</package> anymore. In addition, the joinscript 98univention-squid-samba4.inst now corectly saves its status when not in a samba4 environment (<ulink url="&ucsbug;32011">Bug 32011</ulink>).
+		  The package <package>univention-squid-kerberos</package> does not depend on <package>univention-samba4</package> anymore. In addition, the joinscript <filename>98univention-squid-samba4.inst</filename> now corectly saves its status when not in a samba4 environment (<ulink url="&ucsbug;32011">Bug 32011</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2015,7 +2009,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		 The PostgreSQL configuration file <filename>/etc/postgresql/pam_ldap.conf</filename> now uses
-		 the univention python lib to generate the LDAP URI
+		 the univention Python lib to generate the LDAP URI
 		 (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
 
@@ -2559,7 +2553,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  A join and an unjoin script have been added to the package <package>univention-ad-connector</package>. The join
-		  script adds the AD Connector service to the server object and the unjoin script removes the service 
+		  script adds the AD Connector service to the server object and the unjoin script removes the service
 		  (<ulink url="&ucsbug;32455">Bug 32455</ulink>).
 		</simpara></listitem>
 
@@ -2661,7 +2655,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Several UDM test cases have been added (<ulink url="&ucsbug;31652">Bug 31652</ulink>, <ulink url="&ucsbug;31653">Bug 31653</ulink>, <ulink url="&ucsbug;31654">Bug 31654</ulink>, <ulink url="&ucsbug;31655">Bug 31655</ulink>, <ulink url="&ucsbug;31656">Bug 31656</ulink>, <ulink url="&ucsbug;31658">Bug 31658</ulink>, <ulink url="&ucsbug;31658">Bug 31658</ulink>, <ulink url="&ucsbug;31657">Bug 31657</ulink>, <ulink url="&ucsbug;31659">Bug 31659</ulink>, <ulink url="&ucsbug;31661">Bug 31661</ulink>, <ulink url="&ucsbug;31660">Bug 31660</ulink>).
+		Several UDM test cases have been added (<ulink url="&ucsbug;31652">Bug 31652</ulink>, <ulink url="&ucsbug;31653">Bug 31653</ulink>, <ulink url="&ucsbug;31654">Bug 31654</ulink>, <ulink url="&ucsbug;31655">Bug 31655</ulink>, <ulink url="&ucsbug;31656">Bug 31656</ulink>, <ulink url="&ucsbug;31658">Bug 31658</ulink>, <ulink url="&ucsbug;31657">Bug 31657</ulink>, <ulink url="&ucsbug;31659">Bug 31659</ulink>, <ulink url="&ucsbug;31661">Bug 31661</ulink>, <ulink url="&ucsbug;31660">Bug 31660</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -2705,7 +2699,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		A python wrapper for the UDM CLI has been added (<ulink url="&ucsbug;30560">Bug 30560</ulink>).
+		A Python wrapper for the UDM CLI has been added (<ulink url="&ucsbug;30560">Bug 30560</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
