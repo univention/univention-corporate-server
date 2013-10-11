@@ -640,7 +640,7 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Position number on tab</entry>
+					<entry>Layout position of the extended attribute</entry>
 					<entry>
 						<para>
 						  If several extended attributes are to be managed on one tab, the order
@@ -678,7 +678,7 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Position number of group</entry>
+					<entry>Layout position of the extended attribute's group</entry>
 					<entry>
 						If multiple groups are managed in one tab, this position number can be
 						used to specify the order of the groups. They are shown in the

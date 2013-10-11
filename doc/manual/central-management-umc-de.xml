@@ -660,7 +660,7 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Positionsnummer auf der Karteikarte</entry>
+					<entry>Layoutposition des erweiterten Attributs</entry>
 					<entry>
 						<para>
 							Sollen mehrere erweiterte Attribute auf einer Karteikarte verwaltet
@@ -699,7 +699,7 @@
 					</entry>
 				</row>
 				<row>
-					<entry>Positionsnummer der Gruppe</entry>
+					<entry>Layoutposition der Gruppe des erweiterten Attributs</entry>
 					<entry>
 						Sollen mehrere Gruppen auf einer Karteikarte verwaltet werden, kann anhand
 						dieser Positionsnummer die Darstellungsreihenfolge beeinflusst werden. Sie
