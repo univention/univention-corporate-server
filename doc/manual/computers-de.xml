@@ -765,8 +765,11 @@
 				  </itemizedlist>
 
 				  <section id="computers:networkcomplex:bridge">
-					<title>Bridging</title>
-					
+					<title>Bridging
+						<indexterm><primary>Netzwerk</primary><secondary>Bridge</secondary></indexterm>
+						<indexterm><primary>Netzwerk</primary><secondary>Switch</secondary><see>Bridge</see></indexterm>
+					</title>
+
 					<para>
 					  Der häufigste Anwendungsfall für <emphasis>Bridging</emphasis> ist die gemeinsame Nutzung einer
 					  physischen Netzwerkkarte durch eine oder mehrere virtuelle Maschinen. Anstatt eine Netzwerkkarte
@@ -808,7 +811,7 @@
 					  möglichen Einstellungen findet sich in der Manpage
 					  <citerefentry><refentrytitle>bridge-utils-interfaces</refentrytitle><manvolnum>5</manvolnum></citerefentry>.
 					</para>
-					  
+
 					<para>
 					  Nach einem Klick auf <guimenu>Weiter</guimenu> kann der Bridge optional eine IP-Adresse zugewiesen werden.
 					  Diese kann dann auch als Netzwerkinterface auf dem Virtualisierungshost verwendet
@@ -818,8 +821,15 @@
 				  </section>
 
 				  <section id="computers:networkcomplex:bonding">
-					<title>Bonding</title>
-					
+					<title>Bonding
+						<indexterm><primary>Netzwerk</primary><secondary>Bonding</secondary></indexterm>
+						<indexterm><primary>Netzwerk</primary><secondary>Kanalbündelung</secondary><see>Bonding</see></indexterm>
+						<indexterm><primary>Netzwerk</primary><secondary>Link aggregation</secondary><see>Bonding</see></indexterm>
+						<indexterm><primary>Netzwerk</primary><secondary>Etherchannel</secondary><see>Bonding</see></indexterm>
+						<indexterm><primary>Netzwerk</primary><secondary>Teaming</secondary><see>Bonding</see></indexterm>
+						<indexterm><primary>Netzwerk</primary><secondary>Trunking</secondary><see>Bonding</see></indexterm>
+					</title>
+
 					<para>
 					  Mit <emphasis>Bonding</emphasis> können zwei (oder mehr)
 					  physische Netzwerkkarten zur Erhöhung des Durchsatzes oder zur Verbesserung der
@@ -891,7 +901,10 @@
 				  </section>
 
 				  <section id="computers:networkcomplex:vlan">
-					<title>VLANs</title>
+					<title>VLANs
+						<indexterm><primary>Netzwerk</primary><secondary>VLAN</secondary></indexterm>
+						<indexterm><primary>Netzwerk</primary><secondary>802.1q</secondary><see>VLAN</see></indexterm>
+					</title>
 					<para>
 					  VLANs können verwendet werden um den Netzwerkverkehr in einem physischen
 					  Netzwerk logisch auf ein oder mehrere virtuelle Unternetze aufzuteilen. Jedes

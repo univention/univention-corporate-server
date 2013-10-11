@@ -771,14 +771,17 @@
 			  </itemizedlist>
 
 			  <section id="computers:networkcomplex:bridge">
-				<title>Bridging</title>
-					
+				<title>Bridging
+					<indexterm><primary>Network</primary><secondary>Bridge</secondary></indexterm>
+					<indexterm><primary>Network</primary><secondary>Switch</secondary><see>Bridge</see></indexterm>
+				</title>
+
 				<para>
 				  The most common application scenario for <emphasis>bridging</emphasis> is the
 				  shared use of a physical network card by one or more virtual machines. Instead of
-				  a network card for each virtual machine and the virtualization server
+				  one network card for each virtual machine and the virtualization server
 				  itself, all systems are connected via a shared uplink. A bridge can be compared
-				  with a switch realised in a software which is used to connect the individual hosts
+				  with a switch implemented in software which is used to connect the individual hosts
 				  together. The hardware network adapter used is called a <emphasis>bridge
 				  port</emphasis>.
 				</para>
@@ -792,30 +795,28 @@
 
 				<para>
 				  The physical network card intended to act as the uplink can be selected under
-				  <guimenu>Bridge ports</guimenu>. In the typical application scenario of connecting
+				  <guimenu>Bridge ports</guimenu>. In the typical scenario of connecting
 				  virtual machines via just one network card, there is no risk of a network loop.
-				  If the bridge is used to connect two networks, the spanning tree
+				  If the bridge is used to connect two ethernet networks, the spanning tree
 				  protocol (STP) is employed to avoid network loops
-				  
 				  <footnote><para>
 					The Linux kernel only implements STP, not the Rapid STP or Multiple STP versions.
-				  </para></footnote>. 
-
+				  </para></footnote>.
 				  The <guimenu>Forwarding delay</guimenu> setting configures the waiting time in
 				  seconds during which information is collected about the network topology when a
 				  connection is being made via STP. If the bridge is used for connecting virtual machines to
 				  one physical network card, STP should be disabled by setting the value to
-				  0. Otherwise problems may occur when using DHCP, as the packages sent during the
+				  0. Otherwise problems may occur when using DHCP, as the packets sent during the
 				  waiting time are not forwarded.
 				</para>
-				
+
 				<para>
 				  The <guimenu>Additional bridge options</guimenu> input field can be used to configure
 				  arbitrary bridge parameters. This is only necessary in exceptional cases; an overview of
-				  the possible settings can be found on the man page
+				  the possible settings can be found on the manual page
 				  <citerefentry><refentrytitle>bridge-utils-interfaces</refentrytitle><manvolnum>5</manvolnum></citerefentry>.
 				</para>
-					  
+
 				<para>
 				  Clicking on <guimenu>Next</guimenu> offers the possibility of optionally assigning
 				  the bridge an IP address. This interface can then also be used as a network
@@ -826,8 +827,14 @@
 			  </section>
 
 			  <section id="computers:networkcomplex:bonding">
-				<title>Bonding</title>
-					
+				 <title>Bonding
+					<indexterm><primary>Network</primary><secondary>Bonding</secondary></indexterm>
+					<indexterm><primary>Network</primary><secondary>Link aggregation</secondary><see>Bonding</see></indexterm>
+					<indexterm><primary>Network</primary><secondary>Etherchannel</secondary><see>Bonding</see></indexterm>
+					<indexterm><primary>Network</primary><secondary>Teaming</secondary><see>Bonding</see></indexterm>
+					<indexterm><primary>Network</primary><secondary>Trunking</secondary><see>Bonding</see></indexterm>
+				 </title>
+
 				<para>
 				  <emphasis>Bonding</emphasis> can be used to bundle two (or more) physical network
 				  cards in order to increase the performance or improve redundancy in failover
@@ -837,7 +844,7 @@
 				<para>
 				  In order to configure a bonding, <emphasis>Bonding</emphasis> must be selected as
 				  the <guimenu>Interface type</guimenu> under <guimenu>Add</guimenu>. The
-				  <guimenu>Name of the bonding interface</guimenu>  can be selected at will. Then
+				  <guimenu>Name of the bonding interface</guimenu> can be selected at will. Then
 				  click on <guimenu>Next</guimenu>.
 				</para>
 
@@ -897,17 +904,19 @@
 			  </section>
 
 			  <section id="computers:networkcomplex:vlan">
-				<title>VLANs</title>
+				<title>VLANs
+					<indexterm><primary>Network</primary><secondary>VLAN</secondary></indexterm>
+					<indexterm><primary>Network</primary><secondary>802.1q</secondary><see>VLAN</see></indexterm>
+				</title>
 				<para>
 				  VLANs can be used to separate the network traffic in a physical network
 				  logically over one or more virtual subnetworks. Each of these virtual networks is
 				  an independent broadcast domain. This makes it e.g. possible to differentiate between
 				  a network for the employees and a guest network for visitors in a company
-				  network although they use the same physical cables.  The individual end devices
+				  network although they use the same physical cables. The individual end devices
 				  can be assigned to the VLANs via the configuration of the switches. The
 				  network switches must support 802.1q VLANs.
 				</para>
-
 
 				<para>
 				  A distinction is made between two types of connections between network cards:
@@ -916,7 +925,7 @@
 				<itemizedlist>
 				  <listitem>
 					<para>
-					  A connection only transports packages from a specific VLAN. In this case,
+					  A connection only transports packets from a specific VLAN. In this case,
 					  <firstterm>untagged</firstterm> data packets are transmitted.
 					</para>
 
@@ -928,11 +937,11 @@
 
 				  <listitem>
 					<para>
-					 A connection transports packages from several VLANs. This is also referred to
-					 as a <firstterm>trunk link</firstterm>. In this case, each package is assigned
+					 A connection transports packets from several VLANs. This is also referred to
+					 as a <firstterm>trunk link</firstterm>. In this case, each packet is assigned
 					 to a VLAN using a VLAN ID. During transmission between trunk
 					 links and specific VLANs, the network switch takes over the task of
-					 filtering the packages by means of the VLAN IDs as well as adding and removing
+					 filtering the packets by means of the VLAN IDs as well as adding and removing
 					 the VLAN IDs.
 					</para>
 
@@ -941,7 +950,7 @@
 					</para>
 
 					<para>
-					  Some switches also allow the sending of packages with and without VLAN tags
+					  Some switches also allow the sending of packets with and without VLAN tags
 					  over a shared connection, but this is not described in more detail here.
 					</para>
 				  </listitem>
@@ -951,7 +960,7 @@
 				  When configuring a VLAN in the &ucsUMC; it is possible to configure for a
 				  computer which VLANs it wants to participate in. An example here would be an
 				  internal company web server, which should be available both to the employees and
-				  any users of the guest network. 
+				  any users of the guest network.
 				</para>
 
 				<para>
