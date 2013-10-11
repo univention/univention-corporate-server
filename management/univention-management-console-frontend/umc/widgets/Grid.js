@@ -651,12 +651,10 @@ define([
 				// deselect disabled rows
 				this._grid.selection.deselect(evt.rowIndex);
 			} else {
-				this._grid.selection.toggleSelect(evt.rowIndex);
-
 				// execute default action or toggle selection
 				if (((!this.defaultActionColumn && evt.cellIndex === 1) || (this.defaultActionColumn && evt.cell.field == this.defaultActionColumn))) {
 					if (evt.target == evt.cellNode) {
-						// not clicked on text, revert toggle
+						// not clicked on text
 						this._grid.selection.toggleSelect(evt.rowIndex);
 						return;
 					}
@@ -682,6 +680,8 @@ define([
 							}
 						}
 					}
+				} else {
+					this._grid.selection.toggleSelect(evt.rowIndex);
 				}
 			}
 		},
@@ -853,7 +853,7 @@ define([
 				iitem = this._grid.getItem(idx);
 				iid = iitem[this.moduleStore.idProperty];
 				disabled = this._disabledIDs[iid] === true;
-				if (disabled != !!this._grid.rowSelectCell.disabled(idx)) {
+				if (disabled === (!this._grid.rowSelectCell.disabled(idx))) {
 					this._grid.rowSelectCell.setDisabled(idx, disabled);
 				}
 			}

@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.103-1) unstable; urgency=low
+
+  * Bug #26418: fix grid selection when clicking on row
+
+ -- Florian Best <best@univention.de>  Fri, 11 Oct 2013 13:06:40 +0200
+
 univention-management-console-frontend (3.0.102-1) unstable; urgency=low
 
   * Bug #32218: adjusted styling of disabled submit button
