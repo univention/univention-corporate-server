@@ -436,7 +436,7 @@ define([
 		},
 
 		_setContextActions: function() {
-			this._contextActionsToolbar = new ContainerWidget({});
+			this._contextActionsToolbar = new ContainerWidget({ style: 'float: left' });
 			this._contextActionsMenu = new Menu({});
 
 			array.forEach(this._getContextActions(), function(iaction) {
