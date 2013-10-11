@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.104-1) unstable; urgency=low
+
+  * Bug #32218: added shadow effect to hovered buttons
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Oct 2013 13:35:52 +0200
+
 univention-management-console-frontend (3.0.103-1) unstable; urgency=low
 
   * Bug #26418: fix grid selection when clicking on row
