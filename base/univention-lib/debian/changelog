@@ -1,3 +1,9 @@
+univention-lib (3.0.21-1) unstable; urgency=low
+
+  * Added python-magic to the dependency list (Bug #32409)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Oct 2013 21:39:08 +0200
+
 univention-lib (3.0.20-6) unstable; urgency=low
 
   * Add support for icons, umc module definition and translation files
