@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.102-1) unstable; urgency=low
+
+  * Bug #32218: adjusted styling of disabled submit button
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 11 Oct 2013 11:37:05 +0200
+
 univention-management-console-frontend (3.0.101-1) unstable; urgency=low
 
   * Bug #32218: adjust button icons to new style, CSS/HTML cleanup

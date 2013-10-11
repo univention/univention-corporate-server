@@ -261,24 +261,22 @@
 
 
 /* disabled submit buttons should have grey background with dark grey font color */
-.umc .dijitButtonDisabled.umcSubmitButton .dijitButtonNode {
-	background-color: @grayAthens;
-	border: solid 1px @grayAlto;
+.umc .dijitButtonDisabled.umcSubmitButton {
+	//background-color: @grayAthens;
+	//border: solid 1px @grayAlto;
 	color: @gray;
+	background-color: @greenZanah;
 }
 
 .umc .dijitButtonDisabled,
 .umc .dijitDropDownButtonDisabled,
 .umc .dijitComboButtonDisabled,
 .umc .dijitToggleButtonDisabled {
-  background: none;
-}
+	background: none;
 
-.umc .dijitButtonDisabled .dijitButtonNode,
-.umc .dijitDropDownButtonDisabled .dijitButtonNode,
-.umc .dijitComboButtonDisabled .dijitButtonNode,
-.umc .dijitToggleButtonDisabled .dijitButtonNode {
-  background-image: none /* remove the upstream white transition */;
+	.dijitButtonNode {
+		background-image: none /* remove the upstream white transition */;
+	}
 }
 
 .umc .dijitToggleButton .dijitCheckBoxIcon {
@@ -467,6 +465,7 @@
 	background: @grayShip;
 	color: white;
 }
+
 .umc .dijitTooltipContainer {
   background-color: @grayShip;
   background-image: url(images/tooltipGradient.png);
