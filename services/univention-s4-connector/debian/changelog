@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.26-2) unstable; urgency=low
+
+  * Allow the sync of a local group from UCS to S4. For this the
+    connector have to ignore the SID mapping (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 Oct 2013 21:57:53 +0200
+
 univention-s4-connector (8.0.26-1) unstable; urgency=low
 
   * Don't resync rejected files before the first sync is complete

@@ -297,6 +297,13 @@ print "			ignore_filter='(|%s)'," % ignore_filter
 
 			con_create_objectclass=['top', 'group'],
 
+			# These functions can extend the addlist while
+			# creating an object in S4. Parameters are
+			#	s4connector, property_type, object, addlist, serverctrls
+			con_create_extenstions = [
+							univention.s4connector.s4.check_for_local_group_and_extend_serverctrls_and_sid,
+			],
+
 			post_con_modify_functions=[
 							@!@
 if configRegistry.is_true('connector/s4/mapping/sid_to_s4', False) and not configRegistry.is_true('connector/s4/mapping/sid', True):
