@@ -1963,7 +1963,6 @@ class s4(univention.s4connector.ucs):
 		_d=ud.function('ldap.initialize')
 		print "--------------------------------------"
 		print "Initialize sync from S4"
-		self.resync_rejected()
 		if self._get_lastUSN() == 0: # we startup new
 			ud.debug(ud.LDAP, ud.PROCESS, "initialize S4: last USN is 0, sync all")
 			# query highest USN in LDAP
@@ -1979,6 +1978,7 @@ class s4(univention.s4connector.ucs):
 			self._commit_lastUSN()
 			ud.debug(ud.LDAP, ud.INFO, "initialize S4: sync of all objects finished, lastUSN is %d", self.__get_highestCommittedUSN())
 		else:
+			self.resync_rejected()
 			polled=self.poll()		
 			self._commit_lastUSN()
 		print "--------------------------------------"

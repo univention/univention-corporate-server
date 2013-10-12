@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.26-1) unstable; urgency=low
+
+  * Don't resync rejected files before the first sync is complete
+    (Bug #32852)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 Oct 2013 21:00:02 +0200
+
 univention-s4-connector (8.0.25-1) unstable; urgency=low
 
   * Create container Builtin during join otherwise all domain local
