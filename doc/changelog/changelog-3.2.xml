@@ -2535,6 +2535,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  <ulink url="&ucsbug;32690">Bug 32690</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The S4 connector does no longer synchronizes rejected objects before the initialization
+		  phase is complete
+		  <ulink url="&ucsbug;32852">Bug 32852</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
