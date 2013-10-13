@@ -120,17 +120,15 @@ def __is_groupType_local(groupType):
 
 def check_for_local_group_and_extend_serverctrls_and_sid(s4connector, property_type, object, add_or_modlist, serverctrls):
 	groupType = object.get('attributes', {}).get('univentionGroupType', [])[0]
-	ud.debug(ud.LDAP, ud.PROCESS, "groupType: %s" % groupType)
+	ud.debug(ud.LDAP, ud.INFO, "groupType: %s" % groupType)
 	if __is_groupType_local(groupType):
 		LDB_CONTROL_RELAX_OID = '1.3.6.1.4.1.4203.666.5.12'
 		serverctrls.append(LDAPControl(LDB_CONTROL_RELAX_OID,criticality=0))
 
 		sambaSID = object.get('attributes', {}).get('sambaSID', [])[0]
-		ud.debug(ud.LDAP, ud.PROCESS, "sambaSID: %s" % sambaSID)
+		ud.debug(ud.LDAP, ud.INFO, "sambaSID: %s" % sambaSID)
 		objectSid = ndr_pack(security.dom_sid('%s' % (sambaSID)))
 		add_or_modlist.append(('objectSid', [objectSid]))
-
-		ud.debug(ud.LDAP, ud.PROCESS, "object: %s" % object)
 
 def encode_attrib(attrib):
 	if not attrib or type(attrib) == type(u''): # referral or already unicode
