@@ -395,13 +395,17 @@ mkgpg () { # Create GPG-key for secure APT
 }
 
 mksh () { # Create shell scripts $@ in $1
-	local dir="${1}"
+	local dir="${1}" ret='$?'
 	shift
 	while [ $# -ge 1 ]
 	do
+		case "${1}" in
+		--return) ret="${2}" ; shift 2 ;;
+		esac
 		cat <<-EOF >"${dir}/${1}.sh"
 		#!/bin/sh
 		echo "${dir}/${1}.sh ${RANDOM}" "\$@" >>"${BASEDIR}/install.log"
+		exit ${ret}
 		EOF
 		chmod 755 "${dir}/${1}.sh"
 		case "${_repository_online_verify}" in

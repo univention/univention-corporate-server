@@ -1,3 +1,9 @@
+ucs-test (4.0.140-1) unstable; urgency=low
+
+  * 09/54: Fix preup.sh signature (Bug #32851)
+
+ -- Philipp Hahn <hahn@univention.de>  Sun, 13 Oct 2013 13:21:35 +0200
+
 ucs-test (4.0.139-1) unstable; urgency=low
 
   * 52_s4connector/01*group*: Update group sync tests (Bug #32767)
