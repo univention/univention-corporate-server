@@ -1137,6 +1137,11 @@
 		<listitem><simpara>
 			UDM modules now try to automatically reestablish the connection to the LDAP server if possible (<ulink url="&ucsbug;32617">Bug 32617</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			The groups/group module now considers the options flag via UDM CLI (<ulink url="&ucsbug;32853">Bug 32853</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
