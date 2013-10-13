@@ -347,6 +347,7 @@ class object(univention.admin.handlers.simpleLdap):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+		global options
 		global mapping
 		global property_descriptions
 		global s4connector_present
@@ -368,6 +369,16 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
+		self.options=[]
+		if 'objectClass' in self.oldattr:
+			ocs=self.oldattr['objectClass']
+			if 'posixGroup' in ocs:
+				self.options.append( 'posix' )
+			if 'sambaGroupMapping' in ocs:
+				self.options.append( 'samba' )
+		else:
+			self._define_options( options )
+
 	def open(self):
 		global options
 		univention.admin.handlers.simpleLdap.open(self)
@@ -377,16 +388,6 @@ class object(univention.admin.handlers.simpleLdap):
 			self.cache_uniqueMember.set_timeout( caching_timeout )
 		except:
 			pass
-
-		self.options=[]
-		if self.oldattr.has_key('objectClass'):
-			ocs=self.oldattr['objectClass']
-			if 'posixGroup' in ocs:
-				self.options.append( 'posix' )
-			if 'sambaGroupMapping' in ocs:
-				self.options.append( 'samba' )
-		else:
-			self._define_options( options )
 
 		if 'samba' in self.options:
 			sid = self.oldattr.get('sambaSID', [''])[0]

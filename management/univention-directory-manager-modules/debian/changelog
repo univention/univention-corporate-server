@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.56-1) unstable; urgency=low
+
+  * groups/group.py: move option definition from open to __init__,
+    otherwise it is not possible to create a posix only group via CLI
+    (Bug #32853)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 21:00:00 +0200
+
 univention-directory-manager-modules (9.0.53-2) unstable; urgency=low
 
   * fix base64 mapping of multivalued properties (Bug #32409)
