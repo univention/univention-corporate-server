@@ -93,8 +93,8 @@ fi
 echo -n "Check build environment: "
 univention-install -y --force-yes subversion build-essential sbsigntool gnu-efi debhelper libnss3-tools >> "$LOG" 2>> "$LOG" && echo "ok" || fail "Package installation failed. Please check $LOG"
 
-###TMPDIR="$(mktemp -d $(pwd)/shim.XXXXXXX)"  # FIXME
-TMPDIR=/root/src && cd /root/src # FIXME
+TMPDIR="$(mktemp -d $(pwd)/shim.XXXXXXX)"  # FIXME
+#TMPDIR=/root/src && cd /root/src # FIXME
 
 echo "Build directory: $TMPDIR"
 echo "Build directory: $TMPDIR" >> "$LOG"
