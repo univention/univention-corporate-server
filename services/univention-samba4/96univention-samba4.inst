@@ -475,6 +475,8 @@ _create_group_with_special_sid ()
 		test -z "$binddn" && binddn="cn=admin,$ldap_base"
 		test -z "$bindpwd" && bindpwd="$(cat /etc/ldap.secret)"
 
+		udm container/cn create "$@" --ignore_exists --set name=Builtin
+
 		udm groups/group create "$@" --ignore_exists --option=posix \
 				--position "cn=Builtin,$ldap_base" \
 				--set name="$name" \
