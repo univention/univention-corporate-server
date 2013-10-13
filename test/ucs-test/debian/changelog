@@ -1,3 +1,10 @@
+ucs-test (4.0.138-1) unstable; urgency=low
+
+  * 52_s4connector/147sync_create_known_ucs_group: Consider UCR variable
+    connector/s4/mapping/group/synclocal (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 11:06:12 +0200
+
 ucs-test (4.0.137-1) unstable; urgency=low
 
   * 00_base/07kpasswd_output: The test user is created as member of
