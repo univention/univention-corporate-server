@@ -1,3 +1,9 @@
+univention-samba4 (3.0.21-2) unstable; urgency=low
+
+  * Create pseudo groups at the beginnig of the join script (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 23:51:50 +0200
+
 univention-samba4 (3.0.21-1) unstable; urgency=low
 
   * Move pseudo group creation from base.ldif to samba4 join script

@@ -356,9 +356,14 @@ set_default_fACL() {
 		print "Warning: $dirname is not a directory"
 	fi
 	## set default ACLs so sysvol-sync can read files and directories
-	nscd -i group
-	if ! getent group "Authenticated Users" >/dev/null; then
-		/etc/init.d/nscd restart
+	if is_ucr_true nss/group/cachefile; then
+		is_ucr_true nss/group/cachefile/check_member && ldap_group_to_file_param="--check_member"
+		/usr/lib/univention-pam/ldap-group-to-file.py $ldap_group_to_file_param
+	else
+		nscd -i group
+		if ! getent group "Authenticated Users" >/dev/null; then
+			/etc/init.d/nscd restart
+		fi
 	fi
 	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' "$dirname"
 	rc="$?"
@@ -475,7 +480,6 @@ _create_group_with_special_sid ()
 				--set name="$name" \
 				--set adGroupType="-2147483643"
 
-		echo ldapmodify -x -D "$binddn" -w "$bindpwd"
 		echo "dn: cn=$name,cn=Builtin,$ldap_base
 changetype: modify
 add: objectClass
@@ -544,6 +548,8 @@ if [ -n "$samba4_join_site" ]; then
 		## use "${SITE_OPTION[@]}" below instead of "$SITE_OPTION" for propper quoting and to avoid passing an empty string
 	fi
 fi
+
+create_pseudo_groups "$@"
 
 if [ "$samba4_role" = 'DC' ]; then
 
@@ -818,8 +824,6 @@ if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 			--set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1 || die
 	univention-config-registry unset create/home/share
 fi
-
-create_pseudo_groups "$@"
 
 /etc/init.d/samba-ad-dc restart
 
