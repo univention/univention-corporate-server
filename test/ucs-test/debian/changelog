@@ -1,3 +1,10 @@
+ucs-test (4.0.141-1) unstable; urgency=low
+
+  * 62_udm-groups/22_group_posix_only: test case to create posix group
+    only (Bug #32853)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 21:09:54 +0200
+
 ucs-test (4.0.140-1) unstable; urgency=low
 
   * 09/54: Fix preup.sh signature (Bug #32851)

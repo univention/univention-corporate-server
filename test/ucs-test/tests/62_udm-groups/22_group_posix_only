@@ -1,0 +1,17 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create a group with posix option only
+## tags: [udm]
+## roles: [domaincontroller_master]
+## exposure: careful
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		group = udm.create_group(options=['posix'])[0]
+		utils.verify_ldap_object(group, {'objectClass': ['top', 'posixGroup', 'univentionGroup', 'univentionObject']})
