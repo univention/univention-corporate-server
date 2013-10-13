@@ -1,3 +1,9 @@
+ucs-test (4.0.139-1) unstable; urgency=low
+
+  * 52_s4connector/01*group*: Update group sync tests (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 11:50:16 +0200
+
 ucs-test (4.0.138-1) unstable; urgency=low
 
   * 52_s4connector/147sync_create_known_ucs_group: Consider UCR variable

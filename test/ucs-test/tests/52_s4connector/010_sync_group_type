@@ -15,7 +15,12 @@
 test -n "$connector_s4_ldap_host" || exit 137
 connector_running_on_this_host || exit 137
 
-is_ucr_true connector/s4/mapping/group/sync/localgroups || exit 137
+is_ucr_true connector/s4/mapping/group/synclocal || exit 137
+
+GLOBAL_GROUP_TYPE="-2147483646"
+LOCAL_GROUP_TYPE="-2147483643"
+DOMAIN_LOCAL_GROUP_TYPE="-2147483644"
+UNIVERSAL_GROUP_TYPE="-2147483640"
 
 SYNCMODE="$(ad_get_sync_mode)"
 ad_set_sync_mode "sync"
@@ -41,17 +46,24 @@ for groupType in 2 3 5; do
 	udm_exists "groups/group"; fail_bool 1 110
 done
 
-# Check if Print Operator members synced
-UDM_users_user_username="$(random_chars)"
-UDM_GROUP_DN="cn=Printer-Admins,cn=groups,$ldap_base"
-AD_USER_DN="CN=$UDM_users_user_username,CN=Users,$(ad_get_base)"
-ad_createuser "$UDM_users_user_username" || fail_test 110
-ad_append_to_attribute "CN=Print Operators,CN=builtin,$(ad_get_base)" "member" "$AD_USER_DN" || fail_test 110
-ad_wait_for_synchronization; fail_bool 0 110
+for groupType in $GLOBAL_GROUP_TYPE $LOCAL_GROUP_TYPE $DOMAIN_LOCAL_GROUP_TYPE $UNIVERSAL_GROUP_TYPE; do
+	UDM_groups_group_name="$(random_chars)"
+	UDM_groups_group_adGroupType="$groupType"
 
-ad_verify_multi_value_attribute_contains "CN=Print Operators,CN=builtin,$(ad_get_base)" "member" "$AD_USER_DN"; fail_bool 0 110
-udm_verify_multi_value_udm_attribute_contains "users" \
-	"uid=$UDM_users_user_username,cn=users,$ldap_base" "groups/group"; fail_bool 1 110
+	udm_create "groups/group"; fail_bool 0 110
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+	ad_exists "$AD_DN"; fail_bool 0 110
+
+	ad_verify_attribute "$AD_DN" "groupType" "$groupType"; fail_bool 0 110
+
+	ad_delete "$AD_DN" || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	ad_exists "$AD_DN"; fail_bool 1 110
+	udm_exists "groups/group"; fail_bool 1 110
+done
 
 exit "$RETVAL"
 
