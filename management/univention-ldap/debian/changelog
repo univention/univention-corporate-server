@@ -1,3 +1,10 @@
+univention-ldap (10.0.15-1) unstable; urgency=low
+
+  * Move pseudo group creation from base.ldif to samba4 join script
+    (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 21:42:07 +0200
+
 univention-ldap (10.0.14-1) unstable; urgency=low
 
   * Add support for icons, umc module definition and translation files         
