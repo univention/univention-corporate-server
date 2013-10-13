@@ -455,6 +455,55 @@ cleanup_var_lib_samba ()
 	fi
 }
 
+_create_group_with_special_sid ()
+{
+	local name="$1"
+	local sid="$2"
+
+	shift 2
+	
+	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name))" | sed -ne 's|dn: ||p')"
+
+	if [ -z "$group_dn" ]; then
+
+		extract_binddn_and_bindpwd_from_args "$@"
+		test -z "$binddn" && binddn="cn=admin,$ldap_base"
+		test -z "$bindpwd" && bindpwd="$(cat /etc/ldap.secret)"
+
+		udm groups/group create "$@" --ignore_exists --option=posix \
+				--position "cn=Builtin,$ldap_base" \
+				--set name="$name" \
+				--set adGroupType="-2147483643"
+
+		echo ldapmodify -x -D "$binddn" -w "$bindpwd"
+		echo "dn: cn=$name,cn=Builtin,$ldap_base
+changetype: modify
+add: objectClass
+objectClass: sambaGroupMapping
+-
+add: sambaSID
+sambaSID: $sid
+-
+add: sambaGroupType
+sambaGroupType: 2" | ldapmodify -x -D "$binddn" -w "$bindpwd" 
+		
+		if [ "$name" = "Authenticated Users" ]; then
+			udm groups/group modify "$@" --dn "cn=$name,cn=Builtin,$ldap_base" \
+				--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base" \
+				--append nestedGroup="cn=Windows Hosts,cn=groups,$ldap_base"
+		fi
+	fi
+}
+
+create_pseudo_groups ()
+{
+	_create_group_with_special_sid "Authenticated Users" "S-1-5-11" "$@"
+	_create_group_with_special_sid "World Authority" "S-1-1" "$@"
+	_create_group_with_special_sid "Everyone" "S-1-1-0" "$@"
+	_create_group_with_special_sid "Null Authority" "S-1-0" "$@"
+	_create_group_with_special_sid "Nobody" "S-1-0-0" "$@"
+}
+
 ### --- END helper functions ---
 
 extract_binddn_and_bindpwd_from_args "$@"
@@ -769,6 +818,8 @@ if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 			--set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1 || die
 	univention-config-registry unset create/home/share
 fi
+
+create_pseudo_groups "$@"
 
 /etc/init.d/samba-ad-dc restart
 
