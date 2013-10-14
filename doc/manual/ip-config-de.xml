@@ -1961,7 +1961,7 @@ univention-config-registry set squid/webports="80 443"
 
 		  <listitem><simpara>
 			Die Authentifizierung erfolgt über Kerberos. Benutzer, die an einem Windows-Client
-			angemeldet sind, der Mitglied einer Samba 4-Domäne ist authentifzieren sich am Proxy mit
+			angemeldet sind, der Mitglied einer Samba 4-Domäne ist, authentifzieren sich am Proxy mit
 			dem Ticket, das sie im Rahmen der Domänenanmeldung erhalten haben. Um
 			Kerberos-Authentifizierung zu aktivieren muss das Paket
 			<emphasis>univention-squid-kerberos</emphasis> auf jedem Proxyserver installiert
