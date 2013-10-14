@@ -29,16 +29,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-02 11:49+0200\n"
+"POT-Creation-Date: 2013-10-14 21:35+0200\n"
 "PO-Revision-Date: 2011-10-09 19:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.3\n"
 
-#: group.py:53
+#: group.py:53 group.py:208
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -78,99 +79,107 @@ msgstr "Samba-Gruppe"
 msgid "Name"
 msgstr "Name"
 
-#: group.py:96 group.py:248
+#: group.py:97 group.py:263
 msgid "Group ID"
 msgstr "Gruppen-ID"
 
-#: group.py:106
+#: group.py:107
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: group.py:116
-msgid "Samba group type"
-msgstr "Samba Gruppentyp"
+#: group.py:117
+msgid "NT group type"
+msgstr "NT Gruppentyp"
 
-#: group.py:127
+#: group.py:128
 msgid "Samba privileges"
 msgstr "Samba-Privilegien"
 
-#: group.py:128
+#: group.py:129
 msgid "Manage samba privileges"
 msgstr "Samba-Privilegien verwalten"
 
-#: group.py:138
+#: group.py:139
+msgid "AD group type"
+msgstr "AD Gruppentyp"
+
+#: group.py:140
+msgid "Active Directory group type"
+msgstr "Active Directory Gruppentyp"
+
+#: group.py:151
 msgid "Description"
 msgstr "Beschreibung"
 
-#: group.py:148
+#: group.py:162
 msgid "Users"
 msgstr "Benutzer"
 
-#: group.py:159
+#: group.py:173
 msgid "Hosts"
 msgstr "enthaltene Rechner"
 
-#: group.py:171
+#: group.py:185
 msgid "Mail address"
 msgstr "Mail-Adresse"
 
-#: group.py:182 group.py:245
+#: group.py:197 group.py:260
 msgid "Member of"
 msgstr "Mitglied von"
 
-#: group.py:204
+#: group.py:219
 msgid "Users that are allowed to send e-mails to the group"
 msgstr "Benutzer, die berechtigt sind, E-Mails an diese Gruppe zu versenden"
 
-#: group.py:215
+#: group.py:230
 msgid "Groups that are allowed to send e-mails to the group"
 msgstr "Gruppen, die berechtigt sind, E-Mails an diese Gruppe zu versenden"
 
-#: group.py:228
+#: group.py:243
 msgid "General"
 msgstr "Allgemein"
 
-#: group.py:228
+#: group.py:243
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: group.py:229
+#: group.py:244
 msgid "Group account"
 msgstr "Gruppen-Konto"
 
-#: group.py:232
+#: group.py:247
 msgid "Members of this group"
 msgstr "Mitglieder dieser Gruppe"
 
-#: group.py:237
+#: group.py:252
 msgid "Mail"
 msgstr "Mail"
 
-#: group.py:237
+#: group.py:252
 msgid "Mail settings of this group"
 msgstr "Mail-Einstellungen dieser Gruppe"
 
-#: group.py:242
+#: group.py:257
 msgid "Host members"
 msgstr "enthaltene Rechner"
 
-#: group.py:242
+#: group.py:257
 msgid "Host members of this group"
 msgstr "in dieser Gruppe enthaltene Rechner"
 
-#: group.py:245
+#: group.py:260
 msgid "Membership in other groups"
 msgstr "Mitgliedschaft in weiteren Gruppen"
 
-#: group.py:248
+#: group.py:263
 msgid "ID of this group"
 msgstr "ID dieser Gruppe"
 
-#: group.py:251
+#: group.py:266
 msgid "Windows"
 msgstr "Windows"
 
-#: group.py:251
+#: group.py:266
 msgid "Windows account settings"
 msgstr "Windows-Kontoeinstellungen"
 
