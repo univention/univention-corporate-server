@@ -56,15 +56,7 @@ _=translation.translate
 #
 def import_syntax_files():
 	for dir in sys.path:
-		fn = os.path.join( dir, 'univention/admin/syntax.py' )
-		if os.path.exists( fn ):
-			try:
-				fd = open( fn, 'r' )
-				exec fd in univention.admin.syntax.__dict__
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
-			except:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
-
+		if os.path.exists( os.path.join( dir, 'univention/admin/syntax.py' ) ):
 			if os.path.isdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
 				for f in os.listdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
 					if f.endswith('.py'):
@@ -401,7 +393,7 @@ class Upload( ISyntax ):
 	def parse( self, value ):
 		return value
 
-class GzipBase64Upload( Upload ):
+class GzipBase64Text( TextArea ):
 	@classmethod
 	def parse( self, text ):
 		try:
@@ -414,7 +406,7 @@ class GzipBase64Upload( Upload ):
 			raise univention.admin.uexceptions.valueError( _( 'Value must be gzip compressed and Base64 encoded: %s' ) % str( text ) )
 		return text
 
-class Bzip2Base64Upload( Upload ):
+class Bzip2Base64Text( TextArea ):
 	@classmethod
 	def parse( self, text ):
 		try:
@@ -454,17 +446,7 @@ class jpegPhoto( Upload ):
 			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg'))
 
 from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
-class Base64UMCIcon( Upload ):
-	@classmethod
-	def parse( self, text ):
-		try:
-			data = base64.decodestring( text )
-		except:
-			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
-		image_mime_type_of_buffer(data) ## exact return value irrelevant, only exceptions matter at this point
-		return text
-
-class Bzip2Base64XMLUpload( Upload ):
+class Bzip2Base64XML( TextArea ):
 	@classmethod
 	def parse( self, text ):
 		try:
@@ -477,6 +459,16 @@ class Bzip2Base64XMLUpload( Upload ):
 			raise univention.admin.uexceptions.valueError( _( 'Value must be bz2 compressed and Base64 encoded: %s' ) % str( text ) )
 		if get_mime_type(data) != 'application/xml':
 			raise univention.admin.uexceptions.valueError( _( 'Not Base64 encoded XML data: %s' ) % str( text ) )
+		return text
+
+class Base64UMCIcon( Upload ):
+	@classmethod
+	def parse( self, text ):
+		try:
+			data = base64.decodestring( text )
+		except:
+			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
+		image_mime_type_of_buffer(data) ## exact return value irrelevant, only exceptions matter at this point
 		return text
 
 class GNUMessageCatalog( Upload ):
