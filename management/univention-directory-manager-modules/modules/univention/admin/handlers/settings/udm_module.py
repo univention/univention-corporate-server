@@ -146,7 +146,7 @@ property_descriptions={
 		),
 	'messagecatalog': univention.admin.property(
 			short_description=_('GNU message catalog for translations'),
-			long_description='GNU message catalog (syntax: <RFC 3066 languagetag> <Base64 encoded data>)',
+			long_description='GNU message catalog (syntax: <language tag> <Base64 encoded GNU message catalog>)',
 			syntax=univention.admin.syntax.Localesubdirname_and_GNUMessageCatalog,
 			multivalue=1,
 			include_in_default_search=0,
