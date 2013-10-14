@@ -1262,7 +1262,7 @@
 	<title>Extended attributes</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The descriptions of exteneded attribute properties which are related to it's position in the layout have been improved in order to be easier to understand (<ulink url="&ucsbug;28629">Bug 28629</ulink>).
+		  The descriptions of exteneded attribute properties have been improved and the layout of the module has been rebuilt (<ulink url="&ucsbug;28629">Bug 28629</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>
