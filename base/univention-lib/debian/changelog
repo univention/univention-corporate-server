@@ -1,3 +1,9 @@
+univention-lib (3.0.21-2) unstable; urgency=low
+
+  * Improve option parsing in ucs_registerLDAPExtension (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 14 Oct 2013 17:31:35 +0200
+
 univention-lib (3.0.21-1) unstable; urgency=low
 
   * Added python-magic to the dependency list (Bug #32409)

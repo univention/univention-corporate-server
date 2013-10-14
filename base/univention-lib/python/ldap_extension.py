@@ -858,23 +858,23 @@ def ucs_registerLDAPExtension():
 	parser = OptionParser(prog=functionname, option_class=UCSOption)
 
 	parser.add_option("--schema", dest="schemafile",
-			action="append", type="existing_filename",
+			action="append", type="existing_filename", default=[],
 			help="Register LDAP schema", metavar="<LDAP schema file>")
 
 	parser.add_option("--acl", dest="aclfile",
-			action="append", type="existing_filename",
+			action="append", type="existing_filename", default=[],
 			help="Register LDAP ACL", metavar="<UCR template for OpenLDAP ACL file>")
 
 	parser.add_option("--udm_module", dest="udm_module",
-			action="append", type="string",
+			action="append", type="existing_filename", default=[],
 			help="UDM module", metavar="<filename>")
 
 	parser.add_option("--udm_syntax", dest="udm_syntax",
-			action="append", type="string",
+			action="append", type="existing_filename", default=[],
 			help="UDM syntax", metavar="<filename>")
 
 	parser.add_option("--udm_hook", dest="udm_hook",
-			action="append", type="string",
+			action="append", type="existing_filename", default=[],
 			help="UDM hook", metavar="<filename>")
 
 	parser.add_option("--packagename", dest="packagename",
@@ -923,6 +923,8 @@ def ucs_registerLDAPExtension():
 	parser.add_option_group(auth_options)
 
 	opts, args = parser.parse_args()
+	if len(opts.udm_module) > 1:
+		parser.error('--udm_module option can be given once only.')
 	if not opts.packagename:
 		parser.error('--packagename option is required.')
 	if not opts.packageversion:
