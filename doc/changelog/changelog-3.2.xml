@@ -2462,6 +2462,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32461">Bug 32461</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  A traceback has been fixed in the script <filename>purge_s4_computer.py</filename>, which could occurr if a DC was removed from a Samba4/AD site.
+		  (<ulink url="&ucsbug;30763">Bug 30763</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
