@@ -61,19 +61,6 @@ def update():
 	modules={}
 	superordinates=set()
 
-	## since last update(), the module source files for syntax and hooks may have changed.
-	## due to some bizarre timing issue more often than not python2.6 does not actually
-	## pick up a source file that has been  modified during runtime, but reloads the pyc
-	## file instead. In these cases mtype always showed imp.PY_SOURCE.
-	## Manually recompiling and reloading the module   seems to be the most simple
-	## reliable workaround for this. (Bug #32565)
-	for imported_module in (univention.admin.syntax, univention.admin.hook):
-		module_loaded_from_filename = inspect.getfile(imported_module)
-		(name, suffix, mode, mtype)  = inspect.getmoduleinfo(module_loaded_from_filename)
-		if mtype == imp.PY_SOURCE:
-			py_compile.compile(inspect.getfile(imported_module))
-			imp.reload(imported_module)
-
 	## since last update(), syntax.d and hooks.d may have changed (Bug #31154)
 	univention.admin.syntax.import_syntax_files()
 	univention.admin.hook.import_hook_files()

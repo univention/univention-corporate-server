@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.57-1) unstable; urgency=low
+
+  * Fix for Bug #32565
+
+ -- Arvid Requate <requate@univention.de>  Mon, 14 Oct 2013 12:10:43 +0200
+
 univention-directory-manager-modules (9.0.56-1) unstable; urgency=low
 
   * groups/group.py: move option definition from open to __init__,
