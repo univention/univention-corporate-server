@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.59-3) unstable; urgency=low
+
+  * Adjust new syntax classes to be mappable by umc-module/udm/syntax.py
+    (Bug #32409)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 14 Oct 2013 18:38:52 +0200
+
 univention-directory-manager-modules (9.0.59-2) unstable; urgency=low
 
   * Ok, UMC Bug fixed, so the patch from 9.0.57-1 can be applied

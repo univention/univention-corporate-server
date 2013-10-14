@@ -53,7 +53,7 @@ property_descriptions={
 	'name': univention.admin.property(
 	        short_description=_('UDM module name'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
@@ -64,7 +64,7 @@ property_descriptions={
 	'filename': univention.admin.property(
 			short_description=_('UDM module file name'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,	## relative path, may contain directories
+			syntax=univention.admin.syntax.string,	## relative path, may contain directories
 			multivalue=0,
 			options=[],
 			required=1,
@@ -106,7 +106,7 @@ property_descriptions={
 	'package': univention.admin.property(
 			short_description=_('Software package'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -144,8 +144,8 @@ property_descriptions={
 			identifies=0
 		),
 	'messagecatalog': univention.admin.property(
-			short_description=_('Langage tag + ": " + GNU message catalog'),
-			long_description='GNU message catalog (syntax: <RFC 3066 languagetag>: <Base64 encoded data>)',
+			short_description=_('GNU message catalog for translations'),
+			long_description='GNU message catalog (syntax: <RFC 3066 languagetag> <Base64 encoded data>)',
 			syntax=univention.admin.syntax.Localesubdirname_and_GNUMessageCatalog,
 			multivalue=1,
 			include_in_default_search=0,

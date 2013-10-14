@@ -469,7 +469,7 @@ class Bzip2Base64XML( TextArea ):
 			raise univention.admin.uexceptions.valueError( _( 'Not Base64 encoded XML data: %s' ) % str( text ) )
 		return text
 
-class Base64UMCIcon( Upload ):
+class Base64UMCIcon( TextArea ):
 	@classmethod
 	def parse( self, text ):
 		try:
@@ -479,7 +479,7 @@ class Base64UMCIcon( Upload ):
 		image_mime_type_of_buffer(data) ## exact return value irrelevant, only exceptions matter at this point
 		return text
 
-class GNUMessageCatalog( Upload ):
+class GNUMessageCatalog( TextArea ):
 	@classmethod
 	def parse( self, text ):
 		try:
@@ -490,7 +490,7 @@ class GNUMessageCatalog( Upload ):
 			raise univention.admin.uexceptions.valueError( _( 'Not Base64 encoded GNU message catalog (.mo) data: %s' ) % str( text ) )
 		return text
 
-class Localesubdirname( ISyntax ):
+class Localesubdirname( string ):
 	@classmethod
 	def parse( self, text ):
 		if not text in os.listdir('/usr/share/locale'):

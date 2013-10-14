@@ -55,7 +55,7 @@ property_descriptions={
 	'name': univention.admin.property(
 	        short_description=_('UDM hook name'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			include_in_default_search=1,
 			options=[],
@@ -108,7 +108,7 @@ property_descriptions={
 	'package': univention.admin.property(
 			short_description=_('Software package'),
 			long_description='',
-			syntax=univention.admin.syntax.TextArea,
+			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
 			required=0,
