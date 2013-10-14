@@ -1603,7 +1603,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Two new functions <function>ucs_registerLDAPExtensios</function> and <function>ucs_unregisterLDAPExtensios</function> have been implemented
+		Two new functions <function>ucs_registerLDAPExtensions</function> and <function>ucs_unregisterLDAPExtensions</function> have been implemented
 		(<ulink url="&ucsbug;32392">Bug 32392</ulink>, <ulink url="&ucsbug;26785">Bug 26785</ulink>, <ulink url="&ucsbug;32643">Bug 32643</ulink>,
 		<ulink url="&ucsbug;32663">Bug 32663</ulink>).
 	  </simpara></listitem>
