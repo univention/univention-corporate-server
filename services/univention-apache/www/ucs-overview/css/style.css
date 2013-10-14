@@ -16,6 +16,15 @@ a:hover, a:active, a:focus {
 }
 /*end*/
 
+/* group noscript */
+
+#header-right .dropdown,
+#site-header .nav-tabs {
+	display: none;
+}
+
+/*end*/
+
 /*group header*/
 #site-header {
 	background: url(../img/backgrounds/header_bg.png) no-repeat center top #d4d5d6;
@@ -197,23 +206,26 @@ ul.nav.nav-tabs li.active a {
 }
 
 #content li#no-service {
-	margin: 50px auto;
-	float: none;
-	width: 350px;
 	display: none;
 }
 
-#content li#no-service .wrapper {
+#content li.warning {
+	margin: 50px auto;
+	float: none;
+	width: 350px;
+}
+
+#content li.warning .wrapper {
 	height: auto;
 	text-align: center;
 	padding: 15px 25px;
 }
 
-#content li#no-service .wrapper:hover {
+#content li.warning .wrapper:hover {
 	box-shadow: none;
 }
 
-#content li#no-service .icon {
+#content li.warning .icon {
 	width: 90px;
 	height: 100px;
 	background: url(../img/elements/hint.png) no-repeat center center;
@@ -225,16 +237,16 @@ ul.nav.nav-tabs li.active a {
 	box-shadow: none;
 }
 
-#content li#no-service .title {
+#content li.warning .title {
 	padding-top: 5px;
 	padding-bottom: 10px;
 }
 
-#content li#no-service a {
+#content li.warning a {
 	color: #d50633;
 }
 
-#content li#no-service a:hover {
+#content li.warning a:hover {
 	text-decoration: underline;
 }
 

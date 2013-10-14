@@ -1,3 +1,10 @@
+univention-apache (6.0.10-1) unstable; urgency=low
+
+  * Bug #32838: adapt ucs-overview for displaying a warning if javascript is
+  	disabled
+
+ -- Florian Best <best@univention.de>  Mon, 14 Oct 2013 11:00:46 +0200
+
 univention-apache (6.0.9-1) unstable; urgency=low
 
   * added UCS domaincontroller master link to UCS overview on non DC master

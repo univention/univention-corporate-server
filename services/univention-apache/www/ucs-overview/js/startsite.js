@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console*/
+/*global define require console window $*/
 
 define([
 	"dojo/_base/lang",
@@ -165,11 +165,18 @@ define([
 			domStyle.set('no-service', 'display', this._entries.service.length ? 'none' : 'block');
 		},
 
-		_updateLinkEntries: function(category) {
+		_updateLinkEntries: function() {
 			this._placeLinkEntriesInDom('admin');
 			this._placeLinkEntriesInDom('service');
 			this._focusAdminTab();
 			this._updateNoServiceHint();
+		},
+
+		_updateNoScriptElements: function() {
+			var dropdown = query('#header-right .dropdown')[0];
+			var navtabs = query('#site-header .nav-tabs')[0];
+			domStyle.set(dropdown, 'display', 'inherit');
+			domStyle.set(navtabs, 'display', 'inherit');
 		},
 
 		_matchLocale: function(locale, /* Function? */ mapper) {
@@ -227,6 +234,7 @@ define([
 		},
 
 		start: function() {
+			this._updateNoScriptElements();
 			this._updateLinkEntries();
 			this._updateLocales();
 			this._updateTranslations();
