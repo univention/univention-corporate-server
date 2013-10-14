@@ -44,6 +44,7 @@ _=translation.translate
 OC = "univentionUDMModule"
 
 module='settings/udm_module'
+superordinate='settings/cn'
 childs=0
 operations=['add','edit','remove','search','move']
 short_description=_('Settings: UDM Module')

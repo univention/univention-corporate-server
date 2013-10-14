@@ -46,6 +46,7 @@ _=translation.translate
 OC = "univentionUDMHook"
 
 module='settings/udm_hook'
+superordinate='settings/cn'
 childs=0
 operations=['add','edit','remove','search','move']
 short_description=_('Settings: UDM Hook')

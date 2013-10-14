@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.59-4) unstable; urgency=low
+
+  * Add superordinate to udm_*.py modules (Bug #32665)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 14 Oct 2013 18:51:23 +0200
+
 univention-directory-manager-modules (9.0.59-3) unstable; urgency=low
 
   * Adjust new syntax classes to be mappable by umc-module/udm/syntax.py
