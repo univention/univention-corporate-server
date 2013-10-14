@@ -1,3 +1,11 @@
+univention-spamassassin (5.0.0-1) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30945)
+  * Bump version for UCS 3.2
+  * Update copyright for 2013
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 14 Oct 2013 15:50:09 +0200
+
 univention-spamassassin (4.0.3-4) unstable; urgency=low
 
   * Removed  obsolete ucr variable "mail/antispam/globalfolder" from

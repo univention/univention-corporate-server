@@ -1,18 +1,18 @@
 [mail/antispam/learndaily]
-Description[de]=Lerne täglich Ham und Spam Nachrichten
-Description[en]=Learn ham and spam messages daily
+Description[de]=Ist diese Variable auf 'yes' gesetzt, werden alle Spam- und Ham-Ordner täglich in das Bayes-Training einbezogen. Ist die Variable nicht gesetzt, erfolgt kein Bayes-Training.
+Description[en]=If this variable is set to 'yes', all spam and ham folder are included in the daily Bayes training. If the variable is unset, not Bayes training occurs.
 Type=str
 Categories=service-mail
 
 [mail/antispam/requiredhits]
-Description[de]=Anzahl Punkte ab denen eine E-Mail als Spam klassifiziert wird
-Description[en]=Required hits to classify a mail as spam
-Type=str
+Description[de]=SpamAssassin arbeitet mit einem Punktesystem, das mit steigender Punktzahl eine höhere Wahrscheinlichkeit für Spam ausdrückt. Punkte werden nach verschiedenen Kriterien vergeben, die beispielsweise auf Schlagworte innerhalb der E-Mail oder fehlerhafte Codierungen ansprechen. E-Mails, die eine bestimmte Anzahl Punkte überschreiten, werden nicht im Posteingang, sondern im Spam-Ordner abgelegt. Diese Variable konfiguriert den Schwellenwert, ab der E-Mails als Spam deklariert werden. Die Voreinstellung (5) muss in der Regel nicht angepasst werden. Je nach Erfahrung im eigenen Umfeld kann dieser Wert aber auch niedriger angesetzt werden. Es muss dann jedoch mit mehr E-Mails gerechnet werden, die fälschlich als Spam erkannt wurden.
+Description[en]= SpamAssassin operates a point system, which uses an increasing number of points to express a high probability of the e-mail being spam. Points are awarded according to different criteria, for example, keywords within the e-mail or incorrect encodings. E-mails which are classified as spam - because they exceed a certain number of points - are not delivered to the recipient's inbox by Cyrus, but rather in the Spam folder below it. This variable configures the spam threshold The presetting (5) generally does not need to be adjusted. However, depending on experience in the local environment, this value can also be set lower. This will, however, result in more e-mails being incorrectly designated as spam.
+Type=int
 Categories=service-mail
 
 [mail/antispam/autostart]
-Description[de]=Automatischer Start des Mail Filters
-Description[en]=Automatically start of the mail filter
+Description[de]=Die Variable konfiguriert den Startmodus des SpamAssassin-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the SpamAssassin service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
 Type=str
 Categories=service-mail,system-services
 
