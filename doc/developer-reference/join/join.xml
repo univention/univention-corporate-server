@@ -579,6 +579,9 @@ fi
 								<arg choice="opt">--packageversion<replaceable>packageversion</replaceable></arg>
 								<arg choice="opt">--ucsversionstart<replaceable>ucsversion</replaceable></arg>
 								<arg choice="opt">--ucsversionend<replaceable>ucsversion</replaceable></arg>
+								<arg choice="opt">--messagecatalog <replaceable>filename</replaceable></arg>
+								<arg choice="opt">--umcregistration <replaceable>filename</replaceable></arg>
+								<arg choice="opt">--icon <replaceable>filename</replaceable></arg>
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
@@ -624,13 +627,38 @@ fi
 								in the <acronym>LDAP</acronym> directory which make use of it.
 							</para>
 							<para>
+								The option <literal>--messagecatalog</literal> can be used to supply message translation files in GNU message catalog format.
+								The filenames must correspond to a valid language tag, i.e. must correspond to a subdirectory of <filename>/usr/share/locale</filename>.
+								This option can be given multiple times, but only in combination with the option <literal>--udm_module</literal>.
+							</para>
+							<para>
+								The option <literal>--umcregistration</literal> can be used to supply an UMC registration file (in XML format) to make the UDM module
+								accessible via Univention Management Console (UMC).
+								This option can only be used in combination with the option <literal>--udm_module</literal>.
+							</para>
+							<para>
+								The option <literal>--icon</literal> can be used to supply icon files (png or jpeg, in 16x16 or 50x50, or svgz).
+								This option can be given multiple times, but only in combination with the option <literal>--udm_module</literal>.
+							</para>
+							<para>
 								Example usage in join script:
 							</para>
 							<programlisting language="sh">
 export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
 . /usr/share/univention-lib/ldap.sh
-ucs_registerLDAPExtension "$@" --schema \
-	/path/to/appschemaextension.schema
+
+ucs_registerLDAPExtension "$@" \
+  --schema /path/to/appschemaextension.schema \
+  --acl /path/to/appaclextension.acl
+  --udm_syntax /path/to/appudmsyntax.py
+
+ucs_registerLDAPExtension "$@" \
+  --umc_module /path/to/appudmmodule.py \
+  --messagecatalog /path/to/de.mo \
+  --messagecatalog /path/to/eo.mo \
+  --umcregistration /path/to/module-object.xml \
+  --icon /path/to/moduleicon16x16.png \
+  --icon /path/to/moduleicon50x50.png \
 							</programlisting>
 						</listitem>
 					</varlistentry>

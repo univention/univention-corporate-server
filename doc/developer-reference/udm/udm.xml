@@ -1331,6 +1331,92 @@ udm settings/syntax create "$@" --ignore_exists \
 		</section>
 	</section>
 
+	<section id="settings:udm_hook">
+		<title>Packaging UDM Hooks</title>
+		<para>
+			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> hook in the UCS domain
+			from any system in the domain. For this purpose, a UDM hook can be stored as a special type of UDM object.
+			The module responsible for this type of objects is called <literal>settings/udm_hook</literal>. As these objects are replicated throughout the
+			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
+		</para>
+		<para>
+			The commands to create the <acronym>UDM</acronym> hook objects in UDM may be put into any join script (<xref linkend="chap:join"/>).
+			Like every <acronym>UDM</acronym> object a <acronym>UDM</acronym> hook object can be created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
+			<acronym>UDM</acronym> hook objects can be stored anywhere in the <acronym>LDAP</acronym> directory, but the recommended location would be <literal>cn=udm_hook,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
+			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
+		</para>
+		<para>
+			The module <literal>settings/udm_hook</literal> requires several parameters.
+			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
+		</para>
+		<variablelist>
+			<varlistentry><term><literal>name</literal> (required)</term>
+				<listitem>
+					<simpara>
+						Name of the UDM hook.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>data</literal> (required)</term>
+				<listitem>
+					<simpara>
+						The actual UDM hook data in bzip2 and base64 encoded format.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>filename</literal> (required)</term>
+				<listitem>
+					<simpara>
+						The file name the UDM hook data should be written to by the listening servers. The file name must not contain any path elements.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>package</literal> (required)</term>
+				<listitem>
+					<simpara>
+						Name of the Debian package which creates the object.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>packageversion</literal> (required)</term>
+				<listitem>
+					<simpara>
+						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
+						Defaults to <literal>string</literal>.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>ucsversionstart</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						Minimal required UCS version. The UDM hook is only activated by systems with a version higher than or equal to this.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						Maximal required UCS version. The UDM hook is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 3.2-x release range a value like 3.2.99 may be used.
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>active</literal> (internal)</term>
+				<listitem>
+					<simpara>
+						A boolean flag used internally by the &ucsMaster; to signal availability of the new UDM hook on the &ucsMaster; (default: <literal>FALSE</literal>).
+					</simpara>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</section>
+
 	<section id="settings:udm_module">
 		<title>Packaging UDM Extension Modules</title>
 		<para>
@@ -1368,6 +1454,27 @@ udm settings/syntax create "$@" --ignore_exists \
 				<listitem>
 					<simpara>
 						The file name the UDM module data should be written to by the listening servers. The file name may contain path elements and should conform to the name of the UDM module (e.g. <literal>newapp/someobject.py</literal>).
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>messagecatalog</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						Multivalued property to supply message translation files (syntax: &lt;language tag&gt; &lt;Base64 encoded GNU message catalog&gt;).
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>umcregistration</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						XML definition required to make the UDM module available though the Univention Management Console (base64 encoded XML)
+					</simpara>
+				</listitem>
+			</varlistentry>
+			<varlistentry><term><literal>icon</literal> (optional)</term>
+				<listitem>
+					<simpara>
+						Multivalued property to supply icons for the Univention Management Console (base64 encoded png, jpeg or svgz).
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1497,92 +1604,6 @@ udm settings/syntax create "$@" --ignore_exists \
 				<listitem>
 					<simpara>
 						A boolean flag used internally by the &ucsMaster; to signal availability of the new UDM syntax on the &ucsMaster; (default: <literal>FALSE</literal>).
-					</simpara>
-				</listitem>
-			</varlistentry>
-		</variablelist>
-	</section>
-
-	<section id="settings:udm_hook">
-		<title>Packaging UDM Hooks</title>
-		<para>
-			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> hook in the UCS domain
-			from any system in the domain. For this purpose, a UDM hook can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <literal>settings/udm_hook</literal>. As these objects are replicated throughout the
-			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
-		</para>
-		<para>
-			The commands to create the <acronym>UDM</acronym> hook objects in UDM may be put into any join script (<xref linkend="chap:join"/>).
-			Like every <acronym>UDM</acronym> object a <acronym>UDM</acronym> hook object can be created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
-			<acronym>UDM</acronym> hook objects can be stored anywhere in the <acronym>LDAP</acronym> directory, but the recommended location would be <literal>cn=udm_hook,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
-			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
-		</para>
-		<para>
-			The module <literal>settings/udm_hook</literal> requires several parameters.
-			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
-		</para>
-		<variablelist>
-			<varlistentry><term><literal>name</literal> (required)</term>
-				<listitem>
-					<simpara>
-						Name of the UDM hook.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry><term><literal>data</literal> (required)</term>
-				<listitem>
-					<simpara>
-						The actual UDM hook data in bzip2 and base64 encoded format.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry><term><literal>filename</literal> (required)</term>
-				<listitem>
-					<simpara>
-						The file name the UDM hook data should be written to by the listening servers. The file name must not contain any path elements.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry><term><literal>package</literal> (required)</term>
-				<listitem>
-					<simpara>
-						Name of the Debian package which creates the object.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry><term><literal>packageversion</literal> (required)</term>
-				<listitem>
-					<simpara>
-						Version of the Debian package which creates the object. For object modifications the version number needs to increase unless the package name is modified as well.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry><term><literal>appidentifier</literal> (optional)</term>
-				<listitem>
-					<simpara>
-						The identifier of the app which creates the object. This is important to indicate that the object is required as long as the app is installed anywhere in the UCS domain.
-						Defaults to <literal>string</literal>.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry><term><literal>ucsversionstart</literal> (optional)</term>
-				<listitem>
-					<simpara>
-						Minimal required UCS version. The UDM hook is only activated by systems with a version higher than or equal to this.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
-				<listitem>
-					<simpara>
-						Maximal required UCS version. The UDM hook is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 3.2-x release range a value like 3.2.99 may be used.
-					</simpara>
-				</listitem>
-			</varlistentry>
-			<varlistentry><term><literal>active</literal> (internal)</term>
-				<listitem>
-					<simpara>
-						A boolean flag used internally by the &ucsMaster; to signal availability of the new UDM hook on the &ucsMaster; (default: <literal>FALSE</literal>).
 					</simpara>
 				</listitem>
 			</varlistentry>
