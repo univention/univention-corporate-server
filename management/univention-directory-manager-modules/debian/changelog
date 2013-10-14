@@ -1,3 +1,12 @@
+univention-directory-manager-modules (9.0.58-1) unstable; urgency=low
+
+  * added long descriptions to settings/extended_attribute and
+    settings/extended_option
+  * improved settings/extended_attribute layout
+  (Bug #28629)
+
+ -- Lukas Walter <walter@univention.de>  Mon, 14 Oct 2013 14:04:19 +0200
+
 univention-directory-manager-modules (9.0.57-1) unstable; urgency=low
 
   * Fix for Bug #32565

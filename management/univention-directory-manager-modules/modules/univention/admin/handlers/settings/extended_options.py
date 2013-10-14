@@ -85,8 +85,8 @@ property_descriptions = {
 			identifies=False
 		),
 		'translationShortDescription': univention.admin.property(
-			short_description=_('Translation of short description '),
-			long_description=_('Translation of the short description for the option as shown on the Option tab'),
+			short_description=_('Translations of short description'),
+			long_description=_('Translations of the short description for the option as shown on the Option tab'),
 			syntax=univention.admin.syntax.translationTupleShortDescription,
 			multivalue=True,
 			include_in_default_search=1,
@@ -96,8 +96,8 @@ property_descriptions = {
 			identifies=False
 		),
 		'translationLongDescription': univention.admin.property(
-			short_description=_('Translation of long description '),
-			long_description=_('Translation of the long description for the option as shown on the Option tab'),
+			short_description=_('Translations of long description'),
+			long_description=_('Translations of the long description for the option as shown on the Option tab'),
 			syntax=univention.admin.syntax.translationTupleLongDescription,
 			multivalue=True,
 			include_in_default_search=1,
@@ -137,7 +137,7 @@ property_descriptions = {
 			identifies=False
 		),
 		'objectClass': univention.admin.property(
-			short_description=_('Object class'),
+			short_description=_('LDAP object class'),
 			long_description=_('Mapping to LDAP objectClasses'),
 			syntax=univention.admin.syntax.string,
 			multivalue=True,
