@@ -1,180 +1,180 @@
 [mail/cyrus/admins]
-Description[de]=Liste von Benutzern mit Administratorrechten
-Description[en]=List of users with administrative rights
+Description[de]=Die hier konfigurierten Benutzernamen erhalten neben den Benutzern 'root' und 'cyrus' administrative Berechtigungen für alle Cyrus-Dienste. Mehrere Benutzernamen müssen durch Kommas getrennt werden.
+Description[en]=The usernames configured here receive administrative privileges for all Cyrus service in addition to the users 'root' and 'cyrus'. Multiple usernames must be separated by commas.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/imap/admins]
-Description[de]=Liste von Benutzern mit Administratorrechten im IMAP
-Description[en]=List of users with administrative rights in IMAP
+Description[de]=Die hier konfigurierten Benutzernamen erhalten neben den Benutzern 'root' und 'cyrus' administrative Berechtigungen für den IMAP-Dienst. Mehrere Benutzernamen müssen durch Kommas getrennt werden.
+Description[en]=The usernames configured here receive administrative privileges for the IMAP service in addition to the users 'root' and 'cyrus'. Multiple usernames must be separated by commas.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/userlogfiles]
-Description[de]=Definiert, ob für neue Benutzer Logfiles in /var/lib/cyrus/log/ erstellt werden sollen.
-Description[en]=Controls whether user log files will be created for new users in /var/lib/cyrus/log/.
-Type=str
+Description[de]=Ist diese Option aktiviert, werden die Logdateien für jeden Benutzer separat unter /var/lib/cyrus/log/ erstellt. Diese Option sollte nur in Ausnahmefällen aktiviert werden. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
+Description[en]=If this option is enabled, the logfiles are stored for each user under /var/lib/cyrus/log/. This option should only be enabled in exceptional cases. If the variable is unset, the option is disabled.
+Type=bool
 Categories=service-mail
 
 [mail/cyrus/loginrealms]
-Description[de]=Liste alternativer Domänen aus denen sich Benutzer anmelden dürfen
-Description[en]=List of remote realms whose users may authenticate
+Description[de]=Eine Liste von Domänen, die sich am Cyrus-Server anmelden dürfen. Ist diese Variable nicht gesetzt, gelten die Einstellungen aus 'mail/hosteddomains'. Mehrere Werte müssen durch Kommas getrennt werden.
+Description[en]=A list of domains which can log in to the Cyrus server. If the variable is unset, the settings from 'mail/hosteddomains' apply. Multiple values must be separated by commas.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/imap]
-Description[de]=Aktiviert/Deaktiviert den IMAP-Daemon
-Description[en]=Enable/Disable the IMAP-Daemon
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird der Cyrus-IMAP-Dienst gestartet.
+Description[en]=If this variable is set to 'yes', the Cyrus IMAP service is started.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/imap/lookup_groups]
-Description[de]=Gruppenauflösung wenn auth_unix verwendet wird
-Description[en]=Look up groups when using auth_unix
+Description[de]=Wird diese Variable auf 'no' gesetzt, werden Gruppenmitgliedschaften durch Cyrus nicht aufgelöst. Dies kann in Sonderfällen die Performance steigern, die Variable sollte aber im Regelfall nicht verwendet werden. Ist die Variable nicht gesetzt, werden Gruppenmitgliedschaften aufgelöst.
+Description[en]=If this variable is set to 'no', group memberships are not resolved by Cyrus. This can increase the performance in corner cases. This variable should only be used in exceptional cases. If the variable is unset, group memberships are resolved.
 Type=str
-Categories=service-mail,system-network
+Categories=service-mail
 
 [mail/cyrus/imap/quota]
-Description[de]=Aktiviert/Deaktiert Mailquota
-Description[en]=Enable/Disable mailquota
-Type=str
-Categories=service-mail,system-network
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, können IMAP-Mail-Quota-Einstellungen durch Richtlinien in der Univention Management Console konfiguriert werden.
+Description[en]=If this option is activated or the variable unset, IMAP mail quota settings can be configured through policies in the Univention Management Console.
+Type=bool
+Categories=service-mail
 
 [mail/cyrus/imap/quotawarnpercent]
-Description[de]=Prozent des Quotaverbrauchs ab dem der Server Warnmeldungen generiert
-Description[en]=The percent of quota utilization over which the server generates warnings
-Type=str
+Description[de]=Ist Mail-Quota aktiviert (siehe 'mail/cyrus/imap/quota'), konfiguriert diese Variable den Schwellwert in Prozent, ab dem IMAP-Clients eine Warnmeldung ausgeben. Der Wert muss als Zahl zwischen 0 und 100 ohne Prozentzeichen angegeben werden.
+Description[en]=If mail quota is activated (see 'mail/cyrus/imap/quota'), this variable configures the threshold in percent for which a warning message should be issued in IMAP clients. The value must be entered as a number between 0 and 100 without the percent sign. 
+Type=int
 Categories=service-mail
 
 [mail/cyrus/imap/quotawarnkb]
-Description[de]=Maximaler freier Speicher (in kB) ab dem Warnmeldungen generiert werden
-Description[en]=The maximum amount of free space (in kB) in which to give a quota warning
-Type=str
+Description[de]=Ist Mail-Quota aktiviert (siehe 'mail/cyrus/imap/quota'), konfiguriert diese Variable den Schwellwert an freiem Mailspeicherplatz in Kilobyte, ab dem IMAP-Clients eine Warnmeldung ausgeben. 
+Description[en]=If mail quota is activated (see 'mail/cyrus/imap/quota'), this variable configures the threshold in free mail storage capacity in kilobyzes for which a warning message should be issued in IMAP clients.
+Type=int
 Categories=service-mail
 
 [mail/cyrus/imap/quotainterval]
-Description[de]=Setzt das Zeitintervall, in welchem auf Mailquotaeinstellungen geprüft wird (Minuten)
-Description[en]=Sets time interval for checking mailquota settings (minutes)
-Type=str
+Description[de]=Die in der UMC konfigurierte Mailquota wird bei der Authentifizierung am Mailserver in die Quota-Einstellungen des Cyrus-Servers übertragen. Dabei wird ein Aktualisierungsintervall ausgewertet, so dass erst nach Ablauf dieses Zeitraums die Quota-Einstellungen aktualisiert werden. Diese Variable konfiguriert das Intevrall in Minuten.
+Description[en]=The mail quota configured in the UMC is transferred to the quota settings of the Cyrus server during authentication on the mail server. The update interval is evaluated so that the quota settings are only updated once this time period has expired. This variable configures the interval in minutes.
+Type=int
 Categories=service-mail
 
 [mail/cyrus/imap/duplicatesuppression]
-Description[de]=Wenn gesetzt, wird lmtpd die E-Mail-Zustellung mit der selben Message-ID, die schon an den Posteingang zugestellt wurde unterbinden. Zeichnet den Posteingang und Message_ID/Letzte-Message-ID von allen erfolgreichen Zustellungen auf (Standard: yes)
-Description[en]=If enabled, lmtpd will suppress delivery of a message to a mailbox if a message with the same message-id (or resent-message-id) is recorded as having already been delivered to the mailbox. Records the mailbox and message-id/resent-message-id of all successful deliveries (Default: yes)
-Type=str
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird die Zustellung von E-Mails mit einer Message-ID, die schon an den Posteingang zugestellt wurde unterbunden. 
+Description[en]=If this option is enabled or the variable is unset, the delivery of e-mails with a message ID which has already been delivered to the inbox is suppressed.
+Type=bool
 Categories=service-mail
 
 [mail/cyrus/idlemethod]
-Description[de]=Zu verwendendes Backend für das IDLE Kommando ("no", "poll", "idled")
-Description[en]=The idle backend to use for IDLE command ("no", "poll", "idled")
+Description[de]=Das IDLE-Kommando des IMAP-Protokolls erlaubt es Clients direkte Benachrichtigungen zu erhalten wenn neue E-Mails verfügbar sind. Wird diese Variable auf 'idled' gesetzt, unterstützt der IMAP-Server IDLE. Wird die Variable auf 'poll' oder 'no' gesetzt, müssen die Benutzer manuell neue E-Mails abrufen.
+Description[en]=The IDLE command of the IMAP protocols allows clients to receive direct notifications if new e-mails are available. If this variable is set to 'idled', the IMAP server supports IDLE. If the variable is set to 'poll' or 'no', users must pull manually for new e-mails.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/pop]
-Description[de]=Aktiviert/Deaktiviert den POP3-Daemon
-Description[en]=Enable/Disable the POP3-Daemon
+Description[de]=Ist diese Variable auf 'yes' gesetzt, wird der Cyrus-POP3-Dienst gestartet.
+Description[en]=If this variable is set to 'yes', the Cyrus POP3 service is started.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/imap/maxchilds]
-Description[de]=Maximale Anzahl von IMAPd Instanzen
-Description[en]=Maximum amount of IMAPd instances
-Type=str
+Description[de]=Diese Variable konfiguriert die maximale Anzahl möglicher IMAP-Verbindungen. Ist die Variable nicht gesetzt, gilt 400.
+Description[en]=This variable configures the maximum amount of IMAP connections. If the variable is unset, 400 applies.
+Type=int
 Categories=service-mail
 
 [mail/cyrus/pop/maxchilds]
-Description[de]=Maximale Anzahl von POP3d Instanzen
-Description[en]=Maximum amount of POP3d instances
-Type=str
+Description[de]=Diese Variable konfiguriert die maximale Anzahl möglicher POP3-Verbindungen. Ist die Variable nicht gesetzt, gilt 400.
+Description[en]=This variable configures the maximum amount of POP3 connections. If the variable is unset, 400 applies.
+Type=int
 Categories=service-mail
 
 [mail/cyrus/sieve/maxchilds]
-Description[de]=Maximale Anzahl von Sieve Instanzen
-Description[en]=Maximum amount of sieve instances
-Type=str
+Description[de]=Diese Variable konfiguriert die maximale Anzahl möglicher SIEVE-Verbindungen. Ist die Variable nicht gesetzt, gilt 400.
+Description[en]=This variable configures the maximum amount of SIEVE connections. If the variable is unset, 400 applies.
+Type=int
 Categories=service-mail
 
 [mail/cyrus/sieve/listen_host]
-Description[de]=Von Sieve zu belegender UNIX oder Internetsocket
-Description[en]=UNIX or internet socket for sieve to listen on
+Description[de]=Diese Variable konfiguriert, von welchen Systemen aus auf den SIEVE-Dienst zugegriffen werden kann. Mögliche Werte sind 'all' (von überall), 'localhost' oder eine kommaseparierte Liste von IP-Adressen.
+Description[en]=This variable configures which systems may access the SIEVE service. Possible values are 'all' (from everywhere), 'localhost' or a list of IP adresses separated by commas.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/sieve/port]
-Description[de]=Der von Cyrus zu verwendende Sieve-Port (Standard: 4190)
-Description[en]=The TCP port cyrus should listen on for sieve connections (Default: 4190)
-Type=str
+Description[de]=Auf diesem Port wartet der SIEVE-Dienst auf Verbindungen. Ist die Variable nicht gesetzt, gilt 4190.
+Description[en]=The SIEVE service is listening for connections on this port. If the variable is unset, 4190 applies.
+Type=int
 Categories=service-mail
 
 [mail/cyrus/autostart]
-Description[de]=Definiert ob Cyrus beim Booten des Rechners gestartet wird
-Description[en]=Defines if cyrus should be started when booting the computer
+Description[de]=Die Variable konfiguriert den Startmodus des Cyrus-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Cyrus service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/squatter/cron]
-Description[de]=Definiert den Intervall, in der Indexservice squatter Mails indiziert
-Description[en]=Defines the interval to have the indexservice squatter process mails
+Description[de]=Das Intervall für die regelmäßige Indizierung der IMAP-Daten über den Squatter-Dienste. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'.
+Description[en]=The interval for the regular indexing of the IMAP data by the Squatter service. The configuration is done in Cron syntax, see 'man 5 crontab'.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/backup-metadata/cron]
-Description[de]=Definiert das Intervall, in der die Mailbox und Annotations Datenbanken gesichert werden
-Description[en]=Defines the interval to backup the mailbox and annotations database files
+Description[de]=Das Skript /usr/sbin/univention-cyrus-backup-metadata sichert die Cyrus-Datenbanken mailboxes.db und annotations.db nach /var/univention-backup/cyrus. Diese Variable konfiguriert das Sicherungsintervall. Die Konfiguration erfolgt in Cron-Syntax, siehe 'man 5 crontab'.
+Description[en]=The script /usr/sbin/univention-cyrus-backup-metadata performs a backup of the Cyrus databases mailboxes.db and annotations.db into the directory /var/univention-backup/cyrus. This variable configures the backup interval. The configuration is done in Cron syntax, see 'man 5 crontab'.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/mailbox/rename]
-Description[de]=Definiert, ob eine Cyrus Mailbox umbenannt werden soll, wenn eine primäre Mailadresse geändert wurde
-Description[en]=Defines if a cyrus mailbox should be renamed, if a primary mailaddress was modified
-Type=str
+Description[de]=Das Postfach eines Benutzers ist mit der primären E-Mail-Adresse verknüpft und nicht mit dem Benutzernamen. Diese Variable konfiguriert das Verhalten bei der Änderung der primären E-Mail-Adresse. Ist die Option aktiviert, wird auch das IMAP-Postfach des Benutzers umbenannt. Ist sie deaktiviert oder die Variable nicht gesetzt, sind nach dem Ändern der primären E-Mail-Adresse eines Benutzers seine bisherigen E-Mails nicht mehr erreichbar!
+Description[en]=A user's mailbox is linked to the primary e-mail address and not to the user name. This variable configures the reaction when the primary e-mail address is changed. If the option is enabled, the name of the user's IMAP mailbox is changed as well. If the option is disabled or the variable unset, it will not be possible to read previous e-mails any more once the user's primary e-mail address is changed!
+Type=bool
 Categories=service-mail
 
 [mail/cyrus/mailbox/delete]
-Description[de]=Definiert, ob eine Cyrus Mailbox gelöscht werden soll, wenn eine primäre Mailadresse entfernt oder ein Benutzerobjekt gelöscht wurde
-Description[en]=Defines if a cyrus mailbox should be deleted, if a primary mailaddress was removed or a user object has been deleted
-Type=str
+Description[de]=Ist diese Option aktiviert wird bei der Löschung eines Benutzerkontos in der Univention Management Console auch das IMAP-Postfach gelöscht. Ist die Option deaktiviert oder die Variable nicht gesetzt bleiben die Postfächer bei Löschung eines Benutzerkontos erhalten. 
+Description[en]=If this option is activated the IMAP mailbox is also deleted when a user account is deleted. If the option is disabled or the variable unset, the mailboxes are kept when a user account is deleted.
+Type=bool
 Categories=service-mail
 
 [mail/cyrus/folder/spam]
-Description[de]=Name des IMAP-Ordners für Spam-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird (default: Spam). Achtung: diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden.
-Description[en]=Name of IMAP folder for spam mails that is created automatically when creating a new mail account (default: Spam). Attention: this variable should not be changed after mail accounts have been created.
+Description[de]=Der Name des IMAP-Ordners für Spam-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird. Achtung: diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden. Ist die Variable nicht gesetzt, wird 'Spam' verwendet.
+Description[en]=The name of IMAP folder for spam mails that is created automatically when creating a new mail account. Attention: this variable should not be changed after mail accounts have been created. If the variable is unset, 'Spam' is used.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/folder/ham]
-Description[de]=Name des IMAP-Ordners für Ham-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird (default: Ham).
-Description[en]=Name of IMAP folder for ham mails that is created automatically when creating a new mail account (default: Ham).
+Description[de]=Der Name des IMAP-Ordners für Ham-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird. Achtung: diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden. Ist die Variable nicht gesetzt, wird 'Ham' verwendet.
+Description[en]=The name of IMAP folder for ham mails that is created automatically when creating a new mail account. Attention: this variable should not be changed after mail accounts have been created. If the variable is unset, 'Ham' is used.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/folder/predefined_folders]
-Description[de]=Eine semikolon-separierte Liste mit IMAP-Ordner-Namen, die beim Anlegen eines Mail-Accounts automatisch erzeugt werden (default: none).
-Description[en]=A semicolon-separated list of IMAP folder names that are created automatically when creating a new mail account (default: none).
+Description[de]=Hier kann eine optionale Liste von IMAP-Ordner-Namen angegeben werden, die beim Anlegen eines Mail-Kontos automatisch erzeugt werden. Mehrere Werte müssen durch Semikolons getrennt werden.
+Description[en]=A list of IMAP folder names can be configured here which are created automatically when creating a new mail account. Multiple values must be separated by commas.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/ldap/pwfile]
-Description[de]=Passwort-Datei für die LDAP Authentifizierung.
-Description[en]=Password file for the ldap authentication.
+Description[de]=Die Datei, die das Passwort für die LDAP-Authentifizierung des Cyrus-Dienstes enthält. Die Datei sollte genau eine Zeile mit dem Passwort enthalten.
+Description[en]=A file containing the password of LDAP authentication of the Cyrus service. The file should contain exactly one line with the password.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/sieve/spam]
-Description[de]=Definiert, ob beim Anlegen einer Mailbox ein Sieve-Skript erstellt werden soll, das Spam-Mails in den Ordner Spam verschiebt (default: true)
-Description[en]=Defines whether or not to create a sieve script for every new mailbox, which moves spam mails into the spam folder (default: true)
-Type=str
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird beim Anlegen einer Mailbox ein Sieve-Skript erstellt, das Spam-Mails in den Spam-Ordner verschiebt (siehe 'mail/cyrus/folder/spam').
+Description[en]=If this option is activated or the variable unset, a Sieve script is created for every new mailbox, which moves spam mails into the spam folder (see 'mail/cyrus/folder/spam').
+Type=bool
 Categories=service-mail
 
 [mail/cyrus/ssl/certificate]
-Description[de]=Vollständiger Dateiname des SSL-Zertifikats, das von Cyrus für SSL-Verbindungen verwendet wird (Default: /var/lib/cyrus/cert.pem)
-Description[en]=Pathname of SSL certificate that is used by Cyrus to establish SSL connections (default: /var/lib/cyrus/cert.pem)
+Description[de]=Der vollständiger Dateiname des SSL-Zertifikats, das von Cyrus für SSL-Verbindungen verwendet wird. Ist die Variable nicht gesetzt, wird /var/lib/cyrus/cert.pem verwendet.
+Description[en]=The full path name of SSL certificate that is used by Cyrus to establish SSL connections. If the variable is unset, /var/lib/cyrus/cert.pem is used.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/ssl/key]
-Description[de]=Vollständiger Dateiname der SSL-Schlüsseldatei, das von Cyrus für SSL-Verbindungen verwendet wird (Default: /var/lib/cyrus/private.key)
-Description[en]=Pathname of SSL key file that is used by Cyrus to establish SSL connections (default: /var/lib/cyrus/cert.pem)
+Description[de]=Der vollständige Dateiname der SSL-Schlüsseldatei, das von Cyrus für SSL-Verbindungen verwendet wird. Ist die Variable nicht gesetzt, wird /var/lib/cyrus/private.key verwendet.
+Description[en]=The full path name of SSL key file that is used by Cyrus to establish SSL connections. If the variable is unset /var/lib/cyrus/cert.pem is used.
 Type=str
 Categories=service-mail
 
@@ -191,14 +191,13 @@ Type=str
 Categories=service-mail
 
 [mail/cyrus/initscript]
-Description[de]=Dateiname des Initskripts der installierten Cyrus version
-Description[en]=Filename of the installed cyrus version's init script
+Description[de]=Diese Variable konfiguriert den Namen des Init-Scripts des Cyrus-Dienstes. Wird Cyrus 2.2 eingesetzt, muss sie auf 'cyrus2.2' gesetzt werden, ansonsten auf 'cyrus-imapd'.
+Description[en]=This variable configures the name of the init script of the Cyrus service. If Cyrus 2.2 is used, it must be set to 'cyrus2.2', otherwise to 'cyrus-imapd'.
 Type=str
 Categories=service-mail
 
-
 [mail/cyrus/bdb/dbconfig/.*]
-Description[de]=BDB-Konfiguration für die Cyrus-Datenbank in /var/lib/cyrus/db/DB_CONFIG. Nach Änderungen muss der Cyrus-Server neu gestartet werden.
-Description[en]=BDB configuration for the cyrus database in /var/lib/cyrus/db/DB_CONFIG. After changing these variables the cyrus server has to be restarted.
+Description[de]=Mit Variablen der Form mail/cyrus/bdb/dbconfig/VARIABLE=WERT können beliebige BDB-Konfigurationsoptionen für die Cyrus-Datenbank in /var/lib/cyrus/db/DB_CONFIG gesetzt werden. Beispiel: 'mail/cyrus/bdb/dbconfig/set_lg_regionmax=2097152'. Nach Änderungen muss der Cyrus-Server neu gestartet werden.
+Description[en]=Arbitrary BDB configuration options for the Cyrus database in /var/lib/cyrus/db/DB_CONFIG can be configured with variables in the format mail/cyrus/bdb/dbconfig/VARIABLE=VALUE. After changing these variables the Cyrus server must be restarted.
 Type=str
 Categories=service-mail
