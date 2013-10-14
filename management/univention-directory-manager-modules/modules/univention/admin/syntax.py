@@ -56,7 +56,15 @@ _=translation.translate
 #
 def import_syntax_files():
 	for dir in sys.path:
-		if os.path.exists( os.path.join( dir, 'univention/admin/syntax.py' ) ):
+		fn = os.path.join( dir, 'univention/admin/syntax.py' )
+		if os.path.exists( fn ):
+			try:
+				fd = open( fn, 'r' )
+				exec fd in univention.admin.syntax.__dict__
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
+			except:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
+
 			if os.path.isdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
 				for f in os.listdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
 					if f.endswith('.py'):

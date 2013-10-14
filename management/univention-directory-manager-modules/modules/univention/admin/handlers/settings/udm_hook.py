@@ -77,7 +77,7 @@ property_descriptions={
 	'data': univention.admin.property(
 			short_description=_('UDM hook data'),
 			long_description='',
-			syntax=univention.admin.syntax.Bzip2Base64Upload,
+			syntax=univention.admin.syntax.Bzip2Base64Text,
 			multivalue=0,
 			options=[],
 			required=1,
