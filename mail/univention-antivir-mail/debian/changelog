@@ -1,3 +1,9 @@
+univention-antivir-mail (5.0.0-3) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30945)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 14 Oct 2013 09:21:02 +0200
+
 univention-antivir-mail (5.0.0-2) unstable; urgency=low
 
   * update license (Bug #31332)

@@ -1,53 +1,53 @@
 [mail/antivir/amavis/autostart]
-Description[de]=Automatischer Start des Amavis Dienst
-Description[en]=Automatically start of the amavis daemon
+Description[de]=Die Variable konfiguriert den Startmodus des Amavis-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Amavis service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=str
 Categories=service-mail,system-services
 
 [clamav/daemon/autostart]
-Description[de]=Automatischer Start des Virenscanner
-Description[en]=Automatically start of the antivirus daemon
+Description[de]=Die Variable konfiguriert den Startmodus des ClamAV-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the ClamAV service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
 Type=str
 Categories=service-mail,system-services
 
 [clamav/freshclam/autostart]
-Description[de]=Automatischer Start des Virenscanner Updaters
-Description[en]=Automatically start of the antivirus update daemon
+Description[de]=Die Variable konfiguriert den Startmodus des Freshclam-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Apache service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, can can be enabled manually at a later point.
 Type=str
-Categories=service-mail,system-services
+Categories=service-webproxy,service-mail,system-services
 
 [mail/antispam/bodysizelimit]
-Description[de]=Größenlimit für die SPAM-Prüfung (KiB)
-Description[en]=Sizelimit for spam check (KiB)
-Type=str
+Description[de]=E-Mails, die größer sind als die hier konfigurierte Größe in Kilobyte werden von der Spam-Erkennung nicht geprüft.
+Description[en]=Emails which are bigger than the size in kilobytes configured here are not checked by the spam detection.
+Type=int
 Categories=service-mail
 
 [clamav/database/mirror]
-Description[de]=Server, von den die Databank Updates geladen werden.
-Description[en]=Server  name  where  database  updates  are  downloaded from.
+Description[de]=Von diesen/diesem Server(n) werden Virensignatur-Updates durch den Freshclam-Dienst heruntergeladen. Mehrere Werte müssen durch Leerzeichen getrennt werden.
+Description[en]=Virus signature updates are downloaded by the Freshclam service from this/these server(s). Multiple values must be separated by commas.
 Type=str
 Categories=service-mail
 
 [clamav/proxy/http]
-Description[de]=HTTP Proxy für freshclam
-Description[en]=HTTP Proxy to use
+Description[de]=Der zu verwendende HTTP-Proxyserver für den Download der Virensignaturen durch Freshclam, z.B. <http://192.168.1.100>. Ist die Variable nicht gesetzt, gelten die Proxy-Einstellungen aus 'http/proxy'.
+The HTTP proxy server to be used for downloading the virus signatures through Freshclam, e.g. <http://192.168.1.100>. If the variable is unset, the settings from 'http/proxy' apply.
 Type=str
 Categories=service-mail
 
 [clamav/proxy/username]
-Description[de]=HTTP Proxy Benutzer für freshclam
-Description[en]=freshclam HTTP proxy username 
+Description[de]=Wenn der Proxy für den Freshclam-Download Authenzifizierung erfordert (siehe 'clamav/proxy/http'), kann hier ein Benutzername konfiguriert werden.
+Description[en]=If the HTTP proxy server for downloading virus signatures through Freshclam requires authentication (see 'clamav/proxy/http'), the username can be configured here.
 Type=str
 Categories=service-mail
 
 [clamav/proxy/password]
-Description[de]=HTTP Proxy Passwort für freshclam
-Description[en]=freshclam HTTP proxy password
+Description[de]=Wenn der Proxy für den Freshclam-Download Authenzifizierung erfordert (siehe 'clamav/proxy/http'), kann hier das Passwort konfiguriert werden.
+Description[en]=If the HTTP proxy server for downloading virus signatures through Freshclam requires authentication (see 'clamav/proxy/http'), the password can be configured here.
 Type=str
 Categories=service-mail
 
 [clamav/proxy/port]
-Description[de]=HTTP Proxy Port für freshclam
-Description[en]=freshclam HTTP proxy port
-Type=str
+Description[de]=Der Port des zu verwendenden HTTP-Proxyservers für den Download der Virensignaturen durch Freshclam, z.B. 3128. Ist die Variable nicht gesetzt, gelten die Proxy-Einstellungen aus 'http/proxy'.
+Description[en]=The port of the HTTP proxy server to be used for downloading the virus signatures through Freshclam, e.g. 3128. If the variable is unset, the settings from 'http/proxy' apply.
+Type=int
 Categories=service-mail
