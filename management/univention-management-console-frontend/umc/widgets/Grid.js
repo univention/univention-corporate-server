@@ -338,6 +338,10 @@ define([
 				if (defaultActionExists && isDefaultActionColumn) {
 					col.formatter = lang.hitch(this, function(value, rowIndex) {
 						value = icol.formatter ? icol.formatter(value, rowIndex) : value;
+						var item = this._grid.getItem(rowIndex);
+						if (!this._getDefaultActionForItem(item)) {
+							return value;
+						}
 						if (value.domNode) {
 							var container = new ContainerWidget({
 								'class': 'umcGridDefaultAction',
