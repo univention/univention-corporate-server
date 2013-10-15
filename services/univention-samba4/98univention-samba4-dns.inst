@@ -71,7 +71,7 @@ while [ $count -le 600 ]; do
 	dn="$(univention-ldapsearch -LLL "(&(uid=dns-$hostname)(objectClass=sambaSamAccount))" dn | sed -ne 's|^dn: ||p')"
 	if [ -n "$dn" ]; then
 		echo " done"
-		udm users/user modify --dn "$dn" --set objectFlag=hidden
+		udm users/user modify "$@" --dn "$dn" --set objectFlag=hidden
 		break
 	else
 		echo -n "."
