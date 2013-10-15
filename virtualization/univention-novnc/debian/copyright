@@ -1,0 +1,43 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: noVNC
+Source: https://github.com/kanaka/noVNC/
+
+Files: *
+Copyright: (c) 2011-2013 Joel Martin <github@martintribe.org>
+License: MPL-2.0
+
+Files: debian/*
+Copyright: (c) 2011-2013 Joel Martin <github@martintribe.org>
+License: GPL-2+
+
+Files: *.html include/*.css
+Copyright: Ed Schouten <ed@80386.nl>
+License: BSD-2-clause
+
+Files: include/Orbitron*
+Copyright: (c) 2009 Matt McInerney
+License: SIL Open Font License 1.1
+
+Files: images/*
+License: CC-SA-3.0
+
+Files: include/base64.js
+Copyright: 2000 Digital Creations 2 Inc
+License: MPL-2.0
+
+Files: include/des.js
+Copyright: (c) 1996 Widget Workshop, Inc.
+Copyright: (c) 1996 by Jef Poskanzer <jef@acme.com>.
+License: BSD
+
+Files: include/jsunzip.js
+License: zlib/libpng license
+
+Files: include/web-socket-js/*
+License: BSD-3-clause
+
+Files: include/chrome-app/tcp-stream.js
+License: Apache 2.0 license
+
+Files: utils/websockify, utils/websocket.py
+License: LGPL-3
