@@ -401,7 +401,7 @@ class Upload( ISyntax ):
 	def parse( self, value ):
 		return value
 
-class GzipBase64Text( TextArea ):
+class Base64GzipText( TextArea ):
 	@classmethod
 	def parse( self, text ):
 		try:
@@ -414,7 +414,7 @@ class GzipBase64Text( TextArea ):
 			raise univention.admin.uexceptions.valueError( _( 'Value must be gzip compressed and Base64 encoded: %s' ) % str( text ) )
 		return text
 
-class Bzip2Base64Text( TextArea ):
+class Base64Bzip2Text( TextArea ):
 	@classmethod
 	def parse( self, text ):
 		try:
@@ -424,7 +424,7 @@ class Bzip2Base64Text( TextArea ):
 		try:
 			data = bz2.decompress(compressed_data)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Value must be bz2 compressed and Base64 encoded: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError( _( 'Value must be bzip2 compressed and Base64 encoded: %s' ) % str( text ) )
 		return text
 
 class Base64Upload( Upload ):
@@ -454,7 +454,7 @@ class jpegPhoto( Upload ):
 			raise univention.admin.uexceptions.valueError(_('Value must be Base64 encoded jpeg'))
 
 from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
-class Bzip2Base64XML( TextArea ):
+class Base64Bzip2XML( TextArea ):
 	@classmethod
 	def parse( self, text ):
 		try:
@@ -464,7 +464,7 @@ class Bzip2Base64XML( TextArea ):
 		try:
 			data = bz2.decompress(compressed_data)
 		except:
-			raise univention.admin.uexceptions.valueError( _( 'Value must be bz2 compressed and Base64 encoded: %s' ) % str( text ) )
+			raise univention.admin.uexceptions.valueError( _( 'Value must be bzip2 compressed and Base64 encoded: %s' ) % str( text ) )
 		if get_mime_type(data) != 'application/xml':
 			raise univention.admin.uexceptions.valueError( _( 'Not Base64 encoded XML data: %s' ) % str( text ) )
 		return text

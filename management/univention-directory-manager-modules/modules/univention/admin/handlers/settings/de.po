@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-14 10:50+0200\n"
+"POT-Creation-Date: 2013-10-15 12:43+0200\n"
 "PO-Revision-Date: 2011-12-01 09:47+0100\n"
 "Last-Translator: Philipp Hahn <hahn@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -59,8 +59,8 @@ msgstr "Name"
 #: printermodel.py:82 printermodel.py:83 printeruri.py:80 printeruri.py:81
 #: prohibited_username.py:79 prohibited_username.py:80 sambaconfig.py:183
 #: sambaconfig.py:184 sambadomain.py:230 sambadomain.py:231 service.py:65
-#: service.py:66 syntax.py:160 syntax.py:161 udm_hook.py:151 udm_hook.py:152
-#: udm_module.py:151 udm_module.py:152 udm_syntax.py:151 udm_syntax.py:152
+#: service.py:66 syntax.py:160 syntax.py:161 udm_hook.py:152 udm_hook.py:153
+#: udm_module.py:181 udm_module.py:182 udm_syntax.py:152 udm_syntax.py:153
 #: umc_operationset.py:104 umc_operationset.py:105 usertemplate.py:352
 #: usertemplate.py:353 xconfig_choices.py:169 xconfig_choices.py:170
 msgid "General"
@@ -68,8 +68,8 @@ msgstr "Allgemein"
 
 #: cn.py:65 default.py:144 directory.py:179 extended_options.py:152
 #: ldapacl.py:152 ldapschema.py:132 sambaconfig.py:183 sambadomain.py:230
-#: service.py:65 syntax.py:160 udm_hook.py:151 udm_module.py:151
-#: udm_syntax.py:151 usertemplate.py:352
+#: service.py:65 syntax.py:160 udm_hook.py:152 udm_module.py:181
+#: udm_syntax.py:152 usertemplate.py:352
 msgid "Basic values"
 msgstr "Grundeinstellungen"
 
@@ -215,11 +215,11 @@ msgstr "Eindeutiger Name"
 
 #: extended_attribute.py:53
 msgid ""
-"Name which by default is used by the command "
-"line programm and internally to identify the extended attribute"
+"Name which by default is used by the command line programm and internally to "
+"identify the extended attribute"
 msgstr ""
-"Name der standardmäßig vom Kommandozeilenprogramm "
-"und intern zur Identifizierung des erweiterten Attributs verwendet wird"
+"Name der standardmäßig vom Kommandozeilenprogramm und intern zur "
+"Identifizierung des erweiterten Attributs verwendet wird"
 
 #: extended_attribute.py:63 extended_attribute.py:377
 msgid "Short description"
@@ -301,8 +301,12 @@ msgid "Multi value"
 msgstr "Mehrfachwert"
 
 #: extended_attribute.py:148
-msgid "This extended attribute can store multiple values instead of only a single value"
-msgstr "Dieses erweiterte Attribut kann mehrere Werte anstatt nur eines Wertes speichern"
+msgid ""
+"This extended attribute can store multiple values instead of only a single "
+"value"
+msgstr ""
+"Dieses erweiterte Attribut kann mehrere Werte anstatt nur eines Wertes "
+"speichern"
 
 #: extended_attribute.py:158
 msgid "Default value"
@@ -322,12 +326,11 @@ msgstr "Dieses erweiterte Attribut nicht in der UMC anzeigen"
 
 #: extended_attribute.py:169
 msgid ""
-"The extended attribute is not shown in the UMC. It "
-"can only be used from the commandline programm or the Python interface"
+"The extended attribute is not shown in the UMC. It can only be used from the "
+"commandline programm or the Python interface"
 msgstr ""
-"Dieses erweiterte Attribut wird nicht in der "
-"UMC angezeigt. Es kann dann nur über das "
-"Kommandozeilenprogramm oder das Python-Interface verwendet werden"
+"Dieses erweiterte Attribut wird nicht in der UMC angezeigt. Es kann dann nur "
+"über das Kommandozeilenprogramm oder das Python-Interface verwendet werden"
 
 #: extended_attribute.py:178
 msgid "Tab name"
@@ -351,9 +354,9 @@ msgid ""
 "This number specifies the position on which this extended attributes is "
 "placed on the tab or in the group. The numeration starts at 1"
 msgstr ""
-"Diese Nummer legt die Position fest an welcher dieses erweiterte Attribut auf "
-"der Karteikarte oder in der Gruppe platziert wird. Die Nummerierung beginnt "
-"bei 1"
+"Diese Nummer legt die Position fest an welcher dieses erweiterte Attribut "
+"auf der Karteikarte oder in der Gruppe platziert wird. Die Nummerierung "
+"beginnt bei 1"
 
 #: extended_attribute.py:198
 msgid "Group name"
@@ -366,8 +369,8 @@ msgid ""
 "group is used"
 msgstr ""
 "Zusammenhängende Attribute können gruppiert werden. Dieses Feld gibt den "
-"Name der Gruppe an in welcher dieses erweiterte Attribut platziert wird."
-"Wenn kein Name gegeben wird, wird keine Gruppe verwendet"
+"Name der Gruppe an in welcher dieses erweiterte Attribut platziert wird.Wenn "
+"kein Name gegeben wird, wird keine Gruppe verwendet"
 
 #: extended_attribute.py:208
 msgid "Group ordering number"
@@ -412,11 +415,11 @@ msgstr "Existierende Eigenschaft mit diesem Namen überschreiben"
 
 #: extended_attribute.py:239
 msgid ""
-"The pre-defined property with this name is replaced by "
-"this extended attribute"
+"The pre-defined property with this name is replaced by this extended "
+"attribute"
 msgstr ""
-"Die vordefinierte Eigenschaft mit diesem Namen wird durch "
-"dieses erweiterte Attribut ersetzt"
+"Die vordefinierte Eigenschaft mit diesem Namen wird durch dieses erweiterte "
+"Attribut ersetzt"
 
 #: extended_attribute.py:248
 msgid "Span both columns"
@@ -437,14 +440,8 @@ msgstr "LDAP-Attribut"
 #: extended_attribute.py:259
 msgid "Name of the LDAP attribute used to store this extended attribute"
 msgstr ""
-"Name des LDAP-Attributs das verwendet wird um dieses erweiterte Attribut "
-"zu speichern"
-
-#: extended_attribute.py:300
-msgid "Name of the LDAP object class used to store this extended attribute"
-msgstr ""
-"Name der LDAP-Objektklasse die verwendet wird um dieses erweiterte Attribut "
-"zu speichern"
+"Name des LDAP-Attributs das verwendet wird um dieses erweiterte Attribut zu "
+"speichern"
 
 #: extended_attribute.py:268
 msgid "Editable after creation"
@@ -482,6 +479,12 @@ msgstr "Wert ist erforderlich und muss eingegeben werden"
 #: extended_attribute.py:299 extended_options.py:140
 msgid "LDAP object class"
 msgstr "LDAP-Objektklasse"
+
+#: extended_attribute.py:300
+msgid "Name of the LDAP object class used to store this extended attribute"
+msgstr ""
+"Name der LDAP-Objektklasse die verwendet wird um dieses erweiterte Attribut "
+"zu speichern"
 
 #: extended_attribute.py:309
 msgid "Delete object class when value is unset"
@@ -680,50 +683,50 @@ msgstr "Dateiname der ACL"
 msgid "ACL data"
 msgstr "ACL-Daten"
 
-#: ldapacl.py:89 ldapschema.py:89 udm_hook.py:88 udm_module.py:88
-#: udm_syntax.py:88
+#: ldapacl.py:89 ldapschema.py:89 udm_hook.py:89 udm_module.py:87
+#: udm_syntax.py:89
 msgid "Active"
 msgstr "Aktiv"
 
-#: ldapacl.py:100 ldapschema.py:100 udm_hook.py:99 udm_module.py:99
-#: udm_syntax.py:99
+#: ldapacl.py:100 ldapschema.py:100 udm_hook.py:100 udm_module.py:98
+#: udm_syntax.py:100
 msgid "App identifier"
 msgstr "App-Kennung"
 
-#: ldapacl.py:110 ldapschema.py:110 udm_hook.py:109 udm_module.py:109
-#: udm_syntax.py:109
+#: ldapacl.py:110 ldapschema.py:110 udm_hook.py:110 udm_module.py:108
+#: udm_syntax.py:110
 msgid "Software package"
 msgstr "Softwarepaket"
 
-#: ldapacl.py:120 ldapschema.py:120 udm_hook.py:119 udm_module.py:119
-#: udm_syntax.py:119
+#: ldapacl.py:120 ldapschema.py:120 udm_hook.py:120 udm_module.py:118
+#: udm_syntax.py:120
 msgid "Software package version"
 msgstr "Version des Softwarepakets"
 
-#: ldapacl.py:130 udm_hook.py:129 udm_module.py:129 udm_syntax.py:129
+#: ldapacl.py:130 udm_hook.py:130 udm_module.py:128 udm_syntax.py:130
 msgid "Minimal UCS version"
 msgstr "Minimale UCS-Version"
 
-#: ldapacl.py:140 udm_hook.py:139 udm_module.py:139 udm_syntax.py:139
+#: ldapacl.py:140 udm_hook.py:140 udm_module.py:138 udm_syntax.py:140
 msgid "Maximal UCS version"
 msgstr "Maximale UCS-Version"
 
-#: ldapacl.py:158 ldapschema.py:138 udm_hook.py:157 udm_module.py:157
-#: udm_syntax.py:157
+#: ldapacl.py:158 ldapschema.py:138 udm_hook.py:158 udm_module.py:190
+#: udm_syntax.py:158
 msgid "Metadata"
 msgstr "Metadaten"
 
-#: ldapacl.py:163 udm_hook.py:162 udm_module.py:162 udm_syntax.py:162
+#: ldapacl.py:163 udm_hook.py:163 udm_module.py:195 udm_syntax.py:163
 msgid "UCS Version Dependencies"
 msgstr "UCS-Versionsabhängigkeiten"
 
-#: ldapacl.py:167 ldapschema.py:143 udm_hook.py:166 udm_module.py:166
-#: udm_syntax.py:166
+#: ldapacl.py:167 ldapschema.py:143 udm_hook.py:167 udm_module.py:199
+#: udm_syntax.py:167
 msgid "Activated"
 msgstr "Aktiviert"
 
-#: ldapacl.py:219 ldapschema.py:193 udm_hook.py:218 udm_module.py:218
-#: udm_syntax.py:218
+#: ldapacl.py:219 ldapschema.py:193 udm_hook.py:219 udm_module.py:255
+#: udm_syntax.py:219
 msgid "packageversion: Version must not be lower than the current one."
 msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."
 
@@ -1224,51 +1227,63 @@ msgid "An LDAP attribute is required of which the information will be stored."
 msgstr ""
 "Ein LDAP-Attribut wird benötigt dessen Information gespeichert werden soll."
 
-#: udm_hook.py:51
+#: udm_hook.py:52
 msgid "Settings: UDM Hook"
 msgstr "Einstellungen: UDM Hook"
 
-#: udm_hook.py:56
+#: udm_hook.py:57
 msgid "UDM hook name"
 msgstr "Name des UDM Hooks"
 
-#: udm_hook.py:67
+#: udm_hook.py:68
 msgid "UDM hook file name"
 msgstr "Dateiname des UDM Hooks"
 
-#: udm_hook.py:78
+#: udm_hook.py:79
 msgid "UDM hook data"
 msgstr "UDM Hook-Daten"
 
-#: udm_module.py:51
+#: udm_module.py:50
 msgid "Settings: UDM Module"
 msgstr "Einstellungen: UDM Modul"
 
-#: udm_module.py:56
+#: udm_module.py:55
 msgid "UDM module name"
 msgstr "Name des UDM Moduls"
 
-#: udm_module.py:67
+#: udm_module.py:66
 msgid "UDM module file name"
 msgstr "Dateiname des UDM Moduls"
 
-#: udm_module.py:78
+#: udm_module.py:77
 msgid "UDM module data"
 msgstr "UDM Moduldaten"
 
-#: udm_syntax.py:51
+#: udm_module.py:148
+msgid "GNU message catalog for translations"
+msgstr "GNU Message Catalog für Übersetzungen"
+
+#: udm_module.py:159
+msgid "UMC registration data"
+msgstr "UMC-Registrierungsdaten"
+
+#: udm_module.py:169
+msgid "UMC icon"
+msgstr "UMC-Icon"
+
+#: udm_syntax.py:52
 msgid "Settings: UDM Syntax"
 msgstr "Einstellungen: UDM Syntax"
 
-#: udm_syntax.py:56
+#: udm_syntax.py:57
 msgid "UDM syntax name"
 msgstr "Name der UDM Syntax"
 
-#: udm_syntax.py:67
+#: udm_syntax.py:68
 msgid "UDM syntax file name"
 msgstr "Dateiname der UDM Syntax"
 
-#: udm_syntax.py:78
+#: udm_syntax.py:79
 msgid "UDM syntax data"
 msgstr "UDM Syntaxdaten"
 

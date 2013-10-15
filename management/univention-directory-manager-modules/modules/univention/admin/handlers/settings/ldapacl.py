@@ -78,7 +78,7 @@ property_descriptions={
 	'data': univention.admin.property(
 			short_description=_('ACL data'),
 			long_description='',
-			syntax=univention.admin.syntax.Bzip2Base64Text,
+			syntax=univention.admin.syntax.Base64Bzip2Text,
 			multivalue=0,
 			options=[],
 			required=1,

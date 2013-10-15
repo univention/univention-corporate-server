@@ -76,7 +76,7 @@ property_descriptions={
 	'data': univention.admin.property(
 			short_description=_('UDM module data'),
 			long_description='UDM module data (syntax: Base64 encoded Bzip2)',
-			syntax=univention.admin.syntax.Bzip2Base64Text,
+			syntax=univention.admin.syntax.Base64Bzip2Text,
 			multivalue=0,
 			options=[],
 			required=1,
@@ -158,7 +158,7 @@ property_descriptions={
 	'umcregistration': univention.admin.property(
 			short_description=_('UMC registration data'),
 			long_description='UMC registration data (syntax: Bzip2 compressed and Base64 encoded XML)',
-			syntax=univention.admin.syntax.Bzip2Base64XML,
+			syntax=univention.admin.syntax.Base64Bzip2XML,
 			multivalue=0,
 			options=[],
 			required=0,
