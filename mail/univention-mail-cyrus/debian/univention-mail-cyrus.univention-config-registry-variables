@@ -1,18 +1,18 @@
 [mail/cyrus/admins]
 Description[de]=Die hier konfigurierten Benutzernamen erhalten neben den Benutzern 'root' und 'cyrus' administrative Berechtigungen für alle Cyrus-Dienste. Mehrere Benutzernamen müssen durch Kommas getrennt werden.
-Description[en]=The usernames configured here receive administrative privileges for all Cyrus service in addition to the users 'root' and 'cyrus'. Multiple usernames must be separated by commas.
+Description[en]=The user names configured here receive administrative privileges for all Cyrus services in addition to the users 'root' and 'cyrus'. Multiple user names must be separated by commas.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/imap/admins]
 Description[de]=Die hier konfigurierten Benutzernamen erhalten neben den Benutzern 'root' und 'cyrus' administrative Berechtigungen für den IMAP-Dienst. Mehrere Benutzernamen müssen durch Kommas getrennt werden.
-Description[en]=The usernames configured here receive administrative privileges for the IMAP service in addition to the users 'root' and 'cyrus'. Multiple usernames must be separated by commas.
+Description[en]=The user names configured here receive administrative privileges for the IMAP service in addition to the users 'root' and 'cyrus'. Multiple user names must be separated by commas.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/userlogfiles]
 Description[de]=Ist diese Option aktiviert, werden die Logdateien für jeden Benutzer separat unter /var/lib/cyrus/log/ erstellt. Diese Option sollte nur in Ausnahmefällen aktiviert werden. Ist die Variable nicht gesetzt, ist die Option deaktiviert.
-Description[en]=If this option is enabled, the logfiles are stored for each user under /var/lib/cyrus/log/. This option should only be enabled in exceptional cases. If the variable is unset, the option is disabled.
+Description[en]=If this option is enabled, the logfiles are stored for each user below /var/lib/cyrus/log/. This option should only be enabled in exceptional cases. If the variable is unset, the option is disabled.
 Type=bool
 Categories=service-mail
 
@@ -48,12 +48,12 @@ Categories=service-mail
 
 [mail/cyrus/imap/quotawarnkb]
 Description[de]=Ist Mail-Quota aktiviert (siehe 'mail/cyrus/imap/quota'), konfiguriert diese Variable den Schwellwert an freiem Mailspeicherplatz in Kilobyte, ab dem IMAP-Clients eine Warnmeldung ausgeben. 
-Description[en]=If mail quota is activated (see 'mail/cyrus/imap/quota'), this variable configures the threshold in free mail storage capacity in kilobyzes for which a warning message should be issued in IMAP clients.
+Description[en]=If mail quota is activated (see 'mail/cyrus/imap/quota'), this variable configures the threshold in free mail storage capacity in kilobytes for which a warning message should be issued in IMAP clients.
 Type=int
 Categories=service-mail
 
 [mail/cyrus/imap/quotainterval]
-Description[de]=Die in der UMC konfigurierte Mailquota wird bei der Authentifizierung am Mailserver in die Quota-Einstellungen des Cyrus-Servers übertragen. Dabei wird ein Aktualisierungsintervall ausgewertet, so dass erst nach Ablauf dieses Zeitraums die Quota-Einstellungen aktualisiert werden. Diese Variable konfiguriert das Intevrall in Minuten.
+Description[de]=Die in der UMC konfigurierte Mailquota wird bei der Authentifizierung am Mailserver in die Quota-Einstellungen des Cyrus-Servers übertragen. Dabei wird ein Aktualisierungsintervall ausgewertet, so dass erst nach Ablauf dieses Zeitraums die Quota-Einstellungen aktualisiert werden. Diese Variable konfiguriert das Intervall in Minuten.
 Description[en]=The mail quota configured in the UMC is transferred to the quota settings of the Cyrus server during authentication on the mail server. The update interval is evaluated so that the quota settings are only updated once this time period has expired. This variable configures the interval in minutes.
 Type=int
 Categories=service-mail
@@ -65,7 +65,7 @@ Type=bool
 Categories=service-mail
 
 [mail/cyrus/idlemethod]
-Description[de]=Das IDLE-Kommando des IMAP-Protokolls erlaubt es Clients direkte Benachrichtigungen zu erhalten wenn neue E-Mails verfügbar sind. Wird diese Variable auf 'idled' gesetzt, unterstützt der IMAP-Server IDLE. Wird die Variable auf 'poll' oder 'no' gesetzt, müssen die Benutzer manuell neue E-Mails abrufen.
+Description[de]=Das IDLE-Kommando des IMAP-Protokolls erlaubt es Clients direkte Benachrichtigungen zu erhalten, wenn neue E-Mails verfügbar sind. Wird diese Variable auf 'idled' gesetzt, unterstützt der IMAP-Server IDLE. Wird die Variable auf 'poll' oder 'no' gesetzt, müssen die Benutzer manuell neue E-Mails abrufen.
 Description[en]=The IDLE command of the IMAP protocols allows clients to receive direct notifications if new e-mails are available. If this variable is set to 'idled', the IMAP server supports IDLE. If the variable is set to 'poll' or 'no', users must pull manually for new e-mails.
 Type=str
 Categories=service-mail
@@ -137,14 +137,14 @@ Type=bool
 Categories=service-mail
 
 [mail/cyrus/folder/spam]
-Description[de]=Der Name des IMAP-Ordners für Spam-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird. Achtung: diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden. Ist die Variable nicht gesetzt, wird 'Spam' verwendet.
-Description[en]=The name of IMAP folder for spam mails that is created automatically when creating a new mail account. Attention: this variable should not be changed after mail accounts have been created. If the variable is unset, 'Spam' is used.
+Description[de]=Der Name des IMAP-Ordners für Spam-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird. Diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden. Ist die Variable nicht gesetzt, wird 'Spam' verwendet.
+Description[en]=The name of IMAP folder for spam mails that is created automatically when creating a new mail account. This variable should not be changed after mail accounts have been created. If the variable is unset, 'Spam' is used.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/folder/ham]
-Description[de]=Der Name des IMAP-Ordners für Ham-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird. Achtung: diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden. Ist die Variable nicht gesetzt, wird 'Ham' verwendet.
-Description[en]=The name of IMAP folder for ham mails that is created automatically when creating a new mail account. Attention: this variable should not be changed after mail accounts have been created. If the variable is unset, 'Ham' is used.
+Description[de]=Der Name des IMAP-Ordners für Ham-Mails, der beim Anlegen eines Mail-Kontos automatisch erzeugt wird. Diese Variable sollte nicht geändert werden, nachdem bereits Mail-Konten angelegt wurden. Ist die Variable nicht gesetzt, wird 'Ham' verwendet.
+Description[en]=The name of IMAP folder for ham mails that is created automatically when creating a new mail account. This variable should not be changed after mail accounts have been created. If the variable is unset, 'Ham' is used.
 Type=str
 Categories=service-mail
 
@@ -156,7 +156,7 @@ Categories=service-mail
 
 [mail/cyrus/ldap/pwfile]
 Description[de]=Die Datei, die das Passwort für die LDAP-Authentifizierung des Cyrus-Dienstes enthält. Die Datei sollte genau eine Zeile mit dem Passwort enthalten.
-Description[en]=A file containing the password of LDAP authentication of the Cyrus service. The file should contain exactly one line with the password.
+Description[en]=A file containing the password for LDAP authentication of the Cyrus service. The file should contain exactly one line with the password.
 Type=str
 Categories=service-mail
 
@@ -179,19 +179,19 @@ Type=str
 Categories=service-mail
 
 [mail/cyrus/mailnotifier]
-Description[de]=Methode für die "MAIL"-Benachrichtigungen des notifyd.
-Description[en]=notifyd method to use for "MAIL" notifications.
+Description[de]=Die Benachrichtigungsmethode für 'mail/cyrus/notifyd'. Mögliche Werte sind 'null', 'log' oder 'zephyr'.
+Description[en]=The notification method for 'mail/cyrus/notifyd'. Possible values are 'null', 'log' or 'zephyr'.
 Type=str
 Categories=service-mail
 
 [mail/cyrus/notifyd]
-Description[de]=Aktivierung bzw. Deaktivierung des cyrus notifyd (default: true, falls mail/cyrus/mailnotifier gesetzt)
-Description[en]=Disable or enable cyrus notifyd (default: true, if mail/cyrus/mailnotifier is set)
-Type=str
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird der Cyrus-Mail-Benachrichtigungsdiensts (notifyd) gestartet.
+Description[en]=If this option is enabled or the variable unset, the Cyrus mail notification service (notify) is started.
+Type=bool
 Categories=service-mail
 
 [mail/cyrus/initscript]
-Description[de]=Diese Variable konfiguriert den Namen des Init-Scripts des Cyrus-Dienstes. Wird Cyrus 2.2 eingesetzt, muss sie auf 'cyrus2.2' gesetzt werden, ansonsten auf 'cyrus-imapd'.
+Description[de]=Diese Variable konfiguriert den Namen des Init-Scripts des Cyrus-Dienstes. Wird Cyrus 2.2 eingesetzt, muss sie auf 'cyrus2.2' gesetzt sein, ansonsten auf 'cyrus-imapd'.
 Description[en]=This variable configures the name of the init script of the Cyrus service. If Cyrus 2.2 is used, it must be set to 'cyrus2.2', otherwise to 'cyrus-imapd'.
 Type=str
 Categories=service-mail
