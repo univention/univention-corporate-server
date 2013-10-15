@@ -48,7 +48,8 @@ Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-management-console-server,
- python-univention-virtual-machine-manager (= ${source:Version})
+ python-univention-virtual-machine-manager (= ${source:Version}),
+ univention-novnc,
 Description: UCS Virtual Machine Manager UMC module
  This package contains the UCS Virtual Machine Manager Daemon
  UMC module.

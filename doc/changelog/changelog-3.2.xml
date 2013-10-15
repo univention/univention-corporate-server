@@ -2154,6 +2154,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 			An unjoin script has been added to package <package>univention-virtual-machine-manager-daemon</package>.
 			The unjoin script removes the UVMM service from the server object and removes the default &ucsUCRV;s (<ulink url="&ucsbug;32449">Bug 32449</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			The Java based VNC viewer has been replaced by <ulink ulr="http://novnc.com/">noVNC</ulink>, a JavaScript and HTML5 based VNC client (<ulink url="&ucsbug;30540">Bug 30540</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
