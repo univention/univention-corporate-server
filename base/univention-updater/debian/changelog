@@ -1,3 +1,10 @@
+univention-updater (9.0.21-2) unstable; urgency=low
+
+  * Bug #32634: try to automagically determine the GRUB boot device
+  * Bug #32634: special handling of UEFI systems
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 15 Oct 2013 21:41:04 +0200
+
 univention-updater (9.0.21-1) unstable; urgency=low
 
   * Bug #32218: fixed styling of back button on progress page
