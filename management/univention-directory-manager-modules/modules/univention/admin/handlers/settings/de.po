@@ -366,7 +366,7 @@ msgid ""
 "group is used"
 msgstr ""
 "Zusammenhängende Attribute können gruppiert werden. Dieses Feld gibt den "
-"Namen der Gruppe an in welcher dieses erweiterte Attribut platziert wird."
+"Name der Gruppe an in welcher dieses erweiterte Attribut platziert wird."
 "Wenn kein Name gegeben wird, wird keine Gruppe verwendet"
 
 #: extended_attribute.py:208

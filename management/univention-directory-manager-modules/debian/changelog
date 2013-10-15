@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.60-3) unstable; urgency=low
+
+  * fixed typo (Bug #28629)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 15 Oct 2013 10:39:19 +0200
+
 univention-directory-manager-modules (9.0.60-2) unstable; urgency=low
 
   * Update German translation (Bug #28629)
