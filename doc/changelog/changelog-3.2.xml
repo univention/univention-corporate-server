@@ -731,6 +731,11 @@
 		  (<ulink url="&ucsbug;31673">Bug 31673</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The host matching with wildcards in UMC ACLs has been re-enabled.
+		  (<ulink url="&ucsbug;32850">Bug 32850</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
