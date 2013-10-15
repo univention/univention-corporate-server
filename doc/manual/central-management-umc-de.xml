@@ -118,7 +118,7 @@
 
 		<para>
 		  Jeder angemeldete Benutzer kann ohne erneute Anmeldung weitere UMC-Instanzen der
-		  Domäne verwenden: Wird in der schwarzen oberen Bildleiste unter <guimenu>Host:</guimenu>
+		  Domäne verwenden: Wird in der Titelleiste unter <guimenu>Host:</guimenu>
 		  ein Rechner ausgewählt, öffnet sich ein neues Fenster mit der &ucsUMC; des Systems.
 		</para>
 

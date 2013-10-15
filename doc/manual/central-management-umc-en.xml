@@ -128,7 +128,7 @@
 
 		<para>
 		  Users who are already logged in can use additional UMC instances in the domain without having
-		  to log in again: If a host is selected in the top, black toolbar under
+		  to log in again: If a host is selected in the title bar under
 		  <guimenu>Host:</guimenu>, a new window opens with the system's &ucsUMC;.
 		</para>
 
