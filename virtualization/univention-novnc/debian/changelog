@@ -1,4 +1,4 @@
-univention-novnc (0.4+0+20131014+git142aa45) ucs-3.2; urgency=low
+univention-novnc (0.4+0+20131014+git142aa45-1) ucs-3.2; urgency=low
 
   * Replace Java based VNC applet by noVNC (Bug #30540)
 
