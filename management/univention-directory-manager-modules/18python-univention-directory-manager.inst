@@ -56,6 +56,7 @@ for i in $modules; do
 done
 
 univention-directory-manager settings/extended_attribute "$@" create \
+	--ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name=objectFlag \
 	--set CLIName=objectFlag \
@@ -68,7 +69,7 @@ univention-directory-manager settings/extended_attribute "$@" create \
 	--set objectClass=univentionObject \
 	--set ldapMapping=univentionObjectFlag \
 	--set disableUDMWeb=1 \
-	$mods
+	$mods || die
 
 stop_udm_cli_server
 
