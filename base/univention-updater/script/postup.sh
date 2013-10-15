@@ -130,6 +130,11 @@ if [ -n "$update_grub_boot" ] ; then
        ucr unset update/grub/boot || \
        echo -e "Warning: Installation of GRUB on device \"$update_grub_boot\" failed!\nPlease run 'grub-install <DEVICE>' manually, to update GRUB on your boot device." | tee -a "$UPDATER_LOG" >&2
 fi
+. /usr/share/univention-lib/ucr.sh
+if is_ucr_true grub/efi ; then
+	echo "Installing new grub version ..." >> "$UPDATER_LOG"
+	grub-install || echo -e "Warning: Installation of GRUB failed!\nPlease run 'grub-install' manually, to update GRUB on your boot device." | tee -a "$UPDATER_LOG" >&2
+fi
 
 # For UCS 3.2-0 a reboot is required
 univention-config-registry set update/reboot/required=true >>"$UPDATER_LOG" 2>&1

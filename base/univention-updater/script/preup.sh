@@ -313,39 +313,41 @@ if [ "$(dpkg-query -W -f='${Status}\n' univention-fetchmail 2>/dev/null)" = "ins
 	univention-config-registry set update31/hold/fetchmail=true >>"$UPDATER_LOG" 2>&1
 fi
 
-# check for possible GRUB2 partitions (Bug #32634)
+# check for possible GRUB2 partitions on non-EFI systems (Bug #32634)
 eval "$(ucr shell update/grub/boot)"
-if [ -z "$update_grub_boot" ] ; then
-	for device in $(egrep '^\s*[0-9]+' /proc/partitions | awk '{print $4}') ; do
-		# code borrowed from grub-common.postinst:
-		# a) find "GRUB" within boot sector
-		# b) GRUB2 uses assembler codes "63eb" (JMP) as first two bytes
-		if dd if="/dev/$device" bs=512 count=1 2>/dev/null | grep -aq GRUB; then
-			if [ "$(dd if=/dev/$device bs=2 count=1 2>/dev/null | od -Ax -tx2 | head -n1 | cut -d' ' -f2)" = "63eb" ] ; then
-				if [ -z "$update_grub_boot" ] ; then
-					update_grub_boot="/dev/$device"
-				else
-					echo "WARNING: Cannot determine the GRUB boot device clearly."
-					echo "         After the update has been completed, please install GRUB with"
-					echo "         the following command on your boot device:"
-					echo
-					echo "         grub-install <DEVICE>"
-					sleep 5s
+if ! is_ucr_true grub/efi ; then
+	if [ -z "$update_grub_boot" ] && ! is_ucr_true grub/efi ; then
+		for device in $(egrep '^\s*[0-9]+' /proc/partitions | awk '{print $4}') ; do
+			# code borrowed from grub-common.postinst:
+			# a) find "GRUB" within boot sector
+			# b) GRUB2 uses assembler codes "63eb" (JMP) as first two bytes
+			if dd if="/dev/$device" bs=512 count=1 2>/dev/null | grep -aq GRUB; then
+				if [ "$(dd if=/dev/$device bs=2 count=1 2>/dev/null | od -Ax -tx2 | head -n1 | cut -d' ' -f2)" = "63eb" ] ; then
+					if [ -z "$update_grub_boot" ] ; then
+						update_grub_boot="/dev/$device"
+					else
+						echo "WARNING: Cannot determine the GRUB boot device clearly."
+						echo "		   After the update has been completed, please install GRUB with"
+						echo "		   the following command on your boot device:"
+						echo
+						echo "		   grub-install <DEVICE>"
+						sleep 5s
+					fi
 				fi
 			fi
+		done
+		if [ -n "$update_grub_boot" ] ; then
+			ucr set update/grub/boot="$update_grub_boot"
 		fi
-	done
-	if [ -n "$update_grub_boot" ] ; then
-		ucr set update/grub/boot="$update_grub_boot"
 	fi
-fi
-if [ -z "$(ucr get update/grub/boot)" ] ; then
-	echo "WARNING: Cannot determine the GRUB boot device clearly."
-	echo "		   After the update has been completed, please install GRUB with"
-	echo "		   the following command on your boot device:"
-	echo
-	echo "		   grub-install <DEVICE>"
-	sleep 5s
+	if [ -z "$(ucr get update/grub/boot)" ] ; then
+		echo "WARNING: Cannot determine the GRUB boot device clearly."
+		echo "		   After the update has been completed, please install GRUB with"
+		echo "		   the following command on your boot device:"
+		echo
+		echo "		   grub-install <DEVICE>"
+		sleep 5s
+	fi
 fi
 
 # Pre-upgrade
