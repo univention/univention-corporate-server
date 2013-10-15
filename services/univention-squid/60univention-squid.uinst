@@ -1,9 +1,9 @@
 #! /bin/sh
 #
 # Univention Squid
-#  join script
+#  unjoin script
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,39 +30,34 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=1
+
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
+
 joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-# copy machine.secret
-dest="/etc/squid3.secret"
-cp /etc/machine.secret "$dest"
-chown proxy:root "$dest"
-chmod 600  "$dest"
+# remove service
+ucs_removeServiceFromLocalhost "PROXY" "$@" || die
 
-ucs_addServiceToLocalhost 'PROXY' "$@"
-
-# add squid to nagios' UNIVENTION_SQUID service check
+# remove squid to nagios' UNIVENTION_SQUID service check
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
+	hostname="$(univention-ldapsearch \
+		cn=UNIVENTION_SQUID \
+		univentionNagiosHostname | \
+		ldapsearch-wrapper | \
+		grep ^univentionNagiosHostname: | \
+		awk -F ': ' '{print $2}')"
 
-	if ! univention-ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -s base -b "cn=UNIVENTION_SQUID,cn=nagios,$ldap_base" dn 2>/dev/null >/dev/null ; then
-		echo "Cannot find nagios object cn=UNIVENTION_SQUID,cn=nagios,$ldap_base (ldapsearch error $?)"
-		echo "Please check if univention-nagios-server is installed on a system in UCS domain to enable nagios functionality."
-	else
-		if [ "$(univention-ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret -b "$ldap_hostdn" univentionNagiosEnabled | sed -ne 's/univentionNagiosEnabled: //p')" = "1" ] ; then
-			univention-directory-manager nagios/service modify "$@" \
-				--dn "cn=UNIVENTION_SQUID,cn=nagios,$ldap_base" \
-				--append assignedHosts="${ldap_hostdn}" || die
-		else
-			echo "univentionNagiosEnabled is not set for $ldap_hostdn"
-		fi
+	if [ -n "$hostname" -a "$hostname" = "$(hostname -f)" ]; then
+		univention-directory-manager nagios/service modify "$@" \
+			--dn "cn=UNIVENTION_SQUID,cn=nagios,$ldap_base" \
+			--remove assignedHosts="${ldap_hostdn}" || die
 	fi
 fi
 
-joinscript_save_current_version
+joinscript_remove_script_from_status_file univention-squid
 
 exit 0
-
