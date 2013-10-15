@@ -1835,6 +1835,14 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32438">Bug 32438</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The property <emphasis>Use Windows client driver</emphasis> has been removed from the printer shares.
+		  During update the corresponding LDAP attribute will be removed on all printers hosted by the updated
+		  server, which in turn will remove the corresponding samba option from the local printer share definitions.
+		  The samba option is not required any longer because the print spool code has been updated in the new Samba
+		  version.  (<ulink url="&ucsbug;31624">Bug 31624</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
