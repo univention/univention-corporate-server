@@ -1,3 +1,10 @@
+univention-postgrey (2.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright years for 2013
+  * Update/review UCR variable descriptions (Bug #30945)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 05 Jul 2013 15:13:01 +0200
+
 univention-postgrey (1.0.2-2) unstable; urgency=low
 
   * Fix dependencies on u-c (Bug #22668)
