@@ -1,4 +1,10 @@
-univention-directory-manager-modules (9.0.60-4.1) unstable; urgency=low
+univention-directory-manager-modules (9.0.60-6) unstable; urgency=low
+
+  * added objectFlag (Bug #31408) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Oct 2013 12:57:45 +0200
+
+univention-directory-manager-modules (9.0.60-5) unstable; urgency=low
 
   * Updated translation files (Bug #32409)
   * Rename new Base64 syntaxes to better reflect the order.
