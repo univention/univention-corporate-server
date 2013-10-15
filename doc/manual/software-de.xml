@@ -217,7 +217,7 @@
 	  Aktualisierungen für Applikationen erfolgen unabhängig von den Release-Zyklen für
 	  &ucsUCS;. Ist eine neue Version einer Applikation verfügbar, wird der Menüpunkt
 	  <guimenu>Aktualisieren</guimenu> angezeigt, der die Installation der neuen Version
-	  startet. Wenn Aktualisierungen verfügbar sind, wird außerdem bei der Anmeldung an der
+	  startet. Wenn Aktualisierungen verfügbar sind, wird außerdem im UMC-Modul <guimenu>Software-Aktualisierung</guimenu>
 	  &ucsUMC; ein entsprechender Hinweis ausgegeben.
 	</para>
 
