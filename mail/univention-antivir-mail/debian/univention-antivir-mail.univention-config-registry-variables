@@ -17,8 +17,8 @@ Type=str
 Categories=service-webproxy,service-mail,system-services
 
 [mail/antispam/bodysizelimit]
-Description[de]=E-Mails, die größer sind als die hier konfigurierte Größe in Kilobyte werden von der Spam-Erkennung nicht geprüft.
-Description[en]=Emails which are bigger than the size in kilobytes configured here are not checked by the spam detection.
+Description[de]=E-Mails, die größer sind als die hier konfigurierte Größe in Kilobyte werden von der Spamerkennung nicht geprüft.
+Description[en]=E-mails which are bigger than the size in kilobytes configured here are not checked by the spam detection.
 Type=int
 Categories=service-mail
 
@@ -30,18 +30,18 @@ Categories=service-mail
 
 [clamav/proxy/http]
 Description[de]=Der zu verwendende HTTP-Proxyserver für den Download der Virensignaturen durch Freshclam, z.B. <http://192.168.1.100>. Ist die Variable nicht gesetzt, gelten die Proxy-Einstellungen aus 'http/proxy'.
-The HTTP proxy server to be used for downloading the virus signatures through Freshclam, e.g. <http://192.168.1.100>. If the variable is unset, the settings from 'http/proxy' apply.
+Description[en]=The HTTP proxy server to be used for downloading the virus signatures through Freshclam, e.g. <http://192.168.1.100>. If the variable is unset, the settings from 'http/proxy' apply.
 Type=str
 Categories=service-mail
 
 [clamav/proxy/username]
-Description[de]=Wenn der Proxy für den Freshclam-Download Authenzifizierung erfordert (siehe 'clamav/proxy/http'), kann hier ein Benutzername konfiguriert werden.
+Description[de]=Wenn der Proxy für den Freshclam-Download Authentifizierung erfordert (siehe 'clamav/proxy/http'), kann hier ein Benutzername konfiguriert werden.
 Description[en]=If the HTTP proxy server for downloading virus signatures through Freshclam requires authentication (see 'clamav/proxy/http'), the username can be configured here.
 Type=str
 Categories=service-mail
 
 [clamav/proxy/password]
-Description[de]=Wenn der Proxy für den Freshclam-Download Authenzifizierung erfordert (siehe 'clamav/proxy/http'), kann hier das Passwort konfiguriert werden.
+Description[de]=Wenn der Proxy für den Freshclam-Download Authentifizierung erfordert (siehe 'clamav/proxy/http'), kann hier das Passwort konfiguriert werden.
 Description[en]=If the HTTP proxy server for downloading virus signatures through Freshclam requires authentication (see 'clamav/proxy/http'), the password can be configured here.
 Type=str
 Categories=service-mail
