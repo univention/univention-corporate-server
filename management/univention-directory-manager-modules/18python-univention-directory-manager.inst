@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Directory Manager Modules
-#  postinst script
+# UCS Directory Manager
+#  join script
 #
-# Copyright 2004-2013 Univention GmbH
+# Copyright 2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,29 +30,48 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+VERSION=1
+. /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/all.sh
+joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-#DEBHELPER#
+modules="users/user
+groups/group
+computers/ipmanagedclient
+computers/trustaccount
+computers/linux
+computers/macos
+computers/ubuntu
+computers/windows
+computers/windows_domaincontroller
+computers/memberserver
+computers/domaincontroller_backup
+computers/domaincontroller_master
+computers/domaincontroller_slave"
 
-if [ "$1" = configure -a -z "$2" ]; then
-	# only set this for new installations
-	univention-config-registry set directory/manager/web/modules/users/user/properties/homePostalAddress/syntax=postalAddress \
-		password/hashing/method?SHA-512
-fi
+for i in $modules; do
+	mods="$mods --set module=$i"
+done
 
-if [ "$1" = "configure" ]; then
-	univention-config-registry set directory/manager/web/modules/groups/group/caching/uniqueMember/timeout?300 \
-		password/hashing/method?MD5 # for update keep old behaviour
+univention-directory-manager settings/extended_attribute "$@" create \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name=objectFlag \
+	--set CLIName=objectFlag \
+	--set shortDescription="Univention object flag" \
+	--set translationShortDescription='"de_DE" "Univention Objekt-Flag"' \
+	--set longDescription="Define flags for an object" \
+	--set translationLongDescription='"de_DE" "Flags an Objekten definieren"' \
+	--set syntax=ObjectFlag \
+	--set mayChange=1 \
+	--set objectClass=univentionObject \
+	--set ldapMapping=univentionObjectFlag \
+	--set disableUDMWeb=1 \
+	$mods
 
-	univention-config-registry set password/samba/lmhash?false \
-							directory/manager/user_group/uniqueness=true
+stop_udm_cli_server
 
-	## load the listener module
-	/etc/init.d/univention-directory-listener crestart
-fi
-
-call_joinscript 18python-univention-directory-manager.inst
+joinscript_save_current_version
 
 exit 0

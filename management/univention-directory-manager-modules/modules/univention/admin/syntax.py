@@ -2894,6 +2894,13 @@ class mailHomeServer(LDAP_Search):
 			appendEmptyValue = True
 		)
 
+class ObjectFlag( select ):
+	empty_value = True
+	choices = [
+		( 'hidden', _( 'Mark this object as hidden' ) ),
+		( 'temporary', _( 'Mark this object as temporary' ) ),
+	]
+
 
 if __name__ == '__main__':
 	import doctest

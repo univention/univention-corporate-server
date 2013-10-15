@@ -1282,6 +1282,14 @@ msgstr ""
 "Darf nur mit einer Zahl oder einem Buchstaben beginnen und nicht mit einem "
 "Leerzeichen enden."
 
+#: syntax.py:2880
+msgid "Mark this object as hidden"
+msgstr "Dieses Objekt als versteckt markieren"
+
+#: syntax.py:2881
+msgid "Mark this object as temporary"
+msgstr "Dieses Objekt als temporär markieren"
+
 #: uexceptions.py:45
 msgid "Object exists."
 msgstr "Das Objekt existiert bereits."

@@ -17,3 +17,4 @@ modules/univention/admin/syntax.d/*.py usr/share/pyshared/univention/admin/synta
 modules/univention/admin/hooks.d/*.py usr/share/pyshared/univention/admin/hooks.d/
 python-lib/*.py usr/share/pyshared/univention/lib
 listener/*.py usr/lib/univention-directory-listener/system/
+18python-univention-directory-manager.inst usr/lib/univention-install/

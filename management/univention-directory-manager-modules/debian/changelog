@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.60-4) unstable; urgency=low
+
+  * added objectFlag (Bug #31408) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Oct 2013 12:46:55 +0200
+
 univention-directory-manager-modules (9.0.60-3) unstable; urgency=low
 
   * fixed typo (Bug #28629)
@@ -108,7 +114,7 @@ univention-directory-manager-modules (9.0.50-1) unstable; urgency=low
 
   * Fix detection of Active flag in ldap_extension listener                    
     (Bug #32403, Bug #32406, Bug #32409)
-  * Use UCS_Version from python-univntion-lib
+  * Use UCS_Version from python-univention-lib
 
  -- Arvid Requate <requate@univention.de>  Tue, 08 Oct 2013 14:50:02 +0200
 
