@@ -15,7 +15,7 @@
 
 	  <listitem>
 		<para>
-		The Debian point update 6.0.8 was incorporated. Among other changes it also fixes several security issues:  <ulink url="&ucsbug;31094">Bug 31094</ulink>).
+		The Debian point update 6.0.8 was incorporated. Among other changes it also fixes several security issues:  <ulink url="&ucsbug;31956">Bug 31956</ulink>).
 		</para>
 		<itemizedlist>
 		  <listitem><simpara>
