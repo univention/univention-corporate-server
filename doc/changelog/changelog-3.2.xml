@@ -162,7 +162,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The Grub configuration of the installation DVD no longer loads
+		The GRUB configuration of the installation DVD no longer loads
 		the Cirrus graphics module. Instead, standard VGA is now
 		used. In addition the colour depth has been set to 32
 		bits. This fixes display problems when installing in Citrix
@@ -281,6 +281,14 @@
 		<listitem><simpara>
 		  The &ucsUCRV; descriptions in <package>univention-grub</package> and <package>univention-bootsplash</package> have been
 		  revised (<ulink url="&ucsbug;30943">Bug 30943</ulink>).
+		</simpara></listitem>
+		<listitem><simpara>
+		  Prior to UCS 3.2 a terminal resolution of 800x600 pixels with a colour
+		  depth of 16 bits has been used as default (<envar>grub/vga=788</envar>).  During the update to UCS
+		  3.2 the color depth switches from 16 to 24 bits (<envar>grub/vga=789</envar>) if the default settings
+		  are still set.  The old state may be regained by setting the &ucsUCRV;
+		  <envar>grub/vga=788</envar>. To prevent this change during the update, set the &ucsUCRV;
+		  <envar>update32/grub/changecolordepth=no</envar> prior to the update (<ulink url="&ucsbug;32634">Bug 32634</ulink>).
 		</simpara></listitem>
 	  </itemizedlist>
   </section>

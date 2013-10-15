@@ -230,19 +230,19 @@ ucr set mail/cyrus/bdb/dbconfig/set_lg_max="1048576"
 		</para>
 
 	  <section>
-		<title>Migration to Grub 2</title>
+		<title>Migration to GRUB 2</title>
 		<para>
-		  Starting with UCS 3.0, in a new installation, the Univention Installer writes Grub 2 in
+		  Starting with UCS 3.0, in a new installation, the Univention Installer writes GRUB 2 in
 		  the boot sector directly.
 		</para>
 
 		<para>
-		  In an updated system, Grub 1 remains installed in the master boot record (MBR). Grub 2
-		  sets up a "Chainload into Grub" entry, which then loads the actual Grub 2.
+		  In an updated system, GRUB 1 remains installed in the master boot record (MBR). Grub 2
+		  sets up a "Chainload into GRUB" entry, which then loads the actual GRUB 2.
 		</para>
 
 		<para>
-		  Documentation explaining how to write Grub 2 directly in the MBR on updated systems is
+		  Documentation explaining how to write GRUB 2 directly in the MBR on updated systems is
 		  provided in the Univention Support Database
 		  (<ulink url="http://sdb.univention.de/1218"/>).
 		</para>
