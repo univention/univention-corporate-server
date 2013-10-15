@@ -87,7 +87,7 @@
 		</para>
 		<figure id="umc-login">
 			<title>UMC-Anmeldemaske</title>
-			<graphic scalefit="1" align="center" width="50%" fileref="illustrations/umc_login_de.png"/>
+			<graphic scalefit="1" width="50%" fileref="illustrations/umc_login_de.png"/>
 		</figure>
 		<para>
 			Nach Aufruf der URL erscheint die Anmeldemaske, in der

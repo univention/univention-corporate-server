@@ -89,7 +89,7 @@
 		</para>
 		<figure id="umc-login">
 		<title>UMC login mask</title>
-			<graphic scalefit="1" align="center" width="50%" fileref="illustrations/umc_login_en.png"/>
+			<graphic scalefit="1" width="50%" fileref="illustrations/umc_login_en.png"/>
 		</figure>
 		<para>
 			Once the URL has been opened, a login mask is displayed in which
