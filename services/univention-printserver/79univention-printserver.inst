@@ -86,7 +86,7 @@ while read dn; do
 	delete: univentionPrinterUseClientDriver
 	-
 	%EOR
-done < <(univention-ldapsearch -xLLL "(&(univentionPrinterUseClientDriver=1)(univentionPrinterSpoolHost=$(hostname -f)))" dn | ldapsearch-wrapper | sed -n 's/dn: //p')
+done < <(univention-ldapsearch -xLLL "(&(univentionPrinterUseClientDriver=*)(univentionPrinterSpoolHost=$(hostname -f)))" dn | ldapsearch-wrapper | sed -n 's/dn: //p')
 ### </cleanupcode>
 
 # keep/delete old printer ppds
