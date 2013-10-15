@@ -84,7 +84,7 @@ def create_group_Enterprise_Domain_Controllers(lo):
 	al.append(("uniqueMember", s4dc_dnlist))
 	al.append(("memberUid", s4dc_uidlist))
 	al.append(("univentionObjectType", "groups/group"))
-	al.append(("univentionObjectFlag:", "hidden"))
+	al.append(("univentionObjectFlag", "hidden"))
 	try:
 		lo.add(groupDN, al)
 	except Exception, err:
