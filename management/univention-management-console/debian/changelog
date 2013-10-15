@@ -1,4 +1,4 @@
-univention-management-console (5.0.63-1) unstable; urgency=low
+univention-management-console (5.0.62-8) unstable; urgency=low
 
   * Bug #32850: allow host matching with wildcards for UMC ACLs
 
