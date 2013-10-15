@@ -92,7 +92,7 @@ define([
 		//		'canExecute': function that specifies whether an action can be excuted for
 		//		              a particular item; the function receives a dict of all item
 		//		              properties as parameter
-		//		'iconClass': specifies a different tooltip class than umc/widgets/Tooltip
+		//		'tooltipClass': specifies a different tooltip class than umc/widgets/Tooltip
 		//		'isContextAction': specifies that the action requires a selection
 		//		'isStandardAction': specifies whether the action is displayed as own button or in the "more" menu
 		//		'isMultiAction': specifies whether this action can be executed for multiple items
@@ -151,12 +151,6 @@ define([
 		defaultActionColumn: '',
 
 		disabled: false,
-
-		// multiActionsAlwaysActive: Boolean
-		//		By default this option is set to false. In that case a multi
-		//		action is disabled if no item is selected. Setting this
-		//		option to true forces multi actions to be always enabled.
-		multiActionsAlwaysActive: false,
 
 		_contextMenu: null,
 
@@ -306,8 +300,6 @@ define([
 
 			// make sure that we update the disabled items after sorting etc.
 			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, '_updateDisabledItems')));
-
-//			this.own(aspect.before(this._contextMenu, '_openMyself', lang.hitch(this, '__behaviorOldGrid')));
 		},
 
 		setColumnsAndActions: function(columns, actions) {
@@ -462,17 +454,16 @@ define([
 					var btn = new Button(lang.mixin(props, getCallback(''), { iconClass: props.iconClass || 'umcIconNoIcon' }));
 					if (iaction.description) {
 						try {
-						var item = undefined;
-						var idescription = typeof iaction.description == "function" ? iaction.description(item) : iaction.description;
+						var idescription = typeof iaction.description == "function" ? iaction.description(undefined) : iaction.description;
 						var tooltip = new (iaction.tooltipClass || Tooltip)({
 							label: idescription,
 							connectId: [btn.domNode]
 						});
 						if (iaction.onShowDescription) {
-							tooltip = lang.mixin(tooltip, { onShow: function(target) { iaction.onShowDescription(target, item); }});
+							tooltip = lang.mixin(tooltip, { onShow: function(target) { iaction.onShowDescription(target, undefined); }});
 						}
 						if (iaction.onHideDescription) {
-							tooltip = lang.mixin(tooltip, { onHide: function() { iaction.onHideDescription(item); }});
+							tooltip = lang.mixin(tooltip, { onHide: function() { iaction.onHideDescription(undefined); }});
 						}
 						btn.own(tooltip);
 						} catch (error) {}
@@ -559,8 +550,6 @@ define([
 			this._updateContextActions();
 
 			this._updateFooterContent();
-
-			this.__behaviorOldGrid();
 		},
 
 		_getContextActionItems: function() {
@@ -572,12 +561,8 @@ define([
 
 			array.forEach(this._getContextActionItems(), function(item) {
 				if ((item instanceof Button || item instanceof MenuItem) && item._action) {
-					var enabled = true;
-					if (nItems === 0) {
-						// if no row is selected:
-						// disable all multiactions (except they are always active)
-						enabled = this.multiActionsAlwaysActive === true && item._action.isMultiAction;
-					} else if (nItems > 1) {
+					var enabled = nItems !== 0;
+					if (nItems > 1) {
 						// when more than 1 row is selected:
 						// disable actions which are no multiactions
 						enabled = item._action.isMultiAction;
@@ -604,42 +589,6 @@ define([
 			}
 		},
 
-		__behaviorOldGrid: function() {
-			// reconstructs the old behavior...
-
-			var nItems = this._grid.selection.getSelectedCount();
-			var item = nItems === 1 ? this.getSelectedItems()[0] : undefined;
-			array.forEach(this._getContextActionItems(), function(ichild) {
-				var iaction = ichild._iaction;
-				if (iaction) {
-					var iconClass = (typeof iaction.iconClass == "function") ? iaction.iconClass(item) : iaction.iconClass;
-					var label = (typeof iaction.label == "function") ? iaction.label(item) : iaction.label;
-					ichild.set('iconClass', iconClass);
-					ichild.set('label', label);
-
-					if (ichild instanceof Button && iaction.description) {
-						try {
-							// try
-							var idescription = typeof iaction.description == "function" ? iaction.description(item) : iaction.description;
-							// catch: pass;
-							// else:
-							var tooltip = new (iaction.tooltipClass || Tooltip)({
-								label: idescription,
-								connectId: [ichild.domNode]
-							});
-							if (iaction.onShowDescription) {
-								tooltip = lang.mixin(tooltip, { onShow: function(target) { iaction.onShowDescription(target, item); }});
-							}
-							if (iaction.onHideDescription) {
-								tooltip = lang.mixin(tooltip, { onHide: function() { iaction.onHideDescription(item); }});
-							}
-							ichild.own(tooltip);
-						} catch (error) {}
-					}
-				}
-			}, this);
-		},
-
 		_onRowClick: function(evt) {
 			if (evt.cellIndex === 0) {
 				// the checkbox cell was pressed, this does already the wanted behavior
@@ -650,38 +599,44 @@ define([
 			if (rowDisabled) {
 				// deselect disabled rows
 				this._grid.selection.deselect(evt.rowIndex);
+				return;
+			}
+
+			var item = this._grid.getItem(evt.rowIndex);
+			var identity = item[this.moduleStore.idProperty];
+
+			var defaultAction = this._getDefaultActionForItem(item);
+			var isDefaultActionColumn = ((!this.defaultActionColumn && evt.cellIndex === 1) || (this.defaultActionColumn && evt.cell.field == this.defaultActionColumn));
+			var hasClickedOnText = (evt.target != evt.cellNode);
+
+			// execute default action or toggle selection
+			if (defaultAction && isDefaultActionColumn && hasClickedOnText) {
+				this._publishAction('default-' + defaultAction.name);
+				defaultAction.callback([identity], [item]);
 			} else {
-				// execute default action or toggle selection
-				if (((!this.defaultActionColumn && evt.cellIndex === 1) || (this.defaultActionColumn && evt.cell.field == this.defaultActionColumn))) {
-					if (evt.target == evt.cellNode) {
-						// not clicked on text
-						this._grid.selection.toggleSelect(evt.rowIndex);
-						return;
-					}
-					var item = this._grid.getItem(evt.rowIndex);
-					var identity = item[this.moduleStore.idProperty];
+				this._grid.selection.toggleSelect(evt.rowIndex);
+			}
+		},
 
-					var defaultAction = typeof this.defaultAction == "function" ?
-						this.defaultAction([identity], [item]) : this.defaultAction;
+		_getDefaultActionForItem: function(item) {
+			// returns the default action for a specified item if the action exists and can be executed
+			var identity = item[this.moduleStore.idProperty];
+			var defaultAction = typeof this.defaultAction == "function" ?
+				this.defaultAction([identity], [item]) : this.defaultAction;
 
-					if (defaultAction) {
-						var action;
-						array.forEach(this.actions, function(iaction) {
-							if (iaction.name == defaultAction) {
-								action = iaction;
-								return false;
-							}
-						}, this);
-						if (action && action.callback) {
-							var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
-							if (isExecutable && !this.getDisabledItem(identity)) {
-								this._publishAction('default-' + action.name);
-								action.callback([identity], [item]);
-							}
-						}
+			if (defaultAction) {
+				var action;
+				array.forEach(this.actions, function(iaction) {
+					if (iaction.name == defaultAction) {
+						action = iaction;
+						return false;
 					}
-				} else {
-					this._grid.selection.toggleSelect(evt.rowIndex);
+				}, this);
+				if (action && action.callback) {
+					var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
+					if (isExecutable && !this.getDisabledItem(identity)) {
+						return action;
+					}
 				}
 			}
 		},

@@ -1,3 +1,10 @@
+univention-management-console-frontend (3.0.105-1) unstable; urgency=low
+
+  * Bug #26418: remove multiActionsAlwaysActive property from grid, simplify
+  	handling of default action
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2013 10:04:15 +0200
+
 univention-management-console-frontend (3.0.104-1) unstable; urgency=low
 
   * Bug #32218: added shadow effect to hovered buttons
