@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=8
+VERSION=9
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -70,6 +70,16 @@ while getopts  "h-:" option; do
     esac
 done
 
+### <cleanupcode bug=31624 comment="may be removed after UCS 3.2-0">
+while read dn; do
+	ldapmodify -x "${credentials[@]}" <<-%EOR
+	dn: $dn
+	changetype: modify
+	delete: univentionPrinterUseClientDriver
+	-
+	%EOR
+done < <(univention-ldapsearch -xLLL "(&(univentionPrinterUseClientDriver=1)(univentionPrinterSpoolHost=$(hostname -f)))" dn | ldapsearch-wrapper | sed -n 's/dn: //p')
+### </cleanupcode>
 
 # keep/delete old printer ppds
 if [ $JS_LAST_EXECUTED_VERSION -le 7 ]; then
