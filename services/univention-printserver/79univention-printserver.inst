@@ -71,6 +71,14 @@ while getopts  "h-:" option; do
 done
 
 ### <cleanupcode bug=31624 comment="may be removed after UCS 3.2-0">
+if [ -z "$credentials" ]; then
+	if [ -r /etc/ldap.secret ]; then
+		credentials=("-D" "cn=admin,$ldap_base" "-y" /etc/ldap.secret)
+	else
+		echo "INFO: Administrative credentials required for this joinscript"
+		exit 1
+	fi
+fi
 while read dn; do
 	ldapmodify -x "${credentials[@]}" <<-%EOR
 	dn: $dn
