@@ -1,3 +1,9 @@
+univention-management-console (5.0.63-1) unstable; urgency=low
+
+  * Bug #32850: allow host matching with wildcards for UMC ACLs
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Oct 2013 17:43:07 +0200
+
 univention-management-console (5.0.62-7) unstable; urgency=low
 
   * Simplify the UMC ACLs evaluation which improves the UMC login
