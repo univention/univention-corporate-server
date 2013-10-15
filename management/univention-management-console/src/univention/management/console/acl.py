@@ -62,6 +62,7 @@ import os, sys, ldap
 import cPickle
 import itertools
 import operator
+from fnmatch import fnmatch
 
 from .config import ucr
 from .log import *
@@ -146,7 +147,7 @@ class ACLs( object ):
 							hosts.append(server['name'])
 			elif host == '*':
 				hosts.append(ucr['hostname'])
-			elif host == ucr['hostname']:
+			elif fnmatch(ucr['hostname'], host):
 				hosts.append(ucr['hostname'])
 
 		return hosts

@@ -1,3 +1,9 @@
+univention-management-console (6.0.17-1) unstable; urgency=low
+
+  * Bug #32850: allow host matching with wildcards for UMC ACLs
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 15 Oct 2013 17:53:10 +0200
+
 univention-management-console (6.0.16-1) unstable; urgency=low
 
   * Bug #32299: reload categories, modules and UCR variable on auth request
