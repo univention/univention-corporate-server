@@ -73,7 +73,7 @@
 		  möglich. Hier sind alle Web-Dienste verlinkt, die auf dem System angeboten werden. Im
 		  Reiter <guimenu>Administration</guimenu> kann dann die &ucsUMC; über den Link
 		  <guimenu>Univention Management Console</guimenu> aufgerufen werden. Sind auf dem System
-		  Dienste installiert, die einen eigenen Webdienst mitbringen (z.B. die Nagios-Oberfläche)
+		  Dienste installiert, die einen eigenen Webdienst mitbringen (z.B. Horde-Webmail)
 		  sind diese im Reiter <guimenu>Installierte Web-Dienste</guimenu> verlinkt.
 		</para>
 
