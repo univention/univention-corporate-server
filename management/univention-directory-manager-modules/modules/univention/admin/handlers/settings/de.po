@@ -351,7 +351,7 @@ msgid ""
 "This number specifies the position on which this extended attributes is "
 "placed on the tab or in the group. The numeration starts at 1"
 msgstr ""
-"Diese Numme legt die Position fest an welcher dieses erweiterte Attribut auf "
+"Diese Nummer legt die Position fest an welcher dieses erweiterte Attribut auf "
 "der Karteikarte oder in der Gruppe platziert wird. Die Nummerierung beginnt "
 "bei 1"
 
@@ -366,7 +366,7 @@ msgid ""
 "group is used"
 msgstr ""
 "Zusammenhängende Attribute können gruppiert werden. Dieses Feld gibt den "
-"Namen der Gruppe an in welcher dieses erweiterte Attriubt platziert wird."
+"Namen der Gruppe an in welcher dieses erweiterte Attribut platziert wird."
 "Wenn kein Name gegeben wird, wird keine Gruppe verwendet"
 
 #: extended_attribute.py:208
@@ -408,7 +408,7 @@ msgstr ""
 
 #: extended_attribute.py:238
 msgid "Overwrite existing property with this name"
-msgstr "Exiserende Eigenschaft mit diesem Namen überschreiben"
+msgstr "Existierende Eigenschaft mit diesem Namen überschreiben"
 
 #: extended_attribute.py:239
 msgid ""
@@ -654,7 +654,7 @@ msgstr "Editierbar"
 
 #: extended_options.py:121
 msgid "Option may be repeatedly turned on and off."
-msgstr "Die Option kann wiederholg gesetzt und entfernt werden."
+msgstr "Die Option kann wiederholt gesetzt und entfernt werden."
 
 #: extended_options.py:131
 msgid "List of modules this option applies to."
@@ -725,7 +725,7 @@ msgstr "Aktiviert"
 #: ldapacl.py:219 ldapschema.py:193 udm_hook.py:218 udm_module.py:218
 #: udm_syntax.py:218
 msgid "packageversion: Version must not be lower than the current one."
-msgstr "packageversion: Der Wert darf nicht geringer sein als der aktuelle."
+msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."
 
 #: ldapschema.py:52
 msgid "Settings: LDAP Schema Extension"
@@ -1482,7 +1482,7 @@ msgstr "Auflösung"
 
 #: xconfig_choices.py:77
 msgid "Color Depth"
-msgstr "Farb-Tiefe"
+msgstr "Farbtiefe"
 
 #: xconfig_choices.py:87
 msgid "Mouse Protocol"
