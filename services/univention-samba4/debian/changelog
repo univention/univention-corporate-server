@@ -1,3 +1,9 @@
+univention-samba4 (3.0.22-3) unstable; urgency=low
+
+  * Hide group Enterprise Domain Controllers as well (Bug #32871)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Oct 2013 19:33:30 +0200
+
 univention-samba4 (3.0.22-2) unstable; urgency=low
 
   * Pass join credentials to udm command (Bug #32871)
