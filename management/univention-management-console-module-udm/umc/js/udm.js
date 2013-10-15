@@ -309,6 +309,15 @@ define([
 
 			// define actions
 			var actions = [{
+				name: 'workaround',
+				label: ' ',
+				visible: false,
+				isContextAction: false,
+				callback: lang.hitch(this, function(keys, items) {
+					this._tree.set('path', this._ldapDN2TreePath(keys[0]));
+					this.filter(this._searchForm.get('value'));
+				})
+			}, {
 				name: 'add',
 				label: _('Add'),
 				description: _( 'Add a new %s', this.objectNameSingular ),
@@ -422,14 +431,12 @@ define([
 						return _('%(nSelected)d %(objPlural)s of %(nTotal)d selected', map);
 					}
 				}),
-				defaultAction: lang.hitch( this, function( keys, items ) {
-					if ( 'navigation' == this.moduleFlavor && ( this._searchForm._widgets.objectType.get( 'value' ) == '$containers$' || items[ 0 ].$childs$ === true ) ) {
-						this._tree.set( 'path', this._ldapDN2TreePath( keys[ 0 ] ) );
-						this.filter( this._searchForm.get('value') );
-					} else {
-						return 'edit';
+				defaultAction: lang.hitch(this, function(keys, items) {
+					if ('navigation' == this.moduleFlavor && (this._searchForm._widgets.objectType.get('value') == '$containers$' || items[0].$childs$ === true)) {
+						return 'workaround';
 					}
-				} )
+					return 'edit';
+				})
 			});
 
 			titlePane.addChild(this._grid);

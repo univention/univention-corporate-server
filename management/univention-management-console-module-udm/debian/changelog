@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.44-1) unstable; urgency=low
+
+  * Bug #26418: replace workaround by a not so ugly workaround in LDAP
+    directory grid
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2013 11:54:13 +0200
+
 univention-management-console-module-udm (4.0.43-1) unstable; urgency=low
 
   * udm/syntax.py should not statically import syntax classes (Bug #32565)
