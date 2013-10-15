@@ -1,3 +1,9 @@
+univention-quota (8.0.4-1) unstable; urgency=low
+
+  * Bug #26418: adapt grid actions
+
+ -- Florian Best <best@univention.de>  Tue, 15 Oct 2013 11:03:33 +0200
+
 univention-quota (8.0.3-1) unstable; urgency=low
 
   * Bug #26418: adapt grid actions

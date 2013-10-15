@@ -77,31 +77,16 @@ define([
 
 			var actions = [{
 				name: 'activate',
-				label: lang.hitch(this, function(item) {
-					if (item === undefined) {
-						return _('(De)activate');
-					} else if (item.inUse === true) {
-						return _('Deactivate');
-					} else {
-						return _('Activate');
-					}
-				}),
+				label: _('Activate'),
 				isStandardAction: true,
-				canExecute: function(item) {
-					if (item.mountPoint == '/') {
-						return false;
-					} else {
-						return true;
-					}
-				},
-				callback: lang.hitch(this, function(partitionDevice) {
-					var doActivate = true;
-					var item = this._grid.getItem(partitionDevice);
-					if (item.inUse === true) {
-						doActivate = false;
-					}
-					this.activateQuota(partitionDevice, doActivate);
-				})
+				canExecute: function(item) { return item.mountPoint != '/' && !item.inUse; },
+				callback: lang.hitch(this, 'activateQuota')
+			}, {
+				name: 'deactivate',
+				label: _('Deactivate'),
+				isStandardAction: true,
+				canExecute: function(item) { return item.mountPoint != '/' && item.inUse; },
+				callback: lang.hitch(this, 'activateQuota')
 			}, {
 				name: 'edit',
 				label: _('Configure'),
@@ -196,29 +181,33 @@ define([
 			this._overviewPage.startup();
 		},
 
-		activateQuota: function(partitionDevice, doActivate) {
+		activateQuota: function(partitionDevices, items) {
+			var partitionDevice = partitionDevices[0];
+			var item = items[0];
+			var doActivate = !item.inUse;
+
 			var dialogMessage = '';
 			if (doActivate === true) {
-				dialogMessage = _('Please confirm quota support activation on device: %s', partitionDevice);
+				dialogMessage = _('Please confirm quota support activation on device: %s', [partitionDevice]);
 			} else {
-				dialogMessage = _('Please confirm quota support deactivation on device: %s', partitionDevice);
+				dialogMessage = _('Please confirm quota support deactivation on device: %s', [partitionDevice]);
 			}
 			dialog.confirm(dialogMessage, [{
 				label: _('OK'),
 				callback: lang.hitch(this, function() {
-					tools.umcpCommand('quota/partitions/' + (doActivate ? 'activate' : 'deactivate'),
-									  	  {"partitionDevice" : partitionDevice.shift()}).then(
-										  	  lang.hitch(this, function(data) {
-											  	  if (data.result.success === true) {
-												  	  this._grid.filter({'dummy': 'dummy'});
-											  	  } else {
-												  	  this._showActivateQuotaDialog(data.result, doActivate);
-											  	  }
-										  	  })
-									  	  );
+					var cmd = 'quota/partitions/' + (doActivate ? 'activate' : 'deactivate');
+					var opts = {"partitionDevice" : partitionDevice};
+					tools.umcpCommand(cmd, opts).then(lang.hitch(this, function(data) {
+						if (data.result.success === true) {
+							this._grid.filter({'dummy': 'dummy'});
+						} else {
+							this._showActivateQuotaDialog(data.result, doActivate);
+						}
+					}));
 				})
 			}, {
-				label: _('Cancel')
+				label: _('Cancel'),
+				'default': true
 			}]);
 		},
 
