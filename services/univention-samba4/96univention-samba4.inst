@@ -480,7 +480,8 @@ _create_group_with_special_sid ()
 		udm groups/group create "$@" --ignore_exists --option=posix \
 				--position "cn=Builtin,$ldap_base" \
 				--set name="$name" \
-				--set adGroupType="-2147483643"
+				--set adGroupType="-2147483643" \
+				--set objectFlag=hidden
 
 		echo "dn: cn=$name,cn=Builtin,$ldap_base
 changetype: modify

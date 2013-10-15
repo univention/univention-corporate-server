@@ -1,3 +1,9 @@
+univention-samba4 (3.0.22-1) unstable; urgency=low
+
+  * Hide dns-$hostname and pseudo groups (Bug #32871)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Oct 2013 19:09:26 +0200
+
 univention-samba4 (3.0.21-3) unstable; urgency=low
 
   * Create Builtin container (Bug #32461)
