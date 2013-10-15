@@ -1,3 +1,9 @@
+univention-join (6.0.12-1) unstable; urgency=low
+
+  * Hide join-backup and join-slave by default (Bug #32871)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Oct 2013 19:14:09 +0200
+
 univention-join (6.0.11-1) unstable; urgency=low
 
   * Bug #26418: adapt grid actions

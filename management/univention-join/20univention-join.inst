@@ -56,12 +56,30 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-directory-manager groups/group create "$@" --ignore_exists --position "cn=groups,$ldap_base" --set name="Backup Join"     --set description="Group for joining domain controller backup servers" || die
 	univention-directory-manager groups/group create "$@" --ignore_exists --position "cn=groups,$ldap_base" --set name="Slave Join"      --set description="Group for joining domain controller slave servers" || die
 	if [ ${#backup_join_pwd} -gt 7 ]; then
-		univention-directory-manager users/user   create "$@" --ignore_exists --position "cn=users,$ldap_base"  --set username="join-backup" --set primaryGroup="cn=Backup Join,cn=groups,$ldap_base" --set unixhome="/dev/null" --set password="$backup_join_pwd" --set lastname="Joinuser" --append groups="cn=Slave Join,cn=groups,$ldap_base" --append groups="cn=DC Backup Hosts,cn=groups,$ldap_base" --append groups="cn=DC Slave Hosts,cn=groups,$ldap_base" || die
+		univention-directory-manager users/user create "$@" --ignore_exists \
+					--position "cn=users,$ldap_base" \
+					--set username="join-backup" \
+					--set primaryGroup="cn=Backup Join,cn=groups,$ldap_base" \
+					--set unixhome="/dev/null" \
+					--set password="$backup_join_pwd" \
+					--set lastname="Joinuser" \
+					--set objectFlag=hidden \
+					--append groups="cn=Slave Join,cn=groups,$ldap_base" \
+					--append groups="cn=DC Backup Hosts,cn=groups,$ldap_base" \
+					--append groups="cn=DC Slave Hosts,cn=groups,$ldap_base" || die
 	else
 		echo "join-backup PWD too short"
 	fi
 	if [ ${#slave_join_pwd} -gt 7 ]; then
-		univention-directory-manager users/user   create "$@" --ignore_exists --position "cn=users,$ldap_base"  --set username="join-slave"  --set primaryGroup="cn=Slave Join,cn=groups,$ldap_base"  --set unixhome="/dev/null" --set password="$slave_join_pwd"  --set lastname="Joinuser"  --append groups="cn=DC Slave Hosts,cn=groups,$ldap_base" || die
+		univention-directory-manager users/user create "$@" --ignore_exists \
+					--position "cn=users,$ldap_base"  \
+					--set username="join-slave"  \
+					--set primaryGroup="cn=Slave Join,cn=groups,$ldap_base"  \
+					--set unixhome="/dev/null" \
+					--set password="$slave_join_pwd"  \
+					--set lastname="Joinuser"  \
+					--set objectFlag=hidden \
+					--append groups="cn=DC Slave Hosts,cn=groups,$ldap_base" || die
 	else
 		echo "join-slave PWD too short"
 	fi
