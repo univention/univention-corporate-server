@@ -1710,6 +1710,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The Postfix configuration now uses the LDAP servers configured through the &ucsUCRV;
 		  <envar>ldap/server/addition</envar> too (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  An unjoin script for <package>univention-mail-server</package> has been added (<ulink url="&ucsbug;32454">Bug 32454</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 

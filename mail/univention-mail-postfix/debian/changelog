@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.5-1) unstable; urgency=low
+
+  * added unjoin script for univention-mail-server (Bug #32454)
+
+ -- Lukas Walter <walter@univention.de>  Tue, 15 Oct 2013 13:52:31 +0200
+
 univention-mail-postfix (8.0.4-1) unstable; urgency=low
 
   * Register ldap/server/addition for ldap.transport and ldap.groups
