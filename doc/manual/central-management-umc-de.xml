@@ -130,7 +130,7 @@
 			Die UCS-Lizenz kann eingerichtet werden, indem in der oberen rechten
 			Bildschirmzeile auf das Zahnrad-Symbol geklickt wird. Hier muss der
 			Menüpunkt <guimenu>Lizenz</guimenu> ausgewählt werden. Unter
-			<guimenu>Aktuelle Lizenz</guimenu> ist der momentane Lizensierungszustand
+			<guimenu>Aktuelle Lizenz</guimenu> ist der momentane Lizenzierungszustand
 			aufgeführt.
 		</para>
 		<figure id="umc-license">
@@ -146,7 +146,7 @@
 
 		<para>
 		  Die Installation der meisten Anwendungen aus dem Univention App Center erfordert einen individuell
-		  ausgestellten Lizenzchlüssel mit eindeutiger Schlüsselidentifikation. UCS-Lizenzschlüssel,
+		  ausgestellten Lizenzschlüssel mit eindeutiger Schlüsselidentifikation. UCS-Lizenzschlüssel,
 		  die für UCS-Versionen vor 3.1 ausgestellt wurden können durch Klick auf die die
 		  Schaltfläche <guimenu>Aktualisierten Lizenzschlüssel mit Identifikation
 		  anfordern</guimenu> aktualisiert werden. Der aktuelle Lizenzschlüssel wird dabei an Univention geschickt
@@ -156,7 +156,7 @@
 		</para>
 
 		<para>
-		  Ist die Anzahl der lizensierten Benutzer- oder Rechner-Objekte überschritten, können keine
+		  Ist die Anzahl der lizenzierten Benutzer- oder Rechner-Objekte überschritten, können keine
 		  weiteren Objekte in der &ucsUMC; angelegt oder bestehende editiert werden, solange keine
 		  erweiterte Lizenz eingespielt wird oder nicht mehr benötigte Benutzer oder Rechner
 		  entfernt werden. Auf der UMC-Startseite wird bei überschrittener Lizenz ein entsprechender

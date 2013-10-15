@@ -175,12 +175,12 @@
 	<para>
 	  Klickt man auf eine der angezeigten Applikationen, werden weitergehende Details zu der
 	  Komponente angezeigt (u.a. Beschreibung, Hersteller, Ansprechpartner und ein
-	  Screenshot). Im Feld <guimenu>E-Mail Benachrichtigung</guimenu> wird angezeigt, ob der
+	  Screenshot). Im Feld <guimenu>Benachrichtigung</guimenu> wird angezeigt, ob der
 	  Hersteller der Softwarekomponente bei der Installation/Deinstallation benachrichtigt wird.
-	  Einige Applikationen können direkt über Univention lizensiert werden. Für diese
+	  Einige Applikationen können direkt über Univention lizenziert werden. Für diese
 	  Applikationen wird in der unteren Bildleiste der Button <guimenu>Shop</guimenu> neben
 	  einem stilisierten Einkaufskorb angezeigt. Für alle anderen Applikationen muss der
-	  Hersteller der Applikation über die unter <emphasis>Kontakt</emphasis> angezeigt
+	  Hersteller der Applikation über die unter <guimenu>Kontakt</guimenu> angezeigt
 	  E-Mail-Adresse kontaktiert werden.
 	</para>
 
@@ -630,13 +630,13 @@ univention-repository-update -h
 
 	<para>
 	  Um auf einem bereits installierten System nachträglich weitere Pakete
-	  zuinstallieren, stehen mehrere Möglichkeiten zur Verfügung:
+	  zu installieren, stehen mehrere Möglichkeiten zur Verfügung:
 	</para>
 	
 	<section id="computers:softwareselection">
 	  <title>Installation/Deinstallation von UCS-Komponenten im Univention App Center</title>
 	  <para>
-		Alle Softwarekomponenten, die im Univention Installer angeboten werden können auch
+		Alle Softwarekomponenten, die im Univention Installer angeboten werden, können auch
 		über das Univention App Center nachträglich installiert und entfernt werden. Dazu
 		muss die Paket-Kategorie <guimenu>UCS-Komponenten</guimenu> ausgewählt
 		werden. Weitere Hinweise zum Univention App Center finden sich in <xref linkend="software:appcenter"/>.
