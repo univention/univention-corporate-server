@@ -1,3 +1,10 @@
+univention-grub (7.0.1-2) unstable; urgency=low
+
+  * Bug #32634: switch color depth automatically from 788 (800x600x16) to
+  	789 (800x600x24) during update to UCS 3.2-0
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Sun, 13 Oct 2013 21:28:43 +0200
+
 univention-grub (7.0.1-1) unstable; urgency=low
 
   * Bug #32634: updated univention-grub-generate-menu-lst for GRUB 2.00
