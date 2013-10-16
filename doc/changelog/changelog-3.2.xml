@@ -2566,6 +2566,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;29000">Bug 29000</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The option force group=Authenticated Users has been removed from the sysvol share
+		  definition. Now it is possible for users with the primary group Domain Admins to
+		  create and to modify GPOs
+		  (<ulink url="&ucsbug;30999">Bug 30999</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
