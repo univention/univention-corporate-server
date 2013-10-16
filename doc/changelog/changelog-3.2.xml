@@ -475,9 +475,15 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  LDAP ACLs have been improved with respect to security
+		  (<ulink url="&ucsbug;31305">Bug 31305</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  <command>univention-ldap-backup</command> now creates a separate logfile during the backup process in <filename class="directory">/var/univention-backup/</filename>
 		  (<ulink url="&ucsbug;31997">Bug 31997</ulink>).
 		</simpara></listitem>
+
 	  </itemizedlist>
 
 
