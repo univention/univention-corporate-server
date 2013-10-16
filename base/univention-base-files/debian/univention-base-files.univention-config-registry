@@ -95,6 +95,9 @@ File: etc/modprobe.d/univention-blacklist.conf
 Variables: kernel/blacklist
 
 Type: file
+File: etc/modprobe.d/vmgfx.conf
+
+Type: file
 File: etc/apt/apt.conf.d/80proxy
 Variables: proxy/http
 Variables: proxy/username

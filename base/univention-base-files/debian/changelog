@@ -1,3 +1,11 @@
+univention-base-files (3.0.3-7) unstable; urgency=low
+
+  * Provide a modprobe configuration file for vmwgfx (the DRM driver for vmware) to
+    enable fbdev support. Otherwise we have startup freezes in bootsplash and on
+    the command line (Bug #32536)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 16 Oct 2013 11:01:26 +0200
+
 univention-base-files (3.0.3-6) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30943)
