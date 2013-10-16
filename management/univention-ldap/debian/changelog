@@ -1,3 +1,13 @@
+univention-ldap (10.0.16-1) unstable; urgency=low
+
+  * Don't allow cration of objects with uidNumber=0 below cn=computers
+  * Don't authorize dn.onelevel="cn=dc,cn=computers" for modifications
+    involving attribute uidNumber=0.
+  * Don't allow creation of posixAccounts below cn=idmap,cn=univention
+    (Bug #31305)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Oct 2013 17:29:07 +0200
+
 univention-ldap (10.0.15-2) unstable; urgency=low
 
   * Added support for custom NFS share options (Bug #18708)
@@ -11,6 +21,7 @@ univention-ldap (10.0.15-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 21:42:07 +0200
 
+>>>>>>> .r45185
 univention-ldap (10.0.14-1) unstable; urgency=low
 
   * Add support for icons, umc module definition and translation files         
