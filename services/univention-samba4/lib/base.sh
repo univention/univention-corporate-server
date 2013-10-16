@@ -75,29 +75,6 @@ univention_samba4_append_to_ucr() {
 	%EOF
 }
 
-create_Enterprise_Domain_Controllers() {
-	## Note: This is actually joinscript code, but needs to be put here, to be called also from
-	##       univention-s4-connector.postinst because the joinscript version could not be increased
-	##       for the errata update.
-	## Note: S4 Connector currently does not synchronize it to the Samba4 foreignSecurityPrincipal
-	##       having the same builtin SID. Additionally it should be put to the group/ignorelist,
-	##       as it would cause rejects.
-	##
-	## attempt to create group with correct builtin SID
-	if /usr/share/univention-samba4/scripts/create_group_Enterprise_Domain_Controllers.py "$@"; then
-
-		## update local group cache
-		. /usr/share/univention-lib/ucr.sh
-		is_ucr_true nss/group/cachefile
-		if [ $? != 1 ]; then	## $? = 2 would indicate an unset variable.
-			if is_ucr_true nss/group/cachefile/check_member; then
-				option='--check_member'
-			fi
-			/usr/lib/univention-pam/ldap-group-to-file.py "${option[@]}"
-		fi
-	fi
-}
-
 remove_non_samba4_dc_srv_records() {
 
 	ldif=$(univention-ldapsearch -LLLx "(&(objectClass=univentionDomainController)(univentionService=Samba 4))" cn associatedDomain | ldapsearch-wrapper)

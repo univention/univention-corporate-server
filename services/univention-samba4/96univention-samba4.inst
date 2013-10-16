@@ -459,8 +459,9 @@ _create_group_with_special_sid ()
 {
 	local name="$1"
 	local sid="$2"
+	local position="$3"
 
-	shift 2
+	shift 3
 	
 	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name))" | sed -ne 's|dn: ||p')"
 
@@ -470,15 +471,13 @@ _create_group_with_special_sid ()
 		test -z "$binddn" && binddn="cn=admin,$ldap_base"
 		test -z "$bindpwd" && bindpwd="$(cat /etc/ldap.secret)"
 
-		udm container/cn create "$@" --ignore_exists --set name=Builtin
-
 		udm groups/group create "$@" --ignore_exists --option=posix \
-				--position "cn=Builtin,$ldap_base" \
+				--position "$position,$ldap_base" \
 				--set name="$name" \
 				--set adGroupType="-2147483643" \
 				--set objectFlag=hidden
 
-		echo "dn: cn=$name,cn=Builtin,$ldap_base
+		echo "dn: cn=$name,$position,$ldap_base
 changetype: modify
 add: objectClass
 objectClass: sambaGroupMapping
@@ -490,7 +489,7 @@ add: sambaGroupType
 sambaGroupType: 2" | ldapmodify -x -D "$binddn" -w "$bindpwd" 
 		
 		if [ "$name" = "Authenticated Users" ]; then
-			udm groups/group modify "$@" --dn "cn=$name,cn=Builtin,$ldap_base" \
+			udm groups/group modify "$@" --dn "cn=$name,$position,$ldap_base" \
 				--append nestedGroup="cn=DC Slave Hosts,cn=groups,$ldap_base" \
 				--append nestedGroup="cn=Windows Hosts,cn=groups,$ldap_base"
 		fi
@@ -499,11 +498,17 @@ sambaGroupType: 2" | ldapmodify -x -D "$binddn" -w "$bindpwd"
 
 create_pseudo_groups ()
 {
-	_create_group_with_special_sid "Authenticated Users" "S-1-5-11" "$@"
-	_create_group_with_special_sid "World Authority" "S-1-1" "$@"
-	_create_group_with_special_sid "Everyone" "S-1-1-0" "$@"
-	_create_group_with_special_sid "Null Authority" "S-1-0" "$@"
-	_create_group_with_special_sid "Nobody" "S-1-0-0" "$@"
+	udm container/cn create "$@" --ignore_exists --set name=Builtin
+
+	_create_group_with_special_sid "Authenticated Users" "cn=Builtin" "S-1-5-11" "$@"
+	_create_group_with_special_sid "World Authority" "cn=Builtin" "S-1-1" "$@"
+	_create_group_with_special_sid "Everyone" "cn=Builtin" "S-1-1-0" "$@"
+	_create_group_with_special_sid "Null Authority" "cn=Builtin" "S-1-0" "$@"
+	_create_group_with_special_sid "Nobody" "S-1-0-0" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Enterprise Domain Controllers" "S-1-5-9" "cn=groups" "$@"
+
+	udm groups/group modify "$@" --dn  "cn=Enterprise Domain Controllers,cn=groups,$ldap_base" \
+			--append hosts="$ldap_hostdn"
 }
 
 ### --- END helper functions ---

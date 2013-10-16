@@ -1,3 +1,10 @@
+univention-samba4 (3.0.23-2) unstable; urgency=low
+
+  * Move the creation of Enterprise Domain Controllers to univention-
+    samba4 (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 12:25:45 +0200
+
 univention-samba4 (3.0.23-1) unstable; urgency=low
 
   * Update group cache before running ntacl sysvolreset (Bug #32461)
