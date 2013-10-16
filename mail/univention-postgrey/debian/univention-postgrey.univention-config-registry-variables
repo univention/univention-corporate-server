@@ -1,24 +1,24 @@
 [mail/postfix/greylisting]
-Description[de]=Ist diese Option aktiviert, verwendet Postfix Antispam-Maßnahme Greylisting (siehe http://de.wikipedia.org/wiki/Greylisting). Ist die variable nicht gesetzt, wird kein Greylisting verwendet.
+Description[de]=Ist diese Option aktiviert, verwendet Postfix die Antispam-Maßnahme Greylisting (siehe http://de.wikipedia.org/wiki/Greylisting). Ist die Variable nicht gesetzt, wird kein Greylisting verwendet.
 Description[en]=If this option is activated, Postfix uses the antispam measure greylisting (see http://en.wikipedia.org/wiki/Greylisting). If the variable is unset, no greylisting is used.
 Type=bool
 Categories=service-mail
 
 [mail/postfix/greylisting/delay]
-Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable wie viele Sekunden E-Mails temporär zurückgewiesen werden. Ist die Variable nicht gesetzt, gelten 300 Sekunden.
-Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures how many seconds e-mails are temporarily rejected. If the variable is unset, 300 seconds apply.
+Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable für wie viele Sekunden E-Mails temporär zurückgewiesen werden. Ist die Variable nicht gesetzt, gelten 300 Sekunden.
+Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures for how many seconds e-mails are temporarily rejected. If the variable is unset, 300 seconds apply.
 Type=int
 Categories=service-mail
 
 [mail/postfix/greylisting/max-age]
-Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable nach wievielen Tagen alte Einträge in der Datenbank der Verbindungsversuche entfernt werden sollen. Ist die Variable nicht gesetzt, gelten 35 Tage.
-Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures after how many days old entries in the connection database are removed. If the variable is unset, 35 days apply.
+Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable nach wievielen Tagen alte Einträge aus der Datenbank der Verbindungsversuche entfernt werden sollen. Ist die Variable nicht gesetzt, gelten 35 Tage.
+Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures after how many days old entries  are removed from the connection database. If the variable is unset, 35 days apply.
 Type=int
 Categories=service-mail
 
 [mail/postfix/greylisting/retry-window]
-Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable den Zeitraum in Stunden, innerhalb dessen ein vom Greylisting betroffener Server den erneuten Zustellversuch starten darf. Ist die Variable nicht gesetzt, gelten 48 Stunden.
-Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures the time frame in hours during which a server affected by greylisting may initiate a retry.
+Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable den Zeitraum in Stunden, innerhalb dessen ein vom Greylisting betroffener Server den erneuten Zustellversuch starten muss. Ist die Variable nicht gesetzt, gelten 48 Stunden.
+Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures the time frame in hours during which a server affected by greylisting must initiate a retry.
 Type=int
 Categories=service-mail
 
@@ -29,36 +29,32 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/greylisting/privacy]
-Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting) und diese Option aktiviert oder die Variable nicht gesetzt, speichert Postgrey in seiner Verbindungsdatenbank nicht die IP-Adressen, sondern nur SHA-1 Einweg-Hashes der IP-Adressen.
+Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting) und diese Option aktiviert oder die Variable nicht gesetzt, speichert Postgrey in seiner Verbindungsdatenbank nicht die IP-Adressen, sondern nur SHA-1-Einweg-Hashes der IP-Adressen.
 Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting) and this option is enabled or the variable unset, Postgrey stores one-way SHA-1 hashes of IP addresses instead of the actual IP addresses in it's connection database.
 Type=bool
 Categories=service-mail
 
 [mail/postfix/greylisting/text]
 Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable einen vom Postgrey-Standard abweichenden Text für die Ablehnung der E-Mail. Dies bekommen nur Nutzer von inkomatiblen Mailservern zu sehen.
-Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures a text to override the Postgrey standard message for mail rejection. This is only visibile to users of incompatible mail servers.
+Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures a text to override the Postgrey standard message for mail rejection. This is only visible to users of incompatible mail servers.
 Type=str
 Categories=service-mail
 
 [mail/postfix/greylisting/client/whitelist/auto]
 Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable nach wie vielen erfolgreich angenommenen E-Mails der Server auf eine automatische Whitelist gesetzt wird. Durch Setzen auf 0 kann die automatische Whitelist deaktiviert werden. Ist die Variable nicht gesetzt, gilt 5.
-Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures after how many successfully accepted mails a the server will be automatically whitelisted. The automatic whitelist can be disabled with setting the variable to 0.  If the variable is unset, 5 applies.
+Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures after how many successfully accepted mails a server will be automatically whitelisted. The automatic whitelist can be disabled with setting the variable to 0.  If the variable is unset, 5 applies.
 Type=int
 Categories=service-mail
 
 [mail/postfix/greylisting/client/whitelist]
-Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable
-Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures
-Description[de]=Dateien die Server enthalten für die kein Greylisting stattfinden soll
-Description[en]=Files containing servers for which no greylisting shall be done
+Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable eine Liste von Konfigurationsdateien, in denen Mail-Domänen konfiguriert sind, für die kein Greylisting durchgeführt wird. Ein Beispiel für das Format der Dateien findet sich in /etc/postgrey/whitelist_clients. Mehrere Dateinamen werden durch Kommata getrennt.
+Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures a list of configuration files in which mail domains are configured for which no greylisting is made. An example for the file format is /etc/postgrey/whitelist_clients. Multiple file names must be separated by commas.
 Type=str
 Categories=service-mail
 
 [mail/postfix/greylisting/recipient/whitelist]
-Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable
-Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures
-Description[de]=Dateien die Empfänger enthalten für die kein Greylisting stattfinden soll
-Description[en]=Files containing recipients for whom no greylisting shall be done
+Description[de]=Ist Greylisting aktiviert (siehe 'mail/postfix/greylisting), konfiguriert diese Variable eine Liste von Konfigurationsdateien, in denen Mailadressen konfiguriert sind, für die kein Greylisting durchgeführt wird. Ein Beispiel für das Format der Dateien findet sich in /etc/postgrey/whitelist_recipients. Mehrere Dateinamen werden durch Kommata getrennt.
+Description[en]=If greylisting is enabled (see 'mail/postfix/greylisting), this variable configures a list of configuration files in which e-mail addresses are configured for which no greylisting is made. An example for the file format is /etc/postgrey/whitelist_recipients. Multiple file names must be separated by commas.
 Type=str
 Categories=service-mail
 
