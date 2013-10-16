@@ -1,0 +1,30 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Test well-known security principals"
+## exposure: safe
+## packages:
+##  - univention-samba4
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## versions:
+##  3.1-1: skip
+##  3.2-0: fixed
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+eval "$(ucr shell)"
+
+univention-s4search -b "CN=Configuration,$ldap_base" objectclass=foreignSecurityPrincipal cn | sed -ne 's|cn: ||p' | while read cn; do
+	sid="$(univention-s4search -b "CN=Configuration,$ldap_base" "(&(objectclass=foreignSecurityPrincipal)(cn=$cn))" objectSid | sed -ne 's|objectSid: ||p')"
+
+	ucs_dn="$(univention-ldapsearch "(&(cn=$cn)(sambaSID=$sid))" dn | sed -ne 's|dn: ||p')"
+	
+	if [ -n "$ucs_dn" ]; then
+		echo "Found $ucs_dn with SID $sid"
+	else
+		echo "UCS object not found with cn=$cn and sambaSID=$sid"
+		exit 1
+	fi
+done
+
