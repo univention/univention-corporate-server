@@ -509,6 +509,31 @@ create_pseudo_groups ()
 
 	udm groups/group modify "$@" --dn  "cn=Enterprise Domain Controllers,cn=groups,$ldap_base" \
 			--append hosts="$ldap_hostdn"
+
+	_create_group_with_special_sid "Remote Interactive Logon" "S-1-5-14" "cn=Builtin" "$@"
+	_create_group_with_special_sid "SChannel Authentication" "S-1-5-64-14" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Digest Authentication" "S-1-5-64-21" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Terminal Server User" "S-1-5-13" "cn=Builtin" "$@"
+	_create_group_with_special_sid "NTLM Authentication" "S-1-5-64-10" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Other Organization" "S-1-5-1000" "cn=Builtin" "$@"
+	_create_group_with_special_sid "This Organization" "S-1-5-15" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Anonymous Logon" "S-1-5-7" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Network Service" "S-1-5-20" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Creator Group" "S-1-3-1" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Creator Owner" "S-1-3-0" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Local Service" "S-1-5-19" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Owner Rights" "S-1-3-4" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Interactive" "S-1-5-4" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Restricted" "S-1-5-12" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Network" "S-1-5-2" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Service" "S-1-5-6" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Dialup" "S-1-5-1" "cn=Builtin" "$@"
+	_create_group_with_special_sid "System" "S-1-5-18" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Batch" "S-1-5-3" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Proxy" "S-1-5-8" "cn=Builtin" "$@"
+	_create_group_with_special_sid "IUSR" "S-1-5-17" "cn=Builtin" "$@"
+	_create_group_with_special_sid "Self" "S-1-5-10" "cn=Builtin" "$@"
+
 }
 
 ### --- END helper functions ---
