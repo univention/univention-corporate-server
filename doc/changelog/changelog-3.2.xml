@@ -1175,7 +1175,7 @@
 		<listitem><simpara>
 			It is now possible to set the AD group type for groups. The group type is synchronized to
 			Samba 4 via the Univention S4 connector if the &ucsUCRV;
-			<envar>connector/s4/mapping/group/synclocal</envar> is set to true
+			<envar>connector/s4/mapping/group/grouptype</envar> is set to true
 			(<ulink url="&ucsbug;32853">Bug 32853</ulink>).
 		</simpara></listitem>
 
@@ -2658,7 +2658,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  The S4 connector can now synchronizes the different group types (local, domain local, 
-		  global and universal) if the &ucsUCRV; <envar>connector/s4/mapping/group/synclocal</envar>
+		  global and universal) if the &ucsUCRV; <envar>connector/s4/mapping/group/grouptype</envar>
 		  is set to true. By default this is activated for new UCS 3.2 installations only. All other
 		  systems have to be migrated manually
 		  (<ulink url="&ucsbug;32768">Bug 32768</ulink>, <ulink url="&ucsbug;29486">Bug 29486</ulink>).
