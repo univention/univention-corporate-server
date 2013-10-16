@@ -76,6 +76,7 @@ while [ $count -le 600 ]; do
 	else
 		echo -n "."
 		count=$((count+1))
+		sleep 1
 	fi
 done
 
