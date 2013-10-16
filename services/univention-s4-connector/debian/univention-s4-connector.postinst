@@ -55,7 +55,7 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/mapping/gpo?true \
 							   connector/s4/mapping/user/ignorelist?"root,pcpatch,ucs-s4sync" \
 							   connector/s4/mapping/group/grouptype?true \
-							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers" \
+							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers,Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self" \
 							   connector/s4/mapping/group/table/Printer-Admins?"Print Operators" \
 							   connector/s4/mapping/container/ignorelist?"mail,kerberos,MicrosoftDNS" \
 							   connector/s4/mapping/dns/ignorelist?"DC=_ldap._tcp.Default-First-Site-Name._site"

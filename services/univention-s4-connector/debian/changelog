@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.26-6) unstable; urgency=low
+
+  * Ignore foreignSecurityPrincipals (Bug #29000)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 21:45:56 +0200
+
 univention-s4-connector (8.0.26-5) unstable; urgency=low
 
   * Rename connector/s4/mapping/group/synclocal to
