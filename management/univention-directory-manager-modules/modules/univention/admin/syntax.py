@@ -1031,6 +1031,14 @@ class netmask(simple):
 			pass
 		raise univention.admin.uexceptions.valueError, _("Not a valid netmask!")
 
+class ipnetwork(simple):
+	@classmethod
+	def parse(self, text):
+		try:
+			ipaddr.IPNetwork(text)
+		except ValueError:
+			raise univention.admin.uexceptions.valueError, _("Not a valid network!")
+
 class IPv4_AddressRange( complex ):
 	subsyntaxes = (
 		(_('First address'), ipv4Address),
@@ -2894,13 +2902,49 @@ class mailHomeServer(LDAP_Search):
 			appendEmptyValue = True
 		)
 
+class list_of_hostnames_and_ipadresses_and_networks(simple):
+	"""
+	>>> list_of_hostnames_and_networks().parse('hostname')
+	'hostname'
+	>>> list_of_hostnames_and_networks().parse('10.10.10.0/24')
+	'10.10.10.0/24'
+	>>> list_of_hostnames_and_networks().parse('10.10.10.0/255.255.255.0')
+	'10.10.10.0/255.255.255.0'
+	>>> list_of_hostnames_and_networks().parse('illegalhostname$!"§%&/(') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> list_of_hostnames_and_networks().parse('10.10.10.0/') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> list_of_hostnames_and_networks().parse('/24') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	>>> list_of_hostnames_and_networks().parse('10.10.10.0/255') #doctest: +IGNORE_EXCEPTION_DETAIL
+	Traceback (most recent call last):
+	...
+	valueError:
+	"""
+	@classmethod
+	def parse( self, text ):
+		try:
+			if '/' in text: # a network
+				ipnetwork.parse(text)
+			else: # a hostname or ip address
+				hostOrIP.parse(text)
+		except univention.admin.uexceptions.valueError as e:
+			error = _('Error: %s - %s')
+			raise univention.admin.uexceptions.valueError( error % (text, str(e)))
+		return text
+
 class ObjectFlag( select ):
 	empty_value = True
 	choices = [
 		( 'hidden', _( 'Mark this object as hidden' ) ),
 		( 'temporary', _( 'Mark this object as temporary' ) ),
 	]
-
 
 if __name__ == '__main__':
 	import doctest

@@ -1,3 +1,13 @@
+univention-directory-manager-modules (9.0.62-2) unstable; urgency=low
+
+  * Improved layout and texts (Bug #32882)
+  * Added new syntax ipnetwork and 
+    list_of_hostnames_and_ipadresses_and_networks (Bug #32882)
+  * NFS shares can now be restricted to networks (Bug #32882)
+  * Custom settings can now be added to NFS shares (Bug #18708)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 16 Oct 2013 13:33:34 +0200
+
 univention-directory-manager-modules (9.0.62-1) unstable; urgency=low
 
   * added objectFlag (Bug #31408) 

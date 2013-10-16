@@ -79,7 +79,7 @@ options={
 property_descriptions={
 	'name': univention.admin.property(
 			short_description=_('Name'),
-			long_description=_('Name'),
+			long_description=_('Name of the share'),
 			syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
 			multivalue=0,
 			include_in_default_search=1,
@@ -121,8 +121,8 @@ property_descriptions={
 			identifies=0
 		),
 	'owner': univention.admin.property(
-			short_description=_('Directory owner'),
-			long_description=_('The owner of the directory. If none is given root will be owner.'),
+			short_description=_('Directory owner of the share\'s root directory'),
+			long_description=_('The owner of the exported root directory. If none is given root will be owner.'),
 			syntax=univention.admin.syntax.UserID,
 			multivalue=0,
 			options=[],
@@ -132,8 +132,8 @@ property_descriptions={
 			default="0"
 		),
 	'group': univention.admin.property(
-			short_description=_('Directory owner group'),
-			long_description=_('The primary group of the directory, if none give group 0 will be used.'),
+			short_description=_('Directory owner group of the share\'s root directory'),
+			long_description=_('The primary group of the exported root directory, if none is given group 0 will be used.'),
 			syntax=univention.admin.syntax.GroupID,
 			multivalue=0,
 			options=[],
@@ -143,8 +143,8 @@ property_descriptions={
 			default="0"
 		),
 	'directorymode': univention.admin.property(
-			short_description=_('Directory mode'),
-			long_description=_('Mode of the directory.'),
+			short_description=_('Permissions for the share\'s root directory'),
+			long_description=_('Access rights to the exported root directory'),
 			syntax=univention.admin.syntax.UNIX_AccessRight,
 			multivalue=0,
 			options=[],
@@ -163,7 +163,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default='0'
+			default='1'
 		),
 	'sync': univention.admin.property(
 			short_description=_('NFS synchronisation'),
@@ -174,6 +174,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
+			default='sync'
 		),
 	'subtree_checking': univention.admin.property(
 			short_description=_('Subtree checking'),
@@ -184,21 +185,23 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
+			default='1'
 		),
 	'root_squash': univention.admin.property(
-			short_description=_('Redirect root access'),
-			long_description=_('Redirect accesses to a non-privileged ID.'),
+			short_description=_('Redirect root access uid'),
+			long_description=_('Redirect root user access to a non-privileged uid.'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=['nfs'],
 			required=0,
 			may_change=1,
 			identifies=0,
+			default='1'
 		),
 	'nfs_hosts': univention.admin.property(
-			short_description=_('Allowed hosts'),
-			long_description=_('A network or a selection of hosts that may mount this share.'),
-			syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
+			short_description=_('Allowed hosts, ip addresses or networks'),
+			long_description=_('May contain hostnames, ip addresses or networks (e.g. 10.1.1.1/24 or 10.1.1.1/255.255.255.0'),
+			syntax=univention.admin.syntax.list_of_hostnames_and_ipadresses_and_networks,
 			multivalue=1,
 			options=['nfs'],
 			required=0,
@@ -228,8 +231,8 @@ property_descriptions={
 			default= '<name>',
 		),
 	'sambaBrowseable': univention.admin.property(
-			short_description=_('Browseable'),
-			long_description=_('Share is listed in the Windows Network environment'),
+			short_description=_('Show in Windows network environment'),
+			long_description=_('Share is browseable, i.e. it is listed in the Windows network environment'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=['samba'],
@@ -239,7 +242,7 @@ property_descriptions={
 			default='1'
 		),
 	'sambaPublic': univention.admin.property(
-			short_description=_('Public'),
+			short_description=_('Allow anonymous access with a guest user'),
 			long_description=_('Allow guest access'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
@@ -251,7 +254,7 @@ property_descriptions={
 		),
 	'sambaDosFilemode': univention.admin.property(
 			short_description=_('Users with write access may modify permissions'),
-			long_description=_('users who have write access to a file or directory are able to change the permissions '),
+			long_description=_('Users who have write access to a file or directory are able to change the permissions '),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=['samba'],
@@ -621,11 +624,21 @@ property_descriptions={
 			default='0'
 		),
 	'sambaCustomSettings': univention.admin.property(
-			short_description=_('Custom share settings'),
+			short_description=_('Custom Samba share settings'),
 			long_description=_('Set new custom share settings'),
 			syntax=univention.admin.syntax.keyAndValue,
 			multivalue=1,
 			options=['samba'],
+			required=0,
+			may_change=1,
+			identifies=0,
+		),
+	'nfsCustomSettings': univention.admin.property(
+			short_description=_('Custom NFS share settings'),
+			long_description=_('Set new custom share settings'),
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=['nfs'],
 			required=0,
 			may_change=1,
 			identifies=0,
@@ -653,22 +666,19 @@ layout = [
 	Tab( _( 'Samba' ), _( 'General Samba settings' ), layout = [
 		Group( _( 'Samba' ), layout = [
 			'sambaName',
+			'sambaWriteable',
 			'sambaBrowseable',
 			'sambaPublic',
 			'sambaMSDFSRoot',
 			[ 'sambaDosFilemode'],
 			[ 'sambaHideUnreadable' ],
 			[ 'sambaVFSObjects'],
-			[ 'sambaPostexec', 'sambaPreexec'],
 		] ),
 	] ),
 	Tab( _( 'Samba permissions' ), _( 'Samba permission settings' ), advanced = True, layout = [
 		Group( _( 'Samba permissions' ), layout = [
-			'sambaWriteable',
 			[ 'sambaForceUser', 'sambaForceGroup' ],
 			[ 'sambaValidUsers', 'sambaInvalidUsers' ],
-			[ 'sambaHostsAllow', 'sambaHostsDeny' ],
-			[ 'sambaWriteList', 'sambaHideFiles' ],
 			[ 'sambaNtAclSupport', 'sambaInheritAcls' ],
 			[ 'sambaInheritOwner', 'sambaInheritPermissions' ],
 		] ),
@@ -687,11 +697,19 @@ layout = [
 			[ 'sambaStrictLocking', 'sambaOplocks' ],
 			[ 'sambaLevel2Oplocks', 'sambaFakeOplocks' ],
 			[ 'sambaBlockSize', 'sambaCscPolicy' ],
+			[ 'sambaHostsAllow', 'sambaHostsDeny' ],
+			[ 'sambaWriteList', 'sambaHideFiles' ],
+			[ 'sambaPostexec', 'sambaPreexec'],
 		] ),
 	] ),
 	Tab( _( 'Samba custom settings' ), _( 'Custom settings for Samba shares' ), advanced = True, layout = [
 		Group( _( 'Samba custom settings' ), layout = [
 			'sambaCustomSettings'
+		] ),
+	] ),
+	Tab( _( 'NFS custom settings' ), _( 'Custom settings for NFS shares' ), advanced = True, layout = [
+		Group( _( 'NFS custom settings' ), layout = [
+			'nfsCustomSettings'
 		] ),
 	] ),
 ]
@@ -793,6 +811,7 @@ mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, st
 mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolToString, stringToBool)
 mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool)
 mapping.register('sambaCustomSettings', 'univentionShareSambaCustomSetting', mapKeyAndValue, unmapKeyAndValue)
+mapping.register('nfsCustomSettings', 'univentionShareNFSCustomSetting')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -851,10 +870,8 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.invalidOperation, _('It is not valid to set %s as a share.')%self['path']
 
 		ocs = ['top', 'univentionShare']
-		if not ( 'samba' in self.options or 'nfs' in self.options):
-			raise univention.admin.uexceptions.invalidOptions, _('Need  %s or %s in options to create a share.')%(
-				options['samba'].short_description,
-				options['nfs'].short_description)
+
+		self.check_options_for_validity()
 
 		if 'samba' in self.options:
 			ocs.append('univentionShareSamba')
@@ -876,11 +893,8 @@ class object(univention.admin.handlers.simpleLdap):
 
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		if not ( 'samba' in self.options or 'nfs' in self.options):
-			raise univention.admin.uexceptions.invalidOptions, ('Need  %s or %s in options to create a share.')%(
-				options['samba'].short_description,
-				options['nfs'].short_description)
-
+		self.check_options_for_validity()
+		
 		if self.options != self.old_options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old_options: %s' % self.old_options)
@@ -935,6 +949,13 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def description(self):
 		return _('%s (%s on %s)') % (self['name'], self['path'], self['host'])
+
+	def check_options_for_validity(self):
+		if not ( 'samba' in self.options or 'nfs' in self.options):
+			raise univention.admin.uexceptions.invalidOptions, ('Need  %s or %s in options to create a share.')%(
+				options['samba'].short_description,
+				options['nfs'].short_description)
+
 
 def lookup_filter(filter_s=None, lo=None):
 	lookup_filter_obj = \
