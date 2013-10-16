@@ -1,3 +1,9 @@
+univention-samba4 (3.0.24-1) unstable; urgency=low
+
+  * Activate sysvol sync in 98univention-samba4-dns.inst (Bug #29662)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 12:55:12 +0200
+
 univention-samba4 (3.0.23-2) unstable; urgency=low
 
   * Move the creation of Enterprise Domain Controllers to univention-
