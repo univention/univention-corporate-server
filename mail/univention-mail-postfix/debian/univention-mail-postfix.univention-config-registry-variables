@@ -1,78 +1,79 @@
 [mail/alias/.*]
-Description[de]=Mailweiterleitung für lokale Empfänger
-Description[en]=Redirect mail for local recipients
+Description[de]=Mit Variablen der Form mail/alias/BENUTZERNAME=EMAILADRESSE kann eine Mailweiterleitung für Mailkonten lokaler Benutzer konfiguriert werden.
+Description[en]=Variables in the format mail/alias/USERNAME=EMAILADDRESS allow the configuration of a mail forwarding for the mail accounts of local users.
 Type=str
 Categories=service-mail
 
 [mail/antivir]
-Description[de]=Aktiviert/Deaktiviert die Virenprüfung von E-Mails
-Description[en]=Enable/Disable virus checking for e-mails
+Description[de]=Ist diese Option aktiviert, werden E-Mails durch den ClamAV-Scanner auf Malware/Viren geprüft. Ist die Variable nicht gesetzt, erfolgt kein Scan.
+Description[en]=If this option is activated, e-mails are scanned for malware/viruses using the scanner ClamAV. If the variable is unset, no scan is performed.
 Type=bool
 Categories=service-mail
 
 [mail/hosteddomains]
-Description[de]=Liste aller Mail-Domänen, die auf diesem System gehostet werden.
-Description[en]=List of mail domains hosted by this server
+Description[de]=Diese Variable speichert die verwendeten Mail-Domänen. Anpassungen sollten nicht über diese Variable erfolgen, stattdessen können Maildomänen über das Mail-Modul der UMC hinzugefügt und entfernt werden.
+Description[en]=This variable contains the mail domains in use. This variable should not be directly modified, instead mail domains can be created/removed in the mail module of the UMC.
 Type=str
+ReadOnly=yes
 Categories=service-mail
 
 [mail/archivefolder]
-Description[de]=Archiviert ein und ausgehende E-Mails im angegebenen Postfach
-Description[en]=Archive all incoming and outgoing e-mails in given account
+Description[de]=Wird diese Variable auf eine E-Mail-Adresse gesetzt, sendet Postfix eine Blindkopie aller ein- und ausgehenden E-Mails an diese Adresse. So kann eine z.B. Mailarchivierungslösung angebunden werden. Falls noch kein Postfach für diese Adresse existiert, wird es automatisch angelegt. 
+Description[en]=If this variable is set to an e-mail address, Postfix sends a blind carbon copy of all incoming and outgoing e-mails to this address. This can e.g. be used to feed a mail archive solution. If there is no mailbox for this address, one will be created automatically. 
 Type=str
 Categories=service-mail
 
 [mail/messagesizelimit]
-Description[de]=Maximale Größe von E-Mails (Angabe in Bytes)
-Description[en]=Maximum size of e-mails (specified in bytes)
+Description[de]=Mit dieser Variable kann die maximale Größe in Byte für ein- und ausgehende E-Mails festgelegt werden. Wird 0 als Wert konfiguriert, so wird die Begrenzung aufgehoben. Es ist zu beachten, dass Emailanhänge durch die Base64-Kodierung um ca. ein Drittel vergrössert werden. 
+Description[en]=This variable can be used to set the maximum size in bytes for incoming and outgoing e-mails. If the value is configured to 0 the limit is effectively removed. Please note that e-mail attachments are enlarged by approximately a third due to the base64 encoding. 
 Type=int
 Categories=service-mail
 
 [mail/postfix/mynetworks]
-Description[de]=Mails zu diesen Domänen werden über die local_transport Regel zugestellt
-Description[en]=Mails to the given domains are delivered via the local_transport rule
+Description[de]=Für E-Mails aus dem hier angebenenen Netz/Netzen ist Relaying erlaubt. Das Format ist unter http://www.postfix.org/postconf.5.html unter ('mynetworks') beschrieben. Ist die Variable nicht gesetzt, gilt '127.0.0.0/8'. 
+Description[en]=Relaying is permitted for e-mails from the network(s) specified hier. The format is described at http://www.postfix.org/postconf.5.html under ('mynetworks'). If the variable is unset, '127.0.0.0/8' applies.
 Type=str
 Categories=service-mail
 
 [mail/relayhost]
-Description[de]=FQDN des zu verwendenden Relay-Server
-Description[en]=FQDN of the relay host to use
+Description[de]=In der Grundeinstellung baut Postfix beim Versenden einer E-Mail an eine nicht-lokale Adresse eine direkte SMTP-Verbindung an den für diese Domain zuständigen Mailserver auf. Dieser Server wird durch eine Abfrage des MX-Records im DNS ermittelt. Alternativ kann ein Mail-Relay-Server zu Einsatz kommen, also ein Server der die Mails entgegen nimmt und den weiteren Versand abwickelt. Der Server muss in dieser Variable als vollqualifizierter Domänenname (FQDN) eingetragen werden. 
+Description[en]=In the default setting, Postfix creates a direct STMP connection to the mail server responsible for the domain when an e-mail is sent to a non-local address. This server is determined by querying the MX record in the DNS. Alternatively, a mail relay server can also be used, i.e., a server which receives the mails and takes over their further sending. The server must be entered as a fully qualified domain name(FQDN).
 Type=str
 Categories=service-mail
 
 [mail/relayauth]
-Description[de]=Aktiviert/Deaktiviert die Authentifizierung am Relay-Server
-Description[en]=Enable/Disable authentication for relay host
+Description[de]=Wird ein Mail-Relay verwendet (siehe 'mail/relayhost') und erfordert das Relay Authentifizierung, muss diese Option aktiviert werden. Der Benutzername und das Passwort für den Relay-Server werden in der Datei /etc/postfix/smtp_auth konfiguriert. Dies ist im UCS-Handbuch dokumentiert.
+Description[en]=If a mail relay is used (see 'mail/relayhost') and if the relay requires authentication, this option must be authenticated. The username and the password for the relay server are configured in the file /etc/postfix/smtp_auth. This is documented in the UCS manual.
 Type=bool
 Categories=service-mail
 
 [mail/smtp/helo/name]
-Description[de]=Rechnername der mit SMTP EHLO oder HELO Kommandos versendet wird
-Description[en]=Hostname to send in the SMTP EHLO or HELO command.
+Description[de]=Mit dieser Variable kann der Rechnername konfiguriert werden, unter dem sich der Server im Rahmen des SMTP-Protokolls identifiziert (EHLO/HELO). Ist die Variable nicht gesetzt, wird der vollqualifizierte Rechnername verwendet.
+Description[en]=This variable allows the configuration of the hostname the server used for identification as part of the SMTP protocol (EHLO/HELO). If the variable is unset, fhe fully qualified hostname is used.
 Type=str
 Categories=service-mail
 
 [mail/smtpport]
-Description[de]=Port des SMTP-Servers
-Description[en]=Port for SMTP server to use
+Description[de]=Mit dieser Variable kann der Port konfiguriert werden, unter dem Postfix erreichbar ist. Ist die Variable nicht gesetzt, gilt 25. Wird der Port angepasst und wird Univention Firewall verwendet, müssen zusätzlich Paketfilterregeln angepasst werden.
+Description[en]=This variable configures the port under which Postfix operates. If the variable is unset, 25 applies. If the port is changed and if Univention Firewall is used, packet filter rules must be adapted as well.
 Type=int
 Categories=service-mail
 
 [postfix/autostart]
-Description[de]=Aktiviert/Deaktiviert den automatischen Start von Postfix
-Description[en]=Enable/Disable the automatic of Postfix
-Type=bool
+Description[de]=Die Variable konfiguriert den Startmodus des Postfix-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the Postfix service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, but can be enabled manually at a later point.
+Type=str
 Categories=service-mail
 
 [mail/localmailboxsizelimit]
-Description[de]=Maximale Dateigröße lokaler mailbox- oder maildir-Dateien (Angabe in Bytes)
-Description[en]=Maximum size of any local mailbox or maildir file (specified in bytes)
+Description[de]=Diese Variable konfiguriert die maximale Dateigröße in Bytes von Mailbox- oder Maildir-Dateien. Ist die Variable nicht gesetzt, gilt keine Beschränkung.
+Description[en]=This variable configures the maximum size in bytes of mailbox or Maildir files. If the variable is unset, no limitation applies.
 Type=int
 Categories=service-mail
 
 [mail/postfix/masquerade/domains]
-Description[de]=Liste von Domänen für die Masquerading aktiviert ist
-Description[en]=List of domains for which masquerading is enabled
+Description[de]=Mit dieser Variable kann eine Unterdomäne aus E-Mail-Adressen entfernt werden, so dass z.B. user@server.example.com nach user@example.com umgeschrieben wird. Das Format ist unter http://www.postfix.org/postconf.5.html unter ('masquerade_domains') beschrieben. Ist die Variable nicht gesetzt, gilt der vollqualifizierte Rechnername des Servers.
+Description[en]=This variable can be used to strip a subdomain from an e-mail-adress, so that e.g. user@server.example.com can be rewritten to user@example.com. The format is described at http://www.postfix.org/postconf.5.html under ('masquerade_domains'). If the variable is unset, the fully qualified hostname of the server is used.
 Type=str
 Categories=service-mail
 

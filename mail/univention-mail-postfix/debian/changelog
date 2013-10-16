@@ -1,3 +1,10 @@
+univention-mail-postfix (8.0.5-2) unstable; urgency=low
+
+  * Update/review UCR variable descriptions (Bug #30945)
+  * Update copyright for 2013
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 16 Oct 2013 14:48:30 +0200
+
 univention-mail-postfix (8.0.5-1) unstable; urgency=low
 
   * added unjoin script for univention-mail-server (Bug #32454)
