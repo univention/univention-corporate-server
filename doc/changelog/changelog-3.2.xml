@@ -1126,8 +1126,9 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
-			A problem in the reloading process of UDM modules has been fixed, which could cause Python to neglect runtime changes of the main syntax and hook Python modules. This is mainly an issue which could occur during development of new UCS releases.
-			(<ulink url="&ucsbug;32565">Bug 32565</ulink>).
+			Avoid problems when reloading UDM modules. This could cause the UMC
+			Server to crash when UDM modules and UDM syntax definitions were out of
+			sync (<ulink url="&ucsbug;32565">Bug 32565</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
