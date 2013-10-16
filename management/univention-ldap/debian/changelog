@@ -1,3 +1,9 @@
+univention-ldap (10.0.15-2) unstable; urgency=low
+
+  * Added support for custom NFS share options (Bug #18708)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 16 Oct 2013 13:52:13 +0200
+
 univention-ldap (10.0.15-1) unstable; urgency=low
 
   * Move pseudo group creation from base.ldif to samba4 join script
