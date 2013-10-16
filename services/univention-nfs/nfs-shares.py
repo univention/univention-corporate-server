@@ -136,13 +136,18 @@ def handler(dn, new, old, command):
 		else:
 			subtree='no_subtree_check'
 
+		custom_settings = ""
+		if new.has_key('univentionShareNFSCustomSetting'):
+			for custom_setting in new['univentionShareNFSCustomSetting']:
+				custom_settings += ",%s" % custom_setting
+
 		if new.has_key( 'univentionShareNFSAllowed' ):
 			permitted = new['univentionShareNFSAllowed']
 		else:
 			permitted=['*']
 
 		for p in permitted:
-			options += ' %s(%s,%s,%s,%s)' % (p, read_write, root_squash, sync_mode, subtree)
+			options += ' %s(%s,%s,%s,%s%s)' % (p, read_write, root_squash, sync_mode, subtree, custom_settings)
 
 		new_lines.append('"%s" %s # LDAP:%s' % (path, options, dn))
 

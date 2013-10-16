@@ -39,7 +39,7 @@ case "$1" in
 
 		univention-config-registry set \
 			nfs/ports?static \
-			nfs/nfsd/nfs4?false \
+			nfs/nfsd/nfs4?true \
 			nfs/create/homesharepath?true
 
 		# configure firewall
@@ -60,6 +60,11 @@ case "$1" in
 			security/packetfilter/package/univention-nfs/udp/32765:32769/all="ACCEPT" \
 			security/packetfilter/package/univention-nfs/udp/32765:32769/all/en="NFS related RPC daemons"
 		[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+
+		# activate nfsv4 with ucs3.2
+		if dpkg --compare-versions "$2" lt-nl 6.0.1-5; then
+			ucr set nfs/nfsd/nfs4=true 
+		fi
 
 		if test -f /etc/init.d/univention-directory-listener
 		then

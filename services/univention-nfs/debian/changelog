@@ -1,3 +1,11 @@
+univention-nfs (6.0.1-5) unstable; urgency=low
+
+  * Activate NFSv4 by default (Bug #21556) 
+  * Added support for custom NFS share settings by supporting
+    univentionShareNFSCustomSetting in nfs-shares listener (Bug #18708)
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 16 Oct 2013 13:56:32 +0200
+
 univention-nfs (6.0.1-4) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
