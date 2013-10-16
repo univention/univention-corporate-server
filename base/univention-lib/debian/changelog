@@ -1,3 +1,10 @@
+univention-lib (3.0.22-1) unstable; urgency=low
+
+  * Added update_nss_group_cache () for updating the group cache
+    depending on the nss methode (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 11:59:57 +0200
+
 univention-lib (3.0.21-2) unstable; urgency=low
 
   * Improve option parsing in ucs_registerLDAPExtension (Bug #32409)

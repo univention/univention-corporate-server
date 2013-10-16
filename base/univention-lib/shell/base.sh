@@ -27,6 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/univention-lib/ucr.sh
 
 #
 # creates an empty file with given owner/group and permissions
@@ -240,6 +241,18 @@ create_machine_password () {
 	fi
 	
 	pwgen -1 -${compl} ${length} | tr -d '\n'
+}
+
+#
+# Update the NSS group cache
+#
+update_nss_group_cache () {
+	if is_ucr_true nss/group/cachefile; then
+		is_ucr_true nss/group/cachefile/check_member && ldap_group_to_file_param="--check_member"
+		/usr/lib/univention-pam/ldap-group-to-file.py $ldap_group_to_file_param
+	else
+		nscd -i group
+	fi
 }
 
 # vim:set sw=4 ts=4 noet:
