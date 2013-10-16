@@ -2816,6 +2816,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
+		Provide a modprobe configuration file for vmwgfx (the DRM driver for vmware) to enable fbdev
+		support. Otherwise startup freezes in bootsplash and on the command line occur when
+		installed in Vmware ESXi (<ulink url="&ucsbug;32536">Bug 32536</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
 		<package>ocfs2-tools</package> was updated to version 1.6.4 (<ulink url="&ucsbug;28979">Bug 28979</ulink>).
 	  </simpara></listitem>
 
