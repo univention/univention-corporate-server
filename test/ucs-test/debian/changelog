@@ -1,5 +1,11 @@
 ucs-test (4.0.141-1) unstable; urgency=low
 
+  * Fix timing issue in 10_ldap/74schema_update (Bug #26785)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Oct 2013 15:28:11 +0200
+
+ucs-test (4.0.141-1) unstable; urgency=low
+
   * 62_udm-groups/22_group_posix_only: test case to create posix group
     only (Bug #32853)
 
