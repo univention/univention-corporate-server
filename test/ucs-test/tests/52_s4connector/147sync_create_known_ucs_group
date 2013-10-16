@@ -28,7 +28,7 @@ udm_create "groups/group" || fail_test 110
 
 section "Create inner group"
 
-#'Known' UCS-Groups are expected not to be synced to AD if connector/s4/mapping/group/synclocal to false
+#'Known' UCS-Groups are expected not to be synced to AD if connector/s4/mapping/group/grouptype to false
 UDM_groups_group_name="$INNER_GROUP"
 udm_create "groups/group" "" "" "" "" --set sambaGroupType=5 || fail_test 110
 
@@ -45,7 +45,7 @@ udm_exists "groups/group"; fail_bool 0 110
 UDM_groups_group_name="$INNER_GROUP"
 udm_exists "groups/group"; fail_bool 0 110
 
-if is_ucr_true connector/s4/mapping/group/synclocal; then
+if is_ucr_true connector/s4/mapping/group/grouptype; then
 	ad_exists "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
 else
 	ad_exists "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 1 110
@@ -58,7 +58,7 @@ UDM_groups_group_name="$OUTER_GROUP"
 udm_verify_multi_value_udm_attribute_contains "nestedGroup" \
 	"cn=$INNER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
 
-if is_ucr_true connector/s4/mapping/group/synclocal; then
+if is_ucr_true connector/s4/mapping/group/grouptype; then
 	ad_verify_multi_value_attribute_contains "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
 		"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
 else

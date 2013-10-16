@@ -1,3 +1,10 @@
+ucs-test (4.0.144-2) unstable; urgency=low
+
+  * Rename connector/s4/mapping/group/synclocal to
+    connector/s4/mapping/group/grouptype (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 21:33:56 +0200
+
 ucs-test (4.0.144-1) unstable; urgency=low
 
   * 51_samba4/31well-known-security-principals: Added a test case to
