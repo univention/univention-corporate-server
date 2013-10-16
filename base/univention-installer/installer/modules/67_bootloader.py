@@ -204,8 +204,9 @@ class object(content):
 			else:
 				self.selected_device = self.selected_device.rstrip('0123456789')
 			self.debug('Guessing device: %s' % self.selected_device)
-		if not self.selected_device in self.devices and self.devices:
-			self.selected_device = self.devices.keys()[0]
+		devicelist = sorted(self.devices.values(), key=lambda entry: entry[1])
+		if devicelist and not self.selected_device in [ entry[0] for entry in devicelist ]:
+			self.selected_device = devicelist[0][0]
 		self.debug('self.selected_device: %s' % self.selected_device)
 
 	def layout(self):
