@@ -1,3 +1,9 @@
+univention-samba4 (3.0.25-2) unstable; urgency=low
+
+  * Use the correct container for the pseudo groups (Bug #29000)"
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 20:49:19 +0200
+
 univention-samba4 (3.0.25-1) unstable; urgency=low
 
   * Create foreignSecurityPrincipal in join script (Bug #29000)
