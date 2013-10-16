@@ -1,3 +1,9 @@
+univention-updater (9.0.22-1) unstable; urgency=low
+
+  * Adjust pre- and postup.sh (Bug #31676)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Oct 2013 00:48:23 +0200
+
 univention-updater (9.0.21-2) unstable; urgency=low
 
   * Bug #32634: try to automagically determine the GRUB boot device

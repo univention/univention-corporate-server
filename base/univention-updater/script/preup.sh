@@ -152,12 +152,12 @@ hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')
 if [ -n "$hold_packages" ]; then
 	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
 	echo "system!"
-	echo "Please check the following packages and unmark them or set the UCR variable update31/ignore_hold to yes"
+	echo "Please check the following packages and unmark them or set the UCR variable update32/ignore_hold to yes"
 	for hp in $hold_packages; do
 		echo " - $hp"
 	done
-	if is_ucr_true update31/ignore_hold; then
-		echo "WARNING: update31/ignore_hold is set to true. Skipped as requested."
+	if is_ucr_true update32/ignore_hold; then
+		echo "WARNING: update32/ignore_hold is set to true. Skipped as requested."
 	else
 		exit 1
 	fi
@@ -195,11 +195,12 @@ pruneOldKernel () {
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove --purge $(COLUMNS=200 dpkg -l linux-image-${kernel_version}-ucs\* 2>/dev/null | grep linux-image- | awk '{ print $2 }' | sort -n | egrep -v "linux-image-$(uname -r)|$ignore_kver" | tr "\n" " ") >>/var/log/univention/updater.log 2>&1
 }
 
-if [ "$update31_pruneoldkernel" = "yes" ]; then
+if [ "$update32_pruneoldkernel" = "yes" ]; then
 	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
 	pruneOldKernel "2.6.18"
 	pruneOldKernel "2.6.26"
 	pruneOldKernel "2.6.32"
+	pruneOldKernel "3.2"
 	echo "done" | tee -a /var/log/univention/updater.log
 fi
 
@@ -217,12 +218,12 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
 		echo "         This may interrupt the update and result in an inconsistent system!"
 		echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         config registry variable update31/checkfilesystems to \"no\"."
+		echo "         config registry variable update32/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" -a ! "$update31_pruneoldkernel" = "yes" ] ; then
+		if [ "$partition" = "/boot" -a ! "$update32_pruneoldkernel" = "yes" ] ; then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
 			echo "         next update attempt by setting config registry variable"
-			echo "         update31/pruneoldkernel to \"yes\"."
+			echo "         update32/pruneoldkernel to \"yes\"."
 		fi
 		echo ""
 		# kill the running univention-updater process
@@ -239,7 +240,7 @@ fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
 # check space on filesystems
-if [ ! "$update31_checkfilesystems" = "no" ]
+if [ ! "$update32_checkfilesystems" = "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "800000" "0,8 GB"
@@ -305,12 +306,6 @@ then
 	echo "       contains the deprecated option 'skip-bdb'. The option MUST be removed"
 	echo "       before the update can continue."
 	exit 1
-fi
-
-if [ "$(dpkg-query -W -f='${Status}\n' univention-fetchmail 2>/dev/null)" = "install ok installed" ]; then
-	echo "univention-fetchmail hold" | dpkg --set-selections
-	echo "univention-fetchmail-schema hold" | dpkg --set-selections
-	univention-config-registry set update31/hold/fetchmail=true >>"$UPDATER_LOG" 2>&1
 fi
 
 # check for possible GRUB2 partitions on non-EFI systems (Bug #32634)

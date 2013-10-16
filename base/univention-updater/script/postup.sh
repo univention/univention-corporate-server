@@ -64,13 +64,6 @@ eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
 # Remove VNC module; Bug #30158
 univention-remove -y --purge univention-management-console-module-vnc >>"$UPDATER_LOG" 2>&1
 
-if [ "$update31_hold_fetchmail" = "true" ]; then
-	echo "univention-fetchmail install" | dpkg --set-selections
-	echo "univention-fetchmail-schema install" | dpkg --set-selections
-	install univention-fetchmail-schema univention-fetchmail >>"$UPDATER_LOG" 2>&1
-	univention-config-registry unset update31/hold/fetchmail >>"$UPDATER_LOG" 2>&1
-fi
-
 # Remove Flash plugin installer, Bug #31852
 univention-remove -y --purge univention-flashplugin >>"$UPDATER_LOG" 2>&1
 
