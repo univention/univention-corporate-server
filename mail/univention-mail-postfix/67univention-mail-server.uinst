@@ -36,10 +36,21 @@ VERSION=1
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
 
+eval "$(ucr shell)"
+
 joinscript_init
 
 
 ucs_removeServiceFromLocalhost "SMTP" "$@"
-udm container/cn remove "$@" --dn "cn=mail,$ldap_base" || die
+
+domain_list="$domainname"
+if [ "$mail_default_domains" ] ; then
+	domain_list="$mail_default_domains"
+fi
+
+for domain in $domain_list ; do
+	udm mail/domain remove "$@" --ignore_exists --dn "cn=$domain,cn=domain,cn=mail,$ldap_base" || die
+
+done
 
 joinscript_remove_script_from_status_file univention-mail-server

@@ -1,3 +1,9 @@
+univention-mail-postfix (8.0.6-1) unstable; urgency=low
+
+  * adapted univention-mail-server unjoin script (Bug #32454)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 16 Oct 2013 14:50:24 +0200
+
 univention-mail-postfix (8.0.5-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30945)

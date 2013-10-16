@@ -1,3 +1,9 @@
+univention-nagios (7.0.3-1) unstable; urgency=low
+
+  * adapted unjoin script for univention-nagios-server (Bug #32453)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 16 Oct 2013 15:03:15 +0200
+
 univention-nagios (7.0.2-1) unstable; urgency=low
 
   * added unjoin script for univention-nagios-server (Bug #32453)
