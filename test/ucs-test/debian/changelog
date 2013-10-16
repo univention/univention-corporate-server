@@ -1,4 +1,4 @@
-ucs-test (4.0.141-1) unstable; urgency=low
+ucs-test (4.0.142-1) unstable; urgency=low
 
   * Fix timing issue in 10_ldap/74schema_update (Bug #26785)
 
