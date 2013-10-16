@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.45-1) unstable; urgency=low
+
+  * Bug #32877: make sure that properties are only returned if they are
+    specified in the module layout
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 16 Oct 2013 12:56:12 +0200
+
 univention-management-console-module-udm (4.0.44-1) unstable; urgency=low
 
   * Bug #26418: replace workaround by a not so ugly workaround in LDAP

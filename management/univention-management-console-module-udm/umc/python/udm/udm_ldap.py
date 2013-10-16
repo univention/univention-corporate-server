@@ -591,7 +591,24 @@ class UDM_Module( object ):
 		return passwords
 
 	def get_properties( self, ldap_dn=None ):
-		properties = self.properties
+		# scan the layout to only find elements which are displayed
+		inLayout = set()
+		def _scanLayout(_layout):
+			if isinstance(_layout, list):
+				for ielement in _layout:
+					_scanLayout(ielement)
+			elif isinstance(_layout, dict) and 'layout' in _layout:
+				_scanLayout(_layout['layout'])
+			elif isinstance(_layout, basestring):
+				inLayout.add(_layout)
+		_scanLayout(self.get_layout(ldap_dn))
+
+		# only return properties that are in the layout
+		properties = []
+		for iprop in self.properties:
+			if iprop['id'] in inLayout:
+				properties.append(iprop)
+
 		if ldap_dn:
 			# hack reference list for policies into items
 			if self.is_policy_module():
