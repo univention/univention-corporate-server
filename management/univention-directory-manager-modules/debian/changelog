@@ -1,3 +1,10 @@
+univention-directory-manager-modules (9.0.63-1) unstable; urgency=low
+
+  * Bug #32565: Revert all changes so far, too complicated. Just avoid the
+    situation in other packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 Oct 2013 19:00:13 +0200
+
 univention-directory-manager-modules (9.0.62-2) unstable; urgency=low
 
   * Improved layout and texts (Bug #32882)

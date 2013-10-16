@@ -46,8 +46,6 @@ import sys, os
 import shlex
 import imghdr
 
-
-
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
 
@@ -56,15 +54,7 @@ _=translation.translate
 #
 def import_syntax_files():
 	for dir in sys.path:
-		fn = os.path.join( dir, 'univention/admin/syntax.py' )
-		if os.path.exists( fn ):
-			try:
-				fd = open( fn, 'r' )
-				exec fd in univention.admin.syntax.__dict__
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
-			except:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
-
+		if os.path.exists( os.path.join( dir, 'univention/admin/syntax.py' ) ):
 			if os.path.isdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
 				for f in os.listdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
 					if f.endswith('.py'):
@@ -75,7 +65,6 @@ def import_syntax_files():
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
 						except:
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
-
 
 choice_update_functions = []
 def __register_choice_update_function(func):
@@ -367,10 +356,10 @@ class UCSVersion( string ):
 	@classmethod
 	def parse( self, value ):
 		try:
-			ver = UCS_Version(value)
+			UCS_Version(value)
 		except ValueError:
 			raise univention.admin.uexceptions.valueError( _( 'Invalid UCS version: %s' ) % (value, ))
-		
+
 		return value
 
 class DebianPackageVersion( string ):
@@ -384,7 +373,7 @@ class DebianPackageVersion( string ):
 		p=value.find(':')
 		if p != -1 and not value[:p].isdigit():
 			raise univention.admin.uexceptions.valueError( _( 'Non-integer epoch in debian package version: %s' ) % str( value[:p] ) )
-		
+
 		return value
 
 class BaseFilename( string ):
@@ -409,7 +398,7 @@ class Base64GzipText( TextArea ):
 		except:
 			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
 		try:
-			data = zlib.decompress(gziped_data, 16+zlib.MAX_WBITS)
+			zlib.decompress(gziped_data, 16+zlib.MAX_WBITS)
 		except:
 			raise univention.admin.uexceptions.valueError( _( 'Value must be gzip compressed and Base64 encoded: %s' ) % str( text ) )
 		return text
@@ -422,7 +411,7 @@ class Base64Bzip2Text( TextArea ):
 		except:
 			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
 		try:
-			data = bz2.decompress(compressed_data)
+			bz2.decompress(compressed_data)
 		except:
 			raise univention.admin.uexceptions.valueError( _( 'Value must be bzip2 compressed and Base64 encoded: %s' ) % str( text ) )
 		return text
@@ -2276,7 +2265,7 @@ class language(select):
 		('yi_US', 'Yiddish/USA'),
 		('yi_US.UTF-8', 'Yiddish/USA(UTF-8)'),
 		('zu_ZA', 'Zulu/South Africa'),
-		('zu_ZA.UTF-8', 'Zulu/South Africa(UTF-8)'),	
+		('zu_ZA.UTF-8', 'Zulu/South Africa(UTF-8)'),
 	]
 
 class Month(select):
@@ -2884,7 +2873,7 @@ class PrinterURI( complex ):
 
 class policyName(string):
 	_re = re.compile('^[a-zA-Z0-9]{1}[a-zA-Z0-9 #!$%&/\|\^.~_-]*?[a-zA-Z0-9#!$%&/\|\^.~_-]{1}$')
-	
+
 	@classmethod
 	def parse(self, text):
 		if self._re.match(text):

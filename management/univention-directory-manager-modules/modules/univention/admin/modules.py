@@ -38,8 +38,6 @@ import types
 import copy
 import locale
 import imp
-import inspect
-import py_compile
 import univention.debug as ud
 import univention.admin
 import univention.admin.uldap
