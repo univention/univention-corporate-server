@@ -149,9 +149,6 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 
 	/etc/init.d/univention-s4-connector restart
 
-	## Note: This group is created only once (usually during initial join) by the host providing the S4 Connector service
-	create_Enterprise_Domain_Controllers "$@"
-
 	univention-config-registry set dns/backend=samba4
 	if [ -x /etc/init.d/bind9 ]; then
 		/etc/init.d/bind9 restart

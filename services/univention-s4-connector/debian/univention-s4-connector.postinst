@@ -97,31 +97,6 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 	if [ "$restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart
 	fi
-
-	if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.32-2; then
-		server_role="$(ucr get server/role)"
-		if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ] ; then
-			ldap_base=$(ucr get ldap/base)
-			if [ -r "/etc/ldap.secret" ]; then
-				binddn="cn=admin,$ldap_base"
-				bindpwd=$(< /etc/ldap.secret)
-			else
-				echo "ERROR: /etc/ldap.secret not present"
-				exit 1
-			fi
-			## store the binddn and bindpwd options in UDM_ARGV
-			UDM_ARGV=("--binddn" "$binddn" --bindpwd "$bindpwd")
-			set -- "${UDM_ARGV[@]}"
-
-			NAME="S4 Connector"
-			s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
-
-			if [ -z "$s4connectorservicehost_dns" ]; then	## this system will provide the S4 Connector Service
-				## Note: This group is created only once on the host providing the S4 Connector service
-				create_Enterprise_Domain_Controllers "$@"
-			fi
-		fi
-	fi
 fi
 
 exit 0
