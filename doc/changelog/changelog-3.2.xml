@@ -2692,6 +2692,14 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32455">Bug 32455</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The AD connector can now synchronizes the different group types (domain local, 
+		  global and universal) if the &ucsUCRV; <envar>connector/ad/mapping/group/grouptype</envar>
+		  is set to true. By default this is activated for new UCS 3.2 installations only. All other
+		  systems have to be migrated manually
+		  (<ulink url="&ucsbug;32769">Bug 32769</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
