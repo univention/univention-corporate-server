@@ -1,3 +1,10 @@
+univention-s4-connector (8.0.26-5) unstable; urgency=low
+
+  * Rename connector/s4/mapping/group/synclocal to
+    connector/s4/mapping/group/grouptype (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 21:32:17 +0200
+
 univention-s4-connector (8.0.26-4) unstable; urgency=low
 
   * Move the creation of Enterprise Domain Controllers to univention-

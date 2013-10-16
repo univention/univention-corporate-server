@@ -39,7 +39,7 @@ create_logfile /var/log/univention/connector-s4-status.log "root:adm" 640
 #DEBHELPER#
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
-	univention-config-registry set connector/s4/mapping/group/synclocal?false
+	univention-config-registry set connector/s4/mapping/group/grouptype?false
 fi
 
 univention-config-registry set connector/s4/listener/dir?/var/lib/univention-connector/s4 \
@@ -54,7 +54,7 @@ univention-config-registry set connector/s4/listener/dir?/var/lib/univention-con
 							   connector/s4/mapping/sid?true \
 							   connector/s4/mapping/gpo?true \
 							   connector/s4/mapping/user/ignorelist?"root,pcpatch,ucs-s4sync" \
-							   connector/s4/mapping/group/synclocal?true \
+							   connector/s4/mapping/group/grouptype?true \
 							   connector/s4/mapping/group/ignorelist?"Windows Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers" \
 							   connector/s4/mapping/group/table/Printer-Admins?"Print Operators" \
 							   connector/s4/mapping/container/ignorelist?"mail,kerberos,MicrosoftDNS" \

@@ -70,9 +70,9 @@ Description[en]=The group names specified here are not synchronised by the conne
 Type=str
 Categories=service-s4con
 
-[connector/s4/mapping/group/synclocal]
-Description[de]=Ist diese Option aktiviert, werden lokale Active Directory Gruppen synchronisiert. Ist die Variable nicht gesetzt, werden lokale Active Directory Gruppen synchronisiert.
-Description[en]=If this option is activated, local Active Directory groups are synchronized. If the variable is unset local Active Directory groups are synchronized.
+[connector/s4/mapping/group/grouptype]
+Description[de]=Ist diese Option aktiviert, werden sämtliche Active Directory Gruppen synchronisiert. Ist die Variable nicht gesetzt, werden nur globale Active Directory Gruppen synchronisiert.
+Description[en]=If this option is activated, all Active Directory groups are synchronized. If the variable is unset only global Active Directory groups are synchronized.
 Type=bool
 Categories=service-s4con
 

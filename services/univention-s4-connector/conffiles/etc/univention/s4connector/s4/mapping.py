@@ -72,7 +72,7 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'cn=opsi,@%@ldap/base@%@',
 			'cn=Microsoft Exchange System Objects,@%@connector/s4/ldap/base@%@']
 
-if configRegistry.is_false('connector/s4/mapping/group/synclocal', False):
+if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
 	global_ignore_subtree.append('cn=Builtin,@%@connector/s4/ldap/base@%@')
 print 'global_ignore_subtree=%s' % global_ignore_subtree
 @!@
@@ -283,7 +283,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 
 @!@
 ignore_filter = ''
-if configRegistry.is_false('connector/s4/mapping/group/synclocal', False):
+if configRegistry.is_false('connector/s4/mapping/group/grouptype', False):
 	ignore_filter += '(sambaGroupType=5)(groupType=5)'
 for group in configRegistry.get('connector/s4/mapping/group/ignorelist', '').split(','):
 	if group:
@@ -338,7 +338,7 @@ if configRegistry.is_true('connector/s4/mapping/sid_to_ucs', True) and not confi
 							con_attribute='description',
 						),
 @!@
-if configRegistry.is_true('connector/s4/mapping/group/synclocal', True):
+if configRegistry.is_true('connector/s4/mapping/group/grouptype', True):
 	print "					'groupType': univention.s4connector.attribute ("
 	print "							ucs_attribute='adGroupType',"
 	print "							ldap_attribute='univentionGroupType',"
