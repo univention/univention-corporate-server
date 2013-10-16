@@ -1,3 +1,10 @@
+univention-samba4 (3.0.26-1) unstable; urgency=low
+
+  * Remove the force group parameter from the sysvol share definition
+    (Bug #30999)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Oct 2013 00:37:32 +0200
+
 univention-samba4 (3.0.25-3) unstable; urgency=low
 
   * Really wait five minutes before dns-* was created (Bug #32871)
