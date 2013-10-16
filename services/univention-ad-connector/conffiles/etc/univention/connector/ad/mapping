@@ -239,10 +239,13 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 
 @!@
 ignore_filter = ''
+ignore_filter += '(groupType=-2147483643)(groupType=4)(univentionGroupType=-2147483643)(univentionGroupType=4)'
+if configRegistry.is_false('connector/ad/mapping/group/grouptype', False):
+	ignore_filter += '(sambaGroupType=5)(groupType=5)'
 for group in configRegistry.get('connector/ad/mapping/group/ignorelist', '').split(','):
 	if group:
 		ignore_filter += '(cn=%s)' % (group)
-print "			ignore_filter='(|(sambaGroupType=5)(groupType=5)%s)'," % ignore_filter
+print "			ignore_filter='(|%s)'," % ignore_filter
 @!@
 
 			ignore_subtree = global_ignore_subtree,
@@ -265,6 +268,14 @@ print "			ignore_filter='(|(sambaGroupType=5)(groupType=5)%s)'," % ignore_filter
 							required=1,
 							compare_function=univention.connector.compare_lowercase,
 						),
+@!@
+if configRegistry.is_true('connector/ad/mapping/group/grouptype', True):
+	print "					'groupType': univention.connector.attribute ("
+	print "							ucs_attribute='adGroupType',"
+	print "							ldap_attribute='univentionGroupType',"
+	print "							con_attribute='groupType',"
+	print "					),"
+@!@
 					'description': univention.connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',

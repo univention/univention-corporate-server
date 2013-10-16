@@ -58,6 +58,12 @@ Description[en]=Defines which mapping of standard group names should be used bet
 Type=str
 Categories=service-adcon
 
+[con.*/ad/mapping/group/grouptype]
+Description[de]=Ist diese Option aktiviert, werden die unterschiedlichen Active Directory Gruppen synchronisiert mit Ausnhme der lokalen Gruppen. Ist die Variable nicht gesetzt, werden nur globale Active Directory Gruppen synchronisiert.
+Description[en]=If this option is activated, the different Active Directory groups are synchronized except the local groups. If the variable is unset only global Active Directory groups are synchronized.
+Type=bool
+Categories=service-s4con
+
 [con.*/ad/mapping/syncmode]
 Description[de]=Diese Variable konfiguriert den Sychronisations-Modus zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Änderungen können nur im Active Directory vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden).
 Description[en]=This variable configures the synchronisation mode between the UCS LDAP and Active Directory. The following values are supported: 'read' (changes can only by made in Active Directory and are synchronised to UCS LDAP), 'write' (changes can only by made in UCS LDAP and are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes can be made in both directory services).

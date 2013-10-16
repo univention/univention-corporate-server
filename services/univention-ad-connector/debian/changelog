@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.7-1) unstable; urgency=low
+
+  * Synchronize the groupType (Bug #32768)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Oct 2013 00:04:48 +0200
+
 univention-ad-connector (8.0.6-2) unstable; urgency=low
 
   * Bug #32698: add XS-Python-Version to control file
