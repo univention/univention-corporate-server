@@ -94,7 +94,7 @@ if [ -x /etc/init.d/apache2 ]; then
 fi
 
 # configure default entries for UCS overview site
-if [ $server_role = "domaincontroller_master" || $server_role = "domaincontroller_backup" ]; then
+if [ $server_role = "domaincontroller_master" ] || [ $server_role = "domaincontroller_backup" ]; then
 	ucr set \
 		ucs/web/overview/entries/admin/root-certificate/icon?"/icon/50x50/root-certificate.png" \
 		ucs/web/overview/entries/admin/root-certificate/label?"Root certificate" \

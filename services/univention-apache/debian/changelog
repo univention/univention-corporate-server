@@ -1,3 +1,9 @@
+univention-apache (6.0.10-2) unstable; urgency=low
+
+  * fixed univention-apache.postinst (Bug #32647)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 16 Oct 2013 16:07:09 +0200
+
 univention-apache (6.0.10-1) unstable; urgency=low
 
   * Bug #32838: adapt ucs-overview for displaying a warning if javascript is
