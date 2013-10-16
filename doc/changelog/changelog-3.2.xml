@@ -1985,6 +1985,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The &ucsUCRV; descriptions in <package>univention-nagios</package> have been
 		  revised (<ulink url="&ucsbug;30944">Bug 30944</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  An unjoin script for <package>univention-nagios-server</package> has been added (<ulink url="&ucsbug;32453">Bug 32453</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 

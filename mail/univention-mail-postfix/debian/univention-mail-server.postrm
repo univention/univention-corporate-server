@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 #
 # postrm script for univention-mail-server
 #
@@ -31,7 +31,6 @@
 
 
 . /usr/share/univention-lib/base.sh
-set -e
 
 case "$1" in
 	remove|purge)

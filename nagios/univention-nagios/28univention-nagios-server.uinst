@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/sh -e
 #
-# univention nagios server
-#  postrm script
+# Univention Nagios Server
+#  unjoin script
 #
-# Copyright 2012-2013 Univention GmbH
+# Copyright 2007-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,25 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
+VERSION=1
 
-. /usr/share/univention-lib/base.sh
-
-
-# umc overview
-univention-config-registry unset \
-	ucs/web/overview/entries/admin/nagios/description/de \
-	ucs/web/overview/entries/admin/nagios/description \
-	ucs/web/overview/entries/admin/nagios/icon \
-	ucs/web/overview/entries/admin/nagios/label \
-	ucs/web/overview/entries/admin/nagios/label/de \
-	ucs/web/overview/entries/admin/nagios/link \
-	ucs/web/overview/entries/admin/nagios/priority
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/all.sh
 
 
-if [ "$1" = "purge" ] ; then
-	call_unjoinscript 28univention-nagios-server.uinst
-fi
+joinscript_init
 
+udm groups/group remove "$@" --dn "cn=Nagios Admins,cn=groups,$ldap_base" || die
+udm container/cn remove "$@" --dn "cn=console,cn=univention,$ldap_base" || die
+udm container/cn remove "$@" --dn "cn=console,cn=policies,$ldap_base" || die
+
+join_script_remove_script_from_status_file univention-nagios-server
 
 exit 0
