@@ -1,3 +1,9 @@
+univention-samba4 (3.0.23-1) unstable; urgency=low
+
+  * Update group cache before running ntacl sysvolreset (Bug #32461)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 12:01:50 +0200
+
 univention-samba4 (3.0.22-4) unstable; urgency=low
 
   * Hide group Enterprise Domain Controllers as well (Bug #32871)

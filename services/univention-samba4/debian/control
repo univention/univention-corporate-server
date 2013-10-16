@@ -15,7 +15,7 @@ Conflicts: univention-samba
 Depends: ${misc:Depends},
  univention-config-registry (>= 8.0.2-1),
  univention-directory-manager-tools (>> 7.0.147),
- shell-univention-lib (>= 3.0.1-1),
+ shell-univention-lib (>= 3.0.22-1),
  python-univention-lib (>= 1.0.45),
  python-univention (>= 6.0.9-3),
  samba (>= 4.1),

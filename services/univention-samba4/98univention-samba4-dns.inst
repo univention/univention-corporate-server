@@ -79,6 +79,7 @@ while [ $count -le 600 ]; do
 	fi
 done
 
+update_nss_group_cache
 
 # Reset NTACLs after the connector has synced the accounts
 if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then

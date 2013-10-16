@@ -356,14 +356,9 @@ set_default_fACL() {
 		print "Warning: $dirname is not a directory"
 	fi
 	## set default ACLs so sysvol-sync can read files and directories
-	if is_ucr_true nss/group/cachefile; then
-		is_ucr_true nss/group/cachefile/check_member && ldap_group_to_file_param="--check_member"
-		/usr/lib/univention-pam/ldap-group-to-file.py $ldap_group_to_file_param
-	else
-		nscd -i group
-		if ! getent group "Authenticated Users" >/dev/null; then
-			/etc/init.d/nscd restart
-		fi
+	update_nss_group_cache
+	if ! getent group "Authenticated Users" >/dev/null; then
+		/etc/init.d/nscd restart
 	fi
 	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' "$dirname"
 	rc="$?"
