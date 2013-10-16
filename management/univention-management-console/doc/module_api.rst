@@ -17,3 +17,8 @@ UMC modules
 	:undoc-members:
 	:show-inheritance:
 
+.. automodule:: univention.management.console.modules.mixins
+	:members:
+	:undoc-members:
+	:show-inheritance:
+

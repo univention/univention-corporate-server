@@ -49,8 +49,6 @@ import univention.admin.objects as udm_objects
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 
-users_module = None
-
 from univention.lib.i18n import Translation, I18N_Error
 
 from .message import Response, Request, MIMETYPE_JSON, InvalidOptionsError
@@ -64,6 +62,15 @@ from ..acl import LDAP_ACLs
 from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
+
+users_module = None
+try:
+	# get the users/user UDM module
+	udm_modules.update()
+	users_module = udm_modules.get('users/user')
+except udm_errors.base as e:
+	# UDM error, user module coule not be initiated
+	CORE.warn('An error occurred getting the UDM users/user module: %s' % e)
 
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
 
@@ -178,10 +185,10 @@ class Processor( signals.Provider ):
 	"""
 
 	def __init__( self, username, password ):
-		global users_module
 		self.__username = username
 		self.__password = password
 		self.__user_dn = None
+		self.__udm_users_module_initialised = False
 		signals.Provider.__init__( self )
 		self.core_i18n = Translation( 'univention-management-console' )
 		self.i18n = I18N_Manager()
@@ -201,16 +208,6 @@ class Processor( signals.Provider ):
 				CORE.info( 'The LDAP DN for user %s is %s' % ( self.__username, self.__user_dn ) )
 			else:
 				CORE.info( 'The LDAP DN for user %s could not be found' % self.__username )
-
-			try:
-				# initiate the users/user UDM module
-				udm_modules.update()
-				users_module = udm_modules.get('users/user')
-				udm_modules.init(self.lo, self.po, users_module)
-			except udm_errors.base as e:
-				# UDM error, user module coule not be initiated
-				CORE.warn('An error occurred intializing the UDM users/user module: %s' % e)
-				users_module = None
 
 		# read the ACLs
 		self.acls = LDAP_ACLs( self.lo, self.__username, ucr[ 'ldap/base' ] )
@@ -325,6 +322,10 @@ class Processor( signals.Provider ):
 			if not users_module:
 				raise udm_errors.base('UDM module users/user could not be initiated')
 
+			if not self.__udm_users_module_initialised:
+				# initiate the users/user UDM module
+				udm_modules.init(self.lo, self.po, users_module)
+				self.__udm_users_module_initialised = True
 			# open an LDAP connection with the user password and credentials
 			lo = udm_uldap.access(host = ucr.get('ldap/server/name'), base = ucr.get('ldap/base'), port = int(ucr.get('ldap/server/port', '7389')), binddn = self.__user_dn, bindpw = self.__password, follow_referral=True)
 

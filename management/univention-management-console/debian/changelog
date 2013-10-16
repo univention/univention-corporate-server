@@ -1,3 +1,10 @@
+univention-management-console (6.0.18-1) unstable; urgency=low
+
+  * Bug #32565: Avoid reloading UDM users module: If handler and syntax are of
+    of sync this may lead to import errors that crash the whole server
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 Oct 2013 19:32:23 +0200
+
 univention-management-console (6.0.17-1) unstable; urgency=low
 
   * Bug #32850: allow host matching with wildcards for UMC ACLs
