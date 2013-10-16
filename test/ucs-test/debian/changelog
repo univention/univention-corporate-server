@@ -1,3 +1,11 @@
+ucs-test (4.0.144-3) unstable; urgency=low
+
+  * 55_adconnector/010_sync_group_type: test groupType synchronization
+    (Bug #32769)
+  * Adapt existing AD connector tests to new groupType synchronization
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Oct 2013 00:10:49 +0200
+
 ucs-test (4.0.144-2) unstable; urgency=low
 
   * Rename connector/s4/mapping/group/synclocal to

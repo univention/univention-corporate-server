@@ -6,11 +6,12 @@
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137
-. "$TESTLIBPATH/random.sh" || exit 137 
+. "$TESTLIBPATH/random.sh" || exit 137
 
 . "adconnector.sh" || exit 137
 test -n "$connector_ad_ldap_host" || exit 137
 
+. /usr/share/univention-lib/ucr.sh
 
 INNER_GROUP="$(random_chars)"
 OUTER_GROUP="$(random_chars)"
@@ -25,7 +26,7 @@ udm_create "groups/group" || fail_test 110
 
 section "Create inner group"
 
-#'Known' UCS-Groups are expected not to be synced to AD
+#'Known' UCS-Groups are expected not to be synced to AD if connector/ad/mapping/group/grouptype to false
 UDM_groups_group_name="$INNER_GROUP"
 udm_create "groups/group" "" "" "" "" --set sambaGroupType=5 || fail_test 110
 
@@ -42,7 +43,11 @@ udm_exists "groups/group"; fail_bool 0 110
 UDM_groups_group_name="$INNER_GROUP"
 udm_exists "groups/group"; fail_bool 0 110
 
-ad_exists "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 1 110
+if is_ucr_true connector/ad/mapping/group/grouptype; then
+	ad_exists "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
+else
+	ad_exists "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 1 110
+fi
 ad_exists "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
 
 udm_verify_udm_attribute "sambaGroupType" "5" "groups/group"; fail_bool 0 110
@@ -51,8 +56,13 @@ UDM_groups_group_name="$OUTER_GROUP"
 udm_verify_multi_value_udm_attribute_contains "nestedGroup" \
 	"cn=$INNER_GROUP,cn=groups,$ldap_base" "groups/group"; fail_bool 0 110
 
-ad_verify_multi_value_attribute_contains "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
-	"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 1 110
+if is_ucr_true connector/ad/mapping/group/grouptype; then
+	ad_verify_multi_value_attribute_contains "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
+		"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 0 110
+else
+	ad_verify_multi_value_attribute_contains "CN=$OUTER_GROUP,CN=groups,$(ad_get_base)" \
+		"member" "CN=$INNER_GROUP,CN=groups,$(ad_get_base)"; fail_bool 1 110
+fi
 
 section "Clean up"
 

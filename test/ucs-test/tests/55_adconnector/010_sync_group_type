@@ -1,0 +1,82 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check group type synchronisation"
+## exposure: dangerous
+## packages:
+## - univention-ad-connector
+## tags:
+##  - basic
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. /usr/share/univention-lib/ucr.sh
+. "adconnector.sh" || exit 137
+test -n "$connector_ad_ldap_host" || exit 137
+
+is_ucr_true connector/ad/mapping/group/grouptype || exit 137
+
+GLOBAL_GROUP_TYPE="-2147483646"
+LOCAL_GROUP_TYPE="-2147483643"
+DOMAIN_LOCAL_GROUP_TYPE="-2147483644"
+UNIVERSAL_GROUP_TYPE="-2147483640"
+
+SYNCMODE="$(ad_get_sync_mode)"
+ad_set_sync_mode "sync"
+
+# Groups created in UCS are always global groups in AD
+for groupType in 2 3 5; do
+	UDM_groups_group_name="$(random_chars)"
+	UDM_groups_group_sambaGroupType="$groupType"
+
+	udm_create "groups/group"; fail_bool 0 110
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+	ad_exists "$AD_DN"; fail_bool 0 110
+
+	ad_verify_attribute "$AD_DN" "groupType" "-2147483646"; fail_bool 0 110
+	udm_verify_udm_attribute "sambaGroupType" "$groupType" "groups/group"; fail_bool 0 110
+
+	ad_delete "$AD_DN" || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	ad_exists "$AD_DN"; fail_bool 1 110
+	udm_exists "groups/group"; fail_bool 1 110
+done
+
+for groupType in $GLOBAL_GROUP_TYPE $DOMAIN_LOCAL_GROUP_TYPE $UNIVERSAL_GROUP_TYPE; do
+	UDM_groups_group_name="$(random_chars)"
+	UDM_groups_group_adGroupType="$groupType"
+
+	udm_create "groups/group"; fail_bool 0 110
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+	ad_exists "$AD_DN"; fail_bool 0 110
+
+	ad_verify_attribute "$AD_DN" "groupType" "$groupType"; fail_bool 0 110
+
+	ad_delete "$AD_DN" || fail_test 110
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	ad_exists "$AD_DN"; fail_bool 1 110
+	udm_exists "groups/group"; fail_bool 1 110
+done
+
+# Unable to create local groups in AD
+for groupType in $LOCAL_GROUP_TYPE; do
+	UDM_groups_group_name="$(random_chars)"
+	UDM_groups_group_adGroupType="$groupType"
+
+	udm_create "groups/group"; fail_bool 0 110
+	ad_wait_for_synchronization; fail_bool 0 110
+
+	AD_DN="CN=$UDM_groups_group_name,CN=groups,$(ad_get_base)"
+	ad_exists "$AD_DN"; fail_bool 1 110
+
+	udm_delete "groups/group"
+done
+
+exit "$RETVAL"
+
