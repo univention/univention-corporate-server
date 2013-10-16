@@ -1,3 +1,9 @@
+univention-ldap (10.0.16-2) unstable; urgency=low
+
+  * Fix missing double termination in access by dn.regex clause (Bug #31305)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Oct 2013 17:40:04 +0200
+
 univention-ldap (10.0.16-1) unstable; urgency=low
 
   * Don't allow cration of objects with uidNumber=0 below cn=computers
@@ -21,7 +27,6 @@ univention-ldap (10.0.15-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 13 Oct 2013 21:42:07 +0200
 
->>>>>>> .r45185
 univention-ldap (10.0.14-1) unstable; urgency=low
 
   * Add support for icons, umc module definition and translation files         

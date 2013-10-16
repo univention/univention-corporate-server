@@ -11,7 +11,7 @@ access to dn="cn=admin-settings,cn=univention,%(base)s" attrs="entry,children"
 	by * none break
 
 access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$"
-	by dn.regex="^uid=$1,.*%(base)s$" %(access)s
+	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s
 	by dn.base="cn=admin,%(base)s" %(access)s
 	by * none
 ''' % { 'base' : ldap_base, 'access' : access }
