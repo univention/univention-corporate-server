@@ -2524,6 +2524,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;30763">Bug 30763</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The sysvol synchronization is started after the Samba 4 join scripts are finished
+		  (<ulink url="&ucsbug;29662">Bug 29662</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
