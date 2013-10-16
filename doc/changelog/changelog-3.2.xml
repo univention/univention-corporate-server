@@ -504,6 +504,10 @@
 			have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
 		  </simpara></listitem>
 
+		  <listitem><simpara>
+			The new attribute <envar>univentionShareNFSCustomSetting</envar> to support custom NFS share settings has been added (<ulink url="&ucsbug;18708">Bug 18708</ulink>).
+		  </simpara></listitem>
+
 		</itemizedlist>
 	</section>
 
@@ -1495,6 +1499,15 @@
 		  When appending name servers to DNS forward and DNS reverse zones, a trailing dot will be
 		  added to every entry if missing, not only the first one (<ulink url="&ucsbug;29568">Bug 29568</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+			The UMC Share module layout and texts have been improved (<ulink url="&ucsbug;32882">Bug 32882</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			Custom NFS settings can now be added to NFS Shares (<ulink url="&ucsbug;18708">Bug 18708</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -2012,6 +2025,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The &ucsUCRV; descriptions in <package>univention-nfs</package> have been
 		  revised (<ulink url="&ucsbug;30948">Bug 30948</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  NFSv4 is now activated by default in UCS 3.2. Shares are accessible by clients depending on their capabilities. 
+		  To disable NFSv4 support the &ucsUCRV; <envar>nfs/nfsd/nfs4</envar> can be set to false (<ulink url="&ucsbug;21556">Bug 21556</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
