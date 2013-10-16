@@ -1,3 +1,9 @@
+univention-ldap (10.0.16-3) unstable; urgency=low
+
+  * Fixed syntax errors in ACL config (Bug #31305)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Oct 2013 20:35:37 +0200
+
 univention-ldap (10.0.16-2) unstable; urgency=low
 
   * Fix missing double termination in access by dn.regex clause (Bug #31305)

@@ -35,8 +35,9 @@ if configRegistry.is_true('ldap/acl/slavepdc', True):
 	print '   by dn.onelevel="cn=dc,cn=computers,%s" %s' % ( ldap_base, usr )
 	print '   by * read break'
 
-	print 'access to attrs=uidNumber value=0	## to prevent uidNumber=0 modifications'
-	print '   by dn.onelevel="cn=dc,cn=computers,%s" read'
+	print '## to prevent uidNumber=0 modifications'
+	print 'access to attrs=uidNumber value=0'
+	print '   by dn.onelevel="cn=dc,cn=computers,%s" read' % ( ldap_base )
 	print '   by * read break'
 
 	print 'access to dn.subtree="cn=computers,%s" attrs=children,entry filter="(!(uidNumber=0))"' % ( ldap_base )
