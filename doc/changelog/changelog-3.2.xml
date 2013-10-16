@@ -1168,6 +1168,11 @@
 			(<ulink url="&ucsbug;32871">Bug 32871</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The new extended attribute "objectFlag" has been added to the UDM modules users, groups and computers
+		  (<ulink url="&ucsbug;31408">Bug 31408</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
