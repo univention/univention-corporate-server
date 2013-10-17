@@ -81,7 +81,12 @@ def _test_domain_local_group_change():
 		else:
 			raise GroupChangePossible
 
-		udm.modify_object('groups/group', dn = group2, adGroupType=GROUP_TYPE_GLOBAL)
+		try:
+			udm.modify_object('groups/group', dn = group2, adGroupType=GROUP_TYPE_GLOBAL)
+		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
+			pass
+		else:
+			raise GroupChangePossible
 
 		udm.modify_object('groups/group', dn = group3, adGroupType=GROUP_TYPE_UNIVERSAL)
 
@@ -129,7 +134,12 @@ def _test_global_group_change():
 		else:
 			raise GroupChangePossible
 
-		udm.modify_object('groups/group', dn = group2, adGroupType=GROUP_TYPE_DOMAIN_LOCAL)
+		try:
+			udm.modify_object('groups/group', dn = group2, adGroupType=GROUP_TYPE_DOMAIN_LOCAL)
+		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
+			pass
+		else:
+			raise GroupChangePossible
 
 		udm.modify_object('groups/group', dn = group3, adGroupType=GROUP_TYPE_UNIVERSAL)
 
