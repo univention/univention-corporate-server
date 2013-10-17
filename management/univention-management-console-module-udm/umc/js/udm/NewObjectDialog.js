@@ -34,15 +34,16 @@ define([
 	"dojo/_base/array",
 	"dojo/has",
 	"dojo/promise/all",
+	"dojo/Deferred",
+	"dijit/Dialog",
 	"umc/tools",
-	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, has, all, tools, Page, Text, Form, ContainerWidget, _) {
+], function(declare, lang, array, has, all, Deferred, Dialog, tools, Text, Form, ContainerWidget, _) {
 
-	return declare("umc.modules.udm.NewObjectDialog", [ Page ], {
+	return declare("umc.modules.udm.NewObjectDialog", [ Dialog ], {
 		// summary:
 		//		Dialog class for creating a new LDAP object.
 
@@ -82,26 +83,12 @@ define([
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			this.canContinue = new Deferred();
 
-			// buttons
-			var buttons = [{
-				name: 'continue',
-				label: _('Continue'),
-				defaultButton: true,
-				callback: lang.hitch(this, function() {
-					this.onDone(this._form.get('value'));
-				}),
-				style: 'float:right;'
-			}, {
-				name: 'cancel',
-				label: _('Cancel'),
-				callback: lang.hitch(this, function() {
-					this.onCancel();
-				})
-			}];
-
+			// mixin the dialog title
 			lang.mixin(this, {
-				footerButtons: buttons
+				//style: 'max-width: 450px'
+				title: _( 'Add a new %s', this.objectNameSingular )
 			});
 		},
 
@@ -246,15 +233,39 @@ define([
 				layout = [ 'container', 'container_help', 'objectType', 'objectTemplate' ];
 			}
 
+			// buttons
+			var buttons = [{
+				name: 'add',
+				label: _('Add'),
+				defaultButton: true,
+				callback: lang.hitch(this, function() {
+					this.onDone(this._form.get('value'));
+					this.destroyRecursive();
+				}),
+				style: 'float:right;'
+			}, {
+				name: 'close',
+				label: _('Close'),
+				callback: lang.hitch(this, function() {
+					this.destroyRecursive();
+				})
+			}];
+
 			// now create a Form
 			this._form = new Form({
 				widgets: widgets,
+				buttons: buttons,
 				layout: layout
 			});
 			this._form.on('submit', lang.hitch(this, function() {
 				this.onDone(this._form.get('value'));
+				this.destroyRecursive();
 			}));
-			this.addChild(this._form);
+
+			var container = new ContainerWidget({});
+			container.addChild(this._form);
+			this.set('content', container);
+
 			this._form.ready().then(lang.hitch(this, function() {
 				var formNecessary = false;
 				tools.forIn(this._form._widgets, function(iname, iwidget) {
@@ -265,17 +276,18 @@ define([
 						}
 					}
 				});
-				if (!formNecessary) {
-					this._form.submit();
+				if (formNecessary) {
+					this.canContinue.reject();
 				} else {
-
-					// show headerText only if the form will be displayed
-					this.set('headerText', _('Add a new %s', this.objectNameSingular));
+					this.canContinue.resolve();
+					this._form.submit();
 				}
 			}));
+			this.show();
 		},
 
-		onDone: function() {
+		onDone: function(options) {
+			// event stub
 		},
 
 		onCancel: function() {

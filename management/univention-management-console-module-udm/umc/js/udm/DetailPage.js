@@ -43,7 +43,7 @@ define([
 	"dojo/json",
 	"dijit/TitlePane",
 	"dijit/layout/BorderContainer",
-	"dijit/layout/StackContainer",
+	"dijit/layout/ContentPane",
 	"umc/render",
 	"umc/tools",
 	"umc/dialog",
@@ -63,8 +63,8 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/widgets"
-], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, StackContainer, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
-	return declare("umc.modules.udm.DetailPage", [ StackContainer, StandbyMixin ], {
+], function(declare, lang, array, on, Deferred, when, all, style, construct, domClass, topic, json, TitlePane, BorderContainer, ContentPane, render, tools, dialog, ContainerWidget, Form, Page, StandbyMixin, ProgressBar, TabContainer, Text, Button, ComboBox, LabelPane, Template, OverwriteLabel, UMCPBundle, _ ) {
+	return declare("umc.modules.udm.DetailPage", [ ContentPane, StandbyMixin ], {
 		// summary:
 		//		This class renderes a detail page containing subtabs and form elements
 		//		in order to edit LDAP objects.
@@ -104,6 +104,10 @@ define([
 		// note: String?
 		//		If given, this string is displayed as note on the first page.
 		note: null,
+
+		// showProgressBarDeferred: Deferred
+		//		When to start showing the progress bar
+		showProgressBarDeferred: null,
 
 		// internal reference to the formular containing all form widgets of an LDAP object
 		_form: null,
@@ -173,8 +177,10 @@ define([
 			this.inherited(arguments);
 
 			// create a progressbar
+			this.progressMessage = _('Loading %s...', this.objectNameSingular);
 			this._progressBar = this.own(new ProgressBar())[0];
-			this._progressBar.reset(_('Loading %s...', this.objectNameSingular));
+			this._progressBar.reset(this.progressMessage);
+			this.loadedDeferred = new Deferred();
 
 			// remember the objectType of the object we are going to edit
 			this._editedObjType = this.objectType;
@@ -191,8 +197,9 @@ define([
 			this._bundledCommands = {};
 
 			// prepare parallel queries
+			this.propertyQuery = this.umcpCommandBundle('udm/properties', params);
 			var commands = {
-				properties: this.umcpCommandBundle('udm/properties', params),
+				properties: this.propertyQuery,
 				layout: this.umcpCommandBundle('udm/layout', params)
 			};
 			if (!this._multiEdit) {
@@ -208,11 +215,17 @@ define([
 			// in case an object template has been chosen, add the umcp request for the template
 			var objTemplate = lang.getObject('objectTemplate', false, this.newObjectOptions);
 			if (objTemplate && 'None' != objTemplate) {
-				commands.template = this.umcpCommand('udm/get', [objTemplate], true, 'settings/usertemplate');
+				this.templateQuery = this.umcpCommand('udm/get', [objTemplate], true, 'settings/usertemplate');
+				commands.template = this.templateQuery;
+			} else {
+				this.templateQuery = new Deferred();
+				this.templateQuery.resolve(null);
 			}
 
 			// when the commands have been finished, create the detail page
-			this.standby(true, this._progressBar);
+			this.showProgressBarDeferred.then(lang.hitch(this, function() {
+				this.standbyDuring(this.loadedDeferred, this._progressBar);
+			}));
 			(new all(commands)).then(lang.hitch(this, function(results) {
 				var properties = lang.getObject('properties.result', false, results);
 				var layout = lang.getObject('layout.result', false, results);
@@ -220,14 +233,12 @@ define([
 				this.ldapBase = results.ucr[ 'ldap/base' ];
 				var template = lang.getObject('template.result', false, results) || null;
 				this.renderDetailPage(properties, layout, policies, template).then(lang.hitch(this, function() {
-					this.standby(false);
+					this.loadedDeferred.resolve();
 				}), lang.hitch(this, function() {
-					this.standby(false);
+					this.loadedDeferred.resolve();
 				}));
 			}), lang.hitch(this, function() {
-				this.standby(false);
-			}), lang.hitch(this, function() {
-				this.standby(false);
+				this.loadedDeferred.resolve();
 			}));
 		},
 
@@ -652,43 +663,7 @@ define([
 				style: 'margin:0'
 			}))[0];
 			this._policyDeferred.then(lang.hitch(this, function() {
-				var wizardModuleURL = 'umc/modules/udm/wizards/' + this.objectType;
-				var wizardCheck;
-				if (!this.newObjectOptions) {
-					wizardCheck = new Deferred();
-					wizardCheck.reject();
-				} else {
-					wizardCheck = tools.urlExists(wizardModuleURL);
-				}
-				when(wizardCheck).then(
-					lang.hitch(this, function() {
-						require([wizardModuleURL], lang.hitch(this, function(WizardClass) {
-							this._wizard = WizardClass({
-								detailForm: this._form,
-								detailButtons: this.getButtonDefinitions()
-							});
-							this._wizard.on('Cancel', lang.hitch(this, function() {
-								topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'create-wizard', 'cancel');
-								this.onCloseTab();
-							}));
-							this._wizard.on('Advanced', lang.hitch(this, function() {
-								topic.publish('/umc/actions', 'udm', this._parentModule.moduleFlavor, 'create-wizard', 'advance');
-								this.selectChild(this._form);
-								this._tabs.getChildren()[0].addNote(_('%s was not yet created!', this.objectNameSingular));
-							}));
-							this._wizard.on('Finished', lang.hitch(this, function() {
-								this.validateChanges(null);
-							}));
-							this.addChild(this._wizard);
-							this.addChild(this._form);
-							this.selectChild(this._wizard);
-						}));
-					}),
-					lang.hitch(this, function() {
-						this.addChild(this._form);
-						this.selectChild(this._form);
-					})
-				);
+				this.set('content', this._form);
 			}));
 
 			// set options
@@ -700,49 +675,8 @@ define([
 			// initiate the template mechanism (only for new objects)
 			if (!this.ldapName && !this._multiEdit) {
 				// search for given default values in the properties... these will be replaced
-				// by the template mechanism
-				var template = {};
-				array.forEach(_properties, function(iprop) {
-					if (iprop['default']) {
-						var defVal = iprop['default'];
-						if (typeof defVal == "string" && iprop.multivalue) {
-							defVal = [ defVal ];
-						}
-						template[iprop.id] = defVal;
-					}
-				});
-
-				// mixin the values set in the template object (if given)
-				if (_template) {
-					tools.forIn(_template, lang.hitch(this, function(key, value) {
-						// $dn$, $options$, etc of the template
-						// should not be values for the object
-						if ((/^\$.*\$$/).test(key)) {
-							delete _template[key];
-						}
-						if ((/^_.+$/).test(key)) {
-							var specialWidget = this[key + 'Widget'];
-							// TODO: it may be important to solve this generically
-							// by now, only _options will go this path
-							// and _optionsWidget needs a special format
-							var specialValue = {};
-							array.forEach(value, function(val) {
-								specialValue[val] = true;
-							});
-							if (specialWidget) {
-								specialWidget.set('value', specialValue);
-							}
-							delete _template[key];
-						}
-					}));
-					template = lang.mixin(template, _template);
-				}
-
-				// create a new template object that takes care of updating the elements in the form
-				this._template = this.own(new Template({
-					widgets: widgets,
-					template: template
-				}))[0];
+				this.templateObject = this.buildTemplate(_template, _properties, widgets);
+				this.own(this.templateObject);
 			}
 
 			// load form data
@@ -803,6 +737,52 @@ define([
 				});
 			}));
 			return ret;
+		},
+
+		buildTemplate: function(_template, _properties, widgets) {
+			// by the template mechanism
+			var template = {};
+			array.forEach(_properties, function(iprop) {
+				if (iprop['default']) {
+					var defVal = iprop['default'];
+					if (typeof defVal == "string" && iprop.multivalue) {
+						defVal = [ defVal ];
+					}
+					template[iprop.id] = defVal;
+				}
+			});
+
+			// mixin the values set in the template object (if given)
+			if (_template) {
+				tools.forIn(_template, lang.hitch(this, function(key, value) {
+					// $dn$, $options$, etc of the template
+					// should not be values for the object
+					if ((/^\$.*\$$/).test(key)) {
+						delete _template[key];
+					}
+					if ((/^_.+$/).test(key)) {
+						var specialWidget = this[key + 'Widget'];
+						// TODO: it may be important to solve this generically
+						// by now, only _options will go this path
+						// and _optionsWidget needs a special format
+						var specialValue = {};
+						array.forEach(value, function(val) {
+							specialValue[val] = true;
+						});
+						if (specialWidget) {
+							specialWidget.set('value', specialValue);
+						}
+						delete _template[key];
+					}
+				}));
+				template = lang.mixin(template, _template);
+			}
+
+			// create a new template object that takes care of updating the elements in the form
+			return new Template({
+				widgets: widgets,
+				template: template
+			});
 		},
 
 		getButtonDefinitions: function() {

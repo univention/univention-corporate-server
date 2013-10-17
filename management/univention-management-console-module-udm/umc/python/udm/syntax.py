@@ -50,11 +50,10 @@ class Widget( object ):
 
 	def __contains__( self, syntax ):
 		'''Checks if the syntax is represented by this widget'''
-		syntax_classes = tuple(getattr(udm_syntax, iclass) for iclass in self._syntax_classes if hasattr(udm_syntax, iclass))
 		if self._subclasses:
-			return isinstance( syntax, syntax_classes ) or type( syntax ) in ( type, ) and issubclass( syntax, syntax_classes )
+			return isinstance( syntax, self._syntax_classes ) or type( syntax ) in ( type, ) and issubclass( syntax, self._syntax_classes )
 		else:
-			return inspect.isclass( syntax ) and syntax in syntax_classes or type( syntax ) in syntax_classes
+			return inspect.isclass( syntax ) and syntax in self._syntax_classes or type( syntax ) in self._syntax_classes
 
 	def name( self, syntax, udm_property ):
 		if self._name is None and callable( self._widget_func ):
@@ -67,23 +66,23 @@ class Widget( object ):
 		return self._default_value
 
 __widgets = (
-	Widget( 'CheckBox', ( "OkOrNot", "TrueFalseUp", "boolean", ), False ),
-	Widget( 'PasswordInputBox', ( "passwd", "userPasswd", ), '' ),
-	Widget( 'DateBox', ( "iso8601Date", "date", ), '1970-01-01' ),
-	Widget( 'TimeBox', ( "TimeString", ), '00:00'),
-	Widget( None, ( "LDAP_Search", ), [], subclasses = False, widget_func = lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox' ),
-	Widget( 'ComboBox', ( "select", ), [] ),
-	Widget( 'TextBox', ( "ldapDnOrNone", "ldapDn", ), '', subclasses = False ),
-	Widget( None, ("UDM_Objects", ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and syn.simple == False and 'umc/modules/udm/MultiObjectSelect' or 'umc/modules/udm/ComboBox' ),
-	Widget( 'ComboBox', ( "UDM_Attribute", ), '' ),
-	Widget( None, ( "ldapDnOrNone", "ldapDn", ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc/modules/udm/MultiObjectSelect' or 'ComboBox' ),
-	Widget( 'UnixAccessRights', ( "UNIX_AccessRight", ), '000' ),
-	Widget( 'MultiSelect', ( "MultiSelect", ), [] ),
-	Widget( 'umc/modules/udm/CertificateUploader', ( "Base64Upload", ), '' ),
-	Widget( 'ImageUploader', ( "jpegPhoto", ), '' ),
-	Widget( 'TextArea', ( "TextArea", ), '' ),
-	Widget( 'TextBox', ( "simple", ), '*' ),
-	Widget( None, ( "complex", ), None, widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'MultiInput' or 'ComplexInput' ),
+	Widget( 'CheckBox', ( udm_syntax.OkOrNot, udm_syntax.TrueFalseUp, udm_syntax.boolean ), False ),
+	Widget( 'PasswordInputBox', ( udm_syntax.passwd, udm_syntax.userPasswd ), '' ),
+	Widget( 'DateBox', ( udm_syntax.iso8601Date, udm_syntax.date ), '1970-01-01' ),
+	Widget( 'TimeBox', ( udm_syntax.TimeString ), '00:00'),
+	Widget( None, ( udm_syntax.LDAP_Search, ), [], subclasses = False, widget_func = lambda syn, prop: syn.viewonly and 'LinkList' or 'ComboBox' ),
+	Widget( 'ComboBox', udm_syntax.select, [] ),
+	Widget( 'TextBox', ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', subclasses = False ),
+	Widget( None, udm_syntax.UDM_Objects, '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and len( syn.udm_modules ) == 1 and syn.simple == False and 'umc/modules/udm/MultiObjectSelect' or 'umc/modules/udm/ComboBox' ),
+	Widget( 'ComboBox', udm_syntax.UDM_Attribute, '' ),
+	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc/modules/udm/MultiObjectSelect' or 'ComboBox' ),
+	Widget( 'UnixAccessRights', udm_syntax.UNIX_AccessRight, '000' ),
+	Widget( 'MultiSelect', udm_syntax.MultiSelect, [] ),
+	Widget( 'umc/modules/udm/CertificateUploader', udm_syntax.Base64Upload, '' ),
+	Widget( 'ImageUploader', udm_syntax.jpegPhoto, '' ),
+	Widget( 'TextArea', udm_syntax.TextArea, '' ),
+	Widget( 'TextBox', udm_syntax.simple, '*' ),
+	Widget( None, udm_syntax.complex, None, widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'MultiInput' or 'ComplexInput' ),
 	)
 
 def choices( syntax, udm_property ):

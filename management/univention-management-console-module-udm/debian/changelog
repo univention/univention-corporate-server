@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.47-1) unstable; urgency=low
+
+  * Bug #23214: Render wizard as popup over search grid
+  * Bug #32565: Revert changes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 17 Oct 2013 15:34:51 +0200
+
 univention-management-console-module-udm (4.0.46-1) unstable; urgency=low
 
   * Bug #32877: re-enable module options

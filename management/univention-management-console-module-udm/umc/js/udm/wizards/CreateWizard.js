@@ -43,8 +43,7 @@ define([
 		autoValidate: true,
 		autoFocus: true,
 
-		detailForm: null,
-		detailButtons: null,
+		detailPage: null,
 
 		widgetPages: null,
 
@@ -56,19 +55,20 @@ define([
 			return widgets;
 		},
 
-		buildWidget: function(widgetName, originalWidget, type) {
+		buildWidget: function(widgetName, originalWidgetDefinition) {
 			return {
 				name: widgetName,
-				sizeClass: originalWidget.sizeClass,
-				label: originalWidget.label,
-				required: originalWidget.required,
-				type: type,
-				value: originalWidget.get('value')
+				sizeClass: originalWidgetDefinition.size,
+				label: originalWidgetDefinition.label,
+				required: originalWidgetDefinition.required,
+				type: originalWidgetDefinition.type
 			};
 		},
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
+			this._mayFinishDeferred = this.detailPage.loadedDeferred;
+			this._detailButtons = this.detailPage.getButtonDefinitions();
 			var pages = [];
 			this._connectWidgets = [];
 			array.forEach(this.widgetPages, lang.hitch(this, function(page) {
@@ -77,9 +77,8 @@ define([
 				var pageName = 'page' + pages.length;
 				var pageWidgets = this._getPageWidgets(layout);
 				array.forEach(pageWidgets, lang.hitch(this, function(widgetName) {
-					var originalWidget = this.detailForm.getWidget(widgetName);
-					var type = originalWidget.declaredClass.substr(originalWidget.declaredClass.lastIndexOf('.') + 1);
-					widgets.push(this.buildWidget(widgetName, originalWidget, type));
+					var originalWidgetDefinition = array.filter(this.properties, function(prop) { return prop.id == widgetName; })[0];
+					widgets.push(this.buildWidget(widgetName, originalWidgetDefinition));
 					this._connectWidgets.push({page: pageName, widget: widgetName});
 				}));
 				pages.push({
@@ -95,38 +94,31 @@ define([
 			});
 		},
 
-		connectWidget: function(wizardWidget, wizardForm, detailWidget) {
-			wizardForm.ready().then(lang.hitch(this, function() {
-				this.own(wizardWidget.watch('value', function(attr, oldVal, newVal) {
-					detailWidget.set('value', newVal);
-				}));
-			}));
-		},
-
 		buildRendering: function() {
 			this.inherited(arguments);
-			array.forEach(this._connectWidgets, lang.hitch(this, function(pageWidget) {
-				var wizardWidget = this.getWidget(pageWidget.page, pageWidget.widget);
-				var wizardForm = this._pages[pageWidget.page]._form;
-				var detailWidget = this.detailForm.getWidget(pageWidget.widget);
-				this.connectWidget(wizardWidget, wizardForm, detailWidget);
+			var allWidgets = {};
+			tools.forIn(this._pages, lang.hitch(this, function(pageName, page) {
+				var finishButton = page._footerButtons.finish;
+				var originalLabel = finishButton.get('label');
+				finishButton.set('disabled', true);
+				finishButton.set('label', this.detailPage.progressMessage);
+				this._mayFinishDeferred.then(function() {
+					finishButton.set('label', originalLabel);
+					finishButton.set('disabled', false);
+				});
+				lang.mixin(allWidgets, page._form._widgets);
 			}));
+
+			this.templateObject = this.detailPage.buildTemplate(this.template, this.properties, allWidgets);
+			this.own(this.templateObject);
 		},
 
 		getFooterButtons: function() {
 			var buttons = this.inherited(arguments);
 			array.forEach(buttons, lang.hitch(this, function(button) {
 				if (button.name === 'finish') {
-					array.some(this.detailButtons, function(detailButton) {
+					array.some(this._detailButtons, function(detailButton) {
 						if (detailButton.name === 'submit') {
-							button.label = detailButton.label;
-							return true;
-						}
-					});
-				}
-				if (button.name === 'cancel') {
-					array.some(this.detailButtons, function(detailButton) {
-						if (detailButton.name === 'close') {
 							button.label = detailButton.label;
 							return true;
 						}
@@ -137,22 +129,11 @@ define([
 				name: 'advance',
 				label: _('Advanced'),
 				align: 'right',
-				callback: lang.hitch(this, 'onAdvanced')
+				callback: lang.hitch(this, function() {
+					this.onAdvanced(this.getValues());
+				})
 			});
 			return buttons;
-		},
-
-		onFinished: function() {
-			var focusNode = focusUtil.curNode;
-			if (focusNode) {
-				var focusWidget = registry.byId(focusNode.id);
-				if (focusWidget) {
-					// force watch handler to fire _before_ on('Finished').
-					//   otherwise the value from the wizard is not set to the underlying
-					//   UDM form while validating
-					focusWidget.set('value', focusWidget.get('value'));
-				}
-			}
 		},
 
 		onAdvanced: function() {

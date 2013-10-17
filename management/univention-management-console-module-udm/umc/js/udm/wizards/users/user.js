@@ -40,7 +40,8 @@ define([
 				title: _('User information'),
 				widgets: [
 					['title', 'firstname', 'lastname'], // row one
-					['username'] // row two
+					['username'], // row two
+					['disabled'] // row three
 				]
 			}, { // page two
 				title: _('Password'),
@@ -49,7 +50,32 @@ define([
 					['pwdChangeNextLogin', 'overridePWLength']
 				]
 			}
-		]
+		],
+
+		buildWidget: function(widgetName, originalWidgetDefinition) {
+			if (widgetName == 'disabled') {
+				return {
+					name: widgetName,
+					sizeClass: 'One',
+					label: _('Account disabled'),
+					required: false,
+					type: 'CheckBox'
+				};
+			} else {
+				return this.inherited(arguments);
+			}
+		},
+
+		getValues: function() {
+			var values = this.inherited(arguments);
+			var disabled = values.disabled;
+			delete values.disabled;
+			if (disabled) {
+				values.disabled = 'all';
+			}
+			return values;
+		}
+
 	});
 });
 

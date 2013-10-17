@@ -143,6 +143,8 @@ define([
 		_menuDelete: null,
 		_menuMove: null,
 
+		_createObjectWizard: null,
+
 		constructor: function() {
 			this._default_columns = [{
 				name: 'name',
@@ -189,6 +191,8 @@ define([
 				// finish standby
 				this.standby(false);
 			}));
+
+			this._wizardStandby = new Deferred();
 
 			// get the correct entry from the lists above
 			this.objectNameSingular = objNames['default'][0];
@@ -450,6 +454,11 @@ define([
 				this._ucr['directory/manager/web/modules/default'];
 			this._autoSearch = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/search/autosearch'] ||
 				this._ucr['directory/manager/web/modules/autosearch'];
+			this._wizardsDisabled = this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/wizard/disabled'] ||
+				this._ucr['directory/manager/web/modules/wizard/disabled'];
+			if (this.moduleFlavor == 'navigation') {
+				this._wizardsDisabled = 'yes';
+			}
 
 			var umcpCmd = lang.hitch(this, 'umcpCommand');
 			var widgets = [];
@@ -559,8 +568,8 @@ define([
 				umcpCommand: umcpCmd,
 				depends: [ 'objectProperty', 'objectType' ]
 			}]);
-			layout[0].push('hidden');
 			layout[0].push('objectType');
+			layout[0].push('hidden');
 			if (superordinates && superordinates.length) {
 				layout[0].push('objectProperty');
 				layout[1].push('objectPropertyValue');
@@ -1262,11 +1271,6 @@ define([
 			//		Open a user dialog for creating a new LDAP object.
 
 			// when we are in navigation mode, make sure the user has selected a container
-			if (this._newObjectDialogPage) {
-				this.removeChild(this._newObjectDialogPage);
-				this._newObjectDialogPage.destroyRecursive();
-				this._newObjectDialogPage = null;
-			}
 			var selectedContainer = { id: '', label: '', path: '' };
 			if ('navigation' == this.moduleFlavor) {
 				var items = this._tree.get('selectedItems');
@@ -1280,37 +1284,57 @@ define([
 
 			// open the dialog
 			var superordinate = this._searchForm.getWidget('superordinate');
-			this._newObjectDialogPage = new NewObjectDialog({
+			var _dialog = new NewObjectDialog({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				moduleFlavor: this.moduleFlavor,
 				selectedContainer: selectedContainer,
 				selectedSuperordinate: superordinate && superordinate.get('value'),
 				defaultObjectType: this._ucr['directory/manager/web/modules/' + this.moduleFlavor + '/add/default'] || null,
+				onDone: lang.hitch(this, function(options) {
+					// reinitiate standby when it stopped because
+					// of dialog
+					if (_dialog.canContinue.isRejected()) {
+						this.standbyDuring(this._wizardStandby);
+					}
+
+					// when the options are specified, create a new detail page
+					options.objectType = options.objectType || this.moduleFlavor; // default objectType is the module flavor
+					this.createDetailPage(options.objectType, undefined, options);
+				}),
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular
 			});
-			this._newObjectDialogPage.on('Cancel', lang.hitch(this, function(values) {
-				this.selectChild(this._searchPage);
-			}));
-			this._newObjectDialogPage.on('Done', lang.hitch(this, function(values) {
-				// when the values are specified, create a new detail page
-				values.objectType = values.objectType || this.moduleFlavor; // default objectType is the module flavor
-				this.createDetailPage(values.objectType, undefined, values);
-			}));
-			this.addChild(this._newObjectDialogPage);
-			this.selectChild(this._newObjectDialogPage);
+			this.own(_dialog);
+			this.standbyDuring(all([_dialog.canContinue, this._wizardStandby]));
 		},
 
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
 			// summary:
 			//		Creates and views the detail page for editing LDAP objects.
 
-			if (newObjOptions) {
+			var wizardDeferred = new Deferred();
+			var showProgressBarDeferred = new Deferred();
+			if (newObjOptions && !tools.isTrue(this._wizardsDisabled)) {
 				// make sure that container and superordinate are at least set to null
 				newObjOptions = lang.mixin({
 					container: null,
 					superordinate: null
 				}, newObjOptions);
+				var wizardModuleURL = 'umc/modules/udm/wizards/' + objectType;
+				tools.urlExists(wizardModuleURL).then(
+					lang.hitch(this, function() {
+						require([wizardModuleURL], lang.hitch(this, function(WizardClass) {
+							wizardDeferred.resolve(WizardClass);
+						}));
+					}),
+					lang.hitch(this, function() {
+						wizardDeferred.reject();
+						showProgressBarDeferred.resolve();
+					})
+				);
+			} else {
+				wizardDeferred.reject();
+				showProgressBarDeferred.resolve();
 			}
 
 			this._detailPage = new DetailPage({
@@ -1322,6 +1346,7 @@ define([
 				newObjectOptions: newObjOptions,
 				moduleWidget: this,
 				isClosable: isClosable,
+				showProgressBarDeferred: showProgressBarDeferred,
 				note: note || null,
 				objectNamePlural: this.objectNamePlural,
 				objectNameSingular: this.objectNameSingular
@@ -1331,7 +1356,79 @@ define([
 			this._detailPage.on('save', lang.hitch(this, 'onObjectSaved'));
 			this._detailPage.on('focusModule', lang.hitch(this, 'focusModule'));
 			this.addChild(this._detailPage);
-			this.selectChild(this._detailPage);
+			wizardDeferred.then(
+				lang.hitch(this, function(WizardClass) {
+					var getFromDetailPage = {
+						properties: this._detailPage.propertyQuery,
+						template: this._detailPage.templateQuery
+					};
+					all(getFromDetailPage).then(lang.hitch(this, function(results) {
+						this._wizardStandby.resolve();
+						this._wizardStandby = new Deferred();
+
+						var properties = lang.getObject('properties.result', false, results);
+						var template = lang.getObject('template.result', false, results) || null;
+						if (template && template.length > 0) {
+							template = template[0];
+						} else {
+							template = null;
+						}
+						var wizard = new WizardClass({
+							style: 'width: 630px; height:310px;',
+							detailPage: this._detailPage,
+							template: template,
+							properties: properties
+						});
+						wizard.on('Cancel', lang.hitch(this, function() {
+							topic.publish('/umc/actions', 'udm', this.moduleFlavor, 'create-wizard', 'cancel');
+							this._createObjectWizard.hide().then(lang.hitch(this, function() {
+								this._detailPage.onCloseTab();
+							}));
+						}));
+						var gotoDetailPage = lang.hitch(this, function(values, submit) {
+							showProgressBarDeferred.resolve();
+							this._createObjectWizard.hide().then(lang.hitch(this, function() {
+								this.standbyDuring(this._detailPage.loadedDeferred).then(lang.hitch(this, function() {
+									lang.mixin(this._detailPage.templateObject._userChanges, wizard.templateObject._userChanges);
+									tools.forIn(values, lang.hitch(this, function(key, val) {
+										this._detailPage._form.getWidget(key).set('value', val);
+									}));
+									this.selectChild(this._detailPage);
+									if (submit) {
+										this._detailPage._form.ready().then(lang.hitch(this, function() {
+											this._detailPage.validateChanges(null);
+										}));
+									} else {
+										this._detailPage._tabs.getChildren()[0].addNote(_('%s was not yet created!', this.objectNameSingular));
+									}
+								}));
+							}));
+						});
+						wizard.on('Advanced', lang.hitch(this, function(values) {
+							topic.publish('/umc/actions', 'udm', this.moduleFlavor, 'create-wizard', 'advance');
+							gotoDetailPage(values, false);
+						}));
+						wizard.on('Finished', lang.hitch(this, function(values) {
+							gotoDetailPage(values, true);
+						}));
+						this._createObjectWizard = new Dialog({
+							title: _('Add a new %s', this.objectNameSingular),
+							content: wizard
+						});
+						this.own(this._createObjectWizard);
+						this._createObjectWizard.show();
+						this._createObjectWizard.on('hide', lang.hitch(this, function() {
+							this._createObjectWizard.destroyRecursive();
+							this._createObjectWizard = null;
+						}));
+					}));
+				}),
+				lang.hitch(this, function() {
+					this._wizardStandby.resolve();
+					this._wizardStandby = new Deferred();
+					this.selectChild(this._detailPage);
+				})
+			);
 		},
 
 		closeDetailPage: function() {
