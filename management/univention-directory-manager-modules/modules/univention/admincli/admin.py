@@ -233,10 +233,9 @@ def module_information(module, identifies_only=0):
 		superordinate=univention.admin.modules.get(module.superordinate)
 		information.update(module_information(superordinate, identifies_only=1))
 
-	for name, property in module.property_descriptions.items():
-		if (identifies_only and property.identifies) or (not identifies_only):
-			information[module][0][name]=property
 	if not identifies_only:
+		for name, property in module.property_descriptions.items():
+			information[module][0][name]=property
 		if hasattr(module,'options'):
 			for name, option in module.options.items():
 				information[module][1][name]=option
