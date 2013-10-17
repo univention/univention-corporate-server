@@ -178,6 +178,7 @@ create_spn_account() {
 		servicePrincipalName: $servicePrincipalName
 		name: $spn_account_name
 		msDS-KeyVersionNumber: $msdsKeyVersion
+		saltPrincipal: $spn_account_name@$kerberos_realm
 		%EOF
 	else
 		echo -n "Saving password for $spn_account_name account: "
