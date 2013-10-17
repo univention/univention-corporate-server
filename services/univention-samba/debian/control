@@ -9,7 +9,8 @@ Standards-Version: 3.5.2
 
 Package: univention-samba
 Architecture: all
-Pre-Depends: samba (>= 3.0.20)
+Pre-Depends: samba (>= 3.0.20),
+ univention-config
 Depends: ${misc:Depends},
  univention-config (>= 8.0.2),
  univention-base-files,
