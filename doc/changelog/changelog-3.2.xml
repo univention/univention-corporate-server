@@ -2596,8 +2596,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-			The default for &ucsUCRV; <varname>samba/max_open_files</varname> is now raised to 32786, like it is the case in <filename>univention-samba</filename>
+		  The default for &ucsUCRV; <varname>samba/max_open_files</varname> is now raised to 32786, like it is the case in <filename>univention-samba</filename>
 		  (<ulink url="&ucsbug;32221">Bug 32221</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+			The script create_spn_account.sh now also sets the <emphasis>saltPrincipal</emphasis> attribute, for compatibility with kinit
+		  (<ulink url="&ucsbug;32291">Bug 32291</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
