@@ -2354,8 +2354,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Samba 3</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The Samba packages have been updated to version 4.1.0 RC2. The file server component is provided
+		  The Samba packages have been updated to version 4.1.0. The file server component is provided
 		  by the package <package>samba</package> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
+		  The package is build with the the patch for CVE-2013-4408.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2440,9 +2441,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	<title>Samba 4</title>
 	  <itemizedlist>
 		<listitem><simpara>
-		  The Samba packages have been updated to version 4.1.0 RC3. The components providing Active Directory compatible
+		  The Samba packages have been updated to version 4.1.0. The components providing Active Directory compatible
 		  domain services are now provided by the package <package>samba-ad-dc</package>. The file server component is provided
 		  by the package <package>samba</package> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
+		  The package is build with the the patch for CVE-2013-4408.
 		</simpara></listitem>
 
 		<listitem><simpara>
