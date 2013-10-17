@@ -1156,6 +1156,11 @@
 		</simpara></listitem>
 
 		<listitem><simpara>
+			A bug in the CLI version of the UDM has been fixed
+			(<ulink url="&ucsbug;32671">Bug 32671</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 			An mistake in the <emphasis>jpegPhoto</emphasis> UDM syntax has been corrected which lead to invalid data getting stored in the LDAP with some jpeg Photos.
 			(<ulink url="&ucsbug;30342">Bug 30342</ulink>).
 		</simpara></listitem>
