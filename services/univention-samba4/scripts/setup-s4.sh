@@ -28,6 +28,7 @@
 # <http://www.gnu.org/licenses/>.
 
 . /usr/share/univention-lib/all.sh
+. /usr/share/univention-samba4/lib/all.sh
 
 LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
 

@@ -1,3 +1,9 @@
+univention-samba4 (3.0.27-5) unstable; urgency=low
+
+  * Add missing include in setup-s4.sh (Bug #31106)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 17:00:59 +0200
+
 univention-samba4 (3.0.27-4) unstable; urgency=low
 
   * Adjust spelling of samba/max_openfiles (Bug #32049)
