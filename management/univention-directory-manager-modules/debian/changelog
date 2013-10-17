@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.64-1) unstable; urgency=low
+
+  * fixed 18python-univention-directory-manager.inst (Bug #31408) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 17 Oct 2013 12:48:17 +0200
+
 univention-directory-manager-modules (9.0.63-1) unstable; urgency=low
 
   * Bug #32565: Revert all changes so far, too complicated. Just avoid the

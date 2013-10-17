@@ -55,7 +55,7 @@ for i in $modules; do
 	mods="$mods --set module=$i"
 done
 
-univention-directory-manager settings/extended_attribute "$@" create \
+univention-directory-manager settings/extended_attribute create "$@" \
 	--ignore_exists \
 	--position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name=objectFlag \
