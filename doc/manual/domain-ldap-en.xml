@@ -1259,7 +1259,7 @@ univention-directory-listener-ctrl resync cups-printers
 	  SAML (Security Assertion Markup Language) is an XML-based standard for exchanging
 	  authentication information, which allows single sign-on across domain boundaries among other
 	  things. UCS provides a SAML identity provider: The external service (e.g., Salesforce) is then
-	  securely registered via a cryptographic certificate and trusted by the identity provider. The
+	  securely registered via a cryptographic certificate and trusts the identity provider. The
 	  user then only needs to authenticate himself in UCS and can use the mounted service without
 	  renewed authentication.
 	</para>
