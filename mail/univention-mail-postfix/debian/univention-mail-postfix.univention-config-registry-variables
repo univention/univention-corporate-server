@@ -78,128 +78,122 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/masquerade/exceptions]
-Description[de]=E-Mail Adressen die vom Masquerading ausgenommen werden
-Description[en]=E-Mail addresses tp except from masquerading
+Description[de]=Mit dieser Variable können Benutzernamen angegeben werden, deren E-Mail Adressen vom Masquerading ausgenommen werden (siehe 'mail/postfix/masquerade/domains). Mehrere Benutzernamen werden durch Kommas getrennt.
+Description[en]=This variable can be used to exempt users from e-mail address masquerading (see 'mail/postfix/masquerade/domains). Multiple user names must be separated by commas.
 Type=str
 Categories=service-mail
 
 [mail/postfix/softbounce]
-Description[de]=Mails nicht abweisen und in lokaler Queue belassen
-Description[en]=Do not bounce mails and keep the in local queues
-Type=str
+Description[de]=Bei einer Reihe von Fehlersituationen (z.B. bei nicht vorhandenen Benutzern) kann es zu einem Bounce der betroffenen Mail kommen, d.h. die Mail wird an den Absender zurückgesendet. Ist diese Option aktiviert werden Mails nie mit einem Bounce zurückgesendet, sondern immer weiterhin in der Queue vorgehalten. Diese Einstellung ist insbesondere für Konfigurationsarbeiten am Mailserver nützlich. Ist die Variable nicht gesetzt, werden Bounces verwendet.
+Description[en]=If a number of error situations (e.g., for non-existent users) the result may be a mail bounce, i.e., the mail cannot be delivered and is returned to the sender. If this option is enabled e-mails are never returned as bounces, but instead are held in the queue. This setting is particularly useful during configuration work on the mail server. If the variable is unset, bounces are made.
+Type=bool
 Categories=service-mail
 
 [mail/postfix/dnslookups]
-Description[de]=Mailserver führt selbständig DNS-Lookups für MX-Records durch
-Description[en]=Mailserver runs dns lookups for mx records
+Description[de]=In der Grundeinstellung baut Postfix beim Versenden einer E-Mail an eine nicht-lokale Adresse eine direkte SMTP-Verbindung an den für diese Domain zuständigen Mailserver auf. Ist diese Option aktiviert oder die Variable nicht gesetzt, wird dieser Server durch eine Abfrage des MX-Records im DNS ermittelt. Wird sie deaktiviert erfolgt die Auflösung über die Systemfunktion getaddrinfo() (dies ist nur in Sonderfällen nötig).
+Description[en]=In the default setting, Postfix creates a direct STMP connection to the mail server responsible for the domain when an e-mail is sent to a non-local address. If this option is enabled of the variable unset, this server is determined by querying the MX record in the DNS. If the option is disabled, the system function getaddrinfo() is used (this is only needed in exceptional cases).
 Type=bool
 Categories=service-mail
 
 [mail/postfix/local/header/rewrite/clients]
-Description[de]=Leerzeichen-getrennte Berechtigungsliste, die das Umschreiben von Headern für die angegebenen Clients erlaubt
-Description[en]=List of space-delimited permissions that enable header rewriting for specified mail clients
+Description[de]=Für die hier konfigurierten Clients ist das Umschreiben von Headern erlaubt. Das Format ist unter http://www.postfix.org/postconf.5.html unter ('local_header_rewrite_clients') beschrieben.
+Description[en]=Header rewriting is permitted to the clients configured here. The format is described at http://www.postfix.org/postconf.5.html under ('mynetworks').
 Type=str
 Categories=service-mail
 
 [mail/maps/canonical/sender/classes]
-Description[de]=Leerzeichen-getrennte Liste mit Adresstypen, auf die das sender_canonical_maps address mapping angewendet wird
-Description[en]=List of space-delimited address types that are subject to sender_canonical_maps address mapping
+Description[de]=Ist diese Variable nicht gesetzt, werden Canonical Sender Maps auf die Header im Mail-Envelope und im Mail-Header angewendet. Alternativ kann sie auf 'envelope_sender' oder 'header_sender' konfiguriert werden.
+Description[en]=If this variable is unset, canonical sender maps are applied to the header in the mail envelope and the mail header. Alternatively is can be configured to 'envelope_sender' or 'header_sender'.
 Type=str
 Categories=service-mail
 
 [mail/maps/canonical/sender/enable]
-Description[de]=Liste mit freigeschalteten Quellen für Canonical Sender Maps (ldap, file, ...)
-Description[en]=List of enabled sources for canonical sender maps (ldap, file, ...)
+Description[de]=Diese Variable konfiguriert eine die Quellen für Canonical Sender Maps. Mögliche Werte sind 'ldap' (dazu muss das Paket 'univention-mail-canonical-maps' installiert sein) oder 'file'.
+Description[en]=This variable configures the sources for canonical sender maps. Possible values are 'ldap' (the package 'univention-mail-canonical-maps' must be installed) or 'file'.
 Type=str
 Categories=service-mail
 
 [mail/maps/canonical/recipient/enable]
-Description[de]=Liste mit freigeschalteten Quellen für Canonical Recipient Maps (ldap, file, ...)
-Description[en]=List of enabled sources for canonical recipient maps (ldap, file, ...)
+Description[de]=Diese Variable konfiguriert eine die Quellen für Canonical Recipient Maps. Mögliche Werte sind 'ldap' (dazu muss das Paket 'univention-mail-canonical-maps' installiert sein) oder 'file'.
+Description[en]=This variable configures the sources for canonical recipient maps. Possible values are 'ldap' (the package 'univention-mail-canonical-maps' must be installed) or 'file'.
 Type=str
 Categories=service-mail
 
 [mail/maps/canonical/recipient/classes]
-Description[de]=Liste von Adresstypen, auf die das recipient_canonical_maps Addressabbildung angewendet wird (durch Leerzeichen getrennt)
-Description[en]=Address types that are subject to recipient_canonical_maps address mappings (space delimited if more than one value is passed)
+Description[de]=Ist diese Variable nicht gesetzt, werden Canonical Recipient Maps auf die Header im Mail-Envelope und im Mail-Header angewendet. Alternativ kann sie auf 'envelope_sender' oder 'header_sender' konfiguriert werden.
+Description[en]=If this variable is unset, canonical recipient maps are applied to the header in the mail envelope and the mail header. Alternatively is can be configured to 'envelope_sender' or 'header_sender'.
 Type=str
 Categories=service-mail
 
 [mail/maps/transport/.*]
-Description[de]=Transport-Map-Eintrag
-Description[en]=Entry for transport map
+Description[de]=Im Regelfall erfolgt das Mailrouting über im DNS hinterlegte MX-Records. Für Sonderfälle - beispielsweise den Betrieb eines Tunnels zwischen zwei Servern, die nicht über DNS aufgelöst werden können - kann die Konfiguration einer manuellen Transportroute nötig sein. Mit Variablen der Form mail/maps/transport/IDENTIFIER=TRANSPORTENTRY kann dies konfiguriert werden. Das Format der Transportrouten ist unter http://www.postfix.org/transport.5.html dokumentiert. Beispiel: mail/maps/transport/TUNNEL="somedomain.org smtp:[mail.somedomain.com]"
+Description[en]=Usually mail routing is based on MX records retrieved from DNS. For some cases - e.g. the operation of a tunnel between two servers which do not have access to DNS - the configuration of a manual transport route can be necessary. This can be configured with variables in the format mail/maps/transport/IDENTIFIER=TRANSPORTENTRY. The format of the transport routes is documented at http://www.postfix.org/transport.5.html. Example: Beispiel: mail/maps/transport/TUNNEL="somedomain.org smtp:[mail.somedomain.com]".
 Type=str
 Categories=service-mail
 
 [mail/postfix/ldap/timeout]
-Description[de]=Timeout für LDAP-Abfragen in Sekunden (Default: 15)
-Description[en]=Timeout for ldap requests given in seconds (default: 15)
+Description[de]=Der Timeout für LDAP-Abfragen des Postfix-Servers in Sekunden. 
+Description[en]=The timeout for LDAP requests of the Postfix server in seconds.
 Type=int
 Categories=service-mail
 
 [mail/postfix/policy/listfilter]
-Description[de]=Falls diese Variable auf "yes" oder "true" gesetzt ist, wird das Postfix Policy Skript zur Beschränkung von Mailgruppen und Mailverteilerlisten verwendet
-Description[en]=If true or yes, the postfix policy listfilter for restriction of mailgroups and distributions lists is used
+Description[de]=In der Grundeinstellungen kann jeder Benutzer an in der UMC konfigurierte Mailinglisten und Mailgruppen schreiben. Um Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis einzuschränken. Um diese Funktion zu verwenden, muss die Option aktiviert werden. Ist die Variable nicht gesetzt, kann jeder Benutzer an Mailgruppen oder Mailinglisten schreiben.
+Description[en]=In the default settings, everyone can write to mail group or mailing lists configured in the UMC. To prevent misuse, there is the possibility of restricting the circle of people who can send mails. To use this sender restriction, this option must be enabled. If the variable is unset, every user can send to mail groups or mailing lists.
 Type=bool
 Categories=service-mail
 
 [mail/postfix/policy/listfilter/maxproc]
-Description[de]=Anzahl der maximalen Prozesse für das Postfix policy Skript listfilter
-Description[en]=Number of processes for the postfix policy script listfilter
+Description[de]=Sind Sendeeinschränkungen konfiguriert (siehe 'mail/postfix/policy/listfilter') kann mit dieser Variable die Anzahl der maximal gestarteten Filterprozesse konfiguriert werden.
+Description[en]=If sender restrictions are configured (see 'mail/postfix/policy/listfilter'), this variable configures the amount of filter processes started.
 Type=int
 Categories=service-mail
 
 [mail/postfix/smtpd/restrictions/recipient/.*]
-Description[de]=Einträge für die Postfix-Option smtpd_recipient_restrictions
-Description[en]=Entries for postfix option smtpd_recipient_restrictions
+Description[de]=Mit Variablen der Form mail/postfix/smtpd/restrictions/recipient/SEQUENZNUMMER=REGEL können Empfangsbeschränkungen über die Postfix-Option smtpd_recipient_restrictions konfiguriert werden (siehe http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions). Die Sequenznummer wird alphanumerisch sortiert und beeinflusst die Reihenfolge.
+Description[en]=Variables in the format mail/postfix/smtpd/restrictions/recipient/SEQUENCE=RULE can be used to configure recipient restrictions using the Postfix option smtpd_recipient_restrictions (see http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions). The sequence number is sorted alphabetically and ensures the order.
 Type=str
 Categories=service-mail
 
 [mail/postfix/smtp/hostlookup]
-Description[de]=Mechanismen, die der Postfix SMTP client verwendet, um die IP-Adresse eines Rechners aufzulösen (Default: dns)
-Description[en]=What mechanisms are used when the Postfix SMTP client tries to look up a host's IP address (default: dns)
+Description[de]=Die Mechanismen, die der Postfix verwendet, um die IP-Adresse eines Rechners aufzulösen: 'dns', 'native' (Auflösung über nsswitch.conf) oder 'dns,native' (erst DNS, dann Fallback auf Methoden aus nsswitch.conf).
+Description[en]=The mechanisms used by Postfix to look up a host's IP address: 'dns', 'native' (resolution via nsswitch.conf' or 'dns,native' (first DNS and fallback to nsswich.conf).
 Type=str
 Categories=service-mail
 
 [mail/smtp/VRFY/disabled]
-Description[de]=Der Wert "yes" deaktiviert das SMTP-Kommando "VRFY" in Postfix.
-Description[en]=If set to "yes" the SMTP command "VRFY" gets disabled in postfix.
+Description[de]=Ist diese Option aktiviert, wird das SMTP-Kommando VRFY deaktiviert. Mit diesem Kommando kann geprüft werden, ob eine E-Mail-Adresse gültig ist, was von Spammern missbraucht werden kann. Ist die Variable nicht gesetzt, wird VRFY angeboten.
+Description[en]=If this option is activated, the SMTP command VRFY is disabled. This command can be used to verify whether an e-mail address is valid (which can be abused by spammers). If the variable is unset, VRFY is provided.
 Type=bool
 Categories=service-mail
 
-[mail/default/domains]
-Description[de]=Leerzeichenseparierte Liste mit Maildomänen, die während der Installation von univention-mail-server im LDAP angelegt werden (Default: $domainname)
-Description[en]=Space separated list of mail domains that will be created during installation of univention-mail-server in LDAP (default: $domainname)
-Type=str
-Categories=service-mail
-
 [mail/postfix/ssl/certificate]
-Description[de]=Vollständiger Dateiname des SSL-Zertifikats, das von Postfix für SSL-Verbindungen verwendet wird (Default: /etc/univention/ssl/<FQDN>/cert.pem)
-Description[en]=Pathname of SSL certificate that is used by Postfix to establish SSL connections (default: /etc/univention/ssl/<FQDN>/cert.pem)
+Description[de]=Vollständiger Dateiname des SSL-Zertifikats, das von Postfix für SSL-Verbindungen verwendet wird. Ist die Variable nicht gesetzt, wird das Rechnerzertifikat verwendet.
+Description[en]=The full path name of the SSL certificate that is used by Postfix to establish SSL connections. If the variable is unset, the host certificate is used.
 Type=str
 Categories=service-mail
 
 [mail/postfix/ssl/key]
-Description[de]=Vollständiger Dateiname der SSL-Schlüsseldatei, die von Postfix für SSL-Verbindungen verwendet wird (Default: /etc/univention/ssl/<FQDN>/private.key)
-Description[en]=Pathname of SSL key file that is used by Postfix to establish SSL connections (default: /etc/univention/ssl/<FQDN>/private.key)
+Description[de]=Vollständiger Dateiname der SSL-Schlüsseldatei, die von Postfix für SSL-Verbindungen verwendet wird. Ist die Variable nicht gesetzt, wird der SSL-Schlüssel des Servers verwendet.
+Description[en]=The full pathn ame of SSL key file that is used by Postfix to establish SSL connections. If the variable is unset, the SSL key of the host is used.
 Type=str
 Categories=service-mail
 
 [mail/postfix/tls/client/level]
-Description[de]=Die Standard SMTP TLS Sicherheitsstufe für den Postfix SMTP Client (Mögliche Werte: "may", "none", Default: "none")
-Description[en]=The default SMTP TLS security level for the Postfix SMTP client (Valid values: "may", "none"; Default: "none")
+Description[de]=Die Variable konfiguriert die Verwendung von TLS-Verschlüsselung in SMTP: 'may' verwendet TLS wenn der andere Server es anbietet, 'none' deaktiviert es. Weitere Konfigurationsoptionen sind unter http://www.postfix.org/postconf.5.html#smtp_tls_security_level beschrieben.
+Description[en]=This variable configures the use of TLS encryption in SMTP: 'may' uses TLS if the other server offers it, 'none' deactivates it. Further configuration directives are documented at http://www.postfix.org/postconf.5.html#smtp_tls_security_level.
 Type=str
 Categories=service-mail
 
 [mail/postfix/inet/protocols]
-Description[de]=Liste mit Protokollen, die in Postfix aktiviert werden (Mögliche Werte: "all", "ipv4", "ipv6", "ipv4, ipv6"; Standard: "ipv4")
-Description[en]=List of protocols activated in postfix (Valid values: "all", "ipv4", "ipv6", "ipv4, ipv6"; Default: "ipv4")
+Description[de]=Ist diese Variable auf 'ipv4' gesetzt oder nicht gesetzt, verwendet Postfix nur IPv4 für den Verbindungsaufbau. 'all' konfiguriert zusätzlich die Verwendung von IPv6.
+Description[en]=If this variable is set to 'ipv4' or unset, Postfix only uses IPv4 for its connections. 'all' configures to also use IPv6.
 Type=str
 Categories=service-mail
 
 [mail/postfix/inet/interfaces]
-Description[de]=Liste der Netzwerkinterface, auf denen Postfix Post entgegennimmt: all, loopback-only, IP-Adressen
-Description[en]=List of network interfaces, on which Postfix accepts incoming mail: all, loopback-only, IP-Adressen
+Description[de]=Die Liste der Netzwerkinterfaces, auf denen Postfix Post entgegennimmt: 'all', 'loopback-only', oder einzelne IP-Adressen.
+Description[en]=The list of network interfaces, on which Postfix accepts incoming mail: 'all', 'loopback-only', or a selection of IP addresses.
 Type=str
 Categories=service-mail
 
