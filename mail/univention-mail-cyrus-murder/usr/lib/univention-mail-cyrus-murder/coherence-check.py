@@ -4,7 +4,7 @@
 # Univention Mail Cyrus Murder
 #  sanity check script: check coherence of HomeServer and backend mailbox
 #
-# Copyright (C) 2008-2012 Univention GmbH
+# Copyright (C) 2008-2013 Univention GmbH
 #
 # http://www.univention.de/
 #

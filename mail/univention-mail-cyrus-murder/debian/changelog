@@ -1,3 +1,12 @@
+univention-mail-cyrus-murder (5.0.0-1) unstable; urgency=low
+
+  * Bump version for UCS 3.2, update copyright for 2013
+  * Update/review UCR variable descriptions (Bug #30945)
+    Remove unused variables mail/cyrus/murder/backends, mail/cyrus/murder/frontends,
+    mail/cyrus/murder/frontend/id, mail/cyrus/murder/backend/id	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 17 Oct 2013 11:44:22 +0200
+
 univention-mail-cyrus-murder (4.0.7-1) unstable; urgency=low
 
   * Use ldap/server/addition in cyrus murder pam configuration

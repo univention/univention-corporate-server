@@ -1,48 +1,18 @@
 [mail/cyrus/murder/master]
-Description[de]=Name des Cyrus Murder MUPDATE Master
-Description[en]=Name of the Cyrus Murder MUPDATE master
+Description[de]=Der Name des Cyrus-Servers, der in einem verteilten Cyrus-Setup die Rolle des authoritativen MUPDATE-Servers annimmt.
+Description[en]=The name of the Cyrus server which provides the role of the authoritative MUPDATE server in a distributed Cyrus setup.
 Type=str
-Categories=Mail
-
-[mail/cyrus/murder/backends]
-Description[de]=Liste der Cyrus Murder Backends
-Description[en]=List of Cyrus Murder backends
-Type=str
-Categories=Mail
-
-[mail/cyrus/murder/frontends]
-Description[de]=Liste der Cyrus Murder Frontends
-Description[en]=List of Cyrus Murder frontends
-Type=str
-Categories=Mail
-
-[mail/cyrus/murder/frontend/id]
-Description[de]=Email-ID für das lokale Cyrus Murder Frontend
-Description[en]=Email-ID for the local Cyrus Murder frontend
-Type=str
-Categories=Mail
-
-[mail/cyrus/murder/backend/id]
-Description[de]=Email-ID für das lokale Cyrus Murder Backend
-Description[en]=Email-ID for the local Cyrus Murder backend
-Type=str
-Categories=Mail
-
-[mail/cyrus/murder/backend/id]
-Description[de]=Hostname für das lokale Cyrus Murder Backend
-Description[en]=Hostname for the local Cyrus Murder backend
-Type=str
-Categories=Mail
+Categories=service-mail
 
 [mail/cyrus/murder/backend/interface]
-Description[de]=Netzwerkinterface für das lokale Cyrus Murder Backend
-Description[en]=Network interface for the local Cyrus Murder backend
+Description[de]=Das Netzwerkinterface auf dem der Backend-Server in einer verteilten Cyrus Murder-Umgebung betrieben wird.
+Description[en]=The network interface on which the backend server in a distributed Cyrus Murder setup is operated.
 Type=str
-Categories=Mail
+Categories=service-mail
 
-[mail/cyrus/murder/backend/interface]
-Description[de]=Netzwerkinterface für das lokale Cyrus Murder Frontend
-Description[en]=Network interface for the local Cyrus Murder frontend
+[mail/cyrus/murder/frontend/interface]
+Description[de]=Das Netzwerkinterface auf dem der Frontend-Server in einer verteilten Cyrus Murder-Umgebung betrieben wird.
+Description[en]=The network interface on which the frontend server in a distributed Cyrus Murder setup is operated.
 Type=str
-Categories=Mail
+Categories=service-mail
 

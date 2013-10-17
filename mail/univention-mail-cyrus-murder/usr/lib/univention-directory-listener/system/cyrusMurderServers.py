@@ -3,7 +3,7 @@
 # Univention Cyrus Murder
 #  listener module: Cyrus Murder frontend list
 #
-# Copyright (C) 2011-2012 Univention GmbH
+# Copyright (C) 2011-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
