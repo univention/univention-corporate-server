@@ -49,12 +49,12 @@ msgid "%s was not yet created!"
 msgstr "%s wurde noch nicht angelegt!"
 
 #: umc/js/udm.js:865
-msgid "(Advanced options)"
-msgstr "(Erweiterte Optionen)"
+msgid "Advanced options"
+msgstr "Erweiterte Optionen"
 
 #: umc/js/udm.js:857
-msgid "(Simplified options)"
-msgstr "(Vereinfachte Opt.)"
+msgid "Simplified options"
+msgstr "Vereinfachte Optionen"
 
 #: umc/js/udm/DetailPage.js:405
 msgid "(multi-edit)"

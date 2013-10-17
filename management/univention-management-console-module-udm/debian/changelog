@@ -1,3 +1,10 @@
+univention-management-console-module-udm (4.0.46-1) unstable; urgency=low
+
+  * Bug #32877: re-enable module options
+  * Bug #32218: adjusted label of toggle button for search options
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 17 Oct 2013 11:23:42 +0200
+
 univention-management-console-module-udm (4.0.45-1) unstable; urgency=low
 
   * Bug #32877: make sure that properties are only returned if they are

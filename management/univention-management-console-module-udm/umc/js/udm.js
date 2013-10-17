@@ -584,6 +584,7 @@ define([
 				buttons.push({
 					name: 'toggleSearch',
 					label: '',  // label will be set in toggleSearch
+					style: 'margin-right: 0',
 					callback: lang.hitch(this, function() {
 						this._isAdvancedSearch = !this._isAdvancedSearch;
 						var search = this._isAdvancedSearch ? 'toggle-search-advanced' : 'toggle-search-simple';
@@ -861,7 +862,7 @@ define([
 					widgets.objectProperty.set('visible', true);
 					widgets.hidden.set('visible', true);
 					//widgets.objectPropertyValue.set('visible', true);
-					toggleButton.set('label', _('(Simplified options)'));
+					toggleButton.set('label', _('Simplified options'));
 				} else {
 					widgets.objectType.set('visible', false);
 					if ('container' in widgets) {
@@ -869,7 +870,7 @@ define([
 					}
 					widgets.objectProperty.set('visible', false);
 					widgets.hidden.set('visible', false);
-					toggleButton.set('label', _('(Advanced options)'));
+					toggleButton.set('label', _('Advanced options'));
 				}
 				// during simple search without search label (default properties)
 				//   we are wasting space at the top. fixing it:
