@@ -68,44 +68,38 @@ modify_testcases = (
 			("uid", "", modify_uids[0]),
 			("uidNumber", "", "0"),
 			("homeDirectory", "", "foo"),
-		),
-		(
-			("objectClass", "posixAccount", ""),
-			("uid", modify_uids[0], ""),
-			("uidNumber", "0", ""),
-			("homeDirectory", "foo", ""),
 		)
 	),
 )
 
 if __name__ == "__main__":
 	udm = UCSTestUDM()
-	user_dn,_username = udm.create_user( password='univention' )
 
 	with open('/etc/machine.secret') as pwdfile:
 		lo = univention.uldap.access( host=ucr.get('ldap/master'), port=int(ucr.get('ldap/master/port', '7389')), base=ucr.get('ldap/base'), binddn=ucr.get('ldap/hostdn'), bindpw=pwdfile.read())
 
 	
-	for add_testcase in add_testcases:
+	for dn, al in add_testcases:
 		try:
-			lo.add(add_testcase[0], add_testcase[1])
+			lo.add(dn, al)
 		except ldap.INSUFFICIENT_ACCESS:
-			print "OK: ldapadd of %s denied" % (add_testcase[0],)
+			print "OK: ldapadd of %s denied" % (dn,)
 			pass
 		else:
-			fail('uidNumber=0 hijacking by ldapadd succeded: %s' % (add_testcase,))
-			lo.delete(add_testcase[0])
+			fail('uidNumber=0 hijacking by ldapadd succeded: %s' % (dn,))
+			lo.delete(dn)
 			sys.exit(100)
 
-	for modify_testcase in modify_testcases:
+	for dn, ml in modify_testcases:
 		try:
-			lo.modify(modify_testcase[0], modify_testcase[1])
+			lo.modify(dn, ml)
 		except ldap.INSUFFICIENT_ACCESS:
-			print "OK: ldapmodify of %s denied" % (modify_testcase[0],)
+			print "OK: ldapmodify of %s denied" % (dn,)
 			pass
 		else:
-			fail('uidNumber=0 hijacking by ldapmodify succeded: %s' % (modify_testcase,))
-			lo.modify(modify_testcase[0], modify_testcase[2])
+			fail('uidNumber=0 hijacking by ldapmodify succeded: %s' % (dn,))
+			rml = [ (attr, new, old) for (attr, old, new) in ml ]
+			lo.modify(dn, rml)
 			sys.exit(100)
 
 # vim: set ft=python :

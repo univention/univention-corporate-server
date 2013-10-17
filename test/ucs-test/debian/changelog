@@ -1,3 +1,9 @@
+ucs-test (4.0.145-1) unstable; urgency=low
+
+  * Cleanup test for Bug #31305
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 11:15:32 +0200
+
 ucs-test (4.0.144-3) unstable; urgency=low
 
   * 55_adconnector/010_sync_group_type: test groupType synchronization
