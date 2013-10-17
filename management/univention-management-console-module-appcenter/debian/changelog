@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.40-1) unstable; urgency=low
+
+  * remove obsolete app errata respositories from UCR (Bug #30904)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 17 Oct 2013 13:35:26 +0200
+
 univention-management-console-module-appcenter (3.0.39-1) unstable; urgency=low
 
   * Bug #26418: adapt grid actions

@@ -964,6 +964,10 @@
 		<listitem><simpara>
 		  The package for the App Center UMC module now ships a new LDAP schema extension <filename>univention-app.schema</filename> using the new mechanism implemented via <ulink url="&ucsbug;32412">Bug 32412</ulink>). Building on this new LDAP schema the package installs a new UDM module <emphasis>appcenter/app</emphasis> for the registration of App metadata (<ulink url="&ucsbug;32414">Bug 32414</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The app errata repositories will be removed from UCR during the update (<ulink url="&ucsbug;30904">Bug 30904</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 

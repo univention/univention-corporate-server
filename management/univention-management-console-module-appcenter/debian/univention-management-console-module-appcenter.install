@@ -1,3 +1,5 @@
 udm/handlers/appcenter/*.py usr/share/pyshared/univention/admin/handlers/appcenter
 ldap/*.schema usr/share/univention-management-console-module-appcenter
 ldap/*.acl usr/share/univention-management-console-module-appcenter
+scripts/* usr/share/univention-management-console-module-appcenter
+

@@ -34,5 +34,9 @@
 
 univention-config-registry set repository/app_center/server?appcenter.test.software-univention.de
 
+if dpkg --compare-versions "$2" lt-nl 3.0.40-1; then
+	/usr/share/univention-management-console-module-appcenter/remove-app-errata-repositories-from-ucr
+fi
+
 exit 0
 
