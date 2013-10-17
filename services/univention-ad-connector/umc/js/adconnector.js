@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define window*/
 
 define([
 	"dojo/_base/declare",
@@ -50,62 +50,62 @@ define([
 	"umc/i18n!umc/modules/adconnector"
 ], function(declare, lang, array, DijitDialog, dialog, tools, render, Module, Page, Wizard, StandbyMixin, Text, Button, TextBox, CheckBox, ComboBox, PasswordBox, InfoUploader, _) {
 
-	var ADConnectorWizard = declare("umc.modules._adconnector.Wizard", [ Wizard ], {
+	var ADConnectorWizard = declare("umc.modules._adconnector.Wizard", [Wizard], {
 		pages: null,
 
 		variables: null,
 
 		constructor: function() {
-			this.pages = [ {
+			this.pages = [{
 				name: 'fqdn',
 				helpText: '<p>' + _('Please enter the fully qualified hostname of the Active Directory server.') + '</p><p>'
 					+ _('The hostname must be resolvable by the UCS server. A DNS entry can be configured in the DNS module, or a static host record can be configured through the Univention Configuration Registry module, e.g.')
 					+ '</p><p>hosts/static/192.168.0.10=w2k8-ad.example.com</p>',
-				headerText: _( 'UCS Active Directory Connector configuration' ),
+				headerText: _('UCS Active Directory Connector configuration'),
 				widgets: [{
 					name: 'LDAP_Host',
 					type: TextBox,
 					required: true,
 					regExp: '.+',
-					invalidMessage: _( 'The hostname of the Active Directory server is required' ),
-					label: _( 'Active Directory Server' )
+					invalidMessage: _('The hostname of the Active Directory server is required'),
+					label: _('Active Directory Server')
 				}, {
 					name: 'guess',
 					type: CheckBox,
-					label: _( 'Automatic determination of the LDAP configuration' )
+					label: _('Automatic determination of the LDAP configuration')
 				}],
-				layout: [ 'LDAP_Host', 'guess' ]
+				layout: ['LDAP_Host', 'guess']
 			}, {
 				name: 'ldap',
-				helpText: _( 'LDAP und kerberos configuration of the Active Directory server needs to be specified for the synchronisation' ),
-				headerText: _( 'LDAP and Kerberos' ),
+				helpText: _('LDAP und kerberos configuration of the Active Directory server needs to be specified for the synchronisation'),
+				headerText: _('LDAP and Kerberos'),
 				widgets: [{
 					name: 'LDAP_Base',
 					type: TextBox,
 					required: true,
 					sizeClass: 'OneAndAHalf',
-					label: _( 'LDAP base' )
+					label: _('LDAP base')
 				}, {
 					name: 'LDAP_BindDN',
 					required: true,
 					type: TextBox,
 					sizeClass: 'OneAndAHalf',
-					label: _( 'LDAP DN of the synchronisation user' )
+					label: _('LDAP DN of the synchronisation user')
 				}, {
 					name: 'LDAP_Password',
 					type: PasswordBox,
-					label: _( 'Password of the synchronisation user' )
+					label: _('Password of the synchronisation user')
 				}, {
 					name: 'KerberosDomain',
 					type: TextBox,
-					label: _( 'Kerberos domain' )
+					label: _('Kerberos domain')
 				}],
-				layout: [ 'LDAP_Base', 'LDAP_BindDN', 'LDAP_Password', 'KerberosDomain' ]
+				layout: ['LDAP_Base', 'LDAP_BindDN', 'LDAP_Password', 'KerberosDomain']
 			}, {
 				name: 'sync',
-				helpText: _( 'UCS Active Directory Connector supports three types of synchronisation.' ),
-				headerText: _( 'Synchronisation mode' ),
-				widgets: [ {
+				helpText: _('UCS Active Directory Connector supports three types of synchronisation.'),
+				headerText: _('Synchronisation mode'),
+				widgets: [{
 					name: 'MappingSyncMode',
 					type: ComboBox,
 					staticValues: [
@@ -118,122 +118,122 @@ define([
 						}, {
 							id: 'write',
 							label: 'UCS -> AD'
-						} ],
-					label: _( 'Synchronisation mode' )
+						}],
+					label: _('Synchronisation mode')
 				}, {
 					name: 'MappingGroupLanguage',
-					label: _( 'System language of Active Directory server' ),
+					label: _('System language of Active Directory server'),
 					type: ComboBox,
 					staticValues: [
 						{
 							id: 'de',
-							label: _( 'German' )
+							label: _('German')
 						}, {
 							id: 'en',
-							label: _( 'English' )
-						} ]
-				} ],
-				layout: [ 'MappingSyncMode', 'MappingGroupLanguage' ]
+							label: _('English')
+						}]
+				}],
+				layout: ['MappingSyncMode', 'MappingGroupLanguage']
 			}, {
 				name: 'extended',
-				helpText: _( 'The following settings control the internal behaviour of the UCS Active Directory connector. For all attributes reasonable default values are provided.' ),
-				headerText: _( 'Extended settings' ),
-				widgets: [ {
+				helpText: _('The following settings control the internal behaviour of the UCS Active Directory connector. For all attributes reasonable default values are provided.'),
+				headerText: _('Extended settings'),
+				widgets: [{
 					name: 'PollSleep',
 					type: TextBox,
 					sizeClass: 'OneThird',
-					label: _( 'Poll Interval (seconds)' )
+					label: _('Poll Interval (seconds)')
 				}, {
 					name: 'RetryRejected',
-					label: _( 'Retry interval for rejected objects' ),
+					label: _('Retry interval for rejected objects'),
 					type: TextBox,
 					sizeClass: 'OneThird'
 				}, {
 					name: 'DebugLevel',
-					label: _( 'Debug level of Active Directory Connector' ),
+					label: _('Debug level of Active Directory Connector'),
 					type: TextBox,
 					sizeClass: 'OneThird'
 				}, {
 					name: 'DebugFunction',
-					label: _( 'Add debug output for functions' ),
+					label: _('Add debug output for functions'),
 					type: CheckBox,
 					sizeClass: 'OneThird'
-				} ],
-				layout: [ 'PollSleep', 'RetryRejected', 'DebugLevel', 'DebugFunction' ]
-			} ];
+				}],
+				layout: ['PollSleep', 'RetryRejected', 'DebugLevel', 'DebugFunction']
+			}];
 		},
 
 		next: function(/*String*/ currentID) {
-			if ( !currentID ) {
-				tools.forIn( this.variables, lang.hitch( this, function( option, value ) {
-					var w = this.getWidget( null, option );
-					if ( w ) {
-						w.set( 'value', value );
+			if (!currentID) {
+				tools.forIn(this.variables, lang.hitch(this, function(option, value) {
+					var w = this.getWidget(null, option);
+					if (w) {
+						w.set('value', value);
 					}
-				} ) );
+				}));
 				// of no LDAP_base is set activate the automatic determination
-				if ( !this.variables.LDAP_base ) {
-					this.getWidget( 'fqdn', 'guess' ).set( 'value', true );
+				if (!this.variables.LDAP_base) {
+					this.getWidget('fqdn', 'guess').set('value', true);
 				}
 			} else if (currentID == 'fqdn') {
-				var nameWidget = this.getWidget( 'LDAP_Host' );
-				if ( ! nameWidget.isValid() ) {
+				var nameWidget = this.getWidget('LDAP_Host');
+				if (!nameWidget.isValid()) {
 					nameWidget.focus();
 					return null;
 				}
 
-				var guess = this.getWidget( 'fqdn', 'guess' );
-				if ( guess.get( 'value' ) ) {
-					this.standby( true );
-					var server = this.getWidget( 'fqdn', 'LDAP_Host' );
-					tools.umcpCommand( 'adconnector/guess', { 'LDAP_Host' : server.get( 'value' ) } ).then( lang.hitch( this, function( response ) {
-						if ( response.result.LDAP_Base ) {
-							this.getWidget( 'ldap', 'LDAP_Base' ).set( 'value', response.result.LDAP_Base );
-							this.getWidget( 'ldap', 'LDAP_BindDN' ).set( 'value', 'cn=Administrator,cn=users,' + response.result.LDAP_Base );
-							this.getWidget( 'ldap', 'KerberosDomain' ).set( 'value', tools.explodeDn( response.result.LDAP_Base, true ).join( '.' ) );
+				var guess = this.getWidget('fqdn', 'guess');
+				if (guess.get('value')) {
+					this.standby(true);
+					var server = this.getWidget('fqdn', 'LDAP_Host');
+					tools.umcpCommand('adconnector/guess', { 'LDAP_Host' : server.get('value') }).then(lang.hitch(this, function(response) {
+						if (response.result.LDAP_Base) {
+							this.getWidget('ldap', 'LDAP_Base').set('value', response.result.LDAP_Base);
+							this.getWidget('ldap', 'LDAP_BindDN').set('value', 'cn=Administrator,cn=users,' + response.result.LDAP_Base);
+							this.getWidget('ldap', 'KerberosDomain').set('value', tools.explodeDn(response.result.LDAP_Base, true).join('.'));
 						} else {
-							dialog.notify( response.result.message );
+							dialog.notify(response.result.message);
 						}
-						this.standby( false );
-					} ) );
+						this.standby(false);
+					}));
 				}
-			} else if ( currentID == 'ldap' ) {
+			} else if (currentID == 'ldap') {
 				var valid = true;
-				array.forEach( [ 'LDAP_Base', 'LDAP_BindDN', 'LDAP_Password' ], lang.hitch( this, function( widgetName ) {
-					if ( ! this.getWidget( widgetName ).isValid() ) {
-						this.getWidget( widgetName ).focus();
+				array.forEach(['LDAP_Base', 'LDAP_BindDN', 'LDAP_Password'], lang.hitch(this, function(widgetName) {
+					if (!this.getWidget(widgetName).isValid()) {
+						this.getWidget(widgetName).focus();
 						valid = false;
 						return false;
 					}
-				} ) );
-				if ( !valid ) {
+				}));
+				if (!valid) {
 					return null;
 				}
 
-				var password = this.getWidget( 'ldap', 'LDAP_Password' );
-				if ( ! this.variables.passwordExists && ! password.get( 'value' ) ) {
-					dialog.alert( _( 'The password for the synchronisation account is required!' ) );
+				var password = this.getWidget('ldap', 'LDAP_Password');
+				if (!this.variables.passwordExists && !password.get('value')) {
+					dialog.alert(_('The password for the synchronisation account is required!'));
 					return currentID;
 				}
 			}
 
-			return this.inherited( arguments );
+			return this.inherited(arguments);
 		},
 
-		onFinished: function( values ) {
-			this.standby( true );
-			tools.umcpCommand( 'adconnector/save', values ).then( lang.hitch( this, function( response ) {
-				if ( !response.result.success ) {
-					dialog.alert( response.result.message );
+		onFinished: function(values) {
+			this.standby(true);
+			tools.umcpCommand('adconnector/save', values).then(lang.hitch(this, function(response) {
+				if (!response.result.success) {
+					dialog.alert(response.result.message);
 				} else {
-					dialog.notify( response.result.message );
+					dialog.notify(response.result.message);
 				}
-				this.standby( false );
-			} ) );
+				this.standby(false);
+			}));
 		}
 	});
 
-	var ADConnectorWizardDialog = declare("umc.modules._adconnector.WizardDialog", [ DijitDialog, StandbyMixin ], {
+	var ADConnectorWizardDialog = declare("umc.modules._adconnector.WizardDialog", [DijitDialog, StandbyMixin], {
 		// summary:
 		//		Dialog class for the configuration wizard
 
@@ -244,28 +244,28 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			tools.umcpCommand( 'adconnector/load' ).then( lang.hitch( this, function( response ) {
-				this._wizard = new ADConnectorWizard( {
+			tools.umcpCommand('adconnector/load').then(lang.hitch(this, function(response) {
+				this._wizard = new ADConnectorWizard({
 					style: 'width: 500px; height: 400px;',
 					variables: response.result
-				} );
-				this.set( 'content', this._wizard );
+				});
+				this.set('content', this._wizard);
 				this._wizard.on('Finished', lang.hitch(this, function() {
 					this.onSaved();
-				} ));
+				}));
 				this._wizard.on('Cancel', lang.hitch(this, function() {
 					this.hide();
 					this.destroyRecursive();
-				} ));
+				}));
 				this._wizard.startup();
-			} ) );
+			}));
 		},
 
 		onSaved: function() {
 		}
 	});
 
-	return declare("umc.modules.adconnector", [ Module ], {
+	return declare("umc.modules.adconnector", [Module], {
 
 		standbyOpacity: 1.00,
 
@@ -279,12 +279,12 @@ define([
 			this.inherited(arguments);
 
 			this._page = new Page({
-				helpText: _( "This module provides a configuration wizard for the UCS Active Directory Connector to simplify the setup." ),
-				headerText: _( "Configuration of the UCS Active Directory Connector" )
+				helpText: _("This module provides a configuration wizard for the UCS Active Directory Connector to simplify the setup."),
+				headerText: _("Configuration of the UCS Active Directory Connector")
 			});
 			this.addChild(this._page);
 
-			var widgets = [ {
+			var widgets = [{
 				name: 'configured',
 				type: Text
 			}, {
@@ -295,62 +295,62 @@ define([
 				type: InfoUploader,
 				showClearButton: false,
 				command: 'adconnector/upload/certificate',
-				onUploaded: lang.hitch( this, function( result ) {
-					if ( typeof  result  == "string" ) {
+				onUploaded: lang.hitch(this, function(result) {
+					if (typeof  result  == "string") {
 						return;
 					}
-					if ( result.success ) {
-						dialog.notify( _( 'The certificate was imported successfully' ) );
+					if (result.success) {
+						dialog.notify(_('The certificate was imported successfully'));
 						this.showHideElements();
 					} else {
-						dialog.alert( _( 'Failed to import the certificate' ) + ': ' + result.message );
+						dialog.alert(_('Failed to import the certificate') + ': ' + result.message);
 					}
-				} )
+				})
 			}, {
 				name: 'download',
 				type: Text,
 				content: ''
-			} ];
+			}];
 
-			var buttons = [ {
+			var buttons = [{
 				name: 'start',
-				label: _( 'Start UCS Active Directory Connector' ),
-				callback: lang.hitch( this, function() {
-					tools.umcpCommand( 'adconnector/service', { action : 'start' } ).then( lang.hitch( this, function( response ) {
+				label: _('Start UCS Active Directory Connector'),
+				callback: lang.hitch(this, function() {
+					tools.umcpCommand('adconnector/service', { action : 'start' }).then(lang.hitch(this, function(response) {
 						this.showHideElements();
-					} ) );
-				} )
+					}));
+				})
 			}, {
 				name: 'stop',
-				label: _( 'Stop UCS Active Directory Connector' ),
-				callback: lang.hitch( this, function() {
-					tools.umcpCommand( 'adconnector/service', { action : 'stop' } ).then( lang.hitch( this, function( response ) {
+				label: _('Stop UCS Active Directory Connector'),
+				callback: lang.hitch(this, function() {
+					tools.umcpCommand('adconnector/service', { action : 'stop' }).then(lang.hitch(this, function(response) {
 						this.showHideElements();
-					} ) );
-				} )
+					}));
+				})
 			}, {
 				name: 'configure',
-				label: _( 'Configure UCS Active Directory Connector' ),
-				callback: lang.hitch( this, function() {
-					var dlg = new ADConnectorWizardDialog( {
-						title: _( 'UCS Active Directory Connector Wizard' )
-					} );
+				label: _('Configure UCS Active Directory Connector'),
+				callback: lang.hitch(this, function() {
+					var dlg = new ADConnectorWizardDialog({
+						title: _('UCS Active Directory Connector Wizard')
+					});
 					dlg.show();
-					dlg.on('saved', lang.hitch( this, function() {
+					dlg.on('saved', lang.hitch(this, function() {
 						dlg.destroyRecursive();
 						this.showHideElements();
-					} ) );
-				} )
-			} ];
+					}));
+				})
+			}];
 
-			this._widgets = render.widgets( widgets );
-			this._buttons = render.buttons( buttons );
+			this._widgets = render.widgets(widgets);
+			this._buttons = render.buttons(buttons);
 
 			var _container = render.layout([{
 				label: _('Configuration'),
 				layout: ['configured',  'configure']
 			}, {
-				label: _( 'UCS Active Directory Connector service'),
+				label: _('UCS Active Directory Connector service'),
 				layout: ['running', 'start', 'stop']
 			}, {
 				label: _('Active Directory Server configuration'),
@@ -360,8 +360,8 @@ define([
 				layout: ['download']
 			}], this._widgets, this._buttons);
 
-			_container.set( 'style', 'overflow: auto' );
-			this._page.addChild( _container );
+			_container.set('style', 'overflow: auto');
+			this._page.addChild(_container);
 
 			this.showHideElements();
 		},
@@ -394,11 +394,11 @@ define([
 			this.placeButton('adconnector/cert.pem');
 		},
 
-		placeButton: function(url, label) {
+		placeButton: function(url) {
 			var label = _('Download %s', url.substring(url.indexOf('/') + 1));
 			var button = new Button({
 				label: label,
-				onClick: function() {
+				callback: function() {
 					var remoteWin = window.open('', '_blank');
 					tools.umcpCommand(url).then(function(response) {
 						remoteWin.location = response.result;
@@ -410,37 +410,37 @@ define([
 		},
 
 		showHideElements: function() {
-			this.standbyDuring(tools.umcpCommand( 'adconnector/state' ).then( lang.hitch( this, function( response ) {
+			this.standbyDuring(tools.umcpCommand('adconnector/state').then(lang.hitch(this, function(response) {
 				this._update_download_text(response.result);
 
-				if ( response.result.configured ) {
-					this._widgets.configured.set( 'content', _( 'The configuration process has been finished and all required settings for UCS Active Directory Connector are set.' ) );
+				if (response.result.configured) {
+					this._widgets.configured.set('content', _('The configuration process has been finished and all required settings for UCS Active Directory Connector are set.'));
 				} else {
-					this._widgets.configured.set( 'content', _( 'The configuration process has not been started yet or is incomplete.' ) );
+					this._widgets.configured.set('content', _('The configuration process has not been started yet or is incomplete.'));
 				}
-				if ( ! response.result.certificate ) {
-					this._widgets.certificateUpload.set( 'value', _( 'The Active Directory certificate has not been installed yet.' ) );
+				if (!response.result.certificate) {
+					this._widgets.certificateUpload.set('value', _('The Active Directory certificate has not been installed yet.'));
 				} else {
-					this._widgets.certificateUpload.set( 'value', _( 'The Active Directory certificate has been successfully installed.' ) );
+					this._widgets.certificateUpload.set('value', _('The Active Directory certificate has been successfully installed.'));
 				}
-				if ( response.result.running ) {
-					this._widgets.running.set( 'content', _( 'UCS Active Directory Connector is currently running.' ) );
-					this._buttons.start.set( 'visible', false );
-					this._buttons.stop.set( 'visible', true );
+				if (response.result.running) {
+					this._widgets.running.set('content', _('UCS Active Directory Connector is currently running.'));
+					this._buttons.start.set('visible', false);
+					this._buttons.stop.set('visible', true);
 				} else {
-					var message = _( 'UCS Active Directory Connector is not running.' );
-					if ( ! response.result.configured ) {
-						message += _( ' The Configuation of UCS Active Directory Connector must be completed before the server can be started.' );
-						this._buttons.start.set( 'visible', false );
-						this._buttons.stop.set( 'visible', false );
+					var message = _('UCS Active Directory Connector is not running.');
+					if (!response.result.configured) {
+						message += _(' The Configuation of UCS Active Directory Connector must be completed before the server can be started.');
+						this._buttons.start.set('visible', false);
+						this._buttons.stop.set('visible', false);
 					} else {
-						this._buttons.start.set( 'visible', true );
-						this._buttons.stop.set( 'visible', false );
+						this._buttons.start.set('visible', true);
+						this._buttons.stop.set('visible', false);
 					}
-					this._widgets.running.set( 'content', message );
+					this._widgets.running.set('content', message);
 				}
-			} ) ));
+			})));
 		}
-	} );
+	});
 
 });

@@ -264,7 +264,7 @@ class Instance( Base ):
 					MODULE.error('Removing failed: %s' % (exc,))
 				finally:
 					return False  # stops timer
-			notifier.timer_add(5000, remove_tempfile)
+			notifier.timer_add(30000, remove_tempfile)
 
 		return '/univention-ad-connector/%s/%s' % (tempdirname, filename)
 
