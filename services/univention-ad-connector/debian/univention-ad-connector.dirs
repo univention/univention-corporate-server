@@ -1,4 +1,5 @@
 usr/sbin
+etc/apache2/conf.d
 etc/univention/connector/ad
 usr/lib/univention-directory-listener/system
 usr/lib/univention-install

@@ -41,13 +41,14 @@ define([
 	"umc/widgets/Wizard",
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
+	"umc/widgets/Button",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/PasswordBox",
 	"umc/widgets/InfoUploader",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, DijitDialog, dialog, tools, render, Module, Page, Wizard, StandbyMixin, Text, TextBox, CheckBox, ComboBox, PasswordBox, InfoUploader, _) {
+], function(declare, lang, array, DijitDialog, dialog, tools, render, Module, Page, Wizard, StandbyMixin, Text, Button, TextBox, CheckBox, ComboBox, PasswordBox, InfoUploader, _) {
 
 	var ADConnectorWizard = declare("umc.modules._adconnector.Wizard", [ Wizard ], {
 		pages: null,
@@ -276,13 +277,12 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
-			this.standby(true);
 
-        	this._page = new Page({
-            	helpText: _( "This module provides a configuration wizard for the UCS Active Directory Connector to simplify the setup." ),
-            	headerText: _( "Configuration of the UCS Active Directory Connector" )
-        	});
-        	this.addChild(this._page);
+			this._page = new Page({
+				helpText: _( "This module provides a configuration wizard for the UCS Active Directory Connector to simplify the setup." ),
+				headerText: _( "Configuration of the UCS Active Directory Connector" )
+			});
+			this.addChild(this._page);
 
 			var widgets = [ {
 				name: 'configured',
@@ -364,7 +364,6 @@ define([
 			this._page.addChild( _container );
 
 			this.showHideElements();
-			this.standby( false );
 		},
 
 		_update_download_text: function(result) {
@@ -379,22 +378,39 @@ define([
 			+ '</li>';
 
 			if (result.configured) {
-				downloadText += '<li><a target="_blank" href="/umcp/adconnector/cert.pem" type="application/octet-stream">cert.pem</a><br>'
+				downloadText += '<li id="adconnector/cert.pem"><br>'
 				+ _('The <b>cert.pem</b> file contains the SSL certificates created in UCS for secure communication.') + ' '
 				+ _('It must be copied into the installation directory of the password service.')
 				+ _('<br />Please verify that the file has been downloaded as <b>cert.pem</b>, Internet Explorer appends a .txt under some circumstances.')
-				+ '</li><li><a target="_blank" href="/umcp/adconnector/private.key" type="application/octet-stream">private.key</a><br>'
+				+ '</li><li id="adconnector/private.key"><br>'
 				+ _('The <b>private.key</b> file contains the private key to the SSL certificates.') + ' '
 				+ _('It must be copied into the installation directory of the password service.')
 				+ '</li>';
 			}
 			downloadText += '</ul>';
 			this._widgets.download.set('content', downloadText);
+
+			this.placeButton('adconnector/private.key');
+			this.placeButton('adconnector/cert.pem');
 		},
 
+		placeButton: function(url, label) {
+			var label = _('Download %s', url.substring(url.indexOf('/') + 1));
+			var button = new Button({
+				label: label,
+				onClick: function() {
+					var remoteWin = window.open('', '_blank');
+					tools.umcpCommand(url).then(function(response) {
+						remoteWin.location = response.result;
+					});
+				}
+			});
+			this.own(button);
+			button.placeAt(url, 'first');
+		},
 
 		showHideElements: function() {
-			tools.umcpCommand( 'adconnector/state' ).then( lang.hitch( this, function( response ) {
+			this.standbyDuring(tools.umcpCommand( 'adconnector/state' ).then( lang.hitch( this, function( response ) {
 				this._update_download_text(response.result);
 
 				if ( response.result.configured ) {
@@ -423,7 +439,7 @@ define([
 					}
 					this._widgets.running.set( 'content', message );
 				}
-			} ) );
+			} ) ));
 		}
 	} );
 

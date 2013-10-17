@@ -279,3 +279,6 @@ msgstr "UCS Active Directory Connector Dienst"
 msgid "UCS Active Directory Connector supports three types of synchronisation."
 msgstr ""
 "UCS Active Directory Connector unterstützt drei Typen der Synchronisation."
+
+msgid "Download %s"
+msgstr "%s herunterladen"

@@ -42,12 +42,15 @@ from univention.management.console.modules import UMC_CommandError
 
 import notifier.popen
 
+import uuid
+import shutil
 import fnmatch
 import psutil
 import os.path
 import subprocess
 import time
 import pipes
+from pwd import getpwnam
 
 _ = Translation('univention-management-console-module-top').translate
 
@@ -230,14 +233,40 @@ class Instance( Base ):
 
 	def _serve_file(self, filename):
 		ucr.load()
+
 		host = ucr.get('connector/ad/ldap/host')
-		filename = '/etc/univention/ssl/%s/%s' % (host, filename)
+		filepath = '/etc/univention/ssl/%s/%s' % (host, filename)
+
 		if not host:
 			raise UMC_CommandError('Not configured yet')
-		if not os.path.exists(filename):
+		if not os.path.exists(filepath):
 			raise UMC_CommandError('File does not exists')
-		with open(filename) as fd:
-			return fd.read()
+
+		tempdirname = str(uuid.uuid4())
+		destination = '/var/www/univention-ad-connector/%s/' % (tempdirname,)
+		destfile = os.path.join(destination, filename)
+
+		try:
+			uid = getpwnam('www-data').pw_uid
+			os.mkdir(destination, 0700)
+			os.chown(destination, uid, 0)
+			shutil.copy(filepath, destfile)
+			os.chown(destfile, uid, 0)
+		except Exception, exc:
+			MODULE.error('Creation of %r failed: %s' % (destfile, exc))
+			raise
+		else:
+			def remove_tempfile():
+				try:
+					os.remove(destfile)
+					os.removedirs(destination)
+				except Exception, exc:
+					MODULE.error('Removing failed: %s' % (exc,))
+				finally:
+					return False  # stops timer
+			notifier.timer_add(5000, remove_tempfile)
+
+		return '/univention-ad-connector/%s/%s' % (tempdirname, filename)
 
 	@file_upload
 	def upload_certificate( self, request ):
