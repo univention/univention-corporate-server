@@ -2635,6 +2635,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;30968">Bug 30968</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The obsolete script <filename>create_dns-host_spn.py</filename> has been removed
+		  (<ulink url="&ucsbug;28371">Bug 28371</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
