@@ -484,6 +484,11 @@
 		  (<ulink url="&ucsbug;31997">Bug 31997</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			The <filename>slapd</filename> init script now removes the temporary schema file
+		  (<ulink url="&ucsbug;31989">Bug 31989</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
 
 
@@ -2416,6 +2421,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  <filename>/var/lib/samba/private/</filename>. This is now considered in the password
 		  change hook
 		  (<ulink url="&ucsbug;32789">Bug 32789</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The spelling mistake in the &ucsUCRV; description for <varname>samba/max_openfiles</varname> was fixed.
+		  (<ulink url="&ucsbug;32049">Bug 32049</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
