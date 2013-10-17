@@ -1,3 +1,9 @@
+univention-ldap (10.0.17-1) unstable; urgency=low
+
+  * init.d/slapd: tempfile, boolean (Bug #31989)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 16:46:33 +0200
+
 univention-ldap (10.0.16-3) unstable; urgency=low
 
   * Fixed syntax errors in ACL config (Bug #31305)

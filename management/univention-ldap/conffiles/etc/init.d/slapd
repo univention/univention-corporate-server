@@ -69,21 +69,21 @@ check_subschema ()
 		res=$?
 		if [ $res != 0 ]; then
 			count=$((count+1))
-			if [ $count = 2 ]; then
+			if [ $count -ge 2 ]; then
 				echo "Failed to search schema"
 				exit 1
 			fi
 			sleep 2
 		fi
 	done
-
 @!@
-if baseConfig.has_key('ldap/schema/export') and baseConfig['ldap/schema/export'].lower() in ['yes', 'true']:
+if baseConfig.is_true('ldap/schema/export'):
 		print '\tcp $tmpfile /var/www/ldap-schema.txt'
 		print '\tchmod a+r /var/www/ldap-schema.txt'
 @!@
-
 	md5=`md5sum $tmpfile | awk '{print $1}'`
+	rm -f "$tmpfile"
+
 	if [ ! -d /var/lib/univention-ldap/schema ]; then
 		mkdir /var/lib/univention-ldap/schema
 	fi
@@ -117,11 +117,11 @@ if baseConfig.has_key('ldap/schema/export') and baseConfig['ldap/schema/export']
 
 check_replog_file ()
 {
-test -f /var/lib/univention-ldap/replog/replog || \
-	touch /var/lib/univention-ldap/replog/replog
-chmod 0600 /var/lib/univention-ldap/replog/replog
-test -f /var/lib/univention-ldap/replog/replog.lock || \
-	touch /var/lib/univention-ldap/replog/replog.lock
+	test -f /var/lib/univention-ldap/replog/replog || \
+		touch /var/lib/univention-ldap/replog/replog
+	chmod 0600 /var/lib/univention-ldap/replog/replog
+	test -f /var/lib/univention-ldap/replog/replog.lock || \
+		touch /var/lib/univention-ldap/replog/replog.lock
 }
 
 
