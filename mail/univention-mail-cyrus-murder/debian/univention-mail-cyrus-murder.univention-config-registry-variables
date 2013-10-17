@@ -1,6 +1,6 @@
 [mail/cyrus/murder/master]
-Description[de]=Der Name des Cyrus-Servers, der in einem verteilten Cyrus-Setup die Rolle des authoritativen MUPDATE-Servers annimmt.
-Description[en]=The name of the Cyrus server which provides the role of the authoritative MUPDATE server in a distributed Cyrus setup.
+Description[de]=Der Name des Cyrus-Servers, der in einer verteilten Cyrus Murder-Umgebung die Rolle des authoritativen MUPDATE-Servers annimmt.
+Description[en]=The name of the Cyrus server which provides the role of the authoritative MUPDATE server in a distributed Cyrus Murder setup.
 Type=str
 Categories=service-mail
 
