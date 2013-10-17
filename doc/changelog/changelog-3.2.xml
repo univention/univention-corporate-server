@@ -1741,6 +1741,13 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The PAM tool pam_univentionmailcyrus supports a comma-separated list for the option
 		  ldap_host (<ulink url="&ucsbug;19753">Bug 19753</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCRV; descriptions in <package>univention-mail-cyrus</package> and
+		  <package>univention-mail-cyrus-murder</package> have been revised (<ulink
+		  url="&ucsbug;30945">Bug 30945</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
@@ -1764,6 +1771,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  An unjoin script for <package>univention-mail-server</package> has been added (<ulink url="&ucsbug;32454">Bug 32454</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCRV; descriptions in <package>univention-mail-postfix</package> have been revised
+		  (<ulink url="&ucsbug;30945">Bug 30945</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
@@ -1783,6 +1795,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  Unused &ucsUCRV;s have been removed from
 		  <package>univention-antivir-mail</package> (<ulink url="&ucsbug;30900">Bug 30900</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCRV; descriptions in <package>univention-antivir-mail</package>,
+		  <package>univention-postgrey</package>, and <package>univention-spamassassin</package>
+		  have been revised (<ulink url="&ucsbug;30945">Bug 30945</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2879,6 +2897,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  <listitem><simpara>
 		The &ucsUCRV; descriptions in <package>univention-system-info</package>
 		have been revised (<ulink url="&ucsbug;30946">Bug 30946</ulink>).
+	  </simpara></listitem>
+
+	  <listitem><simpara>
+		The &ucsUCRV; descriptions in <package>univention-fetchmail</package> have been revised
+		(<ulink url="&ucsbug;30945">Bug 30945</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
