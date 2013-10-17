@@ -64,10 +64,10 @@ define([
 	"dijit/layout/BorderContainer",
 	"dijit/layout/TabContainer",
 	"dijit/popup",
+	"dijit/registry",
 	"umc/tools",
 	"umc/dialog",
 	"umc/store",
-	"umc/app/StartupDialog",
 	"umc/widgets/ProgressInfo",
 	"umc/widgets/LiveSearchSidebar",
 	"umc/widgets/GalleryPane",
@@ -77,7 +77,7 @@ define([
 	"umc/widgets/Button",
 	"umc/i18n!umc/branding,umc/app",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, popup, tools, dialog, store, StartupDialog, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, _) {
+], function(declare, lang, kernel, array, baseWin, query, win, on, aspect, has, string, Evented, Deferred, when, all, cookie, topic, Memory, Observable, style, domAttr, domClass, domGeometry, domConstruct, locale, Dialog, Menu, MenuItem, CheckedMenuItem, MenuSeparator, Tooltip, DropDownButton, BorderContainer, TabContainer, popup, registry, tools, dialog, store, ProgressInfo, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Text, Button, _) {
 	// cache UCR variables
 	var _ucr = {};
 	var _userPreferences = {};
@@ -692,6 +692,7 @@ define([
 				'update/reboot/required',
 				'umc/web/piwik',
 				'license/base',
+				'uuid/license',
 				'version/erratalevel',
 				'version/patchlevel',
 				'version/version'
@@ -977,6 +978,7 @@ define([
 
 			require(['umc/modules/udm/LicenseDialog'], lang.hitch(this, function(LicenseDialog) {
 				this._insertSeparatorToSettingsMenu();
+				this._insertActivationMenuItem();
 				this._settingsMenu.addChild(new MenuItem({
 					label: _('License'),
 					onClick : function() {
@@ -986,6 +988,18 @@ define([
 					}
 				}), 0);
 			}));
+		},
+
+		_insertActivationMenuItem: function() {
+			if (_ucr['uuid/license']) {
+				// license has already been activated
+				return;
+			}
+
+			this._settingsMenu.addChild(new MenuItem({
+				label: _('Activate UCS'),
+				onClick: lang.hitch(this, '_showActivationDialog')
+			}), 0);
 		},
 
 		_insertSeparatorToSettingsMenu: function() {
@@ -1128,7 +1142,9 @@ define([
 
 		_focusSearchField: function() {
 			if (!has('touch')) {
-				this._searchSidebar.focus();
+				setTimeout(lang.hitch(this, function() {
+					this._searchSidebar.focus();
+				}, 0));
 			}
 		},
 
@@ -1394,22 +1410,24 @@ define([
 			var isUserAdmin = tools.status('username').toLowerCase() == 'administrator';
 			var isUCRVariableEmpty = !Boolean(_ucr['umc/web/startupdialog']);
 			var showStartupDialog = tools.isTrue(_ucr['umc/web/startupdialog']);
-			if (!((isUCRVariableEmpty && _hasFFPULicense() && isUserAdmin) || (showStartupDialog && isUserAdmin))) {
+			var isDCMaster = _ucr['server/role'] == 'domaincontroller_master';
+			if (!isDCMaster || !((isUCRVariableEmpty && _hasFFPULicense() && isUserAdmin) || (showStartupDialog && isUserAdmin))) {
 				return;
 			}
 
-			var startupDialog = new StartupDialog({});
-			startupDialog.on('hide', function() {
-				// dialog is being closed
-				// set the UCR variable to false to prevent any further popup
-				var ucrStore = store('key', 'ucr');
-				ucrStore.put({
-					key: 'umc/web/startupdialog',
-					value: 'false'
+			require(["umc/app/StartupDialog"], lang.hitch(this, function(StartupDialog) {
+				var startupDialog = new StartupDialog({});
+				startupDialog.on('hide', function() {
+					// dialog is being closed
+					// set the UCR variable to false to prevent any further popup
+					var ucrStore = store('key', 'ucr');
+					ucrStore.put({
+						key: 'umc/web/startupdialog',
+						value: 'false'
+					});
+					startupDialog.destroyRecursive();
 				});
-				startupDialog.destroyRecursive();
-			});
-			startupDialog.show();
+			}));
 		},
 
 		_updateQuery: function() {
@@ -1627,6 +1645,62 @@ define([
 			topic.subscribe('/umc/tabs/focus', lang.hitch(this, 'focusTab'));
 
 			this._setupStaticGui = true;
+		},
+
+		_showActivationDialog: function() {
+			topic.publish('/umc/actions', 'menu-settings', 'activation');
+
+			var _reopenActivationDialog = lang.hitch(this, function(_deferred) {
+				if (!_deferred) {
+					_deferred = new Deferred();
+				}
+				var _emailWidget = registry.byId('umc_app_activation_email');
+				if (!_emailWidget) {
+					this._showActivationDialog();
+					_deferred.resolve();
+				} else {
+					// the previous dialog has not been destroyed completely...
+					// try again after a small timeout
+					setTimeout(lang.hitch(this, _reopenActivationDialog, _deferred), 200);
+				}
+				return _deferred;
+			});
+
+			var confirmDeferred = dialog.templateDialog('umc/app', 'activation.' + _getLang()  + '.html', {
+				path: require.toUrl('umc/app'),
+				leaveFieldFreeDisplay: 'none'
+			}, _('Usage statistics'), [{
+				name: 'cancel',
+				label: _('Cancel')
+			}, {
+				name: 'activate',
+				label: _('Activate'),
+				'default': true
+			}]);
+
+			var emailWidget = registry.byId('umc_app_activation_email');
+			confirmDeferred.then(lang.hitch(this, function(response) {
+				if (response != 'activate') {
+					return;
+				}
+
+				var email = emailWidget.get('value');
+				if (!email || email.indexOf('@') < 1) {
+					_reopenActivationDialog().then(function() {
+						dialog.alert(_('Please enter a valid email address'));
+					});
+				} else {
+					tools.umcpCommand('udm/request_new_license', {
+						email: email
+					}, false).then(function() {
+						// nothing to do
+					}, lang.hitch(this, function(error) {
+						_reopenActivationDialog().then(function() {
+							tools.handleErrorStatus(error.response);
+						});
+					}));
+				}
+			}));
 		},
 
 		_showAboutDialog: function() {

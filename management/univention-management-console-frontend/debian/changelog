@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.106-1) unstable; urgency=low
+
+  * Bug #30811: evaluate startup wizard input, add license activation dialogue
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 17 Oct 2013 14:43:12 +0200
+
 univention-management-console-frontend (3.0.105-1) unstable; urgency=low
 
   * Bug #26418: remove multiActionsAlwaysActive property from grid, simplify

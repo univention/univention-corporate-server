@@ -33,10 +33,14 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
+	"dojo/query",
 	"dojo/parser",
+	"dojo/dom-attr",
 	"dojo/dom-class",
 	"dojo/Deferred",
 	"dojo/when",
+	"dojo/topic",
+	"dijit/registry",
 	"dijit/Dialog",
 	"dijit/layout/StackContainer",
 	"dijit/form/RadioButton",
@@ -45,7 +49,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/i18n!umc/app"
-], function(declare, lang, kernel, array, parser, domClass, Deferred, when, Dialog, StackContainer, RadioButton, tools, Text, ContainerWidget, Button, _) {
+], function(declare, lang, kernel, array, query, parser, domAttr, domClass, Deferred, when, topic, registry, Dialog, StackContainer, RadioButton, tools, Text, ContainerWidget, Button, _) {
 	var _lang = kernel.locale.split('-')[0];
 	var _getDocumentDependency = function(key) {
 		return lang.replace('dojo/text!umc/app/{key}.{lang}.html', {
@@ -54,12 +58,34 @@ define([
 		});
 	};
 
-	// pre-load HTML template documents
+	var isLicenseActivated = function() {
+		return tools.ucr('uuid/license').then(function(ucr) {
+			return Boolean(ucr['uuid/license']);
+		});
+	}
+
 	var _docDeferred = new Deferred();
-	var _docDependencies = array.map(['welcome', 'feedback', 'activation', 'help', 'finished'], _getDocumentDependency);
-	require(_docDependencies, function(/*...*/) {
-		_docDeferred.resolve(arguments);
-	});
+	var preloadTemplateDocuments = function() {
+		isLicenseActivated().then(function(activated) {
+			var docs = ['welcome', 'feedback', 'activation', 'help', 'finished'];
+			if (activated) {
+				// remove license activation page if system is already activated
+				var indexActivation = array.indexOf(docs, 'activation');
+				if (indexActivation >= 0) {
+					docs.splice(indexActivation, 1);
+				}
+			}
+
+			// pre-load HTML template documents
+			var _docDependencies = array.map(docs, _getDocumentDependency);
+			require(_docDependencies, function(/*...*/) {
+				_docDeferred.resolve(arguments);
+			});
+		});
+	};
+
+	preloadTemplateDocuments();
+
 
 	var _replaceVariablesInDocument = function(piwikDisabled, doc) {
 		return lang.replace(doc, {
@@ -79,9 +105,7 @@ define([
 
 		_pages: null,
 
-		_gotoPage: function(idx) {
-			this._stackContainer.selectChild(this._pages[idx]);
-		},
+		_wizardCompleted: false,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -102,34 +126,9 @@ define([
 						style: 'overflow:auto;'
 					});
 
-					// 'next' button
-					if (idx < docs.length - 1) {
-						footer.addChild(new Button({
-							label: _('Next'),
-							callback: lang.hitch(this, '_gotoPage', idx + 1),
-							style: 'float:right',
-							defaultButton: true
-						}));
-					}
-
-					// 'close' button
-					if (idx == docs.length - 1) {
-						footer.addChild(new Button({
-							label: _('Close'),
-							callback: lang.hitch(this, 'close'),
-							style: 'float:right',
-							defaultButton: true
-						}));
-					}
-
-					// 'back' button
-					if (idx > 0) {
-						footer.addChild(new Button({
-							label: _('Back'),
-							callback: lang.hitch(this, '_gotoPage', idx - 1),
-							style: 'float:right'
-						}));
-					}
+					var footerRight = new ContainerWidget({
+						style: 'float:right;'
+					});
 
 					// 'cancel' button
 					if (idx < docs.length - 1) {
@@ -140,9 +139,35 @@ define([
 						}));
 					}
 
+					// 'back' button
+					if (idx > 0) {
+						footerRight.addChild(new Button({
+							label: _('Back'),
+							callback: lang.hitch(this, '_gotoPage', idx - 1)
+						}));
+					}
+
+					// 'next' button
+					if (idx < docs.length - 1) {
+						footerRight.addChild(new Button({
+							label: _('Next'),
+							callback: lang.hitch(this, '_gotoPage', idx + 1),
+							defaultButton: true
+						}));
+					}
+
+					// 'close' button
+					if (idx == docs.length - 1) {
+						footerRight.addChild(new Button({
+							label: _('Close'),
+							callback: lang.hitch(this, 'close'),
+							defaultButton: true
+						}));
+					}
+					footer.addChild(footerRight);
+
 					// create 'page'
-					var page = new ContainerWidget({
-					});
+					var page = new ContainerWidget({});
 					var html = new Text({
 						content: idoc,
 						style: 'width:600px; max-height:280px; overflow-y:auto; overflow-x:hidden;'
@@ -154,24 +179,86 @@ define([
 					this._stackContainer.addChild(page);
 				}, this);
 
+				this.show();
 				this.set('content', this._stackContainer);
 			}));
 
 			this.on('hide', lang.hitch(this, function() {
+				this._evaluate();
 				setTimeout(lang.hitch(this, 'destroyRecursive'), 0);
 			}));
 		},
 
 		close: function() {
-			when(this.hide(), lang.hitch(this, function() {
-				setTimeout(lang.hitch(this, 'destroyRecursive'), 0);
-			}));
+			this._wizardCompleted = true;
+			this.hide();
 		},
 
 		destroyRecursive: function() {
 			this.inherited(arguments);
-		}
+		},
 
+		_gotoPage: function(idx) {
+			this._stackContainer.selectChild(this._pages[idx]);
+		},
+
+		_evaluate: function() {
+			if (this._wizardCompleted) {
+				this._evaluateFeedback();
+				this._evaluateHardwareStatistics();
+				this._evaluateActivation();
+			}
+			this._evaluateWizardCompleted();
+		},
+
+		_evaluateFeedback: function() {
+			var installationOK = registry.byId('umc_app_startup_installation_ok').get('value');
+			var installationNotOK = registry.byId('umc_app_startup_installation_not_ok').get('value');
+			var label = 'none';
+			if (installationOK || installationNotOK) {
+				label = installationOK ? 'positive' : 'negative';
+			}
+			topic.publish('/umc/actions', 'startup-wizard', 'installation-feedback', label)
+		},
+
+		_evaluateHardwareStatistics: function() {
+			var enableHardwareStatistics = registry.byId('umc_app_feedback_Checkbox').get('checked');
+			if (enableHardwareStatistics) {
+				tools.umcpCommand('sysinfo/general', {}, false).then(function(response) {
+					var options = response.result;
+					options.comment = 'Sent via UMC startup wizard.';
+					return tools.umcpCommand('sysinfo/system', options, false);
+				}).then(function(response) {
+					// upload archive
+					return tools.umcpCommand('sysinfo/upload', {
+						archive: response.result.archive
+					}, false);
+				}).then(function() {}, function() {
+					// silently ignore errors
+					console.log('Hardware information could not be sent.');
+				});
+			}
+		},
+
+		_evaluateActivation: function() {
+			// license activation page may not be shown -> make sure email widget exists
+			var emailWidget = registry.byId('umc_app_activation_email');
+			if (!emailWidget) {
+				return;
+			}
+
+			var email = emailWidget.get('value');
+			if (email && email.indexOf('@') > 0) {
+				tools.umcpCommand('udm/request_new_license', {
+					email: email
+				});
+			}
+		},
+
+		_evaluateWizardCompleted: function() {
+			var label = this._wizardCompleted ? 'completed' : 'canceled';
+			topic.publish('/umc/actions', 'startup-wizard', label);
+		}
 	});
 });
 
