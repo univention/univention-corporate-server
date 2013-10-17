@@ -2703,6 +2703,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;32768">Bug 32768</ulink>, <ulink url="&ucsbug;29486">Bug 29486</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The S4 connector now always logs the name of reject files, simplifying problem analysis
+		  (<ulink url="&ucsbug;32262">Bug 32262</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
