@@ -1190,7 +1190,7 @@
 			It is now possible to set the AD group type for groups. The group type is synchronized to
 			Samba 4 via the Univention S4 connector if the &ucsUCRV;
 			<envar>connector/s4/mapping/group/grouptype</envar> is set to true
-			(<ulink url="&ucsbug;32853">Bug 32853</ulink>).
+			(<ulink url="&ucsbug;32853">Bug 32853</ulink>, <ulink url="&ucsbug;32767">Bug 32767</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
