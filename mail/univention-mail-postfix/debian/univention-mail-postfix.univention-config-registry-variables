@@ -192,25 +192,25 @@ Type=str
 Categories=service-mail
 
 [mail/postfix/inet/interfaces]
-Description[de]=Die Liste der Netzwerkinterfaces, auf denen Postfix Post entgegennimmt: 'all', 'loopback-only', oder einzelne IP-Adressen.
+Description[de]=Die Liste der Netzwerkinterfaces, auf denen Postfix E-Mails entgegennimmt: 'all', 'loopback-only', oder einzelne IP-Adressen.
 Description[en]=The list of network interfaces, on which Postfix accepts incoming mail: 'all', 'loopback-only', or a selection of IP addresses.
 Type=str
 Categories=service-mail
 
 [mail/postfix/transport/ldap/enabled]
-Description[de]=Binden zusätzliche eine per LDAP zur Verfügung gestellte transport_maps ein
-Description[en]=Includes a additional transport_maps provided via LDAP
+Description[de]=Ist diese Option aktiviert, werden Transport Maps auch aus dem LDAP-Verzeichnis gelesen. Ist die Variable nicht gesetzt, werden keine Werte aus dem LDAP gelesen.
+Description[en]=If this option is enabled, transport maps are also read from the LDAP directory. If the variable is unset, no values are read from LDAP.
 Type=bool
 Categories=service-mail
 
 [mail/postfix/virtual/enabled]
-Description[de]=Aktiviert die Unterstützung für virtuelle Mail-Domains
-Description[en]=Activated the support for virtual mail domains
+Description[de]=Ist diese Option aktiviert, werden virtuelle Mail-Domänen unterstützt. Ist die Variable nicht gesetzt, wird dies nicht unterstützt.
+Description[en]=If this option is activated virtual mail domains are supported. If the variable is unset, this is not supported.
 Type=bool
 Categories=service-mail
 
 [mail/postfix/smtpd/debug]
-Description[de]=Falls auf true gesetzt, wird der smtpd im Debug-Modus gestartet (default: false)
-Description[en]=If set to true the smtpd is started in debug mode (default: false)
+Description[de]=Ist diese Option aktiviert, wird der smtpd im Debug-Modus gestartet. Ist die Variable nicht gesetzt, wird der Dienst normal gestartet.
+Description[en]=If this option is enabled, the smtpd is started in debug mode. If the variable is unset, the service is started normally.
 Type=bool
 Categories=service-mail
