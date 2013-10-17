@@ -2620,6 +2620,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;31106">Bug 31106</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  A couple of UCR checks for the &ucsUCRV; <varname>samba4/service/smb</varname> have been fixed.
+		  (<ulink url="&ucsbug;30968">Bug 30968</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
