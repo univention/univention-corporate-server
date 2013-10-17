@@ -37,6 +37,7 @@ if [ "$1" = "remove" ]; then
 	call_unjoinscript 04univention-samba4.uinst
 
 	ucr unset windows/wins-support \
+			samba/max_open_files \
 			samba/quota/command \
 			samba/max/protocol \
 			samba/share/netlogon

@@ -1,3 +1,10 @@
+univention-samba4 (3.0.27-1) unstable; urgency=low
+
+  * set samba/max_open_files?32808 like in univention-samba
+    (Bug #32221)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 15:06:51 +0200
+
 univention-samba4 (3.0.26-1) unstable; urgency=low
 
   * Remove the force group parameter from the sysvol share definition

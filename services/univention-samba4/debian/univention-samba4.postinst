@@ -83,6 +83,7 @@ univention-config-registry set \
 	samba/read_raw?yes \
 	samba/write_raw?yes \
 	samba/max_xmit?65535 \
+	samba/max_open_files?32808 \
 	samba/getwd_cache?yes \
 	samba/store_dos_attributes?yes \
 	samba/preserve_case?yes \
