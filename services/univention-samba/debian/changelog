@@ -1,3 +1,10 @@
+univention-samba (8.0.12-1) unstable; urgency=low
+
+  * Adjust spelling of samba/max_openfiles (Bug #32049
+  * Adjust debian packaging files to standard naming convention
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 16:36:27 +0200
+
 univention-samba (8.0.11-1) unstable; urgency=low
 
   * With the new samba version the secrets.tdb path has been moved to
