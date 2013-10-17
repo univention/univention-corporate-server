@@ -2595,6 +2595,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  (<ulink url="&ucsbug;30999">Bug 30999</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			The default for &ucsUCRV; <varname>samba/max_open_files</varname> is now raised to 32786, like it is the case in <filename>univention-samba</filename>
+		  (<ulink url="&ucsbug;32221">Bug 32221</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
