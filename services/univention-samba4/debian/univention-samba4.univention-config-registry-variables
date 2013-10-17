@@ -52,6 +52,12 @@ Description[en]=Maximum packet size in bytes that will be negotiated by Samba wi
 Type=int
 Categories=service-samba
 
+[samba/max_openfiles]
+Description[de]=Die maximale Anzahl an Dateien, die der Samba-Dienst öffnen kann. Wenn der Wert angepasst wird, müssen ggf. auch Unix-Prozesslimits angepasst werden.
+Description[en]=The maximum number of files the Samba service can open. If the value is adapted, Unix process limits might need to be expanded as well.
+Type=int
+Categories=service-samba
+
 [samba/netbios/aliases]
 Description[de]=Mit dieser Variable können zusätzliche Alias-Namen für einen Samba-Server konfiguriert werden, unter denen dieser im NETBIOS-Namensdienst erscheint. Mehrere Werte müssen durch Leerzeichen getrennt werden.
 Description[en]=This variable allows the configuration of additional alias names for a Samba server in the NetBIOS name service. Multiple values need to be separated by blanks.

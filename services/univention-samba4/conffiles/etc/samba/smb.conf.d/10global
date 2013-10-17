@@ -55,6 +55,10 @@ if configRegistry.is_true('samba4/schema/update/allowed'):
 else:
 	print '\tdsdb:schema update allowed = no'
 
+max_open_files = configRegistry.get('samba/max_open_files')
+if max_open_files:
+	print '\tmax open files = %s' % max_open_files
+
 for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/charset/dos', 'dos charset'),
 		       ('samba/charset/unix', 'unix charset'),

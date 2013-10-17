@@ -1,3 +1,9 @@
+univention-samba4 (3.0.27-3) unstable; urgency=low
+
+  * Register and evaluate samba/max_open_files (Bug #32221)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 16:10:53 +0200
+
 univention-samba4 (3.0.27-2) unstable; urgency=low
 
   * Make create_spn_account.sh add the saltPrincipal attribute
