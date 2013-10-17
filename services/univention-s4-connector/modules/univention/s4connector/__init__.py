@@ -762,11 +762,11 @@ class ucs:
 						if traceback_level == ud.INFO:
 							self._debug_traceback(traceback_level, "The sync failed. This could be because the parent object does not exist. This object will be synced in next sync step.")
 						else:
-							self._debug_traceback(traceback_level, "sync failed, saved as rejected")
+							self._debug_traceback(traceback_level, "sync failed, saved as rejected\n\t%s" % (filename,))
 						return False
 					except:
 						self._save_rejected_ucs(filename, dn)
-						self._debug_traceback(traceback_level, "sync failed, saved as rejected")
+						self._debug_traceback(traceback_level, "sync failed, saved as rejected\n\t%s" % (filename,))
 						return False
 				else:
 					return True

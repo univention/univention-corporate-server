@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.27-1) unstable; urgency=low
+
+  * Always log filename for rejects (Bug #32262)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 15:55:06 +0200
+
 univention-s4-connector (8.0.26-6) unstable; urgency=low
 
   * Ignore foreignSecurityPrincipals (Bug #29000)
