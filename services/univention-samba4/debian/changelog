@@ -1,3 +1,9 @@
+univention-samba4 (3.0.27-6) unstable; urgency=low
+
+  * fix UCR checks for samba4/service/smb (Bug #30968)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 17:06:29 +0200
+
 univention-samba4 (3.0.27-5) unstable; urgency=low
 
   * Add missing include in setup-s4.sh (Bug #31106)

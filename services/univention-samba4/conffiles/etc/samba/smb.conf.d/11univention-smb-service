@@ -1,6 +1,6 @@
 @!@
 print '; ---------------------<smb service configuration>-----------------------'
-if configRegistry.get('samba4/service/smb', 's3fs'):
+if configRegistry.get('samba4/service/smb', 's3fs') == 's3fs':
 	print '''
 	debug hirestimestamp = yes
 	debug pid = yes'''
@@ -11,7 +11,7 @@ if configRegistry.get('samba4/service/smb', 's3fs'):
 	if dcerpc_endpoints:
 		print '\tdcerpc endpoint servers\t=', ' '.join(dcerpc_endpoints)
 
-elif configRegistry.get('samba4/service/smb', 'smbd'):
+elif configRegistry.get('samba4/service/smb', 'smbd') == 'smbd':
 	if configRegistry['samba4/role'] != 'MEMBER':	## otherwise it's already set in 10global
 		print '\tsecurity = ads'
 
