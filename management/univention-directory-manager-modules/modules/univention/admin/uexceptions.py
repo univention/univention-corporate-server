@@ -103,14 +103,15 @@ class groupNameAlreadyUsed(base):
 
 class adGroupTypeChangeLocalToAny(base):
 	message = _('The AD group type can not be changed from type local to any other type.')
+class adGroupTypeChangeToLocal(base):
+	message = _('The AD group type can not be changed to type local.')
+
 class adGroupTypeChangeGlobalToUniversal(base):
-	message = _('The AD group type can not be changed from global to universal.')
+	message = _('The AD group type can not be changed from global to universal, because the group is member of another global group.')
 class adGroupTypeChangeDomainLocalToUniversal(base):
-	message = _("The AD group type can not be changed from domain local to universal.")
+	message = _("The AD group type can not be changed from domain local to universal, because the group is member of another domain local group.")
 class adGroupTypeChangeUniversalToGlobal(base):
-	message = _("The AD group type can not be changed from universal to global.")
-class adGroupTypeChangeUniversalToDomainGlobal(base):
-	message = _("The AD group type can not be changed from universal to domain local.")
+	message = _("The AD group type can not be changed from universal to global, because the group is member of another universal group.")
 
 class prohibitedUsername(base):
 	message=_('Prohibited username.')

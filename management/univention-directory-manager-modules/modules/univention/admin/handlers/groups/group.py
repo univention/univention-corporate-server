@@ -947,6 +947,30 @@ class object(univention.admin.handlers.simpleLdap):
 		except ValueError:
 			return False
 
+	def _has_another_global_member(self):
+		searchResult = self.lo.search(base=self.position.getDomain(), filter='(uniqueMember=%s)' % self.dn, attr=['univentionGroupType'])
+		for (dn,attr) in searchResult:
+			groupType = attr.get('univentionGroupType', [None])[0]
+			if self.__is_groupType_global(groupType):
+				return True
+		return False
+
+	def _has_another_domain_local_member(self):
+		searchResult = self.lo.search(base=self.position.getDomain(), filter='(uniqueMember=%s)' % self.dn, attr=['univentionGroupType'])
+		for (dn,attr) in searchResult:
+			groupType = attr.get('univentionGroupType', [None])[0]
+			if self.__is_groupType_domain_local(groupType):
+				return True
+		return False
+
+	def _has_another_universal_member(self):
+		searchResult = self.lo.search(base=self.position.getDomain(), filter='(uniqueMember=%s)' % self.dn, attr=['univentionGroupType'])
+		for (dn,attr) in searchResult:
+			groupType = attr.get('univentionGroupType', [None])[0]
+			if self.__is_groupType_universal(groupType):
+				return True
+		return False
+
 	def check_ad_group_type_change(self):
 		if not self.hasChanged('adGroupType'):
 			return
@@ -961,31 +985,32 @@ class object(univention.admin.handlers.simpleLdap):
 			return
 
 		if self.__is_groupType_local(old_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChangeDomainLocalToAny
+			raise univention.admin.uexceptions.adGroupTypeChangeLocalToAny
+
+		if self.__is_groupType_local(new_groupType):
+			raise univention.admin.uexceptions.adGroupTypeChangeToLocal
 
 		# See for details:
 		#  http://technet.microsoft.com/en-us/library/cc755692%28v=ws.10%29.aspx
 
-		# Global to universal:
-		#  This conversion is allowed only if the group that you want to change is not a member of
-		#  another global scope group.
-		# Domain local to universal:
-		#  This conversion is allowed only if the group that you want to change does not have
-		#  another domain local group as a member.
-		# Universal to global:
-		#  This conversion is allowed only if the group that you want to change does not have
-		#  another universal group as a member.
-		# Universal to domain local:
-		#  There are no restrictions for this operation.
-
-		if self.__is_groupType_global(old_groupType) and self.__is_univeral(new_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChangeGlobalToUniversal
-		elif self.__is_groupType_domain_local(old_groupType) and self.__is_univeral(new_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChangeDomainLocalToUniversal
+		if self.__is_groupType_global(old_groupType) and self.__is_groupType_universal(new_groupType):
+			# Global to universal:
+			#  This conversion is allowed only if the group that you want to change is not a member of
+			#  another global scope group.
+			if self._has_another_global_member():
+				raise univention.admin.uexceptions.adGroupTypeChangeGlobalToUniversal
+		elif self.__is_groupType_domain_local(old_groupType) and self.__is_groupType_universal(new_groupType):
+			# Domain local to universal:
+			#  This conversion is allowed only if the group that you want to change does not have
+			#  another domain local group as a member.
+			if self._has_another_domain_local_member():
+				raise univention.admin.uexceptions.adGroupTypeChangeDomainLocalToUniversal
 		elif self.__is_groupType_universal(old_groupType) and self.__is_groupType_global(new_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChangeUniversalToGlobal
-		elif self.__is_groupType_universal(old_groupType) and self.__is_domain_global(new_groupType):
-			raise univention.admin.uexceptions.adGroupTypeChangeUniversalToDomainGlobal
+			# Universal to global:
+			#  This conversion is allowed only if the group that you want to change does not have
+			#  another universal group as a member.
+			if self._has_another_universal_member():
+					raise univention.admin.uexceptions.adGroupTypeChangeUniversalToGlobal
 
 	def __generate_group_sid(self, gidNum):
 		groupSid = None
