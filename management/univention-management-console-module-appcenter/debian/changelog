@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.41-1) unstable; urgency=low
+
+  * ONLY remove obsolete app errata settings from UCR (Bug #30904)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 17 Oct 2013 17:10:00 +0200
+
 univention-management-console-module-appcenter (3.0.40-1) unstable; urgency=low
 
   * remove obsolete app errata respositories from UCR (Bug #30904)

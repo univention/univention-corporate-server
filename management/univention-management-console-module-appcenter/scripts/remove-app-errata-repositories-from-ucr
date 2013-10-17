@@ -2,17 +2,23 @@
 
 
 
-import univention.management.console.modules.appcenter.util as util
+import univention.management.console.modules.appcenter.app_center as app_center
 import univention.management.console.modules.appcenter.constants as constants
 import univention.config_registry as config_registry
 
 if __name__ == "__main__":
 	ucr = config_registry.ConfigRegistry()
 	ucr.load()
-	
-	for key, value in ucr.items():
-		if key.startswith("repository/online/component/") and key.split("/")[3] != "3.2-0-errata":
-			del ucr[key]
+
+	for app in app_center.Application.all():
+		for version in app.versions:
+			try:
+				del ucr["%s/%s/%s-errata" % (constants.COMPONENT_BASE, version.component_id, version.component_id)]
+
+				for key in ("server", "localmirror", "version"):
+					del ucr["%s/%s/%s-errata/%s" % (constants.COMPONENT_BASE, version.component_id, version.component_id, key)]
+			except:
+				pass
 	
 	ucr.save()
 
