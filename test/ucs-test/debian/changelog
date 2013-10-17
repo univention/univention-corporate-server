@@ -1,3 +1,10 @@
+ucs-test (4.0.146-1) unstable; urgency=low
+
+  * 62_udm-groups/23_group_modify_grouptype: added new test case to
+    check which groupType changes are allowed (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Oct 2013 21:30:48 +0200
+
 ucs-test (4.0.145-4) unstable; urgency=low
 
   * More adjustments (Bug #32554)
