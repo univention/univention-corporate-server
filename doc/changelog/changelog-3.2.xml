@@ -2441,6 +2441,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
+		  The nameserver process is no longer restarted after each samba4 restart
+		  (<ulink url="&ucsbug;30543">Bug 30543</ulink>).
+		</simpara></listitem>
+
+		<listitem><simpara>
 		  &ucsUCRV; <envar>windows/wins-server</envar> and &ucsUCRV;
 		  <envar>windows/wins-support</envar> are now initialized during join
 		  (<ulink url="&ucsbug;30813">Bug 30813</ulink>, <ulink url="&ucsbug;32745">Bug 32745</ulink>).
