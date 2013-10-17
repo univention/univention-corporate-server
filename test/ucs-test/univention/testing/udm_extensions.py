@@ -91,27 +91,31 @@ def call_unjoin_script(name, fail_on_error=True):
 	ucr.load()
 	return call_cmd(['/usr/lib/univention-uninstall/%s' % name, '--binddn', ucr.get('tests/domainadmin/account'), '--bindpwdfile', ucr.get('tests/domainadmin/pwdfile')], fail_on_error=fail_on_error)
 
-def get_syntax_buffer(name=None):
+def get_syntax_buffer(name=None, identifier=None):
 	"""
 	Returns a UDM syntax with given name (e.g. 'MySimpleHook'). If name is omitted,
 	a randomly generated name is used.
 	"""
 	if name is None:
 		name = random_name()
-	return '''# this syntax class has been created by ucs-test
+	if identifier is None:
+		identifier = name
+	return '''# UCS-TEST SYNTAX %(syntax_identifier)s
 class %(syntax_name)s(simple):
         regex = re.compile('^ucstest-[0-9A-Za-z]+$')
         error_message = 'Wrong value given for ucs-test-syntax!'
-''' % {'syntax_name': name}
+''' % {'syntax_name': name, 'syntax_identifier': identifier}
 
-def get_hook_buffer(name=None):
+def get_hook_buffer(name=None, identifier=None):
 	"""
 	Returns a UDM hook with given name (e.g. 'MySimpleHook'). If name is omitted,
 	a randomly generated name is used.
 	"""
 	if name is None:
 		name = random_name()
-	return '''# this udm hook has been created by ucs-test
+	if identifier is None:
+		identifier = name
+	return '''# UCS-TEST HOOK %(hook_identifier)s
 from univention.admin.hook import simpleHook
 
 class %(hook_name)s(simpleHook):
@@ -120,10 +124,10 @@ class %(hook_name)s(simpleHook):
 	def hook_ldap_pre_modify(self, obj):
 		""" Set description consisting of username, lastname """
 		obj['description'] = 'USERNAME=%%(username)s  LASTNAME=%%(lastname)s' %% obj.info
-''' % {'hook_name': name}
+''' % {'hook_name': name, 'hook_identifier': identifier}
 
 
-def get_module_buffer(name=None):
+def get_module_buffer(name=None, identifier=None):
 	"""
 	Returns a UDM module with given name (e.g. 'testing/mytest'). If name is omitted,
 	a randomly generated name is used ('ucstest/%(randomstring)s').
@@ -131,6 +135,8 @@ def get_module_buffer(name=None):
 	if name is None:
 		name = 'ucstest/%s' % (random_name(), )
 	assert('/' in name)
+	if identifier is None:
+		identifier = name
 	return '''# this UDM module has been created by ucs-test
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -144,7 +150,7 @@ module='%(module_udmname)s'
 operations=['add','edit','remove','search']
 usewizard=1
 childs=0
-short_description=_('A UCS-TEST TEST MODULE')
+short_description=_('UCS-TEST MODULE %(module_identifier)s')
 long_description=''
 module_search_filter=univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'automountMap'),
@@ -198,10 +204,10 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 def identify(dn, attr, canonical=0):
 	return 'automountMap' in attr.get('objectClass', [])
-''' %  {'module_udmname': name}
+''' % {'module_udmname': name, 'module_identifier': identifier}
 
 
-def get_extension_buffer(extension_type, name=None):
+def get_extension_buffer(extension_type, name=None, identifier=None):
 	"""
 	Get UDM extension of specified type with specified name.
 	In case the name is omitted, a random name will be used.
@@ -210,7 +216,7 @@ def get_extension_buffer(extension_type, name=None):
 	return { 'hook': get_hook_buffer,
 	  'syntax': get_syntax_buffer,
 	  'module': get_module_buffer,
-	  }[extension_type](name)
+	  }[extension_type](name, identifier)
 
 
 def get_postinst_script_buffer(extension_type, filename, app_id=None, version_start=None, version_end=None):

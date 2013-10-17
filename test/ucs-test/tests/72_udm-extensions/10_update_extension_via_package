@@ -72,8 +72,9 @@ def test_extension(extension_type):
 		print 'Removing UDM extension from LDAP'
 		remove_extension_by_name(extension_type, extension_name, fail_on_error=False)
 
-		print 'Uninstalling binary package %r' % package_name
-		package.uninstall()
+		for package in packages:
+			print 'Uninstalling binary package %r' % package.get_package_name()
+			package.uninstall()
 
 		print 'Removing source package'
 		for package in packages:
