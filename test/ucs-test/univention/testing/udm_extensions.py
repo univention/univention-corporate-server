@@ -222,7 +222,7 @@ def get_postinst_script_buffer(extension_type, filename, app_id=None, version_st
 	if not app_id:
 		app_id = ''
 	else:
-		app_id = 'UNIVENTION_APP_IDENTIFIER="%s"' % app_id
+		app_id = 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
 	if not version_start:
 		version_start = ''
 	else:
@@ -269,7 +269,7 @@ def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_ver
 	if not app_id:
 		app_id = ''
 	else:
-		app_id = 'UNIVENTION_APP_IDENTIFIER="%s"' % app_id
+		app_id = 'export UNIVENTION_APP_IDENTIFIER="%s"' % app_id
 	if not version_start:
 		version_start = ''
 	else:

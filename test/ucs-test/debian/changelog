@@ -1,3 +1,9 @@
+ucs-test (4.0.145-3) unstable; urgency=low
+
+  * Adjust udm-extension tests (Bug #32554)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 16:02:50 +0200
+
 ucs-test (4.0.145-2) unstable; urgency=low
 
   * Fix 50_samba/30winbind in samba4 domains (Bug #31772)

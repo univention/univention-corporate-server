@@ -31,9 +31,9 @@ def test_extension(extension_type):
 			version_start = random_ucs_version(max_major=2)
 			version_end = random_ucs_version(min_major=5)
 
-			# create special extension name
+			# create unique extension identifier
 			extension_identifier = '%s_%s' % (extension_name, package_version.replace('.','_'))
-			extension_buffer = get_extension_buffer(extension_type, extension_identifier)
+			extension_buffer = get_extension_buffer(extension_type, extension_name, extension_identifier)
 			joinscript_buffer = get_join_script_buffer(extension_type,
 													  '/usr/share/%s/%s' % (package_name, extension_filename),
 													  app_id=app_id,

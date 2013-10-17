@@ -8,7 +8,7 @@
 
 from univention.config_registry import ConfigRegistry
 import univention.testing.udm as udm_test
-from univention.testing.utils import verify_ldap_object, wait_for_replication_and_postrun, fail
+from univention.testing.utils import verify_ldap_object, wait_for_replication, fail
 from univention.testing.strings import random_name, random_version, random_ucs_version
 from univention.testing.udm_extensions import *
 import subprocess
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 							   ucsversionend = version_end,
 							   active = 'FALSE')
 
-		wait_for_replication_and_postrun()
+		wait_for_replication()
 		udm.stop_cli_server()
 
 		verify_ldap_object(dn, {
@@ -57,14 +57,14 @@ if __name__ == '__main__':
 
 				})
 
-		output = subprocess.Popen(['udm', 'modules'], stdout=subprocess.PIPE).communicate()
+		output, stderr = subprocess.Popen(['udm', 'modules'], stdout=subprocess.PIPE).communicate()
 		if not extension_name in output:
 			fail('ERROR: udm cli server has not been reloaded yet or module registration failed')
 
 		extension_dn = udm.create_object(extension_name, position=ucr.get('ldap/base'), name=object_name)
 		udm.remove_object(extension_name, dn=extension_dn)
 
-	wait_for_replication_and_postrun()
+	wait_for_replication()
 	udm.stop_cli_server()
 
 	with udm_test.UCSTestUDM() as udm:
