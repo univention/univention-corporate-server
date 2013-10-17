@@ -993,7 +993,11 @@ class object(univention.admin.handlers.simpleLdap):
 		# See for details:
 		#  http://technet.microsoft.com/en-us/library/cc755692%28v=ws.10%29.aspx
 
-		if self.__is_groupType_global(old_groupType) and self.__is_groupType_universal(new_groupType):
+		if self.__is_groupType_global(old_groupType) and self.__is_groupType_domain_local(new_groupType):
+			raise univention.admin.uexceptions.adGroupTypeChangeGlobalToDomainLocal
+		elif self.__is_groupType_domain_local(old_groupType) and self.__is_groupType_global(new_groupType):
+			raise univention.admin.uexceptions.adGroupTypeChangeDomainLocalToGlobal
+		elif self.__is_groupType_global(old_groupType) and self.__is_groupType_universal(new_groupType):
 			# Global to universal:
 			#  This conversion is allowed only if the group that you want to change is not a member of
 			#  another global scope group.

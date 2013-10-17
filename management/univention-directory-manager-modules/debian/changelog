@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.67-1) unstable; urgency=low
+
+  * Added more groupType change restrictions (Bug #32767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Oct 2013 21:54:34 +0200
+
 univention-directory-manager-modules (9.0.66-1) unstable; urgency=low
 
   * Implement groupType change handling (Bug #32767)

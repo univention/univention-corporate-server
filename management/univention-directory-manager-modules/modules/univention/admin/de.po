@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.99\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-17 21:36+0200\n"
+"POT-Creation-Date: 2013-10-17 21:52+0200\n"
 "PO-Revision-Date: 2012-07-11 17:21+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
@@ -1385,8 +1385,7 @@ msgstr ""
 
 #: uexceptions.py:107
 msgid "The AD group type can not be changed to type local."
-msgstr ""
-"Der AD Gruppentyp kann nicht auf den Typ Lokal geändert werden."
+msgstr "Der AD Gruppentyp kann nicht auf den Typ Lokal geändert werden."
 
 #: uexceptions.py:110
 msgid ""
@@ -1401,29 +1400,40 @@ msgid ""
 "The AD group type can not be changed from domain local to universal, because "
 "the group is member of another domain local group."
 msgstr ""
-"Der AD Gruppentyp kann nicht von Domänenlokal auf Universal geändert werden, weil "
-"die Gruppe ist Mitglied einer anderen Domänenlokalen Gruppe."
+"Der AD Gruppentyp kann nicht von Domänenlokal auf Universal geändert werden, "
+"weil die Gruppe ist Mitglied einer anderen Domänenlokalen Gruppe."
 
 #: uexceptions.py:114
 msgid ""
 "The AD group type can not be changed from universal to global, because the "
 "group is member of another universal group."
-msgstr "Der AD Gruppentyp kann nicht von Universal auf Global geändert werden, weil "
+msgstr ""
+"Der AD Gruppentyp kann nicht von Universal auf Global geändert werden, weil "
 "die Gruppe ist Mitglied einer anderen Univeral Gruppe."
 
 #: uexceptions.py:117
+msgid "The AD group type can not be changed from global to domain local."
+msgstr ""
+"Der AD Gruppentyp kann nicht von Global auf Domänenlokal geändert werden."
+
+#: uexceptions.py:119
+msgid "The AD group type can not be changed from domain local to global."
+msgstr ""
+"Der AD Gruppentyp kann nicht von Domänenlokal auf Global geändert werden."
+
+#: uexceptions.py:122
 msgid "Prohibited username."
 msgstr "Verbotener Benutzername."
 
-#: uexceptions.py:120
+#: uexceptions.py:125
 msgid "IP address is already in use."
 msgstr "Die IP-Adresse wird bereits verwendet."
 
-#: uexceptions.py:123
+#: uexceptions.py:128
 msgid "DNS alias is already in use."
 msgstr "Das DNS-Alias wird bereits verwendet."
 
-#: uexceptions.py:126
+#: uexceptions.py:131
 msgid ""
 "The DHCP entry for this host should contain the zone DN, the IP address and "
 "the MAC address."
@@ -1431,7 +1441,7 @@ msgstr ""
 "Der DHCP-Eintrag für diesen Rechner sollte den Zonen-DN, die IP-und die MAC-"
 "Adresse enthalten."
 
-#: uexceptions.py:129
+#: uexceptions.py:134
 msgid ""
 "The DNS alias entry for this host should contain the zone name, the alias "
 "zone container DN and the alias."
@@ -1439,89 +1449,89 @@ msgstr ""
 "Der DNS-Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN "
 "des Alias-Zonencontainers und den Alias-Namen enthalten."
 
-#: uexceptions.py:132
+#: uexceptions.py:137
 msgid "The provided DNS information are invalid."
 msgstr "Die angegebenen DNS-Informationen sind ungültig."
 
-#: uexceptions.py:135
+#: uexceptions.py:140
 msgid "Next IP address not found."
 msgstr "Die nächste IP-Adresse wurde nicht gefunden."
 
-#: uexceptions.py:138
+#: uexceptions.py:143
 msgid "The given IP address is not within the range of the selected network"
 msgstr "Die angegebene IP ist nicht im Bereich des zugeordneten Netzwerks."
 
-#: uexceptions.py:141
+#: uexceptions.py:146
 msgid "The MAC address is already in use."
 msgstr "Die MAC-Adresse wird bereits verwendet."
 
-#: uexceptions.py:144
+#: uexceptions.py:149
 msgid "The mail address is already in use."
 msgstr "Die Mail-Adresse wird bereits verwendet."
 
-#: uexceptions.py:147
+#: uexceptions.py:152
 msgid "DHCP server name already used: "
 msgstr "Der DHCP-Servername wird bereits verwendet."
 
-#: uexceptions.py:150
+#: uexceptions.py:155
 msgid "Default Kolab home server does not exist"
 msgstr "Der Standard Kolab Home Server existiert nicht."
 
-#: uexceptions.py:153
+#: uexceptions.py:158
 msgid "Default primary group does not exist"
 msgstr "Die primäre Standardgruppe existiert nicht."
 
-#: uexceptions.py:156
+#: uexceptions.py:161
 msgid "This is a primary group"
 msgstr "Das ist eine primäre Gruppe."
 
-#: uexceptions.py:162
+#: uexceptions.py:167
 msgid "The requested group not be found."
 msgstr "Die angeforderte Gruppe wurde nicht gefunden."
 
-#: uexceptions.py:165
+#: uexceptions.py:170
 msgid "The DHCP entry was not found."
 msgstr "Der DHCP-Eintrag wurde nicht gefunden."
 
-#: uexceptions.py:168
+#: uexceptions.py:173
 msgid "The DNS entry was not found"
 msgstr "Der DNS-Eintrag wurde nicht gefunden."
 
-#: uexceptions.py:171
+#: uexceptions.py:176
 msgid ""
 "The FQDN of this object is too long, it must have less than 64 characters."
 msgstr ""
 "Der FQDN dieses Objekts ist zu lang, er darf nicht mehr als 64 Zeichen haben."
 
-#: uexceptions.py:174
+#: uexceptions.py:179
 msgid "Not all needed information was entered."
 msgstr "Nicht alle benötigten Informationen wurden angegeben."
 
-#: uexceptions.py:177
+#: uexceptions.py:182
 msgid "Cannot overwrite a fixed attribute."
 msgstr "Kann kein unveränderliches Attribut überschreiben."
 
-#: uexceptions.py:180
+#: uexceptions.py:185
 msgid "Dynamic BOOTP leases are not compatible with failover."
 msgstr "Dynamic BOOTP ist nicht kompatibel mit Failover."
 
-#: uexceptions.py:183
+#: uexceptions.py:188
 msgid "No license found."
 msgstr "Es wurde keine Lizenz gefunden."
 
-#: uexceptions.py:186
+#: uexceptions.py:191
 msgid "The license is invalid."
 msgstr "Die Lizenz ist ungültig."
 
-#: uexceptions.py:189
+#: uexceptions.py:194
 msgid "The license is expired."
 msgstr "Die Lizenz ist abgelaufen."
 
-#: uexceptions.py:192
+#: uexceptions.py:197
 msgid "The license is invalid for the current base DN."
 msgstr "Die Lizenz ist ungültig für den aktuellen Basis-DN."
 
-#: uexceptions.py:195
+#: uexceptions.py:200
 msgid ""
 "The license check is disabled. Your are using the GPL version without any "
 "support or maintenance by Univention."
@@ -1529,133 +1539,133 @@ msgstr ""
 "Die Lizenzüberprüfung ist deaktiviert. Sie verwenden die GPL Version ohne "
 "die Support oder Maintenance Unterstüzung von Univention."
 
-#: uexceptions.py:201
+#: uexceptions.py:206
 msgid "Too many user accounts"
 msgstr "Zu viele Benutzerkonten"
 
-#: uexceptions.py:203
+#: uexceptions.py:208
 msgid "Too many client accounts"
 msgstr "Zu viele Client Konten"
 
-#: uexceptions.py:205
+#: uexceptions.py:210
 msgid "Too many desktop accounts"
 msgstr "Zu viele Desktop Konten"
 
-#: uexceptions.py:207
+#: uexceptions.py:212
 msgid "Too many groupware accounts"
 msgstr "Zu viele Groupware Konten"
 
-#: uexceptions.py:209
+#: uexceptions.py:214
 msgid "Too many users"
 msgstr "Zu viele Benutzerkonten"
 
-#: uexceptions.py:211
+#: uexceptions.py:216
 msgid "Too many servers"
 msgstr "Zu viele Serverkonten"
 
-#: uexceptions.py:213
+#: uexceptions.py:218
 msgid "Too many managed clients"
 msgstr "Zu viele Managed Client Konten"
 
-#: uexceptions.py:215
+#: uexceptions.py:220
 msgid "Too many corporate clients"
 msgstr "Zu viele Corporate Client Konten"
 
-#: uexceptions.py:217
+#: uexceptions.py:222
 msgid "Too many DVS users"
 msgstr "Zu viele DVS-Benutzerkonten"
 
-#: uexceptions.py:219
+#: uexceptions.py:224
 msgid "Too many DVS clients"
 msgstr "Zu viele DVS-Client Konten"
 
-#: uexceptions.py:221
+#: uexceptions.py:226
 msgid "During this session add and modify are disabled"
 msgstr "Während dieser Sitzung sind Hinzufügen und Bearbeiten nicht verfügbar."
 
-#: uexceptions.py:224
+#: uexceptions.py:229
 msgid "Password has been used before. Please choose a different one."
 msgstr "Das Passwort wurde bereits verwendet. Bitte wählen Sie ein anderes."
 
-#: uexceptions.py:227
+#: uexceptions.py:232
 msgid "The password is to short, at least 8 character!"
 msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
 
-#: uexceptions.py:230
+#: uexceptions.py:235
 msgid "Network and IP range are incompatible."
 msgstr "Netzwerk und IP-Adressbereich passen nicht zusammen."
 
-#: uexceptions.py:233
+#: uexceptions.py:238
 msgid "The IP range contains its network address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet seine Netzwerk Adresse. Das ist nicht "
 "zulässig!"
 
-#: uexceptions.py:236
+#: uexceptions.py:241
 msgid "The IP range contains its broadcast address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet die Broadcast-Adresse. Das ist nicht "
 "zulässig!"
 
-#: uexceptions.py:239
+#: uexceptions.py:244
 msgid "Overlapping IP ranges"
 msgstr "Überschneidung in den IP-Adressbereichen"
 
-#: uexceptions.py:242
+#: uexceptions.py:247
 msgid "Invalid combination of options."
 msgstr "Unzulässige Zusammenstellung von Optionen."
 
-#: uexceptions.py:245 uexceptions.py:248
+#: uexceptions.py:250 uexceptions.py:253
 msgid "Password policy error: "
 msgstr "Fehler in der Passwort-Richtlinie: "
 
-#: uexceptions.py:251
+#: uexceptions.py:256
 msgid "This operation is not allowed on this object."
 msgstr "Die Operation ist für dieses Objekt nicht erlaubt."
 
-#: uexceptions.py:254
+#: uexceptions.py:259
 msgid "Empty printer groups are not possible."
 msgstr "Leere Druckergruppen sind nicht möglich."
 
-#: uexceptions.py:257
+#: uexceptions.py:262
 msgid ""
 "Printer groups with quota support can only have members with quota support."
 msgstr ""
 "Einer Druckergruppen mit Unterstützung für Quota können als Mitglieder nur "
 "Drucker mit Quota haben."
 
-#: uexceptions.py:260
+#: uexceptions.py:265
 msgid "Only printer objects can be members of a printer group."
 msgstr "Nur Drucker-Objekte können Mitglied in einer Druckergruppe sein."
 
-#: uexceptions.py:263
+#: uexceptions.py:268
 msgid "Only existing groups are allowed."
 msgstr "Nur existierende Gruppen sind erlaubt."
 
-#: uexceptions.py:266
+#: uexceptions.py:271
 msgid "Only existing users are allowed."
 msgstr "Nur existierende Benutzer sind erlaubt."
 
-#: uexceptions.py:269
+#: uexceptions.py:274
 #, python-format
 msgid "Invalid syntax in default value. Check these templates: %s."
 msgstr "Falsche Syntax bei Standardwert. Zu prüfende Vorlagen: %s."
 
-#: uexceptions.py:274
+#: uexceptions.py:279
 msgid "Timeperiod Object still in use!"
 msgstr "Nagios-Zeitraum-Objekt wird noch genutzt!"
 
-#: uexceptions.py:277
+#: uexceptions.py:282
 msgid "IP address entry required to assign nagios services!"
 msgstr "Zum Zuweisen von Nagios-Diensten wird eine IP-Adresse benötigt!"
 
-#: uexceptions.py:280
+#: uexceptions.py:285
 msgid "DNS Forward Zone entry required to assign nagios services!"
 msgstr ""
 "Zum Zuweisen von Nagios-Diensten wird ein Eintrag in der DNS Forward Zone "
 "benötigt!"
 
-#: uexceptions.py:283
+#: uexceptions.py:288
 msgid ""
 "The DNS forward entry could not be created. Please remove existing alias "
 "records or comparable DNS objects with the same name as this host from the "
@@ -1665,11 +1675,11 @@ msgstr ""
 "DNS-Alias Records oder vergleichbare DNS-Objekte mit dem Namen dieses "
 "Rechners aus der DNS-Forward-Zone entfernt werden."
 
-#: uexceptions.py:286
+#: uexceptions.py:291
 msgid "Circular group dependency detected: "
 msgstr "Zyklische Gruppen-Abhängigkeit festgestellt: "
 
-#: uexceptions.py:292
+#: uexceptions.py:297
 msgid ""
 "Need a primary group with samba option to create a user with samba option"
 msgstr ""
@@ -1692,11 +1702,6 @@ msgstr "Authentisierung fehlgeschlagen"
 #: uldap.py:416
 msgid "Moving childs is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
-
-#~ msgid "The AD group type can not be changed from universal to domain local."
-#~ msgstr ""
-#~ "Der AD Gruppentyp kann nicht von Universal auf Domänenlokal geändert "
-#~ "werden."
 
 #~ msgid "cannot find fqdn of "
 #~ msgstr "FQDN konnte nicht gefunden werden: "
