@@ -32,12 +32,10 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dijit/registry",
-	"dijit/focus",
 	"umc/tools",
 	"umc/widgets/Wizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, lang, array, registry, focusUtil, tools, Wizard, _) {
+], function(declare, lang, array, tools, Wizard, _) {
 
 	return declare("umc.modules.udm.wizards.CreateWizard", [ Wizard ], {
 		autoValidate: true,
@@ -56,6 +54,11 @@ define([
 		},
 
 		buildWidget: function(widgetName, originalWidgetDefinition) {
+			if (originalWidgetDefinition.multivalue) {
+				this._multiValuesWidgets.push(widgetName);
+				originalWidgetDefinition = lang.clone(originalWidgetDefinition);
+				originalWidgetDefinition.type = 'TextBox';
+			}
 			return {
 				name: widgetName,
 				sizeClass: originalWidgetDefinition.size,
@@ -65,10 +68,21 @@ define([
 			};
 		},
 
+		getValues: function() {
+			var values = this.inherited(arguments);
+			tools.forIn(lang.clone(values), lang.hitch(this, function(key, value) {
+				if (this._multiValuesWidgets.indexOf(key) !== -1) {
+					values[key] = [value];
+				}
+			}));
+			return values;
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._mayFinishDeferred = this.detailPage.loadedDeferred;
 			this._detailButtons = this.detailPage.getButtonDefinitions();
+			this._multiValuesWidgets = [];
 			var pages = [];
 			this._connectWidgets = [];
 			array.forEach(this.widgetPages, lang.hitch(this, function(page) {
@@ -134,6 +148,10 @@ define([
 				})
 			});
 			return buttons;
+		},
+
+		canFinish: function() {
+			return this.inherited(arguments) && this._mayFinishDeferred.isResolved();
 		},
 
 		onAdvanced: function() {

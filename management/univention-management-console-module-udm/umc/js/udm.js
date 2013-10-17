@@ -1398,8 +1398,6 @@ define([
 										this._detailPage._form.ready().then(lang.hitch(this, function() {
 											this._detailPage.validateChanges(null);
 										}));
-									} else {
-										this._detailPage._tabs.getChildren()[0].addNote(_('%s was not yet created!', this.objectNameSingular));
 									}
 								}));
 							}));
@@ -1413,7 +1411,8 @@ define([
 						}));
 						this._createObjectWizard = new Dialog({
 							title: _('Add a new %s', this.objectNameSingular),
-							content: wizard
+							content: wizard,
+							autofocus: false // interferes with wizard.autoFocus
 						});
 						this.own(this._createObjectWizard);
 						this._createObjectWizard.show();

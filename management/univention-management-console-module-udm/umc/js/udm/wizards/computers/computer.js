@@ -30,48 +30,55 @@
 
 define([
 	"dojo/_base/declare",
+	"dojo/_base/array",
 	"umc/modules/udm/wizards/CreateWizard",
 	"umc/i18n!umc/modules/udm"
-], function(declare, CreateWizard, _) {
+], function(declare, array, CreateWizard, _) {
 
-	return declare("umc.modules.udm.wizards.users.user", [ CreateWizard ], {
+	return declare("umc.modules.udm.wizards.computers.computer", [ CreateWizard ], {
 		widgetPages: [
 			{ // page one
-				title: _('User information'),
+				title: _('Computer information'),
 				widgets: [
-					['title', 'firstname', 'lastname'], // row one
-					['username'] // row two
-				]
-			}, { // page two
-				title: _('Password'),
-				widgets: [
-					['password'],
-					['pwdChangeNextLogin', 'overridePWLength'],
-					['disabled']
+					['name']
+					//['default_network'],
+					//['mac', 'ip']
 				]
 			}
 		],
 
-		buildWidget: function(widgetName, originalWidgetDefinition) {
-			if (widgetName == 'disabled') {
-				return {
-					name: widgetName,
-					sizeClass: 'One',
-					label: _('Account disabled'),
-					required: false,
-					type: 'CheckBox'
-				};
-			} else {
-				return this.inherited(arguments);
-			}
-		},
+		//buildWidget: function(widgetName, originalWidgetDefinition) {
+		//	if (widgetName == 'default_network') {
+		//		return {
+		//			name: widgetName,
+		//			sizeClass: 'One',
+		//			label: _('Use default network'),
+		//			required: false,
+		//			value: true,
+		//			type: 'CheckBox'
+		//		};
+		//	} else {
+		//		return this.inherited(arguments);
+		//	}
+		//},
 
 		getValues: function() {
 			var values = this.inherited(arguments);
-			var disabled = values.disabled;
-			delete values.disabled;
-			if (disabled) {
-				values.disabled = 'all';
+			var networkWidget = this.detailPage._form.getWidget('network');
+			var value;
+			array.some(networkWidget.store._getItemsArray(), function(item) {
+				if (item.label[0] == 'default') {
+					value = item.id[0];
+					return true;
+				}
+				if (!value) {
+					// first non empty element is fallback
+					value = item.id[0];
+				}
+				return false;
+			});
+			if (value) {
+				values.network = value;
 			}
 			return values;
 		}

@@ -30,52 +30,8 @@
 
 define([
 	"dojo/_base/declare",
-	"umc/modules/udm/wizards/CreateWizard",
-	"umc/i18n!umc/modules/udm"
-], function(declare, CreateWizard, _) {
-
-	return declare("umc.modules.udm.wizards.users.user", [ CreateWizard ], {
-		widgetPages: [
-			{ // page one
-				title: _('User information'),
-				widgets: [
-					['title', 'firstname', 'lastname'], // row one
-					['username'] // row two
-				]
-			}, { // page two
-				title: _('Password'),
-				widgets: [
-					['password'],
-					['pwdChangeNextLogin', 'overridePWLength'],
-					['disabled']
-				]
-			}
-		],
-
-		buildWidget: function(widgetName, originalWidgetDefinition) {
-			if (widgetName == 'disabled') {
-				return {
-					name: widgetName,
-					sizeClass: 'One',
-					label: _('Account disabled'),
-					required: false,
-					type: 'CheckBox'
-				};
-			} else {
-				return this.inherited(arguments);
-			}
-		},
-
-		getValues: function() {
-			var values = this.inherited(arguments);
-			var disabled = values.disabled;
-			delete values.disabled;
-			if (disabled) {
-				values.disabled = 'all';
-			}
-			return values;
-		}
-
-	});
+	"umc/modules/udm/wizards/computers/computer"
+], function(declare, ComputerWizard) {
+	return declare("umc.modules.udm.wizards.computers.windows", [ ComputerWizard ]);
 });
 
