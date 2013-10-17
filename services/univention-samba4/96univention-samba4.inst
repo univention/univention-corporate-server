@@ -241,6 +241,10 @@ run_samba_provision() {
 		exit "$rc"
 	fi
 	univention-config-registry set windows/wins-support=yes windows/wins-server?"localhost"
+
+	# Re-commit /etc/krb5.keytab
+	#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
+	/usr/share/univention-samba4/scripts/create-keytab.sh
 }
 
 samba_domain_join() {
@@ -287,6 +291,10 @@ samba_domain_join() {
 		echo "Failed to join the domain."
 		exit 1
 	fi
+
+	# Re-commit /etc/krb5.keytab
+	#  https://forge.univention.org/bugzilla/show_bug.cgi?id=27426
+	/usr/share/univention-samba4/scripts/create-keytab.sh
 }
 
 disable_slapd_on_standard_port() {

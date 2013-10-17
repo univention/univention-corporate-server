@@ -1,3 +1,10 @@
+univention-samba4 (3.0.27-9) unstable; urgency=low
+
+  * Re-commit /etc/krb5.keytab, was missing on some fresh installations
+    of Samba 4.1 (Bug #31698)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 19:56:42 +0200
+
 univention-samba4 (3.0.27-8) unstable; urgency=low
 
   * Run dbcheck --fix in postinst (Bug #31698)
