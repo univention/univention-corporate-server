@@ -407,8 +407,12 @@ msgid "License text"
 msgstr "Lizenztext"
 
 #: umc/js/udm/LicenseDialog.js:93
-msgid "License upload"
-msgstr "Lizenz hochladen"
+msgid "License file upload"
+msgstr "Lizenzdatei hochladen"
+
+#: umc/js/udm/LicenseDialog.js:93
+msgid "Information about the \"free for personal use\" license"
+msgstr "Informationen über die \"Free For Personal Use\"-Lizenz"
 
 #: umc/js/udm.js:1493
 msgid "Linux"
