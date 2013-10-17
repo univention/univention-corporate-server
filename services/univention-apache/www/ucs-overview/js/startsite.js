@@ -72,7 +72,29 @@ define([
 			services: _('Installed web services'),
 			admin: _('Administration'),
 			noServiceTitle: _('There are currently no user web services installed.'),
-			noServiceDescription: _('Additional services may be installed in the category <a href="#admin">Administration</a> via Univention Management Console.')
+			noServiceDescription: _('Additional services may be installed in the category <a href="#admin">Administration</a> via Univention Management Console.'),
+			wiki: _('Univention Wiki'),
+			forum: _('Univention Forum'),
+			sdb: _('Univention Support Database'),
+			manual: _('Manual for Univention Corporate Server'),
+			apps: _('App Catalogue'),
+			products: _('Additional Products'),
+			solutions: _('Solutions based on UCS'),
+			univention_website: _('Univention Website'),
+			news: _('News'),
+			dates: _('Dates'),
+			univention_partner: _('Univention Partners'),
+			'http://wiki.univention.de/': _('http://wiki.univention.de/'),
+			'http://forum.univention.de/': _('http://forum.univention.de/'),
+			'http://sdb.univention.de/': _('http://sdb.univention.de/'),
+			'http://docs.univention.de/en.html': _('http://docs.univention.de/en.html'),
+			'http://www.univention.de/en/products/ucs/app-catalogue/': _('http://www.univention.de/en/products/ucs/app-catalogue/'),
+			'http://www.univention.de/en/products/': _('http://www.univention.de/en/products/'),
+			'http://www.univention.de/en/ucs-solutions/': _('http://www.univention.de/en/ucs-solutions/'),
+			'http://www.univention.de/en/': _('http://www.univention.de/en/'),
+			'http://www.univention.de/en/univention/news/news-releases/': _('http://www.univention.de/en/univention/news/news-releases/'),
+			'http://www.univention.de/en/univention/dates/': _('http://www.univention.de/en/univention/dates/'),
+			'http://www.univention.de/en/partner/': _('http://www.univention.de/en/partner/')
 		},
 
 		_localizeString: function(str) {
@@ -222,9 +244,15 @@ define([
 
 		_updateTranslations: function() {
 			query('*[data-i18n]').forEach(lang.hitch(this, function(inode) {
-				var i18nID = domAttr.get(inode, 'data-i18n');
-				if (i18nID in this._translations) {
-					domAttr.set(inode, 'innerHTML', this._translations[i18nID]);
+				var value = domAttr.get(inode, 'data-i18n');
+				if (value in this._translations) {
+					domAttr.set(inode, 'innerHTML', this._translations[value]);
+				}
+			}));
+			query('a[href]').forEach(lang.hitch(this, function(inode) {
+				var href = domAttr.get(inode, 'href');
+				if (href in this._translations) {
+					domAttr.set(inode, 'href', this._translations[href]);
 				}
 			}));
 		},
