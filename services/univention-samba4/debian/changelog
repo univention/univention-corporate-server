@@ -1,3 +1,9 @@
+univention-samba4 (3.0.27-4) unstable; urgency=low
+
+  * Adjust spelling of samba/max_openfiles (Bug #32049)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 16:30:55 +0200
+
 univention-samba4 (3.0.27-3) unstable; urgency=low
 
   * Register and evaluate samba/max_open_files (Bug #32221)
