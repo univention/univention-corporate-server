@@ -243,6 +243,17 @@ secret: $machine_secret
 					univention-config-registry commit /etc/krb5.conf
 			fi
 
+			## run dbcheck on update but backup first.
+			if [ -d /var/lib/samba/private ]; then
+				backup_id=$(date +%Y%m%d-%H%M%S)
+				backup_dir="/var/backups/samba4.$backup_id"
+				if [ -d "$backup_dir" ]; then
+					rm -rf "$backup_dir"
+ 				fi
+				mkdir "$backup_dir" && \
+				cp -a /var/lib/samba/private "$backup_dir" && \
+				samba-tool dbcheck --cross-ncs --fix --yes
+ 			fi
 
 		fi
 	fi
