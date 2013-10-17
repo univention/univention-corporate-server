@@ -1,3 +1,9 @@
+ucs-test (4.0.145-2) unstable; urgency=low
+
+  * Fix 50_samba/30winbind in samba4 domains (Bug #31772)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Oct 2013 14:09:48 +0200
+
 ucs-test (4.0.145-1) unstable; urgency=low
 
   * Cleanup test for Bug #31305

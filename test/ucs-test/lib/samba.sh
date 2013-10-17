@@ -17,6 +17,21 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 		done
 		echo
 	fi
+	if [ -e "/var/lib/samba/private/sam.ldb" ]; then
+		sambaSID=$(univention-s4search --controls=domain_scope:1  samaccountname="$username" objectSid | sed -n 's/^objectSid: //p')
+		if [ -z "$sambaSID" ]; then
+			echo -n "Waiting for DRS replication of domain sambaSID for user $username."
+		fi
+		while [ -z "$sambaSID" ]; do
+			if [ "$(($t-$t0))" -gt 30 ]; then
+				fail_fast 1 "TIMEOUT: No domain sambaSID replicated to local Samba4 directory after $(($t-$t0)) seconds"
+			fi
+			sleep 1
+			echo -n "."
+			sambaSID=$(univention-s4search --controls=domain_scope:1  samaccountname="$username" objectSid | sed -n 's/^objectSid: //p')
+			t=$(date +%Y%m%d%H%M%S)
+		done
+	fi
 	echo "S4-Connector and LDAP replication of domain sambaSID took $(($t-$t0)) seconds"
 }
 
