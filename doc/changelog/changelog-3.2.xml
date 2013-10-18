@@ -3091,6 +3091,10 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		and tests the horde login
 		(<ulink url="&ucsbug;32230">Bug 32230</ulink>).
 	  </simpara></listitem>
+	  <listitem><simpara>
+ 	    Unjoin scripts have been added to <package>univention-mail-horde</package>
+	    (<ulink url="&ucsbug;32899">Bug 32899</ulink>).
+	  </simpara></listitem>
 	</itemizedlist>
 </section>
 <!-- vim: set ts=4 sw=2 noet: -->
