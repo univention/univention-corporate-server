@@ -1,3 +1,9 @@
+univention-samba4 (3.0.28-1) unstable; urgency=low
+
+  * Wait for dns- replication only if it is not ignored (Bug #32871)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Oct 2013 19:33:02 +0200
+
 univention-samba4 (3.0.27-9) unstable; urgency=low
 
   * Re-commit /etc/krb5.keytab, was missing on some fresh installations
