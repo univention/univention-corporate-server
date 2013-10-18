@@ -988,22 +988,6 @@ define([
 			}), 0);
 		},
 
-		_showLicenseImportDialog: function() {
-			require(['umc/modules/udm/LicenseImportDialog'], function(LicenseImportDialog) {
-				topic.publish('/umc/actions', 'menu-settings', 'license-import');
-				var dlg = new LicenseImportDialog();
-				dlg.show();
-			});
-		},
-
-		_showLicenseInformationDialog: function() {
-			require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
-				topic.publish('/umc/actions', 'menu-settings', 'license');
-				var dlg = new LicenseDialog();
-				dlg.show();
-			});
-		},
-
 		_insertActivationMenuItem: function() {
 			if (_ucr['uuid/license']) {
 				// license has already been activated
@@ -1662,6 +1646,22 @@ define([
 			this._setupStaticGui = true;
 		},
 
+		_showLicenseImportDialog: function() {
+			topic.publish('/umc/actions', 'menu-settings', 'license-import');
+			require(['umc/modules/udm/LicenseImportDialog'], function(LicenseImportDialog) {
+				var dlg = new LicenseImportDialog();
+				dlg.show();
+			});
+		},
+
+		_showLicenseInformationDialog: function() {
+			topic.publish('/umc/actions', 'menu-settings', 'license');
+			require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
+				var dlg = new LicenseDialog();
+				dlg.show();
+			});
+		},
+
 		_showActivationDialog: function() {
 			topic.publish('/umc/actions', 'menu-settings', 'activation');
 
@@ -1694,7 +1694,7 @@ define([
 			var confirmDeferred = dialog.templateDialog('umc/app', 'activation.' + _getLang()  + '.html', {
 				path: require.toUrl('umc/app'),
 				leaveFieldFreeDisplay: 'none'
-			}, _('Usage statistics'), [{
+			}, _('Activation of UCS'), [{
 				name: 'cancel',
 				label: _('Cancel')
 			}, {

@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.111-1) unstable; urgency=low
+
+  * Bug #30811: fix title of UCS activation dialog
+
+ -- Florian Best <best@univention.de>  Fri, 18 Oct 2013 13:40:16 +0200
+
 univention-management-console-frontend (3.0.110-1) unstable; urgency=low
 
   * Bug #30811: added translations for startup wizard
