@@ -1535,6 +1535,10 @@
 			Custom NFS settings can now be added to NFS Shares (<ulink url="&ucsbug;18708">Bug 18708</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+			The setuid, setgid and sticky bit flags can now be set for share root-directories (<ulink url="&ucsbug;15087">Bug 15087</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
