@@ -976,11 +976,19 @@ define([
 				return;
 			}
 
-			require(['umc/modules/udm/LicenseDialog'], lang.hitch(this, function(LicenseDialog) {
+			require(['umc/modules/udm/LicenseDialog', 'umc/modules/udm/LicenseImportDialog'], lang.hitch(this, function(LicenseDialog, LicenseImportDialog) {
 				this._insertSeparatorToSettingsMenu();
 				this._insertActivationMenuItem();
 				this._settingsMenu.addChild(new MenuItem({
-					label: _('License'),
+					label: _('Import new license'),
+					onClick : function() {
+						topic.publish('/umc/actions', 'menu-settings', 'license-import');
+						var dlg = new LicenseImportDialog();
+						dlg.show();
+					}
+				}), 0);
+				this._settingsMenu.addChild(new MenuItem({
+					label: _('License information'),
 					onClick : function() {
 						topic.publish('/umc/actions', 'menu-settings', 'license');
 						var dlg = new LicenseDialog();
@@ -1643,12 +1651,23 @@ define([
 			topic.subscribe('/umc/modules/open', lang.hitch(this, 'openModule'));
 			topic.subscribe('/umc/tabs/close', lang.hitch(this, 'closeTab'));
 			topic.subscribe('/umc/tabs/focus', lang.hitch(this, 'focusTab'));
+			topic.subscribe('/umc/license/activation', lang.hitch(this, '_showActivationDialog'));
 
 			this._setupStaticGui = true;
 		},
 
 		_showActivationDialog: function() {
 			topic.publish('/umc/actions', 'menu-settings', 'activation');
+
+			/** The following two checks are only for if this dialogue is opened via topic.publish() **/
+			if (_ucr['uuid/license']) {
+				dialog.alert(_('The license has already been activated'));
+				return;
+			}
+			if (!this.getModule('udm')) {
+				dialog.alert(_('Activation is not possible because the UDM module is not available. Probably because of insufficient permissions.'));
+				return;
+			}
 
 			var _reopenActivationDialog = lang.hitch(this, function(_deferred) {
 				if (!_deferred) {
