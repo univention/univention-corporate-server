@@ -1762,6 +1762,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  url="&ucsbug;30945">Bug 30945</ulink>).
 		</simpara></listitem>
 
+		<listitem><simpara>
+		  The &ucsUCRV;s <envar>mail/cyrus/ssl/cafile</envar> and <envar>mail/cyrus/ssl/capath</envar> have been
+		  added to <package>univention-mail-cyrus</package> to configure the cyrus ca certificates
+		  (<ulink url="&ucsbug;28123">Bug 28123</ulink>).
+		</simpara></listitem>
+
 	  </itemizedlist>
   </section>
 
