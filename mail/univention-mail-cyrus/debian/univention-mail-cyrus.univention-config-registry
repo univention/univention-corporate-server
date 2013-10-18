@@ -22,6 +22,8 @@ Variables: ldap/hostdn
 Variables: mail/cyrus/ldap/pwfile
 Variables: mail/cyrus/ssl/certificate
 Variables: mail/cyrus/ssl/key
+Variables: mail/cyrus/ssl/cafile
+Variables: mail/cyrus/ssl/capath
 Variables: mail/cyrus/mailnotifier
 Variables: mail/cyrus/notifyd
 User: cyrus

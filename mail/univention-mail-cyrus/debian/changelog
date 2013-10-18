@@ -1,3 +1,9 @@
+univention-mail-cyrus (6.0.5-1) unstable; urgency=low
+
+  * added mail/cyrus/ssl/capath and mail/cyrus/ssl/cafile (Bug #28123) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Oct 2013 13:36:43 +0200
+
 univention-mail-cyrus (6.0.4-6) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30945)

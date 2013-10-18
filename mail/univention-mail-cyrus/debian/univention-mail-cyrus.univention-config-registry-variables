@@ -178,6 +178,19 @@ Description[en]=The full path name of SSL key file that is used by Cyrus to esta
 Type=str
 Categories=service-mail
 
+[mail/cyrus/ssl/cafile]
+Description[de]=Datei mit einem mehreren Stammzertifizierungsstellen (CA) (default: None, default cyrus murder: /etc/univention/ssl/ucsCA/CAcert.pem)
+Description[en]=File containing one or more Certificate Authority (CA) certificates (default: None, default cyrus murder: /etc/univention/ssl/ucsCA/CAcert.pem)
+Type=str
+Categories=service-mail
+
+[mail/cyrus/ssl/capath]
+Description[de]=Pfad zum Verzeichnis mir Stammzertifizierungsstellen (CA).(default: /etc/univention/ssl/ucsCA/certs/, default cyrus murder: None)
+
+Description[en]=Path to directory with certificates of CAs. (default: /etc/univention/ssl/ucsCA/certs/, default cyrus murder: None)
+Type=str
+Categories=service-mail
+
 [mail/cyrus/mailnotifier]
 Description[de]=Die Benachrichtigungsmethode für 'mail/cyrus/notifyd'. Mögliche Werte sind 'null', 'log' oder 'zephyr'.
 Description[en]=The notification method for 'mail/cyrus/notifyd'. Possible values are 'null', 'log' or 'zephyr'.
