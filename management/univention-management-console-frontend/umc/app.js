@@ -967,35 +967,41 @@ define([
 					tools.preferences('moduleHelpText', this.checked);
 				}
 			}));
-			this._insertLicenseMenuItem();
+			this._insertLicenseMenuItems();
 		},
 
-		_insertLicenseMenuItem: function() {
+		_insertLicenseMenuItems: function() {
 			// try to insert license dialog
 			if (!this.getModule('udm')) {
 				return;
 			}
 
-			require(['umc/modules/udm/LicenseDialog', 'umc/modules/udm/LicenseImportDialog'], lang.hitch(this, function(LicenseDialog, LicenseImportDialog) {
-				this._insertSeparatorToSettingsMenu();
-				this._insertActivationMenuItem();
-				this._settingsMenu.addChild(new MenuItem({
-					label: _('Import new license'),
-					onClick : function() {
-						topic.publish('/umc/actions', 'menu-settings', 'license-import');
-						var dlg = new LicenseImportDialog();
-						dlg.show();
-					}
-				}), 0);
-				this._settingsMenu.addChild(new MenuItem({
-					label: _('License information'),
-					onClick : function() {
-						topic.publish('/umc/actions', 'menu-settings', 'license');
-						var dlg = new LicenseDialog();
-						dlg.show();
-					}
-				}), 0);
-			}));
+			this._insertSeparatorToSettingsMenu();
+			this._insertActivationMenuItem();
+			this._settingsMenu.addChild(new MenuItem({
+				label: _('Import new license'),
+				onClick : lang.hitch(this, '_showLicenseImportDialog')
+			}), 0);
+			this._settingsMenu.addChild(new MenuItem({
+				label: _('License information'),
+				onClick : lang.hitch(this, '_showLicenseInformationDialog')
+			}), 0);
+		},
+
+		_showLicenseImportDialog: function() {
+			require(['umc/modules/udm/LicenseImportDialog'], function(LicenseImportDialog) {
+				topic.publish('/umc/actions', 'menu-settings', 'license-import');
+				var dlg = new LicenseImportDialog();
+				dlg.show();
+			});
+		},
+
+		_showLicenseInformationDialog: function() {
+			require(['umc/modules/udm/LicenseDialog'], function(LicenseDialog) {
+				topic.publish('/umc/actions', 'menu-settings', 'license');
+				var dlg = new LicenseDialog();
+				dlg.show();
+			});
 		},
 
 		_insertActivationMenuItem: function() {
@@ -1661,11 +1667,11 @@ define([
 
 			/** The following two checks are only for if this dialogue is opened via topic.publish() **/
 			if (_ucr['uuid/license']) {
-				dialog.alert(_('The license has already been activated'));
+				dialog.alert(_('The license has already been activated.'));
 				return;
 			}
 			if (!this.getModule('udm')) {
-				dialog.alert(_('Activation is not possible because the UDM module is not available. Probably because of insufficient permissions.'));
+				dialog.alert(_('Activation is not possible. Please login as Administrator on the DC master.'));
 				return;
 			}
 
@@ -1697,12 +1703,12 @@ define([
 				'default': true
 			}]);
 
-			var emailWidget = registry.byId('umc_app_activation_email');
 			confirmDeferred.then(lang.hitch(this, function(response) {
 				if (response != 'activate') {
 					return;
 				}
 
+				var emailWidget = registry.byId('umc_app_activation_email');
 				var email = emailWidget.get('value');
 				if (!email || email.indexOf('@') < 1) {
 					_reopenActivationDialog().then(function() {
@@ -1711,9 +1717,9 @@ define([
 				} else {
 					tools.umcpCommand('udm/request_new_license', {
 						email: email
-					}, false).then(function() {
-						// nothing to do
-					}, lang.hitch(this, function(error) {
+					}, false).then(lang.hitch(this, function() {
+						this._showLicenseImportDialog();
+					}), lang.hitch(this, function(error) {
 						_reopenActivationDialog().then(function() {
 							tools.handleErrorStatus(error.response);
 						});

@@ -76,10 +76,8 @@ msgid "Activate UCS"
 msgstr "UCS aktivieren"
 
 #: umc/app.js:1668
-msgid ""
-"Activation is not possible because the UDM module is not available. Probably "
-"because of insufficient permissions."
-msgstr "Aktivierung is nicht möglich aufgrund nicht verfügbarem UDM-Modul. Wahrscheinlich wegen nicht ausreichenden Berechtigungen."
+msgid "Activation is not possible. Please login as Administrator on the DC master."
+msgstr "Aktivierung is nicht möglich. Bitte als Administrator auf dem DC Master einloggen."
 
 #: umc/widgets/MultiObjectSelect.js:120 umc/widgets/MultiObjectSelect.js:266
 msgid "Add"
@@ -496,7 +494,7 @@ msgstr ""
 "abgelaufen."
 
 #: umc/app.js:1664
-msgid "The license has already been activated"
+msgid "The license has already been activated."
 msgstr "Die Lizenz wurde bereits aktiviert."
 
 #: umc/widgets/LoginDialog.js:169
