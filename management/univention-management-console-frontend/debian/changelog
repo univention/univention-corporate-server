@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.110-1) unstable; urgency=low
+
+  * Bug #30811: added translations for startup wizard
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 18 Oct 2013 12:03:53 +0200
+
 univention-management-console-frontend (3.0.109-1) unstable; urgency=low
 
   * Bug #32389: show license import dialog after activation

@@ -1011,7 +1011,7 @@ define([
 			}
 
 			this._settingsMenu.addChild(new MenuItem({
-				label: _('Activate UCS'),
+				label: _('Activation of UCS'),
 				onClick: lang.hitch(this, '_showActivationDialog')
 			}), 0);
 		},
@@ -1049,7 +1049,7 @@ define([
 				label: _('UCS start site'),
 				onClick: function() {
 					topic.publish('/umc/actions', 'menu-help', 'ucs-start-site');
-					var w = window.open( '/', 'ucs-start-site' );
+					var w = window.open( '/ucs-overview?lang=' + kernel.locale, 'ucs-start-site' );
 					w.focus();
 				}
 			}));
@@ -1058,7 +1058,7 @@ define([
 				label: _('Univention Website'),
 				onClick: function() {
 					topic.publish('/umc/actions', 'menu-help', 'website');
-					var w = window.open( 'http://www.univention.de/', 'univention' );
+					var w = window.open( _('umcUniventionUrl'), 'univention' );
 					w.focus();
 				}
 			}));
@@ -1712,7 +1712,7 @@ define([
 				var email = emailWidget.get('value');
 				if (!email || email.indexOf('@') < 1) {
 					_reopenActivationDialog().then(function() {
-						dialog.alert(_('Please enter a valid email address'));
+						dialog.alert(_('Please enter a valid email address!'));
 					});
 				} else {
 					tools.umcpCommand('udm/request_new_license', {

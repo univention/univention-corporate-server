@@ -1,10 +1,10 @@
-<h1 id="dialog-feedback">Feedback durch Nutzungsstatistiken</h1>
+<h1>Feedback via usage statistics</h1>
 <div style='background:url({path}/feedback.png) no-repeat; background-position:5px 5px; padding-left:165px; min-height:160px;'>
-	<p>Auf UCS-Evaluationssystemen werden standardmäßig anonyme Statistiken erzeugt und an Univention gesendet. Dies ermöglicht es, UCS beständig an die konkreten Anwenderbedürfnisse anzupassen.</p>
-	<p>Die Informationen umfassen zum einen UMC-Nutzungsstatistiken sowie einmalig grundlegende Informationen über die Hardware-Konfiguration. Details zur Erfassung sowie zur Deaktivierung der Statistiken werden im <a href="http://docs.univention.de/handbuch.html#central-management-umc:piwik" target="_blank">UCS-Handbuch</a> beschrieben.</a>
-	<p>Durch Einspielen einer Kauflizenz werden die Nutzungsstatistiken automatisch deaktiviert.</p>
+	<p>On UCS evaluation systems, anonymous usage statistics are by default created and sent to Univention. This allows to continously adapt UCS to suit the practical needs of its users.</p>
+	<p>The information consists of UMC usage statistics and a one-time statistic on the hardware configuration. Details about the usage statistics and about its deactivation can be found in the <a href="http://docs.univention.de/manual.html#central-management-umc:piwik" target="_blank">UCS manual</a>.</a>
+	<p>Usage statistics are automatically deactivated when importing a commercial license.</p>
 	<form style="display:{hardwareStatisticsCheckboxDisplay}">
 		<input name="enableHardwareStatistics" id="umc_app_feedback_Checkbox" data-dojo-type="dijit/form/CheckBox" checked/>
-		<label for="umc_app_feedback_Checkbox">Einmalige Erfassung von Hardware-Statistiken aktivieren.</label>
+		<label for="umc_app_feedback_Checkbox">Enable one-time statistic on hardware configuration.</label>
 	</form>
 </div>

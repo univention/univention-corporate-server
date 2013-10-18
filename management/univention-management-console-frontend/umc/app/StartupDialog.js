@@ -99,7 +99,7 @@ define([
 		// summary:
 		//		The dialog which is shown during the first login of Administrator.
 
-		title: 'Willkommen bei UMC',
+		title: _('Welcome to UMC'),
 
 		_stackContainer: null,
 
