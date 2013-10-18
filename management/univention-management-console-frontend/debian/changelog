@@ -1,3 +1,11 @@
+univention-management-console-frontend (3.0.112-1) unstable; urgency=low
+
+  * Added new widget UnixAccessRightsExtended which provides additional
+    checkboxes to set setuid, setgid and sticky bit permissions (Bug #15087) 
+  * Changed css style .umcUNIXAccessRights-table td to use italic font
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 18 Oct 2013 14:59:39 +0200
+
 univention-management-console-frontend (3.0.111-1) unstable; urgency=low
 
   * Bug #30811: fix title of UCS activation dialog
