@@ -313,9 +313,8 @@ msgid "Language"
 msgstr "Sprache"
 
 #: umc/app.js:991
-#, fuzzy
 msgid "License information"
-msgstr "Hinweis"
+msgstr "Lizenz informationen"
 
 #: umc/app.js:236
 #, python-format

@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.108-1) unstable; urgency=low
+
+  * Bug #32389: fix fuzzy
+
+ -- Florian Best <best@univention.de>  Fri, 18 Oct 2013 11:01:08 +0200
+
 univention-management-console-frontend (3.0.107-1) unstable; urgency=low
 
   * Bug #32389: split license into two menu entries: import new
