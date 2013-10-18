@@ -425,12 +425,7 @@ define([
 		showLicenseRequest: function(action) {
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'request-license');
 			if (this.udmAccessible) {
-				require(['umc/modules/udm/LicenseDialog'], lang.hitch(this, function(LicenseDialog) {
-					var dlg = new LicenseDialog();
-					dlg.requestNewLicense(this.appCenterInformation).then(function() {
-						dlg.show();
-					});
-				}));
+				topic.publish('/umc/license/activation');
 			} else {
 				// UDM is not present. Either because this is
 				// not the DC Master or because the user is no
