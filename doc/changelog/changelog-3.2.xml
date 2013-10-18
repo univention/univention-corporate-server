@@ -1790,6 +1790,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The &ucsUCRV; descriptions in <package>univention-mail-postfix</package> have been revised
 		  (<ulink url="&ucsbug;30945">Bug 30945</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCRV;s <envar>mail/postfix/ssl/cafile</envar> and <envar>mail/postfix/ssl/capath</envar> have been 
+		  added to <package>univention-mail-postfix</package> to configure smtpd ca certificates
+		  (<ulink url="&ucsbug;28124">Bug 28124</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
