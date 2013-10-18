@@ -2431,6 +2431,10 @@ class MinuteSimple(select):
 class UNIX_AccessRight( simple ):
 	pass
 
+# Widget supports setuid/setgid/sticky bit 
+class UNIX_AccessRight_extended( simple ):
+	pass
+
 class sambaGroupType(select):
 	choices=[
 		('', ''),

@@ -145,14 +145,14 @@ property_descriptions={
 	'directorymode': univention.admin.property(
 			short_description=_('Permissions for the share\'s root directory'),
 			long_description=_('Access rights to the exported root directory'),
-			syntax=univention.admin.syntax.UNIX_AccessRight,
+			syntax=univention.admin.syntax.UNIX_AccessRight_extended,
 			multivalue=0,
 			options=[],
 			required=0,
 			may_change=1,
 			identifies=0,
 			dontsearch=1,
-			default="0755"
+			default="00755"
 		),
 	'writeable': univention.admin.property(
 			short_description=_('NFS write access'),

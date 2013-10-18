@@ -1,3 +1,11 @@
+univention-directory-manager-modules (9.0.67-2) unstable; urgency=low
+
+  * Added syntax UNIX_AccessRight_extended. The widget should provide
+    the additional flags setuid, setgid and sticky bit (Bug #15087)
+  * The share layout now uses the syntax UNIX_AccessRight_extended 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 18 Oct 2013 14:50:52 +0200
+
 univention-directory-manager-modules (9.0.67-1) unstable; urgency=low
 
   * Added more groupType change restrictions (Bug #32767)
