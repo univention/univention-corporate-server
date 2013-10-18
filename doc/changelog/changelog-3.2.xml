@@ -1802,6 +1802,11 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  added to <package>univention-mail-postfix</package> to configure smtpd ca certificates
 		  (<ulink url="&ucsbug;28124">Bug 28124</ulink>).
 		</simpara></listitem>
+
+		<listitem><simpara>
+		  The &ucsUCRV; <envar>mail/postfix/smtpd/banner</envar> has been added to <package>univention-mail-postfix</package>
+		  to configure the the SMTP greeting banner (<ulink url="&ucsbug;32444">Bug 32444</ulink>).
+		</simpara></listitem>
 	  </itemizedlist>
   </section>
 
