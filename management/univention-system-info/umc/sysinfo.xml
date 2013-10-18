@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="sysinfo" icon="sysinfo-module" priority="2" version="1.0">
 		<name>System information</name>
-		<description>Collecting system information</description>
+		<description>Collection of hardware information of the local system for the Univention support</description>
 		<keywords>system,information</keywords>
 		<categories>
 			<category name="system"/>

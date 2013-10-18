@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="top" icon="top" priority="12" version="1.0">
 		<name>Process overview</name>
-		<description>Process overview and control</description>
+		<description>Overview of processes on the local system, terminate processes</description>
 		<keywords>process</keywords>
 		<categories>
 			<category name="system"/>

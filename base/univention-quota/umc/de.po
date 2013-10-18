@@ -15,5 +15,5 @@ msgstr ""
 msgid "Filesystem quotas"
 msgstr "Dateisystem Quota"
 
-msgid "Set, unset and modify filesystem quota"
-msgstr "Setzen, Entfernen und Bearbeiten von Quota-Einstellungen"
+msgid "Quota configuraton of the local system"
+msgstr "Quota Konfiguration des lokalen Systems"

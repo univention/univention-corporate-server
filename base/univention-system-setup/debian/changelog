@@ -1,3 +1,9 @@
+univention-system-setup (7.0.50-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:07:53 +0200
+
 univention-system-setup (7.0.49-1) unstable; urgency=low
 
   * Bug #30816: fix removal of interfaces, remove unused code

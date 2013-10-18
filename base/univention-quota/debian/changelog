@@ -1,3 +1,9 @@
+univention-quota (8.0.5-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:07:37 +0200
+
 univention-quota (8.0.4-1) unstable; urgency=low
 
   * Bug #26418: adapt grid actions

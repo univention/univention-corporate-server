@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="updater" icon="updater" priority="8" version="1.0">
 		<name>Software update</name>
-		<description>Online software update</description>
+		<description>Overview and installation of available updates for the local UCS system</description>
 		<keywords>updater</keywords>
 		<categories>
 			<category name="system"/>

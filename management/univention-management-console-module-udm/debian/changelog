@@ -1,3 +1,9 @@
+univention-management-console-module-udm (4.0.52-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:04:35 +0200
+
 univention-management-console-module-udm (4.0.51-2) unstable; urgency=low
 
   * Assign new Syntax UNIX_AccessRight_extended to new Widget 

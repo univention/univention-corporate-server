@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="quota" icon="quota-module" priority="10" version="1.0">
 		<name>Filesystem quotas</name>
-		<description>Set, unset and modify filesystem quota</description>
+		<description>Quota configuraton of the local system</description>
 		<keywords>filesystem,quota,partition</keywords>
 		<categories>
 			<category name="system"/>

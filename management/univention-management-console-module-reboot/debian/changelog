@@ -1,3 +1,9 @@
+univention-management-console-module-reboot (3.0.3-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:05:08 +0200
+
 univention-management-console-module-reboot (3.0.2-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition

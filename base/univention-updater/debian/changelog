@@ -1,3 +1,9 @@
+univention-updater (9.0.23-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:07:18 +0200
+
 univention-updater (9.0.22-1) unstable; urgency=low
 
   * Adjust pre- and postup.sh (Bug #31676)

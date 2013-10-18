@@ -2,7 +2,7 @@
 <umc version="2.0">
 	<module id="reboot" icon="reboot" priority="9" version="1.0">
 		<name>Reboot</name>
-		<description>System reboot or halt</description>
+		<description>Shut down or reboot of the local system</description>
 		<keywords>reboot,shutdown,halt</keywords>
 		<categories>
 			<category name="system"/>

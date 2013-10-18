@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
 	<module id="mrtg" icon="mrtg" priority="16" version="1.0">
-		<name>Statistics</name>
+		<name>Overview of local systems usage and performance statistics</name>
 		<description>Show system usage statistics</description>
 		<keywords>system,usage,statistics</keywords>
 		<categories>

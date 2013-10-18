@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (3.0.44-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:03:26 +0200
+
 univention-management-console-module-appcenter (3.0.43-1) unstable; urgency=low
 
   * Bug #30629: Adapt wording in case license request dialog is unavailable.

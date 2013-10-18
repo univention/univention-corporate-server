@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Browsing the LDAP directory tree"
-msgstr "Durchsuchen des LDAP-Verzeichnisbaums"
+msgid "Browsing and managing the LDAP tree of the domain"
+msgstr "Durchsuchen und Verwalten des LDAP-Verzeichisbaums der Domäne"
 
 msgid "Change Password"
 msgstr "Passwort ändern"
@@ -42,38 +42,38 @@ msgstr "E-Mail"
 msgid "Manages all UDM modules"
 msgstr "Verwaltet alle UDM-Module"
 
-msgid "Managing DHCP settings"
-msgstr "Verwaltung von DHCP-Einstellungen"
+msgid "Configuration of domain DHCP settings"
+msgstr "Konfiguration von DHCP-Einstellungen der Domäne"
 
-msgid "Managing DNS settings"
-msgstr "Verwaltung von DNS-Einstellungen"
+msgid "Configuration of domain DNS settings"
+msgstr "Konfiguration von DNS-Einstellungen der Domäne"
 
-msgid "Managing Nagios settings"
-msgstr "Verwaltung von Nagios-Einstellungen"
+msgid "Configuration of domain nagios settings"
+msgstr "Konfiguration von Nagios Einstellungen der Domäne"
 
-msgid "Managing computers"
-msgstr "Verwaltung von Rechnern"
+msgid "Creation, removal and management of computers in the domain"
+msgstr "Erstellen, Löschen und Verwalten von Rechnern in der Domäne"
 
-msgid "Managing groups"
-msgstr "Verwaltung von Gruppen"
+msgid "Creation, removal and management of user and computer groups in the domain"
+msgstr "Erstellen, Löschen und Verwalten von Benutzer- und Rechnergruppen in der Domäne"
 
-msgid "Managing mail settings"
-msgstr "Verwaltung von E-Mail-Einstellungen"
+msgid "Configuration of domain E-mail settings"
+msgstr "Konfiguration von E-Mail Einstellungen der Domäne"
 
-msgid "Managing networks"
-msgstr "Verwaltung von Netzwerk-Einstellungen"
+msgid "Network configuration of domain network settings"
+msgstr "Konfiguration von Netzwerkeinstellungen der Domäne"
 
-msgid "Managing policies"
-msgstr "Verwaltung von Richtlinien"
+msgid "Creation, removal and management domain wide policies"
+msgstr "Erstellen, Löschen und Verwalten von domänenweiten Richtlinien"
 
-msgid "Managing printers"
-msgstr "Verwaltung von Druckern"
+msgid "Creation, removal and management printer shares and printer share groups in the domain"
+msgstr "Erstellen, Löschen und Verwalten von Druckerfreigaben und Gruppen von Druckerfreigaben in der Domäne"
 
-msgid "Managing shares"
-msgstr "Verwaltung von Freigaben"
+msgid "Creation, removal and management directory shares in the domain"
+msgstr "Erstellen, Löschen und Verwalten von Verzeichnisfreigaben in der Domäne"
 
-msgid "Managing users"
-msgstr "Verwaltung von Benutzern"
+msgid "Creation, removal and management of domain users"
+msgstr "Erstellen, Löschen und Verwalten von Benutzern in der Domäne"
 
 msgid "Nagios"
 msgstr "Nagios"
@@ -87,8 +87,8 @@ msgstr "Richtlinien"
 msgid "Printers"
 msgstr "Drucker"
 
-msgid "Settings for the personal account"
-msgstr "Einstellungen für das persönliche Konto"
+msgid "Password change for the current user"
+msgstr "Passwortänderung für den momentanen Benutzer"
 
 msgid "Shares"
 msgstr "Freigaben"

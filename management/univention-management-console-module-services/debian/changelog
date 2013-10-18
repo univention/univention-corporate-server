@@ -1,3 +1,9 @@
+univention-management-console-module-services (3.0.2-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:04:03 +0200
+
 univention-management-console-module-services (3.0.1-1) unstable; urgency=low
 
   * Bug #26418: adapt grid actions

@@ -1,3 +1,9 @@
+univention-join (6.0.13-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:06:32 +0200
+
 univention-join (6.0.12-1) unstable; urgency=low
 
   * Hide join-backup and join-slave by default (Bug #32871)

@@ -19,8 +19,8 @@ msgstr ""
 msgid "Basic settings"
 msgstr "Basis-Einstellungen"
 
-msgid "Configuration of the basic system settings"
-msgstr "Konfiguration der grundlegenden Systemeinstellungen"
+msgid "Configuration of basic settings of the local system"
+msgstr "Konfiguration grundlegender Einstellungen des lokalen Systems"
 
 #~ msgid "Basic settings wizard"
 #~ msgstr "Assistent Basis-Einstellungen"

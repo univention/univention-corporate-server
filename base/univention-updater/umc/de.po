@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Online software update"
-msgstr "Online Software-Update"
+msgid "Overview and installation of available updates for the UCS system"
+msgstr "Überblick und Installation der für das lokale UCS-System verfügbaren Aktualisierungen"
 
 msgid "Software update"
 msgstr "Software-Aktualisierung"

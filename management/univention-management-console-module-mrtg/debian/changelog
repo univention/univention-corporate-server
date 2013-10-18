@@ -1,3 +1,9 @@
+univention-management-console-module-mrtg (2.0.4-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:01:46 +0200
+
 univention-management-console-module-mrtg (2.0.3-1) unstable; urgency=low
 
   * Bug #32048: Add keywords to UMC module definition

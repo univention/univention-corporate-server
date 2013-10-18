@@ -15,8 +15,8 @@ msgstr ""
 msgid "App Center"
 msgstr "App Center"
 
-msgid "Manage (install/uninstall) software packages on your machine"
-msgstr "Verwaltung der Software-Pakete auf diesem System"
+msgid "Installation of apps and software packages on the local system, repository server configuration"
+msgstr "Installation von Apps und Software-Paketen auf dem lokalen System, Repository-Server Konfiguration"
 
 #~ msgid "Software management"
 #~ msgstr "Software-Verwaltung"

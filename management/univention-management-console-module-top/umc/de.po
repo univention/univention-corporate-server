@@ -15,5 +15,5 @@ msgstr ""
 msgid "Process overview"
 msgstr "Prozessübersicht"
 
-msgid "Process overview and control"
-msgstr "Übersicht und Kontrolle von Prozessen"
+msgid "Overview of processes on the local system, terminate processes"
+msgstr "Übersicht der Prozesse des lokalen Systems, Prozesse beenden"

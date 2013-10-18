@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Control over system services"
-msgstr "Verwaltung von Systemdiensten"
+msgid "Overview and configuraton of services on the local system"
+msgstr "Übersicht und Konfigration von Diensten auf dem lokalen System"
 
 msgid "System services"
 msgstr "Systemdienste"

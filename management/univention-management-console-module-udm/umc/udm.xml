@@ -6,67 +6,67 @@
 		<keywords></keywords>
 		<flavor icon="udm-users" priority="13" id="users/user">
 			<name>Users</name>
-			<description>Managing users</description>
+			<description>Creation, removal and management of domain users</description>
 			<keywords>users</keywords>
 		</flavor>
 		<flavor icon="udm-groups" priority="12" id="groups/group">
 			<name>Groups</name>
-			<description>Managing groups</description>
+			<description>Creation, removal and management of user and computer groups in the domain</description>
 			<keywords>groups</keywords>
 		</flavor>
 		<flavor icon="udm-computers" priority="11" id="computers/computer">
 			<name>Computers</name>
-			<description>Managing computers</description>
+			<description>Creation, removal and management of computers in the domain</description>
 			<keywords>computers</keywords>
 		</flavor>
 		<flavor icon="udm-networks" priority="10" id="networks/network">
 			<name>Networks</name>
-			<description>Managing networks</description>
+			<description>Configuration of domain network settings</description>
 			<keywords>networks</keywords>
 		</flavor>
 		<flavor icon="udm-dns" priority="9" id="dns/dns">
 			<name>DNS</name>
-			<description>Managing DNS settings</description>
+			<description>Configuration of domain DNS settings</description>
 			<keywords>dns</keywords>
 		</flavor>
 		<flavor icon="udm-dhcp" priority="8" id="dhcp/dhcp">
 			<name>DHCP</name>
-			<description>Managing DHCP settings</description>
+			<description>Configuration of domain DHCP settings</description>
 			<keywords>dhcp</keywords>
 		</flavor>
 		<flavor icon="udm-shares" priority="7" id="shares/share">
 			<name>Shares</name>
-			<description>Managing shares</description>
+			<description>Creation, removal and management directory shares in the domain</description>
 			<keywords>shares</keywords>
 		</flavor>
 		<flavor icon="udm-printers" priority="6" id="shares/print">
 			<name>Printers</name>
-			<description>Managing printers</description>
+			<description>Creation, removal and management printer shares and printer share groups in the domain</description>
 			<keywords>printers</keywords>
 		</flavor>
 		<flavor icon="udm-mail" priority="5" id="mail/mail">
 			<name>Mail</name>
-			<description>Managing mail settings</description>
+			<description>Configuration of domain E-mail settings</description>
 			<keywords>mail,e-mail,email</keywords>
 		</flavor>
 		<flavor icon="udm-nagios" priority="4" id="nagios/nagios">
 			<name>Nagios</name>
-			<description>Managing Nagios settings</description>
+			<description>Configuration of domain nagios settings</description>
 			<keywords>nagios</keywords>
 		</flavor>
 		<flavor icon="udm-policies" priority="3" id="policies/policy">
 			<name>Policies</name>
-			<description>Managing policies</description>
+			<description>Creation, removal and management domain wide policies</description>
 			<keywords>policy,policies</keywords>
 		</flavor>
 		<flavor icon="udm-navigation" priority="2" id="navigation">
 			<name>LDAP directory</name>
-			<description>Browsing the LDAP directory tree</description>
+			<description>Browsing and managing the LDAP tree of the domain</description>
 			<keywords>ldap,directory,udm</keywords>
 		</flavor>
 		<flavor icon="udm-self" priority="1" id="users/self">
 			<name>Change Password</name>
-			<description>Settings for the personal account</description>
+			<description>Password change for the current user</description>
 			<keywords>change password,password</keywords>
 		</flavor> 
 		<categories>

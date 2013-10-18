@@ -1,3 +1,9 @@
+univention-system-info (4.0.3-1) unstable; urgency=low
+
+  * revised UMC module description (Bug #32022)
+
+ -- Lukas Walter <walter@univention.de>  Fri, 18 Oct 2013 18:02:58 +0200
+
 univention-system-info (4.0.2-1) unstable; urgency=low
 
   * Bug #31056: Renamed UCR variable for tracebacks

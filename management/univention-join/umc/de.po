@@ -15,5 +15,5 @@ msgstr ""
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
-msgid "Show overview of join scripts"
-msgstr "Status und Aktionen zum Domänenbeitritt"
+msgid "Overview of the domain join status of the local system"
+msgstr "Überblick des Domänenbeitritt Status des lokalen Systems"
