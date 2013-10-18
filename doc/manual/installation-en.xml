@@ -889,6 +889,28 @@
 	</para>
 </section>
 
+<!-- <section id="installation:vmware"> -->
+<!--   <title>Installation in VMware</title> -->
+<!--   <para> -->
+<!-- 	Wird UCS als Gast in VMware installiert muss als <guimenu>Gastbetriebssystem</guimenu> die -->
+<!-- 	Option <guimenu>Linux &ar; Anderes Linux-System</guimenu> ausgewählt werden (UCS basiert zwar -->
+<!-- 	auf Debian, die Vorlagen für Debian können aber nicht verwendet werden). -->
+<!--   </para> -->
+
+<!--   <para> -->
+<!-- 	Der in UCS verwendete Linux-Kernel bringt alle nötigen Unterstützungstreiber für den Betrieb in -->
+<!-- 	VMware direkt mit (vmw_balloon, vmw_pvsci, vmw_vmci, vmwgfx und vmxnet3). -->
+<!--   </para> -->
+
+<!--   <para> -->
+<!-- 	Die Open-Source-Variante der VMware Tools (Open VM Tools) wird mit UCS ausgeliefert. Die Tools -->
+<!-- 	können über das Paket <package>open-vm-tools</package> installiert werden (sie sind nicht -->
+<!-- 	zwingend notwendig, erlauben aber z.B. die Synchronisation der Zeit auf dem -->
+<!-- 	Virtualisierungsserver mit dem Gastsystem). -->
+<!--   </para> -->
+<!-- </section> -->
+
+
 <section id="installation:xenserver">
 <title>Installation in Citrix XenServer</title>
 	<para>
