@@ -43,6 +43,7 @@ Variables: mail/postfix/transport/ldap/enabled
 Variables: mail/postfix/inet/interfaces
 Variables: mail/postfix/inet/protocols
 Variables: mail/smtp/VRFY/disabled
+Variables: mail/postfix/smtpd/banner
 
 Type: subfile
 Multifile: etc/postfix/main.cf

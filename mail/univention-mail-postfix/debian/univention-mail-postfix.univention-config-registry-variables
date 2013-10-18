@@ -17,6 +17,12 @@ Type=str
 ReadOnly=yes
 Categories=service-mail
 
+[mail/postfix/smtpd/banner]
+Description[de]=Der Text, der auf den Status-Code 220 im SMTP Grußbanner folgt (default: $myhostname ESMTP $mail_name)
+Description[en]=The text that follows the 220 status code in the SMTP greeting banner (default: $myhostname ESMTP $mail_name)
+Type=str
+Categories=service-mail
+
 [mail/archivefolder]
 Description[de]=Wird diese Variable auf eine E-Mail-Adresse gesetzt, sendet Postfix eine Blindkopie aller ein- und ausgehenden E-Mails an diese Adresse. So kann z.B. eine  Mailarchivierungslösung angebunden werden. Falls noch kein Postfach für diese Adresse existiert, wird es automatisch angelegt.
 Description[en]=If this variable is set to an e-mail address, Postfix sends a blind carbon copy of all incoming and outgoing e-mails to this address. This can e.g. be used to connect a mail archive solution. If there is no mailbox for this address, one will be created automatically. 

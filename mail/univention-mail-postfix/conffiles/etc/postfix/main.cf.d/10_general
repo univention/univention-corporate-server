@@ -85,3 +85,8 @@ yesno = { True: 'yes', False: 'no' }
 print 'disable_vrfy_command = %s' % yesno.get(configRegistry.is_true('mail/smtp/VRFY/disabled', False))
 @!@
 
+# banner
+@!@
+if configRegistry.get('mail/postfix/smtpd/banner'):
+	print 'smtpd_banner = %s' % configRegistry['mail/postfix/smtpd/banner']
+@!@
