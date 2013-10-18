@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-uvmm 2.0.40-1\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2013-05-23 09:14+0200\n"
+"POT-Creation-Date: 2013-10-18 15:13+0200\n"
 "PO-Revision-Date: 2013-05-23 09:17+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -43,91 +43,85 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/uvmm/domains.py:416
+#: umc/python/uvmm/domains.py:436
 msgid "Could not determine architecture for domain"
 msgstr "Die Architektur der Instanz konnte nicht ermittelt werden"
 
-#: umc/python/uvmm/domains.py:530
+#: umc/python/uvmm/domains.py:515
 msgid "Could not determine the keyboard layout for the VNC access"
 msgstr ""
 "Das Tastaturlayout für den VNC Direktzugriff konnte nicht ermittelt werden"
 
-#: umc/python/uvmm/domains.py:514
+#: umc/python/uvmm/domains.py:499
 msgid "Could not determine the list of boot devices for domain"
 msgstr "Die Liste der Boot-Devices der Instanz konnte nicht ermittelt werden"
 
-#: umc/python/uvmm/domains.py:486
+#: umc/python/uvmm/domains.py:471
 msgid "Could not determine virtualization technology for domain"
 msgstr ""
 "Die Virtualisierungstechnologie der Instanz konnte nicht ermittelt werden"
 
-#: umc/python/uvmm/storages.py:335
+#: umc/python/uvmm/storages.py:256
 #, python-format
 msgid "Could not retrieve details for domain %s"
 msgstr "Die Details zur virtuellen Instanz %s konnten nicht abgerufen werden"
 
-#: umc/python/uvmm/storages.py:317
+#: umc/python/uvmm/storages.py:238
 msgid "Failed to check if the drive is used by any other virtual instance"
 msgstr ""
 "Die Prüfung ob das Laufwerk von einer anderen virtuellen Instanz verwendet "
 "wird ist fehlgeschlagen."
 
-#: umc/python/uvmm/domains.py:463
+#: umc/python/uvmm/domains.py:448
 #, python-format
 msgid "Failed to retrieve details for the server %(nodeURI)s"
 msgstr ""
 "Das Abrufen der Details zum physikalischen Server %(nodeURI)s ist "
 "fehlgeschlagen"
 
-#: umc/python/uvmm/profiles.py:77
+#: umc/python/uvmm/profiles.py:70
 msgid "Full virtualization (KVM)"
 msgstr "Voll-Virtualisierung (KVM)"
 
-#: umc/python/uvmm/profiles.py:78
+#: umc/python/uvmm/profiles.py:71
 msgid "Full virtualization (XEN)"
 msgstr "Voll-Virtualisierung (XEN)"
 
-#: umc/python/uvmm/domains.py:626
+#: umc/python/uvmm/domains.py:611
 #, python-format
 msgid "Invalid domain state: %s"
 msgstr "Ungültiger Domain Status: %s"
 
-#: umc/python/uvmm/profiles.py:79
+#: umc/python/uvmm/profiles.py:72
 msgid "Paravirtualization (XEN)"
 msgstr "Paravirtualisierung (XEN)"
 
-#: umc/python/uvmm/nodes.py:102 umc/python/uvmm/__init__.py:145
+#: umc/python/uvmm/nodes.py:98 umc/python/uvmm/__init__.py:144
 msgid "Physical servers"
 msgstr "Physikalische Server"
 
-#: umc/python/uvmm/uvmmd.py:68
+#: umc/python/uvmm/uvmmd.py:70
 msgid "The given UVMM command is not known"
 msgstr "Der gegebene UVMM Befehl ist unbekannt"
 
-#: umc/python/uvmm/storages.py:255
-msgid "The given pool could not be found or is no file pool"
-msgstr ""
-"Der angegebene Speicherbereich konnte nicht gefunden werden oder ist kein "
-"Verzeichnis"
-
-#: umc/python/uvmm/domains.py:467
+#: umc/python/uvmm/domains.py:452
 #, python-format
 msgid "Unknown physical server %(nodeURI)s"
 msgstr "Unbekannter physikalischer Server %(nodeURI)s"
 
-#: umc/python/uvmm/profiles.py:176
+#: umc/python/uvmm/profiles.py:170
 msgid "Unknown profile"
 msgstr "Unbekanntes Profil"
 
-#: umc/python/uvmm/domains.py:437
+#: umc/python/uvmm/domains.py:420
 msgid "Unknown profile given"
 msgstr "Unbekanntes Profil wurde angegeben"
 
-#: umc/python/uvmm/__init__.py:150
+#: umc/python/uvmm/__init__.py:149
 msgid "Unknown query type"
 msgstr "Unbekannter Anfragetyp"
 
-#: umc/python/uvmm/domains.py:505
+#: umc/python/uvmm/domains.py:490
 msgid "vcpus must be a number"
 msgstr "vcpus muß numerisch sein"
 
@@ -136,3 +130,8 @@ msgstr "vcpus muß numerisch sein"
 
 #~ msgid "No valid source for disk \"%s\" found"
 #~ msgstr "Es fehlt eine gültige Quelle für das Gerät \"%s\""
+
+#~ msgid "The given pool could not be found or is no file pool"
+#~ msgstr ""
+#~ "Der angegebene Speicherbereich konnte nicht gefunden werden oder ist kein "
+#~ "Verzeichnis"

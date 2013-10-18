@@ -130,7 +130,7 @@ define([
 					})
 				}, {
 					name: 'add',
-					label: _('Add drive'),
+					label: _('Add'),
 					isContextAction: false,
 					iconClass: 'umcIconAdd',
 					callback: lang.hitch(this, '_addDrive')

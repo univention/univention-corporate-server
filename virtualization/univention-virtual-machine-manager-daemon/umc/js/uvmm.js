@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/string",
+	"dojo/query",
 	"dojo/Deferred",
 	"dojox/html/entities",
 	"dijit/Menu",
@@ -56,14 +57,23 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
 	"umc/widgets/TextBox",
+	"umc/widgets/Button",
 	"umc/modules/uvmm/TreeModel",
 	"umc/modules/uvmm/DomainPage",
 	"umc/modules/uvmm/DomainWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, Deferred, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, string, query, Deferred, entities, Menu, MenuItem, ContentPane, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, ExpandingTitlePane, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
-	CheckBox, ComboBox, TextBox, TreeModel, DomainPage, DomainWizard, types, _) {
+	CheckBox, ComboBox, TextBox, Button, TreeModel, DomainPage, DomainWizard, types, _) {
+
+	var canStart = function(item) {
+		return !(item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
+	};
+
+	var canVNC = function(item) {
+		return (item.state == 'RUNNING' || item.state == 'IDLE') && item.vnc_port && item.node_available;
+	};
 
 	return declare("umc.modules.uvmm", [ Module ], {
 
@@ -180,6 +190,8 @@ define([
 
 				// register event
 				this._grid.on('FilterDone', lang.hitch(this, '_selectInputText')); // FIXME: ?
+
+				this._grid.on('StyleRow', lang.hitch(this, '_onGridStyleRow'));
 			} ) );
 			// generate the navigation tree
 			var model = new TreeModel({
@@ -768,7 +780,68 @@ define([
 				style: 'min-width: 80px;',
 				width: 'adjust',
 				formatter: lang.hitch(this, 'cpuUsageFormatter')
+			}, {
+				name: 'start',
+				label: _('Start'),
+				width: '50px',
+				description: _( 'Start the virtual machine' ),
+				formatter: lang.hitch(this, '_startFormatter')
+			}, {
+				name: 'vnc',
+				label: _('View'),
+				width: '50px',
+				description: lang.hitch(this, function(item) {
+					return lang.replace( _( 'Open a view to the virtual machine {label} on {nodeName}' ), item );
+				}),
+				formatter: lang.hitch(this, '_viewFormatter')
 			}];
+		},
+
+		_onGridStyleRow: function(row) {
+//			var nd = query('td[idx="1"]', row.node)[0];
+		},
+
+		_startFormatter: function(val, rowIndex, col) {
+			var item = this._grid._grid.getItem(rowIndex);
+			if (!canStart(item)) {
+				return '';
+			}
+			var id = item[this._grid.moduleStore.idProperty];
+			var btn = new Button({
+				label: '',
+				iconClass: 'umcIconPlay',
+				style: 'padding: 0; display: inline; margin: 0;',
+				callback: lang.hitch(this, '_changeState', 'RUN', 'start', [id], [item])
+			});
+			this.own(btn);
+			var tooltip = new Tooltip({
+				label: col.description,
+				connectId: [btn.domNode]
+			});
+			btn.own(tooltip);
+			return btn;
+		},
+
+		_viewFormatter: function(val, rowIndex, col) {
+			var item = this._grid._grid.getItem(rowIndex);
+			if (!canVNC(item)) {
+				return '';
+			}
+			var id = item[this._grid.moduleStore.idProperty];
+			var btn = new Button({
+				label: '',
+				iconClass: 'umcIconView',
+				style: 'padding: 0; display: inline; margin: 0;',
+				callback: lang.hitch(this, 'vncLink', [id], [item])
+			});
+			this.own(btn);
+			var description = col.description(item);
+			var tooltip = new Tooltip({
+				label: description,
+				connectId: [btn.domNode]
+			});
+			btn.own(tooltip);
+			return btn;
 		},
 
 		_getGridActions: function(type) {
@@ -795,9 +868,7 @@ define([
 				isStandardAction: true,
 				isMultiAction: true,
 				callback: lang.hitch(this, '_changeState', 'RUN', 'start' ),
-				canExecute: function(item) {
-					return !(item.state == 'RUNNING' || item.state == 'IDLE') && item.node_available;
-				}
+				canExecute: canStart
 			}, {
 				name: 'shutdown',
 				label: _('Shutdown'),
@@ -868,13 +939,9 @@ define([
 				isStandardAction: true,
 				isMultiAction: false,
 				iconClass: 'umcIconView',
-				description: lang.hitch( this, function( item ) {
-					return lang.replace( _( 'Open a view to the virtual machine {label} on {nodeName}' ), item );
-				} ),
+				description: _('Open a view to the virtual machine {label} on {nodeName}'),
 				callback: lang.hitch(this, 'vncLink' ),
-				canExecute: function(item) {
-					return (item.state == 'RUNNING' || item.state == 'IDLE') && item.vnc_port && item.node_available;
-				}
+				canExecute: canVNC
 			}, {
 				name: 'migrate',
 				label: _( 'Migrate' ),
