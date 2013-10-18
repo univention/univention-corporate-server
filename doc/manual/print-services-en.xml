@@ -81,13 +81,23 @@
 </section>
 
 <section id="print-services:configuration">
-<title>Setting the local configuration properties of a print server</title>
-<para>
-  The configuration of the CUPS print server is performed via settings from the LDAP directory
-  service and &ucsUCR;. If the &ucsUCRV; <envar>cups/include/local</envar> is set to
-  <emphasis>true</emphasis>, the <filename>/etc/cups/cupsd.local.conf</filename> file is included,
-   in which arbitrary options can be defined.
-</para>
+  <title>Setting the local configuration properties of a print server</title>
+  <para>
+	The configuration of the CUPS print server is performed via settings from the LDAP directory
+	service and &ucsUCR;. If the &ucsUCRV; <envar>cups/include/local</envar> is set to
+	<emphasis>true</emphasis>, the <filename>/etc/cups/cupsd.local.conf</filename> file is included,
+	in which arbitrary options can be defined.
+  </para>
+
+  <!-- <para> -->
+  <!-- 	Tritt bei der Verarbeitung einer Drucker-Queue ein Fehler auf (z.B. weil der angebundene Drucker -->
+  <!-- 	ausgeschaltet ist), wird in der Grundeinstellung die weitere Bearbeitung der Warteschlange -->
+  <!-- 	gestoppt. Diese muss dann durch den Administrator wieder aktiviert werden (siehe <xref -->
+  <!-- 	linkend="umc:modules:printer"/>). Wird die &ucsUCRV; <envar>cups/errorpolicy</envar> auf -->
+  <!-- 	<emphasis>retry-job</emphasis> gesetzt, versucht CUPS alle dreissig Sekunden automatisch  -->
+  <!-- 	erfolglose Druckaufträge erneut durchzuführen. -->
+  <!-- </para> -->
+
 </section>
 
 <section id="print::shares">
