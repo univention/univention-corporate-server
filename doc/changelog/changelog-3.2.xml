@@ -1017,7 +1017,7 @@
 		<listitem><simpara>
 				Forcing a user to change the password upon next login has been changed
 				internally when using <emphasis>Samba</emphasis>. It has been adapted
-				to newer versions of samba and do not require <emphasis>PAM</emphasis>
+				to newer versions of Samba and do not require <emphasis>PAM</emphasis>
 				anymore (<ulink url="&ucsbug;17890">Bug 17890</ulink>).
 		</simpara></listitem>
 
@@ -1855,8 +1855,8 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  Always create a samba printers configuration file and not only if client driver is activated,
-		  the samba name is set or ACLs are defined (<ulink url="&ucsbug;30432">Bug 30432</ulink>).
+		  Always create a Samba printers configuration file and not only if client driver is activated,
+		  the Samba name is set or ACLs are defined (<ulink url="&ucsbug;30432">Bug 30432</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -1941,9 +1941,9 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The property <emphasis>Use Windows client driver</emphasis> has been removed from the printer shares.
 		  During update the corresponding LDAP attribute will be removed on all printers hosted by the updated
-		  server, which in turn will remove the corresponding samba option from the local printer share definitions.
-		  The samba option is not required any longer because the print spool code has been updated in the new Samba
-		  version.  (<ulink url="&ucsbug;31624">Bug 31624</ulink>).
+		  server, which in turn will remove the corresponding Samba option from the local printer share definitions.
+		  The Samba option is not required any longer because the print spool code has been updated in the new Samba
+		  version (<ulink url="&ucsbug;31624">Bug 31624</ulink>).
 		</simpara></listitem>
 
 	  </itemizedlist>
@@ -2011,12 +2011,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  The package <package>univention-squid-kerberos</package> does not depend on <package>univention-samba4</package> anymore. In addition, the joinscript <filename>98univention-squid-samba4.inst</filename> now corectly saves its status when not in a samba4 environment (<ulink url="&ucsbug;32011">Bug 32011</ulink>).
+		  The package <package>univention-squid-kerberos</package> does not depend on <package>univention-samba4</package> anymore. In addition, the joinscript <filename>98univention-squid-samba4.inst</filename> now corectly saves its status when not in a Samba 4 environment (<ulink url="&ucsbug;32011">Bug 32011</ulink>).
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  The join script of the package <package>univention-squid-kerberos</package> failed
-		  on samba3 dc slaves in a samba3/samba4 mixed environment. This bug has been
+		  on Samba 3 dc slaves in a Samba 3/Samba 4 mixed environment. This bug has been
 		  fixed (<ulink url="&ucsbug;32186">Bug 32186</ulink>).
 		</simpara></listitem>
 
@@ -2377,7 +2377,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		<listitem><simpara>
 		  The Samba packages have been updated to version 4.1.0. The file server component is provided
 		  by the package <package>samba</package> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
-		  The package is build with the the patch for CVE-2013-4408.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2444,7 +2443,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		</simpara></listitem>
 
 		<listitem><simpara>
-		  With the new samba upstream package the secrets.tdb file has been moved to
+		  With the new Samba upstream package the secrets.tdb file has been moved to
 		  <filename>/var/lib/samba/private/</filename>. This is now considered in the password
 		  change hook
 		  (<ulink url="&ucsbug;32789">Bug 32789</ulink>).
@@ -2465,7 +2464,6 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 		  The Samba packages have been updated to version 4.1.0. The components providing Active Directory compatible
 		  domain services are now provided by the package <package>samba-ad-dc</package>. The file server component is provided
 		  by the package <package>samba</package> as usual (<ulink url="&ucsbug;31698">Bug 31698</ulink>).
-		  The package is build with the the patch for CVE-2013-4408.
 		</simpara></listitem>
 
 		<listitem><simpara>
@@ -2604,7 +2602,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 
 		<listitem><simpara>
 		  A configuration for the default idmap config <emphasis>*</emphasis> has been added to the
-		  samba 4 configuration. The new default can be overwritten via
+		  Samba 4 configuration. The new default can be overwritten via
 		  <filename>/etc/samba/local.conf</filename>
 		  (<ulink url="&ucsbug;32376">Bug 32376</ulink>).
 		</simpara></listitem>
@@ -2883,12 +2881,12 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		The samba test case for creating spn accounts has been improved
+		The Samba test case for creating spn accounts has been improved
 		(<ulink url="&ucsbug;32778">Bug 32778</ulink>).
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Under certain circumstances samba 3.6.8 reports a timeout for the unix password sync during
+		Under certain circumstances Samba 3.6.8 reports a timeout for the unix password sync during
 		password changes. Since the password change is successful nonetheless, two test cases have
 		been adjusted to tolerate this flaw (<ulink url="&ucsbug;31794">Bug 31794</ulink>).
 	  </simpara></listitem>
@@ -2929,7 +2927,7 @@ mail/cyrus/bdb/dbconfig/set_cachesize="0 2097152 1"</programlisting>
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-	   Improved test cases for samba share and folder access permissions are now available (<ulink url="&ucsbug;29056">Bug 29056</ulink>)
+	   Improved test cases for Samba share and folder access permissions are now available (<ulink url="&ucsbug;29056">Bug 29056</ulink>)
 	  </simpara></listitem>
 
 	  <listitem><simpara>
