@@ -77,6 +77,7 @@ __widgets = (
 	Widget( 'ComboBox', udm_syntax.UDM_Attribute, '' ),
 	Widget( None, ( udm_syntax.ldapDnOrNone, udm_syntax.ldapDn ), '', widget_func = lambda syn, prop: prop[ 'multivalue' ] and 'umc/modules/udm/MultiObjectSelect' or 'ComboBox' ),
 	Widget( 'UnixAccessRights', udm_syntax.UNIX_AccessRight, '000' ),
+	Widget( 'UnixAccessRightsExtended', udm_syntax.UNIX_AccessRight_extended, '0000' ),
 	Widget( 'MultiSelect', udm_syntax.MultiSelect, [] ),
 	Widget( 'umc/modules/udm/CertificateUploader', udm_syntax.Base64Upload, '' ),
 	Widget( 'ImageUploader', udm_syntax.jpegPhoto, '' ),
