@@ -1,3 +1,10 @@
+ucs-test (4.0.147-1) unstable; urgency=low
+
+  * Workaround for timing issue in 10_ldap/70schema_unregistration_basis
+    (Bug #26785)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 18 Oct 2013 16:12:46 +0200
+
 ucs-test (4.0.146-2) unstable; urgency=low
 
   * 62_udm-groups/23_group_modify_grouptype: more groupType change

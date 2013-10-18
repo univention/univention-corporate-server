@@ -78,6 +78,7 @@ if not success:
 	fail('The attribue was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
 	sys.exit(100)
 
+sleep(10) ## seems to be required, otherwise the fetch_schema_from_ldap_master still fetches the old schema
 call_unjoin_script(unjoin_script_name)
 
 # The postrun needs a few seconds
